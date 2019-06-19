@@ -1,0 +1,59 @@
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+    <property name="now" value="sysdate" dbms="oracle"/>
+    <property name="now" value="now()" dbms="mysql"/>
+    <property name="now" value="now()" dbms="postgresql"/>
+
+    <changeSet id="init" author="roman.berla">
+        <createTable tableName="users">
+            <column name="user_id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false" />
+            </column>
+            <column name="create_date" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP"/>
+            <column defaultValue="CURRENT_TIMESTAMP_ON_UPDATE"
+                    name="update_date"
+                    type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="phone" type="number">
+                <constraints nullable="false" />
+            </column>
+            <column name="phone_confirmed" type="number" defaultValueNumeric="0">
+                <constraints nullable="false" />
+            </column>
+
+        </createTable>
+
+        <createTable tableName="code_verifications">
+            <column name="code_id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false" />
+            </column>
+            <column name="create_date" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP"/>
+            <column defaultValue="CURRENT_TIMESTAMP_ON_UPDATE"
+                    name="update_date"
+                    type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="user_id" type="int"/>
+            <column name="phone" type="number">
+            </column>
+            <column name="code" type="number">
+                <constraints nullable="false" />
+            </column>
+            <column name="code_confirmed" type="number" defaultValueNumeric="0">
+                <constraints nullable="false" />
+            </column>
+
+        </createTable>
+
+        <modifySql dbms="mysql">
+            <regExpReplace replace="'CURRENT_TIMESTAMP_ON_UPDATE'" with="CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP"/>
+            <append value=" engine innodb" />
+        </modifySql>
+    </changeSet>
+
+
+</databaseChangeLog>
