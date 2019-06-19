@@ -1,18 +1,19 @@
 apply plugin: 'com.android.application'
-
 apply plugin: 'kotlin-android'
-
+apply plugin: 'kotlin-kapt'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'realm-android'
 
 android {
     compileSdkVersion 28
     defaultConfig {
         applicationId "com.app.belcobtm"
-        minSdkVersion 19
+        minSdkVersion 23
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        multiDexEnabled = true
     }
     buildTypes {
         release {
@@ -20,7 +21,36 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
 }
+
+kapt {
+    generateStubs = true
+}
+
+project.ext {
+    trustVersion = "0.10.0"
+
+    web3jVersion = "3.0.1-android"
+    gethVersion = "1.8.11"
+
+    retrofitVersion = "2.6.0"
+    okhttpVersion = "3.14.2"
+    gsonVersion = "2.8.5"
+
+    rxJavaVersion = "2.2.9"
+    rxAndroidVersion = "2.1.1"
+
+    parcelerVersion = "1.1.12"
+
+    duggerVersion = "2.23.1"
+}
+
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
@@ -33,4 +63,41 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+
+
+    implementation "com.android.support:multidex:1.0.3"
+
+    implementation "com.trustwallet.walletcore:walletcore:$project.trustVersion"
+
+    // Etherium client
+    implementation "org.web3j:core:$project.web3jVersion"
+    implementation "org.web3j:utils:$project.web3jVersion"
+    implementation "org.web3j:abi:$project.web3jVersion"
+
+    implementation "org.ethereum:geth:$project.gethVersion"
+    // Http client
+    implementation "com.squareup.retrofit2:retrofit:$project.retrofitVersion"
+    implementation "com.squareup.retrofit2:converter-gson:$project.retrofitVersion"
+    implementation "com.squareup.retrofit2:adapter-rxjava2:$project.retrofitVersion"
+    implementation "com.squareup.okhttp3:okhttp:$project.okhttpVersion"
+    implementation "com.google.code.gson:gson:$project.gsonVersion"
+
+    // ReactiveX
+    implementation "io.reactivex.rxjava2:rxjava:$project.rxJavaVersion"
+    implementation "io.reactivex.rxjava2:rxandroid:$project.rxAndroidVersion"
+
+    // Parceler
+    implementation "org.parceler:parceler-api:$project.parcelerVersion"
+    annotationProcessor "org.parceler:parceler:$project.parcelerVersion"
+
+    // Dagger 2
+    // Dagger core
+    implementation "com.google.dagger:dagger:$project.duggerVersion"
+    kapt "com.google.dagger:dagger-compiler:$project.duggerVersion"
+// Dagger Android
+    implementation "com.google.dagger:dagger-android:$project.duggerVersion"
+    implementation "com.google.dagger:dagger-android-support:$project.duggerVersion" // if you use the support libraries
+    kapt "com.google.dagger:dagger-android-processor:$project.duggerVersion"
+
+    implementation 'com.github.tbruyelle:rxpermissions:0.10.2'
 }

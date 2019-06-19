@@ -13,8 +13,8 @@ import kotlinx.android.synthetic.main.activity_login.*
 
 class LoginActivity : BaseMvpActivity<LoginContract.View, LoginContract.Presenter>(), LoginContract.View {
 
-    override var mPresenter: LoginContract.Presenter = LoginPresenter()
 
+    override var mPresenter: LoginContract.Presenter = LoginPresenter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,7 +28,10 @@ class LoginActivity : BaseMvpActivity<LoginContract.View, LoginContract.Presente
             false
         })
 
+        create_wallet.setOnClickListener { mPresenter.createWallet() }
+
     }
+
 
     private fun attemptLogin() {
         hideSoftKeyboard()
@@ -47,10 +50,7 @@ class LoginActivity : BaseMvpActivity<LoginContract.View, LoginContract.Presente
 
     override fun showProgress(show: Boolean) {
         runOnUiThread {
-            // On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
-            // for very easy animations. If available, use these APIs to fade-in
-            // the progress spinner.
-            //val shortAnimTime = resources.getInteger(android.R.integer.config_shortAnimTime).toLong()
+            //todo
 
         }
     }
