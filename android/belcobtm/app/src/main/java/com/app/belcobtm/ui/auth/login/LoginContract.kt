@@ -8,6 +8,7 @@ object LoginContract {
 
     interface Presenter : BaseMvpPresenter<View> {
         fun login(email: String?, password: String?)
+        fun createWallet()
     }
 
     interface View : BaseMvpView {
