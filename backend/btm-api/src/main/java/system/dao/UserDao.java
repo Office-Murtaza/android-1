@@ -2,11 +2,13 @@ package system.dao;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
+import org.springframework.stereotype.Repository;
 import system.model.User;
 import system.model.exception.UserException;
 
 import java.util.List;
 
+@Repository
 public class UserDao extends Dao {
 
     public User create(User user)

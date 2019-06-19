@@ -2,11 +2,13 @@ package system.dao;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
+import org.springframework.stereotype.Repository;
 import system.model.exception.CodeVerificationException;
 import system.model.CodeVerification;
 
 import java.util.List;
 
+@Repository
 public class CodeVerificationDao extends Dao {
 
     public CodeVerification create(CodeVerification codeVerification)
