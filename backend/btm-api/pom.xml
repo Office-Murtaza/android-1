@@ -5,7 +5,7 @@
     <parent>
         <artifactId>backend</artifactId>
         <groupId>com.btm</groupId>
-        <version>0.0.2</version>
+        <version>0.0.6</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -27,9 +27,9 @@
                     <artifactId>tomcat7-maven-plugin</artifactId>
                     <version>2.2</version>
                     <configuration>
-                        <url>http://localhost:8080/</url>
+                        <url>http://localhost:80/</url>
                         <server>localhost</server>
-                        <path>/</path>
+                        <path>/${project.build.finalName}</path>
                         <!--used to be artefact name here-->
                     </configuration>
                 </plugin>

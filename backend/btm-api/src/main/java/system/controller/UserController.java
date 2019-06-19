@@ -43,33 +43,33 @@ public class UserController {
 
     @RequestMapping(value="/phone_confirmation", method = RequestMethod.POST)
     public @ResponseBody
-    JSONObject confirmPhoneCode(@RequestBody ConfirmPhoneCodeInput input) {
+    ResponseEntity<JsonNode> confirmPhoneCode(@RequestBody ConfirmPhoneCodeInput input) {
         System.out.println(input.userId + "" + input.smsCode);
 
-        JSONObject response = new JSONObject();
+        ObjectNode response = mapper.createObjectNode();
         response.put("code", 1);
         response.put("sessionId", "SESS");
-        return response;
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 
     @RequestMapping(value="/login", method = RequestMethod.POST)
     public @ResponseBody
-    JSONObject login(@RequestBody LoginInput input) {
+    ResponseEntity<JsonNode> login(@RequestBody LoginInput input) {
         System.out.println(input.phone + input.password);
 
-        JSONObject response = new JSONObject();
+        ObjectNode response = mapper.createObjectNode();
         response.put("userId", 1);
         response.put("sessionId", "SESS");
-        return response;
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 
     @RequestMapping(value="/logout", method = RequestMethod.POST)
     public @ResponseBody
-    JSONObject logout(@RequestBody LogoutInput input) {
+    ResponseEntity<JsonNode> logout(@RequestBody LogoutInput input) {
         System.out.println(input.userId + input.sessionId);
 
-        JSONObject response = new JSONObject();
+        ObjectNode response = mapper.createObjectNode();
         response.put("code", 0);
-        return response;
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 }
