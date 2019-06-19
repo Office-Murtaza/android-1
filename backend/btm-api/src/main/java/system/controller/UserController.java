@@ -1,7 +1,12 @@
 package system.controller;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,19 +23,22 @@ import system.service.UserService;
 public class UserController {
 
     @Autowired
+    private ObjectMapper mapper;
+    @Autowired
     UserService userService;
     @Autowired
     CodeVerificationService codeVerificationService;
 
     @RequestMapping(value="/create", method = RequestMethod.POST)
     public @ResponseBody
-    JSONObject addEvent(@RequestBody CreateUserInput input) {
+    ResponseEntity<JsonNode> addEvent(@RequestBody CreateUserInput input) {
         System.out.println(input.phone + input.password);
 
-        JSONObject response = new JSONObject();
+        ObjectNode response = mapper.createObjectNode();
         response.put("code", 1);
         response.put("userId", 1);
-        return response;
+
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 
     @RequestMapping(value="/phone_confirmation", method = RequestMethod.POST)
