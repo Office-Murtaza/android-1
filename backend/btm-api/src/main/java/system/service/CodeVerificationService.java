@@ -2,8 +2,9 @@ package system.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import system.dao.UserDao;
-import system.model.User;
+import system.dao.CodeVerificationDao;
+import system.model.CodeVerification;
+import system.model.exception.CodeVerificationException;
 import system.model.exception.UserException;
 
 import java.util.LinkedList;
@@ -13,32 +14,40 @@ import java.util.List;
 public class CodeVerificationService {
 
     @Autowired
-    UserDao dao;
+    CodeVerificationDao dao;
 
-    public User create(User user) {
+    public CodeVerification create(CodeVerification user) {
         try {
             return dao.create(user);
-        } catch (UserException e) {
+        } catch (CodeVerificationException e) {
             e.printStackTrace();
         }
         return null;
     }
 
-    public void delete(User user) {
+    public void delete(CodeVerification user) {
         try {
             dao.delete(user);
-        } catch (UserException e) {
+        } catch (CodeVerificationException e) {
             e.printStackTrace();
         }
     }
 
-    public List<User> list() {
+    public List<CodeVerification> list() {
         try {
             return dao.list();
-        } catch (UserException e) {
+        } catch (CodeVerificationException e) {
             e.printStackTrace();
         }
         return new LinkedList<>();
     }
 
+    public Boolean isCodeTheSameAsTheLastCodeSentToUser(long userId, String smsCode) {
+        try {
+            return dao.isCodeTheSameAsTheLastCodeSentToUser(userId, smsCode);
+        } catch (UserException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }

@@ -6,6 +6,8 @@ import org.springframework.stereotype.Repository;
 import system.model.User;
 import system.model.exception.UserException;
 
+import javax.persistence.NoResultException;
+import java.util.LinkedList;
 import java.util.List;
 
 @Repository
@@ -14,8 +16,8 @@ public class UserDao extends Dao {
     public User create(User user)
             throws UserException {
         try {
-            begin();            
-            getSession().save(user);     
+            begin();
+            getSession().save(user);
             commit();
             return user;
         } catch (HibernateException e) {
@@ -41,13 +43,35 @@ public class UserDao extends Dao {
     	try {
             begin();
             Query q = getSession().createQuery("from User");
-            List<User> adverts = q.list();
+            List<User> users = q.list();
             commit();
-            return adverts;
+            return users;
         } catch (HibernateException e) {
             rollback();
             throw new UserException("Could not list users", e);
         }
     	
+    }
+
+    public boolean isUserWithConfirmedPhoneExist(User u) throws UserException {
+        try {
+            begin();
+
+            boolean userExists;
+            try {
+                userExists = !getSession().createQuery("from User u where u.phone = :phone and u.phoneConfirmed = :phone_confirmed ")
+                        .setParameter("phone", u.getPhone())
+                        .setParameter("phone_confirmed", 1L)
+                        .list().isEmpty();
+            } catch (NoResultException e) {
+                userExists = false;
+            }
+
+            commit();
+            return userExists;
+        } catch (HibernateException e) {
+            rollback();
+            throw new UserException("Could not list users", e);
+        }
     }
 }

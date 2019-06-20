@@ -41,4 +41,12 @@ public class UserService {
         return new LinkedList<>();
     }
 
+    public Boolean isUserWithConfirmedPhoneExist(User u) {
+        try {
+            return dao.isUserWithConfirmedPhoneExist(u);
+        } catch (UserException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }

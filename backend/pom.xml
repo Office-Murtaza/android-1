@@ -9,7 +9,7 @@
 
 	<groupId>com.btm</groupId>
 	<artifactId>backend</artifactId>
-	<version>0.0.6</version>
+	<version>0.0.7</version>
     <packaging>pom</packaging>
 
 	<name>backend</name>
@@ -26,9 +26,11 @@
                 <artifactId>tomcat7-maven-plugin</artifactId>
                 <version>2.2</version>
                 <configuration>
-                    <url>http://localhost:80/</url>
-                    <server>localhost</server>
-                    <path>/${project.build.finalName}</path>
+                    <url>localhost/</url>
+                    <!--<server>localhost</server>-->
+                    <!--<port>80</port>-->
+                    <path>/</path>
+                    <!--<path>/${project.build.finalName}</path>-->
                 </configuration>
             </plugin>
             <plugin>

@@ -1,5 +1,8 @@
 package system.model;
 
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
 import javax.persistence.*;
 import java.util.Date;
 
@@ -20,17 +23,21 @@ public class CodeVerification {
     private User user;
 
     @Column(name = "phone")
-    private long phone;
+    private String phone;
 
     @Column(name = "code")
-    private long code;
+    private String code;
 
     @Column(name = "code_confirmed")
     private long codeConfirmed;
 
+    @CreationTimestamp
+    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "create_date")
     private Date createDate;
 
+    @UpdateTimestamp
+    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "update_date")
     private Date updateDate;
 
@@ -50,19 +57,19 @@ public class CodeVerification {
         this.user = user;
     }
 
-    public long getPhone() {
+    public String getPhone() {
         return phone;
     }
 
-    public void setPhone(long phone) {
+    public void setPhone(String phone) {
         this.phone = phone;
     }
 
-    public long getCode() {
+    public String getCode() {
         return code;
     }
 
-    public void setCode(long code) {
+    public void setCode(String code) {
         this.code = code;
     }
 

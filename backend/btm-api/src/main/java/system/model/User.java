@@ -1,5 +1,8 @@
 package system.model;
 
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
 import javax.persistence.*;
 import java.util.Date;
 
@@ -19,17 +22,23 @@ public class User {
     private long userId;
 
     @Column(name = "phone")
-    private long phone;
+    private String phone;
 
     @Column(name = "phone_confirmed")
     private long phoneConfirmed;
 
+    @Column(name = "password")
+    private String password;
+
+    @CreationTimestamp
+    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "create_date")
     private Date createDate;
 
+    @UpdateTimestamp
+    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "update_date")
     private Date updateDate;
-
 
     public long getUserId() {
         return userId;
@@ -39,11 +48,11 @@ public class User {
         this.userId = userId;
     }
 
-    public long getPhone() {
+    public String getPhone() {
         return phone;
     }
 
-    public void setPhone(long phone) {
+    public void setPhone(String phone) {
         this.phone = phone;
     }
 
@@ -53,6 +62,14 @@ public class User {
 
     public void setPhoneConfirmed(long phoneConfirmed) {
         this.phoneConfirmed = phoneConfirmed;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public Date getCreateDate() {

@@ -5,7 +5,7 @@
     <parent>
         <artifactId>backend</artifactId>
         <groupId>com.btm</groupId>
-        <version>0.0.6</version>
+        <version>0.0.7</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -22,17 +22,17 @@
                         <failOnMissingWebXml>false</failOnMissingWebXml>
                     </configuration>
                 </plugin>
-                <plugin>
-                    <groupId>org.apache.tomcat.maven</groupId>
-                    <artifactId>tomcat7-maven-plugin</artifactId>
-                    <version>2.2</version>
-                    <configuration>
-                        <url>http://localhost:80/</url>
-                        <server>localhost</server>
-                        <path>/${project.build.finalName}</path>
-                        <!--used to be artefact name here-->
-                    </configuration>
-                </plugin>
+                <!--<plugin>-->
+                    <!--<groupId>org.apache.tomcat.maven</groupId>-->
+                    <!--<artifactId>tomcat7-maven-plugin</artifactId>-->
+                    <!--<version>2.2</version>-->
+                    <!--<configuration>-->
+                        <!--<url>http://localhost:80/</url>-->
+                        <!--<server>localhost</server>-->
+                        <!--<path>/${project.build.finalName}</path>-->
+                        <!--&lt;!&ndash;used to be artefact name here&ndash;&gt;-->
+                    <!--</configuration>-->
+                <!--</plugin>-->
                 <!--<plugin>-->
                     <!--<groupId>org.eclipse.jetty</groupId>-->
                     <!--<artifactId>jetty-maven-plugin</artifactId>-->
@@ -133,6 +133,11 @@
             <groupId>org.json</groupId>
             <artifactId>json</artifactId>
             <version>20160810</version>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.0</version>
         </dependency>
     </dependencies>
 
