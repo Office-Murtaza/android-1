@@ -3,7 +3,9 @@ package system.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import system.dao.UserDao;
+import system.model.CodeVerification;
 import system.model.User;
+import system.model.exception.CodeVerificationException;
 import system.model.exception.UserException;
 
 import java.util.LinkedList;
@@ -22,6 +24,14 @@ public class UserService {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public void update(User user) {
+        try {
+            dao.update(user);
+        } catch (UserException e) {
+            e.printStackTrace();
+        }
     }
 
     public void delete(User user) {

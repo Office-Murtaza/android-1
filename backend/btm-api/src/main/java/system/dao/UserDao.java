@@ -3,7 +3,9 @@ package system.dao;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.springframework.stereotype.Repository;
+import system.model.CodeVerification;
 import system.model.User;
+import system.model.exception.CodeVerificationException;
 import system.model.exception.UserException;
 
 import javax.persistence.NoResultException;
@@ -26,6 +28,18 @@ public class UserDao extends Dao {
         }
     }
 
+    public void update(User user)
+            throws UserException {
+        try {
+            begin();
+            getSession().update(user);
+            commit();
+        } catch (HibernateException e) {
+            rollback();
+            throw new UserException("Exception while updating user: " + e.getMessage());
+        }
+    }
+
     public void delete(User user)
             throws UserException {
         try {
@@ -37,9 +51,9 @@ public class UserDao extends Dao {
             throw new UserException("Could not delete user", e);
         }
     }
-    
+
     public List<User> list() throws UserException{
-    	
+
     	try {
             begin();
             Query q = getSession().createQuery("from User");
@@ -50,7 +64,7 @@ public class UserDao extends Dao {
             rollback();
             throw new UserException("Could not list users", e);
         }
-    	
+
     }
 
     public boolean isUserWithConfirmedPhoneExist(User u) throws UserException {

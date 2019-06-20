@@ -1,6 +1,7 @@
 package system.model;
 
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.ManyToAny;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
@@ -8,7 +9,6 @@ import java.util.Date;
 
 @Entity
 @Table(name="code_verifications")
-@PrimaryKeyJoinColumn(name = "user_id")
 public class CodeVerification {
     /*
     code_verifications(code_id, user_id, phone, code, code_confirmed, create_date, update_date)
@@ -16,11 +16,16 @@ public class CodeVerification {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "code_id", unique = true, nullable = false)
-    private long userId;
+    private long codeId;
 
-    @OneToOne
-    @PrimaryKeyJoinColumn
+    @ManyToOne
+    @JoinColumns(
+            {@JoinColumn(name = "user_id", referencedColumnName="user_id")}
+            )
     private User user;
+
+//    @Column(name = "user_id")
+//    private long userId;
 
     @Column(name = "phone")
     private String phone;
@@ -41,12 +46,12 @@ public class CodeVerification {
     @Column(name = "update_date")
     private Date updateDate;
 
-    public long getUserId() {
-        return userId;
+    public long getCodeId() {
+        return codeId;
     }
 
-    public void setUserId(long userId) {
-        this.userId = userId;
+    public void setCodeId(long codeId) {
+        this.codeId = codeId;
     }
 
     public User getUser() {
@@ -56,6 +61,14 @@ public class CodeVerification {
     public void setUser(User user) {
         this.user = user;
     }
+
+//    public long getUserId() {
+//        return userId;
+//    }
+//
+//    public void setUserId(long userId) {
+//        this.userId = userId;
+//    }
 
     public String getPhone() {
         return phone;

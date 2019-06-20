@@ -9,6 +9,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import system.dao.CodeVerificationCode;
+import system.dao.CodeVerificationResult;
 import system.model.CodeVerification;
 import system.model.POJO.ConfirmPhoneCodeInput;
 import system.model.POJO.CreateUserInput;
@@ -65,7 +67,8 @@ public class UserController {
             CodeVerification verification = new CodeVerification();
             verification.setPhone(u.getPhone());
             verification.setCode(code);
-            verification.setUserId(u.getUserId());
+//            verification.setUserId(userId);
+            verification.setUser(u);
 
             codeVerificationService.create(verification);
         }
@@ -81,12 +84,22 @@ public class UserController {
     ResponseEntity<JsonNode> confirmPhoneCode(@RequestBody ConfirmPhoneCodeInput input) {
         System.out.println(input.userId + "" + input.smsCode);
 
-        if(codeVerificationService.isCodeTheSameAsTheLastCodeSentToUser(input.userId, input.smsCode)) {
+        CodeVerificationResult verificationResult =
+                codeVerificationService.isCodeTheSameAsTheLastCodeSentToUser(input.userId, input.smsCode);
+        CodeVerificationCode verificationResultCode = verificationResult.getCode();
 
+        if(verificationResultCode == CodeVerificationCode.OK) {
+            CodeVerification latestVerification = verificationResult.getLatestVerification();
+            latestVerification.setCodeConfirmed(1);
+            codeVerificationService.update(latestVerification);
+
+            User user = latestVerification.getUser();
+            user.setPhoneConfirmed(1);
+            userService.update(user);
         }
 
         ObjectNode response = mapper.createObjectNode();
-        response.put("code", 1);
+        response.put("code", verificationResultCode != null? verificationResultCode.getCode() : 1);
         response.put("sessionId", "SESS");
         return new ResponseEntity<>(response, HttpStatus.OK);
     }

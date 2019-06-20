@@ -3,6 +3,8 @@ package system.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import system.dao.CodeVerificationDao;
+import system.dao.CodeVerificationCode;
+import system.dao.CodeVerificationResult;
 import system.model.CodeVerification;
 import system.model.exception.CodeVerificationException;
 import system.model.exception.UserException;
@@ -25,9 +27,17 @@ public class CodeVerificationService {
         return null;
     }
 
-    public void delete(CodeVerification user) {
+    public void delete(CodeVerification verification) {
         try {
-            dao.delete(user);
+            dao.delete(verification);
+        } catch (CodeVerificationException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void update(CodeVerification verification) {
+        try {
+            dao.update(verification);
         } catch (CodeVerificationException e) {
             e.printStackTrace();
         }
@@ -42,7 +52,7 @@ public class CodeVerificationService {
         return new LinkedList<>();
     }
 
-    public Boolean isCodeTheSameAsTheLastCodeSentToUser(long userId, String smsCode) {
+    public CodeVerificationResult isCodeTheSameAsTheLastCodeSentToUser(long userId, String smsCode) {
         try {
             return dao.isCodeTheSameAsTheLastCodeSentToUser(userId, smsCode);
         } catch (UserException e) {

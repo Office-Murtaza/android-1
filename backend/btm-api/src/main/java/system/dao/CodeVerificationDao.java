@@ -3,13 +3,13 @@ package system.dao;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.springframework.stereotype.Repository;
-import system.model.User;
 import system.model.exception.CodeVerificationException;
 import system.model.CodeVerification;
 import system.model.exception.UserException;
 
 import javax.persistence.NoResultException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Repository
 public class CodeVerificationDao extends Dao {
@@ -19,13 +19,25 @@ public class CodeVerificationDao extends Dao {
     public CodeVerification create(CodeVerification codeVerification)
             throws CodeVerificationException {
         try {
-            begin();            
-            getSession().save(codeVerification);     
+            begin();
+            getSession().save(codeVerification);
             commit();
             return codeVerification;
         } catch (HibernateException e) {
             rollback();
             throw new CodeVerificationException("Exception while creating codeVerification: " + e.getMessage());
+        }
+    }
+
+    public void update(CodeVerification verification)
+            throws CodeVerificationException {
+        try {
+            begin();
+            getSession().update(verification);
+            commit();
+        } catch (HibernateException e) {
+            rollback();
+            throw new CodeVerificationException("Exception while updating codeVerification: " + e.getMessage());
         }
     }
 
@@ -40,9 +52,9 @@ public class CodeVerificationDao extends Dao {
             throw new CodeVerificationException("Could not delete codeVerification", e);
         }
     }
-    
+
     public List<CodeVerification> list() throws CodeVerificationException{
-    	
+
     	try {
             begin();
             Query q = getSession().createQuery("from CodeVerification");
@@ -53,45 +65,48 @@ public class CodeVerificationDao extends Dao {
             rollback();
             throw new CodeVerificationException("Could not list codeVerifications", e);
         }
-    	
+
     }
 
-    public boolean isCodeTheSameAsTheLastCodeSentToUser(long userId, String smsCode) throws UserException {
+    public CodeVerificationResult isCodeTheSameAsTheLastCodeSentToUser(long userId, String smsCode) throws UserException {
         try {
             begin();
 
-            boolean goodCodeExists = false;
+            CodeVerificationCode codeVerificationCode = CodeVerificationCode.NOT_MATCH;
+            CodeVerification latestSentCode = null;
             try {
+
                 List codeVerificationsAsObjects = getSession()
-                        .createQuery("from CodeVerification v where v.userId = :userId")
-                        .setParameter("userId", userId)
+                        .createQuery("from CodeVerification")
                         .list();
                 if(!codeVerificationsAsObjects.isEmpty()) {
                     LinkedList<CodeVerification> codeVerificationsCasted = new LinkedList<>(
                             (List<CodeVerification>) codeVerificationsAsObjects
                     );
+                    codeVerificationsCasted = codeVerificationsCasted
+                            .stream()
+                            .filter(cv -> cv.getUser().getUserId() == userId).collect(Collectors.toCollection(LinkedList::new));
                     codeVerificationsCasted.sort(Comparator.comparing(CodeVerification::getCreateDate));
-                    CodeVerification latestSentCode = codeVerificationsCasted.getFirst();//todo check if it will be first or last
+                    latestSentCode = codeVerificationsCasted.getLast();
+
+                    int latestSentCodeInt = Integer.parseInt(latestSentCode.getCode().trim());
+                    int smsCodeInt = Integer.parseInt(smsCode.trim());
+
                     long dateDifference = new Date().getTime() - latestSentCode.getCreateDate().getTime();
-                    if(latestSentCode.getCode().equals(smsCode) && dateDifference < TEN_MIN_IN_MS) {
-                        goodCodeExists = true;
+                    System.out.println("Date difference is " + (dateDifference / 60000) + " min");
+                    if(latestSentCodeInt == smsCodeInt && dateDifference < TEN_MIN_IN_MS) {
+                        codeVerificationCode = CodeVerificationCode.OK;
+                    } else if(latestSentCodeInt == smsCodeInt && dateDifference >= TEN_MIN_IN_MS) {
+                        codeVerificationCode = CodeVerificationCode.EXPIRED;
                     }
-                    System.out.println(
-                            "Latest is " + codeVerificationsCasted.getFirst().getCode() +
-                                    " created at " + codeVerificationsCasted.getFirst().getCreateDate()
-                    );
-                    System.out.println(
-                            "Difference is " +
-                            ((new Date().getTime() - codeVerificationsCasted.getFirst().getCreateDate().getTime()) / TEN_MIN_IN_MS)
-                    );
                 }
 
             } catch (NoResultException e) {
-                goodCodeExists = false;
+                codeVerificationCode = CodeVerificationCode.NOT_MATCH;
             }
 
             commit();
-            return goodCodeExists;
+            return new CodeVerificationResult(codeVerificationCode, latestSentCode);
         } catch (HibernateException e) {
             rollback();
             throw new UserException("Could not check last code verification", e);
