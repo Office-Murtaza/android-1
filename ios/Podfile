@@ -1,0 +1,12 @@
+platform :ios, '12.1'
+
+use_frameworks!
+
+target 'BelcoBTM' do
+
+  pod 'TrustWalletCore', '0.8.1'
+  
+  target 'BelcoBTMTests' do
+      inherit! :search_paths
+  end
+end
