@@ -6,9 +6,15 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import org.springframework.web.context.request.RequestContextHolder;
 import system.dao.CodeVerificationCode;
 import system.dao.CodeVerificationResult;
 import system.model.CodeVerification;
@@ -21,6 +27,10 @@ import system.service.CodeVerificationService;
 import system.service.TwilioService;
 import system.service.UserService;
 
+import javax.annotation.Resource;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.Random;
 
 @Controller
@@ -109,16 +119,44 @@ public class UserController {
     ResponseEntity<JsonNode> login(@RequestBody LoginInput input) {
         System.out.println(input.phone + input.password);
 
+        String sessionId = RequestContextHolder.currentRequestAttributes().getSessionId();
+
         ObjectNode response = mapper.createObjectNode();
         response.put("userId", 1);
-        response.put("sessionId", "SESS");
+        response.put("sessionId", sessionId);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    @Resource(name="authenticationManager")
+    private AuthenticationManager authManager;
+
+    @RequestMapping(value = "/login2", method = RequestMethod.POST)
+    public ResponseEntity<JsonNode> login2(@RequestBody LoginInput input, final HttpServletRequest request) {
+        String username = input.phone;
+        String password = input.password;
+        UsernamePasswordAuthenticationToken authReq =
+                new UsernamePasswordAuthenticationToken(username, password);
+        Authentication auth = authManager.authenticate(authReq);
+        SecurityContext sc = SecurityContextHolder.getContext();
+        sc.setAuthentication(auth);
+        HttpSession session = request.getSession(true);
+        session.setAttribute("SPRING_SECURITY_CONTEXT", sc);
+
+        String sessionId = session.getId();
+
+        ObjectNode response = mapper.createObjectNode();
+        response.put("userId", 1);
+        response.put("sessionId", sessionId);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+
     @RequestMapping(value="/logout", method = RequestMethod.POST)
     public @ResponseBody
-    ResponseEntity<JsonNode> logout(@RequestBody LogoutInput input) {
+    ResponseEntity<JsonNode> logout(@RequestBody LogoutInput input, final HttpServletRequest request) {
         System.out.println(input.userId + input.sessionId);
+
+        request.getSession().invalidate();
 
         ObjectNode response = mapper.createObjectNode();
         response.put("code", 0);

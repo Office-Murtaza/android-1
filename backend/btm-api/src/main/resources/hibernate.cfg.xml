@@ -4,9 +4,9 @@
 <hibernate-configuration>
  <session-factory name="sessionFactory">
   <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
-  <property name="hibernate.connection.url">jdbc:mysql://db4free.net:3306/basebasss</property>
-  <property name="hibernate.connection.username">root112344</property>
-  <property name="hibernate.connection.password">P@ssw0rd</property>
+  <property name="hibernate.connection.url">jdbc:mysql://206.189.204.44:3306/batm</property>
+  <property name="hibernate.connection.username">belcobtm</property>
+  <property name="hibernate.connection.password">abc123456</property>
   <property name="hibernate.hbm2ddl.auto">update</property>
   <property name="hibernate.dialect">org.hibernate.dialect.MySQL5Dialect</property>
   <property name="hibernate.show_sql">true</property>
