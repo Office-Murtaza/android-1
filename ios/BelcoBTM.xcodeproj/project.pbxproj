@@ -1,0 +1,594 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 50;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		0A6B80E6521C169318F74470 /* Pods_BelcoBTM.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4C26252DD327E99A86B25EE8 /* Pods_BelcoBTM.framework */; };
+		8A33EE3DD05925BFA31B46D7 /* Pods_BelcoBTMTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 93B635B3923A75814A7C9672 /* Pods_BelcoBTMTests.framework */; };
+		DB0BB5F722BD10B90035FF6C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB0BB5F622BD10B90035FF6C /* AppDelegate.swift */; };
+		DB0BB5F922BD10B90035FF6C /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB0BB5F822BD10B90035FF6C /* ViewController.swift */; };
+		DB0BB5FC22BD10B90035FF6C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DB0BB5FA22BD10B90035FF6C /* Main.storyboard */; };
+		DB0BB5FE22BD10BA0035FF6C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DB0BB5FD22BD10BA0035FF6C /* Assets.xcassets */; };
+		DB0BB60122BD10BA0035FF6C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DB0BB5FF22BD10BA0035FF6C /* LaunchScreen.storyboard */; };
+		DBD1750E22BD26CB0021A05E /* HDWallet+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD1750C22BD26CB0021A05E /* HDWallet+Extensions.swift */; };
+		DBD1750F22BD26CB0021A05E /* HDWalletTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD1750D22BD26CB0021A05E /* HDWalletTests.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		DBD1750722BD26860021A05E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = DB0BB5EB22BD10B80035FF6C /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = DB0BB5F222BD10B80035FF6C;
+			remoteInfo = TestWallet;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		29074D3265954D0895731B3E /* Pods-BelcoBTMTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BelcoBTMTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-BelcoBTMTests/Pods-BelcoBTMTests.debug.xcconfig"; sourceTree = "<group>"; };
+		4C26252DD327E99A86B25EE8 /* Pods_BelcoBTM.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BelcoBTM.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		661D19503FDC169CE02C6638 /* Pods-BelcoBTM.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BelcoBTM.release.xcconfig"; path = "Pods/Target Support Files/Pods-BelcoBTM/Pods-BelcoBTM.release.xcconfig"; sourceTree = "<group>"; };
+		6D3B031B834817D4A51FF02B /* Pods-BelcoBTM.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BelcoBTM.debug.xcconfig"; path = "Pods/Target Support Files/Pods-BelcoBTM/Pods-BelcoBTM.debug.xcconfig"; sourceTree = "<group>"; };
+		93B635B3923A75814A7C9672 /* Pods_BelcoBTMTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BelcoBTMTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		BC99C318B0E49E804141428F /* Pods-BelcoBTMTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BelcoBTMTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-BelcoBTMTests/Pods-BelcoBTMTests.release.xcconfig"; sourceTree = "<group>"; };
+		DB0BB5F322BD10B90035FF6C /* BelcoBTM.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BelcoBTM.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		DB0BB5F622BD10B90035FF6C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		DB0BB5F822BD10B90035FF6C /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		DB0BB5FB22BD10B90035FF6C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		DB0BB5FD22BD10BA0035FF6C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		DB0BB60022BD10BA0035FF6C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		DB0BB60222BD10BA0035FF6C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		DBD1750222BD26860021A05E /* BelcoBTMTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BelcoBTMTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		DBD1750622BD26860021A05E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		DBD1750C22BD26CB0021A05E /* HDWallet+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "HDWallet+Extensions.swift"; sourceTree = "<group>"; };
+		DBD1750D22BD26CB0021A05E /* HDWalletTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HDWalletTests.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		DB0BB5F022BD10B80035FF6C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0A6B80E6521C169318F74470 /* Pods_BelcoBTM.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DBD174FF22BD26860021A05E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8A33EE3DD05925BFA31B46D7 /* Pods_BelcoBTMTests.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		0FF40CB301564F71A26D9269 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				4C26252DD327E99A86B25EE8 /* Pods_BelcoBTM.framework */,
+				93B635B3923A75814A7C9672 /* Pods_BelcoBTMTests.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		93998D052DC7607E47EA7663 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				6D3B031B834817D4A51FF02B /* Pods-BelcoBTM.debug.xcconfig */,
+				661D19503FDC169CE02C6638 /* Pods-BelcoBTM.release.xcconfig */,
+				29074D3265954D0895731B3E /* Pods-BelcoBTMTests.debug.xcconfig */,
+				BC99C318B0E49E804141428F /* Pods-BelcoBTMTests.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		DB0BB5EA22BD10B80035FF6C = {
+			isa = PBXGroup;
+			children = (
+				DB0BB5F522BD10B90035FF6C /* BelcoBTM */,
+				DBD1750322BD26860021A05E /* BelcoBTMTests */,
+				DB0BB5F422BD10B90035FF6C /* Products */,
+				93998D052DC7607E47EA7663 /* Pods */,
+				0FF40CB301564F71A26D9269 /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		DB0BB5F422BD10B90035FF6C /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				DB0BB5F322BD10B90035FF6C /* BelcoBTM.app */,
+				DBD1750222BD26860021A05E /* BelcoBTMTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		DB0BB5F522BD10B90035FF6C /* BelcoBTM */ = {
+			isa = PBXGroup;
+			children = (
+				DB0BB5F622BD10B90035FF6C /* AppDelegate.swift */,
+				DB0BB5F822BD10B90035FF6C /* ViewController.swift */,
+				DB0BB5FA22BD10B90035FF6C /* Main.storyboard */,
+				DB0BB5FD22BD10BA0035FF6C /* Assets.xcassets */,
+				DB0BB5FF22BD10BA0035FF6C /* LaunchScreen.storyboard */,
+				DB0BB60222BD10BA0035FF6C /* Info.plist */,
+			);
+			path = BelcoBTM;
+			sourceTree = "<group>";
+		};
+		DBD1750322BD26860021A05E /* BelcoBTMTests */ = {
+			isa = PBXGroup;
+			children = (
+				DBD1751022BD26D40021A05E /* Extensions */,
+				DBD1750D22BD26CB0021A05E /* HDWalletTests.swift */,
+				DBD1750622BD26860021A05E /* Info.plist */,
+			);
+			path = BelcoBTMTests;
+			sourceTree = "<group>";
+		};
+		DBD1751022BD26D40021A05E /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				DBD1750C22BD26CB0021A05E /* HDWallet+Extensions.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		DB0BB5F222BD10B80035FF6C /* BelcoBTM */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DB0BB60522BD10BA0035FF6C /* Build configuration list for PBXNativeTarget "BelcoBTM" */;
+			buildPhases = (
+				7ED1E2D1833AA66A67E9596D /* [CP] Check Pods Manifest.lock */,
+				DB0BB5EF22BD10B80035FF6C /* Sources */,
+				DB0BB5F022BD10B80035FF6C /* Frameworks */,
+				DB0BB5F122BD10B80035FF6C /* Resources */,
+				DACE419727AC17B6399DEEAD /* [CP] Embed Pods Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = BelcoBTM;
+			productName = TestWallet;
+			productReference = DB0BB5F322BD10B90035FF6C /* BelcoBTM.app */;
+			productType = "com.apple.product-type.application";
+		};
+		DBD1750122BD26860021A05E /* BelcoBTMTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DBD1750B22BD26860021A05E /* Build configuration list for PBXNativeTarget "BelcoBTMTests" */;
+			buildPhases = (
+				71CCD3B24B4EA300A5140675 /* [CP] Check Pods Manifest.lock */,
+				DBD174FE22BD26860021A05E /* Sources */,
+				DBD174FF22BD26860021A05E /* Frameworks */,
+				DBD1750022BD26860021A05E /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				DBD1750822BD26860021A05E /* PBXTargetDependency */,
+			);
+			name = BelcoBTMTests;
+			productName = TestWalletTests;
+			productReference = DBD1750222BD26860021A05E /* BelcoBTMTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		DB0BB5EB22BD10B80035FF6C /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 1010;
+				LastUpgradeCheck = 1010;
+				ORGANIZATIONNAME = "Daniel Tischenko";
+				TargetAttributes = {
+					DB0BB5F222BD10B80035FF6C = {
+						CreatedOnToolsVersion = 10.1;
+					};
+					DBD1750122BD26860021A05E = {
+						CreatedOnToolsVersion = 10.1;
+						LastSwiftMigration = 1010;
+						TestTargetID = DB0BB5F222BD10B80035FF6C;
+					};
+				};
+			};
+			buildConfigurationList = DB0BB5EE22BD10B80035FF6C /* Build configuration list for PBXProject "BelcoBTM" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = DB0BB5EA22BD10B80035FF6C;
+			productRefGroup = DB0BB5F422BD10B90035FF6C /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				DB0BB5F222BD10B80035FF6C /* BelcoBTM */,
+				DBD1750122BD26860021A05E /* BelcoBTMTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		DB0BB5F122BD10B80035FF6C /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DB0BB60122BD10BA0035FF6C /* LaunchScreen.storyboard in Resources */,
+				DB0BB5FE22BD10BA0035FF6C /* Assets.xcassets in Resources */,
+				DB0BB5FC22BD10B90035FF6C /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DBD1750022BD26860021A05E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		71CCD3B24B4EA300A5140675 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-BelcoBTMTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		7ED1E2D1833AA66A67E9596D /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-BelcoBTM-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		DACE419727AC17B6399DEEAD /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-BelcoBTM/Pods-BelcoBTM-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/SwiftProtobuf/SwiftProtobuf.framework",
+				"${BUILT_PRODUCTS_DIR}/TrustWalletCore/TrustWalletCore.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftProtobuf.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TrustWalletCore.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-BelcoBTM/Pods-BelcoBTM-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		DB0BB5EF22BD10B80035FF6C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DB0BB5F922BD10B90035FF6C /* ViewController.swift in Sources */,
+				DB0BB5F722BD10B90035FF6C /* AppDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DBD174FE22BD26860021A05E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DBD1750F22BD26CB0021A05E /* HDWalletTests.swift in Sources */,
+				DBD1750E22BD26CB0021A05E /* HDWallet+Extensions.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		DBD1750822BD26860021A05E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = DB0BB5F222BD10B80035FF6C /* BelcoBTM */;
+			targetProxy = DBD1750722BD26860021A05E /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		DB0BB5FA22BD10B90035FF6C /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				DB0BB5FB22BD10B90035FF6C /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		DB0BB5FF22BD10BA0035FF6C /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				DB0BB60022BD10BA0035FF6C /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		DB0BB60322BD10BA0035FF6C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		DB0BB60422BD10BA0035FF6C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		DB0BB60622BD10BA0035FF6C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 6D3B031B834817D4A51FF02B /* Pods-BelcoBTM.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = BTPQF57VMN;
+				INFOPLIST_FILE = BelcoBTM/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = dantish.BelcoBTM;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		DB0BB60722BD10BA0035FF6C /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 661D19503FDC169CE02C6638 /* Pods-BelcoBTM.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = BTPQF57VMN;
+				INFOPLIST_FILE = BelcoBTM/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = dantish.BelcoBTM;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		DBD1750922BD26860021A05E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 29074D3265954D0895731B3E /* Pods-BelcoBTMTests.debug.xcconfig */;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = BTPQF57VMN;
+				INFOPLIST_FILE = BelcoBTMTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = dantish.BelcoBTMTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/BelcoBTM.app/BelcoBTM";
+			};
+			name = Debug;
+		};
+		DBD1750A22BD26860021A05E /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = BC99C318B0E49E804141428F /* Pods-BelcoBTMTests.release.xcconfig */;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = BTPQF57VMN;
+				INFOPLIST_FILE = BelcoBTMTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = dantish.BelcoBTMTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/BelcoBTM.app/BelcoBTM";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		DB0BB5EE22BD10B80035FF6C /* Build configuration list for PBXProject "BelcoBTM" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				DB0BB60322BD10BA0035FF6C /* Debug */,
+				DB0BB60422BD10BA0035FF6C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		DB0BB60522BD10BA0035FF6C /* Build configuration list for PBXNativeTarget "BelcoBTM" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				DB0BB60622BD10BA0035FF6C /* Debug */,
+				DB0BB60722BD10BA0035FF6C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		DBD1750B22BD26860021A05E /* Build configuration list for PBXNativeTarget "BelcoBTMTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				DBD1750922BD26860021A05E /* Debug */,
+				DBD1750A22BD26860021A05E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = DB0BB5EB22BD10B80035FF6C /* Project object */;
+}
