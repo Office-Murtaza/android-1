@@ -1,0 +1,34 @@
+"shared.ok" = "OK";
+"shared.cancel" = "Cancel";
+"shared.next" = "Next";
+"shared.copy" = "Copy";
+"shared.done" = "Done";
+"shared.error.title" = "Error";
+"shared.error.message" = "Something went wrong. Please try again later";
+
+"welcome.tagline" = "Stay Ahead of the Crypto Future";
+"welcome.first_slide.title" = "Keep All Assets in One Place";
+"welcome.second_slide.title" = "Buy & Sell Cryptocurrency";
+"welcome.third_slide.title" = "Secure & Fast Transactions";
+"welcome.error.title" = "Please, Accept Our Terms & Conditions";
+"welcome.create_button.title" = "CREATE A NEW WALLET";
+"welcome.login_button.title" = "LOGIN TO MY WALLET";
+"welcome.terms_and_conditions" = "Accept Terms & Conditions";
+"welcome.recover_wallet" = "RECOVER MY WALLET";
+"welcome.contact_support" = "CONTACT SUPPORT";
+"welcome.support.title" = "Support";
+"welcome.support.phone" = "+1 - 888 - 848 - 3033";
+"welcome.support.mail" = "support@belcobtm.com";
+
+"create_wallet.title" = "Create a New Wallet";
+"create_wallet.form.phone_number.placeholder" = "Phone Number *";
+"create_wallet.form.password.placeholder" = "Password *";
+"create_wallet.form.confirm_password.placeholder" = "Confirm Password *";
+"create_wallet.form.error.all_fields_required" = "All fields are required";
+"create_wallet.form.error.not_valid_phone_number" = "Phone number is not valid";
+"create_wallet.form.error.not_equal_passwords" = "Passwords do not match";
+"create_wallet.code.placeholder" = "SMS Code";
+"create_wallet.code.error.title" = "Code should have 4 digits";
+
+"seed_phrase.title" = "Seed Phrase";
+"seed_phrase.annotation" = "If you lost your seed phrase you will not be able your wallet";
