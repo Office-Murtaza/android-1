@@ -40,7 +40,6 @@
                             <promptOnNonLocalDatabase>false</promptOnNonLocalDatabase>
                             <verbose>true</verbose>
                             <changeLogFile>changelog.xml</changeLogFile>
-                            <driver>com.mysql.jdbc.Driver</driver>
                             <url>jdbc:mysql://206.189.204.44:3306/batm</url>
                             <username>belcobtm</username>
                             <password>abc123456</password>

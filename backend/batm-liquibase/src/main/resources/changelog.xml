@@ -6,7 +6,7 @@
     <changeSet id="1" author="Kostya" labels="8.0" failOnError="false">
         <sqlFile encoding="utf8"
                  endDelimiter=";"
-                 path="create/add_column_LIMIT_PASS_COUNT_to_USER_UNIT_MAP.sql"
+                 path="create/w_user.sql"
                  splitStatements="true"
                  stripComments="true"/>
     </changeSet>
