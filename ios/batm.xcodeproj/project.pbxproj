@@ -7,8 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0A6B80E6521C169318F74470 /* Pods_BelcoBTM.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4C26252DD327E99A86B25EE8 /* Pods_BelcoBTM.framework */; };
-		8A33EE3DD05925BFA31B46D7 /* Pods_BelcoBTMTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 93B635B3923A75814A7C9672 /* Pods_BelcoBTMTests.framework */; };
+		32C70C2C2AC5257199173D49 /* Pods_batm.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5D2E48FC9C22336570E8297D /* Pods_batm.framework */; };
+		757DD7261AB321C5873550C2 /* Pods_batmTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 142D5BA6DA2741657FE02671 /* Pods_batmTests.framework */; };
 		DB0BB5F722BD10B90035FF6C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB0BB5F622BD10B90035FF6C /* AppDelegate.swift */; };
 		DB0BB5F922BD10B90035FF6C /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB0BB5F822BD10B90035FF6C /* ViewController.swift */; };
 		DB0BB5FC22BD10B90035FF6C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DB0BB5FA22BD10B90035FF6C /* Main.storyboard */; };
@@ -29,23 +29,23 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		29074D3265954D0895731B3E /* Pods-BelcoBTMTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BelcoBTMTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-BelcoBTMTests/Pods-BelcoBTMTests.debug.xcconfig"; sourceTree = "<group>"; };
-		4C26252DD327E99A86B25EE8 /* Pods_BelcoBTM.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BelcoBTM.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		661D19503FDC169CE02C6638 /* Pods-BelcoBTM.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BelcoBTM.release.xcconfig"; path = "Pods/Target Support Files/Pods-BelcoBTM/Pods-BelcoBTM.release.xcconfig"; sourceTree = "<group>"; };
-		6D3B031B834817D4A51FF02B /* Pods-BelcoBTM.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BelcoBTM.debug.xcconfig"; path = "Pods/Target Support Files/Pods-BelcoBTM/Pods-BelcoBTM.debug.xcconfig"; sourceTree = "<group>"; };
-		93B635B3923A75814A7C9672 /* Pods_BelcoBTMTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BelcoBTMTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		BC99C318B0E49E804141428F /* Pods-BelcoBTMTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BelcoBTMTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-BelcoBTMTests/Pods-BelcoBTMTests.release.xcconfig"; sourceTree = "<group>"; };
-		DB0BB5F322BD10B90035FF6C /* BelcoBTM.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BelcoBTM.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		142D5BA6DA2741657FE02671 /* Pods_batmTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_batmTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		45A08286B5F7CE8E60F5C7D3 /* Pods-batmTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-batmTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-batmTests/Pods-batmTests.release.xcconfig"; sourceTree = "<group>"; };
+		5D2E48FC9C22336570E8297D /* Pods_batm.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_batm.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		92EFAEC3F34F5098AD0B7F2B /* Pods-batm.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-batm.debug.xcconfig"; path = "Pods/Target Support Files/Pods-batm/Pods-batm.debug.xcconfig"; sourceTree = "<group>"; };
+		A084412719F54976481F3BD4 /* Pods-batmTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-batmTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-batmTests/Pods-batmTests.debug.xcconfig"; sourceTree = "<group>"; };
+		DB0BB5F322BD10B90035FF6C /* batm.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = batm.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DB0BB5F622BD10B90035FF6C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		DB0BB5F822BD10B90035FF6C /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		DB0BB5FB22BD10B90035FF6C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		DB0BB5FD22BD10BA0035FF6C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		DB0BB60022BD10BA0035FF6C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		DB0BB60222BD10BA0035FF6C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		DBD1750222BD26860021A05E /* BelcoBTMTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BelcoBTMTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		DBD1750222BD26860021A05E /* batmTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = batmTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		DBD1750622BD26860021A05E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		DBD1750C22BD26CB0021A05E /* HDWallet+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "HDWallet+Extensions.swift"; sourceTree = "<group>"; };
 		DBD1750D22BD26CB0021A05E /* HDWalletTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HDWalletTests.swift; sourceTree = "<group>"; };
+		F62E959DD3C3751B0D83F925 /* Pods-batm.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-batm.release.xcconfig"; path = "Pods/Target Support Files/Pods-batm/Pods-batm.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -53,7 +53,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0A6B80E6521C169318F74470 /* Pods_BelcoBTM.framework in Frameworks */,
+				32C70C2C2AC5257199173D49 /* Pods_batm.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -61,54 +61,54 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8A33EE3DD05925BFA31B46D7 /* Pods_BelcoBTMTests.framework in Frameworks */,
+				757DD7261AB321C5873550C2 /* Pods_batmTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		0FF40CB301564F71A26D9269 /* Frameworks */ = {
+		5F389EC499E6FFEF3BBB6E19 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				4C26252DD327E99A86B25EE8 /* Pods_BelcoBTM.framework */,
-				93B635B3923A75814A7C9672 /* Pods_BelcoBTMTests.framework */,
-			);
-			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		93998D052DC7607E47EA7663 /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				6D3B031B834817D4A51FF02B /* Pods-BelcoBTM.debug.xcconfig */,
-				661D19503FDC169CE02C6638 /* Pods-BelcoBTM.release.xcconfig */,
-				29074D3265954D0895731B3E /* Pods-BelcoBTMTests.debug.xcconfig */,
-				BC99C318B0E49E804141428F /* Pods-BelcoBTMTests.release.xcconfig */,
+				92EFAEC3F34F5098AD0B7F2B /* Pods-batm.debug.xcconfig */,
+				F62E959DD3C3751B0D83F925 /* Pods-batm.release.xcconfig */,
+				A084412719F54976481F3BD4 /* Pods-batmTests.debug.xcconfig */,
+				45A08286B5F7CE8E60F5C7D3 /* Pods-batmTests.release.xcconfig */,
 			);
 			name = Pods;
+			sourceTree = "<group>";
+		};
+		69A08C4BAA3CCE770777E941 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				5D2E48FC9C22336570E8297D /* Pods_batm.framework */,
+				142D5BA6DA2741657FE02671 /* Pods_batmTests.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 		DB0BB5EA22BD10B80035FF6C = {
 			isa = PBXGroup;
 			children = (
-				DB0BB5F522BD10B90035FF6C /* BelcoBTM */,
-				DBD1750322BD26860021A05E /* BelcoBTMTests */,
+				DB0BB5F522BD10B90035FF6C /* batm */,
+				DBD1750322BD26860021A05E /* batmTests */,
 				DB0BB5F422BD10B90035FF6C /* Products */,
-				93998D052DC7607E47EA7663 /* Pods */,
-				0FF40CB301564F71A26D9269 /* Frameworks */,
+				5F389EC499E6FFEF3BBB6E19 /* Pods */,
+				69A08C4BAA3CCE770777E941 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
 		DB0BB5F422BD10B90035FF6C /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				DB0BB5F322BD10B90035FF6C /* BelcoBTM.app */,
-				DBD1750222BD26860021A05E /* BelcoBTMTests.xctest */,
+				DB0BB5F322BD10B90035FF6C /* batm.app */,
+				DBD1750222BD26860021A05E /* batmTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		DB0BB5F522BD10B90035FF6C /* BelcoBTM */ = {
+		DB0BB5F522BD10B90035FF6C /* batm */ = {
 			isa = PBXGroup;
 			children = (
 				DB0BB5F622BD10B90035FF6C /* AppDelegate.swift */,
@@ -118,17 +118,17 @@
 				DB0BB5FF22BD10BA0035FF6C /* LaunchScreen.storyboard */,
 				DB0BB60222BD10BA0035FF6C /* Info.plist */,
 			);
-			path = BelcoBTM;
+			path = batm;
 			sourceTree = "<group>";
 		};
-		DBD1750322BD26860021A05E /* BelcoBTMTests */ = {
+		DBD1750322BD26860021A05E /* batmTests */ = {
 			isa = PBXGroup;
 			children = (
 				DBD1751022BD26D40021A05E /* Extensions */,
 				DBD1750D22BD26CB0021A05E /* HDWalletTests.swift */,
 				DBD1750622BD26860021A05E /* Info.plist */,
 			);
-			path = BelcoBTMTests;
+			path = batmTests;
 			sourceTree = "<group>";
 		};
 		DBD1751022BD26D40021A05E /* Extensions */ = {
@@ -142,30 +142,30 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		DB0BB5F222BD10B80035FF6C /* BelcoBTM */ = {
+		DB0BB5F222BD10B80035FF6C /* batm */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = DB0BB60522BD10BA0035FF6C /* Build configuration list for PBXNativeTarget "BelcoBTM" */;
+			buildConfigurationList = DB0BB60522BD10BA0035FF6C /* Build configuration list for PBXNativeTarget "batm" */;
 			buildPhases = (
-				7ED1E2D1833AA66A67E9596D /* [CP] Check Pods Manifest.lock */,
+				C4B058597ADE9076E504F7AB /* [CP] Check Pods Manifest.lock */,
 				DB0BB5EF22BD10B80035FF6C /* Sources */,
 				DB0BB5F022BD10B80035FF6C /* Frameworks */,
 				DB0BB5F122BD10B80035FF6C /* Resources */,
-				DACE419727AC17B6399DEEAD /* [CP] Embed Pods Frameworks */,
+				8C23C493B1C2CD548323EC48 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
-			name = BelcoBTM;
+			name = batm;
 			productName = TestWallet;
-			productReference = DB0BB5F322BD10B90035FF6C /* BelcoBTM.app */;
+			productReference = DB0BB5F322BD10B90035FF6C /* batm.app */;
 			productType = "com.apple.product-type.application";
 		};
-		DBD1750122BD26860021A05E /* BelcoBTMTests */ = {
+		DBD1750122BD26860021A05E /* batmTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = DBD1750B22BD26860021A05E /* Build configuration list for PBXNativeTarget "BelcoBTMTests" */;
+			buildConfigurationList = DBD1750B22BD26860021A05E /* Build configuration list for PBXNativeTarget "batmTests" */;
 			buildPhases = (
-				71CCD3B24B4EA300A5140675 /* [CP] Check Pods Manifest.lock */,
+				98D2A0526D7398CE178023F5 /* [CP] Check Pods Manifest.lock */,
 				DBD174FE22BD26860021A05E /* Sources */,
 				DBD174FF22BD26860021A05E /* Frameworks */,
 				DBD1750022BD26860021A05E /* Resources */,
@@ -175,9 +175,9 @@
 			dependencies = (
 				DBD1750822BD26860021A05E /* PBXTargetDependency */,
 			);
-			name = BelcoBTMTests;
+			name = batmTests;
 			productName = TestWalletTests;
-			productReference = DBD1750222BD26860021A05E /* BelcoBTMTests.xctest */;
+			productReference = DBD1750222BD26860021A05E /* batmTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
@@ -200,7 +200,7 @@
 					};
 				};
 			};
-			buildConfigurationList = DB0BB5EE22BD10B80035FF6C /* Build configuration list for PBXProject "BelcoBTM" */;
+			buildConfigurationList = DB0BB5EE22BD10B80035FF6C /* Build configuration list for PBXProject "batm" */;
 			compatibilityVersion = "Xcode 9.3";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -213,8 +213,8 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				DB0BB5F222BD10B80035FF6C /* BelcoBTM */,
-				DBD1750122BD26860021A05E /* BelcoBTMTests */,
+				DB0BB5F222BD10B80035FF6C /* batm */,
+				DBD1750122BD26860021A05E /* batmTests */,
 			);
 		};
 /* End PBXProject section */
@@ -240,7 +240,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		71CCD3B24B4EA300A5140675 /* [CP] Check Pods Manifest.lock */ = {
+		8C23C493B1C2CD548323EC48 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -248,51 +248,7 @@
 			inputFileListPaths = (
 			);
 			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-BelcoBTMTests-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		7ED1E2D1833AA66A67E9596D /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-BelcoBTM-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		DACE419727AC17B6399DEEAD /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-BelcoBTM/Pods-BelcoBTM-frameworks.sh",
+				"${SRCROOT}/Pods/Target Support Files/Pods-batm/Pods-batm-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/SwiftProtobuf/SwiftProtobuf.framework",
 				"${BUILT_PRODUCTS_DIR}/TrustWalletCore/TrustWalletCore.framework",
 			);
@@ -305,7 +261,51 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-BelcoBTM/Pods-BelcoBTM-frameworks.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-batm/Pods-batm-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		98D2A0526D7398CE178023F5 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-batmTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		C4B058597ADE9076E504F7AB /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-batm-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -334,7 +334,7 @@
 /* Begin PBXTargetDependency section */
 		DBD1750822BD26860021A05E /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = DB0BB5F222BD10B80035FF6C /* BelcoBTM */;
+			target = DB0BB5F222BD10B80035FF6C /* batm */;
 			targetProxy = DBD1750722BD26860021A05E /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -477,17 +477,17 @@
 		};
 		DB0BB60622BD10BA0035FF6C /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 6D3B031B834817D4A51FF02B /* Pods-BelcoBTM.debug.xcconfig */;
+			baseConfigurationReference = 92EFAEC3F34F5098AD0B7F2B /* Pods-batm.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = BTPQF57VMN;
-				INFOPLIST_FILE = BelcoBTM/Info.plist;
+				INFOPLIST_FILE = batm/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = dantish.BelcoBTM;
+				PRODUCT_BUNDLE_IDENTIFIER = dantish.batm;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -496,17 +496,17 @@
 		};
 		DB0BB60722BD10BA0035FF6C /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 661D19503FDC169CE02C6638 /* Pods-BelcoBTM.release.xcconfig */;
+			baseConfigurationReference = F62E959DD3C3751B0D83F925 /* Pods-batm.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = BTPQF57VMN;
-				INFOPLIST_FILE = BelcoBTM/Info.plist;
+				INFOPLIST_FILE = batm/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = dantish.BelcoBTM;
+				PRODUCT_BUNDLE_IDENTIFIER = dantish.batm;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -515,53 +515,53 @@
 		};
 		DBD1750922BD26860021A05E /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 29074D3265954D0895731B3E /* Pods-BelcoBTMTests.debug.xcconfig */;
+			baseConfigurationReference = A084412719F54976481F3BD4 /* Pods-batmTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = BTPQF57VMN;
-				INFOPLIST_FILE = BelcoBTMTests/Info.plist;
+				INFOPLIST_FILE = batmTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = dantish.BelcoBTMTests;
+				PRODUCT_BUNDLE_IDENTIFIER = dantish.batmTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/BelcoBTM.app/BelcoBTM";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/batm.app/batm";
 			};
 			name = Debug;
 		};
 		DBD1750A22BD26860021A05E /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = BC99C318B0E49E804141428F /* Pods-BelcoBTMTests.release.xcconfig */;
+			baseConfigurationReference = 45A08286B5F7CE8E60F5C7D3 /* Pods-batmTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = BTPQF57VMN;
-				INFOPLIST_FILE = BelcoBTMTests/Info.plist;
+				INFOPLIST_FILE = batmTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = dantish.BelcoBTMTests;
+				PRODUCT_BUNDLE_IDENTIFIER = dantish.batmTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/BelcoBTM.app/BelcoBTM";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/batm.app/batm";
 			};
 			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		DB0BB5EE22BD10B80035FF6C /* Build configuration list for PBXProject "BelcoBTM" */ = {
+		DB0BB5EE22BD10B80035FF6C /* Build configuration list for PBXProject "batm" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				DB0BB60322BD10BA0035FF6C /* Debug */,
@@ -570,7 +570,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		DB0BB60522BD10BA0035FF6C /* Build configuration list for PBXNativeTarget "BelcoBTM" */ = {
+		DB0BB60522BD10BA0035FF6C /* Build configuration list for PBXNativeTarget "batm" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				DB0BB60622BD10BA0035FF6C /* Debug */,
@@ -579,7 +579,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		DBD1750B22BD26860021A05E /* Build configuration list for PBXNativeTarget "BelcoBTMTests" */ = {
+		DBD1750B22BD26860021A05E /* Build configuration list for PBXNativeTarget "batmTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				DBD1750922BD26860021A05E /* Debug */,

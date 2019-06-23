@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "DB0BB5F222BD10B80035FF6C"
-               BuildableName = "BelcoBTM.app"
-               BlueprintName = "BelcoBTM"
-               ReferencedContainer = "container:BelcoBTM.xcodeproj">
+               BuildableName = "batm.app"
+               BlueprintName = "batm"
+               ReferencedContainer = "container:batm.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -33,9 +33,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "DBD1750122BD26860021A05E"
-               BuildableName = "BelcoBTMTests.xctest"
-               BlueprintName = "BelcoBTMTests"
-               ReferencedContainer = "container:BelcoBTM.xcodeproj">
+               BuildableName = "batmTests.xctest"
+               BlueprintName = "batmTests"
+               ReferencedContainer = "container:batm.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -43,9 +43,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "DB0BB5F222BD10B80035FF6C"
-            BuildableName = "BelcoBTM.app"
-            BlueprintName = "BelcoBTM"
-            ReferencedContainer = "container:BelcoBTM.xcodeproj">
+            BuildableName = "batm.app"
+            BlueprintName = "batm"
+            ReferencedContainer = "container:batm.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <AdditionalOptions>
@@ -66,9 +66,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "DB0BB5F222BD10B80035FF6C"
-            BuildableName = "BelcoBTM.app"
-            BlueprintName = "BelcoBTM"
-            ReferencedContainer = "container:BelcoBTM.xcodeproj">
+            BuildableName = "batm.app"
+            BlueprintName = "batm"
+            ReferencedContainer = "container:batm.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <AdditionalOptions>
@@ -85,9 +85,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "DB0BB5F222BD10B80035FF6C"
-            BuildableName = "BelcoBTM.app"
-            BlueprintName = "BelcoBTM"
-            ReferencedContainer = "container:BelcoBTM.xcodeproj">
+            BuildableName = "batm.app"
+            BlueprintName = "batm"
+            ReferencedContainer = "container:batm.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>
