@@ -19,4 +19,8 @@ public class Response {
     public static Response ok(Object res) {
         return new Response(res, null);
     }
+
+    public static Response error(Error error) {
+        return new Response(null, error);
+    }
 }
