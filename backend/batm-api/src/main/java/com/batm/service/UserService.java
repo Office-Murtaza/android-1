@@ -1,28 +1,43 @@
 package com.batm.service;
 
+import com.batm.entity.*;
 import com.batm.entity.Error;
-import com.batm.entity.Json;
-import com.batm.entity.Response;
-import com.batm.entity.User;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.orm.hibernate5.HibernateTemplate;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
-public class UserService {
+public class UserService implements UserDetailsService {
 
     @Autowired
     private SessionFactory sessionFactory;
 
     @Autowired
+    private HibernateTemplate hibernateTemplate;
+
+    @Autowired
     private BCryptPasswordEncoder passwordEncoder;
+
+    @Autowired
+    private SMSService smsService;
+
+    @Autowired
+    private AuthenticationManager authenticationManager;
 
     public Response register(User user) {
         Session session = sessionFactory.getCurrentSession();
@@ -39,8 +54,22 @@ public class UserService {
 
         Long userId = (Long) session.save(user);
 
-        //send SMS
-        return Response.ok(Json.register(userId));
+        if (smsService.sendCode(user.getPhone())) {
+
+            UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+            UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(userDetails, password, userDetails.getAuthorities());
+
+            authenticationManager.authenticate(usernamePasswordAuthenticationToken);
+
+            if (usernamePasswordAuthenticationToken.isAuthenticated()) {
+                SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
+                logger.debug(String.format("Auto login %s successfully!", username));
+            }
+
+            return Response.ok(Json.register(userId));
+        } else {
+            return Response.error(Json.register(userId), new Error(2, "Error send SMS code"));
+        }
     }
 
     public Response login(User user) {
@@ -57,8 +86,11 @@ public class UserService {
             return Response.error(new Error(2, "Wrong phone or password"));
         }
 
-        //send SMS
-        return Response.ok(Json.login(true));
+        if (smsService.sendCode(user.getPhone())) {
+            return Response.ok(Json.login(true));
+        } else {
+            return Response.error(new Error(2, "Error send SMS code"));
+        }
     }
 
     public List<User> test() {
@@ -67,5 +99,22 @@ public class UserService {
         List<User> users = session.createQuery("SELECT u FROM User u", User.class).getResultList();
 
         return users;
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String phone) throws UsernameNotFoundException {
+        Optional<User> optionalUser = findByPhone(phone);
+
+        return Optional.ofNullable(optionalUser).orElseThrow(() -> new UsernameNotFoundException("Phone not found"))
+                .map(UserDetailsImpl::new).get();
+    }
+
+    private Optional<User> findByPhone(String phone) {
+        Session session = sessionFactory.getCurrentSession();
+
+        Query query = session.createQuery("SELECT u FROM User u WHERE u.phone = :phone");
+        query.setParameter("phone", phone);
+
+        return Optional.of((User) query.getSingleResult());
     }
 }

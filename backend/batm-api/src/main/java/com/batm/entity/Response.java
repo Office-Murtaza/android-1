@@ -23,4 +23,8 @@ public class Response {
     public static Response error(Error error) {
         return new Response(null, error);
     }
+
+    public static Response error(Object response, Error error) {
+        return new Response(response, error);
+    }
 }
