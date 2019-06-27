@@ -1,7 +1,6 @@
 package com.batm.entity;
 
 import java.io.Serializable;
-import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -21,19 +20,19 @@ import lombok.Setter;
 @NoArgsConstructor
 @Entity
 @Table(name = "w_user")
-public class User implements Serializable {
+public class User extends AbstractAuditingEntity implements Serializable {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "user_id")
-    private Long userId;
-    private String phone;
-    private String password;
-    private String role;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 9027143155135946959L;
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "user_id")
+	private Long userId;
+	private String phone;
+	private String password;
+	private String role;
 
-    @Column(name = "create_date")
-    private Date createDate;
-
-    @Column(name = "update_date")
-    private Date updateDate;
 }
