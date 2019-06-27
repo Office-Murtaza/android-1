@@ -1,126 +1,73 @@
 package com.batm.security;
 
-import com.batm.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.filter.CorsFilter;
+
+import com.batm.security.jwt.JWTConfigurer;
+import com.batm.security.jwt.TokenProvider;
 
 @Configuration
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
-    @Autowired
-    private BCryptPasswordEncoder passwordEncoder;
+	private final AuthenticationManagerBuilder authenticationManagerBuilder;
 
-    @Autowired
-    private UserService userService;
+	private final TokenProvider tokenProvider;
 
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userService).passwordEncoder(passwordEncoder);
-    }
+	public SecurityConfiguration(AuthenticationManagerBuilder authenticationManagerBuilder,
+			TokenProvider tokenProvider) {
+		this.authenticationManagerBuilder = authenticationManagerBuilder;
+		this.tokenProvider = tokenProvider;
+	}
 
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http.csrf().disable();
-        http.authorizeRequests()
-                .antMatchers("**/getAllItems").authenticated()
-                .anyRequest().permitAll()
-                .and().formLogin().permitAll();
+	@Override
+	@Bean
+	public AuthenticationManager authenticationManagerBean() throws Exception {
+		return super.authenticationManagerBean();
+	}
 
-        /*
-        http.httpBasic()
-                .and()
-                .authorizeRequests()
-                .anyRequest().authenticated();
-                */
+	@Bean
+	public PasswordEncoder passwordEncoder() {
+		return new BCryptPasswordEncoder();
+	}
 
-//        http.httpBasic()
-//                .and()
-//                .authorizeRequests()
-//                .anyRequest().authenticated();
-//
-//            http.authorizeRequests().antMatchers("/", "/list")
-//                    .access("hasRole('USER') or hasRole('ADMIN') or hasRole('DBA')")
-//                    .antMatchers("/newuser/**", "/delete-user-*").access("hasRole('ADMIN')").antMatchers("/edit-user-*")
-//                    .access("hasRole('ADMIN') or hasRole('DBA')").and().formLogin().loginPage("/login")
-//                    .loginProcessingUrl("/login").usernameParameter("ssoId").passwordParameter("password").and()
-//                    .rememberMe().rememberMeParameter("remember-me").tokenRepository(tokenRepository)
-//                    .tokenValiditySeconds(86400).and().csrf().and().exceptionHandling().accessDeniedPage("/Access_Denied");
-//
-//        http.csrf().disable()
-//                .authorizeRequests()
-//                .antMatchers("/user/**").hasAnyRole("ADMIN","USER")
-//                .and().httpBasic().realmName("MY APP REALM")
-//                .authenticationEntryPoint(myAppBasicAuthenticationEntryPoint);
-//
-//        http
-//                .authorizeRequests()
-//                .anyRequest().authenticated()
-//                .and()
-//                .httpBasic()
-//                .and()
-//                .sessionManagement()
-//                .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-//
-//
-//        http.csrf().requireCsrfProtectionMatcher(new AntPathRequestMatcher("**/login")).and().authorizeRequests()
-//                .antMatchers("/dashboard").hasRole("USER").and().formLogin().defaultSuccessUrl("/dashboard")
-//                .loginPage("/login").and().logout().permitAll();
-//
-//        http.httpBasic().and().authorizeRequests().antMatchers("/students/**")
-//                .hasRole("USER").antMatchers("/**").hasRole("ADMIN").and()
-//                .csrf().disable().headers().frameOptions().disable();
-//
-//        http
-//                .sessionManagement()
-//                .sessionCreationPolicy(STATELESS)
-//                .and()
-//                .exceptionHandling()
-//                // this entry point handles when you request a protected page and you are not yet
-//                // authenticated
-//                .defaultAuthenticationEntryPointFor(forbiddenEntryPoint(), PROTECTED_URLS)
-//                .and()
-//                .authenticationProvider(provider)
-//                .addFilterBefore(restAuthenticationFilter(), AnonymousAuthenticationFilter.class)
-//                .authorizeRequests()
-//                .requestMatchers(PROTECTED_URLS)
-//                .authenticated()
-//                .and()
-//                .csrf().disable()
-//                .formLogin().disable()
-//                .httpBasic().disable()
-//                .logout().disable();
-//
-//        http.
-//                authorizeRequests()
-//                .antMatchers("/").permitAll()
-//                .antMatchers("/login").permitAll()
-//                .antMatchers("/registration").permitAll()
-//                .antMatchers("/admin/**").hasAuthority("ADMIN").anyRequest()
-//                .authenticated().and().csrf().disable().formLogin()
-//                .loginPage("/login").failureUrl("/login?error=true")
-//                .defaultSuccessUrl("/admin/home")
-//                .usernameParameter("email")
-//                .passwordParameter("password")
-//                .and().logout()
-//                .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-//                .logoutSuccessUrl("/").and().exceptionHandling()
-//                .accessDeniedPage("/access-denied");
-//
-//        httpSecurity.csrf().disable()
-//                .authorizeRequests().anyRequest().authenticated()
-//                .and().httpBasic();
-    }
+	@Override
+	protected void configure(final AuthenticationManagerBuilder auth) throws Exception {
+		auth.inMemoryAuthentication().withUser("user1").password(passwordEncoder().encode("user1Pass")).roles("USER")
+				.and().withUser("user2").password(passwordEncoder().encode("user2Pass")).roles("USER").and()
+				.withUser("admin").password(passwordEncoder().encode("adminPass")).roles("ADMIN");
+	}
 
-    @Bean
-    public AuthenticationManager getAuthenticationManager() throws Exception {
-        return authenticationManagerBean();
-    }
+	@Override
+	public void configure(WebSecurity web) throws Exception {
+		web.ignoring().antMatchers(HttpMethod.OPTIONS, "/**").antMatchers("/app/**/*.{js,html}").antMatchers("/i18n/**")
+				.antMatchers("/content/**").antMatchers("/swagger-ui/index.html").antMatchers("/test/**");
+	}
+
+	@Override
+	public void configure(HttpSecurity http) throws Exception {
+		// @formatter:off
+		http.csrf().disable()
+				.exceptionHandling().and().headers().frameOptions().disable().and().sessionManagement()
+				.sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().apply(securityConfigurerAdapter());
+		// @formatter:on
+	}
+
+	private JWTConfigurer securityConfigurerAdapter() {
+		return new JWTConfigurer(tokenProvider);
+	}
 }
