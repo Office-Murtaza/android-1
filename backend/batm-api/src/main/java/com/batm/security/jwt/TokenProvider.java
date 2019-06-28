@@ -31,11 +31,16 @@ public class TokenProvider implements InitializingBean {
 	private Key key;
 
 	private long tokenValidityInMilliseconds;
+	
+	private long refreshTokenValidityInMilliseconds;
 
 	private long tokenValidityInMillisecondsForRememberMe;
 
 	@Value("${security.jwt.base64-secret}")
 	private String base64Secret;
+	
+	@Value("${security.jwt.refresh-token-validity-in-seconds}")
+	private long refreshTokenValidityInSeconds;
 	
 	@Value("${security.jwt.token-validity-in-seconds}")
 	private long tokenValidityInSeconds;
@@ -52,6 +57,7 @@ public class TokenProvider implements InitializingBean {
 		this.key = Keys.hmacShaKeyFor(keyBytes);
 		this.tokenValidityInMilliseconds = 1000
 				* tokenValidityInSeconds;
+		this.refreshTokenValidityInMilliseconds = 1000 * refreshTokenValidityInSeconds;
 		this.tokenValidityInMillisecondsForRememberMe = 1000 * tokenValidityInSecondsForRememberMe;
 	}
 
@@ -101,5 +107,21 @@ public class TokenProvider implements InitializingBean {
 			log.trace("JWT token compact of handler are invalid trace: {}", e);
 		}
 		return false;
+	}
+
+	public String createRefreshToken(Authentication authentication, boolean rememberMe) {
+		String authorities = authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority)
+				.collect(Collectors.joining(","));
+
+		long now = (new Date()).getTime();
+		Date validity;
+		if (rememberMe) {
+			validity = new Date(now + this.tokenValidityInMillisecondsForRememberMe);
+		} else {
+			validity = new Date(now + this.refreshTokenValidityInMilliseconds);
+		}
+
+		return Jwts.builder().setSubject(authentication.getName()).claim(AUTHORITIES_KEY, authorities)
+				.signWith(key, SignatureAlgorithm.HS512).setExpiration(validity).compact();
 	}
 }

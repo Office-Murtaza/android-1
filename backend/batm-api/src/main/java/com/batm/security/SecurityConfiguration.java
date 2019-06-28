@@ -1,5 +1,8 @@
 package com.batm.security;
 
+import javax.annotation.PostConstruct;
+
+import org.springframework.beans.factory.BeanInitializationException;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -11,10 +14,9 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.web.filter.CorsFilter;
 
 import com.batm.security.jwt.JWTConfigurer;
 import com.batm.security.jwt.TokenProvider;
@@ -28,10 +30,22 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
 	private final TokenProvider tokenProvider;
 
-	public SecurityConfiguration(AuthenticationManagerBuilder authenticationManagerBuilder,
-			TokenProvider tokenProvider) {
+	private final UserDetailsService userDetailsService;
+
+	public SecurityConfiguration(AuthenticationManagerBuilder authenticationManagerBuilder, TokenProvider tokenProvider,
+			UserDetailsService userDetailsService) {
 		this.authenticationManagerBuilder = authenticationManagerBuilder;
 		this.tokenProvider = tokenProvider;
+		this.userDetailsService = userDetailsService;
+	}
+
+	@PostConstruct
+	public void init() {
+		try {
+			authenticationManagerBuilder.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
+		} catch (Exception e) {
+			throw new BeanInitializationException("Security configuration failed", e);
+		}
 	}
 
 	@Override
@@ -46,13 +60,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	}
 
 	@Override
-	protected void configure(final AuthenticationManagerBuilder auth) throws Exception {
-		auth.inMemoryAuthentication().withUser("user1").password(passwordEncoder().encode("user1Pass")).roles("USER")
-				.and().withUser("user2").password(passwordEncoder().encode("user2Pass")).roles("USER").and()
-				.withUser("admin").password(passwordEncoder().encode("adminPass")).roles("ADMIN");
-	}
-
-	@Override
 	public void configure(WebSecurity web) throws Exception {
 		web.ignoring().antMatchers(HttpMethod.OPTIONS, "/**").antMatchers("/app/**/*.{js,html}").antMatchers("/i18n/**")
 				.antMatchers("/content/**").antMatchers("/swagger-ui/index.html").antMatchers("/test/**");
@@ -61,8 +68,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	@Override
 	public void configure(HttpSecurity http) throws Exception {
 		// @formatter:off
-		http.csrf().disable()
-				.exceptionHandling().and().headers().frameOptions().disable().and().sessionManagement()
+		http.csrf().disable().exceptionHandling().and().headers().frameOptions().disable().and().sessionManagement()
 				.sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().apply(securityConfigurerAdapter());
 		// @formatter:on
 	}

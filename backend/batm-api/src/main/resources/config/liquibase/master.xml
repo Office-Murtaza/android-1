@@ -14,5 +14,8 @@
     <property name="uuidType" value="varchar(36)" dbms="h2, mysql"/>
 
     <include file="config/liquibase/changelog/create_user.sql" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/create_code_verification.sql" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/create_coin.sql" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/create_user_coin.sql" relativeToChangelogFile="false"/>
 
 </databaseChangeLog>
