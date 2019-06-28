@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.batm.entity.CodeVerification;
 import com.batm.entity.Error;
+import com.batm.entity.Response;
 import com.batm.entity.User;
 import com.batm.rest.vm.LoginVM;
 import com.batm.rest.vm.RegisterVM;
@@ -101,7 +102,7 @@ public class UserJWTController {
 	}
 
 	@PostMapping("/user/register")
-	public ResponseEntity<?> registerAccount(@Valid @RequestBody RegisterVM register) {
+	public Response registerAccount(@Valid @RequestBody RegisterVM register) {
 
 		String regex = "^\\+(?:[0-9] ?){10,10}[0-9]$";
 
@@ -109,40 +110,39 @@ public class UserJWTController {
 
 		Matcher matcher = pattern.matcher(register.getPhone());
 		if (!matcher.matches()) {
-			return new ResponseEntity<>(new Error(2, "Invalid phone number"), HttpStatus.OK);
+			return Response.error(new Error(2, "Invalid phone number"));
 		}
 
 		Optional<User> findOneByPhoneIgnoreCase = userService.findOneByPhoneIgnoreCase(register.getPhone());
 		if (findOneByPhoneIgnoreCase.isPresent()) {
-			return new ResponseEntity<>(new Error(1, "Phone is already registered"), HttpStatus.OK);
+			return Response.error(new Error(1, "Phone is already registered"));
 		}
 
 		if (!checkPasswordLength(register.getPassword())) {
-			return new ResponseEntity<>(new Error(2, "Password length should be in 6 to 15"), HttpStatus.OK);
+			return Response.error(new Error(2, "Password length should be in 6 to 15"));
 		}
 		User user = userService.registerUser(register.getPhone(), register.getPassword());
 		twilioComponent.sendOTP(user);
-		return new ResponseEntity<>(getJwt(user.getUserId(), register.getPhone(), register.getPassword()),
-				HttpStatus.OK);
+		return Response.ok(getJwt(user.getUserId(), register.getPhone(), register.getPassword()));
 	}
 
 	@PostMapping("/user/verify")
-	public ResponseEntity<?> validateBuyerOTP(@RequestBody ValidateOTPVM validateOtpVM) {
+	public Response validateBuyerOTP(@RequestBody ValidateOTPVM validateOtpVM) {
 		CodeVerification codeVerification = codeVerificationService.getCodeByUserId(validateOtpVM.getUserId());
 		Instant time10MinuteAge = Instant.now().minusSeconds(10 * 60);
 		if (!StringUtils.isEmpty(codeVerification.getCode())
 				&& codeVerification.getLastModifiedDate().isBefore(time10MinuteAge)) {
-			return new ResponseEntity<>(new Error(2, "Verification code is expired"), HttpStatus.OK);
+			return Response.error(new Error(2, "Verification code is expired"));
 		}
 
 		if (!StringUtils.equals(validateOtpVM.getCode(), codeVerification.getCode())) {
-			return new ResponseEntity<>(new Error(2, "Wrong verification code"), HttpStatus.OK);
+			return Response.error(new Error(2, "Wrong verification code"));
 		}
 
 		codeVerification.setCode("0");
 		codeVerificationService.save(codeVerification);
 
-		return new ResponseEntity<>(new ValidateOTPResponse(validateOtpVM.getUserId(), true), HttpStatus.OK);
+		return Response.ok(new ValidateOTPResponse(validateOtpVM.getUserId(), true));
 	}
 
 	private static boolean checkPasswordLength(String password) {
