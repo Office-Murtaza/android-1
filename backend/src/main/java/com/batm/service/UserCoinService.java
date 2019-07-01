@@ -31,31 +31,37 @@ public class UserCoinService {
 		Coin coin = coinRepository.findByCoinCode("BTC");
 		if (coin == null) {
 			coin = new Coin("BTC", "Bitcoin");
+			coinRepository.save(coin);
 		}
 
 		coin = coinRepository.findByCoinCode("ETH");
 		if (coin == null) {
 			coin = new Coin("ETH", "Ethereum");
+			coinRepository.save(coin);
 		}
 
 		coin = coinRepository.findByCoinCode("LTC");
 		if (coin == null) {
 			coin = new Coin("LTC", "Litecoin");
+			coinRepository.save(coin);
 		}
 
 		coin = coinRepository.findByCoinCode("BNB");
 		if (coin == null) {
 			coin = new Coin("BNB", "Binance Coin");
+			coinRepository.save(coin);
 		}
 
 		coin = coinRepository.findByCoinCode("TRX");
 		if (coin == null) {
 			coin = new Coin("TRX", "Tron");
+			coinRepository.save(coin);
 		}
 
 		coin = coinRepository.findByCoinCode("XRP");
 		if (coin == null) {
 			coin = new Coin("XRP", "Ripple");
+			coinRepository.save(coin);
 		}
 
 	}

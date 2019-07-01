@@ -25,8 +25,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.batm.entity.CodeVerification;
 import com.batm.entity.Error;
+import com.batm.entity.RefreshToken;
 import com.batm.entity.Response;
 import com.batm.entity.User;
+import com.batm.repository.RefreshTokenRepository;
 import com.batm.rest.vm.LoginVM;
 import com.batm.rest.vm.RegisterVM;
 import com.batm.rest.vm.ValidateOTPResponse;
@@ -67,6 +69,9 @@ public class UserJWTController {
 
 	@Autowired
 	private CodeVerificationService codeVerificationService;
+	
+	@Autowired
+	private RefreshTokenRepository refreshTokenRepository;
 
 	@PostMapping("/login")
 	public ResponseEntity<JWTToken> authorize(@Valid @RequestBody LoginVM loginVM) {
@@ -123,6 +128,9 @@ public class UserJWTController {
 		}
 		User user = userService.registerUser(register.getPhone(), register.getPassword());
 		twilioComponent.sendOTP(user);
+		JWTToken jwt = getJwt(user.getUserId(), register.getPhone(), register.getPassword());
+		
+		this.refreshTokenRepository.save(new RefreshToken(jwt.getRefreshToken(), user));
 		return Response.ok(getJwt(user.getUserId(), register.getPhone(), register.getPassword()));
 	}
 
@@ -139,7 +147,7 @@ public class UserJWTController {
 			return Response.error(new Error(2, "Wrong verification code"));
 		}
 
-		codeVerification.setCode("0");
+		codeVerification.setCodeStatus("1");
 		codeVerificationService.save(codeVerification);
 
 		return Response.ok(new ValidateOTPResponse(validateOtpVM.getUserId(), true));

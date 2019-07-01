@@ -47,7 +47,7 @@ public class TwilioComponent {
 				otp = RandomStringUtils.randomNumeric(4);
 			}
 
-			codeVerificationRepository.save(new CodeVerification(user, otp, ""));
+			codeVerificationRepository.save(new CodeVerification(user, otp, "0"));
 
 			// Build the parameters
 			List<NameValuePair> params = new ArrayList<>();

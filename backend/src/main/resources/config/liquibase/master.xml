@@ -17,5 +17,6 @@
     <include file="config/liquibase/changelog/create_code_verification.sql" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/create_coin.sql" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/create_user_coin.sql" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/create_refresh_token.sql" relativeToChangelogFile="false"/>
 
 </databaseChangeLog>

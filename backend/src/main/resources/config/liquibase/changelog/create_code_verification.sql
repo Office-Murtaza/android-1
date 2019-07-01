@@ -1,7 +1,7 @@
 CREATE TABLE `w_code_verification` (
   `code_id` bigint(20) NOT NULL AUTO_INCREMENT,
   `created_date` datetime DEFAULT NULL,
-  `last_modified_date` datetime DEFAULT NULL,
+  `update_date` datetime DEFAULT NULL,
   `code` varchar(255) DEFAULT NULL,
   `code_status` varchar(255) DEFAULT NULL,
   `user_id` bigint(20) DEFAULT NULL,
