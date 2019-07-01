@@ -3,9 +3,12 @@ package com.app.belcobtm.mvp
 import android.app.Activity
 import android.content.Context
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
+import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import com.app.belcobtm.R
+import com.google.android.material.snackbar.Snackbar
 
 abstract class BaseMvpActivity<in V : BaseMvpView, T : BaseMvpPresenter<V>>
     : AppCompatActivity(), BaseMvpView {
@@ -25,13 +28,19 @@ abstract class BaseMvpActivity<in V : BaseMvpView, T : BaseMvpPresenter<V>>
 
     override fun showError(error: String?) {
         runOnUiThread {
-            Toast.makeText(this, error, Toast.LENGTH_LONG).show()
+            val containerView = findViewById<View>(R.id.container)
+            val snackbar = Snackbar.make(containerView, error!!, Snackbar.LENGTH_SHORT)
+            snackbar.view.setBackgroundColor(getColor(R.color.error_color_material_light))
+            snackbar.show()
         }
     }
 
     override fun showError(stringResId: Int) {
         runOnUiThread {
-            Toast.makeText(this, stringResId, Toast.LENGTH_LONG).show()
+            val containerView = findViewById<View>(R.id.container)
+            val snackbar = Snackbar.make(containerView, stringResId, Snackbar.LENGTH_SHORT)
+            snackbar.view.setBackgroundColor(getColor(R.color.error_color_material_light))
+            snackbar.show()
         }
     }
 
@@ -41,7 +50,7 @@ abstract class BaseMvpActivity<in V : BaseMvpView, T : BaseMvpPresenter<V>>
         }
     }
 
-    override fun showMessage(message: String) {
+    override fun showMessage(message: String?) {
         runOnUiThread {
             Toast.makeText(this, message, Toast.LENGTH_LONG).show()
         }

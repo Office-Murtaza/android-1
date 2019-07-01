@@ -11,5 +11,48 @@
     <string name="login_failed">"Login failed"</string>
 
     <string name="error_no_internet_no_socket">Cannot connect to server. Please, check your internet connection</string>
+    <string name="logo_text">Stay Ahead of the Crypto Future</string>
+
+
+    <string name="terms"><u>Terms &amp; Conditions</u></string>
+    <string name="recover_my_wallet"><u>Recover My Wallet</u></string>
+    <string name="contact_support"><u>Contact support</u></string>
+    <string name="accept">Accept</string>
+    <string name="create_a_new_wallet">Create a New Wallet</string>
+    <string name="login_to_my_wallet">Login to My Wallet</string>
+
+    <!--welcome-->
+    <string name="welcome_slide_1">Keep All Assets in One Place</string>
+    <string name="welcome_slide_2">Buy &amp; Sell Cryptocurrency</string>
+    <string name="welcome_slide_3">Secure  Fast Transactions</string>
+    <string name="support">Support</string>
+    <string name="support_phone">+1 - 888 - 848 - 3033</string>
+    <string name="support_email">support@belcobtm.com</string>
+    <string name="copy"><u>Copy</u></string>
+    <string name="support_email_clipboard">Support email copied to clipboard</string>
+    <string name="support_phone_clipboard">Support phone copied to clipboard</string>
+    <string name="please_accept_terms">Please, Accept Our Terms &amp; Conditions</string>
+
+    <!--create wallet-->
+    <string name="verify_sms_code">Verify Sms code</string>
+    <string name="next">Next</string>
+    <string name="cancel">Cancel</string>
+    <string name="phone">Phone Number *</string>
+    <string name="pass">Password *</string>
+    <string name="confirm_pass">Confirm Password *</string>
+    <string name="error_all_fields_required">All fields are required</string>
+    <string name="error_phone_not_valid">Phone number is not valid</string>
+    <string name="error_confirm_pass">Passwords do not match</string>
+    <string name="error_short_pass">Password should be longer</string>
+    <string name="error_sms_code_4_digits">Code should have 4 digits</string>
+    <string name="sms_code">SMS code</string>
+
+    <!--seed phrase-->
+    <string name="done">Done</string>
+    <string name="seed_phrase">Seed Phrase</string>
+    <string name="seed_info">If you lost your seed phrase you will not be able to restore your wallet</string>
+    <string name="seed_clipboard">Seed phrase copied to clipboard</string>
+
+
 
 </resources>
