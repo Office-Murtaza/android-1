@@ -3,10 +3,26 @@ platform :ios, '12.1'
 use_frameworks!
 
 target 'batm' do
-
+  
+  # UI
+  pod 'SnapKit', '4.2.0'
+  pod 'MBProgressHUD', '1.1.0'
+  pod 'FlagPhoneNumber', '0.7.2'
+  
+  # Utilities
   pod 'TrustWalletCore', '0.8.1'
+  pod 'PhoneNumberKit', '2.6.0'
+  pod 'Swinject', '2.6.2'
+  pod 'ObjectMapper', '3.4.2'
+  
+  # Rx
+  pod 'Moya/RxSwift', '11.0.2'
+  pod 'RxOptional', '3.6.2'
+  pod 'RxFlow', '1.6.2'
+  pod 'RxSwift', '4.5.0'
+  pod 'RxCocoa', '4.5.0'
   
   target 'batmTests' do
-      inherit! :search_paths
+    inherit! :search_paths
   end
 end
