@@ -147,7 +147,7 @@ public class UserJWTController {
 			return Response.error(new Error(2, "Wrong verification code"));
 		}
 
-		codeVerification.setCode("1");
+		codeVerification.setCodeStatus("1");
 		codeVerificationService.save(codeVerification);
 
 		return Response.ok(new ValidateOTPResponse(validateOtpVM.getUserId(), true));

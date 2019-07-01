@@ -4,7 +4,7 @@ CREATE TABLE `w_refresh_token` (
   `update_date` datetime DEFAULT NULL,
   `token` varchar(255) DEFAULT NULL,
   `user_id` bigint(20) DEFAULT NULL,
-  PRIMARY KEY (`code_id`),
-  KEY `FKb4nuwpbnklsxrtvsv6n4oriuo_user` (`user_id`),
-  CONSTRAINT `FKb4nuwpbnklsxrtvsv6n4oriuo_user` FOREIGN KEY (`user_id`) REFERENCES `w_user` (`user_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  PRIMARY KEY (`token_id`),
+  KEY `FKt2ubj142plwgifp4qtegv9agj` (`user_id`),
+  CONSTRAINT `FKt2ubj142plwgifp4qtegv9agj` FOREIGN KEY (`user_id`) REFERENCES `w_user` (`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
