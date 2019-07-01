@@ -22,6 +22,9 @@ public class CoinController {
 	
 	@PostMapping("/user/add-coins")
 	public Response addCoins(@RequestBody CoinVM coinVM) {
+		if(coinVM == null || coinVM.getCoins().isEmpty()) {
+			return Response.error(new com.batm.entity.Error(1, "Empty coin list."));
+		}
 		try {
 			userCoinService.save(coinVM);
 		} catch (Exception e) {
