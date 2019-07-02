@@ -68,7 +68,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	@Override
 	public void configure(HttpSecurity http) throws Exception {
 		// @formatter:off
-		http.csrf().disable().exceptionHandling().and().headers().frameOptions().disable().and().sessionManagement()
+		http.csrf().disable().authorizeRequests().antMatchers("/api/v1/user/register").permitAll().antMatchers("/api/v1/**").authenticated().and().exceptionHandling().and().headers().frameOptions().disable().and().sessionManagement()
 				.sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().apply(securityConfigurerAdapter());
 		// @formatter:on
 	}
