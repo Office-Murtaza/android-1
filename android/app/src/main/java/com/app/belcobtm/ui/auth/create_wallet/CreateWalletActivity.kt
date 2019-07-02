@@ -2,15 +2,13 @@ package com.app.belcobtm.ui.auth.create_wallet
 
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
-import android.content.ClipData
-import android.content.ClipboardManager
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.AppCompatEditText
 import com.app.belcobtm.R
 import com.app.belcobtm.mvp.BaseMvpActivity
-import com.app.belcobtm.ui.auth.SeedPhraseActivity
+import com.app.belcobtm.ui.auth.seed.SeedPhraseActivity
 import com.google.android.material.textfield.TextInputLayout
 import kotlinx.android.synthetic.main.activity_create_wallet.*
 

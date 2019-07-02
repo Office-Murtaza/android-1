@@ -53,6 +53,13 @@
     <string name="seed_info">If you lost your seed phrase you will not be able to restore your wallet</string>
     <string name="seed_clipboard">Seed phrase copied to clipboard</string>
 
+    <!--recover seed phrase-->
+    <string name="paste"><u>Paste</u></string>
+    <string name="paste_seed_info">Enter your secret 15 world phrase here to restore your wallet</string>
+
+
+
+
 
 
 </resources>

@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/auth_bg_color"
+    tools:context=".ui.auth.welcome.WelcomeActivity">
+
+    <!-- Login progress -->
+    <FrameLayout
+        android:id="@+id/progress"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/gray_progress"
+        android:clickable="true"
+        android:elevation="15dp"
+        android:focusable="true"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ProgressBar
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="8dp" />
+    </FrameLayout>
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/logo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_x2"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_logo" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/appCompatImageView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="100dp"
+        android:scaleType="fitXY"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/logo_text"
+        app:srcCompat="@drawable/bg_auth" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/logo_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_half"
+        android:text="@string/logo_text"
+        android:textColor="@color/gray_text_color"
+        app:fontFamily="@font/poppins_bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/logo" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/icon"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:scaleType="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/logo_text"
+        app:srcCompat="@drawable/ic_recover_wallet" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/icon_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_x2"
+        android:text="@string/recover_my_wallet"
+        android:textColor="@android:color/white"
+        android:textSize="20sp"
+        app:fontFamily="@font/poppins_bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/icon" />
+
+    <View
+        android:layout_width="30dp"
+        android:layout_height="4dp"
+        android:layout_marginBottom="@dimen/margin_main"
+        android:background="@drawable/bt_orange_rounded_corner"
+        app:layout_constraintBottom_toTopOf="@id/card_view"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/icon_text" />
+
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/card_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_x2"
+        android:layout_marginEnd="@dimen/margin_x2"
+        android:layout_marginBottom="@dimen/margin_main"
+        app:cardBackgroundColor="@android:color/white"
+        app:cardCornerRadius="25dp"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="@dimen/margin_half">
+
+
+            <com.hbb20.CountryCodePicker
+                android:id="@+id/phone_ccp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_main"
+                android:gravity="center"
+                app:ccp_autoFormatNumber="true"
+                app:ccp_clickable="false"
+                app:ccp_defaultNameCode="US"
+                app:ccp_showNameCode="false"
+                app:layout_constraintBottom_toBottomOf="@id/til_phone"
+                app:layout_constraintEnd_toStartOf="@id/til_phone"
+                app:layout_constraintStart_toStartOf="parent"/>
+
+            <View
+                android:id="@+id/vertical_phone_divider"
+                android:layout_width="1dp"
+                android:layout_height="20dp"
+                android:background="@color/gray_text_color"
+                app:layout_constraintBottom_toBottomOf="@id/phone_ccp"
+                app:layout_constraintStart_toEndOf="@id/phone_ccp"
+                app:layout_constraintTop_toTopOf="@id/phone_ccp" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/til_phone"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_half"
+                android:layout_marginEnd="@dimen/margin_main"
+                android:orientation="horizontal"
+                app:layout_constraintBottom_toTopOf="@id/til_pass"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/phone_ccp">
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/phone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@id/phone_ccp"
+                    android:drawableEnd="@drawable/ic_phone"
+                    android:hint="@string/phone"
+                    android:inputType="phone"
+                    android:maxLines="1"
+                    android:paddingEnd="@dimen/margin_half"
+                    android:singleLine="true"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/til_pass"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_main"
+                android:layout_marginTop="@dimen/margin_main"
+                android:layout_marginEnd="@dimen/margin_main"
+                app:layout_constraintBottom_toTopOf="@id/bt_next"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent">
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/pass"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableEnd="@drawable/ic_lock"
+                    android:hint="@string/pass"
+                    android:inputType="textPassword"
+                    android:maxLines="1"
+                    android:paddingEnd="@dimen/margin_half"
+                    android:singleLine="true"/>
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/bt_next"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_half"
+                android:layout_marginEnd="@dimen/margin_main"
+                android:layout_marginBottom="@dimen/margin_main"
+                android:background="@drawable/bt_gray_rounded_corner"
+                android:backgroundTint="@color/blue_color"
+                android:text="@string/next"
+                android:textColor="@android:color/white"
+                app:fontFamily="@font/poppins_bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/bt_cancel" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/bt_cancel"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_main"
+                android:layout_marginTop="@dimen/margin_main"
+                android:background="@drawable/bt_gray_rounded_corner"
+                android:backgroundTint="@color/bt_gray"
+                android:text="@string/cancel"
+                android:textColor="@color/dark_gray_text_color"
+                app:fontFamily="@font/poppins_bold"
+                app:layout_constraintBaseline_toBaselineOf="@id/bt_next"
+                app:layout_constraintEnd_toStartOf="@+id/bt_next"
+                app:layout_constraintStart_toStartOf="parent" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    </com.google.android.material.card.MaterialCardView>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

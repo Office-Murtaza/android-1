@@ -42,6 +42,9 @@ interface ApiInterface {
     @POST("user/register")
     fun register(@Body registerParam: RegisterParam): Observable<ServerResponse<RegisterResponse>>
 
+    @POST("user/recover")
+    fun recover(@Body registerParam: RegisterParam): Observable<ServerResponse<RegisterResponse>>
+
     @POST("user/verify")
     fun verifySmsCode(@Body verifySmsParam: VerifySmsParam): Observable<ServerResponse<VerifySmsResponse>>
 

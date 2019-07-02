@@ -1,4 +1,4 @@
-package com.app.belcobtm.ui.auth
+package com.app.belcobtm.ui.auth.seed
 
 import android.content.ClipData
 import android.content.ClipboardManager

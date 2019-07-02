@@ -15,6 +15,11 @@ class AuthDataManager : BaseDataManager() {
     fun registerWallet(phone: String, password: String): Observable<Optional<RegisterResponse>> {
         return genObservable(api.register(RegisterParam(phone, password)))
     }
+
+    fun recoverWallet(phone: String, password: String): Observable<Optional<RegisterResponse>> {
+        return genObservable(api.register(RegisterParam(phone, password)))
+    }
+
     fun verifySmsCode(smsCode: String, userId: String): Observable<Optional<VerifySmsResponse>> {
         return genObservable(api.verifySmsCode(VerifySmsParam(smsCode, userId)))
     }
