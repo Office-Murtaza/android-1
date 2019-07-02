@@ -39,6 +39,9 @@ public class RefreshToken extends AbstractAuditingEntity implements Serializable
 	@OneToOne
 	@JoinColumn(name = "user_id")
 	private User user;
+	
+	@Column(name = "expired")
+	private int expired = 0;
 
 	public RefreshToken(String token, User user) {
 		super();

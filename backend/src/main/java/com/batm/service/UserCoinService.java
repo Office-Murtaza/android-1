@@ -63,6 +63,12 @@ public class UserCoinService {
 			coin = new Coin("XRP", "Ripple");
 			coinRepository.save(coin);
 		}
+		
+		coin = coinRepository.findByCoinCode("BCH");
+		if (coin == null) {
+			coin = new Coin("BCH", "Bitcoin Cash");
+			coinRepository.save(coin);
+		}
 
 	}
 
@@ -71,7 +77,7 @@ public class UserCoinService {
 
 		coinVM.getCoins().stream().forEach(coinDTO -> {
 			Coin code = coinRepository.findByCoinCode(coinDTO.getCoinCode());
-			UserCoin userCoin = new UserCoin(user, code, coinDTO.getCoinCode(), coinDTO.getPublicKey());
+			UserCoin userCoin = new UserCoin(user, code, coinDTO.getPublicKey());
 			userCoinRepository.save(userCoin);
 		});
 

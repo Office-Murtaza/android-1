@@ -3,6 +3,7 @@ CREATE TABLE `w_refresh_token` (
   `created_date` datetime DEFAULT NULL,
   `update_date` datetime DEFAULT NULL,
   `token` varchar(255) DEFAULT NULL,
+  `expired` INT  DEFAULT 0,
   `user_id` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`token_id`),
   KEY `FKt2ubj142plwgifp4qtegv9agj` (`user_id`),

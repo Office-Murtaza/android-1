@@ -37,18 +37,15 @@ public class UserCoin extends AbstractAuditingEntity implements Serializable {
 	private User user;
 
 	@ManyToOne
-	@JoinColumn(name = "coin_id")
+	@JoinColumn(name = "coin_id", nullable = false)
 	private Coin coin;
-
-	private String coinCode;
 
 	private String publicKey;
 
-	public UserCoin(User user, Coin coin, String coinCode, String publicKey) {
+	public UserCoin(User user, Coin coin, String publicKey) {
 		super();
 		this.user = user;
 		this.coin = coin;
-		this.coinCode = coinCode;
 		this.publicKey = publicKey;
 	}
 
