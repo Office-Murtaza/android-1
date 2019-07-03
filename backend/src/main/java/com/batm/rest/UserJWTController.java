@@ -18,6 +18,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -69,24 +70,45 @@ public class UserJWTController {
 
 	@Autowired
 	private CodeVerificationService codeVerificationService;
-	
+
 	@Autowired
 	private RefreshTokenRepository refreshTokenRepository;
+	
+	@Autowired
+	private PasswordEncoder passwordEncoder;
 
 	@PostMapping("/login")
-	public ResponseEntity<JWTToken> authorize(@Valid @RequestBody LoginVM loginVM) {
+	public Response authorize(@Valid @RequestBody LoginVM loginVM) {
 
-		UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
-				loginVM.getUsername(), loginVM.getPassword());
+		String regex = "^\\+(?:[0-9] ?){10,10}[0-9]$";
 
-		Authentication authentication = this.authenticationManager.authenticate(authenticationToken);
-		SecurityContextHolder.getContext().setAuthentication(authentication);
-		boolean rememberMe = (loginVM.isRememberMe() == null) ? false : loginVM.isRememberMe();
-		String jwt = tokenProvider.createToken(authentication, rememberMe);
-		HttpHeaders httpHeaders = new HttpHeaders();
-		httpHeaders.add(JWTFilter.AUTHORIZATION_HEADER, "Bearer " + jwt);
-		return new ResponseEntity<>(getJwt(0L, loginVM.getUsername(), loginVM.getPassword()), httpHeaders,
-				HttpStatus.OK);
+		Pattern pattern = Pattern.compile(regex);
+
+		Matcher matcher = pattern.matcher(loginVM.getPhone());
+		if (!matcher.matches()) {
+			return Response.error(new Error(2, "Invalid phone number"));
+		}
+
+		if (!checkPasswordLength(loginVM.getPassword())) {
+			return Response.error(new Error(2, "Password length should be in 6 to 15"));
+		}
+
+		Optional<User> findOneByPhoneIgnoreCase = userService.findOneByPhoneIgnoreCase(loginVM.getPhone());
+		if (!findOneByPhoneIgnoreCase.isPresent()) {
+			return Response.error(new Error(1, "Phone is not registered"));
+		}
+
+		User user = userService.registerUser(loginVM.getPhone(), loginVM.getPassword());
+		
+		boolean passwordMatch = passwordEncoder.matches(loginVM.getPassword(), user.getPassword());
+		if(!passwordMatch) {
+			return Response.error(new Error(1, "Wrong password"));
+		}
+		
+		JWTToken jwt = getJwt(user.getUserId(), loginVM.getPhone(), loginVM.getPassword());
+
+		this.refreshTokenRepository.save(new RefreshToken(jwt.getRefreshToken(), user));
+		return Response.ok(jwt);
 
 	}
 
@@ -118,20 +140,21 @@ public class UserJWTController {
 			return Response.error(new Error(2, "Invalid phone number"));
 		}
 
+		if (!checkPasswordLength(register.getPassword())) {
+			return Response.error(new Error(2, "Password length should be in 6 to 15"));
+		}
+
 		Optional<User> findOneByPhoneIgnoreCase = userService.findOneByPhoneIgnoreCase(register.getPhone());
 		if (findOneByPhoneIgnoreCase.isPresent()) {
 			return Response.error(new Error(1, "Phone is already registered"));
 		}
 
-		if (!checkPasswordLength(register.getPassword())) {
-			return Response.error(new Error(2, "Password length should be in 6 to 15"));
-		}
 		User user = userService.registerUser(register.getPhone(), register.getPassword());
 		twilioComponent.sendOTP(user);
 		JWTToken jwt = getJwt(user.getUserId(), register.getPhone(), register.getPassword());
-		
+
 		this.refreshTokenRepository.save(new RefreshToken(jwt.getRefreshToken(), user));
-		return Response.ok(getJwt(user.getUserId(), register.getPhone(), register.getPassword()));
+		return Response.ok(jwt);
 	}
 
 	@PostMapping("/user/verify")
