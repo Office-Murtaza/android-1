@@ -45,21 +45,20 @@ public class TwilioComponent {
 				otp = "1234";
 			} else {
 				otp = RandomStringUtils.randomNumeric(4);
+				// Build the parameters
+				List<NameValuePair> params = new ArrayList<>();
+				String phoneNumber = user.getPhone();
+				params.add(new BasicNameValuePair("To", phoneNumber));
+				params.add(new BasicNameValuePair("From", fromNumber));
+				params.add(new BasicNameValuePair("Body",
+						"Dear Customer, " + otp + " is your one time password(OTP).Please enter the OTP to proceed."));
+
+				MessageFactory messageFactory = twilioRestClient.getAccount().getMessageFactory();
+				Message message = messageFactory.create(params);
+				log.info("msg sid {}", message.getSid());
 			}
-
+			
 			codeVerificationRepository.save(new CodeVerification(user, otp, "0"));
-
-			// Build the parameters
-			List<NameValuePair> params = new ArrayList<>();
-			String phoneNumber = user.getPhone();
-			params.add(new BasicNameValuePair("To", phoneNumber));
-			params.add(new BasicNameValuePair("From", fromNumber));
-			params.add(new BasicNameValuePair("Body",
-					"Dear Customer, " + otp + " is your one time password(OTP).Please enter the OTP to proceed."));
-
-			MessageFactory messageFactory = twilioRestClient.getAccount().getMessageFactory();
-			Message message = messageFactory.create(params);
-			log.info("msg sid {}", message.getSid());
 
 		} catch (TwilioRestException e) {
 			log.error("Getting error while sending message", e);
