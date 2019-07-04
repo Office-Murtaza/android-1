@@ -1,10 +1,13 @@
 package com.batm.service;
 
+import java.util.List;
+
 import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.batm.entity.CodeVerification;
 import com.batm.entity.Coin;
 import com.batm.entity.User;
 import com.batm.entity.UserCoin;
@@ -26,7 +29,7 @@ public class UserCoinService {
 	private UserRepository userRepository;
 
 	@PostConstruct
-	public void inin() {
+	public void init() {
 
 		Coin coin = coinRepository.findByCoinCode("BTC");
 		if (coin == null) {
@@ -82,5 +85,14 @@ public class UserCoinService {
 		});
 
 	}
+	
+	public List<UserCoin> getCoinByUserId(Long userId) {
+		return userCoinRepository.findByUserUserId(userId);
+	}
+	
+	public UserCoin getCoinWithUserIdAndCoinCode(Long userId,String coinCode) {
+		return userCoinRepository.findByUserUserIdAndCoinCoinCode(userId, coinCode);
+	}
+
 
 }
