@@ -1,11 +1,9 @@
 CREATE TABLE `w_refresh_token` (
-  `token_id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `user_id` bigint(20) NOT NULL,
+  `expired` int(11) DEFAULT NULL,
+  `token` varchar(255) DEFAULT NULL,
   `created_date` datetime DEFAULT NULL,
   `update_date` datetime DEFAULT NULL,
-  `token` varchar(255) DEFAULT NULL,
-  `expired` INT  DEFAULT 0,
-  `user_id` bigint(20) DEFAULT NULL,
-  PRIMARY KEY (`token_id`),
-  KEY `FKt2ubj142plwgifp4qtegv9agj` (`user_id`),
+  PRIMARY KEY (`user_id`),
   CONSTRAINT `FKt2ubj142plwgifp4qtegv9agj` FOREIGN KEY (`user_id`) REFERENCES `w_user` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

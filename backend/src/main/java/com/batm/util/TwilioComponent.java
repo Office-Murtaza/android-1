@@ -58,7 +58,13 @@ public class TwilioComponent {
 				log.info("msg sid {}", message.getSid());
 			}
 			
-			codeVerificationRepository.save(new CodeVerification(user, otp, "0"));
+			CodeVerification codeVerification = this.codeVerificationRepository.findByUserUserId(user.getUserId());
+			if(codeVerification == null) {
+				codeVerification = new CodeVerification(user, otp, "0");
+			}else {
+				codeVerification.setCode(otp);
+			}
+			codeVerificationRepository.save(codeVerification);
 
 		} catch (TwilioRestException e) {
 			log.error("Getting error while sending message", e);

@@ -26,17 +26,14 @@ public class Coin extends AbstractAuditingEntity implements Serializable {
 	private static final long serialVersionUID = -1712969322089989538L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "coin_id")
-	private Long id;
-
-	private String coinCode;
+	private String id;
 
 	private String coinName;
 
 	public Coin(String coinCode, String coinName) {
 		super();
-		this.coinCode = coinCode;
+		this.id = coinCode;
 		this.coinName = coinName;
 	}
 	

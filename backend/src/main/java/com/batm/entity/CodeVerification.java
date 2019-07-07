@@ -2,13 +2,11 @@ package com.batm.entity;
 
 import java.io.Serializable;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.MapsId;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import lombok.Getter;
@@ -28,11 +26,10 @@ public class CodeVerification extends AbstractAuditingEntity implements Serializ
 	private static final long serialVersionUID = -1712969322089989538L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "code_id")
-	private Long codeId;
+	private Long id;
 
-	@ManyToOne
+	@MapsId
+	@OneToOne
 	@JoinColumn(name = "user_id")
 	private User user;
 

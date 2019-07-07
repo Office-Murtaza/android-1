@@ -10,6 +10,6 @@ public interface UserCoinRepository extends JpaRepository<UserCoin, Long> {
 
 	List<UserCoin> findByUserUserId(Long userId);
 
-	UserCoin findByUserUserIdAndCoinCoinCode(Long userId, String coinCode);
+	UserCoin findByUserUserIdAndCoinId(Long userId, String coinCode);
 
 }

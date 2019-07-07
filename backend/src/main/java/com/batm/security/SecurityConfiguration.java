@@ -68,7 +68,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	@Override
 	public void configure(HttpSecurity http) throws Exception {
 		// @formatter:off
-		http.csrf().disable().authorizeRequests().antMatchers("/api/v1/user/register","/api/v1/user/recover","/api/v1/user/login").permitAll()
+		http.csrf().disable().authorizeRequests().antMatchers("/api/v1/user/recover").permitAll()
+		.antMatchers("/api/v1/user/login").permitAll()
+		.antMatchers("/api/v1/twillio/send").permitAll()
+		.antMatchers("/api/v1/user/register").permitAll()
 				.antMatchers("/api/v1/binance/getcurrentprice").permitAll().antMatchers("/api/v1/**").authenticated()
 				.and().exceptionHandling().and().headers().frameOptions().disable().and().sessionManagement()
 				.sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().apply(securityConfigurerAdapter());

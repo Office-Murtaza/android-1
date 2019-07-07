@@ -31,43 +31,43 @@ public class UserCoinService {
 	@PostConstruct
 	public void init() {
 
-		Coin coin = coinRepository.findByCoinCode("BTC");
+		Coin coin = coinRepository.findById("BTC");
 		if (coin == null) {
 			coin = new Coin("BTC", "Bitcoin");
 			coinRepository.save(coin);
 		}
 
-		coin = coinRepository.findByCoinCode("ETH");
+		coin = coinRepository.findById("ETH");
 		if (coin == null) {
 			coin = new Coin("ETH", "Ethereum");
 			coinRepository.save(coin);
 		}
 
-		coin = coinRepository.findByCoinCode("LTC");
+		coin = coinRepository.findById("LTC");
 		if (coin == null) {
 			coin = new Coin("LTC", "Litecoin");
 			coinRepository.save(coin);
 		}
 
-		coin = coinRepository.findByCoinCode("BNB");
+		coin = coinRepository.findById("BNB");
 		if (coin == null) {
 			coin = new Coin("BNB", "Binance Coin");
 			coinRepository.save(coin);
 		}
 
-		coin = coinRepository.findByCoinCode("TRX");
+		coin = coinRepository.findById("TRX");
 		if (coin == null) {
 			coin = new Coin("TRX", "Tron");
 			coinRepository.save(coin);
 		}
 
-		coin = coinRepository.findByCoinCode("XRP");
+		coin = coinRepository.findById("XRP");
 		if (coin == null) {
 			coin = new Coin("XRP", "Ripple");
 			coinRepository.save(coin);
 		}
 		
-		coin = coinRepository.findByCoinCode("BCH");
+		coin = coinRepository.findById("BCH");
 		if (coin == null) {
 			coin = new Coin("BCH", "Bitcoin Cash");
 			coinRepository.save(coin);
@@ -79,7 +79,7 @@ public class UserCoinService {
 		User user = userRepository.getOne(coinVM.getUserId());
 
 		coinVM.getCoins().stream().forEach(coinDTO -> {
-			Coin code = coinRepository.findByCoinCode(coinDTO.getCoinCode());
+			Coin code = coinRepository.findById(coinDTO.getCoinCode());
 			UserCoin userCoin = new UserCoin(user, code, coinDTO.getPublicKey());
 			userCoinRepository.save(userCoin);
 		});
@@ -91,7 +91,7 @@ public class UserCoinService {
 	}
 	
 	public UserCoin getCoinWithUserIdAndCoinCode(Long userId,String coinCode) {
-		return userCoinRepository.findByUserUserIdAndCoinCoinCode(userId, coinCode);
+		return userCoinRepository.findByUserUserIdAndCoinId(userId, coinCode);
 	}
 
 
