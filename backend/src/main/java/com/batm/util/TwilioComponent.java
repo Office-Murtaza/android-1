@@ -1,5 +1,6 @@
 package com.batm.util;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -62,7 +63,9 @@ public class TwilioComponent {
 			if(codeVerification == null) {
 				codeVerification = new CodeVerification(user, otp, "0");
 			}else {
+				codeVerification.setCodeStatus("0");
 				codeVerification.setCode(otp);
+				codeVerification.setLastModifiedDate(Instant.now());
 			}
 			codeVerificationRepository.save(codeVerification);
 
