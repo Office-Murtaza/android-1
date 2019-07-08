@@ -10,7 +10,9 @@ import javax.validation.Valid;
 import com.batm.util.Constant;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -65,6 +67,13 @@ public class UserJWTController {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+    
+    @Value("${security.jwt.access-token-duration}")
+    private Long expiryTime;
+    
+    @Value("${security.verification.code-validity}")
+    private Long verificationCodeValidity;
+   
 
     @PostMapping("/user/register")
     public Response registerAccount(@Valid @RequestBody RegisterVM register) {
@@ -130,7 +139,7 @@ public class UserJWTController {
     @PostMapping("/user/verify")
     public Response validateVerficationCode(@RequestBody ValidateOTPVM validateOtpVM) {
         CodeVerification codeVerification = codeVerificationService.getCodeByUserId(validateOtpVM.getUserId());
-        Instant time10MinuteAge = Instant.now().minusSeconds(10 * 60);
+        Instant time10MinuteAge = Instant.now().minusMillis(verificationCodeValidity);
         if (!StringUtils.isEmpty(codeVerification.getCode())
                 && codeVerification.getLastModifiedDate().isBefore(time10MinuteAge)) {
             return Response.error(new Error(2, "Verification code is expired"));
@@ -165,7 +174,7 @@ public class UserJWTController {
             return Response.ok(jwt);
 
         } else {
-            return Response.error(new Error(2, "Refresh token not exist"));
+            throw new AccessDeniedException("Refresh token not exist");
         }
     }
 
@@ -175,25 +184,23 @@ public class UserJWTController {
 
         Authentication authentication = this.authenticationManager.authenticate(authenticationToken);
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        boolean rememberMe = false;
-        String jwt = tokenProvider.createToken(authentication, rememberMe);
-        String refreshToken = tokenProvider.createRefreshToken(authentication, rememberMe);
+        String jwt = tokenProvider.createToken(authentication);
+        String refreshToken = tokenProvider.createRefreshToken();
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add(JWTFilter.AUTHORIZATION_HEADER, "Bearer " + jwt);
 
-        return new JWTToken(userId, jwt, System.currentTimeMillis() + 300000, refreshToken,
+        return new JWTToken(userId, jwt, System.currentTimeMillis() + expiryTime, refreshToken,
                 authentication.getAuthorities().stream().map(role -> role.getAuthority()).collect(Collectors.toList()));
     }
 
     private JWTToken getJwt(Long userId) {
-        boolean rememberMe = false;
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String jwt = tokenProvider.createToken(authentication, false);
-        String refreshToken = tokenProvider.createRefreshToken(authentication, rememberMe);
+        String jwt = tokenProvider.createToken(authentication);
+        String refreshToken = tokenProvider.createRefreshToken();
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add(JWTFilter.AUTHORIZATION_HEADER, "Bearer " + jwt);
 
-        return new JWTToken(userId, jwt, System.currentTimeMillis() + 300000, refreshToken,
+        return new JWTToken(userId, jwt, System.currentTimeMillis() + expiryTime, refreshToken,
                 authentication.getAuthorities().stream().map(role -> role.getAuthority()).collect(Collectors.toList()));
     }
 
