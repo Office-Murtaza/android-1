@@ -145,10 +145,10 @@
 					<changeLogFile>${project.basedir}/src/main/resources/db/changelog/changelog-master.xml</changeLogFile>
 					<diffChangeLogFile>${project.basedir}/src/main/resources/config/liquibase/changelog/${maven.build.timestamp}_changelog.xml</diffChangeLogFile>
 					<driver>com.mysql.cj.jdbc.Driver</driver>
-					<url>jdbc:mysql://localhost:3306/batm</url>
+					<url>jdbc:mysql://206.189.204.44:3306/batm</url>
 					<defaultSchemaName>nusape</defaultSchemaName>
-					<username>root</username>
-					<password>Vikas@123</password>
+					<username>belcobtm</username>
+					<password>abc123456</password>
 					<verbose>true</verbose>
 					<logging>debug</logging>
 					<contexts>!test</contexts>
