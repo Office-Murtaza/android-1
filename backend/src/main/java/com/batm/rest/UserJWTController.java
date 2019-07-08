@@ -6,9 +6,8 @@ import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
-
 import javax.validation.Valid;
-
+import com.batm.util.Constant;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -21,7 +20,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.batm.entity.CodeVerification;
 import com.batm.entity.Error;
 import com.batm.entity.RefreshToken;
@@ -38,243 +36,190 @@ import com.batm.security.jwt.TokenProvider;
 import com.batm.service.CodeVerificationService;
 import com.batm.service.UserService;
 import com.batm.util.TwilioComponent;
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-/**
- * Controller to authenticate users.
- */
 @RestController
 @RequestMapping("/api/v1")
 public class UserJWTController {
 
-	public static final int PASSWORD_MIN_LENGTH = 6;
+    @Autowired
+    private TokenProvider tokenProvider;
 
-	public static final int PASSWORD_MAX_LENGTH = 15;
+    @Autowired
+    private AuthenticationManager authenticationManager;
 
-	@Autowired
-	private TokenProvider tokenProvider;
+    @Autowired
+    private UserService userService;
 
-	@Autowired
-	private AuthenticationManager authenticationManager;
+    @Autowired
+    private TwilioComponent twilioComponent;
 
-	@Autowired
-	private UserService userService;
+    @Autowired
+    private CodeVerificationService codeVerificationService;
 
-	@Autowired
-	private TwilioComponent twilioComponent;
+    @Autowired
+    private RefreshTokenRepository refreshTokenRepository;
 
-	@Autowired
-	private CodeVerificationService codeVerificationService;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
-	@Autowired
-	private RefreshTokenRepository refreshTokenRepository;
+    @PostMapping("/user/register")
+    public Response registerAccount(@Valid @RequestBody RegisterVM register) {
+        Pattern pattern = Pattern.compile(Constant.REGEX_PHONE);
 
-	@Autowired
-	private PasswordEncoder passwordEncoder;
+        Matcher matcher = pattern.matcher(register.getPhone());
+        if (!matcher.matches()) {
+            return Response.error(new Error(2, "Invalid phone number"));
+        }
 
-	@PostMapping("/user/login")
-	public Response authorize(@Valid @RequestBody LoginVM loginVM) {
+        if (!checkPasswordLength(register.getPassword())) {
+            return Response.error(new Error(2, "Password length should be in 6 to 15"));
+        }
 
-		String regex = "^\\+(?:[0-9] ?){10,10}[0-9]$";
+        Optional<User> findOneByPhoneIgnoreCase = userService.findOneByPhoneIgnoreCase(register.getPhone());
+        if (findOneByPhoneIgnoreCase.isPresent()) {
+            return Response.error(new Error(1, "Phone is already registered"));
+        }
 
-		Pattern pattern = Pattern.compile(regex);
+        User user = userService.registerUser(register.getPhone(), register.getPassword());
+        twilioComponent.sendOTP(user);
+        JWTToken jwt = getJwt(user.getUserId(), register.getPhone(), register.getPassword());
 
-		Matcher matcher = pattern.matcher(loginVM.getPhone());
-		if (!matcher.matches()) {
-			return Response.error(new Error(2, "Invalid phone number"));
-		}
+        this.refreshTokenRepository.save(new RefreshToken(jwt.getRefreshToken(), user));
+        return Response.ok(jwt);
+    }
 
-		if (!checkPasswordLength(loginVM.getPassword())) {
-			return Response.error(new Error(2, "Password length should be in 6 to 15"));
-		}
+    @PostMapping("/user/recover")
+    public Response recoverAccount(@Valid @RequestBody LoginVM loginVM) {
+        Pattern pattern = Pattern.compile(Constant.REGEX_PHONE);
 
-		Optional<User> findOneByPhoneIgnoreCase = userService.findOneByPhoneIgnoreCase(loginVM.getPhone());
-		if (!findOneByPhoneIgnoreCase.isPresent()) {
-			return Response.error(new Error(1, "Phone is not registered"));
-		}
-		User user = findOneByPhoneIgnoreCase.get();
+        Matcher matcher = pattern.matcher(loginVM.getPhone());
+        if (!matcher.matches()) {
+            return Response.error(new Error(2, "Invalid phone number"));
+        }
 
-		boolean passwordMatch = passwordEncoder.matches(loginVM.getPassword(), user.getPassword());
-		if (!passwordMatch) {
-			return Response.error(new Error(1, "Wrong password"));
-		}
+        if (!checkPasswordLength(loginVM.getPassword())) {
+            return Response.error(new Error(3, "Password length should be in 6 to 15"));
+        }
 
-		JWTToken jwt = getJwt(user.getUserId(), loginVM.getPhone(), loginVM.getPassword());
+        Optional<User> findOneByPhoneIgnoreCase = userService.findOneByPhoneIgnoreCase(loginVM.getPhone());
+        if (!findOneByPhoneIgnoreCase.isPresent()) {
+            return Response.error(new Error(2, "Phone is not registered"));
+        }
 
-		RefreshToken token = this.refreshTokenRepository.findByUserUserId(user.getUserId());
-		token.setToken(jwt.getRefreshToken());
-		this.refreshTokenRepository.save(token);
-		return Response.ok(jwt);
+        User user = findOneByPhoneIgnoreCase.get();
 
-	}
-	
-	@PostMapping("/user/refresh")
-	public Response refresh(@Valid @RequestBody RefreshVM refreshVM) {
-		
-		RefreshToken refreshToken = this.refreshTokenRepository.findByTokenAndUserUserId(refreshVM.getRefreshToken(), refreshVM.getUserId());
-		if(refreshToken != null) {
-			User user = userService.findById(refreshVM.getUserId());
+        boolean passwordMatch = passwordEncoder.matches(loginVM.getPassword(), user.getPassword());
+        if (!passwordMatch) {
+            return Response.error(new Error(3, "Wrong password"));
+        }
 
-			JWTToken jwt = getJwt(user.getUserId());
+        JWTToken jwt = getJwt(user.getUserId(), loginVM.getPhone(), loginVM.getPassword());
 
-			RefreshToken token = this.refreshTokenRepository.findByUserUserId(user.getUserId());
-			token.setToken(jwt.getRefreshToken());
-			this.refreshTokenRepository.save(token);
-			return Response.ok(jwt);
+        twilioComponent.sendOTP(user);
 
-		}else {
-			return Response.error(new Error(2, "Refresh token not exist"));
-		}
-		
+        RefreshToken token = this.refreshTokenRepository.findByUserUserId(user.getUserId());
+        token.setToken(jwt.getRefreshToken());
+        this.refreshTokenRepository.save(token);
+        return Response.ok(jwt);
+    }
 
-	}
+    @PostMapping("/user/verify")
+    public Response validateVerficationCode(@RequestBody ValidateOTPVM validateOtpVM) {
+        CodeVerification codeVerification = codeVerificationService.getCodeByUserId(validateOtpVM.getUserId());
+        Instant time10MinuteAge = Instant.now().minusSeconds(10 * 60);
+        if (!StringUtils.isEmpty(codeVerification.getCode())
+                && codeVerification.getLastModifiedDate().isBefore(time10MinuteAge)) {
+            return Response.error(new Error(2, "Verification code is expired"));
+        }
 
-	private JWTToken getJwt(Long userId, String username, String password) {
-		UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username,
-				password);
+        if (StringUtils.equals(codeVerification.getCodeStatus(), "1")) {
+            return Response.error(new Error(2, "Verification code is already used"));
+        }
 
-		Authentication authentication = this.authenticationManager.authenticate(authenticationToken);
-		SecurityContextHolder.getContext().setAuthentication(authentication);
-		boolean rememberMe = false;
-		String jwt = tokenProvider.createToken(authentication, rememberMe);
-		String refreshToken = tokenProvider.createRefreshToken(authentication, rememberMe);
-		HttpHeaders httpHeaders = new HttpHeaders();
-		httpHeaders.add(JWTFilter.AUTHORIZATION_HEADER, "Bearer " + jwt);
+        if (!StringUtils.equals(validateOtpVM.getCode(), codeVerification.getCode())) {
+            return Response.error(new Error(2, "Wrong verification code"));
+        }
 
-		return new JWTToken(userId, jwt, System.currentTimeMillis() + 300000, refreshToken,
-				authentication.getAuthorities().stream().map(role -> role.getAuthority()).collect(Collectors.toList()));
-	}
-	
-	private JWTToken getJwt(Long userId) {
-		boolean rememberMe = false;
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		String jwt = tokenProvider.createToken(authentication, false);
-		String refreshToken = tokenProvider.createRefreshToken(authentication, rememberMe);
-		HttpHeaders httpHeaders = new HttpHeaders();
-		httpHeaders.add(JWTFilter.AUTHORIZATION_HEADER, "Bearer " + jwt);
+        codeVerification.setCodeStatus("1");
+        codeVerificationService.save(codeVerification);
 
-		return new JWTToken(userId, jwt, System.currentTimeMillis() + 300000, refreshToken,
-				authentication.getAuthorities().stream().map(role -> role.getAuthority()).collect(Collectors.toList()));
-	}
+        return Response.ok(new ValidateOTPResponse(validateOtpVM.getUserId(), true));
+    }
 
-	@PostMapping("/user/register")
-	public Response registerAccount(@Valid @RequestBody RegisterVM register) {
+    @PostMapping("/user/refresh")
+    public Response refresh(@Valid @RequestBody RefreshVM refreshVM) {
 
-		String regex = "^\\+(?:[0-9] ?){10,10}[0-9]$";
+        RefreshToken refreshToken = this.refreshTokenRepository.findByTokenAndUserUserId(refreshVM.getRefreshToken(), refreshVM.getUserId());
+        if (refreshToken != null) {
+            User user = userService.findById(refreshVM.getUserId());
 
-		Pattern pattern = Pattern.compile(regex);
+            JWTToken jwt = getJwt(user.getUserId());
 
-		Matcher matcher = pattern.matcher(register.getPhone());
-		if (!matcher.matches()) {
-			return Response.error(new Error(2, "Invalid phone number"));
-		}
+            RefreshToken token = this.refreshTokenRepository.findByUserUserId(user.getUserId());
+            token.setToken(jwt.getRefreshToken());
+            this.refreshTokenRepository.save(token);
+            return Response.ok(jwt);
 
-		if (!checkPasswordLength(register.getPassword())) {
-			return Response.error(new Error(2, "Password length should be in 6 to 15"));
-		}
+        } else {
+            return Response.error(new Error(2, "Refresh token not exist"));
+        }
+    }
 
-		Optional<User> findOneByPhoneIgnoreCase = userService.findOneByPhoneIgnoreCase(register.getPhone());
-		if (findOneByPhoneIgnoreCase.isPresent()) {
-			return Response.error(new Error(1, "Phone is already registered"));
-		}
+    private JWTToken getJwt(Long userId, String username, String password) {
+        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username,
+                password);
 
-		User user = userService.registerUser(register.getPhone(), register.getPassword());
-		twilioComponent.sendOTP(user);
-		JWTToken jwt = getJwt(user.getUserId(), register.getPhone(), register.getPassword());
+        Authentication authentication = this.authenticationManager.authenticate(authenticationToken);
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        boolean rememberMe = false;
+        String jwt = tokenProvider.createToken(authentication, rememberMe);
+        String refreshToken = tokenProvider.createRefreshToken(authentication, rememberMe);
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.add(JWTFilter.AUTHORIZATION_HEADER, "Bearer " + jwt);
 
-		this.refreshTokenRepository.save(new RefreshToken(jwt.getRefreshToken(), user));
-		return Response.ok(jwt);
-	}
+        return new JWTToken(userId, jwt, System.currentTimeMillis() + 300000, refreshToken,
+                authentication.getAuthorities().stream().map(role -> role.getAuthority()).collect(Collectors.toList()));
+    }
 
-	@PostMapping("/user/verify")
-	public Response validateVerficationCode(@RequestBody ValidateOTPVM validateOtpVM) {
-		CodeVerification codeVerification = codeVerificationService.getCodeByUserId(validateOtpVM.getUserId());
-		Instant time10MinuteAge = Instant.now().minusSeconds(10 * 60);
-		if (!StringUtils.isEmpty(codeVerification.getCode())
-				&& codeVerification.getLastModifiedDate().isBefore(time10MinuteAge)) {
-			return Response.error(new Error(2, "Verification code is expired"));
-		}
-		
-		if (StringUtils.equals(codeVerification.getCodeStatus(), "1")) {
-			return Response.error(new Error(2, "Verification code is already used"));
-		}
+    private JWTToken getJwt(Long userId) {
+        boolean rememberMe = false;
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String jwt = tokenProvider.createToken(authentication, false);
+        String refreshToken = tokenProvider.createRefreshToken(authentication, rememberMe);
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.add(JWTFilter.AUTHORIZATION_HEADER, "Bearer " + jwt);
 
-		if (!StringUtils.equals(validateOtpVM.getCode(), codeVerification.getCode())) {
-			return Response.error(new Error(2, "Wrong verification code"));
-		}
+        return new JWTToken(userId, jwt, System.currentTimeMillis() + 300000, refreshToken,
+                authentication.getAuthorities().stream().map(role -> role.getAuthority()).collect(Collectors.toList()));
+    }
 
-		codeVerification.setCodeStatus("1");
-		codeVerificationService.save(codeVerification);
+    private static boolean checkPasswordLength(String password) {
+        return !StringUtils.isEmpty(password) && password.length() >= Constant.PASSWORD_MIN_LENGTH
+                && password.length() <= Constant.PASSWORD_MAX_LENGTH;
+    }
 
-		return Response.ok(new ValidateOTPResponse(validateOtpVM.getUserId(), true));
-	}
+    /**
+     * Object to return as body in JWT Authentication.
+     */
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    static class JWTToken {
 
-	@PostMapping("/user/recover")
-	public Response recoverAccount(@Valid @RequestBody LoginVM loginVM) {
+        private Long userId;
 
-		String regex = "^\\+(?:[0-9] ?){10,10}[0-9]$";
+        private String accessToken;
 
-		Pattern pattern = Pattern.compile(regex);
+        private Long expires;
 
-		Matcher matcher = pattern.matcher(loginVM.getPhone());
-		if (!matcher.matches()) {
-			return Response.error(new Error(2, "Invalid phone number"));
-		}
+        private String refreshToken;
 
-		if (!checkPasswordLength(loginVM.getPassword())) {
-			return Response.error(new Error(3, "Password length should be in 6 to 15"));
-		}
+        private List<String> roles;
 
-		Optional<User> findOneByPhoneIgnoreCase = userService.findOneByPhoneIgnoreCase(loginVM.getPhone());
-		if (!findOneByPhoneIgnoreCase.isPresent()) {
-			return Response.error(new Error(2, "Phone is not registered"));
-		}
-
-		User user = findOneByPhoneIgnoreCase.get();
-
-		boolean passwordMatch = passwordEncoder.matches(loginVM.getPassword(), user.getPassword());
-		if (!passwordMatch) {
-			return Response.error(new Error(3, "Wrong password"));
-		}
-
-		JWTToken jwt = getJwt(user.getUserId(), loginVM.getPhone(), loginVM.getPassword());
-		
-		twilioComponent.sendOTP(user);
-		
-		RefreshToken token = this.refreshTokenRepository.findByUserUserId(user.getUserId());
-		token.setToken(jwt.getRefreshToken());
-		this.refreshTokenRepository.save(token);
-		return Response.ok(jwt);
-
-	}
-
-	private static boolean checkPasswordLength(String password) {
-		return !StringUtils.isEmpty(password) && password.length() >= PASSWORD_MIN_LENGTH
-				&& password.length() <= PASSWORD_MAX_LENGTH;
-	}
-
-	/**
-	 * Object to return as body in JWT Authentication.
-	 */
-	@Getter
-	@Setter
-	@AllArgsConstructor
-	@NoArgsConstructor
-	static class JWTToken {
-
-		private Long userId;
-
-		private String accessToken;
-
-		private Long expires;
-
-		private String refreshToken;
-
-		private List<String> roles;
-
-	}
+    }
 }
