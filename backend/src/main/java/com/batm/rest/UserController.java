@@ -65,7 +65,10 @@ public class UserController {
 			Double totalBalance = 0D;
 			List<UserCoin> userCoins = this.userCoinService.getCoinByUserId(userId);
 			for (UserCoin userCoin : userCoins) {
-
+				String coinCode = userCoin.getCoin().getId();
+				if(coinCode.equalsIgnoreCase("BCH")) {
+					coinCode = "BCHABC";
+				}
 				String prc = binanceApiRestClient.getPrice(userCoin.getCoin().getId() + "USDT").getPrice();
 				Double price = Double.valueOf(prc);
 				totalBalance += price;
