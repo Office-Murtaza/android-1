@@ -69,7 +69,8 @@ public class UserController {
 				if(coinCode.equalsIgnoreCase("BCH")) {
 					coinCode = "BCHABC";
 				}
-				String prc = binanceApiRestClient.getPrice(userCoin.getCoin().getId() + "USDT").getPrice();
+
+				String prc = binanceApiRestClient.getPrice(coinCode + "USDT").getPrice();
 				Double price = Double.valueOf(prc);
 				totalBalance += price;
 				balances.add(new CoinBalanceResponseDTO(userCoin.getCoin().getId(), userCoin.getPublicKey(), 1.0,
