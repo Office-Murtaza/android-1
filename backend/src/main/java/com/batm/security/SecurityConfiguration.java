@@ -69,6 +69,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	public void configure(HttpSecurity http) throws Exception {
 		// @formatter:off
 		http.csrf().disable().authorizeRequests().antMatchers("/api/v1/user/recover").permitAll()
+		.antMatchers("/api/v1/user/refresh").permitAll()
 		.antMatchers("/api/v1/user/login").permitAll()
 		.antMatchers("/api/v1/twillio/send").permitAll()
 		.antMatchers("/api/v1/user/register").permitAll()
