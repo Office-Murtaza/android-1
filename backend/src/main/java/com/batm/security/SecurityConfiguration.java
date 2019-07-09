@@ -1,7 +1,10 @@
 package com.batm.security;
 
+
 import javax.annotation.PostConstruct;
 
+import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.codec.binary.StringUtils;
 import org.springframework.beans.factory.BeanInitializationException;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,7 +18,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.batm.security.jwt.JWTConfigurer;
@@ -56,7 +58,17 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
 	@Bean
 	public PasswordEncoder passwordEncoder() {
-		return new BCryptPasswordEncoder();
+		return new PasswordEncoder() {
+			@Override
+			public String encode(CharSequence charSequence) {
+				return Base64.encodeBase64String(charSequence.toString().getBytes());
+			}
+
+			@Override
+			public boolean matches(CharSequence charSequence, String s) {
+				return StringUtils.equals(encode(charSequence), s);
+			}
+		};
 	}
 
 	@Override
@@ -69,10 +81,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	public void configure(HttpSecurity http) throws Exception {
 		// @formatter:off
 		http.csrf().disable().authorizeRequests().antMatchers("/api/v1/user/recover").permitAll()
-		.antMatchers("/api/v1/user/refresh").permitAll()
-		.antMatchers("/api/v1/user/login").permitAll()
-		.antMatchers("/api/v1/twillio/send").permitAll()
-		.antMatchers("/api/v1/user/register").permitAll()
+				.antMatchers("/api/v1/user/refresh").permitAll().antMatchers("/api/v1/user/login").permitAll()
+				.antMatchers("/api/v1/twillio/send").permitAll().antMatchers("/api/v1/user/register").permitAll()
 				.antMatchers("/api/v1/binance/getcurrentprice").permitAll().antMatchers("/api/v1/**").authenticated()
 				.and().exceptionHandling().and().headers().frameOptions().disable().and().sessionManagement()
 				.sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().apply(securityConfigurerAdapter());

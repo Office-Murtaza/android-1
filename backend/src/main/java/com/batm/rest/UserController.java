@@ -1,6 +1,7 @@
 package com.batm.rest;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,6 +22,7 @@ import com.batm.entity.UserCoin;
 import com.batm.rest.vm.CoinBalanceVM;
 import com.batm.rest.vm.CoinVM;
 import com.batm.service.UserCoinService;
+import com.binance.api.client.BinanceApiRestClient;
 
 @RestController
 @RequestMapping("/api/v1")
@@ -28,6 +30,9 @@ public class UserController {
 
 	@Autowired
 	private UserCoinService userCoinService;
+
+	@Autowired
+	private BinanceApiRestClient binanceApiRestClient;
 
 	@PostMapping("/user/{userId}/coins-compare")
 	public Response compareCoins(@RequestBody CoinVM coinVM, @PathVariable Long userId) {
@@ -60,10 +65,18 @@ public class UserController {
 			Double totalBalance = 0D;
 			List<UserCoin> userCoins = this.userCoinService.getCoinByUserId(userId);
 			for (UserCoin userCoin : userCoins) {
-				totalBalance += 1.0;
+
+				String prc = binanceApiRestClient.getPrice(userCoin.getCoin().getId() + "USDT").getPrice();
+				Double price = Double.valueOf(prc);
+				totalBalance += price;
 				balances.add(new CoinBalanceResponseDTO(userCoin.getCoin().getId(), userCoin.getPublicKey(), 1.0,
-						new Price(2.0)));
+						new Price(price), userCoin.getCoin().getOrderIndex()));
 			}
+			
+			Comparator<CoinBalanceResponseDTO> sortingByIndex =
+					(CoinBalanceResponseDTO s1, CoinBalanceResponseDTO s2)->s1.getOrderIndex().compareTo(s2.getOrderIndex());
+
+			balances.sort(sortingByIndex);
 
 			return Response.ok(new CoinBalanceVM(userId, balances, new Price(totalBalance)));
 		} catch (Exception e) {

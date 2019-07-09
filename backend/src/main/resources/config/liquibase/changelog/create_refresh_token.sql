@@ -1,6 +1,5 @@
 CREATE TABLE `w_refresh_token` (
   `user_id` bigint(20) NOT NULL,
-  `expired` int(11) DEFAULT NULL,
   `token` varchar(255) DEFAULT NULL,
   `created_date` datetime DEFAULT NULL,
   `update_date` datetime DEFAULT NULL,

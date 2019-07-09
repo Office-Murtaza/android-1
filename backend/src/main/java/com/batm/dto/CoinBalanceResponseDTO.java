@@ -19,4 +19,6 @@ public class CoinBalanceResponseDTO {
 	
 	private Price price;
 	
+	private transient Integer orderIndex;
+	
 }

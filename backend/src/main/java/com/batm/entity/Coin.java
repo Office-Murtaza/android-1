@@ -4,8 +4,6 @@ import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -30,11 +28,15 @@ public class Coin extends AbstractAuditingEntity implements Serializable {
 	private String id;
 
 	private String coinName;
+	
+	@Column(name = "order_index")
+	private Integer orderIndex;
 
-	public Coin(String coinCode, String coinName) {
+	public Coin(String coinCode, String coinName, Integer index) {
 		super();
 		this.id = coinCode;
 		this.coinName = coinName;
+		this.orderIndex = index;
 	}
 	
 	

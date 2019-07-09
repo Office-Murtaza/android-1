@@ -36,7 +36,7 @@ public class TwilioAutoconfiguration {
 		TwilioRestClient client = new TwilioRestClient("AC7a1ae375d456dc5adca6570e538e0d04","f80ee19779216a604394cfc6f9674591");
 		
 		List<NameValuePair> params = new ArrayList<>();
-		params.add(new BasicNameValuePair("To", "+15005550006"));
+		params.add(new BasicNameValuePair("To", "+16466756302"));
 		params.add(new BasicNameValuePair("From", "+12018906708"));
 		params.add(new BasicNameValuePair("Body",
 				"Dear Customer, How are you?"));

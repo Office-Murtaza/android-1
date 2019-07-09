@@ -8,6 +8,8 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import javax.validation.Valid;
 import com.batm.util.Constant;
+
+import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -166,7 +168,7 @@ public class UserJWTController {
         if (refreshToken != null) {
             User user = userService.findById(refreshVM.getUserId());
 
-            JWTToken jwt = getJwt(user.getUserId());
+            JWTToken jwt = getJwt(user);
 
             RefreshToken token = this.refreshTokenRepository.findByUserUserId(user.getUserId());
             token.setToken(jwt.getRefreshToken());
@@ -193,14 +195,17 @@ public class UserJWTController {
                 authentication.getAuthorities().stream().map(role -> role.getAuthority()).collect(Collectors.toList()));
     }
 
-    private JWTToken getJwt(Long userId) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    private JWTToken getJwt(User user) {
+    	 UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(user.getPhone(),
+                 new String(Base64.decodeBase64(user.getPassword())));
+
+         Authentication authentication = this.authenticationManager.authenticate(authenticationToken);
         String jwt = tokenProvider.createToken(authentication);
         String refreshToken = tokenProvider.createRefreshToken();
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add(JWTFilter.AUTHORIZATION_HEADER, "Bearer " + jwt);
 
-        return new JWTToken(userId, jwt, System.currentTimeMillis() + expiryTime, refreshToken,
+        return new JWTToken(user.getUserId(), jwt, System.currentTimeMillis() + expiryTime, refreshToken,
                 authentication.getAuthorities().stream().map(role -> role.getAuthority()).collect(Collectors.toList()));
     }
 
