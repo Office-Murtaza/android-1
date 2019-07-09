@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -20,7 +21,6 @@ import com.batm.entity.UserCoin;
 import com.batm.rest.vm.CoinBalanceVM;
 import com.batm.rest.vm.CoinVM;
 import com.batm.service.UserCoinService;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 @RestController
 @RequestMapping("/api/v1")
@@ -53,7 +53,7 @@ public class UserController {
 
 	}
 
-	@PostMapping("/user/{userId}/coins-balance")
+	@GetMapping("/user/{userId}/coins-balance")
 	public Response compareCoins(@PathVariable Long userId) {
 		List<CoinBalanceResponseDTO> balances = new ArrayList<>();
 		try {
