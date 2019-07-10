@@ -1,6 +1,7 @@
 package com.batm.rest;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -80,7 +81,7 @@ public class CoinController {
 	public Response compareCoins(@PathVariable Long userId) {
 		List<CoinBalanceResponseDTO> balances = new ArrayList<>();
 		try {
-			BigDecimal totalBalance = new BigDecimal("0");
+			BigDecimal totalBalance = new BigDecimal("0").setScale(2,RoundingMode.DOWN);
 			List<UserCoin> userCoins = this.userCoinService.getCoinByUserId(userId);
 			for (UserCoin userCoin : userCoins) {
 				String coinCode = userCoin.getCoin().getId();
@@ -89,7 +90,7 @@ public class CoinController {
 				}
 
 				String prc = binanceApiRestClient.getPrice(coinCode + "USDT").getPrice();
-				BigDecimal price = new BigDecimal(prc);
+				BigDecimal price = new BigDecimal(prc).setScale(2,RoundingMode.DOWN);
 				totalBalance = totalBalance.add(price);
 				balances.add(new CoinBalanceResponseDTO(userCoin.getCoin().getId(), userCoin.getPublicKey(),
 						new BigDecimal("1"), new Price(price), userCoin.getCoin().getOrderIndex()));
@@ -105,6 +106,5 @@ public class CoinController {
 		}
 
 	}
-
 	
 }
