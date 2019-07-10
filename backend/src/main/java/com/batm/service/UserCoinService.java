@@ -74,8 +74,8 @@ public class UserCoinService {
 
 	}
 
-	public void save(CoinVM coinVM) {
-		User user = userRepository.getOne(coinVM.getUserId());
+	public void save(CoinVM coinVM, Long userId) {
+		User user = userRepository.getOne(userId);
 
 		coinVM.getCoins().stream().forEach(coinDTO -> {
 			Coin code = coinRepository.findById(coinDTO.getCoinCode());

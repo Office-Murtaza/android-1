@@ -11,8 +11,6 @@ import lombok.Setter;
 @NoArgsConstructor
 public class RefreshVM {
 
-	private Long userId;
-
 	private String refreshToken;
 
 }

@@ -1,5 +1,7 @@
 package com.batm.dto;
 
+import java.math.BigDecimal;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,7 +17,7 @@ public class CoinBalanceResponseDTO {
 
 	private String publicKey;
 	
-	private Double balance;
+	private BigDecimal balance;
 	
 	private Price price;
 	

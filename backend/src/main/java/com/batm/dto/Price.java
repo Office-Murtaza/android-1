@@ -1,5 +1,7 @@
 package com.batm.dto;
 
+import java.math.BigDecimal;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.AllArgsConstructor;
@@ -14,6 +16,6 @@ import lombok.Setter;
 public class Price {
 
 	@JsonProperty("USD")
-	private Double usd;
+	private BigDecimal usd;
 
 }
