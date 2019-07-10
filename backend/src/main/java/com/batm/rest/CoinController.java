@@ -90,7 +90,7 @@ public class CoinController {
 
 				String prc = binanceApiRestClient.getPrice(coinCode + "USDT").getPrice();
 				BigDecimal price = new BigDecimal(prc);
-				totalBalance.add(price);
+				totalBalance = totalBalance.add(price);
 				balances.add(new CoinBalanceResponseDTO(userCoin.getCoin().getId(), userCoin.getPublicKey(),
 						new BigDecimal("1"), new Price(price), userCoin.getCoin().getOrderIndex()));
 			}
