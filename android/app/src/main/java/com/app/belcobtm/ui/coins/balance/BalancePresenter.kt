@@ -20,7 +20,6 @@ class BalancePresenter : BaseMvpPresenterImpl<BalanceContract.View, CoinsDataMan
     }
 
     override fun requestCoins() {
-        mView?.showProgress(true)
         val userId = App.appContext().pref.getUserId().toString()
         mDataManager.getCoins(userId)
             .subscribe({ response: Optional<GetCoinsResponse> ->
