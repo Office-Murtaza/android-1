@@ -5,7 +5,7 @@
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/auth_bg_color"
+    android:background="@color/bg_color"
     tools:context=".ui.auth.welcome.WelcomeActivity">
 
     <androidx.appcompat.widget.AppCompatImageView
@@ -71,7 +71,7 @@
         android:layout_marginBottom="@dimen/margin_main"
         app:cardBackgroundColor="@android:color/white"
         app:cardCornerRadius="25dp"
-        app:layout_constraintBottom_toTopOf="@id/recover_my_wallet">
+        app:layout_constraintBottom_toTopOf="@id/contact_support">
 
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
@@ -94,13 +94,13 @@
                 app:fontFamily="@font/poppins_bold" />
 
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/login_to_my_wallet"
+                android:id="@+id/recover_my_wallet"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_main"
                 android:background="@drawable/bt_gray_rounded_corner"
                 android:backgroundTint="@color/bt_gray"
-                android:text="@string/login_to_my_wallet"
+                android:text="@string/recover_my_wallet"
                 android:textColor="@color/dark_gray_text_color"
                 app:fontFamily="@font/poppins_bold" />
 
@@ -137,22 +137,6 @@
             </androidx.appcompat.widget.LinearLayoutCompat>
         </androidx.appcompat.widget.LinearLayoutCompat>
     </com.google.android.material.card.MaterialCardView>
-
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/recover_my_wallet"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/margin_quoter"
-        android:background="?attr/selectableItemBackgroundBorderless"
-        android:clickable="true"
-        android:focusable="true"
-        android:text="@string/recover_my_wallet"
-        android:textColor="@color/gray_text_color"
-        app:fontFamily="@font/poppins_semi_bold"
-        app:layout_constraintBottom_toTopOf="@id/contact_support"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:textAllCaps="true" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/contact_support"

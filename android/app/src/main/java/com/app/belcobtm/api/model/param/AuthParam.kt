@@ -3,7 +3,7 @@ package com.app.belcobtm.api.model.param
 import com.google.gson.annotations.SerializedName
 
 
-data class RegisterParam(
+data class AuthParam(
     @SerializedName("phone")
     val phone: String, // +12018906708
     @SerializedName("password")

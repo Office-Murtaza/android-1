@@ -4,6 +4,8 @@ import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.os.Bundle
 import android.view.View
+import android.view.inputmethod.EditorInfo
+import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.AppCompatEditText
 import com.app.belcobtm.R
@@ -16,21 +18,33 @@ import kotlinx.android.synthetic.main.activity_create_wallet.*
 class CreateWalletActivity : BaseMvpActivity<CreateWalletContract.View, CreateWalletContract.Presenter>(),
     CreateWalletContract.View {
 
-    override var mPresenter: CreateWalletContract.Presenter = CreateWalletPresenter()
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create_wallet)
         phone_ccp.registerCarrierNumberEditText(phone)
         bt_cancel.setOnClickListener { onBackPressed() }
         bt_next.setOnClickListener {
-            mPresenter.attemptCreateWallet(
-                phone_ccp.fullNumberWithPlus.toString(),
-                pass.text.toString(),
-                confirm_pass.text.toString()
-            )
+            attemptCreateWallet()
         }
+
+        confirm_pass.setOnEditorActionListener(TextView.OnEditorActionListener { _, id, _ ->
+            if (id == EditorInfo.IME_ACTION_DONE || id == EditorInfo.IME_NULL) {
+                hideSoftKeyboard()
+                attemptCreateWallet()
+                return@OnEditorActionListener true
+            }
+            false
+        })
     }
+
+    private fun attemptCreateWallet(){
+        mPresenter.attemptCreateWallet(
+            phone_ccp.fullNumberWithPlus.toString(),
+            pass.text.toString(),
+            confirm_pass.text.toString()
+        )
+    }
+
 
     override fun openSmsCodeDialog(error: String?) {
         val view = layoutInflater.inflate(R.layout.view_sms_code_dialog, null)

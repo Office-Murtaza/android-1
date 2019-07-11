@@ -10,6 +10,7 @@ import android.text.SpannableStringBuilder
 import android.text.style.ForegroundColorSpan
 import androidx.appcompat.app.AppCompatActivity
 import com.app.belcobtm.R
+import com.app.belcobtm.ui.coins.balance.BalanceActivity
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_seed_phrase.*
 import org.jetbrains.anko.design.longSnackbar
@@ -51,16 +52,13 @@ class SeedPhraseActivity : AppCompatActivity() {
         word_10.text = addColorText(seedArray[9], "10 ")
         word_11.text = addColorText(seedArray[10], "11 ")
         word_12.text = addColorText(seedArray[11], "12 ")
-        word_13.text = addColorText(seedArray[12], "13 ")
-        word_14.text = addColorText(seedArray[13], "14 ")
-        word_15.text = addColorText(seedArray[14], "15 ")
 
         copy_seed.setOnClickListener {
             copyToClipboard(mSeedPhrase)
             Snackbar.make(container, R.string.seed_clipboard, Snackbar.LENGTH_LONG).show()
         }
 
-        bt_done.setOnClickListener { container.longSnackbar("Register finished. Main screen in progress...") }//todo open main screen
+        bt_done.setOnClickListener { startActivity(Intent(this, BalanceActivity::class.java)) }//todo open pin screen
     }
 
     private fun addColorText(text: String, addingText: String): SpannableStringBuilder {

@@ -2,15 +2,10 @@ package com.app.belcobtm.ui.auth.recover_seed
 
 import com.app.belcobtm.App
 import com.app.belcobtm.api.data_manager.AuthDataManager
-import com.app.belcobtm.api.model.ServerException
-import com.app.belcobtm.api.model.response.RegisterResponse
-import com.app.belcobtm.db.CryptoCoin
-import com.app.belcobtm.db.CryptoCoinModel
+import com.app.belcobtm.db.DbCryptoCoin
+import com.app.belcobtm.db.DbCryptoCoinModel
 import com.app.belcobtm.mvp.BaseMvpPresenterImpl
-import com.app.belcobtm.ui.auth.recover_wallet.RecoverWalletContract
-import com.app.belcobtm.util.Optional
 import com.app.belcobtm.util.pref
-import io.reactivex.Observable
 import io.realm.Realm
 import org.web3j.utils.Numeric
 import wallet.core.jni.BitcoinAddress
@@ -22,73 +17,26 @@ import wallet.core.jni.P2PKHPrefix
 class RecoverSeedPresenter : BaseMvpPresenterImpl<RecoverSeedContract.View, AuthDataManager>(),
     RecoverSeedContract.Presenter {
 
-//    init {
-//        createWallet()
-//    }
-
-    override var mDataManager = AuthDataManager()
-    private var userId: String = ""
-    private var seed: String = ""
-
-    override fun attemptRecoverWallet(phone: String, pass: String) {
-        if (phone.isEmpty() || pass.isEmpty()) {
-            mView?.showError(com.app.belcobtm.R.string.error_all_fields_required)
-        } else if (pass.length < 4) {
-            mView?.showError(com.app.belcobtm.R.string.error_short_pass)
-        } else {
-            mView?.showProgress(true)
-            mDataManager.registerWallet(phone, pass)
-                .flatMap { response ->
-                    App.appContext().pref.setSessionApiToken(response.value?.accessToken)
-                    App.appContext().pref.setRefreshApiToken(response.value?.refreshToken)
-                    App.appContext().pref.setUserId(response.value?.userId)
-                    mDataManager.reinitRetrofitClient()
-
-                    return@flatMap Observable.just(response)
-                }
-                .subscribe({ response: Optional<RegisterResponse> ->
-                    mView?.openSmsCodeDialog()
-                    mView?.showProgress(false)
-                    userId = response.value?.userId.toString()
-                }
-                    , { error: Throwable ->
-                        mView?.showProgress(false)
-                        if (error is ServerException) {
-                            mView?.showError(error.errorMessage)
-                        } else {
-                            mView?.showError(error.message)
-                        }
-                    })
-        }
+    override fun injectDependency() {
+        presenterComponent.inject(this)
     }
 
-    override fun verifyCode(code: String) {
+    override fun verifySeed(seed: String) {
         mView?.showProgress(true)
-//        mDataManager.verifySmsCode(code, userId)
-//            .flatMap { t ->
-//                val allCoins = createWallet()
-//                return@flatMap Observable.just(allCoins)
-//            }
-//            .flatMap { dbCoins ->
-//                return@flatMap mDataManager.addCoins(dbCoins, userId)
-//            }
-//            .subscribe({ response ->
-//                mView?.showProgress(false)
-//                mView?.onWalletCreated(seed)
-//            }
-//                , { error: Throwable ->
-//                    mView?.showProgress(false)
-//                    if (error is ServerException) {
-//                        mView?.openSmsCodeDialog(error.errorMessage)
-//                    } else {
-//                        mView?.showError(error.message)
-//                    }
-//
-//                })
+        val allCoins = createWallet(seed)
+        val userId = App.appContext().pref.getUserId().toString()
+        mDataManager.verifyCoins(userId, allCoins)
+            .subscribe({ response ->
+                mView?.showProgress(false)
+                mView?.onSeedVerifyed()
+            }
+                , { error: Throwable ->
+                    mView?.showProgress(false)
+                    mView?.showError(error.message)
+                })
     }
 
-
-    private fun createWallet(): ArrayList<CryptoCoin> {
+    private fun createWallet(seed: String): ArrayList<DbCryptoCoin> {
         val bitcoin = CoinType.BITCOIN
         val bitcoinCash = CoinType.BITCOINCASH
         val etherum = CoinType.ETHEREUM
@@ -97,7 +45,7 @@ class RecoverSeedPresenter : BaseMvpPresenterImpl<RecoverSeedContract.View, Auth
         val xrp = CoinType.XRP
         val tron = CoinType.TRON
 
-        val wallet = HDWallet(160, "")
+        val wallet = HDWallet(seed, "")
 
         val bitcoinPrivateKey = wallet.getKeyForCoin(bitcoin)
         val bitcoinPrivateKeyStr = Numeric.toHexStringNoPrefix(bitcoinPrivateKey.data())
@@ -128,19 +76,18 @@ class RecoverSeedPresenter : BaseMvpPresenterImpl<RecoverSeedContract.View, Auth
         val tronPrivateKeyStr = Numeric.toHexStringNoPrefix(tronPrivateKey.data())
         val tronAddress = tron.deriveAddress(tronPrivateKey)
 
-        seed = wallet.mnemonic()
         App.appContext().pref.setSeed(seed)
 
         val realm = Realm.getDefaultInstance()
-        val coinModel = CryptoCoinModel()
+        val coinModel = DbCryptoCoinModel()
 
-        coinModel.addCryptoCoin(realm, CryptoCoin("BTC", bitcoinAddress, bitcoinPrivateKeyStr))
-        coinModel.addCryptoCoin(realm, CryptoCoin("BCH", bitcoinChAddress, bitcoinChPrivateKeyStr))
-        coinModel.addCryptoCoin(realm, CryptoCoin("ETH", etherumAddress, etherumPrivateKeyStr))
-        coinModel.addCryptoCoin(realm, CryptoCoin("LTC", litecoinAddress, litecoinPrivateKeyStr))
-        coinModel.addCryptoCoin(realm, CryptoCoin("BNB", binanceAddress, binancePrivateKeyStr))
-        coinModel.addCryptoCoin(realm, CryptoCoin("TRX", tronAddress, tronPrivateKeyStr))
-        coinModel.addCryptoCoin(realm, CryptoCoin("XRP", xrpAddress, xrpPrivateKeyStr))
+        coinModel.addCryptoCoin(realm, DbCryptoCoin("BTC", bitcoinAddress, bitcoinPrivateKeyStr))
+        coinModel.addCryptoCoin(realm, DbCryptoCoin("BCH", bitcoinChAddress, bitcoinChPrivateKeyStr))
+        coinModel.addCryptoCoin(realm, DbCryptoCoin("ETH", etherumAddress, etherumPrivateKeyStr))
+        coinModel.addCryptoCoin(realm, DbCryptoCoin("LTC", litecoinAddress, litecoinPrivateKeyStr))
+        coinModel.addCryptoCoin(realm, DbCryptoCoin("BNB", binanceAddress, binancePrivateKeyStr))
+        coinModel.addCryptoCoin(realm, DbCryptoCoin("TRX", tronAddress, tronPrivateKeyStr))
+        coinModel.addCryptoCoin(realm, DbCryptoCoin("XRP", xrpAddress, xrpPrivateKeyStr))
 
 
         return coinModel.getAllCryptoCoin(realm)

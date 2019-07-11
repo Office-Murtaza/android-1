@@ -5,7 +5,7 @@
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/auth_bg_color"
+    android:background="@color/bg_color"
     tools:context=".ui.auth.welcome.WelcomeActivity">
 
     <!-- Login progress -->
@@ -207,7 +207,8 @@
                     android:inputType="textPassword"
                     android:maxLines="1"
                     android:paddingEnd="@dimen/margin_half"
-                    android:singleLine="true" />
+                    android:singleLine="true"
+                    android:nextFocusDown="@id/bt_next"/>
 
             </com.google.android.material.textfield.TextInputLayout>
 

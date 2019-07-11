@@ -5,10 +5,9 @@
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/auth_bg_color"
+    android:background="@color/bg_color"
     tools:context=".ui.auth.welcome.WelcomeActivity">
 
-    <!-- Login progress -->
     <FrameLayout
         android:id="@+id/progress"
         android:layout_width="match_parent"
@@ -314,62 +313,62 @@
                 <androidx.appcompat.widget.AppCompatEditText
                     android:id="@+id/word_12"
                     style="@style/SeedElemText"
-                    android:nextFocusDown="@id/word_13"/>
+                    android:nextFocusDown="@id/bt_done"/>
             </LinearLayout>
 
 
-            <LinearLayout
-                android:id="@+id/word_13_container"
-                style="@style/SeedElemContainer"
-                app:layout_constraintBottom_toBottomOf="@id/word_14_container"
-                app:layout_constraintEnd_toStartOf="@id/word_14_container"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@id/word_14_container">
+            <!--<LinearLayout-->
+                <!--android:id="@+id/word_13_container"-->
+                <!--style="@style/SeedElemContainer"-->
+                <!--app:layout_constraintBottom_toBottomOf="@id/word_14_container"-->
+                <!--app:layout_constraintEnd_toStartOf="@id/word_14_container"-->
+                <!--app:layout_constraintStart_toStartOf="parent"-->
+                <!--app:layout_constraintTop_toTopOf="@id/word_14_container">-->
 
-                <androidx.appcompat.widget.AppCompatTextView
-                    style="@style/SeedElemHint"
-                    android:text="13 " />
+                <!--<androidx.appcompat.widget.AppCompatTextView-->
+                    <!--style="@style/SeedElemHint"-->
+                    <!--android:text="13 " />-->
 
-                <androidx.appcompat.widget.AppCompatEditText
-                    android:id="@+id/word_13"
-                    style="@style/SeedElemText"
-                    android:nextFocusDown="@id/word_14"/>
-            </LinearLayout>
+                <!--<androidx.appcompat.widget.AppCompatEditText-->
+                    <!--android:id="@+id/word_13"-->
+                    <!--style="@style/SeedElemText"-->
+                    <!--android:nextFocusDown="@id/word_14"/>-->
+            <!--</LinearLayout>-->
 
-            <LinearLayout
-                android:id="@+id/word_14_container"
-                style="@style/SeedElemContainer"
-                android:layout_marginTop="@dimen/margin_half"
-                app:layout_constraintEnd_toStartOf="@id/word_15_container"
-                app:layout_constraintStart_toEndOf="@id/word_13_container"
-                app:layout_constraintTop_toBottomOf="@id/word_11_container">
+            <!--<LinearLayout-->
+                <!--android:id="@+id/word_14_container"-->
+                <!--style="@style/SeedElemContainer"-->
+                <!--android:layout_marginTop="@dimen/margin_half"-->
+                <!--app:layout_constraintEnd_toStartOf="@id/word_15_container"-->
+                <!--app:layout_constraintStart_toEndOf="@id/word_13_container"-->
+                <!--app:layout_constraintTop_toBottomOf="@id/word_11_container">-->
 
-                <androidx.appcompat.widget.AppCompatTextView
-                    style="@style/SeedElemHint"
-                    android:text="14 " />
+                <!--<androidx.appcompat.widget.AppCompatTextView-->
+                    <!--style="@style/SeedElemHint"-->
+                    <!--android:text="14 " />-->
 
-                <androidx.appcompat.widget.AppCompatEditText
-                    android:id="@+id/word_14"
-                    style="@style/SeedElemText"
-                    android:nextFocusDown="@id/word_15"/>
-            </LinearLayout>
+                <!--<androidx.appcompat.widget.AppCompatEditText-->
+                    <!--android:id="@+id/word_14"-->
+                    <!--style="@style/SeedElemText"-->
+                    <!--android:nextFocusDown="@id/word_15"/>-->
+            <!--</LinearLayout>-->
 
-            <LinearLayout
-                android:id="@+id/word_15_container"
-                style="@style/SeedElemContainer"
-                app:layout_constraintBottom_toBottomOf="@id/word_14_container"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/word_14_container"
-                app:layout_constraintTop_toTopOf="@id/word_14_container">
+            <!--<LinearLayout-->
+                <!--android:id="@+id/word_15_container"-->
+                <!--style="@style/SeedElemContainer"-->
+                <!--app:layout_constraintBottom_toBottomOf="@id/word_14_container"-->
+                <!--app:layout_constraintEnd_toEndOf="parent"-->
+                <!--app:layout_constraintStart_toEndOf="@id/word_14_container"-->
+                <!--app:layout_constraintTop_toTopOf="@id/word_14_container">-->
 
-                <androidx.appcompat.widget.AppCompatTextView
-                    style="@style/SeedElemHint"
-                    android:text="15 " />
+                <!--<androidx.appcompat.widget.AppCompatTextView-->
+                    <!--style="@style/SeedElemHint"-->
+                    <!--android:text="15 " />-->
 
-                <androidx.appcompat.widget.AppCompatEditText
-                    android:id="@+id/word_15"
-                    style="@style/SeedElemText" />
-            </LinearLayout>
+                <!--<androidx.appcompat.widget.AppCompatEditText-->
+                    <!--android:id="@+id/word_15"-->
+                    <!--style="@style/SeedElemText" />-->
+            <!--</LinearLayout>-->
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/paste_seed"
@@ -384,7 +383,7 @@
                 app:fontFamily="@font/poppins_medium"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/word_14_container" />
+                app:layout_constraintTop_toBottomOf="@id/word_11_container" />
 
 
             <androidx.appcompat.widget.AppCompatButton
@@ -396,7 +395,7 @@
                 android:layout_marginBottom="@dimen/margin_x2"
                 android:background="@drawable/bt_gray_rounded_corner"
                 android:backgroundTint="@color/blue_color"
-                android:text="@string/done"
+                android:text="@string/next"
                 android:textColor="@android:color/white"
                 app:fontFamily="@font/poppins_bold"
                 app:layout_constraintBottom_toBottomOf="parent"

@@ -5,12 +5,8 @@ import android.animation.AnimatorListenerAdapter
 import android.content.ClipboardManager
 import android.os.Bundle
 import android.view.View
-import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.widget.AppCompatEditText
-import androidx.constraintlayout.widget.ConstraintLayout
 import com.app.belcobtm.R
 import com.app.belcobtm.mvp.BaseMvpActivity
-import com.google.android.material.textfield.TextInputLayout
 import kotlinx.android.synthetic.main.activity_recover_seed_phrase.*
 import org.jetbrains.anko.design.longSnackbar
 
@@ -18,52 +14,61 @@ import org.jetbrains.anko.design.longSnackbar
 class RecoverSeedPhraseActivity : BaseMvpActivity<RecoverSeedContract.View, RecoverSeedContract.Presenter>(),
     RecoverSeedContract.View {
 
-    override var mPresenter: RecoverSeedContract.Presenter = RecoverSeedPresenter()
-
-    private lateinit var mSeedPhrase: String
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_recover_seed_phrase)
 
-
-
-        bt_done.setOnClickListener { container.longSnackbar("Register finished. Main screen in progress...") }//todo open main screen
+        bt_done.setOnClickListener {
+            val seed = getSeedFormView()
+            if (seed.isNotEmpty())
+                mPresenter.verifySeed(seed)
+            else showError("Enter seed first")
+        }
         paste_seed.setOnClickListener {
-            mSeedPhrase = getTextFromClipboard()
-            initSeedView()
+            val seed = getTextFromClipboard()
+            initSeedView(seed)
+        }
+    }
+
+    override fun onSeedVerifyed() {
+        container.longSnackbar("Open create pin screen. in progress...") //todo open main screen
+    }
+
+    private fun getSeedFormView(): String {
+        var seed = ""
+        if(word_1.text!!.isNotEmpty()
+            && word_1.text!!.isNotEmpty()
+            && word_2.text!!.isNotEmpty()
+            && word_3.text!!.isNotEmpty()
+            && word_4.text!!.isNotEmpty()
+            && word_5.text!!.isNotEmpty()
+            && word_6.text!!.isNotEmpty()
+            && word_7.text!!.isNotEmpty()
+            && word_8.text!!.isNotEmpty()
+            && word_9.text!!.isNotEmpty()
+            && word_10.text!!.isNotEmpty()
+            && word_11.text!!.isNotEmpty()
+            && word_12.text!!.isNotEmpty()) {
+            seed += word_1.text.toString() + " "
+            seed += word_2.text.toString() + " "
+            seed += word_3.text.toString() + " "
+            seed += word_4.text.toString() + " "
+            seed += word_5.text.toString() + " "
+            seed += word_6.text.toString() + " "
+            seed += word_7.text.toString() + " "
+            seed += word_8.text.toString() + " "
+            seed += word_9.text.toString() + " "
+            seed += word_10.text.toString() + " "
+            seed += word_11.text.toString() + " "
+            seed += word_12.text.toString()
         }
 
+        return seed
     }
 
-    override fun onResume() {
-        super.onResume()
-//        val maxWidth = word_1.width
-//        word_1.maxWidth = maxWidth
-////        word_1.width = ConstraintLayout.LayoutParams.WRAP_CONTENT
-//
-//        val params = word_1_container.layoutParams as ConstraintLayout.LayoutParams
-//        params.startToStart = -1
-//        params.width = ConstraintLayout.LayoutParams.WRAP_CONTENT
-//        word_1_container.requestLayout()
-//
-//        val params2 = word_2_container.layoutParams as ConstraintLayout.LayoutParams
-//        params2.startToEnd = -1
-//        params2.endToStart = -1
-//        params2.startToStart = R.id.card_container
-//        params2.endToEnd = R.id.card_container
-//        params2.width = ConstraintLayout.LayoutParams.WRAP_CONTENT
-//        word_2_container.requestLayout()
-//
-//        val params3 = word_3_container.layoutParams as ConstraintLayout.LayoutParams
-//        params3.endToEnd = -1
-//        params3.width = ConstraintLayout.LayoutParams.WRAP_CONTENT
-//        word_2_container.requestLayout()
-    }
-
-    private fun initSeedView() {
+    private fun initSeedView(seed: String) {
         try {
-            val seedArray = mSeedPhrase.split(" ")
+            val seedArray = seed.split(" ")
             word_1.setText(seedArray[0])
             word_2.setText(seedArray[1])
             word_3.setText(seedArray[2])
@@ -76,14 +81,9 @@ class RecoverSeedPhraseActivity : BaseMvpActivity<RecoverSeedContract.View, Reco
             word_10.setText(seedArray[9])
             word_11.setText(seedArray[10])
             word_12.setText(seedArray[11])
-            word_13.setText(seedArray[12])
-            word_14.setText(seedArray[13])
-            word_15.setText(seedArray[14])
         } catch (e: Exception) {
             showError(e.message)
         }
-
-
     }
 
     override fun showProgress(show: Boolean) {
@@ -105,29 +105,5 @@ class RecoverSeedPhraseActivity : BaseMvpActivity<RecoverSeedContract.View, Reco
         val clipData = clipboard.primaryClip
         val item = clipData?.getItemAt(0)
         return item?.text.toString()
-    }
-
-
-    override fun openSmsCodeDialog(error: String?) {
-        val view = layoutInflater.inflate(com.app.belcobtm.R.layout.view_sms_code_dialog, null)
-        val smsCode = view.findViewById<AppCompatEditText>(com.app.belcobtm.R.id.sms_code)
-        AlertDialog
-            .Builder(this)
-            .setTitle(getString(com.app.belcobtm.R.string.verify_sms_code))
-            .setPositiveButton(com.app.belcobtm.R.string.next)
-            { _, _ ->
-                val code = smsCode.text.toString()
-                if (code.length != 4) {
-                    openSmsCodeDialog(getString(com.app.belcobtm.R.string.error_sms_code_4_digits))
-                } else {
-                    mPresenter.verifyCode(code)
-                }
-            }
-            .setNegativeButton(com.app.belcobtm.R.string.cancel) { _, _ -> onBackPressed() }
-            .setView(view)
-            .create()
-            .show()
-        val tilSmsCode = view.findViewById<TextInputLayout>(com.app.belcobtm.R.id.til_sms_code)
-        tilSmsCode.error = error
     }
 }

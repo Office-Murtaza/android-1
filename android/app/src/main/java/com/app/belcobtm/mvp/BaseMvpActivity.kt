@@ -9,22 +9,22 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.app.belcobtm.R
 import com.google.android.material.snackbar.Snackbar
+import dagger.android.AndroidInjection
+import javax.inject.Inject
 
 abstract class BaseMvpActivity<in V : BaseMvpView, T : BaseMvpPresenter<V>>
     : AppCompatActivity(), BaseMvpView {
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        AndroidInjection.inject(this)
         super.onCreate(savedInstanceState)
-//        injectDependency()
         mPresenter.attachView(this as V)
     }
 
-//    protected abstract fun injectDependency()
+    @Inject
+    protected lateinit var mPresenter: T
 
     override fun getContext(): Context = this
-
-    protected abstract var mPresenter: T
-
 
     override fun showError(error: String?) {
         runOnUiThread {

@@ -6,11 +6,14 @@ import com.app.belcobtm.mvp.BaseMvpView
 
 object RecoverWalletContract {
     interface Presenter : BaseMvpPresenter<View> {
-        fun attemptLogin(phone: String, pass: String)
+        fun attemptRecover(phone: String, pass: String)
+        fun verifyCode(code: String)
     }
 
     interface View : BaseMvpView {
         fun showProgress(show: Boolean)
-        fun onLoginSuccess(seed: String)
+        fun onRecoverSuccess(seed: String)
+        fun onSmsSuccess()
+        fun openSmsCodeDialog(error: String? = null)
     }
 }
