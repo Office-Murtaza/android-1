@@ -56,8 +56,8 @@ class CreateWalletViewController: ModuleViewController<CreateWalletPresenter> {
     return view
   }()
   
-  let codeView: CreateWalletCodeView = {
-    let view = CreateWalletCodeView()
+  let codeView: CodeView = {
+    let view = CodeView()
     view.alpha = 0
     return view
   }()

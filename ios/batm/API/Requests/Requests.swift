@@ -1,5 +1,19 @@
 import Moya
 
+struct RefreshTokenRequest: APIRequest {
+  typealias ResponseType = APIResponse<Account>
+  typealias ResponseTrait = SingleResponseTrait
+  
+  let account: Account
+  
+  var path: String { return "/refresh" }
+  var method: HTTPMethod { return .post }
+  var task: HTTPTask {
+    return .requestParameters(parameters: ["refreshToken": account.refreshToken],
+                              encoding: JSONEncoding.default)
+  }
+}
+
 struct CreateAccountRequest: APIRequest {
   typealias ResponseType = APIResponse<Account>
   typealias ResponseTrait = SingleResponseTrait
@@ -7,7 +21,7 @@ struct CreateAccountRequest: APIRequest {
   let phoneNumber: String
   let password: String
   
-  var path: String { return "/user/register" }
+  var path: String { return "/register" }
   var method: HTTPMethod { return .post }
   var task: HTTPTask {
     return .requestParameters(parameters: ["phone": phoneNumber,
@@ -16,34 +30,61 @@ struct CreateAccountRequest: APIRequest {
   }
 }
 
-struct VerifyCodeRequest: APIRequest {
+struct RecoverWalletRequest: APIRequest {
+  typealias ResponseType = APIResponse<Account>
+  typealias ResponseTrait = SingleResponseTrait
+  
+  let phoneNumber: String
+  let password: String
+  
+  var path: String { return "/recover" }
+  var method: HTTPMethod { return .post }
+  var task: HTTPTask {
+    return .requestParameters(parameters: ["phone": phoneNumber,
+                                           "password": password],
+                              encoding: JSONEncoding.default)
+  }
+}
+
+struct VerifyCodeRequest: AuthorizedAPIRequest {
   typealias ResponseType = APIEmptyResponse
   typealias ResponseTrait = SingleResponseTrait
   
   let userId: Int
   let code: String
   
-  var path: String { return "/user/verify" }
+  var path: String { return "/user/\(userId)/verify" }
   var method: HTTPMethod { return .post }
   var task: HTTPTask {
-    return .requestParameters(parameters: ["userId": userId,
-                                           "code": code],
+    return .requestParameters(parameters: ["code": code],
                               encoding: JSONEncoding.default)
   }
 }
 
-struct AddCoinsRequest: APIRequest {
+struct AddCoinsRequest: AuthorizedAPIRequest {
   typealias ResponseType = APIEmptyResponse
   typealias ResponseTrait = SingleResponseTrait
   
   let userId: Int
   let coins: [CoinAddress]
   
-  var path: String { return "/user/add-coins" }
+  var path: String { return "/user/\(userId)/coins/add" }
   var method: HTTPMethod { return .post }
   var task: HTTPTask {
-    return .requestParameters(parameters: ["userId": userId,
-                                           "coins": coins.toJSON()],
+    return .requestParameters(parameters: ["coins": coins.toJSON()],
                               encoding: JSONEncoding.default)
+  }
+}
+
+struct CoinsBalanceRequest: AuthorizedAPIRequest {
+  typealias ResponseType = APIResponse<CoinsBalance>
+  typealias ResponseTrait = SingleResponseTrait
+  
+  let userId: Int
+  
+  var path: String { return "/user/\(userId)/coins/balance" }
+  var method: HTTPMethod { return .get }
+  var task: HTTPTask {
+    return .requestPlain
   }
 }

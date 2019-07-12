@@ -5,10 +5,15 @@ import CoreData
 
 final class AppAssembly: Assembly {
   
+  enum Keys: String {
+    case pinCodeModule
+  }
+  
   func assemble(container: Container) {
     assembleNetwork(container: container)
     assembleStorages(container: container)
     assembleServices(container: container)
+    assembleUsecases(container: container)
   }
   
   private func assembleNetwork(container: Container) {
@@ -19,10 +24,15 @@ final class AppAssembly: Assembly {
     container.register(NetworkRequestExecutor.self) { (ioc, url: URL) -> NetworkRequestExecutor in
       let network = ioc.resolve(NetworkService.self, argument: url)!
       let credentials = ioc.resolve(AccountStorage.self)!
-      return BTMNetworkService(networkService: network, credentials: credentials)
+      let logoutUsecase = ioc.resolve(LogoutUsecase.self)!
+      let pinCodeService = ioc.resolve(PinCodeService.self)!
+      return BTMNetworkService(networkService: network,
+                               credentials: credentials,
+                               logoutUsecase: logoutUsecase,
+                               pinCodeService: pinCodeService)
       }.inObjectScope(.transient)
     container.register(APIGateway.self) { ioc in
-      let baseURL = URL(string: "http://206.189.204.44:8080/api/v1")!
+      let baseURL = URL(string: "https://test.belcobtm.com/api/v1")!
       let networkService = ioc.resolve(NetworkRequestExecutor.self, argument: baseURL)!
       return APIGatewayImpl(networkProvider: networkService)
       } .inObjectScope(.container)
@@ -30,7 +40,7 @@ final class AppAssembly: Assembly {
   
   fileprivate func assembleStorages(container: Container) {
     container.register(LogoutStorageRegistry.self) { _ in
-      return StorageRegistry()
+      return LogoutStorageRegistryImpl()
       }.inObjectScope(.container)
     container.register(AccountStorage.self) { ioc in
       let executor = ioc.resolve(StorageTransactionExecutor.self)!
@@ -46,6 +56,13 @@ final class AppAssembly: Assembly {
       storageRegistry.add(storage: storage)
       return storage
       }.inObjectScope(.container)
+    container.register(PinCodeStorage.self) { ioc in
+      let executor = ioc.resolve(StorageTransactionExecutor.self)!
+      let storageRegistry = ioc.resolve(LogoutStorageRegistry.self)!
+      let storage = PinCodeStorageImpl(transactionExecutor: executor)
+      storageRegistry.add(storage: storage)
+      return storage
+      }.inObjectScope(.container)
   }
   
   fileprivate func assembleServices(container: Container) {
@@ -53,6 +70,52 @@ final class AppAssembly: Assembly {
       let walletStorage = ioc.resolve(BTMWalletStorage.self)!
       return WalletServiceImpl(walletStorage: walletStorage)
       }.inObjectScope(.container)
+  }
+  
+  fileprivate func assembleUsecases(container: Container) {
+    container.register(LoginUsecase.self) { ioc in
+      let api = ioc.resolve(APIGateway.self)!
+      let accountStorage = ioc.resolve(AccountStorage.self)!
+      let walletStorage = ioc.resolve(BTMWalletStorage.self)!
+      let walletService = ioc.resolve(WalletService.self)!
+      return LoginUsecaseImpl(api: api,
+                              accountStorage: accountStorage,
+                              walletStorage: walletStorage,
+                              walletService: walletService)
+      }.inObjectScope(.container)
+    container.register(LogoutUsecase.self) { ioc in
+      let registry = ioc.resolve(LogoutStorageRegistry.self)!
+      return LogoutUsecaseImpl(storageRegistry: registry)
+      }
+      .inObjectScope(.container)
+    container.register(CoinsBalanceUsecase.self) { ioc in
+      let api = ioc.resolve(APIGateway.self)!
+      let accountStorage = ioc.resolve(AccountStorage.self)!
+      return CoinsBalanceUsecaseImpl(api: api,
+                                     accountStorage: accountStorage)
+      }.inObjectScope(.container)
+    container.register(PinCodeUsecase.self) { ioc in
+      let pinCodeStorage = ioc.resolve(PinCodeStorage.self)!
+      return PinCodeUsecaseImpl(pinCodeStorage: pinCodeStorage)
+      }.inObjectScope(.container)
+    container.register(PinCodeService.self) { _ in PinCodeServiceImpl() }
+      .inObjectScope(.container)
+      .implements(PinCodeVerificationModuleDelegate.self)
+      .initCompleted { ioc, service in
+        let module = ioc.resolve(Module<PinCodeModule>.self, name: Keys.pinCodeModule.rawValue)!
+        module.input.setup(for: .verification)
+        (service as! PinCodeServiceImpl).module = module
+      }
+    container.register(Module<PinCodeModule>.self, name: Keys.pinCodeModule.rawValue) { resolver in
+      let viewController = PinCodeViewController()
+      let usecase = resolver.resolve(PinCodeUsecase.self)!
+      let presenter = PinCodePresenter(usecase: usecase)
+      
+      presenter.delegate = resolver.resolve(PinCodeVerificationModuleDelegate.self)
+      viewController.presenter = presenter
+      
+      return Module<PinCodeModule>(controller: viewController, input: presenter)
+    }
   }
 }
 // swiftlint:enable type_body_length

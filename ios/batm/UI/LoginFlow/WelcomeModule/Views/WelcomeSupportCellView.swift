@@ -25,7 +25,11 @@ class WelcomeSupportCellView: UIView {
     return label
   }()
   
-  let copyLabel = CopyLabelView()
+  let copyLabel: UnderlinedLabelView = {
+    let view = UnderlinedLabelView()
+    view.configure(for: .copy)
+    return view
+  }()
   
   override init(frame: CGRect) {
     super.init(frame: frame)

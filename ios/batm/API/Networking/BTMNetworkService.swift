@@ -6,11 +6,17 @@ final class BTMNetworkService: NetworkRequestExecutor {
   
   let network: NetworkService
   let credentials: AccountStorage
+  let logoutUsecase: LogoutUsecase
+  let pinCodeService: PinCodeService
   
   init(networkService: NetworkService,
-       credentials: AccountStorage) {
+       credentials: AccountStorage,
+       logoutUsecase: LogoutUsecase,
+       pinCodeService: PinCodeService) {
     self.network = networkService
     self.credentials = credentials
+    self.logoutUsecase = logoutUsecase
+    self.pinCodeService = pinCodeService
   }
   
   // MARK: - NetworkRequestExecutor
@@ -78,7 +84,8 @@ final class BTMNetworkService: NetworkRequestExecutor {
   }
   
   private func refreshCredentials() -> Completable {
-    return credentials.get()
+    return pinCodeService.verifyPinCode()
+      .andThen(credentials.get())
       .asObservable()
       .flatMap { [unowned self] creds -> Single<Account> in
         return self.refreshCredentials(creds)
@@ -87,19 +94,27 @@ final class BTMNetworkService: NetworkRequestExecutor {
   }
   
   private func refreshCredentials(_ creds: Account) -> Single<Account> {
-    return .just(creds)
-//    return refreshService.refresh(credentials: creds)
-//      .catchError { [unowned self, logoutUsecase] in
-//        let mappedError = self.map(error: $0)
-//        let singleError = Single<Account>.error(mappedError)
-//
-//        if mappedError == .notAuthorized {
-//          return logoutUsecase.logout().flatMap { _ in singleError }
-//        }
-//
-//        return singleError
-//      }
-//      .flatMap { [credentials] in credentials.save($0).andThen(.just($0)) }
+    let request = RefreshTokenRequest(account: creds)
+    return execute(request)
+      .flatMap {
+        switch $0 {
+        case let .response(response):
+          return Single.just(response)
+        case let .error(error):
+          return Single.error(error)
+        }
+      }
+      .flatMap { [credentials] in credentials.save(account: $0).andThen(.just($0)) }
+      .catchError { [unowned self, logoutUsecase] in
+        let mappedError = self.map(error: $0)
+        let singleError = Single<Account>.error(mappedError)
+
+        if mappedError == .notAuthorized {
+          return logoutUsecase.logout().flatMap { _ in singleError }
+        }
+
+        return singleError
+      }
   }
   
   func headers<Request: SimpleRequest>(for request: Request) -> Single<[String: String]?> {
@@ -113,6 +128,7 @@ final class BTMNetworkService: NetworkRequestExecutor {
   
   func map(error: Error) -> APIError {
     return castable(error)
+      .map { APIError.serverError($0) }
       .map { $0 as APIError }
       .map(convert(error:))
       .extract(.unknown)
@@ -124,7 +140,7 @@ final class BTMNetworkService: NetworkRequestExecutor {
       return .notValid
     case let .statusCode(response) where response.statusCode == 409:
       return .conflict
-    case let .statusCode(response) where response.statusCode == 401:
+    case let .statusCode(response) where response.statusCode == 403:
       return .notAuthorized
     case let .statusCode(response) where response.statusCode == 404:
       return .notFound

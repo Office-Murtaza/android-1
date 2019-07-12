@@ -4,7 +4,7 @@ import RxCocoa
 
 class BackgroundDarkView: UIView {
   
-  let dummyButton = UIButton(type: .system)
+  let dummyButton = DummyButton()
   
   override init(frame: CGRect) {
     super.init(frame: frame)

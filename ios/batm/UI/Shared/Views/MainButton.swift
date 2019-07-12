@@ -4,7 +4,7 @@ import RxCocoa
 
 enum MainButtonType {
   case create
-  case login
+  case recover
   case cancel
   case next
   case done
@@ -45,10 +45,10 @@ class MainButton: UIButton {
       backgroundColor = .lightGold
       customAttributes = [.foregroundColor: UIColor.white]
       title = localize(L.Welcome.CreateButton.title)
-    case .login:
+    case .recover:
       backgroundColor = UIColor.greyish.withAlphaComponent(0.15)
       customAttributes = [.foregroundColor: UIColor.slateGrey]
-     title = localize(L.Welcome.LoginButton.title)
+      title = localize(L.Welcome.RecoverButton.title)
     case .cancel:
       backgroundColor = .whiteTwo
       customAttributes = [.foregroundColor: UIColor.slateGrey]

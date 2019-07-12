@@ -6,6 +6,7 @@ class WelcomePresenter: ModulePresenter, WelcomeModule {
   struct Input {
     var openTermsAndConditions: Driver<Void>
     var create: Driver<Void>
+    var recover: Driver<Void>
   }
   
   weak var delegate: WelcomeModuleDelegate?
@@ -17,6 +18,10 @@ class WelcomePresenter: ModulePresenter, WelcomeModule {
     
     input.create
       .drive(onNext: { [delegate] in delegate?.showCreateWalletScreen() })
+      .disposed(by: disposeBag)
+    
+    input.recover
+      .drive(onNext: { [delegate] in delegate?.showRecoverScreen() })
       .disposed(by: disposeBag)
   }
 }

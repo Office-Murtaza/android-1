@@ -4,6 +4,10 @@ final class ReloadAdapter<Section: SectionType>: SectionedDataSourceObserverType
   
   weak var view: Refreshable?
   
+  var executor: Executor {
+    return asyncExecutor(queue: DispatchQueue.main)
+  }
+  
   func dataSourceDidChangeContent<D: SectionedDataSourceType>(_ dataSource: D,
                                                               changes: [Change],
                                                               applyBlock: () -> Void)

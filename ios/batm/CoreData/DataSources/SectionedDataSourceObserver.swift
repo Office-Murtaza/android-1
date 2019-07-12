@@ -15,15 +15,13 @@ protocol SectionedDataSourceObserverType: class {
   func dataSourceDidReload<D: SectionedDataSourceType>(_ dataSource: D) where D.Section == Section
 }
 
-extension SectionedDataSourceObserverType {
-  var executor: Executor {
-    return asyncExecutor(queue: DispatchQueue.main)
-  }
-}
-
 class AnySectionedDataSourceObserverBase<S: SectionType>: SectionedDataSourceObserverType {
   
   typealias Change = SectionedDataSourceChange<S>
+  
+  var executor: Executor {
+    return asyncExecutor(queue: DispatchQueue.main)
+  }
   
   func dataSourceDidChangeContent<D: SectionedDataSourceType>(_ dataSource: D,
                                                               changes: [Change],

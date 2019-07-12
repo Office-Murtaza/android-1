@@ -28,18 +28,6 @@ class WelcomeViewController: ModuleViewController<WelcomePresenter>, UIScrollVie
   
   let buttonsView = WelcomeButtonsView()
   
-  let recoverLabel: UILabel = {
-    let label = UILabel()
-    let attributes: [NSAttributedString.Key : Any] = [
-      NSAttributedString.Key.underlineStyle: NSUnderlineStyle.single.rawValue,
-      NSAttributedString.Key.foregroundColor: UIColor.warmGrey,
-      NSAttributedString.Key.font: UIFont.poppinsSemibold11,
-      ]
-    let attributedText = NSAttributedString(string: localize(L.Welcome.recoverWallet), attributes: attributes)
-    label.attributedText = attributedText
-    return label
-  }()
-  
   let supportLabel: UILabel = {
     let label = UILabel()
     let attributes: [NSAttributedString.Key : Any] = [
@@ -52,7 +40,7 @@ class WelcomeViewController: ModuleViewController<WelcomePresenter>, UIScrollVie
     return label
   }()
   
-  let supportDummyButton = UIButton(type: .system)
+  let supportDummyButton = DummyButton()
   
   let backgroundDarkView: BackgroundDarkView = {
     let view = BackgroundDarkView()
@@ -78,7 +66,6 @@ class WelcomeViewController: ModuleViewController<WelcomePresenter>, UIScrollVie
                      taglineLabel,
                      sliderView,
                      buttonsView,
-                     recoverLabel,
                      supportLabel,
                      supportDummyButton,
                      backgroundDarkView,
@@ -109,12 +96,8 @@ class WelcomeViewController: ModuleViewController<WelcomePresenter>, UIScrollVie
       $0.top.greaterThanOrEqualTo(backgroundImageView).offset(50).priority(.required)
     }
     buttonsView.snp.makeConstraints {
-      $0.bottom.equalTo(recoverLabel.snp.top).offset(-15)
+      $0.bottom.equalTo(supportLabel.snp.top).offset(-15)
       $0.left.right.equalToSuperview().inset(30)
-      $0.centerX.equalToSuperview()
-    }
-    recoverLabel.snp.makeConstraints {
-      $0.bottom.equalTo(supportLabel.snp.top).offset(-10)
       $0.centerX.equalToSuperview()
     }
     supportLabel.snp.makeConstraints {
@@ -164,7 +147,9 @@ class WelcomeViewController: ModuleViewController<WelcomePresenter>, UIScrollVie
     
     let openTermsAndConditionsDriver = buttonsView.termsAndConditionsView.rx.termsAndConditionsTap
     let createDriver = buttonsView.rx.createTap
+    let recoverDriver = buttonsView.rx.recoverTap
     presenter.bind(input: WelcomePresenter.Input(openTermsAndConditions: openTermsAndConditionsDriver,
-                                                 create: createDriver))
+                                                 create: createDriver,
+                                                 recover: recoverDriver))
   }
 }
