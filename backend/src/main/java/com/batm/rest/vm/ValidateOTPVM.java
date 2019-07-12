@@ -11,8 +11,6 @@ import lombok.Setter;
 @NoArgsConstructor
 public class ValidateOTPVM {
 
-	private Long userId;
-
 	private String code;
 
 }

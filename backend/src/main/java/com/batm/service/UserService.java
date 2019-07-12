@@ -34,5 +34,9 @@ public class UserService {
 		// TODO Auto-generated method stub
 		return this.userRepository.findOneByPhoneIgnoreCase(phone);
 	}
+	
+	public User findById(Long userId) {
+		return this.userRepository.getOne(userId);
+	}
 
 }

@@ -1,12 +1,15 @@
 package com.batm.repository;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.batm.entity.CodeVerification;
 import com.batm.entity.UserCoin;
 
 public interface UserCoinRepository extends JpaRepository<UserCoin, Long> {
 
-	CodeVerification findByUserUserId(Long userId);
+	List<UserCoin> findByUserUserId(Long userId);
+
+	UserCoin findByUserUserIdAndCoinId(Long userId, String coinCode);
 
 }

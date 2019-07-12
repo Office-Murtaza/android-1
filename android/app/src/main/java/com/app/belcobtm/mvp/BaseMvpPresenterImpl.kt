@@ -1,7 +1,9 @@
 package com.app.belcobtm.mvp
 
+import com.app.belcobtm.api.data_manager.BaseDataManager
 
-abstract class BaseMvpPresenterImpl<V : BaseMvpView> : BaseMvpPresenter<V> {
+
+abstract class BaseMvpPresenterImpl<V : BaseMvpView, T : BaseDataManager> : BaseMvpPresenter<V> {
 
     protected var mView: V? = null
 
@@ -12,6 +14,9 @@ abstract class BaseMvpPresenterImpl<V : BaseMvpView> : BaseMvpPresenter<V> {
     override fun detachView() {
         mView = null
     }
+
+    protected abstract var mDataManager: T
+
 
     protected fun <T : Throwable> onError(exception: T) {
         //TODO add error handler logic in this api

@@ -6,6 +6,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.stream.Collectors;
 
+import org.apache.commons.lang3.RandomStringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
@@ -17,7 +18,12 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
 
-import io.jsonwebtoken.*;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.MalformedJwtException;
+import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.UnsupportedJwtException;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 
@@ -30,48 +36,26 @@ public class TokenProvider implements InitializingBean {
 
 	private Key key;
 
-	private long tokenValidityInMilliseconds;
-	
-	private long refreshTokenValidityInMilliseconds;
-
-	private long tokenValidityInMillisecondsForRememberMe;
-
 	@Value("${security.jwt.base64-secret}")
 	private String base64Secret;
-	
-	@Value("${security.jwt.refresh-token-validity-in-seconds}")
-	private long refreshTokenValidityInSeconds;
-	
-	@Value("${security.jwt.token-validity-in-seconds}")
-	private long tokenValidityInSeconds;
-	
-	@Value("${security.jwt.token-validity-in-seconds-for-remember-me}")
-	private long tokenValidityInSecondsForRememberMe;
-	
+
+	@Value("${security.jwt.access-token-duration}")
+	private long tokenValidityInMilliseconds;
+
 	@Override
 	public void afterPropertiesSet() throws Exception {
 
 		log.debug("Using a Base64-encoded JWT secret key");
-		byte[] keyBytes = Decoders.BASE64
-				.decode(base64Secret);
+		byte[] keyBytes = Decoders.BASE64.decode(base64Secret);
 		this.key = Keys.hmacShaKeyFor(keyBytes);
-		this.tokenValidityInMilliseconds = 1000
-				* tokenValidityInSeconds;
-		this.refreshTokenValidityInMilliseconds = 1000 * refreshTokenValidityInSeconds;
-		this.tokenValidityInMillisecondsForRememberMe = 1000 * tokenValidityInSecondsForRememberMe;
 	}
 
-	public String createToken(Authentication authentication, boolean rememberMe) {
+	public String createToken(Authentication authentication) {
 		String authorities = authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority)
 				.collect(Collectors.joining(","));
 
 		long now = (new Date()).getTime();
-		Date validity;
-		if (rememberMe) {
-			validity = new Date(now + this.tokenValidityInMillisecondsForRememberMe);
-		} else {
-			validity = new Date(now + this.tokenValidityInMilliseconds);
-		}
+		Date validity = new Date(now + this.tokenValidityInMilliseconds);
 
 		return Jwts.builder().setSubject(authentication.getName()).claim(AUTHORITIES_KEY, authorities)
 				.signWith(key, SignatureAlgorithm.HS512).setExpiration(validity).compact();
@@ -109,19 +93,7 @@ public class TokenProvider implements InitializingBean {
 		return false;
 	}
 
-	public String createRefreshToken(Authentication authentication, boolean rememberMe) {
-		String authorities = authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority)
-				.collect(Collectors.joining(","));
-
-		long now = (new Date()).getTime();
-		Date validity;
-		if (rememberMe) {
-			validity = new Date(now + this.tokenValidityInMillisecondsForRememberMe);
-		} else {
-			validity = new Date(now + this.refreshTokenValidityInMilliseconds);
-		}
-
-		return Jwts.builder().setSubject(authentication.getName()).claim(AUTHORITIES_KEY, authorities)
-				.signWith(key, SignatureAlgorithm.HS512).setExpiration(validity).compact();
+	public String createRefreshToken() {
+		return RandomStringUtils.randomAlphanumeric(250);
 	}
 }

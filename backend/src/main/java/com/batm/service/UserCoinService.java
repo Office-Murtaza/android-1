@@ -1,5 +1,7 @@
 package com.batm.service;
 
+import java.util.List;
+
 import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,49 +28,69 @@ public class UserCoinService {
 	private UserRepository userRepository;
 
 	@PostConstruct
-	public void inin() {
+	public void init() {
 
-		Coin coin = coinRepository.findByCoinCode("BTC");
+		Coin coin = coinRepository.findById("BTC");
 		if (coin == null) {
-			coin = new Coin("BTC", "Bitcoin");
+			coin = new Coin("BTC", "Bitcoin", 0);
+			coinRepository.save(coin);
 		}
 
-		coin = coinRepository.findByCoinCode("ETH");
+		coin = coinRepository.findById("ETH");
 		if (coin == null) {
-			coin = new Coin("ETH", "Ethereum");
+			coin = new Coin("ETH", "Ethereum", 1);
+			coinRepository.save(coin);
 		}
 
-		coin = coinRepository.findByCoinCode("LTC");
+		coin = coinRepository.findById("LTC");
 		if (coin == null) {
-			coin = new Coin("LTC", "Litecoin");
+			coin = new Coin("LTC", "Litecoin", 3);
+			coinRepository.save(coin);
 		}
 
-		coin = coinRepository.findByCoinCode("BNB");
+		coin = coinRepository.findById("BNB");
 		if (coin == null) {
-			coin = new Coin("BNB", "Binance Coin");
+			coin = new Coin("BNB", "Binance Coin", 4);
+			coinRepository.save(coin);
 		}
 
-		coin = coinRepository.findByCoinCode("TRX");
+		coin = coinRepository.findById("TRX");
 		if (coin == null) {
-			coin = new Coin("TRX", "Tron");
+			coin = new Coin("TRX", "Tron", 5);
+			coinRepository.save(coin);
 		}
 
-		coin = coinRepository.findByCoinCode("XRP");
+		coin = coinRepository.findById("XRP");
 		if (coin == null) {
-			coin = new Coin("XRP", "Ripple");
+			coin = new Coin("XRP", "Ripple", 6);
+			coinRepository.save(coin);
+		}
+
+		coin = coinRepository.findById("BCH");
+		if (coin == null) {
+			coin = new Coin("BCH", "Bitcoin Cash", 2);
+			coinRepository.save(coin);
 		}
 
 	}
 
-	public void save(CoinVM coinVM) {
-		User user = userRepository.getOne(coinVM.getUserId());
+	public void save(CoinVM coinVM, Long userId) {
+		User user = userRepository.getOne(userId);
 
 		coinVM.getCoins().stream().forEach(coinDTO -> {
-			Coin code = coinRepository.findByCoinCode(coinDTO.getCoinCode());
-			UserCoin userCoin = new UserCoin(user, code, coinDTO.getCoinCode(), coinDTO.getPublicKey());
+			Coin code = coinRepository.findById(coinDTO.getCoinCode());
+			UserCoin userCoin = new UserCoin(user, code, coinDTO.getPublicKey());
 			userCoinRepository.save(userCoin);
 		});
 
+	}
+
+	public List<UserCoin> getCoinByUserId(Long userId) {
+		return userCoinRepository.findByUserUserId(userId);
+	}
+
+	public UserCoin getCoinWithUserIdAndCoinCode(Long userId, String coinCode) {
+		return userCoinRepository.findByUserUserIdAndCoinId(userId, coinCode);
 	}
 
 }

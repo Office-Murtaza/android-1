@@ -6,6 +6,6 @@ import com.batm.entity.Coin;
 
 public interface CoinRepository extends JpaRepository<Coin, Long> {
 
-	Coin findByCoinCode(String coinCode);
+	Coin findById(String coinCode);
 
 }

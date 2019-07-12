@@ -1,7 +1,7 @@
 package com.app.belcobtm.mvp
 
 import android.content.Context
-import android.support.annotation.StringRes
+import androidx.annotation.StringRes
 
 
 interface BaseMvpView {
@@ -14,7 +14,7 @@ interface BaseMvpView {
 
     fun showMessage(@StringRes srtResId: Int)
 
-    fun showMessage(message: String)
+    fun showMessage(message: String?)
 
 
 }
