@@ -18,6 +18,10 @@ final class RefreshAdapter<Section: SectionType>: SectionedDataSourceObserverTyp
   
   weak var view: Refreshable?
   
+  var executor: Executor {
+    return asyncExecutor(queue: DispatchQueue.main)
+  }
+  
   private func didChange(_ element: Section.Element?,
                          for type: SectionedDataSourceChange<Section>.Element) {
     switch type {

@@ -8,7 +8,9 @@ final class LoginFlow: BaseFlow<BTMNavigationController, LoginFlowController> {
       Dependencies(),
       WelcomeAssembly(),
       CreateWalletAssembly(),
-      SeedPhraseAssembly()
+      SeedPhraseAssembly(),
+      RecoverAssembly(),
+      RecoverSeedPhraseAssembly(),
     ]
   }
   
@@ -16,6 +18,9 @@ final class LoginFlow: BaseFlow<BTMNavigationController, LoginFlowController> {
     case welcome
     case createWallet
     case seedPhrase
+    case recover
+    case recoverSeedPhrase
+    case setupPinCode
     case backToWelcome
     case pop
   }
@@ -30,13 +35,22 @@ final class LoginFlow: BaseFlow<BTMNavigationController, LoginFlowController> {
     switch step {
     case .welcome:
       let module = resolver.resolve(Module<WelcomeModule>.self)!
-      view.setViewControllers([module.controller], animated: false)
-      return .none
+      return replaceRoot(module.controller, animated: false)
     case .createWallet:
       let module = resolver.resolve(Module<CreateWalletModule>.self)!
       return push(module.controller)
     case .seedPhrase:
       let module = resolver.resolve(Module<SeedPhraseModule>.self)!
+      return push(module.controller)
+    case .recover:
+      let module = resolver.resolve(Module<RecoverModule>.self)!
+      return push(module.controller)
+    case .recoverSeedPhrase:
+      let module = resolver.resolve(Module<RecoverSeedPhraseModule>.self)!
+      return push(module.controller)
+    case .setupPinCode:
+      let module = resolver.resolve(Module<PinCodeModule>.self)!
+      module.input.setup(for: .setup)
       return push(module.controller)
     case .backToWelcome:
       let module = resolver.resolve(Module<WelcomeModule>.self)!

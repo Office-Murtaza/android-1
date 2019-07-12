@@ -76,7 +76,7 @@ class CreateWalletPresenter: ModulePresenter, CreateWalletModule {
       .withLatestFrom(state)
       .filter { $0.validationState.isValid }
       .map { $0.code }
-      .flatMap { [unowned self] in self.track(self.verifyCode(code: $0)) }
+      .flatMap { [unowned self] in self.track(self.proceedWithCode($0)) }
       .subscribe(onNext: { [delegate] in delegate?.finishCreatingWallet() })
       .disposed(by: disposeBag)
   }
@@ -92,15 +92,17 @@ class CreateWalletPresenter: ModulePresenter, CreateWalletModule {
       }
   }
   
-  private func verifyCode(code: String) -> Completable {
+  private func proceedWithCode(_ code: String) -> Completable {
     return usecase.verifyCode(code: code)
+      .andThen(usecase.createWallet())
+      .andThen(usecase.addCoins())
       .catchError { [store] in
         if let apiError = $0 as? APIError, case let .serverError(error) = apiError {
           store.action.accept(.makeInvalidState(error))
         }
         
         throw $0
-    }
+      }
   }
   
 }

@@ -14,7 +14,11 @@ class SeedPhraseView: RoundedView {
     return label
   }()
   
-  let copyLabel = CopyLabelView()
+  let copyLabel: UnderlinedLabelView = {
+    let view = UnderlinedLabelView()
+    view.configure(for: .copy)
+    return view
+  }()
   
   let doneButton: MainButton = {
     let button = MainButton()
@@ -65,8 +69,8 @@ class SeedPhraseView: RoundedView {
   private func initializeMainStackView(words: [String]) {
     wordViews = {
       return words.enumerated().map {
-        let view = SeedPhraseWordView()
-        view.configure(for: $1, by: $0 + 1)
+        let view = SeedPhraseWordView(index: $0 + 1)
+        view.configure(for: $1)
         return view
       }
     }()

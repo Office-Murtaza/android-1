@@ -6,14 +6,23 @@ protocol AccountStorage: ClearOnLogoutStorage {
   func save(account: Account) -> Completable
   func get() -> Single<Account>
   func delete() -> Completable
+  
+  var stateObservable: Observable<Account?> { get }
 }
 
 class AccountStorageImpl: CoreDataStorage<AccountStorageUtils>, AccountStorage {
   
+  let stateSubject = PublishSubject<Account?>()
+  var stateObservable: Observable<Account?> {
+    return stateSubject
+  }
+  
   func save(account: Account) -> Completable {
     return save {
       try $0.save(account: account)
-    }
+    }.do(onCompleted: { [stateSubject] in
+      stateSubject.onNext(account)
+    })
   }
   
   func get() -> Single<Account> {
@@ -29,7 +38,9 @@ class AccountStorageImpl: CoreDataStorage<AccountStorageUtils>, AccountStorage {
   func delete() -> Completable {
     return save {
       try $0.delete()
-    }
+    }.do(onCompleted: { [stateSubject] in
+      stateSubject.onNext(nil)
+    })
   }
   
 }

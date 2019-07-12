@@ -3,7 +3,6 @@ import RxSwift
 import RxCocoa
 
 enum MainTextFieldType {
-  case phoneNumber
   case password
   case confirmPassword
   case smsCode
@@ -70,27 +69,21 @@ class MainTextField: UITextField {
     let placeholder: String
     
     switch type {
-    case .phoneNumber:
-      placeholder = localize(L.CreateWallet.Form.PhoneNumber.placeholder)
-      imageView.image = UIImage(named: "create_wallet_phone")
-      keyboardType = .phonePad
-      isSecureTextEntry = false
-      textContentType = .telephoneNumber
     case .password:
       placeholder = localize(L.CreateWallet.Form.Password.placeholder)
-      imageView.image = UIImage(named: "create_wallet_password")
+      imageView.image = UIImage(named: "login_password")
       keyboardType = .default
       isSecureTextEntry = true
       textContentType = .newPassword
     case .confirmPassword:
       placeholder = localize(L.CreateWallet.Form.ConfirmPassword.placeholder)
-      imageView.image = UIImage(named: "create_wallet_password")
+      imageView.image = UIImage(named: "login_password")
       keyboardType = .default
       isSecureTextEntry = true
       textContentType = .newPassword
     case .smsCode:
       placeholder = localize(L.CreateWallet.Code.placeholder)
-      imageView.image = UIImage(named: "create_wallet_sms_code")
+      imageView.image = UIImage(named: "login_sms_code")
       keyboardType = .numberPad
       isSecureTextEntry = false
       textContentType = .oneTimeCode

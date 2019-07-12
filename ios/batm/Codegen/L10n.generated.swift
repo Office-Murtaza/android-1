@@ -1,8 +1,23 @@
 // Root structs 
 enum L {
 
+  struct CoinsBalance {
+    static let title = "coins_balance.title"
+  }
+
   struct CreateWallet {
     static let title = "create_wallet.title"
+  }
+
+  struct PinCode {
+  }
+
+  struct Recover {
+    static let title = "recover.title"
+  }
+
+  struct RecoverSeedPhrase {
+    static let annotation = "recover_seed_phrase.annotation"
   }
 
   struct SeedPhrase {
@@ -16,11 +31,11 @@ enum L {
     static let done = "shared.done"
     static let next = "shared.next"
     static let ok = "shared.ok"
+    static let paste = "shared.paste"
   }
 
   struct Welcome {
     static let contactSupport = "welcome.contact_support"
-    static let recoverWallet = "welcome.recover_wallet"
     static let tagline = "welcome.tagline"
     static let termsAndConditions = "welcome.terms_and_conditions"
   }
@@ -56,9 +71,15 @@ extension L.CreateWallet.Form {
   struct Password {
     static let placeholder = "create_wallet.form.password.placeholder"
   }
+}
+extension L.PinCode {
 
-  struct PhoneNumber {
-    static let placeholder = "create_wallet.form.phone_number.placeholder"
+  struct Setup {
+    static let title = "pin_code.setup.title"
+  }
+
+  struct Verification {
+    static let title = "pin_code.verification.title"
   }
 }
 extension L.Shared {
@@ -82,8 +103,8 @@ extension L.Welcome {
     static let title = "welcome.first_slide.title"
   }
 
-  struct LoginButton {
-    static let title = "welcome.login_button.title"
+  struct RecoverButton {
+    static let title = "welcome.recover_button.title"
   }
 
   struct SecondSlide {

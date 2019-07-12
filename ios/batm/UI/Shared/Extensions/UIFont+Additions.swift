@@ -30,6 +30,14 @@ extension UIFont {
     return UIFont(name: "Poppins-SemiBold", size: 11.0)!
   }
   
+  class var poppinsSemibold12: UIFont {
+    return UIFont(name: "Poppins-SemiBold", size: 12.0)!
+  }
+  
+  class var poppinsSemibold16: UIFont {
+    return UIFont(name: "Poppins-SemiBold", size: 16.0)!
+  }
+  
   class var poppinsSemibold20: UIFont {
     return UIFont(name: "Poppins-SemiBold", size: 20.0)!
   }
@@ -38,8 +46,16 @@ extension UIFont {
     return UIFont(name: "Poppins-SemiBold", size: 22.0)!
   }
   
+  class var poppinsSemibold28: UIFont {
+    return UIFont(name: "Poppins-SemiBold", size: 28.0)!
+  }
+  
   class var poppinsBold12: UIFont {
     return UIFont(name: "Poppins-Bold", size: 12.0)!
+  }
+  
+  class var poppinsBold13: UIFont {
+    return UIFont(name: "Poppins-Bold", size: 13.0)!
   }
   
   class var poppinsBold14: UIFont {

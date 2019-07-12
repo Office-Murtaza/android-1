@@ -1,6 +1,6 @@
 import Foundation
 
-struct Account {
+struct Account: Equatable {
   let userId: Int
   let accessToken: String
   let refreshToken: String

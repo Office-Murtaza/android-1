@@ -19,9 +19,9 @@ class WelcomeButtonsView: RoundedView, HasDisposeBag {
     return button
   }()
   
-  let loginButton: MainButton = {
+  let recoverButton: MainButton = {
     let button = MainButton()
-    button.configure(for: .login)
+    button.configure(for: .recover)
     return button
   }()
   
@@ -45,7 +45,7 @@ class WelcomeButtonsView: RoundedView, HasDisposeBag {
     addSubviews(container,
                 errorView)
     container.addSubviews(createButton,
-                          loginButton,
+                          recoverButton,
                           termsAndConditionsView)
   }
   
@@ -60,12 +60,12 @@ class WelcomeButtonsView: RoundedView, HasDisposeBag {
     createButton.snp.makeConstraints {
       $0.top.left.right.equalToSuperview()
     }
-    loginButton.snp.makeConstraints {
+    recoverButton.snp.makeConstraints {
       $0.top.equalTo(createButton.snp.bottom).offset(13)
       $0.left.right.equalToSuperview()
     }
     termsAndConditionsView.snp.makeConstraints {
-      $0.top.equalTo(loginButton.snp.bottom).offset(25)
+      $0.top.equalTo(recoverButton.snp.bottom).offset(25)
       $0.centerX.equalToSuperview()
       $0.bottom.equalToSuperview()
     }
@@ -85,6 +85,10 @@ extension Reactive where Base == WelcomeButtonsView {
     return base.createButton.rx.tap
       .asDriver()
       .filter { [base] in base.termsAndConditionsView.isAccepted }
+  }
+  
+  var recoverTap: Driver<Void> {
+    return base.recoverButton.rx.tap.asDriver()
   }
 }
 

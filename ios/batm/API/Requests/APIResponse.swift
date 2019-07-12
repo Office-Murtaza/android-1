@@ -17,12 +17,7 @@ extension APIResponse: ImmutableMappable {
       return
     }
     
-    guard let responseJSON = map.JSON["response"] as? [String: Any] else {
-      self = .error(.unknown)
-      return
-    }
-    
-    self = .response(try T(JSON: responseJSON))
+    self = .response(try map.value("response"))
   }
 }
 

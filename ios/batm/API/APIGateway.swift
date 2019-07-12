@@ -15,8 +15,10 @@ enum APIError: Error, Equatable {
 protocol APIGateway {
   
   func createAccount(phoneNumber: String, password: String) -> Single<Account>
+  func recoverWallet(phoneNumber: String, password: String) -> Single<Account>
   func verifyCode(userId: Int, code: String) -> Completable
   func addCoins(userId: Int, coins: [CoinAddress]) -> Completable
+  func getCoinsBalance(userId: Int) -> Single<CoinsBalance>
   
 }
 
@@ -29,6 +31,19 @@ final class APIGatewayImpl: APIGateway {
   
   func createAccount(phoneNumber: String, password: String) -> Single<Account> {
     let request = CreateAccountRequest(phoneNumber: phoneNumber, password: password)
+    return api.execute(request)
+      .flatMap {
+        switch $0 {
+        case let .response(response):
+          return Single.just(response)
+        case let .error(error):
+          return Single.error(error)
+        }
+    }
+  }
+  
+  func recoverWallet(phoneNumber: String, password: String) -> Single<Account> {
+    let request = RecoverWalletRequest(phoneNumber: phoneNumber, password: password)
     return api.execute(request)
       .flatMap {
         switch $0 {
@@ -66,6 +81,19 @@ final class APIGatewayImpl: APIGateway {
         }
       }
       .toCompletable()
+  }
+  
+  func getCoinsBalance(userId: Int) -> Single<CoinsBalance> {
+    let request = CoinsBalanceRequest(userId: userId)
+    return api.execute(request)
+      .flatMap {
+        switch $0 {
+        case let .response(response):
+          return Single.just(response)
+        case let .error(error):
+          return Single.error(error)
+        }
+      }
   }
   
 }
