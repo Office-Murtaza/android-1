@@ -19,6 +19,16 @@ class BalancePresenter : BaseMvpPresenterImpl<BalanceContract.View, CoinsDataMan
         presenterComponent.inject(this)
     }
 
+    override fun checkPinEntered() {
+        val pin = App.appContext().pref.getPin()
+        val token = App.appContext().pref.getSessionApiToken()
+        when {
+            token == null -> mView?.onTokenNotSaved()
+            pin != null -> mView?.onPinSaved()
+            else -> mView?.onPinNotSaved()
+        }
+    }
+
     override fun requestCoins() {
         val userId = App.appContext().pref.getUserId().toString()
         mDataManager.getCoins(userId)
@@ -30,12 +40,7 @@ class BalancePresenter : BaseMvpPresenterImpl<BalanceContract.View, CoinsDataMan
                 mView?.notifyData()
             }
                 , { error: Throwable ->
-                    mView?.showProgress(false)
-                    if (error is ServerException) {
-                        mView?.showError(error.errorMessage)
-                    } else {
-                        mView?.showError(error.message)
-                    }
+                    checkError(error)
                 })
     }
 }

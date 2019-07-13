@@ -10,7 +10,6 @@ object LoginContract {
     }
 
     interface View : BaseMvpView {
-        fun showProgress(show: Boolean)
         fun onLoginSuccess(seed: String)
     }
 }

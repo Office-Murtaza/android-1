@@ -11,9 +11,7 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
-/**
- * Created by ADMIN on 17.07.2018.
- */
+
 class RetrofitClient private constructor() {
     private object Holder {
         val INSTANCE = RetrofitClient()

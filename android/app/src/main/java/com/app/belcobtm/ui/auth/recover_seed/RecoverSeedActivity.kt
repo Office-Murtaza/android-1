@@ -1,17 +1,15 @@
 package com.app.belcobtm.ui.auth.recover_seed
 
-import android.animation.Animator
-import android.animation.AnimatorListenerAdapter
 import android.content.ClipboardManager
+import android.content.Intent
 import android.os.Bundle
-import android.view.View
 import com.app.belcobtm.R
 import com.app.belcobtm.mvp.BaseMvpActivity
+import com.app.belcobtm.ui.coins.balance.BalanceActivity
 import kotlinx.android.synthetic.main.activity_recover_seed_phrase.*
-import org.jetbrains.anko.design.longSnackbar
 
 
-class RecoverSeedPhraseActivity : BaseMvpActivity<RecoverSeedContract.View, RecoverSeedContract.Presenter>(),
+class RecoverSeedActivity : BaseMvpActivity<RecoverSeedContract.View, RecoverSeedContract.Presenter>(),
     RecoverSeedContract.View {
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -22,7 +20,7 @@ class RecoverSeedPhraseActivity : BaseMvpActivity<RecoverSeedContract.View, Reco
             val seed = getSeedFormView()
             if (seed.isNotEmpty())
                 mPresenter.verifySeed(seed)
-            else showError("Enter seed first")
+            else showError(getString(R.string.enter_seed_first))
         }
         paste_seed.setOnClickListener {
             val seed = getTextFromClipboard()
@@ -31,12 +29,13 @@ class RecoverSeedPhraseActivity : BaseMvpActivity<RecoverSeedContract.View, Reco
     }
 
     override fun onSeedVerifyed() {
-        container.longSnackbar("Open create pin screen. in progress...") //todo open main screen
+        finishAffinity()
+        startActivity(Intent(this, BalanceActivity::class.java))
     }
 
     private fun getSeedFormView(): String {
         var seed = ""
-        if(word_1.text!!.isNotEmpty()
+        if (word_1.text!!.isNotEmpty()
             && word_1.text!!.isNotEmpty()
             && word_2.text!!.isNotEmpty()
             && word_3.text!!.isNotEmpty()
@@ -48,7 +47,8 @@ class RecoverSeedPhraseActivity : BaseMvpActivity<RecoverSeedContract.View, Reco
             && word_9.text!!.isNotEmpty()
             && word_10.text!!.isNotEmpty()
             && word_11.text!!.isNotEmpty()
-            && word_12.text!!.isNotEmpty()) {
+            && word_12.text!!.isNotEmpty()
+        ) {
             seed += word_1.text.toString() + " "
             seed += word_2.text.toString() + " "
             seed += word_3.text.toString() + " "
@@ -83,20 +83,6 @@ class RecoverSeedPhraseActivity : BaseMvpActivity<RecoverSeedContract.View, Reco
             word_12.setText(seedArray[11])
         } catch (e: Exception) {
             showError(e.message)
-        }
-    }
-
-    override fun showProgress(show: Boolean) {
-        runOnUiThread {
-            val shortAnimTime = resources.getInteger(android.R.integer.config_shortAnimTime).toLong()
-            progress.animate()
-                .setDuration(shortAnimTime)
-                .alpha((if (show) 1 else 0).toFloat())
-                .setListener(object : AnimatorListenerAdapter() {
-                    override fun onAnimationEnd(animation: Animator) {
-                        progress.visibility = if (show) View.VISIBLE else View.GONE
-                    }
-                })
         }
     }
 

@@ -12,9 +12,7 @@ import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Path
 
-/**
- * Created by ADMIN on 17.07.2018.
- */
+
 interface ApiInterface {
 
 //    @FormUrlEncoded
@@ -62,7 +60,7 @@ interface ApiInterface {
     fun verifyCoins(@Path("userId") userId: String, @Body verifyCoinsParam: AddCoinsParam): Observable<ServerResponse<AddCoinsResponse>>
 
     @GET("user/{userId}/coins/balance")
-    fun getCoins(@Path("userId") userId: String): Observable<ServerResponse<GetCoinsResponse>>//todo make right response
+    fun getCoins(@Path("userId") userId: String): Observable<ServerResponse<GetCoinsResponse>>
 
 
 }

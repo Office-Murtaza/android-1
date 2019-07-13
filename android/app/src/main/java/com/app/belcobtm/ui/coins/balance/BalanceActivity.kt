@@ -1,15 +1,14 @@
 package com.app.belcobtm.ui.coins.balance
 
-import android.animation.Animator
-import android.animation.AnimatorListenerAdapter
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
-import android.view.View
 import com.app.belcobtm.R
 import com.app.belcobtm.mvp.BaseMvpActivity
+import com.app.belcobtm.ui.auth.pin.PinActivity
+import com.app.belcobtm.ui.auth.welcome.WelcomeActivity
 import com.app.belcobtm.util.CoinItemDecoration
 import kotlinx.android.synthetic.main.activity_balance.*
-import kotlinx.android.synthetic.main.activity_create_wallet.progress
 
 
 class BalanceActivity : BaseMvpActivity<BalanceContract.View, BalanceContract.Presenter>(),
@@ -21,14 +20,20 @@ class BalanceActivity : BaseMvpActivity<BalanceContract.View, BalanceContract.Pr
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_balance)
 
+        mPresenter.checkPinEntered()
+
         mAdapter = CoinsAdapter(mPresenter.coinsList)
         coins_recycler.adapter = mAdapter
         coins_recycler.addItemDecoration(CoinItemDecoration(resources.getDimensionPixelSize(R.dimen.margin_half)))
 
         swipe_refresh.setOnRefreshListener { mPresenter.requestCoins() }
         swipe_refresh.setColorSchemeColors(
-              Color.RED, Color.GREEN, Color.BLUE)
+            Color.RED, Color.GREEN, Color.BLUE
+        )
+    }
 
+    override fun onStart() {
+        super.onStart()
         showProgress(true)
         mPresenter.requestCoins()
     }
@@ -38,21 +43,30 @@ class BalanceActivity : BaseMvpActivity<BalanceContract.View, BalanceContract.Pr
         mAdapter.notifyDataSetChanged()
     }
 
+    override fun onTokenNotSaved() {
+        finishAffinity()
+        startActivity(Intent(this, WelcomeActivity::class.java))
+    }
+
+    override fun onPinSaved() {
+        val mode = PinActivity.Companion.Mode.MODE_PIN
+        val intent = PinActivity.getIntent(this, mode)
+        startActivityForResult(intent, mode.ordinal)
+    }
+
+    override fun onPinNotSaved() {
+        val mode = PinActivity.Companion.Mode.MODE_CREATE_PIN
+        val intent = PinActivity.getIntent(this, mode)
+        startActivityForResult(intent, mode.ordinal)
+    }
+
     override fun showProgress(show: Boolean) {
         runOnUiThread {
-
             if (!show)
                 swipe_refresh.isRefreshing = false
 
-            val shortAnimTime = resources.getInteger(android.R.integer.config_shortAnimTime).toLong()
-            progress.animate()
-                .setDuration(shortAnimTime)
-                .alpha((if (show) 1 else 0).toFloat())
-                .setListener(object : AnimatorListenerAdapter() {
-                    override fun onAnimationEnd(animation: Animator) {
-                        progress.visibility = if (show) View.VISIBLE else View.GONE
-                    }
-                })
+            super.showProgress(show)
         }
     }
+
 }

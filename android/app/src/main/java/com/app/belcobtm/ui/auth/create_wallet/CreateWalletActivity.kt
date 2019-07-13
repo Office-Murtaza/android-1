@@ -1,9 +1,6 @@
 package com.app.belcobtm.ui.auth.create_wallet
 
-import android.animation.Animator
-import android.animation.AnimatorListenerAdapter
 import android.os.Bundle
-import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
@@ -37,7 +34,7 @@ class CreateWalletActivity : BaseMvpActivity<CreateWalletContract.View, CreateWa
         })
     }
 
-    private fun attemptCreateWallet(){
+    private fun attemptCreateWallet() {
         mPresenter.attemptCreateWallet(
             phone_ccp.fullNumberWithPlus.toString(),
             pass.text.toString(),
@@ -73,20 +70,5 @@ class CreateWalletActivity : BaseMvpActivity<CreateWalletContract.View, CreateWa
         SeedPhraseActivity.startActivity(this, seed)
         finish()
     }
-
-    override fun showProgress(show: Boolean) {
-        runOnUiThread {
-            val shortAnimTime = resources.getInteger(android.R.integer.config_shortAnimTime).toLong()
-            progress.animate()
-                .setDuration(shortAnimTime)
-                .alpha((if (show) 1 else 0).toFloat())
-                .setListener(object : AnimatorListenerAdapter() {
-                    override fun onAnimationEnd(animation: Animator) {
-                        progress.visibility = if (show) View.VISIBLE else View.GONE
-                    }
-                })
-        }
-    }
-
 
 }

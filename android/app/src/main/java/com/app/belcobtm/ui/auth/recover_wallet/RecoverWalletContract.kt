@@ -11,7 +11,6 @@ object RecoverWalletContract {
     }
 
     interface View : BaseMvpView {
-        fun showProgress(show: Boolean)
         fun onRecoverSuccess(seed: String)
         fun onSmsSuccess()
         fun openSmsCodeDialog(error: String? = null)

@@ -1,13 +1,19 @@
 package com.app.belcobtm.mvp
 
+import android.animation.Animator
+import android.animation.AnimatorListenerAdapter
 import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import android.widget.FrameLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.app.belcobtm.R
+import com.app.belcobtm.ui.auth.pin.PinActivity
+import com.app.belcobtm.ui.auth.welcome.WelcomeActivity
 import com.google.android.material.snackbar.Snackbar
 import dagger.android.AndroidInjection
 import javax.inject.Inject
@@ -54,6 +60,27 @@ abstract class BaseMvpActivity<in V : BaseMvpView, T : BaseMvpPresenter<V>>
         runOnUiThread {
             Toast.makeText(this, message, Toast.LENGTH_LONG).show()
         }
+    }
+
+    override fun showProgress(show: Boolean) {
+        runOnUiThread {
+            val progress = findViewById<FrameLayout?>(R.id.progress)
+            if (progress != null) {
+                val shortAnimTime = resources.getInteger(android.R.integer.config_shortAnimTime).toLong()
+                progress.animate()
+                    .setDuration(shortAnimTime)
+                    .alpha((if (show) 1 else 0).toFloat())
+                    .setListener(object : AnimatorListenerAdapter() {
+                        override fun onAnimationEnd(animation: Animator) {
+                            progress.visibility = if (show) View.VISIBLE else View.GONE
+                        }
+                    })
+            }
+        }
+    }
+
+    override fun onRefreshTokenFailed() {
+        startActivity(Intent(this, PinActivity::class.java))
     }
 
     override fun onDestroy() {

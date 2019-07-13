@@ -17,6 +17,10 @@
     <color name="bt_orange">#ffcd4c</color>
     <color name="blue_color">#0073e4</color>
 
+    <color name="pin_gray_unchecked">#4d6c91</color>
+
+
+
 
 
 </resources>

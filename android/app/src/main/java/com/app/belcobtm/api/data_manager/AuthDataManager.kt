@@ -2,6 +2,7 @@ package com.app.belcobtm.api.data_manager
 
 import com.app.belcobtm.api.model.param.AddCoinsParam
 import com.app.belcobtm.api.model.param.AuthParam
+import com.app.belcobtm.api.model.param.RefreshParam
 import com.app.belcobtm.api.model.param.VerifySmsParam
 import com.app.belcobtm.api.model.response.AddCoinsResponse
 import com.app.belcobtm.api.model.response.AuthResponse
@@ -18,6 +19,10 @@ class AuthDataManager : BaseDataManager() {
 
     fun recoverWallet(phone: String, password: String): Observable<Optional<AuthResponse>> {
         return genObservable(api.recover(AuthParam(phone, password)))
+    }
+
+    fun refreshToken(refreshToken: String?): Observable<Optional<AuthResponse>> {
+        return genObservable(api.refresh(RefreshParam(refreshToken)))
     }
 
     fun login(phone: String, password: String): Observable<Optional<AuthResponse>> {

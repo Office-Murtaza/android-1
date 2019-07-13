@@ -7,6 +7,8 @@ object Const {
     private const val BASE_API_URL = "$BASE_URL/api"
     const val API_URL = "$BASE_API_URL/v1/"
 
+    const val ERROR_403 = 403
+
 
     const val TERMS_URL = "https://www.belcobtm.com/privacy-policy"
 }

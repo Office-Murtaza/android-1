@@ -4,6 +4,8 @@ import com.app.belcobtm.ui.auth.create_wallet.CreateWalletContract
 import com.app.belcobtm.ui.auth.create_wallet.CreateWalletPresenter
 import com.app.belcobtm.ui.auth.login.LoginContract
 import com.app.belcobtm.ui.auth.login.LoginPresenter
+import com.app.belcobtm.ui.auth.pin.PinContract
+import com.app.belcobtm.ui.auth.pin.PinPresenter
 import com.app.belcobtm.ui.auth.recover_seed.RecoverSeedContract
 import com.app.belcobtm.ui.auth.recover_seed.RecoverSeedPresenter
 import com.app.belcobtm.ui.auth.recover_wallet.RecoverWalletContract
@@ -40,6 +42,11 @@ class ActivityModule {
     @Provides
     fun provideBalancePresenter(): BalanceContract.Presenter {
         return BalancePresenter()
+    }
+
+    @Provides
+    fun providePinPresenter(): PinContract.Presenter {
+        return PinPresenter()
     }
 
 

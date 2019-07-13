@@ -1,10 +1,7 @@
 package com.app.belcobtm.ui.auth.login
 
-import android.animation.Animator
-import android.animation.AnimatorListenerAdapter
 import android.content.Intent
 import android.os.Bundle
-import android.view.View
 import com.app.belcobtm.R
 import com.app.belcobtm.mvp.BaseMvpActivity
 import kotlinx.android.synthetic.main.activity_create_wallet.*
@@ -29,20 +26,5 @@ class LoginActivity : BaseMvpActivity<LoginContract.View, LoginContract.Presente
     override fun onLoginSuccess(seed: String) {
         startActivity(Intent(this, LoginActivity::class.java))
     }
-
-    override fun showProgress(show: Boolean) {
-        runOnUiThread {
-            val shortAnimTime = resources.getInteger(android.R.integer.config_shortAnimTime).toLong()
-            progress.animate()
-                .setDuration(shortAnimTime)
-                .alpha((if (show) 1 else 0).toFloat())
-                .setListener(object : AnimatorListenerAdapter() {
-                    override fun onAnimationEnd(animation: Animator) {
-                        progress.visibility = if (show) View.VISIBLE else View.GONE
-                    }
-                })
-        }
-    }
-
 
 }

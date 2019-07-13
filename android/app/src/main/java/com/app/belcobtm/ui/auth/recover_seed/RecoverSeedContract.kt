@@ -11,7 +11,6 @@ object RecoverSeedContract {
     }
 
     interface View : BaseMvpView {
-        fun showProgress(show: Boolean)
         fun onSeedVerifyed()
 
     }

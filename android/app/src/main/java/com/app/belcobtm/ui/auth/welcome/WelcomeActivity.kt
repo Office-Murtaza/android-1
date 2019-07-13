@@ -55,6 +55,7 @@ class WelcomeActivity : AppCompatActivity() {
         App.run {
             appContext().pref.setSessionApiToken(null)
             appContext().pref.setRefreshApiToken(null)
+            appContext().pref.setPin(null)
             appContext().pref.setUserId(null)
         }
 

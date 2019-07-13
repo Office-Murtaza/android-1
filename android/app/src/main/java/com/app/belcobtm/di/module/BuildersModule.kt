@@ -3,7 +3,8 @@ package com.app.belcobtm.di.module
 import com.app.belcobtm.di.ActivityScope
 import com.app.belcobtm.ui.auth.create_wallet.CreateWalletActivity
 import com.app.belcobtm.ui.auth.login.LoginActivity
-import com.app.belcobtm.ui.auth.recover_seed.RecoverSeedPhraseActivity
+import com.app.belcobtm.ui.auth.pin.PinActivity
+import com.app.belcobtm.ui.auth.recover_seed.RecoverSeedActivity
 import com.app.belcobtm.ui.auth.recover_wallet.RecoverWalletActivity
 import com.app.belcobtm.ui.coins.balance.BalanceActivity
 import dagger.Module
@@ -21,7 +22,7 @@ abstract class BuildersModule {
 
     @ActivityScope
     @ContributesAndroidInjector(modules = [ActivityModule::class])
-    internal abstract fun bindRecoverSeedPhraseActivity(): RecoverSeedPhraseActivity
+    internal abstract fun bindRecoverSeedPhraseActivity(): RecoverSeedActivity
 
     @ActivityScope
     @ContributesAndroidInjector(modules = [ActivityModule::class])
@@ -30,4 +31,8 @@ abstract class BuildersModule {
     @ActivityScope
     @ContributesAndroidInjector(modules = [ActivityModule::class])
     internal abstract fun bindBalanceActivity(): BalanceActivity
+
+    @ActivityScope
+    @ContributesAndroidInjector(modules = [ActivityModule::class])
+    internal abstract fun bindPinActivity(): PinActivity
 }

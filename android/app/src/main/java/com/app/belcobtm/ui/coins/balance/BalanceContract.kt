@@ -10,10 +10,14 @@ object BalanceContract {
         val coinsList: ArrayList<GetCoinsResponse.CoinModel>
         val balance: Double
         fun requestCoins()
+        fun checkPinEntered()
     }
 
     interface View : BaseMvpView {
-        fun showProgress(show: Boolean)
         fun notifyData()
+        fun onPinSaved()
+        fun onPinNotSaved()
+        fun onTokenNotSaved()
+
     }
 }

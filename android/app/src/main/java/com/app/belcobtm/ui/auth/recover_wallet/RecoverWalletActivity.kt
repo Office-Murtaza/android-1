@@ -1,17 +1,14 @@
 package com.app.belcobtm.ui.auth.recover_wallet
 
-import android.animation.Animator
-import android.animation.AnimatorListenerAdapter
 import android.content.Intent
 import android.os.Bundle
-import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.AppCompatEditText
 import com.app.belcobtm.R
 import com.app.belcobtm.mvp.BaseMvpActivity
-import com.app.belcobtm.ui.auth.recover_seed.RecoverSeedPhraseActivity
+import com.app.belcobtm.ui.auth.recover_seed.RecoverSeedActivity
 import com.google.android.material.textfield.TextInputLayout
 import kotlinx.android.synthetic.main.activity_create_wallet.*
 
@@ -38,7 +35,7 @@ class RecoverWalletActivity : BaseMvpActivity<RecoverWalletContract.View, Recove
         })
     }
 
-    private fun attemptRecover(){
+    private fun attemptRecover() {
         mPresenter.attemptRecover(
             phone_ccp.fullNumberWithPlus.toString(),
             pass.text.toString()
@@ -47,20 +44,6 @@ class RecoverWalletActivity : BaseMvpActivity<RecoverWalletContract.View, Recove
 
     override fun onRecoverSuccess(seed: String) {
         startActivity(Intent(this, RecoverWalletActivity::class.java))
-    }
-
-    override fun showProgress(show: Boolean) {
-        runOnUiThread {
-            val shortAnimTime = resources.getInteger(android.R.integer.config_shortAnimTime).toLong()
-            progress.animate()
-                .setDuration(shortAnimTime)
-                .alpha((if (show) 1 else 0).toFloat())
-                .setListener(object : AnimatorListenerAdapter() {
-                    override fun onAnimationEnd(animation: Animator) {
-                        progress.visibility = if (show) View.VISIBLE else View.GONE
-                    }
-                })
-        }
     }
 
     override fun openSmsCodeDialog(error: String?) {
@@ -87,7 +70,7 @@ class RecoverWalletActivity : BaseMvpActivity<RecoverWalletContract.View, Recove
     }
 
     override fun onSmsSuccess() {
-        startActivity(Intent(this, RecoverSeedPhraseActivity::class.java))
+        startActivity(Intent(this, RecoverSeedActivity::class.java))
         finish()
     }
 }

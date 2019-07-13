@@ -9,11 +9,12 @@ import android.text.SpannableString
 import android.text.SpannableStringBuilder
 import android.text.style.ForegroundColorSpan
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.IntentCompat
 import com.app.belcobtm.R
 import com.app.belcobtm.ui.coins.balance.BalanceActivity
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_seed_phrase.*
-import org.jetbrains.anko.design.longSnackbar
+import org.jetbrains.anko.startActivity
 
 
 class SeedPhraseActivity : AppCompatActivity() {
@@ -58,7 +59,10 @@ class SeedPhraseActivity : AppCompatActivity() {
             Snackbar.make(container, R.string.seed_clipboard, Snackbar.LENGTH_LONG).show()
         }
 
-        bt_done.setOnClickListener { startActivity(Intent(this, BalanceActivity::class.java)) }//todo open pin screen
+        bt_done.setOnClickListener {
+            finishAffinity()
+            startActivity(Intent(this, BalanceActivity::class.java))
+        }
     }
 
     private fun addColorText(text: String, addingText: String): SpannableStringBuilder {
