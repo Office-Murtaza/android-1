@@ -5,7 +5,7 @@
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/auth_bg_color"
+    android:background="@color/bg_color"
     tools:context=".ui.auth.welcome.WelcomeActivity">
 
     <!-- Login progress -->
@@ -286,52 +286,52 @@
                 app:layout_constraintBaseline_toBaselineOf="@id/word_11"
                 app:layout_constraintStart_toEndOf="@id/word_11" />
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/word_13"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/margin_half"
-                android:background="@drawable/seed_gray_rounded_corner"
-                android:gravity="center"
-                android:paddingStart="@dimen/margin_half"
-                android:paddingTop="@dimen/margin_quoter"
-                android:paddingEnd="@dimen/margin_half"
-                android:paddingBottom="@dimen/margin_quoter"
-                app:fontFamily="@font/poppins_medium"
-                app:layout_constraintBaseline_toBaselineOf="@id/word_14"
-                app:layout_constraintEnd_toStartOf="@id/word_14" />
+            <!--<androidx.appcompat.widget.AppCompatTextView-->
+                <!--android:id="@+id/word_13"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginEnd="@dimen/margin_half"-->
+                <!--android:background="@drawable/seed_gray_rounded_corner"-->
+                <!--android:gravity="center"-->
+                <!--android:paddingStart="@dimen/margin_half"-->
+                <!--android:paddingTop="@dimen/margin_quoter"-->
+                <!--android:paddingEnd="@dimen/margin_half"-->
+                <!--android:paddingBottom="@dimen/margin_quoter"-->
+                <!--app:fontFamily="@font/poppins_medium"-->
+                <!--app:layout_constraintBaseline_toBaselineOf="@id/word_14"-->
+                <!--app:layout_constraintEnd_toStartOf="@id/word_14" />-->
 
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/word_14"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_half"
-                android:background="@drawable/seed_gray_rounded_corner"
-                android:gravity="center"
-                android:paddingStart="@dimen/margin_half"
-                android:paddingTop="@dimen/margin_quoter"
-                android:paddingEnd="@dimen/margin_half"
-                android:paddingBottom="@dimen/margin_quoter"
-                app:fontFamily="@font/poppins_medium"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/word_11" />
+            <!--<androidx.appcompat.widget.AppCompatTextView-->
+                <!--android:id="@+id/word_14"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginTop="@dimen/margin_half"-->
+                <!--android:background="@drawable/seed_gray_rounded_corner"-->
+                <!--android:gravity="center"-->
+                <!--android:paddingStart="@dimen/margin_half"-->
+                <!--android:paddingTop="@dimen/margin_quoter"-->
+                <!--android:paddingEnd="@dimen/margin_half"-->
+                <!--android:paddingBottom="@dimen/margin_quoter"-->
+                <!--app:fontFamily="@font/poppins_medium"-->
+                <!--app:layout_constraintEnd_toEndOf="parent"-->
+                <!--app:layout_constraintStart_toStartOf="parent"-->
+                <!--app:layout_constraintTop_toBottomOf="@id/word_11" />-->
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/word_15"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/margin_half"
-                android:background="@drawable/seed_gray_rounded_corner"
-                android:gravity="center"
-                android:paddingStart="@dimen/margin_half"
-                android:paddingTop="@dimen/margin_quoter"
-                android:paddingEnd="@dimen/margin_half"
-                android:paddingBottom="@dimen/margin_quoter"
-                app:fontFamily="@font/poppins_medium"
-                app:layout_constraintBaseline_toBaselineOf="@id/word_14"
-                app:layout_constraintStart_toEndOf="@id/word_14" />
+            <!--<androidx.appcompat.widget.AppCompatTextView-->
+                <!--android:id="@+id/word_15"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginStart="@dimen/margin_half"-->
+                <!--android:background="@drawable/seed_gray_rounded_corner"-->
+                <!--android:gravity="center"-->
+                <!--android:paddingStart="@dimen/margin_half"-->
+                <!--android:paddingTop="@dimen/margin_quoter"-->
+                <!--android:paddingEnd="@dimen/margin_half"-->
+                <!--android:paddingBottom="@dimen/margin_quoter"-->
+                <!--app:fontFamily="@font/poppins_medium"-->
+                <!--app:layout_constraintBaseline_toBaselineOf="@id/word_14"-->
+                <!--app:layout_constraintStart_toEndOf="@id/word_14" />-->
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/copy_seed"
@@ -340,7 +340,7 @@
                 android:clickable="true"
                 android:focusable="true"
                 android:text="@string/copy"
-                app:layout_constraintTop_toBottomOf="@id/word_14"
+                app:layout_constraintTop_toBottomOf="@id/word_11"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 android:layout_marginTop="@dimen/margin_main"
@@ -358,7 +358,7 @@
                 android:layout_marginBottom="@dimen/margin_x2"
                 android:background="@drawable/bt_gray_rounded_corner"
                 android:backgroundTint="@color/blue_color"
-                android:text="@string/done"
+                android:text="@string/next"
                 android:textColor="@android:color/white"
                 app:fontFamily="@font/poppins_bold"
                 app:layout_constraintBottom_toBottomOf="parent"

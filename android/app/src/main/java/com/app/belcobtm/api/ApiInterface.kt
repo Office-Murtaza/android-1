@@ -1,19 +1,18 @@
 package com.app.belcobtm.api
 
 import com.app.belcobtm.api.model.ServerResponse
-import com.app.belcobtm.api.model.param.AddCoinsParam
-import com.app.belcobtm.api.model.param.RegisterParam
-import com.app.belcobtm.api.model.param.VerifySmsParam
+import com.app.belcobtm.api.model.param.*
 import com.app.belcobtm.api.model.response.AddCoinsResponse
-import com.app.belcobtm.api.model.response.RegisterResponse
+import com.app.belcobtm.api.model.response.AuthResponse
+import com.app.belcobtm.api.model.response.GetCoinsResponse
 import com.app.belcobtm.api.model.response.VerifySmsResponse
 import io.reactivex.Observable
 import retrofit2.http.Body
+import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.Path
 
-/**
- * Created by ADMIN on 17.07.2018.
- */
+
 interface ApiInterface {
 
 //    @FormUrlEncoded
@@ -39,17 +38,29 @@ interface ApiInterface {
 //                       @Part document_front: MultipartBody.Part?,
 //                       @Part document_back: MultipartBody.Part?): Observable<ServerResponse<Any>>
 
-    @POST("user/register")
-    fun register(@Body registerParam: RegisterParam): Observable<ServerResponse<RegisterResponse>>
+    @POST("register")
+    fun register(@Body registerParam: AuthParam): Observable<ServerResponse<AuthResponse>>
 
-    @POST("user/verify")
-    fun verifySmsCode(@Body verifySmsParam: VerifySmsParam): Observable<ServerResponse<VerifySmsResponse>>
+    @POST("recover")
+    fun recover(@Body registerParam: AuthParam): Observable<ServerResponse<AuthResponse>>
 
-    @POST("user/add-coins")
-    fun addCoins(@Body addCoinsParam: AddCoinsParam): Observable<ServerResponse<AddCoinsResponse>>
+    @POST("refresh")
+    fun refresh(@Body refreshParam: RefreshParam): Observable<ServerResponse<AuthResponse>>
 
+    @POST("user/login")
+    fun login(@Body loginParam: AuthParam): Observable<ServerResponse<AuthResponse>>
 
+    @POST("user/{userId}/verify")
+    fun verifySmsCode(@Path("userId") userId: String, @Body verifySmsParam: VerifySmsParam): Observable<ServerResponse<VerifySmsResponse>>
 
+    @POST("user/{userId}/coins/add")
+    fun addCoins(@Path("userId") userId: String, @Body addCoinsParam: AddCoinsParam): Observable<ServerResponse<AddCoinsResponse>>
+
+    @POST("user/{userId}/coins/compare")
+    fun verifyCoins(@Path("userId") userId: String, @Body verifyCoinsParam: AddCoinsParam): Observable<ServerResponse<AddCoinsResponse>>
+
+    @GET("user/{userId}/coins/balance")
+    fun getCoins(@Path("userId") userId: String): Observable<ServerResponse<GetCoinsResponse>>
 
 
 }

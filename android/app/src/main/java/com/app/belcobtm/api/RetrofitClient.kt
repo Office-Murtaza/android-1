@@ -11,9 +11,7 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
-/**
- * Created by ADMIN on 17.07.2018.
- */
+
 class RetrofitClient private constructor() {
     private object Holder {
         val INSTANCE = RetrofitClient()
@@ -23,16 +21,13 @@ class RetrofitClient private constructor() {
         val instance: RetrofitClient by lazy { Holder.INSTANCE }
     }
 
-    lateinit var apiInterface: ApiInterface
+    var apiInterface: ApiInterface = getClient(API_URL).create(ApiInterface::class.java)
 
-    init {
-        initApiInterface()
-    }
+    private var mToken: String? = App.appContext().pref.getSessionApiToken()
 
     //public for reinit ApiInterface after token getting
-    fun initApiInterface() {
-        apiInterface = getClient(API_URL).create(ApiInterface::class.java)
-//        apiInterface = getClient(REST_API_URL_DEV).create(ApiInterface::class.java)
+    fun updateToken() {
+        mToken = App.appContext().pref.getSessionApiToken()
     }
 
 
@@ -49,38 +44,23 @@ class RetrofitClient private constructor() {
         val httpLoggingInterceptor: HttpLoggingInterceptor =
             HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
 
-        val token = App.appContext().pref.getSessionApiToken()
-        if (token.isNullOrEmpty()) {
-            return OkHttpClient.Builder()
-                .connectTimeout(60, TimeUnit.SECONDS)
-                .readTimeout(60, TimeUnit.SECONDS)
-                .addInterceptor(ErrorInterceptor())
-                .addInterceptor { chain ->
-                    val request = chain.request().newBuilder()
-                        .addHeader("Content-Type", "application/json")
-                        .addHeader("X-Requested-With", "XMLHttpRequest")
-                        .addHeader("Accept", "application/json")
-                        .build()
-                    chain.proceed(request)
-                }
-                .addInterceptor(httpLoggingInterceptor)
-                .build()
-        } else {
-            return OkHttpClient.Builder()
-                .connectTimeout(60, TimeUnit.SECONDS)
-                .readTimeout(60, TimeUnit.SECONDS)
-                .addInterceptor(ErrorInterceptor())
-                .addInterceptor { chain ->
-                    val request = chain.request().newBuilder()
-                        .addHeader("Content-Type", "application/json")
-                        .addHeader("X-Requested-With", "XMLHttpRequest")
-                        .addHeader("Accept", "application/json")
-                        .addHeader("Authorization", "Bearer $token")
-                        .build()
-                    chain.proceed(request)
-                }
-                .addInterceptor(httpLoggingInterceptor)
-                .build()
-        }
+        return OkHttpClient.Builder()
+            .connectTimeout(60, TimeUnit.SECONDS)
+            .readTimeout(60, TimeUnit.SECONDS)
+            .addInterceptor(ErrorInterceptor())
+            .addInterceptor { chain ->
+                val request = chain.request().newBuilder()
+                    .addHeader("Content-Type", "application/json")
+                    .addHeader("X-Requested-With", "XMLHttpRequest")
+                    .addHeader("Accept", "application/json")
+                if (mToken.isNullOrEmpty())
+                    mToken = App.appContext().pref.getSessionApiToken()
+                if (!mToken.isNullOrEmpty())
+                    request.addHeader("Authorization", "Bearer $mToken")
+                chain.proceed(request.build())
+            }
+            .addInterceptor(httpLoggingInterceptor)
+            .build()
+
     }
 }

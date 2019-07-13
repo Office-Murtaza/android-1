@@ -2,7 +2,7 @@ package com.app.belcobtm.api.model.response
 import com.google.gson.annotations.SerializedName
 
 
-data class RegisterResponse(
+data class AuthResponse(
     @SerializedName("accessToken")
     val accessToken: String, // eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIkMmEkMTAkR1VaR1JKYmhlQ1F0VXlyelV2VjhKT1RjUUxQYWZ4ZWRkbzYwYzBxR3g0cUx2YVVYZnIwQ3kiLCJhdXRoIjoiUk9MRV9VU0VSIiwiZXhwIjoxNTYxODM4NTQzfQ.gEUiZxUsLl_jBR0JckZu9c9KZYd3e0TwOs-LSyL-We3WG4af15jgUvSGOKgRtCW5sOedk_cDupwuAA2yGXA1qw
     @SerializedName("expires")

@@ -16,5 +16,8 @@ interface BaseMvpView {
 
     fun showMessage(message: String?)
 
+    fun showProgress(show: Boolean)
+
+    fun onRefreshTokenFailed()
 
 }
