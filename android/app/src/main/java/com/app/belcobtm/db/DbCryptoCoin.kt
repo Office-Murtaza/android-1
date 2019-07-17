@@ -5,7 +5,7 @@ import io.realm.RealmObject
 import io.realm.annotations.PrimaryKey
 
 
-open class CryptoCoin(
+open class DbCryptoCoin(
 
     open var coinType: String = "",
     open var publicKey: String = "",
@@ -16,7 +16,7 @@ open class CryptoCoin(
     open var _ID: Int = 0
 
     init {
-        val currentIdNum = Realm.getDefaultInstance().where(CryptoCoin::class.java).max("_ID")
+        val currentIdNum = Realm.getDefaultInstance().where(DbCryptoCoin::class.java).max("_ID")
         _ID = if (currentIdNum == null) {
             1
         } else {
@@ -28,5 +28,5 @@ open class CryptoCoin(
         coinType: String = this.coinType,
         publicKey: String = this.publicKey,
         privateKey: String = this.privateKey
-    ) = CryptoCoin(coinType, publicKey, privateKey)
+    ) = DbCryptoCoin(coinType, publicKey, privateKey)
 }

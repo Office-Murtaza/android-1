@@ -22,23 +22,24 @@ class PrefManager private constructor(context: Context) {
     val PREF_KEY_API_SESSION_TOKEN = "KEY_API_SESSION_TOKEN"
     val PREF_KEY_API_REFRESH_TOKEN = "KEY_API_REFRESH_TOKEN"
     val PREF_KEY_USER_ID = "KEY_USER_ID"
+    val PREF_KEY_PIN = "KEY_PIN"
 
 
     fun setSessionApiToken(token: String?) = mPrefs.set(PREF_KEY_API_SESSION_TOKEN, token)
     fun getSessionApiToken(): String? = mPrefs.getString(PREF_KEY_API_SESSION_TOKEN, null)
 
-    fun setRefreshApiToken(refreshToken: String?) = mPrefs.set(PREF_KEY_API_SESSION_TOKEN, refreshToken)
-    fun getRefreshApiToken(): String? = mPrefs.getString(PREF_KEY_API_SESSION_TOKEN, null)
+    fun setRefreshApiToken(refreshToken: String?) = mPrefs.set(PREF_KEY_API_REFRESH_TOKEN, refreshToken)
+    fun getRefreshApiToken(): String? = mPrefs.getString(PREF_KEY_API_REFRESH_TOKEN, null)
 
     fun setSeed(seed: String?) = mPrefs.set(PREF_KEY_SEED, seed)
     fun getSeed(): String? = mPrefs.getString(PREF_KEY_SEED, null)
 
-    fun setVerificationLevel(verificationLevel: Int?) = mPrefs.set(PREF_KEY_API_REFRESH_TOKEN, verificationLevel)
-    fun getVerificationLevel(): Int = mPrefs.getInt(PREF_KEY_API_REFRESH_TOKEN, -1)
-
-    //    fun getUserId(): Int? = mPrefs[PREF_KEY_USER_ID, -1]
+  //    fun getUserId(): Int? = mPrefs[PREF_KEY_USER_ID, -1]
     fun setUserId(userId: Int?) = mPrefs.set(PREF_KEY_USER_ID, userId)
     fun getUserId(): Int = mPrefs.getInt(PREF_KEY_USER_ID, -1)
+
+    fun setPin(pin: String?) = mPrefs.set(PREF_KEY_PIN, pin)
+    fun getPin(): String? = mPrefs.getString(PREF_KEY_PIN, null)
 
 
 

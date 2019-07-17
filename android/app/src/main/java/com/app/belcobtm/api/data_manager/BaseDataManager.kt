@@ -13,16 +13,21 @@ import io.reactivex.schedulers.Schedulers
 open class BaseDataManager {
     val api = RetrofitClient.instance.apiInterface
 
-    //use after getting token
-    fun reinitRetrofitClient() {
-        RetrofitClient.instance.initApiInterface()
+    //    //use after getting token
+    fun updateToken() {
+        RetrofitClient.instance.updateToken()
     }
 
     protected fun <T> genObservable(observable: Observable<ServerResponse<T>>): Observable<Optional<T>> {
         return applySchedulers(observable)
             .flatMap { response ->
                 when {
-                    response.error != null -> Observable.error(ServerException(response.error.errorCode, response.error.errorMsg))
+                    response.error != null -> Observable.error(
+                        ServerException(
+                            response.error.errorCode,
+                            response.error.errorMsg
+                        )
+                    )
                     response.response == null -> Observable.just(None)
                     else -> Observable.just(Some(response.response))
                 }

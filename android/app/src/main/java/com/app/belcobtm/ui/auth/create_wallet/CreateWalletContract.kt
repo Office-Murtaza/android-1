@@ -12,7 +12,6 @@ object CreateWalletContract {
 
     interface View : BaseMvpView {
         fun openSmsCodeDialog(error: String? = null)
-        fun showProgress(show: Boolean)
         fun onWalletCreated(seed: String)
     }
 }

@@ -56,7 +56,7 @@ project.ext {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation 'com.android.support:appcompat-v7:28.0.0'
     implementation 'com.android.support:design:28.0.0'
     implementation 'com.android.support:support-annotations:28.0.0'
@@ -70,7 +70,7 @@ dependencies {
     implementation 'androidx.core:core-ktx:1.2.0-alpha02'
 
     //viewpager
-    implementation 'androidx.viewpager2:viewpager2:1.0.0-alpha05'
+    implementation 'androidx.viewpager2:viewpager2:1.0.0-alpha06'
     implementation 'me.relex:circleindicator:2.1.2'
 
     implementation "com.android.support:multidex:1.0.3"
@@ -104,7 +104,7 @@ dependencies {
     // Dagger core
     implementation "com.google.dagger:dagger:$project.duggerVersion"
     kapt "com.google.dagger:dagger-compiler:$project.duggerVersion"
-// Dagger Android
+    // Dagger Android
     implementation "com.google.dagger:dagger-android:$project.duggerVersion"
     implementation "com.google.dagger:dagger-android-support:$project.duggerVersion" // if you use the support libraries
     kapt "com.google.dagger:dagger-android-processor:$project.duggerVersion"
@@ -121,6 +121,8 @@ dependencies {
     implementation "org.jetbrains.anko:anko-commons:$project.anko_version"
     implementation "org.jetbrains.anko:anko-design:$project.anko_version"
 
+    //cryptography
+    implementation 'com.yakivmospan:scytale:1.0.1'
 
 
 }

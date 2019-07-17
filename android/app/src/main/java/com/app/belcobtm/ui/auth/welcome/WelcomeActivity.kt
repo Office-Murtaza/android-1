@@ -10,13 +10,18 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.browser.customtabs.CustomTabsIntent
+import com.app.belcobtm.App
 import com.app.belcobtm.R
+import com.app.belcobtm.db.DbCryptoCoinModel
 import com.app.belcobtm.model.WelcomePagerItem
 import com.app.belcobtm.ui.auth.create_wallet.CreateWalletActivity
+import com.app.belcobtm.ui.auth.recover_wallet.RecoverWalletActivity
+import com.app.belcobtm.ui.coins.balance.BalanceActivity
 import com.app.belcobtm.util.Const.TERMS_URL
+import com.app.belcobtm.util.pref
 import com.google.android.material.snackbar.Snackbar
+import io.realm.Realm
 import kotlinx.android.synthetic.main.activity_welcome.*
-import org.jetbrains.anko.design.snackbar
 
 
 class WelcomeActivity : AppCompatActivity() {
@@ -42,8 +47,21 @@ class WelcomeActivity : AppCompatActivity() {
         contact_support.setOnClickListener { openSupportDialog() }
 
         create_a_new_wallet.setOnClickListener { onClickCreateNewWallet() }
-        login_to_my_wallet.setOnClickListener { onClickLoginMyWallet() }
-        recover_my_wallet.setOnClickListener { showInProgress() }//todo
+        recover_my_wallet.setOnClickListener { startActivity(Intent(this, RecoverWalletActivity::class.java)) }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        App.run {
+            appContext().pref.setSessionApiToken(null)
+            appContext().pref.setRefreshApiToken(null)
+            appContext().pref.setPin(null)
+            appContext().pref.setUserId(null)
+        }
+
+        val realm = Realm.getDefaultInstance()
+        val coinModel = DbCryptoCoinModel()
+        coinModel.delAllCryptoCoin(realm)
     }
 
     private fun openSupportDialog() {
@@ -96,26 +114,12 @@ class WelcomeActivity : AppCompatActivity() {
         clipboard.primaryClip = clip
     }
 
-
     private fun onClickCreateNewWallet() {
         if (accept_terms.isChecked)
             startActivity(Intent(this, CreateWalletActivity::class.java))
         else {
             showAcceptTermsError()
         }
-    }
-
-    private fun onClickLoginMyWallet() {
-        if (accept_terms.isChecked)
-            showInProgress()//todo
-        else {
-            showAcceptTermsError()
-        }
-    }
-
-    //todo remove when not needed
-    private fun showInProgress() {
-        container.snackbar("In progress...")
     }
 
     private fun showAcceptTermsError() {

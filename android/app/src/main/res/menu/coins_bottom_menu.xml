@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/menu_wallet"
+        android:icon="@drawable/ic_menu_wallet"
+        android:title="@string/wallet" />
+
+    <item
+        android:id="@+id/menu_atm"
+        android:icon="@drawable/ic_menu_atm"
+        android:title="@string/atm" />
+
+    <item
+        android:id="@+id/menu_settings"
+        android:icon="@drawable/ic_menu_settings"
+        android:title="@string/settings" />
+</menu>
