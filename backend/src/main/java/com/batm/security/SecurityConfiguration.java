@@ -1,8 +1,6 @@
 package com.batm.security;
 
-
 import javax.annotation.PostConstruct;
-
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.binary.StringUtils;
 import org.springframework.beans.factory.BeanInitializationException;
@@ -19,7 +17,6 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
-
 import com.batm.security.jwt.JWTConfigurer;
 import com.batm.security.jwt.TokenProvider;
 
@@ -28,68 +25,75 @@ import com.batm.security.jwt.TokenProvider;
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
-	private final AuthenticationManagerBuilder authenticationManagerBuilder;
+    private final AuthenticationManagerBuilder authenticationManagerBuilder;
+    private final TokenProvider tokenProvider;
+    private final UserDetailsService userDetailsService;
 
-	private final TokenProvider tokenProvider;
+    public SecurityConfiguration(AuthenticationManagerBuilder authenticationManagerBuilder, TokenProvider tokenProvider,
+                                 UserDetailsService userDetailsService) {
+        this.authenticationManagerBuilder = authenticationManagerBuilder;
+        this.tokenProvider = tokenProvider;
+        this.userDetailsService = userDetailsService;
+    }
 
-	private final UserDetailsService userDetailsService;
+    @PostConstruct
+    public void init() {
+        try {
+            authenticationManagerBuilder.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
+        } catch (Exception e) {
+            throw new BeanInitializationException("Security configuration failed", e);
+        }
+    }
 
-	public SecurityConfiguration(AuthenticationManagerBuilder authenticationManagerBuilder, TokenProvider tokenProvider,
-			UserDetailsService userDetailsService) {
-		this.authenticationManagerBuilder = authenticationManagerBuilder;
-		this.tokenProvider = tokenProvider;
-		this.userDetailsService = userDetailsService;
-	}
+    @Override
+    @Bean
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+        return super.authenticationManagerBean();
+    }
 
-	@PostConstruct
-	public void init() {
-		try {
-			authenticationManagerBuilder.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
-		} catch (Exception e) {
-			throw new BeanInitializationException("Security configuration failed", e);
-		}
-	}
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new PasswordEncoder() {
 
-	@Override
-	@Bean
-	public AuthenticationManager authenticationManagerBean() throws Exception {
-		return super.authenticationManagerBean();
-	}
+            @Override
+            public String encode(CharSequence charSequence) {
+                return Base64.encodeBase64String(charSequence.toString().getBytes());
+            }
 
-	@Bean
-	public PasswordEncoder passwordEncoder() {
-		return new PasswordEncoder() {
-			@Override
-			public String encode(CharSequence charSequence) {
-				return Base64.encodeBase64String(charSequence.toString().getBytes());
-			}
+            @Override
+            public boolean matches(CharSequence charSequence, String s) {
+                return StringUtils.equals(encode(charSequence), s);
+            }
+        };
+    }
 
-			@Override
-			public boolean matches(CharSequence charSequence, String s) {
-				return StringUtils.equals(encode(charSequence), s);
-			}
-		};
-	}
+    @Override
+    public void configure(WebSecurity web) throws Exception {
+        web.ignoring()
+                .antMatchers(HttpMethod.OPTIONS, "/**")
+                .antMatchers("/app/**/*.{js,html}")
+                .antMatchers("/i18n/**")
+                .antMatchers("/content/**")
+                .antMatchers("/swagger-ui/index.html")
+                .antMatchers("/test/**");
+    }
 
-	@Override
-	public void configure(WebSecurity web) throws Exception {
-		web.ignoring().antMatchers(HttpMethod.OPTIONS, "/**").antMatchers("/app/**/*.{js,html}").antMatchers("/i18n/**")
-				.antMatchers("/content/**").antMatchers("/swagger-ui/index.html").antMatchers("/test/**");
-	}
+    @Override
+    public void configure(HttpSecurity http) throws Exception {
+        http.csrf().disable().authorizeRequests()
+                .antMatchers("/api/v1/register").permitAll()
+                .antMatchers("/api/v1/recover").permitAll()
+                .antMatchers("/api/v1/refresh").permitAll()
 
-	@Override
-	public void configure(HttpSecurity http) throws Exception {
-		// @formatter:off
-		http.csrf().disable().authorizeRequests().antMatchers("/api/v1/recover").permitAll()
-				.antMatchers("/api/v1/refresh").permitAll().antMatchers("/api/v1/user/login").permitAll()
-				.antMatchers("/api/v1/twillio/send").permitAll().antMatchers("/api/v1/register").permitAll()
-				.antMatchers("/api/v1/binance/getcurrentprice").permitAll().antMatchers("/api/v1/**").authenticated()
-				.and().exceptionHandling().and().headers().frameOptions().disable().and().sessionManagement()
-				.sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().apply(securityConfigurerAdapter());
-		// @formatter:on
-	}
+                .antMatchers("/api/v1/test/binance/price").permitAll()
+                .antMatchers("/api/v1/test/twilio/send").permitAll()
 
-	private JWTConfigurer securityConfigurerAdapter() {
-		return new JWTConfigurer(tokenProvider);
-	}
+                .antMatchers("/api/v1/**").authenticated()
+                .and().exceptionHandling().and().headers().frameOptions().disable().and().sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().apply(securityConfigurerAdapter());
+    }
+
+    private JWTConfigurer securityConfigurerAdapter() {
+        return new JWTConfigurer(tokenProvider);
+    }
 }

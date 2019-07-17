@@ -6,8 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class BatmApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(BatmApplication.class, args);
-	}
-
+    public static void main(String[] args) {
+        SpringApplication.run(BatmApplication.class, args);
+    }
 }
