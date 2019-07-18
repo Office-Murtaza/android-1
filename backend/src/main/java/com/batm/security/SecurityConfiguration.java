@@ -1,6 +1,7 @@
 package com.batm.security;
 
 import javax.annotation.PostConstruct;
+
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.binary.StringUtils;
 import org.springframework.beans.factory.BeanInitializationException;
@@ -17,6 +18,8 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
+
+import com.batm.repository.TokenRepository;
 import com.batm.security.jwt.JWTConfigurer;
 import com.batm.security.jwt.TokenProvider;
 
@@ -28,12 +31,14 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
     private final TokenProvider tokenProvider;
     private final UserDetailsService userDetailsService;
+    private final TokenRepository tokenRepository;
 
     public SecurityConfiguration(AuthenticationManagerBuilder authenticationManagerBuilder, TokenProvider tokenProvider,
-                                 UserDetailsService userDetailsService) {
+                                 UserDetailsService userDetailsService, TokenRepository tokenRepository) {
         this.authenticationManagerBuilder = authenticationManagerBuilder;
         this.tokenProvider = tokenProvider;
         this.userDetailsService = userDetailsService;
+        this.tokenRepository = tokenRepository;
     }
 
     @PostConstruct
@@ -94,6 +99,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     }
 
     private JWTConfigurer securityConfigurerAdapter() {
-        return new JWTConfigurer(tokenProvider);
+        return new JWTConfigurer(tokenProvider, tokenRepository);
     }
 }

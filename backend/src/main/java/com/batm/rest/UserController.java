@@ -25,10 +25,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.batm.entity.CodeVerification;
 import com.batm.entity.Error;
-import com.batm.entity.RefreshToken;
+import com.batm.entity.Token;
 import com.batm.entity.Response;
 import com.batm.entity.User;
-import com.batm.repository.RefreshTokenRepository;
+import com.batm.repository.TokenRepository;
 import com.batm.rest.vm.LoginVM;
 import com.batm.rest.vm.RefreshVM;
 import com.batm.rest.vm.RegisterVM;
@@ -65,7 +65,7 @@ public class UserController {
     private CodeVerificationService codeVerificationService;
 
     @Autowired
-    private RefreshTokenRepository refreshTokenRepository;
+    private TokenRepository refreshTokenRepository;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -98,7 +98,7 @@ public class UserController {
         twilioComponent.sendOTP(user);
         JWTToken jwt = getJwt(user.getUserId(), register.getPhone(), register.getPassword());
 
-        this.refreshTokenRepository.save(new RefreshToken(jwt.getRefreshToken(), user));
+        this.refreshTokenRepository.save(new Token(jwt.getAccessToken(),jwt.getRefreshToken(), user));
         return Response.ok(jwt);
     }
 
@@ -131,8 +131,9 @@ public class UserController {
 
         twilioComponent.sendOTP(user);
 
-        RefreshToken token = this.refreshTokenRepository.findByUserUserId(user.getUserId());
-        token.setToken(jwt.getRefreshToken());
+        Token token = this.refreshTokenRepository.findByUserUserId(user.getUserId());
+        token.setRefreshToken(jwt.getRefreshToken());
+        token.setAccessToken(jwt.getAccessToken());
         this.refreshTokenRepository.save(token);
         return Response.ok(jwt);
     }
@@ -163,14 +164,15 @@ public class UserController {
     @PostMapping("/refresh")
     public Response refresh(@Valid @RequestBody RefreshVM refreshVM) {
 
-        RefreshToken refreshToken = this.refreshTokenRepository.findByToken(refreshVM.getRefreshToken());
+        Token refreshToken = this.refreshTokenRepository.findByRefreshToken(refreshVM.getRefreshToken());
         if (refreshToken != null) {
             User user = userService.findById(refreshToken.getUser().getUserId());
 
             JWTToken jwt = getJwt(user);
 
-            RefreshToken token = this.refreshTokenRepository.findByUserUserId(user.getUserId());
-            token.setToken(jwt.getRefreshToken());
+            Token token = this.refreshTokenRepository.findByUserUserId(user.getUserId());
+            token.setRefreshToken(jwt.getRefreshToken());
+            token.setAccessToken(jwt.getAccessToken());
             this.refreshTokenRepository.save(token);
             return Response.ok(jwt);
 

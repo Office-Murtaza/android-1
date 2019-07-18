@@ -1,6 +1,7 @@
-CREATE TABLE `w_refresh_token` (
+CREATE TABLE `w_token` (
   `user_id` bigint(20) NOT NULL,
-  `token` varchar(255) DEFAULT NULL,
+  `refresh_token` varchar(255) DEFAULT NULL,
+  `access_token` varchar(255) DEFAULT NULL,
   `created_date` datetime DEFAULT NULL,
   `update_date` datetime DEFAULT NULL,
   PRIMARY KEY (`user_id`),

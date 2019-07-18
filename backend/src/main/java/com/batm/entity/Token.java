@@ -20,8 +20,8 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "w_refresh_token")
-public class RefreshToken extends AbstractAuditingEntity implements Serializable {
+@Table(name = "w_token")
+public class Token extends AbstractAuditingEntity implements Serializable {
 
 	/**
 	 * 
@@ -31,16 +31,19 @@ public class RefreshToken extends AbstractAuditingEntity implements Serializable
 	@Id
 	private Long id;
 
-	private String token;
+	private String refreshToken;
+	
+	private String accessToken;
 
 	@MapsId
 	@OneToOne
 	@JoinColumn(name = "user_id")
 	private User user;
 
-	public RefreshToken(String token, User user) {
+	public Token(String accessToken, String refreshToken, User user) {
 		super();
-		this.token = token;
+		this.accessToken = accessToken;
+		this.refreshToken = refreshToken;
 		this.user = user;
 	}
 

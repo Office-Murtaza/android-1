@@ -1,16 +1,24 @@
 package com.batm.security.jwt;
 
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.util.StringUtils;
-import org.springframework.web.filter.GenericFilterBean;
+import java.io.IOException;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
+import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.util.StringUtils;
+import org.springframework.web.filter.GenericFilterBean;
+
+import com.batm.entity.AccessDenied;
+import com.batm.entity.Token;
+import com.batm.repository.TokenRepository;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * Filters incoming requests and installs a Spring Security principal if a header corresponding to a valid user is
@@ -21,9 +29,12 @@ public class JWTFilter extends GenericFilterBean {
     public static final String AUTHORIZATION_HEADER = "Authorization";
 
     private TokenProvider tokenProvider;
+    
+    private TokenRepository tokenRepository;
 
-    public JWTFilter(TokenProvider tokenProvider) {
+    public JWTFilter(TokenProvider tokenProvider, TokenRepository tokenRepository) {
         this.tokenProvider = tokenProvider;
+        this.tokenRepository = tokenRepository;
     }
 
     @Override
@@ -31,10 +42,19 @@ public class JWTFilter extends GenericFilterBean {
         throws IOException, ServletException {
         HttpServletRequest httpServletRequest = (HttpServletRequest) servletRequest;
         String jwt = resolveToken(httpServletRequest);
-        if (StringUtils.hasText(jwt) && this.tokenProvider.validateToken(jwt)) {
-            Authentication authentication = this.tokenProvider.getAuthentication(jwt);
-            SecurityContextHolder.getContext().setAuthentication(authentication);
-        }
+		if (StringUtils.hasText(jwt) && this.tokenProvider.validateToken(jwt)) {
+			Token token = tokenRepository.findByAccessToken(jwt);
+			if (token == null) {
+				HttpServletResponse response = (HttpServletResponse) servletResponse;
+				response.addHeader("Content-Type", "application/json;charset=UTF-8");
+				response.setStatus(HttpStatus.FORBIDDEN.value());
+				ObjectMapper mapper = new ObjectMapper();
+				response.getWriter().write(mapper.writeValueAsString(new AccessDenied(403, "Invalid access token")));
+				return;
+			}
+			Authentication authentication = this.tokenProvider.getAuthentication(jwt);
+			SecurityContextHolder.getContext().setAuthentication(authentication);
+		}
         filterChain.doFilter(servletRequest, servletResponse);
     }
 
@@ -45,4 +65,5 @@ public class JWTFilter extends GenericFilterBean {
         }
         return null;
     }
+    
 }
