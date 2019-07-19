@@ -7,13 +7,13 @@ import javax.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.batm.dto.UserCoinDTO;
 import com.batm.entity.Coin;
 import com.batm.entity.User;
 import com.batm.entity.UserCoin;
 import com.batm.repository.CoinRepository;
 import com.batm.repository.UserCoinRepository;
 import com.batm.repository.UserRepository;
-import com.batm.rest.vm.CoinVM;
 
 @Service
 public class UserCoinService {
@@ -74,10 +74,10 @@ public class UserCoinService {
 
 	}
 
-	public void save(CoinVM coinVM, Long userId) {
+	public void save(List<UserCoinDTO> userCoins, Long userId) {
 		User user = userRepository.getOne(userId);
 
-		coinVM.getCoins().stream().forEach(coinDTO -> {
+		userCoins.stream().forEach(coinDTO -> {
 			Coin code = coinRepository.findById(coinDTO.getCoinCode());
 			UserCoin userCoin = new UserCoin(user, code, coinDTO.getPublicKey());
 			userCoinRepository.save(userCoin);
