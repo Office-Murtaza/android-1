@@ -6,7 +6,7 @@ import com.batm.entity.CodeVerification;
 import com.batm.repository.CodeVerificationRepository;
 
 @Service
-public class CodeVerificationService {
+public class VerificationService {
 
     @Autowired
     private CodeVerificationRepository codeValidatorRepository;
