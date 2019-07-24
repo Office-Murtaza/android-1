@@ -39,4 +39,15 @@
 "pin_code.setup.title" = "Setup PIN Code";
 "pin_code.verification.title" = "Enter PIN Code";
 
-"coins_balance.title" = "Total Balance:";
+"coins_balance.title" = "Wallet";
+"coins_balance.total_balance" = "Total Balance:";
+"coins_balance.footer.title" = "Add Wallets";
+
+"filter_coins.title" = "Add Wallets";
+"filter_coins.show" = "Show";
+"filter_coins.hide" = "Hide";
+
+"atm.title" = "ATM";
+"atm.info_window.open_now" = "Open Now:";
+
+"settings.title" = "Settings";

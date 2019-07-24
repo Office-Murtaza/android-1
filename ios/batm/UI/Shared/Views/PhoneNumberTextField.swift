@@ -3,7 +3,9 @@ import RxSwift
 import RxCocoa
 import FlagPhoneNumber
 
-class PhoneNumberTextField: FPNTextField {
+class PhoneNumberTextField: FPNTextField, FPNTextFieldDelegate {
+  
+  let phoneNumberRelay = BehaviorRelay<String?>(value: nil)
   
   let imageView = UIImageView(image: UIImage(named: "login_phone"))
   
@@ -22,6 +24,8 @@ class PhoneNumberTextField: FPNTextField {
   
   private func setupUI() {
     translatesAutoresizingMaskIntoConstraints = false
+    
+    delegate = self
     
     textColor = .warmGrey
     font = .poppinsMedium12
@@ -45,4 +49,21 @@ class PhoneNumberTextField: FPNTextField {
     }
   }
   
+  func fpnDidValidatePhoneNumber(textField: FPNTextField, isValid: Bool) {
+    guard isValid else {
+      phoneNumberRelay.accept(textField.text)
+      return
+    }
+    
+    phoneNumberRelay.accept(textField.getFormattedPhoneNumber(format: .E164))
+  }
+  
+  func fpnDidSelectCountry(name: String, dialCode: String, code: String) {}
+  
+}
+
+extension Reactive where Base == PhoneNumberTextField {
+  var phoneNumber: Driver<String?> {
+    return base.phoneNumberRelay.asDriver()
+  }
 }

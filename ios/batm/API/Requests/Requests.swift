@@ -66,12 +66,12 @@ struct AddCoinsRequest: AuthorizedAPIRequest {
   typealias ResponseTrait = SingleResponseTrait
   
   let userId: Int
-  let coins: [CoinAddress]
+  let coinAddresses: [CoinAddress]
   
   var path: String { return "/user/\(userId)/coins/add" }
   var method: HTTPMethod { return .post }
   var task: HTTPTask {
-    return .requestParameters(parameters: ["coins": coins.toJSON()],
+    return .requestParameters(parameters: ["coins": coinAddresses.toJSON()],
                               encoding: JSONEncoding.default)
   }
 }
@@ -83,6 +83,17 @@ struct CoinsBalanceRequest: AuthorizedAPIRequest {
   let userId: Int
   
   var path: String { return "/user/\(userId)/coins/balance" }
+  var method: HTTPMethod { return .get }
+  var task: HTTPTask {
+    return .requestPlain
+  }
+}
+
+struct MapAddressesRequest: AuthorizedAPIRequest {
+  typealias ResponseType = APIResponse<MapAddresses>
+  typealias ResponseTrait = SingleResponseTrait
+  
+  var path: String { return "/static/atm/address" }
   var method: HTTPMethod { return .get }
   var task: HTTPTask {
     return .requestPlain

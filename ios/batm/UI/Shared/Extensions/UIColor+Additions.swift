@@ -10,6 +10,14 @@ extension UIColor {
     return UIColor(white: 124.0 / 255.0, alpha: 1.0)
   }
   
+  @nonobjc class var warmGreyThree: UIColor {
+    return UIColor(white: 152.0 / 255.0, alpha: 1.0)
+  }
+  
+  @nonobjc class var warmGreyFour: UIColor {
+    return UIColor(white: 155.0 / 255.0, alpha: 1.0)
+  }
+  
   @nonobjc class var white: UIColor {
     return UIColor(white: 1.0, alpha: 1.0)
   }

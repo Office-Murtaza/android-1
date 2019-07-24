@@ -1,16 +1,15 @@
 import RxFlow
 import RxSwift
 
-class MainFlow: BaseFlow<BTMNavigationController, MainFlowController> {
+class MainFlow: BaseFlow<BTMTabBarController, MainFlowController> {
   override func assemblies() -> [Assembly] {
     return [
-      Dependencies(),
-      CoinsBalanceAssembly()
+      Dependencies()
     ]
   }
   
   enum Steps: Step, Equatable {
-    case coinsBalance
+    case main
   }
   
   override func route(to step: Step) -> NextFlowItems {
@@ -21,9 +20,13 @@ class MainFlow: BaseFlow<BTMNavigationController, MainFlowController> {
   
   private func handleFlow(step: Steps) -> NextFlowItems {
     switch step {
-    case .coinsBalance:
-      let module = resolver.resolve(Module<CoinsBalanceModule>.self)!
-      return replaceRoot(module.controller, animated: false)
+    case .main:
+      let coinsBalance = CoinsBalanceFlow(view: BTMNavigationController(), parent: self)
+      let atm = ATMFlow(view: BTMNavigationController(), parent: self)
+      let settings = SettingsFlow(view: BTMNavigationController(), parent: self)
+      
+      return setTabs(with: [coinsBalance, atm, settings],
+                     steppers: [coinsBalance.stepper, atm.stepper, settings.stepper])
     }
   }
 }

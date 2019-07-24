@@ -41,6 +41,6 @@ public class User extends AbstractAuditingEntity implements Serializable {
 	private CodeVerification codeVerification;
 
 	@OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
-	private RefreshToken refreshToken;
+	private Token refreshToken;
 
 }

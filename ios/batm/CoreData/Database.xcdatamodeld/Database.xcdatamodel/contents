@@ -6,13 +6,15 @@
         <attribute name="refreshToken" attributeType="String" syncable="YES"/>
         <attribute name="userId" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
     </entity>
+    <entity name="BTMCoinRecord" representedClassName="BTMCoinRecord" syncable="YES">
+        <attribute name="privateKey" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="publicKey" attributeType="String" syncable="YES"/>
+        <attribute name="type" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="visible" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
+    </entity>
     <entity name="BTMWalletRecord" representedClassName="BTMWalletRecord" syncable="YES">
         <attribute name="seedPhrase" attributeType="String" syncable="YES"/>
-        <relationship name="coinAddresses" toMany="YES" deletionRule="Cascade" destinationEntity="CoinAddressRecord" syncable="YES"/>
-    </entity>
-    <entity name="CoinAddressRecord" representedClassName="CoinAddressRecord" syncable="YES">
-        <attribute name="address" attributeType="String" syncable="YES"/>
-        <attribute name="type" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <relationship name="coins" toMany="YES" deletionRule="Cascade" destinationEntity="BTMCoinRecord" syncable="YES"/>
     </entity>
     <entity name="PinCodeRecord" representedClassName="PinCodeRecord" syncable="YES">
         <attribute name="pinCode" attributeType="String" syncable="YES"/>
@@ -20,7 +22,7 @@
     <elements>
         <element name="AccountRecord" positionX="-63" positionY="-18" width="128" height="105"/>
         <element name="BTMWalletRecord" positionX="-36" positionY="36" width="128" height="75"/>
-        <element name="CoinAddressRecord" positionX="-54" positionY="18" width="128" height="75"/>
+        <element name="BTMCoinRecord" positionX="-54" positionY="18" width="128" height="105"/>
         <element name="PinCodeRecord" positionX="-45" positionY="36" width="128" height="60"/>
     </elements>
 </model>

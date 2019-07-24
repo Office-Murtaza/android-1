@@ -65,7 +65,7 @@ class CreateWalletPresenter: ModulePresenter, CreateWalletModule {
       .doOnNext { [store] in store.action.accept(.updateValidationState) }
       .withLatestFrom(state)
       .filter { $0.validationState.isValid }
-      .map { ($0.notFormattedPhoneNumber, $0.password) }
+      .map { ($0.phoneNumber, $0.password) }
       .flatMap { [unowned self] in self.track(self.createAccount(phoneNumber: $0.0, password: $0.1)) }
       .subscribe(onNext: { [store] in store.action.accept(.showCodePopup) })
       .disposed(by: disposeBag)

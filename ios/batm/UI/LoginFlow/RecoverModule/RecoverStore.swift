@@ -19,11 +19,6 @@ struct RecoverState: Equatable {
   var validationState: ValidationState = .unknown
   var shouldShowCodePopup: Bool = false
   
-  var notFormattedPhoneNumber: String {
-    guard let phoneNumber = try? PhoneNumberKit.default.parse(self.phoneNumber) else { return "" }
-    return PhoneNumberKit.default.format(phoneNumber, toType: .e164)
-  }
-  
 }
 
 final class RecoverStore: ViewStore<RecoverAction, RecoverState> {
@@ -36,7 +31,7 @@ final class RecoverStore: ViewStore<RecoverAction, RecoverState> {
     var state = state
     
     switch action {
-    case let .updatePhoneNumber(phoneNumber): state.phoneNumber = PartialFormatter.default.formatPartial(phoneNumber ?? "")
+    case let .updatePhoneNumber(phoneNumber): state.phoneNumber = phoneNumber ?? ""
     case let .updatePassword(password): state.password = password ?? ""
     case let .updateCode(code): state.code = code ?? ""
     case .updateValidationState: state.validationState = validate(state)

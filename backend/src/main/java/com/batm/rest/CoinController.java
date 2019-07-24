@@ -7,6 +7,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,11 +15,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
 import com.batm.dto.CoinBalanceResponseDTO;
 import com.batm.dto.Price;
 import com.batm.dto.UserCoinDTO;
 import com.batm.entity.Response;
+import com.batm.entity.User;
 import com.batm.entity.UserCoin;
+import com.batm.repository.UserRepository;
 import com.batm.rest.vm.CoinBalanceVM;
 import com.batm.rest.vm.CoinVM;
 import com.batm.service.UserCoinService;
@@ -30,6 +34,9 @@ public class CoinController {
 
     @Autowired
     private UserCoinService userCoinService;
+    
+	@Autowired
+	private UserRepository userRepository;
 
     @Autowired
     private BinanceApiRestClient binanceApiRestClient;
@@ -39,8 +46,20 @@ public class CoinController {
         if (coinVM == null || coinVM.getCoins().isEmpty()) {
             return Response.error(new com.batm.entity.Error(1, "Empty coin list."));
         }
+        
+        User user = userRepository.getOne(userId);
+        List<UserCoinDTO> newUserCoins = new ArrayList<>();
+        for (UserCoinDTO coinDTO : coinVM.getCoins()) {
+			UserCoin userCoin = userCoinService.getCoinWithUserIdAndCoinCode(user.getUserId(), coinDTO.getCoinCode());
+			if(userCoin == null) {
+				newUserCoins.add(coinDTO);
+			}
+		}
+        if (newUserCoins.isEmpty()) {
+            return Response.error(new com.batm.entity.Error(1, "User coins already set up"));
+        }
         try {
-            userCoinService.save(coinVM, userId);
+            userCoinService.save(newUserCoins, userId);
         } catch (Exception e) {
             return Response.error(new com.batm.entity.Error(1, "Something has been wrong."));
         }
