@@ -17,8 +17,9 @@ protocol APIGateway {
   func createAccount(phoneNumber: String, password: String) -> Single<Account>
   func recoverWallet(phoneNumber: String, password: String) -> Single<Account>
   func verifyCode(userId: Int, code: String) -> Completable
-  func addCoins(userId: Int, coins: [CoinAddress]) -> Completable
+  func addCoins(userId: Int, coinAddresses: [CoinAddress]) -> Completable
   func getCoinsBalance(userId: Int) -> Single<CoinsBalance>
+  func getMapAddresses() -> Single<MapAddresses>
   
 }
 
@@ -69,8 +70,8 @@ final class APIGatewayImpl: APIGateway {
       .toCompletable()
   }
   
-  func addCoins(userId: Int, coins: [CoinAddress]) -> Completable {
-    let request = AddCoinsRequest(userId: userId, coins: coins)
+  func addCoins(userId: Int, coinAddresses: [CoinAddress]) -> Completable {
+    let request = AddCoinsRequest(userId: userId, coinAddresses: coinAddresses)
     return api.execute(request)
       .map { apiResponse -> Void in
         switch apiResponse {
@@ -94,6 +95,19 @@ final class APIGatewayImpl: APIGateway {
           return Single.error(error)
         }
       }
+  }
+  
+  func getMapAddresses() -> Single<MapAddresses> {
+    let request = MapAddressesRequest()
+    return api.execute(request)
+      .flatMap {
+        switch $0 {
+        case let .response(response):
+          return Single.just(response)
+        case let .error(error):
+          return Single.error(error)
+        }
+    }
   }
   
 }

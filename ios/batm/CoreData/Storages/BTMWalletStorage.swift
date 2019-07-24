@@ -5,6 +5,7 @@ import RxSwift
 protocol BTMWalletStorage: ClearOnLogoutStorage {
   func save(wallet: BTMWallet) -> Completable
   func get() -> Single<BTMWallet>
+  func changeVisibility(of coin: BTMCoin) -> Completable
   func delete() -> Completable
 }
 
@@ -19,6 +20,12 @@ class BTMWalletStorageImpl: CoreDataStorage<BTMWalletStorageUtils>, BTMWalletSto
   func get() -> Single<BTMWallet> {
     return fetch {
       return try $0.get()
+    }
+  }
+  
+  func changeVisibility(of coin: BTMCoin) -> Completable {
+    return save {
+      try $0.changeVisibility(of: coin)
     }
   }
   
@@ -54,6 +61,20 @@ class BTMWalletStorageUtils: StorageUtils {
     }
     
     return try converter.convert(model: walletRecord)
+  }
+  
+  func changeVisibility(of coin: BTMCoin) throws {
+    guard let walletRecord = try BTMWalletRecord.fetchFirst(in: context) else {
+      throw StorageError.notFound
+    }
+    
+    
+    let coinRecord = walletRecord.coins.first { $0.type == coin.type.rawValue }
+    guard let unwrappedCoinRecord = coinRecord else {
+      throw StorageError.notFound
+    }
+    
+    unwrappedCoinRecord.visible.toggle()
   }
   
   func delete() throws {

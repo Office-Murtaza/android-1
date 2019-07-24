@@ -6,10 +6,12 @@ protocol MainFlowControllerDelegate: class {}
 
 class MainFlowController: FlowController, FlowActivator {
   
-  var initialStep: Step = MainFlow.Steps.coinsBalance
+  var initialStep: Step = MainFlow.Steps.main
   
   weak var delegate: MainFlowControllerDelegate?
   
 }
 
-extension MainFlowController: CoinsBalanceModuleDelegate {}
+extension MainFlowController: CoinsBalanceFlowControllerDelegate {}
+extension MainFlowController: ATMFlowControllerDelegate {}
+extension MainFlowController: SettingsFlowControllerDelegate {}
