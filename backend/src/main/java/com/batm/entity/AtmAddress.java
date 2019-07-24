@@ -1,7 +1,7 @@
 package com.batm.entity;
 
 import java.math.BigDecimal;
-import java.util.Set;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -41,7 +41,7 @@ public class AtmAddress extends AbstractAuditingEntity{
 	
 	@JsonManagedReference
 	@OneToMany(mappedBy="atmAddress")
-    private Set<OpenHour> openHours;
+    private List<OpenHour> openHours;
 	
 	
 }
