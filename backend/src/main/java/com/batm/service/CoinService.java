@@ -12,6 +12,7 @@ import com.batm.dto.Price;
 import com.batm.rest.vm.CoinBalanceVM;
 import com.batm.util.Util;
 import com.binance.api.client.BinanceApiRestClient;
+import com.binance.dex.api.client.BinanceDexApiRestClient;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +40,7 @@ public class CoinService {
     private UserRepository userRepository;
 
     private static BinanceApiRestClient binance;
+    private static BinanceDexApiRestClient binanceDex;
     private static RestTemplate rest;
 
     private static String btcUrl;
@@ -48,6 +50,7 @@ public class CoinService {
     private static String trxUrl;
 
     public CoinService(@Autowired final BinanceApiRestClient binance,
+                       @Autowired final BinanceDexApiRestClient binanceDex,
                        @Autowired final RestTemplate rest,
                        @Value("${btc.url}") final String btcUrl,
                        @Value("${eth.url}") final String ethUrl,
@@ -56,6 +59,7 @@ public class CoinService {
                        @Value("${trx.url}") final String trxUrl) {
 
         this.binance = binance;
+        this.binanceDex = binanceDex;
         this.rest = rest;
         this.btcUrl = btcUrl;
         this.ethUrl = ethUrl;
@@ -121,7 +125,9 @@ public class CoinService {
 
             @Override
             public BigDecimal getBalance(String address) {
-                return BigDecimal.ZERO;
+                //address = "bnb1pv5vycd4xe3nu0msrewgf9tmfvam8yr3x6j97q";
+
+                return getBinanceDEXBalance(address);
             }
         }, XRP {
             @Override
@@ -221,6 +227,22 @@ public class CoinService {
             if (!data.isEmpty()) {
                 return new BigDecimal(data.getJSONObject(0).getString("balance")).divide(BigDecimal.valueOf(divider)).setScale(2, RoundingMode.DOWN);
             }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return BigDecimal.ZERO;
+    }
+
+    private static BigDecimal getBinanceDEXBalance(String address) {
+        try {
+            return binanceDex
+                    .getAccount(address)
+                    .getBalances()
+                    .stream()
+                    .filter(e -> "BNB".equals(e.getSymbol()))
+                    .map(it -> new BigDecimal(it.getFree()).add(new BigDecimal(it.getLocked())))
+                    .reduce(BigDecimal.ZERO, BigDecimal::add).setScale(2, RoundingMode.DOWN);
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -119,6 +119,11 @@
             <artifactId>binance-java-api</artifactId>
             <version>e038355e51</version>
         </dependency>
+        <dependency>
+            <groupId>com.binance.dex.api</groupId>
+            <artifactId>binance-dex-api-client</artifactId>
+            <version>1.0.3</version>
+        </dependency>
     </dependencies>
 
     <repositories>
