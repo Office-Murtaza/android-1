@@ -13,7 +13,7 @@ class WelcomePresenter: ModulePresenter, WelcomeModule {
   
   func bind(input: Input) {
     input.openTermsAndConditions
-      .drive(onNext: { UIApplication.shared.open(API.privacyPolicyURL) })
+      .drive(onNext: { UIApplication.shared.open(URL.privacyPolicy) })
       .disposed(by: disposeBag)
     
     input.create

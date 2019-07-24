@@ -21,7 +21,8 @@ class PinCodeServiceImpl: PinCodeService, PinCodeVerificationModuleDelegate {
         topRootViewController = topRootViewController.presentedViewController!
       }
       
-      guard !self.module.controller.isBeingPresented else { return }
+      guard !self.module.controller.isBeingPresented &&
+        self.module.controller.presentingViewController == nil else { return }
       
       topRootViewController.present(self.module.controller, animated: true, completion: nil)
     }

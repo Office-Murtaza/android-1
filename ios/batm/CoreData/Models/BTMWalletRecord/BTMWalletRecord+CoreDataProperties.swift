@@ -8,7 +8,7 @@ extension BTMWalletRecord: ActiveRecord {
   }
   
   @NSManaged public var seedPhrase: String
-  @NSManaged public var coinAddresses: Set<CoinAddressRecord>
+  @NSManaged public var coins: Set<BTMCoinRecord>
   
 }
 
@@ -18,9 +18,9 @@ extension ActiveRecord where Self: BTMWalletRecord {
     let predicate = NSPredicate(format: "seedPhrase == %@", wallet.seedPhrase)
     let element = try fetchFirstOrCreate(matching: predicate, in: context)
     element.seedPhrase = wallet.seedPhrase
-    element.coinAddresses.forEach { context.delete($0) }
-    element.coinAddresses = try Set(wallet.coinAddresses.map {
-      try CoinAddressRecord.create(in: context, coinAddress: $0)
+    element.coins.forEach { context.delete($0) }
+    element.coins = try Set(wallet.coins.map {
+      try BTMCoinRecord.create(in: context, coin: $0)
     })
     return element
   }

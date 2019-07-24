@@ -2,6 +2,6 @@ import Foundation
 
 struct CoinsBalance: Equatable {
   let totalBalance: Double
-  let coins: [CoinBalance]
+  var coins: [CoinBalance]
 }
 

@@ -172,12 +172,6 @@ class CreateWalletViewController: ModuleViewController<CreateWalletPresenter> {
   private func setupUIBindings() {
     presenter.state
       .asObservable()
-      .map { $0.phoneNumber }
-      .bind(to: formView.phoneNumberTextField.rx.text)
-      .disposed(by: disposeBag)
-    
-    presenter.state
-      .asObservable()
       .map { $0.password }
       .bind(to: formView.passwordTextField.rx.text)
       .disposed(by: disposeBag)
@@ -234,7 +228,7 @@ class CreateWalletViewController: ModuleViewController<CreateWalletPresenter> {
   override func setupBindings() {
     setupUIBindings()
     
-    let updatePhoneNumberDriver = formView.phoneNumberTextField.rx.text.asDriver()
+    let updatePhoneNumberDriver = formView.phoneNumberTextField.rx.phoneNumber
     let updatePasswordDriver = formView.passwordTextField.rx.text.asDriver()
     let updateConfirmPasswordDriver = formView.confirmPasswordTextField.rx.text.asDriver()
     let updateCodeDriver = codeView.smsCodeTextField.rx.text.asDriver()

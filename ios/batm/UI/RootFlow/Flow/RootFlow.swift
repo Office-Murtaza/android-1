@@ -30,7 +30,7 @@ class RootFlow: BaseFlow<UIWindow, RootFlowController> {
       module.input.setup(for: .verification)
       return replaceRoot(with: module)
     case .main:
-      let mainFlow = MainFlow(view: BTMNavigationController(), parent: self)
+      let mainFlow = MainFlow(view: BTMTabBarController(), parent: self)
       return replaceRoot(with: mainFlow)
     }
   }
