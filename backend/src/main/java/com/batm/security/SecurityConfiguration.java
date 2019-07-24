@@ -1,7 +1,6 @@
 package com.batm.security;
 
 import javax.annotation.PostConstruct;
-
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.binary.StringUtils;
 import org.springframework.beans.factory.BeanInitializationException;
@@ -18,7 +17,6 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
-
 import com.batm.repository.TokenRepository;
 import com.batm.security.jwt.JWTConfigurer;
 import com.batm.security.jwt.TokenProvider;

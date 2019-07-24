@@ -38,7 +38,7 @@ import com.batm.security.jwt.JWTFilter;
 import com.batm.security.jwt.TokenProvider;
 import com.batm.service.VerificationService;
 import com.batm.service.UserService;
-import com.batm.util.Constants;
+import com.batm.util.Constant;
 import com.batm.util.TwilioComponent;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -78,7 +78,7 @@ public class UserController {
 
     @PostMapping("/register")
     public Response registerAccount(@Valid @RequestBody RegisterVM register) {
-        Pattern pattern = Pattern.compile(Constants.REGEX_PHONE);
+        Pattern pattern = Pattern.compile(Constant.REGEX_PHONE);
 
         Matcher matcher = pattern.matcher(register.getPhone());
         if (!matcher.matches()) {
@@ -104,7 +104,7 @@ public class UserController {
 
     @PostMapping("/recover")
     public Response recoverAccount(@Valid @RequestBody LoginVM loginVM) {
-        Pattern pattern = Pattern.compile(Constants.REGEX_PHONE);
+        Pattern pattern = Pattern.compile(Constant.REGEX_PHONE);
 
         Matcher matcher = pattern.matcher(loginVM.getPhone());
         if (!matcher.matches()) {
@@ -211,8 +211,8 @@ public class UserController {
     }
 
     private static boolean checkPasswordLength(String password) {
-        return !StringUtils.isEmpty(password) && password.length() >= Constants.PASSWORD_MIN_LENGTH
-                && password.length() <= Constants.PASSWORD_MAX_LENGTH;
+        return !StringUtils.isEmpty(password) && password.length() >= Constant.PASSWORD_MIN_LENGTH
+                && password.length() <= Constant.PASSWORD_MAX_LENGTH;
     }
 
     @Getter
