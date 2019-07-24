@@ -2,6 +2,7 @@ package com.batm.service;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
@@ -152,6 +153,10 @@ public class CoinService {
     }
 
     public CoinBalanceVM getCoinsBalance(Long userId, List<String> coins) {
+        if (coins == null || coins.isEmpty()) {
+            return new CoinBalanceVM(userId, new ArrayList<>(), new Price(BigDecimal.ZERO));
+        }
+
         List<UserCoin> userCoins = userCoinRepository.findByUserUserId(userId);
 
         List<CompletableFuture<CoinBalanceDTO>> futures = userCoins.stream()
@@ -213,7 +218,7 @@ public class CoinService {
             JSONObject res = rest.getForObject(url + "/v1/accounts/" + address, JSONObject.class);
             JSONArray data = res.getJSONArray("data");
 
-            if(!data.isEmpty()) {
+            if (!data.isEmpty()) {
                 return new BigDecimal(data.getJSONObject(0).getString("balance")).divide(BigDecimal.valueOf(divider)).setScale(2, RoundingMode.DOWN);
             }
         } catch (Exception e) {

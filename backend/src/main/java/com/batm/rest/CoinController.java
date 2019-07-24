@@ -64,12 +64,8 @@ public class CoinController {
     }
 
     @GetMapping("/user/{userId}/coins/balance")
-    public Response getCoinsBalance(@PathVariable Long userId, @RequestParam List<String> coins) {
+    public Response getCoinsBalance(@PathVariable Long userId, @RequestParam(required = false) List<String> coins) {
         try {
-            if (coins.isEmpty()) {
-                return Response.error(new com.batm.entity.Error(2, "Empty coin list"));
-            }
-
             return Response.ok(coinService.getCoinsBalance(userId, coins));
         } catch (Exception e) {
             e.printStackTrace();
