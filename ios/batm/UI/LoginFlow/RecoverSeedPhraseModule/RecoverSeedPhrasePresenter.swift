@@ -27,7 +27,7 @@ class RecoverSeedPhrasePresenter: ModulePresenter, RecoverSeedPhraseModule {
       .map { $0.map { $0.trimmingCharacters(in: .whitespaces) } }
       .map { $0.joined(separator: " ") }
       .asObservable()
-      .flatMap { [usecase] in usecase.recoverWallet(seedPhrase: $0).andThen(Observable.just(())) }
+      .flatMap { [unowned self] in self.track(self.usecase.recoverWallet(seedPhrase: $0)) }
       .subscribe(onNext: { [delegate] in delegate?.finishRecoveringSeedPhrase() })
       .disposed(by: disposeBag)
   }

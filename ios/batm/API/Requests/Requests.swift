@@ -81,11 +81,13 @@ struct CoinsBalanceRequest: AuthorizedAPIRequest {
   typealias ResponseTrait = SingleResponseTrait
   
   let userId: Int
+  let coins: [BTMCoin]
   
   var path: String { return "/user/\(userId)/coins/balance" }
   var method: HTTPMethod { return .get }
   var task: HTTPTask {
-    return .requestPlain
+    return .requestParameters(parameters: ["coins": coins.map { $0.type.code }],
+                              encoding: URLEncoding.customDefault)
   }
 }
 

@@ -20,24 +20,11 @@ class CoinsBalanceUsecaseImpl: CoinsBalanceUsecase {
   }
   
   func getCoinsBalance() -> Single<CoinsBalance> {
-    let coinsBalanceObservable = accountStorage.get()
-      .flatMap { [api] in api.getCoinsBalance(userId: $0.userId) }
+    return walletStorage.get()
       .asObservable()
-    
-    let walletObservable = walletStorage.get().asObservable()
-    
-    return Observable.combineLatest(coinsBalanceObservable, walletObservable)
-      .map { (coinsBalance, wallet) -> CoinsBalance in
-        var filteredCoinsBalance = coinsBalance
-        
-        filteredCoinsBalance.coins = filteredCoinsBalance.coins.filter { coinBalance in
-          return wallet.coins.contains { coin in
-            coin.type == coinBalance.type && coin.isVisible
-          }
-        }
-        
-        return filteredCoinsBalance
-      }
+      .map { $0.coins.filter { $0.isVisible } }
+      .withLatestFrom(accountStorage.get()) { ($1, $0) }
+      .flatMap { [api] in api.getCoinsBalance(userId: $0.userId, coins: $1) }
       .asSingle()
   }
   

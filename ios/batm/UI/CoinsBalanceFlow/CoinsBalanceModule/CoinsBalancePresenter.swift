@@ -40,7 +40,7 @@ class CoinsBalancePresenter: ModulePresenter, CoinsBalanceModule {
     input.refresh
       .asObservable()
       .doOnNext { [store] in store.action.accept(.startFetching) }
-      .flatMap { [usecase] in usecase.getCoinsBalance() }
+      .flatMap { [unowned self] in self.track(self.usecase.getCoinsBalance()) }
       .map { CoinsBalanceAction.finishFetching($0) }
       .bind(to: store.action)
       .disposed(by: disposeBag)

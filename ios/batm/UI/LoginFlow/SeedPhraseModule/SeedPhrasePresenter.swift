@@ -18,7 +18,7 @@ class SeedPhrasePresenter: ModulePresenter, SeedPhraseModule {
     
     super.init()
     
-    usecase.getSeedPhrase()
+    self.track(usecase.getSeedPhrase())
       .asObservable()
       .bind(to: seedPhraseRelay)
       .disposed(by: disposeBag)

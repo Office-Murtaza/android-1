@@ -30,7 +30,7 @@ class ATMPresenter: ModulePresenter, ATMModule {
   }
   
   private func fetchMapAddresses() {
-    usecase.getMapAddresses()
+    self.track(usecase.getMapAddresses())
       .asObservable()
       .map { ATMAction.updateMapAddresses($0) }
       .bind(to: store.action)

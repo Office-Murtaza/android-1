@@ -27,7 +27,8 @@ class FilterCoinsPresenter: ModulePresenter, FilterCoinsModule {
     
     super.init()
     
-    fetchCoins()
+    self.track(fetchCoins())
+      .asObservable()
       .bind(to: store.action)
       .disposed(by: disposeBag)
   }
