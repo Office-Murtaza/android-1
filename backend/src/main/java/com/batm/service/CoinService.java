@@ -7,25 +7,30 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
-import com.batm.dto.CoinBalanceDTO;
-import com.batm.dto.Price;
-import com.batm.rest.vm.CoinBalanceVM;
-import com.batm.util.Util;
-import com.binance.api.client.BinanceApiRestClient;
-import com.binance.dex.api.client.BinanceDexApiRestClient;
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
+
+import com.batm.dto.CoinBalanceDTO;
+import com.batm.dto.Price;
+import com.batm.dto.UserCoinDTO;
 import com.batm.entity.Coin;
+import com.batm.entity.Response;
 import com.batm.entity.User;
 import com.batm.entity.UserCoin;
 import com.batm.repository.CoinRepository;
 import com.batm.repository.UserCoinRepository;
 import com.batm.repository.UserRepository;
+import com.batm.rest.vm.CoinBalanceVM;
 import com.batm.rest.vm.CoinVM;
-import org.springframework.web.client.RestTemplate;
+import com.batm.util.Util;
+import com.binance.api.client.BinanceApiRestClient;
+import com.binance.dex.api.client.BinanceDexApiRestClient;
+
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
 
 @Service
 public class CoinService {
@@ -197,16 +202,58 @@ public class CoinService {
             return new CoinBalanceDTO(userCoin.getCoin().getId(), userCoin.getPublicKey(), coinBalance, new Price(coinPrice), userCoin.getCoin().getOrderIndex());
         });
     }
+    
+    private Coin getCoin(List<Coin> coins, String coinCode) {
+    	Coin coin = null;
+    	int index = coins.indexOf(new Coin(coinCode));
+    	if(index >= 0) {
+    		coin = coins.get(index);
+    	}
+    	return coin;
+    }
 
     public void save(CoinVM coinVM, Long userId) {
         User user = userRepository.getOne(userId);
-
+        List<Coin> coins = this.coinRepository.findAll();
+        List<UserCoin> userCoins = this.userCoinRepository.findAll();
+        
+        List<UserCoin> newCoins = new ArrayList<>();
         coinVM.getCoins().stream().forEach(coinDTO -> {
-            Coin code = coinRepository.findById(coinDTO.getCoinCode());
-            UserCoin userCoin = new UserCoin(user, code, coinDTO.getPublicKey());
-            userCoinRepository.save(userCoin);
+        	Coin coin = getCoin(coins, coinDTO.getCoinCode());
+			if (coin != null) {
+				UserCoin userCoin = new UserCoin(user, coin, coinDTO.getPublicKey());
+				if (userCoins.indexOf(userCoin) < 0) {
+					newCoins.add(userCoin);
+				}
+			}
         });
+        
+        userCoinRepository.saveAll(newCoins);
     }
+    
+    public Response compareCoins(CoinVM coinVM, Long userId) {
+    	Response response = null; 
+    	
+         List<UserCoin> userCoins = this.userCoinRepository.findByUserUserId(userId);
+         
+    	for (UserCoinDTO userCoin : coinVM.getCoins()) {
+             UserCoin tempUserCoin = new UserCoin(userCoin.getCoinCode());
+             int index = userCoins.indexOf(tempUserCoin);
+             if(index <0) {
+            	 return Response.error(new com.batm.entity.Error(3, "Coin does not exist"));
+             }
+             
+             String dbPublicKey = userCoins.get(index).getPublicKey();
+             if (userCoin.getPublicKey() == null
+                     || !userCoin.getPublicKey().equalsIgnoreCase(dbPublicKey)) {
+                 return Response.error(new com.batm.entity.Error(3, "Public keys not match"));
+             }
+         }
+    	
+    	return response;
+    }
+    
+    
 
     public UserCoin getCoinWithUserIdAndCoinCode(Long userId, String coinCode) {
         return userCoinRepository.findByUserUserIdAndCoinId(userId, coinCode);

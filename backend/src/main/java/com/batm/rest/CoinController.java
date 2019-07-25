@@ -44,13 +44,9 @@ public class CoinController {
                 return Response.error(new com.batm.entity.Error(2, "Empty coin list"));
             }
 
-            for (UserCoinDTO userCoin : coinVM.getCoins()) {
-                UserCoin coinWithUserIdAndCoinCode = this.coinService.getCoinWithUserIdAndCoinCode(userId,
-                        userCoin.getCoinCode());
-                if (userCoin.getPublicKey() == null
-                        || !userCoin.getPublicKey().equalsIgnoreCase(coinWithUserIdAndCoinCode.getPublicKey())) {
-                    return Response.error(new com.batm.entity.Error(3, "Public keys not match"));
-                }
+            Response errorResponse = coinService.compareCoins(coinVM, userId);
+            if(errorResponse != null) {
+            	return errorResponse;
             }
 
             Map<String, String> response = new HashMap<>();
