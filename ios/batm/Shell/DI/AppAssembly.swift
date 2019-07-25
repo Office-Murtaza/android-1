@@ -91,8 +91,18 @@ final class AppAssembly: Assembly {
     container.register(CoinsBalanceUsecase.self) { ioc in
       let api = ioc.resolve(APIGateway.self)!
       let accountStorage = ioc.resolve(AccountStorage.self)!
+      let walletStorage = ioc.resolve(BTMWalletStorage.self)!
       return CoinsBalanceUsecaseImpl(api: api,
-                                     accountStorage: accountStorage)
+                                     accountStorage: accountStorage,
+                                     walletStorage: walletStorage)
+      }.inObjectScope(.container)
+    container.register(ATMUsecase.self) { ioc in
+      let api = ioc.resolve(APIGateway.self)!
+      return ATMUsecaseImpl(api: api)
+      }.inObjectScope(.container)
+    container.register(FilterCoinsUsecase.self) { ioc in
+      let walletStorage = ioc.resolve(BTMWalletStorage.self)!
+      return FilterCoinsUsecaseImpl(walletStorage: walletStorage)
       }.inObjectScope(.container)
     container.register(PinCodeUsecase.self) { ioc in
       let pinCodeStorage = ioc.resolve(PinCodeStorage.self)!

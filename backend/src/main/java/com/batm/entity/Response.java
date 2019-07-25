@@ -24,7 +24,7 @@ public class Response {
         return new Response(null, error);
     }
 
-    public static Response error(Object response, Error error) {
-        return new Response(response, error);
+    public static Response serverError() {
+        return Response.error(new com.batm.entity.Error(1, "Server error"));
     }
 }

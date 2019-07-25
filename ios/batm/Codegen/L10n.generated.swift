@@ -1,12 +1,23 @@
 // Root structs 
 enum L {
 
+  struct Atm {
+    static let title = "atm.title"
+  }
+
   struct CoinsBalance {
     static let title = "coins_balance.title"
+    static let totalBalance = "coins_balance.total_balance"
   }
 
   struct CreateWallet {
     static let title = "create_wallet.title"
+  }
+
+  struct FilterCoins {
+    static let hide = "filter_coins.hide"
+    static let show = "filter_coins.show"
+    static let title = "filter_coins.title"
   }
 
   struct PinCode {
@@ -25,6 +36,10 @@ enum L {
     static let title = "seed_phrase.title"
   }
 
+  struct Settings {
+    static let title = "settings.title"
+  }
+
   struct Shared {
     static let cancel = "shared.cancel"
     static let copy = "shared.copy"
@@ -41,6 +56,18 @@ enum L {
   }
 }
 // Extensions
+extension L.Atm {
+
+  struct InfoWindow {
+    static let openNow = "atm.info_window.open_now"
+  }
+}
+extension L.CoinsBalance {
+
+  struct Footer {
+    static let title = "coins_balance.footer.title"
+  }
+}
 extension L.CreateWallet {
 
   struct Code {

@@ -2,6 +2,11 @@ PODS:
   - Alamofire (4.8.2)
   - FlagPhoneNumber (0.7.2):
     - libPhoneNumber-iOS
+  - GoogleMaps (3.2.0):
+    - GoogleMaps/Maps (= 3.2.0)
+  - GoogleMaps/Base (3.2.0)
+  - GoogleMaps/Maps (3.2.0):
+    - GoogleMaps/Base
   - libPhoneNumber-iOS (0.9.15)
   - MBProgressHUD (1.1.0)
   - Moya/Core (11.0.2):
@@ -35,6 +40,7 @@ PODS:
 
 DEPENDENCIES:
   - FlagPhoneNumber (= 0.7.2)
+  - GoogleMaps (= 3.2.0)
   - MBProgressHUD (= 1.1.0)
   - Moya/RxSwift (= 11.0.2)
   - ObjectMapper (= 3.4.2)
@@ -51,6 +57,7 @@ SPEC REPOS:
   https://github.com/cocoapods/specs.git:
     - Alamofire
     - FlagPhoneNumber
+    - GoogleMaps
     - libPhoneNumber-iOS
     - MBProgressHUD
     - Moya
@@ -69,6 +76,7 @@ SPEC REPOS:
 SPEC CHECKSUMS:
   Alamofire: ae5c501addb7afdbb13687d7f2f722c78734c2d3
   FlagPhoneNumber: 86194d414c7e3b2f38c16136c4f8a5d34e3ee8b7
+  GoogleMaps: 5046d7edfe381c1a0b20fdaf293915a375c3122b
   libPhoneNumber-iOS: 0a32a9525cf8744fe02c5206eb30d571e38f7d75
   MBProgressHUD: e7baa36a220447d8aeb12769bf0585582f3866d9
   Moya: a725035953bc1c0eb1be505ab903984501d82440
@@ -84,6 +92,6 @@ SPEC CHECKSUMS:
   Swinject: cf7458774b1b00323080a9c67e47a1ee7f9d2af1
   TrustWalletCore: 0ea4ae229b3a4d3dc0889a862fc1d00375a278c4
 
-PODFILE CHECKSUM: 007f724a73e4e90b0aa2d2097d3e976d950df790
+PODFILE CHECKSUM: 6888bde06508a047bf21524328d9d7521e334293
 
-COCOAPODS: 1.5.3
+COCOAPODS: 1.7.4

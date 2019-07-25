@@ -32,7 +32,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
   
   private var initializers: [Initializer] {
     return [
-      DIInitializer()
+      DIInitializer(),
+      GoogleServicesInitializer()
     ]
   }
 }

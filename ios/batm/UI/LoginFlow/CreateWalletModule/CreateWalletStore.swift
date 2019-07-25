@@ -21,11 +21,6 @@ struct CreateWalletState: Equatable {
   var validationState: ValidationState = .unknown
   var shouldShowCodePopup: Bool = false
   
-  var notFormattedPhoneNumber: String {
-    guard let phoneNumber = try? PhoneNumberKit.default.parse(self.phoneNumber) else { return "" }
-    return PhoneNumberKit.default.format(phoneNumber, toType: .e164)
-  }
-  
 }
 
 final class CreateWalletStore: ViewStore<CreateWalletAction, CreateWalletState> {
@@ -38,7 +33,7 @@ final class CreateWalletStore: ViewStore<CreateWalletAction, CreateWalletState> 
     var state = state
     
     switch action {
-    case let .updatePhoneNumber(phoneNumber): state.phoneNumber = PartialFormatter.default.formatPartial(phoneNumber ?? "")
+    case let .updatePhoneNumber(phoneNumber): state.phoneNumber = phoneNumber ?? ""
     case let .updatePassword(password): state.password = password ?? ""
     case let .updateConfirmPassword(confirmPassword): state.confirmPassword = confirmPassword ?? ""
     case let .updateCode(code): state.code = code ?? ""

@@ -74,19 +74,29 @@ class MainTextField: UITextField {
       imageView.image = UIImage(named: "login_password")
       keyboardType = .default
       isSecureTextEntry = true
-      textContentType = .newPassword
+      if #available(iOS 12.0, *) {
+        textContentType = .newPassword
+      } else {
+        textContentType = .password
+      }
     case .confirmPassword:
       placeholder = localize(L.CreateWallet.Form.ConfirmPassword.placeholder)
       imageView.image = UIImage(named: "login_password")
       keyboardType = .default
       isSecureTextEntry = true
-      textContentType = .newPassword
+      if #available(iOS 12.0, *) {
+        textContentType = .newPassword
+      } else {
+        textContentType = .password
+      }
     case .smsCode:
       placeholder = localize(L.CreateWallet.Code.placeholder)
       imageView.image = UIImage(named: "login_sms_code")
       keyboardType = .numberPad
       isSecureTextEntry = false
-      textContentType = .oneTimeCode
+      if #available(iOS 12.0, *) {
+        textContentType = .oneTimeCode
+      }
     }
     
     attributedPlaceholder = NSAttributedString(string: placeholder, attributes: attributes)

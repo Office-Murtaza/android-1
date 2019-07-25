@@ -80,7 +80,10 @@ class LoginUsecaseImpl: LoginUsecase {
   func addCoins() -> Completable {
     return Observable.combineLatest(accountStorage.get().asObservable(),
                                     walletStorage.get().asObservable())
-      .flatMap { [api] in api.addCoins(userId: $0.userId, coins: $1.coinAddresses).andThen(Observable.just(())) }
+      .flatMap { [api] (account, wallet) -> Observable<Void> in
+        let coinAddresses = wallet.coins.map { CoinAddress(coin: $0) }
+        return api.addCoins(userId: account.userId, coinAddresses: coinAddresses).andThen(Observable.just(()))
+      }
       .toCompletable()
   }
   
