@@ -7,10 +7,11 @@ import com.app.belcobtm.mvp.BaseMvpView
 
 object BalanceContract {
     interface Presenter : BaseMvpPresenter<View> {
-        val coinsList: ArrayList<GetCoinsResponse.CoinModel>
+        val visibleCoins: ArrayList<GetCoinsResponse.CoinModel>
         val balance: Double
         fun requestCoins()
         fun checkPinEntered()
+        fun checkCoinVisibility()
     }
 
     interface View : BaseMvpView {

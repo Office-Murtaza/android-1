@@ -6,7 +6,7 @@ import com.app.belcobtm.api.model.ServerException
 import com.app.belcobtm.api.model.response.AuthResponse
 import com.app.belcobtm.db.DbCryptoCoin
 import com.app.belcobtm.db.DbCryptoCoinModel
-import com.app.belcobtm.mvp.BaseMvpPresenterImpl
+import com.app.belcobtm.mvp.BaseMvpDIPresenterImpl
 import com.app.belcobtm.util.Optional
 import com.app.belcobtm.util.pref
 import io.reactivex.Observable
@@ -18,7 +18,7 @@ import wallet.core.jni.HDWallet
 import wallet.core.jni.P2PKHPrefix
 
 
-class CreateWalletPresenter : BaseMvpPresenterImpl<CreateWalletContract.View, AuthDataManager>(),
+class CreateWalletPresenter : BaseMvpDIPresenterImpl<CreateWalletContract.View, AuthDataManager>(),
     CreateWalletContract.Presenter {
 
 //    init {

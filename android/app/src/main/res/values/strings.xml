@@ -74,5 +74,11 @@
     <string name="setup_pin_code">Setup PIN Code</string>
     <string name="enter_pin_code">Enter PIN Code</string>
 
+    <!--visibility coins-->
+    <string name="show">Show</string>
+    <string name="hide">Hide</string>
+    <string name="add_wallet">Add wallet</string>
+    <string name="add_wallets">Add wallets</string>
+
 
 </resources>

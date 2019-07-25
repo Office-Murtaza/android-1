@@ -59,6 +59,30 @@ class DbCryptoCoinModel : DbCryptoCoinInterface {
         return list
     }
 
+    override fun getAllVisibleCryptoCoin(realm: Realm): ArrayList<DbCryptoCoin> {
+        val list = ArrayList<DbCryptoCoin>()
+
+        val results = realm
+            .where(DbCryptoCoin::class.java)
+            .equalTo("visible", true)
+            .findAll()
+        list.addAll(realm.copyFromRealm(results))
+
+        return list
+    }
+
+    override fun getAllHiddenCryptoCoin(realm: Realm): ArrayList<DbCryptoCoin> {
+        val list = ArrayList<DbCryptoCoin>()
+
+        val results = realm
+            .where(DbCryptoCoin::class.java)
+            .equalTo("visible", false)
+            .findAll()
+        list.addAll(realm.copyFromRealm(results))
+
+        return list
+    }
+
     override fun delAllCryptoCoin(realm: Realm): Boolean {
         return try {
             realm.beginTransaction()

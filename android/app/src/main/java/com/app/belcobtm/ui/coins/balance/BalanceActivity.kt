@@ -7,6 +7,7 @@ import com.app.belcobtm.R
 import com.app.belcobtm.mvp.BaseMvpActivity
 import com.app.belcobtm.ui.auth.pin.PinActivity
 import com.app.belcobtm.ui.auth.welcome.WelcomeActivity
+import com.app.belcobtm.ui.coins.visibility.VisibilityCoinsActivity
 import com.app.belcobtm.util.CoinItemDecoration
 import kotlinx.android.synthetic.main.activity_balance.*
 
@@ -22,7 +23,8 @@ class BalanceActivity : BaseMvpActivity<BalanceContract.View, BalanceContract.Pr
 
         mPresenter.checkPinEntered()
 
-        mAdapter = CoinsAdapter(mPresenter.coinsList)
+        mAdapter = CoinsAdapter(mPresenter.visibleCoins)
+        coins_recycler.isNestedScrollingEnabled = false
         coins_recycler.adapter = mAdapter
         coins_recycler.addItemDecoration(CoinItemDecoration(resources.getDimensionPixelSize(R.dimen.margin_half)))
 
@@ -30,11 +32,14 @@ class BalanceActivity : BaseMvpActivity<BalanceContract.View, BalanceContract.Pr
         swipe_refresh.setColorSchemeColors(
             Color.RED, Color.GREEN, Color.BLUE
         )
+
+        add_wallet.setOnClickListener { startActivity(Intent(this, VisibilityCoinsActivity::class.java)) }
+
     }
 
     override fun onStart() {
         super.onStart()
-        showProgress(true)
+        mPresenter.checkCoinVisibility()
         mPresenter.requestCoins()
     }
 

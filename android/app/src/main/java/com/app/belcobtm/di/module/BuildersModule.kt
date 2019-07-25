@@ -7,6 +7,7 @@ import com.app.belcobtm.ui.auth.pin.PinActivity
 import com.app.belcobtm.ui.auth.recover_seed.RecoverSeedActivity
 import com.app.belcobtm.ui.auth.recover_wallet.RecoverWalletActivity
 import com.app.belcobtm.ui.coins.balance.BalanceActivity
+import com.app.belcobtm.ui.coins.visibility.VisibilityCoinsActivity
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 
@@ -35,4 +36,7 @@ abstract class BuildersModule {
     @ActivityScope
     @ContributesAndroidInjector(modules = [ActivityModule::class])
     internal abstract fun bindPinActivity(): PinActivity
+    @ActivityScope
+    @ContributesAndroidInjector(modules = [ActivityModule::class])
+    internal abstract fun bindVisibilityCoinsActivity(): VisibilityCoinsActivity
 }

@@ -7,12 +7,12 @@ import android.os.Vibrator
 import com.app.belcobtm.App
 import com.app.belcobtm.api.data_manager.AuthDataManager
 import com.app.belcobtm.api.model.ServerException
-import com.app.belcobtm.mvp.BaseMvpPresenterImpl
+import com.app.belcobtm.mvp.BaseMvpDIPresenterImpl
 import com.app.belcobtm.util.Const.ERROR_403
 import com.app.belcobtm.util.pref
 
 
-class PinPresenter : BaseMvpPresenterImpl<PinContract.View, AuthDataManager>(), PinContract.Presenter {
+class PinPresenter : BaseMvpDIPresenterImpl<PinContract.View, AuthDataManager>(), PinContract.Presenter {
 
     override fun injectDependency() {
         presenterComponent.inject(this)

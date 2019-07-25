@@ -16,7 +16,6 @@ import com.app.belcobtm.db.DbCryptoCoinModel
 import com.app.belcobtm.model.WelcomePagerItem
 import com.app.belcobtm.ui.auth.create_wallet.CreateWalletActivity
 import com.app.belcobtm.ui.auth.recover_wallet.RecoverWalletActivity
-import com.app.belcobtm.ui.coins.balance.BalanceActivity
 import com.app.belcobtm.util.Const.TERMS_URL
 import com.app.belcobtm.util.pref
 import com.google.android.material.snackbar.Snackbar

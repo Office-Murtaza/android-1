@@ -6,14 +6,14 @@ import io.realm.annotations.PrimaryKey
 
 
 open class DbCryptoCoin(
-
     open var coinType: String = "",
     open var publicKey: String = "",
-    open var privateKey: String = ""
-
+    open var privateKey: String = "",
+    open var visible: Boolean = true
 ) : RealmObject() {
     @PrimaryKey
     open var _ID: Int = 0
+
 
     init {
         val currentIdNum = Realm.getDefaultInstance().where(DbCryptoCoin::class.java).max("_ID")
@@ -27,6 +27,7 @@ open class DbCryptoCoin(
     fun copy(
         coinType: String = this.coinType,
         publicKey: String = this.publicKey,
-        privateKey: String = this.privateKey
-    ) = DbCryptoCoin(coinType, publicKey, privateKey)
+        privateKey: String = this.privateKey,
+        visible: Boolean = this.visible
+    ) = DbCryptoCoin(coinType, publicKey, privateKey, visible)
 }

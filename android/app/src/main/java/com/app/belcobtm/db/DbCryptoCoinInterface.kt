@@ -9,6 +9,8 @@ interface DbCryptoCoinInterface {
     fun getCryptoCoin(realm: Realm, coinId: Int): DbCryptoCoin?
     fun getCryptoCoin(realm: Realm, coinType: String): DbCryptoCoin?
     fun getAllCryptoCoin(realm: Realm): ArrayList<DbCryptoCoin>
+    fun getAllVisibleCryptoCoin(realm: Realm): ArrayList<DbCryptoCoin>
+    fun getAllHiddenCryptoCoin(realm: Realm): ArrayList<DbCryptoCoin>
     fun delAllCryptoCoin(realm: Realm): Boolean
 
 }

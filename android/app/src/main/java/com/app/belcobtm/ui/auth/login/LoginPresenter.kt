@@ -4,13 +4,13 @@ import com.app.belcobtm.App
 import com.app.belcobtm.api.data_manager.AuthDataManager
 import com.app.belcobtm.api.model.ServerException
 import com.app.belcobtm.api.model.response.AuthResponse
-import com.app.belcobtm.mvp.BaseMvpPresenterImpl
+import com.app.belcobtm.mvp.BaseMvpDIPresenterImpl
 import com.app.belcobtm.util.Optional
 import com.app.belcobtm.util.pref
 import io.reactivex.Observable
 
 
-class LoginPresenter : BaseMvpPresenterImpl<LoginContract.View, AuthDataManager>(),
+class LoginPresenter : BaseMvpDIPresenterImpl<LoginContract.View, AuthDataManager>(),
     LoginContract.Presenter {
 
     private var userId: String = ""

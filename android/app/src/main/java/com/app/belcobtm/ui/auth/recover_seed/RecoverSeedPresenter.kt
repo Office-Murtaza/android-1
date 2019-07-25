@@ -4,7 +4,7 @@ import com.app.belcobtm.App
 import com.app.belcobtm.api.data_manager.AuthDataManager
 import com.app.belcobtm.db.DbCryptoCoin
 import com.app.belcobtm.db.DbCryptoCoinModel
-import com.app.belcobtm.mvp.BaseMvpPresenterImpl
+import com.app.belcobtm.mvp.BaseMvpDIPresenterImpl
 import com.app.belcobtm.util.pref
 import io.realm.Realm
 import org.web3j.utils.Numeric
@@ -14,7 +14,7 @@ import wallet.core.jni.HDWallet
 import wallet.core.jni.P2PKHPrefix
 
 
-class RecoverSeedPresenter : BaseMvpPresenterImpl<RecoverSeedContract.View, AuthDataManager>(),
+class RecoverSeedPresenter : BaseMvpDIPresenterImpl<RecoverSeedContract.View, AuthDataManager>(),
     RecoverSeedContract.Presenter {
 
     override fun injectDependency() {

@@ -9,11 +9,19 @@ import com.app.belcobtm.util.Const
 import javax.inject.Inject
 
 
-abstract class BaseMvpPresenterImpl<V : BaseMvpView> : BaseMvpPresenter<V> {
+abstract class BaseMvpDIPresenterImpl<V : BaseMvpView, T : BaseDataManager> : BaseMvpPresenter<V> {
 
     protected var mView: V? = null
 
+    protected val presenterComponent: PresenterComponent = DaggerPresenterComponent.builder()
+        .presenterModule(PresenterModule())
+        .build()
+    protected abstract fun injectDependency()
+    @Inject
+    protected lateinit var mDataManager: T
+
     override fun attachView(view: V) {
+        injectDependency()
         mView = view
     }
 
