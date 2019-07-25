@@ -1,16 +1,16 @@
 package com.app.belcobtm.api
 
 import com.app.belcobtm.api.model.ServerResponse
-import com.app.belcobtm.api.model.param.*
+import com.app.belcobtm.api.model.param.AddCoinsParam
+import com.app.belcobtm.api.model.param.AuthParam
+import com.app.belcobtm.api.model.param.RefreshParam
+import com.app.belcobtm.api.model.param.VerifySmsParam
 import com.app.belcobtm.api.model.response.AddCoinsResponse
 import com.app.belcobtm.api.model.response.AuthResponse
 import com.app.belcobtm.api.model.response.GetCoinsResponse
 import com.app.belcobtm.api.model.response.VerifySmsResponse
 import io.reactivex.Observable
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.POST
-import retrofit2.http.Path
+import retrofit2.http.*
 
 
 interface ApiInterface {
@@ -60,7 +60,7 @@ interface ApiInterface {
     fun verifyCoins(@Path("userId") userId: String, @Body verifyCoinsParam: AddCoinsParam): Observable<ServerResponse<AddCoinsResponse>>
 
     @GET("user/{userId}/coins/balance")
-    fun getCoins(@Path("userId") userId: String): Observable<ServerResponse<GetCoinsResponse>>
+    fun getCoins(@Path("userId") userId: String, @Query("coins") coins: ArrayList<String>): Observable<ServerResponse<GetCoinsResponse>>
 
 
 }

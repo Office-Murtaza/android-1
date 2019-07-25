@@ -6,8 +6,8 @@ import io.reactivex.Observable
 
 class CoinsDataManager : BaseDataManager() {
 
-    fun getCoins(userId: String): Observable<Optional<GetCoinsResponse>> {
-        return genObservable(api.getCoins(userId))
+    fun getCoins(userId: String, coins: ArrayList<String>): Observable<Optional<GetCoinsResponse>> {
+        return genObservable(api.getCoins(userId, coins))
     }
 
 }

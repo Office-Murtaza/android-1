@@ -2,18 +2,20 @@ package com.app.belcobtm
 
 import android.app.Activity
 import android.content.Context
+import androidx.fragment.app.Fragment
 import androidx.multidex.MultiDexApplication
 import com.app.belcobtm.di.component.DaggerAppComponent
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasActivityInjector
+import dagger.android.support.HasSupportFragmentInjector
 import io.realm.Realm
 import io.realm.RealmConfiguration
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class App @Inject constructor() : MultiDexApplication(), HasActivityInjector {
+class App @Inject constructor() : MultiDexApplication(), HasActivityInjector, HasSupportFragmentInjector {
 
     init {
         instance = this
@@ -29,6 +31,9 @@ class App @Inject constructor() : MultiDexApplication(), HasActivityInjector {
 
     @Inject
     lateinit var dispatchingAndroidInjector: DispatchingAndroidInjector<Activity>
+
+    @Inject
+    lateinit var fragmentDispatchingAndroidInjector: DispatchingAndroidInjector<Fragment>
 
     override fun onCreate() {
         super.onCreate()
@@ -49,5 +54,9 @@ class App @Inject constructor() : MultiDexApplication(), HasActivityInjector {
 
     override fun activityInjector(): AndroidInjector<Activity>? {
         return dispatchingAndroidInjector
+    }
+
+    override fun supportFragmentInjector(): AndroidInjector<Fragment> {
+        return fragmentDispatchingAndroidInjector
     }
 }

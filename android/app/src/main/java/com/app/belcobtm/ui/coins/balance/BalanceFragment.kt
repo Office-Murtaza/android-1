@@ -3,8 +3,11 @@ package com.app.belcobtm.ui.coins.balance
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import com.app.belcobtm.R
-import com.app.belcobtm.mvp.BaseMvpActivity
+import com.app.belcobtm.mvp.BaseMvpFragment
 import com.app.belcobtm.ui.auth.pin.PinActivity
 import com.app.belcobtm.ui.auth.welcome.WelcomeActivity
 import com.app.belcobtm.ui.coins.visibility.VisibilityCoinsActivity
@@ -12,18 +15,19 @@ import com.app.belcobtm.util.CoinItemDecoration
 import kotlinx.android.synthetic.main.activity_balance.*
 
 
-class BalanceActivity : BaseMvpActivity<BalanceContract.View, BalanceContract.Presenter>(),
+class BalanceFragment : BaseMvpFragment<BalanceContract.View, BalanceContract.Presenter>(),
     BalanceContract.View {
 
     private lateinit var mAdapter: CoinsAdapter
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_balance)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        return inflater.inflate(R.layout.fragment_balance, container, false)
+    }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         mPresenter.checkPinEntered()
 
-        mAdapter = CoinsAdapter(mPresenter.visibleCoins)
+        mAdapter = CoinsAdapter(mPresenter.coinsList)
         coins_recycler.isNestedScrollingEnabled = false
         coins_recycler.adapter = mAdapter
         coins_recycler.addItemDecoration(CoinItemDecoration(resources.getDimensionPixelSize(R.dimen.margin_half)))
@@ -33,13 +37,12 @@ class BalanceActivity : BaseMvpActivity<BalanceContract.View, BalanceContract.Pr
             Color.RED, Color.GREEN, Color.BLUE
         )
 
-        add_wallet.setOnClickListener { startActivity(Intent(this, VisibilityCoinsActivity::class.java)) }
-
+        add_wallet.setOnClickListener { startActivity(Intent(context, VisibilityCoinsActivity::class.java)) }
     }
+
 
     override fun onStart() {
         super.onStart()
-        mPresenter.checkCoinVisibility()
         mPresenter.requestCoins()
     }
 
@@ -49,24 +52,24 @@ class BalanceActivity : BaseMvpActivity<BalanceContract.View, BalanceContract.Pr
     }
 
     override fun onTokenNotSaved() {
-        finishAffinity()
-        startActivity(Intent(this, WelcomeActivity::class.java))
+        activity?.finishAffinity()
+        startActivity(Intent(context, WelcomeActivity::class.java))
     }
 
     override fun onPinSaved() {
         val mode = PinActivity.Companion.Mode.MODE_PIN
-        val intent = PinActivity.getIntent(this, mode)
+        val intent = PinActivity.getIntent(context, mode)
         startActivityForResult(intent, mode.ordinal)
     }
 
     override fun onPinNotSaved() {
         val mode = PinActivity.Companion.Mode.MODE_CREATE_PIN
-        val intent = PinActivity.getIntent(this, mode)
+        val intent = PinActivity.getIntent(context, mode)
         startActivityForResult(intent, mode.ordinal)
     }
 
     override fun showProgress(show: Boolean) {
-        runOnUiThread {
+        activity?.runOnUiThread {
             if (!show)
                 swipe_refresh.isRefreshing = false
 

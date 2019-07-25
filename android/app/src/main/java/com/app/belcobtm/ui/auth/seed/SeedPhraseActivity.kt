@@ -9,12 +9,10 @@ import android.text.SpannableString
 import android.text.SpannableStringBuilder
 import android.text.style.ForegroundColorSpan
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.IntentCompat
 import com.app.belcobtm.R
-import com.app.belcobtm.ui.coins.balance.BalanceActivity
+import com.app.belcobtm.ui.coins.MainActivity
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_seed_phrase.*
-import org.jetbrains.anko.startActivity
 
 
 class SeedPhraseActivity : AppCompatActivity() {
@@ -61,7 +59,7 @@ class SeedPhraseActivity : AppCompatActivity() {
 
         bt_done.setOnClickListener {
             finishAffinity()
-            startActivity(Intent(this, BalanceActivity::class.java))
+            startActivity(Intent(this, MainActivity::class.java))
         }
     }
 
