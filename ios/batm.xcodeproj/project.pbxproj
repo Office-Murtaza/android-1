@@ -29,6 +29,7 @@
 		DB130D6922C273B60056E67E /* WelcomeSupportCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB130D6822C273B60056E67E /* WelcomeSupportCellView.swift */; };
 		DB130D6B22C28AF60056E67E /* BackgroundDarkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB130D6A22C28AF60056E67E /* BackgroundDarkView.swift */; };
 		DB130D6E22C28CB70056E67E /* WelcomeTappableLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB130D6D22C28CB70056E67E /* WelcomeTappableLabel.swift */; };
+		DB226C5A22E99E3E0087E6C5 /* URLEncoding+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB226C5922E99E3E0087E6C5 /* URLEncoding+Extensions.swift */; };
 		DB308EAF22E71402003D91AF /* ATMInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB308EAE22E71402003D91AF /* ATMInfoView.swift */; };
 		DB308EB122E73762003D91AF /* MapAddresses.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB308EB022E73762003D91AF /* MapAddresses.swift */; };
 		DB308EB322E73793003D91AF /* MapAddress.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB308EB222E73793003D91AF /* MapAddress.swift */; };
@@ -281,6 +282,7 @@
 		DB130D6822C273B60056E67E /* WelcomeSupportCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeSupportCellView.swift; sourceTree = "<group>"; };
 		DB130D6A22C28AF60056E67E /* BackgroundDarkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundDarkView.swift; sourceTree = "<group>"; };
 		DB130D6D22C28CB70056E67E /* WelcomeTappableLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeTappableLabel.swift; sourceTree = "<group>"; };
+		DB226C5922E99E3E0087E6C5 /* URLEncoding+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URLEncoding+Extensions.swift"; sourceTree = "<group>"; };
 		DB308EAE22E71402003D91AF /* ATMInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ATMInfoView.swift; sourceTree = "<group>"; };
 		DB308EB022E73762003D91AF /* MapAddresses.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapAddresses.swift; sourceTree = "<group>"; };
 		DB308EB222E73793003D91AF /* MapAddress.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapAddress.swift; sourceTree = "<group>"; };
@@ -919,6 +921,7 @@
 				DB9616ED22C74EB40078E92D /* RecursiveLock+Extensions.swift */,
 				DB70851E22CF90F500FFE4F7 /* String+Extensions.swift */,
 				DB308EBC22E7396A003D91AF /* URL+Extensions.swift */,
+				DB226C5922E99E3E0087E6C5 /* URLEncoding+Extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -1691,6 +1694,7 @@
 				DB96173222C791690078E92D /* WalletService.swift in Sources */,
 				DB9616AA22C608DD0078E92D /* SeedPhraseWordView.swift in Sources */,
 				DB8D409C22C3EBF700D5FBD0 /* Module.swift in Sources */,
+				DB226C5A22E99E3E0087E6C5 /* URLEncoding+Extensions.swift in Sources */,
 				DB9616B222C610280078E92D /* UnderlinedLabelView.swift in Sources */,
 				DB9616A522C602CC0078E92D /* SeedPhraseAssembly.swift in Sources */,
 				DBA6843522E42BF70079429E /* BTMTabBarController.swift in Sources */,

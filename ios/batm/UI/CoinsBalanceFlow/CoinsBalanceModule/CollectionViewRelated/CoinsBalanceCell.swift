@@ -86,28 +86,9 @@ final class CoinsBalanceCell: UICollectionViewCell {
   }
   
   func configure(for model: CoinBalance) {
+    typeImageView.image = model.type.logo
     typeLabel.text = model.type.verboseValue
     priceLabel.text = "USD \(model.price)"
-    
-    let roundedBalanceString = String(format: "%.6f", model.balance)
-    balanceLabel.text = "\(roundedBalanceString) \(model.type.code)"
-    
-    switch model.type {
-    case .bitcoin:
-      typeImageView.image = UIImage(named: "coins_bitcoin")
-    case .ethereum:
-      typeImageView.image = UIImage(named: "coins_ethereum")
-    case .bitcoinCash:
-      typeImageView.image = UIImage(named: "coins_bitcoin_cash")
-    case .litecoin:
-      typeImageView.image = UIImage(named: "coins_litecoin")
-    case .binance:
-      typeImageView.image = UIImage(named: "coins_binance")
-    case .tron:
-      typeImageView.image = UIImage(named: "coins_tron")
-    case .ripple:
-      typeImageView.image = UIImage(named: "coins_ripple")
-    default: break
-    }
+    balanceLabel.text = "\(model.balance) \(model.type.code)"
   }
 }
