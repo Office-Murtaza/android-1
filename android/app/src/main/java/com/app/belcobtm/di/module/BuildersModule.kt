@@ -7,7 +7,9 @@ import com.app.belcobtm.ui.auth.login.LoginActivity
 import com.app.belcobtm.ui.auth.pin.PinActivity
 import com.app.belcobtm.ui.auth.recover_seed.RecoverSeedActivity
 import com.app.belcobtm.ui.auth.recover_wallet.RecoverWalletActivity
+import com.app.belcobtm.ui.coins.atm.AtmFragment
 import com.app.belcobtm.ui.coins.balance.BalanceFragment
+import com.app.belcobtm.ui.coins.main.MainActivity
 import com.app.belcobtm.ui.coins.visibility.VisibilityCoinsActivity
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
@@ -38,8 +40,16 @@ abstract class BuildersModule {
     @ContributesAndroidInjector(modules = [ActivityModule::class])
     internal abstract fun bindVisibilityCoinsActivity(): VisibilityCoinsActivity
 
+    @ActivityScope
+    @ContributesAndroidInjector(modules = [ActivityModule::class])
+    internal abstract fun bindMainActivity(): MainActivity
+
 
     @FragmentScope
     @ContributesAndroidInjector(modules = [FragmentModule::class])
     internal abstract fun bindBalanceFragment(): BalanceFragment
+
+    @FragmentScope
+    @ContributesAndroidInjector(modules = [FragmentModule::class])
+    internal abstract fun bindAtmFragment(): AtmFragment
 }

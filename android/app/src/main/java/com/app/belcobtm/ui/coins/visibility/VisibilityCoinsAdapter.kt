@@ -41,8 +41,8 @@ class VisibilityCoinsAdapter(
                 item.visible = isChecked
 
                 val context = buttonView.context
-                buttonView.text = if (isChecked) context.getString(R.string.show)
-                else context.getString(R.string.hide)
+                buttonView.text = if (isChecked) context.getString(R.string.hide)
+                else context.getString(R.string.show)
 
                 mVisibilityChangedListener.onCoinVisibilityChanged(position, isChecked)
             }

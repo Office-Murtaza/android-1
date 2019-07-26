@@ -10,6 +10,7 @@ import com.app.belcobtm.R
 import com.app.belcobtm.mvp.BaseMvpFragment
 import com.app.belcobtm.ui.auth.pin.PinActivity
 import com.app.belcobtm.ui.auth.welcome.WelcomeActivity
+import com.app.belcobtm.ui.coins.main.MainContract
 import com.app.belcobtm.ui.coins.visibility.VisibilityCoinsActivity
 import com.app.belcobtm.util.CoinItemDecoration
 import kotlinx.android.synthetic.main.activity_balance.*
@@ -25,7 +26,6 @@ class BalanceFragment : BaseMvpFragment<BalanceContract.View, BalanceContract.Pr
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        mPresenter.checkPinEntered()
 
         mAdapter = CoinsAdapter(mPresenter.coinsList)
         coins_recycler.isNestedScrollingEnabled = false
@@ -51,22 +51,7 @@ class BalanceFragment : BaseMvpFragment<BalanceContract.View, BalanceContract.Pr
         mAdapter.notifyDataSetChanged()
     }
 
-    override fun onTokenNotSaved() {
-        activity?.finishAffinity()
-        startActivity(Intent(context, WelcomeActivity::class.java))
-    }
 
-    override fun onPinSaved() {
-        val mode = PinActivity.Companion.Mode.MODE_PIN
-        val intent = PinActivity.getIntent(context, mode)
-        startActivityForResult(intent, mode.ordinal)
-    }
-
-    override fun onPinNotSaved() {
-        val mode = PinActivity.Companion.Mode.MODE_CREATE_PIN
-        val intent = PinActivity.getIntent(context, mode)
-        startActivityForResult(intent, mode.ordinal)
-    }
 
     override fun showProgress(show: Boolean) {
         activity?.runOnUiThread {

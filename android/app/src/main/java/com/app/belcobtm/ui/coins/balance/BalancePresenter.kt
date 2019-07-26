@@ -5,6 +5,7 @@ import com.app.belcobtm.api.data_manager.CoinsDataManager
 import com.app.belcobtm.api.model.response.GetCoinsResponse
 import com.app.belcobtm.db.DbCryptoCoinModel
 import com.app.belcobtm.mvp.BaseMvpDIPresenterImpl
+import com.app.belcobtm.ui.coins.main.MainContract
 import com.app.belcobtm.util.Optional
 import com.app.belcobtm.util.pref
 import io.realm.Realm
@@ -22,16 +23,6 @@ class BalancePresenter : BaseMvpDIPresenterImpl<BalanceContract.View, CoinsDataM
 
     override fun injectDependency() {
         presenterComponent.inject(this)
-    }
-
-    override fun checkPinEntered() {
-        val pin = App.appContext().pref.getPin()
-        val token = App.appContext().pref.getSessionApiToken()
-        when {
-            token == null -> mView?.onTokenNotSaved()
-            pin != null -> mView?.onPinSaved()
-            else -> mView?.onPinNotSaved()
-        }
     }
 
     override fun requestCoins() {

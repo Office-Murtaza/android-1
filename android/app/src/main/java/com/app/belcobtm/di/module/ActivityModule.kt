@@ -10,8 +10,8 @@ import com.app.belcobtm.ui.auth.recover_seed.RecoverSeedContract
 import com.app.belcobtm.ui.auth.recover_seed.RecoverSeedPresenter
 import com.app.belcobtm.ui.auth.recover_wallet.RecoverWalletContract
 import com.app.belcobtm.ui.auth.recover_wallet.RecoverWalletPresenter
-import com.app.belcobtm.ui.coins.balance.BalanceContract
-import com.app.belcobtm.ui.coins.balance.BalancePresenter
+import com.app.belcobtm.ui.coins.main.MainContract
+import com.app.belcobtm.ui.coins.main.MainPresenter
 import com.app.belcobtm.ui.coins.visibility.VisibilityCoinsContract
 import com.app.belcobtm.ui.coins.visibility.VisibilityCoinsPresenter
 import dagger.Module
@@ -42,19 +42,19 @@ class ActivityModule {
     }
 
     @Provides
-    fun provideBalancePresenter(): BalanceContract.Presenter {
-        return BalancePresenter()
+    fun provideBalancePresenter(): MainContract.Presenter {
+        return MainPresenter()
     }
 
     @Provides
     fun providePinPresenter(): PinContract.Presenter {
         return PinPresenter()
     }
+
     @Provides
     fun provideVisibilityCoinsPresenter(): VisibilityCoinsContract.Presenter {
         return VisibilityCoinsPresenter()
     }
-
 
 
 }

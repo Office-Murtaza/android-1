@@ -85,6 +85,7 @@ abstract class BaseMvpFragment<in V : BaseMvpView, T : BaseMvpPresenter<V>>
     }
 
     override fun onRefreshTokenFailed() {
-        startActivity(Intent(context, PinActivity::class.java))
+        if (isVisible)
+            startActivity(Intent(context, PinActivity::class.java))
     }
 }

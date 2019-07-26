@@ -82,5 +82,8 @@
     <string name="add_wallet">Add wallet</string>
     <string name="add_wallets">Add wallets</string>
 
+    <!--atm-->
+    <string name="open_now">Open Now:</string>
+
 
 </resources>

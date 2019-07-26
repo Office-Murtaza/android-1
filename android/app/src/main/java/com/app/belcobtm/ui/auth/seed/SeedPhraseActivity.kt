@@ -10,7 +10,7 @@ import android.text.SpannableStringBuilder
 import android.text.style.ForegroundColorSpan
 import androidx.appcompat.app.AppCompatActivity
 import com.app.belcobtm.R
-import com.app.belcobtm.ui.coins.MainActivity
+import com.app.belcobtm.ui.coins.main.MainActivity
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_seed_phrase.*
 

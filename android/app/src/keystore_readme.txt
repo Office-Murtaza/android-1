@@ -1,0 +1,1 @@
+keystore pass:   com.app.belcobtm

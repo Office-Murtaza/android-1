@@ -43,7 +43,7 @@
             android:paddingTop="@dimen/margin_quoter"
             android:paddingEnd="@dimen/margin_main"
             android:paddingBottom="@dimen/margin_quoter"
-            android:text="@string/hide"
+            android:text="@string/show"
             android:textColor="@android:color/white"
             android:textSize="14sp"
             app:fontFamily="@font/poppins_bold" />

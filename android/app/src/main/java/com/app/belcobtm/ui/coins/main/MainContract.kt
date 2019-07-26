@@ -1,19 +1,19 @@
-package com.app.belcobtm.ui.coins.balance
+package com.app.belcobtm.ui.coins.main
 
 import com.app.belcobtm.api.model.response.GetCoinsResponse
 import com.app.belcobtm.mvp.BaseMvpPresenter
 import com.app.belcobtm.mvp.BaseMvpView
 
 
-object BalanceContract {
+object MainContract {
     interface Presenter : BaseMvpPresenter<View> {
-        val coinsList: ArrayList<GetCoinsResponse.CoinModel>
-        val balance: Double
-        fun requestCoins()
+        fun checkPinEntered()
     }
 
     interface View : BaseMvpView {
-        fun notifyData()
+        fun onPinSaved()
+        fun onPinNotSaved()
+        fun onTokenNotSaved()
 
     }
 }

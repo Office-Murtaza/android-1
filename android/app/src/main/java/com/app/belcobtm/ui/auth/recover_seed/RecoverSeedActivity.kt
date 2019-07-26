@@ -5,7 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import com.app.belcobtm.R
 import com.app.belcobtm.mvp.BaseMvpActivity
-import com.app.belcobtm.ui.coins.MainActivity
+import com.app.belcobtm.ui.coins.main.MainActivity
 import kotlinx.android.synthetic.main.activity_recover_seed_phrase.*
 
 
