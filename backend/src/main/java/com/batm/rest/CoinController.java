@@ -5,9 +5,7 @@ import java.util.List;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import com.batm.dto.UserCoinDTO;
 import com.batm.entity.Response;
-import com.batm.entity.UserCoin;
 import com.batm.rest.vm.CoinVM;
 import com.batm.service.CoinService;
 
@@ -44,15 +42,7 @@ public class CoinController {
                 return Response.error(new com.batm.entity.Error(2, "Empty coin list"));
             }
 
-            Response errorResponse = coinService.compareCoins(coinVM, userId);
-            if(errorResponse != null) {
-            	return errorResponse;
-            }
-
-            Map<String, String> response = new HashMap<>();
-            response.put("isCoinsMatched", true + "");
-
-            return Response.ok(response);
+            return coinService.compareCoins(coinVM, userId);
         } catch (Exception e) {
             e.printStackTrace();
             return Response.serverError();
