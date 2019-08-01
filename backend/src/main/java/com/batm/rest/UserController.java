@@ -1,12 +1,16 @@
 package com.batm.rest;
 
 import java.time.Instant;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+
 import javax.validation.Valid;
+
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,15 +22,17 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
 import com.batm.entity.CodeVerification;
 import com.batm.entity.Error;
-import com.batm.entity.Token;
 import com.batm.entity.Response;
+import com.batm.entity.Token;
 import com.batm.entity.User;
 import com.batm.repository.TokenRepository;
 import com.batm.rest.vm.LoginVM;
@@ -36,10 +42,11 @@ import com.batm.rest.vm.ValidateOTPResponse;
 import com.batm.rest.vm.ValidateOTPVM;
 import com.batm.security.jwt.JWTFilter;
 import com.batm.security.jwt.TokenProvider;
-import com.batm.service.VerificationService;
 import com.batm.service.UserService;
+import com.batm.service.VerificationService;
 import com.batm.util.Constant;
 import com.batm.util.TwilioComponent;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -178,6 +185,19 @@ public class UserController {
 
         } else {
             throw new AccessDeniedException("Refresh token not exist");
+        }
+    }
+    
+    @GetMapping("/user/{userId}/phone")
+    public Response getCoinsBalance(@PathVariable Long userId) {
+		try {
+			User user = userService.findById(userId);
+			Map<String, Object> response = new HashMap<>();
+			response.put("phone", user.getPhone());
+			return Response.ok(response);
+		} catch (Exception e) {
+            e.printStackTrace();
+            return Response.serverError();
         }
     }
 
