@@ -33,6 +33,7 @@ import com.batm.entity.CodeVerification;
 import com.batm.entity.Error;
 import com.batm.entity.Response;
 import com.batm.entity.Token;
+import com.batm.entity.Unlink;
 import com.batm.entity.User;
 import com.batm.repository.TokenRepository;
 import com.batm.rest.vm.CheckPasswordRequestVM;
@@ -44,6 +45,7 @@ import com.batm.rest.vm.ValidateOTPResponse;
 import com.batm.rest.vm.ValidateOTPVM;
 import com.batm.security.jwt.JWTFilter;
 import com.batm.security.jwt.TokenProvider;
+import com.batm.service.UnlinkService;
 import com.batm.service.UserService;
 import com.batm.service.VerificationService;
 import com.batm.util.Constant;
@@ -78,6 +80,9 @@ public class UserController {
 
 	@Autowired
 	private PasswordEncoder passwordEncoder;
+	
+	@Autowired
+	private UnlinkService unlinkService;
 
 	@Value("${security.jwt.access-token-duration}")
 	private Long expiryTime;
@@ -229,6 +234,25 @@ public class UserController {
 
 			Map<String, Object> response = new HashMap<>();
 			response.put("updated", true);
+			return Response.ok(response);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return Response.serverError();
+		}
+	}
+	
+	
+	@PostMapping("/user/{userId}/unlink")
+	public Response unlinkUser(@PathVariable Long userId) {
+		try {
+			Unlink unlink = unlinkService.unlinkUser(userId);
+			Map<String, Object> response = new HashMap<>();
+			if(unlink != null) {
+				response.put("updated", true);
+			}else {
+				response.put("updated", false);
+			}
+			
 			return Response.ok(response);
 		} catch (Exception e) {
 			e.printStackTrace();

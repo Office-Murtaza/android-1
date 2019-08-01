@@ -42,5 +42,8 @@ public class User extends AbstractAuditingEntity implements Serializable {
 
 	@OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
 	private Token refreshToken;
+	
+	@OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+	private Unlink unlink;
 
 }
