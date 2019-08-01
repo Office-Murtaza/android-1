@@ -38,5 +38,13 @@ public class UserService {
 	public User findById(Long userId) {
 		return this.userRepository.getOne(userId);
 	}
+	
+	public User save(User user) {
+		return this.userRepository.save(user);
+	}
+	
+	public void updatePassword(String encodedPassword, Long userId) {
+		this.userRepository.updatePassword(encodedPassword, userId);
+	}
 
 }

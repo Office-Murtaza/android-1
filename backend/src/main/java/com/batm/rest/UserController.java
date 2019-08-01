@@ -39,6 +39,7 @@ import com.batm.rest.vm.CheckPasswordRequestVM;
 import com.batm.rest.vm.LoginVM;
 import com.batm.rest.vm.RefreshVM;
 import com.batm.rest.vm.RegisterVM;
+import com.batm.rest.vm.UpdatePasswordRequestVM;
 import com.batm.rest.vm.ValidateOTPResponse;
 import com.batm.rest.vm.ValidateOTPVM;
 import com.batm.security.jwt.JWTFilter;
@@ -213,6 +214,21 @@ public class UserController {
 
 			Map<String, Object> response = new HashMap<>();
 			response.put("match", match);
+			return Response.ok(response);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return Response.serverError();
+		}
+	}
+	
+	@PostMapping("/user/{userId}/password")
+	public Response updatePassword(@RequestBody UpdatePasswordRequestVM updatePasswordRequest, @PathVariable Long userId) {
+		try {
+			String encodedPassowrd = passwordEncoder.encode(updatePasswordRequest.getPassword());
+			userService.updatePassword(encodedPassowrd, userId);
+
+			Map<String, Object> response = new HashMap<>();
+			response.put("updated", true);
 			return Response.ok(response);
 		} catch (Exception e) {
 			e.printStackTrace();
