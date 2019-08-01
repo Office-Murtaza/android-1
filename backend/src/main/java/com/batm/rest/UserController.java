@@ -196,7 +196,7 @@ public class UserController {
 	}
 
 	@GetMapping("/user/{userId}/phone")
-	public Response getCoinsBalance(@PathVariable Long userId) {
+	public Response getPhone(@PathVariable Long userId) {
 		try {
 			User user = userService.findById(userId);
 			Map<String, Object> response = new HashMap<>();
