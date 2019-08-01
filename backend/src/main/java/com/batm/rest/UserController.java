@@ -204,16 +204,20 @@ public class UserController {
 
 	@PostMapping("/user/{userId}/check/password")
 	public Response checkPassword(@RequestBody CheckPasswordRequestVM checkPasswordRequest, @PathVariable Long userId) {
-		Boolean match = Boolean.FALSE;
-		
-		User user = this.userService.findById(userId);
-		if(user != null) {
-			match = passwordEncoder.matches(checkPasswordRequest.getPassword(), user.getPassword());
+		try {
+			Boolean match = Boolean.FALSE;
+			User user = this.userService.findById(userId);
+			if (user != null) {
+				match = passwordEncoder.matches(checkPasswordRequest.getPassword(), user.getPassword());
+			}
+
+			Map<String, Object> response = new HashMap<>();
+			response.put("match", match);
+			return Response.ok(response);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return Response.serverError();
 		}
-		
-		Map<String, Object> response = new HashMap<>();
-		response.put("match", match);
-		return Response.ok(response);
 	}
 
 	private JWTToken getJwt(Long userId, String username, String password) {
