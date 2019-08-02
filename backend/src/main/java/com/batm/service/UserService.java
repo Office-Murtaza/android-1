@@ -46,5 +46,9 @@ public class UserService {
 	public void updatePassword(String encodedPassword, Long userId) {
 		this.userRepository.updatePassword(encodedPassword, userId);
 	}
+	
+	public void updatePhone(String phone, Long userId) {
+		this.userRepository.updatePhone(phone, userId);
+	}
 
 }

@@ -34,10 +34,12 @@ import com.batm.entity.Error;
 import com.batm.entity.Response;
 import com.batm.entity.Token;
 import com.batm.entity.Unlink;
+import com.batm.entity.UpdatePhone;
 import com.batm.entity.User;
 import com.batm.repository.TokenRepository;
 import com.batm.rest.vm.CheckPasswordRequestVM;
 import com.batm.rest.vm.LoginVM;
+import com.batm.rest.vm.PhoneRequestVM;
 import com.batm.rest.vm.RefreshVM;
 import com.batm.rest.vm.RegisterVM;
 import com.batm.rest.vm.UpdatePasswordRequestVM;
@@ -46,6 +48,7 @@ import com.batm.rest.vm.ValidateOTPVM;
 import com.batm.security.jwt.JWTFilter;
 import com.batm.security.jwt.TokenProvider;
 import com.batm.service.UnlinkService;
+import com.batm.service.UpdatePhoneService;
 import com.batm.service.UserService;
 import com.batm.service.VerificationService;
 import com.batm.util.Constant;
@@ -83,6 +86,9 @@ public class UserController {
 	
 	@Autowired
 	private UnlinkService unlinkService;
+	
+	@Autowired
+	private UpdatePhoneService updatePhoneService;
 
 	@Value("${security.jwt.access-token-duration}")
 	private Long expiryTime;
@@ -201,6 +207,49 @@ public class UserController {
 			User user = userService.findById(userId);
 			Map<String, Object> response = new HashMap<>();
 			response.put("phone", user.getPhone());
+			return Response.ok(response);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return Response.serverError();
+		}
+	}
+	
+	@PostMapping("/user/{userId}/phone")
+	public Response updatePhone(@RequestBody PhoneRequestVM phoneRequest, @PathVariable Long userId) {
+		try {
+			updatePhoneService.udpatePhone(phoneRequest, userId);
+			Map<String, Object> response = new HashMap<>();
+			response.put("smsSent", true);
+			return Response.ok(response);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return Response.serverError();
+		}
+	}
+	
+	@PostMapping("/user/{userId}/phone/confirm")
+	public Response updatePhoneConfirm(@RequestBody ValidateOTPVM validateOtpVM,@PathVariable Long userId) {
+		try {
+			UpdatePhone updatePhone = updatePhoneService.getUpdatePhone(userId);
+			if(!StringUtils.equals("0", updatePhone.getStatus())) {
+				return Response.error(new Error(2, "Invalid request"));
+			}
+			
+			CodeVerification codeVerification = codeVerificationService.getCodeByUserId(userId);
+			if(StringUtils.equals("1", codeVerification.getCodeStatus())) {
+				return Response.error(new Error(3, "Verification code is already used"));
+			}
+			
+			if (!StringUtils.equals(validateOtpVM.getCode(), codeVerification.getCode())) {
+				return Response.error(new Error(2, "Wrong verification code"));
+			}
+			
+			userService.updatePhone(updatePhone.getPhone(), userId);
+			updatePhone.setStatus("1");
+			updatePhoneService.save(updatePhone);
+			
+			Map<String, Object> response = new HashMap<>();
+			response.put("confirmed", true);
 			return Response.ok(response);
 		} catch (Exception e) {
 			e.printStackTrace();
