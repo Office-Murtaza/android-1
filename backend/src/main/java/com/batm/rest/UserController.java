@@ -8,9 +8,7 @@ import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
-
 import javax.validation.Valid;
-
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +26,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.batm.entity.CodeVerification;
 import com.batm.entity.Error;
 import com.batm.entity.Response;
@@ -48,12 +45,11 @@ import com.batm.rest.vm.ValidateOTPVM;
 import com.batm.security.jwt.JWTFilter;
 import com.batm.security.jwt.TokenProvider;
 import com.batm.service.UnlinkService;
-import com.batm.service.UpdatePhoneService;
+import com.batm.service.PhoneService;
 import com.batm.service.UserService;
 import com.batm.service.VerificationService;
 import com.batm.util.Constant;
 import com.batm.util.TwilioComponent;
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -63,300 +59,326 @@ import lombok.Setter;
 @RequestMapping("/api/v1")
 public class UserController {
 
-	@Autowired
-	private TokenProvider tokenProvider;
+    @Autowired
+    private TokenProvider tokenProvider;
 
-	@Autowired
-	private AuthenticationManager authenticationManager;
+    @Autowired
+    private AuthenticationManager authenticationManager;
 
-	@Autowired
-	private UserService userService;
+    @Autowired
+    private UserService userService;
 
-	@Autowired
-	private TwilioComponent twilioComponent;
+    @Autowired
+    private TwilioComponent twilioComponent;
 
-	@Autowired
-	private VerificationService codeVerificationService;
+    @Autowired
+    private VerificationService codeVerificationService;
 
-	@Autowired
-	private TokenRepository refreshTokenRepository;
+    @Autowired
+    private TokenRepository refreshTokenRepository;
 
-	@Autowired
-	private PasswordEncoder passwordEncoder;
-	
-	@Autowired
-	private UnlinkService unlinkService;
-	
-	@Autowired
-	private UpdatePhoneService updatePhoneService;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
-	@Value("${security.jwt.access-token-duration}")
-	private Long expiryTime;
+    @Autowired
+    private UnlinkService unlinkService;
 
-	@Value("${security.verification.code-validity}")
-	private Long verificationCodeValidity;
+    @Autowired
+    private PhoneService phoneService;
 
-	@PostMapping("/register")
-	public Response registerAccount(@Valid @RequestBody RegisterVM register) {
-		Pattern pattern = Pattern.compile(Constant.REGEX_PHONE);
+    @Value("${security.jwt.access-token-duration}")
+    private Long expiryTime;
 
-		Matcher matcher = pattern.matcher(register.getPhone());
-		if (!matcher.matches()) {
-			return Response.error(new Error(2, "Invalid phone number"));
-		}
+    @Value("${security.verification.code-validity}")
+    private Long verificationCodeValidity;
 
-		if (!checkPasswordLength(register.getPassword())) {
-			return Response.error(new Error(2, "Password length should be in 6 to 15"));
-		}
+    @PostMapping("/register")
+    public Response register(@Valid @RequestBody RegisterVM register) {
+        try {
+            Pattern pattern = Pattern.compile(Constant.REGEX_PHONE);
 
-		Optional<User> findOneByPhoneIgnoreCase = userService.findOneByPhoneIgnoreCase(register.getPhone());
-		if (findOneByPhoneIgnoreCase.isPresent()) {
-			return Response.error(new Error(1, "Phone is already registered"));
-		}
+            Matcher matcher = pattern.matcher(register.getPhone());
+            if (!matcher.matches()) {
+                return Response.error(new Error(2, "Invalid phone number"));
+            }
 
-		User user = userService.registerUser(register.getPhone(), register.getPassword());
-		twilioComponent.sendOTP(user);
-		JWTToken jwt = getJwt(user.getUserId(), register.getPhone(), register.getPassword());
+            if (!checkPasswordLength(register.getPassword())) {
+                return Response.error(new Error(2, "Password length should be in 6 to 15"));
+            }
 
-		this.refreshTokenRepository.save(new Token(jwt.getAccessToken(), jwt.getRefreshToken(), user));
-		return Response.ok(jwt);
-	}
+            Optional<User> findOneByPhoneIgnoreCase = userService.findOneByPhoneIgnoreCase(register.getPhone());
+            if (findOneByPhoneIgnoreCase.isPresent()) {
+                return Response.error(new Error(1, "Phone is already registered"));
+            }
 
-	@PostMapping("/recover")
-	public Response recoverAccount(@Valid @RequestBody LoginVM loginVM) {
-		Pattern pattern = Pattern.compile(Constant.REGEX_PHONE);
+            User user = userService.registerUser(register.getPhone(), register.getPassword());
+            twilioComponent.sendOTP(user);
+            JWTToken jwt = getJwt(user.getUserId(), register.getPhone(), register.getPassword());
 
-		Matcher matcher = pattern.matcher(loginVM.getPhone());
-		if (!matcher.matches()) {
-			return Response.error(new Error(2, "Invalid phone number"));
-		}
+            refreshTokenRepository.save(new Token(jwt.getAccessToken(), jwt.getRefreshToken(), user));
 
-		if (!checkPasswordLength(loginVM.getPassword())) {
-			return Response.error(new Error(3, "Password length should be in 6 to 15"));
-		}
+            return Response.ok(jwt);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Response.serverError();
+        }
+    }
 
-		Optional<User> findOneByPhoneIgnoreCase = userService.findOneByPhoneIgnoreCase(loginVM.getPhone());
-		if (!findOneByPhoneIgnoreCase.isPresent()) {
-			return Response.error(new Error(2, "Phone is not registered"));
-		}
+    @PostMapping("/recover")
+    public Response recover(@Valid @RequestBody LoginVM loginVM) {
+        try {
+            Pattern pattern = Pattern.compile(Constant.REGEX_PHONE);
 
-		User user = findOneByPhoneIgnoreCase.get();
+            Matcher matcher = pattern.matcher(loginVM.getPhone());
+            if (!matcher.matches()) {
+                return Response.error(new Error(2, "Invalid phone number"));
+            }
 
-		boolean passwordMatch = passwordEncoder.matches(loginVM.getPassword(), user.getPassword());
-		if (!passwordMatch) {
-			return Response.error(new Error(3, "Wrong password"));
-		}
+            if (!checkPasswordLength(loginVM.getPassword())) {
+                return Response.error(new Error(3, "Password length should be in 6 to 15"));
+            }
 
-		JWTToken jwt = getJwt(user.getUserId(), loginVM.getPhone(), loginVM.getPassword());
+            Optional<User> findOneByPhoneIgnoreCase = userService.findOneByPhoneIgnoreCase(loginVM.getPhone());
+            if (!findOneByPhoneIgnoreCase.isPresent()) {
+                return Response.error(new Error(2, "Phone is not registered"));
+            }
 
-		twilioComponent.sendOTP(user);
+            User user = findOneByPhoneIgnoreCase.get();
 
-		Token token = this.refreshTokenRepository.findByUserUserId(user.getUserId());
-		token.setRefreshToken(jwt.getRefreshToken());
-		token.setAccessToken(jwt.getAccessToken());
-		this.refreshTokenRepository.save(token);
-		return Response.ok(jwt);
-	}
+            boolean passwordMatch = passwordEncoder.matches(loginVM.getPassword(), user.getPassword());
+            if (!passwordMatch) {
+                return Response.error(new Error(3, "Wrong password"));
+            }
 
-	@PostMapping("/user/{userId}/verify")
-	public Response validateVerficationCode(@RequestBody ValidateOTPVM validateOtpVM, @PathVariable Long userId) {
-		CodeVerification codeVerification = codeVerificationService.getCodeByUserId(userId);
-		Instant time10MinuteAge = Instant.now().minusMillis(verificationCodeValidity);
-		if (!StringUtils.isEmpty(codeVerification.getCode())
-				&& codeVerification.getLastModifiedDate().isBefore(time10MinuteAge)) {
-			return Response.error(new Error(2, "Verification code is expired"));
-		}
+            JWTToken jwt = getJwt(user.getUserId(), loginVM.getPhone(), loginVM.getPassword());
 
-		if (StringUtils.equals(codeVerification.getCodeStatus(), "1")) {
-			return Response.error(new Error(2, "Verification code is already used"));
-		}
+            twilioComponent.sendOTP(user);
 
-		if (!StringUtils.equals(validateOtpVM.getCode(), codeVerification.getCode())) {
-			return Response.error(new Error(2, "Wrong verification code"));
-		}
+            Token token = this.refreshTokenRepository.findByUserUserId(user.getUserId());
+            token.setRefreshToken(jwt.getRefreshToken());
+            token.setAccessToken(jwt.getAccessToken());
+            refreshTokenRepository.save(token);
 
-		codeVerification.setCodeStatus("1");
-		codeVerificationService.save(codeVerification);
+            return Response.ok(jwt);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Response.serverError();
+        }
+    }
 
-		return Response.ok(new ValidateOTPResponse(userId, true));
-	}
+    @PostMapping("/user/{userId}/verify")
+    public Response verify(@RequestBody ValidateOTPVM validateOtpVM, @PathVariable Long userId) {
+        try {
+            CodeVerification codeVerification = codeVerificationService.getCodeByUserId(userId);
+            Instant time10MinuteAge = Instant.now().minusMillis(verificationCodeValidity);
+            if (!StringUtils.isEmpty(codeVerification.getCode())
+                    && codeVerification.getLastModifiedDate().isBefore(time10MinuteAge)) {
+                return Response.error(new Error(2, "Verification code is expired"));
+            }
 
-	@PostMapping("/refresh")
-	public Response refresh(@Valid @RequestBody RefreshVM refreshVM) {
+            if (StringUtils.equals(codeVerification.getCodeStatus(), "1")) {
+                return Response.error(new Error(2, "Verification code is already used"));
+            }
 
-		Token refreshToken = this.refreshTokenRepository.findByRefreshToken(refreshVM.getRefreshToken());
-		if (refreshToken != null) {
-			User user = userService.findById(refreshToken.getUser().getUserId());
+            if (!StringUtils.equals(validateOtpVM.getCode(), codeVerification.getCode())) {
+                return Response.error(new Error(2, "Wrong verification code"));
+            }
 
-			JWTToken jwt = getJwt(user);
+            codeVerification.setCodeStatus("1");
+            codeVerificationService.save(codeVerification);
 
-			Token token = this.refreshTokenRepository.findByUserUserId(user.getUserId());
-			token.setRefreshToken(jwt.getRefreshToken());
-			token.setAccessToken(jwt.getAccessToken());
-			this.refreshTokenRepository.save(token);
-			return Response.ok(jwt);
+            return Response.ok(new ValidateOTPResponse(userId, true));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Response.serverError();
+        }
+    }
 
-		} else {
-			throw new AccessDeniedException("Refresh token not exist");
-		}
-	}
+    @PostMapping("/refresh")
+    public Response refresh(@Valid @RequestBody RefreshVM refreshVM) {
+        try {
+            Token refreshToken = refreshTokenRepository.findByRefreshToken(refreshVM.getRefreshToken());
 
-	@GetMapping("/user/{userId}/phone")
-	public Response getPhone(@PathVariable Long userId) {
-		try {
-			User user = userService.findById(userId);
-			Map<String, Object> response = new HashMap<>();
-			response.put("phone", user.getPhone());
-			return Response.ok(response);
-		} catch (Exception e) {
-			e.printStackTrace();
-			return Response.serverError();
-		}
-	}
-	
-	@PostMapping("/user/{userId}/phone")
-	public Response updatePhone(@RequestBody PhoneRequestVM phoneRequest, @PathVariable Long userId) {
-		try {
-			updatePhoneService.udpatePhone(phoneRequest, userId);
-			Map<String, Object> response = new HashMap<>();
-			response.put("smsSent", true);
-			return Response.ok(response);
-		} catch (Exception e) {
-			e.printStackTrace();
-			return Response.serverError();
-		}
-	}
-	
-	@PostMapping("/user/{userId}/phone/confirm")
-	public Response updatePhoneConfirm(@RequestBody ValidateOTPVM validateOtpVM,@PathVariable Long userId) {
-		try {
-			UpdatePhone updatePhone = updatePhoneService.getUpdatePhone(userId);
-			if(!StringUtils.equals("0", updatePhone.getStatus())) {
-				return Response.error(new Error(2, "Invalid request"));
-			}
-			
-			CodeVerification codeVerification = codeVerificationService.getCodeByUserId(userId);
-			if(StringUtils.equals("1", codeVerification.getCodeStatus())) {
-				return Response.error(new Error(3, "Verification code is already used"));
-			}
-			
-			if (!StringUtils.equals(validateOtpVM.getCode(), codeVerification.getCode())) {
-				return Response.error(new Error(2, "Wrong verification code"));
-			}
-			
-			userService.updatePhone(updatePhone.getPhone(), userId);
-			updatePhone.setStatus("1");
-			updatePhoneService.save(updatePhone);
-			
-			Map<String, Object> response = new HashMap<>();
-			response.put("confirmed", true);
-			return Response.ok(response);
-		} catch (Exception e) {
-			e.printStackTrace();
-			return Response.serverError();
-		}
-	}
+            if (refreshToken != null) {
+                User user = userService.findById(refreshToken.getUser().getUserId());
 
-	@PostMapping("/user/{userId}/check/password")
-	public Response checkPassword(@RequestBody CheckPasswordRequestVM checkPasswordRequest, @PathVariable Long userId) {
-		try {
-			Boolean match = Boolean.FALSE;
-			User user = this.userService.findById(userId);
-			if (user != null) {
-				match = passwordEncoder.matches(checkPasswordRequest.getPassword(), user.getPassword());
-			}
+                JWTToken jwt = getJwt(user);
 
-			Map<String, Object> response = new HashMap<>();
-			response.put("match", match);
-			return Response.ok(response);
-		} catch (Exception e) {
-			e.printStackTrace();
-			return Response.serverError();
-		}
-	}
-	
-	@PostMapping("/user/{userId}/password")
-	public Response updatePassword(@RequestBody UpdatePasswordRequestVM updatePasswordRequest, @PathVariable Long userId) {
-		try {
-			String encodedPassowrd = passwordEncoder.encode(updatePasswordRequest.getPassword());
-			userService.updatePassword(encodedPassowrd, userId);
+                Token token = refreshTokenRepository.findByUserUserId(user.getUserId());
+                token.setRefreshToken(jwt.getRefreshToken());
+                token.setAccessToken(jwt.getAccessToken());
+                refreshTokenRepository.save(token);
 
-			Map<String, Object> response = new HashMap<>();
-			response.put("updated", true);
-			return Response.ok(response);
-		} catch (Exception e) {
-			e.printStackTrace();
-			return Response.serverError();
-		}
-	}
-	
-	
-	@PostMapping("/user/{userId}/unlink")
-	public Response unlinkUser(@PathVariable Long userId) {
-		try {
-			Unlink unlink = unlinkService.unlinkUser(userId);
-			Map<String, Object> response = new HashMap<>();
-			if(unlink != null) {
-				response.put("updated", true);
-			}else {
-				response.put("updated", false);
-			}
-			
-			return Response.ok(response);
-		} catch (Exception e) {
-			e.printStackTrace();
-			return Response.serverError();
-		}
-	}
+                return Response.ok(jwt);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Response.serverError();
+        }
 
-	private JWTToken getJwt(Long userId, String username, String password) {
-		UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username,
-				password);
+        throw new AccessDeniedException("Refresh token not exist");
+    }
 
-		Authentication authentication = this.authenticationManager.authenticate(authenticationToken);
-		SecurityContextHolder.getContext().setAuthentication(authentication);
-		String jwt = tokenProvider.createToken(authentication);
-		String refreshToken = tokenProvider.createRefreshToken();
-		HttpHeaders httpHeaders = new HttpHeaders();
-		httpHeaders.add(JWTFilter.AUTHORIZATION_HEADER, "Bearer " + jwt);
+    @GetMapping("/user/{userId}/phone")
+    public Response getPhone(@PathVariable Long userId) {
+        try {
+            User user = userService.findById(userId);
+            Map<String, Object> response = new HashMap<>();
+            response.put("phone", user.getPhone());
 
-		return new JWTToken(userId, jwt, System.currentTimeMillis() + expiryTime, refreshToken,
-				authentication.getAuthorities().stream().map(role -> role.getAuthority()).collect(Collectors.toList()));
-	}
+            return Response.ok(response);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Response.serverError();
+        }
+    }
 
-	private JWTToken getJwt(User user) {
-		UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
-				user.getPhone(), new String(Base64.decodeBase64(user.getPassword())));
+    @PostMapping("/user/{userId}/phone")
+    public Response updatePhone(@RequestBody PhoneRequestVM phoneRequest, @PathVariable Long userId) {
+        try {
+            phoneService.updatePhone(phoneRequest, userId);
+            Map<String, Object> response = new HashMap<>();
+            response.put("smsSent", true);
 
-		Authentication authentication = this.authenticationManager.authenticate(authenticationToken);
-		String jwt = tokenProvider.createToken(authentication);
-		String refreshToken = tokenProvider.createRefreshToken();
-		HttpHeaders httpHeaders = new HttpHeaders();
-		httpHeaders.add(JWTFilter.AUTHORIZATION_HEADER, "Bearer " + jwt);
+            return Response.ok(response);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Response.serverError();
+        }
+    }
 
-		return new JWTToken(user.getUserId(), jwt, System.currentTimeMillis() + expiryTime, refreshToken,
-				authentication.getAuthorities().stream().map(role -> role.getAuthority()).collect(Collectors.toList()));
-	}
+    @PostMapping("/user/{userId}/phone/confirm")
+    public Response confirmPhone(@RequestBody ValidateOTPVM validateOtpVM, @PathVariable Long userId) {
+        try {
+            UpdatePhone updatePhone = phoneService.getUpdatePhone(userId);
+            if (!StringUtils.equals("0", updatePhone.getStatus())) {
+                return Response.error(new Error(2, "Invalid request"));
+            }
 
-	private static boolean checkPasswordLength(String password) {
-		return !StringUtils.isEmpty(password) && password.length() >= Constant.PASSWORD_MIN_LENGTH
-				&& password.length() <= Constant.PASSWORD_MAX_LENGTH;
-	}
+            CodeVerification codeVerification = codeVerificationService.getCodeByUserId(userId);
+            if (StringUtils.equals("1", codeVerification.getCodeStatus())) {
+                return Response.error(new Error(3, "Verification code is already used"));
+            }
 
-	@Getter
-	@Setter
-	@AllArgsConstructor
-	@NoArgsConstructor
-	static class JWTToken {
+            if (!StringUtils.equals(validateOtpVM.getCode(), codeVerification.getCode())) {
+                return Response.error(new Error(2, "Wrong verification code"));
+            }
 
-		private Long userId;
+            userService.updatePhone(updatePhone.getPhone(), userId);
+            updatePhone.setStatus("1");
+            phoneService.save(updatePhone);
 
-		private String accessToken;
+            Map<String, Object> response = new HashMap<>();
+            response.put("confirmed", true);
 
-		private Long expires;
+            return Response.ok(response);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Response.serverError();
+        }
+    }
 
-		private String refreshToken;
+    @PostMapping("/user/{userId}/check/password")
+    public Response checkPassword(@RequestBody CheckPasswordRequestVM checkPasswordRequest, @PathVariable Long userId) {
+        try {
+            Boolean match = Boolean.FALSE;
+            User user = this.userService.findById(userId);
+            if (user != null) {
+                match = passwordEncoder.matches(checkPasswordRequest.getPassword(), user.getPassword());
+            }
 
-		private List<String> roles;
-	}
+            Map<String, Object> response = new HashMap<>();
+            response.put("match", match);
+
+            return Response.ok(response);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Response.serverError();
+        }
+    }
+
+    @PostMapping("/user/{userId}/password")
+    public Response updatePassword(@RequestBody UpdatePasswordRequestVM updatePasswordRequest, @PathVariable Long userId) {
+        try {
+            String encodedPassword = passwordEncoder.encode(updatePasswordRequest.getPassword());
+            userService.updatePassword(encodedPassword, userId);
+
+            Map<String, Object> response = new HashMap<>();
+            response.put("updated", true);
+
+            return Response.ok(response);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Response.serverError();
+        }
+    }
+
+    @PostMapping("/user/{userId}/unlink")
+    public Response unlink(@PathVariable Long userId) {
+        try {
+            Unlink unlink = unlinkService.unlinkUser(userId);
+            Map<String, Object> response = new HashMap<>();
+            if (unlink != null) {
+                response.put("updated", true);
+            } else {
+                response.put("updated", false);
+            }
+
+            return Response.ok(response);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Response.serverError();
+        }
+    }
+
+    private JWTToken getJwt(Long userId, String username, String password) {
+        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username,
+                password);
+
+        Authentication authentication = this.authenticationManager.authenticate(authenticationToken);
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        String jwt = tokenProvider.createToken(authentication);
+        String refreshToken = tokenProvider.createRefreshToken();
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.add(JWTFilter.AUTHORIZATION_HEADER, "Bearer " + jwt);
+
+        return new JWTToken(userId, jwt, System.currentTimeMillis() + expiryTime, refreshToken,
+                authentication.getAuthorities().stream().map(role -> role.getAuthority()).collect(Collectors.toList()));
+    }
+
+    private JWTToken getJwt(User user) {
+        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
+                user.getPhone(), new String(Base64.decodeBase64(user.getPassword())));
+
+        Authentication authentication = this.authenticationManager.authenticate(authenticationToken);
+        String jwt = tokenProvider.createToken(authentication);
+        String refreshToken = tokenProvider.createRefreshToken();
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.add(JWTFilter.AUTHORIZATION_HEADER, "Bearer " + jwt);
+
+        return new JWTToken(user.getUserId(), jwt, System.currentTimeMillis() + expiryTime, refreshToken,
+                authentication.getAuthorities().stream().map(role -> role.getAuthority()).collect(Collectors.toList()));
+    }
+
+    private static boolean checkPasswordLength(String password) {
+        return !StringUtils.isEmpty(password) && password.length() >= Constant.PASSWORD_MIN_LENGTH
+                && password.length() <= Constant.PASSWORD_MAX_LENGTH;
+    }
+
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    static class JWTToken {
+
+        private Long userId;
+
+        private String accessToken;
+
+        private Long expires;
+
+        private String refreshToken;
+
+        private List<String> roles;
+    }
 }
