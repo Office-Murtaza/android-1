@@ -11,13 +11,11 @@ import javax.persistence.Table;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
 @AllArgsConstructor
-@NoArgsConstructor
 @Entity
 @Table(name = "w_update_phone")
 public class UpdatePhone extends AbstractAuditingEntity implements Serializable {
@@ -37,6 +35,10 @@ public class UpdatePhone extends AbstractAuditingEntity implements Serializable 
 	
 	private String phone;
 	
-	private String status = "0";
+	private Integer status = 0;
 
+	public UpdatePhone() {
+		super();
+	}
+	
 }

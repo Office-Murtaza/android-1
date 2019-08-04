@@ -45,5 +45,8 @@ public class User extends AbstractAuditingEntity implements Serializable {
 	
 	@OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
 	private Unlink unlink;
+	
+	@OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+	private UpdatePhone updatePhone;
 
 }

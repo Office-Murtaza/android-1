@@ -11,6 +11,7 @@ import java.util.stream.Collectors;
 import javax.validation.Valid;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.StringUtils;
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
@@ -251,7 +252,8 @@ public class UserController {
     public Response confirmPhone(@RequestBody ValidateOTPVM validateOtpVM, @PathVariable Long userId) {
         try {
             UpdatePhone updatePhone = phoneService.getUpdatePhone(userId);
-            if (!StringUtils.equals("0", updatePhone.getStatus())) {
+            updatePhone = (UpdatePhone) Hibernate.unproxy(updatePhone);
+            if (updatePhone.getStatus() == null || updatePhone.getStatus().intValue() == 1) {
                 return Response.error(new Error(2, "Invalid request"));
             }
 
@@ -265,7 +267,7 @@ public class UserController {
             }
 
             userService.updatePhone(updatePhone.getPhone(), userId);
-            updatePhone.setStatus("1");
+            updatePhone.setStatus(1);
             phoneService.save(updatePhone);
 
             Map<String, Object> response = new HashMap<>();
