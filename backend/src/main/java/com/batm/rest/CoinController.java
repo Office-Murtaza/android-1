@@ -25,9 +25,9 @@ public class CoinController {
 
             coinService.save(coinVM, userId);
 
-            Map<String, String> response = new HashMap<>();
-            response.put("userId", userId + "");
-            response.put("isCoinsAdded", true + "");
+            Map<String, Object> response = new HashMap<>();
+            response.put("isCoinsAdded", true);
+
             return Response.ok(response);
         } catch (Exception e) {
             e.printStackTrace();

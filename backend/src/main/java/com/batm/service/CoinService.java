@@ -243,8 +243,8 @@ public class CoinService {
             }
         }
 
-        Map<String, String> response = new HashMap<>();
-        response.put("isCoinsMatched", true + "");
+        Map<String, Object> response = new HashMap<>();
+        response.put("isCoinsMatched", true);
 
         return Response.ok(response);
     }

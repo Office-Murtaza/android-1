@@ -19,6 +19,8 @@
     <include file="liquibase/create/create_token.sql" relativeToChangelogFile="false"/>
     <include file="liquibase/create/create_atm_address.sql" relativeToChangelogFile="false"/>
     <include file="liquibase/create/create_open_hour.sql" relativeToChangelogFile="false"/>
+    <include file="liquibase/create/create_link.sql" relativeToChangelogFile="false"/>
+    <include file="liquibase/create/create_update_phone.sql" relativeToChangelogFile="false"/>
     
     <include file="liquibase/insert/insert_coins.sql" relativeToChangelogFile="false"/>
     <include file="liquibase/insert/insert_atm_address.sql" relativeToChangelogFile="false"/>
