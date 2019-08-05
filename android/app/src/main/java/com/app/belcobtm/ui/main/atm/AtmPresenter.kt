@@ -1,4 +1,4 @@
-package com.app.belcobtm.ui.coins.atm
+package com.app.belcobtm.ui.main.atm
 
 import com.app.belcobtm.api.data_manager.CoinsDataManager
 import com.app.belcobtm.api.model.response.AtmResponse

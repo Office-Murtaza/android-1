@@ -1,4 +1,4 @@
-package com.app.belcobtm.ui.coins.balance
+package com.app.belcobtm.ui.main.coins.balance
 
 import android.content.Intent
 import android.graphics.Color
@@ -8,10 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.app.belcobtm.R
 import com.app.belcobtm.mvp.BaseMvpFragment
-import com.app.belcobtm.ui.auth.pin.PinActivity
-import com.app.belcobtm.ui.auth.welcome.WelcomeActivity
-import com.app.belcobtm.ui.coins.main.MainContract
-import com.app.belcobtm.ui.coins.visibility.VisibilityCoinsActivity
+import com.app.belcobtm.ui.main.coins.visibility.VisibilityCoinsActivity
 import com.app.belcobtm.util.CoinItemDecoration
 import kotlinx.android.synthetic.main.activity_balance.*
 

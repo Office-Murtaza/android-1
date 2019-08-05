@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/bg_color"
-    tools:context=".ui.coins.main.MainActivity"
+    tools:context=".ui.main.main_activity.MainActivity"
     tools:showIn="@layout/activity_main">
 
     <!-- Login progress -->

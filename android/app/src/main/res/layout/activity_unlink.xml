@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ui.main.settings.UnlinkActivity">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/toolbar_container"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@drawable/bg_toolbar"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:title="@string/settings_unlink" />
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_x3"
+        android:layout_marginTop="@dimen/margin_x3"
+        android:layout_marginEnd="@dimen/margin_x3"
+        android:layout_marginBottom="@dimen/margin_x4"
+        android:fontFamily="@font/poppins_medium"
+        android:gravity="center"
+        android:text="@string/unlink_warning"
+        android:textSize="16sp" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/unlink"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_x4"
+        android:layout_marginEnd="@dimen/margin_x4"
+        android:background="@drawable/bt_gray_rounded_corner"
+        android:fontFamily="@font/poppins_bold"
+        android:text="@string/unlink_wallet"
+        android:textColor="@color/dark_gray_text_color" />
+
+</androidx.appcompat.widget.LinearLayoutCompat>

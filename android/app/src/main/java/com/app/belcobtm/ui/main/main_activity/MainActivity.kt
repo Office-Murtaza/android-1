@@ -1,4 +1,4 @@
-package com.app.belcobtm.ui.coins.main
+package com.app.belcobtm.ui.main.main_activity
 
 import android.content.Intent
 import android.os.Bundle
@@ -8,8 +8,9 @@ import com.app.belcobtm.R
 import com.app.belcobtm.mvp.BaseMvpActivity
 import com.app.belcobtm.ui.auth.pin.PinActivity
 import com.app.belcobtm.ui.auth.welcome.WelcomeActivity
-import com.app.belcobtm.ui.coins.atm.AtmFragment
-import com.app.belcobtm.ui.coins.balance.BalanceFragment
+import com.app.belcobtm.ui.main.atm.AtmFragment
+import com.app.belcobtm.ui.main.coins.balance.BalanceFragment
+import com.app.belcobtm.ui.main.settings.SettingsFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -41,7 +42,7 @@ class MainActivity : BaseMvpActivity<MainContract.View, MainContract.Presenter>(
                     return true
                 }
                 R.id.menu_settings -> {
-//                    setFragment(BalanceFragment())//todo settings fragment
+                    setFragment(SettingsFragment())
                     return true
                 }
             }

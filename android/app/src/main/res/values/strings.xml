@@ -1,7 +1,7 @@
 <resources>
     <string name="google_maps_key">AIzaSyDGBWQKBBKloFJfQgY_5i-l-a7aT8oRWhw</string>
 
-    <string name="app_name">Belcobtm</string>
+    <string name="app_name">Belco Wallet</string>
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password</string>
@@ -84,6 +84,17 @@
 
     <!--atm-->
     <string name="open_now">Open Now:</string>
+
+    <!--settings-->
+    <string name="settings_phone">Phone</string>
+    <string name="settings_pass">Password</string>
+    <string name="settings_pin">PIN</string>
+    <string name="settings_unlink">Unlink</string>
+    <string name="unlink_warning">Unlink the wallet means clear wallet seed phrase and coins private keys from the current device. You can recover the wallet at any time by seed phrase. If you lose your seed phrase you lost your wallet and all funds.  \n\nPlease make sure you have stored your seed phrase in a safe place.</string>
+    <string name="unlink_wallet">Unlink Wallet</string>
+    <string name="change_phone">Change phone</string>
+    <string name="open_seed">Open Seed</string>
+    <string name="password_doesnt_match">Password doesn\'t match</string>
 
 
 </resources>

@@ -1,4 +1,4 @@
-package com.app.belcobtm.ui.coins.atm
+package com.app.belcobtm.ui.main.atm
 
 import android.content.Context
 import android.text.SpannableString

@@ -1,4 +1,4 @@
-package com.app.belcobtm.ui.coins.visibility
+package com.app.belcobtm.ui.main.coins.visibility
 
 import com.app.belcobtm.db.DbCryptoCoin
 import com.app.belcobtm.mvp.BaseMvpPresenter

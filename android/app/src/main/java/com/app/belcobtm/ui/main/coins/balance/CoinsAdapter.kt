@@ -1,4 +1,4 @@
-package com.app.belcobtm.ui.coins.balance
+package com.app.belcobtm.ui.main.coins.balance
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

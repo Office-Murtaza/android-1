@@ -1,39 +1,13 @@
 package com.app.belcobtm.api
 
 import com.app.belcobtm.api.model.ServerResponse
-import com.app.belcobtm.api.model.param.AddCoinsParam
-import com.app.belcobtm.api.model.param.AuthParam
-import com.app.belcobtm.api.model.param.RefreshParam
-import com.app.belcobtm.api.model.param.VerifySmsParam
+import com.app.belcobtm.api.model.param.*
 import com.app.belcobtm.api.model.response.*
 import io.reactivex.Observable
 import retrofit2.http.*
 
 
 interface ApiInterface {
-
-//    @FormUrlEncoded
-//    @PUT("auth/resetPasswordRequests/{token}")
-//    fun resetPassword(@Path("token") token: String?, @Field("password") pass: String): Observable<ServerResponse<Any>>
-//
-//    @GET("flights_v2")
-//    fun findFlight(@Query("code") flightCode: String, @Query("departure") date: String): Observable<ServerResponse<ArrayList<FlightModel>>>
-//
-//    @POST("orders/{id}/accept")
-//    fun orderInsurance(@Path("id") insuranceId: String?): Observable<ServerResponse<FlightModel>>
-//
-//    @GET("orders")
-//    fun getInsurances(): Observable<ServerResponse<ArrayList<FlightModel>>>
-//
-//    @DELETE("orders/{id}")
-//    fun deleteInsurance(@Path("id") insuranceId: String?): Observable<ServerResponse<Any>>
-
-//    @Multipart
-//    @POST("account/verification")
-//    fun verification12(@Part application_level: MultipartBody.Part?,
-//                       @Part document_type: MultipartBody.Part?,
-//                       @Part document_front: MultipartBody.Part?,
-//                       @Part document_back: MultipartBody.Part?): Observable<ServerResponse<Any>>
 
     @POST("register")
     fun register(@Body registerParam: AuthParam): Observable<ServerResponse<AuthResponse>>
@@ -62,5 +36,7 @@ interface ApiInterface {
     @GET ("static/atm/address")
     fun getAtmAddress(): Observable<ServerResponse<AtmResponse>>
 
+    @POST("user/{userId}/check/password")
+    fun checkPass(@Path("userId") userId: String, @Body checkPassParam: CheckPassParam): Observable<ServerResponse<CheckPassResponse>>
 
 }

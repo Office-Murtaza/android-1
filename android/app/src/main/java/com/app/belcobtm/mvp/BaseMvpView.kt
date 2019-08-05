@@ -12,6 +12,10 @@ interface BaseMvpView {
 
     fun showError(@StringRes stringResId: Int)
 
+    fun showLongError(error: String?)
+
+    fun showLongError(@StringRes stringResId: Int)
+
     fun showMessage(@StringRes srtResId: Int)
 
     fun showMessage(message: String?)

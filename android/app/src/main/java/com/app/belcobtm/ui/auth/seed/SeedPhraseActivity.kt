@@ -10,7 +10,7 @@ import android.text.SpannableStringBuilder
 import android.text.style.ForegroundColorSpan
 import androidx.appcompat.app.AppCompatActivity
 import com.app.belcobtm.R
-import com.app.belcobtm.ui.coins.main.MainActivity
+import com.app.belcobtm.ui.main.main_activity.MainActivity
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_seed_phrase.*
 
@@ -18,13 +18,16 @@ import kotlinx.android.synthetic.main.activity_seed_phrase.*
 class SeedPhraseActivity : AppCompatActivity() {
 
     private lateinit var mSeedPhrase: String
+    private var mFromSettings: Boolean = false
 
     companion object {
         private const val KEY_SEED = "KEY_SEED"
+        private const val KEY_FROM_SETTINGS = "KEY_FROM_SETTINGS"
 
-        fun startActivity(context: Context, seed: String) {
+        fun startActivity(context: Context, seed: String?, fromSettings: Boolean = false) {
             val intent = Intent(context, SeedPhraseActivity::class.java)
             intent.putExtra(KEY_SEED, seed)
+            intent.putExtra(KEY_FROM_SETTINGS, fromSettings)
             context.startActivity(intent)
         }
     }
@@ -34,6 +37,7 @@ class SeedPhraseActivity : AppCompatActivity() {
         setContentView(R.layout.activity_seed_phrase)
 
         mSeedPhrase = intent.getStringExtra(KEY_SEED)
+        mFromSettings = intent.getBooleanExtra(KEY_FROM_SETTINGS, false)
         initView()
     }
 
@@ -56,10 +60,17 @@ class SeedPhraseActivity : AppCompatActivity() {
             copyToClipboard(mSeedPhrase)
             Snackbar.make(container, R.string.seed_clipboard, Snackbar.LENGTH_LONG).show()
         }
+        if (mFromSettings) {
+            bt_done.text = getString(android.R.string.ok)
+        }
 
         bt_done.setOnClickListener {
-            finishAffinity()
-            startActivity(Intent(this, MainActivity::class.java))
+            if (mFromSettings) {
+                onBackPressed()
+            } else {
+                finishAffinity()
+                startActivity(Intent(this, MainActivity::class.java))
+            }
         }
     }
 

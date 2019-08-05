@@ -1,7 +1,6 @@
-package com.app.belcobtm.ui.coins.atm
+package com.app.belcobtm.ui.main.atm
 
 import com.app.belcobtm.api.model.response.AtmResponse
-import com.app.belcobtm.api.model.response.GetCoinsResponse
 import com.app.belcobtm.mvp.BaseMvpPresenter
 import com.app.belcobtm.mvp.BaseMvpView
 

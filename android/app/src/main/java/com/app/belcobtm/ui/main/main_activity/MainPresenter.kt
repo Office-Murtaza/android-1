@@ -1,4 +1,4 @@
-package com.app.belcobtm.ui.coins.main
+package com.app.belcobtm.ui.main.main_activity
 
 import com.app.belcobtm.App
 import com.app.belcobtm.mvp.BaseMvpPresenterImpl

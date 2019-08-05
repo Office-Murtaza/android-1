@@ -1,4 +1,4 @@
-package com.app.belcobtm.ui.coins.balance
+package com.app.belcobtm.ui.main.coins.balance
 
 import com.app.belcobtm.api.model.response.GetCoinsResponse
 import com.app.belcobtm.mvp.BaseMvpPresenter

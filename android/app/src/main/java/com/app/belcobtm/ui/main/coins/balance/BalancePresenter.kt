@@ -1,11 +1,10 @@
-package com.app.belcobtm.ui.coins.balance
+package com.app.belcobtm.ui.main.coins.balance
 
 import com.app.belcobtm.App
 import com.app.belcobtm.api.data_manager.CoinsDataManager
 import com.app.belcobtm.api.model.response.GetCoinsResponse
 import com.app.belcobtm.db.DbCryptoCoinModel
 import com.app.belcobtm.mvp.BaseMvpDIPresenterImpl
-import com.app.belcobtm.ui.coins.main.MainContract
 import com.app.belcobtm.util.Optional
 import com.app.belcobtm.util.pref
 import io.realm.Realm
