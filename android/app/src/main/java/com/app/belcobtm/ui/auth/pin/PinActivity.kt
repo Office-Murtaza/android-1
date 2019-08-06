@@ -146,7 +146,7 @@ class PinActivity : BaseMvpActivity<PinContract.View, PinContract.Presenter>(), 
                     setResult(Activity.RESULT_OK)
                     finish()
                 }
-                else -> {//second create/change pin screen. pin doesn't match
+                else -> {//second create/change pin screen. pin doesn't phone
                     pinNotMatch()
                     onBackPressed()
                 }

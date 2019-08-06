@@ -39,4 +39,13 @@ interface ApiInterface {
     @POST("user/{userId}/check/password")
     fun checkPass(@Path("userId") userId: String, @Body checkPassParam: CheckPassParam): Observable<ServerResponse<CheckPassResponse>>
 
+    @GET("user/{userId}/phone")
+    fun getPhone(@Path("userId") userId: String): Observable<ServerResponse<GetPhoneResponse>>
+
+    @POST("user/{userId}/phone")
+    fun updatePhone(@Path("userId") userId: String, @Body updatePhoneParam: UpdatePhoneParam): Observable<ServerResponse<UpdatePhoneResponse>>
+
+    @POST("user/{userId}/phone/confirm")
+    fun confirmPhoneSms(@Path("userId") userId: String, @Body updatePhoneParam: ConfirmPhoneSmsParam): Observable<ServerResponse<ConfirmPhoneSmsResponse>>
+
 }

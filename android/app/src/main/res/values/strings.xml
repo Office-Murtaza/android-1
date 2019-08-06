@@ -95,6 +95,8 @@
     <string name="change_phone">Change phone</string>
     <string name="open_seed">Open Seed</string>
     <string name="password_doesnt_match">Password doesn\'t match</string>
+    <string name="change">Change</string>
+    <string name="new_phone_number">New Phone Number</string>
 
 
 </resources>

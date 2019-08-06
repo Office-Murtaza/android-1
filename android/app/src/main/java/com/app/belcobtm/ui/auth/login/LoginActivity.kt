@@ -18,7 +18,7 @@ class LoginActivity : BaseMvpActivity<LoginContract.View, LoginContract.Presente
         bt_next.setOnClickListener {
             mPresenter.attemptLogin(
                 phone_ccp.fullNumberWithPlus.toString(),
-                pass.text.toString()
+                edit_text.text.toString()
             )
         }
     }

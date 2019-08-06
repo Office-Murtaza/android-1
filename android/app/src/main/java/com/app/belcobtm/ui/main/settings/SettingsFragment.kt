@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.app.belcobtm.R
 import com.app.belcobtm.ui.main.settings.check_pass.CheckPassActivity
+import com.app.belcobtm.ui.main.settings.phone.ShowPhoneActivity
 import kotlinx.android.synthetic.main.fragment_settings.*
 
 
@@ -17,8 +18,9 @@ class SettingsFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        settings_phone.setOnClickListener { startActivity(Intent(activity, ShowPhoneActivity::class.java))}
         settings_unlink.setOnClickListener { startActivity(Intent(activity, UnlinkActivity::class.java))}
-        settings_seed.setOnClickListener { CheckPassActivity.startActivity(context, CheckPassActivity.Companion.Mode.MODE_SEED) }
+        settings_seed.setOnClickListener { CheckPassActivity.start(context, CheckPassActivity.Companion.Mode.MODE_OPEN_SEED) }
 
     }
 }

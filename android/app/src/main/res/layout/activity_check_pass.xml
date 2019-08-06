@@ -25,7 +25,6 @@
             app:title="Check pass" />
     </com.google.android.material.appbar.AppBarLayout>
 
-    <!-- Login progress -->
     <FrameLayout
         android:id="@+id/progress"
         android:layout_width="match_parent"
@@ -49,7 +48,7 @@
     </FrameLayout>
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/til_pass"
+        android:id="@+id/til_edit_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/margin_main"
@@ -60,7 +59,7 @@
         app:layout_constraintTop_toBottomOf="@id/toolbar_container">
 
         <androidx.appcompat.widget.AppCompatEditText
-            android:id="@+id/pass"
+            android:id="@+id/edit_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:drawableEnd="@drawable/ic_lock"
@@ -72,7 +71,6 @@
 
     </com.google.android.material.textfield.TextInputLayout>
 
-
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/cancel"
         android:layout_width="0dp"
@@ -82,12 +80,13 @@
         android:layout_marginEnd="@dimen/margin_half"
         android:layout_weight="1"
         android:background="@drawable/bt_gray_rounded_corner"
+        android:backgroundTint="@color/bg_color"
         android:fontFamily="@font/poppins_bold"
         android:text="@string/cancel"
         android:textColor="@color/dark_gray_text_color"
         app:layout_constraintEnd_toStartOf="@+id/next"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/til_pass" />
+        app:layout_constraintTop_toBottomOf="@id/til_edit_text" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/next"

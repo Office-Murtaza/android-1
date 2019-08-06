@@ -10,14 +10,16 @@ import com.app.belcobtm.util.pref
 
 class CheckPassPresenter : BaseMvpDIPresenterImpl<CheckPassContract.View, SettingsDataManager>(),
     CheckPassContract.Presenter {
+
+    private val mUserId = App.appContext().pref.getUserId().toString()
+
     override fun injectDependency() {
         presenterComponent.inject(this)
     }
 
     override fun checkPass(pass: String) {
-        val userId = App.appContext().pref.getUserId().toString()
         mView?.showProgress(true)
-        mDataManager.checkPass(userId, pass).subscribe(
+        mDataManager.checkPass(mUserId, pass).subscribe(
             { response ->
                 mView?.showProgress(false)
                 if (response.value != null && response.value!!.match) {
@@ -34,6 +36,41 @@ class CheckPassPresenter : BaseMvpDIPresenterImpl<CheckPassContract.View, Settin
 
     override fun requestSeed() {
         val seed = App.appContext().pref.getSeed()
-        mView?.onSeedGot(seed)
+        mView?.onSeedReceived(seed)
+    }
+
+    override fun updatePhone(phone: String) {
+        mView?.showProgress(true)
+        mDataManager.updatePhone(mUserId, phone).subscribe(
+            { response ->
+                mView?.showProgress(false)
+                if (response.value != null && response.value!!.smsSent) {
+                    mView?.openSmsCodeDialog()
+                } else {
+                    mView?.showMessage(R.string.password_doesnt_match)
+                }
+                //todo check error handling
+            },
+            { error ->
+                mView?.showProgress(false)
+                mView?.showMessage(error.message)
+            })
+    }
+
+    override fun confirmPhoneSms(phone: String, code: String) {
+        mDataManager.confirmPhoneSms(mUserId, phone, code).subscribe(
+            { response ->
+                mView?.showProgress(false)
+                if (response.value != null && response.value!!.confirmed) {
+                    mView?.onSmsConfirmed()
+                } else {
+                    mView?.showMessage(R.string.password_doesnt_match)
+                }
+                //todo check error handling
+            },
+            { error ->
+                mView?.showProgress(false)
+                mView?.showMessage(error.message)
+            })
     }
 }

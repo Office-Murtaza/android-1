@@ -12,6 +12,7 @@ import com.app.belcobtm.ui.main.coins.balance.BalanceFragment
 import com.app.belcobtm.ui.main.main_activity.MainActivity
 import com.app.belcobtm.ui.main.coins.visibility.VisibilityCoinsActivity
 import com.app.belcobtm.ui.main.settings.check_pass.CheckPassActivity
+import com.app.belcobtm.ui.main.settings.phone.ShowPhoneActivity
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 
@@ -49,6 +50,9 @@ abstract class BuildersModule {
     @ContributesAndroidInjector(modules = [ActivityModule::class])
     internal abstract fun bindCheckPassActivity(): CheckPassActivity
 
+    @ActivityScope
+    @ContributesAndroidInjector(modules = [ActivityModule::class])
+    internal abstract fun bindCShowPhoneActivity(): ShowPhoneActivity
 
     @FragmentScope
     @ContributesAndroidInjector(modules = [FragmentModule::class])

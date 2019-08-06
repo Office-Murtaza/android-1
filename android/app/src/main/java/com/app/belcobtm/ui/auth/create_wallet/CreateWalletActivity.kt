@@ -42,7 +42,6 @@ class CreateWalletActivity : BaseMvpActivity<CreateWalletContract.View, CreateWa
         )
     }
 
-
     override fun openSmsCodeDialog(error: String?) {
         val view = layoutInflater.inflate(R.layout.view_sms_code_dialog, null)
         val smsCode = view.findViewById<AppCompatEditText>(R.id.sms_code)

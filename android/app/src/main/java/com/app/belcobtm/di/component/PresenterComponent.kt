@@ -10,6 +10,7 @@ import com.app.belcobtm.ui.main.atm.AtmPresenter
 import com.app.belcobtm.ui.main.coins.balance.BalancePresenter
 import com.app.belcobtm.ui.main.main_activity.MainPresenter
 import com.app.belcobtm.ui.main.settings.check_pass.CheckPassPresenter
+import com.app.belcobtm.ui.main.settings.phone.ShowPhonePresenter
 import dagger.Component
 
 
@@ -25,5 +26,6 @@ interface PresenterComponent {
     fun inject(presenter: BalancePresenter)
     fun inject(presenter: AtmPresenter)
     fun inject(presenter: CheckPassPresenter)
+        fun inject(presenter: ShowPhonePresenter)
 
 }
