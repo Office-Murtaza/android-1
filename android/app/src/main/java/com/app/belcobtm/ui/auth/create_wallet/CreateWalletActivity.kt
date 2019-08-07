@@ -36,7 +36,7 @@ class CreateWalletActivity : BaseMvpActivity<CreateWalletContract.View, CreateWa
 
     private fun attemptCreateWallet() {
         mPresenter.attemptCreateWallet(
-            phone_ccp.fullNumberWithPlus.toString(),
+            phone_ccp.formattedFullNumber.replace("-", " "),
             pass.text.toString(),
             confirm_pass.text.toString()
         )

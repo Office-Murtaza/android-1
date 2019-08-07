@@ -1,11 +1,11 @@
 package com.app.belcobtm.ui.main.settings
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
+import androidx.appcompat.app.AppCompatActivity
 import com.app.belcobtm.R
+import com.app.belcobtm.ui.main.settings.check_pass.CheckPassActivity
 import kotlinx.android.synthetic.main.activity_unlink.*
-import org.jetbrains.anko.toast
 
 class UnlinkActivity : AppCompatActivity() {
 
@@ -16,7 +16,10 @@ class UnlinkActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)
 
-        unlink.setOnClickListener { toast("todo unlink") }
+        unlink.setOnClickListener {
+            CheckPassActivity.start(this, CheckPassActivity.Companion.Mode.MODE_UNLINK)
+            finish()
+        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

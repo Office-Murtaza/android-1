@@ -17,8 +17,8 @@ class LoginActivity : BaseMvpActivity<LoginContract.View, LoginContract.Presente
         bt_cancel.setOnClickListener { onBackPressed() }
         bt_next.setOnClickListener {
             mPresenter.attemptLogin(
-                phone_ccp.fullNumberWithPlus.toString(),
-                edit_text.text.toString()
+                phone_ccp.formattedFullNumber.replace("-", " "),
+                pass.text.toString()
             )
         }
     }

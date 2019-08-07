@@ -37,7 +37,7 @@ class RecoverWalletActivity : BaseMvpActivity<RecoverWalletContract.View, Recove
 
     private fun attemptRecover() {
         mPresenter.attemptRecover(
-            phone_ccp.fullNumberWithPlus.toString(),
+            phone_ccp.formattedFullNumber.replace("-", " "),
             pass.text.toString()
         )
     }

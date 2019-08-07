@@ -48,4 +48,7 @@ interface ApiInterface {
     @POST("user/{userId}/phone/confirm")
     fun confirmPhoneSms(@Path("userId") userId: String, @Body updatePhoneParam: ConfirmPhoneSmsParam): Observable<ServerResponse<ConfirmPhoneSmsResponse>>
 
+    @POST("user/{userId}/unlink")
+    fun unlink(@Path("userId") userId: String): Observable<ServerResponse<UnlinkResponse>>
+
 }

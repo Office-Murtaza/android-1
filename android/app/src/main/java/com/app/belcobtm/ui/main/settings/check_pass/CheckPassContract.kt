@@ -10,6 +10,7 @@ object CheckPassContract {
         fun updatePhone(phone: String)
         fun confirmPhoneSms(phone: String, code: String)
         fun requestSeed()
+        fun unlink()
     }
 
     interface View : BaseMvpView {
@@ -17,5 +18,6 @@ object CheckPassContract {
         fun onSeedReceived(seed: String?)
         fun onSmsConfirmed()
         fun openSmsCodeDialog(error: String? = null)
+        fun onUnlinkSuccess()
     }
 }

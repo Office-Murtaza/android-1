@@ -73,4 +73,24 @@ class CheckPassPresenter : BaseMvpDIPresenterImpl<CheckPassContract.View, Settin
                 mView?.showMessage(error.message)
             })
     }
+
+    override fun unlink() {
+        mDataManager.unlink(mUserId).subscribe(
+            { response ->
+                mView?.showProgress(false)
+                if (response.value != null && response.value!!.updated) {
+                    mView?.onUnlinkSuccess()
+
+                } else {
+                    mView?.showMessage(R.string.password_doesnt_match)
+                }
+                //todo check error handling
+            },
+            { error ->
+                mView?.showProgress(false)
+                mView?.showMessage(error.message)
+            })
+    }
+
+
 }
