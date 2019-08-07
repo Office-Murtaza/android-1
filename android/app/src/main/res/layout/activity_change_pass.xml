@@ -47,43 +47,75 @@
             android:layout_marginBottom="8dp" />
     </FrameLayout>
 
-    <com.hbb20.CountryCodePicker
-        android:id="@+id/phone_ccp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        app:ccp_autoFormatNumber="true"
-        app:ccp_clickable="false"
-        app:ccp_defaultNameCode="US"
-        app:ccp_showNameCode="false"
-        android:layout_marginStart="@dimen/margin_main"
-        app:layout_constraintBottom_toBottomOf="@id/til_edit_text"
-        app:layout_constraintEnd_toStartOf="@id/til_edit_text"
-        app:layout_constraintStart_toStartOf="parent"
-        android:visibility="gone"/>
-
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/til_edit_text"
+        android:id="@+id/til_old_pass"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/margin_main"
         android:layout_marginTop="@dimen/margin_main"
         android:layout_marginEnd="@dimen/margin_main"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/phone_ccp"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/toolbar_container">
 
         <androidx.appcompat.widget.AppCompatEditText
-            android:id="@+id/edit_text"
+            android:id="@+id/old_pass"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:drawableEnd="@drawable/ic_lock"
-            android:hint="@string/pass"
+            android:hint="@string/old_pass"
+            android:inputType="textPassword"
+            android:maxLines="1"
+            android:nextFocusDown="@id/bt_next"
+            android:paddingEnd="@dimen/margin_half"
+            android:singleLine="true" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/til_new_pass"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_main"
+        android:layout_marginEnd="@dimen/margin_main"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/til_old_pass">
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/new_pass"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableEnd="@drawable/ic_lock"
+            android:hint="@string/new_pass"
             android:inputType="textPassword"
             android:maxLines="1"
             android:paddingEnd="@dimen/margin_half"
-            android:singleLine="true"
-            android:nextFocusDown="@id/bt_next"/>
+            android:singleLine="true" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/til_confirm_new_pass"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_main"
+        android:layout_marginEnd="@dimen/margin_main"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/til_new_pass">
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/confirm_new_pass"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableEnd="@drawable/ic_lock"
+            android:hint="@string/confirm_new_pass"
+            android:inputType="textPassword"
+            android:maxLines="1"
+            android:nextFocusDown="@id/bt_next"
+            android:paddingEnd="@dimen/margin_half"
+            android:singleLine="true" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -100,12 +132,12 @@
         android:fontFamily="@font/poppins_bold"
         android:text="@string/cancel"
         android:textColor="@color/dark_gray_text_color"
-        app:layout_constraintEnd_toStartOf="@+id/next"
+        app:layout_constraintEnd_toStartOf="@+id/change_pass"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/til_edit_text" />
+        app:layout_constraintTop_toBottomOf="@id/til_confirm_new_pass" />
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/next"
+        android:id="@+id/change_pass"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/margin_half"
@@ -114,7 +146,7 @@
         android:background="@drawable/bt_gray_rounded_corner"
         android:backgroundTint="@color/blue_color"
         android:fontFamily="@font/poppins_bold"
-        android:text="@string/next"
+        android:text="@string/change_password"
         android:textColor="@android:color/white"
         app:layout_constraintBaseline_toBaselineOf="@+id/cancel"
         app:layout_constraintEnd_toEndOf="parent"

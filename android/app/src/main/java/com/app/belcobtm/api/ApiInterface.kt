@@ -49,6 +49,10 @@ interface ApiInterface {
     fun confirmPhoneSms(@Path("userId") userId: String, @Body updatePhoneParam: ConfirmPhoneSmsParam): Observable<ServerResponse<ConfirmPhoneSmsResponse>>
 
     @POST("user/{userId}/unlink")
-    fun unlink(@Path("userId") userId: String): Observable<ServerResponse<UnlinkResponse>>
+    fun unlink(@Path("userId") userId: String): Observable<ServerResponse<UpdateResponse>>
+
+    @POST("user/{userId}/password")
+    fun changePass(@Path("userId") userId: String, @Body changePassParam: ChangePassParam): Observable<ServerResponse<UpdateResponse>>
+
 
 }

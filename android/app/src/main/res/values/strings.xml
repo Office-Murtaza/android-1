@@ -97,6 +97,10 @@
     <string name="password_doesnt_match">Password doesn\'t match</string>
     <string name="change">Change</string>
     <string name="new_phone_number">New Phone Number</string>
+    <string name="change_password">Change password</string>
+    <string name="new_pass">New Password *</string>
+    <string name="old_pass">Old Password *</string>
+    <string name="confirm_new_pass"> Confirm New Password *</string>
 
 
 </resources>

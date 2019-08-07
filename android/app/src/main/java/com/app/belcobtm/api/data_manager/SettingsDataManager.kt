@@ -1,5 +1,6 @@
 package com.app.belcobtm.api.data_manager
 
+import com.app.belcobtm.api.model.param.ChangePassParam
 import com.app.belcobtm.api.model.param.CheckPassParam
 import com.app.belcobtm.api.model.param.ConfirmPhoneSmsParam
 import com.app.belcobtm.api.model.param.UpdatePhoneParam
@@ -11,6 +12,10 @@ class SettingsDataManager : BaseDataManager() {
 
     fun checkPass(userId: String, pass: String): Observable<Optional<CheckPassResponse>> {
         return genObservable(api.checkPass(userId, CheckPassParam(pass)))
+    }
+
+    fun changePass(userId: String, newPassword: String, oldPassword: String): Observable<Optional<UpdateResponse>> {
+        return genObservable(api.changePass(userId, ChangePassParam(newPassword, oldPassword)))
     }
 
     fun getPhone(userId: String): Observable<Optional<GetPhoneResponse>> {
@@ -25,7 +30,7 @@ class SettingsDataManager : BaseDataManager() {
         return genObservable(api.confirmPhoneSms(userId, ConfirmPhoneSmsParam(phone, smsCode)))
     }
 
-    fun unlink(userId: String): Observable<Optional<UnlinkResponse>> {
+    fun unlink(userId: String): Observable<Optional<UpdateResponse>> {
         return genObservable(api.unlink(userId))
     }
 

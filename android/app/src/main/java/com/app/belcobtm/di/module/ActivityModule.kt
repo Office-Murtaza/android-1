@@ -10,12 +10,14 @@ import com.app.belcobtm.ui.auth.recover_seed.RecoverSeedContract
 import com.app.belcobtm.ui.auth.recover_seed.RecoverSeedPresenter
 import com.app.belcobtm.ui.auth.recover_wallet.RecoverWalletContract
 import com.app.belcobtm.ui.auth.recover_wallet.RecoverWalletPresenter
+import com.app.belcobtm.ui.main.coins.settings.change_pass.ChangePassContract
 import com.app.belcobtm.ui.main.coins.settings.check_pass.CheckPassContract
 import com.app.belcobtm.ui.main.coins.settings.phone.ShowPhoneContract
-import com.app.belcobtm.ui.main.main_activity.MainContract
-import com.app.belcobtm.ui.main.main_activity.MainPresenter
 import com.app.belcobtm.ui.main.coins.visibility.VisibilityCoinsContract
 import com.app.belcobtm.ui.main.coins.visibility.VisibilityCoinsPresenter
+import com.app.belcobtm.ui.main.main_activity.MainContract
+import com.app.belcobtm.ui.main.main_activity.MainPresenter
+import com.app.belcobtm.ui.main.settings.change_pass.ChangePassPresenter
 import com.app.belcobtm.ui.main.settings.check_pass.CheckPassPresenter
 import com.app.belcobtm.ui.main.settings.phone.ShowPhonePresenter
 import dagger.Module
@@ -63,6 +65,11 @@ class ActivityModule {
     @Provides
     fun provideCheckPassPresenter(): CheckPassContract.Presenter {
         return CheckPassPresenter()
+    }
+
+    @Provides
+    fun provideChangePassPresenter(): ChangePassContract.Presenter {
+        return ChangePassPresenter()
     }
 
     @Provides
