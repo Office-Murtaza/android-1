@@ -6,4 +6,6 @@ import com.batm.entity.Unlink;
 
 public interface UnlinkRepository extends JpaRepository<Unlink, Long> {
 
+	Unlink findByUserUserId(Long userId);
+	
 }
