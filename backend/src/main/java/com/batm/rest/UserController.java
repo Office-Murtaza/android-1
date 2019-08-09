@@ -238,6 +238,10 @@ public class UserController {
     @PostMapping("/user/{userId}/phone")
     public Response updatePhone(@RequestBody PhoneRequestVM phoneRequest, @PathVariable Long userId) {
         try {
+        	Boolean isPhoneExist = this.userService.isPhoneExist(phoneRequest.getPhone(), userId);
+        	if(isPhoneExist) {
+        		return Response.error(new Error(2, "Phone is already registered"));
+        	}
             phoneService.updatePhone(phoneRequest, userId);
             Map<String, Object> response = new HashMap<>();
             response.put("smsSent", true);

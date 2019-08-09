@@ -23,4 +23,7 @@ public interface UserRepository extends JpaRepository<User, Long>{
 	@Modifying
 	@Query("update User user set user.phone =:phone where user.userId =:userId")
 	void updatePhone(@Param("phone") String phone, @Param("userId") Long userId);
+	
+	@Query("select from User user where user.phone =:phone where user.userId !=:userId")
+	User isPhoneExist(@Param("phone") String phone, @Param("userId") Long userId);
 }

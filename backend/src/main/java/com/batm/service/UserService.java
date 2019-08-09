@@ -34,21 +34,26 @@ public class UserService {
 		// TODO Auto-generated method stub
 		return this.userRepository.findOneByPhoneIgnoreCase(phone);
 	}
-	
+
 	public User findById(Long userId) {
 		return this.userRepository.getOne(userId);
 	}
-	
+
 	public User save(User user) {
 		return this.userRepository.save(user);
 	}
-	
+
 	public void updatePassword(String encodedPassword, Long userId) {
 		this.userRepository.updatePassword(encodedPassword, userId);
 	}
-	
+
 	public void updatePhone(String phone, Long userId) {
 		this.userRepository.updatePhone(phone, userId);
+	}
+
+	public Boolean isPhoneExist(String phone, Long userId) {
+		User user = this.userRepository.isPhoneExist(phone, userId);
+		return user != null ? true : false;
 	}
 
 }
