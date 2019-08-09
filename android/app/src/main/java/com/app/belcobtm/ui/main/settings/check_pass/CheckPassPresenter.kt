@@ -69,8 +69,7 @@ class CheckPassPresenter : BaseMvpDIPresenterImpl<CheckPassContract.View, Settin
                 //todo check error handling
             },
             { error ->
-                mView?.showProgress(false)
-                mView?.showMessage(error.message)
+                checkError(error)
             })
     }
 
@@ -87,8 +86,7 @@ class CheckPassPresenter : BaseMvpDIPresenterImpl<CheckPassContract.View, Settin
                 //todo check error handling
             },
             { error ->
-                mView?.showProgress(false)
-                mView?.showMessage(error.message)
+                checkError(error)
             })
     }
 

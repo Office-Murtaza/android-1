@@ -3,14 +3,9 @@ package com.app.belcobtm.ui.main.settings.change_pass
 import com.app.belcobtm.App
 import com.app.belcobtm.R
 import com.app.belcobtm.api.data_manager.SettingsDataManager
-import com.app.belcobtm.api.model.ServerException
-import com.app.belcobtm.api.model.response.AuthResponse
 import com.app.belcobtm.mvp.BaseMvpDIPresenterImpl
 import com.app.belcobtm.ui.main.coins.settings.change_pass.ChangePassContract
-import com.app.belcobtm.ui.main.coins.settings.check_pass.CheckPassContract
-import com.app.belcobtm.util.Optional
 import com.app.belcobtm.util.pref
-import io.reactivex.Observable
 
 
 class ChangePassPresenter : BaseMvpDIPresenterImpl<ChangePassContract.View, SettingsDataManager>(),
@@ -41,9 +36,25 @@ class ChangePassPresenter : BaseMvpDIPresenterImpl<ChangePassContract.View, Sett
                     }
                 },
                 { error ->
-                    mView?.showProgress(false)
-                    mView?.showMessage(error.message)
+                    checkError(error)
                 })
         }
     }
+
+    override fun changePin(oldPin: String, newPin: String, confirmNewPin: String) {
+        val savedPin = App.appContext().pref.getPin()
+        if (oldPin.isEmpty() || newPin.isEmpty() || confirmNewPin.isEmpty()) {
+            mView?.showError(R.string.error_all_fields_required)
+        } else if (oldPin != savedPin) {
+            mView?.showError(R.string.error_wrong_old_pin)
+        } else if (newPin.length < 6) {
+            mView?.showError(R.string.error_short_pin)
+        } else if (newPin != confirmNewPin) {
+            mView?.showError(R.string.error_confirm_pin)
+        } else {
+            App.appContext().pref.setPin(newPin)
+            mView?.onPinChanged()
+        }
+    }
+
 }

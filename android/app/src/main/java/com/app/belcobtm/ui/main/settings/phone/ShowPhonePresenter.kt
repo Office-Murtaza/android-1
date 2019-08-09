@@ -25,8 +25,7 @@ class ShowPhonePresenter : BaseMvpDIPresenterImpl<ShowPhoneContract.View, Settin
 
             },
             { error ->
-                mView?.showProgress(false)
-                mView?.showMessage(error.message)
+                checkError(error)
             })
     }
 }

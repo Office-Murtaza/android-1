@@ -15,7 +15,7 @@ class SettingsDataManager : BaseDataManager() {
     }
 
     fun changePass(userId: String, newPassword: String, oldPassword: String): Observable<Optional<UpdateResponse>> {
-        return genObservable(api.changePass(userId, ChangePassParam(newPassword, oldPassword)))
+        return genObservable(api.changePass(userId, ChangePassParam(oldPassword, newPassword)))
     }
 
     fun getPhone(userId: String): Observable<Optional<GetPhoneResponse>> {

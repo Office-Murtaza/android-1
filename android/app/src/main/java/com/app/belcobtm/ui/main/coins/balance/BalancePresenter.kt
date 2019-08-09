@@ -42,22 +42,6 @@ class BalancePresenter : BaseMvpDIPresenterImpl<BalanceContract.View, CoinsDataM
             })
     }
 
-//    override fun checkCoinVisibility() {
-//        val dbVisibleCoins = coinModel.getAllVisibleCryptoCoin(realm)
-//        visibleCoins.clear()
-//
-//        dbVisibleCoins.forEach { dbVisibleCoin ->
-//            coinsList.forEach { apiCoin ->
-//                if (apiCoin.coinId == dbVisibleCoin.coinType) {
-//                    visibleCoins.add(apiCoin)
-//                    return@forEach
-//                }
-//            }
-//        }
-//
-//        mView?.notifyData()
-//    }
-
     private fun getVisibleCoinsNames(): ArrayList<String> {
         val dbVisibleCoins = coinModel.getAllVisibleCryptoCoin(realm)
         var names: ArrayList<String> = arrayListOf()

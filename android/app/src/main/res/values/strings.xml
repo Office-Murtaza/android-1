@@ -47,6 +47,8 @@
     <string name="error_all_fields_required">All fields are required</string>
     <string name="error_phone_not_valid">Phone number is not valid</string>
     <string name="error_confirm_pass">Passwords do not match</string>
+    <string name="error_short_pin">Pin should be longer</string>
+    <string name="error_confirm_pin">Pin do not match</string>
     <string name="error_short_pass">Password should be longer</string>
     <string name="error_sms_code_4_digits">Code should have 4 digits</string>
     <string name="sms_code">SMS code</string>
@@ -101,6 +103,14 @@
     <string name="new_pass">New Password *</string>
     <string name="old_pass">Old Password *</string>
     <string name="confirm_new_pass"> Confirm New Password *</string>
+    <string name="change_pin">Change pin</string>
+    <string name="new_pin">New Pin *</string>
+    <string name="old_pin">Old Pin *</string>
+    <string name="confirm_new_pin"> Confirm New Pin *</string>
+    <string name="password_changed">Password changed</string>
+    <string name="pin_changed">Pin changed</string>
+    <string name="error_wrong_old_pin">Old pin doesn\'t match</string>
+
 
 
 </resources>

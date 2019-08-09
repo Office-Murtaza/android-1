@@ -59,7 +59,7 @@
         app:layout_constraintTop_toBottomOf="@id/toolbar_container">
 
         <androidx.appcompat.widget.AppCompatEditText
-            android:id="@+id/old_pass"
+            android:id="@+id/old_value"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:drawableEnd="@drawable/ic_lock"
@@ -83,7 +83,7 @@
         app:layout_constraintTop_toBottomOf="@id/til_old_pass">
 
         <androidx.appcompat.widget.AppCompatEditText
-            android:id="@+id/new_pass"
+            android:id="@+id/new_value"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:drawableEnd="@drawable/ic_lock"
@@ -106,7 +106,7 @@
         app:layout_constraintTop_toBottomOf="@id/til_new_pass">
 
         <androidx.appcompat.widget.AppCompatEditText
-            android:id="@+id/confirm_new_pass"
+            android:id="@+id/confirm_new_value"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:drawableEnd="@drawable/ic_lock"
@@ -132,12 +132,12 @@
         android:fontFamily="@font/poppins_bold"
         android:text="@string/cancel"
         android:textColor="@color/dark_gray_text_color"
-        app:layout_constraintEnd_toStartOf="@+id/change_pass"
+        app:layout_constraintEnd_toStartOf="@+id/change_value"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/til_confirm_new_pass" />
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/change_pass"
+        android:id="@+id/change_value"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/margin_half"

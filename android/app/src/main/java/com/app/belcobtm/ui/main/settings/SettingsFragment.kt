@@ -20,9 +20,10 @@ class SettingsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         settings_phone.setOnClickListener { startActivity(Intent(activity, ShowPhoneActivity::class.java))}
-        settings_change_pass.setOnClickListener { startActivity(Intent(activity, ChangePassActivity::class.java))}
-        settings_unlink.setOnClickListener { startActivity(Intent(activity, UnlinkActivity::class.java))}
+        settings_change_pass.setOnClickListener { ChangePassActivity.start(activity, ChangePassActivity.Companion.Mode.MODE_CHANGE_PASS)}
+        settings_change_pin.setOnClickListener { ChangePassActivity.start(activity, ChangePassActivity.Companion.Mode.MODE_CHANGE_PIN)}
         settings_seed.setOnClickListener { CheckPassActivity.start(context, CheckPassActivity.Companion.Mode.MODE_OPEN_SEED) }
+        settings_unlink.setOnClickListener { startActivity(Intent(activity, UnlinkActivity::class.java))}
 
     }
 }
