@@ -2,30 +2,30 @@ package com.batm.service;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
-import com.batm.dto.CoinBalanceDTO;
-import com.batm.dto.Price;
-import com.batm.rest.vm.CoinBalanceVM;
-import com.batm.util.Util;
-import com.binance.api.client.BinanceApiRestClient;
-import com.binance.dex.api.client.BinanceDexApiRestClient;
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
+import com.batm.dto.CoinBalanceDTO;
+import com.batm.dto.Price;
+import com.batm.dto.UserCoinDTO;
 import com.batm.entity.Coin;
+import com.batm.entity.Response;
 import com.batm.entity.User;
 import com.batm.entity.UserCoin;
 import com.batm.repository.CoinRepository;
 import com.batm.repository.UserCoinRepository;
 import com.batm.repository.UserRepository;
+import com.batm.rest.vm.CoinBalanceVM;
 import com.batm.rest.vm.CoinVM;
-import org.springframework.web.client.RestTemplate;
+import com.batm.util.Util;
+import com.binance.api.client.BinanceApiRestClient;
+import com.binance.dex.api.client.BinanceDexApiRestClient;
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
 
 @Service
 public class CoinService {
@@ -48,6 +48,7 @@ public class CoinService {
     private static String bchUrl;
     private static String ltcUrl;
     private static String trxUrl;
+    private static String xrpUrl;
 
     public CoinService(@Autowired final BinanceApiRestClient binance,
                        @Autowired final BinanceDexApiRestClient binanceDex,
@@ -56,7 +57,8 @@ public class CoinService {
                        @Value("${eth.url}") final String ethUrl,
                        @Value("${bch.url}") final String bchUrl,
                        @Value("${ltc.url}") final String ltcUrl,
-                       @Value("${trx.url}") final String trxUrl) {
+                       @Value("${trx.url}") final String trxUrl,
+                       @Value("${xrp.url}") final String xrpUrl) {
 
         this.binance = binance;
         this.binanceDex = binanceDex;
@@ -66,6 +68,7 @@ public class CoinService {
         this.bchUrl = bchUrl;
         this.ltcUrl = ltcUrl;
         this.trxUrl = trxUrl;
+        this.xrpUrl = xrpUrl;
     }
 
     public enum CoinEnum {
@@ -79,7 +82,7 @@ public class CoinService {
             public BigDecimal getBalance(String address) {
                 //address = "1F1tAaz5x1HUXrCNLbtMDqcw6o5GNn4xqX";
 
-                return getBlockBookBalance(btcUrl, address, 100000000L);
+                return getBlockbookBalance(btcUrl, address, 100000000L);
             }
         }, ETH {
             @Override
@@ -91,7 +94,7 @@ public class CoinService {
             public BigDecimal getBalance(String address) {
                 //address = "0x5eD8Cee6b63b1c6AFce3AD7c92f4fD7E1B8fAd9F";
 
-                return getBlockBookBalance(ethUrl, address, 1000000000000000000L);
+                return getBlockbookBalance(ethUrl, address, 1000000000000000000L);
             }
         }, BCH {
             @Override
@@ -103,7 +106,7 @@ public class CoinService {
             public BigDecimal getBalance(String address) {
                 //address = "bitcoincash:pp8skudq3x5hzw8ew7vzsw8tn4k8wxsqsv0lt0mf3g";
 
-                return getBlockBookBalance(bchUrl, address, 100000000L);
+                return getBlockbookBalance(bchUrl, address, 100000000L);
             }
         }, LTC {
             @Override
@@ -115,7 +118,7 @@ public class CoinService {
             public BigDecimal getBalance(String address) {
                 //address = "MH1RcrnDDttNBmz6XLRK4vJbUGp36nmThv";
 
-                return getBlockBookBalance(ltcUrl, address, 100000000L);
+                return getBlockbookBalance(ltcUrl, address, 100000000L);
             }
         }, BNB {
             @Override
@@ -137,7 +140,9 @@ public class CoinService {
 
             @Override
             public BigDecimal getBalance(String address) {
-                return BigDecimal.ZERO;
+                //address = "r3kmLJN5D28dHuH8vZNUZpMC43pEHpaocV";
+
+                return getRippledBalance(address, 1000000L);
             }
         }, TRX {
             @Override
@@ -193,21 +198,58 @@ public class CoinService {
         });
     }
 
+    private Coin getCoin(List<Coin> coins, String coinCode) {
+        Coin coin = null;
+        int index = coins.indexOf(new Coin(coinCode));
+        if (index >= 0) {
+            coin = coins.get(index);
+        }
+        return coin;
+    }
+
     public void save(CoinVM coinVM, Long userId) {
-        User user = userRepository.getOne(userId);
+        User user = userRepository.findById(userId).get();
+        List<Coin> coins = coinRepository.findAll();
+        List<UserCoin> userCoins = userCoinRepository.findByUserUserId(userId);
 
+        List<UserCoin> newCoins = new ArrayList<>();
         coinVM.getCoins().stream().forEach(coinDTO -> {
-            Coin code = coinRepository.findById(coinDTO.getCoinCode());
-            UserCoin userCoin = new UserCoin(user, code, coinDTO.getPublicKey());
-            userCoinRepository.save(userCoin);
+            Coin coin = getCoin(coins, coinDTO.getCoinCode());
+            if (coin != null) {
+                UserCoin userCoin = new UserCoin(user, coin, coinDTO.getPublicKey());
+                if (userCoins.indexOf(userCoin) < 0) {
+                    newCoins.add(userCoin);
+                }
+            }
         });
+
+        userCoinRepository.saveAll(newCoins);
     }
 
-    public UserCoin getCoinWithUserIdAndCoinCode(Long userId, String coinCode) {
-        return userCoinRepository.findByUserUserIdAndCoinId(userId, coinCode);
+    public Response compareCoins(CoinVM coinVM, Long userId) {
+        List<UserCoin> userCoins = this.userCoinRepository.findByUserUserId(userId);
+
+        for (UserCoinDTO userCoin : coinVM.getCoins()) {
+            UserCoin tempUserCoin = new UserCoin(userCoin.getCoinCode());
+            int index = userCoins.indexOf(tempUserCoin);
+            if (index < 0) {
+                return Response.error(new com.batm.entity.Error(3, "Coin does not exist"));
+            }
+
+            String dbPublicKey = userCoins.get(index).getPublicKey();
+            if (userCoin.getPublicKey() == null
+                    || !userCoin.getPublicKey().equalsIgnoreCase(dbPublicKey)) {
+                return Response.error(new com.batm.entity.Error(3, "Public keys not match"));
+            }
+        }
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("isCoinsMatched", true);
+
+        return Response.ok(response);
     }
 
-    private static BigDecimal getBlockBookBalance(String url, String address, long divider) {
+    private static BigDecimal getBlockbookBalance(String url, String address, long divider) {
         try {
             JSONObject res = rest.getForObject(url + "/api/v2/address/" + address + "?details=basic", JSONObject.class);
 
@@ -243,6 +285,29 @@ public class CoinService {
                     .filter(e -> "BNB".equals(e.getSymbol()))
                     .map(it -> new BigDecimal(it.getFree()).add(new BigDecimal(it.getLocked())))
                     .reduce(BigDecimal.ZERO, BigDecimal::add).setScale(2, RoundingMode.DOWN);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return BigDecimal.ZERO;
+    }
+
+    private static BigDecimal getRippledBalance(String address, long divider) {
+        try {
+            JSONObject param = new JSONObject();
+            param.put("account", address);
+
+            JSONArray params = new JSONArray();
+            params.add(param);
+
+            JSONObject req = new JSONObject();
+            req.put("method", "account_info");
+            req.put("params", params);
+
+            JSONObject res = rest.postForObject(xrpUrl, req, JSONObject.class);
+            String balance = res.getJSONObject("result").getJSONObject("account_data").getString("Balance");
+
+            return new BigDecimal(balance).divide(BigDecimal.valueOf(divider)).setScale(2, RoundingMode.DOWN);
         } catch (Exception e) {
             e.printStackTrace();
         }

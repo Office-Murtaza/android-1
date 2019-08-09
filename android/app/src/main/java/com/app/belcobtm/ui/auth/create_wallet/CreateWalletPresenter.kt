@@ -35,7 +35,7 @@ class CreateWalletPresenter : BaseMvpDIPresenterImpl<CreateWalletContract.View, 
     override fun attemptCreateWallet(phone: String, pass: String, confirmPass: String) {
         if (phone.isEmpty() || pass.isEmpty() || confirmPass.isEmpty()) {
             mView?.showError(com.app.belcobtm.R.string.error_all_fields_required)
-        } else if (pass.length < 4) {
+        } else if (pass.length < 6) {
             mView?.showError(com.app.belcobtm.R.string.error_short_pass)
         } else if (pass != confirmPass) {
             mView?.showError(com.app.belcobtm.R.string.error_confirm_pass)

@@ -91,6 +91,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/v1/test/binance/price").permitAll()
                 .antMatchers("/api/v1/test/twilio/send").permitAll()
 
+                //.antMatchers("/api/v1/**").permitAll()
                 .antMatchers("/api/v1/**").authenticated()
                 .and().exceptionHandling().and().headers().frameOptions().disable().and().sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().apply(securityConfigurerAdapter());

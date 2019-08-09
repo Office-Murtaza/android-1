@@ -5,7 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import com.app.belcobtm.R
 import com.app.belcobtm.mvp.BaseMvpActivity
-import com.app.belcobtm.ui.coins.balance.BalanceActivity
+import com.app.belcobtm.ui.main.main_activity.MainActivity
 import kotlinx.android.synthetic.main.activity_recover_seed_phrase.*
 
 
@@ -30,7 +30,7 @@ class RecoverSeedActivity : BaseMvpActivity<RecoverSeedContract.View, RecoverSee
 
     override fun onSeedVerifyed() {
         finishAffinity()
-        startActivity(Intent(this, BalanceActivity::class.java))
+        startActivity(Intent(this, MainActivity::class.java))
     }
 
     private fun getSeedFormView(): String {

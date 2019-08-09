@@ -60,4 +60,19 @@
         <item name="android:paddingBottom">@dimen/margin_quoter</item>
     </style>
 
+    <style name="SettingsItemStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">?android:attr/listPreferredItemHeight</item>
+        <item name="android:background">?attr/selectableItemBackground</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:clickable">true</item>
+        <item name="android:focusable">true</item>
+        <item name="android:fontFamily">@font/poppins_bold</item>
+        <item name="android:paddingStart">@dimen/margin_x3</item>
+        <item name="android:paddingEnd">@dimen/margin_x3</item>
+        <item name="android:drawableEnd">@drawable/ic_arrow_right</item>
+        <item name="android:drawablePadding">@dimen/margin_main</item>
+        <item name="android:gravity">center_vertical</item>
+    </style>
+
 </resources>

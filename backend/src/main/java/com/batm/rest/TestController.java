@@ -2,6 +2,7 @@ package com.batm.rest;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -41,7 +42,7 @@ public class TestController {
 
         params.add(new BasicNameValuePair("To", phone));
         params.add(new BasicNameValuePair("From", fromNumber));
-        params.add(new BasicNameValuePair("Body", "BelcoBTM code: " + RandomStringUtils.randomNumeric(4)));
+        params.add(new BasicNameValuePair("Body", "Code: " + RandomStringUtils.randomNumeric(4)));
 
         MessageFactory messageFactory = twilio.getAccount().getMessageFactory();
 

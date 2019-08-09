@@ -2,41 +2,12 @@ package com.app.belcobtm.api
 
 import com.app.belcobtm.api.model.ServerResponse
 import com.app.belcobtm.api.model.param.*
-import com.app.belcobtm.api.model.response.AddCoinsResponse
-import com.app.belcobtm.api.model.response.AuthResponse
-import com.app.belcobtm.api.model.response.GetCoinsResponse
-import com.app.belcobtm.api.model.response.VerifySmsResponse
+import com.app.belcobtm.api.model.response.*
 import io.reactivex.Observable
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.POST
-import retrofit2.http.Path
+import retrofit2.http.*
 
 
 interface ApiInterface {
-
-//    @FormUrlEncoded
-//    @PUT("auth/resetPasswordRequests/{token}")
-//    fun resetPassword(@Path("token") token: String?, @Field("password") pass: String): Observable<ServerResponse<Any>>
-//
-//    @GET("flights_v2")
-//    fun findFlight(@Query("code") flightCode: String, @Query("departure") date: String): Observable<ServerResponse<ArrayList<FlightModel>>>
-//
-//    @POST("orders/{id}/accept")
-//    fun orderInsurance(@Path("id") insuranceId: String?): Observable<ServerResponse<FlightModel>>
-//
-//    @GET("orders")
-//    fun getInsurances(): Observable<ServerResponse<ArrayList<FlightModel>>>
-//
-//    @DELETE("orders/{id}")
-//    fun deleteInsurance(@Path("id") insuranceId: String?): Observable<ServerResponse<Any>>
-
-//    @Multipart
-//    @POST("account/verification")
-//    fun verification12(@Part application_level: MultipartBody.Part?,
-//                       @Part document_type: MultipartBody.Part?,
-//                       @Part document_front: MultipartBody.Part?,
-//                       @Part document_back: MultipartBody.Part?): Observable<ServerResponse<Any>>
 
     @POST("register")
     fun register(@Body registerParam: AuthParam): Observable<ServerResponse<AuthResponse>>
@@ -60,7 +31,28 @@ interface ApiInterface {
     fun verifyCoins(@Path("userId") userId: String, @Body verifyCoinsParam: AddCoinsParam): Observable<ServerResponse<AddCoinsResponse>>
 
     @GET("user/{userId}/coins/balance")
-    fun getCoins(@Path("userId") userId: String): Observable<ServerResponse<GetCoinsResponse>>
+    fun getCoins(@Path("userId") userId: String, @Query("coins") coins: ArrayList<String>): Observable<ServerResponse<GetCoinsResponse>>
+
+    @GET ("static/atm/address")
+    fun getAtmAddress(): Observable<ServerResponse<AtmResponse>>
+
+    @POST("user/{userId}/check/password")
+    fun checkPass(@Path("userId") userId: String, @Body checkPassParam: CheckPassParam): Observable<ServerResponse<CheckPassResponse>>
+
+    @GET("user/{userId}/phone")
+    fun getPhone(@Path("userId") userId: String): Observable<ServerResponse<GetPhoneResponse>>
+
+    @POST("user/{userId}/phone")
+    fun updatePhone(@Path("userId") userId: String, @Body updatePhoneParam: UpdatePhoneParam): Observable<ServerResponse<UpdatePhoneResponse>>
+
+    @POST("user/{userId}/phone/confirm")
+    fun confirmPhoneSms(@Path("userId") userId: String, @Body updatePhoneParam: ConfirmPhoneSmsParam): Observable<ServerResponse<ConfirmPhoneSmsResponse>>
+
+    @POST("user/{userId}/unlink")
+    fun unlink(@Path("userId") userId: String): Observable<ServerResponse<UpdateResponse>>
+
+    @POST("user/{userId}/password")
+    fun changePass(@Path("userId") userId: String, @Body changePassParam: ChangePassParam): Observable<ServerResponse<UpdateResponse>>
 
 
 }

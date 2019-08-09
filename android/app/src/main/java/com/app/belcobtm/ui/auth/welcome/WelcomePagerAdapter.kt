@@ -17,7 +17,7 @@ class WelcomePagerAdapter(private val mValues: ArrayList<WelcomePagerItem>) : Re
     }
 
     override fun getItemCount(): Int {
-        return 3
+        return mValues.size
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {

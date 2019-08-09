@@ -5,9 +5,7 @@ import java.util.List;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import com.batm.dto.UserCoinDTO;
 import com.batm.entity.Response;
-import com.batm.entity.UserCoin;
 import com.batm.rest.vm.CoinVM;
 import com.batm.service.CoinService;
 
@@ -27,9 +25,9 @@ public class CoinController {
 
             coinService.save(coinVM, userId);
 
-            Map<String, String> response = new HashMap<>();
-            response.put("userId", userId + "");
-            response.put("isCoinsAdded", true + "");
+            Map<String, Object> response = new HashMap<>();
+            response.put("isCoinsAdded", true);
+
             return Response.ok(response);
         } catch (Exception e) {
             e.printStackTrace();
@@ -44,19 +42,7 @@ public class CoinController {
                 return Response.error(new com.batm.entity.Error(2, "Empty coin list"));
             }
 
-            for (UserCoinDTO userCoin : coinVM.getCoins()) {
-                UserCoin coinWithUserIdAndCoinCode = this.coinService.getCoinWithUserIdAndCoinCode(userId,
-                        userCoin.getCoinCode());
-                if (userCoin.getPublicKey() == null
-                        || !userCoin.getPublicKey().equalsIgnoreCase(coinWithUserIdAndCoinCode.getPublicKey())) {
-                    return Response.error(new com.batm.entity.Error(3, "Public keys not match"));
-                }
-            }
-
-            Map<String, String> response = new HashMap<>();
-            response.put("isCoinsMatched", true + "");
-
-            return Response.ok(response);
+            return coinService.compareCoins(coinVM, userId);
         } catch (Exception e) {
             e.printStackTrace();
             return Response.serverError();
