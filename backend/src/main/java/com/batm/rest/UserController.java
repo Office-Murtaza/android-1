@@ -35,6 +35,7 @@ import com.batm.entity.Unlink;
 import com.batm.entity.UpdatePhone;
 import com.batm.entity.User;
 import com.batm.repository.TokenRepository;
+import com.batm.rest.vm.ChangePasswordRequestVM;
 import com.batm.rest.vm.CheckPasswordRequestVM;
 import com.batm.rest.vm.LoginVM;
 import com.batm.rest.vm.PhoneRequestVM;
@@ -300,16 +301,22 @@ public class UserController {
     }
 
     @PostMapping("/user/{userId}/password")
-    public Response updatePassword(@RequestBody UpdatePasswordRequestVM updatePasswordRequest, @PathVariable Long userId) {
-        try {
-            String encodedPassword = passwordEncoder.encode(updatePasswordRequest.getPassword());
-            userService.updatePassword(encodedPassword, userId);
+    public Response updatePassword(@RequestBody ChangePasswordRequestVM changePasswordRequest, @PathVariable Long userId) {
+		try {
 
-            Map<String, Object> response = new HashMap<>();
-            response.put("updated", true);
+			User user = this.userService.findById(userId);
+			Boolean match = passwordEncoder.matches(changePasswordRequest.getOldPassword(), user.getPassword());
+			if(!match) {
+				  return Response.error(new Error(2, "Old password does not match."));
+			}
+			String encodedPassword = passwordEncoder.encode(changePasswordRequest.getNewPassword());
+			userService.updatePassword(encodedPassword, userId);
 
-            return Response.ok(response);
-        } catch (Exception e) {
+			Map<String, Object> response = new HashMap<>();
+			response.put("updated", true);
+
+			return Response.ok(response);
+		} catch (Exception e) {
             e.printStackTrace();
             return Response.serverError();
         }

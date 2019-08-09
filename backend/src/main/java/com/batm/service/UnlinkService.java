@@ -22,9 +22,13 @@ public class UnlinkService {
 	public Unlink unlinkUser(Long userId) {
 		User user = this.userRepository.getOne(userId);
 		if(user != null) {
-			Unlink unlink = new Unlink();
-			unlink.setUser(user);
-			unlink.setCreatedDate(Instant.now());
+			Unlink unlink = this.unlinkRepository.findByUserUserId(userId);
+			if(unlink == null) {
+				unlink = new Unlink();
+				unlink.setUser(user);
+				unlink.setCreatedDate(Instant.now());
+			}
+			
 			unlink.setLastModifiedDate(Instant.now());
 			unlinkRepository.save(unlink);
 			return unlink;
