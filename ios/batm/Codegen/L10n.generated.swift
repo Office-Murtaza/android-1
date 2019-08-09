@@ -5,6 +5,18 @@ enum L {
     static let title = "atm.title"
   }
 
+  struct ChangePassword {
+    static let title = "change_password.title"
+  }
+
+  struct ChangePhone {
+    static let title = "change_phone.title"
+  }
+
+  struct ChangePin {
+    static let title = "change_pin.title"
+  }
+
   struct CoinsBalance {
     static let title = "coins_balance.title"
     static let totalBalance = "coins_balance.total_balance"
@@ -12,6 +24,10 @@ enum L {
 
   struct CreateWallet {
     static let title = "create_wallet.title"
+  }
+
+  struct EnterPassword {
+    static let title = "enter_password.title"
   }
 
   struct FilterCoins {
@@ -37,16 +53,35 @@ enum L {
   }
 
   struct Settings {
+    static let changePassword = "settings.change_password"
+    static let changePin = "settings.change_pin"
+    static let phone = "settings.phone"
+    static let showSeedPhrase = "settings.show_seed_phrase"
     static let title = "settings.title"
+    static let unlink = "settings.unlink"
   }
 
   struct Shared {
     static let cancel = "shared.cancel"
+    static let change = "shared.change"
     static let copy = "shared.copy"
     static let done = "shared.done"
     static let next = "shared.next"
     static let ok = "shared.ok"
     static let paste = "shared.paste"
+  }
+
+  struct ShowPhone {
+    static let title = "show_phone.title"
+  }
+
+  struct ShowSeedPhrase {
+    static let title = "show_seed_phrase.title"
+  }
+
+  struct Unlink {
+    static let title = "unlink.title"
+    static let warning = "unlink.warning"
   }
 
   struct Welcome {
@@ -60,6 +95,50 @@ extension L.Atm {
 
   struct InfoWindow {
     static let openNow = "atm.info_window.open_now"
+  }
+}
+extension L.ChangePassword {
+
+  struct Form {
+  }
+}
+extension L.ChangePassword.Form {
+
+  struct ConfirmNewPassword {
+    static let placeholder = "change_password.form.confirm_new_password.placeholder"
+  }
+
+  struct NewPassword {
+    static let placeholder = "change_password.form.new_password.placeholder"
+  }
+
+  struct OldPassword {
+    static let placeholder = "change_password.form.old_password.placeholder"
+  }
+}
+extension L.ChangePin {
+
+  struct Form {
+  }
+}
+extension L.ChangePin.Form {
+
+  struct ConfirmNewPin {
+    static let placeholder = "change_pin.form.confirm_new_pin.placeholder"
+  }
+
+  struct Error {
+    static let notEqualPins = "change_pin.form.error.not_equal_pins"
+    static let notMatch = "change_pin.form.error.not_match"
+    static let wrongLength = "change_pin.form.error.wrong_length"
+  }
+
+  struct NewPin {
+    static let placeholder = "change_pin.form.new_pin.placeholder"
+  }
+
+  struct OldPin {
+    static let placeholder = "change_pin.form.old_pin.placeholder"
   }
 }
 extension L.CoinsBalance {
@@ -99,6 +178,17 @@ extension L.CreateWallet.Form {
     static let placeholder = "create_wallet.form.password.placeholder"
   }
 }
+extension L.EnterPassword {
+
+  struct Form {
+  }
+}
+extension L.EnterPassword.Form {
+
+  struct Error {
+    static let wrongPassword = "enter_password.form.error.wrong_password"
+  }
+}
 extension L.PinCode {
 
   struct Setup {
@@ -114,6 +204,12 @@ extension L.Shared {
   struct Error {
     static let message = "shared.error.message"
     static let title = "shared.error.title"
+  }
+}
+extension L.Unlink {
+
+  struct Button {
+    static let title = "unlink.button.title"
   }
 }
 extension L.Welcome {

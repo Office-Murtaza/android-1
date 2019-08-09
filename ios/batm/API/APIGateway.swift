@@ -20,6 +20,12 @@ protocol APIGateway {
   func addCoins(userId: Int, coinAddresses: [CoinAddress]) -> Completable
   func getCoinsBalance(userId: Int, coins: [BTMCoin]) -> Single<CoinsBalance>
   func getMapAddresses() -> Single<MapAddresses>
+  func getPhoneNumber(userId: Int) -> Single<PhoneNumber>
+  func checkPassword(userId: Int, password: String) -> Single<Bool>
+  func changePhone(userId: Int, phoneNumber: String) -> Completable
+  func confirmPhone(userId: Int, phoneNumber: String, code: String) -> Completable
+  func changePassword(userId: Int, oldPassword: String, newPassword: String) -> Completable
+  func unlink(userId: Int) -> Completable
   
 }
 
@@ -108,6 +114,88 @@ final class APIGatewayImpl: APIGateway {
           return Single.error(error)
         }
     }
+  }
+  
+  func getPhoneNumber(userId: Int) -> Single<PhoneNumber> {
+    let request = GetPhoneNumberRequest(userId: userId)
+    return api.execute(request)
+      .flatMap {
+        switch $0 {
+        case let .response(response):
+          return Single.just(response)
+        case let .error(error):
+          return Single.error(error)
+        }
+    }
+  }
+  
+  func checkPassword(userId: Int, password: String) -> Single<Bool> {
+    let request = CheckPasswordRequest(userId: userId, password: password)
+    return api.execute(request)
+      .map { apiResponse -> Bool in
+        switch apiResponse {
+        case let .response(response):
+          return response.matched
+        case let .error(error):
+          throw error
+        }
+      }
+  }
+  
+  func changePhone(userId: Int, phoneNumber: String) -> Completable {
+    let request = ChangePhoneRequest(userId: userId, phoneNumber: phoneNumber)
+    return api.execute(request)
+      .map { apiResponse -> Void in
+        switch apiResponse {
+        case .response:
+          return Void()
+        case let .error(error):
+          throw error
+        }
+      }
+      .toCompletable()
+  }
+  
+  func confirmPhone(userId: Int, phoneNumber: String, code: String) -> Completable {
+    let request = ConfirmPhoneRequest(userId: userId, phoneNumber: phoneNumber, code: code)
+    return api.execute(request)
+      .map { apiResponse -> Void in
+        switch apiResponse {
+        case .response:
+          return Void()
+        case let .error(error):
+          throw error
+        }
+      }
+      .toCompletable()
+  }
+  
+  func changePassword(userId: Int, oldPassword: String, newPassword: String) -> Completable {
+    let request = ChangePasswordRequest(userId: userId, oldPassword: oldPassword, newPassword: newPassword)
+    return api.execute(request)
+      .map { apiResponse -> Void in
+        switch apiResponse {
+        case .response:
+          return Void()
+        case let .error(error):
+          throw error
+        }
+      }
+      .toCompletable()
+  }
+  
+  func unlink(userId: Int) -> Completable {
+    let request = UnlinkRequest(userId: userId)
+    return api.execute(request)
+      .map { apiResponse -> Void in
+        switch apiResponse {
+        case .response:
+          return Void()
+        case let .error(error):
+          throw error
+        }
+      }
+      .toCompletable()
   }
   
 }

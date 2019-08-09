@@ -3,9 +3,15 @@ import RxSwift
 import RxCocoa
 
 enum MainTextFieldType {
+  case oldPassword
+  case newPassword
+  case confirmNewPassword
   case password
   case confirmPassword
   case smsCode
+  case oldPin
+  case newPin
+  case confirmNewPin
 }
 
 class MainTextField: UITextField {
@@ -69,6 +75,28 @@ class MainTextField: UITextField {
     let placeholder: String
     
     switch type {
+    case .oldPassword:
+      placeholder = localize(L.ChangePassword.Form.OldPassword.placeholder)
+      imageView.image = UIImage(named: "login_password")
+      keyboardType = .default
+      isSecureTextEntry = true
+      textContentType = .password
+    case .newPassword:
+      placeholder = localize(L.ChangePassword.Form.NewPassword.placeholder)
+      imageView.image = UIImage(named: "login_password")
+      keyboardType = .default
+      isSecureTextEntry = true
+      if #available(iOS 12.0, *) {
+        textContentType = .newPassword
+      } else {
+        textContentType = .password
+      }
+    case .confirmNewPassword:
+      placeholder = localize(L.ChangePassword.Form.ConfirmNewPassword.placeholder)
+      imageView.image = UIImage(named: "login_password")
+      keyboardType = .default
+      isSecureTextEntry = true
+      textContentType = .password
     case .password:
       placeholder = localize(L.CreateWallet.Form.Password.placeholder)
       imageView.image = UIImage(named: "login_password")
@@ -84,11 +112,7 @@ class MainTextField: UITextField {
       imageView.image = UIImage(named: "login_password")
       keyboardType = .default
       isSecureTextEntry = true
-      if #available(iOS 12.0, *) {
-        textContentType = .newPassword
-      } else {
-        textContentType = .password
-      }
+      textContentType = .password
     case .smsCode:
       placeholder = localize(L.CreateWallet.Code.placeholder)
       imageView.image = UIImage(named: "login_sms_code")
@@ -97,6 +121,24 @@ class MainTextField: UITextField {
       if #available(iOS 12.0, *) {
         textContentType = .oneTimeCode
       }
+    case .oldPin:
+      placeholder = localize(L.ChangePin.Form.OldPin.placeholder)
+      imageView.image = UIImage(named: "settings_pin")
+      imageView.tintColor = .whiteFive
+      keyboardType = .numberPad
+      isSecureTextEntry = true
+    case .newPin:
+      placeholder = localize(L.ChangePin.Form.NewPin.placeholder)
+      imageView.image = UIImage(named: "settings_pin")
+      imageView.tintColor = .whiteFive
+      keyboardType = .numberPad
+      isSecureTextEntry = true
+    case .confirmNewPin:
+      placeholder = localize(L.ChangePin.Form.ConfirmNewPin.placeholder)
+      imageView.image = UIImage(named: "settings_pin")
+      imageView.tintColor = .whiteFive
+      keyboardType = .numberPad
+      isSecureTextEntry = true
     }
     
     attributedPlaceholder = NSAttributedString(string: placeholder, attributes: attributes)

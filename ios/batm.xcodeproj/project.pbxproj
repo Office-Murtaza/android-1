@@ -58,6 +58,15 @@
 		DB4F395322DEFA4100D53BF3 /* FilterCoinsStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB4F395222DEFA4100D53BF3 /* FilterCoinsStore.swift */; };
 		DB4F395522DEFCBB00D53BF3 /* FilterCoinsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB4F395422DEFCBB00D53BF3 /* FilterCoinsPresenter.swift */; };
 		DB4F395722DEFD3B00D53BF3 /* FilterCoinsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB4F395622DEFD3B00D53BF3 /* FilterCoinsViewController.swift */; };
+		DB59EA1922F9C4BF00EB64A7 /* ChangePasswordFlow+Dependencies.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB59EA1622F9C4BF00EB64A7 /* ChangePasswordFlow+Dependencies.swift */; };
+		DB59EA1A22F9C4BF00EB64A7 /* ChangePasswordFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB59EA1722F9C4BF00EB64A7 /* ChangePasswordFlow.swift */; };
+		DB59EA1B22F9C4BF00EB64A7 /* ChangePasswordFlowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB59EA1822F9C4BF00EB64A7 /* ChangePasswordFlowController.swift */; };
+		DB59EA2122F9C51B00EB64A7 /* ChangePasswordModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB59EA1D22F9C51B00EB64A7 /* ChangePasswordModule.swift */; };
+		DB59EA2222F9C51B00EB64A7 /* ChangePasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB59EA1E22F9C51B00EB64A7 /* ChangePasswordViewController.swift */; };
+		DB59EA2322F9C51B00EB64A7 /* ChangePasswordPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB59EA1F22F9C51B00EB64A7 /* ChangePasswordPresenter.swift */; };
+		DB59EA2422F9C51B00EB64A7 /* ChangePasswordAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB59EA2022F9C51B00EB64A7 /* ChangePasswordAssembly.swift */; };
+		DB59EA2722F9D01900EB64A7 /* ChangePasswordFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB59EA2622F9D01900EB64A7 /* ChangePasswordFormView.swift */; };
+		DB59EA2922F9D2BD00EB64A7 /* ChangePasswordStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB59EA2822F9D2BD00EB64A7 /* ChangePasswordStore.swift */; };
 		DB6A578522C1EE5600DEE38A /* WelcomeSliderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB6A578422C1EE5600DEE38A /* WelcomeSliderView.swift */; };
 		DB6A578722C1F00300DEE38A /* WelcomeButtonsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB6A578622C1F00300DEE38A /* WelcomeButtonsView.swift */; };
 		DB6A578922C214F500DEE38A /* UISnapKit+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB6A578822C214F500DEE38A /* UISnapKit+Extensions.swift */; };
@@ -70,6 +79,29 @@
 		DB70852D22CFAE2F00FFE4F7 /* MainFlowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB70852C22CFAE2F00FFE4F7 /* MainFlowController.swift */; };
 		DB70852F22CFAE5800FFE4F7 /* MainFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB70852E22CFAE5800FFE4F7 /* MainFlow.swift */; };
 		DB70853122CFAF1500FFE4F7 /* MainFlow+Dependencies.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB70853022CFAF1500FFE4F7 /* MainFlow+Dependencies.swift */; };
+		DB83661522FA9FCB00454F5C /* ShowSeedPhraseFlow+Dependencies.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB83661222FA9FCB00454F5C /* ShowSeedPhraseFlow+Dependencies.swift */; };
+		DB83661622FA9FCB00454F5C /* ShowSeedPhraseFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB83661322FA9FCB00454F5C /* ShowSeedPhraseFlow.swift */; };
+		DB83661722FA9FCB00454F5C /* ShowSeedPhraseFlowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB83661422FA9FCB00454F5C /* ShowSeedPhraseFlowController.swift */; };
+		DB83661E22FAA01F00454F5C /* ShowSeedPhraseModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB83661A22FAA01F00454F5C /* ShowSeedPhraseModule.swift */; };
+		DB83661F22FAA01F00454F5C /* ShowSeedPhraseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB83661B22FAA01F00454F5C /* ShowSeedPhraseViewController.swift */; };
+		DB83662022FAA01F00454F5C /* ShowSeedPhrasePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB83661C22FAA01F00454F5C /* ShowSeedPhrasePresenter.swift */; };
+		DB83662122FAA01F00454F5C /* ShowSeedPhraseAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB83661D22FAA01F00454F5C /* ShowSeedPhraseAssembly.swift */; };
+		DB83662722FAA75100454F5C /* UnlinkFlow+Dependencies.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB83662422FAA75100454F5C /* UnlinkFlow+Dependencies.swift */; };
+		DB83662822FAA75100454F5C /* UnlinkFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB83662522FAA75100454F5C /* UnlinkFlow.swift */; };
+		DB83662922FAA75100454F5C /* UnlinkFlowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB83662622FAA75100454F5C /* UnlinkFlowController.swift */; };
+		DB83662F22FAA76B00454F5C /* UnlinkModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB83662B22FAA76B00454F5C /* UnlinkModule.swift */; };
+		DB83663022FAA76B00454F5C /* UnlinkViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB83662C22FAA76B00454F5C /* UnlinkViewController.swift */; };
+		DB83663122FAA76B00454F5C /* UnlinkPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB83662D22FAA76B00454F5C /* UnlinkPresenter.swift */; };
+		DB83663222FAA76B00454F5C /* UnlinkAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB83662E22FAA76B00454F5C /* UnlinkAssembly.swift */; };
+		DB83663822FAB7CE00454F5C /* ChangePinFlow+Dependencies.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB83663522FAB7CE00454F5C /* ChangePinFlow+Dependencies.swift */; };
+		DB83663922FAB7CE00454F5C /* ChangePinFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB83663622FAB7CE00454F5C /* ChangePinFlow.swift */; };
+		DB83663A22FAB7CE00454F5C /* ChangePinFlowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB83663722FAB7CE00454F5C /* ChangePinFlowController.swift */; };
+		DB83664022FAB7E200454F5C /* ChangePinModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB83663C22FAB7E200454F5C /* ChangePinModule.swift */; };
+		DB83664122FAB7E200454F5C /* ChangePinViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB83663D22FAB7E200454F5C /* ChangePinViewController.swift */; };
+		DB83664222FAB7E200454F5C /* ChangePinPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB83663E22FAB7E200454F5C /* ChangePinPresenter.swift */; };
+		DB83664322FAB7E200454F5C /* ChangePinAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB83663F22FAB7E200454F5C /* ChangePinAssembly.swift */; };
+		DB83664522FABB0C00454F5C /* ChangePinStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB83664422FABB0C00454F5C /* ChangePinStore.swift */; };
+		DB83664822FABFB800454F5C /* ChangePinFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB83664722FABFB800454F5C /* ChangePinFormView.swift */; };
 		DB8D408122C3DBA700D5FBD0 /* CreateWalletModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB8D408022C3DBA700D5FBD0 /* CreateWalletModule.swift */; };
 		DB8D408322C3DBC000D5FBD0 /* CreateWalletPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB8D408222C3DBC000D5FBD0 /* CreateWalletPresenter.swift */; };
 		DB8D408522C3DBF200D5FBD0 /* CreateWalletViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB8D408422C3DBF200D5FBD0 /* CreateWalletViewController.swift */; };
@@ -239,9 +271,35 @@
 		DBBF29AE22D3C0CC00A5DE6A /* CoinsBalanceUsecase.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBBF29AD22D3C0CC00A5DE6A /* CoinsBalanceUsecase.swift */; };
 		DBBF29B022D3EE6200A5DE6A /* LogoutUsecase.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBBF29AF22D3EE6200A5DE6A /* LogoutUsecase.swift */; };
 		DBC37F4122C7F42200519153 /* PhoneNumberTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC37F4022C7F42200519153 /* PhoneNumberTextField.swift */; };
+		DBC68C9322F85C9900473247 /* SettingsUsecase.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC68C9222F85C9900473247 /* SettingsUsecase.swift */; };
+		DBC68C9522F85DF700473247 /* PhoneNumber.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC68C9422F85DF700473247 /* PhoneNumber.swift */; };
+		DBC68C9722F85E1300473247 /* PhoneNumber+Mapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC68C9622F85E1300473247 /* PhoneNumber+Mapping.swift */; };
+		DBC68CA722F868E000473247 /* EnterPasswordModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC68CA322F868E000473247 /* EnterPasswordModule.swift */; };
+		DBC68CA822F868E000473247 /* EnterPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC68CA422F868E000473247 /* EnterPasswordViewController.swift */; };
+		DBC68CA922F868E000473247 /* EnterPasswordPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC68CA522F868E000473247 /* EnterPasswordPresenter.swift */; };
+		DBC68CAA22F868E000473247 /* EnterPasswordAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC68CA622F868E000473247 /* EnterPasswordAssembly.swift */; };
+		DBC68CAD22F86C5F00473247 /* EnterPasswordFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC68CAC22F86C5F00473247 /* EnterPasswordFormView.swift */; };
+		DBC68CAF22F86E0000473247 /* EnterPasswordStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC68CAE22F86E0000473247 /* EnterPasswordStore.swift */; };
+		DBC68CB122F8755000473247 /* CheckPassword.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC68CB022F8755000473247 /* CheckPassword.swift */; };
+		DBC68CB322F8759100473247 /* CheckPassword+Mapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC68CB222F8759100473247 /* CheckPassword+Mapping.swift */; };
+		DBC68CB922F8798F00473247 /* ChangePhoneModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC68CB522F8798F00473247 /* ChangePhoneModule.swift */; };
+		DBC68CBA22F8798F00473247 /* ChangePhoneViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC68CB622F8798F00473247 /* ChangePhoneViewController.swift */; };
+		DBC68CBB22F8798F00473247 /* ChangePhonePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC68CB722F8798F00473247 /* ChangePhonePresenter.swift */; };
+		DBC68CBC22F8798F00473247 /* ChangePhoneAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC68CB822F8798F00473247 /* ChangePhoneAssembly.swift */; };
+		DBC68CBF22F87A0A00473247 /* ChangePhoneFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC68CBE22F87A0A00473247 /* ChangePhoneFormView.swift */; };
+		DBC68CC222F87A3B00473247 /* ChangePhoneStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC68CC122F87A3B00473247 /* ChangePhoneStore.swift */; };
+		DBCAC39222F7380B00B77841 /* SettingsCollectionViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBCAC39122F7380B00B77841 /* SettingsCollectionViewDataSource.swift */; };
+		DBCAC39422F7384F00B77841 /* SettingsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBCAC39322F7384F00B77841 /* SettingsCell.swift */; };
 		DBDA966222BFDB6E005B93DF /* ModulePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBDA966122BFDB6E005B93DF /* ModulePresenter.swift */; };
 		DBDA966722C00424005B93DF /* ErrorTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBDA966622C00424005B93DF /* ErrorTracker.swift */; };
 		DBDA966922C0043F005B93DF /* ActivityTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBDA966822C0043F005B93DF /* ActivityTracker.swift */; };
+		DBECA62C22F7FB22002C2610 /* ChangePhoneFlowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBECA62B22F7FB22002C2610 /* ChangePhoneFlowController.swift */; };
+		DBECA62E22F7FB6C002C2610 /* ChangePhoneFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBECA62D22F7FB6C002C2610 /* ChangePhoneFlow.swift */; };
+		DBECA63022F7FBA9002C2610 /* ChangePhoneFlow+Dependencies.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBECA62F22F7FBA9002C2610 /* ChangePhoneFlow+Dependencies.swift */; };
+		DBECA63322F7FBE3002C2610 /* ShowPhoneModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBECA63222F7FBE3002C2610 /* ShowPhoneModule.swift */; };
+		DBECA63522F7FC11002C2610 /* ShowPhonePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBECA63422F7FC11002C2610 /* ShowPhonePresenter.swift */; };
+		DBECA63722F7FC36002C2610 /* ShowPhoneViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBECA63622F7FC36002C2610 /* ShowPhoneViewController.swift */; };
+		DBECA63922F7FDB0002C2610 /* ShowPhoneAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBECA63822F7FDB0002C2610 /* ShowPhoneAssembly.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -311,6 +369,15 @@
 		DB4F395222DEFA4100D53BF3 /* FilterCoinsStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterCoinsStore.swift; sourceTree = "<group>"; };
 		DB4F395422DEFCBB00D53BF3 /* FilterCoinsPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterCoinsPresenter.swift; sourceTree = "<group>"; };
 		DB4F395622DEFD3B00D53BF3 /* FilterCoinsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterCoinsViewController.swift; sourceTree = "<group>"; };
+		DB59EA1622F9C4BF00EB64A7 /* ChangePasswordFlow+Dependencies.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ChangePasswordFlow+Dependencies.swift"; sourceTree = "<group>"; };
+		DB59EA1722F9C4BF00EB64A7 /* ChangePasswordFlow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangePasswordFlow.swift; sourceTree = "<group>"; };
+		DB59EA1822F9C4BF00EB64A7 /* ChangePasswordFlowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangePasswordFlowController.swift; sourceTree = "<group>"; };
+		DB59EA1D22F9C51B00EB64A7 /* ChangePasswordModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangePasswordModule.swift; sourceTree = "<group>"; };
+		DB59EA1E22F9C51B00EB64A7 /* ChangePasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangePasswordViewController.swift; sourceTree = "<group>"; };
+		DB59EA1F22F9C51B00EB64A7 /* ChangePasswordPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangePasswordPresenter.swift; sourceTree = "<group>"; };
+		DB59EA2022F9C51B00EB64A7 /* ChangePasswordAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangePasswordAssembly.swift; sourceTree = "<group>"; };
+		DB59EA2622F9D01900EB64A7 /* ChangePasswordFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangePasswordFormView.swift; sourceTree = "<group>"; };
+		DB59EA2822F9D2BD00EB64A7 /* ChangePasswordStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangePasswordStore.swift; sourceTree = "<group>"; };
 		DB6A578422C1EE5600DEE38A /* WelcomeSliderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeSliderView.swift; sourceTree = "<group>"; };
 		DB6A578622C1F00300DEE38A /* WelcomeButtonsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeButtonsView.swift; sourceTree = "<group>"; };
 		DB6A578822C214F500DEE38A /* UISnapKit+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UISnapKit+Extensions.swift"; sourceTree = "<group>"; };
@@ -322,6 +389,29 @@
 		DB70852C22CFAE2F00FFE4F7 /* MainFlowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainFlowController.swift; sourceTree = "<group>"; };
 		DB70852E22CFAE5800FFE4F7 /* MainFlow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainFlow.swift; sourceTree = "<group>"; };
 		DB70853022CFAF1500FFE4F7 /* MainFlow+Dependencies.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MainFlow+Dependencies.swift"; sourceTree = "<group>"; };
+		DB83661222FA9FCB00454F5C /* ShowSeedPhraseFlow+Dependencies.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ShowSeedPhraseFlow+Dependencies.swift"; sourceTree = "<group>"; };
+		DB83661322FA9FCB00454F5C /* ShowSeedPhraseFlow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowSeedPhraseFlow.swift; sourceTree = "<group>"; };
+		DB83661422FA9FCB00454F5C /* ShowSeedPhraseFlowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowSeedPhraseFlowController.swift; sourceTree = "<group>"; };
+		DB83661A22FAA01F00454F5C /* ShowSeedPhraseModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowSeedPhraseModule.swift; sourceTree = "<group>"; };
+		DB83661B22FAA01F00454F5C /* ShowSeedPhraseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowSeedPhraseViewController.swift; sourceTree = "<group>"; };
+		DB83661C22FAA01F00454F5C /* ShowSeedPhrasePresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowSeedPhrasePresenter.swift; sourceTree = "<group>"; };
+		DB83661D22FAA01F00454F5C /* ShowSeedPhraseAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowSeedPhraseAssembly.swift; sourceTree = "<group>"; };
+		DB83662422FAA75100454F5C /* UnlinkFlow+Dependencies.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UnlinkFlow+Dependencies.swift"; sourceTree = "<group>"; };
+		DB83662522FAA75100454F5C /* UnlinkFlow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnlinkFlow.swift; sourceTree = "<group>"; };
+		DB83662622FAA75100454F5C /* UnlinkFlowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnlinkFlowController.swift; sourceTree = "<group>"; };
+		DB83662B22FAA76B00454F5C /* UnlinkModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnlinkModule.swift; sourceTree = "<group>"; };
+		DB83662C22FAA76B00454F5C /* UnlinkViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnlinkViewController.swift; sourceTree = "<group>"; };
+		DB83662D22FAA76B00454F5C /* UnlinkPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnlinkPresenter.swift; sourceTree = "<group>"; };
+		DB83662E22FAA76B00454F5C /* UnlinkAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnlinkAssembly.swift; sourceTree = "<group>"; };
+		DB83663522FAB7CE00454F5C /* ChangePinFlow+Dependencies.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ChangePinFlow+Dependencies.swift"; sourceTree = "<group>"; };
+		DB83663622FAB7CE00454F5C /* ChangePinFlow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangePinFlow.swift; sourceTree = "<group>"; };
+		DB83663722FAB7CE00454F5C /* ChangePinFlowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangePinFlowController.swift; sourceTree = "<group>"; };
+		DB83663C22FAB7E200454F5C /* ChangePinModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangePinModule.swift; sourceTree = "<group>"; };
+		DB83663D22FAB7E200454F5C /* ChangePinViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangePinViewController.swift; sourceTree = "<group>"; };
+		DB83663E22FAB7E200454F5C /* ChangePinPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangePinPresenter.swift; sourceTree = "<group>"; };
+		DB83663F22FAB7E200454F5C /* ChangePinAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangePinAssembly.swift; sourceTree = "<group>"; };
+		DB83664422FABB0C00454F5C /* ChangePinStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangePinStore.swift; sourceTree = "<group>"; };
+		DB83664722FABFB800454F5C /* ChangePinFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangePinFormView.swift; sourceTree = "<group>"; };
 		DB8D408022C3DBA700D5FBD0 /* CreateWalletModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateWalletModule.swift; sourceTree = "<group>"; };
 		DB8D408222C3DBC000D5FBD0 /* CreateWalletPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateWalletPresenter.swift; sourceTree = "<group>"; };
 		DB8D408422C3DBF200D5FBD0 /* CreateWalletViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateWalletViewController.swift; sourceTree = "<group>"; };
@@ -492,12 +582,38 @@
 		DBBF29AD22D3C0CC00A5DE6A /* CoinsBalanceUsecase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinsBalanceUsecase.swift; sourceTree = "<group>"; };
 		DBBF29AF22D3EE6200A5DE6A /* LogoutUsecase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogoutUsecase.swift; sourceTree = "<group>"; };
 		DBC37F4022C7F42200519153 /* PhoneNumberTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneNumberTextField.swift; sourceTree = "<group>"; };
+		DBC68C9222F85C9900473247 /* SettingsUsecase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsUsecase.swift; sourceTree = "<group>"; };
+		DBC68C9422F85DF700473247 /* PhoneNumber.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneNumber.swift; sourceTree = "<group>"; };
+		DBC68C9622F85E1300473247 /* PhoneNumber+Mapping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PhoneNumber+Mapping.swift"; sourceTree = "<group>"; };
+		DBC68CA322F868E000473247 /* EnterPasswordModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnterPasswordModule.swift; sourceTree = "<group>"; };
+		DBC68CA422F868E000473247 /* EnterPasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnterPasswordViewController.swift; sourceTree = "<group>"; };
+		DBC68CA522F868E000473247 /* EnterPasswordPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnterPasswordPresenter.swift; sourceTree = "<group>"; };
+		DBC68CA622F868E000473247 /* EnterPasswordAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnterPasswordAssembly.swift; sourceTree = "<group>"; };
+		DBC68CAC22F86C5F00473247 /* EnterPasswordFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnterPasswordFormView.swift; sourceTree = "<group>"; };
+		DBC68CAE22F86E0000473247 /* EnterPasswordStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnterPasswordStore.swift; sourceTree = "<group>"; };
+		DBC68CB022F8755000473247 /* CheckPassword.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckPassword.swift; sourceTree = "<group>"; };
+		DBC68CB222F8759100473247 /* CheckPassword+Mapping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CheckPassword+Mapping.swift"; sourceTree = "<group>"; };
+		DBC68CB522F8798F00473247 /* ChangePhoneModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangePhoneModule.swift; sourceTree = "<group>"; };
+		DBC68CB622F8798F00473247 /* ChangePhoneViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangePhoneViewController.swift; sourceTree = "<group>"; };
+		DBC68CB722F8798F00473247 /* ChangePhonePresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangePhonePresenter.swift; sourceTree = "<group>"; };
+		DBC68CB822F8798F00473247 /* ChangePhoneAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangePhoneAssembly.swift; sourceTree = "<group>"; };
+		DBC68CBE22F87A0A00473247 /* ChangePhoneFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangePhoneFormView.swift; sourceTree = "<group>"; };
+		DBC68CC122F87A3B00473247 /* ChangePhoneStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangePhoneStore.swift; sourceTree = "<group>"; };
+		DBCAC39122F7380B00B77841 /* SettingsCollectionViewDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsCollectionViewDataSource.swift; sourceTree = "<group>"; };
+		DBCAC39322F7384F00B77841 /* SettingsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsCell.swift; sourceTree = "<group>"; };
 		DBD1750222BD26860021A05E /* batmTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = batmTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		DBD1750622BD26860021A05E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		DBD1750C22BD26CB0021A05E /* BTMWallet+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "BTMWallet+Extensions.swift"; sourceTree = "<group>"; };
 		DBDA966122BFDB6E005B93DF /* ModulePresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModulePresenter.swift; sourceTree = "<group>"; };
 		DBDA966622C00424005B93DF /* ErrorTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorTracker.swift; sourceTree = "<group>"; };
 		DBDA966822C0043F005B93DF /* ActivityTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityTracker.swift; sourceTree = "<group>"; };
+		DBECA62B22F7FB22002C2610 /* ChangePhoneFlowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangePhoneFlowController.swift; sourceTree = "<group>"; };
+		DBECA62D22F7FB6C002C2610 /* ChangePhoneFlow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangePhoneFlow.swift; sourceTree = "<group>"; };
+		DBECA62F22F7FBA9002C2610 /* ChangePhoneFlow+Dependencies.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ChangePhoneFlow+Dependencies.swift"; sourceTree = "<group>"; };
+		DBECA63222F7FBE3002C2610 /* ShowPhoneModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowPhoneModule.swift; sourceTree = "<group>"; };
+		DBECA63422F7FC11002C2610 /* ShowPhonePresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowPhonePresenter.swift; sourceTree = "<group>"; };
+		DBECA63622F7FC36002C2610 /* ShowPhoneViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowPhoneViewController.swift; sourceTree = "<group>"; };
+		DBECA63822F7FDB0002C2610 /* ShowPhoneAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowPhoneAssembly.swift; sourceTree = "<group>"; };
 		F62E959DD3C3751B0D83F925 /* Pods-batm.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-batm.release.xcconfig"; path = "Pods/Target Support Files/Pods-batm/Pods-batm.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -708,6 +824,11 @@
 				DBA6842C22E42AA20079429E /* CoinsBalanceFlow */,
 				DBA6843622E449A20079429E /* ATMFlow */,
 				DBA6844922E45A040079429E /* SettingsFlow */,
+				DBECA62922F7FADF002C2610 /* ChangePhoneFlow */,
+				DB59EA0E22F9B7B400EB64A7 /* ChangePasswordFlow */,
+				DB83663322FAB7A300454F5C /* ChangePinFlow */,
+				DB83661022FA9ECC00454F5C /* ShowSeedPhraseFlow */,
+				DB83662222FAA73B00454F5C /* UnlinkFlow */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -774,6 +895,46 @@
 			path = FilterCoinsModule;
 			sourceTree = "<group>";
 		};
+		DB59EA0E22F9B7B400EB64A7 /* ChangePasswordFlow */ = {
+			isa = PBXGroup;
+			children = (
+				DB59EA1522F9C16A00EB64A7 /* Flow */,
+				DB59EA1C22F9C50800EB64A7 /* ChangePasswordModule */,
+			);
+			path = ChangePasswordFlow;
+			sourceTree = "<group>";
+		};
+		DB59EA1522F9C16A00EB64A7 /* Flow */ = {
+			isa = PBXGroup;
+			children = (
+				DB59EA1722F9C4BF00EB64A7 /* ChangePasswordFlow.swift */,
+				DB59EA1822F9C4BF00EB64A7 /* ChangePasswordFlowController.swift */,
+				DB59EA1622F9C4BF00EB64A7 /* ChangePasswordFlow+Dependencies.swift */,
+			);
+			path = Flow;
+			sourceTree = "<group>";
+		};
+		DB59EA1C22F9C50800EB64A7 /* ChangePasswordModule */ = {
+			isa = PBXGroup;
+			children = (
+				DB59EA2522F9D00C00EB64A7 /* Views */,
+				DB59EA1E22F9C51B00EB64A7 /* ChangePasswordViewController.swift */,
+				DB59EA1F22F9C51B00EB64A7 /* ChangePasswordPresenter.swift */,
+				DB59EA1D22F9C51B00EB64A7 /* ChangePasswordModule.swift */,
+				DB59EA2022F9C51B00EB64A7 /* ChangePasswordAssembly.swift */,
+				DB59EA2822F9D2BD00EB64A7 /* ChangePasswordStore.swift */,
+			);
+			path = ChangePasswordModule;
+			sourceTree = "<group>";
+		};
+		DB59EA2522F9D00C00EB64A7 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				DB59EA2622F9D01900EB64A7 /* ChangePasswordFormView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
 		DB70852022CFA37600FFE4F7 /* MainFlow */ = {
 			isa = PBXGroup;
 			children = (
@@ -813,6 +974,106 @@
 				DB8D40AA22C3EF9400D5FBD0 /* RootFlow+Dependencies.swift */,
 			);
 			path = Flow;
+			sourceTree = "<group>";
+		};
+		DB83661022FA9ECC00454F5C /* ShowSeedPhraseFlow */ = {
+			isa = PBXGroup;
+			children = (
+				DB83661122FA9F5500454F5C /* Flow */,
+				DB83661922FAA00B00454F5C /* ShowSeedPhraseModule */,
+			);
+			path = ShowSeedPhraseFlow;
+			sourceTree = "<group>";
+		};
+		DB83661122FA9F5500454F5C /* Flow */ = {
+			isa = PBXGroup;
+			children = (
+				DB83661322FA9FCB00454F5C /* ShowSeedPhraseFlow.swift */,
+				DB83661422FA9FCB00454F5C /* ShowSeedPhraseFlowController.swift */,
+				DB83661222FA9FCB00454F5C /* ShowSeedPhraseFlow+Dependencies.swift */,
+			);
+			path = Flow;
+			sourceTree = "<group>";
+		};
+		DB83661922FAA00B00454F5C /* ShowSeedPhraseModule */ = {
+			isa = PBXGroup;
+			children = (
+				DB83661B22FAA01F00454F5C /* ShowSeedPhraseViewController.swift */,
+				DB83661C22FAA01F00454F5C /* ShowSeedPhrasePresenter.swift */,
+				DB83661A22FAA01F00454F5C /* ShowSeedPhraseModule.swift */,
+				DB83661D22FAA01F00454F5C /* ShowSeedPhraseAssembly.swift */,
+			);
+			path = ShowSeedPhraseModule;
+			sourceTree = "<group>";
+		};
+		DB83662222FAA73B00454F5C /* UnlinkFlow */ = {
+			isa = PBXGroup;
+			children = (
+				DB83662322FAA74600454F5C /* Flow */,
+				DB83662A22FAA75800454F5C /* UnlinkModule */,
+			);
+			path = UnlinkFlow;
+			sourceTree = "<group>";
+		};
+		DB83662322FAA74600454F5C /* Flow */ = {
+			isa = PBXGroup;
+			children = (
+				DB83662522FAA75100454F5C /* UnlinkFlow.swift */,
+				DB83662622FAA75100454F5C /* UnlinkFlowController.swift */,
+				DB83662422FAA75100454F5C /* UnlinkFlow+Dependencies.swift */,
+			);
+			path = Flow;
+			sourceTree = "<group>";
+		};
+		DB83662A22FAA75800454F5C /* UnlinkModule */ = {
+			isa = PBXGroup;
+			children = (
+				DB83662C22FAA76B00454F5C /* UnlinkViewController.swift */,
+				DB83662D22FAA76B00454F5C /* UnlinkPresenter.swift */,
+				DB83662B22FAA76B00454F5C /* UnlinkModule.swift */,
+				DB83662E22FAA76B00454F5C /* UnlinkAssembly.swift */,
+			);
+			path = UnlinkModule;
+			sourceTree = "<group>";
+		};
+		DB83663322FAB7A300454F5C /* ChangePinFlow */ = {
+			isa = PBXGroup;
+			children = (
+				DB83663422FAB7C300454F5C /* Flow */,
+				DB83663B22FAB7D300454F5C /* ChangePinModule */,
+			);
+			path = ChangePinFlow;
+			sourceTree = "<group>";
+		};
+		DB83663422FAB7C300454F5C /* Flow */ = {
+			isa = PBXGroup;
+			children = (
+				DB83663622FAB7CE00454F5C /* ChangePinFlow.swift */,
+				DB83663722FAB7CE00454F5C /* ChangePinFlowController.swift */,
+				DB83663522FAB7CE00454F5C /* ChangePinFlow+Dependencies.swift */,
+			);
+			path = Flow;
+			sourceTree = "<group>";
+		};
+		DB83663B22FAB7D300454F5C /* ChangePinModule */ = {
+			isa = PBXGroup;
+			children = (
+				DB83664622FABFA800454F5C /* Views */,
+				DB83663D22FAB7E200454F5C /* ChangePinViewController.swift */,
+				DB83663E22FAB7E200454F5C /* ChangePinPresenter.swift */,
+				DB83663C22FAB7E200454F5C /* ChangePinModule.swift */,
+				DB83663F22FAB7E200454F5C /* ChangePinAssembly.swift */,
+				DB83664422FABB0C00454F5C /* ChangePinStore.swift */,
+			);
+			path = ChangePinModule;
+			sourceTree = "<group>";
+		};
+		DB83664622FABFA800454F5C /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				DB83664722FABFB800454F5C /* ChangePinFormView.swift */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 		DB8D407F22C3DB7300D5FBD0 /* CreateWalletModule */ = {
@@ -981,6 +1242,7 @@
 				DBBF29AD22D3C0CC00A5DE6A /* CoinsBalanceUsecase.swift */,
 				DBB5B39022E1A59000222640 /* FilterCoinsUsecase.swift */,
 				DB308EBE22E73A56003D91AF /* ATMUsecase.swift */,
+				DBC68C9222F85C9900473247 /* SettingsUsecase.swift */,
 			);
 			path = Usecases;
 			sourceTree = "<group>";
@@ -997,6 +1259,8 @@
 				DB308EB422E737FA003D91AF /* OpenHour.swift */,
 				DB308EB222E73793003D91AF /* MapAddress.swift */,
 				DB308EB022E73762003D91AF /* MapAddresses.swift */,
+				DBC68C9422F85DF700473247 /* PhoneNumber.swift */,
+				DBC68CB022F8755000473247 /* CheckPassword.swift */,
 			);
 			path = Entities;
 			sourceTree = "<group>";
@@ -1120,6 +1384,8 @@
 				DB308EB622E73837003D91AF /* OpenHour+Mapping.swift */,
 				DB308EB822E73888003D91AF /* MapAddress+Mapping.swift */,
 				DB308EBA22E738FC003D91AF /* MapAddresses+Mapping.swift */,
+				DBC68C9622F85E1300473247 /* PhoneNumber+Mapping.swift */,
+				DBC68CB222F8759100473247 /* CheckPassword+Mapping.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -1292,6 +1558,7 @@
 		DBA6845122E45A880079429E /* SettingsModule */ = {
 			isa = PBXGroup;
 			children = (
+				DBCAC38F22F737EC00B77841 /* CollectionViewRelated */,
 				DBA6845622E45AE70079429E /* SettingsViewController.swift */,
 				DBA6845422E45AAC0079429E /* SettingsPresenter.swift */,
 				DBA6845222E45A9A0079429E /* SettingsModule.swift */,
@@ -1360,6 +1627,65 @@
 			path = DataSource;
 			sourceTree = "<group>";
 		};
+		DBC68CA222F868CE00473247 /* EnterPasswordModule */ = {
+			isa = PBXGroup;
+			children = (
+				DBC68CAB22F86C5500473247 /* Views */,
+				DBC68CA322F868E000473247 /* EnterPasswordModule.swift */,
+				DBC68CA422F868E000473247 /* EnterPasswordViewController.swift */,
+				DBC68CA522F868E000473247 /* EnterPasswordPresenter.swift */,
+				DBC68CA622F868E000473247 /* EnterPasswordAssembly.swift */,
+				DBC68CAE22F86E0000473247 /* EnterPasswordStore.swift */,
+			);
+			path = EnterPasswordModule;
+			sourceTree = "<group>";
+		};
+		DBC68CAB22F86C5500473247 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				DBC68CAC22F86C5F00473247 /* EnterPasswordFormView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		DBC68CB422F8797500473247 /* ChangePhoneModule */ = {
+			isa = PBXGroup;
+			children = (
+				DBC68CBD22F879FD00473247 /* Views */,
+				DBC68CB622F8798F00473247 /* ChangePhoneViewController.swift */,
+				DBC68CB722F8798F00473247 /* ChangePhonePresenter.swift */,
+				DBC68CB522F8798F00473247 /* ChangePhoneModule.swift */,
+				DBC68CB822F8798F00473247 /* ChangePhoneAssembly.swift */,
+				DBC68CC122F87A3B00473247 /* ChangePhoneStore.swift */,
+			);
+			path = ChangePhoneModule;
+			sourceTree = "<group>";
+		};
+		DBC68CBD22F879FD00473247 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				DBC68CBE22F87A0A00473247 /* ChangePhoneFormView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		DBCAC38F22F737EC00B77841 /* CollectionViewRelated */ = {
+			isa = PBXGroup;
+			children = (
+				DBCAC39022F737F900B77841 /* DataSource */,
+				DBCAC39322F7384F00B77841 /* SettingsCell.swift */,
+			);
+			path = CollectionViewRelated;
+			sourceTree = "<group>";
+		};
+		DBCAC39022F737F900B77841 /* DataSource */ = {
+			isa = PBXGroup;
+			children = (
+				DBCAC39122F7380B00B77841 /* SettingsCollectionViewDataSource.swift */,
+			);
+			path = DataSource;
+			sourceTree = "<group>";
+		};
 		DBD1750322BD26860021A05E /* batmTests */ = {
 			isa = PBXGroup;
 			children = (
@@ -1384,6 +1710,38 @@
 				DBDA966822C0043F005B93DF /* ActivityTracker.swift */,
 			);
 			path = Rx;
+			sourceTree = "<group>";
+		};
+		DBECA62922F7FADF002C2610 /* ChangePhoneFlow */ = {
+			isa = PBXGroup;
+			children = (
+				DBECA62A22F7FB04002C2610 /* Flow */,
+				DBECA63122F7FBCF002C2610 /* ShowPhoneModule */,
+				DBC68CA222F868CE00473247 /* EnterPasswordModule */,
+				DBC68CB422F8797500473247 /* ChangePhoneModule */,
+			);
+			path = ChangePhoneFlow;
+			sourceTree = "<group>";
+		};
+		DBECA62A22F7FB04002C2610 /* Flow */ = {
+			isa = PBXGroup;
+			children = (
+				DBECA62D22F7FB6C002C2610 /* ChangePhoneFlow.swift */,
+				DBECA62B22F7FB22002C2610 /* ChangePhoneFlowController.swift */,
+				DBECA62F22F7FBA9002C2610 /* ChangePhoneFlow+Dependencies.swift */,
+			);
+			path = Flow;
+			sourceTree = "<group>";
+		};
+		DBECA63122F7FBCF002C2610 /* ShowPhoneModule */ = {
+			isa = PBXGroup;
+			children = (
+				DBECA63622F7FC36002C2610 /* ShowPhoneViewController.swift */,
+				DBECA63422F7FC11002C2610 /* ShowPhonePresenter.swift */,
+				DBECA63222F7FBE3002C2610 /* ShowPhoneModule.swift */,
+				DBECA63822F7FDB0002C2610 /* ShowPhoneAssembly.swift */,
+			);
+			path = ShowPhoneModule;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1611,18 +1969,24 @@
 			buildActionMask = 2147483647;
 			files = (
 				DB308EAF22E71402003D91AF /* ATMInfoView.swift in Sources */,
+				DB59EA2722F9D01900EB64A7 /* ChangePasswordFormView.swift in Sources */,
 				DB9D3EA922C14FDB008DC600 /* UIFont+Additions.swift in Sources */,
 				DBBF29AE22D3C0CC00A5DE6A /* CoinsBalanceUsecase.swift in Sources */,
 				DBA6842F22E42AF80079429E /* CoinsBalanceFlow.swift in Sources */,
 				DB9616F722C753390078E92D /* AccountConverter.swift in Sources */,
 				DB9616D922C748610078E92D /* ReloadAdapter.swift in Sources */,
+				DBC68CA822F868E000473247 /* EnterPasswordViewController.swift in Sources */,
 				DB0211BD22CCE48A004065E9 /* RecoverSeedPhrasePresenter.swift in Sources */,
+				DBECA62C22F7FB22002C2610 /* ChangePhoneFlowController.swift in Sources */,
 				DB308EBB22E738FC003D91AF /* MapAddresses+Mapping.swift in Sources */,
 				DBA6844222E44AE40079429E /* ATMPresenter.swift in Sources */,
+				DBC68CAD22F86C5F00473247 /* EnterPasswordFormView.swift in Sources */,
 				DB9616A322C5FFC10078E92D /* RoundedView.swift in Sources */,
 				DB96169422C5678E0078E92D /* MainButton.swift in Sources */,
+				DBECA63022F7FBA9002C2610 /* ChangePhoneFlow+Dependencies.swift in Sources */,
 				DB04E4D722D880B5000E2D85 /* PinCodeService.swift in Sources */,
 				DB9616DA22C748610078E92D /* FRCBuilder.swift in Sources */,
+				DBECA63522F7FC11002C2610 /* ShowPhonePresenter.swift in Sources */,
 				DBBF299E22D3810200A5DE6A /* CoinAddress+Mapping.swift in Sources */,
 				DB9616F022C74FCB0078E92D /* Executor.swift in Sources */,
 				DB04E4D222D85E92000E2D85 /* PinCodeConverter.swift in Sources */,
@@ -1630,6 +1994,8 @@
 				DBBF29A022D3814300A5DE6A /* CoinAddress.swift in Sources */,
 				DB96171422C75E950078E92D /* Requests.swift in Sources */,
 				DB3C03D222CB5AA00036F779 /* RecoverModule.swift in Sources */,
+				DB83662122FAA01F00454F5C /* ShowSeedPhraseAssembly.swift in Sources */,
+				DBC68CA922F868E000473247 /* EnterPasswordPresenter.swift in Sources */,
 				DBBF29A822D3872D00A5DE6A /* CoinsBalance+Mapping.swift in Sources */,
 				DB9616B822C63E270078E92D /* Account.swift in Sources */,
 				DB49463822DF274B001EE56E /* FilterCoinsCollectionViewDataSource.swift in Sources */,
@@ -1644,6 +2010,7 @@
 				DB9616B022C60EFB0078E92D /* UIStackView+Extensions.swift in Sources */,
 				DB9616AE22C60ECA0078E92D /* UIView+Extensions.swift in Sources */,
 				DB308EBD22E7396A003D91AF /* URL+Extensions.swift in Sources */,
+				DBCAC39222F7380B00B77841 /* SettingsCollectionViewDataSource.swift in Sources */,
 				DB70851D22CF8A7600FFE4F7 /* BTMWallet+Extensions.swift in Sources */,
 				DBAD53A622D7C63A0005F682 /* PinCodeDotView.swift in Sources */,
 				DBA6844C22E45A190079429E /* SettingsFlow.swift in Sources */,
@@ -1652,9 +2019,12 @@
 				DB04E4D922D8AC4D000E2D85 /* PinCodeAssembly.swift in Sources */,
 				DBBF29A622D386B500A5DE6A /* ObjectMapperError.swift in Sources */,
 				DB9D3ED222C155B2008DC600 /* UITapGestureRecognizer+AttributedText.swift in Sources */,
+				DB59EA2422F9C51B00EB64A7 /* ChangePasswordAssembly.swift in Sources */,
 				DBAD53A822D7CC500005F682 /* KeyboardHelper.swift in Sources */,
+				DB59EA2122F9C51B00EB64A7 /* ChangePasswordModule.swift in Sources */,
 				DB8D408322C3DBC000D5FBD0 /* CreateWalletPresenter.swift in Sources */,
 				DB8D40AD22C3EFFF00D5FBD0 /* WelcomeAssembly.swift in Sources */,
+				DB59EA1A22F9C4BF00EB64A7 /* ChangePasswordFlow.swift in Sources */,
 				DBBF299A22D3764100A5DE6A /* CoinsBalanceCell.swift in Sources */,
 				DB0BB5F722BD10B90035FF6C /* AppDelegate.swift in Sources */,
 				DBA6843322E42B920079429E /* CoinsBalanceFlow+Dependencies.swift in Sources */,
@@ -1664,16 +2034,23 @@
 				DB904AA522C01189007CB734 /* WelcomePresenter.swift in Sources */,
 				DB9616C122C745980078E92D /* Database.xcdatamodeld in Sources */,
 				DB130D6B22C28AF60056E67E /* BackgroundDarkView.swift in Sources */,
+				DB83664222FAB7E200454F5C /* ChangePinPresenter.swift in Sources */,
+				DB59EA2922F9D2BD00EB64A7 /* ChangePasswordStore.swift in Sources */,
 				DB9616F922C7553D0078E92D /* StorageError.swift in Sources */,
 				DBAD539B22D7B8870005F682 /* PinCodePresenter.swift in Sources */,
 				DB70852522CFA3C500FFE4F7 /* CoinsBalancePresenter.swift in Sources */,
+				DB83661F22FAA01F00454F5C /* ShowSeedPhraseViewController.swift in Sources */,
 				DB130D6722C26EF20056E67E /* WelcomeSupportView.swift in Sources */,
 				DB904A9E22C00E2A007CB734 /* RxFlow+Extensions.swift in Sources */,
 				DB9616EE22C74EB40078E92D /* RecursiveLock+Extensions.swift in Sources */,
+				DB83661E22FAA01F00454F5C /* ShowSeedPhraseModule.swift in Sources */,
 				DB9616E822C74E4C0078E92D /* SectionedDataSource.swift in Sources */,
 				DB04E4D422D85EE5000E2D85 /* PinCodeUsecase.swift in Sources */,
 				DBBF299622D3725D00A5DE6A /* UITableView+ReusableView.swift in Sources */,
+				DBC68CB322F8759100473247 /* CheckPassword+Mapping.swift in Sources */,
 				DB8D40B722C4027500D5FBD0 /* MainFormView.swift in Sources */,
+				DBC68C9522F85DF700473247 /* PhoneNumber.swift in Sources */,
+				DB83663A22FAB7CE00454F5C /* ChangePinFlowController.swift in Sources */,
 				DB96173722C7B1140078E92D /* BTMCoinRecord+CoreDataProperties.swift in Sources */,
 				DB8D40A722C3EE3800D5FBD0 /* LoginFlowController.swift in Sources */,
 				DB8D40B022C3F4D700D5FBD0 /* BTMNavigationController.swift in Sources */,
@@ -1682,14 +2059,18 @@
 				DBB5B38F22E0CD5800222640 /* BTMCoin.swift in Sources */,
 				DB9616DC22C748610078E92D /* StorageTransaction.swift in Sources */,
 				DB8D408C22C3E54200D5FBD0 /* Initializer.swift in Sources */,
+				DB83664122FAB7E200454F5C /* ChangePinViewController.swift in Sources */,
 				DB96168A22C50F350078E92D /* ValidationRule.swift in Sources */,
 				DB8D40A322C3ED9C00D5FBD0 /* LoginFlow.swift in Sources */,
 				DBA6845022E45A300079429E /* SettingsFlow+Dependencies.swift in Sources */,
 				DBA6844022E44AC70079429E /* ATMModule.swift in Sources */,
 				DB4F395522DEFCBB00D53BF3 /* FilterCoinsPresenter.swift in Sources */,
 				DB9616F322C750CA0078E92D /* Converter.swift in Sources */,
+				DBC68CB122F8755000473247 /* CheckPassword.swift in Sources */,
+				DB59EA1B22F9C4BF00EB64A7 /* ChangePasswordFlowController.swift in Sources */,
 				DBAD539F22D7BA1D0005F682 /* PinCodeViewController.swift in Sources */,
 				DB9616AC22C60CD80078E92D /* Array+Extensions.swift in Sources */,
+				DB59EA2222F9C51B00EB64A7 /* ChangePasswordViewController.swift in Sources */,
 				DB96172722C761DA0078E92D /* APIRequest.swift in Sources */,
 				DB96173222C791690078E92D /* WalletService.swift in Sources */,
 				DB9616AA22C608DD0078E92D /* SeedPhraseWordView.swift in Sources */,
@@ -1702,11 +2083,14 @@
 				DB96172322C75E950078E92D /* Observable+ObjectMapper.swift in Sources */,
 				DBA6845722E45AE70079429E /* SettingsViewController.swift in Sources */,
 				DB96171722C75E950078E92D /* RefreshCredentialsService.swift in Sources */,
+				DB83662F22FAA76B00454F5C /* UnlinkModule.swift in Sources */,
 				DB308EB922E73888003D91AF /* MapAddress+Mapping.swift in Sources */,
 				DBAD53A422D7C5610005F682 /* PinCodeView.swift in Sources */,
 				DB3C03DD22CB5F7C0036F779 /* RecoverFormView.swift in Sources */,
 				DB497AF722BF6AA0008CE4A8 /* WelcomeViewController.swift in Sources */,
+				DB83662822FAA75100454F5C /* UnlinkFlow.swift in Sources */,
 				DB308EBF22E73A56003D91AF /* ATMUsecase.swift in Sources */,
+				DBC68CBB22F8798F00473247 /* ChangePhonePresenter.swift in Sources */,
 				DB96173922C7B2610078E92D /* BTMCoinConverter.swift in Sources */,
 				DB8D40AB22C3EF9400D5FBD0 /* RootFlow+Dependencies.swift in Sources */,
 				DB9616EA22C74E4C0078E92D /* FetchedResultsSectionInfo.swift in Sources */,
@@ -1722,19 +2106,27 @@
 				DB308EB322E73793003D91AF /* MapAddress.swift in Sources */,
 				DBA6843D22E44A880079429E /* ATMFlow+Dependencies.swift in Sources */,
 				DB8D40B522C401DD00D5FBD0 /* GoldSeparatorView.swift in Sources */,
+				DB83664822FABFB800454F5C /* ChangePinFormView.swift in Sources */,
 				DB8D40B222C3F86500D5FBD0 /* CreateWalletAssembly.swift in Sources */,
 				DBAD539D22D7B95F0005F682 /* PinCodeStore.swift in Sources */,
 				DB96174022C7CDA70078E92D /* BTMWalletRecord+CoreDataClass.swift in Sources */,
 				DB0211C622CD340A004065E9 /* TextFieldWithoutPaddings.swift in Sources */,
+				DBC68CA722F868E000473247 /* EnterPasswordModule.swift in Sources */,
+				DBECA63322F7FBE3002C2610 /* ShowPhoneModule.swift in Sources */,
 				DB9616BA22C63F9B0078E92D /* APIGateway.swift in Sources */,
 				DBA6844622E44B930079429E /* ATMViewController.swift in Sources */,
 				DB130D6922C273B60056E67E /* WelcomeSupportCellView.swift in Sources */,
+				DBC68CBC22F8798F00473247 /* ChangePhoneAssembly.swift in Sources */,
 				DB9616D522C748610078E92D /* CoreDataStorage.swift in Sources */,
+				DB83663822FAB7CE00454F5C /* ChangePinFlow+Dependencies.swift in Sources */,
 				DB96171E22C75E950078E92D /* Account+Mapping.swift in Sources */,
 				DB96172D22C78BF30078E92D /* AppAssembly.swift in Sources */,
 				DB6A578722C1F00300DEE38A /* WelcomeButtonsView.swift in Sources */,
+				DB59EA2322F9C51B00EB64A7 /* ChangePasswordPresenter.swift in Sources */,
 				DB9616FB22C757D30078E92D /* LogoutStorageRegistry.swift in Sources */,
 				DB308EB722E73837003D91AF /* OpenHour+Mapping.swift in Sources */,
+				DB83662022FAA01F00454F5C /* ShowSeedPhrasePresenter.swift in Sources */,
+				DB59EA1922F9C4BF00EB64A7 /* ChangePasswordFlow+Dependencies.swift in Sources */,
 				DB96173D22C7B57F0078E92D /* CoinType+Extensions.swift in Sources */,
 				DB96169D22C5FABC0078E92D /* SeedPhraseModule.swift in Sources */,
 				DB8D408522C3DBF200D5FBD0 /* CreateWalletViewController.swift in Sources */,
@@ -1742,24 +2134,32 @@
 				DB8D409122C3E89C00D5FBD0 /* RootFlow.swift in Sources */,
 				DB70853122CFAF1500FFE4F7 /* MainFlow+Dependencies.swift in Sources */,
 				DB9616E622C74E4C0078E92D /* SectionedDataSourceObservable.swift in Sources */,
+				DBC68CC222F87A3B00473247 /* ChangePhoneStore.swift in Sources */,
 				DB96169222C538500078E92D /* ErrorView.swift in Sources */,
 				DB96172522C75E950078E92D /* Response+ObjectMapper.swift in Sources */,
 				DB70852F22CFAE5800FFE4F7 /* MainFlow.swift in Sources */,
 				DB8D408922C3E4E100D5FBD0 /* Swinject.swift in Sources */,
+				DBC68C9722F85E1300473247 /* PhoneNumber+Mapping.swift in Sources */,
 				DBA6844822E44C390079429E /* ATMAssembly.swift in Sources */,
 				DB9D3EA022C0F6BA008DC600 /* UIColor+Additions.swift in Sources */,
 				DBA7393D22C3482E00CEFD57 /* L10n.generated.swift in Sources */,
 				DB3C03D822CB5DCE0036F779 /* RecoverViewController.swift in Sources */,
+				DB83661622FA9FCB00454F5C /* ShowSeedPhraseFlow.swift in Sources */,
 				DB70851F22CF90F500FFE4F7 /* String+Extensions.swift in Sources */,
 				DBDA966222BFDB6E005B93DF /* ModulePresenter.swift in Sources */,
 				DB8D40A922C3EEDE00D5FBD0 /* LoginFlow+Dependencies.swift in Sources */,
 				DBBF299822D3748C00A5DE6A /* UICollectionView+ReusableView.swift in Sources */,
+				DBC68CBF22F87A0A00473247 /* ChangePhoneFormView.swift in Sources */,
 				DB96174422C7D1070078E92D /* BTMWalletConverter.swift in Sources */,
 				DB49463A22DF2B0C001EE56E /* FilterCoinsAssembly.swift in Sources */,
+				DB83664322FAB7E200454F5C /* ChangePinAssembly.swift in Sources */,
 				DBBF29A422D3848F00A5DE6A /* CoinBalance+Mapping.swift in Sources */,
 				DB96171522C75E950078E92D /* BTMNetworkService.swift in Sources */,
 				DB70852722CFA3EC00FFE4F7 /* CoinsBalanceViewController.swift in Sources */,
+				DB83661522FA9FCB00454F5C /* ShowSeedPhraseFlow+Dependencies.swift in Sources */,
 				DB04E4D022D85D5C000E2D85 /* PinCodeRecord+CoreDataProperties.swift in Sources */,
+				DB83662922FAA75100454F5C /* UnlinkFlowController.swift in Sources */,
+				DB83662722FAA75100454F5C /* UnlinkFlow+Dependencies.swift in Sources */,
 				DB96172F22C78F010078E92D /* PersistentStackAssembly.swift in Sources */,
 				DB497AFC22BFD5F7008CE4A8 /* ModuleViewController.swift in Sources */,
 				DB49463E22DF7C0D001EE56E /* CoinsBalanceFooterView.swift in Sources */,
@@ -1769,6 +2169,7 @@
 				DB9616EB22C74E4C0078E92D /* SectionedDataSourceObserver.swift in Sources */,
 				DB0211BB22CCE42B004065E9 /* RecoverSeedPhraseModule.swift in Sources */,
 				DB9D3EA722C1476F008DC600 /* WelcomeSlideView.swift in Sources */,
+				DBC68CB922F8798F00473247 /* ChangePhoneModule.swift in Sources */,
 				DBA6844E22E45A250079429E /* SettingsFlowController.swift in Sources */,
 				DB96172B22C77DD80078E92D /* APIResponse.swift in Sources */,
 				DB8D408E22C3E5A500D5FBD0 /* DIInitializer.swift in Sources */,
@@ -1780,19 +2181,26 @@
 				DB3C03D422CB5ADE0036F779 /* RecoverStore.swift in Sources */,
 				DB9616D622C748610078E92D /* FetchRequestBuilder.swift in Sources */,
 				DB904AA322C00FC7007CB734 /* UIView+MBProgressHUD.swift in Sources */,
+				DB83663922FAB7CE00454F5C /* ChangePinFlow.swift in Sources */,
 				DB9616BD22C67FCA0078E92D /* AccountStorage.swift in Sources */,
+				DBCAC39422F7384F00B77841 /* SettingsCell.swift in Sources */,
 				DBBF299C22D3801500A5DE6A /* CoinsBalance.swift in Sources */,
 				DB4B9DCB22E5A4710016746A /* GoogleServicesInitializer.swift in Sources */,
 				DB3C03E122CB62320036F779 /* DummyButton.swift in Sources */,
+				DBECA63922F7FDB0002C2610 /* ShowPhoneAssembly.swift in Sources */,
 				DB9616A822C606530078E92D /* SeedPhraseView.swift in Sources */,
 				DB3C03DF22CB60960036F779 /* RecoverAssembly.swift in Sources */,
 				DB96173522C7B0C90078E92D /* BTMCoinRecord+CoreDataClass.swift in Sources */,
 				DB9616C722C747200078E92D /* AccountRecord+CoreDataProperties.swift in Sources */,
 				DB308EB522E737FA003D91AF /* OpenHour.swift in Sources */,
+				DB83664522FABB0C00454F5C /* ChangePinStore.swift in Sources */,
 				DB9616F522C752410078E92D /* CoreDataObserver.swift in Sources */,
+				DBECA63722F7FC36002C2610 /* ShowPhoneViewController.swift in Sources */,
 				DB96168822C50E720078E92D /* CreateWalletStore.swift in Sources */,
 				DBBF299422D3719500A5DE6A /* CoinsBalanceCollectionViewDataSource.swift in Sources */,
+				DB83661722FA9FCB00454F5C /* ShowSeedPhraseFlowController.swift in Sources */,
 				DB70852922CFADDE00FFE4F7 /* CoinsBalanceAssembly.swift in Sources */,
+				DBC68CAF22F86E0000473247 /* EnterPasswordStore.swift in Sources */,
 				DB8D409A22C3EB1400D5FBD0 /* Castable.swift in Sources */,
 				DB96172922C76E360078E92D /* BTMWallet.swift in Sources */,
 				DBBF29B022D3EE6200A5DE6A /* LogoutUsecase.swift in Sources */,
@@ -1801,12 +2209,16 @@
 				DB9D3EA522C13078008DC600 /* TermsAndConditionsView.swift in Sources */,
 				DB96168C22C517C80078E92D /* PhoneNumberKit+Extensions.swift in Sources */,
 				DB6A578922C214F500DEE38A /* UISnapKit+Extensions.swift in Sources */,
+				DB83663122FAA76B00454F5C /* UnlinkPresenter.swift in Sources */,
 				DBA6845522E45AAC0079429E /* SettingsPresenter.swift in Sources */,
 				DB904AA122C00EEA007CB734 /* UIViewController+Errors.swift in Sources */,
 				DB8D409622C3E9BF00D5FBD0 /* FlowController.swift in Sources */,
 				DB9616B522C63D6E0078E92D /* LoginUsecase.swift in Sources */,
+				DBC68CBA22F8798F00473247 /* ChangePhoneViewController.swift in Sources */,
 				DBA6843122E42B450079429E /* CoinsBalanceFlowController.swift in Sources */,
 				DB9616C422C746F70078E92D /* AccountRecord+CoreDataClass.swift in Sources */,
+				DB83663022FAA76B00454F5C /* UnlinkViewController.swift in Sources */,
+				DBECA62E22F7FB6C002C2610 /* ChangePhoneFlow.swift in Sources */,
 				DBA7393A22C33F2600CEFD57 /* Localization.swift in Sources */,
 				DBDA966722C00424005B93DF /* ErrorTracker.swift in Sources */,
 				DB9616E922C74E4C0078E92D /* FetchedResultsDataSource.swift in Sources */,
@@ -1816,12 +2228,16 @@
 				DB96169922C5F52F0078E92D /* CreateWalletFormView.swift in Sources */,
 				DB70852D22CFAE2F00FFE4F7 /* MainFlowController.swift in Sources */,
 				DB0211BF22CCE5A6004065E9 /* RecoverSeedPhraseViewController.swift in Sources */,
+				DB83663222FAA76B00454F5C /* UnlinkAssembly.swift in Sources */,
 				DBA6843822E449BA0079429E /* ATMFlow.swift in Sources */,
 				DB8D408122C3DBA700D5FBD0 /* CreateWalletModule.swift in Sources */,
 				DB9616E722C74E4C0078E92D /* AnySectionedDataSource.swift in Sources */,
+				DBC68CAA22F868E000473247 /* EnterPasswordAssembly.swift in Sources */,
 				DB9616DD22C748610078E92D /* NSManagedObject+ActiveRecord.swift in Sources */,
 				DB4F395122DEFA2600D53BF3 /* FilterCoinsModule.swift in Sources */,
+				DBC68C9322F85C9900473247 /* SettingsUsecase.swift in Sources */,
 				DBDA966922C0043F005B93DF /* ActivityTracker.swift in Sources */,
+				DB83664022FAB7E200454F5C /* ChangePinModule.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1984,16 +2400,17 @@
 			baseConfigurationReference = 92EFAEC3F34F5098AD0B7F2B /* Pods-batm.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = BTPQF57VMN;
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = 2RUJ559RK4;
 				INFOPLIST_FILE = batm/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = dantish.batm;
+				PRODUCT_BUNDLE_IDENTIFIER = com.belcobtm.BelcoWallet;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = BelcoWalletDevelopmentProfile;
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -2004,16 +2421,18 @@
 			baseConfigurationReference = F62E959DD3C3751B0D83F925 /* Pods-batm.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = BTPQF57VMN;
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = 2RUJ559RK4;
 				INFOPLIST_FILE = batm/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = dantish.batm;
+				PRODUCT_BUNDLE_IDENTIFIER = com.belcobtm.BelcoWallet;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = BelcoWalletAppStoreProfile;
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

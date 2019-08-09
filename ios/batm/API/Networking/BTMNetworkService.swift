@@ -5,18 +5,21 @@ import ObjectMapper
 final class BTMNetworkService: NetworkRequestExecutor {
   
   let network: NetworkService
-  let credentials: AccountStorage
+  let accountStorage: AccountStorage
   let logoutUsecase: LogoutUsecase
   let pinCodeService: PinCodeService
+  let refreshCredentialsService: RefreshCredentialsService
   
   init(networkService: NetworkService,
-       credentials: AccountStorage,
+       accountStorage: AccountStorage,
        logoutUsecase: LogoutUsecase,
-       pinCodeService: PinCodeService) {
+       pinCodeService: PinCodeService,
+       refreshCredentialsService: RefreshCredentialsService) {
     self.network = networkService
-    self.credentials = credentials
+    self.accountStorage = accountStorage
     self.logoutUsecase = logoutUsecase
     self.pinCodeService = pinCodeService
+    self.refreshCredentialsService = refreshCredentialsService
   }
   
   // MARK: - NetworkRequestExecutor
@@ -54,6 +57,7 @@ final class BTMNetworkService: NetworkRequestExecutor {
         .asObservable()
         .flatMap { execute(request, $0) }
         .catchError { [unowned self] in throw self.map(error: $0) }
+      
       return retry(request, signal: requestSignal)
   }
   
@@ -63,10 +67,9 @@ final class BTMNetworkService: NetworkRequestExecutor {
         return signal
           .asObservable()
           .retryWhen { [unowned self] in self.retryNotAuthorized(errors: $0) }
-      } else {
-        return signal
-          .asObservable()
       }
+      
+      return signal.asObservable()
   }
   
   private func retryNotAuthorized(errors: Observable<Error>) -> Observable<Void> {
@@ -74,52 +77,32 @@ final class BTMNetworkService: NetworkRequestExecutor {
       .map { [unowned self] in self.map(error: $0) }
       .flatMap { [unowned self] error -> Observable<Void> in
         if error == .notAuthorized {
-          return self.refreshCredentials()
-            .andThen(.just(()))
-        } else {
-          return .error(error)
+          return self.refreshCredentials().andThen(.just(()))
         }
+        
+        return .error(error)
       }
       .toVoid()
   }
   
   private func refreshCredentials() -> Completable {
     return pinCodeService.verifyPinCode()
-      .andThen(credentials.get())
-      .asObservable()
-      .flatMap { [unowned self] creds -> Single<Account> in
-        return self.refreshCredentials(creds)
-      }
-      .toCompletable()
-  }
-  
-  private func refreshCredentials(_ creds: Account) -> Single<Account> {
-    let request = RefreshTokenRequest(account: creds)
-    return execute(request)
-      .flatMap {
-        switch $0 {
-        case let .response(response):
-          return Single.just(response)
-        case let .error(error):
-          return Single.error(error)
-        }
-      }
-      .flatMap { [credentials] in credentials.save(account: $0).andThen(.just($0)) }
-      .catchError { [unowned self, logoutUsecase] in
-        let mappedError = self.map(error: $0)
-        let singleError = Single<Account>.error(mappedError)
-
+      .andThen(refreshCredentialsService.refresh())
+      .catchError { [logoutUsecase] in
+        guard let mappedError = $0 as? APIError else { throw $0 }
+        let completableError = Completable.error(mappedError)
+        
         if mappedError == .notAuthorized {
-          return logoutUsecase.logout().flatMap { _ in singleError }
+          return logoutUsecase.logout().flatMapCompletable { _ in completableError }
         }
-
-        return singleError
+        
+        return completableError
       }
   }
   
   func headers<Request: SimpleRequest>(for request: Request) -> Single<[String: String]?> {
     if request is AuthorizedRequest {
-      return credentials.get()
+      return accountStorage.get()
         .map { ["Authorization": "Bearer " + $0.accessToken] }
         .catchError { _ in .just(nil) }
     }

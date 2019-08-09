@@ -44,6 +44,7 @@ class PinCodeStorageUtils: StorageUtils {
   }
   
   func save(pinCode: String) throws {
+    try delete()
     try PinCodeRecord.findOrCreate(in: context, pinCode: pinCode)
   }
   

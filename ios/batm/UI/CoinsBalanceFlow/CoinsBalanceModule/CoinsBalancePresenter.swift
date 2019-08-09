@@ -25,11 +25,6 @@ class CoinsBalancePresenter: ModulePresenter, CoinsBalanceModule {
        store: Store = CoinsBalanceStore()) {
     self.usecase = usecase
     self.store = store
-    
-    super.init()
-    
-    setupBindings()
-    fetchCoinsBalance()
   }
   
   func fetchCoinsBalance() {
@@ -48,6 +43,9 @@ class CoinsBalancePresenter: ModulePresenter, CoinsBalanceModule {
     input.filterCoinsTap
       .drive(onNext: { [unowned self] in self.delegate?.showFilterCoins(from: self) })
       .disposed(by: disposeBag)
+    
+    setupBindings()
+    fetchCoinsBalance()
   }
   
   private func setupBindings() {
