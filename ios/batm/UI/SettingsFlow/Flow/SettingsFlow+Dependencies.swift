@@ -13,7 +13,12 @@ extension SettingsFlow {
           return flowController
         }
         .inObjectScope(.container)
-        .implements(SettingsModuleDelegate.self)
+        .implements(SettingsModuleDelegate.self,
+                    ChangePhoneFlowControllerDelegate.self,
+                    ChangePasswordFlowControllerDelegate.self,
+                    ChangePinFlowControllerDelegate.self,
+                    ShowSeedPhraseFlowControllerDelegate.self,
+                    UnlinkFlowControllerDelegate.self)
     }
   }
 }

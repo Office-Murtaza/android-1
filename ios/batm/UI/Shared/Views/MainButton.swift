@@ -8,6 +8,8 @@ enum MainButtonType {
   case cancel
   case next
   case done
+  case change
+  case unlink
 }
 
 class MainButton: UIButton {
@@ -61,6 +63,14 @@ class MainButton: UIButton {
       backgroundColor = .ceruleanBlue
       customAttributes = [.foregroundColor: UIColor.white]
       title = localize(L.Shared.done)
+    case .change:
+      backgroundColor = .whiteTwo
+      customAttributes = [.foregroundColor: UIColor.slateGrey]
+      title = localize(L.Shared.change)
+    case .unlink:
+      backgroundColor = .whiteTwo
+      customAttributes = [.foregroundColor: UIColor.slateGrey]
+      title = localize(L.Unlink.Button.title)
     }
     
     let allAttributes = commonAttributes.merging(customAttributes, uniquingKeysWith: { _, new in new })

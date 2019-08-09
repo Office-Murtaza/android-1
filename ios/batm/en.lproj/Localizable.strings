@@ -4,6 +4,7 @@
 "shared.copy" = "Copy";
 "shared.paste" = "Paste";
 "shared.done" = "Done";
+"shared.change" = "Change";
 "shared.error.title" = "Error";
 "shared.error.message" = "Something went wrong. Please try again later";
 
@@ -51,3 +52,34 @@
 "atm.info_window.open_now" = "Open Now:";
 
 "settings.title" = "Settings";
+"settings.phone" = "Phone";
+"settings.change_password" = "Change Password";
+"settings.change_pin" = "Change PIN";
+"settings.show_seed_phrase" = "Show Seed Phrase";
+"settings.unlink" = "Unlink";
+
+"show_phone.title" = "Phone";
+
+"enter_password.title" = "Enter Password";
+"enter_password.form.error.wrong_password" = "Wrong password";
+
+"change_phone.title" = "Change Phone";
+
+"change_password.title" = "Change Password";
+"change_password.form.old_password.placeholder" = "Old Password *";
+"change_password.form.new_password.placeholder" = "New Password *";
+"change_password.form.confirm_new_password.placeholder" = "Confirm New Password *";
+
+"change_pin.title" = "Change PIN";
+"change_pin.form.old_pin.placeholder" = "Old PIN *";
+"change_pin.form.new_pin.placeholder" = "New PIN *";
+"change_pin.form.confirm_new_pin.placeholder" = "Confirm New PIN *";
+"change_pin.form.error.wrong_length" = "PIN should have 6 digits";
+"change_pin.form.error.not_equal_pins" = "PINs do not match";
+"change_pin.form.error.not_match" = "Wrong Old PIN";
+
+"show_seed_phrase.title" = "Seed Phrase";
+
+"unlink.title" = "Unlink";
+"unlink.warning" = "Unlink the wallet means clear wallet seed phrase and coins private keys from the current device. You can recover the wallet at any time by seed phrase. If you lose your seed phrase you lost your wallet and all funds.\n\nPlease make sure you have stored your seed phrase in a safe place.";
+"unlink.button.title" = "Unlink Wallet";

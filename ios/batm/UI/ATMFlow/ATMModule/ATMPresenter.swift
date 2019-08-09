@@ -23,10 +23,6 @@ class ATMPresenter: ModulePresenter, ATMModule {
        store: Store = ATMStore()) {
     self.usecase = usecase
     self.store = store
-    
-    super.init()
-    
-    fetchMapAddresses()
   }
   
   private func fetchMapAddresses() {
@@ -38,6 +34,6 @@ class ATMPresenter: ModulePresenter, ATMModule {
   }
   
   func bind(input: Input) {
-    
+    fetchMapAddresses()
   }
 }

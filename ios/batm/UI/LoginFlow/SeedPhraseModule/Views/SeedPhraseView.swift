@@ -2,7 +2,9 @@ import UIKit
 import RxSwift
 import RxCocoa
 
-class SeedPhraseView: RoundedView {
+class SeedPhraseView: UIView {
+  
+  let roundedView = RoundedView()
   
   let annotationLabel: UILabel = {
     let label = UILabel()
@@ -32,8 +34,10 @@ class SeedPhraseView: RoundedView {
   
   var mainStackView: UIStackView!
   
-  override init(frame: CGRect) {
-    super.init(frame: frame)
+  init(flat: Bool = false) {
+    super.init(frame: .null)
+    
+    roundedView.isHidden = flat
     
     setupUI()
     setupLayout()
@@ -46,11 +50,15 @@ class SeedPhraseView: RoundedView {
   private func setupUI() {
     translatesAutoresizingMaskIntoConstraints = false
     
-    addSubviews(annotationLabel,
+    addSubviews(roundedView,
+                annotationLabel,
                 doneButton)
   }
   
   private func setupLayout() {
+    roundedView.snp.makeConstraints {
+      $0.edges.equalToSuperview()
+    }
     annotationLabel.snp.makeConstraints {
       $0.top.left.right.equalToSuperview().inset(50)
     }

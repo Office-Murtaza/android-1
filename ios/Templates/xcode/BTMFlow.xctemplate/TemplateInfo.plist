@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Kind</key>
+	<string>Xcode.IDEFoundation.TextSubstitutionFileTemplateKind</string>
+	<key>Description</key>
+	<string>An empty Flow files.</string>
+	<key>Summary</key>
+	<string>An empty Flow files</string>
+	<key>SortOrder</key>
+	<string>30</string>
+	<key>Options</key>
+	<array>
+		<dict>
+			<key>Identifier</key>
+			<string>flowName</string>
+			<key>Required</key>
+			<true/>
+			<key>Name</key>
+			<string>Flow name:</string>
+			<key>Description</key>
+			<string>The name of the flow</string>
+			<key>Type</key>
+			<string>text</string>
+		</dict>
+	</array>
+</dict>
+</plist>

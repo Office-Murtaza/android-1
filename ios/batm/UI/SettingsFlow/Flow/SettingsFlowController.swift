@@ -12,4 +12,66 @@ class SettingsFlowController: FlowController, FlowActivator {
   
 }
 
-extension SettingsFlowController: SettingsModuleDelegate {}
+extension SettingsFlowController: SettingsModuleDelegate {
+  
+  func didSelectPhone(_ phoneNumber: PhoneNumber) {
+    step.accept(SettingsFlow.Steps.phone(phoneNumber))
+  }
+  
+  func didSelectChangePassword() {
+    step.accept(SettingsFlow.Steps.changePassword)
+  }
+  
+  func didSelectChangePin() {
+    step.accept(SettingsFlow.Steps.changePin)
+  }
+  
+  func didSelectShowSeedPhrase() {
+    step.accept(SettingsFlow.Steps.showSeedPhrase)
+  }
+  
+  func didSelectUnlink() {
+    step.accept(SettingsFlow.Steps.unlink)
+  }
+  
+}
+
+extension SettingsFlowController: ChangePhoneFlowControllerDelegate {
+  
+  func didFinishChangePhoneFlow() {
+    step.accept(SettingsFlow.Steps.popToRoot)
+  }
+  
+}
+
+extension SettingsFlowController: ChangePasswordFlowControllerDelegate {
+  
+  func didFinishChangePasswordFlow() {
+    step.accept(SettingsFlow.Steps.popToRoot)
+  }
+  
+}
+
+extension SettingsFlowController: ChangePinFlowControllerDelegate {
+  
+  func didFinishChangePinFlow() {
+    step.accept(SettingsFlow.Steps.popToRoot)
+  }
+  
+}
+
+extension SettingsFlowController: ShowSeedPhraseFlowControllerDelegate {
+  
+  func didFinishShowSeedPhraseFlow() {
+    step.accept(SettingsFlow.Steps.popToRoot)
+  }
+  
+}
+
+extension SettingsFlowController: UnlinkFlowControllerDelegate {
+  
+  func didFinishUnlinkFlow() {
+    step.accept(SettingsFlow.Steps.popToRoot)
+  }
+  
+}

@@ -7,6 +7,10 @@ extension Reactive where Base: UIViewController {
     return Binder(base) { controller, error in
       let message: String
       
+      if error is PinCodeError {
+        return
+      }
+      
       if let apiError = error as? APIError, case .serverError = apiError {
         return
       }

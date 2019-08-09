@@ -1,6 +1,10 @@
 import Foundation
 import RxSwift
 
+enum PinCodeError: Error {
+  case notMatch
+}
+
 protocol PinCodeUsecase {
   func save(pinCode: String) -> Completable
   func verify(pinCode: String) -> Single<Bool>

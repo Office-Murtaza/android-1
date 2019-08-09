@@ -17,23 +17,32 @@ final class AppAssembly: Assembly {
   }
   
   private func assembleNetwork(container: Container) {
-    container.register(NetworkService.self) { (ioc, url: URL) in
+    container.register(NetworkService.self) { ioc in
+      let baseURL = URL(string: "https://test.belcobtm.com/api/v1")!
       let provider = MoyaProvider<MultiTarget>()
-      return NetworkService(baseApiUrl: url, provider: provider)
-      }.inObjectScope(.transient)
-    container.register(NetworkRequestExecutor.self) { (ioc, url: URL) -> NetworkRequestExecutor in
-      let network = ioc.resolve(NetworkService.self, argument: url)!
-      let credentials = ioc.resolve(AccountStorage.self)!
+      return NetworkService(baseApiUrl: baseURL, provider: provider)
+      }.inObjectScope(.container)
+    container.register(NetworkRequestExecutor.self) { ioc in
+      let network = ioc.resolve(NetworkService.self)!
+      let accountStorage = ioc.resolve(AccountStorage.self)!
       let logoutUsecase = ioc.resolve(LogoutUsecase.self)!
       let pinCodeService = ioc.resolve(PinCodeService.self)!
+      let refreshCredentialsService = ioc.resolve(RefreshCredentialsService.self)!
       return BTMNetworkService(networkService: network,
-                               credentials: credentials,
+                               accountStorage: accountStorage,
                                logoutUsecase: logoutUsecase,
-                               pinCodeService: pinCodeService)
-      }.inObjectScope(.transient)
+                               pinCodeService: pinCodeService,
+                               refreshCredentialsService: refreshCredentialsService)
+      }
+      .inObjectScope(.container)
+    container.register(RefreshCredentialsService.self) { ioc in
+      let networkService = ioc.resolve(NetworkService.self)!
+      let accountStorage = ioc.resolve(AccountStorage.self)!
+      return RefreshCredentialsServiceImpl(networkService: networkService,
+                                           accountStorage: accountStorage)
+      }.inObjectScope(.container)
     container.register(APIGateway.self) { ioc in
-      let baseURL = URL(string: "https://test.belcobtm.com/api/v1")!
-      let networkService = ioc.resolve(NetworkRequestExecutor.self, argument: baseURL)!
+      let networkService = ioc.resolve(NetworkRequestExecutor.self)!
       return APIGatewayImpl(networkProvider: networkService)
       } .inObjectScope(.container)
   }
@@ -103,6 +112,20 @@ final class AppAssembly: Assembly {
     container.register(FilterCoinsUsecase.self) { ioc in
       let walletStorage = ioc.resolve(BTMWalletStorage.self)!
       return FilterCoinsUsecaseImpl(walletStorage: walletStorage)
+      }.inObjectScope(.container)
+    container.register(SettingsUsecase.self) { ioc in
+      let api = ioc.resolve(APIGateway.self)!
+      let accountStorage = ioc.resolve(AccountStorage.self)!
+      let walletStorage = ioc.resolve(BTMWalletStorage.self)!
+      let refreshCredentialsService = ioc.resolve(RefreshCredentialsService.self)!
+      let logoutUsecase = ioc.resolve(LogoutUsecase.self)!
+      let pinCodeUsecase = ioc.resolve(PinCodeUsecase.self)!
+      return SettingsUsecaseImpl(api: api,
+                                 accountStorage: accountStorage,
+                                 walletStorage: walletStorage,
+                                 refreshCredentialsService: refreshCredentialsService,
+                                 logoutUsecase: logoutUsecase,
+                                 pinCodeUsecase: pinCodeUsecase)
       }.inObjectScope(.container)
     container.register(PinCodeUsecase.self) { ioc in
       let pinCodeStorage = ioc.resolve(PinCodeStorage.self)!

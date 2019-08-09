@@ -2,7 +2,9 @@ import UIKit
 import RxSwift
 import RxCocoa
 
-class MainFormView: RoundedView {
+class MainFormView: UIView {
+  
+  let roundedView = RoundedView()
   
   let container = UIView()
   
@@ -24,8 +26,10 @@ class MainFormView: RoundedView {
     return button
   }()
   
-  override init(frame: CGRect) {
-    super.init(frame: frame)
+  init(flat: Bool = false) {
+    super.init(frame: .null)
+    
+    roundedView.isHidden = flat
     
     setupUI()
     setupLayout()
@@ -38,13 +42,17 @@ class MainFormView: RoundedView {
   private func setupUI() {
     translatesAutoresizingMaskIntoConstraints = false
     
-    addSubviews(container,
+    addSubviews(roundedView,
+                container,
                 errorView)
     container.addSubviews(cancelButton,
                           nextButton)
   }
   
   private func setupLayout() {
+    roundedView.snp.makeConstraints {
+      $0.edges.equalToSuperview()
+    }
     errorView.snp.makeConstraints {
       $0.top.equalToSuperview().offset(10)
       $0.centerX.equalToSuperview()
