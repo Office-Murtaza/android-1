@@ -12,8 +12,6 @@ import javax.validation.Valid;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Hibernate;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
@@ -38,7 +36,6 @@ import com.batm.rest.vm.LoginVM;
 import com.batm.rest.vm.PhoneRequestVM;
 import com.batm.rest.vm.RefreshVM;
 import com.batm.rest.vm.RegisterVM;
-import com.batm.rest.vm.UpdatePasswordRequestVM;
 import com.batm.rest.vm.ValidateOTPResponse;
 import com.batm.rest.vm.ValidateOTPVM;
 import com.batm.security.jwt.JWTFilter;
@@ -235,10 +232,10 @@ public class UserController {
     @PostMapping("/user/{userId}/phone")
     public Response updatePhone(@RequestBody PhoneRequestVM phoneRequest, @PathVariable Long userId) {
         try {
-        	Boolean isPhoneExist = this.userService.isPhoneExist(phoneRequest.getPhone(), userId);
-        	if(isPhoneExist) {
-        		return Response.error(new Error(2, "Phone is already registered"));
-        	}
+            Boolean isPhoneExist = this.userService.isPhoneExist(phoneRequest.getPhone(), userId);
+            if (isPhoneExist) {
+                return Response.error(new Error(2, "Phone is already registered"));
+            }
             phoneService.updatePhone(phoneRequest, userId);
             Map<String, Object> response = new HashMap<>();
             response.put("smsSent", true);
@@ -303,21 +300,21 @@ public class UserController {
 
     @PostMapping("/user/{userId}/password")
     public Response updatePassword(@RequestBody ChangePasswordRequestVM changePasswordRequest, @PathVariable Long userId) {
-		try {
+        try {
 
-			User user = this.userService.findById(userId);
-			Boolean match = passwordEncoder.matches(changePasswordRequest.getOldPassword(), user.getPassword());
-			if(!match) {
-				  return Response.error(new Error(2, "Old password does not match."));
-			}
-			String encodedPassword = passwordEncoder.encode(changePasswordRequest.getNewPassword());
-			userService.updatePassword(encodedPassword, userId);
+            User user = this.userService.findById(userId);
+            Boolean match = passwordEncoder.matches(changePasswordRequest.getOldPassword(), user.getPassword());
+            if (!match) {
+                return Response.error(new Error(2, "Old password does not match."));
+            }
+            String encodedPassword = passwordEncoder.encode(changePasswordRequest.getNewPassword());
+            userService.updatePassword(encodedPassword, userId);
 
-			Map<String, Object> response = new HashMap<>();
-			response.put("updated", true);
+            Map<String, Object> response = new HashMap<>();
+            response.put("updated", true);
 
-			return Response.ok(response);
-		} catch (Exception e) {
+            return Response.ok(response);
+        } catch (Exception e) {
             e.printStackTrace();
             return Response.serverError();
         }
@@ -335,40 +332,6 @@ public class UserController {
             }
 
             return Response.ok(response);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return Response.serverError();
-        }
-    }
-
-    @GetMapping("/user/{userId}/coins/{coinId}/transactions")
-    public Response getTransactions(@PathVariable Long userId, @PathVariable Long coinId, @RequestParam Integer index) {
-        JSONParser parser = new JSONParser();
-        try {
-
-            JSONObject jsonObject = (JSONObject) parser.parse(" {" +
-                    "\"total\": 2," +
-                    "\"transactions\": [" +
-                    "{" +
-                    "\"index\": 1," +
-                    "\"txid\": \"b53d6f6614218a6d7a6b23cd89150908e8112d8717dc2ba2c7bf2997a8c16e09\"," +
-                    "\"type\": \"withdraw\"," +
-                    "\"value\": 0.01," +
-                    "\"status\": \"confirmed\"," +
-                    "\"date\": \"2019-08-17\"" +
-                    "}," +
-                    "{" +
-                    "\"index\": 2," +
-                    "\"txid\": \"5a919ae049ea60249570216b9916dd1381608287fb339f0b3ae068ce949fca29\"," +
-                    "\"type\": \"deposit\"," +
-                    "\"value\": 0.01," +
-                    "\"status\": \"confirmed\"," +
-                    "\"date\": \"2019-08-16\"" +
-                    "}" +
-                    "]" +
-                    "}");
-            return Response.ok(jsonObject);
-
         } catch (Exception e) {
             e.printStackTrace();
             return Response.serverError();
