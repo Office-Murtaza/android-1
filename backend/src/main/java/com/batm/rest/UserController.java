@@ -1,10 +1,7 @@
 package com.batm.rest;
 
 import java.time.Instant;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -12,6 +9,7 @@ import javax.validation.Valid;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Hibernate;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -341,32 +339,33 @@ public class UserController {
         }
     }
 
+    //TODO: update with real data
     @GetMapping("/user/{userId}/coins/{coinId}/transactions")
     public Response getTransactions(@PathVariable Long userId, @PathVariable Long coinId, @RequestParam Integer index) {
-        JSONParser parser = new JSONParser();
         try {
+            if(index > 2 || index < 1) throw new Exception();
 
-            JSONObject jsonObject = (JSONObject) parser.parse(" {" +
-                    "\"total\": 2," +
-                    "\"transactions\": [" +
-                    "{" +
-                    "\"index\": 1," +
-                    "\"txid\": \"b53d6f6614218a6d7a6b23cd89150908e8112d8717dc2ba2c7bf2997a8c16e09\"," +
-                    "\"type\": \"withdraw\"," +
-                    "\"value\": 0.01," +
-                    "\"status\": \"confirmed\"," +
-                    "\"date\": \"2019-08-17\"" +
-                    "}," +
-                    "{" +
-                    "\"index\": 2," +
-                    "\"txid\": \"5a919ae049ea60249570216b9916dd1381608287fb339f0b3ae068ce949fca29\"," +
-                    "\"type\": \"deposit\"," +
-                    "\"value\": 0.01," +
-                    "\"status\": \"confirmed\"," +
-                    "\"date\": \"2019-08-16\"" +
-                    "}" +
-                    "]" +
-                    "}");
+            JSONArray array = new JSONArray();
+            String[] statuses = new String[] {"pending", "complete", "fail", "unknown"};
+            String[] types = new String[] {"withdraw", "deposit"};
+            int count = index == 1 ? 10 : 2;
+
+            for (int i = 1; i <=count; i++) {
+                JSONObject o = new JSONObject();
+                o.put("index", count > 2 ? i : i + 10);
+                o.put("txid", "b53d6f6614218a6d7a6b23cd89150908e8112d8717dc2ba2c7bf2997a8c16e09");
+                o.put("type", types[new Random().ints(1, 0, 2).sum()]);
+                o.put("value", 0.01);
+                o.put("status", statuses[new Random().ints(1, 0, 4).sum()]);
+                o.put("date", "2019-08-17");
+
+                array.add(o);
+            }
+
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("total", 12);
+            jsonObject.put("transactions", array);
+
             return Response.ok(jsonObject);
 
         } catch (Exception e) {
