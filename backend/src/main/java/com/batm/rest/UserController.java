@@ -346,7 +346,7 @@ public class UserController {
             if(index > 2 || index < 1) throw new Exception();
 
             JSONArray array = new JSONArray();
-            String[] statuses = new String[] {"pending", "complete", "fail", "unknown"};
+            String[] statuses = new String[] {"pending", "confirmed", "fail", "unknown"};
             String[] types = new String[] {"withdraw", "deposit"};
             int count = index == 1 ? 10 : 2;
 
