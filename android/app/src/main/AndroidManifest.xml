@@ -67,13 +67,6 @@
             android:name=".ui.auth.pin.PinActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppThemeNoActionBar">
-
-            <!-- <intent-filter> -->
-            <!-- <action android:name="android.intent.action.MAIN" /> -->
-
-
-            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
-            <!-- </intent-filter> -->
         </activity>
         <activity
             android:name=".ui.main.settings.UnlinkActivity"
@@ -90,6 +83,12 @@
         <activity android:name=".ui.main.settings.phone.ShowPhoneActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppThemeNoActionBar"/>
+
+        <activity
+            android:name=".ui.main.coins.transactions.TransactionsActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppThemeNoActionBar">
+        </activity>
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"

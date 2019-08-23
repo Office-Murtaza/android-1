@@ -54,5 +54,8 @@ interface ApiInterface {
     @POST("user/{userId}/password")
     fun changePass(@Path("userId") userId: String, @Body changePassParam: ChangePassParam): Observable<ServerResponse<UpdateResponse>>
 
+    @GET("user/{userId}/coins/{coinId}/transactions")
+    fun getTransactions(@Path("userId") userId: String,@Path("coinId") coinId: String, @Query("index") elementIndex:Int ): Observable<ServerResponse<GetTransactionsResponse>>
+
 
 }

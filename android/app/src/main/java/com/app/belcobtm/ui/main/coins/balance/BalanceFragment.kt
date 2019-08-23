@@ -7,14 +7,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.app.belcobtm.R
+import com.app.belcobtm.api.model.response.CoinModel
 import com.app.belcobtm.mvp.BaseMvpFragment
+import com.app.belcobtm.ui.main.coins.transactions.TransactionsActivity
 import com.app.belcobtm.ui.main.coins.visibility.VisibilityCoinsActivity
 import com.app.belcobtm.util.CoinItemDecoration
 import kotlinx.android.synthetic.main.activity_balance.*
 
 
 class BalanceFragment : BaseMvpFragment<BalanceContract.View, BalanceContract.Presenter>(),
-    BalanceContract.View {
+    BalanceContract.View
+    , CoinsAdapter.OnCoinClickListener {
 
     private lateinit var mAdapter: CoinsAdapter
 
@@ -24,7 +27,7 @@ class BalanceFragment : BaseMvpFragment<BalanceContract.View, BalanceContract.Pr
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
-        mAdapter = CoinsAdapter(mPresenter.coinsList)
+        mAdapter = CoinsAdapter(mPresenter.coinsList, this)
         coins_recycler.isNestedScrollingEnabled = false
         coins_recycler.adapter = mAdapter
         coins_recycler.addItemDecoration(CoinItemDecoration(resources.getDimensionPixelSize(R.dimen.margin_half)))
@@ -49,7 +52,6 @@ class BalanceFragment : BaseMvpFragment<BalanceContract.View, BalanceContract.Pr
     }
 
 
-
     override fun showProgress(show: Boolean) {
         activity?.runOnUiThread {
             if (!show)
@@ -59,4 +61,7 @@ class BalanceFragment : BaseMvpFragment<BalanceContract.View, BalanceContract.Pr
         }
     }
 
+    override fun onCoinClick(coin: CoinModel) {
+        TransactionsActivity.start(activity, coin)
+    }
 }

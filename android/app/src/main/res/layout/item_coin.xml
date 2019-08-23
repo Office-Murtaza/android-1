@@ -9,8 +9,12 @@
     app:cardCornerRadius="12.5dp">
 
     <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/coin_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:clickable="true"
+        android:focusable="true"
         android:gravity="center_vertical"
         android:orientation="horizontal"
         android:padding="@dimen/margin_main">

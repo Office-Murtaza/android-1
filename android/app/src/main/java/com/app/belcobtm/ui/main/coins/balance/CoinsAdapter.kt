@@ -4,11 +4,11 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.app.belcobtm.R
-import com.app.belcobtm.api.model.response.GetCoinsResponse
+import com.app.belcobtm.api.model.response.CoinModel
 import kotlinx.android.synthetic.main.item_coin.view.*
 
 
-class CoinsAdapter(private val mCoinsList: ArrayList<GetCoinsResponse.CoinModel>) :
+class CoinsAdapter(private val mCoinsList: ArrayList<CoinModel>, private val mOnCoinClickListener: OnCoinClickListener) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -22,23 +22,28 @@ class CoinsAdapter(private val mCoinsList: ArrayList<GetCoinsResponse.CoinModel>
             val item = mCoinsList[position]
 
             val coinImageId = when (item.coinId) {
-                "ETH"->R.drawable.ic_eth_logo
-                "BCH"->R.drawable.ic_bch_logo
-                "LTC"->R.drawable.ic_ltc_logo
-                "BNB"->R.drawable.ic_bnb_logo
-                "TRX"->R.drawable.ic_trx_logo
+                "ETH" -> R.drawable.ic_eth_logo
+                "BCH" -> R.drawable.ic_bch_logo
+                "LTC" -> R.drawable.ic_ltc_logo
+                "BNB" -> R.drawable.ic_bnb_logo
+                "TRX" -> R.drawable.ic_trx_logo
                 "XRP" -> R.drawable.ic_xrp_logo
                 else -> R.drawable.ic_bit_logo
             }
             holder.itemView.coin_image.setImageResource(coinImageId)
             holder.itemView.coin_name.text = item.coinId
             holder.itemView.coin_balance.text = "${item.balance} ${item.coinId}"
-            holder.itemView.coin_price.text = "USD ${item.price.uSD}"
+            holder.itemView.coin_price.text = "USD ${item.price?.uSD}"
+            holder.itemView.coin_container.setOnClickListener { mOnCoinClickListener.onCoinClick(item) }
         }
 
     }
 
     override fun getItemCount(): Int {
         return mCoinsList.size
+    }
+
+    interface OnCoinClickListener {
+        fun onCoinClick(coin: CoinModel)
     }
 }

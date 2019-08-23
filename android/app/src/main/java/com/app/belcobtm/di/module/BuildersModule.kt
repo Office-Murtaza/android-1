@@ -9,6 +9,7 @@ import com.app.belcobtm.ui.auth.recover_seed.RecoverSeedActivity
 import com.app.belcobtm.ui.auth.recover_wallet.RecoverWalletActivity
 import com.app.belcobtm.ui.main.atm.AtmFragment
 import com.app.belcobtm.ui.main.coins.balance.BalanceFragment
+import com.app.belcobtm.ui.main.coins.transactions.TransactionsActivity
 import com.app.belcobtm.ui.main.main_activity.MainActivity
 import com.app.belcobtm.ui.main.coins.visibility.VisibilityCoinsActivity
 import com.app.belcobtm.ui.main.settings.change_pass.ChangePassActivity
@@ -57,7 +58,7 @@ abstract class BuildersModule {
 
     @ActivityScope
     @ContributesAndroidInjector(modules = [ActivityModule::class])
-    internal abstract fun bindCShowPhoneActivity(): ShowPhoneActivity
+    internal abstract fun bindShowPhoneActivity(): ShowPhoneActivity
 
     @FragmentScope
     @ContributesAndroidInjector(modules = [FragmentModule::class])
@@ -66,4 +67,10 @@ abstract class BuildersModule {
     @FragmentScope
     @ContributesAndroidInjector(modules = [FragmentModule::class])
     internal abstract fun bindAtmFragment(): AtmFragment
+
+    @ActivityScope
+    @ContributesAndroidInjector(modules = [ActivityModule::class])
+    internal abstract fun bindTransactionsActivity(): TransactionsActivity
+
+
 }

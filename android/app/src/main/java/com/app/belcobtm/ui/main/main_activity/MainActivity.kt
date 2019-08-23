@@ -22,7 +22,6 @@ class MainActivity : BaseMvpActivity<MainContract.View, MainContract.Presenter>(
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
         mPresenter.checkPinEntered()
 
         bottom_bar.setOnNavigationItemSelectedListener(this)
