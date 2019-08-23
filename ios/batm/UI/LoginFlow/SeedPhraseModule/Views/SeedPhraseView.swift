@@ -12,7 +12,9 @@ class SeedPhraseView: UIView {
     label.textColor = .slateGrey
     label.font = .poppinsMedium14
     label.textAlignment = .center
-    label.numberOfLines = 0
+    label.numberOfLines = 2
+    label.adjustsFontSizeToFitWidth = true
+    label.minimumScaleFactor = 0.5
     return label
   }()
   
@@ -60,7 +62,9 @@ class SeedPhraseView: UIView {
       $0.edges.equalToSuperview()
     }
     annotationLabel.snp.makeConstraints {
-      $0.top.left.right.equalToSuperview().inset(50)
+      $0.left.right.equalToSuperview().inset(50)
+      $0.top.greaterThanOrEqualToSuperview().offset(30)
+      $0.top.equalToSuperview().offset(50).priority(.low)
     }
     doneButton.snp.makeConstraints {
       $0.left.right.equalToSuperview().inset(45)
@@ -110,11 +114,12 @@ class SeedPhraseView: UIView {
   private func setupMainStackViewLayout() {
     mainStackView.snp.makeConstraints {
       $0.top.equalTo(annotationLabel.snp.bottom).offset(30)
-      $0.left.right.equalToSuperview().inset(30)
+      $0.left.right.equalToSuperview().inset(10)
     }
     copyLabel.snp.makeConstraints {
       $0.top.equalTo(mainStackView.snp.bottom).offset(30)
       $0.centerX.equalToSuperview()
+      $0.bottom.lessThanOrEqualTo(doneButton.snp.top).offset(-30).priority(.high)
     }
   }
   

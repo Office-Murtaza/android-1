@@ -19,8 +19,10 @@ class RootFlowController: FlowController, FlowActivator, HasDisposeBag {
         switch $0 {
         case .loggedOut:
           return .just(RootFlow.Steps.login)
+        case .setupPinCode:
+          return .just(RootFlow.Steps.pinCode(.setup))
         case .loggedIn:
-          return .just(RootFlow.Steps.verifyPinCode)
+          return .just(RootFlow.Steps.pinCode(.verification))
         }
       }
       .asObservable()

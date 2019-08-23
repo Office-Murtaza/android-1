@@ -9,6 +9,7 @@ class CoinsBalancePresenter: ModulePresenter, CoinsBalanceModule {
   struct Input {
     var refresh: Driver<Void>
     var filterCoinsTap: Driver<Void>
+    var coinTap: Driver<CoinBalance>
   }
   
   private let usecase: CoinsBalanceUsecase
@@ -42,6 +43,10 @@ class CoinsBalancePresenter: ModulePresenter, CoinsBalanceModule {
     
     input.filterCoinsTap
       .drive(onNext: { [unowned self] in self.delegate?.showFilterCoins(from: self) })
+      .disposed(by: disposeBag)
+    
+    input.coinTap
+      .drive(onNext: { [delegate] in delegate?.showCoinDetails(with: $0) })
       .disposed(by: disposeBag)
     
     setupBindings()

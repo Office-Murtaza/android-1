@@ -62,10 +62,10 @@ extension ObservableConvertibleType {
   }
 }
 
-extension ObservableType where E == Bool {
+extension ObservableConvertibleType where E == Bool {
   
   func not() -> Observable<Bool> {
-    return self.map { !$0 }
+    return self.asObservable().map { !$0 }
   }
 }
 
@@ -126,5 +126,39 @@ extension BehaviorRelay where E == Bool {
 extension ObservableType where E: Equatable {
   func ignore(_ element: E) -> Observable<E> {
     return filter { $0 != element }
+  }
+}
+
+extension ObservableType {
+  func flatFilter<T>(_ signal: T) -> Observable<E> where T: ObservableConvertibleType, T.E == Bool {
+    return withLatestFrom(signal) { ($0, $1) }
+      .filter { $0.1 }
+      .map { $0.0 }
+  }
+}
+
+extension SharedSequence {
+  func flatFilter<T>(_ signal: T) -> SharedSequence<S, Element> where T: ObservableConvertibleType, T.E == Bool {
+    return flatMap { value in
+      return signal.asObservable()
+        .map { $0 ? value : nil }
+        .take(1)
+        .asSharedSequence(onErrorJustReturn: nil)
+      }
+      .filter { $0 != nil }
+      .map { $0! }
+  }
+}
+
+extension PrimitiveSequence where Trait == SingleTrait {
+  func flatFilter<T>(_ signal: T) -> Maybe<Element> where T: ObservableConvertibleType, T.E == Bool {
+    return flatMap { value in
+      return signal.asObservable()
+        .map { $0 ? value : nil }
+        .take(1)
+        .asSingle()
+      }
+      .filter { $0 != nil }
+      .map { $0! }
   }
 }

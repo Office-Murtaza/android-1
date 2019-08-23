@@ -5,6 +5,18 @@ import SnapKit
 
 class RecoverSeedPhraseViewController: ModuleViewController<RecoverSeedPhrasePresenter> {
   
+  let tapRecognizer = UITapGestureRecognizer()
+  
+  let rootScrollView: UIScrollView = {
+    let scrollView = UIScrollView()
+    scrollView.bounces = false
+    scrollView.contentInsetAdjustmentBehavior = .never
+    scrollView.keyboardDismissMode = .interactive
+    return scrollView
+  }()
+  
+  let contentView = UIView()
+  
   let backgroundImageView: UIImageView = {
     let imageView = UIImageView(image: UIImage(named: "login_background"))
     imageView.contentMode = .scaleAspectFill
@@ -32,16 +44,53 @@ class RecoverSeedPhraseViewController: ModuleViewController<RecoverSeedPhrasePre
     return .lightContent
   }
   
-  override func setupUI() {
-    view.backgroundColor = .whiteThree
+  private func registerForKeyboardNotifications() {
+    NotificationCenter.default.addObserver(self,
+                                           selector: #selector(adjustForKeyboard),
+                                           name: UIResponder.keyboardWillShowNotification,
+                                           object: nil)
+    NotificationCenter.default.addObserver(self,
+                                           selector: #selector(adjustForKeyboard),
+                                           name: UIResponder.keyboardWillHideNotification,
+                                           object: nil)
+  }
+  
+  @objc private func adjustForKeyboard(notification: Notification) {
+    guard let keyboardValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else { return }
     
-    view.addSubviews(backgroundImageView,
+    let keyboardHeight = keyboardValue.cgRectValue.size.height
+    
+    if notification.name == UIResponder.keyboardWillHideNotification {
+      rootScrollView.contentInset = .zero
+    } else {
+      rootScrollView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: keyboardHeight + 15, right: 0)
+    }
+    
+    rootScrollView.scrollIndicatorInsets = rootScrollView.contentInset
+  }
+  
+  override func setupUI() {
+    registerForKeyboardNotifications()
+    
+    view.backgroundColor = .whiteTwo
+    
+    view.addSubview(rootScrollView)
+    rootScrollView.addSubview(contentView)
+    contentView.addSubviews(backgroundImageView,
                      titleLabel,
                      separatorView,
                      mainView)
+    contentView.addGestureRecognizer(tapRecognizer)
   }
   
   override func setupLayout() {
+    rootScrollView.snp.makeConstraints {
+      $0.edges.equalToSuperview()
+    }
+    contentView.snp.makeConstraints {
+      $0.edges.equalToSuperview()
+      $0.size.equalToSuperview()
+    }
     backgroundImageView.snp.makeConstraints {
       $0.top.left.right.equalToSuperview()
       $0.height.equalTo(187)
@@ -62,11 +111,26 @@ class RecoverSeedPhraseViewController: ModuleViewController<RecoverSeedPhrasePre
   }
   
   private func setupUIBindings() {
-    presenter.seedPhraseRelay
+    presenter.state
+      .asObservable()
+      .map { $0.validationState }
+      .map { validationState -> String? in
+        switch validationState {
+        case .valid, .unknown: return nil
+        case let .invalid(message): return message
+        }
+      }
+      .bind(to: mainView.rx.error)
+      .disposed(by: disposeBag)
+    
+    presenter.seedPhraseWordsRelay
       .observeOn(MainScheduler.instance)
-      .filterNil()
-      .map { $0.split(separator: " ").map { String($0) } }
       .subscribe(onNext: { [mainView] in mainView.configure(for: $0) })
+      .disposed(by: disposeBag)
+    
+    tapRecognizer.rx.event.asDriver()
+      .map { _ in () }
+      .drive(onNext: { [view] in view?.endEditing(true) })
       .disposed(by: disposeBag)
   }
   

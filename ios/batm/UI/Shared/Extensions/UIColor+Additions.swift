@@ -82,4 +82,12 @@ extension UIColor {
     return UIColor(red: 77.0 / 255.0, green: 108.0 / 255.0, blue: 145.0 / 255.0, alpha: 1.0)
   }
   
+  @nonobjc class var darkMint: UIColor {
+    return UIColor(red: 72.0 / 255.0, green: 190.0 / 255.0, blue: 83.0 / 255.0, alpha: 1.0)
+  }
+  
+  @nonobjc class var tomato: UIColor {
+    return UIColor(red: 224.0 / 255.0, green: 45.0 / 255.0, blue: 45.0 / 255.0, alpha: 1.0)
+  }
+  
 }

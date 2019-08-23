@@ -22,6 +22,8 @@ class WelcomeSupportCellView: UIView {
     let label = UILabel()
     label.textColor = .slateGrey
     label.font = .poppinsMedium14
+    label.adjustsFontSizeToFitWidth = true
+    label.minimumScaleFactor = 0.1
     return label
   }()
   
@@ -63,6 +65,7 @@ class WelcomeSupportCellView: UIView {
     titleLabel.snp.makeConstraints {
       $0.top.equalToSuperview().offset(4)
       $0.left.equalTo(roundedView.snp.right).offset(16)
+      $0.right.equalToSuperview()
     }
     copyLabel.snp.makeConstraints {
       $0.bottom.equalToSuperview().offset(-4)

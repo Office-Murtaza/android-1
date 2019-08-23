@@ -86,10 +86,12 @@ final class AppAssembly: Assembly {
       let api = ioc.resolve(APIGateway.self)!
       let accountStorage = ioc.resolve(AccountStorage.self)!
       let walletStorage = ioc.resolve(BTMWalletStorage.self)!
+      let pinCodeStorage = ioc.resolve(PinCodeStorage.self)!
       let walletService = ioc.resolve(WalletService.self)!
       return LoginUsecaseImpl(api: api,
                               accountStorage: accountStorage,
                               walletStorage: walletStorage,
+                              pinCodeStorage: pinCodeStorage,
                               walletService: walletService)
       }.inObjectScope(.container)
     container.register(LogoutUsecase.self) { ioc in
@@ -113,6 +115,14 @@ final class AppAssembly: Assembly {
       let walletStorage = ioc.resolve(BTMWalletStorage.self)!
       return FilterCoinsUsecaseImpl(walletStorage: walletStorage)
       }.inObjectScope(.container)
+    container.register(CoinDetailsUsecase.self) { ioc in
+      let api = ioc.resolve(APIGateway.self)!
+      let accountStorage = ioc.resolve(AccountStorage.self)!
+      let walletStorage = ioc.resolve(BTMWalletStorage.self)!
+      return CoinDetailsUsecaseImpl(api: api,
+                                    accountStorage: accountStorage,
+                                    walletStorage: walletStorage)
+      }.inObjectScope(.container)
     container.register(SettingsUsecase.self) { ioc in
       let api = ioc.resolve(APIGateway.self)!
       let accountStorage = ioc.resolve(AccountStorage.self)!
@@ -131,7 +141,10 @@ final class AppAssembly: Assembly {
       let pinCodeStorage = ioc.resolve(PinCodeStorage.self)!
       return PinCodeUsecaseImpl(pinCodeStorage: pinCodeStorage)
       }.inObjectScope(.container)
-    container.register(PinCodeService.self) { _ in PinCodeServiceImpl() }
+    container.register(PinCodeService.self) { ioc in
+      let pinCodeStorage = ioc.resolve(PinCodeStorage.self)!
+      return PinCodeServiceImpl(pinCodeStorage: pinCodeStorage)
+      }
       .inObjectScope(.container)
       .implements(PinCodeVerificationModuleDelegate.self)
       .initCompleted { ioc, service in
