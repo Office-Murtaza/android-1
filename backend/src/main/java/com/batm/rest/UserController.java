@@ -1,10 +1,7 @@
 package com.batm.rest;
 
 import java.time.Instant;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -21,12 +18,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import com.batm.entity.CodeVerification;
 import com.batm.entity.Error;
 import com.batm.entity.Response;
@@ -41,7 +33,6 @@ import com.batm.rest.vm.LoginVM;
 import com.batm.rest.vm.PhoneRequestVM;
 import com.batm.rest.vm.RefreshVM;
 import com.batm.rest.vm.RegisterVM;
-import com.batm.rest.vm.UpdatePasswordRequestVM;
 import com.batm.rest.vm.ValidateOTPResponse;
 import com.batm.rest.vm.ValidateOTPVM;
 import com.batm.security.jwt.JWTFilter;
@@ -238,10 +229,10 @@ public class UserController {
     @PostMapping("/user/{userId}/phone")
     public Response updatePhone(@RequestBody PhoneRequestVM phoneRequest, @PathVariable Long userId) {
         try {
-        	Boolean isPhoneExist = this.userService.isPhoneExist(phoneRequest.getPhone(), userId);
-        	if(isPhoneExist) {
-        		return Response.error(new Error(2, "Phone is already registered"));
-        	}
+            Boolean isPhoneExist = this.userService.isPhoneExist(phoneRequest.getPhone(), userId);
+            if (isPhoneExist) {
+                return Response.error(new Error(2, "Phone is already registered"));
+            }
             phoneService.updatePhone(phoneRequest, userId);
             Map<String, Object> response = new HashMap<>();
             response.put("smsSent", true);
@@ -306,21 +297,21 @@ public class UserController {
 
     @PostMapping("/user/{userId}/password")
     public Response updatePassword(@RequestBody ChangePasswordRequestVM changePasswordRequest, @PathVariable Long userId) {
-		try {
+        try {
 
-			User user = this.userService.findById(userId);
-			Boolean match = passwordEncoder.matches(changePasswordRequest.getOldPassword(), user.getPassword());
-			if(!match) {
-				  return Response.error(new Error(2, "Old password does not match."));
-			}
-			String encodedPassword = passwordEncoder.encode(changePasswordRequest.getNewPassword());
-			userService.updatePassword(encodedPassword, userId);
+            User user = this.userService.findById(userId);
+            Boolean match = passwordEncoder.matches(changePasswordRequest.getOldPassword(), user.getPassword());
+            if (!match) {
+                return Response.error(new Error(2, "Old password does not match."));
+            }
+            String encodedPassword = passwordEncoder.encode(changePasswordRequest.getNewPassword());
+            userService.updatePassword(encodedPassword, userId);
 
-			Map<String, Object> response = new HashMap<>();
-			response.put("updated", true);
+            Map<String, Object> response = new HashMap<>();
+            response.put("updated", true);
 
-			return Response.ok(response);
-		} catch (Exception e) {
+            return Response.ok(response);
+        } catch (Exception e) {
             e.printStackTrace();
             return Response.serverError();
         }
