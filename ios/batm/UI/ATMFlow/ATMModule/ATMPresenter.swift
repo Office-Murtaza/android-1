@@ -25,15 +25,15 @@ class ATMPresenter: ModulePresenter, ATMModule {
     self.store = store
   }
   
-  private func fetchMapAddresses() {
-    self.track(usecase.getMapAddresses())
+  func bind(input: Input) {
+    setupBindings()
+  }
+  
+  private func setupBindings() {
+    track(usecase.getMapAddresses())
       .asObservable()
       .map { ATMAction.updateMapAddresses($0) }
       .bind(to: store.action)
       .disposed(by: disposeBag)
-  }
-  
-  func bind(input: Input) {
-    fetchMapAddresses()
   }
 }

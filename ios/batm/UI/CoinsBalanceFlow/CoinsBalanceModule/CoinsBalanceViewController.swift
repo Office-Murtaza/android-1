@@ -98,12 +98,6 @@ class CoinsBalanceViewController: ModuleViewController<CoinsBalancePresenter>, U
     dataSource.collectionView = collectionView
     
     presenter.state
-      .map { $0.coinsBalance == nil }
-      .asObservable()
-      .bind(to: view.rx.showHUD)
-      .disposed(by: disposeBag)
-    
-    presenter.state
       .map { $0.coinsBalance?.totalBalance }
       .filterNil()
       .map { "$ \($0)" }
@@ -130,9 +124,11 @@ class CoinsBalanceViewController: ModuleViewController<CoinsBalancePresenter>, U
     
     let refreshDriver = refreshControl.rx.controlEvent(.valueChanged).asDriver()
     let filterCoinsTapDriver = dataSource.footerTap.asDriver(onErrorDriveWith: .empty())
+    let coinTap = dataSource.coinTap.asDriver(onErrorDriveWith: .empty())
     
     presenter.bind(input: CoinsBalancePresenter.Input(refresh: refreshDriver,
-                                                      filterCoinsTap: filterCoinsTapDriver))
+                                                      filterCoinsTap: filterCoinsTapDriver,
+                                                      coinTap: coinTap))
   }
   
   func collectionView(_ collectionView: UICollectionView,

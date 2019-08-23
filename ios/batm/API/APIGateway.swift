@@ -1,4 +1,5 @@
 import Foundation
+import TrustWalletCore
 import RxSwift
 
 enum APIError: Error, Equatable {
@@ -18,6 +19,7 @@ protocol APIGateway {
   func recoverWallet(phoneNumber: String, password: String) -> Single<Account>
   func verifyCode(userId: Int, code: String) -> Completable
   func addCoins(userId: Int, coinAddresses: [CoinAddress]) -> Completable
+  func compareCoins(userId: Int, coinAddresses: [CoinAddress]) -> Completable
   func getCoinsBalance(userId: Int, coins: [BTMCoin]) -> Single<CoinsBalance>
   func getMapAddresses() -> Single<MapAddresses>
   func getPhoneNumber(userId: Int) -> Single<PhoneNumber>
@@ -26,6 +28,7 @@ protocol APIGateway {
   func confirmPhone(userId: Int, phoneNumber: String, code: String) -> Completable
   func changePassword(userId: Int, oldPassword: String, newPassword: String) -> Completable
   func unlink(userId: Int) -> Completable
+  func getTransactions(userId: Int, type: CoinType, page: Int) -> Single<Transactions>
   
 }
 
@@ -78,6 +81,20 @@ final class APIGatewayImpl: APIGateway {
   
   func addCoins(userId: Int, coinAddresses: [CoinAddress]) -> Completable {
     let request = AddCoinsRequest(userId: userId, coinAddresses: coinAddresses)
+    return api.execute(request)
+      .map { apiResponse -> Void in
+        switch apiResponse {
+        case .response:
+          return Void()
+        case let .error(error):
+          throw error
+        }
+      }
+      .toCompletable()
+  }
+  
+  func compareCoins(userId: Int, coinAddresses: [CoinAddress]) -> Completable {
+    let request = CompareCoinsRequest(userId: userId, coinAddresses: coinAddresses)
     return api.execute(request)
       .map { apiResponse -> Void in
         switch apiResponse {
@@ -196,6 +213,20 @@ final class APIGatewayImpl: APIGateway {
         }
       }
       .toCompletable()
+  }
+  
+  func getTransactions(userId: Int, type: CoinType, page: Int) -> Single<Transactions> {
+    let index = page * 10 + 1
+    let request = TransactionsRequest(userId: userId, coinId: type.code, index: index)
+    return api.execute(request)
+      .flatMap {
+        switch $0 {
+        case let .response(response):
+          return Single.just(response)
+        case let .error(error):
+          return Single.error(error)
+        }
+      }
   }
   
 }

@@ -8,6 +8,10 @@ protocol PinCodeStorage: ClearOnLogoutStorage {
   func delete() -> Completable
 }
 
+enum PinCodeStorageError: Error {
+  case notFound
+}
+
 class PinCodeStorageImpl: CoreDataStorage<PinCodeStorageUtils>, PinCodeStorage {
   
   func save(pinCode: String) -> Completable {
@@ -50,7 +54,7 @@ class PinCodeStorageUtils: StorageUtils {
   
   func get() throws -> String {
     guard let pinCodeRecord = try PinCodeRecord.fetchFirst(in: context) else {
-      throw StorageError.notFound
+      throw PinCodeStorageError.notFound
     }
     
     return try converter.convert(model: pinCodeRecord)

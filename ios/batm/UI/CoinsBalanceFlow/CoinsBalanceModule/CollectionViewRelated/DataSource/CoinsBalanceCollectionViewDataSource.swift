@@ -5,6 +5,7 @@ import RxCocoa
 final class CoinsBalanceCollectionViewDataSource: NSObject, UICollectionViewDataSource, HasDisposeBag {
   
   let coinBalancesRelay = BehaviorRelay<[CoinBalance]>(value: [])
+  let coinTap = PublishRelay<CoinBalance>()
   let footerTap = PublishRelay<Void>()
   
   private var values: [CoinBalance] = [] {
@@ -19,6 +20,11 @@ final class CoinsBalanceCollectionViewDataSource: NSObject, UICollectionViewData
       collectionView.register(CoinsBalanceCell.self)
       collectionView.registerFooter(CoinsBalanceFooterView.self)
       collectionView.reloadData()
+      
+      collectionView.rx.itemSelected
+        .map { [unowned self] in self.values[$0.item] }
+        .bind(to: coinTap)
+        .disposed(by: disposeBag)
     }
   }
   

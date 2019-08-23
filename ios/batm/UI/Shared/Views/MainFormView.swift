@@ -56,6 +56,8 @@ class MainFormView: UIView {
     errorView.snp.makeConstraints {
       $0.top.equalToSuperview().offset(10)
       $0.centerX.equalToSuperview()
+      $0.left.greaterThanOrEqualToSuperview().offset(15)
+      $0.right.lessThanOrEqualToSuperview().offset(-15)
     }
     container.snp.makeConstraints {
       $0.edges.equalToSuperview().inset(30)

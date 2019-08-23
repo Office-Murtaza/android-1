@@ -83,3 +83,17 @@
 "unlink.title" = "Unlink";
 "unlink.warning" = "Unlink the wallet means clear wallet seed phrase and coins private keys from the current device. You can recover the wallet at any time by seed phrase. If you lose your seed phrase you lost your wallet and all funds.\n\nPlease make sure you have stored your seed phrase in a safe place.";
 "unlink.button.title" = "Unlink Wallet";
+
+"coin_details.price" = "Price:";
+"coin_details.balance" = "Balance:";
+"coin_details.deposit" = "Deposit";
+"coin_details.withdraw" = "Withdraw";
+"coin_details.send_gift" = "Send Gift";
+"coin_details.receive_gift" = "Receive Gift";
+"coin_details.buy" = "Buy";
+"coin_details.sell" = "Sell";
+"coin_details.pending" = "Pending";
+"coin_details.complete" = "Complete";
+"coin_details.fail" = "Fail";
+"coin_details.unknown" = "Unknown";
+"coin_details.address" = "Address";

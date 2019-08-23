@@ -14,7 +14,8 @@ extension CoinsBalanceFlow {
         }
         .inObjectScope(.container)
         .implements(CoinsBalanceModuleDelegate.self,
-                    FilterCoinsModuleDelegate.self)
+                    FilterCoinsModuleDelegate.self,
+                    CoinDetailsFlowControllerDelegate.self)
     }
   }
 }

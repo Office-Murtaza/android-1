@@ -23,6 +23,8 @@ class SeedPhraseWordView: UIView, UITextFieldDelegate, HasDisposeBag {
     let textField = TextFieldWithoutPaddings()
     textField.font = .poppinsMedium11
     textField.textColor = .slateGrey
+    textField.autocorrectionType = .no
+    textField.autocapitalizationType = .none
     textField.delegate = self
     return textField
   }()

@@ -10,7 +10,7 @@ class RootFlow: BaseFlow<UIWindow, RootFlowController> {
   
   enum Steps: Step, Equatable {
     case login
-    case verifyPinCode
+    case pinCode(PinCodeStage)
     case main
   }
   
@@ -25,12 +25,15 @@ class RootFlow: BaseFlow<UIWindow, RootFlowController> {
     case .login:
       let loginFlow = LoginFlow(view: BTMNavigationController(), parent: self)
       return replaceRoot(with: loginFlow)
-    case .verifyPinCode:
+    case let .pinCode(stage):
       let module = resolver.resolve(Module<PinCodeModule>.self)!
-      module.input.setup(for: .verification)
+      module.input.setup(for: stage)
       return replaceRoot(with: module)
     case .main:
-      let mainFlow = MainFlow(view: BTMTabBarController(), parent: self)
+      let tabBarController = BTMTabBarController()
+      tabBarController.tabBar.isTranslucent = false
+      tabBarController.tabBar.barTintColor = .white
+      let mainFlow = MainFlow(view: tabBarController, parent: self)
       return replaceRoot(with: mainFlow)
     }
   }
