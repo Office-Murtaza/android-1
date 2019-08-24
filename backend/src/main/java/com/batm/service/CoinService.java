@@ -102,8 +102,8 @@ public class CoinService {
             }
 
             @Override
-            public String getTransactionId(String address, BigDecimal amount) {
-                return getBlockbookTransactionId(btcUrl, address, amount, 100000000L);
+            public String getTransactionId(String address, BigDecimal amount, Integer transactionType) {
+                return getBlockbookTransactionId(btcUrl, address, amount, transactionType, 100000000L);
             }
         }, ETH {
             @Override
@@ -119,7 +119,7 @@ public class CoinService {
             }
 
             @Override
-            public String getTransactionId(String address, BigDecimal amount) {
+            public String getTransactionId(String address, BigDecimal amount, Integer transactionType) {
                 return null;
             }
         }, BCH {
@@ -136,7 +136,7 @@ public class CoinService {
             }
 
             @Override
-            public String getTransactionId(String address, BigDecimal amount) {
+            public String getTransactionId(String address, BigDecimal amount, Integer transactionType) {
                 return null;
             }
         }, LTC {
@@ -153,8 +153,8 @@ public class CoinService {
             }
 
             @Override
-            public String getTransactionId(String address, BigDecimal amount) {
-                return getBlockbookTransactionId(ltcUrl, address, amount, 100000000L);
+            public String getTransactionId(String address, BigDecimal amount, Integer transactionType) {
+                return getBlockbookTransactionId(ltcUrl, address, amount, transactionType, 100000000L);
             }
         }, BNB {
             @Override
@@ -170,7 +170,7 @@ public class CoinService {
             }
 
             @Override
-            public String getTransactionId(String address, BigDecimal amount) {
+            public String getTransactionId(String address, BigDecimal amount, Integer transactionType) {
                 return null;
             }
         }, XRP {
@@ -187,7 +187,7 @@ public class CoinService {
             }
 
             @Override
-            public String getTransactionId(String address, BigDecimal amount) {
+            public String getTransactionId(String address, BigDecimal amount, Integer transactionType) {
                 return null;
             }
         }, TRX {
@@ -204,7 +204,7 @@ public class CoinService {
             }
 
             @Override
-            public String getTransactionId(String address, BigDecimal amount) {
+            public String getTransactionId(String address, BigDecimal amount, Integer transactionType) {
                 return null;
             }
         };
@@ -213,7 +213,7 @@ public class CoinService {
 
         public abstract BigDecimal getBalance(String address);
 
-        public abstract String getTransactionId(String address, BigDecimal amount);
+        public abstract String getTransactionId(String address, BigDecimal amount, Integer transactionType);
     }
 
     @Scheduled(fixedDelay = 600_000)
@@ -252,7 +252,7 @@ public class CoinService {
         return CompletableFuture.supplyAsync(() -> {
             if (!Pattern.matches("^[a-fA-F0-9]{64}$", String.valueOf(transaction.getDetail()))) {
                 CoinEnum coinEnum = CoinEnum.valueOf(transaction.getCryptoCurrency());
-                transaction.setDetail(coinEnum.getTransactionId(transaction.getCryptoAddress(), transaction.getCryptoAmount()));
+                transaction.setDetail(coinEnum.getTransactionId(transaction.getCryptoAddress(), transaction.getCryptoAmount(), transaction.getType()));
             }
             return validateChainalysisTransfer(transaction);
         });
@@ -310,16 +310,17 @@ public class CoinService {
         return null;
     }
 
-    private static String getBlockbookTransactionId(String url, String address, BigDecimal amount, long divider) {
+    private static String getBlockbookTransactionId(String url, String address, BigDecimal amount, Integer transactionType, long divider) {
+        String type = transactionType == 0 ? "vout" : "vin";
         try {
             JSONObject res = rest.getForObject(url + "/api/v2/address/" + address + "?details=txs", JSONObject.class);
             for (Object jsonTransactions : res.getJSONArray("transactions")) {
-                for (Object vin : ((JSONObject) jsonTransactions).getJSONArray("vin")) {
-                    if (vin instanceof JSONObject) {
-                        String value = ((JSONObject) vin).getString("value");
+                for (Object operationObject : ((JSONObject) jsonTransactions).getJSONArray(type)) {
+                    if (operationObject instanceof JSONObject) {
+                        String value = ((JSONObject) operationObject).getString("value");
                         BigDecimal bigValue = new BigDecimal(value).divide(BigDecimal.valueOf(divider)).stripTrailingZeros();
                         if (bigValue.equals(amount.stripTrailingZeros())) {
-                            return ((JSONObject) vin).getString("txid");
+                            return ((JSONObject) jsonTransactions).getString("txid");
                         }
                     }
                 }
