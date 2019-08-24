@@ -38,12 +38,6 @@ class ATMViewController: ModuleViewController<ATMPresenter>, GMSMapViewDelegate,
   
   private func setupUIBindings() {
     presenter.state
-      .asObservable()
-      .map { $0.mapAddresses == nil }
-      .bind(to: view.rx.showHUD)
-      .disposed(by: disposeBag)
-    
-    presenter.state
       .map { $0.mapAddresses }
       .filterNil()
       .map { $0.addresses }

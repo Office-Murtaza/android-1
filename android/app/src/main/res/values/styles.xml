@@ -75,4 +75,16 @@
         <item name="android:gravity">center_vertical</item>
     </style>
 
+    <style name="TransactionButtonStyle">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">35dp</item>
+        <item name="android:layout_marginStart">@dimen/margin_main</item>
+        <item name="android:layout_marginTop">@dimen/margin_x2</item>
+        <item name="android:background">@drawable/bt_transaction_rounded_corner</item>
+        <item name="android:backgroundTint">@color/blue_color</item>
+        <item name="android:fontFamily">@font/poppins_bold</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">10sp</item>
+    </style>
+
 </resources>

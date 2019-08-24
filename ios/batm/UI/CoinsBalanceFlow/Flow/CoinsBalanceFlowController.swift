@@ -20,6 +20,10 @@ extension CoinsBalanceFlowController: CoinsBalanceModuleDelegate {
     step.accept(CoinsBalanceFlow.Steps.filterCoins)
   }
   
+  func showCoinDetails(with coinBalance: CoinBalance) {
+    step.accept(CoinsBalanceFlow.Steps.coinDetails(coinBalance))
+  }
+  
 }
 
 extension CoinsBalanceFlowController: FilterCoinsModuleDelegate {
@@ -29,5 +33,11 @@ extension CoinsBalanceFlowController: FilterCoinsModuleDelegate {
   
   func didChangeVisibility() {
     module?.fetchCoinsBalance()
+  }
+}
+
+extension CoinsBalanceFlowController: CoinDetailsFlowControllerDelegate {
+  func didFinishCoinDetailsFlow() {
+    step.accept(CoinsBalanceFlow.Steps.pop)
   }
 }

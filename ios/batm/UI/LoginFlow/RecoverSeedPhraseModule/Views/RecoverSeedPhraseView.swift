@@ -4,13 +4,21 @@ import RxCocoa
 
 class RecoverSeedPhraseView: RoundedView {
   
+  let errorView: ErrorView = {
+    let view = ErrorView()
+    view.isHidden = true
+    return view
+  }()
+  
   let annotationLabel: UILabel = {
     let label = UILabel()
     label.text = localize(L.RecoverSeedPhrase.annotation)
     label.textColor = .slateGrey
     label.font = .poppinsMedium14
     label.textAlignment = .center
-    label.numberOfLines = 0
+    label.numberOfLines = 2
+    label.adjustsFontSizeToFitWidth = true
+    label.minimumScaleFactor = 0.5
     return label
   }()
   
@@ -65,20 +73,30 @@ class RecoverSeedPhraseView: RoundedView {
     addSubviews(annotationLabel,
                 mainStackView,
                 pasteLabel,
-                doneButton)
+                doneButton,
+                errorView)
   }
   
   private func setupLayout() {
+    errorView.snp.makeConstraints {
+      $0.top.equalToSuperview().offset(10)
+      $0.centerX.equalToSuperview()
+      $0.left.greaterThanOrEqualToSuperview().offset(15)
+      $0.right.lessThanOrEqualToSuperview().offset(-15)
+    }
     annotationLabel.snp.makeConstraints {
-      $0.top.left.right.equalToSuperview().inset(50)
+      $0.left.right.equalToSuperview().inset(50)
+      $0.top.greaterThanOrEqualToSuperview().offset(30)
+      $0.top.equalToSuperview().offset(50).priority(.low)
     }
     mainStackView.snp.makeConstraints {
       $0.top.equalTo(annotationLabel.snp.bottom).offset(30)
-      $0.left.right.equalToSuperview().inset(30)
+      $0.left.right.equalToSuperview().inset(10)
     }
     pasteLabel.snp.makeConstraints {
       $0.top.equalTo(mainStackView.snp.bottom).offset(30)
       $0.centerX.equalToSuperview()
+      $0.bottom.lessThanOrEqualTo(doneButton.snp.top).offset(-30).priority(.high)
     }
     doneButton.snp.makeConstraints {
       $0.left.right.equalToSuperview().inset(45)
@@ -106,5 +124,11 @@ extension Reactive where Base == RecoverSeedPhraseView {
           .map { $0?.nilIfEmpty() }
           .compactMap { $0 }
       }
+  }
+  var error: Binder<String?> {
+    return Binder(base) { target, value in
+      target.errorView.isHidden = value == nil
+      target.errorView.configure(for: value)
+    }
   }
 }

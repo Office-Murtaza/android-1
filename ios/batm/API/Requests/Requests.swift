@@ -1,4 +1,5 @@
 import Moya
+import TrustWalletCore
 
 struct RefreshTokenRequest: APIRequest {
   typealias ResponseType = APIResponse<Account>
@@ -69,6 +70,21 @@ struct AddCoinsRequest: AuthorizedAPIRequest {
   let coinAddresses: [CoinAddress]
   
   var path: String { return "/user/\(userId)/coins/add" }
+  var method: HTTPMethod { return .post }
+  var task: HTTPTask {
+    return .requestParameters(parameters: ["coins": coinAddresses.toJSON()],
+                              encoding: JSONEncoding.default)
+  }
+}
+
+struct CompareCoinsRequest: AuthorizedAPIRequest {
+  typealias ResponseType = APIEmptyResponse
+  typealias ResponseTrait = SingleResponseTrait
+  
+  let userId: Int
+  let coinAddresses: [CoinAddress]
+  
+  var path: String { return "/user/\(userId)/coins/compare" }
   var method: HTTPMethod { return .post }
   var task: HTTPTask {
     return .requestParameters(parameters: ["coins": coinAddresses.toJSON()],
@@ -189,5 +205,21 @@ struct UnlinkRequest: AuthorizedAPIRequest {
   var method: HTTPMethod { return .post }
   var task: HTTPTask {
     return .requestPlain
+  }
+}
+
+struct TransactionsRequest: AuthorizedAPIRequest {
+  typealias ResponseType = APIResponse<Transactions>
+  typealias ResponseTrait = SingleResponseTrait
+  
+  let userId: Int
+  let coinId: String
+  let index: Int
+  
+  var path: String { return "/user/\(userId)/coins/\(coinId)/transactions" }
+  var method: HTTPMethod { return .get }
+  var task: HTTPTask {
+    return .requestParameters(parameters: ["index": index],
+                              encoding: URLEncoding.customDefault)
   }
 }

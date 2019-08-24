@@ -10,6 +10,8 @@ class ErrorView: UIView {
     let label = UILabel()
     label.textColor = .orangeyRed
     label.font = .poppinsMedium10
+    label.adjustsFontSizeToFitWidth = true
+    label.minimumScaleFactor = 0.7
     return label
   }()
   

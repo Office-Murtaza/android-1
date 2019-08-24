@@ -11,8 +11,8 @@ android {
         applicationId "com.app.belcobtm"
         minSdkVersion 23
         targetSdkVersion 28
-        versionCode 3
-        versionName "0.4.1"
+        versionCode 5
+        versionName "0.4.3"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled = true
     }
@@ -101,7 +101,7 @@ dependencies {
 
     // Parceler
     implementation "org.parceler:parceler-api:$project.parcelerVersion"
-    annotationProcessor "org.parceler:parceler:$project.parcelerVersion"
+    kapt "org.parceler:parceler:$project.parcelerVersion"
 
     // Dagger 2
     // Dagger core
@@ -129,6 +129,10 @@ dependencies {
 
 //    rxpermissions
     implementation 'com.github.tbruyelle:rxpermissions:0.10.2'
+
+    //QR code
+    implementation 'com.google.zxing:core:3.3.0'
+    implementation('com.journeyapps:zxing-android-embedded:3.6.0') { transitive = false }
 
 
 }

@@ -17,6 +17,22 @@ enum L {
     static let title = "change_pin.title"
   }
 
+  struct CoinDetails {
+    static let address = "coin_details.address"
+    static let balance = "coin_details.balance"
+    static let buy = "coin_details.buy"
+    static let complete = "coin_details.complete"
+    static let deposit = "coin_details.deposit"
+    static let fail = "coin_details.fail"
+    static let pending = "coin_details.pending"
+    static let price = "coin_details.price"
+    static let receiveGift = "coin_details.receive_gift"
+    static let sell = "coin_details.sell"
+    static let sendGift = "coin_details.send_gift"
+    static let unknown = "coin_details.unknown"
+    static let withdraw = "coin_details.withdraw"
+  }
+
   struct CoinsBalance {
     static let title = "coins_balance.title"
     static let totalBalance = "coins_balance.total_balance"

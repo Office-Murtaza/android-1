@@ -111,6 +111,24 @@
     <string name="pin_changed">Pin changed</string>
     <string name="error_wrong_old_pin">Old pin doesn\'t match</string>
 
+    <!--transactions-->
+    <string name="deposit">Deposit</string>
+    <string name="wallet_code_clipboard">Wallet code copied to clipboard</string>
+    <string name="price">Price:</string>
+    <string name="balance">Balance:</string>
+
+    <!--transaction status-->
+    <string name="unknown">unknown</string>
+    <string name="pending">pending</string>
+    <string name="complete">complete</string>
+    <string name="fail">fail</string>
+
+    <!--transaction type-->
+    <string name="withdraw">withdraw</string>
+    <string name="send_gift">send gift</string>
+    <string name="receive_gift">receive gift</string>
+    <string name="buy">buy</string>
+    <string name="sell">sell</string>
 
 
 </resources>

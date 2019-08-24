@@ -13,6 +13,7 @@ class CoinsBalanceFlow: BaseFlow<BTMNavigationController, CoinsBalanceFlowContro
   enum Steps: Step, Equatable {
     case coinsBalance
     case filterCoins
+    case coinDetails(CoinBalance)
     case pop
   }
   
@@ -33,6 +34,10 @@ class CoinsBalanceFlow: BaseFlow<BTMNavigationController, CoinsBalanceFlowContro
     case .filterCoins:
       let module = resolver.resolve(Module<FilterCoinsModule>.self)!
       return push(module.controller)
+    case let .coinDetails(coinBalance):
+      let flow = CoinDetailsFlow(view: view, parent: self)
+      let step = CoinDetailsFlow.Steps.coinDetails(coinBalance)
+      return next(flow: flow, step: step)
     case .pop: return pop()
     }
   }

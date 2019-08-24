@@ -13,6 +13,8 @@ import com.app.belcobtm.ui.auth.recover_wallet.RecoverWalletPresenter
 import com.app.belcobtm.ui.main.coins.settings.change_pass.ChangePassContract
 import com.app.belcobtm.ui.main.coins.settings.check_pass.CheckPassContract
 import com.app.belcobtm.ui.main.coins.settings.phone.ShowPhoneContract
+import com.app.belcobtm.ui.main.coins.transactions.TransactionsContract
+import com.app.belcobtm.ui.main.coins.transactions.TransactionsPresenter
 import com.app.belcobtm.ui.main.coins.visibility.VisibilityCoinsContract
 import com.app.belcobtm.ui.main.coins.visibility.VisibilityCoinsPresenter
 import com.app.belcobtm.ui.main.main_activity.MainContract
@@ -75,6 +77,11 @@ class ActivityModule {
     @Provides
     fun provideShowPhonePresenter(): ShowPhoneContract.Presenter {
         return ShowPhonePresenter()
+    }
+
+    @Provides
+    fun provideTransactionsPresenter(): TransactionsContract.Presenter {
+        return TransactionsPresenter()
     }
 
 

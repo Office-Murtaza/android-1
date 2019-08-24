@@ -2,6 +2,7 @@ package com.app.belcobtm.ui.main.coins.balance
 
 import com.app.belcobtm.App
 import com.app.belcobtm.api.data_manager.CoinsDataManager
+import com.app.belcobtm.api.model.response.CoinModel
 import com.app.belcobtm.api.model.response.GetCoinsResponse
 import com.app.belcobtm.db.DbCryptoCoinModel
 import com.app.belcobtm.mvp.BaseMvpDIPresenterImpl
@@ -13,7 +14,7 @@ import io.realm.Realm
 class BalancePresenter : BaseMvpDIPresenterImpl<BalanceContract.View, CoinsDataManager>(),
     BalanceContract.Presenter {
 
-    override val coinsList: ArrayList<GetCoinsResponse.CoinModel> = arrayListOf()
+    override val coinsList: ArrayList<CoinModel> = arrayListOf()
     override var balance: Double = 0.0
 
     private val realm = Realm.getDefaultInstance()
