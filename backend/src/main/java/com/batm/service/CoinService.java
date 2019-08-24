@@ -4,18 +4,21 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+
+import com.batm.dto.*;
+import com.batm.entity.*;
+import com.batm.repository.TransactionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.*;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
-import com.batm.dto.CoinBalanceDTO;
-import com.batm.dto.Price;
-import com.batm.dto.UserCoinDTO;
-import com.batm.entity.Coin;
-import com.batm.entity.Response;
-import com.batm.entity.User;
-import com.batm.entity.UserCoin;
 import com.batm.repository.CoinRepository;
 import com.batm.repository.UserCoinRepository;
 import com.batm.repository.UserRepository;
@@ -39,6 +42,9 @@ public class CoinService {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private TransactionRepository transactionRepository;
+
     private static BinanceApiRestClient binance;
     private static BinanceDexApiRestClient binanceDex;
     private static RestTemplate rest;
@@ -50,6 +56,10 @@ public class CoinService {
     private static String trxUrl;
     private static String xrpUrl;
 
+    private static String chainalysisUrl;
+    private static String chainalysisApiKey;
+    private static Integer chainalysisRowsLimit;
+
     public CoinService(@Autowired final BinanceApiRestClient binance,
                        @Autowired final BinanceDexApiRestClient binanceDex,
                        @Autowired final RestTemplate rest,
@@ -58,7 +68,10 @@ public class CoinService {
                        @Value("${bch.url}") final String bchUrl,
                        @Value("${ltc.url}") final String ltcUrl,
                        @Value("${trx.url}") final String trxUrl,
-                       @Value("${xrp.url}") final String xrpUrl) {
+                       @Value("${xrp.url}") final String xrpUrl,
+                       @Value("${chainalysis.url}") final String chainalysisUrl,
+                       @Value("${chainalysis.api-key}") final String chainalysisApiKey,
+                       @Value("${chainalysis.rows-limit}") final Integer chainalysisRowsLimit) {
 
         this.binance = binance;
         this.binanceDex = binanceDex;
@@ -69,6 +82,9 @@ public class CoinService {
         this.ltcUrl = ltcUrl;
         this.trxUrl = trxUrl;
         this.xrpUrl = xrpUrl;
+        this.chainalysisUrl = chainalysisUrl;
+        this.chainalysisApiKey = chainalysisApiKey;
+        this.chainalysisRowsLimit = chainalysisRowsLimit;
     }
 
     public enum CoinEnum {
@@ -84,6 +100,11 @@ public class CoinService {
 
                 return getBlockbookBalance(btcUrl, address, 100000000L);
             }
+
+            @Override
+            public String getTransactionId(String address, BigDecimal amount) {
+                return getBlockbookTransactionId(btcUrl, address, amount, 100000000L);
+            }
         }, ETH {
             @Override
             public BigDecimal getPrice() {
@@ -95,6 +116,11 @@ public class CoinService {
                 //address = "0x5eD8Cee6b63b1c6AFce3AD7c92f4fD7E1B8fAd9F";
 
                 return getBlockbookBalance(ethUrl, address, 1000000000000000000L);
+            }
+
+            @Override
+            public String getTransactionId(String address, BigDecimal amount) {
+                return null;
             }
         }, BCH {
             @Override
@@ -108,6 +134,11 @@ public class CoinService {
 
                 return getBlockbookBalance(bchUrl, address, 100000000L);
             }
+
+            @Override
+            public String getTransactionId(String address, BigDecimal amount) {
+                return null;
+            }
         }, LTC {
             @Override
             public BigDecimal getPrice() {
@@ -119,6 +150,11 @@ public class CoinService {
                 //address = "MH1RcrnDDttNBmz6XLRK4vJbUGp36nmThv";
 
                 return getBlockbookBalance(ltcUrl, address, 100000000L);
+            }
+
+            @Override
+            public String getTransactionId(String address, BigDecimal amount) {
+                return getBlockbookTransactionId(ltcUrl, address, amount, 100000000L);
             }
         }, BNB {
             @Override
@@ -132,6 +168,11 @@ public class CoinService {
 
                 return getBinanceDEXBalance(address);
             }
+
+            @Override
+            public String getTransactionId(String address, BigDecimal amount) {
+                return null;
+            }
         }, XRP {
             @Override
             public BigDecimal getPrice() {
@@ -143,6 +184,11 @@ public class CoinService {
                 //address = "r3kmLJN5D28dHuH8vZNUZpMC43pEHpaocV";
 
                 return getRippledBalance(address, 1000000L);
+            }
+
+            @Override
+            public String getTransactionId(String address, BigDecimal amount) {
+                return null;
             }
         }, TRX {
             @Override
@@ -156,11 +202,133 @@ public class CoinService {
 
                 return getTrongridBalance(trxUrl, address, 1000000L);
             }
+
+            @Override
+            public String getTransactionId(String address, BigDecimal amount) {
+                return null;
+            }
         };
 
         public abstract BigDecimal getPrice();
 
         public abstract BigDecimal getBalance(String address);
+
+        public abstract String getTransactionId(String address, BigDecimal amount);
+    }
+
+    @Scheduled(fixedDelay = 600_000)
+    public void scheduleFixedDelayTask() {
+        Set<CoinEnum> coins = new HashSet<>(Arrays.asList(CoinEnum.BTC, CoinEnum.LTC));
+        List<Transaction> untrackedTransactionList = getUntrackedTransactions(coins, chainalysisRowsLimit);
+
+        List<CompletableFuture<ChainalysisResponseDTO>> futures = untrackedTransactionList.stream()
+                .map(CoinService::callAsyncChainalysisValidation)
+                .collect(Collectors.toList());
+
+        List<Transaction> analyzedTransactions = futures.stream()
+                .map(CompletableFuture::join)
+                .filter(Objects::nonNull)
+                .map(ChainalysisResponseDTO::getTransaction)
+                .collect(Collectors.toList());
+
+        saveTransactions(analyzedTransactions);
+    }
+
+    public List<Transaction> getUntrackedTransactions(Set<CoinEnum> coins, Integer limit) {
+        Pageable page = PageRequest.of(0, limit);
+        Set<String> currency = coins.stream()
+                .map(Enum::name)
+                .collect(Collectors.toSet());
+
+        return transactionRepository.findUnTrackedClosedTransactions(currency, page);
+    }
+
+    @Transactional
+    public List<Transaction> saveTransactions(List<Transaction> transactions) {
+        return transactionRepository.saveAll(transactions);
+    }
+
+    private static CompletableFuture<ChainalysisResponseDTO> callAsyncChainalysisValidation(Transaction transaction) {
+        return CompletableFuture.supplyAsync(() -> {
+            if (!Pattern.matches("^[a-fA-F0-9]{64}$", String.valueOf(transaction.getDetail()))) {
+                CoinEnum coinEnum = CoinEnum.valueOf(transaction.getCryptoCurrency());
+                transaction.setDetail(coinEnum.getTransactionId(transaction.getCryptoAddress(), transaction.getCryptoAmount()));
+            }
+            return validateChainalysisTransfer(transaction);
+        });
+    }
+
+    private static ChainalysisResponseDTO validateChainalysisTransfer(Transaction transaction) {
+        ChainalysisResponseDTO result = new ChainalysisResponseDTO();
+
+        if (transaction.getDetail() == null) {
+            transaction.setTracked(true);
+            result.setTransaction(transaction);
+            return result;
+        }
+
+        String requestType = transaction.getType() == 0 ? "received" : "sent";
+        String requestTransferReference = transaction.getType() == 0
+                ? String.format("%s:%s", transaction.getDetail(), transaction.getCryptoAddress())
+                : String.format("%s:%d", transaction.getDetail(), 0);
+
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("asset", transaction.getCryptoCurrency());
+        jsonObject.put("transferReference", requestTransferReference);
+
+        JSONArray jsonArray = new JSONArray();
+        jsonArray.add(jsonObject);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.set("Token", chainalysisApiKey);
+
+        HttpEntity<JSONArray> request = new HttpEntity<>(jsonArray, headers);
+
+        String url = chainalysisUrl + "/api/kyt/v1/users/" + transaction.getIdentity().getPublicId() + "/transfers/" + requestType;
+
+        try {
+            ResponseEntity<JSONArray> responseEntity = rest.exchange(url, HttpMethod.POST, request, JSONArray.class);
+            transaction.setTracked(true);
+            result.setTransaction(transaction);
+
+            if (responseEntity.getBody() != null) {
+                JSONObject checkResult = responseEntity.getBody().getJSONObject(0);
+                result.setTransferReference(checkResult.getString("transferReference"));
+                result.setAsset(checkResult.getString("asset"));
+                result.setClusterName(checkResult.getJSONObject("cluster").getString("name"));
+                result.setClusterCategory(checkResult.getJSONObject("cluster").getString("category"));
+                result.setRating(checkResult.getString("rating"));
+            }
+
+            return result;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    private static String getBlockbookTransactionId(String url, String address, BigDecimal amount, long divider) {
+        try {
+            JSONObject res = rest.getForObject(url + "/api/v2/address/" + address + "?details=txs", JSONObject.class);
+            for (Object jsonTransactions : res.getJSONArray("transactions")) {
+                for (Object vin : ((JSONObject) jsonTransactions).getJSONArray("vin")) {
+                    if (vin instanceof JSONObject) {
+                        String value = ((JSONObject) vin).getString("value");
+                        BigDecimal bigValue = new BigDecimal(value).divide(BigDecimal.valueOf(divider)).stripTrailingZeros();
+                        if (bigValue.equals(amount.stripTrailingZeros())) {
+                            return ((JSONObject) vin).getString("txid");
+                        }
+                    }
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
     }
 
     public CoinBalanceVM getCoinsBalance(Long userId, List<String> coins) {
