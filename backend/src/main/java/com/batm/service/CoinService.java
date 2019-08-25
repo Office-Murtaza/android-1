@@ -297,9 +297,13 @@ public class CoinService {
                 JSONObject checkResult = responseEntity.getBody().getJSONObject(0);
                 result.setTransferReference(checkResult.getString("transferReference"));
                 result.setAsset(checkResult.getString("asset"));
-                result.setClusterName(checkResult.getJSONObject("cluster").getString("name"));
-                result.setClusterCategory(checkResult.getJSONObject("cluster").getString("category"));
                 result.setRating(checkResult.getString("rating"));
+
+                JSONObject cluster = checkResult.getJSONObject("cluster");
+                if (cluster != null) {
+                    result.setClusterName(cluster.getString("name"));
+                    result.setClusterCategory(cluster.getString("category"));
+                }
             }
 
             return result;
