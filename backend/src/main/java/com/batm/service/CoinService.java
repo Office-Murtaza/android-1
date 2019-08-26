@@ -18,6 +18,7 @@ import org.springframework.http.*;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import com.batm.repository.CoinRepository;
 import com.batm.repository.UserCoinRepository;
@@ -307,6 +308,14 @@ public class CoinService {
             }
 
             return result;
+        } catch (HttpClientErrorException he){
+            System.out.println("-------------------------------------- url:\n");
+            System.out.println(url);
+
+            System.out.println("-------------------------------------- request:\n");
+            System.out.println(request);
+
+            he.printStackTrace();
         } catch (Exception e) {
             e.printStackTrace();
         }
