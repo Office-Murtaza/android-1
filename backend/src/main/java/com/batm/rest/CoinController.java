@@ -4,6 +4,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import com.batm.entity.Error;
+import com.batm.util.Constant;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,6 +61,29 @@ public class CoinController {
     public Response getCoinsBalance(@PathVariable Long userId, @RequestParam(required = false) List<String> coins) {
         try {
             return Response.ok(coinService.getCoinsBalance(userId, coins));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Response.serverError();
+        }
+    }
+
+    @GetMapping("/user/{userId}/coins/{coinId}/publicKey")
+    public Response getCoinAddressByUserPhone(@PathVariable String userId, @PathVariable CoinService.CoinEnum coinId, @RequestParam String phone) {
+        try {
+            Pattern pattern = Pattern.compile(Constant.REGEX_PHONE);
+            Matcher matcher = pattern.matcher(phone.replace("\"", ""));
+            if (!matcher.find()) {
+                return Response.error(new Error(2, "Invalid phone number"));
+            }
+
+            String address = coinService.getCoinAddressByUserPhoneAndCoin(matcher.group(0), coinId.name());
+            if(address == null) {
+                address = coinService.getDefaultPublicKeyByCoin(coinId);
+            }
+
+            JSONObject jsonResponse = new JSONObject();
+            jsonResponse.put("publicKey", address);
+            return Response.ok(jsonResponse);
         } catch (Exception e) {
             e.printStackTrace();
             return Response.serverError();
