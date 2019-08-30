@@ -6,6 +6,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import javax.validation.Valid;
+
+import com.batm.repository.UserRepository;
+import net.sf.json.JSONObject;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Hibernate;
@@ -69,6 +72,9 @@ public class UserController {
 
     @Autowired
     private TokenRepository refreshTokenRepository;
+
+    @Autowired
+    private UserRepository userRepository;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -220,6 +226,22 @@ public class UserController {
             response.put("phone", user.getPhone());
 
             return Response.ok(response);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Response.serverError();
+        }
+    }
+
+    @GetMapping("/user/{userId}/code/send")
+    public Response sendCode(@PathVariable Long userId) {
+        try {
+            return userRepository.getByUserId(userId)
+                    .map(user -> {
+                        twilioComponent.sendOTP(user);
+                        JSONObject response = new JSONObject();
+                        response.put("sent", true);
+                        return Response.ok(response);
+                    }).orElseThrow(() -> new Exception("User not found"));
         } catch (Exception e) {
             e.printStackTrace();
             return Response.serverError();

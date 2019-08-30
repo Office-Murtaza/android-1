@@ -12,6 +12,7 @@ import com.batm.entity.*;
 import com.batm.repository.TransactionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.env.Environment;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.*;
@@ -33,6 +34,9 @@ import net.sf.json.JSONObject;
 
 @Service
 public class CoinService {
+
+    @Autowired
+    private Environment environment;
 
     @Autowired
     private UserCoinRepository userCoinRepository;
@@ -74,18 +78,18 @@ public class CoinService {
                        @Value("${chainalysis.api-key}") final String chainalysisApiKey,
                        @Value("${chainalysis.rows-limit}") final Integer chainalysisRowsLimit) {
 
-        this.binance = binance;
-        this.binanceDex = binanceDex;
-        this.rest = rest;
-        this.btcUrl = btcUrl;
-        this.ethUrl = ethUrl;
-        this.bchUrl = bchUrl;
-        this.ltcUrl = ltcUrl;
-        this.trxUrl = trxUrl;
-        this.xrpUrl = xrpUrl;
-        this.chainalysisUrl = chainalysisUrl;
-        this.chainalysisApiKey = chainalysisApiKey;
-        this.chainalysisRowsLimit = chainalysisRowsLimit;
+        CoinService.binance = binance;
+        CoinService.binanceDex = binanceDex;
+        CoinService.rest = rest;
+        CoinService.btcUrl = btcUrl;
+        CoinService.ethUrl = ethUrl;
+        CoinService.bchUrl = bchUrl;
+        CoinService.ltcUrl = ltcUrl;
+        CoinService.trxUrl = trxUrl;
+        CoinService.xrpUrl = xrpUrl;
+        CoinService.chainalysisUrl = chainalysisUrl;
+        CoinService.chainalysisApiKey = chainalysisApiKey;
+        CoinService.chainalysisRowsLimit = chainalysisRowsLimit;
     }
 
     public enum CoinEnum {
@@ -218,7 +222,7 @@ public class CoinService {
     }
 
     @Scheduled(fixedDelay = 600_000)
-    public void scheduleFixedDelayTask() {
+    public void scheduleChainalysisTransactionRegistrationDelayTask() {
         Set<CoinEnum> coins = new HashSet<>(Arrays.asList(CoinEnum.BTC, CoinEnum.LTC));
         List<Transaction> untrackedTransactionList = getUntrackedTransactions(coins, chainalysisRowsLimit);
 
@@ -270,7 +274,7 @@ public class CoinService {
 
         String requestType = transaction.getType() == 0 ? "received" : "sent";
         String requestTransferReference = transaction.getType() == 0
-                ? String.format("%s:%s", transaction.getDetail(), transaction.getCryptoAddress())
+                ? String.format("%s:%s", transaction.getDetail(), transaction.getCryptoAddress().split(":")[0])
                 : String.format("%s:%d", transaction.getDetail(), 0);
 
         JSONObject jsonObject = new JSONObject();
@@ -306,9 +310,7 @@ public class CoinService {
                     result.setClusterCategory(cluster.getString("category"));
                 }
             }
-
-            return result;
-        } catch (HttpClientErrorException he){
+        } catch (HttpClientErrorException he) {
             System.out.println("-------------------------------------- url:\n");
             System.out.println(url);
 
@@ -316,11 +318,13 @@ public class CoinService {
             System.out.println(request);
 
             he.printStackTrace();
+            return result;
         } catch (Exception e) {
             e.printStackTrace();
+            return result;
         }
 
-        return null;
+        return result;
     }
 
     private static String getBlockbookTransactionId(String url, String address, BigDecimal amount, Integer transactionType, long divider) {
@@ -495,5 +499,19 @@ public class CoinService {
         }
 
         return BigDecimal.ZERO;
+    }
+
+    public String getCoinAddressByUserPhoneAndCoin(String phone, String coin) {
+        return userRepository.findOneByPhoneIgnoreCase(phone).map(user -> {
+            UserCoin userCoin = userCoinRepository.findByUserUserIdAndCoinId(user.getUserId(), coin);
+            if (userCoin != null) {
+                return userCoin.getPublicKey();
+            }
+            return null;
+        }).orElse(null);
+    }
+
+    public String getDefaultPublicKeyByCoin(CoinEnum coin) {
+        return environment.getProperty(String.format("%s.publicKey", coin.name().toLowerCase()));
     }
 }
