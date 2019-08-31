@@ -4,9 +4,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
-
 import com.batm.dto.*;
 import com.batm.entity.*;
 import com.batm.repository.TransactionRepository;
@@ -107,8 +105,8 @@ public class CoinService {
             }
 
             @Override
-            public String getTransactionId(String address, BigDecimal amount, Integer transactionType) {
-                return getBlockbookTransactionId(btcUrl, address, amount, transactionType, 100000000L);
+            public TransactionNumberDTO getTransactionNumber(String address, BigDecimal amount) {
+                return getBlockbookTransactionNumber(btcUrl, address, amount, 100000000L);
             }
         }, ETH {
             @Override
@@ -124,7 +122,7 @@ public class CoinService {
             }
 
             @Override
-            public String getTransactionId(String address, BigDecimal amount, Integer transactionType) {
+            public TransactionNumberDTO getTransactionNumber(String address, BigDecimal amount) {
                 return null;
             }
         }, BCH {
@@ -141,7 +139,7 @@ public class CoinService {
             }
 
             @Override
-            public String getTransactionId(String address, BigDecimal amount, Integer transactionType) {
+            public TransactionNumberDTO getTransactionNumber(String address, BigDecimal amount) {
                 return null;
             }
         }, LTC {
@@ -158,8 +156,8 @@ public class CoinService {
             }
 
             @Override
-            public String getTransactionId(String address, BigDecimal amount, Integer transactionType) {
-                return getBlockbookTransactionId(ltcUrl, address, amount, transactionType, 100000000L);
+            public TransactionNumberDTO getTransactionNumber(String address, BigDecimal amount) {
+                return getBlockbookTransactionNumber(ltcUrl, address, amount, 100000000L);
             }
         }, BNB {
             @Override
@@ -175,7 +173,7 @@ public class CoinService {
             }
 
             @Override
-            public String getTransactionId(String address, BigDecimal amount, Integer transactionType) {
+            public TransactionNumberDTO getTransactionNumber(String address, BigDecimal amount) {
                 return null;
             }
         }, XRP {
@@ -192,7 +190,7 @@ public class CoinService {
             }
 
             @Override
-            public String getTransactionId(String address, BigDecimal amount, Integer transactionType) {
+            public TransactionNumberDTO getTransactionNumber(String address, BigDecimal amount) {
                 return null;
             }
         }, TRX {
@@ -209,7 +207,7 @@ public class CoinService {
             }
 
             @Override
-            public String getTransactionId(String address, BigDecimal amount, Integer transactionType) {
+            public TransactionNumberDTO getTransactionNumber(String address, BigDecimal amount) {
                 return null;
             }
         };
@@ -218,7 +216,7 @@ public class CoinService {
 
         public abstract BigDecimal getBalance(String address);
 
-        public abstract String getTransactionId(String address, BigDecimal amount, Integer transactionType);
+        public abstract TransactionNumberDTO getTransactionNumber(String address, BigDecimal amount);
     }
 
     @Scheduled(fixedDelay = 600_000)
@@ -255,10 +253,13 @@ public class CoinService {
 
     private static CompletableFuture<ChainalysisResponseDTO> callAsyncChainalysisValidation(Transaction transaction) {
         return CompletableFuture.supplyAsync(() -> {
-            if (!Pattern.matches("^[a-fA-F0-9]{64}$", String.valueOf(transaction.getDetail()))) {
-                CoinEnum coinEnum = CoinEnum.valueOf(transaction.getCryptoCurrency());
-                transaction.setDetail(coinEnum.getTransactionId(transaction.getCryptoAddress(), transaction.getCryptoAmount(), transaction.getType()));
-            }
+            transaction.setCryptoAddress(transaction.getCryptoAddress().split(":")[0]);
+
+            CoinEnum coinEnum = CoinEnum.valueOf(transaction.getCryptoCurrency());
+            TransactionNumberDTO trxNumberDTO = coinEnum.getTransactionNumber(transaction.getCryptoAddress(), transaction.getCryptoAmount());
+            transaction.setDetail(trxNumberDTO.getTransactionId());
+            transaction.setN(trxNumberDTO.getN());
+
             return validateChainalysisTransfer(transaction);
         });
     }
@@ -274,8 +275,8 @@ public class CoinService {
 
         String requestType = transaction.getType() == 0 ? "received" : "sent";
         String requestTransferReference = transaction.getType() == 0
-                ? String.format("%s:%s", transaction.getDetail(), transaction.getCryptoAddress().split(":")[0])
-                : String.format("%s:%d", transaction.getDetail(), 0);
+                ? String.format("%s:%s", transaction.getDetail(), transaction.getCryptoAddress())
+                : String.format("%s:%d", transaction.getDetail(), transaction.getN());
 
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("asset", transaction.getCryptoCurrency());
@@ -327,17 +328,20 @@ public class CoinService {
         return result;
     }
 
-    private static String getBlockbookTransactionId(String url, String address, BigDecimal amount, Integer transactionType, long divider) {
-        String type = transactionType == 0 ? "vout" : "vin";
+    private static TransactionNumberDTO getBlockbookTransactionNumber(String url, String address, BigDecimal amount, long divider) {
         try {
             JSONObject res = rest.getForObject(url + "/api/v2/address/" + address + "?details=txs", JSONObject.class);
             for (Object jsonTransactions : res.getJSONArray("transactions")) {
-                for (Object operationObject : ((JSONObject) jsonTransactions).getJSONArray(type)) {
+                for (Object operationObject : ((JSONObject) jsonTransactions).getJSONArray("vout")) {
                     if (operationObject instanceof JSONObject) {
-                        String value = ((JSONObject) operationObject).getString("value");
+                        JSONObject operationJson = ((JSONObject) operationObject);
+                        String value = operationJson.getString("value");
                         BigDecimal bigValue = new BigDecimal(value).divide(BigDecimal.valueOf(divider)).stripTrailingZeros();
+                        int n = operationJson.getInt("n");
+
                         if (bigValue.equals(amount.stripTrailingZeros())) {
-                            return ((JSONObject) jsonTransactions).getString("txid");
+                            String transactionId = ((JSONObject) jsonTransactions).getString("txid");
+                            return new TransactionNumberDTO(transactionId, n);
                         }
                     }
                 }

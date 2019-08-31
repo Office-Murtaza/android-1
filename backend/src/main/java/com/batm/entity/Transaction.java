@@ -5,7 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
 import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -34,6 +33,10 @@ public class Transaction implements Serializable {
     private Long transactionId;
 
     private Integer type;
+
+    @Transient
+    private Integer n;
+
     private String detail;
     private Integer status;
     private Boolean tracked;
