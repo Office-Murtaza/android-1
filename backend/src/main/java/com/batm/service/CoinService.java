@@ -5,9 +5,12 @@ import java.math.RoundingMode;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
+
 import com.batm.dto.*;
+import com.batm.dto.mapper.TransactionMapper;
 import com.batm.entity.*;
 import com.batm.repository.TransactionRepository;
+import com.batm.util.Constant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
@@ -29,6 +32,8 @@ import com.binance.api.client.BinanceApiRestClient;
 import com.binance.dex.api.client.BinanceDexApiRestClient;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
+
+import javax.annotation.Nullable;
 
 @Service
 public class CoinService {
@@ -101,12 +106,36 @@ public class CoinService {
             public BigDecimal getBalance(String address) {
                 //address = "1F1tAaz5x1HUXrCNLbtMDqcw6o5GNn4xqX";
 
-                return getBlockbookBalance(btcUrl, address, 100000000L);
+                return getBlockbookBalance(btcUrl, address, Constant.BTC_BLOCKBOOK_DIVIDER);
             }
 
             @Override
             public TransactionNumberDTO getTransactionNumber(String address, BigDecimal amount) {
-                return getBlockbookTransactionNumber(btcUrl, address, amount, 100000000L);
+                return getBlockbookTransactionNumber(btcUrl, address, amount, Constant.BTC_BLOCKBOOK_DIVIDER);
+            }
+
+            @Override
+            public TransactionResponseDTO<TransactionDTO> getTransactions(String address, Integer startIndex, Integer limit) {
+                startIndex = startIndex <= 0 ? 1 : startIndex;
+                TransactionResponseDTO<TransactionDTO> result = new TransactionResponseDTO<>();
+                List<TransactionDTO> transactionDTOList = new ArrayList<>();
+
+                TransactionResponseDTO<BlockbookTransactionDTO> transactionDTOTransactionResponseDTO = getBlockbookTransactions(btcUrl, address, Constant.BTC_BLOCKBOOK_DIVIDER, startIndex, limit);
+                List<BlockbookTransactionDTO> blockbookTransactionDTOList = transactionDTOTransactionResponseDTO.getTransactions();
+
+                for (int i = 0; i < blockbookTransactionDTOList.size(); i++) {
+                    TransactionDTO transactionDTO = TransactionMapper.toTransactionDTO(blockbookTransactionDTOList.get(i));
+                    transactionDTO.setIndex(i+1);
+                    transactionDTOList.add(transactionDTO);
+                }
+
+                result.setTxs(transactionDTOTransactionResponseDTO.getTxs());
+                result.setAddress(transactionDTOTransactionResponseDTO.getAddress());
+                result.setItemsOnPage(transactionDTOTransactionResponseDTO.getItemsOnPage());
+                result.setTotalPages(transactionDTOTransactionResponseDTO.getTotalPages());
+                result.setTransactions(transactionDTOList);
+
+                return result;
             }
         }, ETH {
             @Override
@@ -118,11 +147,16 @@ public class CoinService {
             public BigDecimal getBalance(String address) {
                 //address = "0x5eD8Cee6b63b1c6AFce3AD7c92f4fD7E1B8fAd9F";
 
-                return getBlockbookBalance(ethUrl, address, 1000000000000000000L);
+                return getBlockbookBalance(ethUrl, address, Constant.ETH_BLOCKBOOK_DIVIDER);
             }
 
             @Override
             public TransactionNumberDTO getTransactionNumber(String address, BigDecimal amount) {
+                return null;
+            }
+
+            @Override
+            public TransactionResponseDTO<TransactionDTO> getTransactions(String address, Integer startIndex, Integer limit) {
                 return null;
             }
         }, BCH {
@@ -135,11 +169,16 @@ public class CoinService {
             public BigDecimal getBalance(String address) {
                 //address = "bitcoincash:pp8skudq3x5hzw8ew7vzsw8tn4k8wxsqsv0lt0mf3g";
 
-                return getBlockbookBalance(bchUrl, address, 100000000L);
+                return getBlockbookBalance(bchUrl, address, Constant.BCH_BLOCKBOOK_DIVIDER);
             }
 
             @Override
             public TransactionNumberDTO getTransactionNumber(String address, BigDecimal amount) {
+                return null;
+            }
+
+            @Override
+            public TransactionResponseDTO<TransactionDTO> getTransactions(String address, Integer startIndex, Integer limit) {
                 return null;
             }
         }, LTC {
@@ -152,12 +191,17 @@ public class CoinService {
             public BigDecimal getBalance(String address) {
                 //address = "MH1RcrnDDttNBmz6XLRK4vJbUGp36nmThv";
 
-                return getBlockbookBalance(ltcUrl, address, 100000000L);
+                return getBlockbookBalance(ltcUrl, address, Constant.LTC_BLOCKBOOK_DIVIDER);
             }
 
             @Override
             public TransactionNumberDTO getTransactionNumber(String address, BigDecimal amount) {
-                return getBlockbookTransactionNumber(ltcUrl, address, amount, 100000000L);
+                return getBlockbookTransactionNumber(ltcUrl, address, amount, Constant.LTC_BLOCKBOOK_DIVIDER);
+            }
+
+            @Override
+            public TransactionResponseDTO<TransactionDTO> getTransactions(String address, Integer startIndex, Integer limit) {
+                return null;
             }
         }, BNB {
             @Override
@@ -174,6 +218,11 @@ public class CoinService {
 
             @Override
             public TransactionNumberDTO getTransactionNumber(String address, BigDecimal amount) {
+                return null;
+            }
+
+            @Override
+            public TransactionResponseDTO<TransactionDTO> getTransactions(String address, Integer startIndex, Integer limit) {
                 return null;
             }
         }, XRP {
@@ -193,6 +242,11 @@ public class CoinService {
             public TransactionNumberDTO getTransactionNumber(String address, BigDecimal amount) {
                 return null;
             }
+
+            @Override
+            public TransactionResponseDTO<TransactionDTO> getTransactions(String address, Integer startIndex, Integer limit) {
+                return null;
+            }
         }, TRX {
             @Override
             public BigDecimal getPrice() {
@@ -210,6 +264,11 @@ public class CoinService {
             public TransactionNumberDTO getTransactionNumber(String address, BigDecimal amount) {
                 return null;
             }
+
+            @Override
+            public TransactionResponseDTO<TransactionDTO> getTransactions(String address, Integer startIndex, Integer limit) {
+                return null;
+            }
         };
 
         public abstract BigDecimal getPrice();
@@ -217,6 +276,8 @@ public class CoinService {
         public abstract BigDecimal getBalance(String address);
 
         public abstract TransactionNumberDTO getTransactionNumber(String address, BigDecimal amount);
+
+        public abstract TransactionResponseDTO<TransactionDTO> getTransactions(String address, Integer startIndex, Integer limit);
     }
 
     @Scheduled(fixedDelay = 600_000)
@@ -351,6 +412,51 @@ public class CoinService {
         }
 
         return null;
+    }
+
+    public TransactionResponseDTO<TransactionDTO> getTransactions(Long userId, CoinEnum coin, Integer startIndex) {
+        TransactionResponseDTO<TransactionDTO> result = new TransactionResponseDTO<>();
+        int defaultLimit = 10;
+
+        try {
+            String address = getCoinAddressByUserIdAndCoin(userId, coin.name());
+            result = coin.getTransactions(address, startIndex, defaultLimit);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return result;
+    }
+
+    public static TransactionResponseDTO<BlockbookTransactionDTO> getBlockbookTransactions(String url, String address, Long divider, @Nullable Integer fromIndex, @Nullable Integer limit) {
+        TransactionResponseDTO<BlockbookTransactionDTO> result = new TransactionResponseDTO<>();
+        List<BlockbookTransactionDTO> blockbookTransactionDTOList = new ArrayList<>();
+
+        double pageSize = 1000;
+
+        try {
+            for (int i = 1; i <= Math.ceil((fromIndex + limit) / pageSize); i++) {
+                JSONObject res = rest.getForObject(url + "/api/v2/address/" + address + "?details=txs&pageSize=1000&page=" + i, JSONObject.class);
+                JSONArray transactionsArray = res.optJSONArray("transactions");
+
+                transactionsArray.forEach(t -> blockbookTransactionDTOList.add(TransactionMapper.toBlockbookTransactionDTO((JSONObject) t, address, divider)));
+
+                result.setTotalPages(res.getInt("totalPages"));
+                result.setItemsOnPage(res.optInt("itemsOnPage"));
+                result.setAddress(res.optString("address"));
+                result.setTxs(res.optInt("txs"));
+                result.setTransactions(blockbookTransactionDTOList);
+
+                if (res.getInt("page") == res.getInt("totalPages")) {
+                    break;
+                }
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return result;
     }
 
     public CoinBalanceVM getCoinsBalance(Long userId, List<String> coins) {
@@ -503,6 +609,10 @@ public class CoinService {
         }
 
         return BigDecimal.ZERO;
+    }
+
+    public String getCoinAddressByUserIdAndCoin(Long userId, String coin) {
+        return userCoinRepository.findByUserUserIdAndCoinId(userId, coin).getPublicKey();
     }
 
     public String getCoinAddressByUserPhoneAndCoin(String phone, String coin) {
