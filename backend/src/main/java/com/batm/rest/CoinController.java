@@ -3,13 +3,13 @@ package com.batm.rest;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.batm.dto.TransactionDTO;
+import com.batm.dto.TransactionResponseDTO;
 import com.batm.entity.Error;
 import com.batm.util.Constant;
-import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -90,37 +90,20 @@ public class CoinController {
         }
     }
 
-    //TODO: update with real data
     @GetMapping("/user/{userId}/coins/{coinId}/transactions")
-    public Response getTransactions(@PathVariable Long userId, @PathVariable String coinId, @RequestParam Integer index) {
+    public Response getTransactions(@PathVariable Long userId, @PathVariable CoinService.CoinEnum coinId, @RequestParam(required = false) Integer index) {
+        index = index == null || index <= 0 ? 1 : index;
         try {
-            JSONArray array = new JSONArray();
+            TransactionResponseDTO<TransactionDTO> transactionResponseDTO = coinService.getTransactions(userId, coinId, index);
+            List<TransactionDTO> transactions = transactionResponseDTO.getTransactions();
 
-            if (index == 1 || index == 11) {
-                int count = 10;
+            int limit = Math.min(transactions.size(), (10 + index));
 
-                if (index == 11) {
-                    count = 2;
-                }
+            JSONObject response = new JSONObject();
+            response.put("total", transactionResponseDTO.getTxs());
+            response.put("transactions", transactions.subList(index - 1, limit - 1));
 
-                for (int i = 1; i <= count; i++) {
-                    JSONObject o = new JSONObject();
-                    o.put("index", count > 2 ? i : i + 10);
-                    o.put("txid", "b53d6f6614218a6d7a6b23cd89150908e8112d8717dc2ba2c7bf2997a8c16e09");
-                    o.put("type", new Random().nextInt(6) + 1);
-                    o.put("value", 0.01);
-                    o.put("status", new Random().nextInt(4));
-                    o.put("date", "2019-08-17");
-
-                    array.add(o);
-                }
-            }
-
-            JSONObject jsonObject = new JSONObject();
-            jsonObject.put("total", 12);
-            jsonObject.put("transactions", array);
-
-            return Response.ok(jsonObject);
+            return Response.ok(response);
         } catch (Exception e) {
             e.printStackTrace();
             return Response.serverError();
