@@ -26,9 +26,9 @@ public class TransactionMapper {
                 .setBlockHeight(jsonObject.optInt("blockHeight"))
                 .setConfirmations(jsonObject.optInt("confirmations"))
                 .setBlockTime(jsonObject.optLong("blockTime"))
-                .setValue(new BigDecimal(jsonObject.optString("value")).divide(BigDecimal.valueOf(blockbookCoinDivider)).stripTrailingZeros())
-                .setValueIn(new BigDecimal(jsonObject.optString("valueIn")).divide(BigDecimal.valueOf(blockbookCoinDivider)).stripTrailingZeros())
-                .setFees(new BigDecimal(jsonObject.optString("fees")).divide(BigDecimal.valueOf(blockbookCoinDivider)).stripTrailingZeros())
+                .setValue(TransactionMapper.getBigDecimalFromStringWithDividing(jsonObject.optString("value"), blockbookCoinDivider))
+                .setValue(TransactionMapper.getBigDecimalFromStringWithDividing(jsonObject.optString("valueIn"), blockbookCoinDivider))
+                .setValue(TransactionMapper.getBigDecimalFromStringWithDividing(jsonObject.optString("fees"), blockbookCoinDivider))
                 .setHex(jsonObject.optString("hex"))
                 .setVin(vinJsonObjectList.stream().map(vin -> TransactionMapper.getBlockbookTransactionVinDTO(vin, blockbookCoinDivider)).collect(Collectors.toList()))
                 .setVout(voutJsonObjectList.stream().map(vout -> TransactionMapper.getBlockbookTransactionVoutDTO(vout, blockbookCoinDivider)).collect(Collectors.toList()));
@@ -43,13 +43,13 @@ public class TransactionMapper {
                 .setStatus(TransactionMapper.getTransactionStatusByConfirmations(blockbookTransactionDTO.getConfirmations()));
     }
 
-    public static TransactionResponseDTO<TransactionDTO> toTransactionResponseDTO (TransactionResponseDTO<BlockbookTransactionDTO> transactionDTOTransactionResponseDTO) {
+    public static TransactionResponseDTO<TransactionDTO> toTransactionResponseDTO(TransactionResponseDTO<BlockbookTransactionDTO> transactionDTOTransactionResponseDTO) {
         List<TransactionDTO> transactionDTOList = new ArrayList<>();
         List<BlockbookTransactionDTO> blockbookTransactionDTOList = transactionDTOTransactionResponseDTO.getTransactions();
 
         for (int i = 0; i < blockbookTransactionDTOList.size(); i++) {
             TransactionDTO transactionDTO = TransactionMapper.toTransactionDTO(blockbookTransactionDTOList.get(i));
-            transactionDTO.setIndex(i+1);
+            transactionDTO.setIndex(i + 1);
             transactionDTOList.add(transactionDTO);
         }
 
@@ -68,7 +68,7 @@ public class TransactionMapper {
                 .setSequence(jsonObject.optLong("sequence"))
                 .setN(jsonObject.optInt("n"))
                 .setIsAddress(jsonObject.optBoolean("isAddress"))
-                .setValue(new BigDecimal(jsonObject.optString("value")).divide(BigDecimal.valueOf(blockbookCoinDivider)).stripTrailingZeros())
+                .setValue(TransactionMapper.getBigDecimalFromStringWithDividing(jsonObject.optString("value"), blockbookCoinDivider))
                 .setHex(jsonObject.optString("hex"))
                 .setVout(jsonObject.optInt("vout"))
                 .setAddresses(TransactionMapper.toList(jsonObject.optJSONArray("addresses")));
@@ -76,7 +76,7 @@ public class TransactionMapper {
 
     private static BlockbookTransactionVoutDTO getBlockbookTransactionVoutDTO(JSONObject jsonObject, Long blockbookCoinDivider) {
         return new BlockbookTransactionVoutDTO()
-                .setValue(new BigDecimal(jsonObject.optString("value")).divide(BigDecimal.valueOf(blockbookCoinDivider)).stripTrailingZeros())
+                .setValue(TransactionMapper.getBigDecimalFromStringWithDividing(jsonObject.optString("value"), blockbookCoinDivider))
                 .setN(jsonObject.optInt("n"))
                 .setHex(jsonObject.optString("hex"))
                 .setIsAddress(jsonObject.optBoolean("isAddress"))
@@ -93,6 +93,13 @@ public class TransactionMapper {
             }
         }
         return list;
+    }
+
+    private static BigDecimal getBigDecimalFromStringWithDividing(String value, Long divider) {
+        if (value != null && value.length() > 0) {
+            return new BigDecimal(value).divide(BigDecimal.valueOf(divider)).stripTrailingZeros();
+        }
+        return null;
     }
 
     /*
