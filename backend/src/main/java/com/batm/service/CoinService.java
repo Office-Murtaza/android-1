@@ -116,26 +116,8 @@ public class CoinService {
 
             @Override
             public TransactionResponseDTO<TransactionDTO> getTransactions(String address, Integer startIndex, Integer limit) {
-                startIndex = startIndex <= 0 ? 1 : startIndex;
-                TransactionResponseDTO<TransactionDTO> result = new TransactionResponseDTO<>();
-                List<TransactionDTO> transactionDTOList = new ArrayList<>();
-
                 TransactionResponseDTO<BlockbookTransactionDTO> transactionDTOTransactionResponseDTO = getBlockbookTransactions(btcUrl, address, Constant.BTC_BLOCKBOOK_DIVIDER, startIndex, limit);
-                List<BlockbookTransactionDTO> blockbookTransactionDTOList = transactionDTOTransactionResponseDTO.getTransactions();
-
-                for (int i = 0; i < blockbookTransactionDTOList.size(); i++) {
-                    TransactionDTO transactionDTO = TransactionMapper.toTransactionDTO(blockbookTransactionDTOList.get(i));
-                    transactionDTO.setIndex(i+1);
-                    transactionDTOList.add(transactionDTO);
-                }
-
-                result.setTxs(transactionDTOTransactionResponseDTO.getTxs());
-                result.setAddress(transactionDTOTransactionResponseDTO.getAddress());
-                result.setItemsOnPage(transactionDTOTransactionResponseDTO.getItemsOnPage());
-                result.setTotalPages(transactionDTOTransactionResponseDTO.getTotalPages());
-                result.setTransactions(transactionDTOList);
-
-                return result;
+                return TransactionMapper.toTransactionResponseDTO(transactionDTOTransactionResponseDTO);
             }
         }, ETH {
             @Override
@@ -157,7 +139,8 @@ public class CoinService {
 
             @Override
             public TransactionResponseDTO<TransactionDTO> getTransactions(String address, Integer startIndex, Integer limit) {
-                return null;
+                TransactionResponseDTO<BlockbookTransactionDTO> transactionDTOTransactionResponseDTO = getBlockbookTransactions(ethUrl, address, Constant.ETH_BLOCKBOOK_DIVIDER, startIndex, limit);
+                return TransactionMapper.toTransactionResponseDTO(transactionDTOTransactionResponseDTO);
             }
         }, BCH {
             @Override
@@ -179,7 +162,8 @@ public class CoinService {
 
             @Override
             public TransactionResponseDTO<TransactionDTO> getTransactions(String address, Integer startIndex, Integer limit) {
-                return null;
+                TransactionResponseDTO<BlockbookTransactionDTO> transactionDTOTransactionResponseDTO = getBlockbookTransactions(bchUrl, address, Constant.BCH_BLOCKBOOK_DIVIDER, startIndex, limit);
+                return TransactionMapper.toTransactionResponseDTO(transactionDTOTransactionResponseDTO);
             }
         }, LTC {
             @Override
@@ -201,7 +185,8 @@ public class CoinService {
 
             @Override
             public TransactionResponseDTO<TransactionDTO> getTransactions(String address, Integer startIndex, Integer limit) {
-                return null;
+                TransactionResponseDTO<BlockbookTransactionDTO> transactionDTOTransactionResponseDTO = getBlockbookTransactions(ltcUrl, address, Constant.LTC_BLOCKBOOK_DIVIDER, startIndex, limit);
+                return TransactionMapper.toTransactionResponseDTO(transactionDTOTransactionResponseDTO);
             }
         }, BNB {
             @Override
@@ -415,6 +400,7 @@ public class CoinService {
     }
 
     public TransactionResponseDTO<TransactionDTO> getTransactions(Long userId, CoinEnum coin, Integer startIndex) {
+        startIndex = startIndex == null || startIndex <= 0 ? 1 : startIndex;
         TransactionResponseDTO<TransactionDTO> result = new TransactionResponseDTO<>();
         int defaultLimit = 10;
 
@@ -439,7 +425,9 @@ public class CoinService {
                 JSONObject res = rest.getForObject(url + "/api/v2/address/" + address + "?details=txs&pageSize=1000&page=" + i, JSONObject.class);
                 JSONArray transactionsArray = res.optJSONArray("transactions");
 
-                transactionsArray.forEach(t -> blockbookTransactionDTOList.add(TransactionMapper.toBlockbookTransactionDTO((JSONObject) t, address, divider)));
+                if (transactionsArray != null) {
+                    transactionsArray.forEach(t -> blockbookTransactionDTOList.add(TransactionMapper.toBlockbookTransactionDTO((JSONObject) t, address, divider)));
+                }
 
                 result.setTotalPages(res.getInt("totalPages"));
                 result.setItemsOnPage(res.optInt("itemsOnPage"));
