@@ -1,9 +1,6 @@
 package com.batm.dto.mapper;
 
-import com.batm.dto.BlockbookTransactionDTO;
-import com.batm.dto.BlockbookTransactionVinDTO;
-import com.batm.dto.BlockbookTransactionVoutDTO;
-import com.batm.dto.TransactionDTO;
+import com.batm.dto.*;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.springframework.stereotype.Component;
@@ -44,6 +41,25 @@ public class TransactionMapper {
                 .setDate(new Date(blockbookTransactionDTO.getBlockTime() * 1000))
                 .setType(TransactionMapper.getTransactionType(blockbookTransactionDTO))
                 .setStatus(TransactionMapper.getTransactionStatusByConfirmations(blockbookTransactionDTO.getConfirmations()));
+    }
+
+    public static TransactionResponseDTO<TransactionDTO> toTransactionResponseDTO (TransactionResponseDTO<BlockbookTransactionDTO> transactionDTOTransactionResponseDTO) {
+        List<TransactionDTO> transactionDTOList = new ArrayList<>();
+        List<BlockbookTransactionDTO> blockbookTransactionDTOList = transactionDTOTransactionResponseDTO.getTransactions();
+
+        for (int i = 0; i < blockbookTransactionDTOList.size(); i++) {
+            TransactionDTO transactionDTO = TransactionMapper.toTransactionDTO(blockbookTransactionDTOList.get(i));
+            transactionDTO.setIndex(i+1);
+            transactionDTOList.add(transactionDTO);
+        }
+
+        return new TransactionResponseDTO<TransactionDTO>(
+                transactionDTOTransactionResponseDTO.getTotalPages(),
+                transactionDTOTransactionResponseDTO.getItemsOnPage(),
+                transactionDTOTransactionResponseDTO.getAddress(),
+                transactionDTOTransactionResponseDTO.getTxs(),
+                transactionDTOList
+        );
     }
 
     private static BlockbookTransactionVinDTO getBlockbookTransactionVinDTO(JSONObject jsonObject, Long blockbookCoinDivider) {

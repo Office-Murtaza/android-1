@@ -1,5 +1,6 @@
 package com.batm.rest;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -101,7 +102,12 @@ public class CoinController {
 
             JSONObject response = new JSONObject();
             response.put("total", transactionResponseDTO.getTxs());
-            response.put("transactions", transactions.subList(index - 1, limit - 1));
+
+            if (transactions != null && transactions.size() >= limit && index <= limit) {
+                response.put("transactions", transactions.subList(index - 1, limit - 1));
+            } else {
+                response.put("transactions", new ArrayList<>());
+            }
 
             return Response.ok(response);
         } catch (Exception e) {
