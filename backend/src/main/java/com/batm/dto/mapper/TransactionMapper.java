@@ -1,11 +1,14 @@
 package com.batm.dto.mapper;
 
 import com.batm.dto.*;
+import com.binance.dex.api.client.domain.Transaction;
+import com.binance.dex.api.client.domain.TransactionPage;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -27,11 +30,35 @@ public class TransactionMapper {
                 .setConfirmations(jsonObject.optInt("confirmations"))
                 .setBlockTime(jsonObject.optLong("blockTime"))
                 .setValue(TransactionMapper.getBigDecimalFromStringWithDividing(jsonObject.optString("value"), blockbookCoinDivider))
-                .setValue(TransactionMapper.getBigDecimalFromStringWithDividing(jsonObject.optString("valueIn"), blockbookCoinDivider))
-                .setValue(TransactionMapper.getBigDecimalFromStringWithDividing(jsonObject.optString("fees"), blockbookCoinDivider))
+                .setValueIn(TransactionMapper.getBigDecimalFromStringWithDividing(jsonObject.optString("valueIn"), blockbookCoinDivider))
+                .setFees(TransactionMapper.getBigDecimalFromStringWithDividing(jsonObject.optString("fees"), blockbookCoinDivider))
                 .setHex(jsonObject.optString("hex"))
                 .setVin(vinJsonObjectList.stream().map(vin -> TransactionMapper.getBlockbookTransactionVinDTO(vin, blockbookCoinDivider)).collect(Collectors.toList()))
                 .setVout(voutJsonObjectList.stream().map(vout -> TransactionMapper.getBlockbookTransactionVoutDTO(vout, blockbookCoinDivider)).collect(Collectors.toList()));
+    }
+
+    public static RippledTransactionDTO toRippledTransactionDTO(JSONObject jsonObject, Long rippledCoinDivider) {
+        final long MILLENNIUM_IN_SECONDS = 946684800;
+        JSONObject tx = jsonObject.optJSONObject("tx");
+        Boolean verified = jsonObject.optBoolean("validated");
+
+        return new RippledTransactionDTO()
+                .setAccount(tx.optString("Account"))
+                .setDestination(tx.optString("Destination"))
+                .setDate(tx.optLong("date") + MILLENNIUM_IN_SECONDS)
+                .setAmount(TransactionMapper.getBigDecimalFromStringWithDividing(tx.optString("Amount"), rippledCoinDivider))
+                .setHash(tx.optString("hash"))
+                .setVerified(verified);
+    }
+
+    // todo complete
+    public static TrongridTransactionDTO toTrongridTransactionDTO(JSONObject jsonObject, Long rippledCoinDivider) {
+
+        return new TrongridTransactionDTO();
+//                .setAmount(TransactionMapper.getBigDecimalFromStringWithDividing(jsonObject
+//                        .optJSONObject("raw_data")
+//                        .optJSONObject("contract")
+//                        .optString("Amount"), rippledCoinDivider));
     }
 
     public static TransactionDTO toTransactionDTO(BlockbookTransactionDTO blockbookTransactionDTO) {
@@ -39,8 +66,29 @@ public class TransactionMapper {
                 .setTxid(blockbookTransactionDTO.getTxid())
                 .setValue(blockbookTransactionDTO.getValue())
                 .setDate(new Date(blockbookTransactionDTO.getBlockTime() * 1000))
-                .setType(TransactionMapper.getTransactionType(blockbookTransactionDTO))
+                .setType(TransactionMapper.getBlockbookTransactionType(blockbookTransactionDTO))
                 .setStatus(TransactionMapper.getTransactionStatusByConfirmations(blockbookTransactionDTO.getConfirmations()));
+    }
+
+    public static TransactionDTO toTransactionDTO(Transaction transaction, String address) {
+        return new TransactionDTO()
+                .setTxid(transaction.getTxHash())
+                .setValue(new BigDecimal(transaction.getValue()))
+                .setDate(Date.from(ZonedDateTime.parse(transaction.getTimeStamp()).toInstant()))
+                .setType(transaction.getToAddr().equals(address)
+                        ? TransactionDTO.TransactionType.DEPOSIT : TransactionDTO.TransactionType.WITHDRAW)
+                .setStatus(TransactionDTO.TransactionStatus.COMPLETE);
+    }
+
+    public static TransactionDTO toTransactionDTO(RippledTransactionDTO transaction, String address) {
+        return new TransactionDTO()
+                .setTxid(transaction.getHash())
+                .setValue(transaction.getAmount())
+                .setDate(new Date(transaction.getDate() * 1000))
+                .setType(transaction.getDestination().equals(address)
+                        ? TransactionDTO.TransactionType.DEPOSIT : TransactionDTO.TransactionType.WITHDRAW)
+                .setStatus(transaction.getVerified() ? TransactionDTO.TransactionStatus.COMPLETE
+                        : TransactionDTO.TransactionStatus.PENDING);
     }
 
     public static TransactionResponseDTO<TransactionDTO> toTransactionResponseDTO(TransactionResponseDTO<BlockbookTransactionDTO> transactionDTOTransactionResponseDTO) {
@@ -60,6 +108,37 @@ public class TransactionMapper {
                 transactionDTOTransactionResponseDTO.getTxs(),
                 transactionDTOList
         );
+    }
+
+    public static TransactionResponseDTO<TransactionDTO> toTransactionResponseDTO(TransactionPage transactionPage, String address) {
+        List<TransactionDTO> transactionDTOList = new ArrayList<>();
+        List<Transaction> binanceTransactions = transactionPage.getTx();
+
+        for (int i = 0; i < binanceTransactions.size(); i++) {
+            TransactionDTO transactionDTO = TransactionMapper.toTransactionDTO(binanceTransactions.get(i), address);
+            transactionDTO.setIndex(i + 1);
+            transactionDTOList.add(transactionDTO);
+        }
+
+        return new TransactionResponseDTO<TransactionDTO>()
+                .setAddress(address)
+                .setTxs(transactionPage.getTotal())
+                .setTransactions(transactionDTOList);
+    }
+
+    public static TransactionResponseDTO<TransactionDTO> toTransactionResponseDTO(List<RippledTransactionDTO> rippledTransactionDTOS, String address) {
+        List<TransactionDTO> transactionDTOList = new ArrayList<>();
+
+        for (int i = 0; i < rippledTransactionDTOS.size(); i++) {
+            TransactionDTO transactionDTO = TransactionMapper.toTransactionDTO(rippledTransactionDTOS.get(i), address);
+            transactionDTO.setIndex(i + 1);
+            transactionDTOList.add(transactionDTO);
+        }
+
+        return new TransactionResponseDTO<TransactionDTO>()
+                .setAddress(address)
+                .setTxs((long) rippledTransactionDTOS.size())
+                .setTransactions(transactionDTOList);
     }
 
     private static BlockbookTransactionVinDTO getBlockbookTransactionVinDTO(JSONObject jsonObject, Long blockbookCoinDivider) {
@@ -102,26 +181,15 @@ public class TransactionMapper {
         return null;
     }
 
-    /*
-        unknown(0),
-        pending(1), confirmation null, 0, 1, 2
-        complete(2), 3<
-        fail(3)
-     */
-    private static Integer getTransactionStatusByConfirmations(Integer confirmations) {
-        return confirmations == null || confirmations < 3 ? 1 : 2;
+    private static TransactionDTO.TransactionStatus getTransactionStatusByConfirmations(Integer confirmations) {
+        return confirmations == null || confirmations < 3
+                ? TransactionDTO.TransactionStatus.PENDING
+                : TransactionDTO.TransactionStatus.COMPLETE;
     }
 
-    /*
-        deposit(1),
-        withdraw(2),
-        send gift(3),
-        receive gift(4),
-        buy(5),
-        sell(6)
-     */
-    private static Integer getTransactionType(BlockbookTransactionDTO blockbookTransactionDTO) {
+    private static TransactionDTO.TransactionType getBlockbookTransactionType(BlockbookTransactionDTO blockbookTransactionDTO) {
         List<BlockbookTransactionVinDTO> vins = blockbookTransactionDTO.getVin();
-        return vins.stream().anyMatch(vin -> vin.getAddresses().contains(blockbookTransactionDTO.getAddress())) ? 2 : 1;
+        return vins.stream().anyMatch(vin -> vin.getAddresses().contains(blockbookTransactionDTO.getAddress()))
+                ? TransactionDTO.TransactionType.WITHDRAW : TransactionDTO.TransactionType.DEPOSIT;
     }
 }
