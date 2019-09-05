@@ -2,8 +2,10 @@ package com.batm.service;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 import com.batm.dto.*;
@@ -11,6 +13,9 @@ import com.batm.dto.mapper.TransactionMapper;
 import com.batm.entity.*;
 import com.batm.repository.TransactionRepository;
 import com.batm.util.Constant;
+import com.binance.dex.api.client.domain.TransactionPage;
+import com.binance.dex.api.client.domain.TransactionType;
+import com.binance.dex.api.client.domain.request.TransactionsRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
@@ -32,8 +37,6 @@ import com.binance.api.client.BinanceApiRestClient;
 import com.binance.dex.api.client.BinanceDexApiRestClient;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
-
-import javax.annotation.Nullable;
 
 @Service
 public class CoinService {
@@ -228,7 +231,8 @@ public class CoinService {
 
             @Override
             public TransactionResponseDTO<TransactionDTO> getTransactions(String address, Integer startIndex, Integer limit) {
-                return null;
+                TransactionPage page = getBinanceDEXTransactions(address);
+                return TransactionMapper.toTransactionResponseDTO(page, address);
             }
 
             @Override
@@ -245,7 +249,7 @@ public class CoinService {
             public BigDecimal getBalance(String address) {
                 //address = "r3kmLJN5D28dHuH8vZNUZpMC43pEHpaocV";
 
-                return getRippledBalance(address, 1000000L);
+                return getRippledBalance(address, Constant.XRP_BLOCKBOOK_DIVIDER);
             }
 
             @Override
@@ -255,7 +259,8 @@ public class CoinService {
 
             @Override
             public TransactionResponseDTO<TransactionDTO> getTransactions(String address, Integer startIndex, Integer limit) {
-                return null;
+                List<RippledTransactionDTO> rippledTransactionDTOS = getRippledTransactions(address, Constant.XRP_BLOCKBOOK_DIVIDER);
+                return TransactionMapper.toTransactionResponseDTO(rippledTransactionDTOS, address);
             }
 
             @Override
@@ -272,7 +277,7 @@ public class CoinService {
             public BigDecimal getBalance(String address) {
                 //address = "TFKCrg61s7Q9oWZAM9Fy4ua6ZvSAom8j7V";
 
-                return getTrongridBalance(trxUrl, address, 1000000L);
+                return getTrongridBalance(trxUrl, address, Constant.TRX_BLOCKBOOK_DIVIDER);
             }
 
             @Override
@@ -282,6 +287,8 @@ public class CoinService {
 
             @Override
             public TransactionResponseDTO<TransactionDTO> getTransactions(String address, Integer startIndex, Integer limit) {
+                List<TrongridTransactionDTO> rippledTransactionDTOS = getTrongridTransactions(address, startIndex, Constant.TRX_BLOCKBOOK_DIVIDER);
+//                return TransactionMapper.toTransactionResponseDTO(rippledTransactionDTOS, address); // todo
                 return null;
             }
 
@@ -451,7 +458,7 @@ public class CoinService {
         return result;
     }
 
-    public static TransactionResponseDTO<BlockbookTransactionDTO> getBlockbookTransactions(String url, String address, Long divider, @Nullable Integer fromIndex, @Nullable Integer limit) {
+    public static TransactionResponseDTO<BlockbookTransactionDTO> getBlockbookTransactions(String url, String address, Long divider, Integer fromIndex, Integer limit) {
         TransactionResponseDTO<BlockbookTransactionDTO> result = new TransactionResponseDTO<>();
         List<BlockbookTransactionDTO> blockbookTransactionDTOList = new ArrayList<>();
 
@@ -469,7 +476,7 @@ public class CoinService {
                 result.setTotalPages(res.getInt("totalPages"));
                 result.setItemsOnPage(res.optInt("itemsOnPage"));
                 result.setAddress(res.optString("address"));
-                result.setTxs(res.optInt("txs"));
+                result.setTxs(res.optLong("txs"));
                 result.setTransactions(blockbookTransactionDTOList);
 
                 if (res.getInt("page") == res.getInt("totalPages")) {
@@ -623,6 +630,24 @@ public class CoinService {
         return BigDecimal.ZERO;
     }
 
+    private static TransactionPage getBinanceDEXTransactions(String address) {
+        try {
+            TransactionsRequest transactionsRequest = new TransactionsRequest();
+            transactionsRequest.setStartTime(new SimpleDateFormat("yyyy").parse("2010").getTime());
+            transactionsRequest.setEndTime(new Date().getTime() + TimeUnit.DAYS.toMillis(1));
+            transactionsRequest.setTxType(TransactionType.TRANSFER);
+            transactionsRequest.setAddress(address);
+            transactionsRequest.setTxAsset("BNB");
+            transactionsRequest.setLimit(1000);
+
+            return binanceDex.getTransactions(transactionsRequest);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
     private static BigDecimal getRippledBalance(String address, long divider) {
         try {
             JSONObject param = new JSONObject();
@@ -644,6 +669,69 @@ public class CoinService {
         }
 
         return BigDecimal.ZERO;
+    }
+
+    private static List<RippledTransactionDTO> getRippledTransactions(String address, long divider) {
+        List<RippledTransactionDTO> result = new ArrayList<>();
+        try {
+            JSONObject param = new JSONObject();
+            param.put("account", address);
+            param.put("binary", false);
+            param.put("forward", false);
+            param.put("ledger_index_max", -1);
+            param.put("ledger_index_min", -1);
+            param.put("limit", 1000);
+
+            JSONArray params = new JSONArray();
+            params.add(param);
+
+            JSONObject req = new JSONObject();
+            req.put("method", "account_tx");
+            req.put("params", params);
+
+            JSONObject res = rest.postForObject(xrpUrl, req, JSONObject.class);
+            JSONObject jsonResult = res.optJSONObject("result");
+            JSONArray transactionsJsonArr = jsonResult.optJSONArray("transactions");
+
+            if (transactionsJsonArr != null) {
+                transactionsJsonArr.forEach(t -> result.add(TransactionMapper.toRippledTransactionDTO((JSONObject) t, divider)));
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return result;
+    }
+
+    // todo complete
+    private static List<TrongridTransactionDTO> getTrongridTransactions(String address, Integer startIndex, long divider) {
+        List<TrongridTransactionDTO> result = new ArrayList<>();
+        String nextPageUrl = trxUrl;
+
+        try {
+            do {
+                JSONObject res = rest.getForObject(nextPageUrl, JSONObject.class);
+                JSONObject meta = res.optJSONObject("meta");
+                JSONObject links = meta.optJSONObject("links");
+
+                nextPageUrl = links.optString("next");
+
+                JSONArray data = res.optJSONArray("data");
+                if (data != null) {
+                    data.forEach(t -> result.add(TransactionMapper.toTrongridTransactionDTO((JSONObject) t, divider)));
+                }
+
+                if (nextPageUrl == null || nextPageUrl.equals("")) {
+                    break;
+                }
+
+            } while (result.size() < startIndex + 10);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return result;
     }
 
     public String getCoinAddressByUserIdAndCoin(Long userId, String coin) {

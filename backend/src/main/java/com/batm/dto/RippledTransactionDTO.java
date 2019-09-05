@@ -6,19 +6,19 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
-import java.util.List;
+import java.math.BigDecimal;
 
 @Getter
 @Setter
 @Accessors(chain = true)
 @NoArgsConstructor
 @AllArgsConstructor
-public class TransactionResponseDTO<T> {
+public class RippledTransactionDTO {
 
-    private Integer totalPages;
-    private Integer itemsOnPage;
-    private String address;
-    private Long txs;
-
-    private List<T> transactions;
+    private String destination;
+    private String account;
+    private String hash;
+    private Long date;
+    private Boolean verified;
+    private BigDecimal amount;
 }

@@ -6,19 +6,19 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
-import java.util.List;
+import java.math.BigDecimal;
 
 @Getter
 @Setter
 @Accessors(chain = true)
 @NoArgsConstructor
 @AllArgsConstructor
-public class TransactionResponseDTO<T> {
+public class TrongridTransactionDTO {
 
-    private Integer totalPages;
-    private Integer itemsOnPage;
-    private String address;
-    private Long txs;
-
-    private List<T> transactions;
+    private String txID;
+    private String code;
+    private BigDecimal amount;
+    private Long block_timestamp;
+    private String owner_address;
+    private String to_address;
 }
