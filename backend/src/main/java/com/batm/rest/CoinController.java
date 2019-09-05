@@ -6,10 +6,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 import com.batm.dto.TransactionDTO;
 import com.batm.dto.TransactionResponseDTO;
 import com.batm.entity.Error;
+import com.batm.rest.vm.TxVM;
 import com.batm.util.Constant;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -78,7 +78,7 @@ public class CoinController {
             }
 
             String address = coinService.getCoinAddressByUserPhoneAndCoin(matcher.group(0), coinId.name());
-            if(address == null) {
+            if (address == null) {
                 address = coinService.getDefaultPublicKeyByCoin(coinId);
             }
 
@@ -108,6 +108,19 @@ public class CoinController {
             } else {
                 response.put("transactions", new ArrayList<>());
             }
+
+            return Response.ok(response);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Response.serverError();
+        }
+    }
+
+    @PostMapping("/user/{userId}/coins/{coinId}/transaction")
+    public Response submitTransaction(@PathVariable Long userId, @PathVariable CoinService.CoinEnum coinId, @RequestBody TxVM txVM) {
+        try {
+            JSONObject response = new JSONObject();
+            response.put("tx", coinId.submitTransaction(txVM.getHex()));
 
             return Response.ok(response);
         } catch (Exception e) {
