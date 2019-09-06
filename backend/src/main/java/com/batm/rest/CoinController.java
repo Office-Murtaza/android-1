@@ -97,14 +97,13 @@ public class CoinController {
         try {
             TransactionResponseDTO<TransactionDTO> transactionResponseDTO = coinService.getTransactions(userId, coinId, index);
             List<TransactionDTO> transactions = transactionResponseDTO.getTransactions();
-
-            int limit = Math.min(transactions.size(), (10 + index));
+            int limit = index + 10;
 
             JSONObject response = new JSONObject();
             response.put("total", transactionResponseDTO.getTxs());
 
-            if (transactions != null && transactions.size() >= limit && index <= limit) {
-                response.put("transactions", transactions.subList(index - 1, limit - 1));
+            if (transactions != null && transactions.size() >= index) {
+                response.put("transactions", transactions.subList(index - 1, transactions.size() < limit ? transactions.size() : limit - 1));
             } else {
                 response.put("transactions", new ArrayList<>());
             }

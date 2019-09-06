@@ -1,12 +1,14 @@
 package com.batm.dto.mapper;
 
 import com.batm.dto.*;
+import com.batm.util.Base58;
 import com.binance.dex.api.client.domain.Transaction;
 import com.binance.dex.api.client.domain.TransactionPage;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.springframework.stereotype.Component;
 
+import javax.xml.bind.DatatypeConverter;
 import java.math.BigDecimal;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
@@ -52,11 +54,46 @@ public class TransactionMapper {
     }
 
     // todo complete
-    public static TrongridTransactionDTO toTrongridTransactionDTO(JSONObject jsonObject, Long rippledCoinDivider) {
-        String txId = jsonObject.optString("tx_id") != null && !jsonObject.optString("tx_id").equals("") ? jsonObject.optString("tx_id") : jsonObject.optString("txID");
-        return new TrongridTransactionDTO()
-                .setBlockTimestamp(jsonObject.optLong("block_timestamp"))
-                .setTxID(txId);
+    public static TrongridTransactionDTO toTrongridTransactionDTO(JSONObject jsonObject, String address, Long trongridDivider) {
+        try {
+            String hexAddress = TransactionMapper.getHexStringFromBase58(address).toLowerCase();
+            String txId = jsonObject.optString("tx_id") != null && !jsonObject.optString("tx_id").equals("")
+                    ? jsonObject.optString("tx_id") : jsonObject.optString("txID");
+            JSONArray contract = jsonObject.optJSONObject("raw_data").optJSONArray("contract");
+            List<JSONObject> contractList = TransactionMapper.toList(contract);
+            List<JSONObject> ret = TransactionMapper.toList(jsonObject.optJSONArray("ret"));
+            JSONObject parameter = null;
+
+            for (int i = 0; i < contractList.size(); i++) {
+                JSONObject p = contractList.get(i).optJSONObject("parameter");
+                JSONObject value = p.optJSONObject("value");
+                String owner = value.optString("owner_address");
+                String to = value.optString("to_address");
+                long amount = value.optLong("amount");
+
+                if (amount > 0
+                        && (value.optString("asset_name") == null || value.optString("asset_name").equals(""))
+                        && (!owner.equals("") && !to.equals("") && !owner.equals(to))
+                        && (owner.equals(hexAddress.substring(0, owner.length())) || to.equals(hexAddress.substring(0, to.length())))) {
+                    parameter = value;
+                    break;
+                }
+            }
+
+            if (parameter != null) {
+                return new TrongridTransactionDTO()
+                        .setBlockTimestamp(jsonObject.optLong("block_timestamp"))
+                        .setTxID(txId)
+                        .setAmount(TransactionMapper.getBigDecimalFromStringWithDividing(Long.toString(parameter.optLong("amount")), trongridDivider))
+                        .setToAddress(parameter.optString("to_address"))
+                        .setOwnerAddress(parameter.optString("owner_address"))
+                        .setCode(ret.get(0).optString("code"));
+            }
+        } catch (Exception e) {
+            return null;
+        }
+
+        return null;
     }
 
     public static TransactionDTO toTransactionDTO(BlockbookTransactionDTO blockbookTransactionDTO) {
@@ -92,6 +129,9 @@ public class TransactionMapper {
     public static TransactionDTO toTransactionDTO(TrongridTransactionDTO transaction, String address) {
         return new TransactionDTO()
                 .setTxid(transaction.getTxID())
+                .setStatus(transaction.getCode().equals("SUCESS") ? TransactionDTO.TransactionStatus.COMPLETE : TransactionDTO.TransactionStatus.PENDING)
+                .setType(transaction.getToAddress().equals(address) ? TransactionDTO.TransactionType.DEPOSIT : TransactionDTO.TransactionType.WITHDRAW)
+                .setValue(transaction.getAmount())
                 .setDate(new Date(transaction.getBlockTimestamp()));
     }
 
@@ -195,5 +235,9 @@ public class TransactionMapper {
         List<BlockbookTransactionVinDTO> vins = blockbookTransactionDTO.getVin();
         return vins.stream().anyMatch(vin -> vin.getAddresses().contains(blockbookTransactionDTO.getAddress()))
                 ? TransactionDTO.TransactionType.WITHDRAW : TransactionDTO.TransactionType.DEPOSIT;
+    }
+
+    private static String getHexStringFromBase58(String base58) {
+        return DatatypeConverter.printHexBinary(Base58.decode(base58));
     }
 }

@@ -299,7 +299,7 @@ public class CoinService {
                 return new TransactionResponseDTO<TransactionDTO>()
                         .setAddress(address)
                         .setTxs((long) trongridTransactionDTOS.size())
-                        .setTransactions(transactionDTOList);
+                        .setTransactions(transactionDTOList.stream().filter(Objects::nonNull).collect(Collectors.toList()));
             }
 
             @Override
@@ -717,7 +717,8 @@ public class CoinService {
     // todo complete
     private static List<TrongridTransactionDTO> getTrongridTransactions(String address, Integer startIndex, long divider) {
         List<TrongridTransactionDTO> result = new ArrayList<>();
-        String nextPageUrl = trxUrl + "/v1/accounts/" + address + "/transactions";
+        String nextPageUrl = trxUrl + "/v1/accounts/" + address + "/transactions?limit=200";
+        int counter = 0;
 
         try {
             do {
@@ -729,10 +730,16 @@ public class CoinService {
 
                 JSONArray data = res.optJSONArray("data");
                 if (data != null) {
-                    data.forEach(t -> result.add(TransactionMapper.toTrongridTransactionDTO((JSONObject) t, divider)));
+                    for (int i = 0; i < data.size(); i++) {
+                        result.add(TransactionMapper.toTrongridTransactionDTO((JSONObject) data.get(i), address, divider));
+                    }
+
+                    result = result.stream()
+                            .filter(Objects::nonNull)
+                            .collect(Collectors.toList());
                 }
 
-                if (nextPageUrl == null || nextPageUrl.equals("")) {
+                if (nextPageUrl == null || nextPageUrl.equals("") || ++counter > 5) {
                     break;
                 }
 
