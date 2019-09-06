@@ -18,7 +18,7 @@ public class TrongridTransactionDTO {
     private String txID;
     private String code;
     private BigDecimal amount;
-    private Long block_timestamp;
-    private String owner_address;
-    private String to_address;
+    private Long blockTimestamp;
+    private String ownerAddress;
+    private String toAddress;
 }

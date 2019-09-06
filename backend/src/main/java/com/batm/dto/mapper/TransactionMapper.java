@@ -53,12 +53,10 @@ public class TransactionMapper {
 
     // todo complete
     public static TrongridTransactionDTO toTrongridTransactionDTO(JSONObject jsonObject, Long rippledCoinDivider) {
-
-        return new TrongridTransactionDTO();
-//                .setAmount(TransactionMapper.getBigDecimalFromStringWithDividing(jsonObject
-//                        .optJSONObject("raw_data")
-//                        .optJSONObject("contract")
-//                        .optString("Amount"), rippledCoinDivider));
+        String txId = jsonObject.optString("tx_id") != null && !jsonObject.optString("tx_id").equals("") ? jsonObject.optString("tx_id") : jsonObject.optString("txID");
+        return new TrongridTransactionDTO()
+                .setBlockTimestamp(jsonObject.optLong("block_timestamp"))
+                .setTxID(txId);
     }
 
     public static TransactionDTO toTransactionDTO(BlockbookTransactionDTO blockbookTransactionDTO) {
@@ -89,6 +87,12 @@ public class TransactionMapper {
                         ? TransactionDTO.TransactionType.DEPOSIT : TransactionDTO.TransactionType.WITHDRAW)
                 .setStatus(transaction.getVerified() ? TransactionDTO.TransactionStatus.COMPLETE
                         : TransactionDTO.TransactionStatus.PENDING);
+    }
+
+    public static TransactionDTO toTransactionDTO(TrongridTransactionDTO transaction, String address) {
+        return new TransactionDTO()
+                .setTxid(transaction.getTxID())
+                .setDate(new Date(transaction.getBlockTimestamp()));
     }
 
     public static TransactionResponseDTO<TransactionDTO> toTransactionResponseDTO(TransactionResponseDTO<BlockbookTransactionDTO> transactionDTOTransactionResponseDTO) {

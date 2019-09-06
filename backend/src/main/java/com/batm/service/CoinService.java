@@ -287,9 +287,19 @@ public class CoinService {
 
             @Override
             public TransactionResponseDTO<TransactionDTO> getTransactions(String address, Integer startIndex, Integer limit) {
-                List<TrongridTransactionDTO> rippledTransactionDTOS = getTrongridTransactions(address, startIndex, Constant.TRX_BLOCKBOOK_DIVIDER);
-//                return TransactionMapper.toTransactionResponseDTO(rippledTransactionDTOS, address); // todo
-                return null;
+                List<TrongridTransactionDTO> trongridTransactionDTOS = getTrongridTransactions(address, startIndex, Constant.TRX_BLOCKBOOK_DIVIDER);
+                List<TransactionDTO> transactionDTOList = new ArrayList<>();
+
+                for (int i = 0; i < trongridTransactionDTOS.size(); i++) {
+                    TransactionDTO transactionDTO = TransactionMapper.toTransactionDTO(trongridTransactionDTOS.get(i), address);
+                    transactionDTO.setIndex(i + 1);
+                    transactionDTOList.add(transactionDTO);
+                }
+
+                return new TransactionResponseDTO<TransactionDTO>()
+                        .setAddress(address)
+                        .setTxs((long) trongridTransactionDTOS.size())
+                        .setTransactions(transactionDTOList);
             }
 
             @Override
@@ -707,7 +717,7 @@ public class CoinService {
     // todo complete
     private static List<TrongridTransactionDTO> getTrongridTransactions(String address, Integer startIndex, long divider) {
         List<TrongridTransactionDTO> result = new ArrayList<>();
-        String nextPageUrl = trxUrl;
+        String nextPageUrl = trxUrl + "/v1/accounts/" + address + "/transactions";
 
         try {
             do {
