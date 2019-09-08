@@ -16,6 +16,7 @@ import com.batm.util.Constant;
 import com.binance.dex.api.client.domain.TransactionPage;
 import com.binance.dex.api.client.domain.TransactionType;
 import com.binance.dex.api.client.domain.request.TransactionsRequest;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
@@ -39,6 +40,7 @@ import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 @Service
+@Slf4j
 public class CoinService {
 
     @Autowired
@@ -353,14 +355,21 @@ public class CoinService {
 
     private static CompletableFuture<ChainalysisResponseDTO> callAsyncChainalysisValidation(Transaction transaction) {
         return CompletableFuture.supplyAsync(() -> {
-            transaction.setCryptoAddress(transaction.getCryptoAddress().split(":")[0]);
+            try {
+                transaction.setCryptoAddress(transaction.getCryptoAddress().split(":")[0]);
 
-            CoinEnum coinEnum = CoinEnum.valueOf(transaction.getCryptoCurrency());
-            TransactionNumberDTO trxNumberDTO = coinEnum.getTransactionNumber(transaction.getCryptoAddress(), transaction.getCryptoAmount());
-            transaction.setDetail(trxNumberDTO.getTransactionId());
-            transaction.setN(trxNumberDTO.getN());
+                CoinEnum coinEnum = CoinEnum.valueOf(transaction.getCryptoCurrency());
+                TransactionNumberDTO trxNumberDTO = coinEnum.getTransactionNumber(transaction.getCryptoAddress(), transaction.getCryptoAmount());
+                transaction.setDetail(trxNumberDTO.getTransactionId());
+                transaction.setN(trxNumberDTO.getN());
 
-            return validateChainalysisTransfer(transaction);
+                return validateChainalysisTransfer(transaction);
+            } catch (Exception e) {
+                e.printStackTrace();
+                log.error(transaction.toString());
+            }
+
+            return null;
         });
     }
 

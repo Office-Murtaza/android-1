@@ -78,4 +78,20 @@ public class Transaction implements Serializable {
             return false;
         return true;
     }
+
+    @Override
+    public String toString() {
+        return "Transaction{" +
+                "transactionId=" + transactionId +
+                ", type=" + type +
+                ", n=" + n +
+                ", detail='" + detail + '\'' +
+                ", status=" + status +
+                ", tracked=" + tracked +
+                ", cryptoCurrency='" + cryptoCurrency + '\'' +
+                ", cryptoAddress='" + cryptoAddress + '\'' +
+                ", cryptoAmount=" + cryptoAmount +
+                ", identity=" + identity +
+                '}';
+    }
 }
