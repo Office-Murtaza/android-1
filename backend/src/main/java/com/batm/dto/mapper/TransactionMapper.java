@@ -224,7 +224,7 @@ public class TransactionMapper {
     private static TransactionDTO.TransactionType getBlockbookTransactionType(BlockbookTransactionDTO blockbookTransactionDTO) {
         List<BlockbookTransactionVinDTO> vins = blockbookTransactionDTO.getVin();
         return vins.stream().anyMatch(vin -> vin.getAddresses().contains(blockbookTransactionDTO.getAddress()))
-                ? TransactionDTO.TransactionType.WITHDRAW : TransactionDTO.TransactionType.DEPOSIT;
+                ? TransactionDTO.TransactionType.DEPOSIT : TransactionDTO.TransactionType.WITHDRAW;
     }
 
     private static String getHexStringFromBase58(String base58) {
