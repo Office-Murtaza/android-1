@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import com.batm.dto.SendTransactionResponseDTO;
 import com.batm.dto.TransactionDTO;
 import com.batm.dto.TransactionResponseDTO;
 import com.batm.entity.Error;
@@ -121,6 +123,34 @@ public class CoinController {
             JSONObject response = new JSONObject();
             response.put("tx", coinId.submitTransaction(txVM.getHex()));
 
+            return Response.ok(response);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Response.serverError();
+        }
+    }
+
+    @GetMapping("/user/{userId}/coins/{coinId}/sendtx/{hex}")
+    public Response sendTransaction(@PathVariable Long userId, @PathVariable CoinService.CoinEnum coinId, @PathVariable String hex) {
+        try {
+            JSONObject response = new JSONObject();
+            SendTransactionResponseDTO sendTransactionResponse = coinId.sendTransaction(hex);
+            if (sendTransactionResponse.getSuccess()) {
+                response.put("txId", sendTransactionResponse.getTxId());
+                return Response.ok(response);
+            }
+            throw new Exception();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Response.serverError();
+        }
+    }
+
+    @GetMapping("/user/{userId}/coins/{coinId}/utxo/{publicKey}")
+    public Response getCoinUtxo(@PathVariable String userId, @PathVariable CoinService.CoinEnum coinId, @PathVariable String publicKey) {
+        try {
+            JSONObject response = new JSONObject();
+            response.put("utxoList", coinId.getUtxo(publicKey));
             return Response.ok(response);
         } catch (Exception e) {
             e.printStackTrace();
