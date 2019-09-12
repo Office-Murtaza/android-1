@@ -2,6 +2,7 @@ package com.batm.dto.mapper;
 
 import com.batm.dto.*;
 import com.batm.util.Base58;
+import com.batm.util.Util;
 import com.binance.dex.api.client.domain.Transaction;
 import com.binance.dex.api.client.domain.TransactionPage;
 import net.sf.json.JSONArray;
@@ -20,8 +21,8 @@ import java.util.stream.Collectors;
 public class TransactionMapper {
 
     public static BlockbookTransactionDTO toBlockbookTransactionDTO(JSONObject jsonObject, String address, Long blockbookCoinDivider) {
-        List<JSONObject> vinJsonObjectList = TransactionMapper.toList(jsonObject.optJSONArray("vin"));
-        List<JSONObject> voutJsonObjectList = TransactionMapper.toList(jsonObject.optJSONArray("vout"));
+        List<JSONObject> vinJsonObjectList = Util.jsonArrayToList(jsonObject.optJSONArray("vin"));
+        List<JSONObject> voutJsonObjectList = Util.jsonArrayToList(jsonObject.optJSONArray("vout"));
 
         return new BlockbookTransactionDTO()
                 .setAddress(address)
@@ -60,8 +61,8 @@ public class TransactionMapper {
             String txId = jsonObject.optString("tx_id") != null && !jsonObject.optString("tx_id").equals("")
                     ? jsonObject.optString("tx_id") : jsonObject.optString("txID");
             JSONArray contract = jsonObject.optJSONObject("raw_data").optJSONArray("contract");
-            List<JSONObject> contractList = TransactionMapper.toList(contract);
-            List<JSONObject> ret = TransactionMapper.toList(jsonObject.optJSONArray("ret"));
+            List<JSONObject> contractList = Util.jsonArrayToList(contract);
+            List<JSONObject> ret = Util.jsonArrayToList(jsonObject.optJSONArray("ret"));
             JSONObject parameter = null;
 
             for (int i = 0; i < contractList.size(); i++) {
@@ -194,7 +195,7 @@ public class TransactionMapper {
                 .setValue(TransactionMapper.getBigDecimalFromStringWithDividing(jsonObject.optString("value"), blockbookCoinDivider))
                 .setHex(jsonObject.optString("hex"))
                 .setVout(jsonObject.optInt("vout"))
-                .setAddresses(TransactionMapper.toList(jsonObject.optJSONArray("addresses")));
+                .setAddresses(Util.jsonArrayToList(jsonObject.optJSONArray("addresses")));
     }
 
     private static BlockbookTransactionVoutDTO getBlockbookTransactionVoutDTO(JSONObject jsonObject, Long blockbookCoinDivider) {
@@ -204,18 +205,7 @@ public class TransactionMapper {
                 .setHex(jsonObject.optString("hex"))
                 .setIsAddress(jsonObject.optBoolean("isAddress"))
                 .setSpent(jsonObject.optBoolean("spent"))
-                .setAddresses(TransactionMapper.toList(jsonObject.optJSONArray("addresses")));
-    }
-
-    private static <T> List<T> toList(JSONArray jsonArray) {
-        List<T> list = new ArrayList<>();
-        if (jsonArray != null) {
-            int len = jsonArray.size();
-            for (int i = 0; i < len; i++) {
-                list.add((T) jsonArray.opt(i));
-            }
-        }
-        return list;
+                .setAddresses(Util.jsonArrayToList(jsonObject.optJSONArray("addresses")));
     }
 
     private static BigDecimal getBigDecimalFromStringWithDividing(String value, Long divider) {
