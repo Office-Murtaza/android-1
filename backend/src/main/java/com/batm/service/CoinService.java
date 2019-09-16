@@ -443,7 +443,11 @@ public class CoinService {
                 log.error(transaction.toString());
             }
 
-            return null;
+            ChainalysisResponseDTO dto = new ChainalysisResponseDTO();
+            transaction.setTracked(true);
+            dto.setTransaction(transaction);
+
+            return dto;
         });
     }
 
