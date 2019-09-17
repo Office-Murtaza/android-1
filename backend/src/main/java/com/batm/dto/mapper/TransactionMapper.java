@@ -8,7 +8,6 @@ import com.binance.dex.api.client.domain.TransactionPage;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.springframework.stereotype.Component;
-
 import javax.xml.bind.DatatypeConverter;
 import java.math.BigDecimal;
 import java.time.ZonedDateTime;
@@ -98,11 +97,13 @@ public class TransactionMapper {
     }
 
     public static TransactionDTO toTransactionDTO(BlockbookTransactionDTO blockbookTransactionDTO) {
+        TransactionDTO.TransactionType blockbookTransactionType = TransactionMapper.getBlockbookTransactionType(blockbookTransactionDTO);
+
         return new TransactionDTO()
                 .setTxid(blockbookTransactionDTO.getTxid())
-                .setValue(blockbookTransactionDTO.getValue())
+                .setValue(TransactionMapper.getBlockbookTransactionAmount(blockbookTransactionType, blockbookTransactionDTO))
                 .setDate(new Date(blockbookTransactionDTO.getBlockTime() * 1000))
-                .setType(TransactionMapper.getBlockbookTransactionType(blockbookTransactionDTO))
+                .setType(blockbookTransactionType)
                 .setStatus(TransactionMapper.getTransactionStatusByConfirmations(blockbookTransactionDTO.getConfirmations()));
     }
 
@@ -224,7 +225,19 @@ public class TransactionMapper {
     private static TransactionDTO.TransactionType getBlockbookTransactionType(BlockbookTransactionDTO blockbookTransactionDTO) {
         List<BlockbookTransactionVinDTO> vins = blockbookTransactionDTO.getVin();
         return vins.stream().anyMatch(vin -> vin.getAddresses().contains(blockbookTransactionDTO.getAddress()))
-                ? TransactionDTO.TransactionType.DEPOSIT : TransactionDTO.TransactionType.WITHDRAW;
+                ? TransactionDTO.TransactionType.WITHDRAW : TransactionDTO.TransactionType.DEPOSIT;
+    }
+
+    private static BigDecimal getBlockbookTransactionAmount(TransactionDTO.TransactionType type, BlockbookTransactionDTO blockbookTransactionDTO) {
+        if (type == TransactionDTO.TransactionType.WITHDRAW) {
+            return blockbookTransactionDTO.getVout().stream().filter(vout -> !vout.getAddresses().contains(blockbookTransactionDTO.getAddress()))
+                    .findFirst()
+                    .get().getValue();
+        } else {
+            return blockbookTransactionDTO.getVout().stream().filter(vout -> vout.getAddresses().contains(blockbookTransactionDTO.getAddress()))
+                    .findFirst()
+                    .get().getValue();
+        }
     }
 
     private static String getHexStringFromBase58(String base58) {
