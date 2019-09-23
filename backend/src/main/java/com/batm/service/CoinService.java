@@ -13,6 +13,7 @@ import com.batm.dto.mapper.TransactionMapper;
 import com.batm.entity.*;
 import com.batm.repository.TransactionRepository;
 import com.batm.util.Constant;
+import com.batm.util.TransactionUtil;
 import com.binance.dex.api.client.domain.TransactionPage;
 import com.binance.dex.api.client.domain.TransactionType;
 import com.binance.dex.api.client.domain.request.TransactionsRequest;
@@ -126,6 +127,11 @@ public class CoinService {
             }
 
             @Override
+            public BlockbookTxDTO getTransactions2(String address, Integer startIndex, Integer limit) {
+                return getBlockbookTransactions2(btcUrl, address, Constant.BTC_DIVIDER, startIndex, limit);
+            }
+
+            @Override
             public JSONObject submitTransaction(String txId) {
                 return submitBlockbookTransaction(btcUrl, txId);
             }
@@ -161,6 +167,11 @@ public class CoinService {
             public TransactionResponseDTO<TransactionDTO> getTransactions(String address, Integer startIndex, Integer limit) {
                 TransactionResponseDTO<BlockbookTransactionDTO> transactionDTOTransactionResponseDTO = getBlockbookTransactions(ethUrl, address, Constant.ETH_DIVIDER, startIndex, limit);
                 return TransactionMapper.toTransactionResponseDTO(transactionDTOTransactionResponseDTO);
+            }
+
+            @Override
+            public BlockbookTxDTO getTransactions2(String address, Integer startIndex, Integer limit) {
+                return null;
             }
 
             @Override
@@ -202,6 +213,11 @@ public class CoinService {
             }
 
             @Override
+            public BlockbookTxDTO getTransactions2(String address, Integer startIndex, Integer limit) {
+                return null;
+            }
+
+            @Override
             public JSONObject submitTransaction(String txId) {
                 return submitBlockbookTransaction(bchUrl, txId);
             }
@@ -237,6 +253,11 @@ public class CoinService {
             public TransactionResponseDTO<TransactionDTO> getTransactions(String address, Integer startIndex, Integer limit) {
                 TransactionResponseDTO<BlockbookTransactionDTO> transactionDTOTransactionResponseDTO = getBlockbookTransactions(ltcUrl, address, Constant.LTC_DIVIDER, startIndex, limit);
                 return TransactionMapper.toTransactionResponseDTO(transactionDTOTransactionResponseDTO);
+            }
+
+            @Override
+            public BlockbookTxDTO getTransactions2(String address, Integer startIndex, Integer limit) {
+                return null;
             }
 
             @Override
@@ -278,6 +299,11 @@ public class CoinService {
             }
 
             @Override
+            public BlockbookTxDTO getTransactions2(String address, Integer startIndex, Integer limit) {
+                return null;
+            }
+
+            @Override
             public JSONObject submitTransaction(String txId) {
                 return null;
             }
@@ -313,6 +339,11 @@ public class CoinService {
             public TransactionResponseDTO<TransactionDTO> getTransactions(String address, Integer startIndex, Integer limit) {
                 List<RippledTransactionDTO> rippledTransactionDTOS = getRippledTransactions(address, Constant.XRP_DIVIDER);
                 return TransactionMapper.toTransactionResponseDTO(rippledTransactionDTOS, address);
+            }
+
+            @Override
+            public BlockbookTxDTO getTransactions2(String address, Integer startIndex, Integer limit) {
+                return null;
             }
 
             @Override
@@ -365,6 +396,11 @@ public class CoinService {
             }
 
             @Override
+            public BlockbookTxDTO getTransactions2(String address, Integer startIndex, Integer limit) {
+                return null;
+            }
+
+            @Override
             public JSONObject submitTransaction(String txId) {
                 return null;
             }
@@ -387,6 +423,8 @@ public class CoinService {
         public abstract TransactionNumberDTO getTransactionNumber(String address, BigDecimal amount);
 
         public abstract TransactionResponseDTO<TransactionDTO> getTransactions(String address, Integer startIndex, Integer limit);
+
+        public abstract BlockbookTxDTO getTransactions2(String address, Integer startIndex, Integer limit);
 
         public abstract JSONObject submitTransaction(String txId);
 
@@ -541,7 +579,6 @@ public class CoinService {
     }
 
     public TransactionResponseDTO<TransactionDTO> getTransactions(Long userId, CoinEnum coin, Integer startIndex) {
-        startIndex = startIndex == null || startIndex <= 0 ? 1 : startIndex;
         TransactionResponseDTO<TransactionDTO> result = new TransactionResponseDTO<>();
         int defaultLimit = 10;
 
@@ -553,6 +590,11 @@ public class CoinService {
         }
 
         return result;
+    }
+
+    public BlockbookTxDTO getTransactions2(Long userId, CoinEnum coin, Integer startIndex) {
+        String address = "1GqcbCbwpKbXDMs4VHVT4VZkrag5av8xdJ";//getCoinAddressByUserIdAndCoin(userId, coin.name());
+        return coin.getTransactions2(address, startIndex, Constant.TRANSACTION_LIMIT);
     }
 
     public static TransactionResponseDTO<BlockbookTransactionDTO> getBlockbookTransactions(String url, String address, Long divider, Integer fromIndex, Integer limit) {
@@ -581,6 +623,22 @@ public class CoinService {
                 }
             }
 
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return result;
+    }
+
+    public static BlockbookTxDTO getBlockbookTransactions2(String url, String address, Long divider, Integer fromIndex, Integer limit) {
+        BlockbookTxDTO result = new BlockbookTxDTO();
+
+        try {
+            JSONObject res = rest.getForObject(url + "/api/v2/address/" + address + "?details=txs&pageSize=1000&page=1", JSONObject.class);
+            JSONArray transactionsArray = res.optJSONArray("transactions");
+
+            result.setTotal(res.optInt("txs"));
+            result.setTransactions(TransactionUtil.compose(transactionsArray, address, divider, fromIndex, limit));
         } catch (Exception e) {
             e.printStackTrace();
         }

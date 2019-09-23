@@ -7,7 +7,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
-
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
@@ -19,10 +18,9 @@ import java.util.Date;
 @AllArgsConstructor
 public class TransactionDTO implements Serializable {
 
-    private static final long serialVersionUID = 9027143155135946959L;
-
-    private String txid;
     private Integer index;
+    private String txid;
+
     private BigDecimal value;
 
     @JsonFormat(shape = JsonFormat.Shape.OBJECT)
@@ -42,7 +40,7 @@ public class TransactionDTO implements Serializable {
 
         private int value;
 
-        private TransactionStatus(int value) {
+        TransactionStatus(int value) {
             this.value = value;
         }
 
@@ -62,7 +60,7 @@ public class TransactionDTO implements Serializable {
 
         private int value;
 
-        private TransactionType(int value) {
+        TransactionType(int value) {
             this.value = value;
         }
 

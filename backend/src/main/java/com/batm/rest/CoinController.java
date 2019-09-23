@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import com.batm.dto.BlockbookTxDTO;
 import com.batm.dto.SendTransactionResponseDTO;
 import com.batm.dto.TransactionDTO;
 import com.batm.dto.TransactionResponseDTO;
@@ -109,6 +110,20 @@ public class CoinController {
             }
 
             return Response.ok(response);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Response.serverError();
+        }
+    }
+
+    @GetMapping("/user/{userId}/coins/{coinId}/transactions2")
+    public Response getTransactions2(@PathVariable Long userId, @PathVariable CoinService.CoinEnum coinId, @RequestParam(required = false) Integer index) {
+        try {
+            index = index == null || index <= 0 ? 1 : index;
+
+            BlockbookTxDTO dto = coinService.getTransactions2(userId, coinId, index);
+
+            return Response.ok(dto);
         } catch (Exception e) {
             e.printStackTrace();
             return Response.serverError();
