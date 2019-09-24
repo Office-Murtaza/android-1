@@ -34,8 +34,6 @@ public class TrongridUtil {
                 continue;
             }
 
-            k++;
-
             String txId = tx.optString("txID");
             Long blockTimestamp = tx.optLong("block_timestamp");
             Long amount = rowData.optLong("amount");
@@ -49,6 +47,8 @@ public class TrongridUtil {
             Date date = new Date(blockTimestamp);
 
             transactions.add(new TransactionDTO(fromIndex + k, txId, value, status, type, date));
+
+            k++;
         }
 
         result.setTotal(count);

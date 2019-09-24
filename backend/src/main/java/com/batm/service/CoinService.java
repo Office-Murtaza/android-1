@@ -637,6 +637,7 @@ public class CoinService {
             result.setTotal(res.optInt("txs"));
             result.setTransactions(BlockbookUtil.compose(transactionsArray, address, divider, fromIndex, limit));
 
+            return result;
         } catch (Exception e) {
             e.printStackTrace();
         }
