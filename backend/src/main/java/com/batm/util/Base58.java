@@ -1,11 +1,14 @@
 package com.batm.util;
 
+import org.apache.commons.lang.StringUtils;
+import org.bitcoinj.core.Sha256Hash;
+import org.spongycastle.util.encoders.Hex;
 import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
 
 public class Base58 {
 
-    public static final char[] ALPHABET = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz"
+    private static final char[] ALPHABET = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz"
             .toCharArray();
     private static final int[] INDEXES = new int[128];
 
@@ -21,7 +24,7 @@ public class Base58 {
     /**
      * Encodes the given bytes in base58. No checksum is appended.
      */
-    public static String encode(byte[] input) {
+    private static String encode(byte[] input) {
         if (input.length == 0) {
             return "";
         }
@@ -106,7 +109,7 @@ public class Base58 {
         return copyOfRange(temp, j - zeroCount, temp.length);
     }
 
-    public static BigInteger decodeToBigInteger(String input) throws IllegalArgumentException {
+    private static BigInteger decodeToBigInteger(String input) throws IllegalArgumentException {
         return new BigInteger(1, decode(input));
     }
 
@@ -151,4 +154,74 @@ public class Base58 {
         return range;
     }
 
+    private static byte[] decodeFromBase58Check(String addressBase58) {
+        if (StringUtils.isEmpty(addressBase58)) {
+            return null;
+        }
+
+        byte[] address = decode58Check(addressBase58);
+
+
+        return address;
+    }
+
+    private static byte[] decode58Check(String input) {
+        byte[] decodeCheck = Base58.decode(input);
+        if (decodeCheck.length <= 4) {
+            return null;
+        }
+        byte[] decodeData = new byte[decodeCheck.length - 4];
+        System.arraycopy(decodeCheck, 0, decodeData, 0, decodeData.length);
+        byte[] hash0 = Sha256Hash.hash(decodeData);
+        byte[] hash1 = Sha256Hash.hash(hash0);
+        if (hash1[0] == decodeCheck[decodeData.length] &&
+                hash1[1] == decodeCheck[decodeData.length + 1] &&
+                hash1[2] == decodeCheck[decodeData.length + 2] &&
+                hash1[3] == decodeCheck[decodeData.length + 3]) {
+            return decodeData;
+        }
+        return null;
+    }
+
+    private static String encode58Check(byte[] input) {
+        byte[] hash0 = Sha256Hash.hash(input);
+        byte[] hash1 = Sha256Hash.hash(hash0);
+        byte[] inputCheck = new byte[input.length + 4];
+        System.arraycopy(input, 0, inputCheck, 0, input.length);
+        System.arraycopy(hash1, 0, inputCheck, input.length, 4);
+        return encode(inputCheck);
+    }
+
+    private static String toHexString(byte[] data) {
+        return data == null ? "" : Hex.toHexString(data);
+    }
+
+    private static byte[] fromHexString(String data) {
+        if (data == null) {
+            return new byte[0];
+        }
+        if (data.startsWith("0x")) {
+            data = data.substring(2);
+        }
+        if (data.length() % 2 == 1) {
+            data = "0" + data;
+        }
+        return Hex.decode(data);
+    }
+
+    public static String toBase58(String hex) {
+        return encode58Check(fromHexString(hex));
+    }
+
+    public static void main(String[] args) {
+//        String base58check = "TPSia5447FF1i5mdbtcdNFCfbqfbZBV5no";
+//        String hexString = toHexString(decodeFromBase58Check(base58check));
+//        System.out.println(hexString);
+
+
+            String hexString = "4193cd8c9bfad77cefdfd6f9c6353234bdda625827";
+            String base58check = encode58Check(fromHexString(hexString));
+            System.out.println(base58check);
+
+    }
 }

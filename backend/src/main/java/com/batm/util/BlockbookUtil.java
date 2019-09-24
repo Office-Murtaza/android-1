@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class TransactionUtil {
+public class BlockbookUtil {
 
     public static List<TransactionDTO> compose(JSONArray transactionsArray, String address, Long divider, Integer fromIndex, Integer limit) {
         List<TransactionDTO> transactions = new ArrayList<>();

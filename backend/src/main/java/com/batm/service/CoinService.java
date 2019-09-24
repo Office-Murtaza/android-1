@@ -12,8 +12,7 @@ import com.batm.dto.*;
 import com.batm.dto.mapper.TransactionMapper;
 import com.batm.entity.*;
 import com.batm.repository.TransactionRepository;
-import com.batm.util.Constant;
-import com.batm.util.TransactionUtil;
+import com.batm.util.*;
 import com.binance.dex.api.client.domain.TransactionPage;
 import com.binance.dex.api.client.domain.TransactionType;
 import com.binance.dex.api.client.domain.request.TransactionsRequest;
@@ -34,7 +33,6 @@ import com.batm.repository.UserCoinRepository;
 import com.batm.repository.UserRepository;
 import com.batm.rest.vm.CoinBalanceVM;
 import com.batm.rest.vm.CoinVM;
-import com.batm.util.Util;
 import com.binance.api.client.BinanceApiRestClient;
 import com.binance.dex.api.client.BinanceDexApiRestClient;
 import net.sf.json.JSONArray;
@@ -397,7 +395,7 @@ public class CoinService {
 
             @Override
             public BlockbookTxDTO getTransactions2(String address, Integer startIndex, Integer limit) {
-                return null;
+                return getTrongridTransactions2(address, Constant.TRX_DIVIDER, startIndex, limit);
             }
 
             @Override
@@ -631,19 +629,32 @@ public class CoinService {
     }
 
     public static BlockbookTxDTO getBlockbookTransactions2(String url, String address, Long divider, Integer fromIndex, Integer limit) {
-        BlockbookTxDTO result = new BlockbookTxDTO();
-
         try {
             JSONObject res = rest.getForObject(url + "/api/v2/address/" + address + "?details=txs&pageSize=1000&page=1", JSONObject.class);
             JSONArray transactionsArray = res.optJSONArray("transactions");
 
+            BlockbookTxDTO result = new BlockbookTxDTO();
             result.setTotal(res.optInt("txs"));
-            result.setTransactions(TransactionUtil.compose(transactionsArray, address, divider, fromIndex, limit));
+            result.setTransactions(BlockbookUtil.compose(transactionsArray, address, divider, fromIndex, limit));
+
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        return result;
+        return new BlockbookTxDTO();
+    }
+
+    public static BlockbookTxDTO getTrongridTransactions2(String address, Long divider, Integer fromIndex, Integer limit) {
+        try {
+            JSONObject res = rest.getForObject(trxUrl + "/v1/accounts/" + address + "/transactions?limit=200", JSONObject.class);
+            JSONArray transactionsArray = res.optJSONArray("data");
+
+            return TrongridUtil.compose(transactionsArray, address, divider, fromIndex, limit);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return new BlockbookTxDTO();
     }
 
     public CoinBalanceVM getCoinsBalance(Long userId, List<String> coins) {
