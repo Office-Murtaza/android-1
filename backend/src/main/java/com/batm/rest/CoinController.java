@@ -1,15 +1,11 @@
 package com.batm.rest;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import com.batm.dto.BlockbookTxDTO;
 import com.batm.dto.SendTransactionResponseDTO;
-import com.batm.dto.TransactionDTO;
-import com.batm.dto.TransactionResponseDTO;
 import com.batm.entity.Error;
 import com.batm.util.Constant;
 import org.json.simple.JSONObject;
@@ -94,36 +90,10 @@ public class CoinController {
 
     @GetMapping("/user/{userId}/coins/{coinId}/transactions")
     public Response getTransactions(@PathVariable Long userId, @PathVariable CoinService.CoinEnum coinId, @RequestParam(required = false) Integer index) {
-        index = index == null || index <= 0 ? 1 : index;
-        try {
-            TransactionResponseDTO<TransactionDTO> transactionResponseDTO = coinService.getTransactions(userId, coinId, index);
-            List<TransactionDTO> transactions = transactionResponseDTO.getTransactions();
-            int limit = index + 10;
-
-            JSONObject response = new JSONObject();
-            response.put("total", transactionResponseDTO.getTxs());
-
-            if (transactions != null && transactions.size() >= index) {
-                response.put("transactions", transactions.subList(index - 1, transactions.size() < limit ? transactions.size() : limit - 1));
-            } else {
-                response.put("transactions", new ArrayList<>());
-            }
-
-            return Response.ok(response);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return Response.serverError();
-        }
-    }
-
-    @GetMapping("/user/{userId}/coins/{coinId}/transactions2")
-    public Response getTransactions2(@PathVariable Long userId, @PathVariable CoinService.CoinEnum coinId, @RequestParam(required = false) Integer index) {
         try {
             index = index == null || index <= 0 ? 1 : index;
 
-            BlockbookTxDTO dto = coinService.getTransactions2(userId, coinId, index);
-
-            return Response.ok(dto);
+            return Response.ok(coinService.getTransactions2(userId, coinId, index));
         } catch (Exception e) {
             e.printStackTrace();
             return Response.serverError();

@@ -171,7 +171,7 @@ public class CoinService {
 
             @Override
             public BlockbookTxDTO getTransactions2(String address, Integer startIndex, Integer limit) {
-                return null;
+                return getBlockbookTransactions2(ethUrl, address, Constant.ETH_DIVIDER, startIndex, limit);
             }
 
             @Override
@@ -214,7 +214,7 @@ public class CoinService {
 
             @Override
             public BlockbookTxDTO getTransactions2(String address, Integer startIndex, Integer limit) {
-                return null;
+                return getBlockbookTransactions2(bchUrl, address, Constant.BCH_DIVIDER, startIndex, limit);
             }
 
             @Override
@@ -257,7 +257,7 @@ public class CoinService {
 
             @Override
             public BlockbookTxDTO getTransactions2(String address, Integer startIndex, Integer limit) {
-                return null;
+                return getBlockbookTransactions2(ltcUrl, address, Constant.LTC_DIVIDER, startIndex, limit);
             }
 
             @Override
@@ -593,7 +593,7 @@ public class CoinService {
     }
 
     public BlockbookTxDTO getTransactions2(Long userId, CoinEnum coin, Integer startIndex) {
-        String address = "1GqcbCbwpKbXDMs4VHVT4VZkrag5av8xdJ";//getCoinAddressByUserIdAndCoin(userId, coin.name());
+        String address = getCoinAddressByUserIdAndCoin(userId, coin.name());
         return coin.getTransactions2(address, startIndex, Constant.TRANSACTION_LIMIT);
     }
 

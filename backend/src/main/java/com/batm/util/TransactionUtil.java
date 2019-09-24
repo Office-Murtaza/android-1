@@ -54,16 +54,16 @@ public class TransactionUtil {
     }
 
     private static TransactionDTO.TransactionType getTransactionType(String address, List<JSONObject> vinList) {
-        return vinList.stream().anyMatch(e -> e.getJSONArray("addresses").contains(address)) ? TransactionDTO.TransactionType.WITHDRAW : TransactionDTO.TransactionType.DEPOSIT;
+        return vinList.stream().anyMatch(e -> e.getJSONArray("addresses").toString().toLowerCase().contains(address.toLowerCase())) ? TransactionDTO.TransactionType.WITHDRAW : TransactionDTO.TransactionType.DEPOSIT;
     }
 
     private static BigDecimal getTransactionValue(TransactionDTO.TransactionType type, String address, List<JSONObject> voutList, Long divider) {
         if (type == TransactionDTO.TransactionType.WITHDRAW) {
-            return getTransactionValue(voutList.stream().filter(vout -> !vout.getJSONArray("addresses").contains(address))
+            return getTransactionValue(voutList.stream().filter(vout -> !vout.getJSONArray("addresses").toString().toLowerCase().contains(address.toLowerCase()))
                     .findFirst()
                     .get().getString("value"), divider);
         } else {
-            return getTransactionValue(voutList.stream().filter(vout -> vout.getJSONArray("addresses").contains(address))
+            return getTransactionValue(voutList.stream().filter(vout -> vout.getJSONArray("addresses").toString().toLowerCase().contains(address.toLowerCase()))
                     .findFirst()
                     .get().getString("value"), divider);
         }
