@@ -468,71 +468,22 @@ public class CoinService {
         return null;
     }
 
-//    public TransactionResponseDTO<TransactionDTO> getTransactions(Long userId, CoinEnum coin, Integer startIndex) {
-//        TransactionResponseDTO<TransactionDTO> result = new TransactionResponseDTO<>();
-//        int defaultLimit = 10;
-//
-//        try {
-//            String address = getCoinAddressByUserIdAndCoin(userId, coin.name());
-//            result = coin.getTransactions(address, startIndex, defaultLimit);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//
-//        return result;
-//    }
-
     public BlockbookTxDTO getTransactions(Long userId, CoinEnum coin, Integer startIndex) {
         String address = getCoinAddressByUserIdAndCoin(userId, coin.name());
         return coin.getTransactions(address, startIndex, Constant.TRANSACTION_LIMIT);
     }
 
-//    public static TransactionResponseDTO<BlockbookTransactionDTO> getBlockbookTransactions(String url, String address, Long divider, Integer fromIndex, Integer limit) {
-//        TransactionResponseDTO<BlockbookTransactionDTO> result = new TransactionResponseDTO<>();
-//        List<BlockbookTransactionDTO> blockbookTransactionDTOList = new ArrayList<>();
-//
-//        double pageSize = 1000;
-//
-//        try {
-//            for (int i = 1; i <= Math.ceil((fromIndex + limit) / pageSize); i++) {
-//                JSONObject res = rest.getForObject(url + "/api/v2/address/" + address + "?details=txs&pageSize=1000&page=" + i, JSONObject.class);
-//                JSONArray transactionsArray = res.optJSONArray("transactions");
-//
-//                if (transactionsArray != null) {
-//                    transactionsArray.forEach(t -> blockbookTransactionDTOList.add(TransactionMapper.toBlockbookTransactionDTO((JSONObject) t, address, divider)));
-//                }
-//
-//                result.setTotalPages(res.getInt("totalPages"));
-//                result.setItemsOnPage(res.optInt("itemsOnPage"));
-//                result.setAddress(res.optString("address"));
-//                result.setTxs(res.optLong("txs"));
-//                result.setTransactions(blockbookTransactionDTOList);
-//
-//                if (res.getInt("page") == res.getInt("totalPages")) {
-//                    break;
-//                }
-//            }
-//
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//
-//        return result;
-//    }
-
     public static BlockbookTxDTO getBlockbookTransactions2(String url, String address, Long divider, Integer fromIndex, Integer limit) {
-        BlockbookTxDTO result = new BlockbookTxDTO();
         try {
             JSONObject res = rest.getForObject(url + "/api/v2/address/" + address + "?details=txs&pageSize=1000&page=1", JSONObject.class);
             JSONArray transactionsArray = res.optJSONArray("transactions");
 
-            result.setTotal(res.optInt("txs"));
-            result.setTransactions(BlockbookUtil.compose(transactionsArray, address, divider, fromIndex, limit));
+            return TransactionUtil.composeBlockbook(res.optInt("txs"), transactionsArray, address, divider, fromIndex, limit);
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        return result;
+        return new BlockbookTxDTO();
     }
 
     public static BlockbookTxDTO getTrongridTransactions2(String address, Long divider, Integer fromIndex, Integer limit) {
@@ -540,7 +491,7 @@ public class CoinService {
             JSONObject res = rest.getForObject(trxUrl + "/v1/accounts/" + address + "/transactions?limit=200", JSONObject.class);
             JSONArray transactionsArray = res.optJSONArray("data");
 
-            return TrongridUtil.compose(transactionsArray, address, divider, fromIndex, limit);
+            return TransactionUtil.composeTrongrid(transactionsArray, address, divider, fromIndex, limit);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -565,7 +516,7 @@ public class CoinService {
             JSONObject jsonResult = res.optJSONObject("result");
             JSONArray transactionsArray = jsonResult.optJSONArray("transactions");
 
-            return RippledUtil.compose(transactionsArray, address, divider, fromIndex, limit);
+            return TransactionUtil.composeRippled(transactionsArray, address, divider, fromIndex, limit);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -587,7 +538,7 @@ public class CoinService {
 
             TransactionPage page = binanceDex.getTransactions(request);
 
-            return BlockbookUtil.composeBinance(page, address, divider, fromIndex, limit);
+            return TransactionUtil.composeBinance(page, address, divider, fromIndex, limit);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -693,16 +644,6 @@ public class CoinService {
         return BigDecimal.ZERO;
     }
 
-//    private static JSONObject submitBlockbookTransaction(String url, String txId) {
-//        try {
-//            return rest.getForObject(url + "/api/v2/sendtx/" + txId, JSONObject.class);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//
-//        return new JSONObject();
-//    }
-
     private static BigDecimal getTrongridBalance(String url, String address, long divider) {
         try {
             JSONObject res = rest.getForObject(url + "/v1/accounts/" + address, JSONObject.class);
@@ -734,24 +675,6 @@ public class CoinService {
         return BigDecimal.ZERO;
     }
 
-//    private static TransactionPage getBinanceDEXTransactions(String address) {
-//        try {
-//            TransactionsRequest transactionsRequest = new TransactionsRequest();
-//            transactionsRequest.setStartTime(new SimpleDateFormat("yyyy").parse("2010").getTime());
-//            transactionsRequest.setEndTime(new Date().getTime() + TimeUnit.DAYS.toMillis(1));
-//            transactionsRequest.setTxType(TransactionType.TRANSFER);
-//            transactionsRequest.setAddress(address);
-//            transactionsRequest.setTxAsset("BNB");
-//            transactionsRequest.setLimit(1000);
-//
-//            return binanceDex.getTransactions(transactionsRequest);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//
-//        return null;
-//    }
-
     private static BigDecimal getRippledBalance(String address, long divider) {
         try {
             JSONObject param = new JSONObject();
@@ -774,75 +697,6 @@ public class CoinService {
 
         return BigDecimal.ZERO;
     }
-
-//    private static List<RippledTransactionDTO> getRippledTransactions(String address, long divider) {
-//        List<RippledTransactionDTO> result = new ArrayList<>();
-//        try {
-//            JSONObject param = new JSONObject();
-//            param.put("account", address);
-//            param.put("binary", false);
-//            param.put("forward", false);
-//            param.put("ledger_index_max", -1);
-//            param.put("ledger_index_min", -1);
-//            param.put("limit", 1000);
-//
-//            JSONArray params = new JSONArray();
-//            params.add(param);
-//
-//            JSONObject req = new JSONObject();
-//            req.put("method", "account_tx");
-//            req.put("params", params);
-//
-//            JSONObject res = rest.postForObject(xrpUrl, req, JSONObject.class);
-//            JSONObject jsonResult = res.optJSONObject("result");
-//            JSONArray transactionsJsonArr = jsonResult.optJSONArray("transactions");
-//
-//            if (transactionsJsonArr != null) {
-//                transactionsJsonArr.forEach(t -> result.add(TransactionMapper.toRippledTransactionDTO((JSONObject) t, divider)));
-//            }
-//
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//
-//        return result;
-//    }
-
-//    private static List<TrongridTransactionDTO> getTrongridTransactions(String address, Integer startIndex, long divider) {
-//        List<TrongridTransactionDTO> result = new ArrayList<>();
-//        String nextPageUrl = trxUrl + "/v1/accounts/" + address + "/transactions?limit=200";
-//        int counter = 0;
-//
-//        try {
-//            do {
-//                JSONObject res = rest.getForObject(nextPageUrl, JSONObject.class);
-//                JSONObject meta = res.optJSONObject("meta");
-//                JSONObject links = meta.optJSONObject("links");
-//
-//                nextPageUrl = links.optString("next");
-//
-//                JSONArray data = res.optJSONArray("data");
-//                if (data != null) {
-//                    for (int i = 0; i < data.size(); i++) {
-//                        result.add(TransactionMapper.toTrongridTransactionDTO((JSONObject) data.get(i), address, divider));
-//                    }
-//
-//                    result = result.stream()
-//                            .filter(Objects::nonNull)
-//                            .collect(Collectors.toList());
-//                }
-//
-//                if (nextPageUrl == null || nextPageUrl.equals("") || ++counter > 5) {
-//                    break;
-//                }
-//
-//            } while (result.size() < startIndex + 10);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//
-//        return result;
-//    }
 
     private static SendTransactionDTO sendBlockbookTransaction(String url, String hex) {
         SendTransactionDTO result = new SendTransactionDTO();

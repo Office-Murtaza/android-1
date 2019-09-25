@@ -11,9 +11,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class BlockbookUtil {
+public class TransactionUtil {
 
-    public static List<TransactionDTO> compose(JSONArray transactionsArray, String address, Long divider, Integer fromIndex, Integer limit) {
+    public static BlockbookTxDTO composeBlockbook(Integer total, JSONArray transactionsArray, String address, Long divider, Integer fromIndex, Integer limit) {
+        BlockbookTxDTO result = new BlockbookTxDTO();
         List<TransactionDTO> transactions = new ArrayList<>();
 
         for (int i = 0; i < transactionsArray.size(); i++) {
@@ -28,7 +29,10 @@ public class BlockbookUtil {
             }
         }
 
-        return transactions;
+        result.setTotal(total);
+        result.setTransactions(transactions);
+
+        return result;
     }
 
     private static TransactionDTO parse(Integer index, String address, Long divider, JSONObject json) {
@@ -63,12 +67,95 @@ public class BlockbookUtil {
 
             transactions.add(new TransactionDTO(fromIndex + i, txId, value, status, type, date));
 
-            if((fromIndex + limit) == (i + 1)) {
+            if ((fromIndex + limit) == (i + 1)) {
                 break;
             }
         }
 
         result.setTotal(page.getTotal().intValue());
+        result.setTransactions(transactions);
+
+        return result;
+    }
+
+    public static BlockbookTxDTO composeRippled(JSONArray transactionsArray, String address, Long divider, Integer fromIndex, Integer limit) {
+        BlockbookTxDTO result = new BlockbookTxDTO();
+        List<TransactionDTO> transactions = new ArrayList<>();
+
+        int count = 0;
+        int k = 0;
+
+        for (int i = 0; i < transactionsArray.size(); i++) {
+            count++;
+
+            if ((i + 1 < fromIndex) || ((fromIndex + limit) == (i + 1))) {
+                continue;
+            }
+
+            JSONObject txs = transactionsArray.getJSONObject(i);
+
+            String transactionResult = txs.optJSONObject("meta").optString("TransactionResult");
+
+            TransactionDTO.TransactionStatus status = transactionResult.equalsIgnoreCase("tesSUCCESS") ? TransactionDTO.TransactionStatus.COMPLETE : TransactionDTO.TransactionStatus.PENDING;
+
+            JSONObject tx = txs.optJSONObject("tx");
+
+            String txId = tx.optString("hash");
+            TransactionDTO.TransactionType type = tx.optString("Account").equalsIgnoreCase(address) ? TransactionDTO.TransactionType.WITHDRAW : TransactionDTO.TransactionType.DEPOSIT;
+            BigDecimal value = new BigDecimal(tx.optString("Amount")).divide(BigDecimal.valueOf(divider)).stripTrailingZeros();
+            Date date = new Date((tx.optLong("date") + 946684800L) * 1000);
+
+            transactions.add(new TransactionDTO(fromIndex + k, txId, value, status, type, date));
+            k++;
+        }
+
+        result.setTotal(count);
+        result.setTransactions(transactions);
+
+        return result;
+    }
+
+    public static BlockbookTxDTO composeTrongrid(JSONArray transactionsArray, String address, Long divider, Integer fromIndex, Integer limit) {
+        BlockbookTxDTO result = new BlockbookTxDTO();
+
+        List<TransactionDTO> transactions = new ArrayList<>();
+
+        int count = 0;
+        int k = 0;
+
+        for (int i = 0; i < transactionsArray.size(); i++) {
+            JSONObject tx = transactionsArray.getJSONObject(i);
+
+            JSONObject rowData = tx.optJSONObject("raw_data").optJSONArray("contract").getJSONObject(0).getJSONObject("parameter").optJSONObject("value");
+
+            if (rowData.containsKey("asset_name")) {
+                continue;
+            }
+
+            count++;
+
+            if ((i + 1 < fromIndex) || ((fromIndex + limit) == (i + 1))) {
+                continue;
+            }
+
+            String txId = tx.optString("txID");
+            Long blockTimestamp = tx.optLong("block_timestamp");
+            Long amount = rowData.optLong("amount");
+            String ownerAddress = Base58.toBase58(rowData.optString("owner_address")).toLowerCase();
+            String code = tx.optJSONArray("ret").getJSONObject(0).optString("code");
+
+            TransactionDTO.TransactionType type = ownerAddress.equalsIgnoreCase(address) ? TransactionDTO.TransactionType.WITHDRAW : TransactionDTO.TransactionType.DEPOSIT;
+            BigDecimal value = BigDecimal.valueOf(amount).divide(BigDecimal.valueOf(divider)).stripTrailingZeros();
+            TransactionDTO.TransactionStatus status = code.equalsIgnoreCase("SUCESS") ? TransactionDTO.TransactionStatus.COMPLETE : TransactionDTO.TransactionStatus.PENDING;
+
+            Date date = new Date(blockTimestamp);
+
+            transactions.add(new TransactionDTO(fromIndex + k, txId, value, status, type, date));
+
+            k++;
+        }
+
+        result.setTotal(count);
         result.setTransactions(transactions);
 
         return result;
