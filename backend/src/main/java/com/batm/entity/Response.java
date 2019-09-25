@@ -27,4 +27,8 @@ public class Response {
     public static Response serverError() {
         return Response.error(new com.batm.entity.Error(1, "Server error"));
     }
+
+    public static Response sendTxError(String message) {
+        return Response.error(new com.batm.entity.Error(2, message));
+    }
 }

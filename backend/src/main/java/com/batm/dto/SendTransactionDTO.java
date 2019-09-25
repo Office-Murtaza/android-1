@@ -11,7 +11,7 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 @NoArgsConstructor
 @AllArgsConstructor
-public class SendTransactionResponseDTO {
+public class SendTransactionDTO {
 
     private Boolean success;
     private String txId;

@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import com.batm.dto.SendTransactionResponseDTO;
+import com.batm.dto.SendTransactionDTO;
 import com.batm.entity.Error;
 import com.batm.util.Constant;
 import org.json.simple.JSONObject;
@@ -93,7 +93,7 @@ public class CoinController {
         try {
             index = index == null || index <= 0 ? 1 : index;
 
-            return Response.ok(coinService.getTransactions2(userId, coinId, index));
+            return Response.ok(coinService.getTransactions(userId, coinId, index));
         } catch (Exception e) {
             e.printStackTrace();
             return Response.serverError();
@@ -101,15 +101,17 @@ public class CoinController {
     }
 
     @GetMapping("/user/{userId}/coins/{coinId}/sendtx/{hex}")
-    public Response sendTransaction(@PathVariable Long userId, @PathVariable CoinService.CoinEnum coinId, @PathVariable String hex) {
+    public Response sendTx(@PathVariable Long userId, @PathVariable CoinService.CoinEnum coinId, @PathVariable String hex) {
         try {
-            JSONObject response = new JSONObject();
-            SendTransactionResponseDTO sendTransactionResponse = coinId.sendTransaction(hex);
-            if (sendTransactionResponse.getSuccess()) {
-                response.put("txId", sendTransactionResponse.getTxId());
-                return Response.ok(response);
+            JSONObject res = new JSONObject();
+            SendTransactionDTO dto = coinId.sendTx(hex);
+
+            if (dto.getSuccess()) {
+                res.put("txId", dto.getTxId());
+                return Response.ok(res);
+            } else {
+                return Response.sendTxError(dto.getErrorMessage());
             }
-            throw new Exception();
         } catch (Exception e) {
             e.printStackTrace();
             return Response.serverError();
@@ -120,7 +122,8 @@ public class CoinController {
     public Response getCoinUtxo(@PathVariable String userId, @PathVariable CoinService.CoinEnum coinId, @PathVariable String publicKey) {
         try {
             JSONObject response = new JSONObject();
-            response.put("utxoList", coinId.getUtxo(publicKey));
+            response.put("utxoList", coinId.getUTXO(publicKey));
+
             return Response.ok(response);
         } catch (Exception e) {
             e.printStackTrace();

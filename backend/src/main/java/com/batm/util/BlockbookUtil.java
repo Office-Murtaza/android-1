@@ -1,9 +1,12 @@
 package com.batm.util;
 
+import com.batm.dto.BlockbookTxDTO;
 import com.batm.dto.TransactionDTO;
+import com.binance.dex.api.client.domain.TransactionPage;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import java.math.BigDecimal;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -39,6 +42,36 @@ public class BlockbookUtil {
         Date date = new Date(json.optLong("blockTime") * 1000);
 
         return new TransactionDTO(index, txId, value, status, type, date);
+    }
+
+    public static BlockbookTxDTO composeBinance(TransactionPage page, String address, Long divider, Integer fromIndex, Integer limit) {
+        BlockbookTxDTO result = new BlockbookTxDTO();
+        List<TransactionDTO> transactions = new ArrayList<>();
+
+        for (int i = 0; i < page.getTx().size(); i++) {
+            if ((i + 1 < fromIndex)) {
+                continue;
+            }
+
+            com.binance.dex.api.client.domain.Transaction transaction = page.getTx().get(i);
+
+            String txId = transaction.getTxHash();
+            TransactionDTO.TransactionType type = transaction.getToAddr().equalsIgnoreCase(address) ? TransactionDTO.TransactionType.DEPOSIT : TransactionDTO.TransactionType.WITHDRAW;
+            BigDecimal value = new BigDecimal(transaction.getValue()).stripTrailingZeros();
+            TransactionDTO.TransactionStatus status = TransactionDTO.TransactionStatus.COMPLETE;
+            Date date = Date.from(ZonedDateTime.parse(transaction.getTimeStamp()).toInstant());
+
+            transactions.add(new TransactionDTO(fromIndex + i, txId, value, status, type, date));
+
+            if((fromIndex + limit) == (i + 1)) {
+                break;
+            }
+        }
+
+        result.setTotal(page.getTotal().intValue());
+        result.setTransactions(transactions);
+
+        return result;
     }
 
     private static BigDecimal getTransactionValue(String value, Long divider) {
