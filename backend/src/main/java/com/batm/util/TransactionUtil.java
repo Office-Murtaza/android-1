@@ -13,18 +13,18 @@ import java.util.List;
 
 public class TransactionUtil {
 
-    public static BlockbookTxDTO composeBlockbook(Integer total, JSONArray transactionsArray, String address, Long divider, Integer fromIndex, Integer limit) {
+    public static BlockbookTxDTO composeBlockbook(Integer total, JSONArray transactionsArray, String address, Long divider, Integer startIndex, Integer limit) {
         BlockbookTxDTO result = new BlockbookTxDTO();
         List<TransactionDTO> transactions = new ArrayList<>();
 
         for (int i = 0; i < transactionsArray.size(); i++) {
-            if (i + 1 < fromIndex) {
+            if (i + 1 < startIndex) {
                 continue;
             }
 
-            transactions.add(parse(fromIndex + i, address, divider, transactionsArray.getJSONObject(i)));
+            transactions.add(parse(startIndex + i, address, divider, transactionsArray.getJSONObject(i)));
 
-            if ((fromIndex + limit) == (i + 1)) {
+            if ((startIndex + limit) == (i + 1)) {
                 break;
             }
         }
@@ -48,12 +48,12 @@ public class TransactionUtil {
         return new TransactionDTO(index, txId, value, status, type, date);
     }
 
-    public static BlockbookTxDTO composeBinance(TransactionPage page, String address, Long divider, Integer fromIndex, Integer limit) {
+    public static BlockbookTxDTO composeBinance(TransactionPage page, String address, Integer startIndex, Integer limit) {
         BlockbookTxDTO result = new BlockbookTxDTO();
         List<TransactionDTO> transactions = new ArrayList<>();
 
         for (int i = 0; i < page.getTx().size(); i++) {
-            if ((i + 1 < fromIndex)) {
+            if ((i + 1 < startIndex)) {
                 continue;
             }
 
@@ -65,9 +65,9 @@ public class TransactionUtil {
             TransactionDTO.TransactionStatus status = TransactionDTO.TransactionStatus.COMPLETE;
             Date date = Date.from(ZonedDateTime.parse(transaction.getTimeStamp()).toInstant());
 
-            transactions.add(new TransactionDTO(fromIndex + i, txId, value, status, type, date));
+            transactions.add(new TransactionDTO(startIndex + i, txId, value, status, type, date));
 
-            if ((fromIndex + limit) == (i + 1)) {
+            if ((startIndex + limit) == (i + 1)) {
                 break;
             }
         }
@@ -78,7 +78,7 @@ public class TransactionUtil {
         return result;
     }
 
-    public static BlockbookTxDTO composeRippled(JSONArray transactionsArray, String address, Long divider, Integer fromIndex, Integer limit) {
+    public static BlockbookTxDTO composeRippled(JSONArray transactionsArray, String address, Long divider, Integer startIndex, Integer limit) {
         BlockbookTxDTO result = new BlockbookTxDTO();
         List<TransactionDTO> transactions = new ArrayList<>();
 
@@ -88,7 +88,7 @@ public class TransactionUtil {
         for (int i = 0; i < transactionsArray.size(); i++) {
             count++;
 
-            if ((i + 1 < fromIndex) || ((fromIndex + limit) == (i + 1))) {
+            if ((i + 1 < startIndex) || ((startIndex + limit) == (i + 1))) {
                 continue;
             }
 
@@ -105,7 +105,7 @@ public class TransactionUtil {
             BigDecimal value = new BigDecimal(tx.optString("Amount")).divide(BigDecimal.valueOf(divider)).stripTrailingZeros();
             Date date = new Date((tx.optLong("date") + 946684800L) * 1000);
 
-            transactions.add(new TransactionDTO(fromIndex + k, txId, value, status, type, date));
+            transactions.add(new TransactionDTO(startIndex + k, txId, value, status, type, date));
             k++;
         }
 
@@ -115,7 +115,7 @@ public class TransactionUtil {
         return result;
     }
 
-    public static BlockbookTxDTO composeTrongrid(JSONArray transactionsArray, String address, Long divider, Integer fromIndex, Integer limit) {
+    public static BlockbookTxDTO composeTrongrid(JSONArray transactionsArray, String address, Long divider, Integer startIndex, Integer limit) {
         BlockbookTxDTO result = new BlockbookTxDTO();
 
         List<TransactionDTO> transactions = new ArrayList<>();
@@ -134,7 +134,7 @@ public class TransactionUtil {
 
             count++;
 
-            if ((i + 1 < fromIndex) || ((fromIndex + limit) == (i + 1))) {
+            if ((i + 1 < startIndex) || ((startIndex + limit) == (i + 1))) {
                 continue;
             }
 
@@ -150,7 +150,7 @@ public class TransactionUtil {
 
             Date date = new Date(blockTimestamp);
 
-            transactions.add(new TransactionDTO(fromIndex + k, txId, value, status, type, date));
+            transactions.add(new TransactionDTO(startIndex + k, txId, value, status, type, date));
 
             k++;
         }

@@ -14,4 +14,5 @@ public class Constant {
     public static final Long TRX_DIVIDER = 1000000L;
 
     public static final int TRANSACTION_LIMIT = 10;
+    public static final int DISABLED = 0;
 }

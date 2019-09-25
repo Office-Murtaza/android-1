@@ -1,9 +1,11 @@
 package com.batm.security;
 
 import javax.annotation.PostConstruct;
+import com.batm.util.Constant;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.binary.StringUtils;
 import org.springframework.beans.factory.BeanInitializationException;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -25,6 +27,9 @@ import com.batm.security.jwt.TokenProvider;
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
+
+    @Value("${security.mode}")
+    private Integer securityMode;
 
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
     private final TokenProvider tokenProvider;
@@ -83,18 +88,29 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(HttpSecurity http) throws Exception {
-        http.csrf().disable().authorizeRequests()
-                .antMatchers("/api/v1/register").permitAll()
-                .antMatchers("/api/v1/recover").permitAll()
-                .antMatchers("/api/v1/refresh").permitAll()
+        if (securityMode == Constant.DISABLED) {
+            http.csrf().disable().authorizeRequests()
+                    .antMatchers("/api/v1/register").permitAll()
+                    .antMatchers("/api/v1/recover").permitAll()
+                    .antMatchers("/api/v1/refresh").permitAll()
+                    .antMatchers("/api/v1/test/binance/price").permitAll()
+                    .antMatchers("/api/v1/test/twilio/send").permitAll()
+                    .antMatchers("/api/v1/**").permitAll()
 
-                .antMatchers("/api/v1/test/binance/price").permitAll()
-                .antMatchers("/api/v1/test/twilio/send").permitAll()
+                    .and().exceptionHandling().and().headers().frameOptions().disable().and().sessionManagement()
+                    .sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().apply(securityConfigurerAdapter());
+        } else {
+            http.csrf().disable().authorizeRequests()
+                    .antMatchers("/api/v1/register").permitAll()
+                    .antMatchers("/api/v1/recover").permitAll()
+                    .antMatchers("/api/v1/refresh").permitAll()
+                    .antMatchers("/api/v1/test/binance/price").permitAll()
+                    .antMatchers("/api/v1/test/twilio/send").permitAll()
+                    .antMatchers("/api/v1/**").authenticated()
 
-                //.antMatchers("/api/v1/**").permitAll()
-                .antMatchers("/api/v1/**").authenticated()
-                .and().exceptionHandling().and().headers().frameOptions().disable().and().sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().apply(securityConfigurerAdapter());
+                    .and().exceptionHandling().and().headers().frameOptions().disable().and().sessionManagement()
+                    .sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().apply(securityConfigurerAdapter());
+        }
     }
 
     private JWTConfigurer securityConfigurerAdapter() {

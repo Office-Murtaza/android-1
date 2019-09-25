@@ -9,7 +9,6 @@ import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 import com.batm.dto.*;
 import com.batm.entity.*;
-import com.batm.repository.TransactionRepository;
 import com.batm.util.*;
 import com.binance.dex.api.client.domain.TransactionPage;
 import com.binance.dex.api.client.domain.TransactionType;
@@ -18,13 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.http.*;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import com.batm.repository.CoinRepository;
 import com.batm.repository.UserCoinRepository;
@@ -52,9 +45,6 @@ public class CoinService {
     @Autowired
     private UserRepository userRepository;
 
-    @Autowired
-    private TransactionRepository transactionRepository;
-
     private static BinanceApiRestClient binance;
     private static BinanceDexApiRestClient binanceDex;
     private static RestTemplate rest;
@@ -66,10 +56,6 @@ public class CoinService {
     private static String trxUrl;
     private static String xrpUrl;
 
-    private static String chainalysisUrl;
-    private static String chainalysisApiKey;
-    private static Integer chainalysisRowsLimit;
-
     public CoinService(@Autowired final BinanceApiRestClient binance,
                        @Autowired final BinanceDexApiRestClient binanceDex,
                        @Autowired final RestTemplate rest,
@@ -78,10 +64,7 @@ public class CoinService {
                        @Value("${bch.url}") final String bchUrl,
                        @Value("${ltc.url}") final String ltcUrl,
                        @Value("${trx.url}") final String trxUrl,
-                       @Value("${xrp.url}") final String xrpUrl,
-                       @Value("${chainalysis.url}") final String chainalysisUrl,
-                       @Value("${chainalysis.api-key}") final String chainalysisApiKey,
-                       @Value("${chainalysis.rows-limit}") final Integer chainalysisRowsLimit) {
+                       @Value("${xrp.url}") final String xrpUrl) {
 
         CoinService.binance = binance;
         CoinService.binanceDex = binanceDex;
@@ -92,9 +75,6 @@ public class CoinService {
         CoinService.ltcUrl = ltcUrl;
         CoinService.trxUrl = trxUrl;
         CoinService.xrpUrl = xrpUrl;
-        CoinService.chainalysisUrl = chainalysisUrl;
-        CoinService.chainalysisApiKey = chainalysisApiKey;
-        CoinService.chainalysisRowsLimit = chainalysisRowsLimit;
     }
 
     public enum CoinEnum {
@@ -236,7 +216,7 @@ public class CoinService {
 
             @Override
             public BlockbookTxDTO getTransactions(String address, Integer startIndex, Integer limit) {
-                return getBinanceTransactions2(address, null, startIndex, limit);
+                return getBinanceTransactions2(address, startIndex, limit);
             }
 
             @Override
@@ -323,126 +303,6 @@ public class CoinService {
         public abstract List<JSONObject> getUTXO(String publicKey);
     }
 
-    @Scheduled(fixedDelay = 600_000)
-    public void scheduleChainalysisTransactionRegistrationDelayTask() {
-        Set<CoinEnum> coins = new HashSet<>(Arrays.asList(CoinEnum.BTC, CoinEnum.LTC));
-        List<Transaction> untrackedTransactionList = getUntrackedTransactions(coins, chainalysisRowsLimit);
-
-        List<CompletableFuture<ChainalysisResponseDTO>> futures = untrackedTransactionList.stream()
-                .map(CoinService::callAsyncChainalysisValidation)
-                .collect(Collectors.toList());
-
-        List<Transaction> analyzedTransactions = futures.stream()
-                .map(CompletableFuture::join)
-                .filter(Objects::nonNull)
-                .map(ChainalysisResponseDTO::getTransaction)
-                .collect(Collectors.toList());
-
-        saveTransactions(analyzedTransactions);
-    }
-
-    public List<Transaction> getUntrackedTransactions(Set<CoinEnum> coins, Integer limit) {
-        Pageable page = PageRequest.of(0, limit);
-        Set<String> currency = coins.stream()
-                .map(Enum::name)
-                .collect(Collectors.toSet());
-
-        return transactionRepository.findUnTrackedClosedTransactions(currency, page);
-    }
-
-    @Transactional
-    public List<Transaction> saveTransactions(List<Transaction> transactions) {
-        return transactionRepository.saveAll(transactions);
-    }
-
-    private static CompletableFuture<ChainalysisResponseDTO> callAsyncChainalysisValidation(Transaction transaction) {
-        return CompletableFuture.supplyAsync(() -> {
-            try {
-                transaction.setCryptoAddress(transaction.getCryptoAddress().split(":")[0]);
-
-                CoinEnum coinEnum = CoinEnum.valueOf(transaction.getCryptoCurrency());
-                TransactionNumberDTO trxNumberDTO = coinEnum.getTransactionNumber(transaction.getCryptoAddress(), transaction.getCryptoAmount());
-                transaction.setDetail(trxNumberDTO.getTransactionId());
-                transaction.setN(trxNumberDTO.getN());
-
-                return validateChainalysisTransfer(transaction);
-            } catch (Exception e) {
-                e.printStackTrace();
-                log.error(transaction.toString());
-            }
-
-            ChainalysisResponseDTO dto = new ChainalysisResponseDTO();
-            transaction.setTracked(true);
-            dto.setTransaction(transaction);
-
-            return dto;
-        });
-    }
-
-    private static ChainalysisResponseDTO validateChainalysisTransfer(Transaction transaction) {
-        ChainalysisResponseDTO result = new ChainalysisResponseDTO();
-
-        if (transaction.getDetail() == null) {
-            transaction.setTracked(true);
-            result.setTransaction(transaction);
-            return result;
-        }
-
-        String requestType = transaction.getType() == 0 ? "received" : "sent";
-        String requestTransferReference = transaction.getType() == 0
-                ? String.format("%s:%s", transaction.getDetail(), transaction.getCryptoAddress())
-                : String.format("%s:%d", transaction.getDetail(), transaction.getN());
-
-        JSONObject jsonObject = new JSONObject();
-        jsonObject.put("asset", transaction.getCryptoCurrency());
-        jsonObject.put("transferReference", requestTransferReference);
-
-        JSONArray jsonArray = new JSONArray();
-        jsonArray.add(jsonObject);
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.set("Token", chainalysisApiKey);
-
-        HttpEntity<JSONArray> request = new HttpEntity<>(jsonArray, headers);
-
-        String url = chainalysisUrl + "/api/kyt/v1/users/" + transaction.getIdentity().getPublicId() + "/transfers/" + requestType;
-
-        try {
-            ResponseEntity<JSONArray> responseEntity = rest.exchange(url, HttpMethod.POST, request, JSONArray.class);
-            transaction.setTracked(true);
-            result.setTransaction(transaction);
-
-            if (responseEntity.getBody() != null) {
-                JSONObject checkResult = responseEntity.getBody().getJSONObject(0);
-                result.setTransferReference(checkResult.getString("transferReference"));
-                result.setAsset(checkResult.getString("asset"));
-                result.setRating(checkResult.getString("rating"));
-
-                JSONObject cluster = checkResult.getJSONObject("cluster");
-                if (cluster != null) {
-                    result.setClusterName(cluster.getString("name"));
-                    result.setClusterCategory(cluster.getString("category"));
-                }
-            }
-        } catch (HttpClientErrorException he) {
-            System.out.println("-------------------------------------- url:\n");
-            System.out.println(url);
-
-            System.out.println("-------------------------------------- request:\n");
-            System.out.println(request);
-
-            he.printStackTrace();
-            return result;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return result;
-        }
-
-        return result;
-    }
-
     private static TransactionNumberDTO getBlockbookTransactionNumber(String url, String address, BigDecimal amount, long divider) {
         try {
             JSONObject res = rest.getForObject(url + "/api/v2/address/" + address + "?details=txs", JSONObject.class);
@@ -473,12 +333,12 @@ public class CoinService {
         return coin.getTransactions(address, startIndex, Constant.TRANSACTION_LIMIT);
     }
 
-    public static BlockbookTxDTO getBlockbookTransactions2(String url, String address, Long divider, Integer fromIndex, Integer limit) {
+    public static BlockbookTxDTO getBlockbookTransactions2(String url, String address, Long divider, Integer startIndex, Integer limit) {
         try {
             JSONObject res = rest.getForObject(url + "/api/v2/address/" + address + "?details=txs&pageSize=1000&page=1", JSONObject.class);
             JSONArray transactionsArray = res.optJSONArray("transactions");
 
-            return TransactionUtil.composeBlockbook(res.optInt("txs"), transactionsArray, address, divider, fromIndex, limit);
+            return TransactionUtil.composeBlockbook(res.optInt("txs"), transactionsArray, address, divider, startIndex, limit);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -486,12 +346,12 @@ public class CoinService {
         return new BlockbookTxDTO();
     }
 
-    public static BlockbookTxDTO getTrongridTransactions2(String address, Long divider, Integer fromIndex, Integer limit) {
+    public static BlockbookTxDTO getTrongridTransactions2(String address, Long divider, Integer startIndex, Integer limit) {
         try {
             JSONObject res = rest.getForObject(trxUrl + "/v1/accounts/" + address + "/transactions?limit=200", JSONObject.class);
             JSONArray transactionsArray = res.optJSONArray("data");
 
-            return TransactionUtil.composeTrongrid(transactionsArray, address, divider, fromIndex, limit);
+            return TransactionUtil.composeTrongrid(transactionsArray, address, divider, startIndex, limit);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -499,7 +359,7 @@ public class CoinService {
         return new BlockbookTxDTO();
     }
 
-    private static BlockbookTxDTO getRippledTransactions2(String address, Long divider, Integer fromIndex, Integer limit) {
+    private static BlockbookTxDTO getRippledTransactions2(String address, Long divider, Integer startIndex, Integer limit) {
         try {
             JSONObject param = new JSONObject();
             param.put("account", address);
@@ -516,7 +376,7 @@ public class CoinService {
             JSONObject jsonResult = res.optJSONObject("result");
             JSONArray transactionsArray = jsonResult.optJSONArray("transactions");
 
-            return TransactionUtil.composeRippled(transactionsArray, address, divider, fromIndex, limit);
+            return TransactionUtil.composeRippled(transactionsArray, address, divider, startIndex, limit);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -524,7 +384,7 @@ public class CoinService {
         return new BlockbookTxDTO();
     }
 
-    private static BlockbookTxDTO getBinanceTransactions2(String address, Long divider, Integer fromIndex, Integer limit) {
+    private static BlockbookTxDTO getBinanceTransactions2(String address, Integer startIndex, Integer limit) {
         BlockbookTxDTO result = new BlockbookTxDTO();
 
         try {
@@ -538,7 +398,7 @@ public class CoinService {
 
             TransactionPage page = binanceDex.getTransactions(request);
 
-            return TransactionUtil.composeBinance(page, address, divider, fromIndex, limit);
+            return TransactionUtil.composeBinance(page, address, startIndex, limit);
         } catch (Exception e) {
             e.printStackTrace();
         }
