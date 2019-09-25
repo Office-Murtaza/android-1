@@ -341,7 +341,7 @@ public class CoinService {
 
             @Override
             public BlockbookTxDTO getTransactions2(String address, Integer startIndex, Integer limit) {
-                return null;
+                return getRippledTransactions2(address, Constant.XRP_DIVIDER, startIndex, limit);
             }
 
             @Override
@@ -629,20 +629,18 @@ public class CoinService {
     }
 
     public static BlockbookTxDTO getBlockbookTransactions2(String url, String address, Long divider, Integer fromIndex, Integer limit) {
+        BlockbookTxDTO result = new BlockbookTxDTO();
         try {
             JSONObject res = rest.getForObject(url + "/api/v2/address/" + address + "?details=txs&pageSize=1000&page=1", JSONObject.class);
             JSONArray transactionsArray = res.optJSONArray("transactions");
 
-            BlockbookTxDTO result = new BlockbookTxDTO();
             result.setTotal(res.optInt("txs"));
             result.setTransactions(BlockbookUtil.compose(transactionsArray, address, divider, fromIndex, limit));
-
-            return result;
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        return new BlockbookTxDTO();
+        return result;
     }
 
     public static BlockbookTxDTO getTrongridTransactions2(String address, Long divider, Integer fromIndex, Integer limit) {
@@ -651,6 +649,31 @@ public class CoinService {
             JSONArray transactionsArray = res.optJSONArray("data");
 
             return TrongridUtil.compose(transactionsArray, address, divider, fromIndex, limit);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return new BlockbookTxDTO();
+    }
+
+    private static BlockbookTxDTO getRippledTransactions2(String address, Long divider, Integer fromIndex, Integer limit) {
+        try {
+            JSONObject param = new JSONObject();
+            param.put("account", address);
+            param.put("limit", 1000);
+
+            JSONArray params = new JSONArray();
+            params.add(param);
+
+            JSONObject req = new JSONObject();
+            req.put("method", "account_tx");
+            req.put("params", params);
+
+            JSONObject res = rest.postForObject(xrpUrl, req, JSONObject.class);
+            JSONObject jsonResult = res.optJSONObject("result");
+            JSONArray transactionsArray = jsonResult.optJSONArray("transactions");
+
+            return RippledUtil.compose(transactionsArray, address, divider, fromIndex, limit);
         } catch (Exception e) {
             e.printStackTrace();
         }
