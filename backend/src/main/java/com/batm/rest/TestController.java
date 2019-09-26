@@ -2,7 +2,7 @@ package com.batm.rest;
 
 import java.util.ArrayList;
 import java.util.List;
-
+import com.batm.util.Base58;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -47,5 +47,15 @@ public class TestController {
         MessageFactory messageFactory = twilio.getAccount().getMessageFactory();
 
         return Response.ok(messageFactory.create(params).getStatus());
+    }
+
+    @GetMapping("/trx/toBase58")
+    public Response toBase58(@RequestParam String hex) {
+        return Response.ok(Base58.toBase58(hex));
+    }
+
+    @GetMapping("/trx/toHex")
+    public Response toHex(@RequestParam String base58) {
+        return Response.ok(Base58.toHex(base58));
     }
 }

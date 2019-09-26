@@ -213,6 +213,10 @@ public class Base58 {
         return encode58Check(fromHexString(hex));
     }
 
+    public static String toHex(String base58) {
+        return toHexString(decodeFromBase58Check(base58));
+    }
+
     public static void main(String[] args) {
 //        String base58check = "TPSia5447FF1i5mdbtcdNFCfbqfbZBV5no";
 //        String hexString = toHexString(decodeFromBase58Check(base58check));

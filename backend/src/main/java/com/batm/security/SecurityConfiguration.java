@@ -93,8 +93,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                     .antMatchers("/api/v1/register").permitAll()
                     .antMatchers("/api/v1/recover").permitAll()
                     .antMatchers("/api/v1/refresh").permitAll()
-                    .antMatchers("/api/v1/test/binance/price").permitAll()
-                    .antMatchers("/api/v1/test/twilio/send").permitAll()
+                    .antMatchers("/api/v1/test/**").permitAll()
                     .antMatchers("/api/v1/**").permitAll()
 
                     .and().exceptionHandling().and().headers().frameOptions().disable().and().sessionManagement()
@@ -104,8 +103,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                     .antMatchers("/api/v1/register").permitAll()
                     .antMatchers("/api/v1/recover").permitAll()
                     .antMatchers("/api/v1/refresh").permitAll()
-                    .antMatchers("/api/v1/test/binance/price").permitAll()
-                    .antMatchers("/api/v1/test/twilio/send").permitAll()
+                    .antMatchers("/api/v1/test/**").permitAll()
                     .antMatchers("/api/v1/**").authenticated()
 
                     .and().exceptionHandling().and().headers().frameOptions().disable().and().sessionManagement()
