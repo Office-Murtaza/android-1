@@ -24,6 +24,10 @@ public class Response {
         return new Response(null, error);
     }
 
+    public static Response error(Integer errorCode, String message) {
+        return Response.error(new com.batm.entity.Error(errorCode, message));
+    }
+
     public static Response serverError() {
         return Response.error(new com.batm.entity.Error(1, "Server error"));
     }

@@ -5,20 +5,14 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
-
-import java.math.BigDecimal;
+import net.sf.json.JSONArray;
 
 @Getter
 @Setter
 @Accessors(chain = true)
 @NoArgsConstructor
 @AllArgsConstructor
-public class RippledTransactionDTO {
+public class UtxoDTO {
 
-    private String destination;
-    private String account;
-    private String hash;
-    private Long date;
-    private Boolean verified;
-    private BigDecimal amount;
+    private JSONArray utxoList = new JSONArray();
 }

@@ -5,15 +5,14 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
-import java.util.List;
+import net.sf.json.JSONObject;
 
 @Getter
 @Setter
 @Accessors(chain = true)
 @NoArgsConstructor
 @AllArgsConstructor
-public class BlockbookTxDTO {
+public class CurrentBlockDTO {
 
-    private Integer total;
-    private List<TransactionDTO> transactions;
+    private JSONObject blockHeader = new JSONObject();
 }

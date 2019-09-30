@@ -3,6 +3,7 @@ package com.batm.util;
 import org.apache.commons.lang.StringUtils;
 import org.bitcoinj.core.Sha256Hash;
 import org.spongycastle.util.encoders.Hex;
+
 import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
 
@@ -21,20 +22,17 @@ public class Base58 {
         }
     }
 
-    /**
-     * Encodes the given bytes in base58. No checksum is appended.
-     */
     private static String encode(byte[] input) {
         if (input.length == 0) {
             return "";
         }
         input = copyOfRange(input, 0, input.length);
-        // Count leading zeroes.
+
         int zeroCount = 0;
         while (zeroCount < input.length && input[zeroCount] == 0) {
             ++zeroCount;
         }
-        // The actual encoding.
+
         byte[] temp = new byte[input.length * 2];
         int j = temp.length;
 
@@ -47,11 +45,10 @@ public class Base58 {
             temp[--j] = (byte) ALPHABET[mod];
         }
 
-        // Strip extra '1' if there are some after decoding.
         while (j < temp.length && temp[j] == ALPHABET[0]) {
             ++j;
         }
-        // Add as many leading '1' as there were leading zeros.
+
         while (--zeroCount >= 0) {
             temp[--j] = (byte) ALPHABET[0];
         }
@@ -69,7 +66,7 @@ public class Base58 {
             return new byte[0];
         }
         byte[] input58 = new byte[input.length()];
-        // Transform the String to a base58 byte sequence
+
         for (int i = 0; i < input.length(); ++i) {
             char c = input.charAt(i);
 
@@ -83,12 +80,12 @@ public class Base58 {
 
             input58[i] = (byte) digit58;
         }
-        // Count leading zeroes
+
         int zeroCount = 0;
         while (zeroCount < input58.length && input58[zeroCount] == 0) {
             ++zeroCount;
         }
-        // The encoding
+
         byte[] temp = new byte[input.length()];
         int j = temp.length;
 
@@ -101,7 +98,7 @@ public class Base58 {
 
             temp[--j] = mod;
         }
-        // Do no add extra leading zeroes, move j to first non null byte.
+
         while (j < temp.length && temp[j] == 0) {
             ++j;
         }
@@ -109,13 +106,6 @@ public class Base58 {
         return copyOfRange(temp, j - zeroCount, temp.length);
     }
 
-    private static BigInteger decodeToBigInteger(String input) throws IllegalArgumentException {
-        return new BigInteger(1, decode(input));
-    }
-
-    /**
-     *  number -> number / 58, returns number % 58
-     */
     private static byte divmod58(byte[] number, int startAt) {
         int remainder = 0;
         for (int i = startAt; i < number.length; i++) {
@@ -130,9 +120,6 @@ public class Base58 {
         return (byte) remainder;
     }
 
-    /**
-     * number -> number / 256, returns number % 256
-     */
     private static byte divmod256(byte[] number58, int startAt) {
         int remainder = 0;
         for (int i = startAt; i < number58.length; i++) {
@@ -161,7 +148,6 @@ public class Base58 {
 
         byte[] address = decode58Check(addressBase58);
 
-
         return address;
     }
 
@@ -180,6 +166,7 @@ public class Base58 {
                 hash1[3] == decodeCheck[decodeData.length + 3]) {
             return decodeData;
         }
+
         return null;
     }
 
@@ -215,17 +202,5 @@ public class Base58 {
 
     public static String toHex(String base58) {
         return toHexString(decodeFromBase58Check(base58));
-    }
-
-    public static void main(String[] args) {
-//        String base58check = "TPSia5447FF1i5mdbtcdNFCfbqfbZBV5no";
-//        String hexString = toHexString(decodeFromBase58Check(base58check));
-//        System.out.println(hexString);
-
-
-            String hexString = "4193cd8c9bfad77cefdfd6f9c6353234bdda625827";
-            String base58check = encode58Check(fromHexString(hexString));
-            System.out.println(base58check);
-
     }
 }

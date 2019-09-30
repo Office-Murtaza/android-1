@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import com.batm.dto.SendTransactionDTO;
+
 import com.batm.entity.Error;
 import com.batm.util.Constant;
 import org.json.simple.JSONObject;
@@ -82,49 +82,6 @@ public class CoinController {
             JSONObject jsonResponse = new JSONObject();
             jsonResponse.put("publicKey", address);
             return Response.ok(jsonResponse);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return Response.serverError();
-        }
-    }
-
-    @GetMapping("/user/{userId}/coins/{coinId}/transactions")
-    public Response getTransactions(@PathVariable Long userId, @PathVariable CoinService.CoinEnum coinId, @RequestParam(required = false) Integer index) {
-        try {
-            index = index == null || index <= 0 ? 1 : index;
-
-            return Response.ok(coinService.getTransactions(userId, coinId, index));
-        } catch (Exception e) {
-            e.printStackTrace();
-            return Response.serverError();
-        }
-    }
-
-    @GetMapping("/user/{userId}/coins/{coinId}/sendtx/{hex}")
-    public Response sendTx(@PathVariable Long userId, @PathVariable CoinService.CoinEnum coinId, @PathVariable String hex) {
-        try {
-            JSONObject res = new JSONObject();
-            SendTransactionDTO dto = coinId.sendTx(hex);
-
-            if (dto.getSuccess()) {
-                res.put("txId", dto.getTxId());
-                return Response.ok(res);
-            } else {
-                return Response.sendTxError(dto.getErrorMessage());
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            return Response.serverError();
-        }
-    }
-
-    @GetMapping("/user/{userId}/coins/{coinId}/utxo/{publicKey}")
-    public Response getCoinUtxo(@PathVariable String userId, @PathVariable CoinService.CoinEnum coinId, @PathVariable String publicKey) {
-        try {
-            JSONObject response = new JSONObject();
-            response.put("utxoList", coinId.getUTXO(publicKey));
-
-            return Response.ok(response);
         } catch (Exception e) {
             e.printStackTrace();
             return Response.serverError();

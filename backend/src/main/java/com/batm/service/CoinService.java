@@ -10,6 +10,7 @@ import java.util.stream.Collectors;
 import com.batm.dto.*;
 import com.batm.entity.*;
 import com.batm.util.*;
+import com.binance.dex.api.client.domain.Account;
 import com.binance.dex.api.client.domain.TransactionPage;
 import com.binance.dex.api.client.domain.TransactionType;
 import com.binance.dex.api.client.domain.request.TransactionsRequest;
@@ -95,8 +96,8 @@ public class CoinService {
             }
 
             @Override
-            public BlockbookTxDTO getTransactions(String address, Integer startIndex, Integer limit) {
-                return getBlockbookTransactions2(btcUrl, address, Constant.BTC_DIVIDER, startIndex, limit);
+            public TransactionResponseDTO getTransactions(String address, Integer startIndex, Integer limit) {
+                return getBlockbookTransactions(btcUrl, address, Constant.BTC_DIVIDER, startIndex, limit);
             }
 
             @Override
@@ -105,8 +106,23 @@ public class CoinService {
             }
 
             @Override
-            public List<JSONObject> getUTXO(String publicKey) {
-                return getBlockbookUTXO(btcUrl, publicKey);
+            public UtxoDTO getUTXO(String xpub) {
+                return getBlockbookUTXO(btcUrl, xpub);
+            }
+
+            @Override
+            public NonceDTO getNonce(String address) {
+                return null;
+            }
+
+            @Override
+            public CurrentAccountDTO getCurrentAccount(String address) {
+                return null;
+            }
+
+            @Override
+            public CurrentBlockDTO getCurrentBlock() {
+                return null;
             }
         }, ETH {
             @Override
@@ -125,8 +141,8 @@ public class CoinService {
             }
 
             @Override
-            public BlockbookTxDTO getTransactions(String address, Integer startIndex, Integer limit) {
-                return getBlockbookTransactions2(ethUrl, address, Constant.ETH_DIVIDER, startIndex, limit);
+            public TransactionResponseDTO getTransactions(String address, Integer startIndex, Integer limit) {
+                return getBlockbookTransactions(ethUrl, address, Constant.ETH_DIVIDER, startIndex, limit);
             }
 
             @Override
@@ -135,8 +151,23 @@ public class CoinService {
             }
 
             @Override
-            public List<JSONObject> getUTXO(String publicKey) {
-                return getBlockbookUTXO(ethUrl, publicKey);
+            public UtxoDTO getUTXO(String xpub) {
+                return getBlockbookUTXO(ethUrl, xpub);
+            }
+
+            @Override
+            public NonceDTO getNonce(String address) {
+                return getBlockbookNonce(ethUrl, address);
+            }
+
+            @Override
+            public CurrentAccountDTO getCurrentAccount(String address) {
+                return null;
+            }
+
+            @Override
+            public CurrentBlockDTO getCurrentBlock() {
+                return null;
             }
         }, BCH {
             @Override
@@ -155,8 +186,8 @@ public class CoinService {
             }
 
             @Override
-            public BlockbookTxDTO getTransactions(String address, Integer startIndex, Integer limit) {
-                return getBlockbookTransactions2(bchUrl, address, Constant.BCH_DIVIDER, startIndex, limit);
+            public TransactionResponseDTO getTransactions(String address, Integer startIndex, Integer limit) {
+                return getBlockbookTransactions(bchUrl, address, Constant.BCH_DIVIDER, startIndex, limit);
             }
 
             @Override
@@ -165,8 +196,23 @@ public class CoinService {
             }
 
             @Override
-            public List<JSONObject> getUTXO(String publicKey) {
-                return getBlockbookUTXO(bchUrl, publicKey);
+            public UtxoDTO getUTXO(String xpub) {
+                return getBlockbookUTXO(bchUrl, xpub);
+            }
+
+            @Override
+            public NonceDTO getNonce(String address) {
+                return null;
+            }
+
+            @Override
+            public CurrentAccountDTO getCurrentAccount(String address) {
+                return null;
+            }
+
+            @Override
+            public CurrentBlockDTO getCurrentBlock() {
+                return null;
             }
         }, LTC {
             @Override
@@ -185,8 +231,8 @@ public class CoinService {
             }
 
             @Override
-            public BlockbookTxDTO getTransactions(String address, Integer startIndex, Integer limit) {
-                return getBlockbookTransactions2(ltcUrl, address, Constant.LTC_DIVIDER, startIndex, limit);
+            public TransactionResponseDTO getTransactions(String address, Integer startIndex, Integer limit) {
+                return getBlockbookTransactions(ltcUrl, address, Constant.LTC_DIVIDER, startIndex, limit);
             }
 
             @Override
@@ -195,8 +241,23 @@ public class CoinService {
             }
 
             @Override
-            public List<JSONObject> getUTXO(String publicKey) {
-                return getBlockbookUTXO(ltcUrl, publicKey);
+            public UtxoDTO getUTXO(String xpub) {
+                return getBlockbookUTXO(ltcUrl, xpub);
+            }
+
+            @Override
+            public NonceDTO getNonce(String address) {
+                return null;
+            }
+
+            @Override
+            public CurrentAccountDTO getCurrentAccount(String address) {
+                return null;
+            }
+
+            @Override
+            public CurrentBlockDTO getCurrentBlock() {
+                return null;
             }
         }, BNB {
             @Override
@@ -215,8 +276,8 @@ public class CoinService {
             }
 
             @Override
-            public BlockbookTxDTO getTransactions(String address, Integer startIndex, Integer limit) {
-                return getBinanceTransactions2(address, startIndex, limit);
+            public TransactionResponseDTO getTransactions(String address, Integer startIndex, Integer limit) {
+                return getBinanceTransactions(address, startIndex, limit);
             }
 
             @Override
@@ -225,7 +286,22 @@ public class CoinService {
             }
 
             @Override
-            public List<JSONObject> getUTXO(String publicKey) {
+            public UtxoDTO getUTXO(String xpub) {
+                return null;
+            }
+
+            @Override
+            public NonceDTO getNonce(String address) {
+                return null;
+            }
+
+            @Override
+            public CurrentAccountDTO getCurrentAccount(String address) {
+                return getBinanceCurrentAccount(address);
+            }
+
+            @Override
+            public CurrentBlockDTO getCurrentBlock() {
                 return null;
             }
         }, XRP {
@@ -245,8 +321,8 @@ public class CoinService {
             }
 
             @Override
-            public BlockbookTxDTO getTransactions(String address, Integer startIndex, Integer limit) {
-                return getRippledTransactions2(address, Constant.XRP_DIVIDER, startIndex, limit);
+            public TransactionResponseDTO getTransactions(String address, Integer startIndex, Integer limit) {
+                return getRippledTransactions(address, Constant.XRP_DIVIDER, startIndex, limit);
             }
 
             @Override
@@ -255,7 +331,22 @@ public class CoinService {
             }
 
             @Override
-            public List<JSONObject> getUTXO(String publicKey) {
+            public UtxoDTO getUTXO(String xpub) {
+                return null;
+            }
+
+            @Override
+            public NonceDTO getNonce(String address) {
+                return null;
+            }
+
+            @Override
+            public CurrentAccountDTO getCurrentAccount(String address) {
+                return null;
+            }
+
+            @Override
+            public CurrentBlockDTO getCurrentBlock() {
                 return null;
             }
         }, TRX {
@@ -275,8 +366,8 @@ public class CoinService {
             }
 
             @Override
-            public BlockbookTxDTO getTransactions(String address, Integer startIndex, Integer limit) {
-                return getTrongridTransactions2(address, Constant.TRX_DIVIDER, startIndex, limit);
+            public TransactionResponseDTO getTransactions(String address, Integer startIndex, Integer limit) {
+                return getTrongridTransactions(address, Constant.TRX_DIVIDER, startIndex, limit);
             }
 
             @Override
@@ -285,8 +376,23 @@ public class CoinService {
             }
 
             @Override
-            public List<JSONObject> getUTXO(String publicKey) {
+            public UtxoDTO getUTXO(String xpub) {
                 return null;
+            }
+
+            @Override
+            public NonceDTO getNonce(String address) {
+                return null;
+            }
+
+            @Override
+            public CurrentAccountDTO getCurrentAccount(String address) {
+                return null;
+            }
+
+            @Override
+            public CurrentBlockDTO getCurrentBlock() {
+                return getTrongridCurrentBlock();
             }
         };
 
@@ -296,11 +402,17 @@ public class CoinService {
 
         public abstract TransactionNumberDTO getTransactionNumber(String address, BigDecimal amount);
 
-        public abstract BlockbookTxDTO getTransactions(String address, Integer startIndex, Integer limit);
+        public abstract TransactionResponseDTO getTransactions(String address, Integer startIndex, Integer limit);
 
         public abstract SendTransactionDTO sendTx(String hex);
 
-        public abstract List<JSONObject> getUTXO(String publicKey);
+        public abstract UtxoDTO getUTXO(String xpub);
+
+        public abstract NonceDTO getNonce(String address);
+
+        public abstract CurrentAccountDTO getCurrentAccount(String address);
+
+        public abstract CurrentBlockDTO getCurrentBlock();
     }
 
     private static TransactionNumberDTO getBlockbookTransactionNumber(String url, String address, BigDecimal amount, long divider) {
@@ -328,12 +440,27 @@ public class CoinService {
         return null;
     }
 
-    public BlockbookTxDTO getTransactions(Long userId, CoinEnum coin, Integer startIndex) {
+    public TransactionResponseDTO getTransactions(Long userId, CoinEnum coin, Integer startIndex) {
         String address = getCoinAddressByUserIdAndCoin(userId, coin.name());
         return coin.getTransactions(address, startIndex, Constant.TRANSACTION_LIMIT);
     }
 
-    public static BlockbookTxDTO getBlockbookTransactions2(String url, String address, Long divider, Integer startIndex, Integer limit) {
+    private static NonceDTO getBlockbookNonce(String url, String address) {
+        try {
+            JSONObject res = rest.getForObject(url + "/api/v2/address/" + address + "?details=txs&pageSize=1000&page=1", JSONObject.class);
+            JSONArray transactionsArray = res.optJSONArray("transactions");
+
+            if (transactionsArray != null) {
+                return new NonceDTO(transactionsArray.size());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return new NonceDTO();
+    }
+
+    private static TransactionResponseDTO getBlockbookTransactions(String url, String address, Long divider, Integer startIndex, Integer limit) {
         try {
             JSONObject res = rest.getForObject(url + "/api/v2/address/" + address + "?details=txs&pageSize=1000&page=1", JSONObject.class);
             JSONArray transactionsArray = res.optJSONArray("transactions");
@@ -343,10 +470,10 @@ public class CoinService {
             e.printStackTrace();
         }
 
-        return new BlockbookTxDTO();
+        return new TransactionResponseDTO();
     }
 
-    public static BlockbookTxDTO getTrongridTransactions2(String address, Long divider, Integer startIndex, Integer limit) {
+    private static TransactionResponseDTO getTrongridTransactions(String address, Long divider, Integer startIndex, Integer limit) {
         try {
             JSONObject res = rest.getForObject(trxUrl + "/v1/accounts/" + address + "/transactions?limit=200", JSONObject.class);
             JSONArray transactionsArray = res.optJSONArray("data");
@@ -356,10 +483,23 @@ public class CoinService {
             e.printStackTrace();
         }
 
-        return new BlockbookTxDTO();
+        return new TransactionResponseDTO();
     }
 
-    private static BlockbookTxDTO getRippledTransactions2(String address, Long divider, Integer startIndex, Integer limit) {
+    private static CurrentBlockDTO getTrongridCurrentBlock() {
+        try {
+            String resStr = rest.getForObject(trxUrl + "/wallet/getnowblock", String.class);
+            JSONObject res = JSONObject.fromObject(resStr);
+
+            return new CurrentBlockDTO(res.optJSONObject("block_header"));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return new CurrentBlockDTO();
+    }
+
+    private static TransactionResponseDTO getRippledTransactions(String address, Long divider, Integer startIndex, Integer limit) {
         try {
             JSONObject param = new JSONObject();
             param.put("account", address);
@@ -381,11 +521,11 @@ public class CoinService {
             e.printStackTrace();
         }
 
-        return new BlockbookTxDTO();
+        return new TransactionResponseDTO();
     }
 
-    private static BlockbookTxDTO getBinanceTransactions2(String address, Integer startIndex, Integer limit) {
-        BlockbookTxDTO result = new BlockbookTxDTO();
+    private static TransactionResponseDTO getBinanceTransactions(String address, Integer startIndex, Integer limit) {
+        TransactionResponseDTO result = new TransactionResponseDTO();
 
         try {
             TransactionsRequest request = new TransactionsRequest();
@@ -535,6 +675,18 @@ public class CoinService {
         return BigDecimal.ZERO;
     }
 
+    private static CurrentAccountDTO getBinanceCurrentAccount(String address) {
+        try {
+            Account account = binanceDex.getAccount(address);
+
+            return new CurrentAccountDTO(account.getAccountNumber(), account.getSequence());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return new CurrentAccountDTO();
+    }
+
     private static BigDecimal getRippledBalance(String address, long divider) {
         try {
             JSONObject param = new JSONObject();
@@ -577,16 +729,16 @@ public class CoinService {
         return result;
     }
 
-    private static List<JSONObject> getBlockbookUTXO(String url, String publicKey) {
+    private static UtxoDTO getBlockbookUTXO(String url, String publicKey) {
         try {
             JSONArray res = rest.getForObject(url + "/api/v2/utxo/" + publicKey, JSONArray.class);
 
-            return Util.jsonArrayToList(res);
+            return new UtxoDTO(res);
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        return null;
+        return new UtxoDTO();
     }
 
     public String getCoinAddressByUserIdAndCoin(Long userId, String coin) {

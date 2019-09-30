@@ -1,6 +1,6 @@
 package com.batm.util;
 
-import com.batm.dto.BlockbookTxDTO;
+import com.batm.dto.TransactionResponseDTO;
 import com.batm.dto.TransactionDTO;
 import com.binance.dex.api.client.domain.TransactionPage;
 import net.sf.json.JSONArray;
@@ -13,8 +13,8 @@ import java.util.List;
 
 public class TransactionUtil {
 
-    public static BlockbookTxDTO composeBlockbook(Integer total, JSONArray transactionsArray, String address, Long divider, Integer startIndex, Integer limit) {
-        BlockbookTxDTO result = new BlockbookTxDTO();
+    public static TransactionResponseDTO composeBlockbook(Integer total, JSONArray transactionsArray, String address, Long divider, Integer startIndex, Integer limit) {
+        TransactionResponseDTO result = new TransactionResponseDTO();
         List<TransactionDTO> transactions = new ArrayList<>();
 
         for (int i = 0; i < transactionsArray.size(); i++) {
@@ -48,8 +48,8 @@ public class TransactionUtil {
         return new TransactionDTO(index, txId, value, status, type, date);
     }
 
-    public static BlockbookTxDTO composeBinance(TransactionPage page, String address, Integer startIndex, Integer limit) {
-        BlockbookTxDTO result = new BlockbookTxDTO();
+    public static TransactionResponseDTO composeBinance(TransactionPage page, String address, Integer startIndex, Integer limit) {
+        TransactionResponseDTO result = new TransactionResponseDTO();
         List<TransactionDTO> transactions = new ArrayList<>();
 
         for (int i = 0; i < page.getTx().size(); i++) {
@@ -78,8 +78,8 @@ public class TransactionUtil {
         return result;
     }
 
-    public static BlockbookTxDTO composeRippled(JSONArray transactionsArray, String address, Long divider, Integer startIndex, Integer limit) {
-        BlockbookTxDTO result = new BlockbookTxDTO();
+    public static TransactionResponseDTO composeRippled(JSONArray transactionsArray, String address, Long divider, Integer startIndex, Integer limit) {
+        TransactionResponseDTO result = new TransactionResponseDTO();
         List<TransactionDTO> transactions = new ArrayList<>();
 
         int count = 0;
@@ -115,8 +115,8 @@ public class TransactionUtil {
         return result;
     }
 
-    public static BlockbookTxDTO composeTrongrid(JSONArray transactionsArray, String address, Long divider, Integer startIndex, Integer limit) {
-        BlockbookTxDTO result = new BlockbookTxDTO();
+    public static TransactionResponseDTO composeTrongrid(JSONArray transactionsArray, String address, Long divider, Integer startIndex, Integer limit) {
+        TransactionResponseDTO result = new TransactionResponseDTO();
 
         List<TransactionDTO> transactions = new ArrayList<>();
 
