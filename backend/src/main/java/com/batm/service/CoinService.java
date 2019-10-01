@@ -7,17 +7,23 @@ import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
+
 import com.batm.dto.*;
 import com.batm.entity.*;
+import com.batm.model.Error;
+import com.batm.model.Response;
 import com.batm.util.*;
 import com.binance.dex.api.client.domain.Account;
 import com.binance.dex.api.client.domain.TransactionPage;
 import com.binance.dex.api.client.domain.TransactionType;
 import com.binance.dex.api.client.domain.request.TransactionsRequest;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import com.batm.repository.CoinRepository;
@@ -33,9 +39,6 @@ import net.sf.json.JSONObject;
 @Service
 @Slf4j
 public class CoinService {
-
-    @Autowired
-    private Environment environment;
 
     @Autowired
     private UserCoinRepository userCoinRepository;
@@ -56,6 +59,7 @@ public class CoinService {
     private static String ltcUrl;
     private static String trxUrl;
     private static String xrpUrl;
+    private static String bnbUrl;
 
     public CoinService(@Autowired final BinanceApiRestClient binance,
                        @Autowired final BinanceDexApiRestClient binanceDex,
@@ -65,7 +69,8 @@ public class CoinService {
                        @Value("${bch.url}") final String bchUrl,
                        @Value("${ltc.url}") final String ltcUrl,
                        @Value("${trx.url}") final String trxUrl,
-                       @Value("${xrp.url}") final String xrpUrl) {
+                       @Value("${xrp.url}") final String xrpUrl,
+                       @Value("${bnb.url}") final String bnbUrl) {
 
         CoinService.binance = binance;
         CoinService.binanceDex = binanceDex;
@@ -76,6 +81,7 @@ public class CoinService {
         CoinService.ltcUrl = ltcUrl;
         CoinService.trxUrl = trxUrl;
         CoinService.xrpUrl = xrpUrl;
+        CoinService.bnbUrl = bnbUrl;
     }
 
     public enum CoinEnum {
@@ -101,11 +107,6 @@ public class CoinService {
             }
 
             @Override
-            public SendTransactionDTO sendTx(String hex) {
-                return sendBlockbookTransaction(btcUrl, hex);
-            }
-
-            @Override
             public UtxoDTO getUTXO(String xpub) {
                 return getBlockbookUTXO(btcUrl, xpub);
             }
@@ -123,6 +124,18 @@ public class CoinService {
             @Override
             public CurrentBlockDTO getCurrentBlock() {
                 return null;
+            }
+
+            @Override
+            public String getWalletAddress() {
+                return null;
+            }
+
+            @Override
+            public String submitTransaction(Long userId, SubmitTransactionDTO transaction) {
+                String txId = submitBlockbookTransaction(btcUrl, transaction);
+
+                return txId;
             }
         }, ETH {
             @Override
@@ -146,13 +159,8 @@ public class CoinService {
             }
 
             @Override
-            public SendTransactionDTO sendTx(String hex) {
-                return sendBlockbookTransaction(ethUrl, hex);
-            }
-
-            @Override
             public UtxoDTO getUTXO(String xpub) {
-                return getBlockbookUTXO(ethUrl, xpub);
+                return null;
             }
 
             @Override
@@ -168,6 +176,18 @@ public class CoinService {
             @Override
             public CurrentBlockDTO getCurrentBlock() {
                 return null;
+            }
+
+            @Override
+            public String getWalletAddress() {
+                return null;
+            }
+
+            @Override
+            public String submitTransaction(Long userId, SubmitTransactionDTO transaction) {
+                String txId = submitBlockbookTransaction(ethUrl, transaction);
+
+                return txId;
             }
         }, BCH {
             @Override
@@ -191,11 +211,6 @@ public class CoinService {
             }
 
             @Override
-            public SendTransactionDTO sendTx(String hex) {
-                return sendBlockbookTransaction(bchUrl, hex);
-            }
-
-            @Override
             public UtxoDTO getUTXO(String xpub) {
                 return getBlockbookUTXO(bchUrl, xpub);
             }
@@ -213,6 +228,18 @@ public class CoinService {
             @Override
             public CurrentBlockDTO getCurrentBlock() {
                 return null;
+            }
+
+            @Override
+            public String getWalletAddress() {
+                return null;
+            }
+
+            @Override
+            public String submitTransaction(Long userId, SubmitTransactionDTO transaction) {
+                String txId = submitBlockbookTransaction(bchUrl, transaction);
+
+                return txId;
             }
         }, LTC {
             @Override
@@ -236,11 +263,6 @@ public class CoinService {
             }
 
             @Override
-            public SendTransactionDTO sendTx(String hex) {
-                return sendBlockbookTransaction(ltcUrl, hex);
-            }
-
-            @Override
             public UtxoDTO getUTXO(String xpub) {
                 return getBlockbookUTXO(ltcUrl, xpub);
             }
@@ -258,6 +280,18 @@ public class CoinService {
             @Override
             public CurrentBlockDTO getCurrentBlock() {
                 return null;
+            }
+
+            @Override
+            public String getWalletAddress() {
+                return null;
+            }
+
+            @Override
+            public String submitTransaction(Long userId, SubmitTransactionDTO transaction) {
+                String txId = submitBlockbookTransaction(ltcUrl, transaction);
+
+                return txId;
             }
         }, BNB {
             @Override
@@ -281,11 +315,6 @@ public class CoinService {
             }
 
             @Override
-            public SendTransactionDTO sendTx(String hex) {
-                return null;
-            }
-
-            @Override
             public UtxoDTO getUTXO(String xpub) {
                 return null;
             }
@@ -303,6 +332,18 @@ public class CoinService {
             @Override
             public CurrentBlockDTO getCurrentBlock() {
                 return null;
+            }
+
+            @Override
+            public String getWalletAddress() {
+                return null;
+            }
+
+            @Override
+            public String submitTransaction(Long userId, SubmitTransactionDTO transaction) {
+                String txId = submitBinanceTransaction(bnbUrl, transaction);
+
+                return txId;
             }
         }, XRP {
             @Override
@@ -326,11 +367,6 @@ public class CoinService {
             }
 
             @Override
-            public SendTransactionDTO sendTx(String hex) {
-                return null;
-            }
-
-            @Override
             public UtxoDTO getUTXO(String xpub) {
                 return null;
             }
@@ -348,6 +384,18 @@ public class CoinService {
             @Override
             public CurrentBlockDTO getCurrentBlock() {
                 return null;
+            }
+
+            @Override
+            public String getWalletAddress() {
+                return null;
+            }
+
+            @Override
+            public String submitTransaction(Long userId, SubmitTransactionDTO transaction) {
+                String txId = submitRippledTransaction(bnbUrl, transaction);
+
+                return txId;
             }
         }, TRX {
             @Override
@@ -371,11 +419,6 @@ public class CoinService {
             }
 
             @Override
-            public SendTransactionDTO sendTx(String hex) {
-                return null;
-            }
-
-            @Override
             public UtxoDTO getUTXO(String xpub) {
                 return null;
             }
@@ -394,6 +437,18 @@ public class CoinService {
             public CurrentBlockDTO getCurrentBlock() {
                 return getTrongridCurrentBlock();
             }
+
+            @Override
+            public String getWalletAddress() {
+                return null;
+            }
+
+            @Override
+            public String submitTransaction(Long userId, SubmitTransactionDTO transaction) {
+                String txId = submitTrongridTransaction(bnbUrl, transaction);
+
+                return txId;
+            }
         };
 
         public abstract BigDecimal getPrice();
@@ -404,8 +459,6 @@ public class CoinService {
 
         public abstract TransactionResponseDTO getTransactions(String address, Integer startIndex, Integer limit);
 
-        public abstract SendTransactionDTO sendTx(String hex);
-
         public abstract UtxoDTO getUTXO(String xpub);
 
         public abstract NonceDTO getNonce(String address);
@@ -413,6 +466,10 @@ public class CoinService {
         public abstract CurrentAccountDTO getCurrentAccount(String address);
 
         public abstract CurrentBlockDTO getCurrentBlock();
+
+        public abstract String getWalletAddress();
+
+        public abstract String submitTransaction(Long userId, SubmitTransactionDTO transaction);
     }
 
     private static TransactionNumberDTO getBlockbookTransactionNumber(String url, String address, BigDecimal amount, long divider) {
@@ -616,13 +673,13 @@ public class CoinService {
             UserCoin tempUserCoin = new UserCoin(userCoin.getCoinCode());
             int index = userCoins.indexOf(tempUserCoin);
             if (index < 0) {
-                return Response.error(new com.batm.entity.Error(3, "Coin does not exist"));
+                return Response.error(new Error(3, "Coin does not exist"));
             }
 
             String dbPublicKey = userCoins.get(index).getPublicKey();
             if (userCoin.getPublicKey() == null
                     || !userCoin.getPublicKey().equalsIgnoreCase(dbPublicKey)) {
-                return Response.error(new com.batm.entity.Error(3, "Public keys not match"));
+                return Response.error(new Error(3, "Public keys not match"));
             }
         }
 
@@ -710,23 +767,73 @@ public class CoinService {
         return BigDecimal.ZERO;
     }
 
-    private static SendTransactionDTO sendBlockbookTransaction(String url, String hex) {
-        SendTransactionDTO result = new SendTransactionDTO();
-
+    private static String submitBlockbookTransaction(String url, SubmitTransactionDTO transaction) {
         try {
-            JSONObject res = rest.getForObject(url + "/api/v2/sendtx/" + hex, JSONObject.class);
-            String txId = res.optString("result");
+            //JSONObject res = rest.getForObject(url + "/api/v2/sendtx/" + transaction.getHex(), JSONObject.class);
 
-            if (txId != null) {
-                result.setTxId(txId).setSuccess(true);
-            } else {
-                result.setErrorMessage(res.optJSONObject("error").optString("message"));
-            }
+            String txId = RandomStringUtils.randomAlphanumeric(50);
+
+            return txId;
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        return result;
+        return null;
+    }
+
+    private static String submitTrongridTransaction(String url, SubmitTransactionDTO transaction) {
+        try {
+            //JSONObject res = rest.postForObject(url + "/wallet/broadcasttransaction", transaction.getTrx(), JSONObject.class);
+
+            String txId = RandomStringUtils.randomAlphanumeric(50);
+
+            return txId;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    private static String submitBinanceTransaction(String url, SubmitTransactionDTO transaction) {
+        try {
+            //HttpHeaders headers = new HttpHeaders();
+            //headers.setContentType(MediaType.TEXT_PLAIN);
+
+            //JSONObject res = rest.postForObject(url + "api/v1/broadcast", transaction.getHex(), JSONObject.class);
+
+            String txId = RandomStringUtils.randomAlphanumeric(50);
+
+            return txId;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    private static String submitRippledTransaction(String url, SubmitTransactionDTO transaction) {
+        try {
+            //JSONObject param = new JSONObject();
+            //param.put("tx_blob", transaction.getHex());
+
+            //JSONArray params = new JSONArray();
+            //params.add(param);
+
+            //JSONObject req = new JSONObject();
+            //req.put("method", "submit");
+            //req.put("params", params);
+
+            //JSONObject res = rest.postForObject(url, req, JSONObject.class);
+
+            String txId = RandomStringUtils.randomAlphanumeric(50);
+
+            return txId;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
     }
 
     private static UtxoDTO getBlockbookUTXO(String url, String publicKey) {
@@ -745,17 +852,18 @@ public class CoinService {
         return userCoinRepository.findByUserUserIdAndCoinId(userId, coin).getPublicKey();
     }
 
-    public String getCoinAddressByUserPhoneAndCoin(String phone, String coin) {
-        return userRepository.findOneByPhoneIgnoreCase(phone).map(user -> {
-            UserCoin userCoin = userCoinRepository.findByUserUserIdAndCoinId(user.getUserId(), coin);
-            if (userCoin != null) {
-                return userCoin.getPublicKey();
-            }
-            return null;
-        }).orElse(null);
-    }
+    public GiftAddressDTO getUserGiftAddress(CoinService.CoinEnum coinId, String phone) {
+        Optional<User> user = userRepository.findOneByPhoneIgnoreCase(phone);
 
-    public String getDefaultPublicKeyByCoin(CoinEnum coin) {
-        return environment.getProperty(String.format("%s.publicKey", coin.name().toLowerCase()));
+        if (user.isPresent()) {
+            String address = user.get().getUserCoins().stream()
+                    .filter(k -> k.getCoinId().equalsIgnoreCase(coinId.name()))
+                    .findFirst().get()
+                    .getPublicKey();
+
+            return new GiftAddressDTO(address, true);
+        } else {
+            return new GiftAddressDTO(coinId.getWalletAddress(), false);
+        }
     }
 }

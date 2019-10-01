@@ -1,8 +1,9 @@
 package com.batm.rest;
 
-import com.batm.dto.SendTransactionDTO;
-import com.batm.entity.Response;
+import com.batm.dto.SubmitTransactionDTO;
+import com.batm.model.Response;
 import com.batm.service.CoinService;
+import org.apache.commons.lang.StringUtils;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -29,7 +30,7 @@ public class TransactionController {
     @GetMapping("/user/{userId}/coins/{coinId}/transactions/utxo/{xpub}")
     public Response getUtxo(@PathVariable String userId, @PathVariable CoinService.CoinEnum coinId, @PathVariable String xpub) {
         try {
-            if (coinId == CoinService.CoinEnum.BTC || coinId == CoinService.CoinEnum.ETH || coinId == CoinService.CoinEnum.BCH || coinId == CoinService.CoinEnum.LTC) {
+            if (coinId == CoinService.CoinEnum.BTC || coinId == CoinService.CoinEnum.BCH || coinId == CoinService.CoinEnum.LTC) {
                 return Response.ok(coinId.getUTXO(xpub));
             } else {
                 return Response.error(2, coinId.name() + " not allowed");
@@ -82,17 +83,18 @@ public class TransactionController {
         }
     }
 
-    @GetMapping("/user/{userId}/coins/{coinId}/sendtx/{hex}")
-    public Response sendTx(@PathVariable Long userId, @PathVariable CoinService.CoinEnum coinId, @PathVariable String hex) {
+    @PostMapping("/user/{userId}/coins/{coinId}/transactions/submit")
+    public Response submit(@PathVariable Long userId, @PathVariable CoinService.CoinEnum coinId, @RequestBody SubmitTransactionDTO transaction) {
         try {
-            JSONObject res = new JSONObject();
-            SendTransactionDTO dto = coinId.sendTx(hex);
+            String txId = coinId.submitTransaction(userId, transaction);
 
-            if (dto.getSuccess()) {
-                res.put("txId", dto.getTxId());
+            if (StringUtils.isNotEmpty(txId)) {
+                JSONObject res = new JSONObject();
+                res.put("txId", txId);
+
                 return Response.ok(res);
             } else {
-                return Response.sendTxError(dto.getErrorMessage());
+                return Response.error(2, coinId.name() + " error transaction creation");
             }
         } catch (Exception e) {
             e.printStackTrace();

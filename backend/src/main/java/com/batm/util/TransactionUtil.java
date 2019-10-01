@@ -2,9 +2,12 @@ package com.batm.util;
 
 import com.batm.dto.TransactionResponseDTO;
 import com.batm.dto.TransactionDTO;
+import com.batm.model.TransactionStatus;
+import com.batm.model.TransactionType;
 import com.binance.dex.api.client.domain.TransactionPage;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
+
 import java.math.BigDecimal;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
@@ -40,9 +43,9 @@ public class TransactionUtil {
         List<JSONObject> voutList = Util.jsonArrayToList(json.optJSONArray("vout"));
 
         String txId = json.getString("txid");
-        TransactionDTO.TransactionType type = getTransactionType(address, vinList);
+        TransactionType type = getTransactionType(address, vinList);
         BigDecimal value = getTransactionValue(type, address, voutList, divider);
-        TransactionDTO.TransactionStatus status = getTransactionStatus(json.optInt("confirmations"));
+        TransactionStatus status = getTransactionStatus(json.optInt("confirmations"));
         Date date = new Date(json.optLong("blockTime") * 1000);
 
         return new TransactionDTO(index, txId, value, status, type, date);
@@ -60,9 +63,9 @@ public class TransactionUtil {
             com.binance.dex.api.client.domain.Transaction transaction = page.getTx().get(i);
 
             String txId = transaction.getTxHash();
-            TransactionDTO.TransactionType type = transaction.getToAddr().equalsIgnoreCase(address) ? TransactionDTO.TransactionType.DEPOSIT : TransactionDTO.TransactionType.WITHDRAW;
+            TransactionType type = transaction.getToAddr().equalsIgnoreCase(address) ? TransactionType.DEPOSIT : TransactionType.WITHDRAW;
             BigDecimal value = new BigDecimal(transaction.getValue()).stripTrailingZeros();
-            TransactionDTO.TransactionStatus status = TransactionDTO.TransactionStatus.COMPLETE;
+            TransactionStatus status = TransactionStatus.COMPLETE;
             Date date = Date.from(ZonedDateTime.parse(transaction.getTimeStamp()).toInstant());
 
             transactions.add(new TransactionDTO(startIndex + i, txId, value, status, type, date));
@@ -96,12 +99,12 @@ public class TransactionUtil {
 
             String transactionResult = txs.optJSONObject("meta").optString("TransactionResult");
 
-            TransactionDTO.TransactionStatus status = transactionResult.equalsIgnoreCase("tesSUCCESS") ? TransactionDTO.TransactionStatus.COMPLETE : TransactionDTO.TransactionStatus.PENDING;
+            TransactionStatus status = transactionResult.equalsIgnoreCase("tesSUCCESS") ? TransactionStatus.COMPLETE : TransactionStatus.PENDING;
 
             JSONObject tx = txs.optJSONObject("tx");
 
             String txId = tx.optString("hash");
-            TransactionDTO.TransactionType type = tx.optString("Account").equalsIgnoreCase(address) ? TransactionDTO.TransactionType.WITHDRAW : TransactionDTO.TransactionType.DEPOSIT;
+            TransactionType type = tx.optString("Account").equalsIgnoreCase(address) ? TransactionType.WITHDRAW : TransactionType.DEPOSIT;
             BigDecimal value = new BigDecimal(tx.optString("Amount")).divide(BigDecimal.valueOf(divider)).stripTrailingZeros();
             Date date = new Date((tx.optLong("date") + 946684800L) * 1000);
 
@@ -144,9 +147,9 @@ public class TransactionUtil {
             String ownerAddress = Base58.toBase58(rowData.optString("owner_address")).toLowerCase();
             String code = tx.optJSONArray("ret").getJSONObject(0).optString("code");
 
-            TransactionDTO.TransactionType type = ownerAddress.equalsIgnoreCase(address) ? TransactionDTO.TransactionType.WITHDRAW : TransactionDTO.TransactionType.DEPOSIT;
+            TransactionType type = ownerAddress.equalsIgnoreCase(address) ? TransactionType.WITHDRAW : TransactionType.DEPOSIT;
             BigDecimal value = BigDecimal.valueOf(amount).divide(BigDecimal.valueOf(divider)).stripTrailingZeros();
-            TransactionDTO.TransactionStatus status = code.equalsIgnoreCase("SUCESS") ? TransactionDTO.TransactionStatus.COMPLETE : TransactionDTO.TransactionStatus.PENDING;
+            TransactionStatus status = code.equalsIgnoreCase("SUCESS") ? TransactionStatus.COMPLETE : TransactionStatus.PENDING;
 
             Date date = new Date(blockTimestamp);
 
@@ -169,16 +172,16 @@ public class TransactionUtil {
         return null;
     }
 
-    private static TransactionDTO.TransactionStatus getTransactionStatus(Integer confirmations) {
-        return (confirmations == null || confirmations < 3) ? TransactionDTO.TransactionStatus.PENDING : TransactionDTO.TransactionStatus.COMPLETE;
+    private static TransactionStatus getTransactionStatus(Integer confirmations) {
+        return (confirmations == null || confirmations < 3) ? TransactionStatus.PENDING : TransactionStatus.COMPLETE;
     }
 
-    private static TransactionDTO.TransactionType getTransactionType(String address, List<JSONObject> vinList) {
-        return vinList.stream().anyMatch(e -> e.getJSONArray("addresses").toString().toLowerCase().contains(address.toLowerCase())) ? TransactionDTO.TransactionType.WITHDRAW : TransactionDTO.TransactionType.DEPOSIT;
+    private static TransactionType getTransactionType(String address, List<JSONObject> vinList) {
+        return vinList.stream().anyMatch(e -> e.getJSONArray("addresses").toString().toLowerCase().contains(address.toLowerCase())) ? TransactionType.WITHDRAW : TransactionType.DEPOSIT;
     }
 
-    private static BigDecimal getTransactionValue(TransactionDTO.TransactionType type, String address, List<JSONObject> voutList, Long divider) {
-        if (type == TransactionDTO.TransactionType.WITHDRAW) {
+    private static BigDecimal getTransactionValue(TransactionType type, String address, List<JSONObject> voutList, Long divider) {
+        if (type == TransactionType.WITHDRAW) {
             return getTransactionValue(voutList.stream().filter(vout -> !vout.getJSONArray("addresses").toString().toLowerCase().contains(address.toLowerCase()))
                     .findFirst()
                     .get().getString("value"), divider);

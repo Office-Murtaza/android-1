@@ -1,4 +1,4 @@
-package com.batm.entity;
+package com.batm.model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
@@ -25,14 +25,10 @@ public class Response {
     }
 
     public static Response error(Integer errorCode, String message) {
-        return Response.error(new com.batm.entity.Error(errorCode, message));
+        return Response.error(new Error(errorCode, message));
     }
 
     public static Response serverError() {
-        return Response.error(new com.batm.entity.Error(1, "Server error"));
-    }
-
-    public static Response sendTxError(String message) {
-        return Response.error(new com.batm.entity.Error(2, message));
+        return Response.error(new Error(1, "Server error"));
     }
 }

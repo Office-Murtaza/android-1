@@ -1,7 +1,8 @@
 package com.batm.dto;
 
+import com.batm.model.TransactionStatus;
+import com.batm.model.TransactionType;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -31,42 +32,4 @@ public class TransactionDTO implements Serializable {
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private Date date;
-
-    public enum TransactionStatus {
-        UNKNOWN(0),
-        PENDING(1),
-        COMPLETE(2),
-        FAIL(3);
-
-        private int value;
-
-        TransactionStatus(int value) {
-            this.value = value;
-        }
-
-        @JsonValue
-        public int getValue() {
-            return value;
-        }
-    }
-
-    public enum TransactionType {
-        DEPOSIT(1),
-        WITHDRAW(2),
-        SEND_GIFT(3),
-        RECEIVE_GIFT(4),
-        BUY(5),
-        SELL(6);
-
-        private int value;
-
-        TransactionType(int value) {
-            this.value = value;
-        }
-
-        @JsonValue
-        public int getValue() {
-            return value;
-        }
-    }
 }

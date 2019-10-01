@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.batm.entity.AtmAddress;
 import com.batm.entity.OpenHour;
-import com.batm.entity.Response;
+import com.batm.model.Response;
 import com.batm.repository.AtmAddressRepository;
 
 @RestController

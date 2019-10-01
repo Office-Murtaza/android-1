@@ -1,7 +1,11 @@
 package com.batm.service;
 
+import java.time.Instant;
 import java.util.Optional;
 
+import com.batm.dto.GiftAddressDTO;
+import com.batm.entity.Unlink;
+import com.batm.repository.UnlinkRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -17,6 +21,9 @@ public class UserService {
 
 	@Autowired
 	private UserRepository userRepository;
+
+	@Autowired
+	private UnlinkRepository unlinkRepository;
 
 	public User registerUser(String phone, String password) {
 
@@ -56,4 +63,20 @@ public class UserService {
 		return user != null ? true : false;
 	}
 
+	public Unlink unlinkUser(Long userId) {
+		User user = this.userRepository.getOne(userId);
+		if(user != null) {
+			Unlink unlink = this.unlinkRepository.findByUserUserId(userId);
+			if(unlink == null) {
+				unlink = new Unlink();
+				unlink.setUser(user);
+				unlink.setCreatedDate(Instant.now());
+			}
+
+			unlink.setLastModifiedDate(Instant.now());
+			unlinkRepository.save(unlink);
+			return unlink;
+		}
+		return null;
+	}
 }

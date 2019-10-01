@@ -1,4 +1,4 @@
-package com.batm.entity;
+package com.batm.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

@@ -23,8 +23,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import com.batm.entity.CodeVerification;
-import com.batm.entity.Error;
-import com.batm.entity.Response;
+import com.batm.model.Error;
+import com.batm.model.Response;
 import com.batm.entity.Token;
 import com.batm.entity.Unlink;
 import com.batm.entity.UpdatePhone;
@@ -40,7 +40,6 @@ import com.batm.rest.vm.ValidateOTPResponse;
 import com.batm.rest.vm.ValidateOTPVM;
 import com.batm.security.jwt.JWTFilter;
 import com.batm.security.jwt.TokenProvider;
-import com.batm.service.UnlinkService;
 import com.batm.service.PhoneService;
 import com.batm.service.UserService;
 import com.batm.service.VerificationService;
@@ -78,9 +77,6 @@ public class UserController {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
-
-    @Autowired
-    private UnlinkService unlinkService;
 
     @Autowired
     private PhoneService phoneService;
@@ -320,7 +316,6 @@ public class UserController {
     @PostMapping("/user/{userId}/password")
     public Response updatePassword(@RequestBody ChangePasswordRequestVM changePasswordRequest, @PathVariable Long userId) {
         try {
-
             User user = this.userService.findById(userId);
             Boolean match = passwordEncoder.matches(changePasswordRequest.getOldPassword(), user.getPassword());
             if (!match) {
@@ -342,7 +337,7 @@ public class UserController {
     @PostMapping("/user/{userId}/unlink")
     public Response unlink(@PathVariable Long userId) {
         try {
-            Unlink unlink = unlinkService.unlinkUser(userId);
+            Unlink unlink = userService.unlinkUser(userId);
             Map<String, Object> response = new HashMap<>();
             if (unlink != null) {
                 response.put("updated", true);
