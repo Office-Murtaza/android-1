@@ -5,6 +5,8 @@ import RxCocoa
 enum UnderlinedLabelViewType {
   case copy
   case paste
+  case scan
+  case max
 }
 
 class UnderlinedLabelView: UIView {
@@ -49,6 +51,8 @@ class UnderlinedLabelView: UIView {
     switch type {
     case .copy: attributedText = NSAttributedString(string: localize(L.Shared.copy), attributes: attributes)
     case .paste: attributedText = NSAttributedString(string: localize(L.Shared.paste), attributes: attributes)
+    case .scan: attributedText = NSAttributedString(string: localize(L.Shared.scan), attributes: attributes)
+    case .max: attributedText = NSAttributedString(string: localize(L.Shared.max), attributes: attributes)
     }
     
     underlinedLabel.attributedText = attributedText

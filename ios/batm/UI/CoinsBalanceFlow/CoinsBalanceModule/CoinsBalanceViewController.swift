@@ -100,7 +100,7 @@ class CoinsBalanceViewController: ModuleViewController<CoinsBalancePresenter>, U
     presenter.state
       .map { $0.coinsBalance?.totalBalance }
       .filterNil()
-      .map { "$ \($0)" }
+      .map { "$ \(NSNumber(value: $0).decimalValue)" }
       .asObservable()
       .bind(to: balanceLabel.rx.text)
       .disposed(by: disposeBag)

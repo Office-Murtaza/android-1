@@ -10,7 +10,6 @@ final class CoinDetailsPresenter: ModulePresenter, CoinDetailsModule {
   struct Input {
     var back: Driver<Void>
     var refresh: Driver<Void>
-    var deposit: Driver<Void>
     var withdraw: Driver<Void>
     var sendGift: Driver<Void>
     var sell: Driver<Void>
@@ -24,8 +23,6 @@ final class CoinDetailsPresenter: ModulePresenter, CoinDetailsModule {
 
   weak var delegate: CoinDetailsModuleDelegate?
   
-  var coinBalance: CoinBalance!
-  
   var state: Driver<CoinDetailsState> {
     return store.state
   }
@@ -37,7 +34,7 @@ final class CoinDetailsPresenter: ModulePresenter, CoinDetailsModule {
   }
   
   func setup(with coinBalance: CoinBalance) {
-    self.coinBalance = coinBalance
+    store.action.accept(.setupCoinBalance(coinBalance))
   }
 
   func bind(input: Input) {
@@ -48,19 +45,20 @@ final class CoinDetailsPresenter: ModulePresenter, CoinDetailsModule {
     input.refresh
       .asObservable()
       .flatFilter(activity.not())
-      .flatMap { [unowned self] in self.usecase.getTransactions(for: self.coinBalance.type, from: 0) }
+      .withLatestFrom(state)
+      .map { $0.coinBalance }
+      .filterNil()
+      .flatMap { [unowned self] in self.usecase.getTransactions(for: $0.type, from: 0) }
       .subscribe(onNext: { [store] in
         store.action.accept(.finishFetchingTransactions($0))
         store.action.accept(.updatePage(0))
       })
       .disposed(by: disposeBag)
     
-    input.deposit
-      .drive(onNext: { print("DEPOSIT CLICKED") })
-      .disposed(by: disposeBag)
-    
     input.withdraw
-      .drive(onNext: { print("WITHDRAW CLICKED") })
+      .withLatestFrom(state)
+      .filter { $0.coin != nil && $0.coinBalance != nil }
+      .drive(onNext: { [delegate] in delegate?.showWithdrawScreen(for: $0.coin!, and: $0.coinBalance!) })
       .disposed(by: disposeBag)
     
     input.sendGift
@@ -83,10 +81,15 @@ final class CoinDetailsPresenter: ModulePresenter, CoinDetailsModule {
   }
   
   private func setupBindings() {
-    let combinedObservable = Observable.combineLatest(
-      usecase.getTransactions(for: coinBalance.type, from: 0).asObservable(),
-      usecase.getCoin(for: coinBalance.type).asObservable()
-    )
+    let combinedObservable = state
+      .map { $0.coinBalance }
+      .filterNil()
+      .asObservable()
+      .take(1)
+      .flatMap { [usecase] in
+        return Observable.combineLatest(usecase.getTransactions(for: $0.type, from: 0).asObservable(),
+                                        usecase.getCoin(for: $0.type).asObservable())
+      }
     
     track(combinedObservable)
       .drive(onNext: { [store] in
@@ -99,7 +102,7 @@ final class CoinDetailsPresenter: ModulePresenter, CoinDetailsModule {
       .flatFilter(activity.not())
       .withLatestFrom(state)
       .filter { !$0.isLastPage }
-      .flatMap { [unowned self] in self.usecase.getTransactions(for: self.coinBalance.type, from: $0.page + 1) }
+      .flatMap { [unowned self] in self.usecase.getTransactions(for: $0.coinBalance!.type, from: $0.page + 1) }
       .doOnNext { [store] in store.action.accept(.finishFetchingNextTransactions($0)) }
       .withLatestFrom(state)
       .subscribe(onNext: { [store] in store.action.accept(.updatePage($0.page + 1)) })

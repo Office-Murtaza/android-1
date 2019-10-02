@@ -5,19 +5,20 @@ use_frameworks!
 target 'batm' do
   
   # UI
-  pod 'SnapKit', '4.2.0'
+  pod 'SnapKit', '5.0.1'
   pod 'MBProgressHUD', '1.1.0'
   pod 'FlagPhoneNumber', '0.7.2'
-  pod 'GoogleMaps', '3.2.0'
-  
+  pod 'GoogleMaps', '3.4.0'
+  pod 'QRCodeReader.swift', '10.1.0'
+
   # Utilities
-  pod 'TrustWalletCore', '0.8.1'
-  pod 'PhoneNumberKit', '2.6.0'
-  pod 'Swinject', '2.6.2'
-  pod 'ObjectMapper', '3.4.2'
+  pod 'TrustWalletCore', '0.12.22'
+  pod 'PhoneNumberKit', '3.0.0'
+  pod 'Swinject', '2.7.1'
+  pod 'ObjectMapper', '3.5.1'
   
   # Rx
-  pod 'Moya/RxSwift', '11.0.2'
+  pod 'Moya/RxSwift', '13.0.1'
   pod 'RxOptional', '3.6.2'
   pod 'RxFlow', '1.6.2'
   pod 'RxSwift', '4.5.0'

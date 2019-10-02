@@ -33,6 +33,12 @@ enum L {
     static let withdraw = "coin_details.withdraw"
   }
 
+  struct CoinWithdraw {
+    static let address = "coin_withdraw.address"
+    static let amount = "coin_withdraw.amount"
+    static let title = "coin_withdraw.title"
+  }
+
   struct CoinsBalance {
     static let title = "coins_balance.title"
     static let totalBalance = "coins_balance.total_balance"
@@ -82,9 +88,11 @@ enum L {
     static let change = "shared.change"
     static let copy = "shared.copy"
     static let done = "shared.done"
+    static let max = "shared.max"
     static let next = "shared.next"
     static let ok = "shared.ok"
     static let paste = "shared.paste"
+    static let scan = "shared.scan"
   }
 
   struct ShowPhone {
@@ -155,6 +163,20 @@ extension L.ChangePin.Form {
 
   struct OldPin {
     static let placeholder = "change_pin.form.old_pin.placeholder"
+  }
+}
+extension L.CoinWithdraw {
+
+  struct Form {
+  }
+}
+extension L.CoinWithdraw.Form {
+
+  struct Error {
+    static let invalidAddress = "coin_withdraw.form.error.invalid_address"
+    static let invalidAmount = "coin_withdraw.form.error.invalid_amount"
+    static let tooHighAmount = "coin_withdraw.form.error.too_high_amount"
+    static let tooLowAmount = "coin_withdraw.form.error.too_low_amount"
   }
 }
 extension L.CoinsBalance {

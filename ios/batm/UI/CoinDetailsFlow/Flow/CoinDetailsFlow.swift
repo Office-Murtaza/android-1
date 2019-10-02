@@ -4,12 +4,15 @@ class CoinDetailsFlow: BaseFlow<BTMNavigationController, CoinDetailsFlowControll
   override func assemblies() -> [Assembly] {
     return [
       Dependencies(),
-      CoinDetailsAssembly()
+      CoinDetailsAssembly(),
+      CoinWithdrawAssembly()
     ]
   }
   
   enum Steps: Step, Equatable {
     case coinDetails(CoinBalance)
+    case withdraw(BTMCoin, CoinBalance)
+    case pop
   }
   
   override func route(to step: Step) -> NextFlowItems {
@@ -24,6 +27,12 @@ class CoinDetailsFlow: BaseFlow<BTMNavigationController, CoinDetailsFlowControll
       let module = resolver.resolve(Module<CoinDetailsModule>.self)!
       module.input.setup(with: coinBalance)
       return push(module.controller)
+    case let .withdraw(coin, coinBalance):
+      let module = resolver.resolve(Module<CoinWithdrawModule>.self)!
+      module.input.setup(with: coin)
+      module.input.setup(with: coinBalance)
+      return push(module.controller)
+    case .pop: return pop()
     }
   }
 }

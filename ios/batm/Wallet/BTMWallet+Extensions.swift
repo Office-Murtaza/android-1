@@ -9,7 +9,7 @@ extension BTMWallet {
                                            .litecoin,
                                            .binance,
                                            .tron,
-                                           .ripple]
+                                           .xrp]
   
   init(hdWallet: HDWallet) {
     let seedPhrase = hdWallet.mnemonic
@@ -20,9 +20,10 @@ extension BTMWallet {
       
       switch $0 {
       case .bitcoin:
-        let bitcoinPublicKey = privateKey.getPublicKeySecp256k1(compressed: true)
-        publicKey = BitcoinAddress(publicKey: bitcoinPublicKey,
-                                   prefix: P2PKHPrefix.bitcoin.rawValue).description
+        let extPubKey = hdWallet.getExtendedPubKey(purpose: .bip44, coin: $0, version: .xpub)
+        let path = DerivationPath(purpose: .bip44, coinType: $0).description
+        let bitcoinPublicKey = HDWallet.getPublicKeyFromExtended(extended: extPubKey, derivationPath: path)!
+        publicKey = BitcoinAddress(publicKey: bitcoinPublicKey, prefix: $0.p2pkhPrefix)!.description
       default:
         publicKey = $0.deriveAddress(privateKey: privateKey)
       }

@@ -17,7 +17,7 @@ struct CreateWalletState: Equatable {
   var phoneNumber: String = ""
   var password: String = ""
   var confirmPassword: String = ""
-  var code = ""
+  var code: String = ""
   var validationState: ValidationState = .unknown
   var shouldShowCodePopup: Bool = false
   

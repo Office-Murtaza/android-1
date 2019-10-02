@@ -29,14 +29,21 @@ protocol APIGateway {
   func changePassword(userId: Int, oldPassword: String, newPassword: String) -> Completable
   func unlink(userId: Int) -> Completable
   func getTransactions(userId: Int, type: CoinType, page: Int) -> Single<Transactions>
-  
+  func getUtxos(userId: Int, type: CoinType, xpub: String) -> Single<[Utxo]>
+  func submitTransaction(userId: Int, type: CoinType, txhex: String) -> Completable
+  func requestCode(userId: Int) -> Completable
+  func getTronBlockHeader() -> Single<BTMTronBlockHeader>
+  func submitTronTransaction(json: [String: Any]) -> Completable
 }
 
 final class APIGatewayImpl: APIGateway {
   let api: NetworkRequestExecutor
+  let tron: NetworkRequestExecutor
   
-  required init(networkProvider apiProvider: NetworkRequestExecutor) {
-    self.api = apiProvider
+  required init(networkProvider api: NetworkRequestExecutor,
+                tronAPIProvider tron: NetworkRequestExecutor) {
+    self.api = api
+    self.tron = tron
   }
   
   func createAccount(phoneNumber: String, password: String) -> Single<Account> {
@@ -227,6 +234,57 @@ final class APIGatewayImpl: APIGateway {
           return Single.error(error)
         }
       }
+  }
+  
+  func getUtxos(userId: Int, type: CoinType, xpub: String) -> Single<[Utxo]> {
+    let request = UtxosRequest(userId: userId, coinId: type.code, xpub: xpub)
+    return api.execute(request)
+      .flatMap {
+        switch $0 {
+        case let .response(response):
+          return Single.just(response.utxos)
+        case let .error(error):
+          return Single.error(error)
+        }
+      }
+  }
+  
+  func submitTransaction(userId: Int, type: CoinType, txhex: String) -> Completable {
+    let request = SubmitTransactionRequest(userId: userId, coinId: type.code, txhex: txhex)
+    return api.execute(request)
+      .map { apiResponse -> Void in
+        switch apiResponse {
+        case .response:
+          return Void()
+        case let .error(error):
+          throw error
+        }
+      }
+      .toCompletable()
+  }
+  
+  func requestCode(userId: Int) -> Completable {
+    let request = RequestCodeRequest(userId: userId)
+    return api.execute(request)
+      .map { apiResponse -> Void in
+        switch apiResponse {
+        case .response:
+          return Void()
+        case let .error(error):
+          throw error
+        }
+      }
+      .toCompletable()
+  }
+  
+  func getTronBlockHeader() -> Single<BTMTronBlockHeader> {
+    let request = GetTronBlockHeader()
+    return tron.execute(request)
+  }
+  
+  func submitTronTransaction(json: [String: Any]) -> Completable {
+    let request = SubmitTronTransaction(json: json)
+    return tron.execute(request)
   }
   
 }

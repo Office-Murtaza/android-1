@@ -223,3 +223,69 @@ struct TransactionsRequest: AuthorizedAPIRequest {
                               encoding: URLEncoding.customDefault)
   }
 }
+
+struct UtxosRequest: AuthorizedAPIRequest {
+  typealias ResponseType = APIResponse<Utxos>
+  typealias ResponseTrait = SingleResponseTrait
+  
+  let userId: Int
+  let coinId: String
+  let xpub: String
+  
+  var path: String { return "/user/\(userId)/coins/\(coinId)/utxo/\(xpub)" }
+  var method: HTTPMethod { return .get }
+  var task: HTTPTask {
+    return .requestPlain
+  }
+}
+
+struct SubmitTransactionRequest: AuthorizedAPIRequest {
+  typealias ResponseType = APIEmptyResponse
+  typealias ResponseTrait = SingleResponseTrait
+  
+  let userId: Int
+  let coinId: String
+  let txhex: String
+  
+  var path: String { return "/user/\(userId)/coins/\(coinId)/sendtx/\(txhex)" }
+  var method: HTTPMethod { return .get }
+  var task: HTTPTask {
+    return .requestPlain
+  }
+}
+
+struct RequestCodeRequest: AuthorizedAPIRequest {
+  typealias ResponseType = APIEmptyResponse
+  typealias ResponseTrait = SingleResponseTrait
+  
+  let userId: Int
+  
+  var path: String { return "/user/\(userId)/code/send" }
+  var method: HTTPMethod { return .get }
+  var task: HTTPTask {
+    return .requestPlain
+  }
+}
+
+struct GetTronBlockHeader: APIRequest {
+  typealias ResponseType = BTMTronBlockHeader
+  typealias ResponseTrait = SingleResponseTrait
+  
+  var path: String { return "/wallet/getnowblock" }
+  var method: HTTPMethod { return .get }
+  var task: HTTPTask {
+    return .requestPlain
+  }
+}
+
+struct SubmitTronTransaction: SimpleRequest {
+  typealias ResponseTrait = NopResponseTrait
+  
+  let json: [String: Any]
+  
+  var path: String { return "/wallet/broadcasttransaction" }
+  var method: HTTPMethod { return .post }
+  var task: HTTPTask {
+    return .requestParameters(parameters: json, encoding: JSONEncoding.default)
+  }
+}

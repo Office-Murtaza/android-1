@@ -12,7 +12,8 @@ extension CoinDetailsFlow {
           return flowController
         }
         .inObjectScope(.container)
-        .implements(CoinDetailsModuleDelegate.self)
+        .implements(CoinDetailsModuleDelegate.self,
+                    CoinWithdrawModuleDelegate.self)
     }
   }
 }

@@ -1,6 +1,5 @@
 import Foundation
 import RxSwift
-import PhoneNumberKit
 
 enum PinCodeStage {
   case setup

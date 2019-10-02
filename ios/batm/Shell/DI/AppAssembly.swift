@@ -7,6 +7,8 @@ final class AppAssembly: Assembly {
   
   enum Keys: String {
     case pinCodeModule
+    case apiUrl
+    case tronUrl
   }
   
   func assemble(container: Container) {
@@ -17,13 +19,14 @@ final class AppAssembly: Assembly {
   }
   
   private func assembleNetwork(container: Container) {
-    container.register(NetworkService.self) { ioc in
-      let baseURL = URL(string: "https://test.belcobtm.com/api/v1")!
+    container.register(URL.self, name: Keys.apiUrl.rawValue) { _ in URL(string: "https://test.belcobtm.com/api/v1")! }
+    container.register(URL.self, name: Keys.tronUrl.rawValue) { _ in URL(string: "https://api.trongrid.io")! }
+    container.register(NetworkService.self) { (ioc, baseUrl: URL) in
       let provider = MoyaProvider<MultiTarget>()
-      return NetworkService(baseApiUrl: baseURL, provider: provider)
-      }.inObjectScope(.container)
-    container.register(NetworkRequestExecutor.self) { ioc in
-      let network = ioc.resolve(NetworkService.self)!
+      return NetworkService(baseApiUrl: baseUrl, provider: provider)
+      }.inObjectScope(.transient)
+    container.register(NetworkRequestExecutor.self) { (ioc, baseUrl: URL) in
+      let network = ioc.resolve(NetworkService.self, argument: baseUrl)!
       let accountStorage = ioc.resolve(AccountStorage.self)!
       let logoutUsecase = ioc.resolve(LogoutUsecase.self)!
       let pinCodeService = ioc.resolve(PinCodeService.self)!
@@ -34,16 +37,21 @@ final class AppAssembly: Assembly {
                                pinCodeService: pinCodeService,
                                refreshCredentialsService: refreshCredentialsService)
       }
-      .inObjectScope(.container)
+      .inObjectScope(.transient)
     container.register(RefreshCredentialsService.self) { ioc in
-      let networkService = ioc.resolve(NetworkService.self)!
+      let apiUrl = ioc.resolve(URL.self, name: Keys.apiUrl.rawValue)!
+      let networkService = ioc.resolve(NetworkService.self, argument: apiUrl)!
       let accountStorage = ioc.resolve(AccountStorage.self)!
       return RefreshCredentialsServiceImpl(networkService: networkService,
                                            accountStorage: accountStorage)
       }.inObjectScope(.container)
     container.register(APIGateway.self) { ioc in
-      let networkService = ioc.resolve(NetworkRequestExecutor.self)!
-      return APIGatewayImpl(networkProvider: networkService)
+      let apiUrl = ioc.resolve(URL.self, name: Keys.apiUrl.rawValue)!
+      let networkService = ioc.resolve(NetworkRequestExecutor.self, argument: apiUrl)!
+      let tronUrl = ioc.resolve(URL.self, name: Keys.tronUrl.rawValue)!
+      let tronService = ioc.resolve(NetworkRequestExecutor.self, argument: tronUrl)!
+      return APIGatewayImpl(networkProvider: networkService,
+                            tronAPIProvider: tronService)
       } .inObjectScope(.container)
   }
   
@@ -76,8 +84,12 @@ final class AppAssembly: Assembly {
   
   fileprivate func assembleServices(container: Container) {
     container.register(WalletService.self) { ioc in
+      let api = ioc.resolve(APIGateway.self)!
+      let accountStorage = ioc.resolve(AccountStorage.self)!
       let walletStorage = ioc.resolve(BTMWalletStorage.self)!
-      return WalletServiceImpl(walletStorage: walletStorage)
+      return WalletServiceImpl(api: api,
+                               accountStorage: accountStorage,
+                               walletStorage: walletStorage)
       }.inObjectScope(.container)
   }
   
@@ -119,9 +131,11 @@ final class AppAssembly: Assembly {
       let api = ioc.resolve(APIGateway.self)!
       let accountStorage = ioc.resolve(AccountStorage.self)!
       let walletStorage = ioc.resolve(BTMWalletStorage.self)!
+      let walletService = ioc.resolve(WalletService.self)!
       return CoinDetailsUsecaseImpl(api: api,
                                     accountStorage: accountStorage,
-                                    walletStorage: walletStorage)
+                                    walletStorage: walletStorage,
+                                    walletService: walletService)
       }.inObjectScope(.container)
     container.register(SettingsUsecase.self) { ioc in
       let api = ioc.resolve(APIGateway.self)!
@@ -143,15 +157,15 @@ final class AppAssembly: Assembly {
       }.inObjectScope(.container)
     container.register(PinCodeService.self) { ioc in
       let pinCodeStorage = ioc.resolve(PinCodeStorage.self)!
-      return PinCodeServiceImpl(pinCodeStorage: pinCodeStorage)
+      let getModule = { () -> Module<PinCodeModule> in
+        let module = ioc.resolve(Module<PinCodeModule>.self, name: Keys.pinCodeModule.rawValue)!
+        module.input.setup(for: .verification)
+        return module
+      }
+      return PinCodeServiceImpl(pinCodeStorage: pinCodeStorage, getModule: getModule)
       }
       .inObjectScope(.container)
       .implements(PinCodeVerificationModuleDelegate.self)
-      .initCompleted { ioc, service in
-        let module = ioc.resolve(Module<PinCodeModule>.self, name: Keys.pinCodeModule.rawValue)!
-        module.input.setup(for: .verification)
-        (service as! PinCodeServiceImpl).module = module
-      }
     container.register(Module<PinCodeModule>.self, name: Keys.pinCodeModule.rawValue) { resolver in
       let viewController = PinCodeViewController()
       let usecase = resolver.resolve(PinCodeUsecase.self)!

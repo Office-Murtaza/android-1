@@ -5,6 +5,8 @@
 "shared.paste" = "Paste";
 "shared.done" = "Done";
 "shared.change" = "Change";
+"shared.scan" = "Scan";
+"shared.max" = "Max";
 "shared.error.title" = "Error";
 "shared.error.message" = "Something went wrong. Please try again later";
 
@@ -97,3 +99,11 @@
 "coin_details.fail" = "Fail";
 "coin_details.unknown" = "Unknown";
 "coin_details.address" = "Address";
+
+"coin_withdraw.title" = "Withdraw";
+"coin_withdraw.address" = "Address";
+"coin_withdraw.amount" = "Amount";
+"coin_withdraw.form.error.invalid_address" = "Invalid address";
+"coin_withdraw.form.error.invalid_amount" = "Invalid amount";
+"coin_withdraw.form.error.too_low_amount" = "Amount can't be zero or lower";
+"coin_withdraw.form.error.too_high_amount" = "Amount can't be higher than your balance";

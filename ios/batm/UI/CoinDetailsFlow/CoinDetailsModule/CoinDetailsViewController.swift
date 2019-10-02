@@ -133,11 +133,17 @@ final class CoinDetailsViewController: ModuleViewController<CoinDetailsPresenter
   }
   
   func setupUIBindings() {
-    titleLabel.text = presenter.coinBalance.type.verboseValue
-    balanceView.configure(for: presenter.coinBalance)
-    
     collectionView.dataSource = dataSource
     dataSource.collectionView = collectionView
+    
+    presenter.state
+      .map { $0.coinBalance }
+      .filterNil()
+      .drive(onNext: { [titleLabel, balanceView] in
+        titleLabel.text = $0.type.verboseValue
+        balanceView.configure(for: $0)
+      })
+      .disposed(by: disposeBag)
     
     presenter.state
       .map { $0.transactions?.transactions }
@@ -172,7 +178,6 @@ final class CoinDetailsViewController: ModuleViewController<CoinDetailsPresenter
     
     let backDriver = backButton.rx.tap.asDriver()
     let refreshDriver = refreshControl.rx.controlEvent(.valueChanged).asDriver()
-    let depositDriver = buttonsView.rx.depositTap
     let withdrawDriver = buttonsView.rx.withdrawTap
     let sendGiftDriver = buttonsView.rx.sendGiftTap
     let sellDriver = buttonsView.rx.sellTap
@@ -181,7 +186,6 @@ final class CoinDetailsViewController: ModuleViewController<CoinDetailsPresenter
     
     presenter.bind(input: CoinDetailsPresenter.Input(back: backDriver,
                                                      refresh: refreshDriver,
-                                                     deposit: depositDriver,
                                                      withdraw: withdrawDriver,
                                                      sendGift: sendGiftDriver,
                                                      sell: sellDriver,
