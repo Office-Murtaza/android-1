@@ -3,8 +3,8 @@ package com.batm.rest;
 import com.batm.dto.SubmitTransactionDTO;
 import com.batm.model.Response;
 import com.batm.service.CoinService;
+import net.sf.json.JSONObject;
 import org.apache.commons.lang.StringUtils;
-import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

@@ -99,14 +99,8 @@
         </dependency>
         <dependency>
             <groupId>com.twilio.sdk</groupId>
-            <artifactId>twilio-java-sdk</artifactId>
-            <version>6.3.0</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>io.jsonwebtoken</groupId>
-                    <artifactId>jjwt</artifactId>
-                </exclusion>
-            </exclusions>
+            <artifactId>twilio</artifactId>
+            <version>7.42.0</version>
         </dependency>
         <dependency>
             <groupId>net.sf.json-lib</groupId>

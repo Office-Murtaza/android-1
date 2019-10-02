@@ -7,7 +7,6 @@ import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
-
 import com.batm.dto.*;
 import com.batm.entity.*;
 import com.batm.model.Error;
@@ -19,9 +18,9 @@ import com.binance.dex.api.client.domain.TransactionType;
 import com.binance.dex.api.client.domain.request.TransactionsRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.RandomStringUtils;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.env.Environment;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
@@ -52,6 +51,7 @@ public class CoinService {
     private static BinanceApiRestClient binance;
     private static BinanceDexApiRestClient binanceDex;
     private static RestTemplate rest;
+    private static MessageService messageService;
 
     private static String btcUrl;
     private static String ethUrl;
@@ -64,6 +64,7 @@ public class CoinService {
     public CoinService(@Autowired final BinanceApiRestClient binance,
                        @Autowired final BinanceDexApiRestClient binanceDex,
                        @Autowired final RestTemplate rest,
+                       @Autowired final MessageService messageService,
                        @Value("${btc.url}") final String btcUrl,
                        @Value("${eth.url}") final String ethUrl,
                        @Value("${bch.url}") final String bchUrl,
@@ -135,6 +136,10 @@ public class CoinService {
             public String submitTransaction(Long userId, SubmitTransactionDTO transaction) {
                 String txId = submitBlockbookTransaction(btcUrl, transaction);
 
+                if (StringUtils.isNotEmpty(txId) && com.batm.model.TransactionType.SEND_GIFT.getValue() == transaction.getType()) {
+                    messageService.sendGiftMessage(this, transaction);
+                }
+
                 return txId;
             }
         }, ETH {
@@ -186,6 +191,10 @@ public class CoinService {
             @Override
             public String submitTransaction(Long userId, SubmitTransactionDTO transaction) {
                 String txId = submitBlockbookTransaction(ethUrl, transaction);
+
+                if (StringUtils.isNotEmpty(txId) && com.batm.model.TransactionType.SEND_GIFT.getValue() == transaction.getType()) {
+                    messageService.sendGiftMessage(this, transaction);
+                }
 
                 return txId;
             }
@@ -239,6 +248,10 @@ public class CoinService {
             public String submitTransaction(Long userId, SubmitTransactionDTO transaction) {
                 String txId = submitBlockbookTransaction(bchUrl, transaction);
 
+                if (StringUtils.isNotEmpty(txId) && com.batm.model.TransactionType.SEND_GIFT.getValue() == transaction.getType()) {
+                    messageService.sendGiftMessage(this, transaction);
+                }
+
                 return txId;
             }
         }, LTC {
@@ -290,6 +303,10 @@ public class CoinService {
             @Override
             public String submitTransaction(Long userId, SubmitTransactionDTO transaction) {
                 String txId = submitBlockbookTransaction(ltcUrl, transaction);
+
+                if (StringUtils.isNotEmpty(txId) && com.batm.model.TransactionType.SEND_GIFT.getValue() == transaction.getType()) {
+                    messageService.sendGiftMessage(this, transaction);
+                }
 
                 return txId;
             }
@@ -343,6 +360,10 @@ public class CoinService {
             public String submitTransaction(Long userId, SubmitTransactionDTO transaction) {
                 String txId = submitBinanceTransaction(bnbUrl, transaction);
 
+                if (StringUtils.isNotEmpty(txId) && com.batm.model.TransactionType.SEND_GIFT.getValue() == transaction.getType()) {
+                    messageService.sendGiftMessage(this, transaction);
+                }
+
                 return txId;
             }
         }, XRP {
@@ -395,6 +416,10 @@ public class CoinService {
             public String submitTransaction(Long userId, SubmitTransactionDTO transaction) {
                 String txId = submitRippledTransaction(bnbUrl, transaction);
 
+                if (StringUtils.isNotEmpty(txId) && com.batm.model.TransactionType.SEND_GIFT.getValue() == transaction.getType()) {
+                    messageService.sendGiftMessage(this, transaction);
+                }
+
                 return txId;
             }
         }, TRX {
@@ -446,6 +471,10 @@ public class CoinService {
             @Override
             public String submitTransaction(Long userId, SubmitTransactionDTO transaction) {
                 String txId = submitTrongridTransaction(bnbUrl, transaction);
+
+                if (StringUtils.isNotEmpty(txId) && com.batm.model.TransactionType.SEND_GIFT.getValue() == transaction.getType()) {
+                    messageService.sendGiftMessage(this, transaction);
+                }
 
                 return txId;
             }
@@ -769,7 +798,7 @@ public class CoinService {
 
     private static String submitBlockbookTransaction(String url, SubmitTransactionDTO transaction) {
         try {
-            //JSONObject res = rest.getForObject(url + "/api/v2/sendtx/" + transaction.getHex(), JSONObject.class);
+            JSONObject res = rest.getForObject(url + "/api/v2/sendtx/" + transaction.getHex(), JSONObject.class);
 
             String txId = RandomStringUtils.randomAlphanumeric(50);
 
@@ -783,7 +812,7 @@ public class CoinService {
 
     private static String submitTrongridTransaction(String url, SubmitTransactionDTO transaction) {
         try {
-            //JSONObject res = rest.postForObject(url + "/wallet/broadcasttransaction", transaction.getTrx(), JSONObject.class);
+            JSONObject res = rest.postForObject(url + "/wallet/broadcasttransaction", transaction.getTrx(), JSONObject.class);
 
             String txId = RandomStringUtils.randomAlphanumeric(50);
 
@@ -797,10 +826,10 @@ public class CoinService {
 
     private static String submitBinanceTransaction(String url, SubmitTransactionDTO transaction) {
         try {
-            //HttpHeaders headers = new HttpHeaders();
-            //headers.setContentType(MediaType.TEXT_PLAIN);
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.TEXT_PLAIN);
 
-            //JSONObject res = rest.postForObject(url + "api/v1/broadcast", transaction.getHex(), JSONObject.class);
+            JSONObject res = rest.postForObject(url + "api/v1/broadcast", transaction.getHex(), JSONObject.class);
 
             String txId = RandomStringUtils.randomAlphanumeric(50);
 
@@ -814,17 +843,17 @@ public class CoinService {
 
     private static String submitRippledTransaction(String url, SubmitTransactionDTO transaction) {
         try {
-            //JSONObject param = new JSONObject();
-            //param.put("tx_blob", transaction.getHex());
+            JSONObject param = new JSONObject();
+            param.put("tx_blob", transaction.getHex());
 
-            //JSONArray params = new JSONArray();
-            //params.add(param);
+            JSONArray params = new JSONArray();
+            params.add(param);
 
-            //JSONObject req = new JSONObject();
-            //req.put("method", "submit");
-            //req.put("params", params);
+            JSONObject req = new JSONObject();
+            req.put("method", "submit");
+            req.put("params", params);
 
-            //JSONObject res = rest.postForObject(url, req, JSONObject.class);
+            JSONObject res = rest.postForObject(url, req, JSONObject.class);
 
             String txId = RandomStringUtils.randomAlphanumeric(50);
 

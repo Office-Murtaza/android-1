@@ -7,6 +7,8 @@ import lombok.Setter;
 import lombok.experimental.Accessors;
 import net.sf.json.JSONObject;
 
+import java.math.BigDecimal;
+
 @Getter
 @Setter
 @Accessors(chain = true)
@@ -20,7 +22,7 @@ public class SubmitTransactionDTO {
     private Boolean exists;
     private String message;
     private String image;
-
+    private BigDecimal amount;
     private String hex;
 
     private JSONObject trx;

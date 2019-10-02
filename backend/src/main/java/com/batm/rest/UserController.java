@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 import javax.validation.Valid;
 
 import com.batm.repository.UserRepository;
+import com.batm.service.MessageService;
 import net.sf.json.JSONObject;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.StringUtils;
@@ -40,11 +41,8 @@ import com.batm.rest.vm.ValidateOTPResponse;
 import com.batm.rest.vm.ValidateOTPVM;
 import com.batm.security.jwt.JWTFilter;
 import com.batm.security.jwt.TokenProvider;
-import com.batm.service.PhoneService;
 import com.batm.service.UserService;
-import com.batm.service.VerificationService;
 import com.batm.util.Constant;
-import com.batm.util.TwilioComponent;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -53,6 +51,12 @@ import lombok.Setter;
 @RestController
 @RequestMapping("/api/v1")
 public class UserController {
+
+    @Value("${security.jwt.access-token-duration}")
+    private Long expiryTime;
+
+    @Value("${security.verification.code-validity}")
+    private Long verificationCodeValidity;
 
     @Autowired
     private TokenProvider tokenProvider;
@@ -64,12 +68,6 @@ public class UserController {
     private UserService userService;
 
     @Autowired
-    private TwilioComponent twilioComponent;
-
-    @Autowired
-    private VerificationService codeVerificationService;
-
-    @Autowired
     private TokenRepository refreshTokenRepository;
 
     @Autowired
@@ -79,13 +77,7 @@ public class UserController {
     private PasswordEncoder passwordEncoder;
 
     @Autowired
-    private PhoneService phoneService;
-
-    @Value("${security.jwt.access-token-duration}")
-    private Long expiryTime;
-
-    @Value("${security.verification.code-validity}")
-    private Long verificationCodeValidity;
+    private MessageService messageService;
 
     @PostMapping("/register")
     public Response register(@Valid @RequestBody RegisterVM register) {
@@ -107,7 +99,7 @@ public class UserController {
             }
 
             User user = userService.registerUser(register.getPhone(), register.getPassword());
-            twilioComponent.sendOTP(user);
+            messageService.sendVerificationCode(user);
             JWTToken jwt = getJwt(user.getUserId(), register.getPhone(), register.getPassword());
 
             refreshTokenRepository.save(new Token(jwt.getAccessToken(), jwt.getRefreshToken(), user));
@@ -147,7 +139,7 @@ public class UserController {
 
             JWTToken jwt = getJwt(user.getUserId(), loginVM.getPhone(), loginVM.getPassword());
 
-            twilioComponent.sendOTP(user);
+            messageService.sendVerificationCode(user);
 
             Token token = this.refreshTokenRepository.findByUserUserId(user.getUserId());
             token.setRefreshToken(jwt.getRefreshToken());
@@ -164,7 +156,7 @@ public class UserController {
     @PostMapping("/user/{userId}/verify")
     public Response verify(@RequestBody ValidateOTPVM validateOtpVM, @PathVariable Long userId) {
         try {
-            CodeVerification codeVerification = codeVerificationService.getCodeByUserId(userId);
+            CodeVerification codeVerification = userService.getCodeByUserId(userId);
             Instant time10MinuteAge = Instant.now().minusMillis(verificationCodeValidity);
             if (!StringUtils.isEmpty(codeVerification.getCode())
                     && codeVerification.getLastModifiedDate().isBefore(time10MinuteAge)) {
@@ -180,7 +172,7 @@ public class UserController {
             }
 
             codeVerification.setCodeStatus("1");
-            codeVerificationService.save(codeVerification);
+            userService.save(codeVerification);
 
             return Response.ok(new ValidateOTPResponse(userId, true));
         } catch (Exception e) {
@@ -233,7 +225,7 @@ public class UserController {
         try {
             return userRepository.getByUserId(userId)
                     .map(user -> {
-                        twilioComponent.sendOTP(user);
+                        messageService.sendVerificationCode(user);
                         JSONObject response = new JSONObject();
                         response.put("sent", true);
                         return Response.ok(response);
@@ -251,7 +243,7 @@ public class UserController {
             if (isPhoneExist) {
                 return Response.error(new Error(2, "Phone is already registered"));
             }
-            phoneService.updatePhone(phoneRequest, userId);
+            userService.updatePhone(phoneRequest, userId);
             Map<String, Object> response = new HashMap<>();
             response.put("smsSent", true);
 
@@ -265,13 +257,13 @@ public class UserController {
     @PostMapping("/user/{userId}/phone/confirm")
     public Response confirmPhone(@RequestBody ValidateOTPVM validateOtpVM, @PathVariable Long userId) {
         try {
-            UpdatePhone updatePhone = phoneService.getUpdatePhone(userId);
+            UpdatePhone updatePhone = userService.getUpdatePhone(userId);
             updatePhone = (UpdatePhone) Hibernate.unproxy(updatePhone);
             if (updatePhone.getStatus() == null || updatePhone.getStatus().intValue() == 1) {
                 return Response.error(new Error(2, "Invalid request"));
             }
 
-            CodeVerification codeVerification = codeVerificationService.getCodeByUserId(userId);
+            CodeVerification codeVerification = userService.getCodeByUserId(userId);
             if (StringUtils.equals("1", codeVerification.getCodeStatus())) {
                 return Response.error(new Error(3, "Verification code is already used"));
             }
@@ -282,7 +274,7 @@ public class UserController {
 
             userService.updatePhone(updatePhone.getPhone(), userId);
             updatePhone.setStatus(1);
-            phoneService.save(updatePhone);
+            userService.save(updatePhone);
 
             Map<String, Object> response = new HashMap<>();
             response.put("confirmed", true);
