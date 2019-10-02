@@ -1,6 +1,7 @@
 import Foundation
 
 enum CoinDetailsAction: Equatable {
+  case setupCoinBalance(CoinBalance)
   case startFetching
   case finishFetchingTransactions(Transactions)
   case finishFetchingNextTransactions(Transactions)
@@ -10,6 +11,7 @@ enum CoinDetailsAction: Equatable {
 
 struct CoinDetailsState: Equatable {
   
+  var coinBalance: CoinBalance?
   var transactions: Transactions?
   var coin: BTMCoin?
   var page: Int = 0
@@ -17,7 +19,7 @@ struct CoinDetailsState: Equatable {
   
   var isLastPage: Bool {
     guard let transactions = transactions else { return false }
-    return transactions.total <= transactions.transactions.count
+    return transactions.transactions.count >= transactions.total 
   }
   
 }
@@ -32,6 +34,7 @@ final class CoinDetailsStore: ViewStore<CoinDetailsAction, CoinDetailsState> {
     var state = state
     
     switch action {
+    case let .setupCoinBalance(coinBalance): state.coinBalance = coinBalance
     case .startFetching: state.isFetching = true
     case let.finishFetchingTransactions(transactions): state.transactions = transactions
     case let .finishFetchingNextTransactions(transactions):

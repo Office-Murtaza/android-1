@@ -9,8 +9,10 @@ protocol AuthorizedRequest {}
 protocol Retriable {}
 protocol APIRequest: ResponseHolder, SimpleRequest {}
 
-typealias AuthorizedAPIRequest = AuthorizedRequest & APIRequest & Retriable
-typealias AuthorizedSimpleRequest = AuthorizedRequest & SimpleRequest & Retriable
+typealias RetriableAPIRequest = APIRequest & Retriable
+typealias RetriableSimpleRequest = SimpleRequest & Retriable
+typealias AuthorizedAPIRequest = AuthorizedRequest & RetriableAPIRequest
+typealias AuthorizedSimpleRequest = AuthorizedRequest & RetriableSimpleRequest
 
 protocol ResponseHolder {
   associatedtype ResponseType: ImmutableMappable

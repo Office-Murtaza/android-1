@@ -5,6 +5,9 @@ import TrustWalletCore
 protocol CoinDetailsUsecase {
   func getTransactions(for type: CoinType, from page: Int) -> Single<Transactions>
   func getCoin(for type: CoinType) -> Single<BTMCoin>
+  func withdraw(from coin: BTMCoin, to destination: String, amount: Double) -> Completable
+  func requestCode() -> Completable
+  func verifyCode(code: String) -> Completable
 }
 
 class CoinDetailsUsecaseImpl: CoinDetailsUsecase {
@@ -12,13 +15,16 @@ class CoinDetailsUsecaseImpl: CoinDetailsUsecase {
   let api: APIGateway
   let accountStorage: AccountStorage
   let walletStorage: BTMWalletStorage
+  let walletService: WalletService
   
   init(api: APIGateway,
        accountStorage: AccountStorage,
-       walletStorage: BTMWalletStorage) {
+       walletStorage: BTMWalletStorage,
+       walletService: WalletService) {
     self.api = api
     self.accountStorage = accountStorage
     self.walletStorage = walletStorage
+    self.walletService = walletService
   }
   
   func getTransactions(for type: CoinType, from page: Int) -> Single<Transactions> {
@@ -37,6 +43,20 @@ class CoinDetailsUsecaseImpl: CoinDetailsUsecase {
         
         return unwrappedCoin
       }
+  }
+  
+  func withdraw(from coin: BTMCoin, to destination: String, amount: Double) -> Completable {
+    return walletService.getTransactionHex(for: coin, destination: destination, amount: amount)
+  }
+  
+  func requestCode() -> Completable {
+    return accountStorage.get()
+      .flatMapCompletable { [api] in api.requestCode(userId: $0.userId) }
+  }
+  
+  func verifyCode(code: String) -> Completable {
+    return accountStorage.get()
+      .flatMapCompletable { [api] in api.verifyCode(userId: $0.userId, code: code) }
   }
   
 }

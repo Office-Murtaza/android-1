@@ -88,12 +88,12 @@ final class BTMNetworkService: NetworkRequestExecutor {
   private func refreshCredentials() -> Completable {
     return pinCodeService.verifyPinCode()
       .andThen(refreshCredentialsService.refresh())
-      .catchError { [logoutUsecase] in
-        guard let mappedError = $0 as? APIError else { throw $0 }
+      .catchError { [unowned self] in
+        let mappedError = self.map(error: $0)
         let completableError = Completable.error(mappedError)
         
         if mappedError == .notAuthorized {
-          return logoutUsecase.logout().flatMapCompletable { _ in completableError }
+          return self.logoutUsecase.logout().flatMapCompletable { _ in completableError }
         }
         
         return completableError
