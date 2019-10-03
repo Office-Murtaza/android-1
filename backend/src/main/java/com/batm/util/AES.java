@@ -12,11 +12,9 @@ public class AES {
     private static byte[] key;
 
     private static void setKey(String myKey) {
-        MessageDigest sha = null;
-
         try {
+            MessageDigest sha = MessageDigest.getInstance("SHA-1");
             key = myKey.getBytes("UTF-8");
-            sha = MessageDigest.getInstance("SHA-1");
             key = sha.digest(key);
             key = Arrays.copyOf(key, 16);
             secretKey = new SecretKeySpec(key, "AES");

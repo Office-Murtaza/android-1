@@ -52,6 +52,7 @@ public class CoinService {
     private static BinanceDexApiRestClient binanceDex;
     private static RestTemplate rest;
     private static MessageService messageService;
+    private static WalletService walletService;
 
     private static String btcUrl;
     private static String ethUrl;
@@ -65,6 +66,7 @@ public class CoinService {
                        @Autowired final BinanceDexApiRestClient binanceDex,
                        @Autowired final RestTemplate rest,
                        @Autowired final MessageService messageService,
+                       @Autowired final WalletService walletService,
                        @Value("${btc.url}") final String btcUrl,
                        @Value("${eth.url}") final String ethUrl,
                        @Value("${bch.url}") final String bchUrl,
@@ -76,6 +78,9 @@ public class CoinService {
         CoinService.binance = binance;
         CoinService.binanceDex = binanceDex;
         CoinService.rest = rest;
+        CoinService.messageService = messageService;
+        CoinService.walletService = walletService;
+
         CoinService.btcUrl = btcUrl;
         CoinService.ethUrl = ethUrl;
         CoinService.bchUrl = bchUrl;
@@ -129,7 +134,7 @@ public class CoinService {
 
             @Override
             public String getWalletAddress() {
-                return null;
+                return walletService.getAddressBTC();
             }
 
             @Override
@@ -185,7 +190,7 @@ public class CoinService {
 
             @Override
             public String getWalletAddress() {
-                return null;
+                return walletService.getAddressETH();
             }
 
             @Override
@@ -241,7 +246,7 @@ public class CoinService {
 
             @Override
             public String getWalletAddress() {
-                return null;
+                return walletService.getAddressBCH();
             }
 
             @Override
@@ -297,7 +302,7 @@ public class CoinService {
 
             @Override
             public String getWalletAddress() {
-                return null;
+                return walletService.getAddressLTC();
             }
 
             @Override
@@ -353,7 +358,7 @@ public class CoinService {
 
             @Override
             public String getWalletAddress() {
-                return null;
+                return walletService.getAddressBNB();
             }
 
             @Override
@@ -409,7 +414,7 @@ public class CoinService {
 
             @Override
             public String getWalletAddress() {
-                return null;
+                return walletService.getAddressXRP();
             }
 
             @Override
@@ -465,7 +470,7 @@ public class CoinService {
 
             @Override
             public String getWalletAddress() {
-                return null;
+                return walletService.getAddressTRX();
             }
 
             @Override
