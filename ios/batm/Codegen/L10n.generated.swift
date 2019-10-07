@@ -33,9 +33,11 @@ enum L {
     static let withdraw = "coin_details.withdraw"
   }
 
+  struct CoinSendGift {
+    static let title = "coin_send_gift.title"
+  }
+
   struct CoinWithdraw {
-    static let address = "coin_withdraw.address"
-    static let amount = "coin_withdraw.amount"
     static let title = "coin_withdraw.title"
   }
 
@@ -84,6 +86,7 @@ enum L {
   }
 
   struct Shared {
+    static let addGif = "shared.add_gif"
     static let cancel = "shared.cancel"
     static let change = "shared.change"
     static let copy = "shared.copy"
@@ -92,6 +95,7 @@ enum L {
     static let next = "shared.next"
     static let ok = "shared.ok"
     static let paste = "shared.paste"
+    static let removeGif = "shared.remove_gif"
     static let scan = "shared.scan"
   }
 
@@ -165,12 +169,39 @@ extension L.ChangePin.Form {
     static let placeholder = "change_pin.form.old_pin.placeholder"
   }
 }
+extension L.CoinSendGift {
+
+  struct Form {
+  }
+}
+extension L.CoinSendGift.Form {
+
+  struct Error {
+    static let invalidPhone = "coin_send_gift.form.error.invalid_phone"
+  }
+
+  struct Message {
+    static let placeholder = "coin_send_gift.form.message.placeholder"
+  }
+
+  struct Phone {
+    static let title = "coin_send_gift.form.phone.title"
+  }
+}
 extension L.CoinWithdraw {
 
   struct Form {
   }
 }
 extension L.CoinWithdraw.Form {
+
+  struct Address {
+    static let title = "coin_withdraw.form.address.title"
+  }
+
+  struct Amount {
+    static let title = "coin_withdraw.form.amount.title"
+  }
 
   struct Error {
     static let invalidAddress = "coin_withdraw.form.error.invalid_address"

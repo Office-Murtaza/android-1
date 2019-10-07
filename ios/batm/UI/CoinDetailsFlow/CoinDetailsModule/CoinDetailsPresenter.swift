@@ -62,7 +62,9 @@ final class CoinDetailsPresenter: ModulePresenter, CoinDetailsModule {
       .disposed(by: disposeBag)
     
     input.sendGift
-      .drive(onNext: { print("SEND GIFT CLICKED") })
+      .withLatestFrom(state)
+      .filter { $0.coin != nil && $0.coinBalance != nil }
+      .drive(onNext: { [delegate] in delegate?.showSendGiftScreen(for: $0.coin!, and: $0.coinBalance!) })
       .disposed(by: disposeBag)
     
     input.sell

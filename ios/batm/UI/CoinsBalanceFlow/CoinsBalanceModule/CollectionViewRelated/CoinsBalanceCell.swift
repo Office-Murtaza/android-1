@@ -88,7 +88,7 @@ final class CoinsBalanceCell: UICollectionViewCell {
   func configure(for model: CoinBalance) {
     typeImageView.image = model.type.logo
     typeLabel.text = model.type.verboseValue
-    priceLabel.text = "USD \(model.price)"
-    balanceLabel.text = "\(model.balance) \(model.type.code)"
+    priceLabel.text = "USD \(model.price.fiatFormatted)"
+    balanceLabel.text = "\(model.balance.coinFormatted) \(model.type.code)"
   }
 }

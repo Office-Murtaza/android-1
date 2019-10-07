@@ -103,9 +103,9 @@ class CoinDetailsBalanceView: RoundedView {
   }
   
   func configure(for coinBalance: CoinBalance) {
-    priceValueLabel.text = "\(coinBalance.price) USD"
-    balanceCoinValueLabel.text = "\(coinBalance.balance) \(coinBalance.type.code)"
-    balanceCurrencyValueLabel.text = "\(coinBalance.balance * coinBalance.price) USD"
+    priceValueLabel.text = "\(coinBalance.price.fiatFormatted) USD"
+    balanceCoinValueLabel.text = "\(coinBalance.balance.coinFormatted) \(coinBalance.type.code)"
+    balanceCurrencyValueLabel.text = "\((coinBalance.balance * coinBalance.price).fiatFormatted) USD"
   }
 }
 

@@ -10,6 +10,7 @@ target 'batm' do
   pod 'FlagPhoneNumber', '0.7.2'
   pod 'GoogleMaps', '3.4.0'
   pod 'QRCodeReader.swift', '10.1.0'
+  pod 'Giphy', '1.1.1'
 
   # Utilities
   pod 'TrustWalletCore', '0.12.22'

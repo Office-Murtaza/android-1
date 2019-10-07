@@ -239,18 +239,46 @@ struct UtxosRequest: AuthorizedAPIRequest {
   }
 }
 
+struct GetNonceRequest: AuthorizedAPIRequest {
+  typealias ResponseType = APIResponse<Nonce>
+  typealias ResponseTrait = SingleResponseTrait
+  
+  let userId: Int
+  let coinId: String
+  let address: String
+  
+  var path: String { return "/user/\(userId)/coins/\(coinId)/transactions/nonce/\(address)" }
+  var method: HTTPMethod { return .get }
+  var task: HTTPTask {
+    return .requestPlain
+  }
+}
+
 struct SubmitTransactionRequest: AuthorizedAPIRequest {
   typealias ResponseType = APIEmptyResponse
   typealias ResponseTrait = SingleResponseTrait
   
   let userId: Int
   let coinId: String
-  let txhex: String
+  let txType: TransactionType
+  let amount: Double
+  let phone: String?
+  let message: String?
+  let imageUrl: String?
+  let txhex: String?
+  let trxJson: [String: Any]?
   
-  var path: String { return "/user/\(userId)/coins/\(coinId)/sendtx/\(txhex)" }
-  var method: HTTPMethod { return .get }
+  var path: String { return "/user/\(userId)/coins/\(coinId)/transactions/submit" }
+  var method: HTTPMethod { return .post }
   var task: HTTPTask {
-    return .requestPlain
+    return .requestParameters(parameters: ["type": txType.rawValue,
+                                           "amount": amount,
+                                           "phone": phone as Any,
+                                           "message": message as Any,
+                                           "image": imageUrl as Any,
+                                           "hex": txhex as Any,
+                                           "trx": trxJson as Any],
+                              encoding: JSONEncoding.default)
   }
 }
 
@@ -267,25 +295,61 @@ struct RequestCodeRequest: AuthorizedAPIRequest {
   }
 }
 
-struct GetTronBlockHeader: APIRequest {
-  typealias ResponseType = BTMTronBlockHeader
+struct GetTronBlockHeaderRequest: AuthorizedAPIRequest {
+  typealias ResponseType = APIResponse<BTMTronBlockHeader>
   typealias ResponseTrait = SingleResponseTrait
   
-  var path: String { return "/wallet/getnowblock" }
+  let userId: Int
+  let coinId: String
+  
+  var path: String { return "/user/\(userId)/coins/\(coinId)/transactions/currentblock" }
   var method: HTTPMethod { return .get }
   var task: HTTPTask {
     return .requestPlain
   }
 }
 
-struct SubmitTronTransaction: SimpleRequest {
-  typealias ResponseTrait = NopResponseTrait
+struct GetBinanceAccountInfoRequest: AuthorizedAPIRequest {
+  typealias ResponseType = APIResponse<BinanceAccountInfo>
+  typealias ResponseTrait = SingleResponseTrait
   
-  let json: [String: Any]
+  let userId: Int
+  let coinId: String
+  let address: String
   
-  var path: String { return "/wallet/broadcasttransaction" }
-  var method: HTTPMethod { return .post }
+  var path: String { return "/user/\(userId)/coins/\(coinId)/transactions/currentaccount/\(address)" }
+  var method: HTTPMethod { return .get }
   var task: HTTPTask {
-    return .requestParameters(parameters: json, encoding: JSONEncoding.default)
+    return .requestPlain
+  }
+}
+
+struct GetRippleSequenceRequest: AuthorizedAPIRequest {
+  typealias ResponseType = APIResponse<RippleSequence>
+  typealias ResponseTrait = SingleResponseTrait
+  
+  let userId: Int
+  let coinId: String
+  let address: String
+  
+  var path: String { return "/user/\(userId)/coins/\(coinId)/transactions/currentaccount/\(address)" }
+  var method: HTTPMethod { return .get }
+  var task: HTTPTask {
+    return .requestPlain
+  }
+}
+
+struct GetGiftAddressRequest: AuthorizedAPIRequest {
+  typealias ResponseType = APIResponse<GiftAddress>
+  typealias ResponseTrait = SingleResponseTrait
+  
+  let userId: Int
+  let coinId: String
+  let phone: String
+  
+  var path: String { return "/user/\(userId)/coins/\(coinId)/giftaddress" }
+  var method: HTTPMethod { return .get }
+  var task: HTTPTask {
+    return .requestParameters(parameters: ["phone": phone], encoding: URLEncoding.customDefault)
   }
 }
