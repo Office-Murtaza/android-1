@@ -42,16 +42,16 @@ extension CoinType {
     }
   }
   
-  var unit: Int {
+  var unit: Int64 {
     switch self {
-    case .bitcoin, .bitcoinCash, .litecoin: return 100_000_000
+    case .bitcoin, .bitcoinCash, .litecoin, .binance: return 100_000_000
     case .ethereum: return 1_000_000_000_000_000_000
-    case .tron: return 1_000_000
+    case .tron, .xrp: return 1_000_000
     default: return 0
     }
   }
   
-  var feePerByte: Int {
+  var feePerByte: Int64 {
     switch self {
     case .bitcoin: return 40
     case .bitcoinCash: return 40
@@ -60,26 +60,38 @@ extension CoinType {
     }
   }
   
-  var gasLimit: Int {
+  var gasLimit: Int64 {
     switch self {
     case .ethereum: return 21000
     default: return 0
     }
   }
   
-  var gasPrice: Int {
+  var gasPrice: Int64 {
     switch self {
     case .ethereum: return 20_000_000_000
     default: return 0
     }
   }
   
-  var fee: Double {
+  var feeInUnit: Int64 {
     switch self {
     case .bitcoin, .bitcoinCash, .litecoin:
-      return Double(feePerByte) / Double(unit / 1000)
+      return feePerByte * 1000
     case .ethereum:
-      return Double(gasLimit) / Double(unit / gasPrice)
+      return gasLimit * gasPrice
+    case .tron:
+      return unit
+    case .xrp:
+      return 20
+    default: return 0
+    }
+  }
+  
+  var fee: Double {
+    switch self {
+    case .bitcoin, .bitcoinCash, .litecoin, .ethereum, .tron, .xrp:
+      return Double(feeInUnit) / Double(unit)
     default: return 0
     }
   }

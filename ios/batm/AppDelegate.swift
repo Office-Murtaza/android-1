@@ -33,7 +33,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
   private var initializers: [Initializer] {
     return [
       DIInitializer(),
-      GoogleServicesInitializer()
+      GoogleServicesInitializer(),
+      GiphyInitializer()
     ]
   }
 }

@@ -38,6 +38,7 @@ extension UITapGestureRecognizer {
     case .left, .natural, .justified: return 0.0
     case .right: return 1.0
     case .center: return 0.5
+    @unknown default: return 0.0
     }
   }
 }

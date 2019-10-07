@@ -5,13 +5,15 @@ class CoinDetailsFlow: BaseFlow<BTMNavigationController, CoinDetailsFlowControll
     return [
       Dependencies(),
       CoinDetailsAssembly(),
-      CoinWithdrawAssembly()
+      CoinWithdrawAssembly(),
+      CoinSendGiftAssembly()
     ]
   }
   
   enum Steps: Step, Equatable {
     case coinDetails(CoinBalance)
     case withdraw(BTMCoin, CoinBalance)
+    case sendGift(BTMCoin, CoinBalance)
     case pop
   }
   
@@ -29,6 +31,11 @@ class CoinDetailsFlow: BaseFlow<BTMNavigationController, CoinDetailsFlowControll
       return push(module.controller)
     case let .withdraw(coin, coinBalance):
       let module = resolver.resolve(Module<CoinWithdrawModule>.self)!
+      module.input.setup(with: coin)
+      module.input.setup(with: coinBalance)
+      return push(module.controller)
+    case let .sendGift(coin, coinBalance):
+      let module = resolver.resolve(Module<CoinSendGiftModule>.self)!
       module.input.setup(with: coin)
       module.input.setup(with: coinBalance)
       return push(module.controller)

@@ -21,6 +21,18 @@ enum TransactionType {
     }
   }
   
+  var rawValue: Int {
+    switch self {
+      case .unknown: return 0
+      case .deposit: return 1
+      case .withdraw: return 2
+      case .sendGift: return 3
+      case .receiveGift: return 4
+      case .buy: return 5
+      case .sell: return 6
+    }
+  }
+  
   init(rawValue: Int) {
     switch rawValue {
     case 0: self = .unknown

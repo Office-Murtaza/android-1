@@ -2,11 +2,10 @@ import UIKit
 import RxCocoa
 import RxSwift
 import SnapKit
-import QRCodeReader
+import GiphyUISDK
+import GiphyCoreSDK
 
-final class CoinWithdrawViewController: ModuleViewController<CoinWithdrawPresenter>, QRCodeReaderViewControllerDelegate {
-  
-  private let didScanAddressRelay = PublishRelay<String?>()
+final class CoinSendGiftViewController: ModuleViewController<CoinSendGiftPresenter> {
   
   let tapRecognizer = UITapGestureRecognizer()
   
@@ -37,7 +36,7 @@ final class CoinWithdrawViewController: ModuleViewController<CoinWithdrawPresent
   
   let titleLabel: UILabel = {
     let label = UILabel()
-    label.text = localize(L.CoinWithdraw.title)
+    label.text = localize(L.CoinSendGift.title)
     label.textColor = .white
     label.font = .poppinsSemibold20
     return label
@@ -45,25 +44,19 @@ final class CoinWithdrawViewController: ModuleViewController<CoinWithdrawPresent
   
   let errorView = ErrorView()
   
-  let addressLabel: UILabel = {
+  let phoneLabel: UILabel = {
     let label = UILabel()
-    label.text = localize(L.CoinWithdraw.Form.Address.title)
+    label.text = localize(L.CoinSendGift.Form.Phone.title)
     label.textColor = .slateGrey
     label.font = .poppinsSemibold14
     return label
   }()
   
-  let addressTextField: MainTextField = {
-    let textField = MainTextField()
+  let phoneTextField: PhoneNumberTextField = {
+    let textField = PhoneNumberTextField()
     textField.textAlignment = .center
     return textField
   }()
-  
-  let addressActionsContainer = UIView()
-  
-  let pasteActionContainer = UIView()
-  
-  let scanActionContainer = UIView()
   
   let pasteLabel: UnderlinedLabelView = {
     let label = UnderlinedLabelView()
@@ -71,13 +64,27 @@ final class CoinWithdrawViewController: ModuleViewController<CoinWithdrawPresent
     return label
   }()
   
-  let scanLabel: UnderlinedLabelView = {
+  let exchangeView = CoinWithdrawExchangeView()
+  
+  let gifViewContainer = UIView()
+  
+  let addGifLabel: UnderlinedLabelView = {
     let label = UnderlinedLabelView()
-    label.configure(for: .scan)
+    label.configure(for: .addGif)
     return label
   }()
   
-  let exchangeView = CoinWithdrawExchangeView()
+  let removeGifLabel: UnderlinedLabelView = {
+    let label = UnderlinedLabelView()
+    label.configure(for: .removeGif)
+    return label
+  }()
+  
+  let messageTextField: MainTextField = {
+    let textField = MainTextField()
+    textField.configure(for: .message)
+    return textField
+  }()
   
   let nextButton: MainButton = {
     let button = MainButton()
@@ -96,6 +103,8 @@ final class CoinWithdrawViewController: ModuleViewController<CoinWithdrawPresent
     view.alpha = 0
     return view
   }()
+  
+  private let didUpdateImageUrlRelay = PublishRelay<String?>()
   
   override var shouldShowNavigationBar: Bool {
     return false
@@ -140,20 +149,19 @@ final class CoinWithdrawViewController: ModuleViewController<CoinWithdrawPresent
     contentView.addSubviews(backgroundImageView,
                             safeAreaContainer,
                             errorView,
-                            addressLabel,
-                            addressTextField,
-                            addressActionsContainer,
+                            phoneLabel,
+                            phoneTextField,
+                            pasteLabel,
                             exchangeView,
+                            gifViewContainer,
+                            addGifLabel,
+                            removeGifLabel,
+                            messageTextField,
                             nextButton,
                             backgroundDarkView,
                             codeView)
+    safeAreaContainer.addSubviews(backButton, titleLabel)
     contentView.addGestureRecognizer(tapRecognizer)
-    addressActionsContainer.addSubviews(pasteActionContainer,
-                                        scanActionContainer)
-    pasteActionContainer.addSubview(pasteLabel)
-    scanActionContainer.addSubview(scanLabel)
-    safeAreaContainer.addSubviews(backButton,
-                                  titleLabel)
   }
 
   override func setupLayout() {
@@ -184,38 +192,41 @@ final class CoinWithdrawViewController: ModuleViewController<CoinWithdrawPresent
       $0.top.equalTo(backgroundImageView.snp.bottom).offset(10)
       $0.centerX.equalToSuperview()
     }
-    addressLabel.snp.makeConstraints {
+    phoneLabel.snp.makeConstraints {
       $0.top.equalTo(backgroundImageView.snp.bottom).offset(30)
       $0.centerX.equalToSuperview()
     }
-    addressTextField.snp.makeConstraints {
-      $0.top.equalTo(addressLabel.snp.bottom).offset(15)
+    phoneTextField.snp.makeConstraints {
+      $0.top.equalTo(phoneLabel.snp.bottom).offset(15)
       $0.left.right.equalToSuperview().inset(25)
     }
-    addressActionsContainer.snp.makeConstraints {
-      $0.top.equalTo(addressTextField.snp.bottom)
-      $0.left.right.equalTo(addressTextField)
-    }
-    pasteActionContainer.snp.makeConstraints {
-      $0.top.left.bottom.equalToSuperview()
-    }
-    scanActionContainer.snp.makeConstraints {
-      $0.top.right.bottom.equalToSuperview()
-      $0.left.equalTo(pasteActionContainer.snp.right)
-      $0.width.equalTo(pasteActionContainer)
-    }
-    [pasteLabel, scanLabel].forEach {
-      $0.snp.makeConstraints {
-        $0.top.bottom.equalToSuperview().inset(15)
-        $0.centerX.equalToSuperview()
-      }
+    pasteLabel.snp.makeConstraints {
+      $0.top.equalTo(phoneTextField.snp.bottom).offset(15)
+      $0.centerX.equalToSuperview()
     }
     exchangeView.snp.makeConstraints {
-      $0.top.equalTo(addressActionsContainer.snp.bottom).offset(30)
+      $0.top.equalTo(pasteLabel.snp.bottom).offset(30)
+      $0.left.right.equalToSuperview().inset(25)
+    }
+    gifViewContainer.snp.makeConstraints {
+      $0.top.equalTo(exchangeView.snp.bottom).offset(30)
+      $0.centerX.equalToSuperview()
+      $0.height.equalTo(100)
+    }
+    addGifLabel.snp.makeConstraints {
+      $0.top.equalTo(gifViewContainer.snp.bottom).offset(15)
+      $0.right.equalTo(contentView.snp.centerX).offset(-35)
+    }
+    removeGifLabel.snp.makeConstraints {
+      $0.top.equalTo(gifViewContainer.snp.bottom).offset(15)
+      $0.left.equalTo(contentView.snp.centerX).offset(35)
+    }
+    messageTextField.snp.makeConstraints {
+      $0.top.equalTo(addGifLabel.snp.bottom).offset(30)
       $0.left.right.equalToSuperview().inset(25)
     }
     nextButton.snp.makeConstraints {
-      $0.top.equalTo(exchangeView.snp.bottom).offset(30)
+      $0.top.equalTo(messageTextField.snp.bottom).offset(15)
       $0.width.equalToSuperview().multipliedBy(0.42)
       $0.centerX.equalToSuperview()
     }
@@ -226,6 +237,8 @@ final class CoinWithdrawViewController: ModuleViewController<CoinWithdrawPresent
       $0.left.right.equalToSuperview().inset(30)
       $0.bottom.equalToSuperview().inset(view.safeAreaInsets.bottom + 30)
     }
+    
+    hideGifView()
   }
   
   private func showCodeView() {
@@ -244,8 +257,8 @@ final class CoinWithdrawViewController: ModuleViewController<CoinWithdrawPresent
     
     presenter.state
       .asObservable()
-      .map { $0.address }
-      .bind(to: addressTextField.rx.text)
+      .map { $0.phone }
+      .bind(to: phoneTextField.rx.text)
       .disposed(by: disposeBag)
     
     presenter.state
@@ -306,62 +319,92 @@ final class CoinWithdrawViewController: ModuleViewController<CoinWithdrawPresent
       .drive(onNext: { [view] in view?.endEditing(true) })
       .disposed(by: disposeBag)
     
-    scanLabel.rx.tap
-      .drive(onNext: { [unowned self] in self.showQrReader() })
+    addGifLabel.rx.tap
+      .drive(onNext: { [unowned self] in
+        let gphVC = GiphyViewController()
+        gphVC.delegate = self
+        self.present(gphVC, animated: true, completion: nil)
+      })
       .disposed(by: disposeBag)
+    
+    removeGifLabel.rx.tap
+      .drive(onNext: { [unowned self] in self.hideGifView() })
+      .disposed(by: disposeBag)
+  }
+  
+  private func showGifView(media: GPHMedia) {
+    let gifView = GPHMediaView()
+    let rendition: GPHRenditionType = .fixedHeightSmall
+    
+    gifViewContainer.subviews.forEach { $0.removeFromSuperview() }
+    gifViewContainer.addSubview(gifView)
+    gifView.snp.makeConstraints {
+      $0.edges.equalToSuperview()
+      $0.width.equalTo(gifView.snp.height).multipliedBy(media.aspectRatio)
+    }
+    
+    gifView.setMedia(media, rendition: rendition)
+    
+    let imageUrl = media.url(rendition: rendition, fileType: .gif)
+    didUpdateImageUrlRelay.accept(imageUrl)
+  }
+  
+  private func hideGifView() {
+    let emptyGifView = UIView()
+    emptyGifView.backgroundColor = .whiteTwo
+    emptyGifView.layer.cornerRadius = 16
+    
+    let emptyGifImageView = UIImageView(image: UIImage(named: "send_gift"))
+    emptyGifView.addSubview(emptyGifImageView)
+    emptyGifImageView.snp.makeConstraints {
+      $0.center.equalToSuperview()
+    }
+    
+    gifViewContainer.subviews.forEach { $0.removeFromSuperview() }
+    gifViewContainer.addSubview(emptyGifView)
+    emptyGifView.snp.makeConstraints {
+      $0.edges.equalToSuperview()
+      $0.width.equalTo(emptyGifView.snp.height)
+    }
   }
 
   override func setupBindings() {
     setupUIBindings()
     
     let backDriver = backButton.rx.tap.asDriver()
-    let updateAddressDriver = Driver.merge(addressTextField.rx.text.asDriver(),
-                                           didScanAddressRelay.asDriver(onErrorJustReturn: ""))
-    let updateCurrencyAmountDriver = exchangeView.rx.currencyText
-    let updateCoinAmountDriver = exchangeView.rx.coinText
-    let pasteAddressDriver = pasteLabel.rx.tap
+    let updatePhoneDriver = phoneTextField.rx.text.asDriver()
+    let updateCurrencyAmountDriver = exchangeView.currencyTextField.rx.text.asDriver()
+    let updateCoinAmountDriver = exchangeView.coinTextField.rx.text.asDriver()
+    let pastePhoneDriver = pasteLabel.rx.tap
     let updateCodeDriver = codeView.smsCodeTextField.rx.text.asDriver()
+    let updateMessageDriver = messageTextField.rx.text.asDriver()
+    let updateImageUrlDriver = didUpdateImageUrlRelay.asDriver(onErrorJustReturn: nil)
     let cancelDriver = codeView.rx.cancelTap
     let maxDriver = exchangeView.rx.maxTap
     let nextDriver = nextButton.rx.tap.asDriver()
     let sendCodeDriver = codeView.rx.nextTap
     
-    presenter.bind(input: CoinWithdrawPresenter.Input(back: backDriver,
-                                                      updateAddress: updateAddressDriver,
+    presenter.bind(input: CoinSendGiftPresenter.Input(back: backDriver,
+                                                      updatePhone: updatePhoneDriver,
                                                       updateCurrencyAmount: updateCurrencyAmountDriver,
                                                       updateCoinAmount: updateCoinAmountDriver,
-                                                      pasteAddress: pasteAddressDriver,
+                                                      pastePhone: pastePhoneDriver,
                                                       updateCode: updateCodeDriver,
+                                                      updateMessage: updateMessageDriver,
+                                                      updateImageUrl: updateImageUrlDriver,
                                                       cancel: cancelDriver,
                                                       max: maxDriver,
                                                       next: nextDriver,
                                                       sendCode: sendCodeDriver))
   }
-  
-  // MARK: QRReader
-  
-  lazy var qrReaderVC: QRCodeReaderViewController = {
-    let builder = QRCodeReaderViewControllerBuilder {
-      $0.reader = QRCodeReader(metadataObjectTypes: [.qr], captureDevicePosition: .back)
-    }
+}
+
+extension CoinSendGiftViewController: GiphyDelegate {
+  func didSelectMedia(giphyViewController: GiphyViewController, media: GPHMedia) {
+    showGifView(media: media)
     
-    return QRCodeReaderViewController(builder: builder)
-  }()
-  
-  private func showQrReader() {
-    qrReaderVC.delegate = self
-    present(qrReaderVC, animated: true, completion: nil)
+    giphyViewController.dismiss(animated: true, completion: nil)
   }
   
-  func reader(_ reader: QRCodeReaderViewController, didScanResult result: QRCodeReaderResult) {
-    reader.stopScanning()
-    dismiss(animated: true, completion: nil)
-    
-    didScanAddressRelay.accept(result.value)
-  }
-  
-  func readerDidCancel(_ reader: QRCodeReaderViewController) {
-    reader.stopScanning()
-    dismiss(animated: true, completion: nil)
-  }
+  func didDismiss(controller: GiphyViewController?) {}
 }

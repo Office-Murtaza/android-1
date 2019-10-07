@@ -7,9 +7,9 @@ class PhoneNumberTextField: FPNTextField, FPNTextFieldDelegate {
   
   let phoneNumberRelay = BehaviorRelay<String?>(value: nil)
   
-  let imageView = UIImageView(image: UIImage(named: "login_phone"))
+  let imageViewContainer = UIView()
   
-  private let padding = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 35)
+  let imageView = UIImageView(image: UIImage(named: "login_phone"))
   
   init() {
     super.init(frame: .null)
@@ -36,7 +36,10 @@ class PhoneNumberTextField: FPNTextField, FPNTextFieldDelegate {
     layer.borderWidth = 1
     layer.borderColor = UIColor.whiteTwo.cgColor
     
-    addSubview(imageView)
+    rightView = imageViewContainer
+    rightViewMode = .always
+    
+    imageViewContainer.addSubview(imageView)
   }
   
   private func setupLayout() {
@@ -44,8 +47,8 @@ class PhoneNumberTextField: FPNTextField, FPNTextFieldDelegate {
       $0.height.equalTo(50)
     }
     imageView.snp.makeConstraints {
-      $0.centerY.equalToSuperview()
-      $0.right.equalToSuperview().offset(-17)
+      $0.top.bottom.left.equalToSuperview()
+      $0.right.equalToSuperview().offset(-15)
     }
   }
   

@@ -12,13 +12,14 @@ enum MainTextFieldType {
   case oldPin
   case newPin
   case confirmNewPin
+  case message
 }
 
 class MainTextField: UITextField {
   
   let imageView = UIImageView(image: nil)
   
-  private let padding = UIEdgeInsets(top: 0, left: 18, bottom: 0, right: 35)
+  private var padding = UIEdgeInsets(top: 0, left: 18, bottom: 0, right: 18)
   
   override init(frame: CGRect) {
     super.init(frame: frame)
@@ -69,6 +70,11 @@ class MainTextField: UITextField {
     return bounds.inset(by: padding)
   }
   
+  private func setImage(_ image: UIImage?) {
+    imageView.image = image
+    padding = padding.byUpdating(right: image == nil ? 18 : 35)
+  }
+  
   func configure(for type: MainTextFieldType) {
     let attributes: [NSAttributedString.Key: Any] = [.foregroundColor: UIColor.warmGrey,
                                                      .font: UIFont.poppinsMedium12]
@@ -77,13 +83,13 @@ class MainTextField: UITextField {
     switch type {
     case .oldPassword:
       placeholder = localize(L.ChangePassword.Form.OldPassword.placeholder)
-      imageView.image = UIImage(named: "login_password")
+      setImage(UIImage(named: "login_password"))
       keyboardType = .default
       isSecureTextEntry = true
       textContentType = .password
     case .newPassword:
       placeholder = localize(L.ChangePassword.Form.NewPassword.placeholder)
-      imageView.image = UIImage(named: "login_password")
+      setImage(UIImage(named: "login_password"))
       keyboardType = .default
       isSecureTextEntry = true
       if #available(iOS 12.0, *) {
@@ -93,13 +99,13 @@ class MainTextField: UITextField {
       }
     case .confirmNewPassword:
       placeholder = localize(L.ChangePassword.Form.ConfirmNewPassword.placeholder)
-      imageView.image = UIImage(named: "login_password")
+      setImage(UIImage(named: "login_password"))
       keyboardType = .default
       isSecureTextEntry = true
       textContentType = .password
     case .password:
       placeholder = localize(L.CreateWallet.Form.Password.placeholder)
-      imageView.image = UIImage(named: "login_password")
+      setImage(UIImage(named: "login_password"))
       keyboardType = .default
       isSecureTextEntry = true
       if #available(iOS 12.0, *) {
@@ -109,13 +115,13 @@ class MainTextField: UITextField {
       }
     case .confirmPassword:
       placeholder = localize(L.CreateWallet.Form.ConfirmPassword.placeholder)
-      imageView.image = UIImage(named: "login_password")
+      setImage(UIImage(named: "login_password"))
       keyboardType = .default
       isSecureTextEntry = true
       textContentType = .password
     case .smsCode:
       placeholder = localize(L.CreateWallet.Code.placeholder)
-      imageView.image = UIImage(named: "login_sms_code")
+      setImage(UIImage(named: "login_sms_code"))
       keyboardType = .numberPad
       isSecureTextEntry = false
       if #available(iOS 12.0, *) {
@@ -123,22 +129,25 @@ class MainTextField: UITextField {
       }
     case .oldPin:
       placeholder = localize(L.ChangePin.Form.OldPin.placeholder)
-      imageView.image = UIImage(named: "settings_pin")
+      setImage(UIImage(named: "settings_pin"))
       imageView.tintColor = .whiteFive
       keyboardType = .numberPad
       isSecureTextEntry = true
     case .newPin:
       placeholder = localize(L.ChangePin.Form.NewPin.placeholder)
-      imageView.image = UIImage(named: "settings_pin")
+      setImage(UIImage(named: "settings_pin"))
       imageView.tintColor = .whiteFive
       keyboardType = .numberPad
       isSecureTextEntry = true
     case .confirmNewPin:
       placeholder = localize(L.ChangePin.Form.ConfirmNewPin.placeholder)
-      imageView.image = UIImage(named: "settings_pin")
+      setImage(UIImage(named: "settings_pin"))
       imageView.tintColor = .whiteFive
       keyboardType = .numberPad
       isSecureTextEntry = true
+    case .message:
+      placeholder = localize(L.CoinSendGift.Form.Message.placeholder)
+      textAlignment = .center
     }
     
     attributedPlaceholder = NSAttributedString(string: placeholder, attributes: attributes)

@@ -7,6 +7,8 @@
 "shared.change" = "Change";
 "shared.scan" = "Scan";
 "shared.max" = "Max";
+"shared.add_gif" = "Add GIF";
+"shared.remove_gif" = "Remove GIF";
 "shared.error.title" = "Error";
 "shared.error.message" = "Something went wrong. Please try again later";
 
@@ -101,9 +103,14 @@
 "coin_details.address" = "Address";
 
 "coin_withdraw.title" = "Withdraw";
-"coin_withdraw.address" = "Address";
-"coin_withdraw.amount" = "Amount";
+"coin_withdraw.form.address.title" = "Address";
+"coin_withdraw.form.amount.title" = "Amount";
 "coin_withdraw.form.error.invalid_address" = "Invalid address";
 "coin_withdraw.form.error.invalid_amount" = "Invalid amount";
 "coin_withdraw.form.error.too_low_amount" = "Amount can't be zero or lower";
 "coin_withdraw.form.error.too_high_amount" = "Amount can't be higher than your balance";
+
+"coin_send_gift.title" = "Send Gift";
+"coin_send_gift.form.phone.title" = "Phone";
+"coin_send_gift.form.error.invalid_phone" = "Invalid phone";
+"coin_send_gift.form.message.placeholder" = "Input Text Message";
