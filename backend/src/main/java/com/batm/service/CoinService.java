@@ -53,6 +53,7 @@ public class CoinService {
     private static RestTemplate rest;
     private static MessageService messageService;
     private static WalletService walletService;
+    private static UserService userService;
 
     private static String btcUrl;
     private static String ethUrl;
@@ -67,6 +68,7 @@ public class CoinService {
                        @Autowired final RestTemplate rest,
                        @Autowired final MessageService messageService,
                        @Autowired final WalletService walletService,
+                       @Autowired final UserService userService,
                        @Value("${btc.url}") final String btcUrl,
                        @Value("${eth.url}") final String ethUrl,
                        @Value("${bch.url}") final String bchUrl,
@@ -80,6 +82,7 @@ public class CoinService {
         CoinService.rest = rest;
         CoinService.messageService = messageService;
         CoinService.walletService = walletService;
+        CoinService.userService = userService;
 
         CoinService.btcUrl = btcUrl;
         CoinService.ethUrl = ethUrl;
@@ -139,10 +142,11 @@ public class CoinService {
 
             @Override
             public String submitTransaction(Long userId, SubmitTransactionDTO transaction) {
-                String txId = submitBlockbookTransaction(btcUrl, transaction);
+                String txId = submitBlockbookTransaction(btcUrl, transaction, this);
 
                 if (StringUtils.isNotEmpty(txId) && com.batm.model.TransactionType.SEND_GIFT.getValue() == transaction.getType()) {
-                    messageService.sendGiftMessage(this, transaction);
+                    Optional<User> user = userService.getUser(transaction.getPhone());
+                    messageService.sendGiftMessage(this, transaction, user.isPresent());
                 }
 
                 return txId;
@@ -195,10 +199,11 @@ public class CoinService {
 
             @Override
             public String submitTransaction(Long userId, SubmitTransactionDTO transaction) {
-                String txId = submitBlockbookTransaction(ethUrl, transaction);
+                String txId = submitBlockbookTransaction(ethUrl, transaction, this);
 
                 if (StringUtils.isNotEmpty(txId) && com.batm.model.TransactionType.SEND_GIFT.getValue() == transaction.getType()) {
-                    messageService.sendGiftMessage(this, transaction);
+                    Optional<User> user = userService.getUser(transaction.getPhone());
+                    messageService.sendGiftMessage(this, transaction, user.isPresent());
                 }
 
                 return txId;
@@ -251,10 +256,11 @@ public class CoinService {
 
             @Override
             public String submitTransaction(Long userId, SubmitTransactionDTO transaction) {
-                String txId = submitBlockbookTransaction(bchUrl, transaction);
+                String txId = submitBlockbookTransaction(bchUrl, transaction, this);
 
                 if (StringUtils.isNotEmpty(txId) && com.batm.model.TransactionType.SEND_GIFT.getValue() == transaction.getType()) {
-                    messageService.sendGiftMessage(this, transaction);
+                    Optional<User> user = userService.getUser(transaction.getPhone());
+                    messageService.sendGiftMessage(this, transaction, user.isPresent());
                 }
 
                 return txId;
@@ -307,10 +313,11 @@ public class CoinService {
 
             @Override
             public String submitTransaction(Long userId, SubmitTransactionDTO transaction) {
-                String txId = submitBlockbookTransaction(ltcUrl, transaction);
+                String txId = submitBlockbookTransaction(ltcUrl, transaction, this);
 
                 if (StringUtils.isNotEmpty(txId) && com.batm.model.TransactionType.SEND_GIFT.getValue() == transaction.getType()) {
-                    messageService.sendGiftMessage(this, transaction);
+                    Optional<User> user = userService.getUser(transaction.getPhone());
+                    messageService.sendGiftMessage(this, transaction, user.isPresent());
                 }
 
                 return txId;
@@ -366,7 +373,8 @@ public class CoinService {
                 String txId = submitBinanceTransaction(bnbUrl, transaction);
 
                 if (StringUtils.isNotEmpty(txId) && com.batm.model.TransactionType.SEND_GIFT.getValue() == transaction.getType()) {
-                    messageService.sendGiftMessage(this, transaction);
+                    Optional<User> user = userService.getUser(transaction.getPhone());
+                    messageService.sendGiftMessage(this, transaction, user.isPresent());
                 }
 
                 return txId;
@@ -404,7 +412,7 @@ public class CoinService {
 
             @Override
             public CurrentAccountDTO getCurrentAccount(String address) {
-                return null;
+                return getRippledCurrentAccount(address);
             }
 
             @Override
@@ -419,10 +427,11 @@ public class CoinService {
 
             @Override
             public String submitTransaction(Long userId, SubmitTransactionDTO transaction) {
-                String txId = submitRippledTransaction(bnbUrl, transaction);
+                String txId = submitRippledTransaction(xrpUrl, transaction);
 
                 if (StringUtils.isNotEmpty(txId) && com.batm.model.TransactionType.SEND_GIFT.getValue() == transaction.getType()) {
-                    messageService.sendGiftMessage(this, transaction);
+                    Optional<User> user = userService.getUser(transaction.getPhone());
+                    messageService.sendGiftMessage(this, transaction, user.isPresent());
                 }
 
                 return txId;
@@ -475,10 +484,11 @@ public class CoinService {
 
             @Override
             public String submitTransaction(Long userId, SubmitTransactionDTO transaction) {
-                String txId = submitTrongridTransaction(bnbUrl, transaction);
+                String txId = submitTrongridTransaction(trxUrl, transaction);
 
                 if (StringUtils.isNotEmpty(txId) && com.batm.model.TransactionType.SEND_GIFT.getValue() == transaction.getType()) {
-                    messageService.sendGiftMessage(this, transaction);
+                    Optional<User> user = userService.getUser(transaction.getPhone());
+                    messageService.sendGiftMessage(this, transaction, user.isPresent());
                 }
 
                 return txId;
@@ -554,9 +564,11 @@ public class CoinService {
     private static TransactionResponseDTO getBlockbookTransactions(String url, String address, Long divider, Integer startIndex, Integer limit) {
         try {
             JSONObject res = rest.getForObject(url + "/api/v2/address/" + address + "?details=txs&pageSize=1000&page=1", JSONObject.class);
-            JSONArray transactionsArray = res.optJSONArray("transactions");
+            JSONArray array = res.optJSONArray("transactions");
 
-            return TransactionUtil.composeBlockbook(res.optInt("txs"), transactionsArray, address, divider, startIndex, limit);
+            if (array != null && !array.isEmpty()) {
+                return TransactionUtil.composeBlockbook(res.optInt("txs"), array, address, divider, startIndex, limit);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -567,9 +579,11 @@ public class CoinService {
     private static TransactionResponseDTO getTrongridTransactions(String address, Long divider, Integer startIndex, Integer limit) {
         try {
             JSONObject res = rest.getForObject(trxUrl + "/v1/accounts/" + address + "/transactions?limit=200", JSONObject.class);
-            JSONArray transactionsArray = res.optJSONArray("data");
+            JSONArray array = res.optJSONArray("data");
 
-            return TransactionUtil.composeTrongrid(transactionsArray, address, divider, startIndex, limit);
+            if (array != null && !array.isEmpty()) {
+                return TransactionUtil.composeTrongrid(array, address, divider, startIndex, limit);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -605,9 +619,11 @@ public class CoinService {
 
             JSONObject res = rest.postForObject(xrpUrl, req, JSONObject.class);
             JSONObject jsonResult = res.optJSONObject("result");
-            JSONArray transactionsArray = jsonResult.optJSONArray("transactions");
+            JSONArray array = jsonResult.optJSONArray("transactions");
 
-            return TransactionUtil.composeRippled(transactionsArray, address, divider, startIndex, limit);
+            if (array != null && !array.isEmpty()) {
+                return TransactionUtil.composeRippled(array, address, divider, startIndex, limit);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -801,9 +817,36 @@ public class CoinService {
         return BigDecimal.ZERO;
     }
 
-    private static String submitBlockbookTransaction(String url, SubmitTransactionDTO transaction) {
+    private static CurrentAccountDTO getRippledCurrentAccount(String address) {
         try {
+            JSONObject param = new JSONObject();
+            param.put("account", address);
+
+            JSONArray params = new JSONArray();
+            params.add(param);
+
+            JSONObject req = new JSONObject();
+            req.put("method", "account_info");
+            req.put("params", params);
+
+            JSONObject res = rest.postForObject(xrpUrl, req, JSONObject.class);
+            Long sequence = res.getJSONObject("result").getJSONObject("account_data").optLong("Sequence");
+
+            return new CurrentAccountDTO(null, sequence);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return new CurrentAccountDTO();
+    }
+
+    private static String submitBlockbookTransaction(String url, SubmitTransactionDTO transaction, CoinEnum coinId) {
+        try {
+            System.out.println("---------------------------------------------------- " + coinId.name());
+            System.out.println(transaction.toString());
+
             JSONObject res = rest.getForObject(url + "/api/v2/sendtx/" + transaction.getHex(), JSONObject.class);
+            System.out.println(res);
 
             String txId = RandomStringUtils.randomAlphanumeric(50);
 
@@ -817,7 +860,11 @@ public class CoinService {
 
     private static String submitTrongridTransaction(String url, SubmitTransactionDTO transaction) {
         try {
-            JSONObject res = rest.postForObject(url + "/wallet/broadcasttransaction", transaction.getTrx(), JSONObject.class);
+            System.out.println("---------------------------------------------------- TRX");
+            System.out.println(transaction.toString());
+
+            JSONObject res = JSONObject.fromObject(rest.postForObject(url + "/wallet/broadcasttransaction", transaction.getTrx(), String.class));
+            System.out.println(res);
 
             String txId = RandomStringUtils.randomAlphanumeric(50);
 
@@ -831,10 +878,14 @@ public class CoinService {
 
     private static String submitBinanceTransaction(String url, SubmitTransactionDTO transaction) {
         try {
+            System.out.println("---------------------------------------------------- BNB");
+            System.out.println(transaction.toString());
+
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.TEXT_PLAIN);
 
-            JSONObject res = rest.postForObject(url + "api/v1/broadcast", transaction.getHex(), JSONObject.class);
+            JSONObject res = rest.postForObject(url + "/api/v1/broadcast", transaction.getHex(), JSONObject.class);
+            System.out.println(res);
 
             String txId = RandomStringUtils.randomAlphanumeric(50);
 
@@ -860,9 +911,7 @@ public class CoinService {
 
             JSONObject res = rest.postForObject(url, req, JSONObject.class);
 
-            String txId = RandomStringUtils.randomAlphanumeric(50);
-
-            return txId;
+            return res.optJSONObject("result").optJSONObject("tx_json").optString("hash");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -895,9 +944,9 @@ public class CoinService {
                     .findFirst().get()
                     .getPublicKey();
 
-            return new GiftAddressDTO(address, true);
+            return new GiftAddressDTO(address);
         } else {
-            return new GiftAddressDTO(coinId.getWalletAddress(), false);
+            return new GiftAddressDTO(coinId.getWalletAddress());
         }
     }
 }

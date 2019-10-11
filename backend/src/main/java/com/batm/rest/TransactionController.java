@@ -58,7 +58,7 @@ public class TransactionController {
     @GetMapping("/user/{userId}/coins/{coinId}/transactions/currentaccount/{address}")
     public Response getCurrentAccount(@PathVariable String userId, @PathVariable CoinService.CoinEnum coinId, @PathVariable String address) {
         try {
-            if (coinId == CoinService.CoinEnum.BNB) {
+            if (coinId == CoinService.CoinEnum.BNB || coinId == CoinService.CoinEnum.XRP) {
                 return Response.ok(coinId.getCurrentAccount(address));
             } else {
                 return Response.error(2, coinId.name() + " not allowed");

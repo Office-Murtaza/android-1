@@ -2,20 +2,13 @@ package com.batm.service;
 
 import java.time.Instant;
 import java.util.Optional;
-
-import com.batm.entity.CodeVerification;
-import com.batm.entity.Unlink;
-import com.batm.entity.UpdatePhone;
-import com.batm.repository.CodeVerificationRepository;
-import com.batm.repository.UnlinkRepository;
-import com.batm.repository.UpdatePhoneRepository;
+import com.batm.entity.*;
+import com.batm.repository.*;
 import com.batm.rest.vm.PhoneRequestVM;
+import com.batm.util.Util;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import com.batm.entity.User;
-import com.batm.repository.UserRepository;
-
 import javax.transaction.Transactional;
 
 @Service
@@ -39,29 +32,44 @@ public class UserService {
     @Autowired
     private CodeVerificationRepository codeValidatorRepository;
 
-    public User registerUser(String phone, String password) {
+    @Autowired
+    private IdentityRepository identityRepository;
 
-        User newUser = new User();
-        String encryptedPassword = passwordEncoder.encode(password);
-        newUser.setPhone(phone);
-        // new user gets initially a generated password
-        newUser.setPassword(encryptedPassword);
-        newUser.setRole("ROLE_USER");
-        userRepository.save(newUser);
-        return newUser;
-    }
+//    @Autowired
+//    private LimitRepository limitRepository;
+//
+//    @Autowired
+//    private DailyLimitRepository dailyLimitRepository;
 
-    public Optional<User> findOneByPhoneIgnoreCase(String phone) {
-        // TODO Auto-generated method stub
-        return this.userRepository.findOneByPhoneIgnoreCase(phone);
+    @Transactional
+    public User register(String phone, String password) {
+        User user = new User();
+        user.setPhone(phone);
+        user.setPassword(passwordEncoder.encode(password));
+        user.setRole("ROLE_USER");
+        User savedUser = userRepository.save(user);
+
+        Identity identity = new Identity();
+        identity.setPublicId(Util.generatePublicId());
+        identity.setState(0);
+        identity.setUser(savedUser);
+        Identity savedIdentity = identityRepository.save(identity);
+
+//        Limit limit = new Limit();
+//        limit.setAmount(BigDecimal.valueOf(10000));
+//        limit.setCurrency("USD");
+//        Limit savedLimit = limitRepository.save(limit);
+//
+//        DailyLimit dailyLimit = new DailyLimit();
+//        dailyLimit.setIdentity(savedIdentity);
+//        dailyLimit.setLimit(savedLimit);
+//        dailyLimitRepository.save(dailyLimit);
+
+        return user;
     }
 
     public User findById(Long userId) {
         return this.userRepository.getOne(userId);
-    }
-
-    public User save(User user) {
-        return this.userRepository.save(user);
     }
 
     public void updatePassword(String encodedPassword, Long userId) {
@@ -122,10 +130,14 @@ public class UserService {
     }
 
     public CodeVerification getCodeByUserId(Long userId) {
-        return this.codeValidatorRepository.findByUserUserId(userId);
+        return codeValidatorRepository.findByUserUserId(userId);
     }
 
     public void save(CodeVerification codeVerification) {
-        this.codeValidatorRepository.save(codeVerification);
+        codeValidatorRepository.save(codeVerification);
+    }
+
+    public Optional<User> getUser(String phone) {
+        return userRepository.findOneByPhoneIgnoreCase(phone);
     }
 }

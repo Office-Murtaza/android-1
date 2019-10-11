@@ -6,7 +6,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import javax.validation.Valid;
-
+import com.batm.dto.AuthenticationDTO;
+import com.batm.dto.TokenDTO;
 import com.batm.repository.UserRepository;
 import com.batm.service.MessageService;
 import net.sf.json.JSONObject;
@@ -33,20 +34,14 @@ import com.batm.entity.User;
 import com.batm.repository.TokenRepository;
 import com.batm.rest.vm.ChangePasswordRequestVM;
 import com.batm.rest.vm.CheckPasswordRequestVM;
-import com.batm.rest.vm.LoginVM;
 import com.batm.rest.vm.PhoneRequestVM;
 import com.batm.rest.vm.RefreshVM;
-import com.batm.rest.vm.RegisterVM;
 import com.batm.rest.vm.ValidateOTPResponse;
 import com.batm.rest.vm.ValidateOTPVM;
 import com.batm.security.jwt.JWTFilter;
 import com.batm.security.jwt.TokenProvider;
 import com.batm.service.UserService;
 import com.batm.util.Constant;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @RestController
 @RequestMapping("/api/v1")
@@ -80,27 +75,27 @@ public class UserController {
     private MessageService messageService;
 
     @PostMapping("/register")
-    public Response register(@Valid @RequestBody RegisterVM register) {
+    public Response register(@RequestBody AuthenticationDTO dto) {
         try {
             Pattern pattern = Pattern.compile(Constant.REGEX_PHONE);
 
-            Matcher matcher = pattern.matcher(register.getPhone());
+            Matcher matcher = pattern.matcher(dto.getPhone());
             if (!matcher.matches()) {
-                return Response.error(new Error(2, "Invalid phone number"));
+                return Response.serverError(2, "Invalid phone number");
             }
 
-            if (!checkPasswordLength(register.getPassword())) {
-                return Response.error(new Error(2, "Password length should be in 6 to 15"));
+            if (!checkPasswordLength(dto.getPassword())) {
+                return Response.serverError(3, "Password length should be in 6 to 15");
             }
 
-            Optional<User> findOneByPhoneIgnoreCase = userService.findOneByPhoneIgnoreCase(register.getPhone());
+            Optional<User> findOneByPhoneIgnoreCase = userService.getUser(dto.getPhone());
             if (findOneByPhoneIgnoreCase.isPresent()) {
-                return Response.error(new Error(1, "Phone is already registered"));
+                return Response.serverError(4, "Phone is already registered");
             }
 
-            User user = userService.registerUser(register.getPhone(), register.getPassword());
+            User user = userService.register(dto.getPhone(), dto.getPassword());
             messageService.sendVerificationCode(user);
-            JWTToken jwt = getJwt(user.getUserId(), register.getPhone(), register.getPassword());
+            TokenDTO jwt = getJwt(user.getUserId(), dto.getPhone(), dto.getPassword());
 
             refreshTokenRepository.save(new Token(jwt.getAccessToken(), jwt.getRefreshToken(), user));
 
@@ -112,32 +107,32 @@ public class UserController {
     }
 
     @PostMapping("/recover")
-    public Response recover(@Valid @RequestBody LoginVM loginVM) {
+    public Response recover(@RequestBody AuthenticationDTO dto) {
         try {
             Pattern pattern = Pattern.compile(Constant.REGEX_PHONE);
 
-            Matcher matcher = pattern.matcher(loginVM.getPhone());
+            Matcher matcher = pattern.matcher(dto.getPhone());
             if (!matcher.matches()) {
                 return Response.error(new Error(2, "Invalid phone number"));
             }
 
-            if (!checkPasswordLength(loginVM.getPassword())) {
+            if (!checkPasswordLength(dto.getPassword())) {
                 return Response.error(new Error(3, "Password length should be in 6 to 15"));
             }
 
-            Optional<User> findOneByPhoneIgnoreCase = userService.findOneByPhoneIgnoreCase(loginVM.getPhone());
+            Optional<User> findOneByPhoneIgnoreCase = userService.getUser(dto.getPhone());
             if (!findOneByPhoneIgnoreCase.isPresent()) {
                 return Response.error(new Error(2, "Phone is not registered"));
             }
 
             User user = findOneByPhoneIgnoreCase.get();
 
-            boolean passwordMatch = passwordEncoder.matches(loginVM.getPassword(), user.getPassword());
+            boolean passwordMatch = passwordEncoder.matches(dto.getPassword(), user.getPassword());
             if (!passwordMatch) {
                 return Response.error(new Error(3, "Wrong password"));
             }
 
-            JWTToken jwt = getJwt(user.getUserId(), loginVM.getPhone(), loginVM.getPassword());
+            TokenDTO jwt = getJwt(user.getUserId(), dto.getPhone(), dto.getPassword());
 
             messageService.sendVerificationCode(user);
 
@@ -189,7 +184,7 @@ public class UserController {
             if (refreshToken != null) {
                 User user = userService.findById(refreshToken.getUser().getUserId());
 
-                JWTToken jwt = getJwt(user);
+                TokenDTO jwt = getJwt(user);
 
                 Token token = refreshTokenRepository.findByUserUserId(user.getUserId());
                 token.setRefreshToken(jwt.getRefreshToken());
@@ -344,7 +339,7 @@ public class UserController {
         }
     }
 
-    private JWTToken getJwt(Long userId, String username, String password) {
+    private TokenDTO getJwt(Long userId, String username, String password) {
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username,
                 password);
 
@@ -355,11 +350,11 @@ public class UserController {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add(JWTFilter.AUTHORIZATION_HEADER, "Bearer " + jwt);
 
-        return new JWTToken(userId, jwt, System.currentTimeMillis() + expiryTime, refreshToken,
+        return new TokenDTO(userId, jwt, System.currentTimeMillis() + expiryTime, refreshToken,
                 authentication.getAuthorities().stream().map(role -> role.getAuthority()).collect(Collectors.toList()));
     }
 
-    private JWTToken getJwt(User user) {
+    private TokenDTO getJwt(User user) {
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
                 user.getPhone(), new String(Base64.decodeBase64(user.getPassword())));
 
@@ -369,29 +364,12 @@ public class UserController {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add(JWTFilter.AUTHORIZATION_HEADER, "Bearer " + jwt);
 
-        return new JWTToken(user.getUserId(), jwt, System.currentTimeMillis() + expiryTime, refreshToken,
+        return new TokenDTO(user.getUserId(), jwt, System.currentTimeMillis() + expiryTime, refreshToken,
                 authentication.getAuthorities().stream().map(role -> role.getAuthority()).collect(Collectors.toList()));
     }
 
     private static boolean checkPasswordLength(String password) {
         return !StringUtils.isEmpty(password) && password.length() >= Constant.PASSWORD_MIN_LENGTH
                 && password.length() <= Constant.PASSWORD_MAX_LENGTH;
-    }
-
-    @Getter
-    @Setter
-    @AllArgsConstructor
-    @NoArgsConstructor
-    static class JWTToken {
-
-        private Long userId;
-
-        private String accessToken;
-
-        private Long expires;
-
-        private String refreshToken;
-
-        private List<String> roles;
     }
 }

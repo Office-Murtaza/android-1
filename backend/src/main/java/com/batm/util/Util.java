@@ -1,7 +1,7 @@
 package com.batm.util;
 
 import net.sf.json.JSONArray;
-
+import org.apache.commons.lang3.RandomStringUtils;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
@@ -22,5 +22,9 @@ public class Util {
             }
         }
         return list;
+    }
+
+    public static String generatePublicId() {
+        return "I" + RandomStringUtils.randomAlphanumeric(15).toUpperCase();
     }
 }

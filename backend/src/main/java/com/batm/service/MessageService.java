@@ -11,12 +11,10 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-
 import javax.annotation.PostConstruct;
 import java.net.URI;
 import java.time.Instant;
 import java.util.Arrays;
-
 import com.twilio.rest.api.v2010.account.Message;
 import com.twilio.type.PhoneNumber;
 
@@ -88,17 +86,17 @@ public class MessageService {
         return null;
     }
 
-    public Message.Status sendGiftMessage(CoinService.CoinEnum coinId, SubmitTransactionDTO dto) {
+    public Message.Status sendGiftMessage(CoinService.CoinEnum coinId, SubmitTransactionDTO dto, Boolean userExists) {
         try {
             StringBuilder body = new StringBuilder("You receive " + dto.getAmount() + " " + coinId.name()).append("\n").append(dto.getMessage());
 
-            if (!dto.getExists()) {
+            if (!userExists) {
                 body.append("\n").append("In order to receive it install Belco Wallet app and create an account using your current phone number");
             }
 
             Message message = Message
                     .creator(new PhoneNumber(dto.getPhone()), new PhoneNumber(fromNumber), body.toString())
-                    .setMediaUrl(Arrays.asList(URI.create("https://media.giphy.com/media/uGGT9wVlxPAuk/giphy.gif")))
+                    .setMediaUrl(Arrays.asList(URI.create(dto.getImage())))
                     .create();
 
             return message.getStatus();

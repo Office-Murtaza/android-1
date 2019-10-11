@@ -132,7 +132,7 @@ public class ChainalysisService {
 
         HttpEntity<JSONArray> request = new HttpEntity<>(jsonArray, headers);
 
-        String url = chainalysisUrl + "/api/kyt/v1/users/" + transaction.getIdentity().getPublicId() + "/transfers/" + requestType;
+        String url = chainalysisUrl + "/api/kyt/v1/users/" + "abc" + "/transfers/" + requestType;
 
         try {
             ResponseEntity<JSONArray> responseEntity = rest.exchange(url, HttpMethod.POST, request, JSONArray.class);

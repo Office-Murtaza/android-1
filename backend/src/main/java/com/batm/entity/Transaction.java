@@ -15,12 +15,12 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @Entity
 @Table(name = "transactionrecord")
-@NamedEntityGraphs(value = {
-        @NamedEntityGraph(
-                name = Transaction.IDENTITY,
-                attributeNodes = @NamedAttributeNode("identity")
-        )
-})
+//@NamedEntityGraphs(value = {
+//        @NamedEntityGraph(
+//                name = Transaction.IDENTITY,
+//                attributeNodes = @NamedAttributeNode("identity")
+//        )
+//})
 public class Transaction implements Serializable {
 
     private static final long serialVersionUID = -1712969322089989538L;
@@ -50,9 +50,9 @@ public class Transaction implements Serializable {
     @Column(name = "cryptoamount")
     private BigDecimal cryptoAmount;
 
-    @JsonBackReference
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private Identity identity;
+//    @JsonBackReference
+//    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+//    private Identity identity;
 
     @Override
     public int hashCode() {
@@ -77,21 +77,5 @@ public class Transaction implements Serializable {
         } else if (!transactionId.equals(other.transactionId))
             return false;
         return true;
-    }
-
-    @Override
-    public String toString() {
-        return "Transaction{" +
-                "transactionId=" + transactionId +
-                ", type=" + type +
-                ", n=" + n +
-                ", detail='" + detail + '\'' +
-                ", status=" + status +
-                ", tracked=" + tracked +
-                ", cryptoCurrency='" + cryptoCurrency + '\'' +
-                ", cryptoAddress='" + cryptoAddress + '\'' +
-                ", cryptoAmount=" + cryptoAmount +
-                ", identity=" + identity +
-                '}';
     }
 }
