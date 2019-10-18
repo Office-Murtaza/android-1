@@ -4,11 +4,11 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import javax.persistence.*;
-import java.io.Serializable;
-import java.time.Instant;
+import java.util.Date;
+import java.util.List;
 
 @Getter
 @Setter
@@ -16,39 +16,170 @@ import java.time.Instant;
 @NoArgsConstructor
 @Entity
 @Table(name = "identity")
-public class Identity implements Serializable {
+public class Identity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Long identityId;
+    @GeneratedValue(
+            strategy = GenerationType.IDENTITY
+    )
+    @Column(
+            name = "id"
+    )
+    private long id;
 
-    @Column(name = "publicid")
+    @Column(
+            name = "publicid"
+    )
     private String publicId;
 
-    private Integer state;
+    @Column(
+            name = "externalid"
+    )
+    private String externalId;
 
-    @CreationTimestamp
-    @Column(name = "created", updatable = false)
-    private Instant createDate = Instant.now();
+    @Column(
+            name = "type"
+    )
+    private Integer type;
 
-    @CreationTimestamp
-    @Column(name = "registered", updatable = false)
-    private Instant registerDate = Instant.now();
+    @Column(
+            name = "state"
+    )
+    private int state;
 
-    @UpdateTimestamp
-    @Column(name = "lastupdatedat")
-    private Instant updateDate = Instant.now();
+    @Column(
+            name = "created"
+    )
+    private Date created;
 
-    @MapsId
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @Column(
+            name = "registered"
+    )
+    private Date registered;
+
+    @Column(
+            name = "lastupdatedat"
+    )
+    private Date lastUpdatedAt;
+
+    @Column(
+            name = "configurationcashcurrency"
+    )
+    private String configurationCashCurrency;
+
+    @OneToMany(
+            cascade = {CascadeType.ALL},
+            fetch = FetchType.LAZY
+    )
+    @JoinTable(
+            name = "identity_limit_cptr",
+            joinColumns = {@JoinColumn(
+                    name = "identity_id",
+                    referencedColumnName = "id"
+            )},
+            inverseJoinColumns = {@JoinColumn(
+                    name = "limit_id",
+                    referencedColumnName = "id"
+            )}
+    )
+    @Fetch(FetchMode.SUBSELECT)
+    private List<Limit> limitCashPerTransaction;
+
+    @OneToMany(
+            cascade = {CascadeType.ALL},
+            fetch = FetchType.LAZY
+    )
+    @JoinTable(
+            name = "identity_limit_cph",
+            joinColumns = {@JoinColumn(
+                    name = "identity_id",
+                    referencedColumnName = "id"
+            )},
+            inverseJoinColumns = {@JoinColumn(
+                    name = "limit_id",
+                    referencedColumnName = "id"
+            )}
+    )
+    @Fetch(FetchMode.SUBSELECT)
+    private List<Limit> limitCashPerHour;
+
+    @OneToMany(
+            cascade = {CascadeType.ALL},
+            fetch = FetchType.LAZY
+    )
+    @JoinTable(
+            name = "identity_limit_cpd",
+            joinColumns = {@JoinColumn(
+                    name = "identity_id",
+                    referencedColumnName = "id"
+            )},
+            inverseJoinColumns = {@JoinColumn(
+                    name = "limit_id",
+                    referencedColumnName = "id"
+            )}
+    )
+    @Fetch(FetchMode.SUBSELECT)
+    private List<Limit> limitCashPerDay;
+
+    @OneToMany(
+            cascade = {CascadeType.ALL},
+            fetch = FetchType.LAZY
+    )
+    @JoinTable(
+            name = "identity_limit_cpw",
+            joinColumns = {@JoinColumn(
+                    name = "identity_id",
+                    referencedColumnName = "id"
+            )},
+            inverseJoinColumns = {@JoinColumn(
+                    name = "limit_id",
+                    referencedColumnName = "id"
+            )}
+    )
+    @Fetch(FetchMode.SUBSELECT)
+    private List<Limit> limitCashPerWeek;
+
+    @OneToMany(
+            cascade = {CascadeType.ALL},
+            fetch = FetchType.LAZY
+    )
+    @JoinTable(
+            name = "identity_limit_cpm",
+            joinColumns = {@JoinColumn(
+                    name = "identity_id",
+                    referencedColumnName = "id"
+            )},
+            inverseJoinColumns = {@JoinColumn(
+                    name = "limit_id",
+                    referencedColumnName = "id"
+            )}
+    )
+    @Fetch(FetchMode.SUBSELECT)
+    private List<Limit> limitCashPerMonth;
+
+    @Column(
+            name = "watchlistlastscanat"
+    )
+    private Date watchListLastScanAt;
+
+    @Column(
+            name = "watchlistbanned"
+    )
+    private Boolean watchListBanned;
+
+    @Column(
+            name = "note",
+            columnDefinition = "MEDIUMTEXT"
+    )
+    private String note;
+
+    @OneToOne
     @JoinColumn(name = "user_id")
     private User user;
 
-//    @OneToOne(mappedBy = "identity", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-//    private DailyLimit dailyLimit;
+    @OneToMany(mappedBy="identity")
+    private List<TransactionRecord> transactionRecords;
 
-//    @JsonManagedReference
-//    @OneToMany(mappedBy = "identity", fetch = FetchType.LAZY)
-//    private Set<Transaction> transactions;
+    @OneToMany(mappedBy="identity")
+    private List<TransactionRecordGift> transactionRecordGifts;
 }

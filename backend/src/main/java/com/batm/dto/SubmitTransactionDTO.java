@@ -20,4 +20,5 @@ public class SubmitTransactionDTO {
     private String hex;
     private String fromAddress;
     private JSONObject trx;
+    private String refTxId;
 }

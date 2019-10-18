@@ -9,9 +9,9 @@ import javax.annotation.PostConstruct;
 @Service
 public class WalletService {
 
-    static {
-        System.loadLibrary("TrustWalletCore");
-    }
+//    static {
+//        System.loadLibrary("TrustWalletCore");
+//    }
 
     @Value("${wallet.seed}")
     private String walletSeed;
@@ -31,29 +31,29 @@ public class WalletService {
 
     @PostConstruct
     public void init() {
-        wallet = new HDWallet(AES.decrypt(walletSeed, walletSeedKey), "");
-
-        PrivateKey privateKeyBTC = wallet.getKeyForCoin(CoinType.BITCOIN);
-        PublicKey publicKeyBTC = privateKeyBTC.getPublicKeySecp256k1(true);
-        addressBTC = new BitcoinAddress(publicKeyBTC, P2PKHPrefix.BITCOIN.value()).description();
-
-        PrivateKey privateKeyBCH = wallet.getKeyForCoin(CoinType.BITCOINCASH);
-        addressBCH = CoinType.BITCOINCASH.deriveAddress(privateKeyBCH);
-
-        PrivateKey privateKeyETH = wallet.getKeyForCoin(CoinType.ETHEREUM);
-        addressETH = CoinType.ETHEREUM.deriveAddress(privateKeyETH);
-
-        PrivateKey privateKeyLTC = wallet.getKeyForCoin(CoinType.LITECOIN);
-        addressLTC = CoinType.LITECOIN.deriveAddress(privateKeyLTC);
-
-        PrivateKey privateKeyBNB = wallet.getKeyForCoin(CoinType.BINANCE);
-        addressBNB = CoinType.BINANCE.deriveAddress(privateKeyBNB);
-
-        PrivateKey privateKeyXRP = wallet.getKeyForCoin(CoinType.XRP);
-        addressXRP = CoinType.XRP.deriveAddress(privateKeyXRP);
-
-        PrivateKey privateKeyTRX = wallet.getKeyForCoin(CoinType.TRON);
-        addressTRX = CoinType.TRON.deriveAddress(privateKeyTRX);
+//        wallet = new HDWallet(AES.decrypt(walletSeed, walletSeedKey), "");
+//
+//        PrivateKey privateKeyBTC = wallet.getKeyForCoin(CoinType.BITCOIN);
+//        PublicKey publicKeyBTC = privateKeyBTC.getPublicKeySecp256k1(true);
+//        addressBTC = new BitcoinAddress(publicKeyBTC, P2PKHPrefix.BITCOIN.value()).description();
+//
+//        PrivateKey privateKeyBCH = wallet.getKeyForCoin(CoinType.BITCOINCASH);
+//        addressBCH = CoinType.BITCOINCASH.deriveAddress(privateKeyBCH);
+//
+//        PrivateKey privateKeyETH = wallet.getKeyForCoin(CoinType.ETHEREUM);
+//        addressETH = CoinType.ETHEREUM.deriveAddress(privateKeyETH);
+//
+//        PrivateKey privateKeyLTC = wallet.getKeyForCoin(CoinType.LITECOIN);
+//        addressLTC = CoinType.LITECOIN.deriveAddress(privateKeyLTC);
+//
+//        PrivateKey privateKeyBNB = wallet.getKeyForCoin(CoinType.BINANCE);
+//        addressBNB = CoinType.BINANCE.deriveAddress(privateKeyBNB);
+//
+//        PrivateKey privateKeyXRP = wallet.getKeyForCoin(CoinType.XRP);
+//        addressXRP = CoinType.XRP.deriveAddress(privateKeyXRP);
+//
+//        PrivateKey privateKeyTRX = wallet.getKeyForCoin(CoinType.TRON);
+//        addressTRX = CoinType.TRON.deriveAddress(privateKeyTRX);
     }
 
     public String getAddressBTC() {

@@ -88,14 +88,14 @@ public class UserController {
                 return Response.serverError(3, "Password length should be in 6 to 15");
             }
 
-            Optional<User> findOneByPhoneIgnoreCase = userService.getUser(dto.getPhone());
+            Optional<User> findOneByPhoneIgnoreCase = userService.findByPhone(dto.getPhone());
             if (findOneByPhoneIgnoreCase.isPresent()) {
                 return Response.serverError(4, "Phone is already registered");
             }
 
             User user = userService.register(dto.getPhone(), dto.getPassword());
             messageService.sendVerificationCode(user);
-            TokenDTO jwt = getJwt(user.getUserId(), dto.getPhone(), dto.getPassword());
+            TokenDTO jwt = getJwt(user.getUserId(), user.getIdentity().getId(), dto.getPhone(), dto.getPassword());
 
             refreshTokenRepository.save(new Token(jwt.getAccessToken(), jwt.getRefreshToken(), user));
 
@@ -120,7 +120,7 @@ public class UserController {
                 return Response.error(new Error(3, "Password length should be in 6 to 15"));
             }
 
-            Optional<User> findOneByPhoneIgnoreCase = userService.getUser(dto.getPhone());
+            Optional<User> findOneByPhoneIgnoreCase = userService.findByPhone(dto.getPhone());
             if (!findOneByPhoneIgnoreCase.isPresent()) {
                 return Response.error(new Error(2, "Phone is not registered"));
             }
@@ -132,7 +132,7 @@ public class UserController {
                 return Response.error(new Error(3, "Wrong password"));
             }
 
-            TokenDTO jwt = getJwt(user.getUserId(), dto.getPhone(), dto.getPassword());
+            TokenDTO jwt = getJwt(user.getUserId(), user.getIdentity().getId(), dto.getPhone(), dto.getPassword());
 
             messageService.sendVerificationCode(user);
 
@@ -339,7 +339,7 @@ public class UserController {
         }
     }
 
-    private TokenDTO getJwt(Long userId, String username, String password) {
+    private TokenDTO getJwt(Long userId, Long identityId, String username, String password) {
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username,
                 password);
 
@@ -350,7 +350,7 @@ public class UserController {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add(JWTFilter.AUTHORIZATION_HEADER, "Bearer " + jwt);
 
-        return new TokenDTO(userId, jwt, System.currentTimeMillis() + expiryTime, refreshToken,
+        return new TokenDTO(userId, identityId, jwt, System.currentTimeMillis() + expiryTime, refreshToken,
                 authentication.getAuthorities().stream().map(role -> role.getAuthority()).collect(Collectors.toList()));
     }
 
@@ -364,7 +364,7 @@ public class UserController {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add(JWTFilter.AUTHORIZATION_HEADER, "Bearer " + jwt);
 
-        return new TokenDTO(user.getUserId(), jwt, System.currentTimeMillis() + expiryTime, refreshToken,
+        return new TokenDTO(user.getUserId(), user.getIdentity().getId(), jwt, System.currentTimeMillis() + expiryTime, refreshToken,
                 authentication.getAuthorities().stream().map(role -> role.getAuthority()).collect(Collectors.toList()));
     }
 

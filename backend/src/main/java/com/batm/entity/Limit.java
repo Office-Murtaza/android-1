@@ -5,7 +5,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import javax.persistence.*;
-import java.io.Serializable;
 import java.math.BigDecimal;
 
 @Getter
@@ -14,16 +13,25 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @Entity
 @Table(name = "tlimit")
-public class Limit implements Serializable {
-
+public class Limit {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Long limitId;
+    @GeneratedValue(
+            strategy = GenerationType.IDENTITY
+    )
+    @Column(
+            name = "id"
+    )
+    private long id;
 
-    @OneToOne(mappedBy = "limit", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private DailyLimit dailyLimit;
-
-    private BigDecimal amount;
+    @Column(
+            name = "currency"
+    )
     private String currency;
+
+    @Column(
+            name = "amount",
+            precision = 20,
+            scale = 10
+    )
+    private BigDecimal amount;
 }

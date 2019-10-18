@@ -15,6 +15,7 @@ import java.util.List;
 public class TokenDTO {
 
     private Long userId;
+    private Long identityId;
     private String accessToken;
     private Long expires;
     private String refreshToken;

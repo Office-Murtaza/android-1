@@ -3,8 +3,8 @@ package com.batm.rest;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import com.batm.model.Error;
+import com.batm.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import com.batm.model.Response;
@@ -14,6 +14,9 @@ import com.batm.service.CoinService;
 @RestController
 @RequestMapping("/api/v1")
 public class CoinController {
+
+    @Autowired
+    private UserService userService;
 
     @Autowired
     private CoinService coinService;
@@ -64,7 +67,7 @@ public class CoinController {
     @GetMapping("/user/{userId}/coins/{coinId}/giftaddress")
     public Response getCoinAddressByUserPhone(@PathVariable String userId, @PathVariable CoinService.CoinEnum coinId, @RequestParam String phone) {
         try {
-            return Response.ok(coinService.getUserGiftAddress(coinId, phone));
+            return Response.ok(userService.getUserGiftAddress(coinId, phone));
         } catch (Exception e) {
             e.printStackTrace();
             return Response.serverError();

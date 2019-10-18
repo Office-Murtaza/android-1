@@ -17,6 +17,6 @@ public class CoinBalanceDTO {
     private String coinId;
     private String publicKey;
     private BigDecimal balance;
-    private Price price;
+    private AmountDTO price;
     private transient Integer orderIndex;
 }

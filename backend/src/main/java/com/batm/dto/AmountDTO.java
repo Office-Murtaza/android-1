@@ -13,7 +13,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class Price {
+public class AmountDTO {
 
     @JsonProperty("USD")
     private BigDecimal usd;

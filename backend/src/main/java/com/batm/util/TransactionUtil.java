@@ -7,7 +7,6 @@ import com.batm.model.TransactionType;
 import com.binance.dex.api.client.domain.TransactionPage;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
-
 import java.math.BigDecimal;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
@@ -96,11 +95,8 @@ public class TransactionUtil {
             }
 
             JSONObject txs = transactionsArray.getJSONObject(i);
-
             String transactionResult = txs.optJSONObject("meta").optString("TransactionResult");
-
-            TransactionStatus status = transactionResult.equalsIgnoreCase("tesSUCCESS") ? TransactionStatus.COMPLETE : TransactionStatus.PENDING;
-
+            TransactionStatus status = getRippledTransactionStatus(transactionResult);
             JSONObject tx = txs.optJSONObject("tx");
 
             String txId = tx.optString("hash");
@@ -145,11 +141,11 @@ public class TransactionUtil {
             Long blockTimestamp = tx.optLong("block_timestamp");
             Long amount = rowData.optLong("amount");
             String ownerAddress = Base58.toBase58(rowData.optString("owner_address")).toLowerCase();
-            String code = tx.optJSONArray("ret").getJSONObject(0).optString("code");
+            String code = tx.optJSONArray("ret").getJSONObject(0).optString("contractRet");
 
             TransactionType type = ownerAddress.equalsIgnoreCase(address) ? TransactionType.WITHDRAW : TransactionType.DEPOSIT;
             BigDecimal value = BigDecimal.valueOf(amount).divide(BigDecimal.valueOf(divider)).stripTrailingZeros();
-            TransactionStatus status = code.equalsIgnoreCase("SUCESS") ? TransactionStatus.COMPLETE : TransactionStatus.PENDING;
+            TransactionStatus status = code.equalsIgnoreCase("SUCCESS") ? TransactionStatus.COMPLETE : TransactionStatus.PENDING;
 
             Date date = new Date(blockTimestamp);
 
@@ -162,6 +158,14 @@ public class TransactionUtil {
         result.setTransactions(transactions);
 
         return result;
+    }
+
+    public static TransactionStatus getRippledTransactionStatus(String str) {
+        if (str.equalsIgnoreCase("tesSUCCESS")) {
+            return TransactionStatus.COMPLETE;
+        }
+
+        return TransactionStatus.FAIL;
     }
 
     private static BigDecimal getTransactionValue(String value, Long divider) {
