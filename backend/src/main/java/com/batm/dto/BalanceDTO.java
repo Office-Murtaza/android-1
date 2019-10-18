@@ -1,8 +1,7 @@
-package com.batm.rest.vm;
+package com.batm.dto;
 
 import java.util.List;
-import com.batm.dto.CoinBalanceDTO;
-import com.batm.dto.AmountDTO;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,11 +9,12 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
-public class CoinBalanceVM {
+@AllArgsConstructor
+@JsonInclude(JsonInclude.Include.NON_NULL)
+public class BalanceDTO {
 
     private Long userId;
-    private List<CoinBalanceDTO> coins;
     private AmountDTO totalBalance;
+    private List<CoinBalanceDTO> coins;
 }

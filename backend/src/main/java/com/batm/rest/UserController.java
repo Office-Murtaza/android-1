@@ -10,6 +10,7 @@ import com.batm.dto.AuthenticationDTO;
 import com.batm.dto.TokenDTO;
 import com.batm.repository.UserRepository;
 import com.batm.service.MessageService;
+import com.batm.util.Util;
 import net.sf.json.JSONObject;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.StringUtils;
@@ -32,14 +33,13 @@ import com.batm.entity.Unlink;
 import com.batm.entity.UpdatePhone;
 import com.batm.entity.User;
 import com.batm.repository.TokenRepository;
-import com.batm.rest.vm.ChangePasswordRequestVM;
-import com.batm.rest.vm.CheckPasswordRequestVM;
-import com.batm.rest.vm.PhoneRequestVM;
-import com.batm.rest.vm.RefreshVM;
-import com.batm.rest.vm.ValidateOTPResponse;
-import com.batm.rest.vm.ValidateOTPVM;
-import com.batm.security.jwt.JWTFilter;
-import com.batm.security.jwt.TokenProvider;
+import com.batm.dto.ChangePasswordDTO;
+import com.batm.dto.CheckPasswordDTO;
+import com.batm.dto.PhoneDTO;
+import com.batm.dto.RefreshDTO;
+import com.batm.dto.ValidateResponseDTO;
+import com.batm.dto.ValidateDTO;
+import com.batm.security.TokenProvider;
 import com.batm.service.UserService;
 import com.batm.util.Constant;
 
@@ -149,7 +149,7 @@ public class UserController {
     }
 
     @PostMapping("/user/{userId}/verify")
-    public Response verify(@RequestBody ValidateOTPVM validateOtpVM, @PathVariable Long userId) {
+    public Response verify(@RequestBody ValidateDTO validateOtpVM, @PathVariable Long userId) {
         try {
             CodeVerification codeVerification = userService.getCodeByUserId(userId);
             Instant time10MinuteAge = Instant.now().minusMillis(verificationCodeValidity);
@@ -169,7 +169,7 @@ public class UserController {
             codeVerification.setCodeStatus("1");
             userService.save(codeVerification);
 
-            return Response.ok(new ValidateOTPResponse(userId, true));
+            return Response.ok(new ValidateResponseDTO(userId, true));
         } catch (Exception e) {
             e.printStackTrace();
             return Response.serverError();
@@ -177,9 +177,9 @@ public class UserController {
     }
 
     @PostMapping("/refresh")
-    public Response refresh(@Valid @RequestBody RefreshVM refreshVM) {
+    public Response refresh(@Valid @RequestBody RefreshDTO refreshDTO) {
         try {
-            Token refreshToken = refreshTokenRepository.findByRefreshToken(refreshVM.getRefreshToken());
+            Token refreshToken = refreshTokenRepository.findByRefreshToken(refreshDTO.getRefreshToken());
 
             if (refreshToken != null) {
                 User user = userService.findById(refreshToken.getUser().getUserId());
@@ -232,7 +232,7 @@ public class UserController {
     }
 
     @PostMapping("/user/{userId}/phone")
-    public Response updatePhone(@RequestBody PhoneRequestVM phoneRequest, @PathVariable Long userId) {
+    public Response updatePhone(@RequestBody PhoneDTO phoneRequest, @PathVariable Long userId) {
         try {
             Boolean isPhoneExist = this.userService.isPhoneExist(phoneRequest.getPhone(), userId);
             if (isPhoneExist) {
@@ -250,7 +250,7 @@ public class UserController {
     }
 
     @PostMapping("/user/{userId}/phone/confirm")
-    public Response confirmPhone(@RequestBody ValidateOTPVM validateOtpVM, @PathVariable Long userId) {
+    public Response confirmPhone(@RequestBody ValidateDTO validateOtpVM, @PathVariable Long userId) {
         try {
             UpdatePhone updatePhone = userService.getUpdatePhone(userId);
             updatePhone = (UpdatePhone) Hibernate.unproxy(updatePhone);
@@ -282,7 +282,7 @@ public class UserController {
     }
 
     @PostMapping("/user/{userId}/check/password")
-    public Response checkPassword(@RequestBody CheckPasswordRequestVM checkPasswordRequest, @PathVariable Long userId) {
+    public Response checkPassword(@RequestBody CheckPasswordDTO checkPasswordRequest, @PathVariable Long userId) {
         try {
             Boolean match = Boolean.FALSE;
             User user = this.userService.findById(userId);
@@ -301,7 +301,7 @@ public class UserController {
     }
 
     @PostMapping("/user/{userId}/password")
-    public Response updatePassword(@RequestBody ChangePasswordRequestVM changePasswordRequest, @PathVariable Long userId) {
+    public Response updatePassword(@RequestBody ChangePasswordDTO changePasswordRequest, @PathVariable Long userId) {
         try {
             User user = this.userService.findById(userId);
             Boolean match = passwordEncoder.matches(changePasswordRequest.getOldPassword(), user.getPassword());
@@ -346,9 +346,9 @@ public class UserController {
         Authentication authentication = this.authenticationManager.authenticate(authenticationToken);
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String jwt = tokenProvider.createToken(authentication);
-        String refreshToken = tokenProvider.createRefreshToken();
+        String refreshToken = Util.createRefreshToken();
         HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.add(JWTFilter.AUTHORIZATION_HEADER, "Bearer " + jwt);
+        httpHeaders.add(Constant.AUTHORIZATION_HEADER, "Bearer " + jwt);
 
         return new TokenDTO(userId, identityId, jwt, System.currentTimeMillis() + expiryTime, refreshToken,
                 authentication.getAuthorities().stream().map(role -> role.getAuthority()).collect(Collectors.toList()));
@@ -360,9 +360,9 @@ public class UserController {
 
         Authentication authentication = this.authenticationManager.authenticate(authenticationToken);
         String jwt = tokenProvider.createToken(authentication);
-        String refreshToken = tokenProvider.createRefreshToken();
+        String refreshToken = Util.createRefreshToken();
         HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.add(JWTFilter.AUTHORIZATION_HEADER, "Bearer " + jwt);
+        httpHeaders.add(Constant.AUTHORIZATION_HEADER, "Bearer " + jwt);
 
         return new TokenDTO(user.getUserId(), user.getIdentity().getId(), jwt, System.currentTimeMillis() + expiryTime, refreshToken,
                 authentication.getAuthorities().stream().map(role -> role.getAuthority()).collect(Collectors.toList()));

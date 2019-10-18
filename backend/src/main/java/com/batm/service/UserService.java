@@ -8,7 +8,7 @@ import java.util.Optional;
 import com.batm.dto.GiftAddressDTO;
 import com.batm.entity.*;
 import com.batm.repository.*;
-import com.batm.rest.vm.PhoneRequestVM;
+import com.batm.dto.PhoneDTO;
 import com.batm.util.Constant;
 import com.batm.util.Util;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -115,7 +115,7 @@ public class UserService {
         return null;
     }
 
-    public UpdatePhone updatePhone(PhoneRequestVM phoneRequest, Long userId) {
+    public UpdatePhone updatePhone(PhoneDTO phoneRequest, Long userId) {
         User user = userRepository.getOne(userId);
         UpdatePhone updatePhone = user.getUpdatePhone();
         if (updatePhone == null || updatePhone.getId() == null) {

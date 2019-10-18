@@ -4,6 +4,9 @@ import java.math.BigDecimal;
 
 public class Constant {
 
+    public static final String AUTHORIZATION_HEADER = "Authorization";
+    public static final String AUTHORITIES_KEY = "auth";
+
     public static final String REGEX_PHONE = "^(\\+1)[0-9]{10}$";
     public static final String DEFAULT_CODE = "1234";
 

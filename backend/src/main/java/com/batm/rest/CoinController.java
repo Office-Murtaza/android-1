@@ -8,7 +8,7 @@ import com.batm.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import com.batm.model.Response;
-import com.batm.rest.vm.CoinVM;
+import com.batm.dto.CoinDTO;
 import com.batm.service.CoinService;
 
 @RestController
@@ -22,13 +22,13 @@ public class CoinController {
     private CoinService coinService;
 
     @PostMapping("/user/{userId}/coins/add")
-    public Response addCoins(@RequestBody CoinVM coinVM, @PathVariable Long userId) {
+    public Response addCoins(@RequestBody CoinDTO coinDTO, @PathVariable Long userId) {
         try {
-            if (coinVM == null || coinVM.getCoins().isEmpty()) {
+            if (coinDTO == null || coinDTO.getCoins().isEmpty()) {
                 return Response.error(new Error(2, "Empty coin list"));
             }
 
-            coinService.save(coinVM, userId);
+            coinService.save(coinDTO, userId);
 
             Map<String, Object> response = new HashMap<>();
             response.put("isCoinsAdded", true);
@@ -41,13 +41,13 @@ public class CoinController {
     }
 
     @PostMapping("/user/{userId}/coins/compare")
-    public Response compareCoins(@RequestBody CoinVM coinVM, @PathVariable Long userId) {
+    public Response compareCoins(@RequestBody CoinDTO coinDTO, @PathVariable Long userId) {
         try {
-            if (coinVM == null || coinVM.getCoins().isEmpty()) {
+            if (coinDTO == null || coinDTO.getCoins().isEmpty()) {
                 return Response.error(new Error(2, "Empty coin list"));
             }
 
-            return coinService.compareCoins(coinVM, userId);
+            return coinService.compareCoins(coinDTO, userId);
         } catch (Exception e) {
             e.printStackTrace();
             return Response.serverError();

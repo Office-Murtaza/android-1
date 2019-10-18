@@ -13,14 +13,13 @@ import com.batm.model.Response;
 import com.batm.model.TransactionStatus;
 import com.batm.util.*;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import com.batm.repository.CoinRepository;
-import com.batm.rest.vm.CoinBalanceVM;
-import com.batm.rest.vm.CoinVM;
+import com.batm.dto.BalanceDTO;
+import com.batm.dto.CoinDTO;
 import com.binance.api.client.BinanceApiRestClient;
 
 @Slf4j
@@ -538,38 +537,38 @@ public class CoinService {
         return coin.getTransactions(address, startIndex, Constant.TRANSACTION_LIMIT);
     }
 
-    public CoinBalanceVM getCoinsBalance(Long userId, List<String> coins) {
+    public BalanceDTO getCoinsBalance(Long userId, List<String> coins) {
         if (coins == null || coins.isEmpty()) {
-            return new CoinBalanceVM(userId, new ArrayList<>(), new AmountDTO(BigDecimal.ZERO));
+            return new BalanceDTO(userId, new AmountDTO(BigDecimal.ZERO), new ArrayList<>());
         }
 
         List<UserCoin> userCoins = userService.getUserCoins(userId);
 
-        List<CompletableFuture<CoinBalanceDTO>> futures = userCoins.stream()
+        List<CompletableFuture<com.batm.dto.CoinBalanceDTO>> futures = userCoins.stream()
                 .filter(it -> coins.contains(it.getCoin().getId()))
                 .map(dto -> callAsync(dto))
                 .collect(Collectors.toList());
 
-        List<CoinBalanceDTO> balances = futures.stream()
+        List<com.batm.dto.CoinBalanceDTO> balances = futures.stream()
                 .map(CompletableFuture::join)
-                .sorted(Comparator.comparing(CoinBalanceDTO::getOrderIndex))
+                .sorted(Comparator.comparing(com.batm.dto.CoinBalanceDTO::getOrderIndex))
                 .collect(Collectors.toList());
 
         BigDecimal totalBalance = balances.stream()
                 .map(it -> it.getPrice().getUsd().multiply(it.getBalance()))
                 .reduce(BigDecimal.ZERO, BigDecimal::add).setScale(2, RoundingMode.DOWN);
 
-        return new CoinBalanceVM(userId, balances, new AmountDTO(totalBalance));
+        return new BalanceDTO(userId, new AmountDTO(totalBalance), balances);
     }
 
-    private CompletableFuture<CoinBalanceDTO> callAsync(UserCoin userCoin) {
+    private CompletableFuture<com.batm.dto.CoinBalanceDTO> callAsync(UserCoin userCoin) {
         return CompletableFuture.supplyAsync(() -> {
             CoinEnum coinEnum = CoinEnum.valueOf(userCoin.getCoin().getId());
 
             BigDecimal coinPrice = coinEnum.getPrice();
             BigDecimal coinBalance = coinEnum.getBalance(userCoin.getPublicKey());
 
-            return new CoinBalanceDTO(userCoin.getCoin().getId(), userCoin.getPublicKey(), coinBalance, new AmountDTO(coinPrice), userCoin.getCoin().getOrderIndex());
+            return new com.batm.dto.CoinBalanceDTO(userCoin.getCoin().getId(), userCoin.getPublicKey(), coinBalance, new AmountDTO(coinPrice), userCoin.getCoin().getOrderIndex());
         });
     }
 
@@ -577,7 +576,7 @@ public class CoinService {
         return coins.stream().filter(e -> e.getId().equalsIgnoreCase(coinId)).findFirst().get();
     }
 
-    public void save(CoinVM coinVM, Long userId) {
+    public void save(CoinDTO coinVM, Long userId) {
         User user = userService.findById(userId);
         List<Coin> coins = coinRepository.findAll();
         List<UserCoin> userCoins = userService.getUserCoins(userId);
@@ -596,10 +595,10 @@ public class CoinService {
         userService.save(newCoins);
     }
 
-    public Response compareCoins(CoinVM coinVM, Long userId) {
+    public Response compareCoins(CoinDTO coinDTO, Long userId) {
         List<UserCoin> userCoins = userService.getUserCoins(userId);
 
-        for (UserCoinDTO userCoin : coinVM.getCoins()) {
+        for (UserCoinDTO userCoin : coinDTO.getCoins()) {
             UserCoin tempUserCoin = new UserCoin(userCoin.getCoinCode());
             int index = userCoins.indexOf(tempUserCoin);
             if (index < 0) {
