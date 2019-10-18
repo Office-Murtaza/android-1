@@ -150,69 +150,6 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
-
-            <plugin>
-                <groupId>org.liquibase</groupId>
-                <artifactId>liquibase-maven-plugin</artifactId>
-                <version>${liquibase.version}</version>
-                <configuration>
-                    <changeLogFile>${project.basedir}/src/main/resources/db/changelog/changelog-master.xml
-                    </changeLogFile>
-                    <diffChangeLogFile>
-                        ${project.basedir}/src/main/resources/config/liquibase/changelog/${maven.build.timestamp}_changelog.xml
-                    </diffChangeLogFile>
-                    <driver>com.mysql.cj.jdbc.Driver</driver>
-                    <url>jdbc:mysql://206.189.204.44:3306/batm</url>
-                    <defaultSchemaName>nusape</defaultSchemaName>
-                    <username>belcobtm</username>
-                    <password>abc123456</password>
-                    <verbose>true</verbose>
-                    <logging>debug</logging>
-                    <contexts>!test</contexts>
-                </configuration>
-                <dependencies>
-                    <dependency>
-                        <groupId>org.hibernate</groupId>
-                        <artifactId>hibernate-core</artifactId>
-                        <version>${hibernate-core.version}</version>
-                    </dependency>
-                    <dependency>
-                        <groupId>org.javassist</groupId>
-                        <artifactId>javassist</artifactId>
-                        <version>${javassist.version}</version>
-                    </dependency>
-                    <dependency>
-                        <groupId>org.liquibase.ext</groupId>
-                        <artifactId>liquibase-hibernate5</artifactId>
-                        <version>${liquibase-hibernate5.version}</version>
-                    </dependency>
-                    <dependency>
-                        <groupId>org.springframework.boot</groupId>
-                        <artifactId>spring-boot-starter-data-jpa</artifactId>
-                        <version>${spring-boot.version}</version>
-                    </dependency>
-                    <dependency>
-                        <groupId>javax.validation</groupId>
-                        <artifactId>validation-api</artifactId>
-                        <version>${validation-api.version}</version>
-                    </dependency>
-                    <dependency>
-                        <groupId>org.springframework</groupId>
-                        <artifactId>spring-core</artifactId>
-                        <version>${spring.version}</version>
-                    </dependency>
-                    <dependency>
-                        <groupId>org.springframework</groupId>
-                        <artifactId>spring-context</artifactId>
-                        <version>${spring.version}</version>
-                    </dependency>
-                    <dependency>
-                        <groupId>org.springframework</groupId>
-                        <artifactId>spring-beans</artifactId>
-                        <version>${spring.version}</version>
-                    </dependency>
-                </dependencies>
-            </plugin>
         </plugins>
     </build>
 
