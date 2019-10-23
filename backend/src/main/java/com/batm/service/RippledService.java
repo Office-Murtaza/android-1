@@ -6,6 +6,7 @@ import com.batm.dto.TransactionResponseDTO;
 import com.batm.model.TransactionStatus;
 import com.batm.util.Constant;
 import com.batm.util.TransactionUtil;
+import com.batm.util.Util;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +14,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 
 @Service
 public class RippledService {
@@ -39,7 +39,7 @@ public class RippledService {
             JSONObject res = rest.postForObject(url, req, JSONObject.class);
             String balance = res.getJSONObject("result").getJSONObject("account_data").getString("Balance");
 
-            return new BigDecimal(balance).divide(BigDecimal.valueOf(Constant.XRP_DIVIDER)).setScale(2, RoundingMode.DOWN);
+            return Util.format(new BigDecimal(balance).divide(BigDecimal.valueOf(Constant.XRP_DIVIDER)), 2);
         } catch (Exception e) {
             e.printStackTrace();
         }

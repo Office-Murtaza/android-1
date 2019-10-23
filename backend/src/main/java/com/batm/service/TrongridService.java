@@ -6,6 +6,7 @@ import com.batm.dto.TransactionResponseDTO;
 import com.batm.model.TransactionStatus;
 import com.batm.util.Constant;
 import com.batm.util.TransactionUtil;
+import com.batm.util.Util;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +14,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 
 @Service
 public class TrongridService {
@@ -30,9 +30,8 @@ public class TrongridService {
             JSONArray data = res.getJSONArray("data");
 
             if (!data.isEmpty()) {
-                return new BigDecimal(data.getJSONObject(0).getString("balance"))
-                        .divide(BigDecimal.valueOf(Constant.TRX_DIVIDER))
-                        .setScale(5, RoundingMode.DOWN);
+                return Util.format(new BigDecimal(data.getJSONObject(0).getString("balance"))
+                        .divide(BigDecimal.valueOf(Constant.TRX_DIVIDER)), 5);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -45,7 +44,7 @@ public class TrongridService {
         try {
             JSONObject res = JSONObject.fromObject(rest.postForObject(url + "/wallet/broadcasttransaction", transaction.getTrx(), String.class));
 
-            if(res.optBoolean("result")) {
+            if (res.optBoolean("result")) {
                 return transaction.getTrx().optString("txID");
             }
         } catch (Exception e) {

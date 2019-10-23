@@ -104,7 +104,7 @@
     <changeSet id="15" author="Kostya" failOnError="false">
         <sqlFile encoding="utf8"
                  endDelimiter=";"
-                 path="db/update/add_user_it_to_identity.sql"
+                 path="db/update/add_user_id_to_identity.sql"
                  splitStatements="true"
                  stripComments="true"/>
     </changeSet>

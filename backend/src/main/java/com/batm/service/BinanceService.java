@@ -5,6 +5,7 @@ import com.batm.dto.SubmitTransactionDTO;
 import com.batm.dto.TransactionResponseDTO;
 import com.batm.model.TransactionStatus;
 import com.batm.util.TransactionUtil;
+import com.batm.util.Util;
 import com.binance.dex.api.client.BinanceDexApiRestClient;
 import com.binance.dex.api.client.domain.Account;
 import com.binance.dex.api.client.domain.TransactionMetadata;
@@ -20,7 +21,6 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
@@ -39,13 +39,13 @@ public class BinanceService {
 
     public BigDecimal getBalance(String address) {
         try {
-            return binanceDex
+            return Util.format(binanceDex
                     .getAccount(address)
                     .getBalances()
                     .stream()
                     .filter(e -> "BNB".equals(e.getSymbol()))
                     .map(it -> new BigDecimal(it.getFree()).add(new BigDecimal(it.getLocked())))
-                    .reduce(BigDecimal.ZERO, BigDecimal::add).setScale(5, RoundingMode.DOWN);
+                    .reduce(BigDecimal.ZERO, BigDecimal::add), 5);
         } catch (Exception e) {
             e.printStackTrace();
         }

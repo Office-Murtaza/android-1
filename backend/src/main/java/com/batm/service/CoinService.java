@@ -1,11 +1,9 @@
 package com.batm.service;
 
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
-
 import com.batm.dto.*;
 import com.batm.entity.*;
 import com.batm.model.Error;
@@ -554,9 +552,9 @@ public class CoinService {
                 .sorted(Comparator.comparing(com.batm.dto.CoinBalanceDTO::getOrderIndex))
                 .collect(Collectors.toList());
 
-        BigDecimal totalBalance = balances.stream()
+        BigDecimal totalBalance = Util.format(balances.stream()
                 .map(it -> it.getPrice().getUsd().multiply(it.getBalance()))
-                .reduce(BigDecimal.ZERO, BigDecimal::add).setScale(2, RoundingMode.DOWN);
+                .reduce(BigDecimal.ZERO, BigDecimal::add), 2);
 
         return new BalanceDTO(userId, new AmountDTO(totalBalance), balances);
     }

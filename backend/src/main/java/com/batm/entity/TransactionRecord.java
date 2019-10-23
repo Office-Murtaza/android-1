@@ -15,7 +15,7 @@ import java.util.Date;
 @Entity
 @Table(name = "transactionrecord")
 public class TransactionRecord {
-
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -201,6 +201,8 @@ public class TransactionRecord {
             scale = 10
     )
     private BigDecimal expectedProfitValue;
+
+    private Boolean tracked;
 
     @Column(name = "ratesourceprice", precision = 20, scale = 10)
     private BigDecimal rateSourcePrice;

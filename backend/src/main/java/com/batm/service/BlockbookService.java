@@ -2,6 +2,7 @@ package com.batm.service;
 
 import com.batm.dto.*;
 import com.batm.util.TransactionUtil;
+import com.batm.util.Util;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.apache.commons.lang.RandomStringUtils;
@@ -9,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 
 @Service
 public class BlockbookService {
@@ -21,7 +21,7 @@ public class BlockbookService {
         try {
             JSONObject res = rest.getForObject(url + "/api/v2/address/" + address + "?details=basic", JSONObject.class);
 
-            return new BigDecimal(res.getString("balance")).divide(BigDecimal.valueOf(divider)).setScale(5, RoundingMode.DOWN);
+            return Util.format(new BigDecimal(res.getString("balance")).divide(BigDecimal.valueOf(divider)), 5);
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -1,22 +1,32 @@
 package com.batm.service;
 
+import com.batm.dto.AmountDTO;
 import com.batm.dto.SubmitTransactionDTO;
+import com.batm.dto.UserLimitDTO;
 import com.batm.entity.Coin;
 import com.batm.entity.Identity;
 import com.batm.entity.TransactionRecordGift;
+import com.batm.entity.User;
 import com.batm.model.TransactionStatus;
 import com.batm.model.TransactionType;
 import com.batm.repository.TransactionRecordGiftRepository;
+import com.batm.repository.TransactionRecordRepository;
 import com.batm.util.Constant;
+import com.batm.util.Util;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
 public class TransactionService {
+
+    @Autowired
+    private TransactionRecordRepository transactionRecordRepository;
 
     @Autowired
     private TransactionRecordGiftRepository transactionRecordGiftRepository;
@@ -43,6 +53,30 @@ public class TransactionService {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public UserLimitDTO getUserTransactionLimits(Long userId) {
+        UserLimitDTO dto = new UserLimitDTO();
+        dto.setDailyLimit(new AmountDTO(BigDecimal.ZERO));
+        dto.setTxLimit(new AmountDTO(BigDecimal.ZERO));
+
+        try {
+            User user = userService.findById(userId);
+            BigDecimal txAmount = transactionRecordRepository.getTransactionsSumByDate(user.getIdentity(), Util.getStartDate(), new Date());
+            BigDecimal dailyLimit = user.getIdentity().getLimitCashPerDay().get(0).getAmount();
+            BigDecimal txLimit = user.getIdentity().getLimitCashPerTransaction().get(0).getAmount();
+
+            if (txAmount != null) {
+                dailyLimit.subtract(txAmount);
+            }
+
+            dto.setDailyLimit(new AmountDTO(Util.format(dailyLimit, 2)));
+            dto.setTxLimit(new AmountDTO(Util.format(txLimit, 2)));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return dto;
     }
 
     @Scheduled(fixedDelay = 1200_000)
