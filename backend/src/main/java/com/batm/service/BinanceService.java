@@ -4,6 +4,8 @@ import com.batm.dto.CurrentAccountDTO;
 import com.batm.dto.SubmitTransactionDTO;
 import com.batm.dto.TransactionDTO;
 import com.batm.dto.TransactionListDTO;
+import com.batm.entity.TransactionRecord;
+import com.batm.entity.TransactionRecordGift;
 import com.batm.model.TransactionStatus;
 import com.batm.util.Constant;
 import com.batm.util.Util;
@@ -23,9 +25,7 @@ import org.springframework.web.client.RestTemplate;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.time.ZonedDateTime;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 @Service
@@ -93,11 +93,14 @@ public class BinanceService {
             JSONObject res = rest.getForObject(nodeUrl + "/api/v1/tx/" + txId + "?format=json", JSONObject.class);
             JSONObject msg = res.optJSONObject("tx").optJSONObject("value").optJSONArray("msg").getJSONObject(0);
 
+            dto.setTxId(txId);
+            dto.setLink(explorerUrl + "/" + txId);
             dto.setFromAddress(msg.optJSONObject("value").optJSONArray("inputs").getJSONObject(0).optString("address"));
             dto.setToAddress(msg.optJSONObject("value").optJSONArray("outputs").getJSONObject(0).optString("address"));
             dto.setType(com.batm.model.TransactionType.getType(dto.getFromAddress(), dto.getToAddress(), address));
             dto.setStatus(getStatus(res.getInt("code")));
             dto.setCryptoAmount(getAmount(msg.optJSONObject("value").optJSONArray("inputs").getJSONObject(0).getJSONArray("coins").getJSONObject(0).optString("amount")));
+            dto.setCryptoFee(getAmount("1000000"));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -105,7 +108,7 @@ public class BinanceService {
         return dto;
     }
 
-    public TransactionListDTO getTransactionList(String address, Integer startIndex, Integer limit) {
+    public TransactionListDTO getTransactionList(String address, Integer startIndex, Integer limit, List<TransactionRecordGift> gifts, List<TransactionRecord> txs) {
         TransactionListDTO result = new TransactionListDTO();
 
         try {
@@ -118,8 +121,9 @@ public class BinanceService {
             request.setLimit(1000);
 
             TransactionPage page = binanceDex.getTransactions(request);
+            Map<String, TransactionDTO> map = collectNodeTxs(page, address);
 
-            return build(page, address, startIndex, limit);
+            return Util.buildTxs(map, startIndex, limit, gifts, txs);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -139,15 +143,10 @@ public class BinanceService {
         return new CurrentAccountDTO();
     }
 
-    private TransactionListDTO build(TransactionPage page, String address, Integer startIndex, Integer limit) {
-        TransactionListDTO result = new TransactionListDTO();
-        List<TransactionDTO> transactions = new ArrayList<>();
+    private Map<String, TransactionDTO> collectNodeTxs(TransactionPage page, String address) {
+        Map<String, TransactionDTO> map = new HashMap<>();
 
         for (int i = 0; i < page.getTx().size(); i++) {
-            if ((i + 1 < startIndex)) {
-                continue;
-            }
-
             com.binance.dex.api.client.domain.Transaction tx = page.getTx().get(i);
 
             String txId = tx.getTxHash();
@@ -156,17 +155,10 @@ public class BinanceService {
             TransactionStatus status = getStatus(tx.getCode());
             Date date1 = Date.from(ZonedDateTime.parse(tx.getTimeStamp()).toInstant());
 
-            transactions.add(new TransactionDTO(startIndex + i, txId, amount, type, status, date1));
-
-            if ((startIndex + limit) == (i + 1)) {
-                break;
-            }
+            map.put(txId, new TransactionDTO(txId, amount, type, status, date1));
         }
 
-        result.setTotal(page.getTotal().intValue());
-        result.setTransactions(transactions);
-
-        return result;
+        return map;
     }
 
     private TransactionStatus getStatus(int code) {

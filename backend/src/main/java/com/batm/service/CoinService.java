@@ -108,8 +108,8 @@ public class CoinService {
             }
 
             @Override
-            public TransactionListDTO getTransactionList(String address, Integer startIndex, Integer limit) {
-                return blockbook.getTransactionList(btcNodeUrl, address, Constant.BTC_DIVIDER, startIndex, limit);
+            public TransactionListDTO getTransactionList(String address, Integer startIndex, Integer limit, List<TransactionRecordGift> gifts, List<TransactionRecord> txs) {
+                return blockbook.getTransactionList(btcNodeUrl, address, Constant.BTC_DIVIDER, startIndex, limit, gifts, txs);
             }
 
             @Override
@@ -142,7 +142,7 @@ public class CoinService {
                 String txId = blockbook.submitTransaction(btcNodeUrl, transaction);
 
                 if (StringUtils.isNotEmpty(txId) && com.batm.model.TransactionType.SEND_GIFT.getValue() == transaction.getType()) {
-                    processGiftTransaction(userId, this, transaction, txId);
+                    saveGift(userId, this, txId, transaction);
                 }
 
                 return txId;
@@ -179,8 +179,8 @@ public class CoinService {
             }
 
             @Override
-            public TransactionListDTO getTransactionList(String address, Integer startIndex, Integer limit) {
-                return blockbook.getTransactionList(ethNodeUrl, address, Constant.ETH_DIVIDER, startIndex, limit);
+            public TransactionListDTO getTransactionList(String address, Integer startIndex, Integer limit, List<TransactionRecordGift> gifts, List<TransactionRecord> txs) {
+                return blockbook.getTransactionList(ethNodeUrl, address, Constant.ETH_DIVIDER, startIndex, limit, gifts, txs);
             }
 
             @Override
@@ -213,7 +213,7 @@ public class CoinService {
                 String txId = blockbook.submitTransaction(ethNodeUrl, transaction);
 
                 if (StringUtils.isNotEmpty(txId) && com.batm.model.TransactionType.SEND_GIFT.getValue() == transaction.getType()) {
-                    processGiftTransaction(userId, this, transaction, txId);
+                    saveGift(userId, this, txId, transaction);
                 }
 
                 return txId;
@@ -250,8 +250,8 @@ public class CoinService {
             }
 
             @Override
-            public TransactionListDTO getTransactionList(String address, Integer startIndex, Integer limit) {
-                return blockbook.getTransactionList(bchNodeUrl, address, Constant.BCH_DIVIDER, startIndex, limit);
+            public TransactionListDTO getTransactionList(String address, Integer startIndex, Integer limit, List<TransactionRecordGift> gifts, List<TransactionRecord> txs) {
+                return blockbook.getTransactionList(bchNodeUrl, address, Constant.BCH_DIVIDER, startIndex, limit, gifts, txs);
             }
 
             @Override
@@ -284,7 +284,7 @@ public class CoinService {
                 String txId = blockbook.submitTransaction(bchNodeUrl, transaction);
 
                 if (StringUtils.isNotEmpty(txId) && com.batm.model.TransactionType.SEND_GIFT.getValue() == transaction.getType()) {
-                    processGiftTransaction(userId, this, transaction, txId);
+                    saveGift(userId, this, txId, transaction);
                 }
 
                 return txId;
@@ -321,8 +321,8 @@ public class CoinService {
             }
 
             @Override
-            public TransactionListDTO getTransactionList(String address, Integer startIndex, Integer limit) {
-                return blockbook.getTransactionList(ltcNodeUrl, address, Constant.LTC_DIVIDER, startIndex, limit);
+            public TransactionListDTO getTransactionList(String address, Integer startIndex, Integer limit, List<TransactionRecordGift> gifts, List<TransactionRecord> txs) {
+                return blockbook.getTransactionList(ltcNodeUrl, address, Constant.LTC_DIVIDER, startIndex, limit, gifts, txs);
             }
 
             @Override
@@ -355,7 +355,7 @@ public class CoinService {
                 String txId = blockbook.submitTransaction(ltcNodeUrl, transaction);
 
                 if (StringUtils.isNotEmpty(txId) && com.batm.model.TransactionType.SEND_GIFT.getValue() == transaction.getType()) {
-                    processGiftTransaction(userId, this, transaction, txId);
+                    saveGift(userId, this, txId, transaction);
                 }
 
                 return txId;
@@ -393,8 +393,8 @@ public class CoinService {
             }
 
             @Override
-            public TransactionListDTO getTransactionList(String address, Integer startIndex, Integer limit) {
-                return binance.getTransactionList(address, startIndex, limit);
+            public TransactionListDTO getTransactionList(String address, Integer startIndex, Integer limit, List<TransactionRecordGift> gifts, List<TransactionRecord> txs) {
+                return binance.getTransactionList(address, startIndex, limit, gifts, txs);
             }
 
             @Override
@@ -427,7 +427,7 @@ public class CoinService {
                 String txId = binance.submitTransaction(transaction);
 
                 if (StringUtils.isNotEmpty(txId) && com.batm.model.TransactionType.SEND_GIFT.getValue() == transaction.getType()) {
-                    processGiftTransaction(userId, this, transaction, txId);
+                    saveGift(userId, this, txId, transaction);
                 }
 
                 return txId;
@@ -465,8 +465,8 @@ public class CoinService {
             }
 
             @Override
-            public TransactionListDTO getTransactionList(String address, Integer startIndex, Integer limit) {
-                return rippled.getTransactionList(address, startIndex, limit);
+            public TransactionListDTO getTransactionList(String address, Integer startIndex, Integer limit, List<TransactionRecordGift> gifts, List<TransactionRecord> txs) {
+                return rippled.getTransactionList(address, startIndex, limit, gifts, txs);
             }
 
             @Override
@@ -499,7 +499,7 @@ public class CoinService {
                 String txId = rippled.submitTransaction(transaction);
 
                 if (StringUtils.isNotEmpty(txId) && com.batm.model.TransactionType.SEND_GIFT.getValue() == transaction.getType()) {
-                    processGiftTransaction(userId, this, transaction, txId);
+                    saveGift(userId, this, txId, transaction);
                 }
 
                 return txId;
@@ -537,8 +537,8 @@ public class CoinService {
             }
 
             @Override
-            public TransactionListDTO getTransactionList(String address, Integer startIndex, Integer limit) {
-                return trongrid.getTransactionList(address, startIndex, limit);
+            public TransactionListDTO getTransactionList(String address, Integer startIndex, Integer limit, List<TransactionRecordGift> gifts, List<TransactionRecord> txs) {
+                return trongrid.getTransactionList(address, startIndex, limit, gifts, txs);
             }
 
             @Override
@@ -571,7 +571,7 @@ public class CoinService {
                 String txId = trongrid.submitTransaction(transaction);
 
                 if (StringUtils.isNotEmpty(txId) && com.batm.model.TransactionType.SEND_GIFT.getValue() == transaction.getType()) {
-                    processGiftTransaction(userId, this, transaction, txId);
+                    saveGift(userId, this, txId, transaction);
                 }
 
                 return txId;
@@ -590,7 +590,7 @@ public class CoinService {
 
         public abstract TransactionDTO getTransaction(String txId, String address);
 
-        public abstract TransactionListDTO getTransactionList(String address, Integer startIndex, Integer limit);
+        public abstract TransactionListDTO getTransactionList(String address, Integer startIndex, Integer limit, List<TransactionRecordGift> gifts, List<TransactionRecord> txs);
 
         public abstract UtxoDTO getUTXO(String xpub);
 
@@ -615,24 +615,23 @@ public class CoinService {
 
         if (txGift != null) {
             dto.setImageId(txGift.getImage());
-            dto.setImageId(txGift.getMessage());
-            dto.setType(dto.getType() == TransactionType.WITHDRAW ? TransactionType.SEND_GIFT : TransactionType.RECEIVE_GIFT);
+            dto.setMessage(txGift.getMessage());
+            dto.setType(TransactionType.getGiftType(dto.getType()));
         } else if (txRecord != null) {
             dto.setSellInfo(coin.getName() + ":" + txRecord.getCryptoAddress() + "?" + txRecord.getCryptoAmount() + "&" + txRecord.getRemoteTransactionId() + "&" + txRecord.getUuid());
-
-            if (dto.getType() == null) {
-                dto.setType(TransactionType.SELL_FAW);
-            } else {
-                dto.setType(dto.getType() == TransactionType.WITHDRAW ? TransactionType.SELL : TransactionType.BUY);
-            }
+            dto.setType(TransactionType.getTxType(dto.getType()));
         }
 
         return dto;
     }
 
     public TransactionListDTO getTransactions(Long userId, CoinEnum coin, Integer startIndex) {
-        String address = userService.getUserCoin(userId, coin.name()).getPublicKey();
-        return coin.getTransactionList(address, startIndex, Constant.TRANSACTION_LIMIT);
+        User user = userService.findById(userId);
+        String address = user.getCoinAddress(coin.name());
+        List<TransactionRecordGift> gifts = user.getIdentity().getTxGiftList(coin.name());
+        List<TransactionRecord> txs = user.getIdentity().getTxRecordList(coin.name());
+
+        return coin.getTransactionList(address, startIndex, Constant.TRANSACTION_LIMIT, gifts, txs);
     }
 
     public BalanceDTO getCoinsBalance(Long userId, List<String> coins) {
@@ -716,13 +715,12 @@ public class CoinService {
         return Response.ok(response);
     }
 
-    public static void processGiftTransaction(Long userId, CoinEnum coinId, SubmitTransactionDTO dto, String txId) {
-        Identity sender = userService.findById(userId).getIdentity();
-        Coin coin = userService.getUserCoin(userId, coinId.name()).getCoin();
+    public static void saveGift(Long userId, CoinEnum coinId, String txId, SubmitTransactionDTO dto) {
+        User user = userService.findById(userId);
 
         Optional<User> receiver = userService.findByPhone(dto.getPhone());
         messageService.sendGiftMessage(coinId, dto, receiver.isPresent());
 
-        transactionService.saveGift(sender, txId, coin, dto, receiver.isPresent());
+        transactionService.saveGift(user.getIdentity(), txId, user.getCoin(coinId.name()), dto, receiver.isPresent());
     }
 }

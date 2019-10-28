@@ -4,6 +4,8 @@ import com.batm.dto.CurrentBlockDTO;
 import com.batm.dto.SubmitTransactionDTO;
 import com.batm.dto.TransactionDTO;
 import com.batm.dto.TransactionListDTO;
+import com.batm.entity.TransactionRecord;
+import com.batm.entity.TransactionRecordGift;
 import com.batm.model.TransactionStatus;
 import com.batm.model.TransactionType;
 import com.batm.util.Base58;
@@ -17,9 +19,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class TrongridService {
@@ -109,13 +109,15 @@ public class TrongridService {
         return dto;
     }
 
-    public TransactionListDTO getTransactionList(String address, Integer startIndex, Integer limit) {
+    public TransactionListDTO getTransactionList(String address, Integer startIndex, Integer limit, List<TransactionRecordGift> gifts, List<TransactionRecord> txs) {
         try {
             JSONObject res = rest.getForObject(nodeUrl + "/v1/accounts/" + address + "/transactions?limit=200", JSONObject.class);
             JSONArray array = res.optJSONArray("data");
 
             if (array != null && !array.isEmpty()) {
-                return build(array, address, startIndex, limit);
+                Map<String, TransactionDTO> map = collectNodeTxs(array, address);
+
+                return Util.buildTxs(map, startIndex, limit, gifts, txs);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -137,13 +139,8 @@ public class TrongridService {
         return new CurrentBlockDTO();
     }
 
-    private TransactionListDTO build(JSONArray transactionsArray, String address, Integer startIndex, Integer limit) {
-        TransactionListDTO result = new TransactionListDTO();
-
-        List<TransactionDTO> transactions = new ArrayList<>();
-
-        int count = 0;
-        int k = 0;
+    private Map<String, TransactionDTO> collectNodeTxs(JSONArray transactionsArray, String address) {
+        Map<String, TransactionDTO> map = new HashMap<>();
 
         for (int i = 0; i < transactionsArray.size(); i++) {
             JSONObject tx = transactionsArray.getJSONObject(i);
@@ -151,12 +148,6 @@ public class TrongridService {
             JSONObject row = tx.optJSONObject("raw_data").optJSONArray("contract").getJSONObject(0).getJSONObject("parameter").optJSONObject("value");
 
             if (row.containsKey("asset_name")) {
-                continue;
-            }
-
-            count++;
-
-            if ((i + 1 < startIndex) || ((startIndex + limit) == (i + 1))) {
                 continue;
             }
 
@@ -169,15 +160,10 @@ public class TrongridService {
             TransactionStatus status = getStatus(contractRet);
             Date date1 = new Date(tx.optJSONObject("raw_data").optLong("timestamp"));
 
-            transactions.add(new TransactionDTO(startIndex + k, txId, amount, type, status, date1));
-
-            k++;
+            map.put(txId, new TransactionDTO(txId, amount, type, status, date1));
         }
 
-        result.setTotal(count);
-        result.setTransactions(transactions);
-
-        return result;
+        return map;
     }
 
     private TransactionStatus getStatus(String str) {

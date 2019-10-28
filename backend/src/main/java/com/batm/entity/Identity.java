@@ -6,11 +6,11 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
-
 import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Getter
 @Setter
@@ -193,9 +193,19 @@ public class Identity {
     }
 
     @Transient
+    public List<TransactionRecord> getTxRecordList(String coinId) {
+        return transactionRecords.stream().filter(e -> e.getCryptoCurrency().equalsIgnoreCase(coinId)).collect(Collectors.toList());
+    }
+
+    @Transient
     public TransactionRecordGift getTxGift(String txId, String coinId) {
         Optional<TransactionRecordGift> first = transactionRecordGifts.stream().filter(e -> e.getTxId().equalsIgnoreCase(txId) && e.getCoin().getId().equalsIgnoreCase(coinId)).findFirst();
 
         return first.isPresent() ? first.get() : null;
+    }
+
+    @Transient
+    public List<TransactionRecordGift> getTxGiftList(String coinId) {
+        return transactionRecordGifts.stream().filter(e -> e.getCoin().getId().equalsIgnoreCase(coinId)).collect(Collectors.toList());
     }
 }

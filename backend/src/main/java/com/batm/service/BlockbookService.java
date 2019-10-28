@@ -1,7 +1,10 @@
 package com.batm.service;
 
 import com.batm.dto.*;
-import com.batm.util.TransactionUtil;
+import com.batm.entity.TransactionRecord;
+import com.batm.entity.TransactionRecordGift;
+import com.batm.model.TransactionStatus;
+import com.batm.model.TransactionType;
 import com.batm.util.Util;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -10,6 +13,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import java.math.BigDecimal;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Service
 public class BlockbookService {
@@ -71,13 +78,15 @@ public class BlockbookService {
         return new NonceDTO();
     }
 
-    public TransactionListDTO getTransactionList(String url, String address, BigDecimal divider, Integer startIndex, Integer limit) {
+    public TransactionListDTO getTransactionList(String url, String address, BigDecimal divider, Integer startIndex, Integer limit, List<TransactionRecordGift> gifts, List<TransactionRecord> txs) {
         try {
             JSONObject res = rest.getForObject(url + "/api/v2/address/" + address + "?details=txs&pageSize=1000&page=1", JSONObject.class);
             JSONArray array = res.optJSONArray("transactions");
 
             if (array != null && !array.isEmpty()) {
-                return TransactionUtil.composeBlockbook(res.optInt("txs"), array, address, divider, startIndex, limit);
+                Map<String, TransactionDTO> map = collectNodeTxs(array, address, divider);
+
+                return Util.buildTxs(map, startIndex, limit, gifts, txs);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -106,6 +115,55 @@ public class BlockbookService {
             }
         } catch (Exception e) {
             e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    private Map<String, TransactionDTO> collectNodeTxs(JSONArray array, String address, BigDecimal divider) {
+        Map<String, TransactionDTO> map = new HashMap<>();
+
+        for (int i = 0; i < array.size(); i++) {
+            JSONObject json = array.getJSONObject(i);
+            JSONArray vinArray = json.optJSONArray("vin");
+            JSONArray voutArray = json.optJSONArray("vout");
+
+            String txId = json.optString("txid");
+            TransactionType type = getType(address, vinArray);
+            BigDecimal amount = Util.format5(getAmount(type, address, voutArray, divider));
+            TransactionStatus status = getStatus(json.optInt("confirmations"));
+            Date date1 = new Date(json.optLong("blockTime") * 1000);
+
+            map.put(txId, new TransactionDTO(txId, amount, type, status, date1));
+        }
+
+        return map;
+    }
+
+    private TransactionStatus getStatus(Integer confirmations) {
+        return (confirmations == null || confirmations < 3) ? TransactionStatus.PENDING : TransactionStatus.COMPLETE;
+    }
+
+    private BigDecimal getAmount(TransactionType type, String address, JSONArray array, BigDecimal divider) {
+        for (int i = 0; i < array.size(); i++) {
+            JSONObject json = array.getJSONObject(i);
+
+            if ((type == TransactionType.WITHDRAW && !json.optJSONArray("addresses").toString().toLowerCase().contains(address.toLowerCase())) ||
+                    (type == TransactionType.DEPOSIT && json.optJSONArray("addresses").toString().toLowerCase().contains(address.toLowerCase()))) {
+
+                return new BigDecimal(json.optString("value")).divide(divider).stripTrailingZeros();
+            }
+        }
+
+        return null;
+    }
+
+    private TransactionType getType(String address, JSONArray array) {
+        for (int i = 0; i < array.size(); i++) {
+            JSONObject json = array.getJSONObject(i);
+
+            return json.optJSONArray("addresses").toString().toLowerCase().contains(address.toLowerCase()) ? TransactionType.WITHDRAW : TransactionType.DEPOSIT;
+
         }
 
         return null;

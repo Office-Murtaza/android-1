@@ -18,9 +18,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class RippledService {
@@ -158,7 +156,7 @@ public class RippledService {
         return dto;
     }
 
-    public TransactionListDTO getTransactionList(String address, Integer startIndex, Integer limit) {
+    public TransactionListDTO getTransactionList(String address, Integer startIndex, Integer limit, List<TransactionRecordGift> gifts, List<TransactionRecord> txs) {
         try {
             JSONObject param = new JSONObject();
             param.put("account", address);
@@ -176,7 +174,9 @@ public class RippledService {
             JSONArray array = jsonResult.optJSONArray("transactions");
 
             if (array != null && !array.isEmpty()) {
-                return build(array, address, startIndex, limit);
+                Map<String, TransactionDTO> map = collectNodeTxs(array, address);
+
+                return Util.buildTxs(map, startIndex, limit, gifts, txs);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -185,20 +185,10 @@ public class RippledService {
         return new TransactionListDTO();
     }
 
-    private TransactionListDTO build(JSONArray transactionsArray, String address, Integer startIndex, Integer limit) {
-        TransactionListDTO result = new TransactionListDTO();
-        List<TransactionDTO> transactions = new ArrayList<>();
-
-        int count = 0;
-        int k = 0;
+    private Map<String, TransactionDTO> collectNodeTxs(JSONArray transactionsArray, String address) {
+        Map<String, TransactionDTO> map = new HashMap<>();
 
         for (int i = 0; i < transactionsArray.size(); i++) {
-            count++;
-
-            if ((i + 1 < startIndex) || ((startIndex + limit) == (i + 1))) {
-                continue;
-            }
-
             JSONObject txs = transactionsArray.getJSONObject(i);
             TransactionStatus status = getStatus(txs.optJSONObject("meta").optString("TransactionResult"));
 
@@ -206,16 +196,12 @@ public class RippledService {
             String txId = tx.optString("hash");
             TransactionType type = TransactionType.getType(tx.optString("Account"), tx.optString("Destination"), address);
             BigDecimal amount = Util.format5(getAmount(tx.optString("Amount")));
-            Date date = new Date((tx.optLong("date") + 946684800L) * 1000);
+            Date date1 = new Date((tx.optLong("date") + 946684800L) * 1000);
 
-            transactions.add(new TransactionDTO(startIndex + k, txId, amount, type, status, date));
-            k++;
+            map.put(txId, new TransactionDTO(txId, amount, type, status, date1));
         }
 
-        result.setTotal(count);
-        result.setTransactions(transactions);
-
-        return result;
+        return map;
     }
 
     private TransactionStatus getStatus(String str) {

@@ -10,8 +10,7 @@ public enum TransactionType {
     SEND_GIFT(3),
     RECEIVE_GIFT(4),
     BUY(5),
-    SELL(6),
-    SELL_FAW(7);
+    SELL(6);
 
     private int value;
 
@@ -32,5 +31,25 @@ public enum TransactionType {
         }
 
         return null;
+    }
+
+    public static TransactionType getGiftType(TransactionType type) {
+        if (type == WITHDRAW) {
+            return SEND_GIFT;
+        } else if(type == DEPOSIT) {
+            return RECEIVE_GIFT;
+        } else {
+            return type;
+        }
+    }
+
+    public static TransactionType getTxType(TransactionType type) {
+        if (type == WITHDRAW) {
+            return SELL;
+        } else if(type == DEPOSIT) {
+            return BUY;
+        } else {
+            return type;
+        }
     }
 }

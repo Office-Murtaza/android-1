@@ -49,4 +49,9 @@ public class User extends AbstractAuditingEntity implements Serializable {
     public String getCoinAddress(String coinId) {
         return userCoins.stream().filter(e -> e.getCoinId().equalsIgnoreCase(coinId)).findFirst().get().getPublicKey();
     }
+
+    @Transient
+    public Coin getCoin(String coinId) {
+        return userCoins.stream().filter(e -> e.getCoinId().equalsIgnoreCase(coinId)).findFirst().get().getCoin();
+    }
 }

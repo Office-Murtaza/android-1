@@ -41,8 +41,7 @@ public class TransactionDTO {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private Date date2;
 
-    public TransactionDTO(Integer index, String txId, BigDecimal cryptoAmount, TransactionType type, TransactionStatus status, Date date1) {
-        this.index = index;
+    public TransactionDTO(String txId, BigDecimal cryptoAmount, TransactionType type, TransactionStatus status, Date date1) {
         this.txId = txId;
         this.cryptoAmount = cryptoAmount;
         this.type = type;
