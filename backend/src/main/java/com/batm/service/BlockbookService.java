@@ -17,11 +17,11 @@ public class BlockbookService {
     @Autowired
     private RestTemplate rest;
 
-    public BigDecimal getBalance(String url, String address, long divider) {
+    public BigDecimal getBalance(String url, String address, BigDecimal divider) {
         try {
             JSONObject res = rest.getForObject(url + "/api/v2/address/" + address + "?details=basic", JSONObject.class);
 
-            return Util.format(new BigDecimal(res.getString("balance")).divide(BigDecimal.valueOf(divider)), 5);
+            return Util.format5(new BigDecimal(res.optString("balance")).divide(divider));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -71,7 +71,7 @@ public class BlockbookService {
         return new NonceDTO();
     }
 
-    public TransactionResponseDTO getTransactions(String url, String address, Long divider, Integer startIndex, Integer limit) {
+    public TransactionListDTO getTransactionList(String url, String address, BigDecimal divider, Integer startIndex, Integer limit) {
         try {
             JSONObject res = rest.getForObject(url + "/api/v2/address/" + address + "?details=txs&pageSize=1000&page=1", JSONObject.class);
             JSONArray array = res.optJSONArray("transactions");
@@ -83,10 +83,10 @@ public class BlockbookService {
             e.printStackTrace();
         }
 
-        return new TransactionResponseDTO();
+        return new TransactionListDTO();
     }
 
-    public TransactionNumberDTO getTransactionNumber(String url, String address, BigDecimal amount, long divider) {
+    public TransactionNumberDTO getTransactionNumber(String url, String address, BigDecimal amount, BigDecimal divider) {
         try {
             JSONObject res = rest.getForObject(url + "/api/v2/address/" + address + "?details=txs", JSONObject.class);
             for (Object jsonTransactions : res.getJSONArray("transactions")) {
@@ -94,7 +94,7 @@ public class BlockbookService {
                     if (operationObject instanceof JSONObject) {
                         JSONObject operationJson = ((JSONObject) operationObject);
                         String value = operationJson.getString("value");
-                        BigDecimal bigValue = new BigDecimal(value).divide(BigDecimal.valueOf(divider)).stripTrailingZeros();
+                        BigDecimal bigValue = new BigDecimal(value).divide(divider).stripTrailingZeros();
                         int n = operationJson.getInt("n");
 
                         if (bigValue.equals(amount.stripTrailingZeros())) {

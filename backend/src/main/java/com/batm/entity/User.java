@@ -44,4 +44,9 @@ public class User extends AbstractAuditingEntity implements Serializable {
 
     @OneToOne(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Identity identity;
+
+    @Transient
+    public String getCoinAddress(String coinId) {
+        return userCoins.stream().filter(e -> e.getCoinId().equalsIgnoreCase(coinId)).findFirst().get().getPublicKey();
+    }
 }

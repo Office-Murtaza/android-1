@@ -9,6 +9,7 @@ import com.batm.entity.*;
 import com.batm.model.Error;
 import com.batm.model.Response;
 import com.batm.model.TransactionStatus;
+import com.batm.model.TransactionType;
 import com.batm.util.*;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
@@ -38,10 +39,10 @@ public class CoinService {
     private static RippledService rippled;
     private static TrongridService trongrid;
 
-    private static String btcUrl;
-    private static String ethUrl;
-    private static String bchUrl;
-    private static String ltcUrl;
+    private static String btcNodeUrl;
+    private static String ethNodeUrl;
+    private static String bchNodeUrl;
+    private static String ltcNodeUrl;
 
     public CoinService(@Autowired final BinanceApiRestClient binanceRest,
                        @Autowired final MessageService messageService,
@@ -52,10 +53,10 @@ public class CoinService {
                        @Autowired final BinanceService binance,
                        @Autowired final RippledService rippled,
                        @Autowired final TrongridService trongrid,
-                       @Value("${btc.url}") final String btcUrl,
-                       @Value("${eth.url}") final String ethUrl,
-                       @Value("${bch.url}") final String bchUrl,
-                       @Value("${ltc.url}") final String ltcUrl) {
+                       @Value("${btc.node.url}") final String btcNodeUrl,
+                       @Value("${eth.node.url}") final String ethNodeUrl,
+                       @Value("${bch.node.url}") final String bchNodeUrl,
+                       @Value("${ltc.node.url}") final String ltcNodeUrl) {
 
         CoinService.binanceRest = binanceRest;
         CoinService.messageService = messageService;
@@ -68,10 +69,10 @@ public class CoinService {
         CoinService.rippled = rippled;
         CoinService.trongrid = trongrid;
 
-        CoinService.btcUrl = btcUrl;
-        CoinService.ethUrl = ethUrl;
-        CoinService.bchUrl = bchUrl;
-        CoinService.ltcUrl = ltcUrl;
+        CoinService.btcNodeUrl = btcNodeUrl;
+        CoinService.ethNodeUrl = ethNodeUrl;
+        CoinService.bchNodeUrl = bchNodeUrl;
+        CoinService.ltcNodeUrl = ltcNodeUrl;
     }
 
     public enum CoinEnum {
@@ -83,12 +84,17 @@ public class CoinService {
 
             @Override
             public BigDecimal getBalance(String address) {
-                return blockbook.getBalance(btcUrl, address, Constant.BTC_DIVIDER);
+                return blockbook.getBalance(btcNodeUrl, address, Constant.BTC_DIVIDER);
+            }
+
+            @Override
+            public String getName() {
+                return "bitcoin";
             }
 
             @Override
             public TransactionNumberDTO getTransactionNumber(String address, BigDecimal amount) {
-                return blockbook.getTransactionNumber(btcUrl, address, amount, Constant.BTC_DIVIDER);
+                return blockbook.getTransactionNumber(btcNodeUrl, address, amount, Constant.BTC_DIVIDER);
             }
 
             @Override
@@ -97,13 +103,18 @@ public class CoinService {
             }
 
             @Override
-            public TransactionResponseDTO getTransactions(String address, Integer startIndex, Integer limit) {
-                return blockbook.getTransactions(btcUrl, address, Constant.BTC_DIVIDER, startIndex, limit);
+            public TransactionDTO getTransaction(String txId, String address) {
+                return null;
+            }
+
+            @Override
+            public TransactionListDTO getTransactionList(String address, Integer startIndex, Integer limit) {
+                return blockbook.getTransactionList(btcNodeUrl, address, Constant.BTC_DIVIDER, startIndex, limit);
             }
 
             @Override
             public UtxoDTO getUTXO(String xpub) {
-                return blockbook.getUTXO(btcUrl, xpub);
+                return blockbook.getUTXO(btcNodeUrl, xpub);
             }
 
             @Override
@@ -128,7 +139,7 @@ public class CoinService {
 
             @Override
             public String submitTransaction(Long userId, SubmitTransactionDTO transaction) {
-                String txId = blockbook.submitTransaction(btcUrl, transaction);
+                String txId = blockbook.submitTransaction(btcNodeUrl, transaction);
 
                 if (StringUtils.isNotEmpty(txId) && com.batm.model.TransactionType.SEND_GIFT.getValue() == transaction.getType()) {
                     processGiftTransaction(userId, this, transaction, txId);
@@ -144,7 +155,12 @@ public class CoinService {
 
             @Override
             public BigDecimal getBalance(String address) {
-                return blockbook.getBalance(ethUrl, address, Constant.ETH_DIVIDER);
+                return blockbook.getBalance(ethNodeUrl, address, Constant.ETH_DIVIDER);
+            }
+
+            @Override
+            public String getName() {
+                return "ethereum";
             }
 
             @Override
@@ -158,8 +174,13 @@ public class CoinService {
             }
 
             @Override
-            public TransactionResponseDTO getTransactions(String address, Integer startIndex, Integer limit) {
-                return blockbook.getTransactions(ethUrl, address, Constant.ETH_DIVIDER, startIndex, limit);
+            public TransactionDTO getTransaction(String txId, String address) {
+                return null;
+            }
+
+            @Override
+            public TransactionListDTO getTransactionList(String address, Integer startIndex, Integer limit) {
+                return blockbook.getTransactionList(ethNodeUrl, address, Constant.ETH_DIVIDER, startIndex, limit);
             }
 
             @Override
@@ -169,7 +190,7 @@ public class CoinService {
 
             @Override
             public NonceDTO getNonce(String address) {
-                return blockbook.getNonce(ethUrl, address);
+                return blockbook.getNonce(ethNodeUrl, address);
             }
 
             @Override
@@ -189,7 +210,7 @@ public class CoinService {
 
             @Override
             public String submitTransaction(Long userId, SubmitTransactionDTO transaction) {
-                String txId = blockbook.submitTransaction(ethUrl, transaction);
+                String txId = blockbook.submitTransaction(ethNodeUrl, transaction);
 
                 if (StringUtils.isNotEmpty(txId) && com.batm.model.TransactionType.SEND_GIFT.getValue() == transaction.getType()) {
                     processGiftTransaction(userId, this, transaction, txId);
@@ -205,7 +226,12 @@ public class CoinService {
 
             @Override
             public BigDecimal getBalance(String address) {
-                return blockbook.getBalance(bchUrl, address, Constant.BCH_DIVIDER);
+                return blockbook.getBalance(bchNodeUrl, address, Constant.BCH_DIVIDER);
+            }
+
+            @Override
+            public String getName() {
+                return "bitcoincash";
             }
 
             @Override
@@ -219,13 +245,18 @@ public class CoinService {
             }
 
             @Override
-            public TransactionResponseDTO getTransactions(String address, Integer startIndex, Integer limit) {
-                return blockbook.getTransactions(bchUrl, address, Constant.BCH_DIVIDER, startIndex, limit);
+            public TransactionDTO getTransaction(String txId, String address) {
+                return null;
+            }
+
+            @Override
+            public TransactionListDTO getTransactionList(String address, Integer startIndex, Integer limit) {
+                return blockbook.getTransactionList(bchNodeUrl, address, Constant.BCH_DIVIDER, startIndex, limit);
             }
 
             @Override
             public UtxoDTO getUTXO(String xpub) {
-                return blockbook.getUTXO(bchUrl, xpub);
+                return blockbook.getUTXO(bchNodeUrl, xpub);
             }
 
             @Override
@@ -250,7 +281,7 @@ public class CoinService {
 
             @Override
             public String submitTransaction(Long userId, SubmitTransactionDTO transaction) {
-                String txId = blockbook.submitTransaction(bchUrl, transaction);
+                String txId = blockbook.submitTransaction(bchNodeUrl, transaction);
 
                 if (StringUtils.isNotEmpty(txId) && com.batm.model.TransactionType.SEND_GIFT.getValue() == transaction.getType()) {
                     processGiftTransaction(userId, this, transaction, txId);
@@ -266,12 +297,17 @@ public class CoinService {
 
             @Override
             public BigDecimal getBalance(String address) {
-                return blockbook.getBalance(ltcUrl, address, Constant.LTC_DIVIDER);
+                return blockbook.getBalance(ltcNodeUrl, address, Constant.LTC_DIVIDER);
+            }
+
+            @Override
+            public String getName() {
+                return "litecoin";
             }
 
             @Override
             public TransactionNumberDTO getTransactionNumber(String address, BigDecimal amount) {
-                return blockbook.getTransactionNumber(ltcUrl, address, amount, Constant.LTC_DIVIDER);
+                return blockbook.getTransactionNumber(ltcNodeUrl, address, amount, Constant.LTC_DIVIDER);
             }
 
             @Override
@@ -280,13 +316,18 @@ public class CoinService {
             }
 
             @Override
-            public TransactionResponseDTO getTransactions(String address, Integer startIndex, Integer limit) {
-                return blockbook.getTransactions(ltcUrl, address, Constant.LTC_DIVIDER, startIndex, limit);
+            public TransactionDTO getTransaction(String txId, String address) {
+                return null;
+            }
+
+            @Override
+            public TransactionListDTO getTransactionList(String address, Integer startIndex, Integer limit) {
+                return blockbook.getTransactionList(ltcNodeUrl, address, Constant.LTC_DIVIDER, startIndex, limit);
             }
 
             @Override
             public UtxoDTO getUTXO(String xpub) {
-                return blockbook.getUTXO(ltcUrl, xpub);
+                return blockbook.getUTXO(ltcNodeUrl, xpub);
             }
 
             @Override
@@ -311,7 +352,7 @@ public class CoinService {
 
             @Override
             public String submitTransaction(Long userId, SubmitTransactionDTO transaction) {
-                String txId = blockbook.submitTransaction(ltcUrl, transaction);
+                String txId = blockbook.submitTransaction(ltcNodeUrl, transaction);
 
                 if (StringUtils.isNotEmpty(txId) && com.batm.model.TransactionType.SEND_GIFT.getValue() == transaction.getType()) {
                     processGiftTransaction(userId, this, transaction, txId);
@@ -332,6 +373,11 @@ public class CoinService {
             }
 
             @Override
+            public String getName() {
+                return "binance";
+            }
+
+            @Override
             public TransactionNumberDTO getTransactionNumber(String address, BigDecimal amount) {
                 return null;
             }
@@ -342,8 +388,13 @@ public class CoinService {
             }
 
             @Override
-            public TransactionResponseDTO getTransactions(String address, Integer startIndex, Integer limit) {
-                return binance.getTransactions(address, startIndex, limit);
+            public TransactionDTO getTransaction(String txId, String address) {
+                return binance.getTransaction(txId, address);
+            }
+
+            @Override
+            public TransactionListDTO getTransactionList(String address, Integer startIndex, Integer limit) {
+                return binance.getTransactionList(address, startIndex, limit);
             }
 
             @Override
@@ -394,6 +445,11 @@ public class CoinService {
             }
 
             @Override
+            public String getName() {
+                return "ripple";
+            }
+
+            @Override
             public TransactionNumberDTO getTransactionNumber(String address, BigDecimal amount) {
                 return null;
             }
@@ -404,8 +460,13 @@ public class CoinService {
             }
 
             @Override
-            public TransactionResponseDTO getTransactions(String address, Integer startIndex, Integer limit) {
-                return rippled.getTransactions(address, startIndex, limit);
+            public TransactionDTO getTransaction(String txId, String address) {
+                return rippled.getTransaction(txId, address);
+            }
+
+            @Override
+            public TransactionListDTO getTransactionList(String address, Integer startIndex, Integer limit) {
+                return rippled.getTransactionList(address, startIndex, limit);
             }
 
             @Override
@@ -456,6 +517,11 @@ public class CoinService {
             }
 
             @Override
+            public String getName() {
+                return "tron";
+            }
+
+            @Override
             public TransactionNumberDTO getTransactionNumber(String address, BigDecimal amount) {
                 return null;
             }
@@ -466,8 +532,13 @@ public class CoinService {
             }
 
             @Override
-            public TransactionResponseDTO getTransactions(String address, Integer startIndex, Integer limit) {
-                return trongrid.getTransactions(address, startIndex, limit);
+            public TransactionDTO getTransaction(String txId, String address) {
+                return trongrid.getTransaction(txId, address);
+            }
+
+            @Override
+            public TransactionListDTO getTransactionList(String address, Integer startIndex, Integer limit) {
+                return trongrid.getTransactionList(address, startIndex, limit);
             }
 
             @Override
@@ -511,11 +582,15 @@ public class CoinService {
 
         public abstract BigDecimal getBalance(String address);
 
+        public abstract String getName();
+
         public abstract TransactionNumberDTO getTransactionNumber(String address, BigDecimal amount);
 
         public abstract TransactionStatus getTransactionStatus(String txId);
 
-        public abstract TransactionResponseDTO getTransactions(String address, Integer startIndex, Integer limit);
+        public abstract TransactionDTO getTransaction(String txId, String address);
+
+        public abstract TransactionListDTO getTransactionList(String address, Integer startIndex, Integer limit);
 
         public abstract UtxoDTO getUTXO(String xpub);
 
@@ -530,9 +605,34 @@ public class CoinService {
         public abstract String submitTransaction(Long userId, SubmitTransactionDTO transaction);
     }
 
-    public TransactionResponseDTO getTransactions(Long userId, CoinEnum coin, Integer startIndex) {
+    public TransactionDTO getTransaction(Long userId, CoinEnum coin, String txId) {
+        User user = userService.findById(userId);
+        String address = user.getCoinAddress(coin.name());
+        TransactionRecord txRecord = user.getIdentity().getTxRecord(txId, coin.name());
+        TransactionRecordGift txGift = user.getIdentity().getTxGift(txId, coin.name());
+
+        TransactionDTO dto = coin.getTransaction(txId, address);
+
+        if (txGift != null) {
+            dto.setImageId(txGift.getImage());
+            dto.setImageId(txGift.getMessage());
+            dto.setType(dto.getType() == TransactionType.WITHDRAW ? TransactionType.SEND_GIFT : TransactionType.RECEIVE_GIFT);
+        } else if (txRecord != null) {
+            dto.setSellInfo(coin.getName() + ":" + txRecord.getCryptoAddress() + "?" + txRecord.getCryptoAmount() + "&" + txRecord.getRemoteTransactionId() + "&" + txRecord.getUuid());
+
+            if (dto.getType() == null) {
+                dto.setType(TransactionType.SELL_FAW);
+            } else {
+                dto.setType(dto.getType() == TransactionType.WITHDRAW ? TransactionType.SELL : TransactionType.BUY);
+            }
+        }
+
+        return dto;
+    }
+
+    public TransactionListDTO getTransactions(Long userId, CoinEnum coin, Integer startIndex) {
         String address = userService.getUserCoin(userId, coin.name()).getPublicKey();
-        return coin.getTransactions(address, startIndex, Constant.TRANSACTION_LIMIT);
+        return coin.getTransactionList(address, startIndex, Constant.TRANSACTION_LIMIT);
     }
 
     public BalanceDTO getCoinsBalance(Long userId, List<String> coins) {
@@ -552,9 +652,9 @@ public class CoinService {
                 .sorted(Comparator.comparing(com.batm.dto.CoinBalanceDTO::getOrderIndex))
                 .collect(Collectors.toList());
 
-        BigDecimal totalBalance = Util.format(balances.stream()
+        BigDecimal totalBalance = Util.format2(balances.stream()
                 .map(it -> it.getPrice().getUsd().multiply(it.getBalance()))
-                .reduce(BigDecimal.ZERO, BigDecimal::add), 2);
+                .reduce(BigDecimal.ZERO, BigDecimal::add));
 
         return new BalanceDTO(userId, new AmountDTO(totalBalance), balances);
     }

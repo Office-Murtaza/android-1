@@ -6,9 +6,11 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
+
 import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Getter
 @Setter
@@ -177,9 +179,23 @@ public class Identity {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @OneToMany(mappedBy="identity")
+    @OneToMany(mappedBy = "identity")
     private List<TransactionRecord> transactionRecords;
 
-    @OneToMany(mappedBy="identity")
+    @OneToMany(mappedBy = "identity")
     private List<TransactionRecordGift> transactionRecordGifts;
+
+    @Transient
+    public TransactionRecord getTxRecord(String txId, String coinId) {
+        Optional<TransactionRecord> first = transactionRecords.stream().filter(e -> e.getDetail().equalsIgnoreCase(txId) && e.getCryptoCurrency().equalsIgnoreCase(coinId)).findFirst();
+
+        return first.isPresent() ? first.get() : null;
+    }
+
+    @Transient
+    public TransactionRecordGift getTxGift(String txId, String coinId) {
+        Optional<TransactionRecordGift> first = transactionRecordGifts.stream().filter(e -> e.getTxId().equalsIgnoreCase(txId) && e.getCoin().getId().equalsIgnoreCase(coinId)).findFirst();
+
+        return first.isPresent() ? first.get() : null;
+    }
 }

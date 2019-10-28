@@ -5,15 +5,16 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class UserLimitDTO {
+public class TransactionListDTO {
 
-    private AmountDTO dailyLimit;
-    private AmountDTO txLimit;
-    private AmountDTO sellProfitRate;
+    private Integer total = 0;
+    private List<TransactionDTO> transactions = new ArrayList<>();
 }

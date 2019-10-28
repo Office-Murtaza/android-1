@@ -2,13 +2,13 @@ package com.batm.service;
 
 import com.batm.dto.CurrentAccountDTO;
 import com.batm.dto.SubmitTransactionDTO;
-import com.batm.dto.TransactionResponseDTO;
+import com.batm.dto.TransactionDTO;
+import com.batm.dto.TransactionListDTO;
 import com.batm.model.TransactionStatus;
-import com.batm.util.TransactionUtil;
+import com.batm.util.Constant;
 import com.batm.util.Util;
 import com.binance.dex.api.client.BinanceDexApiRestClient;
 import com.binance.dex.api.client.domain.Account;
-import com.binance.dex.api.client.domain.TransactionMetadata;
 import com.binance.dex.api.client.domain.TransactionPage;
 import com.binance.dex.api.client.domain.TransactionType;
 import com.binance.dex.api.client.domain.request.TransactionsRequest;
@@ -22,7 +22,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
+import java.time.ZonedDateTime;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 @Service
@@ -34,18 +37,21 @@ public class BinanceService {
     @Autowired
     private RestTemplate rest;
 
-    @Value("${bnb.url}")
-    private String url;
+    @Value("${bnb.node.url}")
+    private String nodeUrl;
+
+    @Value("${bnb.explorer.url}")
+    private String explorerUrl;
 
     public BigDecimal getBalance(String address) {
         try {
-            return Util.format(binanceDex
+            return Util.format5(binanceDex
                     .getAccount(address)
                     .getBalances()
                     .stream()
                     .filter(e -> "BNB".equals(e.getSymbol()))
                     .map(it -> new BigDecimal(it.getFree()).add(new BigDecimal(it.getLocked())))
-                    .reduce(BigDecimal.ZERO, BigDecimal::add), 5);
+                    .reduce(BigDecimal.ZERO, BigDecimal::add));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -58,7 +64,7 @@ public class BinanceService {
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.TEXT_PLAIN);
 
-            JSONObject res = JSONArray.fromObject(rest.postForObject(url + "/api/v1/broadcast", transaction.getHex(), String.class)).getJSONObject(0);
+            JSONObject res = JSONArray.fromObject(rest.postForObject(nodeUrl + "/api/v1/broadcast", transaction.getHex(), String.class)).getJSONObject(0);
 
             return res.optString("hash");
         } catch (Exception e) {
@@ -70,11 +76,9 @@ public class BinanceService {
 
     public TransactionStatus getTransactionStatus(String txId) {
         try {
-            TransactionMetadata metadata = binanceDex.getTransactionMetadata(txId);
+            JSONObject res = rest.getForObject(nodeUrl + "/api/v1/tx/" + txId + "?format=json", JSONObject.class);
 
-            if (metadata.isOk()) {
-                return TransactionStatus.COMPLETE;
-            }
+            return getStatus(res.getInt("code"));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -82,8 +86,27 @@ public class BinanceService {
         return TransactionStatus.PENDING;
     }
 
-    public TransactionResponseDTO getTransactions(String address, Integer startIndex, Integer limit) {
-        TransactionResponseDTO result = new TransactionResponseDTO();
+    public TransactionDTO getTransaction(String txId, String address) {
+        TransactionDTO dto = new TransactionDTO();
+
+        try {
+            JSONObject res = rest.getForObject(nodeUrl + "/api/v1/tx/" + txId + "?format=json", JSONObject.class);
+            JSONObject msg = res.optJSONObject("tx").optJSONObject("value").optJSONArray("msg").getJSONObject(0);
+
+            dto.setFromAddress(msg.optJSONObject("value").optJSONArray("inputs").getJSONObject(0).optString("address"));
+            dto.setToAddress(msg.optJSONObject("value").optJSONArray("outputs").getJSONObject(0).optString("address"));
+            dto.setType(com.batm.model.TransactionType.getType(dto.getFromAddress(), dto.getToAddress(), address));
+            dto.setStatus(getStatus(res.getInt("code")));
+            dto.setCryptoAmount(getAmount(msg.optJSONObject("value").optJSONArray("inputs").getJSONObject(0).getJSONArray("coins").getJSONObject(0).optString("amount")));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return dto;
+    }
+
+    public TransactionListDTO getTransactionList(String address, Integer startIndex, Integer limit) {
+        TransactionListDTO result = new TransactionListDTO();
 
         try {
             TransactionsRequest request = new TransactionsRequest();
@@ -96,7 +119,7 @@ public class BinanceService {
 
             TransactionPage page = binanceDex.getTransactions(request);
 
-            return TransactionUtil.composeBinance(page, address, startIndex, limit);
+            return build(page, address, startIndex, limit);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -114,5 +137,47 @@ public class BinanceService {
         }
 
         return new CurrentAccountDTO();
+    }
+
+    private TransactionListDTO build(TransactionPage page, String address, Integer startIndex, Integer limit) {
+        TransactionListDTO result = new TransactionListDTO();
+        List<TransactionDTO> transactions = new ArrayList<>();
+
+        for (int i = 0; i < page.getTx().size(); i++) {
+            if ((i + 1 < startIndex)) {
+                continue;
+            }
+
+            com.binance.dex.api.client.domain.Transaction tx = page.getTx().get(i);
+
+            String txId = tx.getTxHash();
+            com.batm.model.TransactionType type = com.batm.model.TransactionType.getType(tx.getFromAddr(), tx.getToAddr(), address);
+            BigDecimal amount = Util.format5(new BigDecimal(tx.getValue()));
+            TransactionStatus status = getStatus(tx.getCode());
+            Date date1 = Date.from(ZonedDateTime.parse(tx.getTimeStamp()).toInstant());
+
+            transactions.add(new TransactionDTO(startIndex + i, txId, amount, type, status, date1));
+
+            if ((startIndex + limit) == (i + 1)) {
+                break;
+            }
+        }
+
+        result.setTotal(page.getTotal().intValue());
+        result.setTransactions(transactions);
+
+        return result;
+    }
+
+    private TransactionStatus getStatus(int code) {
+        if (code == 0) {
+            return TransactionStatus.COMPLETE;
+        }
+
+        return TransactionStatus.FAIL;
+    }
+
+    private BigDecimal getAmount(String amount) {
+        return new BigDecimal(amount).divide(Constant.BNB_DIVIDER).stripTrailingZeros();
     }
 }

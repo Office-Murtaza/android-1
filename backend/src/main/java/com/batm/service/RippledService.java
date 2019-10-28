@@ -2,18 +2,25 @@ package com.batm.service;
 
 import com.batm.dto.CurrentAccountDTO;
 import com.batm.dto.SubmitTransactionDTO;
-import com.batm.dto.TransactionResponseDTO;
+import com.batm.dto.TransactionDTO;
+import com.batm.dto.TransactionListDTO;
+import com.batm.entity.TransactionRecord;
+import com.batm.entity.TransactionRecordGift;
 import com.batm.model.TransactionStatus;
+import com.batm.model.TransactionType;
 import com.batm.util.Constant;
-import com.batm.util.TransactionUtil;
 import com.batm.util.Util;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 @Service
 public class RippledService {
@@ -21,8 +28,11 @@ public class RippledService {
     @Autowired
     private RestTemplate rest;
 
-    @Value("${xrp.url}")
-    private String url;
+    @Value("${xrp.node.url}")
+    private String nodeUrl;
+
+    @Value("${xrp.explorer.url}")
+    private String explorerUrl;
 
     public BigDecimal getBalance(String address) {
         try {
@@ -36,10 +46,10 @@ public class RippledService {
             req.put("method", "account_info");
             req.put("params", params);
 
-            JSONObject res = rest.postForObject(url, req, JSONObject.class);
+            JSONObject res = rest.postForObject(nodeUrl, req, JSONObject.class);
             String balance = res.getJSONObject("result").getJSONObject("account_data").getString("Balance");
 
-            return Util.format(new BigDecimal(balance).divide(BigDecimal.valueOf(Constant.XRP_DIVIDER)), 2);
+            return Util.format5(new BigDecimal(balance).divide(Constant.XRP_DIVIDER));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -59,7 +69,7 @@ public class RippledService {
             req.put("method", "submit");
             req.put("params", params);
 
-            JSONObject res = rest.postForObject(url, req, JSONObject.class);
+            JSONObject res = rest.postForObject(nodeUrl, req, JSONObject.class);
 
             return res.optJSONObject("result").optJSONObject("tx_json").optString("hash");
         } catch (Exception e) {
@@ -81,7 +91,7 @@ public class RippledService {
             req.put("method", "account_info");
             req.put("params", params);
 
-            JSONObject res = rest.postForObject(url, req, JSONObject.class);
+            JSONObject res = rest.postForObject(nodeUrl, req, JSONObject.class);
             Long sequence = res.getJSONObject("result").getJSONObject("account_data").optLong("Sequence");
 
             return new CurrentAccountDTO(null, sequence);
@@ -104,9 +114,10 @@ public class RippledService {
             req.put("method", "tx");
             req.put("params", params);
 
-            JSONObject res = rest.postForObject(url, req, JSONObject.class);
+            JSONObject res = rest.postForObject(nodeUrl, req, JSONObject.class);
+            String txResult = res.optJSONObject("result").optJSONObject("meta").optString("TransactionResult");
 
-            return TransactionUtil.getRippledTransactionStatus(res.optJSONObject("result").optJSONObject("meta").optString("TransactionResult"));
+            return getStatus(txResult);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -114,7 +125,40 @@ public class RippledService {
         return TransactionStatus.PENDING;
     }
 
-    public TransactionResponseDTO getTransactions(String address, Integer startIndex, Integer limit) {
+    public TransactionDTO getTransaction(String txId, String address) {
+        TransactionDTO dto = new TransactionDTO();
+
+        try {
+            JSONObject param = new JSONObject();
+            param.put("transaction", txId);
+
+            JSONArray params = new JSONArray();
+            params.add(param);
+
+            JSONObject req = new JSONObject();
+            req.put("method", "tx");
+            req.put("params", params);
+
+            JSONObject res = rest.postForObject(nodeUrl, req, JSONObject.class);
+            JSONObject tx = res.optJSONObject("result");
+
+            dto.setTxId(txId);
+            dto.setLink(explorerUrl + "/" + txId);
+            dto.setCryptoAmount(getAmount(tx.optString("Amount")));
+            dto.setCryptoFee(getAmount(tx.optString("Fee")));
+            dto.setFromAddress(tx.optString("Account"));
+            dto.setToAddress(tx.optString("Destination"));
+            dto.setType(TransactionType.getType(dto.getFromAddress(), dto.getToAddress(), address));
+            dto.setStatus(getStatus(tx.optJSONObject("meta").optString("TransactionResult")));
+            dto.setDate2(new Date((tx.optLong("date") + 946684800L) * 1000));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return dto;
+    }
+
+    public TransactionListDTO getTransactionList(String address, Integer startIndex, Integer limit) {
         try {
             JSONObject param = new JSONObject();
             param.put("account", address);
@@ -127,17 +171,62 @@ public class RippledService {
             req.put("method", "account_tx");
             req.put("params", params);
 
-            JSONObject res = rest.postForObject(url, req, JSONObject.class);
+            JSONObject res = rest.postForObject(nodeUrl, req, JSONObject.class);
             JSONObject jsonResult = res.optJSONObject("result");
             JSONArray array = jsonResult.optJSONArray("transactions");
 
             if (array != null && !array.isEmpty()) {
-                return TransactionUtil.composeRippled(array, address, Constant.XRP_DIVIDER, startIndex, limit);
+                return build(array, address, startIndex, limit);
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        return new TransactionResponseDTO();
+        return new TransactionListDTO();
+    }
+
+    private TransactionListDTO build(JSONArray transactionsArray, String address, Integer startIndex, Integer limit) {
+        TransactionListDTO result = new TransactionListDTO();
+        List<TransactionDTO> transactions = new ArrayList<>();
+
+        int count = 0;
+        int k = 0;
+
+        for (int i = 0; i < transactionsArray.size(); i++) {
+            count++;
+
+            if ((i + 1 < startIndex) || ((startIndex + limit) == (i + 1))) {
+                continue;
+            }
+
+            JSONObject txs = transactionsArray.getJSONObject(i);
+            TransactionStatus status = getStatus(txs.optJSONObject("meta").optString("TransactionResult"));
+
+            JSONObject tx = txs.optJSONObject("tx");
+            String txId = tx.optString("hash");
+            TransactionType type = TransactionType.getType(tx.optString("Account"), tx.optString("Destination"), address);
+            BigDecimal amount = Util.format5(getAmount(tx.optString("Amount")));
+            Date date = new Date((tx.optLong("date") + 946684800L) * 1000);
+
+            transactions.add(new TransactionDTO(startIndex + k, txId, amount, type, status, date));
+            k++;
+        }
+
+        result.setTotal(count);
+        result.setTransactions(transactions);
+
+        return result;
+    }
+
+    private TransactionStatus getStatus(String str) {
+        if (StringUtils.isNotEmpty(str) && str.equalsIgnoreCase("tesSUCCESS")) {
+            return TransactionStatus.COMPLETE;
+        }
+
+        return TransactionStatus.FAIL;
+    }
+
+    private BigDecimal getAmount(String amount) {
+        return new BigDecimal(amount).divide(Constant.XRP_DIVIDER).stripTrailingZeros();
     }
 }

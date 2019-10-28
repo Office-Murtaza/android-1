@@ -1,6 +1,7 @@
 package com.batm.service;
 
 import com.batm.dto.AmountDTO;
+import com.batm.dto.PreSubmitDTO;
 import com.batm.dto.SubmitTransactionDTO;
 import com.batm.dto.UserLimitDTO;
 import com.batm.entity.Coin;
@@ -13,7 +14,9 @@ import com.batm.repository.TransactionRecordGiftRepository;
 import com.batm.repository.TransactionRecordRepository;
 import com.batm.util.Constant;
 import com.batm.util.Util;
+import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -34,16 +37,19 @@ public class TransactionService {
     @Autowired
     private UserService userService;
 
+    @Value("${gb.url}")
+    private String gbUrl;
+
     public void saveGift(Identity identity, String txId, Coin coin, SubmitTransactionDTO dto, boolean receiverExist) {
         try {
             TransactionRecordGift gift = new TransactionRecordGift();
             gift.setTxId(txId);
             gift.setType(dto.getType());
-            gift.setAmount(dto.getAmount());
+            gift.setAmount(dto.getCryptoAmount());
             gift.setStatus(TransactionStatus.PENDING.getValue());
             gift.setPhone(dto.getPhone());
             gift.setMessage(dto.getMessage());
-            gift.setImage(dto.getImage());
+            gift.setImage(dto.getImageId());
             gift.setStep(receiverExist ? Constant.GIFT_USER_EXIST : Constant.GIFT_USER_NOT_EXIST);
             gift.setIdentity(identity);
             gift.setCoin(coin);
@@ -59,6 +65,7 @@ public class TransactionService {
         UserLimitDTO dto = new UserLimitDTO();
         dto.setDailyLimit(new AmountDTO(BigDecimal.ZERO));
         dto.setTxLimit(new AmountDTO(BigDecimal.ZERO));
+        dto.setSellProfitRate(new AmountDTO(BigDecimal.ONE));
 
         try {
             User user = userService.findById(userId);
@@ -70,8 +77,34 @@ public class TransactionService {
                 dailyLimit.subtract(txAmount);
             }
 
-            dto.setDailyLimit(new AmountDTO(Util.format(dailyLimit, 2)));
-            dto.setTxLimit(new AmountDTO(Util.format(txLimit, 2)));
+            dto.setDailyLimit(new AmountDTO(Util.format2(dailyLimit)));
+            dto.setTxLimit(new AmountDTO(Util.format2(txLimit)));
+            dto.setSellProfitRate(new AmountDTO(new BigDecimal("1.025")));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return dto;
+    }
+
+    public PreSubmitDTO preSubmit(Long userId, CoinService.CoinEnum coinId, SubmitTransactionDTO transaction) {
+        PreSubmitDTO dto = new PreSubmitDTO();
+
+        try {
+            User user = userService.findById(userId);
+
+            StringBuilder params = new StringBuilder();
+            params.append("?serial_number=").append(Constant.TERMINAL_SERIAL_NUMBER);
+            params.append("&fiat_amount=").append(transaction.getFiatAmount());
+            params.append("&fiat_currency=").append(transaction.getFiatCurrency());
+            params.append("&crypto_amount=").append(transaction.getCryptoAmount());
+            params.append("&crypto_currency=").append(coinId.name());
+            params.append("&identity_public_id=").append(user.getIdentity().getPublicId());
+
+            JSONObject res = Util.insecureRequest(gbUrl + "/extensions/example/sell_crypto" + params.toString());
+
+            dto.setAddress(res.optString("cryptoAddress"));
+            dto.setCryptoAmount(new AmountDTO(BigDecimal.valueOf(res.optDouble("cryptoAmount"))));
         } catch (Exception e) {
             e.printStackTrace();
         }

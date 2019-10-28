@@ -22,8 +22,8 @@ import com.twilio.type.PhoneNumber;
 @Service
 public class MessageService {
 
-    @Value("${twilio.mode}")
-    private Integer twilioMode;
+    @Value("${twilio.enabled}")
+    private Boolean twilioEnabled;
 
     @Value("${twilio.account-sid}")
     private String accountSid;
@@ -61,7 +61,7 @@ public class MessageService {
             Message.Status status = null;
             String code = Constant.DEFAULT_CODE;
 
-            if (twilioMode == Constant.ENABLED) {
+            if (twilioEnabled) {
                 code = RandomStringUtils.randomNumeric(4);
                 status = sendMessage(user.getPhone(), "Belco Wallet Code: " + code);
             }
@@ -88,7 +88,7 @@ public class MessageService {
 
     public Message.Status sendGiftMessage(CoinService.CoinEnum coinId, SubmitTransactionDTO dto, Boolean userExists) {
         try {
-            StringBuilder body = new StringBuilder("You receive " + dto.getAmount() + " " + coinId.name()).append("\n").append(dto.getMessage());
+            StringBuilder body = new StringBuilder("You receive " + dto.getCryptoAmount() + " " + coinId.name()).append("\n").append(dto.getMessage());
 
             if (!userExists) {
                 body.append("\n").append("In order to receive it install Belco Wallet app and create an account using your current phone number");
@@ -96,7 +96,7 @@ public class MessageService {
 
             Message message = Message
                     .creator(new PhoneNumber(dto.getPhone()), new PhoneNumber(fromNumber), body.toString())
-                    .setMediaUrl(Arrays.asList(URI.create(dto.getImage())))
+                    .setMediaUrl(Arrays.asList(URI.create(dto.getImageId())))
                     .create();
 
             return message.getStatus();

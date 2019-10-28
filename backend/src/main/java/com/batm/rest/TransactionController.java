@@ -19,6 +19,16 @@ public class TransactionController {
     @Autowired
     private TransactionService transactionService;
 
+    @GetMapping("/user/{userId}/coins/{coinId}/transaction/{txId}")
+    public Response getTransaction(@PathVariable Long userId, @PathVariable CoinService.CoinEnum coinId, @PathVariable String txId) {
+        try {
+            return Response.ok(coinService.getTransaction(userId, coinId, txId));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Response.serverError();
+        }
+    }
+
     @GetMapping("/user/{userId}/coins/{coinId}/transactions")
     public Response getTransactions(@PathVariable Long userId, @PathVariable CoinService.CoinEnum coinId, @RequestParam(required = false) Integer index) {
         try {
@@ -81,6 +91,16 @@ public class TransactionController {
             } else {
                 return Response.error(2, coinId.name() + " not allowed");
             }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Response.serverError();
+        }
+    }
+
+    @PostMapping("/user/{userId}/coins/{coinId}/transactions/presubmit")
+    public Response preSubmit(@PathVariable Long userId, @PathVariable CoinService.CoinEnum coinId, @RequestBody SubmitTransactionDTO transaction) {
+        try {
+            return Response.ok(transactionService.preSubmit(userId, coinId, transaction));
         } catch (Exception e) {
             e.printStackTrace();
             return Response.serverError();
