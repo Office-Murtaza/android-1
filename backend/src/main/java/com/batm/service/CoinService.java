@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
+
 import com.batm.dto.*;
 import com.batm.entity.*;
 import com.batm.model.Error;
@@ -614,6 +615,7 @@ public class CoinService {
         TransactionDTO dto = coin.getTransaction(txId, address);
 
         if (txGift != null) {
+            dto.setPhone(txGift.getPhone());
             dto.setImageId(txGift.getImage());
             dto.setMessage(txGift.getMessage());
             dto.setType(TransactionType.getGiftType(dto.getType()));

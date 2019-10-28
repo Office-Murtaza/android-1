@@ -112,7 +112,7 @@ public class TransactionService {
         return dto;
     }
 
-    @Scheduled(fixedDelay = 1200_000)
+    @Scheduled(fixedDelay = 600_000)
     public void processGift() {
         processPending();
         processStored();
@@ -142,6 +142,7 @@ public class TransactionService {
                             gift.setStep(0);
                             gift.setIdentity(userService.findByPhone(t.getPhone()).get().getIdentity());
                             gift.setCoin(t.getCoin());
+                            gift.setAmount(t.getAmount());
 
                             confirmedList.add(gift);
                         }
