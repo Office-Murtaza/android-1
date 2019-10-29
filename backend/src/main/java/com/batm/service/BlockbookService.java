@@ -78,6 +78,61 @@ public class BlockbookService {
         return new NonceDTO();
     }
 
+    public TransactionStatus getTransactionStatus(String nodeUrl, String txId) {
+        try {
+            JSONObject res = rest.getForObject(nodeUrl + "/api/v2/tx/" + txId, JSONObject.class);
+
+            return getStatus(res.optInt("confirmations"));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return TransactionStatus.PENDING;
+    }
+
+    public TransactionDTO getTransaction(String nodeUrl, String explorerUrl, String txId, String address, BigDecimal divider) {
+        TransactionDTO dto = new TransactionDTO();
+
+        try {
+            JSONObject res = rest.getForObject(nodeUrl + "/api/v2/tx/" + txId, JSONObject.class);
+            JSONArray vinArray = res.optJSONArray("vin");
+            JSONArray voutArray = res.optJSONArray("vout");
+
+            dto.setTxId(txId);
+            dto.setLink(explorerUrl + "/" + txId);
+            dto.setType(getType(address, vinArray));
+            dto.setCryptoAmount(getAmount(dto.getType(), address, voutArray, divider));
+            dto.setCryptoFee(new BigDecimal(res.optString("fees")).stripTrailingZeros());
+            dto.setFromAddress(vinArray.getJSONObject(0).optJSONArray("addresses").getString(0));
+            dto.setToAddress(getToAddress(voutArray, dto.getFromAddress()));
+            dto.setStatus(getStatus(res.optInt("confirmations")));
+            dto.setDate2(new Date(res.optLong("blockTime") * 1000));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return dto;
+    }
+
+    public Integer getN(String nodeUrl, String txId, String address) {
+        try {
+            JSONObject res = rest.getForObject(nodeUrl + "/api/v2/tx/" + txId, JSONObject.class);
+            JSONArray voutArray = res.optJSONArray("vout");
+
+            for(int i = 0; i < voutArray.size(); i++) {
+                JSONObject json = voutArray.getJSONObject(i);
+
+                if(json.optJSONArray("addresses").toString().toLowerCase().contains(address.toLowerCase())) {
+                    return json.optInt("n");
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
     public TransactionListDTO getTransactionList(String url, String address, BigDecimal divider, Integer startIndex, Integer limit, List<TransactionRecordGift> gifts, List<TransactionRecord> txs) {
         try {
             JSONObject res = rest.getForObject(url + "/api/v2/address/" + address + "?details=txs&pageSize=1000&page=1", JSONObject.class);
@@ -95,30 +150,30 @@ public class BlockbookService {
         return new TransactionListDTO();
     }
 
-    public TransactionNumberDTO getTransactionNumber(String url, String address, BigDecimal amount, BigDecimal divider) {
-        try {
-            JSONObject res = rest.getForObject(url + "/api/v2/address/" + address + "?details=txs", JSONObject.class);
-            for (Object jsonTransactions : res.getJSONArray("transactions")) {
-                for (Object operationObject : ((JSONObject) jsonTransactions).getJSONArray("vout")) {
-                    if (operationObject instanceof JSONObject) {
-                        JSONObject operationJson = ((JSONObject) operationObject);
-                        String value = operationJson.getString("value");
-                        BigDecimal bigValue = new BigDecimal(value).divide(divider).stripTrailingZeros();
-                        int n = operationJson.getInt("n");
-
-                        if (bigValue.equals(amount.stripTrailingZeros())) {
-                            String transactionId = ((JSONObject) jsonTransactions).getString("txid");
-                            return new TransactionNumberDTO(transactionId, n);
-                        }
-                    }
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return null;
-    }
+//    public TransactionNumberDTO getTransactionNumber(String url, String address, BigDecimal amount, BigDecimal divider) {
+//        try {
+//            JSONObject res = rest.getForObject(url + "/api/v2/address/" + address + "?details=txs", JSONObject.class);
+//            for (Object jsonTransactions : res.getJSONArray("transactions")) {
+//                for (Object operationObject : ((JSONObject) jsonTransactions).getJSONArray("vout")) {
+//                    if (operationObject instanceof JSONObject) {
+//                        JSONObject operationJson = ((JSONObject) operationObject);
+//                        String value = operationJson.getString("value");
+//                        BigDecimal bigValue = new BigDecimal(value).divide(divider).stripTrailingZeros();
+//                        int n = operationJson.getInt("n");
+//
+//                        if (bigValue.equals(amount.stripTrailingZeros())) {
+//                            String transactionId = ((JSONObject) jsonTransactions).getString("txid");
+//                            return new TransactionNumberDTO(transactionId, n);
+//                        }
+//                    }
+//                }
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//
+//        return null;
+//    }
 
     private Map<String, TransactionDTO> collectNodeTxs(JSONArray array, String address, BigDecimal divider) {
         Map<String, TransactionDTO> map = new HashMap<>();
@@ -163,7 +218,16 @@ public class BlockbookService {
             JSONObject json = array.getJSONObject(i);
 
             return json.optJSONArray("addresses").toString().toLowerCase().contains(address.toLowerCase()) ? TransactionType.WITHDRAW : TransactionType.DEPOSIT;
+        }
 
+        return null;
+    }
+
+    private String getToAddress(JSONArray array, String address) {
+        for (int i = 0; i < array.size(); i++) {
+            if (!array.getJSONObject(i).optJSONArray("addresses").toString().toLowerCase().contains(address)) {
+                return array.getJSONObject(i).optJSONArray("addresses").getString(0);
+            }
         }
 
         return null;

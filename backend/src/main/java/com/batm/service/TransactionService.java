@@ -113,12 +113,12 @@ public class TransactionService {
     }
 
     @Scheduled(fixedDelay = 600_000)
-    public void processGift() {
-        processPending();
-        processStored();
+    public void processCronTasks() {
+        processPendingGifts();
+        processStoredGifts();
     }
 
-    private void processPending() {
+    private void processPendingGifts() {
         try {
             List<TransactionRecordGift> list = transactionRecordGiftRepository.findByStatus(TransactionStatus.PENDING.getValue(), PageRequest.of(0, 10));
             List<TransactionRecordGift> confirmedList = new ArrayList<>();
@@ -160,7 +160,7 @@ public class TransactionService {
         }
     }
 
-    private void processStored() {
+    private void processStoredGifts() {
         try {
             List<TransactionRecordGift> list = transactionRecordGiftRepository.findByTypeAndStatusAndStep(TransactionType.SEND_GIFT.getValue(), TransactionStatus.COMPLETE.getValue(), Constant.GIFT_USER_NOT_EXIST, PageRequest.of(0, 10));
             List<TransactionRecordGift> confirmedList = new ArrayList<>();

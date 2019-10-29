@@ -4,7 +4,6 @@ import java.math.BigDecimal;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
-
 import com.batm.dto.*;
 import com.batm.entity.*;
 import com.batm.model.Error;
@@ -45,6 +44,11 @@ public class CoinService {
     private static String bchNodeUrl;
     private static String ltcNodeUrl;
 
+    private static String btcExplorerUrl;
+    private static String ethExplorerUrl;
+    private static String bchExplorerUrl;
+    private static String ltcExplorerUrl;
+
     public CoinService(@Autowired final BinanceApiRestClient binanceRest,
                        @Autowired final MessageService messageService,
                        @Autowired final WalletService walletService,
@@ -54,10 +58,16 @@ public class CoinService {
                        @Autowired final BinanceService binance,
                        @Autowired final RippledService rippled,
                        @Autowired final TrongridService trongrid,
+
                        @Value("${btc.node.url}") final String btcNodeUrl,
                        @Value("${eth.node.url}") final String ethNodeUrl,
                        @Value("${bch.node.url}") final String bchNodeUrl,
-                       @Value("${ltc.node.url}") final String ltcNodeUrl) {
+                       @Value("${ltc.node.url}") final String ltcNodeUrl,
+
+                       @Value("${btc.explorer.url}") final String btcExplorerUrl,
+                       @Value("${eth.explorer.url}") final String ethExplorerUrl,
+                       @Value("${bch.explorer.url}") final String bchExplorerUrl,
+                       @Value("${ltc.explorer.url}") final String ltcExplorerUrl) {
 
         CoinService.binanceRest = binanceRest;
         CoinService.messageService = messageService;
@@ -74,6 +84,11 @@ public class CoinService {
         CoinService.ethNodeUrl = ethNodeUrl;
         CoinService.bchNodeUrl = bchNodeUrl;
         CoinService.ltcNodeUrl = ltcNodeUrl;
+
+        CoinService.btcExplorerUrl = btcExplorerUrl;
+        CoinService.ethExplorerUrl = ethExplorerUrl;
+        CoinService.bchExplorerUrl = bchExplorerUrl;
+        CoinService.ltcExplorerUrl = ltcExplorerUrl;
     }
 
     public enum CoinEnum {
@@ -94,18 +109,18 @@ public class CoinService {
             }
 
             @Override
-            public TransactionNumberDTO getTransactionNumber(String address, BigDecimal amount) {
-                return blockbook.getTransactionNumber(btcNodeUrl, address, amount, Constant.BTC_DIVIDER);
+            public Integer getN(String txId, String address) {
+                return blockbook.getN(btcNodeUrl, txId, address);
             }
 
             @Override
             public TransactionStatus getTransactionStatus(String txId) {
-                return null;
+                return blockbook.getTransactionStatus(btcNodeUrl, txId);
             }
 
             @Override
             public TransactionDTO getTransaction(String txId, String address) {
-                return null;
+                return blockbook.getTransaction(btcNodeUrl, btcExplorerUrl, txId, address, Constant.BTC_DIVIDER);
             }
 
             @Override
@@ -165,18 +180,18 @@ public class CoinService {
             }
 
             @Override
-            public TransactionNumberDTO getTransactionNumber(String address, BigDecimal amount) {
-                return null;
+            public Integer getN(String txId, String address) {
+                return blockbook.getN(ethNodeUrl, txId, address);
             }
 
             @Override
             public TransactionStatus getTransactionStatus(String txId) {
-                return null;
+                return blockbook.getTransactionStatus(ethNodeUrl, txId);
             }
 
             @Override
             public TransactionDTO getTransaction(String txId, String address) {
-                return null;
+                return blockbook.getTransaction(ethNodeUrl, ethExplorerUrl, txId, address, Constant.ETH_DIVIDER);
             }
 
             @Override
@@ -236,18 +251,18 @@ public class CoinService {
             }
 
             @Override
-            public TransactionNumberDTO getTransactionNumber(String address, BigDecimal amount) {
-                return null;
+            public Integer getN(String txId, String address) {
+                return blockbook.getN(bchNodeUrl, txId, address);
             }
 
             @Override
             public TransactionStatus getTransactionStatus(String txId) {
-                return null;
+                return blockbook.getTransactionStatus(bchNodeUrl, txId);
             }
 
             @Override
             public TransactionDTO getTransaction(String txId, String address) {
-                return null;
+                return blockbook.getTransaction(bchNodeUrl, bchExplorerUrl, txId, address, Constant.BCH_DIVIDER);
             }
 
             @Override
@@ -307,18 +322,18 @@ public class CoinService {
             }
 
             @Override
-            public TransactionNumberDTO getTransactionNumber(String address, BigDecimal amount) {
-                return blockbook.getTransactionNumber(ltcNodeUrl, address, amount, Constant.LTC_DIVIDER);
+            public Integer getN(String txId, String address) {
+                return blockbook.getN(ltcNodeUrl, txId, address);
             }
 
             @Override
             public TransactionStatus getTransactionStatus(String txId) {
-                return null;
+                return blockbook.getTransactionStatus(ltcNodeUrl, txId);
             }
 
             @Override
             public TransactionDTO getTransaction(String txId, String address) {
-                return null;
+                return blockbook.getTransaction(ltcNodeUrl, ltcExplorerUrl, txId, address, Constant.LTC_DIVIDER);
             }
 
             @Override
@@ -379,7 +394,7 @@ public class CoinService {
             }
 
             @Override
-            public TransactionNumberDTO getTransactionNumber(String address, BigDecimal amount) {
+            public Integer getN(String txId, String address) {
                 return null;
             }
 
@@ -451,7 +466,7 @@ public class CoinService {
             }
 
             @Override
-            public TransactionNumberDTO getTransactionNumber(String address, BigDecimal amount) {
+            public Integer getN(String txId, String address) {
                 return null;
             }
 
@@ -523,7 +538,7 @@ public class CoinService {
             }
 
             @Override
-            public TransactionNumberDTO getTransactionNumber(String address, BigDecimal amount) {
+            public Integer getN(String txId, String address) {
                 return null;
             }
 
@@ -585,7 +600,7 @@ public class CoinService {
 
         public abstract String getName();
 
-        public abstract TransactionNumberDTO getTransactionNumber(String address, BigDecimal amount);
+        public abstract Integer getN(String txId, String address);
 
         public abstract TransactionStatus getTransactionStatus(String txId);
 

@@ -6,7 +6,6 @@ import com.batm.entity.TransactionRecord;
 import com.batm.entity.TransactionRecordGift;
 import com.batm.model.TransactionStatus;
 import com.batm.model.TransactionType;
-import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -25,17 +24,6 @@ public class Util {
 
     public static BigDecimal convert(String str) {
         return new BigDecimal(str).setScale(2, RoundingMode.DOWN);
-    }
-
-    public static <T> List<T> jsonArrayToList(JSONArray jsonArray) {
-        List<T> list = new ArrayList<>();
-        if (jsonArray != null) {
-            int len = jsonArray.size();
-            for (int i = 0; i < len; i++) {
-                list.add((T) jsonArray.opt(i));
-            }
-        }
-        return list;
     }
 
     public static String generatePublicId() {
@@ -193,5 +181,9 @@ public class Util {
         result.setTransactions(transactions);
 
         return result;
+    }
+
+    public static String formatPhone(String phone) {
+        return phone.substring(0, 2) + " " + phone.substring(2, 5) + "-" + phone.substring(5, 8) + "-" + phone.substring(8, 12);
     }
 }

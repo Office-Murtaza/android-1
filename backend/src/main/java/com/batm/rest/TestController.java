@@ -1,5 +1,6 @@
 package com.batm.rest;
 
+import com.batm.service.ChainalysisService;
 import com.batm.service.MessageService;
 import com.batm.service.TransactionService;
 import com.batm.service.WalletService;
@@ -24,12 +25,15 @@ public class TestController {
     @Autowired
     private TransactionService transactionService;
 
-    @GetMapping("/sms/send")
+    @Autowired
+    private ChainalysisService chainalysisService;
+
+    @GetMapping("/sms")
     public Response sendSMS(@RequestParam String phone) {
         return Response.ok(messageService.sendMessage(phone, "Hey there, this is a test message!!!"));
     }
 
-    @GetMapping("/wallet/addresses")
+    @GetMapping("/wallet")
     public Response getWalletAddresses() {
         JSONObject res = new JSONObject();
         res.put("BTC", walletService.getAddressBTC());
@@ -43,9 +47,16 @@ public class TestController {
         return Response.ok(res);
     }
 
-    @GetMapping("/transaction/process")
-    public Response transactionProcess() {
-        transactionService.processGift();
+    @GetMapping("/gifts")
+    public Response gifts() {
+        transactionService.processCronTasks();
+
+        return Response.ok(true);
+    }
+
+    @GetMapping("/chainalysis")
+    public Response chainalysis() {
+        chainalysisService.processUntrackedTransactions();
 
         return Response.ok(true);
     }

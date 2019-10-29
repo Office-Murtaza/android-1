@@ -14,10 +14,5 @@ import lombok.Setter;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ChainalysisResponseDTO {
 
-    private String transferReference;
-    private String asset;
-    private String clusterName;
-    private String clusterCategory;
-    private String rating;
     private TransactionRecord transactionRecord;
 }

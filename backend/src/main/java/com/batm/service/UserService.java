@@ -46,6 +46,12 @@ public class UserService {
     @Autowired
     private LimitRepository limitRepository;
 
+    @Autowired
+    private IdentityPieceRepository identityPieceRepository;
+
+    @Autowired
+    private IdentityPieceCellPhoneRepository identityPieceCellPhoneRepository;
+
     @Transactional
     public User register(String phone, String password) {
         User user = new User();
@@ -77,6 +83,20 @@ public class UserService {
         Identity savedIdentity = identityRepository.save(identity);
 
         user.setIdentity(savedIdentity);
+
+        IdentityPiece ip = new IdentityPiece();
+        ip.setIdentity(savedIdentity);
+        ip.setPieceType(4);
+        ip.setRegistration(true);
+        ip.setCreated(date);
+        IdentityPiece ipSaved = identityPieceRepository.save(ip);
+
+        IdentityPieceCellPhone ipCellPhone = new IdentityPieceCellPhone();
+        ipCellPhone.setIdentity(savedIdentity);
+        ipCellPhone.setIdentityPiece(ipSaved);
+        ipCellPhone.setCreated(date);
+        ipCellPhone.setPhoneNumber(Util.formatPhone(user.getPhone()));
+        identityPieceCellPhoneRepository.save(ipCellPhone);
 
         return user;
     }
@@ -148,10 +168,6 @@ public class UserService {
 
     public CodeVerification getCodeByUserId(Long userId) {
         return codeValidatorRepository.findByUserUserId(userId);
-    }
-
-    public UserCoin getUserCoin(Long userId, String coin) {
-        return userCoinRepository.findByUserUserIdAndCoinId(userId, coin);
     }
 
     public List<UserCoin> getUserCoins(Long userId) {
