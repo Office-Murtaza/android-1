@@ -104,7 +104,7 @@ public class TransactionService {
             JSONObject res = Util.insecureRequest(gbUrl + "/extensions/example/sell_crypto" + params.toString());
 
             dto.setAddress(res.optString("cryptoAddress"));
-            dto.setCryptoAmount(new AmountDTO(BigDecimal.valueOf(res.optDouble("cryptoAmount"))));
+            dto.setCryptoAmount(BigDecimal.valueOf(res.optDouble("cryptoAmount")));
         } catch (Exception e) {
             e.printStackTrace();
         }
