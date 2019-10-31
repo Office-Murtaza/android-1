@@ -8,10 +8,10 @@ import com.batm.model.TransactionType;
 import com.batm.util.Util;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
-import org.apache.commons.lang.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.HashMap;
@@ -39,11 +39,8 @@ public class BlockbookService {
     public String submitTransaction(String url, SubmitTransactionDTO transaction) {
         try {
             JSONObject res = rest.getForObject(url + "/api/v2/sendtx/" + transaction.getHex(), JSONObject.class);
-            System.out.println(res);
 
-            String txId = RandomStringUtils.randomAlphanumeric(50);
-
-            return txId;
+            return res.optString("result");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -90,6 +87,40 @@ public class BlockbookService {
         return TransactionStatus.PENDING;
     }
 
+    public TransactionNumberDTO getTransactionNumber(String url, String address, BigDecimal amount, BigDecimal divider, TransactionType type) {
+        try {
+            JSONObject res = rest.getForObject(url + "/api/v2/address/" + address + "?details=txs&pageSize=1000&page=1", JSONObject.class);
+            JSONArray array = res.optJSONArray("transactions");
+
+            if (array != null && !array.isEmpty()) {
+                for (int i = 0; i < array.size(); i++) {
+                    JSONObject json = array.optJSONObject(i);
+                    JSONArray voutArray = json.optJSONArray("vout");
+
+                    for (int j = 0; j < voutArray.size(); j++) {
+                        JSONObject voutJson = voutArray.optJSONObject(j);
+
+                        if (voutJson.optJSONArray("addresses").toString().toLowerCase().contains(address.toLowerCase())) {
+                            if (type == TransactionType.SELL) {
+                                return new TransactionNumberDTO(json.optString("txid"), voutJson.optInt("n"));
+                            } else if (type == TransactionType.BUY) {
+                                BigDecimal value = new BigDecimal(voutJson.optString("value")).divide(divider).stripTrailingZeros();
+
+                                if (amount.equals(value)) {
+                                    return new TransactionNumberDTO(json.optString("txid"), voutJson.optInt("n"));
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
     public TransactionDTO getTransaction(String nodeUrl, String explorerUrl, String txId, String address, BigDecimal divider) {
         TransactionDTO dto = new TransactionDTO();
 
@@ -102,7 +133,7 @@ public class BlockbookService {
             dto.setLink(explorerUrl + "/" + txId);
             dto.setType(getType(address, vinArray));
             dto.setCryptoAmount(getAmount(dto.getType(), address, voutArray, divider));
-            dto.setCryptoFee(new BigDecimal(res.optString("fees")).stripTrailingZeros());
+            dto.setCryptoFee(new BigDecimal(res.optString("fees")).divide(divider).stripTrailingZeros());
             dto.setFromAddress(vinArray.getJSONObject(0).optJSONArray("addresses").getString(0));
             dto.setToAddress(getToAddress(voutArray, dto.getFromAddress()));
             dto.setStatus(getStatus(res.optInt("confirmations")));
@@ -112,25 +143,6 @@ public class BlockbookService {
         }
 
         return dto;
-    }
-
-    public Integer getN(String nodeUrl, String txId, String address) {
-        try {
-            JSONObject res = rest.getForObject(nodeUrl + "/api/v2/tx/" + txId, JSONObject.class);
-            JSONArray voutArray = res.optJSONArray("vout");
-
-            for(int i = 0; i < voutArray.size(); i++) {
-                JSONObject json = voutArray.getJSONObject(i);
-
-                if(json.optJSONArray("addresses").toString().toLowerCase().contains(address.toLowerCase())) {
-                    return json.optInt("n");
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return null;
     }
 
     public TransactionListDTO getTransactionList(String url, String address, BigDecimal divider, Integer startIndex, Integer limit, List<TransactionRecordGift> gifts, List<TransactionRecord> txs) {
@@ -149,31 +161,6 @@ public class BlockbookService {
 
         return new TransactionListDTO();
     }
-
-//    public TransactionNumberDTO getTransactionNumber(String url, String address, BigDecimal amount, BigDecimal divider) {
-//        try {
-//            JSONObject res = rest.getForObject(url + "/api/v2/address/" + address + "?details=txs", JSONObject.class);
-//            for (Object jsonTransactions : res.getJSONArray("transactions")) {
-//                for (Object operationObject : ((JSONObject) jsonTransactions).getJSONArray("vout")) {
-//                    if (operationObject instanceof JSONObject) {
-//                        JSONObject operationJson = ((JSONObject) operationObject);
-//                        String value = operationJson.getString("value");
-//                        BigDecimal bigValue = new BigDecimal(value).divide(divider).stripTrailingZeros();
-//                        int n = operationJson.getInt("n");
-//
-//                        if (bigValue.equals(amount.stripTrailingZeros())) {
-//                            String transactionId = ((JSONObject) jsonTransactions).getString("txid");
-//                            return new TransactionNumberDTO(transactionId, n);
-//                        }
-//                    }
-//                }
-//            }
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//
-//        return null;
-//    }
 
     private Map<String, TransactionDTO> collectNodeTxs(JSONArray array, String address, BigDecimal divider) {
         Map<String, TransactionDTO> map = new HashMap<>();
@@ -196,7 +183,7 @@ public class BlockbookService {
     }
 
     private TransactionStatus getStatus(Integer confirmations) {
-        return (confirmations == null || confirmations < 3) ? TransactionStatus.PENDING : TransactionStatus.COMPLETE;
+        return (confirmations == null || confirmations < 2) ? TransactionStatus.PENDING : TransactionStatus.COMPLETE;
     }
 
     private BigDecimal getAmount(TransactionType type, String address, JSONArray array, BigDecimal divider) {

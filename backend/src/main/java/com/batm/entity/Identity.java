@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.apache.commons.lang3.StringUtils;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import javax.persistence.*;
@@ -187,25 +188,25 @@ public class Identity {
 
     @Transient
     public TransactionRecord getTxRecord(String txId, String coinId) {
-        Optional<TransactionRecord> first = transactionRecords.stream().filter(e -> e.getDetail().equalsIgnoreCase(txId) && e.getCryptoCurrency().equalsIgnoreCase(coinId)).findFirst();
+        Optional<TransactionRecord> first = transactionRecords.stream().filter(e -> txId.equalsIgnoreCase(e.getDetail()) && coinId.equalsIgnoreCase(e.getCryptoCurrency())).findFirst();
 
         return first.isPresent() ? first.get() : null;
     }
 
     @Transient
     public List<TransactionRecord> getTxRecordList(String coinId) {
-        return transactionRecords.stream().filter(e -> e.getCryptoCurrency().equalsIgnoreCase(coinId)).collect(Collectors.toList());
+        return transactionRecords.stream().filter(e -> coinId.equalsIgnoreCase(e.getCryptoCurrency()) && StringUtils.isNotEmpty(e.getDetail())).collect(Collectors.toList());
     }
 
     @Transient
     public TransactionRecordGift getTxGift(String txId, String coinId) {
-        Optional<TransactionRecordGift> first = transactionRecordGifts.stream().filter(e -> e.getTxId().equalsIgnoreCase(txId) && e.getCoin().getId().equalsIgnoreCase(coinId)).findFirst();
+        Optional<TransactionRecordGift> first = transactionRecordGifts.stream().filter(e -> txId.equalsIgnoreCase(e.getTxId()) && coinId.equalsIgnoreCase(e.getCoin().getId())).findFirst();
 
         return first.isPresent() ? first.get() : null;
     }
 
     @Transient
     public List<TransactionRecordGift> getTxGiftList(String coinId) {
-        return transactionRecordGifts.stream().filter(e -> e.getCoin().getId().equalsIgnoreCase(coinId)).collect(Collectors.toList());
+        return transactionRecordGifts.stream().filter(e -> coinId.equalsIgnoreCase(e.getCoin().getId())).collect(Collectors.toList());
     }
 }

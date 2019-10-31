@@ -1,6 +1,5 @@
 package com.batm.rest;
 
-import com.batm.service.ChainalysisService;
 import com.batm.service.MessageService;
 import com.batm.service.TransactionService;
 import com.batm.service.WalletService;
@@ -25,9 +24,6 @@ public class TestController {
     @Autowired
     private TransactionService transactionService;
 
-    @Autowired
-    private ChainalysisService chainalysisService;
-
     @GetMapping("/sms")
     public Response sendSMS(@RequestParam String phone) {
         return Response.ok(messageService.sendMessage(phone, "Hey there, this is a test message!!!"));
@@ -50,13 +46,6 @@ public class TestController {
     @GetMapping("/gifts")
     public Response gifts() {
         transactionService.processCronTasks();
-
-        return Response.ok(true);
-    }
-
-    @GetMapping("/chainalysis")
-    public Response chainalysis() {
-        chainalysisService.processUntrackedTransactions();
 
         return Response.ok(true);
     }

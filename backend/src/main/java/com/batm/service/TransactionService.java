@@ -1,13 +1,7 @@
 package com.batm.service;
 
-import com.batm.dto.AmountDTO;
-import com.batm.dto.PreSubmitDTO;
-import com.batm.dto.SubmitTransactionDTO;
-import com.batm.dto.UserLimitDTO;
-import com.batm.entity.Coin;
-import com.batm.entity.Identity;
-import com.batm.entity.TransactionRecordGift;
-import com.batm.entity.User;
+import com.batm.dto.*;
+import com.batm.entity.*;
 import com.batm.model.TransactionStatus;
 import com.batm.model.TransactionType;
 import com.batm.repository.TransactionRecordGiftRepository;
@@ -20,6 +14,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
@@ -36,6 +31,12 @@ public class TransactionService {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private ChainalysisService chainalysisService;
+
+    @Autowired
+    private MessageService messageService;
 
     @Value("${gb.url}")
     private String gbUrl;
@@ -112,10 +113,41 @@ public class TransactionService {
         return dto;
     }
 
-    @Scheduled(fixedDelay = 600_000)
+    @Scheduled(fixedDelay = 60_000)
     public void processCronTasks() {
         processPendingGifts();
         processStoredGifts();
+
+        processCompletedTransactions();
+    }
+
+    public void processCompletedTransactions() {
+        try {
+            List<TransactionRecord> list = transactionRecordRepository.findCompletedTransactions(PageRequest.of(0, 50));
+
+            if (!list.isEmpty()) {
+                list.stream().forEach(e -> {
+                    CoinService.CoinEnum coinId = CoinService.CoinEnum.valueOf(e.getCryptoCurrency());
+                    TransactionType type = (e.getType() == 1 && e.getStatus() == 3) ? TransactionType.SELL : TransactionType.BUY;
+                    TransactionNumberDTO txNumber = coinId.getTransactionNumber(e.getCryptoAddress(), e.getCryptoAmount(), type);
+
+                    e.setDetail(txNumber.getTxId());
+                    e.setN(txNumber.getN());
+
+                    User user = e.getIdentity().getUser();
+
+                    if (user != null && type == TransactionType.SELL) {
+                        messageService.sendMessage(user.getPhone(), "Your sell transaction is confirmed");
+                    }
+                });
+
+                chainalysisService.processChainalysis(list);
+
+                transactionRecordRepository.saveAll(list);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void processPendingGifts() {

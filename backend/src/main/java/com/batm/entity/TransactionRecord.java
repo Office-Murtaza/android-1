@@ -56,6 +56,8 @@ public class TransactionRecord {
     )
     private String detail;
 
+    private Integer n;
+
     @Column(
             name = "cashamount",
             precision = 20,

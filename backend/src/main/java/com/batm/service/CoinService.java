@@ -109,8 +109,8 @@ public class CoinService {
             }
 
             @Override
-            public Integer getN(String txId, String address) {
-                return blockbook.getN(btcNodeUrl, txId, address);
+            public TransactionNumberDTO getTransactionNumber(String address, BigDecimal amount, TransactionType type) {
+                return blockbook.getTransactionNumber(btcNodeUrl, address, amount, Constant.BTC_DIVIDER, type);
             }
 
             @Override
@@ -156,10 +156,7 @@ public class CoinService {
             @Override
             public String submitTransaction(Long userId, SubmitTransactionDTO transaction) {
                 String txId = blockbook.submitTransaction(btcNodeUrl, transaction);
-
-                if (StringUtils.isNotEmpty(txId) && com.batm.model.TransactionType.SEND_GIFT.getValue() == transaction.getType()) {
-                    saveGift(userId, this, txId, transaction);
-                }
+                saveGift(userId, this, txId, transaction);
 
                 return txId;
             }
@@ -180,8 +177,8 @@ public class CoinService {
             }
 
             @Override
-            public Integer getN(String txId, String address) {
-                return blockbook.getN(ethNodeUrl, txId, address);
+            public TransactionNumberDTO getTransactionNumber(String address, BigDecimal amount, TransactionType type) {
+                return blockbook.getTransactionNumber(ethNodeUrl, address, amount, Constant.ETH_DIVIDER, type);
             }
 
             @Override
@@ -227,10 +224,7 @@ public class CoinService {
             @Override
             public String submitTransaction(Long userId, SubmitTransactionDTO transaction) {
                 String txId = blockbook.submitTransaction(ethNodeUrl, transaction);
-
-                if (StringUtils.isNotEmpty(txId) && com.batm.model.TransactionType.SEND_GIFT.getValue() == transaction.getType()) {
-                    saveGift(userId, this, txId, transaction);
-                }
+                saveGift(userId, this, txId, transaction);
 
                 return txId;
             }
@@ -251,8 +245,8 @@ public class CoinService {
             }
 
             @Override
-            public Integer getN(String txId, String address) {
-                return blockbook.getN(bchNodeUrl, txId, address);
+            public TransactionNumberDTO getTransactionNumber(String address, BigDecimal amount, TransactionType type) {
+                return blockbook.getTransactionNumber(bchNodeUrl, address, amount, Constant.BCH_DIVIDER, type);
             }
 
             @Override
@@ -298,10 +292,7 @@ public class CoinService {
             @Override
             public String submitTransaction(Long userId, SubmitTransactionDTO transaction) {
                 String txId = blockbook.submitTransaction(bchNodeUrl, transaction);
-
-                if (StringUtils.isNotEmpty(txId) && com.batm.model.TransactionType.SEND_GIFT.getValue() == transaction.getType()) {
-                    saveGift(userId, this, txId, transaction);
-                }
+                saveGift(userId, this, txId, transaction);
 
                 return txId;
             }
@@ -322,8 +313,8 @@ public class CoinService {
             }
 
             @Override
-            public Integer getN(String txId, String address) {
-                return blockbook.getN(ltcNodeUrl, txId, address);
+            public TransactionNumberDTO getTransactionNumber(String address, BigDecimal amount, TransactionType type) {
+                return blockbook.getTransactionNumber(ltcNodeUrl, address, amount, Constant.LTC_DIVIDER, type);
             }
 
             @Override
@@ -369,10 +360,7 @@ public class CoinService {
             @Override
             public String submitTransaction(Long userId, SubmitTransactionDTO transaction) {
                 String txId = blockbook.submitTransaction(ltcNodeUrl, transaction);
-
-                if (StringUtils.isNotEmpty(txId) && com.batm.model.TransactionType.SEND_GIFT.getValue() == transaction.getType()) {
-                    saveGift(userId, this, txId, transaction);
-                }
+                saveGift(userId, this, txId, transaction);
 
                 return txId;
             }
@@ -394,7 +382,7 @@ public class CoinService {
             }
 
             @Override
-            public Integer getN(String txId, String address) {
+            public TransactionNumberDTO getTransactionNumber(String address, BigDecimal amount, TransactionType type) {
                 return null;
             }
 
@@ -441,10 +429,7 @@ public class CoinService {
             @Override
             public String submitTransaction(Long userId, SubmitTransactionDTO transaction) {
                 String txId = binance.submitTransaction(transaction);
-
-                if (StringUtils.isNotEmpty(txId) && com.batm.model.TransactionType.SEND_GIFT.getValue() == transaction.getType()) {
-                    saveGift(userId, this, txId, transaction);
-                }
+                saveGift(userId, this, txId, transaction);
 
                 return txId;
             }
@@ -466,7 +451,7 @@ public class CoinService {
             }
 
             @Override
-            public Integer getN(String txId, String address) {
+            public TransactionNumberDTO getTransactionNumber(String address, BigDecimal amount, TransactionType type) {
                 return null;
             }
 
@@ -513,10 +498,7 @@ public class CoinService {
             @Override
             public String submitTransaction(Long userId, SubmitTransactionDTO transaction) {
                 String txId = rippled.submitTransaction(transaction);
-
-                if (StringUtils.isNotEmpty(txId) && com.batm.model.TransactionType.SEND_GIFT.getValue() == transaction.getType()) {
-                    saveGift(userId, this, txId, transaction);
-                }
+                saveGift(userId, this, txId, transaction);
 
                 return txId;
             }
@@ -538,7 +520,7 @@ public class CoinService {
             }
 
             @Override
-            public Integer getN(String txId, String address) {
+            public TransactionNumberDTO getTransactionNumber(String address, BigDecimal amount, TransactionType type) {
                 return null;
             }
 
@@ -585,10 +567,7 @@ public class CoinService {
             @Override
             public String submitTransaction(Long userId, SubmitTransactionDTO transaction) {
                 String txId = trongrid.submitTransaction(transaction);
-
-                if (StringUtils.isNotEmpty(txId) && com.batm.model.TransactionType.SEND_GIFT.getValue() == transaction.getType()) {
-                    saveGift(userId, this, txId, transaction);
-                }
+                saveGift(userId, this, txId, transaction);
 
                 return txId;
             }
@@ -600,7 +579,7 @@ public class CoinService {
 
         public abstract String getName();
 
-        public abstract Integer getN(String txId, String address);
+        public abstract TransactionNumberDTO getTransactionNumber(String address, BigDecimal amount, TransactionType type);
 
         public abstract TransactionStatus getTransactionStatus(String txId);
 
@@ -733,11 +712,13 @@ public class CoinService {
     }
 
     public static void saveGift(Long userId, CoinEnum coinId, String txId, SubmitTransactionDTO dto) {
-        User user = userService.findById(userId);
+        if (StringUtils.isNotEmpty(txId) && com.batm.model.TransactionType.SEND_GIFT.getValue() == dto.getType()) {
+            User user = userService.findById(userId);
 
-        Optional<User> receiver = userService.findByPhone(dto.getPhone());
-        messageService.sendGiftMessage(coinId, dto, receiver.isPresent());
+            Optional<User> receiver = userService.findByPhone(dto.getPhone());
+            messageService.sendGiftMessage(coinId, dto, receiver.isPresent());
 
-        transactionService.saveGift(user.getIdentity(), txId, user.getCoin(coinId.name()), dto, receiver.isPresent());
+            transactionService.saveGift(user.getIdentity(), txId, user.getCoin(coinId.name()), dto, receiver.isPresent());
+        }
     }
 }

@@ -2,14 +2,11 @@ package com.batm.service;
 
 import com.batm.dto.ChainalysisResponseDTO;
 import com.batm.entity.TransactionRecord;
-import com.batm.repository.TransactionRecordRepository;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.http.*;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import java.util.*;
@@ -21,9 +18,6 @@ public class ChainalysisService {
 
     @Autowired
     private RestTemplate rest;
-
-    @Autowired
-    private TransactionRecordRepository transactionRecordRepository;
 
     @Value("${chainalysis.enabled}")
     private Boolean enabled;
@@ -37,22 +31,11 @@ public class ChainalysisService {
     @Value("${chainalysis.rows-limit}")
     private int rowsLimit;
 
-    @Scheduled(fixedDelay = 900_000)
-    public void processUntrackedTransactions() {
+    public void processChainalysis(List<TransactionRecord> list) {
         try {
             if (enabled) {
-                List<TransactionRecord> untrackedList = transactionRecordRepository.findUntrackedAndClosedTransactions(Arrays.asList(CoinService.CoinEnum.BTC.name(), CoinService.CoinEnum.LTC.name()), PageRequest.of(0, rowsLimit));
-
-                List<CompletableFuture<ChainalysisResponseDTO>> futures = untrackedList
-                        .stream().map(this::callAsync).collect(Collectors.toList());
-
-                List<TransactionRecord> trackedList = futures.stream()
-                        .map(CompletableFuture::join)
-                        .filter(Objects::nonNull)
-                        .map(ChainalysisResponseDTO::getTransactionRecord)
-                        .collect(Collectors.toList());
-
-                transactionRecordRepository.saveAll(trackedList);
+                List<CompletableFuture<ChainalysisResponseDTO>> futures = list.stream().map(this::callAsync).collect(Collectors.toList());
+                futures.stream().map(CompletableFuture::join).filter(Objects::nonNull).map(ChainalysisResponseDTO::getTransactionRecord).collect(Collectors.toList());
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -66,9 +49,9 @@ public class ChainalysisService {
                     tx.setCryptoAddress(tx.getCryptoAddress().split(":")[0]);
                 }
 
-                CoinService.CoinEnum coinEnum = CoinService.CoinEnum.valueOf(tx.getCryptoCurrency());
-
-                sendRequest(tx, coinEnum);
+                if(tx.getTracked() == false && Arrays.asList(CoinService.CoinEnum.BTC, CoinService.CoinEnum.LTC).contains(CoinService.CoinEnum.valueOf(tx.getCryptoCurrency()))) {
+                    sendRequest(tx);
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -77,12 +60,10 @@ public class ChainalysisService {
         });
     }
 
-    private void sendRequest(TransactionRecord tx, CoinService.CoinEnum coinId) {
+    private void sendRequest(TransactionRecord tx) {
         try {
             String requestType = tx.getType() == 0 ? "received" : "sent";
-            String requestTransferReference = tx.getType() == 0
-                    ? String.format("%s:%s", tx.getDetail(), tx.getCryptoAddress())
-                    : String.format("%s:%d", tx.getDetail(), coinId.getN(tx.getDetail(), tx.getCryptoAddress()));
+            String requestTransferReference = tx.getType() == 0 ? String.format("%s:%s", tx.getDetail(), tx.getCryptoAddress()) : String.format("%s:%d", tx.getDetail(), tx.getN());
 
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("asset", tx.getCryptoCurrency());

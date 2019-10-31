@@ -13,6 +13,6 @@ import lombok.Setter;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class TransactionNumberDTO {
 
-    private String transactionId;
-    private int n;
+    private String txId;
+    private Integer n;
 }
