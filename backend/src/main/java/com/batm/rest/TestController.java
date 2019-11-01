@@ -1,6 +1,7 @@
 package com.batm.rest;
 
 import com.batm.service.MessageService;
+import com.batm.service.TransactionService;
 import com.batm.service.WalletService;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,12 +21,15 @@ public class TestController {
     @Autowired
     private WalletService walletService;
 
-    @GetMapping("/sms/send")
+    @Autowired
+    private TransactionService transactionService;
+
+    @GetMapping("/sms")
     public Response sendSMS(@RequestParam String phone) {
         return Response.ok(messageService.sendMessage(phone, "Hey there, this is a test message!!!"));
     }
 
-    @GetMapping("/wallet/addresses")
+    @GetMapping("/wallet")
     public Response getWalletAddresses() {
         JSONObject res = new JSONObject();
         res.put("BTC", walletService.getAddressBTC());
@@ -37,5 +41,12 @@ public class TestController {
         res.put("TRX", walletService.getAddressTRX());
 
         return Response.ok(res);
+    }
+
+    @GetMapping("/gifts")
+    public Response gifts() {
+        transactionService.processCronTasks();
+
+        return Response.ok(true);
     }
 }

@@ -4,7 +4,6 @@ import com.batm.util.AES;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import wallet.core.jni.*;
-
 import javax.annotation.PostConstruct;
 
 @Service

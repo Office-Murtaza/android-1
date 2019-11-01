@@ -5,6 +5,7 @@ import android.content.Context
 import androidx.fragment.app.Fragment
 import androidx.multidex.MultiDexApplication
 import com.app.belcobtm.di.component.DaggerAppComponent
+import com.facebook.stetho.Stetho
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasActivityInjector
@@ -50,6 +51,8 @@ class App @Inject constructor() : MultiDexApplication(), HasActivityInjector, Ha
         config.name("crypto_coin")
         config.deleteRealmIfMigrationNeeded()
         Realm.setDefaultConfiguration(config.build())
+
+        Stetho.initializeWithDefaults(this)
     }
 
     override fun activityInjector(): AndroidInjector<Activity>? {

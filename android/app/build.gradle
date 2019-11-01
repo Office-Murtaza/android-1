@@ -87,6 +87,9 @@ dependencies {
 
     implementation "org.ethereum:geth:$project.gethVersion"
 
+    //logger
+    implementation 'com.facebook.stetho:stetho-okhttp3:1.5.1'
+
     // Http client
     implementation "com.squareup.retrofit2:retrofit:$project.retrofitVersion"
     implementation "com.squareup.retrofit2:converter-gson:$project.retrofitVersion"

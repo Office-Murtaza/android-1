@@ -1,7 +1,6 @@
 package com.batm.security;
 
 import javax.annotation.PostConstruct;
-import com.batm.util.Constant;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.binary.StringUtils;
 import org.springframework.beans.factory.BeanInitializationException;
@@ -20,16 +19,14 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import com.batm.repository.TokenRepository;
-import com.batm.security.jwt.JWTConfigurer;
-import com.batm.security.jwt.TokenProvider;
 
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
-    @Value("${security.mode}")
-    private Integer securityMode;
+    @Value("${security.enabled}")
+    private Boolean securityEnabled;
 
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
     private final TokenProvider tokenProvider;
@@ -88,13 +85,13 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(HttpSecurity http) throws Exception {
-        if (securityMode == Constant.DISABLED) {
+        if (securityEnabled) {
             http.csrf().disable().authorizeRequests()
                     .antMatchers("/api/v1/register").permitAll()
                     .antMatchers("/api/v1/recover").permitAll()
                     .antMatchers("/api/v1/refresh").permitAll()
                     .antMatchers("/api/v1/test/**").permitAll()
-                    .antMatchers("/api/v1/**").permitAll()
+                    .antMatchers("/api/v1/**").authenticated()
 
                     .and().exceptionHandling().and().headers().frameOptions().disable().and().sessionManagement()
                     .sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().apply(securityConfigurerAdapter());
@@ -104,7 +101,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                     .antMatchers("/api/v1/recover").permitAll()
                     .antMatchers("/api/v1/refresh").permitAll()
                     .antMatchers("/api/v1/test/**").permitAll()
-                    .antMatchers("/api/v1/**").authenticated()
+                    .antMatchers("/api/v1/**").permitAll()
 
                     .and().exceptionHandling().and().headers().frameOptions().disable().and().sessionManagement()
                     .sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().apply(securityConfigurerAdapter());

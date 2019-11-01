@@ -3,6 +3,7 @@ package com.app.belcobtm.api
 import com.app.belcobtm.App
 import com.app.belcobtm.util.Const.API_URL
 import com.app.belcobtm.util.pref
+import com.facebook.stetho.okhttp3.StethoInterceptor
 import com.google.gson.Gson
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -48,6 +49,7 @@ class RetrofitClient private constructor() {
             .connectTimeout(60, TimeUnit.SECONDS)
             .readTimeout(60, TimeUnit.SECONDS)
             .addInterceptor(ErrorInterceptor())
+            .addNetworkInterceptor(StethoInterceptor())
             .addInterceptor { chain ->
                 val request = chain.request().newBuilder()
                     .addHeader("Content-Type", "application/json")

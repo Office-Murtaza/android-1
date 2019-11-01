@@ -1,14 +1,17 @@
 package com.batm.entity;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
+import org.apache.commons.lang3.StringUtils;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import javax.persistence.*;
-import java.io.Serializable;
-import java.util.Set;
+import java.util.Date;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Getter
 @Setter
@@ -16,19 +19,194 @@ import java.util.Set;
 @NoArgsConstructor
 @Entity
 @Table(name = "identity")
-public class Identity implements Serializable {
-
-    private static final long serialVersionUID = -1712969322089989538L;
+public class Identity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Long identityId;
+    @GeneratedValue(
+            strategy = GenerationType.IDENTITY
+    )
+    @Column(
+            name = "id"
+    )
+    private long id;
 
-    @Column(name = "publicid")
+    @Column(
+            name = "publicid"
+    )
     private String publicId;
 
-    @JsonManagedReference
-    @OneToMany(mappedBy = "identity", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private Set<Transaction> transactions;
+    @Column(
+            name = "externalid"
+    )
+    private String externalId;
+
+    @Column(
+            name = "type"
+    )
+    private Integer type;
+
+    @Column(
+            name = "state"
+    )
+    private int state;
+
+    @Column(
+            name = "created"
+    )
+    private Date created;
+
+    @Column(
+            name = "registered"
+    )
+    private Date registered;
+
+    @Column(
+            name = "lastupdatedat"
+    )
+    private Date lastUpdatedAt;
+
+    @Column(
+            name = "configurationcashcurrency"
+    )
+    private String configurationCashCurrency;
+
+    @OneToMany(
+            cascade = {CascadeType.ALL},
+            fetch = FetchType.LAZY
+    )
+    @JoinTable(
+            name = "identity_limit_cptr",
+            joinColumns = {@JoinColumn(
+                    name = "identity_id",
+                    referencedColumnName = "id"
+            )},
+            inverseJoinColumns = {@JoinColumn(
+                    name = "limit_id",
+                    referencedColumnName = "id"
+            )}
+    )
+    @Fetch(FetchMode.SUBSELECT)
+    private List<Limit> limitCashPerTransaction;
+
+    @OneToMany(
+            cascade = {CascadeType.ALL},
+            fetch = FetchType.LAZY
+    )
+    @JoinTable(
+            name = "identity_limit_cph",
+            joinColumns = {@JoinColumn(
+                    name = "identity_id",
+                    referencedColumnName = "id"
+            )},
+            inverseJoinColumns = {@JoinColumn(
+                    name = "limit_id",
+                    referencedColumnName = "id"
+            )}
+    )
+    @Fetch(FetchMode.SUBSELECT)
+    private List<Limit> limitCashPerHour;
+
+    @OneToMany(
+            cascade = {CascadeType.ALL},
+            fetch = FetchType.LAZY
+    )
+    @JoinTable(
+            name = "identity_limit_cpd",
+            joinColumns = {@JoinColumn(
+                    name = "identity_id",
+                    referencedColumnName = "id"
+            )},
+            inverseJoinColumns = {@JoinColumn(
+                    name = "limit_id",
+                    referencedColumnName = "id"
+            )}
+    )
+    @Fetch(FetchMode.SUBSELECT)
+    private List<Limit> limitCashPerDay;
+
+    @OneToMany(
+            cascade = {CascadeType.ALL},
+            fetch = FetchType.LAZY
+    )
+    @JoinTable(
+            name = "identity_limit_cpw",
+            joinColumns = {@JoinColumn(
+                    name = "identity_id",
+                    referencedColumnName = "id"
+            )},
+            inverseJoinColumns = {@JoinColumn(
+                    name = "limit_id",
+                    referencedColumnName = "id"
+            )}
+    )
+    @Fetch(FetchMode.SUBSELECT)
+    private List<Limit> limitCashPerWeek;
+
+    @OneToMany(
+            cascade = {CascadeType.ALL},
+            fetch = FetchType.LAZY
+    )
+    @JoinTable(
+            name = "identity_limit_cpm",
+            joinColumns = {@JoinColumn(
+                    name = "identity_id",
+                    referencedColumnName = "id"
+            )},
+            inverseJoinColumns = {@JoinColumn(
+                    name = "limit_id",
+                    referencedColumnName = "id"
+            )}
+    )
+    @Fetch(FetchMode.SUBSELECT)
+    private List<Limit> limitCashPerMonth;
+
+    @Column(
+            name = "watchlistlastscanat"
+    )
+    private Date watchListLastScanAt;
+
+    @Column(
+            name = "watchlistbanned"
+    )
+    private Boolean watchListBanned;
+
+    @Column(
+            name = "note",
+            columnDefinition = "MEDIUMTEXT"
+    )
+    private String note;
+
+    @OneToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
+    @OneToMany(mappedBy = "identity")
+    private List<TransactionRecord> transactionRecords;
+
+    @OneToMany(mappedBy = "identity")
+    private List<TransactionRecordGift> transactionRecordGifts;
+
+    @Transient
+    public TransactionRecord getTxRecord(String txId, String coinId) {
+        Optional<TransactionRecord> first = transactionRecords.stream().filter(e -> txId.equalsIgnoreCase(e.getDetail()) && coinId.equalsIgnoreCase(e.getCryptoCurrency())).findFirst();
+
+        return first.isPresent() ? first.get() : null;
+    }
+
+    @Transient
+    public List<TransactionRecord> getTxRecordList(String coinId) {
+        return transactionRecords.stream().filter(e -> coinId.equalsIgnoreCase(e.getCryptoCurrency()) && StringUtils.isNotEmpty(e.getDetail())).collect(Collectors.toList());
+    }
+
+    @Transient
+    public TransactionRecordGift getTxGift(String txId, String coinId) {
+        Optional<TransactionRecordGift> first = transactionRecordGifts.stream().filter(e -> txId.equalsIgnoreCase(e.getTxId()) && coinId.equalsIgnoreCase(e.getCoin().getId())).findFirst();
+
+        return first.isPresent() ? first.get() : null;
+    }
+
+    @Transient
+    public List<TransactionRecordGift> getTxGiftList(String coinId) {
+        return transactionRecordGifts.stream().filter(e -> coinId.equalsIgnoreCase(e.getCoin().getId())).collect(Collectors.toList());
+    }
 }

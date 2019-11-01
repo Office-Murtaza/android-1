@@ -6,9 +6,11 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import javax.validation.Valid;
-
+import com.batm.dto.AuthenticationDTO;
+import com.batm.dto.TokenDTO;
 import com.batm.repository.UserRepository;
 import com.batm.service.MessageService;
+import com.batm.util.Util;
 import net.sf.json.JSONObject;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.StringUtils;
@@ -31,22 +33,15 @@ import com.batm.entity.Unlink;
 import com.batm.entity.UpdatePhone;
 import com.batm.entity.User;
 import com.batm.repository.TokenRepository;
-import com.batm.rest.vm.ChangePasswordRequestVM;
-import com.batm.rest.vm.CheckPasswordRequestVM;
-import com.batm.rest.vm.LoginVM;
-import com.batm.rest.vm.PhoneRequestVM;
-import com.batm.rest.vm.RefreshVM;
-import com.batm.rest.vm.RegisterVM;
-import com.batm.rest.vm.ValidateOTPResponse;
-import com.batm.rest.vm.ValidateOTPVM;
-import com.batm.security.jwt.JWTFilter;
-import com.batm.security.jwt.TokenProvider;
+import com.batm.dto.ChangePasswordDTO;
+import com.batm.dto.CheckPasswordDTO;
+import com.batm.dto.PhoneDTO;
+import com.batm.dto.RefreshDTO;
+import com.batm.dto.ValidateResponseDTO;
+import com.batm.dto.ValidateDTO;
+import com.batm.security.TokenProvider;
 import com.batm.service.UserService;
 import com.batm.util.Constant;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @RestController
 @RequestMapping("/api/v1")
@@ -80,27 +75,27 @@ public class UserController {
     private MessageService messageService;
 
     @PostMapping("/register")
-    public Response register(@Valid @RequestBody RegisterVM register) {
+    public Response register(@RequestBody AuthenticationDTO dto) {
         try {
             Pattern pattern = Pattern.compile(Constant.REGEX_PHONE);
 
-            Matcher matcher = pattern.matcher(register.getPhone());
+            Matcher matcher = pattern.matcher(dto.getPhone());
             if (!matcher.matches()) {
-                return Response.error(new Error(2, "Invalid phone number"));
+                return Response.serverError(2, "Invalid phone number");
             }
 
-            if (!checkPasswordLength(register.getPassword())) {
-                return Response.error(new Error(2, "Password length should be in 6 to 15"));
+            if (!checkPasswordLength(dto.getPassword())) {
+                return Response.serverError(3, "Password length should be in 6 to 15");
             }
 
-            Optional<User> findOneByPhoneIgnoreCase = userService.findOneByPhoneIgnoreCase(register.getPhone());
+            Optional<User> findOneByPhoneIgnoreCase = userService.findByPhone(dto.getPhone());
             if (findOneByPhoneIgnoreCase.isPresent()) {
-                return Response.error(new Error(1, "Phone is already registered"));
+                return Response.serverError(4, "Phone is already registered");
             }
 
-            User user = userService.registerUser(register.getPhone(), register.getPassword());
+            User user = userService.register(dto.getPhone(), dto.getPassword());
             messageService.sendVerificationCode(user);
-            JWTToken jwt = getJwt(user.getUserId(), register.getPhone(), register.getPassword());
+            TokenDTO jwt = getJwt(user.getUserId(), user.getIdentity().getId(), dto.getPhone(), dto.getPassword());
 
             refreshTokenRepository.save(new Token(jwt.getAccessToken(), jwt.getRefreshToken(), user));
 
@@ -112,32 +107,32 @@ public class UserController {
     }
 
     @PostMapping("/recover")
-    public Response recover(@Valid @RequestBody LoginVM loginVM) {
+    public Response recover(@RequestBody AuthenticationDTO dto) {
         try {
             Pattern pattern = Pattern.compile(Constant.REGEX_PHONE);
 
-            Matcher matcher = pattern.matcher(loginVM.getPhone());
+            Matcher matcher = pattern.matcher(dto.getPhone());
             if (!matcher.matches()) {
                 return Response.error(new Error(2, "Invalid phone number"));
             }
 
-            if (!checkPasswordLength(loginVM.getPassword())) {
+            if (!checkPasswordLength(dto.getPassword())) {
                 return Response.error(new Error(3, "Password length should be in 6 to 15"));
             }
 
-            Optional<User> findOneByPhoneIgnoreCase = userService.findOneByPhoneIgnoreCase(loginVM.getPhone());
+            Optional<User> findOneByPhoneIgnoreCase = userService.findByPhone(dto.getPhone());
             if (!findOneByPhoneIgnoreCase.isPresent()) {
                 return Response.error(new Error(2, "Phone is not registered"));
             }
 
             User user = findOneByPhoneIgnoreCase.get();
 
-            boolean passwordMatch = passwordEncoder.matches(loginVM.getPassword(), user.getPassword());
+            boolean passwordMatch = passwordEncoder.matches(dto.getPassword(), user.getPassword());
             if (!passwordMatch) {
                 return Response.error(new Error(3, "Wrong password"));
             }
 
-            JWTToken jwt = getJwt(user.getUserId(), loginVM.getPhone(), loginVM.getPassword());
+            TokenDTO jwt = getJwt(user.getUserId(), user.getIdentity().getId(), dto.getPhone(), dto.getPassword());
 
             messageService.sendVerificationCode(user);
 
@@ -154,7 +149,7 @@ public class UserController {
     }
 
     @PostMapping("/user/{userId}/verify")
-    public Response verify(@RequestBody ValidateOTPVM validateOtpVM, @PathVariable Long userId) {
+    public Response verify(@RequestBody ValidateDTO validateOtpVM, @PathVariable Long userId) {
         try {
             CodeVerification codeVerification = userService.getCodeByUserId(userId);
             Instant time10MinuteAge = Instant.now().minusMillis(verificationCodeValidity);
@@ -174,7 +169,7 @@ public class UserController {
             codeVerification.setCodeStatus("1");
             userService.save(codeVerification);
 
-            return Response.ok(new ValidateOTPResponse(userId, true));
+            return Response.ok(new ValidateResponseDTO(userId, true));
         } catch (Exception e) {
             e.printStackTrace();
             return Response.serverError();
@@ -182,14 +177,14 @@ public class UserController {
     }
 
     @PostMapping("/refresh")
-    public Response refresh(@Valid @RequestBody RefreshVM refreshVM) {
+    public Response refresh(@Valid @RequestBody RefreshDTO refreshDTO) {
         try {
-            Token refreshToken = refreshTokenRepository.findByRefreshToken(refreshVM.getRefreshToken());
+            Token refreshToken = refreshTokenRepository.findByRefreshToken(refreshDTO.getRefreshToken());
 
             if (refreshToken != null) {
                 User user = userService.findById(refreshToken.getUser().getUserId());
 
-                JWTToken jwt = getJwt(user);
+                TokenDTO jwt = getJwt(user);
 
                 Token token = refreshTokenRepository.findByUserUserId(user.getUserId());
                 token.setRefreshToken(jwt.getRefreshToken());
@@ -237,7 +232,7 @@ public class UserController {
     }
 
     @PostMapping("/user/{userId}/phone")
-    public Response updatePhone(@RequestBody PhoneRequestVM phoneRequest, @PathVariable Long userId) {
+    public Response updatePhone(@RequestBody PhoneDTO phoneRequest, @PathVariable Long userId) {
         try {
             Boolean isPhoneExist = this.userService.isPhoneExist(phoneRequest.getPhone(), userId);
             if (isPhoneExist) {
@@ -255,7 +250,7 @@ public class UserController {
     }
 
     @PostMapping("/user/{userId}/phone/confirm")
-    public Response confirmPhone(@RequestBody ValidateOTPVM validateOtpVM, @PathVariable Long userId) {
+    public Response confirmPhone(@RequestBody ValidateDTO validateOtpVM, @PathVariable Long userId) {
         try {
             UpdatePhone updatePhone = userService.getUpdatePhone(userId);
             updatePhone = (UpdatePhone) Hibernate.unproxy(updatePhone);
@@ -287,7 +282,7 @@ public class UserController {
     }
 
     @PostMapping("/user/{userId}/check/password")
-    public Response checkPassword(@RequestBody CheckPasswordRequestVM checkPasswordRequest, @PathVariable Long userId) {
+    public Response checkPassword(@RequestBody CheckPasswordDTO checkPasswordRequest, @PathVariable Long userId) {
         try {
             Boolean match = Boolean.FALSE;
             User user = this.userService.findById(userId);
@@ -306,7 +301,7 @@ public class UserController {
     }
 
     @PostMapping("/user/{userId}/password")
-    public Response updatePassword(@RequestBody ChangePasswordRequestVM changePasswordRequest, @PathVariable Long userId) {
+    public Response updatePassword(@RequestBody ChangePasswordDTO changePasswordRequest, @PathVariable Long userId) {
         try {
             User user = this.userService.findById(userId);
             Boolean match = passwordEncoder.matches(changePasswordRequest.getOldPassword(), user.getPassword());
@@ -344,54 +339,37 @@ public class UserController {
         }
     }
 
-    private JWTToken getJwt(Long userId, String username, String password) {
+    private TokenDTO getJwt(Long userId, Long identityId, String username, String password) {
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username,
                 password);
 
         Authentication authentication = this.authenticationManager.authenticate(authenticationToken);
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String jwt = tokenProvider.createToken(authentication);
-        String refreshToken = tokenProvider.createRefreshToken();
+        String refreshToken = Util.createRefreshToken();
         HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.add(JWTFilter.AUTHORIZATION_HEADER, "Bearer " + jwt);
+        httpHeaders.add(Constant.AUTHORIZATION_HEADER, "Bearer " + jwt);
 
-        return new JWTToken(userId, jwt, System.currentTimeMillis() + expiryTime, refreshToken,
+        return new TokenDTO(userId, identityId, jwt, System.currentTimeMillis() + expiryTime, refreshToken,
                 authentication.getAuthorities().stream().map(role -> role.getAuthority()).collect(Collectors.toList()));
     }
 
-    private JWTToken getJwt(User user) {
+    private TokenDTO getJwt(User user) {
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
                 user.getPhone(), new String(Base64.decodeBase64(user.getPassword())));
 
         Authentication authentication = this.authenticationManager.authenticate(authenticationToken);
         String jwt = tokenProvider.createToken(authentication);
-        String refreshToken = tokenProvider.createRefreshToken();
+        String refreshToken = Util.createRefreshToken();
         HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.add(JWTFilter.AUTHORIZATION_HEADER, "Bearer " + jwt);
+        httpHeaders.add(Constant.AUTHORIZATION_HEADER, "Bearer " + jwt);
 
-        return new JWTToken(user.getUserId(), jwt, System.currentTimeMillis() + expiryTime, refreshToken,
+        return new TokenDTO(user.getUserId(), user.getIdentity().getId(), jwt, System.currentTimeMillis() + expiryTime, refreshToken,
                 authentication.getAuthorities().stream().map(role -> role.getAuthority()).collect(Collectors.toList()));
     }
 
     private static boolean checkPasswordLength(String password) {
         return !StringUtils.isEmpty(password) && password.length() >= Constant.PASSWORD_MIN_LENGTH
                 && password.length() <= Constant.PASSWORD_MAX_LENGTH;
-    }
-
-    @Getter
-    @Setter
-    @AllArgsConstructor
-    @NoArgsConstructor
-    static class JWTToken {
-
-        private Long userId;
-
-        private String accessToken;
-
-        private Long expires;
-
-        private String refreshToken;
-
-        private List<String> roles;
     }
 }

@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonValue;
 
 public enum TransactionStatus {
 
-    UNKNOWN(0),
     PENDING(1),
     COMPLETE(2),
     FAIL(3);
