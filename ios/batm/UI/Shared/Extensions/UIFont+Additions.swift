@@ -22,6 +22,10 @@ extension UIFont {
     return UIFont(name: "Poppins-Medium", size: 12.0)!
   }
   
+  class var poppinsMedium13: UIFont {
+    return UIFont(name: "Poppins-Medium", size: 13.0)!
+  }
+  
   class var poppinsMedium14: UIFont {
     return UIFont(name: "Poppins-Medium", size: 14.0)!
   }

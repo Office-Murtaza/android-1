@@ -24,14 +24,7 @@ struct CoinWithdrawState: Equatable {
   var shouldShowCodePopup: Bool = false
   
   var maxValue: Double {
-    guard let coin = coin, let coinBalance = coinBalance else { return 0 }
-    
-    let maxValue = max(0, coinBalance.balance - coin.type.fee)
-    
-    switch coin.type {
-    case .ethereum: return min(9, maxValue)
-    default: return maxValue
-    }
+    return coinBalance?.maxValue ?? 0
   }
   
 }
@@ -50,21 +43,21 @@ final class CoinWithdrawStore: ViewStore<CoinWithdrawAction, CoinWithdrawState> 
     case let .setupCoinBalance(coinBalance): state.coinBalance = coinBalance
     case let .updateAddress(address): state.address = address ?? ""
     case let .updateCurrencyAmount(amount):
-      let amount = amount ?? ""
-      state.currencyAmount = amount
-      if amount.isEmpty {
-        state.coinAmount = ""
-      } else {
-        state.coinAmount = String((Double(amount) ?? 0) / state.coinBalance!.price)
-      }
+      let currencyAmount = (amount ?? "").fiatFormatted
+      let doubleCurrencyAmount = Double(currencyAmount)
+      let price = state.coinBalance!.price
+      let coinAmount = doubleCurrencyAmount == nil ? "" : (doubleCurrencyAmount! / price).coinFormatted
+      
+      state.coinAmount = coinAmount
+      state.currencyAmount = currencyAmount
     case let .updateCoinAmount(amount):
-      let amount = amount ?? ""
-      state.coinAmount = amount
-      if amount.isEmpty {
-        state.currencyAmount = ""
-      } else {
-        state.currencyAmount = String((Double(amount) ?? 0) * state.coinBalance!.price)
-      }
+      let coinAmount = (amount ?? "").coinFormatted
+      let doubleCoinAmount = Double(coinAmount)
+      let price = state.coinBalance!.price
+      let currencyAmount = doubleCoinAmount == nil ? "" : (doubleCoinAmount! * price).fiatFormatted
+      
+      state.coinAmount = coinAmount
+      state.currencyAmount = currencyAmount
     case let .updateCode(code): state.code = code ?? ""
     case .updateValidationState: state.validationState = validate(state)
     case let .makeInvalidState(error): state.validationState = .invalid(error)
@@ -87,7 +80,7 @@ final class CoinWithdrawStore: ViewStore<CoinWithdrawAction, CoinWithdrawState> 
       return .invalid(localize(L.CoinWithdraw.Form.Error.invalidAmount))
     }
     
-    guard amount > 0 else {
+    guard amount > coin.type.fee else {
       return .invalid(localize(L.CoinWithdraw.Form.Error.tooLowAmount))
     }
     

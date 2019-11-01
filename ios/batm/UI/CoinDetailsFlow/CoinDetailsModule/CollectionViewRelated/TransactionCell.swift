@@ -119,6 +119,6 @@ final class TransactionCell: UICollectionViewCell {
     typeLabel.text = model.type.verboseValue.uppercased()
     statusLabel.text = model.status.verboseValue
     coloredStatusView.backgroundColor = model.status.associatedColor
-    amountLabel.text = "\(model.amount.coinFormatted))"
+    amountLabel.text = "\(model.amount.coinFormatted)"
   }
 }

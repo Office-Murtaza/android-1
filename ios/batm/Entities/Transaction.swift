@@ -83,6 +83,7 @@ enum TransactionStatus {
 }
 
 struct Transaction: Equatable {
+  let txid: String
   let dateString: String
   let type: TransactionType
   let status: TransactionStatus

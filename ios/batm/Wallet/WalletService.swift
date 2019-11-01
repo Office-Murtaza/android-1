@@ -88,6 +88,7 @@ class WalletServiceImpl: WalletService {
       $0.byteFee = coin.type.feePerByte
       $0.changeAddress = coin.publicKey
       $0.toAddress = toAddress
+      $0.coinType = coin.type.rawValue
     }
     
     utxos.compactMap { DerivationPath($0.path) }.forEach {
@@ -268,7 +269,7 @@ class WalletServiceImpl: WalletService {
     }
     
     var signingInput = BinanceSigningInput()
-    signingInput.chainID = "Binance-Chain-Nile"
+    signingInput.chainID = "Binance-Chain-Tigris"
     signingInput.accountNumber = Int64(accountInfo.accountNumber)
     signingInput.sequence = Int64(accountInfo.sequence)
     

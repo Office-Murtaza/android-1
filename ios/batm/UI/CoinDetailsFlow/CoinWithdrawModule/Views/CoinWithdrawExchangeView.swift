@@ -51,8 +51,12 @@ class CoinWithdrawExchangeView: UIView {
     return label
   }()
   
-  override init(frame: CGRect) {
-    super.init(frame: frame)
+  private let isCoinEditable: Bool
+  
+  init(coinEditable: Bool = true) {
+    self.isCoinEditable = coinEditable
+    
+    super.init(frame: .null)
     
     setupUI()
     setupLayout()
@@ -74,6 +78,8 @@ class CoinWithdrawExchangeView: UIView {
                                   currencyTextField)
     coinContainer.addSubviews(coinLabel,
                               coinTextField)
+    
+    coinTextField.isEnabled = isCoinEditable
   }
   
   private func setupLayout() {

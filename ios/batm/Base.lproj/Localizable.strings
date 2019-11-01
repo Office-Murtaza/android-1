@@ -114,3 +114,32 @@
 "coin_send_gift.form.phone.title" = "Phone";
 "coin_send_gift.form.error.invalid_phone" = "Invalid phone";
 "coin_send_gift.form.message.placeholder" = "Input Text Message";
+
+"coin_sell.title" = "Sell";
+"coin_sell.daily_limit" = "Daily Limit";
+"coin_sell.transaction_limit" = "Transaction Limit";
+"coin_sell.sell_from_another" = "Sell from another address";
+"coin_sell.form.error.not_multiple" = "Fiat amount should be a multiple of 20 or 50";
+
+"coin_sell_details.title" = "Sell";
+"coin_sell_details.another_address.first_instruction" = "Please send this exact amount by scanning QR code above or the payment will be reject.";
+"coin_sell_details.another_address.second_instruction" = "Wait a few minutes before your payment is confirmed. You will receive an SMS when cash withdrawal is ready.";
+"coin_sell_details.another_address.third_instruction" = "On the ATM choose REDEEM TICKET.";
+"coin_sell_details.another_address.fourth_instruction" = "Scan QR code from transaction details popup.";
+"coin_sell_details.current_address.first_instruction" = "Wait a few minutes before your payment is confirmed.";
+"coin_sell_details.current_address.second_instruction" = "You will receive an SMS when cash withdrawal is ready.";
+"coin_sell_details.current_address.third_instruction" = "On the ATM choose REDEEM TICKET.";
+"coin_sell_details.current_address.fourth_instruction" = "Scan QR code from transaction details popup.";
+
+"transaction_details.title" = "Transaction Details";
+"transaction_details.tx_id" = "TxId";
+"transaction_details.type" = "Type";
+"transaction_details.status" = "Status";
+"transaction_details.amount" = "Amount";
+"transaction_details.fee" = "Fee";
+"transaction_details.date" = "Date";
+"transaction_details.from_address" = "From Address";
+"transaction_details.to_address" = "To Address";
+"transaction_details.phone" = "Phone";
+"transaction_details.image" = "Image";
+"transaction_details.message" = "Message";

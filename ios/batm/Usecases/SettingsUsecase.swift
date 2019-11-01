@@ -70,12 +70,7 @@ class SettingsUsecaseImpl: SettingsUsecase {
   
   func changePin(oldPin: String, newPin: String) -> Completable {
     return pinCodeUsecase.verify(pinCode: oldPin)
-      .map { matched -> Void in
-        if matched { return Void() }
-        
-        throw PinCodeError.notMatch
-      }
-      .flatMapCompletable { [pinCodeUsecase] in pinCodeUsecase.save(pinCode: newPin) }
+      .andThen(pinCodeUsecase.save(pinCode: newPin))
   }
   
   func unlink() -> Completable {

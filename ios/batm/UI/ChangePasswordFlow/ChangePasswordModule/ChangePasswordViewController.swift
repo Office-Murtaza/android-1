@@ -30,10 +30,6 @@ final class ChangePasswordViewController: ModuleViewController<ChangePasswordPre
   
   let formView = ChangePasswordFormView()
   
-  override var shouldShowNavigationBar: Bool {
-    return false
-  }
-  
   override var preferredStatusBarStyle: UIStatusBarStyle {
     return .lightContent
   }

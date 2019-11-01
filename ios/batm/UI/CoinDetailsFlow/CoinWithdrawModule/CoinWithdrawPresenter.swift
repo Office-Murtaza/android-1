@@ -81,7 +81,7 @@ final class CoinWithdrawPresenter: ModulePresenter, CoinWithdrawModule {
     input.max
       .asObservable()
       .withLatestFrom(state)
-      .map { String($0.maxValue) }
+      .map { $0.maxValue.coinFormatted }
       .map { CoinWithdrawAction.updateCoinAmount($0) }
       .bind(to: store.action)
       .disposed(by: disposeBag)
@@ -100,8 +100,7 @@ final class CoinWithdrawPresenter: ModulePresenter, CoinWithdrawModule {
       .doOnNext { [store] in store.action.accept(.updateValidationState) }
       .withLatestFrom(state)
       .filter { $0.validationState.isValid }
-      .flatMap { [unowned self] in self.track(self.withdraw(for: $0))
-      }
+      .flatMap { [unowned self] in self.track(self.withdraw(for: $0)) }
       .subscribe(onNext: { [delegate] in delegate?.didFinishCoinWithdraw() })
       .disposed(by: disposeBag)
   }

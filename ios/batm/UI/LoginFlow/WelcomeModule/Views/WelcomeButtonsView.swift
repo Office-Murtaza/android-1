@@ -76,7 +76,7 @@ class WelcomeButtonsView: RoundedView, HasDisposeBag {
   private func setupBindings() {
     createButton.rx.tap
       .asObservable()
-      .map { [termsAndConditionsView] in termsAndConditionsView.isAccepted }
+      .withLatestFrom(termsAndConditionsView.rx.isAccepted)
       .bind(to: errorView.rx.isHidden)
       .disposed(by: disposeBag)
   }
@@ -86,7 +86,7 @@ extension Reactive where Base == WelcomeButtonsView {
   var createTap: Driver<Void> {
     return base.createButton.rx.tap
       .asDriver()
-      .filter { [base] in base.termsAndConditionsView.isAccepted }
+      .flatFilter(base.termsAndConditionsView.rx.isAccepted)
   }
   
   var recoverTap: Driver<Void> {

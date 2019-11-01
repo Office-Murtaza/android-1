@@ -29,14 +29,19 @@ protocol APIGateway {
   func changePassword(userId: Int, oldPassword: String, newPassword: String) -> Completable
   func unlink(userId: Int) -> Completable
   func getTransactions(userId: Int, type: CoinType, page: Int) -> Single<Transactions>
+  func getTransactionDetails(userId: Int, type: CoinType, txid: String) -> Single<TransactionDetails>
   func getUtxos(userId: Int, type: CoinType, xpub: String) -> Single<[Utxo]>
+  func presubmitTransaction(userId: Int,
+                            type: CoinType,
+                            coinAmount: Double,
+                            currencyAmount: Double) -> Single<PreSubmitResponse>
   func submitTransaction(userId: Int,
                          type: CoinType,
                          txType: TransactionType,
                          amount: Double,
                          phone: String?,
                          message: String?,
-                         imageUrl: String?,
+                         imageId: String?,
                          txhex: String?,
                          trxJson: [String: Any]?) -> Completable
   func requestCode(userId: Int) -> Completable
@@ -45,6 +50,8 @@ protocol APIGateway {
   func getNonce(userId: Int, type: CoinType, address: String) -> Single<Nonce>
   func getBinanceAccountInfo(userId: Int, type: CoinType, address: String) -> Single<BinanceAccountInfo>
   func getRippleSequence(userId: Int, type: CoinType, address: String) -> Single<RippleSequence>
+  func getSellAddress(userId: Int, type: CoinType) -> Single<SellAddress>
+  func getSellDetails(userId: Int, type: CoinType) -> Single<SellDetails>
 }
 
 final class APIGatewayImpl: APIGateway {
@@ -247,6 +254,19 @@ final class APIGatewayImpl: APIGateway {
       }
   }
   
+  func getTransactionDetails(userId: Int, type: CoinType, txid: String) -> Single<TransactionDetails> {
+    let request = TransactionDetailsRequest(userId: userId, coinId: type.code, txid: txid)
+    return api.execute(request)
+      .flatMap {
+        switch $0 {
+        case let .response(response):
+          return Single.just(response)
+        case let .error(error):
+          return Single.error(error)
+        }
+      }
+  }
+  
   func getUtxos(userId: Int, type: CoinType, xpub: String) -> Single<[Utxo]> {
     let request = UtxosRequest(userId: userId, coinId: type.code, xpub: xpub)
     return api.execute(request)
@@ -260,13 +280,32 @@ final class APIGatewayImpl: APIGateway {
       }
   }
   
+  func presubmitTransaction(userId: Int,
+                            type: CoinType,
+                            coinAmount: Double,
+                            currencyAmount: Double) -> Single<PreSubmitResponse> {
+    let request = PreSubmitTransactionRequest(userId: userId,
+                                              coinId: type.code,
+                                              coinAmount: coinAmount,
+                                              currencyAmount: currencyAmount)
+    return api.execute(request)
+      .flatMap {
+        switch $0 {
+        case let .response(response):
+          return Single.just(response)
+        case let .error(error):
+          return Single.error(error)
+        }
+      }
+  }
+  
   func submitTransaction(userId: Int,
                          type: CoinType,
                          txType: TransactionType,
                          amount: Double,
                          phone: String?,
                          message: String?,
-                         imageUrl: String?,
+                         imageId: String?,
                          txhex: String?,
                          trxJson: [String: Any]?) -> Completable {
     let request = SubmitTransactionRequest(userId: userId,
@@ -275,7 +314,7 @@ final class APIGatewayImpl: APIGateway {
                                            amount: amount,
                                            phone: phone,
                                            message: message,
-                                           imageUrl: imageUrl,
+                                           imageId: imageId,
                                            txhex: txhex,
                                            trxJson: trxJson)
     return api.execute(request)
@@ -358,6 +397,32 @@ final class APIGatewayImpl: APIGateway {
   
   func getRippleSequence(userId: Int, type: CoinType, address: String) -> Single<RippleSequence> {
     let request = GetRippleSequenceRequest(userId: userId, coinId: type.code, address: address)
+    return api.execute(request)
+      .flatMap {
+        switch $0 {
+        case let .response(response):
+          return Single.just(response)
+        case let .error(error):
+          return Single.error(error)
+        }
+      }
+  }
+  
+  func getSellAddress(userId: Int, type: CoinType) -> Single<SellAddress> {
+    let request = GetSellAddressRequest(userId: userId, coinId: type.code)
+    return api.execute(request)
+      .flatMap {
+        switch $0 {
+        case let .response(response):
+          return Single.just(response)
+        case let .error(error):
+          return Single.error(error)
+        }
+      }
+  }
+  
+  func getSellDetails(userId: Int, type: CoinType) -> Single<SellDetails> {
+    let request = GetSellDetailsRequest(userId: userId, coinId: type.code)
     return api.execute(request)
       .flatMap {
         switch $0 {

@@ -30,10 +30,6 @@ class SettingsViewController: ModuleViewController<SettingsPresenter>, UICollect
     return collectionView
   }()
   
-  override var shouldShowNavigationBar: Bool {
-    return false
-  }
-  
   override var preferredStatusBarStyle: UIStatusBarStyle {
     return .lightContent
   }

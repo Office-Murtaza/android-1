@@ -62,9 +62,7 @@ class RecoverViewController: ModuleViewController<RecoverPresenter> {
     return view
   }()
   
-  override var shouldShowNavigationBar: Bool {
-    return false
-  }
+  private var handler: KeyboardHandler!
   
   private func registerForKeyboardNotifications() {
     NotificationCenter.default.addObserver(self,
@@ -96,7 +94,9 @@ class RecoverViewController: ModuleViewController<RecoverPresenter> {
     
     view.backgroundColor = .whiteTwo
     
-    view.addSubview(rootScrollView)
+    view.addSubviews(rootScrollView,
+                     backgroundDarkView,
+                     codeView)
     rootScrollView.addSubview(contentView)
     contentView.addSubviews(backgroundImageView,
                             logoImageView,
@@ -104,10 +104,15 @@ class RecoverViewController: ModuleViewController<RecoverPresenter> {
                             mainImageView,
                             titleLabel,
                             separatorView,
-                            formView,
-                            backgroundDarkView,
-                            codeView)
+                            formView)
     contentView.addGestureRecognizer(tapRecognizer)
+    
+    setupKeyboardHandling()
+  }
+  
+  private func setupKeyboardHandling() {
+    handler = KeyboardHandler(with: view)
+    setupDefaultKeyboardHandling(with: handler)
   }
   
   override func setupLayout() {
@@ -158,7 +163,8 @@ class RecoverViewController: ModuleViewController<RecoverPresenter> {
       $0.edges.equalToSuperview()
     }
     codeView.snp.makeConstraints {
-      $0.left.right.bottom.equalTo(formView)
+      $0.left.right.equalToSuperview().inset(30)
+      $0.bottom.equalTo(view.safeAreaLayoutGuide).offset(-30)
     }
   }
   
@@ -214,7 +220,8 @@ class RecoverViewController: ModuleViewController<RecoverPresenter> {
       .disposed(by: disposeBag)
     
     Driver.merge(tapRecognizer.rx.event.asDriver().map { _ in () },
-                 backgroundDarkView.rx.tap)
+                 backgroundDarkView.rx.tap,
+                 formView.rx.nextTap)
       .drive(onNext: { [view] in view?.endEditing(true) })
       .disposed(by: disposeBag)
   }

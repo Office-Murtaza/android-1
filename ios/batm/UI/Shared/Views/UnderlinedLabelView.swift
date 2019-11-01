@@ -9,6 +9,7 @@ enum UnderlinedLabelViewType {
   case max
   case addGif
   case removeGif
+  case custom(String)
 }
 
 class UnderlinedLabelView: UIView {
@@ -57,6 +58,9 @@ class UnderlinedLabelView: UIView {
     case .max: attributedText = NSAttributedString(string: localize(L.Shared.max), attributes: attributes)
     case .addGif: attributedText = NSAttributedString(string: localize(L.Shared.addGif), attributes: attributes)
     case .removeGif: attributedText = NSAttributedString(string: localize(L.Shared.removeGif), attributes: attributes)
+    case let .custom(text):
+      attributedText = NSAttributedString(string: text, attributes: attributes)
+      underlinedLabel.numberOfLines = 0
     }
     
     underlinedLabel.attributedText = attributedText

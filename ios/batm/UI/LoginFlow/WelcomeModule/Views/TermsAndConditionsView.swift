@@ -6,15 +6,7 @@ class TermsAndConditionsView: UIView, HasDisposeBag {
   
   let tapRecognizer = UITapGestureRecognizer()
   
-  let checkboxButton: UIButton = {
-    let button = UIButton(type: .system)
-    button.layer.borderColor = UIColor.greyish.withAlphaComponent(0.5).cgColor
-    button.layer.borderWidth = 1
-    button.layer.cornerRadius = 2
-    return button
-  }()
-  
-  let checkmarkImageView = UIImageView(image: UIImage(named: "welcome_checkmark"))
+  let checkboxView = CheckboxView()
   
   let titleLabel: UILabel = {
     let label = UILabel()
@@ -31,16 +23,11 @@ class TermsAndConditionsView: UIView, HasDisposeBag {
     return label
   }()
   
-  var isAccepted: Bool {
-    return checkmarkImageView.superview != nil
-  }
-  
   override init(frame: CGRect) {
     super.init(frame: frame)
     
     setupUI()
     setupLayout()
-    setupBindings()
   }
   
   required init?(coder aDecoder: NSCoder) {
@@ -50,43 +37,26 @@ class TermsAndConditionsView: UIView, HasDisposeBag {
   private func setupUI() {
     translatesAutoresizingMaskIntoConstraints = false
     
-    addSubviews(checkboxButton,
-                titleLabel)
+    addSubviews(checkboxView, titleLabel)
     addGestureRecognizer(tapRecognizer)
   }
   
   private func setupLayout() {
-    checkboxButton.snp.makeConstraints {
+    checkboxView.snp.makeConstraints {
       $0.top.left.bottom.equalToSuperview()
-      $0.size.equalTo(15)
     }
     titleLabel.snp.makeConstraints {
-      $0.left.equalTo(checkboxButton.snp.right).offset(10)
+      $0.left.equalTo(checkboxView.snp.right).offset(10)
       $0.right.centerY.equalToSuperview()
-    }
-  }
-  
-  private func setupBindings() {
-    checkboxButton.rx.tap
-      .asDriver()
-      .map { _ in () }
-      .drive(onNext: { [unowned self] in self.toggleCheckbox() })
-      .disposed(by: disposeBag)
-  }
-  
-  private func toggleCheckbox() {
-    if isAccepted {
-      checkmarkImageView.removeFromSuperview()
-    } else {
-      checkboxButton.addSubview(checkmarkImageView)
-      checkmarkImageView.snp.remakeConstraints {
-        $0.left.bottom.equalToSuperview().inset(2)
-      }
     }
   }
 }
 
 extension Reactive where Base == TermsAndConditionsView {
+  var isAccepted: Driver<Bool> {
+    return base.checkboxView.rx.isAccepted
+  }
+  
   var termsAndConditionsTap: Driver<Void> {
     return base.tapRecognizer.rx.event
       .asDriver()

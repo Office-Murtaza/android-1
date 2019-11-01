@@ -30,10 +30,6 @@ final class ChangePinViewController: ModuleViewController<ChangePinPresenter> {
   
   let formView = ChangePinFormView()
   
-  override var shouldShowNavigationBar: Bool {
-    return false
-  }
-  
   override var preferredStatusBarStyle: UIStatusBarStyle {
     return .lightContent
   }

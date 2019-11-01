@@ -15,7 +15,7 @@ final class CoinSendGiftPresenter: ModulePresenter, CoinSendGiftModule {
     var pastePhone: Driver<Void>
     var updateCode: Driver<String?>
     var updateMessage: Driver<String?>
-    var updateImageUrl: Driver<String?>
+    var updateImageId: Driver<String?>
     var cancel: Driver<Void>
     var max: Driver<Void>
     var next: Driver<Void>
@@ -88,16 +88,16 @@ final class CoinSendGiftPresenter: ModulePresenter, CoinSendGiftModule {
       .bind(to: store.action)
       .disposed(by: disposeBag)
     
-    input.updateImageUrl
+    input.updateImageId
       .asObservable()
-      .map { CoinSendGiftAction.updateImageUrl($0) }
+      .map { CoinSendGiftAction.updateImageId($0) }
       .bind(to: store.action)
       .disposed(by: disposeBag)
     
     input.max
       .asObservable()
       .withLatestFrom(state)
-      .map { String($0.maxValue) }
+      .map { $0.maxValue.coinFormatted }
       .map { CoinSendGiftAction.updateCoinAmount($0) }
       .bind(to: store.action)
       .disposed(by: disposeBag)
@@ -138,7 +138,7 @@ final class CoinSendGiftPresenter: ModulePresenter, CoinSendGiftModule {
                                 to: state.formattedPhoneNumber,
                                 amount: Double(state.coinAmount) ?? 0.0,
                                 message: state.message,
-                                imageUrl: state.imageUrl))
+                                imageId: state.imageId))
       .catchError { [store] in
         if let apiError = $0 as? APIError, case let .serverError(error) = apiError {
           store.action.accept(.makeInvalidState(error))

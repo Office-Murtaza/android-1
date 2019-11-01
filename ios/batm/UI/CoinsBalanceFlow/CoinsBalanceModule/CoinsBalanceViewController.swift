@@ -42,10 +42,6 @@ class CoinsBalanceViewController: ModuleViewController<CoinsBalancePresenter>, U
     return collectionView
   }()
   
-  override var shouldShowNavigationBar: Bool {
-    return false
-  }
-  
   override var preferredStatusBarStyle: UIStatusBarStyle {
     return .lightContent
   }

@@ -224,6 +224,21 @@ struct TransactionsRequest: AuthorizedAPIRequest {
   }
 }
 
+struct TransactionDetailsRequest: AuthorizedAPIRequest {
+  typealias ResponseType = APIResponse<TransactionDetails>
+  typealias ResponseTrait = SingleResponseTrait
+  
+  let userId: Int
+  let coinId: String
+  let txid: String
+  
+  var path: String { return "/user/\(userId)/coins/\(coinId)/transaction/\(txid)" }
+  var method: HTTPMethod { return .get }
+  var task: HTTPTask {
+    return .requestPlain
+  }
+}
+
 struct UtxosRequest: AuthorizedAPIRequest {
   typealias ResponseType = APIResponse<Utxos>
   typealias ResponseTrait = SingleResponseTrait
@@ -232,7 +247,7 @@ struct UtxosRequest: AuthorizedAPIRequest {
   let coinId: String
   let xpub: String
   
-  var path: String { return "/user/\(userId)/coins/\(coinId)/utxo/\(xpub)" }
+  var path: String { return "/user/\(userId)/coins/\(coinId)/transactions/utxo/\(xpub)" }
   var method: HTTPMethod { return .get }
   var task: HTTPTask {
     return .requestPlain
@@ -254,6 +269,25 @@ struct GetNonceRequest: AuthorizedAPIRequest {
   }
 }
 
+struct PreSubmitTransactionRequest: AuthorizedAPIRequest {
+  typealias ResponseType = APIResponse<PreSubmitResponse>
+  typealias ResponseTrait = SingleResponseTrait
+  
+  let userId: Int
+  let coinId: String
+  let coinAmount: Double
+  let currencyAmount: Double
+  
+  var path: String { return "/user/\(userId)/coins/\(coinId)/transactions/presubmit" }
+  var method: HTTPMethod { return .post }
+  var task: HTTPTask {
+    return .requestParameters(parameters: ["cryptoAmount": coinAmount,
+                                           "fiatAmount": currencyAmount,
+                                           "fiatCurrency": "USD"],
+                              encoding: JSONEncoding.default)
+  }
+}
+
 struct SubmitTransactionRequest: AuthorizedAPIRequest {
   typealias ResponseType = APIEmptyResponse
   typealias ResponseTrait = SingleResponseTrait
@@ -264,7 +298,7 @@ struct SubmitTransactionRequest: AuthorizedAPIRequest {
   let amount: Double
   let phone: String?
   let message: String?
-  let imageUrl: String?
+  let imageId: String?
   let txhex: String?
   let trxJson: [String: Any]?
   
@@ -272,10 +306,10 @@ struct SubmitTransactionRequest: AuthorizedAPIRequest {
   var method: HTTPMethod { return .post }
   var task: HTTPTask {
     return .requestParameters(parameters: ["type": txType.rawValue,
-                                           "amount": amount,
+                                           "cryptoAmount": amount,
                                            "phone": phone as Any,
                                            "message": message as Any,
-                                           "image": imageUrl as Any,
+                                           "imageId": imageId as Any,
                                            "hex": txhex as Any,
                                            "trx": trxJson as Any],
                               encoding: JSONEncoding.default)
@@ -351,5 +385,33 @@ struct GetGiftAddressRequest: AuthorizedAPIRequest {
   var method: HTTPMethod { return .get }
   var task: HTTPTask {
     return .requestParameters(parameters: ["phone": phone], encoding: URLEncoding.customDefault)
+  }
+}
+
+struct GetSellAddressRequest: AuthorizedAPIRequest {
+  typealias ResponseType = APIResponse<SellAddress>
+  typealias ResponseTrait = SingleResponseTrait
+  
+  let userId: Int
+  let coinId: String
+  
+  var path: String { return "/user/\(userId)/coins/\(coinId)/transactions/selldetails" }
+  var method: HTTPMethod { return .get }
+  var task: HTTPTask {
+    return .requestPlain
+  }
+}
+
+struct GetSellDetailsRequest: AuthorizedAPIRequest {
+  typealias ResponseType = APIResponse<SellDetails>
+  typealias ResponseTrait = SingleResponseTrait
+  
+  let userId: Int
+  let coinId: String
+  
+  var path: String { return "/user/\(userId)/coins/\(coinId)/transactions/limits" }
+  var method: HTTPMethod { return .get }
+  var task: HTTPTask {
+    return .requestPlain
   }
 }

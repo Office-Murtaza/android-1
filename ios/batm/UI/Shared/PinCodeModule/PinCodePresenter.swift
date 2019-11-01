@@ -32,6 +32,7 @@ class PinCodePresenter: ModulePresenter, PinCodeModule {
   func bind(input: Input) {
     input.updateCode
       .asObservable()
+      .distinctUntilChanged()
       .map { PinCodeAction.updateCode($0) }
       .bind(to: store.action)
       .disposed(by: disposeBag)
@@ -45,8 +46,15 @@ class PinCodePresenter: ModulePresenter, PinCodeModule {
       .asObservable()
       .flatMap { [unowned self] state -> Driver<Bool> in
         switch state.stage {
-        case .setup: return self.track(self.usecase.save(pinCode: state.code).andThen(Observable.just(true)))
-        case .verification: return self.track(self.usecase.verify(pinCode: state.code))
+        case .setup: return self.track(
+          self.usecase.save(pinCode: state.code)
+            .andThen(Observable.just(true))
+          )
+        case .verification: return self.track(
+          self.usecase.verify(pinCode: state.code)
+            .andThen(self.usecase.refresh())
+            .andThen(Observable.just(true))
+        )
         }
       }
       .filter { $0 }

@@ -37,10 +37,6 @@ class FilterCoinsViewController: ModuleViewController<FilterCoinsPresenter>, UIC
     return collectionView
   }()
   
-  override var shouldShowNavigationBar: Bool {
-    return false
-  }
-  
   override var preferredStatusBarStyle: UIStatusBarStyle {
     return .lightContent
   }
