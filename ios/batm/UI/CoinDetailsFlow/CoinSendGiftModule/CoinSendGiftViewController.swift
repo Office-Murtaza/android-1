@@ -5,42 +5,7 @@ import SnapKit
 import GiphyUISDK
 import GiphyCoreSDK
 
-final class CoinSendGiftViewController: ModuleViewController<CoinSendGiftPresenter> {
-  
-  let tapRecognizer = UITapGestureRecognizer()
-  
-  let rootScrollView: UIScrollView = {
-    let scrollView = UIScrollView()
-    scrollView.bounces = false
-    scrollView.contentInsetAdjustmentBehavior = .never
-    scrollView.keyboardDismissMode = .interactive
-    return scrollView
-  }()
-  
-  let contentView = UIView()
-  
-  let backgroundImageView: UIImageView = {
-    let imageView = UIImageView(image: UIImage(named: "login_background"))
-    imageView.contentMode = .scaleAspectFill
-    imageView.clipsToBounds = true
-    return imageView
-  }()
-  
-  let safeAreaContainer = UIView()
-  
-  let backButton: UIButton = {
-    let button = UIButton()
-    button.setImage(UIImage(named: "back"), for: .normal)
-    return button
-  }()
-  
-  let titleLabel: UILabel = {
-    let label = UILabel()
-    label.text = localize(L.CoinSendGift.title)
-    label.textColor = .white
-    label.font = .poppinsSemibold20
-    return label
-  }()
+final class CoinSendGiftViewController: NavigationScreenViewController<CoinSendGiftPresenter> {
   
   let errorView = ErrorView()
   
@@ -104,96 +69,45 @@ final class CoinSendGiftViewController: ModuleViewController<CoinSendGiftPresent
     return view
   }()
   
-  private let didUpdateImageUrlRelay = PublishRelay<String?>()
+  private let didUpdateImageIdRelay = PublishRelay<String?>()
   
-  override var shouldShowNavigationBar: Bool {
-    return false
-  }
+  private var handler: KeyboardHandler!
   
   override var preferredStatusBarStyle: UIStatusBarStyle {
     return .lightContent
   }
-
-  private func registerForKeyboardNotifications() {
-    NotificationCenter.default.addObserver(self,
-                                           selector: #selector(adjustForKeyboard),
-                                           name: UIResponder.keyboardWillShowNotification,
-                                           object: nil)
-    NotificationCenter.default.addObserver(self,
-                                           selector: #selector(adjustForKeyboard),
-                                           name: UIResponder.keyboardWillHideNotification,
-                                           object: nil)
-  }
-  
-  @objc private func adjustForKeyboard(notification: Notification) {
-    guard let keyboardValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else { return }
-    
-    let keyboardHeight = keyboardValue.cgRectValue.size.height
-    
-    if notification.name == UIResponder.keyboardWillHideNotification {
-      rootScrollView.contentInset = .zero
-    } else {
-      rootScrollView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: keyboardHeight, right: 0)
-    }
-    
-    rootScrollView.scrollIndicatorInsets = rootScrollView.contentInset
-  }
   
   override func setupUI() {
-    registerForKeyboardNotifications()
+    view.addSubviews(backgroundDarkView,
+                     codeView)
     
-    view.backgroundColor = .white
+    customView.contentView.addSubviews(errorView,
+                                       phoneLabel,
+                                       phoneTextField,
+                                       pasteLabel,
+                                       exchangeView,
+                                       gifViewContainer,
+                                       addGifLabel,
+                                       removeGifLabel,
+                                       messageTextField,
+                                       nextButton)
+    customView.setTitle(localize(L.CoinSendGift.title))
     
-    view.addSubview(rootScrollView)
-    rootScrollView.addSubview(contentView)
-    contentView.addSubviews(backgroundImageView,
-                            safeAreaContainer,
-                            errorView,
-                            phoneLabel,
-                            phoneTextField,
-                            pasteLabel,
-                            exchangeView,
-                            gifViewContainer,
-                            addGifLabel,
-                            removeGifLabel,
-                            messageTextField,
-                            nextButton,
-                            backgroundDarkView,
-                            codeView)
-    safeAreaContainer.addSubviews(backButton, titleLabel)
-    contentView.addGestureRecognizer(tapRecognizer)
+    setupKeyboardHandling()
+  }
+  
+  private func setupKeyboardHandling() {
+    handler = KeyboardHandler(with: view)
+    setupDefaultKeyboardHandling(with: handler)
   }
 
   override func setupLayout() {
-    rootScrollView.snp.makeConstraints {
-      $0.edges.equalToSuperview()
-    }
-    contentView.snp.makeConstraints {
-      $0.edges.equalToSuperview()
-      $0.size.equalToSuperview()
-    }
-    backgroundImageView.snp.makeConstraints {
-      $0.top.left.right.equalToSuperview()
-      $0.bottom.equalTo(contentView.snp.top).offset(view.safeAreaInsets.top + 44)
-    }
-    safeAreaContainer.snp.makeConstraints {
-      $0.left.right.bottom.equalTo(backgroundImageView)
-      $0.top.equalToSuperview().offset(view.safeAreaInsets.top)
-    }
-    backButton.snp.makeConstraints {
-      $0.centerY.equalTo(titleLabel)
-      $0.left.equalToSuperview().offset(15)
-      $0.size.equalTo(45)
-    }
-    titleLabel.snp.makeConstraints {
-      $0.center.equalToSuperview()
-    }
     errorView.snp.makeConstraints {
-      $0.top.equalTo(backgroundImageView.snp.bottom).offset(10)
+      $0.top.equalToSuperview().offset(10)
       $0.centerX.equalToSuperview()
     }
     phoneLabel.snp.makeConstraints {
-      $0.top.equalTo(backgroundImageView.snp.bottom).offset(30)
+      $0.top.equalToSuperview().offset(30)
       $0.centerX.equalToSuperview()
     }
     phoneTextField.snp.makeConstraints {
@@ -215,11 +129,11 @@ final class CoinSendGiftViewController: ModuleViewController<CoinSendGiftPresent
     }
     addGifLabel.snp.makeConstraints {
       $0.top.equalTo(gifViewContainer.snp.bottom).offset(15)
-      $0.right.equalTo(contentView.snp.centerX).offset(-35)
+      $0.right.equalTo(customView.contentView.snp.centerX).offset(-35)
     }
     removeGifLabel.snp.makeConstraints {
       $0.top.equalTo(gifViewContainer.snp.bottom).offset(15)
-      $0.left.equalTo(contentView.snp.centerX).offset(35)
+      $0.left.equalTo(customView.contentView.snp.centerX).offset(35)
     }
     messageTextField.snp.makeConstraints {
       $0.top.equalTo(addGifLabel.snp.bottom).offset(30)
@@ -229,13 +143,14 @@ final class CoinSendGiftViewController: ModuleViewController<CoinSendGiftPresent
       $0.top.equalTo(messageTextField.snp.bottom).offset(15)
       $0.width.equalToSuperview().multipliedBy(0.42)
       $0.centerX.equalToSuperview()
+      $0.bottom.equalToSuperview().offset(-30)
     }
     backgroundDarkView.snp.makeConstraints {
       $0.edges.equalToSuperview()
     }
     codeView.snp.makeConstraints {
       $0.left.right.equalToSuperview().inset(30)
-      $0.bottom.equalToSuperview().inset(view.safeAreaInsets.bottom + 30)
+      $0.bottom.equalTo(view.safeAreaLayoutGuide).offset(-30)
     }
     
     hideGifView()
@@ -313,8 +228,7 @@ final class CoinSendGiftViewController: ModuleViewController<CoinSendGiftPresent
       .drive(onNext: { [unowned self] _ in self.showCodeView() })
       .disposed(by: disposeBag)
     
-    Driver.merge(tapRecognizer.rx.event.asDriver().map { _ in () },
-                 backgroundDarkView.rx.tap,
+    Driver.merge(backgroundDarkView.rx.tap,
                  nextButton.rx.tap.asDriver())
       .drive(onNext: { [view] in view?.endEditing(true) })
       .disposed(by: disposeBag)
@@ -334,7 +248,6 @@ final class CoinSendGiftViewController: ModuleViewController<CoinSendGiftPresent
   
   private func showGifView(media: GPHMedia) {
     let gifView = GPHMediaView()
-    let rendition: GPHRenditionType = .fixedHeightSmall
     
     gifViewContainer.subviews.forEach { $0.removeFromSuperview() }
     gifViewContainer.addSubview(gifView)
@@ -343,10 +256,9 @@ final class CoinSendGiftViewController: ModuleViewController<CoinSendGiftPresent
       $0.width.equalTo(gifView.snp.height).multipliedBy(media.aspectRatio)
     }
     
-    gifView.setMedia(media, rendition: rendition)
+    gifView.setMedia(media, rendition: .fixedHeightSmall)
     
-    let imageUrl = media.url(rendition: rendition, fileType: .gif)
-    didUpdateImageUrlRelay.accept(imageUrl)
+    didUpdateImageIdRelay.accept(media.id)
   }
   
   private func hideGifView() {
@@ -366,19 +278,21 @@ final class CoinSendGiftViewController: ModuleViewController<CoinSendGiftPresent
       $0.edges.equalToSuperview()
       $0.width.equalTo(emptyGifView.snp.height)
     }
+    
+    didUpdateImageIdRelay.accept(nil)
   }
 
   override func setupBindings() {
     setupUIBindings()
     
-    let backDriver = backButton.rx.tap.asDriver()
+    let backDriver = customView.backButton.rx.tap.asDriver()
     let updatePhoneDriver = phoneTextField.rx.text.asDriver()
     let updateCurrencyAmountDriver = exchangeView.currencyTextField.rx.text.asDriver()
     let updateCoinAmountDriver = exchangeView.coinTextField.rx.text.asDriver()
     let pastePhoneDriver = pasteLabel.rx.tap
     let updateCodeDriver = codeView.smsCodeTextField.rx.text.asDriver()
     let updateMessageDriver = messageTextField.rx.text.asDriver()
-    let updateImageUrlDriver = didUpdateImageUrlRelay.asDriver(onErrorJustReturn: nil)
+    let updateImageIdDriver = didUpdateImageIdRelay.asDriver(onErrorJustReturn: nil)
     let cancelDriver = codeView.rx.cancelTap
     let maxDriver = exchangeView.rx.maxTap
     let nextDriver = nextButton.rx.tap.asDriver()
@@ -391,7 +305,7 @@ final class CoinSendGiftViewController: ModuleViewController<CoinSendGiftPresent
                                                       pastePhone: pastePhoneDriver,
                                                       updateCode: updateCodeDriver,
                                                       updateMessage: updateMessageDriver,
-                                                      updateImageUrl: updateImageUrlDriver,
+                                                      updateImageId: updateImageIdDriver,
                                                       cancel: cancelDriver,
                                                       max: maxDriver,
                                                       next: nextDriver,

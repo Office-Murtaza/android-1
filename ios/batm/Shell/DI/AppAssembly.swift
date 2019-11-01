@@ -153,7 +153,8 @@ final class AppAssembly: Assembly {
       }.inObjectScope(.container)
     container.register(PinCodeUsecase.self) { ioc in
       let pinCodeStorage = ioc.resolve(PinCodeStorage.self)!
-      return PinCodeUsecaseImpl(pinCodeStorage: pinCodeStorage)
+      let refreshService = ioc.resolve(RefreshCredentialsService.self)!
+      return PinCodeUsecaseImpl(pinCodeStorage: pinCodeStorage, refreshService: refreshService)
       }.inObjectScope(.container)
     container.register(PinCodeService.self) { ioc in
       let pinCodeStorage = ioc.resolve(PinCodeStorage.self)!

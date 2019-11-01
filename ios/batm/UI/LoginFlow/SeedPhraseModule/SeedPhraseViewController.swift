@@ -24,10 +24,6 @@ class SeedPhraseViewController: ModuleViewController<SeedPhrasePresenter> {
   
   let mainView = SeedPhraseView()
   
-  override var shouldShowNavigationBar: Bool {
-    return false
-  }
-  
   override var preferredStatusBarStyle: UIStatusBarStyle {
     return .lightContent
   }

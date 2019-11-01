@@ -4,78 +4,13 @@ import RxSwift
 import SnapKit
 import QRCodeReader
 
-final class CoinWithdrawViewController: ModuleViewController<CoinWithdrawPresenter>, QRCodeReaderViewControllerDelegate {
+final class CoinWithdrawViewController: NavigationScreenViewController<CoinWithdrawPresenter>, QRCodeReaderViewControllerDelegate {
   
   private let didScanAddressRelay = PublishRelay<String?>()
   
-  let tapRecognizer = UITapGestureRecognizer()
-  
-  let rootScrollView: UIScrollView = {
-    let scrollView = UIScrollView()
-    scrollView.bounces = false
-    scrollView.contentInsetAdjustmentBehavior = .never
-    scrollView.keyboardDismissMode = .interactive
-    return scrollView
-  }()
-  
-  let contentView = UIView()
-  
-  let backgroundImageView: UIImageView = {
-    let imageView = UIImageView(image: UIImage(named: "login_background"))
-    imageView.contentMode = .scaleAspectFill
-    imageView.clipsToBounds = true
-    return imageView
-  }()
-  
-  let safeAreaContainer = UIView()
-  
-  let backButton: UIButton = {
-    let button = UIButton()
-    button.setImage(UIImage(named: "back"), for: .normal)
-    return button
-  }()
-  
-  let titleLabel: UILabel = {
-    let label = UILabel()
-    label.text = localize(L.CoinWithdraw.title)
-    label.textColor = .white
-    label.font = .poppinsSemibold20
-    return label
-  }()
-  
   let errorView = ErrorView()
   
-  let addressLabel: UILabel = {
-    let label = UILabel()
-    label.text = localize(L.CoinWithdraw.Form.Address.title)
-    label.textColor = .slateGrey
-    label.font = .poppinsSemibold14
-    return label
-  }()
-  
-  let addressTextField: MainTextField = {
-    let textField = MainTextField()
-    textField.textAlignment = .center
-    return textField
-  }()
-  
-  let addressActionsContainer = UIView()
-  
-  let pasteActionContainer = UIView()
-  
-  let scanActionContainer = UIView()
-  
-  let pasteLabel: UnderlinedLabelView = {
-    let label = UnderlinedLabelView()
-    label.configure(for: .paste)
-    return label
-  }()
-  
-  let scanLabel: UnderlinedLabelView = {
-    let label = UnderlinedLabelView()
-    label.configure(for: .scan)
-    return label
-  }()
+  let addressView = CoinWithdrawAddressView()
   
   let exchangeView = CoinWithdrawExchangeView()
   
@@ -97,134 +32,55 @@ final class CoinWithdrawViewController: ModuleViewController<CoinWithdrawPresent
     return view
   }()
   
-  override var shouldShowNavigationBar: Bool {
-    return false
-  }
+  private var handler: KeyboardHandler!
   
   override var preferredStatusBarStyle: UIStatusBarStyle {
     return .lightContent
   }
-
-  private func registerForKeyboardNotifications() {
-    NotificationCenter.default.addObserver(self,
-                                           selector: #selector(adjustForKeyboard),
-                                           name: UIResponder.keyboardWillShowNotification,
-                                           object: nil)
-    NotificationCenter.default.addObserver(self,
-                                           selector: #selector(adjustForKeyboard),
-                                           name: UIResponder.keyboardWillHideNotification,
-                                           object: nil)
-  }
-  
-  @objc private func adjustForKeyboard(notification: Notification) {
-    guard let keyboardValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else { return }
-    
-    let keyboardHeight = keyboardValue.cgRectValue.size.height
-    
-    if notification.name == UIResponder.keyboardWillHideNotification {
-      rootScrollView.contentInset = .zero
-    } else {
-      rootScrollView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: keyboardHeight, right: 0)
-    }
-    
-    rootScrollView.scrollIndicatorInsets = rootScrollView.contentInset
-  }
   
   override func setupUI() {
-    registerForKeyboardNotifications()
+    view.addSubviews(backgroundDarkView,
+                     codeView)
     
-    view.backgroundColor = .white
-    
-    view.addSubview(rootScrollView)
-    rootScrollView.addSubview(contentView)
-    contentView.addSubviews(backgroundImageView,
-                            safeAreaContainer,
-                            errorView,
-                            addressLabel,
-                            addressTextField,
-                            addressActionsContainer,
-                            exchangeView,
-                            nextButton,
-                            backgroundDarkView,
-                            codeView)
-    contentView.addGestureRecognizer(tapRecognizer)
-    addressActionsContainer.addSubviews(pasteActionContainer,
-                                        scanActionContainer)
-    pasteActionContainer.addSubview(pasteLabel)
-    scanActionContainer.addSubview(scanLabel)
-    safeAreaContainer.addSubviews(backButton,
-                                  titleLabel)
+    customView.contentView.addSubviews(errorView,
+                                       addressView,
+                                       exchangeView,
+                                       nextButton)
+    customView.setTitle(localize(L.CoinWithdraw.title))
+   
+    setupKeyboardHandling()
+  }
+  
+  private func setupKeyboardHandling() {
+    handler = KeyboardHandler(with: view)
+    setupDefaultKeyboardHandling(with: handler)
   }
 
   override func setupLayout() {
-    rootScrollView.snp.makeConstraints {
-      $0.edges.equalToSuperview()
-    }
-    contentView.snp.makeConstraints {
-      $0.edges.equalToSuperview()
-      $0.size.equalToSuperview()
-    }
-    backgroundImageView.snp.makeConstraints {
-      $0.top.left.right.equalToSuperview()
-      $0.bottom.equalTo(contentView.snp.top).offset(view.safeAreaInsets.top + 44)
-    }
-    safeAreaContainer.snp.makeConstraints {
-      $0.left.right.bottom.equalTo(backgroundImageView)
-      $0.top.equalToSuperview().offset(view.safeAreaInsets.top)
-    }
-    backButton.snp.makeConstraints {
-      $0.centerY.equalTo(titleLabel)
-      $0.left.equalToSuperview().offset(15)
-      $0.size.equalTo(45)
-    }
-    titleLabel.snp.makeConstraints {
-      $0.center.equalToSuperview()
-    }
     errorView.snp.makeConstraints {
-      $0.top.equalTo(backgroundImageView.snp.bottom).offset(10)
+      $0.top.equalToSuperview().offset(10)
       $0.centerX.equalToSuperview()
     }
-    addressLabel.snp.makeConstraints {
-      $0.top.equalTo(backgroundImageView.snp.bottom).offset(30)
-      $0.centerX.equalToSuperview()
-    }
-    addressTextField.snp.makeConstraints {
-      $0.top.equalTo(addressLabel.snp.bottom).offset(15)
+    addressView.snp.makeConstraints {
+      $0.top.equalToSuperview().offset(30)
       $0.left.right.equalToSuperview().inset(25)
     }
-    addressActionsContainer.snp.makeConstraints {
-      $0.top.equalTo(addressTextField.snp.bottom)
-      $0.left.right.equalTo(addressTextField)
-    }
-    pasteActionContainer.snp.makeConstraints {
-      $0.top.left.bottom.equalToSuperview()
-    }
-    scanActionContainer.snp.makeConstraints {
-      $0.top.right.bottom.equalToSuperview()
-      $0.left.equalTo(pasteActionContainer.snp.right)
-      $0.width.equalTo(pasteActionContainer)
-    }
-    [pasteLabel, scanLabel].forEach {
-      $0.snp.makeConstraints {
-        $0.top.bottom.equalToSuperview().inset(15)
-        $0.centerX.equalToSuperview()
-      }
-    }
     exchangeView.snp.makeConstraints {
-      $0.top.equalTo(addressActionsContainer.snp.bottom).offset(30)
+      $0.top.equalTo(addressView.snp.bottom).offset(15)
       $0.left.right.equalToSuperview().inset(25)
     }
     nextButton.snp.makeConstraints {
       $0.top.equalTo(exchangeView.snp.bottom).offset(30)
       $0.width.equalToSuperview().multipliedBy(0.42)
       $0.centerX.equalToSuperview()
+      $0.bottom.equalToSuperview().offset(-30)
     }
     backgroundDarkView.snp.makeConstraints {
       $0.edges.equalToSuperview()
     }
     codeView.snp.makeConstraints {
       $0.left.right.equalToSuperview().inset(30)
-      $0.bottom.equalToSuperview().inset(view.safeAreaInsets.bottom + 30)
+      $0.bottom.equalTo(view.safeAreaLayoutGuide).offset(-30)
     }
   }
   
@@ -245,7 +101,7 @@ final class CoinWithdrawViewController: ModuleViewController<CoinWithdrawPresent
     presenter.state
       .asObservable()
       .map { $0.address }
-      .bind(to: addressTextField.rx.text)
+      .bind(to: addressView.rx.text)
       .disposed(by: disposeBag)
     
     presenter.state
@@ -300,13 +156,12 @@ final class CoinWithdrawViewController: ModuleViewController<CoinWithdrawPresent
       .drive(onNext: { [unowned self] _ in self.showCodeView() })
       .disposed(by: disposeBag)
     
-    Driver.merge(tapRecognizer.rx.event.asDriver().map { _ in () },
-                 backgroundDarkView.rx.tap,
+    Driver.merge(backgroundDarkView.rx.tap,
                  nextButton.rx.tap.asDriver())
       .drive(onNext: { [view] in view?.endEditing(true) })
       .disposed(by: disposeBag)
     
-    scanLabel.rx.tap
+    addressView.rx.scanTap
       .drive(onNext: { [unowned self] in self.showQrReader() })
       .disposed(by: disposeBag)
   }
@@ -314,12 +169,12 @@ final class CoinWithdrawViewController: ModuleViewController<CoinWithdrawPresent
   override func setupBindings() {
     setupUIBindings()
     
-    let backDriver = backButton.rx.tap.asDriver()
-    let updateAddressDriver = Driver.merge(addressTextField.rx.text.asDriver(),
+    let backDriver = customView.backButton.rx.tap.asDriver()
+    let updateAddressDriver = Driver.merge(addressView.rx.text.asDriver(),
                                            didScanAddressRelay.asDriver(onErrorJustReturn: ""))
     let updateCurrencyAmountDriver = exchangeView.rx.currencyText
     let updateCoinAmountDriver = exchangeView.rx.coinText
-    let pasteAddressDriver = pasteLabel.rx.tap
+    let pasteAddressDriver = addressView.rx.pasteTap
     let updateCodeDriver = codeView.smsCodeTextField.rx.text.asDriver()
     let cancelDriver = codeView.rx.cancelTap
     let maxDriver = exchangeView.rx.maxTap

@@ -44,10 +44,6 @@ final class UnlinkViewController: ModuleViewController<UnlinkPresenter> {
     return button
   }()
   
-  override var shouldShowNavigationBar: Bool {
-    return false
-  }
-  
   override var preferredStatusBarStyle: UIStatusBarStyle {
     return .lightContent
   }

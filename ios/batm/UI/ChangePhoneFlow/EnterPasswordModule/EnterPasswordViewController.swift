@@ -30,10 +30,6 @@ final class EnterPasswordViewController: ModuleViewController<EnterPasswordPrese
   
   let formView = EnterPasswordFormView()
   
-  override var shouldShowNavigationBar: Bool {
-    return false
-  }
-  
   override var preferredStatusBarStyle: UIStatusBarStyle {
     return .lightContent
   }

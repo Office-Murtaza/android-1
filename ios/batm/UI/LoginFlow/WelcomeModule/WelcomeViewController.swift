@@ -54,10 +54,6 @@ class WelcomeViewController: ModuleViewController<WelcomePresenter>, UIScrollVie
     return view
   }()
   
-  override var shouldShowNavigationBar: Bool {
-    return false
-  }
-  
   override func setupUI() {
     view.backgroundColor = .whiteTwo
     

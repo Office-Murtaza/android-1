@@ -33,6 +33,17 @@ enum L {
     static let withdraw = "coin_details.withdraw"
   }
 
+  struct CoinSell {
+    static let dailyLimit = "coin_sell.daily_limit"
+    static let sellFromAnother = "coin_sell.sell_from_another"
+    static let title = "coin_sell.title"
+    static let transactionLimit = "coin_sell.transaction_limit"
+  }
+
+  struct CoinSellDetails {
+    static let title = "coin_sell_details.title"
+  }
+
   struct CoinSendGift {
     static let title = "coin_send_gift.title"
   }
@@ -107,6 +118,21 @@ enum L {
     static let title = "show_seed_phrase.title"
   }
 
+  struct TransactionDetails {
+    static let amount = "transaction_details.amount"
+    static let date = "transaction_details.date"
+    static let fee = "transaction_details.fee"
+    static let fromAddress = "transaction_details.from_address"
+    static let image = "transaction_details.image"
+    static let message = "transaction_details.message"
+    static let phone = "transaction_details.phone"
+    static let status = "transaction_details.status"
+    static let title = "transaction_details.title"
+    static let toAddress = "transaction_details.to_address"
+    static let txId = "transaction_details.tx_id"
+    static let type = "transaction_details.type"
+  }
+
   struct Unlink {
     static let title = "unlink.title"
     static let warning = "unlink.warning"
@@ -167,6 +193,33 @@ extension L.ChangePin.Form {
 
   struct OldPin {
     static let placeholder = "change_pin.form.old_pin.placeholder"
+  }
+}
+extension L.CoinSell {
+
+  struct Form {
+  }
+}
+extension L.CoinSell.Form {
+
+  struct Error {
+    static let notMultiple = "coin_sell.form.error.not_multiple"
+  }
+}
+extension L.CoinSellDetails {
+
+  struct AnotherAddress {
+    static let firstInstruction = "coin_sell_details.another_address.first_instruction"
+    static let fourthInstruction = "coin_sell_details.another_address.fourth_instruction"
+    static let secondInstruction = "coin_sell_details.another_address.second_instruction"
+    static let thirdInstruction = "coin_sell_details.another_address.third_instruction"
+  }
+
+  struct CurrentAddress {
+    static let firstInstruction = "coin_sell_details.current_address.first_instruction"
+    static let fourthInstruction = "coin_sell_details.current_address.fourth_instruction"
+    static let secondInstruction = "coin_sell_details.current_address.second_instruction"
+    static let thirdInstruction = "coin_sell_details.current_address.third_instruction"
   }
 }
 extension L.CoinSendGift {

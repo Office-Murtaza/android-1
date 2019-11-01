@@ -50,10 +50,6 @@ class ShowPhoneViewController: ModuleViewController<ShowPhonePresenter> {
     return button
   }()
   
-  override var shouldShowNavigationBar: Bool {
-    return false
-  }
-  
   override var preferredStatusBarStyle: UIStatusBarStyle {
     return .lightContent
   }

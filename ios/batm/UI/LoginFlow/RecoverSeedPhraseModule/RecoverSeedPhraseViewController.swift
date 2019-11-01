@@ -36,10 +36,6 @@ class RecoverSeedPhraseViewController: ModuleViewController<RecoverSeedPhrasePre
   
   let mainView = RecoverSeedPhraseView()
   
-  override var shouldShowNavigationBar: Bool {
-    return false
-  }
-  
   override var preferredStatusBarStyle: UIStatusBarStyle {
     return .lightContent
   }

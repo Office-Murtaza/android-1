@@ -44,10 +44,6 @@ class PinCodeViewController: ModuleViewController<PinCodePresenter>, UITextField
   
   var handler: KeyboardHandler!
   
-  override var shouldShowNavigationBar: Bool {
-    return false
-  }
-  
   private func setupKeyboardHandling() {
     handler = KeyboardHandler(with: view)
     setupDefaultKeyboardHandling(with: handler, animated: false)

@@ -6,14 +6,22 @@ class CoinDetailsFlow: BaseFlow<BTMNavigationController, CoinDetailsFlowControll
       Dependencies(),
       CoinDetailsAssembly(),
       CoinWithdrawAssembly(),
-      CoinSendGiftAssembly()
+      CoinSendGiftAssembly(),
+      CoinSellAssembly(),
+      CoinSellDetailsAnotherAddressAssembly(),
+      CoinSellDetailsCurrentAddressAssembly(),
+      TransactionDetailsAssembly()
     ]
   }
   
   enum Steps: Step, Equatable {
     case coinDetails(CoinBalance)
+    case transactionDetails(TransactionDetails)
     case withdraw(BTMCoin, CoinBalance)
     case sendGift(BTMCoin, CoinBalance)
+    case sell(BTMCoin, CoinBalance, SellDetails)
+    case sellDetailsForAnotherAddress(SellDetailsForAnotherAddress)
+    case sellDetailsForCurrentAddress
     case pop
   }
   
@@ -29,6 +37,10 @@ class CoinDetailsFlow: BaseFlow<BTMNavigationController, CoinDetailsFlowControll
       let module = resolver.resolve(Module<CoinDetailsModule>.self)!
       module.input.setup(with: coinBalance)
       return push(module.controller)
+    case let .transactionDetails(details):
+      let module = resolver.resolve(Module<TransactionDetailsModule>.self)!
+      module.input.setup(with: details)
+      return push(module.controller)
     case let .withdraw(coin, coinBalance):
       let module = resolver.resolve(Module<CoinWithdrawModule>.self)!
       module.input.setup(with: coin)
@@ -39,6 +51,17 @@ class CoinDetailsFlow: BaseFlow<BTMNavigationController, CoinDetailsFlowControll
       module.input.setup(with: coin)
       module.input.setup(with: coinBalance)
       return push(module.controller)
+    case let .sell(coin, coinBalance, details):
+      let module = resolver.resolve(Module<CoinSellModule>.self)!
+      module.input.setup(coin: coin, coinBalance: coinBalance, details: details)
+      return push(module.controller)
+    case let .sellDetailsForAnotherAddress(details):
+      let module = resolver.resolve(Module<CoinSellDetailsAnotherAddressModule>.self)!
+      module.input.setup(with: details)
+      return replaceLast(module.controller)
+    case .sellDetailsForCurrentAddress:
+      let module = resolver.resolve(Module<CoinSellDetailsCurrentAddressModule>.self)!
+      return replaceLast(module.controller)
     case .pop: return pop()
     }
   }

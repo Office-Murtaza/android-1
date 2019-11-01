@@ -3,14 +3,26 @@ import RxSwift
 import RxCocoa
 import MBProgressHUD
 
-class ModuleViewController <PresenterType: ModulePresenter>: UIViewController, NavigationBarVisibility {
+typealias ModuleViewController<P: ModulePresenter> = GenericModuleViewController<P, UIView>
+typealias NavigationScreenViewController<P: ModulePresenter> = GenericModuleViewController<P, NavigationScreenView>
+
+class GenericModuleViewController<PresenterType: ModulePresenter, View: UIView>: UIViewController, NavigationBarVisibility {
   
   final var presenter: PresenterType!
   
   final var didSetupConstraints: Bool = false
-  
+   
   var shouldShowNavigationBar: Bool {
-    return true
+    return false
+  }
+  
+  var customView: View {
+    guard let casted = view as? View else { fatalError("View should be a covariant of \(View.self)") }
+    return casted
+  }
+  
+  override func loadView() {
+    self.view = View(frame: UIScreen.main.bounds)
   }
   
   final override func viewDidLoad() {
@@ -22,6 +34,7 @@ class ModuleViewController <PresenterType: ModulePresenter>: UIViewController, N
     setupDefaultBindings()
     setupBindings()
     
+    view.layoutIfNeeded()
     presenter.viewIsReady()
   }
   
@@ -34,6 +47,7 @@ class ModuleViewController <PresenterType: ModulePresenter>: UIViewController, N
   }
   
   private func setupDefaultBindings() {
+    rxVisible.bind(to: presenter.visible).disposed(by: disposeBag)
     presenter.activity.drive(view.rx.showHUD).disposed(by: disposeBag)
     presenter.errors.drive(rx.errors).disposed(by: disposeBag)
   }

@@ -19,10 +19,6 @@ class ATMViewController: ModuleViewController<ATMPresenter>, GMSMapViewDelegate,
     }
   }
   
-  override var shouldShowNavigationBar: Bool {
-    return false
-  }
-  
   override func setupUI() {
     view.addSubview(mapView)
     

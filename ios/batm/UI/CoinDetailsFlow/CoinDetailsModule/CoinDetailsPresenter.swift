@@ -15,6 +15,7 @@ final class CoinDetailsPresenter: ModulePresenter, CoinDetailsModule {
     var sell: Driver<Void>
     var copy: Driver<String?>
     var showMore: Driver<Void>
+    var transactionSelected: Driver<IndexPath>
   }
   
   private let usecase: CoinDetailsUsecase
@@ -48,11 +49,11 @@ final class CoinDetailsPresenter: ModulePresenter, CoinDetailsModule {
       .withLatestFrom(state)
       .map { $0.coinBalance }
       .filterNil()
-      .flatMap { [unowned self] in self.usecase.getTransactions(for: $0.type, from: 0) }
-      .subscribe(onNext: { [store] in
-        store.action.accept(.finishFetchingTransactions($0))
-        store.action.accept(.updatePage(0))
-      })
+      .doOnNext { [store] _ in store.action.accept(.startFetching) }
+      .flatMap { [unowned self] in
+        self.track(self.getTransactions(for: $0.type), trackers: [self.errorTracker])
+      }
+      .subscribe()
       .disposed(by: disposeBag)
     
     input.withdraw
@@ -68,7 +69,15 @@ final class CoinDetailsPresenter: ModulePresenter, CoinDetailsModule {
       .disposed(by: disposeBag)
     
     input.sell
-      .drive(onNext: { print("SELL CLICKED") })
+      .asObservable()
+      .withLatestFrom(state)
+      .filter { $0.coin != nil && $0.coinBalance != nil }
+      .map { ($0.coin!, $0.coinBalance!) }
+      .flatMap { [unowned self] coin, coinBalance in
+        return self.track(self.usecase.getSellDetails(for: coin.type))
+          .map { (coin, coinBalance, $0) }
+      }
+      .subscribe(onNext: { [delegate] in delegate?.showSellScreen(coin: $0, coinBalance: $1, details: $2) })
       .disposed(by: disposeBag)
     
     input.copy
@@ -77,6 +86,15 @@ final class CoinDetailsPresenter: ModulePresenter, CoinDetailsModule {
     
     input.showMore
       .drive(onNext: { [fetchTransactionsRelay] _ in fetchTransactionsRelay.accept(()) })
+      .disposed(by: disposeBag)
+    
+    input.transactionSelected
+      .asObservable()
+      .withLatestFrom(state) { ($1.coin?.type, $1.transactions?.transactions[$0.item].txid) }
+      .filter { $0 != nil && $1 != nil }
+      .map { ($0!, $1!) }
+      .flatMap { [unowned self] in self.track(self.usecase.getTransactionDetails(for: $0, by: $1)) }
+      .subscribe(onNext: { [delegate] in delegate?.showTransactionDetails(for: $0) })
       .disposed(by: disposeBag)
     
     setupBindings()
@@ -88,26 +106,43 @@ final class CoinDetailsPresenter: ModulePresenter, CoinDetailsModule {
       .filterNil()
       .asObservable()
       .take(1)
-      .flatMap { [usecase] in
-        return Observable.combineLatest(usecase.getTransactions(for: $0.type, from: 0).asObservable(),
-                                        usecase.getCoin(for: $0.type).asObservable())
-      }
     
-    track(combinedObservable)
-      .drive(onNext: { [store] in
-        store.action.accept(.finishFetchingTransactions($0))
-        store.action.accept(.finishFetchingCoin($1))
-      })
+    combinedObservable
+      .flatMap { [unowned self] in self.track(self.usecase.getCoin(for: $0.type)) }
+      .subscribe(onNext: { [store] in store.action.accept(.finishFetchingCoin($0)) })
+      .disposed(by: disposeBag)
+    
+    combinedObservable
+      .doOnNext { [store] _ in store.action.accept(.startFetching) }
+      .flatMap { [unowned self] in
+        self.track(self.getTransactions(for: $0.type), trackers: [self.errorTracker])
+      }
+      .subscribe()
       .disposed(by: disposeBag)
     
     fetchTransactionsRelay
       .flatFilter(activity.not())
       .withLatestFrom(state)
       .filter { !$0.isLastPage }
-      .flatMap { [unowned self] in self.usecase.getTransactions(for: $0.coinBalance!.type, from: $0.page + 1) }
-      .doOnNext { [store] in store.action.accept(.finishFetchingNextTransactions($0)) }
-      .withLatestFrom(state)
-      .subscribe(onNext: { [store] in store.action.accept(.updatePage($0.page + 1)) })
+      .flatMap { [unowned self] in
+        self.track(self.getTransactions(for: $0.coinBalance!.type, from: $0.nextPage), trackers: [self.errorTracker])
+      }
+      .subscribe()
       .disposed(by: disposeBag)
+  }
+  
+  private func getTransactions(for type: CoinType, from index: Int = 0) -> Single<Transactions> {
+    return usecase.getTransactions(for: type, from: index)
+      .do(onSuccess: { [store] in
+        if index > 0 {
+          store.action.accept(.finishFetchingNextTransactions($0))
+        } else {
+          store.action.accept(.finishFetchingTransactions($0))
+        }
+        store.action.accept(.updatePage(index))
+      },
+      onError: { [store] _ in
+        store.action.accept(.finishFetching)
+      })
   }
 }

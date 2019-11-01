@@ -10,7 +10,7 @@ enum CoinSendGiftAction: Equatable {
   case updateCoinAmount(String?)
   case updateCode(String?)
   case updateMessage(String?)
-  case updateImageUrl(String?)
+  case updateImageId(String?)
   case updateValidationState
   case makeInvalidState(String)
   case showCodePopup
@@ -25,7 +25,7 @@ struct CoinSendGiftState: Equatable {
   var coinAmount: String = ""
   var code: String = ""
   var message: String = ""
-  var imageUrl: String?
+  var imageId: String?
   var validationState: ValidationState = .unknown
   var shouldShowCodePopup: Bool = false
   
@@ -63,24 +63,24 @@ final class CoinSendGiftStore: ViewStore<CoinSendGiftAction, CoinSendGiftState> 
         state.phone = formattedPhoneNumber
       }
     case let .updateCurrencyAmount(amount):
-      let amount = amount ?? ""
-      state.currencyAmount = amount
-      if amount.isEmpty {
-        state.coinAmount = ""
-      } else {
-        state.coinAmount = String((Double(amount) ?? 0) / state.coinBalance!.price)
-      }
+      let currencyAmount = (amount ?? "").fiatFormatted
+      let doubleCurrencyAmount = Double(currencyAmount)
+      let price = state.coinBalance!.price
+      let coinAmount = doubleCurrencyAmount == nil ? "" : (doubleCurrencyAmount! / price).coinFormatted
+      
+      state.coinAmount = coinAmount
+      state.currencyAmount = currencyAmount
     case let .updateCoinAmount(amount):
-      let amount = amount ?? ""
-      state.coinAmount = amount
-      if amount.isEmpty {
-        state.currencyAmount = ""
-      } else {
-        state.currencyAmount = String((Double(amount) ?? 0) * state.coinBalance!.price)
-      }
+      let coinAmount = (amount ?? "").coinFormatted
+      let doubleCoinAmount = Double(coinAmount)
+      let price = state.coinBalance!.price
+      let currencyAmount = doubleCoinAmount == nil ? "" : (doubleCoinAmount! * price).fiatFormatted
+      
+      state.coinAmount = coinAmount
+      state.currencyAmount = currencyAmount
     case let .updateCode(code): state.code = code ?? ""
     case let .updateMessage(message): state.message = message ?? ""
-    case let .updateImageUrl(imageUrl): state.imageUrl = imageUrl
+    case let .updateImageId(imageId): state.imageId = imageId
     case .updateValidationState: state.validationState = validate(state)
     case let .makeInvalidState(error): state.validationState = .invalid(error)
     case .showCodePopup: state.shouldShowCodePopup = true
@@ -94,7 +94,7 @@ final class CoinSendGiftStore: ViewStore<CoinSendGiftAction, CoinSendGiftState> 
       return .invalid(localize(L.CreateWallet.Form.Error.allFieldsRequired))
     }
     
-    guard let _ = try? PhoneNumberKit.default.parse(state.phone) else {
+    guard let coin = state.coin, let _ = try? PhoneNumberKit.default.parse(state.phone) else {
       return .invalid(localize(L.CoinSendGift.Form.Error.invalidPhone))
     }
     
@@ -102,7 +102,7 @@ final class CoinSendGiftStore: ViewStore<CoinSendGiftAction, CoinSendGiftState> 
       return .invalid(localize(L.CoinWithdraw.Form.Error.invalidAmount))
     }
     
-    guard amount > 0 else {
+    guard amount > coin.type.fee else {
       return .invalid(localize(L.CoinWithdraw.Form.Error.tooLowAmount))
     }
     

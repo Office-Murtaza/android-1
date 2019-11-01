@@ -4,15 +4,19 @@ import TrustWalletCore
 
 protocol CoinDetailsUsecase {
   func getTransactions(for type: CoinType, from page: Int) -> Single<Transactions>
+  func getTransactionDetails(for type: CoinType, by txid: String) -> Single<TransactionDetails>
   func getCoin(for type: CoinType) -> Single<BTMCoin>
   func requestCode() -> Completable
   func verifyCode(code: String) -> Completable
   func withdraw(from coin: BTMCoin, to destination: String, amount: Double) -> Completable
+  func getSellDetails(for type: CoinType) -> Single<SellDetails>
+  func presubmit(for type: CoinType, coinAmount: Double, currencyAmount: Double) -> Single<PreSubmitResponse>
+  func sell(from coin: BTMCoin, amount: Double, to toAddress: String) -> Completable
   func sendGift(from coin: BTMCoin,
                 to phone: String,
                 amount: Double,
                 message: String,
-                imageUrl: String?) -> Completable
+                imageId: String?) -> Completable
 }
 
 class CoinDetailsUsecaseImpl: CoinDetailsUsecase {
@@ -35,6 +39,11 @@ class CoinDetailsUsecaseImpl: CoinDetailsUsecase {
   func getTransactions(for type: CoinType, from page: Int) -> Single<Transactions> {
     return accountStorage.get()
       .flatMap { [api] in api.getTransactions(userId: $0.userId, type: type, page: page) }
+  }
+  
+  func getTransactionDetails(for type: CoinType, by txid: String) -> Single<TransactionDetails> {
+    return accountStorage.get()
+      .flatMap { [api] in api.getTransactionDetails(userId: $0.userId, type: type, txid: txid) }
   }
   
   func getCoin(for type: CoinType) -> Single<BTMCoin> {
@@ -79,7 +88,7 @@ class CoinDetailsUsecaseImpl: CoinDetailsUsecase {
                 to phone: String,
                 amount: Double,
                 message: String,
-                imageUrl: String?) -> Completable {
+                imageId: String?) -> Completable {
     return accountStorage.get()
       .flatMap { [api] account in
         return api.getGiftAddress(userId: account.userId, type: coin.type, phone: phone)
@@ -96,7 +105,36 @@ class CoinDetailsUsecaseImpl: CoinDetailsUsecase {
                            amount: amount,
                            phone: phone,
                            message: message,
-                           imageUrl: imageUrl,
+                           imageId: imageId,
+                           transactionResultString: transactionResultString)
+      }
+  }
+  
+  func getSellDetails(for type: CoinType) -> Single<SellDetails> {
+    return accountStorage.get()
+      .flatMap { [api] in api.getSellDetails(userId: $0.userId, type: type) }
+//      .map { _ in SellDetails(dailyLimit: 10000, transactionLimit: 3000, profitRate: 1.025) }
+  }
+  
+  func presubmit(for type: CoinType, coinAmount: Double, currencyAmount: Double) -> Single<PreSubmitResponse> {
+    return accountStorage.get()
+      .flatMap { [api] in api.presubmitTransaction(userId: $0.userId,
+                                                   type: type,
+                                                   coinAmount: coinAmount,
+                                                   currencyAmount: currencyAmount) }
+  }
+  
+  func sell(from coin: BTMCoin, amount: Double, to toAddress: String) -> Completable {
+    return accountStorage.get()
+      .flatMap { [walletService] account in
+        return walletService.getTransactionHex(for: coin, destination: toAddress, amount: amount)
+          .map { (account, $0) }
+      }
+      .flatMapCompletable { [unowned self] account, transactionResultString in
+        return self.submit(userId: account.userId,
+                           type: coin.type,
+                           txType: .sell,
+                           amount: amount,
                            transactionResultString: transactionResultString)
       }
   }
@@ -107,14 +145,14 @@ class CoinDetailsUsecaseImpl: CoinDetailsUsecase {
                       amount: Double,
                       phone: String? = nil,
                       message: String? = nil,
-                      imageUrl: String? = nil,
-                      transactionResultString: String) -> Completable {
+                      imageId: String? = nil,
+                      transactionResultString: String? = nil) -> Completable {
     var txhex: String?
     var trxJson: [String: Any]?
     
     switch type {
     case .tron:
-      if let data = transactionResultString.data(using: .utf8) {
+      if let data = transactionResultString?.data(using: .utf8) {
         trxJson = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: Any]
       }
     default: txhex = transactionResultString
@@ -126,7 +164,7 @@ class CoinDetailsUsecaseImpl: CoinDetailsUsecase {
                                  amount: amount,
                                  phone: phone,
                                  message: message,
-                                 imageUrl: imageUrl,
+                                 imageId: imageId,
                                  txhex: txhex,
                                  trxJson: trxJson)
   }

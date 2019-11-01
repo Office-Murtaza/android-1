@@ -180,6 +180,13 @@ extension BaseFlow where T: UINavigationController {
     view.setViewControllers([screen], animated: animated)
     return .none
   }
+  
+  func replaceLast(_ screen: UIViewController, animated: Bool = true) -> NextFlowItems {
+    var viewControllers = view.viewControllers.dropLast()
+    viewControllers.append(screen)
+    view.setViewControllers(Array(viewControllers), animated: animated)
+    return .none
+  }
 }
 
 extension BaseFlow where T: UITabBarController {
