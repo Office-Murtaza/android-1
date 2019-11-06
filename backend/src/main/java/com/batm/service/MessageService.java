@@ -62,7 +62,7 @@ public class MessageService {
             String code = Constant.DEFAULT_CODE;
 
             if (twilioEnabled) {
-                code = RandomStringUtils.randomNumeric(4);
+                code = Constant.DEFAULT_CODE; //RandomStringUtils.randomNumeric(4);
                 status = sendMessage(user.getPhone(), "Belco Wallet Code: " + code);
             }
 

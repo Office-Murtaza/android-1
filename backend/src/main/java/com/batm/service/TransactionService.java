@@ -12,15 +12,16 @@ import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 @Service
+@EnableScheduling
 public class TransactionService {
 
     @Autowired
@@ -159,10 +160,9 @@ public class TransactionService {
                 try {
                     CoinService.CoinEnum coinId = CoinService.CoinEnum.valueOf(t.getCoin().getId());
                     TransactionStatus status = coinId.getTransactionStatus(t.getTxId());
+                    t.setStatus(status.getValue());
 
                     if (status == TransactionStatus.COMPLETE) {
-                        t.setStatus(TransactionStatus.COMPLETE.getValue());
-
                         if (t.getStep() == Constant.GIFT_USER_EXIST) {
                             TransactionRecordGift gift = new TransactionRecordGift();
                             gift.setTxId(t.getTxId());
@@ -178,9 +178,9 @@ public class TransactionService {
 
                             confirmedList.add(gift);
                         }
-
-                        confirmedList.add(t);
                     }
+
+                    confirmedList.add(t);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
