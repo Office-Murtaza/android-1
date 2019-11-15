@@ -2,46 +2,27 @@ package com.batm.entity;
 
 import java.math.BigDecimal;
 import java.util.List;
-
-import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-
 @Getter
 @Setter
+@AllArgsConstructor
 @NoArgsConstructor
 @Entity
 @Table(name = "w_atm_address")
-public class AtmAddress extends AbstractAuditingEntity{
+public class AtmAddress extends BaseEntity {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "address_id")
-	private Long id;
-	
-	@Column(name = "location_name")
-	private String locationName;
-	
-	private String address;
-	
-	private BigDecimal latitude;
-	
-	private BigDecimal longitude;
-	
-	@JsonManagedReference
-	@OneToMany(mappedBy="atmAddress")
+    private String name;
+    private String address;
+    private BigDecimal latitude;
+    private BigDecimal longitude;
+
+    @OneToMany(mappedBy = "atmAddress")
     private List<OpenHour> openHours;
-	
-	
 }

@@ -1,8 +1,6 @@
 package com.batm.rest;
 
-import java.time.Instant;
 import java.util.*;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import javax.validation.Valid;
@@ -48,7 +46,7 @@ import com.batm.util.Constant;
 public class UserController {
 
     @Value("${security.jwt.access-token-duration}")
-    private Long expiryTime;
+    private Long tokenDuration;
 
     @Value("${security.verification.code-validity}")
     private Long verificationCodeValidity;
@@ -77,27 +75,31 @@ public class UserController {
     @PostMapping("/register")
     public Response register(@RequestBody AuthenticationDTO dto) {
         try {
-            Pattern pattern = Pattern.compile(Constant.REGEX_PHONE);
+            Pattern phonePattern = Pattern.compile(Constant.REGEX_PHONE);
 
-            Matcher matcher = pattern.matcher(dto.getPhone());
-            if (!matcher.matches()) {
+            if (!phonePattern.matcher(dto.getPhone()).matches()) {
                 return Response.serverError(2, "Invalid phone number");
             }
 
             if (!checkPasswordLength(dto.getPassword())) {
-                return Response.serverError(3, "Password length should be in 6 to 15");
+                return Response.serverError(3, "Password length should be from 6 to 15");
             }
 
-            Optional<User> findOneByPhoneIgnoreCase = userService.findByPhone(dto.getPhone());
-            if (findOneByPhoneIgnoreCase.isPresent()) {
+            Optional<User> existingUser = userService.findByPhone(dto.getPhone());
+            if (existingUser.isPresent()) {
                 return Response.serverError(4, "Phone is already registered");
             }
 
             User user = userService.register(dto.getPhone(), dto.getPassword());
             messageService.sendVerificationCode(user);
-            TokenDTO jwt = getJwt(user.getUserId(), user.getIdentity().getId(), dto.getPhone(), dto.getPassword());
+            TokenDTO jwt = getJwt(user.getId(), user.getIdentity().getId(), dto.getPhone(), dto.getPassword());
 
-            refreshTokenRepository.save(new Token(jwt.getAccessToken(), jwt.getRefreshToken(), user));
+            Token token = new Token();
+            token.setRefreshToken(jwt.getRefreshToken());
+            token.setAccessToken(jwt.getAccessToken());
+            token.setUser(user);
+
+            refreshTokenRepository.save(token);
 
             return Response.ok(jwt);
         } catch (Exception e) {
@@ -109,67 +111,38 @@ public class UserController {
     @PostMapping("/recover")
     public Response recover(@RequestBody AuthenticationDTO dto) {
         try {
-            Pattern pattern = Pattern.compile(Constant.REGEX_PHONE);
+            Pattern phonePattern = Pattern.compile(Constant.REGEX_PHONE);
 
-            Matcher matcher = pattern.matcher(dto.getPhone());
-            if (!matcher.matches()) {
-                return Response.error(new Error(2, "Invalid phone number"));
+            if (!phonePattern.matcher(dto.getPhone()).matches()) {
+                return Response.serverError(2, "Invalid phone number");
             }
 
             if (!checkPasswordLength(dto.getPassword())) {
-                return Response.error(new Error(3, "Password length should be in 6 to 15"));
+                return Response.serverError(3, "Password length should be from 6 to 15");
             }
 
-            Optional<User> findOneByPhoneIgnoreCase = userService.findByPhone(dto.getPhone());
-            if (!findOneByPhoneIgnoreCase.isPresent()) {
-                return Response.error(new Error(2, "Phone is not registered"));
+            Optional<User> existingUser = userService.findByPhone(dto.getPhone());
+            if (!existingUser.isPresent()) {
+                return Response.error(new Error(2, "Phone not found"));
             }
 
-            User user = findOneByPhoneIgnoreCase.get();
+            User user = existingUser.get();
 
             boolean passwordMatch = passwordEncoder.matches(dto.getPassword(), user.getPassword());
             if (!passwordMatch) {
                 return Response.error(new Error(3, "Wrong password"));
             }
 
-            TokenDTO jwt = getJwt(user.getUserId(), user.getIdentity().getId(), dto.getPhone(), dto.getPassword());
+            TokenDTO jwt = getJwt(user.getId(), user.getIdentity().getId(), dto.getPhone(), dto.getPassword());
 
             messageService.sendVerificationCode(user);
 
-            Token token = this.refreshTokenRepository.findByUserUserId(user.getUserId());
+            Token token = refreshTokenRepository.findByUserUserId(user.getId());
             token.setRefreshToken(jwt.getRefreshToken());
             token.setAccessToken(jwt.getAccessToken());
             refreshTokenRepository.save(token);
 
             return Response.ok(jwt);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return Response.serverError();
-        }
-    }
-
-    @PostMapping("/user/{userId}/verify")
-    public Response verify(@RequestBody ValidateDTO validateOtpVM, @PathVariable Long userId) {
-        try {
-            CodeVerification codeVerification = userService.getCodeByUserId(userId);
-            Instant time10MinuteAge = Instant.now().minusMillis(verificationCodeValidity);
-            if (!StringUtils.isEmpty(codeVerification.getCode())
-                    && codeVerification.getLastModifiedDate().isBefore(time10MinuteAge)) {
-                return Response.error(new Error(2, "Verification code is expired"));
-            }
-
-            if (StringUtils.equals(codeVerification.getCodeStatus(), "1")) {
-                return Response.error(new Error(2, "Verification code is already used"));
-            }
-
-            if (!StringUtils.equals(validateOtpVM.getCode(), codeVerification.getCode())) {
-                return Response.error(new Error(2, "Wrong verification code"));
-            }
-
-            codeVerification.setCodeStatus("1");
-            userService.save(codeVerification);
-
-            return Response.ok(new ValidateResponseDTO(userId, true));
         } catch (Exception e) {
             e.printStackTrace();
             return Response.serverError();
@@ -182,11 +155,11 @@ public class UserController {
             Token refreshToken = refreshTokenRepository.findByRefreshToken(refreshDTO.getRefreshToken());
 
             if (refreshToken != null) {
-                User user = userService.findById(refreshToken.getUser().getUserId());
+                User user = userService.findById(refreshToken.getUser().getId());
 
                 TokenDTO jwt = getJwt(user);
 
-                Token token = refreshTokenRepository.findByUserUserId(user.getUserId());
+                Token token = refreshTokenRepository.findByUserUserId(user.getId());
                 token.setRefreshToken(jwt.getRefreshToken());
                 token.setAccessToken(jwt.getAccessToken());
                 refreshTokenRepository.save(token);
@@ -199,20 +172,6 @@ public class UserController {
         }
 
         throw new AccessDeniedException("Refresh token not exist");
-    }
-
-    @GetMapping("/user/{userId}/phone")
-    public Response getPhone(@PathVariable Long userId) {
-        try {
-            User user = userService.findById(userId);
-            Map<String, Object> response = new HashMap<>();
-            response.put("phone", user.getPhone());
-
-            return Response.ok(response);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return Response.serverError();
-        }
     }
 
     @GetMapping("/user/{userId}/code/send")
@@ -231,10 +190,53 @@ public class UserController {
         }
     }
 
-    @PostMapping("/user/{userId}/phone")
+    @PostMapping("/user/{userId}/code/verify")
+    public Response verify(@RequestBody ValidateDTO validateOtpVM, @PathVariable Long userId) {
+        try {
+            CodeVerification codeVerification = userService.getCodeByUserId(userId);
+            Long timestamp = System.currentTimeMillis() - verificationCodeValidity;
+
+            if (!StringUtils.isEmpty(codeVerification.getCode())
+                    && codeVerification.getUpdateDate().getTime() < timestamp) {
+                return Response.error(new Error(2, "Code is expired"));
+            }
+
+            if (codeVerification.getStatus() == 1) {
+                return Response.error(new Error(3, "Code is already used"));
+            }
+
+            if (!StringUtils.equals(validateOtpVM.getCode(), codeVerification.getCode())) {
+                return Response.error(new Error(4, "Wrong code"));
+            }
+
+            codeVerification.setStatus(1);
+            userService.save(codeVerification);
+
+            return Response.ok(new ValidateResponseDTO(userId, true));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Response.serverError();
+        }
+    }
+
+    @GetMapping("/user/{userId}/phone")
+    public Response getPhone(@PathVariable Long userId) {
+        try {
+            User user = userService.findById(userId);
+            Map<String, Object> response = new HashMap<>();
+            response.put("phone", user.getPhone());
+
+            return Response.ok(response);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Response.serverError();
+        }
+    }
+
+    @PostMapping("/user/{userId}/phone/update")
     public Response updatePhone(@RequestBody PhoneDTO phoneRequest, @PathVariable Long userId) {
         try {
-            Boolean isPhoneExist = this.userService.isPhoneExist(phoneRequest.getPhone(), userId);
+            Boolean isPhoneExist = userService.isPhoneExist(phoneRequest.getPhone(), userId);
             if (isPhoneExist) {
                 return Response.error(new Error(2, "Phone is already registered"));
             }
@@ -249,7 +251,7 @@ public class UserController {
         }
     }
 
-    @PostMapping("/user/{userId}/phone/confirm")
+    @PostMapping("/user/{userId}/phone/verify")
     public Response confirmPhone(@RequestBody ValidateDTO validateOtpVM, @PathVariable Long userId) {
         try {
             UpdatePhone updatePhone = userService.getUpdatePhone(userId);
@@ -259,7 +261,7 @@ public class UserController {
             }
 
             CodeVerification codeVerification = userService.getCodeByUserId(userId);
-            if (StringUtils.equals("1", codeVerification.getCodeStatus())) {
+            if (codeVerification.getStatus() == 1) {
                 return Response.error(new Error(3, "Verification code is already used"));
             }
 
@@ -281,32 +283,13 @@ public class UserController {
         }
     }
 
-    @PostMapping("/user/{userId}/check/password")
-    public Response checkPassword(@RequestBody CheckPasswordDTO checkPasswordRequest, @PathVariable Long userId) {
-        try {
-            Boolean match = Boolean.FALSE;
-            User user = this.userService.findById(userId);
-            if (user != null) {
-                match = passwordEncoder.matches(checkPasswordRequest.getPassword(), user.getPassword());
-            }
-
-            Map<String, Object> response = new HashMap<>();
-            response.put("match", match);
-
-            return Response.ok(response);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return Response.serverError();
-        }
-    }
-
-    @PostMapping("/user/{userId}/password")
+    @PostMapping("/user/{userId}/password/update")
     public Response updatePassword(@RequestBody ChangePasswordDTO changePasswordRequest, @PathVariable Long userId) {
         try {
-            User user = this.userService.findById(userId);
+            User user = userService.findById(userId);
             Boolean match = passwordEncoder.matches(changePasswordRequest.getOldPassword(), user.getPassword());
             if (!match) {
-                return Response.error(new Error(2, "Old password do not match"));
+                return Response.error(new Error(2, "Old password does not match."));
             }
             String encodedPassword = passwordEncoder.encode(changePasswordRequest.getNewPassword());
             userService.updatePassword(encodedPassword, userId);
@@ -321,7 +304,26 @@ public class UserController {
         }
     }
 
-    @PostMapping("/user/{userId}/unlink")
+    @PostMapping("/user/{userId}/password/verify")
+    public Response checkPassword(@RequestBody CheckPasswordDTO checkPasswordRequest, @PathVariable Long userId) {
+        try {
+            Boolean match = Boolean.FALSE;
+            User user = userService.findById(userId);
+            if (user != null) {
+                match = passwordEncoder.matches(checkPasswordRequest.getPassword(), user.getPassword());
+            }
+
+            Map<String, Object> response = new HashMap<>();
+            response.put("match", match);
+
+            return Response.ok(response);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Response.serverError();
+        }
+    }
+
+    @GetMapping("/user/{userId}/unlink")
     public Response unlink(@PathVariable Long userId) {
         try {
             Unlink unlink = userService.unlinkUser(userId);
@@ -350,7 +352,7 @@ public class UserController {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add(Constant.AUTHORIZATION_HEADER, "Bearer " + jwt);
 
-        return new TokenDTO(userId, identityId, jwt, System.currentTimeMillis() + expiryTime, refreshToken,
+        return new TokenDTO(userId, identityId, jwt, System.currentTimeMillis() + tokenDuration, refreshToken,
                 authentication.getAuthorities().stream().map(role -> role.getAuthority()).collect(Collectors.toList()));
     }
 
@@ -364,7 +366,7 @@ public class UserController {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add(Constant.AUTHORIZATION_HEADER, "Bearer " + jwt);
 
-        return new TokenDTO(user.getUserId(), user.getIdentity().getId(), jwt, System.currentTimeMillis() + expiryTime, refreshToken,
+        return new TokenDTO(user.getId(), user.getIdentity().getId(), jwt, System.currentTimeMillis() + tokenDuration, refreshToken,
                 authentication.getAuthorities().stream().map(role -> role.getAuthority()).collect(Collectors.toList()));
     }
 

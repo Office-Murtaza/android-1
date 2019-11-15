@@ -25,8 +25,7 @@ import com.binance.api.client.BinanceApiRestClient;
 @Service
 public class CoinService {
 
-    @Autowired
-    private CoinRepository coinRepository;
+    private static List<Coin> coinList;
 
     private static BinanceApiRestClient binanceRest;
     private static MessageService messageService;
@@ -54,6 +53,9 @@ public class CoinService {
                        @Autowired final WalletService walletService,
                        @Autowired final UserService userService,
                        @Autowired final TransactionService transactionService,
+
+                       @Autowired final CoinRepository coinRepository,
+
                        @Autowired final BlockbookService blockbook,
                        @Autowired final BinanceService binance,
                        @Autowired final RippledService rippled,
@@ -74,6 +76,8 @@ public class CoinService {
         CoinService.walletService = walletService;
         CoinService.userService = userService;
         CoinService.transactionService = transactionService;
+
+        CoinService.coinList = coinRepository.findAll();
 
         CoinService.blockbook = blockbook;
         CoinService.binance = binance;
@@ -134,12 +138,12 @@ public class CoinService {
             }
 
             @Override
-            public NonceDTO getNonce(String address) {
+            public NonceDTO getNonce(Long userId) {
                 return null;
             }
 
             @Override
-            public CurrentAccountDTO getCurrentAccount(String address) {
+            public CurrentAccountDTO getCurrentAccount(Long userId) {
                 return null;
             }
 
@@ -151,6 +155,11 @@ public class CoinService {
             @Override
             public String getWalletAddress() {
                 return walletService.getAddressBTC();
+            }
+
+            @Override
+            public SubmitTransactionDTO sign(String toAddress, BigDecimal amount) {
+                return null;
             }
 
             @Override
@@ -202,12 +211,15 @@ public class CoinService {
             }
 
             @Override
-            public NonceDTO getNonce(String address) {
+            public NonceDTO getNonce(Long userId) {
+                User user = userService.findById(userId);
+                String address = user.getCoinAddress(this.getName());
+
                 return blockbook.getNonce(ethNodeUrl, address);
             }
 
             @Override
-            public CurrentAccountDTO getCurrentAccount(String address) {
+            public CurrentAccountDTO getCurrentAccount(Long userId) {
                 return null;
             }
 
@@ -219,6 +231,11 @@ public class CoinService {
             @Override
             public String getWalletAddress() {
                 return walletService.getAddressETH();
+            }
+
+            @Override
+            public SubmitTransactionDTO sign(String toAddress, BigDecimal amount) {
+                return null;
             }
 
             @Override
@@ -270,12 +287,12 @@ public class CoinService {
             }
 
             @Override
-            public NonceDTO getNonce(String address) {
+            public NonceDTO getNonce(Long userId) {
                 return null;
             }
 
             @Override
-            public CurrentAccountDTO getCurrentAccount(String address) {
+            public CurrentAccountDTO getCurrentAccount(Long userId) {
                 return null;
             }
 
@@ -287,6 +304,11 @@ public class CoinService {
             @Override
             public String getWalletAddress() {
                 return walletService.getAddressBCH();
+            }
+
+            @Override
+            public SubmitTransactionDTO sign(String toAddress, BigDecimal amount) {
+                return null;
             }
 
             @Override
@@ -338,12 +360,12 @@ public class CoinService {
             }
 
             @Override
-            public NonceDTO getNonce(String address) {
+            public NonceDTO getNonce(Long userId) {
                 return null;
             }
 
             @Override
-            public CurrentAccountDTO getCurrentAccount(String address) {
+            public CurrentAccountDTO getCurrentAccount(Long userId) {
                 return null;
             }
 
@@ -355,6 +377,11 @@ public class CoinService {
             @Override
             public String getWalletAddress() {
                 return walletService.getAddressLTC();
+            }
+
+            @Override
+            public SubmitTransactionDTO sign(String toAddress, BigDecimal amount) {
+                return null;
             }
 
             @Override
@@ -407,12 +434,15 @@ public class CoinService {
             }
 
             @Override
-            public NonceDTO getNonce(String address) {
+            public NonceDTO getNonce(Long userId) {
                 return null;
             }
 
             @Override
-            public CurrentAccountDTO getCurrentAccount(String address) {
+            public CurrentAccountDTO getCurrentAccount(Long userId) {
+                User user = userService.findById(userId);
+                String address = user.getCoinAddress(this.getName());
+
                 return binance.getCurrentAccount(address);
             }
 
@@ -424,6 +454,11 @@ public class CoinService {
             @Override
             public String getWalletAddress() {
                 return walletService.getAddressBNB();
+            }
+
+            @Override
+            public SubmitTransactionDTO sign(String toAddress, BigDecimal amount) {
+                return null;
             }
 
             @Override
@@ -476,12 +511,15 @@ public class CoinService {
             }
 
             @Override
-            public NonceDTO getNonce(String address) {
+            public NonceDTO getNonce(Long userId) {
                 return null;
             }
 
             @Override
-            public CurrentAccountDTO getCurrentAccount(String address) {
+            public CurrentAccountDTO getCurrentAccount(Long userId) {
+                User user = userService.findById(userId);
+                String address = user.getCoinAddress(this.getName());
+
                 return rippled.getCurrentAccount(address);
             }
 
@@ -493,6 +531,11 @@ public class CoinService {
             @Override
             public String getWalletAddress() {
                 return walletService.getAddressXRP();
+            }
+
+            @Override
+            public SubmitTransactionDTO sign(String toAddress, BigDecimal amount) {
+                return null;
             }
 
             @Override
@@ -545,12 +588,12 @@ public class CoinService {
             }
 
             @Override
-            public NonceDTO getNonce(String address) {
+            public NonceDTO getNonce(Long userId) {
                 return null;
             }
 
             @Override
-            public CurrentAccountDTO getCurrentAccount(String address) {
+            public CurrentAccountDTO getCurrentAccount(Long userId) {
                 return null;
             }
 
@@ -562,6 +605,11 @@ public class CoinService {
             @Override
             public String getWalletAddress() {
                 return walletService.getAddressTRX();
+            }
+
+            @Override
+            public SubmitTransactionDTO sign(String toAddress, BigDecimal amount) {
+                return null;
             }
 
             @Override
@@ -589,13 +637,15 @@ public class CoinService {
 
         public abstract UtxoDTO getUTXO(String xpub);
 
-        public abstract NonceDTO getNonce(String address);
+        public abstract NonceDTO getNonce(Long userId);
 
-        public abstract CurrentAccountDTO getCurrentAccount(String address);
+        public abstract CurrentAccountDTO getCurrentAccount(Long userId);
 
         public abstract CurrentBlockDTO getCurrentBlock();
 
         public abstract String getWalletAddress();
+
+        public abstract SubmitTransactionDTO sign(String toAddress, BigDecimal amount);
 
         public abstract String submitTransaction(Long userId, SubmitTransactionDTO transaction);
     }
@@ -610,7 +660,7 @@ public class CoinService {
 
         if (txGift != null) {
             dto.setPhone(txGift.getPhone());
-            dto.setImageId(txGift.getImage());
+            dto.setImageId(txGift.getImageId());
             dto.setMessage(txGift.getMessage());
             dto.setType(TransactionType.getGiftType(dto.getType()));
         } else if (txRecord != null) {
@@ -631,20 +681,16 @@ public class CoinService {
     }
 
     public BalanceDTO getCoinsBalance(Long userId, List<String> coins) {
-        if (coins == null || coins.isEmpty()) {
-            return new BalanceDTO(userId, new AmountDTO(BigDecimal.ZERO), new ArrayList<>());
-        }
-
         List<UserCoin> userCoins = userService.getUserCoins(userId);
 
-        List<CompletableFuture<com.batm.dto.CoinBalanceDTO>> futures = userCoins.stream()
+        List<CompletableFuture<CoinBalanceDTO>> futures = userCoins.stream()
                 .filter(it -> coins.contains(it.getCoin().getId()))
                 .map(dto -> callAsync(dto))
                 .collect(Collectors.toList());
 
-        List<com.batm.dto.CoinBalanceDTO> balances = futures.stream()
+        List<CoinBalanceDTO> balances = futures.stream()
                 .map(CompletableFuture::join)
-                .sorted(Comparator.comparing(com.batm.dto.CoinBalanceDTO::getOrderIndex))
+                .sorted(Comparator.comparing(CoinBalanceDTO::getId))
                 .collect(Collectors.toList());
 
         BigDecimal totalBalance = Util.format2(balances.stream()
@@ -654,31 +700,48 @@ public class CoinService {
         return new BalanceDTO(userId, new AmountDTO(totalBalance), balances);
     }
 
-    private CompletableFuture<com.batm.dto.CoinBalanceDTO> callAsync(UserCoin userCoin) {
+    public FeeDTO getCoinsFee(List<String> coins) {
+        List<CoinFeeDTO> feeList = new ArrayList<>();
+
+        coinList.forEach(e -> {
+            if (coins.contains(e.getCode())) {
+                if (e.getCode() == CoinEnum.ETH.name()) {
+                    feeList.add(new CoinFeeDTO(e.getCode(), null, Constant.GAS_PRICE, Constant.GAS_LIMIT));
+                } else {
+                    feeList.add(new CoinFeeDTO(e.getCode(), e.getFee(), null, null));
+                }
+            }
+        });
+
+        return new FeeDTO(feeList);
+    }
+
+    private CompletableFuture<CoinBalanceDTO> callAsync(UserCoin userCoin) {
         return CompletableFuture.supplyAsync(() -> {
-            CoinEnum coinEnum = CoinEnum.valueOf(userCoin.getCoin().getId());
+            CoinEnum coinEnum = CoinEnum.valueOf(userCoin.getCoin().getCode());
 
             BigDecimal coinPrice = coinEnum.getPrice();
-            BigDecimal coinBalance = coinEnum.getBalance(userCoin.getPublicKey());
+            BigDecimal coinBalance = coinEnum.getBalance(userCoin.getAddress());
 
-            return new com.batm.dto.CoinBalanceDTO(userCoin.getCoin().getId(), userCoin.getPublicKey(), coinBalance, new AmountDTO(coinPrice), userCoin.getCoin().getOrderIndex());
+            return new CoinBalanceDTO(userCoin.getCoin().getId(), userCoin.getCoin().getCode(), userCoin.getAddress(), coinBalance, new AmountDTO(coinPrice));
         });
     }
 
-    private Coin getCoin(List<Coin> coins, String coinId) {
-        return coins.stream().filter(e -> e.getId().equalsIgnoreCase(coinId)).findFirst().get();
+    private Coin getCoin(List<Coin> coins, String coinCode) {
+        return coins.stream().filter(e -> e.getCode().equalsIgnoreCase(coinCode)).findFirst().get();
     }
 
     public void save(CoinDTO coinVM, Long userId) {
         User user = userService.findById(userId);
-        List<Coin> coins = coinRepository.findAll();
         List<UserCoin> userCoins = userService.getUserCoins(userId);
 
         List<UserCoin> newCoins = new ArrayList<>();
-        coinVM.getCoins().stream().forEach(coinDTO -> {
-            Coin coin = getCoin(coins, coinDTO.getCoinCode());
+        coinVM.getCoinList().stream().forEach(coinDTO -> {
+            Coin coin = getCoin(coinList, coinDTO.getCoinCode());
+
             if (coin != null) {
-                UserCoin userCoin = new UserCoin(user, coin, coinDTO.getPublicKey());
+                UserCoin userCoin = new UserCoin(user, coin, coinDTO.getAddress());
+
                 if (userCoins.indexOf(userCoin) < 0) {
                     newCoins.add(userCoin);
                 }
@@ -691,24 +754,17 @@ public class CoinService {
     public Response compareCoins(CoinDTO coinDTO, Long userId) {
         List<UserCoin> userCoins = userService.getUserCoins(userId);
 
-        for (UserCoinDTO userCoin : coinDTO.getCoins()) {
-            UserCoin tempUserCoin = new UserCoin(userCoin.getCoinCode());
-            int index = userCoins.indexOf(tempUserCoin);
-            if (index < 0) {
-                return Response.error(new Error(3, "Coin does not exist"));
-            }
-
-            String dbPublicKey = userCoins.get(index).getPublicKey();
-            if (userCoin.getPublicKey() == null
-                    || !userCoin.getPublicKey().equalsIgnoreCase(dbPublicKey)) {
-                return Response.error(new Error(3, "Public keys not match"));
+        for (UserCoinDTO reqCoin : coinDTO.getCoinList()) {
+            for (UserCoin userCoin : userCoins) {
+                if (reqCoin.getCoinCode().equalsIgnoreCase(userCoin.getCoin().getCode())) {
+                    if (!reqCoin.getAddress().equalsIgnoreCase(userCoin.getAddress())) {
+                        return Response.error(new Error(2, "Coins doesn't match"));
+                    }
+                }
             }
         }
 
-        Map<String, Object> response = new HashMap<>();
-        response.put("isCoinsMatched", true);
-
-        return Response.ok(response);
+        return Response.ok(true);
     }
 
     public static void saveGift(Long userId, CoinEnum coinId, String txId, SubmitTransactionDTO dto) {

@@ -13,15 +13,7 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @Entity
 @Table(name = "tlimit")
-public class Limit {
-    @Id
-    @GeneratedValue(
-            strategy = GenerationType.IDENTITY
-    )
-    @Column(
-            name = "id"
-    )
-    private long id;
+public class Limit extends BaseEntity {
 
     @Column(
             name = "currency"

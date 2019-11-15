@@ -13,12 +13,7 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @Entity
 @Table(name = "transactionrecordgift")
-public class TransactionRecordGift {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Long id;
+public class TransactionRecordGift extends BaseEntity {
 
     @Column(name = "tx_id")
     private String txId;
@@ -28,7 +23,7 @@ public class TransactionRecordGift {
     private BigDecimal amount;
     private String phone;
     private String message;
-    private String image;
+    private String imageId;
     private Integer step;
 
     @Column(name = "ref_tx_id")

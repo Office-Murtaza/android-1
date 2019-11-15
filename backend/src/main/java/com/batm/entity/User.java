@@ -1,6 +1,5 @@
 package com.batm.entity;
 
-import java.io.Serializable;
 import java.util.List;
 import javax.persistence.*;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
@@ -15,12 +14,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Entity
 @Table(name = "w_user")
-public class User extends AbstractAuditingEntity implements Serializable {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "user_id")
-    private Long userId;
+public class User extends BaseEntity {
 
     private String phone;
     private String password;
@@ -46,12 +40,12 @@ public class User extends AbstractAuditingEntity implements Serializable {
     private Identity identity;
 
     @Transient
-    public String getCoinAddress(String coinId) {
-        return userCoins.stream().filter(e -> e.getCoinId().equalsIgnoreCase(coinId)).findFirst().get().getPublicKey();
+    public String getCoinAddress(String coinCode) {
+        return userCoins.stream().filter(e -> coinCode.equalsIgnoreCase(e.getCoin().getCode())).findFirst().get().getAddress();
     }
 
     @Transient
-    public Coin getCoin(String coinId) {
-        return userCoins.stream().filter(e -> e.getCoinId().equalsIgnoreCase(coinId)).findFirst().get().getCoin();
+    public Coin getCoin(String coinCode) {
+        return userCoins.stream().filter(e -> coinCode.equalsIgnoreCase(e.getCoin().getCode())).findFirst().get().getCoin();
     }
 }

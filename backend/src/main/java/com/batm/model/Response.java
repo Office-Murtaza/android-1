@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+import net.sf.json.JSONObject;
 
 @Getter
 @Setter
@@ -17,6 +18,13 @@ public class Response {
     private Error error;
 
     public static Response ok(Object res) {
+        return new Response(res, null);
+    }
+
+    public static Response ok(Boolean bool) {
+        JSONObject res = new JSONObject();
+        res.put("result", bool);
+
         return new Response(res, null);
     }
 

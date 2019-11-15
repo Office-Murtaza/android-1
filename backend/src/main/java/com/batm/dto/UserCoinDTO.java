@@ -14,5 +14,5 @@ import lombok.Setter;
 public class UserCoinDTO {
 
     private String coinCode;
-    private String publicKey;
+    private String address;
 }

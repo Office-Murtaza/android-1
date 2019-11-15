@@ -24,7 +24,7 @@ public class CoinController {
     @PostMapping("/user/{userId}/coins/add")
     public Response addCoins(@RequestBody CoinDTO coinDTO, @PathVariable Long userId) {
         try {
-            if (coinDTO == null || coinDTO.getCoins().isEmpty()) {
+            if (coinDTO.getCoinList().isEmpty()) {
                 return Response.error(new Error(2, "Empty coin list"));
             }
 
@@ -43,7 +43,7 @@ public class CoinController {
     @PostMapping("/user/{userId}/coins/compare")
     public Response compareCoins(@RequestBody CoinDTO coinDTO, @PathVariable Long userId) {
         try {
-            if (coinDTO == null || coinDTO.getCoins().isEmpty()) {
+            if (coinDTO.getCoinList().isEmpty()) {
                 return Response.error(new Error(2, "Empty coin list"));
             }
 
@@ -55,9 +55,19 @@ public class CoinController {
     }
 
     @GetMapping("/user/{userId}/coins/balance")
-    public Response getCoinsBalance(@PathVariable Long userId, @RequestParam(required = false) List<String> coins) {
+    public Response getCoinsBalance(@PathVariable Long userId, @RequestParam List<String> coins) {
         try {
             return Response.ok(coinService.getCoinsBalance(userId, coins));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Response.serverError();
+        }
+    }
+
+    @GetMapping("/user/{userId}/coins/fee")
+    public Response getCoinsFee(@PathVariable Long userId, @RequestParam List<String> coins) {
+        try {
+            return Response.ok(coinService.getCoinsFee(coins));
         } catch (Exception e) {
             e.printStackTrace();
             return Response.serverError();

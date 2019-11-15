@@ -16,13 +16,13 @@ import com.batm.repository.AtmAddressRepository;
 
 @RestController
 @RequestMapping("/api/v1")
-public class AddressController {
+public class TerminalController {
 
     @Autowired
     private AtmAddressRepository atmAddressRepository;
 
-    @GetMapping("/static/atm/address")
-    public Response getAtmAddress() {
+    @GetMapping("/terminal/locations")
+    public Response getTerminalLocations() {
         try {
             List<AtmAddress> atmAddresses = atmAddressRepository.findAll();
 

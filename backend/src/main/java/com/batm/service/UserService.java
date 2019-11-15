@@ -1,6 +1,5 @@
 package com.batm.service;
 
-import java.time.Instant;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -122,34 +121,35 @@ public class UserService {
         User user = this.userRepository.getOne(userId);
         if (user != null) {
             Unlink unlink = this.unlinkRepository.findByUserUserId(userId);
+
             if (unlink == null) {
                 unlink = new Unlink();
                 unlink.setUser(user);
-                unlink.setCreatedDate(Instant.now());
             }
 
-            unlink.setLastModifiedDate(Instant.now());
             unlinkRepository.save(unlink);
+
             return unlink;
         }
+
         return null;
     }
 
     public UpdatePhone updatePhone(PhoneDTO phoneRequest, Long userId) {
         User user = userRepository.getOne(userId);
         UpdatePhone updatePhone = user.getUpdatePhone();
+
         if (updatePhone == null || updatePhone.getId() == null) {
             updatePhone = new UpdatePhone();
         }
+
         updatePhone.setUser(user);
         updatePhone.setPhone(phoneRequest.getPhone());
         updatePhone.setStatus(0);
-        updatePhone.setCreatedDate(Instant.now());
-        updatePhone.setLastModifiedDate(Instant.now());
 
         updatePhoneRepository.save(updatePhone);
-
         messageService.sendVerificationCode(user);
+
         return updatePhone;
     }
 
@@ -187,9 +187,8 @@ public class UserService {
 
         if (user.isPresent()) {
             String address = user.get().getUserCoins().stream()
-                    .filter(k -> k.getCoinId().equalsIgnoreCase(coinId.name()))
-                    .findFirst().get()
-                    .getPublicKey();
+                    .filter(k -> k.getCoin().getCode().equalsIgnoreCase(coinId.name()))
+                    .findFirst().get().getAddress();
 
             return new GiftAddressDTO(address);
         } else {

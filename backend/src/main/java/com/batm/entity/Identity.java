@@ -19,16 +19,7 @@ import java.util.stream.Collectors;
 @NoArgsConstructor
 @Entity
 @Table(name = "identity")
-public class Identity {
-
-    @Id
-    @GeneratedValue(
-            strategy = GenerationType.IDENTITY
-    )
-    @Column(
-            name = "id"
-    )
-    private long id;
+public class Identity extends BaseEntity {
 
     @Column(
             name = "publicid"
@@ -187,26 +178,26 @@ public class Identity {
     private List<TransactionRecordGift> transactionRecordGifts;
 
     @Transient
-    public TransactionRecord getTxRecord(String txId, String coinId) {
-        Optional<TransactionRecord> first = transactionRecords.stream().filter(e -> txId.equalsIgnoreCase(e.getDetail()) && coinId.equalsIgnoreCase(e.getCryptoCurrency())).findFirst();
+    public TransactionRecord getTxRecord(String txId, String coinCode) {
+        Optional<TransactionRecord> first = transactionRecords.stream().filter(e -> txId.equalsIgnoreCase(e.getDetail()) && coinCode.equalsIgnoreCase(e.getCryptoCurrency())).findFirst();
 
         return first.isPresent() ? first.get() : null;
     }
 
     @Transient
-    public List<TransactionRecord> getTxRecordList(String coinId) {
-        return transactionRecords.stream().filter(e -> coinId.equalsIgnoreCase(e.getCryptoCurrency()) && StringUtils.isNotEmpty(e.getDetail())).collect(Collectors.toList());
+    public List<TransactionRecord> getTxRecordList(String coinCode) {
+        return transactionRecords.stream().filter(e -> coinCode.equalsIgnoreCase(e.getCryptoCurrency()) && StringUtils.isNotEmpty(e.getDetail())).collect(Collectors.toList());
     }
 
     @Transient
-    public TransactionRecordGift getTxGift(String txId, String coinId) {
-        Optional<TransactionRecordGift> first = transactionRecordGifts.stream().filter(e -> txId.equalsIgnoreCase(e.getTxId()) && coinId.equalsIgnoreCase(e.getCoin().getId())).findFirst();
+    public TransactionRecordGift getTxGift(String txId, String coinCode) {
+        Optional<TransactionRecordGift> first = transactionRecordGifts.stream().filter(e -> txId.equalsIgnoreCase(e.getTxId()) && coinCode.equalsIgnoreCase(e.getCoin().getCode())).findFirst();
 
         return first.isPresent() ? first.get() : null;
     }
 
     @Transient
-    public List<TransactionRecordGift> getTxGiftList(String coinId) {
-        return transactionRecordGifts.stream().filter(e -> coinId.equalsIgnoreCase(e.getCoin().getId())).collect(Collectors.toList());
+    public List<TransactionRecordGift> getTxGiftList(String coinCode) {
+        return transactionRecordGifts.stream().filter(e -> coinCode.equalsIgnoreCase(e.getCoin().getCode())).collect(Collectors.toList());
     }
 }

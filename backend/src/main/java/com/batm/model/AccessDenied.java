@@ -11,8 +11,8 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class Error {
+public class AccessDenied {
 
-    private Integer errorCode;
-    private String errorMsg;
+    private Integer status;
+    private String message;
 }

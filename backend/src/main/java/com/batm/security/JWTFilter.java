@@ -14,7 +14,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.GenericFilterBean;
-import com.batm.entity.AccessDenied;
+import com.batm.model.AccessDenied;
 import com.batm.entity.Token;
 import com.batm.repository.TokenRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;

@@ -14,12 +14,7 @@ import java.util.Date;
 @NoArgsConstructor
 @Entity
 @Table(name = "transactionrecord")
-public class TransactionRecord {
-    
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private long id;
+public class TransactionRecord extends BaseEntity {
 
     @Column(
             name = "type"

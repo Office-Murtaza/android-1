@@ -13,7 +13,7 @@
     <changeSet id="2" author="Kostya" failOnError="false">
         <sqlFile encoding="utf8"
                  endDelimiter=";"
-                 path="db/create/create_code_verification.sql"
+                 path="db/create/create_codeverify.sql"
                  splitStatements="true"
                  stripComments="true"/>
     </changeSet>
@@ -27,7 +27,7 @@
     <changeSet id="4" author="Kostya" failOnError="false">
         <sqlFile encoding="utf8"
                  endDelimiter=";"
-                 path="db/create/create_user_coin.sql"
+                 path="db/create/create_usercoin.sql"
                  splitStatements="true"
                  stripComments="true"/>
     </changeSet>
@@ -41,81 +41,74 @@
     <changeSet id="6" author="Kostya" failOnError="false">
         <sqlFile encoding="utf8"
                  endDelimiter=";"
-                 path="db/create/create_atm_address.sql"
+                 path="db/create/create_terminallocation.sql"
                  splitStatements="true"
                  stripComments="true"/>
     </changeSet>
     <changeSet id="7" author="Kostya" failOnError="false">
         <sqlFile encoding="utf8"
                  endDelimiter=";"
-                 path="db/create/create_open_hour.sql"
+                 path="db/create/create_terminallocationhour.sql"
                  splitStatements="true"
                  stripComments="true"/>
     </changeSet>
     <changeSet id="8" author="Kostya" failOnError="false">
         <sqlFile encoding="utf8"
                  endDelimiter=";"
-                 path="db/create/create_link.sql"
+                 path="db/create/create_unlink.sql"
                  splitStatements="true"
                  stripComments="true"/>
     </changeSet>
     <changeSet id="9" author="Kostya" failOnError="false">
         <sqlFile encoding="utf8"
                  endDelimiter=";"
-                 path="db/create/create_link.sql"
+                 path="db/create/create_phonechange.sql"
                  splitStatements="true"
                  stripComments="true"/>
     </changeSet>
     <changeSet id="10" author="Kostya" failOnError="false">
         <sqlFile encoding="utf8"
                  endDelimiter=";"
-                 path="db/create/create_update_phone.sql"
+                 path="db/create/create_transactionrecordgift.sql"
                  splitStatements="true"
                  stripComments="true"/>
     </changeSet>
     <changeSet id="11" author="Kostya" failOnError="false">
         <sqlFile encoding="utf8"
                  endDelimiter=";"
-                 path="db/create/create_transactionrecordgift.sql"
+                 path="db/insert/insert_coin.sql"
                  splitStatements="true"
                  stripComments="true"/>
     </changeSet>
     <changeSet id="12" author="Kostya" failOnError="false">
         <sqlFile encoding="utf8"
                  endDelimiter=";"
-                 path="db/insert/insert_coins.sql"
+                 path="db/insert/insert_terminallocation.sql"
                  splitStatements="true"
                  stripComments="true"/>
     </changeSet>
     <changeSet id="13" author="Kostya" failOnError="false">
         <sqlFile encoding="utf8"
                  endDelimiter=";"
-                 path="db/insert/insert_atm_address.sql"
+                 path="db/insert/insert_terminallocationhour.sql"
                  splitStatements="true"
                  stripComments="true"/>
     </changeSet>
     <changeSet id="14" author="Kostya" failOnError="false">
         <sqlFile encoding="utf8"
                  endDelimiter=";"
-                 path="db/insert/insert_open_hour.sql"
+                 path="db/update/add_user_id_to_identity.sql"
                  splitStatements="true"
                  stripComments="true"/>
     </changeSet>
     <changeSet id="15" author="Kostya" failOnError="false">
         <sqlFile encoding="utf8"
                  endDelimiter=";"
-                 path="db/update/add_user_id_to_identity.sql"
-                 splitStatements="true"
-                 stripComments="true"/>
-    </changeSet>
-    <changeSet id="16" author="Kostya" failOnError="false">
-        <sqlFile encoding="utf8"
-                 endDelimiter=";"
                  path="db/update/modify_identity_colums.sql"
                  splitStatements="true"
                  stripComments="true"/>
     </changeSet>
-    <changeSet id="17" author="Kostya" failOnError="false">
+    <changeSet id="16" author="Kostya" failOnError="false">
         <sqlFile encoding="utf8"
                  endDelimiter=";"
                  path="db/update/add_n_to_transactionrecord.sql"

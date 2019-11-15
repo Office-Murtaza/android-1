@@ -131,7 +131,7 @@
         <dependency>
             <groupId>com.trustwallet.walletcore</groupId>
             <artifactId>walletcore</artifactId>
-            <version>0.12.8</version>
+            <version>0.12.24</version>
         </dependency>
     </dependencies>
 

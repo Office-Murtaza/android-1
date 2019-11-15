@@ -13,18 +13,13 @@ import java.util.Date;
 @NoArgsConstructor
 @Entity
 @Table(name = "identitypiececellphone")
-public class IdentityPieceCellPhone {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private long id;
+public class IdentityPieceCellPhone extends BaseEntity {
 
     @ManyToOne(optional = false)
     private Identity identity;
 
     @ManyToOne(optional = false)
-    @JoinColumn(name="identitypiece_id")
+    @JoinColumn(name = "identitypiece_id")
     private IdentityPiece identityPiece;
 
     @Column(name = "created")

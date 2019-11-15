@@ -7,13 +7,11 @@ import com.batm.repository.CodeVerificationRepository;
 import com.batm.util.Constant;
 import com.twilio.Twilio;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import javax.annotation.PostConstruct;
 import java.net.URI;
-import java.time.Instant;
 import java.util.Arrays;
 import com.twilio.rest.api.v2010.account.Message;
 import com.twilio.type.PhoneNumber;
@@ -66,14 +64,16 @@ public class MessageService {
                 status = sendMessage(user.getPhone(), "Belco Wallet Code: " + code);
             }
 
-            CodeVerification codeVerification = codeVerificationRepository.findByUserUserId(user.getUserId());
+            CodeVerification codeVerification = codeVerificationRepository.findByUserUserId(user.getId());
 
             if (codeVerification == null) {
-                codeVerification = new CodeVerification(user, code, "0");
-            } else {
-                codeVerification.setCodeStatus("0");
+                codeVerification = new CodeVerification();
+                codeVerification.setUser(user);
                 codeVerification.setCode(code);
-                codeVerification.setLastModifiedDate(Instant.now());
+                codeVerification.setStatus(0);
+            } else {
+                codeVerification.setStatus(0);
+                codeVerification.setCode(code);
             }
 
             codeVerificationRepository.save(codeVerification);

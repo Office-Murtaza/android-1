@@ -14,9 +14,9 @@ import lombok.Setter;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class CoinBalanceDTO {
 
-    private String coinId;
-    private String publicKey;
+    private Long id;
+    private String code;
+    private String address;
     private BigDecimal balance;
     private AmountDTO price;
-    private transient Integer orderIndex;
 }

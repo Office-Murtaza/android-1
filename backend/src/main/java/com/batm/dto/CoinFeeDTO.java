@@ -1,4 +1,4 @@
-package com.batm.model;
+package com.batm.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
@@ -6,13 +6,17 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.math.BigDecimal;
+
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class Error {
+public class CoinFeeDTO {
 
-    private Integer errorCode;
-    private String errorMsg;
+    private String coinCode;
+    private BigDecimal fee;
+    private Long gasPrice;
+    private Long gasLimit;
 }

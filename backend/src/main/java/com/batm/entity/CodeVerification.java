@@ -1,47 +1,26 @@
 package com.batm.entity;
 
-import java.io.Serializable;
-
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.MapsId;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
-
+import javax.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import java.util.Date;
 
 @Getter
 @Setter
+@AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "w_code_verification")
-public class CodeVerification extends AbstractAuditingEntity implements Serializable {
+@Table(name = "w_codeverify")
+public class CodeVerification extends BaseEntity {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -1712969322089989538L;
+    @OneToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
-	@Id
-	private Long id;
+    private String code;
+    private Integer status;
 
-	@MapsId
-	@OneToOne
-	@JoinColumn(name = "user_id")
-	private User user;
-
-	private String code = "0";
-
-	private String codeStatus;
-
-	public CodeVerification(User user, String code, String codeStatus) {
-		super();
-		this.user = user;
-		this.code = code;
-		this.codeStatus = codeStatus;
-	}
-
+    private Date updateDate;
 }

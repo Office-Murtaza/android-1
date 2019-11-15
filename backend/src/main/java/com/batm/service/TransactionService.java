@@ -9,6 +9,7 @@ import com.batm.repository.TransactionRecordRepository;
 import com.batm.util.Constant;
 import com.batm.util.Util;
 import net.sf.json.JSONObject;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
@@ -51,7 +52,7 @@ public class TransactionService {
             gift.setStatus(TransactionStatus.PENDING.getValue());
             gift.setPhone(dto.getPhone());
             gift.setMessage(dto.getMessage());
-            gift.setImage(dto.getImageId());
+            gift.setImageId(dto.getImageId());
             gift.setStep(receiverExist ? Constant.GIFT_USER_EXIST : Constant.GIFT_USER_NOT_EXIST);
             gift.setIdentity(identity);
             gift.setCoin(coin);
@@ -67,7 +68,7 @@ public class TransactionService {
         UserLimitDTO dto = new UserLimitDTO();
         dto.setDailyLimit(new AmountDTO(BigDecimal.ZERO));
         dto.setTxLimit(new AmountDTO(BigDecimal.ZERO));
-        dto.setSellProfitRate(new AmountDTO(BigDecimal.ONE));
+        dto.setSellProfitRate(BigDecimal.ONE);
 
         try {
             User user = userService.findById(userId);
@@ -81,7 +82,7 @@ public class TransactionService {
 
             dto.setDailyLimit(new AmountDTO(Util.format2(dailyLimit)));
             dto.setTxLimit(new AmountDTO(Util.format2(txLimit)));
-            dto.setSellProfitRate(new AmountDTO(new BigDecimal("1.025")));
+            dto.setSellProfitRate(new BigDecimal("1.025"));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -158,7 +159,7 @@ public class TransactionService {
 
             list.stream().forEach(t -> {
                 try {
-                    CoinService.CoinEnum coinId = CoinService.CoinEnum.valueOf(t.getCoin().getId());
+                    CoinService.CoinEnum coinId = CoinService.CoinEnum.valueOf(t.getCoin().getCode());
                     TransactionStatus status = coinId.getTransactionStatus(t.getTxId());
                     t.setStatus(status.getValue());
 
@@ -170,7 +171,7 @@ public class TransactionService {
                             gift.setStatus(TransactionStatus.COMPLETE.getValue());
                             gift.setPhone(t.getPhone());
                             gift.setMessage(t.getMessage());
-                            gift.setImage(t.getImage());
+                            gift.setImageId(t.getImageId());
                             gift.setStep(0);
                             gift.setIdentity(userService.findByPhone(t.getPhone()).get().getIdentity());
                             gift.setCoin(t.getCoin());
@@ -200,11 +201,21 @@ public class TransactionService {
             list.stream().forEach(t -> {
                 try {
                     if (userService.findByPhone(t.getPhone()).isPresent()) {
-                        //create TW transaction
-                        //submit transaction
-                        t.setStep(Constant.GIFT_USER_TRANSACTION_CREATED);
+                        CoinService.CoinEnum coinCode = CoinService.CoinEnum.valueOf(t.getCoin().getCode());
+                        SubmitTransactionDTO dto = coinCode.sign(t.getIdentity().getUser().getCoinAddress(t.getCoin().getCode()), t.getAmount());
+                        dto.setRefTxId(t.getTxId());
+                        dto.setType(TransactionType.SEND_GIFT.getValue());
+                        dto.setPhone(t.getPhone());
+                        dto.setImageId(t.getImageId());
+                        dto.setMessage(t.getMessage());
 
-                        confirmedList.add(t);
+                        String txId = coinCode.submitTransaction(t.getIdentity().getUser().getId(), dto);
+
+                        if (StringUtils.isNotEmpty(txId)) {
+                            t.setStep(Constant.GIFT_USER_TRANSACTION_CREATED);
+
+                            confirmedList.add(t);
+                        }
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
