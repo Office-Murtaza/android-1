@@ -62,10 +62,9 @@ public class BlockbookService {
     public NonceDTO getNonce(String url, String address) {
         try {
             JSONObject res = rest.getForObject(url + "/api/v2/address/" + address + "?details=txs&pageSize=1000&page=1", JSONObject.class);
-            JSONArray transactionsArray = res.optJSONArray("transactions");
 
-            if (transactionsArray != null) {
-                return new NonceDTO(transactionsArray.size());
+            if (res != null) {
+                return new NonceDTO(res.optInt("txs"));
             }
         } catch (Exception e) {
             e.printStackTrace();

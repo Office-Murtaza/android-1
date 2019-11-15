@@ -306,7 +306,7 @@ public class UserController {
             User user = this.userService.findById(userId);
             Boolean match = passwordEncoder.matches(changePasswordRequest.getOldPassword(), user.getPassword());
             if (!match) {
-                return Response.error(new Error(2, "Old password does not match."));
+                return Response.error(new Error(2, "Old password do not match"));
             }
             String encodedPassword = passwordEncoder.encode(changePasswordRequest.getNewPassword());
             userService.updatePassword(encodedPassword, userId);
