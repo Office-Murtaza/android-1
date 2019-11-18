@@ -1,0 +1,405 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/toolbar_container"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@drawable/bg_toolbar"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:elevation="5dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    android:id="@+id/TxLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginLeft="24dp"
+                    android:layout_marginTop="24dp"
+                    android:text="TxId"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/textTv"
+                    android:clickable="true"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="start"
+                    android:maxLines="5"
+                    android:minLines="3"
+                    android:textColor="#0073e4"
+                    android:textSize="12sp"
+                    app:layout_constraintStart_toEndOf="@+id/guideline1"
+                    app:layout_constraintTop_toTopOf="@+id/TxLabel"
+                    tools:text="b28e2673ead88289a2e5a354bce0630483780098631e688cabe9ee06dd325074"
+                    android:focusable="true" />
+
+                <TextView
+                    android:id="@+id/TypeLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginLeft="24dp"
+                    android:layout_marginTop="24dp"
+                    android:text="Type"
+                    android:textColor="#8d8d8d"
+                    android:textSize="12sp"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/textTv" />
+
+                <TextView
+                    android:id="@+id/typeTv"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="start"
+                    android:textColor="#58585a"
+                    android:textSize="12sp"
+                    app:layout_constraintStart_toEndOf="@+id/guideline1"
+                    app:layout_constraintTop_toTopOf="@id/TypeLabel"
+                    tools:text="Deposit" />
+
+                <TextView
+                    android:id="@+id/StatusLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginLeft="24dp"
+                    android:layout_marginTop="24dp"
+                    android:text="Status"
+                    android:textColor="#8d8d8d"
+                    android:textSize="12sp"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/typeTv" />
+
+                <TextView
+                    android:id="@+id/statusTv"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="start"
+                    android:textColor="#58585a"
+                    android:textSize="12sp"
+                    app:layout_constraintStart_toEndOf="@+id/guideline1"
+                    app:layout_constraintTop_toTopOf="@id/StatusLabel"
+                    tools:text="Pending" />
+
+                <TextView
+                    android:id="@+id/amountLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginLeft="24dp"
+                    android:layout_marginTop="24dp"
+                    android:text="Amount"
+                    android:textColor="#8d8d8d"
+                    android:textSize="12sp"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/statusTv" />
+
+                <TextView
+                    android:id="@+id/amountTv"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="start"
+                    android:textColor="#58585a"
+                    android:textSize="12sp"
+                    app:layout_constraintStart_toEndOf="@+id/guideline1"
+                    app:layout_constraintTop_toTopOf="@id/amountLabel"
+                    tools:text="0.5 BTC" />
+
+                <TextView
+                    android:id="@+id/feeLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginLeft="24dp"
+                    android:layout_marginTop="24dp"
+                    android:text="Fee"
+                    android:textColor="#8d8d8d"
+                    android:textSize="12sp"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/amountTv" />
+
+                <TextView
+                    android:id="@+id/feeTv"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="start"
+                    android:textColor="#58585a"
+                    android:textSize="12sp"
+                    app:layout_constraintStart_toEndOf="@+id/guideline1"
+                    app:layout_constraintTop_toTopOf="@id/feeLabel"
+                    tools:text="0.001 BTC" />
+
+                <TextView
+                    android:id="@+id/dateLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginLeft="24dp"
+                    android:layout_marginTop="24dp"
+                    android:text="Date"
+                    android:textColor="#8d8d8d"
+                    android:textSize="12sp"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/feeTv" />
+
+                <TextView
+                    android:id="@+id/dateTv"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="start"
+                    android:textColor="#58585a"
+                    android:textSize="12sp"
+                    app:layout_constraintStart_toEndOf="@+id/guideline1"
+                    app:layout_constraintTop_toTopOf="@id/dateLabel"
+                    tools:text="2019.10.08 06:32:58 PM" />
+
+                <TextView
+                    android:id="@+id/fromAddressLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginLeft="24dp"
+                    android:layout_marginTop="24dp"
+                    android:text="From Address"
+                    android:textColor="#8d8d8d"
+                    android:textSize="12sp"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/dateTv" />
+
+                <TextView
+                    android:id="@+id/fromAddressTv"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="start"
+                    android:maxLines="3"
+                    android:textColor="#58585a"
+                    android:textSize="12sp"
+                    app:layout_constraintStart_toEndOf="@+id/guideline1"
+                    app:layout_constraintTop_toTopOf="@id/fromAddressLabel"
+                    tools:text="123400438568459684598645946fdsfsdf" />
+
+                <TextView
+                    android:id="@+id/toAddressLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginLeft="24dp"
+                    android:layout_marginTop="24dp"
+                    android:text="To Address"
+                    android:textColor="#8d8d8d"
+                    android:textSize="12sp"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/fromAddressTv" />
+
+                <TextView
+                    android:id="@+id/toAddressTv"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="start"
+                    android:maxLines="3"
+                    android:textColor="#58585a"
+                    android:textSize="12sp"
+                    app:layout_constraintStart_toEndOf="@+id/guideline1"
+                    app:layout_constraintTop_toTopOf="@id/toAddressLabel"
+                    tools:text="1256400438568459684598645946fdsfsdf" />
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guideline1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintGuide_begin="147dp"
+                    app:layout_constraintStart_toStartOf="parent" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/giftContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="visible"
+                android:layout_marginTop="24dp">
+
+                <View
+                    android:id="@+id/divider1"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginLeft="24dp"
+                    android:layout_marginEnd="24dp"
+                    android:layout_marginRight="24dp"
+                    android:background="#f3f3f3"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                </View>
+
+
+                <TextView
+                    android:id="@+id/phoneLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="24dp"
+                    android:layout_marginTop="24dp"
+                    android:text="Phone"
+                    android:textColor="#8d8d8d"
+                    android:textSize="12sp"
+                    android:visibility="gone"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/divider1" />
+
+                <TextView
+                    android:id="@+id/phoneTv"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="start"
+                    android:maxLines="3"
+                    android:textColor="#58585a"
+                    android:textSize="12sp"
+                    android:visibility="gone"
+                    app:layout_constraintStart_toEndOf="@+id/guideline2"
+                    app:layout_constraintTop_toTopOf="@id/phoneLabel"
+                    tools:text="+1 (800) 123 456 789" />
+
+                <TextView
+                    android:id="@+id/imageLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginLeft="24dp"
+                    android:layout_marginTop="24dp"
+                    android:text="Image"
+                    android:visibility="gone"
+                    android:textColor="#8d8d8d"
+                    android:textSize="12sp"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/phoneTv" />
+
+                <ImageView
+                    android:id="@+id/imageIv"
+                    android:layout_width="95dp"
+                    android:visibility="gone"
+                    android:layout_height="95dp"
+                    app:layout_constraintStart_toEndOf="@+id/guideline2"
+                    app:layout_constraintTop_toTopOf="@id/imageLabel">
+
+                </ImageView>
+
+                <TextView
+                    android:id="@+id/messageLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginLeft="24dp"
+                    android:layout_marginTop="24dp"
+                    android:text="Message"
+                    android:visibility="gone"
+                    android:textColor="#8d8d8d"
+                    android:textSize="12sp"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/imageIv" />
+
+                <TextView
+                    android:id="@+id/messageTv"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="24dp"
+                    android:layout_marginRight="24dp"
+                    android:gravity="start"
+                    android:textColor="#58585a"
+                    android:visibility="gone"
+                    android:textSize="12sp"
+                    app:layout_constraintStart_toEndOf="@+id/guideline2"
+                    app:layout_constraintTop_toTopOf="@id/messageLabel"
+                    tools:text="Happy Birthday!" />
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guideline2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintGuide_begin="147dp"
+                    app:layout_constraintStart_toStartOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="116dp"
+               >
+
+                <View
+                    android:id="@+id/divider2"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginLeft="24dp"
+                    android:layout_marginEnd="24dp"
+                    android:layout_marginRight="24dp"
+                    android:background="#f3f3f3"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                </View>
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/qrCodeIv"
+                    android:layout_width="124dp"
+                    android:layout_height="124dp"
+                    android:scaleType="fitXY"
+                    android:layout_marginTop="18dp"
+                    app:layout_constraintLeft_toLeftOf="@id/divider2"
+                    app:layout_constraintRight_toRightOf="@id/divider2"
+                    app:layout_constraintTop_toBottomOf="@id/divider2">
+
+                </androidx.appcompat.widget.AppCompatImageView>
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        </LinearLayout>
+
+    </ScrollView>
+</LinearLayout>

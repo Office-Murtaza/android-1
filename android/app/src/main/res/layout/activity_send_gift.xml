@@ -1,0 +1,329 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    tools:context=".ui.main.settings.phone.ShowPhoneActivity">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/toolbar_container"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@drawable/bg_toolbar"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:elevation="5dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <FrameLayout
+        android:id="@+id/progress"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/gray_progress"
+        android:clickable="true"
+        android:elevation="15dp"
+        android:focusable="true"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar_container">
+
+        <ProgressBar
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="8dp" />
+    </FrameLayout>
+
+    <!--<androidx.appcompat.widget.AppCompatTextView-->
+    <!--android:id="@+id/address_title"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_marginTop="@dimen/margin_main"-->
+    <!--android:fontFamily="@font/poppins_semi_bold"-->
+    <!--android:text="@string/address"-->
+    <!--android:textColor="@color/dark_gray_text_color"-->
+    <!--android:textSize="14sp"-->
+    <!--app:layout_constraintEnd_toEndOf="parent"-->
+    <!--app:layout_constraintStart_toStartOf="parent"-->
+    <!--app:layout_constraintTop_toBottomOf="@id/toolbar_container" />-->
+
+
+    <com.hbb20.CountryCodePicker
+        android:id="@+id/phone_ccp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:gravity="center"
+        app:ccp_autoFormatNumber="true"
+        app:ccp_clickable="false"
+
+        app:ccp_defaultNameCode="US"
+        app:ccp_showNameCode="false"
+        app:layout_constraintBottom_toBottomOf="@id/til_phone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.05"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/til_phone"
+        android:layout_width="260dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_half"
+        android:layout_marginTop="@dimen/margin_half"
+        android:layout_marginEnd="@dimen/margin_x2"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/phone_ccp"
+        app:layout_constraintTop_toBottomOf="@id/toolbar_container">
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/phone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/phone_ccp"
+            android:drawableEnd="@drawable/ic_phone"
+            android:hint="@string/phone"
+            android:inputType="phone"
+            android:maxLines="1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:paddingEnd="@dimen/margin_half"
+            android:singleLine="true"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/phone_paste"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_half"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:clickable="true"
+        android:focusable="true"
+        android:text="@string/paste"
+        android:textColor="@color/blue_color"
+        app:fontFamily="@font/poppins_medium"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/til_phone" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/amount_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_main"
+        android:fontFamily="@font/poppins_semi_bold"
+        android:text="@string/amount"
+        android:textColor="@color/dark_gray_text_color"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/phone_paste" />
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/til_amount_crypto"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_x2"
+        app:layout_constraintEnd_toStartOf="@id/ic_exchange"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/amount_title">
+
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/amount_crypto"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_regular"
+            android:gravity="center"
+            android:inputType="numberDecimal"
+            android:maxLines="3"
+            digits="1234567890."
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:hint="XRP" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/ic_exchange"
+        android:layout_width="15dp"
+        android:layout_height="15dp"
+        android:layout_marginStart="@dimen/margin_x2"
+        android:layout_marginEnd="@dimen/margin_x2"
+        android:scaleType="fitXY"
+        app:layout_constraintBottom_toBottomOf="@+id/til_amount_crypto"
+        app:layout_constraintEnd_toStartOf="@id/til_amount_usd"
+        app:layout_constraintStart_toEndOf="@id/til_amount_crypto"
+        app:layout_constraintTop_toTopOf="@id/til_amount_crypto"
+        app:srcCompat="@drawable/ic_exchange" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/til_amount_usd"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/margin_x2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/ic_exchange"
+        app:layout_constraintTop_toBottomOf="@id/amount_title">
+
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/amount_usd"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:enabled="true"
+            android:fontFamily="@font/poppins_regular"
+            android:gravity="center"
+            android:inputType="numberDecimal"
+            android:maxLines="2"
+            digits="1234567890."
+            android:hint="USD"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/amount_max"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_half"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:clickable="true"
+        android:focusable="true"
+        android:text="@string/max"
+        android:textColor="@color/blue_color"
+        app:fontFamily="@font/poppins_medium"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/til_amount_crypto" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/gif_empty_container"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="@dimen/margin_main"
+        android:background="@drawable/bg_gif_box"
+        android:clickable="true"
+        android:focusable="true"
+        android:scaleType="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/amount_max"
+        app:srcCompat="@drawable/ic_gift_box" />
+
+
+    <!--<FrameLayout-->
+    <!--android:id="@+id/gif_media_view_container"-->
+    <!--android:layout_width="0dp"-->
+    <!--android:layout_height="100dp"-->
+    <!--android:layout_marginTop="@dimen/margin_main"-->
+    <!--app:layout_constraintEnd_toEndOf="parent"-->
+    <!--app:layout_constraintStart_toStartOf="parent"-->
+    <!--app:layout_constraintTop_toBottomOf="@id/amount_max">-->
+
+    <com.giphy.sdk.ui.views.GifView
+        android:id="@+id/gif_media_view"
+        android:layout_width="wrap_content"
+        android:layout_height="100dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/margin_main"
+        app:gphKeepGifRatio="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/amount_max" />
+
+    <!--</FrameLayout>-->
+
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/add_gif"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_main"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:clickable="true"
+        android:focusable="true"
+        android:text="@string/add_gif"
+        android:textColor="@color/blue_color"
+        app:fontFamily="@font/poppins_medium"
+        app:layout_constraintEnd_toStartOf="@id/remove_gif"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/gif_empty_container" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/remove_gif"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_main"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:clickable="true"
+        android:focusable="true"
+        android:text="@string/remove_gif"
+        android:textColor="@color/blue_color"
+        app:fontFamily="@font/poppins_medium"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/add_gif"
+        app:layout_constraintTop_toBottomOf="@id/gif_empty_container" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/til_message"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_x2"
+        android:layout_marginTop="@dimen/margin_main"
+        android:layout_marginEnd="@dimen/margin_x2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/add_gif">
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/messageTv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_regular"
+            android:gravity="center"
+            android:hint="@string/input_text_message"
+            android:inputType="text"
+            android:maxLines="1"
+            android:maxLength="100"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/bt_next"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:foreground="?attr/selectableItemBackground"
+        android:layout_marginTop="@dimen/margin_x3"
+        android:layout_marginBottom="@dimen/margin_main"
+        android:background="@drawable/bt_gray_rounded_corner"
+        android:backgroundTint="@color/blue_color"
+        android:paddingStart="@dimen/margin_x3"
+        android:paddingEnd="@dimen/margin_x3"
+        android:text="@string/next"
+        android:textColor="@android:color/white"
+        app:fontFamily="@font/poppins_bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/til_message" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
