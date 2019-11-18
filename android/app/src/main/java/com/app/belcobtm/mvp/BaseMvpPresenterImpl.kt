@@ -24,7 +24,6 @@ abstract class BaseMvpPresenterImpl<V : BaseMvpView> : BaseMvpPresenter<V> {
 
 
     protected fun <T : Throwable> onError(exception: T) {
-        //TODO add error handler logic in this api
 //        if (exception is ServerException) {
 //            val messageStringId = exception.getMessageStringId()
 //            if(messageStringId == -1)

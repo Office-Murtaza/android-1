@@ -10,6 +10,12 @@ import com.app.belcobtm.ui.auth.recover_seed.RecoverSeedContract
 import com.app.belcobtm.ui.auth.recover_seed.RecoverSeedPresenter
 import com.app.belcobtm.ui.auth.recover_wallet.RecoverWalletContract
 import com.app.belcobtm.ui.auth.recover_wallet.RecoverWalletPresenter
+import com.app.belcobtm.ui.main.coins.details.DetailsContract
+import com.app.belcobtm.ui.main.coins.details.DetailsPresenter
+import com.app.belcobtm.ui.main.coins.sell.SellContract
+import com.app.belcobtm.ui.main.coins.sell.SellPresenter
+import com.app.belcobtm.ui.main.coins.send_gift.SendGiftContract
+import com.app.belcobtm.ui.main.coins.send_gift.SendGiftPresenter
 import com.app.belcobtm.ui.main.coins.settings.change_pass.ChangePassContract
 import com.app.belcobtm.ui.main.coins.settings.check_pass.CheckPassContract
 import com.app.belcobtm.ui.main.coins.settings.phone.ShowPhoneContract
@@ -17,6 +23,8 @@ import com.app.belcobtm.ui.main.coins.transactions.TransactionsContract
 import com.app.belcobtm.ui.main.coins.transactions.TransactionsPresenter
 import com.app.belcobtm.ui.main.coins.visibility.VisibilityCoinsContract
 import com.app.belcobtm.ui.main.coins.visibility.VisibilityCoinsPresenter
+import com.app.belcobtm.ui.main.coins.withdraw.WithdrawContract
+import com.app.belcobtm.ui.main.coins.withdraw.WithdrawPresenter
 import com.app.belcobtm.ui.main.main_activity.MainContract
 import com.app.belcobtm.ui.main.main_activity.MainPresenter
 import com.app.belcobtm.ui.main.settings.change_pass.ChangePassPresenter
@@ -82,6 +90,24 @@ class ActivityModule {
     @Provides
     fun provideTransactionsPresenter(): TransactionsContract.Presenter {
         return TransactionsPresenter()
+    }
+
+    @Provides
+    fun provideWithdrawPresenter(): WithdrawContract.Presenter {
+        return WithdrawPresenter()
+    }
+
+    @Provides
+    fun provideSendGiftPresenter(): SendGiftContract.Presenter {
+        return SendGiftPresenter()
+    }
+ @Provides
+    fun provideSellPresenter(): SellContract.Presenter {
+        return SellPresenter()
+    }
+@Provides
+    fun provideDetailsPresenter(): DetailsContract.Presenter {
+        return DetailsPresenter()
     }
 
 

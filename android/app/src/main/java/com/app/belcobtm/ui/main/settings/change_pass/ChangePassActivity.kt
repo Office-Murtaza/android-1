@@ -72,7 +72,7 @@ class ChangePassActivity : BaseMvpActivity<ChangePassContract.View, ChangePassCo
             Mode.MODE_CHANGE_PIN -> {
                 supportActionBar?.title = getString(com.app.belcobtm.R.string.change_pin)
 
-                change_value.text = getString(com.app.belcobtm.R.string.change_pin)
+                change_value.text = "Next"
                 til_old_pass.hint = getString(com.app.belcobtm.R.string.old_pin)
                 til_new_pass.hint = getString(com.app.belcobtm.R.string.new_pin)
                 til_confirm_new_pass.hint = getString(com.app.belcobtm.R.string.confirm_new_pin)

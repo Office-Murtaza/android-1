@@ -16,10 +16,18 @@ class LoginActivity : BaseMvpActivity<LoginContract.View, LoginContract.Presente
         phone_ccp.registerCarrierNumberEditText(phone)
         bt_cancel.setOnClickListener { onBackPressed() }
         bt_next.setOnClickListener {
+
+            if(phone_ccp.isValidFullNumber)
             mPresenter.attemptLogin(
-                phone_ccp.formattedFullNumber.replace("-", " "),
+                phone_ccp.formattedFullNumber
+                    .replace("-", "")
+                    .replace("(", "")
+                    .replace(")", "")
+                    .replace(" ", ""),
                 pass.text.toString()
             )
+            else
+                showError("Invalid phone number")
         }
     }
 

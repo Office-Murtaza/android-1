@@ -9,9 +9,13 @@ import com.app.belcobtm.ui.auth.recover_seed.RecoverSeedActivity
 import com.app.belcobtm.ui.auth.recover_wallet.RecoverWalletActivity
 import com.app.belcobtm.ui.main.atm.AtmFragment
 import com.app.belcobtm.ui.main.coins.balance.BalanceFragment
+import com.app.belcobtm.ui.main.coins.details.DetailsActivity
+import com.app.belcobtm.ui.main.coins.sell.SellActivity
+import com.app.belcobtm.ui.main.coins.send_gift.SendGiftActivity
 import com.app.belcobtm.ui.main.coins.transactions.TransactionsActivity
-import com.app.belcobtm.ui.main.main_activity.MainActivity
 import com.app.belcobtm.ui.main.coins.visibility.VisibilityCoinsActivity
+import com.app.belcobtm.ui.main.coins.withdraw.WithdrawActivity
+import com.app.belcobtm.ui.main.main_activity.MainActivity
 import com.app.belcobtm.ui.main.settings.change_pass.ChangePassActivity
 import com.app.belcobtm.ui.main.settings.check_pass.CheckPassActivity
 import com.app.belcobtm.ui.main.settings.phone.ShowPhoneActivity
@@ -71,6 +75,23 @@ abstract class BuildersModule {
     @ActivityScope
     @ContributesAndroidInjector(modules = [ActivityModule::class])
     internal abstract fun bindTransactionsActivity(): TransactionsActivity
+
+    @ActivityScope
+    @ContributesAndroidInjector(modules = [ActivityModule::class])
+    internal abstract fun bindWithdrawActivity(): WithdrawActivity
+
+    @ActivityScope
+    @ContributesAndroidInjector(modules = [ActivityModule::class])
+    internal abstract fun bindSendGiftActivity(): SendGiftActivity
+
+    @ActivityScope
+    @ContributesAndroidInjector(modules = [ActivityModule::class])
+    internal abstract fun bindSellActivity(): SellActivity
+
+
+    @ActivityScope
+    @ContributesAndroidInjector(modules = [ActivityModule::class])
+    internal abstract fun bindDetailsActivity(): DetailsActivity
 
 
 }

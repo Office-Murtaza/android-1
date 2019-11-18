@@ -116,8 +116,48 @@
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     tools:listitem="@layout/item_coin" />
 
+                <LinearLayout
+                    android:layout_marginTop="12dp"
+                    android:layout_marginBottom="12dp"
+                    android:id="@+id/add_wallet_ll"
+                    android:layout_width="190dp"
+                    android:clickable="true"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:orientation="horizontal"
+                    android:focusable="true">
 
-                <androidx.appcompat.widget.AppCompatButton
+                    <FrameLayout
+                        android:background="@drawable/bg_btn_add_circle"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+
+                        >
+
+                        <ImageView
+                            android:layout_gravity="center"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:tint="@color/gph_white"
+                            android:src="@drawable/ic_add_24px"
+                            />
+
+                    </FrameLayout>
+
+
+                    <TextView
+                        android:layout_marginStart="8dp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="14sp"
+                        android:textColor="@color/blue_color"
+                        android:textStyle="bold"
+                        android:text="@string/add_wallet" />
+
+
+                </LinearLayout>
+                <!--<androidx.appcompat.widget.AppCompatButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/add_wallet"
@@ -126,7 +166,7 @@
                     android:textColor="@android:color/white"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="@dimen/margin_half"
-                    android:layout_marginBottom="@dimen/margin_main"/>
+                    android:layout_marginBottom="@dimen/margin_main"/>-->
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
 

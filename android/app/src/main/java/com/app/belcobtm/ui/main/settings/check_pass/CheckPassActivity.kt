@@ -17,6 +17,8 @@ import com.app.belcobtm.ui.auth.welcome.WelcomeActivity
 import com.app.belcobtm.ui.main.coins.settings.check_pass.CheckPassContract
 import com.google.android.material.textfield.TextInputLayout
 import kotlinx.android.synthetic.main.activity_check_pass.*
+import kotlinx.android.synthetic.main.activity_check_pass.phone_ccp
+import kotlinx.android.synthetic.main.activity_create_wallet.*
 import kotlinx.android.synthetic.main.activity_unlink.toolbar
 import org.jetbrains.anko.toast
 
@@ -64,7 +66,7 @@ class CheckPassActivity : BaseMvpActivity<CheckPassContract.View, CheckPassContr
 
         when (mMode) {
             Companion.Mode.MODE_OPEN_PHONE -> {
-                supportActionBar?.title = getString(R.string.change_phone)
+                supportActionBar?.title = getString(R.string.open_seed)
                 next.text = getString(R.string.next)
                 next.setOnClickListener {
                     mPresenter.checkPass(edit_text.text.toString())
@@ -80,9 +82,20 @@ class CheckPassActivity : BaseMvpActivity<CheckPassContract.View, CheckPassContr
                 phone_ccp.registerCarrierNumberEditText(edit_text)
                 edit_text.inputType = InputType.TYPE_CLASS_PHONE
 
-                next.text = getString(R.string.change_phone)
+                next.text = "Next"
                 next.setOnClickListener {
-                    mPresenter.updatePhone(phone_ccp.formattedFullNumber.replace("-", " "))
+
+                    if(phone_ccp.isValidFullNumber)
+                        mPresenter.updatePhone(
+                            phone_ccp.formattedFullNumber
+                                .replace("-", "")
+                                .replace("(", "")
+                                .replace(")", "")
+                                .replace(" ", "")
+                        )
+                    else
+                        showError("Invalid phone number")
+
                 }
             }
             Companion.Mode.MODE_UNLINK -> {
@@ -94,7 +107,7 @@ class CheckPassActivity : BaseMvpActivity<CheckPassContract.View, CheckPassContr
             }
             Companion.Mode.MODE_OPEN_SEED -> {
                 supportActionBar?.title = getString(R.string.open_seed)
-                next.text = getString(R.string.open_seed)
+                next.text = "Done"
                 next.setOnClickListener {
                     mPresenter.checkPass(edit_text.text.toString())
                 }
@@ -148,7 +161,10 @@ class CheckPassActivity : BaseMvpActivity<CheckPassContract.View, CheckPassContr
                 if (code.length != 4) {
                     openSmsCodeDialog(getString(R.string.error_sms_code_4_digits))
                 } else {
-                    mPresenter.confirmPhoneSms(edit_text.text.toString(), code)
+                    val phone = phone_ccp.formattedFullNumber
+                        .replace("-", "")
+                        .replace(" ", "")
+                    mPresenter.confirmPhoneSms(phone, code)
                 }
             }
             .setNegativeButton(R.string.cancel) { _, _ -> onBackPressed() }

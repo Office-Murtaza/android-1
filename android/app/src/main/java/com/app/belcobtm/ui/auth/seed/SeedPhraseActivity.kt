@@ -61,7 +61,7 @@ class SeedPhraseActivity : AppCompatActivity() {
             Snackbar.make(container, R.string.seed_clipboard, Snackbar.LENGTH_LONG).show()
         }
         if (mFromSettings) {
-            bt_done.text = getString(android.R.string.ok)
+            bt_done.text = "Done"
         }
 
         bt_done.setOnClickListener {
@@ -85,6 +85,6 @@ class SeedPhraseActivity : AppCompatActivity() {
     private fun copyToClipboard(copiedText: String) {
         val clipboard = getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
         val clip = ClipData.newPlainText(copiedText, copiedText)
-        clipboard.primaryClip = clip
+        clipboard.setPrimaryClip(clip)
     }
 }

@@ -11,12 +11,16 @@ import androidx.appcompat.widget.AppCompatTextView
 import com.app.belcobtm.R
 import com.app.belcobtm.api.model.response.CoinModel
 import com.app.belcobtm.mvp.BaseMvpActivity
+import com.app.belcobtm.ui.main.coins.sell.SellActivity
+import com.app.belcobtm.ui.main.coins.send_gift.SendGiftActivity
+import com.app.belcobtm.ui.main.coins.withdraw.WithdrawActivity
 import com.google.android.material.snackbar.Snackbar
 import com.google.zxing.BarcodeFormat
 import com.journeyapps.barcodescanner.BarcodeEncoder
 import kotlinx.android.synthetic.main.activity_show_phone.container
 import kotlinx.android.synthetic.main.activity_show_phone.toolbar
 import kotlinx.android.synthetic.main.activity_transactions.*
+import kotlinx.android.synthetic.main.item_coin.view.*
 import org.parceler.Parcels
 
 class TransactionsActivity : BaseMvpActivity<TransactionsContract.View, TransactionsContract.Presenter>(),
@@ -48,18 +52,62 @@ class TransactionsActivity : BaseMvpActivity<TransactionsContract.View, Transact
         initView()
         mPresenter.coinId = mCoin.coinId
 
-        showProgress(true)
-        mPresenter.getFirstTransactions()
-
         swipe_refresh.setOnRefreshListener { mPresenter.getFirstTransactions() }
         deposit.setOnClickListener { showDepositDialog() }
+        withdraw.setOnClickListener {
+            if (mCoin.coinId == "BTC"
+                || mCoin.coinId == "BCH"
+                || mCoin.coinId == "ETH"
+                || mCoin.coinId == "LTC"
+                || mCoin.coinId == "XRP"
+                || mCoin.coinId == "TRX"
+                || mCoin.coinId == "BNB") {
+                WithdrawActivity.start(this, mCoin)
+            } else {
+                showMessage("In progress. Only BTC, BCH, XRP, BNB and LTC withdraw available")
+            }
+        }
+        send_gift.setOnClickListener {
+            if (mCoin.coinId == "BTC"
+                || mCoin.coinId == "BCH"
+                || mCoin.coinId == "ETH"
+                || mCoin.coinId == "LTC"
+                || mCoin.coinId == "XRP"
+                || mCoin.coinId == "TRX"
+                || mCoin.coinId == "BNB") {
+                SendGiftActivity.start(this, mCoin)
+            } else {
+                showMessage("In progress. Only BTC, BCH, XRP, ETH, BNB and LTC withdraw available")
+            }
+        }
+
+        sell.setOnClickListener {
+            if (mCoin.coinId == "BTC"
+                || mCoin.coinId == "BCH"
+                || mCoin.coinId == "ETH"
+                || mCoin.coinId == "LTC"
+                || mCoin.coinId == "XRP"
+                || mCoin.coinId == "TRX"
+                || mCoin.coinId == "BNB") {
+                SellActivity.start(this, mCoin)
+            } else {
+                showMessage("In progress. Only BTC, BCH, XRP, ETH, BNB and LTC withdraw available")
+            }
+        }
+
+    }
+
+    override fun onStart() {
+        super.onStart()
+        showProgress(true)
+        mPresenter.getFirstTransactions()
     }
 
 
     private fun initView() {
         supportActionBar?.title = mCoin.fullCoinName
 
-        mAdapter = TransactionsAdapter(mPresenter.transactionList) {
+        mAdapter = TransactionsAdapter(mPresenter.transactionList,mCoin) {
             mPresenter.getTransactions()
         }
         transaction_recycler.adapter = mAdapter
@@ -69,8 +117,15 @@ class TransactionsActivity : BaseMvpActivity<TransactionsContract.View, Transact
         )
 
         price_usd.text = "${mCoin.price.uSD} USD"
-        balance_crypto.text = "${mCoin.balance} ${mCoin.coinId}"
-        balance_usd.text = "${mCoin.balance * mCoin.price.uSD} USD"
+
+        val balance = if (mCoin.balance > 0)
+             String.format("%.6f", mCoin.balance).trimEnd('0')
+        else "0"
+
+        balance_crypto.text = "$balance ${mCoin.coinId}"
+
+        val amountUsd = mCoin.balance * mCoin.price.uSD
+        balance_usd.text = "${String.format("%.2f", amountUsd)} USD"
     }
 
 
@@ -85,7 +140,7 @@ class TransactionsActivity : BaseMvpActivity<TransactionsContract.View, Transact
     private fun showDepositDialog() {
 
         val dialog = AlertDialog.Builder(this)
-            .setTitle(getString(R.string.deposit))
+            .setTitle(getString(R.string.deposit) +" " + mCoin.coinId)
             .setView(R.layout.dialog_deposit)
             .setPositiveButton(R.string.copy) { dialog, _ ->
                 copyToClipboard(getString(R.string.wallet_code_clipboard), mCoin.publicKey)
