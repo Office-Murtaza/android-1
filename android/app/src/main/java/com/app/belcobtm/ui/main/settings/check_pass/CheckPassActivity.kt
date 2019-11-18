@@ -107,7 +107,7 @@ class CheckPassActivity : BaseMvpActivity<CheckPassContract.View, CheckPassContr
             }
             Companion.Mode.MODE_OPEN_SEED -> {
                 supportActionBar?.title = getString(R.string.open_seed)
-                next.text = "Done"
+                next.text = "Next"
                 next.setOnClickListener {
                     mPresenter.checkPass(edit_text.text.toString())
                 }
