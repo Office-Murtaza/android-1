@@ -12,4 +12,11 @@ VALUES
 ('Gameland', '757 Bergen Ave Jersey City, NJ 07306', 40.725611, -74.068375),
 ('Computech Experts', '257 Central Ave Jersey City, NJ 07307', 40.744061, -74.051140),
 ('Amboy Smoke Shop', '345 Madison Ave Perth Amboy, NJ 08861', 40.511044, -74.269502),
-('Express Smoke and Vape Shop', '30 Paterson St New Brunswick, New Jersey, 08901', 40.495363, -74.443486);
+('Express Smoke and Vape Shop', '30 Paterson St New Brunswick, NJ 08901', 40.495363, -74.443486),
+('Garden State News', '1620 Lemoine Ave Fort Lee, NJ 07024', 40.850669, -73.970295),
+('Mobil Gas Station', '532 Middlesex Ave Metuchen, NJ 08840', 40.543910, -74.363296),
+('Lit Smoke Shop', '324 Anderson Ave Fairview, NJ 07022', 40.817541, -73.993794),
+('A&B Food Store', '10002 N 30th St Tampa, FL 33612', 28.040494, -82.426507),
+('Super 7 Food Mart', '10002 N 30th St Tampa, FL 33612', 28.040494, -82.426507),
+('Chevron Hard Rock Gas Station', '7702 E Hillsborough Ave Tampa, FL 33610', 27.996906, -82.370214),
+('US 19 Food & Fuel', '30031 US Hwy 19 N Clearwater, FL 33761', 28.045491, -82.737812);
