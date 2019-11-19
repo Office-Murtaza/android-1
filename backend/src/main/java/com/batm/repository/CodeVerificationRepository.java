@@ -5,5 +5,5 @@ import com.batm.entity.CodeVerification;
 
 public interface CodeVerificationRepository extends JpaRepository<CodeVerification, Long> {
 
-    CodeVerification findByUserUserId(Long userId);
+    CodeVerification findByUserId(Long userId);
 }

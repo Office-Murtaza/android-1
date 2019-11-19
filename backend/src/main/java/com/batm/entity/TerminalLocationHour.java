@@ -15,11 +15,11 @@ import lombok.Setter;
 @NoArgsConstructor
 @Entity
 @Table(name = "w_terminallocationhour")
-public class OpenHour extends BaseEntity {
+public class TerminalLocationHour extends BaseEntity {
 
     @ManyToOne
-    @JoinColumn(name = "address_id")
-    private AtmAddress atmAddress;
+    @JoinColumn(name = "terminal_location_id")
+    private TerminalLocation terminalLocation;
 
     private String days;
     private String hours;

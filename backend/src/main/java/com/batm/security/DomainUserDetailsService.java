@@ -22,7 +22,7 @@ public class DomainUserDetailsService implements UserDetailsService {
     @Override
     @Transactional
     public UserDetails loadUserByUsername(final String login) {
-        return userRepository.findOneByPhoneIgnoreCase(login)
+        return userRepository.findOneByPhone(login)
                 .map(user -> createSpringSecurityUser(user))
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
     }

@@ -12,9 +12,6 @@ import java.util.List;
 
 public interface TransactionRecordRepository extends JpaRepository<TransactionRecord, Long> {
 
-    @Query("SELECT tr FROM TransactionRecord tr WHERE tr.detail IS NOT NULL AND tr.cryptoCurrency IN :currency AND tr.tracked = false AND ((tr.type = 0 AND tr.status = 1) OR (tr.type = 1 AND tr.status = 3))")
-    List<TransactionRecord> findUntrackedAndClosedTransactions(@Param("currency") List<String> currency, Pageable page);
-
     @Query("SELECT tr FROM TransactionRecord tr WHERE tr.detail IS NULL AND ((tr.type = 0 AND tr.status = 1) OR (tr.type = 1 AND tr.status = 3)) ORDER BY tr.serverTime DESC")
     List<TransactionRecord> findCompletedTransactions(Pageable page);
 

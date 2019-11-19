@@ -27,7 +27,7 @@ public class BlockbookService {
         try {
             JSONObject res = rest.getForObject(url + "/api/v2/address/" + address + "?details=basic", JSONObject.class);
 
-            return Util.format5(new BigDecimal(res.optString("balance")).divide(divider));
+            return Util.format6(new BigDecimal(res.optString("balance")).divide(divider));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -170,7 +170,7 @@ public class BlockbookService {
 
             String txId = json.optString("txid");
             TransactionType type = getType(address, vinArray);
-            BigDecimal amount = Util.format5(getAmount(type, address, voutArray, divider));
+            BigDecimal amount = Util.format6(getAmount(type, address, voutArray, divider));
             TransactionStatus status = getStatus(json.optInt("confirmations"));
             Date date1 = new Date(json.optLong("blockTime") * 1000);
 

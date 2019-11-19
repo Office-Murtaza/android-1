@@ -6,8 +6,6 @@ import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 import com.batm.dto.*;
 import com.batm.entity.*;
-import com.batm.model.Error;
-import com.batm.model.Response;
 import com.batm.model.TransactionStatus;
 import com.batm.model.TransactionType;
 import com.batm.util.*;
@@ -684,7 +682,7 @@ public class CoinService {
         List<UserCoin> userCoins = userService.getUserCoins(userId);
 
         List<CompletableFuture<CoinBalanceDTO>> futures = userCoins.stream()
-                .filter(it -> coins.contains(it.getCoin().getId()))
+                .filter(it -> coins.contains(it.getCoin().getCode()))
                 .map(dto -> callAsync(dto))
                 .collect(Collectors.toList());
 
@@ -705,10 +703,10 @@ public class CoinService {
 
         coinList.forEach(e -> {
             if (coins.contains(e.getCode())) {
-                if (e.getCode() == CoinEnum.ETH.name()) {
+                if (CoinEnum.ETH.name().equalsIgnoreCase(e.getCode())) {
                     feeList.add(new CoinFeeDTO(e.getCode(), null, Constant.GAS_PRICE, Constant.GAS_LIMIT));
                 } else {
-                    feeList.add(new CoinFeeDTO(e.getCode(), e.getFee(), null, null));
+                    feeList.add(new CoinFeeDTO(e.getCode(), e.getFee().stripTrailingZeros(), null, null));
                 }
             }
         });
@@ -737,7 +735,7 @@ public class CoinService {
 
         List<UserCoin> newCoins = new ArrayList<>();
         coinVM.getCoinList().stream().forEach(coinDTO -> {
-            Coin coin = getCoin(coinList, coinDTO.getCoinCode());
+            Coin coin = getCoin(coinList, coinDTO.getCode());
 
             if (coin != null) {
                 UserCoin userCoin = new UserCoin(user, coin, coinDTO.getAddress());
@@ -751,20 +749,20 @@ public class CoinService {
         userService.save(newCoins);
     }
 
-    public Response compareCoins(CoinDTO coinDTO, Long userId) {
+    public boolean compareCoins(CoinDTO coinDTO, Long userId) {
         List<UserCoin> userCoins = userService.getUserCoins(userId);
 
         for (UserCoinDTO reqCoin : coinDTO.getCoinList()) {
             for (UserCoin userCoin : userCoins) {
-                if (reqCoin.getCoinCode().equalsIgnoreCase(userCoin.getCoin().getCode())) {
+                if (reqCoin.getCode().equalsIgnoreCase(userCoin.getCoin().getCode())) {
                     if (!reqCoin.getAddress().equalsIgnoreCase(userCoin.getAddress())) {
-                        return Response.error(new Error(2, "Coins doesn't match"));
+                        return false;
                     }
                 }
             }
         }
 
-        return Response.ok(true);
+        return true;
     }
 
     public static void saveGift(Long userId, CoinEnum coinId, String txId, SubmitTransactionDTO dto) {

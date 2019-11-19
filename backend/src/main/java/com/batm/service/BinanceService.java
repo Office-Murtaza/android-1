@@ -45,7 +45,7 @@ public class BinanceService {
 
     public BigDecimal getBalance(String address) {
         try {
-            return Util.format5(binanceDex
+            return Util.format6(binanceDex
                     .getAccount(address)
                     .getBalances()
                     .stream()
@@ -151,7 +151,7 @@ public class BinanceService {
 
             String txId = tx.getTxHash();
             com.batm.model.TransactionType type = com.batm.model.TransactionType.getType(tx.getFromAddr(), tx.getToAddr(), address);
-            BigDecimal amount = Util.format5(new BigDecimal(tx.getValue()));
+            BigDecimal amount = Util.format6(new BigDecimal(tx.getValue()));
             TransactionStatus status = getStatus(tx.getCode());
             Date date1 = Date.from(ZonedDateTime.parse(tx.getTimeStamp()).toInstant());
 

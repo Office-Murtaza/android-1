@@ -133,13 +133,15 @@ public class TransactionService {
                     TransactionType type = (e.getType() == 1 && e.getStatus() == 3) ? TransactionType.SELL : TransactionType.BUY;
                     TransactionNumberDTO txNumber = coinId.getTransactionNumber(e.getCryptoAddress(), e.getCryptoAmount(), type);
 
-                    e.setDetail(txNumber.getTxId());
-                    e.setN(txNumber.getN());
+                    if (txNumber != null) {
+                        e.setDetail(txNumber.getTxId());
+                        e.setN(txNumber.getN());
 
-                    User user = e.getIdentity().getUser();
+                        User user = e.getIdentity().getUser();
 
-                    if (user != null && type == TransactionType.SELL) {
-                        messageService.sendMessage(user.getPhone(), "Your sell transaction is confirmed");
+                        if (user != null && type == TransactionType.SELL) {
+                            messageService.sendMessage(user.getPhone(), "Your sell transaction is confirmed");
+                        }
                     }
                 });
 

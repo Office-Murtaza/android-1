@@ -10,20 +10,18 @@ import com.batm.entity.User;
 
 public interface UserRepository extends JpaRepository<User, Long> {
 
-    Optional<User> findOneByPhoneIgnoreCase(String phone);
-
-    Optional<User> getByUserId(Long userId);
+    Optional<User> findOneByPhone(String phone);
 
     @Transactional
     @Modifying
-    @Query("update User user set user.password =:password where user.userId =:userId")
+    @Query("UPDATE User user SET user.password =:password WHERE user.id = :userId")
     void updatePassword(@Param("password") String password, @Param("userId") Long userId);
 
     @Transactional
     @Modifying
-    @Query("update User user set user.phone =:phone where user.userId =:userId")
+    @Query("UPDATE User user SET user.phone =:phone WHERE user.id = :userId")
     void updatePhone(@Param("phone") String phone, @Param("userId") Long userId);
 
-    @Query("select user from User user where user.phone =:phone and user.userId !=:userId")
+    @Query("SELECT user FROM User user WHERE user.phone =:phone AND user.id <> :userId")
     User isPhoneExist(@Param("phone") String phone, @Param("userId") Long userId);
 }

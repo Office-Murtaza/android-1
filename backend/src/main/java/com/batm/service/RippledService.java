@@ -47,7 +47,7 @@ public class RippledService {
             JSONObject res = rest.postForObject(nodeUrl, req, JSONObject.class);
             String balance = res.getJSONObject("result").getJSONObject("account_data").getString("Balance");
 
-            return Util.format5(new BigDecimal(balance).divide(Constant.XRP_DIVIDER));
+            return Util.format6(new BigDecimal(balance).divide(Constant.XRP_DIVIDER));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -195,7 +195,7 @@ public class RippledService {
             JSONObject tx = txs.optJSONObject("tx");
             String txId = tx.optString("hash");
             TransactionType type = TransactionType.getType(tx.optString("Account"), tx.optString("Destination"), address);
-            BigDecimal amount = Util.format5(getAmount(tx.optString("Amount")));
+            BigDecimal amount = Util.format6(getAmount(tx.optString("Amount")));
             Date date1 = new Date((tx.optLong("date") + 946684800L) * 1000);
 
             map.put(txId, new TransactionDTO(txId, amount, type, status, date1));

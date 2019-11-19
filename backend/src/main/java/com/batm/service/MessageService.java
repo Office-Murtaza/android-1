@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.PostConstruct;
 import java.net.URI;
 import java.util.Arrays;
+import java.util.Date;
 import com.twilio.rest.api.v2010.account.Message;
 import com.twilio.type.PhoneNumber;
 
@@ -64,7 +65,7 @@ public class MessageService {
                 status = sendMessage(user.getPhone(), "Belco Wallet Code: " + code);
             }
 
-            CodeVerification codeVerification = codeVerificationRepository.findByUserUserId(user.getId());
+            CodeVerification codeVerification = codeVerificationRepository.findByUserId(user.getId());
 
             if (codeVerification == null) {
                 codeVerification = new CodeVerification();
@@ -75,6 +76,8 @@ public class MessageService {
                 codeVerification.setStatus(0);
                 codeVerification.setCode(code);
             }
+
+            codeVerification.setUpdateDate(new Date());
 
             codeVerificationRepository.save(codeVerification);
 
@@ -96,7 +99,7 @@ public class MessageService {
 
             Message message = Message
                     .creator(new PhoneNumber(dto.getPhone()), new PhoneNumber(fromNumber), body.toString())
-                    .setMediaUrl(Arrays.asList(URI.create(dto.getImageId())))
+                    .setMediaUrl(Arrays.asList(URI.create("https://media.giphy.com/media/" + dto.getImageId() + "/giphy.gif")))
                     .create();
 
             return message.getStatus();

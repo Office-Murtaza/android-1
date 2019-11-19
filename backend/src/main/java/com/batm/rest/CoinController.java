@@ -1,8 +1,6 @@
 package com.batm.rest;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import com.batm.model.Error;
 import com.batm.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,10 +28,7 @@ public class CoinController {
 
             coinService.save(coinDTO, userId);
 
-            Map<String, Object> response = new HashMap<>();
-            response.put("isCoinsAdded", true);
-
-            return Response.ok(response);
+            return Response.ok(true);
         } catch (Exception e) {
             e.printStackTrace();
             return Response.serverError();
@@ -47,7 +42,11 @@ public class CoinController {
                 return Response.error(new Error(2, "Empty coin list"));
             }
 
-            return coinService.compareCoins(coinDTO, userId);
+            if (coinService.compareCoins(coinDTO, userId)) {
+                return Response.ok(true);
+            } else {
+                return Response.error(new Error(3, "Coins do not match"));
+            }
         } catch (Exception e) {
             e.printStackTrace();
             return Response.serverError();

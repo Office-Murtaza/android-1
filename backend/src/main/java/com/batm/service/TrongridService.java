@@ -41,7 +41,7 @@ public class TrongridService {
             if (!data.isEmpty()) {
                 String balance = data.getJSONObject(0).getString("balance");
 
-                return Util.format5(new BigDecimal(balance).divide(Constant.TRX_DIVIDER));
+                return Util.format6(new BigDecimal(balance).divide(Constant.TRX_DIVIDER));
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -156,7 +156,7 @@ public class TrongridService {
             String toAddress = Base58.toBase58(row.optString("to_address")).toLowerCase();
             String contractRet = tx.optJSONArray("ret").getJSONObject(0).optString("contractRet");
             TransactionType type = TransactionType.getType(fromAddress, toAddress, address);
-            BigDecimal amount = Util.format5(getAmount(row.optLong("amount")));
+            BigDecimal amount = Util.format6(getAmount(row.optLong("amount")));
             TransactionStatus status = getStatus(contractRet);
             Date date1 = new Date(tx.optJSONObject("raw_data").optLong("timestamp"));
 

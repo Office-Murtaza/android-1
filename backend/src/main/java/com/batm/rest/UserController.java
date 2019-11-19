@@ -6,7 +6,6 @@ import java.util.stream.Collectors;
 import javax.validation.Valid;
 import com.batm.dto.AuthenticationDTO;
 import com.batm.dto.TokenDTO;
-import com.batm.repository.UserRepository;
 import com.batm.service.MessageService;
 import com.batm.util.Util;
 import net.sf.json.JSONObject;
@@ -35,7 +34,6 @@ import com.batm.dto.ChangePasswordDTO;
 import com.batm.dto.CheckPasswordDTO;
 import com.batm.dto.PhoneDTO;
 import com.batm.dto.RefreshDTO;
-import com.batm.dto.ValidateResponseDTO;
 import com.batm.dto.ValidateDTO;
 import com.batm.security.TokenProvider;
 import com.batm.service.UserService;
@@ -62,9 +60,6 @@ public class UserController {
 
     @Autowired
     private TokenRepository refreshTokenRepository;
-
-    @Autowired
-    private UserRepository userRepository;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -137,7 +132,7 @@ public class UserController {
 
             messageService.sendVerificationCode(user);
 
-            Token token = refreshTokenRepository.findByUserUserId(user.getId());
+            Token token = refreshTokenRepository.findByUserId(user.getId());
             token.setRefreshToken(jwt.getRefreshToken());
             token.setAccessToken(jwt.getAccessToken());
             refreshTokenRepository.save(token);
@@ -159,7 +154,7 @@ public class UserController {
 
                 TokenDTO jwt = getJwt(user);
 
-                Token token = refreshTokenRepository.findByUserUserId(user.getId());
+                Token token = refreshTokenRepository.findByUserId(user.getId());
                 token.setRefreshToken(jwt.getRefreshToken());
                 token.setAccessToken(jwt.getAccessToken());
                 refreshTokenRepository.save(token);
@@ -177,13 +172,9 @@ public class UserController {
     @GetMapping("/user/{userId}/code/send")
     public Response sendCode(@PathVariable Long userId) {
         try {
-            return userRepository.getByUserId(userId)
-                    .map(user -> {
-                        messageService.sendVerificationCode(user);
-                        JSONObject response = new JSONObject();
-                        response.put("sent", true);
-                        return Response.ok(response);
-                    }).orElseThrow(() -> new Exception("User not found"));
+            messageService.sendVerificationCode(userService.findById(userId));
+
+            return Response.ok(true);
         } catch (Exception e) {
             e.printStackTrace();
             return Response.serverError();
@@ -212,7 +203,7 @@ public class UserController {
             codeVerification.setStatus(1);
             userService.save(codeVerification);
 
-            return Response.ok(new ValidateResponseDTO(userId, true));
+            return Response.ok(true);
         } catch (Exception e) {
             e.printStackTrace();
             return Response.serverError();
@@ -223,10 +214,11 @@ public class UserController {
     public Response getPhone(@PathVariable Long userId) {
         try {
             User user = userService.findById(userId);
-            Map<String, Object> response = new HashMap<>();
-            response.put("phone", user.getPhone());
 
-            return Response.ok(response);
+            JSONObject res = new JSONObject();
+            res.put("phone", user.getPhone());
+
+            return Response.ok(res);
         } catch (Exception e) {
             e.printStackTrace();
             return Response.serverError();
@@ -237,14 +229,14 @@ public class UserController {
     public Response updatePhone(@RequestBody PhoneDTO phoneRequest, @PathVariable Long userId) {
         try {
             Boolean isPhoneExist = userService.isPhoneExist(phoneRequest.getPhone(), userId);
+
             if (isPhoneExist) {
                 return Response.error(new Error(2, "Phone is already registered"));
             }
-            userService.updatePhone(phoneRequest, userId);
-            Map<String, Object> response = new HashMap<>();
-            response.put("smsSent", true);
 
-            return Response.ok(response);
+            userService.updatePhone(phoneRequest, userId);
+
+            return Response.ok(true);
         } catch (Exception e) {
             e.printStackTrace();
             return Response.serverError();
@@ -256,11 +248,13 @@ public class UserController {
         try {
             UpdatePhone updatePhone = userService.getUpdatePhone(userId);
             updatePhone = (UpdatePhone) Hibernate.unproxy(updatePhone);
+
             if (updatePhone.getStatus() == null || updatePhone.getStatus().intValue() == 1) {
                 return Response.error(new Error(2, "Invalid request"));
             }
 
             CodeVerification codeVerification = userService.getCodeByUserId(userId);
+
             if (codeVerification.getStatus() == 1) {
                 return Response.error(new Error(3, "Verification code is already used"));
             }
@@ -273,10 +267,7 @@ public class UserController {
             updatePhone.setStatus(1);
             userService.save(updatePhone);
 
-            Map<String, Object> response = new HashMap<>();
-            response.put("confirmed", true);
-
-            return Response.ok(response);
+            return Response.ok(true);
         } catch (Exception e) {
             e.printStackTrace();
             return Response.serverError();
@@ -288,16 +279,15 @@ public class UserController {
         try {
             User user = userService.findById(userId);
             Boolean match = passwordEncoder.matches(changePasswordRequest.getOldPassword(), user.getPassword());
+
             if (!match) {
                 return Response.error(new Error(2, "Old password does not match."));
             }
+
             String encodedPassword = passwordEncoder.encode(changePasswordRequest.getNewPassword());
             userService.updatePassword(encodedPassword, userId);
 
-            Map<String, Object> response = new HashMap<>();
-            response.put("updated", true);
-
-            return Response.ok(response);
+            return Response.ok(true);
         } catch (Exception e) {
             e.printStackTrace();
             return Response.serverError();
@@ -309,14 +299,12 @@ public class UserController {
         try {
             Boolean match = Boolean.FALSE;
             User user = userService.findById(userId);
+
             if (user != null) {
                 match = passwordEncoder.matches(checkPasswordRequest.getPassword(), user.getPassword());
             }
 
-            Map<String, Object> response = new HashMap<>();
-            response.put("match", match);
-
-            return Response.ok(response);
+            return Response.ok(match);
         } catch (Exception e) {
             e.printStackTrace();
             return Response.serverError();
@@ -327,14 +315,8 @@ public class UserController {
     public Response unlink(@PathVariable Long userId) {
         try {
             Unlink unlink = userService.unlinkUser(userId);
-            Map<String, Object> response = new HashMap<>();
-            if (unlink != null) {
-                response.put("updated", true);
-            } else {
-                response.put("updated", false);
-            }
 
-            return Response.ok(response);
+            return Response.ok(unlink != null);
         } catch (Exception e) {
             e.printStackTrace();
             return Response.serverError();

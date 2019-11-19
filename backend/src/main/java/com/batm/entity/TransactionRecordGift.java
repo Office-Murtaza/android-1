@@ -12,7 +12,7 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "transactionrecordgift")
+@Table(name = "w_transactionrecordgift")
 public class TransactionRecordGift extends BaseEntity {
 
     @Column(name = "tx_id")

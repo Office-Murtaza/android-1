@@ -101,26 +101,28 @@ public class UserService {
     }
 
     public User findById(Long userId) {
-        return this.userRepository.getOne(userId);
+        return userRepository.getOne(userId);
     }
 
     public void updatePassword(String encodedPassword, Long userId) {
-        this.userRepository.updatePassword(encodedPassword, userId);
+        userRepository.updatePassword(encodedPassword, userId);
     }
 
     public void updatePhone(String phone, Long userId) {
-        this.userRepository.updatePhone(phone, userId);
+        userRepository.updatePhone(phone, userId);
     }
 
     public Boolean isPhoneExist(String phone, Long userId) {
-        User user = this.userRepository.isPhoneExist(phone, userId);
+        User user = userRepository.isPhoneExist(phone, userId);
+
         return user != null ? true : false;
     }
 
     public Unlink unlinkUser(Long userId) {
-        User user = this.userRepository.getOne(userId);
+        User user = userRepository.getOne(userId);
+
         if (user != null) {
-            Unlink unlink = this.unlinkRepository.findByUserUserId(userId);
+            Unlink unlink = unlinkRepository.findByUserId(userId);
 
             if (unlink == null) {
                 unlink = new Unlink();
@@ -155,7 +157,7 @@ public class UserService {
 
     @Transactional
     public UpdatePhone getUpdatePhone(Long userId) {
-        return updatePhoneRepository.getOne(userId);
+        return updatePhoneRepository.findByUserId(userId);
     }
 
     public UpdatePhone save(UpdatePhone updatePhone) {
@@ -167,11 +169,11 @@ public class UserService {
     }
 
     public CodeVerification getCodeByUserId(Long userId) {
-        return codeValidatorRepository.findByUserUserId(userId);
+        return codeValidatorRepository.findByUserId(userId);
     }
 
     public List<UserCoin> getUserCoins(Long userId) {
-        return userCoinRepository.findByUserUserId(userId);
+        return userCoinRepository.findByUserId(userId);
     }
 
     public void save(CodeVerification codeVerification) {
@@ -179,7 +181,7 @@ public class UserService {
     }
 
     public Optional<User> findByPhone(String phone) {
-        return userRepository.findOneByPhoneIgnoreCase(phone);
+        return userRepository.findOneByPhone(phone);
     }
 
     public GiftAddressDTO getUserGiftAddress(CoinService.CoinEnum coinId, String phone) {

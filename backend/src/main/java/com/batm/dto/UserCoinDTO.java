@@ -13,6 +13,6 @@ import lombok.Setter;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class UserCoinDTO {
 
-    private String coinCode;
+    private String code;
     private String address;
 }

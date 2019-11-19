@@ -15,14 +15,14 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "w_atm_address")
-public class AtmAddress extends BaseEntity {
+@Table(name = "w_terminallocation")
+public class TerminalLocation extends BaseEntity {
 
     private String name;
     private String address;
     private BigDecimal latitude;
     private BigDecimal longitude;
 
-    @OneToMany(mappedBy = "atmAddress")
-    private List<OpenHour> openHours;
+    @OneToMany(mappedBy = "terminalLocation")
+    private List<TerminalLocationHour> hours;
 }

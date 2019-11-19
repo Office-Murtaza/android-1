@@ -5,7 +5,7 @@ CREATE TABLE IF NOT EXISTS w_transactionrecordgift (
   status INT(2) NOT NULL,
   step INT(2) NOT NULL,
   amount DECIMAL(20, 10) NOT NULL,
-  coin_id VARCHAR(255) NOT NULL,
+  coin_id BIGINT(20) NOT NULL,
   identity_id BIGINT(20) NOT NULL,
   phone VARCHAR(50) DEFAULT NULL,
   message VARCHAR(100) DEFAULT NULL,

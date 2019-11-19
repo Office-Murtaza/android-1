@@ -49,8 +49,8 @@ public class Util {
         return format(value, 2);
     }
 
-    public static BigDecimal format5(BigDecimal value) {
-        return format(value, 5);
+    public static BigDecimal format6(BigDecimal value) {
+        return format(value, 6);
     }
 
     private static BigDecimal format(BigDecimal value, int scale) {
