@@ -22,7 +22,7 @@ public class CoinController {
     @PostMapping("/user/{userId}/coins/add")
     public Response addCoins(@RequestBody CoinDTO coinDTO, @PathVariable Long userId) {
         try {
-            if (coinDTO.getCoinList().isEmpty()) {
+            if (coinDTO.getCoins().isEmpty()) {
                 return Response.error(new Error(2, "Empty coin list"));
             }
 
@@ -38,7 +38,7 @@ public class CoinController {
     @PostMapping("/user/{userId}/coins/compare")
     public Response compareCoins(@RequestBody CoinDTO coinDTO, @PathVariable Long userId) {
         try {
-            if (coinDTO.getCoinList().isEmpty()) {
+            if (coinDTO.getCoins().isEmpty()) {
                 return Response.error(new Error(2, "Empty coin list"));
             }
 

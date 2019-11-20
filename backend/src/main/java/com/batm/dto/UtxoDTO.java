@@ -14,5 +14,5 @@ import net.sf.json.JSONArray;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class UtxoDTO {
 
-    private JSONArray utxoList = new JSONArray();
+    private JSONArray utxos = new JSONArray();
 }

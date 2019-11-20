@@ -211,7 +211,7 @@ public class CoinService {
             @Override
             public NonceDTO getNonce(Long userId) {
                 User user = userService.findById(userId);
-                String address = user.getCoinAddress(this.getName());
+                String address = user.getCoinAddress(name());
 
                 return blockbook.getNonce(ethNodeUrl, address);
             }
@@ -439,7 +439,7 @@ public class CoinService {
             @Override
             public CurrentAccountDTO getCurrentAccount(Long userId) {
                 User user = userService.findById(userId);
-                String address = user.getCoinAddress(this.getName());
+                String address = user.getCoinAddress(name());
 
                 return binance.getCurrentAccount(address);
             }
@@ -516,7 +516,7 @@ public class CoinService {
             @Override
             public CurrentAccountDTO getCurrentAccount(Long userId) {
                 User user = userService.findById(userId);
-                String address = user.getCoinAddress(this.getName());
+                String address = user.getCoinAddress(name());
 
                 return rippled.getCurrentAccount(address);
             }
@@ -734,7 +734,7 @@ public class CoinService {
         List<UserCoin> userCoins = userService.getUserCoins(userId);
 
         List<UserCoin> newCoins = new ArrayList<>();
-        coinVM.getCoinList().stream().forEach(coinDTO -> {
+        coinVM.getCoins().stream().forEach(coinDTO -> {
             Coin coin = getCoin(coinList, coinDTO.getCode());
 
             if (coin != null) {
@@ -752,7 +752,7 @@ public class CoinService {
     public boolean compareCoins(CoinDTO coinDTO, Long userId) {
         List<UserCoin> userCoins = userService.getUserCoins(userId);
 
-        for (UserCoinDTO reqCoin : coinDTO.getCoinList()) {
+        for (UserCoinDTO reqCoin : coinDTO.getCoins()) {
             for (UserCoin userCoin : userCoins) {
                 if (reqCoin.getCode().equalsIgnoreCase(userCoin.getCoin().getCode())) {
                     if (!reqCoin.getAddress().equalsIgnoreCase(userCoin.getAddress())) {

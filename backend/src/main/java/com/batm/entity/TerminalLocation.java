@@ -3,6 +3,7 @@ package com.batm.entity;
 import java.math.BigDecimal;
 import java.util.List;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -23,6 +24,7 @@ public class TerminalLocation extends BaseEntity {
     private BigDecimal latitude;
     private BigDecimal longitude;
 
-    @OneToMany(mappedBy = "terminalLocation")
+    @OneToMany
+    @JoinColumn(name = "terminal_location_id")
     private List<TerminalLocationHour> hours;
 }

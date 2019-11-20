@@ -1,10 +1,11 @@
 package com.batm.rest;
 
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import com.batm.entity.TerminalLocation;
-import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -35,8 +36,8 @@ public class TerminalController {
                 terminalLocation.setHours(sortedData);
             }
 
-            JSONObject res = new JSONObject();
-            res.put("addressList", terminalLocations);
+            Map<String, List<TerminalLocation>> res = new HashMap<>();
+            res.put("addresses", terminalLocations);
 
             return Response.ok(res);
         } catch (Exception e) {

@@ -100,7 +100,7 @@ public class WalletService {
     }
 
     public SubmitTransactionDTO signBTC(CoinType coinType, String fromAddress, String toAddress, BigDecimal amount, BigDecimal fee, BigDecimal divider, List<JSONObject> utxos) {
-        try{
+        try {
             Bitcoin.SigningInput.Builder signerBuilder = Bitcoin.SigningInput.newBuilder();
             signerBuilder.setCoinType(coinType.value());
             signerBuilder.setAmount(amount.multiply(divider).longValue());
@@ -125,7 +125,7 @@ public class WalletService {
                 }
             });
 
-            for(int index = 0; index < utxos.size(); index++) {
+            for (int index = 0; index < utxos.size(); index++) {
                 JSONObject utxo = utxos.get(index);
 
                 String hash = Numeric.toHexString(utxo.optString("txid").getBytes());

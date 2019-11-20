@@ -14,5 +14,5 @@ import lombok.Setter;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class CoinDTO {
 
-    private List<UserCoinDTO> coinList;
+    private List<UserCoinDTO> coins;
 }
