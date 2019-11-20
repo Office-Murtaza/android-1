@@ -7,6 +7,7 @@ import io.realm.annotations.PrimaryKey
 
 open class DbCryptoCoin(
     open var coinType: String = "",
+    open var coinTypeId: Int = -1,
     open var publicKey: String = "",
     open var privateKey: String = "",
     open var visible: Boolean = true
@@ -26,8 +27,9 @@ open class DbCryptoCoin(
 
     fun copy(
         coinType: String = this.coinType,
+        coinTypeId: Int = this.coinTypeId,
         publicKey: String = this.publicKey,
         privateKey: String = this.privateKey,
         visible: Boolean = this.visible
-    ) = DbCryptoCoin(coinType, publicKey, privateKey, visible)
+    ) = DbCryptoCoin(coinType, coinTypeId, publicKey, privateKey, visible)
 }

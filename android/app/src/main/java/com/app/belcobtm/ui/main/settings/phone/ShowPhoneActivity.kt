@@ -1,6 +1,7 @@
 package com.app.belcobtm.ui.main.settings.phone
 
 import android.os.Bundle
+import android.telephony.PhoneNumberUtils
 import android.view.MenuItem
 import com.app.belcobtm.R
 import com.app.belcobtm.mvp.BaseMvpActivity
@@ -34,6 +35,9 @@ class ShowPhoneActivity : BaseMvpActivity<ShowPhoneContract.View, ShowPhoneContr
     }
 
     override fun onPhoneReceived(phone: String?) {
-        phone_view.text = phone
+
+        val formattedNumber = PhoneNumberUtils.formatNumber(phone,"US")
+
+        phone_view.text = formattedNumber
     }
 }

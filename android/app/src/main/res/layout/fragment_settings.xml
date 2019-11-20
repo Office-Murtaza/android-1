@@ -30,7 +30,7 @@
         android:id="@+id/settings_phone"
         style="@style/SettingsItemStyle"
         android:drawableStart="@drawable/ic_settings_phone"
-        android:text="@string/settings_phone" />
+        android:text="Change Phone" />
 
     <include layout="@layout/item_divider" />
 
@@ -38,7 +38,7 @@
         android:id="@+id/settings_change_pass"
         style="@style/SettingsItemStyle"
         android:drawableStart="@drawable/ic_settings_pass"
-        android:text="@string/settings_pass" />
+        android:text="Change Password" />
 
     <include layout="@layout/item_divider" />
 

@@ -8,7 +8,10 @@ import com.app.belcobtm.api.model.response.CoinModel
 import kotlinx.android.synthetic.main.item_coin.view.*
 
 
-class CoinsAdapter(private val mCoinsList: ArrayList<CoinModel>, private val mOnCoinClickListener: OnCoinClickListener) :
+class CoinsAdapter(
+    private val mCoinsList: ArrayList<CoinModel>,
+    private val mOnCoinClickListener: OnCoinClickListener
+) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -32,7 +35,12 @@ class CoinsAdapter(private val mCoinsList: ArrayList<CoinModel>, private val mOn
             }
             holder.itemView.coin_image.setImageResource(coinImageId)
             holder.itemView.coin_name.text = item.coinId
-            holder.itemView.coin_balance.text = "${item.balance} ${item.coinId}"
+
+            val balance = if (item.balance > 0)
+                String.format("%.6f", item.balance).trimEnd('0')
+            else "0"
+            holder.itemView.coin_balance.text = "$balance ${item.coinId}"
+
             holder.itemView.coin_price.text = "USD ${item.price?.uSD}"
             holder.itemView.coin_container.setOnClickListener { mOnCoinClickListener.onCoinClick(item) }
         }

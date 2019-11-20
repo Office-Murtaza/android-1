@@ -87,4 +87,9 @@
         <item name="android:textSize">10sp</item>
     </style>
 
+    <style name="TextLabel" parent="TextAppearance.AppCompat">
+        <item name="android:textColorHint">@color/dark_gray_text_color</item>
+        <item name="colorControlNormal">@color/dark_gray_text_color</item>
+    </style>
+
 </resources>

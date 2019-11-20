@@ -80,9 +80,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_half"
-                android:text="245876543 USD"
                 android:textColor="@color/gray_text_color"
-                app:fontFamily="@font/poppins_semi_bold" />
+                app:fontFamily="@font/poppins_semi_bold"
+                tools:text="245876543 USD" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="wrap_content"
@@ -105,20 +105,20 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="end"
-                    android:text="245 BTC"
                     android:textColor="@color/gray_text_color"
                     app:autoSizeMaxTextSize="18sp"
                     app:autoSizeMinTextSize="4sp"
                     app:autoSizeStepGranularity="2sp"
                     app:autoSizeTextType="uniform"
-                    app:fontFamily="@font/poppins_semi_bold" />
+                    app:fontFamily="@font/poppins_semi_bold"
+                    tools:text="245 BTC" />
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:layout_width="15dp"
                     android:layout_height="15dp"
-                    android:scaleType="fitXY"
                     android:layout_marginStart="@dimen/margin_main"
                     android:layout_marginEnd="@dimen/margin_main"
+                    android:scaleType="fitXY"
                     app:srcCompat="@drawable/ic_exchange" />
 
                 <androidx.appcompat.widget.AppCompatTextView
@@ -126,13 +126,13 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="245876543 USD"
                     android:textColor="@color/gray_text_color"
                     app:autoSizeMaxTextSize="18sp"
                     app:autoSizeMinTextSize="4sp"
                     app:autoSizeStepGranularity="2sp"
                     app:autoSizeTextType="uniform"
-                    app:fontFamily="@font/poppins_semi_bold" />
+                    app:fontFamily="@font/poppins_semi_bold"
+                    tools:text="245876543 USD" />
             </androidx.appcompat.widget.LinearLayoutCompat>
         </androidx.appcompat.widget.LinearLayoutCompat>
     </androidx.cardview.widget.CardView>
@@ -141,6 +141,7 @@
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/deposit"
         style="@style/TransactionButtonStyle"
+        android:foreground="?attr/selectableItemBackground"
         android:text="@string/deposit"
         app:layout_constraintEnd_toStartOf="@id/withdraw"
         app:layout_constraintStart_toStartOf="parent"
@@ -149,6 +150,7 @@
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/withdraw"
         style="@style/TransactionButtonStyle"
+        android:foreground="?attr/selectableItemBackground"
         android:text="@string/withdraw"
         app:layout_constraintEnd_toStartOf="@id/send_gift"
         app:layout_constraintStart_toEndOf="@id/deposit"
@@ -157,6 +159,7 @@
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/send_gift"
         style="@style/TransactionButtonStyle"
+        android:foreground="?attr/selectableItemBackground"
         android:text="@string/send_gift"
         app:layout_constraintEnd_toStartOf="@id/sell"
         app:layout_constraintStart_toEndOf="@id/withdraw"
@@ -166,6 +169,7 @@
         android:id="@+id/sell"
         style="@style/TransactionButtonStyle"
         android:layout_marginEnd="@dimen/margin_main"
+        android:foreground="?attr/selectableItemBackground"
         android:text="@string/sell"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/send_gift"

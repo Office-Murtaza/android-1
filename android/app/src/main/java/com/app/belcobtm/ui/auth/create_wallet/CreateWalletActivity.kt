@@ -35,11 +35,19 @@ class CreateWalletActivity : BaseMvpActivity<CreateWalletContract.View, CreateWa
     }
 
     private fun attemptCreateWallet() {
+
+        if(phone_ccp.isValidFullNumber)
         mPresenter.attemptCreateWallet(
-            phone_ccp.formattedFullNumber.replace("-", " "),
+            phone_ccp.formattedFullNumber
+                .replace("-", "")
+                .replace("(", "")
+                .replace(")", "")
+                .replace(" ", ""),
             pass.text.toString(),
             confirm_pass.text.toString()
         )
+        else
+            showError("Invalid phone number")
     }
 
     override fun openSmsCodeDialog(error: String?) {

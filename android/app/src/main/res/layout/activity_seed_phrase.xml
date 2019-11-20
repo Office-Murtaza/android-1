@@ -358,7 +358,7 @@
                 android:layout_marginBottom="@dimen/margin_x2"
                 android:background="@drawable/bt_gray_rounded_corner"
                 android:backgroundTint="@color/blue_color"
-                android:text="@string/next"
+                android:text="Done"
                 android:textColor="@android:color/white"
                 app:fontFamily="@font/poppins_bold"
                 app:layout_constraintBottom_toBottomOf="parent"

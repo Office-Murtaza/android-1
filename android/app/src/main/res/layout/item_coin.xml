@@ -27,7 +27,7 @@
 
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/margin_main"
             android:layout_marginEnd="@dimen/margin_half"
             android:layout_weight="1"
@@ -48,6 +48,7 @@
                 android:layout_gravity="bottom"
                 android:text="USD 124124.00"
                 android:textSize="12sp"
+                android:layout_marginBottom="1dp"
                 app:fontFamily="@font/poppins_medium" />
         </androidx.appcompat.widget.LinearLayoutCompat>
 

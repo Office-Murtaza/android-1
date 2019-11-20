@@ -2,10 +2,10 @@
 <androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:id="@+id/container"
     tools:context=".ui.main.settings.UnlinkActivity">
 
     <com.google.android.material.appbar.AppBarLayout
@@ -28,11 +28,22 @@
         android:layout_marginStart="@dimen/margin_x3"
         android:layout_marginTop="@dimen/margin_x3"
         android:layout_marginEnd="@dimen/margin_x3"
-        android:layout_marginBottom="@dimen/margin_x4"
         android:fontFamily="@font/poppins_medium"
-        android:gravity="center"
+        android:gravity="center_horizontal"
         android:text="@string/unlink_warning"
         android:textSize="16sp" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_x3"
+        android:layout_marginEnd="@dimen/margin_x3"
+        android:layout_marginBottom="@dimen/margin_x4"
+        android:fontFamily="@font/poppins_medium"
+        android:gravity="center_horizontal"
+        android:text="@string/unlink_warning2"
+        android:textSize="16sp"
+        android:textStyle="bold" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/unlink"
@@ -40,10 +51,10 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/margin_x4"
         android:layout_marginEnd="@dimen/margin_x4"
-        android:backgroundTint="@color/bg_color"
         android:background="@drawable/bt_gray_rounded_corner"
+        android:backgroundTint="@color/blue_color"
         android:fontFamily="@font/poppins_bold"
-        android:text="@string/unlink_wallet"
-        android:textColor="@color/dark_gray_text_color" />
+        android:text="Unlink"
+        android:textColor="@android:color/white" />
 
 </androidx.appcompat.widget.LinearLayoutCompat>

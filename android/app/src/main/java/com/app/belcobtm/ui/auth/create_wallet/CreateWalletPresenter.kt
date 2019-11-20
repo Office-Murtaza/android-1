@@ -11,11 +11,9 @@ import com.app.belcobtm.util.Optional
 import com.app.belcobtm.util.pref
 import io.reactivex.Observable
 import io.realm.Realm
+import org.spongycastle.crypto.DerivationParameters
 import org.web3j.utils.Numeric
-import wallet.core.jni.BitcoinAddress
-import wallet.core.jni.CoinType
-import wallet.core.jni.HDWallet
-import wallet.core.jni.P2PKHPrefix
+import wallet.core.jni.*
 
 
 class CreateWalletPresenter : BaseMvpDIPresenterImpl<CreateWalletContract.View, AuthDataManager>(),
@@ -105,9 +103,9 @@ class CreateWalletPresenter : BaseMvpDIPresenterImpl<CreateWalletContract.View, 
 
         val bitcoinPrivateKey = wallet.getKeyForCoin(bitcoin)
         val bitcoinPrivateKeyStr = Numeric.toHexStringNoPrefix(bitcoinPrivateKey.data())
-        val bitcoinPublicKey = bitcoinPrivateKey.getPublicKeySecp256k1(true)
-        val bitcoinAddress = BitcoinAddress(bitcoinPublicKey, P2PKHPrefix.BITCOIN.value()).description()
-
+        val extBitcoinPublicKey = wallet.getExtendedPublicKey(Purpose.BIP44, bitcoin, HDVersion.XPUB)
+        val bitcoinPublicKey = HDWallet.getPublicKeyFromExtended(extBitcoinPublicKey, "m/44'/145'/0'/0/2")
+        val bitcoinAddress = BitcoinAddress(bitcoinPublicKey, CoinType.BITCOIN.p2pkhPrefix()).description()
         val bitcoinChPrivateKey = wallet.getKeyForCoin(bitcoinCash)
         val bitcoinChPrivateKeyStr = Numeric.toHexStringNoPrefix(bitcoinChPrivateKey.data())
         val bitcoinChAddress = bitcoinCash.deriveAddress(bitcoinChPrivateKey)
@@ -138,13 +136,16 @@ class CreateWalletPresenter : BaseMvpDIPresenterImpl<CreateWalletContract.View, 
         val realm = Realm.getDefaultInstance()
         val coinModel = DbCryptoCoinModel()
 
-        coinModel.addCryptoCoin(realm, DbCryptoCoin("BTC", bitcoinAddress, bitcoinPrivateKeyStr))
-        coinModel.addCryptoCoin(realm, DbCryptoCoin("BCH", bitcoinChAddress, bitcoinChPrivateKeyStr))
-        coinModel.addCryptoCoin(realm, DbCryptoCoin("ETH", etherumAddress, etherumPrivateKeyStr))
-        coinModel.addCryptoCoin(realm, DbCryptoCoin("LTC", litecoinAddress, litecoinPrivateKeyStr))
-        coinModel.addCryptoCoin(realm, DbCryptoCoin("BNB", binanceAddress, binancePrivateKeyStr))
-        coinModel.addCryptoCoin(realm, DbCryptoCoin("TRX", tronAddress, tronPrivateKeyStr))
-        coinModel.addCryptoCoin(realm, DbCryptoCoin("XRP", xrpAddress, xrpPrivateKeyStr))
+        coinModel.addCryptoCoin(realm, DbCryptoCoin("BTC", bitcoin.value(), bitcoinAddress, bitcoinPrivateKeyStr))
+        coinModel.addCryptoCoin(
+            realm,
+            DbCryptoCoin("BCH", bitcoinCash.value(), bitcoinChAddress, bitcoinChPrivateKeyStr)
+        )
+        coinModel.addCryptoCoin(realm, DbCryptoCoin("ETH", etherum.value(), etherumAddress, etherumPrivateKeyStr))
+        coinModel.addCryptoCoin(realm, DbCryptoCoin("LTC", litecoin.value(), litecoinAddress, litecoinPrivateKeyStr))
+        coinModel.addCryptoCoin(realm, DbCryptoCoin("BNB", binance.value(), binanceAddress, binancePrivateKeyStr))
+        coinModel.addCryptoCoin(realm, DbCryptoCoin("TRX", tron.value(), tronAddress, tronPrivateKeyStr))
+        coinModel.addCryptoCoin(realm, DbCryptoCoin("XRP", xrp.value(), xrpAddress, xrpPrivateKeyStr))
 
 
         return coinModel.getAllCryptoCoin(realm)

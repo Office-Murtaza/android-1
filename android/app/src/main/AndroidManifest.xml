@@ -40,6 +40,15 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppThemeNoActionBar" />
         <activity
+            android:name=".ui.main.coins.details.DetailsActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppThemeNoActionBar" />
+
+        <activity
+            android:name=".ui.main.coins.sell.SellActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppThemeNoActionBar" />
+        <activity
             android:name=".ui.auth.recover_seed.RecoverSeedActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppThemeNoActionBar" />
@@ -66,6 +75,7 @@
         <activity
             android:name=".ui.auth.pin.PinActivity"
             android:screenOrientation="portrait"
+            android:launchMode="singleInstance"
             android:theme="@style/AppThemeNoActionBar">
         </activity>
         <activity
@@ -87,7 +97,22 @@
         <activity
             android:name=".ui.main.coins.transactions.TransactionsActivity"
             android:screenOrientation="portrait"
+            android:theme="@style/AppThemeNoActionBar"/>
+
+        <activity
+            android:name=".ui.main.coins.withdraw.WithdrawActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppThemeNoActionBar"/>
+
+        <activity
+            android:name=".ui.main.coins.send_gift.SendGiftActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppThemeNoActionBar">
+           <!-- <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>-->
         </activity>
 
         <meta-data

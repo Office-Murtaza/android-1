@@ -18,6 +18,10 @@ import com.app.belcobtm.ui.auth.pin.PinActivity
 import com.google.android.material.snackbar.Snackbar
 import dagger.android.AndroidInjection
 import javax.inject.Inject
+import androidx.core.app.ComponentActivity.ExtraData
+import androidx.core.content.ContextCompat.getSystemService
+
+
 
 abstract class BaseMvpActivity<in V : BaseMvpView, T : BaseMvpPresenter<V>>
     : AppCompatActivity(), BaseMvpView {
@@ -114,6 +118,6 @@ abstract class BaseMvpActivity<in V : BaseMvpView, T : BaseMvpPresenter<V>>
     protected fun copyToClipboard(toastText: String, copiedText: String) {
         val clipboard = getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
         val clip = ClipData.newPlainText(toastText, copiedText)
-        clipboard.primaryClip = clip
+        clipboard.setPrimaryClip(clip)
     }
 }

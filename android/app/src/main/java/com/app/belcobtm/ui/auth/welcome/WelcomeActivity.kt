@@ -46,7 +46,13 @@ class WelcomeActivity : AppCompatActivity() {
         contact_support.setOnClickListener { openSupportDialog() }
 
         create_a_new_wallet.setOnClickListener { onClickCreateNewWallet() }
-        recover_my_wallet.setOnClickListener { startActivity(Intent(this, RecoverWalletActivity::class.java)) }
+        recover_my_wallet.setOnClickListener {
+            if (accept_terms.isChecked)
+                startActivity(Intent(this, RecoverWalletActivity::class.java))
+            else {
+                showAcceptTermsError()
+            }
+        }
     }
 
     override fun onStart() {
@@ -110,7 +116,7 @@ class WelcomeActivity : AppCompatActivity() {
     private fun copyToClipboard(toastText: String, copiedText: String) {
         val clipboard = getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
         val clip = ClipData.newPlainText(toastText, copiedText)
-        clipboard.primaryClip = clip
+        clipboard.setPrimaryClip(clip)
     }
 
     private fun onClickCreateNewWallet() {
