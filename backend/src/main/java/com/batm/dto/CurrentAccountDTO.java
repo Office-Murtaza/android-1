@@ -15,4 +15,5 @@ public class CurrentAccountDTO {
 
     private Integer accountNumber = 0;
     private Long sequence = 0L;
+    private String chainId;
 }

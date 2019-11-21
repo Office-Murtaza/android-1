@@ -145,9 +145,10 @@ public class TransactionService {
                     }
                 });
 
-                chainalysisService.processChainalysis(list);
-
-                transactionRecordRepository.saveAll(list);
+                if (!list.isEmpty()) {
+                    chainalysisService.processChainalysis(list);
+                    transactionRecordRepository.saveAll(list);
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -189,7 +190,9 @@ public class TransactionService {
                 }
             });
 
-            transactionRecordGiftRepository.saveAll(confirmedList);
+            if (!confirmedList.isEmpty()) {
+                transactionRecordGiftRepository.saveAll(confirmedList);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -224,7 +227,9 @@ public class TransactionService {
                 }
             });
 
-            transactionRecordGiftRepository.saveAll(confirmedList);
+            if (!confirmedList.isEmpty()) {
+                transactionRecordGiftRepository.saveAll(confirmedList);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }

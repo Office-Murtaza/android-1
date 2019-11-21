@@ -698,16 +698,14 @@ public class CoinService {
         return new BalanceDTO(userId, new AmountDTO(totalBalance), balances);
     }
 
-    public FeeDTO getCoinsFee(List<String> coins) {
+    public FeeDTO getCoinsFee() {
         List<CoinFeeDTO> feeList = new ArrayList<>();
 
         coinList.forEach(e -> {
-            if (coins.contains(e.getCode())) {
-                if (CoinEnum.ETH.name().equalsIgnoreCase(e.getCode())) {
-                    feeList.add(new CoinFeeDTO(e.getCode(), null, Constant.GAS_PRICE, Constant.GAS_LIMIT));
-                } else {
-                    feeList.add(new CoinFeeDTO(e.getCode(), e.getFee().stripTrailingZeros(), null, null));
-                }
+            if (CoinEnum.ETH.name().equalsIgnoreCase(e.getCode())) {
+                feeList.add(new CoinFeeDTO(e.getCode(), null, Constant.GAS_PRICE, Constant.GAS_LIMIT));
+            } else {
+                feeList.add(new CoinFeeDTO(e.getCode(), e.getFee().stripTrailingZeros(), null, null));
             }
         });
 

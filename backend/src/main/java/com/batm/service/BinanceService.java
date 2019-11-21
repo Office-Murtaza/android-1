@@ -135,7 +135,7 @@ public class BinanceService {
         try {
             Account account = binanceDex.getAccount(address);
 
-            return new CurrentAccountDTO(account.getAccountNumber(), account.getSequence());
+            return new CurrentAccountDTO(account.getAccountNumber(), account.getSequence(), Constant.BNB_CHAIN_ID);
         } catch (Exception e) {
             e.printStackTrace();
         }

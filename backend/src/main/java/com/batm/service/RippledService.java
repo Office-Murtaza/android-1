@@ -92,7 +92,7 @@ public class RippledService {
             JSONObject res = rest.postForObject(nodeUrl, req, JSONObject.class);
             Long sequence = res.getJSONObject("result").getJSONObject("account_data").optLong("Sequence");
 
-            return new CurrentAccountDTO(null, sequence);
+            return new CurrentAccountDTO(null, sequence, null);
         } catch (Exception e) {
             e.printStackTrace();
         }
