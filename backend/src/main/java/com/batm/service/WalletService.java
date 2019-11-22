@@ -3,6 +3,7 @@ package com.batm.service;
 import com.batm.dto.SubmitTransactionDTO;
 import com.batm.util.AES;
 import com.batm.util.Constant;
+import com.batm.util.Util;
 import com.google.protobuf.ByteString;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
@@ -13,14 +14,15 @@ import wallet.core.jni.proto.*;
 import javax.annotation.PostConstruct;
 import java.math.BigDecimal;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 @Service
 public class WalletService {
 
-//    static {
-//        System.loadLibrary("TrustWalletCore");
-//    }
+    static {
+        System.loadLibrary("TrustWalletCore");
+    }
 
     @Value("${wallet.seed}")
     private String walletSeed;
@@ -49,30 +51,30 @@ public class WalletService {
         String seed = "garage become kid awake salon forget minimum snack crash broken leaf genius";
 
         //wallet = new HDWallet(AES.decrypt(walletSeed, walletSeedKey), "");
-//        wallet = new HDWallet(seed, "");
-//
-//        privateKeyBTC = wallet.getKeyForCoin(CoinType.BITCOIN);
-//        String extPublicKeyBTC = wallet.getExtendedPublicKey(Purpose.BIP44, CoinType.BITCOIN, HDVersion.XPUB);
-//        PublicKey publicKeyBTC = HDWallet.getPublicKeyFromExtended(extPublicKeyBTC, "m/44'/0'/0'/0/0");
-//        addressBTC = new BitcoinAddress(publicKeyBTC, CoinType.BITCOIN.p2pkhPrefix()).description();
-//
-//        PrivateKey privateKeyBCH = wallet.getKeyForCoin(CoinType.BITCOINCASH);
-//        addressBCH = CoinType.BITCOINCASH.deriveAddress(privateKeyBCH);
-//
-//        privateKeyETH = wallet.getKeyForCoin(CoinType.ETHEREUM);
-//        addressETH = CoinType.ETHEREUM.deriveAddress(privateKeyETH);
-//
-//        PrivateKey privateKeyLTC = wallet.getKeyForCoin(CoinType.LITECOIN);
-//        addressLTC = CoinType.LITECOIN.deriveAddress(privateKeyLTC);
-//
-//        privateKeyBNB = wallet.getKeyForCoin(CoinType.BINANCE);
-//        addressBNB = CoinType.BINANCE.deriveAddress(privateKeyBNB);
-//
-//        privateKeyXRP = wallet.getKeyForCoin(CoinType.XRP);
-//        addressXRP = CoinType.XRP.deriveAddress(privateKeyXRP);
-//
-//        privateKeyTRX = wallet.getKeyForCoin(CoinType.TRON);
-//        addressTRX = CoinType.TRON.deriveAddress(privateKeyTRX);
+        wallet = new HDWallet(seed, "");
+
+        privateKeyBTC = wallet.getKeyForCoin(CoinType.BITCOIN);
+        String extPublicKeyBTC = wallet.getExtendedPublicKey(Purpose.BIP44, CoinType.BITCOIN, HDVersion.XPUB);
+        PublicKey publicKeyBTC = HDWallet.getPublicKeyFromExtended(extPublicKeyBTC, "m/44'/0'/0'/0/0");
+        addressBTC = new BitcoinAddress(publicKeyBTC, CoinType.BITCOIN.p2pkhPrefix()).description();
+
+        PrivateKey privateKeyBCH = wallet.getKeyForCoin(CoinType.BITCOINCASH);
+        addressBCH = CoinType.BITCOINCASH.deriveAddress(privateKeyBCH);
+
+        privateKeyETH = wallet.getKeyForCoin(CoinType.ETHEREUM);
+        addressETH = CoinType.ETHEREUM.deriveAddress(privateKeyETH);
+
+        PrivateKey privateKeyLTC = wallet.getKeyForCoin(CoinType.LITECOIN);
+        addressLTC = CoinType.LITECOIN.deriveAddress(privateKeyLTC);
+
+        privateKeyBNB = wallet.getKeyForCoin(CoinType.BINANCE);
+        addressBNB = CoinType.BINANCE.deriveAddress(privateKeyBNB);
+
+        privateKeyXRP = wallet.getKeyForCoin(CoinType.XRP);
+        addressXRP = CoinType.XRP.deriveAddress(privateKeyXRP);
+
+        privateKeyTRX = wallet.getKeyForCoin(CoinType.TRON);
+        addressTRX = CoinType.TRON.deriveAddress(privateKeyTRX);
     }
 
     public String getAddressBTC() {
@@ -106,10 +108,10 @@ public class WalletService {
     public SubmitTransactionDTO signBTC(CoinType coinType, String fromAddress, String toAddress, BigDecimal amount, BigDecimal fee, BigDecimal divider, List<JSONObject> utxos) {
         try {
             Bitcoin.SigningInput.Builder signerBuilder = Bitcoin.SigningInput.newBuilder();
-            signerBuilder.setCoinType(coinType.value());
+            signerBuilder.setCoinType(coinType.value() == 2 ? 0 : coinType.value());
             signerBuilder.setAmount(amount.multiply(divider).longValue());
-            signerBuilder.setByteFee(fee.longValue());
-            //signerBuilder.setHashType(TWBitcoinSigHashType.getCryptoHash(coinType));
+            signerBuilder.setByteFee(fee.multiply(divider).longValue());
+            signerBuilder.setHashType(coinType == CoinType.BITCOINCASH ? 65 : 1);
             signerBuilder.setChangeAddress(fromAddress);
             signerBuilder.setToAddress(toAddress);
 
@@ -132,11 +134,11 @@ public class WalletService {
             for (int index = 0; index < utxos.size(); index++) {
                 JSONObject utxo = utxos.get(index);
 
-                String hash = Numeric.toHexString(utxo.optString("txid").getBytes());
-                String reversedHash = new StringBuilder(hash).reverse().toString();
+                byte[] hash = Numeric.hexStringToByteArray(utxo.optString("txid"));
+                Collections.reverse(Arrays.asList(hash));
 
                 Bitcoin.OutPoint.Builder outPointBuilder = Bitcoin.OutPoint.newBuilder();
-                outPointBuilder.setHash(ByteString.copyFrom(reversedHash.getBytes()));
+                outPointBuilder.setHash(ByteString.copyFrom(hash));
                 outPointBuilder.setIndex(utxo.optInt("vout"));
                 outPointBuilder.setSequence(Integer.MAX_VALUE - utxos.size() + index);
                 Bitcoin.OutPoint outPoint = outPointBuilder.build();
@@ -177,10 +179,10 @@ public class WalletService {
             builder.setToAddress(toAddress);
             builder.setChainId(ByteString.copyFrom(Numeric.hexStringToByteArray("0x1")));
 
-            builder.setNonce(ByteString.copyFrom(Numeric.hexStringToByteArray("0x" + addLeadingZeroes(Integer.toHexString(nonce)))));
-            builder.setGasPrice(ByteString.copyFrom(Numeric.hexStringToByteArray("0x" + addLeadingZeroes(Long.toHexString(Constant.GAS_PRICE)))));
-            builder.setGasLimit(ByteString.copyFrom(Numeric.hexStringToByteArray("0x" + addLeadingZeroes(Long.toHexString(Constant.GAS_LIMIT)))));
-            builder.setAmount(ByteString.copyFrom(Numeric.hexStringToByteArray("0x" + addLeadingZeroes(Long.toHexString(amount.multiply(Constant.ETH_DIVIDER).longValue())))));
+            builder.setNonce(ByteString.copyFrom(Numeric.hexStringToByteArray("0x" + Util.addLeadingZeroes(Integer.toHexString(nonce)))));
+            builder.setGasPrice(ByteString.copyFrom(Numeric.hexStringToByteArray("0x" + Util.addLeadingZeroes(Long.toHexString(Constant.GAS_PRICE)))));
+            builder.setGasLimit(ByteString.copyFrom(Numeric.hexStringToByteArray("0x" + Util.addLeadingZeroes(Long.toHexString(Constant.GAS_LIMIT)))));
+            builder.setAmount(ByteString.copyFrom(Numeric.hexStringToByteArray("0x" + Util.addLeadingZeroes(Long.toHexString(amount.multiply(Constant.ETH_DIVIDER).longValue())))));
 
             Ethereum.SigningOutput output = EthereumSigner.sign(builder.build());
             String hex = "0x" + Numeric.toHexString(output.getEncoded().toByteArray());
@@ -194,22 +196,6 @@ public class WalletService {
         }
 
         return null;
-    }
-
-    private String addLeadingZeroes(String str) {
-        String res = "";
-
-        if (str.length() < 64) {
-            int i = 0;
-            while ((64 - str.length()) > i) {
-                i++;
-                res += "0";
-            }
-
-            return res + str;
-        }
-
-        return str;
     }
 
     public SubmitTransactionDTO signBNB(String toAddress, BigDecimal amount, Long accountNumber, Long sequence, String chainId) {

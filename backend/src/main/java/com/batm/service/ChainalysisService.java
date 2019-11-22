@@ -1,9 +1,11 @@
 package com.batm.service;
 
 import com.batm.dto.ChainalysisResponseDTO;
+import com.batm.dto.TransactionNumberDTO;
 import com.batm.entity.TransactionRecord;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
@@ -49,8 +51,21 @@ public class ChainalysisService {
                     tx.setCryptoAddress(tx.getCryptoAddress().split(":")[0]);
                 }
 
-                if(tx.getTracked() == false && Arrays.asList(CoinService.CoinEnum.BTC, CoinService.CoinEnum.LTC).contains(CoinService.CoinEnum.valueOf(tx.getCryptoCurrency()))) {
-                    sendRequest(tx);
+                CoinService.CoinEnum coinEnum = CoinService.CoinEnum.valueOf(tx.getCryptoCurrency());
+
+                if (!tx.getTracked() && Arrays.asList(CoinService.CoinEnum.BTC, CoinService.CoinEnum.LTC).contains(coinEnum)) {
+                    if (StringUtils.isEmpty(tx.getDetail()) || (tx.getType() == 1 && tx.getN() == null)) {
+                        TransactionNumberDTO numberDTO = coinEnum.getTransactionNumber(tx.getCryptoAddress(), tx.getCryptoAmount(), tx.getTransactionType());
+
+                        if (numberDTO != null) {
+                            tx.setDetail(numberDTO.getTxId());
+                            tx.setN(numberDTO.getN());
+                        }
+                    }
+
+                    if (StringUtils.isNotEmpty(tx.getDetail()) && ((tx.getType() == 1 && tx.getN() != null) || tx.getType() == 0)) {
+                        sendRequest(tx);
+                    }
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -61,6 +76,9 @@ public class ChainalysisService {
     }
 
     private void sendRequest(TransactionRecord tx) {
+        HttpEntity<JSONArray> requestBody = null;
+        String requestUrl = null;
+
         try {
             String requestType = tx.getType() == 0 ? "received" : "sent";
             String requestTransferReference = tx.getType() == 0 ? String.format("%s:%s", tx.getDetail(), tx.getCryptoAddress()) : String.format("%s:%d", tx.getDetail(), tx.getN());
@@ -77,15 +95,18 @@ public class ChainalysisService {
             headers.setContentType(MediaType.APPLICATION_JSON);
             headers.set("Token", apiKey);
 
-            HttpEntity<JSONArray> request = new HttpEntity<>(jsonArray, headers);
-            String requestUrl = url + "/api/kyt/v1/users/" + tx.getIdentity().getPublicId() + "/transfers/" + requestType;
-            ResponseEntity<JSONArray> res = rest.exchange(requestUrl, HttpMethod.POST, request, JSONArray.class);
+            requestBody = new HttpEntity<>(jsonArray, headers);
+            requestUrl = url + "/api/kyt/v1/users/" + tx.getIdentity().getPublicId() + "/transfers/" + requestType;
+            ResponseEntity<JSONArray> res = rest.exchange(requestUrl, HttpMethod.POST, requestBody, JSONArray.class);
 
             if (res.getStatusCode() == HttpStatus.OK) {
                 tx.setTracked(true);
             }
         } catch (Exception e) {
             e.printStackTrace();
+
+            System.out.println("requestUrl: " + requestUrl);
+            System.out.println("requestBody: " + requestBody);
         }
     }
 }

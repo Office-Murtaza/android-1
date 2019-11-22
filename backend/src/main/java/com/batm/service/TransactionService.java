@@ -130,8 +130,7 @@ public class TransactionService {
             if (!list.isEmpty()) {
                 list.stream().forEach(e -> {
                     CoinService.CoinEnum coinId = CoinService.CoinEnum.valueOf(e.getCryptoCurrency());
-                    TransactionType type = (e.getType() == 1 && e.getStatus() == 3) ? TransactionType.SELL : TransactionType.BUY;
-                    TransactionNumberDTO txNumber = coinId.getTransactionNumber(e.getCryptoAddress(), e.getCryptoAmount(), type);
+                    TransactionNumberDTO txNumber = coinId.getTransactionNumber(e.getCryptoAddress(), e.getCryptoAmount(), e.getTransactionType());
 
                     if (txNumber != null) {
                         e.setDetail(txNumber.getTxId());
@@ -139,7 +138,7 @@ public class TransactionService {
 
                         User user = e.getIdentity().getUser();
 
-                        if (user != null && type == TransactionType.SELL) {
+                        if (user != null && e.getTransactionType() == TransactionType.SELL) {
                             messageService.sendMessage(user.getPhone(), "Your sell transaction is confirmed");
                         }
                     }

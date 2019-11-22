@@ -1,5 +1,6 @@
 package com.batm.entity;
 
+import com.batm.model.TransactionType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -206,4 +207,9 @@ public class TransactionRecord extends BaseEntity {
 
     @Column(name = "nameofcryptosettingused")
     private String nameOfCryptoSettingUsed;
+
+    @Transient
+    public TransactionType getTransactionType() {
+        return getType() == 1 ? TransactionType.SELL : TransactionType.BUY;
+    }
 }
