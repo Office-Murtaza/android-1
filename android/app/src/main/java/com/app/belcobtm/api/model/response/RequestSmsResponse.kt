@@ -3,6 +3,6 @@ import com.google.gson.annotations.SerializedName
 
 
 data class RequestSmsResponse(
-    @SerializedName("sent")
+    @SerializedName("result")
     val sent: Boolean // true
 )

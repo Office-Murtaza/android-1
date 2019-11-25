@@ -39,13 +39,13 @@ class CoinModel {
 
     @SerializedName("balance")
     var balance: Double = 0.0 // 1
-    @SerializedName("coinId")
+    @SerializedName("code")
     var coinId: String = ""// XRP
-    @SerializedName("orderIndex")
+    @SerializedName("id")
     var orderIndex: Int = -1 // 6
     @SerializedName("price")
     var price: Price = Price()
-    @SerializedName("publicKey")
+    @SerializedName("address")
     var publicKey: String = ""
 
     val fullCoinName:String

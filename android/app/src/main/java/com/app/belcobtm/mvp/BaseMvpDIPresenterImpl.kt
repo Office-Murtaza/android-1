@@ -16,7 +16,6 @@ import com.app.belcobtm.util.*
 import com.app.belcobtm.util.Optional
 import com.google.protobuf.ByteString
 import io.reactivex.Observable
-import jnr.ffi.Struct
 import wallet.core.jni.*
 import wallet.core.jni.proto.*
 import java.math.BigDecimal
@@ -146,7 +145,7 @@ abstract class BaseMvpDIPresenterImpl<V : BaseMvpView, T : BaseDataManager> : Ba
             account = fromAddress
             amount = cryptoToSubcoin.toLong()
             destination = toAddress
-            fee = 200_000
+            fee = 20
 
             sequence = resp.value?.sequence?.toInt() ?: 0
             privateKey = ByteString.copyFrom(privateKey_.data())
@@ -255,15 +254,15 @@ abstract class BaseMvpDIPresenterImpl<V : BaseMvpView, T : BaseDataManager> : Ba
      * custom implementation of adding leading zeroes
      * for hex value (%016llx)
      */
-     fun addLeadingZeroes(str:String):String?{
-        var res:String =""
-        if(str.length<64){
+    fun addLeadingZeroes(str: String): String? {
+        var res: String = ""
+        if (str.length < 64) {
             var i = 0
-            while ((64-str.length)>i){
+            while ((64 - str.length) > i) {
                 i++
-                res+="0"
+                res += "0"
             }
-            return res+str
+            return res + str
         }
         return str
     }
@@ -279,18 +278,31 @@ abstract class BaseMvpDIPresenterImpl<V : BaseMvpView, T : BaseDataManager> : Ba
             BigDecimal(coinAmount * 1_000_000_000_000_000_000)
 
         //val nonceHex = String.format("%016llx", resp?.nonce)
-        val nonsStr :String  = resp?.nonce?.toString(16) ?: ""
+        val nonsStr: String = resp?.nonce?.toString(16) ?: ""
 
         val nonceHex = ByteString.copyFrom("0x${addLeadingZeroes(nonsStr)}".toHexByteArray())
 
         //val amountHex = String.format("%016llx", cryptoToSubcoin)
-        val amountHex = ByteString.copyFrom("0x${addLeadingZeroes(cryptoToSubcoin.toLong().toString(16))}".toHexByteArray())
+        val amountHex =
+            ByteString.copyFrom("0x${addLeadingZeroes(cryptoToSubcoin.toLong().toString(16))}".toHexByteArray())
+
+
+        val gasPriceD =
+            App.appContext().pref.getCoinsFee()?.firstOrNull { it.code == "ETH" }?.gasPrice?.toLong()
+                ?: 20_000_000_000
+
+        val gasLimitD =
+            App.appContext().pref.getCoinsFee()?.firstOrNull { it.code == "ETH" }?.gasLimit?.toLong()
+                ?: 21000
+
 
         // val gasLimitHex = String.format("%016llx", "21000")//magic num
-        val gasLimitHex = ByteString.copyFrom("0x${addLeadingZeroes(21000.toString(16))}".toHexByteArray())
+        val gasLimitHex =
+            ByteString.copyFrom("0x${addLeadingZeroes(gasLimitD.toString(16))}".toHexByteArray())
 
         //val gasPriceHex = String.format("%016llx", "20_000_000_000")//magic num
-        val gasPriceHex = ByteString.copyFrom("0x${addLeadingZeroes(20_000_000_000.toString(16))}".toHexByteArray())
+        val gasPriceHex =
+            ByteString.copyFrom("0x${addLeadingZeroes(gasPriceD.toString(16))}".toHexByteArray())
 
 
         val signingInput = Ethereum.SigningInput.newBuilder()
@@ -431,7 +443,7 @@ abstract class BaseMvpDIPresenterImpl<V : BaseMvpView, T : BaseDataManager> : Ba
 
         val sngHash = TWBitcoinSigHashType.getCryptoHash(coinType)
 
-        val cointypeValue = if(coinType.value()==2) 0 else coinType.value()
+        val cointypeValue = if (coinType.value() == 2) 0 else coinType.value()
         val signerBuilder = Bitcoin.SigningInput.newBuilder()
             .setAmount(amount)
             .setHashType(sngHash)
@@ -526,17 +538,30 @@ abstract class BaseMvpDIPresenterImpl<V : BaseMvpView, T : BaseDataManager> : Ba
     ripple: 0.00002
      */
     open fun getTransactionFee(coinName: String): Double {
+
         return when (coinName) {
-            "BTC" -> 0.0004
-            "BCH" -> 0.0004
-            "LTC" -> 0.00004
-            "ETH" -> 0.00042
-            "BNB" -> 0.001
-            "TRX" -> 1.0
-            "XRP" -> 0.00002
+            "BTC" -> getFeesFromList(coinName, 0.0004)
+            "BCH" -> getFeesFromList(coinName, 0.0004)
+            "LTC" -> getFeesFromList(coinName, 0.00004)
+            "ETH" -> getFeesFromList(coinName, 0.00042)
+            "BNB" -> getFeesFromList(coinName, 0.001)
+            "TRX" -> getFeesFromList(coinName, 1.0)
+            "XRP" -> getFeesFromList(coinName, 0.00002)
             else -> 4.0
         }
     }
+
+    fun getFeesFromList(coinCode: String, def: Double = Double.MIN_VALUE): Double {
+
+        var fee = (App.appContext().pref.getCoinsFee()?.firstOrNull { it.code == coinCode }?.fee
+            ?: def)
+
+        if (coinCode == "BTC" || coinCode == "BCH" || coinCode == "LTH") {
+            fee /= 100_000_000
+        }
+        return fee
+    }
+
 
     open fun getByteFee(coinName: String?): Int {
         return when (coinName) {

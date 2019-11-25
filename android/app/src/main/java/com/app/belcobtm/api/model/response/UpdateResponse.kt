@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName
 
 
 data class UpdateResponse(
-    @SerializedName("updated")
+    @SerializedName("result")
     val updated: Boolean // true
     ,
     @SerializedName("txId")

@@ -3,7 +3,7 @@ import com.google.gson.annotations.SerializedName
 
 
 data class AddCoinsResponse(
-    @SerializedName("isCoinsAdded")
+    @SerializedName("result")
     val isCoinsAdded: Boolean, // true
     @SerializedName("userId")
     val userId: String // 1000000

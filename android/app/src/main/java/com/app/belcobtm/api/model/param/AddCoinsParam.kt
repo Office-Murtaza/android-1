@@ -16,10 +16,10 @@ import com.google.gson.annotations.SerializedName
      }
 
     data class Coin(
-        @SerializedName("coinCode")
-        val coinCode: String, // XRP
-        @SerializedName("publicKey")
-        val publicKey: String // 111111111111dddddddddddddd
+        @SerializedName("code")
+        val coinCode: String,
+        @SerializedName("address")
+        val publicKey: String
     ){
         constructor(dbCoinDb: DbCryptoCoin):this(dbCoinDb.coinType, dbCoinDb.publicKey)
     }

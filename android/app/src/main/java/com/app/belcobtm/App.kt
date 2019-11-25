@@ -16,7 +16,9 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class App @Inject constructor() : MultiDexApplication(), HasActivityInjector, HasSupportFragmentInjector {
+class App
+
+@Inject constructor() : MultiDexApplication(), HasActivityInjector, HasSupportFragmentInjector {
 
     init {
         instance = this

@@ -3,6 +3,7 @@ package com.app.belcobtm.ui.main.coins.balance
 import com.app.belcobtm.App
 import com.app.belcobtm.api.data_manager.CoinsDataManager
 import com.app.belcobtm.api.model.response.CoinModel
+import com.app.belcobtm.api.model.response.GetCoinsFeeResponse
 import com.app.belcobtm.api.model.response.GetCoinsResponse
 import com.app.belcobtm.db.DbCryptoCoinModel
 import com.app.belcobtm.mvp.BaseMvpDIPresenterImpl
@@ -41,6 +42,20 @@ class BalancePresenter : BaseMvpDIPresenterImpl<BalanceContract.View, CoinsDataM
             , { error: Throwable ->
                 checkError(error)
             })
+
+        mView?.showProgress(true)
+         mDataManager.getCoinsFee(userId).subscribe(
+            { resp: Optional<GetCoinsFeeResponse> ->
+                mView?.showProgress(false)
+
+                App.appContext().pref.saveCoinsFee(resp.value)
+            }
+            , { error: Throwable ->
+                checkError(error)
+            })
+
+
+
     }
 
     private fun getVisibleCoinsNames(): ArrayList<String> {

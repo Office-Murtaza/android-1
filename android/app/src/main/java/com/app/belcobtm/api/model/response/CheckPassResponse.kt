@@ -3,6 +3,6 @@ import com.google.gson.annotations.SerializedName
 
 
 data class CheckPassResponse(
-    @SerializedName("match")
+    @SerializedName("result")
     val match: Boolean // true
 )

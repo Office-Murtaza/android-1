@@ -3,7 +3,7 @@ import com.google.gson.annotations.SerializedName
 
 
 data class AtmResponse(
-    @SerializedName("addressList")
+    @SerializedName("addresses")
     val atmAddressList: ArrayList<AtmAddress>
 ) {
     data class AtmAddress(
@@ -13,11 +13,11 @@ data class AtmResponse(
         val id: Int, // 13
         @SerializedName("latitude")
         val latitude: Double, // 40.50
-        @SerializedName("locationName")
+        @SerializedName("name")
         val locationName: String, // Express Smoke and Vape Shop
         @SerializedName("longitude")
         val longitude: Double, // -74.44
-        @SerializedName("openHours")
+        @SerializedName("hours")
         val openHours: ArrayList<OpenHour>
     ) {
         data class OpenHour(

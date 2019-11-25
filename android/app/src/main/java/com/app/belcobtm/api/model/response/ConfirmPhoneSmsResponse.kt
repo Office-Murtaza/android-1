@@ -3,6 +3,6 @@ import com.google.gson.annotations.SerializedName
 
 
 data class ConfirmPhoneSmsResponse(
-    @SerializedName("confirmed")
+    @SerializedName("result")
     val confirmed: Boolean // true
 )

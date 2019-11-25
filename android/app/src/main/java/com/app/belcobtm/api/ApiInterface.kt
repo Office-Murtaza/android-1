@@ -24,7 +24,7 @@ interface ApiInterface {
     @GET("user/{userId}/code/send")
     fun requestSmsCode(@Path("userId") userId: String): Observable<ServerResponse<RequestSmsResponse>>
 
-    @POST("user/{userId}/verify")
+    @POST("user/{userId}/code/verify")
     fun verifySmsCode(@Path("userId") userId: String, @Body verifySmsParam: VerifySmsParam): Observable<ServerResponse<VerifySmsResponse>>
 
     @POST("user/{userId}/coins/add")
@@ -36,10 +36,13 @@ interface ApiInterface {
     @GET("user/{userId}/coins/balance")
     fun getCoins(@Path("userId") userId: String, @Query("coins") coins: ArrayList<String>): Observable<ServerResponse<GetCoinsResponse>>
 
-    @GET("static/atm/address")
+    @GET("user/{userId}/coins/fee")
+    fun getCoinsFee(@Path("userId") userId: String): Observable<ServerResponse<GetCoinsFeeResponse>>
+
+    @GET("terminal/locations")
     fun getAtmAddress(): Observable<ServerResponse<AtmResponse>>
 
-    @POST("user/{userId}/check/password")
+    @POST("user/{userId}/password/verify")
     fun checkPass(
         @Path("userId") userId: String,
         @Body checkPassParam: CheckPassParam
@@ -48,22 +51,22 @@ interface ApiInterface {
     @GET("user/{userId}/phone")
     fun getPhone(@Path("userId") userId: String): Observable<ServerResponse<GetPhoneResponse>>
 
-    @POST("user/{userId}/phone")
+    @POST("user/{userId}/phone/update")
     fun updatePhone(
         @Path("userId") userId: String,
         @Body updatePhoneParam: UpdatePhoneParam
     ): Observable<ServerResponse<UpdatePhoneResponse>>
 
-    @POST("user/{userId}/phone/confirm")
+    @POST("user/{userId}/phone/verify")
     fun confirmPhoneSms(
         @Path("userId") userId: String,
         @Body updatePhoneParam: ConfirmPhoneSmsParam
     ): Observable<ServerResponse<ConfirmPhoneSmsResponse>>
 
-    @POST("user/{userId}/unlink")
+    @GET("user/{userId}/unlink")
     fun unlink(@Path("userId") userId: String): Observable<ServerResponse<UpdateResponse>>
 
-    @POST("user/{userId}/password")
+    @POST("user/{userId}/password/update")
     fun changePass(
         @Path("userId") userId: String,
         @Body changePassParam: ChangePassParam
@@ -88,7 +91,6 @@ interface ApiInterface {
     ): Observable<ServerResponse<Any>>
 
 
-
     @POST("user/{userId}/coins/{coinId}/transactions/presubmit")
     fun preSubmitTx(
         @Path("userId") userId: String,
@@ -96,7 +98,7 @@ interface ApiInterface {
         @Body body: PreTransactionParam
     ): Observable<ServerResponse<PreSubmitResponse>>
 
- @POST("user/{userId}/coins/{coinId}/transactions/submit")
+    @POST("user/{userId}/coins/{coinId}/transactions/submit")
     fun submitTx(
         @Path("userId") userId: String,
         @Path("coinId") coinId: String,
@@ -119,26 +121,26 @@ interface ApiInterface {
     ): Observable<ServerResponse<TronBlockResponse>>
 
 
-    @GET("user/{userId}/coins/BNB/transactions/currentaccount/{address}")
+    @GET("user/{userId}/coins/BNB/transactions/currentaccount")
     fun getBNBBlockHeader(
         @Path("userId") userId: String,
         @Path("address") address: String
     ): Observable<ServerResponse<BNBBlockResponse>>
 
-  @GET("user/{userId}/coins/XRP/transactions/currentaccount/{address}")
+    @GET("user/{userId}/coins/XRP/transactions/currentaccount")
     fun getXRPBlockHeader(
         @Path("userId") userId: String,
         @Path("address") address: String
     ): Observable<ServerResponse<BNBBlockResponse>>
 
 
- @GET("user/{userId}/coins/ETH/transactions/nonce/{address}")
+    @GET("user/{userId}/coins/ETH/transactions/nonce")
     fun getETHNonce(
         @Path("userId") userId: String,
         @Path("address") address: String
     ): Observable<ServerResponse<ETHResponse>>
 
- @GET("user/{userId}/coins/{coinId}/transactions/limits")
+    @GET("user/{userId}/coins/{coinId}/transactions/limits")
     fun getLimits(
         @Path("userId") userId: String,
         @Path("coinId") coinId: String?
