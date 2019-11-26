@@ -126,7 +126,7 @@ class PinActivity : BaseMvpActivity<PinContract.View, PinContract.Presenter>(), 
             when (mPin1) {
                 null -> {//first create/change pin screen
                     mPin1 = code.text.toString()
-                    icon_text.text = "Confirm PIN Code"//todo move text to toolbar
+                    icon_text.text = "Confirm PIN Code"
                     code.setText("")
                     mPresenter.vibrate(100)
                 }
@@ -157,7 +157,7 @@ class PinActivity : BaseMvpActivity<PinContract.View, PinContract.Presenter>(), 
 
     override fun onBackPressed() {
         if ((mMode == Mode.MODE_CREATE_PIN || mMode == Mode.MODE_CHANGE_PIN) && mPin1 != null) {
-            icon_text.text = "Setup PIN Code"//todo move text to toolbar
+            icon_text.text = "Setup PIN Code"
             mPin1 = null
             code.setText("")
         } else {

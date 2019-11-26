@@ -123,14 +123,12 @@ interface ApiInterface {
 
     @GET("user/{userId}/coins/BNB/transactions/currentaccount")
     fun getBNBBlockHeader(
-        @Path("userId") userId: String,
-        @Path("address") address: String
+        @Path("userId") userId: String
     ): Observable<ServerResponse<BNBBlockResponse>>
 
     @GET("user/{userId}/coins/XRP/transactions/currentaccount")
     fun getXRPBlockHeader(
-        @Path("userId") userId: String,
-        @Path("address") address: String
+        @Path("userId") userId: String
     ): Observable<ServerResponse<BNBBlockResponse>>
 
 

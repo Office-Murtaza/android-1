@@ -91,13 +91,13 @@ open class WithdrawDataManager : BaseDataManager() {
         userId: String,
         address: String
     ): Observable<Optional<BNBBlockResponse>> =
-        genObservable(api.getBNBBlockHeader(userId, address))
+        genObservable(api.getBNBBlockHeader(userId))
 
     fun getXRPBlockHeader(
         userId: String,
         address: String
     ): Observable<Optional<BNBBlockResponse>> =
-        genObservable(api.getXRPBlockHeader(userId, address))
+        genObservable(api.getXRPBlockHeader(userId))
 
     fun getETHNonce(
         userId: String,

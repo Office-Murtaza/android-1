@@ -111,7 +111,6 @@ class WithdrawPresenter : BaseMvpDIPresenterImpl<WithdrawContract.View, Withdraw
                 ,
                 { error: Throwable ->
                     mView?.showProgress(false)
-                    //todo add handling verifySms error and sendHash error
                     if (error is ServerException && error.code != Const.ERROR_403) {
                         mView?.openSmsCodeDialog(error.errorMessage)
                     } else {

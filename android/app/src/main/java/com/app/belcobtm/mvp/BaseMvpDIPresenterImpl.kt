@@ -44,7 +44,6 @@ abstract class BaseMvpDIPresenterImpl<V : BaseMvpView, T : BaseDataManager> : Ba
         mView = null
     }
 
-
     val BTC_DIVIDER = BigDecimal.valueOf(100_000_000)
     val ETH_DIVIDER = BigDecimal.valueOf(1000000000000000000)
     val BCH_DIVIDER = BigDecimal.valueOf(100000000)
@@ -70,7 +69,6 @@ abstract class BaseMvpDIPresenterImpl<V : BaseMvpView, T : BaseDataManager> : Ba
             mView?.showError(error.message)
         }
     }
-
 
     open fun getCoinTransactionHashObs(
         hdWallet: HDWallet,
@@ -120,15 +118,13 @@ abstract class BaseMvpDIPresenterImpl<V : BaseMvpView, T : BaseDataManager> : Ba
         coinType: CoinType
     ): Observable<String> {
 
-
         val cryptoToSubcoin =
             coinAmount * XRP_DIVIDER.toLong()
 
-        val fromAddress = mCoinDbModel?.publicKey
+        val fromAddress = mCoinDbModel?.publicKey ?: ""
         val privateKey_ = PrivateKey(mCoinDbModel?.privateKey?.toHexByteArray())
 
-
-        return dataManager.getXRPBlockHeader(mUserId, mCoinDbModel?.publicKey ?: "")
+        return dataManager.getXRPBlockHeader(mUserId, fromAddress)
             .map { resp ->
                 createXRPTransaction(fromAddress, cryptoToSubcoin, toAddress, privateKey_, resp)
             }
@@ -142,20 +138,25 @@ abstract class BaseMvpDIPresenterImpl<V : BaseMvpView, T : BaseDataManager> : Ba
         resp: Optional<BNBBlockResponse>
     ): String {
         val signingInput = Ripple.SigningInput.newBuilder()
+
+
+        val respFee =
+            (App.appContext().pref.getCoinsFee()?.firstOrNull { it.code == "XRP" }?.fee?.toBigDecimal()
+                ?: BigDecimal(0.000020)) * XRP_DIVIDER
+        val respSeq = resp.value?.sequence?.toInt() ?: 0
+
         signingInput.apply {
             account = fromAddress
             amount = cryptoToSubcoin.toLong()
             destination = toAddress
-            fee = App.appContext().pref.getCoinsFee()?.firstOrNull { it.code == "XRP" }?.fee?.toLong()
-                ?: 1 * XRP_DIVIDER.toLong()
+            fee = (respFee).toLong()
 
-            sequence = resp.value?.sequence?.toInt() ?: 0
+            sequence = respSeq
             privateKey = ByteString.copyFrom(privateKey_.data())
         }
 
         val sign: Ripple.SigningOutput = RippleSigner.sign(signingInput.build())
         val signBytes = sign.encoded.toByteArray()
-
         val resTransactionHashStr = Numeric.toHexString(signBytes)
         return resTransactionHashStr
     }
@@ -219,11 +220,10 @@ abstract class BaseMvpDIPresenterImpl<V : BaseMvpView, T : BaseDataManager> : Ba
         val resHour = cal.time
 
         transaction.expiration = resHour.time ?: 0
-        transaction.feeLimit = App.appContext().pref.getCoinsFee()?.firstOrNull { it.code == "TRX" }?.fee?.toLong()
-            ?: 1 * TRX_DIVIDER.toLong()
-
+        transaction.feeLimit =
+            ((App.appContext().pref.getCoinsFee()?.firstOrNull { it.code == "TRX" }?.fee?.toBigDecimal()
+                ?: BigDecimal(1)) * TRX_DIVIDER).toLong()
         transaction.blockHeader = tronBlock.build()
-
 
         val signing = Tron.SigningInput.newBuilder()
 
@@ -280,15 +280,12 @@ abstract class BaseMvpDIPresenterImpl<V : BaseMvpView, T : BaseDataManager> : Ba
         val cryptoToSubcoin: BigDecimal =
             BigDecimal(coinAmount * ETH_DIVIDER.toLong())
 
-        //val nonceHex = String.format("%016llx", resp?.nonce)
         val nonsStr: String = resp?.nonce?.toString(16) ?: ""
 
         val nonceHex = ByteString.copyFrom("0x${addLeadingZeroes(nonsStr)}".toHexByteArray())
 
-        //val amountHex = String.format("%016llx", cryptoToSubcoin)
         val amountHex =
             ByteString.copyFrom("0x${addLeadingZeroes(cryptoToSubcoin.toLong().toString(16))}".toHexByteArray())
-
 
         val gasPriceD =
             App.appContext().pref.getCoinsFee()?.firstOrNull { it.code == "ETH" }?.gasPrice?.toLong()
@@ -298,12 +295,9 @@ abstract class BaseMvpDIPresenterImpl<V : BaseMvpView, T : BaseDataManager> : Ba
             App.appContext().pref.getCoinsFee()?.firstOrNull { it.code == "ETH" }?.gasLimit?.toLong()
                 ?: 21000
 
-
-        // val gasLimitHex = String.format("%016llx", "21000")//magic num
         val gasLimitHex =
             ByteString.copyFrom("0x${addLeadingZeroes(gasLimitD.toString(16))}".toHexByteArray())
 
-        //val gasPriceHex = String.format("%016llx", "20_000_000_000")//magic num
         val gasPriceHex =
             ByteString.copyFrom("0x${addLeadingZeroes(gasPriceD.toString(16))}".toHexByteArray())
 
@@ -559,6 +553,7 @@ abstract class BaseMvpDIPresenterImpl<V : BaseMvpView, T : BaseDataManager> : Ba
             "BCH" -> getFeesFromList(coinName, 0.0004)
             "LTC" -> getFeesFromList(coinName, 0.00004)
             "ETH" -> getFeesFromList(coinName, 0.00042)
+
             "BNB" -> getFeesFromList(coinName, 0.001)
             "TRX" -> getFeesFromList(coinName, 1.0)
             "XRP" -> getFeesFromList(coinName, 0.00002)
@@ -568,19 +563,20 @@ abstract class BaseMvpDIPresenterImpl<V : BaseMvpView, T : BaseDataManager> : Ba
 
     fun getFeesFromList(coinCode: String, def: Double = Double.MIN_VALUE): Double {
 
-        var fee = (App.appContext().pref.getCoinsFee()?.firstOrNull { it.code == coinCode }?.fee
-            ?: def)
+        var fee = App.appContext().pref.getCoinsFee()?.firstOrNull { it.code == coinCode }?.fee
+            ?: def
 
         if (coinCode == "BTC" || coinCode == "BCH" || coinCode == "LTH") {
-            fee *= 1000
-        }else if(coinCode == "ETH"){
-            val gasPrice = (App.appContext().pref.getCoinsFee()?.firstOrNull { it.code == coinCode }?.gasPrice
-                ?: def)
+            fee = ((fee?.toBigDecimal() ?: BigDecimal(0)) * BigDecimal(1000)).toDouble()
+        } else if (coinCode == "ETH") {
+            val gasPrice =
+                (App.appContext().pref.getCoinsFee()?.firstOrNull { it.code == coinCode }?.gasPrice?.toBigDecimal()
+                    ?: BigDecimal(0))
+            val gasLimit =
+                (App.appContext().pref.getCoinsFee()?.firstOrNull { it.code == coinCode }?.gasLimit?.toBigDecimal()
+                    ?: BigDecimal(0))
 
-            val gasLimit = (App.appContext().pref.getCoinsFee()?.firstOrNull { it.code == coinCode }?.gasLimit
-                ?: def)
-
-            return (gasPrice*gasLimit)/ETH_DIVIDER.toLong()
+            return ((gasPrice.toDouble() * gasLimit.toDouble()) / ETH_DIVIDER.toDouble())
         }
         return fee
     }
@@ -588,17 +584,18 @@ abstract class BaseMvpDIPresenterImpl<V : BaseMvpView, T : BaseDataManager> : Ba
 
     open fun getByteFee(coinName: String?): Int {
         return when (coinName) {
-            "BTC" -> getFeeByteFromList(coinName,40)
-            "BCH" -> getFeeByteFromList(coinName,40)
-            "LTC" -> getFeeByteFromList(coinName,4)
-            else -> getFeeByteFromList(coinName,4)
+            "BTC" -> getFeeByteFromList(coinName, 40)
+            "BCH" -> getFeeByteFromList(coinName, 40)
+            "LTC" -> getFeeByteFromList(coinName, 4)
+            else -> getFeeByteFromList(coinName, 4)
         }
     }
 
     fun getFeeByteFromList(coinCode: String?, def: Int = 4): Int {
 
-        val fee:Double = (App.appContext().pref.getCoinsFee()?.firstOrNull { it.code == coinCode }?.fee
-            ?: Double.MIN_VALUE) ?: Double.MIN_VALUE
+        val fee: Double =
+            (App.appContext().pref.getCoinsFee()?.firstOrNull { it.code == coinCode }?.fee
+                ?: Double.MIN_VALUE) ?: Double.MIN_VALUE
 
         if (coinCode == "BTC" || coinCode == "BCH" || coinCode == "LTH") {
             return (fee * 100_000_000).toInt()
