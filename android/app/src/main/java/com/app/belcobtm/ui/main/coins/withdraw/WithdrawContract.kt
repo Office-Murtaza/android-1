@@ -7,8 +7,13 @@ import com.app.belcobtm.mvp.BaseMvpView
 
 object WithdrawContract {
     interface Presenter : BaseMvpPresenter<View> {
-//        var coinId: String
-        fun getCoinTransactionHash(context: Context, coinId: String, toAddress: String, coinAmount: Double)
+        fun getCoinTransactionHash(
+            context: Context,
+            coinId: String,
+            toAddress: String,
+            coinAmount: Double
+        )
+
         fun validateAddress(coinId: String, walletAddress: String): Boolean
         fun verifySmsCode(code: String)
         fun getTransactionFee(coinName: String): Double

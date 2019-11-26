@@ -14,7 +14,11 @@ class SettingsDataManager : BaseDataManager() {
         return genObservable(api.checkPass(userId, CheckPassParam(pass)))
     }
 
-    fun changePass(userId: String, newPassword: String, oldPassword: String): Observable<Optional<UpdateResponse>> {
+    fun changePass(
+        userId: String,
+        newPassword: String,
+        oldPassword: String
+    ): Observable<Optional<UpdateResponse>> {
         return genObservable(api.changePass(userId, ChangePassParam(oldPassword, newPassword)))
     }
 
@@ -26,7 +30,11 @@ class SettingsDataManager : BaseDataManager() {
         return genObservable(api.updatePhone(userId, UpdatePhoneParam(phone)))
     }
 
-    fun confirmPhoneSms(userId: String, phone: String, smsCode: String): Observable<Optional<ConfirmPhoneSmsResponse>> {
+    fun confirmPhoneSms(
+        userId: String,
+        phone: String,
+        smsCode: String
+    ): Observable<Optional<ConfirmPhoneSmsResponse>> {
         return genObservable(api.confirmPhoneSms(userId, ConfirmPhoneSmsParam(phone, smsCode)))
     }
 

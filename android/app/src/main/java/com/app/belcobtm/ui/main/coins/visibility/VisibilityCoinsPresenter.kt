@@ -7,7 +7,7 @@ import io.realm.Realm
 
 
 class VisibilityCoinsPresenter : BaseMvpPresenterImpl<VisibilityCoinsContract.View>(),
-    VisibilityCoinsContract.Presenter{
+    VisibilityCoinsContract.Presenter {
 
     private val realm = Realm.getDefaultInstance()
     private val coinModel = DbCryptoCoinModel()

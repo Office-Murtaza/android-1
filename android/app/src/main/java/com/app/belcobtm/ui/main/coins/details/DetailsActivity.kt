@@ -3,12 +3,12 @@ package com.app.belcobtm.ui.main.coins.details
 import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.text.SpannableString
 import android.text.style.UnderlineSpan
 import android.view.MenuItem
 import android.view.View
-import androidx.appcompat.widget.AppCompatImageView
 import com.app.belcobtm.R
 import com.app.belcobtm.api.model.response.CoinModel
 import com.app.belcobtm.api.model.response.TransactionDetailsResponse
@@ -22,9 +22,6 @@ import com.google.zxing.BarcodeFormat
 import com.journeyapps.barcodescanner.BarcodeEncoder
 import kotlinx.android.synthetic.main.activity_details_coin.*
 import org.parceler.Parcels
-import androidx.core.app.ComponentActivity.ExtraData
-import androidx.core.content.ContextCompat.getSystemService
-import android.net.Uri
 
 
 class DetailsActivity : BaseMvpActivity<DetailsContract.View, DetailsContract.Presenter>(),
@@ -74,10 +71,12 @@ class DetailsActivity : BaseMvpActivity<DetailsContract.View, DetailsContract.Pr
         statusTv.text = transactionStatusText
 
         amountTv.text = "${String.format(" %.8f", resp?.amount)}"
-        amountTv.text = """${trimTrailingZero(amountTv.text.toString())?.replace(" ","")} ${mCoin.coinId}"""
+        amountTv.text =
+            """${trimTrailingZero(amountTv.text.toString())?.replace(" ", "")} ${mCoin.coinId}"""
 
         feeTv.text = "${String.format(" %.8f", resp?.fee)}"
-        feeTv.text = """${trimTrailingZero(feeTv.text.toString())?.replace(" ","")} ${mCoin.coinId}"""
+        feeTv.text =
+            """${trimTrailingZero(feeTv.text.toString())?.replace(" ", "")} ${mCoin.coinId}"""
 
         dateTv.text = resp?.date
         fromAddressTv.text = resp?.fromAddress
@@ -112,8 +111,10 @@ class DetailsActivity : BaseMvpActivity<DetailsContract.View, DetailsContract.Pr
         resp?.sellInfo?.let {
 
             val walletQrCode =
-                BarcodeEncoder().encodeBitmap(it,
-                    BarcodeFormat.QR_CODE, 124, 124)
+                BarcodeEncoder().encodeBitmap(
+                    it,
+                    BarcodeFormat.QR_CODE, 124, 124
+                )
             qrCodeIv?.setImageBitmap(walletQrCode)
         }
 
@@ -171,9 +172,6 @@ class DetailsActivity : BaseMvpActivity<DetailsContract.View, DetailsContract.Pr
     }
 
     private fun initView() {
-
-
-        //bt_next.setOnClickListener { validateAndSubmit() }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

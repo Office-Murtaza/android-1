@@ -28,8 +28,6 @@ import com.google.android.material.textfield.TextInputLayout
 import kotlinx.android.synthetic.main.activity_send_gift.*
 import kotlinx.android.synthetic.main.activity_show_phone.toolbar
 import org.parceler.Parcels
-import wallet.core.jni.proto.Tron
-import java.lang.NumberFormatException
 
 class SendGiftActivity : BaseMvpActivity<SendGiftContract.View, SendGiftContract.Presenter>(),
     SendGiftContract.View
@@ -86,16 +84,13 @@ class SendGiftActivity : BaseMvpActivity<SendGiftContract.View, SendGiftContract
 
         amount_max.setOnClickListener {
             val balance = mCoin.balance - mPresenter.getTransactionFee(mCoin.coinId)
-            val balanceStr = if (balance > 0){
+            val balanceStr = if (balance > 0) {
                 cryptoBalanceToSend = balance
                 String.format("%.6f", balance).trimEnd('0')
-            }
-            else {
+            } else {
                 cryptoBalanceToSend = 0.0
                 "0"
             }
-
-
             amount_crypto.setText(balanceStr.replace(',', '.'))
 
         }
@@ -247,12 +242,6 @@ class SendGiftActivity : BaseMvpActivity<SendGiftContract.View, SendGiftContract
 
         var errors = 0
 
-        /*    //Validate address
-         if (!mPresenter.validateAddress(mCoin.coinId, toAddress)) {
-             errors++
-             til_phone.error = getString(R.string.wrong_address)
-         }*/
-
         //Validate amount
         if (cryptoBalanceToSend <= 0) {
             errors++
@@ -265,8 +254,6 @@ class SendGiftActivity : BaseMvpActivity<SendGiftContract.View, SendGiftContract
             til_amount_crypto.error = "Not enough balance"
         }
 
-
-        //+18155554444
         //Validate amount
         if (!phone_ccp.isValidFullNumber) {
             errors++
@@ -318,8 +305,6 @@ class SendGiftActivity : BaseMvpActivity<SendGiftContract.View, SendGiftContract
     }
 
     override fun onGifSelected(media: Media) {
-
-
         mPresenter.gifMedia = media
         gif_media_view.visibility = View.VISIBLE
         gif_media_view.setMedia(media, RenditionType.original)

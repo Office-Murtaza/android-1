@@ -17,7 +17,5 @@ object DetailsContract {
 
     interface View : BaseMvpView {
         fun showTransactionDetails(detailsResponse: TransactionDetailsResponse?)
-
-
     }
 }

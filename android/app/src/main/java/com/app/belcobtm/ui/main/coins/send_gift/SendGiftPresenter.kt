@@ -1,21 +1,23 @@
 package com.app.belcobtm.ui.main.coins.send_gift
 
-import com.app.belcobtm.api.model.param.trx.Trx
 import android.content.Context
 import com.app.belcobtm.App
 import com.app.belcobtm.R
 import com.app.belcobtm.api.data_manager.WithdrawDataManager
 import com.app.belcobtm.api.model.ServerException
 import com.app.belcobtm.api.model.param.SendTransactionParam
-import com.app.belcobtm.api.model.response.*
+import com.app.belcobtm.api.model.param.trx.Trx
+import com.app.belcobtm.api.model.response.CoinModel
 import com.app.belcobtm.db.DbCryptoCoin
 import com.app.belcobtm.db.DbCryptoCoinModel
 import com.app.belcobtm.mvp.BaseMvpDIPresenterImpl
-import com.app.belcobtm.util.*
+import com.app.belcobtm.util.Const
+import com.app.belcobtm.util.pref
 import com.giphy.sdk.core.models.Media
 import com.google.gson.Gson
 import io.realm.Realm
-import wallet.core.jni.*
+import wallet.core.jni.CoinType
+import wallet.core.jni.HDWallet
 
 
 class SendGiftPresenter : BaseMvpDIPresenterImpl<SendGiftContract.View, WithdrawDataManager>(),
@@ -48,8 +50,8 @@ class SendGiftPresenter : BaseMvpDIPresenterImpl<SendGiftContract.View, Withdraw
     private val coinModel = DbCryptoCoinModel()
     val mUserId = App.appContext().pref.getUserId().toString()
 
-    private var mTransactionHash :String? = null
-    private var mTransactionHashJson :String? = null
+    private var mTransactionHash: String? = null
+    private var mTransactionHashJson: String? = null
     private var mCoinDbModel: DbCryptoCoin? = null
 
     override fun getCoinTransactionHash(
@@ -75,7 +77,7 @@ class SendGiftPresenter : BaseMvpDIPresenterImpl<SendGiftContract.View, Withdraw
         this.message = message
         this.phone = phone
 
-        this.phoneEncoded = "+" + phone.replace("+","")
+        this.phoneEncoded = "+" + phone.replace("+", "")
         mDataManager.giftAddress(mUserId, mCoinDbModel!!.coinType, phoneEncoded)
             .flatMap { res ->
                 this.fromAddress = res.value?.address
@@ -84,21 +86,20 @@ class SendGiftPresenter : BaseMvpDIPresenterImpl<SendGiftContract.View, Withdraw
                     res.value?.address ?: "",
                     coinType,
                     coinAmount,
-                    mCoinDbModel,mDataManager
+                    mCoinDbModel, mDataManager
                 )
 
             }.flatMap { transactionHash ->
 
 
-                if(CoinType.TRON == coinType){
+                if (CoinType.TRON == coinType) {
                     mTransactionHashJson = transactionHash
                     mTransactionHash = null
-                }else{
+                } else {
                     mTransactionHashJson = null
                     mTransactionHash = transactionHash
                 }
 
-               // Log.v("TRANSACTION_HEX", mTransactionHash)
                 mDataManager.requestSmsCode(mUserId)
             }
             .subscribe({ response ->
@@ -147,7 +148,6 @@ class SendGiftPresenter : BaseMvpDIPresenterImpl<SendGiftContract.View, Withdraw
 
                 })
     }
-
 
 
 }

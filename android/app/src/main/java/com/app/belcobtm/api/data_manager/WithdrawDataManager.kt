@@ -1,7 +1,6 @@
 package com.app.belcobtm.api.data_manager
 
 import com.app.belcobtm.api.TempUtxoRetrofitClient
-import com.app.belcobtm.api.model.ServerResponse
 import com.app.belcobtm.api.model.param.PreTransactionParam
 import com.app.belcobtm.api.model.param.SendTransactionParam
 import com.app.belcobtm.api.model.param.VerifySmsParam
@@ -11,7 +10,6 @@ import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import retrofit2.http.Body
-import retrofit2.http.Path
 
 open class WithdrawDataManager : BaseDataManager() {
     private val tempUtxoApi = TempUtxoRetrofitClient.instance.apiInterface

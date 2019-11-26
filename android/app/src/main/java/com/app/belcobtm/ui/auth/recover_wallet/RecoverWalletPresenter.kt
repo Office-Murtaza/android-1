@@ -10,7 +10,8 @@ import com.app.belcobtm.util.pref
 import io.reactivex.Observable
 
 
-class RecoverWalletPresenter : BaseMvpDIPresenterImpl<RecoverWalletContract.View, AuthDataManager>(),
+class RecoverWalletPresenter :
+    BaseMvpDIPresenterImpl<RecoverWalletContract.View, AuthDataManager>(),
     RecoverWalletContract.Presenter {
 
 
@@ -53,7 +54,7 @@ class RecoverWalletPresenter : BaseMvpDIPresenterImpl<RecoverWalletContract.View
 
     override fun verifyCode(code: String) {
         mView?.showProgress(true)
-        mDataManager.verifySmsCode(userId,code)
+        mDataManager.verifySmsCode(userId, code)
             .subscribe({
                 mView?.showProgress(false)
                 mView?.onSmsSuccess()

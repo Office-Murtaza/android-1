@@ -1,6 +1,5 @@
 package com.app.belcobtm.ui.main.coins.sell
 
-import android.content.Context
 import com.app.belcobtm.App
 import com.app.belcobtm.api.data_manager.WithdrawDataManager
 import com.app.belcobtm.api.model.ServerException
@@ -42,7 +41,6 @@ class SellPresenter : BaseMvpDIPresenterImpl<SellContract.View, WithdrawDataMana
 
     }
 
-
     private var mTransactionHash: String? = null
     private var mTransactionHashJson: String? = null
     private var cryptoResultAmount: Double = Double.MIN_VALUE
@@ -64,13 +62,9 @@ class SellPresenter : BaseMvpDIPresenterImpl<SellContract.View, WithdrawDataMana
             }.flatMap { res ->
                 mView?.showProgress(false)
 
-                //TODO: REMOVE TEST DATA
                 this.addressDestination = res?.value?.address
-                // this.addressDestination = "asdasdfasdfasdververv"
 
                 if (addressDestination.isNullOrEmpty()) {
-                    // mView?.showPretransactionError()
-                    //notify error
                     Observable.error(Throwable("the transaction can not be created"))
                 } else {
 
@@ -82,7 +76,6 @@ class SellPresenter : BaseMvpDIPresenterImpl<SellContract.View, WithdrawDataMana
 
                         if (cryptoResultAmount >= balance) {
 
-                            // mView?.showNewBalanceError()
                             Observable.error(Throwable("coin stock value has been changed"))
                         } else {
                             val seed = App.appContext().pref.getSeed()
@@ -110,10 +103,10 @@ class SellPresenter : BaseMvpDIPresenterImpl<SellContract.View, WithdrawDataMana
             }
             .flatMap { transactionHash ->
 
-                if(CoinType.TRON == coinType){
+                if (CoinType.TRON == coinType) {
                     mTransactionHashJson = transactionHash
                     mTransactionHash = null
-                }else{
+                } else {
                     mTransactionHashJson = null
                     mTransactionHash = transactionHash
                 }
@@ -148,7 +141,7 @@ class SellPresenter : BaseMvpDIPresenterImpl<SellContract.View, WithdrawDataMana
                         { error: Throwable ->
                             mView?.showProgress(false)
                             if (error is ServerException && error.code != Const.ERROR_403) {
-                                    mView?.showErrorAndHideDialogs(error.errorMessage)
+                                mView?.showErrorAndHideDialogs(error.errorMessage)
 
                             } else {
                                 checkError(error)

@@ -7,7 +7,8 @@ import com.app.belcobtm.R
 import com.app.belcobtm.model.WelcomePagerItem
 import kotlinx.android.synthetic.main.item_welcome_pager.view.*
 
-class WelcomePagerAdapter(private val mValues: ArrayList<WelcomePagerItem>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class WelcomePagerAdapter(private val mValues: ArrayList<WelcomePagerItem>) :
+    RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {

@@ -13,7 +13,8 @@ import com.google.android.material.textfield.TextInputLayout
 import kotlinx.android.synthetic.main.activity_create_wallet.*
 
 
-class RecoverWalletActivity : BaseMvpActivity<RecoverWalletContract.View, RecoverWalletContract.Presenter>(),
+class RecoverWalletActivity :
+    BaseMvpActivity<RecoverWalletContract.View, RecoverWalletContract.Presenter>(),
     RecoverWalletContract.View {
 
     override fun onCreate(savedInstanceState: Bundle?) {

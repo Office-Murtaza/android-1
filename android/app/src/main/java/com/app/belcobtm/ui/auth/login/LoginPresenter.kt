@@ -33,7 +33,6 @@ class LoginPresenter : BaseMvpDIPresenterImpl<LoginContract.View, AuthDataManage
             }
             .subscribe({ response: Optional<AuthResponse> ->
                 mView?.showProgress(false)
-                //todo
             }
                 , { error: Throwable ->
                     mView?.showProgress(false)

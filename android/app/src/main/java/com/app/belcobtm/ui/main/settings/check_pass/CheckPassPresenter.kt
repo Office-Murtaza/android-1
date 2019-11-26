@@ -49,7 +49,6 @@ class CheckPassPresenter : BaseMvpDIPresenterImpl<CheckPassContract.View, Settin
                 } else {
                     mView?.showMessage(R.string.password_doesnt_match)
                 }
-                //todo check error handling
             },
             { error ->
                 mView?.showProgress(false)
@@ -66,7 +65,6 @@ class CheckPassPresenter : BaseMvpDIPresenterImpl<CheckPassContract.View, Settin
                 } else {
                     mView?.showMessage(R.string.password_doesnt_match)
                 }
-                //todo check error handling
             },
             { error ->
                 checkError(error)
@@ -83,7 +81,6 @@ class CheckPassPresenter : BaseMvpDIPresenterImpl<CheckPassContract.View, Settin
                 } else {
                     mView?.showMessage(R.string.password_doesnt_match)
                 }
-                //todo check error handling
             },
             { error ->
                 checkError(error)

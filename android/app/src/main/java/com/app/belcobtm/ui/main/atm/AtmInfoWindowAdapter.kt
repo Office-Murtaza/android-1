@@ -42,10 +42,18 @@ class AtmInfoWindowAdapter(val context: Context) : GoogleMap.InfoWindowAdapter {
         val builder = SpannableStringBuilder()
         val text1Spannable = SpannableString("$text1: ")
         text1Spannable.setSpan(
-            ForegroundColorSpan(context.getColor(R.color.light_gray_text_color)), 0, text1Spannable.length, 0
+            ForegroundColorSpan(context.getColor(R.color.light_gray_text_color)),
+            0,
+            text1Spannable.length,
+            0
         )
         val text2Spannable = SpannableString(text2)
-        text2Spannable.setSpan(ForegroundColorSpan(context.getColor(R.color.blue_color)), 0, text2Spannable.length, 0)
+        text2Spannable.setSpan(
+            ForegroundColorSpan(context.getColor(R.color.blue_color)),
+            0,
+            text2Spannable.length,
+            0
+        )
 
         builder.append(text1Spannable).append(text2Spannable)
         return builder

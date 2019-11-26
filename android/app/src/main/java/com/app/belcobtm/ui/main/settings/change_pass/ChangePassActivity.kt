@@ -77,9 +77,12 @@ class ChangePassActivity : BaseMvpActivity<ChangePassContract.View, ChangePassCo
                 til_new_pass.hint = getString(com.app.belcobtm.R.string.new_pin)
                 til_confirm_new_pass.hint = getString(com.app.belcobtm.R.string.confirm_new_pin)
 
-                old_value.inputType = InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_VARIATION_PASSWORD
-                new_value.inputType = InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_VARIATION_PASSWORD
-                confirm_new_value.inputType = InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_VARIATION_PASSWORD
+                old_value.inputType =
+                    InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_VARIATION_PASSWORD
+                new_value.inputType =
+                    InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_VARIATION_PASSWORD
+                confirm_new_value.inputType =
+                    InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_VARIATION_PASSWORD
 
                 val filterArray = arrayOfNulls<InputFilter>(1)
                 filterArray[0] = InputFilter.LengthFilter(6)

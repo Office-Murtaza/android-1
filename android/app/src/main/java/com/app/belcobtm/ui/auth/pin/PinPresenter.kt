@@ -12,7 +12,8 @@ import com.app.belcobtm.util.Const.ERROR_403
 import com.app.belcobtm.util.pref
 
 
-class PinPresenter : BaseMvpDIPresenterImpl<PinContract.View, AuthDataManager>(), PinContract.Presenter {
+class PinPresenter : BaseMvpDIPresenterImpl<PinContract.View, AuthDataManager>(),
+    PinContract.Presenter {
 
     override fun injectDependency() {
         presenterComponent.inject(this)
@@ -45,7 +46,7 @@ class PinPresenter : BaseMvpDIPresenterImpl<PinContract.View, AuthDataManager>()
             }, { error: Throwable ->
                 mView?.showProgress(false)
                 if (error is ServerException) {
-                    if(error.code == ERROR_403){
+                    if (error.code == ERROR_403) {
                         mView?.onRefreshTokenFailed()
                     } else {
                         mView?.showError(error.errorMessage)
@@ -67,9 +68,9 @@ class PinPresenter : BaseMvpDIPresenterImpl<PinContract.View, AuthDataManager>()
                         milliseconds,
                         100
                     )
-                ) // New vibrate method for API Level 26 or higher
+                )
             } else {
-                vibrator.vibrate(milliseconds) // Vibrate method for below API Level 26
+                vibrator.vibrate(milliseconds)
             }
         }
     }
@@ -77,7 +78,7 @@ class PinPresenter : BaseMvpDIPresenterImpl<PinContract.View, AuthDataManager>()
     override fun vibrateError() {
         val pattern = longArrayOf(0, 55, 55, 55)
         val vibrator = App.appContext().getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
-        if (vibrator.hasVibrator()) { // Vibrator availability checking
+        if (vibrator.hasVibrator()) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 val amplitudes = IntArray(pattern.size)
                 for (i in 0 until pattern.size / 2) {
@@ -89,9 +90,9 @@ class PinPresenter : BaseMvpDIPresenterImpl<PinContract.View, AuthDataManager>()
                         amplitudes,
                         -1
                     )
-                ) // New vibrate method for API Level 26 or higher
+                )
             } else {
-                vibrator.vibrate(pattern, -1)// Vibrate method for below API Level 26
+                vibrator.vibrate(pattern, -1)
             }
         }
     }

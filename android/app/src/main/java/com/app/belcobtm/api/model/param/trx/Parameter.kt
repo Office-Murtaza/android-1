@@ -1,7 +1,7 @@
 package com.app.belcobtm.api.model.param.trx
 
-data class Parameter (
+data class Parameter(
 
-	val type_url : String,
-	val value : Value
+    val type_url: String,
+    val value: Value
 )

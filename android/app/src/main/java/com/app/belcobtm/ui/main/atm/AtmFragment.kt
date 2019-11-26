@@ -31,7 +31,11 @@ class AtmFragment : BaseMvpFragment<AtmContract.View, AtmContract.Presenter>(),
     private var mMap: GoogleMap? = null
     private var locationManager: LocationManager? = null
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         return inflater.inflate(com.app.belcobtm.R.layout.fragment_atm, container, false)
     }
 
@@ -62,9 +66,20 @@ class AtmFragment : BaseMvpFragment<AtmContract.View, AtmContract.Presenter>(),
         ).subscribe { granted ->
             if (granted) {
                 mMap?.isMyLocationEnabled = true
-                locationManager = activity?.getSystemService(Context.LOCATION_SERVICE) as LocationManager
-                locationManager?.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 10f, this)
-                locationManager?.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0f, this)
+                locationManager =
+                    activity?.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+                locationManager?.requestLocationUpdates(
+                    LocationManager.GPS_PROVIDER,
+                    5000,
+                    10f,
+                    this
+                )
+                locationManager?.requestLocationUpdates(
+                    LocationManager.NETWORK_PROVIDER,
+                    0,
+                    0f,
+                    this
+                )
 
                 val criteria = Criteria()
                 val bestProvider = locationManager?.getBestProvider(criteria, false)
@@ -94,7 +109,6 @@ class AtmFragment : BaseMvpFragment<AtmContract.View, AtmContract.Presenter>(),
     override fun onProviderEnabled(provider: String?) {}
 
     override fun onProviderDisabled(provider: String?) {}
-//    LocationListener end
 
     private fun initMarkers() {
         if (mMap != null) {

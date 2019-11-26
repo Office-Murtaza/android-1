@@ -8,7 +8,8 @@ import com.app.belcobtm.util.CoinItemDecoration
 import kotlinx.android.synthetic.main.activity_visibility_coins.*
 
 
-class VisibilityCoinsActivity : BaseMvpActivity<VisibilityCoinsContract.View, VisibilityCoinsContract.Presenter>(),
+class VisibilityCoinsActivity :
+    BaseMvpActivity<VisibilityCoinsContract.View, VisibilityCoinsContract.Presenter>(),
     VisibilityCoinsContract.View {
 
     private lateinit var mAdapter: VisibilityCoinsAdapter

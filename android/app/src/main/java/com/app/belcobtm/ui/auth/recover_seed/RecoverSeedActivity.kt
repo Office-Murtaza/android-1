@@ -9,7 +9,8 @@ import com.app.belcobtm.ui.main.main_activity.MainActivity
 import kotlinx.android.synthetic.main.activity_recover_seed_phrase.*
 
 
-class RecoverSeedActivity : BaseMvpActivity<RecoverSeedContract.View, RecoverSeedContract.Presenter>(),
+class RecoverSeedActivity :
+    BaseMvpActivity<RecoverSeedContract.View, RecoverSeedContract.Presenter>(),
     RecoverSeedContract.View {
 
     override fun onCreate(savedInstanceState: Bundle?) {

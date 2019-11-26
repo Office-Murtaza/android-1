@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName
 
 data class AuthParam(
     @SerializedName("phone")
-    val phone: String, // +12018906708
+    val phone: String,
     @SerializedName("password")
-    val password: String // abc123456
+    val password: String
 )

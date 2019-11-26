@@ -45,14 +45,16 @@ abstract class BaseMvpDIPresenterImpl<V : BaseMvpView, T : BaseDataManager> : Ba
     }
 
 
+    val BTC_DIVIDER = BigDecimal.valueOf(100_000_000)
+    val ETH_DIVIDER = BigDecimal.valueOf(1000000000000000000)
+    val BCH_DIVIDER = BigDecimal.valueOf(100000000)
+    val LTC_DIVIDER = BigDecimal.valueOf(100000000)
+    val XRP_DIVIDER = BigDecimal.valueOf(1000000)
+    val TRX_DIVIDER = BigDecimal.valueOf(1000000)
+    val BNB_DIVIDER = BigDecimal.valueOf(100_000_000)
+
     protected fun <T : Throwable> onError(exception: T) {
-//        if (exception is ServerException) {
-//            val messageStringId = exception.getMessageStringId()
-//            if(messageStringId == -1)
-//                mView?.showError(exception.message)
-//            else
-//                mView?.showError(messageStringId)
-//        } else
+
         mView?.showError(exception.message)
     }
 
@@ -120,7 +122,7 @@ abstract class BaseMvpDIPresenterImpl<V : BaseMvpView, T : BaseDataManager> : Ba
 
 
         val cryptoToSubcoin =
-            coinAmount * 1_000_000
+            coinAmount * XRP_DIVIDER.toLong()
 
         val fromAddress = mCoinDbModel?.publicKey
         val privateKey_ = PrivateKey(mCoinDbModel?.privateKey?.toHexByteArray())
@@ -130,7 +132,6 @@ abstract class BaseMvpDIPresenterImpl<V : BaseMvpView, T : BaseDataManager> : Ba
             .map { resp ->
                 createXRPTransaction(fromAddress, cryptoToSubcoin, toAddress, privateKey_, resp)
             }
-
     }
 
     private fun createXRPTransaction(
@@ -145,7 +146,8 @@ abstract class BaseMvpDIPresenterImpl<V : BaseMvpView, T : BaseDataManager> : Ba
             account = fromAddress
             amount = cryptoToSubcoin.toLong()
             destination = toAddress
-            fee = 20
+            fee = App.appContext().pref.getCoinsFee()?.firstOrNull { it.code == "XRP" }?.fee?.toLong()
+                ?: 1 * XRP_DIVIDER.toLong()
 
             sequence = resp.value?.sequence?.toInt() ?: 0
             privateKey = ByteString.copyFrom(privateKey_.data())
@@ -186,10 +188,9 @@ abstract class BaseMvpDIPresenterImpl<V : BaseMvpView, T : BaseDataManager> : Ba
     ): String? {
 
         val cryptoToSubcoin =
-            coinAmount * 1_000_000
+            coinAmount * TRX_DIVIDER.toLong()
 
         val fromAddress = mCoinDbModel?.publicKey
-
         val tronBlock = Tron.BlockHeader.newBuilder()
 
         tronBlock.number = resp?.blockHeader?.raw_data?.number ?: 0L
@@ -218,7 +219,9 @@ abstract class BaseMvpDIPresenterImpl<V : BaseMvpView, T : BaseDataManager> : Ba
         val resHour = cal.time
 
         transaction.expiration = resHour.time ?: 0
-        transaction.feeLimit = 1_000_000
+        transaction.feeLimit = App.appContext().pref.getCoinsFee()?.firstOrNull { it.code == "TRX" }?.fee?.toLong()
+            ?: 1 * TRX_DIVIDER.toLong()
+
         transaction.blockHeader = tronBlock.build()
 
 
@@ -275,7 +278,7 @@ abstract class BaseMvpDIPresenterImpl<V : BaseMvpView, T : BaseDataManager> : Ba
     ): String? {
 
         val cryptoToSubcoin: BigDecimal =
-            BigDecimal(coinAmount * 1_000_000_000_000_000_000)
+            BigDecimal(coinAmount * ETH_DIVIDER.toLong())
 
         //val nonceHex = String.format("%016llx", resp?.nonce)
         val nonsStr: String = resp?.nonce?.toString(16) ?: ""
@@ -334,7 +337,7 @@ abstract class BaseMvpDIPresenterImpl<V : BaseMvpView, T : BaseDataManager> : Ba
     ): Observable<String> {
 
         val cryptoToSubcoin =
-            coinAmount * 100_000_000
+            coinAmount * BNB_DIVIDER.toLong()
 
         val privateKey = PrivateKey(mCoinDbModel?.privateKey?.toHexByteArray())
         val publicKey = privateKey.getPublicKeySecp256k1(true)
@@ -435,7 +438,7 @@ abstract class BaseMvpDIPresenterImpl<V : BaseMvpView, T : BaseDataManager> : Ba
         val publicKeyFrom = coinDbModel?.publicKey
 
         val cryptoToSatoshi =
-            coinAmount * 100_000_000
+            coinAmount * BTC_DIVIDER.toLong()
 
         val amount: Long = cryptoToSatoshi.toLong()
 
@@ -529,13 +532,25 @@ abstract class BaseMvpDIPresenterImpl<V : BaseMvpView, T : BaseDataManager> : Ba
 
 
     /**
-     * bitcoin: 0.0004
+     *
+    bitcoin: 0.0004
     bitcoinCash: 0.0004
     litecoin: 0.00004
     ethereum: 0.00042
     binance: 0.001
     tron: 1
     ripple: 0.00002
+
+    Server
+    BTC  Bitcoin  0.0000004000
+    BCH  Bitcoin Cash  0.0000004000
+    ETH  Ethereum
+    LTC  Litecoin  0.0000000400
+
+    XRP  Ripple  0.0000200000
+    TRX  Tron  1.0000000000
+    BNB  Binance Coin  0.0010000000
+
      */
     open fun getTransactionFee(coinName: String): Double {
 
@@ -557,7 +572,15 @@ abstract class BaseMvpDIPresenterImpl<V : BaseMvpView, T : BaseDataManager> : Ba
             ?: def)
 
         if (coinCode == "BTC" || coinCode == "BCH" || coinCode == "LTH") {
-            fee /= 100_000_000
+            fee *= 1000
+        }else if(coinCode == "ETH"){
+            val gasPrice = (App.appContext().pref.getCoinsFee()?.firstOrNull { it.code == coinCode }?.gasPrice
+                ?: def)
+
+            val gasLimit = (App.appContext().pref.getCoinsFee()?.firstOrNull { it.code == coinCode }?.gasLimit
+                ?: def)
+
+            return (gasPrice*gasLimit)/ETH_DIVIDER.toLong()
         }
         return fee
     }
@@ -565,11 +588,22 @@ abstract class BaseMvpDIPresenterImpl<V : BaseMvpView, T : BaseDataManager> : Ba
 
     open fun getByteFee(coinName: String?): Int {
         return when (coinName) {
-            "BTC" -> 40
-            "BCH" -> 40
-            "LTC" -> 4
-            else -> 4
+            "BTC" -> getFeeByteFromList(coinName,40)
+            "BCH" -> getFeeByteFromList(coinName,40)
+            "LTC" -> getFeeByteFromList(coinName,4)
+            else -> getFeeByteFromList(coinName,4)
         }
+    }
+
+    fun getFeeByteFromList(coinCode: String?, def: Int = 4): Int {
+
+        val fee:Double = (App.appContext().pref.getCoinsFee()?.firstOrNull { it.code == coinCode }?.fee
+            ?: Double.MIN_VALUE) ?: Double.MIN_VALUE
+
+        if (coinCode == "BTC" || coinCode == "BCH" || coinCode == "LTH") {
+            return (fee * 100_000_000).toInt()
+        }
+        return fee.toInt()
     }
 
 

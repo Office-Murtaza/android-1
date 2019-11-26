@@ -37,14 +37,13 @@ class BalancePresenter : BaseMvpDIPresenterImpl<BalanceContract.View, CoinsDataM
                 coinsList.clear()
                 coinsList.addAll(response.value!!.coins)
                 mView?.notifyData()
-//                checkCoinVisibility()
             }
             , { error: Throwable ->
                 checkError(error)
             })
 
         mView?.showProgress(true)
-         mDataManager.getCoinsFee(userId).subscribe(
+        mDataManager.getCoinsFee(userId).subscribe(
             { resp: Optional<GetCoinsFeeResponse> ->
                 mView?.showProgress(false)
 
@@ -53,7 +52,6 @@ class BalancePresenter : BaseMvpDIPresenterImpl<BalanceContract.View, CoinsDataM
             , { error: Throwable ->
                 checkError(error)
             })
-
 
 
     }

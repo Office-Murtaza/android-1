@@ -8,25 +8,25 @@ data class AtmResponse(
 ) {
     data class AtmAddress(
         @SerializedName("address")
-        val address: String, // 30 Paterson St New Brunswick, New Jersey, 08901
+        val address: String,
         @SerializedName("id")
-        val id: Int, // 13
+        val id: Int,
         @SerializedName("latitude")
-        val latitude: Double, // 40.50
+        val latitude: Double,
         @SerializedName("name")
-        val locationName: String, // Express Smoke and Vape Shop
+        val locationName: String,
         @SerializedName("longitude")
-        val longitude: Double, // -74.44
+        val longitude: Double,
         @SerializedName("hours")
         val openHours: ArrayList<OpenHour>
     ) {
         data class OpenHour(
             @SerializedName("days")
-            val days: String, // Sun
+            val days: String,
             @SerializedName("hours")
-            val hours: String, // 10:00am-11:00pm
+            val hours: String,
             @SerializedName("id")
-            val id: Int // 27
+            val id: Int
         )
     }
 }

@@ -42,7 +42,11 @@ class CoinsAdapter(
             holder.itemView.coin_balance.text = "$balance ${item.coinId}"
 
             holder.itemView.coin_price.text = "USD ${item.price?.uSD}"
-            holder.itemView.coin_container.setOnClickListener { mOnCoinClickListener.onCoinClick(item) }
+            holder.itemView.coin_container.setOnClickListener {
+                mOnCoinClickListener.onCoinClick(
+                    item
+                )
+            }
         }
 
     }

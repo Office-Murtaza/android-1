@@ -1,14 +1,11 @@
 package com.app.belcobtm.ui.auth.pin
 
-import android.animation.Animator
-import android.animation.AnimatorListenerAdapter
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.res.ColorStateList
 import android.os.Bundle
 import android.text.Editable
-import android.view.View
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.widget.ImageViewCompat
 import com.app.belcobtm.R
@@ -79,8 +76,6 @@ class PinActivity : BaseMvpActivity<PinContract.View, PinContract.Presenter>(), 
         if (mMode == Mode.MODE_PIN) {
             icon_text.text = getString(R.string.enter_pin_code)
         }
-
-//        forgot_code.setOnClickListener { onBackPressed() }
     }
 
 

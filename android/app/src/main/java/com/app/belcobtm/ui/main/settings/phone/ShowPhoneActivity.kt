@@ -7,7 +7,6 @@ import com.app.belcobtm.R
 import com.app.belcobtm.mvp.BaseMvpActivity
 import com.app.belcobtm.ui.main.coins.settings.phone.ShowPhoneContract
 import com.app.belcobtm.ui.main.settings.check_pass.CheckPassActivity
-import com.hbb20.CountryCodePicker
 import kotlinx.android.synthetic.main.activity_show_phone.*
 
 class ShowPhoneActivity : BaseMvpActivity<ShowPhoneContract.View, ShowPhoneContract.Presenter>(),
@@ -36,7 +35,7 @@ class ShowPhoneActivity : BaseMvpActivity<ShowPhoneContract.View, ShowPhoneContr
 
     override fun onPhoneReceived(phone: String?) {
 
-        val formattedNumber = PhoneNumberUtils.formatNumber(phone,"US")
+        val formattedNumber = PhoneNumberUtils.formatNumber(phone, "US")
 
         phone_view.text = formattedNumber
     }

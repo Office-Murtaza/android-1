@@ -20,10 +20,10 @@ import com.journeyapps.barcodescanner.BarcodeEncoder
 import kotlinx.android.synthetic.main.activity_show_phone.container
 import kotlinx.android.synthetic.main.activity_show_phone.toolbar
 import kotlinx.android.synthetic.main.activity_transactions.*
-import kotlinx.android.synthetic.main.item_coin.view.*
 import org.parceler.Parcels
 
-class TransactionsActivity : BaseMvpActivity<TransactionsContract.View, TransactionsContract.Presenter>(),
+class TransactionsActivity :
+    BaseMvpActivity<TransactionsContract.View, TransactionsContract.Presenter>(),
     TransactionsContract.View {
 
     companion object {
@@ -61,7 +61,8 @@ class TransactionsActivity : BaseMvpActivity<TransactionsContract.View, Transact
                 || mCoin.coinId == "LTC"
                 || mCoin.coinId == "XRP"
                 || mCoin.coinId == "TRX"
-                || mCoin.coinId == "BNB") {
+                || mCoin.coinId == "BNB"
+            ) {
                 WithdrawActivity.start(this, mCoin)
             } else {
                 showMessage("In progress. Only BTC, BCH, XRP, BNB and LTC withdraw available")
@@ -74,7 +75,8 @@ class TransactionsActivity : BaseMvpActivity<TransactionsContract.View, Transact
                 || mCoin.coinId == "LTC"
                 || mCoin.coinId == "XRP"
                 || mCoin.coinId == "TRX"
-                || mCoin.coinId == "BNB") {
+                || mCoin.coinId == "BNB"
+            ) {
                 SendGiftActivity.start(this, mCoin)
             } else {
                 showMessage("In progress. Only BTC, BCH, XRP, ETH, BNB and LTC withdraw available")
@@ -88,7 +90,8 @@ class TransactionsActivity : BaseMvpActivity<TransactionsContract.View, Transact
                 || mCoin.coinId == "LTC"
                 || mCoin.coinId == "XRP"
                 || mCoin.coinId == "TRX"
-                || mCoin.coinId == "BNB") {
+                || mCoin.coinId == "BNB"
+            ) {
                 SellActivity.start(this, mCoin)
             } else {
                 showMessage("In progress. Only BTC, BCH, XRP, ETH, BNB and LTC withdraw available")
@@ -107,7 +110,7 @@ class TransactionsActivity : BaseMvpActivity<TransactionsContract.View, Transact
     private fun initView() {
         supportActionBar?.title = mCoin.fullCoinName
 
-        mAdapter = TransactionsAdapter(mPresenter.transactionList,mCoin) {
+        mAdapter = TransactionsAdapter(mPresenter.transactionList, mCoin) {
             mPresenter.getTransactions()
         }
         transaction_recycler.adapter = mAdapter
@@ -119,7 +122,7 @@ class TransactionsActivity : BaseMvpActivity<TransactionsContract.View, Transact
         price_usd.text = "${mCoin.price.uSD} USD"
 
         val balance = if (mCoin.balance > 0)
-             String.format("%.6f", mCoin.balance).trimEnd('0')
+            String.format("%.6f", mCoin.balance).trimEnd('0')
         else "0"
 
         balance_crypto.text = "$balance ${mCoin.coinId}"
@@ -140,12 +143,13 @@ class TransactionsActivity : BaseMvpActivity<TransactionsContract.View, Transact
     private fun showDepositDialog() {
 
         val dialog = AlertDialog.Builder(this)
-            .setTitle(getString(R.string.deposit) +" " + mCoin.coinId)
+            .setTitle(getString(R.string.deposit) + " " + mCoin.coinId)
             .setView(R.layout.dialog_deposit)
             .setPositiveButton(R.string.copy) { dialog, _ ->
                 copyToClipboard(getString(R.string.wallet_code_clipboard), mCoin.publicKey)
                 dialog.cancel()
-                Snackbar.make(container, R.string.wallet_code_clipboard, Snackbar.LENGTH_LONG).show()
+                Snackbar.make(container, R.string.wallet_code_clipboard, Snackbar.LENGTH_LONG)
+                    .show()
             }
             .create()
         dialog.show()

@@ -13,7 +13,6 @@ import io.reactivex.schedulers.Schedulers
 open class BaseDataManager {
     val api = RetrofitClient.instance.apiInterface
 
-    //    //use after getting token
     fun updateToken() {
         RetrofitClient.instance.updateToken()
     }

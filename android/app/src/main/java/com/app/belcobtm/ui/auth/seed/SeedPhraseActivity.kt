@@ -77,7 +77,12 @@ class SeedPhraseActivity : AppCompatActivity() {
     private fun addColorText(text: String, addingText: String): SpannableStringBuilder {
         val builder = SpannableStringBuilder()
         val redSpannable = SpannableString(addingText)
-        redSpannable.setSpan(ForegroundColorSpan(getColor(R.color.light_gray_text_color)), 0, addingText.length, 0)
+        redSpannable.setSpan(
+            ForegroundColorSpan(getColor(R.color.light_gray_text_color)),
+            0,
+            addingText.length,
+            0
+        )
         builder.append(redSpannable).append(text)
         return builder
     }

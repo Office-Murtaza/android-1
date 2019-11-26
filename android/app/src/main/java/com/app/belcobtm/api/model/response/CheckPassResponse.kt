@@ -4,5 +4,5 @@ import com.google.gson.annotations.SerializedName
 
 data class CheckPassResponse(
     @SerializedName("result")
-    val match: Boolean // true
+    val match: Boolean
 )

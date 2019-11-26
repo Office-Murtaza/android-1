@@ -6,22 +6,22 @@ import java.io.Serializable
 
 data class GetTransactionsResponse(
     @SerializedName("total")
-    val total: Int, // 12
+    val total: Int,
     @SerializedName("transactions")
     val transactions: ArrayList<TransactionModel>
 ): Serializable
 
 data class TransactionModel(
     @SerializedName("date1")
-    val date: String, // 2019-08-17
+    val date: String,
     @SerializedName("index")
-    val index: Int, // 10
+    val index: Int,
     @SerializedName("status")
-    val status: Int, // 2
+    val status: Int,
     @SerializedName("txId")
-    val txid: String, // b53d6f6614218a6d7a6b23cd89150908e8112d8717dc2ba2c7bf2997a8c16e09
+    val txid: String,
     @SerializedName("type")
-    val type: Int, // 5
+    val type: Int,
     @SerializedName("cryptoAmount")
-    val value: Double // 0.01
+    val value: Double
 ) : Serializable

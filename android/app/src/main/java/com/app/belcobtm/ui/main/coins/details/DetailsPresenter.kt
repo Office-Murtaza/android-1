@@ -24,8 +24,10 @@ class DetailsPresenter : BaseMvpDIPresenterImpl<DetailsContract.View, WithdrawDa
 
     override fun getDetails() {
 
-        mDataManager.getTransactionDetails(mUserId,mCoinDbModel?.coinType,
-            transaction.txid).subscribe({ response ->
+        mDataManager.getTransactionDetails(
+            mUserId, mCoinDbModel?.coinType,
+            transaction.txid
+        ).subscribe({ response ->
             if (response.value?.txId != null) {
                 mView?.showTransactionDetails(response.value)
             }

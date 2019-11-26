@@ -48,7 +48,7 @@ class SellActivity : BaseMvpActivity<SellContract.View, SellContract.Presenter>(
     override fun showLimits(resp: LimitsResponse?) {
         this.limits = resp
         daylimit.text = """${String.format(" %.2f", resp?.dailyLimit?.USD)} USD"""
-        transLimit.text ="""${String.format(" %.2f", resp?.txLimit?.USD)} USD"""
+        transLimit.text = """${String.format(" %.2f", resp?.txLimit?.USD)} USD"""
 
 
     }
@@ -83,9 +83,6 @@ class SellActivity : BaseMvpActivity<SellContract.View, SellContract.Presenter>(
         mCoin = Parcels.unwrap(intent.getParcelableExtra(KEY_COIN))
         supportActionBar?.title = "Sell" + " " + mCoin.coinId
 
-
-        //TODO:REMOVE!!!!
-        //mCoin.balance = 300.0
         initView()
 
         mPresenter.bindData(mCoin)
@@ -250,7 +247,6 @@ class SellActivity : BaseMvpActivity<SellContract.View, SellContract.Presenter>(
         addressDestination: String?,
         cryptoResultAmount: Double
     ) {
-        //showMessage("Sell Transaction Done")
         alertDialog?.dismiss()
 
         sellContainer.visibility = View.GONE

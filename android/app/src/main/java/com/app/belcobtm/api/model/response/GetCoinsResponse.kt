@@ -10,11 +10,11 @@ data class GetCoinsResponse(
     @SerializedName("totalBalance")
     val totalBalance: TotalBalance,
     @SerializedName("userId")
-    val userId: Int // 1000007
+    val userId: Int
 ) {
     data class TotalBalance(
         @SerializedName("USD")
-        val uSD: Double // 13055.20
+        val uSD: Double
     )
 }
 
@@ -38,11 +38,11 @@ class CoinModel {
 
 
     @SerializedName("balance")
-    var balance: Double = 0.0 // 1
+    var balance: Double = 0.0
     @SerializedName("code")
-    var coinId: String = ""// XRP
+    var coinId: String = ""
     @SerializedName("id")
-    var orderIndex: Int = -1 // 6
+    var orderIndex: Int = -1
     @SerializedName("price")
     var price: Price = Price()
     @SerializedName("address")
@@ -60,10 +60,8 @@ class CoinModel {
             "XRP"-> return "Ripple"
             else-> return "Unknown"
         }
-
     }
 
-    // rEdQsbTqrQbhT1wourGZqk9c5rjfKm51Wp
     @Parcel
     class Price {
         constructor()
@@ -75,6 +73,6 @@ class CoinModel {
         }
 
         @SerializedName("USD")
-        var uSD: Double = 0.0 // 0.35
+        var uSD: Double = 0.0
     }
 }

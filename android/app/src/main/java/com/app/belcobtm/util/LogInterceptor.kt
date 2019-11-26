@@ -34,7 +34,8 @@ class LogInterceptor : Interceptor {
         var headers = request.headers()
         logBuilder.append("\n=============== Headers ===============\n")
         for (i in headers.size() - 1 downTo -1 + 1) {
-            logBuilder.append(headers.name(i)).append(" : ").append(headers.get(headers.name(i))).append("\n")
+            logBuilder.append(headers.name(i)).append(" : ").append(headers.get(headers.name(i)))
+                .append("\n")
 
         }
         logBuilder.append("\n=============== END Headers ===============\n")
@@ -85,7 +86,8 @@ class LogInterceptor : Interceptor {
         headers = response.headers()
         logBuilder.append("\n=============== Headers ===============\n")
         for (i in headers.size() - 1 downTo -1 + 1) {
-            logBuilder.append(headers.name(i)).append(" : ").append(headers.get(headers.name(i))).append("\n")
+            logBuilder.append(headers.name(i)).append(" : ").append(headers.get(headers.name(i)))
+                .append("\n")
 
         }
         logBuilder.append("\n=============== END Headers ===============\n")

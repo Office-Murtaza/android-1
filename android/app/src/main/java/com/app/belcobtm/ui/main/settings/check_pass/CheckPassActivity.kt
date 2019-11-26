@@ -17,8 +17,6 @@ import com.app.belcobtm.ui.auth.welcome.WelcomeActivity
 import com.app.belcobtm.ui.main.coins.settings.check_pass.CheckPassContract
 import com.google.android.material.textfield.TextInputLayout
 import kotlinx.android.synthetic.main.activity_check_pass.*
-import kotlinx.android.synthetic.main.activity_check_pass.phone_ccp
-import kotlinx.android.synthetic.main.activity_create_wallet.*
 import kotlinx.android.synthetic.main.activity_unlink.toolbar
 import org.jetbrains.anko.toast
 
@@ -85,7 +83,7 @@ class CheckPassActivity : BaseMvpActivity<CheckPassContract.View, CheckPassContr
                 next.text = "Next"
                 next.setOnClickListener {
 
-                    if(phone_ccp.isValidFullNumber)
+                    if (phone_ccp.isValidFullNumber)
                         mPresenter.updatePhone(
                             phone_ccp.formattedFullNumber
                                 .replace("-", "")

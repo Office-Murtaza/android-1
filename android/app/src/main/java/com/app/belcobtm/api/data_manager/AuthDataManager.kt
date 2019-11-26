@@ -33,11 +33,17 @@ class AuthDataManager : BaseDataManager() {
         return genObservable(api.verifySmsCode(userId, VerifySmsParam(smsCode)))
     }
 
-    fun addCoins(userId: String, coinDbs: ArrayList<DbCryptoCoin>): Observable<Optional<AddCoinsResponse>> {
+    fun addCoins(
+        userId: String,
+        coinDbs: ArrayList<DbCryptoCoin>
+    ): Observable<Optional<AddCoinsResponse>> {
         return genObservable(api.addCoins(userId, AddCoinsParam(coinDbs)))
     }
 
-    fun verifyCoins(userId: String, coinDbs: ArrayList<DbCryptoCoin>): Observable<Optional<AddCoinsResponse>> {
+    fun verifyCoins(
+        userId: String,
+        coinDbs: ArrayList<DbCryptoCoin>
+    ): Observable<Optional<AddCoinsResponse>> {
         return genObservable(api.verifyCoins(userId, AddCoinsParam(coinDbs)))
     }
 }

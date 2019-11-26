@@ -21,7 +21,11 @@ class BalanceFragment : BaseMvpFragment<BalanceContract.View, BalanceContract.Pr
 
     private lateinit var mAdapter: CoinsAdapter
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         return inflater.inflate(R.layout.fragment_balance, container, false)
     }
 
@@ -37,7 +41,14 @@ class BalanceFragment : BaseMvpFragment<BalanceContract.View, BalanceContract.Pr
             Color.RED, Color.GREEN, Color.BLUE
         )
 
-        add_wallet_ll.setOnClickListener { startActivity(Intent(context, VisibilityCoinsActivity::class.java)) }
+        add_wallet_ll.setOnClickListener {
+            startActivity(
+                Intent(
+                    context,
+                    VisibilityCoinsActivity::class.java
+                )
+            )
+        }
     }
 
 

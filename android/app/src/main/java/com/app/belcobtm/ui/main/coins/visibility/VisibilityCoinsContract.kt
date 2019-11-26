@@ -6,7 +6,8 @@ import com.app.belcobtm.mvp.BaseMvpView
 
 
 object VisibilityCoinsContract {
-    interface Presenter : BaseMvpPresenter<View>, VisibilityCoinsAdapter.OnCoinVisibilityChangedListener {
+    interface Presenter : BaseMvpPresenter<View>,
+        VisibilityCoinsAdapter.OnCoinVisibilityChangedListener {
         val coinsList: ArrayList<DbCryptoCoin>
     }
 

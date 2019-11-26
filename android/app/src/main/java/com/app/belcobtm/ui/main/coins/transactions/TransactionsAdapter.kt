@@ -31,7 +31,6 @@ class TransactionsAdapter(
             var transactionStatusBgId: Int
             var transactionStatusTextId: Int
 
-//            STATUS
 //            unknown(0),
 //            pending(1),
 //            complete(2),
@@ -55,7 +54,6 @@ class TransactionsAdapter(
                 }
             }
 
-//            TYPE
 //            deposit(1),
 //            withdraw(2),
 //            send gift(3),
