@@ -58,6 +58,7 @@ abstract class BaseMvpDIPresenterImpl<V : BaseMvpView, T : BaseDataManager> : Ba
     }
 
     protected fun checkError(error: Throwable) {
+        println(error)
         mView?.showProgress(false)
         if (error is ServerException) {
             if (error.code == Const.ERROR_403) {
@@ -456,14 +457,14 @@ abstract class BaseMvpDIPresenterImpl<V : BaseMvpView, T : BaseDataManager> : Ba
 
         utxos.forEach {
             val redeemScript = BitcoinScript.buildForAddress(it.address, coinType)
-            var keyHash = if (redeemScript.isPayToWitnessScriptHash) {
+            val keyHash = if (redeemScript.isPayToWitnessScriptHash) {
                 redeemScript.matchPayToWitnessPublicKeyHash()
             } else {
                 redeemScript.matchPayToPubkeyHash()
             }
 
             if (keyHash.isNotEmpty()) {
-                var key = Numeric.toHexString(keyHash)
+                val key = Numeric.toHexString(keyHash)
                 val scriptByteString = ByteString.copyFrom(redeemScript.data())
                 signerBuilder.putScripts(key, scriptByteString)
             }
@@ -566,7 +567,7 @@ abstract class BaseMvpDIPresenterImpl<V : BaseMvpView, T : BaseDataManager> : Ba
         var fee = App.appContext().pref.getCoinsFee()?.firstOrNull { it.code == coinCode }?.fee
             ?: def
 
-        if (coinCode == "BTC" || coinCode == "BCH" || coinCode == "LTH") {
+        if (coinCode == "BTC" || coinCode == "BCH" || coinCode == "LTC") {
             fee = ((fee?.toBigDecimal() ?: BigDecimal(0)) * BigDecimal(1000)).toDouble()
         } else if (coinCode == "ETH") {
             val gasPrice =
@@ -584,9 +585,9 @@ abstract class BaseMvpDIPresenterImpl<V : BaseMvpView, T : BaseDataManager> : Ba
 
     open fun getByteFee(coinName: String?): Int {
         return when (coinName) {
-            "BTC" -> getFeeByteFromList(coinName, 40)
-            "BCH" -> getFeeByteFromList(coinName, 40)
-            "LTC" -> getFeeByteFromList(coinName, 4)
+            "BTC" -> getFeeByteFromList(coinName, 40/100_000_000)
+            "BCH" -> getFeeByteFromList(coinName, 40/100_000_000)
+            "LTC" -> getFeeByteFromList(coinName, 4/100_000_000)
             else -> getFeeByteFromList(coinName, 4)
         }
     }

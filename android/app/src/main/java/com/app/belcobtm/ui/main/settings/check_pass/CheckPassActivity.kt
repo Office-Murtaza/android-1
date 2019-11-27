@@ -98,7 +98,7 @@ class CheckPassActivity : BaseMvpActivity<CheckPassContract.View, CheckPassContr
             }
             Companion.Mode.MODE_UNLINK -> {
                 supportActionBar?.title = getString(R.string.settings_unlink)
-                next.text = getString(R.string.settings_unlink)
+                next.text = "Next"
                 next.setOnClickListener {
                     mPresenter.checkPass(edit_text.text.toString())
                 }

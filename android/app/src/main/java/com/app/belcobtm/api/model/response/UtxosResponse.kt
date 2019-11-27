@@ -3,6 +3,6 @@ import com.google.gson.annotations.SerializedName
 
 
 data class UtxosResponse(
-    @SerializedName("utxoList")
+    @SerializedName("utxos")
     val utxoList: ArrayList<UtxoItem>
 )

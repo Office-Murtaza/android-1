@@ -62,10 +62,7 @@ class WithdrawActivity : BaseMvpActivity<WithdrawContract.View, WithdrawContract
                 cryptoBalanceToSend = 0.0
                 "0"
             }
-
-
             amount_crypto.setText(balanceStr.replace(',', '.'))
-
         }
 
         til_amount_crypto.hint = mCoin.coinId
