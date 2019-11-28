@@ -134,8 +134,7 @@ interface ApiInterface {
 
     @GET("user/{userId}/coins/ETH/transactions/nonce")
     fun getETHNonce(
-        @Path("userId") userId: String,
-        @Path("address") address: String
+        @Path("userId") userId: String
     ): Observable<ServerResponse<ETHResponse>>
 
     @GET("user/{userId}/coins/{coinId}/transactions/limits")

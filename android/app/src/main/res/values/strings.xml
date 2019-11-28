@@ -31,7 +31,7 @@
     <string name="copy"><u>Copy</u></string>
     <string name="support_email_clipboard">Support email copied to clipboard</string>
     <string name="support_phone_clipboard">Support phone copied to clipboard</string>
-    <string name="please_accept_terms">Please, Accept Our Terms &amp; Conditions</string>
+    <string name="please_accept_terms">Please, accept our Terms &amp; Conditions</string>
 
     <!--login-->
     <string name="login">Log In</string>
@@ -143,7 +143,7 @@
     <string name="should_be_filled">Should be filled</string>
     <string name="wrong_crypto_coin_data">Wrong crypto coin data</string>
     <string name="wrong_phone_number">Wrong phone number</string>
-    <string name="input_text_message">Input Text Message</string>
+    <string name="input_text_message">Text Message</string>
     <string name="add_gif"><u>Add GIF</u></string>
     <string name="remove_gif"><u>Remove GIF</u></string>
     <string name="t_dey_lim">Daily Limit</string>

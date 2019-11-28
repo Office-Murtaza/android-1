@@ -103,7 +103,7 @@ open class WithdrawDataManager : BaseDataManager() {
         userId: String,
         address: String
     ): Observable<Optional<ETHResponse>> =
-        genObservable(api.getETHNonce(userId, address))
+        genObservable(api.getETHNonce(userId))
 
     fun getLimits(
         userId: String,
