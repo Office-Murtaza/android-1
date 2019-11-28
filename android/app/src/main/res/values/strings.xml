@@ -127,8 +127,8 @@
 
     <!--transaction type-->
     <string name="withdraw">Withdraw</string>
-    <string name="send_gift">Send gift</string>
-    <string name="receive_gift">Receive gift</string>
+    <string name="send_gift">Send Gift</string>
+    <string name="receive_gift">Receive Gift</string>
     <string name="buy">Buy</string>
     <string name="sell">Sell</string>
 
