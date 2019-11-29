@@ -3,27 +3,27 @@ package com.batm.service;
 import java.math.BigDecimal;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import com.batm.dto.*;
 import com.batm.entity.*;
 import com.batm.model.TransactionStatus;
 import com.batm.model.TransactionType;
 import com.batm.util.*;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import com.batm.repository.CoinRepository;
+import com.batm.repository.CoinRep;
 import com.batm.dto.BalanceDTO;
 import com.batm.dto.CoinDTO;
 import com.binance.api.client.BinanceApiRestClient;
 
-@Slf4j
 @Service
 public class CoinService {
 
     private static List<Coin> coinList;
+    private static Map<String, Coin> coinMap;
 
     private static BinanceApiRestClient binanceRest;
     private static MessageService messageService;
@@ -52,7 +52,7 @@ public class CoinService {
                        @Autowired final UserService userService,
                        @Autowired final TransactionService transactionService,
 
-                       @Autowired final CoinRepository coinRepository,
+                       @Autowired final CoinRep coinRep,
 
                        @Autowired final BlockbookService blockbook,
                        @Autowired final BinanceService binance,
@@ -75,7 +75,8 @@ public class CoinService {
         CoinService.userService = userService;
         CoinService.transactionService = transactionService;
 
-        CoinService.coinList = coinRepository.findAll();
+        CoinService.coinList = coinRep.findAll();
+        CoinService.coinMap = CoinService.coinList.stream().collect(Collectors.toMap(Coin::getCode, Function.identity()));
 
         CoinService.blockbook = blockbook;
         CoinService.binance = binance;
@@ -156,13 +157,13 @@ public class CoinService {
             }
 
             @Override
-            public SubmitTransactionDTO sign(String toAddress, BigDecimal amount) {
+            public String sign(String toAddress, BigDecimal amount) {
                 return null;
             }
 
             @Override
             public String submitTransaction(Long userId, SubmitTransactionDTO transaction) {
-                String txId = blockbook.submitTransaction(btcNodeUrl, transaction);
+                String txId = blockbook.submitTransaction(btcNodeUrl, transaction.getHex());
                 saveGift(userId, this, txId, transaction);
 
                 return txId;
@@ -232,13 +233,16 @@ public class CoinService {
             }
 
             @Override
-            public SubmitTransactionDTO sign(String toAddress, BigDecimal amount) {
+            public String sign(String toAddress, BigDecimal amount) {
+                SubmitTransactionDTO dto = walletService.signETH(toAddress, amount, blockbook.getNonce(ethNodeUrl, walletService.getAddressETH()).getNonce());
+                String txId = blockbook.submitTransaction(ethNodeUrl, dto.getHex());
+
                 return null;
             }
 
             @Override
             public String submitTransaction(Long userId, SubmitTransactionDTO transaction) {
-                String txId = blockbook.submitTransaction(ethNodeUrl, transaction);
+                String txId = blockbook.submitTransaction(ethNodeUrl, transaction.getHex());
                 saveGift(userId, this, txId, transaction);
 
                 return txId;
@@ -305,13 +309,13 @@ public class CoinService {
             }
 
             @Override
-            public SubmitTransactionDTO sign(String toAddress, BigDecimal amount) {
+            public String sign(String toAddress, BigDecimal amount) {
                 return null;
             }
 
             @Override
             public String submitTransaction(Long userId, SubmitTransactionDTO transaction) {
-                String txId = blockbook.submitTransaction(bchNodeUrl, transaction);
+                String txId = blockbook.submitTransaction(bchNodeUrl, transaction.getHex());
                 saveGift(userId, this, txId, transaction);
 
                 return txId;
@@ -378,13 +382,13 @@ public class CoinService {
             }
 
             @Override
-            public SubmitTransactionDTO sign(String toAddress, BigDecimal amount) {
+            public String sign(String toAddress, BigDecimal amount) {
                 return null;
             }
 
             @Override
             public String submitTransaction(Long userId, SubmitTransactionDTO transaction) {
-                String txId = blockbook.submitTransaction(ltcNodeUrl, transaction);
+                String txId = blockbook.submitTransaction(ltcNodeUrl, transaction.getHex());
                 saveGift(userId, this, txId, transaction);
 
                 return txId;
@@ -455,13 +459,22 @@ public class CoinService {
             }
 
             @Override
-            public SubmitTransactionDTO sign(String toAddress, BigDecimal amount) {
+            public String sign(String toAddress, BigDecimal amount) {
+                try {
+                    CurrentAccountDTO currentDTO = binance.getCurrentAccount(walletService.getAddressBNB());
+                    String hex = binance.sign(toAddress, amount, currentDTO.getAccountNumber(), currentDTO.getSequence(), currentDTO.getChainId());
+
+                    return binance.submitTransaction(hex);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
                 return null;
             }
 
             @Override
             public String submitTransaction(Long userId, SubmitTransactionDTO transaction) {
-                String txId = binance.submitTransaction(transaction);
+                String txId = binance.submitTransaction(transaction.getHex());
                 saveGift(userId, this, txId, transaction);
 
                 return txId;
@@ -532,13 +545,22 @@ public class CoinService {
             }
 
             @Override
-            public SubmitTransactionDTO sign(String toAddress, BigDecimal amount) {
+            public String sign(String toAddress, BigDecimal amount) {
+                try {
+                    CurrentAccountDTO accountDTO = rippled.getCurrentAccount(walletService.getAddressXRP());
+                    String hex = rippled.sign(toAddress, amount, coinMap.get(name()).getFee(), accountDTO.getSequence());
+
+                    return rippled.submitTransaction(hex);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
                 return null;
             }
 
             @Override
             public String submitTransaction(Long userId, SubmitTransactionDTO transaction) {
-                String txId = rippled.submitTransaction(transaction);
+                String txId = rippled.submitTransaction(transaction.getHex());
                 saveGift(userId, this, txId, transaction);
 
                 return txId;
@@ -606,7 +628,16 @@ public class CoinService {
             }
 
             @Override
-            public SubmitTransactionDTO sign(String toAddress, BigDecimal amount) {
+            public String sign(String toAddress, BigDecimal amount) {
+                try {
+                    SubmitTransactionDTO dto = walletService.signTRX(toAddress, amount.subtract(coinMap.get(name()).getFee()), coinMap.get(name()).getFee(), trongrid.getCurrentBlock().getBlockHeader());
+                    String txId = trongrid.submitTransaction(dto);
+
+                    System.out.println("txId: " + txId);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
                 return null;
             }
 
@@ -643,7 +674,7 @@ public class CoinService {
 
         public abstract String getWalletAddress();
 
-        public abstract SubmitTransactionDTO sign(String toAddress, BigDecimal amount);
+        public abstract String sign(String toAddress, BigDecimal amount);
 
         public abstract String submitTransaction(Long userId, SubmitTransactionDTO transaction);
     }

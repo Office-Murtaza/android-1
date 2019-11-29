@@ -14,6 +14,6 @@ import lombok.NoArgsConstructor;
 public class CurrentAccountDTO {
 
     private Integer accountNumber = 0;
-    private Long sequence = 0L;
+    private Integer sequence = 0;
     private String chainId;
 }

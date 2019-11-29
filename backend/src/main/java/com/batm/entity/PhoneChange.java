@@ -5,22 +5,19 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import java.util.Date;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "w_codeverify")
-public class CodeVerification extends BaseEntity {
+@Table(name = "w_phonechange")
+public class PhoneChange extends BaseEntity {
 
     @OneToOne
     @JoinColumn(name = "user_id")
     private User user;
 
-    private String code;
-    private Integer status;
-
-    private Date updateDate;
+    private String phone;
+    private Integer status = 0;
 }

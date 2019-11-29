@@ -11,18 +11,18 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import com.batm.entity.User;
-import com.batm.repository.UserRepository;
+import com.batm.repository.UserRep;
 
 @Component("userDetailsService")
 @AllArgsConstructor
 public class DomainUserDetailsService implements UserDetailsService {
 
-    private final UserRepository userRepository;
+    private final UserRep userRep;
 
     @Override
     @Transactional
     public UserDetails loadUserByUsername(final String login) {
-        return userRepository.findOneByPhone(login)
+        return userRep.findOneByPhone(login)
                 .map(user -> createSpringSecurityUser(user))
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
     }

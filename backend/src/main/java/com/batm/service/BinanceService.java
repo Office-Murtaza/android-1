@@ -14,6 +14,7 @@ import com.binance.dex.api.client.domain.Account;
 import com.binance.dex.api.client.domain.TransactionPage;
 import com.binance.dex.api.client.domain.TransactionType;
 import com.binance.dex.api.client.domain.request.TransactionsRequest;
+import com.google.protobuf.ByteString;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,12 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import org.web3j.utils.Numeric;
+import wallet.core.jni.BinanceSigner;
+import wallet.core.jni.CosmosAddress;
+import wallet.core.jni.HRP;
+import wallet.core.jni.proto.Binance;
+
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.time.ZonedDateTime;
@@ -36,6 +43,9 @@ public class BinanceService {
 
     @Autowired
     private RestTemplate rest;
+
+    @Autowired
+    private WalletService walletService;
 
     @Value("${bnb.node.url}")
     private String nodeUrl;
@@ -59,12 +69,12 @@ public class BinanceService {
         return BigDecimal.ZERO;
     }
 
-    public String submitTransaction(SubmitTransactionDTO transaction) {
+    public String submitTransaction(String hex) {
         try {
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.TEXT_PLAIN);
 
-            JSONObject res = JSONArray.fromObject(rest.postForObject(nodeUrl + "/api/v1/broadcast", transaction.getHex(), String.class)).getJSONObject(0);
+            JSONObject res = JSONArray.fromObject(rest.postForObject(nodeUrl + "/api/v1/broadcast", hex, String.class)).getJSONObject(0);
 
             return res.optString("hash");
         } catch (Exception e) {
@@ -135,12 +145,49 @@ public class BinanceService {
         try {
             Account account = binanceDex.getAccount(address);
 
-            return new CurrentAccountDTO(account.getAccountNumber(), account.getSequence(), Constant.BNB_CHAIN_ID);
+            return new CurrentAccountDTO(account.getAccountNumber(), account.getSequence().intValue(), Constant.BNB_CHAIN_ID);
         } catch (Exception e) {
             e.printStackTrace();
         }
 
         return new CurrentAccountDTO();
+    }
+
+    public String sign(String toAddress, BigDecimal amount, Integer accountNumber, Integer sequence, String chainId) {
+        try {
+            Binance.SigningInput.Builder builder = Binance.SigningInput.newBuilder();
+            builder.setChainId(chainId);
+            builder.setAccountNumber(accountNumber);
+            builder.setSequence(sequence);
+            builder.setPrivateKey(ByteString.copyFrom(walletService.getPrivateKeyBNB().data()));
+
+            Binance.SendOrder.Token.Builder token = Binance.SendOrder.Token.newBuilder();
+            token.setDenom("BNB");
+            token.setAmount(amount.multiply(Constant.BNB_DIVIDER).longValue());
+
+            Binance.SendOrder.Input.Builder input = Binance.SendOrder.Input.newBuilder();
+            input.setAddress(ByteString.copyFrom(new CosmosAddress(HRP.BINANCE, walletService.getPrivateKeyBNB().getPublicKeySecp256k1(true)).keyHash()));
+            input.addAllCoins(Arrays.asList(token.build()));
+
+            Binance.SendOrder.Output.Builder output = Binance.SendOrder.Output.newBuilder();
+            output.setAddress(ByteString.copyFrom(new CosmosAddress(toAddress).keyHash()));
+            output.addAllCoins(Arrays.asList(token.build()));
+
+            Binance.SendOrder.Builder sendOrder = Binance.SendOrder.newBuilder();
+            sendOrder.addAllInputs(Arrays.asList(input.build()));
+            sendOrder.addAllOutputs(Arrays.asList(output.build()));
+
+            builder.setSendOrder(sendOrder.build());
+
+            Binance.SigningOutput sign = BinanceSigner.sign(builder.build());
+            byte[] bytes = sign.getEncoded().toByteArray();
+
+            return Numeric.toHexString(bytes).substring(2);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
     }
 
     private Map<String, TransactionDTO> collectNodeTxs(TransactionPage page, String address) {

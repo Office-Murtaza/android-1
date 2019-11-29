@@ -5,7 +5,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
-public interface TransactionRecordGiftRepository extends JpaRepository<TransactionRecordGift, Long> {
+public interface TransactionRecordGiftRep extends JpaRepository<TransactionRecordGift, Long> {
 
     List<TransactionRecordGift> findByStatus(Integer status, Pageable page);
 

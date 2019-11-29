@@ -187,19 +187,19 @@ public class Util {
         return phone.substring(0, 2) + " " + phone.substring(2, 5) + "-" + phone.substring(5, 8) + "-" + phone.substring(8, 12);
     }
 
-    public static String addLeadingZeroes(String str) {
-        String res = "";
-
-        if (str.length() < 64) {
-            int i = 0;
-            while ((64 - str.length()) > i) {
-                i++;
-                res += "0";
-            }
-
-            return res + str;
-        }
-
-        return str;
-    }
+//    public static String addLeadingZeroes(String str) {
+//        String res = "";
+//
+//        if (str.length() < 64) {
+//            int i = 0;
+//            while ((64 - str.length()) > i) {
+//                i++;
+//                res += "0";
+//            }
+//
+//            return res + str;
+//        }
+//
+//        return str;
+//    }
 }

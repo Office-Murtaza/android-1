@@ -8,7 +8,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 import com.batm.entity.User;
 
-public interface UserRepository extends JpaRepository<User, Long> {
+public interface UserRep extends JpaRepository<User, Long> {
 
     Optional<User> findOneByPhone(String phone);
 

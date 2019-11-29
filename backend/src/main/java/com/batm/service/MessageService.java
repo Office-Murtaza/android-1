@@ -1,19 +1,24 @@
 package com.batm.service;
 
 import com.batm.dto.SubmitTransactionDTO;
-import com.batm.entity.CodeVerification;
+import com.batm.entity.CodeVerify;
 import com.batm.entity.User;
-import com.batm.repository.CodeVerificationRepository;
+import com.batm.repository.CodeVerifyRep;
 import com.batm.util.Constant;
 import com.twilio.Twilio;
+import com.twilio.rest.api.v2010.account.MessageCreator;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang.RandomStringUtils;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+
 import javax.annotation.PostConstruct;
 import java.net.URI;
 import java.util.Arrays;
 import java.util.Date;
+
 import com.twilio.rest.api.v2010.account.Message;
 import com.twilio.type.PhoneNumber;
 
@@ -34,7 +39,7 @@ public class MessageService {
     private String fromNumber;
 
     @Autowired
-    private CodeVerificationRepository codeVerificationRepository;
+    private CodeVerifyRep codeVerifyRep;
 
     @PostConstruct
     public void init() {
@@ -61,27 +66,39 @@ public class MessageService {
             String code = Constant.DEFAULT_CODE;
 
             if (twilioEnabled) {
-                code = Constant.DEFAULT_CODE; //RandomStringUtils.randomNumeric(4);
+                code = RandomStringUtils.randomNumeric(4);
                 status = sendMessage(user.getPhone(), "Belco Wallet Code: " + code);
+
+                log.info("verification code user:{} code:{}", user.getId(), code);
             }
 
-            CodeVerification codeVerification = codeVerificationRepository.findByUserId(user.getId());
+            CodeVerify codeVerify = codeVerifyRep.findByUserId(user.getId());
 
-            if (codeVerification == null) {
-                codeVerification = new CodeVerification();
-                codeVerification.setUser(user);
-                codeVerification.setCode(code);
-                codeVerification.setStatus(0);
+            if (codeVerify == null) {
+                codeVerify = new CodeVerify();
+                codeVerify.setUser(user);
+                codeVerify.setCode(code);
+                codeVerify.setStatus(0);
             } else {
-                codeVerification.setStatus(0);
-                codeVerification.setCode(code);
+                codeVerify.setStatus(0);
+                codeVerify.setCode(code);
             }
 
-            codeVerification.setUpdateDate(new Date());
+            codeVerify.setUpdateDate(new Date());
 
-            codeVerificationRepository.save(codeVerification);
+            codeVerifyRep.save(codeVerify);
 
             return status;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    public String getVerificationCode(Long userId) {
+        try {
+            return codeVerifyRep.findByUserId(userId).getCode();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -97,10 +114,13 @@ public class MessageService {
                 body.append("\n").append("In order to receive it install Belco Wallet app and create an account using your current phone number");
             }
 
-            Message message = Message
-                    .creator(new PhoneNumber(dto.getPhone()), new PhoneNumber(fromNumber), body.toString())
-                    .setMediaUrl(Arrays.asList(URI.create("https://media.giphy.com/media/" + dto.getImageId() + "/giphy.gif")))
-                    .create();
+            MessageCreator messageCreator = Message.creator(new PhoneNumber(dto.getPhone()), new PhoneNumber(fromNumber), body.toString());
+
+            if (StringUtils.isNotEmpty(dto.getImageId())) {
+                messageCreator.setMediaUrl(Arrays.asList(URI.create("https://media.giphy.com/media/" + dto.getImageId() + "/giphy.gif")));
+            }
+
+            Message message = messageCreator.create();
 
             return message.getStatus();
         } catch (Exception e) {
