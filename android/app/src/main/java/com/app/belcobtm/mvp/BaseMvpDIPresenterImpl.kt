@@ -585,10 +585,10 @@ abstract class BaseMvpDIPresenterImpl<V : BaseMvpView, T : BaseDataManager> : Ba
 
     open fun getByteFee(coinName: String?): Int {
         return when (coinName) {
-            "BTC" -> getFeeByteFromList(coinName, 40/100_000_000)
-            "BCH" -> getFeeByteFromList(coinName, 40/100_000_000)
-            "LTC" -> getFeeByteFromList(coinName, 4/100_000_000)
-            else -> getFeeByteFromList(coinName, 4)
+            "BTC" -> return getFeeByteFromList(coinName, 40/100_000_000)
+            "BCH" -> return getFeeByteFromList(coinName, 40/100_000_000)
+            "LTC" -> return getFeeByteFromList(coinName, 4/100_000_000)
+            else -> return getFeeByteFromList(coinName, 4)
         }
     }
 
@@ -597,11 +597,7 @@ abstract class BaseMvpDIPresenterImpl<V : BaseMvpView, T : BaseDataManager> : Ba
         val fee: Double =
             (App.appContext().pref.getCoinsFee()?.firstOrNull { it.code == coinCode }?.fee
                 ?: Double.MIN_VALUE) ?: Double.MIN_VALUE
-
-        if (coinCode == "BTC" || coinCode == "BCH" || coinCode == "LTH") {
-            return (fee * 100_000_000).toInt()
-        }
-        return fee.toInt()
+        return (fee * 100_000_000).toInt().toInt()
     }
 
 

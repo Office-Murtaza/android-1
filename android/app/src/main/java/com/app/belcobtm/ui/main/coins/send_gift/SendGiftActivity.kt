@@ -257,7 +257,7 @@ class SendGiftActivity : BaseMvpActivity<SendGiftContract.View, SendGiftContract
         //Validate amount
         if (!phone_ccp.isValidFullNumber) {
             errors++
-            phone.error = "Wrong phone number"
+            showError("Wrong phone number")
         }
 
         if (errors == 0) {

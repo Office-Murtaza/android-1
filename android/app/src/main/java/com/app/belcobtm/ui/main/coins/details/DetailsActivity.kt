@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.telephony.PhoneNumberUtils
 import android.text.SpannableString
 import android.text.style.UnderlineSpan
 import android.view.MenuItem
@@ -101,7 +102,7 @@ class DetailsActivity : BaseMvpActivity<DetailsContract.View, DetailsContract.Pr
         }
 
         resp?.phone?.let {
-            phoneTv.text = it
+            phoneTv.text = PhoneNumberUtils.formatNumber(it, "US")
 
             giftContainer.visibility = View.VISIBLE
             phoneLabel.visibility = View.VISIBLE
