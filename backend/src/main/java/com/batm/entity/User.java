@@ -25,7 +25,7 @@ public class User extends BaseEntity {
     private List<UserCoin> userCoins;
 
     @OneToOne(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private CodeVerification codeVerification;
+    private CodeVerify codeVerify;
 
     @OneToOne(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Token refreshToken;
@@ -34,7 +34,7 @@ public class User extends BaseEntity {
     private Unlink unlink;
 
     @OneToOne(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private UpdatePhone updatePhone;
+    private PhoneChange phoneChange;
 
     @OneToOne(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Identity identity;

@@ -35,9 +35,9 @@ public class BlockbookService {
         return BigDecimal.ZERO;
     }
 
-    public String submitTransaction(String url, SubmitTransactionDTO transaction) {
+    public String submitTransaction(String url, String hex) {
         try {
-            JSONObject res = rest.getForObject(url + "/api/v2/sendtx/" + transaction.getHex(), JSONObject.class);
+            JSONObject res = rest.getForObject(url + "/api/v2/sendtx/" + hex, JSONObject.class);
 
             return res.optString("result");
         } catch (Exception e) {

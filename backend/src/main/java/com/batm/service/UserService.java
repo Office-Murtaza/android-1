@@ -22,34 +22,34 @@ public class UserService {
     private PasswordEncoder passwordEncoder;
 
     @Autowired
-    private UserRepository userRepository;
+    private UserRep userRep;
 
     @Autowired
-    private UnlinkRepository unlinkRepository;
+    private UnlinkRep unlinkRep;
 
     @Autowired
-    private UpdatePhoneRepository updatePhoneRepository;
+    private PhoneChangeRep phoneChangeRep;
 
     @Autowired
     private MessageService messageService;
 
     @Autowired
-    private CodeVerificationRepository codeValidatorRepository;
+    private CodeVerifyRep codeValidatorRepository;
 
     @Autowired
-    private IdentityRepository identityRepository;
+    private IdentityRep identityRep;
 
     @Autowired
-    private UserCoinRepository userCoinRepository;
+    private UserCoinRep userCoinRep;
 
     @Autowired
-    private LimitRepository limitRepository;
+    private LimitRep limitRep;
 
     @Autowired
-    private IdentityPieceRepository identityPieceRepository;
+    private IdentityPieceRep identityPieceRep;
 
     @Autowired
-    private IdentityPieceCellPhoneRepository identityPieceCellPhoneRepository;
+    private IdentityPieceCellPhoneRep identityPieceCellPhoneRep;
 
     @Transactional
     public User register(String phone, String password) {
@@ -57,17 +57,17 @@ public class UserService {
         user.setPhone(phone);
         user.setPassword(passwordEncoder.encode(password));
         user.setRole("ROLE_USER");
-        User savedUser = userRepository.save(user);
+        User savedUser = userRep.save(user);
 
         Limit dailyLimit = new Limit();
         dailyLimit.setAmount(Constant.DAILY_LIMIT);
         dailyLimit.setCurrency("USD");
-        Limit savedDailyLimit = limitRepository.save(dailyLimit);
+        Limit savedDailyLimit = limitRep.save(dailyLimit);
 
         Limit trxLimit = new Limit();
         trxLimit.setAmount(Constant.TX_LIMIT);
         trxLimit.setCurrency("USD");
-        Limit savedTrxLimit = limitRepository.save(trxLimit);
+        Limit savedTrxLimit = limitRep.save(trxLimit);
 
         Date date = new Date();
         Identity identity = new Identity();
@@ -79,7 +79,7 @@ public class UserService {
         identity.setRegistered(date);
         identity.setLimitCashPerDay(Arrays.asList(savedDailyLimit));
         identity.setLimitCashPerTransaction(Arrays.asList(savedTrxLimit));
-        Identity savedIdentity = identityRepository.save(identity);
+        Identity savedIdentity = identityRep.save(identity);
 
         user.setIdentity(savedIdentity);
 
@@ -88,48 +88,48 @@ public class UserService {
         ip.setPieceType(4);
         ip.setRegistration(true);
         ip.setCreated(date);
-        IdentityPiece ipSaved = identityPieceRepository.save(ip);
+        IdentityPiece ipSaved = identityPieceRep.save(ip);
 
         IdentityPieceCellPhone ipCellPhone = new IdentityPieceCellPhone();
         ipCellPhone.setIdentity(savedIdentity);
         ipCellPhone.setIdentityPiece(ipSaved);
         ipCellPhone.setCreated(date);
         ipCellPhone.setPhoneNumber(Util.formatPhone(user.getPhone()));
-        identityPieceCellPhoneRepository.save(ipCellPhone);
+        identityPieceCellPhoneRep.save(ipCellPhone);
 
         return user;
     }
 
     public User findById(Long userId) {
-        return userRepository.getOne(userId);
+        return userRep.getOne(userId);
     }
 
     public void updatePassword(String encodedPassword, Long userId) {
-        userRepository.updatePassword(encodedPassword, userId);
+        userRep.updatePassword(encodedPassword, userId);
     }
 
     public void updatePhone(String phone, Long userId) {
-        userRepository.updatePhone(phone, userId);
+        userRep.updatePhone(phone, userId);
     }
 
     public Boolean isPhoneExist(String phone, Long userId) {
-        User user = userRepository.isPhoneExist(phone, userId);
+        User user = userRep.isPhoneExist(phone, userId);
 
         return user != null ? true : false;
     }
 
     public Unlink unlinkUser(Long userId) {
-        User user = userRepository.getOne(userId);
+        User user = userRep.getOne(userId);
 
         if (user != null) {
-            Unlink unlink = unlinkRepository.findByUserId(userId);
+            Unlink unlink = unlinkRep.findByUserId(userId);
 
             if (unlink == null) {
                 unlink = new Unlink();
                 unlink.setUser(user);
             }
 
-            unlinkRepository.save(unlink);
+            unlinkRep.save(unlink);
 
             return unlink;
         }
@@ -137,51 +137,51 @@ public class UserService {
         return null;
     }
 
-    public UpdatePhone updatePhone(PhoneDTO phoneRequest, Long userId) {
-        User user = userRepository.getOne(userId);
-        UpdatePhone updatePhone = user.getUpdatePhone();
+    public PhoneChange updatePhone(PhoneDTO phoneRequest, Long userId) {
+        User user = userRep.getOne(userId);
+        PhoneChange phoneChange = user.getPhoneChange();
 
-        if (updatePhone == null || updatePhone.getId() == null) {
-            updatePhone = new UpdatePhone();
+        if (phoneChange == null || phoneChange.getId() == null) {
+            phoneChange = new PhoneChange();
         }
 
-        updatePhone.setUser(user);
-        updatePhone.setPhone(phoneRequest.getPhone());
-        updatePhone.setStatus(0);
+        phoneChange.setUser(user);
+        phoneChange.setPhone(phoneRequest.getPhone());
+        phoneChange.setStatus(0);
 
-        updatePhoneRepository.save(updatePhone);
+        phoneChangeRep.save(phoneChange);
         messageService.sendVerificationCode(user);
 
-        return updatePhone;
+        return phoneChange;
     }
 
     @Transactional
-    public UpdatePhone getUpdatePhone(Long userId) {
-        return updatePhoneRepository.findByUserId(userId);
+    public PhoneChange getUpdatePhone(Long userId) {
+        return phoneChangeRep.findByUserId(userId);
     }
 
-    public UpdatePhone save(UpdatePhone updatePhone) {
-        return updatePhoneRepository.save(updatePhone);
+    public PhoneChange save(PhoneChange phoneChange) {
+        return phoneChangeRep.save(phoneChange);
     }
 
     public List<UserCoin> save(List<UserCoin> list) {
-        return userCoinRepository.saveAll(list);
+        return userCoinRep.saveAll(list);
     }
 
-    public CodeVerification getCodeByUserId(Long userId) {
+    public CodeVerify getCodeByUserId(Long userId) {
         return codeValidatorRepository.findByUserId(userId);
     }
 
     public List<UserCoin> getUserCoins(Long userId) {
-        return userCoinRepository.findByUserId(userId);
+        return userCoinRep.findByUserId(userId);
     }
 
-    public void save(CodeVerification codeVerification) {
-        codeValidatorRepository.save(codeVerification);
+    public void save(CodeVerify codeVerify) {
+        codeValidatorRepository.save(codeVerify);
     }
 
     public Optional<User> findByPhone(String phone) {
-        return userRepository.findOneByPhone(phone);
+        return userRep.findOneByPhone(phone);
     }
 
     public GiftAddressDTO getUserGiftAddress(CoinService.CoinEnum coinId, String phone) {

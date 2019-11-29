@@ -4,8 +4,8 @@ import com.batm.dto.*;
 import com.batm.entity.*;
 import com.batm.model.TransactionStatus;
 import com.batm.model.TransactionType;
-import com.batm.repository.TransactionRecordGiftRepository;
-import com.batm.repository.TransactionRecordRepository;
+import com.batm.repository.TransactionRecordGiftRep;
+import com.batm.repository.TransactionRecordRep;
 import com.batm.util.Constant;
 import com.batm.util.Util;
 import net.sf.json.JSONObject;
@@ -26,10 +26,10 @@ import java.util.List;
 public class TransactionService {
 
     @Autowired
-    private TransactionRecordRepository transactionRecordRepository;
+    private TransactionRecordRep transactionRecordRep;
 
     @Autowired
-    private TransactionRecordGiftRepository transactionRecordGiftRepository;
+    private TransactionRecordGiftRep transactionRecordGiftRep;
 
     @Autowired
     private UserService userService;
@@ -58,7 +58,7 @@ public class TransactionService {
             gift.setCoin(coin);
             gift.setRefTxId(dto.getRefTxId());
 
-            transactionRecordGiftRepository.save(gift);
+            transactionRecordGiftRep.save(gift);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -72,7 +72,7 @@ public class TransactionService {
 
         try {
             User user = userService.findById(userId);
-            BigDecimal txAmount = transactionRecordRepository.getTransactionsSumByDate(user.getIdentity(), Util.getStartDate(), new Date());
+            BigDecimal txAmount = transactionRecordRep.getTransactionsSumByDate(user.getIdentity(), Util.getStartDate(), new Date());
             BigDecimal dailyLimit = user.getIdentity().getLimitCashPerDay().get(0).getAmount();
             BigDecimal txLimit = user.getIdentity().getLimitCashPerTransaction().get(0).getAmount();
 
@@ -118,14 +118,14 @@ public class TransactionService {
     @Scheduled(fixedDelay = 60_000)
     public void processCronTasks() {
         processPendingGifts();
-        processStoredGifts();
+        //processStoredGifts();
 
         processCompletedTransactions();
     }
 
     public void processCompletedTransactions() {
         try {
-            List<TransactionRecord> list = transactionRecordRepository.findCompletedTransactions(PageRequest.of(0, 50));
+            List<TransactionRecord> list = transactionRecordRep.findCompletedTransactions(PageRequest.of(0, 50));
 
             if (!list.isEmpty()) {
                 list.stream().forEach(e -> {
@@ -146,7 +146,7 @@ public class TransactionService {
 
                 if (!list.isEmpty()) {
                     chainalysisService.processChainalysis(list);
-                    transactionRecordRepository.saveAll(list);
+                    transactionRecordRep.saveAll(list);
                 }
             }
         } catch (Exception e) {
@@ -156,7 +156,7 @@ public class TransactionService {
 
     private void processPendingGifts() {
         try {
-            List<TransactionRecordGift> list = transactionRecordGiftRepository.findByStatus(TransactionStatus.PENDING.getValue(), PageRequest.of(0, 10));
+            List<TransactionRecordGift> list = transactionRecordGiftRep.findByStatus(TransactionStatus.PENDING.getValue(), PageRequest.of(0, 10));
             List<TransactionRecordGift> confirmedList = new ArrayList<>();
 
             list.stream().forEach(t -> {
@@ -190,7 +190,7 @@ public class TransactionService {
             });
 
             if (!confirmedList.isEmpty()) {
-                transactionRecordGiftRepository.saveAll(confirmedList);
+                transactionRecordGiftRep.saveAll(confirmedList);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -199,14 +199,17 @@ public class TransactionService {
 
     private void processStoredGifts() {
         try {
-            List<TransactionRecordGift> list = transactionRecordGiftRepository.findByTypeAndStatusAndStep(TransactionType.SEND_GIFT.getValue(), TransactionStatus.COMPLETE.getValue(), Constant.GIFT_USER_NOT_EXIST, PageRequest.of(0, 10));
+            List<TransactionRecordGift> list = transactionRecordGiftRep.findByTypeAndStatusAndStep(TransactionType.SEND_GIFT.getValue(), TransactionStatus.COMPLETE.getValue(), Constant.GIFT_USER_NOT_EXIST, PageRequest.of(0, 10));
             List<TransactionRecordGift> confirmedList = new ArrayList<>();
 
             list.stream().forEach(t -> {
                 try {
                     if (userService.findByPhone(t.getPhone()).isPresent()) {
                         CoinService.CoinEnum coinCode = CoinService.CoinEnum.valueOf(t.getCoin().getCode());
-                        SubmitTransactionDTO dto = coinCode.sign(t.getIdentity().getUser().getCoinAddress(t.getCoin().getCode()), t.getAmount());
+                        String hex = coinCode.sign(t.getIdentity().getUser().getCoinAddress(t.getCoin().getCode()), t.getAmount());
+
+                        SubmitTransactionDTO dto = new SubmitTransactionDTO();
+                        dto.setHex(hex);
                         dto.setRefTxId(t.getTxId());
                         dto.setType(TransactionType.SEND_GIFT.getValue());
                         dto.setPhone(t.getPhone());
@@ -227,7 +230,7 @@ public class TransactionService {
             });
 
             if (!confirmedList.isEmpty()) {
-                transactionRecordGiftRepository.saveAll(confirmedList);
+                transactionRecordGiftRep.saveAll(confirmedList);
             }
         } catch (Exception e) {
             e.printStackTrace();

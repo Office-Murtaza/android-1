@@ -16,14 +16,14 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.filter.GenericFilterBean;
 import com.batm.model.AccessDenied;
 import com.batm.entity.Token;
-import com.batm.repository.TokenRepository;
+import com.batm.repository.TokenRep;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @AllArgsConstructor
 public class JWTFilter extends GenericFilterBean {
 
     private TokenProvider tokenProvider;
-    private TokenRepository tokenRepository;
+    private TokenRep tokenRep;
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain)
@@ -32,7 +32,7 @@ public class JWTFilter extends GenericFilterBean {
         String jwt = resolveToken(httpServletRequest);
 
         if (StringUtils.hasText(jwt) && this.tokenProvider.validateToken(jwt)) {
-            Token token = tokenRepository.findByAccessToken(jwt);
+            Token token = tokenRep.findByAccessToken(jwt);
 
             if (token == null) {
                 HttpServletResponse response = (HttpServletResponse) servletResponse;

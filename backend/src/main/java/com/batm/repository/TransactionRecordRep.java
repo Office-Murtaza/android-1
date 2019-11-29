@@ -10,7 +10,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
-public interface TransactionRecordRepository extends JpaRepository<TransactionRecord, Long> {
+public interface TransactionRecordRep extends JpaRepository<TransactionRecord, Long> {
 
     @Query("SELECT tr FROM TransactionRecord tr WHERE tr.detail IS NULL AND ((tr.type = 0 AND tr.status = 1) OR (tr.type = 1 AND tr.status = 3)) ORDER BY tr.serverTime DESC")
     List<TransactionRecord> findCompletedTransactions(Pageable page);

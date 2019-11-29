@@ -18,7 +18,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import com.batm.repository.TokenRepository;
+import com.batm.repository.TokenRep;
 
 @Configuration
 @EnableWebSecurity
@@ -31,14 +31,14 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
     private final TokenProvider tokenProvider;
     private final UserDetailsService userDetailsService;
-    private final TokenRepository tokenRepository;
+    private final TokenRep tokenRep;
 
     public SecurityConfiguration(AuthenticationManagerBuilder authenticationManagerBuilder, TokenProvider tokenProvider,
-                                 UserDetailsService userDetailsService, TokenRepository tokenRepository) {
+                                 UserDetailsService userDetailsService, TokenRep tokenRep) {
         this.authenticationManagerBuilder = authenticationManagerBuilder;
         this.tokenProvider = tokenProvider;
         this.userDetailsService = userDetailsService;
-        this.tokenRepository = tokenRepository;
+        this.tokenRep = tokenRep;
     }
 
     @PostConstruct
@@ -109,6 +109,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     }
 
     private JWTConfigurer securityConfigurerAdapter() {
-        return new JWTConfigurer(tokenProvider, tokenRepository);
+        return new JWTConfigurer(tokenProvider, tokenRep);
     }
 }

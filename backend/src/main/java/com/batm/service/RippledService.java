@@ -1,7 +1,6 @@
 package com.batm.service;
 
 import com.batm.dto.CurrentAccountDTO;
-import com.batm.dto.SubmitTransactionDTO;
 import com.batm.dto.TransactionDTO;
 import com.batm.dto.TransactionListDTO;
 import com.batm.entity.TransactionRecord;
@@ -10,6 +9,7 @@ import com.batm.model.TransactionStatus;
 import com.batm.model.TransactionType;
 import com.batm.util.Constant;
 import com.batm.util.Util;
+import com.google.protobuf.ByteString;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.apache.commons.lang.StringUtils;
@@ -17,6 +17,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import org.web3j.utils.Numeric;
+import wallet.core.jni.RippleSigner;
+import wallet.core.jni.proto.Ripple;
 import java.math.BigDecimal;
 import java.util.*;
 
@@ -25,6 +28,9 @@ public class RippledService {
 
     @Autowired
     private RestTemplate rest;
+
+    @Autowired
+    private WalletService walletService;
 
     @Value("${xrp.node.url}")
     private String nodeUrl;
@@ -55,10 +61,10 @@ public class RippledService {
         return BigDecimal.ZERO;
     }
 
-    public String submitTransaction(SubmitTransactionDTO transaction) {
+    public String submitTransaction(String hex) {
         try {
             JSONObject param = new JSONObject();
-            param.put("tx_blob", transaction.getHex());
+            param.put("tx_blob", hex);
 
             JSONArray params = new JSONArray();
             params.add(param);
@@ -90,7 +96,7 @@ public class RippledService {
             req.put("params", params);
 
             JSONObject res = rest.postForObject(nodeUrl, req, JSONObject.class);
-            Long sequence = res.getJSONObject("result").getJSONObject("account_data").optLong("Sequence");
+            Integer sequence = res.getJSONObject("result").getJSONObject("account_data").optInt("Sequence");
 
             return new CurrentAccountDTO(null, sequence, null);
         } catch (Exception e) {
@@ -183,6 +189,28 @@ public class RippledService {
         }
 
         return new TransactionListDTO();
+    }
+
+    public String sign(String toAddress, BigDecimal amount, BigDecimal fee, Integer sequence) {
+        try {
+            Ripple.SigningInput.Builder builder = Ripple.SigningInput.newBuilder();
+            builder.setAccount(walletService.getAddressXRP());
+            builder.setDestination(toAddress);
+            builder.setAmount(amount.multiply(Constant.XRP_DIVIDER).longValue());
+            builder.setFee(fee.multiply(Constant.XRP_DIVIDER).longValue());
+            builder.setSequence(sequence);
+            builder.setPrivateKey(ByteString.copyFrom(walletService.getPrivateKeyXRP().data()));
+
+            Ripple.SigningOutput sign = RippleSigner.sign(builder.build());
+            byte[] bytes = sign.getEncoded().toByteArray();
+            String hex = Numeric.toHexString(bytes).substring(2);
+
+            return hex;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
     }
 
     private Map<String, TransactionDTO> collectNodeTxs(JSONArray transactionsArray, String address) {

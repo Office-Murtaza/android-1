@@ -12,19 +12,19 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.batm.entity.TerminalLocationHour;
 import com.batm.model.Response;
-import com.batm.repository.TerminalLocationRepository;
+import com.batm.repository.TerminalLocationRep;
 
 @RestController
 @RequestMapping("/api/v1")
 public class TerminalController {
 
     @Autowired
-    private TerminalLocationRepository terminalLocationRepository;
+    private TerminalLocationRep terminalLocationRep;
 
     @GetMapping("/terminal/locations")
     public Response getTerminalLocations() {
         try {
-            List<TerminalLocation> terminalLocations = terminalLocationRepository.findAll();
+            List<TerminalLocation> terminalLocations = terminalLocationRep.findAll();
 
             for (TerminalLocation terminalLocation : terminalLocations) {
                 List<TerminalLocationHour> sortedData = terminalLocation

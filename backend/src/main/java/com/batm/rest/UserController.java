@@ -22,14 +22,14 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-import com.batm.entity.CodeVerification;
+import com.batm.entity.CodeVerify;
 import com.batm.model.Error;
 import com.batm.model.Response;
 import com.batm.entity.Token;
 import com.batm.entity.Unlink;
-import com.batm.entity.UpdatePhone;
+import com.batm.entity.PhoneChange;
 import com.batm.entity.User;
-import com.batm.repository.TokenRepository;
+import com.batm.repository.TokenRep;
 import com.batm.dto.ChangePasswordDTO;
 import com.batm.dto.CheckPasswordDTO;
 import com.batm.dto.PhoneDTO;
@@ -59,7 +59,7 @@ public class UserController {
     private UserService userService;
 
     @Autowired
-    private TokenRepository refreshTokenRepository;
+    private TokenRep refreshTokenRep;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -94,7 +94,7 @@ public class UserController {
             token.setAccessToken(jwt.getAccessToken());
             token.setUser(user);
 
-            refreshTokenRepository.save(token);
+            refreshTokenRep.save(token);
 
             return Response.ok(jwt);
         } catch (Exception e) {
@@ -132,10 +132,10 @@ public class UserController {
 
             messageService.sendVerificationCode(user);
 
-            Token token = refreshTokenRepository.findByUserId(user.getId());
+            Token token = refreshTokenRep.findByUserId(user.getId());
             token.setRefreshToken(jwt.getRefreshToken());
             token.setAccessToken(jwt.getAccessToken());
-            refreshTokenRepository.save(token);
+            refreshTokenRep.save(token);
 
             return Response.ok(jwt);
         } catch (Exception e) {
@@ -147,17 +147,17 @@ public class UserController {
     @PostMapping("/refresh")
     public Response refresh(@Valid @RequestBody RefreshDTO refreshDTO) {
         try {
-            Token refreshToken = refreshTokenRepository.findByRefreshToken(refreshDTO.getRefreshToken());
+            Token refreshToken = refreshTokenRep.findByRefreshToken(refreshDTO.getRefreshToken());
 
             if (refreshToken != null) {
                 User user = userService.findById(refreshToken.getUser().getId());
 
                 TokenDTO jwt = getJwt(user);
 
-                Token token = refreshTokenRepository.findByUserId(user.getId());
+                Token token = refreshTokenRep.findByUserId(user.getId());
                 token.setRefreshToken(jwt.getRefreshToken());
                 token.setAccessToken(jwt.getAccessToken());
-                refreshTokenRepository.save(token);
+                refreshTokenRep.save(token);
 
                 return Response.ok(jwt);
             }
@@ -184,24 +184,24 @@ public class UserController {
     @PostMapping("/user/{userId}/code/verify")
     public Response verify(@RequestBody ValidateDTO validateOtpVM, @PathVariable Long userId) {
         try {
-            CodeVerification codeVerification = userService.getCodeByUserId(userId);
+            CodeVerify codeVerify = userService.getCodeByUserId(userId);
             Long timestamp = System.currentTimeMillis() - verificationCodeValidity;
 
-            if (!StringUtils.isEmpty(codeVerification.getCode())
-                    && codeVerification.getUpdateDate().getTime() < timestamp) {
+            if (!StringUtils.isEmpty(codeVerify.getCode())
+                    && codeVerify.getUpdateDate().getTime() < timestamp) {
                 return Response.error(new Error(2, "Code is expired"));
             }
 
-            if (codeVerification.getStatus() == 1) {
+            if (codeVerify.getStatus() == 1) {
                 return Response.error(new Error(3, "Code is already used"));
             }
 
-            if (!StringUtils.equals(validateOtpVM.getCode(), codeVerification.getCode())) {
+            if (!StringUtils.equals(validateOtpVM.getCode(), codeVerify.getCode())) {
                 return Response.error(new Error(4, "Wrong code"));
             }
 
-            codeVerification.setStatus(1);
-            userService.save(codeVerification);
+            codeVerify.setStatus(1);
+            userService.save(codeVerify);
 
             return Response.ok(true);
         } catch (Exception e) {
@@ -246,26 +246,26 @@ public class UserController {
     @PostMapping("/user/{userId}/phone/verify")
     public Response confirmPhone(@RequestBody ValidateDTO validateOtpVM, @PathVariable Long userId) {
         try {
-            UpdatePhone updatePhone = userService.getUpdatePhone(userId);
-            updatePhone = (UpdatePhone) Hibernate.unproxy(updatePhone);
+            PhoneChange phoneChange = userService.getUpdatePhone(userId);
+            phoneChange = (PhoneChange) Hibernate.unproxy(phoneChange);
 
-            if (updatePhone.getStatus() == null || updatePhone.getStatus().intValue() == 1) {
+            if (phoneChange.getStatus() == null || phoneChange.getStatus().intValue() == 1) {
                 return Response.error(new Error(2, "Invalid request"));
             }
 
-            CodeVerification codeVerification = userService.getCodeByUserId(userId);
+            CodeVerify codeVerify = userService.getCodeByUserId(userId);
 
-            if (codeVerification.getStatus() == 1) {
+            if (codeVerify.getStatus() == 1) {
                 return Response.error(new Error(3, "Verification code is already used"));
             }
 
-            if (!StringUtils.equals(validateOtpVM.getCode(), codeVerification.getCode())) {
+            if (!StringUtils.equals(validateOtpVM.getCode(), codeVerify.getCode())) {
                 return Response.error(new Error(2, "Wrong verification code"));
             }
 
-            userService.updatePhone(updatePhone.getPhone(), userId);
-            updatePhone.setStatus(1);
-            userService.save(updatePhone);
+            userService.updatePhone(phoneChange.getPhone(), userId);
+            phoneChange.setStatus(1);
+            userService.save(phoneChange);
 
             return Response.ok(true);
         } catch (Exception e) {

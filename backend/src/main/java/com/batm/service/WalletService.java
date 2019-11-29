@@ -1,10 +1,9 @@
 package com.batm.service;
 
 import com.batm.dto.SubmitTransactionDTO;
-import com.batm.util.AES;
 import com.batm.util.Constant;
-import com.batm.util.Util;
 import com.google.protobuf.ByteString;
+import lombok.Getter;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -17,6 +16,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+@Getter
 @Service
 public class WalletService {
 
@@ -75,34 +75,6 @@ public class WalletService {
 
         privateKeyTRX = wallet.getKeyForCoin(CoinType.TRON);
         addressTRX = CoinType.TRON.deriveAddress(privateKeyTRX);
-    }
-
-    public String getAddressBTC() {
-        return addressBTC;
-    }
-
-    public String getAddressBCH() {
-        return addressBCH;
-    }
-
-    public String getAddressETH() {
-        return addressETH;
-    }
-
-    public String getAddressLTC() {
-        return addressLTC;
-    }
-
-    public String getAddressBNB() {
-        return addressBNB;
-    }
-
-    public String getAddressXRP() {
-        return addressXRP;
-    }
-
-    public String getAddressTRX() {
-        return addressTRX;
     }
 
     public SubmitTransactionDTO signBTC(CoinType coinType, String fromAddress, String toAddress, BigDecimal amount, BigDecimal fee, BigDecimal divider, List<JSONObject> utxos) {
@@ -179,79 +151,15 @@ public class WalletService {
             builder.setToAddress(toAddress);
             builder.setChainId(ByteString.copyFrom(Numeric.hexStringToByteArray("0x1")));
 
-            builder.setNonce(ByteString.copyFrom(Numeric.hexStringToByteArray("0x" + Util.addLeadingZeroes(Integer.toHexString(nonce)))));
-            builder.setGasPrice(ByteString.copyFrom(Numeric.hexStringToByteArray("0x" + Util.addLeadingZeroes(Long.toHexString(Constant.GAS_PRICE)))));
-            builder.setGasLimit(ByteString.copyFrom(Numeric.hexStringToByteArray("0x" + Util.addLeadingZeroes(Long.toHexString(Constant.GAS_LIMIT)))));
-            builder.setAmount(ByteString.copyFrom(Numeric.hexStringToByteArray("0x" + Util.addLeadingZeroes(Long.toHexString(amount.multiply(Constant.ETH_DIVIDER).longValue())))));
+            builder.setNonce(ByteString.copyFrom(Numeric.hexStringToByteArray("0x" + Integer.toHexString(nonce))));
+            builder.setGasPrice(ByteString.copyFrom(Numeric.hexStringToByteArray("0x" + Long.toHexString(Constant.GAS_PRICE))));
+            builder.setGasLimit(ByteString.copyFrom(Numeric.hexStringToByteArray("0x" + Long.toHexString(Constant.GAS_LIMIT))));
+            builder.setAmount(ByteString.copyFrom(Numeric.hexStringToByteArray("0x" + Long.toHexString(amount.multiply(Constant.ETH_DIVIDER).longValue()))));
 
             Ethereum.SigningOutput output = EthereumSigner.sign(builder.build());
-            String hex = "0x" + Numeric.toHexString(output.getEncoded().toByteArray());
+            String hex = Numeric.toHexString(output.getEncoded().toByteArray());
 
-            SubmitTransactionDTO dto = new SubmitTransactionDTO();
-            dto.setHex(hex);
-
-            return dto;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return null;
-    }
-
-    public SubmitTransactionDTO signBNB(String toAddress, BigDecimal amount, Long accountNumber, Long sequence, String chainId) {
-        try {
-            Binance.SigningInput.Builder builder = Binance.SigningInput.newBuilder();
-            builder.setChainId(chainId);
-            builder.setAccountNumber(accountNumber);
-            builder.setSequence(sequence);
-            builder.setPrivateKey(ByteString.copyFrom(privateKeyBNB.data()));
-
-            Binance.SendOrder.Token.Builder token = Binance.SendOrder.Token.newBuilder();
-            token.setDenom("BNB");
-            token.setAmount(amount.multiply(Constant.BNB_DIVIDER).longValue());
-
-            Binance.SendOrder.Input.Builder input = Binance.SendOrder.Input.newBuilder();
-            input.setAddress(ByteString.copyFrom(new CosmosAddress(HRP.BINANCE, privateKeyBNB.getPublicKeySecp256k1(true)).keyHash()));
-            input.addAllCoins(Arrays.asList(token.build()));
-
-            Binance.SendOrder.Output.Builder output = Binance.SendOrder.Output.newBuilder();
-            output.setAddress(ByteString.copyFrom(new CosmosAddress(toAddress).keyHash()));
-            output.addAllCoins(Arrays.asList(token.build()));
-
-            Binance.SendOrder.Builder sendOrder = Binance.SendOrder.newBuilder();
-            sendOrder.addAllInputs(Arrays.asList(input.build()));
-            sendOrder.addAllOutputs(Arrays.asList(output.build()));
-
-            builder.setSendOrder(sendOrder.build());
-
-            Binance.SigningOutput sign = BinanceSigner.sign(builder.build());
-            byte[] bytes = sign.getEncoded().toByteArray();
-            String hex = Numeric.toHexString(bytes);
-
-            SubmitTransactionDTO dto = new SubmitTransactionDTO();
-            dto.setHex(hex);
-
-            return dto;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return null;
-    }
-
-    public SubmitTransactionDTO signXRP(String toAddress, BigDecimal amount, BigDecimal fee, Integer sequence) {
-        try {
-            Ripple.SigningInput.Builder builder = Ripple.SigningInput.newBuilder();
-            builder.setAccount(addressXRP);
-            builder.setDestination(toAddress);
-            builder.setAmount(amount.multiply(Constant.XRP_DIVIDER).longValue());
-            builder.setFee(fee.multiply(Constant.XRP_DIVIDER).longValue());
-            builder.setSequence(sequence);
-            builder.setPrivateKey(ByteString.copyFrom(privateKeyXRP.data()));
-
-            Ripple.SigningOutput sign = RippleSigner.sign(builder.build());
-            byte[] bytes = sign.getEncoded().toByteArray();
-            String hex = Numeric.toHexString(bytes);
+            System.out.println("hex:" + hex);
 
             SubmitTransactionDTO dto = new SubmitTransactionDTO();
             dto.setHex(hex);
@@ -270,9 +178,9 @@ public class WalletService {
             headerBuilder.setNumber(rawData.optLong("number"));
             headerBuilder.setTimestamp(rawData.optLong("timestamp"));
             headerBuilder.setVersion(rawData.optInt("version"));
-            headerBuilder.setParentHash(ByteString.copyFromUtf8(rawData.optString("parentHash")));
-            headerBuilder.setWitnessAddress(ByteString.copyFromUtf8(rawData.optString("witness_address")));
-            headerBuilder.setTxTrieRoot(ByteString.copyFromUtf8(rawData.optString("txTrieRoot")));
+            headerBuilder.setParentHash(ByteString.copyFrom(Numeric.hexStringToByteArray(rawData.optString("parentHash"))));
+            headerBuilder.setWitnessAddress(ByteString.copyFrom(Numeric.hexStringToByteArray(rawData.optString("witness_address"))));
+            headerBuilder.setTxTrieRoot(ByteString.copyFrom(Numeric.hexStringToByteArray(rawData.optString("txTrieRoot"))));
 
             Tron.TransferContract.Builder transferBuilder = Tron.TransferContract.newBuilder();
             transferBuilder.setOwnerAddress(addressTRX);
@@ -292,6 +200,7 @@ public class WalletService {
 
             Tron.SigningOutput output = TronSigner.sign(sign.build());
 
+            System.out.println("json:" + output.getJson());
             SubmitTransactionDTO dto = new SubmitTransactionDTO();
             dto.setTrx(JSONObject.fromObject(output.getJson()));
 
