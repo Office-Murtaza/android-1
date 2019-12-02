@@ -87,6 +87,13 @@ class WithdrawPresenter : BaseMvpDIPresenterImpl<WithdrawContract.View, Withdraw
         mDataManager.verifySmsCode(mUserId, code)
             .flatMap { res ->
 
+                if(mTransactionHashJson!=null )
+                {
+                    mTransactionHash = Gson().toJson(Gson().fromJson<Trx>(mTransactionHashJson, Trx::class.java))
+                }else{
+                    mTransactionHash =  mTransactionHash?.substring(2)
+                }
+
                 mDataManager.submitTx(
                     mUserId,
                     mCoinDbModel!!.coinType,
@@ -96,8 +103,8 @@ class WithdrawPresenter : BaseMvpDIPresenterImpl<WithdrawContract.View, Withdraw
                         null,
                         null,
                         null,
-                        mTransactionHash?.substring(2),
-                        Gson().fromJson<Trx>(mTransactionHashJson, Trx::class.java)
+                        mTransactionHash,
+                        null
                     )
                 )
 

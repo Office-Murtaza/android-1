@@ -118,6 +118,13 @@ class SendGiftPresenter : BaseMvpDIPresenterImpl<SendGiftContract.View, Withdraw
 
             .flatMap { res ->
 
+                if(mTransactionHashJson!=null )
+                {
+                    mTransactionHash = Gson().toJson(Gson().fromJson<Trx>(mTransactionHashJson, Trx::class.java))
+                }else{
+                    mTransactionHash =  mTransactionHash?.substring(2)
+                }
+
                 mDataManager.submitTx(
                     mUserId,
                     mCoinDbModel!!.coinType,
@@ -127,8 +134,8 @@ class SendGiftPresenter : BaseMvpDIPresenterImpl<SendGiftContract.View, Withdraw
                         phoneEncoded,
                         message,
                         gifMedia?.id,
-                        mTransactionHash?.substring(2),
-                        Gson().fromJson<Trx>(mTransactionHashJson, Trx::class.java)
+                        mTransactionHash,
+                        null
                     )
                 )
             }

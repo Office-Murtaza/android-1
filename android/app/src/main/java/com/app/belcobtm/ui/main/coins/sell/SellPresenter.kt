@@ -115,6 +115,13 @@ class SellPresenter : BaseMvpDIPresenterImpl<SellContract.View, WithdrawDataMana
                     Observable.just("")
                 } else {
 
+                    if(mTransactionHashJson!=null )
+                    {
+                        mTransactionHash = Gson().toJson(Gson().fromJson<Trx>(mTransactionHashJson, Trx::class.java))
+                    }else{
+                        mTransactionHash =  mTransactionHash?.substring(2)
+                    }
+
                     mDataManager.submitTx(
                         mUserId,
                         mCoinDbModel!!.coinType,
@@ -124,8 +131,8 @@ class SellPresenter : BaseMvpDIPresenterImpl<SellContract.View, WithdrawDataMana
                             null,
                             null,
                             null,
-                            mTransactionHash?.substring(2),
-                            Gson().fromJson<Trx>(mTransactionHashJson, Trx::class.java)
+                            mTransactionHash,
+                            null
                         )
                     ).subscribe(
                         {
