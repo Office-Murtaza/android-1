@@ -2,7 +2,6 @@ package com.batm.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
-import net.sf.json.JSONObject;
 import java.math.BigDecimal;
 
 @Getter
@@ -20,6 +19,5 @@ public class SubmitTransactionDTO {
     private String message;
     private String imageId;
     private String hex;
-    private JSONObject trx;
     private String refTxId;
 }

@@ -1,7 +1,6 @@
 package com.batm.service;
 
 import com.batm.dto.CurrentBlockDTO;
-import com.batm.dto.SubmitTransactionDTO;
 import com.batm.dto.TransactionDTO;
 import com.batm.dto.TransactionListDTO;
 import com.batm.entity.TransactionRecord;
@@ -50,12 +49,12 @@ public class TrongridService {
         return BigDecimal.ZERO;
     }
 
-    public String submitTransaction(SubmitTransactionDTO transaction) {
+    public String submitTransaction(JSONObject json) {
         try {
-            JSONObject res = JSONObject.fromObject(rest.postForObject(nodeUrl + "/wallet/broadcasttransaction", transaction.getTrx(), String.class));
+            JSONObject res = JSONObject.fromObject(rest.postForObject(nodeUrl + "/wallet/broadcasttransaction", json, String.class));
 
             if (res.optBoolean("result")) {
-                return transaction.getTrx().optString("txID");
+                return json.optString("txID");
             }
         } catch (Exception e) {
             e.printStackTrace();

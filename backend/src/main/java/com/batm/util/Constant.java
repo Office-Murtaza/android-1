@@ -32,8 +32,8 @@ public class Constant {
 
     public static final String TERMINAL_SERIAL_NUMBER = "BT300197";
 
-    public static final long GAS_PRICE = 20_000_000_000L;
-    public static final long GAS_LIMIT = 21_000;
+    public static final long GAS_PRICE = 50_000_000_000L;
+    public static final long GAS_LIMIT = 50_000;
 
     public static final String BNB_CHAIN_ID = "Binance-Chain-Tigris";
 }
