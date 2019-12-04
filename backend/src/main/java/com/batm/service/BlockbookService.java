@@ -64,7 +64,7 @@ public class BlockbookService {
             JSONObject res = rest.getForObject(url + "/api/v2/address/" + address + "?details=txs&pageSize=1000&page=1", JSONObject.class);
 
             if (res != null) {
-                return new NonceDTO(res.optInt("txs"));
+                return new NonceDTO(res.optInt("nonce"));
             }
         } catch (Exception e) {
             e.printStackTrace();
