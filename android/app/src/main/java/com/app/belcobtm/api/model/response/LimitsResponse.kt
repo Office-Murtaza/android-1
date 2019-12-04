@@ -10,7 +10,7 @@ data class LimitsResponse(
     @SerializedName("txLimit")
     val txLimit: Limit?,
     @SerializedName("sellProfitRate")
-    val sellProfitRate: Limit
+    val sellProfitRate: Double
 
 ) : Serializable
 

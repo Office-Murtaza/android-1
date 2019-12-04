@@ -94,8 +94,8 @@ class SellActivity : BaseMvpActivity<SellContract.View, SellContract.Presenter>(
         sellContainer.visibility = View.VISIBLE
         resultContainer.visibility = View.GONE
 
-        til_amount_left.hint = mCoin.coinId
-        til_amount_right.hint = "USD"
+        til_amount_right.hint = mCoin.coinId
+        til_amount_left.hint = "USD"
 
         amount_left.doAfterTextChanged {
             til_amount_right.error = null
@@ -113,8 +113,8 @@ class SellActivity : BaseMvpActivity<SellContract.View, SellContract.Presenter>(
                 0
             }
 
-            if (fiatAmount % 20 != 0 && fiatAmount % 50 != 0) {
-                til_amount_left.error = "Fiat amount should be a multiple of 20 or 50"
+            if (!checkNotesForATM(fiatAmount)) {
+                til_amount_left.error = "ATM contains only 20 and 50 banknotes"
             } else {
                 til_amount_left.error = null
             }
@@ -122,7 +122,7 @@ class SellActivity : BaseMvpActivity<SellContract.View, SellContract.Presenter>(
 
             val price = mCoin.price.uSD
 
-            val rate = limits?.sellProfitRate?.USD ?: Double.MIN_VALUE
+            val rate = limits?.sellProfitRate ?: Double.MIN_VALUE
 
             var cryptoAmount = (fiatAmount / price * rate)
 
@@ -137,7 +137,7 @@ class SellActivity : BaseMvpActivity<SellContract.View, SellContract.Presenter>(
 
             val price = mCoin.price.uSD
 
-            val rate = limits?.sellProfitRate?.USD ?: Double.MIN_VALUE
+            val rate = limits?.sellProfitRate ?: Double.MIN_VALUE
 
             val balance = mCoin.balance - mPresenter.getTransactionFee(mCoin.coinId)
 
@@ -217,19 +217,21 @@ class SellActivity : BaseMvpActivity<SellContract.View, SellContract.Presenter>(
             til_amount_left.error = getString(R.string.should_be_filled)
         }
 
-        if (fiatAmount % 20 != 0 && fiatAmount % 50 != 0) {
+        // if (fiatAmount % 20 != 0 && fiatAmount % 50 != 0) {
+        if (!checkNotesForATM(fiatAmount)) {
             errors++
-            til_amount_left.error = "Fiat amount should be a multiple of 20 or 50"
+            til_amount_left.error = "ATM contains only 20 and 50 banknotes"
         }
 
         val balance = mCoin.balance - mPresenter.getTransactionFee(mCoin.coinId)
 
         val price = mCoin.price.uSD
 
-        val rate = limits?.sellProfitRate?.USD ?: Double.MIN_VALUE
+        val rate = limits?.sellProfitRate ?: Double.MIN_VALUE
 
         var cryptoAmount = fiatAmount / price * rate
         cryptoAmount = round(cryptoAmount * 100000) / 100000
+
 
         if (balance < cryptoAmount && !chb.isChecked) {
             errors++
@@ -239,6 +241,38 @@ class SellActivity : BaseMvpActivity<SellContract.View, SellContract.Presenter>(
         if (errors == 0) {
             mPresenter.preSubmit(fiatAmount, cryptoAmount, balance, chb.isChecked)
         }
+
+    }
+
+    /**
+    Alternative way (banknotes limit)
+    var isValid = false
+    for( x in 1..40){
+    if((sum - 20 * x) % 50 == 0){
+    isValid = true
+    }
+    }
+    return isValid
+     **/
+
+    fun checkNotesForATM(sum: Int): Boolean {
+
+        var nearestNumberThatCanBeGivenByTwentyAndFifty = sum
+
+        if (sum >= 20)
+        else {
+            nearestNumberThatCanBeGivenByTwentyAndFifty = 0
+        }
+
+        if (sum >= 40)
+        else {
+            nearestNumberThatCanBeGivenByTwentyAndFifty = 20
+        }
+
+        nearestNumberThatCanBeGivenByTwentyAndFifty =
+            (nearestNumberThatCanBeGivenByTwentyAndFifty / 10 * 10)
+
+        return (nearestNumberThatCanBeGivenByTwentyAndFifty == sum)
 
     }
 

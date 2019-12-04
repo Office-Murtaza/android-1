@@ -35,8 +35,19 @@ class VisibilityCoinsAdapter(
                 "XRP" -> R.drawable.ic_xrp_logo
                 else -> R.drawable.ic_bit_logo
             }
+
+            val coinName = when (item.coinType) {
+                "ETH" -> "Ethereum"
+                "BCH" -> "Bitcoin Cash"
+                "LTC" -> "Litecoin"
+                "BNB" -> "Binance"
+                "TRX" -> "TRON"
+                "XRP" -> "Ripple"
+                "BTC" -> "Bitcoin"
+                else -> item.coinType
+            }
             holder.itemView.coin_image.setImageResource(coinImageId)
-            holder.itemView.coin_name.text = item.coinType
+            holder.itemView.coin_name.text = coinName
             holder.itemView.coin_visible.setOnCheckedChangeListener { buttonView, isChecked ->
                 item.visible = isChecked
 

@@ -34,7 +34,7 @@ class CoinsAdapter(
                 else -> R.drawable.ic_bit_logo
             }
             holder.itemView.coin_image.setImageResource(coinImageId)
-            holder.itemView.coin_name.text = item.coinId
+            holder.itemView.coin_name.text = item.fullCoinName
 
             val balance = if (item.balance > 0)
                 String.format("%.6f", item.balance).trimEnd('0')

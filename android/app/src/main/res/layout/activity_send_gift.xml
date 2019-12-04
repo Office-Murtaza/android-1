@@ -95,7 +95,7 @@
             android:layout_height="wrap_content"
             android:layout_toEndOf="@id/phone_ccp"
             android:drawableEnd="@drawable/ic_phone"
-            android:hint="@string/phone"
+            android:hint="@string/phone_number"
             android:inputType="phone"
             android:maxLines="1"
             app:layout_constraintEnd_toEndOf="parent"
