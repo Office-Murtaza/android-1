@@ -3,6 +3,8 @@ package com.app.belcobtm.ui.main.coins.details
 import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.telephony.PhoneNumberUtils
@@ -16,13 +18,18 @@ import com.app.belcobtm.api.model.response.TransactionDetailsResponse
 import com.app.belcobtm.api.model.response.TransactionModel
 import com.app.belcobtm.mvp.BaseMvpActivity
 import com.app.belcobtm.util.Const.GIPHY_API_KEY
+import com.app.belcobtm.util.QRUtils.Companion.getSpacelessQR
 import com.giphy.sdk.ui.GiphyCoreUI
 import com.giphy.sdk.ui.views.GPHMediaView
 import com.giphy.sdk.ui.views.GiphyDialogFragment
 import com.google.zxing.BarcodeFormat
+import com.google.zxing.EncodeHintType
+import com.google.zxing.MultiFormatWriter
+import com.google.zxing.WriterException
 import com.journeyapps.barcodescanner.BarcodeEncoder
 import kotlinx.android.synthetic.main.activity_details_coin.*
 import org.parceler.Parcels
+import java.util.*
 
 
 class DetailsActivity : BaseMvpActivity<DetailsContract.View, DetailsContract.Presenter>(),
@@ -111,16 +118,21 @@ class DetailsActivity : BaseMvpActivity<DetailsContract.View, DetailsContract.Pr
 
         resp?.sellInfo?.let {
 
-            val walletQrCode =
+          /*  val walletQrCode =
                 BarcodeEncoder().encodeBitmap(
                     it,
                     BarcodeFormat.QR_CODE, 124, 124
                 )
+
+
+
             qrCodeIv?.setImageBitmap(walletQrCode)
+            */
+            qrCodeIv?.setImageBitmap(getSpacelessQR(it,104,104))
         }
-
-
     }
+
+
 
     fun trimTrailingZero(value: String?): String? {
         return if (!value.isNullOrEmpty()) {

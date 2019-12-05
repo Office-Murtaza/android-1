@@ -16,6 +16,7 @@ import com.app.belcobtm.api.model.response.CoinModel
 import com.app.belcobtm.api.model.response.LimitsResponse
 import com.app.belcobtm.mvp.BaseMvpActivity
 import com.app.belcobtm.util.Const.GIPHY_API_KEY
+import com.app.belcobtm.util.QRUtils
 import com.giphy.sdk.ui.GiphyCoreUI
 import com.giphy.sdk.ui.views.GiphyDialogFragment
 import com.google.android.material.textfield.TextInputLayout
@@ -301,9 +302,13 @@ class SellActivity : BaseMvpActivity<SellContract.View, SellContract.Presenter>(
                 copyToClipboard(addressDestination ?: "", addressDestination ?: "")
             }
 
-            val walletQrCode =
+          /*  val walletQrCode =
                 BarcodeEncoder().encodeBitmap(addressDestination, BarcodeFormat.QR_CODE, 200, 200)
             qrCodeIv?.setImageBitmap(walletQrCode)
+            */
+            qrCodeIv?.setImageBitmap(QRUtils.getSpacelessQR(addressDestination?:"",200,200))
+
+
         } else {
             resultOwnContainer.visibility = View.VISIBLE
             resultAnotherAddressContainer.visibility = View.GONE

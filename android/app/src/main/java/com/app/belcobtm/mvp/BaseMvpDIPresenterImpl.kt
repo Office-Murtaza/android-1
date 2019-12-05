@@ -441,7 +441,8 @@ abstract class BaseMvpDIPresenterImpl<V : BaseMvpView, T : BaseDataManager> : Ba
 
         val sngHash = TWBitcoinSigHashType.getCryptoHash(coinType)
 
-        val cointypeValue = if (coinType.value() == 2) 0 else coinType.value()
+//        val cointypeValue = if (coinType.value() == 2) 0 else coinType.value()
+        val cointypeValue = coinType.value()
         val signerBuilder = Bitcoin.SigningInput.newBuilder()
             .setAmount(amount)
             .setHashType(sngHash)

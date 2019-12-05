@@ -14,6 +14,7 @@ import com.app.belcobtm.mvp.BaseMvpActivity
 import com.app.belcobtm.ui.main.coins.sell.SellActivity
 import com.app.belcobtm.ui.main.coins.send_gift.SendGiftActivity
 import com.app.belcobtm.ui.main.coins.withdraw.WithdrawActivity
+import com.app.belcobtm.util.QRUtils.Companion.getSpacelessQR
 import com.google.android.material.snackbar.Snackbar
 import com.google.zxing.BarcodeFormat
 import com.journeyapps.barcodescanner.BarcodeEncoder
@@ -156,9 +157,13 @@ class TransactionsActivity :
 
         dialog.findViewById<AppCompatTextView>(R.id.wallet_code)?.text = mCoin.publicKey
 
-        val walletQrCode =
-            BarcodeEncoder().encodeBitmap(mCoin.publicKey, BarcodeFormat.QR_CODE, 200, 200)
-        dialog.findViewById<AppCompatImageView>(R.id.wallet_qr_code)?.setImageBitmap(walletQrCode)
+        /*val walletQrCode =
+            BarcodeEncoder().encodeBitmap(mCoin.publicKey,
+                BarcodeFormat.QR_CODE, 200, 200)
+
+        dialog.findViewById<AppCompatImageView>(R.id.wallet_qr_code)?.setImageBitmap(walletQrCode)*/
+
+        dialog.findViewById<AppCompatImageView>(R.id.wallet_qr_code)?.setImageBitmap(getSpacelessQR(mCoin.publicKey,200,200))
 
     }
 
