@@ -93,8 +93,11 @@ final class CoinDetailsPresenter: ModulePresenter, CoinDetailsModule {
       .withLatestFrom(state) { ($1.coin?.type, $1.transactions?.transactions[$0.item].txid) }
       .filter { $0 != nil && $1 != nil }
       .map { ($0!, $1!) }
-      .flatMap { [unowned self] in self.track(self.usecase.getTransactionDetails(for: $0, by: $1)) }
-      .subscribe(onNext: { [delegate] in delegate?.showTransactionDetails(for: $0) })
+      .flatMap { [unowned self] type, txid in
+        return self.track(self.usecase.getTransactionDetails(for: type, by: txid))
+          .map { ($0, type) }
+      }
+      .subscribe(onNext: { [delegate] in delegate?.showTransactionDetails(with: $0, for: $1) })
       .disposed(by: disposeBag)
     
     setupBindings()

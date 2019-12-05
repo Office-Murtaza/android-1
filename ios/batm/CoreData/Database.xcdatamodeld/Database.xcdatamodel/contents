@@ -1,28 +1,32 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="14490.99" systemVersion="18D109" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="15508" systemVersion="18G87" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="AccountRecord" representedClassName="AccountRecord" syncable="YES">
-        <attribute name="accessToken" attributeType="String" syncable="YES"/>
-        <attribute name="expires" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
-        <attribute name="refreshToken" attributeType="String" syncable="YES"/>
-        <attribute name="userId" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="accessToken" attributeType="String"/>
+        <attribute name="expires" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="refreshToken" attributeType="String"/>
+        <attribute name="userId" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
     </entity>
     <entity name="BTMCoinRecord" representedClassName="BTMCoinRecord" syncable="YES">
-        <attribute name="privateKey" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="publicKey" attributeType="String" syncable="YES"/>
-        <attribute name="type" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
-        <attribute name="visible" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="fee" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="gasLimit" attributeType="Integer 64" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="gasPrice" attributeType="Integer 64" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="index" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="privateKey" optional="YES" attributeType="String"/>
+        <attribute name="publicKey" attributeType="String"/>
+        <attribute name="type" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="visible" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
     </entity>
     <entity name="BTMWalletRecord" representedClassName="BTMWalletRecord" syncable="YES">
-        <attribute name="seedPhrase" attributeType="String" syncable="YES"/>
-        <relationship name="coins" toMany="YES" deletionRule="Cascade" destinationEntity="BTMCoinRecord" syncable="YES"/>
+        <attribute name="seedPhrase" attributeType="String"/>
+        <relationship name="coins" toMany="YES" deletionRule="Cascade" destinationEntity="BTMCoinRecord"/>
     </entity>
     <entity name="PinCodeRecord" representedClassName="PinCodeRecord" syncable="YES">
-        <attribute name="pinCode" attributeType="String" syncable="YES"/>
+        <attribute name="pinCode" attributeType="String"/>
     </entity>
     <elements>
         <element name="AccountRecord" positionX="-63" positionY="-18" width="128" height="105"/>
+        <element name="BTMCoinRecord" positionX="-54" positionY="18" width="128" height="163"/>
         <element name="BTMWalletRecord" positionX="-36" positionY="36" width="128" height="75"/>
-        <element name="BTMCoinRecord" positionX="-54" positionY="18" width="128" height="105"/>
         <element name="PinCodeRecord" positionX="-45" positionY="36" width="128" height="60"/>
     </elements>
 </model>

@@ -79,6 +79,12 @@ class WelcomeButtonsView: RoundedView, HasDisposeBag {
       .withLatestFrom(termsAndConditionsView.rx.isAccepted)
       .bind(to: errorView.rx.isHidden)
       .disposed(by: disposeBag)
+    
+    recoverButton.rx.tap
+      .asObservable()
+      .withLatestFrom(termsAndConditionsView.rx.isAccepted)
+      .bind(to: errorView.rx.isHidden)
+      .disposed(by: disposeBag)
   }
 }
 
@@ -90,7 +96,9 @@ extension Reactive where Base == WelcomeButtonsView {
   }
   
   var recoverTap: Driver<Void> {
-    return base.recoverButton.rx.tap.asDriver()
+    return base.recoverButton.rx.tap
+      .asDriver()
+      .flatFilter(base.termsAndConditionsView.rx.isAccepted)
   }
 }
 

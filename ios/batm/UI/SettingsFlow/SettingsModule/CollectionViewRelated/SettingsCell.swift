@@ -11,11 +11,11 @@ enum SettingsCellType {
   
   var verboseValue: String {
     switch self {
-    case .phone: return localize(L.Settings.phone)
+    case .phone: return localize(L.Settings.changePhone)
     case .changePassword: return localize(L.Settings.changePassword)
     case .changePin: return localize(L.Settings.changePin)
     case .showSeedPhrase: return localize(L.Settings.showSeedPhrase)
-    case .unlink: return localize(L.Settings.unlink)
+    case .unlink: return localize(L.Settings.unlinkWallet)
     }
   }
   

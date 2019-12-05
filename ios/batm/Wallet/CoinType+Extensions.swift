@@ -3,6 +3,8 @@ import TrustWalletCore
 
 extension CoinType {
   
+  static let maxNumberOfFractionDigits = 6
+  
   var verboseValue: String {
     switch self {
     case .bitcoin: return "Bitcoin"
@@ -11,7 +13,7 @@ extension CoinType {
     case .litecoin: return "Litecoin"
     case .binance: return "Binance"
     case .tron: return "Tron"
-    case .xrp: return "XRP"
+    case .xrp: return "Ripple"
     default: return ""
     }
   }
@@ -47,51 +49,6 @@ extension CoinType {
     case .bitcoin, .bitcoinCash, .litecoin, .binance: return 100_000_000
     case .ethereum: return 1_000_000_000_000_000_000
     case .tron, .xrp: return 1_000_000
-    default: return 0
-    }
-  }
-  
-  var feePerByte: Int64 {
-    switch self {
-    case .bitcoin: return 40
-    case .bitcoinCash: return 40
-    case .litecoin: return 4
-    default: return 0
-    }
-  }
-  
-  var gasLimit: Int64 {
-    switch self {
-    case .ethereum: return 21000
-    default: return 0
-    }
-  }
-  
-  var gasPrice: Int64 {
-    switch self {
-    case .ethereum: return 20_000_000_000
-    default: return 0
-    }
-  }
-  
-  var feeInUnit: Int64 {
-    switch self {
-    case .bitcoin, .bitcoinCash, .litecoin:
-      return feePerByte * 1000
-    case .ethereum:
-      return gasLimit * gasPrice
-    case .tron:
-      return unit
-    case .xrp:
-      return 20
-    default: return 0
-    }
-  }
-  
-  var fee: Double {
-    switch self {
-    case .bitcoin, .bitcoinCash, .litecoin, .ethereum, .tron, .xrp:
-      return Double(feeInUnit) / Double(unit)
     default: return 0
     }
   }

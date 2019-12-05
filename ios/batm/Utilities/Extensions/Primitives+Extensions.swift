@@ -1,4 +1,6 @@
 import UIKit
+import PhoneNumberKit
+import TrustWalletCore
 
 extension UIEdgeInsets {
   static func top(_ value: CGFloat) -> UIEdgeInsets {
@@ -28,38 +30,105 @@ extension UIEdgeInsets {
   }
 }
 
+extension Array {
+  func chunked(into size: Int) -> [[Element]] {
+    return stride(from: 0, to: count, by: size).map {
+      Array(self[$0 ..< Swift.min($0 + size, count)])
+    }
+  }
+}
+
+extension String {
+  
+  func nilIfEmpty() -> String? {
+    return self.isEmpty ? nil : self
+  }
+  
+}
+
+extension String {
+  func leadingZeros(_ maxNumberOfDigits: Int) -> String {
+    let numberOfLeadingZeros = maxNumberOfDigits - count
+    
+    guard numberOfLeadingZeros > 0 else { return self }
+    
+    var newString = ""
+    
+    (0..<numberOfLeadingZeros).forEach { _ in
+      newString.append("0")
+    }
+    
+    newString.append(contentsOf: self)
+    
+    return newString
+  }
+}
+
+extension Character {
+  var isDecimalSeparator: Bool {
+    var matchString = ".,"
+    
+    if let separator = Locale.current.decimalSeparator {
+      matchString.append(separator)
+    }
+    
+    return matchString.contains(self)
+  }
+}
+
 extension String {
   var numberOfFractionDigits: Int {
-    guard let _ = Double(self) else { return 0 }
+    guard let _ = self.doubleValue else { return 0 }
     
-    var numberOfDigits = 0
-    var isDotVisited = false
+    var numberOfFractionDigits = 0
+    var isDecimalSeparatorVisited = false
     
     for i in self {
-      if i == "." { isDotVisited = true }
-      else if isDotVisited {
-        numberOfDigits += 1
+      if i.isDecimalSeparator {
+        isDecimalSeparatorVisited = true
+      } else if isDecimalSeparatorVisited {
+        numberOfFractionDigits += 1
       }
     }
     
-    return numberOfDigits
+    return numberOfFractionDigits
   }
   
-  func withMaxFractionDigits(_ maxFractionDigits: Int) -> String {
-    guard let _ = Double(self) else { return self }
+  func withFractionDigits(min minFractionDigits: Int = 0, max maxFractionDigits: Int = Int.max, trailingZeros: Bool = true) -> String {
+    guard let _ = self.doubleValue else { return self }
     
     var newString = ""
-    var numberOfDigits = 0
-    var isDotVisited = false
+    var numberOfFractionDigits = 0
+    var isDecimalSeparatorVisited = false
     
     for i in self {
-      if i == "." { isDotVisited = true }
-      else if isDotVisited {
-        numberOfDigits += 1
+      if i.isDecimalSeparator {
+        isDecimalSeparatorVisited = true
+      } else if isDecimalSeparatorVisited {
+        numberOfFractionDigits += 1
       }
       
-      if (!isDotVisited || maxFractionDigits > 0) && numberOfDigits <= maxFractionDigits {
+      if (!isDecimalSeparatorVisited || maxFractionDigits > 0) && numberOfFractionDigits <= maxFractionDigits {
         newString.append(i)
+      }
+      
+      if isDecimalSeparatorVisited && numberOfFractionDigits == maxFractionDigits { break }
+    }
+    
+    if numberOfFractionDigits < minFractionDigits {
+      if !isDecimalSeparatorVisited { newString.append(".") }
+      
+      (numberOfFractionDigits..<minFractionDigits).forEach { _ in newString.append("0")}
+    }
+    
+    if !trailingZeros {
+      while numberOfFractionDigits > minFractionDigits && newString.last == "0" {
+        newString.removeLast()
+        numberOfFractionDigits -= 1
+      }
+      
+      if newString.last?.isDecimalSeparator ?? false {
+        newString.removeLast()
       }
     }
     
@@ -67,15 +136,45 @@ extension String {
   }
   
   var fiatFormatted: String {
-    return withMaxFractionDigits(2)
+    return withFractionDigits(min: 2, max: 2, trailingZeros: false)
+  }
+  
+  var fiatWithdrawFormatted: String {
+    return withFractionDigits(max: 2)
   }
   
   var fiatSellFormatted: String {
-    return withMaxFractionDigits(0)
+    return withFractionDigits(max: 0)
+  }
+  
+  var coinWithdrawFormatted: String {
+    return withFractionDigits(max: CoinType.maxNumberOfFractionDigits)
   }
   
   var coinFormatted: String {
-    return withMaxFractionDigits(5)
+    return withFractionDigits(max: CoinType.maxNumberOfFractionDigits, trailingZeros: false)
+  }
+  
+  var phoneFormatted: String {
+    guard let phoneNumber = try? PhoneNumberKit.default.parse(self, withRegion: "US") else { return self }
+    
+    let phoneNumberString = PhoneNumberKit.default.format(phoneNumber, toType: .international)
+    let formattedPhoneNumber = phoneNumberString
+      .split { $0 == " " || $0 == "-" }
+      .joined(separator: " - ")
+    
+    return formattedPhoneNumber
+  }
+  
+  var doubleValue: Double? {
+    if let double = Double(self) { return double }
+    
+    var newString = ""
+    for i in self {
+      newString.append(i.isDecimalSeparator ? "." : i)
+    }
+    
+    return Double(newString)
   }
 }
 
@@ -85,7 +184,11 @@ extension Double {
   }
   
   var fiatFormatted: String {
-    return String(self).fiatFormatted
+    return NSNumber(value: self).decimalValue.description.fiatFormatted
+  }
+  
+  var fiatWithdrawFormatted: String {
+    return String(self).fiatWithdrawFormatted
   }
   
   var fiatSellFormatted: String {
@@ -93,18 +196,31 @@ extension Double {
   }
   
   var coinFormatted: String {
-    return String(self).coinFormatted
+    return NSNumber(value: self).decimalValue.description.coinFormatted
   }
   
-  var multipleOfTwentyOrFifty: Double {
+  var coinWithdrawFormatted: String {
+    return String(self).coinWithdrawFormatted
+  }
+  
+  var nearestNumberThatCanBeGivenByTwentyAndFifty: Double {
     let integer = Int(self)
     
-    guard integer >= 0 else { return 0 }
+    guard integer >= 20 else { return 0 }
+    guard integer >= 40 else { return 20 }
     
-    let multipleOfTwenty = integer / 20 * 20
-    let multipleOfFifty = integer / 50 * 50
-    let multipleOfTwentyOrFifty = max(multipleOfTwenty, multipleOfFifty)
+    return Double(integer / 10 * 10)
+  }
+}
+
+extension Int {
+  func pow(_ n: Int) -> Int {
+    guard n >= 0 else { return self }
+    if n == 0 { return 1 }
+    if n == 1 { return self }
     
-    return Double(multipleOfTwentyOrFifty)
+    var a = self
+    (2...n).forEach { _ in a *= self }
+    return a
   }
 }

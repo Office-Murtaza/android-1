@@ -3,6 +3,7 @@ import RxSwift
 import RxCocoa
 import GiphyUISDK
 import GiphyCoreSDK
+import PhoneNumberKit
 
 class TransactionDetailsGiftSectionView: UIView, HasDisposeBag {
   
@@ -42,7 +43,7 @@ class TransactionDetailsGiftSectionView: UIView, HasDisposeBag {
   func configure(for details: TransactionDetails) {
     if let phone = details.phone {
       let phoneView = TransactionDetailsRowView()
-      phoneView.configure(for: .text(phone), with: localize(L.TransactionDetails.phone))
+      phoneView.configure(for: .text(phone.phoneFormatted), with: localize(L.TransactionDetails.phone))
       stackView.addArrangedSubview(phoneView)
     }
     

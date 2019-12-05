@@ -54,7 +54,7 @@ struct VerifyCodeRequest: AuthorizedAPIRequest {
   let userId: Int
   let code: String
   
-  var path: String { return "/user/\(userId)/verify" }
+  var path: String { return "/user/\(userId)/code/verify" }
   var method: HTTPMethod { return .post }
   var task: HTTPTask {
     return .requestParameters(parameters: ["code": code],
@@ -107,11 +107,24 @@ struct CoinsBalanceRequest: AuthorizedAPIRequest {
   }
 }
 
+struct CoinsFeeRequest: AuthorizedAPIRequest {
+  typealias ResponseType = APIResponse<CoinsFee>
+  typealias ResponseTrait = SingleResponseTrait
+  
+  let userId: Int
+  
+  var path: String { return "/user/\(userId)/coins/fee" }
+  var method: HTTPMethod { return .get }
+  var task: HTTPTask {
+    return .requestPlain
+  }
+}
+
 struct MapAddressesRequest: AuthorizedAPIRequest {
   typealias ResponseType = APIResponse<MapAddresses>
   typealias ResponseTrait = SingleResponseTrait
   
-  var path: String { return "/static/atm/address" }
+  var path: String { return "/terminal/locations" }
   var method: HTTPMethod { return .get }
   var task: HTTPTask {
     return .requestPlain
@@ -138,7 +151,7 @@ struct CheckPasswordRequest: AuthorizedAPIRequest {
   let userId: Int
   let password: String
   
-  var path: String { return "/user/\(userId)/check/password" }
+  var path: String { return "/user/\(userId)/password/verify" }
   var method: HTTPMethod { return .post }
   var task: HTTPTask {
     return .requestParameters(parameters: ["password": password],
@@ -153,7 +166,7 @@ struct ChangePhoneRequest: AuthorizedAPIRequest {
   let userId: Int
   let phoneNumber: String
   
-  var path: String { return "/user/\(userId)/phone" }
+  var path: String { return "/user/\(userId)/phone/update" }
   var method: HTTPMethod { return .post }
   var task: HTTPTask {
     return .requestParameters(parameters: ["phone": phoneNumber],
@@ -169,7 +182,7 @@ struct ConfirmPhoneRequest: AuthorizedAPIRequest {
   let phoneNumber: String
   let code: String
   
-  var path: String { return "/user/\(userId)/phone/confirm" }
+  var path: String { return "/user/\(userId)/phone/verify" }
   var method: HTTPMethod { return .post }
   var task: HTTPTask {
     return .requestParameters(parameters: ["phone": phoneNumber,
@@ -186,7 +199,7 @@ struct ChangePasswordRequest: AuthorizedAPIRequest {
   let oldPassword: String
   let newPassword: String
   
-  var path: String { return "/user/\(userId)/password" }
+  var path: String { return "/user/\(userId)/password/update" }
   var method: HTTPMethod { return .post }
   var task: HTTPTask {
     return .requestParameters(parameters: ["oldPassword": oldPassword,
@@ -202,7 +215,7 @@ struct UnlinkRequest: AuthorizedAPIRequest {
   let userId: Int
   
   var path: String { return "/user/\(userId)/unlink" }
-  var method: HTTPMethod { return .post }
+  var method: HTTPMethod { return .get }
   var task: HTTPTask {
     return .requestPlain
   }
@@ -260,9 +273,8 @@ struct GetNonceRequest: AuthorizedAPIRequest {
   
   let userId: Int
   let coinId: String
-  let address: String
   
-  var path: String { return "/user/\(userId)/coins/\(coinId)/transactions/nonce/\(address)" }
+  var path: String { return "/user/\(userId)/coins/\(coinId)/transactions/nonce" }
   var method: HTTPMethod { return .get }
   var task: HTTPTask {
     return .requestPlain
@@ -300,7 +312,6 @@ struct SubmitTransactionRequest: AuthorizedAPIRequest {
   let message: String?
   let imageId: String?
   let txhex: String?
-  let trxJson: [String: Any]?
   
   var path: String { return "/user/\(userId)/coins/\(coinId)/transactions/submit" }
   var method: HTTPMethod { return .post }
@@ -310,8 +321,7 @@ struct SubmitTransactionRequest: AuthorizedAPIRequest {
                                            "phone": phone as Any,
                                            "message": message as Any,
                                            "imageId": imageId as Any,
-                                           "hex": txhex as Any,
-                                           "trx": trxJson as Any],
+                                           "hex": txhex as Any],
                               encoding: JSONEncoding.default)
   }
 }
@@ -349,9 +359,8 @@ struct GetBinanceAccountInfoRequest: AuthorizedAPIRequest {
   
   let userId: Int
   let coinId: String
-  let address: String
   
-  var path: String { return "/user/\(userId)/coins/\(coinId)/transactions/currentaccount/\(address)" }
+  var path: String { return "/user/\(userId)/coins/\(coinId)/transactions/currentaccount" }
   var method: HTTPMethod { return .get }
   var task: HTTPTask {
     return .requestPlain
@@ -364,9 +373,8 @@ struct GetRippleSequenceRequest: AuthorizedAPIRequest {
   
   let userId: Int
   let coinId: String
-  let address: String
   
-  var path: String { return "/user/\(userId)/coins/\(coinId)/transactions/currentaccount/\(address)" }
+  var path: String { return "/user/\(userId)/coins/\(coinId)/transactions/currentaccount" }
   var method: HTTPMethod { return .get }
   var task: HTTPTask {
     return .requestPlain

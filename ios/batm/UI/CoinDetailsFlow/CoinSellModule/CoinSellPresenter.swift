@@ -8,6 +8,10 @@ struct SellDetailsForAnotherAddress: Equatable {
   let amount: Double
 }
 
+struct SellDetailsForCurrentAddress: Equatable {
+  let coin: BTMCoin
+}
+
 final class CoinSellPresenter: ModulePresenter, CoinSellModule {
   
   typealias Store = ViewStore<CoinSellAction, CoinSellState>
@@ -118,8 +122,9 @@ final class CoinSellPresenter: ModulePresenter, CoinSellModule {
       .doOnNext { [store] _ in store.action.accept(.updateValidationState) }
       .withLatestFrom(state)
       .filter { $0.validationState.isValid }
-      .flatMap { [unowned self] in self.track(self.sell(for: $0)) }
-      .subscribe(onNext: { [delegate] in delegate?.showSellDetailsForCurrentAddress() })
+      .flatMap { [unowned self] in self.track(self.sell(for: $0).andThen(Observable.just($0))) }
+      .map { SellDetailsForCurrentAddress(coin: $0.coin!) }
+      .subscribe(onNext: { [delegate] in delegate?.showSellDetailsForCurrentAddress($0) })
       .disposed(by: disposeBag)
   }
   
@@ -136,8 +141,8 @@ final class CoinSellPresenter: ModulePresenter, CoinSellModule {
   
   private func presubmit(for state: CoinSellState) -> Single<PreSubmitResponse> {
     let type = state.coin!.type
-    let coinAmount = Double(state.coinAmount) ?? 0.0
-    let currencyAmount = Double(state.currencyAmount) ?? 0
+    let coinAmount = state.coinAmount.doubleValue ?? 0.0
+    let currencyAmount = state.currencyAmount.doubleValue ?? 0
     
     return usecase.verifyCode(code: state.code)
       .andThen(usecase.presubmit(for: type, coinAmount: coinAmount, currencyAmount: currencyAmount))

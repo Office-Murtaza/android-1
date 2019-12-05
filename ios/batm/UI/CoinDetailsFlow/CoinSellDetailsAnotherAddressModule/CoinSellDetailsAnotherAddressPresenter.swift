@@ -18,6 +18,10 @@ final class CoinSellDetailsAnotherAddressPresenter: ModulePresenter, CoinSellDet
     return "\(details.amount) \(details.coin.type.code)"
   }
   
+  var title: String {
+    return String(format: localize(L.CoinSellDetails.title), details.coin.type.code)
+  }
+  
   func setup(with details: SellDetailsForAnotherAddress) {
     self.details = details
   }

@@ -5,15 +5,15 @@ struct CoinBalance: Equatable {
   let type: CoinType
   let balance: Double
   let price: Double
+  let index: Int
 }
 
-extension CoinBalance {
-  var maxValue: Double {
-    let maxValue = max(0, balance - type.fee)
-    
-    switch type {
-    case .ethereum: return min(9, maxValue)
-    default: return maxValue
+extension CoinBalance: Comparable {
+  static func < (lhs: CoinBalance, rhs: CoinBalance) -> Bool {
+    if lhs.index == rhs.index {
+      return lhs.type.verboseValue < rhs.type.verboseValue
     }
+    
+    return lhs.index < rhs.index
   }
 }

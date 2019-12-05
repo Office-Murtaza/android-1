@@ -15,14 +15,7 @@ class ShowPhonePresenter: ModulePresenter, ShowPhoneModule {
   weak var delegate: ShowPhoneModuleDelegate?
   
   func setup(with phoneNumber: PhoneNumber) {
-    guard let phoneNumber = try? PhoneNumberKit.default.parse(phoneNumber.phoneNumber) else { return }
-    
-    let phoneNumberString = PhoneNumberKit.default.format(phoneNumber, toType: .international)
-    let formattedPhoneNumber = phoneNumberString
-      .split { $0 == " " || $0 == "-" }
-      .joined(separator: " - ")
-    
-    phoneNumberRelay.accept(formattedPhoneNumber)
+    phoneNumberRelay.accept(phoneNumber.phoneNumber.phoneFormatted)
   }
   
   func bind(input: Input) {

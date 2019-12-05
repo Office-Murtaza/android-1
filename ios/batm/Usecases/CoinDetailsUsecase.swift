@@ -113,7 +113,6 @@ class CoinDetailsUsecaseImpl: CoinDetailsUsecase {
   func getSellDetails(for type: CoinType) -> Single<SellDetails> {
     return accountStorage.get()
       .flatMap { [api] in api.getSellDetails(userId: $0.userId, type: type) }
-//      .map { _ in SellDetails(dailyLimit: 10000, transactionLimit: 3000, profitRate: 1.025) }
   }
   
   func presubmit(for type: CoinType, coinAmount: Double, currencyAmount: Double) -> Single<PreSubmitResponse> {
@@ -147,16 +146,6 @@ class CoinDetailsUsecaseImpl: CoinDetailsUsecase {
                       message: String? = nil,
                       imageId: String? = nil,
                       transactionResultString: String? = nil) -> Completable {
-    var txhex: String?
-    var trxJson: [String: Any]?
-    
-    switch type {
-    case .tron:
-      if let data = transactionResultString?.data(using: .utf8) {
-        trxJson = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: Any]
-      }
-    default: txhex = transactionResultString
-    }
     
     return api.submitTransaction(userId: userId,
                                  type: type,
@@ -165,8 +154,7 @@ class CoinDetailsUsecaseImpl: CoinDetailsUsecase {
                                  phone: phone,
                                  message: message,
                                  imageId: imageId,
-                                 txhex: txhex,
-                                 trxJson: trxJson)
+                                 txhex: transactionResultString)
   }
   
 }

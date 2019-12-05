@@ -12,7 +12,6 @@ class CoinDetailsDepositView: UIView {
   
   let titleLabel: UILabel = {
     let label = UILabel()
-    label.text = localize(L.CoinDetails.deposit)
     label.textColor = .slateGrey
     label.font = .poppinsSemibold20
     return label
@@ -110,6 +109,7 @@ class CoinDetailsDepositView: UIView {
   }
   
   func configure(for coin: BTMCoin) {
+    titleLabel.text = String(format: localize(L.CoinDeposit.title), coin.type.code)
     qrCodeImageView.image = UIImage.qrCode(from: coin.publicKey)
     addressValueLabel.text = coin.publicKey
   }

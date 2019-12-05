@@ -10,6 +10,16 @@ final class CoinSellDetailsCurrentAddressPresenter: ModulePresenter, CoinSellDet
   }
 
   weak var delegate: CoinSellDetailsCurrentAddressModuleDelegate?
+  
+  var details: SellDetailsForCurrentAddress!
+  
+  var title: String {
+    return String(format: localize(L.CoinSellDetails.title), details.coin.type.code)
+  }
+  
+  func setup(with details: SellDetailsForCurrentAddress) {
+    self.details = details
+  }
 
   func bind(input: Input) {
     Driver.merge(input.back, input.done)

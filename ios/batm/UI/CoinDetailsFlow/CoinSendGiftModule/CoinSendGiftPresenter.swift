@@ -136,7 +136,7 @@ final class CoinSendGiftPresenter: ModulePresenter, CoinSendGiftModule {
     return usecase.verifyCode(code: state.code)
       .andThen(usecase.sendGift(from: state.coin!,
                                 to: state.formattedPhoneNumber,
-                                amount: Double(state.coinAmount) ?? 0.0,
+                                amount: state.coinAmount.doubleValue ?? 0.0,
                                 message: state.message,
                                 imageId: state.imageId))
       .catchError { [store] in

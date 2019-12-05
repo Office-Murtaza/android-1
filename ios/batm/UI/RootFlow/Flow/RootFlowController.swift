@@ -45,7 +45,11 @@ extension RootFlowController: LoginFlowControllerDelegate {
 }
 
 extension RootFlowController: PinCodeModuleDelegate {
-  func didFinishPinCode() {
+  func didFinishPinCode(for stage: PinCodeStage) {
+    switch stage {
+    case .setup: step.accept(RootFlow.Steps.pinCode(.confirmation))
+    case .confirmation, .verification: step.accept(RootFlow.Steps.main)
+    }
     step.accept(RootFlow.Steps.main)
   }
 }

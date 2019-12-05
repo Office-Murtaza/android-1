@@ -44,7 +44,7 @@ final class ChangePhoneStore: ViewStore<ChangePhoneAction, ChangePhoneState> {
       return .invalid(localize(L.CreateWallet.Form.Error.allFieldsRequired))
     }
     
-    guard let _ = try? PhoneNumberKit.default.parse(state.phoneNumber) else {
+    guard let _ = try? PhoneNumberKit.default.parse(state.phoneNumber, withRegion: "US") else {
       return .invalid(localize(L.CreateWallet.Form.Error.notValidPhoneNumber))
     }
     

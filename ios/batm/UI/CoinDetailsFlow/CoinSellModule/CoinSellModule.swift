@@ -5,6 +5,6 @@ protocol CoinSellModule: class {
 }
 protocol CoinSellModuleDelegate: class {
   func showSellDetailsForAnotherAddress(_ details: SellDetailsForAnotherAddress)
-  func showSellDetailsForCurrentAddress()
+  func showSellDetailsForCurrentAddress(_ details: SellDetailsForCurrentAddress)
   func didFinishCoinSell()
 }

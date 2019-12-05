@@ -30,8 +30,7 @@ extension BTMWallet {
       
       return BTMCoin(type: $0,
                      privateKey: privateKey.data.hexString,
-                     publicKey: publicKey,
-                     isVisible: true)
+                     publicKey: publicKey)
     }
     
     self.init(seedPhrase: seedPhrase, coins: coins)

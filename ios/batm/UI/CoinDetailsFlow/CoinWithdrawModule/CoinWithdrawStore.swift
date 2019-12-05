@@ -24,7 +24,8 @@ struct CoinWithdrawState: Equatable {
   var shouldShowCodePopup: Bool = false
   
   var maxValue: Double {
-    return coinBalance?.maxValue ?? 0
+    guard let balance = coinBalance?.balance, let fee = coin?.feeInCoin, balance > fee else { return 0 }
+    return balance - fee
   }
   
 }
@@ -43,16 +44,16 @@ final class CoinWithdrawStore: ViewStore<CoinWithdrawAction, CoinWithdrawState> 
     case let .setupCoinBalance(coinBalance): state.coinBalance = coinBalance
     case let .updateAddress(address): state.address = address ?? ""
     case let .updateCurrencyAmount(amount):
-      let currencyAmount = (amount ?? "").fiatFormatted
-      let doubleCurrencyAmount = Double(currencyAmount)
+      let currencyAmount = (amount ?? "").fiatWithdrawFormatted
+      let doubleCurrencyAmount = currencyAmount.doubleValue
       let price = state.coinBalance!.price
       let coinAmount = doubleCurrencyAmount == nil ? "" : (doubleCurrencyAmount! / price).coinFormatted
       
       state.coinAmount = coinAmount
       state.currencyAmount = currencyAmount
     case let .updateCoinAmount(amount):
-      let coinAmount = (amount ?? "").coinFormatted
-      let doubleCoinAmount = Double(coinAmount)
+      let coinAmount = (amount ?? "").coinWithdrawFormatted
+      let doubleCoinAmount = coinAmount.doubleValue
       let price = state.coinBalance!.price
       let currencyAmount = doubleCoinAmount == nil ? "" : (doubleCoinAmount! * price).fiatFormatted
       
@@ -76,11 +77,11 @@ final class CoinWithdrawStore: ViewStore<CoinWithdrawAction, CoinWithdrawState> 
       return .invalid(localize(L.CoinWithdraw.Form.Error.invalidAddress))
     }
     
-    guard let amount = Double(state.coinAmount) else {
+    guard let amount = state.coinAmount.doubleValue else {
       return .invalid(localize(L.CoinWithdraw.Form.Error.invalidAmount))
     }
     
-    guard amount > coin.type.fee else {
+    guard amount > 0 else {
       return .invalid(localize(L.CoinWithdraw.Form.Error.tooLowAmount))
     }
     

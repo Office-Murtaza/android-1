@@ -28,12 +28,22 @@ final class UnlinkViewController: ModuleViewController<UnlinkPresenter> {
     return label
   }()
   
+  let annotationLabel: UILabel = {
+    let label = UILabel()
+    label.text = localize(L.Unlink.annotation)
+    label.textColor = .slateGrey
+    label.textAlignment = .center
+    label.font = .poppinsMedium14
+    label.numberOfLines = 0
+    return label
+  }()
+  
   let warningLabel: UILabel = {
     let label = UILabel()
     label.text = localize(L.Unlink.warning)
     label.textColor = .slateGrey
     label.textAlignment = .center
-    label.font = .poppinsMedium14
+    label.font = .poppinsBold14
     label.numberOfLines = 0
     return label
   }()
@@ -53,6 +63,7 @@ final class UnlinkViewController: ModuleViewController<UnlinkPresenter> {
     
     view.addSubviews(backgroundImageView,
                      safeAreaContainer,
+                     annotationLabel,
                      warningLabel,
                      unlinkButton)
     safeAreaContainer.addSubviews(backButton,
@@ -76,8 +87,12 @@ final class UnlinkViewController: ModuleViewController<UnlinkPresenter> {
     titleLabel.snp.makeConstraints {
       $0.center.equalToSuperview()
     }
-    warningLabel.snp.makeConstraints {
+    annotationLabel.snp.makeConstraints {
       $0.top.equalTo(backgroundImageView.snp.bottom).offset(30)
+      $0.left.right.equalToSuperview().inset(25)
+    }
+    warningLabel.snp.makeConstraints {
+      $0.top.equalTo(annotationLabel.snp.bottom).offset(30)
       $0.left.right.equalToSuperview().inset(25)
     }
     unlinkButton.snp.makeConstraints {

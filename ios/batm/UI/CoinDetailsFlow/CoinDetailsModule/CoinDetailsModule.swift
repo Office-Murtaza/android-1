@@ -1,4 +1,5 @@
 import Foundation
+import TrustWalletCore
 
 protocol CoinDetailsModule: class {
   func setup(with coinBalance: CoinBalance)
@@ -8,5 +9,5 @@ protocol CoinDetailsModuleDelegate: class {
   func showWithdrawScreen(for coin: BTMCoin, and coinBalance: CoinBalance)
   func showSendGiftScreen(for coin: BTMCoin, and coinBalance: CoinBalance)
   func showSellScreen(coin: BTMCoin, coinBalance: CoinBalance, details: SellDetails)
-  func showTransactionDetails(for details: TransactionDetails)
+  func showTransactionDetails(with details: TransactionDetails, for type: CoinType)
 }

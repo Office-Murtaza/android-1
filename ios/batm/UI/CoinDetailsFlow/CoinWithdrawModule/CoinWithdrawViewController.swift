@@ -46,7 +46,6 @@ final class CoinWithdrawViewController: NavigationScreenViewController<CoinWithd
                                        addressView,
                                        exchangeView,
                                        nextButton)
-    customView.setTitle(localize(L.CoinWithdraw.title))
    
     setupKeyboardHandling()
   }
@@ -92,6 +91,15 @@ final class CoinWithdrawViewController: NavigationScreenViewController<CoinWithd
   }
   
   func setupUIBindings() {
+    presenter.state
+      .map { $0.coin?.type.code }
+      .filterNil()
+      .distinctUntilChanged()
+      .drive(onNext: { [customView] in
+        customView.setTitle(String(format: localize(L.CoinWithdraw.title), $0))
+      })
+      .disposed(by: disposeBag)
+    
     presenter.state
       .map { $0.coin?.type.code }
       .filterNil()
@@ -199,8 +207,9 @@ final class CoinWithdrawViewController: NavigationScreenViewController<CoinWithd
     let builder = QRCodeReaderViewControllerBuilder {
       $0.reader = QRCodeReader(metadataObjectTypes: [.qr], captureDevicePosition: .back)
     }
-    
-    return QRCodeReaderViewController(builder: builder)
+    let vc = QRCodeReaderViewController(builder: builder)
+    vc.modalPresentationStyle = .fullScreen
+    return vc
   }()
   
   private func showQrReader() {

@@ -12,30 +12,37 @@ class CoinWithdrawExchangeView: UIView {
     return label
   }()
   
-  let currencyContainer = UIView()
-  let coinContainer = UIView()
+  let coinStackView: UIStackView = {
+    let stackView = UIStackView()
+    stackView.axis = .vertical
+    stackView.spacing = 15
+    return stackView
+  }()
+  
+  let currencyStackView: UIStackView = {
+    let stackView = UIStackView()
+    stackView.axis = .vertical
+    stackView.spacing = 15
+    return stackView
+  }()
+  
   let exchangeImageView = UIImageView(image: UIImage(named: "exchange"))
+  
+  let coinLabel: UILabel = {
+    let label = UILabel()
+    label.textColor = .warmGrey
+    label.font = .poppinsMedium14
+    label.textAlignment = .center
+    return label
+  }()
   
   let currencyLabel: UILabel = {
     let label = UILabel()
     label.text = "USD"
     label.textColor = .warmGrey
     label.font = .poppinsMedium14
+    label.textAlignment = .center
     return label
-  }()
-  
-  let coinLabel: UILabel = {
-    let label = UILabel()
-    label.textColor = .warmGrey
-    label.font = .poppinsMedium14
-    return label
-  }()
-  
-  let currencyTextField: MainTextField = {
-    let textField = MainTextField()
-    textField.textAlignment = .center
-    textField.keyboardType = .decimalPad
-    return textField
   }()
   
   let coinTextField: MainTextField = {
@@ -45,16 +52,35 @@ class CoinWithdrawExchangeView: UIView {
     return textField
   }()
   
+  let currencyTextField: MainTextField = {
+    let textField = MainTextField()
+    textField.textAlignment = .center
+    textField.keyboardType = .decimalPad
+    return textField
+  }()
+  
+  let currencySellLabel: UILabel = {
+    let label = UILabel()
+    label.text = localize(L.CoinSell.annotation)
+    label.textColor = .slateGrey
+    label.textAlignment = .center
+    label.font = .poppinsMedium10
+    label.minimumScaleFactor = 0.5
+    label.adjustsFontSizeToFitWidth = true
+    label.numberOfLines = 2
+    return label
+  }()
+  
   let maxLabel: UnderlinedLabelView = {
     let label = UnderlinedLabelView()
     label.configure(for: .max)
     return label
   }()
   
-  private let isCoinEditable: Bool
+  private let isSellMode: Bool
   
-  init(coinEditable: Bool = true) {
-    self.isCoinEditable = coinEditable
+  init(sellMode: Bool = false) {
+    self.isSellMode = sellMode
     
     super.init(frame: .null)
     
@@ -70,16 +96,18 @@ class CoinWithdrawExchangeView: UIView {
     translatesAutoresizingMaskIntoConstraints = false
     
     addSubviews(amountLabel,
-                currencyContainer,
+                coinStackView,
                 exchangeImageView,
-                coinContainer,
+                currencyStackView,
                 maxLabel)
-    currencyContainer.addSubviews(currencyLabel,
-                                  currencyTextField)
-    coinContainer.addSubviews(coinLabel,
-                              coinTextField)
+    coinStackView.addArrangedSubviews(coinLabel,
+                                      coinTextField)
+    currencyStackView.addArrangedSubviews(currencyLabel,
+                                          currencyTextField,
+                                          currencySellLabel)
     
-    coinTextField.isEnabled = isCoinEditable
+    coinTextField.isEnabled = !isSellMode
+    currencySellLabel.isHidden = !isSellMode
   }
   
   private func setupLayout() {
@@ -87,35 +115,24 @@ class CoinWithdrawExchangeView: UIView {
       $0.top.equalToSuperview()
       $0.centerX.equalToSuperview()
     }
-    currencyContainer.snp.makeConstraints {
+    coinStackView.snp.makeConstraints {
       $0.top.equalTo(amountLabel.snp.bottom).offset(15)
       $0.left.equalToSuperview()
     }
     exchangeImageView.snp.makeConstraints {
-      $0.centerY.equalTo(currencyTextField.snp.centerY)
-      $0.left.equalTo(currencyContainer.snp.right).offset(18)
+      $0.centerY.equalTo(coinTextField.snp.centerY)
+      $0.left.equalTo(coinStackView.snp.right).offset(18)
     }
     exchangeImageView.setContentHuggingPriority(.required, for: .horizontal)
     exchangeImageView.setContentCompressionResistancePriority(.required, for: .horizontal)
-    coinContainer.snp.makeConstraints {
+    currencyStackView.snp.makeConstraints {
       $0.top.equalTo(amountLabel.snp.bottom).offset(15)
       $0.right.equalToSuperview()
       $0.left.equalTo(exchangeImageView.snp.right).offset(18)
-      $0.width.equalTo(currencyContainer)
-    }
-    [currencyLabel, coinLabel].forEach {
-      $0.snp.makeConstraints {
-        $0.top.centerX.equalToSuperview()
-      }
-    }
-    [currencyTextField, coinTextField].forEach {
-      $0.snp.makeConstraints {
-        $0.top.equalTo(currencyLabel.snp.bottom).offset(16)
-        $0.left.right.bottom.equalToSuperview()
-      }
+      $0.width.equalTo(coinStackView)
     }
     maxLabel.snp.makeConstraints {
-      $0.top.equalTo(currencyContainer.snp.bottom).offset(15)
+      $0.top.equalTo(currencyStackView.snp.bottom).offset(15)
       $0.centerX.bottom.equalToSuperview()
     }
   }

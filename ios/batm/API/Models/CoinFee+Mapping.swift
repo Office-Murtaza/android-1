@@ -1,7 +1,7 @@
 import ObjectMapper
 import TrustWalletCore
 
-extension CoinBalance: ImmutableMappable {
+extension CoinFee: ImmutableMappable {
   init(map: Map) throws {
     let code: String = try map.value("code")
     
@@ -10,8 +10,8 @@ extension CoinBalance: ImmutableMappable {
     }
     
     type = mappedType
-    balance = try map.value("balance")
-    price = try map.value("price.USD")
-    index = try map.value("id")
+    fee = try? map.value("fee")
+    gasPrice = try? map.value("gasPrice")
+    gasLimit = try? map.value("gasLimit")
   }
 }

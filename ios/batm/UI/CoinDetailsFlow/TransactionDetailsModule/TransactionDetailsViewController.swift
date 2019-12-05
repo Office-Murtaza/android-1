@@ -30,7 +30,7 @@ final class TransactionDetailsViewController: NavigationScreenViewController<Tra
   }
   
   func setupUIBindings() {
-    generalSectionView.configure(for: presenter.details)
+    generalSectionView.configure(with: presenter.details, for: presenter.type)
     stackView.addArrangedSubview(generalSectionView)
     
     if presenter.details.hasGiftInfo {

@@ -102,7 +102,7 @@ class CoinsBalanceViewController: ModuleViewController<CoinsBalancePresenter>, U
       .disposed(by: disposeBag)
     
     presenter.state
-      .map { $0.coinsBalance?.coins }
+      .map { $0.coinsBalance?.coins.sorted() }
       .filterNil()
       .asObservable()
       .bind(to: dataSource.coinBalancesRelay)

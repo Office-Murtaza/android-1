@@ -10,13 +10,14 @@ target 'batm' do
   pod 'FlagPhoneNumber', '0.7.2'
   pod 'GoogleMaps', '3.4.0'
   pod 'QRCodeReader.swift', '10.1.0'
-  pod 'Giphy', '1.1.1'
+  pod 'Giphy', '1.1.6'
 
   # Utilities
   pod 'TrustWalletCore', '0.12.22'
   pod 'PhoneNumberKit', '3.0.0'
   pod 'Swinject', '2.7.1'
   pod 'ObjectMapper', '3.5.1'
+  pod 'BigNumber', :git => 'https://github.com/mkrd/Swift-Big-Integer.git'
   
   # Rx
   pod 'Moya/RxSwift', '13.0.1'
