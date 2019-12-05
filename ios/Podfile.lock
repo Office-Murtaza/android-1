@@ -1,9 +1,10 @@
 PODS:
   - Alamofire (4.9.0)
+  - BigNumber (2.0)
   - DeepDiff (2.2.0)
   - FlagPhoneNumber (0.7.2):
     - libPhoneNumber-iOS
-  - Giphy (1.1.1):
+  - Giphy (1.1.6):
     - DeepDiff (~> 2.2.0)
     - libwebp
     - PINCache
@@ -55,8 +56,9 @@ PODS:
     - SwiftProtobuf (~> 1.5.0)
 
 DEPENDENCIES:
+  - BigNumber (from `https://github.com/mkrd/Swift-Big-Integer.git`)
   - FlagPhoneNumber (= 0.7.2)
-  - Giphy (= 1.1.1)
+  - Giphy (= 1.1.6)
   - GoogleMaps (= 3.4.0)
   - MBProgressHUD (= 1.1.0)
   - Moya/RxSwift (= 13.0.1)
@@ -96,11 +98,21 @@ SPEC REPOS:
     - Swinject
     - TrustWalletCore
 
+EXTERNAL SOURCES:
+  BigNumber:
+    :git: https://github.com/mkrd/Swift-Big-Integer.git
+
+CHECKOUT OPTIONS:
+  BigNumber:
+    :commit: 67a164537bce4a4bfe9f14c41193bfa3e130c569
+    :git: https://github.com/mkrd/Swift-Big-Integer.git
+
 SPEC CHECKSUMS:
   Alamofire: afc3e7c6db61476cb45cdd23fed06bad03bbc321
+  BigNumber: bcc393c06b3e7e2752e5121be58c032c45c6f36b
   DeepDiff: e329bc46dd14ca788d8ec08d34420799ba1d77f2
   FlagPhoneNumber: 86194d414c7e3b2f38c16136c4f8a5d34e3ee8b7
-  Giphy: 5e3c72e73731c63e861688ab512a6b3a83a121b7
+  Giphy: 3c0ab5869df8fb090b98e663d9a011476d644a61
   GoogleMaps: 67f4a604f80dd6a22d09c2a507a3a395b9f23060
   libPhoneNumber-iOS: 0a32a9525cf8744fe02c5206eb30d571e38f7d75
   libwebp: 057912d6d0abfb6357d8bb05c0ea470301f5d61e
@@ -120,6 +132,6 @@ SPEC CHECKSUMS:
   Swinject: ddf78b8486dd9b71a667b852cad919ab4484478e
   TrustWalletCore: 16bab4272fb16bac404c66e5215ca46362adebf1
 
-PODFILE CHECKSUM: a3f578f1e26e398e58eeced2da43a921835a7868
+PODFILE CHECKSUM: ca0811e3141353877a680c9a123af9ed0ccb294f
 
 COCOAPODS: 1.7.5

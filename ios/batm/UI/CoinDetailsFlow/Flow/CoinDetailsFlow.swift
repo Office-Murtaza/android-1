@@ -1,4 +1,5 @@
 import RxFlow
+import TrustWalletCore
 
 class CoinDetailsFlow: BaseFlow<BTMNavigationController, CoinDetailsFlowController> {
   override func assemblies() -> [Assembly] {
@@ -16,12 +17,12 @@ class CoinDetailsFlow: BaseFlow<BTMNavigationController, CoinDetailsFlowControll
   
   enum Steps: Step, Equatable {
     case coinDetails(CoinBalance)
-    case transactionDetails(TransactionDetails)
+    case transactionDetails(TransactionDetails, CoinType)
     case withdraw(BTMCoin, CoinBalance)
     case sendGift(BTMCoin, CoinBalance)
     case sell(BTMCoin, CoinBalance, SellDetails)
     case sellDetailsForAnotherAddress(SellDetailsForAnotherAddress)
-    case sellDetailsForCurrentAddress
+    case sellDetailsForCurrentAddress(SellDetailsForCurrentAddress)
     case pop
   }
   
@@ -37,9 +38,9 @@ class CoinDetailsFlow: BaseFlow<BTMNavigationController, CoinDetailsFlowControll
       let module = resolver.resolve(Module<CoinDetailsModule>.self)!
       module.input.setup(with: coinBalance)
       return push(module.controller)
-    case let .transactionDetails(details):
+    case let .transactionDetails(details, type):
       let module = resolver.resolve(Module<TransactionDetailsModule>.self)!
-      module.input.setup(with: details)
+      module.input.setup(with: details, for: type)
       return push(module.controller)
     case let .withdraw(coin, coinBalance):
       let module = resolver.resolve(Module<CoinWithdrawModule>.self)!
@@ -59,8 +60,9 @@ class CoinDetailsFlow: BaseFlow<BTMNavigationController, CoinDetailsFlowControll
       let module = resolver.resolve(Module<CoinSellDetailsAnotherAddressModule>.self)!
       module.input.setup(with: details)
       return replaceLast(module.controller)
-    case .sellDetailsForCurrentAddress:
+    case let .sellDetailsForCurrentAddress(details):
       let module = resolver.resolve(Module<CoinSellDetailsCurrentAddressModule>.self)!
+      module.input.setup(with: details)
       return replaceLast(module.controller)
     case .pop: return pop()
     }

@@ -16,7 +16,7 @@ final class CoinSellDetailsCurrentAddressViewController: NavigationScreenViewCon
   
   let doneButton: MainButton = {
     let button = MainButton()
-    button.configure(for: .lightDone)
+    button.configure(for: .done)
     return button
   }()
   
@@ -27,7 +27,7 @@ final class CoinSellDetailsCurrentAddressViewController: NavigationScreenViewCon
   override func setupUI() {
     customView.contentView.addSubviews(instructionsView,
                                        doneButton)
-    customView.setTitle(localize(L.CoinSellDetails.title))
+    customView.setTitle(presenter.title)
   }
 
   override func setupLayout() {

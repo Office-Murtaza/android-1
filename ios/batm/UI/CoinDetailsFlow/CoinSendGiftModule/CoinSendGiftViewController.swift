@@ -17,11 +17,7 @@ final class CoinSendGiftViewController: NavigationScreenViewController<CoinSendG
     return label
   }()
   
-  let phoneTextField: PhoneNumberTextField = {
-    let textField = PhoneNumberTextField()
-    textField.textAlignment = .center
-    return textField
-  }()
+  let phoneTextField = PhoneNumberTextField()
   
   let pasteLabel: UnderlinedLabelView = {
     let label = UnderlinedLabelView()
@@ -91,7 +87,6 @@ final class CoinSendGiftViewController: NavigationScreenViewController<CoinSendG
                                        removeGifLabel,
                                        messageTextField,
                                        nextButton)
-    customView.setTitle(localize(L.CoinSendGift.title))
     
     setupKeyboardHandling()
   }
@@ -164,6 +159,15 @@ final class CoinSendGiftViewController: NavigationScreenViewController<CoinSendG
   }
   
   func setupUIBindings() {
+    presenter.state
+      .map { $0.coin?.type.code }
+      .filterNil()
+      .distinctUntilChanged()
+      .drive(onNext: { [customView] in
+        customView.setTitle(String(format: localize(L.CoinSendGift.title), $0))
+      })
+      .disposed(by: disposeBag)
+    
     presenter.state
       .map { $0.coin?.type.code }
       .filterNil()

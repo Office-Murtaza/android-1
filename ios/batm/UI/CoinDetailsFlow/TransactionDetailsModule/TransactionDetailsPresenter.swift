@@ -1,6 +1,7 @@
 import Foundation
 import RxSwift
 import RxCocoa
+import TrustWalletCore
 
 final class TransactionDetailsPresenter: ModulePresenter, TransactionDetailsModule {
 
@@ -12,9 +13,11 @@ final class TransactionDetailsPresenter: ModulePresenter, TransactionDetailsModu
   weak var delegate: TransactionDetailsModuleDelegate?
   
   var details: TransactionDetails!
+  var type: CoinType!
   
-  func setup(with details: TransactionDetails) {
+  func setup(with details: TransactionDetails, for type: CoinType) {
     self.details = details
+    self.type = type
   }
 
   func bind(input: Input) {

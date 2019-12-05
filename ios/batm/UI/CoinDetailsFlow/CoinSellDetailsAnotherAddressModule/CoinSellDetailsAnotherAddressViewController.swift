@@ -48,7 +48,7 @@ final class CoinSellDetailsAnotherAddressViewController: NavigationScreenViewCon
   
   let doneButton: MainButton = {
     let button = MainButton()
-    button.configure(for: .lightDone)
+    button.configure(for: .done)
     return button
   }()
   
@@ -64,7 +64,7 @@ final class CoinSellDetailsAnotherAddressViewController: NavigationScreenViewCon
                                        amountLabel,
                                        instructionsView,
                                        doneButton)
-    customView.setTitle(localize(L.CoinSellDetails.title))
+    customView.setTitle(presenter.title)
     
     qrCodeImageView.image = UIImage.qrCode(from: presenter.details.address)
     addressValueLabel.text = presenter.details.address

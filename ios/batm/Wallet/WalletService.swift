@@ -1,6 +1,7 @@
 import Foundation
 import RxSwift
 import TrustWalletCore
+import BigNumber
 
 enum CreateTransactionError: Error {
   case coinTypeNotSupported
@@ -85,7 +86,7 @@ class WalletServiceImpl: WalletService {
     var input = BitcoinSigningInput.with {
       $0.hashType = coin.type.hashType
       $0.amount = amountInUnits
-      $0.byteFee = coin.type.feePerByte
+      $0.byteFee = coin.transactionFee
       $0.changeAddress = coin.publicKey
       $0.toAddress = toAddress
       $0.coinType = coin.type.rawValue
@@ -150,7 +151,7 @@ class WalletServiceImpl: WalletService {
   
   func getEthereumTransactionHex(for coin: BTMCoin, to destination: String, amount: Double) -> Single<String> {
     return accountStorage.get()
-      .flatMap { [api] in api.getNonce(userId: $0.userId, type: coin.type, address: coin.publicKey) }
+      .flatMap { [api] in api.getNonce(userId: $0.userId, type: coin.type) }
       .map { [unowned self] in try self.getEthereumTransactionHex(coin: coin,
                                                                   toAddress: destination,
                                                                   amount: amount,
@@ -160,16 +161,20 @@ class WalletServiceImpl: WalletService {
   private func getEthereumTransactionHex(coin: BTMCoin,
                                          toAddress: String,
                                          amount: Double,
-                                         nonce: String) throws -> String {
-    let million: Int64 = 1_000_000
-    let castedAmountMultipliedByMillion = Int64(amount * Double(million))
-    let oneMillionthEth = coin.type.unit / million
-    let totalAmount = oneMillionthEth * castedAmountMultipliedByMillion
+                                         nonce: Int) throws -> String {
+    let divider: Int64 = Int64(10.pow(CoinType.maxNumberOfFractionDigits))
     
-    let nonceHex = String(format: "%016llx", nonce)
-    let amountHex = String(format: "%016llx", totalAmount)
-    let gasLimitHex = String(format: "%016llx", coin.type.gasLimit)
-    let gasPriceHex = String(format: "%016llx", coin.type.gasPrice)
+    let dividerthUnit = coin.type.unit / divider
+    let amountMultipliedByDivider = Int64(amount * Double(divider))
+    
+    let bigUnit = BInt(dividerthUnit)
+    let bigAmount = BInt(amountMultipliedByDivider)
+    let bigAmountInUnits = bigUnit * bigAmount
+    let hexAmountInUnits = bigAmountInUnits.asString(radix: 16).leadingZeros(64)
+    
+    let hexNonce = BInt(nonce).asString(radix: 16).leadingZeros(64)
+    let hexGasLimit = BInt(coin.gasLimit).asString(radix: 16).leadingZeros(64)
+    let hexGasPrice = BInt(coin.gasPrice).asString(radix: 16).leadingZeros(64)
     
     guard let privateKey = Data(hexString: coin.privateKey) else {
       throw CreateTransactionError.cantCreate
@@ -177,10 +182,10 @@ class WalletServiceImpl: WalletService {
     
     let input = EthereumSigningInput.with {
       $0.chainID = Data(hexString: "01")!
-      $0.nonce = Data(hexString: nonceHex)!
-      $0.gasLimit = Data(hexString: gasLimitHex)!
-      $0.gasPrice = Data(hexString: gasPriceHex)!
-      $0.amount = Data(hexString: amountHex)!
+      $0.nonce = Data(hexString: hexNonce)!
+      $0.gasLimit = Data(hexString: hexGasLimit)!
+      $0.gasPrice = Data(hexString: hexGasPrice)!
+      $0.amount = Data(hexString: hexAmountInUnits)!
       $0.toAddress = toAddress
       $0.privateKey = privateKey
     }
@@ -204,7 +209,7 @@ class WalletServiceImpl: WalletService {
                                         toAddress: String,
                                         amount: Double,
                                         blockHeader: BTMTronBlockHeader) throws -> String {
-    let castedAmount = Int64(amount * Double(coin.type.unit))
+    let amountInUnits = Int64(amount * Double(coin.type.unit))
     
     guard let privateKey = Data(hexString: coin.privateKey) else {
       throw CreateTransactionError.cantCreate
@@ -213,7 +218,7 @@ class WalletServiceImpl: WalletService {
     let transfer = TronTransferContract.with {
       $0.ownerAddress = coin.publicKey
       $0.toAddress = toAddress
-      $0.amount = castedAmount
+      $0.amount = amountInUnits
     }
     
     let timestamp = Int64(Date().timeIntervalSince1970 * 1000)
@@ -232,7 +237,7 @@ class WalletServiceImpl: WalletService {
       $0.transfer = transfer
       $0.timestamp = timestamp
       $0.expiration = expiration
-      $0.feeLimit = coin.type.feeInUnit
+      $0.feeLimit = coin.transactionFee
       $0.blockHeader = blockHeader
     }
     
@@ -249,9 +254,7 @@ class WalletServiceImpl: WalletService {
   
   func getBinanceTransactionHex(for coin: BTMCoin, to destination: String, amount: Double) -> Single<String> {
     return accountStorage.get()
-      .flatMap { [unowned self] in self.api.getBinanceAccountInfo(userId: $0.userId,
-                                                                  type: coin.type,
-                                                                  address: coin.publicKey) }
+      .flatMap { [unowned self] in self.api.getBinanceAccountInfo(userId: $0.userId, type: coin.type) }
       .map { [unowned self] in try self.getBinanceTransactionHex(coin: coin,
                                                                  toAddress: destination,
                                                                  amount: amount,
@@ -262,14 +265,14 @@ class WalletServiceImpl: WalletService {
                                         toAddress: String,
                                         amount: Double,
                                         accountInfo: BinanceAccountInfo) throws -> String {
-    let castedAmount = Int64(amount * Double(coin.type.unit))
+    let amountInUnits = Int64(amount * Double(coin.type.unit))
     
     guard let privateKey = Data(hexString: coin.privateKey) else {
       throw CreateTransactionError.cantCreate
     }
     
     var signingInput = BinanceSigningInput()
-    signingInput.chainID = "Binance-Chain-Tigris"
+    signingInput.chainID = accountInfo.chainId
     signingInput.accountNumber = Int64(accountInfo.accountNumber)
     signingInput.sequence = Int64(accountInfo.sequence)
     
@@ -277,7 +280,7 @@ class WalletServiceImpl: WalletService {
     
     var token = BinanceSendOrder.Token()
     token.denom = "BNB"
-    token.amount = castedAmount
+    token.amount = amountInUnits
     
     var input = BinanceSendOrder.Input()
     input.address = CosmosAddress(string: coin.publicKey)!.keyHash
@@ -301,9 +304,7 @@ class WalletServiceImpl: WalletService {
   
   func getRippleTransactionHex(for coin: BTMCoin, to destination: String, amount: Double) -> Single<String> {
     return accountStorage.get()
-      .flatMap { [unowned self] in self.api.getRippleSequence(userId: $0.userId,
-                                                              type: coin.type,
-                                                              address: coin.publicKey) }
+      .flatMap { [unowned self] in self.api.getRippleSequence(userId: $0.userId, type: coin.type) }
       .map { [unowned self] in try self.getRippleTransactionHex(coin: coin,
                                                                 toAddress: destination,
                                                                 amount: amount,
@@ -314,7 +315,7 @@ class WalletServiceImpl: WalletService {
                                        toAddress: String,
                                        amount: Double,
                                        sequence: Int) throws -> String {
-    let castedAmount = Int64(amount * Double(coin.type.unit))
+    let amountInUnits = Int64(amount * Double(coin.type.unit))
     
     guard let privateKey = Data(hexString: coin.privateKey) else {
       throw CreateTransactionError.cantCreate
@@ -323,8 +324,8 @@ class WalletServiceImpl: WalletService {
     let input = RippleSigningInput.with {
       $0.account = coin.publicKey
       $0.destination = toAddress
-      $0.amount = castedAmount
-      $0.fee = coin.type.feeInUnit
+      $0.amount = amountInUnits
+      $0.fee = coin.transactionFee
       $0.sequence = Int32(sequence)
       $0.privateKey = privateKey
     }

@@ -15,4 +15,36 @@ extension UIImage {
     
     return nil
   }
+  
+  static func image(
+    color: UIColor,
+    size: CGSize = CGSize(width: 1, height: 1),
+    cornerRadius radius: CGFloat = 0) -> UIImage {
+    
+    guard size.width >= radius * 2 && size.height >= radius * 2 else {
+      fatalError("Radius is bigger than expected")
+    }
+    
+    let rect = CGRect(origin: .zero, size: size)
+    
+    UIGraphicsBeginImageContext(rect.size)
+    
+    guard let context = UIGraphicsGetCurrentContext() else {
+      fatalError("Unable to get drawing context")
+    }
+    
+    let path = UIBezierPath(roundedRect: rect, cornerRadius: radius)
+    path.addClip()
+    color.setFill()
+    context.addPath(path.cgPath)
+    context.fillPath()
+    
+    guard let image = UIGraphicsGetImageFromCurrentImageContext() else {
+      fatalError("Unable to get image from current drawing context")
+    }
+    
+    UIGraphicsEndImageContext()
+    
+    return image
+  }
 }

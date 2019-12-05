@@ -76,8 +76,8 @@ class CoinSellLimitView: UIView {
 extension Reactive where Base == CoinSellLimitView {
   var limits: Binder<SellDetails> {
     return Binder(base) { target, value in
-      target.dailyLimitValueLabel.text = "\(value.dailyLimit) USD"
-      target.transactionLimitValueLabel.text = "\(value.transactionLimit) USD"
+      target.dailyLimitValueLabel.text = "\(value.dailyLimit.fiatFormatted) USD"
+      target.transactionLimitValueLabel.text = "\(value.transactionLimit.fiatFormatted) USD"
     }
   }
 }

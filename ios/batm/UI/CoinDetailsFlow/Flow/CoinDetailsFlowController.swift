@@ -1,4 +1,5 @@
 import RxFlow
+import TrustWalletCore
 
 protocol CoinDetailsFlowControllerDelegate: class {
   func didFinishCoinDetailsFlow()
@@ -28,8 +29,8 @@ extension CoinDetailsFlowController: CoinDetailsModuleDelegate {
     step.accept(CoinDetailsFlow.Steps.sell(coin, coinBalance, details))
   }
   
-  func showTransactionDetails(for details: TransactionDetails) {
-    step.accept(CoinDetailsFlow.Steps.transactionDetails(details))
+  func showTransactionDetails(with details: TransactionDetails, for type: CoinType) {
+    step.accept(CoinDetailsFlow.Steps.transactionDetails(details, type))
   }
   
 }
@@ -56,8 +57,8 @@ extension CoinDetailsFlowController: CoinSellModuleDelegate {
     step.accept(CoinDetailsFlow.Steps.sellDetailsForAnotherAddress(details))
   }
   
-  func showSellDetailsForCurrentAddress() {
-    step.accept(CoinDetailsFlow.Steps.sellDetailsForCurrentAddress)
+  func showSellDetailsForCurrentAddress(_ details: SellDetailsForCurrentAddress) {
+    step.accept(CoinDetailsFlow.Steps.sellDetailsForCurrentAddress(details))
   }
   
   func didFinishCoinSell() {

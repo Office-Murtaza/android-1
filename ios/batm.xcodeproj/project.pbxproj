@@ -107,11 +107,15 @@
 		DB5B2DE4230A769300821713 /* CoinDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB5B2DE0230A769300821713 /* CoinDetailsViewController.swift */; };
 		DB5B2DE5230A769300821713 /* CoinDetailsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB5B2DE1230A769300821713 /* CoinDetailsPresenter.swift */; };
 		DB5B2DE6230A769300821713 /* CoinDetailsAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB5B2DE2230A769300821713 /* CoinDetailsAssembly.swift */; };
+		DB5E3DDC23869DFC00D267E5 /* CoinFee.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB5E3DDB23869DFC00D267E5 /* CoinFee.swift */; };
+		DB5E3DDE23869E8700D267E5 /* CoinsFee.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB5E3DDD23869E8700D267E5 /* CoinsFee.swift */; };
+		DB5E3DE023869EAF00D267E5 /* CoinFee+Mapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB5E3DDF23869EAF00D267E5 /* CoinFee+Mapping.swift */; };
+		DB5E3DE223869EE700D267E5 /* CoinsFee+Mapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB5E3DE123869EE700D267E5 /* CoinsFee+Mapping.swift */; };
+		DB67D1B62394FB3E008EFB0D /* Error+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB67D1B52394FB3E008EFB0D /* Error+Extensions.swift */; };
 		DB6A578522C1EE5600DEE38A /* WelcomeSliderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB6A578422C1EE5600DEE38A /* WelcomeSliderView.swift */; };
 		DB6A578722C1F00300DEE38A /* WelcomeButtonsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB6A578622C1F00300DEE38A /* WelcomeButtonsView.swift */; };
 		DB6A578922C214F500DEE38A /* UISnapKit+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB6A578822C214F500DEE38A /* UISnapKit+Extensions.swift */; };
 		DB70851D22CF8A7600FFE4F7 /* BTMWallet+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD1750C22BD26CB0021A05E /* BTMWallet+Extensions.swift */; };
-		DB70851F22CF90F500FFE4F7 /* String+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB70851E22CF90F500FFE4F7 /* String+Extensions.swift */; };
 		DB70852322CFA39F00FFE4F7 /* CoinsBalanceModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB70852222CFA39F00FFE4F7 /* CoinsBalanceModule.swift */; };
 		DB70852522CFA3C500FFE4F7 /* CoinsBalancePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB70852422CFA3C500FFE4F7 /* CoinsBalancePresenter.swift */; };
 		DB70852722CFA3EC00FFE4F7 /* CoinsBalanceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB70852622CFA3EC00FFE4F7 /* CoinsBalanceViewController.swift */; };
@@ -198,7 +202,6 @@
 		DB9616A522C602CC0078E92D /* SeedPhraseAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB9616A422C602CC0078E92D /* SeedPhraseAssembly.swift */; };
 		DB9616A822C606530078E92D /* SeedPhraseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB9616A722C606530078E92D /* SeedPhraseView.swift */; };
 		DB9616AA22C608DD0078E92D /* SeedPhraseWordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB9616A922C608DD0078E92D /* SeedPhraseWordView.swift */; };
-		DB9616AC22C60CD80078E92D /* Array+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB9616AB22C60CD80078E92D /* Array+Extensions.swift */; };
 		DB9616AE22C60ECA0078E92D /* UIView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB9616AD22C60ECA0078E92D /* UIView+Extensions.swift */; };
 		DB9616B022C60EFB0078E92D /* UIStackView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB9616AF22C60EFB0078E92D /* UIStackView+Extensions.swift */; };
 		DB9616B222C610280078E92D /* UnderlinedLabelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB9616B122C610280078E92D /* UnderlinedLabelView.swift */; };
@@ -491,10 +494,14 @@
 		DB5B2DE0230A769300821713 /* CoinDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinDetailsViewController.swift; sourceTree = "<group>"; };
 		DB5B2DE1230A769300821713 /* CoinDetailsPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinDetailsPresenter.swift; sourceTree = "<group>"; };
 		DB5B2DE2230A769300821713 /* CoinDetailsAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinDetailsAssembly.swift; sourceTree = "<group>"; };
+		DB5E3DDB23869DFC00D267E5 /* CoinFee.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinFee.swift; sourceTree = "<group>"; };
+		DB5E3DDD23869E8700D267E5 /* CoinsFee.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinsFee.swift; sourceTree = "<group>"; };
+		DB5E3DDF23869EAF00D267E5 /* CoinFee+Mapping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CoinFee+Mapping.swift"; sourceTree = "<group>"; };
+		DB5E3DE123869EE700D267E5 /* CoinsFee+Mapping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CoinsFee+Mapping.swift"; sourceTree = "<group>"; };
+		DB67D1B52394FB3E008EFB0D /* Error+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Error+Extensions.swift"; sourceTree = "<group>"; };
 		DB6A578422C1EE5600DEE38A /* WelcomeSliderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeSliderView.swift; sourceTree = "<group>"; };
 		DB6A578622C1F00300DEE38A /* WelcomeButtonsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeButtonsView.swift; sourceTree = "<group>"; };
 		DB6A578822C214F500DEE38A /* UISnapKit+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UISnapKit+Extensions.swift"; sourceTree = "<group>"; };
-		DB70851E22CF90F500FFE4F7 /* String+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extensions.swift"; sourceTree = "<group>"; };
 		DB70852222CFA39F00FFE4F7 /* CoinsBalanceModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinsBalanceModule.swift; sourceTree = "<group>"; };
 		DB70852422CFA3C500FFE4F7 /* CoinsBalancePresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinsBalancePresenter.swift; sourceTree = "<group>"; };
 		DB70852622CFA3EC00FFE4F7 /* CoinsBalanceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinsBalanceViewController.swift; sourceTree = "<group>"; };
@@ -581,7 +588,6 @@
 		DB9616A422C602CC0078E92D /* SeedPhraseAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeedPhraseAssembly.swift; sourceTree = "<group>"; };
 		DB9616A722C606530078E92D /* SeedPhraseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeedPhraseView.swift; sourceTree = "<group>"; };
 		DB9616A922C608DD0078E92D /* SeedPhraseWordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeedPhraseWordView.swift; sourceTree = "<group>"; };
-		DB9616AB22C60CD80078E92D /* Array+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+Extensions.swift"; sourceTree = "<group>"; };
 		DB9616AD22C60ECA0078E92D /* UIView+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Extensions.swift"; sourceTree = "<group>"; };
 		DB9616AF22C60EFB0078E92D /* UIStackView+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIStackView+Extensions.swift"; sourceTree = "<group>"; };
 		DB9616B122C610280078E92D /* UnderlinedLabelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnderlinedLabelView.swift; sourceTree = "<group>"; };
@@ -1458,12 +1464,11 @@
 				DB904A9D22C00E2A007CB734 /* RxFlow+Extensions.swift */,
 				DB96168B22C517C80078E92D /* PhoneNumberKit+Extensions.swift */,
 				DB96168D22C52E3D0078E92D /* Observable+Extensions.swift */,
-				DB9616AB22C60CD80078E92D /* Array+Extensions.swift */,
 				DB9616ED22C74EB40078E92D /* RecursiveLock+Extensions.swift */,
-				DB70851E22CF90F500FFE4F7 /* String+Extensions.swift */,
 				DB308EBC22E7396A003D91AF /* URL+Extensions.swift */,
 				DB226C5922E99E3E0087E6C5 /* URLEncoding+Extensions.swift */,
 				DB2C97212344B4BA006E7D61 /* Primitives+Extensions.swift */,
+				DB67D1B52394FB3E008EFB0D /* Error+Extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -1567,6 +1572,8 @@
 				DBBF299F22D3814300A5DE6A /* CoinAddress.swift */,
 				DBBF29A122D381A200A5DE6A /* CoinBalance.swift */,
 				DBBF299B22D3801500A5DE6A /* CoinsBalance.swift */,
+				DB5E3DDB23869DFC00D267E5 /* CoinFee.swift */,
+				DB5E3DDD23869E8700D267E5 /* CoinsFee.swift */,
 				DB308EB422E737FA003D91AF /* OpenHour.swift */,
 				DB308EB222E73793003D91AF /* MapAddress.swift */,
 				DB308EB022E73762003D91AF /* MapAddresses.swift */,
@@ -1685,6 +1692,8 @@
 				DBBF299D22D3810200A5DE6A /* CoinAddress+Mapping.swift */,
 				DBBF29A322D3848F00A5DE6A /* CoinBalance+Mapping.swift */,
 				DBBF29A722D3872D00A5DE6A /* CoinsBalance+Mapping.swift */,
+				DB5E3DDF23869EAF00D267E5 /* CoinFee+Mapping.swift */,
+				DB5E3DE123869EE700D267E5 /* CoinsFee+Mapping.swift */,
 				DB308EB622E73837003D91AF /* OpenHour+Mapping.swift */,
 				DB308EB822E73888003D91AF /* MapAddress+Mapping.swift */,
 				DB308EBA22E738FC003D91AF /* MapAddresses+Mapping.swift */,
@@ -2358,6 +2367,7 @@
 				DB95EB1E230AA48C0059C84C /* CoinDetailsCollectionViewDataSource.swift in Sources */,
 				DB3C03DA22CB5F360036F779 /* CodeView.swift in Sources */,
 				DBBF29AC22D39DB000A5DE6A /* CoinsBalanceStore.swift in Sources */,
+				DB67D1B62394FB3E008EFB0D /* Error+Extensions.swift in Sources */,
 				DB8D409E22C3EC9D00D5FBD0 /* UIWindow+Transitions.swift in Sources */,
 				DB9616B022C60EFB0078E92D /* UIStackView+Extensions.swift in Sources */,
 				DB9616AE22C60ECA0078E92D /* UIView+Extensions.swift in Sources */,
@@ -2366,6 +2376,7 @@
 				DBCAC39222F7380B00B77841 /* SettingsCollectionViewDataSource.swift in Sources */,
 				DB70851D22CF8A7600FFE4F7 /* BTMWallet+Extensions.swift in Sources */,
 				DBAD53A622D7C63A0005F682 /* PinCodeDotView.swift in Sources */,
+				DB5E3DDE23869E8700D267E5 /* CoinsFee.swift in Sources */,
 				DBA6844C22E45A190079429E /* SettingsFlow.swift in Sources */,
 				DB308EB122E73762003D91AF /* MapAddresses.swift in Sources */,
 				DBFAED8F2326C646004B6D79 /* Utxo.swift in Sources */,
@@ -2403,10 +2414,12 @@
 				DB9616F922C7553D0078E92D /* StorageError.swift in Sources */,
 				DBAD539B22D7B8870005F682 /* PinCodePresenter.swift in Sources */,
 				DB70852522CFA3C500FFE4F7 /* CoinsBalancePresenter.swift in Sources */,
+				DB5E3DE023869EAF00D267E5 /* CoinFee+Mapping.swift in Sources */,
 				DB83661F22FAA01F00454F5C /* ShowSeedPhraseViewController.swift in Sources */,
 				DB130D6722C26EF20056E67E /* WelcomeSupportView.swift in Sources */,
 				DB167CD9230D85D900D9D66E /* Transaction+Mapping.swift in Sources */,
 				DB904A9E22C00E2A007CB734 /* RxFlow+Extensions.swift in Sources */,
+				DB5E3DDC23869DFC00D267E5 /* CoinFee.swift in Sources */,
 				DB9616EE22C74EB40078E92D /* RecursiveLock+Extensions.swift in Sources */,
 				DB83661E22FAA01F00454F5C /* ShowSeedPhraseModule.swift in Sources */,
 				DBC8B45A23634DF400E7A799 /* TransactionDetailsSellInfoSectionView.swift in Sources */,
@@ -2439,7 +2452,6 @@
 				DBC68CB122F8755000473247 /* CheckPassword.swift in Sources */,
 				DB59EA1B22F9C4BF00EB64A7 /* ChangePasswordFlowController.swift in Sources */,
 				DBAD539F22D7BA1D0005F682 /* PinCodeViewController.swift in Sources */,
-				DB9616AC22C60CD80078E92D /* Array+Extensions.swift in Sources */,
 				DB59EA2222F9C51B00EB64A7 /* ChangePasswordViewController.swift in Sources */,
 				DBC620AB2347493F0007D412 /* Nonce+Mapping.swift in Sources */,
 				DB96172722C761DA0078E92D /* APIRequest.swift in Sources */,
@@ -2471,6 +2483,7 @@
 				DBC68CBB22F8798F00473247 /* ChangePhonePresenter.swift in Sources */,
 				DBA7A4A6235662AD000BE997 /* CoinSellViewController.swift in Sources */,
 				DB96173922C7B2610078E92D /* BTMCoinConverter.swift in Sources */,
+				DB5E3DE223869EE700D267E5 /* CoinsFee+Mapping.swift in Sources */,
 				DB8D40AB22C3EF9400D5FBD0 /* RootFlow+Dependencies.swift in Sources */,
 				DB96173B22C7B3480078E92D /* BTMWalletStorage.swift in Sources */,
 				DB96168622C50E330078E92D /* ViewStore.swift in Sources */,
@@ -2535,7 +2548,6 @@
 				DBA7393D22C3482E00CEFD57 /* L10n.generated.swift in Sources */,
 				DB3C03D822CB5DCE0036F779 /* RecoverViewController.swift in Sources */,
 				DB83661622FA9FCB00454F5C /* ShowSeedPhraseFlow.swift in Sources */,
-				DB70851F22CF90F500FFE4F7 /* String+Extensions.swift in Sources */,
 				DBDA966222BFDB6E005B93DF /* ModulePresenter.swift in Sources */,
 				DB95EB20230AA52A0059C84C /* Transaction.swift in Sources */,
 				DB2C971E23449109006E7D61 /* CoinSendGiftAssembly.swift in Sources */,
@@ -2814,7 +2826,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 8;
+				CURRENT_PROJECT_VERSION = 20;
 				DEVELOPMENT_TEAM = 2RUJ559RK4;
 				INFOPLIST_FILE = batm/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -2837,7 +2849,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 8;
+				CURRENT_PROJECT_VERSION = 20;
 				DEVELOPMENT_TEAM = 2RUJ559RK4;
 				INFOPLIST_FILE = batm/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;

@@ -30,11 +30,12 @@ struct CoinSendGiftState: Equatable {
   var shouldShowCodePopup: Bool = false
   
   var maxValue: Double {
-    return coinBalance?.maxValue ?? 0
+    guard let balance = coinBalance?.balance, let fee = coin?.feeInCoin, balance > fee else { return 0 }
+    return balance - fee
   }
   
   var formattedPhoneNumber: String {
-    guard let phoneNumber = try? PhoneNumberKit.default.parse(phone) else { return "" }
+    guard let phoneNumber = try? PhoneNumberKit.default.parse(phone, withRegion: "US") else { return "" }
     return PhoneNumberKit.default.format(phoneNumber, toType: .e164)
   }
   
@@ -54,7 +55,7 @@ final class CoinSendGiftStore: ViewStore<CoinSendGiftAction, CoinSendGiftState> 
     case let .setupCoinBalance(coinBalance): state.coinBalance = coinBalance
     case let .updatePhone(phone): state.phone = phone ?? ""
     case let .pastePhone(phone):
-      if let phoneNumber = try? PhoneNumberKit.default.parse(phone) {
+      if let phoneNumber = try? PhoneNumberKit.default.parse(phone, withRegion: "US") {
         let phoneNumberString = PhoneNumberKit.default.format(phoneNumber, toType: .national)
         let formattedPhoneNumber = phoneNumberString
           .split { !"0123456789".contains($0) }
@@ -63,16 +64,16 @@ final class CoinSendGiftStore: ViewStore<CoinSendGiftAction, CoinSendGiftState> 
         state.phone = formattedPhoneNumber
       }
     case let .updateCurrencyAmount(amount):
-      let currencyAmount = (amount ?? "").fiatFormatted
-      let doubleCurrencyAmount = Double(currencyAmount)
+      let currencyAmount = (amount ?? "").fiatWithdrawFormatted
+      let doubleCurrencyAmount = currencyAmount.doubleValue
       let price = state.coinBalance!.price
       let coinAmount = doubleCurrencyAmount == nil ? "" : (doubleCurrencyAmount! / price).coinFormatted
       
       state.coinAmount = coinAmount
       state.currencyAmount = currencyAmount
     case let .updateCoinAmount(amount):
-      let coinAmount = (amount ?? "").coinFormatted
-      let doubleCoinAmount = Double(coinAmount)
+      let coinAmount = (amount ?? "").coinWithdrawFormatted
+      let doubleCoinAmount = coinAmount.doubleValue
       let price = state.coinBalance!.price
       let currencyAmount = doubleCoinAmount == nil ? "" : (doubleCoinAmount! * price).fiatFormatted
       
@@ -94,15 +95,15 @@ final class CoinSendGiftStore: ViewStore<CoinSendGiftAction, CoinSendGiftState> 
       return .invalid(localize(L.CreateWallet.Form.Error.allFieldsRequired))
     }
     
-    guard let coin = state.coin, let _ = try? PhoneNumberKit.default.parse(state.phone) else {
+    guard let _ = try? PhoneNumberKit.default.parse(state.phone, withRegion: "US") else {
       return .invalid(localize(L.CoinSendGift.Form.Error.invalidPhone))
     }
     
-    guard let amount = Double(state.coinAmount) else {
+    guard let amount = state.coinAmount.doubleValue else {
       return .invalid(localize(L.CoinWithdraw.Form.Error.invalidAmount))
     }
     
-    guard amount > coin.type.fee else {
+    guard amount > 0 else {
       return .invalid(localize(L.CoinWithdraw.Form.Error.tooLowAmount))
     }
     

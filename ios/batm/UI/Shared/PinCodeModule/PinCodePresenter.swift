@@ -44,21 +44,14 @@ class PinCodePresenter: ModulePresenter, PinCodeModule {
     state
       .filter { $0.code.count == PinCodeView.numberOfDots }
       .asObservable()
-      .flatMap { [unowned self] state -> Driver<Bool> in
+      .flatMap { [unowned self] state -> Driver<PinCodeState> in
         switch state.stage {
-        case .setup: return self.track(
-          self.usecase.save(pinCode: state.code)
-            .andThen(Observable.just(true))
-          )
-        case .verification: return self.track(
-          self.usecase.verify(pinCode: state.code)
-            .andThen(self.usecase.refresh())
-            .andThen(Observable.just(true))
-        )
+        case .setup: return self.track(self.usecase.save(pinCode: state.code)).map { state }
+        case .confirmation, .verification:
+          return self.track(self.usecase.verify(pinCode: state.code).andThen(self.usecase.refresh())).map { state }
         }
       }
-      .filter { $0 }
-      .subscribe(onNext: { [delegate] _ in delegate?.didFinishPinCode() })
+      .subscribe(onNext: { [delegate] in delegate?.didFinishPinCode(for: $0.stage) })
       .disposed(by: disposeBag)
   }
   

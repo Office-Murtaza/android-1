@@ -40,7 +40,7 @@ extension LoginFlowController: CreateWalletModuleDelegate {
 extension LoginFlowController: SeedPhraseModuleDelegate {
   
   func finishCopyingSeedPhrase() {
-    step.accept(LoginFlow.Steps.setupPinCode)
+    step.accept(LoginFlow.Steps.pinCode(.setup))
   }
   
 }
@@ -60,16 +60,20 @@ extension LoginFlowController: RecoverModuleDelegate {
 extension LoginFlowController: RecoverSeedPhraseModuleDelegate {
   
   func finishRecoveringSeedPhrase() {
-    step.accept(LoginFlow.Steps.setupPinCode)
+    step.accept(LoginFlow.Steps.pinCode(.setup))
   }
   
 }
 
 extension LoginFlowController: PinCodeModuleDelegate {
   
-  func didFinishPinCode() {
-    complete {
-      delegate?.didFinishLogin()
+  func didFinishPinCode(for stage: PinCodeStage) {
+    switch stage {
+    case .setup: step.accept(LoginFlow.Steps.pinCode(.confirmation))
+    case .confirmation, .verification:
+      complete {
+        delegate?.didFinishLogin()
+      }
     }
   }
   

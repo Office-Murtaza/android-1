@@ -56,7 +56,7 @@ final class BTMNetworkService: NetworkRequestExecutor {
       let requestSignal = headers(for: request)
         .asObservable()
         .flatMap { execute(request, $0) }
-        .catchError { [unowned self] in throw self.map(error: $0) }
+        .catchError { throw $0.mapToAPIError() }
       
       return retry(request, signal: requestSignal)
   }
@@ -74,7 +74,7 @@ final class BTMNetworkService: NetworkRequestExecutor {
   
   private func retryNotAuthorized(errors: Observable<Error>) -> Observable<Void> {
     return errors.take(1)
-      .map { [unowned self] in self.map(error: $0) }
+      .map { $0.mapToAPIError() }
       .flatMap { [unowned self] error -> Observable<Void> in
         if error == .notAuthorized {
           return self.refreshCredentials().andThen(.just(()))
@@ -88,16 +88,6 @@ final class BTMNetworkService: NetworkRequestExecutor {
   private func refreshCredentials() -> Completable {
     return pinCodeService.verifyPinCode()
       .andThen(refreshCredentialsService.refresh())
-      .catchError { [unowned self] in
-        let mappedError = self.map(error: $0)
-        let completableError = Completable.error(mappedError)
-        
-        if mappedError == .notAuthorized {
-          return self.logoutUsecase.logout().flatMapCompletable { _ in completableError }
-        }
-        
-        return completableError
-      }
   }
   
   func headers<Request: SimpleRequest>(for request: Request) -> Single<[String: String]?> {
@@ -107,30 +97,5 @@ final class BTMNetworkService: NetworkRequestExecutor {
         .catchError { _ in .just(nil) }
     }
     return .just(nil)
-  }
-  
-  func map(error: Error) -> APIError {
-    return castable(error)
-      .map { APIError.serverError($0) }
-      .map { $0 as APIError }
-      .map(convert(error:))
-      .extract(.unknown)
-  }
-  
-  func convert(error: MoyaError) -> APIError {
-    switch error {
-    case let .statusCode(response) where response.statusCode == 422:
-      return .notValid
-    case let .statusCode(response) where response.statusCode == 409:
-      return .conflict
-    case let .statusCode(response) where response.statusCode == 403:
-      return .notAuthorized
-    case let .statusCode(response) where response.statusCode == 404:
-      return .notFound
-    case .underlying(_, .none):
-      return .networkError
-    default:
-      return .unknown
-    }
   }
 }

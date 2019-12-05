@@ -17,6 +17,10 @@ enum L {
     static let title = "change_pin.title"
   }
 
+  struct CoinDeposit {
+    static let title = "coin_deposit.title"
+  }
+
   struct CoinDetails {
     static let address = "coin_details.address"
     static let balance = "coin_details.balance"
@@ -34,6 +38,7 @@ enum L {
   }
 
   struct CoinSell {
+    static let annotation = "coin_sell.annotation"
     static let dailyLimit = "coin_sell.daily_limit"
     static let sellFromAnother = "coin_sell.sell_from_another"
     static let title = "coin_sell.title"
@@ -89,11 +94,11 @@ enum L {
 
   struct Settings {
     static let changePassword = "settings.change_password"
+    static let changePhone = "settings.change_phone"
     static let changePin = "settings.change_pin"
-    static let phone = "settings.phone"
     static let showSeedPhrase = "settings.show_seed_phrase"
     static let title = "settings.title"
-    static let unlink = "settings.unlink"
+    static let unlinkWallet = "settings.unlink_wallet"
   }
 
   struct Shared {
@@ -134,6 +139,7 @@ enum L {
   }
 
   struct Unlink {
+    static let annotation = "unlink.annotation"
     static let title = "unlink.title"
     static let warning = "unlink.warning"
   }
@@ -312,6 +318,10 @@ extension L.EnterPassword.Form {
   }
 }
 extension L.PinCode {
+
+  struct Confirmation {
+    static let title = "pin_code.confirmation.title"
+  }
 
   struct Setup {
     static let title = "pin_code.setup.title"

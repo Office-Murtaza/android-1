@@ -83,7 +83,7 @@ class FilterCoinsViewController: ModuleViewController<FilterCoinsPresenter>, UIC
     dataSource.collectionView = collectionView
     
     presenter.state
-      .map { $0.coins }
+      .map { $0.coins.sorted() }
       .asObservable()
       .bind(to: dataSource.coinsRelay)
       .disposed(by: disposeBag)

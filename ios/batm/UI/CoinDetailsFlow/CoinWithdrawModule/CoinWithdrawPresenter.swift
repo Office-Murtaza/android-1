@@ -120,7 +120,7 @@ final class CoinWithdrawPresenter: ModulePresenter, CoinWithdrawModule {
     return usecase.verifyCode(code: state.code)
       .andThen(usecase.withdraw(from: state.coin!,
                                 to: state.address,
-                                amount: Double(state.coinAmount) ?? 0.0))
+                                amount: state.coinAmount.doubleValue ?? 0.0))
       .catchError { [store] in
         if let apiError = $0 as? APIError, case let .serverError(error) = apiError {
           store.action.accept(.makeInvalidState(error))

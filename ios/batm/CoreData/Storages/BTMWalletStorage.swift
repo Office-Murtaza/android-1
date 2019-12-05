@@ -1,11 +1,15 @@
 import Foundation
 import CoreData
 import RxSwift
+import TrustWalletCore
 
 protocol BTMWalletStorage: ClearOnLogoutStorage {
   func save(wallet: BTMWallet) -> Completable
   func get() -> Single<BTMWallet>
   func changeVisibility(of coin: BTMCoin) -> Completable
+  func changeIndex(of type: CoinType, with index: Int) -> Completable
+  func changeFee(of type: CoinType, with fee: Double) -> Completable
+  func changeGas(of type: CoinType, price gasPrice: Int, limit gasLimit: Int) -> Completable
   func delete() -> Completable
 }
 
@@ -26,6 +30,24 @@ class BTMWalletStorageImpl: CoreDataStorage<BTMWalletStorageUtils>, BTMWalletSto
   func changeVisibility(of coin: BTMCoin) -> Completable {
     return save {
       try $0.changeVisibility(of: coin)
+    }
+  }
+  
+  func changeIndex(of type: CoinType, with index: Int) -> Completable {
+    return save {
+      try $0.changeIndex(of: type, with: index)
+    }
+  }
+  
+  func changeFee(of type: CoinType, with fee: Double) -> Completable {
+    return save {
+      try $0.changeFee(of: type, with: fee)
+    }
+  }
+  
+  func changeGas(of type: CoinType, price gasPrice: Int, limit gasLimit: Int) -> Completable {
+    return save {
+      try $0.changeGas(of: type, price: gasPrice, limit: gasLimit)
     }
   }
   
@@ -68,13 +90,52 @@ class BTMWalletStorageUtils: StorageUtils {
       throw StorageError.notFound
     }
     
-    
     let coinRecord = walletRecord.coins.first { $0.type == coin.type.rawValue }
     guard let unwrappedCoinRecord = coinRecord else {
       throw StorageError.notFound
     }
     
     unwrappedCoinRecord.visible.toggle()
+  }
+  
+  func changeIndex(of type: CoinType, with index: Int) throws {
+    guard let walletRecord = try BTMWalletRecord.fetchFirst(in: context) else {
+      throw StorageError.notFound
+    }
+    
+    let coinRecord = walletRecord.coins.first { $0.type == type.rawValue }
+    guard let unwrappedCoinRecord = coinRecord else {
+      throw StorageError.notFound
+    }
+    
+    unwrappedCoinRecord.index = Int32(index)
+  }
+  
+  func changeFee(of type: CoinType, with fee: Double) throws {
+    guard let walletRecord = try BTMWalletRecord.fetchFirst(in: context) else {
+      throw StorageError.notFound
+    }
+    
+    let coinRecord = walletRecord.coins.first { $0.type == type.rawValue }
+    guard let unwrappedCoinRecord = coinRecord else {
+      throw StorageError.notFound
+    }
+    
+    unwrappedCoinRecord.fee = fee
+  }
+  
+  func changeGas(of type: CoinType, price gasPrice: Int, limit gasLimit: Int) throws {
+    guard let walletRecord = try BTMWalletRecord.fetchFirst(in: context) else {
+      throw StorageError.notFound
+    }
+    
+    let coinRecord = walletRecord.coins.first { $0.type == type.rawValue }
+    guard let unwrappedCoinRecord = coinRecord else {
+      throw StorageError.notFound
+    }
+    
+    unwrappedCoinRecord.gasPrice = Int64(gasPrice)
+    unwrappedCoinRecord.gasLimit = Int64(gasLimit)
   }
   
   func delete() throws {

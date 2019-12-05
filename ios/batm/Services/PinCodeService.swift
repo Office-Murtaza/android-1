@@ -51,6 +51,7 @@ class PinCodeServiceImpl: PinCodeService {
         guard !module.controller.isBeingPresented &&
           module.controller.presentingViewController == nil else { return }
         
+        module.controller.modalPresentationStyle = .fullScreen
         topRootViewController.present(module.controller, animated: true, completion: nil)
       }
       .flatMap { [didVerifyPinCodeRelay] in didVerifyPinCodeRelay }
@@ -70,7 +71,7 @@ class PinCodeServiceImpl: PinCodeService {
 }
 
 extension PinCodeServiceImpl: PinCodeVerificationModuleDelegate {
-  func didFinishPinCode() {
+  func didFinishPinCode(for stage: PinCodeStage) {
     didVerifyPinCodeRelay.accept(())
   }
 }

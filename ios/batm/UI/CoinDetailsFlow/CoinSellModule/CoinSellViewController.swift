@@ -10,7 +10,7 @@ final class CoinSellViewController: NavigationScreenViewController<CoinSellPrese
   
   let limitView = CoinSellLimitView()
   
-  let exchangeView = CoinWithdrawExchangeView(coinEditable: false)
+  let exchangeView = CoinWithdrawExchangeView(sellMode: true)
   
   let anotherAddressView = CoinSellAnotherAddressView()
   
@@ -46,7 +46,6 @@ final class CoinSellViewController: NavigationScreenViewController<CoinSellPrese
                                        nextButton)
     view.addSubviews(backgroundDarkView,
                      codeView)
-    customView.setTitle(localize(L.CoinSell.title))
     
     setupKeyboardHandling()
   }
@@ -96,6 +95,15 @@ final class CoinSellViewController: NavigationScreenViewController<CoinSellPrese
   }
   
   func setupUIBindings() {
+    presenter.state
+      .map { $0.coin?.type.code }
+      .filterNil()
+      .distinctUntilChanged()
+      .drive(onNext: { [customView] in
+        customView.setTitle(String(format: localize(L.CoinSell.title), $0))
+      })
+      .disposed(by: disposeBag)
+    
     presenter.state
       .asObservable()
       .map { $0.details }

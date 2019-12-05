@@ -36,18 +36,20 @@ struct CoinSellState: Equatable {
   }
   
   var maxCurrencyValue: Double {
-    if fromAnotherAddress { return maxCurrencyLimit.multipleOfTwentyOrFifty }
+    if fromAnotherAddress { return maxCurrencyLimit.nearestNumberThatCanBeGivenByTwentyAndFifty }
     
     guard
+      let balance = coinBalance?.balance,
+      let fee = coin?.feeInCoin,
+      balance > fee,
       let price = coinBalance?.price,
-      let balanceMaxValue = coinBalance?.maxValue,
       let profitRate = details?.profitRate
     else { return 0 }
-    
+    let balanceMaxValue = balance - fee
     let potentialMaxCurrencyValue = balanceMaxValue * price / profitRate
     let maxCurrencyValue = min(potentialMaxCurrencyValue, maxCurrencyLimit)
     
-    return maxCurrencyValue.multipleOfTwentyOrFifty
+    return maxCurrencyValue.nearestNumberThatCanBeGivenByTwentyAndFifty
   }
   
   var maxValue: Double {
@@ -63,11 +65,19 @@ struct CoinSellState: Equatable {
     guard
       let price = coinBalance?.price,
       let profitRate = details?.profitRate,
-      let currencyAmount = Double(currencyAmount)
+      let currencyAmount = currencyAmount.doubleValue
     else { return "" }
     
     let coinAmount = currencyAmount / price * profitRate
     return coinAmount.coinFormatted
+  }
+  
+  var isValidIfResponseExists: Bool {
+    guard let response = presubmitResponse, !fromAnotherAddress else { return true }
+    
+    guard let balance = coinBalance?.balance, let fee = coin?.feeInCoin, balance > fee else { return false }
+    
+    return balance - fee >= response.amount
   }
   
 }
@@ -99,23 +109,23 @@ final class CoinSellStore: ViewStore<CoinSellAction, CoinSellState> {
   }
   
   private func validate(_ state: CoinSellState) -> ValidationState {
-    guard let coin = state.coin, state.coinAmount.isNotEmpty else {
+    guard state.coinAmount.isNotEmpty else {
       return .invalid(localize(L.CreateWallet.Form.Error.allFieldsRequired))
     }
     
-    guard let currencyAmount = Double(state.currencyAmount) else {
+    guard let currencyAmount = state.currencyAmount.doubleValue else {
       return .invalid(localize(L.CoinWithdraw.Form.Error.invalidAmount))
     }
     
-    guard Int(currencyAmount.multipleOfTwentyOrFifty) == Int(currencyAmount) else {
+    guard Int(currencyAmount.nearestNumberThatCanBeGivenByTwentyAndFifty) == Int(currencyAmount) else {
       return .invalid(localize(L.CoinSell.Form.Error.notMultiple))
     }
     
-    guard let amount = Double(state.coinAmount) else {
+    guard let amount = state.coinAmount.doubleValue else {
       return .invalid(localize(L.CoinWithdraw.Form.Error.invalidAmount))
     }
     
-    guard amount > coin.type.fee else {
+    guard amount > 0 else {
       return .invalid(localize(L.CoinWithdraw.Form.Error.tooLowAmount))
     }
     
@@ -127,8 +137,7 @@ final class CoinSellStore: ViewStore<CoinSellAction, CoinSellState> {
       return .invalid(localize(L.CreateWallet.Code.Error.title))
     }
     
-    if let response = state.presubmitResponse, let coinBalance = state.coinBalance,
-      !state.fromAnotherAddress && response.amount > coinBalance.maxValue {
+    if !state.isValidIfResponseExists {
       return .invalid(localize(L.CoinWithdraw.Form.Error.tooHighAmount))
     }
     

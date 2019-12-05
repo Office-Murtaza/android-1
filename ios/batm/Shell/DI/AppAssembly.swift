@@ -7,8 +7,8 @@ final class AppAssembly: Assembly {
   
   enum Keys: String {
     case pinCodeModule
-    case apiUrl
-    case tronUrl
+    case testApiUrl
+    case prodApiUrl
   }
   
   func assemble(container: Container) {
@@ -19,8 +19,8 @@ final class AppAssembly: Assembly {
   }
   
   private func assembleNetwork(container: Container) {
-    container.register(URL.self, name: Keys.apiUrl.rawValue) { _ in URL(string: "https://test.belcobtm.com/api/v1")! }
-    container.register(URL.self, name: Keys.tronUrl.rawValue) { _ in URL(string: "https://api.trongrid.io")! }
+    container.register(URL.self, name: Keys.testApiUrl.rawValue) { _ in URL(string: "https://test.belcobtm.com/api/v1")! }
+    container.register(URL.self, name: Keys.prodApiUrl.rawValue) { _ in URL(string: "https://prod.belcobtm.com/api/v1")! }
     container.register(NetworkService.self) { (ioc, baseUrl: URL) in
       let provider = MoyaProvider<MultiTarget>()
       return NetworkService(baseApiUrl: baseUrl, provider: provider)
@@ -39,19 +39,18 @@ final class AppAssembly: Assembly {
       }
       .inObjectScope(.transient)
     container.register(RefreshCredentialsService.self) { ioc in
-      let apiUrl = ioc.resolve(URL.self, name: Keys.apiUrl.rawValue)!
+      let apiUrl = ioc.resolve(URL.self, name: Keys.prodApiUrl.rawValue)!
       let networkService = ioc.resolve(NetworkService.self, argument: apiUrl)!
       let accountStorage = ioc.resolve(AccountStorage.self)!
+      let logoutUsecase = ioc.resolve(LogoutUsecase.self)!
       return RefreshCredentialsServiceImpl(networkService: networkService,
-                                           accountStorage: accountStorage)
+                                           accountStorage: accountStorage,
+                                           logoutUsecase: logoutUsecase)
       }.inObjectScope(.container)
     container.register(APIGateway.self) { ioc in
-      let apiUrl = ioc.resolve(URL.self, name: Keys.apiUrl.rawValue)!
+      let apiUrl = ioc.resolve(URL.self, name: Keys.prodApiUrl.rawValue)!
       let networkService = ioc.resolve(NetworkRequestExecutor.self, argument: apiUrl)!
-      let tronUrl = ioc.resolve(URL.self, name: Keys.tronUrl.rawValue)!
-      let tronService = ioc.resolve(NetworkRequestExecutor.self, argument: tronUrl)!
-      return APIGatewayImpl(networkProvider: networkService,
-                            tronAPIProvider: tronService)
+      return APIGatewayImpl(networkProvider: networkService)
       } .inObjectScope(.container)
   }
   

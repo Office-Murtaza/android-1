@@ -21,6 +21,12 @@ class MainTextField: UITextField {
   
   private var padding = UIEdgeInsets(top: 0, left: 18, bottom: 0, right: 18)
   
+  override var isEnabled: Bool {
+    didSet {
+      backgroundColor = isEnabled ? .white : .whiteTwo
+    }
+  }
+  
   override init(frame: CGRect) {
     super.init(frame: frame)
     

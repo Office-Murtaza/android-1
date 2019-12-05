@@ -3,6 +3,7 @@ import RxSwift
 
 enum PinCodeStage {
   case setup
+  case confirmation
   case verification
 }
 
@@ -18,6 +19,7 @@ struct PinCodeState: Equatable {
   var title: String {
     switch stage {
     case .setup: return localize(L.PinCode.Setup.title)
+    case .confirmation: return localize(L.PinCode.Confirmation.title)
     case .verification: return localize(L.PinCode.Verification.title)
     }
   }

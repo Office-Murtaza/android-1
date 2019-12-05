@@ -3,6 +3,7 @@ import RxSwift
 import RxCocoa
 import GiphyUISDK
 import GiphyCoreSDK
+import TrustWalletCore
 
 class TransactionDetailsGeneralSectionView: UIView, HasDisposeBag {
   
@@ -39,14 +40,17 @@ class TransactionDetailsGeneralSectionView: UIView, HasDisposeBag {
     }
   }
   
-  func configure(for details: TransactionDetails) {
+  func configure(with details: TransactionDetails, for type: CoinType) {
     txidRowView.configure(for: .link(details.txid), with: localize(L.TransactionDetails.txId))
     stackView.addArrangedSubview(txidRowView)
     
+    let amount = "\(details.amount.coinFormatted) \(type.code)"
+    let fee = "\(details.fee.coinFormatted) \(type.code)"
+    
     [(details.type.verboseValue, localize(L.TransactionDetails.type)),
      (details.status.verboseValue, localize(L.TransactionDetails.status)),
-     (details.amount.coinFormatted, localize(L.TransactionDetails.amount)),
-     (details.fee.coinFormatted, localize(L.TransactionDetails.fee)),
+     (amount, localize(L.TransactionDetails.amount)),
+     (fee, localize(L.TransactionDetails.fee)),
      (details.dateString, localize(L.TransactionDetails.date)),
      (details.fromAddress, localize(L.TransactionDetails.fromAddress)),
      (details.toAddress, localize(L.TransactionDetails.toAddress))].forEach {
