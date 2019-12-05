@@ -1,7 +1,6 @@
 package com.batm.service;
 
 import com.batm.dto.CurrentAccountDTO;
-import com.batm.dto.SubmitTransactionDTO;
 import com.batm.dto.TransactionDTO;
 import com.batm.dto.TransactionListDTO;
 import com.batm.entity.TransactionRecord;
@@ -28,7 +27,6 @@ import wallet.core.jni.BinanceSigner;
 import wallet.core.jni.CosmosAddress;
 import wallet.core.jni.HRP;
 import wallet.core.jni.proto.Binance;
-
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.time.ZonedDateTime;
@@ -93,7 +91,7 @@ public class BinanceService {
             e.printStackTrace();
         }
 
-        return TransactionStatus.PENDING;
+        return TransactionStatus.FAIL;
     }
 
     public TransactionDTO getTransaction(String txId, String address) {

@@ -33,15 +33,18 @@ public class ChainalysisService {
     @Value("${chainalysis.rows-limit}")
     private int rowsLimit;
 
-    public void processChainalysis(List<TransactionRecord> list) {
+    public List<TransactionRecord> process(List<TransactionRecord> list) {
         try {
             if (enabled) {
                 List<CompletableFuture<ChainalysisResponseDTO>> futures = list.stream().map(this::callAsync).collect(Collectors.toList());
-                futures.stream().map(CompletableFuture::join).filter(Objects::nonNull).map(ChainalysisResponseDTO::getTransactionRecord).collect(Collectors.toList());
+
+                return futures.stream().map(CompletableFuture::join).filter(Objects::nonNull).map(ChainalysisResponseDTO::getTransactionRecord).collect(Collectors.toList());
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        return Collections.EMPTY_LIST;
     }
 
     private CompletableFuture<ChainalysisResponseDTO> callAsync(TransactionRecord tx) {
@@ -53,7 +56,7 @@ public class ChainalysisService {
 
                 CoinService.CoinEnum coinEnum = CoinService.CoinEnum.valueOf(tx.getCryptoCurrency());
 
-                if (!tx.getTracked() && Arrays.asList(CoinService.CoinEnum.BTC, CoinService.CoinEnum.LTC).contains(coinEnum)) {
+                if (tx.getTracked() == 0 && Arrays.asList(CoinService.CoinEnum.BTC, CoinService.CoinEnum.LTC).contains(coinEnum)) {
                     if (StringUtils.isEmpty(tx.getDetail()) || (tx.getType() == 1 && tx.getN() == null)) {
                         TransactionNumberDTO numberDTO = coinEnum.getTransactionNumber(tx.getCryptoAddress(), tx.getCryptoAmount(), tx.getTransactionType());
 
@@ -65,6 +68,8 @@ public class ChainalysisService {
 
                     if (StringUtils.isNotEmpty(tx.getDetail()) && ((tx.getType() == 1 && tx.getN() != null) || tx.getType() == 0)) {
                         sendRequest(tx);
+                    } else {
+                        tx.setTracked(2);
                     }
                 }
             } catch (Exception e) {
@@ -76,9 +81,6 @@ public class ChainalysisService {
     }
 
     private void sendRequest(TransactionRecord tx) {
-        HttpEntity<JSONArray> requestBody = null;
-        String requestUrl = null;
-
         try {
             String requestType = tx.getType() == 0 ? "received" : "sent";
             String requestTransferReference = tx.getType() == 0 ? String.format("%s:%s", tx.getDetail(), tx.getCryptoAddress()) : String.format("%s:%d", tx.getDetail(), tx.getN());
@@ -95,18 +97,18 @@ public class ChainalysisService {
             headers.setContentType(MediaType.APPLICATION_JSON);
             headers.set("Token", apiKey);
 
-            requestBody = new HttpEntity<>(jsonArray, headers);
-            requestUrl = url + "/api/kyt/v1/users/" + tx.getIdentity().getPublicId() + "/transfers/" + requestType;
+            HttpEntity<JSONArray> requestBody = new HttpEntity<>(jsonArray, headers);
+            String requestUrl = url + "/api/kyt/v1/users/" + tx.getIdentity().getPublicId() + "/transfers/" + requestType;
+
+            //System.out.println(" ---- txId:" + tx.getId() + "\n" + "url:" + requestUrl + "\n" + "body:" + requestBody + "\n");
+
             ResponseEntity<JSONArray> res = rest.exchange(requestUrl, HttpMethod.POST, requestBody, JSONArray.class);
 
             if (res.getStatusCode() == HttpStatus.OK) {
-                tx.setTracked(true);
+                tx.setTracked(1);
             }
         } catch (Exception e) {
             e.printStackTrace();
-
-            System.out.println("requestUrl: " + requestUrl);
-            System.out.println("requestBody: " + requestBody);
         }
     }
 }

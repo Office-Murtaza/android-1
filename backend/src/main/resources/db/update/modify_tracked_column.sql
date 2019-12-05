@@ -1,0 +1,1 @@
+ALTER TABLE transactionrecord MODIFY tracked INT(2) DEFAULT 0;

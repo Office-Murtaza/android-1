@@ -12,8 +12,11 @@ import java.util.List;
 
 public interface TransactionRecordRep extends JpaRepository<TransactionRecord, Long> {
 
-    @Query("SELECT tr FROM TransactionRecord tr WHERE tr.detail IS NULL AND ((tr.type = 0 AND tr.status = 1) OR (tr.type = 1 AND tr.status = 3)) ORDER BY tr.serverTime DESC")
-    List<TransactionRecord> findCompletedTransactions(Pageable page);
+    @Query("SELECT tr FROM TransactionRecord tr WHERE tr.notified = 0 AND tr.type = 1 AND tr.status = 3 ORDER BY tr.serverTime DESC")
+    List<TransactionRecord> findNotNotifiedSellTransactions(Pageable page);
+
+    @Query("SELECT tr FROM TransactionRecord tr WHERE tr.tracked = 0 AND ((tr.type = 0 AND tr.status = 1) OR (tr.type = 1 AND tr.status = 3)) ORDER BY tr.serverTime DESC")
+    List<TransactionRecord> findNotTrackedTransactions(Pageable page);
 
     @Query("SELECT SUM(tr.cashAmount) FROM TransactionRecord tr WHERE tr.identity = :identity AND tr.serverTime >= :startDate AND tr.serverTime <= :endDate")
     BigDecimal getTransactionsSumByDate(@Param("identity") Identity identity, @Param("startDate") Date startDate, @Param("endDate") Date endDate);

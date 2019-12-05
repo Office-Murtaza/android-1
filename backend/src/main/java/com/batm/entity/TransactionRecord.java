@@ -200,7 +200,8 @@ public class TransactionRecord extends BaseEntity {
     )
     private BigDecimal expectedProfitValue;
 
-    private Boolean tracked;
+    private Integer tracked;
+    private Integer notified;
 
     @Column(name = "ratesourceprice", precision = 20, scale = 10)
     private BigDecimal rateSourcePrice;

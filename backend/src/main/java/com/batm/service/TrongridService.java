@@ -77,7 +77,7 @@ public class TrongridService {
             e.printStackTrace();
         }
 
-        return TransactionStatus.PENDING;
+        return TransactionStatus.FAIL;
     }
 
     public TransactionDTO getTransaction(String txId, String address) {

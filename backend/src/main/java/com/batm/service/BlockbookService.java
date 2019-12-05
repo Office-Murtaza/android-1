@@ -82,7 +82,7 @@ public class BlockbookService {
             e.printStackTrace();
         }
 
-        return TransactionStatus.PENDING;
+        return TransactionStatus.FAIL;
     }
 
     public TransactionNumberDTO getTransactionNumber(String url, String address, BigDecimal amount, BigDecimal divider, TransactionType type) {

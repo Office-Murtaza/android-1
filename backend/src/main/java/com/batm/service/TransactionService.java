@@ -8,6 +8,7 @@ import com.batm.repository.TransactionRecordGiftRep;
 import com.batm.repository.TransactionRecordRep;
 import com.batm.util.Constant;
 import com.batm.util.Util;
+import com.twilio.rest.api.v2010.account.Message;
 import net.sf.json.JSONObject;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -134,40 +135,8 @@ public class TransactionService {
     @Scheduled(fixedDelay = 60_000)
     public void processCronTasks() {
         processPendingGifts();
-        //processStoredGifts();
-
-        processCompletedTransactions();
-    }
-
-    public void processCompletedTransactions() {
-        try {
-            List<TransactionRecord> list = transactionRecordRep.findCompletedTransactions(PageRequest.of(0, 50));
-
-            if (!list.isEmpty()) {
-                list.stream().forEach(e -> {
-                    CoinService.CoinEnum coinId = CoinService.CoinEnum.valueOf(e.getCryptoCurrency());
-                    TransactionNumberDTO txNumber = coinId.getTransactionNumber(e.getCryptoAddress(), e.getCryptoAmount(), e.getTransactionType());
-
-                    if (txNumber != null) {
-                        e.setDetail(txNumber.getTxId());
-                        e.setN(txNumber.getN());
-
-                        User user = e.getIdentity().getUser();
-
-                        if (user != null && e.getTransactionType() == TransactionType.SELL) {
-                            messageService.sendMessage(user.getPhone(), "Your sell transaction is confirmed");
-                        }
-                    }
-                });
-
-                if (!list.isEmpty()) {
-                    chainalysisService.processChainalysis(list);
-                    transactionRecordRep.saveAll(list);
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        notifySellTransactions();
+        processNotTrackedTransactions();
     }
 
     private void processPendingGifts() {
@@ -189,6 +158,48 @@ public class TransactionService {
 
             if (!confirmedList.isEmpty()) {
                 transactionRecordGiftRep.saveAll(confirmedList);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void processNotTrackedTransactions() {
+        try {
+            List<TransactionRecord> list = transactionRecordRep.findNotTrackedTransactions(PageRequest.of(0, 50));
+
+            if (!list.isEmpty()) {
+                List<TransactionRecord> listRes = chainalysisService.process(list);
+                transactionRecordRep.saveAll(listRes);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void notifySellTransactions() {
+        try {
+            List<TransactionRecord> list = transactionRecordRep.findNotNotifiedSellTransactions(PageRequest.of(0, 50));
+
+            if (!list.isEmpty()) {
+                list.stream().forEach(e -> {
+                    User user = e.getIdentity().getUser();
+
+                    if (user != null) {
+                        Message.Status status = messageService.sendMessage(user.getPhone(), "Your sell transaction is confirmed");
+                        System.out.println("status:" + status);
+
+                        if (status != null) {
+                            e.setNotified(1);
+                        } else {
+                            e.setNotified(2);
+                        }
+                    } else {
+                        e.setNotified(3);
+                    }
+                });
+
+                transactionRecordRep.saveAll(list);
             }
         } catch (Exception e) {
             e.printStackTrace();

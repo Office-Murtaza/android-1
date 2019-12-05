@@ -126,7 +126,7 @@ public class RippledService {
             e.printStackTrace();
         }
 
-        return TransactionStatus.PENDING;
+        return TransactionStatus.FAIL;
     }
 
     public TransactionDTO getTransaction(String txId, String address) {
