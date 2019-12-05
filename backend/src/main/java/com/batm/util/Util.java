@@ -128,19 +128,19 @@ public class Util {
         if (txList != null && !txList.isEmpty()) {
             txList.stream().forEach(e -> {
                 if (StringUtils.isNotEmpty(e.getDetail())) {
+                    TransactionType type = e.getType() == 1 ? TransactionType.SELL : TransactionType.BUY;
+
+                    TransactionStatus status = TransactionStatus.PENDING;
+                    if (type == TransactionType.SELL && e.getStatus() == 3) {
+                        status = TransactionStatus.COMPLETE;
+                    } else if (type == TransactionType.BUY && e.getStatus() == 1) {
+                        status = TransactionStatus.COMPLETE;
+                    }
+
                     if (map.containsKey(e.getDetail())) {
-                        TransactionType type = map.get(e.getDetail()).getType();
-                        map.get(e.getDetail()).setType(TransactionType.getTxType(type));
+                        map.get(e.getDetail()).setType(type);
+                        map.get(e.getDetail()).setStatus(status);
                     } else {
-                        TransactionType type = e.getType() == 1 ? TransactionType.SELL : TransactionType.BUY;
-
-                        TransactionStatus status = TransactionStatus.PENDING;
-                        if (type == TransactionType.SELL && e.getStatus() == 3) {
-                            status = TransactionStatus.COMPLETE;
-                        } else if (type == TransactionType.BUY && e.getStatus() == 1) {
-                            status = TransactionStatus.COMPLETE;
-                        }
-
                         map.put(e.getDetail(), new TransactionDTO(e.getDetail(), e.getCryptoAmount(), type, status, e.getServerTime()));
                     }
                 }
