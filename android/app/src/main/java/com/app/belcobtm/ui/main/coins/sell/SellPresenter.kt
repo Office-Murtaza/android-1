@@ -93,7 +93,7 @@ class SellPresenter : BaseMvpDIPresenterImpl<SellContract.View, WithdrawDataMana
                                     hdWallet,
                                     res.value?.address ?: "",
                                     coinType,
-                                    cryptoAmount ?: Double.MIN_VALUE,
+                                    cryptoResultAmount ?: Double.MIN_VALUE,
                                     mCoinDbModel, mDataManager
                                 )
                             }
