@@ -59,6 +59,22 @@ public class TransactionService {
             gift.setRefTxId(dto.getRefTxId());
 
             transactionRecordGiftRep.save(gift);
+
+            if (receiverExist) {
+                TransactionRecordGift gift2 = new TransactionRecordGift();
+                gift2.setTxId(gift.getTxId());
+                gift2.setType(TransactionType.RECEIVE_GIFT.getValue());
+                gift2.setStatus(TransactionStatus.PENDING.getValue());
+                gift2.setPhone(gift.getPhone());
+                gift2.setMessage(gift.getMessage());
+                gift2.setImageId(gift.getImageId());
+                gift2.setStep(Constant.GIFT_USER_EXIST);
+                gift2.setIdentity(userService.findByPhone(gift.getPhone()).get().getIdentity());
+                gift2.setCoin(gift.getCoin());
+                gift2.setAmount(gift.getAmount());
+
+                transactionRecordGiftRep.save(gift2);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -82,7 +98,7 @@ public class TransactionService {
 
             dto.setDailyLimit(new AmountDTO(Util.format2(dailyLimit)));
             dto.setTxLimit(new AmountDTO(Util.format2(txLimit)));
-            dto.setSellProfitRate(new BigDecimal("1.025"));
+            dto.setSellProfitRate(new BigDecimal("1.05"));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -164,24 +180,6 @@ public class TransactionService {
                     CoinService.CoinEnum coinId = CoinService.CoinEnum.valueOf(t.getCoin().getCode());
                     TransactionStatus status = coinId.getTransactionStatus(t.getTxId());
                     t.setStatus(status.getValue());
-
-                    if (status == TransactionStatus.COMPLETE) {
-                        if (t.getStep() == Constant.GIFT_USER_EXIST) {
-                            TransactionRecordGift gift = new TransactionRecordGift();
-                            gift.setTxId(t.getTxId());
-                            gift.setType(TransactionType.RECEIVE_GIFT.getValue());
-                            gift.setStatus(TransactionStatus.COMPLETE.getValue());
-                            gift.setPhone(t.getPhone());
-                            gift.setMessage(t.getMessage());
-                            gift.setImageId(t.getImageId());
-                            gift.setStep(0);
-                            gift.setIdentity(userService.findByPhone(t.getPhone()).get().getIdentity());
-                            gift.setCoin(t.getCoin());
-                            gift.setAmount(t.getAmount());
-
-                            confirmedList.add(gift);
-                        }
-                    }
 
                     confirmedList.add(t);
                 } catch (Exception e) {
