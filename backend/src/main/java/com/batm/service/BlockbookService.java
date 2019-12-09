@@ -102,9 +102,9 @@ public class BlockbookService {
                             if (type == TransactionType.SELL) {
                                 return new TransactionNumberDTO(json.optString("txid"), voutJson.optInt("n"));
                             } else if (type == TransactionType.BUY) {
-                                BigDecimal value = new BigDecimal(voutJson.optString("value")).divide(divider).stripTrailingZeros();
+                                BigDecimal value = new BigDecimal(voutJson.optString("value")).divide(divider);
 
-                                if (amount.equals(value)) {
+                                if (amount.compareTo(value) == 0) {
                                     return new TransactionNumberDTO(json.optString("txid"), voutJson.optInt("n"));
                                 }
                             }
