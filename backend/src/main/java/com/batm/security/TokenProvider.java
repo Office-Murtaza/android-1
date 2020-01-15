@@ -64,9 +64,7 @@ public class TokenProvider implements InitializingBean {
         try {
             Jwts.parser().setSigningKey(key).parseClaimsJws(authToken);
             return true;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        } catch (Exception e) {}
 
         return false;
     }
