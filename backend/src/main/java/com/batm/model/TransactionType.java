@@ -42,14 +42,4 @@ public enum TransactionType {
             return type;
         }
     }
-
-    public static TransactionType getTxType(TransactionType type) {
-        if (type == WITHDRAW) {
-            return SELL;
-        } else if(type == DEPOSIT) {
-            return BUY;
-        } else {
-            return type;
-        }
-    }
 }
