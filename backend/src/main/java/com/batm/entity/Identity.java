@@ -8,6 +8,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -40,6 +41,9 @@ public class Identity extends BaseEntity {
             name = "state"
     )
     private int state;
+
+    private BigDecimal vipbuydiscount;
+    private BigDecimal vipselldiscount;
 
     @Column(
             name = "created"

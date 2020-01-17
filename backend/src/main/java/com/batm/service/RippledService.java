@@ -179,11 +179,9 @@ public class RippledService {
             JSONObject jsonResult = res.optJSONObject("result");
             JSONArray array = jsonResult.optJSONArray("transactions");
 
-            if (array != null && !array.isEmpty()) {
-                Map<String, TransactionDTO> map = collectNodeTxs(array, address);
+            Map<String, TransactionDTO> map = collectNodeTxs(array, address);
 
-                return Util.buildTxs(map, startIndex, limit, gifts, txs);
-            }
+            return Util.buildTxs(map, startIndex, limit, gifts, txs);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -213,20 +211,22 @@ public class RippledService {
         return null;
     }
 
-    private Map<String, TransactionDTO> collectNodeTxs(JSONArray transactionsArray, String address) {
+    private Map<String, TransactionDTO> collectNodeTxs(JSONArray array, String address) {
         Map<String, TransactionDTO> map = new HashMap<>();
 
-        for (int i = 0; i < transactionsArray.size(); i++) {
-            JSONObject txs = transactionsArray.getJSONObject(i);
-            TransactionStatus status = getStatus(txs.optJSONObject("meta").optString("TransactionResult"));
+        if (array != null && !array.isEmpty()) {
+            for (int i = 0; i < array.size(); i++) {
+                JSONObject txs = array.getJSONObject(i);
+                TransactionStatus status = getStatus(txs.optJSONObject("meta").optString("TransactionResult"));
 
-            JSONObject tx = txs.optJSONObject("tx");
-            String txId = tx.optString("hash");
-            TransactionType type = TransactionType.getType(tx.optString("Account"), tx.optString("Destination"), address);
-            BigDecimal amount = Util.format6(getAmount(tx.optString("Amount")));
-            Date date1 = new Date((tx.optLong("date") + 946684800L) * 1000);
+                JSONObject tx = txs.optJSONObject("tx");
+                String txId = tx.optString("hash");
+                TransactionType type = TransactionType.getType(tx.optString("Account"), tx.optString("Destination"), address);
+                BigDecimal amount = Util.format6(getAmount(tx.optString("Amount")));
+                Date date1 = new Date((tx.optLong("date") + 946684800L) * 1000);
 
-            map.put(txId, new TransactionDTO(txId, amount, type, status, date1));
+                map.put(txId, new TransactionDTO(txId, amount, type, status, date1));
+            }
         }
 
         return map;

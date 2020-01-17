@@ -147,12 +147,9 @@ public class BlockbookService {
         try {
             JSONObject res = rest.getForObject(url + "/api/v2/address/" + address + "?details=txs&pageSize=1000&page=1", JSONObject.class);
             JSONArray array = res.optJSONArray("transactions");
+            Map<String, TransactionDTO> map = collectNodeTxs(array, address, divider);
 
-            if (array != null && !array.isEmpty()) {
-                Map<String, TransactionDTO> map = collectNodeTxs(array, address, divider);
-
-                return Util.buildTxs(map, startIndex, limit, gifts, txs);
-            }
+            return Util.buildTxs(map, startIndex, limit, gifts, txs);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -163,18 +160,20 @@ public class BlockbookService {
     private Map<String, TransactionDTO> collectNodeTxs(JSONArray array, String address, BigDecimal divider) {
         Map<String, TransactionDTO> map = new HashMap<>();
 
-        for (int i = 0; i < array.size(); i++) {
-            JSONObject json = array.getJSONObject(i);
-            JSONArray vinArray = json.optJSONArray("vin");
-            JSONArray voutArray = json.optJSONArray("vout");
+        if (array != null && !array.isEmpty()) {
+            for (int i = 0; i < array.size(); i++) {
+                JSONObject json = array.getJSONObject(i);
+                JSONArray vinArray = json.optJSONArray("vin");
+                JSONArray voutArray = json.optJSONArray("vout");
 
-            String txId = json.optString("txid");
-            TransactionType type = getType(address, vinArray);
-            BigDecimal amount = Util.format6(getAmount(type, address, voutArray, divider));
-            TransactionStatus status = getStatus(json.optInt("confirmations"));
-            Date date1 = new Date(json.optLong("blockTime") * 1000);
+                String txId = json.optString("txid");
+                TransactionType type = getType(address, vinArray);
+                BigDecimal amount = Util.format6(getAmount(type, address, voutArray, divider));
+                TransactionStatus status = getStatus(json.optInt("confirmations"));
+                Date date1 = new Date(json.optLong("blockTime") * 1000);
 
-            map.put(txId, new TransactionDTO(txId, amount, type, status, date1));
+                map.put(txId, new TransactionDTO(txId, amount, type, status, date1));
+            }
         }
 
         return map;

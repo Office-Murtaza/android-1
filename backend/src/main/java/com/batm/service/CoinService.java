@@ -699,9 +699,12 @@ public class CoinService {
             dto.setMessage(txGift.getMessage());
             dto.setType(TransactionType.getGiftType(dto.getType()));
         } else if (txRecord != null) {
-            dto.setSellInfo(coin.getName() + ":" + txRecord.getCryptoAddress() + "?amount=" + txRecord.getCryptoAmount() + "&label=" + txRecord.getRemoteTransactionId() + "&uuid=" + txRecord.getUuid());
             dto.setType(txRecord.getTransactionType());
             dto.setCryptoAmount(txRecord.getCryptoAmount().stripTrailingZeros());
+
+            if(dto.getType() == TransactionType.SELL) {
+                dto.setSellInfo(coin.getName() + ":" + txRecord.getCryptoAddress() + "?amount=" + txRecord.getCryptoAmount() + "&label=" + txRecord.getRemoteTransactionId() + "&uuid=" + txRecord.getUuid());
+            }
         }
 
         return dto;

@@ -1,9 +1,7 @@
 package com.batm.service;
 
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.math.BigDecimal;
+import java.util.*;
 import com.batm.dto.GiftAddressDTO;
 import com.batm.entity.*;
 import com.batm.repository.*;
@@ -59,43 +57,16 @@ public class UserService {
         user.setRole("ROLE_USER");
         User savedUser = userRep.save(user);
 
-        Limit dailyLimit = new Limit();
-        dailyLimit.setAmount(Constant.DAILY_LIMIT);
-        dailyLimit.setCurrency("USD");
-        Limit savedDailyLimit = limitRep.save(dailyLimit);
-
-        Limit trxLimit = new Limit();
-        trxLimit.setAmount(Constant.TX_LIMIT);
-        trxLimit.setCurrency("USD");
-        Limit savedTrxLimit = limitRep.save(trxLimit);
-
         Date date = new Date();
-        Identity identity = new Identity();
-        identity.setPublicId(Util.generatePublicId());
-        identity.setState(0);
-        identity.setUser(savedUser);
-        identity.setCreated(date);
-        identity.setLastUpdatedAt(date);
-        identity.setRegistered(date);
-        identity.setLimitCashPerDay(Arrays.asList(savedDailyLimit));
-        identity.setLimitCashPerTransaction(Arrays.asList(savedTrxLimit));
-        Identity savedIdentity = identityRep.save(identity);
+        String formattedPhone = Util.formatPhone(user.getPhone());
 
-        user.setIdentity(savedIdentity);
+        List<IdentityPieceCellPhone> pieceCellPhones = identityPieceCellPhoneRep.findByPhoneNumber(formattedPhone);
 
-        IdentityPiece ip = new IdentityPiece();
-        ip.setIdentity(savedIdentity);
-        ip.setPieceType(4);
-        ip.setRegistration(true);
-        ip.setCreated(date);
-        IdentityPiece ipSaved = identityPieceRep.save(ip);
-
-        IdentityPieceCellPhone ipCellPhone = new IdentityPieceCellPhone();
-        ipCellPhone.setIdentity(savedIdentity);
-        ipCellPhone.setIdentityPiece(ipSaved);
-        ipCellPhone.setCreated(date);
-        ipCellPhone.setPhoneNumber(Util.formatPhone(user.getPhone()));
-        identityPieceCellPhoneRep.save(ipCellPhone);
+        if (pieceCellPhones.isEmpty()) {
+            user.setIdentity(createNewIdentity(savedUser, date, formattedPhone));
+        } else {
+            user.setIdentity(selectFromExistingIdentities(savedUser, pieceCellPhones));
+        }
 
         return user;
     }
@@ -196,5 +167,61 @@ public class UserService {
         } else {
             return new GiftAddressDTO(coinId.getWalletAddress());
         }
+    }
+
+    private Identity selectFromExistingIdentities(User savedUser, List<IdentityPieceCellPhone> pieceCellPhones) {
+        pieceCellPhones.sort(Comparator.comparing(IdentityPieceCellPhone::getId).reversed());
+
+        Optional<IdentityPieceCellPhone> identityPieceCellPhone = pieceCellPhones.stream().filter(e -> e.getIdentity().getState() == Constant.STATE_REGISTERED).findFirst();
+
+        if (!identityPieceCellPhone.isPresent()) {
+            identityPieceCellPhone = pieceCellPhones.stream().findFirst();
+        }
+
+        Identity identity = identityPieceCellPhone.get().getIdentity();
+        identity.setUser(savedUser);
+
+        return identityRep.save(identity);
+    }
+
+    private Identity createNewIdentity(User savedUser, Date date, String formattedPhone) {
+        Limit dailyLimit = new Limit();
+        dailyLimit.setAmount(Constant.DAILY_LIMIT);
+        dailyLimit.setCurrency("USD");
+        Limit savedDailyLimit = limitRep.save(dailyLimit);
+
+        Limit trxLimit = new Limit();
+        trxLimit.setAmount(Constant.TX_LIMIT);
+        trxLimit.setCurrency("USD");
+        Limit savedTrxLimit = limitRep.save(trxLimit);
+
+        Identity identity = new Identity();
+        identity.setPublicId(Util.generatePublicId());
+        identity.setState(Constant.STATE_REGISTERED);
+        identity.setVipbuydiscount(BigDecimal.ZERO);
+        identity.setVipselldiscount(BigDecimal.ZERO);
+        identity.setUser(savedUser);
+        identity.setCreated(date);
+        identity.setLastUpdatedAt(date);
+        identity.setRegistered(date);
+        identity.setLimitCashPerDay(Arrays.asList(savedDailyLimit));
+        identity.setLimitCashPerTransaction(Arrays.asList(savedTrxLimit));
+        Identity savedIdentity = identityRep.save(identity);
+
+        IdentityPiece ip = new IdentityPiece();
+        ip.setIdentity(savedIdentity);
+        ip.setPieceType(Constant.TYPE_CELLPHONE);
+        ip.setRegistration(true);
+        ip.setCreated(date);
+        IdentityPiece ipSaved = identityPieceRep.save(ip);
+
+        IdentityPieceCellPhone ipCellPhone = new IdentityPieceCellPhone();
+        ipCellPhone.setIdentity(savedIdentity);
+        ipCellPhone.setIdentityPiece(ipSaved);
+        ipCellPhone.setCreated(date);
+        ipCellPhone.setPhoneNumber(formattedPhone);
+        identityPieceCellPhoneRep.save(ipCellPhone);
+
+        return savedIdentity;
     }
 }

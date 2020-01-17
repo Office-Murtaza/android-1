@@ -112,12 +112,9 @@ public class TrongridService {
         try {
             JSONObject res = rest.getForObject(nodeUrl + "/v1/accounts/" + address + "/transactions?limit=200", JSONObject.class);
             JSONArray array = res.optJSONArray("data");
+            Map<String, TransactionDTO> map = collectNodeTxs(array, address);
 
-            if (array != null && !array.isEmpty()) {
-                Map<String, TransactionDTO> map = collectNodeTxs(array, address);
-
-                return Util.buildTxs(map, startIndex, limit, gifts, txs);
-            }
+            return Util.buildTxs(map, startIndex, limit, gifts, txs);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -138,28 +135,30 @@ public class TrongridService {
         return new CurrentBlockDTO();
     }
 
-    private Map<String, TransactionDTO> collectNodeTxs(JSONArray transactionsArray, String address) {
+    private Map<String, TransactionDTO> collectNodeTxs(JSONArray array, String address) {
         Map<String, TransactionDTO> map = new HashMap<>();
 
-        for (int i = 0; i < transactionsArray.size(); i++) {
-            JSONObject tx = transactionsArray.getJSONObject(i);
+        if (array != null && !array.isEmpty()) {
+            for (int i = 0; i < array.size(); i++) {
+                JSONObject tx = array.getJSONObject(i);
 
-            JSONObject row = tx.optJSONObject("raw_data").optJSONArray("contract").getJSONObject(0).getJSONObject("parameter").optJSONObject("value");
+                JSONObject row = tx.optJSONObject("raw_data").optJSONArray("contract").getJSONObject(0).getJSONObject("parameter").optJSONObject("value");
 
-            if (row.containsKey("asset_name")) {
-                continue;
+                if (row.containsKey("asset_name")) {
+                    continue;
+                }
+
+                String txId = tx.optString("txID");
+                String fromAddress = Base58.toBase58(row.optString("owner_address")).toLowerCase();
+                String toAddress = Base58.toBase58(row.optString("to_address")).toLowerCase();
+                String contractRet = tx.optJSONArray("ret").getJSONObject(0).optString("contractRet");
+                TransactionType type = TransactionType.getType(fromAddress, toAddress, address);
+                BigDecimal amount = Util.format6(getAmount(row.optLong("amount")));
+                TransactionStatus status = getStatus(contractRet);
+                Date date1 = new Date(tx.optJSONObject("raw_data").optLong("timestamp"));
+
+                map.put(txId, new TransactionDTO(txId, amount, type, status, date1));
             }
-
-            String txId = tx.optString("txID");
-            String fromAddress = Base58.toBase58(row.optString("owner_address")).toLowerCase();
-            String toAddress = Base58.toBase58(row.optString("to_address")).toLowerCase();
-            String contractRet = tx.optJSONArray("ret").getJSONObject(0).optString("contractRet");
-            TransactionType type = TransactionType.getType(fromAddress, toAddress, address);
-            BigDecimal amount = Util.format6(getAmount(row.optLong("amount")));
-            TransactionStatus status = getStatus(contractRet);
-            Date date1 = new Date(tx.optJSONObject("raw_data").optLong("timestamp"));
-
-            map.put(txId, new TransactionDTO(txId, amount, type, status, date1));
         }
 
         return map;
