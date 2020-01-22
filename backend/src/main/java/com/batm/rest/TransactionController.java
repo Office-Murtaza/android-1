@@ -19,6 +19,9 @@ public class TransactionController {
     @Autowired
     private TransactionService transactionService;
 
+    /**
+     * Transaction Detail
+     */
     @GetMapping("/user/{userId}/coins/{coinId}/transaction/{txId}")
     public Response getTransaction(@PathVariable Long userId, @PathVariable CoinService.CoinEnum coinId, @PathVariable String txId) {
         try {
@@ -29,6 +32,9 @@ public class TransactionController {
         }
     }
 
+    /**
+     * Transaction History
+     */
     @GetMapping("/user/{userId}/coins/{coinId}/transactions")
     public Response getTransactions(@PathVariable Long userId, @PathVariable CoinService.CoinEnum coinId, @RequestParam(required = false) Integer index) {
         try {

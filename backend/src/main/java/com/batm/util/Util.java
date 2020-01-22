@@ -9,6 +9,7 @@ import com.batm.model.TransactionType;
 import net.sf.json.JSONObject;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang3.RandomStringUtils;
+
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
@@ -127,22 +128,26 @@ public class Util {
     private static void mergeTxs(Map<String, TransactionDTO> map, List<TransactionRecord> txList) {
         if (txList != null && !txList.isEmpty()) {
             txList.stream().forEach(e -> {
-                if (StringUtils.isNotEmpty(e.getDetail())) {
-                    TransactionType type = e.getType() == 1 ? TransactionType.SELL : TransactionType.BUY;
+                TransactionType type = e.getType() == 1 ? TransactionType.SELL : TransactionType.BUY;
 
-                    TransactionStatus status = TransactionStatus.PENDING;
-                    if (type == TransactionType.SELL && e.getStatus() == 3) {
-                        status = TransactionStatus.COMPLETE;
-                    } else if (type == TransactionType.BUY && e.getStatus() == 1) {
-                        status = TransactionStatus.COMPLETE;
-                    }
+                TransactionStatus status = TransactionStatus.PENDING; // just in case... use Pending as default
+                if (e.getStatus() == 0) {
+                    status = TransactionStatus.PENDING;
+                } else if (e.getStatus() == 2) {
+                    status = TransactionStatus.FAIL;
+                }
+                else if ((type == TransactionType.SELL && e.getStatus() == 3)
+                        || (type == TransactionType.BUY && e.getStatus() == 1)) {
+                    status = TransactionStatus.COMPLETE;
+                }
 
-                    if (map.containsKey(e.getDetail())) {
-                        map.get(e.getDetail()).setType(type);
-                        map.get(e.getDetail()).setStatus(status);
-                    } else {
-                        map.put(e.getDetail(), new TransactionDTO(e.getDetail(), e.getCryptoAmount(), type, status, e.getServerTime()));
-                    }
+                if (StringUtils.isNotEmpty(e.getDetail()) && map.containsKey(e.getDetail())) {
+                    map.get(e.getDetail()).setType(type);
+                    map.get(e.getDetail()).setStatus(status);
+                } else {
+                    TransactionDTO transactionDTO = new TransactionDTO(e.getDetail(), e.getCryptoAmount(), type, status, e.getServerTime());
+                    transactionDTO.setTxDbId(e.getId().toString());
+                    map.put(e.getDetail(), transactionDTO);
                 }
             });
         }

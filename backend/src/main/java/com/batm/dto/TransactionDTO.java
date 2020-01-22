@@ -1,5 +1,6 @@
 package com.batm.dto;
 
+import com.batm.model.CashStatus;
 import com.batm.model.TransactionStatus;
 import com.batm.model.TransactionType;
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -20,8 +21,10 @@ public class TransactionDTO {
 
     private Integer index;
     private String txId;
+    private String txDbId;
     private String link;
     private BigDecimal cryptoAmount;
+    private BigDecimal fiatAmount;
     private BigDecimal cryptoFee;
     private String fromAddress;
     private String toAddress;
@@ -35,6 +38,9 @@ public class TransactionDTO {
 
     @JsonFormat(shape = JsonFormat.Shape.OBJECT)
     private TransactionStatus status;
+
+    @JsonFormat(shape = JsonFormat.Shape.OBJECT)
+    private CashStatus cashStatus;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private Date date1;

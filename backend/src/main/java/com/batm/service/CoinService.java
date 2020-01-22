@@ -1,25 +1,26 @@
 package com.batm.service;
 
-import java.math.BigDecimal;
-import java.util.*;
-import java.util.concurrent.CompletableFuture;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 import com.batm.dto.*;
 import com.batm.entity.*;
+import com.batm.model.CashStatus;
 import com.batm.model.TransactionStatus;
 import com.batm.model.TransactionType;
-import com.batm.util.*;
+import com.batm.repository.CoinRep;
+import com.batm.util.Constant;
+import com.batm.util.Util;
+import com.binance.api.client.BinanceApiRestClient;
 import net.sf.json.JSONObject;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import com.batm.repository.CoinRep;
-import com.batm.dto.BalanceDTO;
-import com.batm.dto.CoinDTO;
-import com.binance.api.client.BinanceApiRestClient;
 import wallet.core.jni.CoinType;
+
+import java.math.BigDecimal;
+import java.util.*;
+import java.util.concurrent.CompletableFuture;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Service
 public class CoinService {
@@ -686,12 +687,27 @@ public class CoinService {
     }
 
     public TransactionDTO getTransaction(Long userId, CoinEnum coin, String txId) {
-        User user = userService.findById(userId);
-        String address = user.getCoinAddress(coin.name());
-        TransactionRecord txRecord = user.getIdentity().getTxRecord(txId, coin.name());
-        TransactionRecordGift txGift = user.getIdentity().getTxGift(txId, coin.name());
 
-        TransactionDTO dto = coin.getTransaction(txId, address);
+        User user = userService.findById(userId);
+
+        TransactionDTO dto = null;
+        TransactionRecord txRecord = null;
+
+        if (StringUtils.isNumeric(txId)) {  /** consider as txDbId */
+
+            dto = new TransactionDTO();
+            dto.setTxDbId(txId);
+            txRecord = user.getIdentity().getTxRecordByDbId(Long.valueOf(txId), coin.name());
+
+        } else {                            /** consider as txId */
+
+            String address = user.getCoinAddress(coin.name());
+            dto = coin.getTransaction(txId, address);
+            txRecord = user.getIdentity().getTxRecordByCryptoId(txId, coin.name());
+
+        }
+
+        TransactionRecordGift txGift = user.getIdentity().getTxGift(txId, coin.name());
 
         if (txGift != null) {
             dto.setPhone(txGift.getPhone());
@@ -701,8 +717,12 @@ public class CoinService {
         } else if (txRecord != null) {
             dto.setType(txRecord.getTransactionType());
             dto.setCryptoAmount(txRecord.getCryptoAmount().stripTrailingZeros());
-
-            if(dto.getType() == TransactionType.SELL) {
+            if (TransactionType.SELL.equals(dto.getType())
+                    || TransactionType.BUY.equals(dto.getType())) {
+                dto.setFiatAmount(txRecord.getCashAmount().stripTrailingZeros());
+            }
+            if (dto.getType() == TransactionType.SELL) {
+                dto.setCashStatus(CashStatus.getCashStatus(txRecord.getCanBeAllocatedForWithdrawal(), txRecord.getWithdrawn()));
                 dto.setSellInfo(coin.getName() + ":" + txRecord.getCryptoAddress() + "?amount=" + txRecord.getCryptoAmount() + "&label=" + txRecord.getRemoteTransactionId() + "&uuid=" + txRecord.getUuid());
             }
         }

@@ -182,15 +182,26 @@ public class Identity extends BaseEntity {
     private List<TransactionRecordGift> transactionRecordGifts;
 
     @Transient
-    public TransactionRecord getTxRecord(String txId, String coinCode) {
-        Optional<TransactionRecord> first = transactionRecords.stream().filter(e -> txId.equalsIgnoreCase(e.getDetail()) && coinCode.equalsIgnoreCase(e.getCryptoCurrency())).findFirst();
+    public TransactionRecord getTxRecordByCryptoId(String txId, String coinCode) {
+        Optional<TransactionRecord> first = transactionRecords.stream()
+                .filter(e -> txId.equalsIgnoreCase(e.getDetail()) && coinCode.equalsIgnoreCase(e.getCryptoCurrency()))
+                .findFirst();
+
+        return first.isPresent() ? first.get() : null;
+    }
+
+    @Transient
+    public TransactionRecord getTxRecordByDbId(Long txDbId, String coinCode) {
+        Optional<TransactionRecord> first = transactionRecords.stream()
+                .filter(e -> txDbId.equals(e.getId()) && coinCode.equalsIgnoreCase(e.getCryptoCurrency()))
+                .findFirst();
 
         return first.isPresent() ? first.get() : null;
     }
 
     @Transient
     public List<TransactionRecord> getTxRecordList(String coinCode) {
-        return transactionRecords.stream().filter(e -> coinCode.equalsIgnoreCase(e.getCryptoCurrency()) && StringUtils.isNotEmpty(e.getDetail())).collect(Collectors.toList());
+        return transactionRecords.stream().filter(e -> coinCode.equalsIgnoreCase(e.getCryptoCurrency())).collect(Collectors.toList());
     }
 
     @Transient
