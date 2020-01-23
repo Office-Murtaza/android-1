@@ -691,13 +691,13 @@ public class CoinService {
         User user = userService.findById(userId);
 
         TransactionDTO dto = null;
-        TransactionRecord txRecord = null;
+        TransactionRecord txRecord;
 
         if (StringUtils.isNumeric(txId)) {  /** consider as txDbId */
-
-            dto = new TransactionDTO();
             txRecord = user.getIdentity().getTxRecordByDbId(Long.valueOf(txId), coin.name());
-
+            if (txRecord != null) {
+                dto = new TransactionDTO();
+            }
         } else {                            /** consider as txId */
 
             String address = user.getCoinAddress(coin.name());
