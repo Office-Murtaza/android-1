@@ -712,7 +712,16 @@ public class CoinService {
             dto.setMessage(txGift.getMessage());
             dto.setType(TransactionType.getGiftType(dto.getType()));
         } else if (txRecord != null) {
-            dto.setTxDbId(txRecord.getId().toString());
+
+            // to return either txId or txDbId, not both
+            if(StringUtils.isBlank(dto.getTxId())) {
+                if(StringUtils.isNotBlank(txRecord.getDetail())) {
+                    dto.setTxId(txRecord.getDetail());
+                } else {
+                    dto.setTxDbId(txRecord.getId().toString());
+                }
+            }
+
             dto.setType(txRecord.getTransactionType());
             dto.setStatus(txRecord.getTransactionStatus(dto.getType()));
             dto.setCryptoAmount(txRecord.getCryptoAmount().stripTrailingZeros());
