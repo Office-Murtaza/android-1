@@ -135,7 +135,12 @@ public class Util {
                     map.get(e.getDetail()).setType(type);
                     map.get(e.getDetail()).setStatus(status);
                 } else {
-                    TransactionDTO transactionDTO = new TransactionDTO(e.getDetail(), e.getCryptoAmount(), type, status, e.getServerTime());
+                    TransactionDTO transactionDTO = new TransactionDTO(
+                            e.getDetail(),
+                            Util.format6(e.getCryptoAmount()),
+                            type,
+                            status,
+                            e.getServerTime());
                     transactionDTO.setTxDbId(e.getId().toString());
                     map.put(e.getDetail(), transactionDTO);
                 }
