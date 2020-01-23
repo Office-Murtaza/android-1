@@ -131,9 +131,20 @@ public class Util {
                 TransactionType type = e.getTransactionType();
                 TransactionStatus status = e.getTransactionStatus(type);
 
-                if (StringUtils.isNotEmpty(e.getDetail()) && map.containsKey(e.getDetail())) {
-                    map.get(e.getDetail()).setType(type);
-                    map.get(e.getDetail()).setStatus(status);
+                if (StringUtils.isNotEmpty(e.getDetail())) {
+                    if (map.containsKey(e.getDetail())) {
+                        map.get(e.getDetail()).setType(type);
+                        map.get(e.getDetail()).setStatus(status);
+                    } else {
+                        TransactionDTO transactionDTO = new TransactionDTO(
+                                e.getDetail(),
+                                Util.format6(e.getCryptoAmount()),
+                                type,
+                                status,
+                                e.getServerTime());
+                        transactionDTO.setTxDbId(e.getId().toString());
+                        map.put(e.getDetail(), transactionDTO);
+                    }
                 } else {
                     TransactionDTO transactionDTO = new TransactionDTO(
                             e.getDetail(),
@@ -142,7 +153,7 @@ public class Util {
                             status,
                             e.getServerTime());
                     transactionDTO.setTxDbId(e.getId().toString());
-                    map.put(e.getDetail(), transactionDTO);
+                    map.put(e.getId().toString(), transactionDTO);
                 }
             });
         }

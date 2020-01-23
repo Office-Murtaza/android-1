@@ -699,11 +699,9 @@ public class CoinService {
                 dto = new TransactionDTO();
             }
         } else {                            /** consider as txId */
-
             String address = user.getCoinAddress(coin.name());
             dto = coin.getTransaction(txId, address);
             txRecord = user.getIdentity().getTxRecordByCryptoId(txId, coin.name());
-
         }
 
         TransactionRecordGift txGift = user.getIdentity().getTxGift(txId, coin.name());
@@ -718,10 +716,7 @@ public class CoinService {
             dto.setType(txRecord.getTransactionType());
             dto.setStatus(txRecord.getTransactionStatus(dto.getType()));
             dto.setCryptoAmount(txRecord.getCryptoAmount().stripTrailingZeros());
-            if (TransactionType.SELL.equals(dto.getType())
-                    || TransactionType.BUY.equals(dto.getType())) {
-                dto.setFiatAmount(txRecord.getCashAmount().setScale(0));
-            }
+            dto.setFiatAmount(txRecord.getCashAmount().setScale(0));
             if (dto.getType() == TransactionType.SELL) {
                 dto.setCashStatus(CashStatus.getCashStatus(txRecord.getCanBeAllocatedForWithdrawal(), txRecord.getWithdrawn()));
                 dto.setSellInfo(coin.getName() + ":" + txRecord.getCryptoAddress() + "?amount=" + txRecord.getCryptoAmount() + "&label=" + txRecord.getRemoteTransactionId() + "&uuid=" + txRecord.getUuid());
