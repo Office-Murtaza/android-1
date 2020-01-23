@@ -128,18 +128,8 @@ public class Util {
     private static void mergeTxs(Map<String, TransactionDTO> map, List<TransactionRecord> txList) {
         if (txList != null && !txList.isEmpty()) {
             txList.stream().forEach(e -> {
-                TransactionType type = e.getType() == 1 ? TransactionType.SELL : TransactionType.BUY;
-
-                TransactionStatus status = TransactionStatus.PENDING; // just in case... use Pending as default
-                if (e.getStatus() == 0) {
-                    status = TransactionStatus.PENDING;
-                } else if (e.getStatus() == 2) {
-                    status = TransactionStatus.FAIL;
-                }
-                else if ((type == TransactionType.SELL && e.getStatus() == 3)
-                        || (type == TransactionType.BUY && e.getStatus() == 1)) {
-                    status = TransactionStatus.COMPLETE;
-                }
+                TransactionType type = e.getTransactionType();
+                TransactionStatus status = e.getTransactionStatus(type);
 
                 if (StringUtils.isNotEmpty(e.getDetail()) && map.containsKey(e.getDetail())) {
                     map.get(e.getDetail()).setType(type);

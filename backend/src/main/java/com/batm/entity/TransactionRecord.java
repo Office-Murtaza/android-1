@@ -1,5 +1,6 @@
 package com.batm.entity;
 
+import com.batm.model.TransactionStatus;
 import com.batm.model.TransactionType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -212,5 +213,20 @@ public class TransactionRecord extends BaseEntity {
     @Transient
     public TransactionType getTransactionType() {
         return getType() == 1 ? TransactionType.SELL : TransactionType.BUY;
+    }
+
+    @Transient
+    public TransactionStatus getTransactionStatus(TransactionType type) {
+        TransactionStatus status = TransactionStatus.PENDING; // just in case... use Pending as default
+        if (getStatus() == 0) {
+            status = TransactionStatus.PENDING;
+        } else if (getStatus() == 2) {
+            status = TransactionStatus.FAIL;
+        }
+        else if ((type == TransactionType.SELL && getStatus() == 3)
+                || (type == TransactionType.BUY && getStatus() == 1)) {
+            status = TransactionStatus.COMPLETE;
+        }
+        return status;
     }
 }
