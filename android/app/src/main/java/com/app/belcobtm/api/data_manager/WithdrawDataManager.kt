@@ -5,7 +5,7 @@ import com.app.belcobtm.api.model.param.PreTransactionParam
 import com.app.belcobtm.api.model.param.SendTransactionParam
 import com.app.belcobtm.api.model.param.VerifySmsParam
 import com.app.belcobtm.api.model.response.*
-import com.app.belcobtm.util.Optional
+import com.app.belcobtm.core.Optional
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -114,9 +114,15 @@ open class WithdrawDataManager : BaseDataManager() {
     fun getTransactionDetails(
         userId: String?,
         coinId: String?,
-        txid: String?
-    ): Observable<Optional<TransactionDetailsResponse>> =
-        genObservable(api.getTransactionDetails(userId, coinId, txid))
+        txid: String?,
+        txDbId: String?
+    ): Observable<Optional<TransactionDetailsResponse>> {
+        return if (txid != null) {
+            genObservable(api.getTransactionDetails(userId, coinId, txid))
+        } else {
+            genObservable(api.getTransactionDetailsByTxDbId(userId, coinId, txDbId))
+        }
+    }
 
 
 }

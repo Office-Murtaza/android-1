@@ -1,4 +1,4 @@
-package com.app.belcobtm.util
+package com.app.belcobtm.core
 
 import android.graphics.Bitmap
 import android.graphics.Color

@@ -15,7 +15,7 @@ import androidx.core.widget.doAfterTextChanged
 import com.app.belcobtm.R
 import com.app.belcobtm.api.model.response.CoinModel
 import com.app.belcobtm.mvp.BaseMvpActivity
-import com.app.belcobtm.util.Const.GIPHY_API_KEY
+import com.app.belcobtm.core.Const.GIPHY_API_KEY
 import com.giphy.sdk.core.models.Media
 import com.giphy.sdk.core.models.enums.RenditionType
 import com.giphy.sdk.ui.GPHContentType

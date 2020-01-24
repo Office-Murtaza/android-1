@@ -7,7 +7,7 @@ import com.app.belcobtm.api.model.response.TransactionModel
 import com.app.belcobtm.db.DbCryptoCoin
 import com.app.belcobtm.db.DbCryptoCoinModel
 import com.app.belcobtm.mvp.BaseMvpDIPresenterImpl
-import com.app.belcobtm.util.pref
+import com.app.belcobtm.core.pref
 import io.realm.Realm
 import wallet.core.jni.CoinType
 
@@ -25,13 +25,17 @@ class DetailsPresenter : BaseMvpDIPresenterImpl<DetailsContract.View, WithdrawDa
     override fun getDetails() {
 
         mDataManager.getTransactionDetails(
-            mUserId, mCoinDbModel?.coinType,
-            transaction.txid
+            mUserId,
+            mCoinDbModel?.coinType,
+            transaction.txid,
+            transaction.txDbId
         ).subscribe({ response ->
-            if (response.value?.txId != null) {
+            if (response.value?.txId != null || response.value?.txDbId != null) {
                 mView?.showTransactionDetails(response.value)
             }
-        }, { error -> checkError(error) })
+        }, { error ->
+            checkError(error)
+        })
     }
 
     private lateinit var transaction: TransactionModel

@@ -7,11 +7,10 @@ import com.app.belcobtm.api.model.response.AuthResponse
 import com.app.belcobtm.db.DbCryptoCoin
 import com.app.belcobtm.db.DbCryptoCoinModel
 import com.app.belcobtm.mvp.BaseMvpDIPresenterImpl
-import com.app.belcobtm.util.Optional
-import com.app.belcobtm.util.pref
+import com.app.belcobtm.core.Optional
+import com.app.belcobtm.core.pref
 import io.reactivex.Observable
 import io.realm.Realm
-import org.spongycastle.crypto.DerivationParameters
 import org.web3j.utils.Numeric
 import wallet.core.jni.*
 

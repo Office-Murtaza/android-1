@@ -22,5 +22,8 @@
 
     <color name="pin_gray_unchecked">#4d6c91</color>
 
+    <color name="cash_status_not_available">#e02d2d</color>
+    <color name="cash_status_available">#48be53</color>
+    <color name="cash_status_withdrawn">#cbcaca</color>
 
 </resources>

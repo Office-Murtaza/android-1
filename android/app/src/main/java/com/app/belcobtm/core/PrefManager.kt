@@ -1,4 +1,4 @@
-package com.app.belcobtm.util
+package com.app.belcobtm.core
 
 import android.content.Context
 import android.content.SharedPreferences
