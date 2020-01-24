@@ -5,9 +5,9 @@ import org.apache.commons.lang3.BooleanUtils;
 
 public enum CashStatus {
 
-    NOT_AVAILABLE(0),
-    AVAILABLE(1),
-    WITHDRAWN(2);
+    NOT_AVAILABLE(1),
+    AVAILABLE(2),
+    WITHDRAWN(3);
 
     private int value;
 
@@ -20,8 +20,8 @@ public enum CashStatus {
         return value;
     }
 
-    public static CashStatus getCashStatus(Boolean canBeAllocatedForWithdrawal, Boolean isWithdrawn) {
-        if (BooleanUtils.isTrue(canBeAllocatedForWithdrawal)) {
+    public static CashStatus getCashStatus(Boolean canBeCashedOut, Boolean isWithdrawn) {
+        if (BooleanUtils.isTrue(canBeCashedOut)) {
             if (BooleanUtils.isTrue(isWithdrawn)) {
                 return CashStatus.WITHDRAWN;
             }

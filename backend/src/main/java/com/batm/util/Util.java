@@ -9,7 +9,6 @@ import com.batm.model.TransactionType;
 import net.sf.json.JSONObject;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang3.RandomStringUtils;
-
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
@@ -131,29 +130,15 @@ public class Util {
                 TransactionType type = e.getTransactionType();
                 TransactionStatus status = e.getTransactionStatus(type);
 
-                if (StringUtils.isNotEmpty(e.getDetail())) {
-                    if (map.containsKey(e.getDetail())) {
-                        map.get(e.getDetail()).setType(type);
-                        map.get(e.getDetail()).setStatus(status);
-                    } else {
-                        TransactionDTO transactionDTO = new TransactionDTO(
-                                e.getDetail(),
-                                Util.format6(e.getCryptoAmount()),
-                                type,
-                                status,
-                                e.getServerTime());
-                        transactionDTO.setTxDbId(e.getId().toString());
-                        map.put(e.getDetail(), transactionDTO);
-                    }
+                if (StringUtils.isNotEmpty(e.getDetail()) && map.containsKey(e.getDetail())) {
+                    map.get(e.getDetail()).setType(type);
+                    map.get(e.getDetail()).setStatus(status);
                 } else {
-                    TransactionDTO transactionDTO = new TransactionDTO(
-                            e.getDetail(),
-                            Util.format6(e.getCryptoAmount()),
-                            type,
-                            status,
-                            e.getServerTime());
-                    transactionDTO.setTxDbId(e.getId().toString());
-                    map.put(e.getId().toString(), transactionDTO);
+                    TransactionDTO transactionDTO = new TransactionDTO(null, Util.format6(e.getCryptoAmount()), type, status, e.getServerTime());
+                    String txDbId = e.getId().toString();
+                    transactionDTO.setTxDbId(txDbId);
+
+                    map.put(txDbId, transactionDTO);
                 }
             });
         }
@@ -173,17 +158,18 @@ public class Util {
     private static TransactionListDTO build(List<TransactionDTO> list, Integer startIndex, Integer limit) {
         TransactionListDTO result = new TransactionListDTO();
         List<TransactionDTO> transactions = new ArrayList<>();
+        int index = startIndex - 1;
 
         for (int i = 0; i < list.size(); i++) {
-            if ((i + 1 < startIndex)) {
+            if (index > i) {
                 continue;
             }
 
             TransactionDTO dto = list.get(i);
-            dto.setIndex(startIndex + i);
+            dto.setIndex(i + 1);
             transactions.add(dto);
 
-            if ((startIndex + limit) == (i + 1)) {
+            if (index + limit == i + 1) {
                 break;
             }
         }

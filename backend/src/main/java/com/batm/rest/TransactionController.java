@@ -20,19 +20,6 @@ public class TransactionController {
     private TransactionService transactionService;
 
     /**
-     * Transaction Detail
-     */
-    @GetMapping("/user/{userId}/coins/{coinId}/transaction/{txId}")
-    public Response getTransaction(@PathVariable Long userId, @PathVariable CoinService.CoinEnum coinId, @PathVariable String txId) {
-        try {
-            return Response.ok(coinService.getTransaction(userId, coinId, txId));
-        } catch (Exception e) {
-            e.printStackTrace();
-            return Response.serverError();
-        }
-    }
-
-    /**
      * Transaction History
      */
     @GetMapping("/user/{userId}/coins/{coinId}/transactions")
@@ -41,6 +28,19 @@ public class TransactionController {
             index = index == null || index <= 0 ? 1 : index;
 
             return Response.ok(coinService.getTransactions(userId, coinId, index));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Response.serverError();
+        }
+    }
+
+    /**
+     * Transaction Details
+     */
+    @GetMapping("/user/{userId}/coins/{coinId}/transaction/{txId}")
+    public Response getTransaction(@PathVariable Long userId, @PathVariable CoinService.CoinEnum coinId, @PathVariable String txId) {
+        try {
+            return Response.ok(coinService.getTransaction(userId, coinId, txId));
         } catch (Exception e) {
             e.printStackTrace();
             return Response.serverError();

@@ -15,7 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import wallet.core.jni.CoinType;
-
 import java.math.BigDecimal;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
@@ -687,17 +686,13 @@ public class CoinService {
     }
 
     public TransactionDTO getTransaction(Long userId, CoinEnum coin, String txId) {
-
         User user = userService.findById(userId);
 
-        TransactionDTO dto = null;
+        TransactionDTO dto = new TransactionDTO();
         TransactionRecord txRecord;
 
         if (StringUtils.isNumeric(txId)) {  /** consider as txDbId */
             txRecord = user.getIdentity().getTxRecordByDbId(Long.valueOf(txId), coin.name());
-            if (txRecord != null) {
-                dto = new TransactionDTO();
-            }
         } else {                            /** consider as txId */
             String address = user.getCoinAddress(coin.name());
             dto = coin.getTransaction(txId, address);
@@ -714,8 +709,8 @@ public class CoinService {
         } else if (txRecord != null) {
 
             // to return either txId or txDbId, not both
-            if(StringUtils.isBlank(dto.getTxId())) {
-                if(StringUtils.isNotBlank(txRecord.getDetail())) {
+            if (StringUtils.isBlank(dto.getTxId())) {
+                if (StringUtils.isNotBlank(txRecord.getDetail())) {
                     dto.setTxId(txRecord.getDetail());
                 } else {
                     dto.setTxDbId(txRecord.getId().toString());
@@ -726,8 +721,11 @@ public class CoinService {
             dto.setStatus(txRecord.getTransactionStatus(dto.getType()));
             dto.setCryptoAmount(txRecord.getCryptoAmount().stripTrailingZeros());
             dto.setFiatAmount(txRecord.getCashAmount().setScale(0));
+            dto.setToAddress(txRecord.getCryptoAddress());
+            dto.setDate2(txRecord.getServerTime());
+
             if (dto.getType() == TransactionType.SELL) {
-                dto.setCashStatus(CashStatus.getCashStatus(txRecord.getCanBeAllocatedForWithdrawal(), txRecord.getWithdrawn()));
+                dto.setCashStatus(CashStatus.getCashStatus(txRecord.getCanBeCashedOut(), txRecord.getWithdrawn()));
                 dto.setSellInfo(coin.getName() + ":" + txRecord.getCryptoAddress() + "?amount=" + txRecord.getCryptoAmount() + "&label=" + txRecord.getRemoteTransactionId() + "&uuid=" + txRecord.getUuid());
             }
         }
