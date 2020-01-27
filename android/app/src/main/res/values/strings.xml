@@ -57,7 +57,7 @@
     <!--seed phrase-->
     <string name="done">Done</string>
     <string name="seed_phrase">Seed Phrase</string>
-    <string name="seed_info">If you lost your seed phrase you will not be able to restore your wallet</string>
+    <string name="seed_info">If you lost your seed phrase you will not be able to recover your wallet</string>
     <string name="seed_clipboard">Seed phrase copied to clipboard</string>
 
     <!--recover seed phrase-->
