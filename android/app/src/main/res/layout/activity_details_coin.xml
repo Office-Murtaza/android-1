@@ -25,7 +25,8 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
             android:layout_marginTop="8dp"
-            android:layout_marginEnd="24dp">
+            android:layout_marginEnd="24dp"
+            android:paddingBottom="16dp">
 
             <TableRow
                 android:id="@+id/txIdContainerView"
@@ -103,7 +104,8 @@
                         android:textColor="@android:color/white"
                         android:textSize="10sp"
                         android:textStyle="bold"
-                        tools:text="Pending" />
+                        tools:text="Pending"
+                        tools:ignore="SmallSp" />
                 </FrameLayout>
 
             </TableRow>
@@ -269,11 +271,10 @@
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/qrCodeView"
+                style="@style/CoinDetails.Table.Row"
                 android:layout_width="142dp"
                 android:layout_height="142dp"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="16dp"
-                android:layout_marginBottom="16dp"
                 tools:src="@drawable/ic_gift_box" />
         </TableLayout>
 
