@@ -23,11 +23,20 @@ data class TransactionDetailsResponse(
 
 ) : Serializable {
 
-    fun getCashStatusType(): CashStatusType = CashStatusType.values()[cashStatus]
+    fun getSttusType(): TransactionStatusType = TransactionStatusType.values()[status]
+
+    fun getCashStatusType(): TransactionCashStatusType = TransactionCashStatusType.values()[cashStatus]
 }
 
-enum class CashStatusType {
-    NONE,
+enum class TransactionStatusType {
+    UNKNOWN,
+    PENDING,
+    COMPLETE,
+    FAIL
+}
+
+enum class TransactionCashStatusType {
+    UNKNOWN,
     NOT_AVAILABLE,
     AVAILABLE,
     WITHDRAWN

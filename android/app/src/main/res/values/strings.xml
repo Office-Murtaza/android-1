@@ -164,6 +164,10 @@
     <string name="transition_details_screen_image">Image</string>
     <string name="transition_details_screen_message">Message</string>
 
+    <string name="transition_details_screen_unknown">Unknown</string>
+    <string name="transition_details_screen_pending">Pending</string>
+    <string name="transition_details_screen_complete">Complete</string>
+    <string name="transition_details_screen_fail">Fail</string>
     <string name="transition_details_screen_not_available">Not Available</string>
     <string name="transition_details_screen_available">Available</string>
     <string name="transition_details_screen_withdrawn">Withdrawn</string>
