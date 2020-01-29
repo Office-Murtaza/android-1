@@ -1,6 +1,5 @@
 package com.batm.service;
 
-import com.batm.dto.SubmitTransactionDTO;
 import com.batm.util.Constant;
 import com.google.protobuf.ByteString;
 import lombok.Getter;
@@ -20,9 +19,9 @@ import java.util.List;
 @Service
 public class WalletService {
 
-//    static {
-//        System.loadLibrary("TrustWalletCore");
-//    }
+    static {
+        System.loadLibrary("TrustWalletCore");
+    }
 
     @Value("${wallet.seed}")
     private String walletSeed;
@@ -51,30 +50,30 @@ public class WalletService {
         String seed = "garage become kid awake salon forget minimum snack crash broken leaf genius";
 
         //wallet = new HDWallet(AES.decrypt(walletSeed, walletSeedKey), "");
-//        wallet = new HDWallet(seed, "");
-//
-//        privateKeyBTC = wallet.getKeyForCoin(CoinType.BITCOIN);
-//        String extPublicKeyBTC = wallet.getExtendedPublicKey(Purpose.BIP44, CoinType.BITCOIN, HDVersion.XPUB);
-//        PublicKey publicKeyBTC = HDWallet.getPublicKeyFromExtended(extPublicKeyBTC, "m/44'/0'/0'/0/0");
-//        addressBTC = new BitcoinAddress(publicKeyBTC, CoinType.BITCOIN.p2pkhPrefix()).description();
-//
-//        PrivateKey privateKeyBCH = wallet.getKeyForCoin(CoinType.BITCOINCASH);
-//        addressBCH = CoinType.BITCOINCASH.deriveAddress(privateKeyBCH);
-//
-//        privateKeyETH = wallet.getKeyForCoin(CoinType.ETHEREUM);
-//        addressETH = CoinType.ETHEREUM.deriveAddress(privateKeyETH);
-//
-//        PrivateKey privateKeyLTC = wallet.getKeyForCoin(CoinType.LITECOIN);
-//        addressLTC = CoinType.LITECOIN.deriveAddress(privateKeyLTC);
-//
-//        privateKeyBNB = wallet.getKeyForCoin(CoinType.BINANCE);
-//        addressBNB = CoinType.BINANCE.deriveAddress(privateKeyBNB);
-//
-//        privateKeyXRP = wallet.getKeyForCoin(CoinType.XRP);
-//        addressXRP = CoinType.XRP.deriveAddress(privateKeyXRP);
-//
-//        privateKeyTRX = wallet.getKeyForCoin(CoinType.TRON);
-//        addressTRX = CoinType.TRON.deriveAddress(privateKeyTRX);
+        wallet = new HDWallet(seed, "");
+
+        privateKeyBTC = wallet.getKeyForCoin(CoinType.BITCOIN);
+        String extPublicKeyBTC = wallet.getExtendedPublicKey(Purpose.BIP44, CoinType.BITCOIN, HDVersion.XPUB);
+        PublicKey publicKeyBTC = HDWallet.getPublicKeyFromExtended(extPublicKeyBTC, "m/44'/0'/0'/0/0");
+        addressBTC = new BitcoinAddress(publicKeyBTC, CoinType.BITCOIN.p2pkhPrefix()).description();
+
+        PrivateKey privateKeyBCH = wallet.getKeyForCoin(CoinType.BITCOINCASH);
+        addressBCH = CoinType.BITCOINCASH.deriveAddress(privateKeyBCH);
+
+        privateKeyETH = wallet.getKeyForCoin(CoinType.ETHEREUM);
+        addressETH = CoinType.ETHEREUM.deriveAddress(privateKeyETH);
+
+        PrivateKey privateKeyLTC = wallet.getKeyForCoin(CoinType.LITECOIN);
+        addressLTC = CoinType.LITECOIN.deriveAddress(privateKeyLTC);
+
+        privateKeyBNB = wallet.getKeyForCoin(CoinType.BINANCE);
+        addressBNB = CoinType.BINANCE.deriveAddress(privateKeyBNB);
+
+        privateKeyXRP = wallet.getKeyForCoin(CoinType.XRP);
+        addressXRP = CoinType.XRP.deriveAddress(privateKeyXRP);
+
+        privateKeyTRX = wallet.getKeyForCoin(CoinType.TRON);
+        addressTRX = CoinType.TRON.deriveAddress(privateKeyTRX);
     }
 
     public String signBTC(CoinType coinType, String fromAddress, String toAddress, BigDecimal amount, BigDecimal fee, BigDecimal divider, List<JSONObject> utxos) {
@@ -195,46 +194,6 @@ Daniil Tishchenko, [03.12.19 12:32]
             Ethereum.SigningOutput output = EthereumSigner.sign(builder.build());
 
             return Numeric.toHexString(output.getEncoded().toByteArray());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return null;
-    }
-
-    public SubmitTransactionDTO signTRX(String toAddress, BigDecimal amount, BigDecimal fee, JSONObject rawData) {
-        try {
-            Tron.BlockHeader.Builder headerBuilder = Tron.BlockHeader.newBuilder();
-            headerBuilder.setNumber(rawData.optLong("number"));
-            headerBuilder.setTimestamp(rawData.optLong("timestamp"));
-            headerBuilder.setVersion(rawData.optInt("version"));
-            headerBuilder.setParentHash(ByteString.copyFrom(Numeric.hexStringToByteArray(rawData.optString("parentHash"))));
-            headerBuilder.setWitnessAddress(ByteString.copyFrom(Numeric.hexStringToByteArray(rawData.optString("witness_address"))));
-            headerBuilder.setTxTrieRoot(ByteString.copyFrom(Numeric.hexStringToByteArray(rawData.optString("txTrieRoot"))));
-
-            Tron.TransferContract.Builder transferBuilder = Tron.TransferContract.newBuilder();
-            transferBuilder.setOwnerAddress(addressTRX);
-            transferBuilder.setToAddress(toAddress);
-            transferBuilder.setAmount(amount.multiply(Constant.TRX_DIVIDER).longValue());
-
-            Tron.Transaction.Builder transactionBuilder = Tron.Transaction.newBuilder();
-            transactionBuilder.setTransfer(transferBuilder.build());
-            transactionBuilder.setTimestamp(System.currentTimeMillis());
-            transactionBuilder.setExpiration(transactionBuilder.getTimestamp() + 36000000);
-            transactionBuilder.setFeeLimit(fee.multiply(Constant.TRX_DIVIDER).longValue());
-            transactionBuilder.setBlockHeader(headerBuilder.build());
-
-            Tron.SigningInput.Builder sign = Tron.SigningInput.newBuilder();
-            sign.setTransaction(transactionBuilder.build());
-            sign.setPrivateKey(ByteString.copyFrom(Numeric.hexStringToByteArray(Numeric.toHexStringNoPrefix(privateKeyTRX.data()))));
-
-            Tron.SigningOutput output = TronSigner.sign(sign.build());
-
-            System.out.println("json:" + output.getJson());
-            SubmitTransactionDTO dto = new SubmitTransactionDTO();
-            dto.setHex(output.getJson());
-
-            return dto;
         } catch (Exception e) {
             e.printStackTrace();
         }

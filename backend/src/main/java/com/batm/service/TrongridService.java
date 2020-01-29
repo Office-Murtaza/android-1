@@ -10,6 +10,7 @@ import com.batm.model.TransactionType;
 import com.batm.util.Base58;
 import com.batm.util.Constant;
 import com.batm.util.Util;
+import com.google.protobuf.ByteString;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.apache.commons.lang.StringUtils;
@@ -17,6 +18,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import org.web3j.utils.Numeric;
+import wallet.core.jni.TronSigner;
+import wallet.core.jni.proto.Tron;
 import java.math.BigDecimal;
 import java.util.*;
 
@@ -25,6 +29,9 @@ public class TrongridService {
 
     @Autowired
     private RestTemplate rest;
+
+    @Autowired
+    private WalletService walletService;
 
     @Value("${trx.node.url}")
     private String nodeUrl;
@@ -133,6 +140,42 @@ public class TrongridService {
         }
 
         return new CurrentBlockDTO();
+    }
+
+    public JSONObject sign(String toAddress, BigDecimal amount, BigDecimal fee, JSONObject rawData) {
+        try {
+            Tron.BlockHeader.Builder headerBuilder = Tron.BlockHeader.newBuilder();
+            headerBuilder.setNumber(rawData.optLong("number"));
+            headerBuilder.setTimestamp(rawData.optLong("timestamp"));
+            headerBuilder.setVersion(rawData.optInt("version"));
+            headerBuilder.setParentHash(ByteString.copyFrom(Numeric.hexStringToByteArray(rawData.optString("parentHash"))));
+            headerBuilder.setWitnessAddress(ByteString.copyFrom(Numeric.hexStringToByteArray(rawData.optString("witness_address"))));
+            headerBuilder.setTxTrieRoot(ByteString.copyFrom(Numeric.hexStringToByteArray(rawData.optString("txTrieRoot"))));
+
+            Tron.TransferContract.Builder transferBuilder = Tron.TransferContract.newBuilder();
+            transferBuilder.setOwnerAddress(walletService.getAddressTRX());
+            transferBuilder.setToAddress(toAddress);
+            transferBuilder.setAmount(amount.multiply(Constant.TRX_DIVIDER).longValue());
+
+            Tron.Transaction.Builder transactionBuilder = Tron.Transaction.newBuilder();
+            transactionBuilder.setTransfer(transferBuilder.build());
+            transactionBuilder.setTimestamp(System.currentTimeMillis());
+            transactionBuilder.setExpiration(transactionBuilder.getTimestamp() + 36000000);
+            transactionBuilder.setFeeLimit(fee.multiply(Constant.TRX_DIVIDER).longValue());
+            transactionBuilder.setBlockHeader(headerBuilder.build());
+
+            Tron.SigningInput.Builder sign = Tron.SigningInput.newBuilder();
+            sign.setTransaction(transactionBuilder.build());
+            sign.setPrivateKey(ByteString.copyFrom(Numeric.hexStringToByteArray(Numeric.toHexStringNoPrefix(walletService.getPrivateKeyTRX().data()))));
+
+            Tron.SigningOutput output = TronSigner.sign(sign.build());
+
+            return JSONObject.fromObject(output.getJson());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
     }
 
     private Map<String, TransactionDTO> collectNodeTxs(JSONArray array, String address) {

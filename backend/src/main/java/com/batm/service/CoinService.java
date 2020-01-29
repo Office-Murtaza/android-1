@@ -644,6 +644,15 @@ public class CoinService {
 
             @Override
             public String sign(String toAddress, BigDecimal amount) {
+                try {
+                    CurrentBlockDTO currentBlockDTO = trongrid.getCurrentBlock();
+                    JSONObject json = trongrid.sign(toAddress, amount, coinMap.get(name()).getFee(), currentBlockDTO.getBlockHeader().optJSONObject("raw_data"));
+
+                    return trongrid.submitTransaction(json);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
                 return null;
             }
 
