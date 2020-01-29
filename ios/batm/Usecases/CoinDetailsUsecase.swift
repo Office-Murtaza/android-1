@@ -4,7 +4,7 @@ import TrustWalletCore
 
 protocol CoinDetailsUsecase {
   func getTransactions(for type: CoinType, from page: Int) -> Single<Transactions>
-  func getTransactionDetails(for type: CoinType, by txid: String) -> Single<TransactionDetails>
+  func getTransactionDetails(for type: CoinType, by id: String) -> Single<TransactionDetails>
   func getCoin(for type: CoinType) -> Single<BTMCoin>
   func requestCode() -> Completable
   func verifyCode(code: String) -> Completable
@@ -41,9 +41,9 @@ class CoinDetailsUsecaseImpl: CoinDetailsUsecase {
       .flatMap { [api] in api.getTransactions(userId: $0.userId, type: type, page: page) }
   }
   
-  func getTransactionDetails(for type: CoinType, by txid: String) -> Single<TransactionDetails> {
+  func getTransactionDetails(for type: CoinType, by id: String) -> Single<TransactionDetails> {
     return accountStorage.get()
-      .flatMap { [api] in api.getTransactionDetails(userId: $0.userId, type: type, txid: txid) }
+      .flatMap { [api] in api.getTransactionDetails(userId: $0.userId, type: type, id: id) }
   }
   
   func getCoin(for type: CoinType) -> Single<BTMCoin> {

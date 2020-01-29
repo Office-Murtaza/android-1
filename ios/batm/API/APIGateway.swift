@@ -30,7 +30,7 @@ protocol APIGateway {
   func changePassword(userId: Int, oldPassword: String, newPassword: String) -> Completable
   func unlink(userId: Int) -> Completable
   func getTransactions(userId: Int, type: CoinType, page: Int) -> Single<Transactions>
-  func getTransactionDetails(userId: Int, type: CoinType, txid: String) -> Single<TransactionDetails>
+  func getTransactionDetails(userId: Int, type: CoinType, id: String) -> Single<TransactionDetails>
   func getUtxos(userId: Int, type: CoinType, xpub: String) -> Single<[Utxo]>
   func presubmitTransaction(userId: Int,
                             type: CoinType,
@@ -264,8 +264,8 @@ final class APIGatewayImpl: APIGateway {
       }
   }
   
-  func getTransactionDetails(userId: Int, type: CoinType, txid: String) -> Single<TransactionDetails> {
-    let request = TransactionDetailsRequest(userId: userId, coinId: type.code, txid: txid)
+  func getTransactionDetails(userId: Int, type: CoinType, id: String) -> Single<TransactionDetails> {
+    let request = TransactionDetailsRequest(userId: userId, coinId: type.code, id: id)
     return api.execute(request)
       .flatMap {
         switch $0 {

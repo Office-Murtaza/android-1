@@ -8,6 +8,8 @@ enum TransactionDetailsRowType {
   case text(String)
   case link(String)
   case image(String)
+  case status(TransactionStatus)
+  case cashStatus(TransactionCashStatus)
 }
 
 class TransactionDetailsRowView: UIView, HasDisposeBag {
@@ -100,6 +102,33 @@ class TransactionDetailsRowView: UIView, HasDisposeBag {
     }
   }
   
+  private func addStatus(with status: TransactionStatus) {
+    let view = TransactionStatusView()
+    view.configure(for: status)
+    
+    addSubview(view)
+    
+    view.snp.makeConstraints {
+      $0.left.equalToSuperview().offset(130)
+      $0.top.bottom.equalToSuperview()
+    }
+  }
+  
+  private func addCashStatus(with status: TransactionCashStatus) {
+    let label = UILabel()
+    label.text = status.verboseValue
+    label.textColor = status.associatedColor
+    label.font = .poppinsMedium12
+    label.numberOfLines = 0
+    
+    addSubview(label)
+    
+    label.snp.makeConstraints {
+      $0.left.equalToSuperview().offset(130)
+      $0.top.right.bottom.equalToSuperview()
+    }
+  }
+  
   func configure(for type: TransactionDetailsRowType, with title: String) {
     titleLabel.text = title
     
@@ -107,6 +136,8 @@ class TransactionDetailsRowView: UIView, HasDisposeBag {
     case let .text(text): addTitle(with: text)
     case let .link(text): addLink(with: text)
     case let .image(imageId): addImage(with: imageId)
+    case let .status(status): addStatus(with: status)
+    case let .cashStatus(cashStatus): addCashStatus(with: cashStatus)
     }
   }
 }

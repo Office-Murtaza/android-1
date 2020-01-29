@@ -30,7 +30,7 @@ class PhoneNumberTextField: FPNTextField, FPNTextFieldDelegate {
     textColor = .warmGrey
     font = .poppinsMedium12
     flagSize = CGSize(width: 20, height: 20)
-    setCountries(including: [FPNCountryCode.US])
+    setFlag(for: .US)
     
     layer.cornerRadius = 16
     layer.borderWidth = 1

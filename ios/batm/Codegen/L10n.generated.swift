@@ -23,11 +23,13 @@ enum L {
 
   struct CoinDetails {
     static let address = "coin_details.address"
+    static let available = "coin_details.available"
     static let balance = "coin_details.balance"
     static let buy = "coin_details.buy"
     static let complete = "coin_details.complete"
     static let deposit = "coin_details.deposit"
     static let fail = "coin_details.fail"
+    static let notAvailable = "coin_details.not_available"
     static let pending = "coin_details.pending"
     static let price = "coin_details.price"
     static let receiveGift = "coin_details.receive_gift"
@@ -35,6 +37,7 @@ enum L {
     static let sendGift = "coin_details.send_gift"
     static let unknown = "coin_details.unknown"
     static let withdraw = "coin_details.withdraw"
+    static let withdrawn = "coin_details.withdrawn"
   }
 
   struct CoinSell {
@@ -124,9 +127,11 @@ enum L {
   }
 
   struct TransactionDetails {
-    static let amount = "transaction_details.amount"
+    static let cashStatus = "transaction_details.cash_status"
+    static let cryptoAmount = "transaction_details.crypto_amount"
     static let date = "transaction_details.date"
     static let fee = "transaction_details.fee"
+    static let fiatAmount = "transaction_details.fiat_amount"
     static let fromAddress = "transaction_details.from_address"
     static let image = "transaction_details.image"
     static let message = "transaction_details.message"
@@ -134,6 +139,7 @@ enum L {
     static let status = "transaction_details.status"
     static let title = "transaction_details.title"
     static let toAddress = "transaction_details.to_address"
+    static let txDbId = "transaction_details.tx_db_id"
     static let txId = "transaction_details.tx_id"
     static let type = "transaction_details.type"
   }

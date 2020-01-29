@@ -82,8 +82,43 @@ enum TransactionStatus {
   }
 }
 
+enum TransactionCashStatus {
+  case unknown
+  case notAvailable
+  case available
+  case withdrawn
+  
+  var verboseValue: String {
+    switch self {
+    case .notAvailable: return localize(L.CoinDetails.notAvailable)
+    case .available: return localize(L.CoinDetails.available)
+    case .withdrawn: return localize(L.CoinDetails.withdrawn)
+    case .unknown: return localize(L.CoinDetails.unknown)
+    }
+  }
+  
+  var associatedColor: UIColor {
+    switch self {
+    case .notAvailable: return .tomato
+    case .available: return .darkMint
+    case .withdrawn: return .pinkishGrey
+    case .unknown: return .warmGrey
+    }
+  }
+  
+  init(rawValue: Int) {
+    switch rawValue {
+    case 0: self = .notAvailable
+    case 1: self = .available
+    case 2: self = .withdrawn
+    default: self = .unknown
+    }
+  }
+}
+
 struct Transaction: Equatable {
-  let txid: String
+  let txId: String?
+  let txDbId: String?
   let dateString: String
   let type: TransactionType
   let status: TransactionStatus

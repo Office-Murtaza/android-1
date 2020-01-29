@@ -29,6 +29,8 @@ class TransactionDetailsSellInfoSectionView: UIView, HasDisposeBag {
     qrCodeImageView.snp.makeConstraints {
       $0.top.bottom.equalToSuperview().inset(35)
       $0.centerX.equalToSuperview()
+      $0.width.equalToSuperview().multipliedBy(0.5)
+      $0.height.equalTo(qrCodeImageView.snp.width)
     }
   }
   

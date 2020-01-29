@@ -40,23 +40,21 @@ class TransactionDetailsGiftSectionView: UIView, HasDisposeBag {
     }
   }
   
+  private func addTextRow(text: String, title: String) {
+    let view = TransactionDetailsRowView()
+    view.configure(for: .text(text), with: title)
+    stackView.addArrangedSubview(view)
+  }
+  
+  private func addImageRow(id: String, title: String) {
+    let view = TransactionDetailsRowView()
+    view.configure(for: .image(id), with: title)
+    stackView.addArrangedSubview(view)
+  }
+  
   func configure(for details: TransactionDetails) {
-    if let phone = details.phone {
-      let phoneView = TransactionDetailsRowView()
-      phoneView.configure(for: .text(phone.phoneFormatted), with: localize(L.TransactionDetails.phone))
-      stackView.addArrangedSubview(phoneView)
-    }
-    
-    if let imageId = details.imageId {
-      let imageView = TransactionDetailsRowView()
-      imageView.configure(for: .image(imageId), with: localize(L.TransactionDetails.image))
-      stackView.addArrangedSubview(imageView)
-    }
-    
-    if let message = details.message {
-      let phoneView = TransactionDetailsRowView()
-      phoneView.configure(for: .text(message), with: localize(L.TransactionDetails.message))
-      stackView.addArrangedSubview(phoneView)
-    }
+    details.phone.flatMap { addTextRow(text: $0.phoneFormatted, title: localize(L.TransactionDetails.phone)) }
+    details.imageId.flatMap { addImageRow(id: $0, title: localize(L.TransactionDetails.image)) }
+    details.message.flatMap { addTextRow(text: $0, title: localize(L.TransactionDetails.message)) }
   }
 }
