@@ -7,7 +7,9 @@ public class Constant {
     public static final String AUTHORIZATION_HEADER = "Authorization";
     public static final String AUTHORITIES_KEY = "auth";
 
-    public static final String REGEX_PHONE = "^(\\+1)[0-9]{10}$";
+    public static final String REGEX_PHONE = "^\\+(9[976]\\d|8[987530]\\d|6[987]\\d|5[90]\\d|42\\d|3[875]\\d|\n" +
+            "2[98654321]\\d|9[8543210]|8[6421]|6[6543210]|5[87654321]|\n" +
+            "4[987654310]|3[9643210]|2[70]|7|1)\\d{1,14}$";
     public static final String DEFAULT_CODE = "1234";
 
     public static final int PASSWORD_MIN_LENGTH = 6;
