@@ -30,8 +30,6 @@ public class WalletService {
     private String addressXRP = null;
     private String addressTRX = null;
 
-
-
     private PrivateKey privateKeyBTC = null;
     private PrivateKey privateKeyETH = null;
     private PrivateKey privateKeyXRP = null;
@@ -46,7 +44,6 @@ public class WalletService {
         wallet = new HDWallet(seed, "");
 
         privateKeyBTC = wallet.getKeyForCoin(CoinType.BITCOIN);
-        //String extPublicKeyBTC = wallet.getExtendedPublicKey(Purpose.BIP44, CoinType.BITCOIN, HDVersion.XPUB);
         PublicKey publicKeyBTC = HDWallet.getPublicKeyFromExtended(getXPUB(CoinType.BITCOIN), "m/44'/0'/0'/0/0");
         addressBTC = new BitcoinAddress(publicKeyBTC, CoinType.BITCOIN.p2pkhPrefix()).description();
 
@@ -70,7 +67,7 @@ public class WalletService {
     }
 
     public String getXPUB(CoinType coinType) {
-        if(coinType == CoinType.BITCOIN) {
+        if (coinType == CoinType.BITCOIN) {
             return wallet.getExtendedPublicKey(Purpose.BIP44, coinType, HDVersion.XPUB);
         } else {
             return wallet.getExtendedPublicKey(coinType.purpose(), coinType, coinType.xpubVersion());
