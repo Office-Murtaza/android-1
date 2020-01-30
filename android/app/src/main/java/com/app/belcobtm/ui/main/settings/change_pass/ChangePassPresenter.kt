@@ -5,7 +5,7 @@ import com.app.belcobtm.R
 import com.app.belcobtm.api.data_manager.SettingsDataManager
 import com.app.belcobtm.mvp.BaseMvpDIPresenterImpl
 import com.app.belcobtm.ui.main.coins.settings.change_pass.ChangePassContract
-import com.app.belcobtm.util.pref
+import com.app.belcobtm.core.pref
 
 
 class ChangePassPresenter : BaseMvpDIPresenterImpl<ChangePassContract.View, SettingsDataManager>(),

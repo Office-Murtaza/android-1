@@ -1,4 +1,4 @@
-package com.app.belcobtm.util
+package com.app.belcobtm.core
 
 import android.text.TextUtils
 import android.util.Log

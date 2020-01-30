@@ -16,8 +16,8 @@ import com.app.belcobtm.db.DbCryptoCoinModel
 import com.app.belcobtm.model.WelcomePagerItem
 import com.app.belcobtm.ui.auth.create_wallet.CreateWalletActivity
 import com.app.belcobtm.ui.auth.recover_wallet.RecoverWalletActivity
-import com.app.belcobtm.util.Const.TERMS_URL
-import com.app.belcobtm.util.pref
+import com.app.belcobtm.core.Const.TERMS_URL
+import com.app.belcobtm.core.pref
 import com.google.android.material.snackbar.Snackbar
 import io.realm.Realm
 import kotlinx.android.synthetic.main.activity_welcome.*

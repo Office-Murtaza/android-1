@@ -10,8 +10,8 @@ import com.app.belcobtm.api.model.param.trx.Trx
 import com.app.belcobtm.db.DbCryptoCoin
 import com.app.belcobtm.db.DbCryptoCoinModel
 import com.app.belcobtm.mvp.BaseMvpDIPresenterImpl
-import com.app.belcobtm.util.Const
-import com.app.belcobtm.util.pref
+import com.app.belcobtm.core.Const
+import com.app.belcobtm.core.pref
 import com.google.gson.Gson
 import io.realm.Realm
 import wallet.core.jni.CoinType

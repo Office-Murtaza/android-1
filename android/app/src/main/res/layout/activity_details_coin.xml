@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -7,398 +6,277 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-
-    <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/toolbar_container"
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbarView"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="@drawable/bg_toolbar"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-        app:elevation="5dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-    </com.google.android.material.appbar.AppBarLayout>
+        app:elevation="6dp"
+        tools:navigationIcon="@drawable/gph_ic_back"
+        tools:title="Transaction Details" />
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-
-        <LinearLayout
+        <TableLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="24dp"
+            android:paddingBottom="16dp">
 
+            <TableRow
+                android:id="@+id/txIdContainerView"
+                style="@style/CoinDetails.Table.Row">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                <androidx.appcompat.widget.AppCompatTextView
+                    style="@style/CoinDetails.Table.Key"
+                    android:text="@string/transition_details_screen_tx_id" />
 
-                <TextView
-                    android:id="@+id/TxLabel"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="24dp"
-                    android:layout_marginLeft="24dp"
-                    android:layout_marginTop="24dp"
-                    android:text="TxId"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:id="@+id/textTv"
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/txIdView"
+                    style="@style/CoinDetails.Table.Value"
+                    android:background="?android:selectableItemBackground"
                     android:clickable="true"
-                    android:layout_width="200dp"
-                    android:layout_height="wrap_content"
-                    android:gravity="start"
+                    android:focusable="true"
+                    android:fontFamily="@font/poppins_regular"
                     android:maxLines="5"
-                    android:minLines="3"
                     android:textColor="#0073e4"
-                    android:textSize="12sp"
-                    app:layout_constraintStart_toEndOf="@+id/guideline1"
-                    app:layout_constraintTop_toTopOf="@+id/TxLabel"
-                    tools:text="b28e2673ead88289a2e5a354bce0630483780098631e688cabe9ee06dd325074"
-                    android:focusable="true" />
+                    tools:text="b28e2673ead88289a2e5a354bce0630483780098631e688cabe9ee06dd325074" />
+            </TableRow>
 
-                <TextView
-                    android:id="@+id/TypeLabel"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="24dp"
-                    android:layout_marginLeft="24dp"
-                    android:layout_marginTop="24dp"
-                    android:text="Type"
-                    android:textColor="#8d8d8d"
-                    android:textSize="12sp"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/textTv" />
+            <TableRow
+                android:id="@+id/txDbldContainerView"
+                style="@style/CoinDetails.Table.Row"
+                android:visibility="gone"
+                tools:visibility="visible">
 
-                <TextView
-                    android:id="@+id/typeTv"
-                    android:layout_width="200dp"
-                    android:layout_height="wrap_content"
-                    android:gravity="start"
-                    android:textColor="#58585a"
-                    android:textSize="12sp"
-                    app:layout_constraintStart_toEndOf="@+id/guideline1"
-                    app:layout_constraintTop_toTopOf="@id/TypeLabel"
+                <androidx.appcompat.widget.AppCompatTextView
+                    style="@style/CoinDetails.Table.Key"
+                    android:text="@string/transition_details_screen_tx_dbld" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/txDbldView"
+                    style="@style/CoinDetails.Table.Value"
+                    tools:text="1273" />
+            </TableRow>
+
+            <TableRow
+                android:id="@+id/typeContainerView"
+                style="@style/CoinDetails.Table.Row">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    style="@style/CoinDetails.Table.Key"
+                    android:text="@string/transition_details_screen_type" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/typeView"
+                    style="@style/CoinDetails.Table.Value"
                     tools:text="Deposit" />
+            </TableRow>
 
-                <TextView
-                    android:id="@+id/StatusLabel"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="24dp"
-                    android:layout_marginLeft="24dp"
-                    android:layout_marginTop="24dp"
-                    android:text="Status"
-                    android:textColor="#8d8d8d"
-                    android:textSize="12sp"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/typeTv" />
+            <TableRow style="@style/CoinDetails.Table.Row">
 
-                <TextView
-                    android:id="@+id/statusTv"
-                    android:layout_width="200dp"
-                    android:layout_height="wrap_content"
-                    android:gravity="start"
-                    android:textColor="#58585a"
-                    android:textSize="12sp"
-                    app:layout_constraintStart_toEndOf="@+id/guideline1"
-                    app:layout_constraintTop_toTopOf="@id/StatusLabel"
-                    tools:text="Pending" />
+                <androidx.appcompat.widget.AppCompatTextView
+                    style="@style/CoinDetails.Table.Key"
+                    android:layout_gravity="center_vertical"
+                    android:text="@string/transition_details_screen_status" />
 
-                <TextView
-                    android:id="@+id/amountLabel"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="24dp"
-                    android:layout_marginLeft="24dp"
-                    android:layout_marginTop="24dp"
-                    android:text="Amount"
-                    android:textColor="#8d8d8d"
-                    android:textSize="12sp"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/statusTv" />
+                <FrameLayout
+                    style="@style/CoinDetails.Table.Value"
+                    android:layout_gravity="center_vertical">
 
-                <TextView
-                    android:id="@+id/amountTv"
-                    android:layout_width="200dp"
-                    android:layout_height="wrap_content"
-                    android:gravity="start"
-                    android:textColor="#58585a"
-                    android:textSize="12sp"
-                    app:layout_constraintStart_toEndOf="@+id/guideline1"
-                    app:layout_constraintTop_toTopOf="@id/amountLabel"
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/statusView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:background="@drawable/bg_transaction_status"
+                        android:gravity="center"
+                        android:paddingStart="3dp"
+                        android:paddingTop="2dp"
+                        android:paddingEnd="3dp"
+                        android:paddingBottom="2dp"
+                        android:textAllCaps="true"
+                        android:textColor="@android:color/white"
+                        android:textSize="10sp"
+                        android:textStyle="bold"
+                        tools:text="Pending"
+                        tools:ignore="SmallSp" />
+                </FrameLayout>
+
+            </TableRow>
+
+            <TableRow
+                android:id="@+id/cashStatusContainerView"
+                style="@style/CoinDetails.Table.Row"
+                tools:visibility="visible">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    style="@style/CoinDetails.Table.Key"
+                    android:text="@string/transition_details_screen_cash_status" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/cashStatusView"
+                    style="@style/CoinDetails.Table.Value"
+                    android:fontFamily="@font/poppins_medium"
+                    tools:text="Not Available"
+                    tools:textColor="@android:color/holo_red_dark" />
+
+            </TableRow>
+
+            <TableRow
+                android:id="@+id/amountContainerView"
+                style="@style/CoinDetails.Table.Row">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    style="@style/CoinDetails.Table.Key"
+                    android:text="@string/transition_details_screen_amount" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/amountView"
+                    style="@style/CoinDetails.Table.Value"
                     tools:text="0.5 BTC" />
+            </TableRow>
 
-                <TextView
-                    android:id="@+id/feeLabel"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="24dp"
-                    android:layout_marginLeft="24dp"
-                    android:layout_marginTop="24dp"
-                    android:text="Fee"
-                    android:textColor="#8d8d8d"
-                    android:textSize="12sp"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/amountTv" />
+            <TableRow
+                android:id="@+id/feeContainerView"
+                style="@style/CoinDetails.Table.Row">
 
-                <TextView
-                    android:id="@+id/feeTv"
-                    android:layout_width="200dp"
-                    android:layout_height="wrap_content"
-                    android:gravity="start"
-                    android:textColor="#58585a"
-                    android:textSize="12sp"
-                    app:layout_constraintStart_toEndOf="@+id/guideline1"
-                    app:layout_constraintTop_toTopOf="@id/feeLabel"
+                <androidx.appcompat.widget.AppCompatTextView
+                    style="@style/CoinDetails.Table.Key"
+                    android:text="@string/transition_details_screen_fee" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/feeView"
+                    style="@style/CoinDetails.Table.Value"
                     tools:text="0.001 BTC" />
+            </TableRow>
 
-                <TextView
-                    android:id="@+id/dateLabel"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="24dp"
-                    android:layout_marginLeft="24dp"
-                    android:layout_marginTop="24dp"
-                    android:text="Date"
-                    android:textColor="#8d8d8d"
-                    android:textSize="12sp"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/feeTv" />
+            <TableRow
+                android:id="@+id/dateContainerView"
+                style="@style/CoinDetails.Table.Row">
 
-                <TextView
-                    android:id="@+id/dateTv"
-                    android:layout_width="200dp"
-                    android:layout_height="wrap_content"
-                    android:gravity="start"
-                    android:textColor="#58585a"
-                    android:textSize="12sp"
-                    app:layout_constraintStart_toEndOf="@+id/guideline1"
-                    app:layout_constraintTop_toTopOf="@id/dateLabel"
+                <androidx.appcompat.widget.AppCompatTextView
+                    style="@style/CoinDetails.Table.Key"
+                    android:text="@string/transition_details_screen_date" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/dateView"
+                    style="@style/CoinDetails.Table.Value"
                     tools:text="2019.10.08 06:32:58 PM" />
+            </TableRow>
 
-                <TextView
-                    android:id="@+id/fromAddressLabel"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="24dp"
-                    android:layout_marginLeft="24dp"
-                    android:layout_marginTop="24dp"
-                    android:text="From Address"
-                    android:textColor="#8d8d8d"
-                    android:textSize="12sp"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/dateTv" />
+            <TableRow
+                android:id="@+id/fromAddressContainerView"
+                style="@style/CoinDetails.Table.Row">
 
-                <TextView
-                    android:id="@+id/fromAddressTv"
-                    android:layout_width="200dp"
-                    android:layout_height="wrap_content"
-                    android:gravity="start"
+                <androidx.appcompat.widget.AppCompatTextView
+                    style="@style/CoinDetails.Table.Key"
+                    android:text="@string/transition_details_screen_from_address" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/fromAddressView"
+                    style="@style/CoinDetails.Table.Value"
+                    android:layout_weight="2"
                     android:maxLines="3"
-                    android:textColor="#58585a"
-                    android:textSize="12sp"
-                    app:layout_constraintStart_toEndOf="@+id/guideline1"
-                    app:layout_constraintTop_toTopOf="@id/fromAddressLabel"
                     tools:text="123400438568459684598645946fdsfsdf" />
 
-                <TextView
-                    android:id="@+id/toAddressLabel"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="24dp"
-                    android:layout_marginLeft="24dp"
-                    android:layout_marginTop="24dp"
-                    android:text="To Address"
-                    android:textColor="#8d8d8d"
-                    android:textSize="12sp"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/fromAddressTv" />
+            </TableRow>
 
-                <TextView
-                    android:id="@+id/toAddressTv"
-                    android:layout_width="200dp"
-                    android:layout_height="wrap_content"
-                    android:gravity="start"
+            <TableRow
+                android:id="@+id/toAddressContainerView"
+                style="@style/CoinDetails.Table.Row">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    style="@style/CoinDetails.Table.Key"
+                    android:text="@string/transition_details_screen_to_address" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/toAddressView"
+                    style="@style/CoinDetails.Table.Value"
                     android:maxLines="3"
-                    android:textColor="#58585a"
-                    android:textSize="12sp"
-                    app:layout_constraintStart_toEndOf="@+id/guideline1"
-                    app:layout_constraintTop_toTopOf="@id/toAddressLabel"
                     tools:text="1256400438568459684598645946fdsfsdf" />
+            </TableRow>
 
-                <androidx.constraintlayout.widget.Guideline
-                    android:id="@+id/guideline1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintGuide_begin="147dp"
-                    app:layout_constraintStart_toStartOf="parent" />
-
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/giftContainer"
+            <View
+                android:id="@+id/phoneDividerView"
+                style="@style/CoinDetails.Table.Row"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:visibility="visible"
-                android:layout_marginTop="24dp">
+                android:layout_height="1dp"
+                android:background="#f3f3f3" />
 
-                <View
-                    android:id="@+id/divider1"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginStart="24dp"
-                    android:layout_marginLeft="24dp"
-                    android:layout_marginEnd="24dp"
-                    android:layout_marginRight="24dp"
-                    android:background="#f3f3f3"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
+            <TableRow
+                android:id="@+id/phoneContainerView"
+                style="@style/CoinDetails.Table.Row"
+                android:visibility="gone"
+                tools:visibility="visible">
 
-                </View>
+                <androidx.appcompat.widget.AppCompatTextView
+                    style="@style/CoinDetails.Table.Key"
+                    android:text="@string/transition_details_screen_phone" />
 
-
-                <TextView
-                    android:id="@+id/phoneLabel"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="24dp"
-                    android:layout_marginTop="24dp"
-                    android:text="Phone"
-                    android:textColor="#8d8d8d"
-                    android:textSize="12sp"
-                    android:visibility="gone"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/divider1" />
-
-                <TextView
-                    android:id="@+id/phoneTv"
-                    android:layout_width="200dp"
-                    android:layout_height="wrap_content"
-                    android:gravity="start"
-                    android:maxLines="3"
-                    android:textColor="#58585a"
-                    android:textSize="12sp"
-                    android:visibility="gone"
-                    app:layout_constraintStart_toEndOf="@+id/guideline2"
-                    app:layout_constraintTop_toTopOf="@id/phoneLabel"
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/phoneView"
+                    style="@style/CoinDetails.Table.Value"
                     tools:text="+1 (800) 123 456 789" />
+            </TableRow>
 
-                <TextView
-                    android:id="@+id/imageLabel"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="24dp"
-                    android:layout_marginLeft="24dp"
-                    android:layout_marginTop="24dp"
-                    android:text="Image"
-                    android:visibility="gone"
-                    android:textColor="#8d8d8d"
-                    android:textSize="12sp"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/phoneTv" />
+            <TableRow
+                android:id="@+id/imageContainerView"
+                style="@style/CoinDetails.Table.Row"
+                android:visibility="gone"
+                tools:visibility="visible">
 
-                <ImageView
-                    android:id="@+id/imageIv"
-                    android:layout_width="95dp"
-                    android:visibility="gone"
-                    android:layout_height="95dp"
-                    app:layout_constraintStart_toEndOf="@+id/guideline2"
-                    app:layout_constraintTop_toTopOf="@id/imageLabel">
+                <androidx.appcompat.widget.AppCompatTextView
+                    style="@style/CoinDetails.Table.Key"
+                    android:text="@string/transition_details_screen_image" />
 
-                </ImageView>
+                <FrameLayout style="@style/CoinDetails.Table.Value">
 
-                <TextView
-                    android:id="@+id/messageLabel"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="24dp"
-                    android:layout_marginLeft="24dp"
-                    android:layout_marginTop="24dp"
-                    android:text="Message"
-                    android:visibility="gone"
-                    android:textColor="#8d8d8d"
-                    android:textSize="12sp"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/imageIv" />
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/imageView"
+                        android:layout_width="95dp"
+                        android:layout_height="95dp"
+                        tools:src="@drawable/ic_gift_box" />
+                </FrameLayout>
 
-                <TextView
-                    android:id="@+id/messageTv"
-                    android:layout_width="200dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="24dp"
-                    android:layout_marginRight="24dp"
-                    android:gravity="start"
-                    android:textColor="#58585a"
-                    android:visibility="gone"
-                    android:textSize="12sp"
-                    app:layout_constraintStart_toEndOf="@+id/guideline2"
-                    app:layout_constraintTop_toTopOf="@id/messageLabel"
+            </TableRow>
+
+            <TableRow
+                android:id="@+id/messageContainerView"
+                style="@style/CoinDetails.Table.Row"
+                android:visibility="gone"
+                tools:visibility="visible">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    style="@style/CoinDetails.Table.Key"
+                    android:text="@string/transition_details_screen_message" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/messageView"
+                    style="@style/CoinDetails.Table.Value"
                     tools:text="Happy Birthday!" />
+            </TableRow>
 
-                <androidx.constraintlayout.widget.Guideline
-                    android:id="@+id/guideline2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintGuide_begin="147dp"
-                    app:layout_constraintStart_toStartOf="parent" />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <View
+                android:id="@+id/qrCodeDividerView"
+                style="@style/CoinDetails.Table.Row"
                 android:layout_width="match_parent"
-                android:layout_height="144dp"
-               >
+                android:layout_height="1dp"
+                android:background="#f3f3f3" />
 
-                <View
-                    android:id="@+id/divider2"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginStart="24dp"
-                    android:layout_marginLeft="24dp"
-                    android:layout_marginEnd="24dp"
-                    android:layout_marginRight="24dp"
-                    android:background="#f3f3f3"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
-
-                </View>
-
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/qrCodeIv"
-                    android:layout_width="144dp"
-                    android:layout_height="144dp"
-                    android:scaleType="fitXY"
-                    app:layout_constraintLeft_toLeftOf="@id/divider2"
-                    app:layout_constraintRight_toRightOf="@id/divider2"
-                    app:layout_constraintTop_toBottomOf="@id/divider2">
-
-                </androidx.appcompat.widget.AppCompatImageView>
-
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-        </LinearLayout>
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/qrCodeView"
+                style="@style/CoinDetails.Table.Row"
+                android:layout_width="142dp"
+                android:layout_height="142dp"
+                android:layout_gravity="center_horizontal"
+                tools:src="@drawable/ic_gift_box" />
+        </TableLayout>
 
     </ScrollView>
 </LinearLayout>

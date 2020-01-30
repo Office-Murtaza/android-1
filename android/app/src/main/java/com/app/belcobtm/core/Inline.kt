@@ -1,4 +1,4 @@
-package com.app.belcobtm.util
+package com.app.belcobtm.core
 
 import wallet.core.jni.CoinType
 import wallet.core.jni.HDVersion

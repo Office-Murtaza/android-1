@@ -11,7 +11,7 @@ import androidx.core.widget.ImageViewCompat
 import com.app.belcobtm.R
 import com.app.belcobtm.mvp.BaseMvpActivity
 import com.app.belcobtm.ui.auth.welcome.WelcomeActivity
-import com.app.belcobtm.util.MyCustomTextWatcher
+import com.app.belcobtm.core.MyCustomTextWatcher
 import kotlinx.android.synthetic.main.activity_pin.*
 import org.jetbrains.anko.toast
 

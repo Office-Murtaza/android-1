@@ -5,7 +5,7 @@ import com.app.belcobtm.api.model.param.CheckPassParam
 import com.app.belcobtm.api.model.param.ConfirmPhoneSmsParam
 import com.app.belcobtm.api.model.param.UpdatePhoneParam
 import com.app.belcobtm.api.model.response.*
-import com.app.belcobtm.util.Optional
+import com.app.belcobtm.core.Optional
 import io.reactivex.Observable
 
 class SettingsDataManager : BaseDataManager() {
