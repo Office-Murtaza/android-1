@@ -128,11 +128,22 @@
             <artifactId>utils</artifactId>
             <version>3.2.0</version>
         </dependency>
+        <!--<dependency>-->
+        <!--<groupId>com.trustwallet.walletcore</groupId>-->
+        <!--<artifactId>walletcore</artifactId>-->
+        <!--<version>0.12.24</version>-->
+        <!--</dependency>-->
         <dependency>
             <groupId>com.trustwallet</groupId>
             <artifactId>wallet-core</artifactId>
             <version>0.12.24</version>
         </dependency>
+        <!--<dependency>-->
+            <!--<groupId>com.trustwallet</groupId>-->
+            <!--<artifactId>wallet-core</artifactId>-->
+            <!--<version>0.12.31</version>-->
+            <!--&lt;!&ndash;<type>pom</type>&ndash;&gt;-->
+        <!--</dependency>-->
         <dependency>
             <groupId>com.madgag.spongycastle</groupId>
             <artifactId>core</artifactId>

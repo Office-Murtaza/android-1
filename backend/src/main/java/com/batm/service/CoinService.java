@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import wallet.core.jni.CoinType;
+
 import java.math.BigDecimal;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
@@ -160,17 +161,35 @@ public class CoinService {
 
             @Override
             public String sign(String toAddress, BigDecimal amount) {
+                try {
+
+                    List<JSONObject> utxos = blockbook.getUTXO(btcNodeUrl, walletService.getXPUB(CoinType.BITCOIN)).getUtxos();
+                    String hex = blockbook.signBTC(toAddress, amount, coinMap.get(name()).getFee(), utxos);
+
+                    System.out.println(name() + " hex:" + hex);
+                    return blockbook.submitTransaction(btcNodeUrl, hex);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
                 return null;
             }
 
             @Override
             public String submitTransaction(Long userId, SubmitTransactionDTO transaction) {
-                String txId = blockbook.submitTransaction(btcNodeUrl, transaction.getHex());
-                saveGift(userId, this, txId, transaction);
+                try {
+                    String txId = blockbook.submitTransaction(btcNodeUrl, transaction.getHex());
+                    saveGift(userId, this, txId, transaction);
 
-                return txId;
+                    return txId;
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                return null;
             }
-        }, ETH {
+        },
+        ETH {
             @Override
             public BigDecimal getPrice() {
                 return Util.convert(binanceRest.getPrice("ETHUSDT").getPrice());
@@ -239,23 +258,33 @@ public class CoinService {
 
             @Override
             public String sign(String toAddress, BigDecimal amount) {
-                NonceDTO nonceDTO = blockbook.getNonce(ethNodeUrl, walletService.getAddressETH());
-                String hex = walletService.signETH(toAddress, amount, nonceDTO.getNonce());
+                try {
+                    NonceDTO nonceDTO = blockbook.getNonce(ethNodeUrl, walletService.getAddressETH());
+                    String hex = blockbook.signETH(toAddress, amount, nonceDTO.getNonce());
 
-                System.out.println(" ++++ hex:" + hex);
-                return blockbook.submitTransaction(ethNodeUrl, hex);
+                    return blockbook.submitTransaction(ethNodeUrl, hex);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                return null;
             }
 
             @Override
             public String submitTransaction(Long userId, SubmitTransactionDTO transaction) {
-                System.out.println(" ---- ETH hex:" + transaction.getHex());
+                try {
+                    String txId = blockbook.submitTransaction(ethNodeUrl, transaction.getHex());
+                    saveGift(userId, this, txId, transaction);
 
-                String txId = blockbook.submitTransaction(ethNodeUrl, transaction.getHex());
-                saveGift(userId, this, txId, transaction);
+                    return txId;
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
 
-                return txId;
+                return null;
             }
-        }, BCH {
+        },
+        BCH {
             @Override
             public BigDecimal getPrice() {
                 return Util.convert(binanceRest.getPrice("BCHABCUSDT").getPrice());
@@ -318,17 +347,34 @@ public class CoinService {
 
             @Override
             public String sign(String toAddress, BigDecimal amount) {
+                try {
+                    List<JSONObject> utxos = blockbook.getUTXO(bchNodeUrl, walletService.getXPUB(CoinType.BITCOINCASH)).getUtxos();
+                    String hex = blockbook.signBCH(toAddress, amount, coinMap.get(name()).getFee(), utxos);
+
+                    System.out.println(name() + " hex:" + hex);
+                    return blockbook.submitTransaction(bchNodeUrl, hex);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
                 return null;
             }
 
             @Override
             public String submitTransaction(Long userId, SubmitTransactionDTO transaction) {
-                String txId = blockbook.submitTransaction(bchNodeUrl, transaction.getHex());
-                saveGift(userId, this, txId, transaction);
+                try {
+                    String txId = blockbook.submitTransaction(bchNodeUrl, transaction.getHex());
+                    saveGift(userId, this, txId, transaction);
 
-                return txId;
+                    return txId;
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                return null;
             }
-        }, LTC {
+        },
+        LTC {
             @Override
             public BigDecimal getPrice() {
                 return Util.convert(binanceRest.getPrice("LTCUSDT").getPrice());
@@ -391,22 +437,31 @@ public class CoinService {
 
             @Override
             public String sign(String toAddress, BigDecimal amount) {
-                CoinType coinType = CoinType.LITECOIN;
-                String fromAddress = walletService.getAddressLTC();
-                BigDecimal fee = coinMap.get(name()).getFee();
-                List<JSONObject> utxos = blockbook.getUTXO(ltcNodeUrl, fromAddress).getUtxos();
+                try {
+                    List<JSONObject> utxos = blockbook.getUTXO(ltcNodeUrl, walletService.getXPUB(CoinType.LITECOIN)).getUtxos();
+                    String hex = blockbook.signLTC(toAddress, amount, coinMap.get(name()).getFee(), utxos);
 
-                String hex = walletService.signBTC(coinType, fromAddress, toAddress, amount, fee, Constant.LTC_DIVIDER, utxos);
+                    System.out.println(name() + " hex:" + hex);
+                    return blockbook.submitTransaction(ltcNodeUrl, hex);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
 
-                return blockbook.submitTransaction(ltcNodeUrl, hex);
+                return null;
             }
 
             @Override
             public String submitTransaction(Long userId, SubmitTransactionDTO transaction) {
-                String txId = blockbook.submitTransaction(ltcNodeUrl, transaction.getHex());
-                saveGift(userId, this, txId, transaction);
+                try {
+                    String txId = blockbook.submitTransaction(ltcNodeUrl, transaction.getHex());
+                    saveGift(userId, this, txId, transaction);
 
-                return txId;
+                    return txId;
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                return null;
             }
         },
         BNB {
@@ -489,10 +544,16 @@ public class CoinService {
 
             @Override
             public String submitTransaction(Long userId, SubmitTransactionDTO transaction) {
-                String txId = binance.submitTransaction(transaction.getHex());
-                saveGift(userId, this, txId, transaction);
+                try {
+                    String txId = binance.submitTransaction(transaction.getHex());
+                    saveGift(userId, this, txId, transaction);
 
-                return txId;
+                    return txId;
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                return null;
             }
         },
         XRP {
@@ -575,10 +636,16 @@ public class CoinService {
 
             @Override
             public String submitTransaction(Long userId, SubmitTransactionDTO transaction) {
-                String txId = rippled.submitTransaction(transaction.getHex());
-                saveGift(userId, this, txId, transaction);
+                try {
+                    String txId = rippled.submitTransaction(transaction.getHex());
+                    saveGift(userId, this, txId, transaction);
 
-                return txId;
+                    return txId;
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                return null;
             }
         },
         TRX {
@@ -658,10 +725,16 @@ public class CoinService {
 
             @Override
             public String submitTransaction(Long userId, SubmitTransactionDTO transaction) {
-                String txId = trongrid.submitTransaction(JSONObject.fromObject(transaction.getHex()));
-                saveGift(userId, this, txId, transaction);
+                try {
+                    String txId = trongrid.submitTransaction(JSONObject.fromObject(transaction.getHex()));
+                    saveGift(userId, this, txId, transaction);
 
-                return txId;
+                    return txId;
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                return null;
             }
         };
 
