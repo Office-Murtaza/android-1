@@ -243,9 +243,9 @@ struct TransactionDetailsRequest: AuthorizedAPIRequest {
   
   let userId: Int
   let coinId: String
-  let txid: String
+  let id: String
   
-  var path: String { return "/user/\(userId)/coins/\(coinId)/transaction/\(txid)" }
+  var path: String { return "/user/\(userId)/coins/\(coinId)/transaction/\(id)" }
   var method: HTTPMethod { return .get }
   var task: HTTPTask {
     return .requestPlain

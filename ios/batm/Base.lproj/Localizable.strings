@@ -35,7 +35,7 @@
 "create_wallet.code.error.title" = "Code should have 4 digits";
 
 "seed_phrase.title" = "Seed Phrase";
-"seed_phrase.annotation" = "If you lost your seed phrase you will not be able your wallet";
+"seed_phrase.annotation" = "If you lost your seed phrase you will not be able to recover your wallet";
 
 "recover.title" = "Recover My Wallet";
 
@@ -103,6 +103,9 @@
 "coin_details.fail" = "Fail";
 "coin_details.unknown" = "Unknown";
 "coin_details.address" = "Address";
+"coin_details.not_available" = "Not Available";
+"coin_details.available" = "Available";
+"coin_details.withdrawn" = "Withdrawn";
 
 "coin_deposit.title" = "Deposit %@";
 
@@ -138,9 +141,12 @@
 
 "transaction_details.title" = "Transaction Details";
 "transaction_details.tx_id" = "TxId";
+"transaction_details.tx_db_id" = "TxDbId";
 "transaction_details.type" = "Type";
 "transaction_details.status" = "Status";
-"transaction_details.amount" = "Amount";
+"transaction_details.cash_status" = "Cash Status";
+"transaction_details.fiat_amount" = "Fiat Amount";
+"transaction_details.crypto_amount" = "Crypto Amount";
 "transaction_details.fee" = "Fee";
 "transaction_details.date" = "Date";
 "transaction_details.from_address" = "From Address";

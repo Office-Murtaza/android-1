@@ -26,7 +26,9 @@ final class TransactionDetailsPresenter: ModulePresenter, TransactionDetailsModu
       .disposed(by: disposeBag)
     
     input.openLink
-      .map { [unowned self] in URL(string: self.details.link) }
+      .map { [unowned self] in self.details.link }
+      .filterNil()
+      .map { URL(string: $0) }
       .filterNil()
       .drive(onNext: { UIApplication.shared.open($0) })
       .disposed(by: disposeBag)

@@ -32,22 +32,9 @@ final class TransactionCell: UICollectionViewCell {
     return label
   }()
   
-  let statusView = UIView()
+  let statusViewContainer = UIView()
   
-  let coloredStatusView: UIView = {
-    let view = UIView()
-    view.layer.cornerRadius = 3
-    return view
-  }()
-  
-  let statusLabel: UILabel = {
-    let label = UILabel()
-    label.font = .poppinsSemibold10
-    label.textColor = .white
-    label.adjustsFontSizeToFitWidth = true
-    label.minimumScaleFactor = 0.7
-    return label
-  }()
+  let statusView = TransactionStatusView()
   
   let amountLabel: UILabel = {
     let label = UILabel()
@@ -80,8 +67,9 @@ final class TransactionCell: UICollectionViewCell {
     super.prepareForReuse()
     dateLabel.text = nil
     typeLabel.text = nil
-    statusLabel.text = nil
     amountLabel.text = nil
+    
+    statusView.reset()
   }
   
   private func setupUI() {
@@ -91,22 +79,17 @@ final class TransactionCell: UICollectionViewCell {
                             divider)
     stackView.addArrangedSubviews(dateLabel,
                                   typeLabel,
-                                  statusView,
+                                  statusViewContainer,
                                   amountLabel)
-    statusView.addSubview(coloredStatusView)
-    coloredStatusView.addSubview(statusLabel)
+    statusViewContainer.addSubview(statusView)
   }
   
   private func setupLayout() {
     stackView.snp.makeConstraints {
       $0.edges.equalToSuperview()
     }
-    coloredStatusView.snp.makeConstraints {
+    statusView.snp.makeConstraints {
       $0.center.equalToSuperview()
-    }
-    statusLabel.snp.makeConstraints {
-      $0.top.bottom.equalToSuperview().inset(2)
-      $0.left.right.equalToSuperview().inset(5)
     }
     divider.snp.makeConstraints {
       $0.left.right.bottom.equalToSuperview()
@@ -117,8 +100,8 @@ final class TransactionCell: UICollectionViewCell {
   func configure(for model: Transaction) {
     dateLabel.text = model.dateString
     typeLabel.text = model.type.verboseValue.uppercased()
-    statusLabel.text = model.status.verboseValue
-    coloredStatusView.backgroundColor = model.status.associatedColor
     amountLabel.text = "\(model.amount.coinFormatted)"
+    
+    statusView.configure(for: model.status)
   }
 }

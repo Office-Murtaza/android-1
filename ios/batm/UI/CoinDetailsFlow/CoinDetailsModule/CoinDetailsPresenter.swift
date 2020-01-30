@@ -90,11 +90,20 @@ final class CoinDetailsPresenter: ModulePresenter, CoinDetailsModule {
     
     input.transactionSelected
       .asObservable()
-      .withLatestFrom(state) { ($1.coin?.type, $1.transactions?.transactions[$0.item].txid) }
-      .filter { $0 != nil && $1 != nil }
-      .map { ($0!, $1!) }
-      .flatMap { [unowned self] type, txid in
-        return self.track(self.usecase.getTransactionDetails(for: type, by: txid))
+      .withLatestFrom(state) { indexPath, state in
+        let transaction = state.transactions?.transactions[indexPath.item]
+        let id = transaction?.txId ?? transaction?.txDbId
+        
+        if let type = state.coin?.type, let id = id {
+          return (type, id)
+        }
+        
+        return nil
+      }
+      .filter { $0 != nil }
+      .map { $0! }
+      .flatMap { [unowned self] type, id in
+        return self.track(self.usecase.getTransactionDetails(for: type, by: id))
           .map { ($0, type) }
       }
       .subscribe(onNext: { [delegate] in delegate?.showTransactionDetails(with: $0, for: $1) })
