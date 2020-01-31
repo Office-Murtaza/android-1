@@ -15,10 +15,7 @@ public class WalletService {
     }
 
     @Value("${wallet.seed}")
-    private String walletSeed;
-
-    @Value("${wallet.seed.key}")
-    private String walletSeedKey;
+    private String seed;
 
     private HDWallet wallet = null;
 
@@ -38,13 +35,10 @@ public class WalletService {
 
     @PostConstruct
     public void init() {
-        String seed = "garage become kid awake salon forget minimum snack crash broken leaf genius";
-
-        //wallet = new HDWallet(AES.decrypt(walletSeed, walletSeedKey), "");
         wallet = new HDWallet(seed, "");
 
         privateKeyBTC = wallet.getKeyForCoin(CoinType.BITCOIN);
-        PublicKey publicKeyBTC = HDWallet.getPublicKeyFromExtended(getXPUB(CoinType.BITCOIN), "m/44'/0'/0'/0/0");
+        PublicKey publicKeyBTC = HDWallet.getPublicKeyFromExtended(getXpub(CoinType.BITCOIN), "m/44'/0'/0'/0/0");
         addressBTC = new BitcoinAddress(publicKeyBTC, CoinType.BITCOIN.p2pkhPrefix()).description();
 
         PrivateKey privateKeyBCH = wallet.getKeyForCoin(CoinType.BITCOINCASH);
@@ -66,7 +60,7 @@ public class WalletService {
         addressTRX = CoinType.TRON.deriveAddress(privateKeyTRX);
     }
 
-    public String getXPUB(CoinType coinType) {
+    public String getXpub(CoinType coinType) {
         if (coinType == CoinType.BITCOIN) {
             return wallet.getExtendedPublicKey(Purpose.BIP44, coinType, HDVersion.XPUB);
         } else {

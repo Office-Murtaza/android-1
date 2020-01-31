@@ -162,8 +162,7 @@ public class CoinService {
             @Override
             public String sign(String toAddress, BigDecimal amount) {
                 try {
-
-                    List<JSONObject> utxos = blockbook.getUTXO(btcNodeUrl, walletService.getXPUB(CoinType.BITCOIN)).getUtxos();
+                    List<JSONObject> utxos = blockbook.getUTXO(btcNodeUrl, walletService.getXpub(CoinType.BITCOIN)).getUtxos();
                     String hex = blockbook.signBTC(toAddress, amount, coinMap.get(name()).getFee(), utxos);
 
                     System.out.println(name() + " hex:" + hex);
@@ -348,7 +347,7 @@ public class CoinService {
             @Override
             public String sign(String toAddress, BigDecimal amount) {
                 try {
-                    List<JSONObject> utxos = blockbook.getUTXO(bchNodeUrl, walletService.getXPUB(CoinType.BITCOINCASH)).getUtxos();
+                    List<JSONObject> utxos = blockbook.getUTXO(bchNodeUrl, walletService.getXpub(CoinType.BITCOINCASH)).getUtxos();
                     String hex = blockbook.signBCH(toAddress, amount, coinMap.get(name()).getFee(), utxos);
 
                     System.out.println(name() + " hex:" + hex);
@@ -438,7 +437,7 @@ public class CoinService {
             @Override
             public String sign(String toAddress, BigDecimal amount) {
                 try {
-                    List<JSONObject> utxos = blockbook.getUTXO(ltcNodeUrl, walletService.getXPUB(CoinType.LITECOIN)).getUtxos();
+                    List<JSONObject> utxos = blockbook.getUTXO(ltcNodeUrl, walletService.getXpub(CoinType.LITECOIN)).getUtxos();
                     String hex = blockbook.signLTC(toAddress, amount, coinMap.get(name()).getFee(), utxos);
 
                     System.out.println(name() + " hex:" + hex);
