@@ -7,6 +7,7 @@ import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import com.batm.model.Response;
+import wallet.core.jni.CoinType;
 import java.math.BigDecimal;
 
 @RestController
@@ -55,6 +56,19 @@ public class TestController {
 
         res.put("addressTRX", walletService.getAddressTRX());
         res.put("balanceTRX", CoinService.CoinEnum.TRX.getBalance(walletService.getAddressTRX()));
+
+        return Response.ok(res);
+    }
+
+    @GetMapping("/wallet/{coin}/new")
+    public Response getNewWalletAddresses(@PathVariable CoinType coin) {
+        JSONObject res = new JSONObject();
+
+        for (int i = 0; i < 10; i++) {
+            String newPath = walletService.generateNewPath(coin, i);
+
+            res.put(newPath, walletService.generateNewAddress(coin, newPath));
+        }
 
         return Response.ok(res);
     }

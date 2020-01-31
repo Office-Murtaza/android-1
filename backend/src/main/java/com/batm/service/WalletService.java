@@ -61,10 +61,19 @@ public class WalletService {
     }
 
     public String getXpub(CoinType coinType) {
-        if (coinType == CoinType.BITCOIN) {
-            return wallet.getExtendedPublicKey(Purpose.BIP44, coinType, HDVersion.XPUB);
-        } else {
-            return wallet.getExtendedPublicKey(coinType.purpose(), coinType, coinType.xpubVersion());
-        }
+        return coinType == CoinType.BITCOIN ? wallet.getExtendedPublicKey(Purpose.BIP44, coinType, HDVersion.XPUB) : wallet.getExtendedPublicKey(coinType.purpose(), coinType, coinType.xpubVersion());
+    }
+
+    public String generateNewAddress(CoinType coinType, String newPath) {
+        PublicKey publicKey = HDWallet.getPublicKeyFromExtended(getXpub(coinType), newPath);
+        String address = coinType == CoinType.BITCOIN ? new BitcoinAddress(publicKey, CoinType.BITCOIN.p2pkhPrefix()).description() : coinType.deriveAddressFromPublicKey(publicKey);
+
+        return address;
+    }
+
+    public String generateNewPath(CoinType coinType, Integer lastIndex) {
+        String path = coinType == CoinType.BITCOIN ? "m/44'/0'/0'/0/0" : coinType.derivationPath();
+
+        return path.substring(0, path.length() - 1) + (lastIndex + 1);
     }
 }
