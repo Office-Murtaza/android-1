@@ -22,7 +22,7 @@ public class TestController {
 
     @GetMapping("/sms")
     public Response sendSMS(@RequestParam String phone) {
-        return Response.ok(messageService.sendMessage(phone, "Hey there, this is a test message!!!"));
+        return Response.ok(messageService.sendMessage(phone, "Hey there, do you want to buy an elephant?"));
     }
 
     @GetMapping("/code/{userId}")
@@ -36,26 +36,14 @@ public class TestController {
     @GetMapping("/wallet")
     public Response getWalletAddresses() {
         JSONObject res = new JSONObject();
-        res.put("addressBTC", walletService.getAddressBTC());
-        res.put("balanceBTC", CoinService.CoinEnum.BTC.getBalance(walletService.getAddressBTC()));
 
-        res.put("addressBCH", walletService.getAddressBCH());
-        res.put("balanceBCH", CoinService.CoinEnum.BCH.getBalance(walletService.getAddressBCH()));
-
-        res.put("addressETH", walletService.getAddressETH());
-        res.put("balanceETH", CoinService.CoinEnum.ETH.getBalance(walletService.getAddressETH()));
-
-        res.put("addressLTC", walletService.getAddressLTC());
-        res.put("balanceLTC", CoinService.CoinEnum.LTC.getBalance(walletService.getAddressLTC()));
-
-        res.put("addressBNB", walletService.getAddressBNB());
-        res.put("balanceBNB", CoinService.CoinEnum.BNB.getBalance(walletService.getAddressBNB()));
-
-        res.put("addressXRP", walletService.getAddressXRP());
-        res.put("balanceXRP", CoinService.CoinEnum.XRP.getBalance(walletService.getAddressXRP()));
-
-        res.put("addressTRX", walletService.getAddressTRX());
-        res.put("balanceTRX", CoinService.CoinEnum.TRX.getBalance(walletService.getAddressTRX()));
+        res.put("BTC", getCoinJson(walletService.getAddressBTC(), CoinService.CoinEnum.BTC.getBalance(walletService.getAddressBTC()), CoinType.BITCOIN.derivationPath()));
+        res.put("BCH", getCoinJson(walletService.getAddressBCH(), CoinService.CoinEnum.BCH.getBalance(walletService.getAddressBCH()), CoinType.BITCOINCASH.derivationPath()));
+        res.put("ETH", getCoinJson(walletService.getAddressETH(), CoinService.CoinEnum.ETH.getBalance(walletService.getAddressETH()), CoinType.ETHEREUM.derivationPath()));
+        res.put("LTC", getCoinJson(walletService.getAddressLTC(), CoinService.CoinEnum.LTC.getBalance(walletService.getAddressLTC()), CoinType.LITECOIN.derivationPath()));
+        res.put("BNB", getCoinJson(walletService.getAddressBNB(), CoinService.CoinEnum.BNB.getBalance(walletService.getAddressBNB()), CoinType.BINANCE.derivationPath()));
+        res.put("XRP", getCoinJson(walletService.getAddressXRP(), CoinService.CoinEnum.XRP.getBalance(walletService.getAddressXRP()), CoinType.XRP.derivationPath()));
+        res.put("TRX", getCoinJson(walletService.getAddressTRX(), CoinService.CoinEnum.TRX.getBalance(walletService.getAddressTRX()), CoinType.TRON.derivationPath()));
 
         return Response.ok(res);
     }
@@ -65,7 +53,8 @@ public class TestController {
         JSONObject res = new JSONObject();
 
         for (int i = 0; i < 10; i++) {
-            String newPath = walletService.generateNewPath(coin, i);
+            String path = walletService.getPath(coin);
+            String newPath = walletService.generateNewPath(path, i);
 
             res.put(newPath, walletService.generateNewAddress(coin, newPath));
         }
@@ -78,5 +67,15 @@ public class TestController {
         coin.sign(address, amount);
 
         return Response.ok(true);
+    }
+
+    private JSONObject getCoinJson(String address, BigDecimal balance, String path) {
+        JSONObject json = new JSONObject();
+
+        json.put("address", address);
+        json.put("balance", balance);
+        json.put("path", path);
+
+        return json;
     }
 }

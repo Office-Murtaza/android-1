@@ -38,7 +38,7 @@ public class WalletService {
         wallet = new HDWallet(seed, "");
 
         privateKeyBTC = wallet.getKeyForCoin(CoinType.BITCOIN);
-        PublicKey publicKeyBTC = HDWallet.getPublicKeyFromExtended(getXpub(CoinType.BITCOIN), "m/44'/0'/0'/0/0");
+        PublicKey publicKeyBTC = wallet.getPublicKeyFromExtended(getXpub(CoinType.BITCOIN), getPath(CoinType.BITCOIN));
         addressBTC = new BitcoinAddress(publicKeyBTC, CoinType.BITCOIN.p2pkhPrefix()).description();
 
         PrivateKey privateKeyBCH = wallet.getKeyForCoin(CoinType.BITCOINCASH);
@@ -60,20 +60,53 @@ public class WalletService {
         addressTRX = CoinType.TRON.deriveAddress(privateKeyTRX);
     }
 
+    public String getPath(CoinType coinType) {
+        if (coinType == CoinType.BITCOIN) {
+            return "m/44'/0'/0'/0/0";
+        } else {
+            return coinType.derivationPath();
+        }
+    }
+
     public String getXpub(CoinType coinType) {
-        return coinType == CoinType.BITCOIN ? wallet.getExtendedPublicKey(Purpose.BIP44, coinType, HDVersion.XPUB) : wallet.getExtendedPublicKey(coinType.purpose(), coinType, coinType.xpubVersion());
+        if (coinType == CoinType.BITCOIN || coinType == CoinType.XRP) {
+            return wallet.getExtendedPublicKey(Purpose.BIP44, coinType, HDVersion.XPUB);
+        } else {
+            return wallet.getExtendedPublicKey(coinType.purpose(), coinType, coinType.xpubVersion());
+        }
+    }
+
+    public String generateNewPath(String path, Integer index) {
+        return path.substring(0, path.length() - 1) + index;
     }
 
     public String generateNewAddress(CoinType coinType, String newPath) {
-        PublicKey publicKey = HDWallet.getPublicKeyFromExtended(getXpub(coinType), newPath);
-        String address = coinType == CoinType.BITCOIN ? new BitcoinAddress(publicKey, CoinType.BITCOIN.p2pkhPrefix()).description() : coinType.deriveAddressFromPublicKey(publicKey);
+        if (coinType == CoinType.BITCOIN) {
+            PublicKey publicKey = wallet.getPublicKeyFromExtended(getXpub(coinType), newPath);
 
-        return address;
-    }
+            return new BitcoinAddress(publicKey, CoinType.BITCOIN.p2pkhPrefix()).description();
+        } else if (coinType == CoinType.BITCOINCASH || coinType == CoinType.LITECOIN) {
+            PublicKey publicKey = wallet.getPublicKeyFromExtended(getXpub(coinType), newPath);
 
-    public String generateNewPath(CoinType coinType, Integer lastIndex) {
-        String path = coinType == CoinType.BITCOIN ? "m/44'/0'/0'/0/0" : coinType.derivationPath();
+            return coinType.deriveAddressFromPublicKey(publicKey);
+        } else if (coinType == CoinType.XRP) {
+            PublicKey publicKey = wallet.getPublicKeyFromExtended(getXpub(coinType), newPath);
 
-        return path.substring(0, path.length() - 1) + (lastIndex + 1);
+            return new RippleAddress(publicKey).description();
+        } else if (coinType == CoinType.ETHEREUM) {
+            PrivateKey privateKey = wallet.getKey(newPath);
+
+            return new EthereumAddress(privateKey.getPublicKeySecp256k1(false)).description();
+        } else if (coinType == CoinType.TRON) {
+            PrivateKey privateKey = wallet.getKey(newPath);
+
+            return new TronAddress(privateKey.getPublicKeySecp256k1(false)).description();
+        } else if (coinType == CoinType.BINANCE) {
+            PrivateKey privateKey = wallet.getKey(newPath);
+
+            return new CosmosAddress(HRP.BINANCE, privateKey.getPublicKeySecp256k1(true)).description();
+        }
+
+        return null;
     }
 }
