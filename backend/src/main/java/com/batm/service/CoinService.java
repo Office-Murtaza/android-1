@@ -2,7 +2,6 @@ package com.batm.service;
 
 import com.batm.dto.*;
 import com.batm.entity.*;
-import com.batm.model.CashStatus;
 import com.batm.model.TransactionStatus;
 import com.batm.model.TransactionType;
 import com.batm.repository.CoinRep;
@@ -10,12 +9,11 @@ import com.batm.util.Constant;
 import com.batm.util.Util;
 import com.binance.api.client.BinanceApiRestClient;
 import net.sf.json.JSONObject;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import wallet.core.jni.CoinType;
-
 import java.math.BigDecimal;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
@@ -29,7 +27,6 @@ public class CoinService {
     private static Map<String, Coin> coinMap;
 
     private static BinanceApiRestClient binanceRest;
-    private static MessageService messageService;
     private static WalletService walletService;
     private static UserService userService;
     private static TransactionService transactionService;
@@ -50,7 +47,6 @@ public class CoinService {
     private static String ltcExplorerUrl;
 
     public CoinService(@Autowired final BinanceApiRestClient binanceRest,
-                       @Autowired final MessageService messageService,
                        @Autowired final WalletService walletService,
                        @Autowired final UserService userService,
                        @Autowired final TransactionService transactionService,
@@ -73,7 +69,6 @@ public class CoinService {
                        @Value("${ltc.explorer.url}") final String ltcExplorerUrl) {
 
         CoinService.binanceRest = binanceRest;
-        CoinService.messageService = messageService;
         CoinService.walletService = walletService;
         CoinService.userService = userService;
         CoinService.transactionService = transactionService;
@@ -165,7 +160,6 @@ public class CoinService {
                     List<JSONObject> utxos = blockbook.getUTXO(btcNodeUrl, walletService.getXpub(CoinType.BITCOIN)).getUtxos();
                     String hex = blockbook.signBTC(toAddress, amount, coinMap.get(name()).getFee(), utxos);
 
-                    System.out.println(name() + " hex:" + hex);
                     return blockbook.submitTransaction(btcNodeUrl, hex);
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -178,7 +172,10 @@ public class CoinService {
             public String submitTransaction(Long userId, SubmitTransactionDTO transaction) {
                 try {
                     String txId = blockbook.submitTransaction(btcNodeUrl, transaction.getHex());
-                    saveGift(userId, this, txId, transaction);
+
+                    if (StringUtils.isNotBlank(txId) && TransactionType.SEND_GIFT.getValue() == transaction.getType()) {
+                        transactionService.saveGift(userId, this, txId, transaction);
+                    }
 
                     return txId;
                 } catch (Exception e) {
@@ -186,6 +183,11 @@ public class CoinService {
                 }
 
                 return null;
+            }
+
+            @Override
+            public CoinType getCoinType() {
+                return CoinType.BITCOIN;
             }
         },
         ETH {
@@ -273,7 +275,10 @@ public class CoinService {
             public String submitTransaction(Long userId, SubmitTransactionDTO transaction) {
                 try {
                     String txId = blockbook.submitTransaction(ethNodeUrl, transaction.getHex());
-                    saveGift(userId, this, txId, transaction);
+
+                    if (StringUtils.isNotBlank(txId) && TransactionType.SEND_GIFT.getValue() == transaction.getType()) {
+                        transactionService.saveGift(userId, this, txId, transaction);
+                    }
 
                     return txId;
                 } catch (Exception e) {
@@ -281,6 +286,11 @@ public class CoinService {
                 }
 
                 return null;
+            }
+
+            @Override
+            public CoinType getCoinType() {
+                return CoinType.ETHEREUM;
             }
         },
         BCH {
@@ -350,7 +360,6 @@ public class CoinService {
                     List<JSONObject> utxos = blockbook.getUTXO(bchNodeUrl, walletService.getXpub(CoinType.BITCOINCASH)).getUtxos();
                     String hex = blockbook.signBCH(toAddress, amount, coinMap.get(name()).getFee(), utxos);
 
-                    System.out.println(name() + " hex:" + hex);
                     return blockbook.submitTransaction(bchNodeUrl, hex);
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -363,7 +372,10 @@ public class CoinService {
             public String submitTransaction(Long userId, SubmitTransactionDTO transaction) {
                 try {
                     String txId = blockbook.submitTransaction(bchNodeUrl, transaction.getHex());
-                    saveGift(userId, this, txId, transaction);
+
+                    if (StringUtils.isNotBlank(txId) && TransactionType.SEND_GIFT.getValue() == transaction.getType()) {
+                        transactionService.saveGift(userId, this, txId, transaction);
+                    }
 
                     return txId;
                 } catch (Exception e) {
@@ -371,6 +383,11 @@ public class CoinService {
                 }
 
                 return null;
+            }
+
+            @Override
+            public CoinType getCoinType() {
+                return CoinType.BITCOINCASH;
             }
         },
         LTC {
@@ -440,7 +457,6 @@ public class CoinService {
                     List<JSONObject> utxos = blockbook.getUTXO(ltcNodeUrl, walletService.getXpub(CoinType.LITECOIN)).getUtxos();
                     String hex = blockbook.signLTC(toAddress, amount, coinMap.get(name()).getFee(), utxos);
 
-                    System.out.println(name() + " hex:" + hex);
                     return blockbook.submitTransaction(ltcNodeUrl, hex);
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -453,7 +469,10 @@ public class CoinService {
             public String submitTransaction(Long userId, SubmitTransactionDTO transaction) {
                 try {
                     String txId = blockbook.submitTransaction(ltcNodeUrl, transaction.getHex());
-                    saveGift(userId, this, txId, transaction);
+
+                    if (StringUtils.isNotBlank(txId) && TransactionType.SEND_GIFT.getValue() == transaction.getType()) {
+                        transactionService.saveGift(userId, this, txId, transaction);
+                    }
 
                     return txId;
                 } catch (Exception e) {
@@ -461,6 +480,11 @@ public class CoinService {
                 }
 
                 return null;
+            }
+
+            @Override
+            public CoinType getCoinType() {
+                return CoinType.LITECOIN;
             }
         },
         BNB {
@@ -545,7 +569,10 @@ public class CoinService {
             public String submitTransaction(Long userId, SubmitTransactionDTO transaction) {
                 try {
                     String txId = binance.submitTransaction(transaction.getHex());
-                    saveGift(userId, this, txId, transaction);
+
+                    if (StringUtils.isNotBlank(txId) && TransactionType.SEND_GIFT.getValue() == transaction.getType()) {
+                        transactionService.saveGift(userId, this, txId, transaction);
+                    }
 
                     return txId;
                 } catch (Exception e) {
@@ -553,6 +580,11 @@ public class CoinService {
                 }
 
                 return null;
+            }
+
+            @Override
+            public CoinType getCoinType() {
+                return CoinType.BINANCE;
             }
         },
         XRP {
@@ -637,7 +669,10 @@ public class CoinService {
             public String submitTransaction(Long userId, SubmitTransactionDTO transaction) {
                 try {
                     String txId = rippled.submitTransaction(transaction.getHex());
-                    saveGift(userId, this, txId, transaction);
+
+                    if (StringUtils.isNotBlank(txId) && TransactionType.SEND_GIFT.getValue() == transaction.getType()) {
+                        transactionService.saveGift(userId, this, txId, transaction);
+                    }
 
                     return txId;
                 } catch (Exception e) {
@@ -645,6 +680,11 @@ public class CoinService {
                 }
 
                 return null;
+            }
+
+            @Override
+            public CoinType getCoinType() {
+                return CoinType.XRP;
             }
         },
         TRX {
@@ -726,7 +766,10 @@ public class CoinService {
             public String submitTransaction(Long userId, SubmitTransactionDTO transaction) {
                 try {
                     String txId = trongrid.submitTransaction(JSONObject.fromObject(transaction.getHex()));
-                    saveGift(userId, this, txId, transaction);
+
+                    if (StringUtils.isNotBlank(txId) && TransactionType.SEND_GIFT.getValue() == transaction.getType()) {
+                        transactionService.saveGift(userId, this, txId, transaction);
+                    }
 
                     return txId;
                 } catch (Exception e) {
@@ -734,6 +777,11 @@ public class CoinService {
                 }
 
                 return null;
+            }
+
+            @Override
+            public CoinType getCoinType() {
+                return CoinType.TRON;
             }
         };
 
@@ -764,63 +812,8 @@ public class CoinService {
         public abstract String sign(String toAddress, BigDecimal amount);
 
         public abstract String submitTransaction(Long userId, SubmitTransactionDTO transaction);
-    }
 
-    public TransactionDTO getTransaction(Long userId, CoinEnum coin, String txId) {
-        User user = userService.findById(userId);
-
-        TransactionDTO dto = new TransactionDTO();
-        TransactionRecord txRecord;
-
-        if (StringUtils.isNumeric(txId)) {  /** consider as txDbId */
-            txRecord = user.getIdentity().getTxRecordByDbId(Long.valueOf(txId), coin.name());
-        } else {                            /** consider as txId */
-            String address = user.getCoinAddress(coin.name());
-            dto = coin.getTransaction(txId, address);
-            txRecord = user.getIdentity().getTxRecordByCryptoId(txId, coin.name());
-        }
-
-        TransactionRecordGift txGift = user.getIdentity().getTxGift(txId, coin.name());
-
-        if (txGift != null) {
-            dto.setPhone(txGift.getPhone());
-            dto.setImageId(txGift.getImageId());
-            dto.setMessage(txGift.getMessage());
-            dto.setType(TransactionType.getGiftType(dto.getType()));
-        } else if (txRecord != null) {
-
-            // to return either txId or txDbId, not both
-            if (StringUtils.isBlank(dto.getTxId())) {
-                if (StringUtils.isNotBlank(txRecord.getDetail())) {
-                    dto.setTxId(txRecord.getDetail());
-                } else {
-                    dto.setTxDbId(txRecord.getId().toString());
-                }
-            }
-
-            dto.setType(txRecord.getTransactionType());
-            dto.setStatus(txRecord.getTransactionStatus(dto.getType()));
-            dto.setCryptoAmount(txRecord.getCryptoAmount().stripTrailingZeros());
-            dto.setFiatAmount(txRecord.getCashAmount().setScale(0));
-            dto.setToAddress(txRecord.getCryptoAddress());
-            dto.setDate2(txRecord.getServerTime());
-
-            if (dto.getType() == TransactionType.SELL) {
-                dto.setCashStatus(CashStatus.getCashStatus(txRecord.getCanBeCashedOut(), txRecord.getWithdrawn()));
-                dto.setSellInfo(coin.getName() + ":" + txRecord.getCryptoAddress() + "?amount=" + txRecord.getCryptoAmount() + "&label=" + txRecord.getRemoteTransactionId() + "&uuid=" + txRecord.getUuid());
-            }
-        }
-
-        return dto;
-    }
-
-    public TransactionListDTO getTransactions(Long userId, CoinEnum coin, Integer startIndex) {
-        User user = userService.findById(userId);
-        String address = user.getCoinAddress(coin.name());
-        List<TransactionRecordGift> gifts = user.getIdentity().getTxGiftList(coin.name());
-        List<TransactionRecord> txs = user.getIdentity().getTxRecordList(coin.name());
-
-        return coin.getTransactionList(address, startIndex, Constant.TRANSACTION_LIMIT, gifts, txs);
+        public abstract CoinType getCoinType();
     }
 
     public BalanceDTO getCoinsBalance(Long userId, List<String> coins) {
@@ -906,16 +899,5 @@ public class CoinService {
         }
 
         return true;
-    }
-
-    public static void saveGift(Long userId, CoinEnum coinId, String txId, SubmitTransactionDTO dto) {
-        if (StringUtils.isNotEmpty(txId) && com.batm.model.TransactionType.SEND_GIFT.getValue() == dto.getType()) {
-            User user = userService.findById(userId);
-
-            Optional<User> receiver = userService.findByPhone(dto.getPhone());
-            messageService.sendGiftMessage(coinId, dto, receiver.isPresent());
-
-            transactionService.saveGift(user.getIdentity(), txId, user.getCoin(coinId.name()), dto, receiver.isPresent());
-        }
     }
 }

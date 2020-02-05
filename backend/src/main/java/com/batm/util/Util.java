@@ -130,7 +130,7 @@ public class Util {
                 TransactionType type = e.getTransactionType();
                 TransactionStatus status = e.getTransactionStatus(type);
 
-                if (StringUtils.isNotEmpty(e.getDetail()) && map.containsKey(e.getDetail())) {
+                if (StringUtils.isNotBlank(e.getDetail()) && map.containsKey(e.getDetail())) {
                     map.get(e.getDetail()).setType(type);
                     map.get(e.getDetail()).setStatus(status);
                 } else {

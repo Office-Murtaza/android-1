@@ -2,6 +2,7 @@ package com.batm.service;
 
 import com.batm.dto.*;
 import com.batm.entity.*;
+import com.batm.model.CashStatus;
 import com.batm.model.TransactionStatus;
 import com.batm.model.TransactionType;
 import com.batm.repository.TransactionRecordGiftRep;
@@ -21,6 +22,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @EnableScheduling
@@ -44,8 +46,70 @@ public class TransactionService {
     @Value("${gb.url}")
     private String gbUrl;
 
-    public void saveGift(Identity identity, String txId, Coin coin, SubmitTransactionDTO dto, boolean receiverExist) {
+    public TransactionDTO getTransactionDetails(Long userId, CoinService.CoinEnum coin, String txId) {
+        User user = userService.findById(userId);
+
+        TransactionDTO dto = new TransactionDTO();
+        TransactionRecord txRecord;
+
+        if (org.apache.commons.lang.StringUtils.isNumeric(txId)) {  /** consider as txDbId */
+            txRecord = user.getIdentity().getTxRecordByDbId(Long.valueOf(txId), coin.name());
+        } else {                            /** consider as txId */
+            String address = user.getCoinAddress(coin.name());
+            dto = coin.getTransaction(txId, address);
+            txRecord = user.getIdentity().getTxRecordByCryptoId(txId, coin.name());
+        }
+
+        TransactionRecordGift txGift = user.getIdentity().getTxGift(txId, coin.name());
+
+        if (txGift != null) {
+            dto.setPhone(txGift.getPhone());
+            dto.setImageId(txGift.getImageId());
+            dto.setMessage(txGift.getMessage());
+            dto.setType(TransactionType.getGiftType(dto.getType()));
+        } else if (txRecord != null) {
+
+            // to return either txId or txDbId, not both
+            if (org.apache.commons.lang.StringUtils.isBlank(dto.getTxId())) {
+                if (org.apache.commons.lang.StringUtils.isNotBlank(txRecord.getDetail())) {
+                    dto.setTxId(txRecord.getDetail());
+                } else {
+                    dto.setTxDbId(txRecord.getId().toString());
+                }
+            }
+
+            dto.setType(txRecord.getTransactionType());
+            dto.setStatus(txRecord.getTransactionStatus(dto.getType()));
+            dto.setCryptoAmount(txRecord.getCryptoAmount().stripTrailingZeros());
+            dto.setFiatAmount(txRecord.getCashAmount().setScale(0));
+            dto.setToAddress(txRecord.getCryptoAddress());
+            dto.setDate2(txRecord.getServerTime());
+
+            if (dto.getType() == TransactionType.SELL) {
+                dto.setCashStatus(CashStatus.getCashStatus(txRecord.getCanBeCashedOut(), txRecord.getWithdrawn()));
+                dto.setSellInfo(coin.getName() + ":" + txRecord.getCryptoAddress() + "?amount=" + txRecord.getCryptoAmount() + "&label=" + txRecord.getRemoteTransactionId() + "&uuid=" + txRecord.getUuid());
+            }
+        }
+
+        return dto;
+    }
+
+    public TransactionListDTO getTransactionHistory(Long userId, CoinService.CoinEnum coinCode, Integer startIndex) {
+        User user = userService.findById(userId);
+        String address = user.getCoinAddress(coinCode.name());
+        List<TransactionRecordGift> gifts = user.getIdentity().getTxGiftList(coinCode.name());
+        List<TransactionRecord> txs = user.getIdentity().getTxRecordList(coinCode.name());
+
+        return coinCode.getTransactionList(address, startIndex, Constant.TRANSACTION_LIMIT, gifts, txs);
+    }
+
+    public void saveGift(Long userId, CoinService.CoinEnum coinCode, String txId, SubmitTransactionDTO dto) {
         try {
+            User user = userService.findById(userId);
+
+            Optional<User> receiver = userService.findByPhone(dto.getPhone());
+            messageService.sendGiftMessage(coinCode, dto, receiver.isPresent());
+
             TransactionRecordGift gift = new TransactionRecordGift();
             gift.setTxId(txId);
             gift.setType(dto.getType());
@@ -54,14 +118,14 @@ public class TransactionService {
             gift.setPhone(dto.getPhone());
             gift.setMessage(dto.getMessage());
             gift.setImageId(dto.getImageId());
-            gift.setStep(receiverExist ? Constant.GIFT_USER_EXIST : Constant.GIFT_USER_NOT_EXIST);
-            gift.setIdentity(identity);
-            gift.setCoin(coin);
+            gift.setStep(receiver.isPresent() ? Constant.GIFT_USER_EXIST : Constant.GIFT_USER_NOT_EXIST);
+            gift.setIdentity(user.getIdentity());
+            gift.setCoin(user.getCoin(coinCode.name()));
             gift.setRefTxId(dto.getRefTxId());
 
             transactionRecordGiftRep.save(gift);
 
-            if (receiverExist) {
+            if (receiver.isPresent()) {
                 TransactionRecordGift gift2 = new TransactionRecordGift();
                 gift2.setTxId(gift.getTxId());
                 gift2.setType(TransactionType.RECEIVE_GIFT.getValue());
@@ -227,7 +291,7 @@ public class TransactionService {
 
                         String txId = coinCode.submitTransaction(t.getIdentity().getUser().getId(), dto);
 
-                        if (StringUtils.isNotEmpty(txId)) {
+                        if (StringUtils.isNotBlank(txId)) {
                             t.setStep(Constant.GIFT_USER_TRANSACTION_CREATED);
 
                             confirmedList.add(t);

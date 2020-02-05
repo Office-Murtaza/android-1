@@ -24,9 +24,9 @@ public enum TransactionType {
     }
 
     public static TransactionType getType(String fromAddress, String toAddress, String address) {
-        if (StringUtils.isNotEmpty(fromAddress) && fromAddress.equalsIgnoreCase(address)) {
+        if (StringUtils.isNotBlank(fromAddress) && fromAddress.equalsIgnoreCase(address)) {
             return WITHDRAW;
-        } else if (StringUtils.isNotEmpty(toAddress) && toAddress.equalsIgnoreCase(address)) {
+        } else if (StringUtils.isNotBlank(toAddress) && toAddress.equalsIgnoreCase(address)) {
             return DEPOSIT;
         }
 
@@ -36,10 +36,10 @@ public enum TransactionType {
     public static TransactionType getGiftType(TransactionType type) {
         if (type == WITHDRAW) {
             return SEND_GIFT;
-        } else if(type == DEPOSIT) {
+        } else if (type == DEPOSIT) {
             return RECEIVE_GIFT;
-        } else {
-            return type;
         }
+
+        return null;
     }
 }

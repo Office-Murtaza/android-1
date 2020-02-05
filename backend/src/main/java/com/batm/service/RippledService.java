@@ -233,7 +233,7 @@ public class RippledService {
     }
 
     private TransactionStatus getStatus(String str) {
-        if (StringUtils.isNotEmpty(str) && str.equalsIgnoreCase("tesSUCCESS")) {
+        if (StringUtils.isNotBlank(str) && str.equalsIgnoreCase("tesSUCCESS")) {
             return TransactionStatus.COMPLETE;
         }
 

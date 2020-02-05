@@ -48,23 +48,23 @@ public class TestController {
         return Response.ok(res);
     }
 
-    @GetMapping("/wallet/{coin}/new")
-    public Response getNewWalletAddresses(@PathVariable CoinType coin) {
+    @GetMapping("/wallet/{coinType}/new")
+    public Response getNewWalletAddresses(@PathVariable CoinType coinType) {
         JSONObject res = new JSONObject();
 
         for (int i = 0; i < 10; i++) {
-            String path = walletService.getPath(coin);
+            String path = walletService.getPath(coinType);
             String newPath = walletService.generateNewPath(path, i);
 
-            res.put(newPath, walletService.generateNewAddress(coin, newPath));
+            res.put(newPath, walletService.generateNewAddress(coinType, newPath));
         }
 
         return Response.ok(res);
     }
 
-    @GetMapping("/wallet/{coin}/sign")
-    public Response sign(@PathVariable CoinService.CoinEnum coin, @RequestParam String address, @RequestParam BigDecimal amount) {
-        coin.sign(address, amount);
+    @GetMapping("/wallet/{coinCode}/sign")
+    public Response sign(@PathVariable CoinService.CoinEnum coinCode, @RequestParam String address, @RequestParam BigDecimal amount) {
+        coinCode.sign(address, amount);
 
         return Response.ok(true);
     }

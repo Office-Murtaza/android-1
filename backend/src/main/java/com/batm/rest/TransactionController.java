@@ -14,20 +14,17 @@ import org.springframework.web.bind.annotation.*;
 public class TransactionController {
 
     @Autowired
-    private CoinService coinService;
-
-    @Autowired
     private TransactionService transactionService;
 
     /**
      * Transaction History
      */
-    @GetMapping("/user/{userId}/coins/{coinId}/transactions")
-    public Response getTransactions(@PathVariable Long userId, @PathVariable CoinService.CoinEnum coinId, @RequestParam(required = false) Integer index) {
+    @GetMapping("/user/{userId}/coins/{coinCode}/transactions")
+    public Response getTransactions(@PathVariable Long userId, @PathVariable CoinService.CoinEnum coinCode, @RequestParam(required = false) Integer index) {
         try {
             index = index == null || index <= 0 ? 1 : index;
 
-            return Response.ok(coinService.getTransactions(userId, coinId, index));
+            return Response.ok(transactionService.getTransactionHistory(userId, coinCode, index));
         } catch (Exception e) {
             e.printStackTrace();
             return Response.serverError();
@@ -37,23 +34,23 @@ public class TransactionController {
     /**
      * Transaction Details
      */
-    @GetMapping("/user/{userId}/coins/{coinId}/transaction/{txId}")
-    public Response getTransaction(@PathVariable Long userId, @PathVariable CoinService.CoinEnum coinId, @PathVariable String txId) {
+    @GetMapping("/user/{userId}/coins/{coinCode}/transaction/{txId}")
+    public Response getTransaction(@PathVariable Long userId, @PathVariable CoinService.CoinEnum coinCode, @PathVariable String txId) {
         try {
-            return Response.ok(coinService.getTransaction(userId, coinId, txId));
+            return Response.ok(transactionService.getTransactionDetails(userId, coinCode, txId));
         } catch (Exception e) {
             e.printStackTrace();
             return Response.serverError();
         }
     }
 
-    @GetMapping("/user/{userId}/coins/{coinId}/transactions/utxo/{xpub}")
-    public Response getUtxo(@PathVariable Long userId, @PathVariable CoinService.CoinEnum coinId, @PathVariable String xpub) {
+    @GetMapping("/user/{userId}/coins/{coinCode}/transactions/utxo/{xpub}")
+    public Response getUtxo(@PathVariable Long userId, @PathVariable CoinService.CoinEnum coinCode, @PathVariable String xpub) {
         try {
-            if (coinId == CoinService.CoinEnum.BTC || coinId == CoinService.CoinEnum.BCH || coinId == CoinService.CoinEnum.LTC) {
-                return Response.ok(coinId.getUTXO(xpub));
+            if (coinCode == CoinService.CoinEnum.BTC || coinCode == CoinService.CoinEnum.BCH || coinCode == CoinService.CoinEnum.LTC) {
+                return Response.ok(coinCode.getUTXO(xpub));
             } else {
-                return Response.error(2, coinId.name() + " not allowed");
+                return Response.error(2, coinCode.name() + " not allowed");
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -61,13 +58,13 @@ public class TransactionController {
         }
     }
 
-    @GetMapping("/user/{userId}/coins/{coinId}/transactions/nonce")
-    public Response getNonce(@PathVariable Long userId, @PathVariable CoinService.CoinEnum coinId) {
+    @GetMapping("/user/{userId}/coins/{coinCode}/transactions/nonce")
+    public Response getNonce(@PathVariable Long userId, @PathVariable CoinService.CoinEnum coinCode) {
         try {
-            if (coinId == CoinService.CoinEnum.ETH) {
-                return Response.ok(coinId.getNonce(userId));
+            if (coinCode == CoinService.CoinEnum.ETH) {
+                return Response.ok(coinCode.getNonce(userId));
             } else {
-                return Response.error(2, coinId.name() + " not allowed");
+                return Response.error(2, coinCode.name() + " not allowed");
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -75,13 +72,13 @@ public class TransactionController {
         }
     }
 
-    @GetMapping("/user/{userId}/coins/{coinId}/transactions/currentaccount")
-    public Response getCurrentAccount(@PathVariable Long userId, @PathVariable CoinService.CoinEnum coinId) {
+    @GetMapping("/user/{userId}/coins/{coinCode}/transactions/currentaccount")
+    public Response getCurrentAccount(@PathVariable Long userId, @PathVariable CoinService.CoinEnum coinCode) {
         try {
-            if (coinId == CoinService.CoinEnum.BNB || coinId == CoinService.CoinEnum.XRP) {
-                return Response.ok(coinId.getCurrentAccount(userId));
+            if (coinCode == CoinService.CoinEnum.BNB || coinCode == CoinService.CoinEnum.XRP) {
+                return Response.ok(coinCode.getCurrentAccount(userId));
             } else {
-                return Response.error(2, coinId.name() + " not allowed");
+                return Response.error(2, coinCode.name() + " not allowed");
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -89,13 +86,13 @@ public class TransactionController {
         }
     }
 
-    @GetMapping("/user/{userId}/coins/{coinId}/transactions/currentblock")
-    public Response getCurrentBlock(@PathVariable Long userId, @PathVariable CoinService.CoinEnum coinId) {
+    @GetMapping("/user/{userId}/coins/{coinCode}/transactions/currentblock")
+    public Response getCurrentBlock(@PathVariable Long userId, @PathVariable CoinService.CoinEnum coinCode) {
         try {
-            if (coinId == CoinService.CoinEnum.TRX) {
-                return Response.ok(coinId.getCurrentBlock());
+            if (coinCode == CoinService.CoinEnum.TRX) {
+                return Response.ok(coinCode.getCurrentBlock());
             } else {
-                return Response.error(2, coinId.name() + " not allowed");
+                return Response.error(2, coinCode.name() + " not allowed");
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -103,8 +100,8 @@ public class TransactionController {
         }
     }
 
-    @GetMapping("/user/{userId}/coins/{coinId}/transactions/limits")
-    public Response getLimits(@PathVariable Long userId, @PathVariable CoinService.CoinEnum coinId) {
+    @GetMapping("/user/{userId}/coins/{coinCode}/transactions/limits")
+    public Response getLimits(@PathVariable Long userId, @PathVariable CoinService.CoinEnum coinCode) {
         try {
             return Response.ok(transactionService.getUserTransactionLimits(userId));
         } catch (Exception e) {
@@ -113,28 +110,28 @@ public class TransactionController {
         }
     }
 
-    @PostMapping("/user/{userId}/coins/{coinId}/transactions/presubmit")
-    public Response preSubmit(@PathVariable Long userId, @PathVariable CoinService.CoinEnum coinId, @RequestBody SubmitTransactionDTO transaction) {
+    @PostMapping("/user/{userId}/coins/{coinCode}/transactions/presubmit")
+    public Response preSubmit(@PathVariable Long userId, @PathVariable CoinService.CoinEnum coinCode, @RequestBody SubmitTransactionDTO transaction) {
         try {
-            return Response.ok(transactionService.preSubmit(userId, coinId, transaction));
+            return Response.ok(transactionService.preSubmit(userId, coinCode, transaction));
         } catch (Exception e) {
             e.printStackTrace();
             return Response.serverError();
         }
     }
 
-    @PostMapping("/user/{userId}/coins/{coinId}/transactions/submit")
-    public Response submit(@PathVariable Long userId, @PathVariable CoinService.CoinEnum coinId, @RequestBody SubmitTransactionDTO transaction) {
+    @PostMapping("/user/{userId}/coins/{coinCode}/transactions/submit")
+    public Response submit(@PathVariable Long userId, @PathVariable CoinService.CoinEnum coinCode, @RequestBody SubmitTransactionDTO transaction) {
         try {
-            String txId = coinId.submitTransaction(userId, transaction);
+            String txId = coinCode.submitTransaction(userId, transaction);
 
-            if (StringUtils.isNotEmpty(txId)) {
+            if (StringUtils.isNotBlank(txId)) {
                 JSONObject res = new JSONObject();
                 res.put("txId", txId);
 
                 return Response.ok(res);
             } else {
-                return Response.error(2, coinId.name() + " error transaction creation");
+                return Response.error(2, coinCode.name() + " error transaction creation");
             }
         } catch (Exception e) {
             e.printStackTrace();

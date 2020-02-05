@@ -208,7 +208,7 @@ public class TrongridService {
     }
 
     private TransactionStatus getStatus(String str) {
-        if (StringUtils.isNotEmpty(str) && str.equalsIgnoreCase("SUCCESS")) {
+        if (StringUtils.isNotBlank(str) && str.equalsIgnoreCase("SUCCESS")) {
             return TransactionStatus.COMPLETE;
         } else {
             return TransactionStatus.FAIL;

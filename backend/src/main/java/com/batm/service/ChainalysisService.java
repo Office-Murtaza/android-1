@@ -64,7 +64,7 @@ public class ChainalysisService {
                         tx.setN(numberDTO.getN());
                     }
 
-                    if (StringUtils.isNotEmpty(tx.getDetail()) && ((tx.getType() == 1 && tx.getN() != null) || tx.getType() == 0)) {
+                    if (StringUtils.isNotBlank(tx.getDetail()) && ((tx.getType() == 1 && tx.getN() != null) || tx.getType() == 0)) {
                         sendRequest(tx);
                     } else {
                         tx.setTracked(2);
@@ -109,7 +109,6 @@ public class ChainalysisService {
         } catch (Exception e) {
             tx.setTracked(3);
 
-            System.out.println(" ---- chainalysis error txId:" + tx.getId() + "\n" + "url:" + requestUrl + "\n" + "body:" + requestBody + "\n");
             e.printStackTrace();
         }
     }

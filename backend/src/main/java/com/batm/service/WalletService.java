@@ -1,11 +1,14 @@
 package com.batm.service;
 
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import wallet.core.jni.*;
 import javax.annotation.PostConstruct;
+import java.math.BigDecimal;
 
+@Slf4j
 @Getter
 @Service
 public class WalletService {
@@ -108,5 +111,40 @@ public class WalletService {
         }
 
         return null;
+    }
+
+    public String getCryptoAddress(CoinService.CoinEnum coin) {
+        CoinType coinType = coin.getCoinType();
+        Integer index = 0; //get count from DB
+
+        String path = getPath(coinType);
+        String newPath = generateNewPath(path, index + 1);
+        String address = generateNewAddress(coinType, newPath);
+        //persist newPath and address to DB
+
+        return address;
+    }
+
+    public BigDecimal getCryptoBalance(CoinService.CoinEnum coin) {
+        String walletAddress = coin.getWalletAddress();
+        BigDecimal balance = coin.getBalance(walletAddress);
+        //get top 1 hour node transactions
+        //balance - withdraw pending transaction amount
+
+        return balance;
+    }
+
+    public String sendCoins(String toAddress, BigDecimal amount, CoinService.CoinEnum coin, String description) {
+        try {
+
+        } catch (Exception e) {
+            //log.error();
+        }
+
+        return null;
+    }
+
+    public void transferToMainAddress(String fromAddress, BigDecimal amount, CoinService.CoinEnum coin) {
+
     }
 }

@@ -13,12 +13,10 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-
 import javax.annotation.PostConstruct;
 import java.net.URI;
 import java.util.Arrays;
 import java.util.Date;
-
 import com.twilio.rest.api.v2010.account.Message;
 import com.twilio.type.PhoneNumber;
 
@@ -116,7 +114,7 @@ public class MessageService {
 
             MessageCreator messageCreator = Message.creator(new PhoneNumber(dto.getPhone()), new PhoneNumber(fromNumber), body.toString());
 
-            if (StringUtils.isNotEmpty(dto.getImageId())) {
+            if (StringUtils.isNotBlank(dto.getImageId())) {
                 messageCreator.setMediaUrl(Arrays.asList(URI.create("https://media.giphy.com/media/" + dto.getImageId() + "/giphy.gif")));
             }
 
