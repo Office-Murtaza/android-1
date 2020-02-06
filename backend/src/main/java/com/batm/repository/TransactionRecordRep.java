@@ -18,7 +18,8 @@ public interface TransactionRecordRep extends JpaRepository<TransactionRecord, L
             @Param("coinCode") String coinCode);
 
     @Query("SELECT tr FROM TransactionRecord tr WHERE UPPER(tr.detail) = UPPER(:txId) AND UPPER(tr.cryptoCurrency) = UPPER(:coinCode)")
-    Optional<TransactionRecord> findOneByDetailAndCryptoCurrency(
+    Optional<TransactionRecord> findOneByIdentityAndDetailAndCryptoCurrency(
+            @Param("identity") Identity identity,
             @Param("txId") String txId,
             @Param("coinCode") String coinCode);
 

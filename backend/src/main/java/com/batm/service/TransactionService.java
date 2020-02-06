@@ -60,10 +60,13 @@ public class TransactionService {
         } else {                                                    /** consider as txId */
             String address = user.getCoinAddress(coin.name());
             dto = coin.getTransaction(txId, address);
-            txRecord = transactionRecordRep.findOneByDetailAndCryptoCurrency(txId, coin.name()).orElseGet(null);
+            txRecord = transactionRecordRep
+                    .findOneByIdentityAndDetailAndCryptoCurrency(user.getIdentity(), txId, coin.name())
+                    .orElseGet(null);
         }
 
-        TransactionRecordGift txGift = user.getIdentity().getTxGift(txId, coin.name());
+        TransactionRecordGift txGift = transactionRecordGiftRep
+                .findOneByIdentityAndTxIdAndCoinCode(user.getIdentity(),txId, coin.name()).orElseGet(null);
 
         if (txGift != null) {
             dto.setPhone(txGift.getPhone());
@@ -100,7 +103,7 @@ public class TransactionService {
     public TransactionListDTO getTransactionHistory(Long userId, CoinService.CoinEnum coinCode, Integer startIndex) {
         User user = userService.findById(userId);
         String address = user.getCoinAddress(coinCode.name());
-        List<TransactionRecordGift> gifts = user.getIdentity().getTxGiftList(coinCode.name());
+        List<TransactionRecordGift> gifts = transactionRecordGiftRep.findAllByIdentityAndCoinCode(user.getIdentity() ,coinCode.name());
         List<TransactionRecord> txs = transactionRecordRep.findAllByIdentityAndCryptoCurrency(user.getIdentity(), coinCode.name());
 
         return coinCode.getTransactionList(address, startIndex, Constant.TRANSACTION_LIMIT, gifts, txs);
