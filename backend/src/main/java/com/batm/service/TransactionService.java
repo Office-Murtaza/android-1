@@ -1,7 +1,9 @@
 package com.batm.service;
 
 import com.batm.dto.*;
-import com.batm.entity.*;
+import com.batm.entity.TransactionRecord;
+import com.batm.entity.TransactionRecordGift;
+import com.batm.entity.User;
 import com.batm.model.CashStatus;
 import com.batm.model.TransactionStatus;
 import com.batm.model.TransactionType;
@@ -18,6 +20,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
@@ -53,11 +56,11 @@ public class TransactionService {
         TransactionRecord txRecord;
 
         if (org.apache.commons.lang.StringUtils.isNumeric(txId)) {  /** consider as txDbId */
-            txRecord = user.getIdentity().getTxRecordByDbId(Long.valueOf(txId), coin.name());
-        } else {                            /** consider as txId */
+            txRecord = transactionRecordRep.findById(Long.valueOf(txId)).orElseGet(null);
+        } else {                                                    /** consider as txId */
             String address = user.getCoinAddress(coin.name());
             dto = coin.getTransaction(txId, address);
-            txRecord = user.getIdentity().getTxRecordByCryptoId(txId, coin.name());
+            txRecord = transactionRecordRep.findOneByDetailAndCryptoCurrency(txId, coin.name()).orElseGet(null);
         }
 
         TransactionRecordGift txGift = user.getIdentity().getTxGift(txId, coin.name());
@@ -98,7 +101,7 @@ public class TransactionService {
         User user = userService.findById(userId);
         String address = user.getCoinAddress(coinCode.name());
         List<TransactionRecordGift> gifts = user.getIdentity().getTxGiftList(coinCode.name());
-        List<TransactionRecord> txs = user.getIdentity().getTxRecordList(coinCode.name());
+        List<TransactionRecord> txs = transactionRecordRep.findAllByIdentityAndCryptoCurrency(user.getIdentity(), coinCode.name());
 
         return coinCode.getTransactionList(address, startIndex, Constant.TRANSACTION_LIMIT, gifts, txs);
     }
