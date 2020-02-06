@@ -56,17 +56,17 @@ public class TransactionService {
         TransactionRecord txRecord;
 
         if (org.apache.commons.lang.StringUtils.isNumeric(txId)) {  /** consider as txDbId */
-            txRecord = transactionRecordRep.findById(Long.valueOf(txId)).orElseGet(null);
+            txRecord = transactionRecordRep.findById(Long.valueOf(txId)).orElse(null);
         } else {                                                    /** consider as txId */
             String address = user.getCoinAddress(coin.name());
             dto = coin.getTransaction(txId, address);
             txRecord = transactionRecordRep
                     .findOneByIdentityAndDetailAndCryptoCurrency(user.getIdentity(), txId, coin.name())
-                    .orElseGet(null);
+                    .orElse(null);
         }
 
         TransactionRecordGift txGift = transactionRecordGiftRep
-                .findOneByIdentityAndTxIdAndCoinCode(user.getIdentity(),txId, coin.name()).orElseGet(null);
+                .findOneByIdentityAndTxIdAndCoinCode(user.getIdentity(),txId, coin.name()).orElse(null);
 
         if (txGift != null) {
             dto.setPhone(txGift.getPhone());
