@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.app.belcobtm">
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -11,13 +12,14 @@
 
     <application
         android:name=".App"
-        android:allowBackup="true"
+        android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        android:usesCleartextTraffic="true">
+        android:usesCleartextTraffic="true"
+        tools:replace="android:allowBackup">
         <activity
             android:name=".ui.auth.welcome.WelcomeActivity"
             android:label="@string/app_name"
@@ -74,10 +76,9 @@
         </activity>
         <activity
             android:name=".ui.auth.pin.PinActivity"
-            android:screenOrientation="portrait"
             android:launchMode="singleInstance"
-            android:theme="@style/AppThemeNoActionBar">
-        </activity>
+            android:screenOrientation="portrait"
+            android:theme="@style/AppThemeNoActionBar"></activity>
         <activity
             android:name=".ui.main.settings.UnlinkActivity"
             android:screenOrientation="portrait"
@@ -90,29 +91,30 @@
             android:name=".ui.main.settings.change_pass.ChangePassActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppThemeNoActionBar" />
-        <activity android:name=".ui.main.settings.phone.ShowPhoneActivity"
+        <activity
+            android:name=".ui.main.settings.phone.ShowPhoneActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppThemeNoActionBar"/>
+            android:theme="@style/AppThemeNoActionBar" />
 
         <activity
             android:name=".ui.main.coins.transactions.TransactionsActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppThemeNoActionBar"/>
+            android:theme="@style/AppThemeNoActionBar" />
 
         <activity
             android:name=".ui.main.coins.withdraw.WithdrawActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppThemeNoActionBar"/>
+            android:theme="@style/AppThemeNoActionBar" />
 
         <activity
             android:name=".ui.main.coins.send_gift.SendGiftActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppThemeNoActionBar">
-           <!-- <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+            <!-- <intent-filter>
+                 <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>-->
+                 <category android:name="android.intent.category.LAUNCHER" />
+             </intent-filter>-->
         </activity>
 
         <meta-data

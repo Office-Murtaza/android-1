@@ -78,7 +78,9 @@
                     tools:text="Deposit" />
             </TableRow>
 
-            <TableRow style="@style/CoinDetails.Table.Row">
+            <TableRow
+                android:id="@+id/statusContainerView"
+                style="@style/CoinDetails.Table.Row">
 
                 <androidx.appcompat.widget.AppCompatTextView
                     style="@style/CoinDetails.Table.Key"
@@ -140,6 +142,20 @@
                     android:id="@+id/amountView"
                     style="@style/CoinDetails.Table.Value"
                     tools:text="0.5 BTC" />
+            </TableRow>
+
+            <TableRow
+                android:id="@+id/fiatAmountContainerView"
+                style="@style/CoinDetails.Table.Row">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    style="@style/CoinDetails.Table.Key"
+                    android:text="@string/transition_details_screen_fiat_amount" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/fiatAmountView"
+                    style="@style/CoinDetails.Table.Value"
+                    tools:text="100 usd" />
             </TableRow>
 
             <TableRow
@@ -272,8 +288,8 @@
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/qrCodeView"
                 style="@style/CoinDetails.Table.Row"
-                android:layout_width="142dp"
-                android:layout_height="142dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 tools:src="@drawable/ic_gift_box" />
         </TableLayout>
