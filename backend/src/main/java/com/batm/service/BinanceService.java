@@ -7,6 +7,7 @@ import com.batm.entity.TransactionRecord;
 import com.batm.entity.TransactionRecordGift;
 import com.batm.model.TransactionStatus;
 import com.batm.util.Constant;
+import com.batm.util.TxUtil;
 import com.batm.util.Util;
 import com.binance.dex.api.client.BinanceDexApiRestClient;
 import com.binance.dex.api.client.domain.Account;
@@ -131,7 +132,7 @@ public class BinanceService {
             TransactionPage page = binanceDex.getTransactions(request);
             Map<String, TransactionDTO> map = collectNodeTxs(page, address);
 
-            return Util.buildTxs(map, startIndex, limit, gifts, txs);
+            return TxUtil.buildTxs(map, startIndex, limit, gifts, txs);
         } catch (Exception e) {
             e.printStackTrace();
         }

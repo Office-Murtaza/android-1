@@ -9,6 +9,7 @@ import com.batm.model.TransactionStatus;
 import com.batm.model.TransactionType;
 import com.batm.util.Base58;
 import com.batm.util.Constant;
+import com.batm.util.TxUtil;
 import com.batm.util.Util;
 import com.google.protobuf.ByteString;
 import net.sf.json.JSONArray;
@@ -21,8 +22,12 @@ import org.springframework.web.client.RestTemplate;
 import org.web3j.utils.Numeric;
 import wallet.core.jni.TronSigner;
 import wallet.core.jni.proto.Tron;
+
 import java.math.BigDecimal;
-import java.util.*;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Service
 public class TrongridService {
@@ -121,7 +126,7 @@ public class TrongridService {
             JSONArray array = res.optJSONArray("data");
             Map<String, TransactionDTO> map = collectNodeTxs(array, address);
 
-            return Util.buildTxs(map, startIndex, limit, gifts, txs);
+            return TxUtil.buildTxs(map, startIndex, limit, gifts, txs);
         } catch (Exception e) {
             e.printStackTrace();
         }

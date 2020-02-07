@@ -4,15 +4,13 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.apache.commons.lang3.StringUtils;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
+
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Getter
 @Setter
@@ -180,39 +178,4 @@ public class Identity extends BaseEntity {
 
     @OneToMany(mappedBy = "identity")
     private List<TransactionRecordGift> transactionRecordGifts;
-
-    @Transient
-    public TransactionRecord getTxRecordByCryptoId(String txId, String coinCode) {
-        Optional<TransactionRecord> first = transactionRecords.stream()
-                .filter(e -> txId.equalsIgnoreCase(e.getDetail()) && coinCode.equalsIgnoreCase(e.getCryptoCurrency()))
-                .findFirst();
-
-        return first.isPresent() ? first.get() : null;
-    }
-
-    @Transient
-    public TransactionRecord getTxRecordByDbId(Long txDbId, String coinCode) {
-        Optional<TransactionRecord> first = transactionRecords.stream()
-                .filter(e -> txDbId.equals(e.getId()) && coinCode.equalsIgnoreCase(e.getCryptoCurrency()))
-                .findFirst();
-
-        return first.isPresent() ? first.get() : null;
-    }
-
-    @Transient
-    public List<TransactionRecord> getTxRecordList(String coinCode) {
-        return transactionRecords.stream().filter(e -> coinCode.equalsIgnoreCase(e.getCryptoCurrency())).collect(Collectors.toList());
-    }
-
-    @Transient
-    public TransactionRecordGift getTxGift(String txId, String coinCode) {
-        Optional<TransactionRecordGift> first = transactionRecordGifts.stream().filter(e -> txId.equalsIgnoreCase(e.getTxId()) && coinCode.equalsIgnoreCase(e.getCoin().getCode())).findFirst();
-
-        return first.isPresent() ? first.get() : null;
-    }
-
-    @Transient
-    public List<TransactionRecordGift> getTxGiftList(String coinCode) {
-        return transactionRecordGifts.stream().filter(e -> coinCode.equalsIgnoreCase(e.getCoin().getCode())).collect(Collectors.toList());
-    }
 }
