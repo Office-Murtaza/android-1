@@ -154,8 +154,9 @@
     <string name="transition_details_screen_tx_dbld">TxDbld</string>
     <string name="transition_details_screen_type">Type</string>
     <string name="transition_details_screen_status">Status</string>
-    <string name="transition_details_screen_cash_status">Cash status</string>
-    <string name="transition_details_screen_amount">Amount</string>
+    <string name="transition_details_screen_cash_status">Cash Status</string>
+    <string name="transition_details_screen_amount">Crypto Amount</string>
+    <string name="transition_details_screen_fiat_amount">Fiat Amount</string>
     <string name="transition_details_screen_fee">Fee</string>
     <string name="transition_details_screen_date">Date</string>
     <string name="transition_details_screen_from_address">From Address</string>

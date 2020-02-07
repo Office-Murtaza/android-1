@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
+import android.graphics.Point
 import android.graphics.drawable.GradientDrawable
 import android.net.Uri
 import android.os.Bundle
@@ -67,9 +68,10 @@ class DetailsActivity : BaseMvpActivity<DetailsContract.View, DetailsContract.Pr
         showTxIdView(detailsResponse?.txId)
         showTxDbId(detailsResponse?.txDbId)
         showTypeView(detailsResponse?.type)
-        showStatusView(detailsResponse?.getSttusType())
+        showStatusView(detailsResponse?.getStatusType())
         showCashStatus(detailsResponse?.getCashStatusType())
         showAmountView(detailsResponse?.amount)
+        showFiatAmountView(detailsResponse?.fiatAmount)
         showFeeView(detailsResponse?.fee)
         showDateView(detailsResponse?.date)
         showFromAddressView(detailsResponse?.fromAddress)
@@ -88,13 +90,11 @@ class DetailsActivity : BaseMvpActivity<DetailsContract.View, DetailsContract.Pr
 
     fun trimTrailingZero(value: String?): String? {
         return if (!value.isNullOrEmpty()) {
-            if (value!!.indexOf(".") < 0) {
+            if (value.indexOf(".") < 0) {
                 value
-
             } else {
                 value.replace("0*$".toRegex(), "").replace("\\.$".toRegex(), "")
             }
-
         } else {
             value
         }
@@ -155,10 +155,7 @@ class DetailsActivity : BaseMvpActivity<DetailsContract.View, DetailsContract.Pr
             changeDrawableColor(statusView, R.color.transaction_red)
             statusView.setText(R.string.transition_details_screen_fail)
         }
-        else -> {
-            changeDrawableColor(statusView, R.color.bt_gray)
-            statusView.setText(R.string.transition_details_screen_unknown)
-        }
+        else -> statusContainerView.hide()
     }
 
     private fun showCashStatus(statusType: TransactionCashStatusType?) = when (statusType) {
@@ -186,6 +183,15 @@ class DetailsActivity : BaseMvpActivity<DetailsContract.View, DetailsContract.Pr
         amountContainerView.show()
         amountView.text = String.format(" %.8f", amount)
         amountView.text = """${trimTrailingZero(amountView.text.toString())?.replace(" ", "")} ${mCoin.coinId}"""
+    }
+
+    private fun showFiatAmountView(amount: Double?) = if (amount == null) {
+        fiatAmountContainerView.hide()
+    } else {
+        fiatAmountContainerView.show()
+        fiatAmountView.text = String.format(" %.8f", amount)
+        fiatAmountView.text =
+            """${trimTrailingZero(fiatAmountView.text.toString())?.replace(" ", "")} $TAG_USD"""
     }
 
     private fun showFeeView(fee: Double?) = if (fee == null) {
@@ -243,11 +249,10 @@ class DetailsActivity : BaseMvpActivity<DetailsContract.View, DetailsContract.Pr
     private fun showSellInfoView(sellInfo: String?) = if (sellInfo.isNullOrBlank()) {
         qrCodeView.hide()
     } else {
-        /*  val walletQrCode = BarcodeEncoder().encodeBitmap(it, BarcodeFormat.QR_CODE, 124, 124  )
-        qrCodeIv?.setImageBitmap(walletQrCode)
-        */
+        val point = Point().also { windowManager.defaultDisplay.getSize(it) }
+        val qrCodeSize = (if (point.x > point.y) point.y else point.x) / 2
+        qrCodeView?.setImageBitmap(getSpacelessQR(sellInfo, qrCodeSize, qrCodeSize))
         qrCodeView.show()
-        qrCodeView?.setImageBitmap(getSpacelessQR(sellInfo, 104, 104))
     }
 
     private fun showDividers() {
@@ -258,6 +263,7 @@ class DetailsActivity : BaseMvpActivity<DetailsContract.View, DetailsContract.Pr
     companion object {
         private const val KEY_TRANS = "KEY TRANS"
         private const val KEY_COIN = "KEY_COIN"
+        private const val TAG_USD = "USD"
 
         @JvmStatic
         fun start(context: Context?, trans: TransactionModel, coin: CoinModel) {
