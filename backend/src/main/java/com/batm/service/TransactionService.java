@@ -53,47 +53,50 @@ public class TransactionService {
         User user = userService.findById(userId);
 
         TransactionDTO dto = new TransactionDTO();
-        TransactionRecord txRecord;
+        Optional<TransactionRecord> txRecord;
 
         if (org.apache.commons.lang.StringUtils.isNumeric(txId)) {  /** consider as txDbId */
-            txRecord = transactionRecordRep.findById(Long.valueOf(txId)).orElse(null);
+            txRecord = transactionRecordRep.findById(Long.valueOf(txId));
         } else {                                                    /** consider as txId */
             String address = user.getCoinAddress(coin.name());
             dto = coin.getTransaction(txId, address);
             txRecord = transactionRecordRep
-                    .findOneByIdentityAndDetailAndCryptoCurrency(user.getIdentity(), txId, coin.name())
-                    .orElse(null);
+                    .findOneByIdentityAndDetailAndCryptoCurrency(user.getIdentity(), txId, coin.name());
         }
 
-        TransactionRecordGift txGift = transactionRecordGiftRep
-                .findOneByIdentityAndTxIdAndCoinCode(user.getIdentity(),txId, coin.name()).orElse(null);
+        Optional<TransactionRecordGift> txGift = transactionRecordGiftRep
+                .findOneByIdentityAndTxIdAndCoinCode(user.getIdentity(), txId, coin.name());
 
-        if (txGift != null) {
-            dto.setPhone(txGift.getPhone());
-            dto.setImageId(txGift.getImageId());
-            dto.setMessage(txGift.getMessage());
+        if (txGift.isPresent()) {
+            TransactionRecordGift txRecordGift = txGift.get();
+            dto.setPhone(txRecordGift.getPhone());
+            dto.setImageId(txRecordGift.getImageId());
+            dto.setMessage(txRecordGift.getMessage());
             dto.setType(TransactionType.getGiftType(dto.getType()));
-        } else if (txRecord != null) {
-
+        } else if (txRecord.isPresent()) {
+            TransactionRecord transactionRecord = txRecord.get();
             // to return either txId or txDbId, not both
-            if (org.apache.commons.lang.StringUtils.isBlank(dto.getTxId())) {
-                if (org.apache.commons.lang.StringUtils.isNotBlank(txRecord.getDetail())) {
-                    dto.setTxId(txRecord.getDetail());
+            if (StringUtils.isBlank(dto.getTxId())) {
+                if (StringUtils.isNotBlank(transactionRecord.getDetail())) {
+                    dto.setTxId(transactionRecord.getDetail());
                 } else {
-                    dto.setTxDbId(txRecord.getId().toString());
+                    dto.setTxDbId(transactionRecord.getId().toString());
                 }
             }
 
-            dto.setType(txRecord.getTransactionType());
-            dto.setStatus(txRecord.getTransactionStatus(dto.getType()));
-            dto.setCryptoAmount(txRecord.getCryptoAmount().stripTrailingZeros());
-            dto.setFiatAmount(txRecord.getCashAmount().setScale(0));
-            dto.setToAddress(txRecord.getCryptoAddress());
-            dto.setDate2(txRecord.getServerTime());
+            dto.setType(transactionRecord.getTransactionType());
+            dto.setStatus(transactionRecord.getTransactionStatus(dto.getType()));
+            dto.setCryptoAmount(transactionRecord.getCryptoAmount().stripTrailingZeros());
+            dto.setFiatAmount(transactionRecord.getCashAmount().setScale(0));
+            dto.setToAddress(transactionRecord.getCryptoAddress());
+            dto.setDate2(transactionRecord.getServerTime());
 
             if (dto.getType() == TransactionType.SELL) {
-                dto.setCashStatus(CashStatus.getCashStatus(txRecord.getCanBeCashedOut(), txRecord.getWithdrawn()));
-                dto.setSellInfo(coin.getName() + ":" + txRecord.getCryptoAddress() + "?amount=" + txRecord.getCryptoAmount() + "&label=" + txRecord.getRemoteTransactionId() + "&uuid=" + txRecord.getUuid());
+                dto.setCashStatus(CashStatus.getCashStatus(transactionRecord.getCanBeCashedOut(), transactionRecord.getWithdrawn()));
+                dto.setSellInfo(coin.getName() + ":" + transactionRecord.getCryptoAddress()
+                        + "?amount=" + transactionRecord.getCryptoAmount()
+                        + "&label=" + transactionRecord.getRemoteTransactionId()
+                        + "&uuid=" + transactionRecord.getUuid());
             }
         }
 
@@ -103,7 +106,7 @@ public class TransactionService {
     public TransactionListDTO getTransactionHistory(Long userId, CoinService.CoinEnum coinCode, Integer startIndex) {
         User user = userService.findById(userId);
         String address = user.getCoinAddress(coinCode.name());
-        List<TransactionRecordGift> gifts = transactionRecordGiftRep.findAllByIdentityAndCoinCode(user.getIdentity() ,coinCode.name());
+        List<TransactionRecordGift> gifts = transactionRecordGiftRep.findAllByIdentityAndCoinCode(user.getIdentity(), coinCode.name());
         List<TransactionRecord> txs = transactionRecordRep.findAllByIdentityAndCryptoCurrency(user.getIdentity(), coinCode.name());
 
         return coinCode.getTransactionList(address, startIndex, Constant.TRANSACTION_LIMIT, gifts, txs);
