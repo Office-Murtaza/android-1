@@ -25,9 +25,8 @@ public class Constant {
 
     public static final int TRANSACTION_LIMIT = 10;
 
-    public static final int GIFT_USER_EXIST = 0;
-    public static final int GIFT_USER_NOT_EXIST = 1;
-    public static final int GIFT_USER_TRANSACTION_CREATED = 2;
+    public static final int RECEIVER_NOT_EXIST = 0;
+    public static final int RECEIVER_EXIST = 1;
 
     public static final int STATE_REGISTERED = 1;
     public static final int TYPE_CELLPHONE = 4;

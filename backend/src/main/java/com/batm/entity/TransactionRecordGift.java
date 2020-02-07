@@ -24,7 +24,7 @@ public class TransactionRecordGift extends BaseEntity {
     private String phone;
     private String message;
     private String imageId;
-    private Integer step;
+    private Integer receiverStatus;
 
     @Column(name = "ref_tx_id")
     private String refTxId;

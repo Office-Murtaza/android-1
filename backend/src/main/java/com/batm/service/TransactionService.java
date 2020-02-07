@@ -118,7 +118,7 @@ public class TransactionService {
             gift.setPhone(dto.getPhone());
             gift.setMessage(dto.getMessage());
             gift.setImageId(dto.getImageId());
-            gift.setStep(receiver.isPresent() ? Constant.GIFT_USER_EXIST : Constant.GIFT_USER_NOT_EXIST);
+            gift.setReceiverStatus(receiver.isPresent() ? Constant.RECEIVER_EXIST : Constant.RECEIVER_NOT_EXIST);
             gift.setIdentity(user.getIdentity());
             gift.setCoin(user.getCoin(coinCode.name()));
             gift.setRefTxId(dto.getRefTxId());
@@ -133,7 +133,7 @@ public class TransactionService {
                 gift2.setPhone(gift.getPhone());
                 gift2.setMessage(gift.getMessage());
                 gift2.setImageId(gift.getImageId());
-                gift2.setStep(Constant.GIFT_USER_EXIST);
+                gift2.setReceiverStatus(Constant.RECEIVER_EXIST);
                 gift2.setIdentity(userService.findByPhone(gift.getPhone()).get().getIdentity());
                 gift2.setCoin(gift.getCoin());
                 gift2.setAmount(gift.getAmount());
@@ -274,13 +274,14 @@ public class TransactionService {
 
     private void processStoredGifts() {
         try {
-            List<TransactionRecordGift> list = transactionRecordGiftRep.findByTypeAndStatusAndStep(TransactionType.SEND_GIFT.getValue(), TransactionStatus.COMPLETE.getValue(), Constant.GIFT_USER_NOT_EXIST, PageRequest.of(0, 10));
+            List<TransactionRecordGift> list = transactionRecordGiftRep.findByTypeAndStatusAndReceiverStatus(TransactionType.SEND_GIFT.getValue(), TransactionStatus.COMPLETE.getValue(), Constant.RECEIVER_NOT_EXIST, PageRequest.of(0, 10));
             List<TransactionRecordGift> confirmedList = new ArrayList<>();
 
             list.stream().forEach(t -> {
                 try {
                     if (userService.findByPhone(t.getPhone()).isPresent()) {
                         CoinService.CoinEnum coinCode = CoinService.CoinEnum.valueOf(t.getCoin().getCode());
+
                         SignDTO signDTO = coinCode.buildSignDTOFromMainWallet();
                         String hex = coinCode.sign(t.getIdentity().getUser().getCoinAddress(t.getCoin().getCode()), t.getAmount(), signDTO);
 
@@ -295,7 +296,7 @@ public class TransactionService {
                         String txId = coinCode.submitTransaction(t.getIdentity().getUser().getId(), dto);
 
                         if (StringUtils.isNotBlank(txId)) {
-                            t.setStep(Constant.GIFT_USER_TRANSACTION_CREATED);
+                            t.setReceiverStatus(Constant.RECEIVER_EXIST);
 
                             confirmedList.add(t);
                         }

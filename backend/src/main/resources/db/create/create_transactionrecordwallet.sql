@@ -1,19 +1,16 @@
-CREATE TABLE IF NOT EXISTS w_transactionrecordgift (
+CREATE TABLE IF NOT EXISTS w_transactionrecordwallet (
   id BIGINT(20) NOT NULL AUTO_INCREMENT,
   coin_id BIGINT(20) NOT NULL,
   type INT(2) NOT NULL,
   status INT(2) NOT NULL,
   amount DECIMAL(20, 10) NOT NULL,
-  receiver_status INT(2) NOT NULL,
-  identity_id BIGINT(20) NOT NULL,
-  phone VARCHAR(50) DEFAULT NULL,
-  image_id VARCHAR(255) DEFAULT NULL,
-  message VARCHAR(100) DEFAULT NULL,
   tx_id VARCHAR(255) NOT NULL,
-  ref_tx_id VARCHAR(255) DEFAULT NULL,
+  transactionrecordgift_id BIGINT(20) DEFAULT NULL,
+  coinpath_id BIGINT(20) DEFAULT NULL,
   create_date DATETIME DEFAULT CURRENT_TIMESTAMP,
   update_date DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (id),
   FOREIGN KEY (coin_id) REFERENCES w_coin(id),
-  FOREIGN KEY (identity_id) REFERENCES identity(id)
+  FOREIGN KEY (transactionrecordgift_id) REFERENCES transactionrecordgift(id),
+  FOREIGN KEY (coinpath_id) REFERENCES coinpath(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
