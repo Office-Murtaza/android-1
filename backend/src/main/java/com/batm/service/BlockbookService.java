@@ -18,7 +18,6 @@ import wallet.core.jni.*;
 import wallet.core.jni.proto.Bitcoin;
 import wallet.core.jni.proto.Common;
 import wallet.core.jni.proto.Ethereum;
-
 import java.math.BigDecimal;
 import java.util.*;
 
@@ -151,11 +150,22 @@ public class BlockbookService {
         return dto;
     }
 
-    public TransactionListDTO getTransactionList(String url, String address, BigDecimal divider, Integer startIndex, Integer limit, List<TransactionRecordGift> gifts, List<TransactionRecord> txs) {
+    public BlockchainTransactionsDTO getBlockchainTransactions(String url, String address, BigDecimal divider) {
         try {
             JSONObject res = rest.getForObject(url + "/api/v2/address/" + address + "?details=txs&pageSize=1000&page=1", JSONObject.class);
             JSONArray array = res.optJSONArray("transactions");
-            Map<String, TransactionDTO> map = collectNodeTxs(array, address, divider);
+
+            return new BlockchainTransactionsDTO(collectNodeTxs(array, address, divider));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return new BlockchainTransactionsDTO();
+    }
+
+    public TransactionListDTO getTransactionList(String url, String address, BigDecimal divider, Integer startIndex, Integer limit, List<TransactionRecordGift> gifts, List<TransactionRecord> txs) {
+        try {
+            Map<String, TransactionDTO> map = getBlockchainTransactions(url, address, divider).getMap();
 
             return Util.buildTxs(map, startIndex, limit, gifts, txs);
         } catch (Exception e) {
@@ -165,11 +175,14 @@ public class BlockbookService {
         return new TransactionListDTO();
     }
 
-    public String signETH(String toAddress, BigDecimal amount, Integer nonce) {
+    public String signETH(String ethNodeUrl, String toAddress, BigDecimal amount, PrivateKey privateKey) {
         try {
+            String fromAddress = new EthereumAddress(privateKey.getPublicKeySecp256k1(false)).description();
+            Integer nonce = getNonce(ethNodeUrl, fromAddress).getNonce();
+
             Ethereum.SigningInput.Builder builder = Ethereum.SigningInput.newBuilder();
 
-            builder.setPrivateKey(ByteString.copyFrom(Numeric.hexStringToByteArray(Numeric.toHexStringNoPrefix(walletService.getPrivateKeyETH().data()))));
+            builder.setPrivateKey(ByteString.copyFrom(Numeric.hexStringToByteArray(Numeric.toHexStringNoPrefix(privateKey.data()))));
             builder.setToAddress(toAddress);
             builder.setChainId(ByteString.copyFrom(Numeric.hexStringToByteArray("1")));
             builder.setNonce(ByteString.copyFrom(Numeric.hexStringToByteArray(Integer.toHexString(nonce))));
@@ -187,28 +200,8 @@ public class BlockbookService {
         return null;
     }
 
-    public String signBTC(String toAddress, BigDecimal amount, BigDecimal fee, List<JSONObject> utxos) {
-        return signBTCForks(CoinType.BITCOIN, walletService.getAddressBTC(), toAddress, amount, fee, Constant.BTC_DIVIDER, utxos);
-    }
-
-    public String signBCH(String toAddress, BigDecimal amount, BigDecimal fee, List<JSONObject> utxos) {
-        return signBTCForks(CoinType.BITCOINCASH, walletService.getAddressBCH(), toAddress, amount, fee, Constant.BCH_DIVIDER, utxos);
-    }
-
-    public String signLTC(String toAddress, BigDecimal amount, BigDecimal fee, List<JSONObject> utxos) {
-        return signBTCForks(CoinType.LITECOIN, walletService.getAddressLTC(), toAddress, amount, fee, Constant.LTC_DIVIDER, utxos);
-    }
-
-    private String signBTCForks(CoinType coinType, String fromAddress, String toAddress, BigDecimal amount, BigDecimal fee, BigDecimal divider, List<JSONObject> utxos) {
+    public String signBTCForks(CoinType coinType, String fromAddress, String toAddress, BigDecimal amount, BigDecimal fee, BigDecimal divider, List<JSONObject> utxos) {
         try {
-//            System.out.println(" --- coinType:" + coinType);
-//            System.out.println(" --- fromAddress:" + fromAddress);
-//            System.out.println(" --- toAddress:" + toAddress);
-//            System.out.println(" --- amount:" + amount);
-//            System.out.println(" --- fee:" + fee);
-//            System.out.println(" --- divider:" + divider);
-//            System.out.println("utxos:" + utxos);
-
             Bitcoin.SigningInput.Builder signerBuilder = Bitcoin.SigningInput.newBuilder();
             signerBuilder.setCoinType(coinType.value());
             signerBuilder.setAmount(amount.multiply(divider).longValue());
@@ -217,18 +210,12 @@ public class BlockbookService {
             signerBuilder.setChangeAddress(fromAddress);
             signerBuilder.setToAddress(toAddress);
 
-            System.out.println("-- fee:" + signerBuilder.getByteFee());
-
             utxos.forEach(e -> {
-                System.out.println("++ path:" + e.optString("path"));
-
                 PrivateKey privateKey = walletService.getWallet().getKey(e.optString("path"));
                 signerBuilder.addPrivateKey(ByteString.copyFrom(privateKey.data()));
             });
 
             utxos.forEach(e -> {
-                System.out.println("== address:" + e.optString("address"));
-
                 BitcoinScript redeemScript = BitcoinScript.buildForAddress(e.optString("address"), coinType);
                 byte[] keyHash = redeemScript.isPayToWitnessScriptHash() ? redeemScript.matchPayToWitnessPublicKeyHash() : redeemScript.matchPayToPubkeyHash();
 
@@ -241,11 +228,6 @@ public class BlockbookService {
 
             for (int index = 0; index < utxos.size(); index++) {
                 JSONObject utxo = utxos.get(index);
-
-                System.out.println("// txid:" + utxo.optString("txid"));
-                System.out.println("// vout:" + utxo.optInt("vout"));
-                System.out.println("// address:" + utxo.optString("address"));
-                System.out.println("// value:" + utxo.optString("value"));
 
                 byte[] hash = Numeric.hexStringToByteArray(utxo.optString("txid"));
                 Collections.reverse(Arrays.asList(hash));

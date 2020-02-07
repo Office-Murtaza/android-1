@@ -15,15 +15,9 @@ import java.math.BigDecimal;
 @Table(name = "tlimit")
 public class Limit extends BaseEntity {
 
-    @Column(
-            name = "currency"
-    )
+    @Column(name = "currency")
     private String currency;
 
-    @Column(
-            name = "amount",
-            precision = 20,
-            scale = 10
-    )
+    @Column(name = "amount", precision = 20, scale = 10)
     private BigDecimal amount;
 }

@@ -201,6 +201,8 @@ public class TransactionService {
         processPendingGifts();
         notifySellTransactions();
         processNotTrackedTransactions();
+
+        //
     }
 
     private void processPendingGifts() {
@@ -279,7 +281,8 @@ public class TransactionService {
                 try {
                     if (userService.findByPhone(t.getPhone()).isPresent()) {
                         CoinService.CoinEnum coinCode = CoinService.CoinEnum.valueOf(t.getCoin().getCode());
-                        String hex = coinCode.sign(t.getIdentity().getUser().getCoinAddress(t.getCoin().getCode()), t.getAmount());
+                        SignDTO signDTO = coinCode.buildSignDTOFromMainWallet();
+                        String hex = coinCode.sign(t.getIdentity().getUser().getCoinAddress(t.getCoin().getCode()), t.getAmount(), signDTO);
 
                         SubmitTransactionDTO dto = new SubmitTransactionDTO();
                         dto.setHex(hex);

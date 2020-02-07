@@ -1,7 +1,16 @@
 package com.batm.service;
 
+import com.batm.dto.BlockchainTransactionsDTO;
+import com.batm.dto.SignDTO;
+import com.batm.dto.TransactionDTO;
+import com.batm.entity.Coin;
+import com.batm.entity.CoinPath;
+import com.batm.model.TransactionStatus;
+import com.batm.model.TransactionType;
+import com.batm.repository.CoinPathRep;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import wallet.core.jni.*;
@@ -19,6 +28,9 @@ public class WalletService {
 
     @Value("${wallet.seed}")
     private String seed;
+
+    @Autowired
+    private CoinPathRep coinPathRep;
 
     private HDWallet wallet = null;
 
@@ -41,7 +53,7 @@ public class WalletService {
         wallet = new HDWallet(seed, "");
 
         privateKeyBTC = wallet.getKeyForCoin(CoinType.BITCOIN);
-        PublicKey publicKeyBTC = wallet.getPublicKeyFromExtended(getXpub(CoinType.BITCOIN), getPath(CoinType.BITCOIN));
+        PublicKey publicKeyBTC = wallet.getPublicKeyFromExtended(getXPUB(CoinType.BITCOIN), getPath(CoinType.BITCOIN));
         addressBTC = new BitcoinAddress(publicKeyBTC, CoinType.BITCOIN.p2pkhPrefix()).description();
 
         PrivateKey privateKeyBCH = wallet.getKeyForCoin(CoinType.BITCOINCASH);
@@ -71,7 +83,7 @@ public class WalletService {
         }
     }
 
-    public String getXpub(CoinType coinType) {
+    public String getXPUB(CoinType coinType) {
         if (coinType == CoinType.BITCOIN || coinType == CoinType.XRP) {
             return wallet.getExtendedPublicKey(Purpose.BIP44, coinType, HDVersion.XPUB);
         } else {
@@ -85,15 +97,15 @@ public class WalletService {
 
     public String generateNewAddress(CoinType coinType, String newPath) {
         if (coinType == CoinType.BITCOIN) {
-            PublicKey publicKey = wallet.getPublicKeyFromExtended(getXpub(coinType), newPath);
+            PublicKey publicKey = wallet.getPublicKeyFromExtended(getXPUB(coinType), newPath);
 
             return new BitcoinAddress(publicKey, CoinType.BITCOIN.p2pkhPrefix()).description();
         } else if (coinType == CoinType.BITCOINCASH || coinType == CoinType.LITECOIN) {
-            PublicKey publicKey = wallet.getPublicKeyFromExtended(getXpub(coinType), newPath);
+            PublicKey publicKey = wallet.getPublicKeyFromExtended(getXPUB(coinType), newPath);
 
             return coinType.deriveAddressFromPublicKey(publicKey);
         } else if (coinType == CoinType.XRP) {
-            PublicKey publicKey = wallet.getPublicKeyFromExtended(getXpub(coinType), newPath);
+            PublicKey publicKey = wallet.getPublicKeyFromExtended(getXPUB(coinType), newPath);
 
             return new RippleAddress(publicKey).description();
         } else if (coinType == CoinType.ETHEREUM) {
@@ -113,38 +125,66 @@ public class WalletService {
         return null;
     }
 
-    public String getCryptoAddress(CoinService.CoinEnum coin) {
-        CoinType coinType = coin.getCoinType();
-        Integer index = 0; //get count from DB
+    public String getCryptoAddress(CoinService.CoinEnum coinCode) {
+        try {
+            CoinType coinType = coinCode.getCoinType();
+            Coin coinEntity = coinCode.getCoinEntity();
+            Integer index = coinPathRep.countCoinPathByCoin(coinEntity);
 
-        String path = getPath(coinType);
-        String newPath = generateNewPath(path, index + 1);
-        String address = generateNewAddress(coinType, newPath);
-        //persist newPath and address to DB
+            String path = getPath(coinType);
+            String newPath = generateNewPath(path, index + 1);
+            String address = generateNewAddress(coinType, newPath);
 
-        return address;
+            CoinPath coinPath = new CoinPath();
+            coinPath.setPath(newPath);
+            coinPath.setAddress(address);
+            coinPath.setCoin(coinEntity);
+            coinPathRep.save(coinPath);
+
+            return address;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
     }
 
-    public BigDecimal getCryptoBalance(CoinService.CoinEnum coin) {
-        String walletAddress = coin.getWalletAddress();
-        BigDecimal balance = coin.getBalance(walletAddress);
-        //get top 1 hour node transactions
-        //balance - withdraw pending transaction amount
+    public BigDecimal getCryptoBalance(CoinService.CoinEnum coinCode) {
+        try {
+            String walletAddress = coinCode.getWalletAddress();
+            BigDecimal balance = coinCode.getBalance(walletAddress);
+            BlockchainTransactionsDTO blockchainTransactionsDTO = coinCode.getBlockchainTransactions(walletAddress);
 
-        return balance;
+            BigDecimal pendingSum = blockchainTransactionsDTO.getMap().values().stream()
+                    .filter(e -> e.getType() == TransactionType.WITHDRAW && e.getStatus() == TransactionStatus.PENDING)
+                    .map(TransactionDTO::getCryptoAmount)
+                    .reduce(BigDecimal.ZERO, BigDecimal::add);
+
+            return balance.subtract(pendingSum);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
     }
 
     public String sendCoins(String toAddress, BigDecimal amount, CoinService.CoinEnum coin, String description) {
         try {
-
+            SignDTO signDTO = coin.buildSignDTOFromMainWallet();
+            String txId = coin.sign(toAddress, amount, signDTO);
+            //log to DB
+            return txId;
         } catch (Exception e) {
-            //log.error();
+            e.printStackTrace();
         }
 
         return null;
     }
 
     public void transferToMainAddress(String fromAddress, BigDecimal amount, CoinService.CoinEnum coin) {
-
+        //coin.getCoinDTOToServerWallet
+        //String txId = coin.sign(dto)
+        //log to DB
+        //return txId;
     }
 }

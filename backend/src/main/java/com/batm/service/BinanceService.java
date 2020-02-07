@@ -1,5 +1,6 @@
 package com.batm.service;
 
+import com.batm.dto.BlockchainTransactionsDTO;
 import com.batm.dto.CurrentAccountDTO;
 import com.batm.dto.TransactionDTO;
 import com.batm.dto.TransactionListDTO;
@@ -26,6 +27,7 @@ import org.web3j.utils.Numeric;
 import wallet.core.jni.BinanceSigner;
 import wallet.core.jni.CosmosAddress;
 import wallet.core.jni.HRP;
+import wallet.core.jni.PrivateKey;
 import wallet.core.jni.proto.Binance;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
@@ -42,8 +44,8 @@ public class BinanceService {
     @Autowired
     private RestTemplate rest;
 
-    @Autowired
-    private WalletService walletService;
+//    @Autowired
+//    private WalletService walletService;
 
     @Value("${bnb.node.url}")
     private String nodeUrl;
@@ -116,9 +118,7 @@ public class BinanceService {
         return dto;
     }
 
-    public TransactionListDTO getTransactionList(String address, Integer startIndex, Integer limit, List<TransactionRecordGift> gifts, List<TransactionRecord> txs) {
-        TransactionListDTO result = new TransactionListDTO();
-
+    public BlockchainTransactionsDTO getBlockchainTransactions(String address) {
         try {
             TransactionsRequest request = new TransactionsRequest();
             request.setStartTime(new SimpleDateFormat("yyyy").parse("2010").getTime());
@@ -129,14 +129,25 @@ public class BinanceService {
             request.setLimit(1000);
 
             TransactionPage page = binanceDex.getTransactions(request);
-            Map<String, TransactionDTO> map = collectNodeTxs(page, address);
+
+            return new BlockchainTransactionsDTO(collectNodeTxs(page, address));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return new BlockchainTransactionsDTO();
+    }
+
+    public TransactionListDTO getTransactionList(String address, Integer startIndex, Integer limit, List<TransactionRecordGift> gifts, List<TransactionRecord> txs) {
+        try {
+            Map<String, TransactionDTO> map = getBlockchainTransactions(address).getMap();
 
             return Util.buildTxs(map, startIndex, limit, gifts, txs);
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        return result;
+        return new TransactionListDTO();
     }
 
     public CurrentAccountDTO getCurrentAccount(String address) {
@@ -151,20 +162,23 @@ public class BinanceService {
         return new CurrentAccountDTO();
     }
 
-    public String sign(String toAddress, BigDecimal amount, Integer accountNumber, Integer sequence, String chainId) {
+    public String sign(String toAddress, BigDecimal amount, PrivateKey privateKey) {
         try {
+            CosmosAddress fromAddress = new CosmosAddress(HRP.BINANCE, privateKey.getPublicKeySecp256k1(true));
+            CurrentAccountDTO currentDTO = getCurrentAccount(fromAddress.description());
+
             Binance.SigningInput.Builder builder = Binance.SigningInput.newBuilder();
-            builder.setChainId(chainId);
-            builder.setAccountNumber(accountNumber);
-            builder.setSequence(sequence);
-            builder.setPrivateKey(ByteString.copyFrom(walletService.getPrivateKeyBNB().data()));
+            builder.setChainId(currentDTO.getChainId());
+            builder.setAccountNumber(currentDTO.getAccountNumber());
+            builder.setSequence(currentDTO.getSequence());
+            builder.setPrivateKey(ByteString.copyFrom(privateKey.data()));
 
             Binance.SendOrder.Token.Builder token = Binance.SendOrder.Token.newBuilder();
             token.setDenom("BNB");
             token.setAmount(amount.multiply(Constant.BNB_DIVIDER).longValue());
 
             Binance.SendOrder.Input.Builder input = Binance.SendOrder.Input.newBuilder();
-            input.setAddress(ByteString.copyFrom(new CosmosAddress(HRP.BINANCE, walletService.getPrivateKeyBNB().getPublicKeySecp256k1(true)).keyHash()));
+            input.setAddress(ByteString.copyFrom(fromAddress.keyHash()));
             input.addAllCoins(Arrays.asList(token.build()));
 
             Binance.SendOrder.Output.Builder output = Binance.SendOrder.Output.newBuilder();

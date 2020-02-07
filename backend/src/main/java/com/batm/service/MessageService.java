@@ -104,12 +104,13 @@ public class MessageService {
         return null;
     }
 
-    public Message.Status sendGiftMessage(CoinService.CoinEnum coinId, SubmitTransactionDTO dto, Boolean userExists) {
+    public Message.Status sendGiftMessage(CoinService.CoinEnum coinId, SubmitTransactionDTO dto, Boolean receiverExists) {
         try {
             StringBuilder body = new StringBuilder("You receive " + dto.getCryptoAmount() + " " + coinId.name()).append("\n").append(dto.getMessage());
 
-            if (!userExists) {
+            if (!receiverExists) {
                 body.append("\n").append("In order to receive it install Belco Wallet app and create an account using your current phone number");
+                // add app store or google play link
             }
 
             MessageCreator messageCreator = Message.creator(new PhoneNumber(dto.getPhone()), new PhoneNumber(fromNumber), body.toString());
