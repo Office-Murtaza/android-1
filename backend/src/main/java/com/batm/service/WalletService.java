@@ -5,9 +5,11 @@ import com.batm.dto.SignDTO;
 import com.batm.dto.TransactionDTO;
 import com.batm.entity.Coin;
 import com.batm.entity.CoinPath;
+import com.batm.entity.TransactionRecordWallet;
 import com.batm.model.TransactionStatus;
 import com.batm.model.TransactionType;
 import com.batm.repository.CoinPathRep;
+import com.batm.repository.TransactionRecordWalletRep;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +33,9 @@ public class WalletService {
 
     @Autowired
     private CoinPathRep coinPathRep;
+
+    @Autowired
+    private TransactionRecordWalletRep transactionRecordWalletRep;
 
     private HDWallet wallet = null;
 
@@ -168,11 +173,20 @@ public class WalletService {
         return null;
     }
 
-    public String sendCoins(String toAddress, BigDecimal amount, CoinService.CoinEnum coin, String description) {
+    public String sendCoins(String toAddress, BigDecimal amount, CoinService.CoinEnum coinCode) {
         try {
-            SignDTO signDTO = coin.buildSignDTOFromMainWallet();
-            String txId = coin.sign(toAddress, amount, signDTO);
-            //log to DB
+            SignDTO signDTO = coinCode.buildSignDTOFromMainWallet();
+            String txId = coinCode.sign(toAddress, amount, signDTO);
+
+            TransactionRecordWallet wallet = new TransactionRecordWallet();
+            wallet.setCoin(coinCode.getCoinEntity());
+            wallet.setAmount(amount);
+            wallet.setType(TransactionType.SELL.getValue());
+            wallet.setTxId(txId);
+            wallet.setStatus(coinCode.getTransactionStatus(txId).getValue());
+
+            transactionRecordWalletRep.save(wallet);
+
             return txId;
         } catch (Exception e) {
             e.printStackTrace();
@@ -181,10 +195,10 @@ public class WalletService {
         return null;
     }
 
-    public void transferToMainAddress(String fromAddress, BigDecimal amount, CoinService.CoinEnum coin) {
-        //coin.getCoinDTOToServerWallet
-        //String txId = coin.sign(dto)
-        //log to DB
-        //return txId;
-    }
+//    public void transferToMainAddress(String fromAddress, BigDecimal amount, CoinService.CoinEnum coin) {
+//        coin.getCoinDTOToServerWallet
+//        String txId = coin.sign(dto)
+//        log to DB
+//        return txId;
+//    }
 }

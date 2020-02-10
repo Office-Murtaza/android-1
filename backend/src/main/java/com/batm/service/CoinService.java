@@ -9,7 +9,6 @@ import com.batm.util.Constant;
 import com.batm.util.Util;
 import com.binance.api.client.BinanceApiRestClient;
 import net.sf.json.JSONObject;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -167,7 +166,7 @@ public class CoinService {
                 try {
                     String txId = blockbook.submitTransaction(btcNodeUrl, transaction.getHex());
 
-                    if (StringUtils.isNotBlank(txId) && TransactionType.SEND_GIFT.getValue() == transaction.getType()) {
+                    if (TransactionType.SEND_GIFT.getValue() == transaction.getType()) {
                         transactionService.saveGift(userId, this, txId, transaction);
                     }
 
@@ -281,7 +280,7 @@ public class CoinService {
                 try {
                     String txId = blockbook.submitTransaction(ethNodeUrl, transaction.getHex());
 
-                    if (StringUtils.isNotBlank(txId) && TransactionType.SEND_GIFT.getValue() == transaction.getType()) {
+                    if (TransactionType.SEND_GIFT.getValue() == transaction.getType()) {
                         transactionService.saveGift(userId, this, txId, transaction);
                     }
 
@@ -390,7 +389,7 @@ public class CoinService {
                 try {
                     String txId = blockbook.submitTransaction(bchNodeUrl, transaction.getHex());
 
-                    if (StringUtils.isNotBlank(txId) && TransactionType.SEND_GIFT.getValue() == transaction.getType()) {
+                    if (TransactionType.SEND_GIFT.getValue() == transaction.getType()) {
                         transactionService.saveGift(userId, this, txId, transaction);
                     }
 
@@ -499,7 +498,7 @@ public class CoinService {
                 try {
                     String txId = blockbook.submitTransaction(ltcNodeUrl, transaction.getHex());
 
-                    if (StringUtils.isNotBlank(txId) && TransactionType.SEND_GIFT.getValue() == transaction.getType()) {
+                    if (TransactionType.SEND_GIFT.getValue() == transaction.getType()) {
                         transactionService.saveGift(userId, this, txId, transaction);
                     }
 
@@ -610,7 +609,7 @@ public class CoinService {
                 try {
                     String txId = binance.submitTransaction(transaction.getHex());
 
-                    if (StringUtils.isNotBlank(txId) && TransactionType.SEND_GIFT.getValue() == transaction.getType()) {
+                    if (TransactionType.SEND_GIFT.getValue() == transaction.getType()) {
                         transactionService.saveGift(userId, this, txId, transaction);
                     }
 
@@ -721,7 +720,7 @@ public class CoinService {
                 try {
                     String txId = rippled.submitTransaction(transaction.getHex());
 
-                    if (StringUtils.isNotBlank(txId) && TransactionType.SEND_GIFT.getValue() == transaction.getType()) {
+                    if (TransactionType.SEND_GIFT.getValue() == transaction.getType()) {
                         transactionService.saveGift(userId, this, txId, transaction);
                     }
 
@@ -832,7 +831,7 @@ public class CoinService {
                 try {
                     String txId = trongrid.submitTransaction(JSONObject.fromObject(transaction.getHex()));
 
-                    if (StringUtils.isNotBlank(txId) && TransactionType.SEND_GIFT.getValue() == transaction.getType()) {
+                    if (TransactionType.SEND_GIFT.getValue() == transaction.getType()) {
                         transactionService.saveGift(userId, this, txId, transaction);
                     }
 

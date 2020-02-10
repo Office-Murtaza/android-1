@@ -42,10 +42,10 @@ public class WalletController {
     }
 
     @GetMapping("/send")
-    public Response sendCoins(@RequestParam String destinationAddress, @RequestParam BigDecimal amount, @RequestParam CoinService.CoinEnum cryptoCurrency, @RequestParam String description) {
+    public Response sendCoins(@RequestParam String destinationAddress, @RequestParam BigDecimal amount, @RequestParam CoinService.CoinEnum cryptoCurrency) {
         try {
             WalletDTO dto = new WalletDTO();
-            dto.setTxId(walletService.sendCoins(destinationAddress, amount, cryptoCurrency, description));
+            dto.setTxId(walletService.sendCoins(destinationAddress, amount, cryptoCurrency));
 
             return Response.ok(dto);
         } catch (Exception e) {

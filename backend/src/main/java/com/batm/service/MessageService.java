@@ -7,7 +7,6 @@ import com.batm.repository.CodeVerifyRep;
 import com.batm.util.Constant;
 import com.twilio.Twilio;
 import com.twilio.rest.api.v2010.account.MessageCreator;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +19,6 @@ import java.util.Date;
 import com.twilio.rest.api.v2010.account.Message;
 import com.twilio.type.PhoneNumber;
 
-@Slf4j
 @Service
 public class MessageService {
 
@@ -65,9 +63,7 @@ public class MessageService {
 
             if (twilioEnabled) {
                 code = RandomStringUtils.randomNumeric(4);
-                status = sendMessage(user.getPhone(), "Belco Wallet Code: " + code);
-
-                log.info("verification code user:{} code:{}", user.getId(), code);
+                status = sendMessage(user.getPhone(), "Verification Code: " + code);
             }
 
             CodeVerify codeVerify = codeVerifyRep.findByUserId(user.getId());
@@ -104,13 +100,16 @@ public class MessageService {
         return null;
     }
 
-    public Message.Status sendGiftMessage(CoinService.CoinEnum coinId, SubmitTransactionDTO dto, Boolean receiverExists) {
+    public Message.Status sendGiftMessage(CoinService.CoinEnum coinCode, SubmitTransactionDTO dto, Boolean receiverExists) {
         try {
-            StringBuilder body = new StringBuilder("You receive " + dto.getCryptoAmount() + " " + coinId.name()).append("\n").append(dto.getMessage());
+            StringBuilder body = new StringBuilder("You receive " + dto.getCryptoAmount() + " " + coinCode.name()).append("\n").append(dto.getMessage());
 
             if (!receiverExists) {
-                body.append("\n").append("In order to receive it install Belco Wallet app and create an account using your current phone number");
-                // add app store or google play link
+                body.append("\n").append("Please install Belco Wallet and create an account using " + dto.getPhone() + " phone number");
+                body.append("\n").append("IOS");
+                body.append("\n").append(Constant.APP_LINK_IOS);
+                body.append("\n").append("Android");
+                body.append("\n").append(Constant.APP_LINK_ANDROID);
             }
 
             MessageCreator messageCreator = Message.creator(new PhoneNumber(dto.getPhone()), new PhoneNumber(fromNumber), body.toString());

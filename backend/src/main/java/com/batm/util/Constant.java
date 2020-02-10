@@ -40,4 +40,7 @@ public class Constant {
     public static final long GAS_LIMIT = 50_000;
 
     public static final String BNB_CHAIN_ID = "Binance-Chain-Tigris";
+
+    public static final String APP_LINK_IOS = "itms-apps://itunes.apple.com/app/apple-store/id1475407885";
+    public static final String APP_LINK_ANDROID = "https://apps.apple.com/app/belco-wallet/id1475407885";
 }
