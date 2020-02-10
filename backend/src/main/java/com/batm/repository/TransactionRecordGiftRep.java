@@ -27,5 +27,5 @@ public interface TransactionRecordGiftRep extends JpaRepository<TransactionRecor
 
     List<TransactionRecordGift> findByStatus(Integer status, Pageable page);
 
-    List<TransactionRecordGift> findByTypeAndStatusAndStep(Integer type, Integer status, Integer step, Pageable page);
+    List<TransactionRecordGift> findByTypeAndStatusAndReceiverStatus(Integer type, Integer status, Integer receiverStatus, Pageable page);
 }

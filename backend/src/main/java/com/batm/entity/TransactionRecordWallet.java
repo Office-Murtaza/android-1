@@ -12,28 +12,25 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "w_transactionrecordgift")
-public class TransactionRecordGift extends BaseEntity {
+@Table(name = "w_transactionrecordwallet")
+public class TransactionRecordWallet extends BaseEntity {
 
     private Integer type;
     private Integer status;
     private BigDecimal amount;
-    private Integer receiverStatus;
-    private String phone;
-    private String imageId;
-    private String message;
-
-    @Column(name = "tx_id")
-    private String txId;
-
-    @Column(name = "ref_tx_id")
-    private String refTxId;
 
     @ManyToOne
     @JoinColumn(name = "coin_id")
     private Coin coin;
 
-    @ManyToOne
-    @JoinColumn(name = "identity_id")
-    private Identity identity;
+    @Column(name = "tx_id")
+    private String txId;
+
+    @OneToOne
+    @JoinColumn(name = "coinpath_id")
+    private CoinPath coinPath;
+
+    @OneToOne
+    @JoinColumn(name = "transactionrecordgift_id")
+    private TransactionRecordGift transactionRecordGift;
 }

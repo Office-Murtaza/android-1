@@ -9,7 +9,6 @@ import com.batm.util.Constant;
 import com.batm.util.Util;
 import com.binance.api.client.BinanceApiRestClient;
 import net.sf.json.JSONObject;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -155,17 +154,11 @@ public class CoinService {
             }
 
             @Override
-            public String sign(String toAddress, BigDecimal amount) {
-                try {
-                    List<JSONObject> utxos = blockbook.getUTXO(btcNodeUrl, walletService.getXpub(CoinType.BITCOIN)).getUtxos();
-                    String hex = blockbook.signBTC(toAddress, amount, coinMap.get(name()).getFee(), utxos);
+            public String sign(String toAddress, BigDecimal amount, SignDTO dto) {
+                List<JSONObject> utxos = getUTXO(walletService.getXPUB(CoinType.BITCOIN)).getUtxos();
+                String hex = blockbook.signBTCForks(getCoinType(), dto.getFromAddress(), toAddress, amount, getCoinEntity().getFee(), Constant.BTC_DIVIDER, utxos);
 
-                    return blockbook.submitTransaction(btcNodeUrl, hex);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
-                return null;
+                return blockbook.submitTransaction(btcNodeUrl, hex);
             }
 
             @Override
@@ -173,7 +166,7 @@ public class CoinService {
                 try {
                     String txId = blockbook.submitTransaction(btcNodeUrl, transaction.getHex());
 
-                    if (StringUtils.isNotBlank(txId) && TransactionType.SEND_GIFT.getValue() == transaction.getType()) {
+                    if (TransactionType.SEND_GIFT.getValue() == transaction.getType()) {
                         transactionService.saveGift(userId, this, txId, transaction);
                     }
 
@@ -188,6 +181,24 @@ public class CoinService {
             @Override
             public CoinType getCoinType() {
                 return CoinType.BITCOIN;
+            }
+
+            @Override
+            public BlockchainTransactionsDTO getBlockchainTransactions(String address) {
+                return blockbook.getBlockchainTransactions(btcNodeUrl, address, Constant.BTC_DIVIDER);
+            }
+
+            @Override
+            public Coin getCoinEntity() {
+                return coinMap.get(name());
+            }
+
+            @Override
+            public SignDTO buildSignDTOFromMainWallet() {
+                SignDTO dto = new SignDTO();
+                dto.setFromAddress(walletService.getAddressBTC());
+
+                return dto;
             }
         },
         ETH {
@@ -258,17 +269,10 @@ public class CoinService {
             }
 
             @Override
-            public String sign(String toAddress, BigDecimal amount) {
-                try {
-                    NonceDTO nonceDTO = blockbook.getNonce(ethNodeUrl, walletService.getAddressETH());
-                    String hex = blockbook.signETH(toAddress, amount, nonceDTO.getNonce());
+            public String sign(String toAddress, BigDecimal amount, SignDTO dto) {
+                String hex = blockbook.signETH(ethNodeUrl, toAddress, amount, dto.getPrivateKey());
 
-                    return blockbook.submitTransaction(ethNodeUrl, hex);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
-                return null;
+                return blockbook.submitTransaction(ethNodeUrl, hex);
             }
 
             @Override
@@ -276,7 +280,7 @@ public class CoinService {
                 try {
                     String txId = blockbook.submitTransaction(ethNodeUrl, transaction.getHex());
 
-                    if (StringUtils.isNotBlank(txId) && TransactionType.SEND_GIFT.getValue() == transaction.getType()) {
+                    if (TransactionType.SEND_GIFT.getValue() == transaction.getType()) {
                         transactionService.saveGift(userId, this, txId, transaction);
                     }
 
@@ -291,6 +295,24 @@ public class CoinService {
             @Override
             public CoinType getCoinType() {
                 return CoinType.ETHEREUM;
+            }
+
+            @Override
+            public BlockchainTransactionsDTO getBlockchainTransactions(String address) {
+                return blockbook.getBlockchainTransactions(ethNodeUrl, address, Constant.ETH_DIVIDER);
+            }
+
+            @Override
+            public Coin getCoinEntity() {
+                return coinMap.get(name());
+            }
+
+            @Override
+            public SignDTO buildSignDTOFromMainWallet() {
+                SignDTO dto = new SignDTO();
+                dto.setPrivateKey(walletService.getPrivateKeyETH());
+
+                return dto;
             }
         },
         BCH {
@@ -355,17 +377,11 @@ public class CoinService {
             }
 
             @Override
-            public String sign(String toAddress, BigDecimal amount) {
-                try {
-                    List<JSONObject> utxos = blockbook.getUTXO(bchNodeUrl, walletService.getXpub(CoinType.BITCOINCASH)).getUtxos();
-                    String hex = blockbook.signBCH(toAddress, amount, coinMap.get(name()).getFee(), utxos);
+            public String sign(String toAddress, BigDecimal amount, SignDTO dto) {
+                List<JSONObject> utxos = getUTXO(walletService.getXPUB(CoinType.BITCOINCASH)).getUtxos();
+                String hex = blockbook.signBTCForks(getCoinType(), dto.getFromAddress(), toAddress, amount, getCoinEntity().getFee(), Constant.BCH_DIVIDER, utxos);
 
-                    return blockbook.submitTransaction(bchNodeUrl, hex);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
-                return null;
+                return blockbook.submitTransaction(bchNodeUrl, hex);
             }
 
             @Override
@@ -373,7 +389,7 @@ public class CoinService {
                 try {
                     String txId = blockbook.submitTransaction(bchNodeUrl, transaction.getHex());
 
-                    if (StringUtils.isNotBlank(txId) && TransactionType.SEND_GIFT.getValue() == transaction.getType()) {
+                    if (TransactionType.SEND_GIFT.getValue() == transaction.getType()) {
                         transactionService.saveGift(userId, this, txId, transaction);
                     }
 
@@ -388,6 +404,24 @@ public class CoinService {
             @Override
             public CoinType getCoinType() {
                 return CoinType.BITCOINCASH;
+            }
+
+            @Override
+            public BlockchainTransactionsDTO getBlockchainTransactions(String address) {
+                return blockbook.getBlockchainTransactions(bchNodeUrl, address, Constant.BCH_DIVIDER);
+            }
+
+            @Override
+            public Coin getCoinEntity() {
+                return coinMap.get(name());
+            }
+
+            @Override
+            public SignDTO buildSignDTOFromMainWallet() {
+                SignDTO dto = new SignDTO();
+                dto.setFromAddress(walletService.getAddressBCH());
+
+                return dto;
             }
         },
         LTC {
@@ -452,17 +486,11 @@ public class CoinService {
             }
 
             @Override
-            public String sign(String toAddress, BigDecimal amount) {
-                try {
-                    List<JSONObject> utxos = blockbook.getUTXO(ltcNodeUrl, walletService.getXpub(CoinType.LITECOIN)).getUtxos();
-                    String hex = blockbook.signLTC(toAddress, amount, coinMap.get(name()).getFee(), utxos);
+            public String sign(String toAddress, BigDecimal amount, SignDTO dto) {
+                List<JSONObject> utxos = getUTXO(walletService.getXPUB(CoinType.LITECOIN)).getUtxos();
+                String hex = blockbook.signBTCForks(getCoinType(), dto.getFromAddress(), toAddress, amount, getCoinEntity().getFee(), Constant.LTC_DIVIDER, utxos);
 
-                    return blockbook.submitTransaction(ltcNodeUrl, hex);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
-                return null;
+                return blockbook.submitTransaction(ltcNodeUrl, hex);
             }
 
             @Override
@@ -470,7 +498,7 @@ public class CoinService {
                 try {
                     String txId = blockbook.submitTransaction(ltcNodeUrl, transaction.getHex());
 
-                    if (StringUtils.isNotBlank(txId) && TransactionType.SEND_GIFT.getValue() == transaction.getType()) {
+                    if (TransactionType.SEND_GIFT.getValue() == transaction.getType()) {
                         transactionService.saveGift(userId, this, txId, transaction);
                     }
 
@@ -485,6 +513,24 @@ public class CoinService {
             @Override
             public CoinType getCoinType() {
                 return CoinType.LITECOIN;
+            }
+
+            @Override
+            public BlockchainTransactionsDTO getBlockchainTransactions(String address) {
+                return blockbook.getBlockchainTransactions(ltcNodeUrl, address, Constant.LTC_DIVIDER);
+            }
+
+            @Override
+            public Coin getCoinEntity() {
+                return coinMap.get(name());
+            }
+
+            @Override
+            public SignDTO buildSignDTOFromMainWallet() {
+                SignDTO dto = new SignDTO();
+                dto.setFromAddress(walletService.getAddressLTC());
+
+                return dto;
             }
         },
         BNB {
@@ -552,17 +598,10 @@ public class CoinService {
             }
 
             @Override
-            public String sign(String toAddress, BigDecimal amount) {
-                try {
-                    CurrentAccountDTO currentDTO = binance.getCurrentAccount(walletService.getAddressBNB());
-                    String hex = binance.sign(toAddress, amount, currentDTO.getAccountNumber(), currentDTO.getSequence(), currentDTO.getChainId());
+            public String sign(String toAddress, BigDecimal amount, SignDTO dto) {
+                String hex = binance.sign(toAddress, amount, dto.getPrivateKey());
 
-                    return binance.submitTransaction(hex);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
-                return null;
+                return binance.submitTransaction(hex);
             }
 
             @Override
@@ -570,7 +609,7 @@ public class CoinService {
                 try {
                     String txId = binance.submitTransaction(transaction.getHex());
 
-                    if (StringUtils.isNotBlank(txId) && TransactionType.SEND_GIFT.getValue() == transaction.getType()) {
+                    if (TransactionType.SEND_GIFT.getValue() == transaction.getType()) {
                         transactionService.saveGift(userId, this, txId, transaction);
                     }
 
@@ -585,6 +624,24 @@ public class CoinService {
             @Override
             public CoinType getCoinType() {
                 return CoinType.BINANCE;
+            }
+
+            @Override
+            public BlockchainTransactionsDTO getBlockchainTransactions(String address) {
+                return binance.getBlockchainTransactions(address);
+            }
+
+            @Override
+            public Coin getCoinEntity() {
+                return coinMap.get(name());
+            }
+
+            @Override
+            public SignDTO buildSignDTOFromMainWallet() {
+                SignDTO dto = new SignDTO();
+                dto.setPrivateKey(walletService.getPrivateKeyBNB());
+
+                return dto;
             }
         },
         XRP {
@@ -652,17 +709,10 @@ public class CoinService {
             }
 
             @Override
-            public String sign(String toAddress, BigDecimal amount) {
-                try {
-                    CurrentAccountDTO accountDTO = rippled.getCurrentAccount(walletService.getAddressXRP());
-                    String hex = rippled.sign(toAddress, amount, coinMap.get(name()).getFee(), accountDTO.getSequence());
+            public String sign(String toAddress, BigDecimal amount, SignDTO dto) {
+                String hex = rippled.sign(toAddress, amount, getCoinEntity().getFee(), dto.getPublicKey(), dto.getPrivateKey());
 
-                    return rippled.submitTransaction(hex);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
-                return null;
+                return rippled.submitTransaction(hex);
             }
 
             @Override
@@ -670,7 +720,7 @@ public class CoinService {
                 try {
                     String txId = rippled.submitTransaction(transaction.getHex());
 
-                    if (StringUtils.isNotBlank(txId) && TransactionType.SEND_GIFT.getValue() == transaction.getType()) {
+                    if (TransactionType.SEND_GIFT.getValue() == transaction.getType()) {
                         transactionService.saveGift(userId, this, txId, transaction);
                     }
 
@@ -685,6 +735,27 @@ public class CoinService {
             @Override
             public CoinType getCoinType() {
                 return CoinType.XRP;
+            }
+
+            @Override
+            public BlockchainTransactionsDTO getBlockchainTransactions(String address) {
+                return rippled.getBlockchainTransactions(address);
+            }
+
+            @Override
+            public Coin getCoinEntity() {
+                return coinMap.get(name());
+            }
+
+            @Override
+            public SignDTO buildSignDTOFromMainWallet() {
+                CoinType coinType = getCoinType();
+
+                SignDTO dto = new SignDTO();
+                dto.setPublicKey(walletService.getWallet().getPublicKeyFromExtended(walletService.getXPUB(coinType), walletService.getPath(coinType)));
+                dto.setPrivateKey(walletService.getPrivateKeyXRP());
+
+                return dto;
             }
         },
         TRX {
@@ -749,17 +820,10 @@ public class CoinService {
             }
 
             @Override
-            public String sign(String toAddress, BigDecimal amount) {
-                try {
-                    CurrentBlockDTO currentBlockDTO = trongrid.getCurrentBlock();
-                    JSONObject json = trongrid.sign(toAddress, amount, coinMap.get(name()).getFee(), currentBlockDTO.getBlockHeader().optJSONObject("raw_data"));
+            public String sign(String toAddress, BigDecimal amount, SignDTO dto) {
+                JSONObject json = trongrid.sign(toAddress, amount, getCoinEntity().getFee(), dto.getPrivateKey());
 
-                    return trongrid.submitTransaction(json);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
-                return null;
+                return trongrid.submitTransaction(json);
             }
 
             @Override
@@ -767,7 +831,7 @@ public class CoinService {
                 try {
                     String txId = trongrid.submitTransaction(JSONObject.fromObject(transaction.getHex()));
 
-                    if (StringUtils.isNotBlank(txId) && TransactionType.SEND_GIFT.getValue() == transaction.getType()) {
+                    if (TransactionType.SEND_GIFT.getValue() == transaction.getType()) {
                         transactionService.saveGift(userId, this, txId, transaction);
                     }
 
@@ -782,6 +846,24 @@ public class CoinService {
             @Override
             public CoinType getCoinType() {
                 return CoinType.TRON;
+            }
+
+            @Override
+            public BlockchainTransactionsDTO getBlockchainTransactions(String address) {
+                return trongrid.getBlockchainTransactions(address);
+            }
+
+            @Override
+            public Coin getCoinEntity() {
+                return coinMap.get(name());
+            }
+
+            @Override
+            public SignDTO buildSignDTOFromMainWallet() {
+                SignDTO dto = new SignDTO();
+                dto.setPrivateKey(walletService.getPrivateKeyTRX());
+
+                return dto;
             }
         };
 
@@ -809,11 +891,17 @@ public class CoinService {
 
         public abstract String getWalletAddress();
 
-        public abstract String sign(String toAddress, BigDecimal amount);
+        public abstract String sign(String toAddress, BigDecimal amount, SignDTO dto);
 
         public abstract String submitTransaction(Long userId, SubmitTransactionDTO transaction);
 
         public abstract CoinType getCoinType();
+
+        public abstract BlockchainTransactionsDTO getBlockchainTransactions(String address);
+
+        public abstract Coin getCoinEntity();
+
+        public abstract SignDTO buildSignDTOFromMainWallet();
     }
 
     public BalanceDTO getCoinsBalance(Long userId, List<String> coins) {
