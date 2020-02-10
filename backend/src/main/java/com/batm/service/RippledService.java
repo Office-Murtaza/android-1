@@ -9,6 +9,7 @@ import com.batm.entity.TransactionRecordGift;
 import com.batm.model.TransactionStatus;
 import com.batm.model.TransactionType;
 import com.batm.util.Constant;
+import com.batm.util.TxUtil;
 import com.batm.util.Util;
 import com.google.protobuf.ByteString;
 import net.sf.json.JSONArray;
@@ -32,9 +33,6 @@ public class RippledService {
 
     @Autowired
     private RestTemplate rest;
-
-//    @Autowired
-//    private WalletService walletService;
 
     @Value("${xrp.node.url}")
     private String nodeUrl;
@@ -197,7 +195,7 @@ public class RippledService {
         try {
             Map<String, TransactionDTO> map = getBlockchainTransactions(address).getMap();
 
-            return Util.buildTxs(map, startIndex, limit, gifts, txs);
+            return TxUtil.buildTxs(map, startIndex, limit, gifts, txs);
         } catch (Exception e) {
             e.printStackTrace();
         }

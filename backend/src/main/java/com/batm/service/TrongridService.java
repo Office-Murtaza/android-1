@@ -10,6 +10,7 @@ import com.batm.model.TransactionStatus;
 import com.batm.model.TransactionType;
 import com.batm.util.Base58;
 import com.batm.util.Constant;
+import com.batm.util.TxUtil;
 import com.batm.util.Util;
 import com.google.protobuf.ByteString;
 import net.sf.json.JSONArray;
@@ -24,7 +25,6 @@ import wallet.core.jni.PrivateKey;
 import wallet.core.jni.TronAddress;
 import wallet.core.jni.TronSigner;
 import wallet.core.jni.proto.Tron;
-
 import java.math.BigDecimal;
 import java.util.*;
 
@@ -33,9 +33,6 @@ public class TrongridService {
 
     @Autowired
     private RestTemplate rest;
-
-//    @Autowired
-//    private WalletService walletService;
 
     @Value("${trx.node.url}")
     private String nodeUrl;
@@ -137,7 +134,7 @@ public class TrongridService {
         try {
             Map<String, TransactionDTO> map = getBlockchainTransactions(address).getMap();
 
-            return Util.buildTxs(map, startIndex, limit, gifts, txs);
+            return TxUtil.buildTxs(map, startIndex, limit, gifts, txs);
         } catch (Exception e) {
             e.printStackTrace();
         }

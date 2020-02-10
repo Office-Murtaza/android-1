@@ -45,9 +45,6 @@ public class BinanceService {
     @Autowired
     private RestTemplate rest;
 
-//    @Autowired
-//    private WalletService walletService;
-
     @Value("${bnb.node.url}")
     private String nodeUrl;
 
