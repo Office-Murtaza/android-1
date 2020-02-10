@@ -7,7 +7,7 @@ import androidx.fragment.app.Fragment
 import com.app.belcobtm.R
 import com.app.belcobtm.mvp.BaseMvpActivity
 import com.app.belcobtm.ui.auth.pin.PinActivity
-import com.app.belcobtm.ui.auth.welcome.WelcomeActivity
+import com.app.belcobtm.presentation.features.authorization.welcome.WelcomeActivity
 import com.app.belcobtm.ui.main.atm.AtmFragment
 import com.app.belcobtm.ui.main.coins.balance.BalanceFragment
 import com.app.belcobtm.ui.main.settings.SettingsFragment

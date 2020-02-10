@@ -26,7 +26,6 @@ class PrefManager private constructor(context: Context) {
     val PREF_KEY_PIN = "KEY_PIN"
     val PREF_KEY_COINS_FEE = "PREF_KEY_COINS_FEE"
 
-
     fun setSessionApiToken(token: String?) = mPrefs.set(PREF_KEY_API_SESSION_TOKEN, token)
     fun getSessionApiToken(): String? = mPrefs.getString(PREF_KEY_API_SESSION_TOKEN, null)
 
