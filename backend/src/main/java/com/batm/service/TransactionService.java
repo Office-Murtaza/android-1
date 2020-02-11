@@ -3,12 +3,14 @@ package com.batm.service;
 import com.batm.dto.*;
 import com.batm.entity.TransactionRecord;
 import com.batm.entity.TransactionRecordGift;
+import com.batm.entity.TransactionRecordWallet;
 import com.batm.entity.User;
 import com.batm.model.CashStatus;
 import com.batm.model.TransactionStatus;
 import com.batm.model.TransactionType;
 import com.batm.repository.TransactionRecordGiftRep;
 import com.batm.repository.TransactionRecordRep;
+import com.batm.repository.TransactionRecordWalletRep;
 import com.batm.util.Constant;
 import com.batm.util.Util;
 import com.twilio.rest.api.v2010.account.Message;
@@ -20,6 +22,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
@@ -35,6 +38,9 @@ public class TransactionService {
 
     @Autowired
     private TransactionRecordGiftRep transactionRecordGiftRep;
+
+    @Autowired
+    private TransactionRecordWalletRep transactionRecordWalletRep;
 
     @Autowired
     private UserService userService;
@@ -116,41 +122,79 @@ public class TransactionService {
             User user = userService.findById(userId);
 
             Optional<User> receiver = userService.findByPhone(dto.getPhone());
-            messageService.sendGiftMessage(coinCode, dto, receiver.isPresent());
 
-            TransactionRecordGift gift = new TransactionRecordGift();
-            gift.setTxId(txId);
-            gift.setType(dto.getType());
-            gift.setAmount(dto.getCryptoAmount());
-            gift.setStatus(TransactionStatus.PENDING.getValue());
-            gift.setPhone(dto.getPhone());
-            gift.setMessage(dto.getMessage());
-            gift.setImageId(dto.getImageId());
-            gift.setReceiverStatus(receiver.isPresent() ? Constant.RECEIVER_EXIST : Constant.RECEIVER_NOT_EXIST);
-            gift.setIdentity(user.getIdentity());
-            gift.setCoin(user.getCoin(coinCode.name()));
-            gift.setRefTxId(dto.getRefTxId());
+            /** if submitting transaction when found that user registered in system with phone */
+            if (dto.getThroughServerWallet()) {
+                TransactionRecordGift receiverGiftTx = new TransactionRecordGift();
+                receiverGiftTx.setTxId(txId);
+                receiverGiftTx.setType(TransactionType.RECEIVE_GIFT.getValue());
+                receiverGiftTx.setStatus(TransactionStatus.PENDING.getValue());
+                receiverGiftTx.setPhone(dto.getPhone());
+                receiverGiftTx.setMessage(dto.getMessage());
+                receiverGiftTx.setImageId(dto.getImageId());
+                receiverGiftTx.setReceiverStatus(Constant.RECEIVER_EXIST);
+                receiverGiftTx.setIdentity(receiver.get().getIdentity());
+                receiverGiftTx.setCoin(user.getCoin(coinCode.name()));
+                receiverGiftTx.setAmount(dto.getCryptoAmount());
+                transactionRecordGiftRep.save(receiverGiftTx);
 
-            transactionRecordGiftRep.save(gift);
+                // for wallet history
+                TransactionRecordWallet receiverWalletTx = convertGiftToWalletTx(receiverGiftTx);
+                transactionRecordWalletRep.save(receiverWalletTx);
+            }
+            /** if submitting transaction first time via API */
+            else {
+                messageService.sendGiftMessage(coinCode, dto, receiver.isPresent());
 
-            if (receiver.isPresent()) {
-                TransactionRecordGift gift2 = new TransactionRecordGift();
-                gift2.setTxId(gift.getTxId());
-                gift2.setType(TransactionType.RECEIVE_GIFT.getValue());
-                gift2.setStatus(TransactionStatus.PENDING.getValue());
-                gift2.setPhone(gift.getPhone());
-                gift2.setMessage(gift.getMessage());
-                gift2.setImageId(gift.getImageId());
-                gift2.setReceiverStatus(Constant.RECEIVER_EXIST);
-                gift2.setIdentity(userService.findByPhone(gift.getPhone()).get().getIdentity());
-                gift2.setCoin(gift.getCoin());
-                gift2.setAmount(gift.getAmount());
+                TransactionRecordGift senderGiftTx = new TransactionRecordGift();
+                senderGiftTx.setTxId(txId);
+                senderGiftTx.setType(dto.getType());
+                senderGiftTx.setAmount(dto.getCryptoAmount());
+                senderGiftTx.setStatus(TransactionStatus.PENDING.getValue());
+                senderGiftTx.setPhone(dto.getPhone());
+                senderGiftTx.setMessage(dto.getMessage());
+                senderGiftTx.setImageId(dto.getImageId());
+                senderGiftTx.setReceiverStatus(receiver.isPresent() ? Constant.RECEIVER_EXIST : Constant.RECEIVER_NOT_EXIST);
+                senderGiftTx.setIdentity(user.getIdentity());
+                senderGiftTx.setCoin(user.getCoin(coinCode.name()));
+                senderGiftTx.setRefTxId(dto.getRefTxId());
 
-                transactionRecordGiftRep.save(gift2);
+                transactionRecordGiftRep.save(senderGiftTx);
+
+                if (receiver.isPresent()) {
+                    TransactionRecordGift receiverGiftTx = new TransactionRecordGift();
+                    receiverGiftTx.setTxId(senderGiftTx.getTxId());
+                    receiverGiftTx.setType(TransactionType.RECEIVE_GIFT.getValue());
+                    receiverGiftTx.setStatus(TransactionStatus.PENDING.getValue());
+                    receiverGiftTx.setPhone(senderGiftTx.getPhone());
+                    receiverGiftTx.setMessage(senderGiftTx.getMessage());
+                    receiverGiftTx.setImageId(senderGiftTx.getImageId());
+                    receiverGiftTx.setReceiverStatus(Constant.RECEIVER_EXIST);
+                    receiverGiftTx.setIdentity(receiver.get().getIdentity());
+                    receiverGiftTx.setCoin(senderGiftTx.getCoin());
+                    receiverGiftTx.setAmount(senderGiftTx.getAmount());
+
+                    transactionRecordGiftRep.save(receiverGiftTx);
+                } else {
+                    // for wallet history
+                    TransactionRecordWallet senderWalletTx = convertGiftToWalletTx(senderGiftTx);
+                    transactionRecordWalletRep.save(senderWalletTx);
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private TransactionRecordWallet convertGiftToWalletTx(TransactionRecordGift gift) {
+        TransactionRecordWallet walletTx = new TransactionRecordWallet();
+        walletTx.setTxId(gift.getTxId());
+        walletTx.setAmount(gift.getAmount());
+        walletTx.setCoin(gift.getCoin());
+        walletTx.setStatus(gift.getStatus());
+        walletTx.setType(gift.getType());
+        walletTx.setTransactionRecordGift(gift);
+        return walletTx;
     }
 
     public UserLimitDTO getUserTransactionLimits(Long userId) {
@@ -204,18 +248,22 @@ public class TransactionService {
         return dto;
     }
 
-    @Scheduled(fixedDelay = 60_000)
+    @Scheduled(fixedDelay = 60_000) // 1 min
     public void processCronTasks() {
         processPendingGifts();
         notifySellTransactions();
         processNotTrackedTransactions();
+    }
 
-        //
+    @Scheduled(fixedDelay = 300_000) // 5 min
+    public void processWalletGifts() {
+        processStoredGifts();
     }
 
     private void processPendingGifts() {
         try {
-            List<TransactionRecordGift> list = transactionRecordGiftRep.findByStatus(TransactionStatus.PENDING.getValue(), PageRequest.of(0, 10));
+            List<TransactionRecordGift> list = transactionRecordGiftRep
+                    .findByStatusAndHoursAgo(TransactionStatus.PENDING.getValue(), 2, PageRequest.of(0, 10));
             List<TransactionRecordGift> confirmedList = new ArrayList<>();
 
             list.stream().forEach(t -> {
@@ -282,8 +330,13 @@ public class TransactionService {
 
     private void processStoredGifts() {
         try {
-            List<TransactionRecordGift> list = transactionRecordGiftRep.findByTypeAndStatusAndReceiverStatus(TransactionType.SEND_GIFT.getValue(), TransactionStatus.COMPLETE.getValue(), Constant.RECEIVER_NOT_EXIST, PageRequest.of(0, 10));
-            List<TransactionRecordGift> confirmedList = new ArrayList<>();
+            List<TransactionRecordGift> list = transactionRecordGiftRep.findByTypeAndStatusAndStepAndDaysAgo(
+                    TransactionType.SEND_GIFT.getValue(),
+                    TransactionStatus.COMPLETE.getValue(),
+                    Constant.RECEIVER_NOT_EXIST,
+                    7,
+                    PageRequest.of(0, 10));
+            List<TransactionRecordGift> confirmedGiftList = new ArrayList<>();
 
             list.stream().forEach(t -> {
                 try {
@@ -300,13 +353,13 @@ public class TransactionService {
                         dto.setPhone(t.getPhone());
                         dto.setImageId(t.getImageId());
                         dto.setMessage(t.getMessage());
+                        dto.setThroughServerWallet(true);
 
                         String txId = coinCode.submitTransaction(t.getIdentity().getUser().getId(), dto);
 
                         if (StringUtils.isNotBlank(txId)) {
                             t.setReceiverStatus(Constant.RECEIVER_EXIST);
-
-                            confirmedList.add(t);
+                            confirmedGiftList.add(t);
                         }
                     }
                 } catch (Exception e) {
@@ -314,8 +367,8 @@ public class TransactionService {
                 }
             });
 
-            if (!confirmedList.isEmpty()) {
-                transactionRecordGiftRep.saveAll(confirmedList);
+            if (!confirmedGiftList.isEmpty()) {
+                transactionRecordGiftRep.saveAll(confirmedGiftList);
             }
         } catch (Exception e) {
             e.printStackTrace();

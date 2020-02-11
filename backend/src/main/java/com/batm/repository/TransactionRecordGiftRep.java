@@ -1,6 +1,5 @@
 package com.batm.repository;
 
-import com.batm.entity.Coin;
 import com.batm.entity.Identity;
 import com.batm.entity.TransactionRecordGift;
 import org.springframework.data.domain.Pageable;
@@ -8,6 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,7 +25,9 @@ public interface TransactionRecordGiftRep extends JpaRepository<TransactionRecor
             @Param("coinCode") String coinCode
     );
 
-    List<TransactionRecordGift> findByStatus(Integer status, Pageable page);
+    @Query(value = "SELECT trg FROM w_transactionrecordgift trg WHERE trg.status = :status AND tgr.update_date > NOW() - INTERVAL :hoursAgo HOUR)", nativeQuery = true)
+    List<TransactionRecordGift> findByStatusAndHoursAgo(@Param("status") Integer status, @Param("hoursAgo") Integer hours, Pageable page);
 
-    List<TransactionRecordGift> findByTypeAndStatusAndReceiverStatus(Integer type, Integer status, Integer receiverStatus, Pageable page);
+    @Query(value = "SELECT trg FROM w_transactionrecordgift trg WHERE tgr.type = :type AND trg.status = :status AND trg.step = :step AND tgr.update_date > NOW() - INTERVAL :daysAgo DAY)", nativeQuery = true)
+    List<TransactionRecordGift> findByTypeAndStatusAndStepAndDaysAgo(@Param("type") Integer type, @Param("status") Integer status, @Param("step") Integer step, @Param("daysAgo") Integer days, Pageable page);
 }
