@@ -48,7 +48,7 @@
     </FrameLayout>
 
     <com.hbb20.CountryCodePicker
-        android:id="@+id/phone_ccp"
+        android:id="@+id/phonePickerView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center"
@@ -69,7 +69,7 @@
         android:layout_marginTop="@dimen/margin_main"
         android:layout_marginEnd="@dimen/margin_main"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/phone_ccp"
+        app:layout_constraintStart_toEndOf="@id/phonePickerView"
         app:layout_constraintTop_toBottomOf="@id/toolbar_container">
 
         <androidx.appcompat.widget.AppCompatEditText
@@ -82,7 +82,7 @@
             android:maxLines="1"
             android:paddingEnd="@dimen/margin_half"
             android:singleLine="true"
-            android:nextFocusDown="@id/bt_next"/>
+            android:nextFocusDown="@id/nextButtonView"/>
 
     </com.google.android.material.textfield.TextInputLayout>
 

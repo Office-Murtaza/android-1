@@ -1,11 +1,10 @@
 package com.app.belcobtm.di.component
 
 import com.app.belcobtm.di.module.PresenterModule
+import com.app.belcobtm.presentation.features.authorization.recover.wallet.RecoverWalletPresenter
 import com.app.belcobtm.ui.auth.create_wallet.CreateWalletPresenter
-import com.app.belcobtm.ui.auth.login.LoginPresenter
 import com.app.belcobtm.ui.auth.pin.PinPresenter
 import com.app.belcobtm.ui.auth.recover_seed.RecoverSeedPresenter
-import com.app.belcobtm.ui.auth.recover_wallet.RecoverWalletPresenter
 import com.app.belcobtm.ui.main.atm.AtmPresenter
 import com.app.belcobtm.ui.main.coins.balance.BalancePresenter
 import com.app.belcobtm.ui.main.coins.details.DetailsPresenter
@@ -23,7 +22,6 @@ import dagger.Component
 @Component(modules = [PresenterModule::class])
 interface PresenterComponent {
 
-    fun inject(presenter: LoginPresenter)
     fun inject(presenter: RecoverWalletPresenter)
     fun inject(presenter: CreateWalletPresenter)
     fun inject(presenter: RecoverSeedPresenter)

@@ -76,16 +76,16 @@ class CheckPassActivity : BaseMvpActivity<CheckPassContract.View, CheckPassContr
 
                 til_edit_text.hint = getString(R.string.new_phone_number)
                 edit_text.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_phone, 0)
-                phone_ccp.visibility = View.VISIBLE
-                phone_ccp.registerCarrierNumberEditText(edit_text)
+                phonePickerView.visibility = View.VISIBLE
+                phonePickerView.registerCarrierNumberEditText(edit_text)
                 edit_text.inputType = InputType.TYPE_CLASS_PHONE
 
                 next.text = "Next"
                 next.setOnClickListener {
 
-                    if (phone_ccp.isValidFullNumber)
+                    if (phonePickerView.isValidFullNumber)
                         mPresenter.updatePhone(
-                            phone_ccp.formattedFullNumber
+                            phonePickerView.formattedFullNumber
                                 .replace("-", "")
                                 .replace("(", "")
                                 .replace(")", "")
@@ -159,7 +159,7 @@ class CheckPassActivity : BaseMvpActivity<CheckPassContract.View, CheckPassContr
                 if (code.length != 4) {
                     openSmsCodeDialog(getString(R.string.error_sms_code_4_digits))
                 } else {
-                    val phone = phone_ccp.formattedFullNumber
+                    val phone = phonePickerView.formattedFullNumber
                         .replace("-", "")
                         .replace(" ", "")
                     mPresenter.confirmPhoneSms(phone, code)

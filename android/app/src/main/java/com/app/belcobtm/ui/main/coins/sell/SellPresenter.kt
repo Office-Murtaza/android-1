@@ -11,8 +11,8 @@ import com.app.belcobtm.api.model.response.LimitsResponse
 import com.app.belcobtm.db.DbCryptoCoin
 import com.app.belcobtm.db.DbCryptoCoinModel
 import com.app.belcobtm.mvp.BaseMvpDIPresenterImpl
-import com.app.belcobtm.core.Const
-import com.app.belcobtm.core.pref
+import com.app.belcobtm.presentation.core.Const
+import com.app.belcobtm.presentation.core.pref
 import com.google.gson.Gson
 import io.reactivex.Observable
 import io.realm.Realm

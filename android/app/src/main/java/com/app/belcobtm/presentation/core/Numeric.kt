@@ -1,4 +1,4 @@
-package com.app.belcobtm.core
+package com.app.belcobtm.presentation.core
 
 import kotlin.experimental.and
 

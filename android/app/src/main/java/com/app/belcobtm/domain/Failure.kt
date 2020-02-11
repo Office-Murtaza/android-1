@@ -12,6 +12,8 @@ sealed class Failure {
     object BadRequest : Failure()
     object DataError : Failure()
 
+    data class MessageError(val message: String) : Failure()
+
 
     /** * Extend this class for feature specific failures.*/
     abstract class FeatureFailure : Failure()

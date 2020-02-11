@@ -15,8 +15,8 @@ import com.app.belcobtm.R
 import com.app.belcobtm.api.model.response.CoinModel
 import com.app.belcobtm.api.model.response.LimitsResponse
 import com.app.belcobtm.mvp.BaseMvpActivity
-import com.app.belcobtm.core.Const.GIPHY_API_KEY
-import com.app.belcobtm.core.QRUtils
+import com.app.belcobtm.presentation.core.Const.GIPHY_API_KEY
+import com.app.belcobtm.presentation.core.QRUtils
 import com.giphy.sdk.ui.GiphyCoreUI
 import com.giphy.sdk.ui.views.GiphyDialogFragment
 import com.google.android.material.textfield.TextInputLayout
@@ -179,7 +179,7 @@ class SellActivity : BaseMvpActivity<SellContract.View, SellContract.Presenter>(
             false
         })
 
-        bt_next.setOnClickListener { validateAndSubmit() }
+        nextButtonView.setOnClickListener { validateAndSubmit() }
     }
 
 

@@ -1,4 +1,4 @@
-package com.app.belcobtm.core
+package com.app.belcobtm.presentation.core
 
 sealed class Optional<out T> {
     abstract val value: T?

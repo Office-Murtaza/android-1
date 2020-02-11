@@ -14,7 +14,7 @@ import com.app.belcobtm.mvp.BaseMvpActivity
 import com.app.belcobtm.ui.main.coins.sell.SellActivity
 import com.app.belcobtm.ui.main.coins.send_gift.SendGiftActivity
 import com.app.belcobtm.ui.main.coins.withdraw.WithdrawActivity
-import com.app.belcobtm.core.QRUtils.Companion.getSpacelessQR
+import com.app.belcobtm.presentation.core.QRUtils.Companion.getSpacelessQR
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_show_phone.container
 import kotlinx.android.synthetic.main.activity_show_phone.toolbar

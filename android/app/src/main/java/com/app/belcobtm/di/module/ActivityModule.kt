@@ -2,14 +2,14 @@ package com.app.belcobtm.di.module
 
 import com.app.belcobtm.ui.auth.create_wallet.CreateWalletContract
 import com.app.belcobtm.ui.auth.create_wallet.CreateWalletPresenter
-import com.app.belcobtm.ui.auth.login.LoginContract
-import com.app.belcobtm.ui.auth.login.LoginPresenter
+import com.app.belcobtm.presentation.features.authorization.login.LoginContract
+import com.app.belcobtm.presentation.features.authorization.login.LoginPresenter
 import com.app.belcobtm.ui.auth.pin.PinContract
 import com.app.belcobtm.ui.auth.pin.PinPresenter
 import com.app.belcobtm.ui.auth.recover_seed.RecoverSeedContract
 import com.app.belcobtm.ui.auth.recover_seed.RecoverSeedPresenter
-import com.app.belcobtm.ui.auth.recover_wallet.RecoverWalletContract
-import com.app.belcobtm.ui.auth.recover_wallet.RecoverWalletPresenter
+import com.app.belcobtm.presentation.features.authorization.recover.wallet.RecoverWalletContract
+import com.app.belcobtm.presentation.features.authorization.recover.wallet.RecoverWalletPresenter
 import com.app.belcobtm.ui.main.coins.details.DetailsContract
 import com.app.belcobtm.ui.main.coins.details.DetailsPresenter
 import com.app.belcobtm.ui.main.coins.sell.SellContract

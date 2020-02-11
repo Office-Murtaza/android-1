@@ -8,7 +8,7 @@ import com.app.belcobtm.api.model.response.AddCoinsResponse
 import com.app.belcobtm.api.model.response.AuthResponse
 import com.app.belcobtm.api.model.response.VerifySmsResponse
 import com.app.belcobtm.db.DbCryptoCoin
-import com.app.belcobtm.core.Optional
+import com.app.belcobtm.presentation.core.Optional
 import io.reactivex.Observable
 
 class AuthDataManager : BaseDataManager() {
@@ -23,10 +23,6 @@ class AuthDataManager : BaseDataManager() {
 
     fun refreshToken(refreshToken: String?): Observable<Optional<AuthResponse>> {
         return genObservable(api.refresh(RefreshParam(refreshToken)))
-    }
-
-    fun login(phone: String, password: String): Observable<Optional<AuthResponse>> {
-        return genObservable(api.login(AuthParam(phone, password)))
     }
 
     fun verifySmsCode(userId: String, smsCode: String): Observable<Optional<VerifySmsResponse>> {

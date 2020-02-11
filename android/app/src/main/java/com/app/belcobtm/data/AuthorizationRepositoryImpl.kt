@@ -10,10 +10,10 @@ import io.realm.Realm
 class AuthorizationRepositoryImpl(private val prefsHelper: SharedPreferencesHelper) : AuthorizationRepository {
 
     override suspend fun clearAppData(): Either<Failure, Unit> {
-        prefsHelper.accessToken = ""
-        prefsHelper.refreshToken = ""
-        prefsHelper.userPin = ""
-        prefsHelper.userId = -1
+        prefsHelper.accessToken = null
+        prefsHelper.refreshToken = null
+        prefsHelper.userPin = null
+        prefsHelper.userId = null
 
         val realm = Realm.getDefaultInstance()
         DbCryptoCoinModel().delAllCryptoCoin(realm)

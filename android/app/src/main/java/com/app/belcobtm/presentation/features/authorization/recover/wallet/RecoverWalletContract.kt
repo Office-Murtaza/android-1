@@ -1,4 +1,4 @@
-package com.app.belcobtm.ui.auth.recover_wallet
+package com.app.belcobtm.presentation.features.authorization.recover.wallet
 
 import com.app.belcobtm.mvp.BaseMvpPresenter
 import com.app.belcobtm.mvp.BaseMvpView
@@ -13,6 +13,6 @@ object RecoverWalletContract {
     interface View : BaseMvpView {
         fun onRecoverSuccess(seed: String)
         fun onSmsSuccess()
-        fun openSmsCodeDialog(error: String? = null)
+        fun showSmsCodeDialog(error: String? = null)
     }
 }

@@ -1,4 +1,4 @@
-package com.app.belcobtm.core.extensions
+package com.app.belcobtm.presentation.core.extensions
 
 import android.view.View
 

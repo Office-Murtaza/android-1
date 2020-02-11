@@ -30,11 +30,7 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppThemeNoActionBar" />
         <activity
-            android:name=".ui.auth.login.LoginActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppThemeNoActionBar" />
-        <activity
-            android:name=".ui.auth.recover_wallet.RecoverWalletActivity"
+            android:name=".presentation.features.authorization.recover.wallet.RecoverWalletActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppThemeNoActionBar" />
         <activity

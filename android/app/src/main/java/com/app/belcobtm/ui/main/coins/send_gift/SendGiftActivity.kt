@@ -15,7 +15,7 @@ import androidx.core.widget.doAfterTextChanged
 import com.app.belcobtm.R
 import com.app.belcobtm.api.model.response.CoinModel
 import com.app.belcobtm.mvp.BaseMvpActivity
-import com.app.belcobtm.core.Const.GIPHY_API_KEY
+import com.app.belcobtm.presentation.core.Const.GIPHY_API_KEY
 import com.giphy.sdk.core.models.Media
 import com.giphy.sdk.core.models.enums.RenditionType
 import com.giphy.sdk.ui.GPHContentType
@@ -67,7 +67,7 @@ class SendGiftActivity : BaseMvpActivity<SendGiftContract.View, SendGiftContract
 
     private fun initView() {
 
-        phone_ccp.registerCarrierNumberEditText(phone)
+        phonePickerView.registerCarrierNumberEditText(phone)
 
         til_amount_crypto.hint = mCoin.coinId
         val settings = GPHSettings(
@@ -118,7 +118,7 @@ class SendGiftActivity : BaseMvpActivity<SendGiftContract.View, SendGiftContract
             false
         })
 
-        bt_next.setOnClickListener { validateAndSubmit() }
+        nextButtonView.setOnClickListener { validateAndSubmit() }
     }
 
     var cryptoBalanceToSend = 0.0
@@ -230,10 +230,10 @@ class SendGiftActivity : BaseMvpActivity<SendGiftContract.View, SendGiftContract
 
     private fun validateAndSubmit() {
         til_amount_crypto.error = null
-        til_phone.error = null
+        phoneView.error = null
 
 
-        val phoneStrng = phone_ccp.formattedFullNumber
+        val phoneStrng = phonePickerView.formattedFullNumber
             .replace("-", "")
             .replace("(", "")
             .replace(")", "")
@@ -255,7 +255,7 @@ class SendGiftActivity : BaseMvpActivity<SendGiftContract.View, SendGiftContract
         }
 
         //Validate amount
-        if (!phone_ccp.isValidFullNumber) {
+        if (!phonePickerView.isValidFullNumber) {
             errors++
             showError("Wrong phone number")
         }

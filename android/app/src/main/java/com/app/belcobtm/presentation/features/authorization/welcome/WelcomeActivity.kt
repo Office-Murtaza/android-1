@@ -11,9 +11,9 @@ import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.browser.customtabs.CustomTabsIntent
 import com.app.belcobtm.R
-import com.app.belcobtm.core.Const.TERMS_URL
+import com.app.belcobtm.presentation.core.Const.TERMS_URL
 import com.app.belcobtm.ui.auth.create_wallet.CreateWalletActivity
-import com.app.belcobtm.ui.auth.recover_wallet.RecoverWalletActivity
+import com.app.belcobtm.presentation.features.authorization.recover.wallet.RecoverWalletActivity
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_welcome.*
 import org.koin.android.viewmodel.ext.android.viewModel

@@ -5,21 +5,21 @@ import com.app.belcobtm.api.model.response.GetCoinsFeeResponse
 import com.google.gson.Gson
 
 class SharedPreferencesHelper(private val sharedPreferences: SharedPreferences) {
-    var accessToken: String
+    var accessToken: String?
         set(value) = sharedPreferences.set(ACCESS_TOKEN, value)
-        get() = sharedPreferences[ACCESS_TOKEN] ?: ""
+        get() = sharedPreferences[ACCESS_TOKEN]
 
-    var refreshToken: String
+    var refreshToken: String?
         set(value) = sharedPreferences.set(REFRESH_TOKEN, value)
-        get() = sharedPreferences[REFRESH_TOKEN] ?: ""
+        get() = sharedPreferences[REFRESH_TOKEN]
 
     var apiSeed: String?
         set(value) = sharedPreferences.set(API_SEED, value)
         get() = sharedPreferences[API_SEED]
 
-    var userId: Int
+    var userId: Int?
         set(value) = sharedPreferences.set(USER_ID, value)
-        get() = sharedPreferences[USER_ID] ?: -1
+        get() = sharedPreferences[USER_ID]
 
     var userPin: String?
         set(value) = sharedPreferences.set(USER_PIN, value)

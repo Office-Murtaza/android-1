@@ -1,4 +1,4 @@
-package com.app.belcobtm.core
+package com.app.belcobtm.presentation.core
 
 open class SingletonHolder<out T, in A>(creator: (A) -> T) {
     private var creator: ((A) -> T)? = creator

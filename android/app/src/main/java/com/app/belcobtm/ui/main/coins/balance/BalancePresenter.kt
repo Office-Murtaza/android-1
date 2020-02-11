@@ -7,8 +7,8 @@ import com.app.belcobtm.api.model.response.GetCoinsFeeResponse
 import com.app.belcobtm.api.model.response.GetCoinsResponse
 import com.app.belcobtm.db.DbCryptoCoinModel
 import com.app.belcobtm.mvp.BaseMvpDIPresenterImpl
-import com.app.belcobtm.core.Optional
-import com.app.belcobtm.core.pref
+import com.app.belcobtm.presentation.core.Optional
+import com.app.belcobtm.presentation.core.pref
 import io.realm.Realm
 
 
