@@ -1,10 +1,7 @@
 package com.batm.service;
 
 import com.batm.dto.*;
-import com.batm.entity.TransactionRecord;
-import com.batm.entity.TransactionRecordGift;
-import com.batm.entity.TransactionRecordWallet;
-import com.batm.entity.User;
+import com.batm.entity.*;
 import com.batm.model.CashStatus;
 import com.batm.model.TransactionStatus;
 import com.batm.model.TransactionType;
@@ -15,6 +12,7 @@ import com.batm.util.Constant;
 import com.batm.util.Util;
 import com.twilio.rest.api.v2010.account.Message;
 import net.sf.json.JSONObject;
+import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -122,9 +120,10 @@ public class TransactionService {
             User user = userService.findById(userId);
 
             Optional<User> receiver = userService.findByPhone(dto.getPhone());
+            Coin coin = userService.getUserCoin(userId, coinCode.name()).getCoin();
 
             /** if submitting transaction when found that user registered in system with phone */
-            if (dto.getThroughServerWallet()) {
+            if (BooleanUtils.isTrue(dto.getThroughServerWallet())) {
                 TransactionRecordGift receiverGiftTx = new TransactionRecordGift();
                 receiverGiftTx.setTxId(txId);
                 receiverGiftTx.setType(TransactionType.RECEIVE_GIFT.getValue());
@@ -134,7 +133,7 @@ public class TransactionService {
                 receiverGiftTx.setImageId(dto.getImageId());
                 receiverGiftTx.setReceiverStatus(Constant.RECEIVER_EXIST);
                 receiverGiftTx.setIdentity(receiver.get().getIdentity());
-                receiverGiftTx.setCoin(user.getCoin(coinCode.name()));
+                receiverGiftTx.setCoin(coin);
                 receiverGiftTx.setAmount(dto.getCryptoAmount());
                 transactionRecordGiftRep.save(receiverGiftTx);
 
@@ -156,7 +155,7 @@ public class TransactionService {
                 senderGiftTx.setImageId(dto.getImageId());
                 senderGiftTx.setReceiverStatus(receiver.isPresent() ? Constant.RECEIVER_EXIST : Constant.RECEIVER_NOT_EXIST);
                 senderGiftTx.setIdentity(user.getIdentity());
-                senderGiftTx.setCoin(user.getCoin(coinCode.name()));
+                senderGiftTx.setCoin(coin);
                 senderGiftTx.setRefTxId(dto.getRefTxId());
 
                 transactionRecordGiftRep.save(senderGiftTx);
@@ -253,10 +252,6 @@ public class TransactionService {
         processPendingGifts();
         notifySellTransactions();
         processNotTrackedTransactions();
-    }
-
-    @Scheduled(fixedDelay = 300_000) // 5 min
-    public void processWalletGifts() {
         processStoredGifts();
     }
 
@@ -344,10 +339,13 @@ public class TransactionService {
                         CoinService.CoinEnum coinCode = CoinService.CoinEnum.valueOf(t.getCoin().getCode());
 
                         SignDTO signDTO = coinCode.buildSignDTOFromMainWallet();
-                        String hex = coinCode.sign(t.getIdentity().getUser().getCoinAddress(t.getCoin().getCode()), t.getAmount(), signDTO);
+                        String coinAddress = userService
+                                .getUserCoin(t.getIdentity().getUser().getId(), t.getCoin().getCode()).getAddress();
+                        String hex = coinCode.sign(coinAddress, t.getAmount(), signDTO);
 
                         SubmitTransactionDTO dto = new SubmitTransactionDTO();
                         dto.setHex(hex);
+                        dto.setCryptoAmount(t.getAmount());
                         dto.setRefTxId(t.getTxId());
                         dto.setType(TransactionType.SEND_GIFT.getValue());
                         dto.setPhone(t.getPhone());
