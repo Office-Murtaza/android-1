@@ -7,7 +7,7 @@ class CreateWalletPresenter: ModulePresenter, CreateWalletModule {
   typealias Store = ViewStore<CreateWalletAction, CreateWalletState>
   
   struct Input {
-    var updatePhoneNumber: Driver<String?>
+    var updatePhone: Driver<ValidatablePhoneNumber>
     var updatePassword: Driver<String?>
     var updateConfirmPassword: Driver<String?>
     var updateCode: Driver<String?>
@@ -32,9 +32,9 @@ class CreateWalletPresenter: ModulePresenter, CreateWalletModule {
   }
   
   func bind(input: Input) {
-    input.updatePhoneNumber
+    input.updatePhone
       .asObservable()
-      .map { CreateWalletAction.updatePhoneNumber($0) }
+      .map { CreateWalletAction.updatePhone($0) }
       .bind(to: store.action)
       .disposed(by: disposeBag)
     
@@ -65,7 +65,7 @@ class CreateWalletPresenter: ModulePresenter, CreateWalletModule {
       .doOnNext { [store] in store.action.accept(.updateValidationState) }
       .withLatestFrom(state)
       .filter { $0.validationState.isValid }
-      .map { ($0.phoneNumber, $0.password) }
+      .map { ($0.validatablePhone.phoneE164, $0.password) }
       .flatMap { [unowned self] in self.track(self.createAccount(phoneNumber: $0.0, password: $0.1)) }
       .subscribe(onNext: { [store] in store.action.accept(.showCodePopup) })
       .disposed(by: disposeBag)

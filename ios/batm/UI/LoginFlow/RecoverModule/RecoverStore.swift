@@ -1,9 +1,8 @@
 import Foundation
 import RxSwift
-import PhoneNumberKit
 
 enum RecoverAction: Equatable {
-  case updatePhoneNumber(String?)
+  case updatePhone(ValidatablePhoneNumber)
   case updatePassword(String?)
   case updateCode(String?)
   case updateValidationState
@@ -13,7 +12,7 @@ enum RecoverAction: Equatable {
 
 struct RecoverState: Equatable {
   
-  var phoneNumber: String = ""
+  var validatablePhone = ValidatablePhoneNumber()
   var password: String = ""
   var code = ""
   var validationState: ValidationState = .unknown
@@ -31,7 +30,7 @@ final class RecoverStore: ViewStore<RecoverAction, RecoverState> {
     var state = state
     
     switch action {
-    case let .updatePhoneNumber(phoneNumber): state.phoneNumber = phoneNumber ?? ""
+    case let .updatePhone(validatablePhone): state.validatablePhone = validatablePhone
     case let .updatePassword(password): state.password = password ?? ""
     case let .updateCode(code): state.code = code ?? ""
     case .updateValidationState: state.validationState = validate(state)
@@ -43,11 +42,11 @@ final class RecoverStore: ViewStore<RecoverAction, RecoverState> {
   }
   
   private func validate(_ state: RecoverState) -> ValidationState {
-    guard state.phoneNumber.count > 0 && state.password.count > 0 else {
+    guard state.validatablePhone.phone.count > 0 && state.password.count > 0 else {
       return .invalid(localize(L.CreateWallet.Form.Error.allFieldsRequired))
     }
     
-    guard let _ = try? PhoneNumberKit.default.parse(state.phoneNumber, withRegion: "US") else {
+    guard state.validatablePhone.isValid else {
       return .invalid(localize(L.CreateWallet.Form.Error.notValidPhoneNumber))
     }
     
