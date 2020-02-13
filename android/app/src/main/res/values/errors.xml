@@ -16,7 +16,7 @@
     <string name="error_passwords_do_not_match">Passwords do not match</string>
     <string name="error_user_does_not_exist">User does not exist</string>
 
-    <string name="error_do_not_have_jobs">You don\'t have scheduled jobs</string>
     <string name="error_server_unavailable">Could not connect to server</string>
     <string name="error_internet_unavailable">Internet connection is unavailable</string>
+    <string name="error_something_went_wrong">Something went wrong</string>
 </resources>

@@ -31,7 +31,6 @@ import org.koin.android.viewmodel.ext.android.viewModel
 class RecoverWalletActivity : AppCompatActivity() {
     private val viewModel: RecoverWalletViewModel by viewModel()
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_recover_wallet)
@@ -62,12 +61,32 @@ class RecoverWalletActivity : AppCompatActivity() {
             when (it) {
                 is LoadingData.Loading -> showProgress(true)
                 is LoadingData.Success -> {
+                    showSmsCodeDialog()
                     showProgress(false)
                 }
                 is LoadingData.Error -> {
                     when (it.errorType) {
                         is Failure.MessageError -> showError(it.errorType.message)
-                        else -> Unit
+                        is Failure.NetworkConnection -> showError(R.string.error_internet_unavailable)
+                        else -> showError(R.string.error_something_went_wrong)
+                    }
+                    showProgress(false)
+                }
+            }
+        })
+        viewModel.smsCodeLiveData.observe(this, Observer {
+            when (it) {
+                is LoadingData.Loading -> showProgress(true)
+                is LoadingData.Success -> {
+                    showProgress(false)
+                    startActivity(Intent(this, RecoverSeedActivity::class.java))
+                    finish()
+                }
+                is LoadingData.Error -> {
+                    when (it.errorType) {
+                        is Failure.MessageError -> showSmsCodeDialog(it.errorType.message)
+                        is Failure.NetworkConnection -> showError(R.string.error_internet_unavailable)
+                        else -> showError(R.string.error_something_went_wrong)
                     }
                     showProgress(false)
                 }
@@ -82,12 +101,11 @@ class RecoverWalletActivity : AppCompatActivity() {
             .setTitle(getString(R.string.verify_sms_code))
             .setPositiveButton(R.string.next)
             { _, _ ->
-                val smsCode = view.findViewById<AppCompatEditText>(R.id.sms_code)
-                val code = smsCode.text.toString()
-                if (code.length != 4) {
+                val smsCode = view.findViewById<AppCompatEditText>(R.id.sms_code).text.toString()
+                if (smsCode.length != 4) {
                     showSmsCodeDialog(getString(R.string.error_sms_code_4_digits))
                 } else {
-                    verifyCode(code)
+                    viewModel.verifySmsCode(smsCode)
                 }
             }
             .setNegativeButton(R.string.cancel) { _, _ -> onBackPressed() }
@@ -114,35 +132,6 @@ class RecoverWalletActivity : AppCompatActivity() {
         if (isValidFields(phone, password)) {
             viewModel.recoverWallet(phone, password)
         }
-    }
-
-
-    private var userId: String = ""
-    private val mDataManager = AuthDataManager()
-
-    fun onSmsSuccess() {
-        startActivity(Intent(this, RecoverSeedActivity::class.java))
-        finish()
-    }
-
-
-    private fun verifyCode(code: String) {
-        showProgress(true)
-        mDataManager.verifySmsCode(userId, code).subscribe(
-            {
-                showProgress(false)
-                onSmsSuccess()
-            },
-            { error: Throwable ->
-                showProgress(false)
-                if (error is ServerException) {
-                    showSmsCodeDialog(error.errorMessage)
-                } else {
-                    showError(error.message)
-                }
-
-            }
-        )
     }
 
     private fun showProgress(show: Boolean) {
@@ -194,8 +183,3 @@ class RecoverWalletActivity : AppCompatActivity() {
         }
     }
 }
-
-
-//    fun onRecoverSuccess(seed: String) {
-//        startActivity(Intent(this, RecoverWalletActivity::class.java))
-//    }

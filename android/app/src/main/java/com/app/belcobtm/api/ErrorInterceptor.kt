@@ -11,8 +11,7 @@ import java.net.UnknownHostException
 
 class ErrorInterceptor : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response? {
-        val response = try {
-            chain.proceed(chain.request())
+        val response = try { chain.proceed(chain.request())
 
         } catch (e: Exception) {
             e.printStackTrace()

@@ -5,5 +5,5 @@ import com.app.belcobtm.domain.authorization.AuthorizationRepository
 import org.koin.dsl.module
 
 val repositoryModule = module {
-    single<AuthorizationRepository> { AuthorizationRepositoryImpl(get()) }
+    single<AuthorizationRepository> { AuthorizationRepositoryImpl(get(), get(), get()) }
 }
