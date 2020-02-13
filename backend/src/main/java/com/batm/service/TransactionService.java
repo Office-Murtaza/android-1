@@ -235,18 +235,19 @@ public class TransactionService {
         return dto;
     }
 
-    @Scheduled(fixedDelay = 60_000) // 1 min
+    @Scheduled(fixedDelay = 300_000) //5 min
     public void processCronTasks() {
-        processPendingGifts();
-        notifySellTransactions();
-        processNotTrackedTransactions();
-        processStoredGifts();
+        updatePendingGifts();
+        updatePendingWallets();
+        chainalysisSubmitting();
+        notifyConfirmedSell();
+        deliverReservedGifts();
     }
 
-    private void processPendingGifts() {
+    private void updatePendingGifts() {
         try {
             List<TransactionRecordGift> list = transactionRecordGiftRep
-                    .findByStatusAndHoursAgo(TransactionStatus.PENDING.getValue(), 2, PageRequest.of(0, 10));
+                    .findByStatusAndHoursAgo(TransactionStatus.PENDING.getValue(), 2, PageRequest.of(0, 50));
             List<TransactionRecordGift> confirmedList = new ArrayList<>();
 
             list.stream().forEach(t -> {
@@ -269,7 +270,33 @@ public class TransactionService {
         }
     }
 
-    private void processNotTrackedTransactions() {
+    private void updatePendingWallets() {
+        try {
+            List<TransactionRecordWallet> list = transactionRecordWalletRep
+                    .findByStatusAndHoursAgo(TransactionStatus.PENDING.getValue(), 2, PageRequest.of(0, 50));
+            List<TransactionRecordWallet> confirmedList = new ArrayList<>();
+
+            list.stream().forEach(t -> {
+                try {
+                    CoinService.CoinEnum coinId = CoinService.CoinEnum.valueOf(t.getCoin().getCode());
+                    TransactionStatus status = coinId.getTransactionStatus(t.getTxId());
+                    t.setStatus(status.getValue());
+
+                    confirmedList.add(t);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            });
+
+            if (!confirmedList.isEmpty()) {
+                transactionRecordWalletRep.saveAll(confirmedList);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void chainalysisSubmitting() {
         try {
             List<TransactionRecord> list = transactionRecordRep.findNotTrackedTransactions(PageRequest.of(0, 50));
 
@@ -282,7 +309,7 @@ public class TransactionService {
         }
     }
 
-    private void notifySellTransactions() {
+    private void notifyConfirmedSell() {
         try {
             List<TransactionRecord> list = transactionRecordRep.findNotNotifiedSellTransactions(PageRequest.of(0, 50));
 
@@ -308,7 +335,7 @@ public class TransactionService {
         }
     }
 
-    private void processStoredGifts() {
+    private void deliverReservedGifts() {
         try {
             List<TransactionRecordGift> list = transactionRecordGiftRep.findByTypeAndStatusAndStepAndDaysAgo(
                     TransactionType.SEND_GIFT.getValue(),
