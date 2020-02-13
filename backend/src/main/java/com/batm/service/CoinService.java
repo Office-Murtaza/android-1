@@ -949,8 +949,8 @@ public class CoinService {
         });
     }
 
-    private Coin getCoin(List<Coin> coins, String coinCode) {
-        return coins.stream().filter(e -> e.getCode().equalsIgnoreCase(coinCode)).findFirst().get();
+    public Coin getCoin(String coinCode) {
+        return coinList.stream().filter(e -> e.getCode().equalsIgnoreCase(coinCode)).findFirst().get();
     }
 
     public void save(CoinDTO coinVM, Long userId) {
@@ -959,7 +959,7 @@ public class CoinService {
 
         List<UserCoin> newCoins = new ArrayList<>();
         coinVM.getCoins().stream().forEach(coinDTO -> {
-            Coin coin = getCoin(coinList, coinDTO.getCode());
+            Coin coin = getCoin(coinDTO.getCode());
 
             if (coin != null) {
                 UserCoin userCoin = new UserCoin(user, coin, coinDTO.getAddress());

@@ -147,6 +147,10 @@ public class UserService {
         return userCoinRep.findByUserId(userId);
     }
 
+    public UserCoin getUserCoin(Long userId, String coinCode) {
+        return userCoinRep.findByUserIdAndCoinCode(userId, coinCode);
+    }
+
     public void save(CodeVerify codeVerify) {
         codeValidatorRepository.save(codeVerify);
     }
