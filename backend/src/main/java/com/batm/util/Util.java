@@ -2,7 +2,6 @@ package com.batm.util;
 
 import net.sf.json.JSONObject;
 import org.apache.commons.lang3.RandomStringUtils;
-
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
@@ -101,6 +100,8 @@ public class Util {
     }
 
     public static String formatPhone(String phone) {
-        return phone.substring(0, 2) + " " + phone.substring(2, 5) + "-" + phone.substring(5, 8) + "-" + phone.substring(8, 12);
+        int length = phone.length();
+
+        return phone.substring(0, length - 10) + " " + phone.substring(length - 10, length - 7) + "-" + phone.substring(length - 7, length - 4) + "-" + phone.substring(length - 4, length);
     }
 }

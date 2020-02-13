@@ -200,6 +200,11 @@ public class CoinService {
 
                 return dto;
             }
+
+            @Override
+            public BigDecimal getTransactionFee() {
+                return getCoinEntity().getFee().multiply(BigDecimal.valueOf(1000));
+            }
         },
         ETH {
             @Override
@@ -314,6 +319,11 @@ public class CoinService {
 
                 return dto;
             }
+
+            @Override
+            public BigDecimal getTransactionFee() {
+                return BigDecimal.valueOf(Constant.GAS_PRICE).multiply(BigDecimal.valueOf(Constant.GAS_LIMIT)).divide(Constant.ETH_DIVIDER);
+            }
         },
         BCH {
             @Override
@@ -423,6 +433,11 @@ public class CoinService {
 
                 return dto;
             }
+
+            @Override
+            public BigDecimal getTransactionFee() {
+                return getCoinEntity().getFee().multiply(BigDecimal.valueOf(1000));
+            }
         },
         LTC {
             @Override
@@ -531,6 +546,11 @@ public class CoinService {
                 dto.setFromAddress(walletService.getAddressLTC());
 
                 return dto;
+            }
+
+            @Override
+            public BigDecimal getTransactionFee() {
+                return getCoinEntity().getFee().multiply(BigDecimal.valueOf(1000));
             }
         },
         BNB {
@@ -642,6 +662,11 @@ public class CoinService {
                 dto.setPrivateKey(walletService.getPrivateKeyBNB());
 
                 return dto;
+            }
+
+            @Override
+            public BigDecimal getTransactionFee() {
+                return getCoinEntity().getFee();
             }
         },
         XRP {
@@ -757,6 +782,11 @@ public class CoinService {
 
                 return dto;
             }
+
+            @Override
+            public BigDecimal getTransactionFee() {
+                return getCoinEntity().getFee();
+            }
         },
         TRX {
             @Override
@@ -865,6 +895,11 @@ public class CoinService {
 
                 return dto;
             }
+
+            @Override
+            public BigDecimal getTransactionFee() {
+                return getCoinEntity().getFee();
+            }
         };
 
         public abstract BigDecimal getPrice();
@@ -902,6 +937,8 @@ public class CoinService {
         public abstract Coin getCoinEntity();
 
         public abstract SignDTO buildSignDTOFromMainWallet();
+
+        public abstract BigDecimal getTransactionFee();
     }
 
     public BalanceDTO getCoinsBalance(Long userId, List<String> coins) {

@@ -20,7 +20,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
@@ -122,8 +121,8 @@ public class TransactionService {
             Optional<User> receiver = userService.findByPhone(dto.getPhone());
             Coin coin = userService.getUserCoin(userId, coinCode.name()).getCoin();
 
-            /** if submitting transaction when found that user registered in system with phone */
-            if (BooleanUtils.isTrue(dto.getThroughServerWallet())) {
+            /** gift submission from server wallet */
+            if (BooleanUtils.isTrue(dto.getFromServerWallet())) {
                 TransactionRecordGift receiverGiftTx = new TransactionRecordGift();
                 receiverGiftTx.setTxId(txId);
                 receiverGiftTx.setType(TransactionType.RECEIVE_GIFT.getValue());
@@ -141,7 +140,7 @@ public class TransactionService {
                 TransactionRecordWallet receiverWalletTx = convertGiftToWalletTx(receiverGiftTx);
                 transactionRecordWalletRep.save(receiverWalletTx);
             }
-            /** if submitting transaction first time via API */
+            /** gift submission from API */
             else {
                 messageService.sendGiftMessage(coinCode, dto, receiver.isPresent());
 
@@ -183,17 +182,6 @@ public class TransactionService {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    private TransactionRecordWallet convertGiftToWalletTx(TransactionRecordGift gift) {
-        TransactionRecordWallet walletTx = new TransactionRecordWallet();
-        walletTx.setTxId(gift.getTxId());
-        walletTx.setAmount(gift.getAmount());
-        walletTx.setCoin(gift.getCoin());
-        walletTx.setStatus(gift.getStatus());
-        walletTx.setType(gift.getType());
-        walletTx.setTransactionRecordGift(gift);
-        return walletTx;
     }
 
     public UserLimitDTO getUserTransactionLimits(Long userId) {
@@ -281,7 +269,7 @@ public class TransactionService {
         }
     }
 
-    public void processNotTrackedTransactions() {
+    private void processNotTrackedTransactions() {
         try {
             List<TransactionRecord> list = transactionRecordRep.findNotTrackedTransactions(PageRequest.of(0, 50));
 
@@ -294,7 +282,7 @@ public class TransactionService {
         }
     }
 
-    public void notifySellTransactions() {
+    private void notifySellTransactions() {
         try {
             List<TransactionRecord> list = transactionRecordRep.findNotNotifiedSellTransactions(PageRequest.of(0, 50));
 
@@ -304,15 +292,12 @@ public class TransactionService {
 
                     if (user != null) {
                         Message.Status status = messageService.sendMessage(user.getPhone(), "Your sell transaction is confirmed");
-                        System.out.println("status:" + status);
 
-                        if (status != null) {
-                            e.setNotified(1);
+                        if (status != null && status == Message.Status.QUEUED) {
+                            e.setNotified(Constant.SELL_NOTIFIED);
                         } else {
-                            e.setNotified(2);
+                            e.setNotified(Constant.SELL_NOT_NOTIFIED);
                         }
-                    } else {
-                        e.setNotified(3);
                     }
                 });
 
@@ -337,21 +322,22 @@ public class TransactionService {
                 try {
                     if (userService.findByPhone(t.getPhone()).isPresent()) {
                         CoinService.CoinEnum coinCode = CoinService.CoinEnum.valueOf(t.getCoin().getCode());
+                        BigDecimal transactionFee = coinCode.getTransactionFee();
+                        BigDecimal withdrawAmount = t.getAmount().subtract(transactionFee);
 
                         SignDTO signDTO = coinCode.buildSignDTOFromMainWallet();
-                        String coinAddress = userService
-                                .getUserCoin(t.getIdentity().getUser().getId(), t.getCoin().getCode()).getAddress();
-                        String hex = coinCode.sign(coinAddress, t.getAmount(), signDTO);
+                        String coinAddress = userService.getUserCoin(t.getIdentity().getUser().getId(), t.getCoin().getCode()).getAddress();
+                        String hex = coinCode.sign(coinAddress, withdrawAmount, signDTO);
 
                         SubmitTransactionDTO dto = new SubmitTransactionDTO();
                         dto.setHex(hex);
-                        dto.setCryptoAmount(t.getAmount());
+                        dto.setCryptoAmount(withdrawAmount);
                         dto.setRefTxId(t.getTxId());
                         dto.setType(TransactionType.SEND_GIFT.getValue());
                         dto.setPhone(t.getPhone());
                         dto.setImageId(t.getImageId());
                         dto.setMessage(t.getMessage());
-                        dto.setThroughServerWallet(true);
+                        dto.setFromServerWallet(true);
 
                         String txId = coinCode.submitTransaction(t.getIdentity().getUser().getId(), dto);
 
@@ -371,5 +357,17 @@ public class TransactionService {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private TransactionRecordWallet convertGiftToWalletTx(TransactionRecordGift gift) {
+        TransactionRecordWallet walletTx = new TransactionRecordWallet();
+        walletTx.setTxId(gift.getTxId());
+        walletTx.setAmount(gift.getAmount());
+        walletTx.setCoin(gift.getCoin());
+        walletTx.setStatus(gift.getStatus());
+        walletTx.setType(gift.getType());
+        walletTx.setTransactionRecordGift(gift);
+
+        return walletTx;
     }
 }
