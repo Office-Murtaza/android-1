@@ -375,6 +375,7 @@
 		DBECA63922F7FDB0002C2610 /* ShowPhoneAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBECA63822F7FDB0002C2610 /* ShowPhoneAssembly.swift */; };
 		DBEE1371230E80680020E211 /* Transactions+Mapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBEE1370230E80680020E211 /* Transactions+Mapping.swift */; };
 		DBEE1373230ECDC60020E211 /* UICollectionView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBEE1372230ECDC60020E211 /* UICollectionView+Extensions.swift */; };
+		DBEE2E6623F5B7C700EBB915 /* ValidationPhoneNumber.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBEE2E6523F5B7C700EBB915 /* ValidationPhoneNumber.swift */; };
 		DBFAED8F2326C646004B6D79 /* Utxo.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBFAED8E2326C646004B6D79 /* Utxo.swift */; };
 		DBFAED912326C7CC004B6D79 /* Utxo+Mapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBFAED902326C7CC004B6D79 /* Utxo+Mapping.swift */; };
 /* End PBXBuildFile section */
@@ -766,6 +767,7 @@
 		DBECA63822F7FDB0002C2610 /* ShowPhoneAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowPhoneAssembly.swift; sourceTree = "<group>"; };
 		DBEE1370230E80680020E211 /* Transactions+Mapping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Transactions+Mapping.swift"; sourceTree = "<group>"; };
 		DBEE1372230ECDC60020E211 /* UICollectionView+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UICollectionView+Extensions.swift"; sourceTree = "<group>"; };
+		DBEE2E6523F5B7C700EBB915 /* ValidationPhoneNumber.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValidationPhoneNumber.swift; sourceTree = "<group>"; };
 		DBFAED8E2326C646004B6D79 /* Utxo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utxo.swift; sourceTree = "<group>"; };
 		DBFAED902326C7CC004B6D79 /* Utxo+Mapping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Utxo+Mapping.swift"; sourceTree = "<group>"; };
 		F62E959DD3C3751B0D83F925 /* Pods-batm.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-batm.release.xcconfig"; path = "Pods/Target Support Files/Pods-batm/Pods-batm.release.xcconfig"; sourceTree = "<group>"; };
@@ -1904,6 +1906,7 @@
 				DB96168922C50F350078E92D /* ValidationRule.swift */,
 				DB9616EF22C74FCB0078E92D /* Executor.swift */,
 				DBAD53A722D7CC500005F682 /* KeyboardHelper.swift */,
+				DBEE2E6523F5B7C700EBB915 /* ValidationPhoneNumber.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -2464,6 +2467,7 @@
 				DB8D409C22C3EBF700D5FBD0 /* Module.swift in Sources */,
 				DB226C5A22E99E3E0087E6C5 /* URLEncoding+Extensions.swift in Sources */,
 				DB9616B222C610280078E92D /* UnderlinedLabelView.swift in Sources */,
+				DBEE2E6623F5B7C700EBB915 /* ValidationPhoneNumber.swift in Sources */,
 				DB9616A522C602CC0078E92D /* SeedPhraseAssembly.swift in Sources */,
 				DBA6843522E42BF70079429E /* BTMTabBarController.swift in Sources */,
 				DB9616A122C5FD1D0078E92D /* SeedPhraseViewController.swift in Sources */,
@@ -2830,7 +2834,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 22;
+				CURRENT_PROJECT_VERSION = 23;
 				DEVELOPMENT_TEAM = 2RUJ559RK4;
 				INFOPLIST_FILE = batm/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -2854,7 +2858,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 22;
+				CURRENT_PROJECT_VERSION = 23;
 				DEVELOPMENT_TEAM = 2RUJ559RK4;
 				INFOPLIST_FILE = batm/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
