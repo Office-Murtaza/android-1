@@ -1,12 +1,6 @@
 import Foundation
 import PhoneNumberKit
 
-struct ValidatablePhoneNumber: Equatable {
-  var phone: String = ""
-  var isValid: Bool = false
-  var phoneE164 = ""
-}
-
 enum CoinSendGiftAction: Equatable {
   case setupCoin(BTMCoin)
   case setupCoinBalance(CoinBalance)
