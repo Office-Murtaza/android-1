@@ -56,9 +56,7 @@ public class RippledService {
             String balance = res.getJSONObject("result").getJSONObject("account_data").getString("Balance");
 
             return Util.format6(new BigDecimal(balance).divide(Constant.XRP_DIVIDER));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        } catch (Exception e) {}
 
         return BigDecimal.ZERO;
     }

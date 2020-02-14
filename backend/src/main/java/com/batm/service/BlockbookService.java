@@ -36,9 +36,7 @@ public class BlockbookService {
             JSONObject res = rest.getForObject(url + "/api/v2/address/" + address + "?details=basic", JSONObject.class);
 
             return Util.format6(new BigDecimal(res.optString("balance")).divide(divider));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        } catch (Exception e) {}
 
         return BigDecimal.ZERO;
     }

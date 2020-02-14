@@ -156,9 +156,8 @@ public class CoinService {
             @Override
             public String sign(String toAddress, BigDecimal amount, SignDTO dto) {
                 List<JSONObject> utxos = getUTXO(walletService.getXPUB(CoinType.BITCOIN)).getUtxos();
-                String hex = blockbook.signBTCForks(getCoinType(), dto.getFromAddress(), toAddress, amount, getCoinEntity().getFee(), Constant.BTC_DIVIDER, utxos);
 
-                return blockbook.submitTransaction(btcNodeUrl, hex);
+                return blockbook.signBTCForks(getCoinType(), dto.getFromAddress(), toAddress, amount, getCoinEntity().getFee(), Constant.BTC_DIVIDER, utxos);
             }
 
             @Override
@@ -275,9 +274,7 @@ public class CoinService {
 
             @Override
             public String sign(String toAddress, BigDecimal amount, SignDTO dto) {
-                String hex = blockbook.signETH(ethNodeUrl, toAddress, amount, dto.getPrivateKey());
-
-                return blockbook.submitTransaction(ethNodeUrl, hex);
+                return blockbook.signETH(ethNodeUrl, toAddress, amount, dto.getPrivateKey());
             }
 
             @Override
@@ -389,9 +386,8 @@ public class CoinService {
             @Override
             public String sign(String toAddress, BigDecimal amount, SignDTO dto) {
                 List<JSONObject> utxos = getUTXO(walletService.getXPUB(CoinType.BITCOINCASH)).getUtxos();
-                String hex = blockbook.signBTCForks(getCoinType(), dto.getFromAddress(), toAddress, amount, getCoinEntity().getFee(), Constant.BCH_DIVIDER, utxos);
 
-                return blockbook.submitTransaction(bchNodeUrl, hex);
+                return blockbook.signBTCForks(getCoinType(), dto.getFromAddress(), toAddress, amount, getCoinEntity().getFee(), Constant.BCH_DIVIDER, utxos);
             }
 
             @Override
@@ -503,9 +499,8 @@ public class CoinService {
             @Override
             public String sign(String toAddress, BigDecimal amount, SignDTO dto) {
                 List<JSONObject> utxos = getUTXO(walletService.getXPUB(CoinType.LITECOIN)).getUtxos();
-                String hex = blockbook.signBTCForks(getCoinType(), dto.getFromAddress(), toAddress, amount, getCoinEntity().getFee(), Constant.LTC_DIVIDER, utxos);
 
-                return blockbook.submitTransaction(ltcNodeUrl, hex);
+                return blockbook.signBTCForks(getCoinType(), dto.getFromAddress(), toAddress, amount, getCoinEntity().getFee(), Constant.LTC_DIVIDER, utxos);
             }
 
             @Override
@@ -619,9 +614,7 @@ public class CoinService {
 
             @Override
             public String sign(String toAddress, BigDecimal amount, SignDTO dto) {
-                String hex = binance.sign(toAddress, amount, dto.getPrivateKey());
-
-                return binance.submitTransaction(hex);
+                return binance.sign(toAddress, amount, dto.getPrivateKey());
             }
 
             @Override
@@ -735,9 +728,7 @@ public class CoinService {
 
             @Override
             public String sign(String toAddress, BigDecimal amount, SignDTO dto) {
-                String hex = rippled.sign(toAddress, amount, getCoinEntity().getFee(), dto.getPublicKey(), dto.getPrivateKey());
-
-                return rippled.submitTransaction(hex);
+                return rippled.sign(toAddress, amount, getCoinEntity().getFee(), dto.getPublicKey(), dto.getPrivateKey());
             }
 
             @Override
@@ -851,9 +842,7 @@ public class CoinService {
 
             @Override
             public String sign(String toAddress, BigDecimal amount, SignDTO dto) {
-                JSONObject json = trongrid.sign(toAddress, amount, getCoinEntity().getFee(), dto.getPrivateKey());
-
-                return trongrid.submitTransaction(json);
+                return trongrid.sign(toAddress, amount, getCoinEntity().getFee(), dto.getPrivateKey()).toString();
             }
 
             @Override

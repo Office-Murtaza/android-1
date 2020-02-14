@@ -63,7 +63,7 @@ public class MessageService {
 
             if (twilioEnabled) {
                 code = RandomStringUtils.randomNumeric(4);
-                status = sendMessage(user.getPhone(), "Verification Code: " + code);
+                status = sendMessage(user.getPhone(), "Code: " + code);
             }
 
             CodeVerify codeVerify = codeVerifyRep.findByUserId(user.getId());
@@ -102,20 +102,28 @@ public class MessageService {
 
     public Message.Status sendGiftMessage(CoinService.CoinEnum coinCode, SubmitTransactionDTO dto, Boolean receiverExists) {
         try {
-            StringBuilder body = new StringBuilder("You receive " + dto.getCryptoAmount() + " " + coinCode.name()).append("\n").append(dto.getMessage());
+            StringBuilder body = new StringBuilder();
+
+            if (StringUtils.isNotBlank(dto.getMessage())) {
+                body.append("\"").append(dto.getMessage()).append("\"").append("\n");
+            }
+
+            body.append("\n").append("Congrats, you've just received " + dto.getCryptoAmount() + " " + coinCode.name() + " gift");
 
             if (!receiverExists) {
-                body.append("\n").append("Please install Belco Wallet and create an account using " + dto.getPhone() + " phone number");
-                body.append("\n").append("IOS");
+                body.append("\n\n").append("To receive it, install Belco Wallet from a link");
+                body.append("\n\n").append("IOS:");
                 body.append("\n").append(Constant.APP_LINK_IOS);
-                body.append("\n").append("Android");
+                body.append("\n\n").append("Android:");
                 body.append("\n").append(Constant.APP_LINK_ANDROID);
+                body.append("\n\n").append("and create an account using " + dto.getPhone() + " number");
+                body.append("\n");
             }
 
             MessageCreator messageCreator = Message.creator(new PhoneNumber(dto.getPhone()), new PhoneNumber(fromNumber), body.toString());
 
             if (StringUtils.isNotBlank(dto.getImageId())) {
-                messageCreator.setMediaUrl(Arrays.asList(URI.create("https://media.giphy.com/media/" + dto.getImageId() + "/giphy.gif")));
+                messageCreator.setMediaUrl(Arrays.asList(URI.create("https://media.giphy.com/media/" + dto.getImageId().trim() + "/giphy.gif")));
             }
 
             Message message = messageCreator.create();

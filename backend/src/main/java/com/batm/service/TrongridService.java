@@ -50,9 +50,7 @@ public class TrongridService {
 
                 return Util.format6(new BigDecimal(balance).divide(Constant.TRX_DIVIDER));
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        } catch (Exception e) {}
 
         return BigDecimal.ZERO;
     }
