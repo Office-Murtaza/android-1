@@ -5,7 +5,7 @@ import FlagPhoneNumber
 
 class PhoneNumberTextField: FPNTextField, FPNTextFieldDelegate {
   
-  let phoneNumberRelay = BehaviorRelay<String?>(value: nil)
+  let validatablePhoneNumberRelay = BehaviorRelay<ValidatablePhoneNumber>(value: ValidatablePhoneNumber())
   
   let imageViewContainer = UIView()
   
@@ -53,12 +53,12 @@ class PhoneNumberTextField: FPNTextField, FPNTextFieldDelegate {
   }
   
   func fpnDidValidatePhoneNumber(textField: FPNTextField, isValid: Bool) {
-    guard isValid else {
-      phoneNumberRelay.accept(textField.text)
-      return
-    }
+    let phone = textField.text ?? ""
+    let phoneE164 = textField.getFormattedPhoneNumber(format: .E164) ?? ""
     
-    phoneNumberRelay.accept(textField.getFormattedPhoneNumber(format: .E164))
+    validatablePhoneNumberRelay.accept(ValidatablePhoneNumber(phone: phone,
+                                                              isValid: isValid,
+                                                              phoneE164: phoneE164))
   }
   
   func fpnDidSelectCountry(name: String, dialCode: String, code: String) {}
@@ -66,7 +66,7 @@ class PhoneNumberTextField: FPNTextField, FPNTextFieldDelegate {
 }
 
 extension Reactive where Base == PhoneNumberTextField {
-  var phoneNumber: Driver<String?> {
-    return base.phoneNumberRelay.asDriver()
+  var validatablePhoneNumber: Driver<ValidatablePhoneNumber> {
+    return base.validatablePhoneNumberRelay.asDriver()
   }
 }

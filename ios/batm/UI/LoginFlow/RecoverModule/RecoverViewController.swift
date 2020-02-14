@@ -229,14 +229,14 @@ class RecoverViewController: ModuleViewController<RecoverPresenter> {
   override func setupBindings() {
     setupUIBindings()
     
-    let updatePhoneNumberDriver = formView.phoneNumberTextField.rx.phoneNumber
+    let updatePhoneDriver = formView.phoneNumberTextField.rx.validatablePhoneNumber
     let updatePasswordDriver = formView.passwordTextField.rx.text.asDriver()
     let updateCodeDriver = codeView.smsCodeTextField.rx.text.asDriver()
     let cancelDriver = Driver.merge(codeView.rx.cancelTap,
                                     formView.rx.cancelTap)
     let recoverWalletDriver = formView.rx.nextTap
     let confirmCodeDriver = codeView.rx.nextTap
-    presenter.bind(input: RecoverPresenter.Input(updatePhoneNumber: updatePhoneNumberDriver,
+    presenter.bind(input: RecoverPresenter.Input(updatePhone: updatePhoneDriver,
                                                  updatePassword: updatePasswordDriver,
                                                  updateCode: updateCodeDriver,
                                                  cancel: cancelDriver,

@@ -235,7 +235,7 @@ class CreateWalletViewController: ModuleViewController<CreateWalletPresenter> {
   override func setupBindings() {
     setupUIBindings()
     
-    let updatePhoneNumberDriver = formView.phoneNumberTextField.rx.phoneNumber
+    let updatePhoneDriver = formView.phoneNumberTextField.rx.validatablePhoneNumber
     let updatePasswordDriver = formView.passwordTextField.rx.text.asDriver()
     let updateConfirmPasswordDriver = formView.confirmPasswordTextField.rx.text.asDriver()
     let updateCodeDriver = codeView.smsCodeTextField.rx.text.asDriver()
@@ -243,7 +243,7 @@ class CreateWalletViewController: ModuleViewController<CreateWalletPresenter> {
                                     formView.rx.cancelTap)
     let createWalletDriver = formView.rx.nextTap
     let confirmCodeDriver = codeView.rx.nextTap
-    presenter.bind(input: CreateWalletPresenter.Input(updatePhoneNumber: updatePhoneNumberDriver,
+    presenter.bind(input: CreateWalletPresenter.Input(updatePhone: updatePhoneDriver,
                                                       updatePassword: updatePasswordDriver,
                                                       updateConfirmPassword: updateConfirmPasswordDriver,
                                                       updateCode: updateCodeDriver,

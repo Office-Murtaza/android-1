@@ -8,7 +8,7 @@ final class ChangePhonePresenter: ModulePresenter, ChangePhoneModule {
 
   struct Input {
     var back: Driver<Void>
-    var updatePhoneNumber: Driver<String?>
+    var updatePhone: Driver<ValidatablePhoneNumber>
     var updateCode: Driver<String?>
     var cancel: Driver<Void>
     var changePhone: Driver<Void>
@@ -35,9 +35,9 @@ final class ChangePhonePresenter: ModulePresenter, ChangePhoneModule {
       .drive(onNext: { [delegate] in delegate?.didFinishChangePhone() })
       .disposed(by: disposeBag)
     
-    input.updatePhoneNumber
+    input.updatePhone
       .asObservable()
-      .map { ChangePhoneAction.updatePhoneNumber($0) }
+      .map { ChangePhoneAction.updatePhone($0) }
       .bind(to: store.action)
       .disposed(by: disposeBag)
     
@@ -52,7 +52,7 @@ final class ChangePhonePresenter: ModulePresenter, ChangePhoneModule {
       .doOnNext { [store] in store.action.accept(.updateValidationState) }
       .withLatestFrom(state)
       .filter { $0.validationState.isValid }
-      .map { $0.phoneNumber }
+      .map { $0.validatablePhone.phoneE164 }
       .flatMap { [unowned self] in self.track(self.changePhone(phoneNumber: $0)) }
       .subscribe(onNext: { [store] in store.action.accept(.showCodePopup) })
       .disposed(by: disposeBag)
@@ -62,7 +62,7 @@ final class ChangePhonePresenter: ModulePresenter, ChangePhoneModule {
       .doOnNext { [store] in store.action.accept(.updateValidationState) }
       .withLatestFrom(state)
       .filter { $0.validationState.isValid }
-      .map { ($0.phoneNumber, $0.code) }
+      .map { ($0.validatablePhone.phone, $0.code) }
       .flatMap { [unowned self] in self.track(self.confirmPhone(phoneNumber: $0, code: $1)) }
       .subscribe(onNext: { [delegate] in delegate?.didChangePhone() })
       .disposed(by: disposeBag)

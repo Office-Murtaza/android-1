@@ -1,9 +1,8 @@
 import Foundation
 import RxSwift
-import PhoneNumberKit
 
 enum CreateWalletAction: Equatable {
-  case updatePhoneNumber(String?)
+  case updatePhone(ValidatablePhoneNumber)
   case updatePassword(String?)
   case updateConfirmPassword(String?)
   case updateCode(String?)
@@ -14,7 +13,7 @@ enum CreateWalletAction: Equatable {
 
 struct CreateWalletState: Equatable {
   
-  var phoneNumber: String = ""
+  var validatablePhone = ValidatablePhoneNumber()
   var password: String = ""
   var confirmPassword: String = ""
   var code: String = ""
@@ -33,7 +32,7 @@ final class CreateWalletStore: ViewStore<CreateWalletAction, CreateWalletState> 
     var state = state
     
     switch action {
-    case let .updatePhoneNumber(phoneNumber): state.phoneNumber = phoneNumber ?? ""
+    case let .updatePhone(validatablePhone): state.validatablePhone = validatablePhone
     case let .updatePassword(password): state.password = password ?? ""
     case let .updateConfirmPassword(confirmPassword): state.confirmPassword = confirmPassword ?? ""
     case let .updateCode(code): state.code = code ?? ""
@@ -46,11 +45,11 @@ final class CreateWalletStore: ViewStore<CreateWalletAction, CreateWalletState> 
   }
   
   private func validate(_ state: CreateWalletState) -> ValidationState {
-    guard state.phoneNumber.count > 0 && state.password.count > 0 && state.confirmPassword.count > 0 else {
+    guard state.validatablePhone.phone.count > 0 && state.password.count > 0 && state.confirmPassword.count > 0 else {
       return .invalid(localize(L.CreateWallet.Form.Error.allFieldsRequired))
     }
     
-    guard let _ = try? PhoneNumberKit.default.parse(state.phoneNumber, withRegion: "US") else {
+    guard state.validatablePhone.isValid else {
       return .invalid(localize(L.CreateWallet.Form.Error.notValidPhoneNumber))
     }
     

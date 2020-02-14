@@ -107,7 +107,7 @@ final class ChangePhoneViewController: NavigationScreenViewController<ChangePhon
     setupUIBindings()
     
     let backDriver = customView.backButton.rx.tap.asDriver()
-    let updatePhoneNumberDriver = formView.phoneNumberTextField.rx.phoneNumber
+    let updatePhoneDriver = formView.phoneNumberTextField.rx.validatablePhoneNumber
     let updateCodeDriver = codeView.smsCodeTextField.rx.text.asDriver()
     let cancelDriver = Driver.merge(codeView.rx.cancelTap,
                                     formView.rx.cancelTap)
@@ -115,7 +115,7 @@ final class ChangePhoneViewController: NavigationScreenViewController<ChangePhon
     let confirmPhoneDriver = codeView.rx.nextTap
     
     presenter.bind(input: ChangePhonePresenter.Input(back: backDriver,
-                                                     updatePhoneNumber: updatePhoneNumberDriver,
+                                                     updatePhone: updatePhoneDriver,
                                                      updateCode: updateCodeDriver,
                                                      cancel: cancelDriver,
                                                      changePhone: changePhoneDriver,

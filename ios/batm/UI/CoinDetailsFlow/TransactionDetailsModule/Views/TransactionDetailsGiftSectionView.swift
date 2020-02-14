@@ -3,7 +3,6 @@ import RxSwift
 import RxCocoa
 import GiphyUISDK
 import GiphyCoreSDK
-import PhoneNumberKit
 
 class TransactionDetailsGiftSectionView: UIView, HasDisposeBag {
   

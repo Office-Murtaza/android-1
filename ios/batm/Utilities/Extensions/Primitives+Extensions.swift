@@ -156,7 +156,7 @@ extension String {
   }
   
   var phoneFormatted: String {
-    guard let phoneNumber = try? PhoneNumberKit.default.parse(self, withRegion: "US") else { return self }
+    guard let phoneNumber = try? PhoneNumberKit.default.parse(self) else { return self }
     
     let phoneNumberString = PhoneNumberKit.default.format(phoneNumber, toType: .international)
     let formattedPhoneNumber = phoneNumberString

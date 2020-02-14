@@ -1,9 +1,8 @@
 import Foundation
 import RxSwift
-import PhoneNumberKit
 
 enum ChangePhoneAction: Equatable {
-  case updatePhoneNumber(String?)
+  case updatePhone(ValidatablePhoneNumber)
   case updateCode(String?)
   case updateValidationState
   case makeInvalidState(String)
@@ -12,7 +11,7 @@ enum ChangePhoneAction: Equatable {
 
 struct ChangePhoneState: Equatable {
   
-  var phoneNumber: String = ""
+  var validatablePhone = ValidatablePhoneNumber()
   var code = ""
   var validationState: ValidationState = .unknown
   var shouldShowCodePopup: Bool = false
@@ -29,7 +28,7 @@ final class ChangePhoneStore: ViewStore<ChangePhoneAction, ChangePhoneState> {
     var state = state
     
     switch action {
-    case let .updatePhoneNumber(phoneNumber): state.phoneNumber = phoneNumber ?? ""
+    case let .updatePhone(validatablePhone): state.validatablePhone = validatablePhone
     case let .updateCode(code): state.code = code ?? ""
     case .updateValidationState: state.validationState = validate(state)
     case let .makeInvalidState(error): state.validationState = .invalid(error)
@@ -40,11 +39,11 @@ final class ChangePhoneStore: ViewStore<ChangePhoneAction, ChangePhoneState> {
   }
   
   private func validate(_ state: ChangePhoneState) -> ValidationState {
-    guard state.phoneNumber.count > 0 else {
+    guard state.validatablePhone.phone.count > 0 else {
       return .invalid(localize(L.CreateWallet.Form.Error.allFieldsRequired))
     }
     
-    guard let _ = try? PhoneNumberKit.default.parse(state.phoneNumber, withRegion: "US") else {
+    guard state.validatablePhone.isValid else {
       return .invalid(localize(L.CreateWallet.Form.Error.notValidPhoneNumber))
     }
     

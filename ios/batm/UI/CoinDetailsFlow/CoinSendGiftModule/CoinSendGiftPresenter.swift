@@ -1,7 +1,6 @@
 import Foundation
 import RxSwift
 import RxCocoa
-import PhoneNumberKit
 
 final class CoinSendGiftPresenter: ModulePresenter, CoinSendGiftModule {
 
@@ -9,7 +8,7 @@ final class CoinSendGiftPresenter: ModulePresenter, CoinSendGiftModule {
 
   struct Input {
     var back: Driver<Void>
-    var updatePhone: Driver<String?>
+    var updatePhone: Driver<ValidatablePhoneNumber>
     var updateCurrencyAmount: Driver<String?>
     var updateCoinAmount: Driver<String?>
     var pastePhone: Driver<Void>
@@ -135,7 +134,7 @@ final class CoinSendGiftPresenter: ModulePresenter, CoinSendGiftModule {
   private func sendGift(for state: CoinSendGiftState) -> Completable {
     return usecase.verifyCode(code: state.code)
       .andThen(usecase.sendGift(from: state.coin!,
-                                to: state.formattedPhoneNumber,
+                                to: state.validatablePhone.phoneE164,
                                 amount: state.coinAmount.doubleValue ?? 0.0,
                                 message: state.message,
                                 imageId: state.imageId))

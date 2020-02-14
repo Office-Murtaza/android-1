@@ -176,7 +176,7 @@ final class CoinSendGiftViewController: NavigationScreenViewController<CoinSendG
     
     presenter.state
       .asObservable()
-      .map { $0.phone }
+      .map { $0.validatablePhone.phone }
       .bind(to: phoneTextField.rx.text)
       .disposed(by: disposeBag)
     
@@ -290,7 +290,7 @@ final class CoinSendGiftViewController: NavigationScreenViewController<CoinSendG
     setupUIBindings()
     
     let backDriver = customView.backButton.rx.tap.asDriver()
-    let updatePhoneDriver = phoneTextField.rx.text.asDriver()
+    let updatePhoneDriver = phoneTextField.rx.validatablePhoneNumber
     let updateCurrencyAmountDriver = exchangeView.currencyTextField.rx.text.asDriver()
     let updateCoinAmountDriver = exchangeView.coinTextField.rx.text.asDriver()
     let pastePhoneDriver = pasteLabel.rx.tap

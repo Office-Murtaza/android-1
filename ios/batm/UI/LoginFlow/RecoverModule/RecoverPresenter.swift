@@ -7,7 +7,7 @@ class RecoverPresenter: ModulePresenter, RecoverModule {
   typealias Store = ViewStore<RecoverAction, RecoverState>
   
   struct Input {
-    var updatePhoneNumber: Driver<String?>
+    var updatePhone: Driver<ValidatablePhoneNumber>
     var updatePassword: Driver<String?>
     var updateCode: Driver<String?>
     var cancel: Driver<Void>
@@ -31,9 +31,9 @@ class RecoverPresenter: ModulePresenter, RecoverModule {
   }
   
   func bind(input: Input) {
-    input.updatePhoneNumber
+    input.updatePhone
       .asObservable()
-      .map { RecoverAction.updatePhoneNumber($0) }
+      .map { RecoverAction.updatePhone($0) }
       .bind(to: store.action)
       .disposed(by: disposeBag)
     
@@ -58,7 +58,7 @@ class RecoverPresenter: ModulePresenter, RecoverModule {
       .doOnNext { [store] in store.action.accept(.updateValidationState) }
       .withLatestFrom(state)
       .filter { $0.validationState.isValid }
-      .map { ($0.phoneNumber, $0.password) }
+      .map { ($0.validatablePhone.phoneE164, $0.password) }
       .flatMap { [unowned self] in self.track(self.recoverWallet(phoneNumber: $0.0, password: $0.1)) }
       .subscribe(onNext: { [store] in store.action.accept(.showCodePopup) })
       .disposed(by: disposeBag)
