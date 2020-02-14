@@ -25,12 +25,14 @@ public class Constant {
 
     public static final int TRANSACTION_LIMIT = 10;
 
-    public static final int GIFT_USER_EXIST = 0;
-    public static final int GIFT_USER_NOT_EXIST = 1;
-    public static final int GIFT_USER_TRANSACTION_CREATED = 2;
+    public static final int RECEIVER_NOT_EXIST = 0;
+    public static final int RECEIVER_EXIST = 1;
 
     public static final int STATE_REGISTERED = 1;
     public static final int TYPE_CELLPHONE = 4;
+
+    public static final int SELL_NOT_NOTIFIED = 0;
+    public static final int SELL_NOTIFIED = 1;
 
     public static final BigDecimal DAILY_LIMIT = BigDecimal.valueOf(10_000);
     public static final BigDecimal TX_LIMIT = BigDecimal.valueOf(3_000);
@@ -41,4 +43,7 @@ public class Constant {
     public static final long GAS_LIMIT = 50_000;
 
     public static final String BNB_CHAIN_ID = "Binance-Chain-Tigris";
+
+    public static final String APP_LINK_IOS = "itms-apps://itunes.apple.com/app/apple-store/id1475407885";
+    public static final String APP_LINK_ANDROID = "https://apps.apple.com/app/belco-wallet/id1475407885";
 }

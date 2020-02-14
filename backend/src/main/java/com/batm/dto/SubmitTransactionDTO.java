@@ -20,4 +20,5 @@ public class SubmitTransactionDTO {
     private String imageId;
     private String hex;
     private String refTxId;
+    private Boolean fromServerWallet;
 }

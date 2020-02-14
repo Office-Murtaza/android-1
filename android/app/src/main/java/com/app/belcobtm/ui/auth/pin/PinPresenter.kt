@@ -8,8 +8,8 @@ import com.app.belcobtm.App
 import com.app.belcobtm.api.data_manager.AuthDataManager
 import com.app.belcobtm.api.model.ServerException
 import com.app.belcobtm.mvp.BaseMvpDIPresenterImpl
-import com.app.belcobtm.util.Const.ERROR_403
-import com.app.belcobtm.util.pref
+import com.app.belcobtm.core.Const.ERROR_403
+import com.app.belcobtm.core.pref
 
 
 class PinPresenter : BaseMvpDIPresenterImpl<PinContract.View, AuthDataManager>(),

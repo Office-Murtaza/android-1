@@ -7,22 +7,18 @@ import com.batm.repository.CodeVerifyRep;
 import com.batm.util.Constant;
 import com.twilio.Twilio;
 import com.twilio.rest.api.v2010.account.MessageCreator;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-
 import javax.annotation.PostConstruct;
 import java.net.URI;
 import java.util.Arrays;
 import java.util.Date;
-
 import com.twilio.rest.api.v2010.account.Message;
 import com.twilio.type.PhoneNumber;
 
-@Slf4j
 @Service
 public class MessageService {
 
@@ -67,9 +63,7 @@ public class MessageService {
 
             if (twilioEnabled) {
                 code = RandomStringUtils.randomNumeric(4);
-                status = sendMessage(user.getPhone(), "Belco Wallet Code: " + code);
-
-                log.info("verification code user:{} code:{}", user.getId(), code);
+                status = sendMessage(user.getPhone(), "Code: " + code);
             }
 
             CodeVerify codeVerify = codeVerifyRep.findByUserId(user.getId());
@@ -106,18 +100,30 @@ public class MessageService {
         return null;
     }
 
-    public Message.Status sendGiftMessage(CoinService.CoinEnum coinId, SubmitTransactionDTO dto, Boolean userExists) {
+    public Message.Status sendGiftMessage(CoinService.CoinEnum coinCode, SubmitTransactionDTO dto, Boolean receiverExists) {
         try {
-            StringBuilder body = new StringBuilder("You receive " + dto.getCryptoAmount() + " " + coinId.name()).append("\n").append(dto.getMessage());
+            StringBuilder body = new StringBuilder();
 
-            if (!userExists) {
-                body.append("\n").append("In order to receive it install Belco Wallet app and create an account using your current phone number");
+            if (StringUtils.isNotBlank(dto.getMessage())) {
+                body.append("\"").append(dto.getMessage()).append("\"").append("\n");
+            }
+
+            body.append("\n").append("Congrats, you've just received " + dto.getCryptoAmount() + " " + coinCode.name() + " gift");
+
+            if (!receiverExists) {
+                body.append("\n\n").append("To receive it, install Belco Wallet from a link");
+                body.append("\n\n").append("IOS:");
+                body.append("\n").append(Constant.APP_LINK_IOS);
+                body.append("\n\n").append("Android:");
+                body.append("\n").append(Constant.APP_LINK_ANDROID);
+                body.append("\n\n").append("and create an account using " + dto.getPhone() + " number");
+                body.append("\n");
             }
 
             MessageCreator messageCreator = Message.creator(new PhoneNumber(dto.getPhone()), new PhoneNumber(fromNumber), body.toString());
 
-            if (StringUtils.isNotEmpty(dto.getImageId())) {
-                messageCreator.setMediaUrl(Arrays.asList(URI.create("https://media.giphy.com/media/" + dto.getImageId() + "/giphy.gif")));
+            if (StringUtils.isNotBlank(dto.getImageId())) {
+                messageCreator.setMediaUrl(Arrays.asList(URI.create("https://media.giphy.com/media/" + dto.getImageId().trim() + "/giphy.gif")));
             }
 
             Message message = messageCreator.create();

@@ -4,7 +4,7 @@ import com.app.belcobtm.App
 import com.app.belcobtm.api.data_manager.SettingsDataManager
 import com.app.belcobtm.mvp.BaseMvpDIPresenterImpl
 import com.app.belcobtm.ui.main.coins.settings.phone.ShowPhoneContract
-import com.app.belcobtm.util.pref
+import com.app.belcobtm.core.pref
 
 
 class ShowPhonePresenter : BaseMvpDIPresenterImpl<ShowPhoneContract.View, SettingsDataManager>(),

@@ -4,7 +4,7 @@ import com.app.belcobtm.api.model.response.AtmResponse
 import com.app.belcobtm.api.model.response.GetCoinsFeeResponse
 import com.app.belcobtm.api.model.response.GetCoinsResponse
 import com.app.belcobtm.api.model.response.GetTransactionsResponse
-import com.app.belcobtm.util.Optional
+import com.app.belcobtm.core.Optional
 import io.reactivex.Observable
 
 class CoinsDataManager : BaseDataManager() {

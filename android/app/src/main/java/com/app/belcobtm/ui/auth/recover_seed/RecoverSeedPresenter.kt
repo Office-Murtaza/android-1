@@ -5,7 +5,7 @@ import com.app.belcobtm.api.data_manager.AuthDataManager
 import com.app.belcobtm.db.DbCryptoCoin
 import com.app.belcobtm.db.DbCryptoCoinModel
 import com.app.belcobtm.mvp.BaseMvpDIPresenterImpl
-import com.app.belcobtm.util.pref
+import com.app.belcobtm.core.pref
 import io.realm.Realm
 import org.web3j.utils.Numeric
 import wallet.core.jni.*

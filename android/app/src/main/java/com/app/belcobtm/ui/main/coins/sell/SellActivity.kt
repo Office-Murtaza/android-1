@@ -15,13 +15,11 @@ import com.app.belcobtm.R
 import com.app.belcobtm.api.model.response.CoinModel
 import com.app.belcobtm.api.model.response.LimitsResponse
 import com.app.belcobtm.mvp.BaseMvpActivity
-import com.app.belcobtm.util.Const.GIPHY_API_KEY
-import com.app.belcobtm.util.QRUtils
+import com.app.belcobtm.core.Const.GIPHY_API_KEY
+import com.app.belcobtm.core.QRUtils
 import com.giphy.sdk.ui.GiphyCoreUI
 import com.giphy.sdk.ui.views.GiphyDialogFragment
 import com.google.android.material.textfield.TextInputLayout
-import com.google.zxing.BarcodeFormat
-import com.journeyapps.barcodescanner.BarcodeEncoder
 import kotlinx.android.synthetic.main.activity_sell.*
 import org.parceler.Parcels
 import kotlin.math.max

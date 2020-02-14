@@ -1,20 +1,25 @@
 package com.batm.service;
 
-import com.batm.util.Constant;
-import com.google.protobuf.ByteString;
+import com.batm.dto.BlockchainTransactionsDTO;
+import com.batm.dto.SignDTO;
+import com.batm.dto.TransactionDTO;
+import com.batm.entity.Coin;
+import com.batm.entity.CoinPath;
+import com.batm.entity.TransactionRecordWallet;
+import com.batm.model.TransactionStatus;
+import com.batm.model.TransactionType;
+import com.batm.repository.CoinPathRep;
+import com.batm.repository.TransactionRecordWalletRep;
 import lombok.Getter;
-import net.sf.json.JSONObject;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.web3j.utils.Numeric;
 import wallet.core.jni.*;
-import wallet.core.jni.proto.*;
 import javax.annotation.PostConstruct;
 import java.math.BigDecimal;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
 
+@Slf4j
 @Getter
 @Service
 public class WalletService {
@@ -24,10 +29,13 @@ public class WalletService {
     }
 
     @Value("${wallet.seed}")
-    private String walletSeed;
+    private String seed;
 
-    @Value("${wallet.seed.key}")
-    private String walletSeedKey;
+    @Autowired
+    private CoinPathRep coinPathRep;
+
+    @Autowired
+    private TransactionRecordWalletRep transactionRecordWalletRep;
 
     private HDWallet wallet = null;
 
@@ -47,14 +55,10 @@ public class WalletService {
 
     @PostConstruct
     public void init() {
-        String seed = "garage become kid awake salon forget minimum snack crash broken leaf genius";
-
-        //wallet = new HDWallet(AES.decrypt(walletSeed, walletSeedKey), "");
         wallet = new HDWallet(seed, "");
 
         privateKeyBTC = wallet.getKeyForCoin(CoinType.BITCOIN);
-        String extPublicKeyBTC = wallet.getExtendedPublicKey(Purpose.BIP44, CoinType.BITCOIN, HDVersion.XPUB);
-        PublicKey publicKeyBTC = HDWallet.getPublicKeyFromExtended(extPublicKeyBTC, "m/44'/0'/0'/0/0");
+        PublicKey publicKeyBTC = wallet.getPublicKeyFromExtended(getXPUB(CoinType.BITCOIN), getPath(CoinType.BITCOIN));
         addressBTC = new BitcoinAddress(publicKeyBTC, CoinType.BITCOIN.p2pkhPrefix()).description();
 
         PrivateKey privateKeyBCH = wallet.getKeyForCoin(CoinType.BITCOINCASH);
@@ -76,101 +80,73 @@ public class WalletService {
         addressTRX = CoinType.TRON.deriveAddress(privateKeyTRX);
     }
 
-    public String signBTC(CoinType coinType, String fromAddress, String toAddress, BigDecimal amount, BigDecimal fee, BigDecimal divider, List<JSONObject> utxos) {
+    public String getPath(CoinType coinType) {
+        if (coinType == CoinType.BITCOIN) {
+            return "m/44'/0'/0'/0/0";
+        } else {
+            return coinType.derivationPath();
+        }
+    }
+
+    public String getXPUB(CoinType coinType) {
+        if (coinType == CoinType.BITCOIN || coinType == CoinType.XRP) {
+            return wallet.getExtendedPublicKey(Purpose.BIP44, coinType, HDVersion.XPUB);
+        } else {
+            return wallet.getExtendedPublicKey(coinType.purpose(), coinType, coinType.xpubVersion());
+        }
+    }
+
+    public String generateNewPath(String path, Integer index) {
+        return path.substring(0, path.length() - 1) + index;
+    }
+
+    public String generateNewAddress(CoinType coinType, String newPath) {
+        if (coinType == CoinType.BITCOIN) {
+            PublicKey publicKey = wallet.getPublicKeyFromExtended(getXPUB(coinType), newPath);
+
+            return new BitcoinAddress(publicKey, CoinType.BITCOIN.p2pkhPrefix()).description();
+        } else if (coinType == CoinType.BITCOINCASH || coinType == CoinType.LITECOIN) {
+            PublicKey publicKey = wallet.getPublicKeyFromExtended(getXPUB(coinType), newPath);
+
+            return coinType.deriveAddressFromPublicKey(publicKey);
+        } else if (coinType == CoinType.XRP) {
+            PublicKey publicKey = wallet.getPublicKeyFromExtended(getXPUB(coinType), newPath);
+
+            return new RippleAddress(publicKey).description();
+        } else if (coinType == CoinType.ETHEREUM) {
+            PrivateKey privateKey = wallet.getKey(newPath);
+
+            return new EthereumAddress(privateKey.getPublicKeySecp256k1(false)).description();
+        } else if (coinType == CoinType.TRON) {
+            PrivateKey privateKey = wallet.getKey(newPath);
+
+            return new TronAddress(privateKey.getPublicKeySecp256k1(false)).description();
+        } else if (coinType == CoinType.BINANCE) {
+            PrivateKey privateKey = wallet.getKey(newPath);
+
+            return new CosmosAddress(HRP.BINANCE, privateKey.getPublicKeySecp256k1(true)).description();
+        }
+
+        return null;
+    }
+
+    public String getCryptoAddress(CoinService.CoinEnum coinCode) {
         try {
-            System.out.println("coinType:" + coinType);
-            System.out.println("fromAddress:" + fromAddress);
-            System.out.println("toAddress:" + toAddress);
-            System.out.println("amount:" + amount);
-            System.out.println("fee:" + fee);
-            System.out.println("divider:" + divider);
-            System.out.println("utxos:" + utxos);
+            CoinType coinType = coinCode.getCoinType();
+            Coin coinEntity = coinCode.getCoinEntity();
+            Integer index = coinPathRep.countCoinPathByCoin(coinEntity);
 
-            /*
-            Это метод инстанса HDWallet
-            hdWallet.getExtendedPubKey(purpose: coin.type.customPurpose, coin: coin.type, version: coin.type.customVersion)
+            String path = getPath(coinType);
+            String newPath = generateNewPath(path, index + 1);
+            String address = generateNewAddress(coinType, newPath);
 
-            Daniil Tishchenko, [03.12.19 12:31]
-У CoinType уже есть поля purpose, xpubVersion из либки
+            CoinPath coinPath = new CoinPath();
+            coinPath.setPath(newPath);
+            coinPath.setAddress(address);
+            coinPath.setCoin(coinEntity);
+            coinPathRep.save(coinPath);
 
-Daniil Tishchenko, [03.12.19 12:31]
-Я добавил свои, чтобы сделать для биткоина исключение
-
-Daniil Tishchenko, [03.12.19 12:31]
-var customPurpose: Purpose {
-    switch self {
-    case .bitcoin: return .bip44
-    default: return purpose
-    }
-  }
-
-  var customVersion: HDVersion {
-    switch self {
-    case .bitcoin: return .xpub
-    default: return xpubVersion
-    }
-  }
-
-Daniil Tishchenko, [03.12.19 12:31]
-Это экстеншн на CoinType
-
-Daniil Tishchenko, [03.12.19 12:32]
-по сути если не биток возвращает значения дефолтного поля purpose, а если биток, то я форсом возвращаю .bip44
-            */
-
-            Bitcoin.SigningInput.Builder signerBuilder = Bitcoin.SigningInput.newBuilder();
-            signerBuilder.setCoinType(coinType.value() == 2 ? 0 : coinType.value());
-            signerBuilder.setAmount(amount.multiply(divider).longValue());
-            signerBuilder.setByteFee(fee.multiply(divider).longValue());
-            signerBuilder.setHashType(coinType == CoinType.BITCOINCASH ? 65 : 1);
-            signerBuilder.setChangeAddress(fromAddress);
-            signerBuilder.setToAddress(toAddress);
-
-            utxos.forEach(e -> {
-                PrivateKey privateKey = wallet.getKey(e.optString("path"));
-                signerBuilder.addPrivateKey(ByteString.copyFrom(privateKey.data()));
-            });
-
-            utxos.forEach(e -> {
-                BitcoinScript redeemScript = BitcoinScript.buildForAddress(e.optString("address"), coinType);
-                byte[] keyHash = redeemScript.isPayToWitnessScriptHash() ? redeemScript.matchPayToWitnessPublicKeyHash() : redeemScript.matchPayToPubkeyHash();
-
-                if (keyHash.length > 0) {
-                    String key = Numeric.toHexString(keyHash);
-                    ByteString scriptByteString = ByteString.copyFrom(redeemScript.data());
-                    signerBuilder.putScripts(key, scriptByteString);
-                }
-            });
-
-            for (int index = 0; index < utxos.size(); index++) {
-                JSONObject utxo = utxos.get(index);
-
-                byte[] hash = Numeric.hexStringToByteArray(utxo.optString("txid"));
-                Collections.reverse(Arrays.asList(hash));
-
-                Bitcoin.OutPoint.Builder outPointBuilder = Bitcoin.OutPoint.newBuilder();
-                outPointBuilder.setHash(ByteString.copyFrom(hash));
-                outPointBuilder.setIndex(utxo.optInt("vout"));
-                outPointBuilder.setSequence(Integer.MAX_VALUE - utxos.size() + index);
-                Bitcoin.OutPoint outPoint = outPointBuilder.build();
-
-                BitcoinScript redeemScript = BitcoinScript.buildForAddress(utxo.optString("address"), coinType);
-                ByteString scriptByteString = ByteString.copyFrom(redeemScript.data());
-
-                Bitcoin.UnspentTransaction.Builder unspent = Bitcoin.UnspentTransaction.newBuilder();
-                unspent.setScript(scriptByteString);
-                unspent.setAmount(Long.parseLong(utxo.optString("value")));
-                unspent.setOutPoint(outPoint);
-
-                Bitcoin.UnspentTransaction unspentBuild = unspent.build();
-                signerBuilder.addUtxo(unspentBuild);
-            }
-
-            BitcoinTransactionSigner signer = new BitcoinTransactionSigner(signerBuilder.build());
-            Common.Result result = signer.sign();
-            Bitcoin.SigningOutput output = result.getObjects(0).unpack(Bitcoin.SigningOutput.class);
-
-            return Numeric.toHexString(output.getEncoded().toByteArray());
+            return address;
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -178,26 +154,51 @@ Daniil Tishchenko, [03.12.19 12:32]
         return null;
     }
 
-    public String signETH(String toAddress, BigDecimal amount, Integer nonce) {
+    public BigDecimal getCryptoBalance(CoinService.CoinEnum coinCode) {
         try {
-            Ethereum.SigningInput.Builder builder = Ethereum.SigningInput.newBuilder();
+            String walletAddress = coinCode.getWalletAddress();
+            BigDecimal balance = coinCode.getBalance(walletAddress);
+            BlockchainTransactionsDTO blockchainTransactionsDTO = coinCode.getBlockchainTransactions(walletAddress);
 
-            builder.setPrivateKey(ByteString.copyFrom(Numeric.hexStringToByteArray(Numeric.toHexStringNoPrefix(privateKeyETH.data()))));
-            builder.setToAddress(toAddress);
-            builder.setChainId(ByteString.copyFrom(Numeric.hexStringToByteArray("0x1")));
+            BigDecimal pendingSum = blockchainTransactionsDTO.getMap().values().stream()
+                    .filter(e -> e.getType() == TransactionType.WITHDRAW && e.getStatus() == TransactionStatus.PENDING)
+                    .map(TransactionDTO::getCryptoAmount)
+                    .reduce(BigDecimal.ZERO, BigDecimal::add);
 
-            builder.setNonce(ByteString.copyFrom(Numeric.hexStringToByteArray("0x" + Integer.toHexString(nonce))));
-            builder.setGasPrice(ByteString.copyFrom(Numeric.hexStringToByteArray("0x" + Long.toHexString(Constant.GAS_PRICE))));
-            builder.setGasLimit(ByteString.copyFrom(Numeric.hexStringToByteArray("0x" + Long.toHexString(Constant.GAS_LIMIT))));
-            builder.setAmount(ByteString.copyFrom(Numeric.hexStringToByteArray("0x" + Long.toHexString(amount.multiply(Constant.ETH_DIVIDER).longValue()))));
-
-            Ethereum.SigningOutput output = EthereumSigner.sign(builder.build());
-
-            return Numeric.toHexString(output.getEncoded().toByteArray());
+            return balance.subtract(pendingSum);
         } catch (Exception e) {
             e.printStackTrace();
         }
 
         return null;
     }
+
+    public String sendCoins(String toAddress, BigDecimal amount, CoinService.CoinEnum coinCode) {
+        try {
+            SignDTO signDTO = coinCode.buildSignDTOFromMainWallet();
+            String txId = coinCode.sign(toAddress, amount, signDTO);
+
+            TransactionRecordWallet wallet = new TransactionRecordWallet();
+            wallet.setCoin(coinCode.getCoinEntity());
+            wallet.setAmount(amount);
+            wallet.setType(TransactionType.SELL.getValue());
+            wallet.setTxId(txId);
+            wallet.setStatus(coinCode.getTransactionStatus(txId).getValue());
+
+            transactionRecordWalletRep.save(wallet);
+
+            return txId;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+//    public void transferToMainAddress(String fromAddress, BigDecimal amount, CoinService.CoinEnum coin) {
+//        coin.getCoinDTOToServerWallet
+//        String txId = coin.sign(dto)
+//        log to DB
+//        return txId;
+//    }
 }

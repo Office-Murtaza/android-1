@@ -1,5 +1,6 @@
 package com.batm.service;
 
+import com.batm.dto.BlockchainTransactionsDTO;
 import com.batm.dto.CurrentAccountDTO;
 import com.batm.dto.TransactionDTO;
 import com.batm.dto.TransactionListDTO;
@@ -8,6 +9,7 @@ import com.batm.entity.TransactionRecordGift;
 import com.batm.model.TransactionStatus;
 import com.batm.model.TransactionType;
 import com.batm.util.Constant;
+import com.batm.util.TxUtil;
 import com.batm.util.Util;
 import com.google.protobuf.ByteString;
 import net.sf.json.JSONArray;
@@ -18,6 +20,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.web3j.utils.Numeric;
+import wallet.core.jni.PrivateKey;
+import wallet.core.jni.PublicKey;
+import wallet.core.jni.RippleAddress;
 import wallet.core.jni.RippleSigner;
 import wallet.core.jni.proto.Ripple;
 import java.math.BigDecimal;
@@ -28,9 +33,6 @@ public class RippledService {
 
     @Autowired
     private RestTemplate rest;
-
-    @Autowired
-    private WalletService walletService;
 
     @Value("${xrp.node.url}")
     private String nodeUrl;
@@ -54,9 +56,7 @@ public class RippledService {
             String balance = res.getJSONObject("result").getJSONObject("account_data").getString("Balance");
 
             return Util.format6(new BigDecimal(balance).divide(Constant.XRP_DIVIDER));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        } catch (Exception e) {}
 
         return BigDecimal.ZERO;
     }
@@ -162,7 +162,7 @@ public class RippledService {
         return dto;
     }
 
-    public TransactionListDTO getTransactionList(String address, Integer startIndex, Integer limit, List<TransactionRecordGift> gifts, List<TransactionRecord> txs) {
+    public BlockchainTransactionsDTO getBlockchainTransactions(String address) {
         try {
             JSONObject param = new JSONObject();
             param.put("account", address);
@@ -181,7 +181,19 @@ public class RippledService {
 
             Map<String, TransactionDTO> map = collectNodeTxs(array, address);
 
-            return Util.buildTxs(map, startIndex, limit, gifts, txs);
+            return new BlockchainTransactionsDTO(map);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return new BlockchainTransactionsDTO();
+    }
+
+    public TransactionListDTO getTransactionList(String address, Integer startIndex, Integer limit, List<TransactionRecordGift> gifts, List<TransactionRecord> txs) {
+        try {
+            Map<String, TransactionDTO> map = getBlockchainTransactions(address).getMap();
+
+            return TxUtil.buildTxs(map, startIndex, limit, gifts, txs);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -189,15 +201,18 @@ public class RippledService {
         return new TransactionListDTO();
     }
 
-    public String sign(String toAddress, BigDecimal amount, BigDecimal fee, Integer sequence) {
+    public String sign(String toAddress, BigDecimal amount, BigDecimal fee, PublicKey publicKey, PrivateKey privateKey) {
         try {
+            String fromAddress = new RippleAddress(publicKey).description();
+            CurrentAccountDTO accountDTO = getCurrentAccount(fromAddress);
+
             Ripple.SigningInput.Builder builder = Ripple.SigningInput.newBuilder();
-            builder.setAccount(walletService.getAddressXRP());
+            builder.setAccount(fromAddress);
             builder.setDestination(toAddress);
             builder.setAmount(amount.multiply(Constant.XRP_DIVIDER).longValue());
             builder.setFee(fee.multiply(Constant.XRP_DIVIDER).longValue());
-            builder.setSequence(sequence);
-            builder.setPrivateKey(ByteString.copyFrom(walletService.getPrivateKeyXRP().data()));
+            builder.setSequence(accountDTO.getSequence());
+            builder.setPrivateKey(ByteString.copyFrom(privateKey.data()));
 
             Ripple.SigningOutput sign = RippleSigner.sign(builder.build());
             byte[] bytes = sign.getEncoded().toByteArray();
@@ -233,7 +248,7 @@ public class RippledService {
     }
 
     private TransactionStatus getStatus(String str) {
-        if (StringUtils.isNotEmpty(str) && str.equalsIgnoreCase("tesSUCCESS")) {
+        if (StringUtils.isNotBlank(str) && str.equalsIgnoreCase("tesSUCCESS")) {
             return TransactionStatus.COMPLETE;
         }
 

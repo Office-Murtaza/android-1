@@ -1,166 +1,37 @@
 package com.app.belcobtm.ui.main.coins.details
 
+import android.annotation.SuppressLint
 import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
-import android.graphics.Bitmap
-import android.graphics.Color
+import android.graphics.Point
+import android.graphics.drawable.GradientDrawable
 import android.net.Uri
 import android.os.Bundle
 import android.telephony.PhoneNumberUtils
 import android.text.SpannableString
 import android.text.style.UnderlineSpan
 import android.view.MenuItem
-import android.view.View
+import androidx.appcompat.widget.AppCompatTextView
+import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import com.app.belcobtm.R
-import com.app.belcobtm.api.model.response.CoinModel
-import com.app.belcobtm.api.model.response.TransactionDetailsResponse
-import com.app.belcobtm.api.model.response.TransactionModel
+import com.app.belcobtm.api.model.response.*
 import com.app.belcobtm.mvp.BaseMvpActivity
-import com.app.belcobtm.util.Const.GIPHY_API_KEY
-import com.app.belcobtm.util.QRUtils.Companion.getSpacelessQR
+import com.app.belcobtm.core.Const.GIPHY_API_KEY
+import com.app.belcobtm.core.QRUtils.Companion.getSpacelessQR
+import com.app.belcobtm.core.extensions.hide
+import com.app.belcobtm.core.extensions.show
+import com.app.belcobtm.core.extensions.toggle
 import com.giphy.sdk.ui.GiphyCoreUI
 import com.giphy.sdk.ui.views.GPHMediaView
 import com.giphy.sdk.ui.views.GiphyDialogFragment
-import com.google.zxing.BarcodeFormat
-import com.google.zxing.EncodeHintType
-import com.google.zxing.MultiFormatWriter
-import com.google.zxing.WriterException
-import com.journeyapps.barcodescanner.BarcodeEncoder
 import kotlinx.android.synthetic.main.activity_details_coin.*
 import org.parceler.Parcels
-import java.util.*
 
 
 class DetailsActivity : BaseMvpActivity<DetailsContract.View, DetailsContract.Presenter>(),
     DetailsContract.View {
-    override fun showTransactionDetails(resp: TransactionDetailsResponse?) {
-
-        val content = SpannableString(transaction.txid)
-        content.setSpan(UnderlineSpan(), 0, content.length, 0)
-        textTv.text = content
-
-        resp?.link?.let { url ->
-
-            textTv?.setOnClickListener {
-                val i = Intent(Intent.ACTION_VIEW)
-                i.data = Uri.parse(url)
-                startActivity(i)
-            }
-        }
-
-        val transactionTypeTextId = when (resp?.type) {
-            1 -> R.string.deposit
-            2 -> R.string.withdraw
-            3 -> R.string.send_gift
-            4 -> R.string.receive_gift
-            5 -> R.string.buy
-            else -> R.string.sell
-        }
-
-        typeTv.text = getString(transactionTypeTextId)
-
-
-        val transactionStatusText = when (resp?.status) {
-            1 -> {
-                "Pending"
-            }
-            2 -> {
-                "Complete"
-            }
-            3 -> {
-                "Fail"
-            }
-            else -> {
-                "Unknown"
-            }
-        }
-
-        statusTv.text = transactionStatusText
-
-        amountTv.text = "${String.format(" %.8f", resp?.amount)}"
-        amountTv.text =
-            """${trimTrailingZero(amountTv.text.toString())?.replace(" ", "")} ${mCoin.coinId}"""
-
-        feeTv.text = "${String.format(" %.8f", resp?.fee)}"
-        feeTv.text =
-            """${trimTrailingZero(feeTv.text.toString())?.replace(" ", "")} ${mCoin.coinId}"""
-
-        dateTv.text = resp?.date
-        fromAddressTv.text = resp?.fromAddress
-        toAddressTv.text = resp?.toAddress
-
-
-        val mediaView = GPHMediaView(this)
-
-        resp?.imageId?.let {
-            giftContainer.visibility = View.VISIBLE
-            imageIv.visibility = View.VISIBLE
-            imageLabel.visibility = View.VISIBLE
-            mediaView.setMediaWithId(resp.imageId)
-            imageIv.setImageDrawable(mediaView.drawable)
-        }
-
-        resp?.message?.let {
-            giftContainer.visibility = View.VISIBLE
-            messageLabel.visibility = View.VISIBLE
-            messageTv.visibility = View.VISIBLE
-            messageTv.text = resp.message
-        }
-
-        resp?.phone?.let {
-            phoneTv.text = PhoneNumberUtils.formatNumber(it, "US")
-
-            giftContainer.visibility = View.VISIBLE
-            phoneLabel.visibility = View.VISIBLE
-            phoneTv.visibility = View.VISIBLE
-        }
-
-        resp?.sellInfo?.let {
-
-          /*  val walletQrCode =
-                BarcodeEncoder().encodeBitmap(
-                    it,
-                    BarcodeFormat.QR_CODE, 124, 124
-                )
-
-
-
-            qrCodeIv?.setImageBitmap(walletQrCode)
-            */
-            qrCodeIv?.setImageBitmap(getSpacelessQR(it,104,104))
-        }
-    }
-
-
-
-    fun trimTrailingZero(value: String?): String? {
-        return if (!value.isNullOrEmpty()) {
-            if (value!!.indexOf(".") < 0) {
-                value
-
-            } else {
-                value.replace("0*$".toRegex(), "").replace("\\.$".toRegex(), "")
-            }
-
-        } else {
-            value
-        }
-    }
-
-    companion object {
-        private const val KEY_TRANS = "KEY TRANS"
-        private const val KEY_COIN = "KEY_COIN"
-
-        @JvmStatic
-        fun start(context: Context?, trans: TransactionModel, coin: CoinModel) {
-            val intent = Intent(context, DetailsActivity::class.java)
-            intent.putExtra(KEY_TRANS, trans)
-            intent.putExtra(KEY_COIN, Parcels.wrap(coin))
-            context?.startActivity(intent)
-        }
-    }
-
     private lateinit var gifsDialog: GiphyDialogFragment
     private lateinit var mCoin: CoinModel
     private lateinit var transaction: TransactionModel
@@ -171,7 +42,7 @@ class DetailsActivity : BaseMvpActivity<DetailsContract.View, DetailsContract.Pr
         GiphyCoreUI.configure(this, GIPHY_API_KEY)
 
         setContentView(R.layout.activity_details_coin)
-        setSupportActionBar(toolbar)
+        setSupportActionBar(toolbarView)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)
 
@@ -179,12 +50,8 @@ class DetailsActivity : BaseMvpActivity<DetailsContract.View, DetailsContract.Pr
         transaction = intent.getSerializableExtra(KEY_TRANS) as TransactionModel
         supportActionBar?.title = getString(R.string.title_trans_details) + " " + mCoin.coinId
 
-        initView()
         mPresenter.bindData(mCoin, transaction)
         mPresenter.getDetails()
-    }
-
-    private fun initView() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -196,6 +63,43 @@ class DetailsActivity : BaseMvpActivity<DetailsContract.View, DetailsContract.Pr
         return super.onOptionsItemSelected(item)
     }
 
+    @SuppressLint("SetTextI18n")
+    override fun showTransactionDetails(detailsResponse: TransactionDetailsResponse?) {
+        showTxIdView(detailsResponse?.txId)
+        showTxDbId(detailsResponse?.txDbId)
+        showTypeView(detailsResponse?.type)
+        showStatusView(detailsResponse?.getStatusType())
+        showCashStatus(detailsResponse?.getCashStatusType())
+        showAmountView(detailsResponse?.amount)
+        showFiatAmountView(detailsResponse?.fiatAmount)
+        showFeeView(detailsResponse?.fee)
+        showDateView(detailsResponse?.date)
+        showFromAddressView(detailsResponse?.fromAddress)
+        showToAddressView(detailsResponse?.toAddress)
+        showPhoneView(detailsResponse?.phone)
+        showImageView(detailsResponse?.imageId)
+        showMessageView(detailsResponse?.message)
+        showSellInfoView(detailsResponse?.sellInfo)
+        showDividers()
+        txIdView.setOnClickListener {
+            val i = Intent(Intent.ACTION_VIEW)
+            i.data = Uri.parse(detailsResponse?.link)
+            startActivity(i)
+        }
+    }
+
+    fun trimTrailingZero(value: String?): String? {
+        return if (!value.isNullOrEmpty()) {
+            if (value.indexOf(".") < 0) {
+                value
+            } else {
+                value.replace("0*$".toRegex(), "").replace("\\.$".toRegex(), "")
+            }
+        } else {
+            value
+        }
+    }
+
     private fun getTextFromClipboard(): String {
         val clipboard = getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
         val clipData = clipboard.primaryClip
@@ -203,5 +107,170 @@ class DetailsActivity : BaseMvpActivity<DetailsContract.View, DetailsContract.Pr
         return item?.text.toString()
     }
 
+    private fun showTxIdView(txId: String?) = if (txId == null) {
+        txIdContainerView.hide()
+    } else {
+        txIdContainerView.show()
+        txIdView.text = SpannableString(txId).also { it.setSpan(UnderlineSpan(), 0, it.length, 0) }
+    }
 
+    private fun showTxDbId(txDbId: Int?) = if (txDbId == null) {
+        txDbldContainerView.hide()
+    } else {
+        txDbldContainerView.show()
+        txDbldView.text = txDbId.toString()
+    }
+
+    private fun showTypeView(type: Int?) = if (type == null) {
+        typeContainerView.hide()
+    } else {
+        typeContainerView.show()
+        typeView.text = getString(
+            when (type) {
+                1 -> R.string.deposit
+                2 -> R.string.withdraw
+                3 -> R.string.send_gift
+                4 -> R.string.receive_gift
+                5 -> R.string.buy
+                else -> R.string.sell
+            }
+        )
+    }
+
+    private fun changeDrawableColor(
+        textView: AppCompatTextView,
+        resColor: Int
+    ) = (textView.background as GradientDrawable).setColor(ContextCompat.getColor(applicationContext, resColor))
+
+    private fun showStatusView(statusType: TransactionStatusType?) = when (statusType) {
+        TransactionStatusType.PENDING -> {
+            changeDrawableColor(statusView, R.color.bt_orange)
+            statusView.setText(R.string.transition_details_screen_pending)
+        }
+        TransactionStatusType.COMPLETE -> {
+            changeDrawableColor(statusView, R.color.transaction_green)
+            statusView.setText(R.string.transition_details_screen_complete)
+        }
+        TransactionStatusType.FAIL -> {
+            changeDrawableColor(statusView, R.color.transaction_red)
+            statusView.setText(R.string.transition_details_screen_fail)
+        }
+        else -> statusContainerView.hide()
+    }
+
+    private fun showCashStatus(statusType: TransactionCashStatusType?) = when (statusType) {
+        TransactionCashStatusType.NOT_AVAILABLE -> {
+            cashStatusView.setTextColor(ContextCompat.getColor(applicationContext, R.color.cash_status_not_available))
+            cashStatusView.setText(R.string.transition_details_screen_not_available)
+            cashStatusContainerView.show()
+        }
+        TransactionCashStatusType.AVAILABLE -> {
+            cashStatusView.setTextColor(ContextCompat.getColor(applicationContext, R.color.cash_status_available))
+            cashStatusView.setText(R.string.transition_details_screen_available)
+            cashStatusContainerView.show()
+        }
+        TransactionCashStatusType.WITHDRAWN -> {
+            cashStatusView.setTextColor(ContextCompat.getColor(applicationContext, R.color.cash_status_withdrawn))
+            cashStatusView.setText(R.string.transition_details_screen_withdrawn)
+            cashStatusContainerView.show()
+        }
+        else -> cashStatusContainerView.hide()
+    }
+
+    private fun showAmountView(amount: Double?) = if (amount == null) {
+        amountContainerView.hide()
+    } else {
+        amountContainerView.show()
+        amountView.text = String.format(" %.8f", amount)
+        amountView.text = """${trimTrailingZero(amountView.text.toString())?.replace(" ", "")} ${mCoin.coinId}"""
+    }
+
+    private fun showFiatAmountView(amount: Double?) = if (amount == null) {
+        fiatAmountContainerView.hide()
+    } else {
+        fiatAmountContainerView.show()
+        fiatAmountView.text = String.format(" %.8f", amount)
+        fiatAmountView.text =
+            """${trimTrailingZero(fiatAmountView.text.toString())?.replace(" ", "")} $TAG_USD"""
+    }
+
+    private fun showFeeView(fee: Double?) = if (fee == null) {
+        feeContainerView.hide()
+    } else {
+        feeContainerView.show()
+        feeView.text = String.format(" %.8f", fee)
+        feeView.text = """${trimTrailingZero(feeView.text.toString())?.replace(" ", "")} ${mCoin.coinId}"""
+    }
+
+    private fun showDateView(date: String?) = if (date.isNullOrBlank()) {
+        dateContainerView.hide()
+    } else {
+        dateContainerView.show()
+        dateView.text = date
+    }
+
+    private fun showFromAddressView(fromAddress: String?) = if (fromAddress.isNullOrBlank()) {
+        fromAddressContainerView.hide()
+    } else {
+        fromAddressContainerView.show()
+        fromAddressView.text = fromAddress
+    }
+
+    private fun showToAddressView(toAddress: String?) = if (toAddress.isNullOrBlank()) {
+        toAddressContainerView.hide()
+    } else {
+        toAddressContainerView.show()
+        toAddressView.text = toAddress
+    }
+
+    private fun showPhoneView(phone: String?) = if (phone.isNullOrBlank()) {
+        phoneContainerView.hide()
+    } else {
+        phoneContainerView.show()
+        phoneView.text = PhoneNumberUtils.formatNumber(phone, "US")
+    }
+
+    private fun showImageView(imageId: String?) = if (imageId.isNullOrBlank()) {
+        imageContainerView.hide()
+    } else {
+        imageContainerView.show()
+        val mediaView = GPHMediaView(this)
+        mediaView.setMediaWithId(imageId)
+        imageView.setImageDrawable(mediaView.drawable)
+    }
+
+    private fun showMessageView(message: String?) = if (message.isNullOrBlank()) {
+        messageContainerView.hide()
+    } else {
+        messageContainerView.show()
+        messageView.text = message
+    }
+
+    private fun showSellInfoView(sellInfo: String?) = if (sellInfo.isNullOrBlank()) {
+        qrCodeView.hide()
+    } else {
+        val point = Point().also { windowManager.defaultDisplay.getSize(it) }
+        val qrCodeSize = (if (point.x > point.y) point.y else point.x) / 2
+        qrCodeView?.setImageBitmap(getSpacelessQR(sellInfo, qrCodeSize, qrCodeSize))
+        qrCodeView.show()
+    }
+
+    private fun showDividers() {
+        phoneDividerView.toggle(phoneContainerView.isVisible || imageContainerView.isVisible || messageContainerView.isVisible)
+        qrCodeDividerView.toggle(qrCodeView.isVisible)
+    }
+
+    companion object {
+        private const val KEY_TRANS = "KEY TRANS"
+        private const val KEY_COIN = "KEY_COIN"
+        private const val TAG_USD = "USD"
+
+        @JvmStatic
+        fun start(context: Context?, trans: TransactionModel, coin: CoinModel) {
+            val intent = Intent(context, DetailsActivity::class.java)
+            intent.putExtra(KEY_TRANS, trans)
+            intent.putExtra(KEY_COIN, Parcels.wrap(coin))
+            context?.startActivity(intent)
+        }
+    }
 }

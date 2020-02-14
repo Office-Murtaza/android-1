@@ -123,7 +123,6 @@
                 android:layout_marginStart="@dimen/margin_main"
                 android:gravity="center"
                 app:ccp_autoFormatNumber="true"
-                app:ccp_clickable="false"
                 app:ccp_defaultNameCode="US"
                 app:ccp_showNameCode="false"
                 app:layout_constraintBottom_toBottomOf="@id/til_phone"

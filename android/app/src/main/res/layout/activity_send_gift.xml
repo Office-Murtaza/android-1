@@ -68,8 +68,6 @@
         android:layout_marginStart="16dp"
         android:gravity="center"
         app:ccp_autoFormatNumber="true"
-        app:ccp_clickable="false"
-
         app:ccp_defaultNameCode="US"
         app:ccp_showNameCode="false"
         app:layout_constraintBottom_toBottomOf="@id/til_phone"

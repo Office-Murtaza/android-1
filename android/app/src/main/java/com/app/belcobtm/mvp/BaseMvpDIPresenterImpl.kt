@@ -12,8 +12,8 @@ import com.app.belcobtm.db.DbCryptoCoin
 import com.app.belcobtm.di.component.DaggerPresenterComponent
 import com.app.belcobtm.di.component.PresenterComponent
 import com.app.belcobtm.di.module.PresenterModule
-import com.app.belcobtm.util.*
-import com.app.belcobtm.util.Optional
+import com.app.belcobtm.core.*
+import com.app.belcobtm.core.Optional
 import com.google.protobuf.ByteString
 import io.reactivex.Observable
 import wallet.core.jni.*

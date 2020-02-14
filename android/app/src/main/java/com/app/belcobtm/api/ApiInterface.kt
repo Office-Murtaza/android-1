@@ -150,6 +150,13 @@ interface ApiInterface {
         @Path("txid") txid: String?
     ): Observable<ServerResponse<TransactionDetailsResponse>>
 
+    @GET("user/{userId}/coins/{coinId}/transaction/{txDbId}")
+    fun getTransactionDetailsByTxDbId(
+        @Path("userId") userId: String?,
+        @Path("coinId") coinId: String?,
+        @Path("txDbId") txDbId: String?
+    ): Observable<ServerResponse<TransactionDetailsResponse>>
+
 
 //    1. Получения UTXO
 //    GET /api/v1/user/{userId}/coins/{coinId}/transactions/utxo/{xpub} (BTC, ETH, BCH, LTC)

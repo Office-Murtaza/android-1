@@ -147,6 +147,10 @@ public class UserService {
         return userCoinRep.findByUserId(userId);
     }
 
+    public UserCoin getUserCoin(Long userId, String coinCode) {
+        return userCoinRep.findByUserIdAndCoinCode(userId, coinCode);
+    }
+
     public void save(CodeVerify codeVerify) {
         codeValidatorRepository.save(codeVerify);
     }
@@ -155,17 +159,17 @@ public class UserService {
         return userRep.findOneByPhone(phone);
     }
 
-    public GiftAddressDTO getUserGiftAddress(CoinService.CoinEnum coinId, String phone) {
+    public GiftAddressDTO getUserGiftAddress(CoinService.CoinEnum coinCode, String phone) {
         Optional<User> user = findByPhone(phone);
 
         if (user.isPresent()) {
             String address = user.get().getUserCoins().stream()
-                    .filter(k -> k.getCoin().getCode().equalsIgnoreCase(coinId.name()))
+                    .filter(k -> k.getCoin().getCode().equalsIgnoreCase(coinCode.name()))
                     .findFirst().get().getAddress();
 
             return new GiftAddressDTO(address);
         } else {
-            return new GiftAddressDTO(coinId.getWalletAddress());
+            return new GiftAddressDTO(coinCode.getWalletAddress());
         }
     }
 

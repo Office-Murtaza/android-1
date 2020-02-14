@@ -15,16 +15,16 @@ import java.math.BigDecimal;
 @Table(name = "w_transactionrecordgift")
 public class TransactionRecordGift extends BaseEntity {
 
-    @Column(name = "tx_id")
-    private String txId;
-
     private Integer type;
     private Integer status;
     private BigDecimal amount;
+    private Integer receiverStatus;
     private String phone;
-    private String message;
     private String imageId;
-    private Integer step;
+    private String message;
+
+    @Column(name = "tx_id")
+    private String txId;
 
     @Column(name = "ref_tx_id")
     private String refTxId;

@@ -57,7 +57,7 @@
     <!--seed phrase-->
     <string name="done">Done</string>
     <string name="seed_phrase">Seed Phrase</string>
-    <string name="seed_info">If you lost your seed phrase you will not be able to restore your wallet</string>
+    <string name="seed_info">If you lost your seed phrase you will not be able to recover your wallet</string>
     <string name="seed_clipboard">Seed phrase copied to clipboard</string>
 
     <!--recover seed phrase-->
@@ -149,5 +149,27 @@
     <string name="t_dey_lim">Daily Limit</string>
     <string name="t_transaction_limit">Transaction Limit</string>
 
+    <!-- Transition details screen -->
+    <string name="transition_details_screen_tx_id">TxId</string>
+    <string name="transition_details_screen_tx_dbld">TxDbld</string>
+    <string name="transition_details_screen_type">Type</string>
+    <string name="transition_details_screen_status">Status</string>
+    <string name="transition_details_screen_cash_status">Cash Status</string>
+    <string name="transition_details_screen_amount">Crypto Amount</string>
+    <string name="transition_details_screen_fiat_amount">Fiat Amount</string>
+    <string name="transition_details_screen_fee">Fee</string>
+    <string name="transition_details_screen_date">Date</string>
+    <string name="transition_details_screen_from_address">From Address</string>
+    <string name="transition_details_screen_to_address">To Address</string>
+    <string name="transition_details_screen_phone">Phone</string>
+    <string name="transition_details_screen_image">Image</string>
+    <string name="transition_details_screen_message">Message</string>
 
+    <string name="transition_details_screen_unknown">Unknown</string>
+    <string name="transition_details_screen_pending">Pending</string>
+    <string name="transition_details_screen_complete">Complete</string>
+    <string name="transition_details_screen_fail">Fail</string>
+    <string name="transition_details_screen_not_available">Not Available</string>
+    <string name="transition_details_screen_available">Available</string>
+    <string name="transition_details_screen_withdrawn">Withdrawn</string>
 </resources>

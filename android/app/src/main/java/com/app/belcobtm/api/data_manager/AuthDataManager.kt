@@ -8,7 +8,7 @@ import com.app.belcobtm.api.model.response.AddCoinsResponse
 import com.app.belcobtm.api.model.response.AuthResponse
 import com.app.belcobtm.api.model.response.VerifySmsResponse
 import com.app.belcobtm.db.DbCryptoCoin
-import com.app.belcobtm.util.Optional
+import com.app.belcobtm.core.Optional
 import io.reactivex.Observable
 
 class AuthDataManager : BaseDataManager() {

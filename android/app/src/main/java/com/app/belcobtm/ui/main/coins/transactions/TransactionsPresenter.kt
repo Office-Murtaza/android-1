@@ -4,7 +4,7 @@ import com.app.belcobtm.App
 import com.app.belcobtm.api.data_manager.CoinsDataManager
 import com.app.belcobtm.api.model.response.TransactionModel
 import com.app.belcobtm.mvp.BaseMvpDIPresenterImpl
-import com.app.belcobtm.util.pref
+import com.app.belcobtm.core.pref
 
 
 class TransactionsPresenter : BaseMvpDIPresenterImpl<TransactionsContract.View, CoinsDataManager>(),

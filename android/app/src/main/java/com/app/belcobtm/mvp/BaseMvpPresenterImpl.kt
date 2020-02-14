@@ -1,7 +1,7 @@
 package com.app.belcobtm.mvp
 
 import com.app.belcobtm.api.model.ServerException
-import com.app.belcobtm.util.Const
+import com.app.belcobtm.core.Const
 
 
 abstract class BaseMvpPresenterImpl<V : BaseMvpView> : BaseMvpPresenter<V> {

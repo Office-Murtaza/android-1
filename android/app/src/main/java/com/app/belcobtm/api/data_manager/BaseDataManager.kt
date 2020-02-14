@@ -3,9 +3,9 @@ package com.app.belcobtm.api.data_manager
 import com.app.belcobtm.api.RetrofitClient
 import com.app.belcobtm.api.model.ServerException
 import com.app.belcobtm.api.model.ServerResponse
-import com.app.belcobtm.util.None
-import com.app.belcobtm.util.Optional
-import com.app.belcobtm.util.Some
+import com.app.belcobtm.core.None
+import com.app.belcobtm.core.Optional
+import com.app.belcobtm.core.Some
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
