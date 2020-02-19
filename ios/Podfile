@@ -25,6 +25,7 @@ target 'batm' do
   pod 'RxFlow', '1.6.2'
   pod 'RxSwift', '4.5.0'
   pod 'RxCocoa', '4.5.0'
+  pod 'RxReachability', '0.1.8'
   
   target 'batmTests' do
     inherit! :search_paths

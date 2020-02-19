@@ -3,6 +3,7 @@ import TrustWalletCore
 import RxSwift
 
 enum APIError: Error, Equatable {
+  case noConnection
   case networkError
   case notAuthorized
   case forbidden

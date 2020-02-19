@@ -10,7 +10,8 @@
 "shared.add_gif" = "Add GIF";
 "shared.remove_gif" = "Remove GIF";
 "shared.error.title" = "Error";
-"shared.error.message" = "Something went wrong. Please try again later";
+"shared.error.message" = "Server Error, Try Later";
+"shared.error.no_connection.message" = "No Internet Connection";
 
 "welcome.tagline" = "Stay Ahead of the Crypto Future";
 "welcome.first_slide.title" = "Keep All Assets in One Place";

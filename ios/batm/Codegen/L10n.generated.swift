@@ -344,6 +344,12 @@ extension L.Shared {
     static let title = "shared.error.title"
   }
 }
+extension L.Shared.Error {
+
+  struct NoConnection {
+    static let message = "shared.error.no_connection.message"
+  }
+}
 extension L.Unlink {
 
   struct Button {
