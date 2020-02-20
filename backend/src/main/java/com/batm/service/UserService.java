@@ -176,7 +176,7 @@ public class UserService {
     private Identity selectFromExistingIdentities(User savedUser, List<IdentityPieceCellPhone> pieceCellPhones) {
         pieceCellPhones.sort(Comparator.comparing(IdentityPieceCellPhone::getId).reversed());
 
-        Optional<IdentityPieceCellPhone> identityPieceCellPhone = pieceCellPhones.stream().filter(e -> e.getIdentity().getState() == Constant.STATE_REGISTERED).findFirst();
+        Optional<IdentityPieceCellPhone> identityPieceCellPhone = pieceCellPhones.stream().filter(e -> e.getIdentity().getState() == Identity.STATE_REGISTERED).findFirst();
 
         if (!identityPieceCellPhone.isPresent()) {
             identityPieceCellPhone = pieceCellPhones.stream().findFirst();
@@ -201,7 +201,7 @@ public class UserService {
 
         Identity identity = new Identity();
         identity.setPublicId(Util.generatePublicId());
-        identity.setState(Constant.STATE_REGISTERED);
+        identity.setState(Identity.STATE_REGISTERED);
         identity.setVipbuydiscount(BigDecimal.ZERO);
         identity.setVipselldiscount(BigDecimal.ZERO);
         identity.setUser(savedUser);
@@ -214,7 +214,7 @@ public class UserService {
 
         IdentityPiece ip = new IdentityPiece();
         ip.setIdentity(savedIdentity);
-        ip.setPieceType(Constant.TYPE_CELLPHONE);
+        ip.setPieceType(IdentityPiece.TYPE_CELLPHONE);
         ip.setRegistration(true);
         ip.setCreated(date);
         IdentityPiece ipSaved = identityPieceRep.save(ip);

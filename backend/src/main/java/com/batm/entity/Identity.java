@@ -6,7 +6,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
-
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.Date;
@@ -19,6 +18,8 @@ import java.util.List;
 @Entity
 @Table(name = "identity")
 public class Identity extends BaseEntity {
+
+    public static final int STATE_REGISTERED = 1;
 
     @Column(
             name = "publicid"

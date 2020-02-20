@@ -15,6 +15,9 @@ import java.math.BigDecimal;
 @Table(name = "w_transactionrecordgift")
 public class TransactionRecordGift extends BaseEntity {
 
+    public static final int RECEIVER_NOT_EXIST = 0;
+    public static final int RECEIVER_EXIST = 1;
+
     private Integer type;
     private Integer status;
     private BigDecimal amount;

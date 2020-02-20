@@ -23,13 +23,7 @@ public class Constant {
     public static final BigDecimal TRX_DIVIDER = BigDecimal.valueOf(1_000_000L);
     public static final BigDecimal BNB_DIVIDER = BigDecimal.valueOf(100_000_000L);
 
-    public static final int TRANSACTION_LIMIT = 10;
-
-    public static final int RECEIVER_NOT_EXIST = 0;
-    public static final int RECEIVER_EXIST = 1;
-
-    public static final int STATE_REGISTERED = 1;
-    public static final int TYPE_CELLPHONE = 4;
+    public static final int TRANSACTIONS_COUNT = 10;
 
     public static final int SELL_NOT_NOTIFIED = 0;
     public static final int SELL_NOTIFIED = 1;
