@@ -1,8 +1,8 @@
 package com.app.belcobtm.api
 
 import com.app.belcobtm.App
-import com.app.belcobtm.core.Const.API_URL
-import com.app.belcobtm.core.pref
+import com.app.belcobtm.presentation.core.Const.API_URL
+import com.app.belcobtm.presentation.core.pref
 import com.facebook.stetho.okhttp3.StethoInterceptor
 import com.google.gson.Gson
 import okhttp3.OkHttpClient

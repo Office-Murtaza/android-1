@@ -5,7 +5,7 @@ import com.app.belcobtm.api.model.param.PreTransactionParam
 import com.app.belcobtm.api.model.param.SendTransactionParam
 import com.app.belcobtm.api.model.param.VerifySmsParam
 import com.app.belcobtm.api.model.response.*
-import com.app.belcobtm.core.Optional
+import com.app.belcobtm.presentation.core.Optional
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers

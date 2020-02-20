@@ -18,9 +18,6 @@ interface ApiInterface {
     @POST("refresh")
     fun refresh(@Body refreshParam: RefreshParam): Observable<ServerResponse<AuthResponse>>
 
-    @POST("user/login")
-    fun login(@Body loginParam: AuthParam): Observable<ServerResponse<AuthResponse>>
-
     @GET("user/{userId}/code/send")
     fun requestSmsCode(@Path("userId") userId: String): Observable<ServerResponse<RequestSmsResponse>>
 

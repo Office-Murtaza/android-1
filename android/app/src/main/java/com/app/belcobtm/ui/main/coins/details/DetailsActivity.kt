@@ -18,11 +18,11 @@ import androidx.core.view.isVisible
 import com.app.belcobtm.R
 import com.app.belcobtm.api.model.response.*
 import com.app.belcobtm.mvp.BaseMvpActivity
-import com.app.belcobtm.core.Const.GIPHY_API_KEY
-import com.app.belcobtm.core.QRUtils.Companion.getSpacelessQR
-import com.app.belcobtm.core.extensions.hide
-import com.app.belcobtm.core.extensions.show
-import com.app.belcobtm.core.extensions.toggle
+import com.app.belcobtm.presentation.core.Const.GIPHY_API_KEY
+import com.app.belcobtm.presentation.core.QRUtils.Companion.getSpacelessQR
+import com.app.belcobtm.presentation.core.extensions.hide
+import com.app.belcobtm.presentation.core.extensions.show
+import com.app.belcobtm.presentation.core.extensions.toggle
 import com.giphy.sdk.ui.GiphyCoreUI
 import com.giphy.sdk.ui.views.GPHMediaView
 import com.giphy.sdk.ui.views.GiphyDialogFragment

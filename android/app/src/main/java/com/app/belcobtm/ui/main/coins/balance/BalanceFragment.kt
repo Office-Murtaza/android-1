@@ -11,7 +11,7 @@ import com.app.belcobtm.api.model.response.CoinModel
 import com.app.belcobtm.mvp.BaseMvpFragment
 import com.app.belcobtm.ui.main.coins.transactions.TransactionsActivity
 import com.app.belcobtm.ui.main.coins.visibility.VisibilityCoinsActivity
-import com.app.belcobtm.core.CoinItemDecoration
+import com.app.belcobtm.presentation.core.CoinItemDecoration
 import kotlinx.android.synthetic.main.fragment_balance.*
 
 

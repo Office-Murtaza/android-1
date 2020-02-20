@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/bg_color"
-    tools:context=".ui.auth.welcome.WelcomeActivity">
+    tools:context=".presentation.features.authorization.welcome.WelcomeActivity">
 
     <!-- Login progress -->
     <FrameLayout
@@ -116,7 +116,7 @@
 
 
             <com.hbb20.CountryCodePicker
-                android:id="@+id/phone_ccp"
+                android:id="@+id/phonePickerView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/margin_main"
@@ -124,8 +124,8 @@
                 app:ccp_autoFormatNumber="true"
                 app:ccp_defaultNameCode="US"
                 app:ccp_showNameCode="false"
-                app:layout_constraintBottom_toBottomOf="@id/til_phone"
-                app:layout_constraintEnd_toStartOf="@id/til_phone"
+                app:layout_constraintBottom_toBottomOf="@id/phoneView"
+                app:layout_constraintEnd_toStartOf="@id/phoneView"
                 app:layout_constraintStart_toStartOf="parent"/>
 
             <View
@@ -133,26 +133,26 @@
                 android:layout_width="1dp"
                 android:layout_height="20dp"
                 android:background="@color/gray_text_color"
-                app:layout_constraintBottom_toBottomOf="@id/phone_ccp"
-                app:layout_constraintStart_toEndOf="@id/phone_ccp"
-                app:layout_constraintTop_toTopOf="@id/phone_ccp" />
+                app:layout_constraintBottom_toBottomOf="@id/phonePickerView"
+                app:layout_constraintStart_toEndOf="@id/phonePickerView"
+                app:layout_constraintTop_toTopOf="@id/phonePickerView" />
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/til_phone"
+                android:id="@+id/phoneView"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/margin_half"
                 android:layout_marginEnd="@dimen/margin_main"
                 android:orientation="horizontal"
-                app:layout_constraintBottom_toTopOf="@id/til_pass"
+                app:layout_constraintBottom_toTopOf="@id/passwordView"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/phone_ccp">
+                app:layout_constraintStart_toEndOf="@id/phonePickerView">
 
                 <androidx.appcompat.widget.AppCompatEditText
                     android:id="@+id/phone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_toEndOf="@id/phone_ccp"
+                    android:layout_toEndOf="@id/phonePickerView"
                     android:drawableEnd="@drawable/ic_phone"
                     android:hint="@string/phone_number"
                     android:inputType="phone"
@@ -162,13 +162,13 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/til_pass"
+                android:id="@+id/passwordView"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/margin_main"
                 android:layout_marginTop="@dimen/margin_main"
                 android:layout_marginEnd="@dimen/margin_main"
-                app:layout_constraintBottom_toTopOf="@id/bt_next"
+                app:layout_constraintBottom_toTopOf="@id/nextButtonView"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent">
 
@@ -186,7 +186,7 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/bt_next"
+                android:id="@+id/nextButtonView"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/margin_half"
@@ -199,10 +199,10 @@
                 app:fontFamily="@font/poppins_bold"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/bt_cancel" />
+                app:layout_constraintStart_toEndOf="@id/cancelButtonView" />
 
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/bt_cancel"
+                android:id="@+id/cancelButtonView"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/margin_main"
@@ -212,8 +212,8 @@
                 android:text="@string/cancel"
                 android:textColor="@color/dark_gray_text_color"
                 app:fontFamily="@font/poppins_bold"
-                app:layout_constraintBaseline_toBaselineOf="@id/bt_next"
-                app:layout_constraintEnd_toStartOf="@+id/bt_next"
+                app:layout_constraintBaseline_toBaselineOf="@id/nextButtonView"
+                app:layout_constraintEnd_toStartOf="@+id/nextButtonView"
                 app:layout_constraintStart_toStartOf="parent" />
 
 

@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.view.MenuItem
 import com.app.belcobtm.R
 import com.app.belcobtm.mvp.BaseMvpActivity
-import com.app.belcobtm.core.CoinItemDecoration
+import com.app.belcobtm.presentation.core.CoinItemDecoration
 import kotlinx.android.synthetic.main.activity_visibility_coins.*
 
 

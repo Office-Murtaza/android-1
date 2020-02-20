@@ -2,7 +2,7 @@ package com.app.belcobtm.ui.main.main_activity
 
 import com.app.belcobtm.App
 import com.app.belcobtm.mvp.BaseMvpPresenterImpl
-import com.app.belcobtm.core.pref
+import com.app.belcobtm.presentation.core.pref
 
 
 class MainPresenter : BaseMvpPresenterImpl<MainContract.View>(),

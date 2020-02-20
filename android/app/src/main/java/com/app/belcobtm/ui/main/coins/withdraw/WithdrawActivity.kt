@@ -76,7 +76,7 @@ class WithdrawActivity : BaseMvpActivity<WithdrawContract.View, WithdrawContract
             false
         })
 
-        bt_next.setOnClickListener { validateAndSubmit() }
+        nextButtonView.setOnClickListener { validateAndSubmit() }
     }
 
     var cryptoBalanceToSend = 0.0

@@ -7,6 +7,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.AppCompatEditText
 import com.app.belcobtm.R
 import com.app.belcobtm.mvp.BaseMvpActivity
+import com.app.belcobtm.presentation.core.extensions.getString
 import com.app.belcobtm.ui.auth.seed.SeedPhraseActivity
 import com.google.android.material.textfield.TextInputLayout
 import kotlinx.android.synthetic.main.activity_create_wallet.*
@@ -19,11 +20,9 @@ class CreateWalletActivity :
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create_wallet)
-        phone_ccp.registerCarrierNumberEditText(phone)
-        bt_cancel.setOnClickListener { onBackPressed() }
-        bt_next.setOnClickListener {
-            attemptCreateWallet()
-        }
+        phonePickerView.registerCarrierNumberEditText(phoneView.editText)
+        cancelButtonView.setOnClickListener { onBackPressed() }
+        nextButtonView.setOnClickListener { attemptCreateWallet() }
 
         confirm_pass.setOnEditorActionListener(TextView.OnEditorActionListener { _, id, _ ->
             if (id == EditorInfo.IME_ACTION_DONE || id == EditorInfo.IME_NULL) {
@@ -37,18 +36,15 @@ class CreateWalletActivity :
 
     private fun attemptCreateWallet() {
 
-        if (phone_ccp.isValidFullNumber)
+        if (phonePickerView.isValidFullNumber) {
             mPresenter.attemptCreateWallet(
-                phone_ccp.formattedFullNumber
-                    .replace("-", "")
-                    .replace("(", "")
-                    .replace(")", "")
-                    .replace(" ", ""),
-                pass.text.toString(),
+                phonePickerView.formattedFullNumber.replace("[- )(]".toRegex(), ""),
+                passwordView.getString(),
                 confirm_pass.text.toString()
             )
-        else
+        } else {
             showError("Invalid phone number")
+        }
     }
 
     override fun openSmsCodeDialog(error: String?) {

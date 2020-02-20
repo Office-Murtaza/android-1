@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/bg_color"
-    tools:context=".ui.auth.welcome.WelcomeActivity">
+    tools:context=".presentation.features.authorization.welcome.WelcomeActivity">
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/logo"
@@ -41,25 +41,25 @@
         app:layout_constraintTop_toBottomOf="@+id/logo" />
 
     <androidx.viewpager2.widget.ViewPager2
-        android:id="@+id/view_pager"
+        android:id="@+id/pagerView"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="@dimen/margin_x2"
         android:background="@android:color/transparent"
-        app:layout_constraintBottom_toTopOf="@id/view_pager_indicator"
+        app:layout_constraintBottom_toTopOf="@id/pagerIndicatorView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/logo_text" />
 
     <me.relex.circleindicator.CircleIndicator3
-        android:id="@+id/view_pager_indicator"
+        android:id="@+id/pagerIndicatorView"
         android:layout_width="match_parent"
         android:layout_height="24dp"
         android:layout_marginBottom="@dimen/margin_half"
         app:layout_constraintBottom_toTopOf="@id/card_view"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/view_pager" />
+        app:layout_constraintTop_toBottomOf="@id/pagerView" />
 
 
     <com.google.android.material.card.MaterialCardView
@@ -71,7 +71,7 @@
         android:layout_marginBottom="@dimen/margin_main"
         app:cardBackgroundColor="@android:color/white"
         app:cardCornerRadius="25dp"
-        app:layout_constraintBottom_toTopOf="@id/contact_support">
+        app:layout_constraintBottom_toTopOf="@id/contactSupportButtonView">
 
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
@@ -84,7 +84,7 @@
             android:paddingBottom="@dimen/margin_half">
 
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/create_a_new_wallet"
+                android:id="@+id/createWalletButtonView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_half"
@@ -94,7 +94,7 @@
                 app:fontFamily="@font/poppins_bold" />
 
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/recover_my_wallet"
+                android:id="@+id/recoverWalletButtonView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_main"
@@ -111,7 +111,7 @@
                 android:orientation="horizontal">
 
                 <androidx.appcompat.widget.AppCompatCheckBox
-                    android:id="@+id/accept_terms"
+                    android:id="@+id/termsToggleView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="?attr/selectableItemBackgroundBorderless"
@@ -122,7 +122,7 @@
                     app:buttonTint="@color/blue_color" />
 
                 <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/terms"
+                    android:id="@+id/termsLinkView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/margin_half"
@@ -139,7 +139,7 @@
     </com.google.android.material.card.MaterialCardView>
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/contact_support"
+        android:id="@+id/contactSupportButtonView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/margin_main"

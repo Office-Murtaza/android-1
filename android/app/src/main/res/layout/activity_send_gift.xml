@@ -62,7 +62,7 @@
 
 
     <com.hbb20.CountryCodePicker
-        android:id="@+id/phone_ccp"
+        android:id="@+id/phonePickerView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -70,13 +70,13 @@
         app:ccp_autoFormatNumber="true"
         app:ccp_defaultNameCode="US"
         app:ccp_showNameCode="false"
-        app:layout_constraintBottom_toBottomOf="@id/til_phone"
+        app:layout_constraintBottom_toBottomOf="@id/phoneView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.05"
         app:layout_constraintStart_toStartOf="parent" />
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/til_phone"
+        android:id="@+id/phoneView"
         android:layout_width="260dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/margin_half"
@@ -84,14 +84,14 @@
         android:layout_marginEnd="@dimen/margin_x2"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/phone_ccp"
+        app:layout_constraintStart_toEndOf="@id/phonePickerView"
         app:layout_constraintTop_toBottomOf="@id/toolbar_container">
 
         <androidx.appcompat.widget.AppCompatEditText
             android:id="@+id/phone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_toEndOf="@id/phone_ccp"
+            android:layout_toEndOf="@id/phonePickerView"
             android:drawableEnd="@drawable/ic_phone"
             android:hint="@string/phone_number"
             android:inputType="phone"
@@ -116,7 +116,7 @@
         app:fontFamily="@font/poppins_medium"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/til_phone" />
+        app:layout_constraintTop_toBottomOf="@id/phoneView" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/amount_title"
@@ -306,7 +306,7 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/bt_next"
+        android:id="@+id/nextButtonView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:foreground="?attr/selectableItemBackground"

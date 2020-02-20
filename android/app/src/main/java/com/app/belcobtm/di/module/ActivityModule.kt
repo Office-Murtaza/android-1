@@ -2,14 +2,10 @@ package com.app.belcobtm.di.module
 
 import com.app.belcobtm.ui.auth.create_wallet.CreateWalletContract
 import com.app.belcobtm.ui.auth.create_wallet.CreateWalletPresenter
-import com.app.belcobtm.ui.auth.login.LoginContract
-import com.app.belcobtm.ui.auth.login.LoginPresenter
 import com.app.belcobtm.ui.auth.pin.PinContract
 import com.app.belcobtm.ui.auth.pin.PinPresenter
 import com.app.belcobtm.ui.auth.recover_seed.RecoverSeedContract
 import com.app.belcobtm.ui.auth.recover_seed.RecoverSeedPresenter
-import com.app.belcobtm.ui.auth.recover_wallet.RecoverWalletContract
-import com.app.belcobtm.ui.auth.recover_wallet.RecoverWalletPresenter
 import com.app.belcobtm.ui.main.coins.details.DetailsContract
 import com.app.belcobtm.ui.main.coins.details.DetailsPresenter
 import com.app.belcobtm.ui.main.coins.sell.SellContract
@@ -38,11 +34,6 @@ import dagger.Provides
 class ActivityModule {
 
     @Provides
-    fun provideLoginPresenter(): LoginContract.Presenter {
-        return LoginPresenter()
-    }
-
-    @Provides
     fun provideCreateWalletPresenter(): CreateWalletContract.Presenter {
         return CreateWalletPresenter()
     }
@@ -50,11 +41,6 @@ class ActivityModule {
     @Provides
     fun provideRecoverSeedPresenter(): RecoverSeedContract.Presenter {
         return RecoverSeedPresenter()
-    }
-
-    @Provides
-    fun provideRecoverWalletPresenter(): RecoverWalletContract.Presenter {
-        return RecoverWalletPresenter()
     }
 
     @Provides
@@ -101,14 +87,14 @@ class ActivityModule {
     fun provideSendGiftPresenter(): SendGiftContract.Presenter {
         return SendGiftPresenter()
     }
- @Provides
+
+    @Provides
     fun provideSellPresenter(): SellContract.Presenter {
         return SellPresenter()
     }
-@Provides
+
+    @Provides
     fun provideDetailsPresenter(): DetailsContract.Presenter {
         return DetailsPresenter()
     }
-
-
 }

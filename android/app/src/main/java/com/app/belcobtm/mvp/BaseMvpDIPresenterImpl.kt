@@ -12,8 +12,8 @@ import com.app.belcobtm.db.DbCryptoCoin
 import com.app.belcobtm.di.component.DaggerPresenterComponent
 import com.app.belcobtm.di.component.PresenterComponent
 import com.app.belcobtm.di.module.PresenterModule
-import com.app.belcobtm.core.*
-import com.app.belcobtm.core.Optional
+import com.app.belcobtm.presentation.core.*
+import com.app.belcobtm.presentation.core.Optional
 import com.google.protobuf.ByteString
 import io.reactivex.Observable
 import wallet.core.jni.*
@@ -586,9 +586,9 @@ abstract class BaseMvpDIPresenterImpl<V : BaseMvpView, T : BaseDataManager> : Ba
 
     open fun getByteFee(coinName: String?): Int {
         return when (coinName) {
-            "BTC" -> return getFeeByteFromList(coinName, 40/100_000_000)
-            "BCH" -> return getFeeByteFromList(coinName, 40/100_000_000)
-            "LTC" -> return getFeeByteFromList(coinName, 4/100_000_000)
+            "BTC" -> return getFeeByteFromList(coinName, 40 / 100_000_000)
+            "BCH" -> return getFeeByteFromList(coinName, 40 / 100_000_000)
+            "LTC" -> return getFeeByteFromList(coinName, 4 / 100_000_000)
             else -> return getFeeByteFromList(coinName, 4)
         }
     }

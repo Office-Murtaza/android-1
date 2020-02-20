@@ -7,7 +7,7 @@ import com.app.belcobtm.api.model.response.TransactionModel
 import com.app.belcobtm.db.DbCryptoCoin
 import com.app.belcobtm.db.DbCryptoCoinModel
 import com.app.belcobtm.mvp.BaseMvpDIPresenterImpl
-import com.app.belcobtm.core.pref
+import com.app.belcobtm.presentation.core.pref
 import io.realm.Realm
 import wallet.core.jni.CoinType
 

@@ -3,7 +3,7 @@ package com.app.belcobtm.ui.main.atm
 import com.app.belcobtm.api.data_manager.CoinsDataManager
 import com.app.belcobtm.api.model.response.AtmResponse
 import com.app.belcobtm.mvp.BaseMvpDIPresenterImpl
-import com.app.belcobtm.core.Optional
+import com.app.belcobtm.presentation.core.Optional
 
 
 class AtmPresenter : BaseMvpDIPresenterImpl<AtmContract.View, CoinsDataManager>(),
