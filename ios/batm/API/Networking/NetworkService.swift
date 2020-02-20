@@ -1,6 +1,7 @@
 import Moya
 import RxSwift
 import ObjectMapper
+import Reachability
 
 protocol NetworkRequestExecutor {
   func execute<Request: APIRequest, Response>(_ apiRequest: Request) -> Single<Response>
@@ -19,10 +20,13 @@ protocol NetworkRequestExecutor {
 final class NetworkService {
   let baseApiUrl: URL
   let provider: MoyaProvider<MultiTarget>
+  let reachability: Reachability?
   
   init(baseApiUrl: URL, provider: MoyaProvider<MultiTarget> = .init()) {
     self.baseApiUrl = baseApiUrl
     self.provider = provider
+    self.reachability = Reachability()
+    try? self.reachability?.startNotifier()
   }
   
   func execute<Request: APIRequest, Response>(_ apiRequest: Request, headers: [String: String]? = nil)
@@ -54,11 +58,19 @@ final class NetworkService {
   private func runWithProgress<Request>(_ request: Request,
                                         headers: [String: String]?) -> Observable<Moya.ProgressResponse>
     where Request: SimpleRequest {
+      if let reachability = reachability, reachability.connection == .none {
+        return .error(APIError.noConnection)
+      }
+      
       return provider.rx.requestWithProgress(prepare(request, headers: headers))
         .filterSuccessfulStatusCodes()
   }
   
   private func run<Request: SimpleRequest>(_ request: Request, headers: [String: String]?) -> Single<Moya.Response> {
+    if let reachability = reachability, reachability.connection == .none {
+      return .error(APIError.noConnection)
+    }
+    
     return provider.rx.request(prepare(request, headers: headers))
       .filterSuccessfulStatusCodes()
   }

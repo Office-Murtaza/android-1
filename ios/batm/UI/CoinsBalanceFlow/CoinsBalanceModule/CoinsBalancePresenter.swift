@@ -36,8 +36,11 @@ class CoinsBalancePresenter: ModulePresenter, CoinsBalanceModule {
     input.refresh
       .asObservable()
       .doOnNext { [store] in store.action.accept(.startFetching) }
-      .flatMap { [unowned self] in self.track(self.usecase.getCoinsBalance()) }
-      .map { CoinsBalanceAction.finishFetching($0) }
+      .flatMap { [unowned self] in
+        self.track(self.usecase.getCoinsBalance())
+          .do(onCompleted: { self.store.action.accept(.finishFetching) })
+      }
+      .map { CoinsBalanceAction.finishFetchingCoinsBalance($0) }
       .bind(to: store.action)
       .disposed(by: disposeBag)
     
@@ -57,7 +60,7 @@ class CoinsBalancePresenter: ModulePresenter, CoinsBalanceModule {
     fetchCoinsBalanceRelay
       .throttle(2.0, scheduler: MainScheduler.instance)
       .flatMap { [unowned self] in self.track(self.usecase.getCoinsBalance()) }
-      .map { CoinsBalanceAction.finishFetching($0) }
+      .map { CoinsBalanceAction.finishFetchingCoinsBalance($0) }
       .bind(to: store.action)
       .disposed(by: disposeBag)
   }

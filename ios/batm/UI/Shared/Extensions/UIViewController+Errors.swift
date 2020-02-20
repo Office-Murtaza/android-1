@@ -5,8 +5,6 @@ import RxSwift
 extension Reactive where Base: UIViewController {
   var errors: Binder<Error> {
     return Binder(base) { controller, error in
-      let message: String
-      
       if error is PinCodeError {
         return
       }
@@ -15,14 +13,19 @@ extension Reactive where Base: UIViewController {
         return
       }
       
-      var errorMessage = localize(L.Shared.Error.message)
-      #if DEBUG
-      errorMessage += "\n" + String(describing: error)
-      #endif
-      message = errorMessage
+      var errorMessage: String
+      
+      if let apiError = error as? APIError, case .noConnection = apiError {
+        errorMessage = localize(L.Shared.Error.NoConnection.message)
+      } else {
+        errorMessage = localize(L.Shared.Error.message)
+        #if DEBUG
+        errorMessage += "\n" + String(describing: error)
+        #endif
+      }
       
       let alert = UIAlertController(title: localize(L.Shared.Error.title),
-                                    message: message,
+                                    message: errorMessage,
                                     preferredStyle: .alert)
       let okAction = UIAlertAction(title: localize(L.Shared.ok), style: .default)
       alert.addAction(okAction)

@@ -2,7 +2,8 @@ import Foundation
 
 enum CoinsBalanceAction: Equatable {
   case startFetching
-  case finishFetching(CoinsBalance)
+  case finishFetching
+  case finishFetchingCoinsBalance(CoinsBalance)
 }
 
 struct CoinsBalanceState: Equatable {
@@ -23,7 +24,8 @@ final class CoinsBalanceStore: ViewStore<CoinsBalanceAction, CoinsBalanceState> 
     
     switch action {
     case .startFetching: state.isFetching = true
-    case let .finishFetching(coinsBalance):
+    case .finishFetching: state.isFetching = false
+    case let .finishFetchingCoinsBalance(coinsBalance):
       state.isFetching = false
       state.coinsBalance = coinsBalance
     }
