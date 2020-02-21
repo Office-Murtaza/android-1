@@ -123,7 +123,8 @@ public class TransactionController {
     @PostMapping("/user/{userId}/coins/{coinCode}/transactions/submit")
     public Response submit(@PathVariable Long userId, @PathVariable CoinService.CoinEnum coinCode, @RequestBody SubmitTransactionDTO transaction) {
         try {
-            String txId = coinCode.submitTransaction(userId, transaction);
+            String txId = coinCode.submitTransaction(transaction.getHex());
+            transactionService.saveGift(userId, coinCode, txId, transaction);
 
             if (StringUtils.isNotBlank(txId)) {
                 JSONObject res = new JSONObject();

@@ -173,10 +173,11 @@ public class WalletService {
         return null;
     }
 
-    public String sendCoins(String toAddress, BigDecimal amount, CoinService.CoinEnum coinCode) {
+    public String sendCoins(CoinService.CoinEnum coinCode, String toAddress, BigDecimal amount) {
         try {
             SignDTO signDTO = coinCode.buildSignDTOFromMainWallet();
-            String txId = coinCode.sign(toAddress, amount, signDTO);
+            String hex = coinCode.sign(toAddress, amount, signDTO);
+            String txId = coinCode.submitTransaction(hex);
 
             TransactionRecordWallet wallet = new TransactionRecordWallet();
             wallet.setCoin(coinCode.getCoinEntity());

@@ -1,7 +1,5 @@
 package com.batm.rest;
 
-import com.batm.dto.WalletDTO;
-import com.batm.model.Response;
 import com.batm.service.CoinService;
 import com.batm.service.WalletService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,42 +13,28 @@ public class WalletController {
     @Autowired
     private WalletService walletService;
 
-    @GetMapping("/address")
-    public Response getCryptoAddress(@RequestParam CoinService.CoinEnum cryptoCurrency) {
-        try {
-            WalletDTO dto = new WalletDTO();
-            dto.setAddress(walletService.getCryptoAddress(cryptoCurrency));
+    @GetMapping("/validate")
+    public boolean getValidate(@RequestParam CoinService.CoinEnum coinCode, @RequestParam String address) {
+        return coinCode.getCoinType().validate(address);
+    }
 
-            return Response.ok(dto);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return Response.ok(new WalletDTO());
-        }
+    @GetMapping("/address")
+    public String getAddress(@RequestParam CoinService.CoinEnum coinCode) {
+        return walletService.getCryptoAddress(coinCode);
+    }
+
+    @GetMapping("/price")
+    public BigDecimal getPrice(@RequestParam CoinService.CoinEnum coinCode) {
+        return coinCode.getPrice();
     }
 
     @GetMapping("/balance")
-    public Response getCryptoBalance(@RequestParam CoinService.CoinEnum cryptoCurrency) {
-        try {
-            WalletDTO dto = new WalletDTO();
-            dto.setBalance(walletService.getCryptoBalance(cryptoCurrency));
-
-            return Response.ok(dto);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return Response.ok(new WalletDTO());
-        }
+    public BigDecimal getBalance(@RequestParam CoinService.CoinEnum coinCode) {
+        return walletService.getCryptoBalance(coinCode);
     }
 
     @GetMapping("/send")
-    public Response sendCoins(@RequestParam String destinationAddress, @RequestParam BigDecimal amount, @RequestParam CoinService.CoinEnum cryptoCurrency) {
-        try {
-            WalletDTO dto = new WalletDTO();
-            dto.setTxId(walletService.sendCoins(destinationAddress, amount, cryptoCurrency));
-
-            return Response.ok(dto);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return Response.ok(new WalletDTO());
-        }
+    public String sendCoins(@RequestParam CoinService.CoinEnum coinCode, @RequestParam String toAddress, @RequestParam BigDecimal amount) {
+        return walletService.sendCoins(coinCode, toAddress, amount);
     }
 }

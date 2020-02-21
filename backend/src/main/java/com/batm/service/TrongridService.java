@@ -55,8 +55,9 @@ public class TrongridService {
         return BigDecimal.ZERO;
     }
 
-    public String submitTransaction(JSONObject json) {
+    public String submitTransaction(String hex) {
         try {
+            JSONObject json = JSONObject.fromObject(hex);
             JSONObject res = JSONObject.fromObject(rest.postForObject(nodeUrl + "/wallet/broadcasttransaction", json, String.class));
 
             if (res.optBoolean("result")) {

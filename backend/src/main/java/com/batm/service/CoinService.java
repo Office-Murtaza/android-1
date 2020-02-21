@@ -28,7 +28,6 @@ public class CoinService {
     private static BinanceApiRestClient binanceRest;
     private static WalletService walletService;
     private static UserService userService;
-    private static TransactionService transactionService;
 
     private static BlockbookService blockbook;
     private static BinanceService binance;
@@ -48,7 +47,6 @@ public class CoinService {
     public CoinService(@Autowired final BinanceApiRestClient binanceRest,
                        @Autowired final WalletService walletService,
                        @Autowired final UserService userService,
-                       @Autowired final TransactionService transactionService,
 
                        @Autowired final CoinRep coinRep,
 
@@ -70,7 +68,6 @@ public class CoinService {
         CoinService.binanceRest = binanceRest;
         CoinService.walletService = walletService;
         CoinService.userService = userService;
-        CoinService.transactionService = transactionService;
 
         CoinService.coinList = coinRep.findAll();
         CoinService.coinMap = CoinService.coinList.stream().collect(Collectors.toMap(Coin::getCode, Function.identity()));
@@ -161,20 +158,8 @@ public class CoinService {
             }
 
             @Override
-            public String submitTransaction(Long userId, SubmitTransactionDTO transaction) {
-                try {
-                    String txId = blockbook.submitTransaction(btcNodeUrl, transaction.getHex());
-
-                    if (TransactionType.SEND_GIFT.getValue() == transaction.getType()) {
-                        transactionService.saveGift(userId, this, txId, transaction);
-                    }
-
-                    return txId;
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
-                return null;
+            public String submitTransaction(String hex) {
+                return blockbook.submitTransaction(btcNodeUrl, hex);
             }
 
             @Override
@@ -278,20 +263,8 @@ public class CoinService {
             }
 
             @Override
-            public String submitTransaction(Long userId, SubmitTransactionDTO transaction) {
-                try {
-                    String txId = blockbook.submitTransaction(ethNodeUrl, transaction.getHex());
-
-                    if (TransactionType.SEND_GIFT.getValue() == transaction.getType()) {
-                        transactionService.saveGift(userId, this, txId, transaction);
-                    }
-
-                    return txId;
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
-                return null;
+            public String submitTransaction(String hex) {
+                return blockbook.submitTransaction(ethNodeUrl, hex);
             }
 
             @Override
@@ -391,20 +364,8 @@ public class CoinService {
             }
 
             @Override
-            public String submitTransaction(Long userId, SubmitTransactionDTO transaction) {
-                try {
-                    String txId = blockbook.submitTransaction(bchNodeUrl, transaction.getHex());
-
-                    if (TransactionType.SEND_GIFT.getValue() == transaction.getType()) {
-                        transactionService.saveGift(userId, this, txId, transaction);
-                    }
-
-                    return txId;
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
-                return null;
+            public String submitTransaction(String hex) {
+                return blockbook.submitTransaction(bchNodeUrl, hex);
             }
 
             @Override
@@ -504,20 +465,8 @@ public class CoinService {
             }
 
             @Override
-            public String submitTransaction(Long userId, SubmitTransactionDTO transaction) {
-                try {
-                    String txId = blockbook.submitTransaction(ltcNodeUrl, transaction.getHex());
-
-                    if (TransactionType.SEND_GIFT.getValue() == transaction.getType()) {
-                        transactionService.saveGift(userId, this, txId, transaction);
-                    }
-
-                    return txId;
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
-                return null;
+            public String submitTransaction(String hex) {
+                return blockbook.submitTransaction(ltcNodeUrl, hex);
             }
 
             @Override
@@ -618,20 +567,8 @@ public class CoinService {
             }
 
             @Override
-            public String submitTransaction(Long userId, SubmitTransactionDTO transaction) {
-                try {
-                    String txId = binance.submitTransaction(transaction.getHex());
-
-                    if (TransactionType.SEND_GIFT.getValue() == transaction.getType()) {
-                        transactionService.saveGift(userId, this, txId, transaction);
-                    }
-
-                    return txId;
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
-                return null;
+            public String submitTransaction(String hex) {
+                return binance.submitTransaction(hex);
             }
 
             @Override
@@ -732,20 +669,8 @@ public class CoinService {
             }
 
             @Override
-            public String submitTransaction(Long userId, SubmitTransactionDTO transaction) {
-                try {
-                    String txId = rippled.submitTransaction(transaction.getHex());
-
-                    if (TransactionType.SEND_GIFT.getValue() == transaction.getType()) {
-                        transactionService.saveGift(userId, this, txId, transaction);
-                    }
-
-                    return txId;
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
-                return null;
+            public String submitTransaction(String hex) {
+                return rippled.submitTransaction(hex);
             }
 
             @Override
@@ -846,20 +771,8 @@ public class CoinService {
             }
 
             @Override
-            public String submitTransaction(Long userId, SubmitTransactionDTO transaction) {
-                try {
-                    String txId = trongrid.submitTransaction(JSONObject.fromObject(transaction.getHex()));
-
-                    if (TransactionType.SEND_GIFT.getValue() == transaction.getType()) {
-                        transactionService.saveGift(userId, this, txId, transaction);
-                    }
-
-                    return txId;
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
-                return null;
+            public String submitTransaction(String hex) {
+                return trongrid.submitTransaction(hex);
             }
 
             @Override
@@ -917,7 +830,7 @@ public class CoinService {
 
         public abstract String sign(String toAddress, BigDecimal amount, SignDTO dto);
 
-        public abstract String submitTransaction(Long userId, SubmitTransactionDTO transaction);
+        public abstract String submitTransaction(String hex);
 
         public abstract CoinType getCoinType();
 
