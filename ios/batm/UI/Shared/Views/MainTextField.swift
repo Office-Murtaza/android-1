@@ -15,9 +15,10 @@ enum MainTextFieldType {
   case message
 }
 
-class MainTextField: UITextField {
+class MainTextField: UITextField, HasDisposeBag {
   
   let imageView = UIImageView(image: nil)
+  let tapRecognizer = UITapGestureRecognizer()
   
   private var padding = UIEdgeInsets(top: 0, left: 18, bottom: 0, right: 18)
   
@@ -32,6 +33,7 @@ class MainTextField: UITextField {
     
     setupUI()
     setupLayout()
+    setupBindings()
   }
   
   required init?(coder aDecoder: NSCoder) {
@@ -52,6 +54,7 @@ class MainTextField: UITextField {
     layer.borderColor = UIColor.whiteTwo.cgColor
     
     addSubview(imageView)
+    imageView.addGestureRecognizer(tapRecognizer)
   }
   
   private func setupLayout() {
@@ -62,6 +65,19 @@ class MainTextField: UITextField {
       $0.centerY.equalToSuperview()
       $0.right.equalToSuperview().offset(-17)
     }
+  }
+  
+  private func setupBindings() {
+    tapRecognizer.rx.event
+      .asDriver()
+      .drive(onNext: { [unowned self] _ in self.togglePasswordVisibility() })
+      .disposed(by: disposeBag)
+  }
+  
+  private func togglePasswordVisibility() {
+    let imageName = isSecureTextEntry ? "login_password_hidden" : "login_password"
+    setImage(UIImage(named: imageName))
+    isSecureTextEntry.toggle()
   }
   
   override open func textRect(forBounds bounds: CGRect) -> CGRect {
@@ -81,6 +97,25 @@ class MainTextField: UITextField {
     padding = padding.byUpdating(right: image == nil ? 18 : 35)
   }
   
+  private func setUpForPassword(new: Bool = false) {
+    setImage(UIImage(named: "login_password"))
+    imageView.isUserInteractionEnabled = true
+    isSecureTextEntry = true
+    
+    if #available(iOS 12.0, *), new {
+      textContentType = .newPassword
+    } else {
+      textContentType = .password
+    }
+  }
+  
+  private func setUpForPinCode() {
+    setImage(UIImage(named: "settings_pin"))
+    imageView.tintColor = .whiteFive
+    keyboardType = .numberPad
+    isSecureTextEntry = true
+  }
+  
   func configure(for type: MainTextFieldType) {
     let attributes: [NSAttributedString.Key: Any] = [.foregroundColor: UIColor.warmGrey,
                                                      .font: UIFont.poppinsMedium12]
@@ -89,68 +124,35 @@ class MainTextField: UITextField {
     switch type {
     case .oldPassword:
       placeholder = localize(L.ChangePassword.Form.OldPassword.placeholder)
-      setImage(UIImage(named: "login_password"))
-      keyboardType = .default
-      isSecureTextEntry = true
-      textContentType = .password
+      setUpForPassword()
     case .newPassword:
       placeholder = localize(L.ChangePassword.Form.NewPassword.placeholder)
-      setImage(UIImage(named: "login_password"))
-      keyboardType = .default
-      isSecureTextEntry = true
-      if #available(iOS 12.0, *) {
-        textContentType = .newPassword
-      } else {
-        textContentType = .password
-      }
+      setUpForPassword(new: true)
     case .confirmNewPassword:
       placeholder = localize(L.ChangePassword.Form.ConfirmNewPassword.placeholder)
-      setImage(UIImage(named: "login_password"))
-      keyboardType = .default
-      isSecureTextEntry = true
-      textContentType = .password
+      setUpForPassword()
     case .password:
       placeholder = localize(L.CreateWallet.Form.Password.placeholder)
-      setImage(UIImage(named: "login_password"))
-      keyboardType = .default
-      isSecureTextEntry = true
-      if #available(iOS 12.0, *) {
-        textContentType = .newPassword
-      } else {
-        textContentType = .password
-      }
+      setUpForPassword(new: true)
     case .confirmPassword:
       placeholder = localize(L.CreateWallet.Form.ConfirmPassword.placeholder)
-      setImage(UIImage(named: "login_password"))
-      keyboardType = .default
-      isSecureTextEntry = true
-      textContentType = .password
+      setUpForPassword()
     case .smsCode:
       placeholder = localize(L.CreateWallet.Code.placeholder)
       setImage(UIImage(named: "login_sms_code"))
       keyboardType = .numberPad
-      isSecureTextEntry = false
       if #available(iOS 12.0, *) {
         textContentType = .oneTimeCode
       }
     case .oldPin:
       placeholder = localize(L.ChangePin.Form.OldPin.placeholder)
-      setImage(UIImage(named: "settings_pin"))
-      imageView.tintColor = .whiteFive
-      keyboardType = .numberPad
-      isSecureTextEntry = true
+      setUpForPinCode()
     case .newPin:
       placeholder = localize(L.ChangePin.Form.NewPin.placeholder)
-      setImage(UIImage(named: "settings_pin"))
-      imageView.tintColor = .whiteFive
-      keyboardType = .numberPad
-      isSecureTextEntry = true
+      setUpForPinCode()
     case .confirmNewPin:
       placeholder = localize(L.ChangePin.Form.ConfirmNewPin.placeholder)
-      setImage(UIImage(named: "settings_pin"))
-      imageView.tintColor = .whiteFive
-      keyboardType = .numberPad
-      isSecureTextEntry = true
+      setUpForPinCode()
     case .message:
       placeholder = localize(L.CoinSendGift.Form.Message.placeholder)
       textAlignment = .center
