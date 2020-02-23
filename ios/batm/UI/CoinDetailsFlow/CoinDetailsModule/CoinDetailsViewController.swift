@@ -125,6 +125,10 @@ final class CoinDetailsViewController: NavigationScreenViewController<CoinDetail
                  backgroundDarkView.rx.tap)
       .drive(onNext: { [unowned self] in self.hideDepositView() })
       .disposed(by: disposeBag)
+    
+    depositView.rx.copyTap
+      .drive(onNext: { [unowned self] _ in self.view.makeToast(localize(L.Shared.copied)) })
+      .disposed(by: disposeBag)
   }
 
   override func setupBindings() {

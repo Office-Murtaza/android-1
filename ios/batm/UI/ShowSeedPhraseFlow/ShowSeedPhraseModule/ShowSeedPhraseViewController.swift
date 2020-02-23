@@ -75,6 +75,10 @@ final class ShowSeedPhraseViewController: ModuleViewController<ShowSeedPhrasePre
       .map { $0.split(separator: " ").map { String($0) } }
       .subscribe(onNext: { [mainView] in mainView.configure(for: $0) })
       .disposed(by: disposeBag)
+    
+    mainView.rx.copyTap
+      .drive(onNext: { [unowned self] in self.view.makeToast(localize(L.Shared.copied)) })
+      .disposed(by: disposeBag)
   }
 
   override func setupBindings() {

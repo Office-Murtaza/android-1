@@ -38,7 +38,6 @@ class WelcomeSupportView: UIView, HasDisposeBag {
     
     setupUI()
     setupLayout()
-    setupBindings()
   }
   
   required init?(coder aDecoder: NSCoder) {
@@ -83,13 +82,12 @@ class WelcomeSupportView: UIView, HasDisposeBag {
       $0.bottom.equalToSuperview().offset(-35)
     }
   }
-  
-  private func setupBindings() {
-    phoneCellView.rx.copyTap
-      .drive(onNext: { [phoneCellView] in UIPasteboard.general.string = phoneCellView.titleLabel.text })
-      .disposed(by: disposeBag)
-    mailCellView.rx.copyTap
-      .drive(onNext: { [mailCellView] in UIPasteboard.general.string = mailCellView.titleLabel.text })
-      .disposed(by: disposeBag)
+}
+
+extension Reactive where Base == WelcomeSupportView {
+  var copyTap: Driver<String?> {
+    return Driver.merge(base.phoneCellView.rx.copyTap,
+                        base.mailCellView.rx.copyTap)
   }
 }
+

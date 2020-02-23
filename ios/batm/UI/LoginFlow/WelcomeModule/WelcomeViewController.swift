@@ -136,6 +136,10 @@ class WelcomeViewController: ModuleViewController<WelcomePresenter>, UIScrollVie
                  backgroundDarkView.rx.tap)
       .drive(onNext: { [unowned self] in self.hideSupportView() })
       .disposed(by: disposeBag)
+    
+    supportView.rx.copyTap
+      .drive(onNext: { [unowned self] _ in self.view.makeToast(localize(L.Shared.copied)) })
+      .disposed(by: disposeBag)
   }
   
   override func setupBindings() {
@@ -144,8 +148,10 @@ class WelcomeViewController: ModuleViewController<WelcomePresenter>, UIScrollVie
     let openTermsAndConditionsDriver = buttonsView.termsAndConditionsView.rx.termsAndConditionsTap
     let createDriver = buttonsView.rx.createTap
     let recoverDriver = buttonsView.rx.recoverTap
+    let copyDriver = supportView.rx.copyTap
     presenter.bind(input: WelcomePresenter.Input(openTermsAndConditions: openTermsAndConditionsDriver,
                                                  create: createDriver,
-                                                 recover: recoverDriver))
+                                                 recover: recoverDriver,
+                                                 copy: copyDriver))
   }
 }

@@ -2,6 +2,7 @@
 "shared.cancel" = "Cancel";
 "shared.next" = "Next";
 "shared.copy" = "Copy";
+"shared.copied" = "Copied";
 "shared.paste" = "Paste";
 "shared.done" = "Done";
 "shared.change" = "Change";

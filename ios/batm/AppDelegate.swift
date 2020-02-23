@@ -34,7 +34,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     return [
       DIInitializer(),
       GoogleServicesInitializer(),
-      GiphyInitializer()
+      GiphyInitializer(),
+      ToastInitializer(),
     ]
   }
 }

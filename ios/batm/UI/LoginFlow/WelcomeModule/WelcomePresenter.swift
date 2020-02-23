@@ -7,6 +7,7 @@ class WelcomePresenter: ModulePresenter, WelcomeModule {
     var openTermsAndConditions: Driver<Void>
     var create: Driver<Void>
     var recover: Driver<Void>
+    var copy: Driver<String?>
   }
   
   weak var delegate: WelcomeModuleDelegate?
@@ -22,6 +23,10 @@ class WelcomePresenter: ModulePresenter, WelcomeModule {
     
     input.recover
       .drive(onNext: { [delegate] in delegate?.showRecoverScreen() })
+      .disposed(by: disposeBag)
+    
+    input.copy
+      .drive(onNext: { UIPasteboard.general.string = $0 })
       .disposed(by: disposeBag)
   }
 }
