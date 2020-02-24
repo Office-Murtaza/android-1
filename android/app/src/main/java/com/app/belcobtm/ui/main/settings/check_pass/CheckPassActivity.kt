@@ -75,7 +75,7 @@ class CheckPassActivity : BaseMvpActivity<CheckPassContract.View, CheckPassContr
 
 
                 til_edit_text.hint = getString(R.string.new_phone_number)
-                edit_text.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_phone, 0)
+                edit_text.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_phone_in_talk, 0)
                 phonePickerView.visibility = View.VISIBLE
                 phonePickerView.registerCarrierNumberEditText(edit_text)
                 edit_text.inputType = InputType.TYPE_CLASS_PHONE
