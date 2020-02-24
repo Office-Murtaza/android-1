@@ -100,6 +100,7 @@ class CoinDetailsDepositView: UIView {
       $0.top.equalTo(addressLabel.snp.bottom).offset(10)
       $0.left.greaterThanOrEqualToSuperview().offset(25)
       $0.right.lessThanOrEqualToSuperview().offset(-25)
+      $0.centerX.equalToSuperview()
     }
     copyLabel.snp.makeConstraints {
       $0.top.equalTo(addressValueLabel.snp.bottom).offset(10)

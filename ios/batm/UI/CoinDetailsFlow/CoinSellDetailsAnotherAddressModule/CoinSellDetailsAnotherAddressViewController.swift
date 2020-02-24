@@ -107,7 +107,9 @@ final class CoinSellDetailsAnotherAddressViewController: NavigationScreenViewCon
   }
   
   func setupUIBindings() {
-    
+    copyLabel.rx.tap
+      .drive(onNext: { [unowned self] in self.view.makeToast(localize(L.Shared.copied)) })
+      .disposed(by: disposeBag)
   }
 
   override func setupBindings() {

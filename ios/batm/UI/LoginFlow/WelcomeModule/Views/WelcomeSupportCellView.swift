@@ -86,7 +86,8 @@ class WelcomeSupportCellView: UIView {
 }
 
 extension Reactive where Base == WelcomeSupportCellView {
-  var copyTap: Driver<Void> {
+  var copyTap: Driver<String?> {
     return base.copyLabel.rx.tap
+      .map { [base] in base.titleLabel.text }
   }
 }

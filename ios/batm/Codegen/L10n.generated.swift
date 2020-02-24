@@ -108,6 +108,7 @@ enum L {
     static let addGif = "shared.add_gif"
     static let cancel = "shared.cancel"
     static let change = "shared.change"
+    static let copied = "shared.copied"
     static let copy = "shared.copy"
     static let done = "shared.done"
     static let max = "shared.max"
