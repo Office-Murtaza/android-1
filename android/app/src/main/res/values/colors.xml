@@ -5,6 +5,8 @@
     <color name="colorAccent">#0074e5</color>
 
     <color name="edit_text_drawable_tint">#c6c6c6</color>
+    <color name="toast_background">#80000000</color>
+    <color name="toast_text">#FFFFFF</color>
 
     <color name="colorErrorSnackBar">#ff5722</color>
 

@@ -11,16 +11,13 @@ import android.os.Bundle
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.FrameLayout
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.app.belcobtm.R
+import com.app.belcobtm.presentation.core.helper.AlertHelper
 import com.app.belcobtm.ui.auth.pin.PinActivity
 import com.google.android.material.snackbar.Snackbar
 import dagger.android.AndroidInjection
 import javax.inject.Inject
-import androidx.core.app.ComponentActivity.ExtraData
-import androidx.core.content.ContextCompat.getSystemService
-
 
 
 abstract class BaseMvpActivity<in V : BaseMvpView, T : BaseMvpPresenter<V>>
@@ -39,7 +36,6 @@ abstract class BaseMvpActivity<in V : BaseMvpView, T : BaseMvpPresenter<V>>
 
     private fun showError(error: String?, @Snackbar.Duration duration: Int) {
         runOnUiThread {
-            val toastLength = if (duration == Snackbar.LENGTH_SHORT) Toast.LENGTH_SHORT else Toast.LENGTH_LONG
 
             var _error = error
             if (_error.isNullOrEmpty()) _error = "Unknown error appeared"
@@ -50,7 +46,11 @@ abstract class BaseMvpActivity<in V : BaseMvpView, T : BaseMvpPresenter<V>>
                 snackbar.view.setBackgroundColor(resources.getColor(R.color.error_color_material_light))
                 snackbar.show()
             } else {
-                Toast.makeText(this, _error, toastLength).show()
+                if (duration == Snackbar.LENGTH_SHORT) {
+                    AlertHelper.showToastShort(this, _error)
+                } else {
+                    AlertHelper.showToastLong(this, _error)
+                }
             }
         }
     }
@@ -73,13 +73,13 @@ abstract class BaseMvpActivity<in V : BaseMvpView, T : BaseMvpPresenter<V>>
 
     override fun showMessage(srtResId: Int) {
         runOnUiThread {
-            Toast.makeText(this, srtResId, Toast.LENGTH_LONG).show()
+            AlertHelper.showToastLong(this, srtResId)
         }
     }
 
     override fun showMessage(message: String?) {
         runOnUiThread {
-            Toast.makeText(this, message, Toast.LENGTH_LONG).show()
+            AlertHelper.showToastLong(this, message)
         }
     }
 
