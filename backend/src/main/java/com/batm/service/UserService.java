@@ -270,7 +270,7 @@ public class UserService {
         VerificationStatus verificationStatus = VerificationStatus.NOT_VERIFIED;
         String verificationMessage = "OK";
         User user = userRep.getOne(userId);
-        List<IdentityKycReview> identityKycReviews = identityKycReviewRep.findAllByIdentityOrderByTierIdAsc(user.getIdentity());
+        List<IdentityKycReview> identityKycReviews = identityKycReviewRep.findAllByIdentityOrderByIdDesc(user.getIdentity());
 
         if (!CollectionUtils.isEmpty(identityKycReviews)) {
             IdentityKycReview currentIdentityKycReview = identityKycReviews.get(0);
@@ -312,9 +312,9 @@ public class UserService {
 
         //find latest limits
         verificationStateDTO.setDailyLimit(user.getIdentity().getLimitCashPerDay().stream()
-                .max(Comparator.comparing(Limit::getAmount)).get().getAmount());
+                .sorted(Comparator.comparingLong(Limit::getId).reversed()).findFirst().get().getAmount());
         verificationStateDTO.setTxLimit(user.getIdentity().getLimitCashPerTransaction().stream()
-                .max(Comparator.comparing(Limit::getAmount)).get().getAmount());
+                .sorted(Comparator.comparingLong(Limit::getId).reversed()).findFirst().get().getAmount());
 
         return verificationStateDTO;
     }
@@ -351,7 +351,7 @@ public class UserService {
         } else if (verificationData.getTierId() == TIER_VIP_VERIFIED) {
             //prepare file path
             preparedFileName = idSelfiePath + File.separator
-                    + verificationData.getIdNumber() + "_"
+                    + verificationData.getSsn() + "_"
                     + verificationData.getFile().getOriginalFilename();
 
             // prepare personal info for VIP_VERIFIED
@@ -465,16 +465,14 @@ public class UserService {
             dailyLimit.setCurrency("USD");
             Limit dailyLimitSaved = limitRep.save(dailyLimit);
 
-            List<Limit> dailyLimits = review.getIdentity().getLimitCashPerDay();
-            dailyLimits.add(dailyLimitSaved);
+            review.getIdentity().getLimitCashPerDay().add(dailyLimitSaved);
 
             Limit txLimit = new Limit();
             txLimit.setAmount(newTxLimit);
             txLimit.setCurrency("USD");
             Limit txLimitSaved = limitRep.save(txLimit);
 
-            List<Limit> txLimits = review.getIdentity().getLimitCashPerDay();
-            txLimits.add(txLimitSaved);
+            review.getIdentity().getLimitCashPerTransaction().add(txLimitSaved);
 
             identityRep.save(review.getIdentity());
 

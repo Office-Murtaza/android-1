@@ -9,5 +9,5 @@ import java.util.List;
 public interface IdentityKycReviewRep extends JpaRepository<IdentityKycReview, Long> {
     IdentityKycReview findOneByIdentityAndTierId(Identity identity, Integer tierId);
 
-    List<IdentityKycReview> findAllByIdentityOrderByTierIdAsc(Identity identity);
+    List<IdentityKycReview> findAllByIdentityOrderByIdDesc(Identity identity);
 }
