@@ -1,12 +1,14 @@
 package com.batm.rest;
 
-import java.util.*;
-import java.util.regex.Pattern;
-import java.util.stream.Collectors;
-import javax.validation.Valid;
-import com.batm.dto.AuthenticationDTO;
-import com.batm.dto.TokenDTO;
+import com.batm.dto.*;
+import com.batm.entity.*;
+import com.batm.model.Error;
+import com.batm.model.Response;
+import com.batm.repository.TokenRep;
+import com.batm.security.TokenProvider;
 import com.batm.service.MessageService;
+import com.batm.service.UserService;
+import com.batm.util.Constant;
 import com.batm.util.Util;
 import net.sf.json.JSONObject;
 import org.apache.commons.codec.binary.Base64;
@@ -22,22 +24,12 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-import com.batm.entity.CodeVerify;
-import com.batm.model.Error;
-import com.batm.model.Response;
-import com.batm.entity.Token;
-import com.batm.entity.Unlink;
-import com.batm.entity.PhoneChange;
-import com.batm.entity.User;
-import com.batm.repository.TokenRep;
-import com.batm.dto.ChangePasswordDTO;
-import com.batm.dto.CheckPasswordDTO;
-import com.batm.dto.PhoneDTO;
-import com.batm.dto.RefreshDTO;
-import com.batm.dto.ValidateDTO;
-import com.batm.security.TokenProvider;
-import com.batm.service.UserService;
-import com.batm.util.Constant;
+
+import javax.validation.Valid;
+import java.math.BigDecimal;
+import java.util.Optional;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/v1")
@@ -317,6 +309,28 @@ public class UserController {
             Unlink unlink = userService.unlinkUser(userId);
 
             return Response.ok(unlink != null);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Response.serverError();
+        }
+    }
+
+    @GetMapping("/user/{userId}/kyc")
+    public Response getUserVerificationState(@PathVariable Long userId) {
+        try {
+            VerificationStateDTO verificationStateDTO = userService.getVerificationState(userId);
+            return Response.ok(verificationStateDTO);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Response.serverError();
+        }
+    }
+
+    @PostMapping("/user/{userId}/kyc")
+    public Response submitVerificationData(@PathVariable Long userId, @ModelAttribute UserVerificationDTO verificationData) {
+        try {
+            userService.submitVerification(userId, verificationData);
+            return Response.ok(Boolean.TRUE);
         } catch (Exception e) {
             e.printStackTrace();
             return Response.serverError();

@@ -1,0 +1,1 @@
+ALTER TABLE identitypiecepersonalinfo MODIFY COLUMN ssn VARCHAR(11) DEFAULT NULL AFTER id;

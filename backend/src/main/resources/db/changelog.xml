@@ -143,4 +143,32 @@
                  splitStatements="true"
                  stripComments="true"/>
     </changeSet>
+    <changeSet id="21" author="Kostya_M" failOnError="false">
+        <sqlFile encoding="utf8"
+                 endDelimiter=";"
+                 path="db/create/create_w_identitykycreview.sql"
+                 splitStatements="true"
+                 stripComments="true"/>
+    </changeSet>
+    <changeSet id="22" author="Kostya_M" failOnError="false">
+        <sqlFile encoding="utf8"
+                 endDelimiter=";"
+                 path="db/update/add_ssn_to_identitypiecepersonalinfo.sql"
+                 splitStatements="true"
+                 stripComments="true"/>
+    </changeSet>
+    <changeSet id="23" author="Kostya_M" failOnError="false">
+        <sqlFile encoding="utf8"
+                 endDelimiter=";"
+                 path="db/update/modify_ssn_to_identitypiecepersonalinfo.sql"
+                 splitStatements="true"
+                 stripComments="true"/>
+    </changeSet>
+    <changeSet id="24" author="Kostya_M" failOnError="false">
+        <sqlFile encoding="utf8"
+                 endDelimiter=";"
+                 path="db/update/modify_createdBy_to_identitypiecepersonalinfo.sql"
+                 splitStatements="true"
+                 stripComments="true"/>
+    </changeSet>
 </databaseChangeLog>
