@@ -1,7 +1,7 @@
 package com.app.belcobtm.di.module
 
-import com.app.belcobtm.ui.auth.create_wallet.CreateWalletContract
-import com.app.belcobtm.ui.auth.create_wallet.CreateWalletPresenter
+import com.app.belcobtm.presentation.features.authorization.wallet.create.CreateWalletContract
+import com.app.belcobtm.presentation.features.authorization.wallet.create.CreateWalletPresenter
 import com.app.belcobtm.ui.auth.pin.PinContract
 import com.app.belcobtm.ui.auth.pin.PinPresenter
 import com.app.belcobtm.ui.auth.recover_seed.RecoverSeedContract

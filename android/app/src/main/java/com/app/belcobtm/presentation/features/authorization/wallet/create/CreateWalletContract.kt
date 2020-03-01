@@ -1,4 +1,4 @@
-package com.app.belcobtm.ui.auth.create_wallet
+package com.app.belcobtm.presentation.features.authorization.wallet.create
 
 import com.app.belcobtm.mvp.BaseMvpPresenter
 import com.app.belcobtm.mvp.BaseMvpView

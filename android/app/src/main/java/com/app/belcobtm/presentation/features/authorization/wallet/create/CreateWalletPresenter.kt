@@ -1,4 +1,4 @@
-package com.app.belcobtm.ui.auth.create_wallet
+package com.app.belcobtm.presentation.features.authorization.wallet.create
 
 import com.app.belcobtm.App
 import com.app.belcobtm.api.data_manager.AuthDataManager
@@ -132,38 +132,14 @@ class CreateWalletPresenter : BaseMvpDIPresenterImpl<CreateWalletContract.View, 
         App.appContext().pref.setSeed(seed)
 
         val realm = Realm.getDefaultInstance()
-        val coinModel = DbCryptoCoinModel()
-
-        coinModel.addCryptoCoin(
-            realm,
-            DbCryptoCoin("BTC", bitcoin.value(), bitcoinAddress, bitcoinPrivateKeyStr)
-        )
-        coinModel.addCryptoCoin(
-            realm,
-            DbCryptoCoin("BCH", bitcoinCash.value(), bitcoinChAddress, bitcoinChPrivateKeyStr)
-        )
-        coinModel.addCryptoCoin(
-            realm,
-            DbCryptoCoin("ETH", etherum.value(), etherumAddress, etherumPrivateKeyStr)
-        )
-        coinModel.addCryptoCoin(
-            realm,
-            DbCryptoCoin("LTC", litecoin.value(), litecoinAddress, litecoinPrivateKeyStr)
-        )
-        coinModel.addCryptoCoin(
-            realm,
-            DbCryptoCoin("BNB", binance.value(), binanceAddress, binancePrivateKeyStr)
-        )
-        coinModel.addCryptoCoin(
-            realm,
-            DbCryptoCoin("TRX", tron.value(), tronAddress, tronPrivateKeyStr)
-        )
-        coinModel.addCryptoCoin(
-            realm,
-            DbCryptoCoin("XRP", xrp.value(), xrpAddress, xrpPrivateKeyStr)
-        )
-
-
-        return coinModel.getAllCryptoCoin(realm)
+        return DbCryptoCoinModel().apply {
+            addCoin(realm, DbCryptoCoin("BTC", bitcoin.value(), bitcoinAddress, bitcoinPrivateKeyStr))
+            addCoin(realm, DbCryptoCoin("BCH", bitcoinCash.value(), bitcoinChAddress, bitcoinChPrivateKeyStr))
+            addCoin(realm, DbCryptoCoin("ETH", etherum.value(), etherumAddress, etherumPrivateKeyStr))
+            addCoin(realm, DbCryptoCoin("LTC", litecoin.value(), litecoinAddress, litecoinPrivateKeyStr))
+            addCoin(realm, DbCryptoCoin("BNB", binance.value(), binanceAddress, binancePrivateKeyStr))
+            addCoin(realm, DbCryptoCoin("TRX", tron.value(), tronAddress, tronPrivateKeyStr))
+            addCoin(realm, DbCryptoCoin("XRP", xrp.value(), xrpAddress, xrpPrivateKeyStr))
+        }.getAllCryptoCoin(realm)
     }
 }
