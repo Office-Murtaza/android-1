@@ -1,5 +1,5 @@
 package com.app.belcobtm.data.rest.authorization.request
 
-class AddCoinsRequest(
-    coins: List<CoinRequest>
+data class AddCoinsRequest(
+    val coins: List<CoinRequest>
 )

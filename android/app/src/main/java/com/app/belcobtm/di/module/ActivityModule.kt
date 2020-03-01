@@ -1,7 +1,5 @@
 package com.app.belcobtm.di.module
 
-import com.app.belcobtm.presentation.features.authorization.wallet.create.CreateWalletContract
-import com.app.belcobtm.presentation.features.authorization.wallet.create.CreateWalletPresenter
 import com.app.belcobtm.ui.auth.pin.PinContract
 import com.app.belcobtm.ui.auth.pin.PinPresenter
 import com.app.belcobtm.ui.auth.recover_seed.RecoverSeedContract
@@ -34,67 +32,38 @@ import dagger.Provides
 class ActivityModule {
 
     @Provides
-    fun provideCreateWalletPresenter(): CreateWalletContract.Presenter {
-        return CreateWalletPresenter()
-    }
+    fun provideRecoverSeedPresenter(): RecoverSeedContract.Presenter = RecoverSeedPresenter()
 
     @Provides
-    fun provideRecoverSeedPresenter(): RecoverSeedContract.Presenter {
-        return RecoverSeedPresenter()
-    }
+    fun provideBalancePresenter(): MainContract.Presenter = MainPresenter()
 
     @Provides
-    fun provideBalancePresenter(): MainContract.Presenter {
-        return MainPresenter()
-    }
+    fun providePinPresenter(): PinContract.Presenter = PinPresenter()
 
     @Provides
-    fun providePinPresenter(): PinContract.Presenter {
-        return PinPresenter()
-    }
+    fun provideVisibilityCoinsPresenter(): VisibilityCoinsContract.Presenter = VisibilityCoinsPresenter()
 
     @Provides
-    fun provideVisibilityCoinsPresenter(): VisibilityCoinsContract.Presenter {
-        return VisibilityCoinsPresenter()
-    }
+    fun provideCheckPassPresenter(): CheckPassContract.Presenter = CheckPassPresenter()
 
     @Provides
-    fun provideCheckPassPresenter(): CheckPassContract.Presenter {
-        return CheckPassPresenter()
-    }
+    fun provideChangePassPresenter(): ChangePassContract.Presenter = ChangePassPresenter()
 
     @Provides
-    fun provideChangePassPresenter(): ChangePassContract.Presenter {
-        return ChangePassPresenter()
-    }
+    fun provideShowPhonePresenter(): ShowPhoneContract.Presenter = ShowPhonePresenter()
 
     @Provides
-    fun provideShowPhonePresenter(): ShowPhoneContract.Presenter {
-        return ShowPhonePresenter()
-    }
+    fun provideTransactionsPresenter(): TransactionsContract.Presenter = TransactionsPresenter()
 
     @Provides
-    fun provideTransactionsPresenter(): TransactionsContract.Presenter {
-        return TransactionsPresenter()
-    }
+    fun provideWithdrawPresenter(): WithdrawContract.Presenter = WithdrawPresenter()
 
     @Provides
-    fun provideWithdrawPresenter(): WithdrawContract.Presenter {
-        return WithdrawPresenter()
-    }
+    fun provideSendGiftPresenter(): SendGiftContract.Presenter = SendGiftPresenter()
 
     @Provides
-    fun provideSendGiftPresenter(): SendGiftContract.Presenter {
-        return SendGiftPresenter()
-    }
+    fun provideSellPresenter(): SellContract.Presenter = SellPresenter()
 
     @Provides
-    fun provideSellPresenter(): SellContract.Presenter {
-        return SellPresenter()
-    }
-
-    @Provides
-    fun provideDetailsPresenter(): DetailsContract.Presenter {
-        return DetailsPresenter()
-    }
+    fun provideDetailsPresenter(): DetailsContract.Presenter = DetailsPresenter()
 }
