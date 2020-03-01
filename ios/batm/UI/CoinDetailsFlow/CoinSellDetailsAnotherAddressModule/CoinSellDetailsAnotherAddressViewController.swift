@@ -73,7 +73,7 @@ final class CoinSellDetailsAnotherAddressViewController: NavigationScreenViewCon
 
   override func setupLayout() {
     qrCodeImageView.snp.makeConstraints {
-      $0.top.equalTo(customView.backgroundImageView.snp.bottom).offset(35)
+      $0.top.equalToSuperview().offset(35)
       $0.centerX.equalToSuperview()
     }
     addressLabel.snp.makeConstraints {

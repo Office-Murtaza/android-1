@@ -32,7 +32,7 @@ final class CoinSellDetailsCurrentAddressViewController: NavigationScreenViewCon
 
   override func setupLayout() {
     instructionsView.snp.makeConstraints {
-      $0.top.equalTo(customView.backgroundImageView.snp.bottom).offset(40)
+      $0.top.equalToSuperview().offset(40)
       $0.left.right.equalToSuperview().inset(25)
     }
     doneButton.snp.makeConstraints {
