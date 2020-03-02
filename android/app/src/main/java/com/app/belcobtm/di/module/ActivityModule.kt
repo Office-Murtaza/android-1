@@ -1,7 +1,5 @@
 package com.app.belcobtm.di.module
 
-import com.app.belcobtm.ui.auth.pin.PinContract
-import com.app.belcobtm.ui.auth.pin.PinPresenter
 import com.app.belcobtm.ui.auth.recover_seed.RecoverSeedContract
 import com.app.belcobtm.ui.auth.recover_seed.RecoverSeedPresenter
 import com.app.belcobtm.ui.main.coins.details.DetailsContract
@@ -27,7 +25,6 @@ import com.app.belcobtm.ui.main.settings.phone.ShowPhonePresenter
 import dagger.Module
 import dagger.Provides
 
-
 @Module
 class ActivityModule {
 
@@ -36,9 +33,6 @@ class ActivityModule {
 
     @Provides
     fun provideBalancePresenter(): MainContract.Presenter = MainPresenter()
-
-    @Provides
-    fun providePinPresenter(): PinContract.Presenter = PinPresenter()
 
     @Provides
     fun provideVisibilityCoinsPresenter(): VisibilityCoinsContract.Presenter = VisibilityCoinsPresenter()

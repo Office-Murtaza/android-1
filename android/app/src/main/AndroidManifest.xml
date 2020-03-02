@@ -71,7 +71,7 @@
             <!-- </intent-filter> -->
         </activity>
         <activity
-            android:name=".ui.auth.pin.PinActivity"
+            android:name=".presentation.features.authorization.pin.PinActivity"
             android:launchMode="singleInstance"
             android:screenOrientation="portrait"
             android:theme="@style/AppThemeNoActionBar"></activity>

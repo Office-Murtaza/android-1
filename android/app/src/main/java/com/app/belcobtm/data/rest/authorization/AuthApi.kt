@@ -3,7 +3,7 @@ package com.app.belcobtm.data.rest.authorization
 import com.app.belcobtm.data.rest.authorization.request.*
 import com.app.belcobtm.data.rest.authorization.response.AddCoinsResponse
 import com.app.belcobtm.data.rest.authorization.response.RecoverWalletResponse
-import com.app.belcobtm.data.rest.authorization.response.RegisterWalletResponse
+import com.app.belcobtm.data.rest.authorization.response.AuthorizationResponse
 import kotlinx.coroutines.Deferred
 import okhttp3.ResponseBody
 import retrofit2.Response
@@ -15,7 +15,7 @@ interface AuthApi {
     @POST("register")
     fun createWalletAsync(
         @Body request: CreateWalletRequest
-    ): Deferred<Response<RegisterWalletResponse>>
+    ): Deferred<Response<AuthorizationResponse>>
 
     @POST("user/{userId}/code/verify")
     fun createWalletVerifySmsCodeAsync(
@@ -39,4 +39,7 @@ interface AuthApi {
         @Path("userId") userId: Int,
         @Body request: AddCoinsRequest
     ): Deferred<Response<AddCoinsResponse>>
+
+    @POST("refresh")
+    fun signInByRefreshTokenAsync(@Body request: RefreshTokenRequest): Deferred<Response<AuthorizationResponse>>
 }

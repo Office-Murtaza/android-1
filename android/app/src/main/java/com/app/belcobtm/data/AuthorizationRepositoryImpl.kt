@@ -93,6 +93,27 @@ class AuthorizationRepositoryImpl(
         Either.Left(Failure.NetworkConnection)
     }
 
+    override suspend fun authorize(): Either<Failure, Unit> = if (networkUtils.isNetworkAvailable()) {
+        val response = apiService.authorizeByRefreshToken(prefHelper.refreshToken ?: "")
+        if (response.isRight) {
+            val body = (response as Either.Right).b
+            prefHelper.accessToken = body.accessToken
+            prefHelper.refreshToken = body.refreshToken
+            prefHelper.userId = body.userId
+            Either.Right(Unit)
+        } else {
+            response as Either.Left
+        }
+    } else {
+        Either.Left(Failure.NetworkConnection)
+    }
+
+    override fun getAuthorizePin(): String = prefHelper.userPin ?: ""
+
+    override fun setAuthorizePin(pinCode: String) {
+        prefHelper.userPin = pinCode
+    }
+
     private fun createWalletDB(): ArrayList<DbCryptoCoin> {
         val bitcoin = CoinType.BITCOIN
         val bitcoinCash = CoinType.BITCOINCASH

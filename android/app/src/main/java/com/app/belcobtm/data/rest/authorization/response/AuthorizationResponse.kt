@@ -1,6 +1,6 @@
 package com.app.belcobtm.data.rest.authorization.response
 
-data class RegisterWalletResponse(
+data class AuthorizationResponse(
     val accessToken: String,
     val expires: Long,
     val refreshToken: String,

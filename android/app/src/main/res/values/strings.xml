@@ -79,6 +79,7 @@
     <string name="code_not_match">Codes don\'t match. Please, try again</string>
     <string name="setup_pin_code">Setup PIN Code</string>
     <string name="enter_pin_code">Enter PIN Code</string>
+    <string name="confirm_pin_code">Confirm PIN Code</string>
 
     <!--visibility coins-->
     <string name="show">SHOW</string>
