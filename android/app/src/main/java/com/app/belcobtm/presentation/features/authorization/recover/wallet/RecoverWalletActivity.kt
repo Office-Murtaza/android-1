@@ -10,16 +10,14 @@ import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.FrameLayout
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatEditText
 import androidx.lifecycle.Observer
 import com.app.belcobtm.R
-import com.app.belcobtm.api.data_manager.AuthDataManager
-import com.app.belcobtm.api.model.ServerException
 import com.app.belcobtm.domain.Failure
 import com.app.belcobtm.presentation.core.extensions.getString
+import com.app.belcobtm.presentation.core.helper.AlertHelper
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
 import com.app.belcobtm.ui.auth.recover_seed.RecoverSeedActivity
 import com.google.android.material.snackbar.Snackbar
@@ -167,8 +165,6 @@ class RecoverWalletActivity : AppCompatActivity() {
 
     private fun showError(error: String?, @Snackbar.Duration duration: Int) {
         runOnUiThread {
-            val toastLength = if (duration == Snackbar.LENGTH_SHORT) Toast.LENGTH_SHORT else Toast.LENGTH_LONG
-
             var _error = error
             if (_error.isNullOrEmpty()) _error = "Unknown error appeared"
 
@@ -178,7 +174,7 @@ class RecoverWalletActivity : AppCompatActivity() {
                 snackbar.view.setBackgroundColor(resources.getColor(R.color.error_color_material_light))
                 snackbar.show()
             } else {
-                Toast.makeText(this, _error, toastLength).show()
+                AlertHelper.showToastShort(this, _error)
             }
         }
     }

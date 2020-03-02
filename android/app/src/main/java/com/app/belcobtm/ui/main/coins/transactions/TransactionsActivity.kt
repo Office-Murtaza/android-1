@@ -15,7 +15,7 @@ import com.app.belcobtm.ui.main.coins.sell.SellActivity
 import com.app.belcobtm.ui.main.coins.send_gift.SendGiftActivity
 import com.app.belcobtm.ui.main.coins.withdraw.WithdrawActivity
 import com.app.belcobtm.presentation.core.QRUtils.Companion.getSpacelessQR
-import com.google.android.material.snackbar.Snackbar
+import com.app.belcobtm.presentation.core.helper.AlertHelper
 import kotlinx.android.synthetic.main.activity_show_phone.container
 import kotlinx.android.synthetic.main.activity_show_phone.toolbar
 import kotlinx.android.synthetic.main.activity_transactions.*
@@ -147,8 +147,7 @@ class TransactionsActivity :
             .setPositiveButton(R.string.copy) { dialog, _ ->
                 copyToClipboard(getString(R.string.wallet_code_clipboard), mCoin.publicKey)
                 dialog.cancel()
-                Snackbar.make(container, R.string.wallet_code_clipboard, Snackbar.LENGTH_LONG)
-                    .show()
+                AlertHelper.showToastLong(container.context, R.string.wallet_code_clipboard)
             }
             .create()
         dialog.show()
@@ -161,7 +160,8 @@ class TransactionsActivity :
 
         dialog.findViewById<AppCompatImageView>(R.id.wallet_qr_code)?.setImageBitmap(walletQrCode)*/
 
-        dialog.findViewById<AppCompatImageView>(R.id.wallet_qr_code)?.setImageBitmap(getSpacelessQR(mCoin.publicKey,200,200))
+        dialog.findViewById<AppCompatImageView>(R.id.wallet_qr_code)
+            ?.setImageBitmap(getSpacelessQR(mCoin.publicKey, 200, 200))
 
     }
 
