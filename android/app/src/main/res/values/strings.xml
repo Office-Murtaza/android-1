@@ -52,6 +52,7 @@
     <string name="error_confirm_pin">PIN do not match</string>
     <string name="error_short_pass">Password length should be from 6 to 15</string>
     <string name="error_sms_code_4_digits">Code should have 4 digits</string>
+    <string name="error_invalid_phone_number">Invalid phone number</string>
     <string name="sms_code">SMS code</string>
 
     <!--seed phrase-->
@@ -78,6 +79,7 @@
     <string name="code_not_match">Codes don\'t match. Please, try again</string>
     <string name="setup_pin_code">Setup PIN Code</string>
     <string name="enter_pin_code">Enter PIN Code</string>
+    <string name="confirm_pin_code">Confirm PIN Code</string>
 
     <!--visibility coins-->
     <string name="show">SHOW</string>

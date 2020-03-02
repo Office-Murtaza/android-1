@@ -12,7 +12,7 @@ import android.widget.FrameLayout
 import androidx.fragment.app.Fragment
 import com.app.belcobtm.R
 import com.app.belcobtm.presentation.core.helper.AlertHelper
-import com.app.belcobtm.ui.auth.pin.PinActivity
+import com.app.belcobtm.presentation.features.authorization.pin.PinActivity
 import com.google.android.material.snackbar.Snackbar
 import dagger.android.support.AndroidSupportInjection
 import javax.inject.Inject
