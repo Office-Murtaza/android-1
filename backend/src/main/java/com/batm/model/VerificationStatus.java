@@ -5,12 +5,12 @@ import com.fasterxml.jackson.annotation.JsonValue;
 public enum VerificationStatus {
 
     NOT_VERIFIED(1),
-    PENDING(2),
-    REJECTED(3),
-    ACCEPTED(4),
-    VIP_PENDING(5),
-    VIP_REJECTED(6),
-    VIP_ACCEPTED(7);
+    VERIFICATION_PENDING(2),
+    VERIFICATION_REJECTED(3),
+    VERIFIED(4),
+    VIP_VERIFICATION_PENDING(5),
+    VIP_VERIFICATION_REJECTED(6),
+    VIP_VERIFIED(7);
 
     private int value;
 
@@ -21,5 +21,14 @@ public enum VerificationStatus {
     @JsonValue
     public int getValue() {
         return value;
+    }
+
+    public static VerificationStatus getByValue(int value) {
+        for(VerificationStatus e: VerificationStatus.values()) {
+            if(e.value == value) {
+                return e;
+            }
+        }
+        return null;// not found
     }
 }

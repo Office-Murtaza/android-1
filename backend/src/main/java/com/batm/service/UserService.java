@@ -14,14 +14,12 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
-import org.springframework.util.FileCopyUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
 import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -30,11 +28,13 @@ import java.util.*;
 @Service
 public class UserService {
 
-    public static final int TIER_VERIFIED = 1;
-    public static final int TIER_VIP_VERIFIED = 2;
-    public static final int REVIEW_STATUS_REJECTED = 2;
-    public static final int REVIEW_STATUS_ACCEPTED = 3;
+    public static final int TIER_BASIC_VERIFICATION = 1;
+    public static final int TIER_VIP_VERIFICATION = 2;
+
     public static final int REVIEW_STATUS_PENDING = 1;
+    public static final int REVIEW_STATUS_REJECTED = 2;
+    public static final int REVIEW_STATUS_VERIFIED = 3;
+
     @Autowired
     private PasswordEncoder passwordEncoder;
 
@@ -267,50 +267,28 @@ public class UserService {
 
     public VerificationStateDTO getVerificationState(Long userId) {
         VerificationStateDTO verificationStateDTO = new VerificationStateDTO();
+
+        // default status if no requests found
         VerificationStatus verificationStatus = VerificationStatus.NOT_VERIFIED;
-        String verificationMessage = "OK";
+        // default message
+        String verificationMessage = null;
+
         User user = userRep.getOne(userId);
+
         List<IdentityKycReview> identityKycReviews = identityKycReviewRep.findAllByIdentityOrderByIdDesc(user.getIdentity());
 
         if (!CollectionUtils.isEmpty(identityKycReviews)) {
             IdentityKycReview currentIdentityKycReview = identityKycReviews.get(0);
-            ///identify status
-            switch (currentIdentityKycReview.getTierId()) {
-                case TIER_VERIFIED:
-                    switch (currentIdentityKycReview.getReviewStatus()) {
-                        case REVIEW_STATUS_PENDING:
-                            verificationStatus = VerificationStatus.PENDING;
-                            break;
-                        case REVIEW_STATUS_REJECTED:
-                            verificationStatus = VerificationStatus.REJECTED;
-                            verificationMessage = currentIdentityKycReview.getRejectedMessage();
-                            break;
-                        case REVIEW_STATUS_ACCEPTED:
-                            verificationStatus = VerificationStatus.ACCEPTED;
-                            break;
-                    }
-                    break;
-                case TIER_VIP_VERIFIED:
-                    switch (currentIdentityKycReview.getReviewStatus()) {
-                        case REVIEW_STATUS_PENDING:
-                            verificationStatus = VerificationStatus.VIP_PENDING;
-                            break;
-                        case REVIEW_STATUS_REJECTED:
-                            verificationStatus = VerificationStatus.VIP_REJECTED;
-                            verificationMessage = currentIdentityKycReview.getRejectedMessage();
-                            break;
-                        case REVIEW_STATUS_ACCEPTED:
-                            verificationStatus = VerificationStatus.VIP_ACCEPTED;
-                            break;
-                    }
-                    break;
-            }
+
+            // identify status and message
+            verificationStatus = VerificationStatus.getByValue(currentIdentityKycReview.getReviewStatus());
+            verificationMessage = currentIdentityKycReview.getRejectedMessage();
         }
 
         verificationStateDTO.setStatus(verificationStatus);
         verificationStateDTO.setMessage(verificationMessage);
 
-        //find latest limits
+        // find and set latest limits by identity
         verificationStateDTO.setDailyLimit(user.getIdentity().getLimitCashPerDay().stream()
                 .sorted(Comparator.comparingLong(Limit::getId).reversed()).findFirst().get().getAmount());
         verificationStateDTO.setTxLimit(user.getIdentity().getLimitCashPerTransaction().stream()
@@ -324,20 +302,20 @@ public class UserService {
         // TODO add validations for filename, idnumber, ssn etc
         User user = userRep.getOne(userId);
         String preparedFileName;
+        String preparedFilePath;
         IdentityKycReview identityKycReview;
 
-        if (verificationData.getTierId() == TIER_VERIFIED) {
+        if (verificationData.getTierId() == TIER_BASIC_VERIFICATION) {
             //prepare file path
-            preparedFileName = idScanPath + File.separator
-                    + verificationData.getIdNumber() + "_"
-                    + verificationData.getFile().getOriginalFilename();
+            preparedFileName = verificationData.getIdNumber() + "_" + verificationData.getFile().getOriginalFilename();
+            preparedFilePath = idScanPath + File.separator + preparedFileName;
 
             // prepare personal info for VERIFIED
             identityKycReview = IdentityKycReview
                     .builder()
                     .identity(user.getIdentity())
-                    .tierId(TIER_VERIFIED)
-                    .reviewStatus(REVIEW_STATUS_PENDING)
+                    .tierId(TIER_BASIC_VERIFICATION)
+                    .reviewStatus(VerificationStatus.VERIFICATION_PENDING.getValue())
                     .idCardNumber(verificationData.getIdNumber())
                     .address(verificationData.getAddress())
                     .country(verificationData.getCountry())
@@ -348,28 +326,35 @@ public class UserService {
                     .lastName(verificationData.getLastName())
                     .build();
             identityKycReviewRep.save(identityKycReview);
-        } else if (verificationData.getTierId() == TIER_VIP_VERIFIED) {
+        } else if (verificationData.getTierId() == TIER_VIP_VERIFICATION) {
             //prepare file path
-            preparedFileName = idSelfiePath + File.separator
-                    + verificationData.getSsn() + "_"
-                    + verificationData.getFile().getOriginalFilename();
+            preparedFileName = verificationData.getSsn() + "_" + verificationData.getFile().getOriginalFilename();
+            preparedFilePath = idSelfiePath + File.separator + preparedFileName;
 
             // prepare personal info for VIP_VERIFIED
             identityKycReview = IdentityKycReview
                     .builder()
                     .identity(user.getIdentity())
-                    .tierId(TIER_VIP_VERIFIED)
-                    .reviewStatus(REVIEW_STATUS_PENDING)
+                    .tierId(TIER_VIP_VERIFICATION)
+                    .reviewStatus(VerificationStatus.VIP_VERIFICATION_PENDING.getValue())
                     .ssn(verificationData.getSsn())
                     .build();
 
         } else {
+            // if wrong tier don't do anything
             return;
         }
 
-        Path preparedPath = Paths.get(preparedFileName);
+        Path preparedPath = Paths.get(preparedFilePath);
         uploadFile(verificationData.getFile(), preparedPath);
-        String mimeType = Files.probeContentType(preparedPath);
+
+        String mimeType = null;
+
+        try {
+            mimeType = Files.probeContentType(preparedPath);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         // add uploaded file info
         identityKycReview.setFileName(preparedFileName);
@@ -387,7 +372,7 @@ public class UserService {
         Optional<IdentityKycReview> identityKycReview = identityKycReviewRep.findById(identityKycReviewId);
         if (identityKycReview.isPresent()) {
             IdentityKycReview review = identityKycReview.get();
-            if (review.getTierId() == TIER_VERIFIED) {
+            if (review.getTierId() == TIER_BASIC_VERIFICATION) {
 
                 IdentityPiece identityPiece = new IdentityPiece();
                 identityPiece.setIdentity(review.getIdentity());
@@ -421,7 +406,15 @@ public class UserService {
                         .created(new Date())
                         .build();
                 identityPiecePersonalInfoRep.save(identityPiecePersonalInfo);
-            } else if (review.getTierId() == TIER_VIP_VERIFIED) {
+
+                // add new limits per Tier
+                addDailyLimit(review, Constant.VERIFIED_DAILY_LIMIT);
+                addTransactionLimit(review, Constant.VERIFIED_TX_LIMIT);
+
+                // save updated status of review
+                review.setReviewStatus(VerificationStatus.VERIFIED.getValue());
+                identityKycReviewRep.save(review);
+            } else if (review.getTierId() == TIER_VIP_VERIFICATION) {
 
                 IdentityPiece identityPiece = new IdentityPiece();
                 identityPiece.setIdentity(review.getIdentity());
@@ -448,38 +441,39 @@ public class UserService {
                         .created(new Date())
                         .build();
                 identityPiecePersonalInfoRep.save(identityPiecePersonalInfo);
+
+                // add new limits per Tier
+                addDailyLimit(review, Constant.VIP_VERIFIED_DAILY_LIMIT);
+                addTransactionLimit(review, Constant.VIP_VERIFIED_TX_LIMIT);
+
+                // save updated status of review
+                review.setReviewStatus(VerificationStatus.VIP_VERIFIED.getValue());
+                identityKycReviewRep.save(review);
+            } else {
+                // if wrong tier do nothing
+                return;
             }
-
-            // updating new limits based on verification tier
-            BigDecimal newTxLimit = review.getTierId() == TIER_VERIFIED
-                    ? Constant.VERIFIED_TX_LIMIT
-                    : review.getTierId() == TIER_VIP_VERIFIED
-                    ? Constant.VIP_VERIFIED_TX_LIMIT : Constant.TX_LIMIT;
-            BigDecimal newDailyLimit = review.getTierId() == TIER_VERIFIED
-                    ? Constant.VERIFIED_DAILY_LIMIT
-                    : review.getTierId() == TIER_VIP_VERIFIED
-                    ? Constant.VIP_VERIFIED_DAILY_LIMIT : Constant.DAILY_LIMIT;
-
-            Limit dailyLimit = new Limit();
-            dailyLimit.setAmount(newDailyLimit);
-            dailyLimit.setCurrency("USD");
-            Limit dailyLimitSaved = limitRep.save(dailyLimit);
-
-            review.getIdentity().getLimitCashPerDay().add(dailyLimitSaved);
-
-            Limit txLimit = new Limit();
-            txLimit.setAmount(newTxLimit);
-            txLimit.setCurrency("USD");
-            Limit txLimitSaved = limitRep.save(txLimit);
-
-            review.getIdentity().getLimitCashPerTransaction().add(txLimitSaved);
-
-            identityRep.save(review.getIdentity());
-
-            // update status of review
-            review.setReviewStatus(REVIEW_STATUS_ACCEPTED);
-            identityKycReviewRep.save(review);
         }
+    }
+
+    private void addTransactionLimit(IdentityKycReview review, BigDecimal newTxLimit) {
+        Limit txLimit = new Limit();
+        txLimit.setAmount(newTxLimit);
+        txLimit.setCurrency("USD");
+        Limit txLimitSaved = limitRep.save(txLimit);
+
+        review.getIdentity().getLimitCashPerTransaction().add(txLimitSaved);
+
+        identityRep.save(review.getIdentity());
+    }
+
+    private void addDailyLimit(IdentityKycReview review, BigDecimal newDailyLimit) {
+        Limit dailyLimit = new Limit();
+        dailyLimit.setAmount(newDailyLimit);
+        dailyLimit.setCurrency("USD");
+        Limit dailyLimitSaved = limitRep.save(dailyLimit);
+
+        review.getIdentity().getLimitCashPerDay().add(dailyLimitSaved);
     }
 
     private void uploadFile(MultipartFile file, Path outPath) throws IOException {
