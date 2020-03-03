@@ -15,7 +15,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.multipart.MultipartFile;
-
 import javax.transaction.Transactional;
 import java.io.File;
 import java.io.IOException;
@@ -30,10 +29,6 @@ public class UserService {
 
     public static final int TIER_BASIC_VERIFICATION = 1;
     public static final int TIER_VIP_VERIFICATION = 2;
-
-    public static final int REVIEW_STATUS_PENDING = 1;
-    public static final int REVIEW_STATUS_REJECTED = 2;
-    public static final int REVIEW_STATUS_VERIFIED = 3;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -80,10 +75,8 @@ public class UserService {
     @Autowired
     private IdentityPieceSelfieRep identityPieceSelfieRep;
 
-    @Value("${upload.path.id_scan}")
-    private String idScanPath;
-    @Value("${upload.path.id_selfie}")
-    private String idSelfiePath;
+    @Value("${document.upload.path}")
+    private String documentUploadPath;
 
     @Transactional
     public User register(String phone, String password) {
@@ -308,7 +301,7 @@ public class UserService {
         if (verificationData.getTierId() == TIER_BASIC_VERIFICATION) {
             //prepare file path
             preparedFileName = verificationData.getIdNumber() + "_" + verificationData.getFile().getOriginalFilename();
-            preparedFilePath = idScanPath + File.separator + preparedFileName;
+            preparedFilePath = documentUploadPath + File.separator + preparedFileName;
 
             // prepare personal info for VERIFIED
             identityKycReview = IdentityKycReview
@@ -329,7 +322,7 @@ public class UserService {
         } else if (verificationData.getTierId() == TIER_VIP_VERIFICATION) {
             //prepare file path
             preparedFileName = verificationData.getSsn() + "_" + verificationData.getFile().getOriginalFilename();
-            preparedFilePath = idSelfiePath + File.separator + preparedFileName;
+            preparedFilePath = documentUploadPath + File.separator + preparedFileName;
 
             // prepare personal info for VIP_VERIFIED
             identityKycReview = IdentityKycReview
