@@ -28,8 +28,12 @@ public class Constant {
     public static final int SELL_NOT_NOTIFIED = 0;
     public static final int SELL_NOTIFIED = 1;
 
-    public static final BigDecimal DAILY_LIMIT = BigDecimal.valueOf(10_000);
-    public static final BigDecimal TX_LIMIT = BigDecimal.valueOf(3_000);
+    public static final BigDecimal DAILY_LIMIT = BigDecimal.valueOf(900);
+    public static final BigDecimal TX_LIMIT = BigDecimal.valueOf(900);
+    public static final BigDecimal VERIFIED_DAILY_LIMIT = BigDecimal.valueOf(10_000);
+    public static final BigDecimal VERIFIED_TX_LIMIT = BigDecimal.valueOf(3_000);
+    public static final BigDecimal VIP_VERIFIED_DAILY_LIMIT = BigDecimal.valueOf(20_000);
+    public static final BigDecimal VIP_VERIFIED_TX_LIMIT = BigDecimal.valueOf(10_000);
 
     public static final String TERMINAL_SERIAL_NUMBER = "BT300197";
 

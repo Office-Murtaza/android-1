@@ -1,20 +1,34 @@
 package com.batm.service;
 
-import java.math.BigDecimal;
-import java.util.*;
 import com.batm.dto.GiftAddressDTO;
-import com.batm.entity.*;
-import com.batm.repository.*;
 import com.batm.dto.PhoneDTO;
+import com.batm.dto.UserVerificationDTO;
+import com.batm.dto.VerificationStateDTO;
+import com.batm.entity.*;
+import com.batm.model.VerificationStatus;
+import com.batm.repository.*;
 import com.batm.util.Constant;
 import com.batm.util.Util;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
+import org.springframework.web.multipart.MultipartFile;
 import javax.transaction.Transactional;
+import java.io.File;
+import java.io.IOException;
+import java.math.BigDecimal;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.*;
 
 @Service
 public class UserService {
+
+    public static final int TIER_BASIC_VERIFICATION = 1;
+    public static final int TIER_VIP_VERIFICATION = 2;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -48,6 +62,21 @@ public class UserService {
 
     @Autowired
     private IdentityPieceCellPhoneRep identityPieceCellPhoneRep;
+
+    @Autowired
+    private IdentityKycReviewRep identityKycReviewRep;
+
+    @Autowired
+    private IdentityPiecePersonalInfoRep identityPiecePersonalInfoRep;
+
+    @Autowired
+    private IdentityPieceDocumentRep identityPieceDocumentRep;
+
+    @Autowired
+    private IdentityPieceSelfieRep identityPieceSelfieRep;
+
+    @Value("${document.upload.path}")
+    private String documentUploadPath;
 
     @Transactional
     public User register(String phone, String password) {
@@ -227,5 +256,220 @@ public class UserService {
         identityPieceCellPhoneRep.save(ipCellPhone);
 
         return savedIdentity;
+    }
+
+    public VerificationStateDTO getVerificationState(Long userId) {
+        VerificationStateDTO verificationStateDTO = new VerificationStateDTO();
+
+        // default status if no requests found
+        VerificationStatus verificationStatus = VerificationStatus.NOT_VERIFIED;
+        // default message
+        String verificationMessage = null;
+
+        User user = userRep.getOne(userId);
+
+        List<IdentityKycReview> identityKycReviews = identityKycReviewRep.findAllByIdentityOrderByIdDesc(user.getIdentity());
+
+        if (!CollectionUtils.isEmpty(identityKycReviews)) {
+            IdentityKycReview currentIdentityKycReview = identityKycReviews.get(0);
+
+            // identify status and message
+            verificationStatus = VerificationStatus.getByValue(currentIdentityKycReview.getReviewStatus());
+            verificationMessage = currentIdentityKycReview.getRejectedMessage();
+        }
+
+        verificationStateDTO.setStatus(verificationStatus);
+        verificationStateDTO.setMessage(verificationMessage);
+
+        // find and set latest limits by identity
+        verificationStateDTO.setDailyLimit(user.getIdentity().getLimitCashPerDay().stream()
+                .sorted(Comparator.comparingLong(Limit::getId).reversed()).findFirst().get().getAmount());
+        verificationStateDTO.setTxLimit(user.getIdentity().getLimitCashPerTransaction().stream()
+                .sorted(Comparator.comparingLong(Limit::getId).reversed()).findFirst().get().getAmount());
+
+        return verificationStateDTO;
+    }
+
+    @Transactional
+    public void submitVerification(Long userId, UserVerificationDTO verificationData) throws IOException {
+        // TODO add validations for filename, idnumber, ssn etc
+        User user = userRep.getOne(userId);
+        String preparedFileName;
+        String preparedFilePath;
+        IdentityKycReview identityKycReview;
+
+        if (verificationData.getTierId() == TIER_BASIC_VERIFICATION) {
+            //prepare file path
+            preparedFileName = verificationData.getIdNumber() + "_" + verificationData.getFile().getOriginalFilename();
+            preparedFilePath = documentUploadPath + File.separator + preparedFileName;
+
+            // prepare personal info for VERIFIED
+            identityKycReview = IdentityKycReview
+                    .builder()
+                    .identity(user.getIdentity())
+                    .tierId(TIER_BASIC_VERIFICATION)
+                    .reviewStatus(VerificationStatus.VERIFICATION_PENDING.getValue())
+                    .idCardNumber(verificationData.getIdNumber())
+                    .address(verificationData.getAddress())
+                    .country(verificationData.getCountry())
+                    .province(verificationData.getProvince())
+                    .city(verificationData.getCity())
+                    .zip(verificationData.getZipCode())
+                    .firstName(verificationData.getFirstName())
+                    .lastName(verificationData.getLastName())
+                    .build();
+            identityKycReviewRep.save(identityKycReview);
+        } else if (verificationData.getTierId() == TIER_VIP_VERIFICATION) {
+            //prepare file path
+            preparedFileName = verificationData.getSsn() + "_" + verificationData.getFile().getOriginalFilename();
+            preparedFilePath = documentUploadPath + File.separator + preparedFileName;
+
+            // prepare personal info for VIP_VERIFIED
+            identityKycReview = IdentityKycReview
+                    .builder()
+                    .identity(user.getIdentity())
+                    .tierId(TIER_VIP_VERIFICATION)
+                    .reviewStatus(VerificationStatus.VIP_VERIFICATION_PENDING.getValue())
+                    .ssn(verificationData.getSsn())
+                    .build();
+
+        } else {
+            // if wrong tier don't do anything
+            return;
+        }
+
+        Path preparedPath = Paths.get(preparedFilePath);
+        uploadFile(verificationData.getFile(), preparedPath);
+
+        String mimeType = null;
+
+        try {
+            mimeType = Files.probeContentType(preparedPath);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        // add uploaded file info
+        identityKycReview.setFileName(preparedFileName);
+        identityKycReview.setFileMimeType(mimeType);
+
+        IdentityKycReview identityKycReviewSaved = identityKycReviewRep.save(identityKycReview);
+
+        //TODO mov out to new API when we get dashboard for verification of users
+        acceptVerificationData(identityKycReviewSaved.getId()); // hack to auto-accept
+    }
+
+    //TODO later(when we get admin dashboard for review) to change to accept by ID
+    @Transactional
+    public void acceptVerificationData(Long identityKycReviewId) {
+        Optional<IdentityKycReview> identityKycReview = identityKycReviewRep.findById(identityKycReviewId);
+        if (identityKycReview.isPresent()) {
+            IdentityKycReview review = identityKycReview.get();
+            if (review.getTierId() == TIER_BASIC_VERIFICATION) {
+
+                IdentityPiece identityPiece = new IdentityPiece();
+                identityPiece.setIdentity(review.getIdentity());
+                identityPiece.setPieceType(IdentityPiece.TYPE_ID_SCAN);
+                identityPiece.setRegistration(true);
+                identityPiece.setCreated(new Date());
+                IdentityPiece identityPieceSaved = identityPieceRep.save(identityPiece);
+
+                IdentityPieceDocument identityPieceDocument = IdentityPieceDocument
+                        .builder()
+                        .fileName(review.getFileName())
+                        .mimeType(review.getFileMimeType())
+                        .identity(review.getIdentity())
+                        .identityPiece(identityPieceSaved)
+                        .created(new Date())
+                        .build();
+                identityPieceDocumentRep.save(identityPieceDocument);
+
+                IdentityPiecePersonalInfo identityPiecePersonalInfo = IdentityPiecePersonalInfo
+                        .builder()
+                        .firstName(review.getFirstName())
+                        .lastName(review.getLastName())
+                        .identity(review.getIdentity())
+                        .identityPiece(identityPiece)
+                        .address(review.getAddress())
+                        .country(review.getCountry())
+                        .province(review.getProvince())
+                        .city(review.getCity())
+                        .zip(review.getZip())
+                        .idCardNumber(review.getIdCardNumber())
+                        .created(new Date())
+                        .build();
+                identityPiecePersonalInfoRep.save(identityPiecePersonalInfo);
+
+                // add new limits per Tier
+                addDailyLimit(review, Constant.VERIFIED_DAILY_LIMIT);
+                addTransactionLimit(review, Constant.VERIFIED_TX_LIMIT);
+
+                // save updated status of review
+                review.setReviewStatus(VerificationStatus.VERIFIED.getValue());
+                identityKycReviewRep.save(review);
+            } else if (review.getTierId() == TIER_VIP_VERIFICATION) {
+
+                IdentityPiece identityPiece = new IdentityPiece();
+                identityPiece.setIdentity(review.getIdentity());
+                identityPiece.setPieceType(IdentityPiece.TYPE_SELFIE);
+                identityPiece.setRegistration(true);
+                identityPiece.setCreated(new Date());
+                IdentityPiece identityPieceSaved = identityPieceRep.save(identityPiece);
+
+                IdentityPieceSelfie identityPieceSelfie = IdentityPieceSelfie
+                        .builder()
+                        .fileName(review.getFileName())
+                        .mimeType(review.getFileMimeType())
+                        .identity(review.getIdentity())
+                        .identityPiece(identityPieceSaved)
+                        .created(new Date())
+                        .build();
+                identityPieceSelfieRep.save(identityPieceSelfie);
+
+                IdentityPiecePersonalInfo identityPiecePersonalInfo = IdentityPiecePersonalInfo
+                        .builder()
+                        .identity(review.getIdentity())
+                        .identityPiece(identityPiece)
+                        .ssn(review.getSsn())
+                        .created(new Date())
+                        .build();
+                identityPiecePersonalInfoRep.save(identityPiecePersonalInfo);
+
+                // add new limits per Tier
+                addDailyLimit(review, Constant.VIP_VERIFIED_DAILY_LIMIT);
+                addTransactionLimit(review, Constant.VIP_VERIFIED_TX_LIMIT);
+
+                // save updated status of review
+                review.setReviewStatus(VerificationStatus.VIP_VERIFIED.getValue());
+                identityKycReviewRep.save(review);
+            } else {
+                // if wrong tier do nothing
+                return;
+            }
+        }
+    }
+
+    private void addTransactionLimit(IdentityKycReview review, BigDecimal newTxLimit) {
+        Limit txLimit = new Limit();
+        txLimit.setAmount(newTxLimit);
+        txLimit.setCurrency("USD");
+        Limit txLimitSaved = limitRep.save(txLimit);
+
+        review.getIdentity().getLimitCashPerTransaction().add(txLimitSaved);
+
+        identityRep.save(review.getIdentity());
+    }
+
+    private void addDailyLimit(IdentityKycReview review, BigDecimal newDailyLimit) {
+        Limit dailyLimit = new Limit();
+        dailyLimit.setAmount(newDailyLimit);
+        dailyLimit.setCurrency("USD");
+        Limit dailyLimitSaved = limitRep.save(dailyLimit);
+
+        review.getIdentity().getLimitCashPerDay().add(dailyLimitSaved);
+    }
+
+    private void uploadFile(MultipartFile file, Path outPath) throws IOException {
+        Files.write(outPath, file.getBytes());
     }
 }

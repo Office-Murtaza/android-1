@@ -11,6 +11,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.AuditorAware;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.multipart.commons.CommonsMultipartResolver;
+
 import java.util.Optional;
 
 @Configuration
@@ -42,5 +44,12 @@ public class BeanConfiguration {
     @Bean
     public AuditorAware<String> getAuditorAware() {
         return () -> Optional.ofNullable(SecurityContextHolder.getContext().getAuthentication().getName());
+    }
+
+    @Bean(name = "multipartResolver")
+    public CommonsMultipartResolver multipartResolver() {
+        CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver();
+        multipartResolver.setMaxUploadSize(10_000_000); // 10mb
+        return multipartResolver;
     }
 }

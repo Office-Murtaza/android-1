@@ -21,10 +21,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 @EnableScheduling
@@ -200,8 +197,14 @@ public class TransactionService {
         try {
             User user = userService.findById(userId);
             BigDecimal txAmount = transactionRecordRep.getTransactionsSumByDate(user.getIdentity(), Util.getStartDate(), new Date());
-            BigDecimal dailyLimit = user.getIdentity().getLimitCashPerDay().get(0).getAmount();
-            BigDecimal txLimit = user.getIdentity().getLimitCashPerTransaction().get(0).getAmount();
+
+            // find latest limits
+            BigDecimal dailyLimit = user.getIdentity().getLimitCashPerDay().stream()
+                    .sorted(Comparator.comparingLong(Limit::getId).reversed())
+                    .findFirst().get().getAmount();
+            BigDecimal txLimit = user.getIdentity().getLimitCashPerTransaction().stream()
+                    .sorted(Comparator.comparingLong(Limit::getId).reversed())
+                    .findFirst().get().getAmount();
 
             if (txAmount != null) {
                 dailyLimit.subtract(txAmount);
