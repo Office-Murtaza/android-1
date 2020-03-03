@@ -24,14 +24,6 @@ class RetrofitClient private constructor() {
 
     var apiInterface: ApiInterface = getClient(API_URL).create(ApiInterface::class.java)
 
-    private var mToken: String? = App.appContext().pref.getSessionApiToken()
-
-    //public for reinit ApiInterface after token getting
-    fun updateToken() {
-        mToken = App.appContext().pref.getSessionApiToken()
-    }
-
-
     private fun getClient(url: String): Retrofit {
         return Retrofit.Builder()
             .baseUrl(url)
@@ -55,10 +47,9 @@ class RetrofitClient private constructor() {
                     .addHeader("Content-Type", "application/json")
                     .addHeader("X-Requested-With", "XMLHttpRequest")
                     .addHeader("Accept", "application/json")
-                if (mToken.isNullOrEmpty())
-                    mToken = App.appContext().pref.getSessionApiToken()
-                if (!mToken.isNullOrEmpty())
-                    request.addHeader("Authorization", "Bearer $mToken")
+                val refreshToken = App.appContext().pref.getSessionApiToken()
+                if (!refreshToken.isNullOrBlank())
+                    request.addHeader("Authorization", "Bearer $refreshToken")
                 chain.proceed(request.build())
             }
             .addInterceptor(httpLoggingInterceptor)

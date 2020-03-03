@@ -4,7 +4,7 @@ import io.realm.Realm
 
 
 class DbCryptoCoinModel : DbCryptoCoinInterface {
-    override fun addCryptoCoin(realm: Realm, coinDb: DbCryptoCoin): Boolean {
+    override fun addCoin(realm: Realm, coinDb: DbCryptoCoin): Boolean {
         return try {
             realm.beginTransaction()
             realm.copyToRealmOrUpdate(coinDb)

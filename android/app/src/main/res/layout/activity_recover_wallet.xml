@@ -143,7 +143,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/margin_half"
                 android:layout_marginEnd="@dimen/margin_main"
-                android:orientation="horizontal"
                 app:layout_constraintBottom_toTopOf="@id/passwordView"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/phonePickerView">
@@ -151,14 +150,13 @@
                 <androidx.appcompat.widget.AppCompatEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_toEndOf="@id/phonePickerView"
-                    android:drawableEnd="@drawable/ic_phone"
+                    android:drawableEnd="@drawable/ic_phone_in_talk"
+                    android:drawableTint="@color/edit_text_drawable_tint"
                     android:hint="@string/phone_number"
                     android:inputType="phone"
-                    android:maxLines="1"
-                    android:paddingStart="0dp"
-                    android:paddingEnd="@dimen/margin_half"
-                    android:singleLine="true" />
+                    android:lines="1"
+                    android:paddingStart="4dp"
+                    android:paddingEnd="12dp" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -167,22 +165,19 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/margin_main"
                 android:layout_marginTop="@dimen/margin_main"
-                android:layout_marginEnd="@dimen/margin_main"
                 app:layout_constraintBottom_toTopOf="@id/nextButtonView"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent">
+                app:layout_constraintEnd_toEndOf="@id/phoneView"
+                app:layout_constraintStart_toStartOf="parent"
+                app:passwordToggleEnabled="true"
+                app:passwordToggleTint="@color/edit_text_drawable_tint">
 
                 <androidx.appcompat.widget.AppCompatEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:drawableEnd="@drawable/ic_lock"
                     android:hint="@string/pass"
                     android:inputType="textPassword"
-                    android:maxLines="1"
-                    android:nextFocusDown="@id/nextButtonView"
-                    android:paddingStart="0dp"
-                    android:paddingEnd="@dimen/margin_half"
-                    android:singleLine="true" />
+                    android:lines="1"
+                    android:nextFocusDown="@id/nextButtonView" />
 
             </com.google.android.material.textfield.TextInputLayout>
 

@@ -131,6 +131,10 @@ final class APIGatewayImpl: APIGateway {
   }
   
   func getCoinsBalance(userId: Int, coins: [BTMCoin]) -> Single<CoinsBalance> {
+    if coins.isEmpty {
+      return Single.just(CoinsBalance(totalBalance: 0, coins: []))
+    }
+    
     let request = CoinsBalanceRequest(userId: userId, coins: coins)
     return api.execute(request)
       .flatMap {

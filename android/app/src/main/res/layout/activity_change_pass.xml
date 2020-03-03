@@ -56,13 +56,14 @@
         android:layout_marginEnd="@dimen/margin_main"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/toolbar_container">
+        app:layout_constraintTop_toBottomOf="@id/toolbar_container"
+        app:passwordToggleEnabled="true"
+        app:passwordToggleTint="@color/edit_text_drawable_tint">
 
         <androidx.appcompat.widget.AppCompatEditText
             android:id="@+id/old_value"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:drawableEnd="@drawable/ic_lock"
             android:hint="@string/old_pass"
             android:inputType="textPassword"
             android:maxLines="1"
@@ -80,13 +81,14 @@
         android:layout_marginEnd="@dimen/margin_main"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/til_old_pass">
+        app:layout_constraintTop_toBottomOf="@id/til_old_pass"
+        app:passwordToggleEnabled="true"
+        app:passwordToggleTint="@color/edit_text_drawable_tint">
 
         <androidx.appcompat.widget.AppCompatEditText
             android:id="@+id/new_value"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:drawableEnd="@drawable/ic_lock"
             android:hint="@string/new_pass"
             android:inputType="textPassword"
             android:maxLines="1"
@@ -103,13 +105,14 @@
         android:layout_marginEnd="@dimen/margin_main"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/til_new_pass">
+        app:layout_constraintTop_toBottomOf="@id/til_new_pass"
+        app:passwordToggleEnabled="true"
+        app:passwordToggleTint="@color/edit_text_drawable_tint">
 
         <androidx.appcompat.widget.AppCompatEditText
             android:id="@+id/confirm_new_value"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:drawableEnd="@drawable/ic_lock"
             android:hint="@string/confirm_new_pass"
             android:inputType="textPassword"
             android:maxLines="1"

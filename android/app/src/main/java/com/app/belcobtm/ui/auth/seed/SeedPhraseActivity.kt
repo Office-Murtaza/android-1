@@ -10,8 +10,8 @@ import android.text.SpannableStringBuilder
 import android.text.style.ForegroundColorSpan
 import androidx.appcompat.app.AppCompatActivity
 import com.app.belcobtm.R
+import com.app.belcobtm.presentation.core.helper.AlertHelper
 import com.app.belcobtm.ui.main.main_activity.MainActivity
-import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_seed_phrase.*
 
 
@@ -58,7 +58,7 @@ class SeedPhraseActivity : AppCompatActivity() {
 
         copy_seed.setOnClickListener {
             copyToClipboard(mSeedPhrase)
-            Snackbar.make(container, R.string.seed_clipboard, Snackbar.LENGTH_LONG).show()
+            AlertHelper.showToastLong(container.context, R.string.seed_clipboard)
         }
         if (mFromSettings) {
             bt_done.text = "Done"

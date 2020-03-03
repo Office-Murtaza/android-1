@@ -1,4 +1,4 @@
-package com.app.belcobtm.presentation.features.authorization.recover.wallet
+package com.app.belcobtm.presentation.features.authorization.wallet.recover
 
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
@@ -10,17 +10,16 @@ import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.FrameLayout
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatEditText
 import androidx.lifecycle.Observer
 import com.app.belcobtm.R
-import com.app.belcobtm.api.data_manager.AuthDataManager
-import com.app.belcobtm.api.model.ServerException
 import com.app.belcobtm.domain.Failure
 import com.app.belcobtm.presentation.core.extensions.getString
+import com.app.belcobtm.presentation.core.helper.AlertHelper
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
+import com.app.belcobtm.presentation.core.ui.BaseActivity
 import com.app.belcobtm.ui.auth.recover_seed.RecoverSeedActivity
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
@@ -28,7 +27,7 @@ import kotlinx.android.synthetic.main.activity_create_wallet.*
 import org.koin.android.viewmodel.ext.android.viewModel
 
 
-class RecoverWalletActivity : AppCompatActivity() {
+class RecoverWalletActivity : BaseActivity() {
     private val viewModel: RecoverWalletViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -131,55 +130,6 @@ class RecoverWalletActivity : AppCompatActivity() {
 
         if (isValidFields(phone, password)) {
             viewModel.recoverWallet(phone, password)
-        }
-    }
-
-    private fun showProgress(show: Boolean) {
-        runOnUiThread {
-            val progress = findViewById<FrameLayout?>(R.id.progress)
-            if (progress != null) {
-                val shortAnimTime = resources.getInteger(android.R.integer.config_shortAnimTime).toLong()
-                progress.animate()
-                    .setDuration(shortAnimTime)
-                    .alpha((if (show) 1 else 0).toFloat())
-                    .setListener(object : AnimatorListenerAdapter() {
-                        override fun onAnimationEnd(animation: Animator) {
-                            progress.visibility = if (show) View.VISIBLE else View.GONE
-                        }
-                    })
-            }
-        }
-    }
-
-    private fun hideSoftKeyboard(): Boolean {
-        val inputMethodManager = getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
-        inputMethodManager.hideSoftInputFromWindow(currentFocus?.windowToken, 0)
-        return true
-    }
-
-    private fun showError(error: String?) {
-        showError(error, Snackbar.LENGTH_SHORT)
-    }
-
-    private fun showError(stringResId: Int) {
-        showError(getString(stringResId), Snackbar.LENGTH_SHORT)
-    }
-
-    private fun showError(error: String?, @Snackbar.Duration duration: Int) {
-        runOnUiThread {
-            val toastLength = if (duration == Snackbar.LENGTH_SHORT) Toast.LENGTH_SHORT else Toast.LENGTH_LONG
-
-            var _error = error
-            if (_error.isNullOrEmpty()) _error = "Unknown error appeared"
-
-            val containerView = findViewById<View>(R.id.container)
-            if (containerView != null) {
-                val snackbar = Snackbar.make(containerView, _error, Snackbar.LENGTH_SHORT)
-                snackbar.view.setBackgroundColor(resources.getColor(R.color.error_color_material_light))
-                snackbar.show()
-            } else {
-                Toast.makeText(this, _error, toastLength).show()
-            }
         }
     }
 }

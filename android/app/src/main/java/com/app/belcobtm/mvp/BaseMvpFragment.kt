@@ -9,10 +9,10 @@ import android.os.Bundle
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.FrameLayout
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.app.belcobtm.R
-import com.app.belcobtm.ui.auth.pin.PinActivity
+import com.app.belcobtm.presentation.core.helper.AlertHelper
+import com.app.belcobtm.presentation.features.authorization.pin.PinActivity
 import com.google.android.material.snackbar.Snackbar
 import dagger.android.support.AndroidSupportInjection
 import javax.inject.Inject
@@ -35,8 +35,6 @@ abstract class BaseMvpFragment<in V : BaseMvpView, T : BaseMvpPresenter<V>>
 
     private fun showError(error: String?, @Snackbar.Duration duration: Int) {
         activity?.runOnUiThread {
-            val toastLength = if (duration == Snackbar.LENGTH_SHORT) Toast.LENGTH_SHORT else Toast.LENGTH_LONG
-
             var _error = error
             if (_error.isNullOrEmpty()) _error = "Unknown error appeared"
 
@@ -46,7 +44,11 @@ abstract class BaseMvpFragment<in V : BaseMvpView, T : BaseMvpPresenter<V>>
                 snackbar.view.setBackgroundColor(resources.getColor(R.color.error_color_material_light))
                 snackbar.show()
             } else {
-                Toast.makeText(context, _error, toastLength).show()
+                if (duration == Snackbar.LENGTH_SHORT) {
+                    AlertHelper.showToastShort(context, _error)
+                } else {
+                    AlertHelper.showToastLong(context, _error)
+                }
             }
         }
     }
@@ -69,13 +71,13 @@ abstract class BaseMvpFragment<in V : BaseMvpView, T : BaseMvpPresenter<V>>
 
     override fun showMessage(srtResId: Int) {
         activity?.runOnUiThread {
-            Toast.makeText(context, srtResId, Toast.LENGTH_LONG).show()
+            AlertHelper.showToastLong(context, srtResId)
         }
     }
 
     override fun showMessage(message: String?) {
         activity?.runOnUiThread {
-            Toast.makeText(context, message, Toast.LENGTH_LONG).show()
+            AlertHelper.showToastLong(context, message)
         }
     }
 

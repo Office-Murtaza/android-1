@@ -92,14 +92,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_toEndOf="@id/phonePickerView"
-            android:drawableEnd="@drawable/ic_phone"
+            android:drawableEnd="@drawable/ic_phone_in_talk"
+            android:drawableTint="@color/edit_text_drawable_tint"
             android:hint="@string/phone_number"
             android:inputType="phone"
-            android:maxLines="1"
+            android:lines="1"
+            android:paddingStart="4dp"
+            android:paddingEnd="12dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            android:paddingEnd="@dimen/margin_half"
-            android:singleLine="true"/>
+            app:layout_constraintStart_toStartOf="parent" />
     </com.google.android.material.textfield.TextInputLayout>
 
 
@@ -144,13 +145,13 @@
 
         <androidx.appcompat.widget.AppCompatEditText
             android:id="@+id/amount_crypto"
+            digits="1234567890."
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppins_regular"
             android:gravity="center"
             android:inputType="numberDecimal"
             android:maxLines="3"
-            digits="1234567890."
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             tools:hint="XRP" />
@@ -182,15 +183,15 @@
 
         <androidx.appcompat.widget.AppCompatEditText
             android:id="@+id/amount_usd"
+            digits="1234567890."
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:enabled="true"
             android:fontFamily="@font/poppins_regular"
             android:gravity="center"
+            android:hint="USD"
             android:inputType="numberDecimal"
             android:maxLines="2"
-            digits="1234567890."
-            android:hint="USD"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
@@ -298,8 +299,8 @@
             android:gravity="center"
             android:hint="@string/input_text_message"
             android:inputType="text"
-            android:maxLines="1"
             android:maxLength="100"
+            android:maxLines="1"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
@@ -309,11 +310,11 @@
         android:id="@+id/nextButtonView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:foreground="?attr/selectableItemBackground"
         android:layout_marginTop="@dimen/margin_x3"
         android:layout_marginBottom="@dimen/margin_main"
         android:background="@drawable/bt_gray_rounded_corner"
         android:backgroundTint="@color/blue_color"
+        android:foreground="?attr/selectableItemBackground"
         android:paddingStart="@dimen/margin_x3"
         android:paddingEnd="@dimen/margin_x3"
         android:text="@string/next"
