@@ -74,7 +74,7 @@
             android:name=".presentation.features.authorization.pin.PinActivity"
             android:launchMode="singleInstance"
             android:screenOrientation="portrait"
-            android:theme="@style/AppThemeNoActionBar"></activity>
+            android:theme="@style/AppThemeNoActionBar"/>
         <activity
             android:name=".ui.main.settings.UnlinkActivity"
             android:screenOrientation="portrait"
@@ -105,13 +105,12 @@
         <activity
             android:name=".ui.main.coins.send_gift.SendGiftActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppThemeNoActionBar">
-            <!-- <intent-filter>
-                 <action android:name="android.intent.action.MAIN" />
+            android:theme="@style/AppThemeNoActionBar"/>
 
-                 <category android:name="android.intent.category.LAUNCHER" />
-             </intent-filter>-->
-        </activity>
+        <activity
+            android:name=".presentation.features.settings.verification.VerificationInfoActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppThemeNoActionBar" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"

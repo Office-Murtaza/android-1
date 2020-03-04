@@ -94,6 +94,7 @@
     <string name="settings_phone">Phone</string>
     <string name="settings_pass">Change password</string>
     <string name="settings_pin">Change PIN</string>
+    <string name="settings_verification">Verification</string>
     <string name="settings_unlink">Unlink Wallet</string>
     <string name="unlink_warning">Unlink the wallet from the current device means clear all local data(seed phrase, public and private keys). You can recover the wallet any time and on any device using your credentials and seed phrase.\n\n</string>
     <string name="unlink_warning2">Please, make sure you have been stored your credentials and seed phrase before unlinking the wallet.</string>
@@ -114,6 +115,26 @@
     <string name="password_changed">Password changed</string>
     <string name="pin_changed">PIN changed</string>
     <string name="error_wrong_old_pin">Wrong old PIN</string>
+
+    <!-- Verification -->
+        <string name="verification_screen_title">Verification</string>
+    <string name="verification_status">Status</string>
+    <string name="verification_tx_limit">Tx Limit</string>
+    <string name="verification_daily_limit">Daily Limit</string>
+    <string name="verification_vip_verify">VIP Verify</string>
+    <string name="verification_verify">Verify</string>
+    <string name="verification_unit_usd">%1$s USD</string>
+    <string-array name="verification_status_array">
+        <item>Incorrect Status</item>
+        <item>Not Verified</item>
+        <item>Verification Pending</item>
+        <item>Verification Rejected</item>
+        <item>Verified</item>
+        <item>VIP Verification Pending</item>
+        <item>VIP Verification Rejected</item>
+        <item>VIP Verified</item>
+    </string-array>
+    <!--    <string name="verification_"></string>-->
 
     <!--transactions-->
     <string name="deposit">Deposit</string>

@@ -1,6 +1,7 @@
 package com.app.belcobtm.presentation.di
 
 import com.app.belcobtm.domain.authorization.interactor.*
+import com.app.belcobtm.domain.settings.interactor.GetVerificationInfoUseCase
 import org.koin.dsl.module
 
 val useCaseModule = module {
@@ -12,4 +13,5 @@ val useCaseModule = module {
     single { AuthorizeUseCase(get()) }
     single { GetAuthorizePinUseCase(get()) }
     single { SaveAuthorizePinUseCase(get()) }
+    single { GetVerificationInfoUseCase(get()) }
 }

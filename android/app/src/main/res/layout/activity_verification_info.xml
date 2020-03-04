@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbarView"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@drawable/bg_toolbar"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:elevation="6dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:navigationIcon="@drawable/gph_ic_back"
+        tools:title="Toolbar title" />
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/barrierView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="end"
+        app:constraint_referenced_ids="statusKeyView,txLimitKeyView,dailyLimitKeyView" />
+
+    <TextView
+        android:id="@+id/statusKeyView"
+        style="@style/VerificationInfoScreen.Key"
+        android:text="@string/verification_status"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbarView" />
+
+    <TextView
+        android:id="@+id/statusValueView"
+        style="@style/VerificationInfoScreen.Value"
+        app:layout_constraintStart_toEndOf="@id/barrierView"
+        app:layout_constraintTop_toTopOf="@id/statusKeyView"
+        tools:text="Verified" />
+
+    <View
+        android:id="@+id/statusDividerView"
+        style="@style/VerificationInfoScreen.Divider"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/statusKeyView" />
+
+    <TextView
+        android:id="@+id/txLimitKeyView"
+        style="@style/VerificationInfoScreen.Key"
+        android:text="@string/verification_tx_limit"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/statusDividerView" />
+
+    <TextView
+        android:id="@+id/txLimitValueView"
+        style="@style/VerificationInfoScreen.Value"
+        app:layout_constraintStart_toEndOf="@id/barrierView"
+        app:layout_constraintTop_toTopOf="@id/txLimitKeyView"
+        tools:text="1000 USD" />
+
+    <TextView
+        android:id="@+id/dailyLimitKeyView"
+        style="@style/VerificationInfoScreen.Key"
+        android:text="@string/verification_daily_limit"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/txLimitKeyView" />
+
+    <TextView
+        android:id="@+id/dailyLimitValueView"
+        style="@style/VerificationInfoScreen.Value"
+        app:layout_constraintStart_toEndOf="@id/barrierView"
+        app:layout_constraintTop_toTopOf="@id/dailyLimitKeyView"
+        tools:text="1000 USD" />
+
+    <View
+        android:id="@+id/dailyLimitDividerView"
+        style="@style/VerificationInfoScreen.Divider"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/dailyLimitKeyView" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/messageView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:textColor="#8d8d8d"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/dailyLimitDividerView"
+        tools:text="In order to increase daily limit to 3000 USD, please upload a copy of your driver license." />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/verifyButtonView"
+        android:layout_width="160dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/button_blue"
+        android:elevation="0dp"
+        android:fontFamily="@font/poppins_bold"
+        android:foreground="?attr/selectableItemBackground"
+        android:paddingStart="16dp"
+        android:paddingTop="18dp"
+        android:paddingEnd="16dp"
+        android:paddingBottom="14dp"
+        android:text="@string/verification_verify"
+        android:textAllCaps="false"
+        android:textColor="#ffffff"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/messageView" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
