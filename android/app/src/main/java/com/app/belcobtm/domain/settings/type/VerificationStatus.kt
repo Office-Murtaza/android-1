@@ -1,6 +1,6 @@
 package com.app.belcobtm.domain.settings.type
 
-enum class VerificationStatusType(val code: Int) {
+enum class VerificationStatus(val code: Int) {
     NOT_VERIFIED(1),
     VERIFICATION_PENDING(2),
     VERIFICATION_REJECTED(3),
@@ -10,6 +10,6 @@ enum class VerificationStatusType(val code: Int) {
     VIP_VERIFIED(7);
 
     companion object {
-        fun getStatusByCode(code: Int): VerificationStatusType = values().find { it.code == code } ?: NOT_VERIFIED
+        fun getStatusByCode(code: Int): VerificationStatus = values().find { it.code == code } ?: NOT_VERIFIED
     }
 }

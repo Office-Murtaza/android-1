@@ -1,4 +1,4 @@
-package com.app.belcobtm.presentation.features.settings.verification
+package com.app.belcobtm.presentation.features.settings.verification.info
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel

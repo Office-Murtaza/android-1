@@ -108,7 +108,12 @@
             android:theme="@style/AppThemeNoActionBar"/>
 
         <activity
-            android:name=".presentation.features.settings.verification.VerificationInfoActivity"
+            android:name=".presentation.features.settings.verification.info.VerificationInfoActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppThemeNoActionBar" />
+
+        <activity
+            android:name=".presentation.features.settings.verification.blank.VerificationBlankActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppThemeNoActionBar" />
 

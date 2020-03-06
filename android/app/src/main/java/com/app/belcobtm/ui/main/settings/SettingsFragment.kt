@@ -10,7 +10,7 @@ import com.app.belcobtm.R
 import com.app.belcobtm.ui.main.settings.change_pass.ChangePassActivity
 import com.app.belcobtm.ui.main.settings.check_pass.CheckPassActivity
 import com.app.belcobtm.ui.main.settings.phone.ShowPhoneActivity
-import com.app.belcobtm.presentation.features.settings.verification.VerificationInfoActivity
+import com.app.belcobtm.presentation.features.settings.verification.info.VerificationInfoActivity
 import kotlinx.android.synthetic.main.fragment_settings.*
 
 
