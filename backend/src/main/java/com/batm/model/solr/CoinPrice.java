@@ -8,7 +8,7 @@ import org.springframework.data.solr.core.mapping.SolrDocument;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-@SolrDocument(solrCoreName = "belco",collection = "coin_price")
+@SolrDocument(collection = "coin_price")
 @Getter
 @Setter
 @AllArgsConstructor
