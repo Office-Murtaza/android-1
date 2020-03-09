@@ -4,7 +4,9 @@ import com.batm.dto.*;
 import com.batm.entity.*;
 import com.batm.model.TransactionStatus;
 import com.batm.model.TransactionType;
+import com.batm.model.solr.CoinPrice;
 import com.batm.repository.CoinRep;
+import com.batm.repository.solr.CoinPriceRepository;
 import com.batm.util.Constant;
 import com.batm.util.Util;
 import com.binance.api.client.BinanceApiRestClient;
@@ -14,6 +16,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import wallet.core.jni.CoinType;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Function;
@@ -28,6 +31,7 @@ public class CoinService {
     private static BinanceApiRestClient binanceRest;
     private static WalletService walletService;
     private static UserService userService;
+    private static CoinPriceRepository coinPriceRepository;
 
     private static BlockbookService blockbook;
     private static BinanceService binance;
@@ -47,6 +51,7 @@ public class CoinService {
     public CoinService(@Autowired final BinanceApiRestClient binanceRest,
                        @Autowired final WalletService walletService,
                        @Autowired final UserService userService,
+                       @Autowired final CoinPriceRepository coinPriceRepository,
 
                        @Autowired final CoinRep coinRep,
 
@@ -68,6 +73,7 @@ public class CoinService {
         CoinService.binanceRest = binanceRest;
         CoinService.walletService = walletService;
         CoinService.userService = userService;
+        CoinService.coinPriceRepository = coinPriceRepository;
 
         CoinService.coinList = coinRep.findAll();
         CoinService.coinMap = CoinService.coinList.stream().collect(Collectors.toMap(Coin::getCode, Function.identity()));
@@ -92,7 +98,7 @@ public class CoinService {
         BTC {
             @Override
             public BigDecimal getPrice() {
-                return Util.convert(binanceRest.getPrice("BTCUSDT").getPrice());
+                return getBinancePriceBySymbol("BTCUSDT");
             }
 
             @Override
@@ -193,7 +199,7 @@ public class CoinService {
         ETH {
             @Override
             public BigDecimal getPrice() {
-                return Util.convert(binanceRest.getPrice("ETHUSDT").getPrice());
+                return getBinancePriceBySymbol("ETHUSDT");
             }
 
             @Override
@@ -298,7 +304,7 @@ public class CoinService {
         BCH {
             @Override
             public BigDecimal getPrice() {
-                return Util.convert(binanceRest.getPrice("BCHABCUSDT").getPrice());
+                return getBinancePriceBySymbol("BCHABCUSDT");
             }
 
             @Override
@@ -399,7 +405,7 @@ public class CoinService {
         LTC {
             @Override
             public BigDecimal getPrice() {
-                return Util.convert(binanceRest.getPrice("LTCUSDT").getPrice());
+                return getBinancePriceBySymbol("LTCUSDT");
             }
 
             @Override
@@ -500,7 +506,7 @@ public class CoinService {
         BNB {
             @Override
             public BigDecimal getPrice() {
-                return Util.convert(binanceRest.getPrice("BNBUSDT").getPrice());
+                return getBinancePriceBySymbol("BNBUSDT");
             }
 
             @Override
@@ -602,7 +608,7 @@ public class CoinService {
         XRP {
             @Override
             public BigDecimal getPrice() {
-                return Util.convert(binanceRest.getPrice("XRPUSDT").getPrice());
+                return getBinancePriceBySymbol("XRPUSDT");
             }
 
             @Override
@@ -707,7 +713,7 @@ public class CoinService {
         TRX {
             @Override
             public BigDecimal getPrice() {
-                return Util.convert(binanceRest.getPrice("TRXUSDT").getPrice());
+                return getBinancePriceBySymbol("TRXUSDT");
             }
 
             @Override
@@ -841,6 +847,19 @@ public class CoinService {
         public abstract SignDTO buildSignDTOFromMainWallet();
 
         public abstract BigDecimal getTransactionFee();
+    }
+
+    private static BigDecimal getBinancePriceBySymbol(String symbol) {
+        BigDecimal price =  Util.convert(binanceRest.getPrice(symbol).getPrice());
+
+        //save price to Solr
+        CoinPrice coinPrice = new CoinPrice();
+        coinPrice.setCoinName(symbol.substring(0,3));
+        coinPrice.setPrice(price);
+        coinPrice.setTimestamp(LocalDateTime.now());
+        coinPriceRepository.save(coinPrice);
+
+        return price;
     }
 
     public BalanceDTO getCoinsBalance(Long userId, List<String> coins) {
