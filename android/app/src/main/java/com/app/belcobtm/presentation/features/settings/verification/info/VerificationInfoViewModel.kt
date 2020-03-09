@@ -11,7 +11,7 @@ class VerificationInfoViewModel(
 ) : ViewModel() {
     val verificationInfoLiveData = MutableLiveData<LoadingData<VerificationInfoDataItem>>()
 
-    init {
+    fun updateData() {
         verificationInfoLiveData.value = LoadingData.Loading()
         getVerificationInfoUseCase.invoke(Unit) { either ->
             either.either(

@@ -1,5 +1,6 @@
 package com.app.belcobtm.presentation.features.settings.verification.info
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.core.content.ContextCompat
@@ -11,6 +12,8 @@ import com.app.belcobtm.presentation.core.extensions.hide
 import com.app.belcobtm.presentation.core.extensions.show
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
 import com.app.belcobtm.presentation.core.ui.BaseActivity
+import com.app.belcobtm.presentation.features.settings.verification.blank.VerificationBlankActivity
+import com.app.belcobtm.presentation.features.settings.verification.vip.VerificationVipActivity
 import kotlinx.android.synthetic.main.activity_verification_info.*
 import org.koin.android.viewmodel.ext.android.viewModel
 
@@ -23,6 +26,11 @@ class VerificationInfoActivity : BaseActivity() {
         initViews()
         initListeners()
         initObservers()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.updateData()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -45,7 +53,22 @@ class VerificationInfoActivity : BaseActivity() {
 
     private fun initListeners() {
         verifyButtonView.setOnClickListener {
+            val loadingData = viewModel.verificationInfoLiveData.value
 
+            when {
+                loadingData is LoadingData.Success && (loadingData.data.status == VerificationStatus.VERIFIED
+                        || loadingData.data.status == VerificationStatus.VIP_VERIFICATION_REJECTED) -> {
+                    val intent = Intent(this, VerificationVipActivity::class.java)
+                    intent.putExtra(VerificationVipActivity.TAG_TIER_ID, loadingData.data.status)
+                    startActivity(intent)
+                }
+                loadingData is LoadingData.Success && (loadingData.data.status == VerificationStatus.NOT_VERIFIED
+                        || loadingData.data.status == VerificationStatus.VERIFICATION_REJECTED) -> {
+                    val intent = Intent(this, VerificationBlankActivity::class.java)
+                    intent.putExtra(VerificationBlankActivity.TAG_TIER_ID, loadingData.data.status)
+                    startActivity(intent)
+                }
+            }
         }
     }
 
@@ -94,12 +117,12 @@ class VerificationInfoActivity : BaseActivity() {
             verifyButtonView.show()
         }
         VerificationStatus.NOT_VERIFIED,
-        VerificationStatus.VERIFICATION_PENDING,
-        VerificationStatus.VERIFICATION_REJECTED,
-        VerificationStatus.VIP_VERIFICATION_PENDING -> {
+        VerificationStatus.VERIFICATION_REJECTED -> {
             verifyButtonView.setText(R.string.verification_verify)
             verifyButtonView.show()
         }
-        VerificationStatus.VIP_VERIFIED -> verifyButtonView.hide()
+        VerificationStatus.VIP_VERIFIED,
+        VerificationStatus.VERIFICATION_PENDING,
+        VerificationStatus.VIP_VERIFICATION_PENDING -> verifyButtonView.hide()
     }
 }

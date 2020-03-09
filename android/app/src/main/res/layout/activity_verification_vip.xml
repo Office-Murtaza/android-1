@@ -37,7 +37,7 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="24dp"
                 android:fontFamily="@font/poppins_semi_bold"
-                android:text="@string/verification_id_scan"
+                android:text="@string/verification_id_selfie"
                 android:textColor="#58585a"
                 android:textSize="14sp"
                 app:layout_constraintStart_toStartOf="parent"
@@ -93,110 +93,15 @@
             </LinearLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/idNumberView"
+                android:id="@+id/snnView"
                 style="@style/VerificationBlankScreen.EditTextContainer">
 
                 <androidx.appcompat.widget.AppCompatEditText
                     style="@style/VerificationBlankScreen.EditText"
-                    android:hint="@string/verification_id_number"
-                    android:inputType="text"
-                    android:nextFocusDown="@id/firstNameView" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/firstNameView"
-                style="@style/VerificationBlankScreen.EditTextContainer">
-
-                <androidx.appcompat.widget.AppCompatEditText
-                    style="@style/VerificationBlankScreen.EditText"
-                    android:hint="@string/verification_first_name"
-                    android:inputType="textPersonName"
-                    android:nextFocusDown="@id/lastNameView" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/lastNameView"
-                style="@style/VerificationBlankScreen.EditTextContainer">
-
-                <androidx.appcompat.widget.AppCompatEditText
-                    style="@style/VerificationBlankScreen.EditText"
-                    android:hint="@string/verification_last_name"
-                    android:inputType="textPersonName"
-                    android:nextFocusDown="@id/addressView" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/countryView"
-                style="@style/VerificationBlankScreen.EditTextContainer">
-
-                <androidx.appcompat.widget.AppCompatEditText
-                    style="@style/VerificationBlankScreen.EditText"
-                    android:drawableEnd="@drawable/ic_arrow_drop_down"
-                    android:focusableInTouchMode="false"
-                    android:hint="@string/verification_country"
-                    android:inputType="textPostalAddress"
-                    android:nextFocusDown="@id/provinceView"
-                    android:paddingStart="4dp"
-                    android:paddingEnd="12dp" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/provinceView"
-                style="@style/VerificationBlankScreen.EditTextContainer">
-
-                <androidx.appcompat.widget.AppCompatEditText
-                    style="@style/VerificationBlankScreen.EditText"
-                    android:drawableEnd="@drawable/ic_arrow_drop_down"
-                    android:focusableInTouchMode="false"
-                    android:hint="@string/verification_province"
-                    android:inputType="textPostalAddress"
-                    android:nextFocusDown="@id/zipCodeView"
-                    android:paddingStart="4dp"
-                    android:paddingEnd="12dp" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/cityView"
-                style="@style/VerificationBlankScreen.EditTextContainer">
-
-                <androidx.appcompat.widget.AppCompatEditText
-                    style="@style/VerificationBlankScreen.EditText"
-                    android:drawableEnd="@drawable/ic_arrow_drop_down"
-                    android:focusableInTouchMode="false"
-                    android:hint="@string/verification_city"
-                    android:inputType="textPostalAddress"
-                    android:nextFocusDown="@id/countryView"
-                    android:paddingStart="4dp"
-                    android:paddingEnd="12dp" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/zipCodeView"
-                style="@style/VerificationBlankScreen.EditTextContainer">
-
-                <androidx.appcompat.widget.AppCompatEditText
-                    style="@style/VerificationBlankScreen.EditText"
-                    android:hint="@string/verification_zip_code"
+                    android:hint="@string/verification_snn"
                     android:inputType="number"
-                    android:maxLength="5" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/addressView"
-                style="@style/VerificationBlankScreen.EditTextContainer">
-
-                <androidx.appcompat.widget.AppCompatEditText
-                    style="@style/VerificationBlankScreen.EditText"
-                    android:hint="@string/verification_address"
-                    android:imeOptions="actionDone"
-                    android:inputType="textPostalAddress" />
+                    android:maxLength="9"
+                    android:imeOptions="actionDone" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -205,8 +110,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp"
                 android:layout_marginTop="24dp"
+                android:layout_marginEnd="16dp"
                 android:layout_marginBottom="24dp"
                 android:background="@drawable/button_blue"
                 android:elevation="0dp"

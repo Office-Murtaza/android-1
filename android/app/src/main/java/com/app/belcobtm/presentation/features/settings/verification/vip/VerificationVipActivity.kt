@@ -1,32 +1,30 @@
-package com.app.belcobtm.presentation.features.settings.verification.blank
+package com.app.belcobtm.presentation.features.settings.verification.vip
 
 import android.Manifest
 import android.net.Uri
 import android.os.Bundle
 import android.view.MenuItem
 import android.widget.ImageView
-import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.core.view.isNotEmpty
 import androidx.lifecycle.Observer
 import com.app.belcobtm.R
 import com.app.belcobtm.domain.Failure
 import com.app.belcobtm.presentation.core.extensions.*
-import com.app.belcobtm.presentation.core.helper.AlertHelper
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
 import com.app.belcobtm.presentation.core.ui.BaseActivity
 import com.kroegerama.imgpicker.BottomSheetImagePicker
 import com.kroegerama.imgpicker.ButtonType
-import kotlinx.android.synthetic.main.activity_verification_blank.*
-import kotlinx.android.synthetic.main.view_toolbar.toolbarView
+import kotlinx.android.synthetic.main.activity_verification_vip.*
 import org.koin.android.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import permissions.dispatcher.NeedsPermission
 import permissions.dispatcher.RuntimePermissions
+import kotlin.text.isNotBlank
 
 @RuntimePermissions
-class VerificationBlankActivity : BaseActivity(), BottomSheetImagePicker.OnImagesSelectedListener {
-    private val viewModel: VerificationBlankViewModel by viewModel { parametersOf(intent.getIntExtra(TAG_TIER_ID, 0)) }
+class VerificationVipActivity : BaseActivity(), BottomSheetImagePicker.OnImagesSelectedListener {
+    private val viewModel: VerificationVipViewModel by viewModel { parametersOf(intent.getIntExtra(TAG_TIER_ID, 0)) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -67,7 +65,7 @@ class VerificationBlankActivity : BaseActivity(), BottomSheetImagePicker.OnImage
     }
 
     private fun initViews() {
-        setContentView(R.layout.activity_verification_blank)
+        setContentView(R.layout.activity_verification_vip)
         setSupportActionBar(toolbarView)
         supportActionBar?.let { toolbar ->
             toolbar.setDisplayHomeAsUpEnabled(true)
@@ -78,8 +76,8 @@ class VerificationBlankActivity : BaseActivity(), BottomSheetImagePicker.OnImage
 
     private fun initListeners() {
         selectImageButtonView.setOnClickListener { showFilePickerWithPermissionCheck() }
-        verifyButtonView.setOnClickListener { sendBlank() }
-        addressView.actionDoneListener { sendBlank() }
+        verifyButtonView.setOnClickListener { sendVip() }
+        snnView.actionDoneListener { sendVip() }
 
         removeImageButtonView.setOnClickListener {
             viewModel.fileUri = null
@@ -88,49 +86,6 @@ class VerificationBlankActivity : BaseActivity(), BottomSheetImagePicker.OnImage
             removeImageButtonView.hide()
         }
 
-        countryView.editText?.keyListener = null
-        countryView.editText?.setOnClickListener {
-            val countryList = viewModel.countries
-            AlertDialog.Builder(this)
-                .setTitle(R.string.verification_alert_country_title)
-                .setItems(countryList.map { it.name }.toTypedArray()) { dialog, which ->
-                    countryView.setText(countryList[which].name)
-                    provinceView.clear()
-                    cityView.clear()
-                }
-                .create().show()
-        }
-
-        provinceView.editText?.keyListener = null
-        provinceView.editText?.setOnClickListener {
-            viewModel.countries
-                .find { it.name == countryView.getString() }
-                ?.states?.let { stateList ->
-                AlertDialog.Builder(this)
-                    .setTitle(R.string.verification_alert_state_title)
-                    .setItems(stateList.map { it.name }.toTypedArray()) { _, which ->
-                        provinceView.setText(stateList[which].name)
-                        cityView.clear()
-                    }
-                    .create()
-                    .show()
-            } ?: AlertHelper.showToastShort(this, R.string.verification_alert_country_title)
-        }
-
-        cityView.editText?.keyListener = null
-        cityView.editText?.setOnClickListener {
-            viewModel.countries
-                .find { it.name == countryView.getString() }
-                ?.states
-                ?.find { it.name == provinceView.getString() }
-                ?.cities?.let { cities ->
-                AlertDialog.Builder(this)
-                    .setTitle(R.string.verification_alert_city_title)
-                    .setItems(cities.toTypedArray()) { _, which -> cityView.setText(cities[which]) }
-                    .create()
-                    .show()
-            } ?: AlertHelper.showToastShort(this, R.string.verification_alert_state_title)
-        }
     }
 
     private fun initObservers() {
@@ -153,35 +108,15 @@ class VerificationBlankActivity : BaseActivity(), BottomSheetImagePicker.OnImage
         })
     }
 
-    private fun sendBlank() {
+    private fun sendVip() {
         if (isValidFields()) {
-            viewModel.fileUri?.let { imageUri ->
-                viewModel.sendBlank(
-                    imageUri,
-                    idNumberView.getString(),
-                    firstNameView.getString(),
-                    lastNameView.getString(),
-                    addressView.getString(),
-                    cityView.getString(),
-                    countryView.getString(),
-                    provinceView.getString(),
-                    zipCodeView.getString()
-                )
-            }
+            viewModel.fileUri?.let { viewModel.sendBlank(it, snnView.getString()) }
         } else {
             showError(R.string.verification_alert_please_fill_fields)
         }
     }
 
-    private fun isValidFields(): Boolean = viewModel.fileUri != null
-            && idNumberView.isNotBlank()
-            && firstNameView.isNotBlank()
-            && lastNameView.isNotBlank()
-            && addressView.isNotBlank()
-            && cityView.isNotBlank()
-            && countryView.isNotBlank()
-            && provinceView.isNotBlank()
-            && zipCodeView.isNotBlank()
+    private fun isValidFields(): Boolean = viewModel.fileUri != null && snnView.isNotBlank()
 
     companion object {
         const val TAG_TIER_ID = "tag_tier_id"

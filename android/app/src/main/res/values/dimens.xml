@@ -9,4 +9,6 @@
     <dimen name="margin_main">16dp</dimen>
     <dimen name="margin_half">8dp</dimen>
     <dimen name="margin_quoter">4dp</dimen>
+
+    <dimen name="photo_picker_column_size">100dp</dimen>
 </resources>

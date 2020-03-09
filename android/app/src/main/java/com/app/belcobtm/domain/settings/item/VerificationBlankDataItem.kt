@@ -1,10 +1,11 @@
 package com.app.belcobtm.domain.settings.item
 
+import android.net.Uri
+
 data class VerificationBlankDataItem(
     val tierId: Int,
-    val file: String,
+    val imageUri: Uri,
     val idNumber: String,
-    val snn: String,
     val firstName: String,
     val lastName: String,
     val address: String,

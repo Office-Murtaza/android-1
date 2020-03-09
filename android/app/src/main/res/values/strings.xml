@@ -1,5 +1,7 @@
 <resources>
     <string name="google_maps_key">AIzaSyDGBWQKBBKloFJfQgY_5i-l-a7aT8oRWhw</string>
+    <string name="file_provider" translatable="false">com.app.belcobtm.fileprovider</string>
+
 
     <string name="app_name">Belco Wallet</string>
     <!-- Strings related to login -->
@@ -117,7 +119,7 @@
     <string name="error_wrong_old_pin">Wrong old PIN</string>
 
     <!-- Verification -->
-        <string name="verification_screen_title">Verification</string>
+    <string name="verification_screen_title">Verification</string>
     <string name="verification_status">Status</string>
     <string name="verification_tx_limit">Tx Limit</string>
     <string name="verification_daily_limit">Daily Limit</string>
@@ -134,7 +136,25 @@
         <item>VIP Verification Rejected</item>
         <item>VIP Verified</item>
     </string-array>
-    <!--    <string name="verification_"></string>-->
+    <string name="verification_select">Select</string>
+    <string name="verification_remove">Remove</string>
+    <string name="verification_id_number">ID Number *</string>
+    <string name="verification_first_name">First Name *</string>
+    <string name="verification_last_name">Last Name *</string>
+    <string name="verification_address">Address *</string>
+    <string name="verification_city">City *</string>
+    <string name="verification_country">Country *</string>
+    <string name="verification_province">Province *</string>
+    <string name="verification_zip_code">Zip Code *</string>
+    <string name="verification_send">Send</string>
+    <string name="verification_select_photo_please">Select photo please</string>
+    <string name="verification_alert_country_title">Please pick country</string>
+    <string name="verification_alert_state_title">Please pick province</string>
+    <string name="verification_alert_city_title">Please pick city</string>
+    <string name="verification_alert_please_fill_fields">Please fill all fields</string>
+    <string name="verification_id_scan">ID Scan</string>
+    <string name="verification_id_selfie">ID Selfie</string>
+    <string name="verification_snn">SNN *</string>
 
     <!--transactions-->
     <string name="deposit">Deposit</string>
