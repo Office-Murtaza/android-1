@@ -26,7 +26,7 @@ import permissions.dispatcher.RuntimePermissions
 
 @RuntimePermissions
 class VerificationBlankActivity : BaseActivity(), BottomSheetImagePicker.OnImagesSelectedListener {
-    private val viewModel: VerificationBlankViewModel by viewModel { parametersOf(intent.getIntExtra(TAG_TIER_ID, 0)) }
+    private val viewModel: VerificationBlankViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -182,8 +182,4 @@ class VerificationBlankActivity : BaseActivity(), BottomSheetImagePicker.OnImage
             && countryView.isNotBlank()
             && provinceView.isNotBlank()
             && zipCodeView.isNotBlank()
-
-    companion object {
-        const val TAG_TIER_ID = "tag_tier_id"
-    }
 }

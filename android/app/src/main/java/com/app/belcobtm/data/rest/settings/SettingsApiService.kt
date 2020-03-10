@@ -6,8 +6,6 @@ import com.app.belcobtm.domain.Either
 import com.app.belcobtm.domain.Failure
 import com.app.belcobtm.domain.settings.item.VerificationBlankDataItem
 import com.app.belcobtm.domain.settings.item.VerificationVipDataItem
-import okhttp3.MediaType
-import okhttp3.RequestBody
 
 class SettingsApiService(private val fileHelper: FileHelper, private val api: SettingsApi) {
     suspend fun getVerificationInfo(userId: Int): Either<Failure, VerificationInfoResponse> = try {
@@ -25,15 +23,15 @@ class SettingsApiService(private val fileHelper: FileHelper, private val api: Se
         val compressedFile = fileHelper.compressImageFile(blankItem.imageUri)
         val request = api.sendVerificationBlankAsync(
             userId,
-            createTextPart(blankItem.tierId.toString()),
-            createTextPart(blankItem.idNumber),
-            createTextPart(blankItem.firstName),
-            createTextPart(blankItem.lastName),
-            createTextPart(blankItem.address),
-            createTextPart(blankItem.city),
-            createTextPart(blankItem.country),
-            createTextPart(blankItem.province),
-            createTextPart(blankItem.zipCode),
+            VERIFICATION,
+            blankItem.idNumber,
+            blankItem.firstName,
+            blankItem.lastName,
+            blankItem.address,
+            blankItem.city,
+            blankItem.country,
+            blankItem.province,
+            blankItem.zipCode,
             fileHelper.createFilePart(compressedFile.path, "image/*", "file")
         ).await()
 
@@ -50,8 +48,8 @@ class SettingsApiService(private val fileHelper: FileHelper, private val api: Se
         val compressedFile = fileHelper.compressImageFile(dataItem.fileUri)
         val request = api.sendVerificationVipAsync(
             userId,
-            createTextPart(dataItem.tierId.toString()),
-            createTextPart(dataItem.ssn),
+            VIP_VERIFICATION,
+            dataItem.ssn,
             fileHelper.createFilePart(compressedFile.path, "image/*", "file")
         ).await()
 
@@ -61,5 +59,8 @@ class SettingsApiService(private val fileHelper: FileHelper, private val api: Se
         Either.Left(failure)
     }
 
-    private fun createTextPart(text: String) = RequestBody.create(MediaType.parse("text/plain"), text)
+    companion object {
+        private const val VERIFICATION = 1
+        private const val VIP_VERIFICATION = 2
+    }
 }

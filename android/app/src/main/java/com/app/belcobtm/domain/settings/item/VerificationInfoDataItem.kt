@@ -4,7 +4,7 @@ import com.app.belcobtm.domain.settings.type.VerificationStatus
 
 data class VerificationInfoDataItem(
     val status: VerificationStatus,
-    val txLimit: Int,
-    val dayLimit: Int,
+    val txLimit: Double,
+    val dayLimit: Double,
     val message: String
 )

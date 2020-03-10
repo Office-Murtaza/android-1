@@ -16,6 +16,6 @@ val viewModelModule = module {
     viewModel { CreateWalletViewModel(get(), get()) }
     viewModel { PinViewModel(get(), get(), get()) }
     viewModel { VerificationInfoViewModel(get()) }
-    viewModel { (tierId: Int) -> VerificationBlankViewModel(tierId, get(), get()) }
-    viewModel { (tierId: Int) -> VerificationVipViewModel(tierId, get()) }
+    viewModel { VerificationBlankViewModel(get(), get()) }
+    viewModel { VerificationVipViewModel(get()) }
 }

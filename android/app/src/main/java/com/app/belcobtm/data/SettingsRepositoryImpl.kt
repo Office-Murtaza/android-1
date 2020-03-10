@@ -29,7 +29,7 @@ class SettingsRepositoryImpl(
                         status = VerificationStatus.getStatusByCode(responseItem.status),
                         txLimit = responseItem.txLimit,
                         dayLimit = responseItem.dailyLimit,
-                        message = responseItem.message
+                        message = responseItem.message ?: ""
                     )
                 )
             } else {

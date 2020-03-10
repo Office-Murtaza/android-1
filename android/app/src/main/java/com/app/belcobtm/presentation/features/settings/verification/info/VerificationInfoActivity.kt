@@ -58,15 +58,11 @@ class VerificationInfoActivity : BaseActivity() {
             when {
                 loadingData is LoadingData.Success && (loadingData.data.status == VerificationStatus.VERIFIED
                         || loadingData.data.status == VerificationStatus.VIP_VERIFICATION_REJECTED) -> {
-                    val intent = Intent(this, VerificationVipActivity::class.java)
-                    intent.putExtra(VerificationVipActivity.TAG_TIER_ID, loadingData.data.status)
-                    startActivity(intent)
+                    startActivity(Intent(this, VerificationVipActivity::class.java))
                 }
                 loadingData is LoadingData.Success && (loadingData.data.status == VerificationStatus.NOT_VERIFIED
                         || loadingData.data.status == VerificationStatus.VERIFICATION_REJECTED) -> {
-                    val intent = Intent(this, VerificationBlankActivity::class.java)
-                    intent.putExtra(VerificationBlankActivity.TAG_TIER_ID, loadingData.data.status)
-                    startActivity(intent)
+                    startActivity(Intent(this, VerificationBlankActivity::class.java))
                 }
             }
         }

@@ -8,7 +8,6 @@ import com.app.belcobtm.domain.settings.item.VerificationVipDataItem
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
 
 class VerificationVipViewModel(
-    private val tierId: Int,
     private val vipUseCase: SendVerificationVipUseCase
 ) : ViewModel() {
     val uploadingLiveData = MutableLiveData<LoadingData<Unit>>()
@@ -18,7 +17,7 @@ class VerificationVipViewModel(
         file: Uri,
         ssn: String
     ) {
-        val dataItem = VerificationVipDataItem(tierId, file, ssn)
+        val dataItem = VerificationVipDataItem(file, ssn.toInt())
         uploadingLiveData.value = LoadingData.Loading()
         vipUseCase.invoke(SendVerificationVipUseCase.Params(dataItem)) { either ->
             either.either(

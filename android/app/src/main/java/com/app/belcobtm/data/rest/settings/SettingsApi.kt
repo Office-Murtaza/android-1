@@ -18,15 +18,15 @@ interface SettingsApi {
     @POST("user/{userId}/kyc")
     fun sendVerificationBlankAsync(
         @Path("userId") userId: Int,
-        @Part("tierId") tierId: RequestBody,
-        @Part("idNumber") idNumber: RequestBody,
-        @Part("firstName") firstName: RequestBody,
-        @Part("lastName") lastName: RequestBody,
-        @Part("address") address: RequestBody,
-        @Part("city") city: RequestBody,
-        @Part("country") country: RequestBody,
-        @Part("province") province: RequestBody,
-        @Part("zipCode") zipCode: RequestBody,
+        @Part("tierId") tierId: Int,
+        @Part("idNumber") idNumber: String,
+        @Part("firstName") firstName: String,
+        @Part("lastName") lastName: String,
+        @Part("address") address: String,
+        @Part("city") city: String,
+        @Part("country") country: String,
+        @Part("province") province: String,
+        @Part("zipCode") zipCode: String,
         @Part file: MultipartBody.Part
     ): Deferred<Response<ResponseBody>>
 
@@ -34,8 +34,8 @@ interface SettingsApi {
     @POST("user/{userId}/kyc")
     fun sendVerificationVipAsync(
         @Path("userId") userId: Int,
-        @Part("tierId") tierId: RequestBody,
-        @Part("ssn") ssn: RequestBody,
+        @Part("tierId") tierId: Int,
+        @Part("ssn") ssn: Int,
         @Part file: MultipartBody.Part
     ): Deferred<Response<ResponseBody>>
 }

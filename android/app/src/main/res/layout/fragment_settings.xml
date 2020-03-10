@@ -53,7 +53,7 @@
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/verificationButtonView"
         style="@style/SettingsItemStyle"
-        android:drawableStart="@drawable/ic_settings_pin"
+        android:drawableStart="@drawable/ic_user"
         android:text="@string/settings_verification" />
 
     <include layout="@layout/item_divider" />
@@ -71,6 +71,5 @@
         style="@style/SettingsItemStyle"
         android:drawableStart="@drawable/ic_settings_unlink"
         android:text="@string/settings_unlink" />
-
 
 </androidx.appcompat.widget.LinearLayoutCompat>

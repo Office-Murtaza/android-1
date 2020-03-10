@@ -9,7 +9,6 @@ import com.app.belcobtm.domain.settings.item.VerificationBlankDataItem
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
 
 class VerificationBlankViewModel(
-    private val tierId: Int,
     private val uploadUseCase: SendVerificationBlankUseCase,
     private val countriesUseCase: GetVerificationCountryListUseCase
 ) : ViewModel() {
@@ -29,7 +28,6 @@ class VerificationBlankViewModel(
         zipCode: String
     ) {
         val blankItem = VerificationBlankDataItem(
-            tierId,
             file,
             idNumber,
             firstName,
