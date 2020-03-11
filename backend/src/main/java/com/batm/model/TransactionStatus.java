@@ -18,4 +18,12 @@ public enum TransactionStatus {
     public int getValue() {
         return value;
     }
+
+    public int getConfirmations() {
+        if (this == COMPLETE) {
+            return 3;
+        }
+
+        return 0;
+    }
 }

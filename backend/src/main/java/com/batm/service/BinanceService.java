@@ -1,6 +1,6 @@
 package com.batm.service;
 
-import com.batm.dto.BlockchainTransactionsDTO;
+import com.batm.dto.NodeTransactionsDTO;
 import com.batm.dto.CurrentAccountDTO;
 import com.batm.dto.TransactionDTO;
 import com.batm.dto.TransactionListDTO;
@@ -27,7 +27,6 @@ import org.springframework.web.client.RestTemplate;
 import org.web3j.utils.Numeric;
 import wallet.core.jni.BinanceSigner;
 import wallet.core.jni.CosmosAddress;
-import wallet.core.jni.HRP;
 import wallet.core.jni.PrivateKey;
 import wallet.core.jni.proto.Binance;
 import java.math.BigDecimal;
@@ -44,6 +43,9 @@ public class BinanceService {
 
     @Autowired
     private RestTemplate rest;
+
+    @Autowired
+    private WalletService walletService;
 
     @Value("${bnb.node.url}")
     private String nodeUrl;
@@ -114,7 +116,7 @@ public class BinanceService {
         return dto;
     }
 
-    public BlockchainTransactionsDTO getBlockchainTransactions(String address) {
+    public NodeTransactionsDTO getNodeTransactions(String address) {
         try {
             TransactionsRequest request = new TransactionsRequest();
             request.setStartTime(new SimpleDateFormat("yyyy").parse("2010").getTime());
@@ -126,17 +128,17 @@ public class BinanceService {
 
             TransactionPage page = binanceDex.getTransactions(request);
 
-            return new BlockchainTransactionsDTO(collectNodeTxs(page, address));
+            return new NodeTransactionsDTO(collectNodeTxs(page, address));
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        return new BlockchainTransactionsDTO();
+        return new NodeTransactionsDTO();
     }
 
     public TransactionListDTO getTransactionList(String address, Integer startIndex, Integer limit, List<TransactionRecordGift> gifts, List<TransactionRecord> txs) {
         try {
-            Map<String, TransactionDTO> map = getBlockchainTransactions(address).getMap();
+            Map<String, TransactionDTO> map = getNodeTransactions(address).getMap();
 
             return TxUtil.buildTxs(map, startIndex, limit, gifts, txs);
         } catch (Exception e) {
@@ -158,10 +160,19 @@ public class BinanceService {
         return new CurrentAccountDTO();
     }
 
-    public String sign(String toAddress, BigDecimal amount, PrivateKey privateKey) {
+    public String sign(String fromAddress, String toAddress, BigDecimal amount) {
         try {
-            CosmosAddress fromAddress = new CosmosAddress(HRP.BINANCE, privateKey.getPublicKeySecp256k1(true));
-            CurrentAccountDTO currentDTO = getCurrentAccount(fromAddress.description());
+            PrivateKey privateKey;
+
+            if (walletService.isServerAddress(fromAddress)) {
+                privateKey = walletService.getPrivateKeyBNB();
+            } else {
+                String path = walletService.getPath(fromAddress);
+                privateKey = walletService.getWallet().getKey(path);
+            }
+
+            CosmosAddress fromCosmosAddress = new CosmosAddress(fromAddress);
+            CurrentAccountDTO currentDTO = getCurrentAccount(fromCosmosAddress.description());
 
             Binance.SigningInput.Builder builder = Binance.SigningInput.newBuilder();
             builder.setChainId(currentDTO.getChainId());
@@ -174,7 +185,7 @@ public class BinanceService {
             token.setAmount(amount.multiply(Constant.BNB_DIVIDER).longValue());
 
             Binance.SendOrder.Input.Builder input = Binance.SendOrder.Input.newBuilder();
-            input.setAddress(ByteString.copyFrom(fromAddress.keyHash()));
+            input.setAddress(ByteString.copyFrom(fromCosmosAddress.keyHash()));
             input.addAllCoins(Arrays.asList(token.build()));
 
             Binance.SendOrder.Output.Builder output = Binance.SendOrder.Output.newBuilder();
@@ -210,7 +221,7 @@ public class BinanceService {
             TransactionStatus status = getStatus(tx.getCode());
             Date date1 = Date.from(ZonedDateTime.parse(tx.getTimeStamp()).toInstant());
 
-            map.put(txId, new TransactionDTO(txId, amount, type, status, date1));
+            map.put(txId, new TransactionDTO(txId, amount, tx.getFromAddr(), tx.getToAddr(), type, status, date1));
         }
 
         return map;
