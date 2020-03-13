@@ -13,6 +13,15 @@ enum MainTextFieldType {
   case newPin
   case confirmNewPin
   case message
+  case idNumber
+  case firstName
+  case lastName
+  case address
+  case country
+  case province
+  case city
+  case zipCode
+  case ssn
 }
 
 class MainTextField: UITextField, HasDisposeBag {
@@ -116,6 +125,10 @@ class MainTextField: UITextField, HasDisposeBag {
     isSecureTextEntry = true
   }
   
+  private func setUpForPicker() {
+    setImage(UIImage(named: "arrow_down"))
+  }
+  
   func configure(for type: MainTextFieldType) {
     let attributes: [NSAttributedString.Key: Any] = [.foregroundColor: UIColor.warmGrey,
                                                      .font: UIFont.poppinsMedium12]
@@ -156,6 +169,27 @@ class MainTextField: UITextField, HasDisposeBag {
     case .message:
       placeholder = localize(L.CoinSendGift.Form.Message.placeholder)
       textAlignment = .center
+    case .idNumber:
+      placeholder = localize(L.Verification.Form.IDNumber.placeholder)
+    case .firstName:
+      placeholder = localize(L.Verification.Form.FirstName.placeholder)
+    case .lastName:
+      placeholder = localize(L.Verification.Form.LastName.placeholder)
+    case .address:
+      placeholder = localize(L.Verification.Form.Address.placeholder)
+    case .country:
+      placeholder = localize(L.Verification.Form.Country.placeholder)
+      setUpForPicker()
+    case .province:
+      placeholder = localize(L.Verification.Form.Province.placeholder)
+      setUpForPicker()
+    case .city:
+      placeholder = localize(L.Verification.Form.City.placeholder)
+      setUpForPicker()
+    case .zipCode:
+      placeholder = localize(L.Verification.Form.ZipCode.placeholder)
+    case .ssn:
+      placeholder = localize(L.VIPVerification.Form.SSN.placeholder)
     }
     
     attributedPlaceholder = NSAttributedString(string: placeholder, attributes: attributes)

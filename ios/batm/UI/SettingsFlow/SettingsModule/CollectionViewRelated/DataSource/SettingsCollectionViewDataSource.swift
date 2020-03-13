@@ -4,9 +4,7 @@ import RxCocoa
 
 final class SettingsCollectionViewDataSource: NSObject, UICollectionViewDataSource, HasDisposeBag {
   
-  let typesRelay = BehaviorRelay<[SettingsCellType]>(value: [])
-  
-  private var values: [SettingsCellType] = [] {
+  var values: [SettingsCellType] = [] {
     didSet {
       collectionView?.reloadData()
     }
@@ -18,18 +16,6 @@ final class SettingsCollectionViewDataSource: NSObject, UICollectionViewDataSour
       collectionView.register(SettingsCell.self)
       collectionView.reloadData()
     }
-  }
-  
-  override init() {
-    super.init()
-    
-    setupBindings()
-  }
-  
-  private func setupBindings() {
-    typesRelay
-      .subscribe(onNext: { [unowned self] in self.values = $0 })
-      .disposed(by: disposeBag)
   }
   
   func numberOfSections(in collectionView: UICollectionView) -> Int {

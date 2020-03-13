@@ -26,6 +26,10 @@ extension SettingsFlowController: SettingsModuleDelegate {
     step.accept(SettingsFlow.Steps.changePin)
   }
   
+  func didSelectVerification(_ info: VerificationInfo) {
+    step.accept(SettingsFlow.Steps.verification(info))
+  }
+  
   func didSelectShowSeedPhrase() {
     step.accept(SettingsFlow.Steps.showSeedPhrase)
   }
@@ -55,6 +59,14 @@ extension SettingsFlowController: ChangePasswordFlowControllerDelegate {
 extension SettingsFlowController: ChangePinFlowControllerDelegate {
   
   func didFinishChangePinFlow() {
+    step.accept(SettingsFlow.Steps.popToRoot)
+  }
+  
+}
+
+extension SettingsFlowController: VerificationFlowControllerDelegate {
+  
+  func didFinishVerificationFlow() {
     step.accept(SettingsFlow.Steps.popToRoot)
   }
   

@@ -2,10 +2,11 @@ import UIKit
 import RxSwift
 import RxCocoa
 
-enum SettingsCellType {
+enum SettingsCellType: CaseIterable {
   case phone
   case changePassword
   case changePin
+  case verification
   case showSeedPhrase
   case unlink
   
@@ -14,6 +15,7 @@ enum SettingsCellType {
     case .phone: return localize(L.Settings.changePhone)
     case .changePassword: return localize(L.Settings.changePassword)
     case .changePin: return localize(L.Settings.changePin)
+    case .verification: return localize(L.Settings.verification)
     case .showSeedPhrase: return localize(L.Settings.showSeedPhrase)
     case .unlink: return localize(L.Settings.unlinkWallet)
     }
@@ -24,6 +26,7 @@ enum SettingsCellType {
     case .phone: return UIImage(named: "settings_phone")
     case .changePassword: return UIImage(named: "settings_password")
     case .changePin: return UIImage(named: "settings_pin")
+    case .verification: return UIImage(named: "settings_verification")
     case .showSeedPhrase: return UIImage(named: "settings_seed_phrase")
     case .unlink: return UIImage(named: "settings_unlink")
     }

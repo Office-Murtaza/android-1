@@ -46,7 +46,34 @@ class NavigationScreenView: UIView, HasDisposeBag {
     setupBehavior()
   }
   
+  private func registerForKeyboardNotifications() {
+    NotificationCenter.default.addObserver(self,
+                                           selector: #selector(adjustForKeyboard),
+                                           name: UIResponder.keyboardWillShowNotification,
+                                           object: nil)
+    NotificationCenter.default.addObserver(self,
+                                           selector: #selector(adjustForKeyboard),
+                                           name: UIResponder.keyboardWillHideNotification,
+                                           object: nil)
+  }
+  
+  @objc private func adjustForKeyboard(notification: Notification) {
+     guard let keyboardValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else { return }
+     
+     let keyboardHeight = keyboardValue.cgRectValue.size.height
+     
+     if notification.name == UIResponder.keyboardWillHideNotification {
+       rootScrollView.contentInset = .zero
+     } else {
+       rootScrollView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: keyboardHeight, right: 0)
+     }
+     
+     rootScrollView.scrollIndicatorInsets = rootScrollView.contentInset
+   }
+  
   private func setupUI() {
+    registerForKeyboardNotifications()
+    
     backgroundColor = .white
     
     addSubviews(rootScrollView,
