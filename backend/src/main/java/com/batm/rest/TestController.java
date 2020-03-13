@@ -3,6 +3,7 @@ package com.batm.rest;
 import com.batm.dto.SignDTO;
 import com.batm.service.CoinService;
 import com.batm.service.MessageService;
+import com.batm.service.UserService;
 import com.batm.service.WalletService;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,9 @@ public class TestController {
 
     @Autowired
     private MessageService messageService;
+
+    @Autowired
+    private UserService userService;
 
     @Autowired
     private WalletService walletService;
@@ -78,5 +82,10 @@ public class TestController {
         json.put("path", path);
 
         return json;
+    }
+
+    @DeleteMapping("/user/{userId}/kyc")
+    public Response sign(@PathVariable Long userId) {
+        return Response.ok(userService.resetVerificationsForUser(userId));
     }
 }

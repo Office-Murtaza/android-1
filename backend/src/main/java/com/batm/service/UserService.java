@@ -15,6 +15,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.multipart.MultipartFile;
+
 import javax.transaction.Transactional;
 import java.io.File;
 import java.io.IOException;
@@ -471,5 +472,11 @@ public class UserService {
 
     private void uploadFile(MultipartFile file, Path outPath) throws IOException {
         Files.write(outPath, file.getBytes());
+    }
+
+    public Boolean resetVerificationsForUser(Long userId) {
+        User user = userRep.getOne(userId);
+        identityKycReviewRep.deleteByIdentity(user.getIdentity());
+        return true;
     }
 }
