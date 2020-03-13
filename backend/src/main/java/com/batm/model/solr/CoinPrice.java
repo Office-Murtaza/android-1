@@ -8,6 +8,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.solr.core.mapping.Indexed;
 import org.springframework.data.solr.core.mapping.SolrDocument;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 @SolrDocument(collection = "coin_price")
@@ -20,12 +21,12 @@ public class CoinPrice {
     @Indexed(name = "id", type = "string")
     private String id;
 
-    @Indexed(name = "coinName", type = "string")
-    private String coinName;
+    @Indexed(name = "coinCode", type = "string")
+    private String coinCode;
 
     @Indexed(name = "price", type = "pdouble")
-    private String price;
+    private BigDecimal price;
 
-    @Indexed(name = "timestamp", type = "pdate", defaultValue = "NOW")
-    private Date timestamp;
+    @Indexed(name = "date", type = "pdate", defaultValue = "NOW")
+    private Date date;
 }

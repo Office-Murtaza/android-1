@@ -72,9 +72,9 @@ public class BinanceService {
 
             //save price to Solr
             CoinPrice coinPrice = new CoinPrice();
-            coinPrice.setCoinName(coinEnum.name());
-            coinPrice.setPrice(currentPrice.toPlainString());
-            coinPrice.setTimestamp(new Date()); // TODO try default solr date value
+            coinPrice.setCoinCode(coinEnum.name());
+            coinPrice.setPrice(currentPrice);
+            coinPrice.setDate(new Date()); // TODO try default solr date value
             coinPriceRepository.save(coinPrice);
         });
         System.out.println("Processing collecting prices for coins done.");
