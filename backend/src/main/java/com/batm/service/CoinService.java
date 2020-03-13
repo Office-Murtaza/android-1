@@ -4,7 +4,6 @@ import com.batm.dto.*;
 import com.batm.entity.*;
 import com.batm.model.TransactionStatus;
 import com.batm.model.TransactionType;
-import com.batm.model.solr.CoinPrice;
 import com.batm.repository.CoinRep;
 import com.batm.repository.solr.CoinPriceRepository;
 import com.batm.util.Constant;
@@ -15,9 +14,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import wallet.core.jni.CoinType;
+
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -92,6 +94,95 @@ public class CoinService {
         CoinService.ethExplorerUrl = ethExplorerUrl;
         CoinService.bchExplorerUrl = bchExplorerUrl;
         CoinService.ltcExplorerUrl = ltcExplorerUrl;
+    }
+
+    private static BigDecimal getBinancePriceBySymbol(String symbol) {
+        return binance.getBinancePriceBySymbol(symbol);
+    }
+
+    public BalanceDTO getCoinsBalance(Long userId, List<String> coins) {
+        List<UserCoin> userCoins = userService.getUserCoins(userId);
+
+        List<CompletableFuture<CoinBalanceDTO>> futures = userCoins.stream()
+                .filter(it -> coins.contains(it.getCoin().getCode()))
+                .map(dto -> callAsync(dto))
+                .collect(Collectors.toList());
+
+        List<CoinBalanceDTO> balances = futures.stream()
+                .map(CompletableFuture::join)
+                .sorted(Comparator.comparing(CoinBalanceDTO::getId))
+                .collect(Collectors.toList());
+
+        BigDecimal totalBalance = Util.format2(balances.stream()
+                .map(it -> it.getPrice().getUsd().multiply(it.getBalance()))
+                .reduce(BigDecimal.ZERO, BigDecimal::add));
+
+        return new BalanceDTO(userId, new AmountDTO(totalBalance), balances);
+    }
+
+    public FeeDTO getCoinsFee() {
+        List<CoinFeeDTO> feeList = new ArrayList<>();
+
+        coinList.forEach(e -> {
+            if (CoinEnum.ETH.name().equalsIgnoreCase(e.getCode())) {
+                feeList.add(new CoinFeeDTO(e.getCode(), null, Constant.GAS_PRICE, Constant.GAS_LIMIT));
+            } else {
+                feeList.add(new CoinFeeDTO(e.getCode(), e.getFee().stripTrailingZeros(), null, null));
+            }
+        });
+
+        return new FeeDTO(feeList);
+    }
+
+    private CompletableFuture<CoinBalanceDTO> callAsync(UserCoin userCoin) {
+        return CompletableFuture.supplyAsync(() -> {
+            CoinEnum coinEnum = CoinEnum.valueOf(userCoin.getCoin().getCode());
+
+            BigDecimal coinPrice = coinEnum.getPrice();
+            BigDecimal coinBalance = coinEnum.getBalance(userCoin.getAddress());
+
+            return new CoinBalanceDTO(userCoin.getCoin().getId(), userCoin.getCoin().getCode(), userCoin.getAddress(), coinBalance, new AmountDTO(coinPrice));
+        });
+    }
+
+    public Coin getCoin(String coinCode) {
+        return coinList.stream().filter(e -> e.getCode().equalsIgnoreCase(coinCode)).findFirst().get();
+    }
+
+    public void save(CoinDTO coinVM, Long userId) {
+        User user = userService.findById(userId);
+        List<UserCoin> userCoins = userService.getUserCoins(userId);
+
+        List<UserCoin> newCoins = new ArrayList<>();
+        coinVM.getCoins().stream().forEach(coinDTO -> {
+            Coin coin = getCoin(coinDTO.getCode());
+
+            if (coin != null) {
+                UserCoin userCoin = new UserCoin(user, coin, coinDTO.getAddress());
+
+                if (userCoins.indexOf(userCoin) < 0) {
+                    newCoins.add(userCoin);
+                }
+            }
+        });
+
+        userService.save(newCoins);
+    }
+
+    public boolean compareCoins(CoinDTO coinDTO, Long userId) {
+        List<UserCoin> userCoins = userService.getUserCoins(userId);
+
+        for (UserCoinDTO reqCoin : coinDTO.getCoins()) {
+            for (UserCoin userCoin : userCoins) {
+                if (reqCoin.getCode().equalsIgnoreCase(userCoin.getCoin().getCode())) {
+                    if (!reqCoin.getAddress().equalsIgnoreCase(userCoin.getAddress())) {
+                        return false;
+                    }
+                }
+            }
+        }
+
+        return true;
     }
 
     public enum CoinEnum {
@@ -847,103 +938,5 @@ public class CoinService {
         public abstract SignDTO buildSignDTOFromMainWallet();
 
         public abstract BigDecimal getTransactionFee();
-    }
-
-    private static BigDecimal getBinancePriceBySymbol(String symbol) {
-        BigDecimal price =  Util.convert(binanceRest.getPrice(symbol).getPrice());
-
-        //save price to Solr
-        CoinPrice coinPrice = new CoinPrice();
-        coinPrice.setCoinName(symbol.substring(0,3));
-        coinPrice.setPrice(price);
-        coinPrice.setTimestamp(LocalDateTime.now());
-        coinPriceRepository.save(coinPrice);
-
-        return price;
-    }
-
-    public BalanceDTO getCoinsBalance(Long userId, List<String> coins) {
-        List<UserCoin> userCoins = userService.getUserCoins(userId);
-
-        List<CompletableFuture<CoinBalanceDTO>> futures = userCoins.stream()
-                .filter(it -> coins.contains(it.getCoin().getCode()))
-                .map(dto -> callAsync(dto))
-                .collect(Collectors.toList());
-
-        List<CoinBalanceDTO> balances = futures.stream()
-                .map(CompletableFuture::join)
-                .sorted(Comparator.comparing(CoinBalanceDTO::getId))
-                .collect(Collectors.toList());
-
-        BigDecimal totalBalance = Util.format2(balances.stream()
-                .map(it -> it.getPrice().getUsd().multiply(it.getBalance()))
-                .reduce(BigDecimal.ZERO, BigDecimal::add));
-
-        return new BalanceDTO(userId, new AmountDTO(totalBalance), balances);
-    }
-
-    public FeeDTO getCoinsFee() {
-        List<CoinFeeDTO> feeList = new ArrayList<>();
-
-        coinList.forEach(e -> {
-            if (CoinEnum.ETH.name().equalsIgnoreCase(e.getCode())) {
-                feeList.add(new CoinFeeDTO(e.getCode(), null, Constant.GAS_PRICE, Constant.GAS_LIMIT));
-            } else {
-                feeList.add(new CoinFeeDTO(e.getCode(), e.getFee().stripTrailingZeros(), null, null));
-            }
-        });
-
-        return new FeeDTO(feeList);
-    }
-
-    private CompletableFuture<CoinBalanceDTO> callAsync(UserCoin userCoin) {
-        return CompletableFuture.supplyAsync(() -> {
-            CoinEnum coinEnum = CoinEnum.valueOf(userCoin.getCoin().getCode());
-
-            BigDecimal coinPrice = coinEnum.getPrice();
-            BigDecimal coinBalance = coinEnum.getBalance(userCoin.getAddress());
-
-            return new CoinBalanceDTO(userCoin.getCoin().getId(), userCoin.getCoin().getCode(), userCoin.getAddress(), coinBalance, new AmountDTO(coinPrice));
-        });
-    }
-
-    public Coin getCoin(String coinCode) {
-        return coinList.stream().filter(e -> e.getCode().equalsIgnoreCase(coinCode)).findFirst().get();
-    }
-
-    public void save(CoinDTO coinVM, Long userId) {
-        User user = userService.findById(userId);
-        List<UserCoin> userCoins = userService.getUserCoins(userId);
-
-        List<UserCoin> newCoins = new ArrayList<>();
-        coinVM.getCoins().stream().forEach(coinDTO -> {
-            Coin coin = getCoin(coinDTO.getCode());
-
-            if (coin != null) {
-                UserCoin userCoin = new UserCoin(user, coin, coinDTO.getAddress());
-
-                if (userCoins.indexOf(userCoin) < 0) {
-                    newCoins.add(userCoin);
-                }
-            }
-        });
-
-        userService.save(newCoins);
-    }
-
-    public boolean compareCoins(CoinDTO coinDTO, Long userId) {
-        List<UserCoin> userCoins = userService.getUserCoins(userId);
-
-        for (UserCoinDTO reqCoin : coinDTO.getCoins()) {
-            for (UserCoin userCoin : userCoins) {
-                if (reqCoin.getCode().equalsIgnoreCase(userCoin.getCoin().getCode())) {
-                    if (!reqCoin.getAddress().equalsIgnoreCase(userCoin.getAddress())) {
-                        return false;
-                    }
-                }
-            }
-        }
-
-        return true;
     }
 }

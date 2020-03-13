@@ -7,9 +7,12 @@ import com.batm.dto.TransactionListDTO;
 import com.batm.entity.TransactionRecord;
 import com.batm.entity.TransactionRecordGift;
 import com.batm.model.TransactionStatus;
+import com.batm.model.solr.CoinPrice;
+import com.batm.repository.solr.CoinPriceRepository;
 import com.batm.util.Constant;
 import com.batm.util.TxUtil;
 import com.batm.util.Util;
+import com.binance.api.client.BinanceApiRestClient;
 import com.binance.dex.api.client.BinanceDexApiRestClient;
 import com.binance.dex.api.client.domain.Account;
 import com.binance.dex.api.client.domain.TransactionPage;
@@ -20,8 +23,10 @@ import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.web3j.utils.Numeric;
@@ -30,8 +35,10 @@ import wallet.core.jni.CosmosAddress;
 import wallet.core.jni.HRP;
 import wallet.core.jni.PrivateKey;
 import wallet.core.jni.proto.Binance;
+
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
@@ -43,6 +50,12 @@ public class BinanceService {
     private BinanceDexApiRestClient binanceDex;
 
     @Autowired
+    private BinanceApiRestClient binanceRest;
+
+    @Autowired
+    private CoinPriceRepository coinPriceRepository;
+
+    @Autowired
     private RestTemplate rest;
 
     @Value("${bnb.node.url}")
@@ -50,6 +63,27 @@ public class BinanceService {
 
     @Value("${bnb.explorer.url}")
     private String explorerUrl;
+
+    @Scheduled(fixedDelay = 600_000) //10 min
+    public void processCronTasks() {
+        System.out.println("Processing collecting prices for coins..");
+        Arrays.stream(CoinService.CoinEnum.values()).forEach(coinEnum -> {
+            BigDecimal currentPrice = coinEnum.getPrice();
+
+            //save price to Solr
+            CoinPrice coinPrice = new CoinPrice();
+            coinPrice.setCoinName(coinEnum.name());
+            coinPrice.setPrice(currentPrice.toPlainString());
+            coinPrice.setTimestamp(new Date()); // TODO try default solr date value
+            coinPriceRepository.save(coinPrice);
+        });
+        System.out.println("Processing collecting prices for coins done.");
+    }
+
+    @Cacheable(key = "symbol")
+    public BigDecimal getBinancePriceBySymbol(String symbol) {
+        return Util.convert(binanceRest.getPrice(symbol).getPrice());
+    }
 
     public BigDecimal getBalance(String address) {
         try {
@@ -60,7 +94,8 @@ public class BinanceService {
                     .filter(e -> "BNB".equals(e.getSymbol()))
                     .map(it -> new BigDecimal(it.getFree()).add(new BigDecimal(it.getLocked())))
                     .reduce(BigDecimal.ZERO, BigDecimal::add));
-        } catch (Exception e) {}
+        } catch (Exception e) {
+        }
 
         return BigDecimal.ZERO;
     }

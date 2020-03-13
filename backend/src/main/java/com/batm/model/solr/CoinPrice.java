@@ -1,12 +1,14 @@
 package com.batm.model.solr;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.solr.core.mapping.Indexed;
 import org.springframework.data.solr.core.mapping.SolrDocument;
 
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.util.Date;
 
 @SolrDocument(collection = "coin_price")
 @Getter
@@ -21,9 +23,9 @@ public class CoinPrice {
     @Indexed(name = "coinName", type = "string")
     private String coinName;
 
-    @Indexed(name = "price", type = "float")
-    private BigDecimal price;
+    @Indexed(name = "price", type = "pdouble")
+    private String price;
 
-    @Indexed(name = "timestamp", type = "dateTime", defaultValue = "NOW")
-    private LocalDateTime timestamp;
+    @Indexed(name = "timestamp", type = "pdate", defaultValue = "NOW")
+    private Date timestamp;
 }

@@ -2,6 +2,7 @@ package com.batm.rest;
 
 import java.util.List;
 import com.batm.model.Error;
+import com.batm.service.SolrService;
 import com.batm.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +19,8 @@ public class CoinController {
 
     @Autowired
     private CoinService coinService;
+    @Autowired
+    private SolrService solrService;
 
     @PostMapping("/user/{userId}/coins/add")
     public Response addCoins(@RequestBody CoinDTO coinDTO, @PathVariable Long userId) {
@@ -77,6 +80,27 @@ public class CoinController {
     public Response getCoinAddressByUserPhone(@PathVariable String userId, @PathVariable CoinService.CoinEnum coinCode, @RequestParam String phone) {
         try {
             return Response.ok(userService.getUserGiftAddress(coinCode, phone));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Response.serverError();
+        }
+    }
+
+    @GetMapping("/coins/{coinCode}/price-chart")
+    public Response getPriceChart(@PathVariable CoinService.CoinEnum coinCode) {
+        try {
+            return Response.ok(solrService.collectPriceChartData(coinCode));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Response.serverError();
+        }
+    }
+
+    @DeleteMapping("/coins/price-chart")
+    public Response getPriceChart() {
+        try {
+            solrService.cleanAllCoinPrice();
+            return Response.ok("OK");
         } catch (Exception e) {
             e.printStackTrace();
             return Response.serverError();
