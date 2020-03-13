@@ -9,7 +9,10 @@ enum MainButtonType {
   case next
   case done
   case change
+  case send
   case unlink
+  case verify
+  case vipVerify
 }
 
 class MainButton: UIButton {
@@ -38,43 +41,55 @@ class MainButton: UIButton {
   }
   
   func configure(for type: MainButtonType) {
-    let commonAttributes: [NSAttributedString.Key: Any] = [.font: UIFont.poppinsBold14]
-    let customAttributes: [NSAttributedString.Key: Any]
     let title: String
+    let textColor: UIColor
     
     switch type {
     case .create:
       backgroundColor = .lightGold
-      customAttributes = [.foregroundColor: UIColor.white]
-      title = localize(L.Welcome.CreateButton.title)
     case .recover:
       backgroundColor = UIColor.greyish.withAlphaComponent(0.15)
-      customAttributes = [.foregroundColor: UIColor.slateGrey]
-      title = localize(L.Welcome.RecoverButton.title)
     case .cancel:
       backgroundColor = .whiteTwo
-      customAttributes = [.foregroundColor: UIColor.slateGrey]
-      title = localize(L.Shared.cancel)
-    case .next:
+    default:
       backgroundColor = .ceruleanBlue
-      customAttributes = [.foregroundColor: UIColor.white]
-      title = localize(L.Shared.next)
-    case .done:
-      backgroundColor = .ceruleanBlue
-      customAttributes = [.foregroundColor: UIColor.white]
-      title = localize(L.Shared.done)
-    case .change:
-      backgroundColor = .ceruleanBlue
-      customAttributes = [.foregroundColor: UIColor.white]
-      title = localize(L.Shared.change)
-    case .unlink:
-      backgroundColor = .ceruleanBlue
-      customAttributes = [.foregroundColor: UIColor.white]
-      title = localize(L.Unlink.Button.title)
     }
     
-    let allAttributes = commonAttributes.merging(customAttributes, uniquingKeysWith: { _, new in new })
-    let attributedText = NSAttributedString(string: title, attributes: allAttributes)
+    switch type {
+    case .cancel, .recover:
+      textColor = .slateGrey
+    default:
+      textColor = .white
+    }
+    
+    switch type {
+    case .create:
+      title = localize(L.Welcome.CreateButton.title)
+    case .recover:
+      title = localize(L.Welcome.RecoverButton.title)
+    case .cancel:
+      title = localize(L.Shared.cancel)
+    case .next:
+      title = localize(L.Shared.next)
+    case .done:
+      title = localize(L.Shared.done)
+    case .change:
+      title = localize(L.Shared.change)
+    case .send:
+      title = localize(L.Shared.send)
+    case .unlink:
+      title = localize(L.Unlink.Button.title)
+    case .verify:
+      title = localize(L.VerificationInfo.Button.verify)
+    case .vipVerify:
+      title = localize(L.VerificationInfo.Button.vipVerify)
+    }
+    
+    let attributes: [NSAttributedString.Key: Any] = [
+      .font: UIFont.poppinsBold14,
+      .foregroundColor: textColor
+    ]
+    let attributedText = NSAttributedString(string: title, attributes: attributes)
     setAttributedTitle(attributedText, for: .normal)
   }
 }

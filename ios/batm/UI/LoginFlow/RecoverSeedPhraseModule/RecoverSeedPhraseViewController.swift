@@ -110,12 +110,7 @@ class RecoverSeedPhraseViewController: ModuleViewController<RecoverSeedPhrasePre
     presenter.state
       .asObservable()
       .map { $0.validationState }
-      .map { validationState -> String? in
-        switch validationState {
-        case .valid, .unknown: return nil
-        case let .invalid(message): return message
-        }
-      }
+      .mapToErrorMessage()
       .bind(to: mainView.rx.error)
       .disposed(by: disposeBag)
     

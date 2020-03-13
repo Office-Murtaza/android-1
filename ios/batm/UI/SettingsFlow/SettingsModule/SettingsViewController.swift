@@ -65,13 +65,9 @@ class SettingsViewController: ModuleViewController<SettingsPresenter>, UICollect
   }
   
   private func setupUIBindings() {
+    dataSource.values = presenter.types
     collectionView.dataSource = dataSource
     dataSource.collectionView = collectionView
-    
-    presenter.typesRelay
-      .observeOn(MainScheduler.instance)
-      .bind(to: dataSource.typesRelay)
-      .disposed(by: disposeBag)
   }
   
   override func setupBindings() {

@@ -71,12 +71,7 @@ final class EnterPasswordViewController: ModuleViewController<EnterPasswordPrese
     presenter.state
       .asObservable()
       .map { $0.validationState }
-      .map { validationState -> String? in
-        switch validationState {
-        case .valid, .unknown: return nil
-        case let .invalid(message): return message
-        }
-      }
+      .mapToErrorMessage()
       .bind(to: formView.rx.error)
       .disposed(by: disposeBag)
 

@@ -102,6 +102,7 @@ enum L {
     static let showSeedPhrase = "settings.show_seed_phrase"
     static let title = "settings.title"
     static let unlinkWallet = "settings.unlink_wallet"
+    static let verification = "settings.verification"
   }
 
   struct Shared {
@@ -115,8 +116,11 @@ enum L {
     static let next = "shared.next"
     static let ok = "shared.ok"
     static let paste = "shared.paste"
+    static let remove = "shared.remove"
     static let removeGif = "shared.remove_gif"
     static let scan = "shared.scan"
+    static let select = "shared.select"
+    static let send = "shared.send"
   }
 
   struct ShowPhone {
@@ -149,6 +153,20 @@ enum L {
     static let annotation = "unlink.annotation"
     static let title = "unlink.title"
     static let warning = "unlink.warning"
+  }
+
+  struct VIPVerification {
+    static let idSelfie = "v_i_p_verification.id_selfie"
+    static let title = "v_i_p_verification.title"
+  }
+
+  struct Verification {
+    static let idScan = "verification.id_scan"
+    static let title = "verification.title"
+  }
+
+  struct VerificationInfo {
+    static let title = "verification_info.title"
   }
 
   struct Welcome {
@@ -355,6 +373,111 @@ extension L.Unlink {
 
   struct Button {
     static let title = "unlink.button.title"
+  }
+}
+extension L.VIPVerification {
+
+  struct Form {
+  }
+}
+extension L.VIPVerification.Form {
+
+  struct Error {
+    static let idSelfieRequired = "v_i_p_verification.form.error.id_selfie_required"
+  }
+
+  struct SSN {
+    static let placeholder = "v_i_p_verification.form.s_s_n.placeholder"
+  }
+}
+extension L.Verification {
+
+  struct Form {
+  }
+
+  struct Picker {
+    static let title = "verification.picker.title"
+  }
+}
+extension L.Verification.Form {
+
+  struct Address {
+    static let placeholder = "verification.form.address.placeholder"
+  }
+
+  struct City {
+    static let placeholder = "verification.form.city.placeholder"
+  }
+
+  struct Country {
+    static let placeholder = "verification.form.country.placeholder"
+  }
+
+  struct Error {
+    static let idScanRequired = "verification.form.error.id_scan_required"
+    static let imageBroken = "verification.form.error.image_broken"
+  }
+
+  struct FirstName {
+    static let placeholder = "verification.form.first_name.placeholder"
+  }
+
+  struct IDNumber {
+    static let placeholder = "verification.form.i_d_number.placeholder"
+  }
+
+  struct LastName {
+    static let placeholder = "verification.form.last_name.placeholder"
+  }
+
+  struct Province {
+    static let placeholder = "verification.form.province.placeholder"
+  }
+
+  struct ZipCode {
+    static let placeholder = "verification.form.zip_code.placeholder"
+  }
+}
+extension L.Verification.Picker {
+
+  struct CameraOption {
+    static let title = "verification.picker.camera_option.title"
+  }
+
+  struct LibraryOption {
+    static let title = "verification.picker.library_option.title"
+  }
+}
+extension L.VerificationInfo {
+
+  struct Button {
+    static let verify = "verification_info.button.verify"
+    static let vipVerify = "verification_info.button.vip_verify"
+  }
+
+  struct DailyLimitRow {
+    static let title = "verification_info.daily_limit_row.title"
+  }
+
+  struct StatusRow {
+    static let title = "verification_info.status_row.title"
+  }
+
+  struct TxLimitRow {
+    static let title = "verification_info.tx_limit_row.title"
+  }
+}
+extension L.VerificationInfo.StatusRow {
+
+  struct Value {
+    static let notVerified = "verification_info.status_row.value.not_verified"
+    static let unknown = "verification_info.status_row.value.unknown"
+    static let verificationPending = "verification_info.status_row.value.verification_pending"
+    static let verificationRejected = "verification_info.status_row.value.verification_rejected"
+    static let verified = "verification_info.status_row.value.verified"
+    static let vipVerificationPending = "verification_info.status_row.value.vip_verification_pending"
+    static let vipVerificationRejected = "verification_info.status_row.value.vip_verification_rejected"
+    static let vipVerified = "verification_info.status_row.value.vip_verified"
   }
 }
 extension L.Welcome {
