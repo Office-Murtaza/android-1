@@ -13,5 +13,5 @@ public interface IdentityKycReviewRep extends JpaRepository<IdentityKycReview, L
 
     List<IdentityKycReview> findAllByIdentityOrderByIdDesc(Identity identity);
 
-    void deleteByIdentity(Identity identity);
+    void deleteAllByIdentity(Identity identity);
 }
