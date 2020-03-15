@@ -423,3 +423,59 @@ struct GetSellDetailsRequest: AuthorizedAPIRequest {
     return .requestPlain
   }
 }
+
+struct GetVerificationInfoRequest: AuthorizedAPIRequest {
+  typealias ResponseType = APIResponse<VerificationInfo>
+  typealias ResponseTrait = SingleResponseTrait
+  
+  let userId: Int
+  
+  var path: String { return "/user/\(userId)/kyc" }
+  var method: HTTPMethod { return .get }
+  var task: HTTPTask {
+    return .requestPlain
+  }
+}
+
+struct SendVerificationRequest: AuthorizedAPIRequest {
+  typealias ResponseType = APIEmptyResponse
+  typealias ResponseTrait = SingleResponseTrait
+  
+  let userId: Int
+  let userData: VerificationUserData
+  
+  var path: String { return "/user/\(userId)/kyc" }
+  var method: HTTPMethod { return .post }
+  var task: HTTPTask {
+    return .uploadMultipart([
+      MultipartFormData(provider: .data(userData.tierId.data(using: .utf8)!), name: "tierId"),
+      MultipartFormData(provider: .data(userData.idNumber.data(using: .utf8)!), name: "idNumber"),
+      MultipartFormData(provider: .data(userData.firstName.data(using: .utf8)!), name: "firstName"),
+      MultipartFormData(provider: .data(userData.lastName.data(using: .utf8)!), name: "lastName"),
+      MultipartFormData(provider: .data(userData.address.data(using: .utf8)!), name: "address"),
+      MultipartFormData(provider: .data(userData.country.data(using: .utf8)!), name: "country"),
+      MultipartFormData(provider: .data(userData.province.data(using: .utf8)!), name: "province"),
+      MultipartFormData(provider: .data(userData.city.data(using: .utf8)!), name: "city"),
+      MultipartFormData(provider: .data(userData.zipCode.data(using: .utf8)!), name: "zip"),
+      MultipartFormData(provider: .data(userData.scanData), name: "file", fileName: "id_scan.png", mimeType: "image/png"),
+    ])
+  }
+}
+
+struct SendVIPVerificationRequest: AuthorizedAPIRequest {
+  typealias ResponseType = APIEmptyResponse
+  typealias ResponseTrait = SingleResponseTrait
+  
+  let userId: Int
+  let userData: VIPVerificationUserData
+  
+  var path: String { return "/user/\(userId)/kyc" }
+  var method: HTTPMethod { return .post }
+  var task: HTTPTask {
+    return .uploadMultipart([
+      MultipartFormData(provider: .data(userData.tierId.data(using: .utf8)!), name: "tierId"),
+      MultipartFormData(provider: .data(userData.ssn.data(using: .utf8)!), name: "ssn"),
+      MultipartFormData(provider: .data(userData.selfieData), name: "file", fileName: "id_selfie.png", mimeType: "image/png"),
+    ])
+  }
+}

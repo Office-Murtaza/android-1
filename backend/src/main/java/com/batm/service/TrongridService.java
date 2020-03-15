@@ -1,6 +1,6 @@
 package com.batm.service;
 
-import com.batm.dto.BlockchainTransactionsDTO;
+import com.batm.dto.NodeTransactionsDTO;
 import com.batm.dto.CurrentBlockDTO;
 import com.batm.dto.TransactionDTO;
 import com.batm.dto.TransactionListDTO;
@@ -22,7 +22,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.web3j.utils.Numeric;
 import wallet.core.jni.PrivateKey;
-import wallet.core.jni.TronAddress;
 import wallet.core.jni.TronSigner;
 import wallet.core.jni.proto.Tron;
 import java.math.BigDecimal;
@@ -33,6 +32,9 @@ public class TrongridService {
 
     @Autowired
     private RestTemplate rest;
+
+    @Autowired
+    private WalletService walletService;
 
     @Value("${trx.node.url}")
     private String nodeUrl;
@@ -102,10 +104,11 @@ public class TrongridService {
                 dto.setLink(explorerUrl + "/" + txId);
                 dto.setCryptoAmount(getAmount(row.optLong("amount")));
                 dto.setCryptoFee(getAmount(tx.optJSONObject("raw_data").optLong("fee_limit")));
-                dto.setFromAddress(Base58.toBase58(row.optString("owner_address")).toLowerCase());
-                dto.setToAddress(Base58.toBase58(row.optString("to_address")).toLowerCase());
+                dto.setFromAddress(Base58.toBase58(row.optString("owner_address")));
+                dto.setToAddress(Base58.toBase58(row.optString("to_address")));
                 dto.setType(TransactionType.getType(dto.getFromAddress(), dto.getToAddress(), address));
                 dto.setStatus(getStatus(tx.optJSONArray("ret").getJSONObject(0).optString("contractRet")));
+                dto.setConfirmations(dto.getStatus().getConfirmations());
                 dto.setDate2(new Date(tx.optJSONObject("raw_data").optLong("timestamp")));
             }
         } catch (Exception e) {
@@ -115,23 +118,23 @@ public class TrongridService {
         return dto;
     }
 
-    public BlockchainTransactionsDTO getBlockchainTransactions(String address) {
+    public NodeTransactionsDTO getNodeTransactions(String address) {
         try {
             JSONObject res = rest.getForObject(nodeUrl + "/v1/accounts/" + address + "/transactions?limit=200", JSONObject.class);
             JSONArray array = res.optJSONArray("data");
             Map<String, TransactionDTO> map = collectNodeTxs(array, address);
 
-            return new BlockchainTransactionsDTO(map);
+            return new NodeTransactionsDTO(map);
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        return new BlockchainTransactionsDTO();
+        return new NodeTransactionsDTO();
     }
 
     public TransactionListDTO getTransactionList(String address, Integer startIndex, Integer limit, List<TransactionRecordGift> gifts, List<TransactionRecord> txs) {
         try {
-            Map<String, TransactionDTO> map = getBlockchainTransactions(address).getMap();
+            Map<String, TransactionDTO> map = getNodeTransactions(address).getMap();
 
             return TxUtil.buildTxs(map, startIndex, limit, gifts, txs);
         } catch (Exception e) {
@@ -154,9 +157,17 @@ public class TrongridService {
         return new CurrentBlockDTO();
     }
 
-    public JSONObject sign(String toAddress, BigDecimal amount, BigDecimal fee, PrivateKey privateKey) {
+    public String sign(String fromAddress, String toAddress, BigDecimal amount, BigDecimal fee) {
         try {
-            String fromAddress = new TronAddress(privateKey.getPublicKeySecp256k1(false)).description();
+            PrivateKey privateKey;
+
+            if (walletService.isServerAddress(fromAddress)) {
+                privateKey = walletService.getPrivateKeyTRX();
+            } else {
+                String path = walletService.getPath(fromAddress);
+                privateKey = walletService.getWallet().getKey(path);
+            }
+
             CurrentBlockDTO currentBlockDTO = getCurrentBlock();
             JSONObject rawData = currentBlockDTO.getBlockHeader().optJSONObject("raw_data");
 
@@ -186,7 +197,7 @@ public class TrongridService {
 
             Tron.SigningOutput output = TronSigner.sign(sign.build());
 
-            return JSONObject.fromObject(output.getJson());
+            return output.getJson();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -208,15 +219,15 @@ public class TrongridService {
                 }
 
                 String txId = tx.optString("txID");
-                String fromAddress = Base58.toBase58(row.optString("owner_address")).toLowerCase();
-                String toAddress = Base58.toBase58(row.optString("to_address")).toLowerCase();
+                String fromAddress = Base58.toBase58(row.optString("owner_address"));
+                String toAddress = Base58.toBase58(row.optString("to_address"));
                 String contractRet = tx.optJSONArray("ret").getJSONObject(0).optString("contractRet");
                 TransactionType type = TransactionType.getType(fromAddress, toAddress, address);
                 BigDecimal amount = Util.format6(getAmount(row.optLong("amount")));
                 TransactionStatus status = getStatus(contractRet);
                 Date date1 = new Date(tx.optJSONObject("raw_data").optLong("timestamp"));
 
-                map.put(txId, new TransactionDTO(txId, amount, type, status, date1));
+                map.put(txId, new TransactionDTO(txId, amount, fromAddress, toAddress, type, status, date1));
             }
         }
 

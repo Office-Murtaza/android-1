@@ -162,3 +162,36 @@ extension PrimitiveSequence where Trait == SingleTrait {
       .map { $0! }
   }
 }
+
+extension ObservableType where E == ValidationState {
+  func mapToErrorMessage() -> Observable<String?> {
+    return map { validationState -> String? in
+      switch validationState {
+      case .valid, .unknown: return nil
+      case let .invalid(message): return message
+      }
+    }
+  }
+}
+
+extension SharedSequence where E == ValidationState {
+  func mapToErrorMessage() -> SharedSequence<S, String?> {
+    return map { validationState -> String? in
+      switch validationState {
+      case .valid, .unknown: return nil
+      case let .invalid(message): return message
+      }
+    }
+  }
+}
+
+extension PrimitiveSequence where Trait == SingleTrait, E == ValidationState {
+  func mapToErrorMessage() -> Single<String?> {
+    return map { validationState -> String? in
+      switch validationState {
+      case .valid, .unknown: return nil
+      case let .invalid(message): return message
+      }
+    }
+  }
+}

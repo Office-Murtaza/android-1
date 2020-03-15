@@ -1,0 +1,2 @@
+ALTER TABLE w_coin ADD tolerance DECIMAL(20, 10) DEFAULT 0 AFTER fee;
+ALTER TABLE w_coin ADD scale INT(2) DEFAULT 0 AFTER tolerance;

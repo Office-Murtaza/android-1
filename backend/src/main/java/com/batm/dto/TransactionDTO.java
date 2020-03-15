@@ -32,6 +32,7 @@ public class TransactionDTO {
     private String imageId;
     private String message;
     private String sellInfo;
+    private Integer confirmations;
 
     @JsonFormat(shape = JsonFormat.Shape.OBJECT)
     private TransactionType type;
@@ -51,6 +52,16 @@ public class TransactionDTO {
     public TransactionDTO(String txId, BigDecimal cryptoAmount, TransactionType type, TransactionStatus status, Date date1) {
         this.txId = txId;
         this.cryptoAmount = cryptoAmount;
+        this.type = type;
+        this.status = status;
+        this.date1 = date1;
+    }
+
+    public TransactionDTO(String txId, BigDecimal cryptoAmount, String fromAddress, String toAddress, TransactionType type, TransactionStatus status, Date date1) {
+        this.txId = txId;
+        this.cryptoAmount = cryptoAmount;
+        this.fromAddress = fromAddress;
+        this.toAddress = toAddress;
         this.type = type;
         this.status = status;
         this.date1 = date1;

@@ -1,6 +1,5 @@
 package com.batm.rest;
 
-import com.batm.dto.SignDTO;
 import com.batm.service.CoinService;
 import com.batm.service.MessageService;
 import com.batm.service.UserService;
@@ -68,10 +67,8 @@ public class TestController {
     }
 
     @GetMapping("/wallet/{coinCode}/sign")
-    public Response sign(@PathVariable CoinService.CoinEnum coinCode, @RequestParam String address, @RequestParam BigDecimal amount) {
-        SignDTO dto = coinCode.buildSignDTOFromMainWallet();
-
-        return Response.ok(coinCode.sign(address, amount, dto));
+    public Response sign(@PathVariable CoinService.CoinEnum coinCode, @RequestParam String toAddress, @RequestParam BigDecimal amount) {
+        return Response.ok(coinCode.sign(coinCode.getWalletAddress(), toAddress, amount));
     }
 
     private JSONObject getCoinJson(String address, BigDecimal balance, String path) {

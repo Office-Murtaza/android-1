@@ -10,7 +10,8 @@ public enum TransactionType {
     SEND_GIFT(3),
     RECEIVE_GIFT(4),
     BUY(5),
-    SELL(6);
+    SELL(6),
+    MOVE(7);
 
     private int value;
 
@@ -24,10 +25,12 @@ public enum TransactionType {
     }
 
     public static TransactionType getType(String fromAddress, String toAddress, String address) {
-        if (StringUtils.isNotBlank(fromAddress) && fromAddress.equalsIgnoreCase(address)) {
-            return WITHDRAW;
-        } else if (StringUtils.isNotBlank(toAddress) && toAddress.equalsIgnoreCase(address)) {
-            return DEPOSIT;
+        if (StringUtils.isNotBlank(address)) {
+            if (StringUtils.isNotBlank(fromAddress) && fromAddress.equalsIgnoreCase(address)) {
+                return WITHDRAW;
+            } else if (StringUtils.isNotBlank(toAddress) && toAddress.equalsIgnoreCase(address)) {
+                return DEPOSIT;
+            }
         }
 
         return null;
