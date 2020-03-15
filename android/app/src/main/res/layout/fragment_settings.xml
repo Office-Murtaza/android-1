@@ -37,7 +37,7 @@
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/settings_change_pass"
         style="@style/SettingsItemStyle"
-        android:drawableStart="@drawable/ic_settings_pass"
+        android:drawableStart="@drawable/ic_settings_change_password"
         android:text="Change Password" />
 
     <include layout="@layout/item_divider" />
@@ -45,7 +45,7 @@
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/settings_change_pin"
         style="@style/SettingsItemStyle"
-        android:drawableStart="@drawable/ic_settings_pin"
+        android:drawableStart="@drawable/ic_settings_change_pin"
         android:text="@string/settings_pin" />
 
     <include layout="@layout/item_divider" />
@@ -53,7 +53,7 @@
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/verificationButtonView"
         style="@style/SettingsItemStyle"
-        android:drawableStart="@drawable/ic_user"
+        android:drawableStart="@drawable/ic_settings_verification"
         android:text="@string/settings_verification" />
 
     <include layout="@layout/item_divider" />
@@ -61,7 +61,7 @@
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/settings_seed"
         style="@style/SettingsItemStyle"
-        android:drawableStart="@drawable/ic_settings_seed"
+        android:drawableStart="@drawable/ic_settings_seed_phrase"
         android:text="@string/seed_phrase" />
 
     <include layout="@layout/item_divider" />
@@ -69,7 +69,7 @@
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/settings_unlink"
         style="@style/SettingsItemStyle"
-        android:drawableStart="@drawable/ic_settings_unlink"
+        android:drawableStart="@drawable/ic_settings_unlick_wallet"
         android:text="@string/settings_unlink" />
 
 </androidx.appcompat.widget.LinearLayoutCompat>
