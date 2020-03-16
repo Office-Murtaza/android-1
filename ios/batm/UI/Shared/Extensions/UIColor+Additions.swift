@@ -94,4 +94,12 @@ extension UIColor {
     return UIColor(red: 224.0 / 255.0, green: 45.0 / 255.0, blue: 45.0 / 255.0, alpha: 1.0)
   }
   
+  @nonobjc class var mango: UIColor {
+    return UIColor(red: 255.0 / 255.0, green: 163.0 / 255.0, blue: 43.0 / 255.0, alpha: 1.0)
+  }
+  
+  @nonobjc class var puce: UIColor {
+    return UIColor(red: 161.0 / 255.0, green: 126.0 / 255.0, blue: 85.0 / 255.0, alpha: 1.0)
+  }
+  
 }

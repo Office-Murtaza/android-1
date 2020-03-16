@@ -5,11 +5,14 @@
 "shared.copied" = "Copied";
 "shared.paste" = "Paste";
 "shared.done" = "Done";
+"shared.send" = "Send";
 "shared.change" = "Change";
 "shared.scan" = "Scan";
 "shared.max" = "Max";
 "shared.add_gif" = "Add GIF";
 "shared.remove_gif" = "Remove GIF";
+"shared.select" = "Select";
+"shared.remove" = "Remove";
 "shared.error.title" = "Error";
 "shared.error.message" = "Server Error, Try Later";
 "shared.error.no_connection.message" = "No Internet Connection";
@@ -62,6 +65,7 @@
 "settings.change_phone" = "Change Phone";
 "settings.change_password" = "Change Password";
 "settings.change_pin" = "Change PIN";
+"settings.verification" = "Verification";
 "settings.show_seed_phrase" = "Show Seed Phrase";
 "settings.unlink_wallet" = "Unlink Wallet";
 
@@ -84,6 +88,43 @@
 "change_pin.form.error.wrong_length" = "PIN should contain 6 digits";
 "change_pin.form.error.not_equal_pins" = "PINs do not match";
 "change_pin.form.error.not_match" = "Wrong old PIN";
+
+"verification_info.title" = "Verification";
+"verification_info.tx_limit_row.title" = "Tx Limit";
+"verification_info.daily_limit_row.title" = "Daily Limit";
+"verification_info.tx_limit_row.title" = "Tx Limit";
+"verification_info.status_row.title" = "Status";
+"verification_info.status_row.value.unknown" = "Unknown";
+"verification_info.status_row.value.not_verified" = "Not Verified";
+"verification_info.status_row.value.verification_pending" = "Verification Pending";
+"verification_info.status_row.value.verification_rejected" = "Verification Rejected";
+"verification_info.status_row.value.verified" = "Verified";
+"verification_info.status_row.value.vip_verification_pending" = "VIP Verification Pending";
+"verification_info.status_row.value.vip_verification_rejected" = "VIP Verification Rejected";
+"verification_info.status_row.value.vip_verified" = "VIP Verified";
+"verification_info.button.verify" = "Verify";
+"verification_info.button.vip_verify" = "VIP Verify";
+
+"verification.title" = "Verification";
+"verification.id_scan" = "ID Scan";
+"verification.form.i_d_number.placeholder" = "ID Number *";
+"verification.form.first_name.placeholder" = "First Name *";
+"verification.form.last_name.placeholder" = "Last Name *";
+"verification.form.address.placeholder" = "Address *";
+"verification.form.country.placeholder" = "Country *";
+"verification.form.province.placeholder" = "Province *";
+"verification.form.city.placeholder" = "City *";
+"verification.form.zip_code.placeholder" = "Zip Code *";
+"verification.form.error.id_scan_required" = "ID Scan is required";
+"verification.form.error.image_broken" = "Image is broken";
+"verification.picker.title" = "Upload Photo";
+"verification.picker.camera_option.title" = "Take Photo";
+"verification.picker.library_option.title" = "Photo Library";
+
+"v_i_p_verification.title" = "VIP Verification";
+"v_i_p_verification.id_selfie" = "ID Selfie";
+"v_i_p_verification.form.s_s_n.placeholder" = "SSN *";
+"v_i_p_verification.form.error.id_selfie_required" = "ID Selfie is required";
 
 "show_seed_phrase.title" = "Seed Phrase";
 

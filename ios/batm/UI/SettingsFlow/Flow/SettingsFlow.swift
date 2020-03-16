@@ -14,6 +14,7 @@ class SettingsFlow: BaseFlow<BTMNavigationController, SettingsFlowController> {
     case phone(PhoneNumber)
     case changePassword
     case changePin
+    case verification(VerificationInfo)
     case showSeedPhrase
     case unlink
     case popToRoot
@@ -44,6 +45,10 @@ class SettingsFlow: BaseFlow<BTMNavigationController, SettingsFlowController> {
     case .changePin:
       let flow = ChangePinFlow(view: view, parent: self)
       let step = ChangePinFlow.Steps.changePin
+      return next(flow: flow, step: step)
+    case let .verification(info):
+      let flow = VerificationFlow(view: view, parent: self)
+      let step = VerificationFlow.Steps.info(info)
       return next(flow: flow, step: step)
     case .showSeedPhrase:
       let flow = ShowSeedPhraseFlow(view: view, parent: self)

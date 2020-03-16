@@ -17,6 +17,7 @@ extension SettingsFlow {
                     ChangePhoneFlowControllerDelegate.self,
                     ChangePasswordFlowControllerDelegate.self,
                     ChangePinFlowControllerDelegate.self,
+                    VerificationFlowControllerDelegate.self,
                     ShowSeedPhraseFlowControllerDelegate.self,
                     UnlinkFlowControllerDelegate.self)
     }

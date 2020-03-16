@@ -1,6 +1,6 @@
 package com.batm.service;
 
-import com.batm.dto.BlockchainTransactionsDTO;
+import com.batm.dto.NodeTransactionsDTO;
 import com.batm.dto.CurrentAccountDTO;
 import com.batm.dto.TransactionDTO;
 import com.batm.dto.TransactionListDTO;
@@ -20,10 +20,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.web3j.utils.Numeric;
-import wallet.core.jni.PrivateKey;
-import wallet.core.jni.PublicKey;
-import wallet.core.jni.RippleAddress;
-import wallet.core.jni.RippleSigner;
+import wallet.core.jni.*;
 import wallet.core.jni.proto.Ripple;
 import java.math.BigDecimal;
 import java.util.*;
@@ -33,6 +30,9 @@ public class RippledService {
 
     @Autowired
     private RestTemplate rest;
+
+    @Autowired
+    private WalletService walletService;
 
     @Value("${xrp.node.url}")
     private String nodeUrl;
@@ -162,7 +162,7 @@ public class RippledService {
         return dto;
     }
 
-    public BlockchainTransactionsDTO getBlockchainTransactions(String address) {
+    public NodeTransactionsDTO getNodeTransactions(String address) {
         try {
             JSONObject param = new JSONObject();
             param.put("account", address);
@@ -181,17 +181,17 @@ public class RippledService {
 
             Map<String, TransactionDTO> map = collectNodeTxs(array, address);
 
-            return new BlockchainTransactionsDTO(map);
+            return new NodeTransactionsDTO(map);
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        return new BlockchainTransactionsDTO();
+        return new NodeTransactionsDTO();
     }
 
     public TransactionListDTO getTransactionList(String address, Integer startIndex, Integer limit, List<TransactionRecordGift> gifts, List<TransactionRecord> txs) {
         try {
-            Map<String, TransactionDTO> map = getBlockchainTransactions(address).getMap();
+            Map<String, TransactionDTO> map = getNodeTransactions(address).getMap();
 
             return TxUtil.buildTxs(map, startIndex, limit, gifts, txs);
         } catch (Exception e) {
@@ -201,9 +201,17 @@ public class RippledService {
         return new TransactionListDTO();
     }
 
-    public String sign(String toAddress, BigDecimal amount, BigDecimal fee, PublicKey publicKey, PrivateKey privateKey) {
+    public String sign(String fromAddress, String toAddress, BigDecimal amount, BigDecimal fee) {
         try {
-            String fromAddress = new RippleAddress(publicKey).description();
+            PrivateKey privateKey;
+
+            if (walletService.isServerAddress(fromAddress)) {
+                privateKey = walletService.getPrivateKeyXRP();
+            } else {
+                String path = walletService.getPath(fromAddress);
+                privateKey = walletService.getWallet().getKey(path);
+            }
+
             CurrentAccountDTO accountDTO = getCurrentAccount(fromAddress);
 
             Ripple.SigningInput.Builder builder = Ripple.SigningInput.newBuilder();
@@ -236,11 +244,13 @@ public class RippledService {
 
                 JSONObject tx = txs.optJSONObject("tx");
                 String txId = tx.optString("hash");
+                String fromAddress = tx.optString("Account");
+                String toAddress = tx.optString("Destination");
                 TransactionType type = TransactionType.getType(tx.optString("Account"), tx.optString("Destination"), address);
                 BigDecimal amount = Util.format6(getAmount(tx.optString("Amount")));
                 Date date1 = new Date((tx.optLong("date") + 946684800L) * 1000);
 
-                map.put(txId, new TransactionDTO(txId, amount, type, status, date1));
+                map.put(txId, new TransactionDTO(txId, amount, fromAddress, toAddress, type, status, date1));
             }
         }
 

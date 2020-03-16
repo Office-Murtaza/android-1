@@ -363,12 +363,12 @@ public class TransactionService {
                         CoinService.CoinEnum coinCode = CoinService.CoinEnum.valueOf(t.getCoin().getCode());
                         BigDecimal transactionFee = coinCode.getTransactionFee();
                         BigDecimal withdrawAmount = t.getAmount().subtract(transactionFee);
-                        BigDecimal walletBalance = walletService.getCryptoBalance(coinCode);
+                        BigDecimal walletBalance = walletService.getBalance(coinCode);
 
                         if (walletBalance != null && walletBalance.compareTo(withdrawAmount.add(transactionFee)) >= 0) {
-                            SignDTO signDTO = coinCode.buildSignDTOFromMainWallet();
-                            String receiverAddress = userService.getUserCoin(receiver.get().getId(), t.getCoin().getCode()).getAddress();
-                            String hex = coinCode.sign(receiverAddress, withdrawAmount, signDTO);
+                            String fromAddress = coinCode.getWalletAddress();
+                            String toAddress = userService.getUserCoin(receiver.get().getId(), t.getCoin().getCode()).getAddress();
+                            String hex = coinCode.sign(fromAddress, toAddress, withdrawAmount);
 
                             SubmitTransactionDTO dto = new SubmitTransactionDTO();
                             dto.setHex(hex);

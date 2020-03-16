@@ -1,8 +1,8 @@
 package com.batm.rest;
 
-import com.batm.dto.SignDTO;
 import com.batm.service.CoinService;
 import com.batm.service.MessageService;
+import com.batm.service.UserService;
 import com.batm.service.WalletService;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +17,9 @@ public class TestController {
 
     @Autowired
     private MessageService messageService;
+
+    @Autowired
+    private UserService userService;
 
     @Autowired
     private WalletService walletService;
@@ -64,10 +67,8 @@ public class TestController {
     }
 
     @GetMapping("/wallet/{coinCode}/sign")
-    public Response sign(@PathVariable CoinService.CoinEnum coinCode, @RequestParam String address, @RequestParam BigDecimal amount) {
-        SignDTO dto = coinCode.buildSignDTOFromMainWallet();
-
-        return Response.ok(coinCode.sign(address, amount, dto));
+    public Response sign(@PathVariable CoinService.CoinEnum coinCode, @RequestParam String toAddress, @RequestParam BigDecimal amount) {
+        return Response.ok(coinCode.sign(coinCode.getWalletAddress(), toAddress, amount));
     }
 
     private JSONObject getCoinJson(String address, BigDecimal balance, String path) {
@@ -78,5 +79,10 @@ public class TestController {
         json.put("path", path);
 
         return json;
+    }
+
+    @DeleteMapping("/user/{userId}/kyc")
+    public Response sign(@PathVariable Long userId) {
+        return Response.ok(userService.resetVerificationsForUser(userId));
     }
 }

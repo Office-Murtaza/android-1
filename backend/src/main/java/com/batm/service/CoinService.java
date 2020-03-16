@@ -248,10 +248,10 @@ public class CoinService {
             }
 
             @Override
-            public String sign(String toAddress, BigDecimal amount, SignDTO dto) {
+            public String sign(String fromAddress, String toAddress, BigDecimal amount) {
                 List<JSONObject> utxos = getUTXO(walletService.getXPUB(CoinType.BITCOIN)).getUtxos();
 
-                return blockbook.signBTCForks(getCoinType(), dto.getFromAddress(), toAddress, amount, getCoinEntity().getFee(), Constant.BTC_DIVIDER, utxos);
+                return blockbook.signBTCForks(getCoinType(), fromAddress, toAddress, amount, getCoinEntity().getFee(), Constant.BTC_DIVIDER, utxos);
             }
 
             @Override
@@ -265,8 +265,8 @@ public class CoinService {
             }
 
             @Override
-            public BlockchainTransactionsDTO getBlockchainTransactions(String address) {
-                return blockbook.getBlockchainTransactions(btcNodeUrl, address, Constant.BTC_DIVIDER);
+            public NodeTransactionsDTO getNodeTransactions(String address) {
+                return blockbook.getNodeTransactions(btcNodeUrl, address, Constant.BTC_DIVIDER);
             }
 
             @Override
@@ -275,16 +275,18 @@ public class CoinService {
             }
 
             @Override
-            public SignDTO buildSignDTOFromMainWallet() {
-                SignDTO dto = new SignDTO();
-                dto.setFromAddress(walletService.getAddressBTC());
-
-                return dto;
+            public BigDecimal getTransactionFee() {
+                return getCoinEntity().getFee().multiply(BigDecimal.valueOf(1000));
             }
 
             @Override
-            public BigDecimal getTransactionFee() {
-                return getCoinEntity().getFee().multiply(BigDecimal.valueOf(1000));
+            public BigDecimal getTransactionTolerance() {
+                return getCoinEntity().getTolerance();
+            }
+
+            @Override
+            public Integer getScale() {
+                return getCoinEntity().getScale();
             }
         },
         ETH {
@@ -355,8 +357,8 @@ public class CoinService {
             }
 
             @Override
-            public String sign(String toAddress, BigDecimal amount, SignDTO dto) {
-                return blockbook.signETH(ethNodeUrl, toAddress, amount, dto.getPrivateKey());
+            public String sign(String fromAddress, String toAddress, BigDecimal amount) {
+                return blockbook.signETH(ethNodeUrl, toAddress, amount, null);
             }
 
             @Override
@@ -370,8 +372,8 @@ public class CoinService {
             }
 
             @Override
-            public BlockchainTransactionsDTO getBlockchainTransactions(String address) {
-                return blockbook.getBlockchainTransactions(ethNodeUrl, address, Constant.ETH_DIVIDER);
+            public NodeTransactionsDTO getNodeTransactions(String address) {
+                return blockbook.getNodeTransactions(ethNodeUrl, address, Constant.ETH_DIVIDER);
             }
 
             @Override
@@ -380,16 +382,18 @@ public class CoinService {
             }
 
             @Override
-            public SignDTO buildSignDTOFromMainWallet() {
-                SignDTO dto = new SignDTO();
-                dto.setPrivateKey(walletService.getPrivateKeyETH());
-
-                return dto;
+            public BigDecimal getTransactionFee() {
+                return BigDecimal.valueOf(Constant.GAS_PRICE).multiply(BigDecimal.valueOf(Constant.GAS_LIMIT)).divide(Constant.ETH_DIVIDER);
             }
 
             @Override
-            public BigDecimal getTransactionFee() {
-                return BigDecimal.valueOf(Constant.GAS_PRICE).multiply(BigDecimal.valueOf(Constant.GAS_LIMIT)).divide(Constant.ETH_DIVIDER);
+            public BigDecimal getTransactionTolerance() {
+                return getCoinEntity().getTolerance();
+            }
+
+            @Override
+            public Integer getScale() {
+                return getCoinEntity().getScale();
             }
         },
         BCH {
@@ -454,10 +458,10 @@ public class CoinService {
             }
 
             @Override
-            public String sign(String toAddress, BigDecimal amount, SignDTO dto) {
+            public String sign(String fromAddress, String toAddress, BigDecimal amount) {
                 List<JSONObject> utxos = getUTXO(walletService.getXPUB(CoinType.BITCOINCASH)).getUtxos();
 
-                return blockbook.signBTCForks(getCoinType(), dto.getFromAddress(), toAddress, amount, getCoinEntity().getFee(), Constant.BCH_DIVIDER, utxos);
+                return blockbook.signBTCForks(getCoinType(), fromAddress, toAddress, amount, getCoinEntity().getFee(), Constant.BCH_DIVIDER, utxos);
             }
 
             @Override
@@ -471,8 +475,8 @@ public class CoinService {
             }
 
             @Override
-            public BlockchainTransactionsDTO getBlockchainTransactions(String address) {
-                return blockbook.getBlockchainTransactions(bchNodeUrl, address, Constant.BCH_DIVIDER);
+            public NodeTransactionsDTO getNodeTransactions(String address) {
+                return blockbook.getNodeTransactions(bchNodeUrl, address, Constant.BCH_DIVIDER);
             }
 
             @Override
@@ -481,16 +485,18 @@ public class CoinService {
             }
 
             @Override
-            public SignDTO buildSignDTOFromMainWallet() {
-                SignDTO dto = new SignDTO();
-                dto.setFromAddress(walletService.getAddressBCH());
-
-                return dto;
+            public BigDecimal getTransactionFee() {
+                return getCoinEntity().getFee().multiply(BigDecimal.valueOf(1000));
             }
 
             @Override
-            public BigDecimal getTransactionFee() {
-                return getCoinEntity().getFee().multiply(BigDecimal.valueOf(1000));
+            public BigDecimal getTransactionTolerance() {
+                return getCoinEntity().getTolerance();
+            }
+
+            @Override
+            public Integer getScale() {
+                return getCoinEntity().getScale();
             }
         },
         LTC {
@@ -555,10 +561,10 @@ public class CoinService {
             }
 
             @Override
-            public String sign(String toAddress, BigDecimal amount, SignDTO dto) {
+            public String sign(String fromAddress, String toAddress, BigDecimal amount) {
                 List<JSONObject> utxos = getUTXO(walletService.getXPUB(CoinType.LITECOIN)).getUtxos();
 
-                return blockbook.signBTCForks(getCoinType(), dto.getFromAddress(), toAddress, amount, getCoinEntity().getFee(), Constant.LTC_DIVIDER, utxos);
+                return blockbook.signBTCForks(getCoinType(), fromAddress, toAddress, amount, getCoinEntity().getFee(), Constant.LTC_DIVIDER, utxos);
             }
 
             @Override
@@ -572,8 +578,8 @@ public class CoinService {
             }
 
             @Override
-            public BlockchainTransactionsDTO getBlockchainTransactions(String address) {
-                return blockbook.getBlockchainTransactions(ltcNodeUrl, address, Constant.LTC_DIVIDER);
+            public NodeTransactionsDTO getNodeTransactions(String address) {
+                return blockbook.getNodeTransactions(ltcNodeUrl, address, Constant.LTC_DIVIDER);
             }
 
             @Override
@@ -582,16 +588,18 @@ public class CoinService {
             }
 
             @Override
-            public SignDTO buildSignDTOFromMainWallet() {
-                SignDTO dto = new SignDTO();
-                dto.setFromAddress(walletService.getAddressLTC());
-
-                return dto;
+            public BigDecimal getTransactionFee() {
+                return getCoinEntity().getFee().multiply(BigDecimal.valueOf(1000));
             }
 
             @Override
-            public BigDecimal getTransactionFee() {
-                return getCoinEntity().getFee().multiply(BigDecimal.valueOf(1000));
+            public BigDecimal getTransactionTolerance() {
+                return getCoinEntity().getTolerance();
+            }
+
+            @Override
+            public Integer getScale() {
+                return getCoinEntity().getScale();
             }
         },
         BNB {
@@ -659,8 +667,8 @@ public class CoinService {
             }
 
             @Override
-            public String sign(String toAddress, BigDecimal amount, SignDTO dto) {
-                return binance.sign(toAddress, amount, dto.getPrivateKey());
+            public String sign(String fromAddress, String toAddress, BigDecimal amount) {
+                return binance.sign(fromAddress, toAddress, amount);
             }
 
             @Override
@@ -674,8 +682,8 @@ public class CoinService {
             }
 
             @Override
-            public BlockchainTransactionsDTO getBlockchainTransactions(String address) {
-                return binance.getBlockchainTransactions(address);
+            public NodeTransactionsDTO getNodeTransactions(String address) {
+                return binance.getNodeTransactions(address);
             }
 
             @Override
@@ -684,16 +692,18 @@ public class CoinService {
             }
 
             @Override
-            public SignDTO buildSignDTOFromMainWallet() {
-                SignDTO dto = new SignDTO();
-                dto.setPrivateKey(walletService.getPrivateKeyBNB());
-
-                return dto;
+            public BigDecimal getTransactionFee() {
+                return getCoinEntity().getFee();
             }
 
             @Override
-            public BigDecimal getTransactionFee() {
-                return getCoinEntity().getFee();
+            public BigDecimal getTransactionTolerance() {
+                return getCoinEntity().getTolerance();
+            }
+
+            @Override
+            public Integer getScale() {
+                return getCoinEntity().getScale();
             }
         },
         XRP {
@@ -761,8 +771,16 @@ public class CoinService {
             }
 
             @Override
-            public String sign(String toAddress, BigDecimal amount, SignDTO dto) {
-                return rippled.sign(toAddress, amount, getCoinEntity().getFee(), dto.getPublicKey(), dto.getPrivateKey());
+            public String sign(String fromAddress, String toAddress, BigDecimal amount) {
+                BigDecimal balance = getBalance(fromAddress);
+                BigDecimal fee = getCoinEntity().getFee();
+                BigDecimal maxWithdrawAmount = balance.subtract(new BigDecimal(20).subtract(fee));
+
+                if (maxWithdrawAmount.compareTo(amount) < 0) {
+                    amount = maxWithdrawAmount;
+                }
+
+                return rippled.sign(fromAddress, toAddress, amount, fee);
             }
 
             @Override
@@ -776,8 +794,8 @@ public class CoinService {
             }
 
             @Override
-            public BlockchainTransactionsDTO getBlockchainTransactions(String address) {
-                return rippled.getBlockchainTransactions(address);
+            public NodeTransactionsDTO getNodeTransactions(String address) {
+                return rippled.getNodeTransactions(address);
             }
 
             @Override
@@ -786,19 +804,18 @@ public class CoinService {
             }
 
             @Override
-            public SignDTO buildSignDTOFromMainWallet() {
-                CoinType coinType = getCoinType();
-
-                SignDTO dto = new SignDTO();
-                dto.setPublicKey(walletService.getWallet().getPublicKeyFromExtended(walletService.getXPUB(coinType), walletService.getPath(coinType)));
-                dto.setPrivateKey(walletService.getPrivateKeyXRP());
-
-                return dto;
+            public BigDecimal getTransactionFee() {
+                return getCoinEntity().getFee();
             }
 
             @Override
-            public BigDecimal getTransactionFee() {
-                return getCoinEntity().getFee();
+            public BigDecimal getTransactionTolerance() {
+                return getCoinEntity().getTolerance();
+            }
+
+            @Override
+            public Integer getScale() {
+                return getCoinEntity().getScale();
             }
         },
         TRX {
@@ -863,8 +880,8 @@ public class CoinService {
             }
 
             @Override
-            public String sign(String toAddress, BigDecimal amount, SignDTO dto) {
-                return trongrid.sign(toAddress, amount, getCoinEntity().getFee(), dto.getPrivateKey()).toString();
+            public String sign(String fromAddress, String toAddress, BigDecimal amount) {
+                return trongrid.sign(fromAddress, toAddress, amount, getCoinEntity().getFee());
             }
 
             @Override
@@ -878,8 +895,8 @@ public class CoinService {
             }
 
             @Override
-            public BlockchainTransactionsDTO getBlockchainTransactions(String address) {
-                return trongrid.getBlockchainTransactions(address);
+            public NodeTransactionsDTO getNodeTransactions(String address) {
+                return trongrid.getNodeTransactions(address);
             }
 
             @Override
@@ -888,16 +905,18 @@ public class CoinService {
             }
 
             @Override
-            public SignDTO buildSignDTOFromMainWallet() {
-                SignDTO dto = new SignDTO();
-                dto.setPrivateKey(walletService.getPrivateKeyTRX());
-
-                return dto;
+            public BigDecimal getTransactionFee() {
+                return getCoinEntity().getFee();
             }
 
             @Override
-            public BigDecimal getTransactionFee() {
-                return getCoinEntity().getFee();
+            public BigDecimal getTransactionTolerance() {
+                return getCoinEntity().getTolerance();
+            }
+
+            @Override
+            public Integer getScale() {
+                return getCoinEntity().getScale();
             }
         };
 
@@ -925,18 +944,20 @@ public class CoinService {
 
         public abstract String getWalletAddress();
 
-        public abstract String sign(String toAddress, BigDecimal amount, SignDTO dto);
+        public abstract String sign(String fromAddress, String toAddress, BigDecimal amount);
 
         public abstract String submitTransaction(String hex);
 
         public abstract CoinType getCoinType();
 
-        public abstract BlockchainTransactionsDTO getBlockchainTransactions(String address);
+        public abstract NodeTransactionsDTO getNodeTransactions(String address);
 
         public abstract Coin getCoinEntity();
 
-        public abstract SignDTO buildSignDTOFromMainWallet();
-
         public abstract BigDecimal getTransactionFee();
+
+        public abstract BigDecimal getTransactionTolerance();
+
+        public abstract Integer getScale();
     }
 }
