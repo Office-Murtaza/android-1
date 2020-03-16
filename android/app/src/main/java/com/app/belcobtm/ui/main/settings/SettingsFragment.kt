@@ -10,6 +10,7 @@ import com.app.belcobtm.R
 import com.app.belcobtm.ui.main.settings.change_pass.ChangePassActivity
 import com.app.belcobtm.ui.main.settings.check_pass.CheckPassActivity
 import com.app.belcobtm.ui.main.settings.phone.ShowPhoneActivity
+import com.app.belcobtm.presentation.features.settings.verification.info.VerificationInfoActivity
 import kotlinx.android.synthetic.main.fragment_settings.*
 
 
@@ -24,39 +25,22 @@ class SettingsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         settings_phone.setOnClickListener {
-            startActivity(
-                Intent(
-                    activity,
-                    ShowPhoneActivity::class.java
-                )
-            )
+            startActivity(Intent(activity, ShowPhoneActivity::class.java))
         }
         settings_change_pass.setOnClickListener {
-            ChangePassActivity.start(
-                activity,
-                ChangePassActivity.Companion.Mode.MODE_CHANGE_PASS
-            )
+            ChangePassActivity.start(activity, ChangePassActivity.Companion.Mode.MODE_CHANGE_PASS)
         }
         settings_change_pin.setOnClickListener {
-            ChangePassActivity.start(
-                activity,
-                ChangePassActivity.Companion.Mode.MODE_CHANGE_PIN
-            )
+            ChangePassActivity.start(activity, ChangePassActivity.Companion.Mode.MODE_CHANGE_PIN)
         }
         settings_seed.setOnClickListener {
-            CheckPassActivity.start(
-                context,
-                CheckPassActivity.Companion.Mode.MODE_OPEN_SEED
-            )
+            CheckPassActivity.start(context, CheckPassActivity.Companion.Mode.MODE_OPEN_SEED)
         }
         settings_unlink.setOnClickListener {
-            startActivity(
-                Intent(
-                    activity,
-                    UnlinkActivity::class.java
-                )
-            )
+            startActivity(Intent(activity, UnlinkActivity::class.java))
         }
-
+        verificationButtonView.setOnClickListener {
+            startActivity(Intent(activity, VerificationInfoActivity::class.java))
+        }
     }
 }

@@ -34,7 +34,7 @@ abstract class BaseMvpActivity<in V : BaseMvpView, T : BaseMvpPresenter<V>>
 
     override fun getContext(): Context = this
 
-    private fun showError(error: String?, @Snackbar.Duration duration: Int) {
+    private fun showError(error: String?, duration: Int) {
         runOnUiThread {
 
             var _error = error

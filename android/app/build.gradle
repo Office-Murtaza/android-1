@@ -135,7 +135,7 @@ dependencies {
     //cryptography
     implementation 'com.yakivmospan:scytale:1.0.1'
 
-//    rxpermissions
+    //rxpermissions
     implementation 'com.github.tbruyelle:rxpermissions:0.10.2'
 
     //QR code
@@ -153,4 +153,11 @@ dependencies {
 
     //Moshi
     implementation "com.squareup.retrofit2:converter-moshi:$project.retrofitVersion"
+
+    //Permission dispatcher
+    implementation "org.permissionsdispatcher:permissionsdispatcher:4.6.0"
+    kapt "org.permissionsdispatcher:permissionsdispatcher-processor:4.6.0"
+
+    //Image picker
+    implementation 'com.kroegerama:bottomsheet-imagepicker:1.1.2'
 }

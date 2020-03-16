@@ -1,5 +1,7 @@
 <resources>
     <string name="google_maps_key">AIzaSyDGBWQKBBKloFJfQgY_5i-l-a7aT8oRWhw</string>
+    <string name="file_provider" translatable="false">com.app.belcobtm.fileprovider</string>
+
 
     <string name="app_name">Belco Wallet</string>
     <!-- Strings related to login -->
@@ -94,6 +96,7 @@
     <string name="settings_phone">Phone</string>
     <string name="settings_pass">Change password</string>
     <string name="settings_pin">Change PIN</string>
+    <string name="settings_verification">Verification</string>
     <string name="settings_unlink">Unlink Wallet</string>
     <string name="unlink_warning">Unlink the wallet from the current device means clear all local data(seed phrase, public and private keys). You can recover the wallet any time and on any device using your credentials and seed phrase.\n\n</string>
     <string name="unlink_warning2">Please, make sure you have been stored your credentials and seed phrase before unlinking the wallet.</string>
@@ -114,6 +117,44 @@
     <string name="password_changed">Password changed</string>
     <string name="pin_changed">PIN changed</string>
     <string name="error_wrong_old_pin">Wrong old PIN</string>
+
+    <!-- Verification -->
+    <string name="verification_screen_title">Verification</string>
+    <string name="verification_status">Status</string>
+    <string name="verification_tx_limit">Tx Limit</string>
+    <string name="verification_daily_limit">Daily Limit</string>
+    <string name="verification_vip_verify">VIP Verify</string>
+    <string name="verification_verify">Verify</string>
+    <string name="verification_unit_usd">%1$s USD</string>
+    <string-array name="verification_status_array">
+        <item>Incorrect Status</item>
+        <item>Not Verified</item>
+        <item>Verification Pending</item>
+        <item>Verification Rejected</item>
+        <item>Verified</item>
+        <item>VIP Verification Pending</item>
+        <item>VIP Verification Rejected</item>
+        <item>VIP Verified</item>
+    </string-array>
+    <string name="verification_select">Select</string>
+    <string name="verification_remove">Remove</string>
+    <string name="verification_id_number">ID Number *</string>
+    <string name="verification_first_name">First Name *</string>
+    <string name="verification_last_name">Last Name *</string>
+    <string name="verification_address">Address *</string>
+    <string name="verification_city">City *</string>
+    <string name="verification_country">Country *</string>
+    <string name="verification_province">Province *</string>
+    <string name="verification_zip_code">Zip Code *</string>
+    <string name="verification_send">Send</string>
+    <string name="verification_select_photo_please">Select photo please</string>
+    <string name="verification_alert_country_title">Please pick country</string>
+    <string name="verification_alert_state_title">Please pick province</string>
+    <string name="verification_alert_city_title">Please pick city</string>
+    <string name="verification_alert_please_fill_fields">Please fill all fields</string>
+    <string name="verification_id_scan">ID Scan</string>
+    <string name="verification_id_selfie">ID Selfie</string>
+    <string name="verification_snn">SNN *</string>
 
     <!--transactions-->
     <string name="deposit">Deposit</string>

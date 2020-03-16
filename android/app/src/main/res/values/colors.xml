@@ -32,4 +32,11 @@
     <color name="cash_status_available">#48be53</color>
     <color name="cash_status_withdrawn">#cbcaca</color>
 
+    <color name="verification_status_not_verified">#cbcaca</color>
+    <color name="verification_status_verification_pending">#ffcd4c</color>
+    <color name="verification_status_verification_rejected">#e02d2d</color>
+    <color name="verification_status_verified">#48be53</color>
+    <color name="verification_status_vip_verification_pending">#ffa32b</color>
+    <color name="verification_status_vip_verification_rejected">#a17e55</color>
+    <color name="verification_status_vip_verified">#0073e4</color>
 </resources>
