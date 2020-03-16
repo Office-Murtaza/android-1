@@ -15,7 +15,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.multipart.MultipartFile;
-
 import javax.transaction.Transactional;
 import java.io.File;
 import java.io.IOException;
@@ -479,11 +478,12 @@ public class UserService {
     public Boolean resetVerificationsForUser(Long userId) {
         User user = userRep.getOne(userId);
         identityKycReviewRep.deleteAllByIdentity(user.getIdentity());
-        List<IdentityPiece> identityPieces = identityPieceRep.findAllByIdentityAndPieceTypeIn(user.getIdentity(),new int[] {IdentityPiece.TYPE_ID_SCAN,IdentityPiece.TYPE_SELFIE,IdentityPiece.TYPE_PERSONAL_INFORMATION});
+        List<IdentityPiece> identityPieces = identityPieceRep.findAllByIdentityAndPieceTypeIn(user.getIdentity(), new int[]{IdentityPiece.TYPE_ID_SCAN, IdentityPiece.TYPE_SELFIE, IdentityPiece.TYPE_PERSONAL_INFORMATION});
         identityPiecePersonalInfoRep.deleteAllByIdentityPieceIn(identityPieces);
         identityPieceDocumentRep.deleteAllByIdentityPieceIn(identityPieces);
         identityPieceSelfieRep.deleteAllByIdentityPieceIn(identityPieces);
         identityPieceRep.deleteAll(identityPieces);
+
         //revert prices
         List<Limit> limitsPerTx = user.getIdentity().getLimitCashPerTransaction().
                 stream().sorted(Comparator.comparingLong(Limit::getId))
@@ -494,6 +494,7 @@ public class UserService {
         identityRep.save(user.getIdentity());
         limitRep.deleteAll(limitsPerTx);
         limitRep.deleteAll(limitsPerDay);
+
         return true;
     }
 }
