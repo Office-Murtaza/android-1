@@ -5,6 +5,7 @@ import com.batm.entity.*;
 import com.batm.model.TransactionStatus;
 import com.batm.model.TransactionType;
 import com.batm.repository.CoinRep;
+import com.batm.repository.solr.CoinPriceRepository;
 import com.batm.util.Constant;
 import com.batm.util.Util;
 import com.binance.api.client.BinanceApiRestClient;
@@ -13,8 +14,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import wallet.core.jni.CoinType;
+
 import java.math.BigDecimal;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -28,6 +33,7 @@ public class CoinService {
     private static BinanceApiRestClient binanceRest;
     private static WalletService walletService;
     private static UserService userService;
+    private static CoinPriceRepository coinPriceRepository;
 
     private static BlockbookService blockbook;
     private static BinanceService binance;
@@ -47,6 +53,7 @@ public class CoinService {
     public CoinService(@Autowired final BinanceApiRestClient binanceRest,
                        @Autowired final WalletService walletService,
                        @Autowired final UserService userService,
+                       @Autowired final CoinPriceRepository coinPriceRepository,
 
                        @Autowired final CoinRep coinRep,
 
@@ -68,6 +75,7 @@ public class CoinService {
         CoinService.binanceRest = binanceRest;
         CoinService.walletService = walletService;
         CoinService.userService = userService;
+        CoinService.coinPriceRepository = coinPriceRepository;
 
         CoinService.coinList = coinRep.findAll();
         CoinService.coinMap = CoinService.coinList.stream().collect(Collectors.toMap(Coin::getCode, Function.identity()));
@@ -88,11 +96,100 @@ public class CoinService {
         CoinService.ltcExplorerUrl = ltcExplorerUrl;
     }
 
+    private static BigDecimal getBinancePriceBySymbol(String symbol) {
+        return binance.getBinancePriceBySymbol(symbol);
+    }
+
+    public BalanceDTO getCoinsBalance(Long userId, List<String> coins) {
+        List<UserCoin> userCoins = userService.getUserCoins(userId);
+
+        List<CompletableFuture<CoinBalanceDTO>> futures = userCoins.stream()
+                .filter(it -> coins.contains(it.getCoin().getCode()))
+                .map(dto -> callAsync(dto))
+                .collect(Collectors.toList());
+
+        List<CoinBalanceDTO> balances = futures.stream()
+                .map(CompletableFuture::join)
+                .sorted(Comparator.comparing(CoinBalanceDTO::getId))
+                .collect(Collectors.toList());
+
+        BigDecimal totalBalance = Util.format2(balances.stream()
+                .map(it -> it.getPrice().getUsd().multiply(it.getBalance()))
+                .reduce(BigDecimal.ZERO, BigDecimal::add));
+
+        return new BalanceDTO(userId, new AmountDTO(totalBalance), balances);
+    }
+
+    public FeeDTO getCoinsFee() {
+        List<CoinFeeDTO> feeList = new ArrayList<>();
+
+        coinList.forEach(e -> {
+            if (CoinEnum.ETH.name().equalsIgnoreCase(e.getCode())) {
+                feeList.add(new CoinFeeDTO(e.getCode(), null, Constant.GAS_PRICE, Constant.GAS_LIMIT));
+            } else {
+                feeList.add(new CoinFeeDTO(e.getCode(), e.getFee().stripTrailingZeros(), null, null));
+            }
+        });
+
+        return new FeeDTO(feeList);
+    }
+
+    private CompletableFuture<CoinBalanceDTO> callAsync(UserCoin userCoin) {
+        return CompletableFuture.supplyAsync(() -> {
+            CoinEnum coinEnum = CoinEnum.valueOf(userCoin.getCoin().getCode());
+
+            BigDecimal coinPrice = coinEnum.getPrice();
+            BigDecimal coinBalance = coinEnum.getBalance(userCoin.getAddress());
+
+            return new CoinBalanceDTO(userCoin.getCoin().getId(), userCoin.getCoin().getCode(), userCoin.getAddress(), coinBalance, new AmountDTO(coinPrice));
+        });
+    }
+
+    public Coin getCoin(String coinCode) {
+        return coinList.stream().filter(e -> e.getCode().equalsIgnoreCase(coinCode)).findFirst().get();
+    }
+
+    public void save(CoinDTO coinVM, Long userId) {
+        User user = userService.findById(userId);
+        List<UserCoin> userCoins = userService.getUserCoins(userId);
+
+        List<UserCoin> newCoins = new ArrayList<>();
+        coinVM.getCoins().stream().forEach(coinDTO -> {
+            Coin coin = getCoin(coinDTO.getCode());
+
+            if (coin != null) {
+                UserCoin userCoin = new UserCoin(user, coin, coinDTO.getAddress());
+
+                if (userCoins.indexOf(userCoin) < 0) {
+                    newCoins.add(userCoin);
+                }
+            }
+        });
+
+        userService.save(newCoins);
+    }
+
+    public boolean compareCoins(CoinDTO coinDTO, Long userId) {
+        List<UserCoin> userCoins = userService.getUserCoins(userId);
+
+        for (UserCoinDTO reqCoin : coinDTO.getCoins()) {
+            for (UserCoin userCoin : userCoins) {
+                if (reqCoin.getCode().equalsIgnoreCase(userCoin.getCoin().getCode())) {
+                    if (!reqCoin.getAddress().equalsIgnoreCase(userCoin.getAddress())) {
+                        return false;
+                    }
+                }
+            }
+        }
+
+        return true;
+    }
+
     public enum CoinEnum {
         BTC {
             @Override
             public BigDecimal getPrice() {
-                return Util.convert(binanceRest.getPrice("BTCUSDT").getPrice());
+                return getBinancePriceBySymbol("BTCUSDT");
             }
 
             @Override
@@ -195,7 +292,7 @@ public class CoinService {
         ETH {
             @Override
             public BigDecimal getPrice() {
-                return Util.convert(binanceRest.getPrice("ETHUSDT").getPrice());
+                return getBinancePriceBySymbol("ETHUSDT");
             }
 
             @Override
@@ -302,7 +399,7 @@ public class CoinService {
         BCH {
             @Override
             public BigDecimal getPrice() {
-                return Util.convert(binanceRest.getPrice("BCHABCUSDT").getPrice());
+                return getBinancePriceBySymbol("BCHABCUSDT");
             }
 
             @Override
@@ -405,7 +502,7 @@ public class CoinService {
         LTC {
             @Override
             public BigDecimal getPrice() {
-                return Util.convert(binanceRest.getPrice("LTCUSDT").getPrice());
+                return getBinancePriceBySymbol("LTCUSDT");
             }
 
             @Override
@@ -508,7 +605,7 @@ public class CoinService {
         BNB {
             @Override
             public BigDecimal getPrice() {
-                return Util.convert(binanceRest.getPrice("BNBUSDT").getPrice());
+                return getBinancePriceBySymbol("BNBUSDT");
             }
 
             @Override
@@ -612,7 +709,7 @@ public class CoinService {
         XRP {
             @Override
             public BigDecimal getPrice() {
-                return Util.convert(binanceRest.getPrice("XRPUSDT").getPrice());
+                return getBinancePriceBySymbol("XRPUSDT");
             }
 
             @Override
@@ -724,7 +821,7 @@ public class CoinService {
         TRX {
             @Override
             public BigDecimal getPrice() {
-                return Util.convert(binanceRest.getPrice("TRXUSDT").getPrice());
+                return getBinancePriceBySymbol("TRXUSDT");
             }
 
             @Override
@@ -862,90 +959,5 @@ public class CoinService {
         public abstract BigDecimal getTransactionTolerance();
 
         public abstract Integer getScale();
-    }
-
-    public BalanceDTO getCoinsBalance(Long userId, List<String> coins) {
-        List<UserCoin> userCoins = userService.getUserCoins(userId);
-
-        List<CompletableFuture<CoinBalanceDTO>> futures = userCoins.stream()
-                .filter(it -> coins.contains(it.getCoin().getCode()))
-                .map(dto -> callAsync(dto))
-                .collect(Collectors.toList());
-
-        List<CoinBalanceDTO> balances = futures.stream()
-                .map(CompletableFuture::join)
-                .sorted(Comparator.comparing(CoinBalanceDTO::getId))
-                .collect(Collectors.toList());
-
-        BigDecimal totalBalance = Util.format2(balances.stream()
-                .map(it -> it.getPrice().getUsd().multiply(it.getBalance()))
-                .reduce(BigDecimal.ZERO, BigDecimal::add));
-
-        return new BalanceDTO(userId, new AmountDTO(totalBalance), balances);
-    }
-
-    public FeeDTO getCoinsFee() {
-        List<CoinFeeDTO> feeList = new ArrayList<>();
-
-        coinList.forEach(e -> {
-            if (CoinEnum.ETH.name().equalsIgnoreCase(e.getCode())) {
-                feeList.add(new CoinFeeDTO(e.getCode(), null, Constant.GAS_PRICE, Constant.GAS_LIMIT));
-            } else {
-                feeList.add(new CoinFeeDTO(e.getCode(), e.getFee().stripTrailingZeros(), null, null));
-            }
-        });
-
-        return new FeeDTO(feeList);
-    }
-
-    private CompletableFuture<CoinBalanceDTO> callAsync(UserCoin userCoin) {
-        return CompletableFuture.supplyAsync(() -> {
-            CoinEnum coinEnum = CoinEnum.valueOf(userCoin.getCoin().getCode());
-
-            BigDecimal coinPrice = coinEnum.getPrice();
-            BigDecimal coinBalance = coinEnum.getBalance(userCoin.getAddress());
-
-            return new CoinBalanceDTO(userCoin.getCoin().getId(), userCoin.getCoin().getCode(), userCoin.getAddress(), coinBalance, new AmountDTO(coinPrice));
-        });
-    }
-
-    public Coin getCoin(String coinCode) {
-        return coinList.stream().filter(e -> e.getCode().equalsIgnoreCase(coinCode)).findFirst().get();
-    }
-
-    public void save(CoinDTO coinVM, Long userId) {
-        User user = userService.findById(userId);
-        List<UserCoin> userCoins = userService.getUserCoins(userId);
-
-        List<UserCoin> newCoins = new ArrayList<>();
-        coinVM.getCoins().stream().forEach(coinDTO -> {
-            Coin coin = getCoin(coinDTO.getCode());
-
-            if (coin != null) {
-                UserCoin userCoin = new UserCoin(user, coin, coinDTO.getAddress());
-
-                if (userCoins.indexOf(userCoin) < 0) {
-                    newCoins.add(userCoin);
-                }
-            }
-        });
-
-        userService.save(newCoins);
-    }
-
-    public boolean compareCoins(CoinDTO coinDTO, Long userId) {
-        List<UserCoin> userCoins = userService.getUserCoins(userId);
-
-        for (UserCoinDTO reqCoin : coinDTO.getCoins()) {
-            for (UserCoin userCoin : userCoins) {
-                if (reqCoin.getCode().equalsIgnoreCase(userCoin.getCoin().getCode())) {
-                    if (!reqCoin.getAddress().equalsIgnoreCase(userCoin.getAddress())) {
-                        return false;
-                    }
-                }
-            }
-        }
-
-        return true;
     }
 }

@@ -1,7 +1,13 @@
 package com.batm.rest;
 
+import java.util.Arrays;
 import java.util.List;
+
+import com.batm.dto.ChartDTO;
+import com.batm.dto.ChartPriceDTO;
+import com.batm.dto.CoinBalanceDTO;
 import com.batm.model.Error;
+import com.batm.service.SolrService;
 import com.batm.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +24,8 @@ public class CoinController {
 
     @Autowired
     private CoinService coinService;
+    @Autowired
+    private SolrService solrService;
 
     @PostMapping("/user/{userId}/coins/add")
     public Response addCoins(@RequestBody CoinDTO coinDTO, @PathVariable Long userId) {
@@ -77,6 +85,32 @@ public class CoinController {
     public Response getCoinAddressByUserPhone(@PathVariable String userId, @PathVariable CoinService.CoinEnum coinCode, @RequestParam String phone) {
         try {
             return Response.ok(userService.getUserGiftAddress(coinCode, phone));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Response.serverError();
+        }
+    }
+
+    @GetMapping("/user/{userId}/coins/{coinCode}/price-chart")
+    public Response getPriceChart(@PathVariable Long userId, @PathVariable CoinService.CoinEnum coinCode) {
+        try {
+            CoinBalanceDTO coinBalanceDTO = coinService.getCoinsBalance(userId, Arrays.asList(coinCode.name())).getCoins().get(0);
+            return Response.ok(ChartPriceDTO.builder()
+                    .price(coinBalanceDTO.getPrice().getUsd())
+                    .balance(coinBalanceDTO.getBalance())
+                    .chart(solrService.collectPriceChartData(coinCode, coinBalanceDTO.getPrice().getUsd()))
+                    .build());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Response.serverError();
+        }
+    }
+
+    @DeleteMapping("/coins/price-chart")
+    public Response getPriceChart() {
+        try {
+            solrService.cleanAllCoinPrice();
+            return Response.ok("OK");
         } catch (Exception e) {
             e.printStackTrace();
             return Response.serverError();
