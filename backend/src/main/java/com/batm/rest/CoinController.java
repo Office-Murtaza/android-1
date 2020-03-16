@@ -1,6 +1,11 @@
 package com.batm.rest;
 
+import java.util.Arrays;
 import java.util.List;
+
+import com.batm.dto.ChartDTO;
+import com.batm.dto.ChartPriceDTO;
+import com.batm.dto.CoinBalanceDTO;
 import com.batm.model.Error;
 import com.batm.service.SolrService;
 import com.batm.service.UserService;
@@ -86,10 +91,15 @@ public class CoinController {
         }
     }
 
-    @GetMapping("/coins/{coinCode}/price-chart")
-    public Response getPriceChart(@PathVariable CoinService.CoinEnum coinCode) {
+    @GetMapping("/user/{userId}/coins/{coinCode}/price-chart")
+    public Response getPriceChart(@PathVariable Long userId, @PathVariable CoinService.CoinEnum coinCode) {
         try {
-            return Response.ok(solrService.collectPriceChartData(coinCode));
+            CoinBalanceDTO coinBalanceDTO = coinService.getCoinsBalance(userId, Arrays.asList(coinCode.name())).getCoins().get(0);
+            return Response.ok(ChartPriceDTO.builder()
+                    .price(coinBalanceDTO.getPrice().getUsd())
+                    .balance(coinBalanceDTO.getBalance())
+                    .chart(solrService.collectPriceChartData(coinCode, coinBalanceDTO.getPrice().getUsd()))
+                    .build());
         } catch (Exception e) {
             e.printStackTrace();
             return Response.serverError();

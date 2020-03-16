@@ -64,7 +64,7 @@ public class BinanceService {
     @Value("${bnb.explorer.url}")
     private String explorerUrl;
 
-    @Scheduled(fixedDelay = 600_000) //10 min
+    @Scheduled(cron = "0 0 0/1 * * *") // every 1 hour
     public void processCronTasks() {
         System.out.println("Processing collecting prices for coins..");
         Arrays.stream(CoinService.CoinEnum.values()).forEach(coinEnum -> {
@@ -73,14 +73,14 @@ public class BinanceService {
             //save price to Solr
             CoinPrice coinPrice = new CoinPrice();
             coinPrice.setCoinCode(coinEnum.name());
-            coinPrice.setPrice(currentPrice);
+            coinPrice.setPrice(currentPrice.toPlainString());
             coinPrice.setDate(new Date()); // TODO try default solr date value
             coinPriceRepository.save(coinPrice);
         });
         System.out.println("Processing collecting prices for coins done.");
     }
 
-    @Cacheable(key = "symbol")
+    @Cacheable(cacheNames = {"price"}, key = "symbol")
     public BigDecimal getBinancePriceBySymbol(String symbol) {
         return Util.convert(binanceRest.getPrice(symbol).getPrice());
     }

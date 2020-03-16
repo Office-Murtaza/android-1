@@ -25,7 +25,7 @@ public class CoinPrice {
     private String coinCode;
 
     @Indexed(name = "price", type = "pdouble")
-    private BigDecimal price;
+    private String price;
 
     @Indexed(name = "date", type = "pdate", defaultValue = "NOW")
     private Date date;
