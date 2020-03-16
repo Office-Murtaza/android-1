@@ -160,4 +160,7 @@ dependencies {
 
     //Image picker
     implementation 'com.kroegerama:bottomsheet-imagepicker:1.1.2'
+
+    //Charts
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
 }

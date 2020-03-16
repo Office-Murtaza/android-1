@@ -8,48 +8,138 @@ import android.view.MenuItem
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
+import androidx.core.content.ContextCompat
 import com.app.belcobtm.R
 import com.app.belcobtm.api.model.response.CoinModel
 import com.app.belcobtm.mvp.BaseMvpActivity
+import com.app.belcobtm.presentation.core.QRUtils.Companion.getSpacelessQR
+import com.app.belcobtm.presentation.core.extensions.setDrawableStart
+import com.app.belcobtm.presentation.core.helper.AlertHelper
 import com.app.belcobtm.ui.main.coins.sell.SellActivity
 import com.app.belcobtm.ui.main.coins.send_gift.SendGiftActivity
 import com.app.belcobtm.ui.main.coins.withdraw.WithdrawActivity
-import com.app.belcobtm.presentation.core.QRUtils.Companion.getSpacelessQR
-import com.app.belcobtm.presentation.core.helper.AlertHelper
+import com.github.mikephil.charting.data.BarEntry
+import com.github.mikephil.charting.data.LineData
+import com.github.mikephil.charting.data.LineDataSet
 import kotlinx.android.synthetic.main.activity_show_phone.container
 import kotlinx.android.synthetic.main.activity_show_phone.toolbar
 import kotlinx.android.synthetic.main.activity_transactions.*
 import org.parceler.Parcels
 
-class TransactionsActivity :
-    BaseMvpActivity<TransactionsContract.View, TransactionsContract.Presenter>(),
+class TransactionsActivity : BaseMvpActivity<TransactionsContract.View, TransactionsContract.Presenter>(),
     TransactionsContract.View {
-
-    companion object {
-        private const val KEY_COIN = "KEY_COIN"
-
-        @JvmStatic
-        fun start(context: Context?, coin: CoinModel) {
-            val intent = Intent(context, TransactionsActivity::class.java)
-            intent.putExtra(KEY_COIN, Parcels.wrap(coin))
-            context?.startActivity(intent)
-        }
-    }
-
     private lateinit var mCoin: CoinModel
     private lateinit var mAdapter: TransactionsAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_transactions)
+        mCoin = Parcels.unwrap(intent.getParcelableExtra(KEY_COIN))
+        mPresenter.coinId = mCoin.coinId
+        initViews()
+        initListeners()
+    }
+
+    override fun onStart() {
+        super.onStart()
+        showProgress(true)
+        mPresenter.getFirstTransactions()
+    }
+
+    override fun setChanges(changes: Double) {
+        if (changes >= 0) {
+            changesView.setDrawableStart(R.drawable.ic_arrow_drop_up)
+            changesView.compoundDrawableTintList =
+                ContextCompat.getColorStateList(changesView.context, R.color.chart_changes_up)
+            changesView.setTextColor(ContextCompat.getColor(changesView.context, R.color.chart_changes_up))
+        } else {
+            changesView.setDrawableStart(R.drawable.ic_arrow_drop_down)
+            changesView.compoundDrawableTintList =
+                ContextCompat.getColorStateList(changesView.context, R.color.chart_changes_down)
+            changesView.setTextColor(ContextCompat.getColor(changesView.context, R.color.chart_changes_down))
+        }
+        changesView.text = changes.toString()
+    }
+
+    override fun setChart(chartType: ChartPeriodType, chartList: List<Double>) {
+        when (chartType) {
+            ChartPeriodType.DAY -> oneDayButtonView.isChecked = true
+            ChartPeriodType.WEEK -> oneWeekButtonView.isChecked = true
+            ChartPeriodType.MONTH -> oneMonthButtonView.isChecked = true
+            ChartPeriodType.THREE_MONTHS -> threeMonthsButtonView.isChecked = true
+            ChartPeriodType.YEAR -> oneYearButtonView.isChecked = true
+        }
+
+        val valueList = chartList.mapIndexed { index, value -> BarEntry(index.toFloat(), value.toFloat()) }
+        val dataSet = LineDataSet(valueList, null).apply {
+            mode = LineDataSet.Mode.CUBIC_BEZIER
+            color = ContextCompat.getColor(chartView.context, R.color.chart_line)
+            setCircleColors(
+                chartList.mapIndexed { index, _ ->
+                    if (index == chartList.lastIndex) R.color.chart_point else android.R.color.transparent
+                }.toIntArray(),
+                chartView.context
+            )
+            setDrawCircleHole(false)
+            circleRadius = 3f
+            setDrawValues(false)
+        }
+
+        chartView.data = LineData(dataSet)
+        chartView.invalidate()
+    }
+
+    private fun initViews() {
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)
+        supportActionBar?.title = mCoin.fullCoinName
 
-        mCoin = Parcels.unwrap(intent.getParcelableExtra(KEY_COIN))
+        mAdapter = TransactionsAdapter(mPresenter.transactionList, mCoin) {
+            mPresenter.getTransactions()
+        }
+        transaction_recycler.adapter = mAdapter
 
-        initView()
-        mPresenter.coinId = mCoin.coinId
+        swipe_refresh.setColorSchemeColors(
+            Color.RED, Color.GREEN, Color.BLUE
+        )
+
+        priceUsdView.text = "${mCoin.price.uSD} USD"
+
+        val balance = if (mCoin.balance > 0)
+            String.format("%.6f", mCoin.balance).trimEnd('0')
+        else "0"
+
+        balanceCryptoView.text = "$balance ${mCoin.coinId}"
+
+        val amountUsd = mCoin.balance * mCoin.price.uSD
+        balanceUsdView.text = "${String.format("%.2f", amountUsd)} USD"
+
+        initChart()
+    }
+
+    private fun initChart() {
+        with(chartView) {
+            isDragEnabled = false
+            isAutoScaleMinMaxEnabled = true
+            isHighlightPerTapEnabled = false
+            xAxis.isEnabled = false
+            axisLeft.isEnabled = false
+            axisRight.isEnabled = false
+            legend.isEnabled = false
+            description.isEnabled = false
+            extraRightOffset = dpToPx(CHART_MARGIN_END_DP)
+            minOffset = 0f
+            setScaleEnabled(false)
+        }
+    }
+
+    private fun initListeners() {
+        oneDayButtonView.setOnClickListener { mPresenter.chartButtonClicked(ChartPeriodType.DAY) }
+        oneWeekButtonView.setOnClickListener { mPresenter.chartButtonClicked(ChartPeriodType.WEEK) }
+        oneMonthButtonView.setOnClickListener { mPresenter.chartButtonClicked(ChartPeriodType.MONTH) }
+        threeMonthsButtonView.setOnClickListener { mPresenter.chartButtonClicked(ChartPeriodType.THREE_MONTHS) }
+        oneYearButtonView.setOnClickListener { mPresenter.chartButtonClicked(ChartPeriodType.YEAR) }
 
         swipe_refresh.setOnRefreshListener { mPresenter.getFirstTransactions() }
         deposit.setOnClickListener { showDepositDialog() }
@@ -96,38 +186,6 @@ class TransactionsActivity :
                 showMessage("In progress. Only BTC, BCH, XRP, ETH, BNB and LTC withdraw available")
             }
         }
-
-    }
-
-    override fun onStart() {
-        super.onStart()
-        showProgress(true)
-        mPresenter.getFirstTransactions()
-    }
-
-
-    private fun initView() {
-        supportActionBar?.title = mCoin.fullCoinName
-
-        mAdapter = TransactionsAdapter(mPresenter.transactionList, mCoin) {
-            mPresenter.getTransactions()
-        }
-        transaction_recycler.adapter = mAdapter
-
-        swipe_refresh.setColorSchemeColors(
-            Color.RED, Color.GREEN, Color.BLUE
-        )
-
-        price_usd.text = "${mCoin.price.uSD} USD"
-
-        val balance = if (mCoin.balance > 0)
-            String.format("%.6f", mCoin.balance).trimEnd('0')
-        else "0"
-
-        balance_crypto.text = "$balance ${mCoin.coinId}"
-
-        val amountUsd = mCoin.balance * mCoin.price.uSD
-        balance_usd.text = "${String.format("%.2f", amountUsd)} USD"
     }
 
 
@@ -177,6 +235,23 @@ class TransactionsActivity :
                 swipe_refresh.isRefreshing = false
 
             super.showProgress(show)
+        }
+    }
+
+    fun dpToPx(dp: Float): Float {
+        val density: Float = resources.displayMetrics.density
+        return dp.toFloat() * density
+    }
+
+    companion object {
+        private const val KEY_COIN = "KEY_COIN"
+        private const val CHART_MARGIN_END_DP = 15F
+
+        @JvmStatic
+        fun start(context: Context?, coin: CoinModel) {
+            val intent = Intent(context, TransactionsActivity::class.java)
+            intent.putExtra(KEY_COIN, Parcels.wrap(coin))
+            context?.startActivity(intent)
         }
     }
 }
