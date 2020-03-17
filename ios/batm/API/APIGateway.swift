@@ -56,6 +56,7 @@ protocol APIGateway {
   func getVerificationInfo(userId: Int) -> Single<VerificationInfo>
   func sendVerification(userId: Int, userData: VerificationUserData) -> Completable
   func sendVIPVerification(userId: Int, userData: VIPVerificationUserData) -> Completable
+  func getPriceChartData(userId: Int, type: CoinType) -> Single<PriceChartData>
 }
 
 final class APIGatewayImpl: APIGateway {
@@ -489,6 +490,19 @@ final class APIGatewayImpl: APIGateway {
         }
       }
       .toCompletable()
+  }
+  
+  func getPriceChartData(userId: Int, type: CoinType) -> Single<PriceChartData> {
+    let request = GetPriceChartDataRequest(userId: userId, coinId: type.code)
+    return api.execute(request)
+      .flatMap {
+        switch $0 {
+        case let .response(response):
+          return Single.just(response)
+        case let .error(error):
+          return Single.error(error)
+        }
+    }
   }
   
 }
