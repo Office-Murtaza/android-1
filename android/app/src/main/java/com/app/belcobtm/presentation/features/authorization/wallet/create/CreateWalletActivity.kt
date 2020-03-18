@@ -16,7 +16,6 @@ import com.google.android.material.textfield.TextInputLayout
 import kotlinx.android.synthetic.main.activity_create_wallet.*
 import org.koin.android.viewmodel.ext.android.viewModel
 
-
 class CreateWalletActivity : BaseActivity() {
     private val viewModel: CreateWalletViewModel by viewModel()
 
@@ -122,7 +121,7 @@ class CreateWalletActivity : BaseActivity() {
             .setTitle(getString(R.string.verify_sms_code))
             .setPositiveButton(R.string.next) { _, _ ->
                 val code = view.findViewById<AppCompatEditText>(R.id.sms_code).text.toString()
-                if (code.length != 4) {
+                if (code.length != SMS_CODE_LENGTH) {
                     showSmsCodeDialog(getString(R.string.error_sms_code_4_digits))
                 } else {
                     viewModel.verifySmsCode(code)
@@ -136,5 +135,6 @@ class CreateWalletActivity : BaseActivity() {
 
     companion object {
         private const val PASSWORD_MIN_LENGTH: Int = 6
+        private const val SMS_CODE_LENGTH = 4
     }
 }

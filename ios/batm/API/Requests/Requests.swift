@@ -479,3 +479,17 @@ struct SendVIPVerificationRequest: AuthorizedAPIRequest {
     ])
   }
 }
+
+struct GetPriceChartDataRequest: AuthorizedAPIRequest {
+  typealias ResponseType = APIResponse<PriceChartData>
+  typealias ResponseTrait = SingleResponseTrait
+  
+  let userId: Int
+  let coinId: String
+  
+  var path: String { return "/user/\(userId)/coins/\(coinId)/price-chart" }
+  var method: HTTPMethod { return .get }
+  var task: HTTPTask {
+    return .requestPlain
+  }
+}

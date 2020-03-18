@@ -14,7 +14,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-
 import javax.transaction.Transactional;
 import java.io.File;
 import java.io.IOException;
@@ -500,6 +499,7 @@ public class UserService {
         identityPieceDocumentRep.deleteAllByIdentityPieceIn(identityPieces);
         identityPieceSelfieRep.deleteAllByIdentityPieceIn(identityPieces);
         identityPieceRep.deleteAll(identityPieces);
+
         //revert prices
         List<Limit> limitsPerTx = user.getIdentity().getLimitCashPerTransaction().
                 stream().sorted(Comparator.comparingLong(Limit::getId))
@@ -510,6 +510,7 @@ public class UserService {
         identityRep.save(user.getIdentity());
         limitRep.deleteAll(limitsPerTx);
         limitRep.deleteAll(limitsPerDay);
+
         return true;
     }
 }

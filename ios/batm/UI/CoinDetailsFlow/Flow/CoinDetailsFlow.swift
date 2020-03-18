@@ -16,7 +16,7 @@ class CoinDetailsFlow: BaseFlow<BTMNavigationController, CoinDetailsFlowControll
   }
   
   enum Steps: Step, Equatable {
-    case coinDetails(CoinBalance)
+    case coinDetails(CoinBalance, PriceChartData)
     case transactionDetails(TransactionDetails, CoinType)
     case withdraw(BTMCoin, CoinBalance)
     case sendGift(BTMCoin, CoinBalance)
@@ -34,9 +34,10 @@ class CoinDetailsFlow: BaseFlow<BTMNavigationController, CoinDetailsFlowControll
   
   private func handleFlow(step: Steps) -> NextFlowItems {
     switch step {
-    case let .coinDetails(coinBalance):
+    case let .coinDetails(coinBalance, data):
       let module = resolver.resolve(Module<CoinDetailsModule>.self)!
       module.input.setup(with: coinBalance)
+      module.input.setup(with: data)
       return push(module.controller)
     case let .transactionDetails(details, type):
       let module = resolver.resolve(Module<TransactionDetailsModule>.self)!

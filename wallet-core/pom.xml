@@ -9,6 +9,12 @@
     <artifactId>wallet-core</artifactId>
     <version>0.12.24</version>
 
+    <properties>
+        <maven.compiler.source>1.6</maven.compiler.source>
+        <maven.compiler.target>1.6</maven.compiler.target>
+    </properties>
+
+
     <dependencies>
         <dependency>
             <groupId>io.grpc</groupId>

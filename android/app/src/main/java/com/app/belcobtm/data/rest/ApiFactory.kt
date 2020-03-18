@@ -2,6 +2,7 @@ package com.app.belcobtm.data.rest
 
 import com.app.belcobtm.data.rest.authorization.AuthApi
 import com.app.belcobtm.data.rest.interceptor.ResponseInterceptor
+import com.app.belcobtm.data.rest.settings.SettingsApi
 import com.app.belcobtm.data.shared.preferences.SharedPreferencesHelper
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import okhttp3.Interceptor
@@ -36,6 +37,7 @@ class ApiFactory(private val prefHelper: SharedPreferencesHelper) {
         .build()
 
     val authApi: AuthApi = retrofit(baseHttpClient).create(AuthApi::class.java)
+    val settingsApi: SettingsApi = retrofit(baseHttpClient).create(SettingsApi::class.java)
 
     private fun retrofit(okHttpClient: OkHttpClient): Retrofit = Retrofit.Builder()
         .client(okHttpClient)

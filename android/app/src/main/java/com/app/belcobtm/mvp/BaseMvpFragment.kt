@@ -33,7 +33,7 @@ abstract class BaseMvpFragment<in V : BaseMvpView, T : BaseMvpPresenter<V>>
     protected lateinit var mPresenter: T
 
 
-    private fun showError(error: String?, @Snackbar.Duration duration: Int) {
+    private fun showError(error: String?, duration: Int) {
         activity?.runOnUiThread {
             var _error = error
             if (_error.isNullOrEmpty()) _error = "Unknown error appeared"

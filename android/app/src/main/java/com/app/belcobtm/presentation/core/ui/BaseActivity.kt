@@ -26,12 +26,12 @@ abstract class BaseActivity : AppCompatActivity() {
         showError(getString(stringResId), Snackbar.LENGTH_SHORT)
     }
 
-    protected fun showError(error: String?, @Snackbar.Duration duration: Int) {
+    protected fun showError(error: String?, duration: Int) {
         runOnUiThread {
             var _error = error
             if (_error.isNullOrEmpty()) _error = "Unknown error appeared"
 
-            val containerView = findViewById<View>(R.id.container)
+            val containerView = findViewById<View>(android.R.id.content)
             if (containerView != null) {
                 val snackbar = Snackbar.make(containerView, _error, Snackbar.LENGTH_SHORT)
                 snackbar.view.setBackgroundColor(resources.getColor(R.color.error_color_material_light))

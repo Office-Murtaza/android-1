@@ -16,8 +16,8 @@ import kotlinx.android.synthetic.main.fragment_balance.*
 
 
 class BalanceFragment : BaseMvpFragment<BalanceContract.View, BalanceContract.Presenter>(),
-    BalanceContract.View
-    , CoinsAdapter.OnCoinClickListener {
+    BalanceContract.View,
+    CoinsAdapter.OnCoinClickListener {
 
     private lateinit var mAdapter: CoinsAdapter
 
@@ -51,7 +51,6 @@ class BalanceFragment : BaseMvpFragment<BalanceContract.View, BalanceContract.Pr
         }
     }
 
-
     override fun onStart() {
         super.onStart()
         mPresenter.requestCoins()
@@ -65,9 +64,9 @@ class BalanceFragment : BaseMvpFragment<BalanceContract.View, BalanceContract.Pr
 
     override fun showProgress(show: Boolean) {
         activity?.runOnUiThread {
-            if (!show)
+            if (!show) {
                 swipe_refresh.isRefreshing = false
-
+            }
             super.showProgress(show)
         }
     }
