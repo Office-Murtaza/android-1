@@ -39,6 +39,9 @@ interface ApiInterface {
     @GET("terminal/locations")
     fun getAtmAddress(): Observable<ServerResponse<AtmResponse>>
 
+    @GET("user/{userId}/coins/BTC/price-chart")
+    fun getChartAsync(@Path("userId") userId: String): Observable<ServerResponse<ChartResponse>>
+
     @POST("user/{userId}/password/verify")
     fun checkPass(
         @Path("userId") userId: String,

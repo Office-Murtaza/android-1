@@ -161,6 +161,9 @@
     <string name="wallet_code_clipboard">Wallet code copied to clipboard</string>
     <string name="price">Price:</string>
     <string name="balance">Balance:</string>
+    <string name="transaction_changes_percent">%1$s %%</string>
+    <string name="transaction_price_usd">%1$s USD</string>
+    <string name="transaction_crypto_balance">%1$s %2$s</string>
 
     <!--transaction status-->
     <string name="unknown">unknown</string>

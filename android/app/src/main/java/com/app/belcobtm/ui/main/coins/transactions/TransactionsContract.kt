@@ -12,9 +12,15 @@ object TransactionsContract {
 
         fun getTransactions()
         fun getFirstTransactions()
+        fun chartViewInitialized()
+        fun chartButtonClicked(chartType: ChartPeriodType)
     }
 
     interface View : BaseMvpView {
         fun notifyTransactions()
+        fun setPrice(price: Double)
+        fun setBalance(balance: Double)
+        fun setChanges(changes: Double)
+        fun setChart(chartType: ChartPeriodType, chartList: List<Double>)
     }
 }

@@ -39,4 +39,9 @@
     <color name="verification_status_vip_verification_pending">#ffa32b</color>
     <color name="verification_status_vip_verification_rejected">#a17e55</color>
     <color name="verification_status_vip_verified">#0073e4</color>
+
+    <color name="chart_line">#a2c6fd</color>
+    <color name="chart_point">#84b4fd</color>
+    <color name="chart_changes_up">#48be53</color>
+    <color name="chart_changes_down">#e02d2d</color>
 </resources>
