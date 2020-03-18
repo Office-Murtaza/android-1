@@ -9,6 +9,16 @@ import com.app.belcobtm.presentation.core.pref
 
 class TransactionsPresenter : BaseMvpDIPresenterImpl<TransactionsContract.View, CoinsDataManager>(),
     TransactionsContract.Presenter {
+
+    private var balance: Double = 0.0
+    private var price: Double = 0.0
+    private var chartDay: Pair<Double, List<Double>> = Pair(0.0, emptyList())
+    private var chartWeek: Pair<Double, List<Double>> = Pair(0.0, emptyList())
+    private var chartMonth: Pair<Double, List<Double>> = Pair(0.0, emptyList())
+    private var chartThreeMonths: Pair<Double, List<Double>> = Pair(0.0, emptyList())
+    private var chartYear: Pair<Double, List<Double>> = Pair(0.0, emptyList())
+    private var currentChartPeriodType = ChartPeriodType.DAY
+
     override fun injectDependency() {
         presenterComponent.inject(this)
     }
@@ -16,11 +26,6 @@ class TransactionsPresenter : BaseMvpDIPresenterImpl<TransactionsContract.View, 
     override val transactionList: ArrayList<TransactionModel> = arrayListOf()
     override var coinId: String = ""
     private var mTotalTransactions: Int = -1
-
-    override fun getFirstTransactions() {
-        transactionList.clear()
-        getTransactions()
-    }
 
     override fun getTransactions() {
 
@@ -38,40 +43,60 @@ class TransactionsPresenter : BaseMvpDIPresenterImpl<TransactionsContract.View, 
                     transactionList.addAll(response.value!!.transactions)
                 }
                 mView?.notifyTransactions()
-
-
-                mView?.setChart(ChartPeriodType.DAY, day)
-                mView?.setChanges(changesPositive)
             },
             { error ->
                 checkError(error)
             })
     }
 
+    override fun getFirstTransactions() {
+        transactionList.clear()
+        getTransactions()
+    }
+
+    override fun chartViewInitialized() {
+        val userId = App.appContext().pref.getUserId().toString()
+        mDataManager.getChart(userId).subscribe(
+            {
+                val chart = it.value?.chart
+                balance = it.value?.balance ?: 0.0
+                price = it.value?.price ?: 0.0
+                chartDay = Pair(chart?.day?.changes ?: 0.0, chart?.day?.prices ?: emptyList())
+                chartWeek = Pair(chart?.week?.changes ?: 0.0, chart?.week?.prices ?: emptyList())
+                chartMonth = Pair(chart?.month?.changes ?: 0.0, chart?.month?.prices ?: emptyList())
+                chartThreeMonths = Pair(chart?.threeMonths?.changes ?: 0.0, chart?.threeMonths?.prices ?: emptyList())
+                chartYear = Pair(chart?.year?.changes ?: 0.0, chart?.year?.prices ?: emptyList())
+
+                mView?.setBalance(balance)
+                mView?.setPrice(price)
+                updateChartByPeriod(currentChartPeriodType)
+            },
+            { checkError(it) }
+        )
+    }
+
     override fun chartButtonClicked(chartType: ChartPeriodType) {
+        updateChartByPeriod(chartType)
+    }
+
+    private fun updateChartByPeriod(chartType: ChartPeriodType) {
+        currentChartPeriodType = chartType
         when (chartType) {
-            ChartPeriodType.DAY -> mView?.setChart(chartType, day)
-            ChartPeriodType.WEEK -> mView?.setChart(chartType, week)
-            ChartPeriodType.MONTH -> mView?.setChart(chartType, month)
-            ChartPeriodType.THREE_MONTHS -> mView?.setChart(chartType, threeMonths)
-            ChartPeriodType.YEAR -> mView?.setChart(chartType, year)
+            ChartPeriodType.DAY -> mView?.setChart(chartType, chartDay.second)
+            ChartPeriodType.WEEK -> mView?.setChart(chartType, chartWeek.second)
+            ChartPeriodType.MONTH -> mView?.setChart(chartType, chartMonth.second)
+            ChartPeriodType.THREE_MONTHS -> mView?.setChart(chartType, chartThreeMonths.second)
+            ChartPeriodType.YEAR -> mView?.setChart(chartType, chartYear.second)
         }
 
         when (chartType) {
-            ChartPeriodType.DAY -> mView?.setChanges(changesPositive)
-            ChartPeriodType.WEEK -> mView?.setChanges(changesNegative)
-            ChartPeriodType.MONTH -> mView?.setChanges(changesNegative)
-            ChartPeriodType.THREE_MONTHS -> mView?.setChanges(changesPositive)
-            ChartPeriodType.YEAR -> mView?.setChanges(changesNegative)
+            ChartPeriodType.DAY -> mView?.setChanges(chartDay.first)
+            ChartPeriodType.WEEK -> mView?.setChanges(chartWeek.first)
+            ChartPeriodType.MONTH -> mView?.setChanges(chartMonth.first)
+            ChartPeriodType.THREE_MONTHS -> mView?.setChanges(chartThreeMonths.first)
+            ChartPeriodType.YEAR -> mView?.setChanges(chartYear.first)
         }
     }
 
-    val day: List<Double> = listOf(995.0, 997.0, 1004.0, 1002.0, 1010.0, 1000.0, 990.0)
-    val week: List<Double> = listOf(999.0, 1005.0, 990.0, 995.0, 1004.0, 1002.0, 1010.0)
-    val month: List<Double> = listOf(995.0, 997.0, 1004.0, 1002.0, 1010.0, 1000.0, 990.0)
-    val threeMonths: List<Double> = listOf(999.0, 990.0, 995.0, 997.0, 1002.0, 1010.0, 990.0)
-    val year: List<Double> = listOf(1000.0, 999.0, 1005.0, 990.0, 995.0, 997.0)
 
-    val changesPositive = 2.13
-    val changesNegative = -10.44
 }

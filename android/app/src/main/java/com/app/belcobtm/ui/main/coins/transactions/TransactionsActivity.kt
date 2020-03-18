@@ -46,6 +46,16 @@ class TransactionsActivity : BaseMvpActivity<TransactionsContract.View, Transact
         mPresenter.getFirstTransactions()
     }
 
+    override fun setPrice(price: Double) {
+        val convertedPrice = if (price > 0) String.format("%.2f", price).trimEnd('0') else "0"
+        priceUsdView.text = getString(R.string.transaction_price_usd, convertedPrice)
+    }
+
+    override fun setBalance(balance: Double) {
+        val convertedBalance = if (balance > 0) String.format("%.6f", balance).trimEnd('0') else "0"
+        balanceCryptoView.text = getString(R.string.transaction_crypto_balance, convertedBalance, mCoin.coinId)
+    }
+
     override fun setChanges(changes: Double) {
         if (changes >= 0) {
             changesView.setDrawableStart(R.drawable.ic_arrow_drop_up)
@@ -58,7 +68,8 @@ class TransactionsActivity : BaseMvpActivity<TransactionsContract.View, Transact
                 ContextCompat.getColorStateList(changesView.context, R.color.chart_changes_down)
             changesView.setTextColor(ContextCompat.getColor(changesView.context, R.color.chart_changes_down))
         }
-        changesView.text = changes.toString()
+
+        changesView.text = resources.getString(R.string.transaction_changes_percent, changes.toString())
     }
 
     override fun setChart(chartType: ChartPeriodType, chartList: List<Double>) {
@@ -104,14 +115,6 @@ class TransactionsActivity : BaseMvpActivity<TransactionsContract.View, Transact
             Color.RED, Color.GREEN, Color.BLUE
         )
 
-        priceUsdView.text = "${mCoin.price.uSD} USD"
-
-        val balance = if (mCoin.balance > 0)
-            String.format("%.6f", mCoin.balance).trimEnd('0')
-        else "0"
-
-        balanceCryptoView.text = "$balance ${mCoin.coinId}"
-
         val amountUsd = mCoin.balance * mCoin.price.uSD
         balanceUsdView.text = "${String.format("%.2f", amountUsd)} USD"
 
@@ -132,6 +135,8 @@ class TransactionsActivity : BaseMvpActivity<TransactionsContract.View, Transact
             minOffset = 0f
             setScaleEnabled(false)
         }
+
+        mPresenter.chartViewInitialized()
     }
 
     private fun initListeners() {
