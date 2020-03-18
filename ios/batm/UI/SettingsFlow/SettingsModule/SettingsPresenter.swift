@@ -8,7 +8,7 @@ class SettingsPresenter: ModulePresenter, SettingsModule {
     var select: Driver<IndexPath>
   }
   
-  let typesRelay = BehaviorRelay<[SettingsCellType]>(value: [.phone, .changePassword, .changePin, .showSeedPhrase, .unlink])
+  let types = SettingsCellType.allCases
   private let usecase: SettingsUsecase
   
   weak var delegate: SettingsModuleDelegate?
@@ -20,12 +20,13 @@ class SettingsPresenter: ModulePresenter, SettingsModule {
   func bind(input: Input) {
     input.select
       .asObservable()
-      .withLatestFrom(typesRelay) { $1[$0.item] }
+      .map { [types] in types[$0.item] }
       .subscribe(onNext: { [unowned self, delegate] in
         switch $0 {
         case .phone: self.fetchPhoneNumber()
         case .changePassword: delegate?.didSelectChangePassword()
         case .changePin: delegate?.didSelectChangePin()
+        case .verification: self.fetchVerificationInfo()
         case .showSeedPhrase: delegate?.didSelectShowSeedPhrase()
         case .unlink: delegate?.didSelectUnlink()
         }
@@ -36,6 +37,12 @@ class SettingsPresenter: ModulePresenter, SettingsModule {
   private func fetchPhoneNumber() {
     track(usecase.getPhoneNumber())
       .drive(onNext: { [delegate] in delegate?.didSelectPhone($0) })
+      .disposed(by: disposeBag)
+  }
+  
+  private func fetchVerificationInfo() {
+    track(usecase.getVerificationInfo())
+      .drive(onNext: { [delegate] in delegate?.didSelectVerification($0) })
       .disposed(by: disposeBag)
   }
 }

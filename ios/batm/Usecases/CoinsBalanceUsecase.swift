@@ -1,8 +1,10 @@
 import Foundation
 import RxSwift
+import TrustWalletCore
 
 protocol CoinsBalanceUsecase {
   func getCoinsBalance() -> Single<CoinsBalance>
+  func getPriceChartData(for type: CoinType) -> Single<PriceChartData>
 }
 
 class CoinsBalanceUsecaseImpl: CoinsBalanceUsecase, HasDisposeBag {
@@ -55,6 +57,11 @@ class CoinsBalanceUsecaseImpl: CoinsBalanceUsecase, HasDisposeBag {
       .flatMap { [walletStorage] in walletStorage.changeIndex(of: $0, with: $1) }
       .subscribe()
       .disposed(by: disposeBag)
+  }
+  
+  func getPriceChartData(for type: CoinType) -> Single<PriceChartData> {
+    return accountStorage.get()
+      .flatMap { [api] in api.getPriceChartData(userId: $0.userId, type: type) }
   }
   
 }

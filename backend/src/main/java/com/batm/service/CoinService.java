@@ -7,14 +7,16 @@ import com.batm.model.TransactionType;
 import com.batm.repository.CoinRep;
 import com.batm.util.Constant;
 import com.batm.util.Util;
-import com.binance.api.client.BinanceApiRestClient;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import wallet.core.jni.CoinType;
 import java.math.BigDecimal;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -25,7 +27,6 @@ public class CoinService {
     private static List<Coin> coinList;
     private static Map<String, Coin> coinMap;
 
-    private static BinanceApiRestClient binanceRest;
     private static WalletService walletService;
     private static UserService userService;
 
@@ -44,8 +45,7 @@ public class CoinService {
     private static String bchExplorerUrl;
     private static String ltcExplorerUrl;
 
-    public CoinService(@Autowired final BinanceApiRestClient binanceRest,
-                       @Autowired final WalletService walletService,
+    public CoinService(@Autowired final WalletService walletService,
                        @Autowired final UserService userService,
 
                        @Autowired final CoinRep coinRep,
@@ -65,7 +65,6 @@ public class CoinService {
                        @Value("${bch.explorer.url}") final String bchExplorerUrl,
                        @Value("${ltc.explorer.url}") final String ltcExplorerUrl) {
 
-        CoinService.binanceRest = binanceRest;
         CoinService.walletService = walletService;
         CoinService.userService = userService;
 
@@ -88,759 +87,8 @@ public class CoinService {
         CoinService.ltcExplorerUrl = ltcExplorerUrl;
     }
 
-    public enum CoinEnum {
-        BTC {
-            @Override
-            public BigDecimal getPrice() {
-                return Util.convert(binanceRest.getPrice("BTCUSDT").getPrice());
-            }
-
-            @Override
-            public BigDecimal getBalance(String address) {
-                return blockbook.getBalance(btcNodeUrl, address, Constant.BTC_DIVIDER);
-            }
-
-            @Override
-            public String getName() {
-                return "bitcoin";
-            }
-
-            @Override
-            public TransactionNumberDTO getTransactionNumber(String address, BigDecimal amount, TransactionType type) {
-                return blockbook.getTransactionNumber(btcNodeUrl, address, amount, Constant.BTC_DIVIDER, type);
-            }
-
-            @Override
-            public TransactionStatus getTransactionStatus(String txId) {
-                return blockbook.getTransactionStatus(btcNodeUrl, txId);
-            }
-
-            @Override
-            public TransactionDTO getTransaction(String txId, String address) {
-                return blockbook.getTransaction(btcNodeUrl, btcExplorerUrl, txId, address, Constant.BTC_DIVIDER);
-            }
-
-            @Override
-            public TransactionListDTO getTransactionList(String address, Integer startIndex, Integer limit, List<TransactionRecordGift> gifts, List<TransactionRecord> txs) {
-                return blockbook.getTransactionList(btcNodeUrl, address, Constant.BTC_DIVIDER, startIndex, limit, gifts, txs);
-            }
-
-            @Override
-            public UtxoDTO getUTXO(String xpub) {
-                return blockbook.getUTXO(btcNodeUrl, xpub);
-            }
-
-            @Override
-            public NonceDTO getNonce(Long userId) {
-                return null;
-            }
-
-            @Override
-            public CurrentAccountDTO getCurrentAccount(Long userId) {
-                return null;
-            }
-
-            @Override
-            public CurrentBlockDTO getCurrentBlock() {
-                return null;
-            }
-
-            @Override
-            public String getWalletAddress() {
-                return walletService.getAddressBTC();
-            }
-
-            @Override
-            public String sign(String toAddress, BigDecimal amount, SignDTO dto) {
-                List<JSONObject> utxos = getUTXO(walletService.getXPUB(CoinType.BITCOIN)).getUtxos();
-
-                return blockbook.signBTCForks(getCoinType(), dto.getFromAddress(), toAddress, amount, getCoinEntity().getFee(), Constant.BTC_DIVIDER, utxos);
-            }
-
-            @Override
-            public String submitTransaction(String hex) {
-                return blockbook.submitTransaction(btcNodeUrl, hex);
-            }
-
-            @Override
-            public CoinType getCoinType() {
-                return CoinType.BITCOIN;
-            }
-
-            @Override
-            public BlockchainTransactionsDTO getBlockchainTransactions(String address) {
-                return blockbook.getBlockchainTransactions(btcNodeUrl, address, Constant.BTC_DIVIDER);
-            }
-
-            @Override
-            public Coin getCoinEntity() {
-                return coinMap.get(name());
-            }
-
-            @Override
-            public SignDTO buildSignDTOFromMainWallet() {
-                SignDTO dto = new SignDTO();
-                dto.setFromAddress(walletService.getAddressBTC());
-
-                return dto;
-            }
-
-            @Override
-            public BigDecimal getTransactionFee() {
-                return getCoinEntity().getFee().multiply(BigDecimal.valueOf(1000));
-            }
-        },
-        ETH {
-            @Override
-            public BigDecimal getPrice() {
-                return Util.convert(binanceRest.getPrice("ETHUSDT").getPrice());
-            }
-
-            @Override
-            public BigDecimal getBalance(String address) {
-                return blockbook.getBalance(ethNodeUrl, address, Constant.ETH_DIVIDER);
-            }
-
-            @Override
-            public String getName() {
-                return "ethereum";
-            }
-
-            @Override
-            public TransactionNumberDTO getTransactionNumber(String address, BigDecimal amount, TransactionType type) {
-                return blockbook.getTransactionNumber(ethNodeUrl, address, amount, Constant.ETH_DIVIDER, type);
-            }
-
-            @Override
-            public TransactionStatus getTransactionStatus(String txId) {
-                return blockbook.getTransactionStatus(ethNodeUrl, txId);
-            }
-
-            @Override
-            public TransactionDTO getTransaction(String txId, String address) {
-                return blockbook.getTransaction(ethNodeUrl, ethExplorerUrl, txId, address, Constant.ETH_DIVIDER);
-            }
-
-            @Override
-            public TransactionListDTO getTransactionList(String address, Integer startIndex, Integer limit, List<TransactionRecordGift> gifts, List<TransactionRecord> txs) {
-                return blockbook.getTransactionList(ethNodeUrl, address, Constant.ETH_DIVIDER, startIndex, limit, gifts, txs);
-            }
-
-            @Override
-            public UtxoDTO getUTXO(String xpub) {
-                return null;
-            }
-
-            @Override
-            public NonceDTO getNonce(Long userId) {
-                User user = userService.findById(userId);
-                String address = user.getCoinAddress(name());
-
-                NonceDTO nonceDTO = blockbook.getNonce(ethNodeUrl, address);
-                nonceDTO.setNonce(nonceDTO.getNonce());
-
-                return nonceDTO;
-            }
-
-            @Override
-            public CurrentAccountDTO getCurrentAccount(Long userId) {
-                return null;
-            }
-
-            @Override
-            public CurrentBlockDTO getCurrentBlock() {
-                return null;
-            }
-
-            @Override
-            public String getWalletAddress() {
-                return walletService.getAddressETH();
-            }
-
-            @Override
-            public String sign(String toAddress, BigDecimal amount, SignDTO dto) {
-                return blockbook.signETH(ethNodeUrl, toAddress, amount, dto.getPrivateKey());
-            }
-
-            @Override
-            public String submitTransaction(String hex) {
-                return blockbook.submitTransaction(ethNodeUrl, hex);
-            }
-
-            @Override
-            public CoinType getCoinType() {
-                return CoinType.ETHEREUM;
-            }
-
-            @Override
-            public BlockchainTransactionsDTO getBlockchainTransactions(String address) {
-                return blockbook.getBlockchainTransactions(ethNodeUrl, address, Constant.ETH_DIVIDER);
-            }
-
-            @Override
-            public Coin getCoinEntity() {
-                return coinMap.get(name());
-            }
-
-            @Override
-            public SignDTO buildSignDTOFromMainWallet() {
-                SignDTO dto = new SignDTO();
-                dto.setPrivateKey(walletService.getPrivateKeyETH());
-
-                return dto;
-            }
-
-            @Override
-            public BigDecimal getTransactionFee() {
-                return BigDecimal.valueOf(Constant.GAS_PRICE).multiply(BigDecimal.valueOf(Constant.GAS_LIMIT)).divide(Constant.ETH_DIVIDER);
-            }
-        },
-        BCH {
-            @Override
-            public BigDecimal getPrice() {
-                return Util.convert(binanceRest.getPrice("BCHABCUSDT").getPrice());
-            }
-
-            @Override
-            public BigDecimal getBalance(String address) {
-                return blockbook.getBalance(bchNodeUrl, address, Constant.BCH_DIVIDER);
-            }
-
-            @Override
-            public String getName() {
-                return "bitcoincash";
-            }
-
-            @Override
-            public TransactionNumberDTO getTransactionNumber(String address, BigDecimal amount, TransactionType type) {
-                return blockbook.getTransactionNumber(bchNodeUrl, address, amount, Constant.BCH_DIVIDER, type);
-            }
-
-            @Override
-            public TransactionStatus getTransactionStatus(String txId) {
-                return blockbook.getTransactionStatus(bchNodeUrl, txId);
-            }
-
-            @Override
-            public TransactionDTO getTransaction(String txId, String address) {
-                return blockbook.getTransaction(bchNodeUrl, bchExplorerUrl, txId, address, Constant.BCH_DIVIDER);
-            }
-
-            @Override
-            public TransactionListDTO getTransactionList(String address, Integer startIndex, Integer limit, List<TransactionRecordGift> gifts, List<TransactionRecord> txs) {
-                return blockbook.getTransactionList(bchNodeUrl, address, Constant.BCH_DIVIDER, startIndex, limit, gifts, txs);
-            }
-
-            @Override
-            public UtxoDTO getUTXO(String xpub) {
-                return blockbook.getUTXO(bchNodeUrl, xpub);
-            }
-
-            @Override
-            public NonceDTO getNonce(Long userId) {
-                return null;
-            }
-
-            @Override
-            public CurrentAccountDTO getCurrentAccount(Long userId) {
-                return null;
-            }
-
-            @Override
-            public CurrentBlockDTO getCurrentBlock() {
-                return null;
-            }
-
-            @Override
-            public String getWalletAddress() {
-                return walletService.getAddressBCH();
-            }
-
-            @Override
-            public String sign(String toAddress, BigDecimal amount, SignDTO dto) {
-                List<JSONObject> utxos = getUTXO(walletService.getXPUB(CoinType.BITCOINCASH)).getUtxos();
-
-                return blockbook.signBTCForks(getCoinType(), dto.getFromAddress(), toAddress, amount, getCoinEntity().getFee(), Constant.BCH_DIVIDER, utxos);
-            }
-
-            @Override
-            public String submitTransaction(String hex) {
-                return blockbook.submitTransaction(bchNodeUrl, hex);
-            }
-
-            @Override
-            public CoinType getCoinType() {
-                return CoinType.BITCOINCASH;
-            }
-
-            @Override
-            public BlockchainTransactionsDTO getBlockchainTransactions(String address) {
-                return blockbook.getBlockchainTransactions(bchNodeUrl, address, Constant.BCH_DIVIDER);
-            }
-
-            @Override
-            public Coin getCoinEntity() {
-                return coinMap.get(name());
-            }
-
-            @Override
-            public SignDTO buildSignDTOFromMainWallet() {
-                SignDTO dto = new SignDTO();
-                dto.setFromAddress(walletService.getAddressBCH());
-
-                return dto;
-            }
-
-            @Override
-            public BigDecimal getTransactionFee() {
-                return getCoinEntity().getFee().multiply(BigDecimal.valueOf(1000));
-            }
-        },
-        LTC {
-            @Override
-            public BigDecimal getPrice() {
-                return Util.convert(binanceRest.getPrice("LTCUSDT").getPrice());
-            }
-
-            @Override
-            public BigDecimal getBalance(String address) {
-                return blockbook.getBalance(ltcNodeUrl, address, Constant.LTC_DIVIDER);
-            }
-
-            @Override
-            public String getName() {
-                return "litecoin";
-            }
-
-            @Override
-            public TransactionNumberDTO getTransactionNumber(String address, BigDecimal amount, TransactionType type) {
-                return blockbook.getTransactionNumber(ltcNodeUrl, address, amount, Constant.LTC_DIVIDER, type);
-            }
-
-            @Override
-            public TransactionStatus getTransactionStatus(String txId) {
-                return blockbook.getTransactionStatus(ltcNodeUrl, txId);
-            }
-
-            @Override
-            public TransactionDTO getTransaction(String txId, String address) {
-                return blockbook.getTransaction(ltcNodeUrl, ltcExplorerUrl, txId, address, Constant.LTC_DIVIDER);
-            }
-
-            @Override
-            public TransactionListDTO getTransactionList(String address, Integer startIndex, Integer limit, List<TransactionRecordGift> gifts, List<TransactionRecord> txs) {
-                return blockbook.getTransactionList(ltcNodeUrl, address, Constant.LTC_DIVIDER, startIndex, limit, gifts, txs);
-            }
-
-            @Override
-            public UtxoDTO getUTXO(String xpub) {
-                return blockbook.getUTXO(ltcNodeUrl, xpub);
-            }
-
-            @Override
-            public NonceDTO getNonce(Long userId) {
-                return null;
-            }
-
-            @Override
-            public CurrentAccountDTO getCurrentAccount(Long userId) {
-                return null;
-            }
-
-            @Override
-            public CurrentBlockDTO getCurrentBlock() {
-                return null;
-            }
-
-            @Override
-            public String getWalletAddress() {
-                return walletService.getAddressLTC();
-            }
-
-            @Override
-            public String sign(String toAddress, BigDecimal amount, SignDTO dto) {
-                List<JSONObject> utxos = getUTXO(walletService.getXPUB(CoinType.LITECOIN)).getUtxos();
-
-                return blockbook.signBTCForks(getCoinType(), dto.getFromAddress(), toAddress, amount, getCoinEntity().getFee(), Constant.LTC_DIVIDER, utxos);
-            }
-
-            @Override
-            public String submitTransaction(String hex) {
-                return blockbook.submitTransaction(ltcNodeUrl, hex);
-            }
-
-            @Override
-            public CoinType getCoinType() {
-                return CoinType.LITECOIN;
-            }
-
-            @Override
-            public BlockchainTransactionsDTO getBlockchainTransactions(String address) {
-                return blockbook.getBlockchainTransactions(ltcNodeUrl, address, Constant.LTC_DIVIDER);
-            }
-
-            @Override
-            public Coin getCoinEntity() {
-                return coinMap.get(name());
-            }
-
-            @Override
-            public SignDTO buildSignDTOFromMainWallet() {
-                SignDTO dto = new SignDTO();
-                dto.setFromAddress(walletService.getAddressLTC());
-
-                return dto;
-            }
-
-            @Override
-            public BigDecimal getTransactionFee() {
-                return getCoinEntity().getFee().multiply(BigDecimal.valueOf(1000));
-            }
-        },
-        BNB {
-            @Override
-            public BigDecimal getPrice() {
-                return Util.convert(binanceRest.getPrice("BNBUSDT").getPrice());
-            }
-
-            @Override
-            public BigDecimal getBalance(String address) {
-                return binance.getBalance(address);
-            }
-
-            @Override
-            public String getName() {
-                return "binance";
-            }
-
-            @Override
-            public TransactionNumberDTO getTransactionNumber(String address, BigDecimal amount, TransactionType type) {
-                return null;
-            }
-
-            @Override
-            public TransactionStatus getTransactionStatus(String txId) {
-                return binance.getTransactionStatus(txId);
-            }
-
-            @Override
-            public TransactionDTO getTransaction(String txId, String address) {
-                return binance.getTransaction(txId, address);
-            }
-
-            @Override
-            public TransactionListDTO getTransactionList(String address, Integer startIndex, Integer limit, List<TransactionRecordGift> gifts, List<TransactionRecord> txs) {
-                return binance.getTransactionList(address, startIndex, limit, gifts, txs);
-            }
-
-            @Override
-            public UtxoDTO getUTXO(String xpub) {
-                return null;
-            }
-
-            @Override
-            public NonceDTO getNonce(Long userId) {
-                return null;
-            }
-
-            @Override
-            public CurrentAccountDTO getCurrentAccount(Long userId) {
-                User user = userService.findById(userId);
-                String address = user.getCoinAddress(name());
-
-                return binance.getCurrentAccount(address);
-            }
-
-            @Override
-            public CurrentBlockDTO getCurrentBlock() {
-                return null;
-            }
-
-            @Override
-            public String getWalletAddress() {
-                return walletService.getAddressBNB();
-            }
-
-            @Override
-            public String sign(String toAddress, BigDecimal amount, SignDTO dto) {
-                return binance.sign(toAddress, amount, dto.getPrivateKey());
-            }
-
-            @Override
-            public String submitTransaction(String hex) {
-                return binance.submitTransaction(hex);
-            }
-
-            @Override
-            public CoinType getCoinType() {
-                return CoinType.BINANCE;
-            }
-
-            @Override
-            public BlockchainTransactionsDTO getBlockchainTransactions(String address) {
-                return binance.getBlockchainTransactions(address);
-            }
-
-            @Override
-            public Coin getCoinEntity() {
-                return coinMap.get(name());
-            }
-
-            @Override
-            public SignDTO buildSignDTOFromMainWallet() {
-                SignDTO dto = new SignDTO();
-                dto.setPrivateKey(walletService.getPrivateKeyBNB());
-
-                return dto;
-            }
-
-            @Override
-            public BigDecimal getTransactionFee() {
-                return getCoinEntity().getFee();
-            }
-        },
-        XRP {
-            @Override
-            public BigDecimal getPrice() {
-                return Util.convert(binanceRest.getPrice("XRPUSDT").getPrice());
-            }
-
-            @Override
-            public BigDecimal getBalance(String address) {
-                return rippled.getBalance(address);
-            }
-
-            @Override
-            public String getName() {
-                return "ripple";
-            }
-
-            @Override
-            public TransactionNumberDTO getTransactionNumber(String address, BigDecimal amount, TransactionType type) {
-                return null;
-            }
-
-            @Override
-            public TransactionStatus getTransactionStatus(String txId) {
-                return rippled.getTransactionStatus(txId);
-            }
-
-            @Override
-            public TransactionDTO getTransaction(String txId, String address) {
-                return rippled.getTransaction(txId, address);
-            }
-
-            @Override
-            public TransactionListDTO getTransactionList(String address, Integer startIndex, Integer limit, List<TransactionRecordGift> gifts, List<TransactionRecord> txs) {
-                return rippled.getTransactionList(address, startIndex, limit, gifts, txs);
-            }
-
-            @Override
-            public UtxoDTO getUTXO(String xpub) {
-                return null;
-            }
-
-            @Override
-            public NonceDTO getNonce(Long userId) {
-                return null;
-            }
-
-            @Override
-            public CurrentAccountDTO getCurrentAccount(Long userId) {
-                User user = userService.findById(userId);
-                String address = user.getCoinAddress(name());
-
-                return rippled.getCurrentAccount(address);
-            }
-
-            @Override
-            public CurrentBlockDTO getCurrentBlock() {
-                return null;
-            }
-
-            @Override
-            public String getWalletAddress() {
-                return walletService.getAddressXRP();
-            }
-
-            @Override
-            public String sign(String toAddress, BigDecimal amount, SignDTO dto) {
-                return rippled.sign(toAddress, amount, getCoinEntity().getFee(), dto.getPublicKey(), dto.getPrivateKey());
-            }
-
-            @Override
-            public String submitTransaction(String hex) {
-                return rippled.submitTransaction(hex);
-            }
-
-            @Override
-            public CoinType getCoinType() {
-                return CoinType.XRP;
-            }
-
-            @Override
-            public BlockchainTransactionsDTO getBlockchainTransactions(String address) {
-                return rippled.getBlockchainTransactions(address);
-            }
-
-            @Override
-            public Coin getCoinEntity() {
-                return coinMap.get(name());
-            }
-
-            @Override
-            public SignDTO buildSignDTOFromMainWallet() {
-                CoinType coinType = getCoinType();
-
-                SignDTO dto = new SignDTO();
-                dto.setPublicKey(walletService.getWallet().getPublicKeyFromExtended(walletService.getXPUB(coinType), walletService.getPath(coinType)));
-                dto.setPrivateKey(walletService.getPrivateKeyXRP());
-
-                return dto;
-            }
-
-            @Override
-            public BigDecimal getTransactionFee() {
-                return getCoinEntity().getFee();
-            }
-        },
-        TRX {
-            @Override
-            public BigDecimal getPrice() {
-                return Util.convert(binanceRest.getPrice("TRXUSDT").getPrice());
-            }
-
-            @Override
-            public BigDecimal getBalance(String address) {
-                return trongrid.getBalance(address);
-            }
-
-            @Override
-            public String getName() {
-                return "tron";
-            }
-
-            @Override
-            public TransactionNumberDTO getTransactionNumber(String address, BigDecimal amount, TransactionType type) {
-                return null;
-            }
-
-            @Override
-            public TransactionStatus getTransactionStatus(String txId) {
-                return trongrid.getTransactionStatus(txId);
-            }
-
-            @Override
-            public TransactionDTO getTransaction(String txId, String address) {
-                return trongrid.getTransaction(txId, address);
-            }
-
-            @Override
-            public TransactionListDTO getTransactionList(String address, Integer startIndex, Integer limit, List<TransactionRecordGift> gifts, List<TransactionRecord> txs) {
-                return trongrid.getTransactionList(address, startIndex, limit, gifts, txs);
-            }
-
-            @Override
-            public UtxoDTO getUTXO(String xpub) {
-                return null;
-            }
-
-            @Override
-            public NonceDTO getNonce(Long userId) {
-                return null;
-            }
-
-            @Override
-            public CurrentAccountDTO getCurrentAccount(Long userId) {
-                return null;
-            }
-
-            @Override
-            public CurrentBlockDTO getCurrentBlock() {
-                return trongrid.getCurrentBlock();
-            }
-
-            @Override
-            public String getWalletAddress() {
-                return walletService.getAddressTRX();
-            }
-
-            @Override
-            public String sign(String toAddress, BigDecimal amount, SignDTO dto) {
-                return trongrid.sign(toAddress, amount, getCoinEntity().getFee(), dto.getPrivateKey()).toString();
-            }
-
-            @Override
-            public String submitTransaction(String hex) {
-                return trongrid.submitTransaction(hex);
-            }
-
-            @Override
-            public CoinType getCoinType() {
-                return CoinType.TRON;
-            }
-
-            @Override
-            public BlockchainTransactionsDTO getBlockchainTransactions(String address) {
-                return trongrid.getBlockchainTransactions(address);
-            }
-
-            @Override
-            public Coin getCoinEntity() {
-                return coinMap.get(name());
-            }
-
-            @Override
-            public SignDTO buildSignDTOFromMainWallet() {
-                SignDTO dto = new SignDTO();
-                dto.setPrivateKey(walletService.getPrivateKeyTRX());
-
-                return dto;
-            }
-
-            @Override
-            public BigDecimal getTransactionFee() {
-                return getCoinEntity().getFee();
-            }
-        };
-
-        public abstract BigDecimal getPrice();
-
-        public abstract BigDecimal getBalance(String address);
-
-        public abstract String getName();
-
-        public abstract TransactionNumberDTO getTransactionNumber(String address, BigDecimal amount, TransactionType type);
-
-        public abstract TransactionStatus getTransactionStatus(String txId);
-
-        public abstract TransactionDTO getTransaction(String txId, String address);
-
-        public abstract TransactionListDTO getTransactionList(String address, Integer startIndex, Integer limit, List<TransactionRecordGift> gifts, List<TransactionRecord> txs);
-
-        public abstract UtxoDTO getUTXO(String xpub);
-
-        public abstract NonceDTO getNonce(Long userId);
-
-        public abstract CurrentAccountDTO getCurrentAccount(Long userId);
-
-        public abstract CurrentBlockDTO getCurrentBlock();
-
-        public abstract String getWalletAddress();
-
-        public abstract String sign(String toAddress, BigDecimal amount, SignDTO dto);
-
-        public abstract String submitTransaction(String hex);
-
-        public abstract CoinType getCoinType();
-
-        public abstract BlockchainTransactionsDTO getBlockchainTransactions(String address);
-
-        public abstract Coin getCoinEntity();
-
-        public abstract SignDTO buildSignDTOFromMainWallet();
-
-        public abstract BigDecimal getTransactionFee();
+    private static BigDecimal getBinancePriceBySymbol(String symbol) {
+        return binance.getBinancePriceBySymbol(symbol);
     }
 
     public BalanceDTO getCoinsBalance(Long userId, List<String> coins) {
@@ -926,5 +174,781 @@ public class CoinService {
         }
 
         return true;
+    }
+
+    public enum CoinEnum {
+        BTC {
+            @Override
+            public BigDecimal getPrice() {
+                return getBinancePriceBySymbol("BTCUSDT");
+            }
+
+            @Override
+            public BigDecimal getBalance(String address) {
+                return blockbook.getBalance(btcNodeUrl, address, Constant.BTC_DIVIDER);
+            }
+
+            @Override
+            public String getName() {
+                return "bitcoin";
+            }
+
+            @Override
+            public TransactionNumberDTO getTransactionNumber(String address, BigDecimal amount, TransactionType type) {
+                return blockbook.getTransactionNumber(btcNodeUrl, address, amount, Constant.BTC_DIVIDER, type);
+            }
+
+            @Override
+            public TransactionStatus getTransactionStatus(String txId) {
+                return blockbook.getTransactionStatus(btcNodeUrl, txId);
+            }
+
+            @Override
+            public TransactionDTO getTransaction(String txId, String address) {
+                return blockbook.getTransaction(btcNodeUrl, btcExplorerUrl, txId, address, Constant.BTC_DIVIDER);
+            }
+
+            @Override
+            public TransactionListDTO getTransactionList(String address, Integer startIndex, Integer limit, List<TransactionRecordGift> gifts, List<TransactionRecord> txs) {
+                return blockbook.getTransactionList(btcNodeUrl, address, Constant.BTC_DIVIDER, startIndex, limit, gifts, txs);
+            }
+
+            @Override
+            public UtxoDTO getUTXO(String xpub) {
+                return blockbook.getUTXO(btcNodeUrl, xpub);
+            }
+
+            @Override
+            public NonceDTO getNonce(Long userId) {
+                return null;
+            }
+
+            @Override
+            public CurrentAccountDTO getCurrentAccount(Long userId) {
+                return null;
+            }
+
+            @Override
+            public CurrentBlockDTO getCurrentBlock() {
+                return null;
+            }
+
+            @Override
+            public String getWalletAddress() {
+                return walletService.getAddressBTC();
+            }
+
+            @Override
+            public String sign(String fromAddress, String toAddress, BigDecimal amount) {
+                List<JSONObject> utxos = getUTXO(walletService.getXPUB(CoinType.BITCOIN)).getUtxos();
+
+                return blockbook.signBTCForks(getCoinType(), fromAddress, toAddress, amount, getCoinEntity().getFee(), Constant.BTC_DIVIDER, utxos);
+            }
+
+            @Override
+            public String submitTransaction(String hex) {
+                return blockbook.submitTransaction(btcNodeUrl, hex);
+            }
+
+            @Override
+            public CoinType getCoinType() {
+                return CoinType.BITCOIN;
+            }
+
+            @Override
+            public NodeTransactionsDTO getNodeTransactions(String address) {
+                return blockbook.getNodeTransactions(btcNodeUrl, address, Constant.BTC_DIVIDER);
+            }
+
+            @Override
+            public Coin getCoinEntity() {
+                return coinMap.get(name());
+            }
+
+            @Override
+            public BigDecimal getTransactionFee() {
+                return getCoinEntity().getFee().multiply(BigDecimal.valueOf(1000));
+            }
+
+            @Override
+            public BigDecimal getTransactionTolerance() {
+                return getCoinEntity().getTolerance();
+            }
+
+            @Override
+            public Integer getScale() {
+                return getCoinEntity().getScale();
+            }
+        },
+        ETH {
+            @Override
+            public BigDecimal getPrice() {
+                return getBinancePriceBySymbol("ETHUSDT");
+            }
+
+            @Override
+            public BigDecimal getBalance(String address) {
+                return blockbook.getBalance(ethNodeUrl, address, Constant.ETH_DIVIDER);
+            }
+
+            @Override
+            public String getName() {
+                return "ethereum";
+            }
+
+            @Override
+            public TransactionNumberDTO getTransactionNumber(String address, BigDecimal amount, TransactionType type) {
+                return blockbook.getTransactionNumber(ethNodeUrl, address, amount, Constant.ETH_DIVIDER, type);
+            }
+
+            @Override
+            public TransactionStatus getTransactionStatus(String txId) {
+                return blockbook.getTransactionStatus(ethNodeUrl, txId);
+            }
+
+            @Override
+            public TransactionDTO getTransaction(String txId, String address) {
+                return blockbook.getTransaction(ethNodeUrl, ethExplorerUrl, txId, address, Constant.ETH_DIVIDER);
+            }
+
+            @Override
+            public TransactionListDTO getTransactionList(String address, Integer startIndex, Integer limit, List<TransactionRecordGift> gifts, List<TransactionRecord> txs) {
+                return blockbook.getTransactionList(ethNodeUrl, address, Constant.ETH_DIVIDER, startIndex, limit, gifts, txs);
+            }
+
+            @Override
+            public UtxoDTO getUTXO(String xpub) {
+                return null;
+            }
+
+            @Override
+            public NonceDTO getNonce(Long userId) {
+                User user = userService.findById(userId);
+                String address = user.getCoinAddress(name());
+
+                NonceDTO nonceDTO = blockbook.getNonce(ethNodeUrl, address);
+                nonceDTO.setNonce(nonceDTO.getNonce());
+
+                return nonceDTO;
+            }
+
+            @Override
+            public CurrentAccountDTO getCurrentAccount(Long userId) {
+                return null;
+            }
+
+            @Override
+            public CurrentBlockDTO getCurrentBlock() {
+                return null;
+            }
+
+            @Override
+            public String getWalletAddress() {
+                return walletService.getAddressETH();
+            }
+
+            @Override
+            public String sign(String fromAddress, String toAddress, BigDecimal amount) {
+                return blockbook.signETH(ethNodeUrl, toAddress, amount, null);
+            }
+
+            @Override
+            public String submitTransaction(String hex) {
+                return blockbook.submitTransaction(ethNodeUrl, hex);
+            }
+
+            @Override
+            public CoinType getCoinType() {
+                return CoinType.ETHEREUM;
+            }
+
+            @Override
+            public NodeTransactionsDTO getNodeTransactions(String address) {
+                return blockbook.getNodeTransactions(ethNodeUrl, address, Constant.ETH_DIVIDER);
+            }
+
+            @Override
+            public Coin getCoinEntity() {
+                return coinMap.get(name());
+            }
+
+            @Override
+            public BigDecimal getTransactionFee() {
+                return BigDecimal.valueOf(Constant.GAS_PRICE).multiply(BigDecimal.valueOf(Constant.GAS_LIMIT)).divide(Constant.ETH_DIVIDER);
+            }
+
+            @Override
+            public BigDecimal getTransactionTolerance() {
+                return getCoinEntity().getTolerance();
+            }
+
+            @Override
+            public Integer getScale() {
+                return getCoinEntity().getScale();
+            }
+        },
+        BCH {
+            @Override
+            public BigDecimal getPrice() {
+                return getBinancePriceBySymbol("BCHUSDT");
+            }
+
+            @Override
+            public BigDecimal getBalance(String address) {
+                return blockbook.getBalance(bchNodeUrl, address, Constant.BCH_DIVIDER);
+            }
+
+            @Override
+            public String getName() {
+                return "bitcoincash";
+            }
+
+            @Override
+            public TransactionNumberDTO getTransactionNumber(String address, BigDecimal amount, TransactionType type) {
+                return blockbook.getTransactionNumber(bchNodeUrl, address, amount, Constant.BCH_DIVIDER, type);
+            }
+
+            @Override
+            public TransactionStatus getTransactionStatus(String txId) {
+                return blockbook.getTransactionStatus(bchNodeUrl, txId);
+            }
+
+            @Override
+            public TransactionDTO getTransaction(String txId, String address) {
+                return blockbook.getTransaction(bchNodeUrl, bchExplorerUrl, txId, address, Constant.BCH_DIVIDER);
+            }
+
+            @Override
+            public TransactionListDTO getTransactionList(String address, Integer startIndex, Integer limit, List<TransactionRecordGift> gifts, List<TransactionRecord> txs) {
+                return blockbook.getTransactionList(bchNodeUrl, address, Constant.BCH_DIVIDER, startIndex, limit, gifts, txs);
+            }
+
+            @Override
+            public UtxoDTO getUTXO(String xpub) {
+                return blockbook.getUTXO(bchNodeUrl, xpub);
+            }
+
+            @Override
+            public NonceDTO getNonce(Long userId) {
+                return null;
+            }
+
+            @Override
+            public CurrentAccountDTO getCurrentAccount(Long userId) {
+                return null;
+            }
+
+            @Override
+            public CurrentBlockDTO getCurrentBlock() {
+                return null;
+            }
+
+            @Override
+            public String getWalletAddress() {
+                return walletService.getAddressBCH();
+            }
+
+            @Override
+            public String sign(String fromAddress, String toAddress, BigDecimal amount) {
+                List<JSONObject> utxos = getUTXO(walletService.getXPUB(CoinType.BITCOINCASH)).getUtxos();
+
+                return blockbook.signBTCForks(getCoinType(), fromAddress, toAddress, amount, getCoinEntity().getFee(), Constant.BCH_DIVIDER, utxos);
+            }
+
+            @Override
+            public String submitTransaction(String hex) {
+                return blockbook.submitTransaction(bchNodeUrl, hex);
+            }
+
+            @Override
+            public CoinType getCoinType() {
+                return CoinType.BITCOINCASH;
+            }
+
+            @Override
+            public NodeTransactionsDTO getNodeTransactions(String address) {
+                return blockbook.getNodeTransactions(bchNodeUrl, address, Constant.BCH_DIVIDER);
+            }
+
+            @Override
+            public Coin getCoinEntity() {
+                return coinMap.get(name());
+            }
+
+            @Override
+            public BigDecimal getTransactionFee() {
+                return getCoinEntity().getFee().multiply(BigDecimal.valueOf(1000));
+            }
+
+            @Override
+            public BigDecimal getTransactionTolerance() {
+                return getCoinEntity().getTolerance();
+            }
+
+            @Override
+            public Integer getScale() {
+                return getCoinEntity().getScale();
+            }
+        },
+        LTC {
+            @Override
+            public BigDecimal getPrice() {
+                return getBinancePriceBySymbol("LTCUSDT");
+            }
+
+            @Override
+            public BigDecimal getBalance(String address) {
+                return blockbook.getBalance(ltcNodeUrl, address, Constant.LTC_DIVIDER);
+            }
+
+            @Override
+            public String getName() {
+                return "litecoin";
+            }
+
+            @Override
+            public TransactionNumberDTO getTransactionNumber(String address, BigDecimal amount, TransactionType type) {
+                return blockbook.getTransactionNumber(ltcNodeUrl, address, amount, Constant.LTC_DIVIDER, type);
+            }
+
+            @Override
+            public TransactionStatus getTransactionStatus(String txId) {
+                return blockbook.getTransactionStatus(ltcNodeUrl, txId);
+            }
+
+            @Override
+            public TransactionDTO getTransaction(String txId, String address) {
+                return blockbook.getTransaction(ltcNodeUrl, ltcExplorerUrl, txId, address, Constant.LTC_DIVIDER);
+            }
+
+            @Override
+            public TransactionListDTO getTransactionList(String address, Integer startIndex, Integer limit, List<TransactionRecordGift> gifts, List<TransactionRecord> txs) {
+                return blockbook.getTransactionList(ltcNodeUrl, address, Constant.LTC_DIVIDER, startIndex, limit, gifts, txs);
+            }
+
+            @Override
+            public UtxoDTO getUTXO(String xpub) {
+                return blockbook.getUTXO(ltcNodeUrl, xpub);
+            }
+
+            @Override
+            public NonceDTO getNonce(Long userId) {
+                return null;
+            }
+
+            @Override
+            public CurrentAccountDTO getCurrentAccount(Long userId) {
+                return null;
+            }
+
+            @Override
+            public CurrentBlockDTO getCurrentBlock() {
+                return null;
+            }
+
+            @Override
+            public String getWalletAddress() {
+                return walletService.getAddressLTC();
+            }
+
+            @Override
+            public String sign(String fromAddress, String toAddress, BigDecimal amount) {
+                List<JSONObject> utxos = getUTXO(walletService.getXPUB(CoinType.LITECOIN)).getUtxos();
+
+                return blockbook.signBTCForks(getCoinType(), fromAddress, toAddress, amount, getCoinEntity().getFee(), Constant.LTC_DIVIDER, utxos);
+            }
+
+            @Override
+            public String submitTransaction(String hex) {
+                return blockbook.submitTransaction(ltcNodeUrl, hex);
+            }
+
+            @Override
+            public CoinType getCoinType() {
+                return CoinType.LITECOIN;
+            }
+
+            @Override
+            public NodeTransactionsDTO getNodeTransactions(String address) {
+                return blockbook.getNodeTransactions(ltcNodeUrl, address, Constant.LTC_DIVIDER);
+            }
+
+            @Override
+            public Coin getCoinEntity() {
+                return coinMap.get(name());
+            }
+
+            @Override
+            public BigDecimal getTransactionFee() {
+                return getCoinEntity().getFee().multiply(BigDecimal.valueOf(1000));
+            }
+
+            @Override
+            public BigDecimal getTransactionTolerance() {
+                return getCoinEntity().getTolerance();
+            }
+
+            @Override
+            public Integer getScale() {
+                return getCoinEntity().getScale();
+            }
+        },
+        BNB {
+            @Override
+            public BigDecimal getPrice() {
+                return getBinancePriceBySymbol("BNBUSDT");
+            }
+
+            @Override
+            public BigDecimal getBalance(String address) {
+                return binance.getBalance(address);
+            }
+
+            @Override
+            public String getName() {
+                return "binance";
+            }
+
+            @Override
+            public TransactionNumberDTO getTransactionNumber(String address, BigDecimal amount, TransactionType type) {
+                return null;
+            }
+
+            @Override
+            public TransactionStatus getTransactionStatus(String txId) {
+                return binance.getTransactionStatus(txId);
+            }
+
+            @Override
+            public TransactionDTO getTransaction(String txId, String address) {
+                return binance.getTransaction(txId, address);
+            }
+
+            @Override
+            public TransactionListDTO getTransactionList(String address, Integer startIndex, Integer limit, List<TransactionRecordGift> gifts, List<TransactionRecord> txs) {
+                return binance.getTransactionList(address, startIndex, limit, gifts, txs);
+            }
+
+            @Override
+            public UtxoDTO getUTXO(String xpub) {
+                return null;
+            }
+
+            @Override
+            public NonceDTO getNonce(Long userId) {
+                return null;
+            }
+
+            @Override
+            public CurrentAccountDTO getCurrentAccount(Long userId) {
+                User user = userService.findById(userId);
+                String address = user.getCoinAddress(name());
+
+                return binance.getCurrentAccount(address);
+            }
+
+            @Override
+            public CurrentBlockDTO getCurrentBlock() {
+                return null;
+            }
+
+            @Override
+            public String getWalletAddress() {
+                return walletService.getAddressBNB();
+            }
+
+            @Override
+            public String sign(String fromAddress, String toAddress, BigDecimal amount) {
+                return binance.sign(fromAddress, toAddress, amount);
+            }
+
+            @Override
+            public String submitTransaction(String hex) {
+                return binance.submitTransaction(hex);
+            }
+
+            @Override
+            public CoinType getCoinType() {
+                return CoinType.BINANCE;
+            }
+
+            @Override
+            public NodeTransactionsDTO getNodeTransactions(String address) {
+                return binance.getNodeTransactions(address);
+            }
+
+            @Override
+            public Coin getCoinEntity() {
+                return coinMap.get(name());
+            }
+
+            @Override
+            public BigDecimal getTransactionFee() {
+                return getCoinEntity().getFee();
+            }
+
+            @Override
+            public BigDecimal getTransactionTolerance() {
+                return getCoinEntity().getTolerance();
+            }
+
+            @Override
+            public Integer getScale() {
+                return getCoinEntity().getScale();
+            }
+        },
+        XRP {
+            @Override
+            public BigDecimal getPrice() {
+                return getBinancePriceBySymbol("XRPUSDT");
+            }
+
+            @Override
+            public BigDecimal getBalance(String address) {
+                return rippled.getBalance(address);
+            }
+
+            @Override
+            public String getName() {
+                return "ripple";
+            }
+
+            @Override
+            public TransactionNumberDTO getTransactionNumber(String address, BigDecimal amount, TransactionType type) {
+                return null;
+            }
+
+            @Override
+            public TransactionStatus getTransactionStatus(String txId) {
+                return rippled.getTransactionStatus(txId);
+            }
+
+            @Override
+            public TransactionDTO getTransaction(String txId, String address) {
+                return rippled.getTransaction(txId, address);
+            }
+
+            @Override
+            public TransactionListDTO getTransactionList(String address, Integer startIndex, Integer limit, List<TransactionRecordGift> gifts, List<TransactionRecord> txs) {
+                return rippled.getTransactionList(address, startIndex, limit, gifts, txs);
+            }
+
+            @Override
+            public UtxoDTO getUTXO(String xpub) {
+                return null;
+            }
+
+            @Override
+            public NonceDTO getNonce(Long userId) {
+                return null;
+            }
+
+            @Override
+            public CurrentAccountDTO getCurrentAccount(Long userId) {
+                User user = userService.findById(userId);
+                String address = user.getCoinAddress(name());
+
+                return rippled.getCurrentAccount(address);
+            }
+
+            @Override
+            public CurrentBlockDTO getCurrentBlock() {
+                return null;
+            }
+
+            @Override
+            public String getWalletAddress() {
+                return walletService.getAddressXRP();
+            }
+
+            @Override
+            public String sign(String fromAddress, String toAddress, BigDecimal amount) {
+                BigDecimal balance = getBalance(fromAddress);
+                BigDecimal fee = getCoinEntity().getFee();
+                BigDecimal maxWithdrawAmount = balance.subtract(new BigDecimal(20).subtract(fee));
+
+                if (maxWithdrawAmount.compareTo(amount) < 0) {
+                    amount = maxWithdrawAmount;
+                }
+
+                return rippled.sign(fromAddress, toAddress, amount, fee);
+            }
+
+            @Override
+            public String submitTransaction(String hex) {
+                return rippled.submitTransaction(hex);
+            }
+
+            @Override
+            public CoinType getCoinType() {
+                return CoinType.XRP;
+            }
+
+            @Override
+            public NodeTransactionsDTO getNodeTransactions(String address) {
+                return rippled.getNodeTransactions(address);
+            }
+
+            @Override
+            public Coin getCoinEntity() {
+                return coinMap.get(name());
+            }
+
+            @Override
+            public BigDecimal getTransactionFee() {
+                return getCoinEntity().getFee();
+            }
+
+            @Override
+            public BigDecimal getTransactionTolerance() {
+                return getCoinEntity().getTolerance();
+            }
+
+            @Override
+            public Integer getScale() {
+                return getCoinEntity().getScale();
+            }
+        },
+        TRX {
+            @Override
+            public BigDecimal getPrice() {
+                return getBinancePriceBySymbol("TRXUSDT");
+            }
+
+            @Override
+            public BigDecimal getBalance(String address) {
+                return trongrid.getBalance(address);
+            }
+
+            @Override
+            public String getName() {
+                return "tron";
+            }
+
+            @Override
+            public TransactionNumberDTO getTransactionNumber(String address, BigDecimal amount, TransactionType type) {
+                return null;
+            }
+
+            @Override
+            public TransactionStatus getTransactionStatus(String txId) {
+                return trongrid.getTransactionStatus(txId);
+            }
+
+            @Override
+            public TransactionDTO getTransaction(String txId, String address) {
+                return trongrid.getTransaction(txId, address);
+            }
+
+            @Override
+            public TransactionListDTO getTransactionList(String address, Integer startIndex, Integer limit, List<TransactionRecordGift> gifts, List<TransactionRecord> txs) {
+                return trongrid.getTransactionList(address, startIndex, limit, gifts, txs);
+            }
+
+            @Override
+            public UtxoDTO getUTXO(String xpub) {
+                return null;
+            }
+
+            @Override
+            public NonceDTO getNonce(Long userId) {
+                return null;
+            }
+
+            @Override
+            public CurrentAccountDTO getCurrentAccount(Long userId) {
+                return null;
+            }
+
+            @Override
+            public CurrentBlockDTO getCurrentBlock() {
+                return trongrid.getCurrentBlock();
+            }
+
+            @Override
+            public String getWalletAddress() {
+                return walletService.getAddressTRX();
+            }
+
+            @Override
+            public String sign(String fromAddress, String toAddress, BigDecimal amount) {
+                return trongrid.sign(fromAddress, toAddress, amount, getCoinEntity().getFee());
+            }
+
+            @Override
+            public String submitTransaction(String hex) {
+                return trongrid.submitTransaction(hex);
+            }
+
+            @Override
+            public CoinType getCoinType() {
+                return CoinType.TRON;
+            }
+
+            @Override
+            public NodeTransactionsDTO getNodeTransactions(String address) {
+                return trongrid.getNodeTransactions(address);
+            }
+
+            @Override
+            public Coin getCoinEntity() {
+                return coinMap.get(name());
+            }
+
+            @Override
+            public BigDecimal getTransactionFee() {
+                return getCoinEntity().getFee();
+            }
+
+            @Override
+            public BigDecimal getTransactionTolerance() {
+                return getCoinEntity().getTolerance();
+            }
+
+            @Override
+            public Integer getScale() {
+                return getCoinEntity().getScale();
+            }
+        };
+
+        public abstract BigDecimal getPrice();
+
+        public abstract BigDecimal getBalance(String address);
+
+        public abstract String getName();
+
+        public abstract TransactionNumberDTO getTransactionNumber(String address, BigDecimal amount, TransactionType type);
+
+        public abstract TransactionStatus getTransactionStatus(String txId);
+
+        public abstract TransactionDTO getTransaction(String txId, String address);
+
+        public abstract TransactionListDTO getTransactionList(String address, Integer startIndex, Integer limit, List<TransactionRecordGift> gifts, List<TransactionRecord> txs);
+
+        public abstract UtxoDTO getUTXO(String xpub);
+
+        public abstract NonceDTO getNonce(Long userId);
+
+        public abstract CurrentAccountDTO getCurrentAccount(Long userId);
+
+        public abstract CurrentBlockDTO getCurrentBlock();
+
+        public abstract String getWalletAddress();
+
+        public abstract String sign(String fromAddress, String toAddress, BigDecimal amount);
+
+        public abstract String submitTransaction(String hex);
+
+        public abstract CoinType getCoinType();
+
+        public abstract NodeTransactionsDTO getNodeTransactions(String address);
+
+        public abstract Coin getCoinEntity();
+
+        public abstract BigDecimal getTransactionFee();
+
+        public abstract BigDecimal getTransactionTolerance();
+
+        public abstract Integer getScale();
     }
 }

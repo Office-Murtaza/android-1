@@ -17,7 +17,7 @@ import java.util.Date;
 public class Util {
 
     public static BigDecimal convert(String str) {
-        return new BigDecimal(str).setScale(2, RoundingMode.DOWN);
+        return new BigDecimal(str).setScale(3, RoundingMode.UP);
     }
 
     public static String generatePublicId() {

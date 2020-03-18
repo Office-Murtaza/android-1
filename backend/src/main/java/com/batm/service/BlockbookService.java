@@ -149,22 +149,22 @@ public class BlockbookService {
         return dto;
     }
 
-    public BlockchainTransactionsDTO getBlockchainTransactions(String url, String address, BigDecimal divider) {
+    public NodeTransactionsDTO getNodeTransactions(String url, String address, BigDecimal divider) {
         try {
             JSONObject res = rest.getForObject(url + "/api/v2/address/" + address + "?details=txs&pageSize=1000&page=1", JSONObject.class);
             JSONArray array = res.optJSONArray("transactions");
 
-            return new BlockchainTransactionsDTO(collectNodeTxs(array, address, divider));
+            return new NodeTransactionsDTO(collectNodeTxs(array, address, divider));
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        return new BlockchainTransactionsDTO();
+        return new NodeTransactionsDTO();
     }
 
     public TransactionListDTO getTransactionList(String url, String address, BigDecimal divider, Integer startIndex, Integer limit, List<TransactionRecordGift> gifts, List<TransactionRecord> txs) {
         try {
-            Map<String, TransactionDTO> map = getBlockchainTransactions(url, address, divider).getMap();
+            Map<String, TransactionDTO> map = getNodeTransactions(url, address, divider).getMap();
 
             return TxUtil.buildTxs(map, startIndex, limit, gifts, txs);
         } catch (Exception e) {
@@ -276,7 +276,7 @@ public class BlockbookService {
                 TransactionStatus status = getStatus(json.optInt("confirmations"));
                 Date date1 = new Date(json.optLong("blockTime") * 1000);
 
-                map.put(txId, new TransactionDTO(txId, amount, type, status, date1));
+                map.put(txId, new TransactionDTO(txId, amount, address, getToAddress(voutArray, address), type, status, date1));
             }
         }
 

@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface TransactionRecordRep extends JpaRepository<TransactionRecord, Long> {
+
     @Query("SELECT tr FROM TransactionRecord tr WHERE tr.identity = :identity AND UPPER(tr.cryptoCurrency) = UPPER(:coinCode)")
     List<TransactionRecord> findAllByIdentityAndCryptoCurrency(
             @Param("identity") Identity identity,

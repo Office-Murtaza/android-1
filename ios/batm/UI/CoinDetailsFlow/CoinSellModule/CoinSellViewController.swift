@@ -138,12 +138,7 @@ final class CoinSellViewController: NavigationScreenViewController<CoinSellPrese
     
     let errorMessageDriverObservable = presenter.state.asObservable()
       .map { $0.validationState }
-      .map { validationState -> String? in
-        switch validationState {
-        case .valid, .unknown: return nil
-        case let .invalid(message): return message
-        }
-    }
+      .mapToErrorMessage()
     let shouldShowCodePopupObservable = presenter.state.asObservable()
       .map { $0.shouldShowCodePopup }
     

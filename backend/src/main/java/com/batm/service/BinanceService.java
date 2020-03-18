@@ -1,15 +1,18 @@
 package com.batm.service;
 
-import com.batm.dto.BlockchainTransactionsDTO;
+import com.batm.dto.NodeTransactionsDTO;
 import com.batm.dto.CurrentAccountDTO;
 import com.batm.dto.TransactionDTO;
 import com.batm.dto.TransactionListDTO;
 import com.batm.entity.TransactionRecord;
 import com.batm.entity.TransactionRecordGift;
 import com.batm.model.TransactionStatus;
+import com.batm.model.solr.CoinPrice;
+import com.batm.repository.solr.CoinPriceRepository;
 import com.batm.util.Constant;
 import com.batm.util.TxUtil;
 import com.batm.util.Util;
+import com.binance.api.client.BinanceApiRestClient;
 import com.binance.dex.api.client.BinanceDexApiRestClient;
 import com.binance.dex.api.client.domain.Account;
 import com.binance.dex.api.client.domain.TransactionPage;
@@ -20,18 +23,21 @@ import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.web3j.utils.Numeric;
 import wallet.core.jni.BinanceSigner;
 import wallet.core.jni.CosmosAddress;
-import wallet.core.jni.HRP;
 import wallet.core.jni.PrivateKey;
 import wallet.core.jni.proto.Binance;
+
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
@@ -43,13 +49,43 @@ public class BinanceService {
     private BinanceDexApiRestClient binanceDex;
 
     @Autowired
+    private BinanceApiRestClient binanceRest;
+
+    @Autowired
+    private CoinPriceRepository coinPriceRepository;
+
+    @Autowired
     private RestTemplate rest;
+
+    @Autowired
+    private WalletService walletService;
 
     @Value("${bnb.node.url}")
     private String nodeUrl;
 
     @Value("${bnb.explorer.url}")
     private String explorerUrl;
+
+    @Scheduled(cron = "0 0 0/1 * * *") // every 1 hour
+    public void processCronTasks() {
+        System.out.println("Processing collecting prices for coins..");
+        Arrays.stream(CoinService.CoinEnum.values()).forEach(coinEnum -> {
+            BigDecimal currentPrice = coinEnum.getPrice();
+
+            //save price to Solr
+            CoinPrice coinPrice = new CoinPrice();
+            coinPrice.setCoinCode(coinEnum.name());
+            coinPrice.setPrice(currentPrice.toPlainString());
+            coinPrice.setDate(new Date()); // TODO try default solr date value
+            coinPriceRepository.save(coinPrice);
+        });
+        System.out.println("Processing collecting prices for coins done.");
+    }
+
+    @Cacheable(cacheNames = {"price"}, key = "symbol")
+    public BigDecimal getBinancePriceBySymbol(String symbol) {
+        return Util.convert(binanceRest.getPrice(symbol).getPrice());
+    }
 
     public BigDecimal getBalance(String address) {
         try {
@@ -60,7 +96,8 @@ public class BinanceService {
                     .filter(e -> "BNB".equals(e.getSymbol()))
                     .map(it -> new BigDecimal(it.getFree()).add(new BigDecimal(it.getLocked())))
                     .reduce(BigDecimal.ZERO, BigDecimal::add));
-        } catch (Exception e) {}
+        } catch (Exception e) {
+        }
 
         return BigDecimal.ZERO;
     }
@@ -114,7 +151,7 @@ public class BinanceService {
         return dto;
     }
 
-    public BlockchainTransactionsDTO getBlockchainTransactions(String address) {
+    public NodeTransactionsDTO getNodeTransactions(String address) {
         try {
             TransactionsRequest request = new TransactionsRequest();
             request.setStartTime(new SimpleDateFormat("yyyy").parse("2010").getTime());
@@ -126,17 +163,17 @@ public class BinanceService {
 
             TransactionPage page = binanceDex.getTransactions(request);
 
-            return new BlockchainTransactionsDTO(collectNodeTxs(page, address));
+            return new NodeTransactionsDTO(collectNodeTxs(page, address));
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        return new BlockchainTransactionsDTO();
+        return new NodeTransactionsDTO();
     }
 
     public TransactionListDTO getTransactionList(String address, Integer startIndex, Integer limit, List<TransactionRecordGift> gifts, List<TransactionRecord> txs) {
         try {
-            Map<String, TransactionDTO> map = getBlockchainTransactions(address).getMap();
+            Map<String, TransactionDTO> map = getNodeTransactions(address).getMap();
 
             return TxUtil.buildTxs(map, startIndex, limit, gifts, txs);
         } catch (Exception e) {
@@ -158,10 +195,19 @@ public class BinanceService {
         return new CurrentAccountDTO();
     }
 
-    public String sign(String toAddress, BigDecimal amount, PrivateKey privateKey) {
+    public String sign(String fromAddress, String toAddress, BigDecimal amount) {
         try {
-            CosmosAddress fromAddress = new CosmosAddress(HRP.BINANCE, privateKey.getPublicKeySecp256k1(true));
-            CurrentAccountDTO currentDTO = getCurrentAccount(fromAddress.description());
+            PrivateKey privateKey;
+
+            if (walletService.isServerAddress(fromAddress)) {
+                privateKey = walletService.getPrivateKeyBNB();
+            } else {
+                String path = walletService.getPath(fromAddress);
+                privateKey = walletService.getWallet().getKey(path);
+            }
+
+            CosmosAddress fromCosmosAddress = new CosmosAddress(fromAddress);
+            CurrentAccountDTO currentDTO = getCurrentAccount(fromCosmosAddress.description());
 
             Binance.SigningInput.Builder builder = Binance.SigningInput.newBuilder();
             builder.setChainId(currentDTO.getChainId());
@@ -174,7 +220,7 @@ public class BinanceService {
             token.setAmount(amount.multiply(Constant.BNB_DIVIDER).longValue());
 
             Binance.SendOrder.Input.Builder input = Binance.SendOrder.Input.newBuilder();
-            input.setAddress(ByteString.copyFrom(fromAddress.keyHash()));
+            input.setAddress(ByteString.copyFrom(fromCosmosAddress.keyHash()));
             input.addAllCoins(Arrays.asList(token.build()));
 
             Binance.SendOrder.Output.Builder output = Binance.SendOrder.Output.newBuilder();
@@ -210,7 +256,7 @@ public class BinanceService {
             TransactionStatus status = getStatus(tx.getCode());
             Date date1 = Date.from(ZonedDateTime.parse(tx.getTimeStamp()).toInstant());
 
-            map.put(txId, new TransactionDTO(txId, amount, type, status, date1));
+            map.put(txId, new TransactionDTO(txId, amount, tx.getFromAddr(), tx.getToAddr(), type, status, date1));
         }
 
         return map;

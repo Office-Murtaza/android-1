@@ -5,15 +5,16 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.HashSet;
+import java.util.Set;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class BlockchainTransactionsDTO {
+public class ReceivedAddressDTO {
 
-    Map<String, TransactionDTO> map = new HashMap<>();
+    private String address;
+    private Set<String> txIds = new HashSet<>();
 }

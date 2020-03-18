@@ -23,6 +23,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class UserService {
@@ -471,5 +472,29 @@ public class UserService {
 
     private void uploadFile(MultipartFile file, Path outPath) throws IOException {
         Files.write(outPath, file.getBytes());
+    }
+
+    @Transactional
+    public Boolean resetVerificationsForUser(Long userId) {
+        User user = userRep.getOne(userId);
+        identityKycReviewRep.deleteAllByIdentity(user.getIdentity());
+        List<IdentityPiece> identityPieces = identityPieceRep.findAllByIdentityAndPieceTypeIn(user.getIdentity(), new int[]{IdentityPiece.TYPE_ID_SCAN, IdentityPiece.TYPE_SELFIE, IdentityPiece.TYPE_PERSONAL_INFORMATION});
+        identityPiecePersonalInfoRep.deleteAllByIdentityPieceIn(identityPieces);
+        identityPieceDocumentRep.deleteAllByIdentityPieceIn(identityPieces);
+        identityPieceSelfieRep.deleteAllByIdentityPieceIn(identityPieces);
+        identityPieceRep.deleteAll(identityPieces);
+
+        //revert prices
+        List<Limit> limitsPerTx = user.getIdentity().getLimitCashPerTransaction().
+                stream().sorted(Comparator.comparingLong(Limit::getId))
+                .skip(1).collect(Collectors.toList());
+        List<Limit> limitsPerDay = user.getIdentity().getLimitCashPerDay().stream().sorted(Comparator.comparingLong(Limit::getId)).skip(1).collect(Collectors.toList());
+        user.getIdentity().getLimitCashPerTransaction().removeAll(limitsPerTx);
+        user.getIdentity().getLimitCashPerDay().removeAll(limitsPerDay);
+        identityRep.save(user.getIdentity());
+        limitRep.deleteAll(limitsPerTx);
+        limitRep.deleteAll(limitsPerDay);
+
+        return true;
     }
 }
