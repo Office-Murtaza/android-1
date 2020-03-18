@@ -5,16 +5,13 @@ import com.batm.entity.*;
 import com.batm.model.TransactionStatus;
 import com.batm.model.TransactionType;
 import com.batm.repository.CoinRep;
-import com.batm.repository.solr.CoinPriceRepository;
 import com.batm.util.Constant;
 import com.batm.util.Util;
-import com.binance.api.client.BinanceApiRestClient;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import wallet.core.jni.CoinType;
-
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -30,10 +27,8 @@ public class CoinService {
     private static List<Coin> coinList;
     private static Map<String, Coin> coinMap;
 
-    private static BinanceApiRestClient binanceRest;
     private static WalletService walletService;
     private static UserService userService;
-    private static CoinPriceRepository coinPriceRepository;
 
     private static BlockbookService blockbook;
     private static BinanceService binance;
@@ -50,10 +45,8 @@ public class CoinService {
     private static String bchExplorerUrl;
     private static String ltcExplorerUrl;
 
-    public CoinService(@Autowired final BinanceApiRestClient binanceRest,
-                       @Autowired final WalletService walletService,
+    public CoinService(@Autowired final WalletService walletService,
                        @Autowired final UserService userService,
-                       @Autowired final CoinPriceRepository coinPriceRepository,
 
                        @Autowired final CoinRep coinRep,
 
@@ -72,10 +65,8 @@ public class CoinService {
                        @Value("${bch.explorer.url}") final String bchExplorerUrl,
                        @Value("${ltc.explorer.url}") final String ltcExplorerUrl) {
 
-        CoinService.binanceRest = binanceRest;
         CoinService.walletService = walletService;
         CoinService.userService = userService;
-        CoinService.coinPriceRepository = coinPriceRepository;
 
         CoinService.coinList = coinRep.findAll();
         CoinService.coinMap = CoinService.coinList.stream().collect(Collectors.toMap(Coin::getCode, Function.identity()));
@@ -399,7 +390,7 @@ public class CoinService {
         BCH {
             @Override
             public BigDecimal getPrice() {
-                return getBinancePriceBySymbol("BCHABCUSDT");
+                return getBinancePriceBySymbol("BCHUSDT");
             }
 
             @Override
