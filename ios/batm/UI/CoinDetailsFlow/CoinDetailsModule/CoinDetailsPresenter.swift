@@ -16,6 +16,7 @@ final class CoinDetailsPresenter: ModulePresenter, CoinDetailsModule {
     var copy: Driver<String?>
     var showMore: Driver<Void>
     var transactionSelected: Driver<IndexPath>
+    var updateSelectedPeriod: Driver<SelectedPeriod>
   }
   
   private let usecase: CoinDetailsUsecase
@@ -36,6 +37,10 @@ final class CoinDetailsPresenter: ModulePresenter, CoinDetailsModule {
   
   func setup(with coinBalance: CoinBalance) {
     store.action.accept(.setupCoinBalance(coinBalance))
+  }
+  
+  func setup(with data: PriceChartData) {
+    store.action.accept(.setupPriceChartData(data))
   }
 
   func bind(input: Input) {
@@ -109,6 +114,10 @@ final class CoinDetailsPresenter: ModulePresenter, CoinDetailsModule {
       .subscribe(onNext: { [delegate] in delegate?.showTransactionDetails(with: $0, for: $1) })
       .disposed(by: disposeBag)
     
+    input.updateSelectedPeriod
+      .drive(onNext: { [store] in store.action.accept(.updateSelectedPeriod($0)) })
+      .disposed(by: disposeBag)
+    
     setupBindings()
   }
   
@@ -125,7 +134,6 @@ final class CoinDetailsPresenter: ModulePresenter, CoinDetailsModule {
       .disposed(by: disposeBag)
     
     combinedObservable
-      .doOnNext { [store] _ in store.action.accept(.startFetching) }
       .flatMap { [unowned self] in
         self.track(self.getTransactions(for: $0.type), trackers: [self.errorTracker])
       }

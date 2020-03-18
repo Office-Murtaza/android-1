@@ -7,14 +7,9 @@ final class CoinDetailsViewController: NavigationScreenViewController<CoinDetail
   
   var dataSource: CoinDetailsCollectionViewDataSource!
   
-  let balanceView = CoinDetailsBalanceView()
-  
-  let buttonsView = CoinDetailsButtonsView()
-  
   let collectionView: UICollectionView = {
     let layout = UICollectionViewFlowLayout()
     let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-    collectionView.contentInset = UIEdgeInsets(top: 10, left: 0, bottom: 0, right: 0)
     return collectionView
   }()
   
@@ -39,9 +34,7 @@ final class CoinDetailsViewController: NavigationScreenViewController<CoinDetail
   override func setupUI() {
     view.backgroundColor = .whiteTwo
     
-    view.addSubviews(balanceView,
-                     buttonsView,
-                     collectionView,
+    view.addSubviews(collectionView,
                      backgroundDarkView,
                      depositView)
     
@@ -51,16 +44,8 @@ final class CoinDetailsViewController: NavigationScreenViewController<CoinDetail
   }
 
   override func setupLayout() {
-    balanceView.snp.makeConstraints {
-      $0.top.equalTo(customView.backgroundImageView.snp.bottom).offset(25)
-      $0.left.right.equalToSuperview().inset(10)
-    }
-    buttonsView.snp.makeConstraints {
-      $0.top.equalTo(balanceView.snp.bottom).offset(25)
-      $0.left.right.equalToSuperview().inset(10)
-    }
     collectionView.snp.makeConstraints {
-      $0.top.equalTo(buttonsView.snp.bottom)
+      $0.top.equalTo(customView.backgroundImageView.snp.bottom)
       $0.left.right.bottom.equalToSuperview()
     }
     backgroundDarkView.snp.makeConstraints {
@@ -93,10 +78,16 @@ final class CoinDetailsViewController: NavigationScreenViewController<CoinDetail
     presenter.state
       .map { $0.coinBalance }
       .filterNil()
-      .drive(onNext: { [customView, balanceView] in
-        customView.setTitle($0.type.verboseValue)
-        balanceView.configure(for: $0)
-      })
+      .drive(onNext: { [unowned self] in self.customView.setTitle($0.type.verboseValue) })
+      .disposed(by: disposeBag)
+    
+    presenter.state
+      .asObservable()
+      .filter { $0.coinBalance != nil && $0.priceChartData != nil }
+      .map { CoinDetailsHeaderViewConfig(coinBalance: $0.coinBalance!,
+                                         priceChartData: $0.priceChartData!,
+                                         selectedPeriod: $0.selectedPeriod) }
+      .bind(to: dataSource.headerViewConfigRelay)
       .disposed(by: disposeBag)
     
     presenter.state
@@ -112,12 +103,11 @@ final class CoinDetailsViewController: NavigationScreenViewController<CoinDetail
       .bind(to: refreshControl.rx.isRefreshing)
       .disposed(by: disposeBag)
     
-    buttonsView.rx.depositTap
+    dataSource.rx.depositTap
       .withLatestFrom(presenter.state)
       .map { $0.coin }
       .filterNil()
       .do(onNext: { [depositView] in depositView.configure(for: $0) })
-      .asDriver()
       .drive(onNext: { [unowned self] _ in self.showDepositView() })
       .disposed(by: disposeBag)
     
@@ -136,12 +126,13 @@ final class CoinDetailsViewController: NavigationScreenViewController<CoinDetail
     
     let backDriver = customView.backButton.rx.tap.asDriver()
     let refreshDriver = refreshControl.rx.controlEvent(.valueChanged).asDriver()
-    let withdrawDriver = buttonsView.rx.withdrawTap
-    let sendGiftDriver = buttonsView.rx.sendGiftTap
-    let sellDriver = buttonsView.rx.sellTap
+    let withdrawDriver = dataSource.rx.withdrawTap
+    let sendGiftDriver = dataSource.rx.sendGiftTap
+    let sellDriver = dataSource.rx.sellTap
     let copyDriver = depositView.rx.copyTap
     let showMoreDriver = collectionView.rx.willDisplayLastCell.asDriver(onErrorDriveWith: .empty())
     let transactionSelectedDriver = collectionView.rx.itemSelected.asDriver()
+    let updateSelectedPeriodDriver = dataSource.rx.selectedPeriod
     
     presenter.bind(input: CoinDetailsPresenter.Input(back: backDriver,
                                                      refresh: refreshDriver,
@@ -150,12 +141,19 @@ final class CoinDetailsViewController: NavigationScreenViewController<CoinDetail
                                                      sell: sellDriver,
                                                      copy: copyDriver,
                                                      showMore: showMoreDriver,
-                                                     transactionSelected: transactionSelectedDriver))
+                                                     transactionSelected: transactionSelectedDriver,
+                                                     updateSelectedPeriod: updateSelectedPeriodDriver))
   }
   
   func collectionView(_ collectionView: UICollectionView,
                       layout collectionViewLayout: UICollectionViewLayout,
                       sizeForItemAt indexPath: IndexPath) -> CGSize {
     return CGSize(width: collectionView.bounds.width - 20, height: 50)
+  }
+  
+  func collectionView(_ collectionView: UICollectionView,
+                      layout collectionViewLayout: UICollectionViewLayout,
+                      referenceSizeForHeaderInSection section: Int) -> CGSize {
+    return CGSize(width: collectionView.bounds.width, height: 390)
   }
 }
