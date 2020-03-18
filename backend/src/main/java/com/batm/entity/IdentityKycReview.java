@@ -14,7 +14,7 @@ import java.util.Date;
 @Table(name = "w_identitykycreview")
 public class IdentityKycReview extends BaseEntity {
 
-    @ManyToOne(optional = false)
+    @OneToOne(optional = false)
     private Identity identity;
 
     @Column(name = "tier_id")
@@ -46,13 +46,18 @@ public class IdentityKycReview extends BaseEntity {
     @Column(name = "ssn")
     private String ssn;
 
-    @Column(name = "file_name")
-    private String fileName;
+    @Column(name = "ssn_file_name")
+    private String ssnFileName;
 
-    @Column(name = "file_mimetype")
-    private String fileMimeType;
+    @Column(name = "ssn_file_mimetype")
+    private String ssnFileMimeType;
+
+    @Column(name = "id_card_file_name")
+    private String idCardFileName;
+
+    @Column(name = "id_card_file_mimetype")
+    private String idCardFileMimeType;
 
     @Column(name = "rejected_message")
     private String rejectedMessage;
-
 }
