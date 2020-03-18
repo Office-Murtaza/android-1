@@ -56,7 +56,7 @@ class TransactionsPresenter : BaseMvpDIPresenterImpl<TransactionsContract.View, 
 
     override fun chartViewInitialized() {
         val userId = App.appContext().pref.getUserId().toString()
-        mDataManager.getChart(userId).subscribe(
+        mDataManager.getChart(userId, coinId).subscribe(
             {
                 val chart = it.value?.chart
                 balance = it.value?.balance ?: 0.0
