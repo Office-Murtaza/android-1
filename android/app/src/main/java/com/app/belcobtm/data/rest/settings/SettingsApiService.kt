@@ -6,6 +6,8 @@ import com.app.belcobtm.domain.Either
 import com.app.belcobtm.domain.Failure
 import com.app.belcobtm.domain.settings.item.VerificationBlankDataItem
 import com.app.belcobtm.domain.settings.item.VerificationVipDataItem
+import okhttp3.MediaType
+import okhttp3.RequestBody
 
 class SettingsApiService(private val fileHelper: FileHelper, private val api: SettingsApi) {
     suspend fun getVerificationInfo(userId: Int): Either<Failure, VerificationInfoResponse> = try {
@@ -24,14 +26,14 @@ class SettingsApiService(private val fileHelper: FileHelper, private val api: Se
         val request = api.sendVerificationBlankAsync(
             userId,
             VERIFICATION,
-            blankItem.idNumber,
-            blankItem.firstName,
-            blankItem.lastName,
-            blankItem.address,
-            blankItem.city,
-            blankItem.country,
-            blankItem.province,
-            blankItem.zipCode,
+            RequestBody.create(MediaType.parse("text/plain"), blankItem.idNumber),
+            RequestBody.create(MediaType.parse("text/plain"), blankItem.firstName),
+            RequestBody.create(MediaType.parse("text/plain"), blankItem.lastName),
+            RequestBody.create(MediaType.parse("text/plain"), blankItem.address),
+            RequestBody.create(MediaType.parse("text/plain"), blankItem.city),
+            RequestBody.create(MediaType.parse("text/plain"), blankItem.country),
+            RequestBody.create(MediaType.parse("text/plain"), blankItem.province),
+            RequestBody.create(MediaType.parse("text/plain"), blankItem.zipCode),
             fileHelper.createFilePart(compressedFile.path, "image/*", "file")
         ).await()
 

@@ -19,14 +19,14 @@ interface SettingsApi {
     fun sendVerificationBlankAsync(
         @Path("userId") userId: Int,
         @Part("tierId") tierId: Int,
-        @Part("idNumber") idNumber: String,
-        @Part("firstName") firstName: String,
-        @Part("lastName") lastName: String,
-        @Part("address") address: String,
-        @Part("city") city: String,
-        @Part("country") country: String,
-        @Part("province") province: String,
-        @Part("zipCode") zipCode: String,
+        @Part("idNumber") idNumber: RequestBody,
+        @Part("firstName") firstName: RequestBody,
+        @Part("lastName") lastName: RequestBody,
+        @Part("address") address: RequestBody,
+        @Part("city") city: RequestBody,
+        @Part("country") country: RequestBody,
+        @Part("province") province: RequestBody,
+        @Part("zipCode") zipCode: RequestBody,
         @Part file: MultipartBody.Part
     ): Deferred<Response<ResponseBody>>
 
