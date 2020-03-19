@@ -49,7 +49,12 @@ class CoinsBalancePresenter: ModulePresenter, CoinsBalanceModule {
       .disposed(by: disposeBag)
     
     input.coinTap
-      .drive(onNext: { [delegate] in delegate?.showCoinDetails(with: $0) })
+      .asObservable()
+      .flatMap { [unowned self] coinBalance in
+        return self.track(self.usecase.getPriceChartData(for: coinBalance.type))
+          .map { (coinBalance, $0) }
+      }
+      .subscribe(onNext: { [delegate] in delegate?.showCoinDetails(with: $0, and: $1) })
       .disposed(by: disposeBag)
     
     setupBindings()

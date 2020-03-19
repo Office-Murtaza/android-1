@@ -149,6 +149,11 @@
 "coin_details.not_available" = "Not Available";
 "coin_details.available" = "Available";
 "coin_details.withdrawn" = "Withdrawn";
+"coin_details.one_day" = "1d";
+"coin_details.one_week" = "1w";
+"coin_details.one_month" = "1m";
+"coin_details.three_months" = "3m";
+"coin_details.one_year" = "1y";
 
 "coin_deposit.title" = "Deposit %@";
 

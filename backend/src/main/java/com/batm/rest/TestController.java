@@ -37,6 +37,11 @@ public class TestController {
         return Response.ok(res);
     }
 
+    @GetMapping("/price/{coinCode}")
+    public Response getPrice(@PathVariable CoinService.CoinEnum coinCode) {
+        return Response.ok(coinCode.getPrice());
+    }
+
     @GetMapping("/wallet")
     public Response getWalletAddresses() {
         JSONObject res = new JSONObject();

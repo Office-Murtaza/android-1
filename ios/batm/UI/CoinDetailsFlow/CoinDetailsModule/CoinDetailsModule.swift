@@ -3,6 +3,7 @@ import TrustWalletCore
 
 protocol CoinDetailsModule: class {
   func setup(with coinBalance: CoinBalance)
+  func setup(with data: PriceChartData)
 }
 protocol CoinDetailsModuleDelegate: class {
   func didFinishCoinDetails()
