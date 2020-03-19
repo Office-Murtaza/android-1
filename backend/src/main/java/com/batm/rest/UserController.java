@@ -329,6 +329,9 @@ public class UserController {
         try {
             userService.submitVerification(userId, verificationData);
             return Response.ok(Boolean.TRUE);
+        } catch (IllegalStateException ise) {
+            ise.printStackTrace();
+            return Response.error(new Error(1, ise.getMessage()));
         } catch (Exception e) {
             e.printStackTrace();
             return Response.serverError();

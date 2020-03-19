@@ -13,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.util.CollectionUtils;
 import org.springframework.web.multipart.MultipartFile;
 import javax.transaction.Transactional;
 import java.io.File;
@@ -269,10 +268,10 @@ public class UserService {
 
         User user = userRep.getOne(userId);
 
-        List<IdentityKycReview> identityKycReviews = identityKycReviewRep.findAllByIdentityOrderByIdDesc(user.getIdentity());
+        Optional<IdentityKycReview> identityKycReview = identityKycReviewRep.findTop1ByIdentityOrderByIdDesc(user.getIdentity());
 
-        if (!CollectionUtils.isEmpty(identityKycReviews)) {
-            IdentityKycReview currentIdentityKycReview = identityKycReviews.get(0);
+        if (identityKycReview.isPresent()) {
+            IdentityKycReview currentIdentityKycReview = identityKycReview.get();
 
             // identify status and message
             verificationStatus = VerificationStatus.getByValue(currentIdentityKycReview.getReviewStatus());
@@ -292,67 +291,84 @@ public class UserService {
     }
 
     @Transactional
-    public void submitVerification(Long userId, UserVerificationDTO verificationData) throws IOException {
+    public void submitVerification(Long userId, UserVerificationDTO verificationData) throws Exception {
         // TODO add validations for filename, idnumber, ssn etc
         User user = userRep.getOne(userId);
         String preparedFileName;
         String preparedFilePath;
+        String mimeType = null;
         IdentityKycReview identityKycReview;
 
         if (verificationData.getTierId() == TIER_BASIC_VERIFICATION) {
+            //validate
+            Optional<IdentityKycReview> basicVerification = identityKycReviewRep.findTop1ByIdentityOrderByIdDesc(user.getIdentity());
+            if (basicVerification.isPresent()) {
+                identityKycReview = basicVerification.get(); // in order to update previous records
+                if (identityKycReview.getTierId() != null && identityKycReview.getTierId().equals(TIER_VIP_VERIFICATION)) {
+                    throw new IllegalStateException("Failed to make verification request. Can not downgrade Verification tier");
+                }
+            } else {
+                identityKycReview = new IdentityKycReview();
+            }
+
             //prepare file path
             preparedFileName = verificationData.getIdNumber() + "_" + verificationData.getFile().getOriginalFilename();
             preparedFilePath = documentUploadPath + File.separator + preparedFileName;
+            Path preparedPath = Paths.get(preparedFilePath);
+
+            uploadFile(verificationData.getFile(), preparedPath);
+            try { // to get mime-type from saved file
+                mimeType = Files.probeContentType(preparedPath);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
 
             // prepare personal info for VERIFIED
-            identityKycReview = IdentityKycReview
-                    .builder()
-                    .identity(user.getIdentity())
-                    .tierId(TIER_BASIC_VERIFICATION)
-                    .reviewStatus(VerificationStatus.VERIFICATION_PENDING.getValue())
-                    .idCardNumber(verificationData.getIdNumber())
-                    .address(verificationData.getAddress())
-                    .country(verificationData.getCountry())
-                    .province(verificationData.getProvince())
-                    .city(verificationData.getCity())
-                    .zip(verificationData.getZipCode())
-                    .firstName(verificationData.getFirstName())
-                    .lastName(verificationData.getLastName())
-                    .build();
-            identityKycReviewRep.save(identityKycReview);
+            identityKycReview.setIdentity(user.getIdentity());
+            identityKycReview.setTierId(TIER_BASIC_VERIFICATION);
+            identityKycReview.setReviewStatus(VerificationStatus.VERIFICATION_PENDING.getValue());
+            identityKycReview.setIdCardNumber(verificationData.getIdNumber());
+            identityKycReview.setAddress(verificationData.getAddress());
+            identityKycReview.setCountry(verificationData.getCountry());
+            identityKycReview.setProvince(verificationData.getProvince());
+            identityKycReview.setCity(verificationData.getCity());
+            identityKycReview.setZip(verificationData.getZip());
+            identityKycReview.setFirstName(verificationData.getFirstName());
+            identityKycReview.setLastName(verificationData.getLastName());
+            identityKycReview.setIdCardFileName(preparedFileName);
+            identityKycReview.setIdCardFileMimeType(mimeType);
+
         } else if (verificationData.getTierId() == TIER_VIP_VERIFICATION) {
+            //validate
+            Optional<IdentityKycReview> basicVerification = identityKycReviewRep.findTop1ByIdentityOrderByIdDesc(user.getIdentity());
+            if (!basicVerification.isPresent()) {
+                throw new IllegalStateException("Failed to make verification request. Can not skip basic Verification");
+            } else {
+                identityKycReview = basicVerification.get();
+            }
+
             //prepare file path
             preparedFileName = verificationData.getSsn() + "_" + verificationData.getFile().getOriginalFilename();
             preparedFilePath = documentUploadPath + File.separator + preparedFileName;
+            Path preparedPath = Paths.get(preparedFilePath);
+
+            uploadFile(verificationData.getFile(), preparedPath);
+            try { // to get mime-type from saved file
+                mimeType = Files.probeContentType(preparedPath);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
 
             // prepare personal info for VIP_VERIFIED
-            identityKycReview = IdentityKycReview
-                    .builder()
-                    .identity(user.getIdentity())
-                    .tierId(TIER_VIP_VERIFICATION)
-                    .reviewStatus(VerificationStatus.VIP_VERIFICATION_PENDING.getValue())
-                    .ssn(verificationData.getSsn())
-                    .build();
-
+            identityKycReview.setTierId(TIER_VIP_VERIFICATION);
+            identityKycReview.setReviewStatus(VerificationStatus.VIP_VERIFICATION_PENDING.getValue());
+            identityKycReview.setSsn(verificationData.getSsn());
+            identityKycReview.setSsnFileName(preparedFileName);
+            identityKycReview.setSsnFileMimeType(mimeType);
         } else {
             // if wrong tier don't do anything
             return;
         }
-
-        Path preparedPath = Paths.get(preparedFilePath);
-        uploadFile(verificationData.getFile(), preparedPath);
-
-        String mimeType = null;
-
-        try {
-            mimeType = Files.probeContentType(preparedPath);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        // add uploaded file info
-        identityKycReview.setFileName(preparedFileName);
-        identityKycReview.setFileMimeType(mimeType);
 
         IdentityKycReview identityKycReviewSaved = identityKycReviewRep.save(identityKycReview);
 
@@ -377,8 +393,8 @@ public class UserService {
 
                 IdentityPieceDocument identityPieceDocument = IdentityPieceDocument
                         .builder()
-                        .fileName(review.getFileName())
-                        .mimeType(review.getFileMimeType())
+                        .fileName(review.getIdCardFileName())
+                        .mimeType(review.getIdCardFileMimeType())
                         .identity(review.getIdentity())
                         .identityPiece(identityPieceSaved)
                         .created(new Date())
@@ -419,8 +435,8 @@ public class UserService {
 
                 IdentityPieceSelfie identityPieceSelfie = IdentityPieceSelfie
                         .builder()
-                        .fileName(review.getFileName())
-                        .mimeType(review.getFileMimeType())
+                        .fileName(review.getSsnFileName())
+                        .mimeType(review.getSsnFileMimeType())
                         .identity(review.getIdentity())
                         .identityPiece(identityPieceSaved)
                         .created(new Date())
@@ -477,7 +493,7 @@ public class UserService {
     @Transactional
     public Boolean resetVerificationsForUser(Long userId) {
         User user = userRep.getOne(userId);
-        identityKycReviewRep.deleteAllByIdentity(user.getIdentity());
+        identityKycReviewRep.deleteByIdentity(user.getIdentity());
         List<IdentityPiece> identityPieces = identityPieceRep.findAllByIdentityAndPieceTypeIn(user.getIdentity(), new int[]{IdentityPiece.TYPE_ID_SCAN, IdentityPiece.TYPE_SELFIE, IdentityPiece.TYPE_PERSONAL_INFORMATION});
         identityPiecePersonalInfoRep.deleteAllByIdentityPieceIn(identityPieces);
         identityPieceDocumentRep.deleteAllByIdentityPieceIn(identityPieces);

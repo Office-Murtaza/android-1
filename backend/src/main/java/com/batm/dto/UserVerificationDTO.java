@@ -23,5 +23,5 @@ public class UserVerificationDTO {
     private String country;
     private String province;
     private String city;
-    private String zipCode;
+    private String zip;
 }
