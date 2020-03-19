@@ -20,6 +20,8 @@ final class VerificationPresenter: ModulePresenter, VerificationModule {
     var selectCity: Driver<Void>
     var updatePickerItem: Driver<String>
     var send: Driver<Void>
+    var tapOutside: Driver<Void>
+    var selectTypeableField: Driver<Void>
   }
   
   private let usecase: SettingsUsecase
@@ -103,6 +105,14 @@ final class VerificationPresenter: ModulePresenter, VerificationModule {
       .filter { $0.validationState.isValid }
       .flatMap { [unowned self] in self.track(self.sendVerification(state: $0)) }
       .subscribe(onNext: { [delegate] in delegate?.didFinishVerification(with: $0) })
+      .disposed(by: disposeBag)
+    
+    Driver.merge(input.tapOutside,
+                 input.selectTypeableField,
+                 input.select,
+                 input.remove,
+                 input.send)
+      .drive(onNext: { [store] in store.action.accept(.updatePickerOption(.none)) })
       .disposed(by: disposeBag)
   }
   

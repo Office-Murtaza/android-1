@@ -133,13 +133,18 @@ public class BlockbookService {
             JSONArray vinArray = res.optJSONArray("vin");
             JSONArray voutArray = res.optJSONArray("vout");
 
+            String fromAddress = getFromAddress(vinArray, address);
+            String toAddress = getToAddress(voutArray, fromAddress);
+            TransactionType type = TransactionType.getType(fromAddress, toAddress, address);
+            BigDecimal amount = Util.format6(getAmount(type, fromAddress, toAddress, voutArray, divider));
+
             dto.setTxId(txId);
             dto.setLink(explorerUrl + "/" + txId);
-            dto.setType(getType(address, vinArray));
-            dto.setCryptoAmount(getAmount(dto.getType(), address, voutArray, divider));
+            dto.setType(type);
+            dto.setCryptoAmount(amount);
+            dto.setFromAddress(fromAddress);
+            dto.setToAddress(toAddress);
             dto.setCryptoFee(new BigDecimal(res.optString("fees")).divide(divider).stripTrailingZeros());
-            dto.setFromAddress(vinArray.getJSONObject(0).optJSONArray("addresses").getString(0));
-            dto.setToAddress(getToAddress(voutArray, dto.getFromAddress()));
             dto.setStatus(getStatus(res.optInt("confirmations")));
             dto.setDate2(new Date(res.optLong("blockTime") * 1000));
         } catch (Exception e) {
@@ -271,12 +276,15 @@ public class BlockbookService {
                 JSONArray voutArray = json.optJSONArray("vout");
 
                 String txId = json.optString("txid");
-                TransactionType type = getType(address, vinArray);
-                BigDecimal amount = Util.format6(getAmount(type, address, voutArray, divider));
+                String fromAddress = getFromAddress(vinArray, address);
+                String toAddress = getToAddress(voutArray, fromAddress);
+                TransactionType type = TransactionType.getType(fromAddress, toAddress, address);
+                BigDecimal amount = Util.format6(getAmount(type, fromAddress, toAddress, voutArray, divider));
+
                 TransactionStatus status = getStatus(json.optInt("confirmations"));
                 Date date1 = new Date(json.optLong("blockTime") * 1000);
 
-                map.put(txId, new TransactionDTO(txId, amount, address, getToAddress(voutArray, address), type, status, date1));
+                map.put(txId, new TransactionDTO(txId, amount, fromAddress, toAddress, type, status, date1));
             }
         }
 
@@ -287,37 +295,39 @@ public class BlockbookService {
         return (confirmations == null || confirmations < 2) ? TransactionStatus.PENDING : TransactionStatus.COMPLETE;
     }
 
-    private BigDecimal getAmount(TransactionType type, String address, JSONArray array, BigDecimal divider) {
-        for (int i = 0; i < array.size(); i++) {
-            JSONObject json = array.getJSONObject(i);
+    private BigDecimal getAmount(TransactionType type, String fromAddress, String toAddress, JSONArray voutArray, BigDecimal divider) {
+        for (int i = 0; i < voutArray.size(); i++) {
+            JSONObject json = voutArray.getJSONObject(i);
 
-            if ((type == TransactionType.WITHDRAW && !json.optJSONArray("addresses").toString().toLowerCase().contains(address.toLowerCase())) ||
-                    (type == TransactionType.DEPOSIT && json.optJSONArray("addresses").toString().toLowerCase().contains(address.toLowerCase()))) {
+            if ((type == TransactionType.WITHDRAW && !json.optJSONArray("addresses").toString().toLowerCase().contains(fromAddress.toLowerCase())) ||
+                    (type == TransactionType.DEPOSIT && json.optJSONArray("addresses").toString().toLowerCase().contains(toAddress.toLowerCase()))) {
 
                 return new BigDecimal(json.optString("value")).divide(divider).stripTrailingZeros();
             }
         }
 
-        return null;
+        return BigDecimal.ZERO;
     }
 
-    private TransactionType getType(String address, JSONArray array) {
-        for (int i = 0; i < array.size(); i++) {
-            JSONObject json = array.getJSONObject(i);
+    private String getFromAddress(JSONArray vinArray, String address) {
+        for (int i = 0; i < vinArray.size(); i++) {
+            JSONObject json = vinArray.optJSONObject(i);
 
-            return json.optJSONArray("addresses").toString().toLowerCase().contains(address.toLowerCase()) ? TransactionType.WITHDRAW : TransactionType.DEPOSIT;
-        }
-
-        return null;
-    }
-
-    private String getToAddress(JSONArray array, String address) {
-        for (int i = 0; i < array.size(); i++) {
-            if (!array.getJSONObject(i).optJSONArray("addresses").toString().toLowerCase().contains(address)) {
-                return array.getJSONObject(i).optJSONArray("addresses").getString(0);
+            if (json.optJSONArray("addresses").toString().toLowerCase().contains(address.toLowerCase())) {
+                return address;
             }
         }
 
-        return null;
+        return vinArray.optJSONObject(0).optJSONArray("addresses").optString(0);
+    }
+
+    private String getToAddress(JSONArray voutArray, String fromAddress) {
+        for (int i = 0; i < voutArray.size(); i++) {
+            if (!voutArray.getJSONObject(i).optJSONArray("addresses").toString().toLowerCase().contains(fromAddress)) {
+                return voutArray.getJSONObject(i).optJSONArray("addresses").optString(0);
+            }
+        }
+
+        return voutArray.optJSONObject(0).optJSONArray("addresses").optString(0);
     }
 }

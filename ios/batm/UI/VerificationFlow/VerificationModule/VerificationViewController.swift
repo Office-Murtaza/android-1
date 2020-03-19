@@ -126,6 +126,15 @@ final class VerificationViewController: NavigationScreenViewController<Verificat
         errorView.configure(for: $0)
       })
       .disposed(by: disposeBag)
+    
+    Driver.merge(filePickerView.rx.select,
+                 filePickerView.rx.remove,
+                 formView.rx.countryTap,
+                 formView.rx.provinceTap,
+                 formView.rx.cityTap,
+                 formView.sendButton.rx.tap.asDriver())
+      .drive(onNext: { [unowned self] in self.view.endEditing(true) })
+      .disposed(by: disposeBag)
   }
   
   override func setupBindings() {
@@ -144,6 +153,10 @@ final class VerificationViewController: NavigationScreenViewController<Verificat
     let selectCityDriver = formView.rx.cityTap
     let updatePickerItemDriver = formView.rx.selectPickerItem
     let sendDriver = formView.sendButton.rx.tap.asDriver()
+    let tapOutsideDriver = customView.tapRecognizer.rx.event.asDriver().map { _ in }
+    let selectTypeableFieldDriver = Driver.merge(formView.typeableFields.map {
+      return $0.rx.controlEvent(.editingDidBegin).asDriver()
+    })
     
     presenter.bind(input: VerificationPresenter.Input(back: backDriver,
                                                       select: selectDriver,
@@ -157,6 +170,8 @@ final class VerificationViewController: NavigationScreenViewController<Verificat
                                                       selectProvince: selectProvinceDriver,
                                                       selectCity: selectCityDriver,
                                                       updatePickerItem: updatePickerItemDriver,
-                                                      send: sendDriver))
+                                                      send: sendDriver,
+                                                      tapOutside: tapOutsideDriver,
+                                                      selectTypeableField: selectTypeableFieldDriver))
   }
 }

@@ -1,10 +1,10 @@
 package com.batm.model;
 
 import com.fasterxml.jackson.annotation.JsonValue;
-import org.apache.commons.lang.StringUtils;
 
 public enum TransactionType {
 
+    UNKNOWN(0),
     DEPOSIT(1),
     WITHDRAW(2),
     SEND_GIFT(3),
@@ -25,15 +25,13 @@ public enum TransactionType {
     }
 
     public static TransactionType getType(String fromAddress, String toAddress, String address) {
-        if (StringUtils.isNotBlank(address)) {
-            if (StringUtils.isNotBlank(fromAddress) && fromAddress.equalsIgnoreCase(address)) {
-                return WITHDRAW;
-            } else if (StringUtils.isNotBlank(toAddress) && toAddress.equalsIgnoreCase(address)) {
-                return DEPOSIT;
-            }
+        if (address.equalsIgnoreCase(fromAddress)) {
+            return TransactionType.WITHDRAW;
+        } else if (address.equalsIgnoreCase(toAddress)) {
+            return TransactionType.DEPOSIT;
+        } else {
+            return TransactionType.UNKNOWN;
         }
-
-        return null;
     }
 
     public static TransactionType getGiftType(TransactionType type) {

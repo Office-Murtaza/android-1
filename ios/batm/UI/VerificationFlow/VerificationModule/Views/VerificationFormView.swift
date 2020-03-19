@@ -85,6 +85,16 @@ class VerificationFormView: UIView, UIPickerViewDelegate, UIPickerViewDataSource
     return button
   }()
   
+  var typeableFields: [MainTextField] {
+    return [
+      idNumberTextField,
+      firstNameTextField,
+      lastNameTextField,
+      addressTextField,
+      zipCodeTextField
+    ]
+  }
+  
   let countryTapRecognizer = UITapGestureRecognizer()
   let provinceTapRecognizer = UITapGestureRecognizer()
   let cityTapRecognizer = UITapGestureRecognizer()
