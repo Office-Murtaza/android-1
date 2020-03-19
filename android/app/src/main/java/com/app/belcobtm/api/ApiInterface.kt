@@ -22,16 +22,28 @@ interface ApiInterface {
     fun requestSmsCode(@Path("userId") userId: String): Observable<ServerResponse<RequestSmsResponse>>
 
     @POST("user/{userId}/code/verify")
-    fun verifySmsCode(@Path("userId") userId: String, @Body verifySmsParam: VerifySmsParam): Observable<ServerResponse<VerifySmsResponse>>
+    fun verifySmsCode(
+        @Path("userId") userId: String,
+        @Body verifySmsParam: VerifySmsParam
+    ): Observable<ServerResponse<VerifySmsResponse>>
 
     @POST("user/{userId}/coins/add")
-    fun addCoins(@Path("userId") userId: String, @Body addCoinsParam: AddCoinsParam): Observable<ServerResponse<AddCoinsResponse>>
+    fun addCoins(
+        @Path("userId") userId: String,
+        @Body addCoinsParam: AddCoinsParam
+    ): Observable<ServerResponse<AddCoinsResponse>>
 
     @POST("user/{userId}/coins/compare")
-    fun verifyCoins(@Path("userId") userId: String, @Body verifyCoinsParam: AddCoinsParam): Observable<ServerResponse<AddCoinsResponse>>
+    fun verifyCoins(
+        @Path("userId") userId: String,
+        @Body verifyCoinsParam: AddCoinsParam
+    ): Observable<ServerResponse<AddCoinsResponse>>
 
     @GET("user/{userId}/coins/balance")
-    fun getCoins(@Path("userId") userId: String, @Query("coins") coins: ArrayList<String>): Observable<ServerResponse<GetCoinsResponse>>
+    fun getCoins(
+        @Path("userId") userId: String,
+        @Query("coins") coins: ArrayList<String>
+    ): Observable<ServerResponse<GetCoinsResponse>>
 
     @GET("user/{userId}/coins/fee")
     fun getCoinsFee(@Path("userId") userId: String): Observable<ServerResponse<GetCoinsFeeResponse>>
@@ -39,8 +51,11 @@ interface ApiInterface {
     @GET("terminal/locations")
     fun getAtmAddress(): Observable<ServerResponse<AtmResponse>>
 
-    @GET("user/{userId}/coins/BTC/price-chart")
-    fun getChartAsync(@Path("userId") userId: String): Observable<ServerResponse<ChartResponse>>
+    @GET("user/{userId}/coins/{coinId}/price-chart")
+    fun getChartAsync(
+        @Path("userId") userId: String,
+        @Path("coinId") coinId: String
+    ): Observable<ServerResponse<ChartResponse>>
 
     @POST("user/{userId}/password/verify")
     fun checkPass(
@@ -80,7 +95,11 @@ interface ApiInterface {
     ): Observable<ServerResponse<GetTransactionsResponse>>
 
     @GET("user/{userId}/coins/{coinId}/transactions/utxo/{hex}")
-    fun getUtxos(@Path("userId") userId: String, @Path("coinId") coinId: String, @Path("hex") extendedPublicKey: String): Observable<ServerResponse<UtxosResponse>>
+    fun getUtxos(
+        @Path("userId") userId: String,
+        @Path("coinId") coinId: String,
+        @Path("hex") extendedPublicKey: String
+    ): Observable<ServerResponse<UtxosResponse>>
 
 
     @GET("user/{userId}/coins/{coinId}/sendtx/{hex}")

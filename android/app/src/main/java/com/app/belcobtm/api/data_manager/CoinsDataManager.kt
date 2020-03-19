@@ -26,8 +26,8 @@ class CoinsDataManager : BaseDataManager() {
         return genObservable(api.getTransactions(userId, coinId, elementIndex))
     }
 
-    fun getChart(userId: String): Observable<Optional<ChartResponse>>{
-        return genObservable(api.getChartAsync(userId))
+    fun getChart(userId: String, coinId: String): Observable<Optional<ChartResponse>> {
+        return genObservable(api.getChartAsync(userId, coinId))
     }
 
 }
