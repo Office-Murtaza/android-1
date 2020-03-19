@@ -389,6 +389,7 @@ extension L.VIPVerification.Form {
 
   struct Error {
     static let idSelfieRequired = "v_i_p_verification.form.error.id_selfie_required"
+    static let ssnWrongLength = "v_i_p_verification.form.error.ssn_wrong_length"
   }
 
   struct SSN {
@@ -421,6 +422,7 @@ extension L.Verification.Form {
   struct Error {
     static let idScanRequired = "verification.form.error.id_scan_required"
     static let imageBroken = "verification.form.error.image_broken"
+    static let zipCodeWrongLength = "verification.form.error.zip_code_wrong_length"
   }
 
   struct FirstName {

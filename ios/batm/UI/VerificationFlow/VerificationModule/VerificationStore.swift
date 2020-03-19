@@ -122,6 +122,10 @@ final class VerificationStore: ViewStore<VerificationAction, VerificationState> 
         return .invalid(localize(L.CreateWallet.Form.Error.allFieldsRequired))
     }
     
+    guard state.zipCode.count == 5 else {
+      return .invalid(localize(L.Verification.Form.Error.zipCodeWrongLength))
+    }
+    
     guard state.selectedImage != nil else {
       return .invalid(localize(L.Verification.Form.Error.idScanRequired))
     }

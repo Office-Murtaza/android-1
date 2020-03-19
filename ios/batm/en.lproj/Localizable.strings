@@ -117,6 +117,7 @@
 "verification.form.zip_code.placeholder" = "Zip Code *";
 "verification.form.error.id_scan_required" = "ID Scan is required";
 "verification.form.error.image_broken" = "Image is broken";
+"verification.form.error.zip_code_wrong_length" = "Zip Code should contain 5 digits";
 "verification.picker.title" = "Upload Photo";
 "verification.picker.camera_option.title" = "Take Photo";
 "verification.picker.library_option.title" = "Photo Library";
@@ -125,6 +126,7 @@
 "v_i_p_verification.id_selfie" = "ID Selfie";
 "v_i_p_verification.form.s_s_n.placeholder" = "SSN *";
 "v_i_p_verification.form.error.id_selfie_required" = "ID Selfie is required";
+"v_i_p_verification.form.error.ssn_wrong_length" = "SSN should contain 9 digits";
 
 "show_seed_phrase.title" = "Seed Phrase";
 

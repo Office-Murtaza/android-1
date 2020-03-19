@@ -171,12 +171,17 @@ class MainTextField: UITextField, HasDisposeBag {
       textAlignment = .center
     case .idNumber:
       placeholder = localize(L.Verification.Form.IDNumber.placeholder)
+      keyboardType = .namePhonePad
+      autocorrectionType = .no
     case .firstName:
       placeholder = localize(L.Verification.Form.FirstName.placeholder)
+      keyboardType = .alphabet
     case .lastName:
       placeholder = localize(L.Verification.Form.LastName.placeholder)
+      keyboardType = .alphabet
     case .address:
       placeholder = localize(L.Verification.Form.Address.placeholder)
+      keyboardType = .namePhonePad
     case .country:
       placeholder = localize(L.Verification.Form.Country.placeholder)
       setUpForPicker()
@@ -188,8 +193,10 @@ class MainTextField: UITextField, HasDisposeBag {
       setUpForPicker()
     case .zipCode:
       placeholder = localize(L.Verification.Form.ZipCode.placeholder)
+      keyboardType = .numberPad
     case .ssn:
       placeholder = localize(L.VIPVerification.Form.SSN.placeholder)
+      keyboardType = .numberPad
     }
     
     attributedPlaceholder = NSAttributedString(string: placeholder, attributes: attributes)
