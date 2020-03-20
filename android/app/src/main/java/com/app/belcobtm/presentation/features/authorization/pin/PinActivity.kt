@@ -92,7 +92,10 @@ class PinActivity : BaseActivity() {
                         }
                         is Failure.MessageError -> showError(it.errorType.message)
                         is Failure.NetworkConnection -> showError(R.string.error_internet_unavailable)
-                        else ->  startActivity(Intent(this, PinActivity::class.java))
+                        else -> {
+                            finishAffinity()
+                            startActivity(Intent(this, WelcomeActivity::class.java))
+                        }
 //                            showError(R.string.error_something_went_wrong)
                     }
                     showProgress(false)

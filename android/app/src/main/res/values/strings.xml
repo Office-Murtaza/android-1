@@ -155,6 +155,7 @@
     <string name="verification_id_scan">ID Scan</string>
     <string name="verification_id_selfie">ID Selfie</string>
     <string name="verification_snn">SNN *</string>
+    <string name="verification_please_on_permissions">Please on permissions in app settings</string>
 
     <!--transactions-->
     <string name="deposit">Deposit</string>
