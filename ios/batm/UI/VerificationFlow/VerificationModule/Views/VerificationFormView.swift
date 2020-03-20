@@ -31,12 +31,6 @@ class VerificationFormView: UIView, UIPickerViewDelegate, UIPickerViewDataSource
     return textField
   }()
   
-  let addressTextField: MainTextField = {
-    let textField = MainTextField()
-    textField.configure(for: .address)
-    return textField
-  }()
-  
   let countryTextField: MainTextField = {
     let textField = MainTextField()
     textField.configure(for: .country)
@@ -79,6 +73,12 @@ class VerificationFormView: UIView, UIPickerViewDelegate, UIPickerViewDataSource
     return textField
   }()
   
+  let addressTextField: MainTextField = {
+    let textField = MainTextField()
+    textField.configure(for: .address)
+    return textField
+  }()
+  
   let sendButton: MainButton = {
     let button = MainButton()
     button.configure(for: .send)
@@ -90,8 +90,8 @@ class VerificationFormView: UIView, UIPickerViewDelegate, UIPickerViewDataSource
       idNumberTextField,
       firstNameTextField,
       lastNameTextField,
-      addressTextField,
-      zipCodeTextField
+      zipCodeTextField,
+      addressTextField
     ]
   }
   
@@ -138,7 +138,6 @@ class VerificationFormView: UIView, UIPickerViewDelegate, UIPickerViewDataSource
     stackView.addArrangedSubviews(idNumberTextField,
                                   firstNameTextField,
                                   lastNameTextField,
-                                  addressTextField,
                                   countryTextField,
                                   countriesPickerView,
                                   provinceTextField,
@@ -146,6 +145,7 @@ class VerificationFormView: UIView, UIPickerViewDelegate, UIPickerViewDataSource
                                   cityTextField,
                                   citiesPickerView,
                                   zipCodeTextField,
+                                  addressTextField,
                                   sendButton)
     countryTextField.addGestureRecognizer(countryTapRecognizer)
     provinceTextField.addGestureRecognizer(provinceTapRecognizer)
