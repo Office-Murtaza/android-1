@@ -456,7 +456,7 @@ struct SendVerificationRequest: AuthorizedAPIRequest {
       MultipartFormData(provider: .data(userData.country.data(using: .utf8)!), name: "country"),
       MultipartFormData(provider: .data(userData.province.data(using: .utf8)!), name: "province"),
       MultipartFormData(provider: .data(userData.city.data(using: .utf8)!), name: "city"),
-      MultipartFormData(provider: .data(userData.zipCode.data(using: .utf8)!), name: "zip"),
+      MultipartFormData(provider: .data(userData.zipCode.data(using: .utf8)!), name: "zipCode"),
       MultipartFormData(provider: .data(userData.scanData), name: "file", fileName: "id_scan.png", mimeType: "image/png"),
     ])
   }
