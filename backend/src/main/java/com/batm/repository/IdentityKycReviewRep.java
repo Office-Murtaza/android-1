@@ -9,7 +9,7 @@ import java.util.Optional;
 
 public interface IdentityKycReviewRep extends JpaRepository<IdentityKycReview, Long> {
 
-    Optional<IdentityKycReview> findTop1ByIdentityOrderByIdDesc(Identity identity);
+    Optional<IdentityKycReview> findFirstByIdentityOrderByIdDesc(Identity identity);
 
     void deleteByIdentity(Identity identity);
 }

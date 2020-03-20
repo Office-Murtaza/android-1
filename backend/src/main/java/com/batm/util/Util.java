@@ -1,7 +1,9 @@
 package com.batm.util;
 
 import net.sf.json.JSONObject;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang3.RandomStringUtils;
+
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
@@ -13,6 +15,7 @@ import java.math.RoundingMode;
 import java.net.URL;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Optional;
 
 public class Util {
 
@@ -103,5 +106,17 @@ public class Util {
         int length = phone.length();
 
         return phone.substring(0, length - 10) + " " + phone.substring(length - 10, length - 7) + "-" + phone.substring(length - 7, length - 4) + "-" + phone.substring(length - 4, length);
+    }
+
+    /**
+     * Returns file extension with dot or empty string.
+     * @param filename
+     * @return
+     */
+    public static String getExtensionByStringHandling(String filename) {
+        return Optional.ofNullable(filename)
+                .filter(f -> f.contains("."))
+                .map(f -> f.substring(filename.indexOf(".") + 1))
+                .orElse(StringUtils.EMPTY);
     }
 }
