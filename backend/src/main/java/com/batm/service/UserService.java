@@ -336,7 +336,7 @@ public class UserService {
             identityKycReview.setCountry(verificationData.getCountry());
             identityKycReview.setProvince(verificationData.getProvince());
             identityKycReview.setCity(verificationData.getCity());
-            identityKycReview.setZip(verificationData.getZip());
+            identityKycReview.setZip(verificationData.getZipCode());
             identityKycReview.setFirstName(verificationData.getFirstName());
             identityKycReview.setLastName(verificationData.getLastName());
             identityKycReview.setIdCardFileName(preparedFileName);
@@ -390,7 +390,7 @@ public class UserService {
             if (review.getTierId() == TIER_BASIC_VERIFICATION) {
 
                 Optional<IdentityPiece> _scanIdentityPiece = identityPieceRep
-                        .findTop1ByIdentityAndPieceTypeOrderByIdDesc(review.getIdentity(), IdentityPiece.TYPE_ID_SCAN);
+                        .findFirstByIdentityAndPieceTypeOrderByIdDesc(review.getIdentity(), IdentityPiece.TYPE_ID_SCAN);
 
                 if (_scanIdentityPiece.isPresent()) { // update
                     IdentityPiece scanIdentityPiece = _scanIdentityPiece.get();
@@ -424,7 +424,7 @@ public class UserService {
                 }
 
                 Optional<IdentityPiece> _personalInfoIdentityPiece = identityPieceRep
-                        .findTop1ByIdentityAndPieceTypeOrderByIdDesc(review.getIdentity(), IdentityPiece.TYPE_PERSONAL_INFORMATION);
+                        .findFirstByIdentityAndPieceTypeOrderByIdDesc(review.getIdentity(), IdentityPiece.TYPE_PERSONAL_INFORMATION);
                 if (_personalInfoIdentityPiece.isPresent()) { // update
                     IdentityPiece personalInfoIdentityPiece = _personalInfoIdentityPiece.get();
 
@@ -478,7 +478,7 @@ public class UserService {
                 identityKycReviewRep.save(review);
             } else if (review.getTierId() == TIER_VIP_VERIFICATION) {
                 Optional<IdentityPiece> _selfieIdentityPiece = identityPieceRep
-                        .findTop1ByIdentityAndPieceTypeOrderByIdDesc(review.getIdentity(), IdentityPiece.TYPE_SELFIE);
+                        .findFirstByIdentityAndPieceTypeOrderByIdDesc(review.getIdentity(), IdentityPiece.TYPE_SELFIE);
                 if (_selfieIdentityPiece.isPresent()) { // update
                     IdentityPiece selfieIdentityPiece = _selfieIdentityPiece.get();
 
@@ -509,15 +509,23 @@ public class UserService {
                             .created(new Date())
                             .build();
                     identityPieceSelfieRep.save(identityPieceSelfie);
+                }
 
-                    IdentityPiecePersonalInfo identityPiecePersonalInfo = IdentityPiecePersonalInfo
-                            .builder()
-                            .identity(review.getIdentity())
-                            .identityPiece(identityPiece)
-                            .ssn(review.getSsn())
-                            .created(new Date())
-                            .build();
+                Optional<IdentityPiece> _personalInfoIdentityPiece = identityPieceRep
+                        .findFirstByIdentityAndPieceTypeOrderByIdDesc(review.getIdentity(), IdentityPiece.TYPE_PERSONAL_INFORMATION);
+                if (_personalInfoIdentityPiece.isPresent()) { // update
+                    IdentityPiece personalInfoIdentityPiece = _personalInfoIdentityPiece.get();
+
+                    IdentityPiecePersonalInfo identityPiecePersonalInfo = identityPiecePersonalInfoRep
+                            .findFirstByIdentityPieceOrderByIdDesc(personalInfoIdentityPiece).get();
+                    identityPiecePersonalInfo.setSsn(review.getSsn());
+                    identityPiecePersonalInfo.setCreated(new Date());
                     identityPiecePersonalInfoRep.save(identityPiecePersonalInfo);
+
+                    personalInfoIdentityPiece.setCreated(new Date());
+                    identityPieceRep.save(personalInfoIdentityPiece);
+                } else {                                    // create new
+                    throw new IllegalStateException("Failed to make verification request. Can not skip basic Verification");
                 }
 
                 // add new limits per Tier

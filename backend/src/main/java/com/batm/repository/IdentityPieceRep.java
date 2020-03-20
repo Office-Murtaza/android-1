@@ -8,6 +8,6 @@ import java.util.List;
 import java.util.Optional;
 
 public interface IdentityPieceRep extends JpaRepository<IdentityPiece, Long> {
-    Optional<IdentityPiece> findTop1ByIdentityAndPieceTypeOrderByIdDesc(Identity identity, int pieceType);
+    Optional<IdentityPiece> findFirstByIdentityAndPieceTypeOrderByIdDesc(Identity identity, int pieceType);
     List<IdentityPiece> findAllByIdentityAndPieceTypeIn(Identity identity, int[] pieceType);
 }
