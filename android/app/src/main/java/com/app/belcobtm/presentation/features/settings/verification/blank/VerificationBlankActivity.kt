@@ -1,10 +1,12 @@
 package com.app.belcobtm.presentation.features.settings.verification.blank
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.net.Uri
 import android.os.Bundle
 import android.view.MenuItem
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.core.view.isNotEmpty
@@ -21,8 +23,7 @@ import kotlinx.android.synthetic.main.activity_verification_blank.*
 import kotlinx.android.synthetic.main.view_toolbar.toolbarView
 import org.koin.android.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
-import permissions.dispatcher.NeedsPermission
-import permissions.dispatcher.RuntimePermissions
+import permissions.dispatcher.*
 
 @RuntimePermissions
 class VerificationBlankActivity : BaseActivity(), BottomSheetImagePicker.OnImagesSelectedListener {
@@ -51,6 +52,12 @@ class VerificationBlankActivity : BaseActivity(), BottomSheetImagePicker.OnImage
         removeImageButtonView.show()
     }
 
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        // NOTE: delegate the permission handling to generated method
+        onRequestPermissionsResult(requestCode, grantResults)
+    }
+
     @NeedsPermission(
         Manifest.permission.READ_EXTERNAL_STORAGE,
         Manifest.permission.WRITE_EXTERNAL_STORAGE,
@@ -64,6 +71,15 @@ class VerificationBlankActivity : BaseActivity(), BottomSheetImagePicker.OnImage
             .columnSize(R.dimen.photo_picker_column_size)
             .requestTag("single")
             .show(supportFragmentManager)
+    }
+
+    @OnNeverAskAgain(
+        Manifest.permission.READ_EXTERNAL_STORAGE,
+        Manifest.permission.WRITE_EXTERNAL_STORAGE,
+        Manifest.permission.CAMERA
+    )
+    fun permissionsNeverAskAgain() {
+        AlertHelper.showToastShort(this, R.string.verification_please_on_permissions)
     }
 
     private fun initViews() {
