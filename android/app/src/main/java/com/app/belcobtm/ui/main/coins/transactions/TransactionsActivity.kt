@@ -9,6 +9,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.DividerItemDecoration
 import com.app.belcobtm.R
 import com.app.belcobtm.api.model.response.CoinModel
 import com.app.belcobtm.mvp.BaseMvpActivity
@@ -109,7 +110,14 @@ class TransactionsActivity : BaseMvpActivity<TransactionsContract.View, Transact
         mAdapter = TransactionsAdapter(mPresenter.transactionList, mCoin) {
             mPresenter.getTransactions()
         }
-        transaction_recycler.adapter = mAdapter
+        recyclerView.adapter = mAdapter
+
+        val dividerItemDecoration = DividerItemDecoration(recyclerView.context, DividerItemDecoration.VERTICAL)
+        ContextCompat.getDrawable(recyclerView.context, R.drawable.divider_transactions)?.let {
+            dividerItemDecoration.setDrawable(it)
+        }
+        recyclerView.addItemDecoration(dividerItemDecoration)
+
 
         swipe_refresh.setColorSchemeColors(
             Color.RED, Color.GREEN, Color.BLUE
