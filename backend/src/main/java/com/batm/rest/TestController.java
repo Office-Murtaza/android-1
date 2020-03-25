@@ -1,9 +1,6 @@
 package com.batm.rest;
 
-import com.batm.service.CoinService;
-import com.batm.service.MessageService;
-import com.batm.service.UserService;
-import com.batm.service.WalletService;
+import com.batm.service.*;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -23,6 +20,9 @@ public class TestController {
 
     @Autowired
     private WalletService walletService;
+
+    @Autowired
+    private SolrService solrService;
 
     @GetMapping("/sms")
     public Response sendSMS(@RequestParam String phone) {
@@ -84,6 +84,18 @@ public class TestController {
         json.put("path", path);
 
         return json;
+    }
+
+    @DeleteMapping("/coins/price-chart")
+    public Response getPriceChart() {
+        try {
+            solrService.cleanAllCoinPrice();
+
+            return Response.ok(true);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Response.serverError();
+        }
     }
 
     @DeleteMapping("/user/{userId}/kyc")

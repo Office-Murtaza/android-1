@@ -1,0 +1,2 @@
+ALTER TABLE w_transactionrecordwallet ADD transactionrecordc2c_id BIGINT(20) DEFAULT NULL AFTER transactionrecordgift_id;
+ALTER TABLE w_transactionrecordwallet ADD FOREIGN KEY (transactionrecordgift_id) REFERENCES w_transactionrecordc2c(id);

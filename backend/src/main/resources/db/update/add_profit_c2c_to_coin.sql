@@ -1,0 +1,1 @@
+ALTER TABLE w_coin ADD profit_c2c DECIMAL(20, 2) DEFAULT 10.00 AFTER scale;

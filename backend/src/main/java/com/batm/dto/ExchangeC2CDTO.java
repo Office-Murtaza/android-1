@@ -1,5 +1,6 @@
 package com.batm.dto;
 
+import com.batm.service.CoinService;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -12,10 +13,12 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class FeeDTO {
+public class ExchangeC2CDTO {
 
-    private BigDecimal txFee;
-    private BigDecimal byteFee;
-    private Long gasPrice;
-    private Long gasLimit;
+    private String hex;
+    private CoinService.CoinEnum coinCode;
+    private BigDecimal amount;
+    private CoinService.CoinEnum refCoinCode;
+    private BigDecimal refAmount;
+    private BigDecimal profitC2C;
 }

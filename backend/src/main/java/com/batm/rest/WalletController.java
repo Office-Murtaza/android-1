@@ -61,9 +61,9 @@ public class WalletController {
 
         WalletDTO dto = new WalletDTO();
         dto.setAddress(coinCode.getWalletAddress());
-        dto.setTxFee(coinCode.getFee().getTxFee());
-        dto.setTxTolerance(coinCode.getTransactionTolerance().stripTrailingZeros());
-        dto.setScale(coinCode.getScale());
+        dto.setTxFee(coinCode.getCoinSettings().getTxFee());
+        dto.setTxTolerance(coinCode.getCoinEntity().getTolerance().stripTrailingZeros());
+        dto.setScale(coinCode.getCoinEntity().getScale());
 
         System.out.println(" ==== result: " + dto.getAddress());
         System.out.println("\n");

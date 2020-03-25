@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 import com.batm.dto.ChartPriceDTO;
 import com.batm.dto.CoinBalanceDTO;
+import com.batm.dto.ExchangeC2CDTO;
 import com.batm.model.Error;
 import com.batm.service.SolrService;
 import com.batm.service.UserService;
@@ -73,7 +74,7 @@ public class CoinController {
     @GetMapping("/coins/{coinCode}/settings")
     public Response getCoinsSettings(@PathVariable CoinService.CoinEnum coinCode) {
         try {
-            return Response.ok(coinCode.getFee());
+            return Response.ok(coinCode.getCoinSettings());
         } catch (Exception e) {
             e.printStackTrace();
             return Response.serverError();
@@ -105,11 +106,9 @@ public class CoinController {
         }
     }
 
-    @DeleteMapping("/coins/price-chart")
-    public Response getPriceChart() {
+    @PostMapping("/user/{userId}/coins/exchange-c2c")
+    public Response exchangeC2C(@RequestBody ExchangeC2CDTO dto, @PathVariable Long userId) {
         try {
-            solrService.cleanAllCoinPrice();
-
             return Response.ok(true);
         } catch (Exception e) {
             e.printStackTrace();

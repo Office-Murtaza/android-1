@@ -361,7 +361,7 @@ public class TransactionService {
 
                     if (receiver.isPresent()) {
                         CoinService.CoinEnum coinCode = CoinService.CoinEnum.valueOf(t.getCoin().getCode());
-                        BigDecimal txFee = coinCode.getFee().getTxFee();
+                        BigDecimal txFee = coinCode.getCoinSettings().getTxFee();
                         BigDecimal withdrawAmount = t.getAmount().subtract(txFee);
                         BigDecimal walletBalance = walletService.getBalance(coinCode);
 
