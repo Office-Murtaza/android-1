@@ -61,7 +61,7 @@ public class WalletController {
 
         WalletDTO dto = new WalletDTO();
         dto.setAddress(coinCode.getWalletAddress());
-        dto.setTxFee(coinCode.getTransactionFee().stripTrailingZeros());
+        dto.setTxFee(coinCode.getFee().getTxFee());
         dto.setTxTolerance(coinCode.getTransactionTolerance().stripTrailingZeros());
         dto.setScale(coinCode.getScale());
 

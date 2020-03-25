@@ -5,7 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import java.util.List;
+import java.math.BigDecimal;
 
 @Getter
 @Setter
@@ -14,5 +14,8 @@ import java.util.List;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class FeeDTO {
 
-    private List<CoinFeeDTO> fees;
+    private BigDecimal txFee;
+    private BigDecimal byteFee;
+    private Long gasPrice;
+    private Long gasLimit;
 }

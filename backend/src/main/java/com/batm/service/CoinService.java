@@ -111,26 +111,13 @@ public class CoinService {
         return new BalanceDTO(userId, new AmountDTO(totalBalance), balances);
     }
 
-    public FeeDTO getCoinsFee() {
-        List<CoinFeeDTO> feeList = new ArrayList<>();
-
-        coinList.forEach(e -> {
-            if (CoinEnum.ETH.name().equalsIgnoreCase(e.getCode())) {
-                feeList.add(new CoinFeeDTO(e.getCode(), null, Constant.GAS_PRICE, Constant.GAS_LIMIT));
-            } else {
-                feeList.add(new CoinFeeDTO(e.getCode(), e.getFee().stripTrailingZeros(), null, null));
-            }
-        });
-
-        return new FeeDTO(feeList);
-    }
-
     private CompletableFuture<CoinBalanceDTO> callAsync(UserCoin userCoin) {
         return CompletableFuture.supplyAsync(() -> {
             CoinEnum coinEnum = CoinEnum.valueOf(userCoin.getCoin().getCode());
 
+            Integer scale = coinEnum.getCoinEntity().getScale();
             BigDecimal coinPrice = coinEnum.getPrice();
-            BigDecimal coinBalance = coinEnum.getBalance(userCoin.getAddress());
+            BigDecimal coinBalance = coinEnum.getBalance(userCoin.getAddress()).setScale(scale).stripTrailingZeros();
 
             return new CoinBalanceDTO(userCoin.getCoin().getId(), userCoin.getCoin().getCode(), userCoin.getAddress(), coinBalance, new AmountDTO(coinPrice));
         });
@@ -266,18 +253,27 @@ public class CoinService {
             }
 
             @Override
-            public BigDecimal getTransactionFee() {
-                return getCoinEntity().getFee().multiply(BigDecimal.valueOf(1000));
+            public FeeDTO getFee() {
+                FeeDTO dto = new FeeDTO();
+                dto.setByteFee(getCoinEntity().getFee());
+                dto.setTxFee(getCoinEntity().getFee().multiply(BigDecimal.valueOf(1000)).stripTrailingZeros());
+
+                return dto;
             }
 
             @Override
             public BigDecimal getTransactionTolerance() {
-                return getCoinEntity().getTolerance();
+                return getCoinEntity().getTolerance().stripTrailingZeros();
             }
 
             @Override
             public Integer getScale() {
                 return getCoinEntity().getScale();
+            }
+
+            @Override
+            public BigDecimal getProfitC2C() {
+                return null;
             }
         },
         ETH {
@@ -373,18 +369,28 @@ public class CoinService {
             }
 
             @Override
-            public BigDecimal getTransactionFee() {
-                return BigDecimal.valueOf(Constant.GAS_PRICE).multiply(BigDecimal.valueOf(Constant.GAS_LIMIT)).divide(Constant.ETH_DIVIDER);
+            public FeeDTO getFee() {
+                FeeDTO dto = new FeeDTO();
+                dto.setGasPrice(Constant.GAS_PRICE);
+                dto.setGasLimit(Constant.GAS_LIMIT);
+                dto.setTxFee(BigDecimal.valueOf(Constant.GAS_PRICE).multiply(BigDecimal.valueOf(Constant.GAS_LIMIT)).divide(Constant.ETH_DIVIDER).stripTrailingZeros());
+
+                return dto;
             }
 
             @Override
             public BigDecimal getTransactionTolerance() {
-                return getCoinEntity().getTolerance();
+                return getCoinEntity().getTolerance().stripTrailingZeros();
             }
 
             @Override
             public Integer getScale() {
                 return getCoinEntity().getScale();
+            }
+
+            @Override
+            public BigDecimal getProfitC2C() {
+                return null;
             }
         },
         BCH {
@@ -476,18 +482,27 @@ public class CoinService {
             }
 
             @Override
-            public BigDecimal getTransactionFee() {
-                return getCoinEntity().getFee().multiply(BigDecimal.valueOf(1000));
+            public FeeDTO getFee() {
+                FeeDTO dto = new FeeDTO();
+                dto.setByteFee(getCoinEntity().getFee());
+                dto.setTxFee(getCoinEntity().getFee().multiply(BigDecimal.valueOf(1000)).stripTrailingZeros());
+
+                return dto;
             }
 
             @Override
             public BigDecimal getTransactionTolerance() {
-                return getCoinEntity().getTolerance();
+                return getCoinEntity().getTolerance().stripTrailingZeros();
             }
 
             @Override
             public Integer getScale() {
                 return getCoinEntity().getScale();
+            }
+
+            @Override
+            public BigDecimal getProfitC2C() {
+                return null;
             }
         },
         LTC {
@@ -579,18 +594,27 @@ public class CoinService {
             }
 
             @Override
-            public BigDecimal getTransactionFee() {
-                return getCoinEntity().getFee().multiply(BigDecimal.valueOf(1000));
+            public FeeDTO getFee() {
+                FeeDTO dto = new FeeDTO();
+                dto.setByteFee(getCoinEntity().getFee());
+                dto.setTxFee(getCoinEntity().getFee().multiply(BigDecimal.valueOf(1000)).stripTrailingZeros());
+
+                return dto;
             }
 
             @Override
             public BigDecimal getTransactionTolerance() {
-                return getCoinEntity().getTolerance();
+                return getCoinEntity().getTolerance().stripTrailingZeros();
             }
 
             @Override
             public Integer getScale() {
                 return getCoinEntity().getScale();
+            }
+
+            @Override
+            public BigDecimal getProfitC2C() {
+                return null;
             }
         },
         BNB {
@@ -683,18 +707,26 @@ public class CoinService {
             }
 
             @Override
-            public BigDecimal getTransactionFee() {
-                return getCoinEntity().getFee();
+            public FeeDTO getFee() {
+                FeeDTO dto = new FeeDTO();
+                dto.setTxFee(getCoinEntity().getFee().stripTrailingZeros());
+
+                return dto;
             }
 
             @Override
             public BigDecimal getTransactionTolerance() {
-                return getCoinEntity().getTolerance();
+                return getCoinEntity().getTolerance().stripTrailingZeros();
             }
 
             @Override
             public Integer getScale() {
                 return getCoinEntity().getScale();
+            }
+
+            @Override
+            public BigDecimal getProfitC2C() {
+                return null;
             }
         },
         XRP {
@@ -795,18 +827,26 @@ public class CoinService {
             }
 
             @Override
-            public BigDecimal getTransactionFee() {
-                return getCoinEntity().getFee();
+            public FeeDTO getFee() {
+                FeeDTO dto = new FeeDTO();
+                dto.setTxFee(getCoinEntity().getFee().stripTrailingZeros());
+
+                return dto;
             }
 
             @Override
             public BigDecimal getTransactionTolerance() {
-                return getCoinEntity().getTolerance();
+                return getCoinEntity().getTolerance().stripTrailingZeros();
             }
 
             @Override
             public Integer getScale() {
                 return getCoinEntity().getScale();
+            }
+
+            @Override
+            public BigDecimal getProfitC2C() {
+                return null;
             }
         },
         TRX {
@@ -896,18 +936,26 @@ public class CoinService {
             }
 
             @Override
-            public BigDecimal getTransactionFee() {
-                return getCoinEntity().getFee();
+            public FeeDTO getFee() {
+                FeeDTO dto = new FeeDTO();
+                dto.setTxFee(getCoinEntity().getFee().stripTrailingZeros());
+
+                return dto;
             }
 
             @Override
             public BigDecimal getTransactionTolerance() {
-                return getCoinEntity().getTolerance();
+                return getCoinEntity().getTolerance().stripTrailingZeros();
             }
 
             @Override
             public Integer getScale() {
                 return getCoinEntity().getScale();
+            }
+
+            @Override
+            public BigDecimal getProfitC2C() {
+                return null;
             }
         };
 
@@ -945,10 +993,12 @@ public class CoinService {
 
         public abstract Coin getCoinEntity();
 
-        public abstract BigDecimal getTransactionFee();
+        public abstract FeeDTO getFee();
 
         public abstract BigDecimal getTransactionTolerance();
 
         public abstract Integer getScale();
+
+        public abstract BigDecimal getProfitC2C();
     }
 }

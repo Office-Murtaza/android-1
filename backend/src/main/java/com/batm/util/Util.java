@@ -3,7 +3,6 @@ package com.batm.util;
 import net.sf.json.JSONObject;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang3.RandomStringUtils;
-
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
@@ -20,7 +19,7 @@ import java.util.Optional;
 public class Util {
 
     public static BigDecimal convert(String str) {
-        return new BigDecimal(str).setScale(3, RoundingMode.UP);
+        return new BigDecimal(str).setScale(3, RoundingMode.UP).stripTrailingZeros();
     }
 
     public static String generatePublicId() {

@@ -30,6 +30,7 @@ public class WalletDTO {
     private Long gasPrice;
     private Long gasLimit;
     private BigDecimal txTolerance;
+    private BigDecimal profitC2C;
     private Integer scale;
     private List<ReceivedAddressDTO> receivedAddresses;
 }

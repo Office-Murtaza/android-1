@@ -2,8 +2,6 @@ package com.batm.rest;
 
 import java.util.Arrays;
 import java.util.List;
-
-import com.batm.dto.ChartDTO;
 import com.batm.dto.ChartPriceDTO;
 import com.batm.dto.CoinBalanceDTO;
 import com.batm.model.Error;
@@ -24,6 +22,7 @@ public class CoinController {
 
     @Autowired
     private CoinService coinService;
+
     @Autowired
     private SolrService solrService;
 
@@ -71,10 +70,10 @@ public class CoinController {
         }
     }
 
-    @GetMapping("/user/{userId}/coins/fee")
-    public Response getCoinsFee(@PathVariable Long userId) {
+    @GetMapping("/coins/{coinCode}/settings")
+    public Response getCoinsSettings(@PathVariable CoinService.CoinEnum coinCode) {
         try {
-            return Response.ok(coinService.getCoinsFee());
+            return Response.ok(coinCode.getFee());
         } catch (Exception e) {
             e.printStackTrace();
             return Response.serverError();
@@ -110,7 +109,8 @@ public class CoinController {
     public Response getPriceChart() {
         try {
             solrService.cleanAllCoinPrice();
-            return Response.ok("OK");
+
+            return Response.ok(true);
         } catch (Exception e) {
             e.printStackTrace();
             return Response.serverError();

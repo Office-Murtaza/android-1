@@ -11,7 +11,9 @@ public enum TransactionType {
     RECEIVE_GIFT(4),
     BUY(5),
     SELL(6),
-    MOVE(7);
+    MOVE(7),
+    SEND_C2C(8),
+    RECEIVE_C2C(9);
 
     private int value;
 
@@ -39,8 +41,18 @@ public enum TransactionType {
             return SEND_GIFT;
         } else if (type == DEPOSIT) {
             return RECEIVE_GIFT;
+        } else {
+            return TransactionType.UNKNOWN;
         }
+    }
 
-        return null;
+    public static TransactionType getC2CType(TransactionType type) {
+        if (type == WITHDRAW) {
+            return SEND_C2C;
+        } else if (type == DEPOSIT) {
+            return RECEIVE_C2C;
+        } else {
+            return TransactionType.UNKNOWN;
+        }
     }
 }

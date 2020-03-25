@@ -361,11 +361,11 @@ public class TransactionService {
 
                     if (receiver.isPresent()) {
                         CoinService.CoinEnum coinCode = CoinService.CoinEnum.valueOf(t.getCoin().getCode());
-                        BigDecimal transactionFee = coinCode.getTransactionFee();
-                        BigDecimal withdrawAmount = t.getAmount().subtract(transactionFee);
+                        BigDecimal txFee = coinCode.getFee().getTxFee();
+                        BigDecimal withdrawAmount = t.getAmount().subtract(txFee);
                         BigDecimal walletBalance = walletService.getBalance(coinCode);
 
-                        if (walletBalance != null && walletBalance.compareTo(withdrawAmount.add(transactionFee)) >= 0) {
+                        if (walletBalance != null && walletBalance.compareTo(withdrawAmount.add(txFee)) >= 0) {
                             String fromAddress = coinCode.getWalletAddress();
                             String toAddress = userService.getUserCoin(receiver.get().getId(), t.getCoin().getCode()).getAddress();
                             String hex = coinCode.sign(fromAddress, toAddress, withdrawAmount);
