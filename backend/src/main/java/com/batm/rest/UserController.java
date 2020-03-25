@@ -381,9 +381,8 @@ public class UserController {
     @ExceptionHandler(BindException.class)
     public Response handleValidationExceptions(
             BindException ex) {
-        FieldError fieldError = (FieldError) ex.getBindingResult().getAllErrors().get(0);
-        String fieldName = fieldError.getField();
+        FieldError fieldError = (FieldError) ex.getBindingResult().getAllErrors().get(0); // just get first error from List
         String errorMessage = fieldError.getDefaultMessage();
-        return Response.error(new Error(2, "[" + fieldName + "] " + errorMessage));
+        return Response.error(new Error(2,  errorMessage));
     }
 }
