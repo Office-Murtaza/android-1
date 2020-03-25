@@ -17,13 +17,17 @@ import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.validation.BindException;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
+
 import javax.validation.Valid;
 import java.util.Optional;
 import java.util.regex.Pattern;
@@ -325,7 +329,7 @@ public class UserController {
     }
 
     @PostMapping("/user/{userId}/kyc")
-    public Response submitVerificationData(@PathVariable Long userId, @ModelAttribute UserVerificationDTO verificationData) {
+    public Response submitVerificationData(@PathVariable Long userId, @Valid @RequestBody @ModelAttribute UserVerificationDTO verificationData) {
         try {
             userService.submitVerification(userId, verificationData);
             return Response.ok(Boolean.TRUE);
@@ -370,5 +374,16 @@ public class UserController {
     private static boolean checkPasswordLength(String password) {
         return !StringUtils.isEmpty(password) && password.length() >= Constant.PASSWORD_MIN_LENGTH
                 && password.length() <= Constant.PASSWORD_MAX_LENGTH;
+    }
+
+
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ExceptionHandler(BindException.class)
+    public Response handleValidationExceptions(
+            BindException ex) {
+        FieldError fieldError = (FieldError) ex.getBindingResult().getAllErrors().get(0);
+        String fieldName = fieldError.getField();
+        String errorMessage = fieldError.getDefaultMessage();
+        return Response.error(new Error(2, "[" + fieldName + "] " + errorMessage));
     }
 }
