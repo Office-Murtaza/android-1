@@ -26,6 +26,9 @@ public class WalletDTO {
     private BigDecimal amount;
     private Integer confirmations;
     private BigDecimal txFee;
+    private BigDecimal byteFee;
+    private Long gasPrice;
+    private Long gasLimit;
     private BigDecimal txTolerance;
     private Integer scale;
     private List<ReceivedAddressDTO> receivedAddresses;

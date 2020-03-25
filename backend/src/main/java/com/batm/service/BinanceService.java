@@ -26,6 +26,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -34,15 +35,14 @@ import wallet.core.jni.BinanceSigner;
 import wallet.core.jni.CosmosAddress;
 import wallet.core.jni.PrivateKey;
 import wallet.core.jni.proto.Binance;
-
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 @Service
+@EnableScheduling
 public class BinanceService {
 
     @Autowired
@@ -66,7 +66,7 @@ public class BinanceService {
     @Value("${bnb.explorer.url}")
     private String explorerUrl;
 
-    @Scheduled(cron = "0 0 0/1 * * *") // every 1 hour
+    @Scheduled(cron = "0 0 */1 * * *") // every 1 hour
     public void processCronTasks() {
         System.out.println("Processing collecting prices for coins..");
         Arrays.stream(CoinService.CoinEnum.values()).forEach(coinEnum -> {
