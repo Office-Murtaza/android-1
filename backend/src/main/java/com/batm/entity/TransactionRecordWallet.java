@@ -5,7 +5,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import javax.persistence.*;
-import java.math.BigDecimal;
 
 @Getter
 @Setter
@@ -13,18 +12,7 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @Entity
 @Table(name = "w_transactionrecordwallet")
-public class TransactionRecordWallet extends BaseEntity {
-
-    private Integer type;
-    private Integer status;
-    private BigDecimal amount;
-
-    @ManyToOne
-    @JoinColumn(name = "coin_id")
-    private Coin coin;
-
-    @Column(name = "tx_id")
-    private String txId;
+public class TransactionRecordWallet extends BaseTxEntity {
 
     @OneToOne
     @JoinColumn(name = "coinpath_id")
@@ -33,4 +21,8 @@ public class TransactionRecordWallet extends BaseEntity {
     @OneToOne
     @JoinColumn(name = "transactionrecordgift_id")
     private TransactionRecordGift transactionRecordGift;
+
+    @OneToOne
+    @JoinColumn(name = "transactionrecordc2c_id")
+    private TransactionRecordC2C transactionRecordC2C;
 }

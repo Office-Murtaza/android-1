@@ -1,5 +1,6 @@
 package com.batm.rest;
 
+import com.batm.dto.ExchangeC2CDTO;
 import com.batm.dto.SubmitTransactionDTO;
 import com.batm.model.Response;
 import com.batm.service.CoinService;
@@ -134,6 +135,16 @@ public class TransactionController {
             } else {
                 return Response.error(2, coinCode.name() + " error transaction creation");
             }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Response.serverError();
+        }
+    }
+
+    @PostMapping("/user/{userId}/transactions/exchange-c2c")
+    public Response exchangeC2C(@PathVariable Long userId, @RequestBody ExchangeC2CDTO dto) {
+        try {
+            return Response.ok(transactionService.exchangeC2C(userId, dto));
         } catch (Exception e) {
             e.printStackTrace();
             return Response.serverError();

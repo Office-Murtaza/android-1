@@ -5,25 +5,27 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import javax.persistence.*;
+import java.math.BigDecimal;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "w_transactionrecordgift")
-public class TransactionRecordGift extends BaseTxEntity {
+@Table(name = "w_transactionrecordc2c")
+public class TransactionRecordC2C extends BaseTxEntity {
 
-    public static final int RECEIVER_NOT_EXIST = 0;
-    public static final int RECEIVER_EXIST = 1;
+    private BigDecimal refAmount;
 
-    private Integer receiverStatus;
-    private String phone;
-    private String imageId;
-    private String message;
+    @Column(name = "profit_c2c")
+    private BigDecimal profitC2C;
 
     @Column(name = "ref_tx_id")
     private String refTxId;
+
+    @ManyToOne
+    @JoinColumn(name = "ref_coin_id")
+    private Coin refCoin;
 
     @ManyToOne
     @JoinColumn(name = "identity_id")

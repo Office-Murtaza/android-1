@@ -196,7 +196,7 @@ public class WalletService {
             e.printStackTrace();
         }
 
-        return null;
+        return BigDecimal.ZERO;
     }
 
     public List<ReceivedAddressDTO> getReceivedAddresses(CoinService.CoinEnum coinCode, Set<String> addresses) {

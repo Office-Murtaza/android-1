@@ -4,7 +4,6 @@ import java.util.Arrays;
 import java.util.List;
 import com.batm.dto.ChartPriceDTO;
 import com.batm.dto.CoinBalanceDTO;
-import com.batm.dto.ExchangeC2CDTO;
 import com.batm.model.Error;
 import com.batm.service.SolrService;
 import com.batm.service.UserService;
@@ -100,16 +99,6 @@ public class CoinController {
                     .balance(coinBalanceDTO.getBalance())
                     .chart(solrService.collectPriceChartData(coinCode, coinBalanceDTO.getPrice().getUsd()))
                     .build());
-        } catch (Exception e) {
-            e.printStackTrace();
-            return Response.serverError();
-        }
-    }
-
-    @PostMapping("/user/{userId}/coins/exchange-c2c")
-    public Response exchangeC2C(@RequestBody ExchangeC2CDTO dto, @PathVariable Long userId) {
-        try {
-            return Response.ok(true);
         } catch (Exception e) {
             e.printStackTrace();
             return Response.serverError();
