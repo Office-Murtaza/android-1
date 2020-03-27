@@ -377,7 +377,7 @@ public class UserController {
     }
 
 
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ResponseStatus(HttpStatus.OK)
     @ExceptionHandler(BindException.class)
     public Response handleValidationExceptions(
             BindException ex) {

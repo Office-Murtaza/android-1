@@ -16,7 +16,7 @@ public class FileUploadExceptionAdvice {
     private String maxUploadSize;
 
     @ExceptionHandler(MaxUploadSizeExceededException.class)
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public Response handleMaxSizeException(MaxUploadSizeExceededException exc) {
         exc.printStackTrace();
