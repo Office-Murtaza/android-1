@@ -66,21 +66,21 @@ public class UserVerificationDTO {
     @NotBlank(groups = BasicVerificationValidator.class,
             message = "{userVerification.country.required}")
     @Pattern(groups = BasicVerificationValidator.class,
-            regexp = "[a-zA-Z]{2,255}",
+            regexp = "[a-zA-Z\\-\\s]{2,255}",
             message = "{userVerification.country.pattern}")
     private String country;
 
     @NotBlank(groups = BasicVerificationValidator.class,
             message = "{userVerification.province.required}")
     @Pattern(groups = BasicVerificationValidator.class,
-            regexp = "[a-zA-Z]{2,255}",
+            regexp = "[a-zA-Z\\-\\s]{2,255}",
             message = "{userVerification.province.pattern}")
     private String province;
 
     @NotBlank(groups = BasicVerificationValidator.class,
             message = "{userVerification.city.required}")
     @Pattern(groups = BasicVerificationValidator.class,
-            regexp = "[a-zA-Z]{2,255}",
+            regexp = "[a-zA-Z\\-\\s]{2,255}",
             message = "{userVerification.city.pattern}")
     private String city;
 
