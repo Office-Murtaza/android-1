@@ -39,6 +39,10 @@ final class CoinDetailsPresenter: ModulePresenter, CoinDetailsModule {
     store.action.accept(.setupCoinBalance(coinBalance))
   }
   
+  func setup(with coinSettings: CoinSettings) {
+    store.action.accept(.setupCoinSettings(coinSettings))
+  }
+  
   func setup(with data: PriceChartData) {
     store.action.accept(.setupPriceChartData(data))
   }
@@ -64,25 +68,29 @@ final class CoinDetailsPresenter: ModulePresenter, CoinDetailsModule {
     input.withdraw
       .withLatestFrom(state)
       .filter { $0.coin != nil && $0.coinBalance != nil }
-      .drive(onNext: { [delegate] in delegate?.showWithdrawScreen(for: $0.coin!, and: $0.coinBalance!) })
+      .drive(onNext: { [delegate] in delegate?.showWithdrawScreen(coin: $0.coin!,
+                                                                  coinBalance: $0.coinBalance!,
+                                                                  coinSettings: $0.coinSettings!) })
       .disposed(by: disposeBag)
     
     input.sendGift
       .withLatestFrom(state)
       .filter { $0.coin != nil && $0.coinBalance != nil }
-      .drive(onNext: { [delegate] in delegate?.showSendGiftScreen(for: $0.coin!, and: $0.coinBalance!) })
+      .drive(onNext: { [delegate] in delegate?.showSendGiftScreen(coin: $0.coin!,
+                                                                  coinBalance: $0.coinBalance!,
+                                                                  coinSettings: $0.coinSettings!) })
       .disposed(by: disposeBag)
     
     input.sell
       .asObservable()
       .withLatestFrom(state)
       .filter { $0.coin != nil && $0.coinBalance != nil }
-      .map { ($0.coin!, $0.coinBalance!) }
-      .flatMap { [unowned self] coin, coinBalance in
+      .map { ($0.coin!, $0.coinBalance!, $0.coinSettings!) }
+      .flatMap { [unowned self] coin, coinBalance, coinSettings in
         return self.track(self.usecase.getSellDetails(for: coin.type))
-          .map { (coin, coinBalance, $0) }
+          .map { (coin, coinBalance, coinSettings, $0) }
       }
-      .subscribe(onNext: { [delegate] in delegate?.showSellScreen(coin: $0, coinBalance: $1, details: $2) })
+    .subscribe(onNext: { [delegate] in delegate?.showSellScreen(coin: $0, coinBalance: $1, coinSettings: $2, details: $3) })
       .disposed(by: disposeBag)
     
     input.copy

@@ -1,8 +1,7 @@
 import Foundation
 
 protocol CoinSendGiftModule: class {
-  func setup(with coin: BTMCoin)
-  func setup(with coinBalance: CoinBalance)
+  func setup(coin: BTMCoin, coinBalance: CoinBalance, coinSettings: CoinSettings)
 }
 protocol CoinSendGiftModuleDelegate: class {
   func didFinishCoinSendGift()

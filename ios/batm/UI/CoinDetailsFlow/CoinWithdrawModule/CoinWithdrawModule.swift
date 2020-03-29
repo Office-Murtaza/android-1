@@ -1,8 +1,7 @@
 import Foundation
 
 protocol CoinWithdrawModule: class {
-  func setup(with coin: BTMCoin)
-  func setup(with coinBalance: CoinBalance)
+  func setup(coin: BTMCoin, coinBalance: CoinBalance, coinSettings: CoinSettings)
 }
 protocol CoinWithdrawModuleDelegate: class {
   func didFinishCoinWithdraw()

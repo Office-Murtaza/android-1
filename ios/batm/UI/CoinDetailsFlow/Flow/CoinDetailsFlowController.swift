@@ -17,16 +17,16 @@ extension CoinDetailsFlowController: CoinDetailsModuleDelegate {
     delegate?.didFinishCoinDetailsFlow()
   }
   
-  func showWithdrawScreen(for coin: BTMCoin, and coinBalance: CoinBalance) {
-    step.accept(CoinDetailsFlow.Steps.withdraw(coin, coinBalance))
+  func showWithdrawScreen(coin: BTMCoin, coinBalance: CoinBalance, coinSettings: CoinSettings) {
+    step.accept(CoinDetailsFlow.Steps.withdraw(coin, coinBalance, coinSettings))
   }
   
-  func showSendGiftScreen(for coin: BTMCoin, and coinBalance: CoinBalance) {
-    step.accept(CoinDetailsFlow.Steps.sendGift(coin, coinBalance))
+  func showSendGiftScreen(coin: BTMCoin, coinBalance: CoinBalance, coinSettings: CoinSettings) {
+    step.accept(CoinDetailsFlow.Steps.sendGift(coin, coinBalance, coinSettings))
   }
   
-  func showSellScreen(coin: BTMCoin, coinBalance: CoinBalance, details: SellDetails) {
-    step.accept(CoinDetailsFlow.Steps.sell(coin, coinBalance, details))
+  func showSellScreen(coin: BTMCoin, coinBalance: CoinBalance, coinSettings: CoinSettings, details: SellDetails) {
+    step.accept(CoinDetailsFlow.Steps.sell(coin, coinBalance, coinSettings, details))
   }
   
   func showTransactionDetails(with details: TransactionDetails, for type: CoinType) {

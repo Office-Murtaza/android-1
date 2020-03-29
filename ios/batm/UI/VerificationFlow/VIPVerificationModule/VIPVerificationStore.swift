@@ -49,10 +49,6 @@ final class VIPVerificationStore: ViewStore<VIPVerificationAction, VIPVerificati
       return .invalid(localize(L.CreateWallet.Form.Error.allFieldsRequired))
     }
     
-    guard state.ssn.count == 9 else {
-      return .invalid(localize(L.VIPVerification.Form.Error.ssnWrongLength))
-    }
-    
     guard state.selectedImage != nil else {
       return .invalid(localize(L.VIPVerification.Form.Error.idSelfieRequired))
     }

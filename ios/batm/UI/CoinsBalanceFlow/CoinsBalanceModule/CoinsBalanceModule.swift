@@ -5,5 +5,5 @@ protocol CoinsBalanceModule: class {
 }
 protocol CoinsBalanceModuleDelegate: class {
   func showFilterCoins(from module: CoinsBalanceModule)
-  func showCoinDetails(with coinBalance: CoinBalance, and data: PriceChartData)
+  func showCoinDetails(coinBalance: CoinBalance, coinSettings: CoinSettings, data: PriceChartData)
 }

@@ -42,9 +42,10 @@ final class CoinSellPresenter: ModulePresenter, CoinSellModule {
     self.store = store
   }
   
-  func setup(coin: BTMCoin, coinBalance: CoinBalance, details: SellDetails) {
+  func setup(coin: BTMCoin, coinBalance: CoinBalance, coinSettings: CoinSettings, details: SellDetails) {
     store.action.accept(.setupCoin(coin))
     store.action.accept(.setupCoinBalance(coinBalance))
+    store.action.accept(.setupCoinSettings(coinSettings))
     store.action.accept(.setupDetails(details))
   }
 
@@ -157,10 +158,11 @@ final class CoinSellPresenter: ModulePresenter, CoinSellModule {
   
   private func sell(for state: CoinSellState) -> Completable {
     let coin = state.coin!
+    let coinSettings = state.coinSettings!
     let amount = state.presubmitResponse!.amount
     let address = state.presubmitResponse!.address
 
-    return usecase.sell(from: coin, amount: amount, to: address)
+    return usecase.sell(from: coin, with: coinSettings, amount: amount, to: address)
       .catchError { [store] in
         if let apiError = $0 as? APIError, case let .serverError(error) = apiError {
           store.action.accept(.makeInvalidState(error))

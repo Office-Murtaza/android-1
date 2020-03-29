@@ -22,7 +22,7 @@ protocol APIGateway {
   func addCoins(userId: Int, coinAddresses: [CoinAddress]) -> Completable
   func compareCoins(userId: Int, coinAddresses: [CoinAddress]) -> Completable
   func getCoinsBalance(userId: Int, coins: [BTMCoin]) -> Single<CoinsBalance>
-  func getCoinsFee(userId: Int) -> Single<CoinsFee>
+  func getCoinSettings(type: CoinType) -> Single<CoinSettings>
   func getMapAddresses() -> Single<MapAddresses>
   func getPhoneNumber(userId: Int) -> Single<PhoneNumber>
   func checkPassword(userId: Int, password: String) -> Single<Bool>
@@ -151,8 +151,8 @@ final class APIGatewayImpl: APIGateway {
       }
   }
   
-  func getCoinsFee(userId: Int) -> Single<CoinsFee> {
-    let request = CoinsFeeRequest(userId: userId)
+  func getCoinSettings(type: CoinType) -> Single<CoinSettings> {
+    let request = CoinSettingsRequest(coinId: type.code)
     return api.execute(request)
       .flatMap {
         switch $0 {
