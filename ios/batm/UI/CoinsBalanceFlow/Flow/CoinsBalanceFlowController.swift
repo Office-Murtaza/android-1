@@ -20,8 +20,8 @@ extension CoinsBalanceFlowController: CoinsBalanceModuleDelegate {
     step.accept(CoinsBalanceFlow.Steps.filterCoins)
   }
   
-  func showCoinDetails(with coinBalance: CoinBalance, and data: PriceChartData) {
-    step.accept(CoinsBalanceFlow.Steps.coinDetails(coinBalance, data))
+  func showCoinDetails(coinBalance: CoinBalance, coinSettings: CoinSettings, data: PriceChartData) {
+    step.accept(CoinsBalanceFlow.Steps.coinDetails(coinBalance, coinSettings, data))
   }
   
 }

@@ -8,11 +8,15 @@ protocol CoinDetailsUsecase {
   func getCoin(for type: CoinType) -> Single<BTMCoin>
   func requestCode() -> Completable
   func verifyCode(code: String) -> Completable
-  func withdraw(from coin: BTMCoin, to destination: String, amount: Double) -> Completable
+  func withdraw(from coin: BTMCoin,
+                with coinSettings: CoinSettings,
+                to destination: String,
+                amount: Double) -> Completable
   func getSellDetails(for type: CoinType) -> Single<SellDetails>
   func presubmit(for type: CoinType, coinAmount: Double, currencyAmount: Double) -> Single<PreSubmitResponse>
-  func sell(from coin: BTMCoin, amount: Double, to toAddress: String) -> Completable
+  func sell(from coin: BTMCoin, with coinSettings: CoinSettings, amount: Double, to toAddress: String) -> Completable
   func sendGift(from coin: BTMCoin,
+                with coinSettings: CoinSettings,
                 to phone: String,
                 amount: Double,
                 message: String,
@@ -69,10 +73,13 @@ class CoinDetailsUsecaseImpl: CoinDetailsUsecase {
       .flatMapCompletable { [api] in api.verifyCode(userId: $0.userId, code: code) }
   }
   
-  func withdraw(from coin: BTMCoin, to destination: String, amount: Double) -> Completable {
+  func withdraw(from coin: BTMCoin,
+                with coinSettings: CoinSettings,
+                to destination: String,
+                amount: Double) -> Completable {
     return accountStorage.get()
       .flatMap { [walletService] account in
-        return walletService.getTransactionHex(for: coin, destination: destination, amount: amount)
+        return walletService.getTransactionHex(for: coin, with: coinSettings, destination: destination, amount: amount)
           .map { (account, $0) }
       }
       .flatMapCompletable { [unowned self] account, transactionResultString in
@@ -85,6 +92,7 @@ class CoinDetailsUsecaseImpl: CoinDetailsUsecase {
   }
   
   func sendGift(from coin: BTMCoin,
+                with coinSettings: CoinSettings,
                 to phone: String,
                 amount: Double,
                 message: String,
@@ -95,7 +103,7 @@ class CoinDetailsUsecaseImpl: CoinDetailsUsecase {
           .map { (account, $0.address) }
       }
       .flatMap { [walletService] account, destination in
-        return walletService.getTransactionHex(for: coin, destination: destination, amount: amount)
+        return walletService.getTransactionHex(for: coin, with: coinSettings, destination: destination, amount: amount)
           .map { (account, $0) }
       }
       .flatMapCompletable { [unowned self] account, transactionResultString in
@@ -123,10 +131,10 @@ class CoinDetailsUsecaseImpl: CoinDetailsUsecase {
                                                    currencyAmount: currencyAmount) }
   }
   
-  func sell(from coin: BTMCoin, amount: Double, to toAddress: String) -> Completable {
+  func sell(from coin: BTMCoin, with coinSettings: CoinSettings, amount: Double, to toAddress: String) -> Completable {
     return accountStorage.get()
       .flatMap { [walletService] account in
-        return walletService.getTransactionHex(for: coin, destination: toAddress, amount: amount)
+        return walletService.getTransactionHex(for: coin, with: coinSettings, destination: toAddress, amount: amount)
           .map { (account, $0) }
       }
       .flatMapCompletable { [unowned self] account, transactionResultString in

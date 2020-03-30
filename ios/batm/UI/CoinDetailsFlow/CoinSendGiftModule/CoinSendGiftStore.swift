@@ -4,6 +4,7 @@ import PhoneNumberKit
 enum CoinSendGiftAction: Equatable {
   case setupCoin(BTMCoin)
   case setupCoinBalance(CoinBalance)
+  case setupCoinSettings(CoinSettings)
   case updatePhone(ValidatablePhoneNumber)
   case pastePhone(String)
   case updateCurrencyAmount(String?)
@@ -20,6 +21,7 @@ struct CoinSendGiftState: Equatable {
   
   var coin: BTMCoin?
   var coinBalance: CoinBalance?
+  var coinSettings: CoinSettings?
   var validatablePhone = ValidatablePhoneNumber()
   var currencyAmount: String = ""
   var coinAmount: String = ""
@@ -30,7 +32,7 @@ struct CoinSendGiftState: Equatable {
   var shouldShowCodePopup: Bool = false
   
   var maxValue: Double {
-    guard let balance = coinBalance?.balance, let fee = coin?.feeInCoin, balance > fee else { return 0 }
+    guard let balance = coinBalance?.balance, let fee = coinSettings?.txFee, balance > fee else { return 0 }
     return balance - fee
   }
   
@@ -48,6 +50,7 @@ final class CoinSendGiftStore: ViewStore<CoinSendGiftAction, CoinSendGiftState> 
     switch action {
     case let .setupCoin(coin): state.coin = coin
     case let .setupCoinBalance(coinBalance): state.coinBalance = coinBalance
+    case let .setupCoinSettings(coinSettings): state.coinSettings = coinSettings
     case let .updatePhone(validatablePhone): state.validatablePhone = validatablePhone
     case let .pastePhone(phone):
       if let parsedPhone = try? PhoneNumberKit.default.parse(phone) {

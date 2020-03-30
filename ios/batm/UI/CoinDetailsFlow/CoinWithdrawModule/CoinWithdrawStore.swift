@@ -3,6 +3,7 @@ import Foundation
 enum CoinWithdrawAction: Equatable {
   case setupCoin(BTMCoin)
   case setupCoinBalance(CoinBalance)
+  case setupCoinSettings(CoinSettings)
   case updateAddress(String?)
   case updateCurrencyAmount(String?)
   case updateCoinAmount(String?)
@@ -16,6 +17,7 @@ struct CoinWithdrawState: Equatable {
   
   var coin: BTMCoin?
   var coinBalance: CoinBalance?
+  var coinSettings: CoinSettings?
   var address: String = ""
   var currencyAmount: String = ""
   var coinAmount: String = ""
@@ -24,7 +26,7 @@ struct CoinWithdrawState: Equatable {
   var shouldShowCodePopup: Bool = false
   
   var maxValue: Double {
-    guard let balance = coinBalance?.balance, let fee = coin?.feeInCoin, balance > fee else { return 0 }
+    guard let balance = coinBalance?.balance, let fee = coinSettings?.txFee, balance > fee else { return 0 }
     return balance - fee
   }
   
@@ -42,6 +44,7 @@ final class CoinWithdrawStore: ViewStore<CoinWithdrawAction, CoinWithdrawState> 
     switch action {
     case let .setupCoin(coin): state.coin = coin
     case let .setupCoinBalance(coinBalance): state.coinBalance = coinBalance
+    case let .setupCoinSettings(coinSettings): state.coinSettings = coinSettings
     case let .updateAddress(address): state.address = address ?? ""
     case let .updateCurrencyAmount(amount):
       let currencyAmount = (amount ?? "").fiatWithdrawFormatted

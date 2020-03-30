@@ -11,9 +11,6 @@ class BTMCoinConverter: Converter<BTMCoinRecord, BTMCoin> {
                    privateKey: model.privateKey,
                    publicKey: model.publicKey,
                    isVisible: model.visible,
-                   index: Int(model.index),
-                   fee: model.fee,
-                   gasPrice: Int(model.gasPrice),
-                   gasLimit: Int(model.gasLimit))
+                   index: Int(model.index))
   }
 }

@@ -10,6 +10,7 @@ enum SelectedPeriod {
 
 enum CoinDetailsAction: Equatable {
   case setupCoinBalance(CoinBalance)
+  case setupCoinSettings(CoinSettings)
   case setupPriceChartData(PriceChartData)
   case updateSelectedPeriod(SelectedPeriod)
   case startFetching
@@ -23,6 +24,7 @@ enum CoinDetailsAction: Equatable {
 struct CoinDetailsState: Equatable {
   
   var coinBalance: CoinBalance?
+  var coinSettings: CoinSettings?
   var priceChartData: PriceChartData?
   var selectedPeriod: SelectedPeriod = .oneDay
   var transactions: Transactions?
@@ -52,6 +54,7 @@ final class CoinDetailsStore: ViewStore<CoinDetailsAction, CoinDetailsState> {
     
     switch action {
     case let .setupCoinBalance(coinBalance): state.coinBalance = coinBalance
+    case let .setupCoinSettings(coinSettings): state.coinSettings = coinSettings
     case let .setupPriceChartData(data): state.priceChartData = data
     case let .updateSelectedPeriod(selectedPeriod): state.selectedPeriod = selectedPeriod
     case .startFetching: state.isFetching = true

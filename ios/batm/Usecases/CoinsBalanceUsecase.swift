@@ -4,6 +4,7 @@ import TrustWalletCore
 
 protocol CoinsBalanceUsecase {
   func getCoinsBalance() -> Single<CoinsBalance>
+  func getCoinSettings(for type: CoinType) -> Single<CoinSettings>
   func getPriceChartData(for type: CoinType) -> Single<PriceChartData>
 }
 
@@ -22,33 +23,13 @@ class CoinsBalanceUsecaseImpl: CoinsBalanceUsecase, HasDisposeBag {
   }
   
   func getCoinsBalance() -> Single<CoinsBalance> {
-    return accountStorage.get()
-      .flatMap { [api] in api.getCoinsFee(userId: $0.userId) }
-      .asObservable()
-      .doOnNext { [unowned self] in self.updateFees(for: $0) }
-      .flatMap { [walletStorage] _ in walletStorage.get() }
+    return walletStorage.get()
       .map { $0.coins.filter { $0.isVisible } }
+      .asObservable()
       .withLatestFrom(accountStorage.get()) { ($1, $0) }
       .flatMap { [api] in api.getCoinsBalance(userId: $0.userId, coins: $1) }
       .doOnNext { [unowned self] in self.updateIndexes(for: $0) }
       .asSingle()
-  }
-  
-  private func updateFees(for coinsFee: CoinsFee) {
-    Observable.from(coinsFee.fees)
-      .flatMap { [walletStorage] coinFee -> Completable in
-        if let fee = coinFee.fee {
-          return walletStorage.changeFee(of: coinFee.type, with: fee)
-        }
-        
-        if let gasPrice = coinFee.gasPrice, let gasLimit = coinFee.gasLimit {
-          return walletStorage.changeGas(of: coinFee.type, price: gasPrice, limit: gasLimit)
-        }
-        
-        return .empty()
-      }
-      .subscribe()
-      .disposed(by: disposeBag)
   }
   
   private func updateIndexes(for coinsBalance: CoinsBalance) {
@@ -57,6 +38,10 @@ class CoinsBalanceUsecaseImpl: CoinsBalanceUsecase, HasDisposeBag {
       .flatMap { [walletStorage] in walletStorage.changeIndex(of: $0, with: $1) }
       .subscribe()
       .disposed(by: disposeBag)
+  }
+  
+  func getCoinSettings(for type: CoinType) -> Single<CoinSettings> {
+    return api.getCoinSettings(type: type)
   }
   
   func getPriceChartData(for type: CoinType) -> Single<PriceChartData> {

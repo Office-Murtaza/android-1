@@ -51,10 +51,14 @@ class CoinsBalancePresenter: ModulePresenter, CoinsBalanceModule {
     input.coinTap
       .asObservable()
       .flatMap { [unowned self] coinBalance in
-        return self.track(self.usecase.getPriceChartData(for: coinBalance.type))
-          .map { (coinBalance, $0) }
+        return self.track(self.usecase.getCoinSettings(for: coinBalance.type))
+        .map { (coinBalance, $0) }
       }
-      .subscribe(onNext: { [delegate] in delegate?.showCoinDetails(with: $0, and: $1) })
+      .flatMap { [unowned self] coinBalance, coinSettings in
+        return self.track(self.usecase.getPriceChartData(for: coinBalance.type))
+          .map { (coinBalance, coinSettings, $0) }
+      }
+      .subscribe(onNext: { [delegate] in delegate?.showCoinDetails(coinBalance: $0, coinSettings: $1, data: $2) })
       .disposed(by: disposeBag)
     
     setupBindings()

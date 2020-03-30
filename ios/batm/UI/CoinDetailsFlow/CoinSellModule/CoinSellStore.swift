@@ -3,6 +3,7 @@ import Foundation
 enum CoinSellAction: Equatable {
   case setupCoin(BTMCoin)
   case setupCoinBalance(CoinBalance)
+  case setupCoinSettings(CoinSettings)
   case setupDetails(SellDetails)
   case setupPreSubmitResponse(PreSubmitResponse)
   case updateFromAnotherAddress(Bool)
@@ -18,6 +19,7 @@ struct CoinSellState: Equatable {
   
   var coin: BTMCoin?
   var coinBalance: CoinBalance?
+  var coinSettings: CoinSettings?
   var details: SellDetails?
   var presubmitResponse: PreSubmitResponse?
   var fromAnotherAddress: Bool = false
@@ -40,7 +42,7 @@ struct CoinSellState: Equatable {
     
     guard
       let balance = coinBalance?.balance,
-      let fee = coin?.feeInCoin,
+      let fee = coinSettings?.txFee,
       balance > fee,
       let price = coinBalance?.price,
       let profitRate = details?.profitRate
@@ -75,7 +77,7 @@ struct CoinSellState: Equatable {
   var isValidIfResponseExists: Bool {
     guard let response = presubmitResponse, !fromAnotherAddress else { return true }
     
-    guard let balance = coinBalance?.balance, let fee = coin?.feeInCoin, balance > fee else { return false }
+    guard let balance = coinBalance?.balance, let fee = coinSettings?.txFee, balance > fee else { return false }
     
     return balance - fee >= response.amount
   }
@@ -94,6 +96,7 @@ final class CoinSellStore: ViewStore<CoinSellAction, CoinSellState> {
     switch action {
     case let .setupCoin(coin): state.coin = coin
     case let .setupCoinBalance(coinBalance): state.coinBalance = coinBalance
+    case let .setupCoinSettings(coinSettings): state.coinSettings = coinSettings
     case let .setupDetails(details): state.details = details
     case let .setupPreSubmitResponse(response): state.presubmitResponse = response
     case let .updateFromAnotherAddress(fromAnotherAddress): state.fromAnotherAddress = fromAnotherAddress
@@ -128,7 +131,7 @@ final class CoinSellStore: ViewStore<CoinSellAction, CoinSellState> {
     guard amount > 0 else {
       return .invalid(localize(L.CoinWithdraw.Form.Error.tooLowAmount))
     }
-    
+
     guard amount <= state.maxValue else {
       return .invalid(localize(L.CoinWithdraw.Form.Error.tooHighAmount))
     }
