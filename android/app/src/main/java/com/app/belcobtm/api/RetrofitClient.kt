@@ -1,7 +1,7 @@
 package com.app.belcobtm.api
 
 import com.app.belcobtm.App
-import com.app.belcobtm.presentation.core.Const.API_URL
+import com.app.belcobtm.data.rest.ApiFactory
 import com.app.belcobtm.presentation.core.pref
 import com.facebook.stetho.okhttp3.StethoInterceptor
 import com.google.gson.Gson
@@ -12,7 +12,6 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
-
 class RetrofitClient private constructor() {
     private object Holder {
         val INSTANCE = RetrofitClient()
@@ -22,7 +21,7 @@ class RetrofitClient private constructor() {
         val instance: RetrofitClient by lazy { Holder.INSTANCE }
     }
 
-    var apiInterface: ApiInterface = getClient(API_URL).create(ApiInterface::class.java)
+    var apiInterface: ApiInterface = getClient(ApiFactory.SERVER_URL).create(ApiInterface::class.java)
 
     private fun getClient(url: String): Retrofit {
         return Retrofit.Builder()

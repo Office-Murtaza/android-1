@@ -54,7 +54,7 @@ class ApiFactory(private val prefHelper: SharedPreferencesHelper) {
         // private const val BASE_URL = "http://206.189.204.44:8080"
         private const val BASE_URL = "https://test.belcobtm.com"
         private const val API_VERSION = 1
-        private const val SERVER_URL = "$BASE_URL/api/v$API_VERSION/"
+         const val SERVER_URL = "$BASE_URL/api/v$API_VERSION/"
 
         private const val HEADER_CONTENT_TYPE_KEY = "Content-Type"
         private const val HEADER_CONTENT_TYPE_VALUE = "application/json"
