@@ -2,7 +2,7 @@ package com.batm.service;
 
 import com.batm.dto.NodeTransactionsDTO;
 import com.batm.dto.ReceivedAddressDTO;
-import com.batm.dto.TransactionDTO;
+import com.batm.dto.TransactionDetailsDTO;
 import com.batm.entity.Coin;
 import com.batm.entity.CoinPath;
 import com.batm.entity.TransactionRecordWallet;
@@ -188,7 +188,7 @@ public class WalletService {
 
             BigDecimal pendingSum = nodeTransactionsDTO.getMap().values().stream()
                     .filter(e -> e.getType() == TransactionType.WITHDRAW && e.getStatus() == TransactionStatus.PENDING)
-                    .map(TransactionDTO::getCryptoAmount)
+                    .map(TransactionDetailsDTO::getCryptoAmount)
                     .reduce(BigDecimal.ZERO, BigDecimal::add);
 
             return balance.subtract(pendingSum);
@@ -206,7 +206,7 @@ public class WalletService {
             ReceivedAddressDTO dto = new ReceivedAddressDTO();
             dto.setAddress(address);
 
-            Map<String, TransactionDTO> map = coinCode.getNodeTransactions(address).getMap();
+            Map<String, TransactionDetailsDTO> map = coinCode.getNodeTransactions(address).getMap();
 
             Set<String> txIds = map.entrySet().stream()
                     .filter(x -> x.getValue().getToAddress().equalsIgnoreCase(address))

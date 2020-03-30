@@ -1,6 +1,6 @@
 package com.batm.rest;
 
-import com.batm.dto.TransactionDTO;
+import com.batm.dto.TransactionDetailsDTO;
 import com.batm.dto.WalletDTO;
 import com.batm.service.CoinService;
 import com.batm.service.WalletService;
@@ -88,7 +88,7 @@ public class WalletController {
     public WalletDTO getTransaction(@RequestParam CoinService.CoinEnum coinCode, @RequestParam String txId) {
         System.out.println(" ---- /transaction coinCode: " + coinCode.name() + ", txId: " + txId);
 
-        TransactionDTO transaction = coinCode.getTransaction(txId, null);
+        TransactionDetailsDTO transaction = coinCode.getTransaction(txId, null);
 
         WalletDTO dto = new WalletDTO();
         dto.setTxId(txId);

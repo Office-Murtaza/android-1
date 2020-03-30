@@ -1,11 +1,6 @@
 package com.batm.service;
 
-import com.batm.dto.NodeTransactionsDTO;
-import com.batm.dto.CurrentBlockDTO;
-import com.batm.dto.TransactionDTO;
-import com.batm.dto.TransactionListDTO;
-import com.batm.entity.TransactionRecord;
-import com.batm.entity.TransactionRecordGift;
+import com.batm.dto.*;
 import com.batm.model.TransactionStatus;
 import com.batm.model.TransactionType;
 import com.batm.util.Base58;
@@ -89,8 +84,8 @@ public class TrongridService {
         return TransactionStatus.FAIL;
     }
 
-    public TransactionDTO getTransaction(String txId, String address) {
-        TransactionDTO dto = new TransactionDTO();
+    public TransactionDetailsDTO getTransaction(String txId, String address) {
+        TransactionDetailsDTO dto = new TransactionDetailsDTO();
 
         try {
             JSONObject res = rest.getForObject(nodeUrl + "/v1/transactions/" + txId, JSONObject.class);
@@ -122,7 +117,7 @@ public class TrongridService {
         try {
             JSONObject res = rest.getForObject(nodeUrl + "/v1/accounts/" + address + "/transactions?limit=200", JSONObject.class);
             JSONArray array = res.optJSONArray("data");
-            Map<String, TransactionDTO> map = collectNodeTxs(array, address);
+            Map<String, TransactionDetailsDTO> map = collectNodeTxs(array, address);
 
             return new NodeTransactionsDTO(map);
         } catch (Exception e) {
@@ -132,11 +127,11 @@ public class TrongridService {
         return new NodeTransactionsDTO();
     }
 
-    public TransactionListDTO getTransactionList(String address, Integer startIndex, Integer limit, List<TransactionRecordGift> gifts, List<TransactionRecord> txs) {
+    public TransactionListDTO getTransactionList(String address, Integer startIndex, Integer limit, TxListDTO txDTO) {
         try {
-            Map<String, TransactionDTO> map = getNodeTransactions(address).getMap();
+            Map<String, TransactionDetailsDTO> map = getNodeTransactions(address).getMap();
 
-            return TxUtil.buildTxs(map, startIndex, limit, gifts, txs);
+            return TxUtil.buildTxs(map, startIndex, limit, txDTO);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -205,8 +200,8 @@ public class TrongridService {
         return null;
     }
 
-    private Map<String, TransactionDTO> collectNodeTxs(JSONArray array, String address) {
-        Map<String, TransactionDTO> map = new HashMap<>();
+    private Map<String, TransactionDetailsDTO> collectNodeTxs(JSONArray array, String address) {
+        Map<String, TransactionDetailsDTO> map = new HashMap<>();
 
         if (array != null && !array.isEmpty()) {
             for (int i = 0; i < array.size(); i++) {
@@ -227,7 +222,7 @@ public class TrongridService {
                 TransactionStatus status = getStatus(contractRet);
                 Date date1 = new Date(tx.optJSONObject("raw_data").optLong("timestamp"));
 
-                map.put(txId, new TransactionDTO(txId, amount, fromAddress, toAddress, type, status, date1));
+                map.put(txId, new TransactionDetailsDTO(txId, amount, fromAddress, toAddress, type, status, date1));
             }
         }
 

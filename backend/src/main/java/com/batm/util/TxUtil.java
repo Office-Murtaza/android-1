@@ -1,13 +1,14 @@
 package com.batm.util;
 
-import com.batm.dto.TransactionDTO;
+import com.batm.dto.TransactionDetailsDTO;
 import com.batm.dto.TransactionListDTO;
+import com.batm.dto.TxListDTO;
+import com.batm.entity.BaseTxEntity;
 import com.batm.entity.TransactionRecord;
-import com.batm.entity.TransactionRecordGift;
+import com.batm.model.TransactionGroupType;
 import com.batm.model.TransactionStatus;
 import com.batm.model.TransactionType;
 import org.apache.commons.lang.StringUtils;
-
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -15,26 +16,27 @@ import java.util.Map;
 
 public class TxUtil {
 
-    public static TransactionListDTO buildTxs(Map<String, TransactionDTO> map, Integer startIndex, Integer limit, List<TransactionRecordGift> giftList, List<TransactionRecord> txList) {
-        TxUtil.mergeGifts(map, giftList);
-        TxUtil.mergeTxs(map, txList);
-        List<TransactionDTO> list = TxUtil.convertAndSort(map);
+    public static TransactionListDTO buildTxs(Map<String, TransactionDetailsDTO> map, Integer startIndex, Integer limit, TxListDTO txDTO) {
+        mergeGroupGroupTxs(map, txDTO.getGiftList(), TransactionGroupType.GIFT);
+        mergeGroupGroupTxs(map, txDTO.getC2cList(), TransactionGroupType.C2C);
+        mergeBuySellTxs(map, txDTO.getBuySellList());
+        List<TransactionDetailsDTO> list = TxUtil.convertAndSort(map);
 
-        return TxUtil.build(list, startIndex, limit);
+        return build(list, startIndex, limit);
     }
 
-    private static void mergeGifts(Map<String, TransactionDTO> map, List<TransactionRecordGift> giftList) {
-        if (giftList != null && !giftList.isEmpty()) {
-            giftList.stream().forEach(e -> {
+    private static void mergeGroupGroupTxs(Map<String, TransactionDetailsDTO> map, List<? extends BaseTxEntity> list, TransactionGroupType group) {
+        if (list != null && !list.isEmpty()) {
+            list.stream().forEach(e -> {
                 if (map.containsKey(e.getTxId())) {
                     TransactionType type = map.get(e.getTxId()).getType();
-                    map.get(e.getTxId()).setType(TransactionType.getGiftType(type));
+                    map.get(e.getTxId()).setType(TransactionType.convert(type, group));
                 }
             });
         }
     }
 
-    private static void mergeTxs(Map<String, TransactionDTO> map, List<TransactionRecord> txList) {
+    private static void mergeBuySellTxs(Map<String, TransactionDetailsDTO> map, List<TransactionRecord> txList) {
         if (txList != null && !txList.isEmpty()) {
             txList.stream().forEach(e -> {
                 TransactionType type = e.getTransactionType();
@@ -44,20 +46,20 @@ public class TxUtil {
                     map.get(e.getDetail()).setType(type);
                     map.get(e.getDetail()).setStatus(status);
                 } else {
-                    TransactionDTO transactionDTO = new TransactionDTO(null, Util.format6(e.getCryptoAmount()), type, status, e.getServerTime());
+                    TransactionDetailsDTO transactionDetailsDTO = new TransactionDetailsDTO(null, Util.format6(e.getCryptoAmount()), type, status, e.getServerTime());
                     String txDbId = e.getId().toString();
-                    transactionDTO.setTxDbId(txDbId);
+                    transactionDetailsDTO.setTxDbId(txDbId);
 
-                    map.put(txDbId, transactionDTO);
+                    map.put(txDbId, transactionDetailsDTO);
                 }
             });
         }
     }
 
-    private static List<TransactionDTO> convertAndSort(Map<String, TransactionDTO> map) {
+    private static List<TransactionDetailsDTO> convertAndSort(Map<String, TransactionDetailsDTO> map) {
         if (!map.isEmpty()) {
-            List<TransactionDTO> list = new ArrayList<>(map.values());
-            list.sort(Comparator.comparing(TransactionDTO::getDate1).reversed());
+            List<TransactionDetailsDTO> list = new ArrayList<>(map.values());
+            list.sort(Comparator.comparing(TransactionDetailsDTO::getDate1).reversed());
 
             return list;
         }
@@ -65,9 +67,9 @@ public class TxUtil {
         return new ArrayList<>();
     }
 
-    private static TransactionListDTO build(List<TransactionDTO> list, Integer startIndex, Integer limit) {
+    private static TransactionListDTO build(List<TransactionDetailsDTO> list, Integer startIndex, Integer limit) {
         TransactionListDTO result = new TransactionListDTO();
-        List<TransactionDTO> transactions = new ArrayList<>();
+        List<TransactionDetailsDTO> transactions = new ArrayList<>();
         int index = startIndex - 1;
 
         for (int i = 0; i < list.size(); i++) {
@@ -75,7 +77,7 @@ public class TxUtil {
                 continue;
             }
 
-            TransactionDTO dto = list.get(i);
+            TransactionDetailsDTO dto = list.get(i);
             dto.setIndex(i + 1);
             transactions.add(dto);
 

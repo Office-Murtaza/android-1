@@ -16,5 +16,5 @@ import java.util.List;
 public class TransactionListDTO {
 
     private Integer total = 0;
-    private List<TransactionDTO> transactions = new ArrayList<>();
+    private List<TransactionDetailsDTO> transactions = new ArrayList<>();
 }

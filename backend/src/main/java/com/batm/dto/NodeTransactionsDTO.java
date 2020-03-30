@@ -15,5 +15,5 @@ import java.util.Map;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class NodeTransactionsDTO {
 
-    Map<String, TransactionDTO> map = new HashMap<>();
+    Map<String, TransactionDetailsDTO> map = new HashMap<>();
 }

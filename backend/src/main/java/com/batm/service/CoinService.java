@@ -191,13 +191,13 @@ public class CoinService {
             }
 
             @Override
-            public TransactionDTO getTransaction(String txId, String address) {
+            public TransactionDetailsDTO getTransaction(String txId, String address) {
                 return blockbook.getTransaction(btcNodeUrl, btcExplorerUrl, txId, address, Constant.BTC_DIVIDER);
             }
 
             @Override
-            public TransactionListDTO getTransactionList(String address, Integer startIndex, Integer limit, List<TransactionRecordGift> gifts, List<TransactionRecord> txs) {
-                return blockbook.getTransactionList(btcNodeUrl, address, Constant.BTC_DIVIDER, startIndex, limit, gifts, txs);
+            public TransactionListDTO getTransactionList(String address, Integer startIndex, Integer limit, TxListDTO txDTO) {
+                return blockbook.getTransactionList(btcNodeUrl, address, Constant.BTC_DIVIDER, startIndex, limit, txDTO);
             }
 
             @Override
@@ -289,13 +289,13 @@ public class CoinService {
             }
 
             @Override
-            public TransactionDTO getTransaction(String txId, String address) {
+            public TransactionDetailsDTO getTransaction(String txId, String address) {
                 return blockbook.getTransaction(ethNodeUrl, ethExplorerUrl, txId, address, Constant.ETH_DIVIDER);
             }
 
             @Override
-            public TransactionListDTO getTransactionList(String address, Integer startIndex, Integer limit, List<TransactionRecordGift> gifts, List<TransactionRecord> txs) {
-                return blockbook.getTransactionList(ethNodeUrl, address, Constant.ETH_DIVIDER, startIndex, limit, gifts, txs);
+            public TransactionListDTO getTransactionList(String address, Integer startIndex, Integer limit, TxListDTO txDTO) {
+                return blockbook.getTransactionList(ethNodeUrl, address, Constant.ETH_DIVIDER, startIndex, limit, txDTO);
             }
 
             @Override
@@ -392,13 +392,13 @@ public class CoinService {
             }
 
             @Override
-            public TransactionDTO getTransaction(String txId, String address) {
+            public TransactionDetailsDTO getTransaction(String txId, String address) {
                 return blockbook.getTransaction(bchNodeUrl, bchExplorerUrl, txId, address, Constant.BCH_DIVIDER);
             }
 
             @Override
-            public TransactionListDTO getTransactionList(String address, Integer startIndex, Integer limit, List<TransactionRecordGift> gifts, List<TransactionRecord> txs) {
-                return blockbook.getTransactionList(bchNodeUrl, address, Constant.BCH_DIVIDER, startIndex, limit, gifts, txs);
+            public TransactionListDTO getTransactionList(String address, Integer startIndex, Integer limit, TxListDTO txDTO) {
+                return blockbook.getTransactionList(bchNodeUrl, address, Constant.BCH_DIVIDER, startIndex, limit, txDTO);
             }
 
             @Override
@@ -490,13 +490,13 @@ public class CoinService {
             }
 
             @Override
-            public TransactionDTO getTransaction(String txId, String address) {
+            public TransactionDetailsDTO getTransaction(String txId, String address) {
                 return blockbook.getTransaction(ltcNodeUrl, ltcExplorerUrl, txId, address, Constant.LTC_DIVIDER);
             }
 
             @Override
-            public TransactionListDTO getTransactionList(String address, Integer startIndex, Integer limit, List<TransactionRecordGift> gifts, List<TransactionRecord> txs) {
-                return blockbook.getTransactionList(ltcNodeUrl, address, Constant.LTC_DIVIDER, startIndex, limit, gifts, txs);
+            public TransactionListDTO getTransactionList(String address, Integer startIndex, Integer limit, TxListDTO txDTO) {
+                return blockbook.getTransactionList(ltcNodeUrl, address, Constant.LTC_DIVIDER, startIndex, limit, txDTO);
             }
 
             @Override
@@ -588,13 +588,13 @@ public class CoinService {
             }
 
             @Override
-            public TransactionDTO getTransaction(String txId, String address) {
+            public TransactionDetailsDTO getTransaction(String txId, String address) {
                 return binance.getTransaction(txId, address);
             }
 
             @Override
-            public TransactionListDTO getTransactionList(String address, Integer startIndex, Integer limit, List<TransactionRecordGift> gifts, List<TransactionRecord> txs) {
-                return binance.getTransactionList(address, startIndex, limit, gifts, txs);
+            public TransactionListDTO getTransactionList(String address, Integer startIndex, Integer limit, TxListDTO txDTO) {
+                return binance.getTransactionList(address, startIndex, limit, txDTO);
             }
 
             @Override
@@ -686,13 +686,13 @@ public class CoinService {
             }
 
             @Override
-            public TransactionDTO getTransaction(String txId, String address) {
+            public TransactionDetailsDTO getTransaction(String txId, String address) {
                 return rippled.getTransaction(txId, address);
             }
 
             @Override
-            public TransactionListDTO getTransactionList(String address, Integer startIndex, Integer limit, List<TransactionRecordGift> gifts, List<TransactionRecord> txs) {
-                return rippled.getTransactionList(address, startIndex, limit, gifts, txs);
+            public TransactionListDTO getTransactionList(String address, Integer startIndex, Integer limit, TxListDTO txDTO) {
+                return rippled.getTransactionList(address, startIndex, limit, txDTO);
             }
 
             @Override
@@ -792,13 +792,13 @@ public class CoinService {
             }
 
             @Override
-            public TransactionDTO getTransaction(String txId, String address) {
+            public TransactionDetailsDTO getTransaction(String txId, String address) {
                 return trongrid.getTransaction(txId, address);
             }
 
             @Override
-            public TransactionListDTO getTransactionList(String address, Integer startIndex, Integer limit, List<TransactionRecordGift> gifts, List<TransactionRecord> txs) {
-                return trongrid.getTransactionList(address, startIndex, limit, gifts, txs);
+            public TransactionListDTO getTransactionList(String address, Integer startIndex, Integer limit, TxListDTO txDTO) {
+                return trongrid.getTransactionList(address, startIndex, limit, txDTO);
             }
 
             @Override
@@ -871,9 +871,9 @@ public class CoinService {
 
         public abstract TransactionStatus getTransactionStatus(String txId);
 
-        public abstract TransactionDTO getTransaction(String txId, String address);
+        public abstract TransactionDetailsDTO getTransaction(String txId, String address);
 
-        public abstract TransactionListDTO getTransactionList(String address, Integer startIndex, Integer limit, List<TransactionRecordGift> gifts, List<TransactionRecord> txs);
+        public abstract TransactionListDTO getTransactionList(String address, Integer startIndex, Integer limit, TxListDTO txDTO);
 
         public abstract UtxoDTO getUTXO(String xpub);
 

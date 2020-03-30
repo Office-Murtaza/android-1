@@ -1,11 +1,6 @@
 package com.batm.service;
 
-import com.batm.dto.NodeTransactionsDTO;
-import com.batm.dto.CurrentAccountDTO;
-import com.batm.dto.TransactionDTO;
-import com.batm.dto.TransactionListDTO;
-import com.batm.entity.TransactionRecord;
-import com.batm.entity.TransactionRecordGift;
+import com.batm.dto.*;
 import com.batm.model.TransactionStatus;
 import com.batm.model.TransactionType;
 import com.batm.util.Constant;
@@ -129,8 +124,8 @@ public class RippledService {
         return TransactionStatus.FAIL;
     }
 
-    public TransactionDTO getTransaction(String txId, String address) {
-        TransactionDTO dto = new TransactionDTO();
+    public TransactionDetailsDTO getTransaction(String txId, String address) {
+        TransactionDetailsDTO dto = new TransactionDetailsDTO();
 
         try {
             JSONObject param = new JSONObject();
@@ -179,7 +174,7 @@ public class RippledService {
             JSONObject jsonResult = res.optJSONObject("result");
             JSONArray array = jsonResult.optJSONArray("transactions");
 
-            Map<String, TransactionDTO> map = collectNodeTxs(array, address);
+            Map<String, TransactionDetailsDTO> map = collectNodeTxs(array, address);
 
             return new NodeTransactionsDTO(map);
         } catch (Exception e) {
@@ -189,11 +184,11 @@ public class RippledService {
         return new NodeTransactionsDTO();
     }
 
-    public TransactionListDTO getTransactionList(String address, Integer startIndex, Integer limit, List<TransactionRecordGift> gifts, List<TransactionRecord> txs) {
+    public TransactionListDTO getTransactionList(String address, Integer startIndex, Integer limit, TxListDTO txDTO) {
         try {
-            Map<String, TransactionDTO> map = getNodeTransactions(address).getMap();
+            Map<String, TransactionDetailsDTO> map = getNodeTransactions(address).getMap();
 
-            return TxUtil.buildTxs(map, startIndex, limit, gifts, txs);
+            return TxUtil.buildTxs(map, startIndex, limit, txDTO);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -234,8 +229,8 @@ public class RippledService {
         return null;
     }
 
-    private Map<String, TransactionDTO> collectNodeTxs(JSONArray array, String address) {
-        Map<String, TransactionDTO> map = new HashMap<>();
+    private Map<String, TransactionDetailsDTO> collectNodeTxs(JSONArray array, String address) {
+        Map<String, TransactionDetailsDTO> map = new HashMap<>();
 
         if (array != null && !array.isEmpty()) {
             for (int i = 0; i < array.size(); i++) {
@@ -250,7 +245,7 @@ public class RippledService {
                 BigDecimal amount = Util.format6(getAmount(tx.optString("Amount")));
                 Date date1 = new Date((tx.optLong("date") + 946684800L) * 1000);
 
-                map.put(txId, new TransactionDTO(txId, amount, fromAddress, toAddress, type, status, date1));
+                map.put(txId, new TransactionDetailsDTO(txId, amount, fromAddress, toAddress, type, status, date1));
             }
         }
 

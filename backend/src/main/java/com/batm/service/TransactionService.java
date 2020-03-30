@@ -3,6 +3,7 @@ package com.batm.service;
 import com.batm.dto.*;
 import com.batm.entity.*;
 import com.batm.model.CashStatus;
+import com.batm.model.TransactionGroupType;
 import com.batm.model.TransactionStatus;
 import com.batm.model.TransactionType;
 import com.batm.repository.TransactionRecordC2CRep;
@@ -20,7 +21,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-
 import java.math.BigDecimal;
 import java.util.*;
 
@@ -55,53 +55,60 @@ public class TransactionService {
     @Value("${gb.url}")
     private String gbUrl;
 
-    public TransactionDTO getTransactionDetails(Long userId, CoinService.CoinEnum coin, String txId) {
+    public TransactionDetailsDTO getTransactionDetails(Long userId, CoinService.CoinEnum coin, String txId) {
         User user = userService.findById(userId);
 
-        TransactionDTO dto = new TransactionDTO();
-        Optional<TransactionRecord> txRecord;
+        TransactionDetailsDTO dto = new TransactionDetailsDTO();
+        Optional<TransactionRecord> buySellTx;
 
         if (org.apache.commons.lang.StringUtils.isNumeric(txId)) {  /** consider as txDbId */
-            txRecord = recRep.findById(Long.valueOf(txId));
+            buySellTx = recRep.findById(Long.valueOf(txId));
         } else {                                                    /** consider as txId */
             String address = user.getCoinAddress(coin.name());
             dto = coin.getTransaction(txId, address);
-            txRecord = recRep
+            buySellTx = recRep
                     .findOneByIdentityAndDetailAndCryptoCurrency(user.getIdentity(), txId, coin.name());
         }
 
-        Optional<TransactionRecordGift> txGift = giftRep.findOneByIdentityAndTxIdAndCoinCode(user.getIdentity(), txId, coin.name());
+        Optional<TransactionRecordGift> giftTx = giftRep.findOneByIdentityAndTxIdAndCoinCode(user.getIdentity(), txId, coin.name());
+        Optional<TransactionRecordC2C> c2cTx = c2cRep.findOneByIdentityAndTxIdAndCoinCode(user.getIdentity(), txId, coin.name());
 
-        if (txGift.isPresent()) {
-            TransactionRecordGift txRecordGift = txGift.get();
-            dto.setPhone(txRecordGift.getPhone());
-            dto.setImageId(txRecordGift.getImageId());
-            dto.setMessage(txRecordGift.getMessage());
-            dto.setType(TransactionType.getGiftType(dto.getType()));
-        } else if (txRecord.isPresent()) {
-            TransactionRecord transactionRecord = txRecord.get();
+        if (giftTx.isPresent()) {
+            TransactionRecordGift gift = giftTx.get();
+            dto.setPhone(gift.getPhone());
+            dto.setImageId(gift.getImageId());
+            dto.setMessage(gift.getMessage());
+            dto.setType(TransactionType.convert(dto.getType(), TransactionGroupType.GIFT));
+        } else if (c2cTx.isPresent()) {
+            TransactionRecordC2C c2c = c2cTx.get();
+            dto.setRefTxId(c2c.getRefTxId());
+            dto.setRefCoin(c2c.getRefCoin().getCode());
+            dto.setRefCryptoAmount(c2c.getRefAmount());
+            dto.setType(TransactionType.convert(dto.getType(), TransactionGroupType.C2C));
+        } else if (buySellTx.isPresent()) {
+            TransactionRecord buySell = buySellTx.get();
             // to return either txId or txDbId, not both
             if (StringUtils.isBlank(dto.getTxId())) {
-                if (StringUtils.isNotBlank(transactionRecord.getDetail())) {
-                    dto.setTxId(transactionRecord.getDetail());
+                if (StringUtils.isNotBlank(buySell.getDetail())) {
+                    dto.setTxId(buySell.getDetail());
                 } else {
-                    dto.setTxDbId(transactionRecord.getId().toString());
+                    dto.setTxDbId(buySell.getId().toString());
                 }
             }
 
-            dto.setType(transactionRecord.getTransactionType());
-            dto.setStatus(transactionRecord.getTransactionStatus(dto.getType()));
-            dto.setCryptoAmount(transactionRecord.getCryptoAmount().stripTrailingZeros());
-            dto.setFiatAmount(transactionRecord.getCashAmount().setScale(0));
-            dto.setToAddress(transactionRecord.getCryptoAddress());
-            dto.setDate2(transactionRecord.getServerTime());
+            dto.setType(buySell.getTransactionType());
+            dto.setStatus(buySell.getTransactionStatus(dto.getType()));
+            dto.setCryptoAmount(buySell.getCryptoAmount().stripTrailingZeros());
+            dto.setFiatAmount(buySell.getCashAmount().setScale(0));
+            dto.setToAddress(buySell.getCryptoAddress());
+            dto.setDate2(buySell.getServerTime());
 
             if (dto.getType() == TransactionType.SELL) {
-                dto.setCashStatus(CashStatus.getCashStatus(transactionRecord.getCanBeCashedOut(), transactionRecord.getWithdrawn()));
-                dto.setSellInfo(coin.getName() + ":" + transactionRecord.getCryptoAddress()
-                        + "?amount=" + transactionRecord.getCryptoAmount()
-                        + "&label=" + transactionRecord.getRemoteTransactionId()
-                        + "&uuid=" + transactionRecord.getUuid());
+                dto.setCashStatus(CashStatus.getCashStatus(buySell.getCanBeCashedOut(), buySell.getWithdrawn()));
+                dto.setSellInfo(coin.getName() + ":" + buySell.getCryptoAddress()
+                        + "?amount=" + buySell.getCryptoAmount()
+                        + "&label=" + buySell.getRemoteTransactionId()
+                        + "&uuid=" + buySell.getUuid());
             }
         }
 
@@ -111,10 +118,13 @@ public class TransactionService {
     public TransactionListDTO getTransactionHistory(Long userId, CoinService.CoinEnum coinCode, Integer startIndex) {
         User user = userService.findById(userId);
         String address = user.getCoinAddress(coinCode.name());
-        List<TransactionRecordGift> gifts = giftRep.findAllByIdentityAndCoinCode(user.getIdentity(), coinCode.name());
-        List<TransactionRecord> txs = recRep.findAllByIdentityAndCryptoCurrency(user.getIdentity(), coinCode.name());
 
-        return coinCode.getTransactionList(address, startIndex, Constant.TRANSACTIONS_COUNT, gifts, txs);
+        TxListDTO txDTO = new TxListDTO();
+        txDTO.setBuySellList(recRep.findAllByIdentityAndCryptoCurrency(user.getIdentity(), coinCode.name()));
+        txDTO.setGiftList(giftRep.findAllByIdentityAndCoinCode(user.getIdentity(), coinCode.name()));
+        txDTO.setC2cList(c2cRep.findAllByIdentityAndCoinCode(user.getIdentity(), coinCode.name()));
+
+        return coinCode.getTransactionList(address, startIndex, Constant.TRANSACTIONS_COUNT, txDTO);
     }
 
     public void saveGift(Long userId, CoinService.CoinEnum coinCode, String txId, SubmitTransactionDTO dto) {

@@ -17,7 +17,7 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class TransactionDTO {
+public class TransactionDetailsDTO {
 
     private Integer index;
     private String txId;
@@ -33,6 +33,9 @@ public class TransactionDTO {
     private String message;
     private String sellInfo;
     private Integer confirmations;
+    private String refTxId;
+    private String refCoin;
+    private BigDecimal refCryptoAmount;
 
     @JsonFormat(shape = JsonFormat.Shape.OBJECT)
     private TransactionType type;
@@ -49,7 +52,7 @@ public class TransactionDTO {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private Date date2;
 
-    public TransactionDTO(String txId, BigDecimal cryptoAmount, TransactionType type, TransactionStatus status, Date date1) {
+    public TransactionDetailsDTO(String txId, BigDecimal cryptoAmount, TransactionType type, TransactionStatus status, Date date1) {
         this.txId = txId;
         this.cryptoAmount = cryptoAmount;
         this.type = type;
@@ -57,7 +60,7 @@ public class TransactionDTO {
         this.date1 = date1;
     }
 
-    public TransactionDTO(String txId, BigDecimal cryptoAmount, String fromAddress, String toAddress, TransactionType type, TransactionStatus status, Date date1) {
+    public TransactionDetailsDTO(String txId, BigDecimal cryptoAmount, String fromAddress, String toAddress, TransactionType type, TransactionStatus status, Date date1) {
         this.txId = txId;
         this.cryptoAmount = cryptoAmount;
         this.fromAddress = fromAddress;

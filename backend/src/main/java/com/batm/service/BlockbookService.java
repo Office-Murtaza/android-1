@@ -1,8 +1,6 @@
 package com.batm.service;
 
 import com.batm.dto.*;
-import com.batm.entity.TransactionRecord;
-import com.batm.entity.TransactionRecordGift;
 import com.batm.model.TransactionStatus;
 import com.batm.model.TransactionType;
 import com.batm.util.Constant;
@@ -125,8 +123,8 @@ public class BlockbookService {
         return null;
     }
 
-    public TransactionDTO getTransaction(String nodeUrl, String explorerUrl, String txId, String address, BigDecimal divider) {
-        TransactionDTO dto = new TransactionDTO();
+    public TransactionDetailsDTO getTransaction(String nodeUrl, String explorerUrl, String txId, String address, BigDecimal divider) {
+        TransactionDetailsDTO dto = new TransactionDetailsDTO();
 
         try {
             JSONObject res = rest.getForObject(nodeUrl + "/api/v2/tx/" + txId, JSONObject.class);
@@ -167,11 +165,11 @@ public class BlockbookService {
         return new NodeTransactionsDTO();
     }
 
-    public TransactionListDTO getTransactionList(String url, String address, BigDecimal divider, Integer startIndex, Integer limit, List<TransactionRecordGift> gifts, List<TransactionRecord> txs) {
+    public TransactionListDTO getTransactionList(String url, String address, BigDecimal divider, Integer startIndex, Integer limit, TxListDTO txDTO) {
         try {
-            Map<String, TransactionDTO> map = getNodeTransactions(url, address, divider).getMap();
+            Map<String, TransactionDetailsDTO> map = getNodeTransactions(url, address, divider).getMap();
 
-            return TxUtil.buildTxs(map, startIndex, limit, gifts, txs);
+            return TxUtil.buildTxs(map, startIndex, limit, txDTO);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -266,8 +264,8 @@ public class BlockbookService {
         return null;
     }
 
-    private Map<String, TransactionDTO> collectNodeTxs(JSONArray array, String address, BigDecimal divider) {
-        Map<String, TransactionDTO> map = new HashMap<>();
+    private Map<String, TransactionDetailsDTO> collectNodeTxs(JSONArray array, String address, BigDecimal divider) {
+        Map<String, TransactionDetailsDTO> map = new HashMap<>();
 
         if (array != null && !array.isEmpty()) {
             for (int i = 0; i < array.size(); i++) {
@@ -284,7 +282,7 @@ public class BlockbookService {
                 TransactionStatus status = getStatus(json.optInt("confirmations"));
                 Date date1 = new Date(json.optLong("blockTime") * 1000);
 
-                map.put(txId, new TransactionDTO(txId, amount, fromAddress, toAddress, type, status, date1));
+                map.put(txId, new TransactionDetailsDTO(txId, amount, fromAddress, toAddress, type, status, date1));
             }
         }
 

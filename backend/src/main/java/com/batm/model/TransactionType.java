@@ -36,23 +36,21 @@ public enum TransactionType {
         }
     }
 
-    public static TransactionType getGiftType(TransactionType type) {
+    public static TransactionType convert(TransactionType type, TransactionGroupType group) {
         if (type == WITHDRAW) {
-            return SEND_GIFT;
+            if (group == TransactionGroupType.GIFT) {
+                return SEND_GIFT;
+            } else if (group == TransactionGroupType.C2C) {
+                return SEND_C2C;
+            }
         } else if (type == DEPOSIT) {
-            return RECEIVE_GIFT;
-        } else {
-            return TransactionType.UNKNOWN;
+            if (group == TransactionGroupType.GIFT) {
+                return RECEIVE_GIFT;
+            } else if (group == TransactionGroupType.C2C) {
+                return RECEIVE_C2C;
+            }
         }
-    }
 
-    public static TransactionType getC2CType(TransactionType type) {
-        if (type == WITHDRAW) {
-            return SEND_C2C;
-        } else if (type == DEPOSIT) {
-            return RECEIVE_C2C;
-        } else {
-            return TransactionType.UNKNOWN;
-        }
+        return TransactionType.UNKNOWN;
     }
 }
