@@ -19,10 +19,10 @@ class AuthorizationRepositoryImpl(
 ) : AuthorizationRepository {
 
     override suspend fun clearAppData(): Either<Failure, Unit> {
-        prefHelper.accessToken = null
-        prefHelper.refreshToken = null
-        prefHelper.userPin = null
-        prefHelper.userId = null
+        prefHelper.accessToken = ""
+        prefHelper.refreshToken = ""
+        prefHelper.userPin = ""
+        prefHelper.userId = -1
 
         val realm = Realm.getDefaultInstance()
         DbCryptoCoinModel().delAllCryptoCoin(realm)
@@ -53,7 +53,7 @@ class AuthorizationRepositoryImpl(
     override suspend fun recoverWalletVerifySmsCode(
         smsCode: String
     ): Either<Failure, Unit> = if (networkUtils.isNetworkAvailable()) {
-        apiService.recoverWalletVerifySmsCode(prefHelper.userId ?: -1, smsCode)
+        apiService.recoverWalletVerifySmsCode(prefHelper.userId, smsCode)
     } else {
         Either.Left(Failure.NetworkConnection)
     }
@@ -77,12 +77,12 @@ class AuthorizationRepositoryImpl(
     override suspend fun createWalletVerifySmsCode(
         smsCode: String
     ): Either<Failure, String> = if (networkUtils.isNetworkAvailable()) {
-        val response = apiService.createWalletVerifySmsCode(prefHelper.userId ?: -1, smsCode)
+        val response = apiService.createWalletVerifySmsCode(prefHelper.userId, smsCode)
         if (response.isRight) {
             val coinList = createWalletDB()
-            val coinListResponse = apiService.addCoins(prefHelper.userId ?: -1, coinList)
+            val coinListResponse = apiService.addCoins(prefHelper.userId, coinList)
             if (coinListResponse.isRight) {
-                Either.Right(prefHelper.apiSeed ?: "")
+                Either.Right(prefHelper.apiSeed)
             } else {
                 coinListResponse as Either.Left
             }
@@ -93,20 +93,21 @@ class AuthorizationRepositoryImpl(
         Either.Left(Failure.NetworkConnection)
     }
 
-    override suspend fun authorize(): Either<Failure, Unit> = if (networkUtils.isNetworkAvailable()) {
-        val response = apiService.authorizeByRefreshToken(prefHelper.refreshToken ?: "")
-        if (response.isRight) {
-            val body = (response as Either.Right).b
-            prefHelper.accessToken = body.accessToken
-            prefHelper.refreshToken = body.refreshToken
-            prefHelper.userId = body.userId
-            Either.Right(Unit)
+    override suspend fun authorize(): Either<Failure, Unit> =
+        if (networkUtils.isNetworkAvailable()) {
+            val response = apiService.authorizeByRefreshToken(prefHelper.refreshToken)
+            if (response.isRight) {
+                val body = (response as Either.Right).b
+                prefHelper.accessToken = body.accessToken
+                prefHelper.refreshToken = body.refreshToken
+                prefHelper.userId = body.userId
+                Either.Right(Unit)
+            } else {
+                response as Either.Left
+            }
         } else {
-            response as Either.Left
+            Either.Left(Failure.NetworkConnection)
         }
-    } else {
-        Either.Left(Failure.NetworkConnection)
-    }
 
     override fun getAuthorizePin(): String = prefHelper.userPin ?: ""
 
@@ -162,11 +163,26 @@ class AuthorizationRepositoryImpl(
         val realm = Realm.getDefaultInstance()
         return DbCryptoCoinModel().apply {
             //DbCryptoCoin need add to data layer
-            addCoin(realm, DbCryptoCoin("BTC", bitcoin.value(), bitcoinAddress, bitcoinPrivateKeyStr))
-            addCoin(realm, DbCryptoCoin("BCH", bitcoinCash.value(), bitcoinChAddress, bitcoinChPrivateKeyStr))
-            addCoin(realm, DbCryptoCoin("ETH", etherum.value(), etherumAddress, etherumPrivateKeyStr))
-            addCoin(realm, DbCryptoCoin("LTC", litecoin.value(), litecoinAddress, litecoinPrivateKeyStr))
-            addCoin(realm, DbCryptoCoin("BNB", binance.value(), binanceAddress, binancePrivateKeyStr))
+            addCoin(
+                realm,
+                DbCryptoCoin("BTC", bitcoin.value(), bitcoinAddress, bitcoinPrivateKeyStr)
+            )
+            addCoin(
+                realm,
+                DbCryptoCoin("BCH", bitcoinCash.value(), bitcoinChAddress, bitcoinChPrivateKeyStr)
+            )
+            addCoin(
+                realm,
+                DbCryptoCoin("ETH", etherum.value(), etherumAddress, etherumPrivateKeyStr)
+            )
+            addCoin(
+                realm,
+                DbCryptoCoin("LTC", litecoin.value(), litecoinAddress, litecoinPrivateKeyStr)
+            )
+            addCoin(
+                realm,
+                DbCryptoCoin("BNB", binance.value(), binanceAddress, binancePrivateKeyStr)
+            )
             addCoin(realm, DbCryptoCoin("TRX", tron.value(), tronAddress, tronPrivateKeyStr))
             addCoin(realm, DbCryptoCoin("XRP", xrp.value(), xrpAddress, xrpPrivateKeyStr))
         }.getAllCryptoCoin(realm)

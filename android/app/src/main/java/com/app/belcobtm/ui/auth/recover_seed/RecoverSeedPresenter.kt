@@ -1,11 +1,12 @@
 package com.app.belcobtm.ui.auth.recover_seed
 
+import android.preference.PreferenceManager
 import com.app.belcobtm.App
 import com.app.belcobtm.api.data_manager.AuthDataManager
+import com.app.belcobtm.data.shared.preferences.SharedPreferencesHelper
 import com.app.belcobtm.db.DbCryptoCoin
 import com.app.belcobtm.db.DbCryptoCoinModel
 import com.app.belcobtm.mvp.BaseMvpDIPresenterImpl
-import com.app.belcobtm.presentation.core.pref
 import io.realm.Realm
 import org.web3j.utils.Numeric
 import wallet.core.jni.*
@@ -14,6 +15,12 @@ import wallet.core.jni.*
 class RecoverSeedPresenter : BaseMvpDIPresenterImpl<RecoverSeedContract.View, AuthDataManager>(),
     RecoverSeedContract.Presenter {
 
+    //TODO need migrate to dependency koin after refactoring
+    private val prefsHelper: SharedPreferencesHelper by lazy {
+        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(App.appContext())
+        SharedPreferencesHelper(sharedPreferences)
+    }
+
     override fun injectDependency() {
         presenterComponent.inject(this)
     }
@@ -21,7 +28,7 @@ class RecoverSeedPresenter : BaseMvpDIPresenterImpl<RecoverSeedContract.View, Au
     override fun verifySeed(seed: String) {
         mView?.showProgress(true)
         val allCoins = createWallet(seed)
-        val userId = App.appContext().pref.getUserId().toString()
+        val userId = prefsHelper.userId.toString()
         mDataManager.verifyCoins(userId, allCoins)
             .subscribe({ response ->
                 mView?.showProgress(false)
@@ -78,7 +85,7 @@ class RecoverSeedPresenter : BaseMvpDIPresenterImpl<RecoverSeedContract.View, Au
         val tronPrivateKeyStr = Numeric.toHexStringNoPrefix(tronPrivateKey.data())
         val tronAddress = tron.deriveAddress(tronPrivateKey)
 
-        App.appContext().pref.setSeed(seed)
+        prefsHelper.apiSeed = seed
 
         val realm = Realm.getDefaultInstance()
         val coinModel = DbCryptoCoinModel()

@@ -1,14 +1,15 @@
 package com.app.belcobtm.ui.main.coins.balance
 
+import android.preference.PreferenceManager
 import com.app.belcobtm.App
 import com.app.belcobtm.api.data_manager.CoinsDataManager
 import com.app.belcobtm.api.model.response.CoinModel
 import com.app.belcobtm.api.model.response.GetCoinsFeeResponse
 import com.app.belcobtm.api.model.response.GetCoinsResponse
+import com.app.belcobtm.data.shared.preferences.SharedPreferencesHelper
 import com.app.belcobtm.db.DbCryptoCoinModel
 import com.app.belcobtm.mvp.BaseMvpDIPresenterImpl
 import com.app.belcobtm.presentation.core.Optional
-import com.app.belcobtm.presentation.core.pref
 import io.realm.Realm
 
 
@@ -18,6 +19,11 @@ class BalancePresenter : BaseMvpDIPresenterImpl<BalanceContract.View, CoinsDataM
     override val coinsList: ArrayList<CoinModel> = arrayListOf()
     override var balance: Double = 0.0
 
+    //TODO need migrate to dependency koin after refactoring
+    private val prefsHelper: SharedPreferencesHelper by lazy {
+        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(App.appContext())
+        SharedPreferencesHelper(sharedPreferences)
+    }
     private val realm = Realm.getDefaultInstance()
     private val coinModel = DbCryptoCoinModel()
 
@@ -28,7 +34,7 @@ class BalancePresenter : BaseMvpDIPresenterImpl<BalanceContract.View, CoinsDataM
 
     override fun requestCoins() {
         mView?.showProgress(true)
-        val userId = App.appContext().pref.getUserId().toString()
+        val userId = prefsHelper.userId.toString()
         val visibleCoinsNames = getVisibleCoinsNames()
         mDataManager.getCoins(userId, visibleCoinsNames).subscribe(
             { response: Optional<GetCoinsResponse> ->
@@ -46,8 +52,7 @@ class BalancePresenter : BaseMvpDIPresenterImpl<BalanceContract.View, CoinsDataM
         mDataManager.getCoinsFee(userId).subscribe(
             { resp: Optional<GetCoinsFeeResponse> ->
                 mView?.showProgress(false)
-
-                App.appContext().pref.saveCoinsFee(resp.value)
+                prefsHelper.coinsFee = resp.value?.fees?: emptyList()
             }
             , { error: Throwable ->
                 checkError(error)

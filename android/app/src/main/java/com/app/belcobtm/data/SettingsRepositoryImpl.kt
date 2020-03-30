@@ -21,7 +21,7 @@ class SettingsRepositoryImpl(
 ) : SettingsRepository {
     override suspend fun getVerificationInfo(): Either<Failure, VerificationInfoDataItem> =
         if (networkUtils.isNetworkAvailable()) {
-            val response = apiService.getVerificationInfo(prefHelper.userId ?: -1)
+            val response = apiService.getVerificationInfo(prefHelper.userId)
             if (response.isRight) {
                 val responseItem = (response as Either.Right).b
                 Either.Right(
@@ -42,7 +42,7 @@ class SettingsRepositoryImpl(
     override suspend fun sendVerificationBlank(
         blankDataItem: VerificationBlankDataItem
     ): Either<Failure, Unit> = if (networkUtils.isNetworkAvailable()) {
-        apiService.sendVerificationBlank(prefHelper.userId ?: -1, blankDataItem)
+        apiService.sendVerificationBlank(prefHelper.userId, blankDataItem)
     } else {
         Either.Left(Failure.NetworkConnection)
     }
@@ -52,7 +52,7 @@ class SettingsRepositoryImpl(
     override suspend fun sendVerificationVip(
         vipDataItem: VerificationVipDataItem
     ): Either<Failure, Unit> = if (networkUtils.isNetworkAvailable()) {
-        apiService.sendVerificationVip(prefHelper.userId ?: -1, vipDataItem)
+        apiService.sendVerificationVip(prefHelper.userId, vipDataItem)
     } else {
         Either.Left(Failure.NetworkConnection)
     }

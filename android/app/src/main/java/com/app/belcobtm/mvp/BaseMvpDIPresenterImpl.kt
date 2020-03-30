@@ -1,5 +1,6 @@
 package com.app.belcobtm.mvp
 
+import android.preference.PreferenceManager
 import com.app.belcobtm.App
 import com.app.belcobtm.api.data_manager.BaseDataManager
 import com.app.belcobtm.api.data_manager.WithdrawDataManager
@@ -8,6 +9,7 @@ import com.app.belcobtm.api.model.response.BNBBlockResponse
 import com.app.belcobtm.api.model.response.ETHResponse
 import com.app.belcobtm.api.model.response.TronBlockResponse
 import com.app.belcobtm.api.model.response.UtxoItem
+import com.app.belcobtm.data.shared.preferences.SharedPreferencesHelper
 import com.app.belcobtm.db.DbCryptoCoin
 import com.app.belcobtm.di.component.DaggerPresenterComponent
 import com.app.belcobtm.di.component.PresenterComponent
@@ -52,6 +54,12 @@ abstract class BaseMvpDIPresenterImpl<V : BaseMvpView, T : BaseDataManager> : Ba
     val TRX_DIVIDER = BigDecimal.valueOf(1000000)
     val BNB_DIVIDER = BigDecimal.valueOf(100_000_000)
 
+    //TODO need migrate to dependency koin after refactoring
+    private val prefsHelper: SharedPreferencesHelper by lazy {
+        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(App.appContext())
+        SharedPreferencesHelper(sharedPreferences)
+    }
+
     protected fun <T : Throwable> onError(exception: T) {
 
         mView?.showError(exception.message)
@@ -80,7 +88,7 @@ abstract class BaseMvpDIPresenterImpl<V : BaseMvpView, T : BaseDataManager> : Ba
         dataManager: WithdrawDataManager
     ): Observable<String> {
 
-        val mUserId = App.appContext().pref.getUserId().toString()
+        val mUserId = prefsHelper.userId.toString()
 
         return when (coinType) {
             CoinType.XRP -> getXRPTransactionHashObs(
@@ -142,7 +150,7 @@ abstract class BaseMvpDIPresenterImpl<V : BaseMvpView, T : BaseDataManager> : Ba
 
 
         val respFee =
-            (App.appContext().pref.getCoinsFee()?.firstOrNull { it.code == "XRP" }?.fee?.toBigDecimal()
+            (prefsHelper.coinsFee.firstOrNull { it.code == "XRP" }?.fee?.toBigDecimal()
                 ?: BigDecimal(0.000020)) * XRP_DIVIDER
         val respSeq = resp.value?.sequence?.toInt() ?: 0
 
@@ -222,7 +230,7 @@ abstract class BaseMvpDIPresenterImpl<V : BaseMvpView, T : BaseDataManager> : Ba
 
         transaction.expiration = resHour.time ?: 0
         transaction.feeLimit =
-            ((App.appContext().pref.getCoinsFee()?.firstOrNull { it.code == "TRX" }?.fee?.toBigDecimal()
+            ((prefsHelper.coinsFee.firstOrNull { it.code == "TRX" }?.fee?.toBigDecimal()
                 ?: BigDecimal(1)) * TRX_DIVIDER).toLong()
         transaction.blockHeader = tronBlock.build()
 
@@ -289,11 +297,11 @@ abstract class BaseMvpDIPresenterImpl<V : BaseMvpView, T : BaseDataManager> : Ba
             ByteString.copyFrom("0x${addLeadingZeroes(cryptoToSubcoin.toLong().toString(16))}".toHexByteArray())
 
         val gasPriceD =
-            App.appContext().pref.getCoinsFee()?.firstOrNull { it.code == "ETH" }?.gasPrice?.toLong()
+            prefsHelper.coinsFee.firstOrNull { it.code == "ETH" }?.gasPrice?.toLong()
                 ?: 20_000_000_000
 
         val gasLimitD =
-            App.appContext().pref.getCoinsFee()?.firstOrNull { it.code == "ETH" }?.gasLimit?.toLong()
+            prefsHelper.coinsFee.firstOrNull { it.code == "ETH" }?.gasLimit?.toLong()
                 ?: 21000
 
         val gasLimitHex =
@@ -429,7 +437,7 @@ abstract class BaseMvpDIPresenterImpl<V : BaseMvpView, T : BaseDataManager> : Ba
         utxos: ArrayList<UtxoItem>,
         coinAmount: Double
     ): String {
-        val hdWallet = HDWallet(App.appContext().pref.getSeed(), "")
+        val hdWallet = HDWallet(prefsHelper.apiSeed, "")
         val publicKeyFrom = coinDbModel?.publicKey
 
         val cryptoToSatoshi =
@@ -565,17 +573,17 @@ abstract class BaseMvpDIPresenterImpl<V : BaseMvpView, T : BaseDataManager> : Ba
 
     fun getFeesFromList(coinCode: String, def: Double = Double.MIN_VALUE): Double {
 
-        var fee = App.appContext().pref.getCoinsFee()?.firstOrNull { it.code == coinCode }?.fee
+        var fee = prefsHelper.coinsFee.firstOrNull { it.code == coinCode }?.fee
             ?: def
 
         if (coinCode == "BTC" || coinCode == "BCH" || coinCode == "LTC") {
-            fee = ((fee?.toBigDecimal() ?: BigDecimal(0)) * BigDecimal(1000)).toDouble()
+            fee = ((fee.toBigDecimal() ?: BigDecimal(0)) * BigDecimal(1000)).toDouble()
         } else if (coinCode == "ETH") {
             val gasPrice =
-                (App.appContext().pref.getCoinsFee()?.firstOrNull { it.code == coinCode }?.gasPrice?.toBigDecimal()
+                (prefsHelper.coinsFee.firstOrNull { it.code == coinCode }?.gasPrice?.toBigDecimal()
                     ?: BigDecimal(0))
             val gasLimit =
-                (App.appContext().pref.getCoinsFee()?.firstOrNull { it.code == coinCode }?.gasLimit?.toBigDecimal()
+                (prefsHelper.coinsFee.firstOrNull { it.code == coinCode }?.gasLimit?.toBigDecimal()
                     ?: BigDecimal(0))
 
             return ((gasPrice.toDouble() * gasLimit.toDouble()) / ETH_DIVIDER.toDouble())
@@ -596,7 +604,7 @@ abstract class BaseMvpDIPresenterImpl<V : BaseMvpView, T : BaseDataManager> : Ba
     fun getFeeByteFromList(coinCode: String?, def: Int = 4): Int {
 
         val fee: Double =
-            (App.appContext().pref.getCoinsFee()?.firstOrNull { it.code == coinCode }?.fee
+            (prefsHelper.coinsFee.firstOrNull { it.code == coinCode }?.fee
                 ?: Double.MIN_VALUE) ?: Double.MIN_VALUE
         return (fee * 100_000_000).toInt().toInt()
     }

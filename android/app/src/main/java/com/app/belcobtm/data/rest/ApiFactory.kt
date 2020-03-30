@@ -21,7 +21,7 @@ class ApiFactory(private val prefHelper: SharedPreferencesHelper) {
             .addHeader(HEADER_CONTENT_TYPE_KEY, HEADER_CONTENT_TYPE_VALUE)
             .addHeader(HEADER_X_REQUESTED_WITH_KEY, HEADER_X_REQUESTED_WITH_VALUE)
             .addHeader(HEADER_ACCEPT_KEY, HEADER_ACCEPT_VALUE)
-            .addHeader(HEADER_AUTHORIZATION_KEY, getAccessToken())
+            .addHeader(HEADER_AUTHORIZATION_KEY, prefHelper.accessToken)
             .build()
         it.proceed(request)
     }
@@ -46,15 +46,12 @@ class ApiFactory(private val prefHelper: SharedPreferencesHelper) {
         .addCallAdapterFactory(CoroutineCallAdapterFactory())
         .build()
 
-    private fun getAccessToken(): String =
-        if (prefHelper.accessToken.isNullOrBlank()) "" else HEADER_AUTHORIZATION_VALUE + prefHelper.accessToken
-
     companion object {
         // private const val BASE_URL = "https://prod.belcobtm.com"
         // private const val BASE_URL = "http://206.189.204.44:8080"
         private const val BASE_URL = "https://test.belcobtm.com"
         private const val API_VERSION = 1
-         const val SERVER_URL = "$BASE_URL/api/v$API_VERSION/"
+        const val SERVER_URL = "$BASE_URL/api/v$API_VERSION/"
 
         private const val HEADER_CONTENT_TYPE_KEY = "Content-Type"
         private const val HEADER_CONTENT_TYPE_VALUE = "application/json"
@@ -63,7 +60,6 @@ class ApiFactory(private val prefHelper: SharedPreferencesHelper) {
         private const val HEADER_ACCEPT_KEY = "Accept"
         private const val HEADER_ACCEPT_VALUE = "application/json"
         private const val WAIT_TIME_SECONDS = 60L
-        private const val HEADER_AUTHORIZATION_KEY = "Authorization"
-        private const val HEADER_AUTHORIZATION_VALUE = "Bearer "
+        const val HEADER_AUTHORIZATION_KEY = "Authorization"
     }
 }

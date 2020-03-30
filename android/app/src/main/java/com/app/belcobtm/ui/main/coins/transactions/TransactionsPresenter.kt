@@ -1,15 +1,21 @@
 package com.app.belcobtm.ui.main.coins.transactions
 
+import android.preference.PreferenceManager
 import com.app.belcobtm.App
 import com.app.belcobtm.api.data_manager.CoinsDataManager
 import com.app.belcobtm.api.model.response.TransactionModel
+import com.app.belcobtm.data.shared.preferences.SharedPreferencesHelper
 import com.app.belcobtm.mvp.BaseMvpDIPresenterImpl
-import com.app.belcobtm.presentation.core.pref
 
 
 class TransactionsPresenter : BaseMvpDIPresenterImpl<TransactionsContract.View, CoinsDataManager>(),
     TransactionsContract.Presenter {
 
+    //TODO need migrate to dependency koin after refactoring
+    private val prefsHelper: SharedPreferencesHelper by lazy {
+        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(App.appContext())
+        SharedPreferencesHelper(sharedPreferences)
+    }
     private var balance: Double = 0.0
     private var price: Double = 0.0
     private var chartDay: Pair<Double, List<Double>> = Pair(0.0, emptyList())
@@ -34,7 +40,7 @@ class TransactionsPresenter : BaseMvpDIPresenterImpl<TransactionsContract.View, 
             return
         }
 
-        val userId = App.appContext().pref.getUserId().toString()
+        val userId = prefsHelper.userId.toString()
         mDataManager.getTransactions(userId, coinId, transactionList.size + 1).subscribe(
             { response ->
                 mView?.showProgress(false)
@@ -55,7 +61,7 @@ class TransactionsPresenter : BaseMvpDIPresenterImpl<TransactionsContract.View, 
     }
 
     override fun chartViewInitialized() {
-        val userId = App.appContext().pref.getUserId().toString()
+        val userId = prefsHelper.userId.toString()
         mDataManager.getChart(userId, coinId).subscribe(
             {
                 val chart = it.value?.chart

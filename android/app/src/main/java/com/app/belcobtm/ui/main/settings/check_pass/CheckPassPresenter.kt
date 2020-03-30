@@ -1,17 +1,22 @@
 package com.app.belcobtm.ui.main.settings.check_pass
 
+import android.preference.PreferenceManager
 import com.app.belcobtm.App
 import com.app.belcobtm.R
 import com.app.belcobtm.api.data_manager.SettingsDataManager
+import com.app.belcobtm.data.shared.preferences.SharedPreferencesHelper
 import com.app.belcobtm.mvp.BaseMvpDIPresenterImpl
 import com.app.belcobtm.ui.main.coins.settings.check_pass.CheckPassContract
-import com.app.belcobtm.presentation.core.pref
 
 
 class CheckPassPresenter : BaseMvpDIPresenterImpl<CheckPassContract.View, SettingsDataManager>(),
     CheckPassContract.Presenter {
-
-    private val mUserId = App.appContext().pref.getUserId().toString()
+    //TODO need migrate to dependency koin after refactoring
+    private val prefsHelper: SharedPreferencesHelper by lazy {
+        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(App.appContext())
+        SharedPreferencesHelper(sharedPreferences)
+    }
+    private val mUserId = prefsHelper.userId.toString()
 
     override fun injectDependency() {
         presenterComponent.inject(this)
@@ -35,8 +40,7 @@ class CheckPassPresenter : BaseMvpDIPresenterImpl<CheckPassContract.View, Settin
     }
 
     override fun requestSeed() {
-        val seed = App.appContext().pref.getSeed()
-        mView?.onSeedReceived(seed)
+        mView?.onSeedReceived(prefsHelper.apiSeed)
     }
 
     override fun updatePhone(phone: String) {

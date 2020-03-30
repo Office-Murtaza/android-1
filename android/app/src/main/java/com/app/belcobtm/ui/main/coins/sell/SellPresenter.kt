@@ -1,5 +1,6 @@
 package com.app.belcobtm.ui.main.coins.sell
 
+import android.preference.PreferenceManager
 import com.app.belcobtm.App
 import com.app.belcobtm.api.data_manager.WithdrawDataManager
 import com.app.belcobtm.api.model.ServerException
@@ -8,11 +9,11 @@ import com.app.belcobtm.api.model.param.SendTransactionParam
 import com.app.belcobtm.api.model.param.trx.Trx
 import com.app.belcobtm.api.model.response.CoinModel
 import com.app.belcobtm.api.model.response.LimitsResponse
+import com.app.belcobtm.data.shared.preferences.SharedPreferencesHelper
 import com.app.belcobtm.db.DbCryptoCoin
 import com.app.belcobtm.db.DbCryptoCoinModel
 import com.app.belcobtm.mvp.BaseMvpDIPresenterImpl
 import com.app.belcobtm.presentation.core.Const
-import com.app.belcobtm.presentation.core.pref
 import com.google.gson.Gson
 import io.reactivex.Observable
 import io.realm.Realm
@@ -46,6 +47,13 @@ class SellPresenter : BaseMvpDIPresenterImpl<SellContract.View, WithdrawDataMana
     private var cryptoResultAmount: Double = Double.MIN_VALUE
     private var addressDestination: String? = null
     var isErrorOnSms = true
+
+    //TODO need migrate to dependency koin after refactoring
+    private val prefsHelper: SharedPreferencesHelper by lazy {
+        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(App.appContext())
+        SharedPreferencesHelper(sharedPreferences)
+    }
+
     override fun verifySmsCode(code: String) {
         mView?.showProgress(true)
 
@@ -78,8 +86,7 @@ class SellPresenter : BaseMvpDIPresenterImpl<SellContract.View, WithdrawDataMana
 
                             Observable.error(Throwable("coin stock value has been changed"))
                         } else {
-                            val seed = App.appContext().pref.getSeed()
-                            val hdWallet = HDWallet(seed, "")
+                            val hdWallet = HDWallet(prefsHelper.apiSeed, "")
                             this.fromAddress = res.value?.address
 
                             val coinType = if (mCoinDbModel != null) {
@@ -226,7 +233,7 @@ class SellPresenter : BaseMvpDIPresenterImpl<SellContract.View, WithdrawDataMana
 
     private val realm = Realm.getDefaultInstance()
     private val coinModel = DbCryptoCoinModel()
-    val mUserId = App.appContext().pref.getUserId().toString()
+    val mUserId = prefsHelper.userId.toString()
     private var mCoinDbModel: DbCryptoCoin? = null
 
 
