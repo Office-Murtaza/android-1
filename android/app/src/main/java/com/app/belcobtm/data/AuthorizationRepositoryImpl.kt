@@ -109,7 +109,7 @@ class AuthorizationRepositoryImpl(
             Either.Left(Failure.NetworkConnection)
         }
 
-    override fun getAuthorizePin(): String = prefHelper.userPin ?: ""
+    override fun getAuthorizePin(): String = prefHelper.userPin
 
     override fun setAuthorizePin(pinCode: String) {
         prefHelper.userPin = pinCode

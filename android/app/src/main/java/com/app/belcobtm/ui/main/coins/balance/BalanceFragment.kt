@@ -30,16 +30,13 @@ class BalanceFragment : BaseMvpFragment<BalanceContract.View, BalanceContract.Pr
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-
         mAdapter = CoinsAdapter(mPresenter.coinsList, this)
         coins_recycler.isNestedScrollingEnabled = false
         coins_recycler.adapter = mAdapter
         coins_recycler.addItemDecoration(CoinItemDecoration(resources.getDimensionPixelSize(R.dimen.margin_half)))
 
         swipe_refresh.setOnRefreshListener { mPresenter.requestCoins() }
-        swipe_refresh.setColorSchemeColors(
-            Color.RED, Color.GREEN, Color.BLUE
-        )
+        swipe_refresh.setColorSchemeColors(Color.RED, Color.GREEN, Color.BLUE)
 
         add_wallet_ll.setOnClickListener {
             startActivity(
@@ -60,7 +57,6 @@ class BalanceFragment : BaseMvpFragment<BalanceContract.View, BalanceContract.Pr
         balance.text = "$ ${String.format("%.2f", mPresenter.balance)}"
         mAdapter.notifyDataSetChanged()
     }
-
 
     override fun showProgress(show: Boolean) {
         activity?.runOnUiThread {

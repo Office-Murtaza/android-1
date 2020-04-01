@@ -52,7 +52,7 @@ class RetrofitClient private constructor() {
                     .addHeader("X-Requested-With", "XMLHttpRequest")
                     .addHeader("Accept", "application/json")
                 if (prefsHelper.accessToken.isNotBlank())
-                    request.addHeader("Authorization", "Bearer ${prefsHelper.accessToken}")
+                    request.addHeader("Authorization", prefsHelper.accessToken)
                 chain.proceed(request.build())
             }
             .addInterceptor(httpLoggingInterceptor)

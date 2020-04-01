@@ -1,6 +1,7 @@
 package com.app.belcobtm.data.rest
 
 import com.app.belcobtm.data.rest.authorization.AuthApi
+import com.app.belcobtm.data.rest.interceptor.AuthAuthenticator
 import com.app.belcobtm.data.rest.interceptor.ResponseInterceptor
 import com.app.belcobtm.data.rest.settings.SettingsApi
 import com.app.belcobtm.data.shared.preferences.SharedPreferencesHelper
@@ -13,8 +14,6 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 import java.util.concurrent.TimeUnit
 
 class ApiFactory(private val prefHelper: SharedPreferencesHelper) {
-    private val loggingInterceptor: HttpLoggingInterceptor =
-        HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
     private val baseInterceptor: Interceptor = Interceptor {
         val request = it.request()
             .newBuilder()
@@ -26,25 +25,32 @@ class ApiFactory(private val prefHelper: SharedPreferencesHelper) {
         it.proceed(request)
     }
 
-    private val errorInterceptor = ResponseInterceptor()
-
-    private val baseHttpClient = OkHttpClient().newBuilder()
+    private val sessionHttpClient = OkHttpClient().newBuilder()
         .connectTimeout(WAIT_TIME_SECONDS, TimeUnit.SECONDS)
         .readTimeout(WAIT_TIME_SECONDS, TimeUnit.SECONDS)
         .addInterceptor(baseInterceptor)
-        .addInterceptor(loggingInterceptor)
-        .addInterceptor(errorInterceptor)
+        .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
+        .addInterceptor(ResponseInterceptor())
+        .authenticator(AuthAuthenticator(prefHelper, createApi(AuthApi::class.java)))
         .build()
 
-    val authApi: AuthApi = retrofit(baseHttpClient).create(AuthApi::class.java)
-    val settingsApi: SettingsApi = retrofit(baseHttpClient).create(SettingsApi::class.java)
+    val authApi: AuthApi = createApiWithSessionClient(AuthApi::class.java)
+    val settingsApi: SettingsApi = createApiWithSessionClient(SettingsApi::class.java)
 
-    private fun retrofit(okHttpClient: OkHttpClient): Retrofit = Retrofit.Builder()
-        .client(okHttpClient)
+    private fun <T> createApi(clazz: Class<T>): T = Retrofit.Builder()
         .baseUrl(SERVER_URL)
         .addConverterFactory(MoshiConverterFactory.create())
         .addCallAdapterFactory(CoroutineCallAdapterFactory())
         .build()
+        .create(clazz)
+
+    private fun <T> createApiWithSessionClient(clazz: Class<T>): T = Retrofit.Builder()
+        .baseUrl(SERVER_URL)
+        .addConverterFactory(MoshiConverterFactory.create())
+        .addCallAdapterFactory(CoroutineCallAdapterFactory())
+        .client(sessionHttpClient)
+        .build()
+        .create(clazz)
 
     companion object {
         // private const val BASE_URL = "https://prod.belcobtm.com"
@@ -63,3 +69,6 @@ class ApiFactory(private val prefHelper: SharedPreferencesHelper) {
         const val HEADER_AUTHORIZATION_KEY = "Authorization"
     }
 }
+
+
+

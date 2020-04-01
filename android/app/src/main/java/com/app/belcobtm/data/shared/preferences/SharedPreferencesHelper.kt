@@ -1,7 +1,7 @@
 package com.app.belcobtm.data.shared.preferences
 
 import android.content.SharedPreferences
-import com.app.belcobtm.api.model.response.GetCoinsFeeResponse
+import com.app.belcobtm.api.model.response.GetCoinsFeeOldResponse
 import com.google.gson.Gson
 
 class SharedPreferencesHelper(private val sharedPreferences: SharedPreferences) {
@@ -27,12 +27,12 @@ class SharedPreferencesHelper(private val sharedPreferences: SharedPreferences) 
         set(value) = sharedPreferences.set(USER_PIN, value)
         get() = sharedPreferences[USER_PIN] ?: ""
 
-    var coinsFee: List<GetCoinsFeeResponse.CoinFee>
+    var coinsFee: List<GetCoinsFeeOldResponse.CoinFee>
         set(value) = sharedPreferences.set(COINS_FEE, Gson().toJson(value))
         get() = try {
             Gson().fromJson(
                 sharedPreferences[COINS_FEE] ?: "",
-                Array<GetCoinsFeeResponse.CoinFee>::class.java
+                Array<GetCoinsFeeOldResponse.CoinFee>::class.java
             ).toList()
         } catch (e: Exception) {
             e.printStackTrace()
