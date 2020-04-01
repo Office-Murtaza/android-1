@@ -42,7 +42,7 @@ public class TokenProvider implements InitializingBean {
                 .collect(Collectors.joining(","));
 
         long now = (new Date()).getTime();
-        Date validity = new Date(now + this.tokenValidityInMilliseconds);
+        Date validity = new Date(now + tokenValidityInMilliseconds);
 
         return Jwts.builder().setSubject(authentication.getName()).claim(Constant.AUTHORITIES_KEY, authorities)
                 .signWith(key, SignatureAlgorithm.HS512).setExpiration(validity).compact();

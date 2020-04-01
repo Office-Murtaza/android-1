@@ -37,9 +37,9 @@ public class JWTFilter extends GenericFilterBean {
             if (token == null) {
                 HttpServletResponse response = (HttpServletResponse) servletResponse;
                 response.addHeader("Content-Type", "application/json;charset=UTF-8");
-                response.setStatus(HttpStatus.FORBIDDEN.value());
+                response.setStatus(HttpStatus.UNAUTHORIZED.value());
                 ObjectMapper mapper = new ObjectMapper();
-                response.getWriter().write(mapper.writeValueAsString(new AccessDenied(403, "Invalid access token")));
+                response.getWriter().write(mapper.writeValueAsString(new AccessDenied(401, "Invalid access token")));
                 return;
             }
 
