@@ -219,4 +219,11 @@
     <string name="transition_details_screen_not_available">Not Available</string>
     <string name="transition_details_screen_available">Available</string>
     <string name="transition_details_screen_withdrawn">Withdrawn</string>
+
+
+    <string name="transition_details_one_day">1d</string>
+    <string name="transition_details_one_week">1w</string>
+    <string name="transition_details_one_month">1m</string>
+    <string name="transition_details_three_month">3m</string>
+    <string name="transition_details_one_year">1y</string>
 </resources>

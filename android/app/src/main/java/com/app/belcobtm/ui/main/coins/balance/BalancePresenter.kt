@@ -48,13 +48,6 @@ class BalancePresenter : BaseMvpDIPresenterImpl<BalanceContract.View, CoinsDataM
             })
 
         mView?.showProgress(true)
-        mDataManager.getCoinFee("BTC").subscribe(
-            {
-                it.toString()
-            }, {
-                it.toString()
-            }
-        )
 //
 //        mDataManager.getCoinsFee(userId).subscribe({ resp: Optional<GetCoinsFeeOldResponse> ->
 //            mView?.showProgress(false)

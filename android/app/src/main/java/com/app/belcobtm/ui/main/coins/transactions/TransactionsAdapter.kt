@@ -83,13 +83,11 @@ class TransactionsAdapter(
                 onLoadNextCallback()
             }
             holder.itemView.setOnClickListener {
-                DetailsActivity.start(holder.itemView.context,item,coin )
+                DetailsActivity.start(holder.itemView.context, item, coin)
             }
 
         }
     }
 
-    override fun getItemCount(): Int {
-        return mTransactionList.size
-    }
+    override fun getItemCount(): Int = mTransactionList.size
 }

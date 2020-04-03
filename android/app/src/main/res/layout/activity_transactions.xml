@@ -8,22 +8,18 @@
     android:background="@color/bg_color"
     tools:context=".ui.main.settings.phone.ShowPhoneActivity">
 
-    <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/toolbar_container"
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbarView"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="@drawable/bg_toolbar"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-        app:elevation="5dp"
+        app:elevation="6dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-    </com.google.android.material.appbar.AppBarLayout>
+        app:layout_constraintTop_toTopOf="parent"
+        tools:navigationIcon="@drawable/gph_ic_back"
+        tools:title="Bitcoin" />
 
     <View
         android:id="@+id/chartPlaceHolderView"
@@ -32,7 +28,7 @@
         android:background="@android:color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/toolbar_container" />
+        app:layout_constraintTop_toBottomOf="@id/toolbarView" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/priceUsdView"
@@ -40,8 +36,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:textColor="@color/gray_text_color"
-        android:textSize="17sp"
-        app:fontFamily="@font/poppins_semi_bold"
+        android:textSize="18sp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@id/changesView"
         app:layout_constraintEnd_toEndOf="@id/chartPlaceHolderView"
         app:layout_constraintStart_toStartOf="@id/chartPlaceHolderView"
@@ -54,9 +50,9 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:drawableStart="@drawable/ic_arrow_drop_down"
-        android:textColor="#e02d2d"
         android:drawableTint="#e02d2d"
-        app:fontFamily="@font/poppins_semi_bold"
+        android:textColor="#e02d2d"
+        android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@id/chartView"
         app:layout_constraintEnd_toEndOf="@id/chartPlaceHolderView"
         app:layout_constraintStart_toStartOf="@id/chartPlaceHolderView"
@@ -68,50 +64,49 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="8dp"
-        app:layout_constraintBottom_toTopOf="@id/chartRadioGroupView"
+        app:layout_constraintBottom_toTopOf="@id/chartChipGroupView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/changesView" />
 
-    <RadioGroup
-        android:id="@+id/chartRadioGroupView"
+    <com.google.android.material.chip.ChipGroup
+        android:id="@+id/chartChipGroupView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="16dp"
-        android:orientation="horizontal"
+        android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toBottomOf="@id/chartPlaceHolderView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/chartView">
+        app:layout_constraintTop_toBottomOf="@id/chartView"
+        app:singleSelection="true">
 
-        <RadioButton
-            android:id="@+id/oneDayButtonView"
-            style="@style/TransactionsScreen.ChartRadioButton"
-            android:checked="true"
-            android:text="1d" />
+        <com.google.android.material.chip.Chip
+            android:id="@+id/oneDayChipView"
+            style="@style/TransactionsScreen.Chip"
+            android:text="@string/transition_details_one_day"
+            tools:checked="true" />
 
-        <RadioButton
-            android:id="@+id/oneWeekButtonView"
-            style="@style/TransactionsScreen.ChartRadioButton"
-            android:text="1w" />
+        <com.google.android.material.chip.Chip
+            android:id="@+id/oneWeekChipView"
+            style="@style/TransactionsScreen.Chip"
+            android:text="@string/transition_details_one_week" />
 
-        <RadioButton
-            android:id="@+id/oneMonthButtonView"
-            style="@style/TransactionsScreen.ChartRadioButton"
-            android:text="1m" />
+        <com.google.android.material.chip.Chip
+            android:id="@+id/oneMonthChipView"
+            style="@style/TransactionsScreen.Chip"
+            android:text="@string/transition_details_one_month" />
 
-        <RadioButton
-            android:id="@+id/threeMonthsButtonView"
-            style="@style/TransactionsScreen.ChartRadioButton"
-            android:text="3m" />
+        <com.google.android.material.chip.Chip
+            android:id="@+id/threeMonthChipView"
+            style="@style/TransactionsScreen.Chip"
+            android:text="@string/transition_details_three_month" />
 
-        <RadioButton
-            android:id="@+id/oneYearButtonView"
-            style="@style/TransactionsScreen.ChartRadioButton"
-            android:text="1y" />
+        <com.google.android.material.chip.Chip
+            android:id="@+id/oneYearChipView"
+            style="@style/TransactionsScreen.Chip"
+            android:text="@string/transition_details_one_year" />
 
-    </RadioGroup>
+    </com.google.android.material.chip.ChipGroup>
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/balanceTitleView"
@@ -121,7 +116,8 @@
         android:layout_marginEnd="8dp"
         android:text="@string/balance"
         android:textColor="@color/dark_gray_text_color"
-        app:fontFamily="@font/poppins_semi_bold"
+        android:textSize="16sp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toStartOf="@id/balanceCryptoView"
         app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintStart_toStartOf="parent"
@@ -131,9 +127,9 @@
         android:id="@+id/balanceCryptoView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="end"
         android:textColor="#8d8d8d"
-        app:fontFamily="@font/poppins_semi_bold"
+        android:textSize="16sp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@id/balanceTitleView"
         app:layout_constraintEnd_toStartOf="@id/exchangeView"
         app:layout_constraintStart_toEndOf="@id/balanceTitleView"
@@ -146,6 +142,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
+        android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="@id/balanceTitleView"
         app:layout_constraintEnd_toStartOf="@id/balanceUsdView"
         app:layout_constraintStart_toEndOf="@id/balanceCryptoView"
@@ -156,13 +153,54 @@
         android:id="@+id/balanceUsdView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="#0073e4"
-        app:fontFamily="@font/poppins_semi_bold"
+        android:textColor="@color/blue_color"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@id/balanceTitleView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/exchangeView"
         app:layout_constraintTop_toTopOf="@id/balanceTitleView"
         tools:text="8.90 USD" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/depositButtonView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/deposit"
+        app:icon="@drawable/ic_file_download"
+        app:iconGravity="textStart"
+        app:layout_constraintEnd_toStartOf="@id/withdrawButtonView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/balanceTitleView" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/withdrawButtonView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:text="@string/withdraw"
+        app:icon="@drawable/ic_publish"
+        app:iconGravity="textStart"
+        app:layout_constraintEnd_toStartOf="@id/moreButtonView"
+        app:layout_constraintStart_toEndOf="@id/depositButtonView"
+        app:layout_constraintTop_toTopOf="@id/depositButtonView" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/moreButtonView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:src="@drawable/ic_more_vertical"
+        android:clickable="true"
+        android:focusable="true"
+        android:background="?android:selectableItemBackgroundBorderless"
+        app:layout_constraintBottom_toBottomOf="@id/withdrawButtonView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/withdrawButtonView"
+        app:layout_constraintTop_toTopOf="@id/withdrawButtonView"
+        app:tint="#0073e4" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/deposit"
@@ -171,7 +209,7 @@
         android:text="@string/deposit"
         app:layout_constraintEnd_toStartOf="@id/withdraw"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/balanceTitleView" />
+        app:layout_constraintTop_toBottomOf="@id/depositButtonView" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/withdraw"
@@ -180,7 +218,7 @@
         android:text="@string/withdraw"
         app:layout_constraintEnd_toStartOf="@id/send_gift"
         app:layout_constraintStart_toEndOf="@id/deposit"
-        app:layout_constraintTop_toBottomOf="@id/balanceTitleView" />
+        app:layout_constraintTop_toBottomOf="@id/depositButtonView" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/send_gift"
@@ -189,7 +227,7 @@
         android:text="@string/send_gift"
         app:layout_constraintEnd_toStartOf="@id/sell"
         app:layout_constraintStart_toEndOf="@id/withdraw"
-        app:layout_constraintTop_toBottomOf="@id/balanceTitleView" />
+        app:layout_constraintTop_toBottomOf="@id/depositButtonView" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/sell"
@@ -199,7 +237,7 @@
         android:text="@string/sell"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/send_gift"
-        app:layout_constraintTop_toBottomOf="@id/balanceTitleView" />
+        app:layout_constraintTop_toBottomOf="@id/depositButtonView" />
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/swipe_refresh"

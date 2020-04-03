@@ -39,12 +39,7 @@ class BalanceFragment : BaseMvpFragment<BalanceContract.View, BalanceContract.Pr
         swipe_refresh.setColorSchemeColors(Color.RED, Color.GREEN, Color.BLUE)
 
         add_wallet_ll.setOnClickListener {
-            startActivity(
-                Intent(
-                    context,
-                    VisibilityCoinsActivity::class.java
-                )
-            )
+            startActivity(Intent(context, VisibilityCoinsActivity::class.java))
         }
     }
 

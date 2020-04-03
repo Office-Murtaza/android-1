@@ -9,11 +9,11 @@ object TransactionsContract {
     interface Presenter : BaseMvpPresenter<View> {
         val transactionList: ArrayList<TransactionModel>
         var coinId: String
-
-        fun getTransactions()
-        fun getFirstTransactions()
-        fun chartViewInitialized()
+        fun viewCreated()
+        fun viewDestroyed()
         fun chartButtonClicked(chartType: ChartPeriodType)
+        fun refreshTransactionClicked()
+        fun scrolledToLastTransactionItem()
     }
 
     interface View : BaseMvpView {

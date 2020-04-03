@@ -2,9 +2,19 @@ package com.app.belcobtm.data.shared.preferences
 
 import android.content.SharedPreferences
 import com.app.belcobtm.api.model.response.GetCoinsFeeOldResponse
+import com.app.belcobtm.domain.wallet.CoinFeeDataItem
 import com.google.gson.Gson
+import com.squareup.moshi.JsonAdapter
+import com.squareup.moshi.Moshi
+import com.squareup.moshi.Types
 
 class SharedPreferencesHelper(private val sharedPreferences: SharedPreferences) {
+    private val jsonAdapter: JsonAdapter<Map<String, CoinFeeDataItem>> by lazy {
+        val moshi: Moshi = Moshi.Builder().build()
+        val listType = Types.newParameterizedType(Map::class.java, String::class.java, CoinFeeDataItem::class.java)
+        moshi.adapter<Map<String, CoinFeeDataItem>>(listType)
+    }
+
     var accessToken: String
         set(value) = sharedPreferences.set(
             ACCESS_TOKEN, if (value.isBlank()) "" else ACCESS_TOKEN_BEARER + value
@@ -27,16 +37,11 @@ class SharedPreferencesHelper(private val sharedPreferences: SharedPreferences) 
         set(value) = sharedPreferences.set(USER_PIN, value)
         get() = sharedPreferences[USER_PIN] ?: ""
 
-    var coinsFee: List<GetCoinsFeeOldResponse.CoinFee>
-        set(value) = sharedPreferences.set(COINS_FEE, Gson().toJson(value))
-        get() = try {
-            Gson().fromJson(
-                sharedPreferences[COINS_FEE] ?: "",
-                Array<GetCoinsFeeOldResponse.CoinFee>::class.java
-            ).toList()
-        } catch (e: Exception) {
-            e.printStackTrace()
-            emptyList()
+    var coinsFee: Map<String, CoinFeeDataItem>
+        set(value) = sharedPreferences.set(COINS_FEE, jsonAdapter.toJson(value))
+        get() {
+            val json = sharedPreferences[COINS_FEE] ?: ""
+            return if (json.isBlank()) emptyMap() else jsonAdapter.fromJson(json) ?: emptyMap()
         }
 
     companion object {
