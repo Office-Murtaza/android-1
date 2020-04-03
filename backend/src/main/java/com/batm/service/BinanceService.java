@@ -112,18 +112,6 @@ public class BinanceService {
         return null;
     }
 
-    public TransactionStatus getTransactionStatus(String txId) {
-        try {
-            JSONObject res = rest.getForObject(nodeUrl + "/api/v1/tx/" + txId + "?format=json", JSONObject.class);
-
-            return getStatus(res.getInt("code"));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return TransactionStatus.FAIL;
-    }
-
     public TransactionDetailsDTO getTransaction(String txId, String address) {
         TransactionDetailsDTO dto = new TransactionDetailsDTO();
 

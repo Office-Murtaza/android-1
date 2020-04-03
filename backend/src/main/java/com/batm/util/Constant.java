@@ -25,9 +25,6 @@ public class Constant {
 
     public static final int TRANSACTIONS_COUNT = 10;
 
-    public static final int SELL_NOT_NOTIFIED = 0;
-    public static final int SELL_NOTIFIED = 1;
-
     public static final BigDecimal DAILY_LIMIT = BigDecimal.valueOf(900);
     public static final BigDecimal TX_LIMIT = BigDecimal.valueOf(900);
     public static final BigDecimal VERIFIED_DAILY_LIMIT = BigDecimal.valueOf(10_000);
@@ -43,5 +40,5 @@ public class Constant {
     public static final String BNB_CHAIN_ID = "Binance-Chain-Tigris";
 
     public static final String APP_LINK_IOS = "itms-apps://itunes.apple.com/app/apple-store/id1475407885";
-    public static final String APP_LINK_ANDROID = "https://apps.apple.com/app/belco-wallet/id1475407885";
+    public static final String APP_LINK_ANDROID = "https://play.google.com/store/apps/details?id=com.app.belcobtm";
 }

@@ -67,23 +67,6 @@ public class TrongridService {
         return null;
     }
 
-    public TransactionStatus getTransactionStatus(String txId) {
-        try {
-            JSONObject res = rest.getForObject(nodeUrl + "/v1/transactions/" + txId, JSONObject.class);
-            JSONArray array = res.optJSONArray("data");
-
-            if (array != null && !array.isEmpty()) {
-                String contractRet = array.getJSONObject(0).optJSONArray("ret").getJSONObject(0).optString("contractRet");
-
-                return getStatus(contractRet);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return TransactionStatus.FAIL;
-    }
-
     public TransactionDetailsDTO getTransaction(String txId, String address) {
         TransactionDetailsDTO dto = new TransactionDetailsDTO();
 

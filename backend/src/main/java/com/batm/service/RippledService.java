@@ -101,29 +101,6 @@ public class RippledService {
         return new CurrentAccountDTO();
     }
 
-    public TransactionStatus getTransactionStatus(String txId) {
-        try {
-            JSONObject param = new JSONObject();
-            param.put("transaction", txId);
-
-            JSONArray params = new JSONArray();
-            params.add(param);
-
-            JSONObject req = new JSONObject();
-            req.put("method", "tx");
-            req.put("params", params);
-
-            JSONObject res = rest.postForObject(nodeUrl, req, JSONObject.class);
-            String txResult = res.optJSONObject("result").optJSONObject("meta").optString("TransactionResult");
-
-            return getStatus(txResult);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return TransactionStatus.FAIL;
-    }
-
     public TransactionDetailsDTO getTransaction(String txId, String address) {
         TransactionDetailsDTO dto = new TransactionDetailsDTO();
 

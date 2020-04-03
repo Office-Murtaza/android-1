@@ -8,6 +8,7 @@ import com.batm.repository.CoinRep;
 import com.batm.util.Constant;
 import com.batm.util.Util;
 import net.sf.json.JSONObject;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -187,7 +188,7 @@ public class CoinService {
 
             @Override
             public TransactionStatus getTransactionStatus(String txId) {
-                return blockbook.getTransactionStatus(btcNodeUrl, txId);
+                return getTransaction(txId, StringUtils.EMPTY).getStatus();
             }
 
             @Override
@@ -258,6 +259,7 @@ public class CoinService {
                 dto.setProfitC2C(getCoinEntity().getProfitC2C().stripTrailingZeros());
                 dto.setByteFee(getCoinEntity().getFee());
                 dto.setTxFee(getCoinEntity().getFee().multiply(BigDecimal.valueOf(1000)).stripTrailingZeros());
+                dto.setServerWalletAddress(getWalletAddress());
 
                 return dto;
             }
@@ -285,7 +287,7 @@ public class CoinService {
 
             @Override
             public TransactionStatus getTransactionStatus(String txId) {
-                return blockbook.getTransactionStatus(ethNodeUrl, txId);
+                return getTransaction(txId, StringUtils.EMPTY).getStatus();
             }
 
             @Override
@@ -361,6 +363,7 @@ public class CoinService {
                 dto.setGasPrice(Constant.GAS_PRICE);
                 dto.setGasLimit(Constant.GAS_LIMIT);
                 dto.setTxFee(BigDecimal.valueOf(Constant.GAS_PRICE).multiply(BigDecimal.valueOf(Constant.GAS_LIMIT)).divide(Constant.ETH_DIVIDER).stripTrailingZeros());
+                dto.setServerWalletAddress(getWalletAddress());
 
                 return dto;
             }
@@ -388,7 +391,7 @@ public class CoinService {
 
             @Override
             public TransactionStatus getTransactionStatus(String txId) {
-                return blockbook.getTransactionStatus(bchNodeUrl, txId);
+                return getTransaction(txId, StringUtils.EMPTY).getStatus();
             }
 
             @Override
@@ -459,6 +462,7 @@ public class CoinService {
                 dto.setProfitC2C(getCoinEntity().getProfitC2C().stripTrailingZeros());
                 dto.setByteFee(getCoinEntity().getFee());
                 dto.setTxFee(getCoinEntity().getFee().multiply(BigDecimal.valueOf(1000)).stripTrailingZeros());
+                dto.setServerWalletAddress(getWalletAddress());
 
                 return dto;
             }
@@ -486,7 +490,7 @@ public class CoinService {
 
             @Override
             public TransactionStatus getTransactionStatus(String txId) {
-                return blockbook.getTransactionStatus(ltcNodeUrl, txId);
+                return getTransaction(txId, StringUtils.EMPTY).getStatus();
             }
 
             @Override
@@ -557,6 +561,7 @@ public class CoinService {
                 dto.setProfitC2C(getCoinEntity().getProfitC2C().stripTrailingZeros());
                 dto.setByteFee(getCoinEntity().getFee());
                 dto.setTxFee(getCoinEntity().getFee().multiply(BigDecimal.valueOf(1000)).stripTrailingZeros());
+                dto.setServerWalletAddress(getWalletAddress());
 
                 return dto;
             }
@@ -584,7 +589,7 @@ public class CoinService {
 
             @Override
             public TransactionStatus getTransactionStatus(String txId) {
-                return binance.getTransactionStatus(txId);
+                return getTransaction(txId, StringUtils.EMPTY).getStatus();
             }
 
             @Override
@@ -655,6 +660,7 @@ public class CoinService {
                 CoinSettingsDTO dto = new CoinSettingsDTO();
                 dto.setProfitC2C(getCoinEntity().getProfitC2C().stripTrailingZeros());
                 dto.setTxFee(getCoinEntity().getFee().stripTrailingZeros());
+                dto.setServerWalletAddress(getWalletAddress());
 
                 return dto;
             }
@@ -682,7 +688,7 @@ public class CoinService {
 
             @Override
             public TransactionStatus getTransactionStatus(String txId) {
-                return rippled.getTransactionStatus(txId);
+                return getTransaction(txId, StringUtils.EMPTY).getStatus();
             }
 
             @Override
@@ -761,6 +767,7 @@ public class CoinService {
                 CoinSettingsDTO dto = new CoinSettingsDTO();
                 dto.setProfitC2C(getCoinEntity().getProfitC2C().stripTrailingZeros());
                 dto.setTxFee(getCoinEntity().getFee().stripTrailingZeros());
+                dto.setServerWalletAddress(getWalletAddress());
 
                 return dto;
             }
@@ -788,7 +795,7 @@ public class CoinService {
 
             @Override
             public TransactionStatus getTransactionStatus(String txId) {
-                return trongrid.getTransactionStatus(txId);
+                return getTransaction(txId, StringUtils.EMPTY).getStatus();
             }
 
             @Override
@@ -856,6 +863,7 @@ public class CoinService {
                 CoinSettingsDTO dto = new CoinSettingsDTO();
                 dto.setProfitC2C(getCoinEntity().getProfitC2C().stripTrailingZeros());
                 dto.setTxFee(getCoinEntity().getFee().stripTrailingZeros());
+                dto.setServerWalletAddress(getWalletAddress());
 
                 return dto;
             }

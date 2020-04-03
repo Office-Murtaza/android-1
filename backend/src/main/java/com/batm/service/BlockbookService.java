@@ -77,18 +77,6 @@ public class BlockbookService {
         return new NonceDTO();
     }
 
-    public TransactionStatus getTransactionStatus(String nodeUrl, String txId) {
-        try {
-            JSONObject res = rest.getForObject(nodeUrl + "/api/v2/tx/" + txId, JSONObject.class);
-
-            return getStatus(res.optInt("confirmations"));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return TransactionStatus.FAIL;
-    }
-
     public TransactionNumberDTO getTransactionNumber(String url, String address, BigDecimal amount, BigDecimal divider, TransactionType type) {
         try {
             JSONObject res = rest.getForObject(url + "/api/v2/address/" + address + "?details=txs&pageSize=1000&page=1", JSONObject.class);
