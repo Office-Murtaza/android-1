@@ -116,6 +116,8 @@
 		DB5185AE231FE68300052229 /* CoinWithdrawViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB5185AA231FE68300052229 /* CoinWithdrawViewController.swift */; };
 		DB5185AF231FE68300052229 /* CoinWithdrawPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB5185AB231FE68300052229 /* CoinWithdrawPresenter.swift */; };
 		DB5185B0231FE68300052229 /* CoinWithdrawAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB5185AC231FE68300052229 /* CoinWithdrawAssembly.swift */; };
+		DB5413CB24346D59002DDD2F /* CoinWithdrawHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB5413CA24346D59002DDD2F /* CoinWithdrawHeaderView.swift */; };
+		DB5413CD24346EDB002DDD2F /* CoinDetailsBalanceValueView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB5413CC24346EDB002DDD2F /* CoinDetailsBalanceValueView.swift */; };
 		DB59EA1922F9C4BF00EB64A7 /* ChangePasswordFlow+Dependencies.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB59EA1622F9C4BF00EB64A7 /* ChangePasswordFlow+Dependencies.swift */; };
 		DB59EA1A22F9C4BF00EB64A7 /* ChangePasswordFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB59EA1722F9C4BF00EB64A7 /* ChangePasswordFlow.swift */; };
 		DB59EA1B22F9C4BF00EB64A7 /* ChangePasswordFlowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB59EA1822F9C4BF00EB64A7 /* ChangePasswordFlowController.swift */; };
@@ -201,6 +203,7 @@
 		DB8DC11E2412C151006AB4F5 /* VerificationFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB8DC11D2412C151006AB4F5 /* VerificationFormView.swift */; };
 		DB8DC1222413009F006AB4F5 /* VIPVerificationStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB8DC1212413009F006AB4F5 /* VIPVerificationStore.swift */; };
 		DB8DC12524130225006AB4F5 /* VIPVerificationFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB8DC12424130225006AB4F5 /* VIPVerificationFormView.swift */; };
+		DB8E744B2435C362002B5F6D /* CoinWithdrawFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB8E744A2435C362002B5F6D /* CoinWithdrawFormView.swift */; };
 		DB8F077D24102DAE00770643 /* PickerConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB8F077C24102DAE00770643 /* PickerConfig.swift */; };
 		DB8F077F2410343800770643 /* PickerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB8F077E2410343800770643 /* PickerDelegate.swift */; };
 		DB8F078824103E8F00770643 /* PickerFlowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB8F078324103E8F00770643 /* PickerFlowController.swift */; };
@@ -544,6 +547,8 @@
 		DB5185AA231FE68300052229 /* CoinWithdrawViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinWithdrawViewController.swift; sourceTree = "<group>"; };
 		DB5185AB231FE68300052229 /* CoinWithdrawPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinWithdrawPresenter.swift; sourceTree = "<group>"; };
 		DB5185AC231FE68300052229 /* CoinWithdrawAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinWithdrawAssembly.swift; sourceTree = "<group>"; };
+		DB5413CA24346D59002DDD2F /* CoinWithdrawHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinWithdrawHeaderView.swift; sourceTree = "<group>"; };
+		DB5413CC24346EDB002DDD2F /* CoinDetailsBalanceValueView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinDetailsBalanceValueView.swift; sourceTree = "<group>"; };
 		DB59EA1622F9C4BF00EB64A7 /* ChangePasswordFlow+Dependencies.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ChangePasswordFlow+Dependencies.swift"; sourceTree = "<group>"; };
 		DB59EA1722F9C4BF00EB64A7 /* ChangePasswordFlow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangePasswordFlow.swift; sourceTree = "<group>"; };
 		DB59EA1822F9C4BF00EB64A7 /* ChangePasswordFlowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangePasswordFlowController.swift; sourceTree = "<group>"; };
@@ -628,6 +633,7 @@
 		DB8DC11D2412C151006AB4F5 /* VerificationFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerificationFormView.swift; sourceTree = "<group>"; };
 		DB8DC1212413009F006AB4F5 /* VIPVerificationStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VIPVerificationStore.swift; sourceTree = "<group>"; };
 		DB8DC12424130225006AB4F5 /* VIPVerificationFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VIPVerificationFormView.swift; sourceTree = "<group>"; };
+		DB8E744A2435C362002B5F6D /* CoinWithdrawFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinWithdrawFormView.swift; sourceTree = "<group>"; };
 		DB8F077C24102DAE00770643 /* PickerConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickerConfig.swift; sourceTree = "<group>"; };
 		DB8F077E2410343800770643 /* PickerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickerDelegate.swift; sourceTree = "<group>"; };
 		DB8F078324103E8F00770643 /* PickerFlowController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PickerFlowController.swift; sourceTree = "<group>"; };
@@ -1693,6 +1699,7 @@
 				DB95EB19230A982F0059C84C /* CoinDetailsButtonsView.swift */,
 				DB95EB27230AECA10059C84C /* CoinDetailsDepositView.swift */,
 				DB33E9B7241CE52500764BF5 /* CoinDetailsBalanceView.swift */,
+				DB5413CC24346EDB002DDD2F /* CoinDetailsBalanceValueView.swift */,
 				DB33E9BB241CFADB00764BF5 /* CoinDetailsPeriodButtonsView.swift */,
 			);
 			path = Views;
@@ -2268,7 +2275,9 @@
 			isa = PBXGroup;
 			children = (
 				DB8A196123574D1E003E8F7D /* CoinWithdrawAddressView.swift */,
+				DB8E744A2435C362002B5F6D /* CoinWithdrawFormView.swift */,
 				DBEC45B82321030E00BB05B2 /* CoinWithdrawExchangeView.swift */,
+				DB5413CA24346D59002DDD2F /* CoinWithdrawHeaderView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -2658,6 +2667,7 @@
 				DBC620B3234769120007D412 /* RippleSequence+Mapping.swift in Sources */,
 				DBC68CB322F8759100473247 /* CheckPassword+Mapping.swift in Sources */,
 				DB8D40B722C4027500D5FBD0 /* MainFormView.swift in Sources */,
+				DB8E744B2435C362002B5F6D /* CoinWithdrawFormView.swift in Sources */,
 				DB8DC12524130225006AB4F5 /* VIPVerificationFormView.swift in Sources */,
 				DBC68C9522F85DF700473247 /* PhoneNumber.swift in Sources */,
 				DB83663A22FAB7CE00454F5C /* ChangePinFlowController.swift in Sources */,
@@ -2669,6 +2679,7 @@
 				DB8D40B022C3F4D700D5FBD0 /* BTMNavigationController.swift in Sources */,
 				DBA6844422E44B0F0079429E /* ATMStore.swift in Sources */,
 				DBB5B38F22E0CD5800222640 /* BTMCoin.swift in Sources */,
+				DB5413CB24346D59002DDD2F /* CoinWithdrawHeaderView.swift in Sources */,
 				DB9616DC22C748610078E92D /* StorageTransaction.swift in Sources */,
 				DB8D408C22C3E54200D5FBD0 /* Initializer.swift in Sources */,
 				DB83664122FAB7E200454F5C /* ChangePinViewController.swift in Sources */,
@@ -2821,6 +2832,7 @@
 				DBA6844E22E45A250079429E /* SettingsFlowController.swift in Sources */,
 				DB95EB22230AA6FE0059C84C /* TransactionCell.swift in Sources */,
 				DB96172B22C77DD80078E92D /* APIResponse.swift in Sources */,
+				DB5413CD24346EDB002DDD2F /* CoinDetailsBalanceValueView.swift in Sources */,
 				DB8D408E22C3E5A500D5FBD0 /* DIInitializer.swift in Sources */,
 				DB2F25162360A8F400274C60 /* TransactionDetailsViewController.swift in Sources */,
 				DBC9E06323618CDB0008E0A6 /* TransactionDetails.swift in Sources */,

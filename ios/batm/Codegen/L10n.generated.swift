@@ -279,6 +279,12 @@ extension L.CoinSendGift.Form {
 }
 extension L.CoinWithdraw {
 
+  struct Button {
+    static let max = "coin_withdraw.button.max"
+    static let next = "coin_withdraw.button.next"
+    static let paste = "coin_withdraw.button.paste"
+  }
+
   struct Form {
   }
 }
@@ -292,11 +298,23 @@ extension L.CoinWithdraw.Form {
     static let title = "coin_withdraw.form.amount.title"
   }
 
+  struct CoinAmount {
+    static let placeholder = "coin_withdraw.form.coin_amount.placeholder"
+  }
+
+  struct CurrencyAmount {
+    static let placeholder = "coin_withdraw.form.currency_amount.placeholder"
+  }
+
   struct Error {
     static let invalidAddress = "coin_withdraw.form.error.invalid_address"
     static let invalidAmount = "coin_withdraw.form.error.invalid_amount"
     static let tooHighAmount = "coin_withdraw.form.error.too_high_amount"
     static let tooLowAmount = "coin_withdraw.form.error.too_low_amount"
+  }
+
+  struct RecipientAddress {
+    static let placeholder = "coin_withdraw.form.recipient_address.placeholder"
   }
 }
 extension L.CoinsBalance {

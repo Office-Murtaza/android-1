@@ -135,8 +135,8 @@
 "unlink.warning" = "Please, make sure you have been stored your credentials and seed phrase before unlinking the wallet.";
 "unlink.button.title" = "Unlink";
 
-"coin_details.price" = "Price:";
-"coin_details.balance" = "Balance:";
+"coin_details.price" = "Price";
+"coin_details.balance" = "Balance";
 "coin_details.deposit" = "Deposit";
 "coin_details.withdraw" = "Withdraw";
 "coin_details.send_gift" = "Send Gift";
@@ -160,6 +160,12 @@
 "coin_deposit.title" = "Deposit %@";
 
 "coin_withdraw.title" = "Withdraw %@";
+"coin_withdraw.button.max" = "MAX";
+"coin_withdraw.button.paste" = "PASTE";
+"coin_withdraw.button.next" = "NEXT";
+"coin_withdraw.form.recipient_address.placeholder" = "Recipient Address";
+"coin_withdraw.form.coin_amount.placeholder" = "Amount";
+"coin_withdraw.form.currency_amount.placeholder" = "USD Amount";
 "coin_withdraw.form.address.title" = "Address";
 "coin_withdraw.form.amount.title" = "Amount";
 "coin_withdraw.form.error.invalid_address" = "Invalid address";
