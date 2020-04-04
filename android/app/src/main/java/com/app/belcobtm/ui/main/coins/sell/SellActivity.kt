@@ -17,6 +17,7 @@ import com.app.belcobtm.api.model.response.LimitsResponse
 import com.app.belcobtm.mvp.BaseMvpActivity
 import com.app.belcobtm.presentation.core.Const.GIPHY_API_KEY
 import com.app.belcobtm.presentation.core.QRUtils
+import com.app.belcobtm.presentation.core.extensions.*
 import com.giphy.sdk.ui.GiphyCoreUI
 import com.giphy.sdk.ui.views.GiphyDialogFragment
 import com.google.android.material.textfield.TextInputLayout
@@ -46,8 +47,8 @@ class SellActivity : BaseMvpActivity<SellContract.View, SellContract.Presenter>(
 
     override fun showLimits(resp: LimitsResponse?) {
         this.limits = resp
-        daylimit.text = """${String.format(" %.2f", resp?.dailyLimit?.USD)} USD"""
-        transLimit.text = """${String.format(" %.2f", resp?.txLimit?.USD)} USD"""
+        dayLimitView.text = """${String.format(" %.2f", resp?.dailyLimit?.USD)} USD"""
+        txLimitView.text = """${String.format(" %.2f", resp?.txLimit?.USD)} USD"""
 
 
     }
@@ -75,7 +76,7 @@ class SellActivity : BaseMvpActivity<SellContract.View, SellContract.Presenter>(
         GiphyCoreUI.configure(this, GIPHY_API_KEY)
 
         setContentView(R.layout.activity_sell)
-        setSupportActionBar(toolbar)
+        setSupportActionBar(toolbarView)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)
 
@@ -88,34 +89,67 @@ class SellActivity : BaseMvpActivity<SellContract.View, SellContract.Presenter>(
         mPresenter.getDetails()
     }
 
-    private fun initView() {
+    private fun selectMaxPrice(){
+        val price = mCoin.price.uSD
+        val rate = limits?.sellProfitRate ?: Double.MIN_VALUE
+        val balance = mCoin.balance - mPresenter.getTransactionFee(mCoin.coinId)
 
-        sellContainer.visibility = View.VISIBLE
+        val fiatAmount = try {
+            ((balance * price / rate).toInt() / 10 * 10)
+        } catch (e: Exception) {
+            0
+        }
+
+        val mult20 = if (fiatAmount % 20 != 0) {
+            (fiatAmount / 20).toInt() * 20
+        } else fiatAmount
+
+        val mult50 = if (fiatAmount % 50 != 0) {
+            (fiatAmount / 50).toInt() * 50
+        } else fiatAmount
+
+        val fiatMax = max(mult20, mult50)
+        amountUsdView.setText("$fiatMax")
+
+        if (!anotherAddressButtonView.isChecked) {
+            amountUsdView.setText("${max(mult20, mult50)}")
+
+        } else {
+            amountUsdView.setText(
+                "${min(
+                    limits?.dailyLimit?.USD?.toInt() ?: 0,
+                    limits?.txLimit?.USD?.toInt() ?: 0
+                )}"
+            )
+        }
+    }
+
+    private fun initView() {
+        sellContainerGroupView.visibility = View.VISIBLE
         resultContainer.visibility = View.GONE
 
-        til_amount_right.hint = mCoin.coinId
-        til_amount_left.hint = "USD"
+        amountCryptoView.hint =  getString(R.string.sell_screen_crypto_amount, mCoin.coinId.toString())
 
-        amount_left.doAfterTextChanged {
-            til_amount_right.error = null
+        amountUsdView?.editText?.doAfterTextChanged {
+            amountCryptoView.clearError()
 
-            if (amount_left.text.isNullOrEmpty()) {
-                amount_right.setText("")
-                til_amount_left.error = null
+            if (amountUsdView.getString().isEmpty()) {
+                amountCryptoView.setText("")
+                amountUsdView.clearError()
                 return@doAfterTextChanged
             }
 
             val fiatAmount = try {
-                amount_left.text.toString().toInt()
+                amountUsdView.getString().toInt()
             } catch (e: Exception) {
-                amount_left.setText("0")
+                amountUsdView.setText("0")
                 0
             }
 
             if (!checkNotesForATM(fiatAmount)) {
-                til_amount_left.error = "ATM contains only 20 and 50 banknotes"
+                amountUsdView.showError(R.string.sell_screen_atm_contains_only_count_banknotes)
             } else {
-                til_amount_left.error = null
+                amountUsdView.clearError()
             }
 
 
@@ -127,51 +161,13 @@ class SellActivity : BaseMvpActivity<SellContract.View, SellContract.Presenter>(
 
             cryptoAmount = round(cryptoAmount * 100000) / 100000
 
-            amount_right.setText(String.format("%.6f", cryptoAmount).trimEnd('0'))
-
+            amountCryptoView.setText(String.format("%.6f", cryptoAmount).trimEnd('0'))
         }
 
+        maxCryptoView.setOnClickListener { selectMaxPrice() }
+        maxUsdView.setOnClickListener { selectMaxPrice() }
 
-        amount_max.setOnClickListener {
-
-            val price = mCoin.price.uSD
-
-            val rate = limits?.sellProfitRate ?: Double.MIN_VALUE
-
-            val balance = mCoin.balance - mPresenter.getTransactionFee(mCoin.coinId)
-
-
-            val fiatAmount = try {
-                ((balance * price / rate).toInt() / 10 * 10)
-            } catch (e: Exception) {
-                0
-            }
-
-            val mult20 = if (fiatAmount % 20 != 0) {
-                (fiatAmount / 20).toInt() * 20
-            } else fiatAmount
-
-            val mult50 = if (fiatAmount % 50 != 0) {
-                (fiatAmount / 50).toInt() * 50
-            } else fiatAmount
-
-            val fiatMax = max(mult20, mult50)
-            amount_left.setText("$fiatMax")
-
-            if (!chb.isChecked) {
-                amount_left.setText("${max(mult20, mult50)}")
-
-            } else {
-                amount_left.setText(
-                    "${min(
-                        limits?.dailyLimit?.USD?.toInt() ?: 0,
-                        limits?.txLimit?.USD?.toInt() ?: 0
-                    )}"
-                )
-            }
-        }
-
-        amount_left.setOnEditorActionListener(TextView.OnEditorActionListener { _, id, _ ->
+        amountUsdView?.editText?.setOnEditorActionListener(TextView.OnEditorActionListener { _, id, _ ->
             if (id == EditorInfo.IME_ACTION_DONE || id == EditorInfo.IME_NULL) {
                 validateAndSubmit()
                 return@OnEditorActionListener true
@@ -200,10 +196,10 @@ class SellActivity : BaseMvpActivity<SellContract.View, SellContract.Presenter>(
     }
 
     private fun validateAndSubmit() {
-        til_amount_left.error = null
+        amountUsdView.clearError()
 
         val fiatAmount = try {
-            amount_left.text.toString().toInt()
+            amountUsdView.getString().toInt()
         } catch (e: Exception) {
             0
         }
@@ -213,13 +209,13 @@ class SellActivity : BaseMvpActivity<SellContract.View, SellContract.Presenter>(
         //Validate amount
         if (fiatAmount <= 0) {
             errors++
-            til_amount_left.error = getString(R.string.should_be_filled)
+            amountUsdView.showError(R.string.should_be_filled)
         }
 
         // if (fiatAmount % 20 != 0 && fiatAmount % 50 != 0) {
         if (!checkNotesForATM(fiatAmount)) {
             errors++
-            til_amount_left.error = "ATM contains only 20 and 50 banknotes"
+            amountUsdView.showError(R.string.sell_screen_atm_contains_only_count_banknotes)
         }
 
         val balance = mCoin.balance - mPresenter.getTransactionFee(mCoin.coinId)
@@ -232,13 +228,13 @@ class SellActivity : BaseMvpActivity<SellContract.View, SellContract.Presenter>(
         cryptoAmount = round(cryptoAmount * 100000) / 100000
 
 
-        if (balance < cryptoAmount && !chb.isChecked) {
+        if (balance < cryptoAmount && !anotherAddressButtonView.isChecked) {
             errors++
-            til_amount_right.error = "Not enough on a tradable balance"
+            amountCryptoView.showError(R.string.sell_screen_not_enough_tradable_balance)
         }
 
         if (errors == 0) {
-            mPresenter.preSubmit(fiatAmount, cryptoAmount, balance, chb.isChecked)
+            mPresenter.preSubmit(fiatAmount, cryptoAmount, balance, anotherAddressButtonView.isChecked)
         }
 
     }
@@ -282,7 +278,7 @@ class SellActivity : BaseMvpActivity<SellContract.View, SellContract.Presenter>(
     ) {
         alertDialog?.dismiss()
 
-        sellContainer.visibility = View.GONE
+        sellContainerGroupView.visibility = View.GONE
         resultContainer.visibility = View.VISIBLE
 
         doneBtn.setOnClickListener {

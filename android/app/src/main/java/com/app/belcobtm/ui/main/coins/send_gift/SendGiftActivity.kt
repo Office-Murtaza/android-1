@@ -69,7 +69,7 @@ class SendGiftActivity : BaseMvpActivity<SendGiftContract.View, SendGiftContract
 
         phonePickerView.registerCarrierNumberEditText(phone)
 
-        til_amount_crypto.hint = mCoin.coinId
+        amountCryptoView.hint = mCoin.coinId
         val settings = GPHSettings(
             gridType = GridType.waterfall
             , theme = LightTheme
@@ -82,7 +82,7 @@ class SendGiftActivity : BaseMvpActivity<SendGiftContract.View, SendGiftContract
         phone_paste.setOnClickListener { phone.setText(getTextFromClipboard()) }
 
 
-        amount_max.setOnClickListener {
+        maxUsdView.setOnClickListener {
             val balance = mCoin.balance - mPresenter.getTransactionFee(mCoin.coinId)
             val balanceStr = if (balance > 0) {
                 cryptoBalanceToSend = balance
@@ -229,7 +229,7 @@ class SendGiftActivity : BaseMvpActivity<SendGiftContract.View, SendGiftContract
     }
 
     private fun validateAndSubmit() {
-        til_amount_crypto.error = null
+        amountCryptoView.error = null
         phoneView.error = null
 
 
@@ -245,13 +245,13 @@ class SendGiftActivity : BaseMvpActivity<SendGiftContract.View, SendGiftContract
         //Validate amount
         if (cryptoBalanceToSend <= 0) {
             errors++
-            til_amount_crypto.error = getString(R.string.should_be_filled)
+            amountCryptoView.error = getString(R.string.should_be_filled)
         }
 
         //Validate max amount
         if (cryptoBalanceToSend > (mCoin.balance - mPresenter.getTransactionFee(mCoin.coinId))) {
             errors++
-            til_amount_crypto.error = "Not enough balance"
+            amountCryptoView.error = "Not enough balance"
         }
 
         //Validate amount

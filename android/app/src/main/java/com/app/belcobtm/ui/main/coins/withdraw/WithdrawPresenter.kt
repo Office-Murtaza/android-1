@@ -39,10 +39,6 @@ class WithdrawPresenter : BaseMvpDIPresenterImpl<WithdrawContract.View, Withdraw
     private var mTransactionHashJson: String? = null
     private var mCoinDbModel: DbCryptoCoin? = null
 
-    init {
-        toString()
-    }
-
     override fun getCoinTransactionHash(
         context: Context,
         coinId: String,

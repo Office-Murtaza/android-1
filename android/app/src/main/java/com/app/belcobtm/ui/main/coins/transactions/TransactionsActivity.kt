@@ -23,7 +23,6 @@ import com.github.mikephil.charting.data.BarEntry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import kotlinx.android.synthetic.main.activity_show_phone.container
-import kotlinx.android.synthetic.main.activity_show_phone.toolbar
 import kotlinx.android.synthetic.main.activity_transactions.*
 import org.parceler.Parcels
 
@@ -119,7 +118,7 @@ class TransactionsActivity : BaseMvpActivity<TransactionsContract.View, Transact
         mAdapter = TransactionsAdapter(mPresenter.transactionList, mCoin) { mPresenter.scrolledToLastTransactionItem() }
         recyclerView.adapter = mAdapter
         recyclerView.addItemDecoration(dividerItemDecoration)
-        swipe_refresh.setColorSchemeColors(Color.RED, Color.GREEN, Color.BLUE)
+        swipeToRefreshView.setColorSchemeColors(Color.RED, Color.GREEN, Color.BLUE)
 
         val amountUsd = mCoin.balance * mCoin.price.uSD
         balanceUsdView.text = "${String.format("%.2f", amountUsd)} USD"
@@ -162,16 +161,16 @@ class TransactionsActivity : BaseMvpActivity<TransactionsContract.View, Transact
             }
         }
 
-        swipe_refresh.setOnRefreshListener { mPresenter.refreshTransactionClicked() }
-        deposit.setOnClickListener { showDepositDialog() }
-        withdraw.setOnClickListener {
+        swipeToRefreshView.setOnRefreshListener { mPresenter.refreshTransactionClicked() }
+        depositButtonView.setOnClickListener { showDepositDialog() }
+        withdrawButtonView.setOnClickListener {
             if (isCorrectCoinId()) {
                 WithdrawActivity.start(this, mCoin)
             } else {
                 showMessage("In progress. Only BTC, BCH, XRP, BNB and LTC withdraw available")
             }
         }
-        send_gift.setOnClickListener {
+        sendGiftButtonView.setOnClickListener {
             if (isCorrectCoinId()) {
                 SendGiftActivity.start(this, mCoin)
             } else {
@@ -179,7 +178,7 @@ class TransactionsActivity : BaseMvpActivity<TransactionsContract.View, Transact
             }
         }
 
-        sell.setOnClickListener {
+        sellButtonView.setOnClickListener {
             if (isCorrectCoinId()) {
                 SellActivity.start(this, mCoin)
             } else {
@@ -231,7 +230,7 @@ class TransactionsActivity : BaseMvpActivity<TransactionsContract.View, Transact
     override fun showProgress(show: Boolean) {
         runOnUiThread {
             if (!show)
-                swipe_refresh.isRefreshing = false
+                swipeToRefreshView.isRefreshing = false
 
             super.showProgress(show)
         }

@@ -35,8 +35,8 @@ class BalanceFragment : BaseMvpFragment<BalanceContract.View, BalanceContract.Pr
         coins_recycler.adapter = mAdapter
         coins_recycler.addItemDecoration(CoinItemDecoration(resources.getDimensionPixelSize(R.dimen.margin_half)))
 
-        swipe_refresh.setOnRefreshListener { mPresenter.requestCoins() }
-        swipe_refresh.setColorSchemeColors(Color.RED, Color.GREEN, Color.BLUE)
+        swipeToRefreshView.setOnRefreshListener { mPresenter.requestCoins() }
+        swipeToRefreshView.setColorSchemeColors(Color.RED, Color.GREEN, Color.BLUE)
 
         add_wallet_ll.setOnClickListener {
             startActivity(Intent(context, VisibilityCoinsActivity::class.java))
@@ -56,7 +56,7 @@ class BalanceFragment : BaseMvpFragment<BalanceContract.View, BalanceContract.Pr
     override fun showProgress(show: Boolean) {
         activity?.runOnUiThread {
             if (!show) {
-                swipe_refresh.isRefreshing = false
+                swipeToRefreshView.isRefreshing = false
             }
             super.showProgress(show)
         }

@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.MaterialComponents.Light.DarkActionBar">
@@ -14,6 +14,10 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
     </style>
+
+    <style name="Widget.MaterialComponents.TextInputLayout.FilledBox" parent="Widget.Design.TextInputLayout" />
+
+    <style name="Widget.MaterialComponents.TextInputEditText.FilledBox" parent="Widget.Design.TextInputLayout" tools:ignore="PrivateResource" />
 
     <style name="SeedElemContainer">
         <item name="android:layout_width">0dp</item>
@@ -199,6 +203,58 @@
         <item name="android:textAlignment">center</item>
         <item name="backgroundColor">@color/selector_bg_chips</item>
         <item name="android:textColor">@color/selector_text_chips</item>
+    </style>
+
+    <style name="WalletTab" />
+
+    <style name="WalletTab.Title" />
+
+    <style name="WalletTab.Title.Medium" />
+
+    <style name="WalletTab.Title.Medium.Key">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">8dp</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="WalletTab.Title.Medium.Value">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">#8d8d8d</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:ellipsize">end</item>
+    </style>
+
+
+    <style name="WalletTab.EditText" />
+
+    <style name="WalletTab.EditText.Container" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="errorEnabled">true</item>
+        <item name="errorIconDrawable">@null</item>
+    </style>
+
+    <style name="WalletTab.EditText.InputWithMax">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingEnd">54dp</item>
+    </style>
+
+    <style name="WalletTab.EditText.TextLink">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">?attr/selectableItemBackgroundBorderless</item>
+        <item name="android:clickable">true</item>
+        <item name="android:focusable">true</item>
+        <item name="android:padding">4dp</item>
+        <item name="android:textColor">#0073e4</item>
+        <item name="android:textStyle">bold</item>
+        <item name="textAllCaps">true</item>
     </style>
 
 </resources>

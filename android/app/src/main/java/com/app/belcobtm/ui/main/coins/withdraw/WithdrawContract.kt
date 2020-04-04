@@ -17,7 +17,6 @@ object WithdrawContract {
         fun validateAddress(coinId: String, walletAddress: String): Boolean
         fun verifySmsCode(code: String)
         fun getTransactionFee(coinName: String): Double
-
     }
 
     interface View : BaseMvpView {

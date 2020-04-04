@@ -18,8 +18,8 @@
         android:layout_weight="1"
         android:gravity="center"
         android:lines="1"
-        android:textSize="12sp"
-        app:fontFamily="@font/poppins_semi_bold"
+        android:textColor="#58585a"
+        android:textSize="13sp"
         tools:text="12.12.2045" />
 
     <androidx.appcompat.widget.AppCompatTextView
@@ -30,8 +30,8 @@
         android:gravity="center"
         android:lines="1"
         android:textAllCaps="true"
-        android:textSize="12sp"
-        app:fontFamily="@font/poppins_semi_bold"
+        android:textColor="#8d8d8d"
+        android:textSize="13sp"
         tools:text="deposit" />
 
     <FrameLayout
@@ -47,13 +47,14 @@
             android:background="@drawable/bg_transaction_status_unkown"
             android:gravity="center"
             android:lines="1"
-            android:paddingStart="@dimen/margin_half"
+            android:paddingStart="4dp"
             android:paddingTop="2dp"
-            android:paddingEnd="@dimen/margin_half"
+            android:paddingEnd="4dp"
+            android:paddingBottom="2dp"
             android:textAllCaps="true"
             android:textColor="@android:color/white"
-            android:textSize="12sp"
-            app:fontFamily="@font/poppins_semi_bold"
+            android:textSize="11sp"
+            tools:ignore="SmallSp"
             tools:text="complete" />
     </FrameLayout>
 
@@ -65,8 +66,8 @@
         android:ellipsize="end"
         android:gravity="center"
         android:lines="1"
-        android:textSize="12sp"
-        app:fontFamily="@font/poppins_semi_bold"
+        android:textColor="#8d8d8d"
+        android:textSize="13sp"
         tools:text="123.871264165" />
 
 </androidx.appcompat.widget.LinearLayoutCompat>

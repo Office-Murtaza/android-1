@@ -134,7 +134,7 @@
 
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/til_amount_crypto"
+        android:id="@+id/amountCryptoView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/margin_x2"
@@ -165,14 +165,14 @@
         android:layout_marginStart="@dimen/margin_x2"
         android:layout_marginEnd="@dimen/margin_x2"
         android:scaleType="fitXY"
-        app:layout_constraintBottom_toBottomOf="@+id/til_amount_crypto"
-        app:layout_constraintEnd_toStartOf="@id/til_amount_usd"
-        app:layout_constraintStart_toEndOf="@id/til_amount_crypto"
-        app:layout_constraintTop_toTopOf="@id/til_amount_crypto"
-        app:srcCompat="@drawable/ic_exchange" />
+        app:layout_constraintBottom_toBottomOf="@+id/amountCryptoView"
+        app:layout_constraintEnd_toStartOf="@id/amountUsdView"
+        app:layout_constraintStart_toEndOf="@id/amountCryptoView"
+        app:layout_constraintTop_toTopOf="@id/amountCryptoView"
+        app:srcCompat="@drawable/ic_exchange_v" />
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/til_amount_usd"
+        android:id="@+id/amountUsdView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/margin_x2"
@@ -198,7 +198,7 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/amount_max"
+        android:id="@+id/maxUsdView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_half"
@@ -210,7 +210,7 @@
         app:fontFamily="@font/poppins_medium"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/til_amount_crypto" />
+        app:layout_constraintTop_toBottomOf="@id/amountCryptoView" />
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/gif_empty_container"
@@ -223,7 +223,7 @@
         android:scaleType="center"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/amount_max"
+        app:layout_constraintTop_toBottomOf="@id/maxUsdView"
         app:srcCompat="@drawable/ic_gift_box" />
 
 
@@ -245,7 +245,7 @@
         app:gphKeepGifRatio="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/amount_max" />
+        app:layout_constraintTop_toBottomOf="@id/maxUsdView" />
 
     <!--</FrameLayout>-->
 

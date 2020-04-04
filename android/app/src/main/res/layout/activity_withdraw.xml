@@ -5,25 +5,196 @@
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/bg_color"
     tools:context=".ui.main.settings.phone.ShowPhoneActivity">
 
-    <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/toolbar_container"
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbarView"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="@drawable/bg_toolbar"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-        app:elevation="5dp"
+        app:elevation="6dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        tools:navigationIcon="@drawable/gph_ic_back"
+        tools:title="Withdraw" />
 
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/priceBarrierView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="end"
+        app:constraint_referenced_ids="balanceTitleView,priceTitleView" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/priceTitleView"
+        style="@style/WalletTab.Title.Medium.Key"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/withdraw_screen_price"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbarView" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/priceUsdView"
+        style="@style/WalletTab.Title.Medium.Value"
+        android:layout_marginStart="16dp"
+        app:layout_constraintStart_toEndOf="@id/priceBarrierView"
+        app:layout_constraintTop_toTopOf="@id/priceTitleView"
+        tools:text="2525.31 USD" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/balanceTitleView"
+        style="@style/WalletTab.Title.Medium.Key"
+        android:text="@string/withdraw_screen_balance"
+        app:layout_constraintStart_toStartOf="@id/priceTitleView"
+        app:layout_constraintTop_toBottomOf="@id/priceTitleView" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/balanceCryptoView"
+        style="@style/WalletTab.Title.Medium.Value"
+        app:layout_constraintStart_toEndOf="@id/priceBarrierView"
+        app:layout_constraintStart_toStartOf="@id/priceUsdView"
+        app:layout_constraintTop_toTopOf="@id/balanceTitleView"
+        tools:text="0.000902 BTC" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/exchangeView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        app:layout_constraintBottom_toBottomOf="@id/balanceCryptoView"
+        app:layout_constraintEnd_toStartOf="@id/balanceUsdView"
+        app:layout_constraintStart_toEndOf="@id/balanceCryptoView"
+        app:layout_constraintTop_toTopOf="@id/balanceCryptoView"
+        app:srcCompat="@drawable/ic_compare_arrows" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/balanceUsdView"
+        style="@style/WalletTab.Title.Medium.Value"
+        android:layout_marginStart="8dp"
+        android:textColor="@color/blue_color"
+        app:layout_constraintBottom_toBottomOf="@id/exchangeView"
+        app:layout_constraintStart_toEndOf="@id/exchangeView"
+        app:layout_constraintTop_toTopOf="@id/exchangeView"
+        tools:text="8.90 USD" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/addressView"
+        style="@style/WalletTab.EditText.Container"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/balanceTitleView">
+
+        <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-    </com.google.android.material.appbar.AppBarLayout>
+            android:layout_height="wrap_content"
+            android:hint="@string/withdraw_screen_recipient_address"
+            android:inputType="textMultiLine"
+            android:maxHeight="100dp"
+            android:nextFocusDown="@id/amountCryptoView"
+            android:paddingStart="12dp"
+            android:paddingEnd="100dp"
+            tools:text="Address" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/addressScanView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="10dp"
+        android:background="?android:selectableItemBackgroundBorderless"
+        android:clickable="true"
+        android:focusable="true"
+        android:padding="4dp"
+        android:src="@drawable/ic_center_focus"
+        app:layout_constraintBottom_toBottomOf="@id/addressView"
+        app:layout_constraintEnd_toEndOf="@id/addressView"
+        app:layout_constraintTop_toTopOf="@id/addressView"
+        app:tint="#0073e4" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/addressPasteView"
+        style="@style/WalletTab.EditText.TextLink"
+        android:layout_marginEnd="4dp"
+        android:text="@string/paste"
+        app:layout_constraintBottom_toBottomOf="@id/addressScanView"
+        app:layout_constraintEnd_toStartOf="@id/addressScanView"
+        app:layout_constraintTop_toTopOf="@id/addressScanView" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/amountCryptoView"
+        style="@style/WalletTab.EditText.Container"
+        app:layout_constraintEnd_toEndOf="@id/addressView"
+        app:layout_constraintStart_toStartOf="@id/addressView"
+        app:layout_constraintTop_toBottomOf="@id/addressView">
+
+        <com.google.android.material.textfield.TextInputEditText
+            style="@style/WalletTab.EditText.InputWithMax"
+            android:digits="1234567890."
+            android:inputType="numberDecimal"
+            android:nextFocusDown="@id/amountUsdView"
+            tools:hint="@string/withdraw_screen_crypto_amount"
+            tools:ignore="RtlSymmetry" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/maxCryptoView"
+        style="@style/WalletTab.EditText.TextLink"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
+        android:text="@string/max"
+        app:layout_constraintBottom_toBottomOf="@id/amountCryptoView"
+        app:layout_constraintEnd_toEndOf="@id/amountCryptoView"
+        app:layout_constraintTop_toTopOf="@id/amountCryptoView" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/amountUsdView"
+        style="@style/WalletTab.EditText.Container"
+        app:layout_constraintEnd_toEndOf="@id/addressView"
+        app:layout_constraintStart_toStartOf="@id/addressView"
+        app:layout_constraintTop_toBottomOf="@id/amountCryptoView">
+
+        <com.google.android.material.textfield.TextInputEditText
+            style="@style/WalletTab.EditText.InputWithMax"
+            android:digits="1234567890."
+            android:hint="@string/withdraw_screen_usd_amount"
+            android:inputType="numberDecimal"
+            android:textAllCaps="true"
+            tools:ignore="RtlSymmetry" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/maxUsdView"
+        style="@style/WalletTab.EditText.TextLink"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
+        android:text="@string/max"
+        app:layout_constraintBottom_toBottomOf="@id/amountUsdView"
+        app:layout_constraintEnd_toEndOf="@id/amountUsdView"
+        app:layout_constraintTop_toTopOf="@id/amountUsdView" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/nextButtonView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:paddingTop="12dp"
+        android:paddingBottom="12dp"
+        android:text="@string/button_next"
+        android:textColor="@android:color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/amountUsdView" />
 
     <FrameLayout
         android:id="@+id/progress"
@@ -31,13 +202,12 @@
         android:layout_height="match_parent"
         android:background="@color/gray_progress"
         android:clickable="true"
-        android:elevation="15dp"
         android:focusable="true"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/toolbar_container">
+        app:layout_constraintTop_toBottomOf="@id/toolbarView">
 
         <ProgressBar
             style="?android:attr/progressBarStyleLarge"
@@ -46,186 +216,5 @@
             android:layout_gravity="center"
             android:layout_marginBottom="8dp" />
     </FrameLayout>
-
-    <!--<androidx.appcompat.widget.AppCompatTextView-->
-    <!--android:id="@+id/address_title"-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:layout_marginTop="@dimen/margin_main"-->
-    <!--android:fontFamily="@font/poppins_semi_bold"-->
-    <!--android:text="@string/address"-->
-    <!--android:textColor="@color/dark_gray_text_color"-->
-    <!--android:textSize="14sp"-->
-    <!--app:layout_constraintEnd_toEndOf="parent"-->
-    <!--app:layout_constraintStart_toStartOf="parent"-->
-    <!--app:layout_constraintTop_toBottomOf="@id/toolbar_container" />-->
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/til_address"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/margin_x2"
-        android:layout_marginTop="@dimen/margin_half"
-        android:layout_marginEnd="@dimen/margin_x2"
-        android:textColorHint="@color/dark_gray_text_color"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/toolbar_container">
-
-
-        <androidx.appcompat.widget.AppCompatEditText
-            android:id="@+id/address"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/poppins_regular"
-            android:gravity="center"
-            android:hint="@string/address"
-            android:maxLines="4"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
-
-    </com.google.android.material.textfield.TextInputLayout>
-
-
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/address_paste"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_half"
-        android:background="?attr/selectableItemBackgroundBorderless"
-        android:clickable="true"
-        android:focusable="true"
-        android:text="@string/paste"
-        android:textColor="@color/blue_color"
-        app:fontFamily="@font/poppins_medium"
-        app:layout_constraintEnd_toStartOf="@id/address_scan"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/til_address" />
-
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/address_scan"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_half"
-        android:background="?attr/selectableItemBackgroundBorderless"
-        android:clickable="true"
-        android:focusable="true"
-        android:text="@string/scan"
-        android:textColor="@color/blue_color"
-        app:fontFamily="@font/poppins_medium"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/address_paste"
-        app:layout_constraintTop_toBottomOf="@id/til_address" />
-
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/amount_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_main"
-        android:fontFamily="@font/poppins_semi_bold"
-        android:text="@string/amount"
-        android:textColor="@color/dark_gray_text_color"
-        android:textSize="14sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/address_paste" />
-
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/til_amount_crypto"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/margin_x2"
-        app:layout_constraintEnd_toStartOf="@id/ic_exchange"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/amount_title">
-
-
-        <androidx.appcompat.widget.AppCompatEditText
-            android:id="@+id/amount_crypto"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/poppins_regular"
-            android:gravity="center"
-            android:inputType="numberDecimal"
-            android:maxLines="3"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            tools:hint="USD" />
-
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/ic_exchange"
-        android:layout_width="15dp"
-        android:layout_height="15dp"
-        android:layout_marginStart="@dimen/margin_x2"
-        android:layout_marginEnd="@dimen/margin_x2"
-        android:scaleType="fitXY"
-        app:layout_constraintBottom_toBottomOf="@+id/til_amount_crypto"
-        app:layout_constraintEnd_toStartOf="@id/til_amount_usd"
-        app:layout_constraintStart_toEndOf="@id/til_amount_crypto"
-        app:layout_constraintTop_toTopOf="@id/til_amount_crypto"
-        app:srcCompat="@drawable/ic_exchange" />
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/til_amount_usd"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/margin_x2"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/ic_exchange"
-        app:layout_constraintTop_toBottomOf="@id/amount_title">
-
-
-        <androidx.appcompat.widget.AppCompatEditText
-            android:id="@+id/amount_usd"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:enabled="true"
-            android:fontFamily="@font/poppins_regular"
-            android:gravity="center"
-            android:hint="USD"
-            android:inputType="numberDecimal"
-            android:maxLines="2"
-            digits="1234567890."
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
-
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/amount_max"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_half"
-        android:background="?attr/selectableItemBackgroundBorderless"
-        android:clickable="true"
-        android:focusable="true"
-        android:text="@string/max"
-        android:textColor="@color/blue_color"
-        app:fontFamily="@font/poppins_medium"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/til_amount_crypto" />
-
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/nextButtonView"
-        android:foreground="?attr/selectableItemBackground"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_x3"
-        android:layout_marginBottom="@dimen/margin_main"
-        android:background="@drawable/bt_gray_rounded_corner"
-        android:paddingStart="@dimen/margin_x3"
-        android:paddingEnd="@dimen/margin_x3"
-        android:text="@string/next"
-        android:textColor="@android:color/white"
-        android:backgroundTint="@color/blue_color"
-        app:fontFamily="@font/poppins_bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/amount_max" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>
