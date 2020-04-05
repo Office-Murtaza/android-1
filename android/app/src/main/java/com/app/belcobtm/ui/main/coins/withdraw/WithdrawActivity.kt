@@ -89,7 +89,6 @@ class WithdrawActivity : BaseMvpActivity<WithdrawContract.View, WithdrawContract
         balanceUsdView.text = "${String.format("%.2f", amountUsd)} USD"
     }
 
-
     private fun initViews() {
         initPrice()
         initBalance()

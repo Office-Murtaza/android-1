@@ -47,10 +47,8 @@ class SellActivity : BaseMvpActivity<SellContract.View, SellContract.Presenter>(
 
     override fun showLimits(resp: LimitsResponse?) {
         this.limits = resp
-        dayLimitView.text = """${String.format(" %.2f", resp?.dailyLimit?.USD)} USD"""
-        txLimitView.text = """${String.format(" %.2f", resp?.txLimit?.USD)} USD"""
-
-
+        dayLimitView.text = """${String.format("%.2f", resp?.dailyLimit?.USD)} USD"""
+        txLimitView.text = """${String.format("%.2f", resp?.txLimit?.USD)} USD"""
     }
 
     companion object {
@@ -83,10 +81,64 @@ class SellActivity : BaseMvpActivity<SellContract.View, SellContract.Presenter>(
         mCoin = Parcels.unwrap(intent.getParcelableExtra(KEY_COIN))
         supportActionBar?.title = "Sell" + " " + mCoin.coinId
 
-        initView()
+        initListeners()
+        initViews()
 
         mPresenter.bindData(mCoin)
         mPresenter.getDetails()
+    }
+
+    private fun initListeners(){
+        amountUsdView?.editText?.doAfterTextChanged {
+            amountCryptoView.clearError()
+            if (amountUsdView.getString().isEmpty()) {
+                amountCryptoView.setText("")
+                amountUsdView.clearError()
+                return@doAfterTextChanged
+            }
+            val fiatAmount = try {
+                amountUsdView.getString().toInt()
+            } catch (e: Exception) {
+                amountUsdView.setText("0")
+                0
+            }
+            if (!checkNotesForATM(fiatAmount)) {
+                amountUsdView.showError(R.string.sell_screen_atm_contains_only_count_banknotes)
+            } else {
+                amountUsdView.clearError()
+            }
+            val price = mCoin.price.uSD
+            val rate = limits?.sellProfitRate ?: Double.MIN_VALUE
+            var cryptoAmount = (fiatAmount / price * rate)
+            cryptoAmount = round(cryptoAmount * 100000) / 100000
+            amountCryptoView.setText(String.format("%.6f", cryptoAmount).trimEnd('0'))
+        }
+
+        maxCryptoView.setOnClickListener { selectMaxPrice() }
+        maxUsdView.setOnClickListener { selectMaxPrice() }
+        amountUsdView.actionDoneListener { validateAndSubmit() }
+        nextButtonView.setOnClickListener { validateAndSubmit() }
+    }
+
+    private fun initViews() {
+        sellContainerGroupView.visibility = View.VISIBLE
+        resultContainer.visibility = View.GONE
+        amountCryptoView.hint =  getString(R.string.sell_screen_crypto_amount, mCoin.coinId.toString())
+        initPrice()
+        initBalance()
+    }
+
+    private fun initPrice() {
+        val convertedPrice = if (mCoin.price.uSD > 0) String.format("%.2f", mCoin.price.uSD).trimEnd('0') else "0"
+        priceUsdView.text = getString(R.string.transaction_price_usd, convertedPrice)
+    }
+
+    private fun initBalance() {
+        val convertedBalance = if (mCoin.balance > 0) String.format("%.6f", mCoin.balance).trimEnd('0') else "0"
+        balanceCryptoView.text = getString(R.string.transaction_crypto_balance, convertedBalance, mCoin.coinId)
+
+        val amountUsd = mCoin.balance * mCoin.price.uSD
+        balanceUsdView.text = "${String.format("%.2f", amountUsd)} USD"
     }
 
     private fun selectMaxPrice(){
@@ -123,61 +175,6 @@ class SellActivity : BaseMvpActivity<SellContract.View, SellContract.Presenter>(
             )
         }
     }
-
-    private fun initView() {
-        sellContainerGroupView.visibility = View.VISIBLE
-        resultContainer.visibility = View.GONE
-
-        amountCryptoView.hint =  getString(R.string.sell_screen_crypto_amount, mCoin.coinId.toString())
-
-        amountUsdView?.editText?.doAfterTextChanged {
-            amountCryptoView.clearError()
-
-            if (amountUsdView.getString().isEmpty()) {
-                amountCryptoView.setText("")
-                amountUsdView.clearError()
-                return@doAfterTextChanged
-            }
-
-            val fiatAmount = try {
-                amountUsdView.getString().toInt()
-            } catch (e: Exception) {
-                amountUsdView.setText("0")
-                0
-            }
-
-            if (!checkNotesForATM(fiatAmount)) {
-                amountUsdView.showError(R.string.sell_screen_atm_contains_only_count_banknotes)
-            } else {
-                amountUsdView.clearError()
-            }
-
-
-            val price = mCoin.price.uSD
-
-            val rate = limits?.sellProfitRate ?: Double.MIN_VALUE
-
-            var cryptoAmount = (fiatAmount / price * rate)
-
-            cryptoAmount = round(cryptoAmount * 100000) / 100000
-
-            amountCryptoView.setText(String.format("%.6f", cryptoAmount).trimEnd('0'))
-        }
-
-        maxCryptoView.setOnClickListener { selectMaxPrice() }
-        maxUsdView.setOnClickListener { selectMaxPrice() }
-
-        amountUsdView?.editText?.setOnEditorActionListener(TextView.OnEditorActionListener { _, id, _ ->
-            if (id == EditorInfo.IME_ACTION_DONE || id == EditorInfo.IME_NULL) {
-                validateAndSubmit()
-                return@OnEditorActionListener true
-            }
-            false
-        })
-
-        nextButtonView.setOnClickListener { validateAndSubmit() }
-    }
-
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == android.R.id.home) {

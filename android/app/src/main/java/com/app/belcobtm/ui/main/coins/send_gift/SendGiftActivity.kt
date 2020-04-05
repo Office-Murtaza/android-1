@@ -16,6 +16,9 @@ import com.app.belcobtm.R
 import com.app.belcobtm.api.model.response.CoinModel
 import com.app.belcobtm.mvp.BaseMvpActivity
 import com.app.belcobtm.presentation.core.Const.GIPHY_API_KEY
+import com.app.belcobtm.presentation.core.extensions.actionDoneListener
+import com.app.belcobtm.presentation.core.extensions.getString
+import com.app.belcobtm.presentation.core.extensions.setText
 import com.giphy.sdk.core.models.Media
 import com.giphy.sdk.core.models.enums.RenditionType
 import com.giphy.sdk.ui.GPHContentType
@@ -26,12 +29,10 @@ import com.giphy.sdk.ui.themes.LightTheme
 import com.giphy.sdk.ui.views.GiphyDialogFragment
 import com.google.android.material.textfield.TextInputLayout
 import kotlinx.android.synthetic.main.activity_send_gift.*
-import kotlinx.android.synthetic.main.activity_show_phone.toolbar
 import org.parceler.Parcels
 
 class SendGiftActivity : BaseMvpActivity<SendGiftContract.View, SendGiftContract.Presenter>(),
-    SendGiftContract.View
-    , GiphyDialogFragment.GifSelectionListener {
+    SendGiftContract.View, GiphyDialogFragment.GifSelectionListener {
 
     companion object {
         private const val KEY_COIN = "KEY_COIN"
@@ -45,8 +46,8 @@ class SendGiftActivity : BaseMvpActivity<SendGiftContract.View, SendGiftContract
     }
 
     private lateinit var gifsDialog: GiphyDialogFragment
-
     private lateinit var mCoin: CoinModel
+    var cryptoBalanceToSend = 0.0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,7 +55,7 @@ class SendGiftActivity : BaseMvpActivity<SendGiftContract.View, SendGiftContract
         GiphyCoreUI.configure(this, GIPHY_API_KEY)
 
         setContentView(R.layout.activity_send_gift)
-        setSupportActionBar(toolbar)
+        setSupportActionBar(toolbarView)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)
 
@@ -62,70 +63,77 @@ class SendGiftActivity : BaseMvpActivity<SendGiftContract.View, SendGiftContract
         mCoin = Parcels.unwrap(intent.getParcelableExtra(KEY_COIN))
         supportActionBar?.title = "Send Gift" + " " + mCoin.coinId
 
+        initListeners()
         initView()
     }
 
-    private fun initView() {
-
-        phonePickerView.registerCarrierNumberEditText(phone)
-
-        amountCryptoView.hint = mCoin.coinId
-        val settings = GPHSettings(
-            gridType = GridType.waterfall
-            , theme = LightTheme
-            , dimBackground = true
-            , mediaTypeConfig = arrayOf(GPHContentType.gif)
-        )
-        gifsDialog = GiphyDialogFragment.newInstance(settings)
-
-        phone.addTextChangedListener(PhoneNumberFormattingTextWatcher())
-        phone_paste.setOnClickListener { phone.setText(getTextFromClipboard()) }
-
-
-        maxUsdView.setOnClickListener {
-            val balance = mCoin.balance - mPresenter.getTransactionFee(mCoin.coinId)
-            val balanceStr = if (balance > 0) {
-                cryptoBalanceToSend = balance
-                String.format("%.6f", balance).trimEnd('0')
-            } else {
-                cryptoBalanceToSend = 0.0
-                "0"
-            }
-            amount_crypto.setText(balanceStr.replace(',', '.'))
-
-        }
-
-        add_gif.setOnClickListener { openGify() }
-        gif_empty_container.setOnClickListener { openGify() }
-
-        remove_gif.setOnClickListener {
+    private fun initListeners() {
+        phoneView?.editText?.addTextChangedListener(PhoneNumberFormattingTextWatcher())
+        pastePhoneView.setOnClickListener { phoneView.setText(getTextFromClipboard()) }
+        maxUsdView.setOnClickListener { selectMaxPrice() }
+        maxCryptoView.setOnClickListener { selectMaxPrice() }
+        addGifButtonView.setOnClickListener { openGify() }
+        gifEmptyView.setOnClickListener { openGify() }
+        removeGifButtonView.setOnClickListener {
             if (mPresenter.gifMedia != null) {
                 mPresenter.gifMedia = null
-                gif_media_view.setMedia(null, RenditionType.original)
-                gif_empty_container.visibility = View.VISIBLE
-                gif_media_view.visibility = View.INVISIBLE
+                gifView.setMedia(null, RenditionType.original)
+                gifEmptyView.visibility = View.VISIBLE
+                gifView.visibility = View.INVISIBLE
             }
         }
 
         handleAmount()
-
-
-        amount_crypto.setOnEditorActionListener(TextView.OnEditorActionListener { _, id, _ ->
-            if (id == EditorInfo.IME_ACTION_DONE || id == EditorInfo.IME_NULL) {
-                validateAndSubmit()
-                return@OnEditorActionListener true
-            }
-            false
-        })
-
+        amountCryptoView.actionDoneListener { validateAndSubmit() }
         nextButtonView.setOnClickListener { validateAndSubmit() }
     }
 
-    var cryptoBalanceToSend = 0.0
+    private fun initView() {
+        phonePickerView.registerCarrierNumberEditText(phoneView.editText)
+
+        amountCryptoView.hint = mCoin.coinId
+        val settings = GPHSettings(
+            gridType = GridType.waterfall,
+            theme = LightTheme,
+            dimBackground = true,
+            mediaTypeConfig = arrayOf(GPHContentType.gif)
+        )
+        gifsDialog = GiphyDialogFragment.newInstance(settings)
+
+        initPrice()
+        initBalance()
+    }
+
+    private fun initPrice() {
+        val convertedPrice = if (mCoin.price.uSD > 0) String.format("%.2f", mCoin.price.uSD).trimEnd('0') else "0"
+        priceUsdView.text = getString(R.string.transaction_price_usd, convertedPrice)
+    }
+
+    private fun initBalance() {
+        val convertedBalance = if (mCoin.balance > 0) String.format("%.6f", mCoin.balance).trimEnd('0') else "0"
+        balanceCryptoView.text = getString(R.string.transaction_crypto_balance, convertedBalance, mCoin.coinId)
+
+        val amountUsd = mCoin.balance * mCoin.price.uSD
+        balanceUsdView.text = "${String.format("%.2f", amountUsd)} USD"
+    }
+
+    private fun selectMaxPrice() {
+        val balance = mCoin.balance - mPresenter.getTransactionFee(mCoin.coinId)
+        val balanceStr = if (balance > 0) {
+            cryptoBalanceToSend = balance
+            String.format("%.6f", balance).trimEnd('0')
+        } else {
+            cryptoBalanceToSend = 0.0
+            "0"
+        }
+
+        val cryptoText = if (balanceStr.contains(",")) balanceStr.replace(',', '.') else balanceStr
+        amountCryptoView.setText(cryptoText)
+    }
 
     private fun handleAmount() {
         var isTextWorking = false
-        amount_crypto.doAfterTextChanged {
+        amountCryptoView?.editText?.doAfterTextChanged {
             if (isTextWorking)
                 return@doAfterTextChanged
             isTextWorking = true
@@ -134,34 +142,34 @@ class SendGiftActivity : BaseMvpActivity<SendGiftContract.View, SendGiftContract
 
 
             val amountCrypto = try {
-                amount_crypto.text.toString().toDouble()
+                amountCryptoView.getString().toDouble()
             } catch (e: NumberFormatException) {
                 0.0
             }
             cryptoBalanceToSend = amountCrypto
 
             if (amountCrypto > balance) {
-                amount_crypto.setText(trimTrailingZero(balance.toString()))
+                amountCryptoView.setText(trimTrailingZero(balance.toString()) ?: "")
                 cryptoBalanceToSend = balance
                 isTextWorking = false
             }
             val amountUsd = amountCrypto * mCoin.price.uSD
-            amount_usd.setText(String.format("%.2f", amountUsd))
-            amount_usd.setSelection(amount_usd.text?.length ?: 0)
+            amountCryptoView.setText(String.format("%.2f", amountUsd))
+            amountCryptoView?.editText?.setSelection(amountUsdView.getString().length)
             isTextWorking = false
         }
 
-        amount_usd.doAfterTextChanged {
+        amountUsdView?.editText?.doAfterTextChanged {
             if (isTextWorking)
                 return@doAfterTextChanged
             isTextWorking = true
             var balance = mCoin.balance - mPresenter.getTransactionFee(mCoin.coinId)
             balance = if (balance < 0) 0.0 else balance
             if (balance == 0.0) {
-                amount_usd.setText("0")
-                amount_usd.setSelection(amount_usd.text?.length ?: 0)
-                amount_crypto.setText("0")
-                amount_crypto.setSelection(amount_crypto.text?.length ?: 0)
+                amountUsdView.setText("0")
+                amountUsdView?.editText?.setSelection(amountUsdView.getString().length)
+                amountCryptoView.setText("0")
+                amountCryptoView?.editText?.setSelection(amountCryptoView.getString().length)
                 isTextWorking = false
                 return@doAfterTextChanged
             }
@@ -169,25 +177,24 @@ class SendGiftActivity : BaseMvpActivity<SendGiftContract.View, SendGiftContract
             val maxUsd =
                 (mCoin.balance - mPresenter.getTransactionFee(mCoin.coinId)) * mCoin.price.uSD
             val amountUsd = try {
-                amount_usd.text.toString().toDouble()
+                amountUsdView.getString().toDouble()
             } catch (e: NumberFormatException) {
                 0.0
             }
 
             if (amountUsd > maxUsd) {
-                amount_usd.setText(String.format("%.2f", maxUsd))
-                amount_usd.setSelection(amount_usd.text?.length ?: 0)
+                amountUsdView.setText(String.format("%.2f", maxUsd))
+                amountUsdView?.editText?.setSelection(amountUsdView.getString().length)
             }
             var amountCrypt = try {
-                amount_usd.text.toString().toDouble() / mCoin.price.uSD
+                amountUsdView.getString().toDouble() / mCoin.price.uSD
             } catch (e: NumberFormatException) {
                 0.0
             }
 
             amountCrypt = if (amountCrypt < 0) 0.0 else amountCrypt
-            amount_crypto.setText(String.format("%.6f", amountCrypt))
-            amount_crypto.setText(trimTrailingZero(amount_crypto.text.toString()))
-            amount_crypto.setSelection(amount_crypto.text?.length ?: 0)
+            amountCryptoView.setText(trimTrailingZero(String.format("%.6f", amountCrypt)) ?: "")
+            amountCryptoView?.editText?.setSelection(amountCryptoView.getString().length)
             isTextWorking = false
         }
     }
@@ -266,7 +273,7 @@ class SendGiftActivity : BaseMvpActivity<SendGiftContract.View, SendGiftContract
                 mCoin,
                 phoneStrng,
                 cryptoBalanceToSend,
-                messageTv.text?.toString()
+                messageView.getString()
             )
         }
 
@@ -306,8 +313,8 @@ class SendGiftActivity : BaseMvpActivity<SendGiftContract.View, SendGiftContract
 
     override fun onGifSelected(media: Media) {
         mPresenter.gifMedia = media
-        gif_media_view.visibility = View.VISIBLE
-        gif_media_view.setMedia(media, RenditionType.original)
-        gif_empty_container.visibility = View.INVISIBLE
+        gifView.visibility = View.VISIBLE
+        gifView.setMedia(media, RenditionType.original)
+        gifEmptyView.visibility = View.INVISIBLE
     }
 }
