@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 import com.batm.dto.ChartPriceDTO;
 import com.batm.dto.CoinBalanceDTO;
+import com.batm.dto.CoinSettingsDTO;
 import com.batm.model.Error;
 import com.batm.service.SolrService;
 import com.batm.service.UserService;
@@ -73,7 +74,10 @@ public class CoinController {
     @GetMapping("/coins/{coinCode}/settings")
     public Response getCoinsSettings(@PathVariable CoinService.CoinEnum coinCode) {
         try {
-            return Response.ok(coinCode.getCoinSettings());
+            CoinSettingsDTO dto = coinCode.getCoinSettings();
+            dto.setCode(coinCode.name());
+
+            return Response.ok(dto);
         } catch (Exception e) {
             e.printStackTrace();
             return Response.serverError();

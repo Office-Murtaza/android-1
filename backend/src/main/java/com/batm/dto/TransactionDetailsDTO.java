@@ -34,6 +34,7 @@ public class TransactionDetailsDTO {
     private String sellInfo;
     private Integer confirmations;
     private String refTxId;
+    private String refLink;
     private String refCoin;
     private BigDecimal refCryptoAmount;
 

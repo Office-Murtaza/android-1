@@ -14,6 +14,7 @@ import java.math.BigDecimal;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class CoinSettingsDTO {
 
+    private String code;
     private BigDecimal txFee;
     private BigDecimal byteFee;
     private Long gasPrice;
