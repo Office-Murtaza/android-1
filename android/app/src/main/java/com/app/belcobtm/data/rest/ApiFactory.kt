@@ -4,6 +4,7 @@ import com.app.belcobtm.data.rest.authorization.AuthApi
 import com.app.belcobtm.data.rest.interceptor.AuthAuthenticator
 import com.app.belcobtm.data.rest.interceptor.ResponseInterceptor
 import com.app.belcobtm.data.rest.settings.SettingsApi
+import com.app.belcobtm.data.rest.wallet.WalletApi
 import com.app.belcobtm.data.shared.preferences.SharedPreferencesHelper
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import okhttp3.Interceptor
@@ -36,6 +37,7 @@ class ApiFactory(private val prefHelper: SharedPreferencesHelper) {
 
     val authApi: AuthApi = createApiWithSessionClient(AuthApi::class.java)
     val settingsApi: SettingsApi = createApiWithSessionClient(SettingsApi::class.java)
+    val walletApi: WalletApi = createApiWithSessionClient(WalletApi::class.java)
 
     private fun <T> createApi(clazz: Class<T>): T = Retrofit.Builder()
         .baseUrl(SERVER_URL)

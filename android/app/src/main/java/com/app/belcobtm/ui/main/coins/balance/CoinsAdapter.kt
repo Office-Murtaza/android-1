@@ -15,8 +15,7 @@ class CoinsAdapter(
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_coin, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_coin, parent, false)
         return object : RecyclerView.ViewHolder(view) {}
     }
 
@@ -43,9 +42,7 @@ class CoinsAdapter(
 
             holder.itemView.coin_price.text = "USD ${item.price?.uSD}"
             holder.itemView.coin_container.setOnClickListener {
-                mOnCoinClickListener.onCoinClick(
-                    item
-                )
+                mOnCoinClickListener.onCoinClick(item, mCoinsList)
             }
         }
 
@@ -56,6 +53,6 @@ class CoinsAdapter(
     }
 
     interface OnCoinClickListener {
-        fun onCoinClick(coin: CoinModel)
+        fun onCoinClick(coin: CoinModel, coinArray: List<CoinModel>)
     }
 }

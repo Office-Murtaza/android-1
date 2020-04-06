@@ -16,6 +16,8 @@ import com.app.belcobtm.mvp.BaseMvpActivity
 import com.app.belcobtm.presentation.core.QRUtils.Companion.getSpacelessQR
 import com.app.belcobtm.presentation.core.extensions.setDrawableStart
 import com.app.belcobtm.presentation.core.helper.AlertHelper
+import com.app.belcobtm.presentation.features.wallet.IntentCoinItem
+import com.app.belcobtm.presentation.features.wallet.exchange.coin.to.coin.ExchangeCoinToCoinActivity
 import com.app.belcobtm.ui.main.coins.sell.SellActivity
 import com.app.belcobtm.ui.main.coins.send_gift.SendGiftActivity
 import com.app.belcobtm.ui.main.coins.withdraw.WithdrawActivity
@@ -29,12 +31,14 @@ import org.parceler.Parcels
 class TransactionsActivity : BaseMvpActivity<TransactionsContract.View, TransactionsContract.Presenter>(),
     TransactionsContract.View {
     private lateinit var mCoin: CoinModel
+    private lateinit var intentCoinItemList: List<IntentCoinItem>
     private lateinit var mAdapter: TransactionsAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_transactions)
         mCoin = Parcels.unwrap(intent.getParcelableExtra(KEY_COIN))
+        intentCoinItemList = intent.getParcelableArrayListExtra<IntentCoinItem>(KEY_COIN_ARRAY)?.toList() ?: emptyList()
         mPresenter.coinId = mCoin.coinId
         initListeners()
         initViews()
@@ -185,6 +189,26 @@ class TransactionsActivity : BaseMvpActivity<TransactionsContract.View, Transact
                 showMessage("In progress. Only BTC, BCH, XRP, ETH, BNB and LTC withdraw available")
             }
         }
+
+        c2cExchangeButtonView.setOnClickListener {
+            if (isCorrectCoinId()) {
+                val intentCoinItem = IntentCoinItem(
+                    mCoin.price.uSD,
+                    mCoin.balance * mCoin.price.uSD,
+                    mCoin.balance,
+                    mCoin.coinId
+                )
+
+                val intent = Intent(this, ExchangeCoinToCoinActivity::class.java)
+                val coinArray = arrayListOf<IntentCoinItem>()
+                coinArray.addAll(intentCoinItemList)
+                intent.putExtra(ExchangeCoinToCoinActivity.TAG_COIN_ITEM, intentCoinItem)
+                intent.putParcelableArrayListExtra(ExchangeCoinToCoinActivity.TAG_COIN_ITEM_LIST, coinArray)
+                startActivity(intent)
+            } else {
+                showMessage("In progress. Only BTC, BCH, XRP, ETH, BNB and LTC withdraw available")
+            }
+        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -243,12 +267,18 @@ class TransactionsActivity : BaseMvpActivity<TransactionsContract.View, Transact
 
     companion object {
         private const val KEY_COIN = "KEY_COIN"
+        private const val KEY_COIN_ARRAY = "KEY_COIN_LIST"
         private const val CHART_MARGIN_END_DP = 15F
 
         @JvmStatic
-        fun start(context: Context?, coin: CoinModel) {
+        fun start(context: Context?, coin: CoinModel, coinList: List<CoinModel>) {
             val intent = Intent(context, TransactionsActivity::class.java)
+            val coinArrayList = arrayListOf<IntentCoinItem>()
+            coinArrayList.addAll(coinList.map {
+                IntentCoinItem(it.price.uSD, it.balance * it.price.uSD, it.balance, it.coinId)
+            })
             intent.putExtra(KEY_COIN, Parcels.wrap(coin))
+            intent.putParcelableArrayListExtra(KEY_COIN_ARRAY, coinArrayList)
             context?.startActivity(intent)
         }
     }

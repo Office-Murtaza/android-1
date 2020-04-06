@@ -1,19 +1,14 @@
-package com.app.belcobtm.mvp
+package com.app.belcobtm.presentation.features.wallet
 
 import android.preference.PreferenceManager
 import com.app.belcobtm.App
-import com.app.belcobtm.api.data_manager.BaseDataManager
 import com.app.belcobtm.api.data_manager.WithdrawDataManager
-import com.app.belcobtm.api.model.ServerException
 import com.app.belcobtm.api.model.response.BNBBlockResponse
 import com.app.belcobtm.api.model.response.ETHResponse
 import com.app.belcobtm.api.model.response.TronBlockResponse
 import com.app.belcobtm.api.model.response.UtxoItem
 import com.app.belcobtm.data.shared.preferences.SharedPreferencesHelper
 import com.app.belcobtm.db.DbCryptoCoin
-import com.app.belcobtm.di.component.DaggerPresenterComponent
-import com.app.belcobtm.di.component.PresenterComponent
-import com.app.belcobtm.di.module.PresenterModule
 import com.app.belcobtm.presentation.core.*
 import com.app.belcobtm.presentation.core.Optional
 import com.app.belcobtm.presentation.core.extensions.CoinTypeExtension
@@ -25,28 +20,9 @@ import wallet.core.jni.*
 import wallet.core.jni.proto.*
 import java.math.BigDecimal
 import java.util.*
-import javax.inject.Inject
 
-
-abstract class BaseMvpDIPresenterImpl<V : BaseMvpView, T : BaseDataManager> : BaseMvpPresenter<V> {
-    protected var mView: V? = null
-    protected val presenterComponent: PresenterComponent = DaggerPresenterComponent.builder()
-        .presenterModule(PresenterModule())
-        .build()
-
-    protected abstract fun injectDependency()
-
-    @Inject
-    protected lateinit var mDataManager: T
-
-    override fun attachView(view: V) {
-        injectDependency()
-        mView = view
-    }
-
-    override fun detachView() {
-        mView = null
-    }
+class CryptoHashHelper {
+    private val dataManager: WithdrawDataManager = WithdrawDataManager()
 
     //TODO need migrate to dependency koin after refactoring
     private val prefsHelper: SharedPreferencesHelper by lazy {
@@ -54,66 +30,60 @@ abstract class BaseMvpDIPresenterImpl<V : BaseMvpView, T : BaseDataManager> : Ba
         SharedPreferencesHelper(sharedPreferences)
     }
 
-    protected fun <T : Throwable> onError(exception: T) {
-        mView?.showError(exception.message)
-    }
-
-    protected fun checkError(error: Throwable) {
-        println(error)
-        mView?.showProgress(false)
-        if (error is ServerException) {
-            if (error.code == Const.ERROR_403) {
-                mView?.onRefreshTokenFailed()
-            } else {
-                mView?.showError(error.errorMessage)
-            }
-        } else {
-            mView?.showError(error.message)
-        }
-    }
-
-    open fun getCoinTransactionHashObs(
+    fun getCoinTransactionHashObs(
         hdWallet: HDWallet,
         toAddress: String,
         coinType: CoinType?,
         coinAmount: Double,
-        mCoinDbModel: DbCryptoCoin?,
-        dataManager: WithdrawDataManager
+        mCoinDbModel: DbCryptoCoin?
     ): Observable<String> {
         val mUserId = prefsHelper.userId.toString()
         return when (coinType) {
             CoinType.XRP -> getXRPTransactionHashObs(
-                toAddress, coinAmount,
-                mCoinDbModel, dataManager, mUserId, coinType
+                toAddress,
+                coinAmount,
+                mCoinDbModel,
+                mUserId,
+                coinType
             )
             CoinType.BINANCE -> getBNBTransactionHashObs(
-                toAddress, coinAmount,
-                dataManager, mUserId, mCoinDbModel, coinType
+                toAddress,
+                coinAmount,
+                mUserId,
+                mCoinDbModel,
+                coinType
             )
             CoinType.BITCOIN,
             CoinType.BITCOINCASH,
             CoinType.LITECOIN -> getBTCTransactionHashObs(
-                hdWallet, toAddress,
-                coinType, coinAmount,
-                dataManager, mUserId, mCoinDbModel
+                hdWallet,
+                toAddress,
+                coinType,
+                coinAmount,
+                mUserId,
+                mCoinDbModel
             )
             CoinType.TRON -> getTronTransactionHashObs(
-                toAddress, coinAmount, dataManager,
-                mUserId, mCoinDbModel, coinType
+                toAddress,
+                coinAmount,
+                mUserId,
+                mCoinDbModel,
+                coinType
             )
             CoinType.ETHEREUM -> getETHTransactionHashObs(
-                toAddress, coinAmount,
-                dataManager, mUserId, mCoinDbModel
+                toAddress,
+                coinAmount,
+                mUserId,
+                mCoinDbModel
             )
             else -> Observable.just("")
         }
     }
 
-    open fun getXRPTransactionHashObs(
+    private fun getXRPTransactionHashObs(
         toAddress: String,
         coinAmount: Double,
         mCoinDbModel: DbCryptoCoin?,
-        dataManager: WithdrawDataManager,
         mUserId: String,
         coinType: CoinType
     ): Observable<String> {
@@ -149,19 +119,17 @@ abstract class BaseMvpDIPresenterImpl<V : BaseMvpView, T : BaseDataManager> : Ba
 
         val sign: Ripple.SigningOutput = RippleSigner.sign(signingInput.build())
         val signBytes = sign.encoded.toByteArray()
-        val resTransactionHashStr = Numeric.toHexString(signBytes)
-        return resTransactionHashStr
+        return Numeric.toHexString(signBytes)
     }
 
-    open fun getTronTransactionHashObs(
+    private fun getTronTransactionHashObs(
         toAddress: String,
         coinAmount: Double,
-        mDataManager: WithdrawDataManager,
         mUserId: String?,
         mCoinDbModel: DbCryptoCoin?,
         coinType: CoinType?
 
-    ): Observable<String> = mDataManager.getTronBlockHeader(mUserId, mCoinDbModel!!.coinType).map { resp ->
+    ): Observable<String> = dataManager.getTronBlockHeader(mUserId, mCoinDbModel!!.coinType).map { resp ->
         createTronTransactionHash(
             toAddress,
             mCoinDbModel,
@@ -171,7 +139,7 @@ abstract class BaseMvpDIPresenterImpl<V : BaseMvpView, T : BaseDataManager> : Ba
         )
     }
 
-    open fun createTronTransactionHash(
+    private fun createTronTransactionHash(
         toAddress: String, mCoinDbModel: DbCryptoCoin?,
         coinType: CoinType?, resp: TronBlockResponse?, coinAmount: Double
     ): String? {
@@ -217,10 +185,9 @@ abstract class BaseMvpDIPresenterImpl<V : BaseMvpView, T : BaseDataManager> : Ba
         return output.json
     }
 
-    open fun getETHTransactionHashObs(
+    private fun getETHTransactionHashObs(
         toAddress: String,
         coinAmount: Double,
-        dataManager: WithdrawDataManager,
         mUserId: String,
         mCoinDbModel: DbCryptoCoin?
     ): Observable<String> = dataManager.getETHNonce(mUserId, toAddress).map { resp ->
@@ -249,13 +216,13 @@ abstract class BaseMvpDIPresenterImpl<V : BaseMvpView, T : BaseDataManager> : Ba
         return str
     }
 
-    open fun createETHTransactionHash(
+    private fun createETHTransactionHash(
         _toAddress: String,
         mCoinDbModel: DbCryptoCoin,
         resp: ETHResponse?,
         coinAmount: Double
     ): String? {
-        val cryptoToSubcoin = BigDecimal(coinAmount * CoinType.ETHEREUM.unit())
+        val cryptoToSubcoin = BigDecimal(coinAmount * wallet.core.jni.CoinType.ETHEREUM.unit())
         val nonsStr: String = resp?.nonce?.toString(16) ?: ""
         val nonceHex = ByteString.copyFrom("0x${addLeadingZeroes(nonsStr)}".toHexByteArray())
         val amountHex =
@@ -284,10 +251,9 @@ abstract class BaseMvpDIPresenterImpl<V : BaseMvpView, T : BaseDataManager> : Ba
     }
 
 
-    open fun getBNBTransactionHashObs(
+    private fun getBNBTransactionHashObs(
         toAddress: String,
         coinAmount: Double,
-        dataManager: WithdrawDataManager,
         mUserId: String,
         mCoinDbModel: DbCryptoCoin?,
         coinType: CoinType
@@ -308,7 +274,7 @@ abstract class BaseMvpDIPresenterImpl<V : BaseMvpView, T : BaseDataManager> : Ba
         }
     }
 
-    open fun createBNBTransactionHash(
+    private fun createBNBTransactionHash(
         toAddress: String,
         mCoinDbModel: DbCryptoCoin?,
         coinType: CoinType?,
@@ -348,12 +314,11 @@ abstract class BaseMvpDIPresenterImpl<V : BaseMvpView, T : BaseDataManager> : Ba
         return Numeric.toHexString(signBytes)
     }
 
-    open fun getBTCTransactionHashObs(
+    private fun getBTCTransactionHashObs(
         hdWallet: HDWallet,
         toAddress: String,
         coinType: CoinType,
         coinAmount: Double,
-        dataManager: WithdrawDataManager,
         mUserId: String,
         mCoinDbModel: DbCryptoCoin?
     ): Observable<String> {
@@ -374,7 +339,7 @@ abstract class BaseMvpDIPresenterImpl<V : BaseMvpView, T : BaseDataManager> : Ba
         }
     }
 
-    open fun createBTCTransactionHash(
+    private fun createBTCTransactionHash(
         toAddress: String,
         coinDbModel: DbCryptoCoin?,
         coinType: CoinType,
@@ -446,7 +411,7 @@ abstract class BaseMvpDIPresenterImpl<V : BaseMvpView, T : BaseDataManager> : Ba
         return Numeric.toHexString(output.encoded.toByteArray())
     }
 
-    open fun validateAddress(coinId: String, walletAddress: String): Boolean =
+    fun validateAddress(coinId: String, walletAddress: String): Boolean =
         CoinTypeExtension.getTypeByCode(coinId)?.validate(walletAddress) ?: false
 
     /**
@@ -470,9 +435,9 @@ abstract class BaseMvpDIPresenterImpl<V : BaseMvpView, T : BaseDataManager> : Ba
     BNB  Binance Coin  0.0010000000
 
      */
-    open fun getTransactionFee(coinName: String): Double = prefsHelper.coinsFee[coinName]?.txFee ?: 0.0
+    fun getTransactionFee(coinName: String): Double = prefsHelper.coinsFee[coinName]?.txFee ?: 0.0
 
-    open fun getByteFee(coinName: String?): Long {
+    private fun getByteFee(coinName: String?): Long {
         val coinTypeUnit: Long = CoinTypeExtension.getTypeByCode(coinName ?: "")?.unit() ?: 0
         val txFee = prefsHelper.coinsFee[coinName]?.txFee ?: Double.MIN_VALUE
         return (txFee * coinTypeUnit).toLong()

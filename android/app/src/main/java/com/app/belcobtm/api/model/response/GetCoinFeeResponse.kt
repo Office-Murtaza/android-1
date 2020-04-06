@@ -8,7 +8,8 @@ data class GetCoinFeeResponse(
     val byteFee: Double?,
     val gasPrice: Double?,
     val gasLimit: Double?,
-    val profitC2C: Double
+    val profitC2C: Double,
+    val serverWalletAddress: String
 ) : Serializable
 
 fun GetCoinFeeResponse.toDataItem(): CoinFeeDataItem = CoinFeeDataItem(
@@ -16,5 +17,6 @@ fun GetCoinFeeResponse.toDataItem(): CoinFeeDataItem = CoinFeeDataItem(
     profitC2C = profitC2C,
     byteFee = byteFee ?: 0.0,
     gasPrice = gasPrice ?: 0.0,
-    gasLimit = gasLimit ?: 0.0
+    gasLimit = gasLimit ?: 0.0,
+    serverWalletAddress = serverWalletAddress
 )

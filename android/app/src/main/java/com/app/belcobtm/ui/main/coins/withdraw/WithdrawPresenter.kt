@@ -24,6 +24,7 @@ class WithdrawPresenter : BaseMvpDIPresenterImpl<WithdrawContract.View, Withdraw
     override fun injectDependency() {
         presenterComponent.inject(this)
     }
+
     //TODO need migrate to dependency koin after refactoring
     private val prefsHelper: SharedPreferencesHelper by lazy {
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(App.appContext())
@@ -33,7 +34,7 @@ class WithdrawPresenter : BaseMvpDIPresenterImpl<WithdrawContract.View, Withdraw
     private var coinAmount: Double? = null
     private val realm = Realm.getDefaultInstance()
     private val coinModel = DbCryptoCoinModel()
-    val mUserId = prefsHelper.userId.toString()
+    private val mUserId = prefsHelper.userId.toString()
 
     private var mTransactionHash: String? = null
     private var mTransactionHashJson: String? = null
@@ -64,71 +65,64 @@ class WithdrawPresenter : BaseMvpDIPresenterImpl<WithdrawContract.View, Withdraw
             coinAmount,
             mCoinDbModel,
             mDataManager
-        )
-            .flatMap { transactionHash ->
-                // mTransactionHash = transactionHash
-
-                if (CoinType.TRON == coinType) {
-                    mTransactionHashJson = transactionHash
-                    mTransactionHash = null
-                } else {
-                    mTransactionHashJson = null
-                    mTransactionHash = transactionHash
-                }
-
-                mDataManager.requestSmsCode(mUserId)
+        ).flatMap { transactionHash ->
+            if (CoinType.TRON == coinType) {
+                mTransactionHashJson = transactionHash
+                mTransactionHash = null
+            } else {
+                mTransactionHashJson = null
+                mTransactionHash = transactionHash
             }
-            .subscribe({ response ->
+            mDataManager.requestSmsCode(mUserId)
+        }.subscribe(
+            { response ->
                 if (response.value!!.sent) {
                     mView?.openSmsCodeDialog()
                 }
-            }, { error -> checkError(error) })
+            },
+            { error -> checkError(error) }
+        )
     }
 
 
     override fun verifySmsCode(code: String) {
         mView?.showProgress(true)
 
-        mDataManager.verifySmsCode(mUserId, code)
-            .flatMap { res ->
+        mDataManager.verifySmsCode(mUserId, code).flatMap { res ->
+            mTransactionHash = if (mTransactionHashJson != null) {
+                Gson().toJson(Gson().fromJson<Trx>(mTransactionHashJson, Trx::class.java))
+            } else {
+                mTransactionHash?.substring(2)
+            }
 
-                if(mTransactionHashJson!=null )
-                {
-                    mTransactionHash = Gson().toJson(Gson().fromJson<Trx>(mTransactionHashJson, Trx::class.java))
-                }else{
-                    mTransactionHash =  mTransactionHash?.substring(2)
-                }
-
-                mDataManager.submitTx(
-                    mUserId,
-                    mCoinDbModel!!.coinType,
-                    SendTransactionParam(
-                        2,
-                        coinAmount,
-                        null,
-                        null,
-                        null,
-                        mTransactionHash,
-                        null
-                    )
+            mDataManager.submitTx(
+                mUserId,
+                mCoinDbModel!!.coinType,
+                SendTransactionParam(
+                    2,
+                    coinAmount,
+                    null,
+                    null,
+                    null,
+                    mTransactionHash,
+                    null
                 )
-
+            )
+        }.subscribe(
+            {
+                mView?.showProgress(false)
+                mView?.onTransactionDone()
+            }
+            ,
+            { error: Throwable ->
+                mView?.showProgress(false)
+                if (error is ServerException && error.code != Const.ERROR_403) {
+                    mView?.openSmsCodeDialog(error.errorMessage)
+                } else {
+                    checkError(error)
+                }
 
             }
-            .subscribe(
-                {
-                    mView?.showProgress(false)
-                    mView?.onTransactionDone()
-                }
-                ,
-                { error: Throwable ->
-                    mView?.showProgress(false)
-                    if (error is ServerException && error.code != Const.ERROR_403) {
-                        mView?.openSmsCodeDialog(error.errorMessage)
-                    } else {
-                        checkError(error)
-                    }
-
-                })
+        )
     }
 }

@@ -13,11 +13,10 @@ sealed class Either<out L, out R> {
     fun <L> left(a: L) = Left(a)
     fun <R> right(b: R) = Right(b)
 
-    fun either(fnL: (L) -> Unit, fnR: (R) -> Unit): Any =
-        when (this) {
-            is Left -> fnL(a)
-            is Right -> fnR(b)
-        }
+    fun either(fnL: (L) -> Unit, fnR: (R) -> Unit): Any = when (this) {
+        is Left -> fnL(a)
+        is Right -> fnR(b)
+    }
 }
 
 // Credits to Alex Hart -> https://proandroiddev.com/kotlins-nothing-type-946de7d464fb

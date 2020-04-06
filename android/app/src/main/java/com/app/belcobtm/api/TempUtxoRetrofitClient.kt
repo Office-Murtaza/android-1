@@ -15,7 +15,7 @@ class TempUtxoRetrofitClient private constructor() {
     }
 
     companion object {
-        val instance: TempUtxoRetrofitClient by lazy { TempUtxoRetrofitClient.Holder.INSTANCE }
+        val instance: TempUtxoRetrofitClient by lazy { Holder.INSTANCE }
     }
 
     private val TEMP_API_URL = "http://167.99.144.115:9134/api/v2/"

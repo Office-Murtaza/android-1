@@ -255,6 +255,19 @@
     <string name="send_gift_screen_add">Add</string>
     <string name="send_gift_screen_remove">Remove</string>
 
+
+    <!-- Coin to coin screen -->
+    <string name="exchange_coin_to_coin_screen_title">C2C Exchange</string>
+    <string name="exchange_coin_to_coin_screen_price">Price</string>
+    <string name="exchange_coin_to_coin_screen_price_value">%1$s USD</string>
+    <string name="exchange_coin_to_coin_screen_balance">Balance</string>
+    <string name="exchange_coin_to_coin_screen_balance_crypto">%1$s %2$s</string>
+    <string name="exchange_coin_to_coin_screen_balance_usd">%1$s USD</string>
+    <string name="exchange_coin_to_coin_screen_crypto_amount">%1$s Amount</string>
+    <string name="exchange_coin_to_coin_screen_select_coin">Select coin please</string>
+
+
+
     <string name="unit_usd">Usd</string>
     <string name="button_next">Next</string>
 </resources>

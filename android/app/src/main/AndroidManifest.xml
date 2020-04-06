@@ -123,6 +123,11 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppThemeNoActionBar" />
 
+        <activity
+            android:name=".presentation.features.wallet.exchange.coin.to.coin.ExchangeCoinToCoinActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppThemeNoActionBar" />
+
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />

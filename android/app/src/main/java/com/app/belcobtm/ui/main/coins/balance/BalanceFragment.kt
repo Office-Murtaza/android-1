@@ -62,7 +62,7 @@ class BalanceFragment : BaseMvpFragment<BalanceContract.View, BalanceContract.Pr
         }
     }
 
-    override fun onCoinClick(coin: CoinModel) {
-        TransactionsActivity.start(activity, coin)
+    override fun onCoinClick(coin: CoinModel, coinArray: List<CoinModel>) {
+        TransactionsActivity.start(activity, coin, coinArray)
     }
 }

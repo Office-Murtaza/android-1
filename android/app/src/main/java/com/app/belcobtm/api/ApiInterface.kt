@@ -49,7 +49,6 @@ interface ApiInterface {
     @GET("user/{userId}/coins/fee")
     fun getCoinsFee(@Path("userId") userId: String): Observable<ServerResponse<GetCoinsFeeOldResponse>>
 
-    //TODO HERE
     @GET("coins/{coinId}/settings")
     fun getCoinFee(
         @Path("coinId") coinId: String
