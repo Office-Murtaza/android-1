@@ -164,15 +164,18 @@ class TransactionsActivity : BaseMvpActivity<TransactionsContract.View, Transact
                 R.id.oneYearChipView -> mPresenter.chartButtonClicked(ChartPeriodType.YEAR)
             }
         }
-
         swipeToRefreshView.setOnRefreshListener { mPresenter.refreshTransactionClicked() }
-        depositButtonView.setOnClickListener { showDepositDialog() }
+        depositButtonView.setOnClickListener {
+            showDepositDialog()
+            fabMenuView.close(true)
+        }
         withdrawButtonView.setOnClickListener {
             if (isCorrectCoinId()) {
                 WithdrawActivity.start(this, mCoin)
             } else {
                 showMessage("In progress. Only BTC, BCH, XRP, BNB and LTC withdraw available")
             }
+            fabMenuView.close(false)
         }
         sendGiftButtonView.setOnClickListener {
             if (isCorrectCoinId()) {
@@ -180,6 +183,7 @@ class TransactionsActivity : BaseMvpActivity<TransactionsContract.View, Transact
             } else {
                 showMessage("In progress. Only BTC, BCH, XRP, ETH, BNB and LTC withdraw available")
             }
+            fabMenuView.close(false)
         }
 
         sellButtonView.setOnClickListener {
@@ -188,8 +192,8 @@ class TransactionsActivity : BaseMvpActivity<TransactionsContract.View, Transact
             } else {
                 showMessage("In progress. Only BTC, BCH, XRP, ETH, BNB and LTC withdraw available")
             }
+            fabMenuView.close(false)
         }
-
         c2cExchangeButtonView.setOnClickListener {
             if (isCorrectCoinId()) {
                 val intentCoinItem = IntentCoinItem(
@@ -208,6 +212,7 @@ class TransactionsActivity : BaseMvpActivity<TransactionsContract.View, Transact
             } else {
                 showMessage("In progress. Only BTC, BCH, XRP, ETH, BNB and LTC withdraw available")
             }
+            fabMenuView.close(false)
         }
     }
 

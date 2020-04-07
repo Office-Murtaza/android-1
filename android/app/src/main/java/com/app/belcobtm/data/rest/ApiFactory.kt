@@ -56,8 +56,8 @@ class ApiFactory(private val prefHelper: SharedPreferencesHelper) {
 
     companion object {
         // private const val BASE_URL = "https://prod.belcobtm.com"
-        // private const val BASE_URL = "http://206.189.204.44:8080"
-        private const val BASE_URL = "https://test.belcobtm.com"
+         private const val BASE_URL = "http://204.48.21.187:8080"
+//        private const val BASE_URL = "https://test.belcobtm.com"
         private const val API_VERSION = 1
         const val SERVER_URL = "$BASE_URL/api/v$API_VERSION/"
 

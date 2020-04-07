@@ -11,5 +11,8 @@ interface WalletRepository {
         coinTo: String,
         hex: String
     ): Either<Failure, Unit>
+
+    suspend fun sendToDeviceSmsCode(): Either<Failure, Unit>
+    suspend fun verifySmsCode(smsCode: String): Either<Failure, Unit>
 }
 

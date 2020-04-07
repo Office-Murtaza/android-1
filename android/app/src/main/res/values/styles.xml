@@ -205,6 +205,15 @@
         <item name="android:textColor">@color/selector_text_chips</item>
     </style>
 
+    <style name="TransactionsScreen.FloatingActionButtonChild" parent="Widget.MaterialComponents.Chip.Choice">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="fab_colorNormal">@color/blue_color</item>
+        <item name="fab_colorPressed">@color/blue_color</item>
+        <item name="fab_size">mini</item>
+    </style>
+
+
     <style name="WalletTab" />
 
     <style name="WalletTab.Title" />

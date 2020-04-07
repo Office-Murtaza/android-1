@@ -4,15 +4,17 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.MenuItem
-import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.Observer
 import com.app.belcobtm.R
+import com.app.belcobtm.domain.Failure
 import com.app.belcobtm.presentation.core.extensions.*
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
 import com.app.belcobtm.presentation.core.ui.BaseActivity
 import com.app.belcobtm.presentation.features.wallet.IntentCoinItem
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.android.synthetic.main.activity_exchange_coin_to_coin.*
+import kotlinx.android.synthetic.main.view_material_sms_code_dialog.view.*
 import org.koin.android.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
@@ -22,6 +24,34 @@ class ExchangeCoinToCoinActivity : BaseActivity() {
             intent.getParcelableExtra(TAG_COIN_ITEM),
             intent.getParcelableArrayListExtra<IntentCoinItem>(TAG_COIN_ITEM_LIST)
         )
+    }
+    private val smsDialog: AlertDialog by lazy {
+        val view = layoutInflater.inflate(R.layout.view_material_sms_code_dialog, null)
+        val smsCodeView = view.smsCodeView
+        val dialog = MaterialAlertDialogBuilder(this)
+            .setTitle(getString(R.string.verify_sms_code))
+            .setPositiveButton(R.string.next, null)
+            .setNegativeButton(R.string.cancel, null)
+            .setView(view)
+            .create()
+        dialog.setCanceledOnTouchOutside(false)
+        dialog.setOnShowListener {
+            smsCodeView.clearText()
+            smsCodeView.clearError()
+            dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
+                if (smsCodeView.getString().length != 4) {
+                    smsCodeView.showError(R.string.error_sms_code_4_digits)
+                } else {
+                    smsCodeView.clearError()
+                    viewModel.exchangeTransaction(
+                        smsCodeView.getString(),
+                        amountCoinFromView.getString().toDouble()
+                    )
+                    dialog.dismiss()
+                }
+            }
+        }
+        return@lazy dialog
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -66,7 +96,7 @@ class ExchangeCoinToCoinActivity : BaseActivity() {
             amountCoinFromView.setText(viewModel.fromCoinItem.balanceCoin.toStringCoin())
         }
         nextButtonView.setOnClickListener {
-            viewModel.exchange(amountCoinFromView.getString().toDouble())
+            viewModel.createTransaction(amountCoinFromView.getString().toDouble())
         }
     }
 
@@ -75,11 +105,19 @@ class ExchangeCoinToCoinActivity : BaseActivity() {
             when (it) {
                 is LoadingData.Loading -> progressView.show()
                 is LoadingData.Success -> {
+                    when (it.data) {
+                        ExchangeCoinToCoinViewModel.TRANSACTION_CREATED -> smsDialog.show()
+                        ExchangeCoinToCoinViewModel.TRANSACTION_EXCHANGED -> finish()
+                    }
                     progressView.hide()
                 }
                 is LoadingData.Error -> {
+                    when (it.errorType) {
+                        is Failure.MessageError -> showError(it.errorType.message)
+                        is Failure.NetworkConnection -> showError(R.string.error_internet_unavailable)
+                        else -> showError(R.string.error_something_went_wrong)
+                    }
                     progressView.hide()
-                    Toast.makeText(this, "Error", Toast.LENGTH_SHORT).show()
                 }
             }
         })

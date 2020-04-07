@@ -23,6 +23,6 @@ val viewModelModule = module {
     viewModel { VerificationVipViewModel(get()) }
     viewModel { (intentCoinItem: IntentCoinItem, intentCoinItemArrayList: ArrayList<IntentCoinItem>) ->
         val feeMap = (get() as GetCoinFeeMapUseCase).getCoinFeeMap()[intentCoinItem.coinCode]
-        ExchangeCoinToCoinViewModel(feeMap!!, intentCoinItem, intentCoinItemArrayList, get())
+        ExchangeCoinToCoinViewModel(feeMap!!, intentCoinItem, intentCoinItemArrayList, get(), get(), get())
     }
 }

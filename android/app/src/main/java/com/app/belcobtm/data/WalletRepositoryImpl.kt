@@ -19,4 +19,8 @@ class WalletRepositoryImpl(
         coinTo: String,
         hex: String
     ): Either<Failure, Unit> = apiService.coinToCoinExchange(coinFromAmount, coinFrom, coinTo, hex)
+
+    override suspend fun sendToDeviceSmsCode(): Either<Failure, Unit> = apiService.sendToDeviceSmsCode()
+
+    override suspend fun verifySmsCode(smsCode: String): Either<Failure, Unit> = apiService.verifySmsCode(smsCode)
 }

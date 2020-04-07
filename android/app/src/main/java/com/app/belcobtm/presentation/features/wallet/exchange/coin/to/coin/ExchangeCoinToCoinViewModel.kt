@@ -5,20 +5,19 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.app.belcobtm.App
 import com.app.belcobtm.api.model.ServerException
-import com.app.belcobtm.api.model.param.trx.Trx
 import com.app.belcobtm.data.shared.preferences.SharedPreferencesHelper
 import com.app.belcobtm.db.DbCryptoCoinModel
 import com.app.belcobtm.domain.Failure
+import com.app.belcobtm.domain.tools.SendToDeviceSmsCodeUseCase
+import com.app.belcobtm.domain.tools.VerifySmsCodeUseCase
 import com.app.belcobtm.domain.wallet.CoinFeeDataItem
 import com.app.belcobtm.domain.wallet.interactor.CoinToCoinExchangeUseCase
 import com.app.belcobtm.presentation.core.extensions.code
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
 import com.app.belcobtm.presentation.features.wallet.CryptoHashHelper
 import com.app.belcobtm.presentation.features.wallet.IntentCoinItem
-import com.google.gson.Gson
 import io.reactivex.disposables.CompositeDisposable
 import io.realm.Realm
-import org.json.JSONObject
 import wallet.core.jni.CoinType
 import wallet.core.jni.HDWallet
 import java.net.HttpURLConnection
@@ -27,39 +26,14 @@ class ExchangeCoinToCoinViewModel(
     val coinFeeItem: CoinFeeDataItem,
     val fromCoinItem: IntentCoinItem,
     val coinItemList: List<IntentCoinItem>,
-    private val exchangeUseCase: CoinToCoinExchangeUseCase
+    private val exchangeUseCase: CoinToCoinExchangeUseCase,
+    private val sendToDeviceSmsCodeUseCase: SendToDeviceSmsCodeUseCase,
+    private val verifySmsCodeUseCase: VerifySmsCodeUseCase
 ) : ViewModel() {
-    val exchangeLiveData: MutableLiveData<LoadingData<Unit>> = MutableLiveData()
+    val exchangeLiveData: MutableLiveData<LoadingData<String>> = MutableLiveData()
     var toCoinItem: IntentCoinItem? = coinItemList.find { it.coinCode == CoinType.BITCOIN.code() }
 
-    fun getCoinTypeList(): List<CoinType> = listOf(
-        CoinType.BITCOIN,
-        CoinType.ETHEREUM,
-        CoinType.BITCOINCASH,
-        CoinType.LITECOIN,
-        CoinType.BINANCE,
-        CoinType.TRON,
-        CoinType.XRP
-    )
-
-    private fun exchangeCoinToCoin(hex: String, amountFromCoin: Double) {
-        exchangeUseCase.invoke(
-            CoinToCoinExchangeUseCase.Params(
-                amountFromCoin,
-                fromCoinItem.coinCode,
-                toCoinItem?.coinCode ?: "",
-                hex
-            )
-        ) { either ->
-            exchangeLiveData.value = LoadingData.Loading()
-            either.either(
-                { exchangeLiveData.value = LoadingData.Error(it) },
-                { exchangeLiveData.value = LoadingData.Success(it) }
-            )
-        }
-    }
-
-    //TODO Trash code, now hard to change hash realization, need refactoring sprint
+    //TODO Trash values, need refactoring sprint
     private val prefsHelper: SharedPreferencesHelper by lazy {
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(App.appContext())
         SharedPreferencesHelper(sharedPreferences)
@@ -68,28 +42,23 @@ class ExchangeCoinToCoinViewModel(
     private val compositeDisposable: CompositeDisposable = CompositeDisposable()
     private val hashHelper: CryptoHashHelper = CryptoHashHelper()
     private val coinModel = DbCryptoCoinModel()
+    private var transactionHash: String = ""
 
-    fun exchange(amountFromCoin: Double) {
+    @Deprecated("Trash code, now hard to change hash realization, need refactoring sprint")
+    fun createTransaction(amountFromCoin: Double) {
         exchangeLiveData.value = LoadingData.Loading()
-
-        val hdWallet = HDWallet(prefsHelper.apiSeed, "")
         val coinDbModel = coinModel.getCryptoCoin(realm, fromCoinItem.coinCode)
         val coinType = CoinType.createFromValue(coinDbModel!!.coinTypeId)
-
         val request = hashHelper.getCoinTransactionHashObs(
-            hdWallet,
+            HDWallet(prefsHelper.apiSeed, ""),
             coinFeeItem.serverWalletAddress,
             coinType,
             amountFromCoin,
             coinDbModel
         ).subscribe(
-            { responseJson ->
-                if (!JSONObject(responseJson).isNull(KEY_TX_ID)) {
-                    val hash = JSONObject(responseJson).getString(KEY_TX_ID)
-                    exchangeCoinToCoin(hash, amountFromCoin)
-                } else {
-                    exchangeLiveData.value =  LoadingData.Error(Failure.MessageError("Transaction error"))
-                }
+            { hash ->
+                transactionHash = hash
+                sendSmsToDevice()
             },
             { throwable ->
                 exchangeLiveData.value = when {
@@ -103,7 +72,52 @@ class ExchangeCoinToCoinViewModel(
         compositeDisposable.add(request)
     }
 
+    fun exchangeTransaction(
+        code: String,
+        amountFromCoin: Double
+    ) = verifySmsCodeUseCase.invoke(VerifySmsCodeUseCase.Params(code)) { either ->
+        either.either(
+            { exchangeLiveData.value = LoadingData.Error(it) },
+            { exchange(amountFromCoin) }
+        )
+    }
+
+    fun getCoinTypeList(): List<CoinType> = listOf(
+        CoinType.BITCOIN,
+        CoinType.ETHEREUM,
+        CoinType.BITCOINCASH,
+        CoinType.LITECOIN,
+        CoinType.BINANCE,
+        CoinType.TRON,
+        CoinType.XRP
+    )
+
+    private fun sendSmsToDevice() = sendToDeviceSmsCodeUseCase.invoke(Unit) { either ->
+        either.either(
+            { exchangeLiveData.value = LoadingData.Error(it) },
+            { exchangeLiveData.value = LoadingData.Success(TRANSACTION_CREATED) }
+        )
+    }
+
+    private fun exchange(amountFromCoin: Double) {
+        exchangeUseCase.invoke(
+            CoinToCoinExchangeUseCase.Params(
+                amountFromCoin,
+                fromCoinItem.coinCode,
+                toCoinItem?.coinCode ?: "",
+                transactionHash
+            )
+        ) { either ->
+            exchangeLiveData.value = LoadingData.Loading()
+            either.either(
+                { exchangeLiveData.value = LoadingData.Error(it) },
+                { exchangeLiveData.value = LoadingData.Success(TRANSACTION_EXCHANGED) }
+            )
+        }
+    }
+
     companion object {
-        private const val KEY_TX_ID = "txID"
+        const val TRANSACTION_CREATED = "transaction_created"
+        const val TRANSACTION_EXCHANGED = "transaction_exchanged"
     }
 }
