@@ -71,6 +71,16 @@ public class CoinController {
         }
     }
 
+    @GetMapping("/user/{userId}/coins/fee")
+    public Response getCoinsFee(@PathVariable Long userId) {
+        try {
+            return Response.ok(coinService.getCoinsFee());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Response.serverError();
+        }
+    }
+
     @GetMapping("/coins/{coinCode}/settings")
     public Response getCoinsSettings(@PathVariable CoinService.CoinEnum coinCode) {
         try {

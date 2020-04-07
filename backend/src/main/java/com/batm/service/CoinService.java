@@ -164,6 +164,20 @@ public class CoinService {
         return true;
     }
 
+    public FeeDTO getCoinsFee() {
+        List<CoinFeeDTO> feeList = new ArrayList<>();
+
+        coinList.forEach(e -> {
+            if (CoinEnum.ETH.name().equalsIgnoreCase(e.getCode())) {
+                feeList.add(new CoinFeeDTO(e.getCode(), null, Constant.GAS_PRICE, Constant.GAS_LIMIT));
+            } else {
+                feeList.add(new CoinFeeDTO(e.getCode(), e.getFee().stripTrailingZeros(), null, null));
+            }
+        });
+
+        return new FeeDTO(feeList);
+    }
+
     public enum CoinEnum {
         BTC {
             @Override
