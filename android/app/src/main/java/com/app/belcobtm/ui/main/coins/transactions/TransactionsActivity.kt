@@ -214,6 +214,8 @@ class TransactionsActivity : BaseMvpActivity<TransactionsContract.View, Transact
             }
             fabMenuView.close(false)
         }
+
+        fabMenuView.setOnMenuToggleListener { fabMenuView.isClickable = it }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

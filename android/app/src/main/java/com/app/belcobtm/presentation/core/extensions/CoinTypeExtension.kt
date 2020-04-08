@@ -1,6 +1,8 @@
 package com.app.belcobtm.presentation.core.extensions
 
 import wallet.core.jni.CoinType
+import wallet.core.jni.HDVersion
+import wallet.core.jni.Purpose
 
 object CoinTypeExtension {
     fun getTypeByCode(code: String): CoinType? = when (code) {
@@ -48,3 +50,15 @@ fun CoinType.unit(): Long = when (this) {
     else -> 0
 }
 
+
+fun CoinType.customPurpose(): Purpose = if (this == CoinType.BITCOIN) {
+    Purpose.BIP44
+} else {
+    this.purpose()
+}
+
+fun CoinType.customXpubVersion(): HDVersion = if (this == CoinType.BITCOIN) {
+    HDVersion.XPUB
+} else {
+    this.xpubVersion()
+}

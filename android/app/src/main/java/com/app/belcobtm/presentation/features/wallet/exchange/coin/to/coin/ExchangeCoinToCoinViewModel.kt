@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.app.belcobtm.App
 import com.app.belcobtm.api.model.ServerException
+import com.app.belcobtm.api.model.param.trx.Trx
 import com.app.belcobtm.data.shared.preferences.SharedPreferencesHelper
 import com.app.belcobtm.db.DbCryptoCoinModel
 import com.app.belcobtm.domain.Failure
@@ -16,6 +17,7 @@ import com.app.belcobtm.presentation.core.extensions.code
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
 import com.app.belcobtm.presentation.features.wallet.CryptoHashHelper
 import com.app.belcobtm.presentation.features.wallet.IntentCoinItem
+import com.google.gson.Gson
 import io.reactivex.disposables.CompositeDisposable
 import io.realm.Realm
 import wallet.core.jni.CoinType
@@ -57,7 +59,11 @@ class ExchangeCoinToCoinViewModel(
             coinDbModel
         ).subscribe(
             { hash ->
-                transactionHash = hash
+                transactionHash = if (coinType == CoinType.TRON) {
+                    Gson().toJson(Gson().fromJson<Trx>(hash, Trx::class.java))
+                } else {
+                    hash.substring(2)
+                }
                 sendSmsToDevice()
             },
             { throwable ->
@@ -76,6 +82,7 @@ class ExchangeCoinToCoinViewModel(
         code: String,
         amountFromCoin: Double
     ) = verifySmsCodeUseCase.invoke(VerifySmsCodeUseCase.Params(code)) { either ->
+        exchangeLiveData.value = LoadingData.Loading()
         either.either(
             { exchangeLiveData.value = LoadingData.Error(it) },
             { exchange(amountFromCoin) }
@@ -93,27 +100,25 @@ class ExchangeCoinToCoinViewModel(
     )
 
     private fun sendSmsToDevice() = sendToDeviceSmsCodeUseCase.invoke(Unit) { either ->
+        exchangeLiveData.value = LoadingData.Loading()
         either.either(
             { exchangeLiveData.value = LoadingData.Error(it) },
             { exchangeLiveData.value = LoadingData.Success(TRANSACTION_CREATED) }
         )
     }
 
-    private fun exchange(amountFromCoin: Double) {
-        exchangeUseCase.invoke(
-            CoinToCoinExchangeUseCase.Params(
-                amountFromCoin,
-                fromCoinItem.coinCode,
-                toCoinItem?.coinCode ?: "",
-                transactionHash
-            )
-        ) { either ->
-            exchangeLiveData.value = LoadingData.Loading()
-            either.either(
-                { exchangeLiveData.value = LoadingData.Error(it) },
-                { exchangeLiveData.value = LoadingData.Success(TRANSACTION_EXCHANGED) }
-            )
-        }
+    private fun exchange(amountFromCoin: Double) = exchangeUseCase.invoke(
+        CoinToCoinExchangeUseCase.Params(
+            amountFromCoin,
+            fromCoinItem.coinCode,
+            toCoinItem?.coinCode ?: "",
+            transactionHash
+        )
+    ) { either ->
+        either.either(
+            { exchangeLiveData.value = LoadingData.Error(it) },
+            { exchangeLiveData.value = LoadingData.Success(TRANSACTION_EXCHANGED) }
+        )
     }
 
     companion object {

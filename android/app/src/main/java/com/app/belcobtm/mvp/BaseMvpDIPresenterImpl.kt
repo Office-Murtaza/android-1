@@ -16,9 +16,7 @@ import com.app.belcobtm.di.component.PresenterComponent
 import com.app.belcobtm.di.module.PresenterModule
 import com.app.belcobtm.presentation.core.*
 import com.app.belcobtm.presentation.core.Optional
-import com.app.belcobtm.presentation.core.extensions.CoinTypeExtension
-import com.app.belcobtm.presentation.core.extensions.code
-import com.app.belcobtm.presentation.core.extensions.unit
+import com.app.belcobtm.presentation.core.extensions.*
 import com.google.protobuf.ByteString
 import io.reactivex.Observable
 import wallet.core.jni.*
@@ -358,9 +356,9 @@ abstract class BaseMvpDIPresenterImpl<V : BaseMvpView, T : BaseDataManager> : Ba
         mCoinDbModel: DbCryptoCoin?
     ): Observable<String> {
         val extendedPublicKey = hdWallet.getExtendedPublicKey(
-            coinType.getMyCustomPurpose(),
+            coinType.customPurpose(),
             coinType,
-            coinType.getMyCustomXpubVersion()
+            coinType.customXpubVersion()
         )
 
         return dataManager.getBTCUtxos(mUserId, mCoinDbModel!!.coinType, extendedPublicKey).map { utxosResponse ->

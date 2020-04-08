@@ -11,9 +11,7 @@ import com.app.belcobtm.data.shared.preferences.SharedPreferencesHelper
 import com.app.belcobtm.db.DbCryptoCoin
 import com.app.belcobtm.presentation.core.*
 import com.app.belcobtm.presentation.core.Optional
-import com.app.belcobtm.presentation.core.extensions.CoinTypeExtension
-import com.app.belcobtm.presentation.core.extensions.code
-import com.app.belcobtm.presentation.core.extensions.unit
+import com.app.belcobtm.presentation.core.extensions.*
 import com.google.protobuf.ByteString
 import io.reactivex.Observable
 import wallet.core.jni.*
@@ -323,9 +321,9 @@ class CryptoHashHelper {
         mCoinDbModel: DbCryptoCoin?
     ): Observable<String> {
         val extendedPublicKey = hdWallet.getExtendedPublicKey(
-            coinType.getMyCustomPurpose(),
+            coinType.customPurpose(),
             coinType,
-            coinType.getMyCustomXpubVersion()
+            coinType.customXpubVersion()
         )
 
         return dataManager.getBTCUtxos(mUserId, mCoinDbModel!!.coinType, extendedPublicKey).map { utxosResponse ->
@@ -439,7 +437,7 @@ class CryptoHashHelper {
 
     private fun getByteFee(coinName: String?): Long {
         val coinTypeUnit: Long = CoinTypeExtension.getTypeByCode(coinName ?: "")?.unit() ?: 0
-        val txFee = prefsHelper.coinsFee[coinName]?.txFee ?: Double.MIN_VALUE
-        return (txFee * coinTypeUnit).toLong()
+        val byteFee = prefsHelper.coinsFee[coinName]?.byteFee ?: Double.MIN_VALUE
+        return (byteFee * coinTypeUnit).toLong()
     }
 }

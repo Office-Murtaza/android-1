@@ -22,6 +22,7 @@ import com.app.belcobtm.presentation.core.Const.GIPHY_API_KEY
 import com.app.belcobtm.presentation.core.QRUtils.Companion.getSpacelessQR
 import com.app.belcobtm.presentation.core.extensions.hide
 import com.app.belcobtm.presentation.core.extensions.show
+import com.app.belcobtm.presentation.core.extensions.toStringCoin
 import com.app.belcobtm.presentation.core.extensions.toggle
 import com.giphy.sdk.ui.GiphyCoreUI
 import com.giphy.sdk.ui.views.GPHMediaView
@@ -65,7 +66,7 @@ class DetailsActivity : BaseMvpActivity<DetailsContract.View, DetailsContract.Pr
 
     @SuppressLint("SetTextI18n")
     override fun showTransactionDetails(detailsResponse: TransactionDetailsResponse?) {
-        showTxIdView(detailsResponse?.txId)
+        showTxIdView(detailsResponse?.txId, detailsResponse?.link)
         showTxDbId(detailsResponse?.txDbId)
         showTypeView(detailsResponse?.type)
         showStatusView(detailsResponse?.getStatusType())
@@ -80,12 +81,10 @@ class DetailsActivity : BaseMvpActivity<DetailsContract.View, DetailsContract.Pr
         showImageView(detailsResponse?.imageId)
         showMessageView(detailsResponse?.message)
         showSellInfoView(detailsResponse?.sellInfo)
+        showRefTxIdView(detailsResponse?.refTxId, detailsResponse?.refLink)
+        showRefCoinView(detailsResponse?.refCoin)
+        showRefAmountView(detailsResponse?.refCryptoAmount?.toStringCoin())
         showDividers()
-        txIdView.setOnClickListener {
-            val i = Intent(Intent.ACTION_VIEW)
-            i.data = Uri.parse(detailsResponse?.link)
-            startActivity(i)
-        }
     }
 
     fun trimTrailingZero(value: String?): String? {
@@ -107,11 +106,16 @@ class DetailsActivity : BaseMvpActivity<DetailsContract.View, DetailsContract.Pr
         return item?.text.toString()
     }
 
-    private fun showTxIdView(txId: String?) = if (txId == null) {
+    private fun showTxIdView(txId: String?, link: String?) = if (txId == null) {
         txIdContainerView.hide()
     } else {
         txIdContainerView.show()
         txIdView.text = SpannableString(txId).also { it.setSpan(UnderlineSpan(), 0, it.length, 0) }
+        txIdView.setOnClickListener {
+            val i = Intent(Intent.ACTION_VIEW)
+            i.data = Uri.parse(link)
+            startActivity(i)
+        }
     }
 
     private fun showTxDbId(txDbId: Int?) = if (txDbId == null) {
@@ -253,6 +257,32 @@ class DetailsActivity : BaseMvpActivity<DetailsContract.View, DetailsContract.Pr
         val qrCodeSize = (if (point.x > point.y) point.y else point.x) / 2
         qrCodeView?.setImageBitmap(getSpacelessQR(sellInfo, qrCodeSize, qrCodeSize))
         qrCodeView.show()
+    }
+
+    private fun showRefTxIdView(refTxId: String?, refLink: String?) = if (refTxId == null) {
+        refTxIdContainerView.hide()
+    } else {
+        refTxIdContainerView.show()
+        refTxIdView.text = SpannableString(refTxId).also { it.setSpan(UnderlineSpan(), 0, it.length, 0) }
+        refTxIdView.setOnClickListener {
+            val i = Intent(Intent.ACTION_VIEW)
+            i.data = Uri.parse(refLink)
+            startActivity(i)
+        }
+    }
+
+    private fun showRefCoinView(refCoin: String?) = if (refCoin == null) {
+        refCoinContainerView.hide()
+    } else {
+        refCoinContainerView.show()
+        refCoinView.text = refCoin.toString()
+    }
+
+    private fun showRefAmountView(refAmount: String?) = if (refAmount == null) {
+        refAmountContainerView.hide()
+    } else {
+        refAmountContainerView.show()
+        refAmountView.text = refAmountView.toString()
     }
 
     private fun showDividers() {

@@ -285,6 +285,58 @@
                 android:layout_height="1dp"
                 android:background="#f3f3f3" />
 
+            <TableRow
+                android:id="@+id/refTxIdContainerView"
+                style="@style/CoinDetails.Table.Row">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    style="@style/CoinDetails.Table.Key"
+                    android:text="@string/transition_details_screen_ref_tax_id" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/refTxIdView"
+                    style="@style/CoinDetails.Table.Value"
+                    android:background="?android:selectableItemBackground"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:fontFamily="@font/poppins_regular"
+                    android:maxLines="5"
+                    android:textColor="#0073e4"
+                    tools:text="b28e2673ead88289a2e5a354bce0630483780098631e688cabe9ee06dd325074" />
+            </TableRow>
+
+            <TableRow
+                android:id="@+id/refCoinContainerView"
+                style="@style/CoinDetails.Table.Row"
+                android:visibility="gone"
+                tools:visibility="visible">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    style="@style/CoinDetails.Table.Key"
+                    android:text="@string/transition_details_screen_ref_coin" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/refCoinView"
+                    style="@style/CoinDetails.Table.Value"
+                    tools:text="1 BTC" />
+            </TableRow>
+
+            <TableRow
+                android:id="@+id/refAmountContainerView"
+                style="@style/CoinDetails.Table.Row"
+                android:visibility="gone"
+                tools:visibility="visible">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    style="@style/CoinDetails.Table.Key"
+                    android:text="@string/transition_details_screen_ref_amount" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/refAmountView"
+                    style="@style/CoinDetails.Table.Value"
+                    tools:text="Happy Birthday!" />
+            </TableRow>
+
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/qrCodeView"
                 style="@style/CoinDetails.Table.Row"

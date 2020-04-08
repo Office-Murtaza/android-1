@@ -21,27 +21,7 @@ import wallet.core.jni.CoinType
 import wallet.core.jni.HDWallet
 
 
-class SellPresenter : BaseMvpDIPresenterImpl<SellContract.View, WithdrawDataManager>(),
-    SellContract.Presenter {
-    override fun preSubmit(
-        fiatAmount: Int,
-        cryptoAmount: Double,
-        balance: Double,
-        checked: Boolean
-    ) {
-        this.balance = balance
-        this.fiatAmount = fiatAmount
-        this.cryptoAmount = cryptoAmount
-        this.isAnotherAddress = checked
-
-        mDataManager.requestSmsCode(mUserId).subscribe({ response ->
-            if (response.value!!.sent) {
-                mView?.openSmsCodeDialog()
-            }
-        }, { error -> checkError(error) })
-
-    }
-
+class SellPresenter : BaseMvpDIPresenterImpl<SellContract.View, WithdrawDataManager>(), SellContract.Presenter {
     private var mTransactionHash: String? = null
     private var mTransactionHashJson: String? = null
     private var cryptoResultAmount: Double = Double.MIN_VALUE
@@ -54,20 +34,40 @@ class SellPresenter : BaseMvpDIPresenterImpl<SellContract.View, WithdrawDataMana
         SharedPreferencesHelper(sharedPreferences)
     }
 
+    override fun preSubmit(
+        fiatAmount: Int,
+        cryptoAmount: Double,
+        balance: Double,
+        checked: Boolean
+    ) {
+        this.balance = balance
+        this.fiatAmount = fiatAmount
+        this.cryptoAmount = cryptoAmount
+        this.isAnotherAddress = checked
+
+        mDataManager.requestSmsCode(mUserId).subscribe(
+            { response ->
+                if (response.value!!.sent) {
+                    mView?.openSmsCodeDialog()
+                }
+            },
+            { error -> checkError(error) }
+        )
+    }
+
     override fun verifySmsCode(code: String) {
         mView?.showProgress(true)
 
         isErrorOnSms = true
         mDataManager.verifySmsCode(mUserId, code)
-
             .flatMap { res ->
-
                 isErrorOnSms = false
                 mDataManager.preSubmitTx(
                     mUserId, mCoin?.coinId ?: "",
                     PreTransactionParam(cryptoAmount, fiatAmount, "USD")
                 )
-            }.flatMap { res ->
+            }
+            .flatMap { res ->
                 mView?.showProgress(false)
 
                 this.addressDestination = res?.value?.address
@@ -75,7 +75,6 @@ class SellPresenter : BaseMvpDIPresenterImpl<SellContract.View, WithdrawDataMana
                 if (addressDestination.isNullOrEmpty()) {
                     Observable.error(Throwable("the transaction can not be created"))
                 } else {
-
                     this.cryptoResultAmount = res?.value?.cryptoAmount ?: Double.MIN_VALUE
 
                     if (isAnotherAddress) {
@@ -109,7 +108,6 @@ class SellPresenter : BaseMvpDIPresenterImpl<SellContract.View, WithdrawDataMana
                 }
             }
             .flatMap { transactionHash ->
-
                 if (CoinType.TRON == coinType) {
                     mTransactionHashJson = transactionHash
                     mTransactionHash = null
@@ -121,12 +119,10 @@ class SellPresenter : BaseMvpDIPresenterImpl<SellContract.View, WithdrawDataMana
                 if (transactionHash.isNullOrEmpty()) {
                     Observable.just("")
                 } else {
-
-                    if(mTransactionHashJson!=null )
-                    {
-                        mTransactionHash = Gson().toJson(Gson().fromJson<Trx>(mTransactionHashJson, Trx::class.java))
-                    }else{
-                        mTransactionHash =  mTransactionHash?.substring(2)
+                    mTransactionHash = if (mTransactionHashJson != null) {
+                        Gson().toJson(Gson().fromJson<Trx>(mTransactionHashJson, Trx::class.java))
+                    } else {
+                        mTransactionHash?.substring(2)
                     }
 
                     mDataManager.submitTx(
@@ -166,18 +162,15 @@ class SellPresenter : BaseMvpDIPresenterImpl<SellContract.View, WithdrawDataMana
                     Observable.just("")
                 }
             }
-
             .subscribe(
                 {
-
                     mView?.showProgress(false)
                     mView?.onTransactionDone(
                         isAnotherAddress,
                         addressDestination,
                         cryptoResultAmount
                     )
-                }
-                ,
+                },
                 { error: Throwable ->
                     mView?.showProgress(false)
                     if (error is ServerException && error.code != Const.ERROR_403) {
@@ -190,8 +183,8 @@ class SellPresenter : BaseMvpDIPresenterImpl<SellContract.View, WithdrawDataMana
                     } else {
                         checkError(error)
                     }
-
-                })
+                }
+            )
     }
 
 
