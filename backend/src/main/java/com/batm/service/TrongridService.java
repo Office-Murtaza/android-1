@@ -39,15 +39,16 @@ public class TrongridService {
 
     public BigDecimal getBalance(String address) {
         try {
-            JSONObject res = rest.getForObject(nodeUrl + "/v1/accounts/" + address, JSONObject.class);
-            JSONArray data = res.getJSONArray("data");
+            JSONObject req = new JSONObject();
+            req.put("address", Base58.toHex(address));
 
-            if (!data.isEmpty()) {
-                String balance = data.getJSONObject(0).getString("balance");
+            String str = rest.postForObject(nodeUrl + "/wallet/getaccount", req, String.class);
+            JSONObject res = JSONObject.fromObject(str);
 
-                return Util.format6(new BigDecimal(balance).divide(Constant.TRX_DIVIDER));
-            }
-        } catch (Exception e) {}
+            return new BigDecimal(res.optLong("balance")).divide(Constant.TRX_DIVIDER);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         return BigDecimal.ZERO;
     }
