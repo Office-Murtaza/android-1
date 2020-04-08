@@ -26,6 +26,7 @@ enum L {
     static let available = "coin_details.available"
     static let balance = "coin_details.balance"
     static let buy = "coin_details.buy"
+    static let c2cExchange = "coin_details.c2c_exchange"
     static let complete = "coin_details.complete"
     static let deposit = "coin_details.deposit"
     static let fail = "coin_details.fail"
@@ -36,13 +37,19 @@ enum L {
     static let oneYear = "coin_details.one_year"
     static let pending = "coin_details.pending"
     static let price = "coin_details.price"
+    static let receiveC2C = "coin_details.receive_c_2_c"
     static let receiveGift = "coin_details.receive_gift"
     static let sell = "coin_details.sell"
+    static let sendC2C = "coin_details.send_c_2_c"
     static let sendGift = "coin_details.send_gift"
     static let threeMonths = "coin_details.three_months"
     static let unknown = "coin_details.unknown"
     static let withdraw = "coin_details.withdraw"
     static let withdrawn = "coin_details.withdrawn"
+  }
+
+  struct CoinExchange {
+    static let title = "coin_exchange.title"
   }
 
   struct CoinSell {
@@ -146,6 +153,9 @@ enum L {
     static let image = "transaction_details.image"
     static let message = "transaction_details.message"
     static let phone = "transaction_details.phone"
+    static let refAmount = "transaction_details.ref_amount"
+    static let refCoin = "transaction_details.ref_coin"
+    static let refTxId = "transaction_details.ref_tx_id"
     static let status = "transaction_details.status"
     static let title = "transaction_details.title"
     static let toAddress = "transaction_details.to_address"
@@ -229,6 +239,17 @@ extension L.ChangePin.Form {
 
   struct OldPin {
     static let placeholder = "change_pin.form.old_pin.placeholder"
+  }
+}
+extension L.CoinExchange {
+
+  struct Form {
+  }
+}
+extension L.CoinExchange.Form {
+
+  struct Amount {
+    static let placeholder = "coin_exchange.form.amount.placeholder"
   }
 }
 extension L.CoinSell {

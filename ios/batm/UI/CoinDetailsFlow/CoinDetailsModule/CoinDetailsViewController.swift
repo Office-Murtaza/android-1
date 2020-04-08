@@ -2,8 +2,15 @@ import UIKit
 import RxCocoa
 import RxSwift
 import SnapKit
+import JJFloatingActionButton
 
 final class CoinDetailsViewController: NavigationScreenViewController<CoinDetailsPresenter>, UICollectionViewDelegateFlowLayout {
+  
+  let didTapDepositRelay = PublishRelay<Void>()
+  let didTapWithdrawRelay = PublishRelay<Void>()
+  let didTapSendGiftRelay = PublishRelay<Void>()
+  let didTapSellRelay = PublishRelay<Void>()
+  let didTapExchangeRelay = PublishRelay<Void>()
   
   var dataSource: CoinDetailsCollectionViewDataSource!
   
@@ -14,6 +21,8 @@ final class CoinDetailsViewController: NavigationScreenViewController<CoinDetail
   }()
   
   let refreshControl = UIRefreshControl()
+  
+  let floatingActionButton = JJFloatingActionButton()
   
   let backgroundDarkView: BackgroundDarkView = {
     let view = BackgroundDarkView()
@@ -35,18 +44,71 @@ final class CoinDetailsViewController: NavigationScreenViewController<CoinDetail
     view.backgroundColor = .whiteTwo
     
     view.addSubviews(collectionView,
+                     floatingActionButton,
                      backgroundDarkView,
                      depositView)
     
     collectionView.backgroundColor = .clear
     collectionView.refreshControl = refreshControl
     collectionView.delegate = self
+    
+    configureFloatingActionButton()
+  }
+  
+  private func configureFloatingActionButton() {
+    floatingActionButton.buttonDiameter = 56
+    floatingActionButton.overlayView.backgroundColor = UIColor(white: 0, alpha: 0.6)
+    floatingActionButton.buttonImage = UIImage(named: "fab_plus")
+    floatingActionButton.buttonColor = .ceruleanBlue
+    floatingActionButton.buttonImageColor = .white
+
+    let fabCancelImage = UIImage(named: "fab_cancel")
+    fabCancelImage.flatMap { floatingActionButton.buttonAnimationConfiguration = .transition(toImage: $0) }
+    floatingActionButton.itemAnimationConfiguration = .slideIn(withInterItemSpacing: 15)
+
+    floatingActionButton.layer.shadowColor = UIColor.black.cgColor
+    floatingActionButton.layer.shadowOffset = CGSize(width: 0, height: 5)
+    floatingActionButton.layer.shadowOpacity = Float(0.2)
+    floatingActionButton.layer.shadowRadius = CGFloat(5)
+    
+    floatingActionButton.configureDefaultItem { item in
+      item.titleLabel.font = .systemFont(ofSize: 14, weight: .medium)
+      item.titleLabel.textColor = .white
+      item.buttonColor = .ceruleanBlue
+      item.buttonImageColor = .white
+      
+      item.layer.shadowColor = UIColor.black.cgColor
+      item.layer.shadowOffset = CGSize(width: 0, height: 5)
+      item.layer.shadowOpacity = Float(0.2)
+      item.layer.shadowRadius = CGFloat(5)
+    }
+    
+    floatingActionButton.addItem(title: localize(L.CoinDetails.deposit), image: UIImage(named: "fab_deposit")) { [unowned self] _ in
+      self.didTapDepositRelay.accept(())
+    }
+    floatingActionButton.addItem(title: localize(L.CoinDetails.withdraw), image: UIImage(named: "fab_withdraw")) { [unowned self] _ in
+      self.didTapWithdrawRelay.accept(())
+    }
+    floatingActionButton.addItem(title: localize(L.CoinDetails.sendGift), image: UIImage(named: "fab_send_gift")) { [unowned self] _ in
+      self.didTapSendGiftRelay.accept(())
+    }
+    floatingActionButton.addItem(title: localize(L.CoinDetails.sell), image: UIImage(named: "fab_sell")) { [unowned self] _ in
+      self.didTapSellRelay.accept(())
+    }
+    floatingActionButton.addItem(title: localize(L.CoinDetails.c2cExchange), image: UIImage(named: "fab_exchange")) { [unowned self] _ in
+      self.didTapExchangeRelay.accept(())
+    }
+    
+    floatingActionButton.delegate = self
   }
 
   override func setupLayout() {
     collectionView.snp.makeConstraints {
       $0.top.equalTo(customView.backgroundImageView.snp.bottom)
       $0.left.right.bottom.equalToSuperview()
+    }
+    floatingActionButton.snp.makeConstraints {
+      $0.right.bottom.equalTo(view.safeAreaLayoutGuide).inset(16)
     }
     backgroundDarkView.snp.makeConstraints {
       $0.edges.equalToSuperview()
@@ -103,7 +165,7 @@ final class CoinDetailsViewController: NavigationScreenViewController<CoinDetail
       .bind(to: refreshControl.rx.isRefreshing)
       .disposed(by: disposeBag)
     
-    dataSource.rx.depositTap
+    didTapDepositRelay.asDriver(onErrorDriveWith: .empty())
       .withLatestFrom(presenter.state)
       .map { $0.coin }
       .filterNil()
@@ -126,9 +188,10 @@ final class CoinDetailsViewController: NavigationScreenViewController<CoinDetail
     
     let backDriver = customView.backButton.rx.tap.asDriver()
     let refreshDriver = refreshControl.rx.controlEvent(.valueChanged).asDriver()
-    let withdrawDriver = dataSource.rx.withdrawTap
-    let sendGiftDriver = dataSource.rx.sendGiftTap
-    let sellDriver = dataSource.rx.sellTap
+    let withdrawDriver = didTapWithdrawRelay.asDriver(onErrorDriveWith: .empty())
+    let sendGiftDriver = didTapSendGiftRelay.asDriver(onErrorDriveWith: .empty())
+    let sellDriver = didTapSellRelay.asDriver(onErrorDriveWith: .empty())
+    let exchangeDriver = didTapExchangeRelay.asDriver(onErrorDriveWith: .empty())
     let copyDriver = depositView.rx.copyTap
     let showMoreDriver = collectionView.rx.willDisplayLastCell.asDriver(onErrorDriveWith: .empty())
     let transactionSelectedDriver = collectionView.rx.itemSelected.asDriver()
@@ -139,6 +202,7 @@ final class CoinDetailsViewController: NavigationScreenViewController<CoinDetail
                                                      withdraw: withdrawDriver,
                                                      sendGift: sendGiftDriver,
                                                      sell: sellDriver,
+                                                     exchange: exchangeDriver,
                                                      copy: copyDriver,
                                                      showMore: showMoreDriver,
                                                      transactionSelected: transactionSelectedDriver,
@@ -155,5 +219,17 @@ final class CoinDetailsViewController: NavigationScreenViewController<CoinDetail
                       layout collectionViewLayout: UICollectionViewLayout,
                       referenceSizeForHeaderInSection section: Int) -> CGSize {
     return CGSize(width: collectionView.bounds.width, height: 390)
+  }
+}
+
+extension CoinDetailsViewController: JJFloatingActionButtonDelegate {
+  func floatingActionButtonWillOpen(_ button: JJFloatingActionButton) {
+    button.buttonColor = .white
+    button.buttonImageColor = .ceruleanBlue
+  }
+  
+  func floatingActionButtonWillClose(_ button: JJFloatingActionButton) {
+    button.buttonColor = .ceruleanBlue
+    button.buttonImageColor = .white
   }
 }

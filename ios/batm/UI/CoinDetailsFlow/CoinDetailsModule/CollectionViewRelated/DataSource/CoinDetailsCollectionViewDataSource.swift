@@ -7,10 +7,6 @@ final class CoinDetailsCollectionViewDataSource: NSObject, UICollectionViewDataS
   let transactionsRelay = BehaviorRelay<[Transaction]>(value: [])
   let headerViewConfigRelay = BehaviorRelay<CoinDetailsHeaderViewConfig?>(value: nil)
   
-  fileprivate let didTapDepositRelay = PublishRelay<Void>()
-  fileprivate let didTapWithdrawRelay = PublishRelay<Void>()
-  fileprivate let didTapSendGiftRelay = PublishRelay<Void>()
-  fileprivate let didTapSellRelay = PublishRelay<Void>()
   fileprivate let didSelectPeriodRelay = PublishRelay<SelectedPeriod>()
   
   private var values: [Transaction] = [] {
@@ -84,40 +80,12 @@ final class CoinDetailsCollectionViewDataSource: NSObject, UICollectionViewDataS
 }
 
 extension CoinDetailsCollectionViewDataSource: CoinDetailsHeaderViewDelegate {
-  func didTapDeposit() {
-    didTapDepositRelay.accept(())
-  }
-  
-  func didTapWithdraw() {
-    didTapWithdrawRelay.accept(())
-  }
-  
-  func didTapSendGift() {
-    didTapSendGiftRelay.accept(())
-  }
-  
-  func didTapSell() {
-    didTapSellRelay.accept(())
-  }
-  
   func didSelectPeriod(_ period: SelectedPeriod) {
     didSelectPeriodRelay.accept(period)
   }
 }
 
 extension Reactive where Base == CoinDetailsCollectionViewDataSource {
-  var depositTap: Driver<Void> {
-    return base.didTapDepositRelay.asDriver(onErrorDriveWith: .empty())
-  }
-  var withdrawTap: Driver<Void> {
-    return base.didTapWithdrawRelay.asDriver(onErrorDriveWith: .empty())
-  }
-  var sendGiftTap: Driver<Void> {
-    return base.didTapSendGiftRelay.asDriver(onErrorDriveWith: .empty())
-  }
-  var sellTap: Driver<Void> {
-    return base.didTapSellRelay.asDriver(onErrorDriveWith: .empty())
-  }
   var selectedPeriod: Driver<SelectedPeriod> {
     return base.didSelectPeriodRelay.asDriver(onErrorDriveWith: .empty())
   }

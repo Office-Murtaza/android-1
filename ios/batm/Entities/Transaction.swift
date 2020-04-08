@@ -8,6 +8,8 @@ enum TransactionType {
   case receiveGift
   case buy
   case sell
+  case sendC2C
+  case receiveC2C
   
   var verboseValue: String {
     switch self {
@@ -18,6 +20,8 @@ enum TransactionType {
     case .receiveGift: return localize(L.CoinDetails.receiveGift)
     case .buy: return localize(L.CoinDetails.buy)
     case .sell: return localize(L.CoinDetails.sell)
+    case .sendC2C: return localize(L.CoinDetails.sendC2C)
+    case .receiveC2C: return localize(L.CoinDetails.receiveC2C)
     }
   }
   
@@ -30,6 +34,8 @@ enum TransactionType {
       case .receiveGift: return 4
       case .buy: return 5
       case .sell: return 6
+      case .sendC2C: return 8
+      case .receiveC2C: return 9
     }
   }
   
@@ -42,6 +48,8 @@ enum TransactionType {
     case 4: self = .receiveGift
     case 5: self = .buy
     case 6: self = .sell
+    case 8: self = .sendC2C
+    case 9: self = .receiveC2C
     default: self = .unknown
     }
   }

@@ -6,7 +6,7 @@ class CoinDetailsChartView: UIView {
   let priceLabel: UILabel = {
     let label = UILabel()
     label.textColor = .slateGrey
-    label.font = .poppinsSemibold18
+    label.font = .systemFont(ofSize: 18, weight: .bold)
     return label
   }()
   
@@ -16,7 +16,7 @@ class CoinDetailsChartView: UIView {
   
   let changeRateLabel: UILabel = {
     let label = UILabel()
-    label.font = .poppinsSemibold14
+    label.font = .systemFont(ofSize: 14, weight: .medium)
     return label
   }()
   
@@ -38,6 +38,8 @@ class CoinDetailsChartView: UIView {
   
   let periodButtonsView = CoinDetailsPeriodButtonsView()
   
+  let balanceView = CoinDetailsBalanceView()
+  
   override init(frame: CGRect) {
     super.init(frame: frame)
     
@@ -56,7 +58,8 @@ class CoinDetailsChartView: UIView {
     addSubviews(chartView,
                 priceLabel,
                 changeRateContainer,
-                periodButtonsView)
+                periodButtonsView,
+                balanceView)
     changeRateContainer.addSubviews(changeRateImageView,
                                     changeRateLabel)
   }
@@ -84,7 +87,13 @@ class CoinDetailsChartView: UIView {
     periodButtonsView.snp.makeConstraints {
       $0.top.equalTo(chartView.snp.bottom).offset(40)
       $0.centerX.equalToSuperview()
-      $0.bottom.equalToSuperview().offset(-20)
+    }
+    balanceView.snp.makeConstraints {
+      $0.top.equalTo(periodButtonsView.snp.bottom).offset(30)
+      $0.centerX.equalToSuperview()
+      $0.left.greaterThanOrEqualToSuperview().offset(10)
+      $0.right.lessThanOrEqualToSuperview().offset(-10)
+      $0.bottom.equalToSuperview().offset(-30)
     }
   }
   

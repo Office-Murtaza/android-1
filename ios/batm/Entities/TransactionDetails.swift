@@ -1,4 +1,5 @@
 import UIKit
+import TrustWalletCore
 
 struct TransactionDetails: Equatable {
   let txId: String?
@@ -16,6 +17,10 @@ struct TransactionDetails: Equatable {
   let phone: String?
   let imageId: String?
   let message: String?
+  let refTxId: String?
+  let refLink: String?
+  let refCoin: CoinType?
+  let refCryptoAmount: Double?
   let sellInfo: String?
 }
 
@@ -23,6 +28,10 @@ extension TransactionDetails {
   
   var hasGiftInfo: Bool {
     return phone != nil || imageId != nil || message != nil
+  }
+  
+  var hasExchangeInfo: Bool {
+    return refTxId != nil || refCoin != nil || refCryptoAmount != nil
   }
   
   var hasSellInfo: Bool {

@@ -44,6 +44,7 @@ protocol APIGateway {
                          phone: String?,
                          message: String?,
                          imageId: String?,
+                         toCoinType: CoinType?,
                          txhex: String?) -> Completable
   func requestCode(userId: Int) -> Completable
   func getTronBlockHeader(userId: Int, type: CoinType) -> Single<BTMTronBlockHeader>
@@ -325,6 +326,7 @@ final class APIGatewayImpl: APIGateway {
                          phone: String?,
                          message: String?,
                          imageId: String?,
+                         toCoinType: CoinType?,
                          txhex: String?) -> Completable {
     let request = SubmitTransactionRequest(userId: userId,
                                            coinId: type.code,
@@ -333,6 +335,7 @@ final class APIGatewayImpl: APIGateway {
                                            phone: phone,
                                            message: message,
                                            imageId: imageId,
+                                           toCoinId: toCoinType?.code,
                                            txhex: txhex)
     return api.execute(request)
       .map { apiResponse -> Void in

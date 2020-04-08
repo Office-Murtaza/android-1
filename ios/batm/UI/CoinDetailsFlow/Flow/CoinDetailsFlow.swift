@@ -11,18 +11,20 @@ class CoinDetailsFlow: BaseFlow<BTMNavigationController, CoinDetailsFlowControll
       CoinSellAssembly(),
       CoinSellDetailsAnotherAddressAssembly(),
       CoinSellDetailsCurrentAddressAssembly(),
-      TransactionDetailsAssembly()
+      CoinExchangeAssembly(),
+      TransactionDetailsAssembly(),
     ]
   }
   
   enum Steps: Step, Equatable {
-    case coinDetails(CoinBalance, CoinSettings, PriceChartData)
+    case coinDetails([CoinBalance], CoinSettings, PriceChartData)
     case transactionDetails(TransactionDetails, CoinType)
     case withdraw(BTMCoin, CoinBalance, CoinSettings)
     case sendGift(BTMCoin, CoinBalance, CoinSettings)
     case sell(BTMCoin, CoinBalance, CoinSettings, SellDetails)
     case sellDetailsForAnotherAddress(SellDetailsForAnotherAddress)
     case sellDetailsForCurrentAddress(SellDetailsForCurrentAddress)
+    case exchange(BTMCoin, [CoinBalance], CoinSettings)
     case pop
   }
   
@@ -34,11 +36,9 @@ class CoinDetailsFlow: BaseFlow<BTMNavigationController, CoinDetailsFlowControll
   
   private func handleFlow(step: Steps) -> NextFlowItems {
     switch step {
-    case let .coinDetails(coinBalance, coinSettings, data):
+    case let .coinDetails(coinBalances, coinSettings, data):
       let module = resolver.resolve(Module<CoinDetailsModule>.self)!
-      module.input.setup(with: coinBalance)
-      module.input.setup(with: coinSettings)
-      module.input.setup(with: data)
+      module.input.setup(coinBalances: coinBalances, coinSettings: coinSettings, data: data)
       return push(module.controller)
     case let .transactionDetails(details, type):
       let module = resolver.resolve(Module<TransactionDetailsModule>.self)!
@@ -64,6 +64,10 @@ class CoinDetailsFlow: BaseFlow<BTMNavigationController, CoinDetailsFlowControll
       let module = resolver.resolve(Module<CoinSellDetailsCurrentAddressModule>.self)!
       module.input.setup(with: details)
       return replaceLast(module.controller)
+    case let .exchange(coin, coinBalances, coinSettings):
+      let module = resolver.resolve(Module<CoinExchangeModule>.self)!
+      module.input.setup(coin: coin, coinBalances: coinBalances, coinSettings: coinSettings)
+      return push(module.controller)
     case .pop: return pop()
     }
   }
