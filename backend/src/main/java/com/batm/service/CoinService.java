@@ -277,6 +277,11 @@ public class CoinService {
 
                 return dto;
             }
+
+            @Override
+            public String getExplorerUrl() {
+                return btcExplorerUrl;
+            }
         },
         ETH {
             @Override
@@ -381,6 +386,11 @@ public class CoinService {
 
                 return dto;
             }
+
+            @Override
+            public String getExplorerUrl() {
+                return ethExplorerUrl;
+            }
         },
         BCH {
             @Override
@@ -479,6 +489,11 @@ public class CoinService {
                 dto.setServerWalletAddress(getWalletAddress());
 
                 return dto;
+            }
+
+            @Override
+            public String getExplorerUrl() {
+                return bchExplorerUrl;
             }
         },
         LTC {
@@ -579,6 +594,11 @@ public class CoinService {
 
                 return dto;
             }
+
+            @Override
+            public String getExplorerUrl() {
+                return ltcExplorerUrl;
+            }
         },
         BNB {
             @Override
@@ -677,6 +697,11 @@ public class CoinService {
                 dto.setServerWalletAddress(getWalletAddress());
 
                 return dto;
+            }
+
+            @Override
+            public String getExplorerUrl() {
+                return binance.getExplorerUrl();
             }
         },
         XRP {
@@ -785,6 +810,11 @@ public class CoinService {
 
                 return dto;
             }
+
+            @Override
+            public String getExplorerUrl() {
+                return rippled.getExplorerUrl();
+            }
         },
         TRX {
             @Override
@@ -881,6 +911,11 @@ public class CoinService {
 
                 return dto;
             }
+
+            @Override
+            public String getExplorerUrl() {
+                return trongrid.getExplorerUrl();
+            }
         };
 
         public abstract BigDecimal getPrice();
@@ -918,5 +953,7 @@ public class CoinService {
         public abstract Coin getCoinEntity();
 
         public abstract CoinSettingsDTO getCoinSettings();
+
+        public abstract String getExplorerUrl();
     }
 }

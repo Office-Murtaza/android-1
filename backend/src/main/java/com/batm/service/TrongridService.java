@@ -8,6 +8,7 @@ import com.batm.util.Constant;
 import com.batm.util.TxUtil;
 import com.batm.util.Util;
 import com.google.protobuf.ByteString;
+import lombok.Getter;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.apache.commons.lang.StringUtils;
@@ -22,6 +23,7 @@ import wallet.core.jni.proto.Tron;
 import java.math.BigDecimal;
 import java.util.*;
 
+@Getter
 @Service
 public class TrongridService {
 

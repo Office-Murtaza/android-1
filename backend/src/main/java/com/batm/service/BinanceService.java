@@ -14,6 +14,7 @@ import com.binance.dex.api.client.domain.TransactionPage;
 import com.binance.dex.api.client.domain.TransactionType;
 import com.binance.dex.api.client.domain.request.TransactionsRequest;
 import com.google.protobuf.ByteString;
+import lombok.Getter;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +37,7 @@ import java.time.ZonedDateTime;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
+@Getter
 @Service
 @EnableScheduling
 public class BinanceService {
@@ -63,7 +65,6 @@ public class BinanceService {
 
     @Scheduled(cron = "0 0 */1 * * *") // every 1 hour
     public void processCronTasks() {
-        System.out.println("Processing collecting prices for coins..");
         Arrays.stream(CoinService.CoinEnum.values()).forEach(coinEnum -> {
             BigDecimal currentPrice = coinEnum.getPrice();
 
@@ -74,7 +75,6 @@ public class BinanceService {
             coinPrice.setDate(new Date()); // TODO try default solr date value
             coinPriceRepository.save(coinPrice);
         });
-        System.out.println("Processing collecting prices for coins done.");
     }
 
     @Cacheable(cacheNames = {"price"}, key = "symbol")
@@ -91,8 +91,7 @@ public class BinanceService {
                     .filter(e -> "BNB".equals(e.getSymbol()))
                     .map(it -> new BigDecimal(it.getFree()).add(new BigDecimal(it.getLocked())))
                     .reduce(BigDecimal.ZERO, BigDecimal::add));
-        } catch (Exception e) {
-        }
+        } catch (Exception e) {}
 
         return BigDecimal.ZERO;
     }

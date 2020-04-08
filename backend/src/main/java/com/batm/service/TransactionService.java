@@ -22,6 +22,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.*;
 
 @Service
@@ -75,18 +76,23 @@ public class TransactionService {
 
         if (giftTx.isPresent()) {
             TransactionRecordGift gift = giftTx.get();
+
             dto.setPhone(gift.getPhone());
             dto.setImageId(gift.getImageId());
             dto.setMessage(gift.getMessage());
             dto.setType(TransactionType.convert(dto.getType(), TransactionGroupType.GIFT));
         } else if (c2cTx.isPresent()) {
             TransactionRecordC2C c2c = c2cTx.get();
+
+            String code = c2c.getRefCoin().getCode();
             dto.setRefTxId(c2c.getRefTxId());
-            dto.setRefCoin(c2c.getRefCoin().getCode());
+            dto.setRefLink(CoinService.CoinEnum.valueOf(code).getExplorerUrl() + "/" + c2c.getRefTxId());
+            dto.setRefCoin(code);
             dto.setRefCryptoAmount(c2c.getRefAmount());
             dto.setType(TransactionType.convert(dto.getType(), TransactionGroupType.C2C));
         } else if (buySellTx.isPresent()) {
             TransactionRecord buySell = buySellTx.get();
+
             // to return either txId or txDbId, not both
             if (StringUtils.isBlank(dto.getTxId())) {
                 if (StringUtils.isNotBlank(buySell.getDetail())) {
@@ -270,7 +276,7 @@ public class TransactionService {
 
             BigDecimal refAmount = dto.getCryptoAmount()
                     .multiply(coinCode.getPrice())
-                    .divide(refCoinCode.getPrice())
+                    .divide(refCoinCode.getPrice(), refCoinCode.getCoinEntity().getScale(), RoundingMode.HALF_DOWN)
                     .multiply(BigDecimal.valueOf(100).subtract(coinCode.getCoinEntity().getProfitC2C()).divide(BigDecimal.valueOf(100)))
                     .setScale(refCoinCode.getCoinEntity().getScale(), BigDecimal.ROUND_DOWN).stripTrailingZeros();
 
@@ -333,9 +339,12 @@ public class TransactionService {
             try {
                 CoinService.CoinEnum coinId = CoinService.CoinEnum.valueOf(t.getCoin().getCode());
                 TransactionStatus status = coinId.getTransactionStatus(t.getTxId());
-                t.setStatus(status.getValue());
 
-                confirmedList.add(t);
+                if (status != null) {
+                    t.setStatus(status.getValue());
+
+                    confirmedList.add(t);
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }

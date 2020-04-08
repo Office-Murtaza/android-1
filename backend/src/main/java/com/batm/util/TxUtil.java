@@ -20,7 +20,7 @@ public class TxUtil {
         mergeGroupGroupTxs(map, txDTO.getGiftList(), TransactionGroupType.GIFT);
         mergeGroupGroupTxs(map, txDTO.getC2cList(), TransactionGroupType.C2C);
         mergeBuySellTxs(map, txDTO.getBuySellList());
-        List<TransactionDetailsDTO> list = TxUtil.convertAndSort(map);
+        List<TransactionDetailsDTO> list = convertAndSort(map);
 
         return build(list, startIndex, limit);
     }
