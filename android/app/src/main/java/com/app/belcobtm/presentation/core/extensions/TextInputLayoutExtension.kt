@@ -17,7 +17,7 @@ fun TextInputLayout.getString(): String = editText?.text?.toString() ?: ""
 
 fun TextInputLayout.setText(text: String) = editText?.setText(text)
 
-fun TextInputLayout.clear() = editText?.setText("")
+fun TextInputLayout.clearText() = editText?.setText("")
 
 fun TextInputLayout.isNotBlank() = editText?.getString()?.isNotBlank() ?: false
 

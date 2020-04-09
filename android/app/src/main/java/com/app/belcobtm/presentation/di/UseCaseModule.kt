@@ -5,6 +5,10 @@ import com.app.belcobtm.domain.settings.interactor.GetVerificationCountryListUse
 import com.app.belcobtm.domain.settings.interactor.GetVerificationInfoUseCase
 import com.app.belcobtm.domain.settings.interactor.SendVerificationBlankUseCase
 import com.app.belcobtm.domain.settings.interactor.SendVerificationVipUseCase
+import com.app.belcobtm.domain.tools.SendToDeviceSmsCodeUseCase
+import com.app.belcobtm.domain.tools.VerifySmsCodeUseCase
+import com.app.belcobtm.domain.wallet.interactor.CoinToCoinExchangeUseCase
+import com.app.belcobtm.domain.wallet.interactor.GetCoinFeeMapUseCase
 import org.koin.dsl.module
 
 val useCaseModule = module {
@@ -20,4 +24,8 @@ val useCaseModule = module {
     single { SendVerificationBlankUseCase(get()) }
     single { GetVerificationCountryListUseCase(get()) }
     single { SendVerificationVipUseCase(get()) }
+    single { GetCoinFeeMapUseCase(get()) }
+    single { CoinToCoinExchangeUseCase(get()) }
+    single { SendToDeviceSmsCodeUseCase(get()) }
+    single { VerifySmsCodeUseCase(get()) }
 }

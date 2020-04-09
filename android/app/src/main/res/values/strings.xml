@@ -64,7 +64,7 @@
     <string name="seed_clipboard">Seed phrase copied to clipboard</string>
 
     <!--recover seed phrase-->
-    <string name="paste"><u>Paste</u></string>
+    <string name="paste">Paste</string>
     <string name="paste_seed_info">Enter your secret 15 world phrase here to restore your wallet</string>
     <string name="enter_seed_first">Enter seed first</string>
 
@@ -185,9 +185,10 @@
     <string name="scan"><u>Scan</u></string>
     <string name="amount">Amount</string>
     <string name="cancelled">Cancelled</string>
-    <string name="max"><u>Max</u></string>
+    <string name="max">Max</string>
     <string name="wrong_address">Wrong address</string>
     <string name="should_be_filled">Should be filled</string>
+    <string name="not_enough_balance">Not enough balance</string>
     <string name="wrong_crypto_coin_data">Wrong crypto coin data</string>
     <string name="wrong_phone_number">Wrong phone number</string>
     <string name="input_text_message">Text Message</string>
@@ -211,6 +212,10 @@
     <string name="transition_details_screen_phone">Phone</string>
     <string name="transition_details_screen_image">Image</string>
     <string name="transition_details_screen_message">Message</string>
+    <string name="transition_details_screen_ref_tax_id">Ref TxId</string>
+    <string name="transition_details_screen_ref_coin">Ref Coin</string>
+    <string name="transition_details_screen_ref_amount">Ref Amount</string>
+
 
     <string name="transition_details_screen_unknown">Unknown</string>
     <string name="transition_details_screen_pending">Pending</string>
@@ -219,4 +224,55 @@
     <string name="transition_details_screen_not_available">Not Available</string>
     <string name="transition_details_screen_available">Available</string>
     <string name="transition_details_screen_withdrawn">Withdrawn</string>
+    <string name="transition_details_screen_one_day">1d</string>
+    <string name="transition_details_screen_one_week">1w</string>
+    <string name="transition_details_screen_one_month">1m</string>
+    <string name="transition_details_screen_three_month">3m</string>
+    <string name="transition_details_screen_one_year">1y</string>
+
+
+    <!-- Withdraw screen -->
+    <string name="withdraw_screen_price">Price</string>
+    <string name="withdraw_screen_balance">Balance</string>
+    <string name="withdraw_screen_recipient_address">Recipient Address</string>
+    <string name="withdraw_screen_usd_amount">USD Amount</string>
+    <string name="withdraw_screen_crypto_amount">%1$s Amount</string>
+
+    <!-- Sell screen -->
+    <string name="sell_screen_price">Price</string>
+    <string name="sell_screen_balance">Balance</string>
+    <string name="sell_screen_daily_limit">Daily Limit</string>
+    <string name="sell_screen_tx_limit">Tx Limit</string>
+    <string name="sell_screen_usd_amount">USD Amount</string>
+    <string name="sell_screen_crypto_amount">%1$s Amount</string>
+    <string name="sell_screen_sell_from_another_wallet">Sell from another wallet</string>
+    <string name="sell_screen_not_enough_tradable_balance">Not enough on a tradable balance</string>
+    <string name="sell_screen_atm_contains_only_count_banknotes">ATM contains only 20 and 50 banknotes</string>
+    <string name="sell_screen_sell_from_another_address">Sell from another address</string>
+
+    <!-- Send gift screen -->
+    <string name="send_gift_screen_price">Price</string>
+    <string name="send_gift_screen_balance">Balance</string>
+    <string name="send_gift_screen_recipient_address">Phone</string>
+    <string name="send_gift_screen_usd_amount">USD Amount</string>
+    <string name="send_gift_screen_crypto_amount">%1$s Amount</string>
+    <string name="send_gift_screen_message">Message…</string>
+    <string name="send_gift_screen_add">Add</string>
+    <string name="send_gift_screen_remove">Remove</string>
+
+
+    <!-- Coin to coin screen -->
+    <string name="exchange_coin_to_coin_screen_title">C2C Exchange</string>
+    <string name="exchange_coin_to_coin_screen_price">Price</string>
+    <string name="exchange_coin_to_coin_screen_price_value">%1$s USD</string>
+    <string name="exchange_coin_to_coin_screen_balance">Balance</string>
+    <string name="exchange_coin_to_coin_screen_balance_crypto">%1$s %2$s</string>
+    <string name="exchange_coin_to_coin_screen_balance_usd">%1$s USD</string>
+    <string name="exchange_coin_to_coin_screen_crypto_amount">%1$s Amount</string>
+    <string name="exchange_coin_to_coin_screen_select_coin">Select coin please</string>
+
+
+
+    <string name="unit_usd">Usd</string>
+    <string name="button_next">Next</string>
 </resources>

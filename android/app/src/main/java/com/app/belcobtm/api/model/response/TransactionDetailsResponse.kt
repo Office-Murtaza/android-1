@@ -20,8 +20,11 @@ data class TransactionDetailsResponse(
     @SerializedName("imageId") val imageId: String?,
     @SerializedName("message") val message: String?,
     @SerializedName("phone") val phone: String?,
-    @SerializedName("sellInfo") val sellInfo: String?
-
+    @SerializedName("sellInfo") val sellInfo: String?,
+    @SerializedName("refTxId") val refTxId: String?,
+    @SerializedName("refLink") val refLink: String?,
+    @SerializedName("refCoin") val refCoin: String?,
+    @SerializedName("refCryptoAmount") val refCryptoAmount: Double?
 ) : Serializable {
 
     fun getStatusType(): TransactionStatusType = TransactionStatusType.values()[status]

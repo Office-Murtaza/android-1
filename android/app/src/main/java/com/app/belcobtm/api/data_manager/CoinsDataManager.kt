@@ -10,8 +10,12 @@ class CoinsDataManager : BaseDataManager() {
         return genObservable(api.getCoins(userId, coins))
     }
 
-    fun getCoinsFee(userId: String): Observable<Optional<GetCoinsFeeResponse>> {
+    fun getCoinsFee(userId: String): Observable<Optional<GetCoinsFeeOldResponse>> {
         return genObservable(api.getCoinsFee(userId))
+    }
+
+    fun getCoinFee(coinId: String): Observable<Optional<GetCoinFeeResponse>> {
+        return genObservable(api.getCoinFee(coinId))
     }
 
     fun getAtmAddress(): Observable<Optional<AtmResponse>> {

@@ -5,17 +5,15 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
-import android.view.inputmethod.EditorInfo
-import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.AppCompatEditText
 import androidx.core.widget.doAfterTextChanged
 import com.app.belcobtm.R
 import com.app.belcobtm.api.model.response.CoinModel
 import com.app.belcobtm.mvp.BaseMvpActivity
+import com.app.belcobtm.presentation.core.extensions.*
 import com.google.android.material.textfield.TextInputLayout
 import com.google.zxing.integration.android.IntentIntegrator
-import kotlinx.android.synthetic.main.activity_show_phone.toolbar
 import kotlinx.android.synthetic.main.activity_withdraw.*
 import org.parceler.Parcels
 
@@ -38,7 +36,7 @@ class WithdrawActivity : BaseMvpActivity<WithdrawContract.View, WithdrawContract
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_withdraw)
-        setSupportActionBar(toolbar)
+        setSupportActionBar(toolbarView)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)
 
@@ -46,14 +44,15 @@ class WithdrawActivity : BaseMvpActivity<WithdrawContract.View, WithdrawContract
 
         supportActionBar?.title = getString(R.string.title_withdraw) + " " + mCoin.coinId
 
-        initView()
+        initListeners()
+        initViews()
     }
 
-    private fun initView() {
-
-        address_scan.setOnClickListener { IntentIntegrator(this).initiateScan() }
-        address_paste.setOnClickListener { address.setText(getTextFromClipboard()) }
-        amount_max.setOnClickListener {
+    private fun initListeners() {
+        addressScanView.setOnClickListener { IntentIntegrator(this).initiateScan() }
+        addressPasteView.setOnClickListener { addressView.setText(getTextFromClipboard()) }
+        maxCryptoView.setOnClickListener {
+            //TODO
             val balance = mCoin.balance - mPresenter.getTransactionFee(mCoin.coinId)
             val balanceStr = if (balance > 0) {
                 cryptoBalanceToSend = balance
@@ -62,20 +61,42 @@ class WithdrawActivity : BaseMvpActivity<WithdrawContract.View, WithdrawContract
                 cryptoBalanceToSend = 0.0
                 "0"
             }
-            amount_crypto.setText(balanceStr.replace(',', '.'))
+            amountCryptoView.setText(balanceStr.replace(',', '.'))
         }
+        maxUsdView.setOnClickListener {
+            val balance = mCoin.balance - mPresenter.getTransactionFee(mCoin.coinId)
+            val balanceStr = if (balance > 0) {
+                cryptoBalanceToSend = balance
+                String.format("%.6f", balance).trimEnd('0')
+            } else {
+                cryptoBalanceToSend = 0.0
+                "0"
+            }
+            amountCryptoView.setText(balanceStr.replace(',', '.'))
+        }
+    }
 
-        til_amount_crypto.hint = mCoin.coinId
+    private fun initPrice() {
+        val convertedPrice = if (mCoin.price.uSD > 0) String.format("%.2f", mCoin.price.uSD).trimEnd('0') else "0"
+        priceUsdView.text = getString(R.string.transaction_price_usd, convertedPrice)
+    }
+
+    private fun initBalance() {
+        val convertedBalance = if (mCoin.balance > 0) String.format("%.6f", mCoin.balance).trimEnd('0') else "0"
+        balanceCryptoView.text = getString(R.string.transaction_crypto_balance, convertedBalance, mCoin.coinId)
+
+        val amountUsd = mCoin.balance * mCoin.price.uSD
+        balanceUsdView.text = "${String.format("%.2f", amountUsd)} USD"
+    }
+
+    private fun initViews() {
+        initPrice()
+        initBalance()
+
+        amountCryptoView.hint = mCoin.coinId
         handleAmount()
 
-        amount_crypto.setOnEditorActionListener(TextView.OnEditorActionListener { _, id, _ ->
-            if (id == EditorInfo.IME_ACTION_DONE || id == EditorInfo.IME_NULL) {
-                validateAndSubmit()
-                return@OnEditorActionListener true
-            }
-            false
-        })
-
+        amountCryptoView.actionDoneListener { validateAndSubmit() }
         nextButtonView.setOnClickListener { validateAndSubmit() }
     }
 
@@ -83,7 +104,7 @@ class WithdrawActivity : BaseMvpActivity<WithdrawContract.View, WithdrawContract
 
     private fun handleAmount() {
         var isTextWorking = false
-        amount_crypto.doAfterTextChanged {
+        amountCryptoView?.editText?.doAfterTextChanged {
             if (isTextWorking)
                 return@doAfterTextChanged
             isTextWorking = true
@@ -92,34 +113,34 @@ class WithdrawActivity : BaseMvpActivity<WithdrawContract.View, WithdrawContract
 
 
             val amountCrypto = try {
-                amount_crypto.text.toString().toDouble()
+                amountCryptoView.getString().toDouble()
             } catch (e: NumberFormatException) {
                 0.0
             }
             cryptoBalanceToSend = amountCrypto
 
             if (amountCrypto > balance) {
-                amount_crypto.setText(trimTrailingZero(balance.toString()))
+                amountCryptoView.setText(trimTrailingZero(balance.toString()) ?: "")
                 cryptoBalanceToSend = balance
                 isTextWorking = false
             }
             val amountUsd = amountCrypto * mCoin.price.uSD
-            amount_usd.setText(String.format("%.2f", amountUsd))
-            amount_usd.setSelection(amount_usd.text?.length ?: 0)
+            amountUsdView.setText(String.format("%.2f", amountUsd))
+            amountUsdView.editText?.setSelection(amountUsdView.getString().length)
             isTextWorking = false
         }
 
-        amount_usd.doAfterTextChanged {
+        amountUsdView.editText?.doAfterTextChanged {
             if (isTextWorking)
                 return@doAfterTextChanged
             isTextWorking = true
             var balance = mCoin.balance - mPresenter.getTransactionFee(mCoin.coinId)
             balance = if (balance < 0) 0.0 else balance
             if (balance == 0.0) {
-                amount_usd.setText("0")
-                amount_usd.setSelection(amount_usd.text?.length ?: 0)
-                amount_crypto.setText("0")
-                amount_crypto.setSelection(amount_crypto.text?.length ?: 0)
+                amountUsdView.setText("0")
+                amountUsdView?.editText?.setSelection(amountUsdView.getString().length)
+                amountCryptoView.setText("0")
+                amountCryptoView?.editText?.setSelection(amountCryptoView.getString().length)
                 isTextWorking = false
                 return@doAfterTextChanged
             }
@@ -127,25 +148,24 @@ class WithdrawActivity : BaseMvpActivity<WithdrawContract.View, WithdrawContract
             val maxUsd =
                 (mCoin.balance - mPresenter.getTransactionFee(mCoin.coinId)) * mCoin.price.uSD
             val amountUsd = try {
-                amount_usd.text.toString().toDouble()
+                amountUsdView.getString().toDouble()
             } catch (e: NumberFormatException) {
                 0.0
             }
 
             if (amountUsd > maxUsd) {
-                amount_usd.setText(String.format("%.2f", maxUsd))
-                amount_usd.setSelection(amount_usd.text?.length ?: 0)
+                amountUsdView.setText(String.format("%.2f", maxUsd))
+                amountUsdView?.editText?.setSelection(amountUsdView.getString().length)
             }
             var amountCrypt = try {
-                amount_usd.text.toString().toDouble() / mCoin.price.uSD
+                amountUsdView.getString().toDouble() / mCoin.price.uSD
             } catch (e: NumberFormatException) {
                 0.0
             }
 
             amountCrypt = if (amountCrypt < 0) 0.0 else amountCrypt
-            amount_crypto.setText(String.format("%.6f", amountCrypt))
-            amount_crypto.setText(trimTrailingZero(amount_crypto.text.toString()))
-            amount_crypto.setSelection(amount_crypto.text?.length ?: 0)
+            amountCryptoView.setText(trimTrailingZero(String.format("%.6f", amountCrypt)) ?: "")
+            amountCryptoView?.editText?.setSelection(amountCryptoView.getString().length)
             isTextWorking = false
         }
     }
@@ -188,7 +208,7 @@ class WithdrawActivity : BaseMvpActivity<WithdrawContract.View, WithdrawContract
                 val walletCode = result.contents.replaceBefore(':', "")
                     .replaceBefore('=', "")
                     .removePrefix(":")
-                address.setText(walletCode)
+                addressView.setText(walletCode)
             }
         } else {
             super.onActivityResult(requestCode, resultCode, data)
@@ -196,32 +216,32 @@ class WithdrawActivity : BaseMvpActivity<WithdrawContract.View, WithdrawContract
     }
 
     private fun validateAndSubmit() {
-        til_amount_crypto.error = null
-        til_address.error = null
+        amountCryptoView.clearError()
+        addressView.clearError()
 
-        val toAddress = address.text.toString()
+        val toAddress = addressView.getString()
         var errors = 0
 
         //Validate address
         if (!mPresenter.validateAddress(mCoin.coinId, toAddress)) {
             errors++
-            til_address.error = getString(R.string.wrong_address)
+            addressView.showError(R.string.wrong_address)
         }
 
         //Validate amount
         if (cryptoBalanceToSend <= 0) {
             errors++
-            til_amount_crypto.error = getString(R.string.should_be_filled)
+            amountCryptoView.showError(R.string.should_be_filled)
         }
 
         //Validate max amount
         if (cryptoBalanceToSend > (mCoin.balance - mPresenter.getTransactionFee(mCoin.coinId))) {
             errors++
-            til_amount_crypto.error = "Not enough balance"
+            amountCryptoView.showError(R.string.not_enough_balance)
         }
 
         if (errors == 0) {
-            mPresenter.getCoinTransactionHash(this, mCoin.coinId, toAddress, cryptoBalanceToSend!!)
+            mPresenter.getCoinTransactionHash(this, mCoin.coinId, toAddress, cryptoBalanceToSend)
         }
     }
 

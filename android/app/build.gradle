@@ -11,8 +11,8 @@ android {
         applicationId "com.app.belcobtm"
         minSdkVersion 23
         targetSdkVersion 29
-        versionCode 38
-        versionName "1.2"
+        versionCode 40
+        versionName "1.2.2"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled = true
     }
@@ -163,4 +163,6 @@ dependencies {
 
     //Charts
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
+
+    implementation 'com.github.clans:fab:1.6.4'
 }

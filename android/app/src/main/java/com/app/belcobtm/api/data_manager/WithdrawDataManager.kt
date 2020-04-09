@@ -38,7 +38,6 @@ open class WithdrawDataManager : BaseDataManager() {
         return genObservable(api.sendHash(userId, coinId, transactionHexToken))
     }
 
-
     fun requestSmsCode(userId: String): Observable<Optional<RequestSmsResponse>> {
         return genObservable(api.requestSmsCode(userId))
     }
@@ -46,7 +45,6 @@ open class WithdrawDataManager : BaseDataManager() {
     fun verifySmsCode(userId: String, smsCode: String): Observable<Optional<VerifySmsResponse>> {
         return genObservable(api.verifySmsCode(userId, VerifySmsParam(smsCode)))
     }
-
 
     fun preSubmitTx(
         userId: String,
@@ -123,6 +121,4 @@ open class WithdrawDataManager : BaseDataManager() {
             genObservable(api.getTransactionDetailsByTxDbId(userId, coinId, txDbId))
         }
     }
-
-
 }

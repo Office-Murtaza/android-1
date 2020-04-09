@@ -1,81 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginStart="@dimen/margin_half"
-    android:layout_marginEnd="@dimen/margin_half"
-    android:orientation="vertical">
+    android:background="?selectableItemBackground"
+    android:clickable="true"
+    android:focusable="true"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:padding="@dimen/margin_main">
 
-    <androidx.appcompat.widget.LinearLayoutCompat
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:padding="@dimen/margin_main">
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/transaction_date"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:lines="1"
+        android:textColor="#58585a"
+        android:textSize="13sp"
+        tools:text="12.12.2045" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/transaction_type"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1.5"
+        android:gravity="center"
+        android:lines="1"
+        android:textAllCaps="true"
+        android:textColor="#8d8d8d"
+        android:textSize="13sp"
+        tools:text="deposit" />
+
+    <FrameLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1.5">
 
         <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/transaction_date"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
+            android:id="@+id/transaction_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@drawable/bg_transaction_status_unkown"
             android:gravity="center"
-            android:text="12.12.2045"
-            android:textSize="12sp"
-            app:fontFamily="@font/poppins_semi_bold" />
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/transaction_type"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1.5"
-            android:gravity="center"
-            android:text="deposit"
+            android:lines="1"
+            android:paddingStart="4dp"
+            android:paddingTop="2dp"
+            android:paddingEnd="4dp"
+            android:paddingBottom="2dp"
             android:textAllCaps="true"
-            android:textSize="12sp"
-            app:fontFamily="@font/poppins_semi_bold" />
+            android:textColor="@android:color/white"
+            android:textSize="11sp"
+            tools:ignore="SmallSp"
+            tools:text="complete" />
+    </FrameLayout>
 
-        <FrameLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1.5">
-
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/transaction_status"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:background="@drawable/bg_transaction_status_unkown"
-                android:gravity="center"
-                android:paddingStart="@dimen/margin_half"
-                android:paddingEnd="@dimen/margin_half"
-                android:text="complete"
-                android:textAllCaps="true"
-                android:textColor="@android:color/white"
-                android:textSize="12sp"
-                app:fontFamily="@font/poppins_semi_bold" />
-        </FrameLayout>
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/transaction_amount"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:ellipsize="end"
-            android:gravity="center"
-            android:maxLines="1"
-            android:text="123.871264165"
-            android:textSize="12sp"
-            app:fontFamily="@font/poppins_semi_bold" />
-
-    </androidx.appcompat.widget.LinearLayoutCompat>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginStart="@dimen/margin_main"
-        android:layout_marginEnd="@dimen/margin_main"
-        android:layout_marginBottom="@dimen/margin_half"
-        android:background="@color/light_gray_text_color" />
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/transaction_amount"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:ellipsize="end"
+        android:gravity="center"
+        android:lines="1"
+        android:textColor="#8d8d8d"
+        android:textSize="13sp"
+        tools:text="123.871264165" />
 
 </androidx.appcompat.widget.LinearLayoutCompat>

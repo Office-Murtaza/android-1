@@ -1,15 +1,23 @@
 package com.app.belcobtm.ui.main.coins.transactions
 
+import android.preference.PreferenceManager
 import com.app.belcobtm.App
 import com.app.belcobtm.api.data_manager.CoinsDataManager
-import com.app.belcobtm.api.model.response.TransactionModel
+import com.app.belcobtm.api.model.response.*
+import com.app.belcobtm.data.shared.preferences.SharedPreferencesHelper
 import com.app.belcobtm.mvp.BaseMvpDIPresenterImpl
-import com.app.belcobtm.presentation.core.pref
-
+import io.reactivex.Observable
+import io.reactivex.disposables.CompositeDisposable
 
 class TransactionsPresenter : BaseMvpDIPresenterImpl<TransactionsContract.View, CoinsDataManager>(),
     TransactionsContract.Presenter {
 
+    //TODO need migrate to dependency koin after refactoring
+    private val prefsHelper: SharedPreferencesHelper by lazy {
+        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(App.appContext())
+        SharedPreferencesHelper(sharedPreferences)
+    }
+    private val compositeDisposable: CompositeDisposable = CompositeDisposable()
     private var balance: Double = 0.0
     private var price: Double = 0.0
     private var chartDay: Pair<Double, List<Double>> = Pair(0.0, emptyList())
@@ -27,56 +35,94 @@ class TransactionsPresenter : BaseMvpDIPresenterImpl<TransactionsContract.View, 
     override var coinId: String = ""
     private var mTotalTransactions: Int = -1
 
-    override fun getTransactions() {
-
-        if (mTotalTransactions != -1 && mTotalTransactions == transactionList.size) {
-            mView?.showProgress(false)
-            return
-        }
-
-        val userId = App.appContext().pref.getUserId().toString()
-        mDataManager.getTransactions(userId, coinId, transactionList.size + 1).subscribe(
-            { response ->
-                mView?.showProgress(false)
-                if (response.value != null) {
-                    mTotalTransactions = response.value!!.total
-                    transactionList.addAll(response.value!!.transactions)
-                }
-                mView?.notifyTransactions()
-            },
-            { error ->
-                checkError(error)
-            })
+    override fun viewCreated() {
+        initializeData()
     }
 
-    override fun getFirstTransactions() {
-        transactionList.clear()
-        getTransactions()
-    }
-
-    override fun chartViewInitialized() {
-        val userId = App.appContext().pref.getUserId().toString()
-        mDataManager.getChart(userId, coinId).subscribe(
-            {
-                val chart = it.value?.chart
-                balance = it.value?.balance ?: 0.0
-                price = it.value?.price ?: 0.0
-                chartDay = Pair(chart?.day?.changes ?: 0.0, chart?.day?.prices ?: emptyList())
-                chartWeek = Pair(chart?.week?.changes ?: 0.0, chart?.week?.prices ?: emptyList())
-                chartMonth = Pair(chart?.month?.changes ?: 0.0, chart?.month?.prices ?: emptyList())
-                chartThreeMonths = Pair(chart?.threeMonths?.changes ?: 0.0, chart?.threeMonths?.prices ?: emptyList())
-                chartYear = Pair(chart?.year?.changes ?: 0.0, chart?.year?.prices ?: emptyList())
-
-                mView?.setBalance(balance)
-                mView?.setPrice(price)
-                updateChartByPeriod(currentChartPeriodType)
-            },
-            { checkError(it) }
-        )
+    override fun viewDestroyed() {
+        compositeDisposable.dispose()
     }
 
     override fun chartButtonClicked(chartType: ChartPeriodType) {
         updateChartByPeriod(chartType)
+    }
+
+    override fun refreshTransactionClicked() {
+        transactionList.clear()
+        downloadTransactionList(0)
+    }
+
+    override fun scrolledToLastTransactionItem() {
+        if (mTotalTransactions != -1 && mTotalTransactions == transactionList.size) {
+            mView?.showProgress(false)
+        } else {
+            downloadTransactionList(transactionList.size + 1)
+        }
+    }
+
+    private fun initializeData() {
+        val userId = prefsHelper.userId.toString()
+        val mergeList = mutableListOf(
+            mDataManager.getChart(userId, coinId),
+            mDataManager.getTransactions(userId, coinId, 0)
+        )
+
+        if (prefsHelper.coinsFee[coinId] == null) {
+            mergeList.add(mDataManager.getCoinFee(coinId))
+        }
+
+        val requestData = Observable.merge(mergeList).subscribe(
+            { optional ->
+                when (val response = optional.value) {
+                    is ChartResponse -> chartDownloaded(response)
+                    is GetTransactionsResponse -> {
+                        transactionsDownloaded(response)
+                    }
+                    is GetCoinFeeResponse -> coinFeeDownloaded(response)
+                }
+            },
+            { checkError(it) },
+            { mView?.showProgress(false) }
+        )
+        compositeDisposable.add(requestData)
+    }
+
+    private fun downloadTransactionList(currentListSize: Int) {
+        val request = mDataManager.getTransactions(prefsHelper.userId.toString(), coinId, currentListSize).subscribe(
+            { response ->
+                response.value?.let { transactionsDownloaded(it) }
+                mView?.showProgress(false)
+            },
+            { checkError(it) }
+        )
+
+        compositeDisposable.add(request)
+    }
+
+    private fun chartDownloaded(response: ChartResponse) {
+        val chart = response.chart
+        balance = response.balance
+        price = response.price
+        chartDay = Pair(chart.day.changes, chart.day.prices)
+        chartWeek = Pair(chart.week.changes, chart.week.prices)
+        chartMonth = Pair(chart.month.changes, chart.month.prices)
+        chartThreeMonths = Pair(chart.threeMonths.changes, chart.threeMonths.prices)
+        chartYear = Pair(chart.year.changes, chart.year.prices)
+        mView?.setBalance(balance)
+        mView?.setPrice(price)
+        updateChartByPeriod(currentChartPeriodType)
+    }
+
+    private fun transactionsDownloaded(response: GetTransactionsResponse) {
+        mTotalTransactions = response.total
+        transactionList.addAll(response.transactions)
+        mView?.notifyTransactions()
+    }
+
+    private fun coinFeeDownloaded(response: GetCoinFeeResponse) {
+        val mutableCoinsFeeMap = prefsHelper.coinsFee.toMutableMap()
+        mutableCoinsFeeMap[coinId] = response.toDataItem()
+        prefsHelper.coinsFee = mutableCoinsFeeMap
     }
 
     private fun updateChartByPeriod(chartType: ChartPeriodType) {
@@ -97,6 +143,4 @@ class TransactionsPresenter : BaseMvpDIPresenterImpl<TransactionsContract.View, 
             ChartPeriodType.YEAR -> mView?.setChanges(chartYear.first)
         }
     }
-
-
 }

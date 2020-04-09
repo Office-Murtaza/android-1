@@ -1,5 +1,6 @@
 package com.app.belcobtm.mvp
 
+import android.preference.PreferenceManager
 import com.app.belcobtm.App
 import com.app.belcobtm.api.data_manager.BaseDataManager
 import com.app.belcobtm.api.data_manager.WithdrawDataManager
@@ -8,12 +9,14 @@ import com.app.belcobtm.api.model.response.BNBBlockResponse
 import com.app.belcobtm.api.model.response.ETHResponse
 import com.app.belcobtm.api.model.response.TronBlockResponse
 import com.app.belcobtm.api.model.response.UtxoItem
+import com.app.belcobtm.data.shared.preferences.SharedPreferencesHelper
 import com.app.belcobtm.db.DbCryptoCoin
 import com.app.belcobtm.di.component.DaggerPresenterComponent
 import com.app.belcobtm.di.component.PresenterComponent
 import com.app.belcobtm.di.module.PresenterModule
 import com.app.belcobtm.presentation.core.*
 import com.app.belcobtm.presentation.core.Optional
+import com.app.belcobtm.presentation.core.extensions.*
 import com.google.protobuf.ByteString
 import io.reactivex.Observable
 import wallet.core.jni.*
@@ -24,14 +27,13 @@ import javax.inject.Inject
 
 
 abstract class BaseMvpDIPresenterImpl<V : BaseMvpView, T : BaseDataManager> : BaseMvpPresenter<V> {
-
     protected var mView: V? = null
-
     protected val presenterComponent: PresenterComponent = DaggerPresenterComponent.builder()
         .presenterModule(PresenterModule())
         .build()
 
     protected abstract fun injectDependency()
+
     @Inject
     protected lateinit var mDataManager: T
 
@@ -44,16 +46,13 @@ abstract class BaseMvpDIPresenterImpl<V : BaseMvpView, T : BaseDataManager> : Ba
         mView = null
     }
 
-    val BTC_DIVIDER = BigDecimal.valueOf(100_000_000)
-    val ETH_DIVIDER = BigDecimal.valueOf(1000000000000000000)
-    val BCH_DIVIDER = BigDecimal.valueOf(100000000)
-    val LTC_DIVIDER = BigDecimal.valueOf(100000000)
-    val XRP_DIVIDER = BigDecimal.valueOf(1000000)
-    val TRX_DIVIDER = BigDecimal.valueOf(1000000)
-    val BNB_DIVIDER = BigDecimal.valueOf(100_000_000)
+    //TODO need migrate to dependency koin after refactoring
+    private val prefsHelper: SharedPreferencesHelper by lazy {
+        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(App.appContext())
+        SharedPreferencesHelper(sharedPreferences)
+    }
 
     protected fun <T : Throwable> onError(exception: T) {
-
         mView?.showError(exception.message)
     }
 
@@ -79,9 +78,7 @@ abstract class BaseMvpDIPresenterImpl<V : BaseMvpView, T : BaseDataManager> : Ba
         mCoinDbModel: DbCryptoCoin?,
         dataManager: WithdrawDataManager
     ): Observable<String> {
-
-        val mUserId = App.appContext().pref.getUserId().toString()
-
+        val mUserId = prefsHelper.userId.toString()
         return when (coinType) {
             CoinType.XRP -> getXRPTransactionHashObs(
                 toAddress, coinAmount,
@@ -118,17 +115,12 @@ abstract class BaseMvpDIPresenterImpl<V : BaseMvpView, T : BaseDataManager> : Ba
         mUserId: String,
         coinType: CoinType
     ): Observable<String> {
-
-        val cryptoToSubcoin =
-            coinAmount * XRP_DIVIDER.toLong()
-
+        val cryptoToSubCoin = coinAmount * CoinType.XRP.unit()
         val fromAddress = mCoinDbModel?.publicKey ?: ""
-        val privateKey_ = PrivateKey(mCoinDbModel?.privateKey?.toHexByteArray())
-
-        return dataManager.getXRPBlockHeader(mUserId, fromAddress)
-            .map { resp ->
-                createXRPTransaction(fromAddress, cryptoToSubcoin, toAddress, privateKey_, resp)
-            }
+        val privateKey = PrivateKey(mCoinDbModel?.privateKey?.toHexByteArray())
+        return dataManager.getXRPBlockHeader(mUserId, fromAddress).map { resp ->
+            createXRPTransaction(fromAddress, cryptoToSubCoin, toAddress, privateKey, resp)
+        }
     }
 
     private fun createXRPTransaction(
@@ -139,11 +131,8 @@ abstract class BaseMvpDIPresenterImpl<V : BaseMvpView, T : BaseDataManager> : Ba
         resp: Optional<BNBBlockResponse>
     ): String {
         val signingInput = Ripple.SigningInput.newBuilder()
-
-
-        val respFee =
-            (App.appContext().pref.getCoinsFee()?.firstOrNull { it.code == "XRP" }?.fee?.toBigDecimal()
-                ?: BigDecimal(0.000020)) * XRP_DIVIDER
+        val respFee = (prefsHelper.coinsFee[CoinType.XRP.code()]?.txFee?.toBigDecimal()
+            ?: BigDecimal(0.000020)) * BigDecimal.valueOf(CoinType.XRP.unit())
         val respSeq = resp.value?.sequence?.toInt() ?: 0
 
         signingInput.apply {
@@ -162,7 +151,6 @@ abstract class BaseMvpDIPresenterImpl<V : BaseMvpView, T : BaseDataManager> : Ba
         return resTransactionHashStr
     }
 
-
     open fun getTronTransactionHashObs(
         toAddress: String,
         coinAmount: Double,
@@ -171,27 +159,21 @@ abstract class BaseMvpDIPresenterImpl<V : BaseMvpView, T : BaseDataManager> : Ba
         mCoinDbModel: DbCryptoCoin?,
         coinType: CoinType?
 
-    ): Observable<String> {
-        return mDataManager.getTronBlockHeader(mUserId, mCoinDbModel!!.coinType)
-            .map { resp ->
-                createTronTransactionHash(
-                    toAddress,
-                    mCoinDbModel,
-                    coinType,
-                    resp.value,
-                    coinAmount
-                )
-            }
+    ): Observable<String> = mDataManager.getTronBlockHeader(mUserId, mCoinDbModel!!.coinType).map { resp ->
+        createTronTransactionHash(
+            toAddress,
+            mCoinDbModel,
+            coinType,
+            resp.value,
+            coinAmount
+        )
     }
 
     open fun createTronTransactionHash(
         toAddress: String, mCoinDbModel: DbCryptoCoin?,
         coinType: CoinType?, resp: TronBlockResponse?, coinAmount: Double
     ): String? {
-
-        val cryptoToSubcoin =
-            coinAmount * TRX_DIVIDER.toLong()
-
+        val cryptoToSubcoin = coinAmount * CoinType.TRON.unit()
         val fromAddress = mCoinDbModel?.publicKey
         val tronBlock = Tron.BlockHeader.newBuilder()
 
@@ -209,7 +191,6 @@ abstract class BaseMvpDIPresenterImpl<V : BaseMvpView, T : BaseDataManager> : Ba
         transferBuilder.toAddress = toAddress
         transferBuilder.amount = cryptoToSubcoin.toLong()
 
-
         val transaction = Tron.Transaction.newBuilder()
         transaction.transfer = transferBuilder.build()
 
@@ -220,10 +201,9 @@ abstract class BaseMvpDIPresenterImpl<V : BaseMvpView, T : BaseDataManager> : Ba
         cal.add(Calendar.HOUR, 10)
         val resHour = cal.time
 
-        transaction.expiration = resHour.time ?: 0
-        transaction.feeLimit =
-            ((App.appContext().pref.getCoinsFee()?.firstOrNull { it.code == "TRX" }?.fee?.toBigDecimal()
-                ?: BigDecimal(1)) * TRX_DIVIDER).toLong()
+        transaction.expiration = resHour.time
+        transaction.feeLimit = ((prefsHelper.coinsFee[CoinType.TRON.code()]?.txFee?.toBigDecimal()
+            ?: BigDecimal(1)) * BigDecimal.valueOf(CoinType.TRON.unit())).toLong()
         transaction.blockHeader = tronBlock.build()
 
         val signing = Tron.SigningInput.newBuilder()
@@ -241,25 +221,21 @@ abstract class BaseMvpDIPresenterImpl<V : BaseMvpView, T : BaseDataManager> : Ba
         dataManager: WithdrawDataManager,
         mUserId: String,
         mCoinDbModel: DbCryptoCoin?
-    ): Observable<String> {
-
-        return dataManager.getETHNonce(mUserId, toAddress)
-            .map { resp ->
-                createETHTransactionHash(
-                    toAddress,
-                    mCoinDbModel!!,
-                    resp.value,
-                    coinAmount
-                )
-            }
+    ): Observable<String> = dataManager.getETHNonce(mUserId, toAddress).map { resp ->
+        createETHTransactionHash(
+            toAddress,
+            mCoinDbModel!!,
+            resp.value,
+            coinAmount
+        )
     }
 
     /**
      * custom implementation of adding leading zeroes
      * for hex value (%016llx)
      */
-    fun addLeadingZeroes(str: String): String? {
-        var res: String = ""
+    private fun addLeadingZeroes(str: String): String? {
+        var res = ""
         if (str.length < 64) {
             var i = 0
             while ((64 - str.length) > i) {
@@ -277,38 +253,23 @@ abstract class BaseMvpDIPresenterImpl<V : BaseMvpView, T : BaseDataManager> : Ba
         resp: ETHResponse?,
         coinAmount: Double
     ): String? {
-
-        val cryptoToSubcoin: BigDecimal =
-            BigDecimal(coinAmount * ETH_DIVIDER.toLong())
-
+        val cryptoToSubcoin = BigDecimal(coinAmount * CoinType.ETHEREUM.unit())
         val nonsStr: String = resp?.nonce?.toString(16) ?: ""
-
         val nonceHex = ByteString.copyFrom("0x${addLeadingZeroes(nonsStr)}".toHexByteArray())
-
         val amountHex =
             ByteString.copyFrom("0x${addLeadingZeroes(cryptoToSubcoin.toLong().toString(16))}".toHexByteArray())
-
-        val gasPriceD =
-            App.appContext().pref.getCoinsFee()?.firstOrNull { it.code == "ETH" }?.gasPrice?.toLong()
-                ?: 20_000_000_000
-
-        val gasLimitD =
-            App.appContext().pref.getCoinsFee()?.firstOrNull { it.code == "ETH" }?.gasLimit?.toLong()
-                ?: 21000
-
+        val gasPriceD = prefsHelper.coinsFee[CoinType.ETHEREUM.code()]?.gasPrice?.toLong() ?: 20_000_000_000
+        val gasLimitD = prefsHelper.coinsFee[CoinType.ETHEREUM.code()]?.gasLimit?.toLong() ?: 21000
         val gasLimitHex =
             ByteString.copyFrom("0x${addLeadingZeroes(gasLimitD.toString(16))}".toHexByteArray())
-
         val gasPriceHex =
             ByteString.copyFrom("0x${addLeadingZeroes(gasPriceD.toString(16))}".toHexByteArray())
-
-
         val signingInput = Ethereum.SigningInput.newBuilder()
+
         signingInput.apply {
-            privateKey = mCoinDbModel?.privateKey?.toHexBytesInByteString()
+            privateKey = mCoinDbModel.privateKey.toHexBytesInByteString()
             toAddress = _toAddress
             chainId = ByteString.copyFrom("0x1".toHexByteArray())
-
             nonce = nonceHex
             gasPrice = gasPriceHex
             gasLimit = gasLimitHex
@@ -316,7 +277,6 @@ abstract class BaseMvpDIPresenterImpl<V : BaseMvpView, T : BaseDataManager> : Ba
         }
 
         val sign: Ethereum.SigningOutput = EthereumSigner.sign(signingInput.build())
-
         val resTransactionHashStr = Numeric.toHexString(sign.encoded.toByteArray())
         return "0x$resTransactionHashStr"
     }
@@ -330,24 +290,20 @@ abstract class BaseMvpDIPresenterImpl<V : BaseMvpView, T : BaseDataManager> : Ba
         mCoinDbModel: DbCryptoCoin?,
         coinType: CoinType
     ): Observable<String> {
-
-        val cryptoToSubcoin =
-            coinAmount * BNB_DIVIDER.toLong()
-
+        val cryptoToSubcoin = coinAmount * CoinType.BINANCE.unit()
         val privateKey = PrivateKey(mCoinDbModel?.privateKey?.toHexByteArray())
         val publicKey = privateKey.getPublicKeySecp256k1(true)
 
-        return dataManager.getBNBBlockHeader(mUserId, mCoinDbModel?.publicKey ?: "")
-            .map { resp ->
-                createBNBTransactionHash(
-                    toAddress,
-                    mCoinDbModel,
-                    coinType,
-                    resp.value,
-                    cryptoToSubcoin,
-                    privateKey, publicKey
-                )
-            }
+        return dataManager.getBNBBlockHeader(mUserId, mCoinDbModel?.publicKey ?: "").map { resp ->
+            createBNBTransactionHash(
+                toAddress,
+                mCoinDbModel,
+                coinType,
+                resp.value,
+                cryptoToSubcoin,
+                privateKey, publicKey
+            )
+        }
     }
 
     open fun createBNBTransactionHash(
@@ -359,18 +315,15 @@ abstract class BaseMvpDIPresenterImpl<V : BaseMvpView, T : BaseDataManager> : Ba
         privateKey: PrivateKey,
         publicKey: PublicKey?
     ): String? {
-
         val signingInput = Binance.SigningInput.newBuilder()
 
         signingInput.chainId = "Binance-Chain-Tigris"
-
         signingInput.accountNumber = resp?.accountNumber ?: 0
         signingInput.sequence = resp?.sequence ?: 0
-
         signingInput.privateKey = ByteString.copyFrom(privateKey.data())
 
         val token = Binance.SendOrder.Token.newBuilder()
-        token.denom = "BNB"
+        token.denom = CoinType.BINANCE.code()
         token.amount = cryptoToSubcoin.toLong()
 
         val input = Binance.SendOrder.Input.newBuilder()
@@ -391,7 +344,6 @@ abstract class BaseMvpDIPresenterImpl<V : BaseMvpView, T : BaseDataManager> : Ba
         val signBytes = sign.encoded.toByteArray()
 
         return Numeric.toHexString(signBytes)
-
     }
 
     open fun getBTCTransactionHashObs(
@@ -403,23 +355,21 @@ abstract class BaseMvpDIPresenterImpl<V : BaseMvpView, T : BaseDataManager> : Ba
         mUserId: String,
         mCoinDbModel: DbCryptoCoin?
     ): Observable<String> {
-        val extendedPublicKey =
-            hdWallet.getExtendedPublicKey(
-                coinType.getMyCustomPurpose(),
-                coinType,
-                coinType.getMyCustomXpubVersion()
-            )
+        val extendedPublicKey = hdWallet.getExtendedPublicKey(
+            coinType.customPurpose(),
+            coinType,
+            coinType.customXpubVersion()
+        )
 
-        return dataManager.getBTCUtxos(mUserId, mCoinDbModel!!.coinType, extendedPublicKey)
-            .map { utxosResponse ->
-                createBTCTransactionHash(
-                    toAddress,
-                    mCoinDbModel,
-                    coinType,
-                    utxosResponse.value!!.utxoList,
-                    coinAmount
-                )
-            }
+        return dataManager.getBTCUtxos(mUserId, mCoinDbModel!!.coinType, extendedPublicKey).map { utxosResponse ->
+            createBTCTransactionHash(
+                toAddress,
+                mCoinDbModel,
+                coinType,
+                utxosResponse.value!!.utxoList,
+                coinAmount
+            )
+        }
     }
 
     open fun createBTCTransactionHash(
@@ -429,18 +379,12 @@ abstract class BaseMvpDIPresenterImpl<V : BaseMvpView, T : BaseDataManager> : Ba
         utxos: ArrayList<UtxoItem>,
         coinAmount: Double
     ): String {
-        val hdWallet = HDWallet(App.appContext().pref.getSeed(), "")
+        val hdWallet = HDWallet(prefsHelper.apiSeed, "")
         val publicKeyFrom = coinDbModel?.publicKey
-
-        val cryptoToSatoshi =
-            coinAmount * BTC_DIVIDER.toLong()
-
+        val cryptoToSatoshi = coinAmount * CoinType.BITCOIN.unit()
         val amount: Long = cryptoToSatoshi.toLong()
-
         val byteFee = getByteFee(coinDbModel?.coinType)
-
         val sngHash = TWBitcoinSigHashType.getCryptoHash(coinType)
-
 //        val cointypeValue = if (coinType.value() == 2) 0 else coinType.value()
         val cointypeValue = coinType.value()
         val signerBuilder = Bitcoin.SigningInput.newBuilder()
@@ -448,7 +392,7 @@ abstract class BaseMvpDIPresenterImpl<V : BaseMvpView, T : BaseDataManager> : Ba
             .setHashType(sngHash)
             .setToAddress(toAddress)
             .setChangeAddress(publicKeyFrom)
-            .setByteFee(byteFee.toLong())
+            .setByteFee(byteFee)
             .setCoinType(cointypeValue)
 
         utxos.forEach {
@@ -475,25 +419,19 @@ abstract class BaseMvpDIPresenterImpl<V : BaseMvpView, T : BaseDataManager> : Ba
             val hash = utxo.txid.toHexBytes()
             val reversedHash = hash.reversed().toByteArray()
             val reversedHashStr = ByteString.copyFrom(reversedHash)
-
             val index = utxo.vout
-
             val sequence = Int.MAX_VALUE - utxos.size + currentIndex
-
             val outpoint = Bitcoin.OutPoint.newBuilder()
                 .setHash(reversedHashStr)
                 .setIndex(index)
                 .setSequence(sequence)
                 .build()
-
-            val amount_ = utxo.value.toLong()
-
+            val amount = utxo.value.toLong()
             val redeemScript = BitcoinScript.buildForAddress(utxo.address, coinType)
             val scriptByteString = ByteString.copyFrom(redeemScript.data())
-
             val utxo0 = Bitcoin.UnspentTransaction.newBuilder()
                 .setScript(scriptByteString)
-                .setAmount(amount_)
+                .setAmount(amount)
                 .setOutPoint(outpoint)
                 .build()
 
@@ -502,30 +440,12 @@ abstract class BaseMvpDIPresenterImpl<V : BaseMvpView, T : BaseDataManager> : Ba
 
         val signer = BitcoinTransactionSigner(signerBuilder.build())
         val result = signer.sign()
-
-        val output =
-            result.getObjects(0).unpack(wallet.core.jni.proto.Bitcoin.SigningOutput::class.java)
-
-        val resTransactionStr = Numeric.toHexString(output.encoded.toByteArray())
-        return resTransactionStr
+        val output = result.getObjects(0).unpack(Bitcoin.SigningOutput::class.java)
+        return Numeric.toHexString(output.encoded.toByteArray())
     }
 
-
-    open fun validateAddress(coinId: String, walletAddress: String): Boolean {
-        val coin = when (coinId) {
-            "TRX" -> CoinType.TRON
-            "XRP" -> CoinType.XRP
-            "BNB" -> CoinType.BINANCE
-            "BTC" -> CoinType.BITCOIN
-            "BCH" -> CoinType.BITCOINCASH
-            "LTC" -> CoinType.LITECOIN
-            "ETH" -> CoinType.ETHEREUM
-            else -> null
-        }
-
-        return coin?.validate(walletAddress) ?: false
-    }
-
+    open fun validateAddress(coinId: String, walletAddress: String): Boolean =
+        CoinTypeExtension.getTypeByCode(coinId)?.validate(walletAddress) ?: false
 
     /**
      *
@@ -548,58 +468,11 @@ abstract class BaseMvpDIPresenterImpl<V : BaseMvpView, T : BaseDataManager> : Ba
     BNB  Binance Coin  0.0010000000
 
      */
-    open fun getTransactionFee(coinName: String): Double {
+    open fun getTransactionFee(coinName: String): Double = prefsHelper.coinsFee[coinName]?.txFee ?: 0.0
 
-        return when (coinName) {
-            "BTC" -> getFeesFromList(coinName, 0.0004)
-            "BCH" -> getFeesFromList(coinName, 0.0004)
-            "LTC" -> getFeesFromList(coinName, 0.00004)
-            "ETH" -> getFeesFromList(coinName, 0.00042)
-
-            "BNB" -> getFeesFromList(coinName, 0.001)
-            "TRX" -> getFeesFromList(coinName, 1.0)
-            "XRP" -> getFeesFromList(coinName, 0.00002)
-            else -> 4.0
-        }
+    open fun getByteFee(coinName: String?): Long {
+        val coinTypeUnit: Long = CoinTypeExtension.getTypeByCode(coinName ?: "")?.unit() ?: 0
+        val byteFee = prefsHelper.coinsFee[coinName]?.byteFee ?: Double.MIN_VALUE
+        return (byteFee * coinTypeUnit).toLong()
     }
-
-    fun getFeesFromList(coinCode: String, def: Double = Double.MIN_VALUE): Double {
-
-        var fee = App.appContext().pref.getCoinsFee()?.firstOrNull { it.code == coinCode }?.fee
-            ?: def
-
-        if (coinCode == "BTC" || coinCode == "BCH" || coinCode == "LTC") {
-            fee = ((fee?.toBigDecimal() ?: BigDecimal(0)) * BigDecimal(1000)).toDouble()
-        } else if (coinCode == "ETH") {
-            val gasPrice =
-                (App.appContext().pref.getCoinsFee()?.firstOrNull { it.code == coinCode }?.gasPrice?.toBigDecimal()
-                    ?: BigDecimal(0))
-            val gasLimit =
-                (App.appContext().pref.getCoinsFee()?.firstOrNull { it.code == coinCode }?.gasLimit?.toBigDecimal()
-                    ?: BigDecimal(0))
-
-            return ((gasPrice.toDouble() * gasLimit.toDouble()) / ETH_DIVIDER.toDouble())
-        }
-        return fee
-    }
-
-
-    open fun getByteFee(coinName: String?): Int {
-        return when (coinName) {
-            "BTC" -> return getFeeByteFromList(coinName, 40 / 100_000_000)
-            "BCH" -> return getFeeByteFromList(coinName, 40 / 100_000_000)
-            "LTC" -> return getFeeByteFromList(coinName, 4 / 100_000_000)
-            else -> return getFeeByteFromList(coinName, 4)
-        }
-    }
-
-    fun getFeeByteFromList(coinCode: String?, def: Int = 4): Int {
-
-        val fee: Double =
-            (App.appContext().pref.getCoinsFee()?.firstOrNull { it.code == coinCode }?.fee
-                ?: Double.MIN_VALUE) ?: Double.MIN_VALUE
-        return (fee * 100_000_000).toInt().toInt()
-    }
-
-
 }

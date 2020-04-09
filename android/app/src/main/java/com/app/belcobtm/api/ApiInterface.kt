@@ -4,6 +4,7 @@ import com.app.belcobtm.api.model.ServerResponse
 import com.app.belcobtm.api.model.param.*
 import com.app.belcobtm.api.model.response.*
 import io.reactivex.Observable
+import okhttp3.ResponseBody
 import retrofit2.http.*
 
 
@@ -46,7 +47,12 @@ interface ApiInterface {
     ): Observable<ServerResponse<GetCoinsResponse>>
 
     @GET("user/{userId}/coins/fee")
-    fun getCoinsFee(@Path("userId") userId: String): Observable<ServerResponse<GetCoinsFeeResponse>>
+    fun getCoinsFee(@Path("userId") userId: String): Observable<ServerResponse<GetCoinsFeeOldResponse>>
+
+    @GET("coins/{coinId}/settings")
+    fun getCoinFee(
+        @Path("coinId") coinId: String
+    ): Observable<ServerResponse<GetCoinFeeResponse>>
 
     @GET("terminal/locations")
     fun getAtmAddress(): Observable<ServerResponse<AtmResponse>>

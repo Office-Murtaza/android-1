@@ -5,7 +5,7 @@ import org.parceler.Parcel
 import java.io.Serializable
 
 
-data class GetCoinsFeeResponse(
+data class GetCoinsFeeOldResponse(
     @SerializedName("fees")
     val fees: List<CoinFee>
 ) : Serializable {

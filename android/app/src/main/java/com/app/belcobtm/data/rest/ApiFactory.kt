@@ -1,8 +1,10 @@
 package com.app.belcobtm.data.rest
 
 import com.app.belcobtm.data.rest.authorization.AuthApi
+import com.app.belcobtm.data.rest.interceptor.AuthAuthenticator
 import com.app.belcobtm.data.rest.interceptor.ResponseInterceptor
 import com.app.belcobtm.data.rest.settings.SettingsApi
+import com.app.belcobtm.data.rest.wallet.WalletApi
 import com.app.belcobtm.data.shared.preferences.SharedPreferencesHelper
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import okhttp3.Interceptor
@@ -13,48 +15,51 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 import java.util.concurrent.TimeUnit
 
 class ApiFactory(private val prefHelper: SharedPreferencesHelper) {
-    private val loggingInterceptor: HttpLoggingInterceptor =
-        HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
     private val baseInterceptor: Interceptor = Interceptor {
         val request = it.request()
             .newBuilder()
             .addHeader(HEADER_CONTENT_TYPE_KEY, HEADER_CONTENT_TYPE_VALUE)
             .addHeader(HEADER_X_REQUESTED_WITH_KEY, HEADER_X_REQUESTED_WITH_VALUE)
             .addHeader(HEADER_ACCEPT_KEY, HEADER_ACCEPT_VALUE)
-            .addHeader(HEADER_AUTHORIZATION_KEY, getAccessToken())
+            .addHeader(HEADER_AUTHORIZATION_KEY, prefHelper.accessToken)
             .build()
         it.proceed(request)
     }
 
-    private val errorInterceptor = ResponseInterceptor()
-
-    private val baseHttpClient = OkHttpClient().newBuilder()
+    private val sessionHttpClient = OkHttpClient().newBuilder()
         .connectTimeout(WAIT_TIME_SECONDS, TimeUnit.SECONDS)
         .readTimeout(WAIT_TIME_SECONDS, TimeUnit.SECONDS)
         .addInterceptor(baseInterceptor)
-        .addInterceptor(loggingInterceptor)
-        .addInterceptor(errorInterceptor)
+        .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
+        .addInterceptor(ResponseInterceptor())
+        .authenticator(AuthAuthenticator(prefHelper, createApi(AuthApi::class.java)))
         .build()
 
-    val authApi: AuthApi = retrofit(baseHttpClient).create(AuthApi::class.java)
-    val settingsApi: SettingsApi = retrofit(baseHttpClient).create(SettingsApi::class.java)
+    val authApi: AuthApi = createApiWithSessionClient(AuthApi::class.java)
+    val settingsApi: SettingsApi = createApiWithSessionClient(SettingsApi::class.java)
+    val walletApi: WalletApi = createApiWithSessionClient(WalletApi::class.java)
 
-    private fun retrofit(okHttpClient: OkHttpClient): Retrofit = Retrofit.Builder()
-        .client(okHttpClient)
+    private fun <T> createApi(clazz: Class<T>): T = Retrofit.Builder()
         .baseUrl(SERVER_URL)
         .addConverterFactory(MoshiConverterFactory.create())
         .addCallAdapterFactory(CoroutineCallAdapterFactory())
         .build()
+        .create(clazz)
 
-    private fun getAccessToken(): String =
-        if (prefHelper.accessToken.isNullOrBlank()) "" else HEADER_AUTHORIZATION_VALUE + prefHelper.accessToken
+    private fun <T> createApiWithSessionClient(clazz: Class<T>): T = Retrofit.Builder()
+        .baseUrl(SERVER_URL)
+        .addConverterFactory(MoshiConverterFactory.create())
+        .addCallAdapterFactory(CoroutineCallAdapterFactory())
+        .client(sessionHttpClient)
+        .build()
+        .create(clazz)
 
     companion object {
         // private const val BASE_URL = "https://prod.belcobtm.com"
-        // private const val BASE_URL = "http://206.189.204.44:8080"
-        private const val BASE_URL = "https://test.belcobtm.com"
+         private const val BASE_URL = "http://161.35.22.9"
+//        private const val BASE_URL = "https://test.belcobtm.com"
         private const val API_VERSION = 1
-        private const val SERVER_URL = "$BASE_URL/api/v$API_VERSION/"
+        const val SERVER_URL = "$BASE_URL/api/v$API_VERSION/"
 
         private const val HEADER_CONTENT_TYPE_KEY = "Content-Type"
         private const val HEADER_CONTENT_TYPE_VALUE = "application/json"
@@ -63,7 +68,9 @@ class ApiFactory(private val prefHelper: SharedPreferencesHelper) {
         private const val HEADER_ACCEPT_KEY = "Accept"
         private const val HEADER_ACCEPT_VALUE = "application/json"
         private const val WAIT_TIME_SECONDS = 60L
-        private const val HEADER_AUTHORIZATION_KEY = "Authorization"
-        private const val HEADER_AUTHORIZATION_VALUE = "Bearer "
+        const val HEADER_AUTHORIZATION_KEY = "Authorization"
     }
 }
+
+
+

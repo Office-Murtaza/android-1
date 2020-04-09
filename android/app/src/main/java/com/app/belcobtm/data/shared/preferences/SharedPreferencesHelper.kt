@@ -1,41 +1,53 @@
 package com.app.belcobtm.data.shared.preferences
 
 import android.content.SharedPreferences
-import com.app.belcobtm.api.model.response.GetCoinsFeeResponse
+import com.app.belcobtm.api.model.response.GetCoinsFeeOldResponse
+import com.app.belcobtm.domain.wallet.CoinFeeDataItem
 import com.google.gson.Gson
+import com.squareup.moshi.JsonAdapter
+import com.squareup.moshi.Moshi
+import com.squareup.moshi.Types
 
 class SharedPreferencesHelper(private val sharedPreferences: SharedPreferences) {
-    var accessToken: String?
-        set(value) = sharedPreferences.set(ACCESS_TOKEN, value)
-        get() = sharedPreferences[ACCESS_TOKEN]
+    private val jsonAdapter: JsonAdapter<Map<String, CoinFeeDataItem>> by lazy {
+        val moshi: Moshi = Moshi.Builder().build()
+        val listType = Types.newParameterizedType(Map::class.java, String::class.java, CoinFeeDataItem::class.java)
+        moshi.adapter<Map<String, CoinFeeDataItem>>(listType)
+    }
 
-    var refreshToken: String?
+    var accessToken: String
+        set(value) = sharedPreferences.set(
+            ACCESS_TOKEN, if (value.isBlank()) "" else ACCESS_TOKEN_BEARER + value
+        )
+        get() = sharedPreferences[ACCESS_TOKEN] ?: ""
+
+    var refreshToken: String
         set(value) = sharedPreferences.set(REFRESH_TOKEN, value)
-        get() = sharedPreferences[REFRESH_TOKEN]
+        get() = sharedPreferences[REFRESH_TOKEN] ?: ""
 
-    var apiSeed: String?
+    var apiSeed: String
         set(value) = sharedPreferences.set(API_SEED, value)
-        get() = sharedPreferences[API_SEED]
+        get() = sharedPreferences[API_SEED] ?: ""
 
-    var userId: Int?
+    var userId: Int
         set(value) = sharedPreferences.set(USER_ID, value)
-        get() = sharedPreferences[USER_ID]
+        get() = sharedPreferences[USER_ID] ?: -1
 
-    var userPin: String?
+    var userPin: String
         set(value) = sharedPreferences.set(USER_PIN, value)
-        get() = sharedPreferences[USER_PIN]
+        get() = sharedPreferences[USER_PIN] ?: ""
 
-    var coinsFee: List<GetCoinsFeeResponse.CoinFee>?
-        set(value) = sharedPreferences.set(COINS_FEE, Gson().toJson(value))
-        get() = try {
-            Gson().fromJson(sharedPreferences[COINS_FEE] ?: "", Array<GetCoinsFeeResponse.CoinFee>::class.java).toList()
-        } catch (e: Exception) {
-            e.printStackTrace()
-            null
+    var coinsFee: Map<String, CoinFeeDataItem>
+        set(value) = sharedPreferences.set(COINS_FEE, jsonAdapter.toJson(value))
+        get() {
+            val json = sharedPreferences[COINS_FEE] ?: ""
+            return if (json.isBlank()) emptyMap() else jsonAdapter.fromJson(json) ?: emptyMap()
         }
 
     companion object {
         private const val ACCESS_TOKEN = "KEY_API_SESSION_TOKEN"
+        private const val ACCESS_TOKEN_BEARER = "Bearer "
+
         private const val REFRESH_TOKEN = "KEY_API_REFRESH_TOKEN"
         private const val API_SEED = "KEY_API_SEED"
         private const val USER_ID = "KEY_USER_ID"

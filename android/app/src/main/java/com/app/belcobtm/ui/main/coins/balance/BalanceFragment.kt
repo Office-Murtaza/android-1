@@ -30,24 +30,16 @@ class BalanceFragment : BaseMvpFragment<BalanceContract.View, BalanceContract.Pr
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-
         mAdapter = CoinsAdapter(mPresenter.coinsList, this)
         coins_recycler.isNestedScrollingEnabled = false
         coins_recycler.adapter = mAdapter
         coins_recycler.addItemDecoration(CoinItemDecoration(resources.getDimensionPixelSize(R.dimen.margin_half)))
 
-        swipe_refresh.setOnRefreshListener { mPresenter.requestCoins() }
-        swipe_refresh.setColorSchemeColors(
-            Color.RED, Color.GREEN, Color.BLUE
-        )
+        swipeToRefreshView.setOnRefreshListener { mPresenter.requestCoins() }
+        swipeToRefreshView.setColorSchemeColors(Color.RED, Color.GREEN, Color.BLUE)
 
         add_wallet_ll.setOnClickListener {
-            startActivity(
-                Intent(
-                    context,
-                    VisibilityCoinsActivity::class.java
-                )
-            )
+            startActivity(Intent(context, VisibilityCoinsActivity::class.java))
         }
     }
 
@@ -61,17 +53,16 @@ class BalanceFragment : BaseMvpFragment<BalanceContract.View, BalanceContract.Pr
         mAdapter.notifyDataSetChanged()
     }
 
-
     override fun showProgress(show: Boolean) {
         activity?.runOnUiThread {
             if (!show) {
-                swipe_refresh.isRefreshing = false
+                swipeToRefreshView.isRefreshing = false
             }
             super.showProgress(show)
         }
     }
 
-    override fun onCoinClick(coin: CoinModel) {
-        TransactionsActivity.start(activity, coin)
+    override fun onCoinClick(coin: CoinModel, coinArray: List<CoinModel>) {
+        TransactionsActivity.start(activity, coin, coinArray)
     }
 }

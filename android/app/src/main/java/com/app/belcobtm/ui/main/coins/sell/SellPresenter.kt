@@ -1,5 +1,6 @@
 package com.app.belcobtm.ui.main.coins.sell
 
+import android.preference.PreferenceManager
 import com.app.belcobtm.App
 import com.app.belcobtm.api.data_manager.WithdrawDataManager
 import com.app.belcobtm.api.model.ServerException
@@ -8,11 +9,11 @@ import com.app.belcobtm.api.model.param.SendTransactionParam
 import com.app.belcobtm.api.model.param.trx.Trx
 import com.app.belcobtm.api.model.response.CoinModel
 import com.app.belcobtm.api.model.response.LimitsResponse
+import com.app.belcobtm.data.shared.preferences.SharedPreferencesHelper
 import com.app.belcobtm.db.DbCryptoCoin
 import com.app.belcobtm.db.DbCryptoCoinModel
 import com.app.belcobtm.mvp.BaseMvpDIPresenterImpl
 import com.app.belcobtm.presentation.core.Const
-import com.app.belcobtm.presentation.core.pref
 import com.google.gson.Gson
 import io.reactivex.Observable
 import io.realm.Realm
@@ -20,8 +21,19 @@ import wallet.core.jni.CoinType
 import wallet.core.jni.HDWallet
 
 
-class SellPresenter : BaseMvpDIPresenterImpl<SellContract.View, WithdrawDataManager>(),
-    SellContract.Presenter {
+class SellPresenter : BaseMvpDIPresenterImpl<SellContract.View, WithdrawDataManager>(), SellContract.Presenter {
+    private var mTransactionHash: String? = null
+    private var mTransactionHashJson: String? = null
+    private var cryptoResultAmount: Double = Double.MIN_VALUE
+    private var addressDestination: String? = null
+    var isErrorOnSms = true
+
+    //TODO need migrate to dependency koin after refactoring
+    private val prefsHelper: SharedPreferencesHelper by lazy {
+        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(App.appContext())
+        SharedPreferencesHelper(sharedPreferences)
+    }
+
     override fun preSubmit(
         fiatAmount: Int,
         cryptoAmount: Double,
@@ -33,33 +45,29 @@ class SellPresenter : BaseMvpDIPresenterImpl<SellContract.View, WithdrawDataMana
         this.cryptoAmount = cryptoAmount
         this.isAnotherAddress = checked
 
-        mDataManager.requestSmsCode(mUserId).subscribe({ response ->
-            if (response.value!!.sent) {
-                mView?.openSmsCodeDialog()
-            }
-        }, { error -> checkError(error) })
-
+        mDataManager.requestSmsCode(mUserId).subscribe(
+            { response ->
+                if (response.value!!.sent) {
+                    mView?.openSmsCodeDialog()
+                }
+            },
+            { error -> checkError(error) }
+        )
     }
 
-    private var mTransactionHash: String? = null
-    private var mTransactionHashJson: String? = null
-    private var cryptoResultAmount: Double = Double.MIN_VALUE
-    private var addressDestination: String? = null
-    var isErrorOnSms = true
     override fun verifySmsCode(code: String) {
         mView?.showProgress(true)
 
         isErrorOnSms = true
         mDataManager.verifySmsCode(mUserId, code)
-
             .flatMap { res ->
-
                 isErrorOnSms = false
                 mDataManager.preSubmitTx(
                     mUserId, mCoin?.coinId ?: "",
                     PreTransactionParam(cryptoAmount, fiatAmount, "USD")
                 )
-            }.flatMap { res ->
+            }
+            .flatMap { res ->
                 mView?.showProgress(false)
 
                 this.addressDestination = res?.value?.address
@@ -67,7 +75,6 @@ class SellPresenter : BaseMvpDIPresenterImpl<SellContract.View, WithdrawDataMana
                 if (addressDestination.isNullOrEmpty()) {
                     Observable.error(Throwable("the transaction can not be created"))
                 } else {
-
                     this.cryptoResultAmount = res?.value?.cryptoAmount ?: Double.MIN_VALUE
 
                     if (isAnotherAddress) {
@@ -78,8 +85,7 @@ class SellPresenter : BaseMvpDIPresenterImpl<SellContract.View, WithdrawDataMana
 
                             Observable.error(Throwable("coin stock value has been changed"))
                         } else {
-                            val seed = App.appContext().pref.getSeed()
-                            val hdWallet = HDWallet(seed, "")
+                            val hdWallet = HDWallet(prefsHelper.apiSeed, "")
                             this.fromAddress = res.value?.address
 
                             val coinType = if (mCoinDbModel != null) {
@@ -102,7 +108,6 @@ class SellPresenter : BaseMvpDIPresenterImpl<SellContract.View, WithdrawDataMana
                 }
             }
             .flatMap { transactionHash ->
-
                 if (CoinType.TRON == coinType) {
                     mTransactionHashJson = transactionHash
                     mTransactionHash = null
@@ -114,12 +119,10 @@ class SellPresenter : BaseMvpDIPresenterImpl<SellContract.View, WithdrawDataMana
                 if (transactionHash.isNullOrEmpty()) {
                     Observable.just("")
                 } else {
-
-                    if(mTransactionHashJson!=null )
-                    {
-                        mTransactionHash = Gson().toJson(Gson().fromJson<Trx>(mTransactionHashJson, Trx::class.java))
-                    }else{
-                        mTransactionHash =  mTransactionHash?.substring(2)
+                    mTransactionHash = if (mTransactionHashJson != null) {
+                        Gson().toJson(Gson().fromJson<Trx>(mTransactionHashJson, Trx::class.java))
+                    } else {
+                        mTransactionHash?.substring(2)
                     }
 
                     mDataManager.submitTx(
@@ -159,18 +162,15 @@ class SellPresenter : BaseMvpDIPresenterImpl<SellContract.View, WithdrawDataMana
                     Observable.just("")
                 }
             }
-
             .subscribe(
                 {
-
                     mView?.showProgress(false)
                     mView?.onTransactionDone(
                         isAnotherAddress,
                         addressDestination,
                         cryptoResultAmount
                     )
-                }
-                ,
+                },
                 { error: Throwable ->
                     mView?.showProgress(false)
                     if (error is ServerException && error.code != Const.ERROR_403) {
@@ -183,8 +183,8 @@ class SellPresenter : BaseMvpDIPresenterImpl<SellContract.View, WithdrawDataMana
                     } else {
                         checkError(error)
                     }
-
-                })
+                }
+            )
     }
 
 
@@ -226,7 +226,7 @@ class SellPresenter : BaseMvpDIPresenterImpl<SellContract.View, WithdrawDataMana
 
     private val realm = Realm.getDefaultInstance()
     private val coinModel = DbCryptoCoinModel()
-    val mUserId = App.appContext().pref.getUserId().toString()
+    val mUserId = prefsHelper.userId.toString()
     private var mCoinDbModel: DbCryptoCoin? = null
 
 

@@ -1,13 +1,14 @@
 package com.app.belcobtm.ui.main.coins.details
 
+import android.preference.PreferenceManager
 import com.app.belcobtm.App
 import com.app.belcobtm.api.data_manager.WithdrawDataManager
 import com.app.belcobtm.api.model.response.CoinModel
 import com.app.belcobtm.api.model.response.TransactionModel
+import com.app.belcobtm.data.shared.preferences.SharedPreferencesHelper
 import com.app.belcobtm.db.DbCryptoCoin
 import com.app.belcobtm.db.DbCryptoCoinModel
 import com.app.belcobtm.mvp.BaseMvpDIPresenterImpl
-import com.app.belcobtm.presentation.core.pref
 import io.realm.Realm
 import wallet.core.jni.CoinType
 
@@ -49,10 +50,14 @@ class DetailsPresenter : BaseMvpDIPresenterImpl<DetailsContract.View, WithdrawDa
         presenterComponent.inject(this)
     }
 
+
+    //TODO need migrate to dependency koin after refactoring
+    private val prefsHelper: SharedPreferencesHelper by lazy {
+        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(App.appContext())
+        SharedPreferencesHelper(sharedPreferences)
+    }
     private val realm = Realm.getDefaultInstance()
     private val coinModel = DbCryptoCoinModel()
-    val mUserId = App.appContext().pref.getUserId().toString()
+    val mUserId = prefsHelper.userId.toString()
     private var mCoinDbModel: DbCryptoCoin? = null
-
-
 }

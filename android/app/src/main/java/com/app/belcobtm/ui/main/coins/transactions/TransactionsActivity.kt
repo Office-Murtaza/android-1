@@ -9,12 +9,15 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.DividerItemDecoration
 import com.app.belcobtm.R
 import com.app.belcobtm.api.model.response.CoinModel
 import com.app.belcobtm.mvp.BaseMvpActivity
 import com.app.belcobtm.presentation.core.QRUtils.Companion.getSpacelessQR
 import com.app.belcobtm.presentation.core.extensions.setDrawableStart
 import com.app.belcobtm.presentation.core.helper.AlertHelper
+import com.app.belcobtm.presentation.features.wallet.IntentCoinItem
+import com.app.belcobtm.presentation.features.wallet.exchange.coin.to.coin.ExchangeCoinToCoinActivity
 import com.app.belcobtm.ui.main.coins.sell.SellActivity
 import com.app.belcobtm.ui.main.coins.send_gift.SendGiftActivity
 import com.app.belcobtm.ui.main.coins.withdraw.WithdrawActivity
@@ -22,28 +25,34 @@ import com.github.mikephil.charting.data.BarEntry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import kotlinx.android.synthetic.main.activity_show_phone.container
-import kotlinx.android.synthetic.main.activity_show_phone.toolbar
 import kotlinx.android.synthetic.main.activity_transactions.*
 import org.parceler.Parcels
 
 class TransactionsActivity : BaseMvpActivity<TransactionsContract.View, TransactionsContract.Presenter>(),
     TransactionsContract.View {
     private lateinit var mCoin: CoinModel
+    private lateinit var intentCoinItemList: List<IntentCoinItem>
     private lateinit var mAdapter: TransactionsAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_transactions)
         mCoin = Parcels.unwrap(intent.getParcelableExtra(KEY_COIN))
+        intentCoinItemList = intent.getParcelableArrayListExtra<IntentCoinItem>(KEY_COIN_ARRAY)?.toList() ?: emptyList()
         mPresenter.coinId = mCoin.coinId
-        initViews()
         initListeners()
+        initViews()
     }
 
     override fun onStart() {
         super.onStart()
         showProgress(true)
-        mPresenter.getFirstTransactions()
+        mPresenter.viewCreated()
+    }
+
+    override fun onDestroy() {
+        mPresenter.viewDestroyed()
+        super.onDestroy()
     }
 
     override fun setPrice(price: Double) {
@@ -74,11 +83,11 @@ class TransactionsActivity : BaseMvpActivity<TransactionsContract.View, Transact
 
     override fun setChart(chartType: ChartPeriodType, chartList: List<Double>) {
         when (chartType) {
-            ChartPeriodType.DAY -> oneDayButtonView.isChecked = true
-            ChartPeriodType.WEEK -> oneWeekButtonView.isChecked = true
-            ChartPeriodType.MONTH -> oneMonthButtonView.isChecked = true
-            ChartPeriodType.THREE_MONTHS -> threeMonthsButtonView.isChecked = true
-            ChartPeriodType.YEAR -> oneYearButtonView.isChecked = true
+            ChartPeriodType.DAY -> chartChipGroupView.check(R.id.oneDayChipView)
+            ChartPeriodType.WEEK -> chartChipGroupView.check(R.id.oneWeekChipView)
+            ChartPeriodType.MONTH -> chartChipGroupView.check(R.id.oneMonthChipView)
+            ChartPeriodType.THREE_MONTHS -> chartChipGroupView.check(R.id.threeMonthChipView)
+            ChartPeriodType.YEAR -> chartChipGroupView.check(R.id.oneYearChipView)
         }
 
         val valueList = chartList.mapIndexed { index, value -> BarEntry(index.toFloat(), value.toFloat()) }
@@ -101,19 +110,19 @@ class TransactionsActivity : BaseMvpActivity<TransactionsContract.View, Transact
     }
 
     private fun initViews() {
-        setSupportActionBar(toolbar)
+        setSupportActionBar(toolbarView)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)
         supportActionBar?.title = mCoin.fullCoinName
 
-        mAdapter = TransactionsAdapter(mPresenter.transactionList, mCoin) {
-            mPresenter.getTransactions()
+        val dividerItemDecoration = DividerItemDecoration(recyclerView.context, DividerItemDecoration.VERTICAL)
+        ContextCompat.getDrawable(recyclerView.context, R.drawable.divider_transactions)?.let {
+            dividerItemDecoration.setDrawable(it)
         }
-        transaction_recycler.adapter = mAdapter
-
-        swipe_refresh.setColorSchemeColors(
-            Color.RED, Color.GREEN, Color.BLUE
-        )
+        mAdapter = TransactionsAdapter(mPresenter.transactionList, mCoin) { mPresenter.scrolledToLastTransactionItem() }
+        recyclerView.adapter = mAdapter
+        recyclerView.addItemDecoration(dividerItemDecoration)
+        swipeToRefreshView.setColorSchemeColors(Color.RED, Color.GREEN, Color.BLUE)
 
         val amountUsd = mCoin.balance * mCoin.price.uSD
         balanceUsdView.text = "${String.format("%.2f", amountUsd)} USD"
@@ -135,64 +144,79 @@ class TransactionsActivity : BaseMvpActivity<TransactionsContract.View, Transact
             minOffset = 0f
             setScaleEnabled(false)
         }
-
-        mPresenter.chartViewInitialized()
     }
 
-    private fun initListeners() {
-        oneDayButtonView.setOnClickListener { mPresenter.chartButtonClicked(ChartPeriodType.DAY) }
-        oneWeekButtonView.setOnClickListener { mPresenter.chartButtonClicked(ChartPeriodType.WEEK) }
-        oneMonthButtonView.setOnClickListener { mPresenter.chartButtonClicked(ChartPeriodType.MONTH) }
-        threeMonthsButtonView.setOnClickListener { mPresenter.chartButtonClicked(ChartPeriodType.THREE_MONTHS) }
-        oneYearButtonView.setOnClickListener { mPresenter.chartButtonClicked(ChartPeriodType.YEAR) }
+    private fun isCorrectCoinId(): Boolean = mCoin.coinId == "BTC"
+            || mCoin.coinId == "BCH"
+            || mCoin.coinId == "ETH"
+            || mCoin.coinId == "LTC"
+            || mCoin.coinId == "XRP"
+            || mCoin.coinId == "TRX"
+            || mCoin.coinId == "BNB"
 
-        swipe_refresh.setOnRefreshListener { mPresenter.getFirstTransactions() }
-        deposit.setOnClickListener { showDepositDialog() }
-        withdraw.setOnClickListener {
-            if (mCoin.coinId == "BTC"
-                || mCoin.coinId == "BCH"
-                || mCoin.coinId == "ETH"
-                || mCoin.coinId == "LTC"
-                || mCoin.coinId == "XRP"
-                || mCoin.coinId == "TRX"
-                || mCoin.coinId == "BNB"
-            ) {
+    private fun initListeners() {
+        chartChipGroupView.setOnCheckedChangeListener { _, checkedId ->
+            when (checkedId) {
+                R.id.oneDayChipView -> mPresenter.chartButtonClicked(ChartPeriodType.DAY)
+                R.id.oneWeekChipView -> mPresenter.chartButtonClicked(ChartPeriodType.WEEK)
+                R.id.oneMonthChipView -> mPresenter.chartButtonClicked(ChartPeriodType.MONTH)
+                R.id.threeMonthChipView -> mPresenter.chartButtonClicked(ChartPeriodType.THREE_MONTHS)
+                R.id.oneYearChipView -> mPresenter.chartButtonClicked(ChartPeriodType.YEAR)
+            }
+        }
+        swipeToRefreshView.setOnRefreshListener { mPresenter.refreshTransactionClicked() }
+        depositButtonView.setOnClickListener {
+            showDepositDialog()
+            fabMenuView.close(true)
+        }
+        withdrawButtonView.setOnClickListener {
+            if (isCorrectCoinId()) {
                 WithdrawActivity.start(this, mCoin)
             } else {
                 showMessage("In progress. Only BTC, BCH, XRP, BNB and LTC withdraw available")
             }
+            fabMenuView.close(false)
         }
-        send_gift.setOnClickListener {
-            if (mCoin.coinId == "BTC"
-                || mCoin.coinId == "BCH"
-                || mCoin.coinId == "ETH"
-                || mCoin.coinId == "LTC"
-                || mCoin.coinId == "XRP"
-                || mCoin.coinId == "TRX"
-                || mCoin.coinId == "BNB"
-            ) {
+        sendGiftButtonView.setOnClickListener {
+            if (isCorrectCoinId()) {
                 SendGiftActivity.start(this, mCoin)
             } else {
                 showMessage("In progress. Only BTC, BCH, XRP, ETH, BNB and LTC withdraw available")
             }
+            fabMenuView.close(false)
         }
 
-        sell.setOnClickListener {
-            if (mCoin.coinId == "BTC"
-                || mCoin.coinId == "BCH"
-                || mCoin.coinId == "ETH"
-                || mCoin.coinId == "LTC"
-                || mCoin.coinId == "XRP"
-                || mCoin.coinId == "TRX"
-                || mCoin.coinId == "BNB"
-            ) {
+        sellButtonView.setOnClickListener {
+            if (isCorrectCoinId()) {
                 SellActivity.start(this, mCoin)
             } else {
                 showMessage("In progress. Only BTC, BCH, XRP, ETH, BNB and LTC withdraw available")
             }
+            fabMenuView.close(false)
         }
-    }
+        c2cExchangeButtonView.setOnClickListener {
+            if (isCorrectCoinId()) {
+                val intentCoinItem = IntentCoinItem(
+                    mCoin.price.uSD,
+                    mCoin.balance * mCoin.price.uSD,
+                    mCoin.balance,
+                    mCoin.coinId
+                )
 
+                val intent = Intent(this, ExchangeCoinToCoinActivity::class.java)
+                val coinArray = arrayListOf<IntentCoinItem>()
+                coinArray.addAll(intentCoinItemList)
+                intent.putExtra(ExchangeCoinToCoinActivity.TAG_COIN_ITEM, intentCoinItem)
+                intent.putParcelableArrayListExtra(ExchangeCoinToCoinActivity.TAG_COIN_ITEM_LIST, coinArray)
+                startActivity(intent)
+            } else {
+                showMessage("In progress. Only BTC, BCH, XRP, ETH, BNB and LTC withdraw available")
+            }
+            fabMenuView.close(false)
+        }
+
+        fabMenuView.setOnMenuToggleListener { fabMenuView.isClickable = it }
+    }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == android.R.id.home) {
@@ -237,7 +261,7 @@ class TransactionsActivity : BaseMvpActivity<TransactionsContract.View, Transact
     override fun showProgress(show: Boolean) {
         runOnUiThread {
             if (!show)
-                swipe_refresh.isRefreshing = false
+                swipeToRefreshView.isRefreshing = false
 
             super.showProgress(show)
         }
@@ -250,12 +274,18 @@ class TransactionsActivity : BaseMvpActivity<TransactionsContract.View, Transact
 
     companion object {
         private const val KEY_COIN = "KEY_COIN"
+        private const val KEY_COIN_ARRAY = "KEY_COIN_LIST"
         private const val CHART_MARGIN_END_DP = 15F
 
         @JvmStatic
-        fun start(context: Context?, coin: CoinModel) {
+        fun start(context: Context?, coin: CoinModel, coinList: List<CoinModel>) {
             val intent = Intent(context, TransactionsActivity::class.java)
+            val coinArrayList = arrayListOf<IntentCoinItem>()
+            coinArrayList.addAll(coinList.map {
+                IntentCoinItem(it.price.uSD, it.balance * it.price.uSD, it.balance, it.coinId)
+            })
             intent.putExtra(KEY_COIN, Parcels.wrap(coin))
+            intent.putParcelableArrayListExtra(KEY_COIN_ARRAY, coinArrayList)
             context?.startActivity(intent)
         }
     }

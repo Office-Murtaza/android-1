@@ -1,8 +1,9 @@
 package com.app.belcobtm.api
 
+import android.preference.PreferenceManager
 import com.app.belcobtm.App
-import com.app.belcobtm.presentation.core.Const.API_URL
-import com.app.belcobtm.presentation.core.pref
+import com.app.belcobtm.data.rest.ApiFactory
+import com.app.belcobtm.data.shared.preferences.SharedPreferencesHelper
 import com.facebook.stetho.okhttp3.StethoInterceptor
 import com.google.gson.Gson
 import okhttp3.OkHttpClient
@@ -12,17 +13,20 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
-
 class RetrofitClient private constructor() {
-    private object Holder {
-        val INSTANCE = RetrofitClient()
-    }
 
     companion object {
-        val instance: RetrofitClient by lazy { Holder.INSTANCE }
+        val instance: RetrofitClient by lazy { RetrofitClient() }
     }
 
-    var apiInterface: ApiInterface = getClient(API_URL).create(ApiInterface::class.java)
+    //TODO need migrate to dependency koin after refactoring
+    private val prefsHelper: SharedPreferencesHelper by lazy {
+        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(App.appContext())
+        SharedPreferencesHelper(sharedPreferences)
+    }
+
+    var apiInterface: ApiInterface =
+        getClient(ApiFactory.SERVER_URL).create(ApiInterface::class.java)
 
     private fun getClient(url: String): Retrofit {
         return Retrofit.Builder()
@@ -47,9 +51,8 @@ class RetrofitClient private constructor() {
                     .addHeader("Content-Type", "application/json")
                     .addHeader("X-Requested-With", "XMLHttpRequest")
                     .addHeader("Accept", "application/json")
-                val refreshToken = App.appContext().pref.getSessionApiToken()
-                if (!refreshToken.isNullOrBlank())
-                    request.addHeader("Authorization", "Bearer $refreshToken")
+                if (prefsHelper.accessToken.isNotBlank())
+                    request.addHeader("Authorization", prefsHelper.accessToken)
                 chain.proceed(request.build())
             }
             .addInterceptor(httpLoggingInterceptor)

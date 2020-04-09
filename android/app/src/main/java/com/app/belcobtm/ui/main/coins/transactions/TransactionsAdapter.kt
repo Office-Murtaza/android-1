@@ -18,8 +18,7 @@ class TransactionsAdapter(
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_transaction, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_transaction, parent, false)
         return object : RecyclerView.ViewHolder(view) {}
     }
 
@@ -84,13 +83,11 @@ class TransactionsAdapter(
                 onLoadNextCallback()
             }
             holder.itemView.setOnClickListener {
-                DetailsActivity.start(holder.itemView.context,item,coin )
+                DetailsActivity.start(holder.itemView.context, item, coin)
             }
 
         }
     }
 
-    override fun getItemCount(): Int {
-        return mTransactionList.size
-    }
+    override fun getItemCount(): Int = mTransactionList.size
 }

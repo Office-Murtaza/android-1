@@ -1,19 +1,23 @@
 package com.app.belcobtm.ui.main.main_activity
 
+import android.preference.PreferenceManager
 import com.app.belcobtm.App
+import com.app.belcobtm.data.shared.preferences.SharedPreferencesHelper
 import com.app.belcobtm.mvp.BaseMvpPresenterImpl
-import com.app.belcobtm.presentation.core.pref
 
 
 class MainPresenter : BaseMvpPresenterImpl<MainContract.View>(),
     MainContract.Presenter {
+    //TODO need migrate to dependency koin after refactoring
+    private val prefsHelper: SharedPreferencesHelper by lazy {
+        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(App.appContext())
+        SharedPreferencesHelper(sharedPreferences)
+    }
 
     override fun checkPinEntered() {
-        val pin = App.appContext().pref.getPin()
-        val token = App.appContext().pref.getSessionApiToken()
         when {
-            token == null -> mView?.onTokenNotSaved()
-            pin != null -> mView?.onPinSaved()
+            prefsHelper.accessToken.isEmpty() -> mView?.onTokenNotSaved()
+            prefsHelper.userPin.isNotBlank() -> mView?.onPinSaved()
             else -> mView?.onPinNotSaved()
         }
     }

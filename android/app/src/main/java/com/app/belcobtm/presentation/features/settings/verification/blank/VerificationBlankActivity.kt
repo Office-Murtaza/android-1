@@ -1,15 +1,12 @@
 package com.app.belcobtm.presentation.features.settings.verification.blank
 
 import android.Manifest
-import android.annotation.SuppressLint
 import android.net.Uri
 import android.os.Bundle
 import android.view.MenuItem
 import android.widget.ImageView
-import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
-import androidx.core.view.isNotEmpty
 import androidx.lifecycle.Observer
 import com.app.belcobtm.R
 import com.app.belcobtm.domain.Failure
@@ -22,7 +19,6 @@ import com.kroegerama.imgpicker.ButtonType
 import kotlinx.android.synthetic.main.activity_verification_blank.*
 import kotlinx.android.synthetic.main.view_toolbar.toolbarView
 import org.koin.android.viewmodel.ext.android.viewModel
-import org.koin.core.parameter.parametersOf
 import permissions.dispatcher.*
 
 @RuntimePermissions
@@ -111,8 +107,8 @@ class VerificationBlankActivity : BaseActivity(), BottomSheetImagePicker.OnImage
                 .setTitle(R.string.verification_alert_country_title)
                 .setItems(countryList.map { it.name }.toTypedArray()) { dialog, which ->
                     countryView.setText(countryList[which].name)
-                    provinceView.clear()
-                    cityView.clear()
+                    provinceView.clearText()
+                    cityView.clearText()
                 }
                 .create().show()
         }
@@ -126,7 +122,7 @@ class VerificationBlankActivity : BaseActivity(), BottomSheetImagePicker.OnImage
                     .setTitle(R.string.verification_alert_state_title)
                     .setItems(stateList.map { it.name }.toTypedArray()) { _, which ->
                         provinceView.setText(stateList[which].name)
-                        cityView.clear()
+                        cityView.clearText()
                     }
                     .create()
                     .show()

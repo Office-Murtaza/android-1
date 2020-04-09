@@ -1,6 +1,7 @@
 package com.app.belcobtm.ui.main.coins.send_gift
 
 import android.content.Context
+import android.preference.PreferenceManager
 import com.app.belcobtm.App
 import com.app.belcobtm.R
 import com.app.belcobtm.api.data_manager.WithdrawDataManager
@@ -8,11 +9,11 @@ import com.app.belcobtm.api.model.ServerException
 import com.app.belcobtm.api.model.param.SendTransactionParam
 import com.app.belcobtm.api.model.param.trx.Trx
 import com.app.belcobtm.api.model.response.CoinModel
+import com.app.belcobtm.data.shared.preferences.SharedPreferencesHelper
 import com.app.belcobtm.db.DbCryptoCoin
 import com.app.belcobtm.db.DbCryptoCoinModel
 import com.app.belcobtm.mvp.BaseMvpDIPresenterImpl
 import com.app.belcobtm.presentation.core.Const
-import com.app.belcobtm.presentation.core.pref
 import com.giphy.sdk.core.models.Media
 import com.google.gson.Gson
 import io.realm.Realm
@@ -39,6 +40,12 @@ class SendGiftPresenter : BaseMvpDIPresenterImpl<SendGiftContract.View, Withdraw
             _gifMedia = value
         }
 
+    //TODO need migrate to dependency koin after refactoring
+    private val prefsHelper: SharedPreferencesHelper by lazy {
+        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(App.appContext())
+        SharedPreferencesHelper(sharedPreferences)
+    }
+
     private var _phone: String? = null
     private var _gifMedia: Media? = null
 
@@ -48,7 +55,7 @@ class SendGiftPresenter : BaseMvpDIPresenterImpl<SendGiftContract.View, Withdraw
 
     private val realm = Realm.getDefaultInstance()
     private val coinModel = DbCryptoCoinModel()
-    val mUserId = App.appContext().pref.getUserId().toString()
+    val mUserId = prefsHelper.userId.toString()
 
     private var mTransactionHash: String? = null
     private var mTransactionHashJson: String? = null
@@ -61,8 +68,7 @@ class SendGiftPresenter : BaseMvpDIPresenterImpl<SendGiftContract.View, Withdraw
         coinAmount: Double,
         message: String?
     ) {
-        val seed = App.appContext().pref.getSeed()
-        val hdWallet = HDWallet(seed, "")
+        val hdWallet = HDWallet(prefsHelper.apiSeed, "")
 
         mCoinDbModel = coinModel.getCryptoCoin(realm, coin.coinId)
 
