@@ -9,7 +9,7 @@ enum SelectedPeriod {
 }
 
 enum CoinDetailsAction: Equatable {
-  case setupCoinBalance(CoinBalance)
+  case setupCoinBalances([CoinBalance])
   case setupCoinSettings(CoinSettings)
   case setupPriceChartData(PriceChartData)
   case updateSelectedPeriod(SelectedPeriod)
@@ -23,7 +23,7 @@ enum CoinDetailsAction: Equatable {
 
 struct CoinDetailsState: Equatable {
   
-  var coinBalance: CoinBalance?
+  var coinBalances: [CoinBalance]?
   var coinSettings: CoinSettings?
   var priceChartData: PriceChartData?
   var selectedPeriod: SelectedPeriod = .oneDay
@@ -41,6 +41,10 @@ struct CoinDetailsState: Equatable {
     return transactions.transactions.count >= transactions.total 
   }
   
+  var coinBalance: CoinBalance? {
+    return coinBalances?.first { $0.type == coin?.type }
+  }
+  
 }
 
 final class CoinDetailsStore: ViewStore<CoinDetailsAction, CoinDetailsState> {
@@ -53,7 +57,7 @@ final class CoinDetailsStore: ViewStore<CoinDetailsAction, CoinDetailsState> {
     var state = state
     
     switch action {
-    case let .setupCoinBalance(coinBalance): state.coinBalance = coinBalance
+    case let .setupCoinBalances(coinBalances): state.coinBalances = coinBalances
     case let .setupCoinSettings(coinSettings): state.coinSettings = coinSettings
     case let .setupPriceChartData(data): state.priceChartData = data
     case let .updateSelectedPeriod(selectedPeriod): state.selectedPeriod = selectedPeriod

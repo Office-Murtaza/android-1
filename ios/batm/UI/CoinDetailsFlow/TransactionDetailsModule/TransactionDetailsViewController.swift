@@ -5,6 +5,8 @@ import SnapKit
 
 final class TransactionDetailsViewController: NavigationScreenViewController<TransactionDetailsPresenter> {
   
+  let didTapRefTxIdRelay = PublishRelay<Void>()
+  
   let stackView: UIStackView = {
     let stackView = UIStackView()
     stackView.axis = .vertical
@@ -42,6 +44,20 @@ final class TransactionDetailsViewController: NavigationScreenViewController<Tra
       stackView.addArrangedSubview(giftSectionView)
     }
     
+    if presenter.details.hasExchangeInfo {
+      let divider = Divider()
+      stackView.addArrangedSubview(divider)
+      
+      let exchangeSectionView = TransactionDetailsExchangeSectionView()
+      exchangeSectionView.configure(for: presenter.details)
+      stackView.addArrangedSubview(exchangeSectionView)
+      
+      exchangeSectionView.rx.linkTap
+        .asObservable()
+        .bind(to: didTapRefTxIdRelay)
+        .disposed(by: disposeBag)
+    }
+    
     if presenter.details.hasSellInfo {
       let divider = Divider()
       stackView.addArrangedSubview(divider)
@@ -56,10 +72,12 @@ final class TransactionDetailsViewController: NavigationScreenViewController<Tra
     setupUIBindings()
     
     let backDriver = customView.backButton.rx.tap.asDriver()
-    let openLinkDriver = generalSectionView.rx.linkTap
+    let openTxIdLinkDriver = generalSectionView.rx.linkTap
+    let openRefTxIdLinkDriver = didTapRefTxIdRelay.asDriver(onErrorDriveWith: .empty())
     
     presenter.bind(input: TransactionDetailsPresenter.Input(back: backDriver,
-                                                            openLink: openLinkDriver))
+                                                            openTxIdLink: openTxIdLinkDriver,
+                                                            openRefTxIdLink: openRefTxIdLinkDriver))
   }
   
   

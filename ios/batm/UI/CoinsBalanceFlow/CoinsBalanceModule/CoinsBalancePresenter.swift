@@ -56,9 +56,12 @@ class CoinsBalancePresenter: ModulePresenter, CoinsBalanceModule {
       }
       .flatMap { [unowned self] coinBalance, coinSettings in
         return self.track(self.usecase.getPriceChartData(for: coinBalance.type))
-          .map { (coinBalance, coinSettings, $0) }
+          .map { (coinSettings, $0) }
       }
-      .subscribe(onNext: { [delegate] in delegate?.showCoinDetails(coinBalance: $0, coinSettings: $1, data: $2) })
+      .withLatestFrom(state) { ($1, $0.0, $0.1) }
+      .subscribe(onNext: { [delegate] in delegate?.showCoinDetails(coinBalances: $0.coinsBalance!.coins,
+                                                                   coinSettings: $1,
+                                                                   data: $2) })
       .disposed(by: disposeBag)
     
     setupBindings()

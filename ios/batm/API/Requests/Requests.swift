@@ -311,6 +311,7 @@ struct SubmitTransactionRequest: AuthorizedAPIRequest {
   let phone: String?
   let message: String?
   let imageId: String?
+  let toCoinId: String?
   let txhex: String?
   
   var path: String { return "/user/\(userId)/coins/\(coinId)/transactions/submit" }
@@ -321,6 +322,7 @@ struct SubmitTransactionRequest: AuthorizedAPIRequest {
                                            "phone": phone as Any,
                                            "message": message as Any,
                                            "imageId": imageId as Any,
+                                           "refCoin": toCoinId as Any,
                                            "hex": txhex as Any],
                               encoding: JSONEncoding.default)
   }

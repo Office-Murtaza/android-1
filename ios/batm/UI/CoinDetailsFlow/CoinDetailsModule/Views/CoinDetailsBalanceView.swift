@@ -6,31 +6,11 @@ final class CoinDetailsBalanceView: UIView {
     let label = UILabel()
     label.text = localize(L.CoinDetails.balance)
     label.textColor = .slateGrey
-    label.font = .poppinsSemibold15
-    label.adjustsFontSizeToFitWidth = true
-    label.minimumScaleFactor = 0.5
+    label.font = UIFont.systemFont(ofSize: 16, weight: .medium)
     return label
   }()
   
-  let balanceCoinLabel: UILabel = {
-    let label = UILabel()
-    label.textColor = .warmGrey
-    label.font = .poppinsSemibold15
-    label.adjustsFontSizeToFitWidth = true
-    label.minimumScaleFactor = 0.5
-    return label
-  }()
-  
-  let exchangeImageView = UIImageView(image: UIImage(named: "exchange"))
-  
-  let balanceCurrencyLabel: UILabel = {
-    let label = UILabel()
-    label.textColor = .ceruleanBlue
-    label.font = .poppinsSemibold15
-    label.adjustsFontSizeToFitWidth = true
-    label.minimumScaleFactor = 0.5
-    return label
-  }()
+  let balanceValueView = CoinDetailsBalanceValueView()
   
   override init(frame: CGRect) {
     super.init(frame: frame)
@@ -43,54 +23,24 @@ final class CoinDetailsBalanceView: UIView {
     fatalError("init(coder:) has not been implemented")
   }
   
-  override func layoutSubviews() {
-    super.layoutSubviews()
-    
-    if !balanceLabel.adjustsFontSizeToFitWidth { return }
-    
-    let labels = [balanceLabel, balanceCoinLabel, balanceCurrencyLabel]
-    let fontSizes = labels.map { $0.actualFontSize }
-    let minimumFontSize = fontSizes.min()!
-    let maximumFontSize = fontSizes.max()!
-    
-    if minimumFontSize < maximumFontSize {
-      labels.forEach {
-        $0.font = $0.font.withSize(12)
-        $0.adjustsFontSizeToFitWidth = false
-      }
-    }
-  }
-  
   private func setupUI() {
     translatesAutoresizingMaskIntoConstraints = false
     
-    addSubviews(balanceLabel,
-                balanceCoinLabel,
-                exchangeImageView,
-                balanceCurrencyLabel)
+    addSubviews(balanceLabel, balanceValueView)
   }
   
   private func setupLayout() {
     balanceLabel.snp.makeConstraints {
-      $0.left.centerY.equalToSuperview()
+      $0.top.left.bottom.equalToSuperview()
     }
-    balanceCoinLabel.snp.makeConstraints {
+    balanceLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
+    balanceValueView.snp.makeConstraints {
       $0.left.equalTo(balanceLabel.snp.right).offset(10)
-      $0.centerY.equalToSuperview()
-    }
-    exchangeImageView.snp.makeConstraints {
-      $0.left.equalTo(balanceCoinLabel.snp.right).offset(10)
-      $0.top.bottom.equalToSuperview()
-    }
-    balanceCurrencyLabel.snp.makeConstraints {
-      $0.left.equalTo(exchangeImageView.snp.right).offset(10)
-      $0.centerY.right.equalToSuperview()
-      $0.height.equalTo(balanceCoinLabel)
+      $0.top.right.bottom.equalToSuperview()
     }
   }
   
   func configure(for coinBalance: CoinBalance) {
-    balanceCoinLabel.text = "\(coinBalance.balance.coinFormatted) \(coinBalance.type.code)"
-    balanceCurrencyLabel.text = "\((coinBalance.balance * coinBalance.price).fiatFormatted) USD"
+    balanceValueView.configure(for: coinBalance)
   }
 }

@@ -18,6 +18,7 @@ extension CoinDetailsFlow {
                     CoinSellModuleDelegate.self,
                     CoinSellDetailsAnotherAddressModuleDelegate.self,
                     CoinSellDetailsCurrentAddressModuleDelegate.self,
+                    CoinExchangeModuleDelegate.self,
                     TransactionDetailsModuleDelegate.self)
     }
   }

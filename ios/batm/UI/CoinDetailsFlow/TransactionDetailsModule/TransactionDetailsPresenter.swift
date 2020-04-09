@@ -7,7 +7,8 @@ final class TransactionDetailsPresenter: ModulePresenter, TransactionDetailsModu
 
   struct Input {
     var back: Driver<Void>
-    var openLink: Driver<Void>
+    var openTxIdLink: Driver<Void>
+    var openRefTxIdLink: Driver<Void>
   }
 
   weak var delegate: TransactionDetailsModuleDelegate?
@@ -25,8 +26,16 @@ final class TransactionDetailsPresenter: ModulePresenter, TransactionDetailsModu
       .drive(onNext: { [delegate] in delegate?.didFinishTransactionDetails() })
       .disposed(by: disposeBag)
     
-    input.openLink
+    input.openTxIdLink
       .map { [unowned self] in self.details.link }
+      .filterNil()
+      .map { URL(string: $0) }
+      .filterNil()
+      .drive(onNext: { UIApplication.shared.open($0) })
+      .disposed(by: disposeBag)
+    
+    input.openRefTxIdLink
+      .map { [unowned self] in self.details.refLink }
       .filterNil()
       .map { URL(string: $0) }
       .filterNil()

@@ -135,14 +135,17 @@
 "unlink.warning" = "Please, make sure you have been stored your credentials and seed phrase before unlinking the wallet.";
 "unlink.button.title" = "Unlink";
 
-"coin_details.price" = "Price:";
-"coin_details.balance" = "Balance:";
+"coin_details.price" = "Price";
+"coin_details.balance" = "Balance";
 "coin_details.deposit" = "Deposit";
 "coin_details.withdraw" = "Withdraw";
 "coin_details.send_gift" = "Send Gift";
+"coin_details.c2c_exchange" = "C2C Exchange";
 "coin_details.receive_gift" = "Receive Gift";
 "coin_details.buy" = "Buy";
 "coin_details.sell" = "Sell";
+"coin_details.send_c_2_c" = "Send C2C";
+"coin_details.receive_c_2_c" = "Receive C2C";
 "coin_details.pending" = "Pending";
 "coin_details.complete" = "Complete";
 "coin_details.fail" = "Fail";
@@ -160,6 +163,12 @@
 "coin_deposit.title" = "Deposit %@";
 
 "coin_withdraw.title" = "Withdraw %@";
+"coin_withdraw.button.max" = "MAX";
+"coin_withdraw.button.paste" = "PASTE";
+"coin_withdraw.button.next" = "NEXT";
+"coin_withdraw.form.recipient_address.placeholder" = "Recipient Address";
+"coin_withdraw.form.coin_amount.placeholder" = "Amount";
+"coin_withdraw.form.currency_amount.placeholder" = "USD Amount";
 "coin_withdraw.form.address.title" = "Address";
 "coin_withdraw.form.amount.title" = "Amount";
 "coin_withdraw.form.error.invalid_address" = "Invalid address";
@@ -204,3 +213,9 @@
 "transaction_details.phone" = "Phone";
 "transaction_details.image" = "Image";
 "transaction_details.message" = "Message";
+"transaction_details.ref_tx_id" = "Ref TxId";
+"transaction_details.ref_coin" = "Ref Coin";
+"transaction_details.ref_amount" = "Ref Amount";
+
+"coin_exchange.title" = "C2C Exchange %@";
+"coin_exchange.form.amount.placeholder" = "%@ Amount";

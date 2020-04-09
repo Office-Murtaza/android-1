@@ -33,6 +33,10 @@ extension CoinDetailsFlowController: CoinDetailsModuleDelegate {
     step.accept(CoinDetailsFlow.Steps.transactionDetails(details, type))
   }
   
+  func showExchangeScreen(coin: BTMCoin, coinBalances: [CoinBalance], coinSettings: CoinSettings) {
+    step.accept(CoinDetailsFlow.Steps.exchange(coin, coinBalances, coinSettings))
+  }
+  
 }
 
 extension CoinDetailsFlowController: CoinWithdrawModuleDelegate {
@@ -78,6 +82,14 @@ extension CoinDetailsFlowController: CoinSellDetailsAnotherAddressModuleDelegate
 extension CoinDetailsFlowController: CoinSellDetailsCurrentAddressModuleDelegate {
   
   func didFinishCoinSellDetailsCurrentAddress() {
+    step.accept(CoinDetailsFlow.Steps.pop)
+  }
+  
+}
+
+extension CoinDetailsFlowController: CoinExchangeModuleDelegate {
+  
+  func didFinishCoinExchange() {
     step.accept(CoinDetailsFlow.Steps.pop)
   }
   

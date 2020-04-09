@@ -1,4 +1,5 @@
 import ObjectMapper
+import TrustWalletCore
 
 extension TransactionDetails: ImmutableMappable {
   init(map: Map) throws {
@@ -16,12 +17,21 @@ extension TransactionDetails: ImmutableMappable {
     phone = try map.value("phone")
     imageId = try map.value("imageId")
     message = try map.value("message")
+    refTxId = try map.value("refTxId")
+    refLink = try map.value("refLink")
+    refCryptoAmount = try map.value("refCryptoAmount")
     sellInfo = try map.value("sellInfo")
     
     if let cashStatusRawValue: Int = try? map.value("cashStatus") {
       cashStatus = TransactionCashStatus(rawValue: cashStatusRawValue)
     } else {
       cashStatus = nil
+    }
+    
+    if let code: String = try? map.value("refCoin"), let mappedRefCoin = CoinType(code: code) {
+      refCoin = mappedRefCoin
+    } else {
+      refCoin = nil
     }
   }
 }

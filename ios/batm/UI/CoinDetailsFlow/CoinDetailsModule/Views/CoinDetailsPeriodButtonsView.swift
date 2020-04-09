@@ -12,21 +12,21 @@ final class CoinDetailsPeriodButtonsView: UIView {
   }()
   
   var commonAttributes: [NSAttributedString.Key: Any] {
-    return [.font: UIFont.poppinsSemibold12]
+    return [.font: UIFont.systemFont(ofSize: 14, weight: .medium)]
   }
   
   var inactiveAttributes: [NSAttributedString.Key: Any] {
-    return commonAttributes.merging([.foregroundColor: UIColor.warmGrey], uniquingKeysWith: { $1 })
+    return commonAttributes.merging([.foregroundColor: UIColor.slateGrey], uniquingKeysWith: { $1 })
   }
   
   var activeAttributes: [NSAttributedString.Key: Any] {
-    return commonAttributes.merging([.foregroundColor: UIColor.white], uniquingKeysWith: { $1 })
+    return commonAttributes.merging([.foregroundColor: UIColor.ceruleanBlue], uniquingKeysWith: { $1 })
   }
   
   var defaultButton: UIButton {
     let button = UIButton()
     button.backgroundColor = .whiteTwo
-    button.layer.cornerRadius = 8
+    button.layer.cornerRadius = 15
     return button
   }
   
@@ -98,8 +98,8 @@ final class CoinDetailsPeriodButtonsView: UIView {
     
     buttons.forEach {
       $0.snp.makeConstraints {
-        $0.height.equalTo(26)
-        $0.width.equalTo(38)
+        $0.height.equalTo(30)
+        $0.width.equalTo(45)
       }
     }
   }
@@ -120,7 +120,7 @@ final class CoinDetailsPeriodButtonsView: UIView {
       let newAttributedTitle: NSAttributedString
       
       if $0 === selectedButton {
-        $0.backgroundColor = .ceruleanBlue
+        $0.backgroundColor = UIColor.ceruleanBlue.withAlphaComponent(0.1)
         newAttributedTitle = NSAttributedString(string: text, attributes: activeAttributes)
       } else {
         $0.backgroundColor = .whiteTwo

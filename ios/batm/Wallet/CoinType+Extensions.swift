@@ -31,6 +31,19 @@ extension CoinType {
     }
   }
   
+  var smallLogo: UIImage? {
+    switch self {
+    case .bitcoin: return UIImage(named: "coins_bitcoin_small")
+    case .ethereum: return UIImage(named: "coins_ethereum_small")
+    case .bitcoinCash: return UIImage(named: "coins_bitcoin_cash_small")
+    case .litecoin: return UIImage(named: "coins_litecoin_small")
+    case .binance: return UIImage(named: "coins_binance_small")
+    case .tron: return UIImage(named: "coins_tron_small")
+    case .xrp: return UIImage(named: "coins_ripple_small")
+    default: return nil
+    }
+  }
+  
   var code: String {
     switch self {
     case .bitcoin: return "BTC"
