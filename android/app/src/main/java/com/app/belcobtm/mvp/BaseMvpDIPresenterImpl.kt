@@ -472,7 +472,7 @@ abstract class BaseMvpDIPresenterImpl<V : BaseMvpView, T : BaseDataManager> : Ba
 
     open fun getByteFee(coinName: String?): Long {
         val coinTypeUnit: Long = CoinTypeExtension.getTypeByCode(coinName ?: "")?.unit() ?: 0
-        val txFee = prefsHelper.coinsFee[coinName]?.txFee ?: Double.MIN_VALUE
-        return (txFee * coinTypeUnit).toLong()
+        val byteFee = prefsHelper.coinsFee[coinName]?.byteFee ?: Double.MIN_VALUE
+        return (byteFee * coinTypeUnit).toLong()
     }
 }
