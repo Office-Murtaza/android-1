@@ -32,6 +32,8 @@ final class CoinExchangeViewController: NavigationScreenViewController<CoinExcha
     return view
   }()
   
+  private var handler: KeyboardHandler!
+  
   override var preferredStatusBarStyle: UIStatusBarStyle {
     return .lightContent
   }
@@ -41,10 +43,18 @@ final class CoinExchangeViewController: NavigationScreenViewController<CoinExcha
                      codeView)
     
     customView.rootScrollView.canCancelContentTouches = false
+    customView.rootScrollView.contentInsetAdjustmentBehavior = .never
     customView.contentView.addSubviews(errorView,
                                        headerView,
                                        formView,
                                        nextButton)
+    
+    setupKeyboardHandling()
+  }
+  
+  private func setupKeyboardHandling() {
+    handler = KeyboardHandler(with: view)
+    setupDefaultKeyboardHandling(with: handler)
   }
 
   override func setupLayout() {
