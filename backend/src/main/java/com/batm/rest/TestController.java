@@ -24,6 +24,9 @@ public class TestController {
     @Autowired
     private SolrService solrService;
 
+    @Autowired
+    private BinanceService binance;
+
     @GetMapping("/sms")
     public Response sendSMS(@RequestParam String phone) {
         return Response.ok(messageService.sendMessage(phone, "Hey there, do you want to buy an elephant?"));
@@ -84,6 +87,18 @@ public class TestController {
         json.put("path", path);
 
         return json;
+    }
+
+    @GetMapping("/coins/price-chart")
+    public Response submitPriceChart() {
+        try {
+            binance.persistPrice();
+
+            return Response.ok(true);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Response.serverError();
+        }
     }
 
     @DeleteMapping("/coins/price-chart")

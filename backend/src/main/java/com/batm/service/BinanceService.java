@@ -64,7 +64,7 @@ public class BinanceService {
     private String explorerUrl;
 
     @Scheduled(cron = "0 0 */1 * * *") // every 1 hour
-    public void processCronTasks() {
+    public void persistPrice() {
         Arrays.stream(CoinService.CoinEnum.values()).forEach(coinEnum -> {
             BigDecimal currentPrice = coinEnum.getPrice();
 
