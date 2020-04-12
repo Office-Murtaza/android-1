@@ -282,7 +282,7 @@ class DetailsActivity : BaseMvpActivity<DetailsContract.View, DetailsContract.Pr
         refAmountContainerView.hide()
     } else {
         refAmountContainerView.show()
-        refAmountView.text = refAmountView.toString()
+        refAmountView.text = refAmount
     }
 
     private fun showDividers() {

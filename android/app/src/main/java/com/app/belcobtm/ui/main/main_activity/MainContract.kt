@@ -13,6 +13,6 @@ object MainContract {
         fun onPinSaved()
         fun onPinNotSaved()
         fun onTokenNotSaved()
-
+        fun onSeedNotSaved()
     }
 }
