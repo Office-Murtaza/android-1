@@ -273,6 +273,10 @@
     <string name="exchange_coin_to_coin_screen_crypto_amount">%1$s Amount</string>
     <string name="exchange_coin_to_coin_screen_select_coin">Select coin please</string>
 
+    <!-- Deposit -->
+    <string name="deposit_screen_title">Deposit %1$s</string>
+    <string name="deposit_screen_wallet_code_clipboard">Wallet code copied to clipboard</string>
+
 
 
     <string name="unit_usd">Usd</string>

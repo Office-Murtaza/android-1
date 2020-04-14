@@ -5,18 +5,14 @@ import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.view.MenuItem
-import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.widget.AppCompatImageView
-import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.app.belcobtm.R
 import com.app.belcobtm.api.model.response.CoinModel
 import com.app.belcobtm.mvp.BaseMvpActivity
-import com.app.belcobtm.presentation.core.QRUtils.Companion.getSpacelessQR
 import com.app.belcobtm.presentation.core.extensions.setDrawableStart
-import com.app.belcobtm.presentation.core.helper.AlertHelper
 import com.app.belcobtm.presentation.features.wallet.IntentCoinItem
+import com.app.belcobtm.presentation.features.wallet.deposit.DepositActivity
 import com.app.belcobtm.presentation.features.wallet.exchange.coin.to.coin.ExchangeCoinToCoinActivity
 import com.app.belcobtm.ui.main.coins.sell.SellActivity
 import com.app.belcobtm.ui.main.coins.send_gift.SendGiftActivity
@@ -24,7 +20,6 @@ import com.app.belcobtm.ui.main.coins.withdraw.WithdrawActivity
 import com.github.mikephil.charting.data.BarEntry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
-import kotlinx.android.synthetic.main.activity_show_phone.container
 import kotlinx.android.synthetic.main.activity_transactions.*
 import org.parceler.Parcels
 
@@ -200,7 +195,8 @@ class TransactionsActivity : BaseMvpActivity<TransactionsContract.View, Transact
                     mCoin.price.uSD,
                     mCoin.balance * mCoin.price.uSD,
                     mCoin.balance,
-                    mCoin.coinId
+                    mCoin.coinId,
+                    mCoin.publicKey
                 )
 
                 val intent = Intent(this, ExchangeCoinToCoinActivity::class.java)
@@ -215,8 +211,16 @@ class TransactionsActivity : BaseMvpActivity<TransactionsContract.View, Transact
             fabMenuView.close(false)
         }
 
-        fabMenuView.setOnMenuToggleListener { fabMenuView.isClickable = it }
-        fabMenuView.setOnClickListener { fabMenuView.close(true) }
+        fabMenuView.setOnMenuToggleListener {
+            fabMenuView.isClickable = it
+            if (it) {
+                fabMenuView.setOnClickListener { fabMenuView.close(true) }
+            } else {
+                fabMenuView.setOnClickListener(null)
+                fabMenuView.isClickable = false
+                fabMenuView.isFocusable = false
+            }
+        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -228,29 +232,11 @@ class TransactionsActivity : BaseMvpActivity<TransactionsContract.View, Transact
     }
 
     private fun showDepositDialog() {
-
-        val dialog = AlertDialog.Builder(this)
-            .setTitle(getString(R.string.deposit) + " " + mCoin.coinId)
-            .setView(R.layout.dialog_deposit)
-            .setPositiveButton(R.string.copy) { dialog, _ ->
-                copyToClipboard(getString(R.string.wallet_code_clipboard), mCoin.publicKey)
-                dialog.cancel()
-                AlertHelper.showToastLong(container.context, R.string.wallet_code_clipboard)
-            }
-            .create()
-        dialog.show()
-
-        dialog.findViewById<AppCompatTextView>(R.id.wallet_code)?.text = mCoin.publicKey
-
-        /*val walletQrCode =
-            BarcodeEncoder().encodeBitmap(mCoin.publicKey,
-                BarcodeFormat.QR_CODE, 200, 200)
-
-        dialog.findViewById<AppCompatImageView>(R.id.wallet_qr_code)?.setImageBitmap(walletQrCode)*/
-
-        dialog.findViewById<AppCompatImageView>(R.id.wallet_qr_code)
-            ?.setImageBitmap(getSpacelessQR(mCoin.publicKey, 200, 200))
-
+        intentCoinItemList.find { it.coinCode == mCoin.coinId }?.let {
+            val intent = Intent(this, DepositActivity::class.java)
+            intent.putExtra(DepositActivity.TAG_COIN_ITEM, it)
+            startActivity(intent)
+        }
     }
 
     override fun notifyTransactions() {
@@ -268,10 +254,7 @@ class TransactionsActivity : BaseMvpActivity<TransactionsContract.View, Transact
         }
     }
 
-    fun dpToPx(dp: Float): Float {
-        val density: Float = resources.displayMetrics.density
-        return dp.toFloat() * density
-    }
+    private fun dpToPx(dp: Float): Float = dp * resources.displayMetrics.density
 
     companion object {
         private const val KEY_COIN = "KEY_COIN"
@@ -283,7 +266,13 @@ class TransactionsActivity : BaseMvpActivity<TransactionsContract.View, Transact
             val intent = Intent(context, TransactionsActivity::class.java)
             val coinArrayList = arrayListOf<IntentCoinItem>()
             coinArrayList.addAll(coinList.map {
-                IntentCoinItem(it.price.uSD, it.balance * it.price.uSD, it.balance, it.coinId)
+                IntentCoinItem(
+                    it.price.uSD,
+                    it.balance * it.price.uSD,
+                    it.balance,
+                    it.coinId,
+                    it.publicKey
+                )
             })
             intent.putExtra(KEY_COIN, Parcels.wrap(coin))
             intent.putParcelableArrayListExtra(KEY_COIN_ARRAY, coinArrayList)
