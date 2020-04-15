@@ -89,28 +89,18 @@ public class TestController {
         return json;
     }
 
-    @GetMapping("/coins/price-chart")
-    public Response submitPriceChart() {
-        try {
-            binance.persistPrice();
+    @GetMapping("/coins/price-chart/store")
+    public Response storePricesToSolr() {
+        binance.storePricesToSolr();
 
-            return Response.ok(true);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return Response.serverError();
-        }
+        return Response.ok(true);
     }
 
-    @DeleteMapping("/coins/price-chart")
-    public Response getPriceChart() {
-        try {
-            solrService.cleanAllCoinPrice();
+    @GetMapping("/coins/price-chart/delete")
+    public Response deletePricesToSolr() {
+        solrService.deleteAllPrices();
 
-            return Response.ok(true);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return Response.serverError();
-        }
+        return Response.ok(true);
     }
 
     @DeleteMapping("/user/{userId}/kyc")

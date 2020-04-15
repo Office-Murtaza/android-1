@@ -138,16 +138,17 @@ public class UserController {
     }
 
     @PostMapping("/refresh")
-    public Response refresh(@Valid @RequestBody RefreshDTO refreshDTO) {
+    public Response refresh(@RequestBody RefreshDTO refreshDTO) {
+        Long userId = null;
+
         try {
             Token refreshToken = refreshTokenRep.findByRefreshToken(refreshDTO.getRefreshToken());
 
             if (refreshToken != null) {
-                User user = userService.findById(refreshToken.getUser().getId());
+                TokenDTO jwt = getJwt(refreshToken.getUser());
 
-                TokenDTO jwt = getJwt(user);
-
-                Token token = refreshTokenRep.findByUserId(user.getId());
+                userId = refreshToken.getUser().getId();
+                Token token = refreshTokenRep.findByUserId(refreshToken.getUser().getId());
                 token.setRefreshToken(jwt.getRefreshToken());
                 token.setAccessToken(jwt.getAccessToken());
                 refreshTokenRep.save(token);
@@ -159,6 +160,7 @@ public class UserController {
             return Response.serverError();
         }
 
+        System.out.println("---------/refresh \n userId:" + userId + " \n refreshToken:" + refreshDTO.getRefreshToken() + "\n");
         throw new AccessDeniedException("Refresh token not exist");
     }
 
@@ -382,6 +384,6 @@ public class UserController {
             BindException ex) {
         FieldError fieldError = (FieldError) ex.getBindingResult().getAllErrors().get(0); // just get first error from List
         String errorMessage = fieldError.getDefaultMessage();
-        return Response.error(new Error(2,  errorMessage));
+        return Response.error(new Error(2, errorMessage));
     }
 }

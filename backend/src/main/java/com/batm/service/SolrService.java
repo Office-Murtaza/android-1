@@ -14,7 +14,6 @@ import org.springframework.data.solr.core.query.SimpleFilterQuery;
 import org.springframework.data.solr.core.query.SimpleQuery;
 import org.springframework.data.solr.core.query.SimpleStringCriteria;
 import org.springframework.stereotype.Service;
-
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
@@ -27,13 +26,15 @@ import java.util.stream.Collectors;
 
 @Service
 public class SolrService {
+
+    private static final int DAYS_IN_WEEK = 7;
+    private static final int DAYS_IN_YEAR = 365;
+
     @Autowired
     private SolrOperations solrTemplate;
 
     @Autowired
     private CoinPriceRepository coinPriceRepository;
-    public static final int DAYS_IN_WEEK = 7;
-    public static final int DAYS_IN_YEAR = 365;
 
     @Cacheable(cacheNames = {"priceChart"}, key = "coinCode")
     public Page<CoinPrice> fetchCoinPricesForLastYear(CoinService.CoinEnum coinCode) {
@@ -167,7 +168,7 @@ public class SolrService {
         }
     }
 
-    public void cleanAllCoinPrice() {
+    public void deleteAllPrices() {
         coinPriceRepository.deleteAll();
     }
 }

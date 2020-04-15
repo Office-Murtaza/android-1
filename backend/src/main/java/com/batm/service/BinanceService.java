@@ -64,17 +64,21 @@ public class BinanceService {
     private String explorerUrl;
 
     @Scheduled(cron = "0 0 */1 * * *") // every 1 hour
-    public void persistPrice() {
+    public void storePricesToSolr() {
+        List<CoinPrice> coinPrices = new ArrayList<>();
+
         Arrays.stream(CoinService.CoinEnum.values()).forEach(coinEnum -> {
             BigDecimal currentPrice = coinEnum.getPrice();
 
-            //save price to Solr
             CoinPrice coinPrice = new CoinPrice();
             coinPrice.setCoinCode(coinEnum.name());
             coinPrice.setPrice(currentPrice.toPlainString());
-            coinPrice.setDate(new Date()); // TODO try default solr date value
-            coinPriceRepository.save(coinPrice);
+            coinPrice.setDate(new Date());
+
+            coinPrices.add(coinPrice);
         });
+
+        coinPriceRepository.saveAll(coinPrices);
     }
 
     @Cacheable(cacheNames = {"price"}, key = "symbol")
