@@ -8,6 +8,7 @@ import com.app.belcobtm.R
 import com.app.belcobtm.mvp.BaseMvpActivity
 import com.app.belcobtm.presentation.features.authorization.pin.PinActivity
 import com.app.belcobtm.presentation.features.authorization.welcome.WelcomeActivity
+import com.app.belcobtm.ui.auth.recover_seed.RecoverSeedActivity
 import com.app.belcobtm.ui.main.atm.AtmFragment
 import com.app.belcobtm.ui.main.coins.balance.BalanceFragment
 import com.app.belcobtm.ui.main.settings.SettingsFragment
@@ -70,5 +71,9 @@ class MainActivity : BaseMvpActivity<MainContract.View, MainContract.Presenter>(
         val mode = PinActivity.Companion.Mode.MODE_CREATE_PIN
         val intent = PinActivity.getIntent(this, mode)
         startActivityForResult(intent, mode.ordinal)
+    }
+
+    override fun onSeedNotSaved() {
+        startActivity(Intent(this, RecoverSeedActivity::class.java))
     }
 }
