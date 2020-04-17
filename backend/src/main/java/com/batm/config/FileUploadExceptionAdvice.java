@@ -12,14 +12,15 @@ import org.springframework.web.multipart.MaxUploadSizeExceededException;
 
 @ControllerAdvice
 public class FileUploadExceptionAdvice {
+
     @Value("${spring.servlet.multipart.max-file-size}")
     private String maxUploadSize;
 
     @ExceptionHandler(MaxUploadSizeExceededException.class)
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public Response handleMaxSizeException(MaxUploadSizeExceededException exc) {
-        exc.printStackTrace();
+    public Response handleMaxSizeException(MaxUploadSizeExceededException e) {
+        e.printStackTrace();
         return Response.error(new Error(2, "File should be up to " + maxUploadSize));
     }
 }

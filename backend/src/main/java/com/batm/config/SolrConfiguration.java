@@ -8,9 +8,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.solr.core.SolrOperations;
 import org.springframework.data.solr.core.SolrTemplate;
 import org.springframework.data.solr.repository.config.EnableSolrRepositories;
-import org.springframework.data.solr.server.SolrClientFactory;
-import org.springframework.data.solr.server.support.HttpSolrClientFactory;
-import org.springframework.data.solr.server.support.HttpSolrClientFactoryBean;
 
 @Configuration
 @EnableSolrRepositories(basePackages = {"com.batm.repository.solr"})
