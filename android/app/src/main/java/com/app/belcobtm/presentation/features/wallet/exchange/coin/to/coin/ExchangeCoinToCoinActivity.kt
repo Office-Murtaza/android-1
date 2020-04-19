@@ -74,10 +74,12 @@ class ExchangeCoinToCoinActivity : BaseActivity() {
         pickCoinButtonView.editText?.keyListener = null
         pickCoinButtonView.editText?.setOnClickListener {
             val coinList = viewModel.getCoinTypeList()
+            val coinAdapter = CoinDialogAdapter(pickCoinButtonView.context, coinList)
             MaterialAlertDialogBuilder(pickCoinButtonView.context)
                 .setTitle(R.string.exchange_coin_to_coin_screen_select_coin)
-                .setItems(coinList.map { it.verboseValue() }.toTypedArray()) { _, which ->
+                .setAdapter(coinAdapter) { _, which ->
                     pickCoinButtonView.setText(coinList[which].verboseValue())
+                    pickCoinButtonView.setDrawableStartEnd(coinList[which].resIcon(), R.drawable.ic_arrow_drop_down)
                     amountCoinToView.hint = getString(
                         R.string.exchange_coin_to_coin_screen_crypto_amount,
                         coinList[which].code()
@@ -148,11 +150,10 @@ class ExchangeCoinToCoinActivity : BaseActivity() {
             R.string.exchange_coin_to_coin_screen_crypto_amount,
             viewModel.toCoinItem?.coinCode ?: ""
         )
-        pickCoinButtonView.setText(
-            viewModel.getCoinTypeList().find {
-                it.code() == viewModel.toCoinItem?.coinCode
-            }?.verboseValue() ?: ""
-        )
+        viewModel.getCoinTypeList().find { it.code() == viewModel.toCoinItem?.coinCode }?.let {coinType ->
+            pickCoinButtonView.setText(coinType.verboseValue())
+            pickCoinButtonView.setDrawableStartEnd(coinType.resIcon(), R.drawable.ic_arrow_drop_down)
+        }
     }
 
     private val coinFromTextWatcher = object : TextWatcher {

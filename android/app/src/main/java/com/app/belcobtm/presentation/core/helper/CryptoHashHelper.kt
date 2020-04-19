@@ -1,4 +1,4 @@
-package com.app.belcobtm.presentation.features.wallet
+package com.app.belcobtm.presentation.core.helper
 
 import android.preference.PreferenceManager
 import com.app.belcobtm.App

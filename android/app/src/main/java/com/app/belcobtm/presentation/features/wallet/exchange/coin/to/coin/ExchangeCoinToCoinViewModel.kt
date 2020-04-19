@@ -15,7 +15,7 @@ import com.app.belcobtm.domain.wallet.CoinFeeDataItem
 import com.app.belcobtm.domain.wallet.interactor.CoinToCoinExchangeUseCase
 import com.app.belcobtm.presentation.core.extensions.code
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
-import com.app.belcobtm.presentation.features.wallet.CryptoHashHelper
+import com.app.belcobtm.presentation.core.helper.CryptoHashHelper
 import com.app.belcobtm.presentation.features.wallet.IntentCoinItem
 import com.google.gson.Gson
 import io.reactivex.disposables.CompositeDisposable
@@ -42,7 +42,8 @@ class ExchangeCoinToCoinViewModel(
     }
     private val realm = Realm.getDefaultInstance()
     private val compositeDisposable: CompositeDisposable = CompositeDisposable()
-    private val hashHelper: CryptoHashHelper = CryptoHashHelper()
+    private val hashHelper: CryptoHashHelper =
+        CryptoHashHelper()
     private val coinModel = DbCryptoCoinModel()
     private var transactionHash: String = ""
 

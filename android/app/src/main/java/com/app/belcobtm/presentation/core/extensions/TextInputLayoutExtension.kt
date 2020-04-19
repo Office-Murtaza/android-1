@@ -29,3 +29,6 @@ fun TextInputLayout.actionDoneListener(listener: () -> Unit) {
         false
     }
 }
+
+fun TextInputLayout.setDrawableStartEnd(resDrawableStart: Int, resDrawableEnd: Int) =
+    editText?.setCompoundDrawablesRelativeWithIntrinsicBounds(resDrawableStart, 0, resDrawableEnd, 0)
