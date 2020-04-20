@@ -1,6 +1,7 @@
 package com.app.belcobtm.data.di
 
 import android.preference.PreferenceManager
+import com.app.belcobtm.data.TransactionHashHelper
 import com.app.belcobtm.data.core.FileHelper
 import com.app.belcobtm.data.core.NetworkUtils
 import com.app.belcobtm.data.disk.AssetsDataStore
@@ -24,4 +25,5 @@ val dataModule = module {
     single { NetworkUtils(get()) }
     single { FileHelper(get()) }
     single { AssetsDataStore(get()) }
+    single { TransactionHashHelper(get(), get()) }
 }

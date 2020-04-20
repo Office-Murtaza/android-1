@@ -41,15 +41,13 @@ class CryptoHashHelper {
                 toAddress,
                 coinAmount,
                 mCoinDbModel,
-                mUserId,
-                coinType
+                mUserId
             )
             CoinType.BINANCE -> getBNBTransactionHashObs(
                 toAddress,
                 coinAmount,
                 mUserId,
-                mCoinDbModel,
-                coinType
+                mCoinDbModel
             )
             CoinType.BITCOIN,
             CoinType.BITCOINCASH,
@@ -65,8 +63,7 @@ class CryptoHashHelper {
                 toAddress,
                 coinAmount,
                 mUserId,
-                mCoinDbModel,
-                coinType
+                mCoinDbModel
             )
             CoinType.ETHEREUM -> getETHTransactionHashObs(
                 toAddress,
@@ -82,8 +79,7 @@ class CryptoHashHelper {
         toAddress: String,
         coinAmount: Double,
         mCoinDbModel: DbCryptoCoin?,
-        mUserId: String,
-        coinType: CoinType
+        mUserId: String
     ): Observable<String> {
         val cryptoToSubCoin = coinAmount * CoinType.XRP.unit()
         val fromAddress = mCoinDbModel?.publicKey ?: ""
@@ -124,22 +120,18 @@ class CryptoHashHelper {
         toAddress: String,
         coinAmount: Double,
         mUserId: String?,
-        mCoinDbModel: DbCryptoCoin?,
-        coinType: CoinType?
-
+        mCoinDbModel: DbCryptoCoin?
     ): Observable<String> = dataManager.getTronBlockHeader(mUserId, mCoinDbModel!!.coinType).map { resp ->
         createTronTransactionHash(
             toAddress,
             mCoinDbModel,
-            coinType,
             resp.value,
             coinAmount
         )
     }
 
     private fun createTronTransactionHash(
-        toAddress: String, mCoinDbModel: DbCryptoCoin?,
-        coinType: CoinType?, resp: TronBlockResponse?, coinAmount: Double
+        toAddress: String, mCoinDbModel: DbCryptoCoin?, resp: TronBlockResponse?, coinAmount: Double
     ): String? {
         val cryptoToSubcoin = coinAmount * CoinType.TRON.unit()
         val fromAddress = mCoinDbModel?.publicKey
@@ -220,7 +212,7 @@ class CryptoHashHelper {
         resp: ETHResponse?,
         coinAmount: Double
     ): String? {
-        val cryptoToSubcoin = BigDecimal(coinAmount * wallet.core.jni.CoinType.ETHEREUM.unit())
+        val cryptoToSubcoin = BigDecimal(coinAmount * CoinType.ETHEREUM.unit())
         val nonsStr: String = resp?.nonce?.toString(16) ?: ""
         val nonceHex = ByteString.copyFrom("0x${addLeadingZeroes(nonsStr)}".toHexByteArray())
         val amountHex =
@@ -253,8 +245,7 @@ class CryptoHashHelper {
         toAddress: String,
         coinAmount: Double,
         mUserId: String,
-        mCoinDbModel: DbCryptoCoin?,
-        coinType: CoinType
+        mCoinDbModel: DbCryptoCoin?
     ): Observable<String> {
         val cryptoToSubcoin = coinAmount * CoinType.BINANCE.unit()
         val privateKey = PrivateKey(mCoinDbModel?.privateKey?.toHexByteArray())
@@ -263,8 +254,6 @@ class CryptoHashHelper {
         return dataManager.getBNBBlockHeader(mUserId, mCoinDbModel?.publicKey ?: "").map { resp ->
             createBNBTransactionHash(
                 toAddress,
-                mCoinDbModel,
-                coinType,
                 resp.value,
                 cryptoToSubcoin,
                 privateKey, publicKey
@@ -274,8 +263,6 @@ class CryptoHashHelper {
 
     private fun createBNBTransactionHash(
         toAddress: String,
-        mCoinDbModel: DbCryptoCoin?,
-        coinType: CoinType?,
         resp: BNBBlockResponse?,
         cryptoToSubcoin: Double,
         privateKey: PrivateKey,
@@ -391,12 +378,12 @@ class CryptoHashHelper {
                 .setIndex(index)
                 .setSequence(sequence)
                 .build()
-            val amount = utxo.value.toLong()
+            val utxoAmount = utxo.value.toLong()
             val redeemScript = BitcoinScript.buildForAddress(utxo.address, coinType)
             val scriptByteString = ByteString.copyFrom(redeemScript.data())
             val utxo0 = Bitcoin.UnspentTransaction.newBuilder()
                 .setScript(scriptByteString)
-                .setAmount(amount)
+                .setAmount(utxoAmount)
                 .setOutPoint(outpoint)
                 .build()
 
