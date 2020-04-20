@@ -2,6 +2,7 @@ package com.app.belcobtm.data.rest.wallet
 
 import com.app.belcobtm.data.rest.wallet.request.CoinToCoinExchangeRequest
 import com.app.belcobtm.data.rest.wallet.request.VerifySmsCodeRequest
+import com.app.belcobtm.data.rest.wallet.request.WithdrawRequest
 import com.app.belcobtm.data.rest.wallet.response.hash.BinanceBlockResponse
 import com.app.belcobtm.data.rest.wallet.response.hash.TronRawDataResponse
 import com.app.belcobtm.data.rest.wallet.response.hash.UtxoItemResponse
@@ -13,17 +14,40 @@ class WalletApiService(
     private val api: WalletApi,
     private val prefHelper: SharedPreferencesHelper
 ) {
+
+    suspend fun withdraw(
+        hash: String,
+        coinFrom: String,
+        coinFromAmount: Double
+    ): Either<Failure, Unit> = try {
+        val requestBody = WithdrawRequest(
+            type = TRANSACTION_WITHDRAW,
+            cryptoAmount = coinFromAmount,
+            hex = hash
+        )
+        val request = api.withdrawAsync(
+            prefHelper.userId,
+            coinFrom,
+            requestBody
+        ).await()
+
+        request.body()?.let { Either.Right(Unit) } ?: Either.Left(Failure.ServerError())
+    } catch (failure: Failure) {
+        failure.printStackTrace()
+        Either.Left(failure)
+    }
+
     suspend fun coinToCoinExchange(
         coinFromAmount: Double,
         coinFrom: String,
         coinTo: String,
-        hex: String
+        hash: String
     ): Either<Failure, Unit> = try {
         val requestBody = CoinToCoinExchangeRequest(
             type = TRANSACTION_SEND_COIN_TO_COIN,
             cryptoAmount = coinFromAmount,
             refCoin = coinTo,
-            hex = hex
+            hex = hash
         )
         val request = api.coinToCoinExchangeAsync(
             prefHelper.userId,
@@ -100,6 +124,7 @@ class WalletApiService(
     }
 
     companion object {
+        const val TRANSACTION_WITHDRAW = 2
         const val TRANSACTION_SEND_COIN_TO_COIN = 8
 //    case .unknown: return 0
 //    case .deposit: return 1

@@ -2,6 +2,7 @@ package com.app.belcobtm.data.rest.wallet
 
 import com.app.belcobtm.data.rest.wallet.request.CoinToCoinExchangeRequest
 import com.app.belcobtm.data.rest.wallet.request.VerifySmsCodeRequest
+import com.app.belcobtm.data.rest.wallet.request.WithdrawRequest
 import com.app.belcobtm.data.rest.wallet.response.SendSmsCodeResponse
 import com.app.belcobtm.data.rest.wallet.response.hash.*
 import kotlinx.coroutines.Deferred
@@ -13,6 +14,14 @@ import retrofit2.http.POST
 import retrofit2.http.Path
 
 interface WalletApi {
+
+    @POST("user/{userId}/coins/{coinId}/transactions/submit")
+    fun withdrawAsync(
+        @Path("userId") userId: Int,
+        @Path("coinId") coinId: String,
+        @Body body: WithdrawRequest
+    ): Deferred<Response<ResponseBody>>
+
     @POST("user/{userId}/coins/{coinCode}/transactions/submit")
     fun coinToCoinExchangeAsync(
         @Path("userId") userId: Int,

@@ -1,5 +1,6 @@
 package com.app.belcobtm.data
 
+import com.app.belcobtm.data.core.TransactionHashHelper
 import com.app.belcobtm.data.rest.wallet.WalletApiService
 import com.app.belcobtm.data.shared.preferences.SharedPreferencesHelper
 import com.app.belcobtm.db.DbCryptoCoinModel
@@ -18,20 +19,6 @@ class WalletRepositoryImpl(
 ) : WalletRepository {
     override fun getCoinFeeMap(): Map<String, CoinFeeDataItem> = prefHelper.coinsFee
 
-    override suspend fun exchangeCoinToCoin(
-        smsCode: String,
-        coinFromAmount: Double,
-        coinFrom: String,
-        coinTo: String,
-        hex: String
-    ): Either<Failure, Unit> {
-        val smsCodeVerifyResponse = apiService.verifySmsCode(smsCode)
-        return if (smsCodeVerifyResponse.isRight) {
-            apiService.coinToCoinExchange(coinFromAmount, coinFrom, coinTo, hex)
-        } else {
-            smsCodeVerifyResponse as Either.Left
-        }
-    }
 
     override suspend fun createTransaction(fromCoinCode: String, fromCoinAmount: Double): Either<Failure, String> {
         return CoinTypeExtension.getTypeByCode(fromCoinCode)?.let { fromCoinType ->
@@ -50,5 +37,34 @@ class WalletRepositoryImpl(
                 hashResponse as Either.Left
             }
         } ?: Either.Left(Failure.MessageError("Wrong coin type"))
+    }
+
+    override suspend fun withdraw(
+        smsCode: String,
+        hash: String,
+        coinFrom: String,
+        coinFromAmount: Double
+    ): Either<Failure, Unit> {
+        val smsCodeVerifyResponse = apiService.verifySmsCode(smsCode)
+        return if (smsCodeVerifyResponse.isRight) {
+            apiService.withdraw(hash, coinFrom, coinFromAmount)
+        } else {
+            smsCodeVerifyResponse as Either.Left
+        }
+    }
+
+    override suspend fun exchangeCoinToCoin(
+        smsCode: String,
+        coinFromAmount: Double,
+        coinFrom: String,
+        coinTo: String,
+        hex: String
+    ): Either<Failure, Unit> {
+        val smsCodeVerifyResponse = apiService.verifySmsCode(smsCode)
+        return if (smsCodeVerifyResponse.isRight) {
+            apiService.coinToCoinExchange(coinFromAmount, coinFrom, coinTo, hex)
+        } else {
+            smsCodeVerifyResponse as Either.Left
+        }
     }
 }

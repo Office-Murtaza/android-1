@@ -1,5 +1,6 @@
 package com.app.belcobtm.presentation.features.wallet.exchange.coin.to.coin
 
+import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -11,6 +12,7 @@ import com.app.belcobtm.domain.Failure
 import com.app.belcobtm.presentation.core.extensions.*
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
 import com.app.belcobtm.presentation.core.ui.BaseActivity
+import com.app.belcobtm.presentation.features.authorization.pin.PinActivity
 import com.app.belcobtm.presentation.features.wallet.IntentCoinItem
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.android.synthetic.main.activity_exchange_coin_to_coin.*
@@ -115,6 +117,7 @@ class ExchangeCoinToCoinActivity : BaseActivity() {
                 }
                 is LoadingData.Error -> {
                     when (it.errorType) {
+                        is Failure.TokenError -> startActivity(Intent(this, PinActivity::class.java))
                         is Failure.MessageError -> showError(it.errorType.message)
                         is Failure.NetworkConnection -> showError(R.string.error_internet_unavailable)
                         else -> showError(R.string.error_something_went_wrong)
@@ -150,7 +153,7 @@ class ExchangeCoinToCoinActivity : BaseActivity() {
             R.string.exchange_coin_to_coin_screen_crypto_amount,
             viewModel.toCoinItem?.coinCode ?: ""
         )
-        viewModel.getCoinTypeList().find { it.code() == viewModel.toCoinItem?.coinCode }?.let {coinType ->
+        viewModel.getCoinTypeList().find { it.code() == viewModel.toCoinItem?.coinCode }?.let { coinType ->
             pickCoinButtonView.setText(coinType.verboseValue())
             pickCoinButtonView.setDrawableStartEnd(coinType.resIcon(), R.drawable.ic_arrow_drop_down)
         }

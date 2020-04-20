@@ -1,4 +1,4 @@
-package com.app.belcobtm.data
+package com.app.belcobtm.data.core
 
 import com.app.belcobtm.api.model.param.trx.Trx
 import com.app.belcobtm.data.rest.wallet.WalletApiService

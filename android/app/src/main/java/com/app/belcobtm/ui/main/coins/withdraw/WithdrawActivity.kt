@@ -241,7 +241,7 @@ class WithdrawActivity : BaseMvpActivity<WithdrawContract.View, WithdrawContract
         }
 
         if (errors == 0) {
-            mPresenter.getCoinTransactionHash(this, mCoin.coinId, toAddress, cryptoBalanceToSend)
+            mPresenter.getCoinTransactionHash(mCoin.coinId, toAddress, cryptoBalanceToSend)
         }
     }
 
