@@ -29,8 +29,10 @@ class PhoneNumberTextField: FPNTextField, FPNTextFieldDelegate {
     
     textColor = .warmGrey
     font = .poppinsMedium12
-    flagSize = CGSize(width: 20, height: 20)
-    setFlag(for: .US)
+    
+    if let usCountryCode = FPNCountryCode(rawValue: "US") {
+      setFlag(countryCode: usCountryCode)
+    }
     
     layer.cornerRadius = 16
     layer.borderWidth = 1
@@ -62,6 +64,7 @@ class PhoneNumberTextField: FPNTextField, FPNTextFieldDelegate {
   }
   
   func fpnDidSelectCountry(name: String, dialCode: String, code: String) {}
+  func fpnDisplayCountryList() {}
   
 }
 

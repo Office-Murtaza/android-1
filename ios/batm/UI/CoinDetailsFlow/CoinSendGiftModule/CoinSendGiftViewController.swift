@@ -2,6 +2,7 @@ import UIKit
 import RxCocoa
 import RxSwift
 import SnapKit
+import MaterialComponents
 import GiphyUISDK
 import GiphyCoreSDK
 
@@ -9,49 +10,11 @@ final class CoinSendGiftViewController: NavigationScreenViewController<CoinSendG
   
   let errorView = ErrorView()
   
-  let phoneLabel: UILabel = {
-    let label = UILabel()
-    label.text = localize(L.CoinSendGift.Form.Phone.title)
-    label.textColor = .slateGrey
-    label.font = .poppinsSemibold14
-    return label
-  }()
+  let headerView = CoinWithdrawHeaderView()
   
-  let phoneTextField = PhoneNumberTextField()
+  let formView = CoinSendGiftFormView()
   
-  let pasteLabel: UnderlinedLabelView = {
-    let label = UnderlinedLabelView()
-    label.configure(for: .paste)
-    return label
-  }()
-  
-  let exchangeView = CoinWithdrawExchangeView()
-  
-  let gifViewContainer = UIView()
-  
-  let addGifLabel: UnderlinedLabelView = {
-    let label = UnderlinedLabelView()
-    label.configure(for: .addGif)
-    return label
-  }()
-  
-  let removeGifLabel: UnderlinedLabelView = {
-    let label = UnderlinedLabelView()
-    label.configure(for: .removeGif)
-    return label
-  }()
-  
-  let messageTextField: MainTextField = {
-    let textField = MainTextField()
-    textField.configure(for: .message)
-    return textField
-  }()
-  
-  let nextButton: MainButton = {
-    let button = MainButton()
-    button.configure(for: .next)
-    return button
-  }()
+  let nextButton = MDCButton.next
   
   let backgroundDarkView: BackgroundDarkView = {
     let view = BackgroundDarkView()
@@ -65,7 +28,11 @@ final class CoinSendGiftViewController: NavigationScreenViewController<CoinSendG
     return view
   }()
   
-  private let didUpdateImageIdRelay = PublishRelay<String?>()
+  private let didUpdateImageRelay = PublishRelay<GPHMedia?>()
+  
+  private var didUpdateImageDriver: Driver<GPHMedia?> {
+    return didUpdateImageRelay.asDriver(onErrorJustReturn: nil)
+  }
   
   private var handler: KeyboardHandler!
   
@@ -79,14 +46,8 @@ final class CoinSendGiftViewController: NavigationScreenViewController<CoinSendG
     
     customView.rootScrollView.contentInsetAdjustmentBehavior = .never
     customView.contentView.addSubviews(errorView,
-                                       phoneLabel,
-                                       phoneTextField,
-                                       pasteLabel,
-                                       exchangeView,
-                                       gifViewContainer,
-                                       addGifLabel,
-                                       removeGifLabel,
-                                       messageTextField,
+                                       headerView,
+                                       formView,
                                        nextButton)
     
     setupKeyboardHandling()
@@ -99,47 +60,23 @@ final class CoinSendGiftViewController: NavigationScreenViewController<CoinSendG
 
   override func setupLayout() {
     errorView.snp.makeConstraints {
-      $0.top.equalToSuperview().offset(10)
+      $0.top.equalToSuperview().offset(5)
       $0.centerX.equalToSuperview()
     }
-    phoneLabel.snp.makeConstraints {
-      $0.top.equalToSuperview().offset(30)
-      $0.centerX.equalToSuperview()
+    headerView.snp.makeConstraints {
+      $0.top.equalToSuperview().offset(25)
+      $0.left.equalToSuperview().offset(15)
+      $0.right.lessThanOrEqualToSuperview().offset(-15)
     }
-    phoneTextField.snp.makeConstraints {
-      $0.top.equalTo(phoneLabel.snp.bottom).offset(15)
-      $0.left.right.equalToSuperview().inset(25)
-    }
-    pasteLabel.snp.makeConstraints {
-      $0.top.equalTo(phoneTextField.snp.bottom).offset(15)
-      $0.centerX.equalToSuperview()
-    }
-    exchangeView.snp.makeConstraints {
-      $0.top.equalTo(pasteLabel.snp.bottom).offset(30)
-      $0.left.right.equalToSuperview().inset(25)
-    }
-    gifViewContainer.snp.makeConstraints {
-      $0.top.equalTo(exchangeView.snp.bottom).offset(30)
-      $0.centerX.equalToSuperview()
-      $0.height.equalTo(100)
-    }
-    addGifLabel.snp.makeConstraints {
-      $0.top.equalTo(gifViewContainer.snp.bottom).offset(15)
-      $0.right.equalTo(customView.contentView.snp.centerX).offset(-35)
-    }
-    removeGifLabel.snp.makeConstraints {
-      $0.top.equalTo(gifViewContainer.snp.bottom).offset(15)
-      $0.left.equalTo(customView.contentView.snp.centerX).offset(35)
-    }
-    messageTextField.snp.makeConstraints {
-      $0.top.equalTo(addGifLabel.snp.bottom).offset(30)
-      $0.left.right.equalToSuperview().inset(25)
+    formView.snp.makeConstraints {
+      $0.top.equalTo(headerView.snp.bottom).offset(20)
+      $0.left.right.equalToSuperview().inset(15)
     }
     nextButton.snp.makeConstraints {
-      $0.top.equalTo(messageTextField.snp.bottom).offset(15)
-      $0.width.equalToSuperview().multipliedBy(0.42)
-      $0.centerX.equalToSuperview()
-      $0.bottom.equalToSuperview().offset(-30)
+      $0.height.equalTo(50)
+      $0.top.equalTo(formView.snp.bottom).offset(15)
+      $0.left.right.equalToSuperview().inset(15)
+      $0.bottom.lessThanOrEqualToSuperview().offset(-30)
     }
     backgroundDarkView.snp.makeConstraints {
       $0.edges.equalToSuperview()
@@ -148,8 +85,6 @@ final class CoinSendGiftViewController: NavigationScreenViewController<CoinSendG
       $0.left.right.equalToSuperview().inset(30)
       $0.bottom.equalTo(view.safeAreaLayoutGuide).offset(-30)
     }
-    
-    hideGifView()
   }
   
   private func showCodeView() {
@@ -170,27 +105,33 @@ final class CoinSendGiftViewController: NavigationScreenViewController<CoinSendG
       .disposed(by: disposeBag)
     
     presenter.state
+      .map { $0.coinBalance }
+      .filterNil()
+      .drive(onNext: { [headerView] in headerView.configure(for: $0) })
+      .disposed(by: disposeBag)
+    
+    presenter.state
       .map { $0.coin?.type.code }
       .filterNil()
-      .drive(onNext: { [exchangeView] in exchangeView.configure(with: $0) })
+      .drive(onNext: { [formView] in formView.configure(with: $0) })
       .disposed(by: disposeBag)
     
     presenter.state
       .asObservable()
-      .map { $0.validatablePhone.phone }
-      .bind(to: phoneTextField.rx.text)
+      .map { $0.phone }
+      .bind(to: formView.rx.phoneText)
       .disposed(by: disposeBag)
     
     presenter.state
       .asObservable()
       .map { $0.currencyAmount }
-      .bind(to: exchangeView.currencyTextField.rx.text)
+      .bind(to: formView.rx.currencyText)
       .disposed(by: disposeBag)
     
     presenter.state
       .asObservable()
       .map { $0.coinAmount }
-      .bind(to: exchangeView.coinTextField.rx.text)
+      .bind(to: formView.rx.coinText)
       .disposed(by: disposeBag)
     
     presenter.state
@@ -199,6 +140,22 @@ final class CoinSendGiftViewController: NavigationScreenViewController<CoinSendG
       .bind(to: codeView.smsCodeTextField.rx.text)
       .disposed(by: disposeBag)
     
+    didUpdateImageDriver
+      .asObservable()
+      .bind(to: formView.rx.gifMedia)
+      .disposed(by: disposeBag)
+    
+    formView.rx.addGifTap
+      .drive(onNext: { [unowned self] in
+        let gphVC = GiphyViewController()
+        gphVC.delegate = self
+        self.present(gphVC, animated: true, completion: nil)
+      })
+      .disposed(by: disposeBag)
+    
+    formView.rx.removeGifTap
+      .drive(onNext: { [unowned self] in self.didUpdateImageRelay.accept(nil) })
+      .disposed(by: disposeBag)
     
     let errorMessageDriverObservable = presenter.state.asObservable()
       .map { $0.validationState }
@@ -232,90 +189,44 @@ final class CoinSendGiftViewController: NavigationScreenViewController<CoinSendG
                  nextButton.rx.tap.asDriver())
       .drive(onNext: { [view] in view?.endEditing(true) })
       .disposed(by: disposeBag)
-    
-    addGifLabel.rx.tap
-      .drive(onNext: { [unowned self] in
-        let gphVC = GiphyViewController()
-        gphVC.delegate = self
-        self.present(gphVC, animated: true, completion: nil)
-      })
-      .disposed(by: disposeBag)
-    
-    removeGifLabel.rx.tap
-      .drive(onNext: { [unowned self] in self.hideGifView() })
-      .disposed(by: disposeBag)
-  }
-  
-  private func showGifView(media: GPHMedia) {
-    let gifView = GPHMediaView()
-    
-    gifViewContainer.subviews.forEach { $0.removeFromSuperview() }
-    gifViewContainer.addSubview(gifView)
-    gifView.snp.makeConstraints {
-      $0.edges.equalToSuperview()
-      $0.width.equalTo(gifView.snp.height).multipliedBy(media.aspectRatio)
-    }
-    
-    gifView.setMedia(media, rendition: .fixedHeightSmall)
-    
-    didUpdateImageIdRelay.accept(media.id)
-  }
-  
-  private func hideGifView() {
-    let emptyGifView = UIView()
-    emptyGifView.backgroundColor = .whiteTwo
-    emptyGifView.layer.cornerRadius = 16
-    
-    let emptyGifImageView = UIImageView(image: UIImage(named: "send_gift"))
-    emptyGifView.addSubview(emptyGifImageView)
-    emptyGifImageView.snp.makeConstraints {
-      $0.center.equalToSuperview()
-    }
-    
-    gifViewContainer.subviews.forEach { $0.removeFromSuperview() }
-    gifViewContainer.addSubview(emptyGifView)
-    emptyGifView.snp.makeConstraints {
-      $0.edges.equalToSuperview()
-      $0.width.equalTo(emptyGifView.snp.height)
-    }
-    
-    didUpdateImageIdRelay.accept(nil)
   }
 
   override func setupBindings() {
     setupUIBindings()
     
     let backDriver = customView.backButton.rx.tap.asDriver()
-    let updatePhoneDriver = phoneTextField.rx.validatablePhoneNumber
-    let updateCurrencyAmountDriver = exchangeView.currencyTextField.rx.text.asDriver()
-    let updateCoinAmountDriver = exchangeView.coinTextField.rx.text.asDriver()
-    let pastePhoneDriver = pasteLabel.rx.tap
-    let updateCodeDriver = codeView.smsCodeTextField.rx.text.asDriver()
-    let updateMessageDriver = messageTextField.rx.text.asDriver()
-    let updateImageIdDriver = didUpdateImageIdRelay.asDriver(onErrorJustReturn: nil)
-    let cancelDriver = codeView.rx.cancelTap
-    let maxDriver = exchangeView.rx.maxTap
+    let updateCountryDriver = formView.rx.country
+    let updatePhoneDriver = formView.rx.phoneText.asDriver()
+    let updateCurrencyAmountDriver = formView.rx.currencyText.asDriver()
+    let updateCoinAmountDriver = formView.rx.coinText.asDriver()
+    let updateMessageDriver = formView.rx.messageText.asDriver()
+    let updateImageIdDriver = didUpdateImageDriver.map { $0?.id }
+    let pastePhoneDriver = formView.rx.pasteTap
+    let maxDriver = formView.rx.maxTap
     let nextDriver = nextButton.rx.tap.asDriver()
+    let updateCodeDriver = codeView.smsCodeTextField.rx.text.asDriver()
+    let cancelDriver = codeView.rx.cancelTap
     let sendCodeDriver = codeView.rx.nextTap
     
     presenter.bind(input: CoinSendGiftPresenter.Input(back: backDriver,
+                                                      updateCountry: updateCountryDriver,
                                                       updatePhone: updatePhoneDriver,
                                                       updateCurrencyAmount: updateCurrencyAmountDriver,
                                                       updateCoinAmount: updateCoinAmountDriver,
-                                                      pastePhone: pastePhoneDriver,
-                                                      updateCode: updateCodeDriver,
                                                       updateMessage: updateMessageDriver,
                                                       updateImageId: updateImageIdDriver,
-                                                      cancel: cancelDriver,
+                                                      pastePhone: pastePhoneDriver,
                                                       max: maxDriver,
                                                       next: nextDriver,
+                                                      updateCode: updateCodeDriver,
+                                                      cancel: cancelDriver,
                                                       sendCode: sendCodeDriver))
   }
 }
 
 extension CoinSendGiftViewController: GiphyDelegate {
   func didSelectMedia(giphyViewController: GiphyViewController, media: GPHMedia) {
-    showGifView(media: media)
+    didUpdateImageRelay.accept(media)
     
     giphyViewController.dismiss(animated: true, completion: nil)
   }

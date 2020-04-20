@@ -5,40 +5,10 @@ import MaterialComponents
 
 final class CoinWithdrawFormView: UIView {
   
-  static var maxButton: MDCButton {
-    let button = MDCButton()
-    button.setTitle(localize(L.CoinWithdraw.Button.max), for: .normal)
-    button.setTitleColor(.ceruleanBlue, for: .normal)
-    button.contentEdgeInsets = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
-    button.setBackgroundColor(.white)
-    return button
-  }
-  
   let stackView: UIStackView = {
     let stackView = UIStackView()
     stackView.axis = .vertical
     return stackView
-  }()
-  
-  let coinMaxButton = maxButton
-  
-  let currencyMaxButton = maxButton
-  
-  let pasteButton: MDCButton = {
-    let button = MDCButton()
-    button.setTitle(localize(L.CoinWithdraw.Button.paste), for: .normal)
-    button.setTitleColor(.ceruleanBlue, for: .normal)
-    button.contentEdgeInsets = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
-    button.setBackgroundColor(.white)
-    return button
-  }()
-  
-  let scanButton: MDCButton = {
-    let button = MDCButton()
-    button.setImage(UIImage(named: "scan"), for: .normal)
-    button.contentEdgeInsets = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
-    button.setBackgroundColor(.white)
-    return button
   }()
   
   let addressButtonsStackView: UIStackView = {
@@ -47,25 +17,14 @@ final class CoinWithdrawFormView: UIView {
     return stackView
   }()
   
-  let addressTextField: MDCTextField = {
-    let textField = MDCTextField()
-    textField.backgroundColor = .white
-    return textField
-  }()
+  let coinMaxButton = MDCButton.max
+  let currencyMaxButton = MDCButton.max
+  let pasteButton = MDCButton.paste
+  let scanButton = MDCButton.scan
   
-  let coinAmountTextField: MDCTextField = {
-    let textField = MDCTextField()
-    textField.backgroundColor = .white
-    textField.keyboardType = .decimalPad
-    return textField
-  }()
-  
-  let currencyAmountTextField: MDCTextField = {
-    let textField = MDCTextField()
-    textField.backgroundColor = .white
-    textField.keyboardType = .decimalPad
-    return textField
-  }()
+  let addressTextField = MDCTextField.default
+  let coinAmountTextField = MDCTextField.amount
+  let currencyAmountTextField = MDCTextField.amount
   
   let addressTextFieldController: MDCTextInputControllerOutlined
   let coinAmountTextFieldController: MDCTextInputControllerOutlined
@@ -106,11 +65,7 @@ final class CoinWithdrawFormView: UIView {
     currencyAmountTextField.rightView = currencyMaxButton
     currencyAmountTextField.rightViewMode = .always
     
-    let scheme = MDCContainerScheme()
-    scheme.colorScheme = MDCSemanticColorScheme(defaults: .material201907)
-    scheme.colorScheme.primaryColor = .ceruleanBlue
-    scheme.colorScheme.onSurfaceColor = .warmGrey
-    
+    let scheme = MDCContainerScheme.default
     addressTextFieldController.applyTheme(withScheme: scheme)
     coinAmountTextFieldController.applyTheme(withScheme: scheme)
     currencyAmountTextFieldController.applyTheme(withScheme: scheme)

@@ -37,6 +37,10 @@
 		DB16A873235F4438007E3B20 /* CoinSellDetailsAnotherAddressAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB16A86F235F4438007E3B20 /* CoinSellDetailsAnotherAddressAssembly.swift */; };
 		DB1743C6235E2C6300E7DACB /* SellAddress.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB1743C5235E2C6300E7DACB /* SellAddress.swift */; };
 		DB1743C8235E2C7E00E7DACB /* SellAddress+Mapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB1743C7235E2C7E00E7DACB /* SellAddress+Mapping.swift */; };
+		DB1AF0DA244362140037C998 /* CoinSendGiftFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB1AF0D9244362140037C998 /* CoinSendGiftFormView.swift */; };
+		DB1AF0DE24436B4A0037C998 /* MDCButton+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB1AF0DD24436B4A0037C998 /* MDCButton+Extensions.swift */; };
+		DB1AF0E024436B5C0037C998 /* MDCTextField+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB1AF0DF24436B5C0037C998 /* MDCTextField+Extensions.swift */; };
+		DB1AF0E224436D6D0037C998 /* MDCContainerScheme+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB1AF0E124436D6D0037C998 /* MDCContainerScheme+Extensions.swift */; };
 		DB226C5A22E99E3E0087E6C5 /* URLEncoding+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB226C5922E99E3E0087E6C5 /* URLEncoding+Extensions.swift */; };
 		DB2C971B23449109006E7D61 /* CoinSendGiftModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB2C971723449109006E7D61 /* CoinSendGiftModule.swift */; };
 		DB2C971C23449109006E7D61 /* CoinSendGiftViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB2C971823449109006E7D61 /* CoinSendGiftViewController.swift */; };
@@ -308,6 +312,7 @@
 		DB9D3ECF22C1535A008DC600 /* Poppins-Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = DB9D3EB722C151A9008DC600 /* Poppins-Thin.ttf */; };
 		DB9D3ED022C1535C008DC600 /* Poppins-ThinItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = DB9D3EB822C151A9008DC600 /* Poppins-ThinItalic.ttf */; };
 		DB9D3ED222C155B2008DC600 /* UITapGestureRecognizer+AttributedText.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB9D3ED122C155B2008DC600 /* UITapGestureRecognizer+AttributedText.swift */; };
+		DBA65C09244DBF1D0034678E /* FakeTextFied.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBA65C08244DBF1D0034678E /* FakeTextFied.swift */; };
 		DBA6842F22E42AF80079429E /* CoinsBalanceFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBA6842E22E42AF80079429E /* CoinsBalanceFlow.swift */; };
 		DBA6843122E42B450079429E /* CoinsBalanceFlowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBA6843022E42B450079429E /* CoinsBalanceFlowController.swift */; };
 		DBA6843322E42B920079429E /* CoinsBalanceFlow+Dependencies.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBA6843222E42B920079429E /* CoinsBalanceFlow+Dependencies.swift */; };
@@ -475,6 +480,10 @@
 		DB16A86F235F4438007E3B20 /* CoinSellDetailsAnotherAddressAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinSellDetailsAnotherAddressAssembly.swift; sourceTree = "<group>"; };
 		DB1743C5235E2C6300E7DACB /* SellAddress.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SellAddress.swift; sourceTree = "<group>"; };
 		DB1743C7235E2C7E00E7DACB /* SellAddress+Mapping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SellAddress+Mapping.swift"; sourceTree = "<group>"; };
+		DB1AF0D9244362140037C998 /* CoinSendGiftFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinSendGiftFormView.swift; sourceTree = "<group>"; };
+		DB1AF0DD24436B4A0037C998 /* MDCButton+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MDCButton+Extensions.swift"; sourceTree = "<group>"; };
+		DB1AF0DF24436B5C0037C998 /* MDCTextField+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MDCTextField+Extensions.swift"; sourceTree = "<group>"; };
+		DB1AF0E124436D6D0037C998 /* MDCContainerScheme+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MDCContainerScheme+Extensions.swift"; sourceTree = "<group>"; };
 		DB226C5922E99E3E0087E6C5 /* URLEncoding+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URLEncoding+Extensions.swift"; sourceTree = "<group>"; };
 		DB2C971723449109006E7D61 /* CoinSendGiftModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinSendGiftModule.swift; sourceTree = "<group>"; };
 		DB2C971823449109006E7D61 /* CoinSendGiftViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinSendGiftViewController.swift; sourceTree = "<group>"; };
@@ -745,6 +754,7 @@
 		DB9D3EBD22C151AA008DC600 /* Poppins-ExtraLight.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Poppins-ExtraLight.ttf"; sourceTree = "<group>"; };
 		DB9D3EBE22C151AA008DC600 /* Poppins-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Poppins-Medium.ttf"; sourceTree = "<group>"; };
 		DB9D3ED122C155B2008DC600 /* UITapGestureRecognizer+AttributedText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITapGestureRecognizer+AttributedText.swift"; sourceTree = "<group>"; };
+		DBA65C08244DBF1D0034678E /* FakeTextFied.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FakeTextFied.swift; sourceTree = "<group>"; };
 		DBA6842E22E42AF80079429E /* CoinsBalanceFlow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinsBalanceFlow.swift; sourceTree = "<group>"; };
 		DBA6843022E42B450079429E /* CoinsBalanceFlowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinsBalanceFlowController.swift; sourceTree = "<group>"; };
 		DBA6843222E42B920079429E /* CoinsBalanceFlow+Dependencies.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CoinsBalanceFlow+Dependencies.swift"; sourceTree = "<group>"; };
@@ -1023,6 +1033,7 @@
 				DB8A195F235729A0003E8F7D /* NavigationScreenView.swift */,
 				DBDD5D102357928D0012DFAA /* CheckboxView.swift */,
 				DBC8B45B23634EB900E7A799 /* Divider.swift */,
+				DBA65C08244DBF1D0034678E /* FakeTextFied.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -1039,9 +1050,18 @@
 			path = CoinSellDetailsAnotherAddressModule;
 			sourceTree = "<group>";
 		};
+		DB1AF0D8244362030037C998 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				DB1AF0D9244362140037C998 /* CoinSendGiftFormView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
 		DB2C9716234490E8006E7D61 /* CoinSendGiftModule */ = {
 			isa = PBXGroup;
 			children = (
+				DB1AF0D8244362030037C998 /* Views */,
 				DB2C971823449109006E7D61 /* CoinSendGiftViewController.swift */,
 				DB2C971923449109006E7D61 /* CoinSendGiftPresenter.swift */,
 				DB2C971723449109006E7D61 /* CoinSendGiftModule.swift */,
@@ -1704,6 +1724,9 @@
 				DB95EB29230AEFEA0059C84C /* UIImage+Extensions.swift */,
 				DBEE1372230ECDC60020E211 /* UICollectionView+Extensions.swift */,
 				DB33E9B9241CF75000764BF5 /* UILabel+Extensions.swift */,
+				DB1AF0DD24436B4A0037C998 /* MDCButton+Extensions.swift */,
+				DB1AF0DF24436B5C0037C998 /* MDCTextField+Extensions.swift */,
+				DB1AF0E124436D6D0037C998 /* MDCContainerScheme+Extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -2590,6 +2613,7 @@
 				DBECA62C22F7FB22002C2610 /* ChangePhoneFlowController.swift in Sources */,
 				DB33E9C4241D3B1D00764BF5 /* PriceChartPeriod+Mapping.swift in Sources */,
 				DB2F250D2360687800274C60 /* CoinSellDetailsCurrentAddressViewController.swift in Sources */,
+				DB1AF0E224436D6D0037C998 /* MDCContainerScheme+Extensions.swift in Sources */,
 				DB308EBB22E738FC003D91AF /* MapAddresses+Mapping.swift in Sources */,
 				DBA6844222E44AE40079429E /* ATMPresenter.swift in Sources */,
 				DB8F078924103E8F00770643 /* PickerFlow+Dependencies.swift in Sources */,
@@ -2609,6 +2633,7 @@
 				DB16A872235F4438007E3B20 /* CoinSellDetailsAnotherAddressPresenter.swift in Sources */,
 				DB2F251B2360AC9A00274C60 /* TransactionDetailsRowView.swift in Sources */,
 				DBBF299E22D3810200A5DE6A /* CoinAddress+Mapping.swift in Sources */,
+				DB1AF0E024436B5C0037C998 /* MDCTextField+Extensions.swift in Sources */,
 				DB9616F022C74FCB0078E92D /* Executor.swift in Sources */,
 				DB04E4D222D85E92000E2D85 /* PinCodeConverter.swift in Sources */,
 				DB1743C6235E2C6300E7DACB /* SellAddress.swift in Sources */,
@@ -2793,6 +2818,7 @@
 				DB8D40B222C3F86500D5FBD0 /* CreateWalletAssembly.swift in Sources */,
 				DBAD539D22D7B95F0005F682 /* PinCodeStore.swift in Sources */,
 				DB96174022C7CDA70078E92D /* BTMWalletRecord+CoreDataClass.swift in Sources */,
+				DB1AF0DA244362140037C998 /* CoinSendGiftFormView.swift in Sources */,
 				DB0211C622CD340A004065E9 /* TextFieldWithoutPaddings.swift in Sources */,
 				DBC620AD234749B30007D412 /* Nonce.swift in Sources */,
 				DBC68CA722F868E000473247 /* EnterPasswordModule.swift in Sources */,
@@ -2835,6 +2861,7 @@
 				DB8D408922C3E4E100D5FBD0 /* Swinject.swift in Sources */,
 				DBC68C9722F85E1300473247 /* PhoneNumber+Mapping.swift in Sources */,
 				DB5B2DDD230A74D000821713 /* CoinDetailsFlowController.swift in Sources */,
+				DBA65C09244DBF1D0034678E /* FakeTextFied.swift in Sources */,
 				DBA6844822E44C390079429E /* ATMAssembly.swift in Sources */,
 				DB99BB9C2362E0F9006A75BE /* TransactionDetailsGeneralSectionView.swift in Sources */,
 				DB9D3EA022C0F6BA008DC600 /* UIColor+Additions.swift in Sources */,
@@ -2937,6 +2964,7 @@
 				DB904AA122C00EEA007CB734 /* UIViewController+Errors.swift in Sources */,
 				DB8D409622C3E9BF00D5FBD0 /* FlowController.swift in Sources */,
 				DB9616B522C63D6E0078E92D /* LoginUsecase.swift in Sources */,
+				DB1AF0DE24436B4A0037C998 /* MDCButton+Extensions.swift in Sources */,
 				DBC68CBA22F8798F00473247 /* ChangePhoneViewController.swift in Sources */,
 				DB4D7BC22409A133008C2BD5 /* VerificationFlow.swift in Sources */,
 				DBA6843122E42B450079429E /* CoinsBalanceFlowController.swift in Sources */,
