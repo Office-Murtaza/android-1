@@ -77,6 +77,7 @@ final class CoinSendGiftViewController: NavigationScreenViewController<CoinSendG
     view.addSubviews(backgroundDarkView,
                      codeView)
     
+    customView.rootScrollView.contentInsetAdjustmentBehavior = .never
     customView.contentView.addSubviews(errorView,
                                        phoneLabel,
                                        phoneTextField,

@@ -65,7 +65,10 @@ class TransactionsAdapter(
                 3 -> R.string.send_gift
                 4 -> R.string.receive_gift
                 5 -> R.string.buy
-                else -> R.string.sell
+                6 -> R.string.sell
+                8 -> R.string.send_c2c
+                9 -> R.string.receive_c2c
+                else -> R.string.unknown
             }
 
             holder.itemView.transaction_date.text = item.date

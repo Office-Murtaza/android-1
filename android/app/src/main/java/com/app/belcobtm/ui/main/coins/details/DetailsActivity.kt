@@ -87,7 +87,7 @@ class DetailsActivity : BaseMvpActivity<DetailsContract.View, DetailsContract.Pr
         showDividers()
     }
 
-    fun trimTrailingZero(value: String?): String? {
+    private fun trimTrailingZero(value: String?): String? {
         return if (!value.isNullOrEmpty()) {
             if (value.indexOf(".") < 0) {
                 value
@@ -136,7 +136,10 @@ class DetailsActivity : BaseMvpActivity<DetailsContract.View, DetailsContract.Pr
                 3 -> R.string.send_gift
                 4 -> R.string.receive_gift
                 5 -> R.string.buy
-                else -> R.string.sell
+                6 -> R.string.sell
+                8 -> R.string.send_c2c
+                9 -> R.string.receive_c2c
+                else -> R.string.unknown
             }
         )
     }
@@ -282,7 +285,7 @@ class DetailsActivity : BaseMvpActivity<DetailsContract.View, DetailsContract.Pr
         refAmountContainerView.hide()
     } else {
         refAmountContainerView.show()
-        refAmountView.text = refAmountView.toString()
+        refAmountView.text = refAmount
     }
 
     private fun showDividers() {

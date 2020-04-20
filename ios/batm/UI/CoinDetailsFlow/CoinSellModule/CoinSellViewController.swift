@@ -39,6 +39,7 @@ final class CoinSellViewController: NavigationScreenViewController<CoinSellPrese
   }
   
   override func setupUI() {
+    customView.rootScrollView.contentInsetAdjustmentBehavior = .never
     customView.contentView.addSubviews(errorView,
                                        limitView,
                                        exchangeView,

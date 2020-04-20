@@ -17,6 +17,7 @@ class MainPresenter : BaseMvpPresenterImpl<MainContract.View>(),
     override fun checkPinEntered() {
         when {
             prefsHelper.accessToken.isEmpty() -> mView?.onTokenNotSaved()
+            prefsHelper.apiSeed.isEmpty() -> mView?.onSeedNotSaved()
             prefsHelper.userPin.isNotBlank() -> mView?.onPinSaved()
             else -> mView?.onPinNotSaved()
         }
