@@ -4,6 +4,8 @@ import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.MenuItem
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.AppCompatEditText
@@ -19,19 +21,8 @@ import org.parceler.Parcels
 
 class WithdrawActivity : BaseMvpActivity<WithdrawContract.View, WithdrawContract.Presenter>(),
     WithdrawContract.View {
-
-    companion object {
-        private const val KEY_COIN = "KEY_COIN"
-
-        @JvmStatic
-        fun start(context: Context?, coin: CoinModel) {
-            val intent = Intent(context, WithdrawActivity::class.java)
-            intent.putExtra(KEY_COIN, Parcels.wrap(coin))
-            context?.startActivity(intent)
-        }
-    }
-
     private lateinit var mCoin: CoinModel
+    var cryptoBalanceToSend = 0.0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -63,18 +54,8 @@ class WithdrawActivity : BaseMvpActivity<WithdrawContract.View, WithdrawContract
             }
             amountCryptoView.setText(balanceStr.replace(',', '.'))
         }
-        maxUsdView.setOnClickListener {
-            val balance = mCoin.balance - mPresenter.getTransactionFee(mCoin.coinId)
-            val balanceStr = if (balance > 0) {
-                cryptoBalanceToSend = balance
-                String.format("%.6f", balance).trimEnd('0')
-            } else {
-                cryptoBalanceToSend = 0.0
-                "0"
-            }
-            amountCryptoView.setText(balanceStr.replace(',', '.'))
-        }
         amountUsdView?.editText?.keyListener = null
+        amountCryptoView.editText?.addTextChangedListener(coinFromTextWatcher)
     }
 
     private fun initPrice() {
@@ -95,94 +76,8 @@ class WithdrawActivity : BaseMvpActivity<WithdrawContract.View, WithdrawContract
         initBalance()
 
         amountCryptoView.hint = mCoin.coinId
-        handleAmount()
-
         amountCryptoView.actionDoneListener { validateAndSubmit() }
         nextButtonView.setOnClickListener { validateAndSubmit() }
-    }
-
-    var cryptoBalanceToSend = 0.0
-
-    private fun handleAmount() {
-        var isTextWorking = false
-        amountCryptoView?.editText?.doAfterTextChanged {
-            if (isTextWorking)
-                return@doAfterTextChanged
-            isTextWorking = true
-            var balance = mCoin.balance - mPresenter.getTransactionFee(mCoin.coinId)
-            balance = if (balance < 0) 0.0 else balance
-
-
-            val amountCrypto = try {
-                amountCryptoView.getString().toDouble()
-            } catch (e: NumberFormatException) {
-                0.0
-            }
-            cryptoBalanceToSend = amountCrypto
-
-            if (amountCrypto > balance) {
-                amountCryptoView.setText(trimTrailingZero(balance.toString()) ?: "")
-                cryptoBalanceToSend = balance
-                isTextWorking = false
-            }
-            val amountUsd = amountCrypto * mCoin.price.uSD
-            amountUsdView.setText(String.format("%.2f", amountUsd))
-            amountUsdView.editText?.setSelection(amountUsdView.getString().length)
-            isTextWorking = false
-        }
-
-        amountUsdView.editText?.doAfterTextChanged {
-            if (isTextWorking)
-                return@doAfterTextChanged
-            isTextWorking = true
-            var balance = mCoin.balance - mPresenter.getTransactionFee(mCoin.coinId)
-            balance = if (balance < 0) 0.0 else balance
-            if (balance == 0.0) {
-                amountUsdView.setText("0")
-                amountUsdView?.editText?.setSelection(amountUsdView.getString().length)
-                amountCryptoView.setText("0")
-                amountCryptoView?.editText?.setSelection(amountCryptoView.getString().length)
-                isTextWorking = false
-                return@doAfterTextChanged
-            }
-
-            val maxUsd =
-                (mCoin.balance - mPresenter.getTransactionFee(mCoin.coinId)) * mCoin.price.uSD
-            val amountUsd = try {
-                amountUsdView.getString().toDouble()
-            } catch (e: NumberFormatException) {
-                0.0
-            }
-
-            if (amountUsd > maxUsd) {
-                amountUsdView.setText(String.format("%.2f", maxUsd))
-                amountUsdView?.editText?.setSelection(amountUsdView.getString().length)
-            }
-            var amountCrypt = try {
-                amountUsdView.getString().toDouble() / mCoin.price.uSD
-            } catch (e: NumberFormatException) {
-                0.0
-            }
-
-            amountCrypt = if (amountCrypt < 0) 0.0 else amountCrypt
-            amountCryptoView.setText(trimTrailingZero(String.format("%.6f", amountCrypt)) ?: "")
-            amountCryptoView?.editText?.setSelection(amountCryptoView.getString().length)
-            isTextWorking = false
-        }
-    }
-
-    fun trimTrailingZero(value: String?): String? {
-        return if (!value.isNullOrEmpty()) {
-            if (value!!.indexOf(".") < 0) {
-                value
-
-            } else {
-                value.replace("0*$".toRegex(), "").replace("\\.$".toRegex(), "")
-            }
-
-        } else {
-            value
-        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -272,5 +167,68 @@ class WithdrawActivity : BaseMvpActivity<WithdrawContract.View, WithdrawContract
             .show()
         val tilSmsCode = view.findViewById<TextInputLayout>(R.id.til_sms_code)
         tilSmsCode.error = error
+    }
+
+    private val coinFromTextWatcher = object : TextWatcher {
+        val dotChar: Char = '.'
+        var isRunning = false
+        var isDeleting = false
+
+        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            isDeleting = count > after
+        }
+
+        override fun onTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) = Unit
+
+        override fun afterTextChanged(editable: Editable) {
+            if (isRunning) return
+
+            isRunning = true
+
+            when {
+                editable.isEmpty() || editable.toString().replace(
+                    dotChar.toString(),
+                    ""
+                ).toInt() <= 0 -> {
+                    when {
+                        editable.contains(dotChar) && editable.indexOf(dotChar, 0, false) > 1 ->
+                            editable.delete(0, editable.indexOf(dotChar, 0, false) - 1)
+                        !editable.contains(dotChar) && editable.length > 1 -> editable.delete(0, editable.length - 1)
+                    }
+                    amountUsdView.clearText()
+                }
+                editable.first() == dotChar -> editable.insert(0, "0")
+                editable.last() == dotChar && editable.count { it == dotChar } > 1 -> editable.delete(
+                    editable.lastIndex,
+                    editable.length
+                )
+                else -> {
+                    val cryptoBalance = mCoin.balance - mPresenter.getTransactionFee(mCoin.coinId)
+                    val cryptoAmountTemporary = amountCryptoView.getString().toDouble()
+                    val cryptoAmount: Double =
+                        if (cryptoAmountTemporary > cryptoBalance) cryptoBalance
+                        else cryptoAmountTemporary
+
+                    editable.clear()
+                    editable.insert(0, cryptoAmount.toStringCoin())
+                    amountUsdView.setText((cryptoAmount * mCoin.price.uSD).toStringUsd())
+
+                    cryptoBalanceToSend = cryptoAmount
+                }
+            }
+
+            isRunning = false
+        }
+    }
+
+    companion object {
+        private const val KEY_COIN = "KEY_COIN"
+
+        @JvmStatic
+        fun start(context: Context?, coin: CoinModel) {
+            val intent = Intent(context, WithdrawActivity::class.java)
+            intent.putExtra(KEY_COIN, Parcels.wrap(coin))
+            context?.startActivity(intent)
+        }
     }
 }

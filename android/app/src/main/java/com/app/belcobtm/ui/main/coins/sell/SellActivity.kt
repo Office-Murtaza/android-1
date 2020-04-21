@@ -117,9 +117,9 @@ class SellActivity : BaseMvpActivity<SellContract.View, SellContract.Presenter>(
                     amountCryptoView.clearText()
                 }
                 else -> {
-                    val usdAmount: Int =
-                        if (amountUsdView.getString().toInt() > mCoin.price.uSD) mCoin.price.uSD.toInt()
-                        else amountUsdView.getString().toInt()
+                    val temporaryUsdAmount = amountUsdView.getString().toInt()
+                    val usdBalance = (mCoin.balance * mCoin.price.uSD).toInt()
+                    val usdAmount: Int = if (temporaryUsdAmount >= usdBalance) usdBalance else temporaryUsdAmount
 
                     if (!checkNotesForATM(usdAmount)) {
                         amountUsdView.showError(R.string.sell_screen_atm_contains_only_count_banknotes)
@@ -237,9 +237,7 @@ class SellActivity : BaseMvpActivity<SellContract.View, SellContract.Presenter>(
         }
 
         val balance = mCoin.balance - mPresenter.getTransactionFee(mCoin.coinId)
-
         val price = mCoin.price.uSD
-
         val rate = limits?.sellProfitRate ?: Double.MIN_VALUE
 
         var cryptoAmount = fiatAmount / price * rate
@@ -269,7 +267,6 @@ class SellActivity : BaseMvpActivity<SellContract.View, SellContract.Presenter>(
      **/
 
     fun checkNotesForATM(sum: Int): Boolean {
-
         var nearestNumberThatCanBeGivenByTwentyAndFifty = sum
 
         if (sum >= 20)
@@ -282,9 +279,7 @@ class SellActivity : BaseMvpActivity<SellContract.View, SellContract.Presenter>(
             nearestNumberThatCanBeGivenByTwentyAndFifty = 20
         }
 
-        nearestNumberThatCanBeGivenByTwentyAndFifty =
-            (nearestNumberThatCanBeGivenByTwentyAndFifty / 10 * 10)
-
+        nearestNumberThatCanBeGivenByTwentyAndFifty = (nearestNumberThatCanBeGivenByTwentyAndFifty / 10 * 10)
         return (nearestNumberThatCanBeGivenByTwentyAndFifty == sum)
 
     }

@@ -172,17 +172,6 @@
 
     </com.google.android.material.textfield.TextInputLayout>
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/maxUsdView"
-        style="@style/WalletTab.EditText.TextLink"
-        android:layout_marginEnd="10dp"
-        android:layout_marginBottom="10dp"
-        android:text="@string/max"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="@id/amountUsdView"
-        app:layout_constraintEnd_toEndOf="@id/amountUsdView"
-        app:layout_constraintTop_toTopOf="@id/amountUsdView" />
-
     <com.google.android.material.button.MaterialButton
         android:id="@+id/nextButtonView"
         android:layout_width="0dp"
