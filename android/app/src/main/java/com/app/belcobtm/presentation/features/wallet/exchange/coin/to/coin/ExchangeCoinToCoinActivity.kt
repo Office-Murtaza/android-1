@@ -93,6 +93,7 @@ class ExchangeCoinToCoinActivity : BaseActivity() {
                 .show()
         }
         amountCoinFromView?.editText?.addTextChangedListener(coinFromTextWatcher)
+        amountCoinToView?.editText?.keyListener = null
         amountCoinToView?.editText?.afterTextChanged {
             nextButtonView.isEnabled = it.isNotEmpty() && it.toString().toDouble() > 0
         }

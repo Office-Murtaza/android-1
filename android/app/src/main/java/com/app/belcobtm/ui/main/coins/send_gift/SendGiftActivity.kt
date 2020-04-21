@@ -5,20 +5,21 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.telephony.PhoneNumberFormattingTextWatcher
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.MenuItem
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.AppCompatEditText
+import androidx.core.widget.addTextChangedListener
 import androidx.core.widget.doAfterTextChanged
 import com.app.belcobtm.R
 import com.app.belcobtm.api.model.response.CoinModel
 import com.app.belcobtm.mvp.BaseMvpActivity
 import com.app.belcobtm.presentation.core.Const.GIPHY_API_KEY
-import com.app.belcobtm.presentation.core.extensions.actionDoneListener
-import com.app.belcobtm.presentation.core.extensions.getString
-import com.app.belcobtm.presentation.core.extensions.setText
+import com.app.belcobtm.presentation.core.extensions.*
 import com.giphy.sdk.core.models.Media
 import com.giphy.sdk.core.models.enums.RenditionType
 import com.giphy.sdk.ui.GPHContentType
@@ -83,8 +84,9 @@ class SendGiftActivity : BaseMvpActivity<SendGiftContract.View, SendGiftContract
             }
         }
 
-        handleAmount()
+        amountCryptoView?.editText?.addTextChangedListener(coinFromTextWatcher)
         amountCryptoView.actionDoneListener { validateAndSubmit() }
+        amountUsdView?.editText?.keyListener = null
         nextButtonView.setOnClickListener { validateAndSubmit() }
     }
 
@@ -129,89 +131,6 @@ class SendGiftActivity : BaseMvpActivity<SendGiftContract.View, SendGiftContract
 
         val cryptoText = if (balanceStr.contains(",")) balanceStr.replace(',', '.') else balanceStr
         amountCryptoView.setText(cryptoText)
-    }
-
-    private fun handleAmount() {
-        var isTextWorking = false
-        amountCryptoView?.editText?.doAfterTextChanged {
-            if (isTextWorking)
-                return@doAfterTextChanged
-            isTextWorking = true
-            var balance = mCoin.balance - mPresenter.getTransactionFee(mCoin.coinId)
-            balance = if (balance < 0) 0.0 else balance
-
-
-            val amountCrypto = try {
-                amountCryptoView.getString().toDouble()
-            } catch (e: NumberFormatException) {
-                0.0
-            }
-            cryptoBalanceToSend = amountCrypto
-
-            if (amountCrypto > balance) {
-                amountCryptoView.setText(trimTrailingZero(balance.toString()) ?: "")
-                cryptoBalanceToSend = balance
-                isTextWorking = false
-            }
-            val amountUsd = amountCrypto * mCoin.price.uSD
-            amountCryptoView.setText(String.format("%.2f", amountUsd))
-            amountCryptoView?.editText?.setSelection(amountUsdView.getString().length)
-            isTextWorking = false
-        }
-
-        amountUsdView?.editText?.doAfterTextChanged {
-            if (isTextWorking)
-                return@doAfterTextChanged
-            isTextWorking = true
-            var balance = mCoin.balance - mPresenter.getTransactionFee(mCoin.coinId)
-            balance = if (balance < 0) 0.0 else balance
-            if (balance == 0.0) {
-                amountUsdView.setText("0")
-                amountUsdView?.editText?.setSelection(amountUsdView.getString().length)
-                amountCryptoView.setText("0")
-                amountCryptoView?.editText?.setSelection(amountCryptoView.getString().length)
-                isTextWorking = false
-                return@doAfterTextChanged
-            }
-
-            val maxUsd =
-                (mCoin.balance - mPresenter.getTransactionFee(mCoin.coinId)) * mCoin.price.uSD
-            val amountUsd = try {
-                amountUsdView.getString().toDouble()
-            } catch (e: NumberFormatException) {
-                0.0
-            }
-
-            if (amountUsd > maxUsd) {
-                amountUsdView.setText(String.format("%.2f", maxUsd))
-                amountUsdView?.editText?.setSelection(amountUsdView.getString().length)
-            }
-            var amountCrypt = try {
-                amountUsdView.getString().toDouble() / mCoin.price.uSD
-            } catch (e: NumberFormatException) {
-                0.0
-            }
-
-            amountCrypt = if (amountCrypt < 0) 0.0 else amountCrypt
-            amountCryptoView.setText(trimTrailingZero(String.format("%.6f", amountCrypt)) ?: "")
-            amountCryptoView?.editText?.setSelection(amountCryptoView.getString().length)
-            isTextWorking = false
-        }
-    }
-
-
-    fun trimTrailingZero(value: String?): String? {
-        return if (!value.isNullOrEmpty()) {
-            if (value!!.indexOf(".") < 0) {
-                value
-
-            } else {
-                value.replace("0*$".toRegex(), "").replace("\\.$".toRegex(), "")
-            }
-
-        } else {
-            value
-        }
     }
 
     private fun openGify() {
@@ -316,5 +235,55 @@ class SendGiftActivity : BaseMvpActivity<SendGiftContract.View, SendGiftContract
         gifView.visibility = View.VISIBLE
         gifView.setMedia(media, RenditionType.original)
         gifEmptyView.visibility = View.INVISIBLE
+    }
+
+    private val coinFromTextWatcher = object : TextWatcher {
+        val dotChar: Char = '.'
+        var isRunning = false
+        var isDeleting = false
+
+        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            isDeleting = count > after
+        }
+
+        override fun onTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) = Unit
+
+        override fun afterTextChanged(editable: Editable) {
+            if (isRunning) return
+
+            isRunning = true
+
+            when {
+                editable.isEmpty() || editable.toString().replace(
+                    dotChar.toString(),
+                    ""
+                ).toInt() <= 0 -> {
+                    when {
+                        editable.contains(dotChar) && editable.indexOf(dotChar, 0, false) > 1 ->
+                            editable.delete(0, editable.indexOf(dotChar, 0, false) - 1)
+                        !editable.contains(dotChar) && editable.length > 1 -> editable.delete(0, editable.length - 1)
+                    }
+
+                    amountUsdView.clearText()
+                }
+                editable.first() == dotChar -> editable.insert(0, "0")
+                editable.last() == dotChar && editable.count { it == dotChar } > 1 -> editable.delete(
+                    editable.lastIndex,
+                    editable.length
+                )
+                else -> {
+                    val balanceCoin = mCoin.balance - mPresenter.getTransactionFee(mCoin.coinId)
+                    val fromCoinTemporaryValue = amountCryptoView.getString().toDouble()
+                    val fromCoinAmount: Double =
+                        if (fromCoinTemporaryValue > balanceCoin) balanceCoin
+                        else fromCoinTemporaryValue
+                    editable.clear()
+                    editable.insert(0, fromCoinAmount.toStringCoin())
+                    amountUsdView.setText(String.format("%.2f", (fromCoinAmount * mCoin.price.uSD)))
+                }
+            }
+
+            isRunning = false
+        }
     }
 }

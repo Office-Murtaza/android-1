@@ -74,6 +74,7 @@ class WithdrawActivity : BaseMvpActivity<WithdrawContract.View, WithdrawContract
             }
             amountCryptoView.setText(balanceStr.replace(',', '.'))
         }
+        amountUsdView?.editText?.keyListener = null
     }
 
     private fun initPrice() {

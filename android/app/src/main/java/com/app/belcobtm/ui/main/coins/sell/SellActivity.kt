@@ -4,10 +4,10 @@ import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.MenuItem
 import android.view.View
-import android.view.inputmethod.EditorInfo
-import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.AppCompatEditText
 import androidx.core.widget.doAfterTextChanged
@@ -88,42 +88,63 @@ class SellActivity : BaseMvpActivity<SellContract.View, SellContract.Presenter>(
         mPresenter.getDetails()
     }
 
-    private fun initListeners(){
-        amountUsdView?.editText?.doAfterTextChanged {
-            amountCryptoView.clearError()
-            if (amountUsdView.getString().isEmpty()) {
-                amountCryptoView.setText("")
-                amountUsdView.clearError()
-                return@doAfterTextChanged
-            }
-            val fiatAmount = try {
-                amountUsdView.getString().toInt()
-            } catch (e: Exception) {
-                amountUsdView.setText("0")
-                0
-            }
-            if (!checkNotesForATM(fiatAmount)) {
-                amountUsdView.showError(R.string.sell_screen_atm_contains_only_count_banknotes)
-            } else {
-                amountUsdView.clearError()
-            }
-            val price = mCoin.price.uSD
-            val rate = limits?.sellProfitRate ?: Double.MIN_VALUE
-            var cryptoAmount = (fiatAmount / price * rate)
-            cryptoAmount = round(cryptoAmount * 100000) / 100000
-            amountCryptoView.setText(String.format("%.6f", cryptoAmount).trimEnd('0'))
-        }
-
-        maxCryptoView.setOnClickListener { selectMaxPrice() }
+    private fun initListeners() {
+        amountUsdView?.editText?.addTextChangedListener(coinFromTextWatcher)
         maxUsdView.setOnClickListener { selectMaxPrice() }
         amountUsdView.actionDoneListener { validateAndSubmit() }
         nextButtonView.setOnClickListener { validateAndSubmit() }
     }
 
+    private val coinFromTextWatcher = object : TextWatcher {
+        var isRunning = false
+        var isDeleting = false
+
+        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            isDeleting = count > after
+        }
+
+        override fun onTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) = Unit
+
+        override fun afterTextChanged(editable: Editable) {
+            if (isRunning) return
+
+            isRunning = true
+
+            when {
+                editable.isEmpty() -> amountCryptoView.clearText()
+                editable.toString().toInt() == 0 -> {
+                    editable.clear()
+                    amountCryptoView.clearText()
+                }
+                else -> {
+                    val usdAmount: Int =
+                        if (amountUsdView.getString().toInt() > mCoin.price.uSD) mCoin.price.uSD.toInt()
+                        else amountUsdView.getString().toInt()
+
+                    if (!checkNotesForATM(usdAmount)) {
+                        amountUsdView.showError(R.string.sell_screen_atm_contains_only_count_banknotes)
+                    } else {
+                        amountUsdView.clearError()
+                    }
+                    val price = mCoin.price.uSD
+                    val rate = limits?.sellProfitRate ?: Double.MIN_VALUE
+                    var cryptoAmount = (usdAmount / price * rate)
+                    cryptoAmount = round(cryptoAmount * 100000) / 100000
+
+                    editable.clear()
+                    editable.insert(0, usdAmount.toString())
+                    amountCryptoView.setText(String.format("%.6f", cryptoAmount).trimEnd('0'))
+                }
+            }
+
+            isRunning = false
+        }
+    }
+
     private fun initViews() {
         sellContainerGroupView.visibility = View.VISIBLE
         resultContainer.visibility = View.GONE
-        amountCryptoView.hint =  getString(R.string.sell_screen_crypto_amount, mCoin.coinId.toString())
+        amountCryptoView.hint = getString(R.string.sell_screen_crypto_amount, mCoin.coinId)
         initPrice()
         initBalance()
     }
@@ -141,7 +162,7 @@ class SellActivity : BaseMvpActivity<SellContract.View, SellContract.Presenter>(
         balanceUsdView.text = "${String.format("%.2f", amountUsd)} USD"
     }
 
-    private fun selectMaxPrice(){
+    private fun selectMaxPrice() {
         val price = mCoin.price.uSD
         val rate = limits?.sellProfitRate ?: Double.MIN_VALUE
         val balance = mCoin.balance - mPresenter.getTransactionFee(mCoin.coinId)
@@ -153,11 +174,11 @@ class SellActivity : BaseMvpActivity<SellContract.View, SellContract.Presenter>(
         }
 
         val mult20 = if (fiatAmount % 20 != 0) {
-            (fiatAmount / 20).toInt() * 20
+            (fiatAmount / 20) * 20
         } else fiatAmount
 
         val mult50 = if (fiatAmount % 50 != 0) {
-            (fiatAmount / 50).toInt() * 50
+            (fiatAmount / 50) * 50
         } else fiatAmount
 
         val fiatMax = max(mult20, mult50)
@@ -293,11 +314,11 @@ class SellActivity : BaseMvpActivity<SellContract.View, SellContract.Presenter>(
                 copyToClipboard(addressDestination ?: "", addressDestination ?: "")
             }
 
-          /*  val walletQrCode =
-                BarcodeEncoder().encodeBitmap(addressDestination, BarcodeFormat.QR_CODE, 200, 200)
-            qrCodeIv?.setImageBitmap(walletQrCode)
-            */
-            qrCodeIv?.setImageBitmap(QRUtils.getSpacelessQR(addressDestination?:"",200,200))
+            /*  val walletQrCode =
+                  BarcodeEncoder().encodeBitmap(addressDestination, BarcodeFormat.QR_CODE, 200, 200)
+              qrCodeIv?.setImageBitmap(walletQrCode)
+              */
+            qrCodeIv?.setImageBitmap(QRUtils.getSpacelessQR(addressDestination ?: "", 200, 200))
 
 
         } else {
