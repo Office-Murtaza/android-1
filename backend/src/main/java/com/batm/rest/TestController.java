@@ -103,8 +103,8 @@ public class TestController {
         return Response.ok(true);
     }
 
-    @DeleteMapping("/user/{userId}/kyc")
-    public Response sign(@PathVariable Long userId) {
+    @GetMapping("/user/{userId}/kyc/delete")
+    public Response deleteKyc(@PathVariable Long userId) {
         return Response.ok(userService.resetVerificationsForUser(userId));
     }
 }

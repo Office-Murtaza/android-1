@@ -32,37 +32,32 @@ public class CoinService {
     private static UserService userService;
 
     private static BlockbookService blockbook;
+    private static GethService geth;
     private static BinanceService binance;
     private static RippledService rippled;
     private static TrongridService trongrid;
 
     private static String btcNodeUrl;
-    private static String ethNodeUrl;
     private static String bchNodeUrl;
     private static String ltcNodeUrl;
-
     private static String btcExplorerUrl;
-    private static String ethExplorerUrl;
     private static String bchExplorerUrl;
     private static String ltcExplorerUrl;
 
     public CoinService(@Autowired final WalletService walletService,
                        @Autowired final UserService userService,
-
                        @Autowired final CoinRep coinRep,
 
                        @Autowired final BlockbookService blockbook,
+                       @Autowired final GethService geth,
                        @Autowired final BinanceService binance,
                        @Autowired final RippledService rippled,
                        @Autowired final TrongridService trongrid,
 
                        @Value("${btc.node.url}") final String btcNodeUrl,
-                       @Value("${eth.node.url}") final String ethNodeUrl,
                        @Value("${bch.node.url}") final String bchNodeUrl,
                        @Value("${ltc.node.url}") final String ltcNodeUrl,
-
                        @Value("${btc.explorer.url}") final String btcExplorerUrl,
-                       @Value("${eth.explorer.url}") final String ethExplorerUrl,
                        @Value("${bch.explorer.url}") final String bchExplorerUrl,
                        @Value("${ltc.explorer.url}") final String ltcExplorerUrl) {
 
@@ -73,17 +68,16 @@ public class CoinService {
         CoinService.coinMap = CoinService.coinList.stream().collect(Collectors.toMap(Coin::getCode, Function.identity()));
 
         CoinService.blockbook = blockbook;
+        CoinService.geth = geth;
         CoinService.binance = binance;
         CoinService.rippled = rippled;
         CoinService.trongrid = trongrid;
 
         CoinService.btcNodeUrl = btcNodeUrl;
-        CoinService.ethNodeUrl = ethNodeUrl;
         CoinService.bchNodeUrl = bchNodeUrl;
         CoinService.ltcNodeUrl = ltcNodeUrl;
 
         CoinService.btcExplorerUrl = btcExplorerUrl;
-        CoinService.ethExplorerUrl = ethExplorerUrl;
         CoinService.bchExplorerUrl = bchExplorerUrl;
         CoinService.ltcExplorerUrl = ltcExplorerUrl;
     }
@@ -162,20 +156,6 @@ public class CoinService {
         }
 
         return true;
-    }
-
-    public FeeDTO getCoinsFee() {
-        List<CoinFeeDTO> feeList = new ArrayList<>();
-
-        coinList.forEach(e -> {
-            if (CoinEnum.ETH.name().equalsIgnoreCase(e.getCode())) {
-                feeList.add(new CoinFeeDTO(e.getCode(), null, Constant.GAS_PRICE, Constant.GAS_LIMIT));
-            } else {
-                feeList.add(new CoinFeeDTO(e.getCode(), e.getFee().stripTrailingZeros(), null, null));
-            }
-        });
-
-        return new FeeDTO(feeList);
     }
 
     public enum CoinEnum {
@@ -291,7 +271,7 @@ public class CoinService {
 
             @Override
             public BigDecimal getBalance(String address) {
-                return blockbook.getBalance(ethNodeUrl, address, Constant.ETH_DIVIDER);
+                return geth.getBalance(address);
             }
 
             @Override
@@ -301,7 +281,7 @@ public class CoinService {
 
             @Override
             public TransactionNumberDTO getTransactionNumber(String address, BigDecimal amount, TransactionType type) {
-                return blockbook.getTransactionNumber(ethNodeUrl, address, amount, Constant.ETH_DIVIDER, type);
+                return null;
             }
 
             @Override
@@ -311,12 +291,12 @@ public class CoinService {
 
             @Override
             public TransactionDetailsDTO getTransaction(String txId, String address) {
-                return blockbook.getTransaction(ethNodeUrl, ethExplorerUrl, txId, address, Constant.ETH_DIVIDER);
+                return null;
             }
 
             @Override
             public TransactionListDTO getTransactionList(String address, Integer startIndex, Integer limit, TxListDTO txDTO) {
-                return blockbook.getTransactionList(ethNodeUrl, address, Constant.ETH_DIVIDER, startIndex, limit, txDTO);
+                return null;
             }
 
             @Override
@@ -329,8 +309,8 @@ public class CoinService {
                 User user = userService.findById(userId);
                 String address = user.getCoinAddress(name());
 
-                NonceDTO nonceDTO = blockbook.getNonce(ethNodeUrl, address);
-                nonceDTO.setNonce(nonceDTO.getNonce());
+                NonceDTO nonceDTO = new NonceDTO();
+                nonceDTO.setNonce(geth.getNonce(address));
 
                 return nonceDTO;
             }
@@ -352,12 +332,12 @@ public class CoinService {
 
             @Override
             public String sign(String fromAddress, String toAddress, BigDecimal amount) {
-                return blockbook.signETH(ethNodeUrl, toAddress, amount, null);
+                return geth.sign(fromAddress, toAddress, amount);
             }
 
             @Override
             public String submitTransaction(String hex) {
-                return blockbook.submitTransaction(ethNodeUrl, hex);
+                return geth.submitTransaction(hex);
             }
 
             @Override
@@ -367,7 +347,7 @@ public class CoinService {
 
             @Override
             public NodeTransactionsDTO getNodeTransactions(String address) {
-                return blockbook.getNodeTransactions(ethNodeUrl, address, Constant.ETH_DIVIDER);
+                return null;
             }
 
             @Override
@@ -379,9 +359,9 @@ public class CoinService {
             public CoinSettingsDTO getCoinSettings() {
                 CoinSettingsDTO dto = new CoinSettingsDTO();
                 dto.setProfitC2C(getCoinEntity().getProfitC2C().stripTrailingZeros());
-                dto.setGasPrice(Constant.GAS_PRICE);
-                dto.setGasLimit(Constant.GAS_LIMIT);
-                dto.setTxFee(BigDecimal.valueOf(Constant.GAS_PRICE).multiply(BigDecimal.valueOf(Constant.GAS_LIMIT)).divide(Constant.ETH_DIVIDER).stripTrailingZeros());
+                dto.setGasPrice(geth.getGasPrice());
+                dto.setGasLimit(geth.getGasLimit());
+                dto.setTxFee(geth.getTxFee());
                 dto.setServerWalletAddress(getWalletAddress());
 
                 return dto;
@@ -389,7 +369,7 @@ public class CoinService {
 
             @Override
             public String getExplorerUrl() {
-                return ethExplorerUrl;
+                return geth.getEthExplorerUrl();
             }
         },
         BCH {

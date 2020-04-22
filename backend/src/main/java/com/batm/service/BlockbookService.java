@@ -3,7 +3,6 @@ package com.batm.service;
 import com.batm.dto.*;
 import com.batm.model.TransactionStatus;
 import com.batm.model.TransactionType;
-import com.batm.util.Constant;
 import com.batm.util.TxUtil;
 import com.batm.util.Util;
 import com.google.protobuf.ByteString;
@@ -16,7 +15,6 @@ import org.web3j.utils.Numeric;
 import wallet.core.jni.*;
 import wallet.core.jni.proto.Bitcoin;
 import wallet.core.jni.proto.Common;
-import wallet.core.jni.proto.Ethereum;
 import java.math.BigDecimal;
 import java.util.*;
 
@@ -61,20 +59,6 @@ public class BlockbookService {
         }
 
         return new UtxoDTO();
-    }
-
-    public NonceDTO getNonce(String url, String address) {
-        try {
-            JSONObject res = rest.getForObject(url + "/api/v2/address/" + address + "?details=txs&pageSize=1000&page=1", JSONObject.class);
-
-            if (res != null) {
-                return new NonceDTO(res.optInt("nonce"));
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return new NonceDTO();
     }
 
     public TransactionNumberDTO getTransactionNumber(String url, String address, BigDecimal amount, BigDecimal divider, TransactionType type) {
@@ -163,31 +147,6 @@ public class BlockbookService {
         }
 
         return new TransactionListDTO();
-    }
-
-    public String signETH(String ethNodeUrl, String toAddress, BigDecimal amount, PrivateKey privateKey) {
-        try {
-            String fromAddress = new EthereumAddress(privateKey.getPublicKeySecp256k1(false)).description();
-            Integer nonce = getNonce(ethNodeUrl, fromAddress).getNonce();
-
-            Ethereum.SigningInput.Builder builder = Ethereum.SigningInput.newBuilder();
-
-            builder.setPrivateKey(ByteString.copyFrom(Numeric.hexStringToByteArray(Numeric.toHexStringNoPrefix(privateKey.data()))));
-            builder.setToAddress(toAddress);
-            builder.setChainId(ByteString.copyFrom(Numeric.hexStringToByteArray("1")));
-            builder.setNonce(ByteString.copyFrom(Numeric.hexStringToByteArray(Integer.toHexString(nonce))));
-            builder.setGasPrice(ByteString.copyFrom(Numeric.hexStringToByteArray(Long.toHexString(Constant.GAS_PRICE))));
-            builder.setGasLimit(ByteString.copyFrom(Numeric.hexStringToByteArray(Long.toHexString(Constant.GAS_LIMIT))));
-            builder.setAmount(ByteString.copyFrom(Numeric.hexStringToByteArray(Long.toHexString(amount.multiply(Constant.ETH_DIVIDER).longValue()))));
-
-            Ethereum.SigningOutput output = EthereumSigner.sign(builder.build());
-
-            return Numeric.toHexString(output.getEncoded().toByteArray());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return null;
     }
 
     public String signBTCForks(CoinType coinType, String fromAddress, String toAddress, BigDecimal amount, BigDecimal fee, BigDecimal divider, List<JSONObject> utxos) {

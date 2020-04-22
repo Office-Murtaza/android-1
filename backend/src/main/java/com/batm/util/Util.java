@@ -19,7 +19,7 @@ import java.util.Optional;
 public class Util {
 
     public static BigDecimal convert(String str) {
-        return new BigDecimal(str).setScale(3, RoundingMode.UP).stripTrailingZeros();
+        return new BigDecimal(str).setScale(3, RoundingMode.DOWN).stripTrailingZeros();
     }
 
     public static String generatePublicId() {
