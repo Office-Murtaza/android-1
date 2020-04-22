@@ -12,13 +12,7 @@ final class CoinExchangeViewController: NavigationScreenViewController<CoinExcha
   
   let formView = CoinExchangeFormView()
   
-  let nextButton: MDCButton = {
-    let button = MDCButton()
-    button.setBackgroundColor(.ceruleanBlue)
-    button.setTitle(localize(L.CoinWithdraw.Button.next), for: .normal)
-    button.layer.cornerRadius = 4
-    return button
-  }()
+  let nextButton = MDCButton.next
   
   let backgroundDarkView: BackgroundDarkView = {
     let view = BackgroundDarkView()

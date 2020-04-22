@@ -17,6 +17,7 @@
 "shared.button.paste" = "PASTE";
 "shared.button.add" = "ADD";
 "shared.button.remove" = "REMOVE";
+"shared.button.copy" = "COPY";
 "shared.error.title" = "Error";
 "shared.error.message" = "Server Error, Try Later";
 "shared.error.no_connection.message" = "No Internet Connection";

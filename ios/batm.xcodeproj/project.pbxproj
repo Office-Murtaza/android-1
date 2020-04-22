@@ -430,6 +430,11 @@
 		DBEE1373230ECDC60020E211 /* UICollectionView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBEE1372230ECDC60020E211 /* UICollectionView+Extensions.swift */; };
 		DBEE2E6623F5B7C700EBB915 /* ValidationPhoneNumber.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBEE2E6523F5B7C700EBB915 /* ValidationPhoneNumber.swift */; };
 		DBF75DE6240D1A5300E12CB0 /* VerificationFilePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBF75DE5240D1A5300E12CB0 /* VerificationFilePickerView.swift */; };
+		DBF98D3E24502B0700AF6D5A /* CoinDepositModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBF98D3A24502B0700AF6D5A /* CoinDepositModule.swift */; };
+		DBF98D3F24502B0700AF6D5A /* CoinDepositViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBF98D3B24502B0700AF6D5A /* CoinDepositViewController.swift */; };
+		DBF98D4024502B0700AF6D5A /* CoinDepositPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBF98D3C24502B0700AF6D5A /* CoinDepositPresenter.swift */; };
+		DBF98D4124502B0700AF6D5A /* CoinDepositAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBF98D3D24502B0700AF6D5A /* CoinDepositAssembly.swift */; };
+		DBF98D4524502EF800AF6D5A /* CoinDetailsFloatingActionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBF98D4424502EF800AF6D5A /* CoinDetailsFloatingActionButton.swift */; };
 		DBFAED8F2326C646004B6D79 /* Utxo.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBFAED8E2326C646004B6D79 /* Utxo.swift */; };
 		DBFAED912326C7CC004B6D79 /* Utxo+Mapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBFAED902326C7CC004B6D79 /* Utxo+Mapping.swift */; };
 /* End PBXBuildFile section */
@@ -877,6 +882,11 @@
 		DBEE1372230ECDC60020E211 /* UICollectionView+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UICollectionView+Extensions.swift"; sourceTree = "<group>"; };
 		DBEE2E6523F5B7C700EBB915 /* ValidationPhoneNumber.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValidationPhoneNumber.swift; sourceTree = "<group>"; };
 		DBF75DE5240D1A5300E12CB0 /* VerificationFilePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerificationFilePickerView.swift; sourceTree = "<group>"; };
+		DBF98D3A24502B0700AF6D5A /* CoinDepositModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinDepositModule.swift; sourceTree = "<group>"; };
+		DBF98D3B24502B0700AF6D5A /* CoinDepositViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinDepositViewController.swift; sourceTree = "<group>"; };
+		DBF98D3C24502B0700AF6D5A /* CoinDepositPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinDepositPresenter.swift; sourceTree = "<group>"; };
+		DBF98D3D24502B0700AF6D5A /* CoinDepositAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinDepositAssembly.swift; sourceTree = "<group>"; };
+		DBF98D4424502EF800AF6D5A /* CoinDetailsFloatingActionButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinDetailsFloatingActionButton.swift; sourceTree = "<group>"; };
 		DBFAED8E2326C646004B6D79 /* Utxo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utxo.swift; sourceTree = "<group>"; };
 		DBFAED902326C7CC004B6D79 /* Utxo+Mapping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Utxo+Mapping.swift"; sourceTree = "<group>"; };
 		F62E959DD3C3751B0D83F925 /* Pods-batm.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-batm.release.xcconfig"; path = "Pods/Target Support Files/Pods-batm/Pods-batm.release.xcconfig"; sourceTree = "<group>"; };
@@ -1372,6 +1382,7 @@
 			children = (
 				DB5B2DD7230A74C100821713 /* Flow */,
 				DB5B2DDE230A768200821713 /* CoinDetailsModule */,
+				DBF98D3924502AEF00AF6D5A /* CoinDepositModule */,
 				DB5185A8231FE65200052229 /* CoinWithdrawModule */,
 				DB2C9716234490E8006E7D61 /* CoinSendGiftModule */,
 				DBA7A4A023566297000BE997 /* CoinSellModule */,
@@ -1734,12 +1745,7 @@
 		DB95EB16230A8CDE0059C84C /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				DB95EB17230A8CF60059C84C /* CoinDetailsChartView.swift */,
-				DB95EB19230A982F0059C84C /* CoinDetailsButtonsView.swift */,
-				DB95EB27230AECA10059C84C /* CoinDetailsDepositView.swift */,
-				DB33E9B7241CE52500764BF5 /* CoinDetailsBalanceView.swift */,
-				DB5413CC24346EDB002DDD2F /* CoinDetailsBalanceValueView.swift */,
-				DB33E9BB241CFADB00764BF5 /* CoinDetailsPeriodButtonsView.swift */,
+				DBF98D4424502EF800AF6D5A /* CoinDetailsFloatingActionButton.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -1748,9 +1754,8 @@
 			isa = PBXGroup;
 			children = (
 				DB95EB1C230AA4790059C84C /* DataSource */,
-				DB95EB21230AA6FE0059C84C /* TransactionCell.swift */,
-				DBD09E7423DA180C00439634 /* TransactionStatusView.swift */,
-				DB38046D241E7610008EDDE6 /* CoinDetailsHeaderView.swift */,
+				DBF98D4224502E8700AF6D5A /* HeaderView */,
+				DBF98D4324502EB700AF6D5A /* CellView */,
 			);
 			path = CollectionViewRelated;
 			sourceTree = "<group>";
@@ -2374,6 +2379,40 @@
 			path = ShowPhoneModule;
 			sourceTree = "<group>";
 		};
+		DBF98D3924502AEF00AF6D5A /* CoinDepositModule */ = {
+			isa = PBXGroup;
+			children = (
+				DBF98D3A24502B0700AF6D5A /* CoinDepositModule.swift */,
+				DBF98D3B24502B0700AF6D5A /* CoinDepositViewController.swift */,
+				DBF98D3C24502B0700AF6D5A /* CoinDepositPresenter.swift */,
+				DBF98D3D24502B0700AF6D5A /* CoinDepositAssembly.swift */,
+			);
+			path = CoinDepositModule;
+			sourceTree = "<group>";
+		};
+		DBF98D4224502E8700AF6D5A /* HeaderView */ = {
+			isa = PBXGroup;
+			children = (
+				DB95EB17230A8CF60059C84C /* CoinDetailsChartView.swift */,
+				DB95EB19230A982F0059C84C /* CoinDetailsButtonsView.swift */,
+				DB95EB27230AECA10059C84C /* CoinDetailsDepositView.swift */,
+				DB33E9B7241CE52500764BF5 /* CoinDetailsBalanceView.swift */,
+				DB5413CC24346EDB002DDD2F /* CoinDetailsBalanceValueView.swift */,
+				DB33E9BB241CFADB00764BF5 /* CoinDetailsPeriodButtonsView.swift */,
+				DB38046D241E7610008EDDE6 /* CoinDetailsHeaderView.swift */,
+			);
+			path = HeaderView;
+			sourceTree = "<group>";
+		};
+		DBF98D4324502EB700AF6D5A /* CellView */ = {
+			isa = PBXGroup;
+			children = (
+				DB95EB21230AA6FE0059C84C /* TransactionCell.swift */,
+				DBD09E7423DA180C00439634 /* TransactionStatusView.swift */,
+			);
+			path = CellView;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -2682,6 +2721,7 @@
 				DB9D3ED222C155B2008DC600 /* UITapGestureRecognizer+AttributedText.swift in Sources */,
 				DB59EA2422F9C51B00EB64A7 /* ChangePasswordAssembly.swift in Sources */,
 				DB1743C8235E2C7E00E7DACB /* SellAddress+Mapping.swift in Sources */,
+				DBF98D4124502B0700AF6D5A /* CoinDepositAssembly.swift in Sources */,
 				DB5B2DE3230A769300821713 /* CoinDetailsModule.swift in Sources */,
 				DBD8C212240AF44B00BD8A74 /* VerificationInfoRowView.swift in Sources */,
 				DBAD53A822D7CC500005F682 /* KeyboardHelper.swift in Sources */,
@@ -2829,6 +2869,7 @@
 				DBA6844622E44B930079429E /* ATMViewController.swift in Sources */,
 				DB130D6922C273B60056E67E /* WelcomeSupportCellView.swift in Sources */,
 				DBC68CBC22F8798F00473247 /* ChangePhoneAssembly.swift in Sources */,
+				DBF98D3E24502B0700AF6D5A /* CoinDepositModule.swift in Sources */,
 				DB9616D522C748610078E92D /* CoreDataStorage.swift in Sources */,
 				DB33E9C0241D391900764BF5 /* PriceChartPeriods.swift in Sources */,
 				DB83663822FAB7CE00454F5C /* ChangePinFlow+Dependencies.swift in Sources */,
@@ -2905,9 +2946,11 @@
 				DB8D408E22C3E5A500D5FBD0 /* DIInitializer.swift in Sources */,
 				DB2F25162360A8F400274C60 /* TransactionDetailsViewController.swift in Sources */,
 				DBC9E06323618CDB0008E0A6 /* TransactionDetails.swift in Sources */,
+				DBF98D4024502B0700AF6D5A /* CoinDepositPresenter.swift in Sources */,
 				DB95EB2A230AEFEA0059C84C /* UIImage+Extensions.swift in Sources */,
 				DBA6845322E45A9A0079429E /* SettingsModule.swift in Sources */,
 				DB33E9BE241D389400764BF5 /* PriceChartData.swift in Sources */,
+				DBF98D3F24502B0700AF6D5A /* CoinDepositViewController.swift in Sources */,
 				DBAD539922D7B7D10005F682 /* PinCodeModule.swift in Sources */,
 				DB8F077D24102DAE00770643 /* PickerConfig.swift in Sources */,
 				DB0211C122CCE6EC004065E9 /* RecoverSeedPhraseAssembly.swift in Sources */,
@@ -2983,6 +3026,7 @@
 				DB130D6E22C28CB70056E67E /* WelcomeTappableLabel.swift in Sources */,
 				DB96169922C5F52F0078E92D /* CreateWalletFormView.swift in Sources */,
 				DBF75DE6240D1A5300E12CB0 /* VerificationFilePickerView.swift in Sources */,
+				DBF98D4524502EF800AF6D5A /* CoinDetailsFloatingActionButton.swift in Sources */,
 				DB8A196223574D1E003E8F7D /* CoinWithdrawAddressView.swift in Sources */,
 				DB2C971C23449109006E7D61 /* CoinSendGiftViewController.swift in Sources */,
 				DB70852D22CFAE2F00FFE4F7 /* MainFlowController.swift in Sources */,

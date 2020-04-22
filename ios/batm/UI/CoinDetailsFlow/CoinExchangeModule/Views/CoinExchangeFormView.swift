@@ -14,27 +14,10 @@ final class CoinExchangeFormView: UIView, UIPickerViewDelegate, UIPickerViewData
     return stackView
   }()
   
-  let maxButton: MDCButton = {
-    let button = MDCButton()
-    button.setTitle(localize(L.CoinWithdraw.Button.max), for: .normal)
-    button.setTitleColor(.ceruleanBlue, for: .normal)
-    button.contentEdgeInsets = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
-    button.setBackgroundColor(.white)
-    return button
-  }()
+  let maxButton = MDCButton.max
   
-  let fromCoinAmountTextField: MDCTextField = {
-    let textField = MDCTextField()
-    textField.backgroundColor = .white
-    textField.keyboardType = .decimalPad
-    return textField
-  }()
-  
-  let toCoinTextField: MDCTextField = {
-    let textField = MDCTextField()
-    textField.backgroundColor = .white
-    return textField
-  }()
+  let fromCoinAmountTextField = MDCTextField.amount
+  let toCoinTextField = MDCTextField.dropdown
   
   let toCoinPickerView: UIPickerView = {
     let picker = UIPickerView()
@@ -43,9 +26,7 @@ final class CoinExchangeFormView: UIView, UIPickerViewDelegate, UIPickerViewData
   }()
   
   let toCoinAmountTextField: MDCTextField = {
-    let textField = MDCTextField()
-    textField.backgroundColor = .white
-    textField.keyboardType = .decimalPad
+    let textField = MDCTextField.amount
     textField.isEnabled = false
     return textField
   }()
@@ -87,19 +68,9 @@ final class CoinExchangeFormView: UIView, UIPickerViewDelegate, UIPickerViewData
                                   toCoinPickerView,
                                   toCoinAmountTextField)
 
-    fromCoinAmountTextField.trailingView = maxButton
-    fromCoinAmountTextField.trailingViewMode = .always
+    fromCoinAmountTextField.setRightView(maxButton)
     
-    toCoinTextField.leadingViewMode = .always
-    
-    toCoinTextField.trailingView = UIImageView(image: UIImage(named: "dropdown"))
-    toCoinTextField.trailingViewMode = .always
-    
-    let scheme = MDCContainerScheme()
-    scheme.colorScheme = MDCSemanticColorScheme(defaults: .material201907)
-    scheme.colorScheme.primaryColor = .ceruleanBlue
-    scheme.colorScheme.onSurfaceColor = .warmGrey
-    
+    let scheme = MDCContainerScheme.default
     fromCoinAmountTextFieldController.applyTheme(withScheme: scheme)
     toCoinTextFieldController.applyTheme(withScheme: scheme)
     toCoinAmountTextFieldController.applyTheme(withScheme: scheme)
@@ -155,7 +126,7 @@ extension Reactive where Base == CoinExchangeFormView {
   }
   var toCoin: Binder<CoinType> {
     return Binder(base) { target, value in
-      target.toCoinTextField.leadingView = UIImageView(image: value.smallLogo)
+      target.toCoinTextField.setLeftView(UIImageView(image: value.smallLogo))
       target.toCoinTextFieldController.placeholderText = value.verboseValue
       target.toCoinAmountTextFieldController.placeholderText = String(format: localize(L.CoinExchange.Form.Amount.placeholder),
                                                                       value.code)

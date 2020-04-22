@@ -56,14 +56,9 @@ final class CoinWithdrawFormView: UIView {
     addressButtonsStackView.addArrangedSubviews(pasteButton,
                                                 scanButton)
 
-    addressTextField.rightView = addressButtonsStackView
-    addressTextField.rightViewMode = .always
-
-    coinAmountTextField.rightView = coinMaxButton
-    coinAmountTextField.rightViewMode = .always
-    
-    currencyAmountTextField.rightView = currencyMaxButton
-    currencyAmountTextField.rightViewMode = .always
+    addressTextField.setRightView(addressButtonsStackView)
+    coinAmountTextField.setRightView(coinMaxButton)
+    currencyAmountTextField.setRightView(currencyMaxButton)
     
     let scheme = MDCContainerScheme.default
     addressTextFieldController.applyTheme(withScheme: scheme)

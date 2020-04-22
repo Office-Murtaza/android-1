@@ -10,11 +10,11 @@ final class CoinDetailsPresenter: ModulePresenter, CoinDetailsModule {
   struct Input {
     var back: Driver<Void>
     var refresh: Driver<Void>
+    var deposit: Driver<Void>
     var withdraw: Driver<Void>
     var sendGift: Driver<Void>
     var sell: Driver<Void>
     var exchange: Driver<Void>
-    var copy: Driver<String?>
     var showMore: Driver<Void>
     var transactionSelected: Driver<IndexPath>
     var updateSelectedPeriod: Driver<SelectedPeriod>
@@ -60,6 +60,12 @@ final class CoinDetailsPresenter: ModulePresenter, CoinDetailsModule {
       .subscribe()
       .disposed(by: disposeBag)
     
+    input.deposit
+      .withLatestFrom(state)
+      .filter { $0.coin != nil }
+      .drive(onNext: { [delegate] in delegate?.showDepositScreen(coin: $0.coin!) })
+      .disposed(by: disposeBag)
+    
     input.withdraw
       .withLatestFrom(state)
       .filter { $0.coin != nil && $0.coinBalance != nil }
@@ -94,10 +100,6 @@ final class CoinDetailsPresenter: ModulePresenter, CoinDetailsModule {
       .drive(onNext: { [delegate] in delegate?.showExchangeScreen(coin: $0.coin!,
                                                                   coinBalances: $0.coinBalances!,
                                                                   coinSettings: $0.coinSettings!) })
-      .disposed(by: disposeBag)
-    
-    input.copy
-      .drive(onNext: { UIPasteboard.general.string = $0 })
       .disposed(by: disposeBag)
     
     input.showMore

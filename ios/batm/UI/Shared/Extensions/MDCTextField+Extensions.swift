@@ -12,9 +12,14 @@ extension MDCTextField {
     return textField
   }
   
-  static var dialCode: MDCTextField {
+  static var dropdown: MDCTextField {
     let textField = MDCTextField.default
     textField.setRightView(UIImageView(image: UIImage(named: "dropdown")))
+    return textField
+  }
+  
+  static var dialCode: MDCTextField {
+    let textField = MDCTextField.dropdown
     textField.keyboardType = .phonePad
     return textField
   }

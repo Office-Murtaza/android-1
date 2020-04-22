@@ -408,6 +408,7 @@ extension L.Shared {
 
   struct Button {
     static let add = "shared.button.add"
+    static let copy = "shared.button.copy"
     static let max = "shared.button.max"
     static let paste = "shared.button.paste"
     static let remove = "shared.button.remove"
