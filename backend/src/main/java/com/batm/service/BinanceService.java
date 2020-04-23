@@ -2,8 +2,6 @@ package com.batm.service;
 
 import com.batm.dto.*;
 import com.batm.model.TransactionStatus;
-import com.batm.model.solr.CoinPrice;
-import com.batm.repository.solr.CoinPriceRepository;
 import com.batm.util.Constant;
 import com.batm.util.TxUtil;
 import com.batm.util.Util;
@@ -20,10 +18,9 @@ import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
-import org.springframework.scheduling.annotation.EnableScheduling;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.web3j.utils.Numeric;
@@ -39,7 +36,6 @@ import java.util.concurrent.TimeUnit;
 
 @Getter
 @Service
-@EnableScheduling
 public class BinanceService {
 
     @Autowired
@@ -49,7 +45,7 @@ public class BinanceService {
     private BinanceApiRestClient binanceRest;
 
     @Autowired
-    private CoinPriceRepository coinPriceRepository;
+    private MongoOperations mongo;
 
     @Autowired
     private RestTemplate rest;
@@ -62,24 +58,6 @@ public class BinanceService {
 
     @Value("${bnb.explorer.url}")
     private String explorerUrl;
-
-    @Scheduled(cron = "0 0 */1 * * *") // every 1 hour
-    public void storePricesToSolr() {
-        List<CoinPrice> coinPrices = new ArrayList<>();
-
-        Arrays.stream(CoinService.CoinEnum.values()).forEach(coinEnum -> {
-            BigDecimal currentPrice = coinEnum.getPrice();
-
-            CoinPrice coinPrice = new CoinPrice();
-            coinPrice.setCoinCode(coinEnum.name());
-            coinPrice.setPrice(currentPrice.toPlainString());
-            coinPrice.setDate(new Date());
-
-            coinPrices.add(coinPrice);
-        });
-
-        coinPriceRepository.saveAll(coinPrices);
-    }
 
     @Cacheable(cacheNames = {"price"}, key = "symbol")
     public BigDecimal getBinancePriceBySymbol(String symbol) {
@@ -131,6 +109,9 @@ public class BinanceService {
             dto.setCryptoAmount(getAmount(msg.optJSONObject("value").optJSONArray("inputs").getJSONObject(0).getJSONArray("coins").getJSONObject(0).optString("amount")));
             dto.setCryptoFee(getAmount("1000000"));
         } catch (Exception e) {
+            System.out.println(" ---- txId: " + txId);
+            System.out.println(" ---- address: " + address);
+
             e.printStackTrace();
         }
 

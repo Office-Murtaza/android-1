@@ -22,10 +22,7 @@ public class TestController {
     private WalletService walletService;
 
     @Autowired
-    private SolrService solrService;
-
-    @Autowired
-    private BinanceService binance;
+    private PriceChartService priceChart;
 
     @GetMapping("/sms")
     public Response sendSMS(@RequestParam String phone) {
@@ -79,6 +76,18 @@ public class TestController {
         return Response.ok(coinCode.sign(coinCode.getWalletAddress(), toAddress, amount));
     }
 
+    @GetMapping("/coins/price-chart")
+    public Response storePriceChart() {
+        priceChart.storePriceChart();
+
+        return Response.ok(true);
+    }
+
+    @GetMapping("/user/{userId}/kyc/delete")
+    public Response deleteKyc(@PathVariable Long userId) {
+        return Response.ok(userService.resetVerificationsForUser(userId));
+    }
+
     private JSONObject getCoinJson(String address, BigDecimal balance, String path) {
         JSONObject json = new JSONObject();
 
@@ -87,24 +96,5 @@ public class TestController {
         json.put("path", path);
 
         return json;
-    }
-
-    @GetMapping("/coins/price-chart/store")
-    public Response storePricesToSolr() {
-        binance.storePricesToSolr();
-
-        return Response.ok(true);
-    }
-
-    @GetMapping("/coins/price-chart/delete")
-    public Response deletePricesToSolr() {
-        solrService.deleteAllPrices();
-
-        return Response.ok(true);
-    }
-
-    @GetMapping("/user/{userId}/kyc/delete")
-    public Response deleteKyc(@PathVariable Long userId) {
-        return Response.ok(userService.resetVerificationsForUser(userId));
     }
 }

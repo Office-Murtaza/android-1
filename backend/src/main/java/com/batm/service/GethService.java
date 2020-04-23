@@ -1,5 +1,7 @@
 package com.batm.service;
 
+import com.batm.model.GethBlock;
+import com.batm.model.GethTx;
 import com.batm.util.Constant;
 import com.google.protobuf.ByteString;
 import lombok.Getter;
@@ -7,6 +9,10 @@ import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.mongodb.core.MongoOperations;
+import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.web3j.utils.Numeric;
@@ -14,9 +20,12 @@ import wallet.core.jni.EthereumSigner;
 import wallet.core.jni.PrivateKey;
 import wallet.core.jni.proto.Ethereum;
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Service
+@EnableScheduling
 public class GethService {
 
     private final long GAS_PRICE = 50_000_000_000L;
@@ -28,11 +37,31 @@ public class GethService {
     @Autowired
     private WalletService walletService;
 
+    @Autowired
+    private MongoOperations mongo;
+
     @Value("${eth.node.url}")
     private String nodeUrl;
 
     @Value("${eth.explorer.url}")
     private String ethExplorerUrl;
+
+    @Scheduled(cron = "0 0 */1 * * *") // every 1 hour
+    public void storePricesToSolr() {
+        GethBlock block = mongo.findOne(new Query(), GethBlock.class);
+
+        //loop call from lastSuccessBlock + 1 to lastSuccessBlock + 1 + 100
+
+        List<GethTx> txs = new ArrayList<>();
+
+        for(int i = 0; i < 10; i++) {
+
+        }
+            mongo.insertAll(txs);
+
+            block.setLastSuccessBlock(1);
+            mongo.insert(block);
+    }
 
     public BigDecimal getBalance(String address) {
         try {
