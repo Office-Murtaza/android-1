@@ -9,8 +9,10 @@ import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.mongodb.core.MongoOperations;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -19,7 +21,9 @@ import org.web3j.utils.Numeric;
 import wallet.core.jni.EthereumSigner;
 import wallet.core.jni.PrivateKey;
 import wallet.core.jni.proto.Ethereum;
+
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,6 +35,9 @@ public class GethService {
     private final long GAS_PRICE = 50_000_000_000L;
     private final long GAS_LIMIT = 50_000;
 
+    private final int START_BLOCK = 9_000_000;
+    private final int MAX_BLOCK_COUNT = 100;
+
     @Autowired
     private RestTemplate rest;
 
@@ -38,7 +45,7 @@ public class GethService {
     private WalletService walletService;
 
     @Autowired
-    private MongoOperations mongo;
+    private MongoTemplate mongo;
 
     @Value("${eth.node.url}")
     private String nodeUrl;
@@ -46,21 +53,48 @@ public class GethService {
     @Value("${eth.explorer.url}")
     private String ethExplorerUrl;
 
-    @Scheduled(cron = "0 0 */1 * * *") // every 1 hour
-    public void storePricesToSolr() {
-        GethBlock block = mongo.findOne(new Query(), GethBlock.class);
+    @Scheduled(cron = "0 */1 * * * *") // every 1 minute
+    public void storeTxs() {
+        GethBlock block = mongo.exists(new Query(), GethBlock.class) ? mongo.findOne(new Query(), GethBlock.class) : new GethBlock(START_BLOCK);
+        BigInteger lastBlockNumber = getLastBlockNumber();
 
-        //loop call from lastSuccessBlock + 1 to lastSuccessBlock + 1 + 100
+        if (block.getLastSuccessBlock() < lastBlockNumber.intValue()) {
+            int n = Math.min(MAX_BLOCK_COUNT, lastBlockNumber.intValue() - block.getLastSuccessBlock());
 
-        List<GethTx> txs = new ArrayList<>();
+            for (int i = block.getLastSuccessBlock() + 1; i < block.getLastSuccessBlock() + n + 1; i++) {
+                JSONObject blockJson = getBlockByNumber(BigInteger.valueOf(i));
+                JSONArray txs = blockJson.optJSONArray("transactions");
+                List<GethTx> gethTxs = new ArrayList<>();
 
-        for(int i = 0; i < 10; i++) {
+                for (int j = 0; j < txs.size(); j++) {
+                    JSONObject json = txs.getJSONObject(j);
 
+                    BigDecimal amount = new BigDecimal(Numeric.toBigInt(json.optString("value")))
+                            .divide(Constant.ETH_DIVIDER)
+                            .stripTrailingZeros();
+
+                    BigDecimal fee = new BigDecimal(Numeric.toBigInt(json.optString("gasPrice")))
+                            .multiply(new BigDecimal(Numeric.toBigInt(json.optString("gas"))))
+                            .divide(Constant.ETH_DIVIDER)
+                            .stripTrailingZeros();
+
+                    gethTxs.add(GethTx.builder()
+                            .txId(json.optString("hash"))
+                            .blockNumber(i)
+                            .fromAddress(json.optString("from"))
+                            .toAddress(json.optString("to"))
+                            .amount(amount)
+                            .fee(fee)
+                            .blockTime(Numeric.toBigInt(blockJson.optString("timestamp")).longValue())
+                            .build());
+                }
+
+                mongo.remove(new Query(Criteria.where("blockNumber").is(i)), GethTx.class);
+                mongo.insertAll(gethTxs);
+
+                mongo.upsert(new Query(), new Update().set("lastSuccessBlock", i), GethBlock.class);
+            }
         }
-            mongo.insertAll(txs);
-
-            block.setLastSuccessBlock(1);
-            mongo.insert(block);
     }
 
     public BigDecimal getBalance(String address) {
@@ -133,6 +167,42 @@ public class GethService {
         }
 
         return GAS_LIMIT;
+    }
+
+    public BigInteger getLastBlockNumber() {
+        try {
+            JSONObject req = new JSONObject();
+            req.put("jsonrpc", "2.0");
+            req.put("method", "eth_blockNumber");
+            req.put("params", new JSONArray());
+            req.put("id", 1);
+
+            JSONObject res = rest.postForObject(nodeUrl, req, JSONObject.class);
+
+            return Numeric.toBigInt(res.optString("result"));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    public JSONObject getBlockByNumber(BigInteger blockNumber) {
+        try {
+            JSONObject req = new JSONObject();
+            req.put("jsonrpc", "2.0");
+            req.put("method", "eth_getBlockByNumber");
+            req.put("params", JSONArray.fromObject("[\"" + Numeric.toHexStringWithPrefix(blockNumber) + "\", true]"));
+            req.put("id", 1);
+
+            JSONObject res = rest.postForObject(nodeUrl, req, JSONObject.class);
+
+            return res.optJSONObject("result");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
     }
 
     public BigDecimal getTxFee() {

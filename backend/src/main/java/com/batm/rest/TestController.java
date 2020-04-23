@@ -24,6 +24,9 @@ public class TestController {
     @Autowired
     private PriceChartService priceChart;
 
+    @Autowired
+    private GethService gethService;
+
     @GetMapping("/sms")
     public Response sendSMS(@RequestParam String phone) {
         return Response.ok(messageService.sendMessage(phone, "Hey there, do you want to buy an elephant?"));
@@ -76,9 +79,16 @@ public class TestController {
         return Response.ok(coinCode.sign(coinCode.getWalletAddress(), toAddress, amount));
     }
 
-    @GetMapping("/coins/price-chart")
+    @GetMapping("/coins/store-price-chart")
     public Response storePriceChart() {
         priceChart.storePriceChart();
+
+        return Response.ok(true);
+    }
+
+    @GetMapping("/coins/store-txs")
+    public Response storeTxs() {
+        gethService.storeTxs();
 
         return Response.ok(true);
     }
