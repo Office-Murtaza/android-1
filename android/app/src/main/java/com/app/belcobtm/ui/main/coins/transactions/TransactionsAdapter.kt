@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.app.belcobtm.R
 import com.app.belcobtm.api.model.response.CoinModel
 import com.app.belcobtm.api.model.response.TransactionModel
+import com.app.belcobtm.presentation.core.extensions.toStringCoin
 import com.app.belcobtm.ui.main.coins.details.DetailsActivity
 import kotlinx.android.synthetic.main.item_transaction.view.*
 
@@ -75,12 +76,7 @@ class TransactionsAdapter(
             holder.itemView.transaction_status.text = context.getString(transactionStatusTextId)
             holder.itemView.transaction_status.background = context.getDrawable(transactionStatusBgId)
             holder.itemView.transaction_type.text = context.getString(transactionTypeTextId)
-            holder.itemView.transaction_amount.text = item.value.toString()
-
-            val balance = if (item.value > 0)
-                String.format("%.8f", item.value).trimEnd('0')
-            else item.value.toString()
-            holder.itemView.transaction_amount.text = balance
+            holder.itemView.amountView.text = item.value.toStringCoin()
 
             if (position >= mTransactionList.size - 1) {
                 onLoadNextCallback()
@@ -88,7 +84,6 @@ class TransactionsAdapter(
             holder.itemView.setOnClickListener {
                 DetailsActivity.start(holder.itemView.context, item, coin)
             }
-
         }
     }
 

@@ -114,7 +114,8 @@ class SellActivity : BaseMvpActivity<SellContract.View, SellContract.Presenter>(
                 editable.isEmpty() -> amountCryptoView.clearText()
                 editable.toString().toInt() == 0 -> {
                     editable.clear()
-                    amountCryptoView.clearText()
+                    editable.insert(0, 0.toString())
+                    amountCryptoView.setText(editable.toString())
                 }
                 else -> {
                     val temporaryUsdAmount = amountUsdView.getString().toInt()
@@ -133,7 +134,7 @@ class SellActivity : BaseMvpActivity<SellContract.View, SellContract.Presenter>(
 
                     editable.clear()
                     editable.insert(0, usdAmount.toString())
-                    amountCryptoView.setText(String.format("%.6f", cryptoAmount).trimEnd('0'))
+                    amountCryptoView.setText(cryptoAmount.toStringCoin())
                 }
             }
 

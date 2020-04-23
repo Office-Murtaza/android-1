@@ -9,7 +9,6 @@ import android.text.TextWatcher
 import android.view.MenuItem
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.AppCompatEditText
-import androidx.core.widget.doAfterTextChanged
 import com.app.belcobtm.R
 import com.app.belcobtm.api.model.response.CoinModel
 import com.app.belcobtm.mvp.BaseMvpActivity
@@ -43,16 +42,8 @@ class WithdrawActivity : BaseMvpActivity<WithdrawContract.View, WithdrawContract
         addressScanView.setOnClickListener { IntentIntegrator(this).initiateScan() }
         addressPasteView.setOnClickListener { addressView.setText(getTextFromClipboard()) }
         maxCryptoView.setOnClickListener {
-            //TODO
             val balance = mCoin.balance - mPresenter.getTransactionFee(mCoin.coinId)
-            val balanceStr = if (balance > 0) {
-                cryptoBalanceToSend = balance
-                String.format("%.6f", balance).trimEnd('0')
-            } else {
-                cryptoBalanceToSend = 0.0
-                "0"
-            }
-            amountCryptoView.setText(balanceStr.replace(',', '.'))
+            amountCryptoView.setText(balance.toStringCoin())
         }
         amountUsdView?.editText?.keyListener = null
         amountCryptoView.editText?.addTextChangedListener(coinFromTextWatcher)
@@ -64,11 +55,9 @@ class WithdrawActivity : BaseMvpActivity<WithdrawContract.View, WithdrawContract
     }
 
     private fun initBalance() {
-        val convertedBalance = if (mCoin.balance > 0) String.format("%.6f", mCoin.balance).trimEnd('0') else "0"
-        balanceCryptoView.text = getString(R.string.transaction_crypto_balance, convertedBalance, mCoin.coinId)
-
-        val amountUsd = mCoin.balance * mCoin.price.uSD
-        balanceUsdView.text = "${String.format("%.2f", amountUsd)} USD"
+        balanceCryptoView.text =
+            getString(R.string.transaction_crypto_balance, mCoin.balance.toStringCoin(), mCoin.coinId)
+        balanceUsdView.text = getString(R.string.transaction_price_usd, (mCoin.balance * mCoin.price.uSD).toStringUsd())
     }
 
     private fun initViews() {
@@ -170,7 +159,6 @@ class WithdrawActivity : BaseMvpActivity<WithdrawContract.View, WithdrawContract
     }
 
     private val coinFromTextWatcher = object : TextWatcher {
-        val dotChar: Char = '.'
         var isRunning = false
         var isDeleting = false
 
@@ -186,22 +174,24 @@ class WithdrawActivity : BaseMvpActivity<WithdrawContract.View, WithdrawContract
             isRunning = true
 
             when {
-                editable.isEmpty() || editable.toString().replace(
-                    dotChar.toString(),
-                    ""
-                ).toInt() <= 0 -> {
-                    when {
-                        editable.contains(dotChar) && editable.indexOf(dotChar, 0, false) > 1 ->
-                            editable.delete(0, editable.indexOf(dotChar, 0, false) - 1)
-                        !editable.contains(dotChar) && editable.length > 1 -> editable.delete(0, editable.length - 1)
-                    }
-                    amountUsdView.clearText()
-                }
-                editable.first() == dotChar -> editable.insert(0, "0")
-                editable.last() == dotChar && editable.count { it == dotChar } > 1 -> editable.delete(
+                editable.isNotEmpty() && editable.first() == DOT_CHAR -> editable.insert(0, "0")
+                editable.isNotEmpty() && editable.last() == DOT_CHAR && editable.count { it == DOT_CHAR } > 1 -> editable.delete(
                     editable.lastIndex,
                     editable.length
                 )
+                editable.contains(DOT_CHAR) && (editable.lastIndex - editable.indexOf(DOT_CHAR)) > MAX_CHARS_AFTER_DOT -> editable.delete(
+                    editable.lastIndex - 1,
+                    editable.lastIndex
+                )
+                editable.isEmpty() || editable.toString().replace(DOT_CHAR.toString(), "").toInt() <= 0 -> {
+                    val isContainsDot = editable.contains(DOT_CHAR)
+                    val indexOfDot = editable.indexOf(DOT_CHAR)
+                    when {
+                        isContainsDot && indexOfDot > 1 -> editable.delete(0, indexOfDot - 1)
+                        !isContainsDot && editable.length > 1 -> editable.delete(0, editable.length - 1)
+                    }
+                    amountUsdView.clearText()
+                }
                 else -> {
                     val cryptoBalance = mCoin.balance - mPresenter.getTransactionFee(mCoin.coinId)
                     val cryptoAmountTemporary = amountCryptoView.getString().toDouble()
@@ -209,8 +199,10 @@ class WithdrawActivity : BaseMvpActivity<WithdrawContract.View, WithdrawContract
                         if (cryptoAmountTemporary > cryptoBalance) cryptoBalance
                         else cryptoAmountTemporary
 
-                    editable.clear()
-                    editable.insert(0, cryptoAmount.toStringCoin())
+                    if (cryptoAmountTemporary > cryptoBalance) {
+                        editable.clear()
+                        editable.insert(0, cryptoAmount.toStringCoin())
+                    }
                     amountUsdView.setText((cryptoAmount * mCoin.price.uSD).toStringUsd())
 
                     cryptoBalanceToSend = cryptoAmount
@@ -223,6 +215,8 @@ class WithdrawActivity : BaseMvpActivity<WithdrawContract.View, WithdrawContract
 
     companion object {
         private const val KEY_COIN = "KEY_COIN"
+        const val MAX_CHARS_AFTER_DOT = 6
+        const val DOT_CHAR: Char = '.'
 
         @JvmStatic
         fun start(context: Context?, coin: CoinModel) {

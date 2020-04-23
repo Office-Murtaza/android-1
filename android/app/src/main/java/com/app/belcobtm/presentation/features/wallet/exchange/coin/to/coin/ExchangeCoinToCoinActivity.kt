@@ -161,7 +161,6 @@ class ExchangeCoinToCoinActivity : BaseActivity() {
     }
 
     private val coinFromTextWatcher = object : TextWatcher {
-        val dotChar: Char = '.'
         var isRunning = false
         var isDeleting = false
 
@@ -173,45 +172,43 @@ class ExchangeCoinToCoinActivity : BaseActivity() {
 
         override fun afterTextChanged(editable: Editable) {
             if (isRunning) return
-
             isRunning = true
 
             when {
-                editable.isEmpty() || editable.toString().replace(
-                    dotChar.toString(),
-                    ""
-                ).toInt() <= 0 -> {
-                    when {
-                        editable.contains(dotChar) && editable.indexOf(dotChar, 0, false) > 1 ->
-                            editable.delete(0, editable.indexOf(dotChar, 0, false) - 1)
-                        !editable.contains(dotChar) && editable.length > 1 -> editable.delete(0, editable.length - 1)
-                    }
-
-                    amountCoinToView.clearText()
-                }
-                editable.first() == dotChar -> editable.insert(0, "0")
-                editable.last() == dotChar && editable.count { it == dotChar } > 1 -> editable.delete(
+                editable.isNotEmpty() && editable.first() == DOT_CHAR -> editable.insert(0, "0")
+                editable.isNotEmpty() && editable.last() == DOT_CHAR && editable.count { it == DOT_CHAR } > 1 -> editable.delete(
                     editable.lastIndex,
                     editable.length
                 )
+                editable.contains(DOT_CHAR) && (editable.lastIndex - editable.indexOf(DOT_CHAR)) > MAX_CHARS_AFTER_DOT -> editable.delete(
+                    editable.lastIndex - 1,
+                    editable.lastIndex
+                )
+                editable.isEmpty() || editable.toString().replace(DOT_CHAR.toString(), "").toInt() <= 0 -> {
+                    val isContainsDot = editable.contains(DOT_CHAR)
+                    val indexOfDot = editable.indexOf(DOT_CHAR)
+                    when {
+                        isContainsDot && indexOfDot > 1 -> editable.delete(0, indexOfDot - 1)
+                        !isContainsDot && editable.length > 1 -> editable.delete(0, editable.length - 1)
+                    }
+                    amountCoinToView.clearText()
+                }
                 else -> {
                     val fromCoinTemporaryValue = amountCoinFromView.getString().toDouble()
                     val fromCoinAmount: Double =
                         if (fromCoinTemporaryValue > viewModel.fromCoinItem.balanceCoin) viewModel.fromCoinItem.balanceCoin
                         else fromCoinTemporaryValue
                     val toCoinRefPrice = viewModel.toCoinItem?.priceUsd ?: 0.0
-                    editable.clear()
-                    if (toCoinRefPrice <= 0) {
-                        editable.insert(0, toCoinRefPrice.toStringCoin())
-                        amountCoinToView.setText(toCoinRefPrice.toStringCoin())
-                    } else {
-                        val fromCoinPrice = viewModel.fromCoinItem.priceUsd
-                        val fromCoinProfitC2c = viewModel.coinFeeItem.profitC2C
-                        val toCoinAmount =
-                            (fromCoinAmount * fromCoinPrice) / toCoinRefPrice * (100 - fromCoinProfitC2c) / 100
+                    val fromCoinPrice = viewModel.fromCoinItem.priceUsd
+                    val fromCoinProfitC2c = viewModel.coinFeeItem.profitC2C
+                    val toCoinAmount =
+                        (fromCoinAmount * fromCoinPrice) / toCoinRefPrice * (100 - fromCoinProfitC2c) / 100
+
+                    if (fromCoinTemporaryValue > viewModel.fromCoinItem.balanceCoin) {
+                        editable.clear()
                         editable.insert(0, fromCoinAmount.toStringCoin())
-                        amountCoinToView.setText(toCoinAmount.toStringCoin())
                     }
+                    amountCoinToView.setText(toCoinAmount.toStringCoin())
                 }
             }
 
@@ -222,5 +219,7 @@ class ExchangeCoinToCoinActivity : BaseActivity() {
     companion object {
         const val TAG_COIN_ITEM = "tag_coin_item"
         const val TAG_COIN_ITEM_LIST = "tag_coin_item_list"
+        const val MAX_CHARS_AFTER_DOT = 6
+        const val DOT_CHAR: Char = '.'
     }
 }

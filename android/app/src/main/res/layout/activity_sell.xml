@@ -130,7 +130,7 @@
 
         <com.google.android.material.textfield.TextInputEditText
             style="@style/WalletTab.EditText.InputWithMax"
-            android:digits="1234567890."
+            android:digits="1234567890"
             android:inputType="number"
             android:hint="@string/sell_screen_usd_amount"
             tools:ignore="RtlSymmetry" />

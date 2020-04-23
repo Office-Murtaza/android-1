@@ -193,6 +193,7 @@
         android:layout_height="match_parent"
         android:background="@color/gray_progress"
         android:clickable="true"
+        android:elevation="15dp"
         android:focusable="true"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"

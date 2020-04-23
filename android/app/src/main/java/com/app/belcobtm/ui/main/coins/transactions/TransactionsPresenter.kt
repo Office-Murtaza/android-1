@@ -115,7 +115,14 @@ class TransactionsPresenter : BaseMvpDIPresenterImpl<TransactionsContract.View, 
 
     private fun transactionsDownloaded(response: GetTransactionsResponse) {
         mTotalTransactions = response.total
-        transactionList.addAll(response.transactions)
+        val newItems = if (transactionList.isEmpty()) {
+            response.transactions
+        } else {
+            response.transactions.filter { responseItem ->
+                transactionList.firstOrNull { responseItem.txid == it.txid } == null
+            }
+        }
+        transactionList.addAll(newItems)
         mView?.notifyTransactions()
     }
 

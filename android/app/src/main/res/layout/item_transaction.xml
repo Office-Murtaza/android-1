@@ -59,7 +59,7 @@
     </FrameLayout>
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/transaction_amount"
+        android:id="@+id/amountView"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"

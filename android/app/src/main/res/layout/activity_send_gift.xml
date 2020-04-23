@@ -169,13 +169,12 @@
         <com.google.android.material.textfield.TextInputEditText
             style="@style/WalletTab.EditText.InputWithMax"
             android:digits="1234567890."
-            android:focusableInTouchMode="false"
             android:enabled="false"
-            android:text="ffs"
-            android:textColor="@android:color/black"
+            android:focusableInTouchMode="false"
             android:hint="@string/send_gift_screen_usd_amount"
             android:inputType="numberDecimal"
             android:textAllCaps="true"
+            android:textColor="@android:color/black"
             tools:ignore="RtlSymmetry" />
 
     </com.google.android.material.textfield.TextInputLayout>
@@ -282,6 +281,7 @@
         android:layout_height="match_parent"
         android:background="@color/gray_progress"
         android:clickable="true"
+        android:elevation="15dp"
         android:focusable="true"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"

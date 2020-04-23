@@ -9,12 +9,8 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.MenuItem
 import android.view.View
-import android.view.inputmethod.EditorInfo
-import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.AppCompatEditText
-import androidx.core.widget.addTextChangedListener
-import androidx.core.widget.doAfterTextChanged
 import com.app.belcobtm.R
 import com.app.belcobtm.api.model.response.CoinModel
 import com.app.belcobtm.mvp.BaseMvpActivity
@@ -34,17 +30,6 @@ import org.parceler.Parcels
 
 class SendGiftActivity : BaseMvpActivity<SendGiftContract.View, SendGiftContract.Presenter>(),
     SendGiftContract.View, GiphyDialogFragment.GifSelectionListener {
-
-    companion object {
-        private const val KEY_COIN = "KEY_COIN"
-
-        @JvmStatic
-        fun start(context: Context?, coin: CoinModel) {
-            val intent = Intent(context, SendGiftActivity::class.java)
-            intent.putExtra(KEY_COIN, Parcels.wrap(coin))
-            context?.startActivity(intent)
-        }
-    }
 
     private lateinit var gifsDialog: GiphyDialogFragment
     private lateinit var mCoin: CoinModel
@@ -112,25 +97,19 @@ class SendGiftActivity : BaseMvpActivity<SendGiftContract.View, SendGiftContract
     }
 
     private fun initBalance() {
-        val convertedBalance = if (mCoin.balance > 0) String.format("%.6f", mCoin.balance).trimEnd('0') else "0"
-        balanceCryptoView.text = getString(R.string.transaction_crypto_balance, convertedBalance, mCoin.coinId)
-
-        val amountUsd = mCoin.balance * mCoin.price.uSD
-        balanceUsdView.text = "${String.format("%.2f", amountUsd)} USD"
+        balanceCryptoView.text =
+            getString(R.string.transaction_crypto_balance, mCoin.balance.toStringCoin(), mCoin.coinId)
+        balanceUsdView.text = getString(R.string.transaction_price_usd, (mCoin.balance * mCoin.price.uSD).toStringUsd())
     }
 
     private fun selectMaxPrice() {
         val balance = mCoin.balance - mPresenter.getTransactionFee(mCoin.coinId)
-        val balanceStr = if (balance > 0) {
-            cryptoBalanceToSend = balance
-            String.format("%.6f", balance).trimEnd('0')
+        cryptoBalanceToSend = if (balance > 0) {
+            balance
         } else {
-            cryptoBalanceToSend = 0.0
-            "0"
+            0.0
         }
-
-        val cryptoText = if (balanceStr.contains(",")) balanceStr.replace(',', '.') else balanceStr
-        amountCryptoView.setText(cryptoText)
+        amountCryptoView.setText(balance.toStringCoin())
     }
 
     private fun openGify() {
@@ -187,7 +166,7 @@ class SendGiftActivity : BaseMvpActivity<SendGiftContract.View, SendGiftContract
         }
 
         if (errors == 0) {
-            mPresenter.getCoinTransactionHash(
+            mPresenter.createTransaction(
                 this,
                 mCoin,
                 phoneStrng,
@@ -215,7 +194,7 @@ class SendGiftActivity : BaseMvpActivity<SendGiftContract.View, SendGiftContract
                 if (code.length != 4) {
                     openSmsCodeDialog(getString(R.string.error_sms_code_4_digits))
                 } else {
-                    mPresenter.verifySmsCode(code)
+                    mPresenter.completeTransaction(code)
                 }
             }
             .setNegativeButton(R.string.cancel, null)
@@ -254,36 +233,54 @@ class SendGiftActivity : BaseMvpActivity<SendGiftContract.View, SendGiftContract
             isRunning = true
 
             when {
-                editable.isEmpty() || editable.toString().replace(
-                    dotChar.toString(),
-                    ""
-                ).toInt() <= 0 -> {
-                    when {
-                        editable.contains(dotChar) && editable.indexOf(dotChar, 0, false) > 1 ->
-                            editable.delete(0, editable.indexOf(dotChar, 0, false) - 1)
-                        !editable.contains(dotChar) && editable.length > 1 -> editable.delete(0, editable.length - 1)
-                    }
-
-                    amountUsdView.clearText()
-                }
-                editable.first() == dotChar -> editable.insert(0, "0")
-                editable.last() == dotChar && editable.count { it == dotChar } > 1 -> editable.delete(
+                editable.isNotEmpty() && editable.first() == DOT_CHAR -> editable.insert(0, "0")
+                editable.isNotEmpty() && editable.last() == DOT_CHAR && editable.count { it == DOT_CHAR } > 1 -> editable.delete(
                     editable.lastIndex,
                     editable.length
                 )
+                editable.contains(DOT_CHAR) && (editable.lastIndex - editable.indexOf(DOT_CHAR)) > MAX_CHARS_AFTER_DOT -> editable.delete(
+                    editable.lastIndex - 1,
+                    editable.lastIndex
+                )
+                editable.isEmpty() || editable.toString().replace(DOT_CHAR.toString(), "").toInt() <= 0 -> {
+                    val isContainsDot = editable.contains(DOT_CHAR)
+                    val indexOfDot = editable.indexOf(DOT_CHAR)
+                    when {
+                        isContainsDot && indexOfDot > 1 -> editable.delete(0, indexOfDot - 1)
+                        !isContainsDot && editable.length > 1 -> editable.delete(0, editable.length - 1)
+                    }
+                    amountUsdView.clearText()
+                }
                 else -> {
                     val balanceCoin = mCoin.balance - mPresenter.getTransactionFee(mCoin.coinId)
                     val fromCoinTemporaryValue = amountCryptoView.getString().toDouble()
                     val fromCoinAmount: Double =
                         if (fromCoinTemporaryValue > balanceCoin) balanceCoin
                         else fromCoinTemporaryValue
-                    editable.clear()
-                    editable.insert(0, fromCoinAmount.toStringCoin())
-                    amountUsdView.setText(String.format("%.2f", (fromCoinAmount * mCoin.price.uSD)))
+
+                    if (fromCoinTemporaryValue > balanceCoin) {
+                        editable.clear()
+                        editable.insert(0, fromCoinAmount.toStringCoin())
+                    }
+                    amountUsdView.setText((fromCoinAmount * mCoin.price.uSD).toStringUsd())
+                    cryptoBalanceToSend = fromCoinAmount
                 }
             }
 
             isRunning = false
+        }
+    }
+
+    companion object {
+        private const val KEY_COIN = "KEY_COIN"
+        const val MAX_CHARS_AFTER_DOT = 6
+        const val DOT_CHAR: Char = '.'
+
+        @JvmStatic
+        fun start(context: Context?, coin: CoinModel) {
+            val intent = Intent(context, SendGiftActivity::class.java)
+            intent.putExtra(KEY_COIN, Parcels.wrap(coin))
+            context?.startActivity(intent)
         }
     }
 }

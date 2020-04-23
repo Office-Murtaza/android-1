@@ -9,7 +9,7 @@ import wallet.core.jni.CoinType
 class CreateTransactionUseCase(private val repository: WalletRepository) :
     UseCase<String, CreateTransactionUseCase.Params>() {
     override suspend fun run(params: Params): Either<Failure, String> =
-        repository.createTransaction(params.fromCoinCode, params.fromCoinAmount)
+        repository.createTransaction(params.fromCoinCode, params.fromCoinAmount, params.isNeedSendSms)
 
-    data class Params(val fromCoinCode: String, val fromCoinAmount: Double)
+    data class Params(val fromCoinCode: String, val fromCoinAmount: Double, val isNeedSendSms: Boolean = true)
 }

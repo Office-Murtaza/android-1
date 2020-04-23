@@ -1,6 +1,7 @@
 package com.app.belcobtm.data.rest.wallet
 
 import com.app.belcobtm.data.rest.wallet.request.CoinToCoinExchangeRequest
+import com.app.belcobtm.data.rest.wallet.request.SendGiftRequest
 import com.app.belcobtm.data.rest.wallet.request.VerifySmsCodeRequest
 import com.app.belcobtm.data.rest.wallet.request.WithdrawRequest
 import com.app.belcobtm.data.rest.wallet.response.hash.BinanceBlockResponse
@@ -31,6 +32,40 @@ class WalletApiService(
             requestBody
         ).await()
 
+        request.body()?.let { Either.Right(Unit) } ?: Either.Left(Failure.ServerError())
+    } catch (failure: Failure) {
+        failure.printStackTrace()
+        Either.Left(failure)
+    }
+
+    suspend fun getGiftAddress(
+        coinFrom: String,
+        phone: String
+    ): Either<Failure, String> = try {
+        val request = api.getGiftAddressAsync(prefHelper.userId, coinFrom, phone).await()
+        request.body()?.let { Either.Right(it.address ?: "") } ?: Either.Left(Failure.ServerError())
+    } catch (failure: Failure) {
+        failure.printStackTrace()
+        Either.Left(failure)
+    }
+
+    suspend fun sendGift(
+        hash: String,
+        coinFrom: String,
+        coinFromAmount: Double,
+        giftId: String,
+        phone: String,
+        message: String
+    ): Either<Failure, Unit> = try {
+        val requestBody = SendGiftRequest(
+            TRANSACTION_SEND_GIFT,
+            coinFromAmount,
+            phone,
+            message,
+            giftId,
+            hash
+        )
+        val request = api.sendGiftAsync(prefHelper.userId, coinFrom, requestBody).await()
         request.body()?.let { Either.Right(Unit) } ?: Either.Left(Failure.ServerError())
     } catch (failure: Failure) {
         failure.printStackTrace()
@@ -125,6 +160,7 @@ class WalletApiService(
 
     companion object {
         const val TRANSACTION_WITHDRAW = 2
+        const val TRANSACTION_SEND_GIFT = 3
         const val TRANSACTION_SEND_COIN_TO_COIN = 8
 //    case .unknown: return 0
 //    case .deposit: return 1
