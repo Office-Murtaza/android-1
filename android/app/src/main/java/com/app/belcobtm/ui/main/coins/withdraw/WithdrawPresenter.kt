@@ -6,6 +6,7 @@ import com.app.belcobtm.domain.Failure
 import com.app.belcobtm.domain.wallet.interactor.CreateTransactionUseCase
 import com.app.belcobtm.domain.wallet.interactor.WithdrawUseCase
 import com.app.belcobtm.mvp.BaseMvpDIPresenterImpl
+import io.realm.Realm
 import org.koin.core.KoinComponent
 import org.koin.core.inject
 
@@ -16,6 +17,10 @@ class WithdrawPresenter : BaseMvpDIPresenterImpl<WithdrawContract.View, Withdraw
     private var mTransactionHash: String? = null
     private var coinCode: String? = null
     private var coinAmount: Double? = null
+
+    init {
+        Realm.getDefaultInstance()
+    }
 
     override fun injectDependency() = presenterComponent.inject(this)
 

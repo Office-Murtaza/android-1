@@ -10,6 +10,7 @@ import com.app.belcobtm.domain.wallet.interactor.GetGiftAddressUseCase
 import com.app.belcobtm.domain.wallet.interactor.SendGiftUseCase
 import com.app.belcobtm.mvp.BaseMvpDIPresenterImpl
 import com.giphy.sdk.core.models.Media
+import io.realm.Realm
 import org.koin.core.KoinComponent
 import org.koin.core.inject
 
@@ -38,6 +39,10 @@ class SendGiftPresenter : BaseMvpDIPresenterImpl<SendGiftContract.View, Withdraw
 
     private var _phone: String? = null
     private var _gifMedia: Media? = null
+
+    init {
+        Realm.getDefaultInstance()
+    }
 
     override fun injectDependency() = presenterComponent.inject(this)
 

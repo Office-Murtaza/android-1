@@ -53,7 +53,7 @@ class AuthorizationRepositoryImpl(
     override suspend fun recoverWalletVerifySmsCode(
         smsCode: String
     ): Either<Failure, Unit> = if (networkUtils.isNetworkAvailable()) {
-        apiService.recoverWalletVerifySmsCode(prefHelper.userId, smsCode)
+       apiService.recoverWalletVerifySmsCode(prefHelper.userId, smsCode)
     } else {
         Either.Left(Failure.NetworkConnection)
     }
@@ -163,26 +163,11 @@ class AuthorizationRepositoryImpl(
         val realm = Realm.getDefaultInstance()
         return DbCryptoCoinModel().apply {
             //DbCryptoCoin need add to data layer
-            addCoin(
-                realm,
-                DbCryptoCoin("BTC", bitcoin.value(), bitcoinAddress, bitcoinPrivateKeyStr)
-            )
-            addCoin(
-                realm,
-                DbCryptoCoin("BCH", bitcoinCash.value(), bitcoinChAddress, bitcoinChPrivateKeyStr)
-            )
-            addCoin(
-                realm,
-                DbCryptoCoin("ETH", etherum.value(), etherumAddress, etherumPrivateKeyStr)
-            )
-            addCoin(
-                realm,
-                DbCryptoCoin("LTC", litecoin.value(), litecoinAddress, litecoinPrivateKeyStr)
-            )
-            addCoin(
-                realm,
-                DbCryptoCoin("BNB", binance.value(), binanceAddress, binancePrivateKeyStr)
-            )
+            addCoin(realm, DbCryptoCoin("BTC", bitcoin.value(), bitcoinAddress, bitcoinPrivateKeyStr))
+            addCoin(realm, DbCryptoCoin("BCH", bitcoinCash.value(), bitcoinChAddress, bitcoinChPrivateKeyStr))
+            addCoin(realm, DbCryptoCoin("ETH", etherum.value(), etherumAddress, etherumPrivateKeyStr))
+            addCoin(realm, DbCryptoCoin("LTC", litecoin.value(), litecoinAddress, litecoinPrivateKeyStr))
+            addCoin(realm, DbCryptoCoin("BNB", binance.value(), binanceAddress, binancePrivateKeyStr))
             addCoin(realm, DbCryptoCoin("TRX", tron.value(), tronAddress, tronPrivateKeyStr))
             addCoin(realm, DbCryptoCoin("XRP", xrp.value(), xrpAddress, xrpPrivateKeyStr))
         }.getAllCryptoCoin(realm)
