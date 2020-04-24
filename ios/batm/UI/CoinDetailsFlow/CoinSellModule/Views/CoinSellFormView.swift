@@ -3,7 +3,7 @@ import RxSwift
 import RxCocoa
 import MaterialComponents
 
-final class CoinWithdrawFormView: UIView {
+final class CoinSellFormView: UIView {
   
   let stackView: UIStackView = {
     let stackView = UIStackView()
@@ -11,27 +11,21 @@ final class CoinWithdrawFormView: UIView {
     return stackView
   }()
   
-  let addressButtonsStackView: UIStackView = {
-    let stackView = UIStackView()
-    stackView.axis = .horizontal
-    return stackView
-  }()
-  
-  let coinMaxButton = MDCButton.max
   let currencyMaxButton = MDCButton.max
-  let pasteButton = MDCButton.paste
-  let scanButton = MDCButton.scan
   
-  let addressTextField = MDCTextField.default
-  let coinAmountTextField = MDCTextField.amount
+  let coinAmountTextField: MDCTextField = {
+    let textField = MDCTextField.amount
+    textField.isEnabled = false
+    return textField
+  }()
   let currencyAmountTextField = MDCTextField.amount
   
-  let addressTextFieldController: MDCTextInputControllerOutlined
   let coinAmountTextFieldController: MDCTextInputControllerOutlined
   let currencyAmountTextFieldController: MDCTextInputControllerOutlined
   
+  let anotherAddressView = CoinSellAnotherAddressView()
+  
   override init(frame: CGRect) {
-    addressTextFieldController = ThemedTextInputControllerOutlined(textInput: addressTextField)
     coinAmountTextFieldController = ThemedTextInputControllerOutlined(textInput: coinAmountTextField)
     currencyAmountTextFieldController = ThemedTextInputControllerOutlined(textInput: currencyAmountTextField)
     
@@ -48,26 +42,25 @@ final class CoinWithdrawFormView: UIView {
   private func setupUI() {
     translatesAutoresizingMaskIntoConstraints = false
     
-    addSubview(stackView)
-    stackView.addArrangedSubviews(addressTextField,
-                                  coinAmountTextField,
+    addSubviews(stackView,
+                anotherAddressView)
+    stackView.addArrangedSubviews(coinAmountTextField,
                                   currencyAmountTextField)
     
-    addressButtonsStackView.addArrangedSubviews(pasteButton,
-                                                scanButton)
-
-    addressTextField.setRightView(addressButtonsStackView)
-    coinAmountTextField.setRightView(coinMaxButton)
     currencyAmountTextField.setRightView(currencyMaxButton)
     
-    addressTextFieldController.placeholderText = localize(L.CoinWithdraw.Form.RecipientAddress.placeholder)
     coinAmountTextFieldController.placeholderText = localize(L.CoinWithdraw.Form.CoinAmount.placeholder)
     currencyAmountTextFieldController.placeholderText = localize(L.CoinWithdraw.Form.CurrencyAmount.placeholder)
   }
   
   private func setupLayout() {
     stackView.snp.makeConstraints {
-      $0.edges.equalToSuperview()
+      $0.top.left.right.equalToSuperview()
+    }
+    anotherAddressView.snp.makeConstraints {
+      $0.top.equalTo(stackView.snp.bottom).offset(10)
+      $0.left.equalToSuperview().offset(15)
+      $0.bottom.equalToSuperview()
     }
   }
   
@@ -76,24 +69,17 @@ final class CoinWithdrawFormView: UIView {
   }
 }
 
-extension Reactive where Base == CoinWithdrawFormView {
+extension Reactive where Base == CoinSellFormView {
   var currencyText: ControlProperty<String?> {
     return base.currencyAmountTextField.rx.text
   }
   var coinText: ControlProperty<String?> {
     return base.coinAmountTextField.rx.text
   }
-  var addressText: ControlProperty<String?> {
-    return base.addressTextField.rx.text
-  }
   var maxTap: Driver<Void> {
-    return Driver.merge(base.coinMaxButton.rx.tap.asDriver(),
-                        base.currencyMaxButton.rx.tap.asDriver())
+    return base.currencyMaxButton.rx.tap.asDriver()
   }
-  var pasteTap: Driver<Void> {
-    return base.pasteButton.rx.tap.asDriver()
-  }
-  var scanTap: Driver<Void> {
-    return base.scanButton.rx.tap.asDriver()
+  var isAnotherAddress: Driver<Bool> {
+    return base.anotherAddressView.rx.isAccepted
   }
 }

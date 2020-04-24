@@ -1,11 +1,13 @@
 import Foundation
 import PhoneNumberKit
+import FlagPhoneNumber
 
 enum CoinSendGiftAction: Equatable {
   case setupCoin(BTMCoin)
   case setupCoinBalance(CoinBalance)
   case setupCoinSettings(CoinSettings)
-  case updatePhone(ValidatablePhoneNumber)
+  case updateCountry(FPNCountry)
+  case updatePhone(String?)
   case pastePhone(String)
   case updateCurrencyAmount(String?)
   case updateCoinAmount(String?)
@@ -22,7 +24,8 @@ struct CoinSendGiftState: Equatable {
   var coin: BTMCoin?
   var coinBalance: CoinBalance?
   var coinSettings: CoinSettings?
-  var validatablePhone = ValidatablePhoneNumber()
+  var country: FPNCountry?
+  var phone: String = ""
   var currencyAmount: String = ""
   var coinAmount: String = ""
   var code: String = ""
@@ -34,6 +37,18 @@ struct CoinSendGiftState: Equatable {
   var maxValue: Double {
     guard let balance = coinBalance?.balance, let fee = coinSettings?.txFee, balance > fee else { return 0 }
     return balance - fee
+  }
+  
+  var phoneE164: String {
+    guard let region = country?.code.rawValue else { return "" }
+    guard let phoneNumber = try? PhoneNumberKit.default.parse(phone, withRegion: region) else { return "" }
+    
+    return PhoneNumberKit.default.format(phoneNumber, toType: .e164)
+  }
+  
+  var partialFormatter: PartialFormatter {
+    let region = country?.code.rawValue ?? "US"
+    return PartialFormatter(defaultRegion: region, withPrefix: false)
   }
   
 }
@@ -51,17 +66,11 @@ final class CoinSendGiftStore: ViewStore<CoinSendGiftAction, CoinSendGiftState> 
     case let .setupCoin(coin): state.coin = coin
     case let .setupCoinBalance(coinBalance): state.coinBalance = coinBalance
     case let .setupCoinSettings(coinSettings): state.coinSettings = coinSettings
-    case let .updatePhone(validatablePhone): state.validatablePhone = validatablePhone
-    case let .pastePhone(phone):
-      if let parsedPhone = try? PhoneNumberKit.default.parse(phone) {
-        let phoneNational = PhoneNumberKit.default.format(parsedPhone, toType: .national)
-          .split { !"0123456789".contains($0) }
-          .joined()
-        let phoneE164 = PhoneNumberKit.default.format(parsedPhone, toType: .e164)
-        state.validatablePhone = ValidatablePhoneNumber(phone: phoneNational,
-                                                        isValid: true,
-                                                        phoneE164: phoneE164)
-      }
+    case let .updateCountry(country):
+      state.country = country
+      state.phone = state.partialFormatter.formatPartial(state.phone)
+    case let .updatePhone(phone): state.phone = state.partialFormatter.formatPartial(phone ?? "")
+    case let .pastePhone(phone): state.phone = state.partialFormatter.formatPartial(phone)
     case let .updateCurrencyAmount(amount):
       let currencyAmount = (amount ?? "").fiatWithdrawFormatted
       let doubleCurrencyAmount = currencyAmount.doubleValue
@@ -90,11 +99,11 @@ final class CoinSendGiftStore: ViewStore<CoinSendGiftAction, CoinSendGiftState> 
   }
   
   private func validate(_ state: CoinSendGiftState) -> ValidationState {
-    guard state.validatablePhone.phone.count > 0, state.coinAmount.isNotEmpty else {
+    guard state.country != nil && state.phone.count > 0 && state.coinAmount.count > 0 else {
       return .invalid(localize(L.CreateWallet.Form.Error.allFieldsRequired))
     }
     
-    guard state.validatablePhone.isValid else {
+    guard state.phoneE164.count > 0 else {
       return .invalid(localize(L.CoinSendGift.Form.Error.invalidPhone))
     }
     

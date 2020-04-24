@@ -17,6 +17,10 @@ extension CoinDetailsFlowController: CoinDetailsModuleDelegate {
     delegate?.didFinishCoinDetailsFlow()
   }
   
+  func showDepositScreen(coin: BTMCoin) {
+    step.accept(CoinDetailsFlow.Steps.deposit(coin))
+  }
+  
   func showWithdrawScreen(coin: BTMCoin, coinBalance: CoinBalance, coinSettings: CoinSettings) {
     step.accept(CoinDetailsFlow.Steps.withdraw(coin, coinBalance, coinSettings))
   }
@@ -35,6 +39,14 @@ extension CoinDetailsFlowController: CoinDetailsModuleDelegate {
   
   func showExchangeScreen(coin: BTMCoin, coinBalances: [CoinBalance], coinSettings: CoinSettings) {
     step.accept(CoinDetailsFlow.Steps.exchange(coin, coinBalances, coinSettings))
+  }
+  
+}
+
+extension CoinDetailsFlowController: CoinDepositModuleDelegate {
+  
+  func didFinishCoinDeposit() {
+    step.accept(CoinDetailsFlow.Steps.pop)
   }
   
 }

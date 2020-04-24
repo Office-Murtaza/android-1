@@ -39,7 +39,7 @@ final class AppAssembly: Assembly {
       }
       .inObjectScope(.transient)
     container.register(RefreshCredentialsService.self) { ioc in
-      let apiUrl = ioc.resolve(URL.self, name: Keys.testApiUrl.rawValue)!
+      let apiUrl = ioc.resolve(URL.self, name: Keys.prodApiUrl.rawValue)!
       let networkService = ioc.resolve(NetworkService.self, argument: apiUrl)!
       let accountStorage = ioc.resolve(AccountStorage.self)!
       let logoutUsecase = ioc.resolve(LogoutUsecase.self)!
@@ -48,7 +48,7 @@ final class AppAssembly: Assembly {
                                            logoutUsecase: logoutUsecase)
       }.inObjectScope(.container)
     container.register(APIGateway.self) { ioc in
-      let apiUrl = ioc.resolve(URL.self, name: Keys.testApiUrl.rawValue)!
+      let apiUrl = ioc.resolve(URL.self, name: Keys.prodApiUrl.rawValue)!
       let networkService = ioc.resolve(NetworkRequestExecutor.self, argument: apiUrl)!
       return APIGatewayImpl(networkProvider: networkService)
       } .inObjectScope(.container)

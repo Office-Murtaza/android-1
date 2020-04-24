@@ -5,8 +5,9 @@ PODS:
     - Charts/Core (= 3.4.0)
   - Charts/Core (3.4.0)
   - DeepDiff (2.2.0)
-  - FlagPhoneNumber (0.7.2):
-    - libPhoneNumber-iOS
+  - FlagPhoneNumber (0.8.0):
+    - FlagPhoneNumber/libPhoneNumberiOS (= 0.8.0)
+  - FlagPhoneNumber/libPhoneNumberiOS (0.8.0)
   - Giphy (1.1.6):
     - DeepDiff (~> 2.2.0)
     - libwebp
@@ -17,7 +18,6 @@ PODS:
   - GoogleMaps/Maps (3.4.0):
     - GoogleMaps/Base
   - JJFloatingActionButton (2.4.0)
-  - libPhoneNumber-iOS (0.9.15)
   - libwebp (1.0.3):
     - libwebp/demux (= 1.0.3)
     - libwebp/mux (= 1.0.3)
@@ -675,7 +675,7 @@ PODS:
 DEPENDENCIES:
   - BigNumber (from `https://github.com/mkrd/Swift-Big-Integer.git`)
   - Charts (= 3.4.0)
-  - FlagPhoneNumber (= 0.7.2)
+  - FlagPhoneNumber (= 0.8.0)
   - Giphy (= 1.1.6)
   - GoogleMaps (= 3.4.0)
   - JJFloatingActionButton (= 2.4.0)
@@ -704,7 +704,6 @@ SPEC REPOS:
     - Giphy
     - GoogleMaps
     - JJFloatingActionButton
-    - libPhoneNumber-iOS
     - libwebp
     - MaterialComponents
     - MBProgressHUD
@@ -744,11 +743,10 @@ SPEC CHECKSUMS:
   BigNumber: bcc393c06b3e7e2752e5121be58c032c45c6f36b
   Charts: 74c9f256eaf0460c0c416522d1cf8c634ea6b286
   DeepDiff: e329bc46dd14ca788d8ec08d34420799ba1d77f2
-  FlagPhoneNumber: 86194d414c7e3b2f38c16136c4f8a5d34e3ee8b7
+  FlagPhoneNumber: 3712455b95f66cb0f2016fef7d9e34cddf8c7f9a
   Giphy: 3c0ab5869df8fb090b98e663d9a011476d644a61
   GoogleMaps: 67f4a604f80dd6a22d09c2a507a3a395b9f23060
   JJFloatingActionButton: 0d21f5cdd2adde150e62c22c63762ab713c4e16f
-  libPhoneNumber-iOS: 0a32a9525cf8744fe02c5206eb30d571e38f7d75
   libwebp: 057912d6d0abfb6357d8bb05c0ea470301f5d61e
   MaterialComponents: 52e2ade4684e3017eff7f62587b37522d217ea50
   MBProgressHUD: e7baa36a220447d8aeb12769bf0585582f3866d9
@@ -774,6 +772,6 @@ SPEC CHECKSUMS:
   Toast-Swift: 9b6a70f28b3bf0b96c40d46c0c4b9d6639846711
   TrustWalletCore: 16bab4272fb16bac404c66e5215ca46362adebf1
 
-PODFILE CHECKSUM: ffa2d20b7f4b6469738de3dd9be98448ee00ca32
+PODFILE CHECKSUM: 65d6b986c9ca3d8a6a1288ce45b2b8e789f2e2d2
 
 COCOAPODS: 1.7.5

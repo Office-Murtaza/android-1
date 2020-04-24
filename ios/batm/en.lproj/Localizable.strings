@@ -13,6 +13,11 @@
 "shared.remove_gif" = "Remove GIF";
 "shared.select" = "Select";
 "shared.remove" = "Remove";
+"shared.button.max" = "MAX";
+"shared.button.paste" = "PASTE";
+"shared.button.add" = "ADD";
+"shared.button.remove" = "REMOVE";
+"shared.button.copy" = "COPY";
 "shared.error.title" = "Error";
 "shared.error.message" = "Server Error, Try Later";
 "shared.error.no_connection.message" = "No Internet Connection";
@@ -177,15 +182,16 @@
 "coin_withdraw.form.error.too_high_amount" = "Amount can't be higher than your balance";
 
 "coin_send_gift.title" = "Send Gift %@";
-"coin_send_gift.form.phone.title" = "Phone";
+"coin_send_gift.form.code.placeholder" = "Code";
+"coin_send_gift.form.phone.placeholder" = "Phone";
+"coin_send_gift.form.message.placeholder" = "Message...";
 "coin_send_gift.form.error.invalid_phone" = "Invalid phone";
-"coin_send_gift.form.message.placeholder" = "Text Message";
 
 "coin_sell.title" = "Sell %@";
 "coin_sell.daily_limit" = "Daily Limit";
-"coin_sell.transaction_limit" = "Transaction Limit";
-"coin_sell.annotation" = "ATM contains only\n20 and 50 banknotes";
+"coin_sell.tx_limit" = "Tx Limit";
 "coin_sell.sell_from_another" = "Sell from another address";
+"coin_sell.annotation" = "ATM contains only\n20 and 50 banknotes";
 "coin_sell.form.error.not_multiple" = "ATM contains only 20 and 50 banknotes";
 
 "coin_sell_details.title" = "Sell %@";

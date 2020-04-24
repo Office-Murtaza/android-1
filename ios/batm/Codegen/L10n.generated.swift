@@ -57,7 +57,7 @@ enum L {
     static let dailyLimit = "coin_sell.daily_limit"
     static let sellFromAnother = "coin_sell.sell_from_another"
     static let title = "coin_sell.title"
-    static let transactionLimit = "coin_sell.transaction_limit"
+    static let txLimit = "coin_sell.tx_limit"
   }
 
   struct CoinSellDetails {
@@ -286,6 +286,10 @@ extension L.CoinSendGift {
 }
 extension L.CoinSendGift.Form {
 
+  struct Code {
+    static let placeholder = "coin_send_gift.form.code.placeholder"
+  }
+
   struct Error {
     static let invalidPhone = "coin_send_gift.form.error.invalid_phone"
   }
@@ -295,7 +299,7 @@ extension L.CoinSendGift.Form {
   }
 
   struct Phone {
-    static let title = "coin_send_gift.form.phone.title"
+    static let placeholder = "coin_send_gift.form.phone.placeholder"
   }
 }
 extension L.CoinWithdraw {
@@ -401,6 +405,14 @@ extension L.PinCode {
   }
 }
 extension L.Shared {
+
+  struct Button {
+    static let add = "shared.button.add"
+    static let copy = "shared.button.copy"
+    static let max = "shared.button.max"
+    static let paste = "shared.button.paste"
+    static let remove = "shared.button.remove"
+  }
 
   struct Error {
     static let message = "shared.error.message"

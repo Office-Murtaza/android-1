@@ -1,6 +1,7 @@
 import Foundation
 import RxSwift
 import RxCocoa
+import FlagPhoneNumber
 
 final class CoinSendGiftPresenter: ModulePresenter, CoinSendGiftModule {
 
@@ -8,16 +9,17 @@ final class CoinSendGiftPresenter: ModulePresenter, CoinSendGiftModule {
 
   struct Input {
     var back: Driver<Void>
-    var updatePhone: Driver<ValidatablePhoneNumber>
+    var updateCountry: Driver<FPNCountry>
+    var updatePhone: Driver<String?>
     var updateCurrencyAmount: Driver<String?>
     var updateCoinAmount: Driver<String?>
-    var pastePhone: Driver<Void>
-    var updateCode: Driver<String?>
     var updateMessage: Driver<String?>
     var updateImageId: Driver<String?>
-    var cancel: Driver<Void>
+    var pastePhone: Driver<Void>
     var max: Driver<Void>
     var next: Driver<Void>
+    var updateCode: Driver<String?>
+    var cancel: Driver<Void>
     var sendCode: Driver<Void>
   }
   
@@ -45,6 +47,12 @@ final class CoinSendGiftPresenter: ModulePresenter, CoinSendGiftModule {
   func bind(input: Input) {
     Driver.merge(input.back, input.cancel)
       .drive(onNext: { [delegate] in delegate?.didFinishCoinSendGift() })
+      .disposed(by: disposeBag)
+    
+    input.updateCountry
+      .asObservable()
+      .map { CoinSendGiftAction.updateCountry($0) }
+      .bind(to: store.action)
       .disposed(by: disposeBag)
     
     input.updatePhone
@@ -133,7 +141,7 @@ final class CoinSendGiftPresenter: ModulePresenter, CoinSendGiftModule {
     return usecase.verifyCode(code: state.code)
       .andThen(usecase.sendGift(from: state.coin!,
                                 with: state.coinSettings!,
-                                to: state.validatablePhone.phoneE164,
+                                to: state.phoneE164,
                                 amount: state.coinAmount.doubleValue ?? 0.0,
                                 message: state.message,
                                 imageId: state.imageId))

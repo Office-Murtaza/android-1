@@ -2,23 +2,17 @@ import UIKit
 import RxCocoa
 import RxSwift
 import SnapKit
-import QRCodeReader
+import MaterialComponents
 
 final class CoinSellViewController: NavigationScreenViewController<CoinSellPresenter> {
   
   let errorView = ErrorView()
   
-  let limitView = CoinSellLimitView()
+  let headerView = CoinWithdrawHeaderView()
   
-  let exchangeView = CoinWithdrawExchangeView(sellMode: true)
+  let formView = CoinSellFormView()
   
-  let anotherAddressView = CoinSellAnotherAddressView()
-  
-  let nextButton: MainButton = {
-    let button = MainButton()
-    button.configure(for: .next)
-    return button
-  }()
+  let nextButton = MDCButton.next
   
   let backgroundDarkView: BackgroundDarkView = {
     let view = BackgroundDarkView()
@@ -41,9 +35,8 @@ final class CoinSellViewController: NavigationScreenViewController<CoinSellPrese
   override func setupUI() {
     customView.rootScrollView.contentInsetAdjustmentBehavior = .never
     customView.contentView.addSubviews(errorView,
-                                       limitView,
-                                       exchangeView,
-                                       anotherAddressView,
+                                       headerView,
+                                       formView,
                                        nextButton)
     view.addSubviews(backgroundDarkView,
                      codeView)
@@ -57,27 +50,26 @@ final class CoinSellViewController: NavigationScreenViewController<CoinSellPrese
   }
 
   override func setupLayout() {
+    customView.contentView.snp.makeConstraints {
+      $0.height.equalToSuperview()
+    }
     errorView.snp.makeConstraints {
-      $0.top.equalToSuperview().offset(10)
+      $0.top.equalToSuperview().offset(5)
       $0.centerX.equalToSuperview()
     }
-    limitView.snp.makeConstraints {
-      $0.top.equalToSuperview().offset(30)
-      $0.left.right.equalToSuperview().inset(25)
+    headerView.snp.makeConstraints {
+      $0.top.equalToSuperview().offset(25)
+      $0.left.equalToSuperview().offset(15)
+      $0.right.lessThanOrEqualToSuperview().offset(-15)
     }
-    exchangeView.snp.makeConstraints {
-      $0.top.equalTo(limitView.snp.bottom).offset(30)
-      $0.left.right.equalToSuperview().inset(25)
-    }
-    anotherAddressView.snp.makeConstraints {
-      $0.top.equalTo(exchangeView.snp.bottom).offset(35)
-      $0.centerX.equalToSuperview()
+    formView.snp.makeConstraints {
+      $0.top.equalTo(headerView.snp.bottom).offset(20)
+      $0.left.right.equalToSuperview().inset(15)
     }
     nextButton.snp.makeConstraints {
-      $0.top.equalTo(anotherAddressView.snp.bottom).offset(30)
-      $0.width.equalToSuperview().multipliedBy(0.42)
-      $0.centerX.equalToSuperview()
-      $0.bottom.equalToSuperview().offset(-30)
+      $0.height.equalTo(50)
+      $0.top.equalTo(formView.snp.bottom).offset(30)
+      $0.left.right.equalToSuperview().inset(15)
     }
     backgroundDarkView.snp.makeConstraints {
       $0.edges.equalToSuperview()
@@ -106,28 +98,33 @@ final class CoinSellViewController: NavigationScreenViewController<CoinSellPrese
       .disposed(by: disposeBag)
     
     presenter.state
-      .asObservable()
+      .map { $0.coinBalance }
+      .filterNil()
+      .drive(onNext: { [headerView] in headerView.configure(for: $0) })
+      .disposed(by: disposeBag)
+    
+    presenter.state
       .map { $0.details }
       .filterNil()
-      .bind(to: limitView.rx.limits)
+      .drive(onNext: { [headerView] in headerView.configure(for: $0) })
       .disposed(by: disposeBag)
     
     presenter.state
       .map { $0.coin?.type.code }
       .filterNil()
-      .drive(onNext: { [exchangeView] in exchangeView.configure(with: $0) })
+      .drive(onNext: { [formView] in formView.configure(with: $0) })
       .disposed(by: disposeBag)
     
     presenter.state
       .asObservable()
       .map { $0.currencyAmount }
-      .bind(to: exchangeView.currencyTextField.rx.text)
+      .bind(to: formView.rx.currencyText)
       .disposed(by: disposeBag)
     
     presenter.state
       .asObservable()
       .map { $0.coinAmount }
-      .bind(to: exchangeView.coinTextField.rx.text)
+      .bind(to: formView.rx.coinText)
       .disposed(by: disposeBag)
     
     presenter.state
@@ -175,11 +172,11 @@ final class CoinSellViewController: NavigationScreenViewController<CoinSellPrese
     setupUIBindings()
     
     let backDriver = customView.backButton.rx.tap.asDriver()
-    let updateFromAnotherAddressDriver = anotherAddressView.rx.isAccepted
-    let updateCurrencyAmountDriver = exchangeView.rx.currencyText
+    let updateFromAnotherAddressDriver = formView.rx.isAnotherAddress
+    let updateCurrencyAmountDriver = formView.rx.currencyText.asDriver(onErrorDriveWith: .empty())
     let updateCodeDriver = codeView.smsCodeTextField.rx.text.asDriver()
     let cancelDriver = codeView.rx.cancelTap
-    let maxDriver = exchangeView.rx.maxTap
+    let maxDriver = formView.rx.maxTap
     let nextDriver = nextButton.rx.tap.asDriver()
     let sendCodeDriver = codeView.rx.nextTap
     

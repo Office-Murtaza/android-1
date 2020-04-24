@@ -13,6 +13,7 @@ extension CoinDetailsFlow {
         }
         .inObjectScope(.container)
         .implements(CoinDetailsModuleDelegate.self,
+                    CoinDepositModuleDelegate.self,
                     CoinWithdrawModuleDelegate.self,
                     CoinSendGiftModuleDelegate.self,
                     CoinSellModuleDelegate.self,
