@@ -275,7 +275,7 @@
 
     <!-- Deposit -->
     <string name="deposit_screen_title">Deposit %1$s</string>
-    <string name="deposit_screen_wallet_code_clipboard">Wallet code copied to clipboard</string>
+    <string name="deposit_screen_wallet_copied">Copied</string>
 
 
 

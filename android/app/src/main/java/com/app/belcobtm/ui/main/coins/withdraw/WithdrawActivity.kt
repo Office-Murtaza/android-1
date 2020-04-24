@@ -64,7 +64,7 @@ class WithdrawActivity : BaseMvpActivity<WithdrawContract.View, WithdrawContract
         initPrice()
         initBalance()
 
-        amountCryptoView.hint = mCoin.coinId
+        amountCryptoView.hint = getString(R.string.withdraw_screen_crypto_amount, mCoin.coinId)
         amountCryptoView.actionDoneListener { validateAndSubmit() }
         nextButtonView.setOnClickListener { validateAndSubmit() }
     }

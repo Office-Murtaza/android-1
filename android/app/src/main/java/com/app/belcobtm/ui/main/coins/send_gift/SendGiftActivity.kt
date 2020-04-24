@@ -78,7 +78,7 @@ class SendGiftActivity : BaseMvpActivity<SendGiftContract.View, SendGiftContract
     private fun initView() {
         phonePickerView.registerCarrierNumberEditText(phoneView.editText)
 
-        amountCryptoView.hint = mCoin.coinId
+        amountCryptoView.hint = getString(R.string.send_gift_screen_crypto_amount, mCoin.coinId)
         val settings = GPHSettings(
             gridType = GridType.waterfall,
             theme = LightTheme,
@@ -97,8 +97,7 @@ class SendGiftActivity : BaseMvpActivity<SendGiftContract.View, SendGiftContract
     }
 
     private fun initBalance() {
-        balanceCryptoView.text =
-            getString(R.string.transaction_crypto_balance, mCoin.balance.toStringCoin(), mCoin.coinId)
+        balanceCryptoView.text = getString(R.string.transaction_crypto_balance, mCoin.balance.toStringCoin(), mCoin.coinId)
         balanceUsdView.text = getString(R.string.transaction_price_usd, (mCoin.balance * mCoin.price.uSD).toStringUsd())
     }
 
