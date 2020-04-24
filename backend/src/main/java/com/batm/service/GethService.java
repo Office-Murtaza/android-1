@@ -1,8 +1,15 @@
 package com.batm.service;
 
+import com.batm.dto.NodeTransactionsDTO;
+import com.batm.dto.TransactionDetailsDTO;
+import com.batm.dto.TransactionListDTO;
+import com.batm.dto.TxListDTO;
 import com.batm.model.GethBlock;
 import com.batm.model.GethTx;
+import com.batm.model.TransactionStatus;
+import com.batm.model.TransactionType;
 import com.batm.util.Constant;
+import com.batm.util.TxUtil;
 import com.google.protobuf.ByteString;
 import lombok.Getter;
 import net.sf.json.JSONArray;
@@ -21,11 +28,9 @@ import org.web3j.utils.Numeric;
 import wallet.core.jni.EthereumSigner;
 import wallet.core.jni.PrivateKey;
 import wallet.core.jni.proto.Ethereum;
-
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @Getter
 @Service
@@ -169,48 +174,118 @@ public class GethService {
         return GAS_LIMIT;
     }
 
-    public BigInteger getLastBlockNumber() {
-        try {
-            JSONObject req = new JSONObject();
-            req.put("jsonrpc", "2.0");
-            req.put("method", "eth_blockNumber");
-            req.put("params", new JSONArray());
-            req.put("id", 1);
-
-            JSONObject res = rest.postForObject(nodeUrl, req, JSONObject.class);
-
-            return Numeric.toBigInt(res.optString("result"));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return null;
-    }
-
-    public JSONObject getBlockByNumber(BigInteger blockNumber) {
-        try {
-            JSONObject req = new JSONObject();
-            req.put("jsonrpc", "2.0");
-            req.put("method", "eth_getBlockByNumber");
-            req.put("params", JSONArray.fromObject("[\"" + Numeric.toHexStringWithPrefix(blockNumber) + "\", true]"));
-            req.put("id", 1);
-
-            JSONObject res = rest.postForObject(nodeUrl, req, JSONObject.class);
-
-            return res.optJSONObject("result");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return null;
-    }
-
     public BigDecimal getTxFee() {
         return new BigDecimal(getGasPrice()).multiply(new BigDecimal(getGasLimit())).divide(Constant.ETH_DIVIDER).stripTrailingZeros();
     }
 
-    public Integer getNonce(String fromAddress) {
-        return 0;
+    public Integer getNonce(String address) {
+        try {
+            JSONObject req = new JSONObject();
+            req.put("jsonrpc", "2.0");
+            req.put("method", "eth_getTransactionCount");
+            req.put("params", JSONArray.fromObject("[\"" + address + "\", \"latest\"]"));
+            req.put("id", 1);
+
+            JSONObject res = rest.postForObject(nodeUrl, req, JSONObject.class);
+
+            return Numeric.toBigInt(res.optString("result")).intValue();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    public TransactionDetailsDTO getTransaction(String txId, String address) {
+        TransactionDetailsDTO dto = new TransactionDetailsDTO();
+        dto.setTxId(txId);
+        dto.setLink(ethExplorerUrl + "/" + txId);
+
+        try {
+            GethTx gethTx = mongo.findOne(new Query(Criteria.where("_id").is(txId)), GethTx.class);
+
+            if (gethTx != null) {
+                String fromAddress = gethTx.getFromAddress();
+                String toAddress = gethTx.getToAddress();
+
+                dto.setType(TransactionType.getType(fromAddress, toAddress, address));
+                dto.setCryptoAmount(gethTx.getAmount());
+                dto.setFromAddress(fromAddress);
+                dto.setToAddress(toAddress);
+                dto.setCryptoFee(gethTx.getFee());
+                dto.setStatus(TransactionStatus.COMPLETE);
+                dto.setDate2(new Date(gethTx.getBlockTime() * 1000));
+            } else {
+                JSONObject txByHash = getTransactionByHash(txId);
+                JSONObject txReceipt = getTransactionReceipt(txId);
+
+                String fromAddress = txByHash.optString("from");
+                String toAddress = txReceipt.optString("to");
+
+                BigDecimal amount = new BigDecimal(Numeric.toBigInt(txByHash.optString("value")))
+                        .divide(Constant.ETH_DIVIDER)
+                        .stripTrailingZeros();
+
+                BigDecimal fee = new BigDecimal(Numeric.toBigInt(txByHash.optString("gasPrice")))
+                        .multiply(new BigDecimal(Numeric.toBigInt(txByHash.optString("gas"))))
+                        .divide(Constant.ETH_DIVIDER)
+                        .stripTrailingZeros();
+
+                dto.setType(TransactionType.getType(fromAddress, toAddress, address));
+                dto.setCryptoAmount(amount);
+                dto.setFromAddress(fromAddress);
+                dto.setToAddress(toAddress);
+                dto.setCryptoFee(fee);
+                dto.setStatus(TransactionStatus.PENDING);
+                dto.setDate2(new Date());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return dto;
+    }
+
+    public TransactionListDTO getTransactionList(String address, Integer startIndex, Integer limit, TxListDTO txDTO) {
+        try {
+            Map<String, TransactionDetailsDTO> map = getNodeTransactions(address).getMap();
+
+            return TxUtil.buildTxs(map, startIndex, limit, txDTO);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return new TransactionListDTO();
+    }
+
+    public NodeTransactionsDTO getNodeTransactions(String address) {
+        try {
+            Map<String, TransactionDetailsDTO> map = new HashMap<>();
+            List<GethTx> gethTxs = mongo.find(new Query(Criteria.where("fromAddress").is(address).orOperator(Criteria.where("toAddress").is(address))), GethTx.class);
+
+            for (GethTx gethTx : gethTxs) {
+                TransactionDetailsDTO dto = new TransactionDetailsDTO();
+
+                String fromAddress = gethTx.getFromAddress();
+                String toAddress = gethTx.getToAddress();
+
+                dto.setType(TransactionType.getType(fromAddress, toAddress, address));
+                dto.setCryptoAmount(gethTx.getAmount());
+                dto.setFromAddress(fromAddress);
+                dto.setToAddress(toAddress);
+                dto.setCryptoFee(gethTx.getFee());
+                dto.setStatus(TransactionStatus.COMPLETE);
+                dto.setDate1(new Date(gethTx.getBlockTime() * 1000));
+
+                map.put(gethTx.getTxId(), dto);
+            }
+
+            return new NodeTransactionsDTO(map);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return new NodeTransactionsDTO();
     }
 
     public String sign(String fromAddress, String toAddress, BigDecimal amount) {
@@ -238,6 +313,78 @@ public class GethService {
             Ethereum.SigningOutput output = EthereumSigner.sign(builder.build());
 
             return Numeric.toHexString(output.getEncoded().toByteArray());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    private BigInteger getLastBlockNumber() {
+        try {
+            JSONObject req = new JSONObject();
+            req.put("jsonrpc", "2.0");
+            req.put("method", "eth_blockNumber");
+            req.put("params", new JSONArray());
+            req.put("id", 1);
+
+            JSONObject res = rest.postForObject(nodeUrl, req, JSONObject.class);
+
+            return Numeric.toBigInt(res.optString("result"));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    private JSONObject getBlockByNumber(BigInteger blockNumber) {
+        try {
+            JSONObject req = new JSONObject();
+            req.put("jsonrpc", "2.0");
+            req.put("method", "eth_getBlockByNumber");
+            req.put("params", JSONArray.fromObject("[\"" + Numeric.toHexStringWithPrefix(blockNumber) + "\", true]"));
+            req.put("id", 1);
+
+            JSONObject res = rest.postForObject(nodeUrl, req, JSONObject.class);
+
+            return res.optJSONObject("result");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    private JSONObject getTransactionByHash(String txId) {
+        try {
+            JSONObject req = new JSONObject();
+            req.put("jsonrpc", "2.0");
+            req.put("method", "eth_getTransactionByHash");
+            req.put("params", JSONArray.fromObject("[\"" + txId + "\", \"latest\"]"));
+            req.put("id", 1);
+
+            JSONObject res = rest.postForObject(nodeUrl, req, JSONObject.class);
+
+            return res.optJSONObject("result");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    private JSONObject getTransactionReceipt(String txId) {
+        try {
+            JSONObject req = new JSONObject();
+            req.put("jsonrpc", "2.0");
+            req.put("method", "eth_getTransactionReceipt");
+            req.put("params", JSONArray.fromObject("[\"" + txId + "\"]"));
+            req.put("id", 1);
+
+            JSONObject res = rest.postForObject(nodeUrl, req, JSONObject.class);
+
+            return res.optJSONObject("result");
         } catch (Exception e) {
             e.printStackTrace();
         }
