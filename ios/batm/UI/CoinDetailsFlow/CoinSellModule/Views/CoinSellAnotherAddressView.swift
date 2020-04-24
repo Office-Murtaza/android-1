@@ -4,13 +4,13 @@ import RxCocoa
 
 class CoinSellAnotherAddressView: UIView {
   
-  let checkboxView = CheckboxView()
+  let checkboxView = MaterialCheckBoxView()
   
   let titleLabel: UILabel = {
     let label = UILabel()
     label.text = localize(L.CoinSell.sellFromAnother)
-    label.textColor = .slateGrey
-    label.font = .poppinsRegular12
+    label.textColor = .warmGrey
+    label.font = .systemFont(ofSize: 14)
     return label
   }()
   

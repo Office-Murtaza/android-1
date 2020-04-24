@@ -44,9 +44,9 @@ final class CoinExchangeFormView: UIView, UIPickerViewDelegate, UIPickerViewData
   }
   
   override init(frame: CGRect) {
-    fromCoinAmountTextFieldController = MDCTextInputControllerOutlined(textInput: fromCoinAmountTextField)
-    toCoinTextFieldController = MDCTextInputControllerOutlined(textInput: toCoinTextField)
-    toCoinAmountTextFieldController = MDCTextInputControllerOutlined(textInput: toCoinAmountTextField)
+    fromCoinAmountTextFieldController = ThemedTextInputControllerOutlined(textInput: fromCoinAmountTextField)
+    toCoinTextFieldController = ThemedTextInputControllerOutlined(textInput: toCoinTextField)
+    toCoinAmountTextFieldController = ThemedTextInputControllerOutlined(textInput: toCoinAmountTextField)
     
     super.init(frame: frame)
     
@@ -69,11 +69,6 @@ final class CoinExchangeFormView: UIView, UIPickerViewDelegate, UIPickerViewData
                                   toCoinAmountTextField)
 
     fromCoinAmountTextField.setRightView(maxButton)
-    
-    let scheme = MDCContainerScheme.default
-    fromCoinAmountTextFieldController.applyTheme(withScheme: scheme)
-    toCoinTextFieldController.applyTheme(withScheme: scheme)
-    toCoinAmountTextFieldController.applyTheme(withScheme: scheme)
     
     toCoinTextField.addGestureRecognizer(toCoinTapRecognizer)
     

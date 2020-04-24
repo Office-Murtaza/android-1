@@ -57,7 +57,7 @@ enum L {
     static let dailyLimit = "coin_sell.daily_limit"
     static let sellFromAnother = "coin_sell.sell_from_another"
     static let title = "coin_sell.title"
-    static let transactionLimit = "coin_sell.transaction_limit"
+    static let txLimit = "coin_sell.tx_limit"
   }
 
   struct CoinSellDetails {

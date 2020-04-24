@@ -189,9 +189,9 @@
 
 "coin_sell.title" = "Sell %@";
 "coin_sell.daily_limit" = "Daily Limit";
-"coin_sell.transaction_limit" = "Transaction Limit";
-"coin_sell.annotation" = "ATM contains only\n20 and 50 banknotes";
+"coin_sell.tx_limit" = "Tx Limit";
 "coin_sell.sell_from_another" = "Sell from another address";
+"coin_sell.annotation" = "ATM contains only\n20 and 50 banknotes";
 "coin_sell.form.error.not_multiple" = "ATM contains only 20 and 50 banknotes";
 
 "coin_sell_details.title" = "Sell %@";

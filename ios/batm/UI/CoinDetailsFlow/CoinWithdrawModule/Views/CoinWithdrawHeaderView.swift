@@ -4,6 +4,28 @@ import RxCocoa
 
 class CoinWithdrawHeaderView: UIView {
   
+  static var defaultVerticalStackView: UIStackView {
+    let stackView = UIStackView()
+    stackView.axis = .vertical
+    stackView.spacing = 10
+    return stackView
+  }
+  
+  static func defaultTitleLabel(_ title: String) -> UILabel {
+    let label = UILabel()
+    label.text = title
+    label.textColor = .slateGrey
+    label.font = UIFont.systemFont(ofSize: 16, weight: .medium)
+    return label
+  }
+  
+  static var defaultValueLabel: UILabel {
+    let label = UILabel()
+    label.textColor = .warmGrey
+    label.font = UIFont.systemFont(ofSize: 16, weight: .medium)
+    return label
+  }
+  
   let mainStackView: UIStackView = {
     let stackView = UIStackView()
     stackView.axis = .horizontal
@@ -11,44 +33,22 @@ class CoinWithdrawHeaderView: UIView {
     return stackView
   }()
   
-  let titleStackView: UIStackView = {
-    let stackView = UIStackView()
-    stackView.axis = .vertical
-    stackView.spacing = 10
-    return stackView
-  }()
+  let titleStackView = defaultVerticalStackView
+  let valueStackView = defaultVerticalStackView
   
-  let valueStackView: UIStackView = {
-    let stackView = UIStackView()
-    stackView.axis = .vertical
-    stackView.spacing = 10
-    return stackView
-  }()
+  let priceTitleLabel = defaultTitleLabel(localize(L.CoinDetails.price))
+  let balanceTitleLabel = defaultTitleLabel(localize(L.CoinDetails.balance))
+  let dailyLimitTitleLabel = defaultTitleLabel(localize(L.CoinSell.dailyLimit))
+  let txLimitTitleLabel = defaultTitleLabel(localize(L.CoinSell.txLimit))
   
-  let priceLabel: UILabel = {
-    let label = UILabel()
-    label.text = localize(L.CoinDetails.price)
-    label.textColor = .slateGrey
-    label.font = UIFont.systemFont(ofSize: 16, weight: .medium)
-    return label
-  }()
-  
-  let priceValueLabel: UILabel = {
-    let label = UILabel()
-    label.textColor = .warmGrey
-    label.font = UIFont.systemFont(ofSize: 16, weight: .medium)
-    return label
-  }()
-  
-  let balanceLabel: UILabel = {
-    let label = UILabel()
-    label.text = localize(L.CoinDetails.balance)
-    label.textColor = .slateGrey
-    label.font = UIFont.systemFont(ofSize: 16, weight: .medium)
-    return label
-  }()
-  
+  let priceValueLabel = defaultValueLabel
   let balanceValueView = CoinDetailsBalanceValueView()
+  let dailyLimitValueLabel = defaultValueLabel
+  let txLimitValueLabel = defaultValueLabel
+  
+  var sellDetailsLabels: [UILabel] {
+    return [dailyLimitTitleLabel, dailyLimitValueLabel, txLimitTitleLabel, txLimitValueLabel]
+  }
   
   override init(frame: CGRect) {
     super.init(frame: frame)
@@ -69,11 +69,17 @@ class CoinWithdrawHeaderView: UIView {
     mainStackView.addArrangedSubviews(titleStackView,
                                       valueStackView)
     
-    titleStackView.addArrangedSubviews(priceLabel,
-                                       balanceLabel)
+    titleStackView.addArrangedSubviews(priceTitleLabel,
+                                       balanceTitleLabel,
+                                       dailyLimitTitleLabel,
+                                       txLimitTitleLabel)
     
     valueStackView.addArrangedSubviews(priceValueLabel,
-                                       balanceValueView)
+                                       balanceValueView,
+                                       dailyLimitValueLabel,
+                                       txLimitValueLabel)
+    
+    sellDetailsLabels.forEach { $0.isHidden = true }
   }
   
   private func setupLayout() {
@@ -82,10 +88,19 @@ class CoinWithdrawHeaderView: UIView {
     }
     
     priceValueLabel.setContentHuggingPriority(.required, for: .vertical)
+    dailyLimitValueLabel.setContentHuggingPriority(.required, for: .vertical)
+    txLimitValueLabel.setContentHuggingPriority(.required, for: .vertical)
   }
   
   func configure(for coinBalance: CoinBalance) {
     priceValueLabel.text = "\(coinBalance.price.fiatFormatted) USD"
     balanceValueView.configure(for: coinBalance)
+  }
+  
+  func configure(for details: SellDetails) {
+    sellDetailsLabels.forEach { $0.isHidden = false }
+    
+    dailyLimitValueLabel.text = "\(details.dailyLimit.fiatFormatted) USD"
+    txLimitValueLabel.text = "\(details.transactionLimit.fiatFormatted) USD"
   }
 }

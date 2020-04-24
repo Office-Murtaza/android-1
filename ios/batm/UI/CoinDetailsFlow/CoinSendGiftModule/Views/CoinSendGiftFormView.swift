@@ -60,11 +60,11 @@ final class CoinSendGiftFormView: UIView, HasDisposeBag {
   let messageTextFieldController: MDCTextInputControllerOutlinedTextArea
   
   override init(frame: CGRect) {
-    dialCodeTextFieldController = MDCTextInputControllerOutlined(textInput: dialCodeTextField)
-    phoneTextFieldController = MDCTextInputControllerOutlined(textInput: phoneTextField)
-    coinAmountTextFieldController = MDCTextInputControllerOutlined(textInput: coinAmountTextField)
-    currencyAmountTextFieldController = MDCTextInputControllerOutlined(textInput: currencyAmountTextField)
-    messageTextFieldController = MDCTextInputControllerOutlinedTextArea(textInput: messageTextField)
+    dialCodeTextFieldController = ThemedTextInputControllerOutlined(textInput: dialCodeTextField)
+    phoneTextFieldController = ThemedTextInputControllerOutlined(textInput: phoneTextField)
+    coinAmountTextFieldController = ThemedTextInputControllerOutlined(textInput: coinAmountTextField)
+    currencyAmountTextFieldController = ThemedTextInputControllerOutlined(textInput: currencyAmountTextField)
+    messageTextFieldController = ThemedTextInputControllerOutlinedTextArea(textInput: messageTextField)
     
     super.init(frame: frame)
     
@@ -103,12 +103,6 @@ final class CoinSendGiftFormView: UIView, HasDisposeBag {
     phoneTextField.setRightView(pasteButton)
     coinAmountTextField.setRightView(coinMaxButton)
     currencyAmountTextField.setRightView(currencyMaxButton)
-    
-    let scheme = MDCContainerScheme.default
-    dialCodeTextFieldController.applyTheme(withScheme: scheme)
-    phoneTextFieldController.applyTheme(withScheme: scheme)
-    coinAmountTextFieldController.applyTheme(withScheme: scheme)
-    currencyAmountTextFieldController.applyTheme(withScheme: scheme)
     
     dialCodeTextFieldController.placeholderText = localize(L.CoinSendGift.Form.Code.placeholder)
     phoneTextFieldController.placeholderText = localize(L.CoinSendGift.Form.Phone.placeholder)
