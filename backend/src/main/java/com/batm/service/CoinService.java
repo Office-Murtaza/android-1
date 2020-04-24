@@ -291,12 +291,12 @@ public class CoinService {
 
             @Override
             public TransactionDetailsDTO getTransaction(String txId, String address) {
-                return null;
+                return geth.getTransaction(txId, address);
             }
 
             @Override
             public TransactionListDTO getTransactionList(String address, Integer startIndex, Integer limit, TxListDTO txDTO) {
-                return null;
+                return geth.getTransactionList(address, startIndex, limit, txDTO);
             }
 
             @Override
@@ -347,7 +347,7 @@ public class CoinService {
 
             @Override
             public NodeTransactionsDTO getNodeTransactions(String address) {
-                return null;
+                return geth.getNodeTransactions(address);
             }
 
             @Override
