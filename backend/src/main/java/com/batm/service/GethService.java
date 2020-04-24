@@ -188,7 +188,7 @@ public class GethService {
 
             JSONObject res = rest.postForObject(nodeUrl, req, JSONObject.class);
 
-            return Numeric.toBigInt(res.optString("result")).intValue() + 1;
+            return Numeric.toBigInt(res.optString("result")).intValue();
         } catch (Exception e) {
             e.printStackTrace();
         }
