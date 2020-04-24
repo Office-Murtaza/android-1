@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 @Data
 @Configuration
 @ConfigurationProperties(prefix = "caching")
-public class CacheConfiguration {
+public class CacheConfig {
 
     @Data
     public static class CacheSpec {

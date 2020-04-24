@@ -34,9 +34,6 @@ public class Constant {
 
     public static final String TERMINAL_SERIAL_NUMBER = "BT300197";
 
-    public static final long GAS_PRICE = 50_000_000_000L;
-    public static final long GAS_LIMIT = 50_000;
-
     public static final String BNB_CHAIN_ID = "Binance-Chain-Tigris";
 
     public static final String APP_LINK_IOS = "itms-apps://itunes.apple.com/app/apple-store/id1475407885";

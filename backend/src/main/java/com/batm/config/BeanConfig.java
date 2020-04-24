@@ -17,7 +17,7 @@ import org.springframework.web.client.RestTemplate;
 import java.util.Optional;
 
 @Configuration
-public class BeanConfiguration {
+public class BeanConfig {
 
     @Value("${binance.api-key}")
     private String binanceApiKey;
