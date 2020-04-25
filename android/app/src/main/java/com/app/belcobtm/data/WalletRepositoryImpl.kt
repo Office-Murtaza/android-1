@@ -4,14 +4,13 @@ import com.app.belcobtm.data.core.NetworkUtils
 import com.app.belcobtm.data.core.TransactionHashHelper
 import com.app.belcobtm.data.rest.wallet.WalletApiService
 import com.app.belcobtm.data.shared.preferences.SharedPreferencesHelper
-import com.app.belcobtm.db.DbCryptoCoinModel
+import com.app.belcobtm.db.DbCryptoCoin
 import com.app.belcobtm.domain.Either
 import com.app.belcobtm.domain.Failure
 import com.app.belcobtm.domain.wallet.CoinFeeDataItem
 import com.app.belcobtm.domain.wallet.WalletRepository
 import com.app.belcobtm.presentation.core.extensions.CoinTypeExtension
 import com.app.belcobtm.presentation.core.extensions.code
-import io.realm.Realm
 
 class WalletRepositoryImpl(
     private val apiService: WalletApiService,
@@ -28,15 +27,15 @@ class WalletRepositoryImpl(
     }
 
     override suspend fun createTransaction(
+        fromCoinDb: DbCryptoCoin,
         fromCoinCode: String,
         fromCoinAmount: Double,
         isNeedSendSms: Boolean
     ): Either<Failure, String> = if (networkUtils.isNetworkAvailable()) {
         CoinTypeExtension.getTypeByCode(fromCoinCode)?.let { fromCoinType ->
-            val dbModel = DbCryptoCoinModel().getCryptoCoin(Realm.getDefaultInstance(), fromCoinType.code())
             val toAddress = prefHelper.coinsFee[fromCoinType.code()]?.serverWalletAddress ?: ""
             val hashResponse =
-                transactionHashRepository.createTransactionHash(fromCoinType, fromCoinAmount, dbModel, toAddress)
+                transactionHashRepository.createTransactionHash(fromCoinType, fromCoinAmount, fromCoinDb, toAddress)
             return when {
                 isNeedSendSms && hashResponse.isRight -> {
                     val sendSmsToDeviceResponse = apiService.sendToDeviceSmsCode()

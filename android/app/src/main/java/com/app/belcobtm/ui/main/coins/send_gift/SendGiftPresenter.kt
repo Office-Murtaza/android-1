@@ -4,6 +4,7 @@ import android.content.Context
 import com.app.belcobtm.R
 import com.app.belcobtm.api.data_manager.WithdrawDataManager
 import com.app.belcobtm.api.model.response.CoinModel
+import com.app.belcobtm.db.DbCryptoCoinModel
 import com.app.belcobtm.domain.Failure
 import com.app.belcobtm.domain.wallet.interactor.CreateTransactionUseCase
 import com.app.belcobtm.domain.wallet.interactor.GetGiftAddressUseCase
@@ -40,9 +41,8 @@ class SendGiftPresenter : BaseMvpDIPresenterImpl<SendGiftContract.View, Withdraw
     private var _phone: String? = null
     private var _gifMedia: Media? = null
 
-    init {
-        Realm.getDefaultInstance()
-    }
+    private val realm: Realm = Realm.getDefaultInstance()
+    private val dbCryptoCoinModel: DbCryptoCoinModel = DbCryptoCoinModel()
 
     override fun injectDependency() = presenterComponent.inject(this)
 
@@ -94,17 +94,21 @@ class SendGiftPresenter : BaseMvpDIPresenterImpl<SendGiftContract.View, Withdraw
         }
     }
 
-    private fun createTransaction(fromCoinCode: String, fromCoinAmount: Double) = createTransactionUseCase.invoke(
-        CreateTransactionUseCase.Params(fromCoinCode, fromCoinAmount)
-    ) { transactionEither ->
-        transactionEither.either(
-            { errorResponse(it) },
-            { hash ->
-                this.transactionHash = hash
-                mView?.openSmsCodeDialog()
-                mView?.showProgress(false)
+    private fun createTransaction(fromCoinCode: String, fromCoinAmount: Double) {
+        dbCryptoCoinModel.getCryptoCoin(realm, fromCoinCode)?.let { fromCoinDb ->
+            createTransactionUseCase.invoke(
+                CreateTransactionUseCase.Params(fromCoinDb, fromCoinCode, fromCoinAmount)
+            ) { transactionEither ->
+                transactionEither.either(
+                    { errorResponse(it) },
+                    { hash ->
+                        this.transactionHash = hash
+                        mView?.openSmsCodeDialog()
+                        mView?.showProgress(false)
+                    }
+                )
             }
-        )
+        } ?: mView?.showError(R.string.error_please_try_again)
     }
 
     private fun errorResponse(throwable: Throwable) {

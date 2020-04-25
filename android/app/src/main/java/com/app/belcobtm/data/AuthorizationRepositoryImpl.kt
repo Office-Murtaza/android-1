@@ -128,12 +128,9 @@ class AuthorizationRepositoryImpl(
 
         val bitcoinPrivateKey = wallet.getKeyForCoin(bitcoin)
         val bitcoinPrivateKeyStr = Numeric.toHexStringNoPrefix(bitcoinPrivateKey.data())
-        val extBitcoinPublicKey =
-            wallet.getExtendedPublicKey(Purpose.BIP44, bitcoin, HDVersion.XPUB)
-        val bitcoinPublicKey =
-            HDWallet.getPublicKeyFromExtended(extBitcoinPublicKey, "m/44'/0'/0'/0/0")
-        val bitcoinAddress =
-            BitcoinAddress(bitcoinPublicKey, CoinType.BITCOIN.p2pkhPrefix()).description()
+        val extBitcoinPublicKey = wallet.getExtendedPublicKey(Purpose.BIP44, bitcoin, HDVersion.XPUB)
+        val bitcoinPublicKey = HDWallet.getPublicKeyFromExtended(extBitcoinPublicKey, "m/44'/0'/0'/0/0")
+        val bitcoinAddress = BitcoinAddress(bitcoinPublicKey, CoinType.BITCOIN.p2pkhPrefix()).description()
         val bitcoinChPrivateKey = wallet.getKeyForCoin(bitcoinCash)
         val bitcoinChPrivateKeyStr = Numeric.toHexStringNoPrefix(bitcoinChPrivateKey.data())
         val bitcoinChAddress = bitcoinCash.deriveAddress(bitcoinChPrivateKey)

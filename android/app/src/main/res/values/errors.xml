@@ -19,4 +19,5 @@
     <string name="error_server_unavailable">Could not connect to server</string>
     <string name="error_internet_unavailable">Internet connection is unavailable</string>
     <string name="error_something_went_wrong">Something went wrong</string>
+    <string name="error_please_try_again">Please try again</string>
 </resources>

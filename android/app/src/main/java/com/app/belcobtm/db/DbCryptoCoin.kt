@@ -4,7 +4,7 @@ import io.realm.Realm
 import io.realm.RealmObject
 import io.realm.annotations.PrimaryKey
 
-
+@Deprecated("need migrate to room")
 open class DbCryptoCoin(
     open var coinType: String = "",
     open var coinTypeId: Int = -1,
