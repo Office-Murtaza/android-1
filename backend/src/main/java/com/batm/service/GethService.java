@@ -58,46 +58,51 @@ public class GethService {
     @Value("${eth.explorer.url}")
     private String ethExplorerUrl;
 
+    @Value("${eth.node.store.enabled:false}")
+    private Boolean storeEnabled;
+
     @Scheduled(cron = "0 */1 * * * *") // every 1 minute
     public void storeTxs() {
-        GethBlock block = mongo.exists(new Query(), GethBlock.class) ? mongo.findOne(new Query(), GethBlock.class) : new GethBlock(START_BLOCK);
-        BigInteger lastBlockNumber = getLastBlockNumber();
+        if(storeEnabled) {
+            GethBlock block = mongo.exists(new Query(), GethBlock.class) ? mongo.findOne(new Query(), GethBlock.class) : new GethBlock(START_BLOCK);
+            BigInteger lastBlockNumber = getLastBlockNumber();
 
-        if (block.getLastSuccessBlock() < lastBlockNumber.intValue()) {
-            int n = Math.min(MAX_BLOCK_COUNT, lastBlockNumber.intValue() - block.getLastSuccessBlock());
+            if (block.getLastSuccessBlock() < lastBlockNumber.intValue()) {
+                int n = Math.min(MAX_BLOCK_COUNT, lastBlockNumber.intValue() - block.getLastSuccessBlock());
 
-            for (int i = block.getLastSuccessBlock() + 1; i < block.getLastSuccessBlock() + n + 1; i++) {
-                JSONObject blockJson = getBlockByNumber(BigInteger.valueOf(i));
-                JSONArray txs = blockJson.optJSONArray("transactions");
-                List<GethTx> gethTxs = new ArrayList<>();
+                for (int i = block.getLastSuccessBlock() + 1; i < block.getLastSuccessBlock() + n + 1; i++) {
+                    JSONObject blockJson = getBlockByNumber(BigInteger.valueOf(i));
+                    JSONArray txs = blockJson.optJSONArray("transactions");
+                    List<GethTx> gethTxs = new ArrayList<>();
 
-                for (int j = 0; j < txs.size(); j++) {
-                    JSONObject json = txs.getJSONObject(j);
+                    for (int j = 0; j < txs.size(); j++) {
+                        JSONObject json = txs.getJSONObject(j);
 
-                    BigDecimal amount = new BigDecimal(Numeric.toBigInt(json.optString("value")))
-                            .divide(Constant.ETH_DIVIDER)
-                            .stripTrailingZeros();
+                        BigDecimal amount = new BigDecimal(Numeric.toBigInt(json.optString("value")))
+                                .divide(Constant.ETH_DIVIDER)
+                                .stripTrailingZeros();
 
-                    BigDecimal fee = new BigDecimal(Numeric.toBigInt(json.optString("gasPrice")))
-                            .multiply(new BigDecimal(Numeric.toBigInt(json.optString("gas"))))
-                            .divide(Constant.ETH_DIVIDER)
-                            .stripTrailingZeros();
+                        BigDecimal fee = new BigDecimal(Numeric.toBigInt(json.optString("gasPrice")))
+                                .multiply(new BigDecimal(Numeric.toBigInt(json.optString("gas"))))
+                                .divide(Constant.ETH_DIVIDER)
+                                .stripTrailingZeros();
 
-                    gethTxs.add(GethTx.builder()
-                            .txId(json.optString("hash"))
-                            .blockNumber(i)
-                            .fromAddress(json.optString("from"))
-                            .toAddress(json.optString("to"))
-                            .amount(amount)
-                            .fee(fee)
-                            .blockTime(Numeric.toBigInt(blockJson.optString("timestamp")).longValue())
-                            .build());
+                        gethTxs.add(GethTx.builder()
+                                .txId(json.optString("hash"))
+                                .blockNumber(i)
+                                .fromAddress(json.optString("from"))
+                                .toAddress(json.optString("to"))
+                                .amount(amount)
+                                .fee(fee)
+                                .blockTime(Numeric.toBigInt(blockJson.optString("timestamp")).longValue())
+                                .build());
+                    }
+
+                    mongo.remove(new Query(Criteria.where("blockNumber").is(i)), GethTx.class);
+                    mongo.insertAll(gethTxs);
+
+                    mongo.upsert(new Query(), new Update().set("lastSuccessBlock", i), GethBlock.class);
                 }
-
-                mongo.remove(new Query(Criteria.where("blockNumber").is(i)), GethTx.class);
-                mongo.insertAll(gethTxs);
-
-                mongo.upsert(new Query(), new Update().set("lastSuccessBlock", i), GethBlock.class);
             }
         }
     }
