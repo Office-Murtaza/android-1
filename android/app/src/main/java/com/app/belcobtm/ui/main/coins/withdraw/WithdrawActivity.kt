@@ -51,8 +51,7 @@ class WithdrawActivity : BaseMvpActivity<WithdrawContract.View, WithdrawContract
     }
 
     private fun initPrice() {
-        val convertedPrice = if (mCoin.price.uSD > 0) String.format("%.2f", mCoin.price.uSD).trimEnd('0') else "0"
-        priceUsdView.text = getString(R.string.transaction_price_usd, convertedPrice)
+        priceUsdView.text = getString(R.string.transaction_price_usd, mCoin.price.uSD.toStringUsd())
     }
 
     private fun initBalance() {

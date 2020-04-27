@@ -1,6 +1,5 @@
 package com.app.belcobtm.presentation.features.wallet.exchange.coin.to.coin
 
-import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
@@ -102,7 +101,8 @@ class ExchangeCoinToCoinActivity : BaseActivity() {
             amountCoinFromView.setText(viewModel.fromCoinItem.balanceCoin.toStringCoin())
         }
         nextButtonView.setOnClickListener {
-            viewModel.createTransaction(amountCoinFromView.getString().toDouble())
+            val amount = amountCoinFromView.getString().toDouble() + viewModel.coinFeeItem.txFee
+            viewModel.createTransaction(amount)
         }
     }
 
@@ -181,10 +181,8 @@ class ExchangeCoinToCoinActivity : BaseActivity() {
                     editable.lastIndex,
                     editable.length
                 )
-                editable.contains(DOT_CHAR) && (editable.lastIndex - editable.indexOf(DOT_CHAR)) > MAX_CHARS_AFTER_DOT -> editable.delete(
-                    editable.lastIndex - 1,
-                    editable.lastIndex
-                )
+                editable.contains(DOT_CHAR) && (editable.lastIndex - editable.indexOf(DOT_CHAR)) > MAX_CHARS_AFTER_DOT ->
+                    editable.delete(editable.lastIndex - 1, editable.lastIndex)
                 editable.isEmpty() || editable.toString().replace(DOT_CHAR.toString(), "").toInt() <= 0 -> {
                     val isContainsDot = editable.contains(DOT_CHAR)
                     val indexOfDot = editable.indexOf(DOT_CHAR)
@@ -205,9 +203,10 @@ class ExchangeCoinToCoinActivity : BaseActivity() {
                     val toCoinAmount =
                         (fromCoinAmount * fromCoinPrice) / toCoinRefPrice * (100 - fromCoinProfitC2c) / 100
 
-                    if (fromCoinTemporaryValue > viewModel.fromCoinItem.balanceCoin) {
+                    val maxValueWithFee = viewModel.fromCoinItem.balanceCoin - viewModel.coinFeeItem.txFee
+                    if (fromCoinTemporaryValue > maxValueWithFee) {
                         editable.clear()
-                        editable.insert(0, fromCoinAmount.toStringCoin())
+                        editable.insert(0, maxValueWithFee.toStringCoin())
                     }
                     amountCoinToView.setText(toCoinAmount.toStringCoin())
                 }
