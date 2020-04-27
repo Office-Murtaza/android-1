@@ -3,9 +3,9 @@ package com.app.belcobtm.data.core
 import com.app.belcobtm.api.model.param.trx.Trx
 import com.app.belcobtm.data.rest.wallet.WalletApiService
 import com.app.belcobtm.data.shared.preferences.SharedPreferencesHelper
-import com.app.belcobtm.db.DbCryptoCoin
 import com.app.belcobtm.domain.Either
 import com.app.belcobtm.domain.Failure
+import com.app.belcobtm.domain.wallet.CoinDataItem
 import com.app.belcobtm.presentation.core.*
 import com.app.belcobtm.presentation.core.extensions.*
 import com.google.gson.Gson
@@ -21,65 +21,62 @@ class TransactionHashHelper(
 ) {
 
     suspend fun createTransactionHash(
-        fromCoin: CoinType,
+        fromCoin: CoinDataItem,
         fromCoinAmount: Double,
-        fromCoinDbModel: DbCryptoCoin?,
         toAddress: String
-    ): Either<Failure, String> = when (fromCoin) {
+    ): Either<Failure, String> = when (fromCoin.type) {
         CoinType.BITCOIN,
         CoinType.BITCOINCASH,
         CoinType.LITECOIN -> createTransactionHashBTCorLTCorBTH(
             toAddress,
             fromCoin,
-            fromCoinAmount,
-            fromCoinDbModel
+            fromCoinAmount
         )
         CoinType.ETHEREUM -> createTransactionHashETH(
             toAddress,
-            fromCoinAmount,
-            fromCoinDbModel
+            fromCoin,
+            fromCoinAmount
         )
         CoinType.XRP -> createTransactionHashXRP(
             toAddress,
-            fromCoinAmount,
-            fromCoinDbModel
+            fromCoin,
+            fromCoinAmount
         )
         CoinType.BINANCE -> createTransactionHashBNB(
             toAddress,
-            fromCoinAmount,
-            fromCoinDbModel
+            fromCoin,
+            fromCoinAmount
         )
         CoinType.TRON -> createTransactionHashTron(
             toAddress,
-            fromCoinAmount,
-            fromCoinDbModel
+            fromCoin,
+            fromCoinAmount
         )
         else -> Either.Left(Failure.MessageError("Wrong coin"))
     }
 
     private suspend fun createTransactionHashBTCorLTCorBTH(
         toAddress: String,
-        fromCoin: CoinType,
-        fromCoinAmount: Double,
-        fromCoinDbModel: DbCryptoCoin?
+        fromCoin: CoinDataItem,
+        fromCoinAmount: Double
     ): Either<Failure, String> {
         val hdWallet = HDWallet(prefsHelper.apiSeed, "")
         val publicKey = hdWallet.getExtendedPublicKey(
-            fromCoin.customPurpose(),
-            fromCoin,
-            fromCoin.customXpubVersion()
+            fromCoin.type.customPurpose(),
+            fromCoin.type,
+            fromCoin.type.customXpubVersion()
         )
-        val response = apiService.getUtxoList(fromCoin.code(), publicKey)
+        val response = apiService.getUtxoList(fromCoin.code, publicKey)
 
         return if (response.isRight) {
             val utxos = (response as Either.Right).b
-            val publicKeyFrom = fromCoinDbModel?.publicKey
+            val publicKeyFrom = fromCoin.publicKey
             val cryptoToSatoshi = fromCoinAmount * CoinType.BITCOIN.unit()
             val amount: Long = cryptoToSatoshi.toLong()
-            val byteFee = getByteFee(fromCoinDbModel?.coinType)
-            val sngHash = TWBitcoinSigHashType.getCryptoHash(fromCoin)
+            val byteFee = getByteFee(fromCoin.code)
+            val sngHash = TWBitcoinSigHashType.getCryptoHash(fromCoin.type)
 //        val cointypeValue = if (coinType.value() == 2) 0 else coinType.value()
-            val cointypeValue = fromCoin.value()
+            val cointypeValue = fromCoin.type.value()
             val signerBuilder = Bitcoin.SigningInput.newBuilder()
                 .setAmount(amount)
                 .setHashType(sngHash)
@@ -94,7 +91,7 @@ class TransactionHashHelper(
             }
 
             utxos.forEach {
-                val redeemScript = BitcoinScript.buildForAddress(it.address, fromCoin)
+                val redeemScript = BitcoinScript.buildForAddress(it.address, fromCoin.type)
                 val keyHash = if (redeemScript.isPayToWitnessScriptHash) {
                     redeemScript.matchPayToWitnessPublicKeyHash()
                 } else {
@@ -120,7 +117,7 @@ class TransactionHashHelper(
                     .setSequence(sequence)
                     .build()
                 val utxoAmount = utxo.value.toLong()
-                val redeemScript = BitcoinScript.buildForAddress(utxo.address, fromCoin)
+                val redeemScript = BitcoinScript.buildForAddress(utxo.address, fromCoin.type)
                 val scriptByteString = ByteString.copyFrom(redeemScript.data())
                 val utxo0 = Bitcoin.UnspentTransaction.newBuilder()
                     .setScript(scriptByteString)
@@ -149,8 +146,8 @@ class TransactionHashHelper(
 
     private suspend fun createTransactionHashETH(
         toAddress: String,
-        fromCoinAmount: Double,
-        fromCoinDbModel: DbCryptoCoin?
+        fromCoin: CoinDataItem,
+        fromCoinAmount: Double
     ): Either<Failure, String> {
         val response = apiService.getEthereumNonce()
         return if (response.isRight) {
@@ -169,7 +166,7 @@ class TransactionHashHelper(
             val signingInput = Ethereum.SigningInput.newBuilder()
 
             signingInput.also {
-                it.privateKey = fromCoinDbModel?.privateKey?.toHexBytesInByteString()
+                it.privateKey = fromCoin.privateKey.toHexBytesInByteString()
                 it.toAddress = toAddress
                 it.chainId = ByteString.copyFrom("0x1".toHexByteArray())
                 it.nonce = nonceHex
@@ -205,16 +202,16 @@ class TransactionHashHelper(
 
     private suspend fun createTransactionHashXRP(
         toAddress: String,
-        fromCoinAmount: Double,
-        fromCoinDbModel: DbCryptoCoin?
+        fromCoin: CoinDataItem,
+        fromCoinAmount: Double
     ): Either<Failure, String> {
         val response = apiService.getRippleSequence()
 
         return if (response.isRight) {
-            val privateKey = PrivateKey(fromCoinDbModel?.privateKey?.toHexByteArray())
+            val privateKey = PrivateKey(fromCoin.privateKey.toHexByteArray())
             val signingInput = Ripple.SigningInput.newBuilder().also {
                 it.sequence = (response as Either.Right).b.toInt()
-                it.account = fromCoinDbModel?.publicKey ?: ""
+                it.account = fromCoin.publicKey
                 it.amount = (fromCoinAmount * CoinType.XRP.unit()).toLong()
                 it.destination = toAddress
                 it.fee = ((prefsHelper.coinsFee[CoinType.XRP.code()]?.txFee?.toBigDecimal()
@@ -231,13 +228,13 @@ class TransactionHashHelper(
 
     private suspend fun createTransactionHashBNB(
         toAddress: String,
-        fromCoinAmount: Double,
-        fromCoinDbModel: DbCryptoCoin?
+        fromCoin: CoinDataItem,
+        fromCoinAmount: Double
     ): Either<Failure, String> {
         val response = apiService.getBinanceBlockHeader()
 
         return if (response.isRight) {
-            val privateKey = PrivateKey(fromCoinDbModel?.privateKey?.toHexByteArray())
+            val privateKey = PrivateKey(fromCoin.privateKey.toHexByteArray())
             val publicKey = privateKey.getPublicKeySecp256k1(true)
 
             val token = Binance.SendOrder.Token.newBuilder().also {
@@ -273,15 +270,15 @@ class TransactionHashHelper(
 
     private suspend fun createTransactionHashTron(
         toAddress: String,
-        fromCoinAmount: Double,
-        fromCoinDbModel: DbCryptoCoin?
+        fromCoin: CoinDataItem,
+        fromCoinAmount: Double
     ): Either<Failure, String> {
-        val response = apiService.getTronBlockHeader(fromCoinDbModel?.coinType ?: "")
+        val response = apiService.getTronBlockHeader(fromCoin.code)
 
         return if (response.isRight) {
             val rawData = (response as Either.Right).b
             val cryptoToSubcoin = fromCoinAmount * CoinType.TRON.unit()
-            val fromAddress = fromCoinDbModel?.publicKey
+            val fromAddress = fromCoin.publicKey
             val tronBlock = Tron.BlockHeader.newBuilder().also {
                 it.number = rawData?.number ?: 0L
                 it.timestamp = rawData?.timestamp ?: 0L
@@ -308,7 +305,7 @@ class TransactionHashHelper(
             }
             val signing = Tron.SigningInput.newBuilder().also {
                 it.transaction = transaction.build()
-                it.privateKey = fromCoinDbModel?.privateKey?.toHexBytesInByteString()
+                it.privateKey = fromCoin.privateKey.toHexBytesInByteString()
             }.build()
             val jsonHash = TronSigner.sign(signing).json
             val correctJson = Gson().toJson(Gson().fromJson<Trx>(jsonHash, Trx::class.java))

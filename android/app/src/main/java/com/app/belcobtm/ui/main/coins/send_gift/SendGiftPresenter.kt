@@ -5,6 +5,7 @@ import com.app.belcobtm.R
 import com.app.belcobtm.api.data_manager.WithdrawDataManager
 import com.app.belcobtm.api.model.response.CoinModel
 import com.app.belcobtm.db.DbCryptoCoinModel
+import com.app.belcobtm.db.mapToDataItem
 import com.app.belcobtm.domain.Failure
 import com.app.belcobtm.domain.wallet.interactor.CreateTransactionUseCase
 import com.app.belcobtm.domain.wallet.interactor.GetGiftAddressUseCase
@@ -96,10 +97,9 @@ class SendGiftPresenter : BaseMvpDIPresenterImpl<SendGiftContract.View, Withdraw
 
     private fun createTransaction(fromCoinCode: String, fromCoinAmount: Double) {
         dbCryptoCoinModel.getCryptoCoin(realm, fromCoinCode)?.let { fromCoinDb ->
-            createTransactionUseCase.invoke(
-                CreateTransactionUseCase.Params(fromCoinDb, fromCoinCode, fromCoinAmount)
-            ) { transactionEither ->
-                transactionEither.either(
+            val coinDataItem = fromCoinDb.mapToDataItem()
+            createTransactionUseCase.invoke(CreateTransactionUseCase.Params(coinDataItem, fromCoinAmount)) { either ->
+                either.either(
                     { errorResponse(it) },
                     { hash ->
                         this.transactionHash = hash

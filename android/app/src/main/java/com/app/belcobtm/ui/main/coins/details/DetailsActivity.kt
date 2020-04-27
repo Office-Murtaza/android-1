@@ -1,7 +1,6 @@
 package com.app.belcobtm.ui.main.coins.details
 
 import android.annotation.SuppressLint
-import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
 import android.graphics.Point
@@ -20,20 +19,14 @@ import com.app.belcobtm.api.model.response.*
 import com.app.belcobtm.mvp.BaseMvpActivity
 import com.app.belcobtm.presentation.core.Const.GIPHY_API_KEY
 import com.app.belcobtm.presentation.core.QRUtils.Companion.getSpacelessQR
-import com.app.belcobtm.presentation.core.extensions.hide
-import com.app.belcobtm.presentation.core.extensions.show
-import com.app.belcobtm.presentation.core.extensions.toStringCoin
-import com.app.belcobtm.presentation.core.extensions.toggle
+import com.app.belcobtm.presentation.core.extensions.*
 import com.giphy.sdk.ui.GiphyCoreUI
 import com.giphy.sdk.ui.views.GPHMediaView
-import com.giphy.sdk.ui.views.GiphyDialogFragment
 import kotlinx.android.synthetic.main.activity_details_coin.*
 import org.parceler.Parcels
 
-
 class DetailsActivity : BaseMvpActivity<DetailsContract.View, DetailsContract.Presenter>(),
     DetailsContract.View {
-    private lateinit var gifsDialog: GiphyDialogFragment
     private lateinit var mCoin: CoinModel
     private lateinit var transaction: TransactionModel
 
@@ -85,25 +78,6 @@ class DetailsActivity : BaseMvpActivity<DetailsContract.View, DetailsContract.Pr
         showRefCoinView(detailsResponse?.refCoin)
         showRefAmountView(detailsResponse?.refCryptoAmount?.toStringCoin())
         showDividers()
-    }
-
-    private fun trimTrailingZero(value: String?): String? {
-        return if (!value.isNullOrEmpty()) {
-            if (value.indexOf(".") < 0) {
-                value
-            } else {
-                value.replace("0*$".toRegex(), "").replace("\\.$".toRegex(), "")
-            }
-        } else {
-            value
-        }
-    }
-
-    private fun getTextFromClipboard(): String {
-        val clipboard = getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
-        val clipData = clipboard.primaryClip
-        val item = clipData?.getItemAt(0)
-        return item?.text.toString()
     }
 
     private fun showTxIdView(txId: String?, link: String?) = if (txId == null) {
@@ -188,25 +162,21 @@ class DetailsActivity : BaseMvpActivity<DetailsContract.View, DetailsContract.Pr
         amountContainerView.hide()
     } else {
         amountContainerView.show()
-        amountView.text = String.format(" %.8f", amount)
-        amountView.text = """${trimTrailingZero(amountView.text.toString())?.replace(" ", "")} ${mCoin.coinId}"""
+        amountView.text = getString(R.string.transition_details_balance_crypto, amount.toStringCoin(), mCoin.coinId)
     }
 
     private fun showFiatAmountView(amount: Double?) = if (amount == null) {
         fiatAmountContainerView.hide()
     } else {
         fiatAmountContainerView.show()
-        fiatAmountView.text = String.format(" %.8f", amount)
-        fiatAmountView.text =
-            """${trimTrailingZero(fiatAmountView.text.toString())?.replace(" ", "")} $TAG_USD"""
+        fiatAmountView.text = getString(R.string.transition_details_balance_usd, amount.toStringUsd())
     }
 
     private fun showFeeView(fee: Double?) = if (fee == null) {
         feeContainerView.hide()
     } else {
         feeContainerView.show()
-        feeView.text = String.format(" %.8f", fee)
-        feeView.text = """${trimTrailingZero(feeView.text.toString())?.replace(" ", "")} ${mCoin.coinId}"""
+        feeView.text = getString(R.string.transition_details_balance_crypto, fee.toStringCoin(), mCoin.coinId)
     }
 
     private fun showDateView(date: String?) = if (date.isNullOrBlank()) {
@@ -296,7 +266,6 @@ class DetailsActivity : BaseMvpActivity<DetailsContract.View, DetailsContract.Pr
     companion object {
         private const val KEY_TRANS = "KEY TRANS"
         private const val KEY_COIN = "KEY_COIN"
-        private const val TAG_USD = "USD"
 
         @JvmStatic
         fun start(context: Context?, trans: TransactionModel, coin: CoinModel) {

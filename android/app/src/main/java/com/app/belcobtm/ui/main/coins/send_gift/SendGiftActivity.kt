@@ -26,6 +26,7 @@ import com.giphy.sdk.ui.themes.LightTheme
 import com.giphy.sdk.ui.views.GiphyDialogFragment
 import com.google.android.material.textfield.TextInputLayout
 import kotlinx.android.synthetic.main.activity_send_gift.*
+import kotlinx.android.synthetic.main.view_sms_code_dialog.view.*
 import org.parceler.Parcels
 
 class SendGiftActivity : BaseMvpActivity<SendGiftContract.View, SendGiftContract.Presenter>(),
@@ -97,7 +98,8 @@ class SendGiftActivity : BaseMvpActivity<SendGiftContract.View, SendGiftContract
     }
 
     private fun initBalance() {
-        balanceCryptoView.text = getString(R.string.transaction_crypto_balance, mCoin.balance.toStringCoin(), mCoin.coinId)
+        balanceCryptoView.text =
+            getString(R.string.transaction_crypto_balance, mCoin.balance.toStringCoin(), mCoin.coinId)
         balanceUsdView.text = getString(R.string.transaction_price_usd, (mCoin.balance * mCoin.price.uSD).toStringUsd())
     }
 
@@ -183,13 +185,13 @@ class SendGiftActivity : BaseMvpActivity<SendGiftContract.View, SendGiftContract
 
     override fun openSmsCodeDialog(error: String?) {
         val view = layoutInflater.inflate(R.layout.view_sms_code_dialog, null)
-        val smsCode = view.findViewById<AppCompatEditText>(R.id.sms_code)
-        AlertDialog
+        view.til_sms_code.error = error
+        val dialog = AlertDialog
             .Builder(this)
             .setTitle(getString(R.string.verify_sms_code))
             .setPositiveButton(R.string.next)
             { _, _ ->
-                val code = smsCode.text.toString()
+                val code = view.sms_code.text.toString()
                 if (code.length != 4) {
                     openSmsCodeDialog(getString(R.string.error_sms_code_4_digits))
                 } else {
@@ -199,9 +201,8 @@ class SendGiftActivity : BaseMvpActivity<SendGiftContract.View, SendGiftContract
             .setNegativeButton(R.string.cancel, null)
             .setView(view)
             .create()
-            .show()
-        val tilSmsCode = view.findViewById<TextInputLayout>(R.id.til_sms_code)
-        tilSmsCode.error = error
+        dialog.setCanceledOnTouchOutside(false)
+        dialog.show()
     }
 
     override fun onDismissed() {

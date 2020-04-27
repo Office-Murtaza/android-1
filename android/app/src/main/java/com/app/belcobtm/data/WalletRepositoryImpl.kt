@@ -4,13 +4,11 @@ import com.app.belcobtm.data.core.NetworkUtils
 import com.app.belcobtm.data.core.TransactionHashHelper
 import com.app.belcobtm.data.rest.wallet.WalletApiService
 import com.app.belcobtm.data.shared.preferences.SharedPreferencesHelper
-import com.app.belcobtm.db.DbCryptoCoin
 import com.app.belcobtm.domain.Either
 import com.app.belcobtm.domain.Failure
+import com.app.belcobtm.domain.wallet.CoinDataItem
 import com.app.belcobtm.domain.wallet.CoinFeeDataItem
 import com.app.belcobtm.domain.wallet.WalletRepository
-import com.app.belcobtm.presentation.core.extensions.CoinTypeExtension
-import com.app.belcobtm.presentation.core.extensions.code
 
 class WalletRepositoryImpl(
     private val apiService: WalletApiService,
@@ -27,28 +25,24 @@ class WalletRepositoryImpl(
     }
 
     override suspend fun createTransaction(
-        fromCoinDb: DbCryptoCoin,
-        fromCoinCode: String,
+        fromCoin: CoinDataItem,
         fromCoinAmount: Double,
         isNeedSendSms: Boolean
     ): Either<Failure, String> = if (networkUtils.isNetworkAvailable()) {
-        CoinTypeExtension.getTypeByCode(fromCoinCode)?.let { fromCoinType ->
-            val toAddress = prefHelper.coinsFee[fromCoinType.code()]?.serverWalletAddress ?: ""
-            val hashResponse =
-                transactionHashRepository.createTransactionHash(fromCoinType, fromCoinAmount, fromCoinDb, toAddress)
-            return when {
-                isNeedSendSms && hashResponse.isRight -> {
-                    val sendSmsToDeviceResponse = apiService.sendToDeviceSmsCode()
-                    if (sendSmsToDeviceResponse.isRight) {
-                        hashResponse as Either.Right
-                    } else {
-                        sendSmsToDeviceResponse as Either.Left
-                    }
+        val toAddress = prefHelper.coinsFee[fromCoin.code]?.serverWalletAddress ?: ""
+        val hashResponse = transactionHashRepository.createTransactionHash(fromCoin, fromCoinAmount, toAddress)
+        when {
+            isNeedSendSms && hashResponse.isRight -> {
+                val sendSmsToDeviceResponse = apiService.sendToDeviceSmsCode()
+                if (sendSmsToDeviceResponse.isRight) {
+                    hashResponse as Either.Right
+                } else {
+                    sendSmsToDeviceResponse as Either.Left
                 }
-                !isNeedSendSms && hashResponse.isRight -> hashResponse as Either.Right
-                else -> hashResponse as Either.Left
             }
-        } ?: Either.Left(Failure.MessageError("Wrong coin type"))
+            !isNeedSendSms && hashResponse.isRight -> hashResponse as Either.Right
+            else -> hashResponse as Either.Left
+        }
     } else {
         Either.Left(Failure.NetworkConnection)
     }

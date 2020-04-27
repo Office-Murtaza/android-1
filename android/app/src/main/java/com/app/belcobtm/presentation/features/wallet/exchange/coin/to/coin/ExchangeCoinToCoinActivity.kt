@@ -1,5 +1,6 @@
 package com.app.belcobtm.presentation.features.wallet.exchange.coin.to.coin
 
+import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
@@ -33,7 +34,7 @@ class ExchangeCoinToCoinActivity : BaseActivity() {
         val dialog = MaterialAlertDialogBuilder(this)
             .setTitle(getString(R.string.verify_sms_code))
             .setPositiveButton(R.string.next, null)
-            .setNegativeButton(R.string.cancel, null)
+            .setNegativeButton(R.string.cancel) { _, _ -> showProgress(false) }
             .setView(view)
             .create()
         dialog.setCanceledOnTouchOutside(false)

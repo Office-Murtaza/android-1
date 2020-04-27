@@ -2,8 +2,8 @@ package com.app.belcobtm.presentation.features.wallet.exchange.coin.to.coin
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.app.belcobtm.R
 import com.app.belcobtm.db.DbCryptoCoinModel
+import com.app.belcobtm.db.mapToDataItem
 import com.app.belcobtm.domain.Failure
 import com.app.belcobtm.domain.wallet.CoinFeeDataItem
 import com.app.belcobtm.domain.wallet.interactor.CoinToCoinExchangeUseCase
@@ -31,9 +31,10 @@ class ExchangeCoinToCoinViewModel(
     fun createTransaction(fromCoinAmount: Double) {
         val fromCoinDb = dbCryptoCoinModel.getCryptoCoin(realm, fromCoinItem.coinCode)
         if (fromCoinDb != null) {
+            val coinDataItem = fromCoinDb.mapToDataItem()
             exchangeLiveData.value = LoadingData.Loading()
             createTransactionUseCase.invoke(
-                CreateTransactionUseCase.Params(fromCoinDb, fromCoinItem.coinCode, fromCoinAmount)
+                CreateTransactionUseCase.Params(coinDataItem, fromCoinAmount)
             ) { either ->
                 either.either(
                     { exchangeLiveData.value = LoadingData.Error(it) },
