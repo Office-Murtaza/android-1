@@ -445,7 +445,7 @@ public class TransactionService {
                         BigDecimal withdrawAmount = t.getAmount().subtract(txFee);
                         BigDecimal walletBalance = walletService.getBalance(coinCode);
 
-                        if (walletBalance != null && walletBalance.compareTo(withdrawAmount.add(txFee)) >= 0) {
+                        if (walletBalance.compareTo(withdrawAmount.add(txFee)) >= 0) {
                             String fromAddress = coinCode.getWalletAddress();
                             String toAddress = userService.getUserCoin(receiver.get().getId(), t.getCoin().getCode()).getAddress();
                             String hex = coinCode.sign(fromAddress, toAddress, withdrawAmount);

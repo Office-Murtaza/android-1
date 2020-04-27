@@ -191,6 +191,10 @@ public class WalletService {
                     .map(TransactionDetailsDTO::getCryptoAmount)
                     .reduce(BigDecimal.ZERO, BigDecimal::add);
 
+            if(coinCode == CoinService.CoinEnum.XRP) {
+                pendingSum.add(new BigDecimal(20));
+            }
+
             return balance.subtract(pendingSum);
         } catch (Exception e) {
             e.printStackTrace();

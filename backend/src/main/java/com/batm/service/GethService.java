@@ -157,19 +157,19 @@ public class GethService {
     }
 
     public Long getGasLimit() {
-        try {
-            JSONObject req = new JSONObject();
-            req.put("jsonrpc", "2.0");
-            req.put("method", "eth_estimateGas");
-            req.put("params", new JSONArray());
-            req.put("id", 73);
-
-            JSONObject res = rest.postForObject(nodeUrl, req, JSONObject.class);
-
-            return Numeric.toBigInt(res.optString("result")).longValue();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+//        try {
+//            JSONObject req = new JSONObject();
+//            req.put("jsonrpc", "2.0");
+//            req.put("method", "eth_estimateGas");
+//            req.put("params", new JSONArray());
+//            req.put("id", 73);
+//
+//            JSONObject res = rest.postForObject(nodeUrl, req, JSONObject.class);
+//
+//            return Numeric.toBigInt(res.optString("result")).longValue();
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
 
         return GAS_LIMIT;
     }
