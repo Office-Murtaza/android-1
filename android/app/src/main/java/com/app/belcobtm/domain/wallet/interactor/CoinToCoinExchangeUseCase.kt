@@ -11,9 +11,10 @@ class CoinToCoinExchangeUseCase(
     UseCase<Unit, CoinToCoinExchangeUseCase.Params>() {
 
     override suspend fun run(params: Params): Either<Failure, Unit> =
-        repository.exchangeCoinToCoin(params.coinFromAmount, params.coinFrom, params.coinTo, params.hex)
+        repository.exchangeCoinToCoin(params.smsCode, params.coinFromAmount, params.coinFrom, params.coinTo, params.hex)
 
     data class Params(
+        val smsCode: String,
         val coinFromAmount: Double,
         val coinFrom: String,
         val coinTo: String,

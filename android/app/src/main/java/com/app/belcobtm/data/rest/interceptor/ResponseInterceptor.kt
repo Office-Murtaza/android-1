@@ -34,10 +34,11 @@ class ResponseInterceptor : Interceptor {
                     }
                 }
                 HttpURLConnection.HTTP_NOT_FOUND -> throw Failure.ServerError("Not found")
-                HttpURLConnection.HTTP_FORBIDDEN -> response.newBuilder()
-                    .body(response.body())
-                    .code(HttpURLConnection.HTTP_UNAUTHORIZED)
-                    .build()
+                HttpURLConnection.HTTP_FORBIDDEN -> Failure.TokenError
+//                    response.newBuilder()
+//                    .body(response.body())
+//                    .code(HttpURLConnection.HTTP_UNAUTHORIZED)
+//                    .build()
                 else -> Unit
             }
         } catch (e: JSONException) {

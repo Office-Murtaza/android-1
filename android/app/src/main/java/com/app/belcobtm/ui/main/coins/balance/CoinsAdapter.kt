@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.app.belcobtm.R
 import com.app.belcobtm.api.model.response.CoinModel
+import com.app.belcobtm.presentation.core.extensions.toStringCoin
 import kotlinx.android.synthetic.main.item_coin.view.*
 
 
@@ -35,10 +36,9 @@ class CoinsAdapter(
             holder.itemView.coin_image.setImageResource(coinImageId)
             holder.itemView.coin_name.text = item.fullCoinName
 
-            val balance = if (item.balance > 0)
-                String.format("%.6f", item.balance).trimEnd('0')
-            else "0"
-            holder.itemView.coin_balance.text = "$balance ${item.coinId}"
+
+
+            holder.itemView.coin_balance.text = "${item.balance.toStringCoin()} ${item.coinId}"
 
             holder.itemView.coin_price.text = "USD ${item.price?.uSD}"
             holder.itemView.coin_container.setOnClickListener {

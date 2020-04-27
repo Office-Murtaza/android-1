@@ -1,166 +1,123 @@
 package com.app.belcobtm.ui.main.coins.send_gift
 
 import android.content.Context
-import android.preference.PreferenceManager
-import com.app.belcobtm.App
 import com.app.belcobtm.R
 import com.app.belcobtm.api.data_manager.WithdrawDataManager
-import com.app.belcobtm.api.model.ServerException
-import com.app.belcobtm.api.model.param.SendTransactionParam
-import com.app.belcobtm.api.model.param.trx.Trx
 import com.app.belcobtm.api.model.response.CoinModel
-import com.app.belcobtm.data.shared.preferences.SharedPreferencesHelper
-import com.app.belcobtm.db.DbCryptoCoin
 import com.app.belcobtm.db.DbCryptoCoinModel
+import com.app.belcobtm.db.mapToDataItem
+import com.app.belcobtm.domain.Failure
+import com.app.belcobtm.domain.wallet.interactor.CreateTransactionUseCase
+import com.app.belcobtm.domain.wallet.interactor.GetGiftAddressUseCase
+import com.app.belcobtm.domain.wallet.interactor.SendGiftUseCase
 import com.app.belcobtm.mvp.BaseMvpDIPresenterImpl
-import com.app.belcobtm.presentation.core.Const
 import com.giphy.sdk.core.models.Media
-import com.google.gson.Gson
 import io.realm.Realm
-import wallet.core.jni.CoinType
-import wallet.core.jni.HDWallet
-
+import org.koin.core.KoinComponent
+import org.koin.core.inject
 
 class SendGiftPresenter : BaseMvpDIPresenterImpl<SendGiftContract.View, WithdrawDataManager>(),
-    SendGiftContract.Presenter {
-    private var phoneEncoded: String? = null
-    private var message: String? = null
-    private var coinAmount: Double? = 0.0
-    private var coinType: CoinType? = null
-    private var fromAddress: String? = null
+    SendGiftContract.Presenter, KoinComponent {
+    private val getGiftAddressUseCase: GetGiftAddressUseCase by inject()
+    private val createTransactionUseCase: CreateTransactionUseCase by inject()
+    private val sendGiftAddressUseCase: SendGiftUseCase by inject()
+    private var coinFromCode: String = ""
+    private var transactionHash: String = ""
+    private var fromAddress: String = ""
+    private var phoneEncoded: String = ""
+    private var message: String = ""
+    private var coinAmount: Double = 0.0
     override var phone: String?
         get() = _phone
         set(value) {
             _phone = value
         }
+
     override var gifMedia: Media?
         get() = _gifMedia
         set(value) {
-
             _gifMedia = value
         }
-
-    //TODO need migrate to dependency koin after refactoring
-    private val prefsHelper: SharedPreferencesHelper by lazy {
-        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(App.appContext())
-        SharedPreferencesHelper(sharedPreferences)
-    }
 
     private var _phone: String? = null
     private var _gifMedia: Media? = null
 
-    override fun injectDependency() {
-        presenterComponent.inject(this)
-    }
+    private val realm: Realm = Realm.getDefaultInstance()
+    private val dbCryptoCoinModel: DbCryptoCoinModel = DbCryptoCoinModel()
 
-    private val realm = Realm.getDefaultInstance()
-    private val coinModel = DbCryptoCoinModel()
-    val mUserId = prefsHelper.userId.toString()
+    override fun injectDependency() = presenterComponent.inject(this)
 
-    private var mTransactionHash: String? = null
-    private var mTransactionHashJson: String? = null
-    private var mCoinDbModel: DbCryptoCoin? = null
-
-    override fun getCoinTransactionHash(
+    override fun createTransaction(
         context: Context,
-        coin: CoinModel,
+        coinModel: CoinModel,
         phone: String,
         coinAmount: Double,
-        message: String?
+        message: String
     ) {
-        val hdWallet = HDWallet(prefsHelper.apiSeed, "")
-
-        mCoinDbModel = coinModel.getCryptoCoin(realm, coin.coinId)
-
-        this.coinType = if (mCoinDbModel != null) {
-            CoinType.createFromValue(mCoinDbModel!!.coinTypeId)
-        } else {
-            mView?.showError(context.getString(R.string.wrong_crypto_coin_data))
-            return
-        }
-
+        this.coinFromCode = coinModel.coinId
         this.coinAmount = coinAmount
         this.message = message
         this.phone = phone
-
         this.phoneEncoded = "+" + phone.replace("+", "")
-        mDataManager.giftAddress(mUserId, mCoinDbModel!!.coinType, phoneEncoded)
-            .flatMap { res ->
-                this.fromAddress = res.value?.address
-                getCoinTransactionHashObs(
-                    hdWallet,
-                    res.value?.address ?: "",
-                    coinType,
-                    coinAmount,
-                    mCoinDbModel, mDataManager
-                )
 
-            }.flatMap { transactionHash ->
-
-
-                if (CoinType.TRON == coinType) {
-                    mTransactionHashJson = transactionHash
-                    mTransactionHash = null
-                } else {
-                    mTransactionHashJson = null
-                    mTransactionHash = transactionHash
+        mView?.showProgress(true)
+        getGiftAddressUseCase.invoke(GetGiftAddressUseCase.Params(coinFromCode, phoneEncoded)) { giftAddressEither ->
+            giftAddressEither.either(
+                { errorResponse(it) },
+                { giftAddress ->
+                    this.fromAddress = giftAddress
+                    createTransaction(coinFromCode, coinAmount)
                 }
-
-                mDataManager.requestSmsCode(mUserId)
-            }
-            .subscribe({ response ->
-                if (response.value!!.sent) {
-                    mView?.openSmsCodeDialog()
-                }
-            }, { error -> checkError(error) })
-
+            )
+        }
     }
 
-
-    override fun verifySmsCode(code: String) {
+    override fun completeTransaction(smsCode: String) {
         mView?.showProgress(true)
-
-        mDataManager.verifySmsCode(mUserId, code)
-
-            .flatMap { res ->
-
-                if(mTransactionHashJson!=null )
-                {
-                    mTransactionHash = Gson().toJson(Gson().fromJson<Trx>(mTransactionHashJson, Trx::class.java))
-                }else{
-                    mTransactionHash =  mTransactionHash?.substring(2)
-                }
-
-                mDataManager.submitTx(
-                    mUserId,
-                    mCoinDbModel!!.coinType,
-                    SendTransactionParam(
-                        3,
-                        coinAmount,
-                        phoneEncoded,
-                        message,
-                        gifMedia?.id,
-                        mTransactionHash,
-                        null
-                    )
-                )
-            }
-            .subscribe(
+        sendGiftAddressUseCase.invoke(
+            SendGiftUseCase.Params(
+                smsCode = smsCode,
+                hash = transactionHash,
+                coinFrom = coinFromCode,
+                coinFromAmount = coinAmount,
+                giftId = gifMedia?.id ?: "",
+                phone = phoneEncoded,
+                message = message
+            )
+        ) { either ->
+            either.either(
+                { errorResponse(it) },
                 {
                     mView?.showProgress(false)
                     mView?.onTransactionDone()
                 }
-                ,
-                { error: Throwable ->
-                    mView?.showProgress(false)
-                    if (error is ServerException && error.code != Const.ERROR_403) {
-                        mView?.openSmsCodeDialog(error.errorMessage)
-                    } else {
-                        checkError(error)
-                    }
-
-                })
+            )
+        }
     }
 
+    private fun createTransaction(fromCoinCode: String, fromCoinAmount: Double) {
+        dbCryptoCoinModel.getCryptoCoin(realm, fromCoinCode)?.let { fromCoinDb ->
+            val coinDataItem = fromCoinDb.mapToDataItem()
+            createTransactionUseCase.invoke(CreateTransactionUseCase.Params(coinDataItem, fromCoinAmount)) { either ->
+                either.either(
+                    { errorResponse(it) },
+                    { hash ->
+                        this.transactionHash = hash
+                        mView?.openSmsCodeDialog()
+                        mView?.showProgress(false)
+                    }
+                )
+            }
+        } ?: mView?.showError(R.string.error_please_try_again)
+    }
 
+    private fun errorResponse(throwable: Throwable) {
+        mView?.showProgress(false)
+        when (throwable) {
+            is Failure.TokenError -> mView?.onRefreshTokenFailed()
+            is Failure.MessageError -> mView?.showError(throwable.message)
+            is Failure.NetworkConnection -> mView?.showError(R.string.error_internet_unavailable)
+            else -> mView?.showError(R.string.error_something_went_wrong)
+        }
+    }
 }

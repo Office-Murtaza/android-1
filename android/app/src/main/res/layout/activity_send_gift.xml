@@ -97,11 +97,11 @@
         android:paddingTop="8dp"
         android:paddingEnd="4dp"
         android:paddingBottom="8.5dp"
+        app:ccp_arrowColor="#58585a"
         app:ccp_autoFormatNumber="true"
+        app:ccp_contentColor="#58585a"
         app:ccp_defaultNameCode="US"
         app:ccp_showFlag="false"
-        app:ccp_arrowColor="#58585a"
-        app:ccp_contentColor="#58585a"
         app:ccp_showNameCode="false"
         app:ccp_textSize="16sp"
         app:layout_constraintStart_toStartOf="parent"
@@ -169,9 +169,12 @@
         <com.google.android.material.textfield.TextInputEditText
             style="@style/WalletTab.EditText.InputWithMax"
             android:digits="1234567890."
+            android:enabled="false"
+            android:focusableInTouchMode="false"
             android:hint="@string/send_gift_screen_usd_amount"
             android:inputType="numberDecimal"
             android:textAllCaps="true"
+            android:textColor="@android:color/black"
             tools:ignore="RtlSymmetry" />
 
     </com.google.android.material.textfield.TextInputLayout>
@@ -181,8 +184,8 @@
         style="@style/WalletTab.EditText.TextLink"
         android:layout_marginEnd="10dp"
         android:layout_marginBottom="10dp"
-        android:visibility="gone"
         android:text="@string/max"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@id/amountUsdView"
         app:layout_constraintEnd_toEndOf="@id/amountUsdView"
         app:layout_constraintTop_toTopOf="@id/amountUsdView" />
@@ -278,6 +281,7 @@
         android:layout_height="match_parent"
         android:background="@color/gray_progress"
         android:clickable="true"
+        android:elevation="15dp"
         android:focusable="true"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"

@@ -1,17 +1,40 @@
 package com.app.belcobtm.data.rest.wallet
 
 import com.app.belcobtm.data.rest.wallet.request.CoinToCoinExchangeRequest
+import com.app.belcobtm.data.rest.wallet.request.SendGiftRequest
 import com.app.belcobtm.data.rest.wallet.request.VerifySmsCodeRequest
+import com.app.belcobtm.data.rest.wallet.request.WithdrawRequest
+import com.app.belcobtm.data.rest.wallet.response.GetGiftAddressResponse
 import com.app.belcobtm.data.rest.wallet.response.SendSmsCodeResponse
+import com.app.belcobtm.data.rest.wallet.response.hash.*
 import kotlinx.coroutines.Deferred
 import okhttp3.ResponseBody
 import retrofit2.Response
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.POST
-import retrofit2.http.Path
+import retrofit2.http.*
 
 interface WalletApi {
+
+    @POST("user/{userId}/coins/{coinId}/transactions/submit")
+    fun withdrawAsync(
+        @Path("userId") userId: Int,
+        @Path("coinId") coinId: String,
+        @Body body: WithdrawRequest
+    ): Deferred<Response<ResponseBody>>
+
+    @GET("user/{userId}/coins/{coinId}/giftaddress")
+    fun getGiftAddressAsync(
+        @Path("userId") userId: Int,
+        @Path("coinId") coinId: String,
+        @Query("phone") phone: String?
+    ): Deferred<Response<GetGiftAddressResponse>>
+
+    @POST("user/{userId}/coins/{coinId}/transactions/submit")
+    fun sendGiftAsync(
+        @Path("userId") userId: Int,
+        @Path("coinId") coinId: String,
+        @Body body: SendGiftRequest
+    ): Deferred<Response<ResponseBody>>
+
     @POST("user/{userId}/coins/{coinCode}/transactions/submit")
     fun coinToCoinExchangeAsync(
         @Path("userId") userId: Int,
@@ -29,4 +52,32 @@ interface WalletApi {
         @Path("userId") userId: Int,
         @Body verifySmsParam: VerifySmsCodeRequest
     ): Deferred<Response<ResponseBody>>
+
+    @GET("user/{userId}/coins/{coinId}/transactions/utxo/{hex}")
+    fun getUtxoListAsync(
+        @Path("userId") userId: Int,
+        @Path("coinId") coinId: String,
+        @Path("hex") extendedPublicKey: String
+    ): Deferred<Response<UtxoListResponse>>
+
+    @GET("user/{userId}/coins/ETH/transactions/nonce")
+    fun getEthereumNonceAsync(
+        @Path("userId") userId: Int
+    ): Deferred<Response<EthereumResponse>>
+
+    @GET("user/{userId}/coins/XRP/transactions/currentaccount")
+    fun getRippleBlockHeaderAsync(
+        @Path("userId") userId: Int
+    ): Deferred<Response<RippleBlockResponse>>
+
+    @GET("user/{userId}/coins/BNB/transactions/currentaccount")
+    fun getBinanceBlockHeaderAsync(
+        @Path("userId") userId: Int
+    ): Deferred<Response<BinanceBlockResponse>>
+
+    @GET("user/{userId}/coins/{coinId}/transactions/currentblock")
+    fun getTronBlockHeaderAsync(
+        @Path("userId") userId: Int,
+        @Path("coinId") coinId: String
+    ): Deferred<Response<TronBlockResponse>>
 }

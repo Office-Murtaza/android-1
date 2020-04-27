@@ -10,21 +10,18 @@ import com.giphy.sdk.core.models.Media
 object SendGiftContract {
     interface Presenter : BaseMvpPresenter<View> {
         var phone: String?
-
         var gifMedia: Media?
 
-        fun getCoinTransactionHash(
+        fun createTransaction(
             context: Context,
-            coinId: CoinModel,
-            toAddress: String,
+            coinModel: CoinModel,
+            phone: String,
             coinAmount: Double,
-            message: String?
+            message: String
         )
 
-        fun validateAddress(coinId: String, walletAddress: String): Boolean
-        fun verifySmsCode(code: String)
+        fun completeTransaction(smsCode: String)
         fun getTransactionFee(coinName: String): Double
-
     }
 
     interface View : BaseMvpView {

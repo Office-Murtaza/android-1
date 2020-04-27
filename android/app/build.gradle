@@ -11,8 +11,8 @@ android {
         applicationId "com.app.belcobtm"
         minSdkVersion 23
         targetSdkVersion 29
-        versionCode 44
-        versionName "1.3.0"
+        versionCode 47
+        versionName "1.3.3"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled = true
     }

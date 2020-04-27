@@ -216,7 +216,9 @@
     <string name="transition_details_screen_message">Message</string>
     <string name="transition_details_screen_ref_tax_id">Ref TxId</string>
     <string name="transition_details_screen_ref_coin">Ref Coin</string>
-    <string name="transition_details_screen_ref_amount">Ref Amount</string>
+    <string name="transition_details_screen_ref_amount">Ref Amount</string>>
+    <string name="transition_details_balance_crypto">%1$s %2$s</string>
+    <string name="transition_details_balance_usd">%1$s USD</string>
 
 
     <string name="transition_details_screen_unknown">Unknown</string>
@@ -275,7 +277,7 @@
 
     <!-- Deposit -->
     <string name="deposit_screen_title">Deposit %1$s</string>
-    <string name="deposit_screen_wallet_code_clipboard">Wallet code copied to clipboard</string>
+    <string name="deposit_screen_wallet_copied">Copied</string>
 
 
 

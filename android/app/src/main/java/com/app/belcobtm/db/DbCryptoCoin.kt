@@ -1,10 +1,13 @@
 package com.app.belcobtm.db
 
+import com.app.belcobtm.domain.wallet.CoinDataItem
+import com.app.belcobtm.presentation.core.extensions.CoinTypeExtension
 import io.realm.Realm
 import io.realm.RealmObject
 import io.realm.annotations.PrimaryKey
+import wallet.core.jni.CoinType
 
-
+@Deprecated("need migrate to room")
 open class DbCryptoCoin(
     open var coinType: String = "",
     open var coinTypeId: Int = -1,
@@ -33,3 +36,12 @@ open class DbCryptoCoin(
         visible: Boolean = this.visible
     ) = DbCryptoCoin(coinType, coinTypeId, publicKey, privateKey, visible)
 }
+
+fun DbCryptoCoin.mapToDataItem(): CoinDataItem = CoinDataItem(
+    type = CoinTypeExtension.getTypeByCode(coinType)!!,
+    code = coinType,
+    codeId = coinTypeId,
+    publicKey = publicKey,
+    privateKey = privateKey,
+    isVisible = visible
+)

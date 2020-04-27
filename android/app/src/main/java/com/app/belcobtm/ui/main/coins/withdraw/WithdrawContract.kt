@@ -8,7 +8,6 @@ import com.app.belcobtm.mvp.BaseMvpView
 object WithdrawContract {
     interface Presenter : BaseMvpPresenter<View> {
         fun getCoinTransactionHash(
-            context: Context,
             coinId: String,
             toAddress: String,
             coinAmount: Double

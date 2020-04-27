@@ -11,6 +11,8 @@ import com.app.belcobtm.R
 import com.app.belcobtm.api.model.response.CoinModel
 import com.app.belcobtm.mvp.BaseMvpActivity
 import com.app.belcobtm.presentation.core.extensions.setDrawableStart
+import com.app.belcobtm.presentation.core.extensions.toStringCoin
+import com.app.belcobtm.presentation.core.extensions.toStringUsd
 import com.app.belcobtm.presentation.features.wallet.IntentCoinItem
 import com.app.belcobtm.presentation.features.wallet.deposit.DepositActivity
 import com.app.belcobtm.presentation.features.wallet.exchange.coin.to.coin.ExchangeCoinToCoinActivity
@@ -51,13 +53,11 @@ class TransactionsActivity : BaseMvpActivity<TransactionsContract.View, Transact
     }
 
     override fun setPrice(price: Double) {
-        val convertedPrice = if (price > 0) String.format("%.2f", price).trimEnd('0') else "0"
-        priceUsdView.text = getString(R.string.transaction_price_usd, convertedPrice)
+        priceUsdView.text = getString(R.string.transaction_price_usd, price.toStringUsd())
     }
 
     override fun setBalance(balance: Double) {
-        val convertedBalance = if (balance > 0) String.format("%.6f", balance).trimEnd('0') else "0"
-        balanceCryptoView.text = getString(R.string.transaction_crypto_balance, convertedBalance, mCoin.coinId)
+        balanceCryptoView.text = getString(R.string.transaction_crypto_balance, balance.toStringCoin(), mCoin.coinId)
     }
 
     override fun setChanges(changes: Double) {
@@ -120,7 +120,7 @@ class TransactionsActivity : BaseMvpActivity<TransactionsContract.View, Transact
         swipeToRefreshView.setColorSchemeColors(Color.RED, Color.GREEN, Color.BLUE)
 
         val amountUsd = mCoin.balance * mCoin.price.uSD
-        balanceUsdView.text = "${String.format("%.2f", amountUsd)} USD"
+        balanceUsdView.text = getString(R.string.transaction_price_usd, amountUsd.toStringUsd())
 
         initChart()
     }

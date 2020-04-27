@@ -11,5 +11,5 @@ import org.koin.dsl.module
 val repositoryModule = module {
     single<AuthorizationRepository> { AuthorizationRepositoryImpl(get(), get(), get()) }
     single<SettingsRepository> { SettingsRepositoryImpl(get(), get(), get(), get()) }
-    single<WalletRepository> { WalletRepositoryImpl(get(), get()) }
+    single<WalletRepository> { WalletRepositoryImpl(get(), get(), get(), get()) }
 }

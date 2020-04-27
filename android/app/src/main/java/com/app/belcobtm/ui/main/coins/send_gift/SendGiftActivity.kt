@@ -5,20 +5,17 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.telephony.PhoneNumberFormattingTextWatcher
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.MenuItem
 import android.view.View
-import android.view.inputmethod.EditorInfo
-import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.AppCompatEditText
-import androidx.core.widget.doAfterTextChanged
 import com.app.belcobtm.R
 import com.app.belcobtm.api.model.response.CoinModel
 import com.app.belcobtm.mvp.BaseMvpActivity
 import com.app.belcobtm.presentation.core.Const.GIPHY_API_KEY
-import com.app.belcobtm.presentation.core.extensions.actionDoneListener
-import com.app.belcobtm.presentation.core.extensions.getString
-import com.app.belcobtm.presentation.core.extensions.setText
+import com.app.belcobtm.presentation.core.extensions.*
 import com.giphy.sdk.core.models.Media
 import com.giphy.sdk.core.models.enums.RenditionType
 import com.giphy.sdk.ui.GPHContentType
@@ -29,21 +26,11 @@ import com.giphy.sdk.ui.themes.LightTheme
 import com.giphy.sdk.ui.views.GiphyDialogFragment
 import com.google.android.material.textfield.TextInputLayout
 import kotlinx.android.synthetic.main.activity_send_gift.*
+import kotlinx.android.synthetic.main.view_sms_code_dialog.view.*
 import org.parceler.Parcels
 
 class SendGiftActivity : BaseMvpActivity<SendGiftContract.View, SendGiftContract.Presenter>(),
     SendGiftContract.View, GiphyDialogFragment.GifSelectionListener {
-
-    companion object {
-        private const val KEY_COIN = "KEY_COIN"
-
-        @JvmStatic
-        fun start(context: Context?, coin: CoinModel) {
-            val intent = Intent(context, SendGiftActivity::class.java)
-            intent.putExtra(KEY_COIN, Parcels.wrap(coin))
-            context?.startActivity(intent)
-        }
-    }
 
     private lateinit var gifsDialog: GiphyDialogFragment
     private lateinit var mCoin: CoinModel
@@ -83,15 +70,16 @@ class SendGiftActivity : BaseMvpActivity<SendGiftContract.View, SendGiftContract
             }
         }
 
-        handleAmount()
+        amountCryptoView?.editText?.addTextChangedListener(coinFromTextWatcher)
         amountCryptoView.actionDoneListener { validateAndSubmit() }
+        amountUsdView?.editText?.keyListener = null
         nextButtonView.setOnClickListener { validateAndSubmit() }
     }
 
     private fun initView() {
         phonePickerView.registerCarrierNumberEditText(phoneView.editText)
 
-        amountCryptoView.hint = mCoin.coinId
+        amountCryptoView.hint = getString(R.string.send_gift_screen_crypto_amount, mCoin.coinId)
         val settings = GPHSettings(
             gridType = GridType.waterfall,
             theme = LightTheme,
@@ -110,108 +98,19 @@ class SendGiftActivity : BaseMvpActivity<SendGiftContract.View, SendGiftContract
     }
 
     private fun initBalance() {
-        val convertedBalance = if (mCoin.balance > 0) String.format("%.6f", mCoin.balance).trimEnd('0') else "0"
-        balanceCryptoView.text = getString(R.string.transaction_crypto_balance, convertedBalance, mCoin.coinId)
-
-        val amountUsd = mCoin.balance * mCoin.price.uSD
-        balanceUsdView.text = "${String.format("%.2f", amountUsd)} USD"
+        balanceCryptoView.text =
+            getString(R.string.transaction_crypto_balance, mCoin.balance.toStringCoin(), mCoin.coinId)
+        balanceUsdView.text = getString(R.string.transaction_price_usd, (mCoin.balance * mCoin.price.uSD).toStringUsd())
     }
 
     private fun selectMaxPrice() {
         val balance = mCoin.balance - mPresenter.getTransactionFee(mCoin.coinId)
-        val balanceStr = if (balance > 0) {
-            cryptoBalanceToSend = balance
-            String.format("%.6f", balance).trimEnd('0')
+        cryptoBalanceToSend = if (balance > 0) {
+            balance
         } else {
-            cryptoBalanceToSend = 0.0
-            "0"
+            0.0
         }
-
-        val cryptoText = if (balanceStr.contains(",")) balanceStr.replace(',', '.') else balanceStr
-        amountCryptoView.setText(cryptoText)
-    }
-
-    private fun handleAmount() {
-        var isTextWorking = false
-        amountCryptoView?.editText?.doAfterTextChanged {
-            if (isTextWorking)
-                return@doAfterTextChanged
-            isTextWorking = true
-            var balance = mCoin.balance - mPresenter.getTransactionFee(mCoin.coinId)
-            balance = if (balance < 0) 0.0 else balance
-
-
-            val amountCrypto = try {
-                amountCryptoView.getString().toDouble()
-            } catch (e: NumberFormatException) {
-                0.0
-            }
-            cryptoBalanceToSend = amountCrypto
-
-            if (amountCrypto > balance) {
-                amountCryptoView.setText(trimTrailingZero(balance.toString()) ?: "")
-                cryptoBalanceToSend = balance
-                isTextWorking = false
-            }
-            val amountUsd = amountCrypto * mCoin.price.uSD
-            amountCryptoView.setText(String.format("%.2f", amountUsd))
-            amountCryptoView?.editText?.setSelection(amountUsdView.getString().length)
-            isTextWorking = false
-        }
-
-        amountUsdView?.editText?.doAfterTextChanged {
-            if (isTextWorking)
-                return@doAfterTextChanged
-            isTextWorking = true
-            var balance = mCoin.balance - mPresenter.getTransactionFee(mCoin.coinId)
-            balance = if (balance < 0) 0.0 else balance
-            if (balance == 0.0) {
-                amountUsdView.setText("0")
-                amountUsdView?.editText?.setSelection(amountUsdView.getString().length)
-                amountCryptoView.setText("0")
-                amountCryptoView?.editText?.setSelection(amountCryptoView.getString().length)
-                isTextWorking = false
-                return@doAfterTextChanged
-            }
-
-            val maxUsd =
-                (mCoin.balance - mPresenter.getTransactionFee(mCoin.coinId)) * mCoin.price.uSD
-            val amountUsd = try {
-                amountUsdView.getString().toDouble()
-            } catch (e: NumberFormatException) {
-                0.0
-            }
-
-            if (amountUsd > maxUsd) {
-                amountUsdView.setText(String.format("%.2f", maxUsd))
-                amountUsdView?.editText?.setSelection(amountUsdView.getString().length)
-            }
-            var amountCrypt = try {
-                amountUsdView.getString().toDouble() / mCoin.price.uSD
-            } catch (e: NumberFormatException) {
-                0.0
-            }
-
-            amountCrypt = if (amountCrypt < 0) 0.0 else amountCrypt
-            amountCryptoView.setText(trimTrailingZero(String.format("%.6f", amountCrypt)) ?: "")
-            amountCryptoView?.editText?.setSelection(amountCryptoView.getString().length)
-            isTextWorking = false
-        }
-    }
-
-
-    fun trimTrailingZero(value: String?): String? {
-        return if (!value.isNullOrEmpty()) {
-            if (value!!.indexOf(".") < 0) {
-                value
-
-            } else {
-                value.replace("0*$".toRegex(), "").replace("\\.$".toRegex(), "")
-            }
-
-        } else {
-            value
-        }
+        amountCryptoView.setText(balance.toStringCoin())
     }
 
     private fun openGify() {
@@ -268,7 +167,7 @@ class SendGiftActivity : BaseMvpActivity<SendGiftContract.View, SendGiftContract
         }
 
         if (errors == 0) {
-            mPresenter.getCoinTransactionHash(
+            mPresenter.createTransaction(
                 this,
                 mCoin,
                 phoneStrng,
@@ -286,25 +185,24 @@ class SendGiftActivity : BaseMvpActivity<SendGiftContract.View, SendGiftContract
 
     override fun openSmsCodeDialog(error: String?) {
         val view = layoutInflater.inflate(R.layout.view_sms_code_dialog, null)
-        val smsCode = view.findViewById<AppCompatEditText>(R.id.sms_code)
-        AlertDialog
+        view.til_sms_code.error = error
+        val dialog = AlertDialog
             .Builder(this)
             .setTitle(getString(R.string.verify_sms_code))
             .setPositiveButton(R.string.next)
             { _, _ ->
-                val code = smsCode.text.toString()
+                val code = view.sms_code.text.toString()
                 if (code.length != 4) {
                     openSmsCodeDialog(getString(R.string.error_sms_code_4_digits))
                 } else {
-                    mPresenter.verifySmsCode(code)
+                    mPresenter.completeTransaction(code)
                 }
             }
             .setNegativeButton(R.string.cancel, null)
             .setView(view)
             .create()
-            .show()
-        val tilSmsCode = view.findViewById<TextInputLayout>(R.id.til_sms_code)
-        tilSmsCode.error = error
+        dialog.setCanceledOnTouchOutside(false)
+        dialog.show()
     }
 
     override fun onDismissed() {
@@ -316,5 +214,73 @@ class SendGiftActivity : BaseMvpActivity<SendGiftContract.View, SendGiftContract
         gifView.visibility = View.VISIBLE
         gifView.setMedia(media, RenditionType.original)
         gifEmptyView.visibility = View.INVISIBLE
+    }
+
+    private val coinFromTextWatcher = object : TextWatcher {
+        val dotChar: Char = '.'
+        var isRunning = false
+        var isDeleting = false
+
+        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            isDeleting = count > after
+        }
+
+        override fun onTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) = Unit
+
+        override fun afterTextChanged(editable: Editable) {
+            if (isRunning) return
+
+            isRunning = true
+
+            when {
+                editable.isNotEmpty() && editable.first() == DOT_CHAR -> editable.insert(0, "0")
+                editable.isNotEmpty() && editable.last() == DOT_CHAR && editable.count { it == DOT_CHAR } > 1 -> editable.delete(
+                    editable.lastIndex,
+                    editable.length
+                )
+                editable.contains(DOT_CHAR) && (editable.lastIndex - editable.indexOf(DOT_CHAR)) > MAX_CHARS_AFTER_DOT -> editable.delete(
+                    editable.lastIndex - 1,
+                    editable.lastIndex
+                )
+                editable.isEmpty() || editable.toString().replace(DOT_CHAR.toString(), "").toInt() <= 0 -> {
+                    val isContainsDot = editable.contains(DOT_CHAR)
+                    val indexOfDot = editable.indexOf(DOT_CHAR)
+                    when {
+                        isContainsDot && indexOfDot > 1 -> editable.delete(0, indexOfDot - 1)
+                        !isContainsDot && editable.length > 1 -> editable.delete(0, editable.length - 1)
+                    }
+                    amountUsdView.clearText()
+                }
+                else -> {
+                    val balanceCoin = mCoin.balance - mPresenter.getTransactionFee(mCoin.coinId)
+                    val fromCoinTemporaryValue = amountCryptoView.getString().toDouble()
+                    val fromCoinAmount: Double =
+                        if (fromCoinTemporaryValue > balanceCoin) balanceCoin
+                        else fromCoinTemporaryValue
+
+                    if (fromCoinTemporaryValue > balanceCoin) {
+                        editable.clear()
+                        editable.insert(0, fromCoinAmount.toStringCoin())
+                    }
+                    amountUsdView.setText((fromCoinAmount * mCoin.price.uSD).toStringUsd())
+                    cryptoBalanceToSend = fromCoinAmount
+                }
+            }
+
+            isRunning = false
+        }
+    }
+
+    companion object {
+        private const val KEY_COIN = "KEY_COIN"
+        const val MAX_CHARS_AFTER_DOT = 6
+        const val DOT_CHAR: Char = '.'
+
+        @JvmStatic
+        fun start(context: Context?, coin: CoinModel) {
+            val intent = Intent(context, SendGiftActivity::class.java)
+            intent.putExtra(KEY_COIN, Parcels.wrap(coin))
+            context?.startActivity(intent)
+        }
     }
 }

@@ -90,35 +90,13 @@ class RecoverSeedPresenter : BaseMvpDIPresenterImpl<RecoverSeedContract.View, Au
         val realm = Realm.getDefaultInstance()
         val coinModel = DbCryptoCoinModel()
 
-        coinModel.addCoin(
-            realm,
-            DbCryptoCoin("BTC", bitcoin.value(), bitcoinAddress, bitcoinPrivateKeyStr)
-        )
-        coinModel.addCoin(
-            realm,
-            DbCryptoCoin("BCH", bitcoinCash.value(), bitcoinChAddress, bitcoinChPrivateKeyStr)
-        )
-        coinModel.addCoin(
-            realm,
-            DbCryptoCoin("ETH", etherum.value(), etherumAddress, etherumPrivateKeyStr)
-        )
-        coinModel.addCoin(
-            realm,
-            DbCryptoCoin("LTC", litecoin.value(), litecoinAddress, litecoinPrivateKeyStr)
-        )
-        coinModel.addCoin(
-            realm,
-            DbCryptoCoin("BNB", binance.value(), binanceAddress, binancePrivateKeyStr)
-        )
-        coinModel.addCoin(
-            realm,
-            DbCryptoCoin("TRX", tron.value(), tronAddress, tronPrivateKeyStr)
-        )
-        coinModel.addCoin(
-            realm,
-            DbCryptoCoin("XRP", xrp.value(), xrpAddress, xrpPrivateKeyStr)
-        )
-
+        coinModel.addCoin(realm, DbCryptoCoin("BTC", bitcoin.value(), bitcoinAddress, bitcoinPrivateKeyStr))
+        coinModel.addCoin(realm, DbCryptoCoin("BCH", bitcoinCash.value(), bitcoinChAddress, bitcoinChPrivateKeyStr))
+        coinModel.addCoin(realm, DbCryptoCoin("ETH", etherum.value(), etherumAddress, etherumPrivateKeyStr))
+        coinModel.addCoin(realm, DbCryptoCoin("LTC", litecoin.value(), litecoinAddress, litecoinPrivateKeyStr))
+        coinModel.addCoin(realm, DbCryptoCoin("BNB", binance.value(), binanceAddress, binancePrivateKeyStr))
+        coinModel.addCoin(realm, DbCryptoCoin("TRX", tron.value(), tronAddress, tronPrivateKeyStr))
+        coinModel.addCoin(realm, DbCryptoCoin("XRP", xrp.value(), xrpAddress, xrpPrivateKeyStr))
 
         return coinModel.getAllCryptoCoin(realm)
     }
