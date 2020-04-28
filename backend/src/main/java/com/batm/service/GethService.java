@@ -41,7 +41,7 @@ public class GethService {
     private final long GAS_LIMIT = 50_000;
 
     private final int START_BLOCK = 9_000_000;
-    private final int MAX_BLOCK_COUNT = 100;
+    private final int MAX_BLOCK_COUNT = 50;
 
     @Autowired
     private RestTemplate rest;
@@ -61,19 +61,22 @@ public class GethService {
     @Value("${eth.node.store.enabled:false}")
     private Boolean storeEnabled;
 
-    @Scheduled(cron = "0 */1 * * * *") // every 1 minute
+    @Scheduled(cron = "0 */10 * * * *") // every 10 minutes
     public void storeTxs() {
-        if(storeEnabled) {
+        long start = System.currentTimeMillis();
+
+        if (storeEnabled) {
             GethBlock block = mongo.exists(new Query(), GethBlock.class) ? mongo.findOne(new Query(), GethBlock.class) : new GethBlock(START_BLOCK);
             BigInteger lastBlockNumber = getLastBlockNumber();
 
             if (block.getLastSuccessBlock() < lastBlockNumber.intValue()) {
+                List<GethTx> gethTxs = new ArrayList<>();
                 int n = Math.min(MAX_BLOCK_COUNT, lastBlockNumber.intValue() - block.getLastSuccessBlock());
+                int toBlockNumber = block.getLastSuccessBlock() + n;
 
-                for (int i = block.getLastSuccessBlock() + 1; i < block.getLastSuccessBlock() + n + 1; i++) {
+                for (int i = block.getLastSuccessBlock() + 1; i < toBlockNumber + 1; i++) {
                     JSONObject blockJson = getBlockByNumber(BigInteger.valueOf(i));
                     JSONArray txs = blockJson.optJSONArray("transactions");
-                    List<GethTx> gethTxs = new ArrayList<>();
 
                     for (int j = 0; j < txs.size(); j++) {
                         JSONObject json = txs.getJSONObject(j);
@@ -99,10 +102,13 @@ public class GethService {
                     }
 
                     mongo.remove(new Query(Criteria.where("blockNumber").is(i)), GethTx.class);
-                    mongo.insertAll(gethTxs);
-
-                    mongo.upsert(new Query(), new Update().set("lastSuccessBlock", i), GethBlock.class);
                 }
+
+                mongo.insertAll(gethTxs);
+
+                mongo.upsert(new Query(), new Update().set("lastSuccessBlock", toBlockNumber), GethBlock.class);
+
+                System.out.println(" -- store txs time: " + (System.currentTimeMillis() - start));
             }
         }
     }
@@ -162,20 +168,6 @@ public class GethService {
     }
 
     public Long getGasLimit() {
-//        try {
-//            JSONObject req = new JSONObject();
-//            req.put("jsonrpc", "2.0");
-//            req.put("method", "eth_estimateGas");
-//            req.put("params", new JSONArray());
-//            req.put("id", 73);
-//
-//            JSONObject res = rest.postForObject(nodeUrl, req, JSONObject.class);
-//
-//            return Numeric.toBigInt(res.optString("result")).longValue();
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-
         return GAS_LIMIT;
     }
 
@@ -222,27 +214,28 @@ public class GethService {
                 dto.setDate2(new Date(gethTx.getBlockTime() * 1000));
             } else {
                 JSONObject txByHash = getTransactionByHash(txId);
-                JSONObject txReceipt = getTransactionReceipt(txId);
 
-                String fromAddress = txByHash.optString("from");
-                String toAddress = txReceipt.optString("to");
+                if (txByHash != null) {
+                    String fromAddress = txByHash.optString("from");
+                    String toAddress = txByHash.containsKey("to") ? txByHash.optString("to") : getTransactionReceipt(txId).optString("to");
 
-                BigDecimal amount = new BigDecimal(Numeric.toBigInt(txByHash.optString("value")))
-                        .divide(Constant.ETH_DIVIDER)
-                        .stripTrailingZeros();
+                    BigDecimal amount = new BigDecimal(Numeric.toBigInt(txByHash.optString("value")))
+                            .divide(Constant.ETH_DIVIDER)
+                            .stripTrailingZeros();
 
-                BigDecimal fee = new BigDecimal(Numeric.toBigInt(txByHash.optString("gasPrice")))
-                        .multiply(new BigDecimal(Numeric.toBigInt(txByHash.optString("gas"))))
-                        .divide(Constant.ETH_DIVIDER)
-                        .stripTrailingZeros();
+                    BigDecimal fee = new BigDecimal(Numeric.toBigInt(txByHash.optString("gasPrice")))
+                            .multiply(new BigDecimal(Numeric.toBigInt(txByHash.optString("gas"))))
+                            .divide(Constant.ETH_DIVIDER)
+                            .stripTrailingZeros();
 
-                dto.setType(TransactionType.getType(fromAddress, toAddress, address));
-                dto.setCryptoAmount(amount);
-                dto.setFromAddress(fromAddress);
-                dto.setToAddress(toAddress);
-                dto.setCryptoFee(fee);
-                dto.setStatus(TransactionStatus.PENDING);
-                dto.setDate2(new Date());
+                    dto.setType(TransactionType.getType(fromAddress, toAddress, address));
+                    dto.setCryptoAmount(amount);
+                    dto.setFromAddress(fromAddress);
+                    dto.setToAddress(toAddress);
+                    dto.setCryptoFee(fee);
+                    dto.setStatus(TransactionStatus.PENDING);
+                    dto.setDate2(new Date());
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -366,7 +359,7 @@ public class GethService {
             JSONObject req = new JSONObject();
             req.put("jsonrpc", "2.0");
             req.put("method", "eth_getTransactionByHash");
-            req.put("params", JSONArray.fromObject("[\"" + txId + "\", \"latest\"]"));
+            req.put("params", JSONArray.fromObject("[\"" + txId + "\"]"));
             req.put("id", 1);
 
             JSONObject res = rest.postForObject(nodeUrl, req, JSONObject.class);

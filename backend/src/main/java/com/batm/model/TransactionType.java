@@ -1,6 +1,7 @@
 package com.batm.model;
 
 import com.fasterxml.jackson.annotation.JsonValue;
+import org.apache.commons.lang3.StringUtils;
 
 public enum TransactionType {
 
@@ -27,27 +28,31 @@ public enum TransactionType {
     }
 
     public static TransactionType getType(String fromAddress, String toAddress, String address) {
-        if (address.equalsIgnoreCase(fromAddress)) {
-            return TransactionType.WITHDRAW;
-        } else if (address.equalsIgnoreCase(toAddress)) {
-            return TransactionType.DEPOSIT;
-        } else {
-            return TransactionType.UNKNOWN;
+        if (StringUtils.isNotBlank(address)) {
+            if (address.equalsIgnoreCase(fromAddress)) {
+                return TransactionType.WITHDRAW;
+            } else if (address.equalsIgnoreCase(toAddress)) {
+                return TransactionType.DEPOSIT;
+            }
         }
+
+        return TransactionType.UNKNOWN;
     }
 
     public static TransactionType convert(TransactionType type, TransactionGroupType group) {
-        if (type == WITHDRAW) {
-            if (group == TransactionGroupType.GIFT) {
-                return SEND_GIFT;
-            } else if (group == TransactionGroupType.C2C) {
-                return SEND_C2C;
-            }
-        } else if (type == DEPOSIT) {
-            if (group == TransactionGroupType.GIFT) {
-                return RECEIVE_GIFT;
-            } else if (group == TransactionGroupType.C2C) {
-                return RECEIVE_C2C;
+        if (type != null) {
+            if (type == WITHDRAW) {
+                if (group == TransactionGroupType.GIFT) {
+                    return SEND_GIFT;
+                } else if (group == TransactionGroupType.C2C) {
+                    return SEND_C2C;
+                }
+            } else if (type == DEPOSIT) {
+                if (group == TransactionGroupType.GIFT) {
+                    return RECEIVE_GIFT;
+                } else if (group == TransactionGroupType.C2C) {
+                    return RECEIVE_C2C;
+                }
             }
         }
 
