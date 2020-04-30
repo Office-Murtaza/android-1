@@ -40,7 +40,7 @@ public class GethService {
     private final long GAS_PRICE = 50_000_000_000L;
     private final long GAS_LIMIT = 50_000;
 
-    private final int START_BLOCK = 9_000_000;
+    private final int START_BLOCK = 9_970_000;
     private final int MAX_BLOCK_COUNT = 50;
 
     @Autowired
@@ -108,7 +108,7 @@ public class GethService {
 
                 mongo.upsert(new Query(), new Update().set("lastSuccessBlock", toBlockNumber), GethBlock.class);
 
-                System.out.println(" -- store txs time: " + (System.currentTimeMillis() - start));
+                System.out.println("**** storeTxs: " + (System.currentTimeMillis() - start));
             }
         }
     }

@@ -17,8 +17,8 @@ public class WalletController {
     private WalletService walletService;
 
     @GetMapping("/validate")
-    public WalletDTO getValidate(@RequestParam CoinService.CoinEnum coinCode, @RequestParam String address) {
-        System.out.println(" ---- /validate coinCode: " + coinCode.name() + ", address: " + address);
+    public WalletDTO getValidate(@RequestParam CoinService.CoinEnum coinCode, @RequestParam String address, @RequestParam long timestamp, @RequestParam String signature) {
+        System.out.println(" ---- /validate coinCode: " + coinCode.name() + ", address: " + address + ", timestamp: " + timestamp + ", signature: " + signature);
 
         WalletDTO dto = new WalletDTO();
         dto.setValid(coinCode.getCoinType().validate(address));
@@ -30,8 +30,8 @@ public class WalletController {
     }
 
     @GetMapping("/price")
-    public WalletDTO getPrice(@RequestParam CoinService.CoinEnum coinCode) {
-        System.out.println(" ---- /price coinCode: " + coinCode.name());
+    public WalletDTO getPrice(@RequestParam CoinService.CoinEnum coinCode, @RequestParam long timestamp, @RequestParam String signature) {
+        System.out.println(" ---- /price coinCode: " + coinCode.name() + ", timestamp: " + timestamp + ", signature: " + signature);
 
         WalletDTO dto = new WalletDTO();
         dto.setPrice(coinCode.getPrice());
@@ -43,8 +43,8 @@ public class WalletController {
     }
 
     @GetMapping("/balance")
-    public WalletDTO getBalance(@RequestParam CoinService.CoinEnum coinCode) {
-        System.out.println(" ---- /balance coinCode: " + coinCode.name());
+    public WalletDTO getBalance(@RequestParam CoinService.CoinEnum coinCode, @RequestParam long timestamp, @RequestParam String signature) {
+        System.out.println(" ---- /balance coinCode: " + coinCode.name() + ", timestamp: " + timestamp + ", signature: " + signature);
 
         WalletDTO dto = new WalletDTO();
         dto.setBalance(walletService.getBalance(coinCode));
@@ -56,8 +56,8 @@ public class WalletController {
     }
 
     @GetMapping("/settings")
-    public WalletDTO getSettings(@RequestParam CoinService.CoinEnum coinCode) {
-        System.out.println(" ---- /settings coinCode: " + coinCode.name());
+    public WalletDTO getSettings(@RequestParam CoinService.CoinEnum coinCode, @RequestParam long timestamp, @RequestParam String signature) {
+        System.out.println(" ---- /settings coinCode: " + coinCode.name() + ", timestamp: " + timestamp + ", signature: " + signature);
 
         WalletDTO dto = new WalletDTO();
         dto.setAddress(coinCode.getWalletAddress());
@@ -72,8 +72,8 @@ public class WalletController {
     }
 
     @GetMapping("/generate-new-address")
-    public WalletDTO generateNewAddress(@RequestParam CoinService.CoinEnum coinCode) {
-        System.out.println(" ---- /generate-new-address coinCode: " + coinCode.name());
+    public WalletDTO generateNewAddress(@RequestParam CoinService.CoinEnum coinCode, @RequestParam long timestamp, @RequestParam String signature) {
+        System.out.println(" ---- /generate-new-address coinCode: " + coinCode.name() + ", timestamp: " + timestamp + ", signature: " + signature);
 
         WalletDTO dto = new WalletDTO();
         dto.setNewAddress(walletService.generateNewAddress(coinCode));
@@ -85,8 +85,8 @@ public class WalletController {
     }
 
     @GetMapping("/transaction")
-    public WalletDTO getTransaction(@RequestParam CoinService.CoinEnum coinCode, @RequestParam String txId) {
-        System.out.println(" ---- /transaction coinCode: " + coinCode.name() + ", txId: " + txId);
+    public WalletDTO getTransaction(@RequestParam CoinService.CoinEnum coinCode, @RequestParam String txId, @RequestParam long timestamp, @RequestParam String signature) {
+        System.out.println(" ---- /transaction coinCode: " + coinCode.name() + ", txId: " + txId + ", timestamp: " + timestamp + ", signature: " + signature);
 
         TransactionDetailsDTO transaction = coinCode.getTransaction(txId, null);
 
@@ -104,8 +104,8 @@ public class WalletController {
     }
 
     @GetMapping("/received-addresses")
-    public WalletDTO getReceivedAddresses(@RequestParam CoinService.CoinEnum coinCode, @RequestParam Set<String> addresses) {
-        System.out.println(" ---- /received-addresses coinCode: " + coinCode.name() + ", addresses: " + addresses);
+    public WalletDTO getReceivedAddresses(@RequestParam CoinService.CoinEnum coinCode, @RequestParam Set<String> addresses, @RequestParam long timestamp, @RequestParam String signature) {
+        System.out.println(" ---- /received-addresses coinCode: " + coinCode.name() + ", addresses: " + addresses + ", timestamp: " + timestamp + ", signature: " + signature);
 
         WalletDTO dto = new WalletDTO();
         dto.setReceivedAddresses(walletService.getReceivedAddresses(coinCode, addresses));
@@ -117,8 +117,8 @@ public class WalletController {
     }
 
     @GetMapping("/send")
-    public WalletDTO sendCoins(@RequestParam CoinService.CoinEnum coinCode, @RequestParam String fromAddress, @RequestParam String toAddress, @RequestParam BigDecimal amount) {
-        System.out.println(" ---- /send coinCode: " + coinCode.name() + ", fromAddress: " + fromAddress + ", toAddress: " + toAddress + ", amount: " + amount);
+    public WalletDTO sendCoins(@RequestParam CoinService.CoinEnum coinCode, @RequestParam String fromAddress, @RequestParam String toAddress, @RequestParam BigDecimal amount, @RequestParam long timestamp, @RequestParam String signature) {
+        System.out.println(" ---- /send coinCode: " + coinCode.name() + ", fromAddress: " + fromAddress + ", toAddress: " + toAddress + ", amount: " + amount + ", timestamp: " + timestamp + ", signature: " + signature);
 
         WalletDTO dto = new WalletDTO();
         dto.setTxId(walletService.sendCoins(coinCode, fromAddress, toAddress, amount));
