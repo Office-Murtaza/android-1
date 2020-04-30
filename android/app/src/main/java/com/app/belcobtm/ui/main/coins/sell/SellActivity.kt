@@ -1,6 +1,6 @@
 package com.app.belcobtm.ui.main.coins.sell
 
-import android.content.ClipboardManager
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -8,9 +8,9 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.MenuItem
 import android.view.View
+import android.view.ViewTreeObserver
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.AppCompatEditText
-import androidx.core.widget.doAfterTextChanged
 import com.app.belcobtm.R
 import com.app.belcobtm.api.model.response.CoinModel
 import com.app.belcobtm.api.model.response.LimitsResponse
@@ -18,8 +18,8 @@ import com.app.belcobtm.mvp.BaseMvpActivity
 import com.app.belcobtm.presentation.core.Const.GIPHY_API_KEY
 import com.app.belcobtm.presentation.core.QRUtils
 import com.app.belcobtm.presentation.core.extensions.*
+import com.app.belcobtm.presentation.core.helper.AlertHelper
 import com.giphy.sdk.ui.GiphyCoreUI
-import com.giphy.sdk.ui.views.GiphyDialogFragment
 import com.google.android.material.textfield.TextInputLayout
 import kotlinx.android.synthetic.main.activity_sell.*
 import org.parceler.Parcels
@@ -27,15 +27,13 @@ import kotlin.math.max
 import kotlin.math.min
 import kotlin.math.round
 
-class SellActivity : BaseMvpActivity<SellContract.View, SellContract.Presenter>(),
-    SellContract.View {
+class SellActivity : BaseMvpActivity<SellContract.View, SellContract.Presenter>(), SellContract.View {
     override fun showErrorAndHideDialogs(errorMessage: String?) {
         showError(errorMessage)
         alertDialog?.dismiss()
     }
 
     override fun showNewBalanceError() {
-
         showError("coin stock value has been changed")
         alertDialog?.dismiss()
     }
@@ -45,10 +43,10 @@ class SellActivity : BaseMvpActivity<SellContract.View, SellContract.Presenter>(
         alertDialog?.dismiss()
     }
 
-    override fun showLimits(resp: LimitsResponse?) {
-        this.limits = resp
-        dayLimitView.text = """${String.format("%.2f", resp?.dailyLimit?.USD)} USD"""
-        txLimitView.text = """${String.format("%.2f", resp?.txLimit?.USD)} USD"""
+    override fun showLimits(value: LimitsResponse?) {
+        this.limits = value
+        dayLimitView.text = getString(R.string.transaction_price_usd, (value?.dailyLimit?.USD ?: 0.0).toStringUsd())
+        txLimitView.text = getString(R.string.transaction_price_usd, (value?.txLimit?.USD ?: 0.0).toStringUsd())
     }
 
     companion object {
@@ -64,7 +62,6 @@ class SellActivity : BaseMvpActivity<SellContract.View, SellContract.Presenter>(
 
     private var alertDialog: AlertDialog? = null
     private var limits: LimitsResponse? = null
-    private lateinit var gifsDialog: GiphyDialogFragment
 
     private lateinit var mCoin: CoinModel
 
@@ -151,16 +148,14 @@ class SellActivity : BaseMvpActivity<SellContract.View, SellContract.Presenter>(
     }
 
     private fun initPrice() {
-        val convertedPrice = if (mCoin.price.uSD > 0) String.format("%.2f", mCoin.price.uSD).trimEnd('0') else "0"
-        priceUsdView.text = getString(R.string.transaction_price_usd, convertedPrice)
+        priceUsdView.text = getString(R.string.transaction_price_usd, mCoin.price.uSD.toStringUsd())
     }
 
     private fun initBalance() {
-        val convertedBalance = if (mCoin.balance > 0) String.format("%.6f", mCoin.balance).trimEnd('0') else "0"
-        balanceCryptoView.text = getString(R.string.transaction_crypto_balance, convertedBalance, mCoin.coinId)
-
+        balanceCryptoView.text =
+            getString(R.string.transaction_crypto_balance, mCoin.balance.toStringCoin(), mCoin.coinId)
         val amountUsd = mCoin.balance * mCoin.price.uSD
-        balanceUsdView.text = "${String.format("%.2f", amountUsd)} USD"
+        balanceUsdView.text = getString(R.string.transaction_price_usd, amountUsd.toStringUsd())
     }
 
     private fun selectMaxPrice() {
@@ -205,13 +200,6 @@ class SellActivity : BaseMvpActivity<SellContract.View, SellContract.Presenter>(
         }
 
         return super.onOptionsItemSelected(item)
-    }
-
-    private fun getTextFromClipboard(): String {
-        val clipboard = getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
-        val clipData = clipboard.primaryClip
-        val item = clipData?.getItemAt(0)
-        return item?.text.toString()
     }
 
     private fun validateAndSubmit() {
@@ -268,21 +256,13 @@ class SellActivity : BaseMvpActivity<SellContract.View, SellContract.Presenter>(
      **/
 
     fun checkNotesForATM(sum: Int): Boolean {
-        var nearestNumberThatCanBeGivenByTwentyAndFifty = sum
+        val nearestNumberThatCanBeGivenByTwentyAndFifty = when {
+            sum < 20 -> 0
+            sum < 40 -> 20
+            else -> sum
+        } / 10 * 10
 
-        if (sum >= 20)
-        else {
-            nearestNumberThatCanBeGivenByTwentyAndFifty = 0
-        }
-
-        if (sum >= 40)
-        else {
-            nearestNumberThatCanBeGivenByTwentyAndFifty = 20
-        }
-
-        nearestNumberThatCanBeGivenByTwentyAndFifty = (nearestNumberThatCanBeGivenByTwentyAndFifty / 10 * 10)
         return (nearestNumberThatCanBeGivenByTwentyAndFifty == sum)
-
     }
 
     override fun onTransactionDone(
@@ -291,39 +271,35 @@ class SellActivity : BaseMvpActivity<SellContract.View, SellContract.Presenter>(
         cryptoResultAmount: Double
     ) {
         alertDialog?.dismiss()
-
         sellContainerGroupView.visibility = View.GONE
         resultContainer.visibility = View.VISIBLE
-
-        doneBtn.setOnClickListener {
-
-            finish()
-        }
+        doneBtn.setOnClickListener { finish() }
 
         if (anotherAddress) {
-            resultOwnContainer.visibility = View.GONE
-            resultAnotherAddressContainer.visibility = View.VISIBLE
-            addressTv.text = addressDestination
-            amountTv.text = "${String.format("%.6f", cryptoResultAmount)} ${mCoin.coinId}"
-
-            copyBtn.setOnClickListener {
+            anotherAddressGroupView.show()
+            addressView.text = addressDestination
+            amountView.text =
+                getString(R.string.transaction_crypto_balance, cryptoResultAmount.toStringCoin(), mCoin.coinId)
+            imageView.viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
+                override fun onGlobalLayout() {
+                    val params = imageView.layoutParams
+                    val imageSize = imageView.width
+                    params.height = imageSize
+                    imageView.layoutParams = params
+                    imageView.setImageBitmap(QRUtils.getSpacelessQR(addressDestination ?: "", imageSize, imageSize))
+                    imageView.viewTreeObserver.removeOnGlobalLayoutListener(this)
+                }
+            })
+            copyAddressButtonView.setOnClickListener {
                 copyToClipboard(addressDestination ?: "", addressDestination ?: "")
+                AlertHelper.showToastLong(applicationContext, R.string.alert_copy_to_clipboard)
             }
-
-            /*  val walletQrCode =
-                  BarcodeEncoder().encodeBitmap(addressDestination, BarcodeFormat.QR_CODE, 200, 200)
-              qrCodeIv?.setImageBitmap(walletQrCode)
-              */
-            qrCodeIv?.setImageBitmap(QRUtils.getSpacelessQR(addressDestination ?: "", 200, 200))
-
-
         } else {
             resultOwnContainer.visibility = View.VISIBLE
-            resultAnotherAddressContainer.visibility = View.GONE
-
         }
     }
 
+    @SuppressLint("InflateParams")
     override fun openSmsCodeDialog(error: String?) {
         val view = layoutInflater.inflate(R.layout.view_sms_code_dialog, null)
         val smsCode = view.findViewById<AppCompatEditText>(R.id.sms_code)

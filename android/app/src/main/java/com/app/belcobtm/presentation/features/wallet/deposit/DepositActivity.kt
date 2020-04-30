@@ -33,7 +33,7 @@ class DepositActivity : BaseActivity() {
     private fun initListeners() {
         copyButtonView.setOnClickListener {
             copyToClipboard(getString(R.string.wallet_code_clipboard), coinItem.publicKey)
-            AlertHelper.showToastLong(applicationContext, R.string.deposit_screen_wallet_copied)
+            AlertHelper.showToastLong(applicationContext, R.string.alert_copy_to_clipboard)
         }
         imageView.viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
             override fun onGlobalLayout() {
