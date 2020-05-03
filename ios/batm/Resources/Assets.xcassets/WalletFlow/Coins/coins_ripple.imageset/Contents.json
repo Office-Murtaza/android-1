@@ -2,17 +2,15 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "coins_ripple.png",
+      "filename" : "07.pdf",
       "scale" : "1x"
     },
     {
       "idiom" : "universal",
-      "filename" : "coins_ripple@2x.png",
       "scale" : "2x"
     },
     {
       "idiom" : "universal",
-      "filename" : "coins_ripple@3x.png",
       "scale" : "3x"
     }
   ],

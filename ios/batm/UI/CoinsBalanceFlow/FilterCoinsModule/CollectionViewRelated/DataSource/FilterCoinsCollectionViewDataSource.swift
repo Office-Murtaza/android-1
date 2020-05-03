@@ -44,7 +44,14 @@ final class FilterCoinsCollectionViewDataSource: NSObject, UICollectionViewDataS
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
     let model = values[indexPath.item]
     let cell = collectionView.dequeueReusableCell(FilterCoinsCell.self, for: indexPath)
-    cell.configure(for: model, tapRelay: changeVisibilityRelay)
+    cell.delegate = self
+    cell.configure(for: model)
     return cell
+  }
+}
+
+extension FilterCoinsCollectionViewDataSource: FilterCoinsCellDelegate {
+  func didTapChangeVisibility(_ coin: BTMCoin) {
+    changeVisibilityRelay.accept(coin)
   }
 }
