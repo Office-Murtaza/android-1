@@ -38,7 +38,7 @@
                 android:layout_height="400dp"
                 android:padding="16dp"
                 android:scaleType="fitXY"
-                tools:src="@drawable/ic_bnb_logo" />
+                tools:src="@drawable/ic_coin_binance" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/addressView"

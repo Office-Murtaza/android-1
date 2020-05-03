@@ -9,6 +9,8 @@ import com.app.belcobtm.domain.Failure
 import com.app.belcobtm.domain.wallet.CoinDataItem
 import com.app.belcobtm.domain.wallet.CoinFeeDataItem
 import com.app.belcobtm.domain.wallet.WalletRepository
+import com.app.belcobtm.domain.wallet.item.SellLimitsDataItem
+import com.app.belcobtm.domain.wallet.item.SellPreSubmitDataItem
 
 class WalletRepositoryImpl(
     private val apiService: WalletApiService,
@@ -24,6 +26,14 @@ class WalletRepositoryImpl(
         Either.Left(Failure.NetworkConnection)
     }
 
+    override suspend fun verifySmsCode(
+        smsCode: String
+    ): Either<Failure, Unit> = if (networkUtils.isNetworkAvailable()) {
+        apiService.verifySmsCode(smsCode)
+    } else {
+        Either.Left(Failure.NetworkConnection)
+    }
+
     override suspend fun createTransaction(
         fromCoin: CoinDataItem,
         fromCoinAmount: Double,
@@ -33,7 +43,7 @@ class WalletRepositoryImpl(
         val hashResponse = transactionHashRepository.createTransactionHash(fromCoin, fromCoinAmount, toAddress)
         when {
             isNeedSendSms && hashResponse.isRight -> {
-                val sendSmsToDeviceResponse = apiService.sendToDeviceSmsCode()
+                val sendSmsToDeviceResponse = sendSmsToDevice()
                 if (sendSmsToDeviceResponse.isRight) {
                     hashResponse as Either.Right
                 } else {
@@ -53,7 +63,7 @@ class WalletRepositoryImpl(
         coinFrom: String,
         coinFromAmount: Double
     ): Either<Failure, Unit> = if (networkUtils.isNetworkAvailable()) {
-        val smsCodeVerifyResponse = apiService.verifySmsCode(smsCode)
+        val smsCodeVerifyResponse = verifySmsCode(smsCode)
         if (smsCodeVerifyResponse.isRight) {
             apiService.withdraw(hash, coinFrom, coinFromAmount)
         } else {
@@ -62,7 +72,6 @@ class WalletRepositoryImpl(
     } else {
         Either.Left(Failure.NetworkConnection)
     }
-
 
     override suspend fun getGiftAddress(
         coinFrom: String,
@@ -82,11 +91,50 @@ class WalletRepositoryImpl(
         phone: String,
         message: String
     ): Either<Failure, Unit> = if (networkUtils.isNetworkAvailable()) {
-        val smsCodeVerifyResponse = apiService.verifySmsCode(smsCode)
+        val smsCodeVerifyResponse = verifySmsCode(smsCode)
         if (smsCodeVerifyResponse.isRight) {
             apiService.sendGift(hash, coinFrom, coinFromAmount, giftId, phone, message)
         } else {
             smsCodeVerifyResponse as Either.Left
+        }
+    } else {
+        Either.Left(Failure.NetworkConnection)
+    }
+
+    override suspend fun sellGetLimits(
+        coinFrom: String
+    ): Either<Failure, SellLimitsDataItem> = if (networkUtils.isNetworkAvailable()) {
+        apiService.sellGetLimitsAsync(coinFrom)
+    } else {
+        Either.Left(Failure.NetworkConnection)
+    }
+
+    override suspend fun sellPreSubmit(
+        smsCode: String,
+        coinFrom: String,
+        cryptoAmount: Double,
+        toUsdAmount: Int
+    ): Either<Failure, SellPreSubmitDataItem> = if (networkUtils.isNetworkAvailable()) {
+        val smsCodeVerifyResponse = verifySmsCode(smsCode)
+        if (smsCodeVerifyResponse.isRight) {
+            apiService.sellPreSubmit(coinFrom, cryptoAmount, toUsdAmount)
+        } else {
+            smsCodeVerifyResponse as Either.Left
+        }
+    } else {
+        Either.Left(Failure.NetworkConnection)
+    }
+
+    override suspend fun sell(
+        coinFrom: CoinDataItem,
+        coinFromAmount: Double
+    ): Either<Failure, Unit> = if (networkUtils.isNetworkAvailable()) {
+        val transactionResponse = createTransaction(coinFrom, coinFromAmount, false)
+        if (transactionResponse.isRight) {
+            val hash = (transactionResponse as Either.Right).b
+            apiService.sell(coinFromAmount, coinFrom.code, hash)
+        } else {
+            transactionResponse as Either.Left
         }
     } else {
         Either.Left(Failure.NetworkConnection)
@@ -99,7 +147,7 @@ class WalletRepositoryImpl(
         coinTo: String,
         hex: String
     ): Either<Failure, Unit> = if (networkUtils.isNetworkAvailable()) {
-        val smsCodeVerifyResponse = apiService.verifySmsCode(smsCode)
+        val smsCodeVerifyResponse = verifySmsCode(smsCode)
         if (smsCodeVerifyResponse.isRight) {
             apiService.coinToCoinExchange(coinFromAmount, coinFrom, coinTo, hex)
         } else {
@@ -108,5 +156,4 @@ class WalletRepositoryImpl(
     } else {
         Either.Left(Failure.NetworkConnection)
     }
-
 }

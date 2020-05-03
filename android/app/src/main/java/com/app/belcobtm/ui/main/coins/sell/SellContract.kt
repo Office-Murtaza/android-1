@@ -2,6 +2,7 @@ package com.app.belcobtm.ui.main.coins.sell
 
 import com.app.belcobtm.api.model.response.CoinModel
 import com.app.belcobtm.api.model.response.LimitsResponse
+import com.app.belcobtm.domain.wallet.item.SellLimitsDataItem
 import com.app.belcobtm.mvp.BaseMvpPresenter
 import com.app.belcobtm.mvp.BaseMvpView
 
@@ -15,7 +16,7 @@ object SellContract {
             checked: Boolean
         )
 
-        fun verifySmsCode(code: String)
+        fun verifySmsCode(smsCode: String)
 
         fun getTransactionFee(coinName: String): Double
         fun bindData(mCoin: CoinModel?)
@@ -24,16 +25,16 @@ object SellContract {
     }
 
     interface View : BaseMvpView {
-        fun onTransactionDone(
-            anotherAddress: Boolean,
+        fun showDoneScreen()
+        fun showDoneScreenAnotherAddress(
             addressDestination: String?,
-            cryptoResultAmount: Double
+            cryptoAmount: Double
         )
 
         fun openSmsCodeDialog(error: String? = null)
-        fun showLimits(value: LimitsResponse?)
+        fun showLimits(limitsItem: SellLimitsDataItem)
         fun showNewBalanceError()
         fun showPretransactionError()
-        fun showErrorAndHideDialogs(errorMessage: String?)
+        fun showErrorAndHideDialogs(resError: Int)
     }
 }

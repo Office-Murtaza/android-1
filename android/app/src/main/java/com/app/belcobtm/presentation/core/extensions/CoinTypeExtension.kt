@@ -65,12 +65,12 @@ fun CoinType.customXpubVersion(): HDVersion = if (this == CoinType.BITCOIN) {
 }
 
 fun CoinType.resIcon(): Int = when (this) {
-    CoinType.BITCOIN -> R.drawable.ic_bitcoin
-    CoinType.ETHEREUM -> R.drawable.ic_ethereum
-    CoinType.BITCOINCASH -> R.drawable.ic_bitcoin_cash
-    CoinType.LITECOIN -> R.drawable.ic_litecoin
-    CoinType.BINANCE -> R.drawable.ic_binance
-    CoinType.TRON -> R.drawable.ic_tron
-    CoinType.XRP -> R.drawable.ic_ripple
+    CoinType.BITCOIN -> R.drawable.ic_coin_bitcoin
+    CoinType.ETHEREUM -> R.drawable.ic_coin_ethereum
+    CoinType.BITCOINCASH -> R.drawable.ic_coin_bitcoin_cash
+    CoinType.LITECOIN -> R.drawable.ic_coin_litecoin
+    CoinType.BINANCE -> R.drawable.ic_coin_binance
+    CoinType.TRON -> R.drawable.ic_coin_tron
+    CoinType.XRP -> R.drawable.ic_coin_ripple
     else -> 0
 }

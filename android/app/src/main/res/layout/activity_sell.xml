@@ -5,7 +5,6 @@
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/bg_color"
     android:orientation="vertical"
     tools:context=".ui.main.settings.phone.ShowPhoneActivity">
 
@@ -47,7 +46,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:visibility="gone"
-                    app:constraint_referenced_ids="qrCodeContainerView,amountView,instructionsContainerView,doneButtonView "
+                    app:constraint_referenced_ids="instructionsContainerView,doneButtonView "
                     tools:visibility="gone" />
 
                 <androidx.constraintlayout.widget.Barrier
@@ -218,6 +217,7 @@
                     android:layout_marginTop="16dp"
                     android:layout_marginEnd="16dp"
                     android:backgroundTint="@android:color/white"
+                    android:visibility="gone"
                     app:cardCornerRadius="6dp"
                     app:cardElevation="6dp"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -235,7 +235,7 @@
                             android:layout_height="300dp"
                             android:padding="16dp"
                             android:scaleType="fitXY"
-                            tools:src="@drawable/ic_bnb_logo" />
+                            tools:src="@drawable/ic_coin_binance" />
 
                         <androidx.appcompat.widget.AppCompatTextView
                             android:id="@+id/addressView"
@@ -264,8 +264,9 @@
                     android:textAllCaps="true"
                     android:textSize="20sp"
                     android:textStyle="bold"
-                    app:layout_constraintEnd_toEndOf="@id/qrCodeContainerView"
-                    app:layout_constraintStart_toStartOf="@id/qrCodeContainerView"
+                    android:visibility="gone"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/qrCodeContainerView"
                     tools:text="0.000902 BTC" />
 
@@ -273,9 +274,11 @@
                     android:id="@+id/instructionsContainerView"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
                     android:layout_marginTop="16dp"
-                    app:layout_constraintEnd_toEndOf="@id/qrCodeContainerView"
-                    app:layout_constraintStart_toStartOf="@id/qrCodeContainerView"
+                    android:layout_marginEnd="16dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/amountView"
                     tools:ignore="HardcodedText">
 
@@ -342,164 +345,6 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/instructionsContainerView" />
-
-                <FrameLayout
-                    android:id="@+id/resultContainer"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:visibility="gone"
-                    app:layout_constraintTop_toBottomOf="@id/txLimitTitleView"
-                    app:layout_constraintTop_toTopOf="parent"
-                    tools:visibility="visible">
-
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:id="@+id/resultOwnContainer"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="86dp"
-                        android:visibility="gone">
-
-                        <TextView
-                            android:id="@+id/oneLabel3"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="24dp"
-                            android:layout_marginLeft="24dp"
-                            android:layout_marginTop="24dp"
-                            android:gravity="center_horizontal"
-                            android:lineSpacingExtra="10.6sp"
-                            android:text="1."
-                            android:textColor="#0073e4"
-                            android:textSize="12sp"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                        <TextView
-                            android:id="@+id/twoLabel3"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="24dp"
-                            android:layout_marginLeft="24dp"
-                            android:layout_marginTop="16dp"
-                            android:gravity="center_horizontal"
-                            android:lineSpacingExtra="10.6sp"
-                            android:text="2."
-                            android:textColor="#0073e4"
-                            android:textSize="12sp"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/firstStepLabel3" />
-
-                        <TextView
-                            android:id="@+id/threeLabel3"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="24dp"
-                            android:layout_marginLeft="24dp"
-                            android:layout_marginTop="16dp"
-                            android:gravity="center_horizontal"
-                            android:lineSpacingExtra="10.6sp"
-                            android:text="3."
-                            android:textColor="#0073e4"
-                            android:textSize="12sp"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/secondStepLabel3" />
-
-                        <TextView
-                            android:id="@+id/fourLabel3"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="24dp"
-                            android:layout_marginLeft="24dp"
-                            android:layout_marginTop="16dp"
-                            android:gravity="center_horizontal"
-                            android:lineSpacingExtra="10.6sp"
-                            android:text="4."
-                            android:textColor="#0073e4"
-                            android:textSize="12sp"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/thirdStepLabel3" />
-
-
-                        <TextView
-                            android:id="@+id/firstStepLabel3"
-                            android:layout_width="345dp"
-                            android:layout_height="wrap_content"
-                            android:lineSpacingExtra="10.6sp"
-                            android:maxLines="4"
-                            android:text="Wait a few minutes before your payment is confirmed. "
-                            android:textColor="#8d8d8d"
-                            android:textSize="12sp"
-                            app:layout_constraintStart_toEndOf="@+id/guideline3"
-                            app:layout_constraintTop_toTopOf="@+id/oneLabel3" />
-
-                        <TextView
-                            android:id="@+id/secondStepLabel3"
-                            android:layout_width="345dp"
-                            android:layout_height="wrap_content"
-                            android:lineSpacingExtra="10.6sp"
-                            android:maxLines="4"
-                            android:text="You will receive an SMS when cash withdrawal is ready. "
-                            android:textColor="#8d8d8d"
-                            android:textSize="12sp"
-                            app:layout_constraintStart_toEndOf="@+id/guideline3"
-                            app:layout_constraintTop_toTopOf="@+id/twoLabel3" />
-
-
-                        <TextView
-                            android:id="@+id/thirdStepLabel3"
-                            android:layout_width="345dp"
-                            android:layout_height="wrap_content"
-                            android:lineSpacingExtra="10.6sp"
-                            android:maxLines="4"
-                            android:text="On the ATM choose REDEEM TICKET. "
-                            android:textColor="#8d8d8d"
-                            android:textSize="12sp"
-                            app:layout_constraintStart_toEndOf="@+id/guideline3"
-                            app:layout_constraintTop_toTopOf="@+id/threeLabel3" />
-
-
-                        <TextView
-                            android:id="@+id/firthStepLabel3"
-                            android:layout_width="345dp"
-                            android:layout_height="wrap_content"
-                            android:lineSpacingExtra="10.6sp"
-                            android:maxLines="4"
-                            android:text="Scan QR code from transaction details popup. "
-                            android:textColor="#8d8d8d"
-                            android:textSize="12sp"
-                            app:layout_constraintHorizontal_bias="1.0"
-                            app:layout_constraintStart_toEndOf="@+id/guideline3"
-                            app:layout_constraintTop_toTopOf="@+id/fourLabel3" />
-
-                        <androidx.constraintlayout.widget.Guideline
-                            android:id="@+id/guideline3"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical"
-                            app:layout_constraintGuide_begin="42dp" />
-
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-
-                    <androidx.appcompat.widget.AppCompatButton
-                        android:id="@+id/doneBtn"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="bottom|center_horizontal"
-                        android:layout_marginTop="24dp"
-                        android:layout_marginBottom="@dimen/margin_main"
-                        android:background="@drawable/bt_gray_rounded_corner"
-                        android:backgroundTint="@color/blue_color"
-                        android:foreground="?attr/selectableItemBackground"
-                        android:paddingStart="@dimen/margin_x3"
-                        android:paddingEnd="@dimen/margin_x3"
-                        android:text="@string/done"
-                        android:textColor="@android:color/white"
-                        android:visibility="gone"
-                        app:fontFamily="@font/poppins_bold"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent" />
-
-                </FrameLayout>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

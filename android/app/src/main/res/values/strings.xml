@@ -292,4 +292,15 @@
     <string name="button_next">Next</string>
 
     <string name="alert_copy_to_clipboard">Copied</string>
+
+
+
+
+    <string name="coin_name_bitcoin">Bitcoin</string>
+    <string name="coin_name_ethereum">Ethereum</string>
+    <string name="coin_name_bitcoin_cash">Bitcoin Cash</string>
+    <string name="coin_name_litecoin">Litecoin</string>
+    <string name="coin_name_binance">Binance</string>
+    <string name="coin_name_tron">TRON</string>
+    <string name="coin_name_ripple">Ripple</string>
 </resources>

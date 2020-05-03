@@ -1,20 +1,42 @@
 package com.app.belcobtm.data.rest.wallet
 
-import com.app.belcobtm.data.rest.wallet.request.CoinToCoinExchangeRequest
-import com.app.belcobtm.data.rest.wallet.request.SendGiftRequest
-import com.app.belcobtm.data.rest.wallet.request.VerifySmsCodeRequest
-import com.app.belcobtm.data.rest.wallet.request.WithdrawRequest
+import com.app.belcobtm.data.rest.wallet.request.*
 import com.app.belcobtm.data.rest.wallet.response.hash.BinanceBlockResponse
 import com.app.belcobtm.data.rest.wallet.response.hash.TronRawDataResponse
 import com.app.belcobtm.data.rest.wallet.response.hash.UtxoItemResponse
+import com.app.belcobtm.data.rest.wallet.response.mapToDataItem
 import com.app.belcobtm.data.shared.preferences.SharedPreferencesHelper
 import com.app.belcobtm.domain.Either
 import com.app.belcobtm.domain.Failure
+import com.app.belcobtm.domain.wallet.item.SellLimitsDataItem
+import com.app.belcobtm.domain.wallet.item.SellPreSubmitDataItem
 
 class WalletApiService(
     private val api: WalletApi,
     private val prefHelper: SharedPreferencesHelper
 ) {
+
+    suspend fun sendToDeviceSmsCode(): Either<Failure, Unit> = try {
+        val request = api.sendSmsCodeAsync(prefHelper.userId).await()
+        request.body()?.let {
+            if (request.isSuccessful) {
+                Either.Right(Unit)
+            } else {
+                Either.Left(Failure.ServerError())
+            }
+        } ?: Either.Left(Failure.ServerError())
+    } catch (failure: Failure) {
+        failure.printStackTrace()
+        Either.Left(failure)
+    }
+
+    suspend fun verifySmsCode(smsCode: String): Either<Failure, Unit> = try {
+        val request = api.verifySmsCodeAsync(prefHelper.userId, VerifySmsCodeRequest(smsCode)).await()
+        request.body()?.let { Either.Right(Unit) } ?: Either.Left(Failure.ServerError())
+    } catch (failure: Failure) {
+        failure.printStackTrace()
+        Either.Left(failure)
+    }
 
     suspend fun withdraw(
         hash: String,
@@ -72,6 +94,61 @@ class WalletApiService(
         Either.Left(failure)
     }
 
+    suspend fun sellGetLimitsAsync(
+        coinFrom: String
+    ): Either<Failure, SellLimitsDataItem> = try {
+        val request = api.sellGetLimitsAsync(prefHelper.userId, coinFrom).await()
+        request.body()?.let { Either.Right(it.mapToDataItem()) } ?: Either.Left(Failure.ServerError())
+    } catch (failure: Failure) {
+        failure.printStackTrace()
+        Either.Left(failure)
+    }
+
+    suspend fun sellPreSubmit(
+        coinFrom: String,
+        coinFromAmount: Double,
+        usdToAmount: Int
+    ): Either<Failure, SellPreSubmitDataItem> = try {
+        val requestBody = SellPreSubmitRequest(
+            cryptoAmount = coinFromAmount,
+            fiatAmount = usdToAmount,
+            fiatCurrency = UNIT_USD
+        )
+        val request = api.sellPreSubmitAsync(
+            prefHelper.userId,
+            coinFrom,
+            requestBody
+        ).await()
+
+        request.body()?.let {
+            if (it.address.isNullOrBlank()) {
+                Either.Left(Failure.MessageError("The transaction can not be created"))
+            } else {
+                Either.Right(it.mapToDataItem())
+            }
+        } ?: Either.Left(Failure.ServerError())
+    } catch (failure: Failure) {
+        failure.printStackTrace()
+        Either.Left(failure)
+    }
+
+    suspend fun sell(
+        coinFromAmount: Double,
+        coinFrom: String,
+        hash: String
+    ): Either<Failure, Unit> = try {
+        val requestBody = SellRequest(
+            type = TRANSACTION_SELL,
+            cryptoAmount = coinFromAmount,
+            hex = hash
+        )
+        val request = api.sellAsync(prefHelper.userId, coinFrom, requestBody).await()
+        request.body()?.let { Either.Right(Unit) } ?: Either.Left(Failure.ServerError())
+    } catch (failure: Failure) {
+        failure.printStackTrace()
+        Either.Left(failure)
+    }
+
     suspend fun coinToCoinExchange(
         coinFromAmount: Double,
         coinFrom: String,
@@ -90,28 +167,6 @@ class WalletApiService(
             requestBody
         ).await()
 
-        request.body()?.let { Either.Right(Unit) } ?: Either.Left(Failure.ServerError())
-    } catch (failure: Failure) {
-        failure.printStackTrace()
-        Either.Left(failure)
-    }
-
-    suspend fun sendToDeviceSmsCode(): Either<Failure, Unit> = try {
-        val request = api.sendSmsCodeAsync(prefHelper.userId).await()
-        request.body()?.let {
-            if (request.isSuccessful) {
-                Either.Right(Unit)
-            } else {
-                Either.Left(Failure.ServerError())
-            }
-        } ?: Either.Left(Failure.ServerError())
-    } catch (failure: Failure) {
-        failure.printStackTrace()
-        Either.Left(failure)
-    }
-
-    suspend fun verifySmsCode(smsCode: String): Either<Failure, Unit> = try {
-        val request = api.verifySmsCodeAsync(prefHelper.userId, VerifySmsCodeRequest(smsCode)).await()
         request.body()?.let { Either.Right(Unit) } ?: Either.Left(Failure.ServerError())
     } catch (failure: Failure) {
         failure.printStackTrace()
@@ -161,15 +216,8 @@ class WalletApiService(
     companion object {
         const val TRANSACTION_WITHDRAW = 2
         const val TRANSACTION_SEND_GIFT = 3
+        const val TRANSACTION_SELL = 6
         const val TRANSACTION_SEND_COIN_TO_COIN = 8
-//    case .unknown: return 0
-//    case .deposit: return 1
-//    case .withdraw: return 2
-//    case .sendGift: return 3
-//    case .receiveGift: return 4
-//    case .buy: return 5
-//    case .sell: return 6
-//    case .sendC2C: return 8
-//    case .receiveC2C: return 9
+        const val UNIT_USD = "USD"
     }
 }

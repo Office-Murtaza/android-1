@@ -62,7 +62,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.main.coins.visibility.VisibilityCoinsActivity"
+            android:name=".presentation.features.wallet.add.AddWalletActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppThemeNoActionBar">
 

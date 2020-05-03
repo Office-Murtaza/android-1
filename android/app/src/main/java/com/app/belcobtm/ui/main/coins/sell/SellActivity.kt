@@ -13,7 +13,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.AppCompatEditText
 import com.app.belcobtm.R
 import com.app.belcobtm.api.model.response.CoinModel
-import com.app.belcobtm.api.model.response.LimitsResponse
+import com.app.belcobtm.domain.wallet.item.SellLimitsDataItem
 import com.app.belcobtm.mvp.BaseMvpActivity
 import com.app.belcobtm.presentation.core.Const.GIPHY_API_KEY
 import com.app.belcobtm.presentation.core.QRUtils
@@ -28,8 +28,13 @@ import kotlin.math.min
 import kotlin.math.round
 
 class SellActivity : BaseMvpActivity<SellContract.View, SellContract.Presenter>(), SellContract.View {
-    override fun showErrorAndHideDialogs(errorMessage: String?) {
-        showError(errorMessage)
+    private var alertDialog: AlertDialog? = null
+    private var limits: SellLimitsDataItem? = null
+
+    private lateinit var mCoin: CoinModel
+
+    override fun showErrorAndHideDialogs(resError: Int) {
+        showError(resError)
         alertDialog?.dismiss()
     }
 
@@ -43,10 +48,10 @@ class SellActivity : BaseMvpActivity<SellContract.View, SellContract.Presenter>(
         alertDialog?.dismiss()
     }
 
-    override fun showLimits(value: LimitsResponse?) {
-        this.limits = value
-        dayLimitView.text = getString(R.string.transaction_price_usd, (value?.dailyLimit?.USD ?: 0.0).toStringUsd())
-        txLimitView.text = getString(R.string.transaction_price_usd, (value?.txLimit?.USD ?: 0.0).toStringUsd())
+    override fun showLimits(limitsItem: SellLimitsDataItem) {
+        this.limits = limitsItem
+        dayLimitView.text = getString(R.string.transaction_price_usd, limitsItem.usdDailyLimit.toStringUsd())
+        txLimitView.text = getString(R.string.transaction_price_usd, limitsItem.usdTxLimit.toStringUsd())
     }
 
     companion object {
@@ -59,11 +64,6 @@ class SellActivity : BaseMvpActivity<SellContract.View, SellContract.Presenter>(
             context?.startActivity(intent)
         }
     }
-
-    private var alertDialog: AlertDialog? = null
-    private var limits: LimitsResponse? = null
-
-    private lateinit var mCoin: CoinModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -90,6 +90,7 @@ class SellActivity : BaseMvpActivity<SellContract.View, SellContract.Presenter>(
         maxUsdView.setOnClickListener { selectMaxPrice() }
         amountUsdView.actionDoneListener { validateAndSubmit() }
         nextButtonView.setOnClickListener { validateAndSubmit() }
+        doneButtonView.setOnClickListener { finish() }
     }
 
     private val coinFromTextWatcher = object : TextWatcher {
@@ -125,7 +126,7 @@ class SellActivity : BaseMvpActivity<SellContract.View, SellContract.Presenter>(
                         amountUsdView.clearError()
                     }
                     val price = mCoin.price.uSD
-                    val rate = limits?.sellProfitRate ?: Double.MIN_VALUE
+                    val rate = limits?.profitRate ?: Double.MIN_VALUE
                     var cryptoAmount = (usdAmount / price * rate)
                     cryptoAmount = round(cryptoAmount * 100000) / 100000
 
@@ -141,7 +142,6 @@ class SellActivity : BaseMvpActivity<SellContract.View, SellContract.Presenter>(
 
     private fun initViews() {
         sellContainerGroupView.visibility = View.VISIBLE
-        resultContainer.visibility = View.GONE
         amountCryptoView.hint = getString(R.string.sell_screen_crypto_amount, mCoin.coinId)
         initPrice()
         initBalance()
@@ -160,7 +160,7 @@ class SellActivity : BaseMvpActivity<SellContract.View, SellContract.Presenter>(
 
     private fun selectMaxPrice() {
         val price = mCoin.price.uSD
-        val rate = limits?.sellProfitRate ?: Double.MIN_VALUE
+        val rate = limits?.profitRate ?: Double.MIN_VALUE
         val balance = mCoin.balance - mPresenter.getTransactionFee(mCoin.coinId)
 
         val fiatAmount = try {
@@ -186,8 +186,8 @@ class SellActivity : BaseMvpActivity<SellContract.View, SellContract.Presenter>(
         } else {
             amountUsdView.setText(
                 "${min(
-                    limits?.dailyLimit?.USD?.toInt() ?: 0,
-                    limits?.txLimit?.USD?.toInt() ?: 0
+                    limits?.usdDailyLimit?.toInt() ?: 0,
+                    limits?.usdTxLimit?.toInt() ?: 0
                 )}"
             )
         }
@@ -227,7 +227,7 @@ class SellActivity : BaseMvpActivity<SellContract.View, SellContract.Presenter>(
 
         val balance = mCoin.balance - mPresenter.getTransactionFee(mCoin.coinId)
         val price = mCoin.price.uSD
-        val rate = limits?.sellProfitRate ?: Double.MIN_VALUE
+        val rate = limits?.profitRate ?: Double.MIN_VALUE
 
         var cryptoAmount = fiatAmount / price * rate
         cryptoAmount = round(cryptoAmount * 100000) / 100000
@@ -241,7 +241,6 @@ class SellActivity : BaseMvpActivity<SellContract.View, SellContract.Presenter>(
         if (errors == 0) {
             mPresenter.preSubmit(fiatAmount, cryptoAmount, balance, anotherAddressButtonView.isChecked)
         }
-
     }
 
     /**
@@ -265,37 +264,34 @@ class SellActivity : BaseMvpActivity<SellContract.View, SellContract.Presenter>(
         return (nearestNumberThatCanBeGivenByTwentyAndFifty == sum)
     }
 
-    override fun onTransactionDone(
-        anotherAddress: Boolean,
-        addressDestination: String?,
-        cryptoResultAmount: Double
-    ) {
+    override fun showDoneScreen() {
         alertDialog?.dismiss()
-        sellContainerGroupView.visibility = View.GONE
-        resultContainer.visibility = View.VISIBLE
-        doneBtn.setOnClickListener { finish() }
+        sellContainerGroupView.hide()
+        anotherAddressGroupView.show()
+    }
 
-        if (anotherAddress) {
-            anotherAddressGroupView.show()
-            addressView.text = addressDestination
-            amountView.text =
-                getString(R.string.transaction_crypto_balance, cryptoResultAmount.toStringCoin(), mCoin.coinId)
-            imageView.viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
-                override fun onGlobalLayout() {
-                    val params = imageView.layoutParams
-                    val imageSize = imageView.width
-                    params.height = imageSize
-                    imageView.layoutParams = params
-                    imageView.setImageBitmap(QRUtils.getSpacelessQR(addressDestination ?: "", imageSize, imageSize))
-                    imageView.viewTreeObserver.removeOnGlobalLayoutListener(this)
-                }
-            })
-            copyAddressButtonView.setOnClickListener {
-                copyToClipboard(addressDestination ?: "", addressDestination ?: "")
-                AlertHelper.showToastLong(applicationContext, R.string.alert_copy_to_clipboard)
+    override fun showDoneScreenAnotherAddress(addressDestination: String?, cryptoAmount: Double) {
+        alertDialog?.dismiss()
+        sellContainerGroupView.hide()
+        anotherAddressGroupView.show()
+        qrCodeContainerView.show()
+        amountView.show()
+
+        addressView.text = addressDestination
+        amountView.text = getString(R.string.transaction_crypto_balance, cryptoAmount.toStringCoin(), mCoin.coinId)
+        imageView.viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
+            override fun onGlobalLayout() {
+                val params = imageView.layoutParams
+                val imageSize = imageView.width
+                params.height = imageSize
+                imageView.layoutParams = params
+                imageView.setImageBitmap(QRUtils.getSpacelessQR(addressDestination ?: "", imageSize, imageSize))
+                imageView.viewTreeObserver.removeOnGlobalLayoutListener(this)
             }
-        } else {
-            resultOwnContainer.visibility = View.VISIBLE
+        })
+        copyAddressButtonView.setOnClickListener {
+            copyToClipboard(addressDestination ?: "", addressDestination ?: "")
+            AlertHelper.showToastLong(applicationContext, R.string.alert_copy_to_clipboard)
         }
     }
 

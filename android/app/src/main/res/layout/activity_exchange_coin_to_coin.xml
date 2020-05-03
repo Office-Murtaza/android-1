@@ -123,7 +123,7 @@
             android:focusableInTouchMode="false"
             android:inputType="text"
             android:paddingEnd="12dp"
-            tools:drawableStart="@drawable/ic_bitcoin"
+            tools:drawableStart="@drawable/ic_coin_bitcoin"
             tools:hint="@string/exchange_coin_to_coin_screen_select_coin"
             tools:ignore="RtlSymmetry" />
     </com.google.android.material.textfield.TextInputLayout>

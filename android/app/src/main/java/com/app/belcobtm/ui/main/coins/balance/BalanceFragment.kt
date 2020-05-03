@@ -10,7 +10,7 @@ import com.app.belcobtm.R
 import com.app.belcobtm.api.model.response.CoinModel
 import com.app.belcobtm.mvp.BaseMvpFragment
 import com.app.belcobtm.ui.main.coins.transactions.TransactionsActivity
-import com.app.belcobtm.ui.main.coins.visibility.VisibilityCoinsActivity
+import com.app.belcobtm.presentation.features.wallet.add.AddWalletActivity
 import com.app.belcobtm.presentation.core.CoinItemDecoration
 import kotlinx.android.synthetic.main.fragment_balance.*
 
@@ -39,7 +39,7 @@ class BalanceFragment : BaseMvpFragment<BalanceContract.View, BalanceContract.Pr
         swipeToRefreshView.setColorSchemeColors(Color.RED, Color.GREEN, Color.BLUE)
 
         add_wallet_ll.setOnClickListener {
-            startActivity(Intent(context, VisibilityCoinsActivity::class.java))
+            startActivity(Intent(context, AddWalletActivity::class.java))
         }
     }
 
