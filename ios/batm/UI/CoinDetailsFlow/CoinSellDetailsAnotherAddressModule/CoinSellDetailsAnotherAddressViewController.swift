@@ -2,38 +2,16 @@ import UIKit
 import RxCocoa
 import RxSwift
 import SnapKit
+import MaterialComponents
 
 final class CoinSellDetailsAnotherAddressViewController: NavigationScreenViewController<CoinSellDetailsAnotherAddressPresenter> {
   
-  let qrCodeImageView = UIImageView(image: nil)
-  
-  let addressLabel: UILabel = {
-    let label = UILabel()
-    label.text = localize(L.CoinDetails.address)
-    label.textColor = .warmGrey
-    label.font = .poppinsMedium14
-    return label
-  }()
-  
-  let addressValueLabel: UILabel = {
-    let label = UILabel()
-    label.textColor = .slateGrey
-    label.font = .poppinsSemibold14
-    label.adjustsFontSizeToFitWidth = true
-    label.minimumScaleFactor = 0.4
-    return label
-  }()
-  
-  let copyLabel: UnderlinedLabelView = {
-    let label = UnderlinedLabelView()
-    label.configure(for: .copy)
-    return label
-  }()
+  let qrCodeCardView = QRCodeCardView()
   
   let amountLabel: UILabel = {
     let label = UILabel()
     label.textColor = .slateGrey
-    label.font = .poppinsBold16
+    label.font = .systemFont(ofSize: 20, weight: .medium)
     return label
   }()
   
@@ -46,68 +24,46 @@ final class CoinSellDetailsAnotherAddressViewController: NavigationScreenViewCon
     return view
   }()
   
-  let doneButton: MainButton = {
-    let button = MainButton()
-    button.configure(for: .done)
-    return button
-  }()
+  let doneButton = MDCButton.done
   
   override var preferredStatusBarStyle: UIStatusBarStyle {
     return .lightContent
   }
 
   override func setupUI() {
-    customView.contentView.addSubviews(qrCodeImageView,
-                                       addressLabel,
-                                       addressValueLabel,
-                                       copyLabel,
+    customView.contentView.addSubviews(qrCodeCardView,
                                        amountLabel,
                                        instructionsView,
                                        doneButton)
     customView.setTitle(presenter.title)
-    
-    qrCodeImageView.image = UIImage.qrCode(from: presenter.details.address)
-    addressValueLabel.text = presenter.details.address
-    amountLabel.text = presenter.amountString
   }
 
   override func setupLayout() {
-    qrCodeImageView.snp.makeConstraints {
-      $0.top.equalToSuperview().offset(35)
-      $0.centerX.equalToSuperview()
-    }
-    addressLabel.snp.makeConstraints {
-      $0.top.equalTo(qrCodeImageView.snp.bottom).offset(25)
-      $0.centerX.equalToSuperview()
-    }
-    addressValueLabel.snp.makeConstraints {
-      $0.top.equalTo(addressLabel.snp.bottom).offset(10)
-      $0.centerX.equalToSuperview()
-      $0.left.greaterThanOrEqualToSuperview().offset(25)
-      $0.right.lessThanOrEqualToSuperview().offset(-25)
-    }
-    copyLabel.snp.makeConstraints {
-      $0.top.equalTo(addressValueLabel.snp.bottom).offset(10)
-      $0.centerX.equalToSuperview()
+    qrCodeCardView.snp.makeConstraints {
+      $0.top.left.right.equalToSuperview().inset(30)
     }
     amountLabel.snp.makeConstraints {
-      $0.top.equalTo(copyLabel.snp.bottom).offset(30)
+      $0.top.equalTo(qrCodeCardView.snp.bottom).offset(40)
       $0.centerX.equalToSuperview()
     }
     instructionsView.snp.makeConstraints {
       $0.top.equalTo(amountLabel.snp.bottom).offset(30)
-      $0.left.right.equalToSuperview().inset(25)
+      $0.left.right.equalToSuperview().inset(15)
     }
     doneButton.snp.makeConstraints {
-      $0.top.equalTo(instructionsView.snp.bottom).offset(25)
+      $0.top.equalTo(instructionsView.snp.bottom).offset(30)
       $0.centerX.equalToSuperview()
       $0.width.equalTo(150)
-      $0.bottom.equalToSuperview().offset(-40)
+      $0.height.equalTo(48)
+      $0.bottom.equalToSuperview().inset(40)
     }
   }
   
   func setupUIBindings() {
-    copyLabel.rx.tap
+    qrCodeCardView.configure(for: presenter.details.address)
+    amountLabel.text = presenter.amountString
+    
+    qrCodeCardView.rx.copy
       .drive(onNext: { [unowned self] in self.view.makeToast(localize(L.Shared.copied)) })
       .disposed(by: disposeBag)
   }
@@ -116,7 +72,7 @@ final class CoinSellDetailsAnotherAddressViewController: NavigationScreenViewCon
     setupUIBindings()
     
     let backDriver = customView.backButton.rx.tap.asDriver()
-    let copyDriver = copyLabel.rx.tap
+    let copyDriver = qrCodeCardView.rx.copy
     let doneDriver = doneButton.rx.tap.asDriver()
     
     presenter.bind(input: CoinSellDetailsAnotherAddressPresenter.Input(back: backDriver,

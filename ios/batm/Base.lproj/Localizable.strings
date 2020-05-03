@@ -18,6 +18,8 @@
 "shared.button.add" = "ADD";
 "shared.button.remove" = "REMOVE";
 "shared.button.copy" = "COPY";
+"shared.button.next" = "NEXT";
+"shared.button.done" = "DONE";
 "shared.error.title" = "Error";
 "shared.error.message" = "Server Error, Try Later";
 "shared.error.no_connection.message" = "No Internet Connection";
@@ -168,9 +170,6 @@
 "coin_deposit.title" = "Deposit %@";
 
 "coin_withdraw.title" = "Withdraw %@";
-"coin_withdraw.button.max" = "MAX";
-"coin_withdraw.button.paste" = "PASTE";
-"coin_withdraw.button.next" = "NEXT";
 "coin_withdraw.form.recipient_address.placeholder" = "Recipient Address";
 "coin_withdraw.form.coin_amount.placeholder" = "Amount";
 "coin_withdraw.form.currency_amount.placeholder" = "USD Amount";

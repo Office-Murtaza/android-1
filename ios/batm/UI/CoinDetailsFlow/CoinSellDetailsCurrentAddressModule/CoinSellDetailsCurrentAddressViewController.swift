@@ -2,6 +2,7 @@ import UIKit
 import RxCocoa
 import RxSwift
 import SnapKit
+import MaterialComponents
 
 final class CoinSellDetailsCurrentAddressViewController: NavigationScreenViewController<CoinSellDetailsCurrentAddressPresenter> {
   
@@ -14,11 +15,7 @@ final class CoinSellDetailsCurrentAddressViewController: NavigationScreenViewCon
     return view
   }()
   
-  let doneButton: MainButton = {
-    let button = MainButton()
-    button.configure(for: .done)
-    return button
-  }()
+  let doneButton = MDCButton.done
   
   override var preferredStatusBarStyle: UIStatusBarStyle {
     return .lightContent
@@ -32,14 +29,15 @@ final class CoinSellDetailsCurrentAddressViewController: NavigationScreenViewCon
 
   override func setupLayout() {
     instructionsView.snp.makeConstraints {
-      $0.top.equalToSuperview().offset(40)
-      $0.left.right.equalToSuperview().inset(25)
+      $0.top.equalToSuperview().offset(30)
+      $0.left.right.equalToSuperview().inset(15)
     }
     doneButton.snp.makeConstraints {
-      $0.top.equalTo(instructionsView.snp.bottom).offset(25)
+      $0.top.equalTo(instructionsView.snp.bottom).offset(30)
       $0.centerX.equalToSuperview()
       $0.width.equalTo(150)
-      $0.bottom.equalToSuperview().offset(-40)
+      $0.height.equalTo(48)
+      $0.bottom.equalToSuperview().inset(40)
     }
   }
   

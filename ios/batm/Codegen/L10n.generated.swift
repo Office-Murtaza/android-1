@@ -304,12 +304,6 @@ extension L.CoinSendGift.Form {
 }
 extension L.CoinWithdraw {
 
-  struct Button {
-    static let max = "coin_withdraw.button.max"
-    static let next = "coin_withdraw.button.next"
-    static let paste = "coin_withdraw.button.paste"
-  }
-
   struct Form {
   }
 }
@@ -409,7 +403,9 @@ extension L.Shared {
   struct Button {
     static let add = "shared.button.add"
     static let copy = "shared.button.copy"
+    static let done = "shared.button.done"
     static let max = "shared.button.max"
+    static let next = "shared.button.next"
     static let paste = "shared.button.paste"
     static let remove = "shared.button.remove"
   }
