@@ -2,14 +2,8 @@ package com.batm.service;
 
 import com.batm.dto.*;
 import com.batm.entity.*;
-import com.batm.model.CashStatus;
-import com.batm.model.TransactionGroupType;
-import com.batm.model.TransactionStatus;
-import com.batm.model.TransactionType;
-import com.batm.repository.TransactionRecordC2CRep;
-import com.batm.repository.TransactionRecordGiftRep;
-import com.batm.repository.TransactionRecordRep;
-import com.batm.repository.TransactionRecordWalletRep;
+import com.batm.model.*;
+import com.batm.repository.*;
 import com.batm.util.Constant;
 import com.batm.util.Util;
 import net.sf.json.JSONObject;
@@ -40,6 +34,12 @@ public class TransactionService {
 
     @Autowired
     private TransactionRecordC2CRep c2cRep;
+
+    @Autowired
+    private TransactionRecordReserveRep reserveRep;
+
+    @Autowired
+    private UserCoinRep userCoinRep;
 
     @Autowired
     private UserService userService;
@@ -264,15 +264,15 @@ public class TransactionService {
         try {
             CoinService.CoinEnum refCoinCode = CoinService.CoinEnum.valueOf(dto.getRefCoin());
 
-            TransactionRecordC2C c2cRec = new TransactionRecordC2C();
-            c2cRec.setTxId(txId);
-            c2cRec.setIdentity(userService.findById(userId).getIdentity());
-            c2cRec.setCoin(coinCode.getCoinEntity());
-            c2cRec.setAmount(dto.getCryptoAmount());
-            c2cRec.setType(TransactionType.SEND_C2C.getValue());
-            c2cRec.setStatus(TransactionStatus.PENDING.getValue());
-            c2cRec.setProfitC2C(coinCode.getCoinEntity().getProfitC2C());
-            c2cRec.setRefCoin(refCoinCode.getCoinEntity());
+            TransactionRecordC2C record = new TransactionRecordC2C();
+            record.setTxId(txId);
+            record.setIdentity(userService.findById(userId).getIdentity());
+            record.setCoin(coinCode.getCoinEntity());
+            record.setAmount(dto.getCryptoAmount());
+            record.setType(TransactionType.SEND_EXCHANGE.getValue());
+            record.setStatus(TransactionStatus.PENDING.getValue());
+            record.setProfitC2C(coinCode.getCoinEntity().getProfitC2C());
+            record.setRefCoin(refCoinCode.getCoinEntity());
 
             BigDecimal refAmount = dto.getCryptoAmount()
                     .multiply(coinCode.getPrice())
@@ -280,9 +280,54 @@ public class TransactionService {
                     .multiply(BigDecimal.valueOf(100).subtract(coinCode.getCoinEntity().getProfitC2C()).divide(BigDecimal.valueOf(100)))
                     .setScale(refCoinCode.getCoinEntity().getScale(), BigDecimal.ROUND_DOWN).stripTrailingZeros();
 
-            c2cRec.setRefAmount(refAmount);
+            record.setRefAmount(refAmount);
 
-            c2cRep.save(c2cRec);
+            c2cRep.save(record);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void reserve(Long userId, CoinService.CoinEnum coinCode, String txId, SubmitTransactionDTO dto) {
+        try {
+            TransactionRecordReserve record = new TransactionRecordReserve();
+            record.setTxId(txId);
+            record.setIdentity(userService.findById(userId).getIdentity());
+            record.setCoin(coinCode.getCoinEntity());
+            record.setAmount(dto.getCryptoAmount());
+            record.setType(TransactionType.RESERVE.getValue());
+            record.setStatus(TransactionStatus.PENDING.getValue());
+
+            reserveRep.save(record);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void recall(Long userId, CoinService.CoinEnum coinCode, SubmitTransactionDTO dto) {
+        try {
+            BigDecimal txFee = coinCode.getCoinSettings().getTxFee();
+            BigDecimal withdrawAmount = dto.getCryptoAmount().subtract(txFee);
+            BigDecimal walletBalance = walletService.getBalance(coinCode);
+
+            if (walletBalance.compareTo(withdrawAmount.add(txFee)) >= 0) {
+                String fromAddress = coinCode.getWalletAddress();
+                String toAddress = userService.getUserCoin(userId, coinCode.name()).getAddress();
+                String hex = coinCode.sign(fromAddress, toAddress, withdrawAmount);
+                String txId = coinCode.submitTransaction(hex);
+
+                if (StringUtils.isNotBlank(txId)) {
+                    TransactionRecordReserve record = new TransactionRecordReserve();
+                    record.setTxId(txId);
+                    record.setIdentity(userService.findById(userId).getIdentity());
+                    record.setCoin(coinCode.getCoinEntity());
+                    record.setAmount(dto.getCryptoAmount());
+                    record.setType(TransactionType.RECALL.getValue());
+                    record.setStatus(TransactionStatus.PENDING.getValue());
+
+                    reserveRep.save(record);
+                }
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -293,6 +338,8 @@ public class TransactionService {
         completePendingGifts();
         completePendingWallets();
         completePendingC2C();
+        completePendingReserve();
+        completePendingRecall();
 
         chainalysisSubmitting();
         deliverReservedGifts();
@@ -327,6 +374,40 @@ public class TransactionService {
             List<TransactionRecordC2C> confirmedList = massStatusCheck(list);
 
             c2cRep.saveAll(confirmedList);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void completePendingReserve() {
+        try {
+            List<TransactionRecordReserve> list = reserveRep.findByTypeAndStatusAndHoursAgo(TransactionType.RESERVE.getValue(), TransactionStatus.PENDING.getValue(), 2, PageRequest.of(0, 50));
+            List<TransactionRecordReserve> confirmedList = massStatusCheck(list);
+
+            confirmedList.forEach(e -> {
+                UserCoin userCoin = userService.getUserCoin(e.getIdentity().getUser().getId(), e.getCoin().getCode());
+                userCoin.setReservedBalance(userCoin.getReservedBalance().add(e.getAmount()));
+
+                userCoinRep.save(userCoin);
+                reserveRep.save(e);
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void completePendingRecall() {
+        try {
+            List<TransactionRecordReserve> list = reserveRep.findByTypeAndStatusAndHoursAgo(TransactionType.RECALL.getValue(), TransactionStatus.PENDING.getValue(), 2, PageRequest.of(0, 50));
+            List<TransactionRecordReserve> confirmedList = massStatusCheck(list);
+
+            confirmedList.forEach(e -> {
+                UserCoin userCoin = userService.getUserCoin(e.getIdentity().getUser().getId(), e.getCoin().getCode());
+                userCoin.setReservedBalance(userCoin.getReservedBalance().subtract(e.getAmount()));
+
+                userCoinRep.save(userCoin);
+                reserveRep.save(e);
+            });
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -368,7 +449,7 @@ public class TransactionService {
 
     private void deliverReservedC2C() {
         try {
-            List<TransactionRecordC2C> list = c2cRep.findByTypeAndStatusAndRefTxIdNullAndHoursAgo(TransactionType.SEND_C2C.getValue(), TransactionStatus.COMPLETE.getValue(), 2, PageRequest.of(0, 10));
+            List<TransactionRecordC2C> list = c2cRep.findByTypeAndStatusAndRefTxIdNullAndHoursAgo(TransactionType.SEND_EXCHANGE.getValue(), TransactionStatus.COMPLETE.getValue(), 2, PageRequest.of(0, 10));
             List<TransactionRecordC2C> confirmedList = new ArrayList<>();
 
             list.stream().forEach(t -> {
@@ -391,7 +472,7 @@ public class TransactionService {
                             c2cRec.setIdentity(identity);
                             c2cRec.setCoin(coinCode.getCoinEntity());
                             c2cRec.setAmount(t.getRefAmount());
-                            c2cRec.setType(TransactionType.RECEIVE_C2C.getValue());
+                            c2cRec.setType(TransactionType.RECEIVE_EXCHANGE.getValue());
                             c2cRec.setStatus(TransactionStatus.PENDING.getValue());
                             c2cRec.setProfitC2C(t.getProfitC2C());
                             c2cRec.setRefCoin(t.getCoin());

@@ -13,8 +13,10 @@ public enum TransactionType {
     BUY(5),
     SELL(6),
     MOVE(7),
-    SEND_C2C(8),
-    RECEIVE_C2C(9);
+    SEND_EXCHANGE(8),
+    RECEIVE_EXCHANGE(9),
+    RESERVE(10),
+    RECALL(11);
 
     private int value;
 
@@ -45,13 +47,13 @@ public enum TransactionType {
                 if (group == TransactionGroupType.GIFT) {
                     return SEND_GIFT;
                 } else if (group == TransactionGroupType.C2C) {
-                    return SEND_C2C;
+                    return SEND_EXCHANGE;
                 }
             } else if (type == DEPOSIT) {
                 if (group == TransactionGroupType.GIFT) {
                     return RECEIVE_GIFT;
                 } else if (group == TransactionGroupType.C2C) {
-                    return RECEIVE_C2C;
+                    return RECEIVE_EXCHANGE;
                 }
             }
         }

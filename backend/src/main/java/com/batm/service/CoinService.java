@@ -114,7 +114,7 @@ public class CoinService {
             BigDecimal coinPrice = coinEnum.getPrice();
             BigDecimal coinBalance = coinEnum.getBalance(userCoin.getAddress()).setScale(scale, BigDecimal.ROUND_DOWN).stripTrailingZeros();
 
-            return new CoinBalanceDTO(userCoin.getCoin().getId(), userCoin.getCoin().getCode(), userCoin.getAddress(), coinBalance, new AmountDTO(coinPrice));
+            return new CoinBalanceDTO(userCoin.getCoin().getId(), userCoin.getCoin().getCode(), userCoin.getAddress(), coinBalance, userCoin.getReservedBalance(), new AmountDTO(coinPrice));
         });
     }
 
@@ -131,7 +131,7 @@ public class CoinService {
             Coin coin = getCoin(coinDTO.getCode());
 
             if (coin != null) {
-                UserCoin userCoin = new UserCoin(user, coin, coinDTO.getAddress());
+                UserCoin userCoin = new UserCoin(user, coin, coinDTO.getAddress(), BigDecimal.ZERO);
 
                 if (userCoins.indexOf(userCoin) < 0) {
                     newCoins.add(userCoin);

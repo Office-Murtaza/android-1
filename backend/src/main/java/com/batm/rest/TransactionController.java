@@ -131,8 +131,16 @@ public class TransactionController {
                     transactionService.saveGift(userId, coinCode, txId, transaction);
                 }
 
-                if (TransactionType.SEND_C2C.getValue() == transaction.getType()) {
+                if (TransactionType.SEND_EXCHANGE.getValue() == transaction.getType()) {
                     transactionService.exchangeC2C(userId, coinCode, txId, transaction);
+                }
+
+                if (TransactionType.RESERVE.getValue() == transaction.getType()) {
+                    transactionService.reserve(userId, coinCode, txId, transaction);
+                }
+
+                if (TransactionType.RECALL.getValue() == transaction.getType()) {
+                    transactionService.recall(userId, coinCode, transaction);
                 }
 
                 JSONObject res = new JSONObject();

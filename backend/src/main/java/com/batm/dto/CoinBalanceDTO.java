@@ -18,5 +18,6 @@ public class CoinBalanceDTO {
     private String code;
     private String address;
     private BigDecimal balance;
+    private BigDecimal reservedBalance;
     private AmountDTO price;
 }
