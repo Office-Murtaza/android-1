@@ -26,6 +26,11 @@ extension MDCButton {
   static var max: MDCButton {
     let button = MDCButton.text
     button.setTitle(localize(L.Shared.Button.max), for: .normal)
+    
+    button.snp.makeConstraints {
+      $0.width.equalTo(48)
+    }
+    
     return button
   }
   

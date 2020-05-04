@@ -3,7 +3,7 @@ import RxSwift
 import RxCocoa
 import MaterialComponents
 
-final class CoinWithdrawFormView: UIView {
+final class CoinWithdrawFormView: UIView, HasDisposeBag {
   
   let stackView: UIStackView = {
     let stackView = UIStackView()
@@ -11,27 +11,21 @@ final class CoinWithdrawFormView: UIView {
     return stackView
   }()
   
-  let addressButtonsStackView: UIStackView = {
-    let stackView = UIStackView()
-    stackView.axis = .horizontal
-    return stackView
-  }()
+  let addressButtonsStackView = UIStackView()
   
   let coinMaxButton = MDCButton.max
   let currencyMaxButton = MDCButton.max
   let pasteButton = MDCButton.paste
   let scanButton = MDCButton.scan
   
-  let addressTextField = MDCTextField.default
+  let addressTextField = MDCOutlinedTextArea.address
   let coinAmountTextField = MDCTextField.amount
   let currencyAmountTextField = MDCTextField.amount
   
-  let addressTextFieldController: MDCTextInputControllerOutlined
-  let coinAmountTextFieldController: MDCTextInputControllerOutlined
-  let currencyAmountTextFieldController: MDCTextInputControllerOutlined
+  let coinAmountTextFieldController: ThemedTextInputControllerOutlined
+  let currencyAmountTextFieldController: ThemedTextInputControllerOutlined
   
   override init(frame: CGRect) {
-    addressTextFieldController = ThemedTextInputControllerOutlined(textInput: addressTextField)
     coinAmountTextFieldController = ThemedTextInputControllerOutlined(textInput: coinAmountTextField)
     currencyAmountTextFieldController = ThemedTextInputControllerOutlined(textInput: currencyAmountTextField)
     
@@ -39,6 +33,7 @@ final class CoinWithdrawFormView: UIView {
     
     setupUI()
     setupLayout()
+    setupBindings()
   }
   
   required init?(coder aDecoder: NSCoder) {
@@ -48,9 +43,9 @@ final class CoinWithdrawFormView: UIView {
   private func setupUI() {
     translatesAutoresizingMaskIntoConstraints = false
     
-    addSubview(stackView)
-    stackView.addArrangedSubviews(addressTextField,
-                                  coinAmountTextField,
+    addSubviews(addressTextField,
+                stackView)
+    stackView.addArrangedSubviews(coinAmountTextField,
                                   currencyAmountTextField)
     
     addressButtonsStackView.addArrangedSubviews(pasteButton,
@@ -60,15 +55,33 @@ final class CoinWithdrawFormView: UIView {
     coinAmountTextField.setRightView(coinMaxButton)
     currencyAmountTextField.setRightView(currencyMaxButton)
     
-    addressTextFieldController.placeholderText = localize(L.CoinWithdraw.Form.RecipientAddress.placeholder)
+    addressTextField.label.text = localize(L.CoinWithdraw.Form.RecipientAddress.placeholder)
     coinAmountTextFieldController.placeholderText = localize(L.CoinWithdraw.Form.CoinAmount.placeholder)
     currencyAmountTextFieldController.placeholderText = localize(L.CoinWithdraw.Form.CurrencyAmount.placeholder)
   }
   
   private func setupLayout() {
-    stackView.snp.makeConstraints {
-      $0.edges.equalToSuperview()
+    addressTextField.snp.makeConstraints {
+      $0.top.left.right.equalToSuperview()
     }
+    stackView.snp.makeConstraints {
+      $0.top.equalTo(addressTextField.snp.bottom).offset(20)
+      $0.left.right.bottom.equalToSuperview()
+    }
+  }
+  
+  private func setupBindings() {
+    addressTextField.rx.text
+      .asDriver()
+      .filterNil()
+      .filterEmpty()
+      .distinctUntilChanged()
+      .drive(onNext: { [addressTextField] _ in
+        if !addressTextField.textView.isFirstResponder {
+          addressTextField.textView.becomeFirstResponder()
+        }
+      })
+      .disposed(by: disposeBag)
   }
   
   func configure(with coinCode: String) {
