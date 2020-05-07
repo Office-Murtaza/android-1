@@ -1,9 +1,6 @@
 package com.batm.service;
 
-import com.batm.dto.GiftAddressDTO;
-import com.batm.dto.PhoneDTO;
-import com.batm.dto.UserVerificationDTO;
-import com.batm.dto.VerificationStateDTO;
+import com.batm.dto.*;
 import com.batm.entity.*;
 import com.batm.model.VerificationStatus;
 import com.batm.repository.*;
@@ -542,6 +539,16 @@ public class UserService {
         }
     }
 
+    public boolean updateLocation(Long userId, LocationDTO dto) {
+        User user = findById(userId);
+        user.setLatitude(dto.getLatitude());
+        user.setLongitude(dto.getLongitude());
+        
+        userRep.save(user);
+        
+        return true;
+    }
+    
     private void addTransactionLimit(IdentityKycReview review, BigDecimal newTxLimit) {
         Limit txLimit = new Limit();
         txLimit.setAmount(newTxLimit);

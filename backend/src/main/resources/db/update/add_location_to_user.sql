@@ -1,0 +1,2 @@
+ALTER TABLE w_user ADD latitude DECIMAL(20, 10) DEFAULT NULL AFTER role;
+ALTER TABLE w_user ADD longitude DECIMAL(20, 10) DEFAULT NULL AFTER latitude;

@@ -1,5 +1,6 @@
 package com.batm.entity;
 
+import java.math.BigDecimal;
 import java.util.List;
 import javax.persistence.*;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
@@ -19,6 +20,8 @@ public class User extends BaseEntity {
     private String phone;
     private String password;
     private String role;
+    private BigDecimal latitude;
+    private BigDecimal longitude;
 
     @JsonManagedReference
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)

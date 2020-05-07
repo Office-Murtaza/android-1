@@ -28,6 +28,13 @@ public class Response {
         return new Response(res, null);
     }
 
+    public static Response ok(String key, Object value) {
+        JSONObject res = new JSONObject();
+        res.put(key, value);
+
+        return new Response(res, null);
+    }
+
     public static Response error(Error error) {
         return new Response(null, error);
     }

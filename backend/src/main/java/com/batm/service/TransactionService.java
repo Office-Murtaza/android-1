@@ -39,6 +39,9 @@ public class TransactionService {
     private TransactionRecordReserveRep reserveRep;
 
     @Autowired
+    private TradeRep tradeRep;
+
+    @Autowired
     private UserCoinRep userCoinRep;
 
     @Autowired
@@ -260,7 +263,7 @@ public class TransactionService {
         return dto;
     }
 
-    public void exchangeC2C(Long userId, CoinService.CoinEnum coinCode, String txId, SubmitTransactionDTO dto) {
+    public void exchange(Long userId, CoinService.CoinEnum coinCode, String txId, SubmitTransactionDTO dto) {
         try {
             CoinService.CoinEnum refCoinCode = CoinService.CoinEnum.valueOf(dto.getRefCoin());
 
@@ -304,7 +307,7 @@ public class TransactionService {
         }
     }
 
-    public void recall(Long userId, CoinService.CoinEnum coinCode, SubmitTransactionDTO dto) {
+    public String recall(Long userId, CoinService.CoinEnum coinCode, SubmitTransactionDTO dto) {
         try {
             BigDecimal txFee = coinCode.getCoinSettings().getTxFee();
             BigDecimal withdrawAmount = dto.getCryptoAmount().subtract(txFee);
@@ -326,18 +329,88 @@ public class TransactionService {
                     record.setStatus(TransactionStatus.PENDING.getValue());
 
                     reserveRep.save(record);
+
+                    return txId;
                 }
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        return null;
+    }
+
+    public Long postTrade(Long userId, CoinService.CoinEnum coinCode, TradeDTO dto) {
+        try {
+            Trade trade;
+
+            if (dto.getId() == null) {
+                trade = new Trade();
+                trade.setIdentity(userService.findById(userId).getIdentity());
+                trade.setCoin(coinCode.getCoinEntity());
+            } else {
+                trade = tradeRep.findById(dto.getId()).get();
+            }
+
+            trade.setType(dto.getType());
+            trade.setPaymentMethod(dto.getPaymentMethod());
+            trade.setMargin(dto.getMargin());
+            trade.setMinLimit(dto.getMinLimit());
+            trade.setMaxLimit(dto.getMaxLimit());
+            trade.setTerms(dto.getTerms());
+
+            return tradeRep.save(trade).getId();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    public void deleteTrade(Long id) {
+        tradeRep.deleteById(id);
+    }
+
+    public TradeListDTO getTrades(Long userId, CoinService.CoinEnum coinCode, Integer type, Integer index) {
+        if (type == null) {
+            TradeListDTO dto = new TradeListDTO();
+            dto.setBuyTotal(tradeRep.countTradeByType(TradeType.BUY.getValue()));
+            List<Trade> buyTrades = tradeRep.findByTypeOrderByMarginAsc(type, PageRequest.of(index % 10, 10));
+            dto.setBuyTrades(getTradeDetailsList(buyTrades, coinCode, index));
+
+            dto.setSellTotal(tradeRep.countTradeByType(TradeType.SELL.getValue()));
+            List<Trade> sellTrades = tradeRep.findByTypeOrderByMarginDesc(type, PageRequest.of(index % 10, 10));
+            dto.setSellTrades(getTradeDetailsList(sellTrades, coinCode, index));
+
+            return dto;
+        } else {
+            if (type == TradeType.BUY.getValue()) {
+                List<Trade> trades = tradeRep.findByTypeOrderByMarginAsc(type, PageRequest.of(index % 10, 10));
+
+                TradeListDTO dto = new TradeListDTO();
+                dto.setBuyTotal(tradeRep.countTradeByType(type));
+                dto.setBuyTrades(getTradeDetailsList(trades, coinCode, index));
+
+                return dto;
+            } else if (type == TradeType.SELL.getValue()) {
+                List<Trade> trades = tradeRep.findByTypeOrderByMarginDesc(type, PageRequest.of(index % 10, 10));
+
+                TradeListDTO dto = new TradeListDTO();
+                dto.setSellTotal(tradeRep.countTradeByType(type));
+                dto.setSellTrades(getTradeDetailsList(trades, coinCode, index));
+
+                return dto;
+            }
+        }
+
+        return null;
     }
 
     @Scheduled(fixedDelay = 300_000) //5 min
     public void processCronTasks() {
         completePendingGifts();
         completePendingWallets();
-        completePendingC2C();
+        completePendingExchange();
         completePendingReserve();
         completePendingRecall();
 
@@ -368,7 +441,7 @@ public class TransactionService {
         }
     }
 
-    private void completePendingC2C() {
+    private void completePendingExchange() {
         try {
             List<TransactionRecordC2C> list = c2cRep.findByStatusAndHoursAgo(TransactionStatus.PENDING.getValue(), 2, PageRequest.of(0, 50));
             List<TransactionRecordC2C> confirmedList = massStatusCheck(list);
@@ -572,5 +645,29 @@ public class TransactionService {
         walletTx.setTransactionRecordGift(gift);
 
         return walletTx;
+    }
+
+    private List<TradeDetailsDTO> getTradeDetailsList(List<Trade> trades, CoinService.CoinEnum coinCode, Integer index) {
+        List<TradeDetailsDTO> list = new LinkedList<>();
+
+        for (int i = 0; i < trades.size(); i++) {
+            Trade trade = trades.get(i);
+
+            TradeDetailsDTO details = new TradeDetailsDTO();
+            details.setId(trade.getId());
+            details.setIndex(index + i);
+            details.setPublicId(trade.getIdentity().getExternalId());
+            details.setTradeCount(50);
+            details.setRate(100);
+            details.setDistance(2);
+            details.setPrice(coinCode.getPrice().multiply(trade.getMargin().divide(new BigDecimal(100)).add(BigDecimal.ONE)));
+            details.setPaymentMethod(trade.getPaymentMethod());
+            details.setMinLimit(trade.getMinLimit());
+            details.setMaxLimit(trade.getMaxLimit());
+
+            list.add(details);
+        }
+
+        return list;
     }
 }
