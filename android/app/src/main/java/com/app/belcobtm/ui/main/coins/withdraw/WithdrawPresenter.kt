@@ -2,13 +2,10 @@ package com.app.belcobtm.ui.main.coins.withdraw
 
 import com.app.belcobtm.R
 import com.app.belcobtm.api.data_manager.WithdrawDataManager
-import com.app.belcobtm.db.DbCryptoCoinModel
-import com.app.belcobtm.db.mapToDataItem
 import com.app.belcobtm.domain.Failure
 import com.app.belcobtm.domain.wallet.interactor.CreateTransactionUseCase
 import com.app.belcobtm.domain.wallet.interactor.WithdrawUseCase
 import com.app.belcobtm.mvp.BaseMvpDIPresenterImpl
-import io.realm.Realm
 import org.koin.core.KoinComponent
 import org.koin.core.inject
 
@@ -20,9 +17,6 @@ class WithdrawPresenter : BaseMvpDIPresenterImpl<WithdrawContract.View, Withdraw
     private var coinCode: String? = null
     private var coinAmount: Double? = null
 
-    private val realm: Realm = Realm.getDefaultInstance()
-    private val dbCryptoCoinModel: DbCryptoCoinModel = DbCryptoCoinModel()
-
     override fun injectDependency() = presenterComponent.inject(this)
 
     override fun getCoinTransactionHash(
@@ -30,26 +24,23 @@ class WithdrawPresenter : BaseMvpDIPresenterImpl<WithdrawContract.View, Withdraw
         toAddress: String,
         coinAmount: Double
     ) {
-        dbCryptoCoinModel.getCryptoCoin(realm, coinId)?.let { fromCoinDb ->
-            this.coinCode = coinId
-            this.coinAmount = coinAmount
-            val coinDataItem = fromCoinDb.mapToDataItem()
-            mView?.showProgress(true)
-            createTransactionUseCase.invoke(CreateTransactionUseCase.Params(coinDataItem, coinAmount)) { either ->
-                either.either({
-                    when (it) {
-                        is Failure.TokenError -> mView?.onRefreshTokenFailed()
-                        is Failure.MessageError -> mView?.showError(it.message)
-                        is Failure.NetworkConnection -> mView?.showError(R.string.error_internet_unavailable)
-                        else -> mView?.showError(R.string.error_something_went_wrong)
-                    }
-                }, { hash ->
-                    mTransactionHash = hash
-                    mView?.showProgress(false)
-                    mView?.openSmsCodeDialog()
-                })
-            }
-        } ?: mView?.showError(R.string.error_please_try_again)
+        this.coinCode = coinId
+        this.coinAmount = coinAmount
+        mView?.showProgress(true)
+        createTransactionUseCase.invoke(CreateTransactionUseCase.Params(coinId, coinAmount)) { either ->
+            either.either({
+                when (it) {
+                    is Failure.TokenError -> mView?.onRefreshTokenFailed()
+                    is Failure.MessageError -> mView?.showError(it.message)
+                    is Failure.NetworkConnection -> mView?.showError(R.string.error_internet_unavailable)
+                    else -> mView?.showError(R.string.error_something_went_wrong)
+                }
+            }, { hash ->
+                mTransactionHash = hash
+                mView?.showProgress(false)
+                mView?.openSmsCodeDialog()
+            })
+        }
     }
 
     override fun verifySmsCode(code: String) {

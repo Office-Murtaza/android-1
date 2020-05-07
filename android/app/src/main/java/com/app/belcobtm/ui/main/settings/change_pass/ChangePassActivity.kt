@@ -9,12 +9,12 @@ import android.view.MenuItem
 import android.view.inputmethod.EditorInfo
 import android.widget.TextView
 import com.app.belcobtm.mvp.BaseMvpActivity
+import com.app.belcobtm.presentation.core.helper.AlertHelper
 import com.app.belcobtm.ui.main.coins.settings.change_pass.ChangePassContract
 import kotlinx.android.synthetic.main.activity_change_pass.*
 import kotlinx.android.synthetic.main.activity_check_pass.*
 import kotlinx.android.synthetic.main.activity_check_pass.cancel
 import kotlinx.android.synthetic.main.activity_unlink.toolbar
-import org.jetbrains.anko.toast
 
 
 class ChangePassActivity : BaseMvpActivity<ChangePassContract.View, ChangePassContract.Presenter>(),
@@ -123,12 +123,12 @@ class ChangePassActivity : BaseMvpActivity<ChangePassContract.View, ChangePassCo
     }
 
     override fun onPassChanged() {
-        toast(getString(com.app.belcobtm.R.string.password_changed))
+        AlertHelper.showToastShort(this, com.app.belcobtm.R.string.password_changed)
         finish()
     }
 
     override fun onPinChanged() {
-        toast(getString(com.app.belcobtm.R.string.pin_changed))
+        AlertHelper.showToastShort(this, com.app.belcobtm.R.string.pin_changed)
         finish()
     }
 }

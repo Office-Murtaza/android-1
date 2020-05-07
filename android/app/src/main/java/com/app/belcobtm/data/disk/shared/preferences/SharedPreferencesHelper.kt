@@ -1,9 +1,7 @@
-package com.app.belcobtm.data.shared.preferences
+package com.app.belcobtm.data.disk.shared.preferences
 
 import android.content.SharedPreferences
-import com.app.belcobtm.api.model.response.GetCoinsFeeOldResponse
-import com.app.belcobtm.domain.wallet.CoinFeeDataItem
-import com.google.gson.Gson
+import com.app.belcobtm.domain.wallet.item.CoinFeeDataItem
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.Types

@@ -9,8 +9,8 @@ class SendGiftUseCase(private val repository: WalletRepository) : UseCase<Unit, 
     override suspend fun run(params: Params): Either<Failure, Unit> = repository.sendGift(
         smsCode = params.smsCode,
         hash = params.hash,
-        coinFrom = params.coinFrom,
-        coinFromAmount = params.coinFromAmount,
+        fromCoin = params.coinFrom,
+        fromCoinAmount = params.coinFromAmount,
         giftId = params.giftId,
         phone = params.phone,
         message = params.message

@@ -3,30 +3,40 @@ package com.app.belcobtm.presentation.features.wallet.add
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.app.belcobtm.R
-import com.app.belcobtm.db.DbCryptoCoinModel
+import com.app.belcobtm.domain.wallet.item.CoinDataItem
+import com.app.belcobtm.domain.wallet.interactor.GetCoinListUseCase
+import com.app.belcobtm.domain.wallet.interactor.UpdateCoinUseCase
 import com.app.belcobtm.presentation.features.wallet.add.adapter.AddWalletCoinItem
-import io.realm.Realm
 
-class AddWalletViewModel : ViewModel() {
+class AddWalletViewModel(
+    coinListUseCase: GetCoinListUseCase,
+    private val updateCoinUseCase: UpdateCoinUseCase
+) : ViewModel() {
     val coinListLiveData: MutableLiveData<List<AddWalletCoinItem>> = MutableLiveData()
-    private val realm = Realm.getDefaultInstance()
-    private val dbCoinModel = DbCryptoCoinModel()
-    private val dbCoinList = dbCoinModel.getAllCryptoCoin(realm)
+    private val coinDataList: MutableList<CoinDataItem> = mutableListOf()
 
     init {
-        coinListLiveData.value = dbCoinList.map {
-            AddWalletCoinItem(
-                getCoinResIconByType(it.coinType),
-                getCoinResNameByType(it.coinType),
-                it.visible
+        coinListUseCase.invoke(Unit) { either ->
+            either.either(
+                { /* empty */ },
+                { result ->
+                    coinDataList.addAll(result)
+                    coinListLiveData.value = coinDataList.map {
+                        AddWalletCoinItem(
+                            getCoinResIconByType(it.type.name),
+                            getCoinResNameByType(it.type.name),
+                            it.isEnabled
+                        )
+                    }
+                }
             )
         }
     }
 
     fun changeCoinState(position: Int, isChecked: Boolean) {
-        val dbCoin = dbCoinList[position]
-        dbCoin.visible = isChecked
-        dbCoinModel.editCryptoCoin(realm, dbCoin)
+        val coinDataItem = coinDataList[position]
+        coinDataItem.isEnabled = isChecked
+        updateCoinUseCase.invoke(UpdateCoinUseCase.Params(coinDataItem)) {}
     }
 
     private fun getCoinResIconByType(coinType: String) = when (coinType) {

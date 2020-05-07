@@ -5,7 +5,7 @@ import com.app.belcobtm.data.rest.wallet.response.hash.BinanceBlockResponse
 import com.app.belcobtm.data.rest.wallet.response.hash.TronRawDataResponse
 import com.app.belcobtm.data.rest.wallet.response.hash.UtxoItemResponse
 import com.app.belcobtm.data.rest.wallet.response.mapToDataItem
-import com.app.belcobtm.data.shared.preferences.SharedPreferencesHelper
+import com.app.belcobtm.data.disk.shared.preferences.SharedPreferencesHelper
 import com.app.belcobtm.domain.Either
 import com.app.belcobtm.domain.Failure
 import com.app.belcobtm.domain.wallet.item.SellLimitsDataItem
@@ -120,13 +120,7 @@ class WalletApiService(
             requestBody
         ).await()
 
-        request.body()?.let {
-            if (it.address.isNullOrBlank()) {
-                Either.Left(Failure.MessageError("The transaction can not be created"))
-            } else {
-                Either.Right(it.mapToDataItem())
-            }
-        } ?: Either.Left(Failure.ServerError())
+        request.body()?.let { Either.Right(it.mapToDataItem()) } ?: Either.Left(Failure.ServerError())
     } catch (failure: Failure) {
         failure.printStackTrace()
         Either.Left(failure)

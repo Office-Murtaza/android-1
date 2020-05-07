@@ -4,7 +4,7 @@ import android.preference.PreferenceManager
 import com.app.belcobtm.App
 import com.app.belcobtm.api.data_manager.CoinsDataManager
 import com.app.belcobtm.api.model.response.*
-import com.app.belcobtm.data.shared.preferences.SharedPreferencesHelper
+import com.app.belcobtm.data.disk.shared.preferences.SharedPreferencesHelper
 import com.app.belcobtm.mvp.BaseMvpDIPresenterImpl
 import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable

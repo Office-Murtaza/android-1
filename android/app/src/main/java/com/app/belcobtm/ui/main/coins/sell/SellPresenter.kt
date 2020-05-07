@@ -3,16 +3,12 @@ package com.app.belcobtm.ui.main.coins.sell
 import com.app.belcobtm.R
 import com.app.belcobtm.api.data_manager.WithdrawDataManager
 import com.app.belcobtm.api.model.response.CoinModel
-import com.app.belcobtm.db.DbCryptoCoin
-import com.app.belcobtm.db.DbCryptoCoinModel
-import com.app.belcobtm.db.mapToDataItem
 import com.app.belcobtm.domain.Failure
 import com.app.belcobtm.domain.wallet.interactor.SellGetLimitsUseCase
 import com.app.belcobtm.domain.wallet.interactor.SellPreSubmitUseCase
 import com.app.belcobtm.domain.wallet.interactor.SellUseCase
 import com.app.belcobtm.domain.wallet.interactor.SendSmsToDeviceUseCase
 import com.app.belcobtm.mvp.BaseMvpDIPresenterImpl
-import io.realm.Realm
 import org.koin.core.KoinComponent
 import org.koin.core.inject
 
@@ -32,9 +28,6 @@ class SellPresenter : BaseMvpDIPresenterImpl<SellContract.View, WithdrawDataMana
     private var isAnotherAddress: Boolean = false
 
     private var mCoin: CoinModel? = null
-    private val realm = Realm.getDefaultInstance()
-    private val coinModel = DbCryptoCoinModel()
-    private var mCoinDbModel: DbCryptoCoin? = null
 
     override fun injectDependency() = presenterComponent.inject(this)
 
@@ -81,6 +74,10 @@ class SellPresenter : BaseMvpDIPresenterImpl<SellContract.View, WithdrawDataMana
                     addressDestination = response.address
                     cryptoResultAmount = response.fromCoinAmount
                     when {
+                        response.address.isBlank() -> {
+                            mView?.showProgress(false)
+                            mView?.showErrorAndHideDialogs(R.string.error_transaction_cannot_be_created)
+                        }
                         !isAnotherAddress && cryptoResultAmount < balance -> sellTransaction()
                         !isAnotherAddress && cryptoResultAmount >= balance -> errorResponse(Failure.MessageError("coin stock value has been changed"))
                         else -> {
@@ -95,22 +92,17 @@ class SellPresenter : BaseMvpDIPresenterImpl<SellContract.View, WithdrawDataMana
 
     override fun bindData(mCoin: CoinModel?) {
         this.mCoin = mCoin
-        mCoinDbModel = coinModel.getCryptoCoin(realm, mCoin?.coinId ?: "")
     }
 
-    override fun getDetails() {
-        mCoinDbModel?.coinType?.let { coinFrom ->
-            limitsUseCase.invoke(SellGetLimitsUseCase.Params(coinFrom)) { either ->
-                either.either(
-                    { errorResponse(it) },
-                    { mView?.showLimits(it) }
-                )
-            }
-        }
+    override fun getDetails() = limitsUseCase.invoke(SellGetLimitsUseCase.Params(mCoin?.coinId ?: "")) { either ->
+        either.either(
+            { errorResponse(it) },
+            { mView?.showLimits(it) }
+        )
     }
 
-    private fun sellTransaction() = mCoinDbModel?.mapToDataItem()?.let { dataItem ->
-        sellUseCase.invoke(SellUseCase.Params(dataItem, cryptoResultAmount)) { either ->
+    private fun sellTransaction() =
+        sellUseCase.invoke(SellUseCase.Params(mCoin?.coinId ?: "", cryptoResultAmount)) { either ->
             either.either(
                 {
                     mView?.showProgress(false)
@@ -122,7 +114,6 @@ class SellPresenter : BaseMvpDIPresenterImpl<SellContract.View, WithdrawDataMana
                 }
             )
         }
-    }
 
     private fun errorResponse(throwable: Throwable) {
         mView?.showProgress(false)

@@ -26,5 +26,5 @@ val viewModelModule = module {
         val feeMap = (get() as GetCoinFeeMapUseCase).getCoinFeeMap()[intentCoinItem.coinCode]
         ExchangeCoinToCoinViewModel(feeMap!!, intentCoinItem, intentCoinItemArrayList, get(), get())
     }
-    viewModel { AddWalletViewModel() }
+    viewModel { AddWalletViewModel(get(), get()) }
 }

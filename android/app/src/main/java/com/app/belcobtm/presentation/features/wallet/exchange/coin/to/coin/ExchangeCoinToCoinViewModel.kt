@@ -2,16 +2,12 @@ package com.app.belcobtm.presentation.features.wallet.exchange.coin.to.coin
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.app.belcobtm.db.DbCryptoCoinModel
-import com.app.belcobtm.db.mapToDataItem
-import com.app.belcobtm.domain.Failure
-import com.app.belcobtm.domain.wallet.CoinFeeDataItem
+import com.app.belcobtm.domain.wallet.item.CoinFeeDataItem
 import com.app.belcobtm.domain.wallet.interactor.CoinToCoinExchangeUseCase
 import com.app.belcobtm.domain.wallet.interactor.CreateTransactionUseCase
 import com.app.belcobtm.presentation.core.extensions.code
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
 import com.app.belcobtm.presentation.features.wallet.IntentCoinItem
-import io.realm.Realm
 import wallet.core.jni.CoinType
 
 class ExchangeCoinToCoinViewModel(
@@ -25,27 +21,18 @@ class ExchangeCoinToCoinViewModel(
     val exchangeLiveData: MutableLiveData<LoadingData<String>> = MutableLiveData()
     var toCoinItem: IntentCoinItem? = coinItemList.find { it.coinCode == CoinType.BITCOIN.code() }
 
-    private val realm: Realm = Realm.getDefaultInstance()
-    private val dbCryptoCoinModel: DbCryptoCoinModel = DbCryptoCoinModel()
-
     fun createTransaction(fromCoinAmount: Double) {
-        val fromCoinDb = dbCryptoCoinModel.getCryptoCoin(realm, fromCoinItem.coinCode)
-        if (fromCoinDb != null) {
-            val coinDataItem = fromCoinDb.mapToDataItem()
-            exchangeLiveData.value = LoadingData.Loading()
-            createTransactionUseCase.invoke(
-                CreateTransactionUseCase.Params(coinDataItem, fromCoinAmount)
-            ) { either ->
-                either.either(
-                    { exchangeLiveData.value = LoadingData.Error(it) },
-                    { hash ->
-                        transactionHash = hash
-                        exchangeLiveData.value = LoadingData.Success(TRANSACTION_CREATED)
-                    }
-                )
-            }
-        } else {
-            exchangeLiveData.value = LoadingData.Error(Failure.MessageError("Please try again"))
+        exchangeLiveData.value = LoadingData.Loading()
+        createTransactionUseCase.invoke(
+            CreateTransactionUseCase.Params(fromCoinItem.coinCode, fromCoinAmount)
+        ) { either ->
+            either.either(
+                { exchangeLiveData.value = LoadingData.Error(it) },
+                { hash ->
+                    transactionHash = hash
+                    exchangeLiveData.value = LoadingData.Success(TRANSACTION_CREATED)
+                }
+            )
         }
     }
 

@@ -3,17 +3,25 @@ package com.app.belcobtm.ui.auth.recover_seed
 import android.preference.PreferenceManager
 import com.app.belcobtm.App
 import com.app.belcobtm.api.data_manager.AuthDataManager
-import com.app.belcobtm.data.shared.preferences.SharedPreferencesHelper
-import com.app.belcobtm.db.DbCryptoCoin
-import com.app.belcobtm.db.DbCryptoCoinModel
+import com.app.belcobtm.data.disk.database.CoinDao
+import com.app.belcobtm.data.disk.database.CoinEntity
+import com.app.belcobtm.data.disk.database.mapToDataItem
+import com.app.belcobtm.data.disk.shared.preferences.SharedPreferencesHelper
+import com.app.belcobtm.domain.wallet.LocalCoinType
+import com.app.belcobtm.domain.wallet.item.CoinDataItem
 import com.app.belcobtm.mvp.BaseMvpDIPresenterImpl
-import io.realm.Realm
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import org.koin.core.KoinComponent
+import org.koin.core.inject
 import org.web3j.utils.Numeric
 import wallet.core.jni.*
 
 
 class RecoverSeedPresenter : BaseMvpDIPresenterImpl<RecoverSeedContract.View, AuthDataManager>(),
-    RecoverSeedContract.Presenter {
+    RecoverSeedContract.Presenter, KoinComponent {
+    private val daoCoin: CoinDao by inject()
 
     //TODO need migrate to dependency koin after refactoring
     private val prefsHelper: SharedPreferencesHelper by lazy {
@@ -27,20 +35,23 @@ class RecoverSeedPresenter : BaseMvpDIPresenterImpl<RecoverSeedContract.View, Au
 
     override fun verifySeed(seed: String) {
         mView?.showProgress(true)
-        val allCoins = createWallet(seed)
-        val userId = prefsHelper.userId.toString()
-        mDataManager.verifyCoins(userId, allCoins)
-            .subscribe({ response ->
-                mView?.showProgress(false)
-                mView?.onSeedVerifyed()
-            }
-                , { error: Throwable ->
+        CoroutineScope(Dispatchers.IO).launch {
+            val allCoins = createWallet(seed)
+
+            val userId = prefsHelper.userId.toString()
+            mDataManager.verifyCoins(userId, allCoins)
+                .subscribe({ response ->
                     mView?.showProgress(false)
-                    mView?.showError(error.message)
-                })
+                    mView?.onSeedVerifyed()
+                }
+                    , { error: Throwable ->
+                        mView?.showProgress(false)
+                        mView?.showError(error.message)
+                    })
+        }
     }
 
-    private fun createWallet(seed: String): ArrayList<DbCryptoCoin> {
+    private suspend fun createWallet(seed: String): List<CoinDataItem> {
         val bitcoin = CoinType.BITCOIN
         val bitcoinCash = CoinType.BITCOINCASH
         val etherum = CoinType.ETHEREUM
@@ -84,20 +95,18 @@ class RecoverSeedPresenter : BaseMvpDIPresenterImpl<RecoverSeedContract.View, Au
         val tronPrivateKey = wallet.getKeyForCoin(tron)
         val tronPrivateKeyStr = Numeric.toHexStringNoPrefix(tronPrivateKey.data())
         val tronAddress = tron.deriveAddress(tronPrivateKey)
-
+        val entityList = listOf(
+            CoinEntity(LocalCoinType.BTC, bitcoinAddress, bitcoinPrivateKeyStr),
+            CoinEntity(LocalCoinType.BCH, bitcoinChAddress, bitcoinChPrivateKeyStr),
+            CoinEntity(LocalCoinType.ETH, etherumAddress, etherumPrivateKeyStr),
+            CoinEntity(LocalCoinType.LTC, litecoinAddress, litecoinPrivateKeyStr),
+            CoinEntity(LocalCoinType.BNB, binanceAddress, binancePrivateKeyStr),
+            CoinEntity(LocalCoinType.TRX, tronAddress, tronPrivateKeyStr),
+            CoinEntity(LocalCoinType.XRP, xrpAddress, xrpPrivateKeyStr)
+        )
         prefsHelper.apiSeed = seed
-
-        val realm = Realm.getDefaultInstance()
-        val coinModel = DbCryptoCoinModel()
-
-        coinModel.addCoin(realm, DbCryptoCoin("BTC", bitcoin.value(), bitcoinAddress, bitcoinPrivateKeyStr))
-        coinModel.addCoin(realm, DbCryptoCoin("BCH", bitcoinCash.value(), bitcoinChAddress, bitcoinChPrivateKeyStr))
-        coinModel.addCoin(realm, DbCryptoCoin("ETH", etherum.value(), etherumAddress, etherumPrivateKeyStr))
-        coinModel.addCoin(realm, DbCryptoCoin("LTC", litecoin.value(), litecoinAddress, litecoinPrivateKeyStr))
-        coinModel.addCoin(realm, DbCryptoCoin("BNB", binance.value(), binanceAddress, binancePrivateKeyStr))
-        coinModel.addCoin(realm, DbCryptoCoin("TRX", tron.value(), tronAddress, tronPrivateKeyStr))
-        coinModel.addCoin(realm, DbCryptoCoin("XRP", xrp.value(), xrpAddress, xrpPrivateKeyStr))
-
-        return coinModel.getAllCryptoCoin(realm)
+        daoCoin.toString()
+        daoCoin.insertItemList(entityList)
+        return entityList.map { it.mapToDataItem() }
     }
 }

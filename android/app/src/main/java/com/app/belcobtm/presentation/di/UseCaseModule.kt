@@ -32,4 +32,6 @@ val useCaseModule = module {
     single { VerifySmsCodeUseCase(get()) }
     single { SellPreSubmitUseCase(get()) }
     single { SellGetLimitsUseCase(get()) }
+    single { GetCoinListUseCase(get()) }
+    single { UpdateCoinUseCase(get()) }
 }

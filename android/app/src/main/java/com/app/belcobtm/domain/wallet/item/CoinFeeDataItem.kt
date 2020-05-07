@@ -1,4 +1,4 @@
-package com.app.belcobtm.domain.wallet
+package com.app.belcobtm.domain.wallet.item
 
 class CoinFeeDataItem(
     val txFee: Double,

@@ -35,6 +35,7 @@ class AddWalletCoinsAdapter(private val listener: (position: Int, isChecked: Boo
     fun setItemList(itemList: List<AddWalletCoinItem>) {
         this.itemList.clear()
         this.itemList.addAll(itemList)
+        notifyDataSetChanged()
     }
 
     class Holder(itemView: View) : RecyclerView.ViewHolder(itemView)

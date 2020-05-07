@@ -15,11 +15,11 @@ import com.app.belcobtm.App
 import com.app.belcobtm.R
 import com.app.belcobtm.domain.Failure
 import com.app.belcobtm.presentation.core.extensions.onTextChanged
+import com.app.belcobtm.presentation.core.helper.AlertHelper
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
 import com.app.belcobtm.presentation.core.ui.BaseActivity
 import com.app.belcobtm.presentation.features.authorization.welcome.WelcomeActivity
 import kotlinx.android.synthetic.main.activity_pin.*
-import org.jetbrains.anko.toast
 import org.koin.android.viewmodel.ext.android.viewModel
 
 
@@ -156,9 +156,9 @@ class PinActivity : BaseActivity() {
         mPin1 == codeView.text.toString() -> {//second create/change pin screen. pin matches
             viewModel.setPinCode(mPin1 ?: "")
             if (mMode == Mode.MODE_CHANGE_PIN) {
-                toast(R.string.code_changed)
+                AlertHelper.showToastShort(this, R.string.code_changed)
             } else if (mMode == Mode.MODE_CREATE_PIN) {
-                toast(R.string.code_created)
+                AlertHelper.showToastShort(this, R.string.code_created)
             }
             vibrate(300)
             setResult(Activity.RESULT_OK)

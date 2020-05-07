@@ -4,7 +4,7 @@ import android.preference.PreferenceManager
 import com.app.belcobtm.App
 import com.app.belcobtm.R
 import com.app.belcobtm.api.data_manager.SettingsDataManager
-import com.app.belcobtm.data.shared.preferences.SharedPreferencesHelper
+import com.app.belcobtm.data.disk.shared.preferences.SharedPreferencesHelper
 import com.app.belcobtm.mvp.BaseMvpDIPresenterImpl
 import com.app.belcobtm.ui.main.coins.settings.change_pass.ChangePassContract
 

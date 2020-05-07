@@ -2,18 +2,24 @@ package com.app.belcobtm.domain.wallet
 
 import com.app.belcobtm.domain.Either
 import com.app.belcobtm.domain.Failure
+import com.app.belcobtm.domain.wallet.item.CoinDataItem
+import com.app.belcobtm.domain.wallet.item.CoinFeeDataItem
 import com.app.belcobtm.domain.wallet.item.SellLimitsDataItem
 import com.app.belcobtm.domain.wallet.item.SellPreSubmitDataItem
 
 interface WalletRepository {
     fun getCoinFeeMap(): Map<String, CoinFeeDataItem>
 
+    suspend fun getCoinList(): Either<Failure, List<CoinDataItem>>
+
+    suspend fun updateCoin(dataItem: CoinDataItem): Either<Failure, Unit>
+
     suspend fun sendSmsToDevice(): Either<Failure, Unit>
 
     suspend fun verifySmsCode(smsCode: String): Either<Failure, Unit>
 
     suspend fun createTransaction(
-        fromCoin: CoinDataItem,
+        fromCoin: String,
         fromCoinAmount: Double,
         isNeedSendSms: Boolean
     ): Either<Failure, String>
@@ -21,45 +27,45 @@ interface WalletRepository {
     suspend fun withdraw(
         smsCode: String,
         hash: String,
-        coinFrom: String,
-        coinFromAmount: Double
+        fromCoin: String,
+        fromCoinAmount: Double
     ): Either<Failure, Unit>
 
     suspend fun getGiftAddress(
-        coinFrom: String,
+        fromCoin: String,
         phone: String
     ): Either<Failure, String>
 
     suspend fun sendGift(
         smsCode: String,
         hash: String,
-        coinFrom: String,
-        coinFromAmount: Double,
+        fromCoin: String,
+        fromCoinAmount: Double,
         giftId: String,
         phone: String,
         message: String
     ): Either<Failure, Unit>
 
     suspend fun sellGetLimits(
-        coinFrom: String
+        fromCoin: String
     ): Either<Failure, SellLimitsDataItem>
 
     suspend fun sellPreSubmit(
         smsCode: String,
-        coinFrom: String,
+        fromCoin: String,
         cryptoAmount: Double,
         toUsdAmount: Int
     ): Either<Failure, SellPreSubmitDataItem>
 
     suspend fun sell(
-        coinFrom: CoinDataItem,
-        coinFromAmount: Double
+        fromCoin: String,
+        fromCoinAmount: Double
     ): Either<Failure, Unit>
 
     suspend fun exchangeCoinToCoin(
         smsCode: String,
-        coinFromAmount: Double,
-        coinFrom: String,
+        fromCoinAmount: Double,
+        fromCoin: String,
         coinTo: String,
         hex: String
     ): Either<Failure, Unit>

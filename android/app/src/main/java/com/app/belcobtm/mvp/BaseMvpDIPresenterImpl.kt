@@ -4,7 +4,7 @@ import android.preference.PreferenceManager
 import com.app.belcobtm.App
 import com.app.belcobtm.api.data_manager.BaseDataManager
 import com.app.belcobtm.api.model.ServerException
-import com.app.belcobtm.data.shared.preferences.SharedPreferencesHelper
+import com.app.belcobtm.data.disk.shared.preferences.SharedPreferencesHelper
 import com.app.belcobtm.di.component.DaggerPresenterComponent
 import com.app.belcobtm.di.component.PresenterComponent
 import com.app.belcobtm.di.module.PresenterModule
