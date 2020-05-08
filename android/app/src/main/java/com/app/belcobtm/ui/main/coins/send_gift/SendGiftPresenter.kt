@@ -4,15 +4,12 @@ import android.content.Context
 import com.app.belcobtm.R
 import com.app.belcobtm.api.data_manager.WithdrawDataManager
 import com.app.belcobtm.api.model.response.CoinModel
-import com.app.belcobtm.db.DbCryptoCoinModel
-import com.app.belcobtm.db.mapToDataItem
 import com.app.belcobtm.domain.Failure
 import com.app.belcobtm.domain.wallet.interactor.CreateTransactionUseCase
 import com.app.belcobtm.domain.wallet.interactor.GetGiftAddressUseCase
 import com.app.belcobtm.domain.wallet.interactor.SendGiftUseCase
 import com.app.belcobtm.mvp.BaseMvpDIPresenterImpl
 import com.giphy.sdk.core.models.Media
-import io.realm.Realm
 import org.koin.core.KoinComponent
 import org.koin.core.inject
 
@@ -41,9 +38,6 @@ class SendGiftPresenter : BaseMvpDIPresenterImpl<SendGiftContract.View, Withdraw
 
     private var _phone: String? = null
     private var _gifMedia: Media? = null
-
-    private val realm: Realm = Realm.getDefaultInstance()
-    private val dbCryptoCoinModel: DbCryptoCoinModel = DbCryptoCoinModel()
 
     override fun injectDependency() = presenterComponent.inject(this)
 
@@ -95,21 +89,17 @@ class SendGiftPresenter : BaseMvpDIPresenterImpl<SendGiftContract.View, Withdraw
         }
     }
 
-    private fun createTransaction(fromCoinCode: String, fromCoinAmount: Double) {
-        dbCryptoCoinModel.getCryptoCoin(realm, fromCoinCode)?.let { fromCoinDb ->
-            val coinDataItem = fromCoinDb.mapToDataItem()
-            createTransactionUseCase.invoke(CreateTransactionUseCase.Params(coinDataItem, fromCoinAmount)) { either ->
-                either.either(
-                    { errorResponse(it) },
-                    { hash ->
-                        this.transactionHash = hash
-                        mView?.openSmsCodeDialog()
-                        mView?.showProgress(false)
-                    }
-                )
-            }
-        } ?: mView?.showError(R.string.error_please_try_again)
-    }
+    private fun createTransaction(fromCoinCode: String, fromCoinAmount: Double) =
+        createTransactionUseCase.invoke(CreateTransactionUseCase.Params(fromCoinCode, fromCoinAmount)) { either ->
+            either.either(
+                { errorResponse(it) },
+                { hash ->
+                    this.transactionHash = hash
+                    mView?.openSmsCodeDialog()
+                    mView?.showProgress(false)
+                }
+            )
+        }
 
     private fun errorResponse(throwable: Throwable) {
         mView?.showProgress(false)

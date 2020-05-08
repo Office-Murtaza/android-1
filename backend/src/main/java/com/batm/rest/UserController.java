@@ -343,6 +343,16 @@ public class UserController {
         }
     }
 
+    @PostMapping("/user/{userId}/location")
+    public Response updateLocation(@PathVariable Long userId, @RequestBody LocationDTO dto) {
+        try {
+            return Response.ok(userService.updateLocation(userId, dto));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Response.serverError();
+        }
+    }
+
     private TokenDTO getJwt(Long userId, Long identityId, String username, String password) {
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username,
                 password);

@@ -1,33 +1,33 @@
 package com.app.belcobtm.data
 
 import com.app.belcobtm.data.core.NetworkUtils
+import com.app.belcobtm.data.disk.database.CoinDao
+import com.app.belcobtm.data.disk.database.CoinEntity
+import com.app.belcobtm.data.disk.database.mapToDataItem
+import com.app.belcobtm.data.disk.shared.preferences.SharedPreferencesHelper
 import com.app.belcobtm.data.rest.authorization.AuthApiService
-import com.app.belcobtm.data.shared.preferences.SharedPreferencesHelper
-import com.app.belcobtm.db.DbCryptoCoin
-import com.app.belcobtm.db.DbCryptoCoinModel
 import com.app.belcobtm.domain.Either
 import com.app.belcobtm.domain.Failure
 import com.app.belcobtm.domain.authorization.AuthorizationRepository
-import io.realm.Realm
+import com.app.belcobtm.domain.wallet.LocalCoinType
 import org.web3j.utils.Numeric
 import wallet.core.jni.*
 
 class AuthorizationRepositoryImpl(
     private val prefHelper: SharedPreferencesHelper,
     private val apiService: AuthApiService,
-    private val networkUtils: NetworkUtils
+    private val networkUtils: NetworkUtils,
+    private val daoCoin: CoinDao
 ) : AuthorizationRepository {
 
-    override suspend fun clearAppData(): Either<Failure, Unit> {
+    override suspend fun clearAppData(): Unit {
         prefHelper.accessToken = ""
         prefHelper.refreshToken = ""
+        prefHelper.apiSeed = ""
         prefHelper.userPin = ""
         prefHelper.userId = -1
-
-        val realm = Realm.getDefaultInstance()
-        DbCryptoCoinModel().delAllCryptoCoin(realm)
-
-        return Either.Right(Unit)
+        daoCoin.clearTable()
+        return Unit
     }
 
     override suspend fun recoverWallet(
@@ -53,7 +53,7 @@ class AuthorizationRepositoryImpl(
     override suspend fun recoverWalletVerifySmsCode(
         smsCode: String
     ): Either<Failure, Unit> = if (networkUtils.isNetworkAvailable()) {
-       apiService.recoverWalletVerifySmsCode(prefHelper.userId, smsCode)
+        apiService.recoverWalletVerifySmsCode(prefHelper.userId, smsCode)
     } else {
         Either.Left(Failure.NetworkConnection)
     }
@@ -80,7 +80,7 @@ class AuthorizationRepositoryImpl(
         val response = apiService.createWalletVerifySmsCode(prefHelper.userId, smsCode)
         if (response.isRight) {
             val coinList = createWalletDB()
-            val coinListResponse = apiService.addCoins(prefHelper.userId, coinList)
+            val coinListResponse = apiService.addCoins(prefHelper.userId, coinList.map { it.mapToDataItem() })
             if (coinListResponse.isRight) {
                 Either.Right(prefHelper.apiSeed)
             } else {
@@ -115,7 +115,7 @@ class AuthorizationRepositoryImpl(
         prefHelper.userPin = pinCode
     }
 
-    private fun createWalletDB(): ArrayList<DbCryptoCoin> {
+    private suspend fun createWalletDB(): List<CoinEntity> {
         val bitcoin = CoinType.BITCOIN
         val bitcoinCash = CoinType.BITCOINCASH
         val etherum = CoinType.ETHEREUM
@@ -154,19 +154,17 @@ class AuthorizationRepositoryImpl(
         val tronPrivateKey = wallet.getKeyForCoin(tron)
         val tronPrivateKeyStr = Numeric.toHexStringNoPrefix(tronPrivateKey.data())
         val tronAddress = tron.deriveAddress(tronPrivateKey)
-
+        val entityList = listOf(
+            CoinEntity(LocalCoinType.BTC, bitcoinAddress, bitcoinPrivateKeyStr),
+            CoinEntity(LocalCoinType.BCH, bitcoinChAddress, bitcoinChPrivateKeyStr),
+            CoinEntity(LocalCoinType.ETH, etherumAddress, etherumPrivateKeyStr),
+            CoinEntity(LocalCoinType.LTC, litecoinAddress, litecoinPrivateKeyStr),
+            CoinEntity(LocalCoinType.BNB, binanceAddress, binancePrivateKeyStr),
+            CoinEntity(LocalCoinType.TRX, tronAddress, tronPrivateKeyStr),
+            CoinEntity(LocalCoinType.XRP, xrpAddress, xrpPrivateKeyStr)
+        )
         prefHelper.apiSeed = wallet.mnemonic()
-
-        val realm = Realm.getDefaultInstance()
-        return DbCryptoCoinModel().apply {
-            //DbCryptoCoin need add to data layer
-            addCoin(realm, DbCryptoCoin("BTC", bitcoin.value(), bitcoinAddress, bitcoinPrivateKeyStr))
-            addCoin(realm, DbCryptoCoin("BCH", bitcoinCash.value(), bitcoinChAddress, bitcoinChPrivateKeyStr))
-            addCoin(realm, DbCryptoCoin("ETH", etherum.value(), etherumAddress, etherumPrivateKeyStr))
-            addCoin(realm, DbCryptoCoin("LTC", litecoin.value(), litecoinAddress, litecoinPrivateKeyStr))
-            addCoin(realm, DbCryptoCoin("BNB", binance.value(), binanceAddress, binancePrivateKeyStr))
-            addCoin(realm, DbCryptoCoin("TRX", tron.value(), tronAddress, tronPrivateKeyStr))
-            addCoin(realm, DbCryptoCoin("XRP", xrp.value(), xrpAddress, xrpPrivateKeyStr))
-        }.getAllCryptoCoin(realm)
+        daoCoin.insertItemList(entityList)
+        return entityList
     }
 }

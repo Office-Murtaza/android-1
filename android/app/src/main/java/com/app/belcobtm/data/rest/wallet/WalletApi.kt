@@ -1,10 +1,9 @@
 package com.app.belcobtm.data.rest.wallet
 
-import com.app.belcobtm.data.rest.wallet.request.CoinToCoinExchangeRequest
-import com.app.belcobtm.data.rest.wallet.request.SendGiftRequest
-import com.app.belcobtm.data.rest.wallet.request.VerifySmsCodeRequest
-import com.app.belcobtm.data.rest.wallet.request.WithdrawRequest
+import com.app.belcobtm.data.rest.wallet.request.*
 import com.app.belcobtm.data.rest.wallet.response.GetGiftAddressResponse
+import com.app.belcobtm.data.rest.wallet.response.LimitsResponse
+import com.app.belcobtm.data.rest.wallet.response.SellPreSubmitResponse
 import com.app.belcobtm.data.rest.wallet.response.SendSmsCodeResponse
 import com.app.belcobtm.data.rest.wallet.response.hash.*
 import kotlinx.coroutines.Deferred
@@ -33,6 +32,26 @@ interface WalletApi {
         @Path("userId") userId: Int,
         @Path("coinId") coinId: String,
         @Body body: SendGiftRequest
+    ): Deferred<Response<ResponseBody>>
+
+    @GET("user/{userId}/coins/{coinId}/transactions/limits")
+    fun sellGetLimitsAsync(
+        @Path("userId") userId: Int,
+        @Path("coinId") coinId: String
+    ):  Deferred<Response<LimitsResponse>>
+
+    @POST("user/{userId}/coins/{coinId}/transactions/presubmit")
+    fun sellPreSubmitAsync(
+        @Path("userId") userId: Int,
+        @Path("coinId") coinId: String,
+        @Body body: SellPreSubmitRequest
+    ): Deferred<Response<SellPreSubmitResponse>>
+
+    @POST("user/{userId}/coins/{coinId}/transactions/submit")
+    fun sellAsync(
+        @Path("userId") userId: Int,
+        @Path("coinId") coinId: String,
+        @Body body: SellRequest
     ): Deferred<Response<ResponseBody>>
 
     @POST("user/{userId}/coins/{coinCode}/transactions/submit")

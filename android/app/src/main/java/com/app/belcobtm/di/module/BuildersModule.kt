@@ -12,7 +12,7 @@ import com.app.belcobtm.ui.main.coins.details.DetailsActivity
 import com.app.belcobtm.ui.main.coins.sell.SellActivity
 import com.app.belcobtm.ui.main.coins.send_gift.SendGiftActivity
 import com.app.belcobtm.ui.main.coins.transactions.TransactionsActivity
-import com.app.belcobtm.ui.main.coins.visibility.VisibilityCoinsActivity
+import com.app.belcobtm.presentation.features.wallet.add.AddWalletActivity
 import com.app.belcobtm.ui.main.coins.withdraw.WithdrawActivity
 import com.app.belcobtm.ui.main.main_activity.MainActivity
 import com.app.belcobtm.ui.main.settings.change_pass.ChangePassActivity
@@ -41,7 +41,7 @@ abstract class BuildersModule {
 
     @ActivityScope
     @ContributesAndroidInjector(modules = [ActivityModule::class])
-    internal abstract fun bindVisibilityCoinsActivity(): VisibilityCoinsActivity
+    internal abstract fun bindVisibilityCoinsActivity(): AddWalletActivity
 
     @ActivityScope
     @ContributesAndroidInjector(modules = [ActivityModule::class])

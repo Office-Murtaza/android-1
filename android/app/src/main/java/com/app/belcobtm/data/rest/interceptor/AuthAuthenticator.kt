@@ -3,7 +3,7 @@ package com.app.belcobtm.data.rest.interceptor
 import com.app.belcobtm.data.rest.ApiFactory
 import com.app.belcobtm.data.rest.authorization.AuthApi
 import com.app.belcobtm.data.rest.authorization.request.RefreshTokenRequest
-import com.app.belcobtm.data.shared.preferences.SharedPreferencesHelper
+import com.app.belcobtm.data.disk.shared.preferences.SharedPreferencesHelper
 import kotlinx.coroutines.runBlocking
 import okhttp3.Authenticator
 import okhttp3.Request

@@ -32,7 +32,7 @@ public class Constant {
     public static final BigDecimal VIP_VERIFIED_DAILY_LIMIT = BigDecimal.valueOf(20_000);
     public static final BigDecimal VIP_VERIFIED_TX_LIMIT = BigDecimal.valueOf(10_000);
 
-    public static final String TERMINAL_SERIAL_NUMBER = "BT300197";
+    public static final String TERMINAL_SERIAL_NUMBER = "BT100872";
 
     public static final String BNB_CHAIN_ID = "Binance-Chain-Tigris";
 

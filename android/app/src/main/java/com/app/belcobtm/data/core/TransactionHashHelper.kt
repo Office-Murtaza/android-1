@@ -1,11 +1,11 @@
 package com.app.belcobtm.data.core
 
 import com.app.belcobtm.api.model.param.trx.Trx
+import com.app.belcobtm.data.disk.database.CoinDao
+import com.app.belcobtm.data.disk.shared.preferences.SharedPreferencesHelper
 import com.app.belcobtm.data.rest.wallet.WalletApiService
-import com.app.belcobtm.data.shared.preferences.SharedPreferencesHelper
 import com.app.belcobtm.domain.Either
 import com.app.belcobtm.domain.Failure
-import com.app.belcobtm.domain.wallet.CoinDataItem
 import com.app.belcobtm.presentation.core.*
 import com.app.belcobtm.presentation.core.extensions.*
 import com.google.gson.Gson
@@ -17,14 +17,15 @@ import java.util.*
 
 class TransactionHashHelper(
     private val apiService: WalletApiService,
-    private val prefsHelper: SharedPreferencesHelper
+    private val prefsHelper: SharedPreferencesHelper,
+    private val daoCoin: CoinDao
 ) {
 
     suspend fun createTransactionHash(
-        fromCoin: CoinDataItem,
+        fromCoin: CoinType,
         fromCoinAmount: Double,
         toAddress: String
-    ): Either<Failure, String> = when (fromCoin.type) {
+    ): Either<Failure, String> = when (fromCoin) {
         CoinType.BITCOIN,
         CoinType.BITCOINCASH,
         CoinType.LITECOIN -> createTransactionHashBTCorLTCorBTH(
@@ -57,26 +58,26 @@ class TransactionHashHelper(
 
     private suspend fun createTransactionHashBTCorLTCorBTH(
         toAddress: String,
-        fromCoin: CoinDataItem,
+        fromCoin: CoinType,
         fromCoinAmount: Double
     ): Either<Failure, String> {
         val hdWallet = HDWallet(prefsHelper.apiSeed, "")
         val publicKey = hdWallet.getExtendedPublicKey(
-            fromCoin.type.customPurpose(),
-            fromCoin.type,
-            fromCoin.type.customXpubVersion()
+            fromCoin.customPurpose(),
+            fromCoin,
+            fromCoin.customXpubVersion()
         )
-        val response = apiService.getUtxoList(fromCoin.code, publicKey)
+        val response = apiService.getUtxoList(fromCoin.code(), publicKey)
 
         return if (response.isRight) {
             val utxos = (response as Either.Right).b
-            val publicKeyFrom = fromCoin.publicKey
+            val publicKeyFrom = daoCoin.getItem(fromCoin.code()).publicKey
             val cryptoToSatoshi = fromCoinAmount * CoinType.BITCOIN.unit()
             val amount: Long = cryptoToSatoshi.toLong()
-            val byteFee = getByteFee(fromCoin.code)
-            val sngHash = TWBitcoinSigHashType.getCryptoHash(fromCoin.type)
+            val byteFee = getByteFee(fromCoin.code())
+            val sngHash = TWBitcoinSigHashType.getCryptoHash(fromCoin)
 //        val cointypeValue = if (coinType.value() == 2) 0 else coinType.value()
-            val cointypeValue = fromCoin.type.value()
+            val cointypeValue = fromCoin.value()
             val signerBuilder = Bitcoin.SigningInput.newBuilder()
                 .setAmount(amount)
                 .setHashType(sngHash)
@@ -91,7 +92,7 @@ class TransactionHashHelper(
             }
 
             utxos.forEach {
-                val redeemScript = BitcoinScript.buildForAddress(it.address, fromCoin.type)
+                val redeemScript = BitcoinScript.buildForAddress(it.address, fromCoin)
                 val keyHash = if (redeemScript.isPayToWitnessScriptHash) {
                     redeemScript.matchPayToWitnessPublicKeyHash()
                 } else {
@@ -117,7 +118,7 @@ class TransactionHashHelper(
                     .setSequence(sequence)
                     .build()
                 val utxoAmount = utxo.value.toLong()
-                val redeemScript = BitcoinScript.buildForAddress(utxo.address, fromCoin.type)
+                val redeemScript = BitcoinScript.buildForAddress(utxo.address, fromCoin)
                 val scriptByteString = ByteString.copyFrom(redeemScript.data())
                 val utxo0 = Bitcoin.UnspentTransaction.newBuilder()
                     .setScript(scriptByteString)
@@ -146,7 +147,7 @@ class TransactionHashHelper(
 
     private suspend fun createTransactionHashETH(
         toAddress: String,
-        fromCoin: CoinDataItem,
+        fromCoin: CoinType,
         fromCoinAmount: Double
     ): Either<Failure, String> {
         val response = apiService.getEthereumNonce()
@@ -166,7 +167,7 @@ class TransactionHashHelper(
             val signingInput = Ethereum.SigningInput.newBuilder()
 
             signingInput.also {
-                it.privateKey = fromCoin.privateKey.toHexBytesInByteString()
+                it.privateKey = daoCoin.getItem(fromCoin.code()).privateKey.toHexBytesInByteString()
                 it.toAddress = toAddress
                 it.chainId = ByteString.copyFrom("0x1".toHexByteArray())
                 it.nonce = nonceHex
@@ -202,16 +203,17 @@ class TransactionHashHelper(
 
     private suspend fun createTransactionHashXRP(
         toAddress: String,
-        fromCoin: CoinDataItem,
+        fromCoin: CoinType,
         fromCoinAmount: Double
     ): Either<Failure, String> {
         val response = apiService.getRippleSequence()
+        val coinEntity = daoCoin.getItem(fromCoin.code())
 
         return if (response.isRight) {
-            val privateKey = PrivateKey(fromCoin.privateKey.toHexByteArray())
+            val privateKey = PrivateKey(coinEntity.privateKey.toHexByteArray())
             val signingInput = Ripple.SigningInput.newBuilder().also {
                 it.sequence = (response as Either.Right).b.toInt()
-                it.account = fromCoin.publicKey
+                it.account = coinEntity.publicKey
                 it.amount = (fromCoinAmount * CoinType.XRP.unit()).toLong()
                 it.destination = toAddress
                 it.fee = ((prefsHelper.coinsFee[CoinType.XRP.code()]?.txFee?.toBigDecimal()
@@ -228,13 +230,14 @@ class TransactionHashHelper(
 
     private suspend fun createTransactionHashBNB(
         toAddress: String,
-        fromCoin: CoinDataItem,
+        fromCoin: CoinType,
         fromCoinAmount: Double
     ): Either<Failure, String> {
         val response = apiService.getBinanceBlockHeader()
+        val coinEntity = daoCoin.getItem(fromCoin.code())
 
         return if (response.isRight) {
-            val privateKey = PrivateKey(fromCoin.privateKey.toHexByteArray())
+            val privateKey = PrivateKey(coinEntity.privateKey.toHexByteArray())
             val publicKey = privateKey.getPublicKeySecp256k1(true)
 
             val token = Binance.SendOrder.Token.newBuilder().also {
@@ -270,15 +273,16 @@ class TransactionHashHelper(
 
     private suspend fun createTransactionHashTron(
         toAddress: String,
-        fromCoin: CoinDataItem,
+        fromCoin: CoinType,
         fromCoinAmount: Double
     ): Either<Failure, String> {
-        val response = apiService.getTronBlockHeader(fromCoin.code)
+        val response = apiService.getTronBlockHeader(fromCoin.code())
+        val coinEntity = daoCoin.getItem(fromCoin.code())
 
         return if (response.isRight) {
             val rawData = (response as Either.Right).b
             val cryptoToSubcoin = fromCoinAmount * CoinType.TRON.unit()
-            val fromAddress = fromCoin.publicKey
+            val fromAddress = coinEntity.publicKey
             val tronBlock = Tron.BlockHeader.newBuilder().also {
                 it.number = rawData?.number ?: 0L
                 it.timestamp = rawData?.timestamp ?: 0L
@@ -305,7 +309,7 @@ class TransactionHashHelper(
             }
             val signing = Tron.SigningInput.newBuilder().also {
                 it.transaction = transaction.build()
-                it.privateKey = fromCoin.privateKey.toHexBytesInByteString()
+                it.privateKey = coinEntity.privateKey.toHexBytesInByteString()
             }.build()
             val jsonHash = TronSigner.sign(signing).json
             val correctJson = Gson().toJson(Gson().fromJson<Trx>(jsonHash, Trx::class.java))

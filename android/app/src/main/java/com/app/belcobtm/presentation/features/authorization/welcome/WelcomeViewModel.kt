@@ -6,11 +6,6 @@ import com.app.belcobtm.domain.authorization.interactor.ClearAppDataUseCase
 class WelcomeViewModel(private val clearAppDataUseCase: ClearAppDataUseCase) : ViewModel() {
 
     fun clearAppData() {
-        clearAppDataUseCase.invoke(Unit) { either ->
-            either.either(
-                {/**error*/},
-                {/**success*/}
-            )
-        }
+        clearAppDataUseCase.invoke{}
     }
 }

@@ -4,7 +4,7 @@ import com.app.belcobtm.domain.Either
 import com.app.belcobtm.domain.Failure
 
 interface AuthorizationRepository {
-    suspend fun clearAppData(): Either<Failure, Unit>
+    suspend fun clearAppData(): Unit
     suspend fun recoverWallet(phone: String, password: String): Either<Failure, Unit>
     suspend fun recoverWalletVerifySmsCode(smsCode: String): Either<Failure, Unit>
     suspend fun createWallet(phone: String, password: String): Either<Failure, Unit>

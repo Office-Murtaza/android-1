@@ -1,11 +1,11 @@
 package com.app.belcobtm.api.model.param
 
-import com.app.belcobtm.db.DbCryptoCoin
+import com.app.belcobtm.domain.wallet.item.CoinDataItem
 import com.google.gson.annotations.SerializedName
 
 
 class AddCoinsParam(
-    dbCoinDbs: ArrayList<DbCryptoCoin>
+    dbCoinDbs: List<CoinDataItem>
 ) {
 
     @SerializedName("coins")
@@ -21,6 +21,6 @@ class AddCoinsParam(
         @SerializedName("address")
         val publicKey: String
     ) {
-        constructor(dbCoinDb: DbCryptoCoin) : this(dbCoinDb.coinType, dbCoinDb.publicKey)
+        constructor(dataItem: CoinDataItem) : this(dataItem.type.name, dataItem.publicKey)
     }
 }

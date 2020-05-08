@@ -91,6 +91,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                     .antMatchers("/api/v1/recover").permitAll()
                     .antMatchers("/api/v1/refresh").permitAll()
                     .antMatchers("/api/v1/test/**").permitAll()
+                    .antMatchers("/api/v1/wallet/**").permitAll()
                     .antMatchers("/api/v1/**").authenticated()
 
                     .and().exceptionHandling().and().headers().frameOptions().disable().and().sessionManagement()

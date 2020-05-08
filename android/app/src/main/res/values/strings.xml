@@ -253,6 +253,14 @@
     <string name="sell_screen_not_enough_tradable_balance">Not enough on a tradable balance</string>
     <string name="sell_screen_atm_contains_only_count_banknotes">ATM contains only 20 and 50 banknotes</string>
     <string name="sell_screen_sell_from_another_address">Sell from another address</string>
+    <string name="sell_screen_instructions_1">Please send this exact amount by scanning QR code above or the payment will be reject.</string>
+    <string name="sell_screen_instructions_2">Wait a few minutes before your payment is confirmed. You will receive an SMS when cash withdrawal is ready.</string>
+    <string name="sell_screen_instructions_3">On the ATM choose REDEEM TICKET.</string>
+    <string name="sell_screen_instructions_4">Scan QR code from transaction details popup.</string>
+<!--    <string name="sell_screen_"></string>-->
+<!--    <string name="sell_screen_"></string>-->
+
+
 
     <!-- Send gift screen -->
     <string name="send_gift_screen_price">Price</string>
@@ -277,10 +285,22 @@
 
     <!-- Deposit -->
     <string name="deposit_screen_title">Deposit %1$s</string>
-    <string name="deposit_screen_wallet_copied">Copied</string>
 
 
 
     <string name="unit_usd">Usd</string>
     <string name="button_next">Next</string>
+
+    <string name="alert_copy_to_clipboard">Copied</string>
+
+
+
+
+    <string name="coin_name_bitcoin">Bitcoin</string>
+    <string name="coin_name_ethereum">Ethereum</string>
+    <string name="coin_name_bitcoin_cash">Bitcoin Cash</string>
+    <string name="coin_name_litecoin">Litecoin</string>
+    <string name="coin_name_binance">Binance</string>
+    <string name="coin_name_tron">TRON</string>
+    <string name="coin_name_ripple">Ripple</string>
 </resources>

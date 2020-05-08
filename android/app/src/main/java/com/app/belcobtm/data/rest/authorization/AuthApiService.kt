@@ -2,11 +2,11 @@ package com.app.belcobtm.data.rest.authorization
 
 import com.app.belcobtm.data.rest.authorization.request.*
 import com.app.belcobtm.data.rest.authorization.response.AddCoinsResponse
-import com.app.belcobtm.data.rest.authorization.response.RecoverWalletResponse
 import com.app.belcobtm.data.rest.authorization.response.AuthorizationResponse
-import com.app.belcobtm.db.DbCryptoCoin
+import com.app.belcobtm.data.rest.authorization.response.RecoverWalletResponse
 import com.app.belcobtm.domain.Either
 import com.app.belcobtm.domain.Failure
+import com.app.belcobtm.domain.wallet.item.CoinDataItem
 
 class AuthApiService(private val authApi: AuthApi) {
     suspend fun recoverWallet(phone: String, password: String): Either<Failure, RecoverWalletResponse> = try {
@@ -41,10 +41,10 @@ class AuthApiService(private val authApi: AuthApi) {
         Either.Left(failure)
     }
 
-    suspend fun addCoins(userId: Int, coinList: List<DbCryptoCoin>): Either<Failure, AddCoinsResponse> = try {
+    suspend fun addCoins(userId: Int, coinList: List<CoinDataItem>): Either<Failure, AddCoinsResponse> = try {
         val request = authApi.addCoinsAsync(
             userId,
-            AddCoinsRequest(coinList.map { CoinRequest(it.coinType, it.publicKey) })
+            AddCoinsRequest(coinList.map { CoinRequest(it.type.name, it.publicKey) })
         ).await()
         request.body()?.let { Either.Right(it) } ?: Either.Left(Failure.ServerError())
     } catch (failure: Failure) {

@@ -3,6 +3,8 @@ package com.batm.util;
 import net.sf.json.JSONObject;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang3.RandomStringUtils;
+import javax.crypto.Mac;
+import javax.crypto.spec.SecretKeySpec;
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
@@ -117,5 +119,30 @@ public class Util {
                 .filter(f -> f.contains("."))
                 .map(f -> f.substring(filename.lastIndexOf(".")))
                 .orElse(StringUtils.EMPTY);
+    }
+
+    public static String sign(String method, String coin, long timestamp, String apiKey, String apiSecret) {//(String message, String secret) {
+        try {
+            String message = method + "," + apiKey + "," + coin + "," + timestamp;
+
+            SecretKeySpec key = new SecretKeySpec(apiSecret.getBytes(), "HmacSHA256");
+            Mac mac = Mac.getInstance("HmacSHA256");
+            mac.init(key);
+
+            byte[] bytes = mac.doFinal(message.getBytes("ASCII"));
+
+            StringBuffer hash = new StringBuffer();
+
+            for (int i = 0; i < bytes.length; i++) {
+                String hex = Integer.toHexString(0xFF & bytes[i]);
+                if (hex.length() == 1) {
+                    hash.append('0');
+                }
+                hash.append(hex);
+            }
+            return hash.toString();
+        } catch (Exception e) {
+            throw new RuntimeException("Unable to sign message.", e);
+        }
     }
 }
