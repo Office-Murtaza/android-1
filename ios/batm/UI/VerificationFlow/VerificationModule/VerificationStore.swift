@@ -15,13 +15,6 @@ struct VerificationUserData {
   var tierId: String { return "1" }
 }
 
-enum VerificationPickerOption {
-  case countries
-  case provinces
-  case cities
-  case none
-}
-
 enum VerificationAction: Equatable {
   case updateSelectedImage(UIImage?)
   case updateIDNumber(String?)
@@ -32,7 +25,6 @@ enum VerificationAction: Equatable {
   case updateProvince(String?)
   case updateCity(String?)
   case updateZipCode(String?)
-  case updatePickerOption(VerificationPickerOption)
   case updateValidationState
   case makeInvalidState(String)
 }
@@ -47,7 +39,6 @@ struct VerificationState: Equatable {
   var province: String = ""
   var city: String = ""
   var zipCode: String = ""
-  var pickerOption: VerificationPickerOption = .none
   var validationState: ValidationState = .unknown
   
   var selectedImageData: Data? {
@@ -101,7 +92,6 @@ final class VerificationStore: ViewStore<VerificationAction, VerificationState> 
       state.city = ""
     case let .updateCity(city): state.city = city ?? ""
     case let .updateZipCode(zipCode): state.zipCode = zipCode ?? ""
-    case let .updatePickerOption(pickerOption): state.pickerOption = pickerOption
     case .updateValidationState: state.validationState = validate(state)
     case let .makeInvalidState(error): state.validationState = .invalid(error)
     }

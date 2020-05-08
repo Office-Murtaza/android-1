@@ -4,7 +4,9 @@ import RxCocoa
 
 class VerificationFormView: UIView, UIPickerViewDelegate, UIPickerViewDataSource {
   
-  let didSelectPickerRow = PublishRelay<String>()
+  let didSelectCountry = PublishRelay<String>()
+  let didSelectProvince = PublishRelay<String>()
+  let didSelectCity = PublishRelay<String>()
   
   let stackView: UIStackView = {
     let stackView = UIStackView()
@@ -37,22 +39,10 @@ class VerificationFormView: UIView, UIPickerViewDelegate, UIPickerViewDataSource
     return textField
   }()
   
-  let countriesPickerView: UIPickerView = {
-    let picker = UIPickerView()
-    picker.isHidden = true
-    return picker
-  }()
-  
   let provinceTextField: MainTextField = {
     let textField = MainTextField()
     textField.configure(for: .province)
     return textField
-  }()
-  
-  let provincesPickerView: UIPickerView = {
-    let picker = UIPickerView()
-    picker.isHidden = true
-    return picker
   }()
   
   let cityTextField: MainTextField = {
@@ -61,11 +51,17 @@ class VerificationFormView: UIView, UIPickerViewDelegate, UIPickerViewDataSource
     return textField
   }()
   
-  let citiesPickerView: UIPickerView = {
-    let picker = UIPickerView()
-    picker.isHidden = true
-    return picker
-  }()
+  let countryTextFieldContainer = UIView()
+  let provinceTextFieldContainer = UIView()
+  let cityTextFieldContainer = UIView()
+  
+  let fakeCountryTextField = FakeTextField()
+  let fakeProvinceTextField = FakeTextField()
+  let fakeCityTextField = FakeTextField()
+  
+  let countriesPickerView = UIPickerView()
+  let provincesPickerView = UIPickerView()
+  let citiesPickerView = UIPickerView()
   
   let zipCodeTextField: MainTextField = {
     let textField = MainTextField()
@@ -94,10 +90,6 @@ class VerificationFormView: UIView, UIPickerViewDelegate, UIPickerViewDataSource
       addressTextField
     ]
   }
-  
-  let countryTapRecognizer = UITapGestureRecognizer()
-  let provinceTapRecognizer = UITapGestureRecognizer()
-  let cityTapRecognizer = UITapGestureRecognizer()
   
   var countries: [String] = [] {
     didSet {
@@ -138,18 +130,50 @@ class VerificationFormView: UIView, UIPickerViewDelegate, UIPickerViewDataSource
     stackView.addArrangedSubviews(idNumberTextField,
                                   firstNameTextField,
                                   lastNameTextField,
-                                  countryTextField,
-                                  countriesPickerView,
-                                  provinceTextField,
-                                  provincesPickerView,
-                                  cityTextField,
-                                  citiesPickerView,
+                                  countryTextFieldContainer,
+                                  provinceTextFieldContainer,
+                                  cityTextFieldContainer,
                                   zipCodeTextField,
                                   addressTextField,
                                   sendButton)
-    countryTextField.addGestureRecognizer(countryTapRecognizer)
-    provinceTextField.addGestureRecognizer(provinceTapRecognizer)
-    cityTextField.addGestureRecognizer(cityTapRecognizer)
+    
+    countryTextFieldContainer.addSubviews(countryTextField,
+                                          fakeCountryTextField)
+    
+    provinceTextFieldContainer.addSubviews(provinceTextField,
+                                           fakeProvinceTextField)
+    
+    cityTextFieldContainer.addSubviews(cityTextField,
+                                       fakeCityTextField)
+  }
+  
+  private func setupLayout() {
+    stackView.snp.makeConstraints {
+      $0.edges.equalToSuperview()
+    }
+    [countryTextField, fakeCountryTextField].forEach {
+      $0.snp.makeConstraints {
+        $0.edges.equalToSuperview()
+      }
+    }
+    [provinceTextField, fakeProvinceTextField].forEach {
+      $0.snp.makeConstraints {
+        $0.edges.equalToSuperview()
+      }
+    }
+    [cityTextField, fakeCityTextField].forEach {
+      $0.snp.makeConstraints {
+        $0.edges.equalToSuperview()
+      }
+    }
+    
+    setupPickers()
+  }
+  
+  private func setupPickers() {
+    fakeCountryTextField.inputView = countriesPickerView
+    fakeProvinceTextField.inputView = provincesPickerView
+    fakeCityTextField.inputView = citiesPickerView
     
     countriesPickerView.delegate = self
     countriesPickerView.dataSource = self
@@ -157,12 +181,6 @@ class VerificationFormView: UIView, UIPickerViewDelegate, UIPickerViewDataSource
     provincesPickerView.dataSource = self
     citiesPickerView.delegate = self
     citiesPickerView.dataSource = self
-  }
-  
-  private func setupLayout() {
-    stackView.snp.makeConstraints {
-      $0.edges.equalToSuperview()
-    }
   }
   
   func numberOfComponents(in pickerView: UIPickerView) -> Int {
@@ -184,24 +202,21 @@ class VerificationFormView: UIView, UIPickerViewDelegate, UIPickerViewDataSource
   }
   
   func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-    if pickerView === countriesPickerView { return didSelectPickerRow.accept(countries[row]) }
-    if pickerView === provincesPickerView { return didSelectPickerRow.accept(provinces[row]) }
-    if pickerView === citiesPickerView { return didSelectPickerRow.accept(cities[row]) }
+    if pickerView === countriesPickerView { return didSelectCountry.accept(countries[row]) }
+    if pickerView === provincesPickerView { return didSelectProvince.accept(provinces[row]) }
+    if pickerView === citiesPickerView { return didSelectCity.accept(cities[row]) }
   }
 }
 
 extension Reactive where Base == VerificationFormView {
-  var countryTap: Driver<Void> {
-    return base.countryTapRecognizer.rx.event.asDriver().map { _ in }
+  var selectCountry: Driver<String> {
+    return base.didSelectCountry.asDriver(onErrorJustReturn: "")
   }
-  var provinceTap: Driver<Void> {
-    return base.provinceTapRecognizer.rx.event.asDriver().map { _ in }
+  var selectProvince: Driver<String> {
+    return base.didSelectProvince.asDriver(onErrorJustReturn: "")
   }
-  var cityTap: Driver<Void> {
-    return base.cityTapRecognizer.rx.event.asDriver().map { _ in }
-  }
-  var selectPickerItem: Driver<String> {
-    return base.didSelectPickerRow.asDriver(onErrorJustReturn: "")
+  var selectCity: Driver<String> {
+    return base.didSelectCity.asDriver(onErrorJustReturn: "")
   }
   var countries: Binder<[String]> {
     return Binder(base) { target, value in
