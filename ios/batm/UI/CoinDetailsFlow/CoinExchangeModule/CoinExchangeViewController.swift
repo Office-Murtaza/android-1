@@ -103,10 +103,18 @@ final class CoinExchangeViewController: NavigationScreenViewController<CoinExcha
       })
       .disposed(by: disposeBag)
     
-    presenter.state
-      .map { ($0.fromCoin?.type, $0.otherCoinBalances?.map { $0.type }) }
-      .filter { $0 != nil && $1 != nil }
-      .drive(onNext: { [formView] in formView.configure(for: $0!, and: $1!) })
+    let fromCoinDriver = presenter.state
+      .map { $0.fromCoin?.type }
+      .filterNil()
+      .distinctUntilChanged()
+    
+    let otherCoinBalancesDriver = presenter.state
+      .map { state in state.otherCoinBalances?.map { $0.type } }
+      .filterNil()
+      .distinctUntilChanged()
+    
+    Driver.combineLatest(fromCoinDriver, otherCoinBalancesDriver)
+      .drive(onNext: { [formView] in formView.configure(for: $0, and: $1) })
       .disposed(by: disposeBag)
     
     presenter.state
@@ -164,18 +172,9 @@ final class CoinExchangeViewController: NavigationScreenViewController<CoinExcha
       .disposed(by: disposeBag)
     
     Driver.merge(backgroundDarkView.rx.tap,
-                 nextButton.rx.tap.asDriver(),
-                 formView.rx.toCoinTap)
+                 nextButton.rx.tap.asDriver())
     .drive(onNext: { [unowned self] in self.view.endEditing(true) })
     .disposed(by: disposeBag)
-    
-    Driver.merge(customView.tapRecognizer.rx.event.asDriver().map { _ in },
-                 nextButton.rx.tap.asDriver(),
-                 formView.fromCoinAmountTextField.rx.controlEvent(.editingDidBegin).asDriver())
-      .asObservable()
-      .map { true }
-      .bind(to: formView.toCoinPickerView.rx.isHidden)
-      .disposed(by: disposeBag)
   }
 
   override func setupBindings() {

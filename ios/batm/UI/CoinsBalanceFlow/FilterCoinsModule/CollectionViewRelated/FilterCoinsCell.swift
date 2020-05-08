@@ -1,34 +1,28 @@
 import UIKit
 import RxSwift
 import RxCocoa
+import MaterialComponents
+
+protocol FilterCoinsCellDelegate: class {
+  func didTapChangeVisibility(_ coin: BTMCoin)
+}
 
 final class FilterCoinsCell: UICollectionViewCell {
   
   var disposeBag = DisposeBag()
   
+  weak var delegate: FilterCoinsCellDelegate?
+  
   let typeImageView = UIImageView(image: nil)
   
   let typeLabel: UILabel = {
     let label = UILabel()
-    label.font = .poppinsBold13
+    label.font = .systemFont(ofSize: 16, weight: .medium)
     label.textColor = .slateGrey
     return label
   }()
   
-  let visibilityView: UIView = {
-    let view = UIView()
-    view.layer.cornerRadius = 8
-    return view
-  }()
-  
-  let visibilityTitle: UILabel = {
-    let label = UILabel()
-    label.font = .poppinsSemibold13
-    label.textColor = .white
-    return label
-  }()
-  
-  let dummyButton = DummyButton()
+  let visibilitySwitch = UISwitch()
   
   let divider: UIView = {
     let view = UIView()
@@ -59,33 +53,21 @@ final class FilterCoinsCell: UICollectionViewCell {
     
     contentView.addSubviews(typeImageView,
                             typeLabel,
-                            visibilityView,
-                            dummyButton,
+                            visibilitySwitch,
                             divider)
-    visibilityView.addSubview(visibilityTitle)
   }
   
   private func setupLayout() {
     typeImageView.snp.makeConstraints {
-      $0.left.equalToSuperview()
-      $0.top.bottom.equalToSuperview().inset(16)
-      $0.width.equalTo(typeImageView.snp.height)
+      $0.left.centerY.equalToSuperview()
     }
     typeLabel.snp.makeConstraints {
-      $0.left.equalTo(typeImageView.snp.right).offset(16)
-      $0.right.lessThanOrEqualTo(visibilityView.snp.left).offset(-10)
+      $0.left.equalTo(typeImageView.snp.right).offset(20)
+      $0.right.lessThanOrEqualTo(visibilitySwitch.snp.left).offset(-20)
       $0.centerY.equalToSuperview()
     }
-    visibilityView.snp.makeConstraints {
-      $0.centerY.right.equalToSuperview()
-      $0.height.equalTo(30)
-    }
-    visibilityTitle.snp.makeConstraints {
-      $0.left.right.equalToSuperview().inset(10)
-      $0.centerY.equalToSuperview()
-    }
-    dummyButton.snp.makeConstraints {
-      $0.edges.equalTo(visibilityView)
+    visibilitySwitch.snp.makeConstraints {
+      $0.right.centerY.equalToSuperview()
     }
     divider.snp.makeConstraints {
       $0.left.right.bottom.equalToSuperview()
@@ -93,18 +75,15 @@ final class FilterCoinsCell: UICollectionViewCell {
     }
   }
   
-  func configure(for model: BTMCoin, tapRelay: PublishRelay<BTMCoin>) {
-    typeImageView.image = model.type.logo
-    typeLabel.text = model.type.verboseValue
+  func configure(for coin: BTMCoin) {
+    typeImageView.image = coin.type.logo
+    typeLabel.text = coin.type.verboseValue
+    visibilitySwitch.isOn = coin.isVisible
     
-    visibilityView.backgroundColor = model.isVisible ? .warmGreyThree : .ceruleanBlue
-    visibilityTitle.text = model.isVisible ? localize(L.FilterCoins.hide) : localize(L.FilterCoins.show)
-    
-    
-    
-    dummyButton.rx.tap
+    visibilitySwitch.rx.isOn
       .asDriver()
-      .drive(onNext: { tapRelay.accept(model) })
+      .filter { coin.isVisible != $0 }
+      .drive(onNext: { [unowned self] _ in self.delegate?.didTapChangeVisibility(coin) })
       .disposed(by: disposeBag)
   }
 }

@@ -3,37 +3,14 @@ import RxSwift
 import RxCocoa
 import SnapKit
 
-class FilterCoinsViewController: ModuleViewController<FilterCoinsPresenter>, UICollectionViewDelegateFlowLayout {
+class FilterCoinsViewController: NavigationScreenViewController<FilterCoinsPresenter>, UICollectionViewDelegateFlowLayout {
   
   var dataSource: FilterCoinsCollectionViewDataSource!
   
-  let backgroundImageView: UIImageView = {
-    let imageView = UIImageView(image: UIImage(named: "login_background"))
-    imageView.contentMode = .scaleAspectFill
-    imageView.clipsToBounds = true
-    return imageView
-  }()
-  
-  let safeAreaContainer = UIView()
-  
-  let backButton: UIButton = {
-    let button = UIButton()
-    button.setImage(UIImage(named: "back"), for: .normal)
-    return button
-  }()
-  
-  let titleLabel: UILabel = {
-    let label = UILabel()
-    label.text = localize(L.FilterCoins.title)
-    label.textColor = .white
-    label.font = .poppinsSemibold20
-    return label
-  }()
-  
   let collectionView: UICollectionView = {
     let layout = UICollectionViewFlowLayout()
+    layout.minimumLineSpacing = 0
     let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-    collectionView.contentInset = UIEdgeInsets(top: 25, left: 0, bottom: 25, right: 0)
     return collectionView
   }()
   
@@ -42,38 +19,18 @@ class FilterCoinsViewController: ModuleViewController<FilterCoinsPresenter>, UIC
   }
   
   override func setupUI() {
-    view.backgroundColor = .whiteThree
+    view.backgroundColor = .whiteTwo
     
-    view.addSubviews(backgroundImageView,
-                     safeAreaContainer,
-                     collectionView)
-    safeAreaContainer.addSubviews(backButton,
-                                  titleLabel)
+    customView.setTitle(localize(L.FilterCoins.title))
+    customView.addSubviews(collectionView)
     
     collectionView.backgroundColor = .clear
-
     collectionView.delegate = self
   }
   
   override func setupLayout() {
-    backgroundImageView.snp.makeConstraints {
-      $0.top.left.right.equalToSuperview()
-      $0.bottom.equalTo(view.safeAreaLayoutGuide.snp.top).offset(44)
-    }
-    safeAreaContainer.snp.makeConstraints {
-      $0.left.right.bottom.equalTo(backgroundImageView)
-      $0.top.equalTo(view.safeAreaLayoutGuide)
-    }
-    backButton.snp.makeConstraints {
-      $0.centerY.equalTo(titleLabel)
-      $0.left.equalToSuperview().offset(15)
-      $0.size.equalTo(45)
-    }
-    titleLabel.snp.makeConstraints {
-      $0.center.equalToSuperview()
-    }
     collectionView.snp.makeConstraints {
-      $0.top.equalTo(backgroundImageView.snp.bottom)
+      $0.top.equalTo(customView.backgroundImageView.snp.bottom)
       $0.left.right.bottom.equalToSuperview()
     }
   }
@@ -92,7 +49,7 @@ class FilterCoinsViewController: ModuleViewController<FilterCoinsPresenter>, UIC
   override func setupBindings() {
     setupUIBindings()
     
-    let backDriver = backButton.rx.tap.asDriver()
+    let backDriver = customView.backButton.rx.tap.asDriver()
     let changeVisibilityDriver = dataSource.changeVisibilityRelay.asDriver(onErrorDriveWith: .empty())
     
     presenter.bind(input: FilterCoinsPresenter.Input(back: backDriver,
@@ -102,7 +59,7 @@ class FilterCoinsViewController: ModuleViewController<FilterCoinsPresenter>, UIC
   func collectionView(_ collectionView: UICollectionView,
                       layout collectionViewLayout: UICollectionViewLayout,
                       sizeForItemAt indexPath: IndexPath) -> CGSize {
-    return CGSize(width: collectionView.bounds.width - 50, height: 80)
+    return CGSize(width: collectionView.bounds.width - 30, height: 80)
   }
   
 }

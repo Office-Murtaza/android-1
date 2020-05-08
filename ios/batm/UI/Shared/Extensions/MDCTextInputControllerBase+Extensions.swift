@@ -11,6 +11,7 @@ class ThemedTextInputControllerOutlined: MDCTextInputControllerOutlined {
     super.init(textInput: input)
     
     self.applyTheme(withScheme: MDCContainerScheme.default)
+    input?.font = .systemFont(ofSize: 18)
   }
   
 }
@@ -31,6 +32,7 @@ class ThemedTextInputControllerOutlinedTextArea: MDCTextInputControllerOutlinedT
     self.floatingPlaceholderActiveColor = MDCContainerScheme.default.colorScheme.primaryColor.withAlphaComponent(0.89)
     self.floatingPlaceholderNormalColor = MDCContainerScheme.default.colorScheme.onSurfaceColor.withAlphaComponent(0.6)
     input?.textColor = MDCContainerScheme.default.colorScheme.onSurfaceColor
+    input?.font = .systemFont(ofSize: 18)
   }
   
 }

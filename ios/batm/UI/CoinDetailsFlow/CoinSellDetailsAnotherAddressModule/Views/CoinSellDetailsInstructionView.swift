@@ -7,14 +7,12 @@ class CoinSellDetailsInstructionView: UIView {
   let numberLabel: UILabel = {
     let label = UILabel()
     label.textColor = .ceruleanBlue
-    label.font = .poppinsBold13
+    label.font = .systemFont(ofSize: 16, weight: .medium)
     return label
   }()
   
   let instructionLabel: UILabel = {
     let label = UILabel()
-    label.textColor = .warmGrey
-    label.font = .poppinsMedium13
     label.numberOfLines = 0
     return label
   }()
@@ -51,6 +49,14 @@ class CoinSellDetailsInstructionView: UIView {
   
   func configure(number: Int, text: String) {
     numberLabel.text = "\(number)."
-    instructionLabel.text = text
+    
+    let paragraphStyle = NSMutableParagraphStyle()
+    paragraphStyle.lineSpacing = 10
+    
+    let attributedString = NSAttributedString(string: text, attributes: [.foregroundColor: UIColor.warmGrey,
+                                                                         .font: UIFont.systemFont(ofSize: 16),
+                                                                         .paragraphStyle: paragraphStyle])
+    
+    instructionLabel.attributedText = attributedString
   }
 }

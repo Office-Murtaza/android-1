@@ -17,21 +17,18 @@ final class CoinExchangeFormView: UIView, UIPickerViewDelegate, UIPickerViewData
   let maxButton = MDCButton.max
   
   let fromCoinAmountTextField = MDCTextField.amount
-  let toCoinTextField = MDCTextField.dropdown
   
-  let toCoinPickerView: UIPickerView = {
-    let picker = UIPickerView()
-    picker.isHidden = true
-    return picker
-  }()
+  let toCoinTextFieldContainer = UIView()
+  let toCoinTextField = MDCTextField.dropdown
+  let fakeToCoinTextField = FakeTextField()
+  
+  let toCoinPickerView = UIPickerView()
   
   let toCoinAmountTextField: MDCTextField = {
     let textField = MDCTextField.amount
     textField.isEnabled = false
     return textField
   }()
-  
-  let toCoinTapRecognizer = UITapGestureRecognizer()
   
   let fromCoinAmountTextFieldController: MDCTextInputControllerOutlined
   let toCoinTextFieldController: MDCTextInputControllerOutlined
@@ -52,7 +49,6 @@ final class CoinExchangeFormView: UIView, UIPickerViewDelegate, UIPickerViewData
     
     setupUI()
     setupLayout()
-    setupBindings()
   }
   
   required init?(coder aDecoder: NSCoder) {
@@ -64,30 +60,34 @@ final class CoinExchangeFormView: UIView, UIPickerViewDelegate, UIPickerViewData
     
     addSubview(stackView)
     stackView.addArrangedSubviews(fromCoinAmountTextField,
-                                  toCoinTextField,
-                                  toCoinPickerView,
+                                  toCoinTextFieldContainer,
                                   toCoinAmountTextField)
+    
+    toCoinTextFieldContainer.addSubviews(toCoinTextField,
+                                         fakeToCoinTextField)
 
     fromCoinAmountTextField.setRightView(maxButton)
-    
-    toCoinTextField.addGestureRecognizer(toCoinTapRecognizer)
-    
-    toCoinPickerView.delegate = self
-    toCoinPickerView.dataSource = self
   }
   
   private func setupLayout() {
     stackView.snp.makeConstraints {
       $0.edges.equalToSuperview()
     }
+    toCoinTextField.snp.makeConstraints {
+      $0.edges.equalToSuperview()
+    }
+    fakeToCoinTextField.snp.makeConstraints {
+      $0.edges.equalToSuperview()
+    }
+    
+    setupPicker()
   }
   
-  private func setupBindings() {
-    toCoinTapRecognizer.rx.event
-      .asObservable()
-      .map { [toCoinPickerView] _ in !toCoinPickerView.isHidden }
-      .bind(to: toCoinPickerView.rx.isHidden)
-      .disposed(by: disposeBag)
+  func setupPicker() {
+    fakeToCoinTextField.inputView = toCoinPickerView
+    
+    toCoinPickerView.delegate = self
+    toCoinPickerView.dataSource = self
   }
   
   func configure(for coin: CoinType, and otherCoins: [CoinType]) {
@@ -115,9 +115,6 @@ final class CoinExchangeFormView: UIView, UIPickerViewDelegate, UIPickerViewData
 extension Reactive where Base == CoinExchangeFormView {
   var fromCoinAmountText: ControlProperty<String?> {
     return base.fromCoinAmountTextField.rx.text
-  }
-  var toCoinTap: Driver<Void> {
-    return base.toCoinTapRecognizer.rx.event.asDriver().map { _ in }
   }
   var toCoin: Binder<CoinType> {
     return Binder(base) { target, value in

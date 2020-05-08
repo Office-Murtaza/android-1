@@ -63,24 +63,6 @@ final class VerificationViewController: NavigationScreenViewController<Verificat
     
     presenter.state
       .asObservable()
-      .map { $0.pickerOption != .countries }
-      .bind(to: formView.countriesPickerView.rx.isHidden)
-      .disposed(by: disposeBag)
-    
-    presenter.state
-      .asObservable()
-      .map { $0.pickerOption != .provinces }
-      .bind(to: formView.provincesPickerView.rx.isHidden)
-      .disposed(by: disposeBag)
-      
-    presenter.state
-      .asObservable()
-      .map { $0.pickerOption != .cities }
-      .bind(to: formView.citiesPickerView.rx.isHidden)
-      .disposed(by: disposeBag)
-    
-    presenter.state
-      .asObservable()
       .map { $0.country }
       .bind(to: formView.countryTextField.rx.text)
       .disposed(by: disposeBag)
@@ -129,9 +111,6 @@ final class VerificationViewController: NavigationScreenViewController<Verificat
     
     Driver.merge(filePickerView.rx.select,
                  filePickerView.rx.remove,
-                 formView.rx.countryTap,
-                 formView.rx.provinceTap,
-                 formView.rx.cityTap,
                  formView.sendButton.rx.tap.asDriver())
       .drive(onNext: { [unowned self] in self.view.endEditing(true) })
       .disposed(by: disposeBag)
@@ -148,15 +127,10 @@ final class VerificationViewController: NavigationScreenViewController<Verificat
     let updateLastNameDriver = formView.lastNameTextField.rx.text.asDriver()
     let updateAddressDriver = formView.addressTextField.rx.text.asDriver()
     let updateZipCodeDriver = formView.zipCodeTextField.rx.text.asDriver()
-    let selectCountryDriver = formView.rx.countryTap
-    let selectProvinceDriver = formView.rx.provinceTap
-    let selectCityDriver = formView.rx.cityTap
-    let updatePickerItemDriver = formView.rx.selectPickerItem
+    let selectCountryDriver = formView.rx.selectCountry
+    let selectProvinceDriver = formView.rx.selectProvince
+    let selectCityDriver = formView.rx.selectCity
     let sendDriver = formView.sendButton.rx.tap.asDriver()
-    let tapOutsideDriver = customView.tapRecognizer.rx.event.asDriver().map { _ in }
-    let selectTypeableFieldDriver = Driver.merge(formView.typeableFields.map {
-      return $0.rx.controlEvent(.editingDidBegin).asDriver()
-    })
     
     presenter.bind(input: VerificationPresenter.Input(back: backDriver,
                                                       select: selectDriver,
@@ -165,13 +139,10 @@ final class VerificationViewController: NavigationScreenViewController<Verificat
                                                       updateFirstName: updateFirstNameDriver,
                                                       updateLastName: updateLastNameDriver,
                                                       updateAddress: updateAddressDriver,
-                                                      updateZipCode: updateZipCodeDriver,
                                                       selectCountry: selectCountryDriver,
                                                       selectProvince: selectProvinceDriver,
                                                       selectCity: selectCityDriver,
-                                                      updatePickerItem: updatePickerItemDriver,
-                                                      send: sendDriver,
-                                                      tapOutside: tapOutsideDriver,
-                                                      selectTypeableField: selectTypeableFieldDriver))
+                                                      updateZipCode: updateZipCodeDriver,
+                                                      send: sendDriver))
   }
 }

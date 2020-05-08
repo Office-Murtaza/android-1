@@ -7,7 +7,7 @@ class CoinSellDetailsInstructionsView: UIView {
   let stackView: UIStackView = {
     let stackView = UIStackView()
     stackView.axis = .vertical
-    stackView.spacing = 20
+    stackView.spacing = 25
     return stackView
   }()
   

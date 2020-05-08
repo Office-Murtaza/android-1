@@ -26,6 +26,11 @@ extension MDCButton {
   static var max: MDCButton {
     let button = MDCButton.text
     button.setTitle(localize(L.Shared.Button.max), for: .normal)
+    
+    button.snp.makeConstraints {
+      $0.width.equalTo(48)
+    }
+    
     return button
   }
   
@@ -57,13 +62,19 @@ extension MDCButton {
   
   static var next: MDCButton {
     let button = MDCButton.contained
-    button.setTitle(localize(L.CoinWithdraw.Button.next), for: .normal)
+    button.setTitle(localize(L.Shared.Button.next), for: .normal)
+    return button
+  }
+  
+  static var done: MDCButton {
+    let button = MDCButton.contained
+    button.setTitle(localize(L.Shared.Button.done), for: .normal)
     return button
   }
   
   static var copy: MDCButton {
-    let button = MDCButton.contained
-    button.set(image: UIImage(named: "copy"), title: localize(L.Shared.Button.copy))
+    let button = MDCButton.text
+    button.setTitle(localize(L.Shared.Button.copy), for: .normal)
     return button
   }
   

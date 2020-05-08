@@ -14,14 +14,11 @@ final class VerificationPresenter: ModulePresenter, VerificationModule {
     var updateFirstName: Driver<String?>
     var updateLastName: Driver<String?>
     var updateAddress: Driver<String?>
+    var selectCountry: Driver<String>
+    var selectProvince: Driver<String>
+    var selectCity: Driver<String>
     var updateZipCode: Driver<String?>
-    var selectCountry: Driver<Void>
-    var selectProvince: Driver<Void>
-    var selectCity: Driver<Void>
-    var updatePickerItem: Driver<String>
     var send: Driver<Void>
-    var tapOutside: Driver<Void>
-    var selectTypeableField: Driver<Void>
   }
   
   private let usecase: SettingsUsecase
@@ -72,30 +69,20 @@ final class VerificationPresenter: ModulePresenter, VerificationModule {
       .drive(onNext:{ [store] in store.action.accept(.updateAddress($0)) })
       .disposed(by: disposeBag)
     
+    input.selectCountry
+      .drive(onNext: { [store] in store.action.accept(.updateCountry($0)) })
+      .disposed(by: disposeBag)
+    
+    input.selectProvince
+      .drive(onNext: { [store] in store.action.accept(.updateProvince($0)) })
+      .disposed(by: disposeBag)
+    
+    input.selectCity
+      .drive(onNext: { [store] in store.action.accept(.updateCity($0)) })
+      .disposed(by: disposeBag)
+    
     input.updateZipCode
       .drive(onNext:{ [store] in store.action.accept(.updateZipCode($0)) })
-      .disposed(by: disposeBag)
-    
-    Driver.merge(input.selectCountry.map { VerificationPickerOption.countries },
-                 input.selectProvince.map { VerificationPickerOption.provinces },
-                 input.selectCity.map { VerificationPickerOption.cities })
-      .withLatestFrom(state) { ($1, $0) }
-      .drive(onNext: { [store] state, selectedPickerOption in
-        let newPickerOption = state.pickerOption == selectedPickerOption ? .none : selectedPickerOption
-        store.action.accept(.updatePickerOption(newPickerOption))
-      })
-      .disposed(by: disposeBag)
-    
-    input.updatePickerItem
-      .withLatestFrom(state) { ($1, $0) }
-      .drive(onNext: { [store] state, item in
-        switch state.pickerOption {
-        case .countries: store.action.accept(.updateCountry(item))
-        case .provinces: store.action.accept(.updateProvince(item))
-        case .cities: store.action.accept(.updateCity(item))
-        default: break
-        }
-      })
       .disposed(by: disposeBag)
     
     input.send
@@ -105,14 +92,6 @@ final class VerificationPresenter: ModulePresenter, VerificationModule {
       .filter { $0.validationState.isValid }
       .flatMap { [unowned self] in self.track(self.sendVerification(state: $0)) }
       .subscribe(onNext: { [delegate] in delegate?.didFinishVerification(with: $0) })
-      .disposed(by: disposeBag)
-    
-    Driver.merge(input.tapOutside,
-                 input.selectTypeableField,
-                 input.select,
-                 input.remove,
-                 input.send)
-      .drive(onNext: { [store] in store.action.accept(.updatePickerOption(.none)) })
       .disposed(by: disposeBag)
   }
   

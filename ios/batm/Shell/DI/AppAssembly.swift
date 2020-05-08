@@ -9,6 +9,7 @@ final class AppAssembly: Assembly {
     case pinCodeModule
     case testApiUrl
     case prodApiUrl
+    case apiUrl
   }
   
   func assemble(container: Container) {
@@ -21,6 +22,7 @@ final class AppAssembly: Assembly {
   private func assembleNetwork(container: Container) {
     container.register(URL.self, name: Keys.testApiUrl.rawValue) { _ in URL(string: "http://161.35.22.9/api/v1")! }
     container.register(URL.self, name: Keys.prodApiUrl.rawValue) { _ in URL(string: "https://prod.belcobtm.com/api/v1")! }
+    container.register(URL.self, name: Keys.apiUrl.rawValue) { ioc in ioc.resolve(URL.self, name: Keys.testApiUrl.rawValue)! }
     container.register(NetworkService.self) { (ioc, baseUrl: URL) in
       let provider = MoyaProvider<MultiTarget>()
       return NetworkService(baseApiUrl: baseUrl, provider: provider)
@@ -39,7 +41,7 @@ final class AppAssembly: Assembly {
       }
       .inObjectScope(.transient)
     container.register(RefreshCredentialsService.self) { ioc in
-      let apiUrl = ioc.resolve(URL.self, name: Keys.prodApiUrl.rawValue)!
+      let apiUrl = ioc.resolve(URL.self, name: Keys.apiUrl.rawValue)!
       let networkService = ioc.resolve(NetworkService.self, argument: apiUrl)!
       let accountStorage = ioc.resolve(AccountStorage.self)!
       let logoutUsecase = ioc.resolve(LogoutUsecase.self)!
@@ -48,7 +50,7 @@ final class AppAssembly: Assembly {
                                            logoutUsecase: logoutUsecase)
       }.inObjectScope(.container)
     container.register(APIGateway.self) { ioc in
-      let apiUrl = ioc.resolve(URL.self, name: Keys.prodApiUrl.rawValue)!
+      let apiUrl = ioc.resolve(URL.self, name: Keys.apiUrl.rawValue)!
       let networkService = ioc.resolve(NetworkRequestExecutor.self, argument: apiUrl)!
       return APIGatewayImpl(networkProvider: networkService)
       } .inObjectScope(.container)
