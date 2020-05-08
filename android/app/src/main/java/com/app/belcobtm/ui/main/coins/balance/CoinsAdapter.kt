@@ -25,25 +25,19 @@ class CoinsAdapter(
             val item = mCoinsList[position]
 
             val coinImageId = when (item.coinId) {
-                "ETH" -> R.drawable.ic_eth_logo
-                "BCH" -> R.drawable.ic_bch_logo
-                "LTC" -> R.drawable.ic_ltc_logo
-                "BNB" -> R.drawable.ic_bnb_logo
-                "TRX" -> R.drawable.ic_trx_logo
-                "XRP" -> R.drawable.ic_xrp_logo
-                else -> R.drawable.ic_bit_logo
+                "ETH" -> R.drawable.ic_coin_ethereum
+                "BCH" -> R.drawable.ic_coin_bitcoin_cash
+                "LTC" -> R.drawable.ic_coin_litecoin
+                "BNB" -> R.drawable.ic_coin_binance
+                "TRX" -> R.drawable.ic_coin_tron
+                "XRP" -> R.drawable.ic_coin_ripple
+                else -> R.drawable.ic_coin_bitcoin
             }
             holder.itemView.coin_image.setImageResource(coinImageId)
             holder.itemView.coin_name.text = item.fullCoinName
-
-
-
             holder.itemView.coin_balance.text = "${item.balance.toStringCoin()} ${item.coinId}"
-
             holder.itemView.coin_price.text = "USD ${item.price?.uSD}"
-            holder.itemView.coin_container.setOnClickListener {
-                mOnCoinClickListener.onCoinClick(item, mCoinsList)
-            }
+            holder.itemView.coin_container.setOnClickListener { mOnCoinClickListener.onCoinClick(item, mCoinsList) }
         }
 
     }

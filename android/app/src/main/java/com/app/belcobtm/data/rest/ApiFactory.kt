@@ -5,7 +5,7 @@ import com.app.belcobtm.data.rest.interceptor.AuthAuthenticator
 import com.app.belcobtm.data.rest.interceptor.ResponseInterceptor
 import com.app.belcobtm.data.rest.settings.SettingsApi
 import com.app.belcobtm.data.rest.wallet.WalletApi
-import com.app.belcobtm.data.shared.preferences.SharedPreferencesHelper
+import com.app.belcobtm.data.disk.shared.preferences.SharedPreferencesHelper
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient

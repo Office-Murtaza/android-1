@@ -2,7 +2,7 @@ package com.app.belcobtm.ui.main.main_activity
 
 import android.preference.PreferenceManager
 import com.app.belcobtm.App
-import com.app.belcobtm.data.shared.preferences.SharedPreferencesHelper
+import com.app.belcobtm.data.disk.shared.preferences.SharedPreferencesHelper
 import com.app.belcobtm.mvp.BaseMvpPresenterImpl
 
 
@@ -22,4 +22,6 @@ class MainPresenter : BaseMvpPresenterImpl<MainContract.View>(),
             else -> mView?.onPinNotSaved()
         }
     }
+
+    override fun isApiSeedEmpty() = prefsHelper.apiSeed.isEmpty()
 }

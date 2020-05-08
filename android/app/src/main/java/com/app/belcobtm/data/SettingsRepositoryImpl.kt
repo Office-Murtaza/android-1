@@ -3,7 +3,7 @@ package com.app.belcobtm.data
 import com.app.belcobtm.data.core.NetworkUtils
 import com.app.belcobtm.data.disk.AssetsDataStore
 import com.app.belcobtm.data.rest.settings.SettingsApiService
-import com.app.belcobtm.data.shared.preferences.SharedPreferencesHelper
+import com.app.belcobtm.data.disk.shared.preferences.SharedPreferencesHelper
 import com.app.belcobtm.domain.Either
 import com.app.belcobtm.domain.Failure
 import com.app.belcobtm.domain.settings.SettingsRepository

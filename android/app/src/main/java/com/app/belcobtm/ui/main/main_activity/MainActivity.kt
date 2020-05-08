@@ -5,6 +5,8 @@ import android.os.Bundle
 import android.view.MenuItem
 import androidx.fragment.app.Fragment
 import com.app.belcobtm.R
+import com.app.belcobtm.domain.authorization.interactor.ClearAppDataUseCase
+import com.app.belcobtm.domain.wallet.interactor.GetCoinListUseCase
 import com.app.belcobtm.mvp.BaseMvpActivity
 import com.app.belcobtm.presentation.features.authorization.pin.PinActivity
 import com.app.belcobtm.presentation.features.authorization.welcome.WelcomeActivity
@@ -14,19 +16,30 @@ import com.app.belcobtm.ui.main.coins.balance.BalanceFragment
 import com.app.belcobtm.ui.main.settings.SettingsFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.activity_main.*
+import org.koin.android.ext.android.inject
 
-class MainActivity : BaseMvpActivity<MainContract.View, MainContract.Presenter>(),
-    MainContract.View
-    , BottomNavigationView.OnNavigationItemSelectedListener {
-
+class MainActivity : BaseMvpActivity<MainContract.View, MainContract.Presenter>(), MainContract.View,
+    BottomNavigationView.OnNavigationItemSelectedListener {
+    private val coinListUseCase: GetCoinListUseCase by inject()
+    private val clearAppDataUseCase: ClearAppDataUseCase by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        coinListUseCase.invoke {
+            if (it.isEmpty() && !mPresenter.isApiSeedEmpty()) {
+                clearAppDataUseCase.invoke {
+                    launchData()
+                }
+            } else {
+                launchData()
+            }
+        }
+    }
+
+    private fun launchData() {
         mPresenter.checkPinEntered()
-
         bottom_bar.setOnNavigationItemSelectedListener(this)
-
         setFragment(BalanceFragment())
     }
 

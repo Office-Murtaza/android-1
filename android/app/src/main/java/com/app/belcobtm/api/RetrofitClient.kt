@@ -3,8 +3,7 @@ package com.app.belcobtm.api
 import android.preference.PreferenceManager
 import com.app.belcobtm.App
 import com.app.belcobtm.data.rest.ApiFactory
-import com.app.belcobtm.data.shared.preferences.SharedPreferencesHelper
-import com.facebook.stetho.okhttp3.StethoInterceptor
+import com.app.belcobtm.data.disk.shared.preferences.SharedPreferencesHelper
 import com.google.gson.Gson
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -45,7 +44,6 @@ class RetrofitClient private constructor() {
             .connectTimeout(60, TimeUnit.SECONDS)
             .readTimeout(60, TimeUnit.SECONDS)
             .addInterceptor(ErrorInterceptor())
-            .addNetworkInterceptor(StethoInterceptor())
             .addInterceptor { chain ->
                 val request = chain.request().newBuilder()
                     .addHeader("Content-Type", "application/json")

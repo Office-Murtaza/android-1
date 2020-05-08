@@ -1,6 +1,6 @@
 package com.app.belcobtm.api.model.response
 
-import com.app.belcobtm.domain.wallet.CoinFeeDataItem
+import com.app.belcobtm.domain.wallet.item.CoinFeeDataItem
 import java.io.Serializable
 
 data class GetCoinFeeResponse(
@@ -12,11 +12,12 @@ data class GetCoinFeeResponse(
     val serverWalletAddress: String
 ) : Serializable
 
-fun GetCoinFeeResponse.toDataItem(): CoinFeeDataItem = CoinFeeDataItem(
-    txFee = txFee,
-    profitC2C = profitC2C,
-    byteFee = byteFee ?: 0.0,
-    gasPrice = gasPrice ?: 0.0,
-    gasLimit = gasLimit ?: 0.0,
-    serverWalletAddress = serverWalletAddress
-)
+fun GetCoinFeeResponse.toDataItem(): CoinFeeDataItem =
+    CoinFeeDataItem(
+        txFee = txFee,
+        profitC2C = profitC2C,
+        byteFee = byteFee ?: 0.0,
+        gasPrice = gasPrice ?: 0.0,
+        gasLimit = gasLimit ?: 0.0,
+        serverWalletAddress = serverWalletAddress
+    )

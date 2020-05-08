@@ -43,7 +43,7 @@ interface ApiInterface {
     @GET("user/{userId}/coins/balance")
     fun getCoins(
         @Path("userId") userId: String,
-        @Query("coins") coins: ArrayList<String>
+        @Query("coins") coins: List<String>
     ): Observable<ServerResponse<GetCoinsResponse>>
 
     @GET("user/{userId}/coins/fee")

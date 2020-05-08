@@ -9,6 +9,7 @@ import com.app.belcobtm.presentation.features.settings.verification.blank.Verifi
 import com.app.belcobtm.presentation.features.settings.verification.info.VerificationInfoViewModel
 import com.app.belcobtm.presentation.features.settings.verification.vip.VerificationVipViewModel
 import com.app.belcobtm.presentation.features.wallet.IntentCoinItem
+import com.app.belcobtm.presentation.features.wallet.add.AddWalletViewModel
 import com.app.belcobtm.presentation.features.wallet.exchange.coin.to.coin.ExchangeCoinToCoinViewModel
 import org.koin.android.viewmodel.dsl.viewModel
 import org.koin.dsl.module
@@ -25,4 +26,5 @@ val viewModelModule = module {
         val feeMap = (get() as GetCoinFeeMapUseCase).getCoinFeeMap()[intentCoinItem.coinCode]
         ExchangeCoinToCoinViewModel(feeMap!!, intentCoinItem, intentCoinItemArrayList, get(), get())
     }
+    viewModel { AddWalletViewModel(get(), get()) }
 }

@@ -6,6 +6,7 @@ import com.app.belcobtm.domain.settings.interactor.GetVerificationInfoUseCase
 import com.app.belcobtm.domain.settings.interactor.SendVerificationBlankUseCase
 import com.app.belcobtm.domain.settings.interactor.SendVerificationVipUseCase
 import com.app.belcobtm.domain.wallet.interactor.*
+import com.app.belcobtm.presentation.features.wallet.add.AddWalletViewModel
 import org.koin.dsl.module
 
 val useCaseModule = module {
@@ -28,4 +29,9 @@ val useCaseModule = module {
     single { GetGiftAddressUseCase(get()) }
     single { SendGiftUseCase(get()) }
     single { SendSmsToDeviceUseCase(get()) }
+    single { VerifySmsCodeUseCase(get()) }
+    single { SellPreSubmitUseCase(get()) }
+    single { SellGetLimitsUseCase(get()) }
+    single { GetCoinListUseCase(get()) }
+    single { UpdateCoinUseCase(get()) }
 }

@@ -6,12 +6,8 @@ import io.reactivex.Observable
 
 class CoinsDataManager : BaseDataManager() {
 
-    fun getCoins(userId: String, coins: ArrayList<String>): Observable<Optional<GetCoinsResponse>> {
+    fun getCoins(userId: String, coins: List<String>): Observable<Optional<GetCoinsResponse>> {
         return genObservable(api.getCoins(userId, coins))
-    }
-
-    fun getCoinsFee(userId: String): Observable<Optional<GetCoinsFeeOldResponse>> {
-        return genObservable(api.getCoinsFee(userId))
     }
 
     fun getCoinFee(coinId: String): Observable<Optional<GetCoinFeeResponse>> {

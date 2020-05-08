@@ -12,13 +12,13 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.AppCompatEditText
 import com.app.belcobtm.R
 import com.app.belcobtm.mvp.BaseMvpActivity
-import com.app.belcobtm.ui.auth.seed.SeedPhraseActivity
+import com.app.belcobtm.presentation.core.helper.AlertHelper
 import com.app.belcobtm.presentation.features.authorization.welcome.WelcomeActivity
+import com.app.belcobtm.ui.auth.seed.SeedPhraseActivity
 import com.app.belcobtm.ui.main.coins.settings.check_pass.CheckPassContract
 import com.google.android.material.textfield.TextInputLayout
 import kotlinx.android.synthetic.main.activity_check_pass.*
 import kotlinx.android.synthetic.main.activity_unlink.toolbar
-import org.jetbrains.anko.toast
 
 class CheckPassActivity : BaseMvpActivity<CheckPassContract.View, CheckPassContract.Presenter>(),
     CheckPassContract.View {
@@ -174,7 +174,7 @@ class CheckPassActivity : BaseMvpActivity<CheckPassContract.View, CheckPassContr
     }
 
     override fun onSmsConfirmed() {
-        toast("Phone changed")
+        AlertHelper.showToastShort(this, "Phone changed")
         finish()
     }
 
