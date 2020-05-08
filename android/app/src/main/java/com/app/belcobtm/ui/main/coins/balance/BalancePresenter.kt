@@ -33,24 +33,19 @@ class BalancePresenter : BaseMvpDIPresenterImpl<BalanceContract.View, CoinsDataM
     override fun requestCoins() {
         if (prefsHelper.apiSeed.isNotEmpty()) {
             mView?.showProgress(true)
-            coinListUseCase.invoke(Unit) { either ->
-                either.either({
-                    checkError(it)
-                    mView?.showProgress(false)
-                }, { coinList ->
-                    val userId = prefsHelper.userId.toString()
-                    val visibleCoinsNames = coinList.filter { it.isEnabled }.map { it.type.name }
-                    mDataManager.getCoins(userId, visibleCoinsNames)
-                        .subscribe({ response: Optional<GetCoinsResponse> ->
-                            mView?.showProgress(false)
-                            balance = response.value!!.totalBalance.uSD
-                            coinsList.clear()
-                            coinsList.addAll(response.value!!.coins)
-                            mView?.notifyData()
-                        }, { error: Throwable ->
-                            checkError(error)
-                        })
-                })
+            coinListUseCase.invoke { coinList ->
+                val userId = prefsHelper.userId.toString()
+                val visibleCoinsNames = coinList.filter { it.isEnabled }.map { it.type.name }
+                mDataManager.getCoins(userId, visibleCoinsNames)
+                    .subscribe({ response: Optional<GetCoinsResponse> ->
+                        mView?.showProgress(false)
+                        balance = response.value!!.totalBalance.uSD
+                        coinsList.clear()
+                        coinsList.addAll(response.value!!.coins)
+                        mView?.notifyData()
+                    }, { error: Throwable ->
+                        checkError(error)
+                    })
             }
         }
     }

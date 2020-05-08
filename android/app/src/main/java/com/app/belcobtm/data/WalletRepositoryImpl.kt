@@ -25,8 +25,8 @@ class WalletRepositoryImpl(
 ) : WalletRepository {
     override fun getCoinFeeMap(): Map<String, CoinFeeDataItem> = prefHelper.coinsFee
 
-    override suspend fun getCoinList(): Either<Failure, List<CoinDataItem>> =
-        Either.Right((daoCoin.getItemList() ?: emptyList()).map { it.mapToDataItem() })
+    override suspend fun getCoinList(): List<CoinDataItem> =
+        (daoCoin.getItemList() ?: emptyList()).map { it.mapToDataItem() }
 
     override suspend fun updateCoin(dataItem: CoinDataItem): Either<Failure, Unit> {
         daoCoin.updateItem(dataItem.mapToEntity())

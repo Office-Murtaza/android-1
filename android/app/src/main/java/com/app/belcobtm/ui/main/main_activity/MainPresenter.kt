@@ -22,4 +22,6 @@ class MainPresenter : BaseMvpPresenterImpl<MainContract.View>(),
             else -> mView?.onPinNotSaved()
         }
     }
+
+    override fun isApiSeedEmpty() = prefsHelper.apiSeed.isEmpty()
 }

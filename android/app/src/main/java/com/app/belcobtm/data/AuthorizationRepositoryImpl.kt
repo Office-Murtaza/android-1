@@ -20,13 +20,14 @@ class AuthorizationRepositoryImpl(
     private val daoCoin: CoinDao
 ) : AuthorizationRepository {
 
-    override suspend fun clearAppData(): Either<Failure, Unit> {
+    override suspend fun clearAppData(): Unit {
         prefHelper.accessToken = ""
         prefHelper.refreshToken = ""
+        prefHelper.apiSeed = ""
         prefHelper.userPin = ""
         prefHelper.userId = -1
         daoCoin.clearTable()
-        return Either.Right(Unit)
+        return Unit
     }
 
     override suspend fun recoverWallet(

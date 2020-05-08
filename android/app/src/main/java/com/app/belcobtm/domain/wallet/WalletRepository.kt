@@ -10,7 +10,7 @@ import com.app.belcobtm.domain.wallet.item.SellPreSubmitDataItem
 interface WalletRepository {
     fun getCoinFeeMap(): Map<String, CoinFeeDataItem>
 
-    suspend fun getCoinList(): Either<Failure, List<CoinDataItem>>
+    suspend fun getCoinList(): List<CoinDataItem>
 
     suspend fun updateCoin(dataItem: CoinDataItem): Either<Failure, Unit>
 

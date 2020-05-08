@@ -16,20 +16,15 @@ class AddWalletViewModel(
     private val coinDataList: MutableList<CoinDataItem> = mutableListOf()
 
     init {
-        coinListUseCase.invoke(Unit) { either ->
-            either.either(
-                { /* empty */ },
-                { result ->
-                    coinDataList.addAll(result)
-                    coinListLiveData.value = coinDataList.map {
-                        AddWalletCoinItem(
-                            getCoinResIconByType(it.type.name),
-                            getCoinResNameByType(it.type.name),
-                            it.isEnabled
-                        )
-                    }
-                }
-            )
+        coinListUseCase.invoke { result ->
+            coinDataList.addAll(result)
+            coinListLiveData.value = coinDataList.map {
+                AddWalletCoinItem(
+                    getCoinResIconByType(it.type.name),
+                    getCoinResNameByType(it.type.name),
+                    it.isEnabled
+                )
+            }
         }
     }
 

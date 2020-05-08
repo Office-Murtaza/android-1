@@ -7,6 +7,7 @@ import com.app.belcobtm.mvp.BaseMvpView
 object MainContract {
     interface Presenter : BaseMvpPresenter<View> {
         fun checkPinEntered()
+        fun isApiSeedEmpty():Boolean
     }
 
     interface View : BaseMvpView {
