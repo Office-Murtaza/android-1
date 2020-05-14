@@ -24,10 +24,24 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import org.web3j.crypto.Credentials;
+import org.web3j.crypto.WalletUtils;
+import org.web3j.protocol.Web3j;
+import org.web3j.protocol.core.DefaultBlockParameterName;
+import org.web3j.protocol.core.DefaultBlockParameterNumber;
+import org.web3j.protocol.core.Request;
+import org.web3j.protocol.core.methods.request.Transaction;
+import org.web3j.protocol.core.methods.response.EthBlockNumber;
+import org.web3j.protocol.core.methods.response.EthCall;
+import org.web3j.protocol.core.methods.response.EthGetBalance;
+import org.web3j.protocol.core.methods.response.Web3Sha3;
+import org.web3j.protocol.http.HttpService;
 import org.web3j.utils.Numeric;
 import wallet.core.jni.EthereumSigner;
 import wallet.core.jni.PrivateKey;
 import wallet.core.jni.proto.Ethereum;
+
+import javax.annotation.PostConstruct;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.*;
@@ -53,21 +67,39 @@ public class GethService {
     private MongoTemplate mongo;
 
     @Value("${eth.node.url}")
-    private String nodeUrl;
+    private String ethNodeUrl;
+
+    @Value("${catm.node.url}")
+    private String catmNodeUrl;
 
     @Value("${eth.explorer.url}")
     private String ethExplorerUrl;
 
+    @Value("${catm.explorer.url}")
+    private String catmExplorerUrl;
+
     @Value("${eth.node.store.enabled:false}")
     private Boolean storeEnabled;
 
-    @Scheduled(cron = "0 */10 * * * *") // every 10 minutes
+    @Value("${catm.contract.address}")
+    private String contractAddress;
+
+    private Web3j web3;
+
+    @PostConstruct
+    public void init() {
+        web3 = Web3j.build(new HttpService(ethNodeUrl));
+    }
+
+    //@Scheduled(cron = "0 */10 * * * *") // every 10 minutes
     public void storeTxs() {
         long start = System.currentTimeMillis();
 
         if (storeEnabled) {
             GethBlock block = mongo.exists(new Query(), GethBlock.class) ? mongo.findOne(new Query(), GethBlock.class) : new GethBlock(START_BLOCK);
             BigInteger lastBlockNumber = getLastBlockNumber();
+
+            System.out.println("### timestamp: " + System.currentTimeMillis() + ", lastBlockNumber: " + lastBlockNumber);
 
             if (block.getLastSuccessBlock() < lastBlockNumber.intValue()) {
                 List<GethTx> gethTxs = new ArrayList<>();
@@ -101,29 +133,48 @@ public class GethService {
                                 .build());
                     }
 
-                    mongo.remove(new Query(Criteria.where("blockNumber").is(i)), GethTx.class);
+                    //mongo.remove(new Query(Criteria.where("blockNumber").is(i)), GethTx.class);
                 }
 
                 mongo.insertAll(gethTxs);
 
                 mongo.upsert(new Query(), new Update().set("lastSuccessBlock", toBlockNumber), GethBlock.class);
 
-                System.out.println("**** storeTxs: " + (System.currentTimeMillis() - start));
+
+                //System.out.println("**** storeTxs: " + (System.currentTimeMillis() - start));
             }
         }
     }
 
     public BigDecimal getBalance(String address) {
         try {
-            JSONObject req = new JSONObject();
-            req.put("jsonrpc", "2.0");
-            req.put("method", "eth_getBalance");
-            req.put("params", JSONArray.fromObject("[\"" + address + "\", \"latest\"]"));
-            req.put("id", 1);
+            EthGetBalance getBalance = web3.ethGetBalance(address, DefaultBlockParameterName.LATEST).send();
 
-            JSONObject res = rest.postForObject(nodeUrl, req, JSONObject.class);
+//            JSONObject req = new JSONObject();
+//            req.put("jsonrpc", "2.0");
+//            req.put("method", "eth_getBalance");
+//            req.put("params", JSONArray.fromObject("[\"" + address + "\", \"latest\"]"));
+//            req.put("id", 1);
+//
+//            JSONObject res = rest.postForObject(nodeUrl, req, JSONObject.class);
 
-            return new BigDecimal(Numeric.toBigInt(res.optString("result"))).divide(Constant.ETH_DIVIDER);
+            return new BigDecimal(getBalance.getBalance()).divide(Constant.ETH_DIVIDER);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return BigDecimal.ZERO;
+    }
+
+    public BigDecimal getTokenBalance(String address) {
+        try {
+            String res = web3.web3Sha3("balanceOf(address)").send().getResult();
+            String data = res.substring(2, 8) + "000000000000000000000000" + Numeric.cleanHexPrefix(address);
+            Transaction tr = Transaction.createEthCallTransaction(null, contractAddress, data);
+
+            BigDecimal balanceWei = new BigDecimal(Numeric.decodeQuantity(web3.ethCall(tr, DefaultBlockParameterName.LATEST).send().getValue()));
+
+            return balanceWei.divide(Constant.ETH_DIVIDER);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -139,7 +190,7 @@ public class GethService {
             req.put("params", JSONArray.fromObject("[\"" + hex + "\"]"));
             req.put("id", 1);
 
-            JSONObject res = rest.postForObject(nodeUrl, req, JSONObject.class);
+            JSONObject res = rest.postForObject(ethNodeUrl, req, JSONObject.class);
 
             return res.optString("result");
         } catch (Exception e) {
@@ -157,7 +208,7 @@ public class GethService {
             req.put("params", new JSONArray());
             req.put("id", 73);
 
-            JSONObject res = rest.postForObject(nodeUrl, req, JSONObject.class);
+            JSONObject res = rest.postForObject(ethNodeUrl, req, JSONObject.class);
 
             return Numeric.toBigInt(res.optString("result")).longValue();
         } catch (Exception e) {
@@ -183,7 +234,7 @@ public class GethService {
             req.put("params", JSONArray.fromObject("[\"" + address + "\", \"latest\"]"));
             req.put("id", 1);
 
-            JSONObject res = rest.postForObject(nodeUrl, req, JSONObject.class);
+            JSONObject res = rest.postForObject(ethNodeUrl, req, JSONObject.class);
 
             return Numeric.toBigInt(res.optString("result")).intValue();
         } catch (Exception e) {
@@ -326,7 +377,7 @@ public class GethService {
             req.put("params", new JSONArray());
             req.put("id", 1);
 
-            JSONObject res = rest.postForObject(nodeUrl, req, JSONObject.class);
+            JSONObject res = rest.postForObject(ethNodeUrl, req, JSONObject.class);
 
             return Numeric.toBigInt(res.optString("result"));
         } catch (Exception e) {
@@ -344,7 +395,7 @@ public class GethService {
             req.put("params", JSONArray.fromObject("[\"" + Numeric.toHexStringWithPrefix(blockNumber) + "\", true]"));
             req.put("id", 1);
 
-            JSONObject res = rest.postForObject(nodeUrl, req, JSONObject.class);
+            JSONObject res = rest.postForObject(ethNodeUrl, req, JSONObject.class);
 
             return res.optJSONObject("result");
         } catch (Exception e) {
@@ -362,7 +413,7 @@ public class GethService {
             req.put("params", JSONArray.fromObject("[\"" + txId + "\"]"));
             req.put("id", 1);
 
-            JSONObject res = rest.postForObject(nodeUrl, req, JSONObject.class);
+            JSONObject res = rest.postForObject(ethNodeUrl, req, JSONObject.class);
 
             return res.optJSONObject("result");
         } catch (Exception e) {
@@ -380,7 +431,7 @@ public class GethService {
             req.put("params", JSONArray.fromObject("[\"" + txId + "\"]"));
             req.put("id", 1);
 
-            JSONObject res = rest.postForObject(nodeUrl, req, JSONObject.class);
+            JSONObject res = rest.postForObject(ethNodeUrl, req, JSONObject.class);
 
             return res.optJSONObject("result");
         } catch (Exception e) {

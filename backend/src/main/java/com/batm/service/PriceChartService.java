@@ -1,7 +1,6 @@
 package com.batm.service;
 
 import com.batm.dto.*;
-import com.batm.dto.CoinPriceDTO;
 import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
@@ -32,38 +31,30 @@ public class PriceChartService {
     @Scheduled(cron = "0 0 */1 * * *") // every 1 hour
     public void storePriceChart() {
         Arrays.stream(CoinService.CoinEnum.values()).forEach(coinEnum -> {
-            String coinCode = coinEnum.name().toLowerCase();
-
-            CoinPriceDTO coinPrice = new CoinPriceDTO();
-            coinPrice.setPrice(coinEnum.getPrice());
-            coinPrice.setTimestamp(System.currentTimeMillis());
-
-            mongo.getCollection("price_day_" + coinCode).createIndex(new Document("timestamp", 1));
-            mongo.getCollection("price_week_" + coinCode).createIndex(new Document("timestamp", 1));
-            mongo.getCollection("price_month_" + coinCode).createIndex(new Document("timestamp", 1));
-            mongo.getCollection("price_three_months_" + coinCode).createIndex(new Document("timestamp", 1));
-            mongo.getCollection("price_year_" + coinCode).createIndex(new Document("timestamp", 1));
+            String coin = coinEnum.name().toLowerCase();
 
             Document doc = new Document();
-            mongo.getConverter().write(coinPrice, doc);
-            long count = mongo.getCollection("price_day_" + coinCode).countDocuments();
+            doc.put("price", coinEnum.getPrice());
+            doc.put("timestamp", System.currentTimeMillis());
 
-            mongo.getCollection("price_day_" + coinCode).insertOne(doc);
+            long count = mongo.getCollection("price_day_" + coin).countDocuments();
+
+            mongo.getCollection("price_day_" + coin).insertOne(doc);
 
             if (count % (7 * 24) == 0) {
-                mongo.getCollection("price_week_" + coinCode).insertOne(doc);
+                mongo.getCollection("price_week_" + coin).insertOne(doc);
             }
 
             if (count % (30 * 24) == 0) {
-                mongo.getCollection("price_month_" + coinCode).insertOne(doc);
+                mongo.getCollection("price_month_" + coin).insertOne(doc);
             }
 
             if (count % (90 * 24) == 0) {
-                mongo.getCollection("price_three_months_" + coinCode).insertOne(doc);
+                mongo.getCollection("price_three_months_" + coin).insertOne(doc);
             }
 
             if (count % (365 * 24) == 0) {
-                mongo.getCollection("price_year_" + coinCode).insertOne(doc);
+                mongo.getCollection("price_year_" + coin).insertOne(doc);
             }
         });
     }

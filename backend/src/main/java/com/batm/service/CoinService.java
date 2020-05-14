@@ -100,7 +100,7 @@ public class CoinService {
                 .collect(Collectors.toList());
 
         BigDecimal totalBalance = Util.format2(balances.stream()
-                .map(it -> it.getPrice().getUsd().multiply(it.getBalance()))
+                .map(it -> it.getPrice().getUsd().multiply(it.getBalance().add(it.getReservedBalance())))
                 .reduce(BigDecimal.ZERO, BigDecimal::add));
 
         return new BalanceDTO(userId, new AmountDTO(totalBalance), balances);

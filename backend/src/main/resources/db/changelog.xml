@@ -227,4 +227,11 @@
                  splitStatements="true"
                  stripComments="true"/>
     </changeSet>
+    <changeSet id="33" author="Kostya" failOnError="false">
+        <sqlFile encoding="utf8"
+                 endDelimiter=";"
+                 path="db/insert/insert_CATM_in_coin.sql"
+                 splitStatements="true"
+                 stripComments="true"/>
+    </changeSet>
 </databaseChangeLog>

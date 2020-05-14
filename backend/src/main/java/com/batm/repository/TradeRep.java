@@ -9,7 +9,7 @@ public interface TradeRep extends JpaRepository<Trade, Long> {
 
     Integer countTradeByType(Integer type);
 
-    List<Trade> findByTypeOrderByMarginAsc(Integer type, Pageable page);
+    List<Trade> findAllByTypeOrderByMarginAsc(Integer type, Pageable page);
 
-    List<Trade> findByTypeOrderByMarginDesc(Integer type, Pageable page);
+    List<Trade> findAllByTypeOrderByMarginDesc(Integer type, Pageable page);
 }

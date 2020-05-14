@@ -372,20 +372,22 @@ public class TransactionService {
     }
 
     public TradeListDTO getTrades(Long userId, CoinService.CoinEnum coinCode, Integer type, Integer index) {
+        int page = index / 10;
+
         if (type == null) {
             TradeListDTO dto = new TradeListDTO();
             dto.setBuyTotal(tradeRep.countTradeByType(TradeType.BUY.getValue()));
-            List<Trade> buyTrades = tradeRep.findByTypeOrderByMarginAsc(type, PageRequest.of(index % 10, 10));
+            List<Trade> buyTrades = tradeRep.findAllByTypeOrderByMarginAsc(TradeType.BUY.getValue(), PageRequest.of(page, 10));
             dto.setBuyTrades(getTradeDetailsList(buyTrades, coinCode, index));
 
             dto.setSellTotal(tradeRep.countTradeByType(TradeType.SELL.getValue()));
-            List<Trade> sellTrades = tradeRep.findByTypeOrderByMarginDesc(type, PageRequest.of(index % 10, 10));
+            List<Trade> sellTrades = tradeRep.findAllByTypeOrderByMarginDesc(TradeType.SELL.getValue(), PageRequest.of(page, 10));
             dto.setSellTrades(getTradeDetailsList(sellTrades, coinCode, index));
 
             return dto;
         } else {
             if (type == TradeType.BUY.getValue()) {
-                List<Trade> trades = tradeRep.findByTypeOrderByMarginAsc(type, PageRequest.of(index % 10, 10));
+                List<Trade> trades = tradeRep.findAllByTypeOrderByMarginAsc(type, PageRequest.of(page, 10));
 
                 TradeListDTO dto = new TradeListDTO();
                 dto.setBuyTotal(tradeRep.countTradeByType(type));
@@ -393,7 +395,7 @@ public class TransactionService {
 
                 return dto;
             } else if (type == TradeType.SELL.getValue()) {
-                List<Trade> trades = tradeRep.findByTypeOrderByMarginDesc(type, PageRequest.of(index % 10, 10));
+                List<Trade> trades = tradeRep.findAllByTypeOrderByMarginDesc(type, PageRequest.of(page, 10));
 
                 TradeListDTO dto = new TradeListDTO();
                 dto.setSellTotal(tradeRep.countTradeByType(type));
@@ -656,7 +658,7 @@ public class TransactionService {
             TradeDetailsDTO details = new TradeDetailsDTO();
             details.setId(trade.getId());
             details.setIndex(index + i);
-            details.setPublicId(trade.getIdentity().getExternalId());
+            details.setPublicId(trade.getIdentity().getPublicId());
             details.setTradeCount(50);
             details.setRate(100);
             details.setDistance(2);
