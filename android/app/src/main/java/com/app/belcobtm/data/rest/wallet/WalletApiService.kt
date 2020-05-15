@@ -10,6 +10,7 @@ import com.app.belcobtm.domain.Either
 import com.app.belcobtm.domain.Failure
 import com.app.belcobtm.domain.wallet.item.SellLimitsDataItem
 import com.app.belcobtm.domain.wallet.item.SellPreSubmitDataItem
+import com.app.belcobtm.domain.wallet.item.TradeInfoDataItem
 
 class WalletApiService(
     private val api: WalletApi,
@@ -162,6 +163,14 @@ class WalletApiService(
         ).await()
 
         request.body()?.let { Either.Right(Unit) } ?: Either.Left(Failure.ServerError())
+    } catch (failure: Failure) {
+        failure.printStackTrace()
+        Either.Left(failure)
+    }
+
+    suspend fun getTradeInfo(): Either<Failure, TradeInfoDataItem> = try {
+        val request = api.getTradeInfoAsync(prefHelper.userId).await()
+        request.body()?.let { Either.Right(it.mapToDataItem()) } ?: Either.Left(Failure.ServerError())
     } catch (failure: Failure) {
         failure.printStackTrace()
         Either.Left(failure)

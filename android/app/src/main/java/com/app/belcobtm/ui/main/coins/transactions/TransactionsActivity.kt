@@ -16,6 +16,7 @@ import com.app.belcobtm.presentation.core.extensions.toStringUsd
 import com.app.belcobtm.presentation.features.wallet.IntentCoinItem
 import com.app.belcobtm.presentation.features.wallet.deposit.DepositActivity
 import com.app.belcobtm.presentation.features.wallet.exchange.coin.to.coin.ExchangeCoinToCoinActivity
+import com.app.belcobtm.presentation.features.wallet.trade.TradeActivity
 import com.app.belcobtm.ui.main.coins.sell.SellActivity
 import com.app.belcobtm.ui.main.coins.send_gift.SendGiftActivity
 import com.app.belcobtm.ui.main.coins.withdraw.WithdrawActivity
@@ -195,6 +196,8 @@ class TransactionsActivity : BaseMvpActivity<TransactionsContract.View, Transact
                     mCoin.price.uSD,
                     mCoin.balance * mCoin.price.uSD,
                     mCoin.balance,
+                    mCoin.reservedBalance,
+                    mCoin.reservedBalance * mCoin.price.uSD,
                     mCoin.coinId,
                     mCoin.publicKey
                 )
@@ -204,6 +207,27 @@ class TransactionsActivity : BaseMvpActivity<TransactionsContract.View, Transact
                 coinArray.addAll(intentCoinItemList)
                 intent.putExtra(ExchangeCoinToCoinActivity.TAG_COIN_ITEM, intentCoinItem)
                 intent.putParcelableArrayListExtra(ExchangeCoinToCoinActivity.TAG_COIN_ITEM_LIST, coinArray)
+                startActivity(intent)
+            } else {
+                showMessage("In progress. Only BTC, BCH, XRP, ETH, BNB and LTC withdraw available")
+            }
+            fabMenuView.close(false)
+        }
+
+        tradeButtonView.setOnClickListener {
+            if (isCorrectCoinId()) {
+                val intentCoinItem = IntentCoinItem(
+                    mCoin.price.uSD,
+                    mCoin.balance * mCoin.price.uSD,
+                    mCoin.balance,
+                    mCoin.reservedBalance,
+                    mCoin.reservedBalance * mCoin.price.uSD,
+                    mCoin.coinId,
+                    mCoin.publicKey
+                )
+
+                val intent = Intent(this, TradeActivity::class.java)
+                intent.putExtra(TradeActivity.TAG_COIN_ITEM, intentCoinItem)
                 startActivity(intent)
             } else {
                 showMessage("In progress. Only BTC, BCH, XRP, ETH, BNB and LTC withdraw available")
@@ -270,6 +294,8 @@ class TransactionsActivity : BaseMvpActivity<TransactionsContract.View, Transact
                     it.price.uSD,
                     it.balance * it.price.uSD,
                     it.balance,
+                    it.reservedBalance,
+                    it.reservedBalance * it.price.uSD,
                     it.coinId,
                     it.publicKey
                 )

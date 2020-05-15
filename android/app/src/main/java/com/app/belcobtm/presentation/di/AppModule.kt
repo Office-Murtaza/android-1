@@ -11,6 +11,7 @@ import com.app.belcobtm.presentation.features.settings.verification.vip.Verifica
 import com.app.belcobtm.presentation.features.wallet.IntentCoinItem
 import com.app.belcobtm.presentation.features.wallet.add.AddWalletViewModel
 import com.app.belcobtm.presentation.features.wallet.exchange.coin.to.coin.ExchangeCoinToCoinViewModel
+import com.app.belcobtm.presentation.features.wallet.trade.TradeViewModel
 import org.koin.android.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
@@ -27,4 +28,7 @@ val viewModelModule = module {
         ExchangeCoinToCoinViewModel(feeMap!!, intentCoinItem, intentCoinItemArrayList, get(), get())
     }
     viewModel { AddWalletViewModel(get(), get()) }
+    viewModel { (intentCoinItem: IntentCoinItem) ->
+        TradeViewModel(intentCoinItem, get())
+    }
 }

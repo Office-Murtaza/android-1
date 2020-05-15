@@ -1,10 +1,7 @@
 package com.app.belcobtm.data.rest.wallet
 
 import com.app.belcobtm.data.rest.wallet.request.*
-import com.app.belcobtm.data.rest.wallet.response.GetGiftAddressResponse
-import com.app.belcobtm.data.rest.wallet.response.LimitsResponse
-import com.app.belcobtm.data.rest.wallet.response.SellPreSubmitResponse
-import com.app.belcobtm.data.rest.wallet.response.SendSmsCodeResponse
+import com.app.belcobtm.data.rest.wallet.response.*
 import com.app.belcobtm.data.rest.wallet.response.hash.*
 import kotlinx.coroutines.Deferred
 import okhttp3.ResponseBody
@@ -60,6 +57,11 @@ interface WalletApi {
         @Path("coinCode") coinFrom: String,
         @Body request: CoinToCoinExchangeRequest
     ): Deferred<Response<ResponseBody>>
+
+    @GET("user/{userId}/coins/BTC/transactions/trade")
+    fun getTradeInfoAsync(
+        @Path("userId") userId: Int
+    ): Deferred<Response<TradeInfoResponse>>
 
     @GET("user/{userId}/code/send")
     fun sendSmsCodeAsync(

@@ -9,11 +9,8 @@ import com.app.belcobtm.data.disk.shared.preferences.SharedPreferencesHelper
 import com.app.belcobtm.data.rest.wallet.WalletApiService
 import com.app.belcobtm.domain.Either
 import com.app.belcobtm.domain.Failure
-import com.app.belcobtm.domain.wallet.item.CoinDataItem
-import com.app.belcobtm.domain.wallet.item.CoinFeeDataItem
 import com.app.belcobtm.domain.wallet.WalletRepository
-import com.app.belcobtm.domain.wallet.item.SellLimitsDataItem
-import com.app.belcobtm.domain.wallet.item.SellPreSubmitDataItem
+import com.app.belcobtm.domain.wallet.item.*
 import com.app.belcobtm.presentation.core.extensions.CoinTypeExtension
 
 class WalletRepositoryImpl(
@@ -170,4 +167,11 @@ class WalletRepositoryImpl(
     } else {
         Either.Left(Failure.NetworkConnection)
     }
+
+    override suspend fun getTradeInformation(): Either<Failure, TradeInfoDataItem> =
+        if (networkUtils.isNetworkAvailable()) {
+            apiService.getTradeInfo()
+        } else {
+            Either.Left(Failure.NetworkConnection)
+        }
 }

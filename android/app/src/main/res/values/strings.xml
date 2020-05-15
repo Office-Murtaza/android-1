@@ -257,10 +257,6 @@
     <string name="sell_screen_instructions_2">Wait a few minutes before your payment is confirmed. You will receive an SMS when cash withdrawal is ready.</string>
     <string name="sell_screen_instructions_3">On the ATM choose REDEEM TICKET.</string>
     <string name="sell_screen_instructions_4">Scan QR code from transaction details popup.</string>
-<!--    <string name="sell_screen_"></string>-->
-<!--    <string name="sell_screen_"></string>-->
-
-
 
     <!-- Send gift screen -->
     <string name="send_gift_screen_price">Price</string>
@@ -286,14 +282,22 @@
     <!-- Deposit -->
     <string name="deposit_screen_title">Deposit %1$s</string>
 
+    <!-- Deposit -->
+    <string name="trade_screen_title">Trade %1$s</string>
+    <string name="trade_screen_price">Price</string>
+    <string name="trade_screen_balance">Balance</string>
+    <string name="trade_screen_reserved">Reserved</string>
+    <string name="trade_screen_tab_trades_buy">Buy trades</string>
+    <string name="trade_screen_tab_trades_sell">Sell trades</string>
+    <string name="trade_screen_tab_trades_open">Open trades</string>
+    <!--    <string name="trade_screen_"></string>-->
+    <!--    <string name="trade_screen_"></string>-->
 
 
     <string name="unit_usd">Usd</string>
     <string name="button_next">Next</string>
 
     <string name="alert_copy_to_clipboard">Copied</string>
-
-
 
 
     <string name="coin_name_bitcoin">Bitcoin</string>
