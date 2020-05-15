@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import com.batm.model.Response;
 import wallet.core.jni.CoinType;
+
 import java.math.BigDecimal;
 
 @RestController
@@ -22,10 +23,7 @@ public class TestController {
     private WalletService walletService;
 
     @Autowired
-    private PriceChartService priceChart;
-
-    @Autowired
-    private GethService gethService;
+    private GethService geth;
 
     @GetMapping("/sms")
     public Response sendSMS(@RequestParam String phone) {
@@ -38,11 +36,6 @@ public class TestController {
         res.put("code", messageService.getVerificationCode(userId));
 
         return Response.ok(res);
-    }
-
-    @GetMapping("/price/{coinCode}")
-    public Response getPrice(@PathVariable CoinService.CoinEnum coinCode) {
-        return Response.ok(coinCode.getPrice());
     }
 
     @GetMapping("/wallet")
@@ -60,37 +53,26 @@ public class TestController {
         return Response.ok(res);
     }
 
-    @GetMapping("/wallet/{coinType}/new")
-    public Response getNewWalletAddresses(@PathVariable CoinType coinType) {
-        JSONObject res = new JSONObject();
-
-        for (int i = 0; i < 10; i++) {
-            String path = walletService.getPath(coinType);
-            String newPath = walletService.generateNewPath(path, i);
-
-            res.put(newPath, walletService.generateNewAddress(coinType, newPath));
-        }
-
-        return Response.ok(res);
-    }
-
     @GetMapping("/wallet/{coinCode}/sign")
     public Response sign(@PathVariable CoinService.CoinEnum coinCode, @RequestParam String toAddress, @RequestParam BigDecimal amount) {
         return Response.ok(coinCode.sign(coinCode.getWalletAddress(), toAddress, amount));
     }
 
-    @GetMapping("/coins/store-price-chart")
-    public Response storePriceChart() {
-        priceChart.storePriceChart();
+    @GetMapping("/coins/store-eth-txs")
+    public Response storeEthTxs() {
+        geth.storeEthTxs();
 
         return Response.ok(true);
     }
 
-    @GetMapping("/coins/store-txs")
-    public Response storeTxs() {
-        gethService.storeTxs();
+    @GetMapping("/coins/exists")
+    public Response exists(@RequestParam String fromAddress, @RequestParam String toAddress) {
+        return Response.ok(geth.existsInJournal(fromAddress, toAddress));
+    }
 
-        return Response.ok(true);
+    @GetMapping("/coins/token-balance")
+    public Response getTokenBalance(@RequestParam String address) {
+        return Response.ok(geth.getTokenBalance(address));
     }
 
     @GetMapping("/user/{userId}/kyc/delete")

@@ -2,20 +2,16 @@ package com.batm.service;
 
 import com.batm.dto.*;
 import org.bson.Document;
+import org.bson.types.Decimal128;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -37,37 +33,62 @@ public class PriceChartService {
             doc.put("price", coinEnum.getPrice());
             doc.put("timestamp", System.currentTimeMillis());
 
-            long count = mongo.getCollection("price_day_" + coin).countDocuments();
+            long count = mongo.getCollection(getPriceDayColl(coin)).countDocuments();
 
-            mongo.getCollection("price_day_" + coin).insertOne(doc);
+            mongo.getCollection(getPriceDayColl(coin)).insertOne(doc);
 
             if (count % (7 * 24) == 0) {
-                mongo.getCollection("price_week_" + coin).insertOne(doc);
+                mongo.getCollection(getPriceWeekColl(coin)).insertOne(doc);
             }
 
             if (count % (30 * 24) == 0) {
-                mongo.getCollection("price_month_" + coin).insertOne(doc);
+                mongo.getCollection(getPriceMonthColl(coin)).insertOne(doc);
             }
 
             if (count % (90 * 24) == 0) {
-                mongo.getCollection("price_three_months_" + coin).insertOne(doc);
+                mongo.getCollection(getPrice3MonthColl(coin)).insertOne(doc);
             }
 
             if (count % (365 * 24) == 0) {
-                mongo.getCollection("price_year_" + coin).insertOne(doc);
+                mongo.getCollection(getPriceYearColl(coin)).insertOne(doc);
             }
         });
     }
 
-    @Cacheable(cacheNames = {"priceChart"}, key = "coin")
+    //@Cacheable(cacheNames = {"priceChart"}, key = "coin")
     public CoinPriceListDTO fetchCoinPrices(String coin) {
-        Query query = new Query().with(new Sort(Sort.Direction.DESC, "timestamp")).limit(24);
+        Document sort = new Document("timestamp", 1);
+        int limit = 24;
 
-        List<CoinPriceDTO> dayCoinPrice = mongo.find(query, CoinPriceDTO.class, "price_day_" + coin);
-        List<CoinPriceDTO> weekCoinPrice = mongo.find(query, CoinPriceDTO.class, "price_week_" + coin);
-        List<CoinPriceDTO> monthCoinPrice = mongo.find(query, CoinPriceDTO.class, "price_month_" + coin);
-        List<CoinPriceDTO> threeMonthsCoinPrice = mongo.find(query, CoinPriceDTO.class, "price_three_months_" + coin);
-        List<CoinPriceDTO> yearCoinPrice = mongo.find(query, CoinPriceDTO.class, "price_year_" + coin);
+        List<Document> dayCoinPrice = mongo.getCollection(getPriceDayColl(coin))
+                .find()
+                .sort(sort)
+                .limit(limit)
+                .into(new ArrayList<>());
+
+        List<Document> weekCoinPrice = mongo.getCollection(getPriceWeekColl(coin))
+                .find()
+                .sort(sort)
+                .limit(limit)
+                .into(new ArrayList<>());
+
+        List<Document> monthCoinPrice = mongo.getCollection(getPriceMonthColl(coin))
+                .find()
+                .sort(sort)
+                .limit(limit)
+                .into(new ArrayList<>());
+
+        List<Document> threeMonthsCoinPrice = mongo.getCollection(getPrice3MonthColl(coin))
+                .find()
+                .sort(sort)
+                .limit(limit)
+                .into(new ArrayList<>());
+
+        List<Document> yearCoinPrice = mongo.getCollection(getPriceYearColl(coin))
+                .find()
+                .sort(sort)
+                .limit(limit)
+                .into(new ArrayList<>());
 
         return CoinPriceListDTO.builder()
                 .dayCoinPrices(dayCoinPrice)
@@ -117,10 +138,30 @@ public class PriceChartService {
         }
     }
 
-    private LinkedList<BigDecimal> extractPriceValues(List<CoinPriceDTO> list) {
+    private LinkedList<BigDecimal> extractPriceValues(List<Document> list) {
         return list.size() > 1 ? list.stream()
-                .sorted(Comparator.comparing(CoinPriceDTO::getTimestamp))
-                .map(it -> it.getPrice())
+                .sorted(Comparator.comparingLong(it -> it.getLong("timestamp")))
+                .map(it -> it.get("price", Decimal128.class).bigDecimalValue())
                 .collect(Collectors.toCollection(LinkedList::new)) : new LinkedList<>();
+    }
+
+    private String getPriceDayColl(String coin) {
+        return "price_day_" + coin;
+    }
+
+    private String getPriceWeekColl(String coin) {
+        return "price_week_" + coin;
+    }
+
+    private String getPriceMonthColl(String coin) {
+        return "price_month_" + coin;
+    }
+
+    private String getPrice3MonthColl(String coin) {
+        return "price_three_months_" + coin;
+    }
+
+    private String getPriceYearColl(String coin) {
+        return "price_year_" + coin;
     }
 }

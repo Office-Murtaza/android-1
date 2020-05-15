@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import wallet.core.jni.CoinType;
+
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -122,12 +123,12 @@ public class CoinService {
         return coinList.stream().filter(e -> e.getCode().equalsIgnoreCase(coinCode)).findFirst().get();
     }
 
-    public void save(CoinDTO coinVM, Long userId) {
+    public void save(CoinDTO dto, Long userId) {
         User user = userService.findById(userId);
         List<UserCoin> userCoins = userService.getUserCoins(userId);
-
         List<UserCoin> newCoins = new ArrayList<>();
-        coinVM.getCoins().stream().forEach(coinDTO -> {
+
+        dto.getCoins().stream().forEach(coinDTO -> {
             Coin coin = getCoin(coinDTO.getCode());
 
             if (coin != null) {
@@ -135,6 +136,10 @@ public class CoinService {
 
                 if (userCoins.indexOf(userCoin) < 0) {
                     newCoins.add(userCoin);
+                }
+
+                if (CoinEnum.valueOf(coinDTO.getCode()) == CoinEnum.ETH) {
+                    geth.addAddressToJournal(coinDTO.getAddress());
                 }
             }
         });
@@ -271,7 +276,7 @@ public class CoinService {
 
             @Override
             public BigDecimal getBalance(String address) {
-                return geth.getBalance(address);
+                return geth.getEthBalance(address);
             }
 
             @Override
