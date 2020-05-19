@@ -16,6 +16,7 @@
         android:id="@+id/statusView"
         android:layout_width="10dp"
         android:layout_height="10dp"
+        android:visibility="gone"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -31,15 +32,36 @@
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/paymentMethodView"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
         android:textColor="#8d8d8d"
         android:textSize="13sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/barrierView"
         app:layout_constraintStart_toStartOf="@id/userNameView"
         app:layout_constraintTop_toBottomOf="@id/userNameView"
         tools:text="User bank" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tradeTypeView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:background="@drawable/bg_rounded_blue"
+        android:paddingStart="4dp"
+        android:paddingTop="2dp"
+        android:paddingEnd="4dp"
+        android:paddingBottom="2dp"
+        android:textAllCaps="true"
+        android:textColor="@android:color/white"
+        android:textSize="10sp"
+        android:textStyle="bold"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/paymentMethodView"
+        app:layout_constraintStart_toEndOf="@id/paymentMethodView"
+        app:layout_constraintTop_toTopOf="@id/paymentMethodView"
+        tools:ignore="SmallSp"
+        tools:text="sell" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/priceView"
@@ -58,9 +80,9 @@
         android:layout_height="wrap_content"
         android:textColor="#8d8d8d"
         android:textSize="13sp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/paymentMethodView"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/priceView"
+        app:layout_constraintTop_toTopOf="@id/paymentMethodView"
         tools:text="1000 - 10000 usd" />
 
     <androidx.constraintlayout.widget.Barrier

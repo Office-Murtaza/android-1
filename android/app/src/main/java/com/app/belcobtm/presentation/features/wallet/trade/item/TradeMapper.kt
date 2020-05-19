@@ -10,3 +10,20 @@ fun TradeDataItem.mapToUiBuyItem(): TradeListItem.Buy = TradeListItem.Buy(
     price = price.toStringUsd(),
     priceLimit = "$minLimit - $maxLimit"
 )
+
+fun TradeDataItem.mapToUiSellItem(): TradeListItem.Sell = TradeListItem.Sell(
+    id = id,
+    userName = userName,
+    paymentMethod = paymentMethod,
+    price = price.toStringUsd(),
+    priceLimit = "$minLimit - $maxLimit"
+)
+
+fun TradeDataItem.mapToUiOpenItem(): TradeListItem.Open = TradeListItem.Open(
+    id = id,
+    userName = userName,
+    paymentMethod = paymentMethod,
+    price = price.toStringUsd(),
+    priceLimit = "$minLimit - $maxLimit",
+    isBuyType = true
+)

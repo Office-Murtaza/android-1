@@ -168,10 +168,16 @@ class WalletRepositoryImpl(
         Either.Left(Failure.NetworkConnection)
     }
 
-    override suspend fun getTradeInformation(): Either<Failure, TradeInfoDataItem> =
-        if (networkUtils.isNetworkAvailable()) {
+    override suspend fun getTradeInformation(
+        latitude: Double,
+        longitude: Double
+    ): Either<Failure, TradeInfoDataItem> = when {
+        !networkUtils.isNetworkAvailable() -> Either.Left(Failure.NetworkConnection)
+        (latitude > 0 || longitude > 0) && prefHelper.tradeLocationExpirationTime < System.currentTimeMillis() -> {
+            val locationRequest = apiService.sendTradeUserLocation(latitude, longitude)
+            prefHelper.tradeLocationExpirationTime = if (locationRequest.isRight) System.currentTimeMillis() else -1
             apiService.getTradeInfo()
-        } else {
-            Either.Left(Failure.NetworkConnection)
         }
+        else -> apiService.getTradeInfo()
+    }
 }

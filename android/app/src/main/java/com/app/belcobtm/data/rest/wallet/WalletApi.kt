@@ -35,7 +35,7 @@ interface WalletApi {
     fun sellGetLimitsAsync(
         @Path("userId") userId: Int,
         @Path("coinId") coinId: String
-    ):  Deferred<Response<LimitsResponse>>
+    ): Deferred<Response<LimitsResponse>>
 
     @POST("user/{userId}/coins/{coinId}/transactions/presubmit")
     fun sellPreSubmitAsync(
@@ -59,9 +59,15 @@ interface WalletApi {
     ): Deferred<Response<ResponseBody>>
 
     @GET("user/{userId}/coins/BTC/transactions/trade")
-    fun getTradeInfoAsync(
+    fun tradeGetInfoAsync(
         @Path("userId") userId: Int
     ): Deferred<Response<TradeInfoResponse>>
+
+    @POST("user/{userId}/location")
+    fun tradeSendUserLocationAsync(
+        @Path("userId") userId: Int,
+        @Body request: TradeLocationRequest
+    ): Deferred<Response<ResponseBody>>
 
     @GET("user/{userId}/code/send")
     fun sendSmsCodeAsync(

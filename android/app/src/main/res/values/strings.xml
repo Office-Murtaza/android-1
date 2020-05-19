@@ -290,11 +290,15 @@
     <string name="trade_screen_tab_trades_buy">Buy trades</string>
     <string name="trade_screen_tab_trades_sell">Sell trades</string>
     <string name="trade_screen_tab_trades_open">Open trades</string>
-    <!--    <string name="trade_screen_"></string>-->
+    <string name="trade_screen_empty">Empty</string>
+    <string name="trade_screen_recall">Recall</string>
+    <string name="trade_screen_reserve">Reserve</string>
+    <string name="trade_screen_post">Post</string>
     <!--    <string name="trade_screen_"></string>-->
 
 
     <string name="unit_usd">Usd</string>
+    <string name="unit_usd_dynamic">%1$s USD</string>
     <string name="button_next">Next</string>
 
     <string name="alert_copy_to_clipboard">Copied</string>

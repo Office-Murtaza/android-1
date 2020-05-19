@@ -6,6 +6,10 @@ import com.app.belcobtm.domain.UseCase
 import com.app.belcobtm.domain.wallet.WalletRepository
 import com.app.belcobtm.domain.wallet.item.TradeInfoDataItem
 
-class GetTradeInfoUseCase(private val repository: WalletRepository) : UseCase<TradeInfoDataItem, Unit>() {
-    override suspend fun run(params: Unit): Either<Failure, TradeInfoDataItem> = repository.getTradeInformation()
+class GetTradeInfoUseCase(private val repository: WalletRepository) :
+    UseCase<TradeInfoDataItem, GetTradeInfoUseCase.Params>() {
+    override suspend fun run(params: Params): Either<Failure, TradeInfoDataItem> =
+        repository.getTradeInformation(params.latitude, params.longitude)
+
+    data class Params(val latitude: Double, val longitude: Double)
 }

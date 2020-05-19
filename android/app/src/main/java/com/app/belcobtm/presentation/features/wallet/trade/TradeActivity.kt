@@ -2,9 +2,12 @@ package com.app.belcobtm.presentation.features.wallet.trade
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.MenuItem
 import androidx.lifecycle.Observer
 import com.app.belcobtm.R
 import com.app.belcobtm.domain.Failure
+import com.app.belcobtm.presentation.core.extensions.hide
+import com.app.belcobtm.presentation.core.extensions.show
 import com.app.belcobtm.presentation.core.extensions.toStringCoin
 import com.app.belcobtm.presentation.core.extensions.toStringUsd
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
@@ -17,7 +20,13 @@ import org.koin.android.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
 class TradeActivity : BaseActivity() {
-    private val viewModel: TradeViewModel by viewModel { parametersOf(intent.getParcelableExtra(TAG_COIN_ITEM)) }
+    private val viewModel: TradeViewModel by viewModel {
+        parametersOf(
+            intent.getDoubleExtra(TAG_LATITUDE, 0.0),
+            intent.getDoubleExtra(TAG_LONGITUDE, 0.0),
+            intent.getParcelableExtra(TAG_COIN_ITEM)
+        )
+    }
     private val tradePageAdapter = TradePageAdapter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -29,16 +38,45 @@ class TradeActivity : BaseActivity() {
         initViews()
     }
 
-    private fun initListeners() {}
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == android.R.id.home) {
+            onBackPressed()
+            return true
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
+    private fun initListeners() {
+        fabMenuView.setOnMenuToggleListener {
+            fabMenuView.isClickable = it
+            if (it) {
+                fabMenuView.setOnClickListener { fabMenuView.close(true) }
+            } else {
+                fabMenuView.setOnClickListener(null)
+                fabMenuView.isClickable = false
+                fabMenuView.isFocusable = false
+            }
+        }
+        recallButtonView.setOnClickListener {
+            fabMenuView.close(true)
+        }
+        reverseButtonView.setOnClickListener {
+            fabMenuView.close(true)
+        }
+        postButtonView.setOnClickListener {
+            fabMenuView.close(true)
+        }
+    }
 
     private fun initObservers() {
         viewModel.tradePageListLiveData.observe(this, Observer { loadingData ->
             when (loadingData) {
                 is LoadingData.Loading -> {
-                }//progressView.show()
+                    progressView.show()
+                }
                 is LoadingData.Success -> {
                     tradePageAdapter.setItemList(loadingData.data)
-//                    progressView.hide()
+                    progressView.hide()
                 }
                 is LoadingData.Error -> {
                     when (loadingData.errorType) {
@@ -47,7 +85,7 @@ class TradeActivity : BaseActivity() {
                         is Failure.NetworkConnection -> showError(R.string.error_internet_unavailable)
                         else -> showError(R.string.error_something_went_wrong)
                     }
-//                    progressView.hide()
+                    progressView.hide()
                 }
             }
         })
@@ -93,5 +131,7 @@ class TradeActivity : BaseActivity() {
 
     companion object {
         const val TAG_COIN_ITEM = "tag_coin_item"
+        const val TAG_LATITUDE = "tag_latitude"
+        const val TAG_LONGITUDE = "tag_longitude"
     }
 }

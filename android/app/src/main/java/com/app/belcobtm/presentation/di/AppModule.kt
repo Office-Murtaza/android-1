@@ -28,7 +28,7 @@ val viewModelModule = module {
         ExchangeCoinToCoinViewModel(feeMap!!, intentCoinItem, intentCoinItemArrayList, get(), get())
     }
     viewModel { AddWalletViewModel(get(), get()) }
-    viewModel { (intentCoinItem: IntentCoinItem) ->
-        TradeViewModel(intentCoinItem, get())
+    viewModel { (latitude: Double, longitude: Double, intentCoinItem: IntentCoinItem) ->
+        TradeViewModel(latitude, longitude, intentCoinItem, get())
     }
 }
