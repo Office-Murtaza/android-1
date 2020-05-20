@@ -13,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import wallet.core.jni.CoinType;
-
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -37,6 +36,7 @@ public class CoinService {
     private static BinanceService binance;
     private static RippledService rippled;
     private static TrongridService trongrid;
+    private static CacheService cache;
 
     private static String btcNodeUrl;
     private static String bchNodeUrl;
@@ -48,6 +48,7 @@ public class CoinService {
     public CoinService(@Autowired final WalletService walletService,
                        @Autowired final UserService userService,
                        @Autowired final CoinRep coinRep,
+                       @Autowired final CacheService cache,
 
                        @Autowired final BlockbookService blockbook,
                        @Autowired final GethService geth,
@@ -67,6 +68,7 @@ public class CoinService {
 
         CoinService.coinList = coinRep.findAll();
         CoinService.coinMap = CoinService.coinList.stream().collect(Collectors.toMap(Coin::getCode, Function.identity()));
+        CoinService.cache = cache;
 
         CoinService.blockbook = blockbook;
         CoinService.geth = geth;
@@ -84,7 +86,7 @@ public class CoinService {
     }
 
     private static BigDecimal getBinancePriceBySymbol(String symbol) {
-        return binance.getBinancePriceBySymbol(symbol);
+        return cache.getBinancePriceBySymbol(symbol);
     }
 
     public BalanceDTO getCoinsBalance(Long userId, List<String> coins) {
@@ -206,7 +208,7 @@ public class CoinService {
             }
 
             @Override
-            public NonceDTO getNonce(Long userId) {
+            public NonceDTO getNonce(String address) {
                 return null;
             }
 
@@ -296,12 +298,12 @@ public class CoinService {
 
             @Override
             public TransactionDetailsDTO getTransaction(String txId, String address) {
-                return geth.getTransaction(txId, address);
+                return geth.getEthTransaction(txId, address);
             }
 
             @Override
             public TransactionListDTO getTransactionList(String address, Integer startIndex, Integer limit, TxListDTO txDTO) {
-                return geth.getTransactionList(address, startIndex, limit, txDTO);
+                return geth.getEthTransactionList(address, startIndex, limit, txDTO);
             }
 
             @Override
@@ -310,14 +312,8 @@ public class CoinService {
             }
 
             @Override
-            public NonceDTO getNonce(Long userId) {
-                User user = userService.findById(userId);
-                String address = user.getCoinAddress(name());
-
-                NonceDTO nonceDTO = new NonceDTO();
-                nonceDTO.setNonce(geth.getNonce(address));
-
-                return nonceDTO;
+            public NonceDTO getNonce(String address) {
+                return new NonceDTO(geth.getEthNonce(address));
             }
 
             @Override
@@ -337,12 +333,12 @@ public class CoinService {
 
             @Override
             public String sign(String fromAddress, String toAddress, BigDecimal amount) {
-                return geth.sign(fromAddress, toAddress, amount);
+                return geth.ethSign(fromAddress, toAddress, amount);
             }
 
             @Override
             public String submitTransaction(String hex) {
-                return geth.submitTransaction(hex);
+                return geth.submitEthTransaction(hex);
             }
 
             @Override
@@ -352,7 +348,7 @@ public class CoinService {
 
             @Override
             public NodeTransactionsDTO getNodeTransactions(String address) {
-                return geth.getNodeTransactions(address);
+                return geth.getEthNodeTransactions(address);
             }
 
             @Override
@@ -375,6 +371,105 @@ public class CoinService {
             @Override
             public String getExplorerUrl() {
                 return geth.getEthExplorerUrl();
+            }
+        },
+        CATM {
+            @Override
+            public BigDecimal getPrice() {
+                return new BigDecimal("0.1");
+            }
+
+            @Override
+            public BigDecimal getBalance(String address) {
+                return geth.getTokenBalance(address);
+            }
+
+            @Override
+            public String getName() {
+                return "catm";
+            }
+
+            @Override
+            public TransactionNumberDTO getTransactionNumber(String address, BigDecimal amount, TransactionType type) {
+                return null;
+            }
+
+            @Override
+            public TransactionStatus getTransactionStatus(String txId) {
+                return getTransaction(txId, StringUtils.EMPTY).getStatus();
+            }
+
+            @Override
+            public TransactionDetailsDTO getTransaction(String txId, String address) {
+                return geth.getTokenTransaction(txId, address);
+            }
+
+            @Override
+            public TransactionListDTO getTransactionList(String address, Integer startIndex, Integer limit, TxListDTO txDTO) {
+                return geth.getTokenTransactionList(address, startIndex, limit, txDTO);
+            }
+
+            @Override
+            public UtxoDTO getUTXO(String xpub) {
+                return null;
+            }
+
+            @Override
+            public NonceDTO getNonce(String address) {
+                return new NonceDTO(geth.getTokenNonce(address));
+            }
+
+            @Override
+            public CurrentAccountDTO getCurrentAccount(Long userId) {
+                return null;
+            }
+
+            @Override
+            public CurrentBlockDTO getCurrentBlock() {
+                return null;
+            }
+
+            @Override
+            public String getWalletAddress() {
+                return walletService.getAddressETH();
+            }
+
+            @Override
+            public String sign(String fromAddress, String toAddress, BigDecimal amount) {
+                return geth.tokenSign(fromAddress, toAddress, amount);
+            }
+
+            @Override
+            public String submitTransaction(String hex) {
+                return geth.submitTokenTransaction(hex);
+            }
+
+            @Override
+            public CoinType getCoinType() {
+                return CoinEnum.ETH.getCoinType();
+            }
+
+            @Override
+            public NodeTransactionsDTO getNodeTransactions(String address) {
+                return geth.getTokenNodeTransactions(address);
+            }
+
+            @Override
+            public Coin getCoinEntity() {
+                return coinMap.get(name());
+            }
+
+            @Override
+            public CoinSettingsDTO getCoinSettings() {
+                CoinSettingsDTO dto = CoinEnum.ETH.getCoinSettings();
+                dto.setProfitC2C(getCoinEntity().getProfitC2C().stripTrailingZeros());
+
+                return dto;
+            }
+
+            @Override
+            public String getExplorerUrl() {
+                return geth.getTokenExplorerUrl();
             }
         },
         BCH {
@@ -419,7 +514,7 @@ public class CoinService {
             }
 
             @Override
-            public NonceDTO getNonce(Long userId) {
+            public NonceDTO getNonce(String address) {
                 return null;
             }
 
@@ -523,7 +618,7 @@ public class CoinService {
             }
 
             @Override
-            public NonceDTO getNonce(Long userId) {
+            public NonceDTO getNonce(String address) {
                 return null;
             }
 
@@ -627,7 +722,7 @@ public class CoinService {
             }
 
             @Override
-            public NonceDTO getNonce(Long userId) {
+            public NonceDTO getNonce(String address) {
                 return null;
             }
 
@@ -731,7 +826,7 @@ public class CoinService {
             }
 
             @Override
-            public NonceDTO getNonce(Long userId) {
+            public NonceDTO getNonce(String address) {
                 return null;
             }
 
@@ -843,7 +938,7 @@ public class CoinService {
             }
 
             @Override
-            public NonceDTO getNonce(Long userId) {
+            public NonceDTO getNonce(String address) {
                 return null;
             }
 
@@ -919,7 +1014,7 @@ public class CoinService {
 
         public abstract UtxoDTO getUTXO(String xpub);
 
-        public abstract NonceDTO getNonce(Long userId);
+        public abstract NonceDTO getNonce(String address);
 
         public abstract CurrentAccountDTO getCurrentAccount(Long userId);
 

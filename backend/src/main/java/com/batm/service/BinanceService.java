@@ -17,7 +17,6 @@ import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -58,11 +57,6 @@ public class BinanceService {
 
     @Value("${bnb.explorer.url}")
     private String explorerUrl;
-
-    @Cacheable(cacheNames = {"price"}, key = "symbol")
-    public BigDecimal getBinancePriceBySymbol(String symbol) {
-        return Util.convert(binanceRest.getPrice(symbol).getPrice());
-    }
 
     public BigDecimal getBalance(String address) {
         try {
@@ -109,9 +103,6 @@ public class BinanceService {
             dto.setCryptoAmount(getAmount(msg.optJSONObject("value").optJSONArray("inputs").getJSONObject(0).getJSONArray("coins").getJSONObject(0).optString("amount")));
             dto.setCryptoFee(getAmount("1000000"));
         } catch (Exception e) {
-            System.out.println(" ---- txId: " + txId);
-            System.out.println(" ---- address: " + address);
-
             e.printStackTrace();
         }
 

@@ -3,9 +3,7 @@ package com.batm.util;
 import org.apache.commons.lang.StringUtils;
 import org.bitcoinj.core.Sha256Hash;
 import org.spongycastle.util.encoders.Hex;
-
 import java.io.UnsupportedEncodingException;
-import java.math.BigInteger;
 
 public class Base58 {
 

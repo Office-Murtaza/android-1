@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import com.batm.model.Response;
 import wallet.core.jni.CoinType;
-
 import java.math.BigDecimal;
 
 @RestController
@@ -45,12 +44,18 @@ public class TestController {
         res.put("BTC", getCoinJson(walletService.getAddressBTC(), CoinService.CoinEnum.BTC.getBalance(walletService.getAddressBTC()), CoinType.BITCOIN.derivationPath()));
         res.put("BCH", getCoinJson(walletService.getAddressBCH(), CoinService.CoinEnum.BCH.getBalance(walletService.getAddressBCH()), CoinType.BITCOINCASH.derivationPath()));
         res.put("ETH", getCoinJson(walletService.getAddressETH(), CoinService.CoinEnum.ETH.getBalance(walletService.getAddressETH()), CoinType.ETHEREUM.derivationPath()));
+        res.put("CATM", getCoinJson(walletService.getAddressETH(), CoinService.CoinEnum.CATM.getBalance(walletService.getAddressETH()), CoinType.ETHEREUM.derivationPath()));
         res.put("LTC", getCoinJson(walletService.getAddressLTC(), CoinService.CoinEnum.LTC.getBalance(walletService.getAddressLTC()), CoinType.LITECOIN.derivationPath()));
         res.put("BNB", getCoinJson(walletService.getAddressBNB(), CoinService.CoinEnum.BNB.getBalance(walletService.getAddressBNB()), CoinType.BINANCE.derivationPath()));
         res.put("XRP", getCoinJson(walletService.getAddressXRP(), CoinService.CoinEnum.XRP.getBalance(walletService.getAddressXRP()), CoinType.XRP.derivationPath()));
         res.put("TRX", getCoinJson(walletService.getAddressTRX(), CoinService.CoinEnum.TRX.getBalance(walletService.getAddressTRX()), CoinType.TRON.derivationPath()));
 
         return Response.ok(res);
+    }
+
+    @GetMapping("/coins/{coinCode}/price")
+    public Response price(@PathVariable CoinService.CoinEnum coinCode) {
+        return Response.ok(coinCode.getPrice());
     }
 
     @GetMapping("/wallet/{coinCode}/sign")
@@ -60,7 +65,7 @@ public class TestController {
 
     @GetMapping("/coins/store-eth-txs")
     public Response storeEthTxs() {
-        geth.storeEthTxs();
+        geth.storeTxs();
 
         return Response.ok(true);
     }
@@ -73,6 +78,16 @@ public class TestController {
     @GetMapping("/coins/token-balance")
     public Response getTokenBalance(@RequestParam String address) {
         return Response.ok(geth.getTokenBalance(address));
+    }
+
+    @GetMapping("/coins/token-sign")
+    public Response tokenSign(@RequestParam String fromAddress, @RequestParam String toAddress, @RequestParam BigDecimal amount) {
+        return Response.ok(geth.tokenSign(fromAddress, toAddress, amount));
+    }
+
+    @GetMapping("/coins/token-submit")
+    public Response tokenSubmit(@RequestParam String hex) {
+        return Response.ok(geth.submitTokenTransaction(hex));
     }
 
     @GetMapping("/user/{userId}/kyc/delete")

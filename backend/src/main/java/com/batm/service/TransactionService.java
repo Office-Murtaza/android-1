@@ -658,14 +658,15 @@ public class TransactionService {
             TradeDetailsDTO details = new TradeDetailsDTO();
             details.setId(trade.getId());
             details.setIndex(index + i);
-            details.setPublicId(trade.getIdentity().getPublicId());
+            details.setUsername(trade.getIdentity().getPublicId());
             details.setTradeCount(50);
-            details.setRate(100);
+            details.setRate(new BigDecimal("4.5"));
             details.setDistance(2);
             details.setPrice(coinCode.getPrice().multiply(trade.getMargin().divide(new BigDecimal(100)).add(BigDecimal.ONE)));
             details.setPaymentMethod(trade.getPaymentMethod());
             details.setMinLimit(trade.getMinLimit());
             details.setMaxLimit(trade.getMaxLimit());
+            details.setTerms(trade.getTerms());
 
             list.add(details);
         }

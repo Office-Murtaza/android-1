@@ -34,10 +34,11 @@ import org.web3j.protocol.core.methods.response.*;
 import org.web3j.protocol.http.HttpService;
 import org.web3j.tx.gas.DefaultGasProvider;
 import org.web3j.utils.Numeric;
+import wallet.core.jni.EthereumAbiEncoder;
+import wallet.core.jni.EthereumAbiFunction;
 import wallet.core.jni.EthereumSigner;
 import wallet.core.jni.PrivateKey;
 import wallet.core.jni.proto.Ethereum;
-
 import javax.annotation.PostConstruct;
 import java.math.BigDecimal;
 import java.util.*;
@@ -50,7 +51,7 @@ public class GethService {
     private final long GAS_PRICE = 50_000_000_000L;
     private final long GAS_LIMIT = 50_000;
 
-    private final int START_BLOCK = 10_064_660;
+    private final int START_BLOCK = 10101010;
     private final int MAX_BLOCK_COUNT = 100;
 
     private final String ADDRESS_COLL = "eth_address";
@@ -131,7 +132,7 @@ public class GethService {
     }
 
     @Scheduled(cron = "0 */5 * * * *") // every 5 minutes
-    public void storeEthTxs() {
+    public void storeTxs() {
         try {
             if (storeEnabled) {
                 int lastSuccessBlock = mongo.getCollection(BLOCK_COLL).countDocuments() > 0 ?
@@ -254,9 +255,19 @@ public class GethService {
         return BigDecimal.ZERO;
     }
 
-    public String submitTransaction(String hex) {
+    public String submitEthTransaction(String hex) {
         try {
             return ethWeb3.ethSendRawTransaction(hex).send().getTransactionHash();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    public String submitTokenTransaction(String hex) {
+        try {
+            return tokenWeb3.ethSendRawTransaction(hex).send().getTransactionHash();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -282,7 +293,7 @@ public class GethService {
         return new BigDecimal(getGasPrice()).multiply(new BigDecimal(getGasLimit())).divide(Constant.ETH_DIVIDER).stripTrailingZeros();
     }
 
-    public Integer getNonce(String address) {
+    public Integer getEthNonce(String address) {
         try {
             return ethWeb3.ethGetTransactionCount(address, DefaultBlockParameterName.LATEST).send().getTransactionCount().intValue();
         } catch (Exception e) {
@@ -292,83 +303,41 @@ public class GethService {
         return null;
     }
 
-    public TransactionDetailsDTO getTransaction(String txId, String address) {
+    public Integer getTokenNonce(String address) {
         try {
-            Document txDoc = mongo.getCollection(ETH_TX_COLL).find(new Document("txId", txId)).first();
-
-            if (txDoc == null) {
-                return new TransactionDetailsDTO();
-            } else {
-                String fromAddress = txDoc.getString("fromAddress");
-                String toAddress = txDoc.getString("toAddress");
-
-                TransactionDetailsDTO dto = new TransactionDetailsDTO();
-                dto.setTxId(txId);
-                dto.setLink(ethExplorerUrl + "/" + txId);
-                dto.setType(TransactionType.getType(fromAddress, toAddress, address));
-                dto.setCryptoAmount(txDoc.get("amount", Decimal128.class).bigDecimalValue());
-                dto.setFromAddress(fromAddress);
-                dto.setToAddress(toAddress);
-                dto.setCryptoFee(txDoc.get("fee", Decimal128.class).bigDecimalValue());
-                dto.setStatus(TransactionStatus.COMPLETE);
-                dto.setDate2(new Date(txDoc.getLong("blockTime") * 1000));
-
-                return dto;
-            }
+            return tokenWeb3.ethGetTransactionCount(address, DefaultBlockParameterName.LATEST).send().getTransactionCount().intValue();
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        return new TransactionDetailsDTO();
+        return null;
     }
 
-    public TransactionListDTO getTransactionList(String address, Integer startIndex, Integer limit, TxListDTO txDTO) {
-        try {
-            Map<String, TransactionDetailsDTO> map = getNodeTransactions(address).getMap();
-
-            return TxUtil.buildTxs(map, startIndex, limit, txDTO);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return new TransactionListDTO();
+    public TransactionDetailsDTO getEthTransaction(String txId, String address) {
+        return getTransaction(ETH_TX_COLL, txId, address);
     }
 
-    public NodeTransactionsDTO getNodeTransactions(String address) {
-        try {
-            Map<String, TransactionDetailsDTO> map = new HashMap<>();
-
-            BasicDBList or = new BasicDBList();
-            or.add(new Document("fromAddress", address));
-            or.add(new Document("toAddress", address));
-
-            mongo.getCollection(ETH_TX_COLL).find(new Document("$or", or)).into(new ArrayList<>()).stream().forEach(d -> {
-                TransactionDetailsDTO dto = new TransactionDetailsDTO();
-
-                String fromAddress = d.getString("fromAddress");
-                String toAddress = d.getString("toAddress");
-
-                dto.setTxId(d.getString("txId"));
-                dto.setType(TransactionType.getType(fromAddress, toAddress, address));
-                dto.setCryptoAmount(d.get("amount", Decimal128.class).bigDecimalValue());
-                dto.setFromAddress(fromAddress);
-                dto.setToAddress(toAddress);
-                dto.setCryptoFee(d.get("fee", Decimal128.class).bigDecimalValue());
-                dto.setStatus(TransactionStatus.COMPLETE);
-                dto.setDate1(new Date(d.getLong("blockTime") * 1000));
-
-                map.put(d.getString("txId"), dto);
-            });
-
-            return new NodeTransactionsDTO(map);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return new NodeTransactionsDTO();
+    public TransactionDetailsDTO getTokenTransaction(String txId, String address) {
+        return getTransaction(TOKEN_TX_COLL, txId, address);
     }
 
-    public String sign(String fromAddress, String toAddress, BigDecimal amount) {
+    public TransactionListDTO getEthTransactionList(String address, Integer startIndex, Integer limit, TxListDTO txDTO) {
+        return getTransactionList(ETH_TX_COLL, address, startIndex, limit, txDTO);
+    }
+
+    public TransactionListDTO getTokenTransactionList(String address, Integer startIndex, Integer limit, TxListDTO txDTO) {
+        return getTransactionList(TOKEN_TX_COLL, address, startIndex, limit, txDTO);
+    }
+
+    public NodeTransactionsDTO getEthNodeTransactions(String address) {
+        return getNodeTransactions(ETH_TX_COLL, address);
+    }
+
+    public NodeTransactionsDTO getTokenNodeTransactions(String address) {
+        return getNodeTransactions(TOKEN_TX_COLL, address);
+    }
+
+    public String ethSign(String fromAddress, String toAddress, BigDecimal amount) {
         try {
             PrivateKey privateKey;
 
@@ -379,7 +348,7 @@ public class GethService {
                 privateKey = walletService.getWallet().getKey(path);
             }
 
-            Integer nonce = getNonce(fromAddress);
+            Integer nonce = getEthNonce(fromAddress);
             Ethereum.SigningInput.Builder builder = Ethereum.SigningInput.newBuilder();
 
             builder.setPrivateKey(ByteString.copyFrom(Numeric.hexStringToByteArray(Numeric.toHexStringNoPrefix(privateKey.data()))));
@@ -389,6 +358,46 @@ public class GethService {
             builder.setGasPrice(ByteString.copyFrom(Numeric.hexStringToByteArray(Long.toHexString(getGasPrice()))));
             builder.setGasLimit(ByteString.copyFrom(Numeric.hexStringToByteArray(Long.toHexString(getGasLimit()))));
             builder.setAmount(ByteString.copyFrom(Numeric.hexStringToByteArray(Long.toHexString(amount.multiply(Constant.ETH_DIVIDER).longValue()))));
+
+            Ethereum.SigningOutput output = EthereumSigner.sign(builder.build());
+
+            return Numeric.toHexString(output.getEncoded().toByteArray());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    public String tokenSign(String fromAddress, String toAddress, BigDecimal amount) {
+        try {
+            PrivateKey privateKey;
+
+            if (walletService.isServerAddress(fromAddress)) {
+                privateKey = walletService.getPrivateKeyETH();
+            } else {
+                String path = walletService.getPath(fromAddress);
+                privateKey = walletService.getWallet().getKey(path);
+            }
+
+            Integer nonce = getTokenNonce(fromAddress);
+            Ethereum.SigningInput.Builder builder = Ethereum.SigningInput.newBuilder();
+
+            builder.setPrivateKey(ByteString.copyFrom(Numeric.hexStringToByteArray(Numeric.toHexStringNoPrefix(privateKey.data()))));
+            builder.setToAddress(contractAddress);
+            builder.setChainId(ByteString.copyFrom(Numeric.hexStringToByteArray("1")));
+            builder.setNonce(ByteString.copyFrom(Numeric.hexStringToByteArray(Integer.toHexString(nonce))));
+            builder.setGasPrice(ByteString.copyFrom(Numeric.hexStringToByteArray(Long.toHexString(getGasPrice()))));
+            builder.setGasLimit(ByteString.copyFrom(Numeric.hexStringToByteArray(Long.toHexString(getGasLimit()))));
+            builder.setAmount(ByteString.copyFrom(Numeric.hexStringToByteArray(Long.toHexString(0L))));
+
+            EthereumAbiFunction function = EthereumAbiEncoder.buildFunction("transfer");
+            byte[] amountBytes = amount.multiply(Constant.ETH_DIVIDER).toBigInteger().toByteArray();
+            function.addParamAddress(Numeric.hexStringToByteArray(toAddress), false);
+            function.addParamUInt256(amountBytes, false);
+            byte[] encode = EthereumAbiEncoder.encode(function);
+
+            builder.setPayload(ByteString.copyFrom(encode));
 
             Ethereum.SigningOutput output = EthereumSigner.sign(builder.build());
 
@@ -423,5 +432,81 @@ public class GethService {
         }
 
         return address20Bytes;
+    }
+
+    private TransactionListDTO getTransactionList(String coll, String address, Integer startIndex, Integer limit, TxListDTO txDTO) {
+        try {
+            Map<String, TransactionDetailsDTO> map = getNodeTransactions(coll, address).getMap();
+
+            return TxUtil.buildTxs(map, startIndex, limit, txDTO);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return new TransactionListDTO();
+    }
+
+    private NodeTransactionsDTO getNodeTransactions(String coll, String address) {
+        try {
+            Map<String, TransactionDetailsDTO> map = new HashMap<>();
+
+            BasicDBList or = new BasicDBList();
+            or.add(new Document("fromAddress", address));
+            or.add(new Document("toAddress", address));
+
+            mongo.getCollection(coll).find(new Document("$or", or)).into(new ArrayList<>()).stream().forEach(d -> {
+                TransactionDetailsDTO dto = new TransactionDetailsDTO();
+
+                String fromAddress = d.getString("fromAddress");
+                String toAddress = d.getString("toAddress");
+
+                dto.setTxId(d.getString("txId"));
+                dto.setType(TransactionType.getType(fromAddress, toAddress, address));
+                dto.setCryptoAmount(d.get("amount", Decimal128.class).bigDecimalValue());
+                dto.setFromAddress(fromAddress);
+                dto.setToAddress(toAddress);
+                dto.setCryptoFee(d.get("fee", Decimal128.class).bigDecimalValue());
+                dto.setStatus(TransactionStatus.COMPLETE);
+                dto.setDate1(new Date(d.getLong("blockTime") * 1000));
+
+                map.put(d.getString("txId"), dto);
+            });
+
+            return new NodeTransactionsDTO(map);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return new NodeTransactionsDTO();
+    }
+
+    private TransactionDetailsDTO getTransaction(String coll, String txId, String address) {
+        try {
+            Document txDoc = mongo.getCollection(coll).find(new Document("txId", txId)).first();
+
+            if (txDoc == null) {
+                return new TransactionDetailsDTO();
+            } else {
+                String fromAddress = txDoc.getString("fromAddress");
+                String toAddress = txDoc.getString("toAddress");
+
+                TransactionDetailsDTO dto = new TransactionDetailsDTO();
+                dto.setTxId(txId);
+                dto.setLink(ethExplorerUrl + "/" + txId);
+                dto.setType(TransactionType.getType(fromAddress, toAddress, address));
+                dto.setCryptoAmount(txDoc.get("amount", Decimal128.class).bigDecimalValue());
+                dto.setFromAddress(fromAddress);
+                dto.setToAddress(toAddress);
+                dto.setCryptoFee(txDoc.get("fee", Decimal128.class).bigDecimalValue());
+                dto.setStatus(TransactionStatus.COMPLETE);
+                dto.setDate2(new Date(txDoc.getLong("blockTime") * 1000));
+
+                return dto;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return new TransactionDetailsDTO();
     }
 }

@@ -109,11 +109,7 @@ public class Util {
         return phone.substring(0, length - 10) + " " + phone.substring(length - 10, length - 7) + "-" + phone.substring(length - 7, length - 4) + "-" + phone.substring(length - 4, length);
     }
 
-    /**
-     * Returns file extension with dot or empty string.
-     * @param filename
-     * @return
-     */
+    //TODO: rewrite
     public static String getExtensionByStringHandling(String filename) {
         return Optional.ofNullable(filename)
                 .filter(f -> f.contains("."))
@@ -142,7 +138,27 @@ public class Util {
             }
             return hash.toString();
         } catch (Exception e) {
-            throw new RuntimeException("Unable to sign message.", e);
+            throw new RuntimeException("Unable to sign message", e);
         }
+    }
+
+    public static String getPriceDayColl(String coin) {
+        return "price_day_" + coin;
+    }
+
+    public static String getPriceWeekColl(String coin) {
+        return "price_week_" + coin;
+    }
+
+    public static String getPriceMonthColl(String coin) {
+        return "price_month_" + coin;
+    }
+
+    public static String getPrice3MonthColl(String coin) {
+        return "price_three_months_" + coin;
+    }
+
+    public static String getPriceYearColl(String coin) {
+        return "price_year_" + coin;
     }
 }

@@ -19,25 +19,24 @@ import java.util.stream.Collectors;
 @ConfigurationProperties(prefix = "caching")
 public class CacheConfig {
 
+    private Map<String, CacheSpec> specs;
+
     @Data
     public static class CacheSpec {
         private Integer timeout;
         private Integer max = 200;
     }
 
-    private Map<String, CacheSpec> specs;
-
     @Bean
     public CacheManager cacheManager(Ticker ticker) {
         SimpleCacheManager manager = new SimpleCacheManager();
 
         if (specs != null) {
-            List<CaffeineCache> caches =
-                    specs.entrySet().stream()
-                            .map(entry -> buildCache(entry.getKey(),
-                                    entry.getValue(),
-                                    ticker))
-                            .collect(Collectors.toList());
+            List<CaffeineCache> caches = specs
+                    .entrySet()
+                    .stream().map(entry -> buildCache(entry.getKey(), entry.getValue(), ticker))
+                    .collect(Collectors.toList());
+
             manager.setCaches(caches);
         }
 
@@ -45,11 +44,9 @@ public class CacheConfig {
     }
 
     private CaffeineCache buildCache(String name, CacheSpec cacheSpec, Ticker ticker) {
-        final Caffeine<Object, Object> caffeineBuilder
-                = Caffeine.newBuilder()
-                .expireAfterWrite(cacheSpec.getTimeout(), TimeUnit.MINUTES)
-                .maximumSize(cacheSpec.getMax())
-                .ticker(ticker);
+        Caffeine<Object, Object> caffeineBuilder = Caffeine.newBuilder()
+                .expireAfterWrite(cacheSpec.getTimeout(), TimeUnit.SECONDS)
+                .maximumSize(cacheSpec.getMax()).ticker(ticker);
 
         return new CaffeineCache(name, caffeineBuilder.build());
     }

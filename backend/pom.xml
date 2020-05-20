@@ -145,6 +145,7 @@
             <artifactId>wallet-core</artifactId>
             <version>0.12.24</version>
         </dependency>
+
         <dependency>
             <groupId>com.madgag.spongycastle</groupId>
             <artifactId>core</artifactId>

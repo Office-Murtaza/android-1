@@ -60,10 +60,10 @@ public class TransactionController {
     }
 
     @GetMapping("/user/{userId}/coins/{coinCode}/transactions/nonce")
-    public Response getNonce(@PathVariable Long userId, @PathVariable CoinService.CoinEnum coinCode) {
+    public Response getNonce(@PathVariable Long userId, @PathVariable CoinService.CoinEnum coinCode, @RequestParam String address) {
         try {
-            if (coinCode == CoinService.CoinEnum.ETH) {
-                return Response.ok(coinCode.getNonce(userId));
+            if (coinCode == CoinService.CoinEnum.ETH || coinCode == CoinService.CoinEnum.CATM) {
+                return Response.ok(coinCode.getNonce(address));
             } else {
                 return Response.error(2, coinCode.name() + " not allowed");
             }
