@@ -14,9 +14,9 @@
     <application
         android:name=".App"
         android:allowBackup="false"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@drawable/ic_launcher_rounded"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
@@ -64,13 +64,7 @@
         <activity
             android:name=".presentation.features.wallet.add.AddWalletActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppThemeNoActionBar">
-
-            <!-- <intent-filter> -->
-            <!-- <action android:name="android.intent.action.MAIN" /> -->
-            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
-            <!-- </intent-filter> -->
-        </activity>
+            android:theme="@style/AppThemeNoActionBar"/>
         <activity
             android:name=".presentation.features.authorization.pin.PinActivity"
             android:launchMode="singleInstance"
@@ -133,11 +127,13 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppThemeNoActionBar" />
 
-        <activity android:name=".presentation.features.wallet.trade.main.TradeActivity"
+        <activity
+            android:name=".presentation.features.wallet.trade.main.TradeActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppThemeNoActionBar" />
 
-        <activity android:name=".presentation.features.wallet.trade.details.TradeDetailsActivity"
+        <activity
+            android:name=".presentation.features.wallet.trade.details.TradeDetailsActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppThemeNoActionBar" />
 
