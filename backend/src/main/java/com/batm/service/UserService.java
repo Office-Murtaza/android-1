@@ -104,6 +104,10 @@ public class UserService {
         return userRep.getOne(userId);
     }
 
+    public Identity findByUserId(Long userId) {
+        return findById(userId).getIdentity();
+    }
+
     public void updatePassword(String encodedPassword, Long userId) {
         userRep.updatePassword(encodedPassword, userId);
     }

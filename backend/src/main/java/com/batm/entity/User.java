@@ -20,6 +20,8 @@ public class User extends BaseEntity {
     private String phone;
     private String password;
     private String role;
+    private Integer tradeCount;
+    private BigDecimal tradeRate;
     private BigDecimal latitude;
     private BigDecimal longitude;
 
@@ -45,10 +47,5 @@ public class User extends BaseEntity {
     @Transient
     public String getCoinAddress(String coinCode) {
         return userCoins.stream().filter(e -> coinCode.equalsIgnoreCase(e.getCoin().getCode())).findFirst().get().getAddress();
-    }
-
-    @Transient
-    public Coin getCoin(String coinCode) {
-        return userCoins.stream().filter(e -> coinCode.equalsIgnoreCase(e.getCoin().getCode())).findFirst().get().getCoin();
     }
 }

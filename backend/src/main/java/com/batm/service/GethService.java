@@ -89,9 +89,6 @@ public class GethService {
     @Value("${token.explorer.url}")
     private String tokenExplorerUrl;
 
-    @Value("${eth.store.txs.enabled:false}")
-    private Boolean storeEnabled;
-
     @Value("${token.contract.address}")
     private String contractAddress;
 
@@ -134,92 +131,90 @@ public class GethService {
     @Scheduled(cron = "0 */5 * * * *") // every 5 minutes
     public void storeTxs() {
         try {
-            if (storeEnabled) {
-                int lastSuccessBlock = mongo.getCollection(BLOCK_COLL).countDocuments() > 0 ?
-                        mongo.getCollection(BLOCK_COLL).find().first().getInteger("lastSuccessBlock") : START_BLOCK;
+            int lastSuccessBlock = mongo.getCollection(BLOCK_COLL).countDocuments() > 0 ?
+                    mongo.getCollection(BLOCK_COLL).find().first().getInteger("lastSuccessBlock") : START_BLOCK;
 
-                int lastBlockNumber = ethWeb3.ethBlockNumber().send().getBlockNumber().intValue();
+            int lastBlockNumber = ethWeb3.ethBlockNumber().send().getBlockNumber().intValue();
 
-                if (lastSuccessBlock < lastBlockNumber) {
-                    int n = Math.min(MAX_BLOCK_COUNT, lastBlockNumber - lastSuccessBlock);
-                    int toBlockNumber = lastSuccessBlock + n;
+            if (lastSuccessBlock < lastBlockNumber) {
+                int n = Math.min(MAX_BLOCK_COUNT, lastBlockNumber - lastSuccessBlock);
+                int toBlockNumber = lastSuccessBlock + n;
 
-                    for (int i = lastSuccessBlock + 1; i <= toBlockNumber; i++) {
-                        List<Document> ethTxs = new ArrayList<>();
-                        List<Document> tokenTxs = new ArrayList<>();
+                for (int i = lastSuccessBlock + 1; i <= toBlockNumber; i++) {
+                    List<Document> ethTxs = new ArrayList<>();
+                    List<Document> tokenTxs = new ArrayList<>();
 
-                        EthBlock.Block block = ethWeb3.ethGetBlockByNumber(new DefaultBlockParameterNumber(i), true).send().getBlock();
+                    EthBlock.Block block = ethWeb3.ethGetBlockByNumber(new DefaultBlockParameterNumber(i), true).send().getBlock();
 
-                        block.getTransactions().stream().forEach(e -> {
-                            org.web3j.protocol.core.methods.response.Transaction tx = ((EthBlock.TransactionObject) e.get()).get();
+                    block.getTransactions().stream().forEach(e -> {
+                        org.web3j.protocol.core.methods.response.Transaction tx = ((EthBlock.TransactionObject) e.get()).get();
 
-                            String txId = tx.getHash();
-                            String fromAddress = tx.getFrom();
-                            String toAddress = tx.getTo();
+                        String txId = tx.getHash();
+                        String fromAddress = tx.getFrom();
+                        String toAddress = tx.getTo();
 
-                            if (existsInJournal(fromAddress, toAddress)) {
-                                BigDecimal amount = new BigDecimal(tx.getValue())
-                                        .divide(Constant.ETH_DIVIDER)
-                                        .stripTrailingZeros();
+                        if (existsInJournal(fromAddress, toAddress)) {
+                            BigDecimal amount = new BigDecimal(tx.getValue())
+                                    .divide(Constant.ETH_DIVIDER)
+                                    .stripTrailingZeros();
 
-                                BigDecimal fee = new BigDecimal(tx.getGasPrice())
-                                        .multiply(new BigDecimal(tx.getGas()))
-                                        .divide(Constant.ETH_DIVIDER)
-                                        .stripTrailingZeros();
+                            BigDecimal fee = new BigDecimal(tx.getGasPrice())
+                                    .multiply(new BigDecimal(tx.getGas()))
+                                    .divide(Constant.ETH_DIVIDER)
+                                    .stripTrailingZeros();
 
-                                if (amount.compareTo(BigDecimal.ZERO) == 0) {
-                                    try {
-                                        TransactionReceipt tr = tokenWeb3.ethGetTransactionReceipt(txId).send().getTransactionReceipt().get();
-                                        Log log = tr.getLogs().get(0);
+                            if (amount.compareTo(BigDecimal.ZERO) == 0) {
+                                try {
+                                    TransactionReceipt tr = tokenWeb3.ethGetTransactionReceipt(txId).send().getTransactionReceipt().get();
+                                    Log log = tr.getLogs().get(0);
 
-                                        if (contractAddress.equalsIgnoreCase(log.getAddress())) {
-                                            BigDecimal amountToken = new BigDecimal(Numeric.toBigInt(log.getData()))
-                                                    .divide(Constant.ETH_DIVIDER)
-                                                    .stripTrailingZeros();
+                                    if (contractAddress.equalsIgnoreCase(log.getAddress())) {
+                                        BigDecimal amountToken = new BigDecimal(Numeric.toBigInt(log.getData()))
+                                                .divide(Constant.ETH_DIVIDER)
+                                                .stripTrailingZeros();
 
-                                            String fromAddressToken = convertAddress32BytesTo20Bytes(log.getTopics().get(1));
-                                            String toAddressToken = convertAddress32BytesTo20Bytes(log.getTopics().get(2));
+                                        String fromAddressToken = convertAddress32BytesTo20Bytes(log.getTopics().get(1));
+                                        String toAddressToken = convertAddress32BytesTo20Bytes(log.getTopics().get(2));
 
-                                            tokenTxs.add(new Document("txId", txId)
-                                                    .append("blockNumber", tx.getBlockNumber().intValue())
-                                                    .append("fromAddress", fromAddressToken)
-                                                    .append("toAddress", toAddressToken)
-                                                    .append("amount", amountToken)
-                                                    .append("fee", fee)
-                                                    .append("blockTime", block.getTimestamp().longValue())
-                                                    .append("timestamp", System.currentTimeMillis()));
-                                        }
-                                    } catch (Exception f) {
-                                        f.printStackTrace();
+                                        tokenTxs.add(new Document("txId", txId)
+                                                .append("blockNumber", tx.getBlockNumber().intValue())
+                                                .append("fromAddress", fromAddressToken)
+                                                .append("toAddress", toAddressToken)
+                                                .append("amount", amountToken)
+                                                .append("fee", fee)
+                                                .append("blockTime", block.getTimestamp().longValue())
+                                                .append("timestamp", System.currentTimeMillis()));
                                     }
+                                } catch (Exception f) {
+                                    f.printStackTrace();
                                 }
-
-                                ethTxs.add(new Document("txId", txId)
-                                        .append("blockNumber", tx.getBlockNumber().intValue())
-                                        .append("fromAddress", fromAddress)
-                                        .append("toAddress", toAddress)
-                                        .append("amount", amount)
-                                        .append("fee", fee)
-                                        .append("blockTime", block.getTimestamp().longValue())
-                                        .append("timestamp", System.currentTimeMillis()));
                             }
-                        });
 
-                        if (!ethTxs.isEmpty()) {
-                            mongo.getCollection(ETH_TX_COLL).deleteMany(new Document("blockNumber", i));
-                            mongo.getCollection(ETH_TX_COLL).insertMany(ethTxs);
+                            ethTxs.add(new Document("txId", txId)
+                                    .append("blockNumber", tx.getBlockNumber().intValue())
+                                    .append("fromAddress", fromAddress)
+                                    .append("toAddress", toAddress)
+                                    .append("amount", amount)
+                                    .append("fee", fee)
+                                    .append("blockTime", block.getTimestamp().longValue())
+                                    .append("timestamp", System.currentTimeMillis()));
                         }
+                    });
 
-                        if (!tokenTxs.isEmpty()) {
-                            mongo.getCollection(TOKEN_TX_COLL).deleteMany(new Document("blockNumber", i));
-                            mongo.getCollection(TOKEN_TX_COLL).insertMany(tokenTxs);
-                        }
-
-                        mongo.getCollection(BLOCK_COLL).findOneAndUpdate(
-                                new Document("lastSuccessBlock", new Document("$exists", true)),
-                                new Document("$set", new Document("lastSuccessBlock", i).append("timestamp", System.currentTimeMillis())),
-                                new FindOneAndUpdateOptions().upsert(true));
+                    if (!ethTxs.isEmpty()) {
+                        mongo.getCollection(ETH_TX_COLL).deleteMany(new Document("blockNumber", i));
+                        mongo.getCollection(ETH_TX_COLL).insertMany(ethTxs);
                     }
+
+                    if (!tokenTxs.isEmpty()) {
+                        mongo.getCollection(TOKEN_TX_COLL).deleteMany(new Document("blockNumber", i));
+                        mongo.getCollection(TOKEN_TX_COLL).insertMany(tokenTxs);
+                    }
+
+                    mongo.getCollection(BLOCK_COLL).findOneAndUpdate(
+                            new Document("lastSuccessBlock", new Document("$exists", true)),
+                            new Document("$set", new Document("lastSuccessBlock", i).append("timestamp", System.currentTimeMillis())),
+                            new FindOneAndUpdateOptions().upsert(true));
                 }
             }
         } catch (Exception e) {

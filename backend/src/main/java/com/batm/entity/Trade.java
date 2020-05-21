@@ -1,13 +1,11 @@
 package com.batm.entity;
 
+import com.batm.model.TradeType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.math.BigDecimal;
 
 @Getter
@@ -32,4 +30,9 @@ public class Trade extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "identity_id")
     private Identity identity;
+
+    @Transient
+    public TradeType getTradeType() {
+        return getType() == 1 ? TradeType.BUY : TradeType.SELL;
+    }
 }
