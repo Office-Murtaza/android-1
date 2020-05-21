@@ -19,21 +19,26 @@
 
     <!--welcome-->
     <string name="terms"><u>Terms &amp; Conditions</u></string>
-    <string name="recover_my_wallet">Recover My Wallet</string>
-    <string name="contact_support"><u>Contact support</u></string>
     <string name="accept">Accept</string>
-    <string name="create_a_new_wallet">Create a New Wallet</string>
     <string name="login_to_my_wallet">Login to My Wallet</string>
     <string name="welcome_slide_1">Keep All Assets in One Place</string>
     <string name="welcome_slide_2">Buy &amp; Sell Cryptocurrency</string>
     <string name="welcome_slide_3">Secure  Fast Transactions</string>
     <string name="support">Support</string>
-    <string name="support_phone">+1 - 888 - 848 - 3033</string>
+    <string name="support_phone">+1-888-848-3033</string>
     <string name="support_email">support@belcobtm.com</string>
     <string name="copy"><u>Copy</u></string>
     <string name="support_email_clipboard">Support email copied to clipboard</string>
     <string name="support_phone_clipboard">Support phone copied to clipboard</string>
     <string name="please_accept_terms">Please, accept our Terms &amp; Conditions</string>
+    <string name="welcome_screen_contact_support">Contact support</string>
+    <string name="welcome_screen_create_a_new_wallet">Create a New Wallet</string>
+    <string name="welcome_screen_recover_my_wallet">Recover My Wallet</string>
+    <string name="welcome_screen_accept_terms_and_conditions">Accept Terms &amp; Conditions</string>
+    <string name="welcome_screen_terms_and_conditions">Terms &amp; Conditions</string>
+    <string name="welcome_screen_all_assets_in_one_place">All assets in one place</string>
+    <string name="welcome_screen_private_and_secure">Private and secure</string>
+    <string name="welcome_screen_buy_sell_and_trade_assets">Buy, sell and trade assets</string>
 
     <!--login-->
     <string name="login">Log In</string>
@@ -282,7 +287,7 @@
     <!-- Deposit -->
     <string name="deposit_screen_title">Deposit %1$s</string>
 
-    <!-- Deposit -->
+    <!-- Trade -->
     <string name="trade_screen_title">Trade %1$s</string>
     <string name="trade_screen_price">Price</string>
     <string name="trade_screen_balance">Balance</string>
@@ -294,12 +299,20 @@
     <string name="trade_screen_recall">Recall</string>
     <string name="trade_screen_reserve">Reserve</string>
     <string name="trade_screen_post">Post</string>
+    <string name="trade_screen_user">User</string>
+    <string name="trade_screen_payment_method">Payment method</string>
+    <string name="trade_screen_limits">Limits</string>
+    <string name="trade_screen_terms">Terms</string>
+    <string name="trade_screen_trade_details">Trade details</string>
+    <!--    <string name="trade_screen_"></string>-->
+    <!--    <string name="trade_screen_"></string>-->
     <!--    <string name="trade_screen_"></string>-->
 
 
     <string name="unit_usd">Usd</string>
     <string name="unit_usd_dynamic">%1$s USD</string>
     <string name="button_next">Next</string>
+    <string name="button_send">Send</string>
 
     <string name="alert_copy_to_clipboard">Copied</string>
 

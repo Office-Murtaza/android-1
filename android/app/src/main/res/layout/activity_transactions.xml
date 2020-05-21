@@ -201,7 +201,7 @@
         <com.github.clans.fab.FloatingActionButton
             android:id="@+id/tradeButtonView"
             style="@style/TransactionsScreen.FloatingActionButtonChild"
-            android:src="@drawable/ic_exchange_v"
+            android:src="@drawable/ic_trade"
             app:fab_label="Trade" />
 
         <com.github.clans.fab.FloatingActionButton

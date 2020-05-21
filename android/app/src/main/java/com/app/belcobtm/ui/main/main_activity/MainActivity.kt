@@ -24,6 +24,7 @@ class MainActivity : BaseMvpActivity<MainContract.View, MainContract.Presenter>(
     private val clearAppDataUseCase: ClearAppDataUseCase by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
+//        setTheme(R.style.AppThemeNoActionBar)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         coinListUseCase.invoke {

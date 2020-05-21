@@ -1,4 +1,4 @@
-package com.app.belcobtm.presentation.features.wallet.trade.item
+package com.app.belcobtm.presentation.features.wallet.trade.main.item
 
 sealed class TradeListItem(
     open val id: Int,

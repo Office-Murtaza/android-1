@@ -1,4 +1,4 @@
-package com.app.belcobtm.presentation.features.wallet.trade.item
+package com.app.belcobtm.presentation.features.wallet.trade.main.item
 
 import com.app.belcobtm.domain.wallet.item.TradeDataItem
 import com.app.belcobtm.presentation.core.extensions.toStringUsd

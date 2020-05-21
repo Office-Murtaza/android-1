@@ -20,7 +20,7 @@ import com.app.belcobtm.presentation.core.extensions.toStringUsd
 import com.app.belcobtm.presentation.features.wallet.IntentCoinItem
 import com.app.belcobtm.presentation.features.wallet.deposit.DepositActivity
 import com.app.belcobtm.presentation.features.wallet.exchange.coin.to.coin.ExchangeCoinToCoinActivity
-import com.app.belcobtm.presentation.features.wallet.trade.TradeActivity
+import com.app.belcobtm.presentation.features.wallet.trade.main.TradeActivity
 import com.app.belcobtm.ui.main.coins.sell.SellActivity
 import com.app.belcobtm.ui.main.coins.send_gift.SendGiftActivity
 import com.app.belcobtm.ui.main.coins.withdraw.WithdrawActivity

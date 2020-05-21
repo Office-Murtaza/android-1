@@ -1,4 +1,4 @@
-package com.app.belcobtm.presentation.features.wallet.trade.adapter
+package com.app.belcobtm.presentation.features.wallet.trade.main.adapter
 
 import android.graphics.Color
 import android.view.LayoutInflater
@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.app.belcobtm.R
 import com.app.belcobtm.presentation.core.extensions.hide
 import com.app.belcobtm.presentation.core.extensions.show
-import com.app.belcobtm.presentation.features.wallet.trade.item.TradeListItem
+import com.app.belcobtm.presentation.features.wallet.trade.main.item.TradeListItem
 import kotlinx.android.synthetic.main.item_trade_list.view.*
 
 class TradeListAdapter : RecyclerView.Adapter<TradeListAdapter.Holder>() {

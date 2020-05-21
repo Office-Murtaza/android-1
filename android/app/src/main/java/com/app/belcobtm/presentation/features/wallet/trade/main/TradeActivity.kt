@@ -1,4 +1,4 @@
-package com.app.belcobtm.presentation.features.wallet.trade
+package com.app.belcobtm.presentation.features.wallet.trade.main
 
 import android.content.Intent
 import android.os.Bundle
@@ -13,7 +13,7 @@ import com.app.belcobtm.presentation.core.extensions.toStringUsd
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
 import com.app.belcobtm.presentation.core.ui.BaseActivity
 import com.app.belcobtm.presentation.features.authorization.pin.PinActivity
-import com.app.belcobtm.presentation.features.wallet.trade.adapter.TradePageAdapter
+import com.app.belcobtm.presentation.features.wallet.trade.main.adapter.TradePageAdapter
 import com.google.android.material.tabs.TabLayoutMediator
 import kotlinx.android.synthetic.main.activity_trade.*
 import org.koin.android.viewmodel.ext.android.viewModel

@@ -1,14 +1,14 @@
-package com.app.belcobtm.presentation.features.wallet.trade
+package com.app.belcobtm.presentation.features.wallet.trade.main
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.app.belcobtm.domain.wallet.interactor.GetTradeInfoUseCase
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
 import com.app.belcobtm.presentation.features.wallet.IntentCoinItem
-import com.app.belcobtm.presentation.features.wallet.trade.item.TradePageItem
-import com.app.belcobtm.presentation.features.wallet.trade.item.mapToUiBuyItem
-import com.app.belcobtm.presentation.features.wallet.trade.item.mapToUiOpenItem
-import com.app.belcobtm.presentation.features.wallet.trade.item.mapToUiSellItem
+import com.app.belcobtm.presentation.features.wallet.trade.main.item.TradePageItem
+import com.app.belcobtm.presentation.features.wallet.trade.main.item.mapToUiBuyItem
+import com.app.belcobtm.presentation.features.wallet.trade.main.item.mapToUiOpenItem
+import com.app.belcobtm.presentation.features.wallet.trade.main.item.mapToUiSellItem
 
 class TradeViewModel(
     private val latitude: Double,

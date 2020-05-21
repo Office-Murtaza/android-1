@@ -1,4 +1,4 @@
-package com.app.belcobtm.presentation.features.wallet.trade.adapter
+package com.app.belcobtm.presentation.features.wallet.trade.main.adapter
 
 import android.view.LayoutInflater
 import android.view.View
@@ -7,7 +7,7 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
 import com.app.belcobtm.R
-import com.app.belcobtm.presentation.features.wallet.trade.item.TradePageItem
+import com.app.belcobtm.presentation.features.wallet.trade.main.item.TradePageItem
 import kotlinx.android.synthetic.main.item_trade_page.view.*
 
 class TradePageAdapter : RecyclerView.Adapter<TradePageAdapter.Holder>() {

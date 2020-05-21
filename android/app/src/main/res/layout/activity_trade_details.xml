@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ui.main.settings.phone.ShowPhoneActivity">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbarView"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@drawable/bg_toolbar"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:elevation="6dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:navigationIcon="@drawable/gph_ic_back"
+        tools:title="Buy BTC" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingBottom="16dp"
+                tools:context=".ui.main.settings.phone.ShowPhoneActivity">
+
+                <androidx.constraintlayout.widget.Barrier
+                    android:id="@+id/priceBarrierView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:barrierDirection="end"
+                    app:constraint_referenced_ids="userTitleView,priceTitleView,paymentMethodTitleView" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/priceTitleView"
+                    style="@style/WalletTab.Title.Medium.Key"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:text="@string/trade_screen_price"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/priceUsdView"
+                    style="@style/WalletTab.Title.Medium.Value"
+                    android:layout_marginStart="16dp"
+                    app:layout_constraintStart_toEndOf="@id/priceBarrierView"
+                    app:layout_constraintTop_toTopOf="@id/priceTitleView"
+                    tools:text="2525.31 USD" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/userTitleView"
+                    style="@style/WalletTab.Title.Medium.Key"
+                    android:text="@string/trade_screen_user"
+                    app:layout_constraintStart_toStartOf="@id/priceTitleView"
+                    app:layout_constraintTop_toBottomOf="@id/priceTitleView" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/userView"
+                    style="@style/WalletTab.Title.Medium.Value"
+                    android:layout_width="0dp"
+                    android:layout_marginEnd="16dp"
+                    android:maxLines="3"
+                    android:minLines="1"
+                    android:singleLine="false"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="@id/priceUsdView"
+                    app:layout_constraintTop_toTopOf="@id/userTitleView"
+                    tools:text="User name\n(300+/100%/10km)" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/paymentMethodTitleView"
+                    style="@style/WalletTab.Title.Medium.Key"
+                    android:text="@string/trade_screen_payment_method"
+                    app:layout_constraintStart_toStartOf="@id/userTitleView"
+                    app:layout_constraintTop_toBottomOf="@id/userView" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/paymentMethodView"
+                    style="@style/WalletTab.Title.Medium.Value"
+                    android:layout_width="0dp"
+                    app:layout_constraintEnd_toEndOf="@id/userView"
+                    app:layout_constraintStart_toStartOf="@id/userView"
+                    app:layout_constraintTop_toTopOf="@id/paymentMethodTitleView"
+                    tools:text="Pay Pall" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/limitsTitleView"
+                    style="@style/WalletTab.Title.Medium.Key"
+                    android:text="@string/trade_screen_limits"
+                    app:layout_constraintStart_toStartOf="@id/paymentMethodTitleView"
+                    app:layout_constraintTop_toBottomOf="@id/paymentMethodTitleView" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/limitsView"
+                    style="@style/WalletTab.Title.Medium.Value"
+                    app:layout_constraintStart_toStartOf="@id/paymentMethodView"
+                    app:layout_constraintTop_toTopOf="@id/limitsTitleView"
+                    tools:text="1000 - 10000 USD" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/termsView"
+                    style="@style/WalletTab.EditText.Container"
+                    android:layout_width="0dp"
+                    android:layout_height="106dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="16dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/limitsTitleView">
+
+                    <androidx.appcompat.widget.AppCompatEditText
+                        style="@style/WalletTab.EditText.InputWithMax"
+                        android:layout_height="match_parent"
+                        android:gravity="start|top"
+                        android:hint="@string/trade_screen_terms"
+                        android:inputType="textMultiLine"
+                        android:maxLength="160" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/amountCryptoView"
+                    style="@style/WalletTab.EditText.Container"
+                    android:layout_marginTop="16dp"
+                    app:layout_constraintEnd_toEndOf="@id/termsView"
+                    app:layout_constraintStart_toStartOf="@id/termsView"
+                    app:layout_constraintTop_toBottomOf="@id/termsView">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        style="@style/WalletTab.EditText.InputWithMax"
+                        android:digits="1234567890."
+                        android:inputType="numberDecimal"
+                        android:nextFocusDown="@id/amountUsdView"
+                        tools:hint="@string/send_gift_screen_crypto_amount"
+                        tools:ignore="RtlSymmetry" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/maxCryptoView"
+                    style="@style/WalletTab.EditText.TextLink"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:text="@string/max"
+                    app:layout_constraintBottom_toBottomOf="@id/amountCryptoView"
+                    app:layout_constraintEnd_toEndOf="@id/amountCryptoView"
+                    app:layout_constraintTop_toTopOf="@id/amountCryptoView" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/amountUsdView"
+                    style="@style/WalletTab.EditText.Container"
+                    app:layout_constraintEnd_toEndOf="@id/amountCryptoView"
+                    app:layout_constraintStart_toStartOf="@id/amountCryptoView"
+                    app:layout_constraintTop_toBottomOf="@id/amountCryptoView">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        style="@style/WalletTab.EditText.InputWithMax"
+                        android:digits="1234567890."
+                        android:enabled="false"
+                        android:focusableInTouchMode="false"
+                        android:hint="@string/send_gift_screen_usd_amount"
+                        android:inputType="numberDecimal"
+                        android:textAllCaps="true"
+                        android:textColor="@android:color/black"
+                        tools:ignore="RtlSymmetry" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tradeDetailsView"
+                    style="@style/WalletTab.EditText.Container"
+                    android:layout_width="0dp"
+                    android:layout_height="106dp"
+                    app:layout_constraintEnd_toEndOf="@id/amountCryptoView"
+                    app:layout_constraintStart_toStartOf="@id/amountCryptoView"
+                    app:layout_constraintTop_toBottomOf="@id/amountUsdView">
+
+                    <androidx.appcompat.widget.AppCompatEditText
+                        style="@style/WalletTab.EditText.InputWithMax"
+                        android:layout_height="match_parent"
+                        android:gravity="start|top"
+                        android:hint="@string/trade_screen_trade_details"
+                        android:inputType="textMultiLine"
+                        android:maxLength="160" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/sendButtonView"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:paddingTop="12dp"
+                    android:paddingBottom="12dp"
+                    android:text="@string/button_send"
+                    android:textColor="@android:color/white"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tradeDetailsView" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </ScrollView>
+
+        <FrameLayout
+            android:id="@+id/progressView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/gray_progress"
+            android:clickable="true"
+            android:elevation="15dp"
+            android:focusable="true"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/toolbarView">
+
+            <ProgressBar
+                style="?android:attr/progressBarStyleLarge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginBottom="8dp" />
+        </FrameLayout>
+    </FrameLayout>
+
+</LinearLayout>
+

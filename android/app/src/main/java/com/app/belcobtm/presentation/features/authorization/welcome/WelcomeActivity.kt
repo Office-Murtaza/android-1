@@ -5,17 +5,22 @@ import android.content.ClipboardManager
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import androidx.appcompat.app.AlertDialog
+import android.text.Spannable
+import android.text.SpannableString
+import android.text.style.ForegroundColorSpan
+import android.view.MotionEvent
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.AppCompatImageView
-import androidx.appcompat.widget.AppCompatTextView
 import androidx.browser.customtabs.CustomTabsIntent
+import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.RecyclerView
 import com.app.belcobtm.R
 import com.app.belcobtm.presentation.core.Const.TERMS_URL
 import com.app.belcobtm.presentation.features.authorization.wallet.create.CreateWalletActivity
 import com.app.belcobtm.presentation.features.authorization.wallet.recover.RecoverWalletActivity
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_welcome.*
+import kotlinx.android.synthetic.main.view_support_dialog.*
 import org.koin.android.viewmodel.ext.android.viewModel
 
 
@@ -35,27 +40,50 @@ class WelcomeActivity : AppCompatActivity() {
     }
 
     private fun initViews() {
+        val fullText = SpannableString(getString(R.string.welcome_screen_accept_terms_and_conditions))
+        val linkText = getString(R.string.welcome_screen_terms_and_conditions)
+        val startLinkPosition = fullText.indexOf(linkText)
+        val endLinkPosition = startLinkPosition + linkText.length
+        val colorSpan =
+            ForegroundColorSpan(ContextCompat.getColor(tncCheckBoxView.context, R.color.colorAccent))
+        fullText.setSpan(colorSpan, startLinkPosition, endLinkPosition, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+        tncCheckBoxView.text = fullText
+        pagerView.apply {
+            adapter = WelcomePagerAdapter()
+            adapter?.registerAdapterDataObserver(pagerIndicatorView.adapterDataObserver)
+            (getChildAt(0) as RecyclerView).overScrollMode = RecyclerView.OVER_SCROLL_NEVER
+        }
         pagerIndicatorView.setViewPager(pagerView)
-        pagerView.adapter = WelcomePagerAdapter()
-        pagerView.adapter?.registerAdapterDataObserver(pagerIndicatorView.adapterDataObserver)
     }
 
     private fun initListeners() {
-        termsLinkView.setOnClickListener { openTncScreen() }
         contactSupportButtonView.setOnClickListener { showSupportDialog() }
-        createWalletButtonView.setOnClickListener { openCreateWalletScreen() }
+        createNewWalletButtonView.setOnClickListener { openCreateWalletScreen() }
         recoverWalletButtonView.setOnClickListener { openRecoverWallerScreen() }
+        tncCheckBoxView.setOnTouchListener { view, event ->
+            when {
+                event.action == MotionEvent.ACTION_UP && event.x <= view.height -> {
+                    //empty
+                    false
+                }
+                event.action == MotionEvent.ACTION_UP && event.x >= view.height -> {
+                    openTncScreen()
+                    true
+                }
+                else -> false
+            }
+        }
     }
 
     private fun openTncScreen(): Unit = CustomTabsIntent.Builder().build().launchUrl(this, Uri.parse(TERMS_URL))
 
-    private fun openCreateWalletScreen(): Unit = if (termsToggleView.isChecked)
+    private fun openCreateWalletScreen(): Unit = if (tncCheckBoxView.isChecked)
         startActivity(Intent(this, CreateWalletActivity::class.java))
     else {
         showTermsErrorAlert()
     }
 
-    private fun openRecoverWallerScreen(): Unit = if (termsToggleView.isChecked)
+    private fun openRecoverWallerScreen(): Unit = if (tncCheckBoxView.isChecked)
         startActivity(Intent(this, RecoverWalletActivity::class.java))
     else {
         showTermsErrorAlert()
@@ -67,15 +95,8 @@ class WelcomeActivity : AppCompatActivity() {
         Snackbar.LENGTH_SHORT
     ).also { it.view.setBackgroundColor(getColor(R.color.colorErrorSnackBar)) }.show()
 
-    private fun copyToClipboard(toastText: String, copiedText: String) {
-        val clipboard = getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
-        val clip = ClipData.newPlainText(toastText, copiedText)
-        clipboard.setPrimaryClip(clip)
-    }
-
     private fun showSupportDialog() {
-        val dialog = AlertDialog
-            .Builder(this)
+        val dialog = MaterialAlertDialogBuilder(this)
             .setTitle(getString(R.string.support))
             .setPositiveButton(android.R.string.ok, null)
             .setView(R.layout.view_support_dialog)
@@ -85,29 +106,19 @@ class WelcomeActivity : AppCompatActivity() {
         val supportPhone = getString(R.string.support_phone)
 
         dialog.show()
-        dialog.findViewById<AppCompatTextView>(R.id.copy_email)?.setOnClickListener {
-            copyToClipboard(getString(R.string.support_email_clipboard), supportEmail)
+        dialog.phoneButtonView.setOnClickListener {
+            val intent = Intent(Intent.ACTION_DIAL)
+            intent.data = Uri.parse("tel:$supportPhone")
+            startActivity(intent)
             dialog.cancel()
-            Snackbar.make(container, R.string.support_email_clipboard, Snackbar.LENGTH_LONG).show()
         }
-        dialog.findViewById<AppCompatTextView>(R.id.copy_phone)?.setOnClickListener {
-            copyToClipboard(getString(R.string.support_phone_clipboard), supportPhone)
-            dialog.cancel()
-            Snackbar.make(container, R.string.support_phone_clipboard, Snackbar.LENGTH_LONG).show()
-        }
-        dialog.findViewById<AppCompatImageView>(R.id.email_icon)?.setOnClickListener {
+        dialog.emailButtonView.setOnClickListener {
             val intent = Intent(Intent.ACTION_SENDTO)
             intent.data = Uri.parse("mailto:$supportEmail")
             if (intent.resolveActivity(packageManager) != null) {
                 startActivity(intent)
                 dialog.cancel()
             }
-        }
-        dialog.findViewById<AppCompatImageView>(R.id.phone_icon)?.setOnClickListener {
-            val intent = Intent(Intent.ACTION_DIAL)
-            intent.data = Uri.parse("tel:$supportPhone")
-            startActivity(intent)
-            dialog.cancel()
         }
     }
 }

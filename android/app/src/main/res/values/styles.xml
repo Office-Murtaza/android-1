@@ -15,6 +15,11 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="SplashTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <item name="android:windowBackground">@drawable/bg_splash</item>
+        <item name="colorPrimaryDark">@android:color/white</item>
+    </style>
+
     <style name="Widget.MaterialComponents.TextInputLayout.FilledBox" parent="Widget.Design.TextInputLayout" />
 
     <style name="Widget.MaterialComponents.TextInputEditText.FilledBox" parent="Widget.Design.TextInputLayout" tools:ignore="PrivateResource" />
