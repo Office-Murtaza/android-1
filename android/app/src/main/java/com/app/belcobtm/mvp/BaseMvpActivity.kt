@@ -23,11 +23,11 @@ import javax.inject.Inject
 abstract class BaseMvpActivity<in V : BaseMvpView, T : BaseMvpPresenter<V>>
     : AppCompatActivity(), BaseMvpView {
 
-//    override fun onCreate(savedInstanceState: Bundle?) {
-//        AndroidInjection.inject(this)
-//        super.onCreate(savedInstanceState)
-//        mPresenter.attachView(this as V)
-//    }
+    override fun onCreate(savedInstanceState: Bundle?) {
+        AndroidInjection.inject(this)
+        super.onCreate(savedInstanceState)
+        mPresenter.attachView(this as V)
+    }
 
     @Inject
     protected lateinit var mPresenter: T

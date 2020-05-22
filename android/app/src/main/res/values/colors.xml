@@ -12,8 +12,6 @@
 
     <color name="gray_progress">#90000000</color>
 
-    <color name="colorErrorOrange">#ff9e22</color>
-
     <color name="bg_color">#f3f3f3</color>
     <color name="light_gray_text_color">#c1c1c1</color>
     <color name="gray_text_color">#7c7c7c</color>

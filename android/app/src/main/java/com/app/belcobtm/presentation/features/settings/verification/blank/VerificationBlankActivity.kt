@@ -17,7 +17,6 @@ import com.app.belcobtm.presentation.core.ui.BaseActivity
 import com.kroegerama.imgpicker.BottomSheetImagePicker
 import com.kroegerama.imgpicker.ButtonType
 import kotlinx.android.synthetic.main.activity_verification_blank.*
-import kotlinx.android.synthetic.main.view_toolbar.toolbarView
 import org.koin.android.viewmodel.ext.android.viewModel
 import permissions.dispatcher.*
 

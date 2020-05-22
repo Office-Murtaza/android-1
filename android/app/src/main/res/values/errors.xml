@@ -1,25 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="error_field_empty">Field must not be empty</string>
-    <string name="error_field_must_be_six_symbols">Field must be at least 12 characters</string>
-    <string name="error_email_incorrect">Incorrect email</string>
-    <string name="error_incorrect_activation_code">Incorrect activation code</string>
-    <string name="error_password_incorrect">Incorrect password</string>
-    <string name="error_password_short">Password must be at least 8 characters</string>
-    <string name="error_password_has_not_number">Password must have at least one number</string>
-    <string name="error_password_has_not_uppercase">Password must have at least one uppercase character</string>
-    <string name="error_password_has_not_lowercase">Password must have at least one lowercase character</string>
-    <string name="error_password_must_not_spaces">Password must not have spaces</string>
-    <string name="error_password_english_letters">Password may contain only English letters or numbers</string>
-    <string name="error_password_special_symbols">Password one special symbol like $+,:;=?@#|^*()%!-</string>
-    <string name="error_wrong_email_or_password">Wrong email or password</string>
-    <string name="error_passwords_do_not_match">Passwords do not match</string>
-    <string name="error_user_does_not_exist">User does not exist</string>
 
-    <string name="error_server_unavailable">Could not connect to server</string>
     <string name="error_internet_unavailable">Internet connection is unavailable</string>
     <string name="error_something_went_wrong">Something went wrong</string>
-    <string name="error_please_try_again">Please try again</string>
 
     <string name="error_transaction_cannot_be_created">The transaction can not be created</string>
 </resources>
