@@ -85,6 +85,7 @@ final class CoinDetailsViewController: NavigationScreenViewController<CoinDetail
     let sendGiftDriver = fab.rx.sendGiftTap
     let sellDriver = fab.rx.sellTap
     let exchangeDriver = fab.rx.exchangeTap
+    let tradesDriver = fab.rx.tradesTap
     let showMoreDriver = collectionView.rx.willDisplayLastCell.asDriver(onErrorDriveWith: .empty())
     let transactionSelectedDriver = collectionView.rx.itemSelected.asDriver()
     let updateSelectedPeriodDriver = dataSource.rx.selectedPeriod
@@ -96,6 +97,7 @@ final class CoinDetailsViewController: NavigationScreenViewController<CoinDetail
                                                      sendGift: sendGiftDriver,
                                                      sell: sellDriver,
                                                      exchange: exchangeDriver,
+                                                     trades: tradesDriver,
                                                      showMore: showMoreDriver,
                                                      transactionSelected: transactionSelectedDriver,
                                                      updateSelectedPeriod: updateSelectedPeriodDriver))

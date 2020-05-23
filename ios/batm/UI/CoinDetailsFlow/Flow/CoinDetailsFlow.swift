@@ -27,6 +27,7 @@ class CoinDetailsFlow: BaseFlow<BTMNavigationController, CoinDetailsFlowControll
     case sellDetailsForAnotherAddress(SellDetailsForAnotherAddress)
     case sellDetailsForCurrentAddress(SellDetailsForCurrentAddress)
     case exchange(BTMCoin, [CoinBalance], CoinSettings)
+    case trades(CoinBalance)
     case pop
   }
   
@@ -74,6 +75,10 @@ class CoinDetailsFlow: BaseFlow<BTMNavigationController, CoinDetailsFlowControll
       let module = resolver.resolve(Module<CoinExchangeModule>.self)!
       module.input.setup(coin: coin, coinBalances: coinBalances, coinSettings: coinSettings)
       return push(module.controller)
+    case let .trades(coinBalance):
+      let flow = TradesFlow(view: view, parent: self)
+      let step = TradesFlow.Steps.trades(coinBalance)
+      return next(flow: flow, step: step)
     case .pop: return pop()
     }
   }

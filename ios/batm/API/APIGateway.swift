@@ -58,6 +58,9 @@ protocol APIGateway {
   func sendVerification(userId: Int, userData: VerificationUserData) -> Completable
   func sendVIPVerification(userId: Int, userData: VIPVerificationUserData) -> Completable
   func getPriceChartData(userId: Int, type: CoinType) -> Single<PriceChartData>
+  func getBuyTrades(userId: Int, type: CoinType, page: Int) -> Single<BuySellTrades>
+  func getSellTrades(userId: Int, type: CoinType, page: Int) -> Single<BuySellTrades>
+  func updateLocation(userId: Int, latitude: Double, longitude: Double) -> Completable
 }
 
 final class APIGatewayImpl: APIGateway {
@@ -506,6 +509,48 @@ final class APIGatewayImpl: APIGateway {
           return Single.error(error)
         }
     }
+  }
+  
+  func getBuyTrades(userId: Int, type: CoinType, page: Int) -> Single<BuySellTrades> {
+    let index = page * 10 + 1
+    let request = BuySellTradesRequest(userId: userId, coinId: type.code, type: TradeType.buy, index: index)
+    return api.execute(request)
+      .flatMap {
+        switch $0 {
+        case let .response(response):
+          return Single.just(response)
+        case let .error(error):
+          return Single.error(error)
+        }
+      }
+  }
+  
+  func getSellTrades(userId: Int, type: CoinType, page: Int) -> Single<BuySellTrades> {
+    let index = page * 10 + 1
+    let request = BuySellTradesRequest(userId: userId, coinId: type.code, type: TradeType.sell, index: index)
+    return api.execute(request)
+      .flatMap {
+        switch $0 {
+        case let .response(response):
+          return Single.just(response)
+        case let .error(error):
+          return Single.error(error)
+        }
+      }
+  }
+  
+  func updateLocation(userId: Int, latitude: Double, longitude: Double) -> Completable {
+    let request = UpdateLocationRequest(userId: userId, latitude: latitude, longitude: longitude)
+    return api.execute(request)
+    .map { apiResponse -> Void in
+      switch apiResponse {
+      case .response:
+        return Void()
+      case let .error(error):
+        throw error
+      }
+    }
+    .toCompletable()
   }
   
 }

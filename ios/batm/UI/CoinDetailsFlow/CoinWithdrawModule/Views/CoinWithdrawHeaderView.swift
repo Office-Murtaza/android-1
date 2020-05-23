@@ -37,17 +37,27 @@ class CoinWithdrawHeaderView: UIView {
   let valueStackView = defaultVerticalStackView
   
   let priceTitleLabel = defaultTitleLabel(localize(L.CoinDetails.price))
-  let balanceTitleLabel = defaultTitleLabel(localize(L.CoinDetails.balance))
-  let dailyLimitTitleLabel = defaultTitleLabel(localize(L.CoinSell.dailyLimit))
-  let txLimitTitleLabel = defaultTitleLabel(localize(L.CoinSell.txLimit))
-  
   let priceValueLabel = defaultValueLabel
+  
+  let balanceTitleLabel = defaultTitleLabel(localize(L.CoinDetails.balance))
   let balanceValueView = CoinDetailsBalanceValueView()
+  
+  let dailyLimitTitleLabel = defaultTitleLabel(localize(L.CoinSell.dailyLimit))
   let dailyLimitValueLabel = defaultValueLabel
+  
+  let txLimitTitleLabel = defaultTitleLabel(localize(L.CoinSell.txLimit))
   let txLimitValueLabel = defaultValueLabel
+  
+  let reservedTitleLabel = defaultTitleLabel(localize(L.Trades.reserved))
+  let reservedValueView = CoinDetailsBalanceValueView()
+
   
   var sellDetailsLabels: [UILabel] {
     return [dailyLimitTitleLabel, dailyLimitValueLabel, txLimitTitleLabel, txLimitValueLabel]
+  }
+  
+  var reservedViews: [UIView] {
+    return [reservedTitleLabel, reservedValueView]
   }
   
   override init(frame: CGRect) {
@@ -72,14 +82,17 @@ class CoinWithdrawHeaderView: UIView {
     titleStackView.addArrangedSubviews(priceTitleLabel,
                                        balanceTitleLabel,
                                        dailyLimitTitleLabel,
-                                       txLimitTitleLabel)
+                                       txLimitTitleLabel,
+                                       reservedTitleLabel)
     
     valueStackView.addArrangedSubviews(priceValueLabel,
                                        balanceValueView,
                                        dailyLimitValueLabel,
-                                       txLimitValueLabel)
+                                       txLimitValueLabel,
+                                       reservedValueView)
     
     sellDetailsLabels.forEach { $0.isHidden = true }
+    reservedViews.forEach { $0.isHidden = true }
   }
   
   private func setupLayout() {
@@ -92,9 +105,14 @@ class CoinWithdrawHeaderView: UIView {
     txLimitValueLabel.setContentHuggingPriority(.required, for: .vertical)
   }
   
-  func configure(for coinBalance: CoinBalance) {
+  func configure(for coinBalance: CoinBalance, useReserved: Bool = false) {
     priceValueLabel.text = "\(coinBalance.price.fiatFormatted) USD"
     balanceValueView.configure(for: coinBalance)
+    
+    if useReserved {
+      reservedViews.forEach { $0.isHidden = false }
+      reservedValueView.configure(for: coinBalance, useReserved: true)
+    }
   }
   
   func configure(for details: SellDetails) {
