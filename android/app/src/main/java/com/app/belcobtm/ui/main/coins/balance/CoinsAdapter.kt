@@ -36,7 +36,7 @@ class CoinsAdapter(
             holder.itemView.coin_image.setImageResource(coinImageId)
             holder.itemView.coin_name.text = item.fullCoinName
             holder.itemView.coin_balance.text = "${item.balance.toStringCoin()} ${item.coinId}"
-            holder.itemView.coin_price.text = "USD ${item.price?.uSD}"
+            holder.itemView.coin_price.text = "USD ${item.price.uSD}"
             holder.itemView.coin_container.setOnClickListener { mOnCoinClickListener.onCoinClick(item, mCoinsList) }
         }
 

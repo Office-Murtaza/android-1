@@ -58,10 +58,18 @@ interface WalletApi {
         @Body request: CoinToCoinExchangeRequest
     ): Deferred<Response<ResponseBody>>
 
-    @GET("user/{userId}/coins/BTC/transactions/trade")
+    @GET("user/{userId}/coins/{coinCode}/trades")
     fun tradeGetInfoAsync(
-        @Path("userId") userId: Int
+        @Path("userId") userId: Int,
+        @Path("coinCode") coinFrom: String
     ): Deferred<Response<TradeInfoResponse>>
+
+    @POST("/user/{userId}/coins/{coinCode}/trade-request")
+    fun tradeBuyAsync(
+        @Path("userId") userId: Int,
+        @Path("coinCode") toCoin: String,
+        @Body request: TradeBuyRequest
+    ): Deferred<Response<ResponseBody>>
 
     @POST("user/{userId}/location")
     fun tradeSendUserLocationAsync(

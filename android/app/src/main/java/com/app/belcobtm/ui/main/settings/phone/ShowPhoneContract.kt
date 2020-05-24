@@ -5,8 +5,7 @@ import com.app.belcobtm.mvp.BaseMvpView
 
 
 object ShowPhoneContract {
-    interface Presenter : BaseMvpPresenter<View> {
-    }
+    interface Presenter : BaseMvpPresenter<View>
 
     interface View : BaseMvpView {
         fun onPhoneReceived(phone: String?)

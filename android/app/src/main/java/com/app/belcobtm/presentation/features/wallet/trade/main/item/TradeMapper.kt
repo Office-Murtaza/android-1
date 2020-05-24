@@ -1,29 +1,41 @@
 package com.app.belcobtm.presentation.features.wallet.trade.main.item
 
 import com.app.belcobtm.domain.wallet.item.TradeDataItem
-import com.app.belcobtm.presentation.core.extensions.toStringUsd
 
-fun TradeDataItem.mapToUiBuyItem(): TradeListItem.Buy = TradeListItem.Buy(
+fun TradeDataItem.mapToUiBuyItem(): TradeDetailsItem.Buy = TradeDetailsItem.Buy(
     id = id,
+    minLimit = minLimit,
+    maxLimit = maxLimit,
+    tradeCount = tradeCount,
+    distance = distance,
+    rate = rate,
     userName = userName,
     paymentMethod = paymentMethod,
-    price = price.toStringUsd(),
-    priceLimit = "$minLimit - $maxLimit"
+    price = price,
+    terms = terms
 )
 
-fun TradeDataItem.mapToUiSellItem(): TradeListItem.Sell = TradeListItem.Sell(
+fun TradeDataItem.mapToUiSellItem(): TradeDetailsItem.Sell = TradeDetailsItem.Sell(
     id = id,
+    minLimit = minLimit,
+    maxLimit = maxLimit,
+    tradeCount = tradeCount,
+    distance = distance,
+    rate = rate,
     userName = userName,
     paymentMethod = paymentMethod,
-    price = price.toStringUsd(),
-    priceLimit = "$minLimit - $maxLimit"
+    price = price
 )
 
-fun TradeDataItem.mapToUiOpenItem(): TradeListItem.Open = TradeListItem.Open(
+fun TradeDataItem.mapToUiOpenItem(): TradeDetailsItem.Open = TradeDetailsItem.Open(
     id = id,
     userName = userName,
+    minLimit = minLimit,
+    maxLimit = maxLimit,
+    tradeCount = tradeCount,
+    distance = distance,
+    rate = rate,
     paymentMethod = paymentMethod,
-    price = price.toStringUsd(),
-    priceLimit = "$minLimit - $maxLimit",
+    price = price,
     isBuyType = true
 )

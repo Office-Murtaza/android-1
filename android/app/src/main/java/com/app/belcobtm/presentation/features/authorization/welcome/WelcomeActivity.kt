@@ -1,7 +1,5 @@
 package com.app.belcobtm.presentation.features.authorization.welcome
 
-import android.content.ClipData
-import android.content.ClipboardManager
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -22,7 +20,6 @@ import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_welcome.*
 import kotlinx.android.synthetic.main.view_support_dialog.*
 import org.koin.android.viewmodel.ext.android.viewModel
-
 
 class WelcomeActivity : AppCompatActivity() {
     private val viewModel: WelcomeViewModel by viewModel()

@@ -10,17 +10,17 @@ import retrofit2.http.*
 
 interface ApiInterface {
 
-    @POST("register")
-    fun register(@Body registerParam: AuthParam): Observable<ServerResponse<AuthResponse>>
+//    @POST("register")
+//    fun register(@Body registerParam: AuthParam): Observable<ServerResponse<AuthResponse>>
 
     @POST("recover")
     fun recover(@Body registerParam: AuthParam): Observable<ServerResponse<AuthResponse>>
 
-    @POST("refresh")
-    fun refresh(@Body refreshParam: RefreshParam): Observable<ServerResponse<AuthResponse>>
+//    @POST("refresh")
+//    fun refresh(@Body refreshParam: RefreshParam): Observable<ServerResponse<AuthResponse>>
 
-    @GET("user/{userId}/code/send")
-    fun requestSmsCode(@Path("userId") userId: String): Observable<ServerResponse<RequestSmsResponse>>
+//    @GET("user/{userId}/code/send")
+//    fun requestSmsCode(@Path("userId") userId: String): Observable<ServerResponse<RequestSmsResponse>>
 
     @POST("user/{userId}/code/verify")
     fun verifySmsCode(
@@ -28,11 +28,11 @@ interface ApiInterface {
         @Body verifySmsParam: VerifySmsParam
     ): Observable<ServerResponse<VerifySmsResponse>>
 
-    @POST("user/{userId}/coins/add")
-    fun addCoins(
-        @Path("userId") userId: String,
-        @Body addCoinsParam: AddCoinsParam
-    ): Observable<ServerResponse<AddCoinsResponse>>
+//    @POST("user/{userId}/coins/add")
+//    fun addCoins(
+//        @Path("userId") userId: String,
+//        @Body addCoinsParam: AddCoinsParam
+//    ): Observable<ServerResponse<AddCoinsResponse>>
 
     @POST("user/{userId}/coins/compare")
     fun verifyCoins(
@@ -46,8 +46,8 @@ interface ApiInterface {
         @Query("coins") coins: List<String>
     ): Observable<ServerResponse<GetCoinsResponse>>
 
-    @GET("user/{userId}/coins/fee")
-    fun getCoinsFee(@Path("userId") userId: String): Observable<ServerResponse<GetCoinsFeeOldResponse>>
+//    @GET("user/{userId}/coins/fee")
+//    fun getCoinsFee(@Path("userId") userId: String): Observable<ServerResponse<GetCoinsFeeOldResponse>>
 
     @GET("coins/{coinId}/settings")
     fun getCoinFee(
@@ -100,67 +100,61 @@ interface ApiInterface {
         @Query("index") elementIndex: Int
     ): Observable<ServerResponse<GetTransactionsResponse>>
 
-    @GET("user/{userId}/coins/{coinId}/transactions/utxo/{hex}")
-    fun getUtxos(
-        @Path("userId") userId: String,
-        @Path("coinId") coinId: String,
-        @Path("hex") extendedPublicKey: String
-    ): Observable<ServerResponse<UtxosResponse>>
+//    @GET("user/{userId}/coins/{coinId}/transactions/utxo/{hex}")
+//    fun getUtxos(
+//        @Path("userId") userId: String,
+//        @Path("coinId") coinId: String,
+//        @Path("hex") extendedPublicKey: String
+//    ): Observable<ServerResponse<UtxosResponse>>
 
+//    @GET("user/{userId}/coins/{coinId}/sendtx/{hex}")
+//    fun sendHash(
+//        @Path("userId") userId: String,
+//        @Path("coinId") coinId: String,
+//        @Path("hex") transactionHexToken: String
+//    ): Observable<ServerResponse<Any>>
 
-    @GET("user/{userId}/coins/{coinId}/sendtx/{hex}")
-    fun sendHash(
-        @Path("userId") userId: String,
-        @Path("coinId") coinId: String,
-        @Path("hex") transactionHexToken: String
-    ): Observable<ServerResponse<Any>>
+//    @POST("user/{userId}/coins/{coinId}/transactions/presubmit")
+//    fun preSubmitTx(
+//        @Path("userId") userId: String,
+//        @Path("coinId") coinId: String,
+//        @Body body: PreTransactionParam
+//    ): Observable<ServerResponse<PreSubmitResponse>>
 
+//    @POST("user/{userId}/coins/{coinId}/transactions/submit")
+//    fun submitTx(
+//        @Path("userId") userId: String,
+//        @Path("coinId") coinId: String,
+//        @Body body: SendTransactionParam
+//    ): Observable<ServerResponse<UpdateResponse>>
 
-    @POST("user/{userId}/coins/{coinId}/transactions/presubmit")
-    fun preSubmitTx(
-        @Path("userId") userId: String,
-        @Path("coinId") coinId: String,
-        @Body body: PreTransactionParam
-    ): Observable<ServerResponse<PreSubmitResponse>>
+//    @GET("user/{userId}/coins/{coinId}/giftaddress")
+//    fun giftAddress(
+//        @Path("userId") userId: String,
+//        @Path("coinId") coinId: String,
+//        @Query("phone") phone: String?
+//    ): Observable<ServerResponse<GiftAddressResponse>>
 
-    @POST("user/{userId}/coins/{coinId}/transactions/submit")
-    fun submitTx(
-        @Path("userId") userId: String,
-        @Path("coinId") coinId: String,
-        @Body body: SendTransactionParam
-    ): Observable<ServerResponse<UpdateResponse>>
+//    @GET("user/{userId}/coins/{coinId}/transactions/currentblock")
+//    fun getTronBlockHeader(
+//        @Path("userId") userId: String?,
+//        @Path("coinId") coinId: String
+//    ): Observable<ServerResponse<TronBlockResponse>>
 
+//    @GET("user/{userId}/coins/BNB/transactions/currentaccount")
+//    fun getBNBBlockHeader(
+//        @Path("userId") userId: String
+//    ): Observable<ServerResponse<BNBBlockResponse>>
 
-    @GET("user/{userId}/coins/{coinId}/giftaddress")
-    fun giftAddress(
-        @Path("userId") userId: String,
-        @Path("coinId") coinId: String,
-        @Query("phone") phone: String?
-    ): Observable<ServerResponse<GiftAddressResponse>>
+//    @GET("user/{userId}/coins/XRP/transactions/currentaccount")
+//    fun getXRPBlockHeader(
+//        @Path("userId") userId: String
+//    ): Observable<ServerResponse<BNBBlockResponse>>
 
-
-    @GET("user/{userId}/coins/{coinId}/transactions/currentblock")
-    fun getTronBlockHeader(
-        @Path("userId") userId: String?,
-        @Path("coinId") coinId: String
-    ): Observable<ServerResponse<TronBlockResponse>>
-
-
-    @GET("user/{userId}/coins/BNB/transactions/currentaccount")
-    fun getBNBBlockHeader(
-        @Path("userId") userId: String
-    ): Observable<ServerResponse<BNBBlockResponse>>
-
-    @GET("user/{userId}/coins/XRP/transactions/currentaccount")
-    fun getXRPBlockHeader(
-        @Path("userId") userId: String
-    ): Observable<ServerResponse<BNBBlockResponse>>
-
-
-    @GET("user/{userId}/coins/ETH/transactions/nonce")
-    fun getETHNonce(
-        @Path("userId") userId: String
-    ): Observable<ServerResponse<ETHResponse>>
+//    @GET("user/{userId}/coins/ETH/transactions/nonce")
+//    fun getETHNonce(
+//        @Path("userId") userId: String
+//    ): Observable<ServerResponse<ETHResponse>>
 
     @GET("user/{userId}/coins/{coinId}/transactions/limits")
     fun getLimits(

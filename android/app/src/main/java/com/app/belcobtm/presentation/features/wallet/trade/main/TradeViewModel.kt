@@ -3,6 +3,7 @@ package com.app.belcobtm.presentation.features.wallet.trade.main
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.app.belcobtm.domain.wallet.interactor.GetTradeInfoUseCase
+import com.app.belcobtm.domain.wallet.item.TradeInfoDataItem
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
 import com.app.belcobtm.presentation.features.wallet.IntentCoinItem
 import com.app.belcobtm.presentation.features.wallet.trade.main.item.TradePageItem
@@ -20,7 +21,7 @@ class TradeViewModel(
 
     init {
         tradePageListLiveData.value = LoadingData.Loading()
-        getTradeInfoUseCase.invoke(GetTradeInfoUseCase.Params(latitude, longitude)) { either ->
+        getTradeInfoUseCase.invoke(GetTradeInfoUseCase.Params(latitude, longitude, fromCoinItem.coinCode)) { either ->
             either.either(
                 { tradePageListLiveData.value = LoadingData.Error(it) },
                 { tradeInfoItem ->

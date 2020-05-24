@@ -11,8 +11,10 @@ data class TradeItemResponse(
     val rate: Int,
     val distance: Int,
     val price: Double,
-    val publicId: String,
-    val paymentMethod: String
+    val tradeRate: Double,
+    val username: String,
+    val paymentMethod: String,
+    val terms: String
 )
 
 fun TradeItemResponse.mapToDataItem(): TradeDataItem = TradeDataItem(
@@ -21,9 +23,10 @@ fun TradeItemResponse.mapToDataItem(): TradeDataItem = TradeDataItem(
     tradeCount = tradeCount,
     minLimit = minLimit,
     maxLimit = maxLimit,
-    rate = rate,
+    rate = tradeRate,
     distance = distance,
     price = price,
-    userName = publicId,
-    paymentMethod = paymentMethod
+    userName = username,
+    paymentMethod = paymentMethod,
+    terms = terms
 )

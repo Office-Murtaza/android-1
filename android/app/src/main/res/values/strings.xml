@@ -252,6 +252,7 @@
 
     <!-- Trade -->
     <string name="trade_screen_title">Trade %1$s</string>
+    <string name="trade_screen_title_buy">Buy %1$s</string>
     <string name="trade_screen_price">Price</string>
     <string name="trade_screen_balance">Balance</string>
     <string name="trade_screen_reserved">Reserved</string>
@@ -267,7 +268,7 @@
     <string name="trade_screen_limits">Limits</string>
     <string name="trade_screen_terms">Terms</string>
     <string name="trade_screen_trade_details">Trade details</string>
-    <!--    <string name="trade_screen_"></string>-->
+    <string name="trade_screen_user_field">%1$s (%2$d/%3$.0f%%/%4$dkm)</string>
     <!--    <string name="trade_screen_"></string>-->
     <!--    <string name="trade_screen_"></string>-->
 

@@ -168,13 +168,30 @@ class WalletApiService(
         Either.Left(failure)
     }
 
-    suspend fun getTradeInfo(): Either<Failure, TradeInfoDataItem> = try {
-        val request = api.tradeGetInfoAsync(prefHelper.userId).await()
+    suspend fun getTradeInfo(coinFrom: String): Either<Failure, TradeInfoDataItem> = try {
+        val request = api.tradeGetInfoAsync(prefHelper.userId, coinFrom).await()
         request.body()?.let { Either.Right(it.mapToDataItem()) } ?: Either.Left(Failure.ServerError())
     } catch (failure: Failure) {
         failure.printStackTrace()
         Either.Left(failure)
     }
+
+    suspend fun tradeBuy(
+        id: Int,
+        price: Int,
+        fromUsdAmount: Int,
+        toCoin: String,
+        toCoinAmount: Double,
+        detailsText: String
+    ): Either<Failure, Unit> = try {
+        val requestBody = TradeBuyRequest(id, price, fromUsdAmount, toCoinAmount, detailsText)
+        val request = api.tradeBuyAsync(prefHelper.userId, toCoin, requestBody).await()
+        request.body()?.let { Either.Right(Unit) } ?: Either.Left(Failure.ServerError())
+    } catch (failure: Failure) {
+        failure.printStackTrace()
+        Either.Left(failure)
+    }
+
 
     suspend fun sendTradeUserLocation(latitude: Double, longitude: Double): Either<Failure, Unit> = try {
         val requestBody = TradeLocationRequest(latitude, longitude)

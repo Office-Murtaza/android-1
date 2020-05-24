@@ -13,7 +13,10 @@ import com.app.belcobtm.presentation.core.extensions.toStringUsd
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
 import com.app.belcobtm.presentation.core.ui.BaseActivity
 import com.app.belcobtm.presentation.features.authorization.pin.PinActivity
+import com.app.belcobtm.presentation.features.wallet.IntentCoinItem
+import com.app.belcobtm.presentation.features.wallet.trade.details.TradeDetailsBuyActivity
 import com.app.belcobtm.presentation.features.wallet.trade.main.adapter.TradePageAdapter
+import com.app.belcobtm.presentation.features.wallet.trade.main.item.TradeDetailsItem
 import com.google.android.material.tabs.TabLayoutMediator
 import kotlinx.android.synthetic.main.activity_trade.*
 import org.koin.android.viewmodel.ext.android.viewModel
@@ -27,7 +30,19 @@ class TradeActivity : BaseActivity() {
             intent.getParcelableExtra(TAG_COIN_ITEM)
         )
     }
-    private val tradePageAdapter = TradePageAdapter()
+    private val tradePageAdapter = TradePageAdapter { tradeListItem ->
+        when (tradeListItem) {
+            is TradeDetailsItem.Buy -> {
+                val intent = Intent(this, TradeDetailsBuyActivity::class.java)
+                intent.putExtra(
+                    TradeDetailsBuyActivity.TAG_COIN_ITEM,
+                    this.intent.getParcelableExtra<IntentCoinItem>(TAG_COIN_ITEM)
+                )
+                intent.putExtra(TradeDetailsBuyActivity.TAG_TRADE_DETAILS_ITEM, tradeListItem)
+                startActivity(intent)
+            }
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

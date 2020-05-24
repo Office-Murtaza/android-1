@@ -6,9 +6,10 @@ data class TradeDataItem(
     val tradeCount: Int,
     val minLimit: Int,
     val maxLimit: Int,
-    val rate: Int,
     val distance: Int,
+    val rate: Double,
     val price: Double,
     val userName: String,
-    val paymentMethod: String
+    val paymentMethod: String,
+    val terms: String
 )

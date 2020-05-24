@@ -9,7 +9,7 @@ import com.app.belcobtm.domain.wallet.item.TradeInfoDataItem
 class GetTradeInfoUseCase(private val repository: WalletRepository) :
     UseCase<TradeInfoDataItem, GetTradeInfoUseCase.Params>() {
     override suspend fun run(params: Params): Either<Failure, TradeInfoDataItem> =
-        repository.getTradeInformation(params.latitude, params.longitude)
+        repository.getTradeInformation(params.latitude, params.longitude, params.coinFrom)
 
-    data class Params(val latitude: Double, val longitude: Double)
+    data class Params(val latitude: Double, val longitude: Double, val coinFrom: String)
 }

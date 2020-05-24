@@ -67,6 +67,19 @@ interface WalletRepository {
         hex: String
     ): Either<Failure, Unit>
 
-    suspend fun getTradeInformation(latitude: Double, longitude: Double): Either<Failure, TradeInfoDataItem>
+    suspend fun getTradeInformation(
+        latitude: Double,
+        longitude: Double,
+        coinFrom: String
+    ): Either<Failure, TradeInfoDataItem>
+
+    suspend fun tradeBuy(
+        id: Int,
+        price: Int,
+        fromUsdAmount: Int,
+        toCoin: String,
+        toCoinAmount: Double,
+        detailsText: String
+    ): Either<Failure, Unit>
 }
 

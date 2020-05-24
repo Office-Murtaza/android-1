@@ -8,34 +8,47 @@ import androidx.recyclerview.widget.RecyclerView
 import com.app.belcobtm.R
 import com.app.belcobtm.presentation.core.extensions.hide
 import com.app.belcobtm.presentation.core.extensions.show
-import com.app.belcobtm.presentation.features.wallet.trade.main.item.TradeListItem
+import com.app.belcobtm.presentation.core.extensions.toStringUsd
+import com.app.belcobtm.presentation.features.wallet.trade.main.item.TradeDetailsItem
 import kotlinx.android.synthetic.main.item_trade_list.view.*
 
-class TradeListAdapter : RecyclerView.Adapter<TradeListAdapter.Holder>() {
-    private val itemList: MutableList<TradeListItem> = mutableListOf(TradeListItem.Empty)
+class TradeListAdapter(
+    private val listener: (listItem: TradeDetailsItem) -> Unit
+) : RecyclerView.Adapter<TradeListAdapter.Holder>() {
+    private val itemList: MutableList<TradeDetailsItem> = mutableListOf(TradeDetailsItem.Empty)
 
     override fun getItemCount(): Int = itemList.size
 
     override fun getItemViewType(position: Int): Int = when (itemList[position]) {
-        is TradeListItem.Empty -> R.layout.item_trade_list_empty
+        is TradeDetailsItem.Empty -> R.layout.item_trade_list_empty
         else -> R.layout.item_trade_list
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, layout: Int): Holder {
         val view = LayoutInflater.from(parent.context).inflate(layout, parent, false)
         val holder = Holder(view)
+        view.setOnClickListener { listener.invoke(itemList[holder.adapterPosition]) }
         return holder
     }
 
-    override fun onBindViewHolder(holder: Holder, position: Int) = when (val item = itemList[position]) {
-        is TradeListItem.Empty -> Unit
+    override fun onBindViewHolder(
+        holder: Holder,
+        position: Int
+    ) = when (val item = itemList[position]) {
+        is TradeDetailsItem.Empty -> Unit
         else -> with(holder.itemView) {
-            userNameView.text = item.userName
+            userNameView.text = context.getString(
+                R.string.trade_screen_user_field,
+                item.userName,
+                item.tradeCount,
+                item.rate,
+                item.distance
+            )
             paymentMethodView.text = item.paymentMethod
-            priceView.text = context.getString(R.string.unit_usd_dynamic, item.price)
-            priceLimitView.text = context.getString(R.string.unit_usd_dynamic, item.priceLimit)
+            priceView.text = context.getString(R.string.unit_usd_dynamic, item.price.toStringUsd())
+            priceLimitView.text = context.getString(R.string.unit_usd_dynamic, "${item.minLimit} - ${item.maxLimit}")
 
-            if (item is TradeListItem.Open) {
+            if (item is TradeDetailsItem.Open) {
                 holder.itemView.tradeTypeView.background.setTint(Color.RED)
                 holder.itemView.tradeTypeView.show()
             } else {
@@ -44,10 +57,10 @@ class TradeListAdapter : RecyclerView.Adapter<TradeListAdapter.Holder>() {
         }
     }
 
-    fun setItemList(itemList: List<TradeListItem>) {
+    fun setItemList(itemList: List<TradeDetailsItem>) {
         this.itemList.clear()
         if (itemList.isEmpty()) {
-            this.itemList.add(TradeListItem.Empty)
+            this.itemList.add(TradeDetailsItem.Empty)
         } else {
             this.itemList.addAll(itemList)
         }
