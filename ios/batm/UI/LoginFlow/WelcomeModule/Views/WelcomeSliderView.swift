@@ -1,8 +1,9 @@
 import UIKit
 import RxSwift
 import RxCocoa
+import MaterialComponents
 
-class WelcomeSliderView: UIView, UIScrollViewDelegate {
+class WelcomeSliderView: UIView, UIScrollViewDelegate, HasDisposeBag {
   
   let scrollView: UIScrollView = {
     let scrollView = UIScrollView()
@@ -30,10 +31,11 @@ class WelcomeSliderView: UIView, UIScrollViewDelegate {
     return view
   }()
   
-  let pageControl: UIPageControl = {
-    let pageControl = UIPageControl()
+  let pageControl: MDCPageControl = {
+    let pageControl = MDCPageControl()
     pageControl.numberOfPages = 3
-    pageControl.pageIndicatorTintColor = .pinkishGrey
+    pageControl.pageIndicatorTintColor = UIColor.brownishGrey.withAlphaComponent(0.4)
+    pageControl.currentPageIndicatorTintColor = .ceruleanBlue
     return pageControl
   }()
   
@@ -42,6 +44,7 @@ class WelcomeSliderView: UIView, UIScrollViewDelegate {
     
     setupUI()
     setupLayout()
+    setupBindings()
   }
   
   required init?(coder aDecoder: NSCoder) {
@@ -77,22 +80,32 @@ class WelcomeSliderView: UIView, UIScrollViewDelegate {
       $0.top.right.bottom.size.equalToSuperview()
     }
     pageControl.snp.makeConstraints {
-      $0.top.equalTo(scrollView.snp.bottom)
+      $0.top.equalTo(scrollView.snp.bottom).offset(25)
       $0.bottom.centerX.equalToSuperview()
     }
   }
   
-  private func updateCurrentPage() {
-    pageControl.currentPage = Int(scrollView.contentOffset.x / scrollView.frame.width)
+  func setupBindings() {
+    pageControl.rx.controlEvent(.valueChanged)
+      .subscribe(onNext: { [unowned self] in self.didChangePage() })
+      .disposed(by: disposeBag)
   }
   
-  func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
-    if !decelerate {
-      updateCurrentPage()
-    }
+  private func didChangePage() {
+    var offset = scrollView.contentOffset
+    offset.x = CGFloat(pageControl.currentPage) * scrollView.bounds.size.width;
+    scrollView.setContentOffset(offset, animated: true)
   }
   
+  func scrollViewDidScroll(_ scrollView: UIScrollView) {
+    pageControl.scrollViewDidScroll(scrollView)
+  }
+
   func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-    updateCurrentPage()
+    pageControl.scrollViewDidEndDecelerating(scrollView)
+  }
+
+  func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
+    pageControl.scrollViewDidEndScrollingAnimation(scrollView)
   }
 }

@@ -56,7 +56,7 @@ class MaterialCheckBoxView: UIView, HasDisposeBag {
     isAcceptedRelay
       .subscribe(onNext: { [unowned self] isAccepted in
         self.checkmarkImageView.isHidden = !isAccepted
-        self.checkboxButton.layer.borderColor = isAccepted ? UIColor.ceruleanBlue.cgColor : UIColor.greyishTwo.cgColor
+        self.checkboxButton.layer.borderColor = isAccepted ? UIColor.ceruleanBlue.cgColor : UIColor.pinkishGrey.cgColor
         self.checkboxButton.backgroundColor = isAccepted ? .ceruleanBlue : .clear
       })
       .disposed(by: disposeBag)

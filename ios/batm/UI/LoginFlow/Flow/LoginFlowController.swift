@@ -23,6 +23,10 @@ extension LoginFlowController: WelcomeModuleDelegate {
     step.accept(LoginFlow.Steps.recover)
   }
   
+  func showContactSupportAlert() {
+    step.accept(LoginFlow.Steps.contactSupport)
+  }
+  
 }
 
 extension LoginFlowController: CreateWalletModuleDelegate {

@@ -51,6 +51,8 @@
 		DB1CFB56246C518200020104 /* TradesAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB1CFB52246C518200020104 /* TradesAssembly.swift */; };
 		DB1CFB58246C5C2800020104 /* TradesStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB1CFB57246C5C2800020104 /* TradesStore.swift */; };
 		DB226C5A22E99E3E0087E6C5 /* URLEncoding+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB226C5922E99E3E0087E6C5 /* URLEncoding+Extensions.swift */; };
+		DB247B412478F88C009802BB /* SplashViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB247B3D2478F88C009802BB /* SplashViewController.swift */; };
+		DB247B432478F88C009802BB /* SplashAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB247B3F2478F88C009802BB /* SplashAssembly.swift */; };
 		DB2C971B23449109006E7D61 /* CoinSendGiftModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB2C971723449109006E7D61 /* CoinSendGiftModule.swift */; };
 		DB2C971C23449109006E7D61 /* CoinSendGiftViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB2C971823449109006E7D61 /* CoinSendGiftViewController.swift */; };
 		DB2C971D23449109006E7D61 /* CoinSendGiftPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB2C971923449109006E7D61 /* CoinSendGiftPresenter.swift */; };
@@ -522,6 +524,8 @@
 		DB1CFB52246C518200020104 /* TradesAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TradesAssembly.swift; sourceTree = "<group>"; };
 		DB1CFB57246C5C2800020104 /* TradesStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TradesStore.swift; sourceTree = "<group>"; };
 		DB226C5922E99E3E0087E6C5 /* URLEncoding+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URLEncoding+Extensions.swift"; sourceTree = "<group>"; };
+		DB247B3D2478F88C009802BB /* SplashViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashViewController.swift; sourceTree = "<group>"; };
+		DB247B3F2478F88C009802BB /* SplashAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashAssembly.swift; sourceTree = "<group>"; };
 		DB2C971723449109006E7D61 /* CoinSendGiftModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinSendGiftModule.swift; sourceTree = "<group>"; };
 		DB2C971823449109006E7D61 /* CoinSendGiftViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinSendGiftViewController.swift; sourceTree = "<group>"; };
 		DB2C971923449109006E7D61 /* CoinSendGiftPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinSendGiftPresenter.swift; sourceTree = "<group>"; };
@@ -1152,6 +1156,15 @@
 			path = TradesModule;
 			sourceTree = "<group>";
 		};
+		DB247B3B2478F870009802BB /* SplashModule */ = {
+			isa = PBXGroup;
+			children = (
+				DB247B3D2478F88C009802BB /* SplashViewController.swift */,
+				DB247B3F2478F88C009802BB /* SplashAssembly.swift */,
+			);
+			path = SplashModule;
+			sourceTree = "<group>";
+		};
 		DB2C9716234490E8006E7D61 /* CoinSendGiftModule */ = {
 			isa = PBXGroup;
 			children = (
@@ -1719,6 +1732,7 @@
 			isa = PBXGroup;
 			children = (
 				DB70852B22CFAE1C00FFE4F7 /* Flow */,
+				DB247B3B2478F870009802BB /* SplashModule */,
 			);
 			path = RootFlow;
 			sourceTree = "<group>";
@@ -2884,6 +2898,7 @@
 				DB5EB8DE2452D80F00CD1C63 /* MaterialCheckBoxView.swift in Sources */,
 				DBC68C9522F85DF700473247 /* PhoneNumber.swift in Sources */,
 				DB83663A22FAB7CE00454F5C /* ChangePinFlowController.swift in Sources */,
+				DB247B432478F88C009802BB /* SplashAssembly.swift in Sources */,
 				DB96173722C7B1140078E92D /* BTMCoinRecord+CoreDataProperties.swift in Sources */,
 				DB2F25172360A8F400274C60 /* TransactionDetailsPresenter.swift in Sources */,
 				DB33E9C6241D3B7900764BF5 /* PriceChartPeriods+Mapping.swift in Sources */,
@@ -2942,6 +2957,7 @@
 				DB308EB922E73888003D91AF /* MapAddress+Mapping.swift in Sources */,
 				DBAD53A422D7C5610005F682 /* PinCodeView.swift in Sources */,
 				DB5EB8DA2452B23D00CD1C63 /* MDCTextInputControllerBase+Extensions.swift in Sources */,
+				DB247B412478F88C009802BB /* SplashViewController.swift in Sources */,
 				DB3C03DD22CB5F7C0036F779 /* RecoverFormView.swift in Sources */,
 				DB497AF722BF6AA0008CE4A8 /* WelcomeViewController.swift in Sources */,
 				DB83662822FAA75100454F5C /* UnlinkFlow.swift in Sources */,

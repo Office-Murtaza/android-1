@@ -4,11 +4,13 @@ import RxSwift
 class RootFlow: BaseFlow<UIWindow, RootFlowController> {
   override func assemblies() -> [Assembly] {
     return [
+      SplashAssembly(),
       PinCodeAssembly()
     ]
   }
   
   enum Steps: Step, Equatable {
+    case splash
     case login
     case pinCode(PinCodeStage)
     case main
@@ -22,6 +24,9 @@ class RootFlow: BaseFlow<UIWindow, RootFlowController> {
   
   private func handleFlow(step: Steps) -> NextFlowItems {
     switch step {
+    case .splash:
+      let splash = resolver.resolve(Module<SplashModule>.self)!
+      return replaceRoot(with: splash)
     case .login:
       let loginFlow = LoginFlow(view: BTMNavigationController(), parent: self)
       return replaceRoot(with: loginFlow)

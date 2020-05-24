@@ -17,6 +17,12 @@ extension MDCButton {
     return button
   }
   
+  static var outlined: MDCButton {
+    let button = MDCButton.default
+    button.applyOutlinedTheme(withScheme: MDCContainerScheme.default)
+    return button
+  }
+  
   static var contained: MDCButton {
     let button = MDCButton.default
     button.applyContainedTheme(withScheme: MDCContainerScheme.default)
@@ -75,6 +81,24 @@ extension MDCButton {
   static var copy: MDCButton {
     let button = MDCButton.text
     button.setTitle(localize(L.Shared.Button.copy), for: .normal)
+    return button
+  }
+  
+  static var createNewWallet: MDCButton {
+    let button = MDCButton.contained
+    button.setTitle(localize(L.Welcome.CreateButton.title), for: .normal)
+    return button
+  }
+  
+  static var recoverMyWallet: MDCButton {
+    let button = MDCButton.outlined
+    button.setTitle(localize(L.Welcome.RecoverButton.title), for: .normal)
+    return button
+  }
+  
+  static var contactSupport: MDCButton {
+    let button = MDCButton.text
+    button.setTitle(localize(L.Welcome.contactSupport), for: .normal)
     return button
   }
   
