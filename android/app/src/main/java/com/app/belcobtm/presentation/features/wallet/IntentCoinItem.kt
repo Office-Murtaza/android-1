@@ -9,6 +9,8 @@ data class IntentCoinItem(
     val priceUsd: Double,
     val balanceUsd: Double,
     val balanceCoin: Double,
+    val reservedBalanceCoin: Double,
+    val reservedBalanceUsd: Double,
     val coinCode: String,
     val publicKey: String
 ) : Parcelable

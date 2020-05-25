@@ -42,6 +42,10 @@ class SharedPreferencesHelper(private val sharedPreferences: SharedPreferences) 
             return if (json.isBlank()) emptyMap() else jsonAdapter.fromJson(json) ?: emptyMap()
         }
 
+    var tradeLocationExpirationTime: Long
+        set(value) = sharedPreferences.set(USER_PIN, value)
+        get() = sharedPreferences[TRADE_LOCATION_EXPIRATION_TIME] ?: -1
+
     companion object {
         private const val ACCESS_TOKEN = "KEY_API_SESSION_TOKEN"
         private const val ACCESS_TOKEN_BEARER = "Bearer "
@@ -51,5 +55,6 @@ class SharedPreferencesHelper(private val sharedPreferences: SharedPreferences) 
         private const val USER_ID = "KEY_USER_ID"
         private const val USER_PIN = "KEY_PIN"
         private const val COINS_FEE = "PREF_KEY_COINS_FEE"
+        private const val TRADE_LOCATION_EXPIRATION_TIME = "trade_location_expiration_time"
     }
 }

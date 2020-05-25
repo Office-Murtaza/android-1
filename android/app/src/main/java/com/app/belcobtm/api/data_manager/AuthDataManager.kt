@@ -12,14 +12,6 @@ import io.reactivex.Observable
 
 class AuthDataManager : BaseDataManager() {
 
-    fun refreshToken(refreshToken: String?): Observable<Optional<AuthResponse>> {
-        return genObservable(api.refresh(RefreshParam(refreshToken)))
-    }
-
-    fun verifySmsCode(userId: String, smsCode: String): Observable<Optional<VerifySmsResponse>> {
-        return genObservable(api.verifySmsCode(userId, VerifySmsParam(smsCode)))
-    }
-
     fun verifyCoins(
         userId: String,
         coinDbs: List<CoinDataItem>

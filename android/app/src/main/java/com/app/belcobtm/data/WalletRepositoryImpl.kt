@@ -9,11 +9,8 @@ import com.app.belcobtm.data.disk.shared.preferences.SharedPreferencesHelper
 import com.app.belcobtm.data.rest.wallet.WalletApiService
 import com.app.belcobtm.domain.Either
 import com.app.belcobtm.domain.Failure
-import com.app.belcobtm.domain.wallet.item.CoinDataItem
-import com.app.belcobtm.domain.wallet.item.CoinFeeDataItem
 import com.app.belcobtm.domain.wallet.WalletRepository
-import com.app.belcobtm.domain.wallet.item.SellLimitsDataItem
-import com.app.belcobtm.domain.wallet.item.SellPreSubmitDataItem
+import com.app.belcobtm.domain.wallet.item.*
 import com.app.belcobtm.presentation.core.extensions.CoinTypeExtension
 
 class WalletRepositoryImpl(
@@ -33,11 +30,12 @@ class WalletRepositoryImpl(
         return Either.Right(Unit)
     }
 
-    override suspend fun sendSmsToDevice(): Either<Failure, Unit> = if (networkUtils.isNetworkAvailable()) {
-        apiService.sendToDeviceSmsCode()
-    } else {
-        Either.Left(Failure.NetworkConnection)
-    }
+    override suspend fun sendSmsToDevice(): Either<Failure, Unit> =
+        if (networkUtils.isNetworkAvailable()) {
+            apiService.sendToDeviceSmsCode()
+        } else {
+            Either.Left(Failure.NetworkConnection)
+        }
 
     override suspend fun verifySmsCode(
         smsCode: String
@@ -54,7 +52,8 @@ class WalletRepositoryImpl(
     ): Either<Failure, String> = if (networkUtils.isNetworkAvailable()) {
         val toAddress = prefHelper.coinsFee[fromCoin]?.serverWalletAddress ?: ""
         val coinType = CoinTypeExtension.getTypeByCode(fromCoin)
-        val hashResponse = transactionHashRepository.createTransactionHash(coinType!!, fromCoinAmount, toAddress)
+        val hashResponse =
+            transactionHashRepository.createTransactionHash(coinType!!, fromCoinAmount, toAddress)
         when {
             isNeedSendSms && hashResponse.isRight -> {
                 val sendSmsToDeviceResponse = sendSmsToDevice()
@@ -167,6 +166,34 @@ class WalletRepositoryImpl(
         } else {
             smsCodeVerifyResponse as Either.Left
         }
+    } else {
+        Either.Left(Failure.NetworkConnection)
+    }
+
+    override suspend fun getTradeInformation(
+        latitude: Double,
+        longitude: Double,
+        coinFrom: String
+    ): Either<Failure, TradeInfoDataItem> = when {
+        !networkUtils.isNetworkAvailable() -> Either.Left(Failure.NetworkConnection)
+        (latitude > 0 || longitude > 0) && prefHelper.tradeLocationExpirationTime < System.currentTimeMillis() -> {
+            val locationRequest = apiService.sendTradeUserLocation(latitude, longitude)
+            prefHelper.tradeLocationExpirationTime =
+                if (locationRequest.isRight) System.currentTimeMillis() else -1
+            apiService.getTradeInfo(coinFrom)
+        }
+        else -> apiService.getTradeInfo(coinFrom)
+    }
+
+    override suspend fun tradeBuy(
+        id: Int,
+        price: Int,
+        fromUsdAmount: Int,
+        toCoin: String,
+        toCoinAmount: Double,
+        detailsText: String
+    ): Either<Failure, Unit> = if (networkUtils.isNetworkAvailable()) {
+        apiService.tradeBuy(id, price, fromUsdAmount, toCoin, toCoinAmount, detailsText)
     } else {
         Either.Left(Failure.NetworkConnection)
     }

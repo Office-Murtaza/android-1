@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ui.main.settings.phone.ShowPhoneActivity">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbarView"
+        android:layout_width="0dp"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@drawable/bg_toolbar"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:elevation="6dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:navigationIcon="@drawable/gph_ic_back"
+        tools:title="@string/trade_screen_title" />
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/priceBarrierView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="end"
+        app:constraint_referenced_ids="balanceTitleView,priceTitleView,reserveTitleView" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/priceTitleView"
+        style="@style/WalletTab.Title.Medium.Key"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/trade_screen_price"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbarView" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/priceUsdView"
+        style="@style/WalletTab.Title.Medium.Value"
+        android:layout_marginStart="16dp"
+        app:layout_constraintStart_toEndOf="@id/priceBarrierView"
+        app:layout_constraintTop_toTopOf="@id/priceTitleView"
+        tools:text="2525.31 USD" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/balanceTitleView"
+        style="@style/WalletTab.Title.Medium.Key"
+        android:text="@string/trade_screen_balance"
+        app:layout_constraintStart_toStartOf="@id/priceTitleView"
+        app:layout_constraintTop_toBottomOf="@id/priceTitleView" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/balanceCryptoView"
+        style="@style/WalletTab.Title.Medium.Value"
+        app:layout_constraintStart_toStartOf="@id/priceUsdView"
+        app:layout_constraintTop_toTopOf="@id/balanceTitleView"
+        tools:text="0.000902 BTC" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/exchangeView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        app:layout_constraintBottom_toBottomOf="@id/balanceCryptoView"
+        app:layout_constraintEnd_toStartOf="@id/balanceUsdView"
+        app:layout_constraintStart_toEndOf="@id/balanceCryptoView"
+        app:layout_constraintTop_toTopOf="@id/balanceCryptoView"
+        app:srcCompat="@drawable/ic_compare_arrows" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/balanceUsdView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:textColor="@color/blue_color"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintBottom_toBottomOf="@id/exchangeView"
+        app:layout_constraintStart_toEndOf="@id/exchangeView"
+        app:layout_constraintTop_toTopOf="@id/exchangeView"
+        tools:text="8.90 USD" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/reserveTitleView"
+        style="@style/WalletTab.Title.Medium.Key"
+        android:text="@string/trade_screen_reserved"
+        app:layout_constraintStart_toStartOf="@id/balanceTitleView"
+        app:layout_constraintTop_toBottomOf="@id/balanceTitleView" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/reserveCryptoView"
+        style="@style/WalletTab.Title.Medium.Value"
+        app:layout_constraintStart_toStartOf="@id/balanceCryptoView"
+        app:layout_constraintTop_toTopOf="@id/reserveTitleView"
+        tools:text="0.000902 BTC" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/reserveExchangeView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        app:layout_constraintBottom_toBottomOf="@id/reserveCryptoView"
+        app:layout_constraintEnd_toStartOf="@id/reserveUsdView"
+        app:layout_constraintStart_toEndOf="@id/reserveCryptoView"
+        app:layout_constraintTop_toTopOf="@id/reserveCryptoView"
+        app:srcCompat="@drawable/ic_compare_arrows" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/reserveUsdView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:textColor="@color/blue_color"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintBottom_toBottomOf="@id/reserveExchangeView"
+        app:layout_constraintStart_toEndOf="@id/reserveExchangeView"
+        app:layout_constraintTop_toTopOf="@id/reserveExchangeView"
+        tools:text="8.90 USD" />
+
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tabLayoutView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/reserveTitleView" />
+
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/pagerView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="#f5f5f5"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tabLayoutView" />
+
+
+    <com.github.clans.fab.FloatingActionMenu
+        android:id="@+id/fabMenuView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:menu_backgroundColor="#80000000"
+        app:menu_colorNormal="@color/blue_color"
+        app:menu_colorPressed="@color/chart_point"
+        app:menu_fab_size="normal"
+        app:menu_icon="@drawable/ic_add"
+        app:menu_labels_colorNormal="@android:color/white"
+        app:menu_labels_hideAnimation="@anim/fab_scale_down"
+        app:menu_labels_showAnimation="@anim/fab_scale_up"
+        app:menu_labels_textColor="#58585a">
+
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/recallButtonView"
+            style="@style/TransactionsScreen.FloatingActionButtonChild"
+            android:src="@drawable/ic_file_download"
+            app:fab_label="@string/trade_screen_recall" />
+
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/reverseButtonView"
+            style="@style/TransactionsScreen.FloatingActionButtonChild"
+            android:src="@drawable/ic_publish"
+            app:fab_label="@string/trade_screen_reserve" />
+
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/postButtonView"
+            style="@style/TransactionsScreen.FloatingActionButtonChild"
+            android:src="@drawable/ic_create"
+            app:fab_label="@string/trade_screen_post" />
+    </com.github.clans.fab.FloatingActionMenu>
+
+    <FrameLayout
+        android:id="@+id/progressView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/gray_progress"
+        android:clickable="true"
+        android:elevation="15dp"
+        android:focusable="true"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbarView">
+
+        <ProgressBar
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="8dp" />
+    </FrameLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

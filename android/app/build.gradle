@@ -9,9 +9,8 @@ android {
         applicationId "com.app.belcobtm"
         minSdkVersion 23
         targetSdkVersion 29
-        versionCode 48
-        versionName "1.3.2"
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        versionCode 50
+        versionName "1.3.5"
         multiDexEnabled = true
     }
     buildTypes {
@@ -29,88 +28,60 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
-
-}
-
-project.ext {
-    trustVersion = "0.12.24"
-
-    web3jVersion = "3.0.1-android"
-    gethVersion = "1.8.11"
-//    getJavaCompiler
-    retrofitVersion = "2.6.0"
-    okhttpVersion = "3.14.2"
-    gsonVersion = "2.8.5"
-
-    rxJavaVersion = "2.2.9"
-    rxAndroidVersion = "2.1.1"
-
-    parcelerVersion = "1.1.12"
-
-    duggerVersion = "2.23.1"
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    implementation 'com.android.support:appcompat-v7:29.0.0'
-    implementation 'com.android.support:design:29.0.0'
-    implementation 'com.android.support:support-annotations:28.0.0'
-    implementation "com.android.support:cardview-v7:29.0.0"
-    implementation 'com.android.support.constraint:constraint-layout:1.1.3'
-    implementation 'com.google.android.gms:play-services-maps:17.0.0'
-    implementation 'android.arch.lifecycle:extensions:1.1.1'
-    implementation 'androidx.appcompat:appcompat:1.1.0'
+    implementation 'androidx.appcompat:appcompat:1.3.0-alpha01'
+    implementation 'com.google.android.material:material:1.1.0'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
-    testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'com.android.support.test:runner:1.0.2'
-    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+    implementation 'com.google.android.gms:play-services-maps:17.0.0'
+    implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
 
-    implementation 'androidx.core:core-ktx:1.3.0-rc01'
+    implementation 'androidx.core:core-ktx:1.4.0-alpha01'
 
-    //viewpager
-    implementation 'androidx.viewpager2:viewpager2:1.1.0-alpha01'
     implementation 'me.relex:circleindicator:2.1.4'
 
     //swipe refresh layout
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
 
-    implementation "com.android.support:multidex:1.0.3"
+    implementation 'androidx.multidex:multidex:2.0.1'
 
     implementation "com.trustwallet:wallet-core:0.12.24"
 
     // Etherium client
-    implementation "org.web3j:core:$project.web3jVersion"
-    implementation "org.web3j:utils:$project.web3jVersion"
-    implementation "org.web3j:abi:$project.web3jVersion"
+    implementation "org.web3j:core:3.0.1-android"
+    implementation "org.web3j:utils:3.0.1-android"
+    implementation "org.web3j:abi:3.0.1-android"
 
-    implementation "org.ethereum:geth:$project.gethVersion"
+    implementation "org.ethereum:geth:1.8.11"
 
     // Http client
-    implementation "com.squareup.retrofit2:retrofit:$project.retrofitVersion"
-    implementation "com.squareup.retrofit2:converter-gson:$project.retrofitVersion"
-    implementation "com.squareup.retrofit2:adapter-rxjava2:$project.retrofitVersion"
+    implementation "com.squareup.retrofit2:retrofit:2.6.2"
+    implementation "com.squareup.retrofit2:converter-gson:2.6.0"
+    implementation "com.squareup.retrofit2:adapter-rxjava2:2.6.0"
     implementation "com.jakewharton.retrofit:retrofit2-kotlin-coroutines-adapter:0.9.2"
-    implementation "com.squareup.okhttp3:okhttp:$project.okhttpVersion"
-    implementation "com.squareup.okhttp3:logging-interceptor:$project.okhttpVersion"
-    implementation "com.google.code.gson:gson:$project.gsonVersion"
+    implementation "com.squareup.okhttp3:okhttp:3.14.2"
+    implementation "com.squareup.okhttp3:logging-interceptor:3.14.2"
+    implementation "com.google.code.gson:gson:2.8.5"
 
     // ReactiveX
-    implementation "io.reactivex.rxjava2:rxjava:$project.rxJavaVersion"
-    implementation "io.reactivex.rxjava2:rxandroid:$project.rxAndroidVersion"
+    implementation "io.reactivex.rxjava2:rxjava:2.2.9"
+    implementation "io.reactivex.rxjava2:rxandroid:2.1.1"
 
     // Parceler
-    implementation "org.parceler:parceler-api:$project.parcelerVersion"
-    kapt "org.parceler:parceler:$project.parcelerVersion"
+    implementation "org.parceler:parceler-api:1.1.12"
+    kapt "org.parceler:parceler:1.1.12"
 
     // Dagger 2
     // Dagger core
-    implementation "com.google.dagger:dagger:$project.duggerVersion"
-    kapt "com.google.dagger:dagger-compiler:$project.duggerVersion"
+    implementation "com.google.dagger:dagger:2.24"
+    kapt "com.google.dagger:dagger-compiler:2.23.1"
     // Dagger Android
-    implementation "com.google.dagger:dagger-android:$project.duggerVersion"
-    implementation "com.google.dagger:dagger-android-support:$project.duggerVersion" // if you use the support libraries
-    kapt "com.google.dagger:dagger-android-processor:$project.duggerVersion"
+    implementation "com.google.dagger:dagger-android:2.23.1"
+    implementation "com.google.dagger:dagger-android-support:2.23.1" // if you use the support libraries
+    kapt "com.google.dagger:dagger-android-processor:2.23.1"
 
     implementation 'com.github.tbruyelle:rxpermissions:0.10.2'
 
@@ -134,13 +105,12 @@ dependencies {
     implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.20'
     implementation 'com.github.bumptech.glide:glide:4.11.0'
 
-
     //Koin
     implementation "org.koin:koin-android:2.1.5"
     implementation "org.koin:koin-android-viewmodel:2.1.5"
 
     //Moshi
-    implementation "com.squareup.retrofit2:converter-moshi:$project.retrofitVersion"
+    implementation "com.squareup.retrofit2:converter-moshi:2.6.2"
 
     //Permission dispatcher
     implementation "org.permissionsdispatcher:permissionsdispatcher:4.6.0"
@@ -150,7 +120,6 @@ dependencies {
     implementation "androidx.room:room-ktx:2.2.5"
     implementation "androidx.room:room-runtime:2.2.5"
     kapt "androidx.room:room-compiler:2.2.5"
-
 
     //Image picker
     implementation 'com.kroegerama:bottomsheet-imagepicker:1.1.2'

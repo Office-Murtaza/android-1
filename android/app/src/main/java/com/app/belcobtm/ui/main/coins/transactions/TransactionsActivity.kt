@@ -1,8 +1,12 @@
 package com.app.belcobtm.ui.main.coins.transactions
 
+import android.Manifest
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
+import android.location.Location
+import android.location.LocationManager
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.core.content.ContextCompat
@@ -16,6 +20,7 @@ import com.app.belcobtm.presentation.core.extensions.toStringUsd
 import com.app.belcobtm.presentation.features.wallet.IntentCoinItem
 import com.app.belcobtm.presentation.features.wallet.deposit.DepositActivity
 import com.app.belcobtm.presentation.features.wallet.exchange.coin.to.coin.ExchangeCoinToCoinActivity
+import com.app.belcobtm.presentation.features.wallet.trade.main.TradeActivity
 import com.app.belcobtm.ui.main.coins.sell.SellActivity
 import com.app.belcobtm.ui.main.coins.send_gift.SendGiftActivity
 import com.app.belcobtm.ui.main.coins.withdraw.WithdrawActivity
@@ -24,7 +29,12 @@ import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import kotlinx.android.synthetic.main.activity_transactions.*
 import org.parceler.Parcels
+import permissions.dispatcher.NeedsPermission
+import permissions.dispatcher.OnNeverAskAgain
+import permissions.dispatcher.OnPermissionDenied
+import permissions.dispatcher.RuntimePermissions
 
+@RuntimePermissions
 class TransactionsActivity : BaseMvpActivity<TransactionsContract.View, TransactionsContract.Presenter>(),
     TransactionsContract.View {
     private lateinit var mCoin: CoinModel
@@ -102,6 +112,12 @@ class TransactionsActivity : BaseMvpActivity<TransactionsContract.View, Transact
 
         chartView.data = LineData(dataSet)
         chartView.invalidate()
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        // NOTE: delegate the permission handling to generated method
+        onRequestPermissionsResult(requestCode, grantResults)
     }
 
     private fun initViews() {
@@ -195,6 +211,8 @@ class TransactionsActivity : BaseMvpActivity<TransactionsContract.View, Transact
                     mCoin.price.uSD,
                     mCoin.balance * mCoin.price.uSD,
                     mCoin.balance,
+                    mCoin.reservedBalance,
+                    mCoin.reservedBalance * mCoin.price.uSD,
                     mCoin.coinId,
                     mCoin.publicKey
                 )
@@ -211,6 +229,8 @@ class TransactionsActivity : BaseMvpActivity<TransactionsContract.View, Transact
             fabMenuView.close(false)
         }
 
+        tradeButtonView.setOnClickListener { tradeOpenWithPermissionCheck() }
+
         fabMenuView.setOnMenuToggleListener {
             fabMenuView.isClickable = it
             if (it) {
@@ -221,6 +241,45 @@ class TransactionsActivity : BaseMvpActivity<TransactionsContract.View, Transact
                 fabMenuView.isFocusable = false
             }
         }
+    }
+
+    @SuppressLint("MissingPermission")
+    @NeedsPermission(Manifest.permission.ACCESS_FINE_LOCATION)
+    fun tradeOpen() {
+        val lm = getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        val location: Location? = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER)
+        val latitude: Double = location?.latitude ?: 0.0
+        val longitude: Double = location?.longitude ?: 0.0
+        showTradeScreen(latitude, longitude)
+    }
+
+    @OnNeverAskAgain(Manifest.permission.ACCESS_FINE_LOCATION)
+    fun tradeNeverAskAgain() = showTradeScreen()
+
+    @OnPermissionDenied(Manifest.permission.ACCESS_FINE_LOCATION)
+    fun tradeDenied() = showTradeScreen()
+
+    private fun showTradeScreen(latitude: Double = 0.0, longitude: Double = 0.0) {
+        if (isCorrectCoinId()) {
+            val intentCoinItem = IntentCoinItem(
+                mCoin.price.uSD,
+                mCoin.balance * mCoin.price.uSD,
+                mCoin.balance,
+                mCoin.reservedBalance,
+                mCoin.reservedBalance * mCoin.price.uSD,
+                mCoin.coinId,
+                mCoin.publicKey
+            )
+
+            val intent = Intent(this, TradeActivity::class.java)
+            intent.putExtra(TradeActivity.TAG_COIN_ITEM, intentCoinItem)
+            intent.putExtra(TradeActivity.TAG_LATITUDE, latitude)
+            intent.putExtra(TradeActivity.TAG_LONGITUDE, longitude)
+            startActivity(intent)
+        } else {
+            showMessage("In progress. Only BTC, BCH, XRP, ETH, BNB and LTC withdraw available")
+        }
+        fabMenuView.close(false)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -270,6 +329,8 @@ class TransactionsActivity : BaseMvpActivity<TransactionsContract.View, Transact
                     it.price.uSD,
                     it.balance * it.price.uSD,
                     it.balance,
+                    it.reservedBalance,
+                    it.reservedBalance * it.price.uSD,
                     it.coinId,
                     it.publicKey
                 )

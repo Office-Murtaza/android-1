@@ -2,10 +2,7 @@ package com.app.belcobtm.domain.wallet
 
 import com.app.belcobtm.domain.Either
 import com.app.belcobtm.domain.Failure
-import com.app.belcobtm.domain.wallet.item.CoinDataItem
-import com.app.belcobtm.domain.wallet.item.CoinFeeDataItem
-import com.app.belcobtm.domain.wallet.item.SellLimitsDataItem
-import com.app.belcobtm.domain.wallet.item.SellPreSubmitDataItem
+import com.app.belcobtm.domain.wallet.item.*
 
 interface WalletRepository {
     fun getCoinFeeMap(): Map<String, CoinFeeDataItem>
@@ -68,6 +65,21 @@ interface WalletRepository {
         fromCoin: String,
         coinTo: String,
         hex: String
+    ): Either<Failure, Unit>
+
+    suspend fun getTradeInformation(
+        latitude: Double,
+        longitude: Double,
+        coinFrom: String
+    ): Either<Failure, TradeInfoDataItem>
+
+    suspend fun tradeBuy(
+        id: Int,
+        price: Int,
+        fromUsdAmount: Int,
+        toCoin: String,
+        toCoinAmount: Double,
+        detailsText: String
     ): Either<Failure, Unit>
 }
 
