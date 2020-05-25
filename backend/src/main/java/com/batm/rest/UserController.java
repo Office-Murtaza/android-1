@@ -259,6 +259,7 @@ public class UserController {
             }
 
             userService.updatePhone(phoneChange.getPhone(), userId);
+
             phoneChange.setStatus(1);
             userService.save(phoneChange);
 

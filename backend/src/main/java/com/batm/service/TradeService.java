@@ -41,7 +41,7 @@ public class TradeService {
                 trade = tradeRep.findById(dto.getId()).get();
             }
 
-            trade.setType(dto.getType().getValue());
+            trade.setType(dto.getType());
             trade.setPaymentMethod(dto.getPaymentMethod());
             trade.setMargin(dto.getMargin());
             trade.setMinLimit(dto.getMinLimit());
@@ -137,7 +137,7 @@ public class TradeService {
             details.setIndex(index + i);
             details.setUsername(trade.getIdentity().getPublicId());
             details.setTradeCount(50);
-            details.setRate(new BigDecimal("4.5"));
+            details.setTradeRate(new BigDecimal("4.5"));
             details.setDistance(2);
             details.setPrice(coinCode.getPrice().multiply(trade.getMargin().divide(new BigDecimal(100)).add(BigDecimal.ONE)));
             details.setPaymentMethod(trade.getPaymentMethod());

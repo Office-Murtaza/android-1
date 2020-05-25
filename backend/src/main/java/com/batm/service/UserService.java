@@ -114,6 +114,13 @@ public class UserService {
 
     public void updatePhone(String phone, Long userId) {
         userRep.updatePhone(phone, userId);
+
+        Identity identity = findByUserId(userId);
+        IdentityPiece identityPiece = identityPieceRep.findFirstByIdentityAndPieceTypeOrderByIdDesc(identity, IdentityPiece.TYPE_CELLPHONE);
+        IdentityPieceCellPhone identityPieceCellPhone = identityPieceCellPhoneRep.findByIdentityAndIdentityPiece(identity, identityPiece);
+
+        identityPieceCellPhone.setPhoneNumber(Util.formatPhone(phone));
+        identityPieceCellPhoneRep.save(identityPieceCellPhone);
     }
 
     public Boolean isPhoneExist(String phone, Long userId) {
@@ -390,12 +397,10 @@ public class UserService {
             IdentityKycReview review = identityKycReview.get();
             if (review.getTierId() == TIER_BASIC_VERIFICATION) {
 
-                Optional<IdentityPiece> _scanIdentityPiece = identityPieceRep
+                IdentityPiece scanIdentityPiece = identityPieceRep
                         .findFirstByIdentityAndPieceTypeOrderByIdDesc(review.getIdentity(), IdentityPiece.TYPE_ID_SCAN);
 
-                if (_scanIdentityPiece.isPresent()) { // update
-                    IdentityPiece scanIdentityPiece = _scanIdentityPiece.get();
-
+                if (scanIdentityPiece != null) { // update
                     IdentityPieceDocument identityPieceDocument = identityPieceDocumentRep
                             .findFirstByIdentityPieceOrderByIdDesc(scanIdentityPiece).get();
                     identityPieceDocument.setFileName(review.getIdCardFileName());
@@ -406,7 +411,7 @@ public class UserService {
                     scanIdentityPiece.setCreated(new Date());
                     identityPieceRep.save(scanIdentityPiece);
                 } else {                                // crete new
-                    IdentityPiece scanIdentityPiece = new IdentityPiece();
+                    scanIdentityPiece = new IdentityPiece();
                     scanIdentityPiece.setIdentity(review.getIdentity());
                     scanIdentityPiece.setPieceType(IdentityPiece.TYPE_ID_SCAN);
                     scanIdentityPiece.setRegistration(true);
@@ -424,11 +429,9 @@ public class UserService {
                     identityPieceDocumentRep.save(identityPieceDocument);
                 }
 
-                Optional<IdentityPiece> _personalInfoIdentityPiece = identityPieceRep
+                IdentityPiece personalInfoIdentityPiece = identityPieceRep
                         .findFirstByIdentityAndPieceTypeOrderByIdDesc(review.getIdentity(), IdentityPiece.TYPE_PERSONAL_INFORMATION);
-                if (_personalInfoIdentityPiece.isPresent()) { // update
-                    IdentityPiece personalInfoIdentityPiece = _personalInfoIdentityPiece.get();
-
+                if (personalInfoIdentityPiece != null) {
                     IdentityPiecePersonalInfo identityPiecePersonalInfo = identityPiecePersonalInfoRep
                             .findFirstByIdentityPieceOrderByIdDesc(personalInfoIdentityPiece).get();
                     identityPiecePersonalInfo.setFirstName(review.getFirstName());
@@ -445,8 +448,8 @@ public class UserService {
 
                     personalInfoIdentityPiece.setCreated(new Date());
                     identityPieceRep.save(personalInfoIdentityPiece);
-                } else {                                    // create new
-                    IdentityPiece personalInfoIdentityPiece = new IdentityPiece();
+                } else {
+                    personalInfoIdentityPiece = new IdentityPiece();
                     personalInfoIdentityPiece.setIdentity(review.getIdentity());
                     personalInfoIdentityPiece.setPieceType(IdentityPiece.TYPE_PERSONAL_INFORMATION);
                     personalInfoIdentityPiece.setRegistration(true);
@@ -478,23 +481,20 @@ public class UserService {
                 review.setReviewStatus(VerificationStatus.VERIFIED.getValue());
                 identityKycReviewRep.save(review);
             } else if (review.getTierId() == TIER_VIP_VERIFICATION) {
-                Optional<IdentityPiece> _selfieIdentityPiece = identityPieceRep
+                IdentityPiece identityPiece = identityPieceRep
                         .findFirstByIdentityAndPieceTypeOrderByIdDesc(review.getIdentity(), IdentityPiece.TYPE_SELFIE);
-                if (_selfieIdentityPiece.isPresent()) { // update
-                    IdentityPiece selfieIdentityPiece = _selfieIdentityPiece.get();
-
+                if (identityPiece != null) { // update
                     IdentityPieceSelfie identityPieceSelfie = identityPieceSelfieRep
-                            .findFirstByIdentityPieceOrderByIdDesc(selfieIdentityPiece).get();
+                            .findFirstByIdentityPieceOrderByIdDesc(identityPiece).get();
                     identityPieceSelfie.setFileName(review.getSsnFileName());
                     identityPieceSelfie.setMimeType(review.getSsnFileMimeType());
                     identityPieceSelfie.setCreated(new Date());
                     identityPieceSelfieRep.save(identityPieceSelfie);
 
-                    selfieIdentityPiece.setCreated(new Date());
-                    identityPieceRep.save(selfieIdentityPiece);
+                    identityPiece.setCreated(new Date());
+                    identityPieceRep.save(identityPiece);
                 } else {
-
-                    IdentityPiece identityPiece = new IdentityPiece();
+                    identityPiece = new IdentityPiece();
                     identityPiece.setIdentity(review.getIdentity());
                     identityPiece.setPieceType(IdentityPiece.TYPE_SELFIE);
                     identityPiece.setRegistration(true);
@@ -512,11 +512,9 @@ public class UserService {
                     identityPieceSelfieRep.save(identityPieceSelfie);
                 }
 
-                Optional<IdentityPiece> _personalInfoIdentityPiece = identityPieceRep
+                IdentityPiece personalInfoIdentityPiece = identityPieceRep
                         .findFirstByIdentityAndPieceTypeOrderByIdDesc(review.getIdentity(), IdentityPiece.TYPE_PERSONAL_INFORMATION);
-                if (_personalInfoIdentityPiece.isPresent()) { // update
-                    IdentityPiece personalInfoIdentityPiece = _personalInfoIdentityPiece.get();
-
+                if (personalInfoIdentityPiece != null) { // update
                     IdentityPiecePersonalInfo identityPiecePersonalInfo = identityPiecePersonalInfoRep
                             .findFirstByIdentityPieceOrderByIdDesc(personalInfoIdentityPiece).get();
                     identityPiecePersonalInfo.setSsn(review.getSsn());
@@ -547,12 +545,12 @@ public class UserService {
         User user = findById(userId);
         user.setLatitude(dto.getLatitude());
         user.setLongitude(dto.getLongitude());
-        
+
         userRep.save(user);
-        
+
         return true;
     }
-    
+
     private void addTransactionLimit(IdentityKycReview review, BigDecimal newTxLimit) {
         Limit txLimit = new Limit();
         txLimit.setAmount(newTxLimit);

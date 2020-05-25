@@ -18,7 +18,7 @@ public class TradeDetailsDTO {
     private Integer index;
     private String username;
     private Integer tradeCount;
-    private BigDecimal rate;
+    private BigDecimal tradeRate;
     private Integer distance;
     private String paymentMethod;
     private BigDecimal price;

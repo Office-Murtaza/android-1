@@ -51,7 +51,7 @@ public class GethService {
     private final long GAS_PRICE = 50_000_000_000L;
     private final long GAS_LIMIT = 50_000;
 
-    private final int START_BLOCK = 10101010;
+    private final int START_BLOCK = 10135689;
     private final int MAX_BLOCK_COUNT = 100;
 
     private final String ADDRESS_COLL = "eth_address";
@@ -131,9 +131,7 @@ public class GethService {
     @Scheduled(cron = "0 */5 * * * *") // every 5 minutes
     public void storeTxs() {
         try {
-            int lastSuccessBlock = mongo.getCollection(BLOCK_COLL).countDocuments() > 0 ?
-                    mongo.getCollection(BLOCK_COLL).find().first().getInteger("lastSuccessBlock") : START_BLOCK;
-
+            int lastSuccessBlock = mongo.getCollection(BLOCK_COLL).countDocuments() > 0 ? mongo.getCollection(BLOCK_COLL).find().first().getInteger("lastSuccessBlock") : START_BLOCK;
             int lastBlockNumber = ethWeb3.ethBlockNumber().send().getBlockNumber().intValue();
 
             if (lastSuccessBlock < lastBlockNumber) {
@@ -405,6 +403,8 @@ public class GethService {
     }
 
     public void addAddressToJournal(String address) {
+        address = address.toLowerCase();
+
         mongo.getCollection(ADDRESS_COLL).findOneAndUpdate(
                 new Document("address", address),
                 new Document("$set", new Document("address", address).append("timestamp", System.currentTimeMillis())),

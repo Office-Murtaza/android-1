@@ -1,7 +1,5 @@
 package com.batm.dto;
 
-import com.batm.model.TradeType;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -17,10 +15,7 @@ import java.math.BigDecimal;
 public class TradeDTO {
 
     private Long id;
-
-    @JsonFormat(shape = JsonFormat.Shape.OBJECT)
-    private TradeType type;
-
+    private Integer type;
     private String paymentMethod;
     private BigDecimal margin;
     private Integer minLimit;
