@@ -58,7 +58,7 @@ class CoinDetailsFloatingActionButton: ReactiveCompatible, JJFloatingActionButto
     view.addItem(title: localize(L.CoinDetails.sell), image: UIImage(named: "fab_sell")) { [unowned self] _ in
       self.didTapSellRelay.accept(())
     }
-    view.addItem(title: localize(L.CoinDetails.c2cExchange), image: UIImage(named: "fab_exchange")) { [unowned self] _ in
+    view.addItem(title: localize(L.CoinDetails.exchange), image: UIImage(named: "fab_exchange")) { [unowned self] _ in
       self.didTapExchangeRelay.accept(())
     }
     view.addItem(title: localize(L.CoinDetails.trade), image: UIImage(named: "fab_trade")) { [unowned self] _ in

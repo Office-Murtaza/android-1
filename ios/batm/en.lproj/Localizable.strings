@@ -150,7 +150,7 @@
 "coin_details.deposit" = "Deposit";
 "coin_details.withdraw" = "Withdraw";
 "coin_details.send_gift" = "Send Gift";
-"coin_details.c2c_exchange" = "C2C Exchange";
+"coin_details.exchange" = "Exchange";
 "coin_details.trade" = "Trade";
 "coin_details.receive_gift" = "Receive Gift";
 "coin_details.buy" = "Buy";
@@ -226,7 +226,7 @@
 "transaction_details.ref_coin" = "Ref Coin";
 "transaction_details.ref_amount" = "Ref Amount";
 
-"coin_exchange.title" = "C2C Exchange %@";
+"coin_exchange.title" = "Exchange %@";
 "coin_exchange.form.amount.placeholder" = "%@ Amount";
 
 "trades.title" = "Trade %@";
