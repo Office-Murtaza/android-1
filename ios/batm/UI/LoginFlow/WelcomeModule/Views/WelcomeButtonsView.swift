@@ -1,10 +1,9 @@
 import UIKit
 import RxSwift
 import RxCocoa
+import MaterialComponents
 
-class WelcomeButtonsView: RoundedView, HasDisposeBag {
-  
-  let container = UIView()
+class WelcomeButtonsView: UIView, HasDisposeBag {
   
   let errorView: ErrorView = {
     let view = ErrorView()
@@ -13,18 +12,8 @@ class WelcomeButtonsView: RoundedView, HasDisposeBag {
     return view
   }()
   
-  let createButton: MainButton = {
-    let button = MainButton()
-    button.configure(for: .create)
-    return button
-  }()
-  
-  let recoverButton: MainButton = {
-    let button = MainButton()
-    button.configure(for: .recover)
-    return button
-  }()
-  
+  let createButton = MDCButton.createNewWallet
+  let recoverButton = MDCButton.recoverMyWallet
   let termsAndConditionsView = TermsAndConditionsView()
   
   override init(frame: CGRect) {
@@ -42,33 +31,30 @@ class WelcomeButtonsView: RoundedView, HasDisposeBag {
   private func setupUI() {
     translatesAutoresizingMaskIntoConstraints = false
     
-    addSubviews(container,
-                errorView)
-    container.addSubviews(createButton,
-                          recoverButton,
-                          termsAndConditionsView)
+    addSubviews(errorView,
+                createButton,
+                recoverButton,
+                termsAndConditionsView)
   }
   
   private func setupLayout() {
     errorView.snp.makeConstraints {
-      $0.top.equalToSuperview().offset(10)
+      $0.top.equalToSuperview()
       $0.centerX.equalToSuperview()
-      $0.left.greaterThanOrEqualToSuperview().offset(15)
-      $0.right.lessThanOrEqualToSuperview().offset(-15)
-    }
-    container.snp.makeConstraints {
-      $0.edges.equalToSuperview().inset(30)
     }
     createButton.snp.makeConstraints {
-      $0.top.left.right.equalToSuperview()
+      $0.top.equalToSuperview().offset(15)
+      $0.left.right.equalToSuperview()
+      $0.height.equalTo(48)
     }
     recoverButton.snp.makeConstraints {
-      $0.top.equalTo(createButton.snp.bottom).offset(13)
+      $0.top.equalTo(createButton.snp.bottom).offset(20)
       $0.left.right.equalToSuperview()
+      $0.height.equalTo(48)
     }
     termsAndConditionsView.snp.makeConstraints {
-      $0.top.equalTo(recoverButton.snp.bottom).offset(25)
-      $0.centerX.equalToSuperview()
+      $0.top.equalTo(recoverButton.snp.bottom).offset(20)
+      $0.left.equalToSuperview()
       $0.bottom.equalToSuperview()
     }
   }

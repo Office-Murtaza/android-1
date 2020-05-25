@@ -10,6 +10,7 @@ class CoinDetailsFloatingActionButton: ReactiveCompatible, JJFloatingActionButto
   let didTapSendGiftRelay = PublishRelay<Void>()
   let didTapSellRelay = PublishRelay<Void>()
   let didTapExchangeRelay = PublishRelay<Void>()
+  let didTapTradesRelay = PublishRelay<Void>()
   
   let view = JJFloatingActionButton()
   
@@ -60,6 +61,9 @@ class CoinDetailsFloatingActionButton: ReactiveCompatible, JJFloatingActionButto
     view.addItem(title: localize(L.CoinDetails.c2cExchange), image: UIImage(named: "fab_exchange")) { [unowned self] _ in
       self.didTapExchangeRelay.accept(())
     }
+    view.addItem(title: localize(L.CoinDetails.trade), image: UIImage(named: "fab_trade")) { [unowned self] _ in
+      self.didTapTradesRelay.accept(())
+    }
     
     view.delegate = self
   }
@@ -91,5 +95,8 @@ extension Reactive where Base == CoinDetailsFloatingActionButton {
   }
   var exchangeTap: Driver<Void> {
     return base.didTapExchangeRelay.asDriver(onErrorDriveWith: .empty())
+  }
+  var tradesTap: Driver<Void> {
+    return base.didTapTradesRelay.asDriver(onErrorDriveWith: .empty())
   }
 }

@@ -3,7 +3,9 @@ import TrustWalletCore
 
 struct CoinBalance: Equatable {
   let type: CoinType
+  let address: String
   let balance: Double
+  let reservedBalance: Double
   let price: Double
   let index: Int
 }

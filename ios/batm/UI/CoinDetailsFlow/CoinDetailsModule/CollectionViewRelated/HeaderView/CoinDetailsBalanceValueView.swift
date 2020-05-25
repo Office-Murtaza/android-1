@@ -74,8 +74,10 @@ final class CoinDetailsBalanceValueView: UIView {
     }
   }
   
-  func configure(for coinBalance: CoinBalance) {
-    balanceCoinLabel.text = "\(coinBalance.balance.coinFormatted) \(coinBalance.type.code)"
-    balanceCurrencyLabel.text = "\((coinBalance.balance * coinBalance.price).fiatFormatted) USD"
+  func configure(for coinBalance: CoinBalance, useReserved: Bool = false) {
+    let balance = useReserved ? coinBalance.reservedBalance : coinBalance.balance
+    
+    balanceCoinLabel.text = "\(balance.coinFormatted) \(coinBalance.type.code)"
+    balanceCurrencyLabel.text = "\((balance * coinBalance.price).fiatFormatted) USD"
   }
 }

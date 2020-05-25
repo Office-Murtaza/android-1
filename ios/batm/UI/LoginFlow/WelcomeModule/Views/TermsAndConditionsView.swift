@@ -6,18 +6,17 @@ class TermsAndConditionsView: UIView, HasDisposeBag {
   
   let tapRecognizer = UITapGestureRecognizer()
   
-  let checkboxView = CheckboxView()
+  let checkboxView = MaterialCheckBoxView()
   
   let titleLabel: UILabel = {
     let label = UILabel()
     let title = localize(L.Welcome.termsAndConditions)
-    let attributes: [NSAttributedString.Key: Any] = [.font: UIFont.poppinsRegular12]
+    let attributes: [NSAttributedString.Key: Any] = [.font: UIFont.systemFont(ofSize: 15, weight: .medium)]
     let attributedText = NSMutableAttributedString(string: title, attributes: attributes)
     attributedText.addAttribute(.foregroundColor,
                                 value: UIColor.slateGrey,
                                 range: NSRange(location:0,length:6))
-    attributedText.addAttributes([.foregroundColor: UIColor.ceruleanBlue,
-                                  .underlineStyle: NSUnderlineStyle.single.rawValue],
+    attributedText.addAttributes([.foregroundColor: UIColor.ceruleanBlue],
                                  range: NSRange(location:7,length: title.count - 7))
     label.attributedText = attributedText
     return label

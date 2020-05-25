@@ -13,7 +13,7 @@ target 'batm' do
   pod 'Giphy', '1.1.6'
   pod 'Toast-Swift', '5.0.1'
   pod 'Charts', '3.4.0'
-  pod 'MaterialComponents', '109.1.0'
+  pod 'MaterialComponents', '109.3.1'
   pod 'JJFloatingActionButton', '2.4.0'
 
   # Utilities

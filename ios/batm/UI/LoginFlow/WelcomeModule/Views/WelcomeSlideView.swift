@@ -13,8 +13,8 @@ class WelcomeSlideView: UIView {
   let imageView = UIImageView(image: nil)
   let titleLabel: UILabel = {
     let label = UILabel()
-    label.textColor = .pinkishGrey
-    label.font = .poppinsMedium16
+    label.textColor = .slateGrey
+    label.font = .systemFont(ofSize: 20, weight: .bold)
     return label
   }()
   
@@ -40,7 +40,7 @@ class WelcomeSlideView: UIView {
     imageView.setContentCompressionResistancePriority(.defaultLow, for: .vertical)
     imageView.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
     titleLabel.snp.makeConstraints {
-      $0.top.equalTo(imageView.snp.bottom).offset(10)
+      $0.top.equalTo(imageView.snp.bottom).offset(30)
       $0.bottom.centerX.equalToSuperview()
     }
   }

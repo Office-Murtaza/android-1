@@ -43,6 +43,7 @@ enum L {
     static let sendC2C = "coin_details.send_c_2_c"
     static let sendGift = "coin_details.send_gift"
     static let threeMonths = "coin_details.three_months"
+    static let trade = "coin_details.trade"
     static let unknown = "coin_details.unknown"
     static let withdraw = "coin_details.withdraw"
     static let withdrawn = "coin_details.withdrawn"
@@ -141,6 +142,13 @@ enum L {
 
   struct ShowSeedPhrase {
     static let title = "show_seed_phrase.title"
+  }
+
+  struct Trades {
+    static let buy = "trades.buy"
+    static let reserved = "trades.reserved"
+    static let sell = "trades.sell"
+    static let title = "trades.title"
   }
 
   struct TransactionDetails {
@@ -557,7 +565,10 @@ extension L.Welcome {
   }
 
   struct Support {
+    static let copyMail = "welcome.support.copy_mail"
+    static let copyPhone = "welcome.support.copy_phone"
     static let mail = "welcome.support.mail"
+    static let message = "welcome.support.message"
     static let phone = "welcome.support.phone"
     static let title = "welcome.support.title"
   }

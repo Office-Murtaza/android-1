@@ -15,6 +15,7 @@ final class CoinDetailsPresenter: ModulePresenter, CoinDetailsModule {
     var sendGift: Driver<Void>
     var sell: Driver<Void>
     var exchange: Driver<Void>
+    var trades: Driver<Void>
     var showMore: Driver<Void>
     var transactionSelected: Driver<IndexPath>
     var updateSelectedPeriod: Driver<SelectedPeriod>
@@ -100,6 +101,13 @@ final class CoinDetailsPresenter: ModulePresenter, CoinDetailsModule {
       .drive(onNext: { [delegate] in delegate?.showExchangeScreen(coin: $0.coin!,
                                                                   coinBalances: $0.coinBalances!,
                                                                   coinSettings: $0.coinSettings!) })
+      .disposed(by: disposeBag)
+    
+    input.trades
+      .withLatestFrom(state)
+      .map { $0.coinBalance }
+      .filterNil()
+      .drive(onNext: { [delegate] in delegate?.showTradesScreen(coinBalance: $0) })
       .disposed(by: disposeBag)
     
     input.showMore

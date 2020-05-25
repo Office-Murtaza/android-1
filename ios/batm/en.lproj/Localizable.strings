@@ -25,17 +25,20 @@
 "shared.error.no_connection.message" = "No Internet Connection";
 
 "welcome.tagline" = "Stay Ahead of the Crypto Future";
-"welcome.first_slide.title" = "Keep All Assets in One Place";
-"welcome.second_slide.title" = "Buy & Sell Cryptocurrency";
-"welcome.third_slide.title" = "Secure & Fast Transactions";
+"welcome.first_slide.title" = "All assets in one place";
+"welcome.second_slide.title" = "Private and secure";
+"welcome.third_slide.title" = "Buy, sell and trade assets";
 "welcome.error.title" = "Please, Accept Our Terms & Conditions";
 "welcome.create_button.title" = "CREATE A NEW WALLET";
 "welcome.recover_button.title" = "RECOVER MY WALLET";
 "welcome.terms_and_conditions" = "Accept Terms & Conditions";
-"welcome.contact_support" = "CONTACT SUPPORT";
+"welcome.contact_support" = "Contact support";
 "welcome.support.title" = "Support";
 "welcome.support.phone" = "+1 - 888 - 848 - 3033";
 "welcome.support.mail" = "support@belcobtm.com";
+"welcome.support.message" = "Phone: %@\nEmail: %@";
+"welcome.support.copy_phone" = "Copy Phone";
+"welcome.support.copy_mail" = "Copy Email";
 
 "create_wallet.title" = "Create a New Wallet";
 "create_wallet.form.password.placeholder" = "Password *";
@@ -148,6 +151,7 @@
 "coin_details.withdraw" = "Withdraw";
 "coin_details.send_gift" = "Send Gift";
 "coin_details.c2c_exchange" = "C2C Exchange";
+"coin_details.trade" = "Trade";
 "coin_details.receive_gift" = "Receive Gift";
 "coin_details.buy" = "Buy";
 "coin_details.sell" = "Sell";
@@ -224,3 +228,8 @@
 
 "coin_exchange.title" = "C2C Exchange %@";
 "coin_exchange.form.amount.placeholder" = "%@ Amount";
+
+"trades.title" = "Trade %@";
+"trades.reserved" = "Reserved";
+"trades.buy" = "Buy";
+"trades.sell" = "Sell";

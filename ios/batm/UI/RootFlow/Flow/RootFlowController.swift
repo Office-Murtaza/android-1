@@ -4,7 +4,7 @@ import RxFlow
 
 class RootFlowController: FlowController, FlowActivator, HasDisposeBag {
   
-  var initialStep: Step = RootFlow.Steps.login
+  var initialStep: Step = RootFlow.Steps.splash
   
   private let loginUsecase: LoginUsecase
   

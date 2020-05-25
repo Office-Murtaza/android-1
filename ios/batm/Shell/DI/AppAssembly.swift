@@ -81,6 +81,13 @@ final class AppAssembly: Assembly {
       storageRegistry.add(storage: storage)
       return storage
       }.inObjectScope(.container)
+    container.register(LocationUpdateDateStorage.self) { ioc in
+      let executor = ioc.resolve(StorageTransactionExecutor.self)!
+      let storageRegistry = ioc.resolve(LogoutStorageRegistry.self)!
+      let storage = LocationUpdateDateStorageImpl(transactionExecutor: executor)
+      storageRegistry.add(storage: storage)
+      return storage
+      }.inObjectScope(.container)
   }
   
   fileprivate func assembleServices(container: Container) {
@@ -138,6 +145,12 @@ final class AppAssembly: Assembly {
                                     walletStorage: walletStorage,
                                     walletService: walletService)
       }.inObjectScope(.container)
+    container.register(TradesUsecase.self) { ioc in
+      let api = ioc.resolve(APIGateway.self)!
+      let accountStorage = ioc.resolve(AccountStorage.self)!
+      return TradesUsecaseImpl(api: api,
+                               accountStorage: accountStorage)
+      }.inObjectScope(.container)
     container.register(SettingsUsecase.self) { ioc in
       let api = ioc.resolve(APIGateway.self)!
       let accountStorage = ioc.resolve(AccountStorage.self)!
@@ -168,6 +181,15 @@ final class AppAssembly: Assembly {
       }
       .inObjectScope(.container)
       .implements(PinCodeVerificationModuleDelegate.self)
+    container.register(LocationService.self) { ioc in
+      let api = ioc.resolve(APIGateway.self)!
+      let accountStorage = ioc.resolve(AccountStorage.self)!
+      let locationUpdateDateStorage = ioc.resolve(LocationUpdateDateStorage.self)!
+      return LocationServiceImpl(api: api,
+                                 accountStorage: accountStorage,
+                                 locationUpdateDateStorage: locationUpdateDateStorage)
+    }
+      .inObjectScope(.container)
     container.register(Module<PinCodeModule>.self, name: Keys.pinCodeModule.rawValue) { resolver in
       let viewController = PinCodeViewController()
       let usecase = resolver.resolve(PinCodeUsecase.self)!

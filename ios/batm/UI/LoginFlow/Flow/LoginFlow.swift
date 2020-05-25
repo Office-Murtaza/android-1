@@ -22,6 +22,7 @@ final class LoginFlow: BaseFlow<BTMNavigationController, LoginFlowController> {
     case recoverSeedPhrase
     case pinCode(PinCodeStage)
     case backToWelcome
+    case contactSupport
     case pop
   }
   
@@ -55,6 +56,9 @@ final class LoginFlow: BaseFlow<BTMNavigationController, LoginFlowController> {
     case .backToWelcome:
       let module = resolver.resolve(Module<WelcomeModule>.self)!
       return replaceRoot(module.controller, animated: true)
+    case .contactSupport:
+      let alert = resolver.resolve(UIAlertController.self, argument: view.topViewController!)!
+      return present(alert, animated: true)
     case .pop:
       return pop()
     }

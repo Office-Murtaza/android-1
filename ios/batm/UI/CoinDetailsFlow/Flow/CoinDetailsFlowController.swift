@@ -41,6 +41,10 @@ extension CoinDetailsFlowController: CoinDetailsModuleDelegate {
     step.accept(CoinDetailsFlow.Steps.exchange(coin, coinBalances, coinSettings))
   }
   
+  func showTradesScreen(coinBalance: CoinBalance) {
+    step.accept(CoinDetailsFlow.Steps.trades(coinBalance))
+  }
+  
 }
 
 extension CoinDetailsFlowController: CoinDepositModuleDelegate {
@@ -110,6 +114,14 @@ extension CoinDetailsFlowController: CoinExchangeModuleDelegate {
 extension CoinDetailsFlowController: TransactionDetailsModuleDelegate {
   
   func didFinishTransactionDetails() {
+    step.accept(CoinDetailsFlow.Steps.pop)
+  }
+  
+}
+
+extension CoinDetailsFlowController: TradesFlowControllerDelegate {
+  
+  func didFinishTradesFlow() {
     step.accept(CoinDetailsFlow.Steps.pop)
   }
   

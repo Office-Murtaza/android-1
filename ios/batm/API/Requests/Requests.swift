@@ -495,3 +495,38 @@ struct GetPriceChartDataRequest: AuthorizedAPIRequest {
     return .requestPlain
   }
 }
+
+struct BuySellTradesRequest: AuthorizedAPIRequest {
+  typealias ResponseType = APIResponse<BuySellTrades>
+  typealias ResponseTrait = SingleResponseTrait
+  
+  let userId: Int
+  let coinId: String
+  let type: TradeType
+  let index: Int
+  
+  var path: String { return "/user/\(userId)/coins/\(coinId)/trades" }
+  var method: HTTPMethod { return .get }
+  var task: HTTPTask {
+    return .requestParameters(parameters: ["type": type.rawValue,
+                                           "index": index],
+                              encoding: URLEncoding.customDefault)
+  }
+}
+
+struct UpdateLocationRequest: AuthorizedAPIRequest {
+  typealias ResponseType = APIEmptyResponse
+  typealias ResponseTrait = SingleResponseTrait
+  
+  let userId: Int
+  let latitude: Double
+  let longitude: Double
+  
+  var path: String { return "/user/\(userId)/location" }
+  var method: HTTPMethod { return .post }
+  var task: HTTPTask {
+    return .requestParameters(parameters: ["latitude": latitude,
+                                           "longitude": longitude],
+                              encoding: JSONEncoding.default)
+  }
+}

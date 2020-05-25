@@ -12,4 +12,5 @@ protocol CoinDetailsModuleDelegate: class {
   func showSellScreen(coin: BTMCoin, coinBalance: CoinBalance, coinSettings: CoinSettings, details: SellDetails)
   func showTransactionDetails(with details: TransactionDetails, for type: CoinType)
   func showExchangeScreen(coin: BTMCoin, coinBalances: [CoinBalance], coinSettings: CoinSettings)
+  func showTradesScreen(coinBalance: CoinBalance)
 }
