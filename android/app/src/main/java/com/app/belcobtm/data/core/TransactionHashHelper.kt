@@ -150,7 +150,7 @@ class TransactionHashHelper(
         fromCoin: CoinType,
         fromCoinAmount: Double
     ): Either<Failure, String> {
-        val response = apiService.getEthereumNonce()
+        val response = apiService.getEthereumNonce(toAddress)
         return if (response.isRight) {
             val nonceResponse = (response as Either.Right).b
             val cryptoToSubcoin = BigDecimal(fromCoinAmount * CoinType.ETHEREUM.unit())

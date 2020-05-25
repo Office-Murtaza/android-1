@@ -160,6 +160,8 @@
     <string name="sell">Sell</string>
     <string name="send_c2c">Send C2C</string>
     <string name="receive_c2c">Receive C2C</string>
+    <string name="transitions_exchange">Exchange</string>
+    <string name="transitions_trade">Trade</string>
 
     <string name="title_withdraw">Withdraw</string>
     <string name="title_trans_details">Transaction Details</string>
@@ -238,7 +240,7 @@
 
 
     <!-- Coin to coin screen -->
-    <string name="exchange_coin_to_coin_screen_title">C2C Exchange</string>
+    <string name="exchange_coin_to_coin_screen_title">Exchange</string>
     <string name="exchange_coin_to_coin_screen_price">Price</string>
     <string name="exchange_coin_to_coin_screen_price_value">%1$s USD</string>
     <string name="exchange_coin_to_coin_screen_balance">Balance</string>
@@ -267,13 +269,14 @@
     <string name="trade_screen_payment_method">Payment method</string>
     <string name="trade_screen_limits">Limits</string>
     <string name="trade_screen_terms">Terms</string>
-    <string name="trade_screen_trade_details">Trade details</string>
-    <string name="trade_screen_user_field">%1$s (%2$d/%3$.0f%%/%4$dkm)</string>
+    <string name="trade_screen_request_details">Request details</string>
+    <string name="trade_screen_user_field">%1$s (%2$d/%3$.0f/%4$dkm)</string>
+    <string name="trade_screen_send_request">Send request</string>
     <!--    <string name="trade_screen_"></string>-->
-    <!--    <string name="trade_screen_"></string>-->
-
 
     <string name="unit_usd_dynamic">%1$s USD</string>
+    <string name="usd_amount">USD Amount</string>
+    <string name="crypto_amount">%1$s Amount</string>
     <string name="button_next">Next</string>
     <string name="button_send">Send</string>
 

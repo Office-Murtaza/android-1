@@ -110,40 +110,40 @@
                     app:layout_constraintTop_toTopOf="@id/limitsTitleView"
                     tools:text="1000 - 10000 USD" />
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/termsView"
-                    style="@style/WalletTab.EditText.Container"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginEnd="16dp"
-                    android:enabled="false"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/limitsTitleView">
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/termsTitleView"
+                    style="@style/WalletTab.Title.Medium.Key"
+                    android:text="@string/trade_screen_terms"
+                    app:layout_constraintStart_toStartOf="@id/paymentMethodTitleView"
+                    app:layout_constraintTop_toBottomOf="@id/limitsTitleView" />
 
-                    <androidx.appcompat.widget.AppCompatEditText
-                        style="@style/WalletTab.EditText.InputWithMax"
-                        android:layout_height="match_parent"
-                        android:enabled="false"
-                        android:gravity="start|top"
-                        android:hint="@string/trade_screen_terms"
-                        android:inputType="textMultiLine"
-                        android:maxLength="160" />
-                </com.google.android.material.textfield.TextInputLayout>
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/termsView"
+                    style="@style/WalletTab.Title.Medium.Value"
+                    android:layout_width="0dp"
+                    android:layout_marginEnd="16dp"
+                    android:minLines="1"
+                    android:singleLine="false"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="@id/paymentMethodView"
+                    app:layout_constraintTop_toTopOf="@id/termsTitleView"
+                    app:layout_goneMarginEnd="16dp"
+                    tools:text="Terms text dolor it amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt" />
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/amountUsdView"
                     style="@style/WalletTab.EditText.Container"
-                    app:layout_constraintEnd_toEndOf="@id/termsView"
-                    app:layout_constraintStart_toStartOf="@id/termsView"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="16dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/termsView">
 
                     <com.google.android.material.textfield.TextInputEditText
                         style="@style/WalletTab.EditText.InputWithMax"
                         android:digits="1234567890."
-                        android:hint="@string/send_gift_screen_usd_amount"
+                        android:hint="@string/usd_amount"
                         android:inputType="numberDecimal"
                         android:textColor="@android:color/black"
                         tools:ignore="RtlSymmetry" />
@@ -174,7 +174,7 @@
                         android:focusableInTouchMode="false"
                         android:inputType="numberDecimal"
                         android:nextFocusDown="@id/amountUsdView"
-                        tools:hint="@string/send_gift_screen_crypto_amount"
+                        tools:hint="@string/crypto_amount"
                         tools:ignore="RtlSymmetry" />
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -191,7 +191,7 @@
                         style="@style/WalletTab.EditText.InputWithMax"
                         android:layout_height="match_parent"
                         android:gravity="start|top"
-                        android:hint="@string/trade_screen_trade_details"
+                        android:hint="@string/trade_screen_request_details"
                         android:inputType="textMultiLine"
                         android:maxLength="160" />
                 </com.google.android.material.textfield.TextInputLayout>
@@ -206,7 +206,7 @@
                     android:enabled="false"
                     android:paddingTop="12dp"
                     android:paddingBottom="12dp"
-                    android:text="@string/button_send"
+                    android:text="@string/trade_screen_send_request"
                     android:textColor="@android:color/white"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"

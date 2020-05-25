@@ -210,8 +210,8 @@ class WalletApiService(
         Either.Left(failure)
     }
 
-    suspend fun getEthereumNonce(): Either<Failure, Long?> = try {
-        val request = api.getEthereumNonceAsync(prefHelper.userId).await()
+    suspend fun getEthereumNonce(toAddress: String): Either<Failure, Long?> = try {
+        val request = api.getEthereumNonceAsync(prefHelper.userId, toAddress).await()
         request.body()?.let { Either.Right(it.nonce) } ?: Either.Left(Failure.ServerError())
     } catch (failure: Failure) {
         failure.printStackTrace()

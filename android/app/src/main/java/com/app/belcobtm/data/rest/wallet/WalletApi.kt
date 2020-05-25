@@ -97,7 +97,8 @@ interface WalletApi {
 
     @GET("user/{userId}/coins/ETH/transactions/nonce")
     fun getEthereumNonceAsync(
-        @Path("userId") userId: Int
+        @Path("userId") userId: Int,
+        @Path("address") toAddress: String
     ): Deferred<Response<EthereumResponse>>
 
     @GET("user/{userId}/coins/XRP/transactions/currentaccount")

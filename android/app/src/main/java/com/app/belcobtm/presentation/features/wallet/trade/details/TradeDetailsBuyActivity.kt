@@ -100,6 +100,7 @@ class TradeDetailsBuyActivity : BaseActivity() {
             getString(R.string.unit_usd_dynamic, "${tradeDetailsItem.minLimit} - ${tradeDetailsItem.maxLimit}")
         termsView.setText(tradeDetailsItem.terms)
         amountUsdView.setText(tradeDetailsItem.minLimit.toString())
+        amountCryptoView.hint = getString(R.string.crypto_amount, intentCoinItem.coinCode)
     }
 
     private val coinFromTextWatcher = object : TextWatcher {
