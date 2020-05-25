@@ -79,7 +79,7 @@ struct CoinSellState: Equatable {
     
     guard let balance = coinBalance?.balance, let fee = coinSettings?.txFee, balance > fee else { return false }
     
-    return balance - fee >= response.amount
+    return (balance - fee).greaterThanOrEqualTo(response.amount)
   }
   
 }
@@ -132,7 +132,7 @@ final class CoinSellStore: ViewStore<CoinSellAction, CoinSellState> {
       return .invalid(localize(L.CoinWithdraw.Form.Error.tooLowAmount))
     }
 
-    guard amount <= state.maxValue else {
+    guard amount.lessThanOrEqualTo(state.maxValue) else {
       return .invalid(localize(L.CoinWithdraw.Form.Error.tooHighAmount))
     }
     

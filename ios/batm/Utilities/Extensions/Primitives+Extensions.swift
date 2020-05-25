@@ -211,6 +211,18 @@ extension Double {
     
     return Double(integer / 10 * 10)
   }
+  
+  func equalTo(_ double: Double) -> Bool {
+    return fabs(self - double) < 1e-10
+  }
+  
+  func lessThanOrEqualTo(_ double: Double) -> Bool {
+    return self < double || equalTo(double)
+  }
+  
+  func greaterThanOrEqualTo(_ double: Double) -> Bool {
+    return self > double || equalTo(double)
+  }
 }
 
 extension Int {

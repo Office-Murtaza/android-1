@@ -98,7 +98,7 @@ final class CoinExchangeStore: ViewStore<CoinExchangeAction, CoinExchangeState> 
       return .invalid(localize(L.CoinWithdraw.Form.Error.tooLowAmount))
     }
     
-    guard amount <= state.maxValue else {
+    guard amount.lessThanOrEqualTo(state.maxValue) else {
       return .invalid(localize(L.CoinWithdraw.Form.Error.tooHighAmount))
     }
     
