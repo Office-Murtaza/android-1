@@ -4,10 +4,8 @@ import com.fasterxml.jackson.annotation.JsonValue;
 
 public enum TradeType {
 
-    UNKNOWN(0),
     BUY(1),
-    SELL(2),
-    OPEN(3);
+    SELL(2);
 
     private int value;
 
@@ -18,5 +16,13 @@ public enum TradeType {
     @JsonValue
     public int getValue() {
         return value;
+    }
+
+    public static TradeType getRequestType(TradeType type) {
+        if (type == BUY) {
+            return SELL;
+        }
+
+        return BUY;
     }
 }

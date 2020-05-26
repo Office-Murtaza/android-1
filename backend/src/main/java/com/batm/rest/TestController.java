@@ -22,10 +22,7 @@ public class TestController {
     private WalletService walletService;
 
     @Autowired
-    private PriceChartService priceChart;
-
-    @Autowired
-    private GethService gethService;
+    private GethService geth;
 
     @GetMapping("/sms")
     public Response sendSMS(@RequestParam String phone) {
@@ -40,11 +37,6 @@ public class TestController {
         return Response.ok(res);
     }
 
-    @GetMapping("/price/{coinCode}")
-    public Response getPrice(@PathVariable CoinService.CoinEnum coinCode) {
-        return Response.ok(coinCode.getPrice());
-    }
-
     @GetMapping("/wallet")
     public Response getWalletAddresses() {
         JSONObject res = new JSONObject();
@@ -52,6 +44,7 @@ public class TestController {
         res.put("BTC", getCoinJson(walletService.getAddressBTC(), CoinService.CoinEnum.BTC.getBalance(walletService.getAddressBTC()), CoinType.BITCOIN.derivationPath()));
         res.put("BCH", getCoinJson(walletService.getAddressBCH(), CoinService.CoinEnum.BCH.getBalance(walletService.getAddressBCH()), CoinType.BITCOINCASH.derivationPath()));
         res.put("ETH", getCoinJson(walletService.getAddressETH(), CoinService.CoinEnum.ETH.getBalance(walletService.getAddressETH()), CoinType.ETHEREUM.derivationPath()));
+        res.put("CATM", getCoinJson(walletService.getAddressETH(), CoinService.CoinEnum.CATM.getBalance(walletService.getAddressETH()), CoinType.ETHEREUM.derivationPath()));
         res.put("LTC", getCoinJson(walletService.getAddressLTC(), CoinService.CoinEnum.LTC.getBalance(walletService.getAddressLTC()), CoinType.LITECOIN.derivationPath()));
         res.put("BNB", getCoinJson(walletService.getAddressBNB(), CoinService.CoinEnum.BNB.getBalance(walletService.getAddressBNB()), CoinType.BINANCE.derivationPath()));
         res.put("XRP", getCoinJson(walletService.getAddressXRP(), CoinService.CoinEnum.XRP.getBalance(walletService.getAddressXRP()), CoinType.XRP.derivationPath()));
@@ -60,18 +53,9 @@ public class TestController {
         return Response.ok(res);
     }
 
-    @GetMapping("/wallet/{coinType}/new")
-    public Response getNewWalletAddresses(@PathVariable CoinType coinType) {
-        JSONObject res = new JSONObject();
-
-        for (int i = 0; i < 10; i++) {
-            String path = walletService.getPath(coinType);
-            String newPath = walletService.generateNewPath(path, i);
-
-            res.put(newPath, walletService.generateNewAddress(coinType, newPath));
-        }
-
-        return Response.ok(res);
+    @GetMapping("/coins/{coinCode}/price")
+    public Response price(@PathVariable CoinService.CoinEnum coinCode) {
+        return Response.ok(coinCode.getPrice());
     }
 
     @GetMapping("/wallet/{coinCode}/sign")
@@ -79,18 +63,31 @@ public class TestController {
         return Response.ok(coinCode.sign(coinCode.getWalletAddress(), toAddress, amount));
     }
 
-    @GetMapping("/coins/store-price-chart")
-    public Response storePriceChart() {
-        priceChart.storePriceChart();
+    @GetMapping("/coins/store-eth-txs")
+    public Response storeEthTxs() {
+        geth.storeTxs();
 
         return Response.ok(true);
     }
 
-    @GetMapping("/coins/store-txs")
-    public Response storeTxs() {
-        gethService.storeTxs();
+    @GetMapping("/coins/exists")
+    public Response exists(@RequestParam String fromAddress, @RequestParam String toAddress) {
+        return Response.ok(geth.existsInJournal(fromAddress, toAddress));
+    }
 
-        return Response.ok(true);
+    @GetMapping("/coins/token-balance")
+    public Response getTokenBalance(@RequestParam String address) {
+        return Response.ok(geth.getTokenBalance(address));
+    }
+
+    @GetMapping("/coins/token-sign")
+    public Response tokenSign(@RequestParam String fromAddress, @RequestParam String toAddress, @RequestParam BigDecimal amount) {
+        return Response.ok(geth.tokenSign(fromAddress, toAddress, amount));
+    }
+
+    @GetMapping("/coins/token-submit")
+    public Response tokenSubmit(@RequestParam String hex) {
+        return Response.ok(geth.submitTokenTransaction(hex));
     }
 
     @GetMapping("/user/{userId}/kyc/delete")

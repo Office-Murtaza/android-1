@@ -39,28 +39,35 @@ class CoinModel {
 
     @SerializedName("balance")
     var balance: Double = 0.0
+
     @SerializedName("code")
     var coinId: String = ""
+
     @SerializedName("id")
     var orderIndex: Int = -1
+
     @SerializedName("price")
     var price: Price = Price()
+
     @SerializedName("address")
     var publicKey: String = ""
 
-    val fullCoinName:String
-    get() {
-        when(coinId){
-            "BTC"-> return "Bitcoin"
-            "BCH"-> return "Bitcoin Cash"
-            "ETH"-> return "Ethereum"
-            "LTC"-> return "Litecoin"
-            "BNB"-> return "Binance"
-            "TRX"-> return "TRON"
-            "XRP"-> return "Ripple"
-            else-> return "Unknown"
+    @SerializedName("reservedBalance")
+    var reservedBalance: Double = 0.0
+
+    val fullCoinName: String
+        get() {
+            when (coinId) {
+                "BTC" -> return "Bitcoin"
+                "BCH" -> return "Bitcoin Cash"
+                "ETH" -> return "Ethereum"
+                "LTC" -> return "Litecoin"
+                "BNB" -> return "Binance"
+                "TRX" -> return "TRON"
+                "XRP" -> return "Ripple"
+                else -> return "Unknown"
+            }
         }
-    }
 
     @Parcel
     class Price {

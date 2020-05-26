@@ -3,6 +3,7 @@
     <color name="colorPrimary">#0073e4</color>
     <color name="colorPrimaryDark">#004ba0</color>
     <color name="colorAccent">#0074e5</color>
+    <color name="colorStatusBar">#f4f4f4</color>
 
     <color name="edit_text_drawable_tint">#c6c6c6</color>
     <color name="toast_background">#80000000</color>
@@ -11,8 +12,6 @@
     <color name="colorErrorSnackBar">#ff5722</color>
 
     <color name="gray_progress">#90000000</color>
-
-    <color name="colorErrorOrange">#ff9e22</color>
 
     <color name="bg_color">#f3f3f3</color>
     <color name="light_gray_text_color">#c1c1c1</color>
@@ -44,4 +43,8 @@
     <color name="chart_point">#84b4fd</color>
     <color name="chart_changes_up">#48be53</color>
     <color name="chart_changes_down">#e02d2d</color>
+
+
+
+    <color name="colorWhite">#FFFF</color>
 </resources>

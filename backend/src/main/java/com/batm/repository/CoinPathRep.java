@@ -6,9 +6,13 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.List;
+
 public interface CoinPathRep extends JpaRepository<CoinPath, Long> {
 
     Integer countCoinPathByCoin(Coin coin);
+
+    List<CoinPath> findAllByCoin(Coin coin);
 
     CoinPath getCoinPathByAddress(String address);
 

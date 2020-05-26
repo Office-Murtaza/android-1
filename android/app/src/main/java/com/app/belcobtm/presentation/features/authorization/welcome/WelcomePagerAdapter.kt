@@ -1,31 +1,31 @@
 package com.app.belcobtm.presentation.features.authorization.welcome
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.app.belcobtm.R
 import com.app.belcobtm.model.WelcomePagerItem
 import kotlinx.android.synthetic.main.item_welcome_pager.view.*
 
-class WelcomePagerAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class WelcomePagerAdapter : RecyclerView.Adapter<WelcomePagerAdapter.Holder>() {
     private val itemList: List<WelcomePagerItem> = listOf(
-        WelcomePagerItem(R.drawable.ic_welcome_slide1, R.string.welcome_slide_1),
-        WelcomePagerItem(R.drawable.ic_welcome_slide2, R.string.welcome_slide_2),
-        WelcomePagerItem(R.drawable.ic_welcome_slide3, R.string.welcome_slide_3)
+        WelcomePagerItem(R.drawable.ic_welcome_slide_1, R.string.welcome_screen_all_assets_in_one_place),
+        WelcomePagerItem(R.drawable.ic_welcome_slide_2, R.string.welcome_screen_private_and_secure),
+        WelcomePagerItem(R.drawable.ic_welcome_slide_3, R.string.welcome_screen_buy_sell_and_trade_assets)
     )
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_welcome_pager, parent, false)
-        return object : RecyclerView.ViewHolder(view) {}
+    override fun getItemCount(): Int = itemList.size
+
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        viewType: Int
+    ): Holder = Holder(LayoutInflater.from(parent.context).inflate(R.layout.item_welcome_pager, parent, false))
+
+    override fun onBindViewHolder(holder: Holder, position: Int) {
+        holder.itemView.imageView.setImageResource(itemList[position].imageRes)
+        holder.itemView.textView.text = holder.itemView.context.getString(itemList[position].nameRes)
     }
 
-    override fun getItemCount(): Int {
-        return itemList.size
-    }
-
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        holder.itemView.image.setImageResource(itemList[position].imageRes)
-        holder.itemView.name.text = holder.itemView.context.getString(itemList[position].nameRes)
-    }
+    class Holder(view: View) : RecyclerView.ViewHolder(view)
 }

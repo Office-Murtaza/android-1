@@ -28,8 +28,8 @@ class TransactionsAdapter(
             val context = holder.itemView.context
             val item = mTransactionList[position]
 
-            var transactionStatusBgId: Int
-            var transactionStatusTextId: Int
+            val transactionStatusBgId: Int
+            val transactionStatusTextId: Int
 
 //            unknown(0),
 //            pending(1),
@@ -60,7 +60,7 @@ class TransactionsAdapter(
 //            receive gift(4),
 //            buy(5),
 //            sell(6)
-            var transactionTypeTextId = when (item.type) {
+            val transactionTypeTextId = when (item.type) {
                 1 -> R.string.deposit
                 2 -> R.string.withdraw
                 3 -> R.string.send_gift

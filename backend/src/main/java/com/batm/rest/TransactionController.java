@@ -1,7 +1,6 @@
 package com.batm.rest;
 
 import com.batm.dto.SubmitTransactionDTO;
-import com.batm.dto.TradeDTO;
 import com.batm.model.Response;
 import com.batm.model.TransactionType;
 import com.batm.service.CoinService;
@@ -60,10 +59,10 @@ public class TransactionController {
     }
 
     @GetMapping("/user/{userId}/coins/{coinCode}/transactions/nonce")
-    public Response getNonce(@PathVariable Long userId, @PathVariable CoinService.CoinEnum coinCode) {
+    public Response getNonce(@PathVariable Long userId, @PathVariable CoinService.CoinEnum coinCode, @RequestParam String address) {
         try {
-            if (coinCode == CoinService.CoinEnum.ETH) {
-                return Response.ok(coinCode.getNonce(userId));
+            if (coinCode == CoinService.CoinEnum.ETH || coinCode == CoinService.CoinEnum.CATM) {
+                return Response.ok(coinCode.getNonce(address));
             } else {
                 return Response.error(2, coinCode.name() + " not allowed");
             }
@@ -151,40 +150,6 @@ public class TransactionController {
             }
 
             return Response.error(2, coinCode.name() + " error transaction creation");
-        } catch (Exception e) {
-            e.printStackTrace();
-            return Response.serverError();
-        }
-    }
-
-    @PostMapping("/user/{userId}/coins/{coinCode}/transactions/trade")
-    public Response postTrade(@PathVariable Long userId, @PathVariable CoinService.CoinEnum coinCode, @RequestBody TradeDTO dto) {
-        try {
-            return Response.ok("id", transactionService.postTrade(userId, coinCode, dto));
-        } catch (Exception e) {
-            e.printStackTrace();
-            return Response.serverError();
-        }
-    }
-
-    @DeleteMapping("/user/{userId}/coins/{coinCode}/transactions/trade")
-    public Response deleteTrade(@PathVariable Long userId, @PathVariable CoinService.CoinEnum coinCode, @RequestParam Long id) {
-        try {
-            transactionService.deleteTrade(id);
-
-            return Response.ok(true);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return Response.serverError();
-        }
-    }
-
-    @GetMapping("/user/{userId}/coins/{coinCode}/transactions/trade")
-    public Response getTrades(@PathVariable Long userId, @PathVariable CoinService.CoinEnum coinCode, @RequestParam(required = false) Integer type, @RequestParam(required = false) Integer index) {
-        try {
-            index = index == null || index <= 0 ? 1 : index;
-
-            return Response.ok(transactionService.getTrades(userId, coinCode, type, index));
         } catch (Exception e) {
             e.printStackTrace();
             return Response.serverError();

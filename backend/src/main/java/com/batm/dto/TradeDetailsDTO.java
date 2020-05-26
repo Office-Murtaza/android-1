@@ -16,12 +16,13 @@ public class TradeDetailsDTO {
 
     private Long id;
     private Integer index;
-    private String publicId;
+    private String username;
     private Integer tradeCount;
-    private Integer rate;
+    private BigDecimal tradeRate;
     private Integer distance;
     private String paymentMethod;
     private BigDecimal price;
     private Integer minLimit;
     private Integer maxLimit;
+    private String terms;
 }

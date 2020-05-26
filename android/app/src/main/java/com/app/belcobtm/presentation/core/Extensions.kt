@@ -47,7 +47,7 @@ class QRUtils{
                 if (MARGIN_NONE != MARGIN_AUTOMATIC) {
                     hints = EnumMap(EncodeHintType::class.java)
                     // We want to generate with a custom margin size
-                    hints!![EncodeHintType.MARGIN] = MARGIN_NONE
+                    hints[EncodeHintType.MARGIN] = MARGIN_NONE
                 }
                 val writer = MultiFormatWriter()
                 val result =

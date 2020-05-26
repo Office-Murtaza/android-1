@@ -2,6 +2,8 @@ package com.batm.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
+import org.bson.Document;
+
 import java.util.List;
 
 @Getter
@@ -12,9 +14,9 @@ import java.util.List;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class CoinPriceListDTO {
 
-    List<CoinPriceDTO> dayCoinPrices;
-    List<CoinPriceDTO> weekCoinPrices;
-    List<CoinPriceDTO> monthCoinPrices;
-    List<CoinPriceDTO> threeMonthsCoinPrices;
-    List<CoinPriceDTO> yearCoinPrices;
+    List<Document> dayCoinPrices;
+    List<Document> weekCoinPrices;
+    List<Document> monthCoinPrices;
+    List<Document> threeMonthsCoinPrices;
+    List<Document> yearCoinPrices;
 }

@@ -10,6 +10,7 @@ import com.app.belcobtm.domain.Either
 import com.app.belcobtm.domain.Failure
 import com.app.belcobtm.domain.wallet.item.SellLimitsDataItem
 import com.app.belcobtm.domain.wallet.item.SellPreSubmitDataItem
+import com.app.belcobtm.domain.wallet.item.TradeInfoDataItem
 
 class WalletApiService(
     private val api: WalletApi,
@@ -161,6 +162,40 @@ class WalletApiService(
             requestBody
         ).await()
 
+        request.body()?.let { Either.Right(Unit) } ?: Either.Left(Failure.ServerError())
+    } catch (failure: Failure) {
+        failure.printStackTrace()
+        Either.Left(failure)
+    }
+
+    suspend fun getTradeInfo(coinFrom: String): Either<Failure, TradeInfoDataItem> = try {
+        val request = api.tradeGetInfoAsync(prefHelper.userId, coinFrom).await()
+        request.body()?.let { Either.Right(it.mapToDataItem()) } ?: Either.Left(Failure.ServerError())
+    } catch (failure: Failure) {
+        failure.printStackTrace()
+        Either.Left(failure)
+    }
+
+    suspend fun tradeBuy(
+        id: Int,
+        price: Int,
+        fromUsdAmount: Int,
+        toCoin: String,
+        toCoinAmount: Double,
+        detailsText: String
+    ): Either<Failure, Unit> = try {
+        val requestBody = TradeBuyRequest(id, price, fromUsdAmount, toCoinAmount, detailsText)
+        val request = api.tradeBuyAsync(prefHelper.userId, toCoin, requestBody).await()
+        request.body()?.let { Either.Right(Unit) } ?: Either.Left(Failure.ServerError())
+    } catch (failure: Failure) {
+        failure.printStackTrace()
+        Either.Left(failure)
+    }
+
+
+    suspend fun sendTradeUserLocation(latitude: Double, longitude: Double): Either<Failure, Unit> = try {
+        val requestBody = TradeLocationRequest(latitude, longitude)
+        val request = api.tradeSendUserLocationAsync(prefHelper.userId, requestBody).await()
         request.body()?.let { Either.Right(Unit) } ?: Either.Left(Failure.ServerError())
     } catch (failure: Failure) {
         failure.printStackTrace()

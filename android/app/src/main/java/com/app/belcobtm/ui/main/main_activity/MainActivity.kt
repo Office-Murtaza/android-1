@@ -3,6 +3,7 @@ package com.app.belcobtm.ui.main.main_activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
 import com.app.belcobtm.R
 import com.app.belcobtm.domain.authorization.interactor.ClearAppDataUseCase
@@ -25,7 +26,6 @@ class MainActivity : BaseMvpActivity<MainContract.View, MainContract.Presenter>(
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
         coinListUseCase.invoke {
             if (it.isEmpty() && !mPresenter.isApiSeedEmpty()) {
                 clearAppDataUseCase.invoke {
@@ -38,6 +38,8 @@ class MainActivity : BaseMvpActivity<MainContract.View, MainContract.Presenter>(
     }
 
     private fun launchData() {
+        setTheme(R.style.AppThemeNoActionBar)
+        setContentView(R.layout.activity_main)
         mPresenter.checkPinEntered()
         bottom_bar.setOnNavigationItemSelectedListener(this)
         setFragment(BalanceFragment())
