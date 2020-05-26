@@ -20,7 +20,7 @@ public class User extends BaseEntity {
     private String phone;
     private String password;
     private String role;
-    private Integer tradeCount;
+    private Long tradeCount;
     private BigDecimal tradeRate;
     private BigDecimal latitude;
     private BigDecimal longitude;

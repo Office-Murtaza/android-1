@@ -23,8 +23,8 @@ public class TradeRequest extends BaseEntity {
     private String paymentMethod;
     private BigDecimal margin;
     private BigDecimal price;
-    private Integer minLimit;
-    private Integer maxLimit;
+    private Long minLimit;
+    private Long maxLimit;
     private BigDecimal cryptoAmount;
     private BigDecimal fiatAmount;
     private String terms;

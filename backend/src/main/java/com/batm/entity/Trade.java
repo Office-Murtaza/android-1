@@ -19,8 +19,8 @@ public class Trade extends BaseEntity {
     private Integer type;
     private String paymentMethod;
     private BigDecimal margin;
-    private Integer minLimit;
-    private Integer maxLimit;
+    private Long minLimit;
+    private Long maxLimit;
     private String terms;
 
     @ManyToOne

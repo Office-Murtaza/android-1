@@ -22,7 +22,7 @@ public class TradeDetailsDTO {
     private Integer distance;
     private String paymentMethod;
     private BigDecimal price;
-    private Integer minLimit;
-    private Integer maxLimit;
+    private Long minLimit;
+    private Long maxLimit;
     private String terms;
 }
