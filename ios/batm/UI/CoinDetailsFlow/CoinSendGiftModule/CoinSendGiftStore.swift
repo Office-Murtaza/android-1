@@ -115,7 +115,7 @@ final class CoinSendGiftStore: ViewStore<CoinSendGiftAction, CoinSendGiftState> 
       return .invalid(localize(L.CoinWithdraw.Form.Error.tooLowAmount))
     }
     
-    guard amount <= state.maxValue else {
+    guard amount.lessThanOrEqualTo(state.maxValue) else {
       return .invalid(localize(L.CoinWithdraw.Form.Error.tooHighAmount))
     }
     

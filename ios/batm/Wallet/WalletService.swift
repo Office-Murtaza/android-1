@@ -165,7 +165,7 @@ class WalletServiceImpl: WalletService {
                                  to destination: String,
                                  amount: Double) -> Single<String> {
     return accountStorage.get()
-      .flatMap { [api] in api.getNonce(userId: $0.userId, type: coin.type) }
+      .flatMap { [api] in api.getNonce(userId: $0.userId, type: coin.type, address: coin.publicKey) }
       .map { [unowned self] in try self.getEthereumTransactionHex(coin: coin,
                                                                   coinSettings: coinSettings,
                                                                   toAddress: destination,

@@ -273,11 +273,13 @@ struct GetNonceRequest: AuthorizedAPIRequest {
   
   let userId: Int
   let coinId: String
+  let address: String
   
   var path: String { return "/user/\(userId)/coins/\(coinId)/transactions/nonce" }
   var method: HTTPMethod { return .get }
   var task: HTTPTask {
-    return .requestPlain
+    return .requestParameters(parameters: ["address": address],
+                              encoding: URLEncoding.customDefault)
   }
 }
 

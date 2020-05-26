@@ -37,10 +37,10 @@ struct BuySellTrade: Equatable {
   var username: String
   var tradeCount: Int
   var tradeRate: Double
-  var distance: Double?
+  var distance: Int?
   var paymentMethod: String
   var price: Double
-  var minLimit: Double
-  var maxLimit: Double
+  var minLimit: Int
+  var maxLimit: Int
   var terms: String
 }

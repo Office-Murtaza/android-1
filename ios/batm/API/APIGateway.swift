@@ -49,7 +49,7 @@ protocol APIGateway {
   func requestCode(userId: Int) -> Completable
   func getTronBlockHeader(userId: Int, type: CoinType) -> Single<BTMTronBlockHeader>
   func getGiftAddress(userId: Int, type: CoinType, phone: String) -> Single<GiftAddress>
-  func getNonce(userId: Int, type: CoinType) -> Single<Nonce>
+  func getNonce(userId: Int, type: CoinType, address: String) -> Single<Nonce>
   func getBinanceAccountInfo(userId: Int, type: CoinType) -> Single<BinanceAccountInfo>
   func getRippleSequence(userId: Int, type: CoinType) -> Single<RippleSequence>
   func getSellAddress(userId: Int, type: CoinType) -> Single<SellAddress>
@@ -392,8 +392,8 @@ final class APIGatewayImpl: APIGateway {
       }
   }
   
-  func getNonce(userId: Int, type: CoinType) -> Single<Nonce> {
-    let request = GetNonceRequest(userId: userId, coinId: type.code)
+  func getNonce(userId: Int, type: CoinType, address: String) -> Single<Nonce> {
+    let request = GetNonceRequest(userId: userId, coinId: type.code, address: address)
     return api.execute(request)
       .flatMap {
         switch $0 {
