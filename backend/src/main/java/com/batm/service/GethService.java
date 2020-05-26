@@ -307,27 +307,27 @@ public class GethService {
     }
 
     public TransactionDetailsDTO getEthTransaction(String txId, String address) {
-        return getTransaction(ETH_TX_COLL, txId, address);
+        return getTransaction(ETH_TX_COLL, txId.toLowerCase(), address.toLowerCase());
     }
 
     public TransactionDetailsDTO getTokenTransaction(String txId, String address) {
-        return getTransaction(TOKEN_TX_COLL, txId, address);
+        return getTransaction(TOKEN_TX_COLL, txId.toLowerCase(), address.toLowerCase());
     }
 
     public TransactionListDTO getEthTransactionList(String address, Integer startIndex, Integer limit, TxListDTO txDTO) {
-        return getTransactionList(ETH_TX_COLL, address, startIndex, limit, txDTO);
+        return getTransactionList(ETH_TX_COLL, address.toLowerCase(), startIndex, limit, txDTO);
     }
 
     public TransactionListDTO getTokenTransactionList(String address, Integer startIndex, Integer limit, TxListDTO txDTO) {
-        return getTransactionList(TOKEN_TX_COLL, address, startIndex, limit, txDTO);
+        return getTransactionList(TOKEN_TX_COLL, address.toLowerCase(), startIndex, limit, txDTO);
     }
 
     public NodeTransactionsDTO getEthNodeTransactions(String address) {
-        return getNodeTransactions(ETH_TX_COLL, address);
+        return getNodeTransactions(ETH_TX_COLL, address.toLowerCase());
     }
 
     public NodeTransactionsDTO getTokenNodeTransactions(String address) {
-        return getNodeTransactions(TOKEN_TX_COLL, address);
+        return getNodeTransactions(TOKEN_TX_COLL, address.toLowerCase());
     }
 
     public String ethSign(String fromAddress, String toAddress, BigDecimal amount) {

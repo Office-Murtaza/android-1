@@ -4,6 +4,7 @@ import com.batm.dto.TradeDTO;
 import com.batm.dto.TradeDetailsDTO;
 import com.batm.dto.TradeListDTO;
 import com.batm.dto.TradeRequestDTO;
+import com.batm.entity.Coin;
 import com.batm.entity.Trade;
 import com.batm.entity.TradeRequest;
 import com.batm.model.TradeStatus;
@@ -14,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -91,32 +93,33 @@ public class TradeService {
 
     public TradeListDTO getTrades(Long userId, CoinService.CoinEnum coinCode, Integer type, Integer index) {
         int page = index / 10;
+        Coin coin = coinCode.getCoinEntity();
 
         if (type == null) {
             TradeListDTO dto = new TradeListDTO();
-            dto.setBuyTotal(tradeRep.countTradeByType(TradeType.BUY.getValue()));
-            List<Trade> buyTrades = tradeRep.findAllByTypeOrderByMarginAsc(TradeType.BUY.getValue(), PageRequest.of(page, 10));
+            dto.setBuyTotal(tradeRep.countTradeByCoinAndType(coin, TradeType.BUY.getValue()));
+            List<Trade> buyTrades = tradeRep.findAllByCoinAndTypeOrderByMarginAsc(coin, TradeType.BUY.getValue(), PageRequest.of(page, 10));
             dto.setBuyTrades(getTradeDetailsList(buyTrades, coinCode, index));
 
-            dto.setSellTotal(tradeRep.countTradeByType(TradeType.SELL.getValue()));
-            List<Trade> sellTrades = tradeRep.findAllByTypeOrderByMarginDesc(TradeType.SELL.getValue(), PageRequest.of(page, 10));
+            dto.setSellTotal(tradeRep.countTradeByCoinAndType(coin, TradeType.SELL.getValue()));
+            List<Trade> sellTrades = tradeRep.findAllByCoinAndTypeOrderByMarginDesc(coin, TradeType.SELL.getValue(), PageRequest.of(page, 10));
             dto.setSellTrades(getTradeDetailsList(sellTrades, coinCode, index));
 
             return dto;
         } else {
             if (type == TradeType.BUY.getValue()) {
-                List<Trade> trades = tradeRep.findAllByTypeOrderByMarginAsc(type, PageRequest.of(page, 10));
+                List<Trade> trades = tradeRep.findAllByCoinAndTypeOrderByMarginAsc(coin, type, PageRequest.of(page, 10));
 
                 TradeListDTO dto = new TradeListDTO();
-                dto.setBuyTotal(tradeRep.countTradeByType(type));
+                dto.setBuyTotal(tradeRep.countTradeByCoinAndType(coin, type));
                 dto.setBuyTrades(getTradeDetailsList(trades, coinCode, index));
 
                 return dto;
             } else if (type == TradeType.SELL.getValue()) {
-                List<Trade> trades = tradeRep.findAllByTypeOrderByMarginDesc(type, PageRequest.of(page, 10));
+                List<Trade> trades = tradeRep.findAllByCoinAndTypeOrderByMarginDesc(coin, type, PageRequest.of(page, 10));
 
                 TradeListDTO dto = new TradeListDTO();
-                dto.setSellTotal(tradeRep.countTradeByType(type));
+                dto.setSellTotal(tradeRep.countTradeByCoinAndType(coin, type));
                 dto.setSellTrades(getTradeDetailsList(trades, coinCode, index));
 
                 return dto;
@@ -139,7 +142,9 @@ public class TradeService {
             details.setTradeCount(50);
             details.setTradeRate(new BigDecimal("4.5"));
             details.setDistance(2);
-            details.setPrice(coinCode.getPrice().multiply(trade.getMargin().divide(new BigDecimal(100)).add(BigDecimal.ONE)));
+            details.setPrice(coinCode.getPrice()
+                    .multiply(trade.getMargin().divide(new BigDecimal(100)).add(BigDecimal.ONE))
+                    .setScale(3, RoundingMode.DOWN).stripTrailingZeros());
             details.setPaymentMethod(trade.getPaymentMethod());
             details.setMinLimit(trade.getMinLimit());
             details.setMaxLimit(trade.getMaxLimit());
