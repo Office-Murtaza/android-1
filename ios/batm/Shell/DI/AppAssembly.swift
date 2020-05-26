@@ -22,7 +22,7 @@ final class AppAssembly: Assembly {
   private func assembleNetwork(container: Container) {
     container.register(URL.self, name: Keys.testApiUrl.rawValue) { _ in URL(string: "http://161.35.22.9/api/v1")! }
     container.register(URL.self, name: Keys.prodApiUrl.rawValue) { _ in URL(string: "https://prod.belcobtm.com/api/v1")! }
-    container.register(URL.self, name: Keys.apiUrl.rawValue) { ioc in ioc.resolve(URL.self, name: Keys.testApiUrl.rawValue)! }
+    container.register(URL.self, name: Keys.apiUrl.rawValue) { ioc in ioc.resolve(URL.self, name: Keys.prodApiUrl.rawValue)! }
     container.register(NetworkService.self) { (ioc, baseUrl: URL) in
       let provider = MoyaProvider<MultiTarget>()
       return NetworkService(baseApiUrl: baseUrl, provider: provider)
