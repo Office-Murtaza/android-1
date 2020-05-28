@@ -30,7 +30,7 @@
 	<key>NSCameraUsageDescription</key>
 	<string>Allow to access camera for QR code scanning</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>batm need your current location to present on the map</string>
+	<string>Belco needs your location to provide better service like showing up the map with ATMs locations and the distance between users in trades. In this way, we help you to choose the closest ATM or trader to you and as a result, save your time.</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Poppins-Black.ttf</string>
