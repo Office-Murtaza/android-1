@@ -39,6 +39,12 @@
 
     <style name="Widget.MaterialComponents.TextInputEditText.FilledBox" parent="Widget.Design.TextInputLayout" tools:ignore="PrivateResource" />
 
+    <style name="TabLayoutTextStyle">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textAllCaps">true</item>
+    </style>
+
     <style name="SeedElemContainer">
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_height">wrap_content</item>

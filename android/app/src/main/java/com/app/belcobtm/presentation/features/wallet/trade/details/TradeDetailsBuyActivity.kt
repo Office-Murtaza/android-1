@@ -41,6 +41,10 @@ class TradeDetailsBuyActivity : BaseActivity() {
     }
 
     private fun initListeners() {
+        maxCryptoView.setOnClickListener {
+            val balance = tradeDetailsItem.maxLimit
+            amountUsdView.setText(balance.toString())
+        }
         maxUsdView.setOnClickListener {
             val balance = tradeDetailsItem.maxLimit
             amountUsdView.setText(balance.toString())
@@ -92,14 +96,13 @@ class TradeDetailsBuyActivity : BaseActivity() {
             R.string.trade_screen_user_field,
             tradeDetailsItem.userName,
             tradeDetailsItem.tradeCount,
-            tradeDetailsItem.rate,
+            tradeDetailsItem.rate.toStringUsd(),
             tradeDetailsItem.distance
         )
         paymentMethodView.text = tradeDetailsItem.paymentMethod
         limitsView.text =
             getString(R.string.unit_usd_dynamic, "${tradeDetailsItem.minLimit} - ${tradeDetailsItem.maxLimit}")
-        termsView.setText(tradeDetailsItem.terms)
-        amountUsdView.setText(tradeDetailsItem.minLimit.toString())
+        termsView.text = tradeDetailsItem.terms
         amountCryptoView.hint = getString(R.string.crypto_amount, intentCoinItem.coinCode)
     }
 

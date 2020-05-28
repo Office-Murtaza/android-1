@@ -197,14 +197,14 @@ class WithdrawActivity : BaseMvpActivity<WithdrawContract.View, WithdrawContract
                     val cryptoAmount: Double =
                         if (cryptoAmountTemporary > cryptoBalance) cryptoBalance
                         else cryptoAmountTemporary
+                    cryptoBalanceToSend = if (cryptoAmountTemporary > cryptoBalance) mCoin.balance
+                    else cryptoAmountTemporary
 
                     if (cryptoAmountTemporary > cryptoBalance) {
                         editable.clear()
                         editable.insert(0, cryptoAmount.toStringCoin())
                     }
                     amountUsdView.setText((cryptoAmount * mCoin.price.uSD).toStringUsd())
-
-                    cryptoBalanceToSend = cryptoAmount
                 }
             }
 

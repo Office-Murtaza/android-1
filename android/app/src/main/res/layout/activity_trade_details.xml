@@ -131,7 +131,7 @@
                     tools:text="Terms text dolor it amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt" />
 
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/amountUsdView"
+                    android:id="@+id/amountCryptoView"
                     style="@style/WalletTab.EditText.Container"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="16dp"
@@ -139,6 +139,34 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/termsView">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        style="@style/WalletTab.EditText.InputWithMax"
+                        android:digits="1234567890."
+                        android:enabled="false"
+                        android:focusableInTouchMode="false"
+                        android:inputType="numberDecimal"
+                        android:nextFocusDown="@id/amountUsdView"
+                        tools:hint="@string/crypto_amount"
+                        tools:ignore="RtlSymmetry" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/maxCryptoView"
+                    style="@style/WalletTab.EditText.TextLink"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:text="@string/max"
+                    app:layout_constraintBottom_toBottomOf="@id/amountCryptoView"
+                    app:layout_constraintEnd_toEndOf="@id/amountCryptoView"
+                    app:layout_constraintTop_toTopOf="@id/amountCryptoView" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/amountUsdView"
+                    style="@style/WalletTab.EditText.Container"
+                    app:layout_constraintEnd_toEndOf="@id/amountCryptoView"
+                    app:layout_constraintStart_toStartOf="@id/amountCryptoView"
+                    app:layout_constraintTop_toBottomOf="@id/amountCryptoView">
 
                     <com.google.android.material.textfield.TextInputEditText
                         style="@style/WalletTab.EditText.InputWithMax"
@@ -161,31 +189,13 @@
                     app:layout_constraintTop_toTopOf="@id/amountUsdView" />
 
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/amountCryptoView"
-                    style="@style/WalletTab.EditText.Container"
-                    app:layout_constraintEnd_toEndOf="@id/amountUsdView"
-                    app:layout_constraintStart_toStartOf="@id/amountUsdView"
-                    app:layout_constraintTop_toBottomOf="@id/amountUsdView">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        style="@style/WalletTab.EditText.InputWithMax"
-                        android:digits="1234567890."
-                        android:enabled="false"
-                        android:focusableInTouchMode="false"
-                        android:inputType="numberDecimal"
-                        android:nextFocusDown="@id/amountUsdView"
-                        tools:hint="@string/crypto_amount"
-                        tools:ignore="RtlSymmetry" />
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/tradeDetailsView"
                     style="@style/WalletTab.EditText.Container"
                     android:layout_width="0dp"
                     android:layout_height="106dp"
                     app:layout_constraintEnd_toEndOf="@id/amountUsdView"
                     app:layout_constraintStart_toStartOf="@id/amountUsdView"
-                    app:layout_constraintTop_toBottomOf="@id/amountCryptoView">
+                    app:layout_constraintTop_toBottomOf="@id/amountUsdView">
 
                     <androidx.appcompat.widget.AppCompatEditText
                         style="@style/WalletTab.EditText.InputWithMax"

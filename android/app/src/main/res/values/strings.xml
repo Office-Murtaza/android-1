@@ -270,13 +270,13 @@
     <string name="trade_screen_limits">Limits</string>
     <string name="trade_screen_terms">Terms</string>
     <string name="trade_screen_request_details">Request details</string>
-    <string name="trade_screen_user_field">%1$s (%2$d/%3$.0f/%4$dkm)</string>
+    <string name="trade_screen_user_field">%1$s (%2$d, %3$s, %4$dkm)</string>
     <string name="trade_screen_send_request">Send request</string>
     <!--    <string name="trade_screen_"></string>-->
 
     <string name="unit_usd_dynamic">%1$s USD</string>
-    <string name="usd_amount">USD Amount</string>
-    <string name="crypto_amount">%1$s Amount</string>
+    <string name="usd_amount">USD amount</string>
+    <string name="crypto_amount">%1$s amount</string>
     <string name="button_next">Next</string>
     <string name="button_send">Send</string>
 

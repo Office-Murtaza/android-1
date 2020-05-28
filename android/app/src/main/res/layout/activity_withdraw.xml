@@ -137,7 +137,7 @@
 
         <com.google.android.material.textfield.TextInputEditText
             style="@style/WalletTab.EditText.InputWithMax"
-            android:digits="1234567890"
+            android:digits="1234567890."
             android:inputType="numberDecimal"
             android:nextFocusDown="@id/amountUsdView"
             tools:hint="@string/withdraw_screen_crypto_amount"
@@ -163,7 +163,7 @@
 
         <com.google.android.material.textfield.TextInputEditText
             style="@style/WalletTab.EditText.InputWithMax"
-            android:digits="1234567890."
+            android:digits="1234567890"
             android:focusableInTouchMode="false"
             android:hint="@string/withdraw_screen_usd_amount"
             android:inputType="numberDecimal"
