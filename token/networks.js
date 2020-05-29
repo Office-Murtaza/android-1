@@ -27,7 +27,8 @@ module.exports = {
         `https://mainnet.infura.io/v3/${ projectId }`
       ),
       networkId: 1,
-      // gasPrice: 10e9
+      gas: 9e6,
+      gasPrice: 55e9
     }
   },
 };

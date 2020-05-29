@@ -1,6 +1,13 @@
+.idea/
+*.iml
+*.iws
+
+.DS_Store
+
 node_modules
+
 .env
-# OpenZeppelin
-#build/contracts
+
 .openzeppelin/dev-*.json
+.openzeppelin/mainnet.json
 .openzeppelin/.session
