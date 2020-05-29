@@ -1,4 +1,4 @@
-// Copyright © 2017-2019 Trust Wallet.
+// Copyright © 2017-2020 Trust Wallet.
 //
 // This file is part of Trust. The full Trust copyright notice, including
 // terms governing use, modification, and redistribution, is contained in the
@@ -28,21 +28,23 @@ public enum Blockchain {
     ONTOLOGY (14),
     ZILLIQA (15),
     IOTEX (16),
-    ARK (17),
-    EOS (18),
-    IOST (19),
-    SEMUX (20),
-    NANO (21),
-    NEO (22),
-    STEEM (23),
-    WAVES (25),
-    AETERNITY (26),
-    NEBULAS (27),
-    FIO (28),
-    SOLANA (29),
-    HARMONY (30),
-    NEAR (31),
-    ALGORAND (32);
+    EOS (17),
+    NANO (18),
+    NULS (19),
+    WAVES (20),
+    AETERNITY (21),
+    NEBULAS (22),
+    FIO (23),
+    SOLANA (24),
+    HARMONY (25),
+    NEAR (26),
+    ALGORAND (27),
+    TON (28),
+    POLKADOT (29),
+    CARDANO (30),
+    NEO (31),
+    FILECOIN (32),
+    ELRONDNETWORK (33);
 
     private final int value;
     Blockchain(int value) {
@@ -69,21 +71,23 @@ public enum Blockchain {
             case 14: return Blockchain.ONTOLOGY;
             case 15: return Blockchain.ZILLIQA;
             case 16: return Blockchain.IOTEX;
-            case 17: return Blockchain.ARK;
-            case 18: return Blockchain.EOS;
-            case 19: return Blockchain.IOST;
-            case 20: return Blockchain.SEMUX;
-            case 21: return Blockchain.NANO;
-            case 22: return Blockchain.NEO;
-            case 23: return Blockchain.STEEM;
-            case 25: return Blockchain.WAVES;
-            case 26: return Blockchain.AETERNITY;
-            case 27: return Blockchain.NEBULAS;
-            case 28: return Blockchain.FIO;
-            case 29: return Blockchain.SOLANA;
-            case 30: return Blockchain.HARMONY;
-            case 31: return Blockchain.NEAR;
-            case 32: return Blockchain.ALGORAND;
+            case 17: return Blockchain.EOS;
+            case 18: return Blockchain.NANO;
+            case 19: return Blockchain.NULS;
+            case 20: return Blockchain.WAVES;
+            case 21: return Blockchain.AETERNITY;
+            case 22: return Blockchain.NEBULAS;
+            case 23: return Blockchain.FIO;
+            case 24: return Blockchain.SOLANA;
+            case 25: return Blockchain.HARMONY;
+            case 26: return Blockchain.NEAR;
+            case 27: return Blockchain.ALGORAND;
+            case 28: return Blockchain.TON;
+            case 29: return Blockchain.POLKADOT;
+            case 30: return Blockchain.CARDANO;
+            case 31: return Blockchain.NEO;
+            case 32: return Blockchain.FILECOIN;
+            case 33: return Blockchain.ELRONDNETWORK;
             default: return null;
         }
     }

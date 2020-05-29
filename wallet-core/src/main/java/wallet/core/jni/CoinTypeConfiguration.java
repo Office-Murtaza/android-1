@@ -1,4 +1,4 @@
-// Copyright © 2017-2019 Trust Wallet.
+// Copyright © 2017-2020 Trust Wallet.
 //
 // This file is part of Trust. The full Trust copyright notice, including
 // terms governing use, modification, and redistribution, is contained in the
@@ -27,6 +27,7 @@ public class CoinTypeConfiguration {
     public static native String getSymbol(CoinType type);
     public static native int getDecimals(CoinType type);
     public static native String getTransactionURL(CoinType type, String transactionID);
+    public static native String getAccountURL(CoinType type, String accountID);
     public static native String getID(CoinType type);
     public static native String getName(CoinType type);
 

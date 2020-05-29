@@ -1,4 +1,4 @@
-// Copyright © 2017-2019 Trust Wallet.
+// Copyright © 2017-2020 Trust Wallet.
 //
 // This file is part of Trust. The full Trust copyright notice, including
 // terms governing use, modification, and redistribution, is contained in the
@@ -17,7 +17,8 @@ public enum PublicKeyType {
     NIST256P1EXTENDED (3),
     ED25519 (4),
     ED25519BLAKE2B (5),
-    CURVE25519 (6);
+    CURVE25519 (6),
+    ED25519EXTENDED (7);
 
     private final int value;
     PublicKeyType(int value) {
@@ -34,6 +35,7 @@ public enum PublicKeyType {
             case 4: return PublicKeyType.ED25519;
             case 5: return PublicKeyType.ED25519BLAKE2B;
             case 6: return PublicKeyType.CURVE25519;
+            case 7: return PublicKeyType.ED25519EXTENDED;
             default: return null;
         }
     }

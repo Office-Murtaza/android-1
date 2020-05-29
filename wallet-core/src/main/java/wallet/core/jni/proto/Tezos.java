@@ -58,6 +58,13 @@ public final class Tezos {
     }
 
     @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new SigningInput();
+    }
+
+    @java.lang.Override
     public final com.google.protobuf.UnknownFieldSet
     getUnknownFields() {
       return this.unknownFields;
@@ -70,7 +77,6 @@ public final class Tezos {
       if (extensionRegistry == null) {
         throw new java.lang.NullPointerException();
       }
-      int mutable_bitField0_ = 0;
       com.google.protobuf.UnknownFieldSet.Builder unknownFields =
           com.google.protobuf.UnknownFieldSet.newBuilder();
       try {
@@ -701,9 +707,9 @@ public final class Tezos {
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>bytes signed_bytes = 1;</code>
+     * <code>bytes encoded = 1;</code>
      */
-    com.google.protobuf.ByteString getSignedBytes();
+    com.google.protobuf.ByteString getEncoded();
   }
   /**
    * <pre>
@@ -723,7 +729,14 @@ public final class Tezos {
       super(builder);
     }
     private SigningOutput() {
-      signedBytes_ = com.google.protobuf.ByteString.EMPTY;
+      encoded_ = com.google.protobuf.ByteString.EMPTY;
+    }
+
+    @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new SigningOutput();
     }
 
     @java.lang.Override
@@ -739,7 +752,6 @@ public final class Tezos {
       if (extensionRegistry == null) {
         throw new java.lang.NullPointerException();
       }
-      int mutable_bitField0_ = 0;
       com.google.protobuf.UnknownFieldSet.Builder unknownFields =
           com.google.protobuf.UnknownFieldSet.newBuilder();
       try {
@@ -752,7 +764,7 @@ public final class Tezos {
               break;
             case 10: {
 
-              signedBytes_ = input.readBytes();
+              encoded_ = input.readBytes();
               break;
             }
             default: {
@@ -787,13 +799,13 @@ public final class Tezos {
               wallet.core.jni.proto.Tezos.SigningOutput.class, wallet.core.jni.proto.Tezos.SigningOutput.Builder.class);
     }
 
-    public static final int SIGNED_BYTES_FIELD_NUMBER = 1;
-    private com.google.protobuf.ByteString signedBytes_;
+    public static final int ENCODED_FIELD_NUMBER = 1;
+    private com.google.protobuf.ByteString encoded_;
     /**
-     * <code>bytes signed_bytes = 1;</code>
+     * <code>bytes encoded = 1;</code>
      */
-    public com.google.protobuf.ByteString getSignedBytes() {
-      return signedBytes_;
+    public com.google.protobuf.ByteString getEncoded() {
+      return encoded_;
     }
 
     private byte memoizedIsInitialized = -1;
@@ -810,8 +822,8 @@ public final class Tezos {
     @java.lang.Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
-      if (!signedBytes_.isEmpty()) {
-        output.writeBytes(1, signedBytes_);
+      if (!encoded_.isEmpty()) {
+        output.writeBytes(1, encoded_);
       }
       unknownFields.writeTo(output);
     }
@@ -822,9 +834,9 @@ public final class Tezos {
       if (size != -1) return size;
 
       size = 0;
-      if (!signedBytes_.isEmpty()) {
+      if (!encoded_.isEmpty()) {
         size += com.google.protobuf.CodedOutputStream
-          .computeBytesSize(1, signedBytes_);
+          .computeBytesSize(1, encoded_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -841,8 +853,8 @@ public final class Tezos {
       }
       wallet.core.jni.proto.Tezos.SigningOutput other = (wallet.core.jni.proto.Tezos.SigningOutput) obj;
 
-      if (!getSignedBytes()
-          .equals(other.getSignedBytes())) return false;
+      if (!getEncoded()
+          .equals(other.getEncoded())) return false;
       if (!unknownFields.equals(other.unknownFields)) return false;
       return true;
     }
@@ -854,8 +866,8 @@ public final class Tezos {
       }
       int hash = 41;
       hash = (19 * hash) + getDescriptor().hashCode();
-      hash = (37 * hash) + SIGNED_BYTES_FIELD_NUMBER;
-      hash = (53 * hash) + getSignedBytes().hashCode();
+      hash = (37 * hash) + ENCODED_FIELD_NUMBER;
+      hash = (53 * hash) + getEncoded().hashCode();
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -994,7 +1006,7 @@ public final class Tezos {
       @java.lang.Override
       public Builder clear() {
         super.clear();
-        signedBytes_ = com.google.protobuf.ByteString.EMPTY;
+        encoded_ = com.google.protobuf.ByteString.EMPTY;
 
         return this;
       }
@@ -1022,7 +1034,7 @@ public final class Tezos {
       @java.lang.Override
       public wallet.core.jni.proto.Tezos.SigningOutput buildPartial() {
         wallet.core.jni.proto.Tezos.SigningOutput result = new wallet.core.jni.proto.Tezos.SigningOutput(this);
-        result.signedBytes_ = signedBytes_;
+        result.encoded_ = encoded_;
         onBuilt();
         return result;
       }
@@ -1071,8 +1083,8 @@ public final class Tezos {
 
       public Builder mergeFrom(wallet.core.jni.proto.Tezos.SigningOutput other) {
         if (other == wallet.core.jni.proto.Tezos.SigningOutput.getDefaultInstance()) return this;
-        if (other.getSignedBytes() != com.google.protobuf.ByteString.EMPTY) {
-          setSignedBytes(other.getSignedBytes());
+        if (other.getEncoded() != com.google.protobuf.ByteString.EMPTY) {
+          setEncoded(other.getEncoded());
         }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
@@ -1103,31 +1115,31 @@ public final class Tezos {
         return this;
       }
 
-      private com.google.protobuf.ByteString signedBytes_ = com.google.protobuf.ByteString.EMPTY;
+      private com.google.protobuf.ByteString encoded_ = com.google.protobuf.ByteString.EMPTY;
       /**
-       * <code>bytes signed_bytes = 1;</code>
+       * <code>bytes encoded = 1;</code>
        */
-      public com.google.protobuf.ByteString getSignedBytes() {
-        return signedBytes_;
+      public com.google.protobuf.ByteString getEncoded() {
+        return encoded_;
       }
       /**
-       * <code>bytes signed_bytes = 1;</code>
+       * <code>bytes encoded = 1;</code>
        */
-      public Builder setSignedBytes(com.google.protobuf.ByteString value) {
+      public Builder setEncoded(com.google.protobuf.ByteString value) {
         if (value == null) {
     throw new NullPointerException();
   }
   
-        signedBytes_ = value;
+        encoded_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>bytes signed_bytes = 1;</code>
+       * <code>bytes encoded = 1;</code>
        */
-      public Builder clearSignedBytes() {
+      public Builder clearEncoded() {
         
-        signedBytes_ = getDefaultInstance().getSignedBytes();
+        encoded_ = getDefaultInstance().getEncoded();
         onChanged();
         return this;
       }
@@ -1245,6 +1257,13 @@ public final class Tezos {
     }
 
     @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new OperationList();
+    }
+
+    @java.lang.Override
     public final com.google.protobuf.UnknownFieldSet
     getUnknownFields() {
       return this.unknownFields;
@@ -1275,9 +1294,9 @@ public final class Tezos {
               break;
             }
             case 18: {
-              if (!((mutable_bitField0_ & 0x00000002) != 0)) {
+              if (!((mutable_bitField0_ & 0x00000001) != 0)) {
                 operations_ = new java.util.ArrayList<wallet.core.jni.proto.Tezos.Operation>();
-                mutable_bitField0_ |= 0x00000002;
+                mutable_bitField0_ |= 0x00000001;
               }
               operations_.add(
                   input.readMessage(wallet.core.jni.proto.Tezos.Operation.parser(), extensionRegistry));
@@ -1298,7 +1317,7 @@ public final class Tezos {
         throw new com.google.protobuf.InvalidProtocolBufferException(
             e).setUnfinishedMessage(this);
       } finally {
-        if (((mutable_bitField0_ & 0x00000002) != 0)) {
+        if (((mutable_bitField0_ & 0x00000001) != 0)) {
           operations_ = java.util.Collections.unmodifiableList(operations_);
         }
         this.unknownFields = unknownFields.build();
@@ -1318,7 +1337,6 @@ public final class Tezos {
               wallet.core.jni.proto.Tezos.OperationList.class, wallet.core.jni.proto.Tezos.OperationList.Builder.class);
     }
 
-    private int bitField0_;
     public static final int BRANCH_FIELD_NUMBER = 1;
     private volatile java.lang.Object branch_;
     /**
@@ -1603,7 +1621,7 @@ public final class Tezos {
 
         if (operationsBuilder_ == null) {
           operations_ = java.util.Collections.emptyList();
-          bitField0_ = (bitField0_ & ~0x00000002);
+          bitField0_ = (bitField0_ & ~0x00000001);
         } else {
           operationsBuilder_.clear();
         }
@@ -1634,18 +1652,16 @@ public final class Tezos {
       public wallet.core.jni.proto.Tezos.OperationList buildPartial() {
         wallet.core.jni.proto.Tezos.OperationList result = new wallet.core.jni.proto.Tezos.OperationList(this);
         int from_bitField0_ = bitField0_;
-        int to_bitField0_ = 0;
         result.branch_ = branch_;
         if (operationsBuilder_ == null) {
-          if (((bitField0_ & 0x00000002) != 0)) {
+          if (((bitField0_ & 0x00000001) != 0)) {
             operations_ = java.util.Collections.unmodifiableList(operations_);
-            bitField0_ = (bitField0_ & ~0x00000002);
+            bitField0_ = (bitField0_ & ~0x00000001);
           }
           result.operations_ = operations_;
         } else {
           result.operations_ = operationsBuilder_.build();
         }
-        result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
       }
@@ -1702,7 +1718,7 @@ public final class Tezos {
           if (!other.operations_.isEmpty()) {
             if (operations_.isEmpty()) {
               operations_ = other.operations_;
-              bitField0_ = (bitField0_ & ~0x00000002);
+              bitField0_ = (bitField0_ & ~0x00000001);
             } else {
               ensureOperationsIsMutable();
               operations_.addAll(other.operations_);
@@ -1715,7 +1731,7 @@ public final class Tezos {
               operationsBuilder_.dispose();
               operationsBuilder_ = null;
               operations_ = other.operations_;
-              bitField0_ = (bitField0_ & ~0x00000002);
+              bitField0_ = (bitField0_ & ~0x00000001);
               operationsBuilder_ = 
                 com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
                    getOperationsFieldBuilder() : null;
@@ -1826,9 +1842,9 @@ public final class Tezos {
       private java.util.List<wallet.core.jni.proto.Tezos.Operation> operations_ =
         java.util.Collections.emptyList();
       private void ensureOperationsIsMutable() {
-        if (!((bitField0_ & 0x00000002) != 0)) {
+        if (!((bitField0_ & 0x00000001) != 0)) {
           operations_ = new java.util.ArrayList<wallet.core.jni.proto.Tezos.Operation>(operations_);
-          bitField0_ |= 0x00000002;
+          bitField0_ |= 0x00000001;
          }
       }
 
@@ -1978,7 +1994,7 @@ public final class Tezos {
       public Builder clearOperations() {
         if (operationsBuilder_ == null) {
           operations_ = java.util.Collections.emptyList();
-          bitField0_ = (bitField0_ & ~0x00000002);
+          bitField0_ = (bitField0_ & ~0x00000001);
           onChanged();
         } else {
           operationsBuilder_.clear();
@@ -2055,7 +2071,7 @@ public final class Tezos {
           operationsBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
               wallet.core.jni.proto.Tezos.Operation, wallet.core.jni.proto.Tezos.Operation.Builder, wallet.core.jni.proto.Tezos.OperationOrBuilder>(
                   operations_,
-                  ((bitField0_ & 0x00000002) != 0),
+                  ((bitField0_ & 0x00000001) != 0),
                   getParentForChildren(),
                   isClean());
           operations_ = null;
@@ -2185,19 +2201,6 @@ public final class Tezos {
     wallet.core.jni.proto.Tezos.TransactionOperationDataOrBuilder getTransactionOperationDataOrBuilder();
 
     /**
-     * <code>.TW.Tezos.Proto.OriginationOperationData origination_operation_data = 10;</code>
-     */
-    boolean hasOriginationOperationData();
-    /**
-     * <code>.TW.Tezos.Proto.OriginationOperationData origination_operation_data = 10;</code>
-     */
-    wallet.core.jni.proto.Tezos.OriginationOperationData getOriginationOperationData();
-    /**
-     * <code>.TW.Tezos.Proto.OriginationOperationData origination_operation_data = 10;</code>
-     */
-    wallet.core.jni.proto.Tezos.OriginationOperationDataOrBuilder getOriginationOperationDataOrBuilder();
-
-    /**
      * <code>.TW.Tezos.Proto.DelegationOperationData delegation_operation_data = 11;</code>
      */
     boolean hasDelegationOperationData();
@@ -2235,6 +2238,13 @@ public final class Tezos {
     }
 
     @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new Operation();
+    }
+
+    @java.lang.Override
     public final com.google.protobuf.UnknownFieldSet
     getUnknownFields() {
       return this.unknownFields;
@@ -2247,7 +2257,6 @@ public final class Tezos {
       if (extensionRegistry == null) {
         throw new java.lang.NullPointerException();
       }
-      int mutable_bitField0_ = 0;
       com.google.protobuf.UnknownFieldSet.Builder unknownFields =
           com.google.protobuf.UnknownFieldSet.newBuilder();
       try {
@@ -2318,20 +2327,6 @@ public final class Tezos {
               operationDataCase_ = 9;
               break;
             }
-            case 82: {
-              wallet.core.jni.proto.Tezos.OriginationOperationData.Builder subBuilder = null;
-              if (operationDataCase_ == 10) {
-                subBuilder = ((wallet.core.jni.proto.Tezos.OriginationOperationData) operationData_).toBuilder();
-              }
-              operationData_ =
-                  input.readMessage(wallet.core.jni.proto.Tezos.OriginationOperationData.parser(), extensionRegistry);
-              if (subBuilder != null) {
-                subBuilder.mergeFrom((wallet.core.jni.proto.Tezos.OriginationOperationData) operationData_);
-                operationData_ = subBuilder.buildPartial();
-              }
-              operationDataCase_ = 10;
-              break;
-            }
             case 90: {
               wallet.core.jni.proto.Tezos.DelegationOperationData.Builder subBuilder = null;
               if (operationDataCase_ == 11) {
@@ -2392,21 +2387,17 @@ public final class Tezos {
        */
       ENDORSEMENT(0),
       /**
-       * <code>REVEAL = 7;</code>
+       * <code>REVEAL = 107;</code>
        */
-      REVEAL(7),
+      REVEAL(107),
       /**
-       * <code>TRANSACTION = 8;</code>
+       * <code>TRANSACTION = 108;</code>
        */
-      TRANSACTION(8),
+      TRANSACTION(108),
       /**
-       * <code>ORIGINATION = 9;</code>
+       * <code>DELEGATION = 110;</code>
        */
-      ORIGINATION(9),
-      /**
-       * <code>DELEGATION = 10;</code>
-       */
-      DELEGATION(10),
+      DELEGATION(110),
       UNRECOGNIZED(-1),
       ;
 
@@ -2419,21 +2410,17 @@ public final class Tezos {
        */
       public static final int ENDORSEMENT_VALUE = 0;
       /**
-       * <code>REVEAL = 7;</code>
+       * <code>REVEAL = 107;</code>
        */
-      public static final int REVEAL_VALUE = 7;
+      public static final int REVEAL_VALUE = 107;
       /**
-       * <code>TRANSACTION = 8;</code>
+       * <code>TRANSACTION = 108;</code>
        */
-      public static final int TRANSACTION_VALUE = 8;
+      public static final int TRANSACTION_VALUE = 108;
       /**
-       * <code>ORIGINATION = 9;</code>
+       * <code>DELEGATION = 110;</code>
        */
-      public static final int ORIGINATION_VALUE = 9;
-      /**
-       * <code>DELEGATION = 10;</code>
-       */
-      public static final int DELEGATION_VALUE = 10;
+      public static final int DELEGATION_VALUE = 110;
 
 
       public final int getNumber() {
@@ -2455,10 +2442,9 @@ public final class Tezos {
       public static OperationKind forNumber(int value) {
         switch (value) {
           case 0: return ENDORSEMENT;
-          case 7: return REVEAL;
-          case 8: return TRANSACTION;
-          case 9: return ORIGINATION;
-          case 10: return DELEGATION;
+          case 107: return REVEAL;
+          case 108: return TRANSACTION;
+          case 110: return DELEGATION;
           default: return null;
         }
       }
@@ -2517,7 +2503,6 @@ public final class Tezos {
         implements com.google.protobuf.Internal.EnumLite {
       REVEAL_OPERATION_DATA(8),
       TRANSACTION_OPERATION_DATA(9),
-      ORIGINATION_OPERATION_DATA(10),
       DELEGATION_OPERATION_DATA(11),
       OPERATIONDATA_NOT_SET(0);
       private final int value;
@@ -2536,7 +2521,6 @@ public final class Tezos {
         switch (value) {
           case 8: return REVEAL_OPERATION_DATA;
           case 9: return TRANSACTION_OPERATION_DATA;
-          case 10: return ORIGINATION_OPERATION_DATA;
           case 11: return DELEGATION_OPERATION_DATA;
           case 0: return OPERATIONDATA_NOT_SET;
           default: return null;
@@ -2692,32 +2676,6 @@ public final class Tezos {
       return wallet.core.jni.proto.Tezos.TransactionOperationData.getDefaultInstance();
     }
 
-    public static final int ORIGINATION_OPERATION_DATA_FIELD_NUMBER = 10;
-    /**
-     * <code>.TW.Tezos.Proto.OriginationOperationData origination_operation_data = 10;</code>
-     */
-    public boolean hasOriginationOperationData() {
-      return operationDataCase_ == 10;
-    }
-    /**
-     * <code>.TW.Tezos.Proto.OriginationOperationData origination_operation_data = 10;</code>
-     */
-    public wallet.core.jni.proto.Tezos.OriginationOperationData getOriginationOperationData() {
-      if (operationDataCase_ == 10) {
-         return (wallet.core.jni.proto.Tezos.OriginationOperationData) operationData_;
-      }
-      return wallet.core.jni.proto.Tezos.OriginationOperationData.getDefaultInstance();
-    }
-    /**
-     * <code>.TW.Tezos.Proto.OriginationOperationData origination_operation_data = 10;</code>
-     */
-    public wallet.core.jni.proto.Tezos.OriginationOperationDataOrBuilder getOriginationOperationDataOrBuilder() {
-      if (operationDataCase_ == 10) {
-         return (wallet.core.jni.proto.Tezos.OriginationOperationData) operationData_;
-      }
-      return wallet.core.jni.proto.Tezos.OriginationOperationData.getDefaultInstance();
-    }
-
     public static final int DELEGATION_OPERATION_DATA_FIELD_NUMBER = 11;
     /**
      * <code>.TW.Tezos.Proto.DelegationOperationData delegation_operation_data = 11;</code>
@@ -2782,9 +2740,6 @@ public final class Tezos {
       if (operationDataCase_ == 9) {
         output.writeMessage(9, (wallet.core.jni.proto.Tezos.TransactionOperationData) operationData_);
       }
-      if (operationDataCase_ == 10) {
-        output.writeMessage(10, (wallet.core.jni.proto.Tezos.OriginationOperationData) operationData_);
-      }
       if (operationDataCase_ == 11) {
         output.writeMessage(11, (wallet.core.jni.proto.Tezos.DelegationOperationData) operationData_);
       }
@@ -2828,10 +2783,6 @@ public final class Tezos {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(9, (wallet.core.jni.proto.Tezos.TransactionOperationData) operationData_);
       }
-      if (operationDataCase_ == 10) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(10, (wallet.core.jni.proto.Tezos.OriginationOperationData) operationData_);
-      }
       if (operationDataCase_ == 11) {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(11, (wallet.core.jni.proto.Tezos.DelegationOperationData) operationData_);
@@ -2871,10 +2822,6 @@ public final class Tezos {
         case 9:
           if (!getTransactionOperationData()
               .equals(other.getTransactionOperationData())) return false;
-          break;
-        case 10:
-          if (!getOriginationOperationData()
-              .equals(other.getOriginationOperationData())) return false;
           break;
         case 11:
           if (!getDelegationOperationData()
@@ -2918,10 +2865,6 @@ public final class Tezos {
         case 9:
           hash = (37 * hash) + TRANSACTION_OPERATION_DATA_FIELD_NUMBER;
           hash = (53 * hash) + getTransactionOperationData().hashCode();
-          break;
-        case 10:
-          hash = (37 * hash) + ORIGINATION_OPERATION_DATA_FIELD_NUMBER;
-          hash = (53 * hash) + getOriginationOperationData().hashCode();
           break;
         case 11:
           hash = (37 * hash) + DELEGATION_OPERATION_DATA_FIELD_NUMBER;
@@ -3128,13 +3071,6 @@ public final class Tezos {
             result.operationData_ = transactionOperationDataBuilder_.build();
           }
         }
-        if (operationDataCase_ == 10) {
-          if (originationOperationDataBuilder_ == null) {
-            result.operationData_ = operationData_;
-          } else {
-            result.operationData_ = originationOperationDataBuilder_.build();
-          }
-        }
         if (operationDataCase_ == 11) {
           if (delegationOperationDataBuilder_ == null) {
             result.operationData_ = operationData_;
@@ -3217,10 +3153,6 @@ public final class Tezos {
           }
           case TRANSACTION_OPERATION_DATA: {
             mergeTransactionOperationData(other.getTransactionOperationData());
-            break;
-          }
-          case ORIGINATION_OPERATION_DATA: {
-            mergeOriginationOperationData(other.getOriginationOperationData());
             break;
           }
           case DELEGATION_OPERATION_DATA: {
@@ -3766,142 +3698,6 @@ public final class Tezos {
       }
 
       private com.google.protobuf.SingleFieldBuilderV3<
-          wallet.core.jni.proto.Tezos.OriginationOperationData, wallet.core.jni.proto.Tezos.OriginationOperationData.Builder, wallet.core.jni.proto.Tezos.OriginationOperationDataOrBuilder> originationOperationDataBuilder_;
-      /**
-       * <code>.TW.Tezos.Proto.OriginationOperationData origination_operation_data = 10;</code>
-       */
-      public boolean hasOriginationOperationData() {
-        return operationDataCase_ == 10;
-      }
-      /**
-       * <code>.TW.Tezos.Proto.OriginationOperationData origination_operation_data = 10;</code>
-       */
-      public wallet.core.jni.proto.Tezos.OriginationOperationData getOriginationOperationData() {
-        if (originationOperationDataBuilder_ == null) {
-          if (operationDataCase_ == 10) {
-            return (wallet.core.jni.proto.Tezos.OriginationOperationData) operationData_;
-          }
-          return wallet.core.jni.proto.Tezos.OriginationOperationData.getDefaultInstance();
-        } else {
-          if (operationDataCase_ == 10) {
-            return originationOperationDataBuilder_.getMessage();
-          }
-          return wallet.core.jni.proto.Tezos.OriginationOperationData.getDefaultInstance();
-        }
-      }
-      /**
-       * <code>.TW.Tezos.Proto.OriginationOperationData origination_operation_data = 10;</code>
-       */
-      public Builder setOriginationOperationData(wallet.core.jni.proto.Tezos.OriginationOperationData value) {
-        if (originationOperationDataBuilder_ == null) {
-          if (value == null) {
-            throw new NullPointerException();
-          }
-          operationData_ = value;
-          onChanged();
-        } else {
-          originationOperationDataBuilder_.setMessage(value);
-        }
-        operationDataCase_ = 10;
-        return this;
-      }
-      /**
-       * <code>.TW.Tezos.Proto.OriginationOperationData origination_operation_data = 10;</code>
-       */
-      public Builder setOriginationOperationData(
-          wallet.core.jni.proto.Tezos.OriginationOperationData.Builder builderForValue) {
-        if (originationOperationDataBuilder_ == null) {
-          operationData_ = builderForValue.build();
-          onChanged();
-        } else {
-          originationOperationDataBuilder_.setMessage(builderForValue.build());
-        }
-        operationDataCase_ = 10;
-        return this;
-      }
-      /**
-       * <code>.TW.Tezos.Proto.OriginationOperationData origination_operation_data = 10;</code>
-       */
-      public Builder mergeOriginationOperationData(wallet.core.jni.proto.Tezos.OriginationOperationData value) {
-        if (originationOperationDataBuilder_ == null) {
-          if (operationDataCase_ == 10 &&
-              operationData_ != wallet.core.jni.proto.Tezos.OriginationOperationData.getDefaultInstance()) {
-            operationData_ = wallet.core.jni.proto.Tezos.OriginationOperationData.newBuilder((wallet.core.jni.proto.Tezos.OriginationOperationData) operationData_)
-                .mergeFrom(value).buildPartial();
-          } else {
-            operationData_ = value;
-          }
-          onChanged();
-        } else {
-          if (operationDataCase_ == 10) {
-            originationOperationDataBuilder_.mergeFrom(value);
-          }
-          originationOperationDataBuilder_.setMessage(value);
-        }
-        operationDataCase_ = 10;
-        return this;
-      }
-      /**
-       * <code>.TW.Tezos.Proto.OriginationOperationData origination_operation_data = 10;</code>
-       */
-      public Builder clearOriginationOperationData() {
-        if (originationOperationDataBuilder_ == null) {
-          if (operationDataCase_ == 10) {
-            operationDataCase_ = 0;
-            operationData_ = null;
-            onChanged();
-          }
-        } else {
-          if (operationDataCase_ == 10) {
-            operationDataCase_ = 0;
-            operationData_ = null;
-          }
-          originationOperationDataBuilder_.clear();
-        }
-        return this;
-      }
-      /**
-       * <code>.TW.Tezos.Proto.OriginationOperationData origination_operation_data = 10;</code>
-       */
-      public wallet.core.jni.proto.Tezos.OriginationOperationData.Builder getOriginationOperationDataBuilder() {
-        return getOriginationOperationDataFieldBuilder().getBuilder();
-      }
-      /**
-       * <code>.TW.Tezos.Proto.OriginationOperationData origination_operation_data = 10;</code>
-       */
-      public wallet.core.jni.proto.Tezos.OriginationOperationDataOrBuilder getOriginationOperationDataOrBuilder() {
-        if ((operationDataCase_ == 10) && (originationOperationDataBuilder_ != null)) {
-          return originationOperationDataBuilder_.getMessageOrBuilder();
-        } else {
-          if (operationDataCase_ == 10) {
-            return (wallet.core.jni.proto.Tezos.OriginationOperationData) operationData_;
-          }
-          return wallet.core.jni.proto.Tezos.OriginationOperationData.getDefaultInstance();
-        }
-      }
-      /**
-       * <code>.TW.Tezos.Proto.OriginationOperationData origination_operation_data = 10;</code>
-       */
-      private com.google.protobuf.SingleFieldBuilderV3<
-          wallet.core.jni.proto.Tezos.OriginationOperationData, wallet.core.jni.proto.Tezos.OriginationOperationData.Builder, wallet.core.jni.proto.Tezos.OriginationOperationDataOrBuilder> 
-          getOriginationOperationDataFieldBuilder() {
-        if (originationOperationDataBuilder_ == null) {
-          if (!(operationDataCase_ == 10)) {
-            operationData_ = wallet.core.jni.proto.Tezos.OriginationOperationData.getDefaultInstance();
-          }
-          originationOperationDataBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
-              wallet.core.jni.proto.Tezos.OriginationOperationData, wallet.core.jni.proto.Tezos.OriginationOperationData.Builder, wallet.core.jni.proto.Tezos.OriginationOperationDataOrBuilder>(
-                  (wallet.core.jni.proto.Tezos.OriginationOperationData) operationData_,
-                  getParentForChildren(),
-                  isClean());
-          operationData_ = null;
-        }
-        operationDataCase_ = 10;
-        onChanged();;
-        return originationOperationDataBuilder_;
-      }
-
-      private com.google.protobuf.SingleFieldBuilderV3<
           wallet.core.jni.proto.Tezos.DelegationOperationData, wallet.core.jni.proto.Tezos.DelegationOperationData.Builder, wallet.core.jni.proto.Tezos.DelegationOperationDataOrBuilder> delegationOperationDataBuilder_;
       /**
        * <code>.TW.Tezos.Proto.DelegationOperationData delegation_operation_data = 11;</code>
@@ -4130,6 +3926,13 @@ public final class Tezos {
     }
 
     @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new TransactionOperationData();
+    }
+
+    @java.lang.Override
     public final com.google.protobuf.UnknownFieldSet
     getUnknownFields() {
       return this.unknownFields;
@@ -4142,7 +3945,6 @@ public final class Tezos {
       if (extensionRegistry == null) {
         throw new java.lang.NullPointerException();
       }
-      int mutable_bitField0_ = 0;
       com.google.protobuf.UnknownFieldSet.Builder unknownFields =
           com.google.protobuf.UnknownFieldSet.newBuilder();
       try {
@@ -4742,6 +4544,13 @@ public final class Tezos {
     }
 
     @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new RevealOperationData();
+    }
+
+    @java.lang.Override
     public final com.google.protobuf.UnknownFieldSet
     getUnknownFields() {
       return this.unknownFields;
@@ -4754,7 +4563,6 @@ public final class Tezos {
       if (extensionRegistry == null) {
         throw new java.lang.NullPointerException();
       }
-      int mutable_bitField0_ = 0;
       com.google.protobuf.UnknownFieldSet.Builder unknownFields =
           com.google.protobuf.UnknownFieldSet.newBuilder();
       try {
@@ -5199,628 +5007,6 @@ public final class Tezos {
 
   }
 
-  public interface OriginationOperationDataOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:TW.Tezos.Proto.OriginationOperationData)
-      com.google.protobuf.MessageOrBuilder {
-
-    /**
-     * <code>string manager_pubkey = 1;</code>
-     */
-    java.lang.String getManagerPubkey();
-    /**
-     * <code>string manager_pubkey = 1;</code>
-     */
-    com.google.protobuf.ByteString
-        getManagerPubkeyBytes();
-
-    /**
-     * <code>int64 balance = 2;</code>
-     */
-    long getBalance();
-  }
-  /**
-   * <pre>
-   * Origination operation specific data.
-   * Next field: 3
-   * </pre>
-   *
-   * Protobuf type {@code TW.Tezos.Proto.OriginationOperationData}
-   */
-  public  static final class OriginationOperationData extends
-      com.google.protobuf.GeneratedMessageV3 implements
-      // @@protoc_insertion_point(message_implements:TW.Tezos.Proto.OriginationOperationData)
-      OriginationOperationDataOrBuilder {
-  private static final long serialVersionUID = 0L;
-    // Use OriginationOperationData.newBuilder() to construct.
-    private OriginationOperationData(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
-      super(builder);
-    }
-    private OriginationOperationData() {
-      managerPubkey_ = "";
-    }
-
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-    getUnknownFields() {
-      return this.unknownFields;
-    }
-    private OriginationOperationData(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      this();
-      if (extensionRegistry == null) {
-        throw new java.lang.NullPointerException();
-      }
-      int mutable_bitField0_ = 0;
-      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
-          com.google.protobuf.UnknownFieldSet.newBuilder();
-      try {
-        boolean done = false;
-        while (!done) {
-          int tag = input.readTag();
-          switch (tag) {
-            case 0:
-              done = true;
-              break;
-            case 10: {
-              java.lang.String s = input.readStringRequireUtf8();
-
-              managerPubkey_ = s;
-              break;
-            }
-            case 16: {
-
-              balance_ = input.readInt64();
-              break;
-            }
-            default: {
-              if (!parseUnknownField(
-                  input, unknownFields, extensionRegistry, tag)) {
-                done = true;
-              }
-              break;
-            }
-          }
-        }
-      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-        throw e.setUnfinishedMessage(this);
-      } catch (java.io.IOException e) {
-        throw new com.google.protobuf.InvalidProtocolBufferException(
-            e).setUnfinishedMessage(this);
-      } finally {
-        this.unknownFields = unknownFields.build();
-        makeExtensionsImmutable();
-      }
-    }
-    public static final com.google.protobuf.Descriptors.Descriptor
-        getDescriptor() {
-      return wallet.core.jni.proto.Tezos.internal_static_TW_Tezos_Proto_OriginationOperationData_descriptor;
-    }
-
-    @java.lang.Override
-    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-        internalGetFieldAccessorTable() {
-      return wallet.core.jni.proto.Tezos.internal_static_TW_Tezos_Proto_OriginationOperationData_fieldAccessorTable
-          .ensureFieldAccessorsInitialized(
-              wallet.core.jni.proto.Tezos.OriginationOperationData.class, wallet.core.jni.proto.Tezos.OriginationOperationData.Builder.class);
-    }
-
-    public static final int MANAGER_PUBKEY_FIELD_NUMBER = 1;
-    private volatile java.lang.Object managerPubkey_;
-    /**
-     * <code>string manager_pubkey = 1;</code>
-     */
-    public java.lang.String getManagerPubkey() {
-      java.lang.Object ref = managerPubkey_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        managerPubkey_ = s;
-        return s;
-      }
-    }
-    /**
-     * <code>string manager_pubkey = 1;</code>
-     */
-    public com.google.protobuf.ByteString
-        getManagerPubkeyBytes() {
-      java.lang.Object ref = managerPubkey_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        managerPubkey_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-
-    public static final int BALANCE_FIELD_NUMBER = 2;
-    private long balance_;
-    /**
-     * <code>int64 balance = 2;</code>
-     */
-    public long getBalance() {
-      return balance_;
-    }
-
-    private byte memoizedIsInitialized = -1;
-    @java.lang.Override
-    public final boolean isInitialized() {
-      byte isInitialized = memoizedIsInitialized;
-      if (isInitialized == 1) return true;
-      if (isInitialized == 0) return false;
-
-      memoizedIsInitialized = 1;
-      return true;
-    }
-
-    @java.lang.Override
-    public void writeTo(com.google.protobuf.CodedOutputStream output)
-                        throws java.io.IOException {
-      if (!getManagerPubkeyBytes().isEmpty()) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 1, managerPubkey_);
-      }
-      if (balance_ != 0L) {
-        output.writeInt64(2, balance_);
-      }
-      unknownFields.writeTo(output);
-    }
-
-    @java.lang.Override
-    public int getSerializedSize() {
-      int size = memoizedSize;
-      if (size != -1) return size;
-
-      size = 0;
-      if (!getManagerPubkeyBytes().isEmpty()) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, managerPubkey_);
-      }
-      if (balance_ != 0L) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeInt64Size(2, balance_);
-      }
-      size += unknownFields.getSerializedSize();
-      memoizedSize = size;
-      return size;
-    }
-
-    @java.lang.Override
-    public boolean equals(final java.lang.Object obj) {
-      if (obj == this) {
-       return true;
-      }
-      if (!(obj instanceof wallet.core.jni.proto.Tezos.OriginationOperationData)) {
-        return super.equals(obj);
-      }
-      wallet.core.jni.proto.Tezos.OriginationOperationData other = (wallet.core.jni.proto.Tezos.OriginationOperationData) obj;
-
-      if (!getManagerPubkey()
-          .equals(other.getManagerPubkey())) return false;
-      if (getBalance()
-          != other.getBalance()) return false;
-      if (!unknownFields.equals(other.unknownFields)) return false;
-      return true;
-    }
-
-    @java.lang.Override
-    public int hashCode() {
-      if (memoizedHashCode != 0) {
-        return memoizedHashCode;
-      }
-      int hash = 41;
-      hash = (19 * hash) + getDescriptor().hashCode();
-      hash = (37 * hash) + MANAGER_PUBKEY_FIELD_NUMBER;
-      hash = (53 * hash) + getManagerPubkey().hashCode();
-      hash = (37 * hash) + BALANCE_FIELD_NUMBER;
-      hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
-          getBalance());
-      hash = (29 * hash) + unknownFields.hashCode();
-      memoizedHashCode = hash;
-      return hash;
-    }
-
-    public static wallet.core.jni.proto.Tezos.OriginationOperationData parseFrom(
-        java.nio.ByteBuffer data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }
-    public static wallet.core.jni.proto.Tezos.OriginationOperationData parseFrom(
-        java.nio.ByteBuffer data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }
-    public static wallet.core.jni.proto.Tezos.OriginationOperationData parseFrom(
-        com.google.protobuf.ByteString data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }
-    public static wallet.core.jni.proto.Tezos.OriginationOperationData parseFrom(
-        com.google.protobuf.ByteString data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }
-    public static wallet.core.jni.proto.Tezos.OriginationOperationData parseFrom(byte[] data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }
-    public static wallet.core.jni.proto.Tezos.OriginationOperationData parseFrom(
-        byte[] data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }
-    public static wallet.core.jni.proto.Tezos.OriginationOperationData parseFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input);
-    }
-    public static wallet.core.jni.proto.Tezos.OriginationOperationData parseFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input, extensionRegistry);
-    }
-    public static wallet.core.jni.proto.Tezos.OriginationOperationData parseDelimitedFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseDelimitedWithIOException(PARSER, input);
-    }
-    public static wallet.core.jni.proto.Tezos.OriginationOperationData parseDelimitedFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
-    }
-    public static wallet.core.jni.proto.Tezos.OriginationOperationData parseFrom(
-        com.google.protobuf.CodedInputStream input)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input);
-    }
-    public static wallet.core.jni.proto.Tezos.OriginationOperationData parseFrom(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input, extensionRegistry);
-    }
-
-    @java.lang.Override
-    public Builder newBuilderForType() { return newBuilder(); }
-    public static Builder newBuilder() {
-      return DEFAULT_INSTANCE.toBuilder();
-    }
-    public static Builder newBuilder(wallet.core.jni.proto.Tezos.OriginationOperationData prototype) {
-      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
-    }
-    @java.lang.Override
-    public Builder toBuilder() {
-      return this == DEFAULT_INSTANCE
-          ? new Builder() : new Builder().mergeFrom(this);
-    }
-
-    @java.lang.Override
-    protected Builder newBuilderForType(
-        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
-      Builder builder = new Builder(parent);
-      return builder;
-    }
-    /**
-     * <pre>
-     * Origination operation specific data.
-     * Next field: 3
-     * </pre>
-     *
-     * Protobuf type {@code TW.Tezos.Proto.OriginationOperationData}
-     */
-    public static final class Builder extends
-        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:TW.Tezos.Proto.OriginationOperationData)
-        wallet.core.jni.proto.Tezos.OriginationOperationDataOrBuilder {
-      public static final com.google.protobuf.Descriptors.Descriptor
-          getDescriptor() {
-        return wallet.core.jni.proto.Tezos.internal_static_TW_Tezos_Proto_OriginationOperationData_descriptor;
-      }
-
-      @java.lang.Override
-      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-          internalGetFieldAccessorTable() {
-        return wallet.core.jni.proto.Tezos.internal_static_TW_Tezos_Proto_OriginationOperationData_fieldAccessorTable
-            .ensureFieldAccessorsInitialized(
-                wallet.core.jni.proto.Tezos.OriginationOperationData.class, wallet.core.jni.proto.Tezos.OriginationOperationData.Builder.class);
-      }
-
-      // Construct using wallet.core.jni.proto.Tezos.OriginationOperationData.newBuilder()
-      private Builder() {
-        maybeForceBuilderInitialization();
-      }
-
-      private Builder(
-          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
-        super(parent);
-        maybeForceBuilderInitialization();
-      }
-      private void maybeForceBuilderInitialization() {
-        if (com.google.protobuf.GeneratedMessageV3
-                .alwaysUseFieldBuilders) {
-        }
-      }
-      @java.lang.Override
-      public Builder clear() {
-        super.clear();
-        managerPubkey_ = "";
-
-        balance_ = 0L;
-
-        return this;
-      }
-
-      @java.lang.Override
-      public com.google.protobuf.Descriptors.Descriptor
-          getDescriptorForType() {
-        return wallet.core.jni.proto.Tezos.internal_static_TW_Tezos_Proto_OriginationOperationData_descriptor;
-      }
-
-      @java.lang.Override
-      public wallet.core.jni.proto.Tezos.OriginationOperationData getDefaultInstanceForType() {
-        return wallet.core.jni.proto.Tezos.OriginationOperationData.getDefaultInstance();
-      }
-
-      @java.lang.Override
-      public wallet.core.jni.proto.Tezos.OriginationOperationData build() {
-        wallet.core.jni.proto.Tezos.OriginationOperationData result = buildPartial();
-        if (!result.isInitialized()) {
-          throw newUninitializedMessageException(result);
-        }
-        return result;
-      }
-
-      @java.lang.Override
-      public wallet.core.jni.proto.Tezos.OriginationOperationData buildPartial() {
-        wallet.core.jni.proto.Tezos.OriginationOperationData result = new wallet.core.jni.proto.Tezos.OriginationOperationData(this);
-        result.managerPubkey_ = managerPubkey_;
-        result.balance_ = balance_;
-        onBuilt();
-        return result;
-      }
-
-      @java.lang.Override
-      public Builder clone() {
-        return super.clone();
-      }
-      @java.lang.Override
-      public Builder setField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.setField(field, value);
-      }
-      @java.lang.Override
-      public Builder clearField(
-          com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return super.clearField(field);
-      }
-      @java.lang.Override
-      public Builder clearOneof(
-          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return super.clearOneof(oneof);
-      }
-      @java.lang.Override
-      public Builder setRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, java.lang.Object value) {
-        return super.setRepeatedField(field, index, value);
-      }
-      @java.lang.Override
-      public Builder addRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.addRepeatedField(field, value);
-      }
-      @java.lang.Override
-      public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof wallet.core.jni.proto.Tezos.OriginationOperationData) {
-          return mergeFrom((wallet.core.jni.proto.Tezos.OriginationOperationData)other);
-        } else {
-          super.mergeFrom(other);
-          return this;
-        }
-      }
-
-      public Builder mergeFrom(wallet.core.jni.proto.Tezos.OriginationOperationData other) {
-        if (other == wallet.core.jni.proto.Tezos.OriginationOperationData.getDefaultInstance()) return this;
-        if (!other.getManagerPubkey().isEmpty()) {
-          managerPubkey_ = other.managerPubkey_;
-          onChanged();
-        }
-        if (other.getBalance() != 0L) {
-          setBalance(other.getBalance());
-        }
-        this.mergeUnknownFields(other.unknownFields);
-        onChanged();
-        return this;
-      }
-
-      @java.lang.Override
-      public final boolean isInitialized() {
-        return true;
-      }
-
-      @java.lang.Override
-      public Builder mergeFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws java.io.IOException {
-        wallet.core.jni.proto.Tezos.OriginationOperationData parsedMessage = null;
-        try {
-          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
-        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (wallet.core.jni.proto.Tezos.OriginationOperationData) e.getUnfinishedMessage();
-          throw e.unwrapIOException();
-        } finally {
-          if (parsedMessage != null) {
-            mergeFrom(parsedMessage);
-          }
-        }
-        return this;
-      }
-
-      private java.lang.Object managerPubkey_ = "";
-      /**
-       * <code>string manager_pubkey = 1;</code>
-       */
-      public java.lang.String getManagerPubkey() {
-        java.lang.Object ref = managerPubkey_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          managerPubkey_ = s;
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
-      }
-      /**
-       * <code>string manager_pubkey = 1;</code>
-       */
-      public com.google.protobuf.ByteString
-          getManagerPubkeyBytes() {
-        java.lang.Object ref = managerPubkey_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          managerPubkey_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-      /**
-       * <code>string manager_pubkey = 1;</code>
-       */
-      public Builder setManagerPubkey(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  
-        managerPubkey_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>string manager_pubkey = 1;</code>
-       */
-      public Builder clearManagerPubkey() {
-        
-        managerPubkey_ = getDefaultInstance().getManagerPubkey();
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>string manager_pubkey = 1;</code>
-       */
-      public Builder setManagerPubkeyBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-        
-        managerPubkey_ = value;
-        onChanged();
-        return this;
-      }
-
-      private long balance_ ;
-      /**
-       * <code>int64 balance = 2;</code>
-       */
-      public long getBalance() {
-        return balance_;
-      }
-      /**
-       * <code>int64 balance = 2;</code>
-       */
-      public Builder setBalance(long value) {
-        
-        balance_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>int64 balance = 2;</code>
-       */
-      public Builder clearBalance() {
-        
-        balance_ = 0L;
-        onChanged();
-        return this;
-      }
-      @java.lang.Override
-      public final Builder setUnknownFields(
-          final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return super.setUnknownFields(unknownFields);
-      }
-
-      @java.lang.Override
-      public final Builder mergeUnknownFields(
-          final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return super.mergeUnknownFields(unknownFields);
-      }
-
-
-      // @@protoc_insertion_point(builder_scope:TW.Tezos.Proto.OriginationOperationData)
-    }
-
-    // @@protoc_insertion_point(class_scope:TW.Tezos.Proto.OriginationOperationData)
-    private static final wallet.core.jni.proto.Tezos.OriginationOperationData DEFAULT_INSTANCE;
-    static {
-      DEFAULT_INSTANCE = new wallet.core.jni.proto.Tezos.OriginationOperationData();
-    }
-
-    public static wallet.core.jni.proto.Tezos.OriginationOperationData getDefaultInstance() {
-      return DEFAULT_INSTANCE;
-    }
-
-    private static final com.google.protobuf.Parser<OriginationOperationData>
-        PARSER = new com.google.protobuf.AbstractParser<OriginationOperationData>() {
-      @java.lang.Override
-      public OriginationOperationData parsePartialFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws com.google.protobuf.InvalidProtocolBufferException {
-        return new OriginationOperationData(input, extensionRegistry);
-      }
-    };
-
-    public static com.google.protobuf.Parser<OriginationOperationData> parser() {
-      return PARSER;
-    }
-
-    @java.lang.Override
-    public com.google.protobuf.Parser<OriginationOperationData> getParserForType() {
-      return PARSER;
-    }
-
-    @java.lang.Override
-    public wallet.core.jni.proto.Tezos.OriginationOperationData getDefaultInstanceForType() {
-      return DEFAULT_INSTANCE;
-    }
-
-  }
-
   public interface DelegationOperationDataOrBuilder extends
       // @@protoc_insertion_point(interface_extends:TW.Tezos.Proto.DelegationOperationData)
       com.google.protobuf.MessageOrBuilder {
@@ -5857,6 +5043,13 @@ public final class Tezos {
     }
 
     @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new DelegationOperationData();
+    }
+
+    @java.lang.Override
     public final com.google.protobuf.UnknownFieldSet
     getUnknownFields() {
       return this.unknownFields;
@@ -5869,7 +5062,6 @@ public final class Tezos {
       if (extensionRegistry == null) {
         throw new java.lang.NullPointerException();
       }
-      int mutable_bitField0_ = 0;
       com.google.protobuf.UnknownFieldSet.Builder unknownFields =
           com.google.protobuf.UnknownFieldSet.newBuilder();
       try {
@@ -6411,11 +5603,6 @@ public final class Tezos {
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_TW_Tezos_Proto_RevealOperationData_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_TW_Tezos_Proto_OriginationOperationData_descriptor;
-  private static final 
-    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_TW_Tezos_Proto_OriginationOperationData_fieldAccessorTable;
-  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_TW_Tezos_Proto_DelegationOperationData_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
@@ -6432,43 +5619,31 @@ public final class Tezos {
       "\n\013Tezos.proto\022\016TW.Tezos.Proto\"Z\n\014Signing" +
       "Input\0225\n\016operation_list\030\001 \001(\0132\035.TW.Tezos" +
       ".Proto.OperationList\022\023\n\013private_key\030\002 \001(" +
-      "\014\"%\n\rSigningOutput\022\024\n\014signed_bytes\030\001 \001(\014" +
-      "\"N\n\rOperationList\022\016\n\006branch\030\001 \001(\t\022-\n\nope" +
-      "rations\030\002 \003(\0132\031.TW.Tezos.Proto.Operation" +
-      "\"\300\004\n\tOperation\022\017\n\007counter\030\001 \001(\003\022\016\n\006sourc" +
-      "e\030\002 \001(\t\022\013\n\003fee\030\003 \001(\003\022\021\n\tgas_limit\030\004 \001(\003\022" +
-      "\025\n\rstorage_limit\030\005 \001(\003\0225\n\004kind\030\007 \001(\0162\'.T" +
-      "W.Tezos.Proto.Operation.OperationKind\022D\n" +
-      "\025reveal_operation_data\030\010 \001(\0132#.TW.Tezos." +
-      "Proto.RevealOperationDataH\000\022N\n\032transacti" +
-      "on_operation_data\030\t \001(\0132(.TW.Tezos.Proto" +
-      ".TransactionOperationDataH\000\022N\n\032originati" +
-      "on_operation_data\030\n \001(\0132(.TW.Tezos.Proto" +
-      ".OriginationOperationDataH\000\022L\n\031delegatio" +
-      "n_operation_data\030\013 \001(\0132\'.TW.Tezos.Proto." +
-      "DelegationOperationDataH\000\"^\n\rOperationKi" +
-      "nd\022\017\n\013ENDORSEMENT\020\000\022\n\n\006REVEAL\020\007\022\017\n\013TRANS" +
-      "ACTION\020\010\022\017\n\013ORIGINATION\020\t\022\016\n\nDELEGATION\020" +
-      "\nB\020\n\016operation_data\"?\n\030TransactionOperat" +
-      "ionData\022\023\n\013destination\030\001 \001(\t\022\016\n\006amount\030\002" +
-      " \001(\003\")\n\023RevealOperationData\022\022\n\npublic_ke" +
-      "y\030\001 \001(\014\"C\n\030OriginationOperationData\022\026\n\016m" +
-      "anager_pubkey\030\001 \001(\t\022\017\n\007balance\030\002 \001(\003\"+\n\027" +
-      "DelegationOperationData\022\020\n\010delegate\030\001 \001(" +
-      "\tB\027\n\025wallet.core.jni.protob\006proto3"
+      "\014\" \n\rSigningOutput\022\017\n\007encoded\030\001 \001(\014\"N\n\rO" +
+      "perationList\022\016\n\006branch\030\001 \001(\t\022-\n\noperatio" +
+      "ns\030\002 \003(\0132\031.TW.Tezos.Proto.Operation\"\337\003\n\t" +
+      "Operation\022\017\n\007counter\030\001 \001(\003\022\016\n\006source\030\002 \001" +
+      "(\t\022\013\n\003fee\030\003 \001(\003\022\021\n\tgas_limit\030\004 \001(\003\022\025\n\rst" +
+      "orage_limit\030\005 \001(\003\0225\n\004kind\030\007 \001(\0162\'.TW.Tez" +
+      "os.Proto.Operation.OperationKind\022D\n\025reve" +
+      "al_operation_data\030\010 \001(\0132#.TW.Tezos.Proto" +
+      ".RevealOperationDataH\000\022N\n\032transaction_op" +
+      "eration_data\030\t \001(\0132(.TW.Tezos.Proto.Tran" +
+      "sactionOperationDataH\000\022L\n\031delegation_ope" +
+      "ration_data\030\013 \001(\0132\'.TW.Tezos.Proto.Deleg" +
+      "ationOperationDataH\000\"M\n\rOperationKind\022\017\n" +
+      "\013ENDORSEMENT\020\000\022\n\n\006REVEAL\020k\022\017\n\013TRANSACTIO" +
+      "N\020l\022\016\n\nDELEGATION\020nB\020\n\016operation_data\"?\n" +
+      "\030TransactionOperationData\022\023\n\013destination" +
+      "\030\001 \001(\t\022\016\n\006amount\030\002 \001(\003\")\n\023RevealOperatio" +
+      "nData\022\022\n\npublic_key\030\001 \001(\014\"+\n\027DelegationO" +
+      "perationData\022\020\n\010delegate\030\001 \001(\tB\027\n\025wallet" +
+      ".core.jni.protob\006proto3"
     };
-    com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
-        new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
-          public com.google.protobuf.ExtensionRegistry assignDescriptors(
-              com.google.protobuf.Descriptors.FileDescriptor root) {
-            descriptor = root;
-            return null;
-          }
-        };
-    com.google.protobuf.Descriptors.FileDescriptor
+    descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
         new com.google.protobuf.Descriptors.FileDescriptor[] {
-        }, assigner);
+        });
     internal_static_TW_Tezos_Proto_SigningInput_descriptor =
       getDescriptor().getMessageTypes().get(0);
     internal_static_TW_Tezos_Proto_SigningInput_fieldAccessorTable = new
@@ -6480,7 +5655,7 @@ public final class Tezos {
     internal_static_TW_Tezos_Proto_SigningOutput_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_TW_Tezos_Proto_SigningOutput_descriptor,
-        new java.lang.String[] { "SignedBytes", });
+        new java.lang.String[] { "Encoded", });
     internal_static_TW_Tezos_Proto_OperationList_descriptor =
       getDescriptor().getMessageTypes().get(2);
     internal_static_TW_Tezos_Proto_OperationList_fieldAccessorTable = new
@@ -6492,7 +5667,7 @@ public final class Tezos {
     internal_static_TW_Tezos_Proto_Operation_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_TW_Tezos_Proto_Operation_descriptor,
-        new java.lang.String[] { "Counter", "Source", "Fee", "GasLimit", "StorageLimit", "Kind", "RevealOperationData", "TransactionOperationData", "OriginationOperationData", "DelegationOperationData", "OperationData", });
+        new java.lang.String[] { "Counter", "Source", "Fee", "GasLimit", "StorageLimit", "Kind", "RevealOperationData", "TransactionOperationData", "DelegationOperationData", "OperationData", });
     internal_static_TW_Tezos_Proto_TransactionOperationData_descriptor =
       getDescriptor().getMessageTypes().get(4);
     internal_static_TW_Tezos_Proto_TransactionOperationData_fieldAccessorTable = new
@@ -6505,14 +5680,8 @@ public final class Tezos {
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_TW_Tezos_Proto_RevealOperationData_descriptor,
         new java.lang.String[] { "PublicKey", });
-    internal_static_TW_Tezos_Proto_OriginationOperationData_descriptor =
-      getDescriptor().getMessageTypes().get(6);
-    internal_static_TW_Tezos_Proto_OriginationOperationData_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_TW_Tezos_Proto_OriginationOperationData_descriptor,
-        new java.lang.String[] { "ManagerPubkey", "Balance", });
     internal_static_TW_Tezos_Proto_DelegationOperationData_descriptor =
-      getDescriptor().getMessageTypes().get(7);
+      getDescriptor().getMessageTypes().get(6);
     internal_static_TW_Tezos_Proto_DelegationOperationData_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_TW_Tezos_Proto_DelegationOperationData_descriptor,

@@ -10,24 +10,20 @@
 package wallet.core.jni;
 
 
-public enum Purpose {
-    BIP44 (44),
-    BIP49 (49),
-    BIP84 (84),
-    BIP1852 (1852);
+public enum SS58AddressType {
+    POLKADOT ((byte) 0),
+    KUSAMA ((byte) 2);
 
-    private final int value;
-    Purpose(int value) {
+    private final byte value;
+    SS58AddressType(byte value) {
         this.value = value;
     }
-    public int value() { return value; }
+    public byte value() { return value; }
 
-    public static Purpose createFromValue(int value) {
+    public static SS58AddressType createFromValue(byte value) {
         switch (value) {
-            case 44: return Purpose.BIP44;
-            case 49: return Purpose.BIP49;
-            case 84: return Purpose.BIP84;
-            case 1852: return Purpose.BIP1852;
+            case (byte) 0: return SS58AddressType.POLKADOT;
+            case (byte) 2: return SS58AddressType.KUSAMA;
             default: return null;
         }
     }

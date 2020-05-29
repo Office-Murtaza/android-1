@@ -99,6 +99,24 @@ public final class Nano {
     com.google.protobuf.ByteString
         getBalanceBytes();
 
+    /**
+     * <pre>
+     * Work
+     * </pre>
+     *
+     * <code>string work = 7;</code>
+     */
+    java.lang.String getWork();
+    /**
+     * <pre>
+     * Work
+     * </pre>
+     *
+     * <code>string work = 7;</code>
+     */
+    com.google.protobuf.ByteString
+        getWorkBytes();
+
     public wallet.core.jni.proto.Nano.SigningInput.LinkOneofCase getLinkOneofCase();
   }
   /**
@@ -122,6 +140,14 @@ public final class Nano {
       parentBlock_ = com.google.protobuf.ByteString.EMPTY;
       representative_ = "";
       balance_ = "";
+      work_ = "";
+    }
+
+    @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new SigningInput();
     }
 
     @java.lang.Override
@@ -137,7 +163,6 @@ public final class Nano {
       if (extensionRegistry == null) {
         throw new java.lang.NullPointerException();
       }
-      int mutable_bitField0_ = 0;
       com.google.protobuf.UnknownFieldSet.Builder unknownFields =
           com.google.protobuf.UnknownFieldSet.newBuilder();
       try {
@@ -179,6 +204,12 @@ public final class Nano {
               java.lang.String s = input.readStringRequireUtf8();
 
               balance_ = s;
+              break;
+            }
+            case 58: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              work_ = s;
               break;
             }
             default: {
@@ -427,6 +458,48 @@ public final class Nano {
       }
     }
 
+    public static final int WORK_FIELD_NUMBER = 7;
+    private volatile java.lang.Object work_;
+    /**
+     * <pre>
+     * Work
+     * </pre>
+     *
+     * <code>string work = 7;</code>
+     */
+    public java.lang.String getWork() {
+      java.lang.Object ref = work_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        work_ = s;
+        return s;
+      }
+    }
+    /**
+     * <pre>
+     * Work
+     * </pre>
+     *
+     * <code>string work = 7;</code>
+     */
+    public com.google.protobuf.ByteString
+        getWorkBytes() {
+      java.lang.Object ref = work_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        work_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
     private byte memoizedIsInitialized = -1;
     @java.lang.Override
     public final boolean isInitialized() {
@@ -460,6 +533,9 @@ public final class Nano {
       if (!getBalanceBytes().isEmpty()) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 6, balance_);
       }
+      if (!getWorkBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 7, work_);
+      }
       unknownFields.writeTo(output);
     }
 
@@ -491,6 +567,9 @@ public final class Nano {
       if (!getBalanceBytes().isEmpty()) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(6, balance_);
       }
+      if (!getWorkBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(7, work_);
+      }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
       return size;
@@ -514,6 +593,8 @@ public final class Nano {
           .equals(other.getRepresentative())) return false;
       if (!getBalance()
           .equals(other.getBalance())) return false;
+      if (!getWork()
+          .equals(other.getWork())) return false;
       if (!getLinkOneofCase().equals(other.getLinkOneofCase())) return false;
       switch (linkOneofCase_) {
         case 3:
@@ -546,6 +627,8 @@ public final class Nano {
       hash = (53 * hash) + getRepresentative().hashCode();
       hash = (37 * hash) + BALANCE_FIELD_NUMBER;
       hash = (53 * hash) + getBalance().hashCode();
+      hash = (37 * hash) + WORK_FIELD_NUMBER;
+      hash = (53 * hash) + getWork().hashCode();
       switch (linkOneofCase_) {
         case 3:
           hash = (37 * hash) + LINK_BLOCK_FIELD_NUMBER;
@@ -703,6 +786,8 @@ public final class Nano {
 
         balance_ = "";
 
+        work_ = "";
+
         linkOneofCase_ = 0;
         linkOneof_ = null;
         return this;
@@ -741,6 +826,7 @@ public final class Nano {
         }
         result.representative_ = representative_;
         result.balance_ = balance_;
+        result.work_ = work_;
         result.linkOneofCase_ = linkOneofCase_;
         onBuilt();
         return result;
@@ -802,6 +888,10 @@ public final class Nano {
         }
         if (!other.getBalance().isEmpty()) {
           balance_ = other.balance_;
+          onChanged();
+        }
+        if (!other.getWork().isEmpty()) {
+          work_ = other.work_;
           onChanged();
         }
         switch (other.getLinkOneofCase()) {
@@ -1267,6 +1357,95 @@ public final class Nano {
         onChanged();
         return this;
       }
+
+      private java.lang.Object work_ = "";
+      /**
+       * <pre>
+       * Work
+       * </pre>
+       *
+       * <code>string work = 7;</code>
+       */
+      public java.lang.String getWork() {
+        java.lang.Object ref = work_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          work_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <pre>
+       * Work
+       * </pre>
+       *
+       * <code>string work = 7;</code>
+       */
+      public com.google.protobuf.ByteString
+          getWorkBytes() {
+        java.lang.Object ref = work_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          work_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <pre>
+       * Work
+       * </pre>
+       *
+       * <code>string work = 7;</code>
+       */
+      public Builder setWork(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        work_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Work
+       * </pre>
+       *
+       * <code>string work = 7;</code>
+       */
+      public Builder clearWork() {
+        
+        work_ = getDefaultInstance().getWork();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Work
+       * </pre>
+       *
+       * <code>string work = 7;</code>
+       */
+      public Builder setWorkBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        work_ = value;
+        onChanged();
+        return this;
+      }
       @java.lang.Override
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
@@ -1341,6 +1520,24 @@ public final class Nano {
      * <code>bytes block_hash = 2;</code>
      */
     com.google.protobuf.ByteString getBlockHash();
+
+    /**
+     * <pre>
+     * Json representation of the block
+     * </pre>
+     *
+     * <code>string json = 3;</code>
+     */
+    java.lang.String getJson();
+    /**
+     * <pre>
+     * Json representation of the block
+     * </pre>
+     *
+     * <code>string json = 3;</code>
+     */
+    com.google.protobuf.ByteString
+        getJsonBytes();
   }
   /**
    * <pre>
@@ -1361,6 +1558,14 @@ public final class Nano {
     private SigningOutput() {
       signature_ = com.google.protobuf.ByteString.EMPTY;
       blockHash_ = com.google.protobuf.ByteString.EMPTY;
+      json_ = "";
+    }
+
+    @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new SigningOutput();
     }
 
     @java.lang.Override
@@ -1376,7 +1581,6 @@ public final class Nano {
       if (extensionRegistry == null) {
         throw new java.lang.NullPointerException();
       }
-      int mutable_bitField0_ = 0;
       com.google.protobuf.UnknownFieldSet.Builder unknownFields =
           com.google.protobuf.UnknownFieldSet.newBuilder();
       try {
@@ -1395,6 +1599,12 @@ public final class Nano {
             case 18: {
 
               blockHash_ = input.readBytes();
+              break;
+            }
+            case 26: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              json_ = s;
               break;
             }
             default: {
@@ -1455,6 +1665,48 @@ public final class Nano {
       return blockHash_;
     }
 
+    public static final int JSON_FIELD_NUMBER = 3;
+    private volatile java.lang.Object json_;
+    /**
+     * <pre>
+     * Json representation of the block
+     * </pre>
+     *
+     * <code>string json = 3;</code>
+     */
+    public java.lang.String getJson() {
+      java.lang.Object ref = json_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        json_ = s;
+        return s;
+      }
+    }
+    /**
+     * <pre>
+     * Json representation of the block
+     * </pre>
+     *
+     * <code>string json = 3;</code>
+     */
+    public com.google.protobuf.ByteString
+        getJsonBytes() {
+      java.lang.Object ref = json_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        json_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
     private byte memoizedIsInitialized = -1;
     @java.lang.Override
     public final boolean isInitialized() {
@@ -1475,6 +1727,9 @@ public final class Nano {
       if (!blockHash_.isEmpty()) {
         output.writeBytes(2, blockHash_);
       }
+      if (!getJsonBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 3, json_);
+      }
       unknownFields.writeTo(output);
     }
 
@@ -1491,6 +1746,9 @@ public final class Nano {
       if (!blockHash_.isEmpty()) {
         size += com.google.protobuf.CodedOutputStream
           .computeBytesSize(2, blockHash_);
+      }
+      if (!getJsonBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, json_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -1511,6 +1769,8 @@ public final class Nano {
           .equals(other.getSignature())) return false;
       if (!getBlockHash()
           .equals(other.getBlockHash())) return false;
+      if (!getJson()
+          .equals(other.getJson())) return false;
       if (!unknownFields.equals(other.unknownFields)) return false;
       return true;
     }
@@ -1526,6 +1786,8 @@ public final class Nano {
       hash = (53 * hash) + getSignature().hashCode();
       hash = (37 * hash) + BLOCK_HASH_FIELD_NUMBER;
       hash = (53 * hash) + getBlockHash().hashCode();
+      hash = (37 * hash) + JSON_FIELD_NUMBER;
+      hash = (53 * hash) + getJson().hashCode();
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -1667,6 +1929,8 @@ public final class Nano {
 
         blockHash_ = com.google.protobuf.ByteString.EMPTY;
 
+        json_ = "";
+
         return this;
       }
 
@@ -1695,6 +1959,7 @@ public final class Nano {
         wallet.core.jni.proto.Nano.SigningOutput result = new wallet.core.jni.proto.Nano.SigningOutput(this);
         result.signature_ = signature_;
         result.blockHash_ = blockHash_;
+        result.json_ = json_;
         onBuilt();
         return result;
       }
@@ -1748,6 +2013,10 @@ public final class Nano {
         }
         if (other.getBlockHash() != com.google.protobuf.ByteString.EMPTY) {
           setBlockHash(other.getBlockHash());
+        }
+        if (!other.getJson().isEmpty()) {
+          json_ = other.json_;
+          onChanged();
         }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
@@ -1859,6 +2128,95 @@ public final class Nano {
         onChanged();
         return this;
       }
+
+      private java.lang.Object json_ = "";
+      /**
+       * <pre>
+       * Json representation of the block
+       * </pre>
+       *
+       * <code>string json = 3;</code>
+       */
+      public java.lang.String getJson() {
+        java.lang.Object ref = json_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          json_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <pre>
+       * Json representation of the block
+       * </pre>
+       *
+       * <code>string json = 3;</code>
+       */
+      public com.google.protobuf.ByteString
+          getJsonBytes() {
+        java.lang.Object ref = json_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          json_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <pre>
+       * Json representation of the block
+       * </pre>
+       *
+       * <code>string json = 3;</code>
+       */
+      public Builder setJson(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        json_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Json representation of the block
+       * </pre>
+       *
+       * <code>string json = 3;</code>
+       */
+      public Builder clearJson() {
+        
+        json_ = getDefaultInstance().getJson();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Json representation of the block
+       * </pre>
+       *
+       * <code>string json = 3;</code>
+       */
+      public Builder setJsonBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        json_ = value;
+        onChanged();
+        return this;
+      }
       @java.lang.Override
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
@@ -1931,38 +2289,31 @@ public final class Nano {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\nNano.proto\022\rTW.Nano.Proto\"\240\001\n\014SigningI" +
+      "\n\nNano.proto\022\rTW.Nano.Proto\"\256\001\n\014SigningI" +
       "nput\022\023\n\013private_key\030\001 \001(\014\022\024\n\014parent_bloc" +
       "k\030\002 \001(\014\022\024\n\nlink_block\030\003 \001(\014H\000\022\030\n\016link_re" +
       "cipient\030\004 \001(\tH\000\022\026\n\016representative\030\005 \001(\t\022" +
-      "\017\n\007balance\030\006 \001(\tB\014\n\nlink_oneof\"6\n\rSignin" +
-      "gOutput\022\021\n\tsignature\030\001 \001(\014\022\022\n\nblock_hash" +
-      "\030\002 \001(\014B\027\n\025wallet.core.jni.protob\006proto3"
+      "\017\n\007balance\030\006 \001(\t\022\014\n\004work\030\007 \001(\tB\014\n\nlink_o" +
+      "neof\"D\n\rSigningOutput\022\021\n\tsignature\030\001 \001(\014" +
+      "\022\022\n\nblock_hash\030\002 \001(\014\022\014\n\004json\030\003 \001(\tB\027\n\025wa" +
+      "llet.core.jni.protob\006proto3"
     };
-    com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
-        new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
-          public com.google.protobuf.ExtensionRegistry assignDescriptors(
-              com.google.protobuf.Descriptors.FileDescriptor root) {
-            descriptor = root;
-            return null;
-          }
-        };
-    com.google.protobuf.Descriptors.FileDescriptor
+    descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
         new com.google.protobuf.Descriptors.FileDescriptor[] {
-        }, assigner);
+        });
     internal_static_TW_Nano_Proto_SigningInput_descriptor =
       getDescriptor().getMessageTypes().get(0);
     internal_static_TW_Nano_Proto_SigningInput_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_TW_Nano_Proto_SigningInput_descriptor,
-        new java.lang.String[] { "PrivateKey", "ParentBlock", "LinkBlock", "LinkRecipient", "Representative", "Balance", "LinkOneof", });
+        new java.lang.String[] { "PrivateKey", "ParentBlock", "LinkBlock", "LinkRecipient", "Representative", "Balance", "Work", "LinkOneof", });
     internal_static_TW_Nano_Proto_SigningOutput_descriptor =
       getDescriptor().getMessageTypes().get(1);
     internal_static_TW_Nano_Proto_SigningOutput_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_TW_Nano_Proto_SigningOutput_descriptor,
-        new java.lang.String[] { "Signature", "BlockHash", });
+        new java.lang.String[] { "Signature", "BlockHash", "Json", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)

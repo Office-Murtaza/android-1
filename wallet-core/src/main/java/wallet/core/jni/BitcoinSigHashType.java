@@ -1,4 +1,4 @@
-// Copyright © 2017-2019 Trust Wallet.
+// Copyright © 2017-2020 Trust Wallet.
 //
 // This file is part of Trust. The full Trust copyright notice, including
 // terms governing use, modification, and redistribution, is contained in the
@@ -14,7 +14,8 @@ public enum BitcoinSigHashType {
     ALL (0x01),
     NONE (0x02),
     SINGLE (0x03),
-    FORK (0x40);
+    FORK (0x40),
+    FORKBTG (0x4f40);
 
     private final int value;
     BitcoinSigHashType(int value) {
@@ -28,6 +29,7 @@ public enum BitcoinSigHashType {
             case 0x02: return BitcoinSigHashType.NONE;
             case 0x03: return BitcoinSigHashType.SINGLE;
             case 0x40: return BitcoinSigHashType.FORK;
+            case 0x4f40: return BitcoinSigHashType.FORKBTG;
             default: return null;
         }
     }

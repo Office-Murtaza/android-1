@@ -166,6 +166,13 @@ public final class EOS {
     }
 
     @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new Asset();
+    }
+
+    @java.lang.Override
     public final com.google.protobuf.UnknownFieldSet
     getUnknownFields() {
       return this.unknownFields;
@@ -178,7 +185,6 @@ public final class EOS {
       if (extensionRegistry == null) {
         throw new java.lang.NullPointerException();
       }
-      int mutable_bitField0_ = 0;
       com.google.protobuf.UnknownFieldSet.Builder unknownFields =
           com.google.protobuf.UnknownFieldSet.newBuilder();
       try {
@@ -985,6 +991,13 @@ public final class EOS {
     }
 
     @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new SigningInput();
+    }
+
+    @java.lang.Override
     public final com.google.protobuf.UnknownFieldSet
     getUnknownFields() {
       return this.unknownFields;
@@ -997,7 +1010,6 @@ public final class EOS {
       if (extensionRegistry == null) {
         throw new java.lang.NullPointerException();
       }
-      int mutable_bitField0_ = 0;
       com.google.protobuf.UnknownFieldSet.Builder unknownFields =
           com.google.protobuf.UnknownFieldSet.newBuilder();
       try {
@@ -2660,6 +2672,16 @@ public final class EOS {
      */
     com.google.protobuf.ByteString
         getJsonEncodedBytes();
+
+    /**
+     * <code>string error = 2;</code>
+     */
+    java.lang.String getError();
+    /**
+     * <code>string error = 2;</code>
+     */
+    com.google.protobuf.ByteString
+        getErrorBytes();
   }
   /**
    * <pre>
@@ -2679,6 +2701,14 @@ public final class EOS {
     }
     private SigningOutput() {
       jsonEncoded_ = "";
+      error_ = "";
+    }
+
+    @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new SigningOutput();
     }
 
     @java.lang.Override
@@ -2694,7 +2724,6 @@ public final class EOS {
       if (extensionRegistry == null) {
         throw new java.lang.NullPointerException();
       }
-      int mutable_bitField0_ = 0;
       com.google.protobuf.UnknownFieldSet.Builder unknownFields =
           com.google.protobuf.UnknownFieldSet.newBuilder();
       try {
@@ -2709,6 +2738,12 @@ public final class EOS {
               java.lang.String s = input.readStringRequireUtf8();
 
               jsonEncoded_ = s;
+              break;
+            }
+            case 18: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              error_ = s;
               break;
             }
             default: {
@@ -2785,6 +2820,40 @@ public final class EOS {
       }
     }
 
+    public static final int ERROR_FIELD_NUMBER = 2;
+    private volatile java.lang.Object error_;
+    /**
+     * <code>string error = 2;</code>
+     */
+    public java.lang.String getError() {
+      java.lang.Object ref = error_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        error_ = s;
+        return s;
+      }
+    }
+    /**
+     * <code>string error = 2;</code>
+     */
+    public com.google.protobuf.ByteString
+        getErrorBytes() {
+      java.lang.Object ref = error_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        error_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
     private byte memoizedIsInitialized = -1;
     @java.lang.Override
     public final boolean isInitialized() {
@@ -2802,6 +2871,9 @@ public final class EOS {
       if (!getJsonEncodedBytes().isEmpty()) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 1, jsonEncoded_);
       }
+      if (!getErrorBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 2, error_);
+      }
       unknownFields.writeTo(output);
     }
 
@@ -2813,6 +2885,9 @@ public final class EOS {
       size = 0;
       if (!getJsonEncodedBytes().isEmpty()) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, jsonEncoded_);
+      }
+      if (!getErrorBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, error_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -2831,6 +2906,8 @@ public final class EOS {
 
       if (!getJsonEncoded()
           .equals(other.getJsonEncoded())) return false;
+      if (!getError()
+          .equals(other.getError())) return false;
       if (!unknownFields.equals(other.unknownFields)) return false;
       return true;
     }
@@ -2844,6 +2921,8 @@ public final class EOS {
       hash = (19 * hash) + getDescriptor().hashCode();
       hash = (37 * hash) + JSON_ENCODED_FIELD_NUMBER;
       hash = (53 * hash) + getJsonEncoded().hashCode();
+      hash = (37 * hash) + ERROR_FIELD_NUMBER;
+      hash = (53 * hash) + getError().hashCode();
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -2983,6 +3062,8 @@ public final class EOS {
         super.clear();
         jsonEncoded_ = "";
 
+        error_ = "";
+
         return this;
       }
 
@@ -3010,6 +3091,7 @@ public final class EOS {
       public wallet.core.jni.proto.EOS.SigningOutput buildPartial() {
         wallet.core.jni.proto.EOS.SigningOutput result = new wallet.core.jni.proto.EOS.SigningOutput(this);
         result.jsonEncoded_ = jsonEncoded_;
+        result.error_ = error_;
         onBuilt();
         return result;
       }
@@ -3060,6 +3142,10 @@ public final class EOS {
         if (other == wallet.core.jni.proto.EOS.SigningOutput.getDefaultInstance()) return this;
         if (!other.getJsonEncoded().isEmpty()) {
           jsonEncoded_ = other.jsonEncoded_;
+          onChanged();
+        }
+        if (!other.getError().isEmpty()) {
+          error_ = other.error_;
           onChanged();
         }
         this.mergeUnknownFields(other.unknownFields);
@@ -3179,6 +3265,75 @@ public final class EOS {
         onChanged();
         return this;
       }
+
+      private java.lang.Object error_ = "";
+      /**
+       * <code>string error = 2;</code>
+       */
+      public java.lang.String getError() {
+        java.lang.Object ref = error_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          error_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>string error = 2;</code>
+       */
+      public com.google.protobuf.ByteString
+          getErrorBytes() {
+        java.lang.Object ref = error_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          error_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>string error = 2;</code>
+       */
+      public Builder setError(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        error_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string error = 2;</code>
+       */
+      public Builder clearError() {
+        
+        error_ = getDefaultInstance().getError();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string error = 2;</code>
+       */
+      public Builder setErrorBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        error_ = value;
+        onChanged();
+        return this;
+      }
       @java.lang.Override
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
@@ -3264,23 +3419,16 @@ public final class EOS {
       "ender\030\005 \001(\t\022\021\n\trecipient\030\006 \001(\t\022\014\n\004memo\030\007" +
       " \001(\t\022\"\n\005asset\030\010 \001(\0132\023.TW.EOS.Proto.Asset" +
       "\022\023\n\013private_key\030\t \001(\014\022/\n\020private_key_typ" +
-      "e\030\n \001(\0162\025.TW.EOS.Proto.KeyType\"%\n\rSignin" +
-      "gOutput\022\024\n\014json_encoded\030\001 \001(\t*1\n\007KeyType" +
-      "\022\n\n\006LEGACY\020\000\022\014\n\010MODERNK1\020\001\022\014\n\010MODERNR1\020\002" +
-      "B\027\n\025wallet.core.jni.protob\006proto3"
+      "e\030\n \001(\0162\025.TW.EOS.Proto.KeyType\"4\n\rSignin" +
+      "gOutput\022\024\n\014json_encoded\030\001 \001(\t\022\r\n\005error\030\002" +
+      " \001(\t*1\n\007KeyType\022\n\n\006LEGACY\020\000\022\014\n\010MODERNK1\020" +
+      "\001\022\014\n\010MODERNR1\020\002B\027\n\025wallet.core.jni.proto" +
+      "b\006proto3"
     };
-    com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
-        new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
-          public com.google.protobuf.ExtensionRegistry assignDescriptors(
-              com.google.protobuf.Descriptors.FileDescriptor root) {
-            descriptor = root;
-            return null;
-          }
-        };
-    com.google.protobuf.Descriptors.FileDescriptor
+    descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
         new com.google.protobuf.Descriptors.FileDescriptor[] {
-        }, assigner);
+        });
     internal_static_TW_EOS_Proto_Asset_descriptor =
       getDescriptor().getMessageTypes().get(0);
     internal_static_TW_EOS_Proto_Asset_fieldAccessorTable = new
@@ -3298,7 +3446,7 @@ public final class EOS {
     internal_static_TW_EOS_Proto_SigningOutput_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_TW_EOS_Proto_SigningOutput_descriptor,
-        new java.lang.String[] { "JsonEncoded", });
+        new java.lang.String[] { "JsonEncoded", "Error", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)

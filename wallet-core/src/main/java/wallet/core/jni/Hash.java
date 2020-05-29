@@ -1,4 +1,4 @@
-// Copyright © 2017-2019 Trust Wallet.
+// Copyright © 2017-2020 Trust Wallet.
 //
 // This file is part of Trust. The full Trust copyright notice, including
 // terms governing use, modification, and redistribution, is contained in the
@@ -33,8 +33,16 @@ public class Hash {
     public static native byte[] sha3256(byte[] data);
     public static native byte[] sha3512(byte[] data);
     public static native byte[] ripemd(byte[] data);
+    public static native byte[] blake256(byte[] data);
     public static native byte[] blake2b(byte[] data, int size);
-    public static native byte[] sha256RIPEMD(byte[] data);
+    public static native byte[] groestl512(byte[] data);
+    public static native byte[] xxhash64(byte[] data, long seed);
+    public static native byte[] twoXXHash64Concat(byte[] data);
     public static native byte[] sha256SHA256(byte[] data);
+    public static native byte[] sha256RIPEMD(byte[] data);
+    public static native byte[] sha3256RIPEMD(byte[] data);
+    public static native byte[] blake256Blake256(byte[] data);
+    public static native byte[] blake256RIPEMD(byte[] data);
+    public static native byte[] groestl512Groestl512(byte[] data);
 
 }

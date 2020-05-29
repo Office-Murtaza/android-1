@@ -127,6 +127,13 @@ public final class Binance {
     }
 
     @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new Transaction();
+    }
+
+    @java.lang.Override
     public final com.google.protobuf.UnknownFieldSet
     getUnknownFields() {
       return this.unknownFields;
@@ -220,7 +227,6 @@ public final class Binance {
               wallet.core.jni.proto.Binance.Transaction.class, wallet.core.jni.proto.Binance.Transaction.Builder.class);
     }
 
-    private int bitField0_;
     public static final int MSGS_FIELD_NUMBER = 1;
     private java.util.List<com.google.protobuf.ByteString> msgs_;
     /**
@@ -648,7 +654,6 @@ public final class Binance {
       public wallet.core.jni.proto.Binance.Transaction buildPartial() {
         wallet.core.jni.proto.Binance.Transaction result = new wallet.core.jni.proto.Binance.Transaction(this);
         int from_bitField0_ = bitField0_;
-        int to_bitField0_ = 0;
         if (((bitField0_ & 0x00000001) != 0)) {
           msgs_ = java.util.Collections.unmodifiableList(msgs_);
           bitField0_ = (bitField0_ & ~0x00000001);
@@ -662,7 +667,6 @@ public final class Binance {
         result.memo_ = memo_;
         result.source_ = source_;
         result.data_ = data_;
-        result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
       }
@@ -1258,6 +1262,13 @@ public final class Binance {
     }
 
     @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new Signature();
+    }
+
+    @java.lang.Override
     public final com.google.protobuf.UnknownFieldSet
     getUnknownFields() {
       return this.unknownFields;
@@ -1270,7 +1281,6 @@ public final class Binance {
       if (extensionRegistry == null) {
         throw new java.lang.NullPointerException();
       }
-      int mutable_bitField0_ = 0;
       com.google.protobuf.UnknownFieldSet.Builder unknownFields =
           com.google.protobuf.UnknownFieldSet.newBuilder();
       try {
@@ -1355,6 +1365,13 @@ public final class Binance {
         super(builder);
       }
       private PubKey() {
+      }
+
+      @java.lang.Override
+      @SuppressWarnings({"unused"})
+      protected java.lang.Object newInstance(
+          UnusedPrivateParameter unused) {
+        return new PubKey();
       }
 
       @java.lang.Override
@@ -2484,6 +2501,13 @@ public final class Binance {
     }
 
     @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new TradeOrder();
+    }
+
+    @java.lang.Override
     public final com.google.protobuf.UnknownFieldSet
     getUnknownFields() {
       return this.unknownFields;
@@ -2496,7 +2520,6 @@ public final class Binance {
       if (extensionRegistry == null) {
         throw new java.lang.NullPointerException();
       }
-      int mutable_bitField0_ = 0;
       com.google.protobuf.UnknownFieldSet.Builder unknownFields =
           com.google.protobuf.UnknownFieldSet.newBuilder();
       try {
@@ -3698,6 +3721,13 @@ public final class Binance {
     }
 
     @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new CancelTradeOrder();
+    }
+
+    @java.lang.Override
     public final com.google.protobuf.UnknownFieldSet
     getUnknownFields() {
       return this.unknownFields;
@@ -3710,7 +3740,6 @@ public final class Binance {
       if (extensionRegistry == null) {
         throw new java.lang.NullPointerException();
       }
-      int mutable_bitField0_ = 0;
       com.google.protobuf.UnknownFieldSet.Builder unknownFields =
           com.google.protobuf.UnknownFieldSet.newBuilder();
       try {
@@ -4544,6 +4573,13 @@ public final class Binance {
     }
 
     @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new SendOrder();
+    }
+
+    @java.lang.Override
     public final com.google.protobuf.UnknownFieldSet
     getUnknownFields() {
       return this.unknownFields;
@@ -4663,6 +4699,13 @@ public final class Binance {
       }
 
       @java.lang.Override
+      @SuppressWarnings({"unused"})
+      protected java.lang.Object newInstance(
+          UnusedPrivateParameter unused) {
+        return new Token();
+      }
+
+      @java.lang.Override
       public final com.google.protobuf.UnknownFieldSet
       getUnknownFields() {
         return this.unknownFields;
@@ -4675,7 +4718,6 @@ public final class Binance {
         if (extensionRegistry == null) {
           throw new java.lang.NullPointerException();
         }
-        int mutable_bitField0_ = 0;
         com.google.protobuf.UnknownFieldSet.Builder unknownFields =
             com.google.protobuf.UnknownFieldSet.newBuilder();
         try {
@@ -5294,6 +5336,13 @@ public final class Binance {
       }
 
       @java.lang.Override
+      @SuppressWarnings({"unused"})
+      protected java.lang.Object newInstance(
+          UnusedPrivateParameter unused) {
+        return new Input();
+      }
+
+      @java.lang.Override
       public final com.google.protobuf.UnknownFieldSet
       getUnknownFields() {
         return this.unknownFields;
@@ -5323,9 +5372,9 @@ public final class Binance {
                 break;
               }
               case 18: {
-                if (!((mutable_bitField0_ & 0x00000002) != 0)) {
+                if (!((mutable_bitField0_ & 0x00000001) != 0)) {
                   coins_ = new java.util.ArrayList<wallet.core.jni.proto.Binance.SendOrder.Token>();
-                  mutable_bitField0_ |= 0x00000002;
+                  mutable_bitField0_ |= 0x00000001;
                 }
                 coins_.add(
                     input.readMessage(wallet.core.jni.proto.Binance.SendOrder.Token.parser(), extensionRegistry));
@@ -5346,7 +5395,7 @@ public final class Binance {
           throw new com.google.protobuf.InvalidProtocolBufferException(
               e).setUnfinishedMessage(this);
         } finally {
-          if (((mutable_bitField0_ & 0x00000002) != 0)) {
+          if (((mutable_bitField0_ & 0x00000001) != 0)) {
             coins_ = java.util.Collections.unmodifiableList(coins_);
           }
           this.unknownFields = unknownFields.build();
@@ -5366,7 +5415,6 @@ public final class Binance {
                 wallet.core.jni.proto.Binance.SendOrder.Input.class, wallet.core.jni.proto.Binance.SendOrder.Input.Builder.class);
       }
 
-      private int bitField0_;
       public static final int ADDRESS_FIELD_NUMBER = 1;
       private com.google.protobuf.ByteString address_;
       /**
@@ -5622,7 +5670,7 @@ public final class Binance {
 
           if (coinsBuilder_ == null) {
             coins_ = java.util.Collections.emptyList();
-            bitField0_ = (bitField0_ & ~0x00000002);
+            bitField0_ = (bitField0_ & ~0x00000001);
           } else {
             coinsBuilder_.clear();
           }
@@ -5653,18 +5701,16 @@ public final class Binance {
         public wallet.core.jni.proto.Binance.SendOrder.Input buildPartial() {
           wallet.core.jni.proto.Binance.SendOrder.Input result = new wallet.core.jni.proto.Binance.SendOrder.Input(this);
           int from_bitField0_ = bitField0_;
-          int to_bitField0_ = 0;
           result.address_ = address_;
           if (coinsBuilder_ == null) {
-            if (((bitField0_ & 0x00000002) != 0)) {
+            if (((bitField0_ & 0x00000001) != 0)) {
               coins_ = java.util.Collections.unmodifiableList(coins_);
-              bitField0_ = (bitField0_ & ~0x00000002);
+              bitField0_ = (bitField0_ & ~0x00000001);
             }
             result.coins_ = coins_;
           } else {
             result.coins_ = coinsBuilder_.build();
           }
-          result.bitField0_ = to_bitField0_;
           onBuilt();
           return result;
         }
@@ -5720,7 +5766,7 @@ public final class Binance {
             if (!other.coins_.isEmpty()) {
               if (coins_.isEmpty()) {
                 coins_ = other.coins_;
-                bitField0_ = (bitField0_ & ~0x00000002);
+                bitField0_ = (bitField0_ & ~0x00000001);
               } else {
                 ensureCoinsIsMutable();
                 coins_.addAll(other.coins_);
@@ -5733,7 +5779,7 @@ public final class Binance {
                 coinsBuilder_.dispose();
                 coinsBuilder_ = null;
                 coins_ = other.coins_;
-                bitField0_ = (bitField0_ & ~0x00000002);
+                bitField0_ = (bitField0_ & ~0x00000001);
                 coinsBuilder_ = 
                   com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
                      getCoinsFieldBuilder() : null;
@@ -5804,9 +5850,9 @@ public final class Binance {
         private java.util.List<wallet.core.jni.proto.Binance.SendOrder.Token> coins_ =
           java.util.Collections.emptyList();
         private void ensureCoinsIsMutable() {
-          if (!((bitField0_ & 0x00000002) != 0)) {
+          if (!((bitField0_ & 0x00000001) != 0)) {
             coins_ = new java.util.ArrayList<wallet.core.jni.proto.Binance.SendOrder.Token>(coins_);
-            bitField0_ |= 0x00000002;
+            bitField0_ |= 0x00000001;
            }
         }
 
@@ -5956,7 +6002,7 @@ public final class Binance {
         public Builder clearCoins() {
           if (coinsBuilder_ == null) {
             coins_ = java.util.Collections.emptyList();
-            bitField0_ = (bitField0_ & ~0x00000002);
+            bitField0_ = (bitField0_ & ~0x00000001);
             onChanged();
           } else {
             coinsBuilder_.clear();
@@ -6033,7 +6079,7 @@ public final class Binance {
             coinsBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
                 wallet.core.jni.proto.Binance.SendOrder.Token, wallet.core.jni.proto.Binance.SendOrder.Token.Builder, wallet.core.jni.proto.Binance.SendOrder.TokenOrBuilder>(
                     coins_,
-                    ((bitField0_ & 0x00000002) != 0),
+                    ((bitField0_ & 0x00000001) != 0),
                     getParentForChildren(),
                     isClean());
             coins_ = null;
@@ -6144,6 +6190,13 @@ public final class Binance {
       }
 
       @java.lang.Override
+      @SuppressWarnings({"unused"})
+      protected java.lang.Object newInstance(
+          UnusedPrivateParameter unused) {
+        return new Output();
+      }
+
+      @java.lang.Override
       public final com.google.protobuf.UnknownFieldSet
       getUnknownFields() {
         return this.unknownFields;
@@ -6173,9 +6226,9 @@ public final class Binance {
                 break;
               }
               case 18: {
-                if (!((mutable_bitField0_ & 0x00000002) != 0)) {
+                if (!((mutable_bitField0_ & 0x00000001) != 0)) {
                   coins_ = new java.util.ArrayList<wallet.core.jni.proto.Binance.SendOrder.Token>();
-                  mutable_bitField0_ |= 0x00000002;
+                  mutable_bitField0_ |= 0x00000001;
                 }
                 coins_.add(
                     input.readMessage(wallet.core.jni.proto.Binance.SendOrder.Token.parser(), extensionRegistry));
@@ -6196,7 +6249,7 @@ public final class Binance {
           throw new com.google.protobuf.InvalidProtocolBufferException(
               e).setUnfinishedMessage(this);
         } finally {
-          if (((mutable_bitField0_ & 0x00000002) != 0)) {
+          if (((mutable_bitField0_ & 0x00000001) != 0)) {
             coins_ = java.util.Collections.unmodifiableList(coins_);
           }
           this.unknownFields = unknownFields.build();
@@ -6216,7 +6269,6 @@ public final class Binance {
                 wallet.core.jni.proto.Binance.SendOrder.Output.class, wallet.core.jni.proto.Binance.SendOrder.Output.Builder.class);
       }
 
-      private int bitField0_;
       public static final int ADDRESS_FIELD_NUMBER = 1;
       private com.google.protobuf.ByteString address_;
       /**
@@ -6472,7 +6524,7 @@ public final class Binance {
 
           if (coinsBuilder_ == null) {
             coins_ = java.util.Collections.emptyList();
-            bitField0_ = (bitField0_ & ~0x00000002);
+            bitField0_ = (bitField0_ & ~0x00000001);
           } else {
             coinsBuilder_.clear();
           }
@@ -6503,18 +6555,16 @@ public final class Binance {
         public wallet.core.jni.proto.Binance.SendOrder.Output buildPartial() {
           wallet.core.jni.proto.Binance.SendOrder.Output result = new wallet.core.jni.proto.Binance.SendOrder.Output(this);
           int from_bitField0_ = bitField0_;
-          int to_bitField0_ = 0;
           result.address_ = address_;
           if (coinsBuilder_ == null) {
-            if (((bitField0_ & 0x00000002) != 0)) {
+            if (((bitField0_ & 0x00000001) != 0)) {
               coins_ = java.util.Collections.unmodifiableList(coins_);
-              bitField0_ = (bitField0_ & ~0x00000002);
+              bitField0_ = (bitField0_ & ~0x00000001);
             }
             result.coins_ = coins_;
           } else {
             result.coins_ = coinsBuilder_.build();
           }
-          result.bitField0_ = to_bitField0_;
           onBuilt();
           return result;
         }
@@ -6570,7 +6620,7 @@ public final class Binance {
             if (!other.coins_.isEmpty()) {
               if (coins_.isEmpty()) {
                 coins_ = other.coins_;
-                bitField0_ = (bitField0_ & ~0x00000002);
+                bitField0_ = (bitField0_ & ~0x00000001);
               } else {
                 ensureCoinsIsMutable();
                 coins_.addAll(other.coins_);
@@ -6583,7 +6633,7 @@ public final class Binance {
                 coinsBuilder_.dispose();
                 coinsBuilder_ = null;
                 coins_ = other.coins_;
-                bitField0_ = (bitField0_ & ~0x00000002);
+                bitField0_ = (bitField0_ & ~0x00000001);
                 coinsBuilder_ = 
                   com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
                      getCoinsFieldBuilder() : null;
@@ -6654,9 +6704,9 @@ public final class Binance {
         private java.util.List<wallet.core.jni.proto.Binance.SendOrder.Token> coins_ =
           java.util.Collections.emptyList();
         private void ensureCoinsIsMutable() {
-          if (!((bitField0_ & 0x00000002) != 0)) {
+          if (!((bitField0_ & 0x00000001) != 0)) {
             coins_ = new java.util.ArrayList<wallet.core.jni.proto.Binance.SendOrder.Token>(coins_);
-            bitField0_ |= 0x00000002;
+            bitField0_ |= 0x00000001;
            }
         }
 
@@ -6806,7 +6856,7 @@ public final class Binance {
         public Builder clearCoins() {
           if (coinsBuilder_ == null) {
             coins_ = java.util.Collections.emptyList();
-            bitField0_ = (bitField0_ & ~0x00000002);
+            bitField0_ = (bitField0_ & ~0x00000001);
             onChanged();
           } else {
             coinsBuilder_.clear();
@@ -6883,7 +6933,7 @@ public final class Binance {
             coinsBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
                 wallet.core.jni.proto.Binance.SendOrder.Token, wallet.core.jni.proto.Binance.SendOrder.Token.Builder, wallet.core.jni.proto.Binance.SendOrder.TokenOrBuilder>(
                     coins_,
-                    ((bitField0_ & 0x00000002) != 0),
+                    ((bitField0_ & 0x00000001) != 0),
                     getParentForChildren(),
                     isClean());
             coins_ = null;
@@ -7942,6 +7992,2542 @@ public final class Binance {
 
   }
 
+  public interface TokenIssueOrderOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:TW.Binance.Proto.TokenIssueOrder)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <pre>
+     * 0x17EFAB80      // prefix
+     * </pre>
+     *
+     * <code>bytes from = 1;</code>
+     */
+    com.google.protobuf.ByteString getFrom();
+
+    /**
+     * <pre>
+     * token name
+     * </pre>
+     *
+     * <code>string name = 2;</code>
+     */
+    java.lang.String getName();
+    /**
+     * <pre>
+     * token name
+     * </pre>
+     *
+     * <code>string name = 2;</code>
+     */
+    com.google.protobuf.ByteString
+        getNameBytes();
+
+    /**
+     * <pre>
+     * token symbol, in full name with "-" suffix
+     * </pre>
+     *
+     * <code>string symbol = 3;</code>
+     */
+    java.lang.String getSymbol();
+    /**
+     * <pre>
+     * token symbol, in full name with "-" suffix
+     * </pre>
+     *
+     * <code>string symbol = 3;</code>
+     */
+    com.google.protobuf.ByteString
+        getSymbolBytes();
+
+    /**
+     * <pre>
+     * total supply
+     * </pre>
+     *
+     * <code>int64 total_supply = 4;</code>
+     */
+    long getTotalSupply();
+
+    /**
+     * <pre>
+     * mintable
+     * </pre>
+     *
+     * <code>bool mintable = 5;</code>
+     */
+    boolean getMintable();
+  }
+  /**
+   * Protobuf type {@code TW.Binance.Proto.TokenIssueOrder}
+   */
+  public  static final class TokenIssueOrder extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:TW.Binance.Proto.TokenIssueOrder)
+      TokenIssueOrderOrBuilder {
+  private static final long serialVersionUID = 0L;
+    // Use TokenIssueOrder.newBuilder() to construct.
+    private TokenIssueOrder(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private TokenIssueOrder() {
+      from_ = com.google.protobuf.ByteString.EMPTY;
+      name_ = "";
+      symbol_ = "";
+    }
+
+    @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new TokenIssueOrder();
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return this.unknownFields;
+    }
+    private TokenIssueOrder(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            case 10: {
+
+              from_ = input.readBytes();
+              break;
+            }
+            case 18: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              name_ = s;
+              break;
+            }
+            case 26: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              symbol_ = s;
+              break;
+            }
+            case 32: {
+
+              totalSupply_ = input.readInt64();
+              break;
+            }
+            case 40: {
+
+              mintable_ = input.readBool();
+              break;
+            }
+            default: {
+              if (!parseUnknownField(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return wallet.core.jni.proto.Binance.internal_static_TW_Binance_Proto_TokenIssueOrder_descriptor;
+    }
+
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return wallet.core.jni.proto.Binance.internal_static_TW_Binance_Proto_TokenIssueOrder_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              wallet.core.jni.proto.Binance.TokenIssueOrder.class, wallet.core.jni.proto.Binance.TokenIssueOrder.Builder.class);
+    }
+
+    public static final int FROM_FIELD_NUMBER = 1;
+    private com.google.protobuf.ByteString from_;
+    /**
+     * <pre>
+     * 0x17EFAB80      // prefix
+     * </pre>
+     *
+     * <code>bytes from = 1;</code>
+     */
+    public com.google.protobuf.ByteString getFrom() {
+      return from_;
+    }
+
+    public static final int NAME_FIELD_NUMBER = 2;
+    private volatile java.lang.Object name_;
+    /**
+     * <pre>
+     * token name
+     * </pre>
+     *
+     * <code>string name = 2;</code>
+     */
+    public java.lang.String getName() {
+      java.lang.Object ref = name_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        name_ = s;
+        return s;
+      }
+    }
+    /**
+     * <pre>
+     * token name
+     * </pre>
+     *
+     * <code>string name = 2;</code>
+     */
+    public com.google.protobuf.ByteString
+        getNameBytes() {
+      java.lang.Object ref = name_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        name_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int SYMBOL_FIELD_NUMBER = 3;
+    private volatile java.lang.Object symbol_;
+    /**
+     * <pre>
+     * token symbol, in full name with "-" suffix
+     * </pre>
+     *
+     * <code>string symbol = 3;</code>
+     */
+    public java.lang.String getSymbol() {
+      java.lang.Object ref = symbol_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        symbol_ = s;
+        return s;
+      }
+    }
+    /**
+     * <pre>
+     * token symbol, in full name with "-" suffix
+     * </pre>
+     *
+     * <code>string symbol = 3;</code>
+     */
+    public com.google.protobuf.ByteString
+        getSymbolBytes() {
+      java.lang.Object ref = symbol_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        symbol_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int TOTAL_SUPPLY_FIELD_NUMBER = 4;
+    private long totalSupply_;
+    /**
+     * <pre>
+     * total supply
+     * </pre>
+     *
+     * <code>int64 total_supply = 4;</code>
+     */
+    public long getTotalSupply() {
+      return totalSupply_;
+    }
+
+    public static final int MINTABLE_FIELD_NUMBER = 5;
+    private boolean mintable_;
+    /**
+     * <pre>
+     * mintable
+     * </pre>
+     *
+     * <code>bool mintable = 5;</code>
+     */
+    public boolean getMintable() {
+      return mintable_;
+    }
+
+    private byte memoizedIsInitialized = -1;
+    @java.lang.Override
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    @java.lang.Override
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (!from_.isEmpty()) {
+        output.writeBytes(1, from_);
+      }
+      if (!getNameBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 2, name_);
+      }
+      if (!getSymbolBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 3, symbol_);
+      }
+      if (totalSupply_ != 0L) {
+        output.writeInt64(4, totalSupply_);
+      }
+      if (mintable_ != false) {
+        output.writeBool(5, mintable_);
+      }
+      unknownFields.writeTo(output);
+    }
+
+    @java.lang.Override
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (!from_.isEmpty()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(1, from_);
+      }
+      if (!getNameBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, name_);
+      }
+      if (!getSymbolBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, symbol_);
+      }
+      if (totalSupply_ != 0L) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt64Size(4, totalSupply_);
+      }
+      if (mintable_ != false) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBoolSize(5, mintable_);
+      }
+      size += unknownFields.getSerializedSize();
+      memoizedSize = size;
+      return size;
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof wallet.core.jni.proto.Binance.TokenIssueOrder)) {
+        return super.equals(obj);
+      }
+      wallet.core.jni.proto.Binance.TokenIssueOrder other = (wallet.core.jni.proto.Binance.TokenIssueOrder) obj;
+
+      if (!getFrom()
+          .equals(other.getFrom())) return false;
+      if (!getName()
+          .equals(other.getName())) return false;
+      if (!getSymbol()
+          .equals(other.getSymbol())) return false;
+      if (getTotalSupply()
+          != other.getTotalSupply()) return false;
+      if (getMintable()
+          != other.getMintable()) return false;
+      if (!unknownFields.equals(other.unknownFields)) return false;
+      return true;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptor().hashCode();
+      hash = (37 * hash) + FROM_FIELD_NUMBER;
+      hash = (53 * hash) + getFrom().hashCode();
+      hash = (37 * hash) + NAME_FIELD_NUMBER;
+      hash = (53 * hash) + getName().hashCode();
+      hash = (37 * hash) + SYMBOL_FIELD_NUMBER;
+      hash = (53 * hash) + getSymbol().hashCode();
+      hash = (37 * hash) + TOTAL_SUPPLY_FIELD_NUMBER;
+      hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
+          getTotalSupply());
+      hash = (37 * hash) + MINTABLE_FIELD_NUMBER;
+      hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
+          getMintable());
+      hash = (29 * hash) + unknownFields.hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static wallet.core.jni.proto.Binance.TokenIssueOrder parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static wallet.core.jni.proto.Binance.TokenIssueOrder parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static wallet.core.jni.proto.Binance.TokenIssueOrder parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static wallet.core.jni.proto.Binance.TokenIssueOrder parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static wallet.core.jni.proto.Binance.TokenIssueOrder parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static wallet.core.jni.proto.Binance.TokenIssueOrder parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static wallet.core.jni.proto.Binance.TokenIssueOrder parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static wallet.core.jni.proto.Binance.TokenIssueOrder parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static wallet.core.jni.proto.Binance.TokenIssueOrder parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static wallet.core.jni.proto.Binance.TokenIssueOrder parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static wallet.core.jni.proto.Binance.TokenIssueOrder parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static wallet.core.jni.proto.Binance.TokenIssueOrder parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    @java.lang.Override
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(wallet.core.jni.proto.Binance.TokenIssueOrder prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    @java.lang.Override
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code TW.Binance.Proto.TokenIssueOrder}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:TW.Binance.Proto.TokenIssueOrder)
+        wallet.core.jni.proto.Binance.TokenIssueOrderOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return wallet.core.jni.proto.Binance.internal_static_TW_Binance_Proto_TokenIssueOrder_descriptor;
+      }
+
+      @java.lang.Override
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return wallet.core.jni.proto.Binance.internal_static_TW_Binance_Proto_TokenIssueOrder_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                wallet.core.jni.proto.Binance.TokenIssueOrder.class, wallet.core.jni.proto.Binance.TokenIssueOrder.Builder.class);
+      }
+
+      // Construct using wallet.core.jni.proto.Binance.TokenIssueOrder.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+        }
+      }
+      @java.lang.Override
+      public Builder clear() {
+        super.clear();
+        from_ = com.google.protobuf.ByteString.EMPTY;
+
+        name_ = "";
+
+        symbol_ = "";
+
+        totalSupply_ = 0L;
+
+        mintable_ = false;
+
+        return this;
+      }
+
+      @java.lang.Override
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return wallet.core.jni.proto.Binance.internal_static_TW_Binance_Proto_TokenIssueOrder_descriptor;
+      }
+
+      @java.lang.Override
+      public wallet.core.jni.proto.Binance.TokenIssueOrder getDefaultInstanceForType() {
+        return wallet.core.jni.proto.Binance.TokenIssueOrder.getDefaultInstance();
+      }
+
+      @java.lang.Override
+      public wallet.core.jni.proto.Binance.TokenIssueOrder build() {
+        wallet.core.jni.proto.Binance.TokenIssueOrder result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      @java.lang.Override
+      public wallet.core.jni.proto.Binance.TokenIssueOrder buildPartial() {
+        wallet.core.jni.proto.Binance.TokenIssueOrder result = new wallet.core.jni.proto.Binance.TokenIssueOrder(this);
+        result.from_ = from_;
+        result.name_ = name_;
+        result.symbol_ = symbol_;
+        result.totalSupply_ = totalSupply_;
+        result.mintable_ = mintable_;
+        onBuilt();
+        return result;
+      }
+
+      @java.lang.Override
+      public Builder clone() {
+        return super.clone();
+      }
+      @java.lang.Override
+      public Builder setField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.setField(field, value);
+      }
+      @java.lang.Override
+      public Builder clearField(
+          com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return super.clearField(field);
+      }
+      @java.lang.Override
+      public Builder clearOneof(
+          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return super.clearOneof(oneof);
+      }
+      @java.lang.Override
+      public Builder setRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          int index, java.lang.Object value) {
+        return super.setRepeatedField(field, index, value);
+      }
+      @java.lang.Override
+      public Builder addRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.addRepeatedField(field, value);
+      }
+      @java.lang.Override
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof wallet.core.jni.proto.Binance.TokenIssueOrder) {
+          return mergeFrom((wallet.core.jni.proto.Binance.TokenIssueOrder)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(wallet.core.jni.proto.Binance.TokenIssueOrder other) {
+        if (other == wallet.core.jni.proto.Binance.TokenIssueOrder.getDefaultInstance()) return this;
+        if (other.getFrom() != com.google.protobuf.ByteString.EMPTY) {
+          setFrom(other.getFrom());
+        }
+        if (!other.getName().isEmpty()) {
+          name_ = other.name_;
+          onChanged();
+        }
+        if (!other.getSymbol().isEmpty()) {
+          symbol_ = other.symbol_;
+          onChanged();
+        }
+        if (other.getTotalSupply() != 0L) {
+          setTotalSupply(other.getTotalSupply());
+        }
+        if (other.getMintable() != false) {
+          setMintable(other.getMintable());
+        }
+        this.mergeUnknownFields(other.unknownFields);
+        onChanged();
+        return this;
+      }
+
+      @java.lang.Override
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      @java.lang.Override
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        wallet.core.jni.proto.Binance.TokenIssueOrder parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (wallet.core.jni.proto.Binance.TokenIssueOrder) e.getUnfinishedMessage();
+          throw e.unwrapIOException();
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+
+      private com.google.protobuf.ByteString from_ = com.google.protobuf.ByteString.EMPTY;
+      /**
+       * <pre>
+       * 0x17EFAB80      // prefix
+       * </pre>
+       *
+       * <code>bytes from = 1;</code>
+       */
+      public com.google.protobuf.ByteString getFrom() {
+        return from_;
+      }
+      /**
+       * <pre>
+       * 0x17EFAB80      // prefix
+       * </pre>
+       *
+       * <code>bytes from = 1;</code>
+       */
+      public Builder setFrom(com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        from_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 0x17EFAB80      // prefix
+       * </pre>
+       *
+       * <code>bytes from = 1;</code>
+       */
+      public Builder clearFrom() {
+        
+        from_ = getDefaultInstance().getFrom();
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object name_ = "";
+      /**
+       * <pre>
+       * token name
+       * </pre>
+       *
+       * <code>string name = 2;</code>
+       */
+      public java.lang.String getName() {
+        java.lang.Object ref = name_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          name_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <pre>
+       * token name
+       * </pre>
+       *
+       * <code>string name = 2;</code>
+       */
+      public com.google.protobuf.ByteString
+          getNameBytes() {
+        java.lang.Object ref = name_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          name_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <pre>
+       * token name
+       * </pre>
+       *
+       * <code>string name = 2;</code>
+       */
+      public Builder setName(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        name_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * token name
+       * </pre>
+       *
+       * <code>string name = 2;</code>
+       */
+      public Builder clearName() {
+        
+        name_ = getDefaultInstance().getName();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * token name
+       * </pre>
+       *
+       * <code>string name = 2;</code>
+       */
+      public Builder setNameBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        name_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object symbol_ = "";
+      /**
+       * <pre>
+       * token symbol, in full name with "-" suffix
+       * </pre>
+       *
+       * <code>string symbol = 3;</code>
+       */
+      public java.lang.String getSymbol() {
+        java.lang.Object ref = symbol_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          symbol_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <pre>
+       * token symbol, in full name with "-" suffix
+       * </pre>
+       *
+       * <code>string symbol = 3;</code>
+       */
+      public com.google.protobuf.ByteString
+          getSymbolBytes() {
+        java.lang.Object ref = symbol_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          symbol_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <pre>
+       * token symbol, in full name with "-" suffix
+       * </pre>
+       *
+       * <code>string symbol = 3;</code>
+       */
+      public Builder setSymbol(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        symbol_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * token symbol, in full name with "-" suffix
+       * </pre>
+       *
+       * <code>string symbol = 3;</code>
+       */
+      public Builder clearSymbol() {
+        
+        symbol_ = getDefaultInstance().getSymbol();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * token symbol, in full name with "-" suffix
+       * </pre>
+       *
+       * <code>string symbol = 3;</code>
+       */
+      public Builder setSymbolBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        symbol_ = value;
+        onChanged();
+        return this;
+      }
+
+      private long totalSupply_ ;
+      /**
+       * <pre>
+       * total supply
+       * </pre>
+       *
+       * <code>int64 total_supply = 4;</code>
+       */
+      public long getTotalSupply() {
+        return totalSupply_;
+      }
+      /**
+       * <pre>
+       * total supply
+       * </pre>
+       *
+       * <code>int64 total_supply = 4;</code>
+       */
+      public Builder setTotalSupply(long value) {
+        
+        totalSupply_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * total supply
+       * </pre>
+       *
+       * <code>int64 total_supply = 4;</code>
+       */
+      public Builder clearTotalSupply() {
+        
+        totalSupply_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      private boolean mintable_ ;
+      /**
+       * <pre>
+       * mintable
+       * </pre>
+       *
+       * <code>bool mintable = 5;</code>
+       */
+      public boolean getMintable() {
+        return mintable_;
+      }
+      /**
+       * <pre>
+       * mintable
+       * </pre>
+       *
+       * <code>bool mintable = 5;</code>
+       */
+      public Builder setMintable(boolean value) {
+        
+        mintable_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * mintable
+       * </pre>
+       *
+       * <code>bool mintable = 5;</code>
+       */
+      public Builder clearMintable() {
+        
+        mintable_ = false;
+        onChanged();
+        return this;
+      }
+      @java.lang.Override
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.setUnknownFields(unknownFields);
+      }
+
+      @java.lang.Override
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.mergeUnknownFields(unknownFields);
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:TW.Binance.Proto.TokenIssueOrder)
+    }
+
+    // @@protoc_insertion_point(class_scope:TW.Binance.Proto.TokenIssueOrder)
+    private static final wallet.core.jni.proto.Binance.TokenIssueOrder DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new wallet.core.jni.proto.Binance.TokenIssueOrder();
+    }
+
+    public static wallet.core.jni.proto.Binance.TokenIssueOrder getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static final com.google.protobuf.Parser<TokenIssueOrder>
+        PARSER = new com.google.protobuf.AbstractParser<TokenIssueOrder>() {
+      @java.lang.Override
+      public TokenIssueOrder parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new TokenIssueOrder(input, extensionRegistry);
+      }
+    };
+
+    public static com.google.protobuf.Parser<TokenIssueOrder> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<TokenIssueOrder> getParserForType() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public wallet.core.jni.proto.Binance.TokenIssueOrder getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
+  public interface TokenMintOrderOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:TW.Binance.Proto.TokenMintOrder)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <pre>
+     * 0x467E0829      // prefix
+     * </pre>
+     *
+     * <code>bytes from = 1;</code>
+     */
+    com.google.protobuf.ByteString getFrom();
+
+    /**
+     * <pre>
+     * token symbol, in full name with "-" suffix
+     * </pre>
+     *
+     * <code>string symbol = 2;</code>
+     */
+    java.lang.String getSymbol();
+    /**
+     * <pre>
+     * token symbol, in full name with "-" suffix
+     * </pre>
+     *
+     * <code>string symbol = 2;</code>
+     */
+    com.google.protobuf.ByteString
+        getSymbolBytes();
+
+    /**
+     * <pre>
+     * amount to mint
+     * </pre>
+     *
+     * <code>int64 amount = 3;</code>
+     */
+    long getAmount();
+  }
+  /**
+   * Protobuf type {@code TW.Binance.Proto.TokenMintOrder}
+   */
+  public  static final class TokenMintOrder extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:TW.Binance.Proto.TokenMintOrder)
+      TokenMintOrderOrBuilder {
+  private static final long serialVersionUID = 0L;
+    // Use TokenMintOrder.newBuilder() to construct.
+    private TokenMintOrder(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private TokenMintOrder() {
+      from_ = com.google.protobuf.ByteString.EMPTY;
+      symbol_ = "";
+    }
+
+    @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new TokenMintOrder();
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return this.unknownFields;
+    }
+    private TokenMintOrder(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            case 10: {
+
+              from_ = input.readBytes();
+              break;
+            }
+            case 18: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              symbol_ = s;
+              break;
+            }
+            case 24: {
+
+              amount_ = input.readInt64();
+              break;
+            }
+            default: {
+              if (!parseUnknownField(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return wallet.core.jni.proto.Binance.internal_static_TW_Binance_Proto_TokenMintOrder_descriptor;
+    }
+
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return wallet.core.jni.proto.Binance.internal_static_TW_Binance_Proto_TokenMintOrder_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              wallet.core.jni.proto.Binance.TokenMintOrder.class, wallet.core.jni.proto.Binance.TokenMintOrder.Builder.class);
+    }
+
+    public static final int FROM_FIELD_NUMBER = 1;
+    private com.google.protobuf.ByteString from_;
+    /**
+     * <pre>
+     * 0x467E0829      // prefix
+     * </pre>
+     *
+     * <code>bytes from = 1;</code>
+     */
+    public com.google.protobuf.ByteString getFrom() {
+      return from_;
+    }
+
+    public static final int SYMBOL_FIELD_NUMBER = 2;
+    private volatile java.lang.Object symbol_;
+    /**
+     * <pre>
+     * token symbol, in full name with "-" suffix
+     * </pre>
+     *
+     * <code>string symbol = 2;</code>
+     */
+    public java.lang.String getSymbol() {
+      java.lang.Object ref = symbol_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        symbol_ = s;
+        return s;
+      }
+    }
+    /**
+     * <pre>
+     * token symbol, in full name with "-" suffix
+     * </pre>
+     *
+     * <code>string symbol = 2;</code>
+     */
+    public com.google.protobuf.ByteString
+        getSymbolBytes() {
+      java.lang.Object ref = symbol_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        symbol_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int AMOUNT_FIELD_NUMBER = 3;
+    private long amount_;
+    /**
+     * <pre>
+     * amount to mint
+     * </pre>
+     *
+     * <code>int64 amount = 3;</code>
+     */
+    public long getAmount() {
+      return amount_;
+    }
+
+    private byte memoizedIsInitialized = -1;
+    @java.lang.Override
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    @java.lang.Override
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (!from_.isEmpty()) {
+        output.writeBytes(1, from_);
+      }
+      if (!getSymbolBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 2, symbol_);
+      }
+      if (amount_ != 0L) {
+        output.writeInt64(3, amount_);
+      }
+      unknownFields.writeTo(output);
+    }
+
+    @java.lang.Override
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (!from_.isEmpty()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(1, from_);
+      }
+      if (!getSymbolBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, symbol_);
+      }
+      if (amount_ != 0L) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt64Size(3, amount_);
+      }
+      size += unknownFields.getSerializedSize();
+      memoizedSize = size;
+      return size;
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof wallet.core.jni.proto.Binance.TokenMintOrder)) {
+        return super.equals(obj);
+      }
+      wallet.core.jni.proto.Binance.TokenMintOrder other = (wallet.core.jni.proto.Binance.TokenMintOrder) obj;
+
+      if (!getFrom()
+          .equals(other.getFrom())) return false;
+      if (!getSymbol()
+          .equals(other.getSymbol())) return false;
+      if (getAmount()
+          != other.getAmount()) return false;
+      if (!unknownFields.equals(other.unknownFields)) return false;
+      return true;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptor().hashCode();
+      hash = (37 * hash) + FROM_FIELD_NUMBER;
+      hash = (53 * hash) + getFrom().hashCode();
+      hash = (37 * hash) + SYMBOL_FIELD_NUMBER;
+      hash = (53 * hash) + getSymbol().hashCode();
+      hash = (37 * hash) + AMOUNT_FIELD_NUMBER;
+      hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
+          getAmount());
+      hash = (29 * hash) + unknownFields.hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static wallet.core.jni.proto.Binance.TokenMintOrder parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static wallet.core.jni.proto.Binance.TokenMintOrder parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static wallet.core.jni.proto.Binance.TokenMintOrder parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static wallet.core.jni.proto.Binance.TokenMintOrder parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static wallet.core.jni.proto.Binance.TokenMintOrder parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static wallet.core.jni.proto.Binance.TokenMintOrder parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static wallet.core.jni.proto.Binance.TokenMintOrder parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static wallet.core.jni.proto.Binance.TokenMintOrder parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static wallet.core.jni.proto.Binance.TokenMintOrder parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static wallet.core.jni.proto.Binance.TokenMintOrder parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static wallet.core.jni.proto.Binance.TokenMintOrder parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static wallet.core.jni.proto.Binance.TokenMintOrder parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    @java.lang.Override
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(wallet.core.jni.proto.Binance.TokenMintOrder prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    @java.lang.Override
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code TW.Binance.Proto.TokenMintOrder}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:TW.Binance.Proto.TokenMintOrder)
+        wallet.core.jni.proto.Binance.TokenMintOrderOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return wallet.core.jni.proto.Binance.internal_static_TW_Binance_Proto_TokenMintOrder_descriptor;
+      }
+
+      @java.lang.Override
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return wallet.core.jni.proto.Binance.internal_static_TW_Binance_Proto_TokenMintOrder_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                wallet.core.jni.proto.Binance.TokenMintOrder.class, wallet.core.jni.proto.Binance.TokenMintOrder.Builder.class);
+      }
+
+      // Construct using wallet.core.jni.proto.Binance.TokenMintOrder.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+        }
+      }
+      @java.lang.Override
+      public Builder clear() {
+        super.clear();
+        from_ = com.google.protobuf.ByteString.EMPTY;
+
+        symbol_ = "";
+
+        amount_ = 0L;
+
+        return this;
+      }
+
+      @java.lang.Override
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return wallet.core.jni.proto.Binance.internal_static_TW_Binance_Proto_TokenMintOrder_descriptor;
+      }
+
+      @java.lang.Override
+      public wallet.core.jni.proto.Binance.TokenMintOrder getDefaultInstanceForType() {
+        return wallet.core.jni.proto.Binance.TokenMintOrder.getDefaultInstance();
+      }
+
+      @java.lang.Override
+      public wallet.core.jni.proto.Binance.TokenMintOrder build() {
+        wallet.core.jni.proto.Binance.TokenMintOrder result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      @java.lang.Override
+      public wallet.core.jni.proto.Binance.TokenMintOrder buildPartial() {
+        wallet.core.jni.proto.Binance.TokenMintOrder result = new wallet.core.jni.proto.Binance.TokenMintOrder(this);
+        result.from_ = from_;
+        result.symbol_ = symbol_;
+        result.amount_ = amount_;
+        onBuilt();
+        return result;
+      }
+
+      @java.lang.Override
+      public Builder clone() {
+        return super.clone();
+      }
+      @java.lang.Override
+      public Builder setField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.setField(field, value);
+      }
+      @java.lang.Override
+      public Builder clearField(
+          com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return super.clearField(field);
+      }
+      @java.lang.Override
+      public Builder clearOneof(
+          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return super.clearOneof(oneof);
+      }
+      @java.lang.Override
+      public Builder setRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          int index, java.lang.Object value) {
+        return super.setRepeatedField(field, index, value);
+      }
+      @java.lang.Override
+      public Builder addRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.addRepeatedField(field, value);
+      }
+      @java.lang.Override
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof wallet.core.jni.proto.Binance.TokenMintOrder) {
+          return mergeFrom((wallet.core.jni.proto.Binance.TokenMintOrder)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(wallet.core.jni.proto.Binance.TokenMintOrder other) {
+        if (other == wallet.core.jni.proto.Binance.TokenMintOrder.getDefaultInstance()) return this;
+        if (other.getFrom() != com.google.protobuf.ByteString.EMPTY) {
+          setFrom(other.getFrom());
+        }
+        if (!other.getSymbol().isEmpty()) {
+          symbol_ = other.symbol_;
+          onChanged();
+        }
+        if (other.getAmount() != 0L) {
+          setAmount(other.getAmount());
+        }
+        this.mergeUnknownFields(other.unknownFields);
+        onChanged();
+        return this;
+      }
+
+      @java.lang.Override
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      @java.lang.Override
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        wallet.core.jni.proto.Binance.TokenMintOrder parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (wallet.core.jni.proto.Binance.TokenMintOrder) e.getUnfinishedMessage();
+          throw e.unwrapIOException();
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+
+      private com.google.protobuf.ByteString from_ = com.google.protobuf.ByteString.EMPTY;
+      /**
+       * <pre>
+       * 0x467E0829      // prefix
+       * </pre>
+       *
+       * <code>bytes from = 1;</code>
+       */
+      public com.google.protobuf.ByteString getFrom() {
+        return from_;
+      }
+      /**
+       * <pre>
+       * 0x467E0829      // prefix
+       * </pre>
+       *
+       * <code>bytes from = 1;</code>
+       */
+      public Builder setFrom(com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        from_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 0x467E0829      // prefix
+       * </pre>
+       *
+       * <code>bytes from = 1;</code>
+       */
+      public Builder clearFrom() {
+        
+        from_ = getDefaultInstance().getFrom();
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object symbol_ = "";
+      /**
+       * <pre>
+       * token symbol, in full name with "-" suffix
+       * </pre>
+       *
+       * <code>string symbol = 2;</code>
+       */
+      public java.lang.String getSymbol() {
+        java.lang.Object ref = symbol_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          symbol_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <pre>
+       * token symbol, in full name with "-" suffix
+       * </pre>
+       *
+       * <code>string symbol = 2;</code>
+       */
+      public com.google.protobuf.ByteString
+          getSymbolBytes() {
+        java.lang.Object ref = symbol_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          symbol_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <pre>
+       * token symbol, in full name with "-" suffix
+       * </pre>
+       *
+       * <code>string symbol = 2;</code>
+       */
+      public Builder setSymbol(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        symbol_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * token symbol, in full name with "-" suffix
+       * </pre>
+       *
+       * <code>string symbol = 2;</code>
+       */
+      public Builder clearSymbol() {
+        
+        symbol_ = getDefaultInstance().getSymbol();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * token symbol, in full name with "-" suffix
+       * </pre>
+       *
+       * <code>string symbol = 2;</code>
+       */
+      public Builder setSymbolBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        symbol_ = value;
+        onChanged();
+        return this;
+      }
+
+      private long amount_ ;
+      /**
+       * <pre>
+       * amount to mint
+       * </pre>
+       *
+       * <code>int64 amount = 3;</code>
+       */
+      public long getAmount() {
+        return amount_;
+      }
+      /**
+       * <pre>
+       * amount to mint
+       * </pre>
+       *
+       * <code>int64 amount = 3;</code>
+       */
+      public Builder setAmount(long value) {
+        
+        amount_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * amount to mint
+       * </pre>
+       *
+       * <code>int64 amount = 3;</code>
+       */
+      public Builder clearAmount() {
+        
+        amount_ = 0L;
+        onChanged();
+        return this;
+      }
+      @java.lang.Override
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.setUnknownFields(unknownFields);
+      }
+
+      @java.lang.Override
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.mergeUnknownFields(unknownFields);
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:TW.Binance.Proto.TokenMintOrder)
+    }
+
+    // @@protoc_insertion_point(class_scope:TW.Binance.Proto.TokenMintOrder)
+    private static final wallet.core.jni.proto.Binance.TokenMintOrder DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new wallet.core.jni.proto.Binance.TokenMintOrder();
+    }
+
+    public static wallet.core.jni.proto.Binance.TokenMintOrder getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static final com.google.protobuf.Parser<TokenMintOrder>
+        PARSER = new com.google.protobuf.AbstractParser<TokenMintOrder>() {
+      @java.lang.Override
+      public TokenMintOrder parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new TokenMintOrder(input, extensionRegistry);
+      }
+    };
+
+    public static com.google.protobuf.Parser<TokenMintOrder> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<TokenMintOrder> getParserForType() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public wallet.core.jni.proto.Binance.TokenMintOrder getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
+  public interface TokenBurnOrderOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:TW.Binance.Proto.TokenBurnOrder)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <pre>
+     * 0x7ED2D2A0      // prefix
+     * </pre>
+     *
+     * <code>bytes from = 1;</code>
+     */
+    com.google.protobuf.ByteString getFrom();
+
+    /**
+     * <pre>
+     * token symbol, in full name with "-" suffix
+     * </pre>
+     *
+     * <code>string symbol = 2;</code>
+     */
+    java.lang.String getSymbol();
+    /**
+     * <pre>
+     * token symbol, in full name with "-" suffix
+     * </pre>
+     *
+     * <code>string symbol = 2;</code>
+     */
+    com.google.protobuf.ByteString
+        getSymbolBytes();
+
+    /**
+     * <pre>
+     * amount to burn
+     * </pre>
+     *
+     * <code>int64 amount = 3;</code>
+     */
+    long getAmount();
+  }
+  /**
+   * Protobuf type {@code TW.Binance.Proto.TokenBurnOrder}
+   */
+  public  static final class TokenBurnOrder extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:TW.Binance.Proto.TokenBurnOrder)
+      TokenBurnOrderOrBuilder {
+  private static final long serialVersionUID = 0L;
+    // Use TokenBurnOrder.newBuilder() to construct.
+    private TokenBurnOrder(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private TokenBurnOrder() {
+      from_ = com.google.protobuf.ByteString.EMPTY;
+      symbol_ = "";
+    }
+
+    @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new TokenBurnOrder();
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return this.unknownFields;
+    }
+    private TokenBurnOrder(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            case 10: {
+
+              from_ = input.readBytes();
+              break;
+            }
+            case 18: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              symbol_ = s;
+              break;
+            }
+            case 24: {
+
+              amount_ = input.readInt64();
+              break;
+            }
+            default: {
+              if (!parseUnknownField(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return wallet.core.jni.proto.Binance.internal_static_TW_Binance_Proto_TokenBurnOrder_descriptor;
+    }
+
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return wallet.core.jni.proto.Binance.internal_static_TW_Binance_Proto_TokenBurnOrder_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              wallet.core.jni.proto.Binance.TokenBurnOrder.class, wallet.core.jni.proto.Binance.TokenBurnOrder.Builder.class);
+    }
+
+    public static final int FROM_FIELD_NUMBER = 1;
+    private com.google.protobuf.ByteString from_;
+    /**
+     * <pre>
+     * 0x7ED2D2A0      // prefix
+     * </pre>
+     *
+     * <code>bytes from = 1;</code>
+     */
+    public com.google.protobuf.ByteString getFrom() {
+      return from_;
+    }
+
+    public static final int SYMBOL_FIELD_NUMBER = 2;
+    private volatile java.lang.Object symbol_;
+    /**
+     * <pre>
+     * token symbol, in full name with "-" suffix
+     * </pre>
+     *
+     * <code>string symbol = 2;</code>
+     */
+    public java.lang.String getSymbol() {
+      java.lang.Object ref = symbol_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        symbol_ = s;
+        return s;
+      }
+    }
+    /**
+     * <pre>
+     * token symbol, in full name with "-" suffix
+     * </pre>
+     *
+     * <code>string symbol = 2;</code>
+     */
+    public com.google.protobuf.ByteString
+        getSymbolBytes() {
+      java.lang.Object ref = symbol_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        symbol_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int AMOUNT_FIELD_NUMBER = 3;
+    private long amount_;
+    /**
+     * <pre>
+     * amount to burn
+     * </pre>
+     *
+     * <code>int64 amount = 3;</code>
+     */
+    public long getAmount() {
+      return amount_;
+    }
+
+    private byte memoizedIsInitialized = -1;
+    @java.lang.Override
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    @java.lang.Override
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (!from_.isEmpty()) {
+        output.writeBytes(1, from_);
+      }
+      if (!getSymbolBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 2, symbol_);
+      }
+      if (amount_ != 0L) {
+        output.writeInt64(3, amount_);
+      }
+      unknownFields.writeTo(output);
+    }
+
+    @java.lang.Override
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (!from_.isEmpty()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(1, from_);
+      }
+      if (!getSymbolBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, symbol_);
+      }
+      if (amount_ != 0L) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt64Size(3, amount_);
+      }
+      size += unknownFields.getSerializedSize();
+      memoizedSize = size;
+      return size;
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof wallet.core.jni.proto.Binance.TokenBurnOrder)) {
+        return super.equals(obj);
+      }
+      wallet.core.jni.proto.Binance.TokenBurnOrder other = (wallet.core.jni.proto.Binance.TokenBurnOrder) obj;
+
+      if (!getFrom()
+          .equals(other.getFrom())) return false;
+      if (!getSymbol()
+          .equals(other.getSymbol())) return false;
+      if (getAmount()
+          != other.getAmount()) return false;
+      if (!unknownFields.equals(other.unknownFields)) return false;
+      return true;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptor().hashCode();
+      hash = (37 * hash) + FROM_FIELD_NUMBER;
+      hash = (53 * hash) + getFrom().hashCode();
+      hash = (37 * hash) + SYMBOL_FIELD_NUMBER;
+      hash = (53 * hash) + getSymbol().hashCode();
+      hash = (37 * hash) + AMOUNT_FIELD_NUMBER;
+      hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
+          getAmount());
+      hash = (29 * hash) + unknownFields.hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static wallet.core.jni.proto.Binance.TokenBurnOrder parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static wallet.core.jni.proto.Binance.TokenBurnOrder parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static wallet.core.jni.proto.Binance.TokenBurnOrder parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static wallet.core.jni.proto.Binance.TokenBurnOrder parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static wallet.core.jni.proto.Binance.TokenBurnOrder parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static wallet.core.jni.proto.Binance.TokenBurnOrder parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static wallet.core.jni.proto.Binance.TokenBurnOrder parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static wallet.core.jni.proto.Binance.TokenBurnOrder parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static wallet.core.jni.proto.Binance.TokenBurnOrder parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static wallet.core.jni.proto.Binance.TokenBurnOrder parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static wallet.core.jni.proto.Binance.TokenBurnOrder parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static wallet.core.jni.proto.Binance.TokenBurnOrder parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    @java.lang.Override
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(wallet.core.jni.proto.Binance.TokenBurnOrder prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    @java.lang.Override
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code TW.Binance.Proto.TokenBurnOrder}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:TW.Binance.Proto.TokenBurnOrder)
+        wallet.core.jni.proto.Binance.TokenBurnOrderOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return wallet.core.jni.proto.Binance.internal_static_TW_Binance_Proto_TokenBurnOrder_descriptor;
+      }
+
+      @java.lang.Override
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return wallet.core.jni.proto.Binance.internal_static_TW_Binance_Proto_TokenBurnOrder_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                wallet.core.jni.proto.Binance.TokenBurnOrder.class, wallet.core.jni.proto.Binance.TokenBurnOrder.Builder.class);
+      }
+
+      // Construct using wallet.core.jni.proto.Binance.TokenBurnOrder.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+        }
+      }
+      @java.lang.Override
+      public Builder clear() {
+        super.clear();
+        from_ = com.google.protobuf.ByteString.EMPTY;
+
+        symbol_ = "";
+
+        amount_ = 0L;
+
+        return this;
+      }
+
+      @java.lang.Override
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return wallet.core.jni.proto.Binance.internal_static_TW_Binance_Proto_TokenBurnOrder_descriptor;
+      }
+
+      @java.lang.Override
+      public wallet.core.jni.proto.Binance.TokenBurnOrder getDefaultInstanceForType() {
+        return wallet.core.jni.proto.Binance.TokenBurnOrder.getDefaultInstance();
+      }
+
+      @java.lang.Override
+      public wallet.core.jni.proto.Binance.TokenBurnOrder build() {
+        wallet.core.jni.proto.Binance.TokenBurnOrder result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      @java.lang.Override
+      public wallet.core.jni.proto.Binance.TokenBurnOrder buildPartial() {
+        wallet.core.jni.proto.Binance.TokenBurnOrder result = new wallet.core.jni.proto.Binance.TokenBurnOrder(this);
+        result.from_ = from_;
+        result.symbol_ = symbol_;
+        result.amount_ = amount_;
+        onBuilt();
+        return result;
+      }
+
+      @java.lang.Override
+      public Builder clone() {
+        return super.clone();
+      }
+      @java.lang.Override
+      public Builder setField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.setField(field, value);
+      }
+      @java.lang.Override
+      public Builder clearField(
+          com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return super.clearField(field);
+      }
+      @java.lang.Override
+      public Builder clearOneof(
+          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return super.clearOneof(oneof);
+      }
+      @java.lang.Override
+      public Builder setRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          int index, java.lang.Object value) {
+        return super.setRepeatedField(field, index, value);
+      }
+      @java.lang.Override
+      public Builder addRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.addRepeatedField(field, value);
+      }
+      @java.lang.Override
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof wallet.core.jni.proto.Binance.TokenBurnOrder) {
+          return mergeFrom((wallet.core.jni.proto.Binance.TokenBurnOrder)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(wallet.core.jni.proto.Binance.TokenBurnOrder other) {
+        if (other == wallet.core.jni.proto.Binance.TokenBurnOrder.getDefaultInstance()) return this;
+        if (other.getFrom() != com.google.protobuf.ByteString.EMPTY) {
+          setFrom(other.getFrom());
+        }
+        if (!other.getSymbol().isEmpty()) {
+          symbol_ = other.symbol_;
+          onChanged();
+        }
+        if (other.getAmount() != 0L) {
+          setAmount(other.getAmount());
+        }
+        this.mergeUnknownFields(other.unknownFields);
+        onChanged();
+        return this;
+      }
+
+      @java.lang.Override
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      @java.lang.Override
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        wallet.core.jni.proto.Binance.TokenBurnOrder parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (wallet.core.jni.proto.Binance.TokenBurnOrder) e.getUnfinishedMessage();
+          throw e.unwrapIOException();
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+
+      private com.google.protobuf.ByteString from_ = com.google.protobuf.ByteString.EMPTY;
+      /**
+       * <pre>
+       * 0x7ED2D2A0      // prefix
+       * </pre>
+       *
+       * <code>bytes from = 1;</code>
+       */
+      public com.google.protobuf.ByteString getFrom() {
+        return from_;
+      }
+      /**
+       * <pre>
+       * 0x7ED2D2A0      // prefix
+       * </pre>
+       *
+       * <code>bytes from = 1;</code>
+       */
+      public Builder setFrom(com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        from_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 0x7ED2D2A0      // prefix
+       * </pre>
+       *
+       * <code>bytes from = 1;</code>
+       */
+      public Builder clearFrom() {
+        
+        from_ = getDefaultInstance().getFrom();
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object symbol_ = "";
+      /**
+       * <pre>
+       * token symbol, in full name with "-" suffix
+       * </pre>
+       *
+       * <code>string symbol = 2;</code>
+       */
+      public java.lang.String getSymbol() {
+        java.lang.Object ref = symbol_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          symbol_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <pre>
+       * token symbol, in full name with "-" suffix
+       * </pre>
+       *
+       * <code>string symbol = 2;</code>
+       */
+      public com.google.protobuf.ByteString
+          getSymbolBytes() {
+        java.lang.Object ref = symbol_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          symbol_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <pre>
+       * token symbol, in full name with "-" suffix
+       * </pre>
+       *
+       * <code>string symbol = 2;</code>
+       */
+      public Builder setSymbol(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        symbol_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * token symbol, in full name with "-" suffix
+       * </pre>
+       *
+       * <code>string symbol = 2;</code>
+       */
+      public Builder clearSymbol() {
+        
+        symbol_ = getDefaultInstance().getSymbol();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * token symbol, in full name with "-" suffix
+       * </pre>
+       *
+       * <code>string symbol = 2;</code>
+       */
+      public Builder setSymbolBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        symbol_ = value;
+        onChanged();
+        return this;
+      }
+
+      private long amount_ ;
+      /**
+       * <pre>
+       * amount to burn
+       * </pre>
+       *
+       * <code>int64 amount = 3;</code>
+       */
+      public long getAmount() {
+        return amount_;
+      }
+      /**
+       * <pre>
+       * amount to burn
+       * </pre>
+       *
+       * <code>int64 amount = 3;</code>
+       */
+      public Builder setAmount(long value) {
+        
+        amount_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * amount to burn
+       * </pre>
+       *
+       * <code>int64 amount = 3;</code>
+       */
+      public Builder clearAmount() {
+        
+        amount_ = 0L;
+        onChanged();
+        return this;
+      }
+      @java.lang.Override
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.setUnknownFields(unknownFields);
+      }
+
+      @java.lang.Override
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.mergeUnknownFields(unknownFields);
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:TW.Binance.Proto.TokenBurnOrder)
+    }
+
+    // @@protoc_insertion_point(class_scope:TW.Binance.Proto.TokenBurnOrder)
+    private static final wallet.core.jni.proto.Binance.TokenBurnOrder DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new wallet.core.jni.proto.Binance.TokenBurnOrder();
+    }
+
+    public static wallet.core.jni.proto.Binance.TokenBurnOrder getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static final com.google.protobuf.Parser<TokenBurnOrder>
+        PARSER = new com.google.protobuf.AbstractParser<TokenBurnOrder>() {
+      @java.lang.Override
+      public TokenBurnOrder parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new TokenBurnOrder(input, extensionRegistry);
+      }
+    };
+
+    public static com.google.protobuf.Parser<TokenBurnOrder> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<TokenBurnOrder> getParserForType() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public wallet.core.jni.proto.Binance.TokenBurnOrder getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
   public interface TokenFreezeOrderOrBuilder extends
       // @@protoc_insertion_point(interface_extends:TW.Binance.Proto.TokenFreezeOrder)
       com.google.protobuf.MessageOrBuilder {
@@ -8000,6 +10586,13 @@ public final class Binance {
     }
 
     @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new TokenFreezeOrder();
+    }
+
+    @java.lang.Override
     public final com.google.protobuf.UnknownFieldSet
     getUnknownFields() {
       return this.unknownFields;
@@ -8012,7 +10605,6 @@ public final class Binance {
       if (extensionRegistry == null) {
         throw new java.lang.NullPointerException();
       }
-      int mutable_bitField0_ = 0;
       com.google.protobuf.UnknownFieldSet.Builder unknownFields =
           com.google.protobuf.UnknownFieldSet.newBuilder();
       try {
@@ -8754,6 +11346,13 @@ public final class Binance {
     }
 
     @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new TokenUnfreezeOrder();
+    }
+
+    @java.lang.Override
     public final com.google.protobuf.UnknownFieldSet
     getUnknownFields() {
       return this.unknownFields;
@@ -8766,7 +11365,6 @@ public final class Binance {
       if (extensionRegistry == null) {
         throw new java.lang.NullPointerException();
       }
-      int mutable_bitField0_ = 0;
       com.google.protobuf.UnknownFieldSet.Builder unknownFields =
           com.google.protobuf.UnknownFieldSet.newBuilder();
       try {
@@ -9581,6 +12179,13 @@ public final class Binance {
     }
 
     @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new HTLTOrder();
+    }
+
+    @java.lang.Override
     public final com.google.protobuf.UnknownFieldSet
     getUnknownFields() {
       return this.unknownFields;
@@ -9637,9 +12242,9 @@ public final class Binance {
               break;
             }
             case 58: {
-              if (!((mutable_bitField0_ & 0x00000040) != 0)) {
+              if (!((mutable_bitField0_ & 0x00000001) != 0)) {
                 amount_ = new java.util.ArrayList<wallet.core.jni.proto.Binance.SendOrder.Token>();
-                mutable_bitField0_ |= 0x00000040;
+                mutable_bitField0_ |= 0x00000001;
               }
               amount_.add(
                   input.readMessage(wallet.core.jni.proto.Binance.SendOrder.Token.parser(), extensionRegistry));
@@ -9676,7 +12281,7 @@ public final class Binance {
         throw new com.google.protobuf.InvalidProtocolBufferException(
             e).setUnfinishedMessage(this);
       } finally {
-        if (((mutable_bitField0_ & 0x00000040) != 0)) {
+        if (((mutable_bitField0_ & 0x00000001) != 0)) {
           amount_ = java.util.Collections.unmodifiableList(amount_);
         }
         this.unknownFields = unknownFields.build();
@@ -9696,7 +12301,6 @@ public final class Binance {
               wallet.core.jni.proto.Binance.HTLTOrder.class, wallet.core.jni.proto.Binance.HTLTOrder.Builder.class);
     }
 
-    private int bitField0_;
     public static final int FROM_FIELD_NUMBER = 1;
     private com.google.protobuf.ByteString from_;
     /**
@@ -10217,7 +12821,7 @@ public final class Binance {
 
         if (amountBuilder_ == null) {
           amount_ = java.util.Collections.emptyList();
-          bitField0_ = (bitField0_ & ~0x00000040);
+          bitField0_ = (bitField0_ & ~0x00000001);
         } else {
           amountBuilder_.clear();
         }
@@ -10254,7 +12858,6 @@ public final class Binance {
       public wallet.core.jni.proto.Binance.HTLTOrder buildPartial() {
         wallet.core.jni.proto.Binance.HTLTOrder result = new wallet.core.jni.proto.Binance.HTLTOrder(this);
         int from_bitField0_ = bitField0_;
-        int to_bitField0_ = 0;
         result.from_ = from_;
         result.to_ = to_;
         result.recipientOtherChain_ = recipientOtherChain_;
@@ -10262,9 +12865,9 @@ public final class Binance {
         result.randomNumberHash_ = randomNumberHash_;
         result.timestamp_ = timestamp_;
         if (amountBuilder_ == null) {
-          if (((bitField0_ & 0x00000040) != 0)) {
+          if (((bitField0_ & 0x00000001) != 0)) {
             amount_ = java.util.Collections.unmodifiableList(amount_);
-            bitField0_ = (bitField0_ & ~0x00000040);
+            bitField0_ = (bitField0_ & ~0x00000001);
           }
           result.amount_ = amount_;
         } else {
@@ -10273,7 +12876,6 @@ public final class Binance {
         result.expectedIncome_ = expectedIncome_;
         result.heightSpan_ = heightSpan_;
         result.crossChain_ = crossChain_;
-        result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
       }
@@ -10346,7 +12948,7 @@ public final class Binance {
           if (!other.amount_.isEmpty()) {
             if (amount_.isEmpty()) {
               amount_ = other.amount_;
-              bitField0_ = (bitField0_ & ~0x00000040);
+              bitField0_ = (bitField0_ & ~0x00000001);
             } else {
               ensureAmountIsMutable();
               amount_.addAll(other.amount_);
@@ -10359,7 +12961,7 @@ public final class Binance {
               amountBuilder_.dispose();
               amountBuilder_ = null;
               amount_ = other.amount_;
-              bitField0_ = (bitField0_ & ~0x00000040);
+              bitField0_ = (bitField0_ & ~0x00000001);
               amountBuilder_ = 
                 com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
                    getAmountFieldBuilder() : null;
@@ -10698,9 +13300,9 @@ public final class Binance {
       private java.util.List<wallet.core.jni.proto.Binance.SendOrder.Token> amount_ =
         java.util.Collections.emptyList();
       private void ensureAmountIsMutable() {
-        if (!((bitField0_ & 0x00000040) != 0)) {
+        if (!((bitField0_ & 0x00000001) != 0)) {
           amount_ = new java.util.ArrayList<wallet.core.jni.proto.Binance.SendOrder.Token>(amount_);
-          bitField0_ |= 0x00000040;
+          bitField0_ |= 0x00000001;
          }
       }
 
@@ -10850,7 +13452,7 @@ public final class Binance {
       public Builder clearAmount() {
         if (amountBuilder_ == null) {
           amount_ = java.util.Collections.emptyList();
-          bitField0_ = (bitField0_ & ~0x00000040);
+          bitField0_ = (bitField0_ & ~0x00000001);
           onChanged();
         } else {
           amountBuilder_.clear();
@@ -10927,7 +13529,7 @@ public final class Binance {
           amountBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
               wallet.core.jni.proto.Binance.SendOrder.Token, wallet.core.jni.proto.Binance.SendOrder.Token.Builder, wallet.core.jni.proto.Binance.SendOrder.TokenOrBuilder>(
                   amount_,
-                  ((bitField0_ & 0x00000040) != 0),
+                  ((bitField0_ & 0x00000001) != 0),
                   getParentForChildren(),
                   isClean());
           amount_ = null;
@@ -11189,6 +13791,13 @@ public final class Binance {
     }
 
     @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new DepositHTLTOrder();
+    }
+
+    @java.lang.Override
     public final com.google.protobuf.UnknownFieldSet
     getUnknownFields() {
       return this.unknownFields;
@@ -11218,9 +13827,9 @@ public final class Binance {
               break;
             }
             case 18: {
-              if (!((mutable_bitField0_ & 0x00000002) != 0)) {
+              if (!((mutable_bitField0_ & 0x00000001) != 0)) {
                 amount_ = new java.util.ArrayList<wallet.core.jni.proto.Binance.SendOrder.Token>();
-                mutable_bitField0_ |= 0x00000002;
+                mutable_bitField0_ |= 0x00000001;
               }
               amount_.add(
                   input.readMessage(wallet.core.jni.proto.Binance.SendOrder.Token.parser(), extensionRegistry));
@@ -11246,7 +13855,7 @@ public final class Binance {
         throw new com.google.protobuf.InvalidProtocolBufferException(
             e).setUnfinishedMessage(this);
       } finally {
-        if (((mutable_bitField0_ & 0x00000002) != 0)) {
+        if (((mutable_bitField0_ & 0x00000001) != 0)) {
           amount_ = java.util.Collections.unmodifiableList(amount_);
         }
         this.unknownFields = unknownFields.build();
@@ -11266,7 +13875,6 @@ public final class Binance {
               wallet.core.jni.proto.Binance.DepositHTLTOrder.class, wallet.core.jni.proto.Binance.DepositHTLTOrder.Builder.class);
     }
 
-    private int bitField0_;
     public static final int FROM_FIELD_NUMBER = 1;
     private com.google.protobuf.ByteString from_;
     /**
@@ -11546,7 +14154,7 @@ public final class Binance {
 
         if (amountBuilder_ == null) {
           amount_ = java.util.Collections.emptyList();
-          bitField0_ = (bitField0_ & ~0x00000002);
+          bitField0_ = (bitField0_ & ~0x00000001);
         } else {
           amountBuilder_.clear();
         }
@@ -11579,19 +14187,17 @@ public final class Binance {
       public wallet.core.jni.proto.Binance.DepositHTLTOrder buildPartial() {
         wallet.core.jni.proto.Binance.DepositHTLTOrder result = new wallet.core.jni.proto.Binance.DepositHTLTOrder(this);
         int from_bitField0_ = bitField0_;
-        int to_bitField0_ = 0;
         result.from_ = from_;
         if (amountBuilder_ == null) {
-          if (((bitField0_ & 0x00000002) != 0)) {
+          if (((bitField0_ & 0x00000001) != 0)) {
             amount_ = java.util.Collections.unmodifiableList(amount_);
-            bitField0_ = (bitField0_ & ~0x00000002);
+            bitField0_ = (bitField0_ & ~0x00000001);
           }
           result.amount_ = amount_;
         } else {
           result.amount_ = amountBuilder_.build();
         }
         result.swapId_ = swapId_;
-        result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
       }
@@ -11647,7 +14253,7 @@ public final class Binance {
           if (!other.amount_.isEmpty()) {
             if (amount_.isEmpty()) {
               amount_ = other.amount_;
-              bitField0_ = (bitField0_ & ~0x00000002);
+              bitField0_ = (bitField0_ & ~0x00000001);
             } else {
               ensureAmountIsMutable();
               amount_.addAll(other.amount_);
@@ -11660,7 +14266,7 @@ public final class Binance {
               amountBuilder_.dispose();
               amountBuilder_ = null;
               amount_ = other.amount_;
-              bitField0_ = (bitField0_ & ~0x00000002);
+              bitField0_ = (bitField0_ & ~0x00000001);
               amountBuilder_ = 
                 com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
                    getAmountFieldBuilder() : null;
@@ -11746,9 +14352,9 @@ public final class Binance {
       private java.util.List<wallet.core.jni.proto.Binance.SendOrder.Token> amount_ =
         java.util.Collections.emptyList();
       private void ensureAmountIsMutable() {
-        if (!((bitField0_ & 0x00000002) != 0)) {
+        if (!((bitField0_ & 0x00000001) != 0)) {
           amount_ = new java.util.ArrayList<wallet.core.jni.proto.Binance.SendOrder.Token>(amount_);
-          bitField0_ |= 0x00000002;
+          bitField0_ |= 0x00000001;
          }
       }
 
@@ -11898,7 +14504,7 @@ public final class Binance {
       public Builder clearAmount() {
         if (amountBuilder_ == null) {
           amount_ = java.util.Collections.emptyList();
-          bitField0_ = (bitField0_ & ~0x00000002);
+          bitField0_ = (bitField0_ & ~0x00000001);
           onChanged();
         } else {
           amountBuilder_.clear();
@@ -11975,7 +14581,7 @@ public final class Binance {
           amountBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
               wallet.core.jni.proto.Binance.SendOrder.Token, wallet.core.jni.proto.Binance.SendOrder.Token.Builder, wallet.core.jni.proto.Binance.SendOrder.TokenOrBuilder>(
                   amount_,
-                  ((bitField0_ & 0x00000002) != 0),
+                  ((bitField0_ & 0x00000001) != 0),
                   getParentForChildren(),
                   isClean());
           amount_ = null;
@@ -12106,6 +14712,13 @@ public final class Binance {
     }
 
     @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new ClaimHTLOrder();
+    }
+
+    @java.lang.Override
     public final com.google.protobuf.UnknownFieldSet
     getUnknownFields() {
       return this.unknownFields;
@@ -12118,7 +14731,6 @@ public final class Binance {
       if (extensionRegistry == null) {
         throw new java.lang.NullPointerException();
       }
-      int mutable_bitField0_ = 0;
       com.google.protobuf.UnknownFieldSet.Builder unknownFields =
           com.google.protobuf.UnknownFieldSet.newBuilder();
       try {
@@ -12730,6 +15342,13 @@ public final class Binance {
     }
 
     @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new RefundHTLTOrder();
+    }
+
+    @java.lang.Override
     public final com.google.protobuf.UnknownFieldSet
     getUnknownFields() {
       return this.unknownFields;
@@ -12742,7 +15361,6 @@ public final class Binance {
       if (extensionRegistry == null) {
         throw new java.lang.NullPointerException();
       }
-      int mutable_bitField0_ = 0;
       com.google.protobuf.UnknownFieldSet.Builder unknownFields =
           com.google.protobuf.UnknownFieldSet.newBuilder();
       try {
@@ -13419,6 +16037,45 @@ public final class Binance {
      */
     wallet.core.jni.proto.Binance.RefundHTLTOrderOrBuilder getRefundHTLTOrderOrBuilder();
 
+    /**
+     * <code>.TW.Binance.Proto.TokenIssueOrder issue_order = 17;</code>
+     */
+    boolean hasIssueOrder();
+    /**
+     * <code>.TW.Binance.Proto.TokenIssueOrder issue_order = 17;</code>
+     */
+    wallet.core.jni.proto.Binance.TokenIssueOrder getIssueOrder();
+    /**
+     * <code>.TW.Binance.Proto.TokenIssueOrder issue_order = 17;</code>
+     */
+    wallet.core.jni.proto.Binance.TokenIssueOrderOrBuilder getIssueOrderOrBuilder();
+
+    /**
+     * <code>.TW.Binance.Proto.TokenMintOrder mint_order = 18;</code>
+     */
+    boolean hasMintOrder();
+    /**
+     * <code>.TW.Binance.Proto.TokenMintOrder mint_order = 18;</code>
+     */
+    wallet.core.jni.proto.Binance.TokenMintOrder getMintOrder();
+    /**
+     * <code>.TW.Binance.Proto.TokenMintOrder mint_order = 18;</code>
+     */
+    wallet.core.jni.proto.Binance.TokenMintOrderOrBuilder getMintOrderOrBuilder();
+
+    /**
+     * <code>.TW.Binance.Proto.TokenBurnOrder burn_order = 19;</code>
+     */
+    boolean hasBurnOrder();
+    /**
+     * <code>.TW.Binance.Proto.TokenBurnOrder burn_order = 19;</code>
+     */
+    wallet.core.jni.proto.Binance.TokenBurnOrder getBurnOrder();
+    /**
+     * <code>.TW.Binance.Proto.TokenBurnOrder burn_order = 19;</code>
+     */
+    wallet.core.jni.proto.Binance.TokenBurnOrderOrBuilder getBurnOrderOrBuilder();
+
     public wallet.core.jni.proto.Binance.SigningInput.OrderOneofCase getOrderOneofCase();
   }
   /**
@@ -13444,6 +16101,13 @@ public final class Binance {
     }
 
     @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new SigningInput();
+    }
+
+    @java.lang.Override
     public final com.google.protobuf.UnknownFieldSet
     getUnknownFields() {
       return this.unknownFields;
@@ -13456,7 +16120,6 @@ public final class Binance {
       if (extensionRegistry == null) {
         throw new java.lang.NullPointerException();
       }
-      int mutable_bitField0_ = 0;
       com.google.protobuf.UnknownFieldSet.Builder unknownFields =
           com.google.protobuf.UnknownFieldSet.newBuilder();
       try {
@@ -13625,6 +16288,48 @@ public final class Binance {
               orderOneofCase_ = 16;
               break;
             }
+            case 138: {
+              wallet.core.jni.proto.Binance.TokenIssueOrder.Builder subBuilder = null;
+              if (orderOneofCase_ == 17) {
+                subBuilder = ((wallet.core.jni.proto.Binance.TokenIssueOrder) orderOneof_).toBuilder();
+              }
+              orderOneof_ =
+                  input.readMessage(wallet.core.jni.proto.Binance.TokenIssueOrder.parser(), extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom((wallet.core.jni.proto.Binance.TokenIssueOrder) orderOneof_);
+                orderOneof_ = subBuilder.buildPartial();
+              }
+              orderOneofCase_ = 17;
+              break;
+            }
+            case 146: {
+              wallet.core.jni.proto.Binance.TokenMintOrder.Builder subBuilder = null;
+              if (orderOneofCase_ == 18) {
+                subBuilder = ((wallet.core.jni.proto.Binance.TokenMintOrder) orderOneof_).toBuilder();
+              }
+              orderOneof_ =
+                  input.readMessage(wallet.core.jni.proto.Binance.TokenMintOrder.parser(), extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom((wallet.core.jni.proto.Binance.TokenMintOrder) orderOneof_);
+                orderOneof_ = subBuilder.buildPartial();
+              }
+              orderOneofCase_ = 18;
+              break;
+            }
+            case 154: {
+              wallet.core.jni.proto.Binance.TokenBurnOrder.Builder subBuilder = null;
+              if (orderOneofCase_ == 19) {
+                subBuilder = ((wallet.core.jni.proto.Binance.TokenBurnOrder) orderOneof_).toBuilder();
+              }
+              orderOneof_ =
+                  input.readMessage(wallet.core.jni.proto.Binance.TokenBurnOrder.parser(), extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom((wallet.core.jni.proto.Binance.TokenBurnOrder) orderOneof_);
+                orderOneof_ = subBuilder.buildPartial();
+              }
+              orderOneofCase_ = 19;
+              break;
+            }
             default: {
               if (!parseUnknownField(
                   input, unknownFields, extensionRegistry, tag)) {
@@ -13670,6 +16375,9 @@ public final class Binance {
       DEPOSITHTLT_ORDER(14),
       CLAIMHTLT_ORDER(15),
       REFUNDHTLT_ORDER(16),
+      ISSUE_ORDER(17),
+      MINT_ORDER(18),
+      BURN_ORDER(19),
       ORDERONEOF_NOT_SET(0);
       private final int value;
       private OrderOneofCase(int value) {
@@ -13694,6 +16402,9 @@ public final class Binance {
           case 14: return DEPOSITHTLT_ORDER;
           case 15: return CLAIMHTLT_ORDER;
           case 16: return REFUNDHTLT_ORDER;
+          case 17: return ISSUE_ORDER;
+          case 18: return MINT_ORDER;
+          case 19: return BURN_ORDER;
           case 0: return ORDERONEOF_NOT_SET;
           default: return null;
         }
@@ -14047,6 +16758,84 @@ public final class Binance {
       return wallet.core.jni.proto.Binance.RefundHTLTOrder.getDefaultInstance();
     }
 
+    public static final int ISSUE_ORDER_FIELD_NUMBER = 17;
+    /**
+     * <code>.TW.Binance.Proto.TokenIssueOrder issue_order = 17;</code>
+     */
+    public boolean hasIssueOrder() {
+      return orderOneofCase_ == 17;
+    }
+    /**
+     * <code>.TW.Binance.Proto.TokenIssueOrder issue_order = 17;</code>
+     */
+    public wallet.core.jni.proto.Binance.TokenIssueOrder getIssueOrder() {
+      if (orderOneofCase_ == 17) {
+         return (wallet.core.jni.proto.Binance.TokenIssueOrder) orderOneof_;
+      }
+      return wallet.core.jni.proto.Binance.TokenIssueOrder.getDefaultInstance();
+    }
+    /**
+     * <code>.TW.Binance.Proto.TokenIssueOrder issue_order = 17;</code>
+     */
+    public wallet.core.jni.proto.Binance.TokenIssueOrderOrBuilder getIssueOrderOrBuilder() {
+      if (orderOneofCase_ == 17) {
+         return (wallet.core.jni.proto.Binance.TokenIssueOrder) orderOneof_;
+      }
+      return wallet.core.jni.proto.Binance.TokenIssueOrder.getDefaultInstance();
+    }
+
+    public static final int MINT_ORDER_FIELD_NUMBER = 18;
+    /**
+     * <code>.TW.Binance.Proto.TokenMintOrder mint_order = 18;</code>
+     */
+    public boolean hasMintOrder() {
+      return orderOneofCase_ == 18;
+    }
+    /**
+     * <code>.TW.Binance.Proto.TokenMintOrder mint_order = 18;</code>
+     */
+    public wallet.core.jni.proto.Binance.TokenMintOrder getMintOrder() {
+      if (orderOneofCase_ == 18) {
+         return (wallet.core.jni.proto.Binance.TokenMintOrder) orderOneof_;
+      }
+      return wallet.core.jni.proto.Binance.TokenMintOrder.getDefaultInstance();
+    }
+    /**
+     * <code>.TW.Binance.Proto.TokenMintOrder mint_order = 18;</code>
+     */
+    public wallet.core.jni.proto.Binance.TokenMintOrderOrBuilder getMintOrderOrBuilder() {
+      if (orderOneofCase_ == 18) {
+         return (wallet.core.jni.proto.Binance.TokenMintOrder) orderOneof_;
+      }
+      return wallet.core.jni.proto.Binance.TokenMintOrder.getDefaultInstance();
+    }
+
+    public static final int BURN_ORDER_FIELD_NUMBER = 19;
+    /**
+     * <code>.TW.Binance.Proto.TokenBurnOrder burn_order = 19;</code>
+     */
+    public boolean hasBurnOrder() {
+      return orderOneofCase_ == 19;
+    }
+    /**
+     * <code>.TW.Binance.Proto.TokenBurnOrder burn_order = 19;</code>
+     */
+    public wallet.core.jni.proto.Binance.TokenBurnOrder getBurnOrder() {
+      if (orderOneofCase_ == 19) {
+         return (wallet.core.jni.proto.Binance.TokenBurnOrder) orderOneof_;
+      }
+      return wallet.core.jni.proto.Binance.TokenBurnOrder.getDefaultInstance();
+    }
+    /**
+     * <code>.TW.Binance.Proto.TokenBurnOrder burn_order = 19;</code>
+     */
+    public wallet.core.jni.proto.Binance.TokenBurnOrderOrBuilder getBurnOrderOrBuilder() {
+      if (orderOneofCase_ == 19) {
+         return (wallet.core.jni.proto.Binance.TokenBurnOrder) orderOneof_;
+      }
+      return wallet.core.jni.proto.Binance.TokenBurnOrder.getDefaultInstance();
+    }
+
     private byte memoizedIsInitialized = -1;
     @java.lang.Override
     public final boolean isInitialized() {
@@ -14105,6 +16894,15 @@ public final class Binance {
       }
       if (orderOneofCase_ == 16) {
         output.writeMessage(16, (wallet.core.jni.proto.Binance.RefundHTLTOrder) orderOneof_);
+      }
+      if (orderOneofCase_ == 17) {
+        output.writeMessage(17, (wallet.core.jni.proto.Binance.TokenIssueOrder) orderOneof_);
+      }
+      if (orderOneofCase_ == 18) {
+        output.writeMessage(18, (wallet.core.jni.proto.Binance.TokenMintOrder) orderOneof_);
+      }
+      if (orderOneofCase_ == 19) {
+        output.writeMessage(19, (wallet.core.jni.proto.Binance.TokenBurnOrder) orderOneof_);
       }
       unknownFields.writeTo(output);
     }
@@ -14173,6 +16971,18 @@ public final class Binance {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(16, (wallet.core.jni.proto.Binance.RefundHTLTOrder) orderOneof_);
       }
+      if (orderOneofCase_ == 17) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(17, (wallet.core.jni.proto.Binance.TokenIssueOrder) orderOneof_);
+      }
+      if (orderOneofCase_ == 18) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(18, (wallet.core.jni.proto.Binance.TokenMintOrder) orderOneof_);
+      }
+      if (orderOneofCase_ == 19) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(19, (wallet.core.jni.proto.Binance.TokenBurnOrder) orderOneof_);
+      }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
       return size;
@@ -14237,6 +17047,18 @@ public final class Binance {
         case 16:
           if (!getRefundHTLTOrder()
               .equals(other.getRefundHTLTOrder())) return false;
+          break;
+        case 17:
+          if (!getIssueOrder()
+              .equals(other.getIssueOrder())) return false;
+          break;
+        case 18:
+          if (!getMintOrder()
+              .equals(other.getMintOrder())) return false;
+          break;
+        case 19:
+          if (!getBurnOrder()
+              .equals(other.getBurnOrder())) return false;
           break;
         case 0:
         default:
@@ -14303,6 +17125,18 @@ public final class Binance {
         case 16:
           hash = (37 * hash) + REFUNDHTLT_ORDER_FIELD_NUMBER;
           hash = (53 * hash) + getRefundHTLTOrder().hashCode();
+          break;
+        case 17:
+          hash = (37 * hash) + ISSUE_ORDER_FIELD_NUMBER;
+          hash = (53 * hash) + getIssueOrder().hashCode();
+          break;
+        case 18:
+          hash = (37 * hash) + MINT_ORDER_FIELD_NUMBER;
+          hash = (53 * hash) + getMintOrder().hashCode();
+          break;
+        case 19:
+          hash = (37 * hash) + BURN_ORDER_FIELD_NUMBER;
+          hash = (53 * hash) + getBurnOrder().hashCode();
           break;
         case 0:
         default:
@@ -14553,6 +17387,27 @@ public final class Binance {
             result.orderOneof_ = refundHTLTOrderBuilder_.build();
           }
         }
+        if (orderOneofCase_ == 17) {
+          if (issueOrderBuilder_ == null) {
+            result.orderOneof_ = orderOneof_;
+          } else {
+            result.orderOneof_ = issueOrderBuilder_.build();
+          }
+        }
+        if (orderOneofCase_ == 18) {
+          if (mintOrderBuilder_ == null) {
+            result.orderOneof_ = orderOneof_;
+          } else {
+            result.orderOneof_ = mintOrderBuilder_.build();
+          }
+        }
+        if (orderOneofCase_ == 19) {
+          if (burnOrderBuilder_ == null) {
+            result.orderOneof_ = orderOneof_;
+          } else {
+            result.orderOneof_ = burnOrderBuilder_.build();
+          }
+        }
         result.orderOneofCase_ = orderOneofCase_;
         onBuilt();
         return result;
@@ -14657,6 +17512,18 @@ public final class Binance {
           }
           case REFUNDHTLT_ORDER: {
             mergeRefundHTLTOrder(other.getRefundHTLTOrder());
+            break;
+          }
+          case ISSUE_ORDER: {
+            mergeIssueOrder(other.getIssueOrder());
+            break;
+          }
+          case MINT_ORDER: {
+            mergeMintOrder(other.getMintOrder());
+            break;
+          }
+          case BURN_ORDER: {
+            mergeBurnOrder(other.getBurnOrder());
             break;
           }
           case ORDERONEOF_NOT_SET: {
@@ -16175,6 +19042,414 @@ public final class Binance {
         onChanged();;
         return refundHTLTOrderBuilder_;
       }
+
+      private com.google.protobuf.SingleFieldBuilderV3<
+          wallet.core.jni.proto.Binance.TokenIssueOrder, wallet.core.jni.proto.Binance.TokenIssueOrder.Builder, wallet.core.jni.proto.Binance.TokenIssueOrderOrBuilder> issueOrderBuilder_;
+      /**
+       * <code>.TW.Binance.Proto.TokenIssueOrder issue_order = 17;</code>
+       */
+      public boolean hasIssueOrder() {
+        return orderOneofCase_ == 17;
+      }
+      /**
+       * <code>.TW.Binance.Proto.TokenIssueOrder issue_order = 17;</code>
+       */
+      public wallet.core.jni.proto.Binance.TokenIssueOrder getIssueOrder() {
+        if (issueOrderBuilder_ == null) {
+          if (orderOneofCase_ == 17) {
+            return (wallet.core.jni.proto.Binance.TokenIssueOrder) orderOneof_;
+          }
+          return wallet.core.jni.proto.Binance.TokenIssueOrder.getDefaultInstance();
+        } else {
+          if (orderOneofCase_ == 17) {
+            return issueOrderBuilder_.getMessage();
+          }
+          return wallet.core.jni.proto.Binance.TokenIssueOrder.getDefaultInstance();
+        }
+      }
+      /**
+       * <code>.TW.Binance.Proto.TokenIssueOrder issue_order = 17;</code>
+       */
+      public Builder setIssueOrder(wallet.core.jni.proto.Binance.TokenIssueOrder value) {
+        if (issueOrderBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          orderOneof_ = value;
+          onChanged();
+        } else {
+          issueOrderBuilder_.setMessage(value);
+        }
+        orderOneofCase_ = 17;
+        return this;
+      }
+      /**
+       * <code>.TW.Binance.Proto.TokenIssueOrder issue_order = 17;</code>
+       */
+      public Builder setIssueOrder(
+          wallet.core.jni.proto.Binance.TokenIssueOrder.Builder builderForValue) {
+        if (issueOrderBuilder_ == null) {
+          orderOneof_ = builderForValue.build();
+          onChanged();
+        } else {
+          issueOrderBuilder_.setMessage(builderForValue.build());
+        }
+        orderOneofCase_ = 17;
+        return this;
+      }
+      /**
+       * <code>.TW.Binance.Proto.TokenIssueOrder issue_order = 17;</code>
+       */
+      public Builder mergeIssueOrder(wallet.core.jni.proto.Binance.TokenIssueOrder value) {
+        if (issueOrderBuilder_ == null) {
+          if (orderOneofCase_ == 17 &&
+              orderOneof_ != wallet.core.jni.proto.Binance.TokenIssueOrder.getDefaultInstance()) {
+            orderOneof_ = wallet.core.jni.proto.Binance.TokenIssueOrder.newBuilder((wallet.core.jni.proto.Binance.TokenIssueOrder) orderOneof_)
+                .mergeFrom(value).buildPartial();
+          } else {
+            orderOneof_ = value;
+          }
+          onChanged();
+        } else {
+          if (orderOneofCase_ == 17) {
+            issueOrderBuilder_.mergeFrom(value);
+          }
+          issueOrderBuilder_.setMessage(value);
+        }
+        orderOneofCase_ = 17;
+        return this;
+      }
+      /**
+       * <code>.TW.Binance.Proto.TokenIssueOrder issue_order = 17;</code>
+       */
+      public Builder clearIssueOrder() {
+        if (issueOrderBuilder_ == null) {
+          if (orderOneofCase_ == 17) {
+            orderOneofCase_ = 0;
+            orderOneof_ = null;
+            onChanged();
+          }
+        } else {
+          if (orderOneofCase_ == 17) {
+            orderOneofCase_ = 0;
+            orderOneof_ = null;
+          }
+          issueOrderBuilder_.clear();
+        }
+        return this;
+      }
+      /**
+       * <code>.TW.Binance.Proto.TokenIssueOrder issue_order = 17;</code>
+       */
+      public wallet.core.jni.proto.Binance.TokenIssueOrder.Builder getIssueOrderBuilder() {
+        return getIssueOrderFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>.TW.Binance.Proto.TokenIssueOrder issue_order = 17;</code>
+       */
+      public wallet.core.jni.proto.Binance.TokenIssueOrderOrBuilder getIssueOrderOrBuilder() {
+        if ((orderOneofCase_ == 17) && (issueOrderBuilder_ != null)) {
+          return issueOrderBuilder_.getMessageOrBuilder();
+        } else {
+          if (orderOneofCase_ == 17) {
+            return (wallet.core.jni.proto.Binance.TokenIssueOrder) orderOneof_;
+          }
+          return wallet.core.jni.proto.Binance.TokenIssueOrder.getDefaultInstance();
+        }
+      }
+      /**
+       * <code>.TW.Binance.Proto.TokenIssueOrder issue_order = 17;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilderV3<
+          wallet.core.jni.proto.Binance.TokenIssueOrder, wallet.core.jni.proto.Binance.TokenIssueOrder.Builder, wallet.core.jni.proto.Binance.TokenIssueOrderOrBuilder> 
+          getIssueOrderFieldBuilder() {
+        if (issueOrderBuilder_ == null) {
+          if (!(orderOneofCase_ == 17)) {
+            orderOneof_ = wallet.core.jni.proto.Binance.TokenIssueOrder.getDefaultInstance();
+          }
+          issueOrderBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+              wallet.core.jni.proto.Binance.TokenIssueOrder, wallet.core.jni.proto.Binance.TokenIssueOrder.Builder, wallet.core.jni.proto.Binance.TokenIssueOrderOrBuilder>(
+                  (wallet.core.jni.proto.Binance.TokenIssueOrder) orderOneof_,
+                  getParentForChildren(),
+                  isClean());
+          orderOneof_ = null;
+        }
+        orderOneofCase_ = 17;
+        onChanged();;
+        return issueOrderBuilder_;
+      }
+
+      private com.google.protobuf.SingleFieldBuilderV3<
+          wallet.core.jni.proto.Binance.TokenMintOrder, wallet.core.jni.proto.Binance.TokenMintOrder.Builder, wallet.core.jni.proto.Binance.TokenMintOrderOrBuilder> mintOrderBuilder_;
+      /**
+       * <code>.TW.Binance.Proto.TokenMintOrder mint_order = 18;</code>
+       */
+      public boolean hasMintOrder() {
+        return orderOneofCase_ == 18;
+      }
+      /**
+       * <code>.TW.Binance.Proto.TokenMintOrder mint_order = 18;</code>
+       */
+      public wallet.core.jni.proto.Binance.TokenMintOrder getMintOrder() {
+        if (mintOrderBuilder_ == null) {
+          if (orderOneofCase_ == 18) {
+            return (wallet.core.jni.proto.Binance.TokenMintOrder) orderOneof_;
+          }
+          return wallet.core.jni.proto.Binance.TokenMintOrder.getDefaultInstance();
+        } else {
+          if (orderOneofCase_ == 18) {
+            return mintOrderBuilder_.getMessage();
+          }
+          return wallet.core.jni.proto.Binance.TokenMintOrder.getDefaultInstance();
+        }
+      }
+      /**
+       * <code>.TW.Binance.Proto.TokenMintOrder mint_order = 18;</code>
+       */
+      public Builder setMintOrder(wallet.core.jni.proto.Binance.TokenMintOrder value) {
+        if (mintOrderBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          orderOneof_ = value;
+          onChanged();
+        } else {
+          mintOrderBuilder_.setMessage(value);
+        }
+        orderOneofCase_ = 18;
+        return this;
+      }
+      /**
+       * <code>.TW.Binance.Proto.TokenMintOrder mint_order = 18;</code>
+       */
+      public Builder setMintOrder(
+          wallet.core.jni.proto.Binance.TokenMintOrder.Builder builderForValue) {
+        if (mintOrderBuilder_ == null) {
+          orderOneof_ = builderForValue.build();
+          onChanged();
+        } else {
+          mintOrderBuilder_.setMessage(builderForValue.build());
+        }
+        orderOneofCase_ = 18;
+        return this;
+      }
+      /**
+       * <code>.TW.Binance.Proto.TokenMintOrder mint_order = 18;</code>
+       */
+      public Builder mergeMintOrder(wallet.core.jni.proto.Binance.TokenMintOrder value) {
+        if (mintOrderBuilder_ == null) {
+          if (orderOneofCase_ == 18 &&
+              orderOneof_ != wallet.core.jni.proto.Binance.TokenMintOrder.getDefaultInstance()) {
+            orderOneof_ = wallet.core.jni.proto.Binance.TokenMintOrder.newBuilder((wallet.core.jni.proto.Binance.TokenMintOrder) orderOneof_)
+                .mergeFrom(value).buildPartial();
+          } else {
+            orderOneof_ = value;
+          }
+          onChanged();
+        } else {
+          if (orderOneofCase_ == 18) {
+            mintOrderBuilder_.mergeFrom(value);
+          }
+          mintOrderBuilder_.setMessage(value);
+        }
+        orderOneofCase_ = 18;
+        return this;
+      }
+      /**
+       * <code>.TW.Binance.Proto.TokenMintOrder mint_order = 18;</code>
+       */
+      public Builder clearMintOrder() {
+        if (mintOrderBuilder_ == null) {
+          if (orderOneofCase_ == 18) {
+            orderOneofCase_ = 0;
+            orderOneof_ = null;
+            onChanged();
+          }
+        } else {
+          if (orderOneofCase_ == 18) {
+            orderOneofCase_ = 0;
+            orderOneof_ = null;
+          }
+          mintOrderBuilder_.clear();
+        }
+        return this;
+      }
+      /**
+       * <code>.TW.Binance.Proto.TokenMintOrder mint_order = 18;</code>
+       */
+      public wallet.core.jni.proto.Binance.TokenMintOrder.Builder getMintOrderBuilder() {
+        return getMintOrderFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>.TW.Binance.Proto.TokenMintOrder mint_order = 18;</code>
+       */
+      public wallet.core.jni.proto.Binance.TokenMintOrderOrBuilder getMintOrderOrBuilder() {
+        if ((orderOneofCase_ == 18) && (mintOrderBuilder_ != null)) {
+          return mintOrderBuilder_.getMessageOrBuilder();
+        } else {
+          if (orderOneofCase_ == 18) {
+            return (wallet.core.jni.proto.Binance.TokenMintOrder) orderOneof_;
+          }
+          return wallet.core.jni.proto.Binance.TokenMintOrder.getDefaultInstance();
+        }
+      }
+      /**
+       * <code>.TW.Binance.Proto.TokenMintOrder mint_order = 18;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilderV3<
+          wallet.core.jni.proto.Binance.TokenMintOrder, wallet.core.jni.proto.Binance.TokenMintOrder.Builder, wallet.core.jni.proto.Binance.TokenMintOrderOrBuilder> 
+          getMintOrderFieldBuilder() {
+        if (mintOrderBuilder_ == null) {
+          if (!(orderOneofCase_ == 18)) {
+            orderOneof_ = wallet.core.jni.proto.Binance.TokenMintOrder.getDefaultInstance();
+          }
+          mintOrderBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+              wallet.core.jni.proto.Binance.TokenMintOrder, wallet.core.jni.proto.Binance.TokenMintOrder.Builder, wallet.core.jni.proto.Binance.TokenMintOrderOrBuilder>(
+                  (wallet.core.jni.proto.Binance.TokenMintOrder) orderOneof_,
+                  getParentForChildren(),
+                  isClean());
+          orderOneof_ = null;
+        }
+        orderOneofCase_ = 18;
+        onChanged();;
+        return mintOrderBuilder_;
+      }
+
+      private com.google.protobuf.SingleFieldBuilderV3<
+          wallet.core.jni.proto.Binance.TokenBurnOrder, wallet.core.jni.proto.Binance.TokenBurnOrder.Builder, wallet.core.jni.proto.Binance.TokenBurnOrderOrBuilder> burnOrderBuilder_;
+      /**
+       * <code>.TW.Binance.Proto.TokenBurnOrder burn_order = 19;</code>
+       */
+      public boolean hasBurnOrder() {
+        return orderOneofCase_ == 19;
+      }
+      /**
+       * <code>.TW.Binance.Proto.TokenBurnOrder burn_order = 19;</code>
+       */
+      public wallet.core.jni.proto.Binance.TokenBurnOrder getBurnOrder() {
+        if (burnOrderBuilder_ == null) {
+          if (orderOneofCase_ == 19) {
+            return (wallet.core.jni.proto.Binance.TokenBurnOrder) orderOneof_;
+          }
+          return wallet.core.jni.proto.Binance.TokenBurnOrder.getDefaultInstance();
+        } else {
+          if (orderOneofCase_ == 19) {
+            return burnOrderBuilder_.getMessage();
+          }
+          return wallet.core.jni.proto.Binance.TokenBurnOrder.getDefaultInstance();
+        }
+      }
+      /**
+       * <code>.TW.Binance.Proto.TokenBurnOrder burn_order = 19;</code>
+       */
+      public Builder setBurnOrder(wallet.core.jni.proto.Binance.TokenBurnOrder value) {
+        if (burnOrderBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          orderOneof_ = value;
+          onChanged();
+        } else {
+          burnOrderBuilder_.setMessage(value);
+        }
+        orderOneofCase_ = 19;
+        return this;
+      }
+      /**
+       * <code>.TW.Binance.Proto.TokenBurnOrder burn_order = 19;</code>
+       */
+      public Builder setBurnOrder(
+          wallet.core.jni.proto.Binance.TokenBurnOrder.Builder builderForValue) {
+        if (burnOrderBuilder_ == null) {
+          orderOneof_ = builderForValue.build();
+          onChanged();
+        } else {
+          burnOrderBuilder_.setMessage(builderForValue.build());
+        }
+        orderOneofCase_ = 19;
+        return this;
+      }
+      /**
+       * <code>.TW.Binance.Proto.TokenBurnOrder burn_order = 19;</code>
+       */
+      public Builder mergeBurnOrder(wallet.core.jni.proto.Binance.TokenBurnOrder value) {
+        if (burnOrderBuilder_ == null) {
+          if (orderOneofCase_ == 19 &&
+              orderOneof_ != wallet.core.jni.proto.Binance.TokenBurnOrder.getDefaultInstance()) {
+            orderOneof_ = wallet.core.jni.proto.Binance.TokenBurnOrder.newBuilder((wallet.core.jni.proto.Binance.TokenBurnOrder) orderOneof_)
+                .mergeFrom(value).buildPartial();
+          } else {
+            orderOneof_ = value;
+          }
+          onChanged();
+        } else {
+          if (orderOneofCase_ == 19) {
+            burnOrderBuilder_.mergeFrom(value);
+          }
+          burnOrderBuilder_.setMessage(value);
+        }
+        orderOneofCase_ = 19;
+        return this;
+      }
+      /**
+       * <code>.TW.Binance.Proto.TokenBurnOrder burn_order = 19;</code>
+       */
+      public Builder clearBurnOrder() {
+        if (burnOrderBuilder_ == null) {
+          if (orderOneofCase_ == 19) {
+            orderOneofCase_ = 0;
+            orderOneof_ = null;
+            onChanged();
+          }
+        } else {
+          if (orderOneofCase_ == 19) {
+            orderOneofCase_ = 0;
+            orderOneof_ = null;
+          }
+          burnOrderBuilder_.clear();
+        }
+        return this;
+      }
+      /**
+       * <code>.TW.Binance.Proto.TokenBurnOrder burn_order = 19;</code>
+       */
+      public wallet.core.jni.proto.Binance.TokenBurnOrder.Builder getBurnOrderBuilder() {
+        return getBurnOrderFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>.TW.Binance.Proto.TokenBurnOrder burn_order = 19;</code>
+       */
+      public wallet.core.jni.proto.Binance.TokenBurnOrderOrBuilder getBurnOrderOrBuilder() {
+        if ((orderOneofCase_ == 19) && (burnOrderBuilder_ != null)) {
+          return burnOrderBuilder_.getMessageOrBuilder();
+        } else {
+          if (orderOneofCase_ == 19) {
+            return (wallet.core.jni.proto.Binance.TokenBurnOrder) orderOneof_;
+          }
+          return wallet.core.jni.proto.Binance.TokenBurnOrder.getDefaultInstance();
+        }
+      }
+      /**
+       * <code>.TW.Binance.Proto.TokenBurnOrder burn_order = 19;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilderV3<
+          wallet.core.jni.proto.Binance.TokenBurnOrder, wallet.core.jni.proto.Binance.TokenBurnOrder.Builder, wallet.core.jni.proto.Binance.TokenBurnOrderOrBuilder> 
+          getBurnOrderFieldBuilder() {
+        if (burnOrderBuilder_ == null) {
+          if (!(orderOneofCase_ == 19)) {
+            orderOneof_ = wallet.core.jni.proto.Binance.TokenBurnOrder.getDefaultInstance();
+          }
+          burnOrderBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+              wallet.core.jni.proto.Binance.TokenBurnOrder, wallet.core.jni.proto.Binance.TokenBurnOrder.Builder, wallet.core.jni.proto.Binance.TokenBurnOrderOrBuilder>(
+                  (wallet.core.jni.proto.Binance.TokenBurnOrder) orderOneof_,
+                  getParentForChildren(),
+                  isClean());
+          orderOneof_ = null;
+        }
+        orderOneofCase_ = 19;
+        onChanged();;
+        return burnOrderBuilder_;
+      }
       @java.lang.Override
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
@@ -16262,6 +19537,13 @@ public final class Binance {
     }
 
     @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new SigningOutput();
+    }
+
+    @java.lang.Override
     public final com.google.protobuf.UnknownFieldSet
     getUnknownFields() {
       return this.unknownFields;
@@ -16274,7 +19556,6 @@ public final class Binance {
       if (extensionRegistry == null) {
         throw new java.lang.NullPointerException();
       }
-      int mutable_bitField0_ = 0;
       com.google.protobuf.UnknownFieldSet.Builder unknownFields =
           com.google.protobuf.UnknownFieldSet.newBuilder();
       try {
@@ -16780,6 +20061,21 @@ public final class Binance {
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_TW_Binance_Proto_SendOrder_Output_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_TW_Binance_Proto_TokenIssueOrder_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_TW_Binance_Proto_TokenIssueOrder_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_TW_Binance_Proto_TokenMintOrder_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_TW_Binance_Proto_TokenMintOrder_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_TW_Binance_Proto_TokenBurnOrder_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_TW_Binance_Proto_TokenBurnOrder_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_TW_Binance_Proto_TokenFreezeOrder_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
@@ -16846,54 +20142,56 @@ public final class Binance {
       "\n\005Input\022\017\n\007address\030\001 \001(\014\0220\n\005coins\030\002 \003(\0132" +
       "!.TW.Binance.Proto.SendOrder.Token\032K\n\006Ou" +
       "tput\022\017\n\007address\030\001 \001(\014\0220\n\005coins\030\002 \003(\0132!.T" +
-      "W.Binance.Proto.SendOrder.Token\"@\n\020Token" +
-      "FreezeOrder\022\014\n\004from\030\001 \001(\014\022\016\n\006symbol\030\002 \001(" +
-      "\t\022\016\n\006amount\030\003 \001(\003\"B\n\022TokenUnfreezeOrder\022" +
-      "\014\n\004from\030\001 \001(\014\022\016\n\006symbol\030\002 \001(\t\022\016\n\006amount\030" +
-      "\003 \001(\003\"\205\002\n\tHTLTOrder\022\014\n\004from\030\001 \001(\014\022\n\n\002to\030" +
-      "\002 \001(\014\022\035\n\025recipient_other_chain\030\003 \001(\t\022\032\n\022" +
-      "sender_other_chain\030\004 \001(\t\022\032\n\022random_numbe" +
-      "r_hash\030\005 \001(\014\022\021\n\ttimestamp\030\006 \001(\003\0221\n\006amoun" +
-      "t\030\007 \003(\0132!.TW.Binance.Proto.SendOrder.Tok" +
-      "en\022\027\n\017expected_income\030\010 \001(\t\022\023\n\013height_sp" +
-      "an\030\t \001(\003\022\023\n\013cross_chain\030\n \001(\010\"d\n\020Deposit" +
-      "HTLTOrder\022\014\n\004from\030\001 \001(\014\0221\n\006amount\030\002 \003(\0132" +
-      "!.TW.Binance.Proto.SendOrder.Token\022\017\n\007sw" +
-      "ap_id\030\003 \001(\014\"E\n\rClaimHTLOrder\022\014\n\004from\030\001 \001" +
-      "(\014\022\017\n\007swap_id\030\002 \001(\014\022\025\n\rrandom_number\030\003 \001" +
-      "(\014\"0\n\017RefundHTLTOrder\022\014\n\004from\030\001 \001(\014\022\017\n\007s" +
-      "wap_id\030\002 \001(\014\"\241\005\n\014SigningInput\022\020\n\010chain_i" +
-      "d\030\001 \001(\t\022\026\n\016account_number\030\002 \001(\003\022\020\n\010seque" +
-      "nce\030\003 \001(\003\022\016\n\006source\030\004 \001(\003\022\014\n\004memo\030\005 \001(\t\022" +
-      "\023\n\013private_key\030\006 \001(\014\0223\n\013trade_order\030\010 \001(" +
-      "\0132\034.TW.Binance.Proto.TradeOrderH\000\022@\n\022can" +
-      "cel_trade_order\030\t \001(\0132\".TW.Binance.Proto" +
-      ".CancelTradeOrderH\000\0221\n\nsend_order\030\n \001(\0132" +
-      "\033.TW.Binance.Proto.SendOrderH\000\022:\n\014freeze" +
-      "_order\030\013 \001(\0132\".TW.Binance.Proto.TokenFre" +
-      "ezeOrderH\000\022>\n\016unfreeze_order\030\014 \001(\0132$.TW." +
-      "Binance.Proto.TokenUnfreezeOrderH\000\0221\n\nht" +
-      "lt_order\030\r \001(\0132\033.TW.Binance.Proto.HTLTOr" +
-      "derH\000\022?\n\021depositHTLT_order\030\016 \001(\0132\".TW.Bi" +
-      "nance.Proto.DepositHTLTOrderH\000\022:\n\017claimH" +
-      "TLT_order\030\017 \001(\0132\037.TW.Binance.Proto.Claim" +
-      "HTLOrderH\000\022=\n\020refundHTLT_order\030\020 \001(\0132!.T" +
-      "W.Binance.Proto.RefundHTLTOrderH\000B\r\n\013ord" +
-      "er_oneof\" \n\rSigningOutput\022\017\n\007encoded\030\001 \001" +
-      "(\014B\027\n\025wallet.core.jni.protob\006proto3"
+      "W.Binance.Proto.SendOrder.Token\"e\n\017Token" +
+      "IssueOrder\022\014\n\004from\030\001 \001(\014\022\014\n\004name\030\002 \001(\t\022\016" +
+      "\n\006symbol\030\003 \001(\t\022\024\n\014total_supply\030\004 \001(\003\022\020\n\010" +
+      "mintable\030\005 \001(\010\">\n\016TokenMintOrder\022\014\n\004from" +
+      "\030\001 \001(\014\022\016\n\006symbol\030\002 \001(\t\022\016\n\006amount\030\003 \001(\003\">" +
+      "\n\016TokenBurnOrder\022\014\n\004from\030\001 \001(\014\022\016\n\006symbol" +
+      "\030\002 \001(\t\022\016\n\006amount\030\003 \001(\003\"@\n\020TokenFreezeOrd" +
+      "er\022\014\n\004from\030\001 \001(\014\022\016\n\006symbol\030\002 \001(\t\022\016\n\006amou" +
+      "nt\030\003 \001(\003\"B\n\022TokenUnfreezeOrder\022\014\n\004from\030\001" +
+      " \001(\014\022\016\n\006symbol\030\002 \001(\t\022\016\n\006amount\030\003 \001(\003\"\205\002\n" +
+      "\tHTLTOrder\022\014\n\004from\030\001 \001(\014\022\n\n\002to\030\002 \001(\014\022\035\n\025" +
+      "recipient_other_chain\030\003 \001(\t\022\032\n\022sender_ot" +
+      "her_chain\030\004 \001(\t\022\032\n\022random_number_hash\030\005 " +
+      "\001(\014\022\021\n\ttimestamp\030\006 \001(\003\0221\n\006amount\030\007 \003(\0132!" +
+      ".TW.Binance.Proto.SendOrder.Token\022\027\n\017exp" +
+      "ected_income\030\010 \001(\t\022\023\n\013height_span\030\t \001(\003\022" +
+      "\023\n\013cross_chain\030\n \001(\010\"d\n\020DepositHTLTOrder" +
+      "\022\014\n\004from\030\001 \001(\014\0221\n\006amount\030\002 \003(\0132!.TW.Bina" +
+      "nce.Proto.SendOrder.Token\022\017\n\007swap_id\030\003 \001" +
+      "(\014\"E\n\rClaimHTLOrder\022\014\n\004from\030\001 \001(\014\022\017\n\007swa" +
+      "p_id\030\002 \001(\014\022\025\n\rrandom_number\030\003 \001(\014\"0\n\017Ref" +
+      "undHTLTOrder\022\014\n\004from\030\001 \001(\014\022\017\n\007swap_id\030\002 " +
+      "\001(\014\"\313\006\n\014SigningInput\022\020\n\010chain_id\030\001 \001(\t\022\026" +
+      "\n\016account_number\030\002 \001(\003\022\020\n\010sequence\030\003 \001(\003" +
+      "\022\016\n\006source\030\004 \001(\003\022\014\n\004memo\030\005 \001(\t\022\023\n\013privat" +
+      "e_key\030\006 \001(\014\0223\n\013trade_order\030\010 \001(\0132\034.TW.Bi" +
+      "nance.Proto.TradeOrderH\000\022@\n\022cancel_trade" +
+      "_order\030\t \001(\0132\".TW.Binance.Proto.CancelTr" +
+      "adeOrderH\000\0221\n\nsend_order\030\n \001(\0132\033.TW.Bina" +
+      "nce.Proto.SendOrderH\000\022:\n\014freeze_order\030\013 " +
+      "\001(\0132\".TW.Binance.Proto.TokenFreezeOrderH" +
+      "\000\022>\n\016unfreeze_order\030\014 \001(\0132$.TW.Binance.P" +
+      "roto.TokenUnfreezeOrderH\000\0221\n\nhtlt_order\030" +
+      "\r \001(\0132\033.TW.Binance.Proto.HTLTOrderH\000\022?\n\021" +
+      "depositHTLT_order\030\016 \001(\0132\".TW.Binance.Pro" +
+      "to.DepositHTLTOrderH\000\022:\n\017claimHTLT_order" +
+      "\030\017 \001(\0132\037.TW.Binance.Proto.ClaimHTLOrderH" +
+      "\000\022=\n\020refundHTLT_order\030\020 \001(\0132!.TW.Binance" +
+      ".Proto.RefundHTLTOrderH\000\0228\n\013issue_order\030" +
+      "\021 \001(\0132!.TW.Binance.Proto.TokenIssueOrder" +
+      "H\000\0226\n\nmint_order\030\022 \001(\0132 .TW.Binance.Prot" +
+      "o.TokenMintOrderH\000\0226\n\nburn_order\030\023 \001(\0132 " +
+      ".TW.Binance.Proto.TokenBurnOrderH\000B\r\n\013or" +
+      "der_oneof\" \n\rSigningOutput\022\017\n\007encoded\030\001 " +
+      "\001(\014B\027\n\025wallet.core.jni.protob\006proto3"
     };
-    com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
-        new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
-          public com.google.protobuf.ExtensionRegistry assignDescriptors(
-              com.google.protobuf.Descriptors.FileDescriptor root) {
-            descriptor = root;
-            return null;
-          }
-        };
-    com.google.protobuf.Descriptors.FileDescriptor
+    descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
         new com.google.protobuf.Descriptors.FileDescriptor[] {
-        }, assigner);
+        });
     internal_static_TW_Binance_Proto_Transaction_descriptor =
       getDescriptor().getMessageTypes().get(0);
     internal_static_TW_Binance_Proto_Transaction_fieldAccessorTable = new
@@ -16948,50 +20246,68 @@ public final class Binance {
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_TW_Binance_Proto_SendOrder_Output_descriptor,
         new java.lang.String[] { "Address", "Coins", });
-    internal_static_TW_Binance_Proto_TokenFreezeOrder_descriptor =
+    internal_static_TW_Binance_Proto_TokenIssueOrder_descriptor =
       getDescriptor().getMessageTypes().get(5);
+    internal_static_TW_Binance_Proto_TokenIssueOrder_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_TW_Binance_Proto_TokenIssueOrder_descriptor,
+        new java.lang.String[] { "From", "Name", "Symbol", "TotalSupply", "Mintable", });
+    internal_static_TW_Binance_Proto_TokenMintOrder_descriptor =
+      getDescriptor().getMessageTypes().get(6);
+    internal_static_TW_Binance_Proto_TokenMintOrder_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_TW_Binance_Proto_TokenMintOrder_descriptor,
+        new java.lang.String[] { "From", "Symbol", "Amount", });
+    internal_static_TW_Binance_Proto_TokenBurnOrder_descriptor =
+      getDescriptor().getMessageTypes().get(7);
+    internal_static_TW_Binance_Proto_TokenBurnOrder_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_TW_Binance_Proto_TokenBurnOrder_descriptor,
+        new java.lang.String[] { "From", "Symbol", "Amount", });
+    internal_static_TW_Binance_Proto_TokenFreezeOrder_descriptor =
+      getDescriptor().getMessageTypes().get(8);
     internal_static_TW_Binance_Proto_TokenFreezeOrder_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_TW_Binance_Proto_TokenFreezeOrder_descriptor,
         new java.lang.String[] { "From", "Symbol", "Amount", });
     internal_static_TW_Binance_Proto_TokenUnfreezeOrder_descriptor =
-      getDescriptor().getMessageTypes().get(6);
+      getDescriptor().getMessageTypes().get(9);
     internal_static_TW_Binance_Proto_TokenUnfreezeOrder_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_TW_Binance_Proto_TokenUnfreezeOrder_descriptor,
         new java.lang.String[] { "From", "Symbol", "Amount", });
     internal_static_TW_Binance_Proto_HTLTOrder_descriptor =
-      getDescriptor().getMessageTypes().get(7);
+      getDescriptor().getMessageTypes().get(10);
     internal_static_TW_Binance_Proto_HTLTOrder_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_TW_Binance_Proto_HTLTOrder_descriptor,
         new java.lang.String[] { "From", "To", "RecipientOtherChain", "SenderOtherChain", "RandomNumberHash", "Timestamp", "Amount", "ExpectedIncome", "HeightSpan", "CrossChain", });
     internal_static_TW_Binance_Proto_DepositHTLTOrder_descriptor =
-      getDescriptor().getMessageTypes().get(8);
+      getDescriptor().getMessageTypes().get(11);
     internal_static_TW_Binance_Proto_DepositHTLTOrder_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_TW_Binance_Proto_DepositHTLTOrder_descriptor,
         new java.lang.String[] { "From", "Amount", "SwapId", });
     internal_static_TW_Binance_Proto_ClaimHTLOrder_descriptor =
-      getDescriptor().getMessageTypes().get(9);
+      getDescriptor().getMessageTypes().get(12);
     internal_static_TW_Binance_Proto_ClaimHTLOrder_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_TW_Binance_Proto_ClaimHTLOrder_descriptor,
         new java.lang.String[] { "From", "SwapId", "RandomNumber", });
     internal_static_TW_Binance_Proto_RefundHTLTOrder_descriptor =
-      getDescriptor().getMessageTypes().get(10);
+      getDescriptor().getMessageTypes().get(13);
     internal_static_TW_Binance_Proto_RefundHTLTOrder_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_TW_Binance_Proto_RefundHTLTOrder_descriptor,
         new java.lang.String[] { "From", "SwapId", });
     internal_static_TW_Binance_Proto_SigningInput_descriptor =
-      getDescriptor().getMessageTypes().get(11);
+      getDescriptor().getMessageTypes().get(14);
     internal_static_TW_Binance_Proto_SigningInput_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_TW_Binance_Proto_SigningInput_descriptor,
-        new java.lang.String[] { "ChainId", "AccountNumber", "Sequence", "Source", "Memo", "PrivateKey", "TradeOrder", "CancelTradeOrder", "SendOrder", "FreezeOrder", "UnfreezeOrder", "HtltOrder", "DepositHTLTOrder", "ClaimHTLTOrder", "RefundHTLTOrder", "OrderOneof", });
+        new java.lang.String[] { "ChainId", "AccountNumber", "Sequence", "Source", "Memo", "PrivateKey", "TradeOrder", "CancelTradeOrder", "SendOrder", "FreezeOrder", "UnfreezeOrder", "HtltOrder", "DepositHTLTOrder", "ClaimHTLTOrder", "RefundHTLTOrder", "IssueOrder", "MintOrder", "BurnOrder", "OrderOneof", });
     internal_static_TW_Binance_Proto_SigningOutput_descriptor =
-      getDescriptor().getMessageTypes().get(12);
+      getDescriptor().getMessageTypes().get(15);
     internal_static_TW_Binance_Proto_SigningOutput_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_TW_Binance_Proto_SigningOutput_descriptor,

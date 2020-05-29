@@ -81,6 +81,13 @@ public final class Tron {
     }
 
     @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new TransferContract();
+    }
+
+    @java.lang.Override
     public final com.google.protobuf.UnknownFieldSet
     getUnknownFields() {
       return this.unknownFields;
@@ -93,7 +100,6 @@ public final class Tron {
       if (extensionRegistry == null) {
         throw new java.lang.NullPointerException();
       }
-      int mutable_bitField0_ = 0;
       com.google.protobuf.UnknownFieldSet.Builder unknownFields =
           com.google.protobuf.UnknownFieldSet.newBuilder();
       try {
@@ -941,6 +947,13 @@ public final class Tron {
     }
 
     @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new TransferAssetContract();
+    }
+
+    @java.lang.Override
     public final com.google.protobuf.UnknownFieldSet
     getUnknownFields() {
       return this.unknownFields;
@@ -953,7 +966,6 @@ public final class Tron {
       if (extensionRegistry == null) {
         throw new java.lang.NullPointerException();
       }
-      int mutable_bitField0_ = 0;
       com.google.protobuf.UnknownFieldSet.Builder unknownFields =
           com.google.protobuf.UnknownFieldSet.newBuilder();
       try {
@@ -1955,6 +1967,13 @@ public final class Tron {
     }
 
     @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new TransferTRC20Contract();
+    }
+
+    @java.lang.Override
     public final com.google.protobuf.UnknownFieldSet
     getUnknownFields() {
       return this.unknownFields;
@@ -1967,7 +1986,6 @@ public final class Tron {
       if (extensionRegistry == null) {
         throw new java.lang.NullPointerException();
       }
-      int mutable_bitField0_ = 0;
       com.google.protobuf.UnknownFieldSet.Builder unknownFields =
           com.google.protobuf.UnknownFieldSet.newBuilder();
       try {
@@ -2978,6 +2996,13 @@ public final class Tron {
     }
 
     @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new FreezeBalanceContract();
+    }
+
+    @java.lang.Override
     public final com.google.protobuf.UnknownFieldSet
     getUnknownFields() {
       return this.unknownFields;
@@ -2990,7 +3015,6 @@ public final class Tron {
       if (extensionRegistry == null) {
         throw new java.lang.NullPointerException();
       }
-      int mutable_bitField0_ = 0;
       com.google.protobuf.UnknownFieldSet.Builder unknownFields =
           com.google.protobuf.UnknownFieldSet.newBuilder();
       try {
@@ -4057,6 +4081,13 @@ public final class Tron {
     }
 
     @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new UnfreezeBalanceContract();
+    }
+
+    @java.lang.Override
     public final com.google.protobuf.UnknownFieldSet
     getUnknownFields() {
       return this.unknownFields;
@@ -4069,7 +4100,6 @@ public final class Tron {
       if (extensionRegistry == null) {
         throw new java.lang.NullPointerException();
       }
-      int mutable_bitField0_ = 0;
       com.google.protobuf.UnknownFieldSet.Builder unknownFields =
           com.google.protobuf.UnknownFieldSet.newBuilder();
       try {
@@ -4950,6 +4980,13 @@ public final class Tron {
     }
 
     @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new UnfreezeAssetContract();
+    }
+
+    @java.lang.Override
     public final com.google.protobuf.UnknownFieldSet
     getUnknownFields() {
       return this.unknownFields;
@@ -4962,7 +4999,6 @@ public final class Tron {
       if (extensionRegistry == null) {
         throw new java.lang.NullPointerException();
       }
-      int mutable_bitField0_ = 0;
       com.google.protobuf.UnknownFieldSet.Builder unknownFields =
           com.google.protobuf.UnknownFieldSet.newBuilder();
       try {
@@ -5581,6 +5617,13 @@ public final class Tron {
     }
 
     @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new VoteAssetContract();
+    }
+
+    @java.lang.Override
     public final com.google.protobuf.UnknownFieldSet
     getUnknownFields() {
       return this.unknownFields;
@@ -5612,9 +5655,9 @@ public final class Tron {
             }
             case 18: {
               java.lang.String s = input.readStringRequireUtf8();
-              if (!((mutable_bitField0_ & 0x00000002) != 0)) {
+              if (!((mutable_bitField0_ & 0x00000001) != 0)) {
                 voteAddress_ = new com.google.protobuf.LazyStringArrayList();
-                mutable_bitField0_ |= 0x00000002;
+                mutable_bitField0_ |= 0x00000001;
               }
               voteAddress_.add(s);
               break;
@@ -5644,7 +5687,7 @@ public final class Tron {
         throw new com.google.protobuf.InvalidProtocolBufferException(
             e).setUnfinishedMessage(this);
       } finally {
-        if (((mutable_bitField0_ & 0x00000002) != 0)) {
+        if (((mutable_bitField0_ & 0x00000001) != 0)) {
           voteAddress_ = voteAddress_.getUnmodifiableView();
         }
         this.unknownFields = unknownFields.build();
@@ -5664,7 +5707,6 @@ public final class Tron {
               wallet.core.jni.proto.Tron.VoteAssetContract.class, wallet.core.jni.proto.Tron.VoteAssetContract.Builder.class);
     }
 
-    private int bitField0_;
     public static final int OWNER_ADDRESS_FIELD_NUMBER = 1;
     private volatile java.lang.Object ownerAddress_;
     /**
@@ -6005,7 +6047,7 @@ public final class Tron {
         ownerAddress_ = "";
 
         voteAddress_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-        bitField0_ = (bitField0_ & ~0x00000002);
+        bitField0_ = (bitField0_ & ~0x00000001);
         support_ = false;
 
         count_ = 0;
@@ -6037,16 +6079,14 @@ public final class Tron {
       public wallet.core.jni.proto.Tron.VoteAssetContract buildPartial() {
         wallet.core.jni.proto.Tron.VoteAssetContract result = new wallet.core.jni.proto.Tron.VoteAssetContract(this);
         int from_bitField0_ = bitField0_;
-        int to_bitField0_ = 0;
         result.ownerAddress_ = ownerAddress_;
-        if (((bitField0_ & 0x00000002) != 0)) {
+        if (((bitField0_ & 0x00000001) != 0)) {
           voteAddress_ = voteAddress_.getUnmodifiableView();
-          bitField0_ = (bitField0_ & ~0x00000002);
+          bitField0_ = (bitField0_ & ~0x00000001);
         }
         result.voteAddress_ = voteAddress_;
         result.support_ = support_;
         result.count_ = count_;
-        result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
       }
@@ -6102,7 +6142,7 @@ public final class Tron {
         if (!other.voteAddress_.isEmpty()) {
           if (voteAddress_.isEmpty()) {
             voteAddress_ = other.voteAddress_;
-            bitField0_ = (bitField0_ & ~0x00000002);
+            bitField0_ = (bitField0_ & ~0x00000001);
           } else {
             ensureVoteAddressIsMutable();
             voteAddress_.addAll(other.voteAddress_);
@@ -6236,9 +6276,9 @@ public final class Tron {
 
       private com.google.protobuf.LazyStringList voteAddress_ = com.google.protobuf.LazyStringArrayList.EMPTY;
       private void ensureVoteAddressIsMutable() {
-        if (!((bitField0_ & 0x00000002) != 0)) {
+        if (!((bitField0_ & 0x00000001) != 0)) {
           voteAddress_ = new com.google.protobuf.LazyStringArrayList(voteAddress_);
-          bitField0_ |= 0x00000002;
+          bitField0_ |= 0x00000001;
          }
       }
       /**
@@ -6341,7 +6381,7 @@ public final class Tron {
        */
       public Builder clearVoteAddress() {
         voteAddress_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-        bitField0_ = (bitField0_ & ~0x00000002);
+        bitField0_ = (bitField0_ & ~0x00000001);
         onChanged();
         return this;
       }
@@ -6529,6 +6569,13 @@ public final class Tron {
     }
 
     @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new VoteWitnessContract();
+    }
+
+    @java.lang.Override
     public final com.google.protobuf.UnknownFieldSet
     getUnknownFields() {
       return this.unknownFields;
@@ -6559,9 +6606,9 @@ public final class Tron {
               break;
             }
             case 18: {
-              if (!((mutable_bitField0_ & 0x00000002) != 0)) {
+              if (!((mutable_bitField0_ & 0x00000001) != 0)) {
                 votes_ = new java.util.ArrayList<wallet.core.jni.proto.Tron.VoteWitnessContract.Vote>();
-                mutable_bitField0_ |= 0x00000002;
+                mutable_bitField0_ |= 0x00000001;
               }
               votes_.add(
                   input.readMessage(wallet.core.jni.proto.Tron.VoteWitnessContract.Vote.parser(), extensionRegistry));
@@ -6587,7 +6634,7 @@ public final class Tron {
         throw new com.google.protobuf.InvalidProtocolBufferException(
             e).setUnfinishedMessage(this);
       } finally {
-        if (((mutable_bitField0_ & 0x00000002) != 0)) {
+        if (((mutable_bitField0_ & 0x00000001) != 0)) {
           votes_ = java.util.Collections.unmodifiableList(votes_);
         }
         this.unknownFields = unknownFields.build();
@@ -6643,6 +6690,13 @@ public final class Tron {
       }
 
       @java.lang.Override
+      @SuppressWarnings({"unused"})
+      protected java.lang.Object newInstance(
+          UnusedPrivateParameter unused) {
+        return new Vote();
+      }
+
+      @java.lang.Override
       public final com.google.protobuf.UnknownFieldSet
       getUnknownFields() {
         return this.unknownFields;
@@ -6655,7 +6709,6 @@ public final class Tron {
         if (extensionRegistry == null) {
           throw new java.lang.NullPointerException();
         }
-        int mutable_bitField0_ = 0;
         com.google.protobuf.UnknownFieldSet.Builder unknownFields =
             com.google.protobuf.UnknownFieldSet.newBuilder();
         try {
@@ -7219,7 +7272,6 @@ public final class Tron {
 
     }
 
-    private int bitField0_;
     public static final int OWNER_ADDRESS_FIELD_NUMBER = 1;
     private volatile java.lang.Object ownerAddress_;
     /**
@@ -7520,7 +7572,7 @@ public final class Tron {
 
         if (votesBuilder_ == null) {
           votes_ = java.util.Collections.emptyList();
-          bitField0_ = (bitField0_ & ~0x00000002);
+          bitField0_ = (bitField0_ & ~0x00000001);
         } else {
           votesBuilder_.clear();
         }
@@ -7553,19 +7605,17 @@ public final class Tron {
       public wallet.core.jni.proto.Tron.VoteWitnessContract buildPartial() {
         wallet.core.jni.proto.Tron.VoteWitnessContract result = new wallet.core.jni.proto.Tron.VoteWitnessContract(this);
         int from_bitField0_ = bitField0_;
-        int to_bitField0_ = 0;
         result.ownerAddress_ = ownerAddress_;
         if (votesBuilder_ == null) {
-          if (((bitField0_ & 0x00000002) != 0)) {
+          if (((bitField0_ & 0x00000001) != 0)) {
             votes_ = java.util.Collections.unmodifiableList(votes_);
-            bitField0_ = (bitField0_ & ~0x00000002);
+            bitField0_ = (bitField0_ & ~0x00000001);
           }
           result.votes_ = votes_;
         } else {
           result.votes_ = votesBuilder_.build();
         }
         result.support_ = support_;
-        result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
       }
@@ -7622,7 +7672,7 @@ public final class Tron {
           if (!other.votes_.isEmpty()) {
             if (votes_.isEmpty()) {
               votes_ = other.votes_;
-              bitField0_ = (bitField0_ & ~0x00000002);
+              bitField0_ = (bitField0_ & ~0x00000001);
             } else {
               ensureVotesIsMutable();
               votes_.addAll(other.votes_);
@@ -7635,7 +7685,7 @@ public final class Tron {
               votesBuilder_.dispose();
               votesBuilder_ = null;
               votes_ = other.votes_;
-              bitField0_ = (bitField0_ & ~0x00000002);
+              bitField0_ = (bitField0_ & ~0x00000001);
               votesBuilder_ = 
                 com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
                    getVotesFieldBuilder() : null;
@@ -7749,9 +7799,9 @@ public final class Tron {
       private java.util.List<wallet.core.jni.proto.Tron.VoteWitnessContract.Vote> votes_ =
         java.util.Collections.emptyList();
       private void ensureVotesIsMutable() {
-        if (!((bitField0_ & 0x00000002) != 0)) {
+        if (!((bitField0_ & 0x00000001) != 0)) {
           votes_ = new java.util.ArrayList<wallet.core.jni.proto.Tron.VoteWitnessContract.Vote>(votes_);
-          bitField0_ |= 0x00000002;
+          bitField0_ |= 0x00000001;
          }
       }
 
@@ -7901,7 +7951,7 @@ public final class Tron {
       public Builder clearVotes() {
         if (votesBuilder_ == null) {
           votes_ = java.util.Collections.emptyList();
-          bitField0_ = (bitField0_ & ~0x00000002);
+          bitField0_ = (bitField0_ & ~0x00000001);
           onChanged();
         } else {
           votesBuilder_.clear();
@@ -7978,7 +8028,7 @@ public final class Tron {
           votesBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
               wallet.core.jni.proto.Tron.VoteWitnessContract.Vote, wallet.core.jni.proto.Tron.VoteWitnessContract.Vote.Builder, wallet.core.jni.proto.Tron.VoteWitnessContract.VoteOrBuilder>(
                   votes_,
-                  ((bitField0_ & 0x00000002) != 0),
+                  ((bitField0_ & 0x00000001) != 0),
                   getParentForChildren(),
                   isClean());
           votes_ = null;
@@ -8103,6 +8153,13 @@ public final class Tron {
     }
 
     @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new WithdrawBalanceContract();
+    }
+
+    @java.lang.Override
     public final com.google.protobuf.UnknownFieldSet
     getUnknownFields() {
       return this.unknownFields;
@@ -8115,7 +8172,6 @@ public final class Tron {
       if (extensionRegistry == null) {
         throw new java.lang.NullPointerException();
       }
-      int mutable_bitField0_ = 0;
       com.google.protobuf.UnknownFieldSet.Builder unknownFields =
           com.google.protobuf.UnknownFieldSet.newBuilder();
       try {
@@ -8712,6 +8768,13 @@ public final class Tron {
     }
 
     @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new TriggerSmartContract();
+    }
+
+    @java.lang.Override
     public final com.google.protobuf.UnknownFieldSet
     getUnknownFields() {
       return this.unknownFields;
@@ -8724,7 +8787,6 @@ public final class Tron {
       if (extensionRegistry == null) {
         throw new java.lang.NullPointerException();
       }
-      int mutable_bitField0_ = 0;
       com.google.protobuf.UnknownFieldSet.Builder unknownFields =
           com.google.protobuf.UnknownFieldSet.newBuilder();
       try {
@@ -9643,6 +9705,13 @@ public final class Tron {
     }
 
     @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new BlockHeader();
+    }
+
+    @java.lang.Override
     public final com.google.protobuf.UnknownFieldSet
     getUnknownFields() {
       return this.unknownFields;
@@ -9655,7 +9724,6 @@ public final class Tron {
       if (extensionRegistry == null) {
         throw new java.lang.NullPointerException();
       }
-      int mutable_bitField0_ = 0;
       com.google.protobuf.UnknownFieldSet.Builder unknownFields =
           com.google.protobuf.UnknownFieldSet.newBuilder();
       try {
@@ -10592,6 +10660,13 @@ public final class Tron {
     }
 
     @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new Transaction();
+    }
+
+    @java.lang.Override
     public final com.google.protobuf.UnknownFieldSet
     getUnknownFields() {
       return this.unknownFields;
@@ -10604,7 +10679,6 @@ public final class Tron {
       if (extensionRegistry == null) {
         throw new java.lang.NullPointerException();
       }
-      int mutable_bitField0_ = 0;
       com.google.protobuf.UnknownFieldSet.Builder unknownFields =
           com.google.protobuf.UnknownFieldSet.newBuilder();
       try {
@@ -13596,6 +13670,13 @@ public final class Tron {
     }
 
     @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new SigningInput();
+    }
+
+    @java.lang.Override
     public final com.google.protobuf.UnknownFieldSet
     getUnknownFields() {
       return this.unknownFields;
@@ -13608,7 +13689,6 @@ public final class Tron {
       if (extensionRegistry == null) {
         throw new java.lang.NullPointerException();
       }
-      int mutable_bitField0_ = 0;
       com.google.protobuf.UnknownFieldSet.Builder unknownFields =
           com.google.protobuf.UnknownFieldSet.newBuilder();
       try {
@@ -14360,6 +14440,13 @@ public final class Tron {
     }
 
     @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new SigningOutput();
+    }
+
+    @java.lang.Override
     public final com.google.protobuf.UnknownFieldSet
     getUnknownFields() {
       return this.unknownFields;
@@ -14372,7 +14459,6 @@ public final class Tron {
       if (extensionRegistry == null) {
         throw new java.lang.NullPointerException();
       }
-      int mutable_bitField0_ = 0;
       com.google.protobuf.UnknownFieldSet.Builder unknownFields =
           com.google.protobuf.UnknownFieldSet.newBuilder();
       try {
@@ -15295,18 +15381,10 @@ public final class Tron {
       "block_hash\030\004 \001(\014\022\014\n\004json\030\005 \001(\tB\027\n\025wallet" +
       ".core.jni.protob\006proto3"
     };
-    com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
-        new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
-          public com.google.protobuf.ExtensionRegistry assignDescriptors(
-              com.google.protobuf.Descriptors.FileDescriptor root) {
-            descriptor = root;
-            return null;
-          }
-        };
-    com.google.protobuf.Descriptors.FileDescriptor
+    descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
         new com.google.protobuf.Descriptors.FileDescriptor[] {
-        }, assigner);
+        });
     internal_static_TW_Tron_Proto_TransferContract_descriptor =
       getDescriptor().getMessageTypes().get(0);
     internal_static_TW_Tron_Proto_TransferContract_fieldAccessorTable = new

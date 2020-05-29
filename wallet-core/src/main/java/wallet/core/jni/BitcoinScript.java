@@ -1,4 +1,4 @@
-// Copyright © 2017-2019 Trust Wallet.
+// Copyright © 2017-2020 Trust Wallet.
 //
 // This file is part of Trust. The full Trust copyright notice, including
 // terms governing use, modification, and redistribution, is contained in the
@@ -38,6 +38,7 @@ public class BitcoinScript {
     public native byte[] scriptHash();
     public native boolean isPayToScriptHash();
     public native boolean isPayToWitnessScriptHash();
+    public native boolean isPayToWitnessPublicKeyHash();
     public native boolean isWitnessProgram();
     public native byte[] matchPayToPubkey();
     public native byte[] matchPayToPubkeyHash();

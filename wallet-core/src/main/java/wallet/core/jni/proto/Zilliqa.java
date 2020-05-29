@@ -134,6 +134,13 @@ public final class Zilliqa {
     }
 
     @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new SigningInput();
+    }
+
+    @java.lang.Override
     public final com.google.protobuf.UnknownFieldSet
     getUnknownFields() {
       return this.unknownFields;
@@ -146,7 +153,6 @@ public final class Zilliqa {
       if (extensionRegistry == null) {
         throw new java.lang.NullPointerException();
       }
-      int mutable_bitField0_ = 0;
       com.google.protobuf.UnknownFieldSet.Builder unknownFields =
           com.google.protobuf.UnknownFieldSet.newBuilder();
       try {
@@ -1297,6 +1303,24 @@ public final class Zilliqa {
      * <code>bytes signature = 1;</code>
      */
     com.google.protobuf.ByteString getSignature();
+
+    /**
+     * <pre>
+     * JSON transaction with signature
+     * </pre>
+     *
+     * <code>string json = 2;</code>
+     */
+    java.lang.String getJson();
+    /**
+     * <pre>
+     * JSON transaction with signature
+     * </pre>
+     *
+     * <code>string json = 2;</code>
+     */
+    com.google.protobuf.ByteString
+        getJsonBytes();
   }
   /**
    * <pre>
@@ -1316,6 +1340,14 @@ public final class Zilliqa {
     }
     private SigningOutput() {
       signature_ = com.google.protobuf.ByteString.EMPTY;
+      json_ = "";
+    }
+
+    @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new SigningOutput();
     }
 
     @java.lang.Override
@@ -1331,7 +1363,6 @@ public final class Zilliqa {
       if (extensionRegistry == null) {
         throw new java.lang.NullPointerException();
       }
-      int mutable_bitField0_ = 0;
       com.google.protobuf.UnknownFieldSet.Builder unknownFields =
           com.google.protobuf.UnknownFieldSet.newBuilder();
       try {
@@ -1345,6 +1376,12 @@ public final class Zilliqa {
             case 10: {
 
               signature_ = input.readBytes();
+              break;
+            }
+            case 18: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              json_ = s;
               break;
             }
             default: {
@@ -1392,6 +1429,48 @@ public final class Zilliqa {
       return signature_;
     }
 
+    public static final int JSON_FIELD_NUMBER = 2;
+    private volatile java.lang.Object json_;
+    /**
+     * <pre>
+     * JSON transaction with signature
+     * </pre>
+     *
+     * <code>string json = 2;</code>
+     */
+    public java.lang.String getJson() {
+      java.lang.Object ref = json_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        json_ = s;
+        return s;
+      }
+    }
+    /**
+     * <pre>
+     * JSON transaction with signature
+     * </pre>
+     *
+     * <code>string json = 2;</code>
+     */
+    public com.google.protobuf.ByteString
+        getJsonBytes() {
+      java.lang.Object ref = json_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        json_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
     private byte memoizedIsInitialized = -1;
     @java.lang.Override
     public final boolean isInitialized() {
@@ -1409,6 +1488,9 @@ public final class Zilliqa {
       if (!signature_.isEmpty()) {
         output.writeBytes(1, signature_);
       }
+      if (!getJsonBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 2, json_);
+      }
       unknownFields.writeTo(output);
     }
 
@@ -1421,6 +1503,9 @@ public final class Zilliqa {
       if (!signature_.isEmpty()) {
         size += com.google.protobuf.CodedOutputStream
           .computeBytesSize(1, signature_);
+      }
+      if (!getJsonBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, json_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -1439,6 +1524,8 @@ public final class Zilliqa {
 
       if (!getSignature()
           .equals(other.getSignature())) return false;
+      if (!getJson()
+          .equals(other.getJson())) return false;
       if (!unknownFields.equals(other.unknownFields)) return false;
       return true;
     }
@@ -1452,6 +1539,8 @@ public final class Zilliqa {
       hash = (19 * hash) + getDescriptor().hashCode();
       hash = (37 * hash) + SIGNATURE_FIELD_NUMBER;
       hash = (53 * hash) + getSignature().hashCode();
+      hash = (37 * hash) + JSON_FIELD_NUMBER;
+      hash = (53 * hash) + getJson().hashCode();
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -1591,6 +1680,8 @@ public final class Zilliqa {
         super.clear();
         signature_ = com.google.protobuf.ByteString.EMPTY;
 
+        json_ = "";
+
         return this;
       }
 
@@ -1618,6 +1709,7 @@ public final class Zilliqa {
       public wallet.core.jni.proto.Zilliqa.SigningOutput buildPartial() {
         wallet.core.jni.proto.Zilliqa.SigningOutput result = new wallet.core.jni.proto.Zilliqa.SigningOutput(this);
         result.signature_ = signature_;
+        result.json_ = json_;
         onBuilt();
         return result;
       }
@@ -1668,6 +1760,10 @@ public final class Zilliqa {
         if (other == wallet.core.jni.proto.Zilliqa.SigningOutput.getDefaultInstance()) return this;
         if (other.getSignature() != com.google.protobuf.ByteString.EMPTY) {
           setSignature(other.getSignature());
+        }
+        if (!other.getJson().isEmpty()) {
+          json_ = other.json_;
+          onChanged();
         }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
@@ -1735,6 +1831,95 @@ public final class Zilliqa {
       public Builder clearSignature() {
         
         signature_ = getDefaultInstance().getSignature();
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object json_ = "";
+      /**
+       * <pre>
+       * JSON transaction with signature
+       * </pre>
+       *
+       * <code>string json = 2;</code>
+       */
+      public java.lang.String getJson() {
+        java.lang.Object ref = json_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          json_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <pre>
+       * JSON transaction with signature
+       * </pre>
+       *
+       * <code>string json = 2;</code>
+       */
+      public com.google.protobuf.ByteString
+          getJsonBytes() {
+        java.lang.Object ref = json_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          json_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <pre>
+       * JSON transaction with signature
+       * </pre>
+       *
+       * <code>string json = 2;</code>
+       */
+      public Builder setJson(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        json_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * JSON transaction with signature
+       * </pre>
+       *
+       * <code>string json = 2;</code>
+       */
+      public Builder clearJson() {
+        
+        json_ = getDefaultInstance().getJson();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * JSON transaction with signature
+       * </pre>
+       *
+       * <code>string json = 2;</code>
+       */
+      public Builder setJsonBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        json_ = value;
         onChanged();
         return this;
       }
@@ -1815,21 +2000,14 @@ public final class Zilliqa {
       "(\004\022\022\n\nto_address\030\003 \001(\t\022\016\n\006amount\030\004 \001(\014\022\021" +
       "\n\tgas_price\030\005 \001(\014\022\021\n\tgas_limit\030\006 \001(\004\022\023\n\013" +
       "private_key\030\007 \001(\014\022\014\n\004code\030\n \001(\014\022\014\n\004data\030" +
-      "\013 \001(\014\"\"\n\rSigningOutput\022\021\n\tsignature\030\001 \001(" +
-      "\014B\027\n\025wallet.core.jni.protob\006proto3"
+      "\013 \001(\014\"0\n\rSigningOutput\022\021\n\tsignature\030\001 \001(" +
+      "\014\022\014\n\004json\030\002 \001(\tB\027\n\025wallet.core.jni.proto" +
+      "b\006proto3"
     };
-    com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
-        new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
-          public com.google.protobuf.ExtensionRegistry assignDescriptors(
-              com.google.protobuf.Descriptors.FileDescriptor root) {
-            descriptor = root;
-            return null;
-          }
-        };
-    com.google.protobuf.Descriptors.FileDescriptor
+    descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
         new com.google.protobuf.Descriptors.FileDescriptor[] {
-        }, assigner);
+        });
     internal_static_TW_Zilliqa_Proto_SigningInput_descriptor =
       getDescriptor().getMessageTypes().get(0);
     internal_static_TW_Zilliqa_Proto_SigningInput_fieldAccessorTable = new
@@ -1841,7 +2019,7 @@ public final class Zilliqa {
     internal_static_TW_Zilliqa_Proto_SigningOutput_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_TW_Zilliqa_Proto_SigningOutput_descriptor,
-        new java.lang.String[] { "Signature", });
+        new java.lang.String[] { "Signature", "Json", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)

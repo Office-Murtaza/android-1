@@ -1,5 +1,13 @@
+.DS_Store
+
 android/app/release/app.aab
 android/app/release/app-release.apk
 android/app/release/output.json
 android/app/release/release/app-release.apk
 android/app/release/app-release.aab
+
+token/.DS_Store
+token/node_modules
+token/.env
+token/.openzeppelin/dev-*.json
+token/.openzeppelin/.session

@@ -1,4 +1,4 @@
-// Copyright © 2017-2019 Trust Wallet.
+// Copyright © 2017-2020 Trust Wallet.
 //
 // This file is part of Trust. The full Trust copyright notice, including
 // terms governing use, modification, and redistribution, is contained in the
@@ -26,12 +26,12 @@ public class StoredKey {
         return instance;
     }
 
-    static native long nativeCreate(String name, String password);
+    static native long nativeCreate(String name, byte[] password);
     static native void nativeDelete(long handle);
 
     public static native StoredKey load(String path);
-    public static native StoredKey importPrivateKey(byte[] privateKey, String name, String password, CoinType coin);
-    public static native StoredKey importHDWallet(String mnemonic, String name, String password, CoinType coin);
+    public static native StoredKey importPrivateKey(byte[] privateKey, String name, byte[] password, CoinType coin);
+    public static native StoredKey importHDWallet(String mnemonic, String name, byte[] password, CoinType coin);
     public static native StoredKey importJSON(byte[] json);
     public native String identifier();
     public native String name();
@@ -42,14 +42,14 @@ public class StoredKey {
     public native void removeAccountForCoin(CoinType coin);
     public native void addAccount(String address, String derivationPath, String extetndedPublicKey);
     public native boolean store(String path);
-    public native byte[] decryptPrivateKey(String password);
-    public native String decryptMnemonic(String password);
-    public native PrivateKey privateKey(CoinType coin, String password);
-    public native HDWallet wallet(String password);
+    public native byte[] decryptPrivateKey(byte[] password);
+    public native String decryptMnemonic(byte[] password);
+    public native PrivateKey privateKey(CoinType coin, byte[] password);
+    public native HDWallet wallet(byte[] password);
     public native byte[] exportJSON();
-    public native boolean fixAddresses(String password);
+    public native boolean fixAddresses(byte[] password);
 
-    public StoredKey(String name, String password) {
+    public StoredKey(String name, byte[] password) {
         nativeHandle = nativeCreate(name, password);
         if (nativeHandle == 0) {
             throw new InvalidParameterException();

@@ -160,6 +160,13 @@ public final class Decred {
     }
 
     @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new Transaction();
+    }
+
+    @java.lang.Override
     public final com.google.protobuf.UnknownFieldSet
     getUnknownFields() {
       return this.unknownFields;
@@ -194,18 +201,18 @@ public final class Decred {
               break;
             }
             case 26: {
-              if (!((mutable_bitField0_ & 0x00000004) != 0)) {
+              if (!((mutable_bitField0_ & 0x00000001) != 0)) {
                 inputs_ = new java.util.ArrayList<wallet.core.jni.proto.Decred.TransactionInput>();
-                mutable_bitField0_ |= 0x00000004;
+                mutable_bitField0_ |= 0x00000001;
               }
               inputs_.add(
                   input.readMessage(wallet.core.jni.proto.Decred.TransactionInput.parser(), extensionRegistry));
               break;
             }
             case 34: {
-              if (!((mutable_bitField0_ & 0x00000008) != 0)) {
+              if (!((mutable_bitField0_ & 0x00000002) != 0)) {
                 outputs_ = new java.util.ArrayList<wallet.core.jni.proto.Decred.TransactionOutput>();
-                mutable_bitField0_ |= 0x00000008;
+                mutable_bitField0_ |= 0x00000002;
               }
               outputs_.add(
                   input.readMessage(wallet.core.jni.proto.Decred.TransactionOutput.parser(), extensionRegistry));
@@ -236,10 +243,10 @@ public final class Decred {
         throw new com.google.protobuf.InvalidProtocolBufferException(
             e).setUnfinishedMessage(this);
       } finally {
-        if (((mutable_bitField0_ & 0x00000004) != 0)) {
+        if (((mutable_bitField0_ & 0x00000001) != 0)) {
           inputs_ = java.util.Collections.unmodifiableList(inputs_);
         }
-        if (((mutable_bitField0_ & 0x00000008) != 0)) {
+        if (((mutable_bitField0_ & 0x00000002) != 0)) {
           outputs_ = java.util.Collections.unmodifiableList(outputs_);
         }
         this.unknownFields = unknownFields.build();
@@ -259,7 +266,6 @@ public final class Decred {
               wallet.core.jni.proto.Decred.Transaction.class, wallet.core.jni.proto.Decred.Transaction.Builder.class);
     }
 
-    private int bitField0_;
     public static final int SERIALIZETYPE_FIELD_NUMBER = 1;
     private int serializeType_;
     /**
@@ -682,13 +688,13 @@ public final class Decred {
 
         if (inputsBuilder_ == null) {
           inputs_ = java.util.Collections.emptyList();
-          bitField0_ = (bitField0_ & ~0x00000004);
+          bitField0_ = (bitField0_ & ~0x00000001);
         } else {
           inputsBuilder_.clear();
         }
         if (outputsBuilder_ == null) {
           outputs_ = java.util.Collections.emptyList();
-          bitField0_ = (bitField0_ & ~0x00000008);
+          bitField0_ = (bitField0_ & ~0x00000002);
         } else {
           outputsBuilder_.clear();
         }
@@ -723,22 +729,21 @@ public final class Decred {
       public wallet.core.jni.proto.Decred.Transaction buildPartial() {
         wallet.core.jni.proto.Decred.Transaction result = new wallet.core.jni.proto.Decred.Transaction(this);
         int from_bitField0_ = bitField0_;
-        int to_bitField0_ = 0;
         result.serializeType_ = serializeType_;
         result.version_ = version_;
         if (inputsBuilder_ == null) {
-          if (((bitField0_ & 0x00000004) != 0)) {
+          if (((bitField0_ & 0x00000001) != 0)) {
             inputs_ = java.util.Collections.unmodifiableList(inputs_);
-            bitField0_ = (bitField0_ & ~0x00000004);
+            bitField0_ = (bitField0_ & ~0x00000001);
           }
           result.inputs_ = inputs_;
         } else {
           result.inputs_ = inputsBuilder_.build();
         }
         if (outputsBuilder_ == null) {
-          if (((bitField0_ & 0x00000008) != 0)) {
+          if (((bitField0_ & 0x00000002) != 0)) {
             outputs_ = java.util.Collections.unmodifiableList(outputs_);
-            bitField0_ = (bitField0_ & ~0x00000008);
+            bitField0_ = (bitField0_ & ~0x00000002);
           }
           result.outputs_ = outputs_;
         } else {
@@ -746,7 +751,6 @@ public final class Decred {
         }
         result.lockTime_ = lockTime_;
         result.expiry_ = expiry_;
-        result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
       }
@@ -805,7 +809,7 @@ public final class Decred {
           if (!other.inputs_.isEmpty()) {
             if (inputs_.isEmpty()) {
               inputs_ = other.inputs_;
-              bitField0_ = (bitField0_ & ~0x00000004);
+              bitField0_ = (bitField0_ & ~0x00000001);
             } else {
               ensureInputsIsMutable();
               inputs_.addAll(other.inputs_);
@@ -818,7 +822,7 @@ public final class Decred {
               inputsBuilder_.dispose();
               inputsBuilder_ = null;
               inputs_ = other.inputs_;
-              bitField0_ = (bitField0_ & ~0x00000004);
+              bitField0_ = (bitField0_ & ~0x00000001);
               inputsBuilder_ = 
                 com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
                    getInputsFieldBuilder() : null;
@@ -831,7 +835,7 @@ public final class Decred {
           if (!other.outputs_.isEmpty()) {
             if (outputs_.isEmpty()) {
               outputs_ = other.outputs_;
-              bitField0_ = (bitField0_ & ~0x00000008);
+              bitField0_ = (bitField0_ & ~0x00000002);
             } else {
               ensureOutputsIsMutable();
               outputs_.addAll(other.outputs_);
@@ -844,7 +848,7 @@ public final class Decred {
               outputsBuilder_.dispose();
               outputsBuilder_ = null;
               outputs_ = other.outputs_;
-              bitField0_ = (bitField0_ & ~0x00000008);
+              bitField0_ = (bitField0_ & ~0x00000002);
               outputsBuilder_ = 
                 com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
                    getOutputsFieldBuilder() : null;
@@ -968,9 +972,9 @@ public final class Decred {
       private java.util.List<wallet.core.jni.proto.Decred.TransactionInput> inputs_ =
         java.util.Collections.emptyList();
       private void ensureInputsIsMutable() {
-        if (!((bitField0_ & 0x00000004) != 0)) {
+        if (!((bitField0_ & 0x00000001) != 0)) {
           inputs_ = new java.util.ArrayList<wallet.core.jni.proto.Decred.TransactionInput>(inputs_);
-          bitField0_ |= 0x00000004;
+          bitField0_ |= 0x00000001;
          }
       }
 
@@ -1164,7 +1168,7 @@ public final class Decred {
       public Builder clearInputs() {
         if (inputsBuilder_ == null) {
           inputs_ = java.util.Collections.emptyList();
-          bitField0_ = (bitField0_ & ~0x00000004);
+          bitField0_ = (bitField0_ & ~0x00000001);
           onChanged();
         } else {
           inputsBuilder_.clear();
@@ -1269,7 +1273,7 @@ public final class Decred {
           inputsBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
               wallet.core.jni.proto.Decred.TransactionInput, wallet.core.jni.proto.Decred.TransactionInput.Builder, wallet.core.jni.proto.Decred.TransactionInputOrBuilder>(
                   inputs_,
-                  ((bitField0_ & 0x00000004) != 0),
+                  ((bitField0_ & 0x00000001) != 0),
                   getParentForChildren(),
                   isClean());
           inputs_ = null;
@@ -1280,9 +1284,9 @@ public final class Decred {
       private java.util.List<wallet.core.jni.proto.Decred.TransactionOutput> outputs_ =
         java.util.Collections.emptyList();
       private void ensureOutputsIsMutable() {
-        if (!((bitField0_ & 0x00000008) != 0)) {
+        if (!((bitField0_ & 0x00000002) != 0)) {
           outputs_ = new java.util.ArrayList<wallet.core.jni.proto.Decred.TransactionOutput>(outputs_);
-          bitField0_ |= 0x00000008;
+          bitField0_ |= 0x00000002;
          }
       }
 
@@ -1476,7 +1480,7 @@ public final class Decred {
       public Builder clearOutputs() {
         if (outputsBuilder_ == null) {
           outputs_ = java.util.Collections.emptyList();
-          bitField0_ = (bitField0_ & ~0x00000008);
+          bitField0_ = (bitField0_ & ~0x00000002);
           onChanged();
         } else {
           outputsBuilder_.clear();
@@ -1581,7 +1585,7 @@ public final class Decred {
           outputsBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
               wallet.core.jni.proto.Decred.TransactionOutput, wallet.core.jni.proto.Decred.TransactionOutput.Builder, wallet.core.jni.proto.Decred.TransactionOutputOrBuilder>(
                   outputs_,
-                  ((bitField0_ & 0x00000008) != 0),
+                  ((bitField0_ & 0x00000002) != 0),
                   getParentForChildren(),
                   isClean());
           outputs_ = null;
@@ -1800,6 +1804,13 @@ public final class Decred {
     }
 
     @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new TransactionInput();
+    }
+
+    @java.lang.Override
     public final com.google.protobuf.UnknownFieldSet
     getUnknownFields() {
       return this.unknownFields;
@@ -1812,7 +1823,6 @@ public final class Decred {
       if (extensionRegistry == null) {
         throw new java.lang.NullPointerException();
       }
-      int mutable_bitField0_ = 0;
       com.google.protobuf.UnknownFieldSet.Builder unknownFields =
           com.google.protobuf.UnknownFieldSet.newBuilder();
       try {
@@ -2798,6 +2808,13 @@ public final class Decred {
     }
 
     @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new TransactionOutput();
+    }
+
+    @java.lang.Override
     public final com.google.protobuf.UnknownFieldSet
     getUnknownFields() {
       return this.unknownFields;
@@ -2810,7 +2827,6 @@ public final class Decred {
       if (extensionRegistry == null) {
         throw new java.lang.NullPointerException();
       }
-      int mutable_bitField0_ = 0;
       com.google.protobuf.UnknownFieldSet.Builder unknownFields =
           com.google.protobuf.UnknownFieldSet.newBuilder();
       try {
@@ -3457,28 +3473,10 @@ public final class Decred {
 
     /**
      * <pre>
-     * Total transaction fees.
-     * </pre>
-     *
-     * <code>int64 fee = 3;</code>
-     */
-    long getFee();
-
-    /**
-     * <pre>
-     * Maximum spendable amount.
-     * </pre>
-     *
-     * <code>int64 max_amount = 4;</code>
-     */
-    long getMaxAmount();
-
-    /**
-     * <pre>
      * Transaction id
      * </pre>
      *
-     * <code>string transaction_id = 5;</code>
+     * <code>string transaction_id = 3;</code>
      */
     java.lang.String getTransactionId();
     /**
@@ -3486,10 +3484,28 @@ public final class Decred {
      * Transaction id
      * </pre>
      *
-     * <code>string transaction_id = 5;</code>
+     * <code>string transaction_id = 3;</code>
      */
     com.google.protobuf.ByteString
         getTransactionIdBytes();
+
+    /**
+     * <pre>
+     * Optional error message
+     * </pre>
+     *
+     * <code>string error = 4;</code>
+     */
+    java.lang.String getError();
+    /**
+     * <pre>
+     * Optional error message
+     * </pre>
+     *
+     * <code>string error = 4;</code>
+     */
+    com.google.protobuf.ByteString
+        getErrorBytes();
   }
   /**
    * <pre>
@@ -3510,6 +3526,14 @@ public final class Decred {
     private SigningOutput() {
       encoded_ = com.google.protobuf.ByteString.EMPTY;
       transactionId_ = "";
+      error_ = "";
+    }
+
+    @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new SigningOutput();
     }
 
     @java.lang.Override
@@ -3525,7 +3549,6 @@ public final class Decred {
       if (extensionRegistry == null) {
         throw new java.lang.NullPointerException();
       }
-      int mutable_bitField0_ = 0;
       com.google.protobuf.UnknownFieldSet.Builder unknownFields =
           com.google.protobuf.UnknownFieldSet.newBuilder();
       try {
@@ -3554,20 +3577,16 @@ public final class Decred {
               encoded_ = input.readBytes();
               break;
             }
-            case 24: {
-
-              fee_ = input.readInt64();
-              break;
-            }
-            case 32: {
-
-              maxAmount_ = input.readInt64();
-              break;
-            }
-            case 42: {
+            case 26: {
               java.lang.String s = input.readStringRequireUtf8();
 
               transactionId_ = s;
+              break;
+            }
+            case 34: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              error_ = s;
               break;
             }
             default: {
@@ -3648,40 +3667,14 @@ public final class Decred {
       return encoded_;
     }
 
-    public static final int FEE_FIELD_NUMBER = 3;
-    private long fee_;
-    /**
-     * <pre>
-     * Total transaction fees.
-     * </pre>
-     *
-     * <code>int64 fee = 3;</code>
-     */
-    public long getFee() {
-      return fee_;
-    }
-
-    public static final int MAX_AMOUNT_FIELD_NUMBER = 4;
-    private long maxAmount_;
-    /**
-     * <pre>
-     * Maximum spendable amount.
-     * </pre>
-     *
-     * <code>int64 max_amount = 4;</code>
-     */
-    public long getMaxAmount() {
-      return maxAmount_;
-    }
-
-    public static final int TRANSACTION_ID_FIELD_NUMBER = 5;
+    public static final int TRANSACTION_ID_FIELD_NUMBER = 3;
     private volatile java.lang.Object transactionId_;
     /**
      * <pre>
      * Transaction id
      * </pre>
      *
-     * <code>string transaction_id = 5;</code>
+     * <code>string transaction_id = 3;</code>
      */
     public java.lang.String getTransactionId() {
       java.lang.Object ref = transactionId_;
@@ -3700,7 +3693,7 @@ public final class Decred {
      * Transaction id
      * </pre>
      *
-     * <code>string transaction_id = 5;</code>
+     * <code>string transaction_id = 3;</code>
      */
     public com.google.protobuf.ByteString
         getTransactionIdBytes() {
@@ -3710,6 +3703,48 @@ public final class Decred {
             com.google.protobuf.ByteString.copyFromUtf8(
                 (java.lang.String) ref);
         transactionId_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int ERROR_FIELD_NUMBER = 4;
+    private volatile java.lang.Object error_;
+    /**
+     * <pre>
+     * Optional error message
+     * </pre>
+     *
+     * <code>string error = 4;</code>
+     */
+    public java.lang.String getError() {
+      java.lang.Object ref = error_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        error_ = s;
+        return s;
+      }
+    }
+    /**
+     * <pre>
+     * Optional error message
+     * </pre>
+     *
+     * <code>string error = 4;</code>
+     */
+    public com.google.protobuf.ByteString
+        getErrorBytes() {
+      java.lang.Object ref = error_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        error_ = b;
         return b;
       } else {
         return (com.google.protobuf.ByteString) ref;
@@ -3736,14 +3771,11 @@ public final class Decred {
       if (!encoded_.isEmpty()) {
         output.writeBytes(2, encoded_);
       }
-      if (fee_ != 0L) {
-        output.writeInt64(3, fee_);
-      }
-      if (maxAmount_ != 0L) {
-        output.writeInt64(4, maxAmount_);
-      }
       if (!getTransactionIdBytes().isEmpty()) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 5, transactionId_);
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 3, transactionId_);
+      }
+      if (!getErrorBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 4, error_);
       }
       unknownFields.writeTo(output);
     }
@@ -3762,16 +3794,11 @@ public final class Decred {
         size += com.google.protobuf.CodedOutputStream
           .computeBytesSize(2, encoded_);
       }
-      if (fee_ != 0L) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeInt64Size(3, fee_);
-      }
-      if (maxAmount_ != 0L) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeInt64Size(4, maxAmount_);
-      }
       if (!getTransactionIdBytes().isEmpty()) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(5, transactionId_);
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, transactionId_);
+      }
+      if (!getErrorBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(4, error_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -3795,12 +3822,10 @@ public final class Decred {
       }
       if (!getEncoded()
           .equals(other.getEncoded())) return false;
-      if (getFee()
-          != other.getFee()) return false;
-      if (getMaxAmount()
-          != other.getMaxAmount()) return false;
       if (!getTransactionId()
           .equals(other.getTransactionId())) return false;
+      if (!getError()
+          .equals(other.getError())) return false;
       if (!unknownFields.equals(other.unknownFields)) return false;
       return true;
     }
@@ -3818,14 +3843,10 @@ public final class Decred {
       }
       hash = (37 * hash) + ENCODED_FIELD_NUMBER;
       hash = (53 * hash) + getEncoded().hashCode();
-      hash = (37 * hash) + FEE_FIELD_NUMBER;
-      hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
-          getFee());
-      hash = (37 * hash) + MAX_AMOUNT_FIELD_NUMBER;
-      hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
-          getMaxAmount());
       hash = (37 * hash) + TRANSACTION_ID_FIELD_NUMBER;
       hash = (53 * hash) + getTransactionId().hashCode();
+      hash = (37 * hash) + ERROR_FIELD_NUMBER;
+      hash = (53 * hash) + getError().hashCode();
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -3971,11 +3992,9 @@ public final class Decred {
         }
         encoded_ = com.google.protobuf.ByteString.EMPTY;
 
-        fee_ = 0L;
-
-        maxAmount_ = 0L;
-
         transactionId_ = "";
+
+        error_ = "";
 
         return this;
       }
@@ -4009,9 +4028,8 @@ public final class Decred {
           result.transaction_ = transactionBuilder_.build();
         }
         result.encoded_ = encoded_;
-        result.fee_ = fee_;
-        result.maxAmount_ = maxAmount_;
         result.transactionId_ = transactionId_;
+        result.error_ = error_;
         onBuilt();
         return result;
       }
@@ -4066,14 +4084,12 @@ public final class Decred {
         if (other.getEncoded() != com.google.protobuf.ByteString.EMPTY) {
           setEncoded(other.getEncoded());
         }
-        if (other.getFee() != 0L) {
-          setFee(other.getFee());
-        }
-        if (other.getMaxAmount() != 0L) {
-          setMaxAmount(other.getMaxAmount());
-        }
         if (!other.getTransactionId().isEmpty()) {
           transactionId_ = other.transactionId_;
+          onChanged();
+        }
+        if (!other.getError().isEmpty()) {
+          error_ = other.error_;
           onChanged();
         }
         this.mergeUnknownFields(other.unknownFields);
@@ -4299,89 +4315,13 @@ public final class Decred {
         return this;
       }
 
-      private long fee_ ;
-      /**
-       * <pre>
-       * Total transaction fees.
-       * </pre>
-       *
-       * <code>int64 fee = 3;</code>
-       */
-      public long getFee() {
-        return fee_;
-      }
-      /**
-       * <pre>
-       * Total transaction fees.
-       * </pre>
-       *
-       * <code>int64 fee = 3;</code>
-       */
-      public Builder setFee(long value) {
-        
-        fee_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <pre>
-       * Total transaction fees.
-       * </pre>
-       *
-       * <code>int64 fee = 3;</code>
-       */
-      public Builder clearFee() {
-        
-        fee_ = 0L;
-        onChanged();
-        return this;
-      }
-
-      private long maxAmount_ ;
-      /**
-       * <pre>
-       * Maximum spendable amount.
-       * </pre>
-       *
-       * <code>int64 max_amount = 4;</code>
-       */
-      public long getMaxAmount() {
-        return maxAmount_;
-      }
-      /**
-       * <pre>
-       * Maximum spendable amount.
-       * </pre>
-       *
-       * <code>int64 max_amount = 4;</code>
-       */
-      public Builder setMaxAmount(long value) {
-        
-        maxAmount_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <pre>
-       * Maximum spendable amount.
-       * </pre>
-       *
-       * <code>int64 max_amount = 4;</code>
-       */
-      public Builder clearMaxAmount() {
-        
-        maxAmount_ = 0L;
-        onChanged();
-        return this;
-      }
-
       private java.lang.Object transactionId_ = "";
       /**
        * <pre>
        * Transaction id
        * </pre>
        *
-       * <code>string transaction_id = 5;</code>
+       * <code>string transaction_id = 3;</code>
        */
       public java.lang.String getTransactionId() {
         java.lang.Object ref = transactionId_;
@@ -4400,7 +4340,7 @@ public final class Decred {
        * Transaction id
        * </pre>
        *
-       * <code>string transaction_id = 5;</code>
+       * <code>string transaction_id = 3;</code>
        */
       public com.google.protobuf.ByteString
           getTransactionIdBytes() {
@@ -4420,7 +4360,7 @@ public final class Decred {
        * Transaction id
        * </pre>
        *
-       * <code>string transaction_id = 5;</code>
+       * <code>string transaction_id = 3;</code>
        */
       public Builder setTransactionId(
           java.lang.String value) {
@@ -4437,7 +4377,7 @@ public final class Decred {
        * Transaction id
        * </pre>
        *
-       * <code>string transaction_id = 5;</code>
+       * <code>string transaction_id = 3;</code>
        */
       public Builder clearTransactionId() {
         
@@ -4450,7 +4390,7 @@ public final class Decred {
        * Transaction id
        * </pre>
        *
-       * <code>string transaction_id = 5;</code>
+       * <code>string transaction_id = 3;</code>
        */
       public Builder setTransactionIdBytes(
           com.google.protobuf.ByteString value) {
@@ -4460,6 +4400,95 @@ public final class Decred {
   checkByteStringIsUtf8(value);
         
         transactionId_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object error_ = "";
+      /**
+       * <pre>
+       * Optional error message
+       * </pre>
+       *
+       * <code>string error = 4;</code>
+       */
+      public java.lang.String getError() {
+        java.lang.Object ref = error_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          error_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <pre>
+       * Optional error message
+       * </pre>
+       *
+       * <code>string error = 4;</code>
+       */
+      public com.google.protobuf.ByteString
+          getErrorBytes() {
+        java.lang.Object ref = error_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          error_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <pre>
+       * Optional error message
+       * </pre>
+       *
+       * <code>string error = 4;</code>
+       */
+      public Builder setError(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        error_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Optional error message
+       * </pre>
+       *
+       * <code>string error = 4;</code>
+       */
+      public Builder clearError() {
+        
+        error_ = getDefaultInstance().getError();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Optional error message
+       * </pre>
+       *
+       * <code>string error = 4;</code>
+       */
+      public Builder setErrorBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        error_ = value;
         onChanged();
         return this;
       }
@@ -4556,26 +4585,17 @@ public final class Decred {
       "uence\030\002 \001(\r\022\017\n\007valueIn\030\003 \001(\003\022\023\n\013blockHei" +
       "ght\030\004 \001(\r\022\022\n\nblockIndex\030\005 \001(\r\022\016\n\006script\030" +
       "\006 \001(\014\"C\n\021TransactionOutput\022\r\n\005value\030\001 \001(" +
-      "\003\022\017\n\007version\030\002 \001(\r\022\016\n\006script\030\003 \001(\014\"\214\001\n\rS" +
-      "igningOutput\0221\n\013transaction\030\001 \001(\0132\034.TW.D" +
-      "ecred.Proto.Transaction\022\017\n\007encoded\030\002 \001(\014" +
-      "\022\013\n\003fee\030\003 \001(\003\022\022\n\nmax_amount\030\004 \001(\003\022\026\n\016tra" +
-      "nsaction_id\030\005 \001(\tB\027\n\025wallet.core.jni.pro" +
-      "tob\006proto3"
+      "\003\022\017\n\007version\030\002 \001(\r\022\016\n\006script\030\003 \001(\014\"z\n\rSi" +
+      "gningOutput\0221\n\013transaction\030\001 \001(\0132\034.TW.De" +
+      "cred.Proto.Transaction\022\017\n\007encoded\030\002 \001(\014\022" +
+      "\026\n\016transaction_id\030\003 \001(\t\022\r\n\005error\030\004 \001(\tB\027" +
+      "\n\025wallet.core.jni.protob\006proto3"
     };
-    com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
-        new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
-          public com.google.protobuf.ExtensionRegistry assignDescriptors(
-              com.google.protobuf.Descriptors.FileDescriptor root) {
-            descriptor = root;
-            return null;
-          }
-        };
-    com.google.protobuf.Descriptors.FileDescriptor
+    descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
         new com.google.protobuf.Descriptors.FileDescriptor[] {
           wallet.core.jni.proto.Bitcoin.getDescriptor(),
-        }, assigner);
+        });
     internal_static_TW_Decred_Proto_Transaction_descriptor =
       getDescriptor().getMessageTypes().get(0);
     internal_static_TW_Decred_Proto_Transaction_fieldAccessorTable = new
@@ -4599,7 +4619,7 @@ public final class Decred {
     internal_static_TW_Decred_Proto_SigningOutput_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_TW_Decred_Proto_SigningOutput_descriptor,
-        new java.lang.String[] { "Transaction", "Encoded", "Fee", "MaxAmount", "TransactionId", });
+        new java.lang.String[] { "Transaction", "Encoded", "TransactionId", "Error", });
     wallet.core.jni.proto.Bitcoin.getDescriptor();
   }
 

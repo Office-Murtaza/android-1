@@ -19,22 +19,17 @@ public final class Solana {
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>bytes private_key = 1;</code>
-     */
-    com.google.protobuf.ByteString getPrivateKey();
-
-    /**
-     * <code>string recipient = 2;</code>
+     * <code>string recipient = 1;</code>
      */
     java.lang.String getRecipient();
     /**
-     * <code>string recipient = 2;</code>
+     * <code>string recipient = 1;</code>
      */
     com.google.protobuf.ByteString
         getRecipientBytes();
 
     /**
-     * <code>uint64 value = 3;</code>
+     * <code>uint64 value = 2;</code>
      */
     long getValue();
   }
@@ -51,8 +46,14 @@ public final class Solana {
       super(builder);
     }
     private Transfer() {
-      privateKey_ = com.google.protobuf.ByteString.EMPTY;
       recipient_ = "";
+    }
+
+    @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new Transfer();
     }
 
     @java.lang.Override
@@ -68,7 +69,6 @@ public final class Solana {
       if (extensionRegistry == null) {
         throw new java.lang.NullPointerException();
       }
-      int mutable_bitField0_ = 0;
       com.google.protobuf.UnknownFieldSet.Builder unknownFields =
           com.google.protobuf.UnknownFieldSet.newBuilder();
       try {
@@ -80,17 +80,12 @@ public final class Solana {
               done = true;
               break;
             case 10: {
-
-              privateKey_ = input.readBytes();
-              break;
-            }
-            case 18: {
               java.lang.String s = input.readStringRequireUtf8();
 
               recipient_ = s;
               break;
             }
-            case 24: {
+            case 16: {
 
               value_ = input.readUInt64();
               break;
@@ -127,19 +122,10 @@ public final class Solana {
               wallet.core.jni.proto.Solana.Transfer.class, wallet.core.jni.proto.Solana.Transfer.Builder.class);
     }
 
-    public static final int PRIVATE_KEY_FIELD_NUMBER = 1;
-    private com.google.protobuf.ByteString privateKey_;
-    /**
-     * <code>bytes private_key = 1;</code>
-     */
-    public com.google.protobuf.ByteString getPrivateKey() {
-      return privateKey_;
-    }
-
-    public static final int RECIPIENT_FIELD_NUMBER = 2;
+    public static final int RECIPIENT_FIELD_NUMBER = 1;
     private volatile java.lang.Object recipient_;
     /**
-     * <code>string recipient = 2;</code>
+     * <code>string recipient = 1;</code>
      */
     public java.lang.String getRecipient() {
       java.lang.Object ref = recipient_;
@@ -154,7 +140,7 @@ public final class Solana {
       }
     }
     /**
-     * <code>string recipient = 2;</code>
+     * <code>string recipient = 1;</code>
      */
     public com.google.protobuf.ByteString
         getRecipientBytes() {
@@ -170,10 +156,10 @@ public final class Solana {
       }
     }
 
-    public static final int VALUE_FIELD_NUMBER = 3;
+    public static final int VALUE_FIELD_NUMBER = 2;
     private long value_;
     /**
-     * <code>uint64 value = 3;</code>
+     * <code>uint64 value = 2;</code>
      */
     public long getValue() {
       return value_;
@@ -193,14 +179,11 @@ public final class Solana {
     @java.lang.Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
-      if (!privateKey_.isEmpty()) {
-        output.writeBytes(1, privateKey_);
-      }
       if (!getRecipientBytes().isEmpty()) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 2, recipient_);
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 1, recipient_);
       }
       if (value_ != 0L) {
-        output.writeUInt64(3, value_);
+        output.writeUInt64(2, value_);
       }
       unknownFields.writeTo(output);
     }
@@ -211,16 +194,12 @@ public final class Solana {
       if (size != -1) return size;
 
       size = 0;
-      if (!privateKey_.isEmpty()) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeBytesSize(1, privateKey_);
-      }
       if (!getRecipientBytes().isEmpty()) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, recipient_);
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, recipient_);
       }
       if (value_ != 0L) {
         size += com.google.protobuf.CodedOutputStream
-          .computeUInt64Size(3, value_);
+          .computeUInt64Size(2, value_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -237,8 +216,6 @@ public final class Solana {
       }
       wallet.core.jni.proto.Solana.Transfer other = (wallet.core.jni.proto.Solana.Transfer) obj;
 
-      if (!getPrivateKey()
-          .equals(other.getPrivateKey())) return false;
       if (!getRecipient()
           .equals(other.getRecipient())) return false;
       if (getValue()
@@ -254,8 +231,6 @@ public final class Solana {
       }
       int hash = 41;
       hash = (19 * hash) + getDescriptor().hashCode();
-      hash = (37 * hash) + PRIVATE_KEY_FIELD_NUMBER;
-      hash = (53 * hash) + getPrivateKey().hashCode();
       hash = (37 * hash) + RECIPIENT_FIELD_NUMBER;
       hash = (53 * hash) + getRecipient().hashCode();
       hash = (37 * hash) + VALUE_FIELD_NUMBER;
@@ -394,8 +369,6 @@ public final class Solana {
       @java.lang.Override
       public Builder clear() {
         super.clear();
-        privateKey_ = com.google.protobuf.ByteString.EMPTY;
-
         recipient_ = "";
 
         value_ = 0L;
@@ -426,7 +399,6 @@ public final class Solana {
       @java.lang.Override
       public wallet.core.jni.proto.Solana.Transfer buildPartial() {
         wallet.core.jni.proto.Solana.Transfer result = new wallet.core.jni.proto.Solana.Transfer(this);
-        result.privateKey_ = privateKey_;
         result.recipient_ = recipient_;
         result.value_ = value_;
         onBuilt();
@@ -477,9 +449,6 @@ public final class Solana {
 
       public Builder mergeFrom(wallet.core.jni.proto.Solana.Transfer other) {
         if (other == wallet.core.jni.proto.Solana.Transfer.getDefaultInstance()) return this;
-        if (other.getPrivateKey() != com.google.protobuf.ByteString.EMPTY) {
-          setPrivateKey(other.getPrivateKey());
-        }
         if (!other.getRecipient().isEmpty()) {
           recipient_ = other.recipient_;
           onChanged();
@@ -516,38 +485,9 @@ public final class Solana {
         return this;
       }
 
-      private com.google.protobuf.ByteString privateKey_ = com.google.protobuf.ByteString.EMPTY;
-      /**
-       * <code>bytes private_key = 1;</code>
-       */
-      public com.google.protobuf.ByteString getPrivateKey() {
-        return privateKey_;
-      }
-      /**
-       * <code>bytes private_key = 1;</code>
-       */
-      public Builder setPrivateKey(com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  
-        privateKey_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>bytes private_key = 1;</code>
-       */
-      public Builder clearPrivateKey() {
-        
-        privateKey_ = getDefaultInstance().getPrivateKey();
-        onChanged();
-        return this;
-      }
-
       private java.lang.Object recipient_ = "";
       /**
-       * <code>string recipient = 2;</code>
+       * <code>string recipient = 1;</code>
        */
       public java.lang.String getRecipient() {
         java.lang.Object ref = recipient_;
@@ -562,7 +502,7 @@ public final class Solana {
         }
       }
       /**
-       * <code>string recipient = 2;</code>
+       * <code>string recipient = 1;</code>
        */
       public com.google.protobuf.ByteString
           getRecipientBytes() {
@@ -578,7 +518,7 @@ public final class Solana {
         }
       }
       /**
-       * <code>string recipient = 2;</code>
+       * <code>string recipient = 1;</code>
        */
       public Builder setRecipient(
           java.lang.String value) {
@@ -591,7 +531,7 @@ public final class Solana {
         return this;
       }
       /**
-       * <code>string recipient = 2;</code>
+       * <code>string recipient = 1;</code>
        */
       public Builder clearRecipient() {
         
@@ -600,7 +540,7 @@ public final class Solana {
         return this;
       }
       /**
-       * <code>string recipient = 2;</code>
+       * <code>string recipient = 1;</code>
        */
       public Builder setRecipientBytes(
           com.google.protobuf.ByteString value) {
@@ -616,13 +556,13 @@ public final class Solana {
 
       private long value_ ;
       /**
-       * <code>uint64 value = 3;</code>
+       * <code>uint64 value = 2;</code>
        */
       public long getValue() {
         return value_;
       }
       /**
-       * <code>uint64 value = 3;</code>
+       * <code>uint64 value = 2;</code>
        */
       public Builder setValue(long value) {
         
@@ -631,7 +571,7 @@ public final class Solana {
         return this;
       }
       /**
-       * <code>uint64 value = 3;</code>
+       * <code>uint64 value = 2;</code>
        */
       public Builder clearValue() {
         
@@ -697,27 +637,17 @@ public final class Solana {
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>bytes from_private_key = 1;</code>
+     * <code>string validator_pubkey = 1;</code>
      */
-    com.google.protobuf.ByteString getFromPrivateKey();
-
+    java.lang.String getValidatorPubkey();
     /**
-     * <code>bytes stake_private_key = 2;</code>
-     */
-    com.google.protobuf.ByteString getStakePrivateKey();
-
-    /**
-     * <code>string vote_pubkey = 3;</code>
-     */
-    java.lang.String getVotePubkey();
-    /**
-     * <code>string vote_pubkey = 3;</code>
+     * <code>string validator_pubkey = 1;</code>
      */
     com.google.protobuf.ByteString
-        getVotePubkeyBytes();
+        getValidatorPubkeyBytes();
 
     /**
-     * <code>uint64 value = 4;</code>
+     * <code>uint64 value = 2;</code>
      */
     long getValue();
   }
@@ -734,9 +664,14 @@ public final class Solana {
       super(builder);
     }
     private Stake() {
-      fromPrivateKey_ = com.google.protobuf.ByteString.EMPTY;
-      stakePrivateKey_ = com.google.protobuf.ByteString.EMPTY;
-      votePubkey_ = "";
+      validatorPubkey_ = "";
+    }
+
+    @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new Stake();
     }
 
     @java.lang.Override
@@ -752,7 +687,6 @@ public final class Solana {
       if (extensionRegistry == null) {
         throw new java.lang.NullPointerException();
       }
-      int mutable_bitField0_ = 0;
       com.google.protobuf.UnknownFieldSet.Builder unknownFields =
           com.google.protobuf.UnknownFieldSet.newBuilder();
       try {
@@ -764,22 +698,12 @@ public final class Solana {
               done = true;
               break;
             case 10: {
-
-              fromPrivateKey_ = input.readBytes();
-              break;
-            }
-            case 18: {
-
-              stakePrivateKey_ = input.readBytes();
-              break;
-            }
-            case 26: {
               java.lang.String s = input.readStringRequireUtf8();
 
-              votePubkey_ = s;
+              validatorPubkey_ = s;
               break;
             }
-            case 32: {
+            case 16: {
 
               value_ = input.readUInt64();
               break;
@@ -816,62 +740,44 @@ public final class Solana {
               wallet.core.jni.proto.Solana.Stake.class, wallet.core.jni.proto.Solana.Stake.Builder.class);
     }
 
-    public static final int FROM_PRIVATE_KEY_FIELD_NUMBER = 1;
-    private com.google.protobuf.ByteString fromPrivateKey_;
+    public static final int VALIDATOR_PUBKEY_FIELD_NUMBER = 1;
+    private volatile java.lang.Object validatorPubkey_;
     /**
-     * <code>bytes from_private_key = 1;</code>
+     * <code>string validator_pubkey = 1;</code>
      */
-    public com.google.protobuf.ByteString getFromPrivateKey() {
-      return fromPrivateKey_;
-    }
-
-    public static final int STAKE_PRIVATE_KEY_FIELD_NUMBER = 2;
-    private com.google.protobuf.ByteString stakePrivateKey_;
-    /**
-     * <code>bytes stake_private_key = 2;</code>
-     */
-    public com.google.protobuf.ByteString getStakePrivateKey() {
-      return stakePrivateKey_;
-    }
-
-    public static final int VOTE_PUBKEY_FIELD_NUMBER = 3;
-    private volatile java.lang.Object votePubkey_;
-    /**
-     * <code>string vote_pubkey = 3;</code>
-     */
-    public java.lang.String getVotePubkey() {
-      java.lang.Object ref = votePubkey_;
+    public java.lang.String getValidatorPubkey() {
+      java.lang.Object ref = validatorPubkey_;
       if (ref instanceof java.lang.String) {
         return (java.lang.String) ref;
       } else {
         com.google.protobuf.ByteString bs = 
             (com.google.protobuf.ByteString) ref;
         java.lang.String s = bs.toStringUtf8();
-        votePubkey_ = s;
+        validatorPubkey_ = s;
         return s;
       }
     }
     /**
-     * <code>string vote_pubkey = 3;</code>
+     * <code>string validator_pubkey = 1;</code>
      */
     public com.google.protobuf.ByteString
-        getVotePubkeyBytes() {
-      java.lang.Object ref = votePubkey_;
+        getValidatorPubkeyBytes() {
+      java.lang.Object ref = validatorPubkey_;
       if (ref instanceof java.lang.String) {
         com.google.protobuf.ByteString b = 
             com.google.protobuf.ByteString.copyFromUtf8(
                 (java.lang.String) ref);
-        votePubkey_ = b;
+        validatorPubkey_ = b;
         return b;
       } else {
         return (com.google.protobuf.ByteString) ref;
       }
     }
 
-    public static final int VALUE_FIELD_NUMBER = 4;
+    public static final int VALUE_FIELD_NUMBER = 2;
     private long value_;
     /**
-     * <code>uint64 value = 4;</code>
+     * <code>uint64 value = 2;</code>
      */
     public long getValue() {
       return value_;
@@ -891,17 +797,11 @@ public final class Solana {
     @java.lang.Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
-      if (!fromPrivateKey_.isEmpty()) {
-        output.writeBytes(1, fromPrivateKey_);
-      }
-      if (!stakePrivateKey_.isEmpty()) {
-        output.writeBytes(2, stakePrivateKey_);
-      }
-      if (!getVotePubkeyBytes().isEmpty()) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 3, votePubkey_);
+      if (!getValidatorPubkeyBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 1, validatorPubkey_);
       }
       if (value_ != 0L) {
-        output.writeUInt64(4, value_);
+        output.writeUInt64(2, value_);
       }
       unknownFields.writeTo(output);
     }
@@ -912,20 +812,12 @@ public final class Solana {
       if (size != -1) return size;
 
       size = 0;
-      if (!fromPrivateKey_.isEmpty()) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeBytesSize(1, fromPrivateKey_);
-      }
-      if (!stakePrivateKey_.isEmpty()) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeBytesSize(2, stakePrivateKey_);
-      }
-      if (!getVotePubkeyBytes().isEmpty()) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, votePubkey_);
+      if (!getValidatorPubkeyBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, validatorPubkey_);
       }
       if (value_ != 0L) {
         size += com.google.protobuf.CodedOutputStream
-          .computeUInt64Size(4, value_);
+          .computeUInt64Size(2, value_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -942,12 +834,8 @@ public final class Solana {
       }
       wallet.core.jni.proto.Solana.Stake other = (wallet.core.jni.proto.Solana.Stake) obj;
 
-      if (!getFromPrivateKey()
-          .equals(other.getFromPrivateKey())) return false;
-      if (!getStakePrivateKey()
-          .equals(other.getStakePrivateKey())) return false;
-      if (!getVotePubkey()
-          .equals(other.getVotePubkey())) return false;
+      if (!getValidatorPubkey()
+          .equals(other.getValidatorPubkey())) return false;
       if (getValue()
           != other.getValue()) return false;
       if (!unknownFields.equals(other.unknownFields)) return false;
@@ -961,12 +849,8 @@ public final class Solana {
       }
       int hash = 41;
       hash = (19 * hash) + getDescriptor().hashCode();
-      hash = (37 * hash) + FROM_PRIVATE_KEY_FIELD_NUMBER;
-      hash = (53 * hash) + getFromPrivateKey().hashCode();
-      hash = (37 * hash) + STAKE_PRIVATE_KEY_FIELD_NUMBER;
-      hash = (53 * hash) + getStakePrivateKey().hashCode();
-      hash = (37 * hash) + VOTE_PUBKEY_FIELD_NUMBER;
-      hash = (53 * hash) + getVotePubkey().hashCode();
+      hash = (37 * hash) + VALIDATOR_PUBKEY_FIELD_NUMBER;
+      hash = (53 * hash) + getValidatorPubkey().hashCode();
       hash = (37 * hash) + VALUE_FIELD_NUMBER;
       hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
           getValue());
@@ -1103,11 +987,7 @@ public final class Solana {
       @java.lang.Override
       public Builder clear() {
         super.clear();
-        fromPrivateKey_ = com.google.protobuf.ByteString.EMPTY;
-
-        stakePrivateKey_ = com.google.protobuf.ByteString.EMPTY;
-
-        votePubkey_ = "";
+        validatorPubkey_ = "";
 
         value_ = 0L;
 
@@ -1137,9 +1017,7 @@ public final class Solana {
       @java.lang.Override
       public wallet.core.jni.proto.Solana.Stake buildPartial() {
         wallet.core.jni.proto.Solana.Stake result = new wallet.core.jni.proto.Solana.Stake(this);
-        result.fromPrivateKey_ = fromPrivateKey_;
-        result.stakePrivateKey_ = stakePrivateKey_;
-        result.votePubkey_ = votePubkey_;
+        result.validatorPubkey_ = validatorPubkey_;
         result.value_ = value_;
         onBuilt();
         return result;
@@ -1189,14 +1067,8 @@ public final class Solana {
 
       public Builder mergeFrom(wallet.core.jni.proto.Solana.Stake other) {
         if (other == wallet.core.jni.proto.Solana.Stake.getDefaultInstance()) return this;
-        if (other.getFromPrivateKey() != com.google.protobuf.ByteString.EMPTY) {
-          setFromPrivateKey(other.getFromPrivateKey());
-        }
-        if (other.getStakePrivateKey() != com.google.protobuf.ByteString.EMPTY) {
-          setStakePrivateKey(other.getStakePrivateKey());
-        }
-        if (!other.getVotePubkey().isEmpty()) {
-          votePubkey_ = other.votePubkey_;
+        if (!other.getValidatorPubkey().isEmpty()) {
+          validatorPubkey_ = other.validatorPubkey_;
           onChanged();
         }
         if (other.getValue() != 0L) {
@@ -1231,142 +1103,84 @@ public final class Solana {
         return this;
       }
 
-      private com.google.protobuf.ByteString fromPrivateKey_ = com.google.protobuf.ByteString.EMPTY;
+      private java.lang.Object validatorPubkey_ = "";
       /**
-       * <code>bytes from_private_key = 1;</code>
+       * <code>string validator_pubkey = 1;</code>
        */
-      public com.google.protobuf.ByteString getFromPrivateKey() {
-        return fromPrivateKey_;
-      }
-      /**
-       * <code>bytes from_private_key = 1;</code>
-       */
-      public Builder setFromPrivateKey(com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  
-        fromPrivateKey_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>bytes from_private_key = 1;</code>
-       */
-      public Builder clearFromPrivateKey() {
-        
-        fromPrivateKey_ = getDefaultInstance().getFromPrivateKey();
-        onChanged();
-        return this;
-      }
-
-      private com.google.protobuf.ByteString stakePrivateKey_ = com.google.protobuf.ByteString.EMPTY;
-      /**
-       * <code>bytes stake_private_key = 2;</code>
-       */
-      public com.google.protobuf.ByteString getStakePrivateKey() {
-        return stakePrivateKey_;
-      }
-      /**
-       * <code>bytes stake_private_key = 2;</code>
-       */
-      public Builder setStakePrivateKey(com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  
-        stakePrivateKey_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>bytes stake_private_key = 2;</code>
-       */
-      public Builder clearStakePrivateKey() {
-        
-        stakePrivateKey_ = getDefaultInstance().getStakePrivateKey();
-        onChanged();
-        return this;
-      }
-
-      private java.lang.Object votePubkey_ = "";
-      /**
-       * <code>string vote_pubkey = 3;</code>
-       */
-      public java.lang.String getVotePubkey() {
-        java.lang.Object ref = votePubkey_;
+      public java.lang.String getValidatorPubkey() {
+        java.lang.Object ref = validatorPubkey_;
         if (!(ref instanceof java.lang.String)) {
           com.google.protobuf.ByteString bs =
               (com.google.protobuf.ByteString) ref;
           java.lang.String s = bs.toStringUtf8();
-          votePubkey_ = s;
+          validatorPubkey_ = s;
           return s;
         } else {
           return (java.lang.String) ref;
         }
       }
       /**
-       * <code>string vote_pubkey = 3;</code>
+       * <code>string validator_pubkey = 1;</code>
        */
       public com.google.protobuf.ByteString
-          getVotePubkeyBytes() {
-        java.lang.Object ref = votePubkey_;
+          getValidatorPubkeyBytes() {
+        java.lang.Object ref = validatorPubkey_;
         if (ref instanceof String) {
           com.google.protobuf.ByteString b = 
               com.google.protobuf.ByteString.copyFromUtf8(
                   (java.lang.String) ref);
-          votePubkey_ = b;
+          validatorPubkey_ = b;
           return b;
         } else {
           return (com.google.protobuf.ByteString) ref;
         }
       }
       /**
-       * <code>string vote_pubkey = 3;</code>
+       * <code>string validator_pubkey = 1;</code>
        */
-      public Builder setVotePubkey(
+      public Builder setValidatorPubkey(
           java.lang.String value) {
         if (value == null) {
     throw new NullPointerException();
   }
   
-        votePubkey_ = value;
+        validatorPubkey_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>string vote_pubkey = 3;</code>
+       * <code>string validator_pubkey = 1;</code>
        */
-      public Builder clearVotePubkey() {
+      public Builder clearValidatorPubkey() {
         
-        votePubkey_ = getDefaultInstance().getVotePubkey();
+        validatorPubkey_ = getDefaultInstance().getValidatorPubkey();
         onChanged();
         return this;
       }
       /**
-       * <code>string vote_pubkey = 3;</code>
+       * <code>string validator_pubkey = 1;</code>
        */
-      public Builder setVotePubkeyBytes(
+      public Builder setValidatorPubkeyBytes(
           com.google.protobuf.ByteString value) {
         if (value == null) {
     throw new NullPointerException();
   }
   checkByteStringIsUtf8(value);
         
-        votePubkey_ = value;
+        validatorPubkey_ = value;
         onChanged();
         return this;
       }
 
       private long value_ ;
       /**
-       * <code>uint64 value = 4;</code>
+       * <code>uint64 value = 2;</code>
        */
       public long getValue() {
         return value_;
       }
       /**
-       * <code>uint64 value = 4;</code>
+       * <code>uint64 value = 2;</code>
        */
       public Builder setValue(long value) {
         
@@ -1375,7 +1189,7 @@ public final class Solana {
         return this;
       }
       /**
-       * <code>uint64 value = 4;</code>
+       * <code>uint64 value = 2;</code>
        */
       public Builder clearValue() {
         
@@ -1441,23 +1255,14 @@ public final class Solana {
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <pre>
-     * The stake account private key
-     * </pre>
-     *
-     * <code>bytes private_key = 1;</code>
+     * <code>string validator_pubkey = 1;</code>
      */
-    com.google.protobuf.ByteString getPrivateKey();
-
+    java.lang.String getValidatorPubkey();
     /**
-     * <code>string vote_pubkey = 2;</code>
-     */
-    java.lang.String getVotePubkey();
-    /**
-     * <code>string vote_pubkey = 2;</code>
+     * <code>string validator_pubkey = 1;</code>
      */
     com.google.protobuf.ByteString
-        getVotePubkeyBytes();
+        getValidatorPubkeyBytes();
   }
   /**
    * Protobuf type {@code TW.Solana.Proto.DeactivateStake}
@@ -1472,8 +1277,14 @@ public final class Solana {
       super(builder);
     }
     private DeactivateStake() {
-      privateKey_ = com.google.protobuf.ByteString.EMPTY;
-      votePubkey_ = "";
+      validatorPubkey_ = "";
+    }
+
+    @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new DeactivateStake();
     }
 
     @java.lang.Override
@@ -1489,7 +1300,6 @@ public final class Solana {
       if (extensionRegistry == null) {
         throw new java.lang.NullPointerException();
       }
-      int mutable_bitField0_ = 0;
       com.google.protobuf.UnknownFieldSet.Builder unknownFields =
           com.google.protobuf.UnknownFieldSet.newBuilder();
       try {
@@ -1501,14 +1311,9 @@ public final class Solana {
               done = true;
               break;
             case 10: {
-
-              privateKey_ = input.readBytes();
-              break;
-            }
-            case 18: {
               java.lang.String s = input.readStringRequireUtf8();
 
-              votePubkey_ = s;
+              validatorPubkey_ = s;
               break;
             }
             default: {
@@ -1543,47 +1348,34 @@ public final class Solana {
               wallet.core.jni.proto.Solana.DeactivateStake.class, wallet.core.jni.proto.Solana.DeactivateStake.Builder.class);
     }
 
-    public static final int PRIVATE_KEY_FIELD_NUMBER = 1;
-    private com.google.protobuf.ByteString privateKey_;
+    public static final int VALIDATOR_PUBKEY_FIELD_NUMBER = 1;
+    private volatile java.lang.Object validatorPubkey_;
     /**
-     * <pre>
-     * The stake account private key
-     * </pre>
-     *
-     * <code>bytes private_key = 1;</code>
+     * <code>string validator_pubkey = 1;</code>
      */
-    public com.google.protobuf.ByteString getPrivateKey() {
-      return privateKey_;
-    }
-
-    public static final int VOTE_PUBKEY_FIELD_NUMBER = 2;
-    private volatile java.lang.Object votePubkey_;
-    /**
-     * <code>string vote_pubkey = 2;</code>
-     */
-    public java.lang.String getVotePubkey() {
-      java.lang.Object ref = votePubkey_;
+    public java.lang.String getValidatorPubkey() {
+      java.lang.Object ref = validatorPubkey_;
       if (ref instanceof java.lang.String) {
         return (java.lang.String) ref;
       } else {
         com.google.protobuf.ByteString bs = 
             (com.google.protobuf.ByteString) ref;
         java.lang.String s = bs.toStringUtf8();
-        votePubkey_ = s;
+        validatorPubkey_ = s;
         return s;
       }
     }
     /**
-     * <code>string vote_pubkey = 2;</code>
+     * <code>string validator_pubkey = 1;</code>
      */
     public com.google.protobuf.ByteString
-        getVotePubkeyBytes() {
-      java.lang.Object ref = votePubkey_;
+        getValidatorPubkeyBytes() {
+      java.lang.Object ref = validatorPubkey_;
       if (ref instanceof java.lang.String) {
         com.google.protobuf.ByteString b = 
             com.google.protobuf.ByteString.copyFromUtf8(
                 (java.lang.String) ref);
-        votePubkey_ = b;
+        validatorPubkey_ = b;
         return b;
       } else {
         return (com.google.protobuf.ByteString) ref;
@@ -1604,11 +1396,8 @@ public final class Solana {
     @java.lang.Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
-      if (!privateKey_.isEmpty()) {
-        output.writeBytes(1, privateKey_);
-      }
-      if (!getVotePubkeyBytes().isEmpty()) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 2, votePubkey_);
+      if (!getValidatorPubkeyBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 1, validatorPubkey_);
       }
       unknownFields.writeTo(output);
     }
@@ -1619,12 +1408,8 @@ public final class Solana {
       if (size != -1) return size;
 
       size = 0;
-      if (!privateKey_.isEmpty()) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeBytesSize(1, privateKey_);
-      }
-      if (!getVotePubkeyBytes().isEmpty()) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, votePubkey_);
+      if (!getValidatorPubkeyBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, validatorPubkey_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -1641,10 +1426,8 @@ public final class Solana {
       }
       wallet.core.jni.proto.Solana.DeactivateStake other = (wallet.core.jni.proto.Solana.DeactivateStake) obj;
 
-      if (!getPrivateKey()
-          .equals(other.getPrivateKey())) return false;
-      if (!getVotePubkey()
-          .equals(other.getVotePubkey())) return false;
+      if (!getValidatorPubkey()
+          .equals(other.getValidatorPubkey())) return false;
       if (!unknownFields.equals(other.unknownFields)) return false;
       return true;
     }
@@ -1656,10 +1439,8 @@ public final class Solana {
       }
       int hash = 41;
       hash = (19 * hash) + getDescriptor().hashCode();
-      hash = (37 * hash) + PRIVATE_KEY_FIELD_NUMBER;
-      hash = (53 * hash) + getPrivateKey().hashCode();
-      hash = (37 * hash) + VOTE_PUBKEY_FIELD_NUMBER;
-      hash = (53 * hash) + getVotePubkey().hashCode();
+      hash = (37 * hash) + VALIDATOR_PUBKEY_FIELD_NUMBER;
+      hash = (53 * hash) + getValidatorPubkey().hashCode();
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -1793,9 +1574,7 @@ public final class Solana {
       @java.lang.Override
       public Builder clear() {
         super.clear();
-        privateKey_ = com.google.protobuf.ByteString.EMPTY;
-
-        votePubkey_ = "";
+        validatorPubkey_ = "";
 
         return this;
       }
@@ -1823,8 +1602,7 @@ public final class Solana {
       @java.lang.Override
       public wallet.core.jni.proto.Solana.DeactivateStake buildPartial() {
         wallet.core.jni.proto.Solana.DeactivateStake result = new wallet.core.jni.proto.Solana.DeactivateStake(this);
-        result.privateKey_ = privateKey_;
-        result.votePubkey_ = votePubkey_;
+        result.validatorPubkey_ = validatorPubkey_;
         onBuilt();
         return result;
       }
@@ -1873,11 +1651,8 @@ public final class Solana {
 
       public Builder mergeFrom(wallet.core.jni.proto.Solana.DeactivateStake other) {
         if (other == wallet.core.jni.proto.Solana.DeactivateStake.getDefaultInstance()) return this;
-        if (other.getPrivateKey() != com.google.protobuf.ByteString.EMPTY) {
-          setPrivateKey(other.getPrivateKey());
-        }
-        if (!other.getVotePubkey().isEmpty()) {
-          votePubkey_ = other.votePubkey_;
+        if (!other.getValidatorPubkey().isEmpty()) {
+          validatorPubkey_ = other.validatorPubkey_;
           onChanged();
         }
         this.mergeUnknownFields(other.unknownFields);
@@ -1909,112 +1684,71 @@ public final class Solana {
         return this;
       }
 
-      private com.google.protobuf.ByteString privateKey_ = com.google.protobuf.ByteString.EMPTY;
+      private java.lang.Object validatorPubkey_ = "";
       /**
-       * <pre>
-       * The stake account private key
-       * </pre>
-       *
-       * <code>bytes private_key = 1;</code>
+       * <code>string validator_pubkey = 1;</code>
        */
-      public com.google.protobuf.ByteString getPrivateKey() {
-        return privateKey_;
-      }
-      /**
-       * <pre>
-       * The stake account private key
-       * </pre>
-       *
-       * <code>bytes private_key = 1;</code>
-       */
-      public Builder setPrivateKey(com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  
-        privateKey_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <pre>
-       * The stake account private key
-       * </pre>
-       *
-       * <code>bytes private_key = 1;</code>
-       */
-      public Builder clearPrivateKey() {
-        
-        privateKey_ = getDefaultInstance().getPrivateKey();
-        onChanged();
-        return this;
-      }
-
-      private java.lang.Object votePubkey_ = "";
-      /**
-       * <code>string vote_pubkey = 2;</code>
-       */
-      public java.lang.String getVotePubkey() {
-        java.lang.Object ref = votePubkey_;
+      public java.lang.String getValidatorPubkey() {
+        java.lang.Object ref = validatorPubkey_;
         if (!(ref instanceof java.lang.String)) {
           com.google.protobuf.ByteString bs =
               (com.google.protobuf.ByteString) ref;
           java.lang.String s = bs.toStringUtf8();
-          votePubkey_ = s;
+          validatorPubkey_ = s;
           return s;
         } else {
           return (java.lang.String) ref;
         }
       }
       /**
-       * <code>string vote_pubkey = 2;</code>
+       * <code>string validator_pubkey = 1;</code>
        */
       public com.google.protobuf.ByteString
-          getVotePubkeyBytes() {
-        java.lang.Object ref = votePubkey_;
+          getValidatorPubkeyBytes() {
+        java.lang.Object ref = validatorPubkey_;
         if (ref instanceof String) {
           com.google.protobuf.ByteString b = 
               com.google.protobuf.ByteString.copyFromUtf8(
                   (java.lang.String) ref);
-          votePubkey_ = b;
+          validatorPubkey_ = b;
           return b;
         } else {
           return (com.google.protobuf.ByteString) ref;
         }
       }
       /**
-       * <code>string vote_pubkey = 2;</code>
+       * <code>string validator_pubkey = 1;</code>
        */
-      public Builder setVotePubkey(
+      public Builder setValidatorPubkey(
           java.lang.String value) {
         if (value == null) {
     throw new NullPointerException();
   }
   
-        votePubkey_ = value;
+        validatorPubkey_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>string vote_pubkey = 2;</code>
+       * <code>string validator_pubkey = 1;</code>
        */
-      public Builder clearVotePubkey() {
+      public Builder clearValidatorPubkey() {
         
-        votePubkey_ = getDefaultInstance().getVotePubkey();
+        validatorPubkey_ = getDefaultInstance().getValidatorPubkey();
         onChanged();
         return this;
       }
       /**
-       * <code>string vote_pubkey = 2;</code>
+       * <code>string validator_pubkey = 1;</code>
        */
-      public Builder setVotePubkeyBytes(
+      public Builder setValidatorPubkeyBytes(
           com.google.protobuf.ByteString value) {
         if (value == null) {
     throw new NullPointerException();
   }
   checkByteStringIsUtf8(value);
         
-        votePubkey_ = value;
+        validatorPubkey_ = value;
         onChanged();
         return this;
       }
@@ -2076,26 +1810,17 @@ public final class Solana {
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <pre>
-     * The stake account private key
-     * </pre>
-     *
-     * <code>bytes private_key = 1;</code>
+     * <code>string validator_pubkey = 1;</code>
      */
-    com.google.protobuf.ByteString getPrivateKey();
-
+    java.lang.String getValidatorPubkey();
     /**
-     * <code>string recipient = 2;</code>
-     */
-    java.lang.String getRecipient();
-    /**
-     * <code>string recipient = 2;</code>
+     * <code>string validator_pubkey = 1;</code>
      */
     com.google.protobuf.ByteString
-        getRecipientBytes();
+        getValidatorPubkeyBytes();
 
     /**
-     * <code>uint64 value = 3;</code>
+     * <code>uint64 value = 2;</code>
      */
     long getValue();
   }
@@ -2112,8 +1837,14 @@ public final class Solana {
       super(builder);
     }
     private WithdrawStake() {
-      privateKey_ = com.google.protobuf.ByteString.EMPTY;
-      recipient_ = "";
+      validatorPubkey_ = "";
+    }
+
+    @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new WithdrawStake();
     }
 
     @java.lang.Override
@@ -2129,7 +1860,6 @@ public final class Solana {
       if (extensionRegistry == null) {
         throw new java.lang.NullPointerException();
       }
-      int mutable_bitField0_ = 0;
       com.google.protobuf.UnknownFieldSet.Builder unknownFields =
           com.google.protobuf.UnknownFieldSet.newBuilder();
       try {
@@ -2141,17 +1871,12 @@ public final class Solana {
               done = true;
               break;
             case 10: {
-
-              privateKey_ = input.readBytes();
-              break;
-            }
-            case 18: {
               java.lang.String s = input.readStringRequireUtf8();
 
-              recipient_ = s;
+              validatorPubkey_ = s;
               break;
             }
-            case 24: {
+            case 16: {
 
               value_ = input.readUInt64();
               break;
@@ -2188,57 +1913,44 @@ public final class Solana {
               wallet.core.jni.proto.Solana.WithdrawStake.class, wallet.core.jni.proto.Solana.WithdrawStake.Builder.class);
     }
 
-    public static final int PRIVATE_KEY_FIELD_NUMBER = 1;
-    private com.google.protobuf.ByteString privateKey_;
+    public static final int VALIDATOR_PUBKEY_FIELD_NUMBER = 1;
+    private volatile java.lang.Object validatorPubkey_;
     /**
-     * <pre>
-     * The stake account private key
-     * </pre>
-     *
-     * <code>bytes private_key = 1;</code>
+     * <code>string validator_pubkey = 1;</code>
      */
-    public com.google.protobuf.ByteString getPrivateKey() {
-      return privateKey_;
-    }
-
-    public static final int RECIPIENT_FIELD_NUMBER = 2;
-    private volatile java.lang.Object recipient_;
-    /**
-     * <code>string recipient = 2;</code>
-     */
-    public java.lang.String getRecipient() {
-      java.lang.Object ref = recipient_;
+    public java.lang.String getValidatorPubkey() {
+      java.lang.Object ref = validatorPubkey_;
       if (ref instanceof java.lang.String) {
         return (java.lang.String) ref;
       } else {
         com.google.protobuf.ByteString bs = 
             (com.google.protobuf.ByteString) ref;
         java.lang.String s = bs.toStringUtf8();
-        recipient_ = s;
+        validatorPubkey_ = s;
         return s;
       }
     }
     /**
-     * <code>string recipient = 2;</code>
+     * <code>string validator_pubkey = 1;</code>
      */
     public com.google.protobuf.ByteString
-        getRecipientBytes() {
-      java.lang.Object ref = recipient_;
+        getValidatorPubkeyBytes() {
+      java.lang.Object ref = validatorPubkey_;
       if (ref instanceof java.lang.String) {
         com.google.protobuf.ByteString b = 
             com.google.protobuf.ByteString.copyFromUtf8(
                 (java.lang.String) ref);
-        recipient_ = b;
+        validatorPubkey_ = b;
         return b;
       } else {
         return (com.google.protobuf.ByteString) ref;
       }
     }
 
-    public static final int VALUE_FIELD_NUMBER = 3;
+    public static final int VALUE_FIELD_NUMBER = 2;
     private long value_;
     /**
-     * <code>uint64 value = 3;</code>
+     * <code>uint64 value = 2;</code>
      */
     public long getValue() {
       return value_;
@@ -2258,14 +1970,11 @@ public final class Solana {
     @java.lang.Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
-      if (!privateKey_.isEmpty()) {
-        output.writeBytes(1, privateKey_);
-      }
-      if (!getRecipientBytes().isEmpty()) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 2, recipient_);
+      if (!getValidatorPubkeyBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 1, validatorPubkey_);
       }
       if (value_ != 0L) {
-        output.writeUInt64(3, value_);
+        output.writeUInt64(2, value_);
       }
       unknownFields.writeTo(output);
     }
@@ -2276,16 +1985,12 @@ public final class Solana {
       if (size != -1) return size;
 
       size = 0;
-      if (!privateKey_.isEmpty()) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeBytesSize(1, privateKey_);
-      }
-      if (!getRecipientBytes().isEmpty()) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, recipient_);
+      if (!getValidatorPubkeyBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, validatorPubkey_);
       }
       if (value_ != 0L) {
         size += com.google.protobuf.CodedOutputStream
-          .computeUInt64Size(3, value_);
+          .computeUInt64Size(2, value_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -2302,10 +2007,8 @@ public final class Solana {
       }
       wallet.core.jni.proto.Solana.WithdrawStake other = (wallet.core.jni.proto.Solana.WithdrawStake) obj;
 
-      if (!getPrivateKey()
-          .equals(other.getPrivateKey())) return false;
-      if (!getRecipient()
-          .equals(other.getRecipient())) return false;
+      if (!getValidatorPubkey()
+          .equals(other.getValidatorPubkey())) return false;
       if (getValue()
           != other.getValue()) return false;
       if (!unknownFields.equals(other.unknownFields)) return false;
@@ -2319,10 +2022,8 @@ public final class Solana {
       }
       int hash = 41;
       hash = (19 * hash) + getDescriptor().hashCode();
-      hash = (37 * hash) + PRIVATE_KEY_FIELD_NUMBER;
-      hash = (53 * hash) + getPrivateKey().hashCode();
-      hash = (37 * hash) + RECIPIENT_FIELD_NUMBER;
-      hash = (53 * hash) + getRecipient().hashCode();
+      hash = (37 * hash) + VALIDATOR_PUBKEY_FIELD_NUMBER;
+      hash = (53 * hash) + getValidatorPubkey().hashCode();
       hash = (37 * hash) + VALUE_FIELD_NUMBER;
       hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
           getValue());
@@ -2459,9 +2160,7 @@ public final class Solana {
       @java.lang.Override
       public Builder clear() {
         super.clear();
-        privateKey_ = com.google.protobuf.ByteString.EMPTY;
-
-        recipient_ = "";
+        validatorPubkey_ = "";
 
         value_ = 0L;
 
@@ -2491,8 +2190,7 @@ public final class Solana {
       @java.lang.Override
       public wallet.core.jni.proto.Solana.WithdrawStake buildPartial() {
         wallet.core.jni.proto.Solana.WithdrawStake result = new wallet.core.jni.proto.Solana.WithdrawStake(this);
-        result.privateKey_ = privateKey_;
-        result.recipient_ = recipient_;
+        result.validatorPubkey_ = validatorPubkey_;
         result.value_ = value_;
         onBuilt();
         return result;
@@ -2542,11 +2240,8 @@ public final class Solana {
 
       public Builder mergeFrom(wallet.core.jni.proto.Solana.WithdrawStake other) {
         if (other == wallet.core.jni.proto.Solana.WithdrawStake.getDefaultInstance()) return this;
-        if (other.getPrivateKey() != com.google.protobuf.ByteString.EMPTY) {
-          setPrivateKey(other.getPrivateKey());
-        }
-        if (!other.getRecipient().isEmpty()) {
-          recipient_ = other.recipient_;
+        if (!other.getValidatorPubkey().isEmpty()) {
+          validatorPubkey_ = other.validatorPubkey_;
           onChanged();
         }
         if (other.getValue() != 0L) {
@@ -2581,125 +2276,84 @@ public final class Solana {
         return this;
       }
 
-      private com.google.protobuf.ByteString privateKey_ = com.google.protobuf.ByteString.EMPTY;
+      private java.lang.Object validatorPubkey_ = "";
       /**
-       * <pre>
-       * The stake account private key
-       * </pre>
-       *
-       * <code>bytes private_key = 1;</code>
+       * <code>string validator_pubkey = 1;</code>
        */
-      public com.google.protobuf.ByteString getPrivateKey() {
-        return privateKey_;
-      }
-      /**
-       * <pre>
-       * The stake account private key
-       * </pre>
-       *
-       * <code>bytes private_key = 1;</code>
-       */
-      public Builder setPrivateKey(com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  
-        privateKey_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <pre>
-       * The stake account private key
-       * </pre>
-       *
-       * <code>bytes private_key = 1;</code>
-       */
-      public Builder clearPrivateKey() {
-        
-        privateKey_ = getDefaultInstance().getPrivateKey();
-        onChanged();
-        return this;
-      }
-
-      private java.lang.Object recipient_ = "";
-      /**
-       * <code>string recipient = 2;</code>
-       */
-      public java.lang.String getRecipient() {
-        java.lang.Object ref = recipient_;
+      public java.lang.String getValidatorPubkey() {
+        java.lang.Object ref = validatorPubkey_;
         if (!(ref instanceof java.lang.String)) {
           com.google.protobuf.ByteString bs =
               (com.google.protobuf.ByteString) ref;
           java.lang.String s = bs.toStringUtf8();
-          recipient_ = s;
+          validatorPubkey_ = s;
           return s;
         } else {
           return (java.lang.String) ref;
         }
       }
       /**
-       * <code>string recipient = 2;</code>
+       * <code>string validator_pubkey = 1;</code>
        */
       public com.google.protobuf.ByteString
-          getRecipientBytes() {
-        java.lang.Object ref = recipient_;
+          getValidatorPubkeyBytes() {
+        java.lang.Object ref = validatorPubkey_;
         if (ref instanceof String) {
           com.google.protobuf.ByteString b = 
               com.google.protobuf.ByteString.copyFromUtf8(
                   (java.lang.String) ref);
-          recipient_ = b;
+          validatorPubkey_ = b;
           return b;
         } else {
           return (com.google.protobuf.ByteString) ref;
         }
       }
       /**
-       * <code>string recipient = 2;</code>
+       * <code>string validator_pubkey = 1;</code>
        */
-      public Builder setRecipient(
+      public Builder setValidatorPubkey(
           java.lang.String value) {
         if (value == null) {
     throw new NullPointerException();
   }
   
-        recipient_ = value;
+        validatorPubkey_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>string recipient = 2;</code>
+       * <code>string validator_pubkey = 1;</code>
        */
-      public Builder clearRecipient() {
+      public Builder clearValidatorPubkey() {
         
-        recipient_ = getDefaultInstance().getRecipient();
+        validatorPubkey_ = getDefaultInstance().getValidatorPubkey();
         onChanged();
         return this;
       }
       /**
-       * <code>string recipient = 2;</code>
+       * <code>string validator_pubkey = 1;</code>
        */
-      public Builder setRecipientBytes(
+      public Builder setValidatorPubkeyBytes(
           com.google.protobuf.ByteString value) {
         if (value == null) {
     throw new NullPointerException();
   }
   checkByteStringIsUtf8(value);
         
-        recipient_ = value;
+        validatorPubkey_ = value;
         onChanged();
         return this;
       }
 
       private long value_ ;
       /**
-       * <code>uint64 value = 3;</code>
+       * <code>uint64 value = 2;</code>
        */
       public long getValue() {
         return value_;
       }
       /**
-       * <code>uint64 value = 3;</code>
+       * <code>uint64 value = 2;</code>
        */
       public Builder setValue(long value) {
         
@@ -2708,7 +2362,7 @@ public final class Solana {
         return this;
       }
       /**
-       * <code>uint64 value = 3;</code>
+       * <code>uint64 value = 2;</code>
        */
       public Builder clearValue() {
         
@@ -2826,11 +2480,16 @@ public final class Solana {
     wallet.core.jni.proto.Solana.WithdrawStakeOrBuilder getWithdrawTransactionOrBuilder();
 
     /**
-     * <code>string recent_blockhash = 5;</code>
+     * <code>bytes private_key = 5;</code>
+     */
+    com.google.protobuf.ByteString getPrivateKey();
+
+    /**
+     * <code>string recent_blockhash = 6;</code>
      */
     java.lang.String getRecentBlockhash();
     /**
-     * <code>string recent_blockhash = 5;</code>
+     * <code>string recent_blockhash = 6;</code>
      */
     com.google.protobuf.ByteString
         getRecentBlockhashBytes();
@@ -2854,7 +2513,15 @@ public final class Solana {
       super(builder);
     }
     private SigningInput() {
+      privateKey_ = com.google.protobuf.ByteString.EMPTY;
       recentBlockhash_ = "";
+    }
+
+    @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new SigningInput();
     }
 
     @java.lang.Override
@@ -2870,7 +2537,6 @@ public final class Solana {
       if (extensionRegistry == null) {
         throw new java.lang.NullPointerException();
       }
-      int mutable_bitField0_ = 0;
       com.google.protobuf.UnknownFieldSet.Builder unknownFields =
           com.google.protobuf.UnknownFieldSet.newBuilder();
       try {
@@ -2938,6 +2604,11 @@ public final class Solana {
               break;
             }
             case 42: {
+
+              privateKey_ = input.readBytes();
+              break;
+            }
+            case 50: {
               java.lang.String s = input.readStringRequireUtf8();
 
               recentBlockhash_ = s;
@@ -3121,10 +2792,19 @@ public final class Solana {
       return wallet.core.jni.proto.Solana.WithdrawStake.getDefaultInstance();
     }
 
-    public static final int RECENT_BLOCKHASH_FIELD_NUMBER = 5;
+    public static final int PRIVATE_KEY_FIELD_NUMBER = 5;
+    private com.google.protobuf.ByteString privateKey_;
+    /**
+     * <code>bytes private_key = 5;</code>
+     */
+    public com.google.protobuf.ByteString getPrivateKey() {
+      return privateKey_;
+    }
+
+    public static final int RECENT_BLOCKHASH_FIELD_NUMBER = 6;
     private volatile java.lang.Object recentBlockhash_;
     /**
-     * <code>string recent_blockhash = 5;</code>
+     * <code>string recent_blockhash = 6;</code>
      */
     public java.lang.String getRecentBlockhash() {
       java.lang.Object ref = recentBlockhash_;
@@ -3139,7 +2819,7 @@ public final class Solana {
       }
     }
     /**
-     * <code>string recent_blockhash = 5;</code>
+     * <code>string recent_blockhash = 6;</code>
      */
     public com.google.protobuf.ByteString
         getRecentBlockhashBytes() {
@@ -3181,8 +2861,11 @@ public final class Solana {
       if (transactionTypeCase_ == 4) {
         output.writeMessage(4, (wallet.core.jni.proto.Solana.WithdrawStake) transactionType_);
       }
+      if (!privateKey_.isEmpty()) {
+        output.writeBytes(5, privateKey_);
+      }
       if (!getRecentBlockhashBytes().isEmpty()) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 5, recentBlockhash_);
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 6, recentBlockhash_);
       }
       unknownFields.writeTo(output);
     }
@@ -3209,8 +2892,12 @@ public final class Solana {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(4, (wallet.core.jni.proto.Solana.WithdrawStake) transactionType_);
       }
+      if (!privateKey_.isEmpty()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(5, privateKey_);
+      }
       if (!getRecentBlockhashBytes().isEmpty()) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(5, recentBlockhash_);
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(6, recentBlockhash_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -3227,6 +2914,8 @@ public final class Solana {
       }
       wallet.core.jni.proto.Solana.SigningInput other = (wallet.core.jni.proto.Solana.SigningInput) obj;
 
+      if (!getPrivateKey()
+          .equals(other.getPrivateKey())) return false;
       if (!getRecentBlockhash()
           .equals(other.getRecentBlockhash())) return false;
       if (!getTransactionTypeCase().equals(other.getTransactionTypeCase())) return false;
@@ -3261,6 +2950,8 @@ public final class Solana {
       }
       int hash = 41;
       hash = (19 * hash) + getDescriptor().hashCode();
+      hash = (37 * hash) + PRIVATE_KEY_FIELD_NUMBER;
+      hash = (53 * hash) + getPrivateKey().hashCode();
       hash = (37 * hash) + RECENT_BLOCKHASH_FIELD_NUMBER;
       hash = (53 * hash) + getRecentBlockhash().hashCode();
       switch (transactionTypeCase_) {
@@ -3420,6 +3111,8 @@ public final class Solana {
       @java.lang.Override
       public Builder clear() {
         super.clear();
+        privateKey_ = com.google.protobuf.ByteString.EMPTY;
+
         recentBlockhash_ = "";
 
         transactionTypeCase_ = 0;
@@ -3478,6 +3171,7 @@ public final class Solana {
             result.transactionType_ = withdrawTransactionBuilder_.build();
           }
         }
+        result.privateKey_ = privateKey_;
         result.recentBlockhash_ = recentBlockhash_;
         result.transactionTypeCase_ = transactionTypeCase_;
         onBuilt();
@@ -3528,6 +3222,9 @@ public final class Solana {
 
       public Builder mergeFrom(wallet.core.jni.proto.Solana.SigningInput other) {
         if (other == wallet.core.jni.proto.Solana.SigningInput.getDefaultInstance()) return this;
+        if (other.getPrivateKey() != com.google.protobuf.ByteString.EMPTY) {
+          setPrivateKey(other.getPrivateKey());
+        }
         if (!other.getRecentBlockhash().isEmpty()) {
           recentBlockhash_ = other.recentBlockhash_;
           onChanged();
@@ -4141,9 +3838,38 @@ public final class Solana {
         return withdrawTransactionBuilder_;
       }
 
+      private com.google.protobuf.ByteString privateKey_ = com.google.protobuf.ByteString.EMPTY;
+      /**
+       * <code>bytes private_key = 5;</code>
+       */
+      public com.google.protobuf.ByteString getPrivateKey() {
+        return privateKey_;
+      }
+      /**
+       * <code>bytes private_key = 5;</code>
+       */
+      public Builder setPrivateKey(com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        privateKey_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>bytes private_key = 5;</code>
+       */
+      public Builder clearPrivateKey() {
+        
+        privateKey_ = getDefaultInstance().getPrivateKey();
+        onChanged();
+        return this;
+      }
+
       private java.lang.Object recentBlockhash_ = "";
       /**
-       * <code>string recent_blockhash = 5;</code>
+       * <code>string recent_blockhash = 6;</code>
        */
       public java.lang.String getRecentBlockhash() {
         java.lang.Object ref = recentBlockhash_;
@@ -4158,7 +3884,7 @@ public final class Solana {
         }
       }
       /**
-       * <code>string recent_blockhash = 5;</code>
+       * <code>string recent_blockhash = 6;</code>
        */
       public com.google.protobuf.ByteString
           getRecentBlockhashBytes() {
@@ -4174,7 +3900,7 @@ public final class Solana {
         }
       }
       /**
-       * <code>string recent_blockhash = 5;</code>
+       * <code>string recent_blockhash = 6;</code>
        */
       public Builder setRecentBlockhash(
           java.lang.String value) {
@@ -4187,7 +3913,7 @@ public final class Solana {
         return this;
       }
       /**
-       * <code>string recent_blockhash = 5;</code>
+       * <code>string recent_blockhash = 6;</code>
        */
       public Builder clearRecentBlockhash() {
         
@@ -4196,7 +3922,7 @@ public final class Solana {
         return this;
       }
       /**
-       * <code>string recent_blockhash = 5;</code>
+       * <code>string recent_blockhash = 6;</code>
        */
       public Builder setRecentBlockhashBytes(
           com.google.protobuf.ByteString value) {
@@ -4267,9 +3993,14 @@ public final class Solana {
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>bytes encoded = 1;</code>
+     * <code>string encoded = 1;</code>
      */
-    com.google.protobuf.ByteString getEncoded();
+    java.lang.String getEncoded();
+    /**
+     * <code>string encoded = 1;</code>
+     */
+    com.google.protobuf.ByteString
+        getEncodedBytes();
   }
   /**
    * <pre>
@@ -4288,7 +4019,14 @@ public final class Solana {
       super(builder);
     }
     private SigningOutput() {
-      encoded_ = com.google.protobuf.ByteString.EMPTY;
+      encoded_ = "";
+    }
+
+    @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new SigningOutput();
     }
 
     @java.lang.Override
@@ -4304,7 +4042,6 @@ public final class Solana {
       if (extensionRegistry == null) {
         throw new java.lang.NullPointerException();
       }
-      int mutable_bitField0_ = 0;
       com.google.protobuf.UnknownFieldSet.Builder unknownFields =
           com.google.protobuf.UnknownFieldSet.newBuilder();
       try {
@@ -4316,8 +4053,9 @@ public final class Solana {
               done = true;
               break;
             case 10: {
+              java.lang.String s = input.readStringRequireUtf8();
 
-              encoded_ = input.readBytes();
+              encoded_ = s;
               break;
             }
             default: {
@@ -4353,12 +4091,37 @@ public final class Solana {
     }
 
     public static final int ENCODED_FIELD_NUMBER = 1;
-    private com.google.protobuf.ByteString encoded_;
+    private volatile java.lang.Object encoded_;
     /**
-     * <code>bytes encoded = 1;</code>
+     * <code>string encoded = 1;</code>
      */
-    public com.google.protobuf.ByteString getEncoded() {
-      return encoded_;
+    public java.lang.String getEncoded() {
+      java.lang.Object ref = encoded_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        encoded_ = s;
+        return s;
+      }
+    }
+    /**
+     * <code>string encoded = 1;</code>
+     */
+    public com.google.protobuf.ByteString
+        getEncodedBytes() {
+      java.lang.Object ref = encoded_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        encoded_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
     }
 
     private byte memoizedIsInitialized = -1;
@@ -4375,8 +4138,8 @@ public final class Solana {
     @java.lang.Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
-      if (!encoded_.isEmpty()) {
-        output.writeBytes(1, encoded_);
+      if (!getEncodedBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 1, encoded_);
       }
       unknownFields.writeTo(output);
     }
@@ -4387,9 +4150,8 @@ public final class Solana {
       if (size != -1) return size;
 
       size = 0;
-      if (!encoded_.isEmpty()) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeBytesSize(1, encoded_);
+      if (!getEncodedBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, encoded_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -4558,7 +4320,7 @@ public final class Solana {
       @java.lang.Override
       public Builder clear() {
         super.clear();
-        encoded_ = com.google.protobuf.ByteString.EMPTY;
+        encoded_ = "";
 
         return this;
       }
@@ -4635,8 +4397,9 @@ public final class Solana {
 
       public Builder mergeFrom(wallet.core.jni.proto.Solana.SigningOutput other) {
         if (other == wallet.core.jni.proto.Solana.SigningOutput.getDefaultInstance()) return this;
-        if (other.getEncoded() != com.google.protobuf.ByteString.EMPTY) {
-          setEncoded(other.getEncoded());
+        if (!other.getEncoded().isEmpty()) {
+          encoded_ = other.encoded_;
+          onChanged();
         }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
@@ -4667,17 +4430,43 @@ public final class Solana {
         return this;
       }
 
-      private com.google.protobuf.ByteString encoded_ = com.google.protobuf.ByteString.EMPTY;
+      private java.lang.Object encoded_ = "";
       /**
-       * <code>bytes encoded = 1;</code>
+       * <code>string encoded = 1;</code>
        */
-      public com.google.protobuf.ByteString getEncoded() {
-        return encoded_;
+      public java.lang.String getEncoded() {
+        java.lang.Object ref = encoded_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          encoded_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
       }
       /**
-       * <code>bytes encoded = 1;</code>
+       * <code>string encoded = 1;</code>
        */
-      public Builder setEncoded(com.google.protobuf.ByteString value) {
+      public com.google.protobuf.ByteString
+          getEncodedBytes() {
+        java.lang.Object ref = encoded_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          encoded_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>string encoded = 1;</code>
+       */
+      public Builder setEncoded(
+          java.lang.String value) {
         if (value == null) {
     throw new NullPointerException();
   }
@@ -4687,11 +4476,25 @@ public final class Solana {
         return this;
       }
       /**
-       * <code>bytes encoded = 1;</code>
+       * <code>string encoded = 1;</code>
        */
       public Builder clearEncoded() {
         
         encoded_ = getDefaultInstance().getEncoded();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string encoded = 1;</code>
+       */
+      public Builder setEncodedBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        encoded_ = value;
         onChanged();
         return this;
       }
@@ -4787,67 +4590,57 @@ public final class Solana {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\014Solana.proto\022\017TW.Solana.Proto\"A\n\010Trans" +
-      "fer\022\023\n\013private_key\030\001 \001(\014\022\021\n\trecipient\030\002 " +
-      "\001(\t\022\r\n\005value\030\003 \001(\004\"`\n\005Stake\022\030\n\020from_priv" +
-      "ate_key\030\001 \001(\014\022\031\n\021stake_private_key\030\002 \001(\014" +
-      "\022\023\n\013vote_pubkey\030\003 \001(\t\022\r\n\005value\030\004 \001(\004\";\n\017" +
-      "DeactivateStake\022\023\n\013private_key\030\001 \001(\014\022\023\n\013" +
-      "vote_pubkey\030\002 \001(\t\"F\n\rWithdrawStake\022\023\n\013pr" +
-      "ivate_key\030\001 \001(\014\022\021\n\trecipient\030\002 \001(\t\022\r\n\005va" +
-      "lue\030\003 \001(\004\"\266\002\n\014SigningInput\0229\n\024transfer_t" +
-      "ransaction\030\001 \001(\0132\031.TW.Solana.Proto.Trans" +
-      "ferH\000\0223\n\021stake_transaction\030\002 \001(\0132\026.TW.So" +
-      "lana.Proto.StakeH\000\022H\n\034deactivate_stake_t" +
-      "ransaction\030\003 \001(\0132 .TW.Solana.Proto.Deact" +
-      "ivateStakeH\000\022>\n\024withdraw_transaction\030\004 \001" +
-      "(\0132\036.TW.Solana.Proto.WithdrawStakeH\000\022\030\n\020" +
-      "recent_blockhash\030\005 \001(\tB\022\n\020transaction_ty" +
-      "pe\" \n\rSigningOutput\022\017\n\007encoded\030\001 \001(\014B\027\n\025" +
-      "wallet.core.jni.protob\006proto3"
+      "\n\014Solana.proto\022\017TW.Solana.Proto\",\n\010Trans" +
+      "fer\022\021\n\trecipient\030\001 \001(\t\022\r\n\005value\030\002 \001(\004\"0\n" +
+      "\005Stake\022\030\n\020validator_pubkey\030\001 \001(\t\022\r\n\005valu" +
+      "e\030\002 \001(\004\"+\n\017DeactivateStake\022\030\n\020validator_" +
+      "pubkey\030\001 \001(\t\"8\n\rWithdrawStake\022\030\n\020validat" +
+      "or_pubkey\030\001 \001(\t\022\r\n\005value\030\002 \001(\004\"\313\002\n\014Signi" +
+      "ngInput\0229\n\024transfer_transaction\030\001 \001(\0132\031." +
+      "TW.Solana.Proto.TransferH\000\0223\n\021stake_tran" +
+      "saction\030\002 \001(\0132\026.TW.Solana.Proto.StakeH\000\022" +
+      "H\n\034deactivate_stake_transaction\030\003 \001(\0132 ." +
+      "TW.Solana.Proto.DeactivateStakeH\000\022>\n\024wit" +
+      "hdraw_transaction\030\004 \001(\0132\036.TW.Solana.Prot" +
+      "o.WithdrawStakeH\000\022\023\n\013private_key\030\005 \001(\014\022\030" +
+      "\n\020recent_blockhash\030\006 \001(\tB\022\n\020transaction_" +
+      "type\" \n\rSigningOutput\022\017\n\007encoded\030\001 \001(\tB\027" +
+      "\n\025wallet.core.jni.protob\006proto3"
     };
-    com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
-        new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
-          public com.google.protobuf.ExtensionRegistry assignDescriptors(
-              com.google.protobuf.Descriptors.FileDescriptor root) {
-            descriptor = root;
-            return null;
-          }
-        };
-    com.google.protobuf.Descriptors.FileDescriptor
+    descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
         new com.google.protobuf.Descriptors.FileDescriptor[] {
-        }, assigner);
+        });
     internal_static_TW_Solana_Proto_Transfer_descriptor =
       getDescriptor().getMessageTypes().get(0);
     internal_static_TW_Solana_Proto_Transfer_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_TW_Solana_Proto_Transfer_descriptor,
-        new java.lang.String[] { "PrivateKey", "Recipient", "Value", });
+        new java.lang.String[] { "Recipient", "Value", });
     internal_static_TW_Solana_Proto_Stake_descriptor =
       getDescriptor().getMessageTypes().get(1);
     internal_static_TW_Solana_Proto_Stake_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_TW_Solana_Proto_Stake_descriptor,
-        new java.lang.String[] { "FromPrivateKey", "StakePrivateKey", "VotePubkey", "Value", });
+        new java.lang.String[] { "ValidatorPubkey", "Value", });
     internal_static_TW_Solana_Proto_DeactivateStake_descriptor =
       getDescriptor().getMessageTypes().get(2);
     internal_static_TW_Solana_Proto_DeactivateStake_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_TW_Solana_Proto_DeactivateStake_descriptor,
-        new java.lang.String[] { "PrivateKey", "VotePubkey", });
+        new java.lang.String[] { "ValidatorPubkey", });
     internal_static_TW_Solana_Proto_WithdrawStake_descriptor =
       getDescriptor().getMessageTypes().get(3);
     internal_static_TW_Solana_Proto_WithdrawStake_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_TW_Solana_Proto_WithdrawStake_descriptor,
-        new java.lang.String[] { "PrivateKey", "Recipient", "Value", });
+        new java.lang.String[] { "ValidatorPubkey", "Value", });
     internal_static_TW_Solana_Proto_SigningInput_descriptor =
       getDescriptor().getMessageTypes().get(4);
     internal_static_TW_Solana_Proto_SigningInput_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_TW_Solana_Proto_SigningInput_descriptor,
-        new java.lang.String[] { "TransferTransaction", "StakeTransaction", "DeactivateStakeTransaction", "WithdrawTransaction", "RecentBlockhash", "TransactionType", });
+        new java.lang.String[] { "TransferTransaction", "StakeTransaction", "DeactivateStakeTransaction", "WithdrawTransaction", "PrivateKey", "RecentBlockhash", "TransactionType", });
     internal_static_TW_Solana_Proto_SigningOutput_descriptor =
       getDescriptor().getMessageTypes().get(5);
     internal_static_TW_Solana_Proto_SigningOutput_fieldAccessorTable = new

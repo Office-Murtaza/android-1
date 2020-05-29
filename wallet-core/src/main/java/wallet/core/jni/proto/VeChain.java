@@ -73,6 +73,13 @@ public final class VeChain {
     }
 
     @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new Clause();
+    }
+
+    @java.lang.Override
     public final com.google.protobuf.UnknownFieldSet
     getUnknownFields() {
       return this.unknownFields;
@@ -85,7 +92,6 @@ public final class VeChain {
       if (extensionRegistry == null) {
         throw new java.lang.NullPointerException();
       }
-      int mutable_bitField0_ = 0;
       com.google.protobuf.UnknownFieldSet.Builder unknownFields =
           com.google.protobuf.UnknownFieldSet.newBuilder();
       try {
@@ -929,6 +935,13 @@ public final class VeChain {
     }
 
     @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new SigningInput();
+    }
+
+    @java.lang.Override
     public final com.google.protobuf.UnknownFieldSet
     getUnknownFields() {
       return this.unknownFields;
@@ -968,9 +981,9 @@ public final class VeChain {
               break;
             }
             case 34: {
-              if (!((mutable_bitField0_ & 0x00000008) != 0)) {
+              if (!((mutable_bitField0_ & 0x00000001) != 0)) {
                 clauses_ = new java.util.ArrayList<wallet.core.jni.proto.VeChain.Clause>();
-                mutable_bitField0_ |= 0x00000008;
+                mutable_bitField0_ |= 0x00000001;
               }
               clauses_.add(
                   input.readMessage(wallet.core.jni.proto.VeChain.Clause.parser(), extensionRegistry));
@@ -1016,7 +1029,7 @@ public final class VeChain {
         throw new com.google.protobuf.InvalidProtocolBufferException(
             e).setUnfinishedMessage(this);
       } finally {
-        if (((mutable_bitField0_ & 0x00000008) != 0)) {
+        if (((mutable_bitField0_ & 0x00000001) != 0)) {
           clauses_ = java.util.Collections.unmodifiableList(clauses_);
         }
         this.unknownFields = unknownFields.build();
@@ -1036,7 +1049,6 @@ public final class VeChain {
               wallet.core.jni.proto.VeChain.SigningInput.class, wallet.core.jni.proto.VeChain.SigningInput.Builder.class);
     }
 
-    private int bitField0_;
     public static final int CHAIN_TAG_FIELD_NUMBER = 1;
     private int chainTag_;
     /**
@@ -1510,7 +1522,7 @@ public final class VeChain {
 
         if (clausesBuilder_ == null) {
           clauses_ = java.util.Collections.emptyList();
-          bitField0_ = (bitField0_ & ~0x00000008);
+          bitField0_ = (bitField0_ & ~0x00000001);
         } else {
           clausesBuilder_.clear();
         }
@@ -1551,14 +1563,13 @@ public final class VeChain {
       public wallet.core.jni.proto.VeChain.SigningInput buildPartial() {
         wallet.core.jni.proto.VeChain.SigningInput result = new wallet.core.jni.proto.VeChain.SigningInput(this);
         int from_bitField0_ = bitField0_;
-        int to_bitField0_ = 0;
         result.chainTag_ = chainTag_;
         result.blockRef_ = blockRef_;
         result.expiration_ = expiration_;
         if (clausesBuilder_ == null) {
-          if (((bitField0_ & 0x00000008) != 0)) {
+          if (((bitField0_ & 0x00000001) != 0)) {
             clauses_ = java.util.Collections.unmodifiableList(clauses_);
-            bitField0_ = (bitField0_ & ~0x00000008);
+            bitField0_ = (bitField0_ & ~0x00000001);
           }
           result.clauses_ = clauses_;
         } else {
@@ -1569,7 +1580,6 @@ public final class VeChain {
         result.dependsOn_ = dependsOn_;
         result.nonce_ = nonce_;
         result.privateKey_ = privateKey_;
-        result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
       }
@@ -1631,7 +1641,7 @@ public final class VeChain {
           if (!other.clauses_.isEmpty()) {
             if (clauses_.isEmpty()) {
               clauses_ = other.clauses_;
-              bitField0_ = (bitField0_ & ~0x00000008);
+              bitField0_ = (bitField0_ & ~0x00000001);
             } else {
               ensureClausesIsMutable();
               clauses_.addAll(other.clauses_);
@@ -1644,7 +1654,7 @@ public final class VeChain {
               clausesBuilder_.dispose();
               clausesBuilder_ = null;
               clauses_ = other.clauses_;
-              bitField0_ = (bitField0_ & ~0x00000008);
+              bitField0_ = (bitField0_ & ~0x00000001);
               clausesBuilder_ = 
                 com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
                    getClausesFieldBuilder() : null;
@@ -1815,9 +1825,9 @@ public final class VeChain {
       private java.util.List<wallet.core.jni.proto.VeChain.Clause> clauses_ =
         java.util.Collections.emptyList();
       private void ensureClausesIsMutable() {
-        if (!((bitField0_ & 0x00000008) != 0)) {
+        if (!((bitField0_ & 0x00000001) != 0)) {
           clauses_ = new java.util.ArrayList<wallet.core.jni.proto.VeChain.Clause>(clauses_);
-          bitField0_ |= 0x00000008;
+          bitField0_ |= 0x00000001;
          }
       }
 
@@ -2044,7 +2054,7 @@ public final class VeChain {
       public Builder clearClauses() {
         if (clausesBuilder_ == null) {
           clauses_ = java.util.Collections.emptyList();
-          bitField0_ = (bitField0_ & ~0x00000008);
+          bitField0_ = (bitField0_ & ~0x00000001);
           onChanged();
         } else {
           clausesBuilder_.clear();
@@ -2170,7 +2180,7 @@ public final class VeChain {
           clausesBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
               wallet.core.jni.proto.VeChain.Clause, wallet.core.jni.proto.VeChain.Clause.Builder, wallet.core.jni.proto.VeChain.ClauseOrBuilder>(
                   clauses_,
-                  ((bitField0_ & 0x00000008) != 0),
+                  ((bitField0_ & 0x00000001) != 0),
                   getParentForChildren(),
                   isClean());
           clauses_ = null;
@@ -2470,6 +2480,13 @@ public final class VeChain {
     }
 
     @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new SigningOutput();
+    }
+
+    @java.lang.Override
     public final com.google.protobuf.UnknownFieldSet
     getUnknownFields() {
       return this.unknownFields;
@@ -2482,7 +2499,6 @@ public final class VeChain {
       if (extensionRegistry == null) {
         throw new java.lang.NullPointerException();
       }
-      int mutable_bitField0_ = 0;
       com.google.protobuf.UnknownFieldSet.Builder unknownFields =
           com.google.protobuf.UnknownFieldSet.newBuilder();
       try {
@@ -3053,18 +3069,10 @@ public final class VeChain {
       "ded\030\001 \001(\014\022\021\n\tsignature\030\002 \001(\014B\027\n\025wallet.c" +
       "ore.jni.protob\006proto3"
     };
-    com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
-        new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
-          public com.google.protobuf.ExtensionRegistry assignDescriptors(
-              com.google.protobuf.Descriptors.FileDescriptor root) {
-            descriptor = root;
-            return null;
-          }
-        };
-    com.google.protobuf.Descriptors.FileDescriptor
+    descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
         new com.google.protobuf.Descriptors.FileDescriptor[] {
-        }, assigner);
+        });
     internal_static_TW_VeChain_Proto_Clause_descriptor =
       getDescriptor().getMessageTypes().get(0);
     internal_static_TW_VeChain_Proto_Clause_fieldAccessorTable = new

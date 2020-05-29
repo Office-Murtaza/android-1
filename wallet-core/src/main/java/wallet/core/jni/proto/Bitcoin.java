@@ -142,6 +142,13 @@ public final class Bitcoin {
     }
 
     @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new Transaction();
+    }
+
+    @java.lang.Override
     public final com.google.protobuf.UnknownFieldSet
     getUnknownFields() {
       return this.unknownFields;
@@ -176,18 +183,18 @@ public final class Bitcoin {
               break;
             }
             case 26: {
-              if (!((mutable_bitField0_ & 0x00000004) != 0)) {
+              if (!((mutable_bitField0_ & 0x00000001) != 0)) {
                 inputs_ = new java.util.ArrayList<wallet.core.jni.proto.Bitcoin.TransactionInput>();
-                mutable_bitField0_ |= 0x00000004;
+                mutable_bitField0_ |= 0x00000001;
               }
               inputs_.add(
                   input.readMessage(wallet.core.jni.proto.Bitcoin.TransactionInput.parser(), extensionRegistry));
               break;
             }
             case 34: {
-              if (!((mutable_bitField0_ & 0x00000008) != 0)) {
+              if (!((mutable_bitField0_ & 0x00000002) != 0)) {
                 outputs_ = new java.util.ArrayList<wallet.core.jni.proto.Bitcoin.TransactionOutput>();
-                mutable_bitField0_ |= 0x00000008;
+                mutable_bitField0_ |= 0x00000002;
               }
               outputs_.add(
                   input.readMessage(wallet.core.jni.proto.Bitcoin.TransactionOutput.parser(), extensionRegistry));
@@ -208,10 +215,10 @@ public final class Bitcoin {
         throw new com.google.protobuf.InvalidProtocolBufferException(
             e).setUnfinishedMessage(this);
       } finally {
-        if (((mutable_bitField0_ & 0x00000004) != 0)) {
+        if (((mutable_bitField0_ & 0x00000001) != 0)) {
           inputs_ = java.util.Collections.unmodifiableList(inputs_);
         }
-        if (((mutable_bitField0_ & 0x00000008) != 0)) {
+        if (((mutable_bitField0_ & 0x00000002) != 0)) {
           outputs_ = java.util.Collections.unmodifiableList(outputs_);
         }
         this.unknownFields = unknownFields.build();
@@ -231,7 +238,6 @@ public final class Bitcoin {
               wallet.core.jni.proto.Bitcoin.Transaction.class, wallet.core.jni.proto.Bitcoin.Transaction.Builder.class);
     }
 
-    private int bitField0_;
     public static final int VERSION_FIELD_NUMBER = 1;
     private int version_;
     /**
@@ -606,13 +612,13 @@ public final class Bitcoin {
 
         if (inputsBuilder_ == null) {
           inputs_ = java.util.Collections.emptyList();
-          bitField0_ = (bitField0_ & ~0x00000004);
+          bitField0_ = (bitField0_ & ~0x00000001);
         } else {
           inputsBuilder_.clear();
         }
         if (outputsBuilder_ == null) {
           outputs_ = java.util.Collections.emptyList();
-          bitField0_ = (bitField0_ & ~0x00000008);
+          bitField0_ = (bitField0_ & ~0x00000002);
         } else {
           outputsBuilder_.clear();
         }
@@ -643,28 +649,26 @@ public final class Bitcoin {
       public wallet.core.jni.proto.Bitcoin.Transaction buildPartial() {
         wallet.core.jni.proto.Bitcoin.Transaction result = new wallet.core.jni.proto.Bitcoin.Transaction(this);
         int from_bitField0_ = bitField0_;
-        int to_bitField0_ = 0;
         result.version_ = version_;
         result.lockTime_ = lockTime_;
         if (inputsBuilder_ == null) {
-          if (((bitField0_ & 0x00000004) != 0)) {
+          if (((bitField0_ & 0x00000001) != 0)) {
             inputs_ = java.util.Collections.unmodifiableList(inputs_);
-            bitField0_ = (bitField0_ & ~0x00000004);
+            bitField0_ = (bitField0_ & ~0x00000001);
           }
           result.inputs_ = inputs_;
         } else {
           result.inputs_ = inputsBuilder_.build();
         }
         if (outputsBuilder_ == null) {
-          if (((bitField0_ & 0x00000008) != 0)) {
+          if (((bitField0_ & 0x00000002) != 0)) {
             outputs_ = java.util.Collections.unmodifiableList(outputs_);
-            bitField0_ = (bitField0_ & ~0x00000008);
+            bitField0_ = (bitField0_ & ~0x00000002);
           }
           result.outputs_ = outputs_;
         } else {
           result.outputs_ = outputsBuilder_.build();
         }
-        result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
       }
@@ -723,7 +727,7 @@ public final class Bitcoin {
           if (!other.inputs_.isEmpty()) {
             if (inputs_.isEmpty()) {
               inputs_ = other.inputs_;
-              bitField0_ = (bitField0_ & ~0x00000004);
+              bitField0_ = (bitField0_ & ~0x00000001);
             } else {
               ensureInputsIsMutable();
               inputs_.addAll(other.inputs_);
@@ -736,7 +740,7 @@ public final class Bitcoin {
               inputsBuilder_.dispose();
               inputsBuilder_ = null;
               inputs_ = other.inputs_;
-              bitField0_ = (bitField0_ & ~0x00000004);
+              bitField0_ = (bitField0_ & ~0x00000001);
               inputsBuilder_ = 
                 com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
                    getInputsFieldBuilder() : null;
@@ -749,7 +753,7 @@ public final class Bitcoin {
           if (!other.outputs_.isEmpty()) {
             if (outputs_.isEmpty()) {
               outputs_ = other.outputs_;
-              bitField0_ = (bitField0_ & ~0x00000008);
+              bitField0_ = (bitField0_ & ~0x00000002);
             } else {
               ensureOutputsIsMutable();
               outputs_.addAll(other.outputs_);
@@ -762,7 +766,7 @@ public final class Bitcoin {
               outputsBuilder_.dispose();
               outputsBuilder_ = null;
               outputs_ = other.outputs_;
-              bitField0_ = (bitField0_ & ~0x00000008);
+              bitField0_ = (bitField0_ & ~0x00000002);
               outputsBuilder_ = 
                 com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
                    getOutputsFieldBuilder() : null;
@@ -880,9 +884,9 @@ public final class Bitcoin {
       private java.util.List<wallet.core.jni.proto.Bitcoin.TransactionInput> inputs_ =
         java.util.Collections.emptyList();
       private void ensureInputsIsMutable() {
-        if (!((bitField0_ & 0x00000004) != 0)) {
+        if (!((bitField0_ & 0x00000001) != 0)) {
           inputs_ = new java.util.ArrayList<wallet.core.jni.proto.Bitcoin.TransactionInput>(inputs_);
-          bitField0_ |= 0x00000004;
+          bitField0_ |= 0x00000001;
          }
       }
 
@@ -1076,7 +1080,7 @@ public final class Bitcoin {
       public Builder clearInputs() {
         if (inputsBuilder_ == null) {
           inputs_ = java.util.Collections.emptyList();
-          bitField0_ = (bitField0_ & ~0x00000004);
+          bitField0_ = (bitField0_ & ~0x00000001);
           onChanged();
         } else {
           inputsBuilder_.clear();
@@ -1181,7 +1185,7 @@ public final class Bitcoin {
           inputsBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
               wallet.core.jni.proto.Bitcoin.TransactionInput, wallet.core.jni.proto.Bitcoin.TransactionInput.Builder, wallet.core.jni.proto.Bitcoin.TransactionInputOrBuilder>(
                   inputs_,
-                  ((bitField0_ & 0x00000004) != 0),
+                  ((bitField0_ & 0x00000001) != 0),
                   getParentForChildren(),
                   isClean());
           inputs_ = null;
@@ -1192,9 +1196,9 @@ public final class Bitcoin {
       private java.util.List<wallet.core.jni.proto.Bitcoin.TransactionOutput> outputs_ =
         java.util.Collections.emptyList();
       private void ensureOutputsIsMutable() {
-        if (!((bitField0_ & 0x00000008) != 0)) {
+        if (!((bitField0_ & 0x00000002) != 0)) {
           outputs_ = new java.util.ArrayList<wallet.core.jni.proto.Bitcoin.TransactionOutput>(outputs_);
-          bitField0_ |= 0x00000008;
+          bitField0_ |= 0x00000002;
          }
       }
 
@@ -1388,7 +1392,7 @@ public final class Bitcoin {
       public Builder clearOutputs() {
         if (outputsBuilder_ == null) {
           outputs_ = java.util.Collections.emptyList();
-          bitField0_ = (bitField0_ & ~0x00000008);
+          bitField0_ = (bitField0_ & ~0x00000002);
           onChanged();
         } else {
           outputsBuilder_.clear();
@@ -1493,7 +1497,7 @@ public final class Bitcoin {
           outputsBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
               wallet.core.jni.proto.Bitcoin.TransactionOutput, wallet.core.jni.proto.Bitcoin.TransactionOutput.Builder, wallet.core.jni.proto.Bitcoin.TransactionOutputOrBuilder>(
                   outputs_,
-                  ((bitField0_ & 0x00000008) != 0),
+                  ((bitField0_ & 0x00000002) != 0),
                   getParentForChildren(),
                   isClean());
           outputs_ = null;
@@ -1621,6 +1625,13 @@ public final class Bitcoin {
     }
 
     @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new TransactionInput();
+    }
+
+    @java.lang.Override
     public final com.google.protobuf.UnknownFieldSet
     getUnknownFields() {
       return this.unknownFields;
@@ -1633,7 +1644,6 @@ public final class Bitcoin {
       if (extensionRegistry == null) {
         throw new java.lang.NullPointerException();
       }
-      int mutable_bitField0_ = 0;
       com.google.protobuf.UnknownFieldSet.Builder unknownFields =
           com.google.protobuf.UnknownFieldSet.newBuilder();
       try {
@@ -2447,6 +2457,13 @@ public final class Bitcoin {
     }
 
     @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new OutPoint();
+    }
+
+    @java.lang.Override
     public final com.google.protobuf.UnknownFieldSet
     getUnknownFields() {
       return this.unknownFields;
@@ -2459,7 +2476,6 @@ public final class Bitcoin {
       if (extensionRegistry == null) {
         throw new java.lang.NullPointerException();
       }
-      int mutable_bitField0_ = 0;
       com.google.protobuf.UnknownFieldSet.Builder unknownFields =
           com.google.protobuf.UnknownFieldSet.newBuilder();
       try {
@@ -3108,6 +3124,13 @@ public final class Bitcoin {
     }
 
     @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new TransactionOutput();
+    }
+
+    @java.lang.Override
     public final com.google.protobuf.UnknownFieldSet
     getUnknownFields() {
       return this.unknownFields;
@@ -3120,7 +3143,6 @@ public final class Bitcoin {
       if (extensionRegistry == null) {
         throw new java.lang.NullPointerException();
       }
-      int mutable_bitField0_ = 0;
       com.google.protobuf.UnknownFieldSet.Builder unknownFields =
           com.google.protobuf.UnknownFieldSet.newBuilder();
       try {
@@ -3698,6 +3720,13 @@ public final class Bitcoin {
     }
 
     @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new UnspentTransaction();
+    }
+
+    @java.lang.Override
     public final com.google.protobuf.UnknownFieldSet
     getUnknownFields() {
       return this.unknownFields;
@@ -3710,7 +3739,6 @@ public final class Bitcoin {
       if (extensionRegistry == null) {
         throw new java.lang.NullPointerException();
       }
-      int mutable_bitField0_ = 0;
       com.google.protobuf.UnknownFieldSet.Builder unknownFields =
           com.google.protobuf.UnknownFieldSet.newBuilder();
       try {
@@ -4596,6 +4624,31 @@ public final class Bitcoin {
      * <code>uint32 coin_type = 14;</code>
      */
     int getCoinType();
+
+    /**
+     * <pre>
+     * Optional transaction plan
+     * </pre>
+     *
+     * <code>.TW.Bitcoin.Proto.TransactionPlan plan = 15;</code>
+     */
+    boolean hasPlan();
+    /**
+     * <pre>
+     * Optional transaction plan
+     * </pre>
+     *
+     * <code>.TW.Bitcoin.Proto.TransactionPlan plan = 15;</code>
+     */
+    wallet.core.jni.proto.Bitcoin.TransactionPlan getPlan();
+    /**
+     * <pre>
+     * Optional transaction plan
+     * </pre>
+     *
+     * <code>.TW.Bitcoin.Proto.TransactionPlan plan = 15;</code>
+     */
+    wallet.core.jni.proto.Bitcoin.TransactionPlanOrBuilder getPlanOrBuilder();
   }
   /**
    * <pre>
@@ -4618,6 +4671,13 @@ public final class Bitcoin {
       changeAddress_ = "";
       privateKey_ = java.util.Collections.emptyList();
       utxo_ = java.util.Collections.emptyList();
+    }
+
+    @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new SigningInput();
     }
 
     @java.lang.Override
@@ -4672,18 +4732,18 @@ public final class Bitcoin {
               break;
             }
             case 82: {
-              if (!((mutable_bitField0_ & 0x00000020) != 0)) {
+              if (!((mutable_bitField0_ & 0x00000001) != 0)) {
                 privateKey_ = new java.util.ArrayList<com.google.protobuf.ByteString>();
-                mutable_bitField0_ |= 0x00000020;
+                mutable_bitField0_ |= 0x00000001;
               }
               privateKey_.add(input.readBytes());
               break;
             }
             case 90: {
-              if (!((mutable_bitField0_ & 0x00000040) != 0)) {
+              if (!((mutable_bitField0_ & 0x00000002) != 0)) {
                 scripts_ = com.google.protobuf.MapField.newMapField(
                     ScriptsDefaultEntryHolder.defaultEntry);
-                mutable_bitField0_ |= 0x00000040;
+                mutable_bitField0_ |= 0x00000002;
               }
               com.google.protobuf.MapEntry<java.lang.String, com.google.protobuf.ByteString>
               scripts__ = input.readMessage(
@@ -4693,9 +4753,9 @@ public final class Bitcoin {
               break;
             }
             case 98: {
-              if (!((mutable_bitField0_ & 0x00000080) != 0)) {
+              if (!((mutable_bitField0_ & 0x00000004) != 0)) {
                 utxo_ = new java.util.ArrayList<wallet.core.jni.proto.Bitcoin.UnspentTransaction>();
-                mutable_bitField0_ |= 0x00000080;
+                mutable_bitField0_ |= 0x00000004;
               }
               utxo_.add(
                   input.readMessage(wallet.core.jni.proto.Bitcoin.UnspentTransaction.parser(), extensionRegistry));
@@ -4709,6 +4769,19 @@ public final class Bitcoin {
             case 112: {
 
               coinType_ = input.readUInt32();
+              break;
+            }
+            case 122: {
+              wallet.core.jni.proto.Bitcoin.TransactionPlan.Builder subBuilder = null;
+              if (plan_ != null) {
+                subBuilder = plan_.toBuilder();
+              }
+              plan_ = input.readMessage(wallet.core.jni.proto.Bitcoin.TransactionPlan.parser(), extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(plan_);
+                plan_ = subBuilder.buildPartial();
+              }
+
               break;
             }
             default: {
@@ -4726,10 +4799,10 @@ public final class Bitcoin {
         throw new com.google.protobuf.InvalidProtocolBufferException(
             e).setUnfinishedMessage(this);
       } finally {
-        if (((mutable_bitField0_ & 0x00000020) != 0)) {
+        if (((mutable_bitField0_ & 0x00000001) != 0)) {
           privateKey_ = java.util.Collections.unmodifiableList(privateKey_); // C
         }
-        if (((mutable_bitField0_ & 0x00000080) != 0)) {
+        if (((mutable_bitField0_ & 0x00000004) != 0)) {
           utxo_ = java.util.Collections.unmodifiableList(utxo_);
         }
         this.unknownFields = unknownFields.build();
@@ -4761,7 +4834,6 @@ public final class Bitcoin {
               wallet.core.jni.proto.Bitcoin.SigningInput.class, wallet.core.jni.proto.Bitcoin.SigningInput.Builder.class);
     }
 
-    private int bitField0_;
     public static final int HASH_TYPE_FIELD_NUMBER = 1;
     private int hashType_;
     /**
@@ -5092,6 +5164,39 @@ public final class Bitcoin {
       return coinType_;
     }
 
+    public static final int PLAN_FIELD_NUMBER = 15;
+    private wallet.core.jni.proto.Bitcoin.TransactionPlan plan_;
+    /**
+     * <pre>
+     * Optional transaction plan
+     * </pre>
+     *
+     * <code>.TW.Bitcoin.Proto.TransactionPlan plan = 15;</code>
+     */
+    public boolean hasPlan() {
+      return plan_ != null;
+    }
+    /**
+     * <pre>
+     * Optional transaction plan
+     * </pre>
+     *
+     * <code>.TW.Bitcoin.Proto.TransactionPlan plan = 15;</code>
+     */
+    public wallet.core.jni.proto.Bitcoin.TransactionPlan getPlan() {
+      return plan_ == null ? wallet.core.jni.proto.Bitcoin.TransactionPlan.getDefaultInstance() : plan_;
+    }
+    /**
+     * <pre>
+     * Optional transaction plan
+     * </pre>
+     *
+     * <code>.TW.Bitcoin.Proto.TransactionPlan plan = 15;</code>
+     */
+    public wallet.core.jni.proto.Bitcoin.TransactionPlanOrBuilder getPlanOrBuilder() {
+      return getPlan();
+    }
+
     private byte memoizedIsInitialized = -1;
     @java.lang.Override
     public final boolean isInitialized() {
@@ -5138,6 +5243,9 @@ public final class Bitcoin {
       }
       if (coinType_ != 0) {
         output.writeUInt32(14, coinType_);
+      }
+      if (plan_ != null) {
+        output.writeMessage(15, getPlan());
       }
       unknownFields.writeTo(output);
     }
@@ -5197,6 +5305,10 @@ public final class Bitcoin {
         size += com.google.protobuf.CodedOutputStream
           .computeUInt32Size(14, coinType_);
       }
+      if (plan_ != null) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(15, getPlan());
+      }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
       return size;
@@ -5232,6 +5344,11 @@ public final class Bitcoin {
           != other.getUseMaxAmount()) return false;
       if (getCoinType()
           != other.getCoinType()) return false;
+      if (hasPlan() != other.hasPlan()) return false;
+      if (hasPlan()) {
+        if (!getPlan()
+            .equals(other.getPlan())) return false;
+      }
       if (!unknownFields.equals(other.unknownFields)) return false;
       return true;
     }
@@ -5272,6 +5389,10 @@ public final class Bitcoin {
           getUseMaxAmount());
       hash = (37 * hash) + COIN_TYPE_FIELD_NUMBER;
       hash = (53 * hash) + getCoinType();
+      if (hasPlan()) {
+        hash = (37 * hash) + PLAN_FIELD_NUMBER;
+        hash = (53 * hash) + getPlan().hashCode();
+      }
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -5443,11 +5564,11 @@ public final class Bitcoin {
         changeAddress_ = "";
 
         privateKey_ = java.util.Collections.emptyList();
-        bitField0_ = (bitField0_ & ~0x00000020);
+        bitField0_ = (bitField0_ & ~0x00000001);
         internalGetMutableScripts().clear();
         if (utxoBuilder_ == null) {
           utxo_ = java.util.Collections.emptyList();
-          bitField0_ = (bitField0_ & ~0x00000080);
+          bitField0_ = (bitField0_ & ~0x00000004);
         } else {
           utxoBuilder_.clear();
         }
@@ -5455,6 +5576,12 @@ public final class Bitcoin {
 
         coinType_ = 0;
 
+        if (planBuilder_ == null) {
+          plan_ = null;
+        } else {
+          plan_ = null;
+          planBuilder_ = null;
+        }
         return this;
       }
 
@@ -5482,23 +5609,22 @@ public final class Bitcoin {
       public wallet.core.jni.proto.Bitcoin.SigningInput buildPartial() {
         wallet.core.jni.proto.Bitcoin.SigningInput result = new wallet.core.jni.proto.Bitcoin.SigningInput(this);
         int from_bitField0_ = bitField0_;
-        int to_bitField0_ = 0;
         result.hashType_ = hashType_;
         result.amount_ = amount_;
         result.byteFee_ = byteFee_;
         result.toAddress_ = toAddress_;
         result.changeAddress_ = changeAddress_;
-        if (((bitField0_ & 0x00000020) != 0)) {
+        if (((bitField0_ & 0x00000001) != 0)) {
           privateKey_ = java.util.Collections.unmodifiableList(privateKey_);
-          bitField0_ = (bitField0_ & ~0x00000020);
+          bitField0_ = (bitField0_ & ~0x00000001);
         }
         result.privateKey_ = privateKey_;
         result.scripts_ = internalGetScripts();
         result.scripts_.makeImmutable();
         if (utxoBuilder_ == null) {
-          if (((bitField0_ & 0x00000080) != 0)) {
+          if (((bitField0_ & 0x00000004) != 0)) {
             utxo_ = java.util.Collections.unmodifiableList(utxo_);
-            bitField0_ = (bitField0_ & ~0x00000080);
+            bitField0_ = (bitField0_ & ~0x00000004);
           }
           result.utxo_ = utxo_;
         } else {
@@ -5506,7 +5632,11 @@ public final class Bitcoin {
         }
         result.useMaxAmount_ = useMaxAmount_;
         result.coinType_ = coinType_;
-        result.bitField0_ = to_bitField0_;
+        if (planBuilder_ == null) {
+          result.plan_ = plan_;
+        } else {
+          result.plan_ = planBuilder_.build();
+        }
         onBuilt();
         return result;
       }
@@ -5575,7 +5705,7 @@ public final class Bitcoin {
         if (!other.privateKey_.isEmpty()) {
           if (privateKey_.isEmpty()) {
             privateKey_ = other.privateKey_;
-            bitField0_ = (bitField0_ & ~0x00000020);
+            bitField0_ = (bitField0_ & ~0x00000001);
           } else {
             ensurePrivateKeyIsMutable();
             privateKey_.addAll(other.privateKey_);
@@ -5588,7 +5718,7 @@ public final class Bitcoin {
           if (!other.utxo_.isEmpty()) {
             if (utxo_.isEmpty()) {
               utxo_ = other.utxo_;
-              bitField0_ = (bitField0_ & ~0x00000080);
+              bitField0_ = (bitField0_ & ~0x00000004);
             } else {
               ensureUtxoIsMutable();
               utxo_.addAll(other.utxo_);
@@ -5601,7 +5731,7 @@ public final class Bitcoin {
               utxoBuilder_.dispose();
               utxoBuilder_ = null;
               utxo_ = other.utxo_;
-              bitField0_ = (bitField0_ & ~0x00000080);
+              bitField0_ = (bitField0_ & ~0x00000004);
               utxoBuilder_ = 
                 com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
                    getUtxoFieldBuilder() : null;
@@ -5615,6 +5745,9 @@ public final class Bitcoin {
         }
         if (other.getCoinType() != 0) {
           setCoinType(other.getCoinType());
+        }
+        if (other.hasPlan()) {
+          mergePlan(other.getPlan());
         }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
@@ -5940,9 +6073,9 @@ public final class Bitcoin {
 
       private java.util.List<com.google.protobuf.ByteString> privateKey_ = java.util.Collections.emptyList();
       private void ensurePrivateKeyIsMutable() {
-        if (!((bitField0_ & 0x00000020) != 0)) {
+        if (!((bitField0_ & 0x00000001) != 0)) {
           privateKey_ = new java.util.ArrayList<com.google.protobuf.ByteString>(privateKey_);
-          bitField0_ |= 0x00000020;
+          bitField0_ |= 0x00000001;
          }
       }
       /**
@@ -5954,7 +6087,7 @@ public final class Bitcoin {
        */
       public java.util.List<com.google.protobuf.ByteString>
           getPrivateKeyList() {
-        return ((bitField0_ & 0x00000020) != 0) ?
+        return ((bitField0_ & 0x00000001) != 0) ?
                  java.util.Collections.unmodifiableList(privateKey_) : privateKey_;
       }
       /**
@@ -6034,7 +6167,7 @@ public final class Bitcoin {
        */
       public Builder clearPrivateKey() {
         privateKey_ = java.util.Collections.emptyList();
-        bitField0_ = (bitField0_ & ~0x00000020);
+        bitField0_ = (bitField0_ & ~0x00000001);
         onChanged();
         return this;
       }
@@ -6193,9 +6326,9 @@ public final class Bitcoin {
       private java.util.List<wallet.core.jni.proto.Bitcoin.UnspentTransaction> utxo_ =
         java.util.Collections.emptyList();
       private void ensureUtxoIsMutable() {
-        if (!((bitField0_ & 0x00000080) != 0)) {
+        if (!((bitField0_ & 0x00000004) != 0)) {
           utxo_ = new java.util.ArrayList<wallet.core.jni.proto.Bitcoin.UnspentTransaction>(utxo_);
-          bitField0_ |= 0x00000080;
+          bitField0_ |= 0x00000004;
          }
       }
 
@@ -6389,7 +6522,7 @@ public final class Bitcoin {
       public Builder clearUtxo() {
         if (utxoBuilder_ == null) {
           utxo_ = java.util.Collections.emptyList();
-          bitField0_ = (bitField0_ & ~0x00000080);
+          bitField0_ = (bitField0_ & ~0x00000004);
           onChanged();
         } else {
           utxoBuilder_.clear();
@@ -6494,7 +6627,7 @@ public final class Bitcoin {
           utxoBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
               wallet.core.jni.proto.Bitcoin.UnspentTransaction, wallet.core.jni.proto.Bitcoin.UnspentTransaction.Builder, wallet.core.jni.proto.Bitcoin.UnspentTransactionOrBuilder>(
                   utxo_,
-                  ((bitField0_ & 0x00000080) != 0),
+                  ((bitField0_ & 0x00000004) != 0),
                   getParentForChildren(),
                   isClean());
           utxo_ = null;
@@ -6576,6 +6709,159 @@ public final class Bitcoin {
         coinType_ = 0;
         onChanged();
         return this;
+      }
+
+      private wallet.core.jni.proto.Bitcoin.TransactionPlan plan_;
+      private com.google.protobuf.SingleFieldBuilderV3<
+          wallet.core.jni.proto.Bitcoin.TransactionPlan, wallet.core.jni.proto.Bitcoin.TransactionPlan.Builder, wallet.core.jni.proto.Bitcoin.TransactionPlanOrBuilder> planBuilder_;
+      /**
+       * <pre>
+       * Optional transaction plan
+       * </pre>
+       *
+       * <code>.TW.Bitcoin.Proto.TransactionPlan plan = 15;</code>
+       */
+      public boolean hasPlan() {
+        return planBuilder_ != null || plan_ != null;
+      }
+      /**
+       * <pre>
+       * Optional transaction plan
+       * </pre>
+       *
+       * <code>.TW.Bitcoin.Proto.TransactionPlan plan = 15;</code>
+       */
+      public wallet.core.jni.proto.Bitcoin.TransactionPlan getPlan() {
+        if (planBuilder_ == null) {
+          return plan_ == null ? wallet.core.jni.proto.Bitcoin.TransactionPlan.getDefaultInstance() : plan_;
+        } else {
+          return planBuilder_.getMessage();
+        }
+      }
+      /**
+       * <pre>
+       * Optional transaction plan
+       * </pre>
+       *
+       * <code>.TW.Bitcoin.Proto.TransactionPlan plan = 15;</code>
+       */
+      public Builder setPlan(wallet.core.jni.proto.Bitcoin.TransactionPlan value) {
+        if (planBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          plan_ = value;
+          onChanged();
+        } else {
+          planBuilder_.setMessage(value);
+        }
+
+        return this;
+      }
+      /**
+       * <pre>
+       * Optional transaction plan
+       * </pre>
+       *
+       * <code>.TW.Bitcoin.Proto.TransactionPlan plan = 15;</code>
+       */
+      public Builder setPlan(
+          wallet.core.jni.proto.Bitcoin.TransactionPlan.Builder builderForValue) {
+        if (planBuilder_ == null) {
+          plan_ = builderForValue.build();
+          onChanged();
+        } else {
+          planBuilder_.setMessage(builderForValue.build());
+        }
+
+        return this;
+      }
+      /**
+       * <pre>
+       * Optional transaction plan
+       * </pre>
+       *
+       * <code>.TW.Bitcoin.Proto.TransactionPlan plan = 15;</code>
+       */
+      public Builder mergePlan(wallet.core.jni.proto.Bitcoin.TransactionPlan value) {
+        if (planBuilder_ == null) {
+          if (plan_ != null) {
+            plan_ =
+              wallet.core.jni.proto.Bitcoin.TransactionPlan.newBuilder(plan_).mergeFrom(value).buildPartial();
+          } else {
+            plan_ = value;
+          }
+          onChanged();
+        } else {
+          planBuilder_.mergeFrom(value);
+        }
+
+        return this;
+      }
+      /**
+       * <pre>
+       * Optional transaction plan
+       * </pre>
+       *
+       * <code>.TW.Bitcoin.Proto.TransactionPlan plan = 15;</code>
+       */
+      public Builder clearPlan() {
+        if (planBuilder_ == null) {
+          plan_ = null;
+          onChanged();
+        } else {
+          plan_ = null;
+          planBuilder_ = null;
+        }
+
+        return this;
+      }
+      /**
+       * <pre>
+       * Optional transaction plan
+       * </pre>
+       *
+       * <code>.TW.Bitcoin.Proto.TransactionPlan plan = 15;</code>
+       */
+      public wallet.core.jni.proto.Bitcoin.TransactionPlan.Builder getPlanBuilder() {
+        
+        onChanged();
+        return getPlanFieldBuilder().getBuilder();
+      }
+      /**
+       * <pre>
+       * Optional transaction plan
+       * </pre>
+       *
+       * <code>.TW.Bitcoin.Proto.TransactionPlan plan = 15;</code>
+       */
+      public wallet.core.jni.proto.Bitcoin.TransactionPlanOrBuilder getPlanOrBuilder() {
+        if (planBuilder_ != null) {
+          return planBuilder_.getMessageOrBuilder();
+        } else {
+          return plan_ == null ?
+              wallet.core.jni.proto.Bitcoin.TransactionPlan.getDefaultInstance() : plan_;
+        }
+      }
+      /**
+       * <pre>
+       * Optional transaction plan
+       * </pre>
+       *
+       * <code>.TW.Bitcoin.Proto.TransactionPlan plan = 15;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilderV3<
+          wallet.core.jni.proto.Bitcoin.TransactionPlan, wallet.core.jni.proto.Bitcoin.TransactionPlan.Builder, wallet.core.jni.proto.Bitcoin.TransactionPlanOrBuilder> 
+          getPlanFieldBuilder() {
+        if (planBuilder_ == null) {
+          planBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+              wallet.core.jni.proto.Bitcoin.TransactionPlan, wallet.core.jni.proto.Bitcoin.TransactionPlan.Builder, wallet.core.jni.proto.Bitcoin.TransactionPlanOrBuilder>(
+                  getPlan(),
+                  getParentForChildren(),
+                  isClean());
+          plan_ = null;
+        }
+        return planBuilder_;
       }
       @java.lang.Override
       public final Builder setUnknownFields(
@@ -6713,6 +6999,15 @@ public final class Bitcoin {
      */
     wallet.core.jni.proto.Bitcoin.UnspentTransactionOrBuilder getUtxosOrBuilder(
         int index);
+
+    /**
+     * <pre>
+     * Zcash branch id
+     * </pre>
+     *
+     * <code>bytes branch_id = 6;</code>
+     */
+    com.google.protobuf.ByteString getBranchId();
   }
   /**
    * <pre>
@@ -6732,6 +7027,14 @@ public final class Bitcoin {
     }
     private TransactionPlan() {
       utxos_ = java.util.Collections.emptyList();
+      branchId_ = com.google.protobuf.ByteString.EMPTY;
+    }
+
+    @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new TransactionPlan();
     }
 
     @java.lang.Override
@@ -6779,12 +7082,17 @@ public final class Bitcoin {
               break;
             }
             case 42: {
-              if (!((mutable_bitField0_ & 0x00000010) != 0)) {
+              if (!((mutable_bitField0_ & 0x00000001) != 0)) {
                 utxos_ = new java.util.ArrayList<wallet.core.jni.proto.Bitcoin.UnspentTransaction>();
-                mutable_bitField0_ |= 0x00000010;
+                mutable_bitField0_ |= 0x00000001;
               }
               utxos_.add(
                   input.readMessage(wallet.core.jni.proto.Bitcoin.UnspentTransaction.parser(), extensionRegistry));
+              break;
+            }
+            case 50: {
+
+              branchId_ = input.readBytes();
               break;
             }
             default: {
@@ -6802,7 +7110,7 @@ public final class Bitcoin {
         throw new com.google.protobuf.InvalidProtocolBufferException(
             e).setUnfinishedMessage(this);
       } finally {
-        if (((mutable_bitField0_ & 0x00000010) != 0)) {
+        if (((mutable_bitField0_ & 0x00000001) != 0)) {
           utxos_ = java.util.Collections.unmodifiableList(utxos_);
         }
         this.unknownFields = unknownFields.build();
@@ -6822,7 +7130,6 @@ public final class Bitcoin {
               wallet.core.jni.proto.Bitcoin.TransactionPlan.class, wallet.core.jni.proto.Bitcoin.TransactionPlan.Builder.class);
     }
 
-    private int bitField0_;
     public static final int AMOUNT_FIELD_NUMBER = 1;
     private long amount_;
     /**
@@ -6930,6 +7237,19 @@ public final class Bitcoin {
       return utxos_.get(index);
     }
 
+    public static final int BRANCH_ID_FIELD_NUMBER = 6;
+    private com.google.protobuf.ByteString branchId_;
+    /**
+     * <pre>
+     * Zcash branch id
+     * </pre>
+     *
+     * <code>bytes branch_id = 6;</code>
+     */
+    public com.google.protobuf.ByteString getBranchId() {
+      return branchId_;
+    }
+
     private byte memoizedIsInitialized = -1;
     @java.lang.Override
     public final boolean isInitialized() {
@@ -6958,6 +7278,9 @@ public final class Bitcoin {
       }
       for (int i = 0; i < utxos_.size(); i++) {
         output.writeMessage(5, utxos_.get(i));
+      }
+      if (!branchId_.isEmpty()) {
+        output.writeBytes(6, branchId_);
       }
       unknownFields.writeTo(output);
     }
@@ -6988,6 +7311,10 @@ public final class Bitcoin {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(5, utxos_.get(i));
       }
+      if (!branchId_.isEmpty()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(6, branchId_);
+      }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
       return size;
@@ -7013,6 +7340,8 @@ public final class Bitcoin {
           != other.getChange()) return false;
       if (!getUtxosList()
           .equals(other.getUtxosList())) return false;
+      if (!getBranchId()
+          .equals(other.getBranchId())) return false;
       if (!unknownFields.equals(other.unknownFields)) return false;
       return true;
     }
@@ -7040,6 +7369,8 @@ public final class Bitcoin {
         hash = (37 * hash) + UTXOS_FIELD_NUMBER;
         hash = (53 * hash) + getUtxosList().hashCode();
       }
+      hash = (37 * hash) + BRANCH_ID_FIELD_NUMBER;
+      hash = (53 * hash) + getBranchId().hashCode();
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -7188,10 +7519,12 @@ public final class Bitcoin {
 
         if (utxosBuilder_ == null) {
           utxos_ = java.util.Collections.emptyList();
-          bitField0_ = (bitField0_ & ~0x00000010);
+          bitField0_ = (bitField0_ & ~0x00000001);
         } else {
           utxosBuilder_.clear();
         }
+        branchId_ = com.google.protobuf.ByteString.EMPTY;
+
         return this;
       }
 
@@ -7219,21 +7552,20 @@ public final class Bitcoin {
       public wallet.core.jni.proto.Bitcoin.TransactionPlan buildPartial() {
         wallet.core.jni.proto.Bitcoin.TransactionPlan result = new wallet.core.jni.proto.Bitcoin.TransactionPlan(this);
         int from_bitField0_ = bitField0_;
-        int to_bitField0_ = 0;
         result.amount_ = amount_;
         result.availableAmount_ = availableAmount_;
         result.fee_ = fee_;
         result.change_ = change_;
         if (utxosBuilder_ == null) {
-          if (((bitField0_ & 0x00000010) != 0)) {
+          if (((bitField0_ & 0x00000001) != 0)) {
             utxos_ = java.util.Collections.unmodifiableList(utxos_);
-            bitField0_ = (bitField0_ & ~0x00000010);
+            bitField0_ = (bitField0_ & ~0x00000001);
           }
           result.utxos_ = utxos_;
         } else {
           result.utxos_ = utxosBuilder_.build();
         }
-        result.bitField0_ = to_bitField0_;
+        result.branchId_ = branchId_;
         onBuilt();
         return result;
       }
@@ -7298,7 +7630,7 @@ public final class Bitcoin {
           if (!other.utxos_.isEmpty()) {
             if (utxos_.isEmpty()) {
               utxos_ = other.utxos_;
-              bitField0_ = (bitField0_ & ~0x00000010);
+              bitField0_ = (bitField0_ & ~0x00000001);
             } else {
               ensureUtxosIsMutable();
               utxos_.addAll(other.utxos_);
@@ -7311,7 +7643,7 @@ public final class Bitcoin {
               utxosBuilder_.dispose();
               utxosBuilder_ = null;
               utxos_ = other.utxos_;
-              bitField0_ = (bitField0_ & ~0x00000010);
+              bitField0_ = (bitField0_ & ~0x00000001);
               utxosBuilder_ = 
                 com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
                    getUtxosFieldBuilder() : null;
@@ -7319,6 +7651,9 @@ public final class Bitcoin {
               utxosBuilder_.addAllMessages(other.utxos_);
             }
           }
+        }
+        if (other.getBranchId() != com.google.protobuf.ByteString.EMPTY) {
+          setBranchId(other.getBranchId());
         }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
@@ -7505,9 +7840,9 @@ public final class Bitcoin {
       private java.util.List<wallet.core.jni.proto.Bitcoin.UnspentTransaction> utxos_ =
         java.util.Collections.emptyList();
       private void ensureUtxosIsMutable() {
-        if (!((bitField0_ & 0x00000010) != 0)) {
+        if (!((bitField0_ & 0x00000001) != 0)) {
           utxos_ = new java.util.ArrayList<wallet.core.jni.proto.Bitcoin.UnspentTransaction>(utxos_);
-          bitField0_ |= 0x00000010;
+          bitField0_ |= 0x00000001;
          }
       }
 
@@ -7701,7 +8036,7 @@ public final class Bitcoin {
       public Builder clearUtxos() {
         if (utxosBuilder_ == null) {
           utxos_ = java.util.Collections.emptyList();
-          bitField0_ = (bitField0_ & ~0x00000010);
+          bitField0_ = (bitField0_ & ~0x00000001);
           onChanged();
         } else {
           utxosBuilder_.clear();
@@ -7806,12 +8141,53 @@ public final class Bitcoin {
           utxosBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
               wallet.core.jni.proto.Bitcoin.UnspentTransaction, wallet.core.jni.proto.Bitcoin.UnspentTransaction.Builder, wallet.core.jni.proto.Bitcoin.UnspentTransactionOrBuilder>(
                   utxos_,
-                  ((bitField0_ & 0x00000010) != 0),
+                  ((bitField0_ & 0x00000001) != 0),
                   getParentForChildren(),
                   isClean());
           utxos_ = null;
         }
         return utxosBuilder_;
+      }
+
+      private com.google.protobuf.ByteString branchId_ = com.google.protobuf.ByteString.EMPTY;
+      /**
+       * <pre>
+       * Zcash branch id
+       * </pre>
+       *
+       * <code>bytes branch_id = 6;</code>
+       */
+      public com.google.protobuf.ByteString getBranchId() {
+        return branchId_;
+      }
+      /**
+       * <pre>
+       * Zcash branch id
+       * </pre>
+       *
+       * <code>bytes branch_id = 6;</code>
+       */
+      public Builder setBranchId(com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        branchId_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Zcash branch id
+       * </pre>
+       *
+       * <code>bytes branch_id = 6;</code>
+       */
+      public Builder clearBranchId() {
+        
+        branchId_ = getDefaultInstance().getBranchId();
+        onChanged();
+        return this;
       }
       @java.lang.Override
       public final Builder setUnknownFields(
@@ -7906,28 +8282,10 @@ public final class Bitcoin {
 
     /**
      * <pre>
-     * Total transaction fees.
-     * </pre>
-     *
-     * <code>int64 fee = 3;</code>
-     */
-    long getFee();
-
-    /**
-     * <pre>
-     * Maximum spendable amount.
-     * </pre>
-     *
-     * <code>int64 max_amount = 4;</code>
-     */
-    long getMaxAmount();
-
-    /**
-     * <pre>
      * Transaction id
      * </pre>
      *
-     * <code>string transaction_id = 5;</code>
+     * <code>string transaction_id = 3;</code>
      */
     java.lang.String getTransactionId();
     /**
@@ -7935,10 +8293,28 @@ public final class Bitcoin {
      * Transaction id
      * </pre>
      *
-     * <code>string transaction_id = 5;</code>
+     * <code>string transaction_id = 3;</code>
      */
     com.google.protobuf.ByteString
         getTransactionIdBytes();
+
+    /**
+     * <pre>
+     * Optional error message
+     * </pre>
+     *
+     * <code>string error = 4;</code>
+     */
+    java.lang.String getError();
+    /**
+     * <pre>
+     * Optional error message
+     * </pre>
+     *
+     * <code>string error = 4;</code>
+     */
+    com.google.protobuf.ByteString
+        getErrorBytes();
   }
   /**
    * <pre>
@@ -7959,6 +8335,14 @@ public final class Bitcoin {
     private SigningOutput() {
       encoded_ = com.google.protobuf.ByteString.EMPTY;
       transactionId_ = "";
+      error_ = "";
+    }
+
+    @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new SigningOutput();
     }
 
     @java.lang.Override
@@ -7974,7 +8358,6 @@ public final class Bitcoin {
       if (extensionRegistry == null) {
         throw new java.lang.NullPointerException();
       }
-      int mutable_bitField0_ = 0;
       com.google.protobuf.UnknownFieldSet.Builder unknownFields =
           com.google.protobuf.UnknownFieldSet.newBuilder();
       try {
@@ -8003,20 +8386,16 @@ public final class Bitcoin {
               encoded_ = input.readBytes();
               break;
             }
-            case 24: {
-
-              fee_ = input.readInt64();
-              break;
-            }
-            case 32: {
-
-              maxAmount_ = input.readInt64();
-              break;
-            }
-            case 42: {
+            case 26: {
               java.lang.String s = input.readStringRequireUtf8();
 
               transactionId_ = s;
+              break;
+            }
+            case 34: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              error_ = s;
               break;
             }
             default: {
@@ -8097,40 +8476,14 @@ public final class Bitcoin {
       return encoded_;
     }
 
-    public static final int FEE_FIELD_NUMBER = 3;
-    private long fee_;
-    /**
-     * <pre>
-     * Total transaction fees.
-     * </pre>
-     *
-     * <code>int64 fee = 3;</code>
-     */
-    public long getFee() {
-      return fee_;
-    }
-
-    public static final int MAX_AMOUNT_FIELD_NUMBER = 4;
-    private long maxAmount_;
-    /**
-     * <pre>
-     * Maximum spendable amount.
-     * </pre>
-     *
-     * <code>int64 max_amount = 4;</code>
-     */
-    public long getMaxAmount() {
-      return maxAmount_;
-    }
-
-    public static final int TRANSACTION_ID_FIELD_NUMBER = 5;
+    public static final int TRANSACTION_ID_FIELD_NUMBER = 3;
     private volatile java.lang.Object transactionId_;
     /**
      * <pre>
      * Transaction id
      * </pre>
      *
-     * <code>string transaction_id = 5;</code>
+     * <code>string transaction_id = 3;</code>
      */
     public java.lang.String getTransactionId() {
       java.lang.Object ref = transactionId_;
@@ -8149,7 +8502,7 @@ public final class Bitcoin {
      * Transaction id
      * </pre>
      *
-     * <code>string transaction_id = 5;</code>
+     * <code>string transaction_id = 3;</code>
      */
     public com.google.protobuf.ByteString
         getTransactionIdBytes() {
@@ -8159,6 +8512,48 @@ public final class Bitcoin {
             com.google.protobuf.ByteString.copyFromUtf8(
                 (java.lang.String) ref);
         transactionId_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int ERROR_FIELD_NUMBER = 4;
+    private volatile java.lang.Object error_;
+    /**
+     * <pre>
+     * Optional error message
+     * </pre>
+     *
+     * <code>string error = 4;</code>
+     */
+    public java.lang.String getError() {
+      java.lang.Object ref = error_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        error_ = s;
+        return s;
+      }
+    }
+    /**
+     * <pre>
+     * Optional error message
+     * </pre>
+     *
+     * <code>string error = 4;</code>
+     */
+    public com.google.protobuf.ByteString
+        getErrorBytes() {
+      java.lang.Object ref = error_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        error_ = b;
         return b;
       } else {
         return (com.google.protobuf.ByteString) ref;
@@ -8185,14 +8580,11 @@ public final class Bitcoin {
       if (!encoded_.isEmpty()) {
         output.writeBytes(2, encoded_);
       }
-      if (fee_ != 0L) {
-        output.writeInt64(3, fee_);
-      }
-      if (maxAmount_ != 0L) {
-        output.writeInt64(4, maxAmount_);
-      }
       if (!getTransactionIdBytes().isEmpty()) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 5, transactionId_);
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 3, transactionId_);
+      }
+      if (!getErrorBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 4, error_);
       }
       unknownFields.writeTo(output);
     }
@@ -8211,16 +8603,11 @@ public final class Bitcoin {
         size += com.google.protobuf.CodedOutputStream
           .computeBytesSize(2, encoded_);
       }
-      if (fee_ != 0L) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeInt64Size(3, fee_);
-      }
-      if (maxAmount_ != 0L) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeInt64Size(4, maxAmount_);
-      }
       if (!getTransactionIdBytes().isEmpty()) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(5, transactionId_);
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, transactionId_);
+      }
+      if (!getErrorBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(4, error_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -8244,12 +8631,10 @@ public final class Bitcoin {
       }
       if (!getEncoded()
           .equals(other.getEncoded())) return false;
-      if (getFee()
-          != other.getFee()) return false;
-      if (getMaxAmount()
-          != other.getMaxAmount()) return false;
       if (!getTransactionId()
           .equals(other.getTransactionId())) return false;
+      if (!getError()
+          .equals(other.getError())) return false;
       if (!unknownFields.equals(other.unknownFields)) return false;
       return true;
     }
@@ -8267,14 +8652,10 @@ public final class Bitcoin {
       }
       hash = (37 * hash) + ENCODED_FIELD_NUMBER;
       hash = (53 * hash) + getEncoded().hashCode();
-      hash = (37 * hash) + FEE_FIELD_NUMBER;
-      hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
-          getFee());
-      hash = (37 * hash) + MAX_AMOUNT_FIELD_NUMBER;
-      hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
-          getMaxAmount());
       hash = (37 * hash) + TRANSACTION_ID_FIELD_NUMBER;
       hash = (53 * hash) + getTransactionId().hashCode();
+      hash = (37 * hash) + ERROR_FIELD_NUMBER;
+      hash = (53 * hash) + getError().hashCode();
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -8420,11 +8801,9 @@ public final class Bitcoin {
         }
         encoded_ = com.google.protobuf.ByteString.EMPTY;
 
-        fee_ = 0L;
-
-        maxAmount_ = 0L;
-
         transactionId_ = "";
+
+        error_ = "";
 
         return this;
       }
@@ -8458,9 +8837,8 @@ public final class Bitcoin {
           result.transaction_ = transactionBuilder_.build();
         }
         result.encoded_ = encoded_;
-        result.fee_ = fee_;
-        result.maxAmount_ = maxAmount_;
         result.transactionId_ = transactionId_;
+        result.error_ = error_;
         onBuilt();
         return result;
       }
@@ -8515,14 +8893,12 @@ public final class Bitcoin {
         if (other.getEncoded() != com.google.protobuf.ByteString.EMPTY) {
           setEncoded(other.getEncoded());
         }
-        if (other.getFee() != 0L) {
-          setFee(other.getFee());
-        }
-        if (other.getMaxAmount() != 0L) {
-          setMaxAmount(other.getMaxAmount());
-        }
         if (!other.getTransactionId().isEmpty()) {
           transactionId_ = other.transactionId_;
+          onChanged();
+        }
+        if (!other.getError().isEmpty()) {
+          error_ = other.error_;
           onChanged();
         }
         this.mergeUnknownFields(other.unknownFields);
@@ -8748,89 +9124,13 @@ public final class Bitcoin {
         return this;
       }
 
-      private long fee_ ;
-      /**
-       * <pre>
-       * Total transaction fees.
-       * </pre>
-       *
-       * <code>int64 fee = 3;</code>
-       */
-      public long getFee() {
-        return fee_;
-      }
-      /**
-       * <pre>
-       * Total transaction fees.
-       * </pre>
-       *
-       * <code>int64 fee = 3;</code>
-       */
-      public Builder setFee(long value) {
-        
-        fee_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <pre>
-       * Total transaction fees.
-       * </pre>
-       *
-       * <code>int64 fee = 3;</code>
-       */
-      public Builder clearFee() {
-        
-        fee_ = 0L;
-        onChanged();
-        return this;
-      }
-
-      private long maxAmount_ ;
-      /**
-       * <pre>
-       * Maximum spendable amount.
-       * </pre>
-       *
-       * <code>int64 max_amount = 4;</code>
-       */
-      public long getMaxAmount() {
-        return maxAmount_;
-      }
-      /**
-       * <pre>
-       * Maximum spendable amount.
-       * </pre>
-       *
-       * <code>int64 max_amount = 4;</code>
-       */
-      public Builder setMaxAmount(long value) {
-        
-        maxAmount_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <pre>
-       * Maximum spendable amount.
-       * </pre>
-       *
-       * <code>int64 max_amount = 4;</code>
-       */
-      public Builder clearMaxAmount() {
-        
-        maxAmount_ = 0L;
-        onChanged();
-        return this;
-      }
-
       private java.lang.Object transactionId_ = "";
       /**
        * <pre>
        * Transaction id
        * </pre>
        *
-       * <code>string transaction_id = 5;</code>
+       * <code>string transaction_id = 3;</code>
        */
       public java.lang.String getTransactionId() {
         java.lang.Object ref = transactionId_;
@@ -8849,7 +9149,7 @@ public final class Bitcoin {
        * Transaction id
        * </pre>
        *
-       * <code>string transaction_id = 5;</code>
+       * <code>string transaction_id = 3;</code>
        */
       public com.google.protobuf.ByteString
           getTransactionIdBytes() {
@@ -8869,7 +9169,7 @@ public final class Bitcoin {
        * Transaction id
        * </pre>
        *
-       * <code>string transaction_id = 5;</code>
+       * <code>string transaction_id = 3;</code>
        */
       public Builder setTransactionId(
           java.lang.String value) {
@@ -8886,7 +9186,7 @@ public final class Bitcoin {
        * Transaction id
        * </pre>
        *
-       * <code>string transaction_id = 5;</code>
+       * <code>string transaction_id = 3;</code>
        */
       public Builder clearTransactionId() {
         
@@ -8899,7 +9199,7 @@ public final class Bitcoin {
        * Transaction id
        * </pre>
        *
-       * <code>string transaction_id = 5;</code>
+       * <code>string transaction_id = 3;</code>
        */
       public Builder setTransactionIdBytes(
           com.google.protobuf.ByteString value) {
@@ -8909,6 +9209,95 @@ public final class Bitcoin {
   checkByteStringIsUtf8(value);
         
         transactionId_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object error_ = "";
+      /**
+       * <pre>
+       * Optional error message
+       * </pre>
+       *
+       * <code>string error = 4;</code>
+       */
+      public java.lang.String getError() {
+        java.lang.Object ref = error_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          error_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <pre>
+       * Optional error message
+       * </pre>
+       *
+       * <code>string error = 4;</code>
+       */
+      public com.google.protobuf.ByteString
+          getErrorBytes() {
+        java.lang.Object ref = error_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          error_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <pre>
+       * Optional error message
+       * </pre>
+       *
+       * <code>string error = 4;</code>
+       */
+      public Builder setError(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        error_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Optional error message
+       * </pre>
+       *
+       * <code>string error = 4;</code>
+       */
+      public Builder clearError() {
+        
+        error_ = getDefaultInstance().getError();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Optional error message
+       * </pre>
+       *
+       * <code>string error = 4;</code>
+       */
+      public Builder setErrorBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        error_ = value;
         onChanged();
         return this;
       }
@@ -9031,7 +9420,7 @@ public final class Bitcoin {
       "ransactionOutput\022\r\n\005value\030\001 \001(\003\022\016\n\006scrip" +
       "t\030\002 \001(\014\"c\n\022UnspentTransaction\022-\n\tout_poi" +
       "nt\030\001 \001(\0132\032.TW.Bitcoin.Proto.OutPoint\022\016\n\006" +
-      "script\030\002 \001(\014\022\016\n\006amount\030\003 \001(\003\"\321\002\n\014Signing" +
+      "script\030\002 \001(\014\022\016\n\006amount\030\003 \001(\003\"\202\003\n\014Signing" +
       "Input\022\021\n\thash_type\030\001 \001(\r\022\016\n\006amount\030\002 \001(\003" +
       "\022\020\n\010byte_fee\030\003 \001(\003\022\022\n\nto_address\030\004 \001(\t\022\026" +
       "\n\016change_address\030\005 \001(\t\022\023\n\013private_key\030\n " +
@@ -9039,29 +9428,22 @@ public final class Bitcoin {
       "SigningInput.ScriptsEntry\0222\n\004utxo\030\014 \003(\0132" +
       "$.TW.Bitcoin.Proto.UnspentTransaction\022\026\n" +
       "\016use_max_amount\030\r \001(\010\022\021\n\tcoin_type\030\016 \001(\r" +
-      "\032.\n\014ScriptsEntry\022\013\n\003key\030\001 \001(\t\022\r\n\005value\030\002" +
-      " \001(\014:\0028\001\"\215\001\n\017TransactionPlan\022\016\n\006amount\030\001" +
-      " \001(\003\022\030\n\020available_amount\030\002 \001(\003\022\013\n\003fee\030\003 " +
-      "\001(\003\022\016\n\006change\030\004 \001(\003\0223\n\005utxos\030\005 \003(\0132$.TW." +
-      "Bitcoin.Proto.UnspentTransaction\"\215\001\n\rSig" +
-      "ningOutput\0222\n\013transaction\030\001 \001(\0132\035.TW.Bit" +
-      "coin.Proto.Transaction\022\017\n\007encoded\030\002 \001(\014\022" +
-      "\013\n\003fee\030\003 \001(\003\022\022\n\nmax_amount\030\004 \001(\003\022\026\n\016tran" +
-      "saction_id\030\005 \001(\tB\027\n\025wallet.core.jni.prot" +
-      "ob\006proto3"
+      "\022/\n\004plan\030\017 \001(\0132!.TW.Bitcoin.Proto.Transa" +
+      "ctionPlan\032.\n\014ScriptsEntry\022\013\n\003key\030\001 \001(\t\022\r" +
+      "\n\005value\030\002 \001(\014:\0028\001\"\240\001\n\017TransactionPlan\022\016\n" +
+      "\006amount\030\001 \001(\003\022\030\n\020available_amount\030\002 \001(\003\022" +
+      "\013\n\003fee\030\003 \001(\003\022\016\n\006change\030\004 \001(\003\0223\n\005utxos\030\005 " +
+      "\003(\0132$.TW.Bitcoin.Proto.UnspentTransactio" +
+      "n\022\021\n\tbranch_id\030\006 \001(\014\"{\n\rSigningOutput\0222\n" +
+      "\013transaction\030\001 \001(\0132\035.TW.Bitcoin.Proto.Tr" +
+      "ansaction\022\017\n\007encoded\030\002 \001(\014\022\026\n\016transactio" +
+      "n_id\030\003 \001(\t\022\r\n\005error\030\004 \001(\tB\027\n\025wallet.core" +
+      ".jni.protob\006proto3"
     };
-    com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
-        new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
-          public com.google.protobuf.ExtensionRegistry assignDescriptors(
-              com.google.protobuf.Descriptors.FileDescriptor root) {
-            descriptor = root;
-            return null;
-          }
-        };
-    com.google.protobuf.Descriptors.FileDescriptor
+    descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
         new com.google.protobuf.Descriptors.FileDescriptor[] {
-        }, assigner);
+        });
     internal_static_TW_Bitcoin_Proto_Transaction_descriptor =
       getDescriptor().getMessageTypes().get(0);
     internal_static_TW_Bitcoin_Proto_Transaction_fieldAccessorTable = new
@@ -9097,7 +9479,7 @@ public final class Bitcoin {
     internal_static_TW_Bitcoin_Proto_SigningInput_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_TW_Bitcoin_Proto_SigningInput_descriptor,
-        new java.lang.String[] { "HashType", "Amount", "ByteFee", "ToAddress", "ChangeAddress", "PrivateKey", "Scripts", "Utxo", "UseMaxAmount", "CoinType", });
+        new java.lang.String[] { "HashType", "Amount", "ByteFee", "ToAddress", "ChangeAddress", "PrivateKey", "Scripts", "Utxo", "UseMaxAmount", "CoinType", "Plan", });
     internal_static_TW_Bitcoin_Proto_SigningInput_ScriptsEntry_descriptor =
       internal_static_TW_Bitcoin_Proto_SigningInput_descriptor.getNestedTypes().get(0);
     internal_static_TW_Bitcoin_Proto_SigningInput_ScriptsEntry_fieldAccessorTable = new
@@ -9109,13 +9491,13 @@ public final class Bitcoin {
     internal_static_TW_Bitcoin_Proto_TransactionPlan_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_TW_Bitcoin_Proto_TransactionPlan_descriptor,
-        new java.lang.String[] { "Amount", "AvailableAmount", "Fee", "Change", "Utxos", });
+        new java.lang.String[] { "Amount", "AvailableAmount", "Fee", "Change", "Utxos", "BranchId", });
     internal_static_TW_Bitcoin_Proto_SigningOutput_descriptor =
       getDescriptor().getMessageTypes().get(7);
     internal_static_TW_Bitcoin_Proto_SigningOutput_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_TW_Bitcoin_Proto_SigningOutput_descriptor,
-        new java.lang.String[] { "Transaction", "Encoded", "Fee", "MaxAmount", "TransactionId", });
+        new java.lang.String[] { "Transaction", "Encoded", "TransactionId", "Error", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)
