@@ -23,8 +23,9 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.web3j.utils.Numeric;
-import wallet.core.jni.BinanceSigner;
-import wallet.core.jni.CosmosAddress;
+import wallet.core.java.AnySigner;
+import wallet.core.jni.AnyAddress;
+import wallet.core.jni.CoinType;
 import wallet.core.jni.PrivateKey;
 import wallet.core.jni.proto.Binance;
 import java.math.BigDecimal;
@@ -164,8 +165,7 @@ public class BinanceService {
                 privateKey = walletService.getWallet().getKey(path);
             }
 
-            CosmosAddress fromCosmosAddress = new CosmosAddress(fromAddress);
-            CurrentAccountDTO currentDTO = getCurrentAccount(fromCosmosAddress.description());
+            CurrentAccountDTO currentDTO = getCurrentAccount(fromAddress);
 
             Binance.SigningInput.Builder builder = Binance.SigningInput.newBuilder();
             builder.setChainId(currentDTO.getChainId());
@@ -178,11 +178,11 @@ public class BinanceService {
             token.setAmount(amount.multiply(Constant.BNB_DIVIDER).longValue());
 
             Binance.SendOrder.Input.Builder input = Binance.SendOrder.Input.newBuilder();
-            input.setAddress(ByteString.copyFrom(fromCosmosAddress.keyHash()));
+            input.setAddress(ByteString.copyFrom(new AnyAddress(fromAddress, CoinType.BINANCE).data()));
             input.addAllCoins(Arrays.asList(token.build()));
 
             Binance.SendOrder.Output.Builder output = Binance.SendOrder.Output.newBuilder();
-            output.setAddress(ByteString.copyFrom(new CosmosAddress(toAddress).keyHash()));
+            output.setAddress(ByteString.copyFrom(new AnyAddress(toAddress, CoinType.BINANCE).data()));
             output.addAllCoins(Arrays.asList(token.build()));
 
             Binance.SendOrder.Builder sendOrder = Binance.SendOrder.newBuilder();
@@ -191,7 +191,7 @@ public class BinanceService {
 
             builder.setSendOrder(sendOrder.build());
 
-            Binance.SigningOutput sign = BinanceSigner.sign(builder.build());
+            Binance.SigningOutput sign = AnySigner.sign(builder.build(), CoinType.BINANCE, Binance.SigningOutput.parser());
             byte[] bytes = sign.getEncoded().toByteArray();
 
             return Numeric.toHexString(bytes).substring(2);

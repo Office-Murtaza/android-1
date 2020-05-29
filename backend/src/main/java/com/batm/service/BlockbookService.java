@@ -12,9 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.web3j.utils.Numeric;
+import wallet.core.java.AnySigner;
 import wallet.core.jni.*;
 import wallet.core.jni.proto.Bitcoin;
-import wallet.core.jni.proto.Common;
 import java.math.BigDecimal;
 import java.util.*;
 
@@ -199,11 +199,9 @@ public class BlockbookService {
                 signerBuilder.addUtxo(unspentBuild);
             }
 
-            BitcoinTransactionSigner signer = new BitcoinTransactionSigner(signerBuilder.build());
-            Common.Result result = signer.sign();
-            Bitcoin.SigningOutput output = result.getObjects(0).unpack(Bitcoin.SigningOutput.class);
+            Bitcoin.SigningOutput signer = AnySigner.sign(signerBuilder.build(), coinType, Bitcoin.SigningOutput.parser());
 
-            return Numeric.toHexString(output.getEncoded().toByteArray()).substring(2);
+            return signer.getTransactionId();
         } catch (Exception e) {
             e.printStackTrace();
         }

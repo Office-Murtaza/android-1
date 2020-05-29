@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.web3j.utils.Numeric;
+import wallet.core.java.AnySigner;
 import wallet.core.jni.*;
 import wallet.core.jni.proto.Ripple;
 import java.math.BigDecimal;
@@ -196,7 +197,7 @@ public class RippledService {
             builder.setSequence(accountDTO.getSequence());
             builder.setPrivateKey(ByteString.copyFrom(privateKey.data()));
 
-            Ripple.SigningOutput sign = RippleSigner.sign(builder.build());
+            Ripple.SigningOutput sign = AnySigner.sign(builder.build(), CoinType.XRP, Ripple.SigningOutput.parser());
             byte[] bytes = sign.getEncoded().toByteArray();
             String hex = Numeric.toHexString(bytes).substring(2);
 

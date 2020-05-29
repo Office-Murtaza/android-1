@@ -34,10 +34,8 @@ import org.web3j.protocol.core.methods.response.*;
 import org.web3j.protocol.http.HttpService;
 import org.web3j.tx.gas.DefaultGasProvider;
 import org.web3j.utils.Numeric;
-import wallet.core.jni.EthereumAbiEncoder;
-import wallet.core.jni.EthereumAbiFunction;
-import wallet.core.jni.EthereumSigner;
-import wallet.core.jni.PrivateKey;
+import wallet.core.java.AnySigner;
+import wallet.core.jni.*;
 import wallet.core.jni.proto.Ethereum;
 import javax.annotation.PostConstruct;
 import java.math.BigDecimal;
@@ -342,17 +340,17 @@ public class GethService {
             }
 
             Integer nonce = getEthNonce(fromAddress);
-            Ethereum.SigningInput.Builder builder = Ethereum.SigningInput.newBuilder();
+            Ethereum.SigningInput.Builder input = Ethereum.SigningInput.newBuilder();
 
-            builder.setPrivateKey(ByteString.copyFrom(Numeric.hexStringToByteArray(Numeric.toHexStringNoPrefix(privateKey.data()))));
-            builder.setToAddress(toAddress);
-            builder.setChainId(ByteString.copyFrom(Numeric.hexStringToByteArray("1")));
-            builder.setNonce(ByteString.copyFrom(Numeric.hexStringToByteArray(Integer.toHexString(nonce))));
-            builder.setGasPrice(ByteString.copyFrom(Numeric.hexStringToByteArray(Long.toHexString(getGasPrice()))));
-            builder.setGasLimit(ByteString.copyFrom(Numeric.hexStringToByteArray(Long.toHexString(getGasLimit()))));
-            builder.setAmount(ByteString.copyFrom(Numeric.hexStringToByteArray(Long.toHexString(amount.multiply(Constant.ETH_DIVIDER).longValue()))));
+            input.setPrivateKey(ByteString.copyFrom(Numeric.hexStringToByteArray(Numeric.toHexStringNoPrefix(privateKey.data()))));
+            input.setToAddress(toAddress);
+            input.setChainId(ByteString.copyFrom(Numeric.hexStringToByteArray("1")));
+            input.setNonce(ByteString.copyFrom(Numeric.hexStringToByteArray(Integer.toHexString(nonce))));
+            input.setGasPrice(ByteString.copyFrom(Numeric.hexStringToByteArray(Long.toHexString(getGasPrice()))));
+            input.setGasLimit(ByteString.copyFrom(Numeric.hexStringToByteArray(Long.toHexString(getGasLimit()))));
+            input.setAmount(ByteString.copyFrom(Numeric.hexStringToByteArray(Long.toHexString(amount.multiply(Constant.ETH_DIVIDER).longValue()))));
 
-            Ethereum.SigningOutput output = EthereumSigner.sign(builder.build());
+            Ethereum.SigningOutput output = AnySigner.sign(input.build(), CoinType.ETHEREUM, Ethereum.SigningOutput.parser());
 
             return Numeric.toHexString(output.getEncoded().toByteArray());
         } catch (Exception e) {
@@ -374,15 +372,15 @@ public class GethService {
             }
 
             Integer nonce = getTokenNonce(fromAddress);
-            Ethereum.SigningInput.Builder builder = Ethereum.SigningInput.newBuilder();
+            Ethereum.SigningInput.Builder input = Ethereum.SigningInput.newBuilder();
 
-            builder.setPrivateKey(ByteString.copyFrom(Numeric.hexStringToByteArray(Numeric.toHexStringNoPrefix(privateKey.data()))));
-            builder.setToAddress(contractAddress);
-            builder.setChainId(ByteString.copyFrom(Numeric.hexStringToByteArray("1")));
-            builder.setNonce(ByteString.copyFrom(Numeric.hexStringToByteArray(Integer.toHexString(nonce))));
-            builder.setGasPrice(ByteString.copyFrom(Numeric.hexStringToByteArray(Long.toHexString(getGasPrice()))));
-            builder.setGasLimit(ByteString.copyFrom(Numeric.hexStringToByteArray(Long.toHexString(getGasLimit()))));
-            builder.setAmount(ByteString.copyFrom(Numeric.hexStringToByteArray(Long.toHexString(0L))));
+            input.setPrivateKey(ByteString.copyFrom(Numeric.hexStringToByteArray(Numeric.toHexStringNoPrefix(privateKey.data()))));
+            input.setToAddress(contractAddress);
+            input.setChainId(ByteString.copyFrom(Numeric.hexStringToByteArray("4")));
+            input.setNonce(ByteString.copyFrom(Numeric.hexStringToByteArray(Integer.toHexString(nonce))));
+            input.setGasPrice(ByteString.copyFrom(Numeric.hexStringToByteArray(Long.toHexString(getGasPrice()))));
+            input.setGasLimit(ByteString.copyFrom(Numeric.hexStringToByteArray(Long.toHexString(getGasLimit()))));
+            input.setAmount(ByteString.copyFrom(Numeric.hexStringToByteArray(Long.toHexString(0L))));
 
             EthereumAbiFunction function = EthereumAbiEncoder.buildFunction("transfer");
             byte[] amountBytes = amount.multiply(Constant.ETH_DIVIDER).toBigInteger().toByteArray();
@@ -390,9 +388,9 @@ public class GethService {
             function.addParamUInt256(amountBytes, false);
             byte[] encode = EthereumAbiEncoder.encode(function);
 
-            builder.setPayload(ByteString.copyFrom(encode));
+            input.setPayload(ByteString.copyFrom(encode));
 
-            Ethereum.SigningOutput output = EthereumSigner.sign(builder.build());
+            Ethereum.SigningOutput output = AnySigner.sign(input.build(), CoinType.ETHEREUM, Ethereum.SigningOutput.parser());
 
             return Numeric.toHexString(output.getEncoded().toByteArray());
         } catch (Exception e) {

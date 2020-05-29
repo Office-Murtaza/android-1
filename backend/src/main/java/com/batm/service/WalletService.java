@@ -127,19 +127,19 @@ public class WalletService {
         } else if (coinType == CoinType.XRP) {
             PublicKey publicKey = wallet.getPublicKeyFromExtended(getXPUB(coinType), newPath);
 
-            return new RippleAddress(publicKey).description();
+            return new AnyAddress(publicKey, coinType).description();
         } else if (coinType == CoinType.ETHEREUM) {
             PrivateKey privateKey = wallet.getKey(newPath);
 
-            return new EthereumAddress(privateKey.getPublicKeySecp256k1(false)).description();
+            return new AnyAddress(privateKey.getPublicKeySecp256k1(false), coinType).description();
         } else if (coinType == CoinType.TRON) {
             PrivateKey privateKey = wallet.getKey(newPath);
 
-            return new TronAddress(privateKey.getPublicKeySecp256k1(false)).description();
+            return new AnyAddress(privateKey.getPublicKeySecp256k1(false), coinType).description();
         } else if (coinType == CoinType.BINANCE) {
             PrivateKey privateKey = wallet.getKey(newPath);
 
-            return new CosmosAddress(HRP.BINANCE, privateKey.getPublicKeySecp256k1(true)).description();
+            return new AnyAddress(privateKey.getPublicKeySecp256k1(true), coinType).description();
         }
 
         return null;

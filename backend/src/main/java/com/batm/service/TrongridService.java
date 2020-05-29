@@ -17,8 +17,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.web3j.utils.Numeric;
+import wallet.core.java.AnySigner;
+import wallet.core.jni.CoinType;
 import wallet.core.jni.PrivateKey;
-import wallet.core.jni.TronSigner;
 import wallet.core.jni.proto.Tron;
 import java.math.BigDecimal;
 import java.util.*;
@@ -175,7 +176,7 @@ public class TrongridService {
             sign.setTransaction(transactionBuilder.build());
             sign.setPrivateKey(ByteString.copyFrom(Numeric.hexStringToByteArray(Numeric.toHexStringNoPrefix(privateKey.data()))));
 
-            Tron.SigningOutput output = TronSigner.sign(sign.build());
+            Tron.SigningOutput output = AnySigner.sign(sign.build(), CoinType.TRON, Tron.SigningOutput.parser());
 
             return output.getJson();
         } catch (Exception e) {
