@@ -297,6 +297,9 @@
     <string name="crypto_amount">%1$s amount</string>
     <string name="button_next">Next</string>
     <string name="button_send">Send</string>
+    <string name="button_create">Create</string>
+    <string name="button_delete">Delete</string>
+    <string name="button_update">Update</string>
 
     <string name="alert_copy_to_clipboard">Copied</string>
 

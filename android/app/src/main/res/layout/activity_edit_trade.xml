@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/container"
@@ -16,7 +15,7 @@
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:elevation="6dp"
         app:navigationIcon="@drawable/ic_arrow_back"
-        app:title="@string/add_edit_trade_screen_title_create" />
+        app:title="@string/add_edit_trade_screen_title_edit" />
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -146,6 +145,8 @@
                         style="@style/WalletTab.Title.Medium.Value"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:checked="true"
+                        android:paddingStart="0dp"
                         android:paddingEnd="8dp"
                         android:text="@string/add_edit_trade_screen_buy" />
 
@@ -153,6 +154,7 @@
                         style="@style/WalletTab.Title.Medium.Value"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:paddingStart="0dp"
                         android:paddingEnd="8dp"
                         android:text="@string/add_edit_trade_screen_sell" />
                 </RadioGroup>
@@ -248,21 +250,37 @@
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.button.MaterialButton
-                    android:id="@+id/nextButtonView"
+                    android:id="@+id/deleteButtonView"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="8dp"
-                    android:layout_marginEnd="16dp"
+                    android:layout_marginEnd="8dp"
                     android:layout_marginBottom="16dp"
-                    android:enabled="false"
+                    android:backgroundTint="#ecf4fd"
                     android:paddingTop="12dp"
                     android:paddingBottom="12dp"
-                    android:text="@string/button_next"
-                    android:textColor="@android:color/white"
+                    android:text="@string/button_delete"
+                    android:textColor="@color/blue_color"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/updateButtonView"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tradeTermsView" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/updateButtonView"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginBottom="16dp"
+                    android:paddingTop="12dp"
+                    android:paddingBottom="12dp"
+                    android:text="@string/button_update"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/deleteButtonView"
                     app:layout_constraintTop_toBottomOf="@id/tradeTermsView" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
