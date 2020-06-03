@@ -1,7 +1,6 @@
 package com.batm.entity;
 
 import lombok.*;
-
 import javax.persistence.*;
 import java.util.Date;
 
@@ -26,7 +25,6 @@ public class IdentityPieceSelfie extends BaseEntity {
 
     @Column(name = "mimetype")
     private String mimeType;
-
 
     @Column(name = "created")
     private Date created;

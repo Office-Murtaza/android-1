@@ -19,7 +19,6 @@ import java.util.Date;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class TransactionDetailsDTO {
 
-    private Integer index;
     private String txId;
     private String txDbId;
     private String link;

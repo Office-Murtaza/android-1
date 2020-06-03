@@ -18,193 +18,111 @@ import java.util.Date;
 @Table(name = "transactionrecord")
 public class TransactionRecord extends BaseEntity {
 
-    @Column(
-            name = "type"
-    )
+    @Column(name = "type")
     private Integer type = Integer.valueOf(0);
 
-    @Column(
-            name = "remotetid"
-    )
+    @Column(name = "remotetid")
     private String remoteTransactionId;
 
-    @Column(
-            name = "relatedremotetid"
-    )
+    @Column(name = "relatedremotetid")
     private String relatedRemoteTransactionId;
 
-    @Column(
-            name = "localtid"
-    )
+    @Column(name = "localtid")
     private String localTransactionId;
 
-    @Column(
-            name = "uuid"
-    )
+    @Column(name = "uuid")
     private String uuid;
 
-    @Column(
-            name = "status"
-    )
+    @Column(name = "status")
     private int status;
 
-    @Column(
-            name = "detail"
-    )
+    @Column(name = "detail")
     private String detail;
 
     private Integer n;
 
-    @Column(
-            name = "cashamount",
-            precision = 20,
-            scale = 10
-    )
+    @Column(name = "cashamount")
     private BigDecimal cashAmount;
 
-    @Column(
-            name = "cashcurrency"
-    )
+    @Column(name = "cashcurrency")
     private String cashCurrency;
 
-    @Column(
-            name = "cryptoamount",
-            precision = 20,
-            scale = 10
-    )
+    @Column(name = "cryptoamount")
     private BigDecimal cryptoAmount;
 
-    @Column(
-            name = "cryptocurrency"
-    )
+    @Column(name = "cryptocurrency")
     private String cryptoCurrency;
 
-    @Column(
-            name = "cryptoaddress",
-            columnDefinition = "TEXT"
-    )
+    @Column(name = "cryptoaddress")
     private String cryptoAddress;
 
-    @Column(
-            name = "servertime"
-    )
+    @Column(name = "servertime")
     private Date serverTime;
 
-    @Column(
-            name = "terminaltime"
-    )
+    @Column(name = "terminaltime")
     private Date terminalTime;
 
-    @Column(
-            name = "exchangestrategyused"
-    )
+    @Column(name = "exchangestrategyused")
     private int exchangeStrategyUsed;
 
-    @Column(
-            name = "errorcode"
-    )
+    @Column(name = "errorcode")
     private int errorCode;
 
     @ManyToOne
     private Identity identity;
 
-    @Column(
-            name = "sold"
-    )
+    @Column(name = "sold")
     private Boolean sold;
 
-    @Column(
-            name = "purchased"
-    )
+    @Column(name = "purchased")
     private Boolean purchased;
 
-    @Column(
-            name = "withdrawn"
-    )
+    @Column(name = "withdrawn")
     private Boolean withdrawn;
 
-    @Column(
-            name = "canbecashedout"
-    )
+    @Column(name = "canbecashedout")
     private Boolean canBeCashedOut;
 
-    @Column(
-            name = "note",
-            columnDefinition = "TEXT"
-    )
+    @Column(name = "note")
     private String note;
 
-    @Column(
-            name = "cellphoneused"
-    )
+    @Column(name = "cellphoneused")
     private String cellPhoneUsed;
 
-    @Column(
-            name = "canbeallocatedforwithdrawal"
-    )
+    @Column(name = "canbeallocatedforwithdrawal")
     private Boolean canBeAllocatedForWithdrawal;
 
-    @Column(
-            name = "risk"
-    )
+    @Column(name = "risk")
     private Boolean risk;
 
-    @Column(
-            name = "autoexecuted"
-    )
+    @Column(name = "autoexecuted")
     private Boolean autoexecuted;
 
-    @Column(
-            name = "discountcode"
-    )
+    @Column(name = "discountcode")
     private String discountCode;
 
-    @Column(
-            name = "feediscount",
-            precision = 20,
-            scale = 10
-    )
+    @Column(name = "feediscount")
     private BigDecimal feeDiscount;
 
-    @Column(
-            name = "cryptodiscountamount",
-            precision = 20,
-            scale = 10
-    )
+    @Column(name = "cryptodiscountamount")
     private BigDecimal cryptoDiscountAmount;
 
-    @Column(
-            name = "discountquotient",
-            precision = 20,
-            scale = 10
-    )
+    @Column(name = "discountquotient")
     private BigDecimal discountQuotient;
 
-    @Column(
-            name = "fixedtransactionfee",
-            precision = 20,
-            scale = 10
-    )
+    @Column(name = "fixedtransactionfee")
     private BigDecimal fixedTransactionFee;
 
-    @Column(
-            name = "expectedprofitsetting",
-            precision = 20,
-            scale = 10
-    )
+    @Column(name = "expectedprofitsetting")
     private BigDecimal expectedProfitSetting;
 
-    @Column(
-            name = "expectedprofitvalue",
-            precision = 20,
-            scale = 10
-    )
+    @Column(name = "expectedprofitvalue")
     private BigDecimal expectedProfitValue;
 
     private Integer tracked;
     private Integer notified;
 
-    @Column(name = "ratesourceprice", precision = 20, scale = 10)
+    @Column(name = "ratesourceprice")
     private BigDecimal rateSourcePrice;
 
     @Column(name = "nameofcryptosettingused")
@@ -217,16 +135,15 @@ public class TransactionRecord extends BaseEntity {
 
     @Transient
     public TransactionStatus getTransactionStatus(TransactionType type) {
-        TransactionStatus status = TransactionStatus.PENDING; // just in case... use Pending as default
         if (getStatus() == 0) {
-            status = TransactionStatus.PENDING;
+            return TransactionStatus.PENDING;
         } else if (getStatus() == 2) {
-            status = TransactionStatus.FAIL;
-        }
-        else if ((type == TransactionType.SELL && getStatus() == 3)
+            return TransactionStatus.FAIL;
+        } else if ((type == TransactionType.SELL && getStatus() == 3)
                 || (type == TransactionType.BUY && getStatus() == 1)) {
-            status = TransactionStatus.COMPLETE;
+            return TransactionStatus.COMPLETE;
         }
-        return status;
+
+        return TransactionStatus.PENDING;
     }
 }

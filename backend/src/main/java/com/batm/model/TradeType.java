@@ -1,6 +1,8 @@
 package com.batm.model;
 
 import com.fasterxml.jackson.annotation.JsonValue;
+import java.util.HashMap;
+import java.util.Map;
 
 public enum TradeType {
 
@@ -8,6 +10,14 @@ public enum TradeType {
     SELL(2);
 
     private int value;
+
+    private static final Map<Integer, TradeType> map = new HashMap<>();
+
+    static {
+        for (TradeType type : TradeType.values()) {
+            map.put(type.value, type);
+        }
+    }
 
     TradeType(int value) {
         this.value = value;
@@ -18,11 +28,15 @@ public enum TradeType {
         return value;
     }
 
-    public static TradeType getRequestType(TradeType type) {
-        if (type == BUY) {
-            return SELL;
+    public static TradeType valueOf(int value) {
+        return map.get(Integer.valueOf(value));
+    }
+
+    public static int getRequestType(int value) {
+        if (value == BUY.value) {
+            return SELL.value;
         }
 
-        return BUY;
+        return BUY.value;
     }
 }

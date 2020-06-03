@@ -1,6 +1,5 @@
 package com.batm.entity;
 
-import com.batm.model.TradeType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,6 +22,15 @@ public class Trade extends BaseEntity {
     private Long maxLimit;
     private String terms;
 
+    @Transient
+    private Integer distance;
+
+    @Transient
+    private Integer tradeCount;
+
+    @Transient
+    private BigDecimal tradeRate;
+
     @ManyToOne
     @JoinColumn(name = "coin_id")
     private Coin coin;
@@ -30,9 +38,4 @@ public class Trade extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "identity_id")
     private Identity identity;
-
-    @Transient
-    public TradeType getTradeType() {
-        return getType() == 1 ? TradeType.BUY : TradeType.SELL;
-    }
 }

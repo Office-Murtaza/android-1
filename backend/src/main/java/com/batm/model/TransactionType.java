@@ -2,10 +2,11 @@ package com.batm.model;
 
 import com.fasterxml.jackson.annotation.JsonValue;
 import org.apache.commons.lang3.StringUtils;
+import java.util.HashMap;
+import java.util.Map;
 
 public enum TransactionType {
 
-    UNKNOWN(0),
     DEPOSIT(1),
     WITHDRAW(2),
     SEND_GIFT(3),
@@ -20,6 +21,14 @@ public enum TransactionType {
 
     private int value;
 
+    private static final Map<Integer, TransactionType> map = new HashMap<>();
+
+    static {
+        for (TransactionType type : TransactionType.values()) {
+            map.put(type.value, type);
+        }
+    }
+
     TransactionType(int value) {
         this.value = value;
     }
@@ -27,6 +36,10 @@ public enum TransactionType {
     @JsonValue
     public int getValue() {
         return value;
+    }
+
+    public static TransactionType valueOf(int value) {
+        return map.get(Integer.valueOf(value));
     }
 
     public static TransactionType getType(String fromAddress, String toAddress, String address) {
@@ -38,7 +51,7 @@ public enum TransactionType {
             }
         }
 
-        return TransactionType.UNKNOWN;
+        return null;
     }
 
     public static TransactionType convert(TransactionType type, TransactionGroupType group) {
@@ -58,6 +71,6 @@ public enum TransactionType {
             }
         }
 
-        return TransactionType.UNKNOWN;
+        return null;
     }
 }

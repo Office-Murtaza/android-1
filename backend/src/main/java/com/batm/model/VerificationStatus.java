@@ -1,6 +1,8 @@
 package com.batm.model;
 
 import com.fasterxml.jackson.annotation.JsonValue;
+import java.util.HashMap;
+import java.util.Map;
 
 public enum VerificationStatus {
 
@@ -14,6 +16,14 @@ public enum VerificationStatus {
 
     private int value;
 
+    private static final Map<Integer, VerificationStatus> map = new HashMap<>();
+
+    static {
+        for (VerificationStatus type : VerificationStatus.values()) {
+            map.put(type.value, type);
+        }
+    }
+
     VerificationStatus(int value) {
         this.value = value;
     }
@@ -23,12 +33,7 @@ public enum VerificationStatus {
         return value;
     }
 
-    public static VerificationStatus getByValue(int value) {
-        for(VerificationStatus e: VerificationStatus.values()) {
-            if(e.value == value) {
-                return e;
-            }
-        }
-        return null;// not found
+    public static VerificationStatus valueOf(int value) {
+        return map.get(Integer.valueOf(value));
     }
 }

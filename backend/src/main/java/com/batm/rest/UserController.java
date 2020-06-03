@@ -28,7 +28,6 @@ import org.springframework.validation.BindException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
-import java.util.Optional;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
@@ -73,8 +72,9 @@ public class UserController {
                 return Response.serverError(3, "Password length should be from 6 to 15");
             }
 
-            Optional<User> existingUser = userService.findByPhone(dto.getPhone());
-            if (existingUser.isPresent()) {
+            User existingUser = userService.findByPhone(dto.getPhone());
+
+            if (existingUser != null && !existingUser.getUserCoins().isEmpty()) {
                 return Response.serverError(4, "Phone is already registered");
             }
 
@@ -109,12 +109,10 @@ public class UserController {
                 return Response.serverError(3, "Password length should be from 6 to 15");
             }
 
-            Optional<User> existingUser = userService.findByPhone(dto.getPhone());
-            if (!existingUser.isPresent()) {
+            User user = userService.findByPhone(dto.getPhone());
+            if (user == null) {
                 return Response.error(new Error(2, "Phone not found"));
             }
-
-            User user = existingUser.get();
 
             boolean passwordMatch = passwordEncoder.matches(dto.getPassword(), user.getPassword());
             if (!passwordMatch) {

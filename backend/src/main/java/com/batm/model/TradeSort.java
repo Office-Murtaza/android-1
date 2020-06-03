@@ -4,22 +4,22 @@ import com.fasterxml.jackson.annotation.JsonValue;
 import java.util.HashMap;
 import java.util.Map;
 
-public enum TransactionGroupType {
+public enum TradeSort {
 
-    GIFT(1),
-    C2C(2);
+    PRICE(1),
+    DISTANCE(2);
 
     private int value;
 
-    private static final Map<Integer, TransactionGroupType> map = new HashMap<>();
+    private static final Map<Integer, TradeSort> map = new HashMap<>();
 
     static {
-        for (TransactionGroupType type : TransactionGroupType.values()) {
+        for (TradeSort type : TradeSort.values()) {
             map.put(type.value, type);
         }
     }
 
-    TransactionGroupType(int value) {
+    TradeSort(int value) {
         this.value = value;
     }
 
@@ -28,7 +28,7 @@ public enum TransactionGroupType {
         return value;
     }
 
-    public static TransactionGroupType valueOf(int value) {
+    public static TradeSort valueOf(int value) {
         return map.get(Integer.valueOf(value));
     }
 }

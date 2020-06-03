@@ -1,6 +1,5 @@
 package com.batm.repository;
 
-import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -10,7 +9,7 @@ import com.batm.entity.User;
 
 public interface UserRep extends JpaRepository<User, Long> {
 
-    Optional<User> findOneByPhone(String phone);
+    User findOneByPhone(String phone);
 
     @Transactional
     @Modifying

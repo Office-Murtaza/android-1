@@ -13,4 +13,6 @@ public interface TradeRep extends JpaRepository<Trade, Long> {
     List<Trade> findAllByCoinAndTypeOrderByMarginAsc(Coin coin, Integer type, Pageable page);
 
     List<Trade> findAllByCoinAndTypeOrderByMarginDesc(Coin coin, Integer type, Pageable page);
+
+    List<Trade> findAllByCoinAndType(Coin coin, Integer type);
 }

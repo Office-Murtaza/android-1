@@ -1,6 +1,8 @@
 package com.batm.model;
 
 import com.fasterxml.jackson.annotation.JsonValue;
+import java.util.HashMap;
+import java.util.Map;
 
 public enum TransactionStatus {
 
@@ -10,6 +12,14 @@ public enum TransactionStatus {
 
     private int value;
 
+    private static final Map<Integer, TransactionStatus> map = new HashMap<>();
+
+    static {
+        for (TransactionStatus type : TransactionStatus.values()) {
+            map.put(type.value, type);
+        }
+    }
+
     TransactionStatus(int value) {
         this.value = value;
     }
@@ -17,6 +27,10 @@ public enum TransactionStatus {
     @JsonValue
     public int getValue() {
         return value;
+    }
+
+    public static TransactionStatus valueOf(int value) {
+        return map.get(Integer.valueOf(value));
     }
 
     public int getConfirmations() {

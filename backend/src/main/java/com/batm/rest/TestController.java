@@ -80,24 +80,19 @@ public class TestController {
         return Response.ok(geth.getTokenBalance(address));
     }
 
-    @GetMapping("/coins/token-sign")
-    public Response tokenSign(@RequestParam String fromAddress, @RequestParam String toAddress, @RequestParam BigDecimal amount) {
-        return Response.ok(geth.tokenSign(fromAddress, toAddress, amount));
-    }
-
     @GetMapping("/coins/eth-sign")
     public Response ethSign(@RequestParam String fromAddress, @RequestParam String toAddress, @RequestParam BigDecimal amount) {
         return Response.ok(geth.ethSign(fromAddress, toAddress, amount));
     }
 
-    @GetMapping("/coins/token-submit")
-    public Response tokenSubmit(@RequestParam String hex) {
-        return Response.ok(geth.submitTokenTransaction(hex));
-    }
-
     @GetMapping("/coins/eth-submit")
     public Response ethSubmit(@RequestParam String hex) {
-        return Response.ok(geth.submitEthTransaction(hex));
+        return Response.ok(geth.submitTransaction(hex));
+    }
+
+    @GetMapping("/coins/eth-nonce")
+    public Response ethNonce(@RequestParam String address) {
+        return Response.ok(geth.getNonce(address));
     }
 
     @GetMapping("/user/{userId}/kyc/delete")

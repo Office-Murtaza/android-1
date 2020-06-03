@@ -15,7 +15,6 @@ import java.math.BigDecimal;
 public class TradeDetailsDTO {
 
     private Long id;
-    private Integer index;
     private String username;
     private Integer tradeCount;
     private BigDecimal tradeRate;

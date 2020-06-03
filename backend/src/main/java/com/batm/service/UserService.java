@@ -80,7 +80,9 @@ public class UserService {
 
     @Transactional
     public User register(String phone, String password) {
-        User user = new User();
+        User existingUser = findByPhone(phone);
+
+        User user = existingUser == null ? new User() : existingUser;
         user.setPhone(phone);
         user.setPassword(passwordEncoder.encode(password));
         user.setRole("ROLE_USER");
@@ -195,15 +197,15 @@ public class UserService {
         codeValidatorRepository.save(codeVerify);
     }
 
-    public Optional<User> findByPhone(String phone) {
+    public User findByPhone(String phone) {
         return userRep.findOneByPhone(phone);
     }
 
     public GiftAddressDTO getUserGiftAddress(CoinService.CoinEnum coinCode, String phone) {
-        Optional<User> user = findByPhone(phone);
+        User user = findByPhone(phone);
 
-        if (user.isPresent()) {
-            String address = user.get().getUserCoins().stream()
+        if (user != null) {
+            String address = user.getUserCoins().stream()
                     .filter(k -> k.getCoin().getCode().equalsIgnoreCase(coinCode.name()))
                     .findFirst().get().getAddress();
 
@@ -285,7 +287,7 @@ public class UserService {
             IdentityKycReview currentIdentityKycReview = identityKycReview.get();
 
             // identify status and message
-            verificationStatus = VerificationStatus.getByValue(currentIdentityKycReview.getReviewStatus());
+            verificationStatus = VerificationStatus.valueOf(currentIdentityKycReview.getReviewStatus());
             verificationMessage = currentIdentityKycReview.getRejectedMessage();
         }
 

@@ -313,7 +313,7 @@ public class CoinService {
 
             @Override
             public NonceDTO getNonce(String address) {
-                return new NonceDTO(geth.getEthNonce(address));
+                return new NonceDTO(geth.getNonce(address));
             }
 
             @Override
@@ -338,7 +338,7 @@ public class CoinService {
 
             @Override
             public String submitTransaction(String hex) {
-                return geth.submitEthTransaction(hex);
+                return geth.submitTransaction(hex);
             }
 
             @Override
@@ -370,7 +370,7 @@ public class CoinService {
 
             @Override
             public String getExplorerUrl() {
-                return geth.getEthExplorerUrl();
+                return geth.getExplorerUrl();
             }
         },
         CATM {
@@ -416,7 +416,7 @@ public class CoinService {
 
             @Override
             public NonceDTO getNonce(String address) {
-                return new NonceDTO(geth.getTokenNonce(address));
+                return new NonceDTO(geth.getNonce(address));
             }
 
             @Override
@@ -441,7 +441,7 @@ public class CoinService {
 
             @Override
             public String submitTransaction(String hex) {
-                return geth.submitTokenTransaction(hex);
+                return geth.submitTransaction(hex);
             }
 
             @Override
@@ -469,7 +469,7 @@ public class CoinService {
 
             @Override
             public String getExplorerUrl() {
-                return geth.getTokenExplorerUrl();
+                return geth.getExplorerUrl();
             }
         },
         BCH {

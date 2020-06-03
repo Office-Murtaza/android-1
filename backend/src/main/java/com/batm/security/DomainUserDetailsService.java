@@ -13,8 +13,8 @@ import org.springframework.transaction.annotation.Transactional;
 import com.batm.entity.User;
 import com.batm.repository.UserRep;
 
-@Component("userDetailsService")
 @AllArgsConstructor
+@Component("userDetailsService")
 public class DomainUserDetailsService implements UserDetailsService {
 
     private final UserRep userRep;
@@ -22,9 +22,13 @@ public class DomainUserDetailsService implements UserDetailsService {
     @Override
     @Transactional
     public UserDetails loadUserByUsername(final String login) {
-        return userRep.findOneByPhone(login)
-                .map(user -> createSpringSecurityUser(user))
-                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        User user = userRep.findOneByPhone(login);
+
+        if (user == null) {
+            throw new UsernameNotFoundException("User not found");
+        }
+
+        return createSpringSecurityUser(user);
     }
 
     private org.springframework.security.core.userdetails.User createSpringSecurityUser(User user) {

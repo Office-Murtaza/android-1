@@ -38,11 +38,11 @@ public class TradeController {
     }
 
     @GetMapping("/user/{userId}/coins/{coinCode}/trades")
-    public Response getTrades(@PathVariable Long userId, @PathVariable CoinService.CoinEnum coinCode, @RequestParam(required = false) Integer type, @RequestParam(required = false) Integer index) {
+    public Response getTrades(@PathVariable Long userId, @PathVariable CoinService.CoinEnum coinCode, @RequestParam(required = false) Integer type, @RequestParam(required = false) Integer index, @RequestParam(required = false) Integer sort) {
         try {
             index = index == null || index <= 0 ? 1 : index;
 
-            return Response.ok(tradeService.getTrades(userId, coinCode, type, index));
+            return Response.ok(tradeService.getTrades(userId, coinCode, type, index, sort));
         } catch (Exception e) {
             e.printStackTrace();
             return Response.serverError();

@@ -18,6 +18,6 @@ public class Limit extends BaseEntity {
     @Column(name = "currency")
     private String currency;
 
-    @Column(name = "amount", precision = 20, scale = 10)
+    @Column(name = "amount")
     private BigDecimal amount;
 }
