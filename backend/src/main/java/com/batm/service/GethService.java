@@ -97,6 +97,21 @@ public class GethService {
                 Credentials.create(Numeric.toHexString(walletService.getPrivateKeyETH().data())),
                 new DefaultGasProvider());
 
+        web3.pendingTransactionFlowable().subscribe(tx -> {
+            List<Document> ethTxs = new ArrayList<>();
+            List<Document> tokenTxs = new ArrayList<>();
+
+            collectEthTransaction(tx, System.currentTimeMillis(), TransactionStatus.PENDING, ethTxs, tokenTxs);
+
+            if (!ethTxs.isEmpty()) {
+                mongo.getCollection(ETH_TX_COLL).insertMany(ethTxs);
+            }
+
+            if (!tokenTxs.isEmpty()) {
+                mongo.getCollection(TOKEN_TX_COLL).insertMany(tokenTxs);
+            }
+        });
+
         if (!mongo.getCollection(ETH_TX_COLL).listIndexes().iterator().hasNext()) {
             mongo.getCollection(ETH_TX_COLL).createIndex(new Document("txId", 1).append("fromAddress", 1).append("toAddress", 1));
         }
@@ -117,21 +132,6 @@ public class GethService {
             userCoinRep.findAllByCoin(coin).stream().forEach(e -> addAddressToJournal(e.getAddress()));
             coinPathRep.findAllByCoin(coin).stream().forEach(e -> addAddressToJournal(e.getAddress()));
         }
-
-        web3.pendingTransactionFlowable().subscribe(tx -> {
-            List<Document> ethTxs = new ArrayList<>();
-            List<Document> tokenTxs = new ArrayList<>();
-
-            collectEthTransaction(tx, System.currentTimeMillis(), TransactionStatus.PENDING, ethTxs, tokenTxs);
-
-            if (!ethTxs.isEmpty()) {
-                mongo.getCollection(ETH_TX_COLL).insertMany(ethTxs);
-            }
-
-            if (!tokenTxs.isEmpty()) {
-                mongo.getCollection(TOKEN_TX_COLL).insertMany(tokenTxs);
-            }
-        });
     }
 
     @Scheduled(cron = "0 */5 * * * *") // every 5 minutes

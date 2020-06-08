@@ -15,8 +15,11 @@ import java.math.BigDecimal;
 public class TradeRequestDTO {
 
     private Long tradeId;
+    private Long tradeRequestId;
     private BigDecimal price;
     private BigDecimal cryptoAmount;
     private BigDecimal fiatAmount;
     private String details;
+    private Integer status;
+    private Integer rate;
 }

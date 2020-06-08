@@ -1,13 +1,7 @@
 package com.batm.service;
 
-import com.batm.dto.TradeDTO;
-import com.batm.dto.TradeDetailsDTO;
-import com.batm.dto.TradeListDTO;
-import com.batm.dto.TradeRequestDTO;
-import com.batm.entity.Coin;
-import com.batm.entity.Trade;
-import com.batm.entity.TradeRequest;
-import com.batm.entity.User;
+import com.batm.dto.*;
+import com.batm.entity.*;
 import com.batm.model.TradeSort;
 import com.batm.model.TradeStatus;
 import com.batm.model.TradeType;
@@ -15,12 +9,11 @@ import com.batm.repository.TradeRep;
 import com.batm.repository.TradeRequestRep;
 import com.batm.util.Util;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.LinkedList;
 import java.util.List;
 
 @Service
@@ -35,18 +28,11 @@ public class TradeService {
     @Autowired
     private UserService userService;
 
-    public Long postTrade(Long userId, CoinService.CoinEnum coinCode, TradeDTO dto) {
+    public Long createTrade(Long userId, CoinService.CoinEnum coinCode, TradeDTO dto) {
         try {
-            Trade trade;
-
-            if (dto.getId() == null) {
-                trade = new Trade();
-                trade.setIdentity(userService.findById(userId).getIdentity());
-                trade.setCoin(coinCode.getCoinEntity());
-            } else {
-                trade = tradeRep.findById(dto.getId()).get();
-            }
-
+            Trade trade = new Trade();
+            trade.setIdentity(userService.findById(userId).getIdentity());
+            trade.setCoin(coinCode.getCoinEntity());
             trade.setType(dto.getType());
             trade.setPaymentMethod(dto.getPaymentMethod());
             trade.setMargin(dto.getMargin());
@@ -62,13 +48,96 @@ public class TradeService {
         return null;
     }
 
-    public Long postTradeRequest(Long userId, CoinService.CoinEnum coinCode, TradeRequestDTO dto) {
+    public boolean updateTrade(TradeDTO dto) {
+        try {
+            Trade trade = tradeRep.findById(dto.getId()).get();
+
+            trade.setType(dto.getType());
+            trade.setPaymentMethod(dto.getPaymentMethod());
+            trade.setMargin(dto.getMargin());
+            trade.setMinLimit(dto.getMinLimit());
+            trade.setMaxLimit(dto.getMaxLimit());
+            trade.setTerms(dto.getTerms());
+
+            tradeRep.save(trade);
+
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return false;
+    }
+
+    public boolean deleteTrade(Long id) {
+        tradeRep.deleteById(id);
+
+        return true;
+    }
+
+    public TradeListDTO getTrades(Long userId, CoinService.CoinEnum coinCode, Integer index, Integer sort) {
+        User user = userService.findById(userId);
+        Identity identity = user.getIdentity();
+        Coin coin = coinCode.getCoinEntity();
+        BigDecimal price = coinCode.getPrice();
+        List<Trade> trades = tradeRep.findAllByCoin(coin);
+
+        List<TradeDetailsDTO> buyDTOs = new ArrayList<>();
+        List<TradeDetailsDTO> sellDTOs = new ArrayList<>();
+        List<TradeDetailsDTO> myDTOs = new ArrayList<>();
+
+        sort = user.getLatitude() == null ? TradeSort.PRICE.getValue() : sort;
+
+        for (Trade tr : trades) {
+            tr.setPrice(price
+                    .multiply(tr.getMargin().divide(new BigDecimal(100)).add(BigDecimal.ONE))
+                    .setScale(3, RoundingMode.DOWN).stripTrailingZeros());
+
+            if (tr.getIdentity().getId() == identity.getId()) {
+                myDTOs.add(tr.toDTO());
+            } else if (tr.getType() == TradeType.BUY.getValue()) {
+                if (sort == TradeSort.DISTANCE.getValue()) {
+                    tr.setDistance(Util.distance(user, tr.getIdentity().getUser()));
+                }
+
+                buyDTOs.add(tr.toDTO());
+            } else if (tr.getType() == TradeType.SELL.getValue()) {
+                if (sort == TradeSort.DISTANCE.getValue()) {
+                    tr.setDistance(Util.distance(user, tr.getIdentity().getUser()));
+                }
+
+                sellDTOs.add(tr.toDTO());
+            }
+        }
+
+        TradeListDTO dto = new TradeListDTO();
+        dto.setBuyTotal(buyDTOs.size());
+        dto.setSellTotal(sellDTOs.size());
+        dto.setMyTotal(myDTOs.size());
+
+        if (sort == TradeSort.PRICE.getValue()) {
+            buyDTOs.sort(Comparator.comparing(TradeDetailsDTO::getPrice));
+            sellDTOs.sort(Comparator.comparing(TradeDetailsDTO::getPrice).reversed());
+        } else if (sort == TradeSort.DISTANCE.getValue()) {
+            buyDTOs.sort(Comparator.comparing(TradeDetailsDTO::getDistance));
+            sellDTOs.sort(Comparator.comparing(TradeDetailsDTO::getDistance));
+        }
+
+        dto.setBuyTrades(buyDTOs.subList(index - 1, Math.min(buyDTOs.size(), index + 10 - 1)));
+        dto.setSellTrades(sellDTOs.subList(index - 1, Math.min(sellDTOs.size(), index + 10 - 1)));
+        dto.setMyTrades(myDTOs.subList(index - 1, Math.min(myDTOs.size(), index + 10 - 1)));
+
+        return dto;
+    }
+
+    public Long createTradeRequest(Long userId, CoinService.CoinEnum coinCode, TradeRequestDTO dto) {
         try {
             Trade trade = tradeRep.findById(dto.getTradeId()).get();
+            Identity tradeIdentity = trade.getIdentity();
+            Identity requestIdentity = userService.findByUserId(userId);
 
             TradeRequest tr = new TradeRequest();
             tr.setTrade(trade);
-            tr.setType(TradeType.getRequestType(trade.getType()));
             tr.setStatus(TradeStatus.CREATED.getValue());
             tr.setCoin(coinCode.getCoinEntity());
             tr.setPaymentMethod(trade.getPaymentMethod());
@@ -80,8 +149,14 @@ public class TradeService {
             tr.setMaxLimit(trade.getMaxLimit());
             tr.setTerms(tr.getTerms());
             tr.setDetails(dto.getDetails());
-            tr.setRequestIdentity(userService.findByUserId(userId));
-            tr.setTradeIdentity(trade.getIdentity());
+
+            if (trade.getType() == TradeType.BUY.getValue()) {
+                tr.setBuyIdentity(tradeIdentity);
+                tr.setSellIdentity(requestIdentity);
+            } else {
+                tr.setBuyIdentity(requestIdentity);
+                tr.setSellIdentity(tradeIdentity);
+            }
 
             return tradeRequestRep.save(tr).getId();
         } catch (Exception e) {
@@ -91,75 +166,31 @@ public class TradeService {
         return null;
     }
 
-    public void deleteTrade(Long id) {
-        tradeRep.deleteById(id);
+    public boolean updateTradeRequest(Long userId, TradeRequestDTO dto) {
+        try {
+            TradeRequest tr = tradeRequestRep.findById(dto.getTradeRequestId()).get();
+
+            if (dto.getStatus() != null) {
+                tr.setStatus(dto.getStatus());
+            } else if (dto.getRate() != null) {
+                if (userId.compareTo(tr.getBuyIdentity().getUser().getId()) == 0) {
+                    tr.setBuyRate(dto.getRate());
+                } else {
+                    tr.setSellRate(dto.getRate());
+                }
+            }
+
+            tradeRequestRep.save(tr);
+
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return false;
     }
 
-    public TradeListDTO getTrades(Long userId, CoinService.CoinEnum coinCode, Integer type, Integer index, Integer sort) {
-        int page = index / 10;
-
-        User user = userService.findById(userId);
-        Coin coin = coinCode.getCoinEntity();
-        TradeListDTO dto = new TradeListDTO();
-        dto.setBuyTotal(tradeRep.countTradeByCoinAndType(coin, TradeType.BUY.getValue()));
-        dto.setSellTotal(tradeRep.countTradeByCoinAndType(coin, TradeType.SELL.getValue()));
-
-        sort = user.getLatitude() == null ? TradeSort.PRICE.getValue() : sort;
-
-        if(type == null || type == TradeType.BUY.getValue()) {
-            if(sort == TradeSort.PRICE.getValue()) {
-                List<Trade> buyTrades = tradeRep.findAllByCoinAndTypeOrderByMarginAsc(coin, TradeType.BUY.getValue(), PageRequest.of(page, 10));
-                dto.setBuyTrades(getTradeDetailsList(buyTrades, coinCode));
-            } else {
-                List<Trade> buyTrades = tradeRep.findAllByCoinAndType(coin, TradeType.BUY.getValue());
-
-                buyTrades.stream().forEach(e -> e.setDistance(Util.distance(user, e.getIdentity().getUser())));
-                buyTrades.sort(Comparator.comparing(Trade::getDistance));
-
-                dto.setBuyTrades(getTradeDetailsList(buyTrades.subList(index - 1, index + 10 - 1), coinCode));
-            }
-        }
-
-        if(type == null || type == TradeType.SELL.getValue()) {
-            if(sort == TradeSort.PRICE.getValue()) {
-                List<Trade> sellTrades = tradeRep.findAllByCoinAndTypeOrderByMarginDesc(coin, TradeType.SELL.getValue(), PageRequest.of(page, 10));
-                dto.setSellTrades(getTradeDetailsList(sellTrades, coinCode));
-            } else {
-                List<Trade> buyTrades = tradeRep.findAllByCoinAndType(coin, TradeType.SELL.getValue());
-
-                buyTrades.stream().forEach(e -> e.setDistance(Util.distance(user, e.getIdentity().getUser())));
-                buyTrades.sort(Comparator.comparing(Trade::getDistance));
-
-                dto.setBuyTrades(getTradeDetailsList(buyTrades.subList(index - 1, index + 10 - 1), coinCode));
-            }
-        }
-
-        return dto;
-    }
-
-    private List<TradeDetailsDTO> getTradeDetailsList(List<Trade> trades, CoinService.CoinEnum coinCode) {
-        List<TradeDetailsDTO> list = new LinkedList<>();
-
-        for (int i = 0; i < trades.size(); i++) {
-            Trade trade = trades.get(i);
-
-            TradeDetailsDTO details = new TradeDetailsDTO();
-            details.setId(trade.getId());
-            details.setUsername(trade.getIdentity().getPublicId());
-            details.setTradeCount(trade.getTradeCount());
-            details.setTradeRate(trade.getTradeRate());
-            details.setDistance(trade.getDistance());
-            details.setPrice(coinCode.getPrice()
-                    .multiply(trade.getMargin().divide(new BigDecimal(100)).add(BigDecimal.ONE))
-                    .setScale(3, RoundingMode.DOWN).stripTrailingZeros());
-            details.setPaymentMethod(trade.getPaymentMethod());
-            details.setMinLimit(trade.getMinLimit());
-            details.setMaxLimit(trade.getMaxLimit());
-            details.setTerms(trade.getTerms());
-
-            list.add(details);
-        }
-
-        return list;
+    public TradeRequestListDTO getTradeRequests(Long userId, CoinService.CoinEnum coinCode, Integer type, Integer index, Integer sort) {
+        return null;
     }
 }

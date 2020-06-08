@@ -14,9 +14,9 @@ public class TradeListDTO {
 
     private Integer buyTotal;
     private Integer sellTotal;
-    private Integer openTotal;
+    private Integer myTotal;
 
     private List<TradeDetailsDTO> buyTrades;
     private List<TradeDetailsDTO> sellTrades;
-    private List<TradeDetailsDTO> openTrades;
+    private List<TradeDetailsDTO> myTrades;
 }

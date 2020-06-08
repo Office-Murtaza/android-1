@@ -18,7 +18,6 @@ import java.math.BigDecimal;
 @Table(name = "w_traderequest")
 public class TradeRequest extends BaseEntity {
 
-    private Integer type;
     private Integer status;
     private String paymentMethod;
     private BigDecimal margin;
@@ -29,8 +28,8 @@ public class TradeRequest extends BaseEntity {
     private BigDecimal fiatAmount;
     private String terms;
     private String details;
-    private BigDecimal requestRate;
-    private BigDecimal tradeRate;
+    private Integer buyRate;
+    private Integer sellRate;
 
     @ManyToOne
     @JoinColumn(name = "coin_id")
@@ -41,10 +40,10 @@ public class TradeRequest extends BaseEntity {
     private Trade trade;
 
     @ManyToOne
-    @JoinColumn(name = "request_identity_id")
-    private Identity requestIdentity;
+    @JoinColumn(name = "buy_identity_id")
+    private Identity buyIdentity;
 
     @ManyToOne
-    @JoinColumn(name = "trade_identity_id")
-    private Identity tradeIdentity;
+    @JoinColumn(name = "sell_identity_id")
+    private Identity sellIdentity;
 }

@@ -24,9 +24,9 @@ public class TxUtil {
 
         TransactionListDTO dto = new TransactionListDTO();
         dto.setTotal(list.size());
-        dto.setTransactions(list.subList(startIndex - 1, startIndex + limit - 1));
+        dto.setTransactions(list.subList(startIndex - 1, Math.min(list.size(), startIndex + limit - 1)));
 
-        return dto; //build(list, startIndex, limit);
+        return dto;
     }
 
     private static void mergeGroupGroupTxs(Map<String, TransactionDetailsDTO> map, List<? extends BaseTxEntity> list, TransactionGroupType group) {
@@ -70,29 +70,4 @@ public class TxUtil {
 
         return new ArrayList<>();
     }
-
-//    private static TransactionListDTO build(List<TransactionDetailsDTO> list, Integer startIndex, Integer limit) {
-//        TransactionListDTO result = new TransactionListDTO();
-//        List<TransactionDetailsDTO> transactions = new ArrayList<>();
-//        int index = startIndex - 1;
-//
-//        for (int i = 0; i < list.size(); i++) {
-//            if (index > i) {
-//                continue;
-//            }
-//
-//            TransactionDetailsDTO dto = list.get(i);
-//            dto.setIndex(i + 1);
-//            transactions.add(dto);
-//
-//            if (index + limit == i + 1) {
-//                break;
-//            }
-//        }
-//
-//        result.setTotal(list.size());
-//        result.setTransactions(transactions);
-//
-//        return result;
-//    }
 }
