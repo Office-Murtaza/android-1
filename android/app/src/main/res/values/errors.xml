@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <string name="error_please_fill_all_fields">Please fill all fields</string>
     <string name="error_internet_unavailable">Internet connection is unavailable</string>
     <string name="error_something_went_wrong">Something went wrong</string>
 

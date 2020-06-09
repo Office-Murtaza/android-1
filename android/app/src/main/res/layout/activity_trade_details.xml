@@ -56,6 +56,7 @@
                     android:id="@+id/priceUsdView"
                     style="@style/WalletTab.Title.Medium.Value"
                     android:layout_marginStart="16dp"
+                    android:textColor="#48be53"
                     app:layout_constraintStart_toEndOf="@id/priceBarrierView"
                     app:layout_constraintTop_toTopOf="@id/priceTitleView"
                     tools:text="2525.31 USD" />
@@ -143,8 +144,6 @@
                     <com.google.android.material.textfield.TextInputEditText
                         style="@style/WalletTab.EditText.InputWithMax"
                         android:digits="1234567890."
-                        android:enabled="false"
-                        android:focusableInTouchMode="false"
                         android:inputType="numberDecimal"
                         android:nextFocusDown="@id/amountUsdView"
                         tools:hint="@string/crypto_amount"
@@ -170,7 +169,7 @@
 
                     <com.google.android.material.textfield.TextInputEditText
                         style="@style/WalletTab.EditText.InputWithMax"
-                        android:digits="1234567890."
+                        android:digits="1234567890"
                         android:hint="@string/usd_amount"
                         android:inputType="numberDecimal"
                         android:textColor="@android:color/black"
@@ -203,7 +202,7 @@
                         android:gravity="start|top"
                         android:hint="@string/trade_screen_request_details"
                         android:inputType="textMultiLine"
-                        android:maxLength="160" />
+                        android:maxLength="255" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.button.MaterialButton

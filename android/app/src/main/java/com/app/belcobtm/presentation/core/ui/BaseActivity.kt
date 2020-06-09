@@ -2,6 +2,7 @@ package com.app.belcobtm.presentation.core.ui
 
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
+import android.view.MenuItem
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.FrameLayout
@@ -11,6 +12,14 @@ import com.app.belcobtm.presentation.core.helper.AlertHelper
 import com.google.android.material.snackbar.Snackbar
 
 abstract class BaseActivity : AppCompatActivity() {
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == android.R.id.home) {
+            onBackPressed()
+            return true
+        }
+        return super.onOptionsItemSelected(item)
+    }
 
     protected fun hideSoftKeyboard(): Boolean {
         val inputMethodManager = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager

@@ -15,21 +15,18 @@ class CreateWalletViewModel(
 
     fun createWallet(phone: String, password: String) {
         createWalletLiveData.value = LoadingData.Loading()
-        createWalletUseCase.invoke(CreateWalletUseCase.Params(phone, password)) { either ->
-            either.either(
-                { createWalletLiveData.value = LoadingData.Error(it) },
-                { createWalletLiveData.value = LoadingData.Success(it) }
-            )
-        }
+        createWalletUseCase.invoke(
+            CreateWalletUseCase.Params(phone, password),
+            onSuccess = { createWalletLiveData.value = LoadingData.Success(it) },
+            onError = { createWalletLiveData.value = LoadingData.Error(it) }
+        )
     }
 
     fun verifySmsCode(smsCode: String) {
         smsCodeLiveData.value = LoadingData.Loading()
-        createWalletVerifySmsCodeUseCase.invoke(CreateWalletVerifySmsCodeUseCase.Params(smsCode)) { either ->
-            either.either(
-                { smsCodeLiveData.value = LoadingData.Error(it) },
-                { smsCodeLiveData.value = LoadingData.Success(it) }
-            )
-        }
+        createWalletVerifySmsCodeUseCase.invoke(CreateWalletVerifySmsCodeUseCase.Params(smsCode),
+            onSuccess = { smsCodeLiveData.value = LoadingData.Success(it) },
+            onError = { smsCodeLiveData.value = LoadingData.Error(it) }
+        )
     }
 }

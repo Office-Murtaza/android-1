@@ -123,16 +123,54 @@
         app:layout_constraintTop_toTopOf="@id/reserveExchangeView"
         tools:text="8.90 USD" />
 
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/sortTitleView"
+        style="@style/WalletTab.Title.Medium.Key"
+        android:text="@string/add_edit_trade_screen_i_want_to"
+        app:layout_constraintStart_toStartOf="@id/reserveTitleView"
+        app:layout_constraintTop_toBottomOf="@id/reserveTitleView" />
+
+    <RadioGroup
+        android:id="@+id/sortContainerView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:checkedButton="@id/priceButtonView"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="@id/sortTitleView"
+        app:layout_constraintStart_toStartOf="@id/priceBarrierView"
+        app:layout_constraintTop_toTopOf="@id/sortTitleView">
+
+        <androidx.appcompat.widget.AppCompatRadioButton
+            android:id="@+id/priceButtonView"
+            style="@style/WalletTab.Title.Medium.Value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingStart="0dp"
+            android:paddingEnd="8dp"
+            android:text="@string/trade_screen_price" />
+
+        <androidx.appcompat.widget.AppCompatRadioButton
+            android:id="@+id/distanceButtonView"
+            style="@style/WalletTab.Title.Medium.Value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingStart="0dp"
+            android:paddingEnd="8dp"
+            android:text="@string/trade_screen_distance" />
+    </RadioGroup>
+
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tabLayoutView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="12dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:tabTextAppearance="@style/TabLayoutTextStyle"
+        app:layout_constraintTop_toBottomOf="@id/sortTitleView"
         app:tabMode="fixed"
-        app:layout_constraintTop_toBottomOf="@id/reserveTitleView" />
+        app:tabGravity="fill"
+        app:tabTextAppearance="@style/TabLayoutTextStyle" />
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/pagerView"
@@ -161,6 +199,12 @@
         app:menu_labels_hideAnimation="@anim/fab_scale_down"
         app:menu_labels_showAnimation="@anim/fab_scale_up"
         app:menu_labels_textColor="#58585a">
+
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/createButtonView"
+            style="@style/TransactionsScreen.FloatingActionButtonChild"
+            android:src="@drawable/ic_file_download"
+            app:fab_label="@string/trade_screen_create" />
 
         <com.github.clans.fab.FloatingActionButton
             android:id="@+id/recallButtonView"

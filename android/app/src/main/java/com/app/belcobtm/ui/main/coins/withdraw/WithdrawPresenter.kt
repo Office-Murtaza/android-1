@@ -27,20 +27,22 @@ class WithdrawPresenter : BaseMvpDIPresenterImpl<WithdrawContract.View, Withdraw
         this.coinCode = coinId
         this.coinAmount = coinAmount
         mView?.showProgress(true)
-        createTransactionUseCase.invoke(CreateTransactionUseCase.Params(coinId, coinAmount)) { either ->
-            either.either({
+        createTransactionUseCase.invoke(
+            CreateTransactionUseCase.Params(coinId, coinAmount),
+            onSuccess = { hash ->
+                mTransactionHash = hash
+                mView?.showProgress(false)
+                mView?.openSmsCodeDialog()
+            },
+            onError = {
                 when (it) {
                     is Failure.TokenError -> mView?.onRefreshTokenFailed()
                     is Failure.MessageError -> mView?.showError(it.message)
                     is Failure.NetworkConnection -> mView?.showError(R.string.error_internet_unavailable)
                     else -> mView?.showError(R.string.error_something_went_wrong)
                 }
-            }, { hash ->
-                mTransactionHash = hash
-                mView?.showProgress(false)
-                mView?.openSmsCodeDialog()
-            })
-        }
+            }
+        )
     }
 
     override fun verifySmsCode(code: String) {
@@ -49,19 +51,21 @@ class WithdrawPresenter : BaseMvpDIPresenterImpl<WithdrawContract.View, Withdraw
         val fromCoinAmount = coinAmount
         if (!hash.isNullOrBlank() && !fromCoinCode.isNullOrBlank() && fromCoinAmount != null) {
             mView?.showProgress(true)
-            withdrawUseCase.invoke(WithdrawUseCase.Params(code, hash, fromCoinCode, fromCoinAmount)) { either ->
-                either.either({
+            withdrawUseCase.invoke(
+                WithdrawUseCase.Params(code, hash, fromCoinCode, fromCoinAmount),
+                onSuccess = {
+                    mView?.showProgress(false)
+                    mView?.onTransactionDone()
+                },
+                onError = {
                     when (it) {
                         is Failure.TokenError -> mView?.onRefreshTokenFailed()
                         is Failure.MessageError -> mView?.openSmsCodeDialog(it.message)
                         is Failure.NetworkConnection -> mView?.showError(R.string.error_internet_unavailable)
                         else -> mView?.showError(R.string.error_something_went_wrong)
                     }
-                }, {
-                    mView?.showProgress(false)
-                    mView?.onTransactionDone()
-                })
-            }
+                }
+            )
         }
     }
 }

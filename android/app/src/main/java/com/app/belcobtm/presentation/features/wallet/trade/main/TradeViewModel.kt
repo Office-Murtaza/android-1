@@ -2,46 +2,87 @@ package com.app.belcobtm.presentation.features.wallet.trade.main
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.app.belcobtm.domain.wallet.interactor.GetTradeInfoUseCase
-import com.app.belcobtm.domain.wallet.item.TradeInfoDataItem
+import com.app.belcobtm.domain.wallet.interactor.trade.GetListTradeUseCase
+import com.app.belcobtm.domain.wallet.type.TradeSortType
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
 import com.app.belcobtm.presentation.features.wallet.IntentCoinItem
-import com.app.belcobtm.presentation.features.wallet.trade.main.item.TradePageItem
-import com.app.belcobtm.presentation.features.wallet.trade.main.item.mapToUiBuyItem
+import com.app.belcobtm.presentation.features.wallet.trade.main.item.TradeDetailsItem
+import com.app.belcobtm.presentation.features.wallet.trade.main.item.mapToUiBuySellItem
+import com.app.belcobtm.presentation.features.wallet.trade.main.item.mapToUiMyItem
 import com.app.belcobtm.presentation.features.wallet.trade.main.item.mapToUiOpenItem
-import com.app.belcobtm.presentation.features.wallet.trade.main.item.mapToUiSellItem
 
 class TradeViewModel(
     private val latitude: Double,
     private val longitude: Double,
     val fromCoinItem: IntentCoinItem,
-    private val getTradeInfoUseCase: GetTradeInfoUseCase
+    private val getBuyListUseCase: GetListTradeUseCase.Buy,
+    private val getSellListUseCase: GetListTradeUseCase.Sell,
+    private val getMyListUseCase: GetListTradeUseCase.My,
+    private val getOpenListUseCase: GetListTradeUseCase.Open
 ) : ViewModel() {
-    val tradePageListLiveData: MutableLiveData<LoadingData<List<TradePageItem>>> = MutableLiveData()
+    private var sortType: TradeSortType = TradeSortType.PRICE
+
+    val buyListLiveData: MutableLiveData<LoadingData<List<TradeDetailsItem.BuySell>>> = MutableLiveData()
+    val sellListLiveData: MutableLiveData<LoadingData<List<TradeDetailsItem.BuySell>>> = MutableLiveData()
+    val myListLiveData: MutableLiveData<LoadingData<List<TradeDetailsItem.My>>> = MutableLiveData()
+    val openListLiveData: MutableLiveData<LoadingData<List<TradeDetailsItem.Open>>> = MutableLiveData()
 
     init {
-        tradePageListLiveData.value = LoadingData.Loading()
-        getTradeInfoUseCase.invoke(GetTradeInfoUseCase.Params(latitude, longitude, fromCoinItem.coinCode)) { either ->
-            either.either(
-                { tradePageListLiveData.value = LoadingData.Error(it) },
-                { tradeInfoItem ->
-                    val pageList = mutableListOf<TradePageItem>()
-                    val buyItems = TradePageItem(tradeInfoItem.buyTrades.map { it.mapToUiBuyItem() })
-                    val sellItems = TradePageItem(tradeInfoItem.sellTrades.map { it.mapToUiSellItem() })
-                    val openItems = TradePageItem(tradeInfoItem.openTrades.map { it.mapToUiOpenItem() })
-                    pageList.add(TRADE_POSITION_BUY, buyItems)
-                    pageList.add(TRADE_POSITION_SELL, sellItems)
-                    pageList.add(TRADE_POSITION_OPEN, openItems)
-
-                    tradePageListLiveData.value = LoadingData.Success(pageList)
-                }
-            )
-        }
+        updateSorting(TradeSortType.PRICE)
     }
 
-    companion object {
-        const val TRADE_POSITION_BUY = 0
-        const val TRADE_POSITION_SELL = 1
-        const val TRADE_POSITION_OPEN = 2
+    fun updateSorting(sortType: TradeSortType) {
+        this.sortType = sortType
+        updateBuyList(1)
+        updateSellList(1)
+        updateMyList(1)
+        updateOpenList(1)
     }
+
+    fun updateBuyList(paginationStep: Int) {
+        buyListLiveData.value = LoadingData.Loading()
+        getBuyListUseCase.invoke(
+            createGetTradeListParams(paginationStep),
+            onSuccess = { dataItem ->
+                buyListLiveData.value = LoadingData.Success(dataItem.tradeList.map { it.mapToUiBuySellItem(true) })
+            },
+            onError = { buyListLiveData.value = LoadingData.Error(it) }
+        )
+    }
+
+    fun updateSellList(paginationStep: Int) {
+        sellListLiveData.value = LoadingData.Loading()
+        getSellListUseCase.invoke(
+            createGetTradeListParams(paginationStep),
+            onSuccess = { dataItem ->
+                sellListLiveData.value = LoadingData.Success(dataItem.tradeList.map { it.mapToUiBuySellItem(false) })
+            },
+            onError = { sellListLiveData.value = LoadingData.Error(it) }
+        )
+    }
+
+    fun updateMyList(paginationStep: Int) {
+        myListLiveData.value = LoadingData.Loading()
+        getMyListUseCase.invoke(
+            createGetTradeListParams(paginationStep),
+            onSuccess = { dataItem ->
+                myListLiveData.value = LoadingData.Success(dataItem.tradeList.map { it.mapToUiMyItem() })
+            },
+            onError = { myListLiveData.value = LoadingData.Error(it) }
+        )
+    }
+
+    fun updateOpenList(paginationStep: Int) {
+        openListLiveData.value = LoadingData.Loading()
+        getOpenListUseCase.invoke(
+            createGetTradeListParams(paginationStep),
+            onSuccess = { dataItem ->
+                openListLiveData.value = LoadingData.Success(dataItem.tradeList.map { it.mapToUiOpenItem() })
+            },
+            onError = { openListLiveData.value = LoadingData.Error(it) }
+        )
+    }
+
+    private fun createGetTradeListParams(paginationStep: Int) =
+        GetListTradeUseCase.Params(latitude, longitude, fromCoinItem.coinCode, sortType, paginationStep)
 }

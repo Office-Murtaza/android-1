@@ -13,11 +13,9 @@ class VerificationInfoViewModel(
 
     fun updateData() {
         verificationInfoLiveData.value = LoadingData.Loading()
-        getVerificationInfoUseCase.invoke(Unit) { either ->
-            either.either(
-                { verificationInfoLiveData.value = LoadingData.Error(it) },
-                { verificationInfoLiveData.value = LoadingData.Success(it) }
-            )
-        }
+        getVerificationInfoUseCase.invoke(Unit,
+            onSuccess = { verificationInfoLiveData.value = LoadingData.Success(it) },
+            onError = { verificationInfoLiveData.value = LoadingData.Error(it) }
+        )
     }
 }

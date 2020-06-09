@@ -11,6 +11,7 @@ import com.app.belcobtm.domain.Either
 import com.app.belcobtm.domain.Failure
 import com.app.belcobtm.domain.wallet.WalletRepository
 import com.app.belcobtm.domain.wallet.item.*
+import com.app.belcobtm.domain.wallet.type.TradeSortType
 import com.app.belcobtm.presentation.core.extensions.CoinTypeExtension
 
 class WalletRepositoryImpl(
@@ -170,22 +171,75 @@ class WalletRepositoryImpl(
         Either.Left(Failure.NetworkConnection)
     }
 
-    override suspend fun getTradeInformation(
+    override suspend fun tradeGetBuyList(
         latitude: Double,
         longitude: Double,
-        coinFrom: String
+        coinFrom: String,
+        sortType: TradeSortType,
+        paginationStep: Int
     ): Either<Failure, TradeInfoDataItem> = when {
         !networkUtils.isNetworkAvailable() -> Either.Left(Failure.NetworkConnection)
         (latitude > 0 || longitude > 0) && prefHelper.tradeLocationExpirationTime < System.currentTimeMillis() -> {
             val locationRequest = apiService.sendTradeUserLocation(latitude, longitude)
             prefHelper.tradeLocationExpirationTime =
                 if (locationRequest.isRight) System.currentTimeMillis() else -1
-            apiService.getTradeInfo(coinFrom)
+            apiService.getTradeBuyList(coinFrom, sortType, paginationStep)
         }
-        else -> apiService.getTradeInfo(coinFrom)
+        else -> apiService.getTradeBuyList(coinFrom, sortType, paginationStep)
     }
 
-    override suspend fun tradeBuy(
+    override suspend fun getTradeSellList(
+        latitude: Double,
+        longitude: Double,
+        coinFrom: String,
+        sortType: TradeSortType,
+        paginationStep: Int
+    ): Either<Failure, TradeInfoDataItem> = when {
+        !networkUtils.isNetworkAvailable() -> Either.Left(Failure.NetworkConnection)
+        (latitude > 0 || longitude > 0) && prefHelper.tradeLocationExpirationTime < System.currentTimeMillis() -> {
+            val locationRequest = apiService.sendTradeUserLocation(latitude, longitude)
+            prefHelper.tradeLocationExpirationTime =
+                if (locationRequest.isRight) System.currentTimeMillis() else -1
+            apiService.getTradeSellList(coinFrom, sortType, paginationStep)
+        }
+        else -> apiService.getTradeSellList(coinFrom, sortType, paginationStep)
+    }
+
+    override suspend fun getTradeMyList(
+        latitude: Double,
+        longitude: Double,
+        coinFrom: String,
+        sortType: TradeSortType,
+        paginationStep: Int
+    ): Either<Failure, TradeInfoDataItem> = when {
+        !networkUtils.isNetworkAvailable() -> Either.Left(Failure.NetworkConnection)
+        (latitude > 0 || longitude > 0) && prefHelper.tradeLocationExpirationTime < System.currentTimeMillis() -> {
+            val locationRequest = apiService.sendTradeUserLocation(latitude, longitude)
+            prefHelper.tradeLocationExpirationTime =
+                if (locationRequest.isRight) System.currentTimeMillis() else -1
+            apiService.getTradeMyList(coinFrom, sortType, paginationStep)
+        }
+        else -> apiService.getTradeMyList(coinFrom, sortType, paginationStep)
+    }
+
+    override suspend fun getTradeOpenList(
+        latitude: Double,
+        longitude: Double,
+        coinFrom: String,
+        sortType: TradeSortType,
+        paginationStep: Int
+    ): Either<Failure, TradeInfoDataItem> = when {
+        !networkUtils.isNetworkAvailable() -> Either.Left(Failure.NetworkConnection)
+        (latitude > 0 || longitude > 0) && prefHelper.tradeLocationExpirationTime < System.currentTimeMillis() -> {
+            val locationRequest = apiService.sendTradeUserLocation(latitude, longitude)
+            prefHelper.tradeLocationExpirationTime =
+                if (locationRequest.isRight) System.currentTimeMillis() else -1
+            apiService.getTradeOpenList(coinFrom, sortType, paginationStep)
+        }
+        else -> apiService.getTradeOpenList(coinFrom, sortType, paginationStep)
+    }
+
+    override suspend fun tradeBuySell(
         id: Int,
         price: Int,
         fromUsdAmount: Int,
@@ -193,7 +247,33 @@ class WalletRepositoryImpl(
         toCoinAmount: Double,
         detailsText: String
     ): Either<Failure, Unit> = if (networkUtils.isNetworkAvailable()) {
-        apiService.tradeBuy(id, price, fromUsdAmount, toCoin, toCoinAmount, detailsText)
+        apiService.tradeBuySell(id, price, fromUsdAmount, toCoin, toCoinAmount, detailsText)
+    } else {
+        Either.Left(Failure.NetworkConnection)
+    }
+
+    override suspend fun tradeBuyCreate(
+        coinCode: String,
+        paymentMethod: String,
+        margin: Int,
+        minLimit: Long,
+        maxLimit: Long,
+        terms: String
+    ): Either<Failure, Unit> = if (networkUtils.isNetworkAvailable()) {
+        apiService.tradeBuyCreate(coinCode, paymentMethod, margin, minLimit, maxLimit, terms)
+    } else {
+        Either.Left(Failure.NetworkConnection)
+    }
+
+    override suspend fun tradeSellCreate(
+        coinCode: String,
+        paymentMethod: String,
+        margin: Int,
+        minLimit: Long,
+        maxLimit: Long,
+        terms: String
+    ): Either<Failure, Unit> = if (networkUtils.isNetworkAvailable()) {
+        apiService.tradeSellCreate(coinCode, paymentMethod, margin, minLimit, maxLimit, terms)
     } else {
         Either.Left(Failure.NetworkConnection)
     }

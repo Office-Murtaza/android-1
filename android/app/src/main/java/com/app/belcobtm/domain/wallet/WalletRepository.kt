@@ -3,6 +3,7 @@ package com.app.belcobtm.domain.wallet
 import com.app.belcobtm.domain.Either
 import com.app.belcobtm.domain.Failure
 import com.app.belcobtm.domain.wallet.item.*
+import com.app.belcobtm.domain.wallet.type.TradeSortType
 
 interface WalletRepository {
     fun getCoinFeeMap(): Map<String, CoinFeeDataItem>
@@ -67,19 +68,63 @@ interface WalletRepository {
         hex: String
     ): Either<Failure, Unit>
 
-    suspend fun getTradeInformation(
+    suspend fun tradeGetBuyList(
         latitude: Double,
         longitude: Double,
-        coinFrom: String
+        coinFrom: String,
+        sortType: TradeSortType,
+        paginationStep: Int
     ): Either<Failure, TradeInfoDataItem>
 
-    suspend fun tradeBuy(
+    suspend fun getTradeSellList(
+        latitude: Double,
+        longitude: Double,
+        coinFrom: String,
+        sortType: TradeSortType,
+        paginationStep: Int
+    ): Either<Failure, TradeInfoDataItem>
+
+    suspend fun getTradeMyList(
+        latitude: Double,
+        longitude: Double,
+        coinFrom: String,
+        sortType: TradeSortType,
+        paginationStep: Int
+    ): Either<Failure, TradeInfoDataItem>
+
+    suspend fun getTradeOpenList(
+        latitude: Double,
+        longitude: Double,
+        coinFrom: String,
+        sortType: TradeSortType,
+        paginationStep: Int
+    ): Either<Failure, TradeInfoDataItem>
+
+    suspend fun tradeBuySell(
         id: Int,
         price: Int,
         fromUsdAmount: Int,
         toCoin: String,
         toCoinAmount: Double,
         detailsText: String
+    ): Either<Failure, Unit>
+
+    suspend fun tradeBuyCreate(
+        coinCode: String,
+        paymentMethod: String,
+        margin: Int,
+        minLimit: Long,
+        maxLimit: Long,
+        terms: String
+    ): Either<Failure, Unit>
+
+    suspend fun tradeSellCreate(
+        coinCode: String,
+        paymentMethod: String,
+        margin: Int,
+        minLimit: Long,
+        maxLimit: Long,
+        terms: String
     ): Either<Failure, Unit>
 }
 

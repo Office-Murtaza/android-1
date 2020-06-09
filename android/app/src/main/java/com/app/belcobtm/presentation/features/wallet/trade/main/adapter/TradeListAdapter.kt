@@ -1,13 +1,10 @@
 package com.app.belcobtm.presentation.features.wallet.trade.main.adapter
 
-import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.app.belcobtm.R
-import com.app.belcobtm.presentation.core.extensions.hide
-import com.app.belcobtm.presentation.core.extensions.show
 import com.app.belcobtm.presentation.core.extensions.toStringUsd
 import com.app.belcobtm.presentation.features.wallet.trade.main.item.TradeDetailsItem
 import kotlinx.android.synthetic.main.item_trade_list.view.*
@@ -20,7 +17,9 @@ class TradeListAdapter(
     override fun getItemCount(): Int = itemList.size
 
     override fun getItemViewType(position: Int): Int = when (itemList[position]) {
-        is TradeDetailsItem.Empty -> R.layout.item_trade_list_empty
+        is TradeDetailsItem.Empty -> R.layout.item_empty
+        is TradeDetailsItem.Loading -> R.layout.item_progress
+        is TradeDetailsItem.Error -> R.layout.item_error
         else -> R.layout.item_trade_list
     }
 
@@ -34,27 +33,49 @@ class TradeListAdapter(
     override fun onBindViewHolder(
         holder: Holder,
         position: Int
-    ) = when (val item = itemList[position]) {
-        is TradeDetailsItem.Empty -> Unit
-        else -> with(holder.itemView) {
-            userNameView.text = context.getString(
-                R.string.trade_screen_user_field,
+    ) {
+        when (val item = itemList[position]) {
+            is TradeDetailsItem.BuySell -> fillDefaultItem(
+                holder.itemView,
+                item.minLimit,
+                item.maxLimit,
                 item.userName,
                 item.tradeCount,
                 item.rate,
-                item.distance
+                item.distance,
+                item.paymentMethod,
+                item.price
             )
-            paymentMethodView.text = item.paymentMethod
-            priceView.text = context.getString(R.string.unit_usd_dynamic, item.price.toStringUsd())
-            priceLimitView.text = context.getString(R.string.unit_usd_dynamic, "${item.minLimit} - ${item.maxLimit}")
-
-            if (item is TradeDetailsItem.Open) {
-                holder.itemView.tradeTypeView.background.setTint(Color.RED)
-                holder.itemView.tradeTypeView.show()
-            } else {
-                holder.itemView.tradeTypeView.hide()
-            }
+            is TradeDetailsItem.Open -> fillDefaultItem(
+                holder.itemView,
+                item.minLimit,
+                item.maxLimit,
+                item.userName,
+                item.tradeCount,
+                item.rate,
+                item.distance,
+                item.paymentMethod,
+                item.price
+            )
+            is TradeDetailsItem.My -> fillDefaultItem(
+                holder.itemView,
+                item.minLimit,
+                item.maxLimit,
+                item.userName,
+                item.tradeCount,
+                item.rate,
+                item.distance,
+                item.paymentMethod,
+                item.price
+            )
         }
+
+//        if (item is TradeDetailsItem.Open) {
+//            view.tradeTypeView.background.setTint(Color.RED)
+//            view.tradeTypeView.show()
+//        } else {
+//            view.tradeTypeView.hide()
+//        }
     }
 
     fun setItemList(itemList: List<TradeDetailsItem>) {
@@ -65,6 +86,24 @@ class TradeListAdapter(
             this.itemList.addAll(itemList)
         }
         notifyDataSetChanged()
+    }
+
+    private fun fillDefaultItem(
+        view: View,
+        minLimit: Int,
+        maxLimit: Int,
+        userName: String,
+        tradeCount: Int,
+        rate: Double,
+        distance: Int,
+        paymentMethod: String,
+        price: Double
+    ) {
+        view.userNameView.text =
+            view.context.getString(R.string.trade_screen_user_field, userName, tradeCount, rate.toString(), distance)
+        view.paymentMethodView.text = paymentMethod
+        view.priceView.text = view.context.getString(R.string.unit_usd_dynamic, price.toStringUsd())
+        view.priceLimitView.text = view.context.getString(R.string.unit_usd_dynamic, "$minLimit - $maxLimit")
     }
 
     class Holder(view: View) : RecyclerView.ViewHolder(view)

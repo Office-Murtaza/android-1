@@ -3,9 +3,9 @@ package com.app.belcobtm.presentation.features.wallet.add
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.app.belcobtm.R
-import com.app.belcobtm.domain.wallet.item.CoinDataItem
 import com.app.belcobtm.domain.wallet.interactor.GetCoinListUseCase
 import com.app.belcobtm.domain.wallet.interactor.UpdateCoinUseCase
+import com.app.belcobtm.domain.wallet.item.CoinDataItem
 import com.app.belcobtm.presentation.features.wallet.add.adapter.AddWalletCoinItem
 
 class AddWalletViewModel(
@@ -31,7 +31,10 @@ class AddWalletViewModel(
     fun changeCoinState(position: Int, isChecked: Boolean) {
         val coinDataItem = coinDataList[position]
         coinDataItem.isEnabled = isChecked
-        updateCoinUseCase.invoke(UpdateCoinUseCase.Params(coinDataItem)) {}
+        updateCoinUseCase.invoke(UpdateCoinUseCase.Params(coinDataItem),
+            onSuccess = {},
+            onError = {}
+        )
     }
 
     private fun getCoinResIconByType(coinType: String) = when (coinType) {

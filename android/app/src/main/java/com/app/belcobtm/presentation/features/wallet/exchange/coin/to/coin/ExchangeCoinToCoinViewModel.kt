@@ -2,9 +2,9 @@ package com.app.belcobtm.presentation.features.wallet.exchange.coin.to.coin
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.app.belcobtm.domain.wallet.item.CoinFeeDataItem
 import com.app.belcobtm.domain.wallet.interactor.CoinToCoinExchangeUseCase
 import com.app.belcobtm.domain.wallet.interactor.CreateTransactionUseCase
+import com.app.belcobtm.domain.wallet.item.CoinFeeDataItem
 import com.app.belcobtm.presentation.core.extensions.code
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
 import com.app.belcobtm.presentation.features.wallet.IntentCoinItem
@@ -24,16 +24,13 @@ class ExchangeCoinToCoinViewModel(
     fun createTransaction(fromCoinAmount: Double) {
         exchangeLiveData.value = LoadingData.Loading()
         createTransactionUseCase.invoke(
-            CreateTransactionUseCase.Params(fromCoinItem.coinCode, fromCoinAmount)
-        ) { either ->
-            either.either(
-                { exchangeLiveData.value = LoadingData.Error(it) },
-                { hash ->
-                    transactionHash = hash
-                    exchangeLiveData.value = LoadingData.Success(TRANSACTION_CREATED)
-                }
-            )
-        }
+            CreateTransactionUseCase.Params(fromCoinItem.coinCode, fromCoinAmount),
+            onSuccess = { hash ->
+                transactionHash = hash
+                exchangeLiveData.value = LoadingData.Success(TRANSACTION_CREATED)
+            },
+            onError = { exchangeLiveData.value = LoadingData.Error(it) }
+        )
     }
 
     fun exchangeTransaction(
@@ -48,13 +45,10 @@ class ExchangeCoinToCoinViewModel(
                 fromCoinItem.coinCode,
                 toCoinItem?.coinCode ?: "",
                 transactionHash
-            )
-        ) { either ->
-            either.either(
-                { exchangeLiveData.value = LoadingData.Error(it) },
-                { exchangeLiveData.value = LoadingData.Success(TRANSACTION_EXCHANGED) }
-            )
-        }
+            ),
+            onSuccess = { exchangeLiveData.value = LoadingData.Success(TRANSACTION_EXCHANGED) },
+            onError = { exchangeLiveData.value = LoadingData.Error(it) }
+        )
     }
 
     fun getCoinTypeList(): List<CoinType> = listOf(

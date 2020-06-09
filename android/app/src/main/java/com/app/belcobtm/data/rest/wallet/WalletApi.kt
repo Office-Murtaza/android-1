@@ -58,17 +58,56 @@ interface WalletApi {
         @Body request: CoinToCoinExchangeRequest
     ): Deferred<Response<ResponseBody>>
 
-    @GET("user/{userId}/coins/{coinCode}/trades")
+    @GET("user/{userId}/coins/{coinCode}/trades?tab=1&index=1&sort=1")
     fun tradeGetInfoAsync(
         @Path("userId") userId: Int,
         @Path("coinCode") coinFrom: String
     ): Deferred<Response<TradeInfoResponse>>
 
+    @GET("user/{userId}/coins/{coinCode}/trades?tab=1")
+    fun getBuyTradeListAsync(
+        @Path("userId") userId: Int,
+        @Path("coinCode") coinFrom: String,
+        @Query("sort") sort: Int,
+        @Query("index") paginationStep: Int
+    ): Deferred<Response<TradeInfoResponse>>
+
+    @GET("user/{userId}/coins/{coinCode}/trades?tab=2")
+    fun getSellTradeListAsync(
+        @Path("userId") userId: Int,
+        @Path("coinCode") coinFrom: String,
+        @Query("sort") sort: Int,
+        @Query("index") paginationStep: Int
+    ): Deferred<Response<TradeInfoResponse>>
+
+    @GET("user/{userId}/coins/{coinCode}/trades?tab=3")
+    fun getMyTradeListAsync(
+        @Path("userId") userId: Int,
+        @Path("coinCode") coinFrom: String,
+        @Query("sort") sort: Int,
+        @Query("index") paginationStep: Int
+    ): Deferred<Response<TradeInfoResponse>>
+
+    @GET("user/{userId}/coins/{coinCode}/trades?tab=4")
+    fun getOpenTradeListAsync(
+        @Path("userId") userId: Int,
+        @Path("coinCode") coinFrom: String,
+        @Query("sort") sort: Int,
+        @Query("index") paginationStep: Int
+    ): Deferred<Response<TradeInfoResponse>>
+
     @POST("/user/{userId}/coins/{coinCode}/trade-request")
-    fun tradeBuyAsync(
+    fun tradeBuySellAsync(
         @Path("userId") userId: Int,
         @Path("coinCode") toCoin: String,
         @Body request: TradeBuyRequest
+    ): Deferred<Response<ResponseBody>>
+
+    @POST("/user/{userId}/coins/{coinCode}/trade")
+    fun tradeCreateAsync(
+        @Path("userId") userId: Int,
+        @Path("coinCode") toCoin: String,
+        @Body request: TradeCreateRequest
     ): Deferred<Response<ResponseBody>>
 
     @POST("user/{userId}/location")

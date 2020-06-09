@@ -1,16 +1,17 @@
 package com.app.belcobtm.data.rest.wallet
 
+import com.app.belcobtm.data.disk.shared.preferences.SharedPreferencesHelper
 import com.app.belcobtm.data.rest.wallet.request.*
 import com.app.belcobtm.data.rest.wallet.response.hash.BinanceBlockResponse
 import com.app.belcobtm.data.rest.wallet.response.hash.TronRawDataResponse
 import com.app.belcobtm.data.rest.wallet.response.hash.UtxoItemResponse
 import com.app.belcobtm.data.rest.wallet.response.mapToDataItem
-import com.app.belcobtm.data.disk.shared.preferences.SharedPreferencesHelper
 import com.app.belcobtm.domain.Either
 import com.app.belcobtm.domain.Failure
 import com.app.belcobtm.domain.wallet.item.SellLimitsDataItem
 import com.app.belcobtm.domain.wallet.item.SellPreSubmitDataItem
 import com.app.belcobtm.domain.wallet.item.TradeInfoDataItem
+import com.app.belcobtm.domain.wallet.type.TradeSortType
 
 class WalletApiService(
     private val api: WalletApi,
@@ -176,7 +177,55 @@ class WalletApiService(
         Either.Left(failure)
     }
 
-    suspend fun tradeBuy(
+    suspend fun getTradeBuyList(
+        coinFrom: String,
+        sortType: TradeSortType,
+        paginationStep: Int
+    ): Either<Failure, TradeInfoDataItem> = try {
+        val request = api.getBuyTradeListAsync(prefHelper.userId, coinFrom, sortType.code, paginationStep).await()
+        request.body()?.let { Either.Right(it.mapToDataItem()) } ?: Either.Left(Failure.ServerError())
+    } catch (failure: Failure) {
+        failure.printStackTrace()
+        Either.Left(failure)
+    }
+
+    suspend fun getTradeSellList(
+        coinFrom: String,
+        sortType: TradeSortType,
+        paginationStep: Int
+    ): Either<Failure, TradeInfoDataItem> = try {
+        val request = api.getSellTradeListAsync(prefHelper.userId, coinFrom, sortType.code, paginationStep).await()
+        request.body()?.let { Either.Right(it.mapToDataItem()) } ?: Either.Left(Failure.ServerError())
+    } catch (failure: Failure) {
+        failure.printStackTrace()
+        Either.Left(failure)
+    }
+
+    suspend fun getTradeMyList(
+        coinFrom: String,
+        sortType: TradeSortType,
+        paginationStep: Int
+    ): Either<Failure, TradeInfoDataItem> = try {
+        val request = api.getMyTradeListAsync(prefHelper.userId, coinFrom, sortType.code, paginationStep).await()
+        request.body()?.let { Either.Right(it.mapToDataItem()) } ?: Either.Left(Failure.ServerError())
+    } catch (failure: Failure) {
+        failure.printStackTrace()
+        Either.Left(failure)
+    }
+
+    suspend fun getTradeOpenList(
+        coinFrom: String,
+        sortType: TradeSortType,
+        paginationStep: Int
+    ): Either<Failure, TradeInfoDataItem> = try {
+        val request = api.getOpenTradeListAsync(prefHelper.userId, coinFrom, sortType.code, paginationStep).await()
+        request.body()?.let { Either.Right(it.mapToDataItem()) } ?: Either.Left(Failure.ServerError())
+    } catch (failure: Failure) {
+        failure.printStackTrace()
+        Either.Left(failure)
+    }
+
+    suspend fun tradeBuySell(
         id: Int,
         price: Int,
         fromUsdAmount: Int,
@@ -185,7 +234,41 @@ class WalletApiService(
         detailsText: String
     ): Either<Failure, Unit> = try {
         val requestBody = TradeBuyRequest(id, price, fromUsdAmount, toCoinAmount, detailsText)
-        val request = api.tradeBuyAsync(prefHelper.userId, toCoin, requestBody).await()
+        val request = api.tradeBuySellAsync(prefHelper.userId, toCoin, requestBody).await()
+        request.body()?.let { Either.Right(Unit) } ?: Either.Left(Failure.ServerError())
+    } catch (failure: Failure) {
+        failure.printStackTrace()
+        Either.Left(failure)
+    }
+
+    suspend fun tradeBuyCreate(
+        coinCode: String,
+        paymentMethod: String,
+        margin: Int,
+        minLimit: Long,
+        maxLimit: Long,
+        terms: String
+    ): Either<Failure, Unit> = try {
+        val requestBody =
+            TradeCreateRequest(TRANSACTION_TRADE_CREATE_BUY, paymentMethod, margin, minLimit, maxLimit, terms)
+        val request = api.tradeCreateAsync(prefHelper.userId, coinCode, requestBody).await()
+        request.body()?.let { Either.Right(Unit) } ?: Either.Left(Failure.ServerError())
+    } catch (failure: Failure) {
+        failure.printStackTrace()
+        Either.Left(failure)
+    }
+
+    suspend fun tradeSellCreate(
+        coinCode: String,
+        paymentMethod: String,
+        margin: Int,
+        minLimit: Long,
+        maxLimit: Long,
+        terms: String
+    ): Either<Failure, Unit> = try {
+        val requestBody =
+            TradeCreateRequest(TRANSACTION_TRADE_CREATE_SELL, paymentMethod, margin, minLimit, maxLimit, terms)
+        val request = api.tradeCreateAsync(prefHelper.userId, coinCode, requestBody).await()
         request.body()?.let { Either.Right(Unit) } ?: Either.Left(Failure.ServerError())
     } catch (failure: Failure) {
         failure.printStackTrace()
@@ -247,6 +330,9 @@ class WalletApiService(
         const val TRANSACTION_SEND_GIFT = 3
         const val TRANSACTION_SELL = 6
         const val TRANSACTION_SEND_COIN_TO_COIN = 8
+
+        const val TRANSACTION_TRADE_CREATE_BUY = 1
+        const val TRANSACTION_TRADE_CREATE_SELL = 2
         const val UNIT_USD = "USD"
     }
 }

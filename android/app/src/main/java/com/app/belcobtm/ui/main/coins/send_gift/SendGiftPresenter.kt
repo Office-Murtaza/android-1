@@ -55,15 +55,14 @@ class SendGiftPresenter : BaseMvpDIPresenterImpl<SendGiftContract.View, Withdraw
         this.phoneEncoded = "+" + phone.replace("+", "")
 
         mView?.showProgress(true)
-        getGiftAddressUseCase.invoke(GetGiftAddressUseCase.Params(coinFromCode, phoneEncoded)) { giftAddressEither ->
-            giftAddressEither.either(
-                { errorResponse(it) },
-                { giftAddress ->
-                    this.fromAddress = giftAddress
-                    createTransaction(coinFromCode, coinAmount)
-                }
-            )
-        }
+        getGiftAddressUseCase.invoke(
+            GetGiftAddressUseCase.Params(coinFromCode, phoneEncoded),
+            onSuccess = { giftAddress ->
+                this.fromAddress = giftAddress
+                createTransaction(coinFromCode, coinAmount)
+            },
+            onError = { errorResponse(it) }
+        )
     }
 
     override fun completeTransaction(smsCode: String) {
@@ -77,29 +76,25 @@ class SendGiftPresenter : BaseMvpDIPresenterImpl<SendGiftContract.View, Withdraw
                 giftId = gifMedia?.id ?: "",
                 phone = phoneEncoded,
                 message = message
-            )
-        ) { either ->
-            either.either(
-                { errorResponse(it) },
-                {
-                    mView?.showProgress(false)
-                    mView?.onTransactionDone()
-                }
-            )
-        }
+            ),
+            onSuccess = {
+                mView?.showProgress(false)
+                mView?.onTransactionDone()
+            },
+            onError = { errorResponse(it) }
+
+        )
     }
 
-    private fun createTransaction(fromCoinCode: String, fromCoinAmount: Double) =
-        createTransactionUseCase.invoke(CreateTransactionUseCase.Params(fromCoinCode, fromCoinAmount)) { either ->
-            either.either(
-                { errorResponse(it) },
-                { hash ->
-                    this.transactionHash = hash
-                    mView?.openSmsCodeDialog()
-                    mView?.showProgress(false)
-                }
-            )
-        }
+    private fun createTransaction(fromCoinCode: String, fromCoinAmount: Double) = createTransactionUseCase.invoke(
+        CreateTransactionUseCase.Params(fromCoinCode, fromCoinAmount),
+        onSuccess = { hash ->
+            this.transactionHash = hash
+            mView?.openSmsCodeDialog()
+            mView?.showProgress(false)
+        },
+        onError = { errorResponse(it) }
+    )
 
     private fun errorResponse(throwable: Throwable) {
         mView?.showProgress(false)

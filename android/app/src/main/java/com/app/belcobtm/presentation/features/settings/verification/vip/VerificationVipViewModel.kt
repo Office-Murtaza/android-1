@@ -19,11 +19,9 @@ class VerificationVipViewModel(
     ) {
         val dataItem = VerificationVipDataItem(file, ssn.toInt())
         uploadingLiveData.value = LoadingData.Loading()
-        vipUseCase.invoke(SendVerificationVipUseCase.Params(dataItem)) { either ->
-            either.either(
-                { uploadingLiveData.value = LoadingData.Error(it) },
-                { uploadingLiveData.value = LoadingData.Success(it) }
-            )
-        }
+        vipUseCase.invoke(SendVerificationVipUseCase.Params(dataItem),
+            onSuccess = { uploadingLiveData.value = LoadingData.Success(it) },
+            onError = { uploadingLiveData.value = LoadingData.Error(it) }
+        )
     }
 }

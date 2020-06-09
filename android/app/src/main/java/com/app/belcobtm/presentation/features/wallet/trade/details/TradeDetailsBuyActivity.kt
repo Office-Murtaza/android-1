@@ -2,8 +2,6 @@ package com.app.belcobtm.presentation.features.wallet.trade.details
 
 import android.content.Intent
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.MenuItem
 import androidx.lifecycle.Observer
 import com.app.belcobtm.R
@@ -11,6 +9,7 @@ import com.app.belcobtm.domain.Failure
 import com.app.belcobtm.presentation.core.extensions.*
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
 import com.app.belcobtm.presentation.core.ui.BaseActivity
+import com.app.belcobtm.presentation.core.watcher.DoubleTextWatcher
 import com.app.belcobtm.presentation.features.authorization.pin.PinActivity
 import com.app.belcobtm.presentation.features.wallet.IntentCoinItem
 import com.app.belcobtm.presentation.features.wallet.trade.main.item.TradeDetailsItem
@@ -19,10 +18,66 @@ import org.koin.android.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
 class TradeDetailsBuyActivity : BaseActivity() {
-    private lateinit var tradeDetailsItem: TradeDetailsItem.Buy
+    private lateinit var tradeDetailsItem: TradeDetailsItem.BuySell
     private val viewModel: TradeDetailsBuyViewModel by viewModel {
         parametersOf(intent.getParcelableExtra(TAG_COIN_ITEM))
     }
+    private val doubleTextWatcher: DoubleTextWatcher = DoubleTextWatcher(
+        maxCharsAfterDotFirst = DoubleTextWatcher.MAX_CHARS_AFTER_DOT_CRYPTO,
+        maxCharsAfterDotSecond = DoubleTextWatcher.MAX_CHARS_AFTER_DOT_USD,
+        firstTextWatcher = {
+            val maxLimit = tradeDetailsItem.maxLimit
+            val minLimit = tradeDetailsItem.minLimit
+            val cryptoAmount = if (it.toString().replace(".", "").isEmpty()) {
+                0.0
+            } else {
+                it.toString().toDouble()
+            }
+            val usdAmountTemporary = (viewModel.fromCoinItem.priceUsd * cryptoAmount).toInt()
+
+            when {
+                usdAmountTemporary > maxLimit -> {
+                    it.clear()
+                    it.insert(0, (maxLimit / viewModel.fromCoinItem.priceUsd).toStringCoin())
+                    amountUsdView.setText(maxLimit.toString())
+                    sendButtonView.isEnabled = true
+                }
+                usdAmountTemporary < minLimit -> {
+                    amountUsdView.clearText()
+                    sendButtonView.isEnabled = false
+                }
+                else -> {
+                    amountUsdView.setText(usdAmountTemporary.toString())
+                    sendButtonView.isEnabled = true
+                }
+            }
+        },
+        secondTextWatcher = {
+            val maxLimit = tradeDetailsItem.maxLimit
+            val minLimit = tradeDetailsItem.minLimit
+            val usdAmountText = it.toString().replace(".", "")
+            when {
+                usdAmountText.isEmpty() -> {
+                    amountCryptoView.setText((usdAmountText.toInt() / viewModel.fromCoinItem.priceUsd).toStringCoin())
+                    sendButtonView.isEnabled = false
+                }
+                usdAmountText.toInt() > maxLimit -> {
+                    it.clear()
+                    it.insert(0, maxLimit.toString())
+                    amountCryptoView.setText((maxLimit / viewModel.fromCoinItem.priceUsd).toStringCoin())
+                    sendButtonView.isEnabled = true
+                }
+                usdAmountText.toInt() < minLimit -> {
+                    amountCryptoView.clearText()
+                    sendButtonView.isEnabled = false
+                }
+                else -> {
+                    amountCryptoView.setText((usdAmountText.toInt() / viewModel.fromCoinItem.priceUsd).toStringCoin())
+                    sendButtonView.isEnabled = true
+                }
+            }
+        }
+    )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,8 +113,8 @@ class TradeDetailsBuyActivity : BaseActivity() {
                 tradeDetailsView.getString()
             )
         }
-        amountUsdView.editText?.addTextChangedListener(coinFromTextWatcher)
-        amountCryptoView?.editText?.keyListener = null
+        amountCryptoView.editText?.addTextChangedListener(doubleTextWatcher.firstTextWatcher)
+        amountUsdView.editText?.addTextChangedListener(doubleTextWatcher.secondTextWatcher)
     }
 
     private fun initObservers() {
@@ -89,11 +144,15 @@ class TradeDetailsBuyActivity : BaseActivity() {
 
         setSupportActionBar(toolbarView)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.title = getString(R.string.trade_screen_title_buy, intentCoinItem.coinCode)
+        supportActionBar?.title = if (tradeDetailsItem.isBuyType) {
+            getString(R.string.trade_screen_title_buy, intentCoinItem.coinCode)
+        } else {
+            getString(R.string.trade_screen_title_sell, intentCoinItem.coinCode)
+        }
 
         priceUsdView.text = getString(R.string.unit_usd_dynamic, tradeDetailsItem.price.toStringUsd())
         userView.text = getString(
-            R.string.trade_screen_user_field,
+            R.string.trade_screen_user_field_ln,
             tradeDetailsItem.userName,
             tradeDetailsItem.tradeCount,
             tradeDetailsItem.rate.toStringUsd(),
@@ -106,67 +165,8 @@ class TradeDetailsBuyActivity : BaseActivity() {
         amountCryptoView.hint = getString(R.string.crypto_amount, intentCoinItem.coinCode)
     }
 
-    private val coinFromTextWatcher = object : TextWatcher {
-        var isRunning = false
-        var isDeleting = false
-
-        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-            isDeleting = count > after
-        }
-
-        override fun onTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) = Unit
-
-        override fun afterTextChanged(editable: Editable) {
-            if (isRunning) return
-
-            isRunning = true
-
-            when {
-                editable.isNotEmpty() && editable.first() == DOT_CHAR -> editable.insert(0, "0")
-                editable.isNotEmpty() && editable.last() == DOT_CHAR && editable.count { it == DOT_CHAR } > 1 ->
-                    editable.delete(editable.lastIndex, editable.length)
-                editable.contains(DOT_CHAR) && (editable.lastIndex - editable.indexOf(DOT_CHAR)) > MAX_CHARS_AFTER_DOT ->
-                    editable.delete(editable.lastIndex - 1, editable.lastIndex)
-                editable.isEmpty() || editable.toString().replace(DOT_CHAR.toString(), "").toInt() <= 0 -> {
-                    val isContainsDot = editable.contains(DOT_CHAR)
-                    val indexOfDot = editable.indexOf(DOT_CHAR)
-                    when {
-                        isContainsDot && indexOfDot > 1 -> editable.delete(0, indexOfDot - 1)
-                        !isContainsDot && editable.length > 1 -> editable.delete(0, editable.length - 1)
-                    }
-                    amountUsdView.clearText()
-                }
-                else -> {
-                    val maxLimit = tradeDetailsItem.maxLimit
-                    val minLimit = tradeDetailsItem.minLimit
-                    val usdAmountTemporary = amountUsdView.getString().toInt()
-                    when {
-                        usdAmountTemporary > maxLimit -> {
-                            editable.clear()
-                            editable.insert(0, maxLimit.toString())
-                            amountCryptoView.setText((maxLimit / viewModel.fromCoinItem.priceUsd).toString())
-                            sendButtonView.isEnabled = true
-                        }
-                        usdAmountTemporary < minLimit -> {
-                            amountCryptoView.setText(0.0.toStringCoin())
-                            sendButtonView.isEnabled = false
-                        }
-                        else -> {
-                            amountCryptoView.setText((usdAmountTemporary / viewModel.fromCoinItem.priceUsd).toStringUsd())
-                            sendButtonView.isEnabled = true
-                        }
-                    }
-                }
-            }
-
-            isRunning = false
-        }
-    }
-
     companion object {
         const val TAG_COIN_ITEM = "tag_coin_item"
         const val TAG_TRADE_DETAILS_ITEM = "tag_trade_details_item"
-        const val MAX_CHARS_AFTER_DOT = 6
-        const val DOT_CHAR: Char = '.'
     }
 }
