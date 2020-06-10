@@ -13,6 +13,8 @@ final class TradesPresenter: ModulePresenter, TradesModule {
     var refreshSellTrades: Driver<Void>
     var showMoreBuyTrades: Driver<Void>
     var showMoreSellTrades: Driver<Void>
+    var buyTradeSelected: Driver<IndexPath>
+    var sellTradeSelected: Driver<IndexPath>
   }
   
   private let store: Store
@@ -76,6 +78,24 @@ final class TradesPresenter: ModulePresenter, TradesModule {
     
     input.showMoreSellTrades
       .drive(onNext: { [fetchSellTradesRelay] _ in fetchSellTradesRelay.accept(()) })
+      .disposed(by: disposeBag)
+    
+    input.buyTradeSelected
+      .withLatestFrom(state) { indexPath, state in state.buyTrades?.trades[indexPath.item] }
+      .filterNil()
+      .withLatestFrom(state) { ($1, $0) }
+      .drive(onNext: { [delegate] in delegate?.showBuySellTradeDetails(coinBalance: $0.coinBalance!,
+                                                                       trade: $1,
+                                                                       type: .buy) })
+      .disposed(by: disposeBag)
+    
+    input.sellTradeSelected
+      .withLatestFrom(state) { indexPath, state in state.sellTrades?.trades[indexPath.item] }
+      .filterNil()
+      .withLatestFrom(state) { ($1, $0) }
+      .drive(onNext: { [delegate] in delegate?.showBuySellTradeDetails(coinBalance: $0.coinBalance!,
+                                                                       trade: $1,
+                                                                       type: .sell) })
       .disposed(by: disposeBag)
     
     setupBindings()

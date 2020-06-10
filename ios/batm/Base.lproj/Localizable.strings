@@ -13,13 +13,13 @@
 "shared.remove_gif" = "Remove GIF";
 "shared.select" = "Select";
 "shared.remove" = "Remove";
-"shared.button.max" = "MAX";
-"shared.button.paste" = "PASTE";
-"shared.button.add" = "ADD";
-"shared.button.remove" = "REMOVE";
-"shared.button.copy" = "COPY";
-"shared.button.next" = "NEXT";
-"shared.button.done" = "DONE";
+"shared.button.max" = "Max";
+"shared.button.paste" = "Paste";
+"shared.button.add" = "Add";
+"shared.button.remove" = "Remove";
+"shared.button.copy" = "Copy";
+"shared.button.next" = "Next";
+"shared.button.done" = "Done";
 "shared.error.title" = "Error";
 "shared.error.message" = "Server Error, Try Later";
 "shared.error.no_connection.message" = "No Internet Connection";
@@ -233,3 +233,14 @@
 "trades.reserved" = "Reserved";
 "trades.buy" = "Buy";
 "trades.sell" = "Sell";
+
+"buy_sell_trade_details.title" = "%@ %@";
+"buy_sell_trade_details.header.price" = "Price";
+"buy_sell_trade_details.header.user" = "User";
+"buy_sell_trade_details.header.payment" = "Payment";
+"buy_sell_trade_details.header.limits" = "Limits";
+"buy_sell_trade_details.header.terms" = "Terms";
+"buy_sell_trade_details.form.request_details.placeholder" = "Request details";
+"buy_sell_trade_details.error.too_many_characters" = "Request details is too long";
+"buy_sell_trade_details.error.not_within_limits" = "Amount should be within limits";
+"buy_sell_trade_details.button.send_request" = "Send Request";

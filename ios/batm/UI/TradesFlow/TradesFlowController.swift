@@ -16,4 +16,16 @@ extension TradesFlowController: TradesModuleDelegate {
     delegate?.didFinishTradesFlow()
   }
   
+  func showBuySellTradeDetails(coinBalance: CoinBalance, trade: BuySellTrade, type: TradeType) {
+    step.accept(TradesFlow.Steps.buySellTradeDetails(coinBalance, trade, type))
+  }
+  
+}
+
+extension TradesFlowController: BuySellTradeDetailsModuleDelegate {
+  
+  func didFinishBuySellTradeDetails() {
+    step.accept(TradesFlow.Steps.pop)
+  }
+  
 }

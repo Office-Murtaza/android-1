@@ -70,7 +70,7 @@ class TransactionDetailsGeneralSectionView: UIView, HasDisposeBag {
     addStatusRow(status: details.status)
     details.cashStatus.flatMap { addCashStatusRow(status: $0) }
     
-    let fiatAmount = details.fiatAmount.flatMap { "\($0.fiatSellFormatted) USD" }
+    let fiatAmount = details.fiatAmount.flatMap { $0.fiatSellFormatted.withUSD }
     let cryptoAmount = details.cryptoAmount.flatMap { "\($0.coinFormatted) \(type.code)" }
     let cryptoFee = details.cryptoFee.flatMap { "\($0.coinFormatted) \(type.code)" }
     

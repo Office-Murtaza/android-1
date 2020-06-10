@@ -131,12 +131,16 @@ final class TradesViewController: NavigationScreenViewController<TradesPresenter
     let refreshSellTradesDriver = sellTradesRefreshControl.rx.controlEvent(.valueChanged).asDriver()
     let showMoreBuyTradesDriver = buyTradesTableView.rx.willDisplayLastCell.asDriver(onErrorDriveWith: .empty())
     let showMoreSellTradesDriver = sellTradesTableView.rx.willDisplayLastCell.asDriver(onErrorDriveWith: .empty())
+    let buyTradeSelectedDriver = buyTradesTableView.rx.itemSelected.asDriver()
+    let sellTradeSelectedDriver = sellTradesTableView.rx.itemSelected.asDriver()
     
     presenter.bind(input: TradesPresenter.Input(back: backDriver,
                                                 refreshBuyTrades: refreshBuyTradesDriver,
                                                 refreshSellTrades: refreshSellTradesDriver,
                                                 showMoreBuyTrades: showMoreBuyTradesDriver,
-                                                showMoreSellTrades: showMoreSellTradesDriver))
+                                                showMoreSellTrades: showMoreSellTradesDriver,
+                                                buyTradeSelected: buyTradeSelectedDriver,
+                                                sellTradeSelected: sellTradeSelectedDriver))
   }
   
   func tabBar(_ tabBar: MDCTabBar, didSelect item: UITabBarItem) {

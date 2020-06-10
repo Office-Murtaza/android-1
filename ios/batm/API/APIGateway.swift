@@ -61,6 +61,12 @@ protocol APIGateway {
   func getBuyTrades(userId: Int, type: CoinType, page: Int) -> Single<BuySellTrades>
   func getSellTrades(userId: Int, type: CoinType, page: Int) -> Single<BuySellTrades>
   func updateLocation(userId: Int, latitude: Double, longitude: Double) -> Completable
+  func submitTradeRequest(userId: Int,
+                          type: CoinType,
+                          trade: BuySellTrade,
+                          coinAmount: Double,
+                          currencyAmount: Double,
+                          details: String) -> Completable
 }
 
 final class APIGatewayImpl: APIGateway {
@@ -541,6 +547,30 @@ final class APIGatewayImpl: APIGateway {
   
   func updateLocation(userId: Int, latitude: Double, longitude: Double) -> Completable {
     let request = UpdateLocationRequest(userId: userId, latitude: latitude, longitude: longitude)
+    return api.execute(request)
+    .map { apiResponse -> Void in
+      switch apiResponse {
+      case .response:
+        return Void()
+      case let .error(error):
+        throw error
+      }
+    }
+    .toCompletable()
+  }
+  
+  func submitTradeRequest(userId: Int,
+                          type: CoinType,
+                          trade: BuySellTrade,
+                          coinAmount: Double,
+                          currencyAmount: Double,
+                          details: String) -> Completable {
+    let request = SubmitTradeRequestRequest(userId: userId,
+                                            coinId: type.code,
+                                            trade: trade,
+                                            coinAmount: coinAmount,
+                                            currencyAmount: currencyAmount,
+                                            details: details)
     return api.execute(request)
     .map { apiResponse -> Void in
       switch apiResponse {

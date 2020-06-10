@@ -94,14 +94,9 @@ final class BuySellTradeCell: UITableViewCell {
   }
   
   func configure(for trade: BuySellTrade) {
-    var distance = ""
-    if let tradeDistance = trade.distance {
-      distance = ", \(tradeDistance)km"
-    }
-    
-    titleLabel.text = "\(trade.username) (\(trade.tradeCount), \(trade.tradeRate)\(distance))"
+    titleLabel.text = trade.userInfo
     subtitleLabel.text = trade.paymentMethod
-    priceLabel.text = "\(trade.price) USD"
-    limitsLabel.text = "\(trade.minLimit) - \(trade.maxLimit) USD"
+    priceLabel.text = trade.price.fiatFormatted.withUSD
+    limitsLabel.text = trade.formattedLimits
   }
 }

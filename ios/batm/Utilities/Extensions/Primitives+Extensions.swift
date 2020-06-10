@@ -176,6 +176,10 @@ extension String {
     
     return Double(newString)
   }
+  
+  var withUSD: String {
+    return self.appending(" USD")
+  }
 }
 
 extension Double {

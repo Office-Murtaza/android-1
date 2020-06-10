@@ -510,8 +510,9 @@ struct BuySellTradesRequest: AuthorizedAPIRequest {
   var path: String { return "/user/\(userId)/coins/\(coinId)/trades" }
   var method: HTTPMethod { return .get }
   var task: HTTPTask {
-    return .requestParameters(parameters: ["type": type.rawValue,
-                                           "index": index],
+    return .requestParameters(parameters: ["tab": type.rawValue,
+                                           "index": index,
+                                           "sort": 1],
                               encoding: URLEncoding.customDefault)
   }
 }
@@ -529,6 +530,29 @@ struct UpdateLocationRequest: AuthorizedAPIRequest {
   var task: HTTPTask {
     return .requestParameters(parameters: ["latitude": latitude,
                                            "longitude": longitude],
+                              encoding: JSONEncoding.default)
+  }
+}
+
+struct SubmitTradeRequestRequest: AuthorizedAPIRequest {
+  typealias ResponseType = APIEmptyResponse
+  typealias ResponseTrait = SingleResponseTrait
+  
+  let userId: Int
+  let coinId: String
+  let trade: BuySellTrade
+  let coinAmount: Double
+  let currencyAmount: Double
+  let details: String
+  
+  var path: String { return "/user/\(userId)/coins/\(coinId)/trade-request" }
+  var method: HTTPMethod { return .post }
+  var task: HTTPTask {
+    return .requestParameters(parameters: ["tradeId": trade.id,
+                                           "price": trade.price,
+                                           "cryptoAmount": coinAmount,
+                                           "fiatAmount": currencyAmount,
+                                           "details": details],
                               encoding: JSONEncoding.default)
   }
 }

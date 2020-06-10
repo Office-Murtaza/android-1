@@ -5,6 +5,10 @@ enum L {
     static let title = "atm.title"
   }
 
+  struct BuySellTradeDetails {
+    static let title = "buy_sell_trade_details.title"
+  }
+
   struct ChangePassword {
     static let title = "change_password.title"
   }
@@ -203,6 +207,34 @@ extension L.Atm {
 
   struct InfoWindow {
     static let openNow = "atm.info_window.open_now"
+  }
+}
+extension L.BuySellTradeDetails {
+
+  struct Button {
+    static let sendRequest = "buy_sell_trade_details.button.send_request"
+  }
+
+  struct Error {
+    static let notWithinLimits = "buy_sell_trade_details.error.not_within_limits"
+    static let tooManyCharacters = "buy_sell_trade_details.error.too_many_characters"
+  }
+
+  struct Form {
+  }
+
+  struct Header {
+    static let limits = "buy_sell_trade_details.header.limits"
+    static let payment = "buy_sell_trade_details.header.payment"
+    static let price = "buy_sell_trade_details.header.price"
+    static let terms = "buy_sell_trade_details.header.terms"
+    static let user = "buy_sell_trade_details.header.user"
+  }
+}
+extension L.BuySellTradeDetails.Form {
+
+  struct RequestDetails {
+    static let placeholder = "buy_sell_trade_details.form.request_details.placeholder"
   }
 }
 extension L.ChangePassword {
