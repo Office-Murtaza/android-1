@@ -48,7 +48,7 @@ dependencies {
 
     implementation 'androidx.multidex:multidex:2.0.1'
 
-    implementation "com.trustwallet:wallet-core:0.12.24"
+    implementation "com.trustwallet:wallet-core:2.0.15"
 
     // Etherium client
     implementation "org.web3j:core:3.0.1-android"

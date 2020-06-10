@@ -10,6 +10,7 @@ import com.app.belcobtm.presentation.core.*
 import com.app.belcobtm.presentation.core.extensions.*
 import com.google.gson.Gson
 import com.google.protobuf.ByteString
+import wallet.core.java.AnySigner
 import wallet.core.jni.*
 import wallet.core.jni.proto.*
 import java.math.BigDecimal
@@ -78,7 +79,7 @@ class TransactionHashHelper(
             val sngHash = TWBitcoinSigHashType.getCryptoHash(fromCoin)
 //        val cointypeValue = if (coinType.value() == 2) 0 else coinType.value()
             val cointypeValue = fromCoin.value()
-            val signerBuilder = Bitcoin.SigningInput.newBuilder()
+            val input = Bitcoin.SigningInput.newBuilder()
                 .setAmount(amount)
                 .setHashType(sngHash)
                 .setToAddress(toAddress)
@@ -88,7 +89,7 @@ class TransactionHashHelper(
 
             utxos.forEach {
                 val privateKey = hdWallet.getKey(it.path)
-                signerBuilder.addPrivateKey(ByteString.copyFrom(privateKey.data()))
+                input.addPrivateKey(ByteString.copyFrom(privateKey.data()))
             }
 
             utxos.forEach {
@@ -102,7 +103,7 @@ class TransactionHashHelper(
                 if (keyHash.isNotEmpty()) {
                     val key = Numeric.toHexString(keyHash)
                     val scriptByteString = ByteString.copyFrom(redeemScript.data())
-                    signerBuilder.putScripts(key, scriptByteString)
+                    input.putScripts(key, scriptByteString)
                 }
             }
 
@@ -126,13 +127,17 @@ class TransactionHashHelper(
                     .setOutPoint(outpoint)
                     .build()
 
-                signerBuilder.addUtxo(utxo0)
+                input.addUtxo(utxo0)
             }
-
-            val signer = BitcoinTransactionSigner(signerBuilder.build())
-            val result = signer.sign()
-            val output = result.getObjects(0).unpack(Bitcoin.SigningOutput::class.java)
-            val hash = Numeric.toHexString(output.encoded.toByteArray())
+//            val signer = BitcoinTransactionSigner(input.build())
+//            val result = signer.sign()
+//            val output = result.getObjects(0).unpack(Bitcoin.SigningOutput::class.java)
+            val signBytes = AnySigner.sign(
+                input.build(),
+                CoinType.BITCOIN,
+                Bitcoin.SigningOutput.parser()
+            ).encoded.toByteArray()
+            val hash = Numeric.toHexString(signBytes)
             Either.Right(hash.substring(2))
         } else {
             response as Either.Left
@@ -164,9 +169,7 @@ class TransactionHashHelper(
                 ByteString.copyFrom("0x${addLeadingZeroes(gasLimitD.toString(16))}".toHexByteArray())
             val gasPriceHex =
                 ByteString.copyFrom("0x${addLeadingZeroes(gasPriceD.toString(16))}".toHexByteArray())
-            val signingInput = Ethereum.SigningInput.newBuilder()
-
-            signingInput.also {
+            val signingInput = Ethereum.SigningInput.newBuilder().also {
                 it.privateKey = daoCoin.getItem(fromCoin.code()).privateKey.toHexBytesInByteString()
                 it.toAddress = toAddress
                 it.chainId = ByteString.copyFrom("0x1".toHexByteArray())
@@ -174,10 +177,16 @@ class TransactionHashHelper(
                 it.gasPrice = gasPriceHex
                 it.gasLimit = gasLimitHex
                 it.amount = amountHex
-            }
+            }.build()
 
-            val sign: Ethereum.SigningOutput = EthereumSigner.sign(signingInput.build())
-            val resTransactionHashStr = Numeric.toHexString(sign.encoded.toByteArray())
+//            val sign: Ethereum.SigningOutput = EthereumSigner.sign(signingInput)
+//            val resTransactionHashStr = Numeric.toHexString(sign.encoded.toByteArray())
+            val signBytes = AnySigner.sign(
+                signingInput,
+                CoinType.ETHEREUM,
+                Ethereum.SigningOutput.parser()
+            ).encoded.toByteArray()
+            val resTransactionHashStr = Numeric.toHexString(signBytes)
             Either.Right(resTransactionHashStr)
         } else {
             response as Either.Left
@@ -220,7 +229,11 @@ class TransactionHashHelper(
                     ?: BigDecimal(0.000020)) * BigDecimal.valueOf(CoinType.XRP.unit())).toLong()
                 it.privateKey = ByteString.copyFrom(privateKey.data())
             }.build()
-            val signBytes = RippleSigner.sign(signingInput).encoded.toByteArray()
+            val signBytes = AnySigner.sign(
+                signingInput,
+                CoinType.XRP,
+                Ripple.SigningOutput.parser()
+            ).encoded.toByteArray()///RippleSigner.sign(signingInput).encoded.toByteArray()
             val hash = Numeric.toHexString(signBytes)
             Either.Right(hash.substring(2))
         } else {
@@ -245,11 +258,21 @@ class TransactionHashHelper(
                 it.amount = (fromCoinAmount * CoinType.BINANCE.unit()).toLong()
             }
             val input = Binance.SendOrder.Input.newBuilder().also {
-                it.address = ByteString.copyFrom(CosmosAddress(HRP.BINANCE, publicKey).keyHash())
+                it.address = ByteString.copyFrom(
+                    AnyAddress(
+                        publicKey,
+                        CoinType.BINANCE
+                    ).data()
+                ) //ByteString.copyFrom(CosmosAddress(HRP.BINANCE, publicKey).keyHash())
                 it.addAllCoins(listOf(token.build()))
             }
             val output = Binance.SendOrder.Output.newBuilder().also {
-                it.address = ByteString.copyFrom(CosmosAddress(toAddress).keyHash())
+                it.address = ByteString.copyFrom(
+                    AnyAddress(
+                        toAddress,
+                        CoinType.BINANCE
+                    ).data()
+                ) //ByteString.copyFrom(CosmosAddress(toAddress).keyHash())
                 it.addAllCoins(listOf(token.build()))
             }
             val sendOrder = Binance.SendOrder.newBuilder().also {
@@ -263,7 +286,12 @@ class TransactionHashHelper(
                 it.privateKey = ByteString.copyFrom(privateKey.data())
                 it.sendOrder = sendOrder.build()
             }.build()
-            val signBytes = BinanceSigner.sign(signingInput).encoded.toByteArray()
+
+            val signBytes = AnySigner.sign(
+                signingInput,
+                CoinType.BINANCE,
+                Binance.SigningOutput.parser()
+            ).encoded.toByteArray()//BinanceSigner.sign(signingInput).encoded.toByteArray()
             val hash = Numeric.toHexString(signBytes)
             Either.Right(hash.substring(2))
         } else {
@@ -307,12 +335,14 @@ class TransactionHashHelper(
                     ?: BigDecimal(1)) * BigDecimal.valueOf(CoinType.TRON.unit())).toLong()
                 it.blockHeader = tronBlock.build()
             }
-            val signing = Tron.SigningInput.newBuilder().also {
+            val signingInput = Tron.SigningInput.newBuilder().also {
                 it.transaction = transaction.build()
                 it.privateKey = coinEntity.privateKey.toHexBytesInByteString()
             }.build()
-            val jsonHash = TronSigner.sign(signing).json
-            val correctJson = Gson().toJson(Gson().fromJson<Trx>(jsonHash, Trx::class.java))
+
+//            val jsonHash = TronSigner.sign(signingInput).json
+            val signJson = AnySigner.sign(signingInput, CoinType.TRON, Tron.SigningOutput.parser()).json
+            val correctJson = Gson().toJson(Gson().fromJson<Trx>(signJson, Trx::class.java))
             Either.Right(correctJson)
         } else {
             response as Either.Left
