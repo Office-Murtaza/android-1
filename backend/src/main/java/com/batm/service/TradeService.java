@@ -7,17 +7,22 @@ import com.batm.model.TradeStatus;
 import com.batm.model.TradeType;
 import com.batm.repository.TradeRep;
 import com.batm.repository.TradeRequestRep;
-import com.batm.util.Util;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Random;
 
 @Service
 public class TradeService {
+
+    private final int TAB_BUY = 1;
+    private final int TAB_SELL = 2;
+    private final int TAB_MY = 3;
 
     @Autowired
     private TradeRep tradeRep;
@@ -75,57 +80,57 @@ public class TradeService {
         return true;
     }
 
-    public TradeListDTO getTrades(Long userId, CoinService.CoinEnum coinCode, Integer index, Integer sort) {
-        User user = userService.findById(userId);
-        Identity identity = user.getIdentity();
-        Coin coin = coinCode.getCoinEntity();
-        BigDecimal price = coinCode.getPrice();
-        List<Trade> trades = tradeRep.findAllByCoin(coin);
-
-        List<TradeDetailsDTO> buyDTOs = new ArrayList<>();
-        List<TradeDetailsDTO> sellDTOs = new ArrayList<>();
-        List<TradeDetailsDTO> myDTOs = new ArrayList<>();
-
-        sort = user.getLatitude() == null ? TradeSort.PRICE.getValue() : sort;
-
-        for (Trade tr : trades) {
-            tr.setPrice(price
-                    .multiply(tr.getMargin().divide(new BigDecimal(100)).add(BigDecimal.ONE))
-                    .setScale(3, RoundingMode.DOWN).stripTrailingZeros());
-
-            if (tr.getIdentity().getId() == identity.getId()) {
-                myDTOs.add(tr.toDTO());
-            } else if (tr.getType() == TradeType.BUY.getValue()) {
-                if (sort == TradeSort.DISTANCE.getValue()) {
-                    tr.setDistance(Util.distance(user, tr.getIdentity().getUser()));
-                }
-
-                buyDTOs.add(tr.toDTO());
-            } else if (tr.getType() == TradeType.SELL.getValue()) {
-                if (sort == TradeSort.DISTANCE.getValue()) {
-                    tr.setDistance(Util.distance(user, tr.getIdentity().getUser()));
-                }
-
-                sellDTOs.add(tr.toDTO());
-            }
-        }
-
+    public TradeListDTO getTrades(Long userId, CoinService.CoinEnum coinCode, Integer tab, Integer index, Integer sort) {
         TradeListDTO dto = new TradeListDTO();
-        dto.setBuyTotal(buyDTOs.size());
-        dto.setSellTotal(sellDTOs.size());
-        dto.setMyTotal(myDTOs.size());
 
-        if (sort == TradeSort.PRICE.getValue()) {
-            buyDTOs.sort(Comparator.comparing(TradeDetailsDTO::getPrice));
-            sellDTOs.sort(Comparator.comparing(TradeDetailsDTO::getPrice).reversed());
-        } else if (sort == TradeSort.DISTANCE.getValue()) {
-            buyDTOs.sort(Comparator.comparing(TradeDetailsDTO::getDistance));
-            sellDTOs.sort(Comparator.comparing(TradeDetailsDTO::getDistance));
+        try {
+            User user = userService.findById(userId);
+            Identity identity = user.getIdentity();
+            Coin coin = coinCode.getCoinEntity();
+            BigDecimal price = coinCode.getPrice();
+            sort = user.getLatitude() == null ? TradeSort.PRICE.getValue() : sort;
+            List<Trade> trades = new ArrayList<>();
+
+            if (tab == TAB_BUY) {
+                trades = tradeRep.findAllByCoinAndTypeAndIdentityNot(coin, TradeType.BUY.getValue(), identity);
+            } else if (tab == TAB_SELL) {
+                trades = tradeRep.findAllByCoinAndTypeAndIdentityNot(coin, TradeType.SELL.getValue(), identity);
+            } else if (tab == TAB_MY) {
+                trades = tradeRep.findAllByCoinAndIdentity(coin, identity);
+            }
+
+            List<TradeDetailsDTO> tradeDetails = new ArrayList<>();
+
+            for (Trade tr : trades) {
+                TradeUserDTO trader = new TradeUserDTO();
+                trader.setUsername(tr.getIdentity().getPublicId());
+
+                tr.setPrice(price.multiply(tr.getMargin().divide(new BigDecimal(100)).add(BigDecimal.ONE))
+                        .setScale(3, RoundingMode.DOWN).stripTrailingZeros());
+
+                if (tab == TAB_BUY || tab == TAB_SELL) {
+                    //tr.setDistance(Util.distance(user, tr.getIdentity().getUser()));
+                    trader.setDistance(new Random().nextInt(10));
+                }
+
+                trader.setTradeCount(new Random().nextInt(200));
+                trader.setTradeRate(BigDecimal.valueOf(4.3));
+
+                tradeDetails.add(tr.toDTO(trader));
+            }
+
+            dto.setTotal(tradeDetails.size());
+
+            if ((tab == TAB_BUY || tab == TAB_SELL) && sort == TradeSort.DISTANCE.getValue()) {
+                tradeDetails.sort(Comparator.comparing(e -> e.getTrader().getDistance()));
+            } else {
+                tradeDetails.sort(Comparator.comparing(TradeDetailsDTO::getPrice));
+            }
+
+            dto.setTrades(tradeDetails.subList(index - 1, Math.min(tradeDetails.size(), index + 10 - 1)));
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-
-        dto.setBuyTrades(buyDTOs.subList(index - 1, Math.min(buyDTOs.size(), index + 10 - 1)));
-        dto.setSellTrades(sellDTOs.subList(index - 1, Math.min(sellDTOs.size(), index + 10 - 1)));
-        dto.setMyTrades(myDTOs.subList(index - 1, Math.min(myDTOs.size(), index + 10 - 1)));
 
         return dto;
     }
@@ -137,16 +142,12 @@ public class TradeService {
             Identity requestIdentity = userService.findByUserId(userId);
 
             TradeRequest tr = new TradeRequest();
-            tr.setTrade(trade);
-            tr.setStatus(TradeStatus.CREATED.getValue());
+            tr.setStatus(TradeStatus.NEW.getValue());
             tr.setCoin(coinCode.getCoinEntity());
             tr.setPaymentMethod(trade.getPaymentMethod());
-            tr.setMargin(trade.getMargin());
             tr.setPrice(dto.getPrice());
             tr.setCryptoAmount(dto.getCryptoAmount());
             tr.setFiatAmount(dto.getFiatAmount());
-            tr.setMinLimit(trade.getMinLimit());
-            tr.setMaxLimit(trade.getMaxLimit());
             tr.setTerms(tr.getTerms());
             tr.setDetails(dto.getDetails());
 
@@ -190,7 +191,37 @@ public class TradeService {
         return false;
     }
 
-    public TradeRequestListDTO getTradeRequests(Long userId, CoinService.CoinEnum coinCode, Integer type, Integer index, Integer sort) {
-        return null;
+    public TradeRequestListDTO getTradeRequests(Long userId, CoinService.CoinEnum coinCode, Integer index) {
+        TradeRequestListDTO dto = new TradeRequestListDTO();
+
+        try {
+            Identity identity = userService.findByUserId(userId);
+            Coin coin = coinCode.getCoinEntity();
+
+            dto.setTotal(tradeRequestRep.countAllByCoinAndBuyIdentityOrSellIdentity(coin, identity, identity));
+            List<TradeRequest> requests = tradeRequestRep.findAllByCoinAndBuyIdentityOrSellIdentityOrderByCreateDateDesc(coin, identity, identity, PageRequest.of(index / 10, 10));
+
+            requests.stream().forEach(e -> {
+                TradeUserDTO buyer = TradeUserDTO.builder()
+                        .username(e.getBuyIdentity().getPublicId())
+                        .distance(new Random().nextInt(10))
+                        .tradeCount(new Random().nextInt(200))
+                        .tradeRate(BigDecimal.valueOf(4.3))
+                        .build();
+
+                TradeUserDTO seller = TradeUserDTO.builder()
+                        .username(e.getSellIdentity().getPublicId())
+                        .distance(new Random().nextInt(10))
+                        .tradeCount(new Random().nextInt(200))
+                        .tradeRate(BigDecimal.valueOf(4.3))
+                        .build();
+
+                dto.getTradeRequests().add(e.toDTO(buyer, seller));
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return dto;
     }
 }

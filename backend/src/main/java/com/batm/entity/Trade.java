@@ -1,6 +1,7 @@
 package com.batm.entity;
 
 import com.batm.dto.TradeDetailsDTO;
+import com.batm.dto.TradeUserDTO;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,15 +25,6 @@ public class Trade extends BaseEntity {
     private String terms;
 
     @Transient
-    private Integer distance = 3;
-
-    @Transient
-    private Integer tradeCount = 153;
-
-    @Transient
-    private BigDecimal tradeRate = BigDecimal.valueOf(4.3);
-
-    @Transient
     private BigDecimal price;
 
     @ManyToOne
@@ -44,14 +36,11 @@ public class Trade extends BaseEntity {
     private Identity identity;
 
     @Transient
-    public TradeDetailsDTO toDTO() {
+    public TradeDetailsDTO toDTO(TradeUserDTO trader) {
         return TradeDetailsDTO.builder()
                 .id(getId())
                 .type(getType())
-                .username(getIdentity().getPublicId())
-                .tradeCount(getTradeCount())
-                .tradeRate(getTradeRate())
-                .distance(getDistance())
+                .trader(trader)
                 .price(getPrice())
                 .paymentMethod(getPaymentMethod())
                 .minLimit(getMinLimit())

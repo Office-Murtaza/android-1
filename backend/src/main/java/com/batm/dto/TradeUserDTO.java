@@ -2,7 +2,7 @@ package com.batm.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
-import java.util.List;
+import java.math.BigDecimal;
 
 @Getter
 @Setter
@@ -10,8 +10,10 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class TradeListDTO {
+public class TradeUserDTO {
 
-    private Integer total;
-    private List<TradeDetailsDTO> trades;
+    private String username;
+    private Integer tradeCount;
+    private BigDecimal tradeRate;
+    private Integer distance;
 }

@@ -14,13 +14,10 @@ public class TradeDetailsDTO {
 
     private Long id;
     private Integer type;
-    private String username;
-    private Integer tradeCount;
-    private BigDecimal tradeRate;
-    private Integer distance;
     private String paymentMethod;
     private BigDecimal price;
     private Long minLimit;
     private Long maxLimit;
     private String terms;
+    private TradeUserDTO trader;
 }

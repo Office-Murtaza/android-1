@@ -6,13 +6,11 @@ import java.util.Map;
 
 public enum TradeStatus {
 
-    CREATED(1),
+    NEW(1),
     PAID(2),
     RELEASED(3),
-    COMPLETE(4),
-    CANCELED(5),
-    DISPUTED(6),
-    EXPIRED(7);
+    CANCELED(4),
+    DISPUTED(5);
 
     private int value;
 

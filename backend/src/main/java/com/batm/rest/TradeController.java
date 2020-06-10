@@ -46,12 +46,12 @@ public class TradeController {
     }
 
     @GetMapping("/user/{userId}/coins/{coinCode}/trades")
-    public Response getTrades(@PathVariable Long userId, @PathVariable CoinService.CoinEnum coinCode, @RequestParam(required = false) Integer index, @RequestParam(required = false) Integer sort) {
+    public Response getTrades(@PathVariable Long userId, @PathVariable CoinService.CoinEnum coinCode, @RequestParam Integer tab, @RequestParam Integer index, @RequestParam Integer sort) {
         try {
             index = index == null || index <= 0 ? 1 : index;
             sort = sort == null ? 1 : sort;
 
-            return Response.ok(tradeService.getTrades(userId, coinCode, index, sort));
+            return Response.ok(tradeService.getTrades(userId, coinCode, tab, index, sort));
         } catch (Exception e) {
             e.printStackTrace();
             return Response.serverError();
@@ -79,12 +79,11 @@ public class TradeController {
     }
 
     @GetMapping("/user/{userId}/coins/{coinCode}/trade-requests")
-    public Response getTradeRequests(@PathVariable Long userId, @PathVariable CoinService.CoinEnum coinCode, @RequestParam(required = false) Integer type, @RequestParam(required = false) Integer index, @RequestParam(required = false) Integer sort) {
+    public Response getTradeRequests(@PathVariable Long userId, @PathVariable CoinService.CoinEnum coinCode, @RequestParam Integer index) {
         try {
             index = index == null || index <= 0 ? 1 : index;
-            sort = sort == null ? 1 : sort;
 
-            return Response.ok(tradeService.getTradeRequests(userId, coinCode, type, index, sort));
+            return Response.ok(tradeService.getTradeRequests(userId, coinCode, index ));
         } catch (Exception e) {
             e.printStackTrace();
             return Response.serverError();
