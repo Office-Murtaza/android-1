@@ -180,6 +180,10 @@ extension String {
   var withUSD: String {
     return self.appending(" USD")
   }
+  
+  var intValue: Int? {
+    return Int(self)
+  }
 }
 
 extension Double {

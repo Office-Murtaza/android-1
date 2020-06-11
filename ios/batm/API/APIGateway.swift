@@ -61,12 +61,8 @@ protocol APIGateway {
   func getBuyTrades(userId: Int, type: CoinType, page: Int) -> Single<BuySellTrades>
   func getSellTrades(userId: Int, type: CoinType, page: Int) -> Single<BuySellTrades>
   func updateLocation(userId: Int, latitude: Double, longitude: Double) -> Completable
-  func submitTradeRequest(userId: Int,
-                          type: CoinType,
-                          trade: BuySellTrade,
-                          coinAmount: Double,
-                          currencyAmount: Double,
-                          details: String) -> Completable
+  func submitTradeRequest(userId: Int, data: SubmitTradeRequestData) -> Completable
+  func submitTrade(userId: Int, data: SubmitTradeData) -> Completable
 }
 
 final class APIGatewayImpl: APIGateway {
@@ -559,18 +555,22 @@ final class APIGatewayImpl: APIGateway {
     .toCompletable()
   }
   
-  func submitTradeRequest(userId: Int,
-                          type: CoinType,
-                          trade: BuySellTrade,
-                          coinAmount: Double,
-                          currencyAmount: Double,
-                          details: String) -> Completable {
-    let request = SubmitTradeRequestRequest(userId: userId,
-                                            coinId: type.code,
-                                            trade: trade,
-                                            coinAmount: coinAmount,
-                                            currencyAmount: currencyAmount,
-                                            details: details)
+  func submitTradeRequest(userId: Int, data: SubmitTradeRequestData) -> Completable {
+    let request = SubmitTradeRequestRequest(userId: userId, data: data)
+    return api.execute(request)
+    .map { apiResponse -> Void in
+      switch apiResponse {
+      case .response:
+        return Void()
+      case let .error(error):
+        throw error
+      }
+    }
+    .toCompletable()
+  }
+  
+  func submitTrade(userId: Int, data: SubmitTradeData) -> Completable {
+    let request = SubmitTradeRequest(userId: userId, data: data)
     return api.execute(request)
     .map { apiResponse -> Void in
       switch apiResponse {

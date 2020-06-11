@@ -1,4 +1,13 @@
 import Foundation
+import TrustWalletCore
+
+struct SubmitTradeRequestData {
+  var coinType: CoinType
+  var trade: BuySellTrade
+  var coinAmount: Double
+  var currencyAmount: Double
+  var details: String
+}
 
 enum BuySellTradeDetailsAction: Equatable {
   case setupCoinBalance(CoinBalance)
@@ -23,6 +32,21 @@ struct BuySellTradeDetailsState: Equatable {
   
   var maxValue: Double {
     return coinBalance?.reservedBalance ?? 0
+  }
+  
+  var data: SubmitTradeRequestData? {
+    guard let coinType = coinBalance?.type,
+      let trade = trade,
+      let coinAmount = coinAmount.doubleValue,
+      let currencyAmount = currencyAmount.doubleValue else {
+      return nil
+    }
+    
+    return SubmitTradeRequestData(coinType: coinType,
+                                  trade: trade,
+                                  coinAmount: coinAmount,
+                                  currencyAmount: currencyAmount,
+                                  details: requestDetails)
   }
   
 }
@@ -82,11 +106,11 @@ final class BuySellTradeDetailsStore: ViewStore<BuySellTradeDetailsAction, BuySe
     }
     
     guard let trade = state.trade, currencyAmount.greaterThanOrEqualTo(Double(trade.minLimit)), currencyAmount.lessThanOrEqualTo(Double(trade.maxLimit)) else {
-      return .invalid(localize(L.BuySellTradeDetails.Error.notWithinLimits))
+      return .invalid(localize(L.BuySellTradeDetails.Form.Error.notWithinLimits))
     }
     
     guard state.requestDetails.count <= 255 else {
-      return .invalid(localize(L.BuySellTradeDetails.Error.tooManyCharacters))
+      return .invalid(localize(L.BuySellTradeDetails.Form.Error.tooManyCharacters))
     }
     
     return .valid

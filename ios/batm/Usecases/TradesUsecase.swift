@@ -5,11 +5,8 @@ import TrustWalletCore
 protocol TradesUsecase {
   func getBuyTrades(for type: CoinType, from page: Int) -> Single<BuySellTrades>
   func getSellTrades(for type: CoinType, from page: Int) -> Single<BuySellTrades>
-  func sendRequest(for type: CoinType,
-                   trade: BuySellTrade,
-                   coinAmount: Double,
-                   currencyAmount: Double,
-                   details: String) -> Completable
+  func submitTradeRequest(for data: SubmitTradeRequestData) -> Completable
+  func submitTrade(for data: SubmitTradeData) -> Completable
 }
 
 class TradesUsecaseImpl: TradesUsecase {
@@ -33,18 +30,14 @@ class TradesUsecaseImpl: TradesUsecase {
       .flatMap { [api] in api.getSellTrades(userId: $0.userId, type: type, page: page) }
   }
   
-  func sendRequest(for type: CoinType,
-                   trade: BuySellTrade,
-                   coinAmount: Double,
-                   currencyAmount: Double,
-                   details: String) -> Completable {
+  func submitTradeRequest(for data: SubmitTradeRequestData) -> Completable {
     return accountStorage.get()
-      .flatMapCompletable { [api] in api.submitTradeRequest(userId: $0.userId,
-                                                            type: type,
-                                                            trade: trade,
-                                                            coinAmount: coinAmount,
-                                                            currencyAmount: currencyAmount,
-                                                            details: details) }
+      .flatMapCompletable { [api] in api.submitTradeRequest(userId: $0.userId, data: data) }
+  }
+  
+  func submitTrade(for data: SubmitTradeData) -> Completable {
+    return accountStorage.get()
+      .flatMapCompletable { [api] in api.submitTrade(userId: $0.userId, data: data) }
   }
   
 }

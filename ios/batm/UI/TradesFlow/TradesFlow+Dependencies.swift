@@ -12,7 +12,8 @@ extension TradesFlow {
           return flowController
         }
         .implements(TradesModuleDelegate.self,
-                    BuySellTradeDetailsModuleDelegate.self)
+                    BuySellTradeDetailsModuleDelegate.self,
+                    CreateEditTradeModuleDelegate.self)
         .inObjectScope(.container)
     }
   }

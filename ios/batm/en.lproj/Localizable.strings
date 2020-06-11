@@ -233,6 +233,9 @@
 "trades.reserved" = "Reserved";
 "trades.buy" = "Buy";
 "trades.sell" = "Sell";
+"trades.recall" = "Recall";
+"trades.reserve" = "Reserve";
+"trades.create" = "Create";
 
 "buy_sell_trade_details.title" = "%@ %@";
 "buy_sell_trade_details.header.price" = "Price";
@@ -241,6 +244,20 @@
 "buy_sell_trade_details.header.limits" = "Limits";
 "buy_sell_trade_details.header.terms" = "Terms";
 "buy_sell_trade_details.form.request_details.placeholder" = "Request details";
-"buy_sell_trade_details.error.too_many_characters" = "Request details is too long";
-"buy_sell_trade_details.error.not_within_limits" = "Amount should be within limits";
+"buy_sell_trade_details.form.error.too_many_characters" = "Request details is too long";
+"buy_sell_trade_details.form.error.not_within_limits" = "Amount should be within limits";
 "buy_sell_trade_details.button.send_request" = "Send Request";
+
+"create_edit_trade.title" = "Create %@ trade";
+"create_edit_trade.type" = "I want to";
+"create_edit_trade.form.payment.placeholder" = "Payment method";
+"create_edit_trade.form.margin.placeholder" = "Margin";
+"create_edit_trade.form.min_limit.placeholder" = "Min limit";
+"create_edit_trade.form.max_limit.placeholder" = "Max limit";
+"create_edit_trade.form.terms.placeholder" = "Trade terms";
+"create_edit_trade.form.error.too_many_characters_in_payment" = "Payment method is too long";
+"create_edit_trade.form.error.invalid_margin" = "Margin should be between 0 and 100";
+"create_edit_trade.form.error.invalid_min_limit" = "Min limit should be greater than 0";
+"create_edit_trade.form.error.invalid_max_limit" = "Max limit should be greater than Min limit";
+"create_edit_trade.form.error.too_many_characters_in_terms" = "Trade terms is too long";
+"create_edit_trade.button.create" = "Create";

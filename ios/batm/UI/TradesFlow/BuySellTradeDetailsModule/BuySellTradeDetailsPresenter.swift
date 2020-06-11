@@ -65,17 +65,15 @@ final class BuySellTradeDetailsPresenter: ModulePresenter, BuySellTradeDetailsMo
       .doOnNext { [store] in store.action.accept(.updateValidationState) }
       .withLatestFrom(state)
       .filter { $0.validationState.isValid }
-      .flatMap { [unowned self] in self.track(self.sendRequest(for: $0)) }
+      .map { $0.data }
+      .filterNil()
+      .flatMap { [unowned self] in self.track(self.submitTradeRequest(for: $0)) }
       .subscribe(onNext: { [delegate] in delegate?.didFinishBuySellTradeDetails() })
       .disposed(by: disposeBag)
   }
   
-  private func sendRequest(for state: BuySellTradeDetailsState) -> Completable {
-    return usecase.sendRequest(for: state.coinBalance!.type,
-                               trade: state.trade!,
-                               coinAmount: state.coinAmount.doubleValue ?? 0.0,
-                               currencyAmount: state.currencyAmount.doubleValue ?? 0.0,
-                               details: state.requestDetails)
+  private func submitTradeRequest(for data: SubmitTradeRequestData) -> Completable {
+    return usecase.submitTradeRequest(for: data)
       .catchError { [store] in
         if let apiError = $0 as? APIError, case let .serverError(error) = apiError {
           store.action.accept(.makeInvalidState(error))

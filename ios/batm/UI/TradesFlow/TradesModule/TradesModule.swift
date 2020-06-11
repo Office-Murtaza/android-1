@@ -6,4 +6,5 @@ protocol TradesModule: class {
 protocol TradesModuleDelegate: class {
   func didFinishTrades()
   func showBuySellTradeDetails(coinBalance: CoinBalance, trade: BuySellTrade, type: TradeType)
+  func showCreateEditTrade(coinBalance: CoinBalance)
 }

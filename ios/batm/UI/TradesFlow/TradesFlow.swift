@@ -6,12 +6,14 @@ class TradesFlow: BaseFlow<BTMNavigationController, TradesFlowController> {
       Dependencies(),
       TradesAssembly(),
       BuySellTradeDetailsAssembly(),
+      CreateEditTradeAssembly(),
     ]
   }
   
   enum Steps: Step, Equatable {
     case trades(CoinBalance)
     case buySellTradeDetails(CoinBalance, BuySellTrade, TradeType)
+    case createEditTrade(CoinBalance)
     case pop
   }
   
@@ -30,6 +32,10 @@ class TradesFlow: BaseFlow<BTMNavigationController, TradesFlowController> {
     case let .buySellTradeDetails(coinBalance, trade, type):
       let module = resolver.resolve(Module<BuySellTradeDetailsModule>.self)!
       module.input.setup(coinBalance: coinBalance, trade: trade, type: type)
+      return push(module.controller)
+    case let .createEditTrade(coinBalance):
+      let module = resolver.resolve(Module<CreateEditTradeModule>.self)!
+      module.input.setup(coinBalance: coinBalance)
       return push(module.controller)
     case .pop: return pop()
     }

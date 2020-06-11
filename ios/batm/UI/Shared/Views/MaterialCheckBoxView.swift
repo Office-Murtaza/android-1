@@ -61,6 +61,10 @@ class MaterialCheckBoxView: UIView, HasDisposeBag {
       })
       .disposed(by: disposeBag)
   }
+  
+  func set(accepted: Bool) {
+    isAcceptedRelay.accept(accepted)
+  }
 }
 
 extension Reactive where Base == MaterialCheckBoxView {

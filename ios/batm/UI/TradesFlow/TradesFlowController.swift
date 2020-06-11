@@ -20,11 +20,23 @@ extension TradesFlowController: TradesModuleDelegate {
     step.accept(TradesFlow.Steps.buySellTradeDetails(coinBalance, trade, type))
   }
   
+  func showCreateEditTrade(coinBalance: CoinBalance) {
+    step.accept(TradesFlow.Steps.createEditTrade(coinBalance))
+  }
+  
 }
 
 extension TradesFlowController: BuySellTradeDetailsModuleDelegate {
   
   func didFinishBuySellTradeDetails() {
+    step.accept(TradesFlow.Steps.pop)
+  }
+  
+}
+
+extension TradesFlowController: CreateEditTradeModuleDelegate {
+  
+  func didFinishCreateEditTrade() {
     step.accept(TradesFlow.Steps.pop)
   }
   
