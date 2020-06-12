@@ -315,7 +315,7 @@ public class GethService {
 
             input.setPrivateKey(ByteString.copyFrom(Numeric.hexStringToByteArray(Numeric.toHexStringNoPrefix(privateKey.data()))));
             input.setToAddress(contractAddress);
-            input.setChainId(ByteString.copyFrom(Numeric.hexStringToByteArray("4")));
+            input.setChainId(ByteString.copyFrom(Numeric.hexStringToByteArray("1")));
             input.setNonce(ByteString.copyFrom(Numeric.hexStringToByteArray(Integer.toHexString(nonce))));
             input.setGasPrice(ByteString.copyFrom(Numeric.hexStringToByteArray(Long.toHexString(getGasPrice()))));
             input.setGasLimit(ByteString.copyFrom(Numeric.hexStringToByteArray(Long.toHexString(getGasLimit()))));

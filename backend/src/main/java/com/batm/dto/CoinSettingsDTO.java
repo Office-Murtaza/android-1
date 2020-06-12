@@ -20,5 +20,6 @@ public class CoinSettingsDTO {
     private Long gasPrice;
     private Long gasLimit;
     private BigDecimal profitC2C;
-    private String serverWalletAddress;
+    private String walletAddress;
+    private String contractAddress;
 }

@@ -260,7 +260,7 @@ public class CoinService {
                 dto.setProfitC2C(getCoinEntity().getProfitC2C().stripTrailingZeros());
                 dto.setByteFee(getCoinEntity().getFee());
                 dto.setTxFee(getCoinEntity().getFee().multiply(BigDecimal.valueOf(1000)).stripTrailingZeros());
-                dto.setServerWalletAddress(getWalletAddress());
+                dto.setWalletAddress(getWalletAddress());
 
                 return dto;
             }
@@ -363,7 +363,7 @@ public class CoinService {
                 dto.setGasPrice(geth.getGasPrice());
                 dto.setGasLimit(geth.getGasLimit());
                 dto.setTxFee(geth.getTxFee());
-                dto.setServerWalletAddress(getWalletAddress());
+                dto.setWalletAddress(getWalletAddress());
 
                 return dto;
             }
@@ -462,6 +462,7 @@ public class CoinService {
             @Override
             public CoinSettingsDTO getCoinSettings() {
                 CoinSettingsDTO dto = CoinEnum.ETH.getCoinSettings();
+                dto.setContractAddress(geth.getContractAddress());
                 dto.setProfitC2C(getCoinEntity().getProfitC2C().stripTrailingZeros());
 
                 return dto;
@@ -566,7 +567,7 @@ public class CoinService {
                 dto.setProfitC2C(getCoinEntity().getProfitC2C().stripTrailingZeros());
                 dto.setByteFee(getCoinEntity().getFee());
                 dto.setTxFee(getCoinEntity().getFee().multiply(BigDecimal.valueOf(1000)).stripTrailingZeros());
-                dto.setServerWalletAddress(getWalletAddress());
+                dto.setWalletAddress(getWalletAddress());
 
                 return dto;
             }
@@ -670,7 +671,7 @@ public class CoinService {
                 dto.setProfitC2C(getCoinEntity().getProfitC2C().stripTrailingZeros());
                 dto.setByteFee(getCoinEntity().getFee());
                 dto.setTxFee(getCoinEntity().getFee().multiply(BigDecimal.valueOf(1000)).stripTrailingZeros());
-                dto.setServerWalletAddress(getWalletAddress());
+                dto.setWalletAddress(getWalletAddress());
 
                 return dto;
             }
@@ -774,7 +775,7 @@ public class CoinService {
                 CoinSettingsDTO dto = new CoinSettingsDTO();
                 dto.setProfitC2C(getCoinEntity().getProfitC2C().stripTrailingZeros());
                 dto.setTxFee(getCoinEntity().getFee().stripTrailingZeros());
-                dto.setServerWalletAddress(getWalletAddress());
+                dto.setWalletAddress(getWalletAddress());
 
                 return dto;
             }
@@ -886,7 +887,7 @@ public class CoinService {
                 CoinSettingsDTO dto = new CoinSettingsDTO();
                 dto.setProfitC2C(getCoinEntity().getProfitC2C().stripTrailingZeros());
                 dto.setTxFee(getCoinEntity().getFee().stripTrailingZeros());
-                dto.setServerWalletAddress(getWalletAddress());
+                dto.setWalletAddress(getWalletAddress());
 
                 return dto;
             }
@@ -987,7 +988,7 @@ public class CoinService {
                 CoinSettingsDTO dto = new CoinSettingsDTO();
                 dto.setProfitC2C(getCoinEntity().getProfitC2C().stripTrailingZeros());
                 dto.setTxFee(getCoinEntity().getFee().stripTrailingZeros());
-                dto.setServerWalletAddress(getWalletAddress());
+                dto.setWalletAddress(getWalletAddress());
 
                 return dto;
             }
