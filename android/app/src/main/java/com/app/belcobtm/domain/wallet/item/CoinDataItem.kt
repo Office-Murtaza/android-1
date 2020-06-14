@@ -1,11 +1,15 @@
 package com.app.belcobtm.domain.wallet.item
 
-import com.app.belcobtm.domain.wallet.LocalCoinType
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
 
+@Parcelize
 data class CoinDataItem(
-    val type: LocalCoinType,
-    val publicKey: String = "",
-    val privateKey: String = ""
-) {
-    var isEnabled: Boolean = true
-}
+    val balanceCoin: Double,
+    val balanceUsd: Double,
+    val priceUsd: Double,
+    val reservedBalanceCoin: Double,
+    val reservedBalanceUsd: Double,
+    val code: String,
+    val publicKey: String
+) : Parcelable

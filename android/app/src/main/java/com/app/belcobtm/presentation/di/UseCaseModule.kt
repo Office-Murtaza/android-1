@@ -5,10 +5,13 @@ import com.app.belcobtm.domain.settings.interactor.GetVerificationCountryListUse
 import com.app.belcobtm.domain.settings.interactor.GetVerificationInfoUseCase
 import com.app.belcobtm.domain.settings.interactor.SendVerificationBlankUseCase
 import com.app.belcobtm.domain.settings.interactor.SendVerificationVipUseCase
+import com.app.belcobtm.domain.tools.interactor.SendSmsToDeviceUseCase
+import com.app.belcobtm.domain.tools.interactor.VerifySmsCodeUseCase
+import com.app.belcobtm.domain.transaction.interactor.*
+import com.app.belcobtm.domain.transaction.interactor.trade.CreateBuyTradeUseCase
+import com.app.belcobtm.domain.transaction.interactor.trade.CreateSellTradeUseCase
+import com.app.belcobtm.domain.transaction.interactor.trade.GetListTradeUseCase
 import com.app.belcobtm.domain.wallet.interactor.*
-import com.app.belcobtm.domain.wallet.interactor.trade.CreateBuyTradeUseCase
-import com.app.belcobtm.domain.wallet.interactor.trade.CreateSellTradeUseCase
-import com.app.belcobtm.domain.wallet.interactor.trade.GetListTradeUseCase
 import org.koin.dsl.module
 
 val useCaseModule = module {
@@ -34,7 +37,7 @@ val useCaseModule = module {
     single { VerifySmsCodeUseCase(get()) }
     single { SellPreSubmitUseCase(get()) }
     single { SellGetLimitsUseCase(get()) }
-    single { GetCoinListUseCase(get()) }
+    single { GetLocalCoinListUseCase(get()) }
     single { UpdateCoinUseCase(get()) }
     single { GetListTradeUseCase.Buy(get()) }
     single { GetListTradeUseCase.Sell(get()) }
@@ -43,4 +46,8 @@ val useCaseModule = module {
     single { TradeBuySellUseCase(get()) }
     single { CreateBuyTradeUseCase(get()) }
     single { CreateSellTradeUseCase(get()) }
+    single { GetBalanceUseCase(get()) }
+    single { GetChartsUseCase(get()) }
+    single { GetTransactionListUseCase(get()) }
+    single { UpdateCoinFeeUseCase(get()) }
 }

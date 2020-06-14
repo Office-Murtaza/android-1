@@ -2,10 +2,10 @@ package com.app.belcobtm.presentation.features.wallet.trade.main
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.app.belcobtm.domain.wallet.interactor.trade.GetListTradeUseCase
-import com.app.belcobtm.domain.wallet.type.TradeSortType
+import com.app.belcobtm.domain.transaction.interactor.trade.GetListTradeUseCase
+import com.app.belcobtm.domain.transaction.type.TradeSortType
+import com.app.belcobtm.domain.wallet.item.CoinDataItem
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
-import com.app.belcobtm.presentation.features.wallet.IntentCoinItem
 import com.app.belcobtm.presentation.features.wallet.trade.main.item.TradeDetailsItem
 import com.app.belcobtm.presentation.features.wallet.trade.main.item.mapToUiBuySellItem
 import com.app.belcobtm.presentation.features.wallet.trade.main.item.mapToUiMyItem
@@ -14,7 +14,7 @@ import com.app.belcobtm.presentation.features.wallet.trade.main.item.mapToUiOpen
 class TradeViewModel(
     private val latitude: Double,
     private val longitude: Double,
-    val fromCoinItem: IntentCoinItem,
+    val fromCoinItem: CoinDataItem,
     private val getBuyListUseCase: GetListTradeUseCase.Buy,
     private val getSellListUseCase: GetListTradeUseCase.Sell,
     private val getMyListUseCase: GetListTradeUseCase.My,
@@ -84,5 +84,5 @@ class TradeViewModel(
     }
 
     private fun createGetTradeListParams(paginationStep: Int) =
-        GetListTradeUseCase.Params(latitude, longitude, fromCoinItem.coinCode, sortType, paginationStep)
+        GetListTradeUseCase.Params(latitude, longitude, fromCoinItem.code, sortType, paginationStep)
 }

@@ -6,14 +6,14 @@ import android.os.Bundle
 import android.view.MenuItem
 import android.view.ViewTreeObserver
 import com.app.belcobtm.R
+import com.app.belcobtm.domain.wallet.item.CoinDataItem
 import com.app.belcobtm.presentation.core.QRUtils
 import com.app.belcobtm.presentation.core.helper.AlertHelper
 import com.app.belcobtm.presentation.core.ui.BaseActivity
-import com.app.belcobtm.presentation.features.wallet.IntentCoinItem
 import kotlinx.android.synthetic.main.activity_deposit.*
 
 class DepositActivity : BaseActivity() {
-    private lateinit var coinItem: IntentCoinItem
+    private lateinit var coinItem: CoinDataItem
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,7 +51,7 @@ class DepositActivity : BaseActivity() {
         coinItem = intent.getParcelableExtra(TAG_COIN_ITEM)!!
         setSupportActionBar(toolbarView)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.title = getString(R.string.deposit_screen_title, coinItem.coinCode)
+        supportActionBar?.title = getString(R.string.deposit_screen_title, coinItem.code)
         addressView.text = coinItem.publicKey
     }
 

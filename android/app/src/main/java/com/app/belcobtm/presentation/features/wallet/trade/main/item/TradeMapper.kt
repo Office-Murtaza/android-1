@@ -1,6 +1,6 @@
 package com.app.belcobtm.presentation.features.wallet.trade.main.item
 
-import com.app.belcobtm.domain.wallet.item.TradeDataItem
+import com.app.belcobtm.domain.transaction.item.TradeDataItem
 
 fun TradeDataItem.mapToUiBuySellItem(isBuyType: Boolean): TradeDetailsItem.BuySell = TradeDetailsItem.BuySell(
     id = id,

@@ -1,8 +1,7 @@
 package com.app.belcobtm.ui.main.coins.sell
 
-import com.app.belcobtm.api.model.response.CoinModel
-import com.app.belcobtm.api.model.response.LimitsResponse
-import com.app.belcobtm.domain.wallet.item.SellLimitsDataItem
+import com.app.belcobtm.domain.transaction.item.SellLimitsDataItem
+import com.app.belcobtm.domain.wallet.item.CoinDataItem
 import com.app.belcobtm.mvp.BaseMvpPresenter
 import com.app.belcobtm.mvp.BaseMvpView
 
@@ -19,7 +18,7 @@ object SellContract {
         fun verifySmsCode(smsCode: String)
 
         fun getTransactionFee(coinName: String): Double
-        fun bindData(mCoin: CoinModel?)
+        fun bindData(mCoin: CoinDataItem?)
         fun getDetails()
 
     }

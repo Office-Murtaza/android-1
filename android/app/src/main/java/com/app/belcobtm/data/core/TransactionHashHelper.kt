@@ -3,7 +3,7 @@ package com.app.belcobtm.data.core
 import com.app.belcobtm.api.model.param.trx.Trx
 import com.app.belcobtm.data.disk.database.CoinDao
 import com.app.belcobtm.data.disk.shared.preferences.SharedPreferencesHelper
-import com.app.belcobtm.data.rest.wallet.WalletApiService
+import com.app.belcobtm.data.rest.transaction.TransactionApiService
 import com.app.belcobtm.domain.Either
 import com.app.belcobtm.domain.Failure
 import com.app.belcobtm.presentation.core.*
@@ -17,7 +17,7 @@ import java.math.BigDecimal
 import java.util.*
 
 class TransactionHashHelper(
-    private val apiService: WalletApiService,
+    private val apiService: TransactionApiService,
     private val prefsHelper: SharedPreferencesHelper,
     private val daoCoin: CoinDao
 ) {

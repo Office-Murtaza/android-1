@@ -3,17 +3,17 @@ package com.app.belcobtm.ui.main.main_activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
 import com.app.belcobtm.R
 import com.app.belcobtm.domain.authorization.interactor.ClearAppDataUseCase
-import com.app.belcobtm.domain.wallet.interactor.GetCoinListUseCase
+import com.app.belcobtm.domain.wallet.LocalCoinType
+import com.app.belcobtm.domain.wallet.interactor.GetLocalCoinListUseCase
 import com.app.belcobtm.mvp.BaseMvpActivity
 import com.app.belcobtm.presentation.features.authorization.pin.PinActivity
 import com.app.belcobtm.presentation.features.authorization.welcome.WelcomeActivity
+import com.app.belcobtm.presentation.features.wallet.balance.BalanceFragment
 import com.app.belcobtm.ui.auth.recover_seed.RecoverSeedActivity
 import com.app.belcobtm.ui.main.atm.AtmFragment
-import com.app.belcobtm.ui.main.coins.balance.BalanceFragment
 import com.app.belcobtm.ui.main.settings.SettingsFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.activity_main.*
@@ -21,13 +21,14 @@ import org.koin.android.ext.android.inject
 
 class MainActivity : BaseMvpActivity<MainContract.View, MainContract.Presenter>(), MainContract.View,
     BottomNavigationView.OnNavigationItemSelectedListener {
-    private val coinListUseCase: GetCoinListUseCase by inject()
+    private val coinListUseCase: GetLocalCoinListUseCase by inject()
     private val clearAppDataUseCase: ClearAppDataUseCase by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        coinListUseCase.invoke {
-            if (it.isEmpty() && !mPresenter.isApiSeedEmpty()) {
+        coinListUseCase.invoke { dataItemList ->
+            val isHasCATMCoin: Boolean = dataItemList.firstOrNull { it.type == LocalCoinType.CATM } != null
+            if (dataItemList.isEmpty() && !mPresenter.isApiSeedEmpty() || !isHasCATMCoin) {
                 clearAppDataUseCase.invoke {
                     launchData()
                 }

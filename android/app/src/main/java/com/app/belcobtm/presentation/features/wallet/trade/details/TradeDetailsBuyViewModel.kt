@@ -2,12 +2,12 @@ package com.app.belcobtm.presentation.features.wallet.trade.details
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.app.belcobtm.domain.wallet.interactor.TradeBuySellUseCase
+import com.app.belcobtm.domain.transaction.interactor.TradeBuySellUseCase
+import com.app.belcobtm.domain.wallet.item.CoinDataItem
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
-import com.app.belcobtm.presentation.features.wallet.IntentCoinItem
 
 class TradeDetailsBuyViewModel(
-    val fromCoinItem: IntentCoinItem,
+    val fromCoinItem: CoinDataItem,
     private val tradeBuySellUseCase: TradeBuySellUseCase
 ) : ViewModel() {
     val buyLiveData: MutableLiveData<LoadingData<Unit>> = MutableLiveData()
@@ -19,7 +19,7 @@ class TradeDetailsBuyViewModel(
                 id,
                 price.toInt(),
                 fromUsdAmount,
-                fromCoinItem.coinCode,
+                fromCoinItem.code,
                 toCoinAmount,
                 detailsText
             ),

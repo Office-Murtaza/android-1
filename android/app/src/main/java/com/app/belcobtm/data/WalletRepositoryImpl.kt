@@ -1,7 +1,6 @@
 package com.app.belcobtm.data
 
 import com.app.belcobtm.data.core.NetworkUtils
-import com.app.belcobtm.data.core.TransactionHashHelper
 import com.app.belcobtm.data.disk.database.CoinDao
 import com.app.belcobtm.data.disk.database.mapToDataItem
 import com.app.belcobtm.data.disk.database.mapToEntity
@@ -10,270 +9,50 @@ import com.app.belcobtm.data.rest.wallet.WalletApiService
 import com.app.belcobtm.domain.Either
 import com.app.belcobtm.domain.Failure
 import com.app.belcobtm.domain.wallet.WalletRepository
-import com.app.belcobtm.domain.wallet.item.*
-import com.app.belcobtm.domain.wallet.type.TradeSortType
-import com.app.belcobtm.presentation.core.extensions.CoinTypeExtension
+import com.app.belcobtm.domain.wallet.item.BalanceDataItem
+import com.app.belcobtm.domain.wallet.item.ChartDataItem
+import com.app.belcobtm.domain.wallet.item.CoinFeeDataItem
+import com.app.belcobtm.domain.wallet.item.LocalCoinDataItem
 
 class WalletRepositoryImpl(
     private val apiService: WalletApiService,
     private val prefHelper: SharedPreferencesHelper,
-    private val transactionHashRepository: TransactionHashHelper,
     private val networkUtils: NetworkUtils,
     private val daoCoin: CoinDao
 ) : WalletRepository {
     override fun getCoinFeeMap(): Map<String, CoinFeeDataItem> = prefHelper.coinsFee
 
-    override suspend fun getCoinList(): List<CoinDataItem> =
+    override suspend fun getLocalCoinList(): List<LocalCoinDataItem> =
         (daoCoin.getItemList() ?: emptyList()).map { it.mapToDataItem() }
 
-    override suspend fun updateCoin(dataItem: CoinDataItem): Either<Failure, Unit> {
-        daoCoin.updateItem(dataItem.mapToEntity())
+    override suspend fun updateCoin(dataItemLocal: LocalCoinDataItem): Either<Failure, Unit> {
+        daoCoin.updateItem(dataItemLocal.mapToEntity())
         return Either.Right(Unit)
     }
 
-    override suspend fun sendSmsToDevice(): Either<Failure, Unit> =
-        if (networkUtils.isNetworkAvailable()) {
-            apiService.sendToDeviceSmsCode()
-        } else {
-            Either.Left(Failure.NetworkConnection)
-        }
-
-    override suspend fun verifySmsCode(
-        smsCode: String
-    ): Either<Failure, Unit> = if (networkUtils.isNetworkAvailable()) {
-        apiService.verifySmsCode(smsCode)
+    override suspend fun getBalanceItem(): Either<Failure, BalanceDataItem> = if (networkUtils.isNetworkAvailable()) {
+        val enabledCoinList = daoCoin.getItemList()?.filter { it.isEnabled }?.map { it.type.name } ?: emptyList()
+        apiService.getBalance(enabledCoinList)
     } else {
         Either.Left(Failure.NetworkConnection)
     }
 
-    override suspend fun createTransaction(
-        fromCoin: String,
-        fromCoinAmount: Double,
-        isNeedSendSms: Boolean
-    ): Either<Failure, String> = if (networkUtils.isNetworkAvailable()) {
-        val toAddress = prefHelper.coinsFee[fromCoin]?.serverWalletAddress ?: ""
-        val coinType = CoinTypeExtension.getTypeByCode(fromCoin)
-        val hashResponse =
-            transactionHashRepository.createTransactionHash(coinType!!, fromCoinAmount, toAddress)
-        when {
-            isNeedSendSms && hashResponse.isRight -> {
-                val sendSmsToDeviceResponse = sendSmsToDevice()
-                if (sendSmsToDeviceResponse.isRight) {
-                    hashResponse as Either.Right
-                } else {
-                    sendSmsToDeviceResponse as Either.Left
-                }
-            }
-            !isNeedSendSms && hashResponse.isRight -> hashResponse as Either.Right
-            else -> hashResponse as Either.Left
-        }
+    override suspend fun getChart(
+        coinCode: String
+    ): Either<Failure, ChartDataItem> = if (networkUtils.isNetworkAvailable()) {
+        apiService.getChart(coinCode)
     } else {
         Either.Left(Failure.NetworkConnection)
     }
 
-    override suspend fun withdraw(
-        smsCode: String,
-        hash: String,
-        fromCoin: String,
-        fromCoinAmount: Double
-    ): Either<Failure, Unit> = if (networkUtils.isNetworkAvailable()) {
-        val smsCodeVerifyResponse = verifySmsCode(smsCode)
-        if (smsCodeVerifyResponse.isRight) {
-            apiService.withdraw(hash, fromCoin, fromCoinAmount)
-        } else {
-            smsCodeVerifyResponse as Either.Left
-        }
-    } else {
-        Either.Left(Failure.NetworkConnection)
-    }
-
-    override suspend fun getGiftAddress(
-        fromCoin: String,
-        phone: String
-    ): Either<Failure, String> = if (networkUtils.isNetworkAvailable()) {
-        apiService.getGiftAddress(fromCoin, phone)
-    } else {
-        Either.Left(Failure.NetworkConnection)
-    }
-
-    override suspend fun sendGift(
-        smsCode: String,
-        hash: String,
-        fromCoin: String,
-        fromCoinAmount: Double,
-        giftId: String,
-        phone: String,
-        message: String
-    ): Either<Failure, Unit> = if (networkUtils.isNetworkAvailable()) {
-        val smsCodeVerifyResponse = verifySmsCode(smsCode)
-        if (smsCodeVerifyResponse.isRight) {
-            apiService.sendGift(hash, fromCoin, fromCoinAmount, giftId, phone, message)
-        } else {
-            smsCodeVerifyResponse as Either.Left
-        }
-    } else {
-        Either.Left(Failure.NetworkConnection)
-    }
-
-    override suspend fun sellGetLimits(
-        fromCoin: String
-    ): Either<Failure, SellLimitsDataItem> = if (networkUtils.isNetworkAvailable()) {
-        apiService.sellGetLimitsAsync(fromCoin)
-    } else {
-        Either.Left(Failure.NetworkConnection)
-    }
-
-    override suspend fun sellPreSubmit(
-        smsCode: String,
-        fromCoin: String,
-        cryptoAmount: Double,
-        toUsdAmount: Int
-    ): Either<Failure, SellPreSubmitDataItem> = if (networkUtils.isNetworkAvailable()) {
-        val smsCodeVerifyResponse = verifySmsCode(smsCode)
-        if (smsCodeVerifyResponse.isRight) {
-            apiService.sellPreSubmit(fromCoin, cryptoAmount, toUsdAmount)
-        } else {
-            smsCodeVerifyResponse as Either.Left
-        }
-    } else {
-        Either.Left(Failure.NetworkConnection)
-    }
-
-    override suspend fun sell(
-        fromCoin: String,
-        fromCoinAmount: Double
-    ): Either<Failure, Unit> = if (networkUtils.isNetworkAvailable()) {
-        val transactionResponse = createTransaction(fromCoin, fromCoinAmount, false)
-        if (transactionResponse.isRight) {
-            val hash = (transactionResponse as Either.Right).b
-            apiService.sell(fromCoinAmount, fromCoin, hash)
-        } else {
-            transactionResponse as Either.Left
-        }
-    } else {
-        Either.Left(Failure.NetworkConnection)
-    }
-
-    override suspend fun exchangeCoinToCoin(
-        smsCode: String,
-        fromCoinAmount: Double,
-        fromCoin: String,
-        coinTo: String,
-        hex: String
-    ): Either<Failure, Unit> = if (networkUtils.isNetworkAvailable()) {
-        val smsCodeVerifyResponse = verifySmsCode(smsCode)
-        if (smsCodeVerifyResponse.isRight) {
-            apiService.coinToCoinExchange(fromCoinAmount, fromCoin, coinTo, hex)
-        } else {
-            smsCodeVerifyResponse as Either.Left
-        }
-    } else {
-        Either.Left(Failure.NetworkConnection)
-    }
-
-    override suspend fun tradeGetBuyList(
-        latitude: Double,
-        longitude: Double,
-        coinFrom: String,
-        sortType: TradeSortType,
-        paginationStep: Int
-    ): Either<Failure, TradeInfoDataItem> = when {
-        !networkUtils.isNetworkAvailable() -> Either.Left(Failure.NetworkConnection)
-        (latitude > 0 || longitude > 0) && prefHelper.tradeLocationExpirationTime < System.currentTimeMillis() -> {
-            val locationRequest = apiService.sendTradeUserLocation(latitude, longitude)
-            prefHelper.tradeLocationExpirationTime =
-                if (locationRequest.isRight) System.currentTimeMillis() else -1
-            apiService.getTradeBuyList(coinFrom, sortType, paginationStep)
-        }
-        else -> apiService.getTradeBuyList(coinFrom, sortType, paginationStep)
-    }
-
-    override suspend fun getTradeSellList(
-        latitude: Double,
-        longitude: Double,
-        coinFrom: String,
-        sortType: TradeSortType,
-        paginationStep: Int
-    ): Either<Failure, TradeInfoDataItem> = when {
-        !networkUtils.isNetworkAvailable() -> Either.Left(Failure.NetworkConnection)
-        (latitude > 0 || longitude > 0) && prefHelper.tradeLocationExpirationTime < System.currentTimeMillis() -> {
-            val locationRequest = apiService.sendTradeUserLocation(latitude, longitude)
-            prefHelper.tradeLocationExpirationTime =
-                if (locationRequest.isRight) System.currentTimeMillis() else -1
-            apiService.getTradeSellList(coinFrom, sortType, paginationStep)
-        }
-        else -> apiService.getTradeSellList(coinFrom, sortType, paginationStep)
-    }
-
-    override suspend fun getTradeMyList(
-        latitude: Double,
-        longitude: Double,
-        coinFrom: String,
-        sortType: TradeSortType,
-        paginationStep: Int
-    ): Either<Failure, TradeInfoDataItem> = when {
-        !networkUtils.isNetworkAvailable() -> Either.Left(Failure.NetworkConnection)
-        (latitude > 0 || longitude > 0) && prefHelper.tradeLocationExpirationTime < System.currentTimeMillis() -> {
-            val locationRequest = apiService.sendTradeUserLocation(latitude, longitude)
-            prefHelper.tradeLocationExpirationTime =
-                if (locationRequest.isRight) System.currentTimeMillis() else -1
-            apiService.getTradeMyList(coinFrom, sortType, paginationStep)
-        }
-        else -> apiService.getTradeMyList(coinFrom, sortType, paginationStep)
-    }
-
-    override suspend fun getTradeOpenList(
-        latitude: Double,
-        longitude: Double,
-        coinFrom: String,
-        sortType: TradeSortType,
-        paginationStep: Int
-    ): Either<Failure, TradeInfoDataItem> = when {
-        !networkUtils.isNetworkAvailable() -> Either.Left(Failure.NetworkConnection)
-        (latitude > 0 || longitude > 0) && prefHelper.tradeLocationExpirationTime < System.currentTimeMillis() -> {
-            val locationRequest = apiService.sendTradeUserLocation(latitude, longitude)
-            prefHelper.tradeLocationExpirationTime =
-                if (locationRequest.isRight) System.currentTimeMillis() else -1
-            apiService.getTradeOpenList(coinFrom, sortType, paginationStep)
-        }
-        else -> apiService.getTradeOpenList(coinFrom, sortType, paginationStep)
-    }
-
-    override suspend fun tradeBuySell(
-        id: Int,
-        price: Int,
-        fromUsdAmount: Int,
-        toCoin: String,
-        toCoinAmount: Double,
-        detailsText: String
-    ): Either<Failure, Unit> = if (networkUtils.isNetworkAvailable()) {
-        apiService.tradeBuySell(id, price, fromUsdAmount, toCoin, toCoinAmount, detailsText)
-    } else {
-        Either.Left(Failure.NetworkConnection)
-    }
-
-    override suspend fun tradeBuyCreate(
-        coinCode: String,
-        paymentMethod: String,
-        margin: Int,
-        minLimit: Long,
-        maxLimit: Long,
-        terms: String
-    ): Either<Failure, Unit> = if (networkUtils.isNetworkAvailable()) {
-        apiService.tradeBuyCreate(coinCode, paymentMethod, margin, minLimit, maxLimit, terms)
-    } else {
-        Either.Left(Failure.NetworkConnection)
-    }
-
-    override suspend fun tradeSellCreate(
-        coinCode: String,
-        paymentMethod: String,
-        margin: Int,
-        minLimit: Long,
-        maxLimit: Long,
-        terms: String
-    ): Either<Failure, Unit> = if (networkUtils.isNetworkAvailable()) {
-        apiService.tradeSellCreate(coinCode, paymentMethod, margin, minLimit, maxLimit, terms)
+    override suspend fun updateCoinFee(
+        coinCode: String
+    ): Either<Failure, CoinFeeDataItem> = if (networkUtils.isNetworkAvailable()) {
+        val response = apiService.getCoinFee(coinCode)
+        val mutableCoinsFeeMap = prefHelper.coinsFee.toMutableMap()
+        mutableCoinsFeeMap[coinCode] = (response as Either.Right).b
+        prefHelper.coinsFee = mutableCoinsFeeMap
+        response
     } else {
         Either.Left(Failure.NetworkConnection)
     }

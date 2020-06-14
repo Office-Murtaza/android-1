@@ -3,11 +3,11 @@ package com.app.belcobtm.ui.main.coins.send_gift
 import android.content.Context
 import com.app.belcobtm.R
 import com.app.belcobtm.api.data_manager.WithdrawDataManager
-import com.app.belcobtm.api.model.response.CoinModel
 import com.app.belcobtm.domain.Failure
-import com.app.belcobtm.domain.wallet.interactor.CreateTransactionUseCase
-import com.app.belcobtm.domain.wallet.interactor.GetGiftAddressUseCase
-import com.app.belcobtm.domain.wallet.interactor.SendGiftUseCase
+import com.app.belcobtm.domain.transaction.interactor.CreateTransactionUseCase
+import com.app.belcobtm.domain.transaction.interactor.GetGiftAddressUseCase
+import com.app.belcobtm.domain.transaction.interactor.SendGiftUseCase
+import com.app.belcobtm.domain.wallet.item.CoinDataItem
 import com.app.belcobtm.mvp.BaseMvpDIPresenterImpl
 import com.giphy.sdk.core.models.Media
 import org.koin.core.KoinComponent
@@ -43,12 +43,12 @@ class SendGiftPresenter : BaseMvpDIPresenterImpl<SendGiftContract.View, Withdraw
 
     override fun createTransaction(
         context: Context,
-        coinModel: CoinModel,
+        coinModel: CoinDataItem,
         phone: String,
         coinAmount: Double,
         message: String
     ) {
-        this.coinFromCode = coinModel.coinId
+        this.coinFromCode = coinModel.code
         this.coinAmount = coinAmount
         this.message = message
         this.phone = phone

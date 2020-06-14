@@ -6,12 +6,12 @@ import android.view.MenuItem
 import androidx.lifecycle.Observer
 import com.app.belcobtm.R
 import com.app.belcobtm.domain.Failure
+import com.app.belcobtm.domain.wallet.item.CoinDataItem
 import com.app.belcobtm.presentation.core.extensions.*
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
 import com.app.belcobtm.presentation.core.ui.BaseActivity
 import com.app.belcobtm.presentation.core.watcher.DoubleTextWatcher
 import com.app.belcobtm.presentation.features.authorization.pin.PinActivity
-import com.app.belcobtm.presentation.features.wallet.IntentCoinItem
 import com.app.belcobtm.presentation.features.wallet.trade.main.item.TradeDetailsItem
 import kotlinx.android.synthetic.main.activity_trade_details.*
 import org.koin.android.viewmodel.ext.android.viewModel
@@ -139,15 +139,15 @@ class TradeDetailsBuyActivity : BaseActivity() {
     }
 
     private fun initViews() {
-        val intentCoinItem = intent.getParcelableExtra<IntentCoinItem>(TAG_COIN_ITEM)!!
+        val intentCoinItem = intent.getParcelableExtra<CoinDataItem>(TAG_COIN_ITEM)!!
         tradeDetailsItem = intent.getParcelableExtra(TAG_TRADE_DETAILS_ITEM)!!
 
         setSupportActionBar(toolbarView)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.title = if (tradeDetailsItem.isBuyType) {
-            getString(R.string.trade_screen_title_buy, intentCoinItem.coinCode)
+            getString(R.string.trade_screen_title_buy, intentCoinItem.code)
         } else {
-            getString(R.string.trade_screen_title_sell, intentCoinItem.coinCode)
+            getString(R.string.trade_screen_title_sell, intentCoinItem.code)
         }
 
         priceUsdView.text = getString(R.string.unit_usd_dynamic, tradeDetailsItem.price.toStringUsd())
@@ -162,7 +162,7 @@ class TradeDetailsBuyActivity : BaseActivity() {
         limitsView.text =
             getString(R.string.unit_usd_dynamic, "${tradeDetailsItem.minLimit} - ${tradeDetailsItem.maxLimit}")
         termsView.text = tradeDetailsItem.terms
-        amountCryptoView.hint = getString(R.string.crypto_amount, intentCoinItem.coinCode)
+        amountCryptoView.hint = getString(R.string.crypto_amount, intentCoinItem.code)
     }
 
     companion object {

@@ -11,15 +11,15 @@ abstract class UseCase<out Type, in Params> where Type : Any {
 
     operator fun invoke(
         params: Params,
-        onSuccess: (Type) -> Unit,
-        onError: (Failure) -> Unit
+        onSuccess: ((Type) -> Unit)? = null,
+        onError: ((Failure) -> Unit)? = null
     ) {
         val job = CoroutineScope(Dispatchers.IO).async { run(params) }
         CoroutineScope(Dispatchers.Main).launch {
             val onResult: (Either<Failure, Type>) -> Unit = { either ->
                 either.either(
-                    { onError.invoke(it) },
-                    { onSuccess.invoke(it) }
+                    { onError?.invoke(it) },
+                    { onSuccess?.invoke(it) }
                 )
             }
             onResult.invoke(job.await())

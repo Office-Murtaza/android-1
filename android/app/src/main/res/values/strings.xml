@@ -23,8 +23,10 @@
     <string name="welcome_screen_private_and_secure">Private and secure</string>
     <string name="welcome_screen_buy_sell_and_trade_assets">Buy, sell and trade assets</string>
 
-    <!--login-->
-
+    <!-- Balance -->
+    <string name="balance_screen_empty_balance">$ . . .</string>
+    <string name="balance_screen_unit_usd">USD %1$s</string>
+    <string name="balance_screen_add_wallet">+ Add wallet</string>
 
     <!--create wallet-->
     <string name="verify_sms_code">Enter SMS Code</string>
@@ -299,6 +301,7 @@
     <!--    <string name="add_edit_trade_screen_"></string>-->
 
 
+    <string name="unit_dynamic">%1$s %2$s</string>
     <string name="unit_usd_dynamic">%1$s USD</string>
     <string name="usd_amount">USD amount</string>
     <string name="crypto_amount">%1$s amount</string>
@@ -309,13 +312,4 @@
     <string name="button_update">Update</string>
 
     <string name="alert_copy_to_clipboard">Copied</string>
-
-
-    <string name="coin_name_bitcoin">Bitcoin</string>
-    <string name="coin_name_ethereum">Ethereum</string>
-    <string name="coin_name_bitcoin_cash">Bitcoin Cash</string>
-    <string name="coin_name_litecoin">Litecoin</string>
-    <string name="coin_name_binance">Binance</string>
-    <string name="coin_name_tron">TRON</string>
-    <string name="coin_name_ripple">Ripple</string>
 </resources>

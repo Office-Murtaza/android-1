@@ -8,20 +8,17 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.MenuItem
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.widget.AppCompatEditText
 import com.app.belcobtm.R
-import com.app.belcobtm.api.model.response.CoinModel
+import com.app.belcobtm.domain.wallet.item.CoinDataItem
 import com.app.belcobtm.mvp.BaseMvpActivity
 import com.app.belcobtm.presentation.core.extensions.*
-import com.google.android.material.textfield.TextInputLayout
 import com.google.zxing.integration.android.IntentIntegrator
 import kotlinx.android.synthetic.main.activity_withdraw.*
 import kotlinx.android.synthetic.main.view_sms_code_dialog.view.*
-import org.parceler.Parcels
 
 class WithdrawActivity : BaseMvpActivity<WithdrawContract.View, WithdrawContract.Presenter>(),
     WithdrawContract.View {
-    private lateinit var mCoin: CoinModel
+    private lateinit var coinDataItem: CoinDataItem
     var cryptoBalanceToSend = 0.0
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,9 +28,9 @@ class WithdrawActivity : BaseMvpActivity<WithdrawContract.View, WithdrawContract
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)
 
-        mCoin = Parcels.unwrap(intent.getParcelableExtra(KEY_COIN))
+        coinDataItem = intent.getParcelableExtra(KEY_COIN) as CoinDataItem
 
-        supportActionBar?.title = getString(R.string.title_withdraw) + " " + mCoin.coinId
+        supportActionBar?.title = getString(R.string.title_withdraw) + " " + coinDataItem.code
 
         initListeners()
         initViews()
@@ -43,7 +40,7 @@ class WithdrawActivity : BaseMvpActivity<WithdrawContract.View, WithdrawContract
         addressScanView.setOnClickListener { IntentIntegrator(this).initiateScan() }
         addressPasteView.setOnClickListener { addressView.setText(getTextFromClipboard()) }
         maxCryptoView.setOnClickListener {
-            val balance = mCoin.balance - mPresenter.getTransactionFee(mCoin.coinId)
+            val balance = coinDataItem.balanceCoin - mPresenter.getTransactionFee(coinDataItem.code)
             amountCryptoView.setText(balance.toStringCoin())
         }
         amountUsdView?.editText?.keyListener = null
@@ -51,20 +48,20 @@ class WithdrawActivity : BaseMvpActivity<WithdrawContract.View, WithdrawContract
     }
 
     private fun initPrice() {
-        priceUsdView.text = getString(R.string.transaction_price_usd, mCoin.price.uSD.toStringUsd())
+        priceUsdView.text = getString(R.string.transaction_price_usd, coinDataItem.priceUsd.toStringUsd())
     }
 
     private fun initBalance() {
         balanceCryptoView.text =
-            getString(R.string.transaction_crypto_balance, mCoin.balance.toStringCoin(), mCoin.coinId)
-        balanceUsdView.text = getString(R.string.transaction_price_usd, (mCoin.balance * mCoin.price.uSD).toStringUsd())
+            getString(R.string.transaction_crypto_balance, coinDataItem.balanceCoin.toStringCoin(), coinDataItem.code)
+        balanceUsdView.text = getString(R.string.transaction_price_usd, coinDataItem.balanceUsd.toStringUsd())
     }
 
     private fun initViews() {
         initPrice()
         initBalance()
 
-        amountCryptoView.hint = getString(R.string.withdraw_screen_crypto_amount, mCoin.coinId)
+        amountCryptoView.hint = getString(R.string.withdraw_screen_crypto_amount, coinDataItem.code)
         amountCryptoView.actionDoneListener { validateAndSubmit() }
         nextButtonView.setOnClickListener { validateAndSubmit() }
     }
@@ -108,7 +105,7 @@ class WithdrawActivity : BaseMvpActivity<WithdrawContract.View, WithdrawContract
         var errors = 0
 
         //Validate address
-        if (!mPresenter.validateAddress(mCoin.coinId, toAddress)) {
+        if (!mPresenter.validateAddress(coinDataItem.code, toAddress)) {
             errors++
             addressView.showError(R.string.wrong_address)
         }
@@ -120,13 +117,13 @@ class WithdrawActivity : BaseMvpActivity<WithdrawContract.View, WithdrawContract
         }
 
         //Validate max amount
-        if (cryptoBalanceToSend > (mCoin.balance - mPresenter.getTransactionFee(mCoin.coinId))) {
+        if (cryptoBalanceToSend > (coinDataItem.balanceCoin - mPresenter.getTransactionFee(coinDataItem.code))) {
             errors++
             amountCryptoView.showError(R.string.not_enough_balance)
         }
 
         if (errors == 0) {
-            mPresenter.getCoinTransactionHash(mCoin.coinId, toAddress, cryptoBalanceToSend)
+            mPresenter.getCoinTransactionHash(coinDataItem.code, toAddress, cryptoBalanceToSend)
         }
     }
 
@@ -192,19 +189,19 @@ class WithdrawActivity : BaseMvpActivity<WithdrawContract.View, WithdrawContract
                     amountUsdView.clearText()
                 }
                 else -> {
-                    val cryptoBalance = mCoin.balance - mPresenter.getTransactionFee(mCoin.coinId)
+                    val cryptoBalance = coinDataItem.balanceCoin - mPresenter.getTransactionFee(coinDataItem.code)
                     val cryptoAmountTemporary = amountCryptoView.getString().toDouble()
                     val cryptoAmount: Double =
                         if (cryptoAmountTemporary > cryptoBalance) cryptoBalance
                         else cryptoAmountTemporary
-                    cryptoBalanceToSend = if (cryptoAmountTemporary > cryptoBalance) mCoin.balance
+                    cryptoBalanceToSend = if (cryptoAmountTemporary > cryptoBalance) coinDataItem.balanceCoin
                     else cryptoAmountTemporary
 
                     if (cryptoAmountTemporary > cryptoBalance) {
                         editable.clear()
                         editable.insert(0, cryptoAmount.toStringCoin())
                     }
-                    amountUsdView.setText((cryptoAmount * mCoin.price.uSD).toStringUsd())
+                    amountUsdView.setText((cryptoAmount * coinDataItem.priceUsd).toStringUsd())
                 }
             }
 
@@ -218,9 +215,9 @@ class WithdrawActivity : BaseMvpActivity<WithdrawContract.View, WithdrawContract
         const val DOT_CHAR: Char = '.'
 
         @JvmStatic
-        fun start(context: Context?, coin: CoinModel) {
+        fun start(context: Context?, coin: CoinDataItem?) {
             val intent = Intent(context, WithdrawActivity::class.java)
-            intent.putExtra(KEY_COIN, Parcels.wrap(coin))
+            intent.putExtra(KEY_COIN, coin)
             context?.startActivity(intent)
         }
     }

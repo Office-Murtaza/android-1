@@ -6,13 +6,13 @@ import android.view.MenuItem
 import androidx.lifecycle.Observer
 import com.app.belcobtm.R
 import com.app.belcobtm.domain.Failure
-import com.app.belcobtm.domain.wallet.type.TradeSortType
+import com.app.belcobtm.domain.transaction.type.TradeSortType
+import com.app.belcobtm.domain.wallet.item.CoinDataItem
 import com.app.belcobtm.presentation.core.extensions.toStringCoin
 import com.app.belcobtm.presentation.core.extensions.toStringUsd
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
 import com.app.belcobtm.presentation.core.ui.BaseActivity
 import com.app.belcobtm.presentation.features.authorization.pin.PinActivity
-import com.app.belcobtm.presentation.features.wallet.IntentCoinItem
 import com.app.belcobtm.presentation.features.wallet.trade.create.CreateTradeActivity
 import com.app.belcobtm.presentation.features.wallet.trade.details.TradeDetailsBuyActivity
 import com.app.belcobtm.presentation.features.wallet.trade.main.adapter.TradePageAdapter
@@ -39,7 +39,7 @@ class TradeActivity : BaseActivity() {
                 val intent = Intent(this, TradeDetailsBuyActivity::class.java)
                 intent.putExtra(
                     TradeDetailsBuyActivity.TAG_COIN_ITEM,
-                    this.intent.getParcelableExtra<IntentCoinItem>(TAG_COIN_ITEM)
+                    this.intent.getParcelableExtra<CoinDataItem>(TAG_COIN_ITEM)
                 )
                 intent.putExtra(TradeDetailsBuyActivity.TAG_TRADE_DETAILS_ITEM, tradeListItem)
                 startActivity(intent)
@@ -78,7 +78,7 @@ class TradeActivity : BaseActivity() {
             val intent = Intent(this, CreateTradeActivity::class.java)
             intent.putExtra(
                 CreateTradeActivity.TAG_COIN_ITEM,
-                this.intent.getParcelableExtra<IntentCoinItem>(TAG_COIN_ITEM)
+                this.intent.getParcelableExtra<CoinDataItem>(TAG_COIN_ITEM)
             )
             startActivity(intent)
             fabMenuView.close(true)
@@ -153,7 +153,7 @@ class TradeActivity : BaseActivity() {
     private fun initViews() {
         setSupportActionBar(toolbarView)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.title = getString(R.string.trade_screen_title, viewModel.fromCoinItem.coinCode)
+        supportActionBar?.title = getString(R.string.trade_screen_title, viewModel.fromCoinItem.code)
 
         priceUsdView.text = getString(
             R.string.exchange_coin_to_coin_screen_price_value,
@@ -162,7 +162,7 @@ class TradeActivity : BaseActivity() {
         balanceCryptoView.text = getString(
             R.string.exchange_coin_to_coin_screen_balance_crypto,
             viewModel.fromCoinItem.balanceCoin.toStringCoin(),
-            viewModel.fromCoinItem.coinCode
+            viewModel.fromCoinItem.code
         )
         balanceUsdView.text = getString(
             R.string.exchange_coin_to_coin_screen_balance_usd,
@@ -171,7 +171,7 @@ class TradeActivity : BaseActivity() {
         reserveCryptoView.text = getString(
             R.string.exchange_coin_to_coin_screen_balance_crypto,
             viewModel.fromCoinItem.reservedBalanceCoin.toStringCoin(),
-            viewModel.fromCoinItem.coinCode
+            viewModel.fromCoinItem.code
         )
         reserveUsdView.text = getString(
             R.string.exchange_coin_to_coin_screen_balance_usd,

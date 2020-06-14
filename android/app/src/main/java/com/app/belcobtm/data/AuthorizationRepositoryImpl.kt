@@ -116,55 +116,24 @@ class AuthorizationRepositoryImpl(
     }
 
     private suspend fun createWalletDB(): List<CoinEntity> {
-        val bitcoin = CoinType.BITCOIN
-        val bitcoinCash = CoinType.BITCOINCASH
-        val etherum = CoinType.ETHEREUM
-        val litecoin = CoinType.LITECOIN
-        val binance = CoinType.BINANCE
-        val xrp = CoinType.XRP
-        val tron = CoinType.TRON
-
         val wallet = HDWallet(128, "")
-
-        val bitcoinPrivateKey = wallet.getKeyForCoin(bitcoin)
-        val bitcoinPrivateKeyStr = Numeric.toHexStringNoPrefix(bitcoinPrivateKey.data())
-        val extBitcoinPublicKey = wallet.getExtendedPublicKey(Purpose.BIP44, bitcoin, HDVersion.XPUB)
-        val bitcoinPublicKey = HDWallet.getPublicKeyFromExtended(extBitcoinPublicKey, "m/44'/0'/0'/0/0")
-        val bitcoinAddress = BitcoinAddress(bitcoinPublicKey, CoinType.BITCOIN.p2pkhPrefix()).description()
-        val bitcoinChPrivateKey = wallet.getKeyForCoin(bitcoinCash)
-        val bitcoinChPrivateKeyStr = Numeric.toHexStringNoPrefix(bitcoinChPrivateKey.data())
-        val bitcoinChAddress = bitcoinCash.deriveAddress(bitcoinChPrivateKey)
-
-        val etherumPrivateKey = wallet.getKeyForCoin(etherum)
-        val etherumPrivateKeyStr = Numeric.toHexStringNoPrefix(etherumPrivateKey.data())
-        val etherumAddress = etherum.deriveAddress(etherumPrivateKey)
-
-        val litecoinPrivateKey = wallet.getKeyForCoin(litecoin)
-        val litecoinPrivateKeyStr = Numeric.toHexStringNoPrefix(litecoinPrivateKey.data())
-        val litecoinAddress = litecoin.deriveAddress(litecoinPrivateKey)
-
-        val binancePrivateKey = wallet.getKeyForCoin(binance)
-        val binancePrivateKeyStr = Numeric.toHexStringNoPrefix(binancePrivateKey.data())
-        val binanceAddress = binance.deriveAddress(binancePrivateKey)
-
-        val xrpPrivateKey = wallet.getKeyForCoin(xrp)
-        val xrpPrivateKeyStr = Numeric.toHexStringNoPrefix(xrpPrivateKey.data())
-        val xrpAddress = xrp.deriveAddress(xrpPrivateKey)
-
-        val tronPrivateKey = wallet.getKeyForCoin(tron)
-        val tronPrivateKeyStr = Numeric.toHexStringNoPrefix(tronPrivateKey.data())
-        val tronAddress = tron.deriveAddress(tronPrivateKey)
-        val entityList = listOf(
-            CoinEntity(LocalCoinType.BTC, bitcoinAddress, bitcoinPrivateKeyStr),
-            CoinEntity(LocalCoinType.BCH, bitcoinChAddress, bitcoinChPrivateKeyStr),
-            CoinEntity(LocalCoinType.ETH, etherumAddress, etherumPrivateKeyStr),
-            CoinEntity(LocalCoinType.LTC, litecoinAddress, litecoinPrivateKeyStr),
-            CoinEntity(LocalCoinType.BNB, binanceAddress, binancePrivateKeyStr),
-            CoinEntity(LocalCoinType.TRX, tronAddress, tronPrivateKeyStr),
-            CoinEntity(LocalCoinType.XRP, xrpAddress, xrpPrivateKeyStr)
-        )
+        val entityList = LocalCoinType.values().map { createCoinEntity(it, wallet) }
         prefHelper.apiSeed = wallet.mnemonic()
         daoCoin.insertItemList(entityList)
         return entityList
+    }
+
+    private fun createCoinEntity(coinType: LocalCoinType, wallet: HDWallet): CoinEntity {
+        val privateKey: PrivateKey = wallet.getKeyForCoin(coinType.trustWalletType)
+        val address: String = when (coinType) {
+            LocalCoinType.BTC -> {
+                val extBitcoinPublicKey =
+                    wallet.getExtendedPublicKey(Purpose.BIP44, coinType.trustWalletType, HDVersion.XPUB)
+                val bitcoinPublicKey = HDWallet.getPublicKeyFromExtended(extBitcoinPublicKey, "m/44'/0'/0'/0/0")
+                BitcoinAddress(bitcoinPublicKey, coinType.trustWalletType.p2pkhPrefix()).description()
+            }
+            else -> coinType.trustWalletType.deriveAddress(privateKey)
+        }
+        return CoinEntity(coinType, address, Numeric.toHexStringNoPrefix(privateKey.data()))
     }
 }

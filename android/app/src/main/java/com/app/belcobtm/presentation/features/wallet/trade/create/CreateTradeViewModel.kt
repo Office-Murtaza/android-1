@@ -2,13 +2,13 @@ package com.app.belcobtm.presentation.features.wallet.trade.create
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.app.belcobtm.domain.wallet.interactor.trade.CreateBuyTradeUseCase
-import com.app.belcobtm.domain.wallet.interactor.trade.CreateSellTradeUseCase
+import com.app.belcobtm.domain.transaction.interactor.trade.CreateBuyTradeUseCase
+import com.app.belcobtm.domain.transaction.interactor.trade.CreateSellTradeUseCase
+import com.app.belcobtm.domain.wallet.item.CoinDataItem
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
-import com.app.belcobtm.presentation.features.wallet.IntentCoinItem
 
 class CreateTradeViewModel(
-    val fromCoinItem: IntentCoinItem,
+    val fromCoinItem: CoinDataItem,
     private val createTradeBuyUseCase: CreateBuyTradeUseCase,
     private val createTradeSellUseCase: CreateSellTradeUseCase
 ) : ViewModel() {
@@ -26,7 +26,7 @@ class CreateTradeViewModel(
         if (isBuyChecked) {
             createTradeBuyUseCase.invoke(
                 params = CreateBuyTradeUseCase.Params(
-                    fromCoinItem.coinCode,
+                    fromCoinItem.code,
                     paymentMethod,
                     margin,
                     minLimit,
@@ -39,7 +39,7 @@ class CreateTradeViewModel(
         } else {
             createTradeSellUseCase.invoke(
                 params = CreateSellTradeUseCase.Params(
-                    fromCoinItem.coinCode,
+                    fromCoinItem.code,
                     paymentMethod,
                     margin,
                     minLimit,

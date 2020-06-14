@@ -3,8 +3,8 @@ package com.app.belcobtm.ui.main.coins.withdraw
 import com.app.belcobtm.R
 import com.app.belcobtm.api.data_manager.WithdrawDataManager
 import com.app.belcobtm.domain.Failure
-import com.app.belcobtm.domain.wallet.interactor.CreateTransactionUseCase
-import com.app.belcobtm.domain.wallet.interactor.WithdrawUseCase
+import com.app.belcobtm.domain.transaction.interactor.CreateTransactionUseCase
+import com.app.belcobtm.domain.transaction.interactor.WithdrawUseCase
 import com.app.belcobtm.mvp.BaseMvpDIPresenterImpl
 import org.koin.core.KoinComponent
 import org.koin.core.inject

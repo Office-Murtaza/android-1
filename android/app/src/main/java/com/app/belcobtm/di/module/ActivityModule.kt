@@ -1,5 +1,7 @@
 package com.app.belcobtm.di.module
 
+import com.app.belcobtm.presentation.features.wallet.transactions.TransactionsContract
+import com.app.belcobtm.presentation.features.wallet.transactions.TransactionsPresenter
 import com.app.belcobtm.ui.auth.recover_seed.RecoverSeedContract
 import com.app.belcobtm.ui.auth.recover_seed.RecoverSeedPresenter
 import com.app.belcobtm.ui.main.coins.details.DetailsContract
@@ -11,8 +13,6 @@ import com.app.belcobtm.ui.main.coins.send_gift.SendGiftPresenter
 import com.app.belcobtm.ui.main.coins.settings.change_pass.ChangePassContract
 import com.app.belcobtm.ui.main.coins.settings.check_pass.CheckPassContract
 import com.app.belcobtm.ui.main.coins.settings.phone.ShowPhoneContract
-import com.app.belcobtm.ui.main.coins.transactions.TransactionsContract
-import com.app.belcobtm.ui.main.coins.transactions.TransactionsPresenter
 import com.app.belcobtm.ui.main.coins.withdraw.WithdrawContract
 import com.app.belcobtm.ui.main.coins.withdraw.WithdrawPresenter
 import com.app.belcobtm.ui.main.main_activity.MainContract

@@ -10,9 +10,8 @@ import android.text.TextWatcher
 import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.widget.AppCompatEditText
 import com.app.belcobtm.R
-import com.app.belcobtm.api.model.response.CoinModel
+import com.app.belcobtm.domain.wallet.item.CoinDataItem
 import com.app.belcobtm.mvp.BaseMvpActivity
 import com.app.belcobtm.presentation.core.Const.GIPHY_API_KEY
 import com.app.belcobtm.presentation.core.extensions.*
@@ -24,16 +23,14 @@ import com.giphy.sdk.ui.GiphyCoreUI
 import com.giphy.sdk.ui.themes.GridType
 import com.giphy.sdk.ui.themes.LightTheme
 import com.giphy.sdk.ui.views.GiphyDialogFragment
-import com.google.android.material.textfield.TextInputLayout
 import kotlinx.android.synthetic.main.activity_send_gift.*
 import kotlinx.android.synthetic.main.view_sms_code_dialog.view.*
-import org.parceler.Parcels
 
 class SendGiftActivity : BaseMvpActivity<SendGiftContract.View, SendGiftContract.Presenter>(),
     SendGiftContract.View, GiphyDialogFragment.GifSelectionListener {
 
     private lateinit var gifsDialog: GiphyDialogFragment
-    private lateinit var mCoin: CoinModel
+    private lateinit var coinDataItem: CoinDataItem
     var cryptoBalanceToSend = 0.0
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -47,8 +44,8 @@ class SendGiftActivity : BaseMvpActivity<SendGiftContract.View, SendGiftContract
         supportActionBar?.setDisplayShowHomeEnabled(true)
 
 
-        mCoin = Parcels.unwrap(intent.getParcelableExtra(KEY_COIN))
-        supportActionBar?.title = "Send Gift" + " " + mCoin.coinId
+        coinDataItem = intent.getParcelableExtra(KEY_COIN) as CoinDataItem
+        supportActionBar?.title = "Send Gift" + " " + coinDataItem.code
 
         initListeners()
         initView()
@@ -79,7 +76,7 @@ class SendGiftActivity : BaseMvpActivity<SendGiftContract.View, SendGiftContract
     private fun initView() {
         phonePickerView.registerCarrierNumberEditText(phoneView.editText)
 
-        amountCryptoView.hint = getString(R.string.send_gift_screen_crypto_amount, mCoin.coinId)
+        amountCryptoView.hint = getString(R.string.send_gift_screen_crypto_amount, coinDataItem.code)
         val settings = GPHSettings(
             gridType = GridType.waterfall,
             theme = LightTheme,
@@ -93,18 +90,17 @@ class SendGiftActivity : BaseMvpActivity<SendGiftContract.View, SendGiftContract
     }
 
     private fun initPrice() {
-        val convertedPrice = if (mCoin.price.uSD > 0) String.format("%.2f", mCoin.price.uSD).trimEnd('0') else "0"
-        priceUsdView.text = getString(R.string.transaction_price_usd, convertedPrice)
+        priceUsdView.text = getString(R.string.transaction_price_usd, coinDataItem.priceUsd.toStringUsd())
     }
 
     private fun initBalance() {
         balanceCryptoView.text =
-            getString(R.string.transaction_crypto_balance, mCoin.balance.toStringCoin(), mCoin.coinId)
-        balanceUsdView.text = getString(R.string.transaction_price_usd, (mCoin.balance * mCoin.price.uSD).toStringUsd())
+            getString(R.string.transaction_crypto_balance, coinDataItem.balanceCoin.toStringCoin(), coinDataItem.code)
+        balanceUsdView.text = getString(R.string.transaction_price_usd, coinDataItem.balanceUsd.toStringUsd())
     }
 
     private fun selectMaxPrice() {
-        val balance = mCoin.balance - mPresenter.getTransactionFee(mCoin.coinId)
+        val balance = coinDataItem.balanceCoin - mPresenter.getTransactionFee(coinDataItem.code)
         cryptoBalanceToSend = if (balance > 0) {
             balance
         } else {
@@ -155,7 +151,7 @@ class SendGiftActivity : BaseMvpActivity<SendGiftContract.View, SendGiftContract
         }
 
         //Validate max amount
-        if (cryptoBalanceToSend > (mCoin.balance - mPresenter.getTransactionFee(mCoin.coinId))) {
+        if (cryptoBalanceToSend > (coinDataItem.balanceCoin - mPresenter.getTransactionFee(coinDataItem.code))) {
             errors++
             amountCryptoView.error = "Not enough balance"
         }
@@ -169,7 +165,7 @@ class SendGiftActivity : BaseMvpActivity<SendGiftContract.View, SendGiftContract
         if (errors == 0) {
             mPresenter.createTransaction(
                 this,
-                mCoin,
+                coinDataItem,
                 phoneStrng,
                 cryptoBalanceToSend,
                 messageView.getString()
@@ -252,7 +248,7 @@ class SendGiftActivity : BaseMvpActivity<SendGiftContract.View, SendGiftContract
                     amountUsdView.clearText()
                 }
                 else -> {
-                    val balanceCoin = mCoin.balance - mPresenter.getTransactionFee(mCoin.coinId)
+                    val balanceCoin = coinDataItem.balanceCoin - mPresenter.getTransactionFee(coinDataItem.code)
                     val fromCoinTemporaryValue = amountCryptoView.getString().toDouble()
                     val fromCoinAmount: Double =
                         if (fromCoinTemporaryValue > balanceCoin) balanceCoin
@@ -262,7 +258,7 @@ class SendGiftActivity : BaseMvpActivity<SendGiftContract.View, SendGiftContract
                         editable.clear()
                         editable.insert(0, fromCoinAmount.toStringCoin())
                     }
-                    amountUsdView.setText((fromCoinAmount * mCoin.price.uSD).toStringUsd())
+                    amountUsdView.setText((fromCoinAmount * coinDataItem.priceUsd).toStringUsd())
                     cryptoBalanceToSend = fromCoinAmount
                 }
             }
@@ -277,9 +273,9 @@ class SendGiftActivity : BaseMvpActivity<SendGiftContract.View, SendGiftContract
         const val DOT_CHAR: Char = '.'
 
         @JvmStatic
-        fun start(context: Context?, coin: CoinModel) {
+        fun start(context: Context?, coin: CoinDataItem?) {
             val intent = Intent(context, SendGiftActivity::class.java)
-            intent.putExtra(KEY_COIN, Parcels.wrap(coin))
+            intent.putExtra(KEY_COIN, coin)
             context?.startActivity(intent)
         }
     }

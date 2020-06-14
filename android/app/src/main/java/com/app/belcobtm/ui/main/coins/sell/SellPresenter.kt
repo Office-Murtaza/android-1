@@ -2,12 +2,12 @@ package com.app.belcobtm.ui.main.coins.sell
 
 import com.app.belcobtm.R
 import com.app.belcobtm.api.data_manager.WithdrawDataManager
-import com.app.belcobtm.api.model.response.CoinModel
 import com.app.belcobtm.domain.Failure
-import com.app.belcobtm.domain.wallet.interactor.SellGetLimitsUseCase
-import com.app.belcobtm.domain.wallet.interactor.SellPreSubmitUseCase
-import com.app.belcobtm.domain.wallet.interactor.SellUseCase
-import com.app.belcobtm.domain.wallet.interactor.SendSmsToDeviceUseCase
+import com.app.belcobtm.domain.tools.interactor.SendSmsToDeviceUseCase
+import com.app.belcobtm.domain.transaction.interactor.SellGetLimitsUseCase
+import com.app.belcobtm.domain.transaction.interactor.SellPreSubmitUseCase
+import com.app.belcobtm.domain.transaction.interactor.SellUseCase
+import com.app.belcobtm.domain.wallet.item.CoinDataItem
 import com.app.belcobtm.mvp.BaseMvpDIPresenterImpl
 import org.koin.core.KoinComponent
 import org.koin.core.inject
@@ -27,7 +27,7 @@ class SellPresenter : BaseMvpDIPresenterImpl<SellContract.View, WithdrawDataMana
     private var cryptoAmount: Double? = null
     private var isAnotherAddress: Boolean = false
 
-    private var mCoin: CoinModel? = null
+    private var mCoin: CoinDataItem? = null
 
     override fun injectDependency() = presenterComponent.inject(this)
 
@@ -52,7 +52,7 @@ class SellPresenter : BaseMvpDIPresenterImpl<SellContract.View, WithdrawDataMana
         preSubmitUseCase.invoke(
             SellPreSubmitUseCase.Params(
                 smsCode,
-                mCoin?.coinId ?: "",
+                mCoin?.code ?: "",
                 cryptoAmount ?: 0.0,
                 fiatAmount ?: 0
             ),
@@ -84,18 +84,18 @@ class SellPresenter : BaseMvpDIPresenterImpl<SellContract.View, WithdrawDataMana
         )
     }
 
-    override fun bindData(mCoin: CoinModel?) {
+    override fun bindData(mCoin: CoinDataItem?) {
         this.mCoin = mCoin
     }
 
     override fun getDetails() = limitsUseCase.invoke(
-        SellGetLimitsUseCase.Params(mCoin?.coinId ?: ""),
+        SellGetLimitsUseCase.Params(mCoin?.code ?: ""),
         onSuccess = { mView?.showLimits(it) },
         onError = { errorResponse(it) }
     )
 
     private fun sellTransaction() = sellUseCase.invoke(
-        SellUseCase.Params(mCoin?.coinId ?: "", cryptoResultAmount),
+        SellUseCase.Params(mCoin?.code ?: "", cryptoResultAmount),
         onSuccess = {
             mView?.showProgress(false)
             mView?.showDoneScreen()

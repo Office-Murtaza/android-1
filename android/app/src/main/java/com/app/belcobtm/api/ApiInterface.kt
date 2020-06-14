@@ -3,8 +3,8 @@ package com.app.belcobtm.api
 import com.app.belcobtm.api.model.ServerResponse
 import com.app.belcobtm.api.model.param.*
 import com.app.belcobtm.api.model.response.*
+import com.app.belcobtm.data.rest.wallet.response.GetCoinFeeResponse
 import io.reactivex.Observable
-import okhttp3.ResponseBody
 import retrofit2.http.*
 
 
@@ -56,12 +56,6 @@ interface ApiInterface {
 
     @GET("terminal/locations")
     fun getAtmAddress(): Observable<ServerResponse<AtmResponse>>
-
-    @GET("user/{userId}/coins/{coinId}/price-chart")
-    fun getChartAsync(
-        @Path("userId") userId: String,
-        @Path("coinId") coinId: String
-    ): Observable<ServerResponse<ChartResponse>>
 
     @POST("user/{userId}/password/verify")
     fun checkPass(

@@ -1,7 +1,6 @@
 package com.app.belcobtm.ui.main.coins.details
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.content.Intent
 import android.graphics.Point
 import android.graphics.drawable.GradientDrawable
@@ -15,7 +14,9 @@ import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import com.app.belcobtm.R
-import com.app.belcobtm.api.model.response.*
+import com.app.belcobtm.api.model.response.TransactionCashStatusType
+import com.app.belcobtm.api.model.response.TransactionDetailsResponse
+import com.app.belcobtm.api.model.response.TransactionStatusType
 import com.app.belcobtm.mvp.BaseMvpActivity
 import com.app.belcobtm.presentation.core.Const.GIPHY_API_KEY
 import com.app.belcobtm.presentation.core.QRUtils.Companion.getSpacelessQR
@@ -23,29 +24,25 @@ import com.app.belcobtm.presentation.core.extensions.*
 import com.giphy.sdk.ui.GiphyCoreUI
 import com.giphy.sdk.ui.views.GPHMediaView
 import kotlinx.android.synthetic.main.activity_details_coin.*
-import org.parceler.Parcels
 
 class DetailsActivity : BaseMvpActivity<DetailsContract.View, DetailsContract.Presenter>(),
     DetailsContract.View {
-    private lateinit var mCoin: CoinModel
-    private lateinit var transaction: TransactionModel
+    private val coinCode: String by lazy { intent.getStringExtra(TAG_TRANSACTION_DETAILS_COIN_CODE) ?: "" }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         GiphyCoreUI.configure(this, GIPHY_API_KEY)
 
         setContentView(R.layout.activity_details_coin)
         setSupportActionBar(toolbarView)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)
-
-        mCoin = Parcels.unwrap(intent.getParcelableExtra(KEY_COIN))
-        transaction = intent.getSerializableExtra(KEY_TRANS) as TransactionModel
-        supportActionBar?.title = getString(R.string.title_trans_details) + " " + mCoin.coinId
-
-        mPresenter.bindData(mCoin, transaction)
-        mPresenter.getDetails()
+        supportActionBar?.title = getString(R.string.title_trans_details) + " " + coinCode
+        mPresenter.getDetails(
+            coinCode,
+            intent.getStringExtra(TAG_TRANSACTION_DETAILS_ID) ?: "",
+            intent.getStringExtra(TAG_TRANSACTION_DETAILS_DB_ID) ?: ""
+        )
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -162,7 +159,7 @@ class DetailsActivity : BaseMvpActivity<DetailsContract.View, DetailsContract.Pr
         amountContainerView.hide()
     } else {
         amountContainerView.show()
-        amountView.text = getString(R.string.transition_details_balance_crypto, amount.toStringCoin(), mCoin.coinId)
+        amountView.text = getString(R.string.transition_details_balance_crypto, amount.toStringCoin(), coinCode)
     }
 
     private fun showFiatAmountView(amount: Double?) = if (amount == null) {
@@ -176,7 +173,7 @@ class DetailsActivity : BaseMvpActivity<DetailsContract.View, DetailsContract.Pr
         feeContainerView.hide()
     } else {
         feeContainerView.show()
-        feeView.text = getString(R.string.transition_details_balance_crypto, fee.toStringCoin(), mCoin.coinId)
+        feeView.text = getString(R.string.transition_details_balance_crypto, fee.toStringCoin(), coinCode)
     }
 
     private fun showDateView(date: String?) = if (date.isNullOrBlank()) {
@@ -264,15 +261,8 @@ class DetailsActivity : BaseMvpActivity<DetailsContract.View, DetailsContract.Pr
     }
 
     companion object {
-        private const val KEY_TRANS = "KEY TRANS"
-        private const val KEY_COIN = "KEY_COIN"
-
-        @JvmStatic
-        fun start(context: Context?, trans: TransactionModel, coin: CoinModel) {
-            val intent = Intent(context, DetailsActivity::class.java)
-            intent.putExtra(KEY_TRANS, trans)
-            intent.putExtra(KEY_COIN, Parcels.wrap(coin))
-            context?.startActivity(intent)
-        }
+        const val TAG_TRANSACTION_DETAILS_COIN_CODE = "tag_transaction_details_coin_code"
+        const val TAG_TRANSACTION_DETAILS_ID = "tag_transaction_details_id"
+        const val TAG_TRANSACTION_DETAILS_DB_ID = "tag_transaction_details_db_id"
     }
 }
