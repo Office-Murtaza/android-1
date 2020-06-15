@@ -179,7 +179,7 @@ class WithdrawActivity : BaseMvpActivity<WithdrawContract.View, WithdrawContract
                     editable.lastIndex - 1,
                     editable.lastIndex
                 )
-                editable.isEmpty() || editable.toString().replace(DOT_CHAR.toString(), "").toInt() <= 0 -> {
+                editable.isEmpty() || editable.toString().replace(DOT_CHAR.toString(), "").toLong() <= 0 -> {
                     val isContainsDot = editable.contains(DOT_CHAR)
                     val indexOfDot = editable.indexOf(DOT_CHAR)
                     when {

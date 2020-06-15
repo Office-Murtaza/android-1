@@ -17,6 +17,7 @@ import wallet.core.jni.proto.*
 import java.math.BigDecimal
 import java.util.*
 
+
 class TransactionHashHelper(
     private val apiService: TransactionApiService,
     private val prefsHelper: SharedPreferencesHelper,
@@ -157,32 +158,29 @@ class TransactionHashHelper(
         val response = apiService.getEthereumNonce(toAddress)
         return if (response.isRight) {
             val nonceResponse = (response as Either.Right).b
-            val cryptoToSubcoin = BigDecimal(fromCoinAmount * CoinType.ETHEREUM.unit())
-            val nonceStr: String = nonceResponse?.toString(16) ?: ""
-            val hexNonce = ByteString.copyFrom("0x${addLeadingZeroes(nonceStr)}".toHexByteArray())
-            val hexAmount =
-                ByteString.copyFrom("0x${addLeadingZeroes(cryptoToSubcoin.toLong().toString(16))}".toHexByteArray())
-            val gasLimitD = prefsHelper.coinsFee[CoinType.ETHEREUM.code()]?.gasLimit?.toLong() ?: 21000
-            val gasPriceD = prefsHelper.coinsFee[CoinType.ETHEREUM.code()]?.gasPrice?.toLong() ?: 20_000_000_000
-            val hexGasLimit = ByteString.copyFrom("0x${addLeadingZeroes(gasLimitD.toString(16))}".toHexByteArray())
-            val hexGasPrice = ByteString.copyFrom("0x${addLeadingZeroes(gasPriceD.toString(16))}".toHexByteArray())
+            val coinFee = prefsHelper.coinsFee[fromCoin.name]
+            val amountMultipliedByDivider = BigDecimal(fromCoinAmount * CoinType.ETHEREUM.unit()).toLong()
+            val hexAmount = addLeadingZeroes(amountMultipliedByDivider.toString(16))?.toHexByteArray()
+            val hexNonce = addLeadingZeroes(nonceResponse?.toString(16) ?: "")?.toHexByteArray()
+            val hexGasLimit = addLeadingZeroes((coinFee?.gasLimit?.toLong() ?: 0).toString(16))?.toHexByteArray()
+            val hexGasPrice = addLeadingZeroes((coinFee?.gasPrice?.toLong() ?: 0).toString(16))?.toHexByteArray()
             val input = Ethereum.SigningInput.newBuilder().also {
                 it.chainId = ByteString.copyFrom("0x1".toHexByteArray())
-                it.nonce = hexNonce
-                it.gasLimit = hexGasLimit
-                it.gasPrice = hexGasPrice
+                it.nonce = ByteString.copyFrom(hexNonce)
+                it.gasLimit = ByteString.copyFrom(hexGasLimit)
+                it.gasPrice = ByteString.copyFrom(hexGasPrice)
                 it.privateKey = daoCoin.getItem(fromCoin.name).privateKey.toHexBytesInByteString()
             }
 
             if (fromCoin == LocalCoinType.CATM) {
                 val function = EthereumAbiEncoder.buildFunction("transfer")
-                function.addParamAddress(toAddress.toByteArray(), false)
-                function.addParamUInt256(hexAmount.toByteArray(), false)
+                function.addParamAddress(toAddress.toHexByteArray(), false)
+                function.addParamUInt256(amountMultipliedByDivider.toString().toByteArray(), false)
 
                 input.payload = ByteString.copyFrom(EthereumAbiEncoder.encode(function))
-                input.toAddress = prefsHelper.coinsFee[LocalCoinType.CATM.name]?.contractAddress
+                input.toAddress = coinFee?.contractAddress
             } else {
-                input.amount = hexAmount
+                input.amount = ByteString.copyFrom(hexAmount)
                 input.toAddress = toAddress
             }
 
@@ -193,6 +191,16 @@ class TransactionHashHelper(
             response as Either.Left
         }
     }
+
+//       println(" --- PrivateKey: " + daoCoin.getItem(fromCoin.name).privateKey)
+//            println(" --- ToAddress: " + toAddress)
+//            println(" --- ChainId: " + "0x1")
+//            println(" --- Nonce: " + nonceResponse)
+//            println(" --- GasLimit: " + coinFee?.gasLimit?.toLong())
+//            println(" --- GasPrice: " + coinFee?.gasPrice?.toLong())
+//            println(" --- Amount: " + fromCoinAmount)
+//            println(" --- Payload: " + EthereumAbiEncoder.encode(function).toString())
+//            println(" --- Hash: " + transactionHash)
 
     /**
      * custom implementation of adding leading zeroes

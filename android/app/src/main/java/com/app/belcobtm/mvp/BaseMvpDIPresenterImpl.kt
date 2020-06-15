@@ -8,6 +8,7 @@ import com.app.belcobtm.data.disk.shared.preferences.SharedPreferencesHelper
 import com.app.belcobtm.di.component.DaggerPresenterComponent
 import com.app.belcobtm.di.component.PresenterComponent
 import com.app.belcobtm.di.module.PresenterModule
+import com.app.belcobtm.domain.wallet.LocalCoinType
 import com.app.belcobtm.presentation.core.Const
 import com.app.belcobtm.presentation.core.extensions.CoinTypeExtension
 import javax.inject.Inject
@@ -56,8 +57,12 @@ abstract class BaseMvpDIPresenterImpl<V : BaseMvpView, T : BaseDataManager> : Ba
         }
     }
 
-    open fun validateAddress(coinId: String, walletAddress: String): Boolean =
-        CoinTypeExtension.getTypeByCode(coinId)?.validate(walletAddress) ?: false
+    open fun validateAddress(
+        coinId: String,
+        walletAddress: String
+    ): Boolean = CoinTypeExtension.getTypeByCode(
+        if (LocalCoinType.CATM.name == coinId) LocalCoinType.ETH.name else coinId
+    )?.validate(walletAddress) ?: false
 
     open fun getTransactionFee(coinName: String): Double = prefsHelper.coinsFee[coinName]?.txFee ?: 0.0
 }
