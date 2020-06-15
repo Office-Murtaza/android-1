@@ -4,7 +4,7 @@ import FlagPhoneNumber
 
 enum CoinSendGiftAction: Equatable {
   case setupCoin(BTMCoin)
-  case setupCoinBalance(CoinBalance)
+  case setupCoinBalances([CoinBalance])
   case setupCoinSettings(CoinSettings)
   case updateCountry(FPNCountry)
   case updatePhone(String?)
@@ -22,7 +22,7 @@ enum CoinSendGiftAction: Equatable {
 struct CoinSendGiftState: Equatable {
   
   var coin: BTMCoin?
-  var coinBalance: CoinBalance?
+  var coinBalances: [CoinBalance]?
   var coinSettings: CoinSettings?
   var country: FPNCountry?
   var phone: String = ""
@@ -34,9 +34,24 @@ struct CoinSendGiftState: Equatable {
   var validationState: ValidationState = .unknown
   var shouldShowCodePopup: Bool = false
   
+  var coinBalance: CoinBalance? {
+    return coinBalances?.first { $0.type == coin?.type }
+  }
+  
   var maxValue: Double {
-    guard let balance = coinBalance?.balance, let fee = coinSettings?.txFee, balance > fee else { return 0 }
-    return balance - fee
+    guard let type = coin?.type, let balance = coinBalance?.balance, let fee = coinSettings?.txFee else { return 0 }
+    
+    if type != .catm {
+      return max(0, balance - fee)
+    }
+    
+    let ethBalance = coinBalances?.first { $0.type == .ethereum }?.balance ?? 0
+    
+    if ethBalance.greaterThanOrEqualTo(fee) {
+      return balance
+    }
+    
+    return 0
   }
   
   var phoneE164: String {
@@ -64,7 +79,7 @@ final class CoinSendGiftStore: ViewStore<CoinSendGiftAction, CoinSendGiftState> 
     
     switch action {
     case let .setupCoin(coin): state.coin = coin
-    case let .setupCoinBalance(coinBalance): state.coinBalance = coinBalance
+    case let .setupCoinBalances(coinBalances): state.coinBalances = coinBalances
     case let .setupCoinSettings(coinSettings): state.coinSettings = coinSettings
     case let .updateCountry(country):
       state.country = country

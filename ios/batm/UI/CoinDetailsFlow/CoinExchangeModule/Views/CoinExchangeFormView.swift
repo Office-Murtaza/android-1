@@ -6,7 +6,7 @@ import TrustWalletCore
 
 final class CoinExchangeFormView: UIView, UIPickerViewDelegate, UIPickerViewDataSource, HasDisposeBag {
   
-  let didSelectPickerRow = PublishRelay<CoinType>()
+  let didSelectPickerRow = PublishRelay<CustomCoinType>()
   
   let stackView: UIStackView = {
     let stackView = UIStackView()
@@ -34,7 +34,7 @@ final class CoinExchangeFormView: UIView, UIPickerViewDelegate, UIPickerViewData
   let toCoinTextFieldController: MDCTextInputControllerOutlined
   let toCoinAmountTextFieldController: MDCTextInputControllerOutlined
   
-  var coins: [CoinType] = [] {
+  var coins: [CustomCoinType] = [] {
     didSet {
       toCoinPickerView.reloadAllComponents()
     }
@@ -90,7 +90,7 @@ final class CoinExchangeFormView: UIView, UIPickerViewDelegate, UIPickerViewData
     toCoinPickerView.dataSource = self
   }
   
-  func configure(for coin: CoinType, and otherCoins: [CoinType]) {
+  func configure(for coin: CustomCoinType, and otherCoins: [CustomCoinType]) {
     fromCoinAmountTextFieldController.placeholderText = String(format: localize(L.CoinExchange.Form.Amount.placeholder), coin.code)
     coins = otherCoins
   }
@@ -116,7 +116,7 @@ extension Reactive where Base == CoinExchangeFormView {
   var fromCoinAmountText: ControlProperty<String?> {
     return base.fromCoinAmountTextField.rx.text
   }
-  var toCoin: Binder<CoinType> {
+  var toCoin: Binder<CustomCoinType> {
     return Binder(base) { target, value in
       target.toCoinTextField.setLeftView(UIImageView(image: value.smallLogo))
       target.toCoinTextFieldController.placeholderText = value.verboseValue
@@ -124,7 +124,7 @@ extension Reactive where Base == CoinExchangeFormView {
                                                                       value.code)
     }
   }
-  var selectPickerItem: Driver<CoinType> {
+  var selectPickerItem: Driver<CustomCoinType> {
     return base.didSelectPickerRow.asDriver(onErrorDriveWith: .empty())
   }
   var toCoinAmountText: ControlProperty<String?> {

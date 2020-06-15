@@ -2,7 +2,7 @@ import Foundation
 import TrustWalletCore
 
 struct SubmitTradeData: Equatable {
-  var coinType: CoinType
+  var coinType: CustomCoinType
   var tradeType: TradeType
   var payment: String
   var margin: Double

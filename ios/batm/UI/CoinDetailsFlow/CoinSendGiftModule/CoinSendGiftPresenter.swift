@@ -38,9 +38,9 @@ final class CoinSendGiftPresenter: ModulePresenter, CoinSendGiftModule {
     self.store = store
   }
   
-  func setup(coin: BTMCoin, coinBalance: CoinBalance, coinSettings: CoinSettings) {
+  func setup(coin: BTMCoin, coinBalances: [CoinBalance], coinSettings: CoinSettings) {
     store.action.accept(.setupCoin(coin))
-    store.action.accept(.setupCoinBalance(coinBalance))
+    store.action.accept(.setupCoinBalances(coinBalances))
     store.action.accept(.setupCoinSettings(coinSettings))
   }
 

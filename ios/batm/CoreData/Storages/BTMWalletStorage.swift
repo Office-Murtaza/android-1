@@ -7,7 +7,7 @@ protocol BTMWalletStorage: ClearOnLogoutStorage {
   func save(wallet: BTMWallet) -> Completable
   func get() -> Single<BTMWallet>
   func changeVisibility(of coin: BTMCoin) -> Completable
-  func changeIndex(of type: CoinType, with index: Int) -> Completable
+  func changeIndex(of type: CustomCoinType, with index: Int) -> Completable
   func delete() -> Completable
 }
 
@@ -31,7 +31,7 @@ class BTMWalletStorageImpl: CoreDataStorage<BTMWalletStorageUtils>, BTMWalletSto
     }
   }
   
-  func changeIndex(of type: CoinType, with index: Int) -> Completable {
+  func changeIndex(of type: CustomCoinType, with index: Int) -> Completable {
     return save {
       try $0.changeIndex(of: type, with: index)
     }
@@ -76,7 +76,7 @@ class BTMWalletStorageUtils: StorageUtils {
       throw StorageError.notFound
     }
     
-    let coinRecord = walletRecord.coins.first { $0.type == coin.type.rawValue }
+    let coinRecord = walletRecord.coins.first { $0.type == coin.type.code }
     guard let unwrappedCoinRecord = coinRecord else {
       throw StorageError.notFound
     }
@@ -84,12 +84,12 @@ class BTMWalletStorageUtils: StorageUtils {
     unwrappedCoinRecord.visible.toggle()
   }
   
-  func changeIndex(of type: CoinType, with index: Int) throws {
+  func changeIndex(of type: CustomCoinType, with index: Int) throws {
     guard let walletRecord = try BTMWalletRecord.fetchFirst(in: context) else {
       throw StorageError.notFound
     }
     
-    let coinRecord = walletRecord.coins.first { $0.type == type.rawValue }
+    let coinRecord = walletRecord.coins.first { $0.type == type.code }
     guard let unwrappedCoinRecord = coinRecord else {
       throw StorageError.notFound
     }

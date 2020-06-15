@@ -2,7 +2,7 @@ import Foundation
 
 enum CoinWithdrawAction: Equatable {
   case setupCoin(BTMCoin)
-  case setupCoinBalance(CoinBalance)
+  case setupCoinBalances([CoinBalance])
   case setupCoinSettings(CoinSettings)
   case updateAddress(String?)
   case updateCurrencyAmount(String?)
@@ -16,7 +16,7 @@ enum CoinWithdrawAction: Equatable {
 struct CoinWithdrawState: Equatable {
   
   var coin: BTMCoin?
-  var coinBalance: CoinBalance?
+  var coinBalances: [CoinBalance]?
   var coinSettings: CoinSettings?
   var address: String = ""
   var currencyAmount: String = ""
@@ -25,9 +25,24 @@ struct CoinWithdrawState: Equatable {
   var validationState: ValidationState = .unknown
   var shouldShowCodePopup: Bool = false
   
+  var coinBalance: CoinBalance? {
+    return coinBalances?.first { $0.type == coin?.type }
+  }
+  
   var maxValue: Double {
-    guard let balance = coinBalance?.balance, let fee = coinSettings?.txFee, balance > fee else { return 0 }
-    return balance - fee
+    guard let type = coin?.type, let balance = coinBalance?.balance, let fee = coinSettings?.txFee else { return 0 }
+    
+    if type != .catm {
+      return max(0, balance - fee)
+    }
+    
+    let ethBalance = coinBalances?.first { $0.type == .ethereum }?.balance ?? 0
+    
+    if ethBalance.greaterThanOrEqualTo(fee) {
+      return balance
+    }
+    
+    return 0
   }
   
 }
@@ -43,7 +58,7 @@ final class CoinWithdrawStore: ViewStore<CoinWithdrawAction, CoinWithdrawState> 
     
     switch action {
     case let .setupCoin(coin): state.coin = coin
-    case let .setupCoinBalance(coinBalance): state.coinBalance = coinBalance
+    case let .setupCoinBalances(coinBalances): state.coinBalances = coinBalances
     case let .setupCoinSettings(coinSettings): state.coinSettings = coinSettings
     case let .updateAddress(address): state.address = address ?? ""
     case let .updateCurrencyAmount(amount):
@@ -76,7 +91,7 @@ final class CoinWithdrawStore: ViewStore<CoinWithdrawAction, CoinWithdrawState> 
       return .invalid(localize(L.CreateWallet.Form.Error.allFieldsRequired))
     }
     
-    guard let coin = state.coin, coin.type.validate(address: state.address) else {
+    guard let coin = state.coin, coin.type.defaultCoinType.validate(address: state.address) else {
       return .invalid(localize(L.CoinWithdraw.Form.Error.invalidAddress))
     }
     

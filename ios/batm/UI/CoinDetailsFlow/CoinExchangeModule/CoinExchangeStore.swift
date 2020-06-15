@@ -11,7 +11,7 @@ enum CoinExchangeAction: Equatable {
   case setupCoinBalances([CoinBalance])
   case setupCoinSettings(CoinSettings)
   case updateFromCoinAmount(String?)
-  case updateToCoinType(CoinType)
+  case updateToCoinType(CustomCoinType)
   case updateCode(String?)
   case updateValidationState
   case makeInvalidState(String)
@@ -21,7 +21,7 @@ enum CoinExchangeAction: Equatable {
 struct CoinExchangeState: Equatable {
   
   var fromCoin: BTMCoin?
-  var toCoinType: CoinType?
+  var toCoinType: CustomCoinType?
   var coinBalances: [CoinBalance]?
   var coinSettings: CoinSettings?
   var fromCoinAmount: String = ""
@@ -39,8 +39,19 @@ struct CoinExchangeState: Equatable {
   }
   
   var maxValue: Double {
-    guard let balance = fromCoinBalance?.balance, let fee = coinSettings?.txFee, balance > fee else { return 0 }
-    return balance - fee
+    guard let type = fromCoin?.type, let balance = fromCoinBalance?.balance, let fee = coinSettings?.txFee else { return 0 }
+    
+    if type != .catm {
+      return max(0, balance - fee)
+    }
+    
+    let ethBalance = coinBalances?.first { $0.type == .ethereum }?.balance ?? 0
+    
+    if ethBalance.greaterThanOrEqualTo(fee) {
+      return balance
+    }
+    
+    return 0
   }
   
   var fromCoinBalance: CoinBalance? {

@@ -10,7 +10,7 @@ final class CoinExchangePresenter: ModulePresenter, CoinExchangeModule {
   struct Input {
     var back: Driver<Void>
     var updateFromCoinAmount: Driver<String?>
-    var updatePickerItem: Driver<CoinType>
+    var updatePickerItem: Driver<CustomCoinType>
     var updateCode: Driver<String?>
     var cancel: Driver<Void>
     var max: Driver<Void>

@@ -14,9 +14,9 @@ final class TransactionDetailsPresenter: ModulePresenter, TransactionDetailsModu
   weak var delegate: TransactionDetailsModuleDelegate?
   
   var details: TransactionDetails!
-  var type: CoinType!
+  var type: CustomCoinType!
   
-  func setup(with details: TransactionDetails, for type: CoinType) {
+  func setup(with details: TransactionDetails, for type: CustomCoinType) {
     self.details = details
     self.type = type
   }

@@ -2,20 +2,20 @@ import Foundation
 import TrustWalletCore
 
 struct BTMCoin: Equatable {
-  let type: CoinType
+  let type: CustomCoinType
   let privateKey: String
-  let publicKey: String
+  let address: String
   let isVisible: Bool
   let index: Int
   
-  init(type: CoinType,
+  init(type: CustomCoinType,
        privateKey: String,
-       publicKey: String,
+       address: String,
        isVisible: Bool = true,
        index: Int = 0) {
     self.type = type
     self.privateKey = privateKey
-    self.publicKey = publicKey
+    self.address = address
     self.isVisible = isVisible
     self.index = index
   }

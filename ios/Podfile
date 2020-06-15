@@ -17,7 +17,7 @@ target 'batm' do
   pod 'JJFloatingActionButton', '2.4.0'
 
   # Utilities
-  pod 'TrustWalletCore', '0.12.22'
+  pod 'TrustWalletCore', '2.0.10'
   pod 'PhoneNumberKit', '3.0.0'
   pod 'Swinject', '2.7.1'
   pod 'ObjectMapper', '3.5.1'

@@ -63,7 +63,7 @@ class TransactionDetailsGeneralSectionView: UIView, HasDisposeBag {
     stackView.addArrangedSubview(view)
   }
   
-  func configure(with details: TransactionDetails, for type: CoinType) {
+  func configure(with details: TransactionDetails, for type: CustomCoinType) {
     details.txId.flatMap { addTxIdRow(text: $0) }
     details.txDbId.flatMap { addTextRow(text: $0, title: localize(L.TransactionDetails.txDbId)) }
     addTextRow(text: details.type.verboseValue, title: localize(L.TransactionDetails.type))

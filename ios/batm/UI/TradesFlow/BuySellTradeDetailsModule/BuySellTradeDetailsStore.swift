@@ -2,7 +2,7 @@ import Foundation
 import TrustWalletCore
 
 struct SubmitTradeRequestData {
-  var coinType: CoinType
+  var coinType: CustomCoinType
   var trade: BuySellTrade
   var coinAmount: Double
   var currencyAmount: Double

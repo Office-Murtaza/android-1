@@ -706,7 +706,6 @@
 		DB83663F22FAB7E200454F5C /* ChangePinAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangePinAssembly.swift; sourceTree = "<group>"; };
 		DB83664422FABB0C00454F5C /* ChangePinStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangePinStore.swift; sourceTree = "<group>"; };
 		DB83664722FABFB800454F5C /* ChangePinFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangePinFormView.swift; sourceTree = "<group>"; };
-		DB86FD232477FAC9002FE22D /* Database_v3.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Database_v3.xcdatamodel; sourceTree = "<group>"; };
 		DB86FD252477FBD5002FE22D /* LocationUpdateDateRecord+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LocationUpdateDateRecord+CoreDataClass.swift"; sourceTree = "<group>"; };
 		DB86FD272477FBE6002FE22D /* LocationUpdateDateRecord+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LocationUpdateDateRecord+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		DB86FD292477FF7B002FE22D /* LocationUpdateDateConverter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationUpdateDateConverter.swift; sourceTree = "<group>"; };
@@ -782,7 +781,6 @@
 		DB9616B722C63E270078E92D /* Account.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Account.swift; sourceTree = "<group>"; };
 		DB9616B922C63F9B0078E92D /* APIGateway.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIGateway.swift; sourceTree = "<group>"; };
 		DB9616BC22C67FCA0078E92D /* AccountStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountStorage.swift; sourceTree = "<group>"; };
-		DB9616C022C745980078E92D /* Database.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Database.xcdatamodel; sourceTree = "<group>"; };
 		DB9616C322C746F70078E92D /* AccountRecord+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AccountRecord+CoreDataClass.swift"; sourceTree = "<group>"; };
 		DB9616C622C747200078E92D /* AccountRecord+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AccountRecord+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		DB9616CB22C748610078E92D /* CoreDataStorage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataStorage.swift; sourceTree = "<group>"; };
@@ -886,7 +884,7 @@
 		DBADDE352438DD6600BFD806 /* CoinExchangeAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinExchangeAssembly.swift; sourceTree = "<group>"; };
 		DBADDE3B2438DEED00BFD806 /* CoinExchangeFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinExchangeFormView.swift; sourceTree = "<group>"; };
 		DBADDE3D2438E42100BFD806 /* CoinExchangeStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinExchangeStore.swift; sourceTree = "<group>"; };
-		DBB513C124308F65006D1D9E /* Database_v2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Database_v2.xcdatamodel; sourceTree = "<group>"; };
+		DBAF8B192494E64B008322E7 /* Database_v1.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Database_v1.xcdatamodel; sourceTree = "<group>"; };
 		DBB5B38E22E0CD5800222640 /* BTMCoin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTMCoin.swift; sourceTree = "<group>"; };
 		DBB5B39022E1A59000222640 /* FilterCoinsUsecase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterCoinsUsecase.swift; sourceTree = "<group>"; };
 		DBBD06E02369FEDB0096B674 /* PreSubmitResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreSubmitResponse.swift; sourceTree = "<group>"; };
@@ -3567,11 +3565,9 @@
 		DB9616BF22C745980078E92D /* Database.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
-				DB86FD232477FAC9002FE22D /* Database_v3.xcdatamodel */,
-				DBB513C124308F65006D1D9E /* Database_v2.xcdatamodel */,
-				DB9616C022C745980078E92D /* Database.xcdatamodel */,
+				DBAF8B192494E64B008322E7 /* Database_v1.xcdatamodel */,
 			);
-			currentVersion = DB86FD232477FAC9002FE22D /* Database_v3.xcdatamodel */;
+			currentVersion = DBAF8B192494E64B008322E7 /* Database_v1.xcdatamodel */;
 			path = Database.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;

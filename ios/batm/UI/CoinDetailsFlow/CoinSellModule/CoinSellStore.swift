@@ -2,7 +2,7 @@ import Foundation
 
 enum CoinSellAction: Equatable {
   case setupCoin(BTMCoin)
-  case setupCoinBalance(CoinBalance)
+  case setupCoinBalances([CoinBalance])
   case setupCoinSettings(CoinSettings)
   case setupDetails(SellDetails)
   case setupPreSubmitResponse(PreSubmitResponse)
@@ -18,7 +18,7 @@ enum CoinSellAction: Equatable {
 struct CoinSellState: Equatable {
   
   var coin: BTMCoin?
-  var coinBalance: CoinBalance?
+  var coinBalances: [CoinBalance]?
   var coinSettings: CoinSettings?
   var details: SellDetails?
   var presubmitResponse: PreSubmitResponse?
@@ -27,6 +27,10 @@ struct CoinSellState: Equatable {
   var code: String = ""
   var validationState: ValidationState = .unknown
   var shouldShowCodePopup: Bool = false
+  
+  var coinBalance: CoinBalance? {
+    return coinBalances?.first { $0.type == coin?.type }
+  }
   
   var maxCurrencyLimit: Double {
     guard
@@ -41,13 +45,26 @@ struct CoinSellState: Equatable {
     if fromAnotherAddress { return maxCurrencyLimit.nearestNumberThatCanBeGivenByTwentyAndFifty }
     
     guard
+      let type = coin?.type,
       let balance = coinBalance?.balance,
       let fee = coinSettings?.txFee,
-      balance > fee,
       let price = coinBalance?.price,
       let profitRate = details?.profitRate
     else { return 0 }
-    let balanceMaxValue = balance - fee
+    let balanceMaxValue: Double
+    
+    if type != .catm {
+      balanceMaxValue = max(0, balance - fee)
+    } else {
+      let ethBalance = coinBalances?.first { $0.type == .ethereum }?.balance ?? 0
+      
+      if ethBalance.greaterThanOrEqualTo(fee) {
+        balanceMaxValue = balance
+      } else {
+        balanceMaxValue = 0
+      }
+    }
+    
     let potentialMaxCurrencyValue = balanceMaxValue * price / profitRate
     let maxCurrencyValue = min(potentialMaxCurrencyValue, maxCurrencyLimit)
     
@@ -95,7 +112,7 @@ final class CoinSellStore: ViewStore<CoinSellAction, CoinSellState> {
     
     switch action {
     case let .setupCoin(coin): state.coin = coin
-    case let .setupCoinBalance(coinBalance): state.coinBalance = coinBalance
+    case let .setupCoinBalances(coinBalances): state.coinBalances = coinBalances
     case let .setupCoinSettings(coinSettings): state.coinSettings = coinSettings
     case let .setupDetails(details): state.details = details
     case let .setupPreSubmitResponse(response): state.presubmitResponse = response

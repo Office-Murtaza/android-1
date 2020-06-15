@@ -4,8 +4,8 @@ import TrustWalletCore
 
 protocol CoinsBalanceUsecase {
   func getCoinsBalance() -> Single<CoinsBalance>
-  func getCoinSettings(for type: CoinType) -> Single<CoinSettings>
-  func getPriceChartData(for type: CoinType) -> Single<PriceChartData>
+  func getCoinSettings(for type: CustomCoinType) -> Single<CoinSettings>
+  func getPriceChartData(for type: CustomCoinType) -> Single<PriceChartData>
 }
 
 class CoinsBalanceUsecaseImpl: CoinsBalanceUsecase, HasDisposeBag {
@@ -40,11 +40,11 @@ class CoinsBalanceUsecaseImpl: CoinsBalanceUsecase, HasDisposeBag {
       .disposed(by: disposeBag)
   }
   
-  func getCoinSettings(for type: CoinType) -> Single<CoinSettings> {
+  func getCoinSettings(for type: CustomCoinType) -> Single<CoinSettings> {
     return api.getCoinSettings(type: type)
   }
   
-  func getPriceChartData(for type: CoinType) -> Single<PriceChartData> {
+  func getPriceChartData(for type: CustomCoinType) -> Single<PriceChartData> {
     return accountStorage.get()
       .flatMap { [api] in api.getPriceChartData(userId: $0.userId, type: type) }
   }

@@ -154,7 +154,7 @@ final class TradesPresenter: ModulePresenter, TradesModule {
       .disposed(by: disposeBag)
   }
   
-  private func getBuyTrades(for type: CoinType, from index: Int = 0) -> Completable {
+  private func getBuyTrades(for type: CustomCoinType, from index: Int = 0) -> Completable {
     return usecase.getBuyTrades(for: type, from: index)
       .do(onSuccess: { [store] in
         if index > 0 {
@@ -170,7 +170,7 @@ final class TradesPresenter: ModulePresenter, TradesModule {
       .toCompletable()
   }
   
-  private func getSellTrades(for type: CoinType, from index: Int = 0) -> Completable {
+  private func getSellTrades(for type: CustomCoinType, from index: Int = 0) -> Completable {
     return usecase.getSellTrades(for: type, from: index)
       .do(onSuccess: { [store] in
         if index > 0 {

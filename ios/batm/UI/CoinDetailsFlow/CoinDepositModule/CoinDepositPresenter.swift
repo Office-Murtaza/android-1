@@ -23,7 +23,7 @@ final class CoinDepositPresenter: ModulePresenter, CoinDepositModule {
       .disposed(by: disposeBag)
     
     input.copy
-      .drive(onNext: { [unowned self] in UIPasteboard.general.string = self.coin.publicKey })
+      .drive(onNext: { [unowned self] in UIPasteboard.general.string = self.coin.address })
       .disposed(by: disposeBag)
   }
 }
