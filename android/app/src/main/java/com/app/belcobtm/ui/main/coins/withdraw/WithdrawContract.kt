@@ -1,6 +1,5 @@
 package com.app.belcobtm.ui.main.coins.withdraw
 
-import android.content.Context
 import com.app.belcobtm.mvp.BaseMvpPresenter
 import com.app.belcobtm.mvp.BaseMvpView
 

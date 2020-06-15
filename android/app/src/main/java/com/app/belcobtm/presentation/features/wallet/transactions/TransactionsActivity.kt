@@ -99,7 +99,7 @@ class TransactionsActivity : BaseActivity() {
         }
         withdrawButtonView.setOnClickListener {
             if (isCorrectCoinId()) {
-                WithdrawActivity.start(this, viewModel.coinDataItem)
+                WithdrawActivity.start(this, viewModel.coinDataItem, viewModel.coinDataItemList)
             } else {
                 AlertHelper.showToastShort(
                     withdrawButtonView.context,
@@ -110,7 +110,7 @@ class TransactionsActivity : BaseActivity() {
         }
         sendGiftButtonView.setOnClickListener {
             if (isCorrectCoinId()) {
-                SendGiftActivity.start(this, viewModel.coinDataItem)
+                SendGiftActivity.start(this, viewModel.coinDataItem, viewModel.coinDataItemList)
             } else {
                 AlertHelper.showToastShort(
                     sendGiftButtonView.context,
@@ -122,7 +122,7 @@ class TransactionsActivity : BaseActivity() {
 
         sellButtonView.setOnClickListener {
             if (isCorrectCoinId()) {
-                SellActivity.start(this, viewModel.coinDataItem)
+                SellActivity.start(this, viewModel.coinDataItem, viewModel.coinDataItemList)
             } else {
                 AlertHelper.showToastShort(
                     sellButtonView.context,

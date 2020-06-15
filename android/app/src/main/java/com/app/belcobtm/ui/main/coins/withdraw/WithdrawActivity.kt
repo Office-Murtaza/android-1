@@ -9,6 +9,7 @@ import android.text.TextWatcher
 import android.view.MenuItem
 import androidx.appcompat.app.AlertDialog
 import com.app.belcobtm.R
+import com.app.belcobtm.domain.wallet.LocalCoinType
 import com.app.belcobtm.domain.wallet.item.CoinDataItem
 import com.app.belcobtm.mvp.BaseMvpActivity
 import com.app.belcobtm.presentation.core.extensions.*
@@ -19,6 +20,7 @@ import kotlinx.android.synthetic.main.view_sms_code_dialog.view.*
 class WithdrawActivity : BaseMvpActivity<WithdrawContract.View, WithdrawContract.Presenter>(),
     WithdrawContract.View {
     private lateinit var coinDataItem: CoinDataItem
+    private lateinit var coinDataItemList: List<CoinDataItem>
     var cryptoBalanceToSend = 0.0
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -29,6 +31,7 @@ class WithdrawActivity : BaseMvpActivity<WithdrawContract.View, WithdrawContract
         supportActionBar?.setDisplayShowHomeEnabled(true)
 
         coinDataItem = intent.getParcelableExtra(KEY_COIN) as CoinDataItem
+        coinDataItemList = intent.getParcelableArrayListExtra<CoinDataItem>(KEY_COIN_LIST) as ArrayList<CoinDataItem>
 
         supportActionBar?.title = getString(R.string.title_withdraw) + " " + coinDataItem.code
 
@@ -39,10 +42,7 @@ class WithdrawActivity : BaseMvpActivity<WithdrawContract.View, WithdrawContract
     private fun initListeners() {
         addressScanView.setOnClickListener { IntentIntegrator(this).initiateScan() }
         addressPasteView.setOnClickListener { addressView.setText(getTextFromClipboard()) }
-        maxCryptoView.setOnClickListener {
-            val balance = coinDataItem.balanceCoin - mPresenter.getTransactionFee(coinDataItem.code)
-            amountCryptoView.setText(balance.toStringCoin())
-        }
+        maxCryptoView.setOnClickListener { amountCryptoView.setText(getMaxValue().toStringCoin()) }
         amountUsdView?.editText?.keyListener = null
         amountCryptoView.editText?.addTextChangedListener(coinFromTextWatcher)
     }
@@ -189,7 +189,7 @@ class WithdrawActivity : BaseMvpActivity<WithdrawContract.View, WithdrawContract
                     amountUsdView.clearText()
                 }
                 else -> {
-                    val cryptoBalance = coinDataItem.balanceCoin - mPresenter.getTransactionFee(coinDataItem.code)
+                    val cryptoBalance = getMaxValue()
                     val cryptoAmountTemporary = amountCryptoView.getString().toDouble()
                     val cryptoAmount: Double =
                         if (cryptoAmountTemporary > cryptoBalance) cryptoBalance
@@ -209,15 +209,28 @@ class WithdrawActivity : BaseMvpActivity<WithdrawContract.View, WithdrawContract
         }
     }
 
+    private fun getMaxValue(): Double {
+        val coinFee = mPresenter.getTransactionFee(coinDataItem.code)
+        return if ((coinDataItem.code != LocalCoinType.CATM.name)
+            || (coinDataItemList.find { LocalCoinType.ETH.name == it.code }?.balanceCoin ?: 0.0 >= coinFee)
+        ) {
+            coinDataItem.balanceCoin - coinFee
+        } else {
+            0.0
+        }
+    }
+
     companion object {
         private const val KEY_COIN = "KEY_COIN"
+        private const val KEY_COIN_LIST = "KEY_COIN_LIST"
         const val MAX_CHARS_AFTER_DOT = 6
         const val DOT_CHAR: Char = '.'
 
         @JvmStatic
-        fun start(context: Context?, coin: CoinDataItem?) {
+        fun start(context: Context?, coin: CoinDataItem?, coinList: ArrayList<CoinDataItem>?) {
             val intent = Intent(context, WithdrawActivity::class.java)
             intent.putExtra(KEY_COIN, coin)
+            intent.putParcelableArrayListExtra(KEY_COIN_LIST, coinList)
             context?.startActivity(intent)
         }
     }

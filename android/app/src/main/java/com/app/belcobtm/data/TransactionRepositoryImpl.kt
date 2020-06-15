@@ -13,7 +13,7 @@ import com.app.belcobtm.domain.transaction.item.SellPreSubmitDataItem
 import com.app.belcobtm.domain.transaction.item.TradeInfoDataItem
 import com.app.belcobtm.domain.transaction.item.TransactionDataItem
 import com.app.belcobtm.domain.transaction.type.TradeSortType
-import com.app.belcobtm.presentation.core.extensions.CoinTypeExtension
+import com.app.belcobtm.domain.wallet.LocalCoinType
 
 class TransactionRepositoryImpl(
     private val apiService: TransactionApiService,
@@ -37,10 +37,9 @@ class TransactionRepositoryImpl(
         fromCoinAmount: Double,
         isNeedSendSms: Boolean
     ): Either<Failure, String> = if (networkUtils.isNetworkAvailable()) {
-        val toAddress = prefHelper.coinsFee[fromCoin]?.serverWalletAddress ?: ""
-        val coinType = CoinTypeExtension.getTypeByCode(fromCoin)
-        val hashResponse =
-            transactionHashRepository.createTransactionHash(coinType!!, fromCoinAmount, toAddress)
+        val toAddress = prefHelper.coinsFee[fromCoin]?.walletAddress ?: ""
+        val coinType = LocalCoinType.valueOf(fromCoin)
+        val hashResponse = transactionHashRepository.createTransactionHash(coinType, fromCoinAmount, toAddress)
         when {
             isNeedSendSms && hashResponse.isRight -> {
                 val sendSmsToDeviceResponse = toolsRepository.sendSmsToDevice()

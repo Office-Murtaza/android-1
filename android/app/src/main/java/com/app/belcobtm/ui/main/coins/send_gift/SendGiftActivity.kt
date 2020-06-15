@@ -11,6 +11,7 @@ import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AlertDialog
 import com.app.belcobtm.R
+import com.app.belcobtm.domain.wallet.LocalCoinType
 import com.app.belcobtm.domain.wallet.item.CoinDataItem
 import com.app.belcobtm.mvp.BaseMvpActivity
 import com.app.belcobtm.presentation.core.Const.GIPHY_API_KEY
@@ -31,6 +32,7 @@ class SendGiftActivity : BaseMvpActivity<SendGiftContract.View, SendGiftContract
 
     private lateinit var gifsDialog: GiphyDialogFragment
     private lateinit var coinDataItem: CoinDataItem
+    private lateinit var coinDataItemList: List<CoinDataItem>
     var cryptoBalanceToSend = 0.0
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -43,8 +45,8 @@ class SendGiftActivity : BaseMvpActivity<SendGiftContract.View, SendGiftContract
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)
 
-
         coinDataItem = intent.getParcelableExtra(KEY_COIN) as CoinDataItem
+        coinDataItemList = intent.getParcelableArrayListExtra<CoinDataItem>(KEY_COIN_LIST) as ArrayList<CoinDataItem>
         supportActionBar?.title = "Send Gift" + " " + coinDataItem.code
 
         initListeners()
@@ -100,13 +102,16 @@ class SendGiftActivity : BaseMvpActivity<SendGiftContract.View, SendGiftContract
     }
 
     private fun selectMaxPrice() {
-        val balance = coinDataItem.balanceCoin - mPresenter.getTransactionFee(coinDataItem.code)
-        cryptoBalanceToSend = if (balance > 0) {
-            balance
+        val coinFee = mPresenter.getTransactionFee(coinDataItem.code)
+        cryptoBalanceToSend = if ((coinDataItem.code != LocalCoinType.CATM.name)
+            || (coinDataItemList.find { LocalCoinType.ETH.name == it.code }?.balanceCoin ?: 0.0 >= coinFee)
+        ) {
+            coinDataItem.balanceCoin - coinFee
         } else {
             0.0
         }
-        amountCryptoView.setText(balance.toStringCoin())
+
+        amountCryptoView.setText(cryptoBalanceToSend.toStringCoin())
     }
 
     private fun openGify() {
@@ -238,7 +243,7 @@ class SendGiftActivity : BaseMvpActivity<SendGiftContract.View, SendGiftContract
                     editable.lastIndex - 1,
                     editable.lastIndex
                 )
-                editable.isEmpty() || editable.toString().replace(DOT_CHAR.toString(), "").toInt() <= 0 -> {
+                editable.isEmpty() || editable.toString().replace(DOT_CHAR.toString(), "").toLong() <= 0 -> {
                     val isContainsDot = editable.contains(DOT_CHAR)
                     val indexOfDot = editable.indexOf(DOT_CHAR)
                     when {
@@ -269,13 +274,15 @@ class SendGiftActivity : BaseMvpActivity<SendGiftContract.View, SendGiftContract
 
     companion object {
         private const val KEY_COIN = "KEY_COIN"
+        private const val KEY_COIN_LIST = "KEY_COIN_LIST"
         const val MAX_CHARS_AFTER_DOT = 6
         const val DOT_CHAR: Char = '.'
 
         @JvmStatic
-        fun start(context: Context?, coin: CoinDataItem?) {
+        fun start(context: Context?, coin: CoinDataItem?, coinList: ArrayList<CoinDataItem>?) {
             val intent = Intent(context, SendGiftActivity::class.java)
             intent.putExtra(KEY_COIN, coin)
+            intent.putParcelableArrayListExtra(KEY_COIN_LIST, coinList)
             context?.startActivity(intent)
         }
     }

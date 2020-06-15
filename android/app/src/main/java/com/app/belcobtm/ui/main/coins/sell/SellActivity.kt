@@ -13,6 +13,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.AppCompatEditText
 import com.app.belcobtm.R
 import com.app.belcobtm.domain.transaction.item.SellLimitsDataItem
+import com.app.belcobtm.domain.wallet.LocalCoinType
 import com.app.belcobtm.domain.wallet.item.CoinDataItem
 import com.app.belcobtm.mvp.BaseMvpActivity
 import com.app.belcobtm.presentation.core.Const.GIPHY_API_KEY
@@ -31,6 +32,7 @@ class SellActivity : BaseMvpActivity<SellContract.View, SellContract.Presenter>(
     private var limits: SellLimitsDataItem? = null
 
     private lateinit var coinDataItem: CoinDataItem
+    private lateinit var coinDataItemList: List<CoinDataItem>
 
     override fun showErrorAndHideDialogs(resError: Int) {
         showError(resError)
@@ -53,17 +55,6 @@ class SellActivity : BaseMvpActivity<SellContract.View, SellContract.Presenter>(
         txLimitView.text = getString(R.string.transaction_price_usd, limitsItem.usdTxLimit.toStringUsd())
     }
 
-    companion object {
-        private const val KEY_COIN = "KEY_COIN"
-
-        @JvmStatic
-        fun start(context: Context?, coin: CoinDataItem?) {
-            val intent = Intent(context, SellActivity::class.java)
-            intent.putExtra(KEY_COIN, coin)
-            context?.startActivity(intent)
-        }
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -75,6 +66,7 @@ class SellActivity : BaseMvpActivity<SellContract.View, SellContract.Presenter>(
         supportActionBar?.setDisplayShowHomeEnabled(true)
 
         coinDataItem = intent.getParcelableExtra(KEY_COIN) as CoinDataItem
+        coinDataItemList = intent.getParcelableArrayListExtra<CoinDataItem>(KEY_COIN_LIST) as ArrayList<CoinDataItem>
         supportActionBar?.title = "Sell" + " " + coinDataItem.code
 
         initListeners()
@@ -86,7 +78,7 @@ class SellActivity : BaseMvpActivity<SellContract.View, SellContract.Presenter>(
 
     private fun initListeners() {
         amountUsdView?.editText?.addTextChangedListener(coinFromTextWatcher)
-        maxUsdView.setOnClickListener { selectMaxPrice() }
+        maxUsdView.setOnClickListener { amountUsdView.setText(getMaxCurrencyValue().toString()) }
         amountUsdView.actionDoneListener { validateAndSubmit() }
         nextButtonView.setOnClickListener { validateAndSubmit() }
         doneButtonView.setOnClickListener { finish() }
@@ -116,7 +108,7 @@ class SellActivity : BaseMvpActivity<SellContract.View, SellContract.Presenter>(
                 }
                 else -> {
                     val temporaryUsdAmount = amountUsdView.getString().toInt()
-                    val usdBalance = coinDataItem.balanceUsd.toInt()
+                    val usdBalance = getMaxCurrencyValue()
                     val usdAmount: Int = if (temporaryUsdAmount >= usdBalance) usdBalance else temporaryUsdAmount
 
                     if (!checkNotesForATM(usdAmount)) {
@@ -156,17 +148,22 @@ class SellActivity : BaseMvpActivity<SellContract.View, SellContract.Presenter>(
         balanceUsdView.text = getString(R.string.transaction_price_usd, coinDataItem.balanceUsd.toStringUsd())
     }
 
-    private fun selectMaxPrice() {
+    private fun getMaxCurrencyValue(): Int {
+        val coinFee = mPresenter.getTransactionFee(coinDataItem.code)
         val price = coinDataItem.priceUsd
         val rate = limits?.profitRate ?: Double.MIN_VALUE
-        val balance = coinDataItem.balanceCoin - mPresenter.getTransactionFee(coinDataItem.code)
-
+        val balance = if ((coinDataItem.code != LocalCoinType.CATM.name)
+            || (coinDataItemList.find { LocalCoinType.ETH.name == it.code }?.balanceCoin ?: 0.0 >= coinFee)
+        ) {
+            coinDataItem.balanceCoin - coinFee
+        } else {
+            0.0
+        }
         val fiatAmount = try {
             ((balance * price / rate).toInt() / 10 * 10)
         } catch (e: Exception) {
             0
         }
-
         val mult20 = if (fiatAmount % 20 != 0) {
             (fiatAmount / 20) * 20
         } else fiatAmount
@@ -175,19 +172,10 @@ class SellActivity : BaseMvpActivity<SellContract.View, SellContract.Presenter>(
             (fiatAmount / 50) * 50
         } else fiatAmount
 
-        val fiatMax = max(mult20, mult50)
-        amountUsdView.setText("$fiatMax")
-
-        if (!anotherAddressButtonView.isChecked) {
-            amountUsdView.setText("${max(mult20, mult50)}")
-
+        return if (!anotherAddressButtonView.isChecked) {
+            max(mult20, mult50)
         } else {
-            amountUsdView.setText(
-                "${min(
-                    limits?.usdDailyLimit?.toInt() ?: 0,
-                    limits?.usdTxLimit?.toInt() ?: 0
-                )}"
-            )
+            min(limits?.usdDailyLimit?.toInt() ?: 0, limits?.usdTxLimit?.toInt() ?: 0)
         }
     }
 
@@ -319,6 +307,19 @@ class SellActivity : BaseMvpActivity<SellContract.View, SellContract.Presenter>(
         alertDialog?.show()
         val tilSmsCode = view.findViewById<TextInputLayout>(R.id.til_sms_code)
         tilSmsCode.error = error
+    }
+
+    companion object {
+        private const val KEY_COIN = "KEY_COIN"
+        private const val KEY_COIN_LIST = "KEY_COIN_LIST"
+
+        @JvmStatic
+        fun start(context: Context?, coin: CoinDataItem?, coinList: ArrayList<CoinDataItem>?) {
+            val intent = Intent(context, SellActivity::class.java)
+            intent.putExtra(KEY_COIN, coin)
+            intent.putParcelableArrayListExtra(KEY_COIN_LIST, coinList)
+            context?.startActivity(intent)
+        }
     }
 
 }
