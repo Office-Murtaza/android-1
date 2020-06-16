@@ -64,7 +64,6 @@
         <item name="android:layout_gravity">center</item>
         <item name="android:textSize">16sp</item>
         <item name="android:textColor">@color/light_gray_text_color</item>
-        <item name="fontFamily">@font/poppins_medium</item>
     </style>
 
     <style name="SeedElemText">
@@ -76,7 +75,6 @@
         <item name="android:maxLines">1</item>
         <item name="android:singleLine">true</item>
         <item name="android:minWidth">30dp</item>
-        <item name="fontFamily">@font/poppins_medium</item>
     </style>
 
     <style name="SettingsItemStyle">
@@ -86,7 +84,7 @@
         <item name="android:textSize">14sp</item>
         <item name="android:clickable">true</item>
         <item name="android:focusable">true</item>
-        <item name="android:fontFamily">@font/poppins_bold</item>
+        <item name="android:textStyle">bold</item>
         <item name="android:paddingStart">@dimen/margin_x3</item>
         <item name="android:paddingEnd">@dimen/margin_x3</item>
         <item name="android:drawableEnd">@drawable/ic_arrow_right</item>
@@ -108,7 +106,6 @@
         <item name="android:layout_weight">1</item>
         <item name="android:textSize">12sp</item>
         <item name="android:textColor">#8d8d8d</item>
-        <item name="android:fontFamily">@font/poppins_medium</item>
     </style>
 
     <style name="CoinDetails.Table.Value">
@@ -117,7 +114,7 @@
         <item name="android:layout_weight">2</item>
         <item name="android:textSize">12sp</item>
         <item name="android:textColor">#58585a</item>
-        <item name="android:fontFamily">@font/poppins_semi_bold</item>
+        <item name="android:textStyle">bold</item>
     </style>
 
     <style name="PinScreen" />
@@ -128,9 +125,8 @@
         <item name="android:layout_weight">1</item>
         <item name="android:background">?android:attr/selectableItemBackground</item>
         <item name="android:textSize">22sp</item>
-        <item name="android:fontFamily">@font/poppins_semi_bold</item>
-        <item name="android:paddingTop">10dp</item>
-        <item name="android:paddingBottom">4dp</item>
+        <item name="android:paddingTop">14dp</item>
+        <item name="android:paddingBottom">14dp</item>
     </style>
 
 
@@ -139,7 +135,7 @@
     <style name="VerificationInfoScreen.Key">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:fontFamily">@font/poppins_semi_bold</item>
+        <item name="android:textStyle">bold</item>
         <item name="android:textColor">#58585a</item>
         <item name="android:layout_marginStart">16dp</item>
         <item name="android:layout_marginTop">16dp</item>
@@ -148,7 +144,6 @@
     <style name="VerificationInfoScreen.Value">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:fontFamily">@font/poppins_medium</item>
         <item name="android:layout_marginStart">32dp</item>
     </style>
 

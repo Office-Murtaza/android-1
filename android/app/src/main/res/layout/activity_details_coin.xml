@@ -42,7 +42,6 @@
                     android:background="?android:selectableItemBackground"
                     android:clickable="true"
                     android:focusable="true"
-                    android:fontFamily="@font/poppins_regular"
                     android:maxLines="5"
                     android:textColor="#0073e4"
                     tools:text="b28e2673ead88289a2e5a354bce0630483780098631e688cabe9ee06dd325074" />
@@ -124,7 +123,6 @@
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/cashStatusView"
                     style="@style/CoinDetails.Table.Value"
-                    android:fontFamily="@font/poppins_medium"
                     tools:text="Not Available"
                     tools:textColor="@android:color/holo_red_dark" />
 
@@ -299,7 +297,6 @@
                     android:background="?android:selectableItemBackground"
                     android:clickable="true"
                     android:focusable="true"
-                    android:fontFamily="@font/poppins_regular"
                     android:maxLines="5"
                     android:textColor="#0073e4"
                     tools:text="b28e2673ead88289a2e5a354bce0630483780098631e688cabe9ee06dd325074" />

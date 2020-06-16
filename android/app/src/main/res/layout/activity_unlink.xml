@@ -28,7 +28,6 @@
         android:layout_marginStart="@dimen/margin_x3"
         android:layout_marginTop="@dimen/margin_x3"
         android:layout_marginEnd="@dimen/margin_x3"
-        android:fontFamily="@font/poppins_medium"
         android:gravity="center_horizontal"
         android:text="@string/unlink_warning"
         android:textSize="16sp" />
@@ -39,7 +38,6 @@
         android:layout_marginStart="@dimen/margin_x3"
         android:layout_marginEnd="@dimen/margin_x3"
         android:layout_marginBottom="@dimen/margin_x4"
-        android:fontFamily="@font/poppins_medium"
         android:gravity="center_horizontal"
         android:text="@string/unlink_warning2"
         android:textSize="16sp"
@@ -53,7 +51,6 @@
         android:layout_marginEnd="@dimen/margin_x4"
         android:background="@drawable/bt_gray_rounded_corner"
         android:backgroundTint="@color/blue_color"
-        android:fontFamily="@font/poppins_bold"
         android:text="Unlink"
         android:textColor="@android:color/white" />
 
