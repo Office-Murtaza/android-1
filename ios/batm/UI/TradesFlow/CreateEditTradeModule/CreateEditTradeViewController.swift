@@ -14,8 +14,6 @@ final class CreateEditTradeViewController: NavigationScreenViewController<Create
   
   let createButton = MDCButton.create
   
-  private var handler: KeyboardHandler!
-  
   override var preferredStatusBarStyle: UIStatusBarStyle {
     return .lightContent
   }
@@ -27,12 +25,7 @@ final class CreateEditTradeViewController: NavigationScreenViewController<Create
                                        formView,
                                        createButton)
     
-    setupKeyboardHandling()
-  }
-  
-  private func setupKeyboardHandling() {
-    handler = KeyboardHandler(with: view)
-    setupDefaultKeyboardHandling(with: handler)
+    setupDefaultKeyboardHandling()
   }
 
   override func setupLayout() {

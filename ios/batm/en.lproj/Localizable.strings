@@ -29,8 +29,8 @@
 "welcome.second_slide.title" = "Private and secure";
 "welcome.third_slide.title" = "Buy, sell and trade assets";
 "welcome.error.title" = "Please, Accept Our Terms & Conditions";
-"welcome.create_button.title" = "CREATE A NEW WALLET";
-"welcome.recover_button.title" = "RECOVER MY WALLET";
+"welcome.create_button.title" = "CREATE NEW WALLET";
+"welcome.recover_button.title" = "RECOVER OLD WALLET";
 "welcome.terms_and_conditions" = "Accept Terms & Conditions";
 "welcome.contact_support" = "Contact support";
 "welcome.support.title" = "Support";
@@ -40,7 +40,7 @@
 "welcome.support.copy_phone" = "Copy Phone";
 "welcome.support.copy_mail" = "Copy Email";
 
-"create_wallet.title" = "Create a New Wallet";
+"create_wallet.title" = "Create New Wallet";
 "create_wallet.form.password.placeholder" = "Password *";
 "create_wallet.form.confirm_password.placeholder" = "Confirm Password *";
 "create_wallet.form.error.all_fields_required" = "All fields are required";
@@ -52,7 +52,7 @@
 "seed_phrase.title" = "Seed Phrase";
 "seed_phrase.annotation" = "If you lost your seed phrase you will not be able to recover your wallet";
 
-"recover.title" = "Recover My Wallet";
+"recover.title" = "Recover Old Wallet";
 
 "recover_seed_phrase.annotation" = "Enter your secret 15 word phrase here to restore your wallet";
 
@@ -248,7 +248,8 @@
 "buy_sell_trade_details.form.error.not_within_limits" = "Amount should be within limits";
 "buy_sell_trade_details.button.send_request" = "Send Request";
 
-"create_edit_trade.title" = "Create %@ trade";
+"create_edit_trade.create_title" = "Create %@ trade";
+"create_edit_trade.edit_title" = "Edit %@ trade";
 "create_edit_trade.type" = "I want to";
 "create_edit_trade.form.payment.placeholder" = "Payment method";
 "create_edit_trade.form.margin.placeholder" = "Margin";

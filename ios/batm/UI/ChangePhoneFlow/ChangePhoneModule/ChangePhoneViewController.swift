@@ -19,8 +19,6 @@ final class ChangePhoneViewController: NavigationScreenViewController<ChangePhon
     return view
   }()
   
-  private var handler: KeyboardHandler!
-  
   override var preferredStatusBarStyle: UIStatusBarStyle {
     return .lightContent
   }
@@ -32,12 +30,7 @@ final class ChangePhoneViewController: NavigationScreenViewController<ChangePhon
     customView.contentView.addSubview(formView)
     customView.setTitle(localize(L.ChangePhone.title))
     
-    setupKeyboardHandling()
-  }
-  
-  private func setupKeyboardHandling() {
-    handler = KeyboardHandler(with: view)
-    setupDefaultKeyboardHandling(with: handler)
+    setupDefaultKeyboardHandling()
   }
 
   override func setupLayout() {

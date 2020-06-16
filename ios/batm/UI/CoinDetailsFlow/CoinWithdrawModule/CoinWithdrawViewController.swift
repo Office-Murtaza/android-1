@@ -29,8 +29,6 @@ final class CoinWithdrawViewController: NavigationScreenViewController<CoinWithd
     return view
   }()
   
-  private var handler: KeyboardHandler!
-  
   override var preferredStatusBarStyle: UIStatusBarStyle {
     return .lightContent
   }
@@ -45,12 +43,7 @@ final class CoinWithdrawViewController: NavigationScreenViewController<CoinWithd
                                        formView,
                                        nextButton)
     
-    setupKeyboardHandling()
-  }
-  
-  private func setupKeyboardHandling() {
-    handler = KeyboardHandler(with: view)
-    setupDefaultKeyboardHandling(with: handler)
+    setupDefaultKeyboardHandling()
   }
 
   override func setupLayout() {

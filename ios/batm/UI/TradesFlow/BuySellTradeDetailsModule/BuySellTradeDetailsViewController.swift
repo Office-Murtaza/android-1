@@ -14,8 +14,6 @@ final class BuySellTradeDetailsViewController: NavigationScreenViewController<Bu
   
   let sendRequestButton = MDCButton.sendRequest
   
-  private var handler: KeyboardHandler!
-  
   override var preferredStatusBarStyle: UIStatusBarStyle {
     return .lightContent
   }
@@ -27,12 +25,7 @@ final class BuySellTradeDetailsViewController: NavigationScreenViewController<Bu
                                        formView,
                                        sendRequestButton)
     
-    setupKeyboardHandling()
-  }
-  
-  private func setupKeyboardHandling() {
-    handler = KeyboardHandler(with: view)
-    setupDefaultKeyboardHandling(with: handler)
+    setupDefaultKeyboardHandling()
   }
 
   override func setupLayout() {
