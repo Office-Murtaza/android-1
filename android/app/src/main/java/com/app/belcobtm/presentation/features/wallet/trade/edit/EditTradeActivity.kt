@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.MenuItem
 import com.app.belcobtm.R
 import com.app.belcobtm.presentation.core.ui.BaseActivity
-import kotlinx.android.synthetic.main.activity_edit_trade.*
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class EditTradeActivity : BaseActivity() {
@@ -27,8 +26,8 @@ class EditTradeActivity : BaseActivity() {
     }
 
     private fun initListeners() {
-        deleteButtonView.setOnClickListener { }
-        updateButtonView.setOnClickListener { }
+//        deleteButtonView.setOnClickListener { }
+//        updateButtonView.setOnClickListener { }
     }
 
     private fun initObservers() {

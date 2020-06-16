@@ -20,6 +20,12 @@ interface TransactionRepository {
         isNeedSendSms: Boolean
     ): Either<Failure, String>
 
+    suspend fun createWithdrawTransaction(
+        fromCoin: String,
+        fromCoinAmount: Double,
+        toAddress: String
+    ): Either<Failure, String>
+
     suspend fun withdraw(
         smsCode: String,
         hash: String,

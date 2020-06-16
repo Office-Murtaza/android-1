@@ -50,4 +50,5 @@ val useCaseModule = module {
     single { GetChartsUseCase(get()) }
     single { GetTransactionListUseCase(get()) }
     single { UpdateCoinFeeUseCase(get()) }
+    single { CreateWithdrawTransactionUseCase(get()) }
 }

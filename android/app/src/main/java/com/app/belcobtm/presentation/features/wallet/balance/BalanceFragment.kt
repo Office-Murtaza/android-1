@@ -63,7 +63,7 @@ class BalanceFragment : BaseFragment() {
             when (it) {
                 is LoadingData.Loading -> progressView.show()
                 is LoadingData.Success -> {
-                    balanceView.text = it.data.first.toStringUsd()
+                    balanceView.text = getString(R.string.balance_screen_balance, it.data.first.toStringUsd())
                     adapter.setItemList(it.data.second)
                     progressView.hide()
                 }

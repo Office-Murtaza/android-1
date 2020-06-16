@@ -38,7 +38,7 @@
         android:layout_marginBottom="8dp"
         android:paddingTop="12dp"
         android:paddingBottom="12dp"
-        android:text="@string/welcome_screen_create_a_new_wallet"
+        android:text="@string/welcome_screen_create_new_wallet"
         app:layout_constraintBottom_toTopOf="@id/recoverWalletButtonView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -52,7 +52,7 @@
         android:layout_marginEnd="16dp"
         android:paddingTop="12dp"
         android:paddingBottom="12dp"
-        android:text="@string/welcome_screen_recover_my_wallet"
+        android:text="@string/welcome_screen_recover_old_wallet"
         app:layout_constraintBottom_toTopOf="@id/tncCheckBoxView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

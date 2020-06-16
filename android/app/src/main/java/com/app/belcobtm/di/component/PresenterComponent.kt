@@ -1,7 +1,6 @@
 package com.app.belcobtm.di.component
 
 import com.app.belcobtm.di.module.PresenterModule
-import com.app.belcobtm.presentation.features.wallet.transactions.TransactionsPresenter
 import com.app.belcobtm.ui.auth.recover_seed.RecoverSeedPresenter
 import com.app.belcobtm.ui.main.atm.AtmPresenter
 import com.app.belcobtm.ui.main.coins.details.DetailsPresenter
@@ -23,7 +22,6 @@ interface PresenterComponent {
     fun inject(presenter: CheckPassPresenter)
     fun inject(presenter: ChangePassPresenter)
     fun inject(presenter: ShowPhonePresenter)
-    fun inject(presenter: TransactionsPresenter)
     fun inject(presenter: WithdrawPresenter)
     fun inject(presenter: SendGiftPresenter)
     fun inject(sellPresenter: SellPresenter)

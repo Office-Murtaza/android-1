@@ -7,7 +7,6 @@ import com.app.belcobtm.presentation.features.authorization.wallet.create.Create
 import com.app.belcobtm.presentation.features.authorization.wallet.recover.RecoverWalletActivity
 import com.app.belcobtm.presentation.features.wallet.add.AddWalletActivity
 import com.app.belcobtm.presentation.features.wallet.balance.BalanceFragment
-import com.app.belcobtm.presentation.features.wallet.transactions.TransactionsActivityOld
 import com.app.belcobtm.ui.auth.recover_seed.RecoverSeedActivity
 import com.app.belcobtm.ui.main.atm.AtmFragment
 import com.app.belcobtm.ui.main.coins.details.DetailsActivity
@@ -66,10 +65,6 @@ abstract class BuildersModule {
     @FragmentScope
     @ContributesAndroidInjector(modules = [FragmentModule::class])
     internal abstract fun bindAtmFragment(): AtmFragment
-
-    @ActivityScope
-    @ContributesAndroidInjector(modules = [ActivityModule::class])
-    internal abstract fun bindTransactionsActivity(): TransactionsActivityOld
 
     @ActivityScope
     @ContributesAndroidInjector(modules = [ActivityModule::class])

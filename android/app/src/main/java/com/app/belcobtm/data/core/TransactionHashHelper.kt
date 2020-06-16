@@ -155,12 +155,14 @@ class TransactionHashHelper(
         fromCoin: LocalCoinType,
         fromCoinAmount: Double
     ): Either<Failure, String> {
-        val response = apiService.getEthereumNonce(toAddress)
+        val nonceAddress = daoCoin.getItem(fromCoin.name).publicKey
+        val response = apiService.getEthereumNonce(nonceAddress)
+
         return if (response.isRight) {
             val nonceResponse = (response as Either.Right).b
             val coinFee = prefsHelper.coinsFee[fromCoin.name]
-            val amountMultipliedByDivider = BigDecimal(fromCoinAmount * CoinType.ETHEREUM.unit()).toLong()
-            val hexAmount = addLeadingZeroes(amountMultipliedByDivider.toString(16))?.toHexByteArray()
+            val amountMultipliedByDivider = BigDecimal(fromCoinAmount * CoinType.ETHEREUM.unit())
+            val hexAmount = addLeadingZeroes(amountMultipliedByDivider.toLong().toString(16))?.toHexByteArray()
             val hexNonce = addLeadingZeroes(nonceResponse?.toString(16) ?: "")?.toHexByteArray()
             val hexGasLimit = addLeadingZeroes((coinFee?.gasLimit?.toLong() ?: 0).toString(16))?.toHexByteArray()
             val hexGasPrice = addLeadingZeroes((coinFee?.gasPrice?.toLong() ?: 0).toString(16))?.toHexByteArray()
@@ -175,7 +177,7 @@ class TransactionHashHelper(
             if (fromCoin == LocalCoinType.CATM) {
                 val function = EthereumAbiEncoder.buildFunction("transfer")
                 function.addParamAddress(toAddress.toHexByteArray(), false)
-                function.addParamUInt256(amountMultipliedByDivider.toString().toByteArray(), false)
+                function.addParamUInt256(amountMultipliedByDivider.toBigInteger().toByteArray(), false)
 
                 input.payload = ByteString.copyFrom(EthereumAbiEncoder.encode(function))
                 input.toAddress = coinFee?.contractAddress
@@ -192,15 +194,6 @@ class TransactionHashHelper(
         }
     }
 
-//       println(" --- PrivateKey: " + daoCoin.getItem(fromCoin.name).privateKey)
-//            println(" --- ToAddress: " + toAddress)
-//            println(" --- ChainId: " + "0x1")
-//            println(" --- Nonce: " + nonceResponse)
-//            println(" --- GasLimit: " + coinFee?.gasLimit?.toLong())
-//            println(" --- GasPrice: " + coinFee?.gasPrice?.toLong())
-//            println(" --- Amount: " + fromCoinAmount)
-//            println(" --- Payload: " + EthereumAbiEncoder.encode(function).toString())
-//            println(" --- Hash: " + transactionHash)
 
     /**
      * custom implementation of adding leading zeroes

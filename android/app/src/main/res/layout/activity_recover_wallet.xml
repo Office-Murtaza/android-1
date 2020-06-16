@@ -78,7 +78,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_x2"
-        android:text="@string/welcome_screen_recover_my_wallet"
+        android:text="@string/welcome_screen_recover_old_wallet"
         android:textColor="@android:color/white"
         android:textSize="20sp"
         app:fontFamily="@font/poppins_bold"

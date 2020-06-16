@@ -1,7 +1,5 @@
 package com.app.belcobtm.di.module
 
-import com.app.belcobtm.presentation.features.wallet.transactions.TransactionsContract
-import com.app.belcobtm.presentation.features.wallet.transactions.TransactionsPresenter
 import com.app.belcobtm.ui.auth.recover_seed.RecoverSeedContract
 import com.app.belcobtm.ui.auth.recover_seed.RecoverSeedPresenter
 import com.app.belcobtm.ui.main.coins.details.DetailsContract
@@ -40,9 +38,6 @@ class ActivityModule {
 
     @Provides
     fun provideShowPhonePresenter(): ShowPhoneContract.Presenter = ShowPhonePresenter()
-
-    @Provides
-    fun provideTransactionsPresenter(): TransactionsContract.Presenter = TransactionsPresenter()
 
     @Provides
     fun provideWithdrawPresenter(): WithdrawContract.Presenter = WithdrawPresenter()

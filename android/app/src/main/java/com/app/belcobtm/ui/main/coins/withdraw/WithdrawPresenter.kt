@@ -3,7 +3,7 @@ package com.app.belcobtm.ui.main.coins.withdraw
 import com.app.belcobtm.R
 import com.app.belcobtm.api.data_manager.WithdrawDataManager
 import com.app.belcobtm.domain.Failure
-import com.app.belcobtm.domain.transaction.interactor.CreateTransactionUseCase
+import com.app.belcobtm.domain.transaction.interactor.CreateWithdrawTransactionUseCase
 import com.app.belcobtm.domain.transaction.interactor.WithdrawUseCase
 import com.app.belcobtm.mvp.BaseMvpDIPresenterImpl
 import org.koin.core.KoinComponent
@@ -11,7 +11,7 @@ import org.koin.core.inject
 
 class WithdrawPresenter : BaseMvpDIPresenterImpl<WithdrawContract.View, WithdrawDataManager>(),
     WithdrawContract.Presenter, KoinComponent {
-    private val createTransactionUseCase: CreateTransactionUseCase by inject()
+    private val createTransactionUseCase: CreateWithdrawTransactionUseCase by inject()
     private val withdrawUseCase: WithdrawUseCase by inject()
     private var mTransactionHash: String? = null
     private var coinCode: String? = null
@@ -28,7 +28,7 @@ class WithdrawPresenter : BaseMvpDIPresenterImpl<WithdrawContract.View, Withdraw
         this.coinAmount = coinAmount
         mView?.showProgress(true)
         createTransactionUseCase.invoke(
-            CreateTransactionUseCase.Params(coinId, coinAmount),
+            CreateWithdrawTransactionUseCase.Params(coinId, coinAmount, toAddress),
             onSuccess = { hash ->
                 mTransactionHash = hash
                 mView?.showProgress(false)

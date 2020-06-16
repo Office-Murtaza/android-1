@@ -43,7 +43,7 @@ class TransactionsViewModel(
                     )
                 )
             },
-            onError = {}
+            onError = { chartLiveData.value = LoadingData.Error(it) }
         )
         updateCoinFeeUseCase.invoke(UpdateCoinFeeUseCase.Params(coinCode))
         refreshTransactionList()

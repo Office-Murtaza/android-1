@@ -56,6 +56,23 @@ class TransactionRepositoryImpl(
         Either.Left(Failure.NetworkConnection)
     }
 
+    override suspend fun createWithdrawTransaction(
+        fromCoin: String,
+        fromCoinAmount: Double,
+        toAddress: String
+    ): Either<Failure, String> = if (networkUtils.isNetworkAvailable()) {
+        val coinType = LocalCoinType.valueOf(fromCoin)
+        val hashResponse = transactionHashRepository.createTransactionHash(coinType, fromCoinAmount, toAddress)
+        val sendSmsToDeviceResponse = toolsRepository.sendSmsToDevice()
+        when {
+            hashResponse.isRight && sendSmsToDeviceResponse.isRight -> hashResponse as Either.Right
+            sendSmsToDeviceResponse.isLeft -> sendSmsToDeviceResponse as Either.Left
+            else -> hashResponse as Either.Left
+        }
+    } else {
+        Either.Left(Failure.NetworkConnection)
+    }
+
     override suspend fun withdraw(
         smsCode: String,
         hash: String,
