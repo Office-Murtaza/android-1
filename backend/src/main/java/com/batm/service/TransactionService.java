@@ -89,7 +89,7 @@ public class TransactionService {
             dto.setRefLink(CoinService.CoinEnum.valueOf(code).getExplorerUrl() + "/" + c2c.getRefTxId());
             dto.setRefCoin(code);
             dto.setRefCryptoAmount(c2c.getRefAmount());
-            dto.setType(TransactionType.convert(dto.getType(), TransactionGroupType.C2C));
+            dto.setType(TransactionType.convert(dto.getType(), TransactionGroupType.EXCHANGE));
         } else if (buySellTx.isPresent()) {
             TransactionRecord buySell = buySellTx.get();
 

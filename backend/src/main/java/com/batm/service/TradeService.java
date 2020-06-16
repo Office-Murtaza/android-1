@@ -3,7 +3,7 @@ package com.batm.service;
 import com.batm.dto.*;
 import com.batm.entity.*;
 import com.batm.model.TradeSort;
-import com.batm.model.TradeStatus;
+import com.batm.model.TradeRequestStatus;
 import com.batm.model.TradeType;
 import com.batm.repository.TradeRep;
 import com.batm.repository.TradeRequestRep;
@@ -142,7 +142,7 @@ public class TradeService {
             Identity requestIdentity = userService.findByUserId(userId);
 
             TradeRequest tr = new TradeRequest();
-            tr.setStatus(TradeStatus.NEW.getValue());
+            tr.setStatus(TradeRequestStatus.NEW.getValue());
             tr.setCoin(coinCode.getCoinEntity());
             tr.setPaymentMethod(trade.getPaymentMethod());
             tr.setPrice(dto.getPrice());

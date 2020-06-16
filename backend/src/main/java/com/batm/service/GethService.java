@@ -1,9 +1,6 @@
 package com.batm.service;
 
-import com.batm.dto.NodeTransactionsDTO;
-import com.batm.dto.TransactionDetailsDTO;
-import com.batm.dto.TransactionListDTO;
-import com.batm.dto.TxListDTO;
+import com.batm.dto.*;
 import com.batm.entity.Coin;
 import com.batm.model.TransactionStatus;
 import com.batm.model.TransactionType;
@@ -207,7 +204,16 @@ public class GethService {
 
     public String submitTransaction(String hex) {
         try {
-            return web3.ethSendRawTransaction(hex).send().getTransactionHash();
+            String txId = web3.ethSendRawTransaction(hex).send().getTransactionHash();
+            Optional<TransactionReceipt> receipt = web3.ethGetTransactionReceipt(txId).send().getTransactionReceipt();
+
+            System.out.println(" **** submitTransaction.isPresent: " + receipt.isPresent());
+            System.out.println(" **** submitTransaction.isStatusOK: " + receipt.get().isStatusOK());
+
+            if(receipt.isPresent() && receipt.get().isStatusOK()) {
+
+                return txId;
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -215,22 +221,8 @@ public class GethService {
         return null;
     }
 
-    public Long getGasPrice() {
-        try {
-            return web3.ethGasPrice().send().getGasPrice().longValue();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return GAS_PRICE;
-    }
-
-    public Long getGasLimit() {
-        return GAS_LIMIT;
-    }
-
-    public BigDecimal getTxFee() {
-        return new BigDecimal(getGasPrice()).multiply(new BigDecimal(getGasLimit())).divide(Constant.ETH_DIVIDER).stripTrailingZeros();
+    private BigDecimal getTxFee(Long gasLimit, Long gasPrice) {
+        return new BigDecimal(gasLimit).multiply(new BigDecimal(gasPrice)).divide(Constant.ETH_DIVIDER).stripTrailingZeros();
     }
 
     public Integer getNonce(String address) {
@@ -267,7 +259,7 @@ public class GethService {
         return getNodeTransactions(TOKEN_TX_COLL, address.toLowerCase());
     }
 
-    public String ethSign(String fromAddress, String toAddress, BigDecimal amount) {
+    public String ethSign(String fromAddress, String toAddress, BigDecimal amount, Long gasLimit, Long gasPrice) {
         try {
             PrivateKey privateKey;
 
@@ -285,8 +277,8 @@ public class GethService {
             input.setToAddress(toAddress);
             input.setChainId(ByteString.copyFrom(Numeric.hexStringToByteArray("1")));
             input.setNonce(ByteString.copyFrom(Numeric.hexStringToByteArray(Integer.toHexString(nonce))));
-            input.setGasPrice(ByteString.copyFrom(Numeric.hexStringToByteArray(Long.toHexString(getGasPrice()))));
-            input.setGasLimit(ByteString.copyFrom(Numeric.hexStringToByteArray(Long.toHexString(getGasLimit()))));
+            input.setGasLimit(ByteString.copyFrom(Numeric.hexStringToByteArray(Long.toHexString(gasLimit))));
+            input.setGasPrice(ByteString.copyFrom(Numeric.hexStringToByteArray(Long.toHexString(gasPrice))));
             input.setAmount(ByteString.copyFrom(Numeric.hexStringToByteArray(Long.toHexString(amount.multiply(Constant.ETH_DIVIDER).longValue()))));
 
             Ethereum.SigningOutput output = AnySigner.sign(input.build(), CoinType.ETHEREUM, Ethereum.SigningOutput.parser());
@@ -299,7 +291,7 @@ public class GethService {
         return null;
     }
 
-    public String tokenSign(String fromAddress, String toAddress, BigDecimal amount) {
+    public String tokenSign(String fromAddress, String toAddress, BigDecimal amount, Long gasLimit, Long gasPrice) {
         try {
             PrivateKey privateKey;
 
@@ -312,14 +304,12 @@ public class GethService {
 
             Integer nonce = getNonce(fromAddress);
             Ethereum.SigningInput.Builder input = Ethereum.SigningInput.newBuilder();
-
             input.setPrivateKey(ByteString.copyFrom(Numeric.hexStringToByteArray(Numeric.toHexStringNoPrefix(privateKey.data()))));
             input.setToAddress(contractAddress);
             input.setChainId(ByteString.copyFrom(Numeric.hexStringToByteArray("1")));
             input.setNonce(ByteString.copyFrom(Numeric.hexStringToByteArray(Integer.toHexString(nonce))));
-            input.setGasPrice(ByteString.copyFrom(Numeric.hexStringToByteArray(Long.toHexString(getGasPrice()))));
-            input.setGasLimit(ByteString.copyFrom(Numeric.hexStringToByteArray(Long.toHexString(getGasLimit()))));
-            input.setAmount(ByteString.copyFrom(Numeric.hexStringToByteArray(Long.toHexString(0L))));
+            input.setGasLimit(ByteString.copyFrom(Numeric.hexStringToByteArray(Long.toHexString(gasLimit))));
+            input.setGasPrice(ByteString.copyFrom(Numeric.hexStringToByteArray(Long.toHexString(gasPrice))));
 
             EthereumAbiFunction function = EthereumAbiEncoder.buildFunction("transfer");
             byte[] amountBytes = amount.multiply(Constant.ETH_DIVIDER).toBigInteger().toByteArray();
@@ -354,6 +344,18 @@ public class GethService {
         or.add(new Document("address", toAddress));
 
         return mongo.getCollection(ADDRESS_COLL).find(new Document("$or", or)).iterator().hasNext();
+    }
+
+    public CoinSettingsDTO getCoinSettings(Coin coin, String walletAddress) {
+        CoinSettingsDTO dto = new CoinSettingsDTO();
+        dto.setProfitC2C(coin.getProfitC2C().stripTrailingZeros());
+        dto.setGasLimit(coin.getGasLimit());
+        dto.setGasPrice(coin.getGasPrice());
+        dto.setTxFee(getTxFee(dto.getGasLimit(), dto.getGasPrice()));
+        dto.setWalletAddress(walletAddress);
+        dto.setContractAddress(contractAddress);
+
+        return dto;
     }
 
     private String convertAddress32BytesTo20Bytes(String addressBytes32) {
@@ -398,7 +400,9 @@ public class GethService {
                 dto.setFromAddress(fromAddress);
                 dto.setToAddress(toAddress);
                 dto.setCryptoFee(d.get("fee", Decimal128.class).bigDecimalValue());
-                dto.setStatus(TransactionStatus.valueOf(d.getInteger("status")));
+
+                Integer st = d.getInteger("status") == null ? TransactionStatus.COMPLETE.getValue() : d.getInteger("status");
+                dto.setStatus(TransactionStatus.valueOf(st));
                 dto.setDate1(new Date(d.getLong("blockTime") * 1000));
 
                 map.put(d.getString("txId"), dto);
@@ -445,25 +449,28 @@ public class GethService {
     private Document collectTokenTransaction(String txId, Integer blockNumber, Long blockTime, BigDecimal fee, TransactionStatus status) {
         try {
             TransactionReceipt tr = web3.ethGetTransactionReceipt(txId).send().getTransactionReceipt().get();
-            Log log = tr.getLogs().get(0);
 
-            if (contractAddress.equalsIgnoreCase(log.getAddress())) {
-                BigDecimal amountToken = new BigDecimal(Numeric.toBigInt(log.getData()))
-                        .divide(Constant.ETH_DIVIDER)
-                        .stripTrailingZeros();
+            if (tr.getLogs().size() > 0) {
+                Log log = tr.getLogs().get(0);
 
-                String fromAddressToken = convertAddress32BytesTo20Bytes(log.getTopics().get(1));
-                String toAddressToken = convertAddress32BytesTo20Bytes(log.getTopics().get(2));
+                if (contractAddress.equalsIgnoreCase(log.getAddress())) {
+                    BigDecimal amountToken = new BigDecimal(Numeric.toBigInt(log.getData()))
+                            .divide(Constant.ETH_DIVIDER)
+                            .stripTrailingZeros();
 
-                return new Document("txId", txId)
-                        .append("blockNumber", blockNumber)
-                        .append("fromAddress", fromAddressToken)
-                        .append("toAddress", toAddressToken)
-                        .append("amount", amountToken)
-                        .append("fee", fee)
-                        .append("status", status.getValue())
-                        .append("blockTime", blockTime)
-                        .append("timestamp", System.currentTimeMillis());
+                    String fromAddressToken = convertAddress32BytesTo20Bytes(log.getTopics().get(1));
+                    String toAddressToken = convertAddress32BytesTo20Bytes(log.getTopics().get(2));
+
+                    return new Document("txId", txId)
+                            .append("blockNumber", blockNumber)
+                            .append("fromAddress", fromAddressToken)
+                            .append("toAddress", toAddressToken)
+                            .append("amount", amountToken)
+                            .append("fee", fee)
+                            .append("status", status.getValue())
+                            .append("blockTime", blockTime)
+                            .append("timestamp", System.currentTimeMillis());
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();

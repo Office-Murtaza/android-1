@@ -17,7 +17,8 @@ public enum TransactionType {
     SEND_EXCHANGE(8),
     RECEIVE_EXCHANGE(9),
     RESERVE(10),
-    RECALL(11);
+    RECALL(11),
+    SELF(12);
 
     private int value;
 
@@ -38,12 +39,14 @@ public enum TransactionType {
         return value;
     }
 
-    public static TransactionType valueOf(int value) {
-        return map.get(Integer.valueOf(value));
+    public static TransactionType valueOf(Integer value) {
+        return map.get(value);
     }
 
     public static TransactionType getType(String fromAddress, String toAddress, String address) {
-        if (StringUtils.isNotBlank(address)) {
+        if (StringUtils.isNotBlank(fromAddress) && StringUtils.isNotBlank(toAddress) && fromAddress.equalsIgnoreCase(toAddress)) {
+            return TransactionType.SELF;
+        } else if (StringUtils.isNotBlank(address)) {
             if (address.equalsIgnoreCase(fromAddress)) {
                 return TransactionType.WITHDRAW;
             } else if (address.equalsIgnoreCase(toAddress)) {
@@ -59,13 +62,13 @@ public enum TransactionType {
             if (type == WITHDRAW) {
                 if (group == TransactionGroupType.GIFT) {
                     return SEND_GIFT;
-                } else if (group == TransactionGroupType.C2C) {
+                } else if (group == TransactionGroupType.EXCHANGE) {
                     return SEND_EXCHANGE;
                 }
             } else if (type == DEPOSIT) {
                 if (group == TransactionGroupType.GIFT) {
                     return RECEIVE_GIFT;
-                } else if (group == TransactionGroupType.C2C) {
+                } else if (group == TransactionGroupType.EXCHANGE) {
                     return RECEIVE_EXCHANGE;
                 }
             }

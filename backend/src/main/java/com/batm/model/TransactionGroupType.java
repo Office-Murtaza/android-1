@@ -7,7 +7,7 @@ import java.util.Map;
 public enum TransactionGroupType {
 
     GIFT(1),
-    C2C(2);
+    EXCHANGE(2);
 
     private int value;
 
@@ -28,7 +28,7 @@ public enum TransactionGroupType {
         return value;
     }
 
-    public static TransactionGroupType valueOf(int value) {
-        return map.get(Integer.valueOf(value));
+    public static TransactionGroupType valueOf(Integer value) {
+        return map.get(value);
     }
 }

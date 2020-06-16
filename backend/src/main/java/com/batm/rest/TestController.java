@@ -1,5 +1,6 @@
 package com.batm.rest;
 
+import com.batm.entity.Coin;
 import com.batm.service.*;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -82,7 +83,16 @@ public class TestController {
 
     @GetMapping("/coins/eth-sign")
     public Response ethSign(@RequestParam String fromAddress, @RequestParam String toAddress, @RequestParam BigDecimal amount) {
-        return Response.ok(geth.ethSign(fromAddress, toAddress, amount));
+        Coin coin = CoinService.CoinEnum.ETH.getCoinEntity();
+
+        return Response.ok(geth.ethSign(fromAddress, toAddress, amount, coin.getGasLimit(), coin.getGasPrice()));
+    }
+
+    @GetMapping("/coins/token-sign")
+    public Response tokenSign(@RequestParam String fromAddress, @RequestParam String toAddress, @RequestParam BigDecimal amount) {
+        Coin coin = CoinService.CoinEnum.CATM.getCoinEntity();
+
+        return Response.ok(geth.tokenSign(fromAddress, toAddress, amount, coin.getGasLimit(), coin.getGasPrice()));
     }
 
     @GetMapping("/coins/eth-submit")

@@ -1,14 +1,17 @@
 package com.batm.service;
 
 import com.batm.dto.*;
+import com.batm.entity.Coin;
 import com.batm.model.TransactionStatus;
 import com.batm.model.TransactionType;
 import com.batm.util.TxUtil;
 import com.batm.util.Util;
 import com.google.protobuf.ByteString;
+import lombok.Getter;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.web3j.utils.Numeric;
@@ -18,8 +21,27 @@ import wallet.core.jni.proto.Bitcoin;
 import java.math.BigDecimal;
 import java.util.*;
 
+@Getter
 @Service
 public class BlockbookService {
+
+    @Value("${btc.node.url}")
+    private String btcNodeUrl;
+
+    @Value("${bch.node.url}")
+    private String bchNodeUrl;
+
+    @Value("${ltc.node.url}")
+    private String ltcNodeUrl;
+
+    @Value("${btc.explorer.url}")
+    private String btcExplorerUrl;
+
+    @Value("${bch.explorer.url}")
+    private String bchExplorerUrl;
+
+    @Value("${ltc.explorer.url}")
+    private String ltcExplorerUrl;
 
     @Autowired
     private RestTemplate rest;
@@ -104,7 +126,7 @@ public class BlockbookService {
             JSONArray voutArray = res.optJSONArray("vout");
 
             String fromAddress = getFromAddress(vinArray, address);
-            String toAddress = getToAddress(voutArray, fromAddress);
+            String toAddress = getToAddress(voutArray, address, fromAddress);
             TransactionType type = TransactionType.getType(fromAddress, toAddress, address);
             BigDecimal amount = Util.format6(getAmount(type, fromAddress, toAddress, voutArray, divider));
 
@@ -209,6 +231,16 @@ public class BlockbookService {
         return null;
     }
 
+    public CoinSettingsDTO getCoinSettings(Coin coin, String walletAddress) {
+        CoinSettingsDTO dto = new CoinSettingsDTO();
+        dto.setProfitC2C(coin.getProfitC2C().stripTrailingZeros());
+        dto.setByteFee(coin.getFee());
+        dto.setTxFee(coin.getFee().multiply(BigDecimal.valueOf(1000)).stripTrailingZeros());
+        dto.setWalletAddress(walletAddress);
+
+        return dto;
+    }
+
     private Map<String, TransactionDetailsDTO> collectNodeTxs(JSONArray array, String address, BigDecimal divider) {
         Map<String, TransactionDetailsDTO> map = new HashMap<>();
 
@@ -220,7 +252,7 @@ public class BlockbookService {
 
                 String txId = json.optString("txid");
                 String fromAddress = getFromAddress(vinArray, address);
-                String toAddress = getToAddress(voutArray, fromAddress);
+                String toAddress = getToAddress(voutArray, address, fromAddress);
                 TransactionType type = TransactionType.getType(fromAddress, toAddress, address);
                 BigDecimal amount = Util.format6(getAmount(type, fromAddress, toAddress, voutArray, divider));
 
@@ -264,13 +296,17 @@ public class BlockbookService {
         return vinArray.optJSONObject(0).optJSONArray("addresses").optString(0);
     }
 
-    private String getToAddress(JSONArray voutArray, String fromAddress) {
-        for (int i = 0; i < voutArray.size(); i++) {
-            if (!voutArray.getJSONObject(i).optJSONArray("addresses").toString().toLowerCase().contains(fromAddress)) {
-                return voutArray.getJSONObject(i).optJSONArray("addresses").optString(0);
+    private String getToAddress(JSONArray voutArray, String address, String fromAddress) {
+        if (!fromAddress.equalsIgnoreCase(address)) {
+            return address;
+        } else {
+            for (int i = 0; i < voutArray.size(); i++) {
+                if (!voutArray.getJSONObject(i).optJSONArray("addresses").toString().toLowerCase().contains(fromAddress)) {
+                    return voutArray.getJSONObject(i).optJSONArray("addresses").optString(0);
+                }
             }
-        }
 
-        return voutArray.optJSONObject(0).optJSONArray("addresses").optString(0);
+            return voutArray.optJSONObject(0).optJSONArray("addresses").optString(0);
+        }
     }
 }

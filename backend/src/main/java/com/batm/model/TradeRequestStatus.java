@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
 import java.util.HashMap;
 import java.util.Map;
 
-public enum TradeStatus {
+public enum TradeRequestStatus {
 
     NEW(1),
     PAID(2),
@@ -14,15 +14,15 @@ public enum TradeStatus {
 
     private int value;
 
-    private static final Map<Integer, TradeStatus> map = new HashMap<>();
+    private static final Map<Integer, TradeRequestStatus> map = new HashMap<>();
 
     static {
-        for (TradeStatus type : TradeStatus.values()) {
+        for (TradeRequestStatus type : TradeRequestStatus.values()) {
             map.put(type.value, type);
         }
     }
 
-    TradeStatus(int value) {
+    TradeRequestStatus(int value) {
         this.value = value;
     }
 
@@ -31,7 +31,7 @@ public enum TradeStatus {
         return value;
     }
 
-    public static TradeStatus valueOf(int value) {
-        return map.get(Integer.valueOf(value));
+    public static TradeRequestStatus valueOf(Integer value) {
+        return map.get(value);
     }
 }

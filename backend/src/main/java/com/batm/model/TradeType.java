@@ -7,8 +7,7 @@ import java.util.Map;
 public enum TradeType {
 
     BUY(1),
-    SELL(2),
-    MY(3);
+    SELL(2);
 
     private int value;
 
@@ -29,7 +28,7 @@ public enum TradeType {
         return value;
     }
 
-    public static TradeType valueOf(int value) {
-        return map.get(Integer.valueOf(value));
+    public static TradeType valueOf(Integer value) {
+        return map.get(value);
     }
 }

@@ -149,7 +149,7 @@ public class TransactionController {
                 }
             }
 
-            return Response.error(2, coinCode.name() + " error transaction creation");
+            return Response.error(2, coinCode.name() + " submit transaction error");
         } catch (Exception e) {
             e.printStackTrace();
             return Response.serverError();

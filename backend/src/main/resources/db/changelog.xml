@@ -255,4 +255,18 @@
                  splitStatements="true"
                  stripComments="true"/>
     </changeSet>
+    <changeSet id="37" author="Kostya" failOnError="false">
+        <sqlFile encoding="utf8"
+                 endDelimiter=";"
+                 path="db/update/add_gas_to_coin.sql"
+                 splitStatements="true"
+                 stripComments="true"/>
+    </changeSet>
+    <changeSet id="38" author="Kostya" failOnError="false">
+        <sqlFile encoding="utf8"
+                 endDelimiter=";"
+                 path="db/insert/insert_coin_gas.sql"
+                 splitStatements="true"
+                 stripComments="true"/>
+    </changeSet>
 </databaseChangeLog>

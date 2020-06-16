@@ -28,7 +28,7 @@ public enum TradeSort {
         return value;
     }
 
-    public static TradeSort valueOf(int value) {
-        return map.get(Integer.valueOf(value));
+    public static TradeSort valueOf(Integer value) {
+        return map.get(value);
     }
 }

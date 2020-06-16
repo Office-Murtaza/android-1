@@ -1,6 +1,7 @@
 package com.batm.service;
 
 import com.batm.dto.*;
+import com.batm.entity.Coin;
 import com.batm.model.TransactionStatus;
 import com.batm.util.Constant;
 import com.batm.util.TxUtil;

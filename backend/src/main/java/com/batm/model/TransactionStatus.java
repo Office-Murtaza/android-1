@@ -29,8 +29,8 @@ public enum TransactionStatus {
         return value;
     }
 
-    public static TransactionStatus valueOf(int value) {
-        return map.get(Integer.valueOf(value));
+    public static TransactionStatus valueOf(Integer value) {
+        return map.get(value);
     }
 
     public int getConfirmations() {

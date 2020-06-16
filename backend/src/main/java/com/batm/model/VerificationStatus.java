@@ -33,7 +33,7 @@ public enum VerificationStatus {
         return value;
     }
 
-    public static VerificationStatus valueOf(int value) {
-        return map.get(Integer.valueOf(value));
+    public static VerificationStatus valueOf(Integer value) {
+        return map.get(value);
     }
 }

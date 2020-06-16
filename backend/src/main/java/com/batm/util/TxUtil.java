@@ -18,7 +18,7 @@ public class TxUtil {
 
     public static TransactionListDTO buildTxs(Map<String, TransactionDetailsDTO> map, Integer startIndex, Integer limit, TxListDTO txDTO) {
         mergeGroupGroupTxs(map, txDTO.getGiftList(), TransactionGroupType.GIFT);
-        mergeGroupGroupTxs(map, txDTO.getC2cList(), TransactionGroupType.C2C);
+        mergeGroupGroupTxs(map, txDTO.getC2cList(), TransactionGroupType.EXCHANGE);
         mergeBuySellTxs(map, txDTO.getBuySellList());
         List<TransactionDetailsDTO> list = convertAndSort(map);
 
