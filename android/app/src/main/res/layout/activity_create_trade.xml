@@ -255,8 +255,8 @@
                         android:layout_height="wrap_content"
                         android:hint="@string/add_edit_trade_screen_trade_terms"
                         android:maxLength="255"
-                        android:inputType="text"
-                        tools:ignore="RtlSymmetry" />
+                        android:gravity="top"
+                        android:inputType="textMultiLine" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.button.MaterialButton
@@ -267,7 +267,6 @@
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="16dp"
                     android:layout_marginBottom="16dp"
-                    android:imeOptions="actionDone"
                     android:paddingTop="12dp"
                     android:paddingBottom="12dp"
                     android:text="@string/button_create"

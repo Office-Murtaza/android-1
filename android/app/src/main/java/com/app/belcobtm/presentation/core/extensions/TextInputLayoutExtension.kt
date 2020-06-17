@@ -15,6 +15,14 @@ fun TextInputLayout.clearError() {
 
 fun TextInputLayout.getString(): String = editText?.text?.toString() ?: ""
 
+fun TextInputLayout.getDouble(): Double = when {
+    (editText?.text?.isEmpty() == true)
+            || (editText?.text?.toString()?.replace("[^\\d]", "")?.length == 0) -> 0.0
+    else -> {
+        editText?.text?.toString()?.toDouble() ?: 0.0
+    }
+}
+
 fun TextInputLayout.setText(text: String) = editText?.setText(text)
 
 fun TextInputLayout.clearText() = editText?.setText("")

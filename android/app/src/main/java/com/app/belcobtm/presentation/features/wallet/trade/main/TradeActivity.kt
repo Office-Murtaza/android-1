@@ -83,7 +83,6 @@ class TradeActivity : BaseActivity() {
             startActivity(intent)
             fabMenuView.close(true)
         }
-        recallButtonView.setOnClickListener { fabMenuView.close(true) }
         reverseButtonView.setOnClickListener { fabMenuView.close(true) }
         postButtonView.setOnClickListener { fabMenuView.close(true) }
         priceButtonView.setOnClickListener {

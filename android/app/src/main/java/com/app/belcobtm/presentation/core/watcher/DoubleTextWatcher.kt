@@ -62,7 +62,6 @@ class DoubleTextWatcher(
                 editable.delete(editable.lastIndex - 1, editable.lastIndex)
                 false
             }
-            editable.isEmpty() -> false
             else -> {
                 true
             }

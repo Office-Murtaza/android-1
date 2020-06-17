@@ -28,26 +28,22 @@ class TradeDetailsBuyActivity : BaseActivity() {
         firstTextWatcher = {
             val maxLimit = tradeDetailsItem.maxLimit
             val minLimit = tradeDetailsItem.minLimit
-            val cryptoAmount = if (it.toString().replace(".", "").isEmpty()) {
-                0.0
-            } else {
-                it.toString().toDouble()
-            }
-            val usdAmountTemporary = (viewModel.fromCoinItem.priceUsd * cryptoAmount).toInt()
+            val cryptoAmount = it.getDouble()
+            val usdAmount = viewModel.fromCoinItem.priceUsd * it.getDouble()
 
             when {
-                usdAmountTemporary > maxLimit -> {
+                cryptoAmount == 0.0 || usdAmount < minLimit -> {
+                    amountUsdView.clearText()
+                    sendButtonView.isEnabled = false
+                }
+                usdAmount > maxLimit -> {
                     it.clear()
                     it.insert(0, (maxLimit / viewModel.fromCoinItem.priceUsd).toStringCoin())
                     amountUsdView.setText(maxLimit.toString())
                     sendButtonView.isEnabled = true
                 }
-                usdAmountTemporary < minLimit -> {
-                    amountUsdView.clearText()
-                    sendButtonView.isEnabled = false
-                }
                 else -> {
-                    amountUsdView.setText(usdAmountTemporary.toString())
+                    amountUsdView.setText(usdAmount.toString())
                     sendButtonView.isEnabled = true
                 }
             }
@@ -55,24 +51,20 @@ class TradeDetailsBuyActivity : BaseActivity() {
         secondTextWatcher = {
             val maxLimit = tradeDetailsItem.maxLimit
             val minLimit = tradeDetailsItem.minLimit
-            val usdAmountText = it.toString().replace(".", "")
+            val usdAmountText = it.getDouble()
             when {
-                usdAmountText.isEmpty() -> {
-                    amountCryptoView.setText((usdAmountText.toInt() / viewModel.fromCoinItem.priceUsd).toStringCoin())
+                usdAmountText == 0.0 || usdAmountText < minLimit -> {
+                    amountCryptoView.clearText()
                     sendButtonView.isEnabled = false
                 }
-                usdAmountText.toInt() > maxLimit -> {
+                usdAmountText > maxLimit -> {
                     it.clear()
                     it.insert(0, maxLimit.toString())
                     amountCryptoView.setText((maxLimit / viewModel.fromCoinItem.priceUsd).toStringCoin())
                     sendButtonView.isEnabled = true
                 }
-                usdAmountText.toInt() < minLimit -> {
-                    amountCryptoView.clearText()
-                    sendButtonView.isEnabled = false
-                }
                 else -> {
-                    amountCryptoView.setText((usdAmountText.toInt() / viewModel.fromCoinItem.priceUsd).toStringCoin())
+                    amountCryptoView.setText((usdAmountText / viewModel.fromCoinItem.priceUsd).toStringCoin())
                     sendButtonView.isEnabled = true
                 }
             }

@@ -207,12 +207,6 @@
             app:fab_label="@string/trade_screen_create" />
 
         <com.github.clans.fab.FloatingActionButton
-            android:id="@+id/recallButtonView"
-            style="@style/TransactionsScreen.FloatingActionButtonChild"
-            android:src="@drawable/ic_file_download"
-            app:fab_label="@string/trade_screen_recall" />
-
-        <com.github.clans.fab.FloatingActionButton
             android:id="@+id/reverseButtonView"
             style="@style/TransactionsScreen.FloatingActionButtonChild"
             android:src="@drawable/ic_publish"

@@ -43,7 +43,7 @@ class SharedPreferencesHelper(private val sharedPreferences: SharedPreferences) 
         }
 
     var tradeLocationExpirationTime: Long
-        set(value) = sharedPreferences.set(USER_PIN, value)
+        set(value) = sharedPreferences.set(TRADE_LOCATION_EXPIRATION_TIME, value)
         get() = sharedPreferences[TRADE_LOCATION_EXPIRATION_TIME] ?: -1
 
     companion object {

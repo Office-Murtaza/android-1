@@ -105,8 +105,8 @@
                         android:textColor="@android:color/white"
                         android:textSize="10sp"
                         android:textStyle="bold"
-                        tools:text="Pending"
-                        tools:ignore="SmallSp" />
+                        tools:ignore="SmallSp"
+                        tools:text="Pending" />
                 </FrameLayout>
 
             </TableRow>
@@ -255,7 +255,8 @@
                         android:id="@+id/imageView"
                         android:layout_width="95dp"
                         android:layout_height="95dp"
-                        tools:src="@drawable/ic_gift_box" />
+                        app:tint="#b7b7b7"
+                        tools:src="@drawable/ic_gift" />
                 </FrameLayout>
 
             </TableRow>
@@ -340,7 +341,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                tools:src="@drawable/ic_gift_box" />
+                tools:src="@drawable/ic_gift" />
         </TableLayout>
 
     </ScrollView>

@@ -78,8 +78,6 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/margin_main"
         android:text="@string/welcome_screen_contact_support"
-        android:textAllCaps="false"
-        android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
