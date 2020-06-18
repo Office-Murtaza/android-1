@@ -31,7 +31,7 @@ class TradeActivity : BaseActivity() {
             intent.getParcelableExtra(TAG_COIN_ITEM)
         )
     }
-    private val tradePageAdapter = TradePageAdapter { tradeListItem ->
+    private val tradePageAdapter = TradePageAdapter({ tradeListItem ->
         when (tradeListItem) {
 //            is TradeDetailsItem.Open,
 //            is TradeDetailsItem.My,
@@ -45,7 +45,34 @@ class TradeActivity : BaseActivity() {
                 startActivity(intent)
             }
         }
-    }
+    }, { tabIndex: Int, currentListSize: Int ->
+        when (TradeTabType.values()[tabIndex]) {
+            TradeTabType.BUY -> {
+                val loadingData = viewModel.buyListLiveData.value
+                if (loadingData is LoadingData.Success && loadingData.data.first > currentListSize) {
+                    viewModel.updateBuyList(loadingData.data.second.size + 1)
+                }
+            }
+            TradeTabType.SELL -> {
+                val loadingData = viewModel.sellListLiveData.value
+                if (loadingData is LoadingData.Success && loadingData.data.first > currentListSize) {
+                    viewModel.updateSellList(loadingData.data.second.size + 1)
+                }
+            }
+            TradeTabType.MY -> {
+                val loadingData = viewModel.myListLiveData.value
+                if (loadingData is LoadingData.Success && loadingData.data.first > currentListSize) {
+                    viewModel.updateMyList(loadingData.data.second.size + 1)
+                }
+            }
+            TradeTabType.OPEN -> {
+                val loadingData = viewModel.openListLiveData.value
+                if (loadingData is LoadingData.Success && loadingData.data.first > currentListSize) {
+                    viewModel.updateOpenList(loadingData.data.second.size + 1)
+                }
+            }
+        }
+    })
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,6 +80,11 @@ class TradeActivity : BaseActivity() {
         initListeners()
         initObservers()
         initViews()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.updateSorting(null)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -84,7 +116,7 @@ class TradeActivity : BaseActivity() {
             fabMenuView.close(true)
         }
         reverseButtonView.setOnClickListener { fabMenuView.close(true) }
-        postButtonView.setOnClickListener { fabMenuView.close(true) }
+        recallButtonView.setOnClickListener { fabMenuView.close(true) }
         priceButtonView.setOnClickListener {
             tradePageAdapter.clearData()
             viewModel.updateSorting(TradeSortType.PRICE)
@@ -99,12 +131,12 @@ class TradeActivity : BaseActivity() {
         viewModel.buyListLiveData.observe(this, Observer { loadingData ->
             when (loadingData) {
                 is LoadingData.Loading -> {
-                    val listSize = tradePageAdapter.itemList[TradeTabType.BUY.ordinal].size
+                    val listSize = tradePageAdapter.adapterList[TradeTabType.BUY.ordinal].getItemListSize()
                     if (listSize == 0) {
                         tradePageAdapter.setBuyList(listOf(TradeDetailsItem.Loading))
                     }
                 }
-                is LoadingData.Success -> tradePageAdapter.setBuyList(loadingData.data)
+                is LoadingData.Success -> tradePageAdapter.setBuyList(loadingData.data.second)
                 is LoadingData.Error -> tradePageAdapter.setBuyList(listOf(TradeDetailsItem.Error))
             }
         })
@@ -112,12 +144,12 @@ class TradeActivity : BaseActivity() {
         viewModel.sellListLiveData.observe(this, Observer { loadingData ->
             when (loadingData) {
                 is LoadingData.Loading -> {
-                    val listSize = tradePageAdapter.itemList[TradeTabType.SELL.ordinal].size
+                    val listSize = tradePageAdapter.adapterList[TradeTabType.SELL.ordinal].getItemListSize()
                     if (listSize == 0) {
                         tradePageAdapter.setSellList(listOf(TradeDetailsItem.Loading))
                     }
                 }
-                is LoadingData.Success -> tradePageAdapter.setSellList(loadingData.data)
+                is LoadingData.Success -> tradePageAdapter.setSellList(loadingData.data.second)
                 is LoadingData.Error -> tradePageAdapter.setSellList(listOf(TradeDetailsItem.Error))
             }
         })
@@ -125,12 +157,12 @@ class TradeActivity : BaseActivity() {
         viewModel.myListLiveData.observe(this, Observer { loadingData ->
             when (loadingData) {
                 is LoadingData.Loading -> {
-                    val listSize = tradePageAdapter.itemList[TradeTabType.MY.ordinal].size
+                    val listSize = tradePageAdapter.adapterList[TradeTabType.MY.ordinal].getItemListSize()
                     if (listSize == 0) {
                         tradePageAdapter.setMyList(listOf(TradeDetailsItem.Loading))
                     }
                 }
-                is LoadingData.Success -> tradePageAdapter.setMyList(loadingData.data)
+                is LoadingData.Success -> tradePageAdapter.setMyList(loadingData.data.second)
                 is LoadingData.Error -> tradePageAdapter.setMyList(listOf(TradeDetailsItem.Error))
             }
         })
@@ -138,12 +170,12 @@ class TradeActivity : BaseActivity() {
         viewModel.openListLiveData.observe(this, Observer { loadingData ->
             when (loadingData) {
                 is LoadingData.Loading -> {
-                    val listSize = tradePageAdapter.itemList[TradeTabType.OPEN.ordinal].size
+                    val listSize = tradePageAdapter.adapterList[TradeTabType.OPEN.ordinal].getItemListSize()
                     if (listSize == 0) {
                         tradePageAdapter.setOpenList(listOf(TradeDetailsItem.Loading))
                     }
                 }
-                is LoadingData.Success -> tradePageAdapter.setOpenList(loadingData.data)
+                is LoadingData.Success -> tradePageAdapter.setOpenList(loadingData.data.second)
                 is LoadingData.Error -> tradePageAdapter.setOpenList(listOf(TradeDetailsItem.Error))
             }
         })

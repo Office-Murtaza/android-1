@@ -5,3 +5,5 @@ sealed class LoadingData<T> {
     class Loading<T>(val data: T? = null) : LoadingData<T>()
     class Error<T>(val errorType: Exception? = null, val data: T? = null) : LoadingData<T>()
 }
+
+fun <T> LoadingData<T>.isSuccess(): Boolean = this is LoadingData.Success

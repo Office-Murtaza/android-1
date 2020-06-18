@@ -10,7 +10,8 @@ import com.app.belcobtm.presentation.features.wallet.trade.main.item.TradeDetail
 import kotlinx.android.synthetic.main.item_trade_list.view.*
 
 class TradeListAdapter(
-    private val listener: (listItem: TradeDetailsItem) -> Unit
+    private val clickListener: (listItem: TradeDetailsItem) -> Unit,
+    private val endListListener: (currentListSize: Int) -> Unit
 ) : RecyclerView.Adapter<TradeListAdapter.Holder>() {
     private val itemList: MutableList<TradeDetailsItem> = mutableListOf(TradeDetailsItem.Empty)
 
@@ -26,7 +27,7 @@ class TradeListAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, layout: Int): Holder {
         val view = LayoutInflater.from(parent.context).inflate(layout, parent, false)
         val holder = Holder(view)
-        view.setOnClickListener { listener.invoke(itemList[holder.adapterPosition]) }
+        view.setOnClickListener { clickListener.invoke(itemList[holder.adapterPosition]) }
         return holder
     }
 
@@ -70,22 +71,27 @@ class TradeListAdapter(
             )
         }
 
-//        if (item is TradeDetailsItem.Open) {
-//            view.tradeTypeView.background.setTint(Color.RED)
-//            view.tradeTypeView.show()
-//        } else {
-//            view.tradeTypeView.hide()
-//        }
+        if (position >= itemList.size - 1) {
+            endListListener.invoke(itemList.size)
+        }
     }
 
     fun setItemList(itemList: List<TradeDetailsItem>) {
-        this.itemList.clear()
-        if (itemList.isEmpty()) {
-            this.itemList.add(TradeDetailsItem.Empty)
-        } else {
-            this.itemList.addAll(itemList)
+        when {
+            itemList.size + this.itemList.size == 0 -> this.itemList.add(TradeDetailsItem.Empty)
+            this.itemList.any { it is TradeDetailsItem.Loading || it is TradeDetailsItem.Error || it is TradeDetailsItem.Empty } -> {
+                this.itemList.clear()
+                this.itemList.addAll(itemList)
+            }
+            else -> this.itemList.addAll(itemList)
         }
         notifyDataSetChanged()
+    }
+
+    fun getItemListSize(): Int = itemList.size
+
+    fun clearItemList() {
+        itemList.clear()
     }
 
     private fun fillDefaultItem(

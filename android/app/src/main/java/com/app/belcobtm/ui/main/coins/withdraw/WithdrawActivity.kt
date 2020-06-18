@@ -157,19 +157,21 @@ class WithdrawActivity : BaseMvpActivity<WithdrawContract.View, WithdrawContract
         //Validate address
         if (!mPresenter.validateAddress(coinDataItem.code, toAddress)) {
             errors++
-            addressView.showError(R.string.wrong_address)
+            showError(R.string.wrong_address)
         }
 
-        //Validate amount
-        if (cryptoBalanceToSend <= 0) {
+        val isCatm = coinDataItem.code == LocalCoinType.CATM.name
+        val ethBalance = coinDataItemList.find { LocalCoinType.ETH.name == it.code }?.balanceCoin ?: 0.0
+        val isNotEnoughBalanceETH = ethBalance < mPresenter.getTransactionFee(coinDataItem.code)
+        //Validate CATM by ETH commission
+        if (isCatm && isNotEnoughBalanceETH) {
             errors++
-            amountCryptoView.showError(R.string.should_be_filled)
+            showError(R.string.withdraw_screen_where_money_libovski)
         }
 
-        //Validate max amount
-        if (cryptoBalanceToSend > (coinDataItem.balanceCoin - mPresenter.getTransactionFee(coinDataItem.code))) {
+        if (!isCatm && cryptoBalanceToSend > (coinDataItem.balanceCoin - mPresenter.getTransactionFee(coinDataItem.code))) {
             errors++
-            amountCryptoView.showError(R.string.not_enough_balance)
+            showError(R.string.not_enough_balance)
         }
 
         if (errors == 0) {
@@ -204,15 +206,10 @@ class WithdrawActivity : BaseMvpActivity<WithdrawContract.View, WithdrawContract
         dialog.show()
     }
 
-    private fun getMaxValue(): Double {
-        val coinFee = mPresenter.getTransactionFee(coinDataItem.code)
-        return if ((coinDataItem.code != LocalCoinType.CATM.name)
-            || (coinDataItemList.find { LocalCoinType.ETH.name == it.code }?.balanceCoin ?: 0.0 >= coinFee)
-        ) {
-            coinDataItem.balanceCoin - coinFee
-        } else {
-            0.0
-        }
+    private fun getMaxValue(): Double = if (coinDataItem.code == LocalCoinType.CATM.name) {
+        coinDataItem.balanceCoin
+    } else {
+        0.0.coerceAtLeast(coinDataItem.balanceCoin - mPresenter.getTransactionFee(coinDataItem.code))
     }
 
     companion object {

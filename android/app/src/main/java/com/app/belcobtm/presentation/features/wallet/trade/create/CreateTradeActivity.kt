@@ -81,6 +81,7 @@ class CreateTradeActivity : BaseActivity() {
         when {
             isEmptyFields() -> showError(R.string.error_please_fill_all_fields)
             !isCorrectLimits() -> showError(R.string.add_edit_trade_screen_max_min_limit_error)
+            !isCorrectMargin() -> showError(R.string.add_edit_trade_screen_margin_error)
             else -> viewModel.createTrade(
                 buyButtonView.isChecked,
                 paymentMethodView.getString(),
@@ -99,6 +100,8 @@ class CreateTradeActivity : BaseActivity() {
             || tradeTermsView.getString().isEmpty()
 
     private fun isCorrectLimits(): Boolean = minLimitView.getString().toInt() < maxLimitView.getString().toInt()
+
+    private fun isCorrectMargin(): Boolean = marginView.getString().toInt() <= 100
 
     companion object {
         const val TAG_COIN_ITEM = "tag_coin_item"

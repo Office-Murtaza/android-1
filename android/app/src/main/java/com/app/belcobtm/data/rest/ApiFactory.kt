@@ -11,7 +11,6 @@ import com.app.belcobtm.data.rest.wallet.WalletApi
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
-import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import java.util.concurrent.TimeUnit
@@ -32,7 +31,7 @@ class ApiFactory(private val prefHelper: SharedPreferencesHelper) {
         .connectTimeout(WAIT_TIME_SECONDS, TimeUnit.SECONDS)
         .readTimeout(WAIT_TIME_SECONDS, TimeUnit.SECONDS)
         .addInterceptor(baseInterceptor)
-        .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
+//        .addInterceptor(LogInterceptor())
         .addInterceptor(ResponseInterceptor())
         .authenticator(AuthAuthenticator(prefHelper, createApi(AuthApi::class.java)))
         .build()
@@ -60,9 +59,9 @@ class ApiFactory(private val prefHelper: SharedPreferencesHelper) {
 
     companion object {
         // private const val BASE_URL = "https://prod.belcobtm.com"
-        private const val BASE_URL = "http://161.35.22.9"
+        private const val BASE_URL = "http://test.belcobtm.com"
 
-        //        private const val BASE_URL = "https://test.belcobtm.com"
+        // private const val BASE_URL = "http://161.35.22.9"
         private const val API_VERSION = 1
         const val SERVER_URL = "$BASE_URL/api/v$API_VERSION/"
 

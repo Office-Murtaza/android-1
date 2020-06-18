@@ -214,6 +214,7 @@
     <string name="withdraw_screen_recipient_address">Recipient Address</string>
     <string name="withdraw_screen_usd_amount">USD Amount</string>
     <string name="withdraw_screen_crypto_amount">%1$s Amount</string>
+    <string name="withdraw_screen_where_money_libovski">Insufficient ETH balance for transaction fee</string>
 
     <!-- Sell screen -->
     <string name="sell_screen_price">Price</string>
@@ -296,6 +297,8 @@
     <string name="add_edit_trade_screen_max_limit">Max limit</string>
     <string name="add_edit_trade_screen_trade_terms">Trade terms</string>
     <string name="add_edit_trade_screen_max_min_limit_error">Min limit cannot be higher than max limit</string>
+    <string name="add_edit_trade_screen_margin_error">Margin cannot be higher than 100</string>
+    <!--    <string name="add_edit_trade_screen_"></string>-->
     <!--    <string name="add_edit_trade_screen_"></string>-->
 
 

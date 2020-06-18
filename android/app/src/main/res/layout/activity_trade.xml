@@ -201,22 +201,23 @@
         app:menu_labels_textColor="#58585a">
 
         <com.github.clans.fab.FloatingActionButton
-            android:id="@+id/createButtonView"
-            style="@style/TransactionsScreen.FloatingActionButtonChild"
-            android:src="@drawable/ic_file_download"
-            app:fab_label="@string/trade_screen_create" />
-
-        <com.github.clans.fab.FloatingActionButton
             android:id="@+id/reverseButtonView"
             style="@style/TransactionsScreen.FloatingActionButtonChild"
             android:src="@drawable/ic_publish"
             app:fab_label="@string/trade_screen_reserve" />
 
         <com.github.clans.fab.FloatingActionButton
-            android:id="@+id/postButtonView"
+            android:id="@+id/recallButtonView"
+            style="@style/TransactionsScreen.FloatingActionButtonChild"
+            android:src="@drawable/ic_file_download"
+            app:fab_label="@string/trade_screen_recall" />
+
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/createButtonView"
             style="@style/TransactionsScreen.FloatingActionButtonChild"
             android:src="@drawable/ic_create"
-            app:fab_label="@string/trade_screen_post" />
+            app:fab_label="@string/trade_screen_create" />
+
     </com.github.clans.fab.FloatingActionMenu>
 
     <FrameLayout

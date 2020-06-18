@@ -12,14 +12,18 @@ import com.app.belcobtm.presentation.features.wallet.trade.main.type.TradeTabTyp
 import kotlinx.android.synthetic.main.item_trade_page.view.*
 
 class TradePageAdapter(
-    private val listener: (listItem: TradeDetailsItem) -> Unit
+    private val listener: (listItem: TradeDetailsItem) -> Unit,
+    private val endListListener: (tabIndex: Int, currentListSize: Int) -> Unit
 ) :
     RecyclerView.Adapter<TradePageAdapter.Holder>() {
-    val itemList: List<MutableList<TradeDetailsItem>> = listOf(
-        mutableListOf(), mutableListOf(), mutableListOf(), mutableListOf()
+    val adapterList: List<TradeListAdapter> = listOf(
+        TradeListAdapter({ listener.invoke(it) }, { endListListener.invoke(TradeTabType.BUY.ordinal, it) }),
+        TradeListAdapter({ listener.invoke(it) }, { endListListener.invoke(TradeTabType.SELL.ordinal, it) }),
+        TradeListAdapter({ listener.invoke(it) }, { endListListener.invoke(TradeTabType.MY.ordinal, it) }),
+        TradeListAdapter({ listener.invoke(it) }, { endListListener.invoke(TradeTabType.OPEN.ordinal, it) })
     )
 
-    override fun getItemCount(): Int = itemList.size
+    override fun getItemCount(): Int = adapterList.size
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
         val view =
@@ -30,40 +34,31 @@ class TradePageAdapter(
             dividerItemDecoration.setDrawable(it)
         }
         view.listView.addItemDecoration(dividerItemDecoration)
-        view.listView.adapter = TradeListAdapter { listener.invoke(it) }
         return Holder(view)
     }
 
     override fun onBindViewHolder(holder: Holder, position: Int) {
-        (holder.itemView.listView.adapter as TradeListAdapter).setItemList(itemList[position])
+        holder.itemView.listView.adapter = adapterList[position]
     }
 
     fun setBuyList(itemList: List<TradeDetailsItem>) {
-        this.itemList[TradeTabType.BUY.ordinal].clear()
-        this.itemList[TradeTabType.BUY.ordinal].addAll(itemList)
-        notifyItemChanged(TradeTabType.BUY.ordinal)
+        this.adapterList[TradeTabType.BUY.ordinal].setItemList(itemList)
     }
 
     fun setSellList(itemList: List<TradeDetailsItem>) {
-        this.itemList[TradeTabType.SELL.ordinal].clear()
-        this.itemList[TradeTabType.SELL.ordinal].addAll(itemList)
-        notifyItemChanged(TradeTabType.SELL.ordinal)
+        this.adapterList[TradeTabType.SELL.ordinal].setItemList(itemList)
     }
 
     fun setMyList(itemList: List<TradeDetailsItem>) {
-        this.itemList[TradeTabType.MY.ordinal].clear()
-        this.itemList[TradeTabType.MY.ordinal].addAll(itemList)
-        notifyItemChanged(TradeTabType.MY.ordinal)
+        this.adapterList[TradeTabType.MY.ordinal].setItemList(itemList)
     }
 
     fun setOpenList(itemList: List<TradeDetailsItem>) {
-        this.itemList[TradeTabType.OPEN.ordinal].clear()
-        this.itemList[TradeTabType.OPEN.ordinal].addAll(itemList)
-        notifyItemChanged(TradeTabType.OPEN.ordinal)
+        this.adapterList[TradeTabType.OPEN.ordinal].setItemList(itemList)
     }
 
     fun clearData() {
-        this.itemList.forEach { it.clear() }
+        this.adapterList.forEach { it.clearItemList() }
         notifyDataSetChanged()
     }
 

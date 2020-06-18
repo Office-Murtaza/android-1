@@ -103,14 +103,14 @@ interface TransactionApi {
         @Query("index") paginationStep: Int
     ): Deferred<Response<TradeInfoResponse>>
 
-    @POST("/user/{userId}/coins/{coinCode}/trade-request")
+    @POST("user/{userId}/coins/{coinCode}/trade-request")
     fun tradeBuySellAsync(
         @Path("userId") userId: Int,
         @Path("coinCode") toCoin: String,
         @Body request: TradeBuyRequest
     ): Deferred<Response<ResponseBody>>
 
-    @POST("/user/{userId}/coins/{coinCode}/trade")
+    @POST("user/{userId}/coins/{coinCode}/trade")
     fun tradeCreateAsync(
         @Path("userId") userId: Int,
         @Path("coinCode") toCoin: String,

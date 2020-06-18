@@ -22,17 +22,13 @@ class TradeViewModel(
 ) : ViewModel() {
     private var sortType: TradeSortType = TradeSortType.PRICE
 
-    val buyListLiveData: MutableLiveData<LoadingData<List<TradeDetailsItem.BuySell>>> = MutableLiveData()
-    val sellListLiveData: MutableLiveData<LoadingData<List<TradeDetailsItem.BuySell>>> = MutableLiveData()
-    val myListLiveData: MutableLiveData<LoadingData<List<TradeDetailsItem.My>>> = MutableLiveData()
-    val openListLiveData: MutableLiveData<LoadingData<List<TradeDetailsItem.Open>>> = MutableLiveData()
+    val buyListLiveData: MutableLiveData<LoadingData<Pair<Int, List<TradeDetailsItem.BuySell>>>> = MutableLiveData()
+    val sellListLiveData: MutableLiveData<LoadingData<Pair<Int, List<TradeDetailsItem.BuySell>>>> = MutableLiveData()
+    val myListLiveData: MutableLiveData<LoadingData<Pair<Int, List<TradeDetailsItem.My>>>> = MutableLiveData()
+    val openListLiveData: MutableLiveData<LoadingData<Pair<Int, List<TradeDetailsItem.Open>>>> = MutableLiveData()
 
-    init {
-        updateSorting(TradeSortType.PRICE)
-    }
-
-    fun updateSorting(sortType: TradeSortType) {
-        this.sortType = sortType
+    fun updateSorting(sortType: TradeSortType?) {
+        this.sortType = sortType ?: this.sortType
         updateBuyList(1)
         updateSellList(1)
         updateMyList(1)
@@ -44,7 +40,9 @@ class TradeViewModel(
         getBuyListUseCase.invoke(
             createGetTradeListParams(paginationStep),
             onSuccess = { dataItem ->
-                buyListLiveData.value = LoadingData.Success(dataItem.tradeList.map { it.mapToUiBuySellItem(true) })
+                val maxSize = dataItem.total
+                val list = dataItem.tradeList.map { it.mapToUiBuySellItem(true) }
+                buyListLiveData.value = LoadingData.Success(maxSize to list)
             },
             onError = { buyListLiveData.value = LoadingData.Error(it) }
         )
@@ -55,7 +53,9 @@ class TradeViewModel(
         getSellListUseCase.invoke(
             createGetTradeListParams(paginationStep),
             onSuccess = { dataItem ->
-                sellListLiveData.value = LoadingData.Success(dataItem.tradeList.map { it.mapToUiBuySellItem(false) })
+                val maxSize = dataItem.total
+                val list = dataItem.tradeList.map { it.mapToUiBuySellItem(true) }
+                sellListLiveData.value = LoadingData.Success(maxSize to list)
             },
             onError = { sellListLiveData.value = LoadingData.Error(it) }
         )
@@ -66,7 +66,9 @@ class TradeViewModel(
         getMyListUseCase.invoke(
             createGetTradeListParams(paginationStep),
             onSuccess = { dataItem ->
-                myListLiveData.value = LoadingData.Success(dataItem.tradeList.map { it.mapToUiMyItem() })
+                val maxSize = dataItem.total
+                val list = dataItem.tradeList.map { it.mapToUiMyItem() }
+                myListLiveData.value = LoadingData.Success(maxSize to list)
             },
             onError = { myListLiveData.value = LoadingData.Error(it) }
         )
@@ -77,7 +79,9 @@ class TradeViewModel(
         getOpenListUseCase.invoke(
             createGetTradeListParams(paginationStep),
             onSuccess = { dataItem ->
-                openListLiveData.value = LoadingData.Success(dataItem.tradeList.map { it.mapToUiOpenItem() })
+                val maxSize = dataItem.total
+                val list = dataItem.tradeList.map { it.mapToUiOpenItem() }
+                openListLiveData.value = LoadingData.Success(maxSize to list)
             },
             onError = { openListLiveData.value = LoadingData.Error(it) }
         )
