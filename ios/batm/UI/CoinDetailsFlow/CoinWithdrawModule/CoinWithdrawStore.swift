@@ -104,7 +104,17 @@ final class CoinWithdrawStore: ViewStore<CoinWithdrawAction, CoinWithdrawState> 
     }
     
     guard amount.lessThanOrEqualTo(state.maxValue) else {
-      return .invalid(localize(L.CoinWithdraw.Form.Error.tooHighAmount))
+      guard coin.type == .catm, let fee = state.coinSettings?.txFee else {
+        return .invalid(localize(L.CoinWithdraw.Form.Error.tooHighAmount))
+      }
+      
+      let ethBalance = state.coinBalances?.first { $0.type == .ethereum }?.balance ?? 0
+      
+      if ethBalance.greaterThanOrEqualTo(fee) {
+        return .invalid(localize(L.CoinWithdraw.Form.Error.tooHighAmount))
+      }
+      
+      return .invalid(localize(L.CoinWithdraw.Form.Error.insufficientETHBalance))
     }
     
     guard !state.shouldShowCodePopup || state.code.count == 4 else {

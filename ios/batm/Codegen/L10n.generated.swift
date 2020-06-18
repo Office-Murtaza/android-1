@@ -379,6 +379,7 @@ extension L.CoinWithdraw.Form {
   }
 
   struct Error {
+    static let insufficientETHBalance = "coin_withdraw.form.error.insufficient_e_t_h_balance"
     static let invalidAddress = "coin_withdraw.form.error.invalid_address"
     static let invalidAmount = "coin_withdraw.form.error.invalid_amount"
     static let tooHighAmount = "coin_withdraw.form.error.too_high_amount"
