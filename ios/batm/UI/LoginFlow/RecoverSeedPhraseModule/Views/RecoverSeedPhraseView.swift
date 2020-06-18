@@ -35,7 +35,7 @@ class RecoverSeedPhraseView: RoundedView {
   }()
   
   let wordViews: [SeedPhraseWordView] = {
-    return Array(1...12).map { return SeedPhraseWordView(index: $0, isEditable: true) }
+    return Array(1...BTMWallet.seedPhraseLength).map { return SeedPhraseWordView(index: $0, isEditable: true) }
   }()
   
   lazy var horizontalStackViews: [UIStackView]! = {

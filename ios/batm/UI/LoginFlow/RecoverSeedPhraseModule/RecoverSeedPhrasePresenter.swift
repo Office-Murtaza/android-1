@@ -32,10 +32,11 @@ class RecoverSeedPhrasePresenter: ModulePresenter, RecoverSeedPhraseModule {
       .map { UIPasteboard.general.string }
       .filterNil()
       .map { $0.split(separator: " ").map { String($0) } }
+      .map { Array($0.prefix(BTMWallet.seedPhraseLength)) }
       .drive(onNext: { [seedPhraseWordsRelay] in seedPhraseWordsRelay.accept($0) })
       .disposed(by: disposeBag)
     input.done
-      .filter { $0.count == 12 }
+      .filter { $0.count == BTMWallet.seedPhraseLength }
       .map { $0.map { $0.trimmingCharacters(in: .whitespaces) } }
       .map { $0.joined(separator: " ") }
       .asObservable()

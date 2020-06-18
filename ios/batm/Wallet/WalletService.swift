@@ -31,7 +31,7 @@ class WalletServiceImpl: WalletService {
   }
 
   func createWallet() -> Completable {
-    let hdWallet = HDWallet(strength: 128, passphrase: "")
+    let hdWallet = HDWallet(strength: BTMWallet.seedPhraseStrength, passphrase: "")
     let btmWallet = BTMWallet(hdWallet: hdWallet)
     
     return walletStorage.save(wallet: btmWallet)

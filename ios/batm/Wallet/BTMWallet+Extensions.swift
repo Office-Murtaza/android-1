@@ -3,6 +3,11 @@ import TrustWalletCore
 
 extension BTMWallet {
   
+  static let seedPhraseLength = 12
+  static var seedPhraseStrength: Int32 {
+    return Int32(seedPhraseLength) * 11 * 32 / 33
+  }
+  
   init(hdWallet: HDWallet) {
     let seedPhrase = hdWallet.mnemonic
     
