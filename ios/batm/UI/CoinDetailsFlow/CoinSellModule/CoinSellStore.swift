@@ -53,16 +53,10 @@ struct CoinSellState: Equatable {
     else { return 0 }
     let balanceMaxValue: Double
     
-    if type != .catm {
-      balanceMaxValue = max(0, balance - fee)
+    if type == .catm {
+      balanceMaxValue = balance
     } else {
-      let ethBalance = coinBalances?.first { $0.type == .ethereum }?.balance ?? 0
-      
-      if ethBalance.greaterThanOrEqualTo(fee) {
-        balanceMaxValue = balance
-      } else {
-        balanceMaxValue = 0
-      }
+      balanceMaxValue = max(0, balance - fee)
     }
     
     let potentialMaxCurrencyValue = balanceMaxValue * price / profitRate
@@ -150,17 +144,15 @@ final class CoinSellStore: ViewStore<CoinSellAction, CoinSellState> {
     }
 
     guard amount.lessThanOrEqualTo(state.maxValue) else {
-      guard state.coin?.type == .catm, let fee = state.coinSettings?.txFee else {
-        return .invalid(localize(L.CoinWithdraw.Form.Error.tooHighAmount))
-      }
-      
+      return .invalid(localize(L.CoinWithdraw.Form.Error.tooHighAmount))
+    }
+    
+    if state.coin?.type == .catm, let fee = state.coinSettings?.txFee {
       let ethBalance = state.coinBalances?.first { $0.type == .ethereum }?.balance ?? 0
       
-      if ethBalance.greaterThanOrEqualTo(fee) {
-        return .invalid(localize(L.CoinWithdraw.Form.Error.tooHighAmount))
+      if !ethBalance.greaterThanOrEqualTo(fee) {
+        return .invalid(localize(L.CoinWithdraw.Form.Error.insufficientETHBalance))
       }
-      
-      return .invalid(localize(L.CoinWithdraw.Form.Error.insufficientETHBalance))
     }
     
     guard !state.shouldShowCodePopup || state.code.count == 4 else {
