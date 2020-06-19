@@ -53,7 +53,7 @@ public class TransactionRecord extends BaseEntity {
     @Column(name = "cryptocurrency")
     private String cryptoCurrency;
 
-    @Column(name = "cryptoaddress")
+    @Column(name = "cryptoaddress", columnDefinition = "TEXT")
     private String cryptoAddress;
 
     @Column(name = "servertime")
@@ -83,7 +83,7 @@ public class TransactionRecord extends BaseEntity {
     @Column(name = "canbecashedout")
     private Boolean canBeCashedOut;
 
-    @Column(name = "note")
+    @Column(name = "note", columnDefinition = "TEXT")
     private String note;
 
     @Column(name = "cellphoneused")
