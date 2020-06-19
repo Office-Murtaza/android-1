@@ -64,9 +64,9 @@ public class TestController {
         return Response.ok(coinCode.sign(coinCode.getWalletAddress(), toAddress, amount));
     }
 
-    @GetMapping("/coins/store-eth-txs")
-    public Response storeEthTxs() {
-        geth.storeTxs();
+    @GetMapping("/coins/store-node-txs")
+    public Response storeNodeTxs() {
+        geth.storeNodeTransactions();
 
         return Response.ok(true);
     }

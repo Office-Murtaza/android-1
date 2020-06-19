@@ -9,9 +9,12 @@ import com.batm.repository.CoinRep;
 import com.batm.repository.UserCoinRep;
 import com.batm.util.Constant;
 import com.batm.util.TxUtil;
+import com.batm.util.Util;
 import com.google.protobuf.ByteString;
 import com.mongodb.BasicDBList;
+import com.mongodb.bulk.BulkWriteResult;
 import com.mongodb.client.model.FindOneAndUpdateOptions;
+import com.mongodb.client.model.UpdateOneModel;
 import lombok.Getter;
 import org.bson.Document;
 import org.bson.types.Decimal128;
@@ -35,6 +38,7 @@ import wallet.core.java.AnySigner;
 import wallet.core.jni.*;
 import wallet.core.jni.proto.Ethereum;
 import javax.annotation.PostConstruct;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.*;
 
@@ -43,16 +47,22 @@ import java.util.*;
 @EnableScheduling
 public class GethService {
 
-    private final long GAS_PRICE = 50_000_000_000L;
-    private final long GAS_LIMIT = 50_000;
-
-    private final int START_BLOCK = 10135689;
-    private final int MAX_BLOCK_COUNT = 100;
+    private final int START_BLOCK = 10290000;
+    private final int MAX_BLOCK_COUNT = 500;
 
     private final String ADDRESS_COLL = "eth_address";
     private final String BLOCK_COLL = "eth_block";
     private final String ETH_TX_COLL = "eth_transaction";
     private final String TOKEN_TX_COLL = "token_transaction";
+
+    @Value("${eth.node.url}")
+    private String nodeUrl;
+
+    @Value("${eth.explorer.url}")
+    private String explorerUrl;
+
+    @Value("${wallet.contract.address}")
+    private String contractAddress;
 
     @Autowired
     private RestTemplate rest;
@@ -72,15 +82,6 @@ public class GethService {
     @Autowired
     private CoinPathRep coinPathRep;
 
-    @Value("${eth.node.url}")
-    private String nodeUrl;
-
-    @Value("${eth.explorer.url}")
-    private String explorerUrl;
-
-    @Value("${wallet.contract.address}")
-    private String contractAddress;
-
     private Web3j web3;
 
     private com.batm.contract.Token token;
@@ -89,25 +90,8 @@ public class GethService {
     public void init() {
         web3 = Web3j.build(new HttpService(nodeUrl));
 
-        token = com.batm.contract.Token.load(
-                contractAddress, web3,
-                Credentials.create(Numeric.toHexString(walletService.getPrivateKeyETH().data())),
-                new DefaultGasProvider());
-
-        web3.pendingTransactionFlowable().subscribe(tx -> {
-            List<Document> ethTxs = new ArrayList<>();
-            List<Document> tokenTxs = new ArrayList<>();
-
-            collectEthTransaction(tx, System.currentTimeMillis(), TransactionStatus.PENDING, ethTxs, tokenTxs);
-
-            if (!ethTxs.isEmpty()) {
-                mongo.getCollection(ETH_TX_COLL).insertMany(ethTxs);
-            }
-
-            if (!tokenTxs.isEmpty()) {
-                mongo.getCollection(TOKEN_TX_COLL).insertMany(tokenTxs);
-            }
-        });
+        token = com.batm.contract.Token.load(contractAddress, web3,
+                Credentials.create(Numeric.toHexString(walletService.getPrivateKeyETH().data())), new DefaultGasProvider());
 
         if (!mongo.getCollection(ETH_TX_COLL).listIndexes().iterator().hasNext()) {
             mongo.getCollection(ETH_TX_COLL).createIndex(new Document("txId", 1).append("fromAddress", 1).append("toAddress", 1));
@@ -125,14 +109,14 @@ public class GethService {
             addAddressToJournal(walletService.getAddressETH());
             addAddressToJournal(contractAddress);
 
-            Coin coin = CoinService.CoinEnum.ETH.getCoinEntity();
+            Coin coin = coinRep.findCoinByCode(CoinService.CoinEnum.ETH.name());
             userCoinRep.findAllByCoin(coin).stream().forEach(e -> addAddressToJournal(e.getAddress()));
             coinPathRep.findAllByCoin(coin).stream().forEach(e -> addAddressToJournal(e.getAddress()));
         }
     }
 
-    @Scheduled(cron = "0 */5 * * * *") // every 5 minutes
-    public void storeTxs() {
+    @Scheduled(cron = "0 */10 * * * *")
+    public void storeNodeTransactions() {
         try {
             int lastSuccessBlock = mongo.getCollection(BLOCK_COLL).countDocuments() > 0 ? mongo.getCollection(BLOCK_COLL).find().first().getInteger("lastSuccessBlock") : START_BLOCK;
             int lastBlockNumber = web3.ethBlockNumber().send().getBlockNumber().intValue();
@@ -142,26 +126,20 @@ public class GethService {
                 int toBlockNumber = lastSuccessBlock + n;
 
                 for (int i = lastSuccessBlock + 1; i <= toBlockNumber; i++) {
-                    List<Document> ethTxs = new ArrayList<>();
-                    List<Document> tokenTxs = new ArrayList<>();
+                    List<UpdateOneModel<Document>> ethTxs = new ArrayList<>();
+                    List<UpdateOneModel<Document>> tokenTxs = new ArrayList<>();
 
                     EthBlock.Block block = web3.ethGetBlockByNumber(new DefaultBlockParameterNumber(i), true).send().getBlock();
 
                     block.getTransactions().stream().forEach(e -> {
                         org.web3j.protocol.core.methods.response.Transaction tx = ((EthBlock.TransactionObject) e.get()).get();
+                        long timestamp = block.getTimestamp().longValue() * 1000;
 
-                        collectEthTransaction(tx, block.getTimestamp().longValue(), TransactionStatus.COMPLETE, ethTxs, tokenTxs);
+                        fetchEthTransaction(tx, timestamp, TransactionStatus.COMPLETE, ethTxs, tokenTxs);
                     });
 
-                    if (!ethTxs.isEmpty()) {
-                        mongo.getCollection(ETH_TX_COLL).deleteMany(new Document("blockNumber", i));
-                        mongo.getCollection(ETH_TX_COLL).insertMany(ethTxs);
-                    }
-
-                    if (!tokenTxs.isEmpty()) {
-                        mongo.getCollection(TOKEN_TX_COLL).deleteMany(new Document("blockNumber", i));
-                        mongo.getCollection(TOKEN_TX_COLL).insertMany(tokenTxs);
-                    }
+                    bulkWrite(ETH_TX_COLL, ethTxs);
+                    bulkWrite(TOKEN_TX_COLL, tokenTxs);
 
                     mongo.getCollection(BLOCK_COLL).findOneAndUpdate(
                             new Document("lastSuccessBlock", new Document("$exists", true)),
@@ -169,6 +147,25 @@ public class GethService {
                             new FindOneAndUpdateOptions().upsert(true));
                 }
             }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Scheduled(cron = "0 */1 * * * *")
+    public void updateSubmittedTransactions() {
+        try {
+            List<UpdateOneModel<Document>> ethTxs = new ArrayList<>();
+            List<UpdateOneModel<Document>> tokenTxs = new ArrayList<>();
+
+            mongo.getCollection(ETH_TX_COLL).find(new Document("status", TransactionStatus.PENDING.getValue())).limit(10).into(new ArrayList<>()).stream().forEach(d -> {
+                org.web3j.protocol.core.methods.response.Transaction tx = getTransactionByHash(d.getString("txId"));
+
+                fetchEthTransaction(tx, System.currentTimeMillis(), TransactionStatus.COMPLETE, ethTxs, tokenTxs);
+            });
+
+            bulkWrite(ETH_TX_COLL, ethTxs);
+            bulkWrite(TOKEN_TX_COLL, tokenTxs);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -205,15 +202,17 @@ public class GethService {
     public String submitTransaction(String hex) {
         try {
             String txId = web3.ethSendRawTransaction(hex).send().getTransactionHash();
-            Optional<TransactionReceipt> receipt = web3.ethGetTransactionReceipt(txId).send().getTransactionReceipt();
+            org.web3j.protocol.core.methods.response.Transaction tx = getTransactionByHash(txId);
 
-            System.out.println(" **** submitTransaction.isPresent: " + receipt.isPresent());
-            System.out.println(" **** submitTransaction.isStatusOK: " + receipt.get().isStatusOK());
+            List<UpdateOneModel<Document>> ethTxs = new ArrayList<>();
+            List<UpdateOneModel<Document>> tokenTxs = new ArrayList<>();
 
-            if(receipt.isPresent() && receipt.get().isStatusOK()) {
+            fetchEthTransaction(tx, System.currentTimeMillis(), TransactionStatus.PENDING, ethTxs, tokenTxs);
 
-                return txId;
-            }
+            bulkWrite(ETH_TX_COLL, ethTxs);
+            bulkWrite(TOKEN_TX_COLL, tokenTxs);
+
+            return txId;
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -358,8 +357,8 @@ public class GethService {
         return dto;
     }
 
-    private String convertAddress32BytesTo20Bytes(String addressBytes32) {
-        String address20Bytes = Numeric.prependHexPrefix(addressBytes32.substring(addressBytes32.length() - 40));
+    private String convertAddress32BytesTo20Bytes(String address32Bytes) {
+        String address20Bytes = Numeric.prependHexPrefix(address32Bytes.substring(address32Bytes.length() - 40));
 
         if (Numeric.toBigInt(address20Bytes).intValue() == 0) {
             return contractAddress;
@@ -396,14 +395,12 @@ public class GethService {
 
                 dto.setTxId(d.getString("txId"));
                 dto.setType(TransactionType.getType(fromAddress, toAddress, address));
+                dto.setStatus(TransactionStatus.valueOf(d.getInteger("status")));
                 dto.setCryptoAmount(d.get("amount", Decimal128.class).bigDecimalValue());
+                dto.setCryptoFee(d.get("fee", Decimal128.class).bigDecimalValue());
                 dto.setFromAddress(fromAddress);
                 dto.setToAddress(toAddress);
-                dto.setCryptoFee(d.get("fee", Decimal128.class).bigDecimalValue());
-
-                Integer st = d.getInteger("status") == null ? TransactionStatus.COMPLETE.getValue() : d.getInteger("status");
-                dto.setStatus(TransactionStatus.valueOf(st));
-                dto.setDate1(new Date(d.getLong("blockTime") * 1000));
+                dto.setDate1(new Date(d.getLong("blockTime")));
 
                 map.put(d.getString("txId"), dto);
             });
@@ -435,7 +432,7 @@ public class GethService {
                 dto.setToAddress(toAddress);
                 dto.setCryptoFee(txDoc.get("fee", Decimal128.class).bigDecimalValue());
                 dto.setStatus(TransactionStatus.valueOf(txDoc.getInteger("status")));
-                dto.setDate2(new Date(txDoc.getLong("blockTime") * 1000));
+                dto.setDate2(new Date(txDoc.getLong("blockTime")));
 
                 return dto;
             }
@@ -446,30 +443,31 @@ public class GethService {
         return new TransactionDetailsDTO();
     }
 
-    private Document collectTokenTransaction(String txId, Integer blockNumber, Long blockTime, BigDecimal fee, TransactionStatus status) {
+    private Document fetchTokenTransaction(String txId, Integer blockNumber, Long blockTime, BigDecimal fee, TransactionStatus status) {
         try {
-            TransactionReceipt tr = web3.ethGetTransactionReceipt(txId).send().getTransactionReceipt().get();
+            Optional<TransactionReceipt> receiptOptional = web3.ethGetTransactionReceipt(txId).send().getTransactionReceipt();
 
-            if (tr.getLogs().size() > 0) {
-                Log log = tr.getLogs().get(0);
+            if (receiptOptional.isPresent()) {
+                TransactionReceipt receipt = receiptOptional.get();
 
-                if (contractAddress.equalsIgnoreCase(log.getAddress())) {
-                    BigDecimal amountToken = new BigDecimal(Numeric.toBigInt(log.getData()))
-                            .divide(Constant.ETH_DIVIDER)
-                            .stripTrailingZeros();
+                if (receipt.getLogs().size() > 0) {
+                    Log log = receipt.getLogs().get(0);
 
-                    String fromAddressToken = convertAddress32BytesTo20Bytes(log.getTopics().get(1));
-                    String toAddressToken = convertAddress32BytesTo20Bytes(log.getTopics().get(2));
+                    if (contractAddress.equalsIgnoreCase(log.getAddress())) {
+                        BigDecimal amountToken = parseTokenAmount(log.getData());
+                        String fromAddressToken = convertAddress32BytesTo20Bytes(log.getTopics().get(1));
+                        String toAddressToken = convertAddress32BytesTo20Bytes(log.getTopics().get(2));
 
-                    return new Document("txId", txId)
-                            .append("blockNumber", blockNumber)
-                            .append("fromAddress", fromAddressToken)
-                            .append("toAddress", toAddressToken)
-                            .append("amount", amountToken)
-                            .append("fee", fee)
-                            .append("status", status.getValue())
-                            .append("blockTime", blockTime)
-                            .append("timestamp", System.currentTimeMillis());
+                        return new Document("txId", txId)
+                                .append("blockNumber", blockNumber)
+                                .append("fromAddress", fromAddressToken)
+                                .append("toAddress", toAddressToken)
+                                .append("amount", amountToken)
+                                .append("fee", fee)
+                                .append("status", status.getValue())
+                                .append("blockTime", blockTime)
+                                .append("timestamp", System.currentTimeMillis());
+                    }
                 }
             }
         } catch (Exception e) {
@@ -479,7 +477,7 @@ public class GethService {
         return null;
     }
 
-    private void collectEthTransaction(org.web3j.protocol.core.methods.response.Transaction tx, Long timestamp, TransactionStatus status, List<Document> ethTxs, List<Document> tokenTxs) {
+    private void fetchEthTransaction(org.web3j.protocol.core.methods.response.Transaction tx, Long timestamp, TransactionStatus status, List<UpdateOneModel<Document>> ethTxs, List<UpdateOneModel<Document>> tokenTxs) {
         String txId = tx.getHash();
         String fromAddress = tx.getFrom();
         String toAddress = tx.getTo();
@@ -494,19 +492,70 @@ public class GethService {
                     .divide(Constant.ETH_DIVIDER)
                     .stripTrailingZeros();
 
+            Integer blockNumber = parseBlockNumber(tx);
+
             if (amount.compareTo(BigDecimal.ZERO) == 0) {
-                tokenTxs.add(collectTokenTransaction(txId, tx.getBlockNumber().intValue(), timestamp, fee, status));
+                Document tokenDoc = fetchTokenTransaction(txId, blockNumber, timestamp, fee, status);
+
+                if (tokenDoc != null) {
+                    fromAddress = Util.nvl(fromAddress, tokenDoc.getString("fromAddress"));
+                    toAddress = Util.nvl(toAddress, tokenDoc.getString("toAddress"));
+
+                    UpdateOneModel tokenUpdate = new UpdateOneModel(new Document("txId", tokenDoc.getString("txId")), new Document("$set", tokenDoc));
+                    tokenUpdate.getOptions().upsert(true);
+
+                    tokenTxs.add(tokenUpdate);
+                }
             }
 
-            ethTxs.add(new Document("txId", txId)
-                    .append("blockNumber", tx.getBlockNumber().intValue())
+            Document doc = new Document("txId", txId)
+                    .append("blockNumber", blockNumber)
                     .append("fromAddress", fromAddress)
                     .append("toAddress", toAddress)
                     .append("amount", amount)
                     .append("fee", fee)
                     .append("status", status.getValue())
                     .append("blockTime", timestamp)
-                    .append("timestamp", System.currentTimeMillis()));
+                    .append("timestamp", System.currentTimeMillis());
+
+            UpdateOneModel update = new UpdateOneModel(new Document("txId", doc.getString("txId")), new Document("$set", doc));
+            update.getOptions().upsert(true);
+
+            ethTxs.add(update);
         }
+    }
+
+    private BigDecimal parseTokenAmount(String data) {
+        if (Numeric.cleanHexPrefix(data).isEmpty()) {
+            return BigDecimal.ZERO;
+        }
+
+        return new BigDecimal(Numeric.toBigInt(data)).divide(Constant.ETH_DIVIDER).stripTrailingZeros();
+    }
+
+    private Integer parseBlockNumber(org.web3j.protocol.core.methods.response.Transaction tx) {
+        try {
+            return tx.getBlockNumber().intValue();
+        } catch (Exception e) {}
+
+        return 0;
+    }
+
+    private BulkWriteResult bulkWrite(String coll, List<UpdateOneModel<Document>> updates) {
+        if (!updates.isEmpty()) {
+            return mongo.getCollection(coll).bulkWrite(updates);
+        }
+
+        return null;
+    }
+
+    private org.web3j.protocol.core.methods.response.Transaction getTransactionByHash(String txId) {
+        try {
+            return web3.ethGetTransactionByHash(txId).send().getTransaction().get();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return null;
     }
 }

@@ -4,7 +4,6 @@ import com.batm.entity.User;
 import net.sf.json.JSONObject;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang3.RandomStringUtils;
-
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 import javax.net.ssl.HttpsURLConnection;
@@ -24,6 +23,14 @@ public class Util {
 
     public static BigDecimal convert(String str) {
         return new BigDecimal(str).setScale(3, RoundingMode.DOWN).stripTrailingZeros();
+    }
+
+    public static <T> T nvl(T var1, T var2) {
+        if (var1 == null) {
+            return var2;
+        }
+
+        return var1;
     }
 
     public static String generatePublicId() {

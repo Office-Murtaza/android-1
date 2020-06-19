@@ -27,6 +27,5 @@ public class UserCoin extends BaseEntity {
     private Coin coin;
 
     private String address;
-
     private BigDecimal reservedBalance;
 }
