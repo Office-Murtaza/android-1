@@ -15,22 +15,19 @@ class RecoverWalletViewModel(
 
     fun recoverWallet(phone: String, password: String) {
         recoverWalletLiveData.value = LoadingData.Loading()
-        recoverWalletUseCase.invoke(RecoverWalletUseCase.Params(phone, password)) { either ->
-            either.either(
-                { recoverWalletLiveData.value = LoadingData.Error(it) },
-                { recoverWalletLiveData.value = LoadingData.Success(Unit) }
-            )
-        }
+        recoverWalletUseCase.invoke(
+            RecoverWalletUseCase.Params(phone, password),
+            onSuccess = { recoverWalletLiveData.value = LoadingData.Success(Unit) },
+            onError = { recoverWalletLiveData.value = LoadingData.Error(it) }
+        )
     }
 
     fun verifySmsCode(smsCode: String) {
         smsCodeLiveData.value = LoadingData.Loading()
-        smsCodeUseCase.invoke(RecoverWalletVerifySmsCodeUseCase.Params(smsCode)) { either ->
-            either.either(
-                { smsCodeLiveData.value = LoadingData.Error(it) },
-                { smsCodeLiveData.value = LoadingData.Success(Unit) }
-            )
-        }
+        smsCodeUseCase.invoke(
+            RecoverWalletVerifySmsCodeUseCase.Params(smsCode),
+            onSuccess = { smsCodeLiveData.value = LoadingData.Success(Unit) },
+            onError = { smsCodeLiveData.value = LoadingData.Error(it) }
+        )
     }
-
 }

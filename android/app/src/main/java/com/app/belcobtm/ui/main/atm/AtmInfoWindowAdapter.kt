@@ -7,7 +7,6 @@ import android.text.style.ForegroundColorSpan
 import android.view.LayoutInflater
 import android.view.View
 import androidx.appcompat.widget.AppCompatTextView
-import androidx.core.content.res.ResourcesCompat
 import com.app.belcobtm.R
 import com.app.belcobtm.api.model.response.AtmResponse
 import com.google.android.gms.maps.GoogleMap
@@ -27,12 +26,10 @@ class AtmInfoWindowAdapter(val context: Context) : GoogleMap.InfoWindowAdapter {
         view.atm_address.text = atmAddress.address
 
         view.atm_open_hours_container.removeAllViews()
-        val typeface = ResourcesCompat.getFont(context, R.font.poppins_semi_bold)
         atmAddress.openHours.forEach { openHour ->
             val openHourText = getOpenHoursColorText(openHour.days, openHour.hours)
             val textView = AppCompatTextView(context)
             textView.text = openHourText
-            textView.typeface = typeface
             textView.textSize = 12f
             view.atm_open_hours_container.addView(textView)
         }

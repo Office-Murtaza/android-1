@@ -3,11 +3,11 @@ package com.app.belcobtm.ui.main.coins.send_gift
 import android.content.Context
 import com.app.belcobtm.R
 import com.app.belcobtm.api.data_manager.WithdrawDataManager
-import com.app.belcobtm.api.model.response.CoinModel
 import com.app.belcobtm.domain.Failure
-import com.app.belcobtm.domain.wallet.interactor.CreateTransactionUseCase
-import com.app.belcobtm.domain.wallet.interactor.GetGiftAddressUseCase
-import com.app.belcobtm.domain.wallet.interactor.SendGiftUseCase
+import com.app.belcobtm.domain.transaction.interactor.CreateTransactionUseCase
+import com.app.belcobtm.domain.transaction.interactor.GetGiftAddressUseCase
+import com.app.belcobtm.domain.transaction.interactor.SendGiftUseCase
+import com.app.belcobtm.domain.wallet.item.CoinDataItem
 import com.app.belcobtm.mvp.BaseMvpDIPresenterImpl
 import com.giphy.sdk.core.models.Media
 import org.koin.core.KoinComponent
@@ -43,27 +43,26 @@ class SendGiftPresenter : BaseMvpDIPresenterImpl<SendGiftContract.View, Withdraw
 
     override fun createTransaction(
         context: Context,
-        coinModel: CoinModel,
+        coinModel: CoinDataItem,
         phone: String,
         coinAmount: Double,
         message: String
     ) {
-        this.coinFromCode = coinModel.coinId
+        this.coinFromCode = coinModel.code
         this.coinAmount = coinAmount
         this.message = message
         this.phone = phone
         this.phoneEncoded = "+" + phone.replace("+", "")
 
         mView?.showProgress(true)
-        getGiftAddressUseCase.invoke(GetGiftAddressUseCase.Params(coinFromCode, phoneEncoded)) { giftAddressEither ->
-            giftAddressEither.either(
-                { errorResponse(it) },
-                { giftAddress ->
-                    this.fromAddress = giftAddress
-                    createTransaction(coinFromCode, coinAmount)
-                }
-            )
-        }
+        getGiftAddressUseCase.invoke(
+            GetGiftAddressUseCase.Params(coinFromCode, phoneEncoded),
+            onSuccess = { giftAddress ->
+                this.fromAddress = giftAddress
+                createTransaction(coinFromCode, coinAmount)
+            },
+            onError = { errorResponse(it) }
+        )
     }
 
     override fun completeTransaction(smsCode: String) {
@@ -77,29 +76,25 @@ class SendGiftPresenter : BaseMvpDIPresenterImpl<SendGiftContract.View, Withdraw
                 giftId = gifMedia?.id ?: "",
                 phone = phoneEncoded,
                 message = message
-            )
-        ) { either ->
-            either.either(
-                { errorResponse(it) },
-                {
-                    mView?.showProgress(false)
-                    mView?.onTransactionDone()
-                }
-            )
-        }
+            ),
+            onSuccess = {
+                mView?.showProgress(false)
+                mView?.onTransactionDone()
+            },
+            onError = { errorResponse(it) }
+
+        )
     }
 
-    private fun createTransaction(fromCoinCode: String, fromCoinAmount: Double) =
-        createTransactionUseCase.invoke(CreateTransactionUseCase.Params(fromCoinCode, fromCoinAmount)) { either ->
-            either.either(
-                { errorResponse(it) },
-                { hash ->
-                    this.transactionHash = hash
-                    mView?.openSmsCodeDialog()
-                    mView?.showProgress(false)
-                }
-            )
-        }
+    private fun createTransaction(fromCoinCode: String, fromCoinAmount: Double) = createTransactionUseCase.invoke(
+        CreateTransactionUseCase.Params(fromCoinCode, fromCoinAmount),
+        onSuccess = { hash ->
+            this.transactionHash = hash
+            mView?.openSmsCodeDialog()
+            mView?.showProgress(false)
+        },
+        onError = { errorResponse(it) }
+    )
 
     private fun errorResponse(throwable: Throwable) {
         mView?.showProgress(false)

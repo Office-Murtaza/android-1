@@ -9,11 +9,12 @@ import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.Observer
 import com.app.belcobtm.R
 import com.app.belcobtm.domain.Failure
+import com.app.belcobtm.domain.wallet.LocalCoinType
+import com.app.belcobtm.domain.wallet.item.CoinDataItem
 import com.app.belcobtm.presentation.core.extensions.*
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
 import com.app.belcobtm.presentation.core.ui.BaseActivity
 import com.app.belcobtm.presentation.features.authorization.pin.PinActivity
-import com.app.belcobtm.presentation.features.wallet.IntentCoinItem
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.android.synthetic.main.activity_exchange_coin_to_coin.*
 import kotlinx.android.synthetic.main.view_material_sms_code_dialog.view.*
@@ -24,7 +25,7 @@ class ExchangeCoinToCoinActivity : BaseActivity() {
     private val viewModel: ExchangeCoinToCoinViewModel by viewModel {
         parametersOf(
             intent.getParcelableExtra(TAG_COIN_ITEM),
-            intent.getParcelableArrayListExtra<IntentCoinItem>(TAG_COIN_ITEM_LIST)
+            intent.getParcelableArrayListExtra<CoinDataItem>(TAG_COIN_ITEM_LIST)
         )
     }
     private val smsDialog: AlertDialog by lazy {
@@ -75,18 +76,20 @@ class ExchangeCoinToCoinActivity : BaseActivity() {
     private fun initListeners() {
         pickCoinButtonView.editText?.keyListener = null
         pickCoinButtonView.editText?.setOnClickListener {
-            val coinList = viewModel.getCoinTypeList()
-            val coinAdapter = CoinDialogAdapter(pickCoinButtonView.context, coinList)
+            val coinAdapter = CoinDialogAdapter(pickCoinButtonView.context)
             MaterialAlertDialogBuilder(pickCoinButtonView.context)
                 .setTitle(R.string.exchange_coin_to_coin_screen_select_coin)
                 .setAdapter(coinAdapter) { _, which ->
-                    pickCoinButtonView.setText(coinList[which].verboseValue())
-                    pickCoinButtonView.setDrawableStartEnd(coinList[which].resIcon(), R.drawable.ic_arrow_drop_down)
+                    pickCoinButtonView.setText(LocalCoinType.values()[which].fullName)
+                    pickCoinButtonView.setDrawableStartEnd(
+                        LocalCoinType.values()[which].resIcon(),
+                        R.drawable.ic_arrow_drop_down
+                    )
                     amountCoinToView.hint = getString(
                         R.string.exchange_coin_to_coin_screen_crypto_amount,
-                        coinList[which].code()
+                        LocalCoinType.values()[which].name
                     )
-                    viewModel.toCoinItem = viewModel.coinItemList.find { it.coinCode == coinList[which].code() }
+                    viewModel.toCoinItem = viewModel.coinItemList.find { it.code == LocalCoinType.values()[which].name }
                     amountCoinFromView?.editText?.setText(amountCoinFromView.getString())
                 }
                 .create()
@@ -141,7 +144,7 @@ class ExchangeCoinToCoinActivity : BaseActivity() {
         balanceCryptoView.text = getString(
             R.string.exchange_coin_to_coin_screen_balance_crypto,
             viewModel.fromCoinItem.balanceCoin.toStringCoin(),
-            viewModel.fromCoinItem.coinCode
+            viewModel.fromCoinItem.code
         )
         balanceUsdView.text = getString(
             R.string.exchange_coin_to_coin_screen_balance_usd,
@@ -149,14 +152,14 @@ class ExchangeCoinToCoinActivity : BaseActivity() {
         )
         amountCoinFromView.hint = getString(
             R.string.exchange_coin_to_coin_screen_crypto_amount,
-            viewModel.fromCoinItem.coinCode
+            viewModel.fromCoinItem.code
         )
         amountCoinToView.hint = getString(
             R.string.exchange_coin_to_coin_screen_crypto_amount,
-            viewModel.toCoinItem?.coinCode ?: ""
+            viewModel.toCoinItem?.code ?: ""
         )
-        viewModel.getCoinTypeList().find { it.code() == viewModel.toCoinItem?.coinCode }?.let { coinType ->
-            pickCoinButtonView.setText(coinType.verboseValue())
+        LocalCoinType.values().find { it.name == viewModel.toCoinItem?.code }?.let { coinType ->
+            pickCoinButtonView.setText(coinType.fullName)
             pickCoinButtonView.setDrawableStartEnd(coinType.resIcon(), R.drawable.ic_arrow_drop_down)
         }
     }

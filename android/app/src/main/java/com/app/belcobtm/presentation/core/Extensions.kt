@@ -9,6 +9,7 @@ import com.google.zxing.MultiFormatWriter
 import com.google.zxing.WriterException
 import java.util.*
 
+
 fun ByteArray.toHex(): String {
     return Numeric.toHexString(this)
 }
@@ -29,6 +30,15 @@ fun String.toHexBytesInByteString(): ByteString {
     return ByteString.copyFrom(this.toHexBytes())
 }
 
+fun Long.toByteArray(): ByteArray {
+    var newLong = this
+    val result = ByteArray(8)
+    for (i in 7 downTo 0) {
+        result[i] = (newLong and 0xFF).toByte()
+        newLong = newLong shr 8
+    }
+    return result
+}
 
 class QRUtils{
     companion object{

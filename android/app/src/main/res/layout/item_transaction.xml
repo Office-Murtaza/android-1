@@ -50,11 +50,10 @@
             android:paddingTop="2dp"
             android:paddingEnd="4dp"
             android:paddingBottom="2dp"
-            android:textAllCaps="true"
             android:textColor="@android:color/white"
             android:textSize="11sp"
             tools:ignore="SmallSp"
-            tools:text="complete" />
+            tools:text="Complete" />
     </FrameLayout>
 
     <androidx.appcompat.widget.AppCompatTextView

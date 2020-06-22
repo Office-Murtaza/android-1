@@ -173,7 +173,7 @@
         app:layout_constraintTop_toBottomOf="@id/chartPlaceHolderView">
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerView"
+            android:id="@+id/listView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
@@ -202,13 +202,13 @@
             android:id="@+id/tradeButtonView"
             style="@style/TransactionsScreen.FloatingActionButtonChild"
             android:src="@drawable/ic_trade"
-            app:fab_label="Trade" />
+            app:fab_label="@string/transitions_trade" />
 
         <com.github.clans.fab.FloatingActionButton
             android:id="@+id/c2cExchangeButtonView"
             style="@style/TransactionsScreen.FloatingActionButtonChild"
-            android:src="@drawable/ic_exchange_v"
-            app:fab_label="C2C Exchange" />
+            android:src="@drawable/ic_exchange"
+            app:fab_label="@string/transitions_exchange" />
 
         <com.github.clans.fab.FloatingActionButton
             android:id="@+id/sellButtonView"
@@ -236,7 +236,7 @@
     </com.github.clans.fab.FloatingActionMenu>
 
     <FrameLayout
-        android:id="@+id/progress"
+        android:id="@+id/progressView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/gray_progress"

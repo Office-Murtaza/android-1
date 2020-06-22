@@ -2,12 +2,12 @@ package com.app.belcobtm.ui.main.coins.sell
 
 import com.app.belcobtm.R
 import com.app.belcobtm.api.data_manager.WithdrawDataManager
-import com.app.belcobtm.api.model.response.CoinModel
 import com.app.belcobtm.domain.Failure
-import com.app.belcobtm.domain.wallet.interactor.SellGetLimitsUseCase
-import com.app.belcobtm.domain.wallet.interactor.SellPreSubmitUseCase
-import com.app.belcobtm.domain.wallet.interactor.SellUseCase
-import com.app.belcobtm.domain.wallet.interactor.SendSmsToDeviceUseCase
+import com.app.belcobtm.domain.tools.interactor.SendSmsToDeviceUseCase
+import com.app.belcobtm.domain.transaction.interactor.SellGetLimitsUseCase
+import com.app.belcobtm.domain.transaction.interactor.SellPreSubmitUseCase
+import com.app.belcobtm.domain.transaction.interactor.SellUseCase
+import com.app.belcobtm.domain.wallet.item.CoinDataItem
 import com.app.belcobtm.mvp.BaseMvpDIPresenterImpl
 import org.koin.core.KoinComponent
 import org.koin.core.inject
@@ -27,7 +27,7 @@ class SellPresenter : BaseMvpDIPresenterImpl<SellContract.View, WithdrawDataMana
     private var cryptoAmount: Double? = null
     private var isAnotherAddress: Boolean = false
 
-    private var mCoin: CoinModel? = null
+    private var mCoin: CoinDataItem? = null
 
     override fun injectDependency() = presenterComponent.inject(this)
 
@@ -42,12 +42,9 @@ class SellPresenter : BaseMvpDIPresenterImpl<SellContract.View, WithdrawDataMana
         this.cryptoAmount = cryptoAmount
         this.isAnotherAddress = checked
 
-        sendSmsUseCase.invoke(Unit) { either ->
-            either.either(
-                { errorResponse(it) },
-                { mView?.openSmsCodeDialog() }
-            )
-        }
+        sendSmsUseCase.invoke(Unit,
+            onSuccess = { mView?.openSmsCodeDialog() },
+            onError = { errorResponse(it) })
     }
 
     override fun verifySmsCode(smsCode: String) {
@@ -55,65 +52,59 @@ class SellPresenter : BaseMvpDIPresenterImpl<SellContract.View, WithdrawDataMana
         preSubmitUseCase.invoke(
             SellPreSubmitUseCase.Params(
                 smsCode,
-                mCoin?.coinId ?: "",
+                mCoin?.code ?: "",
                 cryptoAmount ?: 0.0,
                 fiatAmount ?: 0
-            )
-        ) { either ->
-            either.either(
-                {
-                    mView?.showProgress(false)
-                    when (it) {
-                        is Failure.TokenError -> mView?.onRefreshTokenFailed()
-                        is Failure.MessageError -> mView?.openSmsCodeDialog(it.message)
-                        is Failure.NetworkConnection -> mView?.showErrorAndHideDialogs(R.string.error_internet_unavailable)
-                        else -> mView?.showErrorAndHideDialogs(R.string.error_something_went_wrong)
+            ),
+            onSuccess = { response ->
+                addressDestination = response.address
+                cryptoResultAmount = response.fromCoinAmount
+                when {
+                    response.address.isBlank() -> {
+                        mView?.showProgress(false)
+                        mView?.showErrorAndHideDialogs(R.string.error_transaction_cannot_be_created)
                     }
-                },
-                { response ->
-                    addressDestination = response.address
-                    cryptoResultAmount = response.fromCoinAmount
-                    when {
-                        response.address.isBlank() -> {
-                            mView?.showProgress(false)
-                            mView?.showErrorAndHideDialogs(R.string.error_transaction_cannot_be_created)
-                        }
-                        !isAnotherAddress && cryptoResultAmount < balance -> sellTransaction()
-                        !isAnotherAddress && cryptoResultAmount >= balance -> errorResponse(Failure.MessageError("coin stock value has been changed"))
-                        else -> {
-                            mView?.showProgress(false)
-                            mView?.showDoneScreenAnotherAddress(addressDestination, cryptoResultAmount)
-                        }
+                    !isAnotherAddress && cryptoResultAmount < balance -> sellTransaction()
+                    !isAnotherAddress && cryptoResultAmount >= balance -> errorResponse(Failure.MessageError("coin stock value has been changed"))
+                    else -> {
+                        mView?.showProgress(false)
+                        mView?.showDoneScreenAnotherAddress(addressDestination, cryptoResultAmount)
                     }
                 }
-            )
-        }
-    }
-
-    override fun bindData(mCoin: CoinModel?) {
-        this.mCoin = mCoin
-    }
-
-    override fun getDetails() = limitsUseCase.invoke(SellGetLimitsUseCase.Params(mCoin?.coinId ?: "")) { either ->
-        either.either(
-            { errorResponse(it) },
-            { mView?.showLimits(it) }
+            },
+            onError = {
+                mView?.showProgress(false)
+                when (it) {
+                    is Failure.TokenError -> mView?.onRefreshTokenFailed()
+                    is Failure.MessageError -> mView?.openSmsCodeDialog(it.message)
+                    is Failure.NetworkConnection -> mView?.showErrorAndHideDialogs(R.string.error_internet_unavailable)
+                    else -> mView?.showErrorAndHideDialogs(R.string.error_something_went_wrong)
+                }
+            }
         )
     }
 
-    private fun sellTransaction() =
-        sellUseCase.invoke(SellUseCase.Params(mCoin?.coinId ?: "", cryptoResultAmount)) { either ->
-            either.either(
-                {
-                    mView?.showProgress(false)
-                    errorResponse(it)
-                },
-                {
-                    mView?.showProgress(false)
-                    mView?.showDoneScreen()
-                }
-            )
+    override fun bindData(mCoin: CoinDataItem?) {
+        this.mCoin = mCoin
+    }
+
+    override fun getDetails() = limitsUseCase.invoke(
+        SellGetLimitsUseCase.Params(mCoin?.code ?: ""),
+        onSuccess = { mView?.showLimits(it) },
+        onError = { errorResponse(it) }
+    )
+
+    private fun sellTransaction() = sellUseCase.invoke(
+        SellUseCase.Params(mCoin?.code ?: "", cryptoResultAmount),
+        onSuccess = {
+            mView?.showProgress(false)
+            mView?.showDoneScreen()
+        },
+        onError = {
+            mView?.showProgress(false)
+            errorResponse(it)
         }
+    )
 
     private fun errorResponse(throwable: Throwable) {
         mView?.showProgress(false)

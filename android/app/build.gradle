@@ -9,8 +9,8 @@ android {
         applicationId "com.app.belcobtm"
         minSdkVersion 23
         targetSdkVersion 29
-        versionCode 50
-        versionName "1.3.5"
+        versionCode 60
+        versionName "1.5"
         multiDexEnabled = true
     }
     buildTypes {
@@ -39,7 +39,7 @@ dependencies {
     implementation 'com.google.android.gms:play-services-maps:17.0.0'
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
 
-    implementation 'androidx.core:core-ktx:1.4.0-alpha01'
+    implementation 'androidx.core:core-ktx:1.5.0-alpha01'
 
     implementation 'me.relex:circleindicator:2.1.4'
 
@@ -48,7 +48,7 @@ dependencies {
 
     implementation 'androidx.multidex:multidex:2.0.1'
 
-    implementation "com.trustwallet:wallet-core:0.12.24"
+    implementation "com.trustwallet:wallet-core:2.0.12"
 
     // Etherium client
     implementation "org.web3j:core:3.0.1-android"

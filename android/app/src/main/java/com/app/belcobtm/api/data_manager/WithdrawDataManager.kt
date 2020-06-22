@@ -18,10 +18,10 @@ open class WithdrawDataManager : BaseDataManager() {
         txid: String?,
         txDbId: String?
     ): Observable<Optional<TransactionDetailsResponse>> {
-        return if (txid != null) {
-            genObservable(api.getTransactionDetails(userId, coinId, txid))
-        } else {
+        return if (txid.isNullOrBlank()) {
             genObservable(api.getTransactionDetailsByTxDbId(userId, coinId, txDbId))
+        } else {
+            genObservable(api.getTransactionDetails(userId, coinId, txid))
         }
     }
 }

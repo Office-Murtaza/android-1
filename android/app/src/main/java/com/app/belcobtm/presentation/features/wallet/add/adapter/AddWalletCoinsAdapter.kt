@@ -5,6 +5,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.app.belcobtm.R
+import com.app.belcobtm.domain.wallet.LocalCoinType
+import com.app.belcobtm.presentation.core.extensions.resIcon
 import kotlinx.android.synthetic.main.item_coin_visible.view.*
 
 
@@ -26,8 +28,9 @@ class AddWalletCoinsAdapter(private val listener: (position: Int, isChecked: Boo
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val item = itemList[position]
         with(holder.itemView) {
-            imageView.setImageResource(item.resIcon)
-            titleView.setText(item.resName)
+            val coinType = LocalCoinType.valueOf(item.coinCode)
+            imageView.setImageResource(coinType.resIcon())
+            titleView.text = coinType.fullName
             switchView.isChecked = item.isChecked
         }
     }

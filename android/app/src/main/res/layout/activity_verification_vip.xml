@@ -36,10 +36,10 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="24dp"
-                android:fontFamily="@font/poppins_semi_bold"
                 android:text="@string/verification_id_selfie"
                 android:textColor="#58585a"
                 android:textSize="14sp"
+                android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/toolbarView" />
 
@@ -99,9 +99,9 @@
                 <androidx.appcompat.widget.AppCompatEditText
                     style="@style/VerificationBlankScreen.EditText"
                     android:hint="@string/verification_snn"
+                    android:imeOptions="actionDone"
                     android:inputType="number"
-                    android:maxLength="9"
-                    android:imeOptions="actionDone" />
+                    android:maxLength="9" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -115,7 +115,6 @@
                 android:layout_marginBottom="24dp"
                 android:background="@drawable/button_blue"
                 android:elevation="0dp"
-                android:fontFamily="@font/poppins_bold"
                 android:foreground="?attr/selectableItemBackground"
                 android:paddingStart="16dp"
                 android:paddingTop="18dp"

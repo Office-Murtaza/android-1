@@ -56,15 +56,15 @@ class SeedPhraseActivity : AppCompatActivity() {
         word_11.text = addColorText(seedArray[10], "11 ")
         word_12.text = addColorText(seedArray[11], "12 ")
 
-        copy_seed.setOnClickListener {
+        copySeedPhraseView.setOnClickListener {
             copyToClipboard(mSeedPhrase)
             AlertHelper.showToastLong(container.context, R.string.seed_clipboard)
         }
         if (mFromSettings) {
-            bt_done.text = "Done"
+            doneButtonView.text = "Done"
         }
 
-        bt_done.setOnClickListener {
+        doneButtonView.setOnClickListener {
             if (mFromSettings) {
                 onBackPressed()
             } else {

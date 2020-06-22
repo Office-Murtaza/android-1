@@ -3,7 +3,7 @@ package com.app.belcobtm.data.disk.database
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.app.belcobtm.domain.wallet.LocalCoinType
-import com.app.belcobtm.domain.wallet.item.CoinDataItem
+import com.app.belcobtm.domain.wallet.item.LocalCoinDataItem
 
 @Entity
 data class CoinEntity(
@@ -13,13 +13,13 @@ data class CoinEntity(
     val isEnabled: Boolean = true
 )
 
-fun CoinEntity.mapToDataItem(): CoinDataItem = CoinDataItem(
+fun CoinEntity.mapToDataItem(): LocalCoinDataItem = LocalCoinDataItem(
     type = type,
     publicKey = publicKey,
     privateKey = privateKey
 ).also { it.isEnabled = isEnabled }
 
-fun CoinDataItem.mapToEntity(): CoinEntity = CoinEntity(
+fun LocalCoinDataItem.mapToEntity(): CoinEntity = CoinEntity(
     type = type,
     publicKey = publicKey,
     privateKey = privateKey,

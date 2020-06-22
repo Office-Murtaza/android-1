@@ -71,7 +71,7 @@
         android:layout_marginTop="@dimen/margin_half"
         android:text="@string/logo_text"
         android:textColor="@color/gray_text_color"
-        app:fontFamily="@font/poppins_bold"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/logo" />
@@ -94,7 +94,7 @@
         android:text="@string/setup_pin_code"
         android:textColor="@android:color/white"
         android:textSize="20sp"
-        app:fontFamily="@font/poppins_bold"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/iconView" />

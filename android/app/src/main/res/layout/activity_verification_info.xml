@@ -103,7 +103,7 @@
         android:layout_marginTop="16dp"
         android:background="@drawable/selector_blue_button"
         android:elevation="0dp"
-        android:fontFamily="@font/poppins_bold"
+        android:textStyle="bold"
         android:paddingStart="16dp"
         android:paddingTop="18dp"
         android:paddingEnd="16dp"

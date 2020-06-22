@@ -205,8 +205,9 @@
             android:layout_height="match_parent"
             android:clickable="true"
             android:focusable="true"
-            android:scaleType="center"
-            app:srcCompat="@drawable/ic_gift_box" />
+            android:padding="16dp"
+            app:srcCompat="@drawable/ic_gift"
+            app:tint="#b7b7b7" />
 
         <com.giphy.sdk.ui.views.GifView
             android:id="@+id/gifView"

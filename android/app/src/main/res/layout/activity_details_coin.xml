@@ -42,7 +42,6 @@
                     android:background="?android:selectableItemBackground"
                     android:clickable="true"
                     android:focusable="true"
-                    android:fontFamily="@font/poppins_regular"
                     android:maxLines="5"
                     android:textColor="#0073e4"
                     tools:text="b28e2673ead88289a2e5a354bce0630483780098631e688cabe9ee06dd325074" />
@@ -98,16 +97,14 @@
                         android:layout_gravity="center_vertical"
                         android:background="@drawable/bg_transaction_status"
                         android:gravity="center"
-                        android:paddingStart="3dp"
+                        android:paddingStart="4dp"
                         android:paddingTop="2dp"
-                        android:paddingEnd="3dp"
+                        android:paddingEnd="4dp"
                         android:paddingBottom="2dp"
-                        android:textAllCaps="true"
                         android:textColor="@android:color/white"
-                        android:textSize="10sp"
-                        android:textStyle="bold"
-                        tools:text="Pending"
-                        tools:ignore="SmallSp" />
+                        android:textSize="11sp"
+                        tools:ignore="SmallSp"
+                        tools:text="Pending" />
                 </FrameLayout>
 
             </TableRow>
@@ -124,7 +121,6 @@
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/cashStatusView"
                     style="@style/CoinDetails.Table.Value"
-                    android:fontFamily="@font/poppins_medium"
                     tools:text="Not Available"
                     tools:textColor="@android:color/holo_red_dark" />
 
@@ -257,7 +253,8 @@
                         android:id="@+id/imageView"
                         android:layout_width="95dp"
                         android:layout_height="95dp"
-                        tools:src="@drawable/ic_gift_box" />
+                        app:tint="#b7b7b7"
+                        tools:src="@drawable/ic_gift" />
                 </FrameLayout>
 
             </TableRow>
@@ -299,7 +296,6 @@
                     android:background="?android:selectableItemBackground"
                     android:clickable="true"
                     android:focusable="true"
-                    android:fontFamily="@font/poppins_regular"
                     android:maxLines="5"
                     android:textColor="#0073e4"
                     tools:text="b28e2673ead88289a2e5a354bce0630483780098631e688cabe9ee06dd325074" />
@@ -343,7 +339,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                tools:src="@drawable/ic_gift_box" />
+                tools:src="@drawable/ic_gift" />
         </TableLayout>
 
     </ScrollView>

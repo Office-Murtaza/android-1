@@ -64,7 +64,7 @@
         <activity
             android:name=".presentation.features.wallet.add.AddWalletActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppThemeNoActionBar"/>
+            android:theme="@style/AppThemeNoActionBar" />
         <activity
             android:name=".presentation.features.authorization.pin.PinActivity"
             android:launchMode="singleInstance"
@@ -88,7 +88,7 @@
             android:theme="@style/AppThemeNoActionBar" />
 
         <activity
-            android:name=".ui.main.coins.transactions.TransactionsActivity"
+            android:name="com.app.belcobtm.presentation.features.wallet.transactions.TransactionsActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppThemeNoActionBar" />
 
@@ -134,6 +134,11 @@
 
         <activity
             android:name=".presentation.features.wallet.trade.details.TradeDetailsBuyActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppThemeNoActionBar" />
+
+        <activity
+            android:name=".presentation.features.wallet.trade.create.CreateTradeActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppThemeNoActionBar" />
 

@@ -39,11 +39,9 @@ class VerificationBlankViewModel(
             zipCode
         )
         uploadingLiveData.value = LoadingData.Loading()
-        uploadUseCase.invoke(SendVerificationBlankUseCase.Params(blankItem)) { either ->
-            either.either(
-                { uploadingLiveData.value = LoadingData.Error(it) },
-                { uploadingLiveData.value = LoadingData.Success(it) }
-            )
-        }
+        uploadUseCase.invoke(SendVerificationBlankUseCase.Params(blankItem),
+            onSuccess = { uploadingLiveData.value = LoadingData.Success(it) },
+            onError = { uploadingLiveData.value = LoadingData.Error(it) }
+        )
     }
 }

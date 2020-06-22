@@ -11,8 +11,6 @@ import com.app.belcobtm.ui.main.coins.send_gift.SendGiftPresenter
 import com.app.belcobtm.ui.main.coins.settings.change_pass.ChangePassContract
 import com.app.belcobtm.ui.main.coins.settings.check_pass.CheckPassContract
 import com.app.belcobtm.ui.main.coins.settings.phone.ShowPhoneContract
-import com.app.belcobtm.ui.main.coins.transactions.TransactionsContract
-import com.app.belcobtm.ui.main.coins.transactions.TransactionsPresenter
 import com.app.belcobtm.ui.main.coins.withdraw.WithdrawContract
 import com.app.belcobtm.ui.main.coins.withdraw.WithdrawPresenter
 import com.app.belcobtm.ui.main.main_activity.MainContract
@@ -40,9 +38,6 @@ class ActivityModule {
 
     @Provides
     fun provideShowPhonePresenter(): ShowPhoneContract.Presenter = ShowPhonePresenter()
-
-    @Provides
-    fun provideTransactionsPresenter(): TransactionsContract.Presenter = TransactionsPresenter()
 
     @Provides
     fun provideWithdrawPresenter(): WithdrawContract.Presenter = WithdrawPresenter()

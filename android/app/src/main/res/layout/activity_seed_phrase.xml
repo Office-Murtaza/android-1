@@ -31,7 +31,6 @@
             android:layout_marginBottom="8dp" />
     </FrameLayout>
 
-
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/appCompatImageView"
         android:layout_width="0dp"
@@ -50,7 +49,7 @@
         android:text="@string/seed_phrase"
         android:textColor="@android:color/white"
         android:textSize="20sp"
-        app:fontFamily="@font/poppins_bold"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -66,7 +65,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/icon_text" />
-
 
     <androidx.cardview.widget.CardView
         android:id="@+id/card_view"
@@ -93,7 +91,6 @@
                 android:gravity="center"
                 android:text="@string/seed_info"
                 android:textSize="16sp"
-                app:fontFamily="@font/poppins_medium"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -109,10 +106,8 @@
                 android:paddingTop="@dimen/margin_quoter"
                 android:paddingEnd="@dimen/margin_half"
                 android:paddingBottom="@dimen/margin_quoter"
-                app:fontFamily="@font/poppins_medium"
                 app:layout_constraintBaseline_toBaselineOf="@id/word_2"
                 app:layout_constraintEnd_toStartOf="@id/word_2" />
-
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/word_2"
@@ -125,7 +120,6 @@
                 android:paddingTop="@dimen/margin_quoter"
                 android:paddingEnd="@dimen/margin_half"
                 android:paddingBottom="@dimen/margin_quoter"
-                app:fontFamily="@font/poppins_medium"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/seed_info" />
@@ -141,7 +135,6 @@
                 android:paddingTop="@dimen/margin_quoter"
                 android:paddingEnd="@dimen/margin_half"
                 android:paddingBottom="@dimen/margin_quoter"
-                app:fontFamily="@font/poppins_medium"
                 app:layout_constraintBaseline_toBaselineOf="@id/word_2"
                 app:layout_constraintStart_toEndOf="@id/word_2" />
 
@@ -156,7 +149,6 @@
                 android:paddingTop="@dimen/margin_quoter"
                 android:paddingEnd="@dimen/margin_half"
                 android:paddingBottom="@dimen/margin_quoter"
-                app:fontFamily="@font/poppins_medium"
                 app:layout_constraintBaseline_toBaselineOf="@id/word_5"
                 app:layout_constraintEnd_toStartOf="@id/word_5" />
 
@@ -172,7 +164,6 @@
                 android:paddingTop="@dimen/margin_quoter"
                 android:paddingEnd="@dimen/margin_half"
                 android:paddingBottom="@dimen/margin_quoter"
-                app:fontFamily="@font/poppins_medium"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/word_2" />
@@ -188,7 +179,6 @@
                 android:paddingTop="@dimen/margin_quoter"
                 android:paddingEnd="@dimen/margin_half"
                 android:paddingBottom="@dimen/margin_quoter"
-                app:fontFamily="@font/poppins_medium"
                 app:layout_constraintBaseline_toBaselineOf="@id/word_5"
                 app:layout_constraintStart_toEndOf="@id/word_5" />
 
@@ -203,7 +193,6 @@
                 android:paddingTop="@dimen/margin_quoter"
                 android:paddingEnd="@dimen/margin_half"
                 android:paddingBottom="@dimen/margin_quoter"
-                app:fontFamily="@font/poppins_medium"
                 app:layout_constraintBaseline_toBaselineOf="@id/word_8"
                 app:layout_constraintEnd_toStartOf="@id/word_8" />
 
@@ -219,7 +208,6 @@
                 android:paddingTop="@dimen/margin_quoter"
                 android:paddingEnd="@dimen/margin_half"
                 android:paddingBottom="@dimen/margin_quoter"
-                app:fontFamily="@font/poppins_medium"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/word_5" />
@@ -235,7 +223,6 @@
                 android:paddingTop="@dimen/margin_quoter"
                 android:paddingEnd="@dimen/margin_half"
                 android:paddingBottom="@dimen/margin_quoter"
-                app:fontFamily="@font/poppins_medium"
                 app:layout_constraintBaseline_toBaselineOf="@id/word_8"
                 app:layout_constraintStart_toEndOf="@id/word_8" />
 
@@ -250,7 +237,6 @@
                 android:paddingTop="@dimen/margin_quoter"
                 android:paddingEnd="@dimen/margin_half"
                 android:paddingBottom="@dimen/margin_quoter"
-                app:fontFamily="@font/poppins_medium"
                 app:layout_constraintBaseline_toBaselineOf="@id/word_11"
                 app:layout_constraintEnd_toStartOf="@id/word_11" />
 
@@ -266,7 +252,6 @@
                 android:paddingTop="@dimen/margin_quoter"
                 android:paddingEnd="@dimen/margin_half"
                 android:paddingBottom="@dimen/margin_quoter"
-                app:fontFamily="@font/poppins_medium"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/word_8" />
@@ -282,94 +267,37 @@
                 android:paddingTop="@dimen/margin_quoter"
                 android:paddingEnd="@dimen/margin_half"
                 android:paddingBottom="@dimen/margin_quoter"
-                app:fontFamily="@font/poppins_medium"
                 app:layout_constraintBaseline_toBaselineOf="@id/word_11"
                 app:layout_constraintStart_toEndOf="@id/word_11" />
 
-            <!--<androidx.appcompat.widget.AppCompatTextView-->
-                <!--android:id="@+id/word_13"-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_marginEnd="@dimen/margin_half"-->
-                <!--android:background="@drawable/seed_gray_rounded_corner"-->
-                <!--android:gravity="center"-->
-                <!--android:paddingStart="@dimen/margin_half"-->
-                <!--android:paddingTop="@dimen/margin_quoter"-->
-                <!--android:paddingEnd="@dimen/margin_half"-->
-                <!--android:paddingBottom="@dimen/margin_quoter"-->
-                <!--app:fontFamily="@font/poppins_medium"-->
-                <!--app:layout_constraintBaseline_toBaselineOf="@id/word_14"-->
-                <!--app:layout_constraintEnd_toStartOf="@id/word_14" />-->
-
-
-            <!--<androidx.appcompat.widget.AppCompatTextView-->
-                <!--android:id="@+id/word_14"-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_marginTop="@dimen/margin_half"-->
-                <!--android:background="@drawable/seed_gray_rounded_corner"-->
-                <!--android:gravity="center"-->
-                <!--android:paddingStart="@dimen/margin_half"-->
-                <!--android:paddingTop="@dimen/margin_quoter"-->
-                <!--android:paddingEnd="@dimen/margin_half"-->
-                <!--android:paddingBottom="@dimen/margin_quoter"-->
-                <!--app:fontFamily="@font/poppins_medium"-->
-                <!--app:layout_constraintEnd_toEndOf="parent"-->
-                <!--app:layout_constraintStart_toStartOf="parent"-->
-                <!--app:layout_constraintTop_toBottomOf="@id/word_11" />-->
-
-            <!--<androidx.appcompat.widget.AppCompatTextView-->
-                <!--android:id="@+id/word_15"-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_marginStart="@dimen/margin_half"-->
-                <!--android:background="@drawable/seed_gray_rounded_corner"-->
-                <!--android:gravity="center"-->
-                <!--android:paddingStart="@dimen/margin_half"-->
-                <!--android:paddingTop="@dimen/margin_quoter"-->
-                <!--android:paddingEnd="@dimen/margin_half"-->
-                <!--android:paddingBottom="@dimen/margin_quoter"-->
-                <!--app:fontFamily="@font/poppins_medium"-->
-                <!--app:layout_constraintBaseline_toBaselineOf="@id/word_14"-->
-                <!--app:layout_constraintStart_toEndOf="@id/word_14" />-->
-
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/copy_seed"
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/copySeedPhraseView"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:clickable="true"
-                android:focusable="true"
-                android:text="@string/copy"
-                app:layout_constraintTop_toBottomOf="@id/word_11"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:layout_marginTop="@dimen/margin_main"
-                android:background="?attr/selectableItemBackgroundBorderless"
+                android:layout_marginTop="8dp"
+                android:text="@string/seed_phrase_screen_copy"
                 android:textColor="@color/blue_color"
-                app:fontFamily="@font/poppins_medium" />
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/word_11" />
 
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/bt_done"
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/doneButtonView"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/margin_x4"
-                android:layout_marginEnd="@dimen/margin_x4"
-                android:layout_marginBottom="@dimen/margin_x2"
-                android:background="@drawable/bt_gray_rounded_corner"
-                android:backgroundTint="@color/blue_color"
-                android:text="Done"
-                android:textColor="@android:color/white"
-                app:fontFamily="@font/poppins_bold"
+                android:layout_marginStart="64dp"
+                android:layout_marginEnd="64dp"
+                android:layout_marginBottom="32dp"
+                android:paddingTop="12dp"
+                android:paddingBottom="12dp"
+                android:text="@string/seed_phrase_screen_done"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
 
-
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-
     </androidx.cardview.widget.CardView>
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>
