@@ -21,19 +21,19 @@ extension CoinDetailsFlowController: CoinDetailsModuleDelegate {
     step.accept(CoinDetailsFlow.Steps.deposit(coin))
   }
   
-  func showWithdrawScreen(coin: BTMCoin, coinBalance: CoinBalance, coinSettings: CoinSettings) {
-    step.accept(CoinDetailsFlow.Steps.withdraw(coin, coinBalance, coinSettings))
+  func showWithdrawScreen(coin: BTMCoin, coinBalances: [CoinBalance], coinSettings: CoinSettings) {
+    step.accept(CoinDetailsFlow.Steps.withdraw(coin, coinBalances, coinSettings))
   }
   
-  func showSendGiftScreen(coin: BTMCoin, coinBalance: CoinBalance, coinSettings: CoinSettings) {
-    step.accept(CoinDetailsFlow.Steps.sendGift(coin, coinBalance, coinSettings))
+  func showSendGiftScreen(coin: BTMCoin, coinBalances: [CoinBalance], coinSettings: CoinSettings) {
+    step.accept(CoinDetailsFlow.Steps.sendGift(coin, coinBalances, coinSettings))
   }
   
-  func showSellScreen(coin: BTMCoin, coinBalance: CoinBalance, coinSettings: CoinSettings, details: SellDetails) {
-    step.accept(CoinDetailsFlow.Steps.sell(coin, coinBalance, coinSettings, details))
+  func showSellScreen(coin: BTMCoin, coinBalances: [CoinBalance], coinSettings: CoinSettings, details: SellDetails) {
+    step.accept(CoinDetailsFlow.Steps.sell(coin, coinBalances, coinSettings, details))
   }
   
-  func showTransactionDetails(with details: TransactionDetails, for type: CoinType) {
+  func showTransactionDetails(with details: TransactionDetails, for type: CustomCoinType) {
     step.accept(CoinDetailsFlow.Steps.transactionDetails(details, type))
   }
   

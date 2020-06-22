@@ -22,7 +22,7 @@ protocol APIGateway {
   func addCoins(userId: Int, coinAddresses: [CoinAddress]) -> Completable
   func compareCoins(userId: Int, coinAddresses: [CoinAddress]) -> Completable
   func getCoinsBalance(userId: Int, coins: [BTMCoin]) -> Single<CoinsBalance>
-  func getCoinSettings(type: CoinType) -> Single<CoinSettings>
+  func getCoinSettings(type: CustomCoinType) -> Single<CoinSettings>
   func getMapAddresses() -> Single<MapAddresses>
   func getPhoneNumber(userId: Int) -> Single<PhoneNumber>
   func checkPassword(userId: Int, password: String) -> Single<Bool>
@@ -30,37 +30,39 @@ protocol APIGateway {
   func confirmPhone(userId: Int, phoneNumber: String, code: String) -> Completable
   func changePassword(userId: Int, oldPassword: String, newPassword: String) -> Completable
   func unlink(userId: Int) -> Completable
-  func getTransactions(userId: Int, type: CoinType, page: Int) -> Single<Transactions>
-  func getTransactionDetails(userId: Int, type: CoinType, id: String) -> Single<TransactionDetails>
-  func getUtxos(userId: Int, type: CoinType, xpub: String) -> Single<[Utxo]>
+  func getTransactions(userId: Int, type: CustomCoinType, page: Int) -> Single<Transactions>
+  func getTransactionDetails(userId: Int, type: CustomCoinType, id: String) -> Single<TransactionDetails>
+  func getUtxos(userId: Int, type: CustomCoinType, xpub: String) -> Single<[Utxo]>
   func presubmitTransaction(userId: Int,
-                            type: CoinType,
+                            type: CustomCoinType,
                             coinAmount: Double,
                             currencyAmount: Double) -> Single<PreSubmitResponse>
   func submitTransaction(userId: Int,
-                         type: CoinType,
+                         type: CustomCoinType,
                          txType: TransactionType,
                          amount: Double,
                          phone: String?,
                          message: String?,
                          imageId: String?,
-                         toCoinType: CoinType?,
+                         toCoinType: CustomCoinType?,
                          txhex: String?) -> Completable
   func requestCode(userId: Int) -> Completable
-  func getTronBlockHeader(userId: Int, type: CoinType) -> Single<BTMTronBlockHeader>
-  func getGiftAddress(userId: Int, type: CoinType, phone: String) -> Single<GiftAddress>
-  func getNonce(userId: Int, type: CoinType, address: String) -> Single<Nonce>
-  func getBinanceAccountInfo(userId: Int, type: CoinType) -> Single<BinanceAccountInfo>
-  func getRippleSequence(userId: Int, type: CoinType) -> Single<RippleSequence>
-  func getSellAddress(userId: Int, type: CoinType) -> Single<SellAddress>
-  func getSellDetails(userId: Int, type: CoinType) -> Single<SellDetails>
+  func getTronBlockHeader(userId: Int, type: CustomCoinType) -> Single<BTMTronBlockHeader>
+  func getGiftAddress(userId: Int, type: CustomCoinType, phone: String) -> Single<GiftAddress>
+  func getNonce(userId: Int, type: CustomCoinType, address: String) -> Single<Nonce>
+  func getBinanceAccountInfo(userId: Int, type: CustomCoinType) -> Single<BinanceAccountInfo>
+  func getRippleSequence(userId: Int, type: CustomCoinType) -> Single<RippleSequence>
+  func getSellAddress(userId: Int, type: CustomCoinType) -> Single<SellAddress>
+  func getSellDetails(userId: Int, type: CustomCoinType) -> Single<SellDetails>
   func getVerificationInfo(userId: Int) -> Single<VerificationInfo>
   func sendVerification(userId: Int, userData: VerificationUserData) -> Completable
   func sendVIPVerification(userId: Int, userData: VIPVerificationUserData) -> Completable
-  func getPriceChartData(userId: Int, type: CoinType) -> Single<PriceChartData>
-  func getBuyTrades(userId: Int, type: CoinType, page: Int) -> Single<BuySellTrades>
-  func getSellTrades(userId: Int, type: CoinType, page: Int) -> Single<BuySellTrades>
+  func getPriceChartData(userId: Int, type: CustomCoinType) -> Single<PriceChartData>
+  func getBuyTrades(userId: Int, type: CustomCoinType, page: Int) -> Single<BuySellTrades>
+  func getSellTrades(userId: Int, type: CustomCoinType, page: Int) -> Single<BuySellTrades>
   func updateLocation(userId: Int, latitude: Double, longitude: Double) -> Completable
+  func submitTradeRequest(userId: Int, data: SubmitTradeRequestData) -> Completable
+  func submitTrade(userId: Int, data: SubmitTradeData) -> Completable
 }
 
 final class APIGatewayImpl: APIGateway {
@@ -155,7 +157,7 @@ final class APIGatewayImpl: APIGateway {
       }
   }
   
-  func getCoinSettings(type: CoinType) -> Single<CoinSettings> {
+  func getCoinSettings(type: CustomCoinType) -> Single<CoinSettings> {
     let request = CoinSettingsRequest(coinId: type.code)
     return api.execute(request)
       .flatMap {
@@ -263,7 +265,7 @@ final class APIGatewayImpl: APIGateway {
       .toCompletable()
   }
   
-  func getTransactions(userId: Int, type: CoinType, page: Int) -> Single<Transactions> {
+  func getTransactions(userId: Int, type: CustomCoinType, page: Int) -> Single<Transactions> {
     let index = page * 10 + 1
     let request = TransactionsRequest(userId: userId, coinId: type.code, index: index)
     return api.execute(request)
@@ -277,7 +279,7 @@ final class APIGatewayImpl: APIGateway {
       }
   }
   
-  func getTransactionDetails(userId: Int, type: CoinType, id: String) -> Single<TransactionDetails> {
+  func getTransactionDetails(userId: Int, type: CustomCoinType, id: String) -> Single<TransactionDetails> {
     let request = TransactionDetailsRequest(userId: userId, coinId: type.code, id: id)
     return api.execute(request)
       .flatMap {
@@ -290,7 +292,7 @@ final class APIGatewayImpl: APIGateway {
       }
   }
   
-  func getUtxos(userId: Int, type: CoinType, xpub: String) -> Single<[Utxo]> {
+  func getUtxos(userId: Int, type: CustomCoinType, xpub: String) -> Single<[Utxo]> {
     let request = UtxosRequest(userId: userId, coinId: type.code, xpub: xpub)
     return api.execute(request)
       .flatMap {
@@ -304,7 +306,7 @@ final class APIGatewayImpl: APIGateway {
   }
   
   func presubmitTransaction(userId: Int,
-                            type: CoinType,
+                            type: CustomCoinType,
                             coinAmount: Double,
                             currencyAmount: Double) -> Single<PreSubmitResponse> {
     let request = PreSubmitTransactionRequest(userId: userId,
@@ -323,13 +325,13 @@ final class APIGatewayImpl: APIGateway {
   }
   
   func submitTransaction(userId: Int,
-                         type: CoinType,
+                         type: CustomCoinType,
                          txType: TransactionType,
                          amount: Double,
                          phone: String?,
                          message: String?,
                          imageId: String?,
-                         toCoinType: CoinType?,
+                         toCoinType: CustomCoinType?,
                          txhex: String?) -> Completable {
     let request = SubmitTransactionRequest(userId: userId,
                                            coinId: type.code,
@@ -366,7 +368,7 @@ final class APIGatewayImpl: APIGateway {
       .toCompletable()
   }
   
-  func getTronBlockHeader(userId: Int, type: CoinType) -> Single<BTMTronBlockHeader> {
+  func getTronBlockHeader(userId: Int, type: CustomCoinType) -> Single<BTMTronBlockHeader> {
     let request = GetTronBlockHeaderRequest(userId: userId, coinId: type.code)
     return api.execute(request)
       .flatMap {
@@ -379,7 +381,7 @@ final class APIGatewayImpl: APIGateway {
       }
   }
   
-  func getGiftAddress(userId: Int, type: CoinType, phone: String) -> Single<GiftAddress> {
+  func getGiftAddress(userId: Int, type: CustomCoinType, phone: String) -> Single<GiftAddress> {
     let request = GetGiftAddressRequest(userId: userId, coinId: type.code, phone: phone)
     return api.execute(request)
       .flatMap {
@@ -392,7 +394,7 @@ final class APIGatewayImpl: APIGateway {
       }
   }
   
-  func getNonce(userId: Int, type: CoinType, address: String) -> Single<Nonce> {
+  func getNonce(userId: Int, type: CustomCoinType, address: String) -> Single<Nonce> {
     let request = GetNonceRequest(userId: userId, coinId: type.code, address: address)
     return api.execute(request)
       .flatMap {
@@ -405,7 +407,7 @@ final class APIGatewayImpl: APIGateway {
       }
   }
   
-  func getBinanceAccountInfo(userId: Int, type: CoinType) -> Single<BinanceAccountInfo> {
+  func getBinanceAccountInfo(userId: Int, type: CustomCoinType) -> Single<BinanceAccountInfo> {
     let request = GetBinanceAccountInfoRequest(userId: userId, coinId: type.code)
     return api.execute(request)
       .flatMap {
@@ -418,7 +420,7 @@ final class APIGatewayImpl: APIGateway {
       }
   }
   
-  func getRippleSequence(userId: Int, type: CoinType) -> Single<RippleSequence> {
+  func getRippleSequence(userId: Int, type: CustomCoinType) -> Single<RippleSequence> {
     let request = GetRippleSequenceRequest(userId: userId, coinId: type.code)
     return api.execute(request)
       .flatMap {
@@ -431,7 +433,7 @@ final class APIGatewayImpl: APIGateway {
       }
   }
   
-  func getSellAddress(userId: Int, type: CoinType) -> Single<SellAddress> {
+  func getSellAddress(userId: Int, type: CustomCoinType) -> Single<SellAddress> {
     let request = GetSellAddressRequest(userId: userId, coinId: type.code)
     return api.execute(request)
       .flatMap {
@@ -444,7 +446,7 @@ final class APIGatewayImpl: APIGateway {
       }
   }
   
-  func getSellDetails(userId: Int, type: CoinType) -> Single<SellDetails> {
+  func getSellDetails(userId: Int, type: CustomCoinType) -> Single<SellDetails> {
     let request = GetSellDetailsRequest(userId: userId, coinId: type.code)
     return api.execute(request)
       .flatMap {
@@ -498,7 +500,7 @@ final class APIGatewayImpl: APIGateway {
       .toCompletable()
   }
   
-  func getPriceChartData(userId: Int, type: CoinType) -> Single<PriceChartData> {
+  func getPriceChartData(userId: Int, type: CustomCoinType) -> Single<PriceChartData> {
     let request = GetPriceChartDataRequest(userId: userId, coinId: type.code)
     return api.execute(request)
       .flatMap {
@@ -511,7 +513,7 @@ final class APIGatewayImpl: APIGateway {
     }
   }
   
-  func getBuyTrades(userId: Int, type: CoinType, page: Int) -> Single<BuySellTrades> {
+  func getBuyTrades(userId: Int, type: CustomCoinType, page: Int) -> Single<BuySellTrades> {
     let index = page * 10 + 1
     let request = BuySellTradesRequest(userId: userId, coinId: type.code, type: TradeType.buy, index: index)
     return api.execute(request)
@@ -525,7 +527,7 @@ final class APIGatewayImpl: APIGateway {
       }
   }
   
-  func getSellTrades(userId: Int, type: CoinType, page: Int) -> Single<BuySellTrades> {
+  func getSellTrades(userId: Int, type: CustomCoinType, page: Int) -> Single<BuySellTrades> {
     let index = page * 10 + 1
     let request = BuySellTradesRequest(userId: userId, coinId: type.code, type: TradeType.sell, index: index)
     return api.execute(request)
@@ -541,6 +543,34 @@ final class APIGatewayImpl: APIGateway {
   
   func updateLocation(userId: Int, latitude: Double, longitude: Double) -> Completable {
     let request = UpdateLocationRequest(userId: userId, latitude: latitude, longitude: longitude)
+    return api.execute(request)
+    .map { apiResponse -> Void in
+      switch apiResponse {
+      case .response:
+        return Void()
+      case let .error(error):
+        throw error
+      }
+    }
+    .toCompletable()
+  }
+  
+  func submitTradeRequest(userId: Int, data: SubmitTradeRequestData) -> Completable {
+    let request = SubmitTradeRequestRequest(userId: userId, data: data)
+    return api.execute(request)
+    .map { apiResponse -> Void in
+      switch apiResponse {
+      case .response:
+        return Void()
+      case let .error(error):
+        throw error
+      }
+    }
+    .toCompletable()
+  }
+  
+  func submitTrade(userId: Int, data: SubmitTradeData) -> Completable {
+    let request = SubmitTradeRequest(userId: userId, data: data)
     return api.execute(request)
     .map { apiResponse -> Void in
       switch apiResponse {

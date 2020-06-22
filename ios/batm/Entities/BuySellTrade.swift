@@ -15,9 +15,9 @@ enum TradeType {
   
   var rawValue: Int {
     switch self {
-      case .unknown: return 0
-      case .buy: return 1
-      case .sell: return 2
+    case .unknown: return 0
+    case .buy: return 1
+    case .sell: return 2
     }
   }
   
@@ -33,7 +33,7 @@ enum TradeType {
 
 struct BuySellTrade: Equatable {
   var id: Int
-  var index: Int
+  var type: TradeType
   var username: String
   var tradeCount: Int
   var tradeRate: Double
@@ -43,4 +43,32 @@ struct BuySellTrade: Equatable {
   var minLimit: Int
   var maxLimit: Int
   var terms: String
+  
+  var formattedLimits: String {
+    return "\(minLimit) - \(maxLimit)".withUSD
+  }
+  
+  var formattedTradeCount: String {
+    switch tradeCount {
+    case ..<100: return "\(tradeCount)"
+    case 100..<1000: return "\(tradeCount / 100 * 100)+"
+    case 1000..<10000: return "\(tradeCount / 1000 * 1000)+"
+    case 10000..<100000: return "\(tradeCount / 10000 * 10000)+"
+    case 100000...: return "\(tradeCount / 100000 * 100000)+"
+    default: return "\(tradeCount)"
+    }
+  }
+  
+  var userStats: String {
+    var formattedDistance = ""
+    if let distance = distance {
+      formattedDistance = ", \(distance)km"
+    }
+    
+    return "(\(formattedTradeCount), \(tradeRate)\(formattedDistance))"
+  }
+  
+  var userInfo: String {
+    return "\(username) \(userStats)"
+  }
 }

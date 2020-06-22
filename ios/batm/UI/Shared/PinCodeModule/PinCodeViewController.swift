@@ -42,15 +42,8 @@ class PinCodeViewController: ModuleViewController<PinCodePresenter>, UITextField
     return textField
   }()
   
-  var handler: KeyboardHandler!
-  
-  private func setupKeyboardHandling() {
-    handler = KeyboardHandler(with: view)
-    setupDefaultKeyboardHandling(with: handler, animated: false)
-  }
-  
   override func setupUI() {
-    setupKeyboardHandling()
+    setupDefaultKeyboardHandling(animated: false)
     
     view.backgroundColor = .whiteTwo
     view.addSubviews(pinCodeTextField,

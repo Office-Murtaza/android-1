@@ -5,7 +5,7 @@ extension CoinBalance: ImmutableMappable {
   init(map: Map) throws {
     let code: String = try map.value("code")
     
-    guard let mappedType = CoinType(code: code) else {
+    guard let mappedType = CustomCoinType(code: code) else {
       throw ObjectMapperError.couldNotMap
     }
     

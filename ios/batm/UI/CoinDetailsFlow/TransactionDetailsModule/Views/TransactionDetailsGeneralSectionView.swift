@@ -63,14 +63,14 @@ class TransactionDetailsGeneralSectionView: UIView, HasDisposeBag {
     stackView.addArrangedSubview(view)
   }
   
-  func configure(with details: TransactionDetails, for type: CoinType) {
+  func configure(with details: TransactionDetails, for type: CustomCoinType) {
     details.txId.flatMap { addTxIdRow(text: $0) }
     details.txDbId.flatMap { addTextRow(text: $0, title: localize(L.TransactionDetails.txDbId)) }
     addTextRow(text: details.type.verboseValue, title: localize(L.TransactionDetails.type))
     addStatusRow(status: details.status)
     details.cashStatus.flatMap { addCashStatusRow(status: $0) }
     
-    let fiatAmount = details.fiatAmount.flatMap { "\($0.fiatSellFormatted) USD" }
+    let fiatAmount = details.fiatAmount.flatMap { $0.fiatSellFormatted.withUSD }
     let cryptoAmount = details.cryptoAmount.flatMap { "\($0.coinFormatted) \(type.code)" }
     let cryptoFee = details.cryptoFee.flatMap { "\($0.coinFormatted) \(type.code)" }
     

@@ -106,7 +106,7 @@ class CoinWithdrawHeaderView: UIView {
   }
   
   func configure(for coinBalance: CoinBalance, useReserved: Bool = false) {
-    priceValueLabel.text = "\(coinBalance.price.fiatFormatted) USD"
+    priceValueLabel.text = coinBalance.price.fiatFormatted.withUSD
     balanceValueView.configure(for: coinBalance)
     
     if useReserved {
@@ -118,7 +118,7 @@ class CoinWithdrawHeaderView: UIView {
   func configure(for details: SellDetails) {
     sellDetailsLabels.forEach { $0.isHidden = false }
     
-    dailyLimitValueLabel.text = "\(details.dailyLimit.fiatFormatted) USD"
-    txLimitValueLabel.text = "\(details.transactionLimit.fiatFormatted) USD"
+    dailyLimitValueLabel.text = details.dailyLimit.fiatFormatted.withUSD
+    txLimitValueLabel.text = details.transactionLimit.fiatFormatted.withUSD
   }
 }

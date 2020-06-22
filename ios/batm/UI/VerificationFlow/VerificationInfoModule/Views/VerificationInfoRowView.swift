@@ -57,11 +57,11 @@ class VerificationInfoRowView: UIView {
     switch type {
     case let .txLimit(limit):
       titleLabel.text = localize(L.VerificationInfo.TxLimitRow.title)
-      valueLabel.text = "\(limit.fiatSellFormatted) USD"
+      valueLabel.text = limit.fiatSellFormatted.withUSD
       valueLabel.textColor = .warmGrey
     case let .dailyLimit(limit):
       titleLabel.text = localize(L.VerificationInfo.DailyLimitRow.title)
-      valueLabel.text = "\(limit.fiatSellFormatted) USD"
+      valueLabel.text = limit.fiatSellFormatted.withUSD
       valueLabel.textColor = .warmGrey
     case let .status(status):
       titleLabel.text = localize(L.VerificationInfo.StatusRow.title)

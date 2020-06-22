@@ -108,7 +108,7 @@ class CoinDetailsChartView: UIView {
     case .oneYear: period = data.periods.oneYearPeriod
     }
     
-    priceLabel.text = "\(data.price.fiatFormatted) USD"
+    priceLabel.text = data.price.fiatFormatted.withUSD
     changeRateImageView.image = period.changeRate < 0
       ? UIImage(named: "change_rate_down")
       : UIImage(named: "change_rate_up")

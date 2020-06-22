@@ -8,7 +8,7 @@ import FlagPhoneNumber
 
 final class CoinSendGiftFormView: UIView, HasDisposeBag {
   
-  let didSelectCountry = PublishRelay<FPNCountry>()
+  let selectedCountryRelay = BehaviorRelay<FPNCountry?>(value: nil)
   
   let stackView: UIStackView = {
     let stackView = UIStackView()
@@ -159,7 +159,8 @@ final class CoinSendGiftFormView: UIView, HasDisposeBag {
   }
   
   private func setupBindings() {
-    didSelectCountry
+    selectedCountryRelay
+      .filterNil()
       .map { $0.phoneCode }
       .bind(to: dialCodeTextField.rx.text)
       .disposed(by: disposeBag)
@@ -173,7 +174,7 @@ final class CoinSendGiftFormView: UIView, HasDisposeBag {
     countryPicker.setup(repository: countryRepository)
     
     countryPicker.didSelect = { [unowned self] country in
-      self.didSelectCountry.accept(country)
+      self.selectedCountryRelay.accept(country)
     }
 
     if let countryCode = FPNCountryCode(rawValue: "US") {
@@ -188,7 +189,7 @@ final class CoinSendGiftFormView: UIView, HasDisposeBag {
 
 extension Reactive where Base == CoinSendGiftFormView {
   var country: Driver<FPNCountry> {
-    return base.didSelectCountry.asDriver(onErrorDriveWith: .empty())
+    return base.selectedCountryRelay.filterNil().asDriver(onErrorDriveWith: .empty())
   }
   var phoneText: ControlProperty<String?> {
     return base.phoneTextField.rx.text

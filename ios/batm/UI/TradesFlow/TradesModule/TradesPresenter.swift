@@ -13,6 +13,11 @@ final class TradesPresenter: ModulePresenter, TradesModule {
     var refreshSellTrades: Driver<Void>
     var showMoreBuyTrades: Driver<Void>
     var showMoreSellTrades: Driver<Void>
+    var buyTradeSelected: Driver<IndexPath>
+    var sellTradeSelected: Driver<IndexPath>
+    var recall: Driver<Void>
+    var reserve: Driver<Void>
+    var create: Driver<Void>
   }
   
   private let store: Store
@@ -78,6 +83,37 @@ final class TradesPresenter: ModulePresenter, TradesModule {
       .drive(onNext: { [fetchSellTradesRelay] _ in fetchSellTradesRelay.accept(()) })
       .disposed(by: disposeBag)
     
+    input.buyTradeSelected
+      .withLatestFrom(state) { indexPath, state in state.buyTrades?.trades[indexPath.item] }
+      .filterNil()
+      .withLatestFrom(state) { ($1, $0) }
+      .drive(onNext: { [delegate] in delegate?.showBuySellTradeDetails(coinBalance: $0.coinBalance!,
+                                                                       trade: $1,
+                                                                       type: .buy) })
+      .disposed(by: disposeBag)
+    
+    input.sellTradeSelected
+      .withLatestFrom(state) { indexPath, state in state.sellTrades?.trades[indexPath.item] }
+      .filterNil()
+      .withLatestFrom(state) { ($1, $0) }
+      .drive(onNext: { [delegate] in delegate?.showBuySellTradeDetails(coinBalance: $0.coinBalance!,
+                                                                       trade: $1,
+                                                                       type: .sell) })
+      .disposed(by: disposeBag)
+    
+    input.recall
+      .drive(onNext: { print("RECALL TAPPED!") })
+      .disposed(by: disposeBag)
+    
+    input.reserve
+    .drive(onNext: { print("RECALL TAPPED!") })
+    .disposed(by: disposeBag)
+    
+    input.create
+      .withLatestFrom(state)
+      .drive(onNext: { [delegate] in delegate?.showCreateEditTrade(coinBalance: $0.coinBalance!) })
+      .disposed(by: disposeBag)
+    
     setupBindings()
   }
   
@@ -118,7 +154,7 @@ final class TradesPresenter: ModulePresenter, TradesModule {
       .disposed(by: disposeBag)
   }
   
-  private func getBuyTrades(for type: CoinType, from index: Int = 0) -> Completable {
+  private func getBuyTrades(for type: CustomCoinType, from index: Int = 0) -> Completable {
     return usecase.getBuyTrades(for: type, from: index)
       .do(onSuccess: { [store] in
         if index > 0 {
@@ -134,7 +170,7 @@ final class TradesPresenter: ModulePresenter, TradesModule {
       .toCompletable()
   }
   
-  private func getSellTrades(for type: CoinType, from index: Int = 0) -> Completable {
+  private func getSellTrades(for type: CustomCoinType, from index: Int = 0) -> Completable {
     return usecase.getSellTrades(for: type, from: index)
       .do(onSuccess: { [store] in
         if index > 0 {

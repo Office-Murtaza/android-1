@@ -102,6 +102,18 @@ extension MDCButton {
     return button
   }
   
+  static var sendRequest: MDCButton {
+    let button = MDCButton.contained
+    button.setTitle(localize(L.BuySellTradeDetails.Button.sendRequest), for: .normal)
+    return button
+  }
+  
+  static var create: MDCButton {
+    let button = MDCButton.contained
+    button.setTitle(localize(L.CreateEditTrade.Button.create), for: .normal)
+    return button
+  }
+  
   func set(image: UIImage?, title: String?, spacing: CGFloat = 10) {
     setTitle(title, for: .normal)
     setImage(image, for: .normal)

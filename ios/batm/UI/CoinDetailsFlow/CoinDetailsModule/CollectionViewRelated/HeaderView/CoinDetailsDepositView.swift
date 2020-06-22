@@ -111,8 +111,8 @@ class CoinDetailsDepositView: UIView {
   
   func configure(for coin: BTMCoin) {
     titleLabel.text = String(format: localize(L.CoinDeposit.title), coin.type.code)
-    qrCodeImageView.image = UIImage.qrCode(from: coin.publicKey)
-    addressValueLabel.text = coin.publicKey
+    qrCodeImageView.image = UIImage.qrCode(from: coin.address)
+    addressValueLabel.text = coin.address
   }
 }
 

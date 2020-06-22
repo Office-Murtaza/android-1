@@ -2,7 +2,7 @@ import Foundation
 import TrustWalletCore
 
 struct CoinBalance: Equatable {
-  let type: CoinType
+  let type: CustomCoinType
   let address: String
   let balance: Double
   let reservedBalance: Double

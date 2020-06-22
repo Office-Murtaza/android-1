@@ -26,8 +26,6 @@ final class CoinSellViewController: NavigationScreenViewController<CoinSellPrese
     return view
   }()
   
-  private var handler: KeyboardHandler!
-  
   override var preferredStatusBarStyle: UIStatusBarStyle {
     return .lightContent
   }
@@ -41,12 +39,7 @@ final class CoinSellViewController: NavigationScreenViewController<CoinSellPrese
     view.addSubviews(backgroundDarkView,
                      codeView)
     
-    setupKeyboardHandling()
-  }
-  
-  private func setupKeyboardHandling() {
-    handler = KeyboardHandler(with: view)
-    setupDefaultKeyboardHandling(with: handler)
+    setupDefaultKeyboardHandling()
   }
 
   override func setupLayout() {

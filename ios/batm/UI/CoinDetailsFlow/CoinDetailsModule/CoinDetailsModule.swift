@@ -7,10 +7,10 @@ protocol CoinDetailsModule: class {
 protocol CoinDetailsModuleDelegate: class {
   func didFinishCoinDetails()
   func showDepositScreen(coin: BTMCoin)
-  func showWithdrawScreen(coin: BTMCoin, coinBalance: CoinBalance, coinSettings: CoinSettings)
-  func showSendGiftScreen(coin: BTMCoin, coinBalance: CoinBalance, coinSettings: CoinSettings)
-  func showSellScreen(coin: BTMCoin, coinBalance: CoinBalance, coinSettings: CoinSettings, details: SellDetails)
-  func showTransactionDetails(with details: TransactionDetails, for type: CoinType)
+  func showWithdrawScreen(coin: BTMCoin, coinBalances: [CoinBalance], coinSettings: CoinSettings)
+  func showSendGiftScreen(coin: BTMCoin, coinBalances: [CoinBalance], coinSettings: CoinSettings)
+  func showSellScreen(coin: BTMCoin, coinBalances: [CoinBalance], coinSettings: CoinSettings, details: SellDetails)
+  func showTransactionDetails(with details: TransactionDetails, for type: CustomCoinType)
   func showExchangeScreen(coin: BTMCoin, coinBalances: [CoinBalance], coinSettings: CoinSettings)
   func showTradesScreen(coinBalance: CoinBalance)
 }

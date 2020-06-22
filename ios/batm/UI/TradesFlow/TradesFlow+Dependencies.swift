@@ -11,7 +11,9 @@ extension TradesFlow {
           flowController.delegate = ioc.resolve(TradesFlowControllerDelegate.self)
           return flowController
         }
-        .implements(TradesModuleDelegate.self)
+        .implements(TradesModuleDelegate.self,
+                    BuySellTradeDetailsModuleDelegate.self,
+                    CreateEditTradeModuleDelegate.self)
         .inObjectScope(.container)
     }
   }

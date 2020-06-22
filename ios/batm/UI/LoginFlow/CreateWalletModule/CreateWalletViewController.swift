@@ -62,8 +62,6 @@ class CreateWalletViewController: ModuleViewController<CreateWalletPresenter> {
     return view
   }()
   
-  private var handler: KeyboardHandler!
-  
   private func registerForKeyboardNotifications() {
     NotificationCenter.default.addObserver(self,
                                            selector: #selector(adjustForKeyboard),
@@ -107,12 +105,7 @@ class CreateWalletViewController: ModuleViewController<CreateWalletPresenter> {
                             formView)
     contentView.addGestureRecognizer(tapRecognizer)
     
-    setupKeyboardHandling()
-  }
-  
-  private func setupKeyboardHandling() {
-    handler = KeyboardHandler(with: view)
-    setupDefaultKeyboardHandling(with: handler)
+    setupDefaultKeyboardHandling()
   }
   
   override func setupLayout() {

@@ -5,6 +5,13 @@ import SnapKit
 
 final class CoinDetailsViewController: NavigationScreenViewController<CoinDetailsPresenter>, UICollectionViewDelegateFlowLayout {
   
+  let didTapDepositRelay = PublishRelay<Void>()
+  let didTapWithdrawRelay = PublishRelay<Void>()
+  let didTapSendGiftRelay = PublishRelay<Void>()
+  let didTapSellRelay = PublishRelay<Void>()
+  let didTapExchangeRelay = PublishRelay<Void>()
+  let didTapTradesRelay = PublishRelay<Void>()
+  
   var dataSource: CoinDetailsCollectionViewDataSource!
   
   let collectionView: UICollectionView = {
@@ -15,7 +22,7 @@ final class CoinDetailsViewController: NavigationScreenViewController<CoinDetail
   
   let refreshControl = UIRefreshControl()
   
-  let fab = CoinDetailsFloatingActionButton()
+  let fab = FloatingActionButton()
   
   override var preferredStatusBarStyle: UIStatusBarStyle {
     return .lightContent
@@ -30,6 +37,29 @@ final class CoinDetailsViewController: NavigationScreenViewController<CoinDetail
     collectionView.backgroundColor = .clear
     collectionView.refreshControl = refreshControl
     collectionView.delegate = self
+    
+    setupFAB()
+  }
+  
+  private func setupFAB() {
+    fab.view.addItem(title: localize(L.CoinDetails.deposit), image: UIImage(named: "fab_deposit")) { [unowned self] _ in
+      self.didTapDepositRelay.accept(())
+    }
+    fab.view.addItem(title: localize(L.CoinDetails.withdraw), image: UIImage(named: "fab_withdraw")) { [unowned self] _ in
+      self.didTapWithdrawRelay.accept(())
+    }
+    fab.view.addItem(title: localize(L.CoinDetails.sendGift), image: UIImage(named: "fab_send_gift")) { [unowned self] _ in
+      self.didTapSendGiftRelay.accept(())
+    }
+    fab.view.addItem(title: localize(L.CoinDetails.sell), image: UIImage(named: "fab_sell")) { [unowned self] _ in
+      self.didTapSellRelay.accept(())
+    }
+    fab.view.addItem(title: localize(L.CoinDetails.exchange), image: UIImage(named: "fab_exchange")) { [unowned self] _ in
+      self.didTapExchangeRelay.accept(())
+    }
+    fab.view.addItem(title: localize(L.CoinDetails.trade), image: UIImage(named: "fab_trade")) { [unowned self] _ in
+      self.didTapTradesRelay.accept(())
+    }
   }
 
   override func setupLayout() {
@@ -80,12 +110,12 @@ final class CoinDetailsViewController: NavigationScreenViewController<CoinDetail
     
     let backDriver = customView.backButton.rx.tap.asDriver()
     let refreshDriver = refreshControl.rx.controlEvent(.valueChanged).asDriver()
-    let depositDriver = fab.rx.depositTap
-    let withdrawDriver = fab.rx.withdrawTap
-    let sendGiftDriver = fab.rx.sendGiftTap
-    let sellDriver = fab.rx.sellTap
-    let exchangeDriver = fab.rx.exchangeTap
-    let tradesDriver = fab.rx.tradesTap
+    let depositDriver = didTapDepositRelay.asDriver(onErrorDriveWith: .empty())
+    let withdrawDriver = didTapWithdrawRelay.asDriver(onErrorDriveWith: .empty())
+    let sendGiftDriver = didTapSendGiftRelay.asDriver(onErrorDriveWith: .empty())
+    let sellDriver = didTapSellRelay.asDriver(onErrorDriveWith: .empty())
+    let exchangeDriver = didTapExchangeRelay.asDriver(onErrorDriveWith: .empty())
+    let tradesDriver = didTapTradesRelay.asDriver(onErrorDriveWith: .empty())
     let showMoreDriver = collectionView.rx.willDisplayLastCell.asDriver(onErrorDriveWith: .empty())
     let transactionSelectedDriver = collectionView.rx.itemSelected.asDriver()
     let updateSelectedPeriodDriver = dataSource.rx.selectedPeriod

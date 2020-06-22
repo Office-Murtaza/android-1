@@ -3,17 +3,17 @@ import RxSwift
 import TrustWalletCore
 
 protocol CoinDetailsUsecase {
-  func getTransactions(for type: CoinType, from page: Int) -> Single<Transactions>
-  func getTransactionDetails(for type: CoinType, by id: String) -> Single<TransactionDetails>
-  func getCoin(for type: CoinType) -> Single<BTMCoin>
+  func getTransactions(for type: CustomCoinType, from page: Int) -> Single<Transactions>
+  func getTransactionDetails(for type: CustomCoinType, by id: String) -> Single<TransactionDetails>
+  func getCoin(for type: CustomCoinType) -> Single<BTMCoin>
   func requestCode() -> Completable
   func verifyCode(code: String) -> Completable
   func withdraw(from coin: BTMCoin,
                 with coinSettings: CoinSettings,
                 to destination: String,
                 amount: Double) -> Completable
-  func getSellDetails(for type: CoinType) -> Single<SellDetails>
-  func presubmit(for type: CoinType, coinAmount: Double, currencyAmount: Double) -> Single<PreSubmitResponse>
+  func getSellDetails(for type: CustomCoinType) -> Single<SellDetails>
+  func presubmit(for type: CustomCoinType, coinAmount: Double, currencyAmount: Double) -> Single<PreSubmitResponse>
   func sell(from coin: BTMCoin, with coinSettings: CoinSettings, amount: Double, to toAddress: String) -> Completable
   func sendGift(from coin: BTMCoin,
                 with coinSettings: CoinSettings,
@@ -23,7 +23,7 @@ protocol CoinDetailsUsecase {
                 imageId: String?) -> Completable
   func exchange(from fromCoin: BTMCoin,
                 with coinSettings: CoinSettings,
-                to toCoinType: CoinType,
+                to toCoinType: CustomCoinType,
                 amount: Double) -> Completable
 }
 
@@ -44,17 +44,17 @@ class CoinDetailsUsecaseImpl: CoinDetailsUsecase {
     self.walletService = walletService
   }
   
-  func getTransactions(for type: CoinType, from page: Int) -> Single<Transactions> {
+  func getTransactions(for type: CustomCoinType, from page: Int) -> Single<Transactions> {
     return accountStorage.get()
       .flatMap { [api] in api.getTransactions(userId: $0.userId, type: type, page: page) }
   }
   
-  func getTransactionDetails(for type: CoinType, by id: String) -> Single<TransactionDetails> {
+  func getTransactionDetails(for type: CustomCoinType, by id: String) -> Single<TransactionDetails> {
     return accountStorage.get()
       .flatMap { [api] in api.getTransactionDetails(userId: $0.userId, type: type, id: id) }
   }
   
-  func getCoin(for type: CoinType) -> Single<BTMCoin> {
+  func getCoin(for type: CustomCoinType) -> Single<BTMCoin> {
     return walletStorage.get()
       .map {
         let coin = $0.coins.first { $0.type == type }
@@ -122,12 +122,12 @@ class CoinDetailsUsecaseImpl: CoinDetailsUsecase {
       }
   }
   
-  func getSellDetails(for type: CoinType) -> Single<SellDetails> {
+  func getSellDetails(for type: CustomCoinType) -> Single<SellDetails> {
     return accountStorage.get()
       .flatMap { [api] in api.getSellDetails(userId: $0.userId, type: type) }
   }
   
-  func presubmit(for type: CoinType, coinAmount: Double, currencyAmount: Double) -> Single<PreSubmitResponse> {
+  func presubmit(for type: CustomCoinType, coinAmount: Double, currencyAmount: Double) -> Single<PreSubmitResponse> {
     return accountStorage.get()
       .flatMap { [api] in api.presubmitTransaction(userId: $0.userId,
                                                    type: type,
@@ -150,12 +150,12 @@ class CoinDetailsUsecaseImpl: CoinDetailsUsecase {
       }
   }
   
-  func exchange(from fromCoin: BTMCoin, with coinSettings: CoinSettings, to toCoinType: CoinType, amount: Double) -> Completable {
+  func exchange(from fromCoin: BTMCoin, with coinSettings: CoinSettings, to toCoinType: CustomCoinType, amount: Double) -> Completable {
     return accountStorage.get()
       .flatMap { [walletService] account in
         return walletService.getTransactionHex(for: fromCoin,
                                                with: coinSettings,
-                                               destination: coinSettings.serverWalletAddress,
+                                               destination: coinSettings.walletAddress,
                                                amount: amount)
           .map { (account, $0) }
       }
@@ -170,13 +170,13 @@ class CoinDetailsUsecaseImpl: CoinDetailsUsecase {
   }
   
   private func submit(userId: Int,
-                      type: CoinType,
+                      type: CustomCoinType,
                       txType: TransactionType,
                       amount: Double,
                       phone: String? = nil,
                       message: String? = nil,
                       imageId: String? = nil,
-                      toCoinType: CoinType? = nil,
+                      toCoinType: CustomCoinType? = nil,
                       transactionResultString: String? = nil) -> Completable {
     
     return api.submitTransaction(userId: userId,

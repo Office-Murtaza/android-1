@@ -75,9 +75,7 @@ extension LoginFlowController: PinCodeModuleDelegate {
     switch stage {
     case .setup: step.accept(LoginFlow.Steps.pinCode(.confirmation))
     case .confirmation, .verification:
-      complete {
-        delegate?.didFinishLogin()
-      }
+      delegate?.didFinishLogin()
     }
   }
   

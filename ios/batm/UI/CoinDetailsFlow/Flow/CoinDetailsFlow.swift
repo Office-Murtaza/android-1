@@ -19,11 +19,11 @@ class CoinDetailsFlow: BaseFlow<BTMNavigationController, CoinDetailsFlowControll
   
   enum Steps: Step, Equatable {
     case coinDetails([CoinBalance], CoinSettings, PriceChartData)
-    case transactionDetails(TransactionDetails, CoinType)
+    case transactionDetails(TransactionDetails, CustomCoinType)
     case deposit(BTMCoin)
-    case withdraw(BTMCoin, CoinBalance, CoinSettings)
-    case sendGift(BTMCoin, CoinBalance, CoinSettings)
-    case sell(BTMCoin, CoinBalance, CoinSettings, SellDetails)
+    case withdraw(BTMCoin, [CoinBalance], CoinSettings)
+    case sendGift(BTMCoin, [CoinBalance], CoinSettings)
+    case sell(BTMCoin, [CoinBalance], CoinSettings, SellDetails)
     case sellDetailsForAnotherAddress(SellDetailsForAnotherAddress)
     case sellDetailsForCurrentAddress(SellDetailsForCurrentAddress)
     case exchange(BTMCoin, [CoinBalance], CoinSettings)
@@ -51,17 +51,17 @@ class CoinDetailsFlow: BaseFlow<BTMNavigationController, CoinDetailsFlowControll
       let module = resolver.resolve(Module<CoinDepositModule>.self)!
       module.input.setup(coin: coin)
       return push(module.controller)
-    case let .withdraw(coin, coinBalance, coinSettings):
+    case let .withdraw(coin, coinBalances, coinSettings):
       let module = resolver.resolve(Module<CoinWithdrawModule>.self)!
-      module.input.setup(coin: coin, coinBalance: coinBalance, coinSettings: coinSettings)
+      module.input.setup(coin: coin, coinBalances: coinBalances, coinSettings: coinSettings)
       return push(module.controller)
-    case let .sendGift(coin, coinBalance, coinSettings):
+    case let .sendGift(coin, coinBalances, coinSettings):
       let module = resolver.resolve(Module<CoinSendGiftModule>.self)!
-      module.input.setup(coin: coin, coinBalance: coinBalance, coinSettings: coinSettings)
+      module.input.setup(coin: coin, coinBalances: coinBalances, coinSettings: coinSettings)
       return push(module.controller)
-    case let .sell(coin, coinBalance, coinSettings, details):
+    case let .sell(coin, coinBalances, coinSettings, details):
       let module = resolver.resolve(Module<CoinSellModule>.self)!
-      module.input.setup(coin: coin, coinBalance: coinBalance, coinSettings: coinSettings, details: details)
+      module.input.setup(coin: coin, coinBalances: coinBalances, coinSettings: coinSettings, details: details)
       return push(module.controller)
     case let .sellDetailsForAnotherAddress(details):
       let module = resolver.resolve(Module<CoinSellDetailsAnotherAddressModule>.self)!

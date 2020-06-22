@@ -13,13 +13,13 @@
 "shared.remove_gif" = "Remove GIF";
 "shared.select" = "Select";
 "shared.remove" = "Remove";
-"shared.button.max" = "MAX";
-"shared.button.paste" = "PASTE";
-"shared.button.add" = "ADD";
-"shared.button.remove" = "REMOVE";
-"shared.button.copy" = "COPY";
-"shared.button.next" = "NEXT";
-"shared.button.done" = "DONE";
+"shared.button.max" = "Max";
+"shared.button.paste" = "Paste";
+"shared.button.add" = "Add";
+"shared.button.remove" = "Remove";
+"shared.button.copy" = "Copy";
+"shared.button.next" = "Next";
+"shared.button.done" = "Done";
 "shared.error.title" = "Error";
 "shared.error.message" = "Server Error, Try Later";
 "shared.error.no_connection.message" = "No Internet Connection";
@@ -29,8 +29,8 @@
 "welcome.second_slide.title" = "Private and secure";
 "welcome.third_slide.title" = "Buy, sell and trade assets";
 "welcome.error.title" = "Please, Accept Our Terms & Conditions";
-"welcome.create_button.title" = "CREATE A NEW WALLET";
-"welcome.recover_button.title" = "RECOVER MY WALLET";
+"welcome.create_button.title" = "CREATE NEW WALLET";
+"welcome.recover_button.title" = "RECOVER OLD WALLET";
 "welcome.terms_and_conditions" = "Accept Terms & Conditions";
 "welcome.contact_support" = "Contact support";
 "welcome.support.title" = "Support";
@@ -40,7 +40,7 @@
 "welcome.support.copy_phone" = "Copy Phone";
 "welcome.support.copy_mail" = "Copy Email";
 
-"create_wallet.title" = "Create a New Wallet";
+"create_wallet.title" = "Create New Wallet";
 "create_wallet.form.password.placeholder" = "Password *";
 "create_wallet.form.confirm_password.placeholder" = "Confirm Password *";
 "create_wallet.form.error.all_fields_required" = "All fields are required";
@@ -52,7 +52,7 @@
 "seed_phrase.title" = "Seed Phrase";
 "seed_phrase.annotation" = "If you lost your seed phrase you will not be able to recover your wallet";
 
-"recover.title" = "Recover My Wallet";
+"recover.title" = "Recover Old Wallet";
 
 "recover_seed_phrase.annotation" = "Enter your secret 15 word phrase here to restore your wallet";
 
@@ -155,8 +155,12 @@
 "coin_details.receive_gift" = "Receive Gift";
 "coin_details.buy" = "Buy";
 "coin_details.sell" = "Sell";
+"coin_details.move" = "Move";
 "coin_details.send_c_2_c" = "Send C2C";
 "coin_details.receive_c_2_c" = "Receive C2C";
+"coin_details.reserve" = "Reserve";
+"coin_details.recall" = "Recall";
+"coin_details.se1f" = "Self";
 "coin_details.pending" = "Pending";
 "coin_details.complete" = "Complete";
 "coin_details.fail" = "Fail";
@@ -183,6 +187,7 @@
 "coin_withdraw.form.error.invalid_amount" = "Invalid amount";
 "coin_withdraw.form.error.too_low_amount" = "Amount can't be zero or lower";
 "coin_withdraw.form.error.too_high_amount" = "Amount can't be higher than your balance";
+"coin_withdraw.form.error.insufficient_e_t_h_balance" = "Insufficient ETH balance for transaction fee";
 
 "coin_send_gift.title" = "Send Gift %@";
 "coin_send_gift.form.code.placeholder" = "Code";
@@ -233,3 +238,32 @@
 "trades.reserved" = "Reserved";
 "trades.buy" = "Buy";
 "trades.sell" = "Sell";
+"trades.recall" = "Recall";
+"trades.reserve" = "Reserve";
+"trades.create" = "Create";
+
+"buy_sell_trade_details.title" = "%@ %@";
+"buy_sell_trade_details.header.price" = "Price";
+"buy_sell_trade_details.header.user" = "User";
+"buy_sell_trade_details.header.payment" = "Payment";
+"buy_sell_trade_details.header.limits" = "Limits";
+"buy_sell_trade_details.header.terms" = "Terms";
+"buy_sell_trade_details.form.request_details.placeholder" = "Request details";
+"buy_sell_trade_details.form.error.too_many_characters" = "Request details is too long";
+"buy_sell_trade_details.form.error.not_within_limits" = "Amount should be within limits";
+"buy_sell_trade_details.button.send_request" = "Send Request";
+
+"create_edit_trade.create_title" = "Create %@ trade";
+"create_edit_trade.edit_title" = "Edit %@ trade";
+"create_edit_trade.type" = "I want to";
+"create_edit_trade.form.payment.placeholder" = "Payment method";
+"create_edit_trade.form.margin.placeholder" = "Margin";
+"create_edit_trade.form.min_limit.placeholder" = "Min limit";
+"create_edit_trade.form.max_limit.placeholder" = "Max limit";
+"create_edit_trade.form.terms.placeholder" = "Trade terms";
+"create_edit_trade.form.error.too_many_characters_in_payment" = "Payment method is too long";
+"create_edit_trade.form.error.invalid_margin" = "Margin should be between 0 and 100";
+"create_edit_trade.form.error.invalid_min_limit" = "Min limit should be greater than 0";
+"create_edit_trade.form.error.invalid_max_limit" = "Max limit should be greater than Min limit";
+"create_edit_trade.form.error.too_many_characters_in_terms" = "Trade terms is too long";
+"create_edit_trade.button.create" = "Create";

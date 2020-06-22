@@ -2,16 +2,16 @@ import Foundation
 import TrustWalletCore
 
 struct CoinAddress {
-  let type: CoinType
+  let type: CustomCoinType
   let address: String
   
-  init(type: CoinType, address: String) {
+  init(type: CustomCoinType, address: String) {
     self.type = type
     self.address = address
   }
   
   init(coin: BTMCoin) {
     self.type = coin.type
-    self.address = coin.publicKey
+    self.address = coin.address
   }
 }

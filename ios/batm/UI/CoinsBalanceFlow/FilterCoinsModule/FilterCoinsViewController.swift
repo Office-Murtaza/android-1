@@ -19,7 +19,7 @@ class FilterCoinsViewController: NavigationScreenViewController<FilterCoinsPrese
   }
   
   override func setupUI() {
-    view.backgroundColor = .whiteTwo
+    view.backgroundColor = .white
     
     customView.setTitle(localize(L.FilterCoins.title))
     customView.addSubviews(collectionView)

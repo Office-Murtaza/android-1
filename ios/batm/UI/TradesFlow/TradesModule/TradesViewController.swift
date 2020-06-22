@@ -6,6 +6,10 @@ import MaterialComponents
 
 final class TradesViewController: NavigationScreenViewController<TradesPresenter>, MDCTabBarDelegate {
   
+  let didTapRecallRelay = PublishRelay<Void>()
+  let didTapReserveRelay = PublishRelay<Void>()
+  let didTapCreateRelay = PublishRelay<Void>()
+  
   var buyTradesDataSource: BuySellTradesTableViewDataSource!
   var sellTradesDataSource: BuySellTradesTableViewDataSource!
   
@@ -35,6 +39,8 @@ final class TradesViewController: NavigationScreenViewController<TradesPresenter
   
   var tableViews: [TradesTableView] { return [buyTradesTableView, sellTradesTableView, openTradesTableView] }
   
+  let fab = FloatingActionButton()
+  
   override var preferredStatusBarStyle: UIStatusBarStyle {
     return .lightContent
   }
@@ -48,11 +54,26 @@ final class TradesViewController: NavigationScreenViewController<TradesPresenter
                                        tabBar,
                                        buyTradesTableView,
                                        sellTradesTableView,
-                                       openTradesTableView)
+                                       openTradesTableView,
+                                       fab.view)
     customView.tapRecognizer.isEnabled = false
     
     buyTradesTableView.refreshControl = buyTradesRefreshControl
     sellTradesTableView.refreshControl = sellTradesRefreshControl
+    
+    setupFAB()
+  }
+  
+  private func setupFAB() {
+    fab.view.addItem(title: localize(L.Trades.create), image: UIImage(named: "fab_create")) { [unowned self] _ in
+      self.didTapCreateRelay.accept(())
+    }
+    fab.view.addItem(title: localize(L.Trades.recall), image: UIImage(named: "fab_recall")) { [unowned self] _ in
+      self.didTapRecallRelay.accept(())
+    }
+    fab.view.addItem(title: localize(L.Trades.reserve), image: UIImage(named: "fab_reserve")) { [unowned self] _ in
+      self.didTapReserveRelay.accept(())
+    }
   }
 
   override func setupLayout() {
@@ -73,6 +94,9 @@ final class TradesViewController: NavigationScreenViewController<TradesPresenter
         $0.top.equalTo(tabBar.snp.bottom)
         $0.left.right.bottom.equalToSuperview()
       }
+    }
+    fab.view.snp.makeConstraints {
+      $0.right.bottom.equalTo(view.safeAreaLayoutGuide).inset(16)
     }
   }
   
@@ -131,12 +155,22 @@ final class TradesViewController: NavigationScreenViewController<TradesPresenter
     let refreshSellTradesDriver = sellTradesRefreshControl.rx.controlEvent(.valueChanged).asDriver()
     let showMoreBuyTradesDriver = buyTradesTableView.rx.willDisplayLastCell.asDriver(onErrorDriveWith: .empty())
     let showMoreSellTradesDriver = sellTradesTableView.rx.willDisplayLastCell.asDriver(onErrorDriveWith: .empty())
+    let buyTradeSelectedDriver = buyTradesTableView.rx.itemSelected.asDriver()
+    let sellTradeSelectedDriver = sellTradesTableView.rx.itemSelected.asDriver()
+    let recallDriver = didTapRecallRelay.asDriver(onErrorDriveWith: .empty())
+    let reserveDriver = didTapReserveRelay.asDriver(onErrorDriveWith: .empty())
+    let createDriver = didTapCreateRelay.asDriver(onErrorDriveWith: .empty())
     
     presenter.bind(input: TradesPresenter.Input(back: backDriver,
                                                 refreshBuyTrades: refreshBuyTradesDriver,
                                                 refreshSellTrades: refreshSellTradesDriver,
                                                 showMoreBuyTrades: showMoreBuyTradesDriver,
-                                                showMoreSellTrades: showMoreSellTradesDriver))
+                                                showMoreSellTrades: showMoreSellTradesDriver,
+                                                buyTradeSelected: buyTradeSelectedDriver,
+                                                sellTradeSelected: sellTradeSelectedDriver,
+                                                recall: recallDriver,
+                                                reserve: reserveDriver,
+                                                create: createDriver))
   }
   
   func tabBar(_ tabBar: MDCTabBar, didSelect item: UITabBarItem) {

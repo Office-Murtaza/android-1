@@ -5,6 +5,10 @@ enum L {
     static let title = "atm.title"
   }
 
+  struct BuySellTradeDetails {
+    static let title = "buy_sell_trade_details.title"
+  }
+
   struct ChangePassword {
     static let title = "change_password.title"
   }
@@ -30,6 +34,7 @@ enum L {
     static let deposit = "coin_details.deposit"
     static let exchange = "coin_details.exchange"
     static let fail = "coin_details.fail"
+    static let move = "coin_details.move"
     static let notAvailable = "coin_details.not_available"
     static let oneDay = "coin_details.one_day"
     static let oneMonth = "coin_details.one_month"
@@ -37,8 +42,11 @@ enum L {
     static let oneYear = "coin_details.one_year"
     static let pending = "coin_details.pending"
     static let price = "coin_details.price"
+    static let recall = "coin_details.recall"
     static let receiveC2C = "coin_details.receive_c_2_c"
     static let receiveGift = "coin_details.receive_gift"
+    static let reserve = "coin_details.reserve"
+    static let se1f = "coin_details.se1f"
     static let sell = "coin_details.sell"
     static let sendC2C = "coin_details.send_c_2_c"
     static let sendGift = "coin_details.send_gift"
@@ -76,6 +84,12 @@ enum L {
   struct CoinsBalance {
     static let title = "coins_balance.title"
     static let totalBalance = "coins_balance.total_balance"
+  }
+
+  struct CreateEditTrade {
+    static let createTitle = "create_edit_trade.create_title"
+    static let editTitle = "create_edit_trade.edit_title"
+    static let type = "create_edit_trade.type"
   }
 
   struct CreateWallet {
@@ -146,6 +160,9 @@ enum L {
 
   struct Trades {
     static let buy = "trades.buy"
+    static let create = "trades.create"
+    static let recall = "trades.recall"
+    static let reserve = "trades.reserve"
     static let reserved = "trades.reserved"
     static let sell = "trades.sell"
     static let title = "trades.title"
@@ -203,6 +220,34 @@ extension L.Atm {
 
   struct InfoWindow {
     static let openNow = "atm.info_window.open_now"
+  }
+}
+extension L.BuySellTradeDetails {
+
+  struct Button {
+    static let sendRequest = "buy_sell_trade_details.button.send_request"
+  }
+
+  struct Form {
+  }
+
+  struct Header {
+    static let limits = "buy_sell_trade_details.header.limits"
+    static let payment = "buy_sell_trade_details.header.payment"
+    static let price = "buy_sell_trade_details.header.price"
+    static let terms = "buy_sell_trade_details.header.terms"
+    static let user = "buy_sell_trade_details.header.user"
+  }
+}
+extension L.BuySellTradeDetails.Form {
+
+  struct Error {
+    static let notWithinLimits = "buy_sell_trade_details.form.error.not_within_limits"
+    static let tooManyCharacters = "buy_sell_trade_details.form.error.too_many_characters"
+  }
+
+  struct RequestDetails {
+    static let placeholder = "buy_sell_trade_details.form.request_details.placeholder"
   }
 }
 extension L.ChangePassword {
@@ -334,6 +379,7 @@ extension L.CoinWithdraw.Form {
   }
 
   struct Error {
+    static let insufficientETHBalance = "coin_withdraw.form.error.insufficient_e_t_h_balance"
     static let invalidAddress = "coin_withdraw.form.error.invalid_address"
     static let invalidAmount = "coin_withdraw.form.error.invalid_amount"
     static let tooHighAmount = "coin_withdraw.form.error.too_high_amount"
@@ -348,6 +394,45 @@ extension L.CoinsBalance {
 
   struct Footer {
     static let title = "coins_balance.footer.title"
+  }
+}
+extension L.CreateEditTrade {
+
+  struct Button {
+    static let create = "create_edit_trade.button.create"
+  }
+
+  struct Form {
+  }
+}
+extension L.CreateEditTrade.Form {
+
+  struct Error {
+    static let invalidMargin = "create_edit_trade.form.error.invalid_margin"
+    static let invalidMaxLimit = "create_edit_trade.form.error.invalid_max_limit"
+    static let invalidMinLimit = "create_edit_trade.form.error.invalid_min_limit"
+    static let tooManyCharactersInPayment = "create_edit_trade.form.error.too_many_characters_in_payment"
+    static let tooManyCharactersInTerms = "create_edit_trade.form.error.too_many_characters_in_terms"
+  }
+
+  struct Margin {
+    static let placeholder = "create_edit_trade.form.margin.placeholder"
+  }
+
+  struct MaxLimit {
+    static let placeholder = "create_edit_trade.form.max_limit.placeholder"
+  }
+
+  struct MinLimit {
+    static let placeholder = "create_edit_trade.form.min_limit.placeholder"
+  }
+
+  struct Payment {
+    static let placeholder = "create_edit_trade.form.payment.placeholder"
+  }
+
+  struct Terms {
+    static let placeholder = "create_edit_trade.form.terms.placeholder"
   }
 }
 extension L.CreateWallet {

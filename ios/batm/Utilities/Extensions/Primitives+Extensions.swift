@@ -148,11 +148,11 @@ extension String {
   }
   
   var coinWithdrawFormatted: String {
-    return withFractionDigits(max: CoinType.maxNumberOfFractionDigits)
+    return withFractionDigits(max: CustomCoinType.maxNumberOfFractionDigits)
   }
   
   var coinFormatted: String {
-    return withFractionDigits(max: CoinType.maxNumberOfFractionDigits, trailingZeros: false)
+    return withFractionDigits(max: CustomCoinType.maxNumberOfFractionDigits, trailingZeros: false)
   }
   
   var phoneFormatted: String {
@@ -175,6 +175,14 @@ extension String {
     }
     
     return Double(newString)
+  }
+  
+  var withUSD: String {
+    return self.appending(" USD")
+  }
+  
+  var intValue: Int? {
+    return Int(self)
   }
 }
 

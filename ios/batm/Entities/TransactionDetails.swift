@@ -19,7 +19,7 @@ struct TransactionDetails: Equatable {
   let message: String?
   let refTxId: String?
   let refLink: String?
-  let refCoin: CoinType?
+  let refCoin: CustomCoinType?
   let refCryptoAmount: Double?
   let sellInfo: String?
 }

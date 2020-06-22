@@ -510,8 +510,9 @@ struct BuySellTradesRequest: AuthorizedAPIRequest {
   var path: String { return "/user/\(userId)/coins/\(coinId)/trades" }
   var method: HTTPMethod { return .get }
   var task: HTTPTask {
-    return .requestParameters(parameters: ["type": type.rawValue,
-                                           "index": index],
+    return .requestParameters(parameters: ["tab": type.rawValue,
+                                           "index": index,
+                                           "sort": 1],
                               encoding: URLEncoding.customDefault)
   }
 }
@@ -529,6 +530,45 @@ struct UpdateLocationRequest: AuthorizedAPIRequest {
   var task: HTTPTask {
     return .requestParameters(parameters: ["latitude": latitude,
                                            "longitude": longitude],
+                              encoding: JSONEncoding.default)
+  }
+}
+
+struct SubmitTradeRequestRequest: AuthorizedAPIRequest {
+  typealias ResponseType = APIEmptyResponse
+  typealias ResponseTrait = SingleResponseTrait
+  
+  let userId: Int
+  let data: SubmitTradeRequestData
+  
+  var path: String { return "/user/\(userId)/coins/\(data.coinType.code)/trade-request" }
+  var method: HTTPMethod { return .post }
+  var task: HTTPTask {
+    return .requestParameters(parameters: ["tradeId": data.trade.id,
+                                           "price": data.trade.price,
+                                           "cryptoAmount": data.coinAmount,
+                                           "fiatAmount": data.currencyAmount,
+                                           "details": data.details],
+                              encoding: JSONEncoding.default)
+  }
+}
+
+struct SubmitTradeRequest: AuthorizedAPIRequest {
+  typealias ResponseType = APIEmptyResponse
+  typealias ResponseTrait = SingleResponseTrait
+  
+  let userId: Int
+  let data: SubmitTradeData
+  
+  var path: String { return "/user/\(userId)/coins/\(data.coinType.code)/trade" }
+  var method: HTTPMethod { return .post }
+  var task: HTTPTask {
+    return .requestParameters(parameters: ["type": data.tradeType.rawValue,
+                                           "paymentMethod": data.payment,
+                                           "margin": data.margin,
+                                           "minLimit": data.minLimit,
+                                           "maxLimit": data.maxLimit,
+                                           "terms": data.terms],
                               encoding: JSONEncoding.default)
   }
 }

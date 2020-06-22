@@ -28,7 +28,7 @@ extension TransactionDetails: ImmutableMappable {
       cashStatus = nil
     }
     
-    if let code: String = try? map.value("refCoin"), let mappedRefCoin = CoinType(code: code) {
+    if let code: String = try? map.value("refCoin"), let mappedRefCoin = CustomCoinType(code: code) {
       refCoin = mappedRefCoin
     } else {
       refCoin = nil

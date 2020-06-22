@@ -42,9 +42,9 @@ final class CoinSellPresenter: ModulePresenter, CoinSellModule {
     self.store = store
   }
   
-  func setup(coin: BTMCoin, coinBalance: CoinBalance, coinSettings: CoinSettings, details: SellDetails) {
+  func setup(coin: BTMCoin, coinBalances: [CoinBalance], coinSettings: CoinSettings, details: SellDetails) {
     store.action.accept(.setupCoin(coin))
-    store.action.accept(.setupCoinBalance(coinBalance))
+    store.action.accept(.setupCoinBalances(coinBalances))
     store.action.accept(.setupCoinSettings(coinSettings))
     store.action.accept(.setupDetails(details))
   }

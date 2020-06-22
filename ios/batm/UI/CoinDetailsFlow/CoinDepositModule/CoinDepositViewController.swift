@@ -27,7 +27,7 @@ final class CoinDepositViewController: NavigationScreenViewController<CoinDeposi
   }
   
   func setupUIBindings() {
-    qrCodeCardView.configure(for: presenter.coin.publicKey)
+    qrCodeCardView.configure(for: presenter.coin.address)
     
     qrCodeCardView.rx.copy
       .drive(onNext: { [unowned self] in self.view.makeToast(localize(L.Shared.copied)) })
