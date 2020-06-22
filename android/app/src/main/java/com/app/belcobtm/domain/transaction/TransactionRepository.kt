@@ -116,7 +116,7 @@ interface TransactionRepository {
     suspend fun tradeBuyCreate(
         coinCode: String,
         paymentMethod: String,
-        margin: Int,
+        margin: Double,
         minLimit: Long,
         maxLimit: Long,
         terms: String
@@ -125,7 +125,7 @@ interface TransactionRepository {
     suspend fun tradeSellCreate(
         coinCode: String,
         paymentMethod: String,
-        margin: Int,
+        margin: Double,
         minLimit: Long,
         maxLimit: Long,
         terms: String

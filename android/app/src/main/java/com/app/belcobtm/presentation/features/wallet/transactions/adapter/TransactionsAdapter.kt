@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.app.belcobtm.R
 import com.app.belcobtm.domain.transaction.type.TransactionStatusType
-import com.app.belcobtm.domain.transaction.type.TransactionType
+import com.app.belcobtm.presentation.core.extensions.getResText
 import com.app.belcobtm.presentation.core.extensions.toStringCoin
 import com.app.belcobtm.presentation.core.ui.BaseDiffCallback
 import com.app.belcobtm.presentation.features.wallet.transactions.item.TransactionsAdapterItem
@@ -39,37 +39,25 @@ class TransactionsAdapter(
         when (item.status) {
             TransactionStatusType.PENDING -> {
                 transactionStatusBgId = R.drawable.bg_transaction_status_pending
-                transactionStatusTextId = R.string.pending
+                transactionStatusTextId = R.string.transaction_status_pending
             }
             TransactionStatusType.COMPLETE -> {
                 transactionStatusBgId = R.drawable.bg_transaction_status_complete
-                transactionStatusTextId = R.string.complete
+                transactionStatusTextId = R.string.transaction_status_complete
             }
             TransactionStatusType.FAIL -> {
                 transactionStatusBgId = R.drawable.bg_transaction_status_fail
-                transactionStatusTextId = R.string.fail
+                transactionStatusTextId = R.string.transaction_status_fail
             }
             else -> {
                 transactionStatusBgId = R.drawable.bg_transaction_status_unkown
-                transactionStatusTextId = R.string.unknown
+                transactionStatusTextId = R.string.transaction_status_unknown
             }
         }
-        val transactionTypeTextId = when (item.type) {
-            TransactionType.DEPOSIT -> R.string.deposit
-            TransactionType.WITHDRAW -> R.string.withdraw
-            TransactionType.SEND_GIFT -> R.string.send_gift
-            TransactionType.RECEIVE_GIFT -> R.string.receive_gift
-            TransactionType.BUY -> R.string.buy
-            TransactionType.SELL -> R.string.sell
-            TransactionType.SEND_COIN_TO_COIN -> R.string.send_c2c
-            TransactionType.RECEIVE_COIN_TO_COIN -> R.string.receive_c2c
-            else -> R.string.unknown
-        }
-
         holder.itemView.transaction_date.text = item.date
         holder.itemView.transaction_status.text = context.getString(transactionStatusTextId)
         holder.itemView.transaction_status.background = context.getDrawable(transactionStatusBgId)
-        holder.itemView.transaction_type.text = context.getString(transactionTypeTextId)
+        holder.itemView.transaction_type.text = context.getString(item.type.getResText())
         holder.itemView.amountView.text = item.cryptoAmount.toStringCoin()
 
         if (position >= itemList.size - 1) {

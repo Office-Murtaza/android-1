@@ -17,7 +17,7 @@ class RecoverSeedActivity :
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_recover_seed_phrase)
 
-        bt_done.setOnClickListener {
+        doneButtonView.setOnClickListener {
             val seed = getSeedFormView()
             if (seed.isNotEmpty())
                 mPresenter.verifySeed(seed)

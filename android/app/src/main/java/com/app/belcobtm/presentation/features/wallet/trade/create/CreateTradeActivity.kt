@@ -85,7 +85,7 @@ class CreateTradeActivity : BaseActivity() {
             else -> viewModel.createTrade(
                 buyButtonView.isChecked,
                 paymentMethodView.getString(),
-                marginView.getString().toInt(),
+                marginView.getString().toDouble(),
                 minLimitView.getString().toLong(),
                 maxLimitView.getString().toLong(),
                 tradeTermsView.getString()
@@ -101,7 +101,7 @@ class CreateTradeActivity : BaseActivity() {
 
     private fun isCorrectLimits(): Boolean = minLimitView.getString().toInt() < maxLimitView.getString().toInt()
 
-    private fun isCorrectMargin(): Boolean = marginView.getString().toInt() <= 100
+    private fun isCorrectMargin(): Boolean = marginView.getString().toDouble() <= 100
 
     companion object {
         const val TAG_COIN_ITEM = "tag_coin_item"

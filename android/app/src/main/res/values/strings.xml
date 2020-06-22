@@ -49,10 +49,12 @@
     <string name="seed_phrase">Seed Phrase</string>
     <string name="seed_info">If you lost your seed phrase you will not be able to recover your wallet</string>
     <string name="seed_clipboard">Seed phrase copied to clipboard</string>
+    <string name="seed_phrase_screen_copy">Copy</string>
+    <string name="seed_phrase_screen_done">Done</string>
 
     <!--recover seed phrase-->
     <string name="paste">Paste</string>
-    <string name="paste_seed_info">Enter your secret 15 world phrase here to restore your wallet</string>
+    <string name="paste_seed_info">Enter your secret 12 world phrase here to restore your wallet</string>
     <string name="enter_seed_first">Enter seed first</string>
 
     <!--balance-->
@@ -148,11 +150,27 @@
     <string name="transaction_price_usd">%1$s USD</string>
     <string name="transaction_crypto_balance">%1$s %2$s</string>
 
+
     <!--transaction status-->
-    <string name="unknown">unknown</string>
-    <string name="pending">pending</string>
-    <string name="complete">complete</string>
-    <string name="fail">fail</string>
+    <string name="transaction_status_unknown">Unknown</string>
+    <string name="transaction_status_pending">Pending</string>
+    <string name="transaction_status_complete">Complete</string>
+    <string name="transaction_status_fail">Fail</string>
+
+    <!--transaction status-->
+    <string name="transaction_type_unknown">Unknown</string>
+    <string name="transaction_type_deposit">Deposit</string>
+    <string name="transaction_type_withdraw">Withdraw</string>
+    <string name="transaction_type_send_gift">Send Gift</string>
+    <string name="transaction_type_receive_gift">Receive Gift</string>
+    <string name="transaction_type_buy">Buy</string>
+    <string name="transaction_type_sell">Sell</string>
+    <string name="transaction_type_move">Move</string>
+    <string name="transaction_type_send_exchange">Send Exchange</string>
+    <string name="transaction_type_receive_exchange">Receive Exchange</string>
+    <string name="transaction_type_reserve">Reserve</string>
+    <string name="transaction_type_recall">Recall</string>
+    <string name="transaction_type_self">Self</string>
 
     <!--transaction type-->
     <string name="withdraw">Withdraw</string>
@@ -160,8 +178,8 @@
     <string name="receive_gift">Receive Gift</string>
     <string name="buy">Buy</string>
     <string name="sell">Sell</string>
-    <string name="send_c2c">Send C2C</string>
-    <string name="receive_c2c">Receive C2C</string>
+    <string name="send_exchange">Send C2C</string>
+    <string name="receive_exchange">Receive C2C</string>
     <string name="transitions_exchange">Exchange</string>
     <string name="transitions_trade">Trade</string>
 

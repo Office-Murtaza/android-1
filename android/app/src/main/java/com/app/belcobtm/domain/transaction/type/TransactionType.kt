@@ -8,6 +8,10 @@ enum class TransactionType(val code: Int) {
     RECEIVE_GIFT(4),
     BUY(5),
     SELL(6),
-    SEND_COIN_TO_COIN(8),
-    RECEIVE_COIN_TO_COIN(9)
+    MOVE(7),
+    SEND_EXCHANGE(8),
+    RECEIVE_EXCHANGE(9),
+    RESERVE(10),
+    RECALL(11),
+    SELF(12)
 }

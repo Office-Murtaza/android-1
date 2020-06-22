@@ -236,7 +236,7 @@ class TransactionApiService(
     suspend fun tradeBuyCreate(
         coinCode: String,
         paymentMethod: String,
-        margin: Int,
+        margin: Double,
         minLimit: Long,
         maxLimit: Long,
         terms: String
@@ -253,7 +253,7 @@ class TransactionApiService(
     suspend fun tradeSellCreate(
         coinCode: String,
         paymentMethod: String,
-        margin: Int,
+        margin: Double,
         minLimit: Long,
         maxLimit: Long,
         terms: String

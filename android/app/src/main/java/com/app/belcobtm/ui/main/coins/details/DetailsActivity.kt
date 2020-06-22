@@ -17,6 +17,7 @@ import com.app.belcobtm.R
 import com.app.belcobtm.api.model.response.TransactionCashStatusType
 import com.app.belcobtm.api.model.response.TransactionDetailsResponse
 import com.app.belcobtm.api.model.response.TransactionStatusType
+import com.app.belcobtm.domain.transaction.type.TransactionType
 import com.app.belcobtm.mvp.BaseMvpActivity
 import com.app.belcobtm.presentation.core.Const.GIPHY_API_KEY
 import com.app.belcobtm.presentation.core.QRUtils.Companion.getSpacelessQR
@@ -96,23 +97,12 @@ class DetailsActivity : BaseMvpActivity<DetailsContract.View, DetailsContract.Pr
         txDbldView.text = txDbId.toString()
     }
 
-    private fun showTypeView(type: Int?) = if (type == null) {
+    private fun showTypeView(typeCode: Int?) = if (typeCode == null) {
         typeContainerView.hide()
     } else {
+        val transactionType = TransactionType.values().firstOrNull { it.code == typeCode } ?: TransactionType.UNKNOWN
         typeContainerView.show()
-        typeView.text = getString(
-            when (type) {
-                1 -> R.string.deposit
-                2 -> R.string.withdraw
-                3 -> R.string.send_gift
-                4 -> R.string.receive_gift
-                5 -> R.string.buy
-                6 -> R.string.sell
-                8 -> R.string.send_c2c
-                9 -> R.string.receive_c2c
-                else -> R.string.unknown
-            }
-        )
+        typeView.setText(transactionType.getResText())
     }
 
     private fun changeDrawableColor(

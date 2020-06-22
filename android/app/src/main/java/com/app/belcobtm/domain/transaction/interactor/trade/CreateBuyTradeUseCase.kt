@@ -20,7 +20,7 @@ class CreateBuyTradeUseCase(private val repository: TransactionRepository) :
     data class Params(
         val coinCode: String,
         val paymentMethod: String,
-        val margin: Int,
+        val margin: Double,
         val minLimit: Long,
         val maxLimit: Long,
         val terms: String

@@ -171,7 +171,7 @@
                         style="@style/WalletTab.EditText.InputWithMax"
                         android:digits="1234567890"
                         android:hint="@string/usd_amount"
-                        android:inputType="numberDecimal"
+                        android:inputType="number"
                         android:textColor="@android:color/black"
                         tools:ignore="RtlSymmetry" />
 

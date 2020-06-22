@@ -84,6 +84,7 @@ class TradeActivity : BaseActivity() {
 
     override fun onResume() {
         super.onResume()
+        tradePageAdapter.clearData()
         viewModel.updateSorting(null)
     }
 

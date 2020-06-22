@@ -16,6 +16,8 @@ import com.app.belcobtm.presentation.features.wallet.trade.main.item.TradeDetail
 import kotlinx.android.synthetic.main.activity_trade_details.*
 import org.koin.android.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
+import kotlin.math.floor
+import kotlin.math.roundToInt
 
 class TradeDetailsBuyActivity : BaseActivity() {
     private lateinit var tradeDetailsItem: TradeDetailsItem.BuySell
@@ -26,10 +28,10 @@ class TradeDetailsBuyActivity : BaseActivity() {
         maxCharsAfterDotFirst = DoubleTextWatcher.MAX_CHARS_AFTER_DOT_CRYPTO,
         maxCharsAfterDotSecond = DoubleTextWatcher.MAX_CHARS_AFTER_DOT_USD,
         firstTextWatcher = {
-            val maxLimit = tradeDetailsItem.maxLimit
-            val minLimit = tradeDetailsItem.minLimit
+            val maxLimit: Int = tradeDetailsItem.maxLimit
+            val minLimit: Int = tradeDetailsItem.minLimit
             val cryptoAmount = it.getDouble()
-            val usdAmount = viewModel.fromCoinItem.priceUsd * it.getDouble()
+            val usdAmount = (viewModel.fromCoinItem.priceUsd * it.getDouble()).roundToInt()
 
             when {
                 cryptoAmount == 0.0 || usdAmount < minLimit -> {
@@ -51,9 +53,9 @@ class TradeDetailsBuyActivity : BaseActivity() {
         secondTextWatcher = {
             val maxLimit = tradeDetailsItem.maxLimit
             val minLimit = tradeDetailsItem.minLimit
-            val usdAmountText = it.getDouble()
+            val usdAmountText = it.getInt()
             when {
-                usdAmountText == 0.0 || usdAmountText < minLimit -> {
+                usdAmountText == 0 || usdAmountText < minLimit -> {
                     amountCryptoView.clearText()
                     sendButtonView.isEnabled = false
                 }

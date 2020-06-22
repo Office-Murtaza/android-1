@@ -17,7 +17,7 @@ class CreateTradeViewModel(
     fun createTrade(
         isBuyChecked: Boolean,
         paymentMethod: String,
-        margin: Int,
+        margin: Double,
         minLimit: Long,
         maxLimit: Long,
         terms: String

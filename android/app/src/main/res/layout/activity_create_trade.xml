@@ -192,11 +192,11 @@
                     <com.google.android.material.textfield.TextInputEditText
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:digits="1234567890"
+                        android:digits="1234567890."
                         android:drawableEnd="@drawable/ic_percent"
                         android:hint="@string/add_edit_trade_screen_margin"
                         android:imeOptions="actionNext"
-                        android:inputType="number"
+                        android:inputType="numberDecimal"
                         android:nextFocusDown="@id/minLimitView"
                         tools:ignore="RtlSymmetry" />
                 </com.google.android.material.textfield.TextInputLayout>
@@ -253,10 +253,11 @@
                     <com.google.android.material.textfield.TextInputEditText
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="@string/add_edit_trade_screen_trade_terms"
-                        android:maxLength="255"
                         android:gravity="top"
-                        android:inputType="textMultiLine" />
+                        android:hint="@string/add_edit_trade_screen_trade_terms"
+                        android:inputType="textMultiLine"
+                        android:maxLength="255"
+                        android:minLines="3" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.button.MaterialButton

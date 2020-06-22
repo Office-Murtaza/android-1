@@ -257,7 +257,7 @@ class TransactionRepositoryImpl(
     override suspend fun tradeBuyCreate(
         coinCode: String,
         paymentMethod: String,
-        margin: Int,
+        margin: Double,
         minLimit: Long,
         maxLimit: Long,
         terms: String
@@ -270,7 +270,7 @@ class TransactionRepositoryImpl(
     override suspend fun tradeSellCreate(
         coinCode: String,
         paymentMethod: String,
-        margin: Int,
+        margin: Double,
         minLimit: Long,
         maxLimit: Long,
         terms: String
