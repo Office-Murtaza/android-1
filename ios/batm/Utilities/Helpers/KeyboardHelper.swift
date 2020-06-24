@@ -42,9 +42,7 @@ final class KeyboardHandler {
 
 extension UIViewController {
   func setupDefaultKeyboardHandling(animated: Bool = true) {
-    Observable.combineLatest(KeyboardHandler.default.output, btmVisible)
-      .filter { $1 }
-      .map { $0.0 }
+    KeyboardHandler.default.output
       .map({ [unowned self] state -> (CGFloat, Double) in
         let convertedFrame = self.view.convert(state.frame, from: nil)
         let keyboardFrameInView = self.view.bounds.intersection(convertedFrame)
@@ -54,22 +52,18 @@ extension UIViewController {
       .subscribeOn(MainScheduler.instance)
       .subscribe(onNext: { [weak self] (height, animationDuration) in
         guard let self = self else { return }
+        
         self.additionalSafeAreaInsets.bottom = height
-        let duration = animated ? animationDuration : 0
-        UIView.animate(withDuration: duration) { [weak self] in
-          self?.view.layoutIfNeeded()
+        
+        guard self.view.window != nil else { return }
+        
+        if animated && animationDuration > 0 {
+          UIView.animate(withDuration: animationDuration) { [weak self] in
+            self?.view.layoutIfNeeded()
+          }
+        } else {
+          self.view.layoutIfNeeded()
         }
       }).disposed(by: disposeBag)
-  }
-}
-
-fileprivate extension Presentable where Self: UIViewController {
-  var btmVisible: Observable<Bool> {
-    let didAppearObservable = self.rx.sentMessage(#selector(UIViewController.viewDidAppear)).map { _ in true }
-    let didDisappearObservable = self.rx.sentMessage(#selector(UIViewController.viewDidDisappear)).map { _ in false }
-    
-    let initialState = Observable.just(false)
-    
-    return initialState.concat(Observable<Bool>.merge(didAppearObservable, didDisappearObservable))
   }
 }
