@@ -136,7 +136,7 @@ extension String {
   }
   
   var fiatFormatted: String {
-    return withFractionDigits(min: 2, max: 2, trailingZeros: false)
+    return withFractionDigits(min: 2, max: 2)
   }
   
   var fiatWithdrawFormatted: String {
@@ -242,19 +242,23 @@ extension Int {
 }
 
 extension NumberFormatter {
-  static var fiatFormatter: NumberFormatter {
+  static var defaultCurrencyFormatter: NumberFormatter {
     let formatter = NumberFormatter()
     formatter.numberStyle = .decimal
-    formatter.maximumFractionDigits = 2
+    formatter.groupingSeparator = ""
     formatter.roundingMode = .halfUp
     return formatter
   }
   
+  static var fiatFormatter: NumberFormatter {
+    let formatter = defaultCurrencyFormatter
+    formatter.maximumFractionDigits = 2
+    return formatter
+  }
+  
   static var coinFormatter: NumberFormatter {
-    let formatter = NumberFormatter()
-    formatter.numberStyle = .decimal
+    let formatter = defaultCurrencyFormatter
     formatter.maximumFractionDigits = CustomCoinType.maxNumberOfFractionDigits
-    formatter.roundingMode = .halfUp
     return formatter
   }
 }
