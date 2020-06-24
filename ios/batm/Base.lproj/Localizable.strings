@@ -54,7 +54,7 @@
 
 "recover.title" = "Recover Old Wallet";
 
-"recover_seed_phrase.annotation" = "Enter your secret 15 word phrase here to restore your wallet";
+"recover_seed_phrase.annotation" = "Enter your secret 12 word phrase here to restore your wallet";
 
 "pin_code.setup.title" = "Setup PIN Code";
 "pin_code.confirmation.title" = "Confirm PIN Code";
