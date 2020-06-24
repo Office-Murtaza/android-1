@@ -13,7 +13,7 @@ import com.app.belcobtm.presentation.core.extensions.toStringUsd
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
 import com.app.belcobtm.presentation.core.ui.BaseActivity
 import com.app.belcobtm.presentation.features.authorization.pin.PinActivity
-import com.app.belcobtm.presentation.features.wallet.trade.create.CreateTradeActivity
+import com.app.belcobtm.presentation.features.wallet.trade.create.TradeCreateActivity
 import com.app.belcobtm.presentation.features.wallet.trade.details.TradeDetailsBuyActivity
 import com.app.belcobtm.presentation.features.wallet.trade.main.adapter.TradePageAdapter
 import com.app.belcobtm.presentation.features.wallet.trade.main.item.TradeDetailsItem
@@ -108,9 +108,9 @@ class TradeActivity : BaseActivity() {
             }
         }
         createButtonView.setOnClickListener {
-            val intent = Intent(this, CreateTradeActivity::class.java)
+            val intent = Intent(this, TradeCreateActivity::class.java)
             intent.putExtra(
-                CreateTradeActivity.TAG_COIN_ITEM,
+                TradeCreateActivity.TAG_COIN_ITEM,
                 this.intent.getParcelableExtra<CoinDataItem>(TAG_COIN_ITEM)
             )
             startActivity(intent)

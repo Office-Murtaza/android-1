@@ -12,9 +12,9 @@ import com.app.belcobtm.presentation.features.settings.verification.vip.Verifica
 import com.app.belcobtm.presentation.features.wallet.add.AddWalletViewModel
 import com.app.belcobtm.presentation.features.wallet.balance.BalanceViewModel
 import com.app.belcobtm.presentation.features.wallet.exchange.coin.to.coin.ExchangeCoinToCoinViewModel
-import com.app.belcobtm.presentation.features.wallet.trade.create.CreateTradeViewModel
+import com.app.belcobtm.presentation.features.wallet.trade.create.TradeCreateViewModel
 import com.app.belcobtm.presentation.features.wallet.trade.details.TradeDetailsBuyViewModel
-import com.app.belcobtm.presentation.features.wallet.trade.edit.EditTradeViewModel
+import com.app.belcobtm.presentation.features.wallet.trade.edit.TradeEditViewModel
 import com.app.belcobtm.presentation.features.wallet.trade.main.TradeViewModel
 import com.app.belcobtm.presentation.features.wallet.transactions.TransactionsViewModel
 import org.koin.android.viewmodel.dsl.viewModel
@@ -39,6 +39,6 @@ val viewModelModule = module {
         TradeViewModel(latitude, longitude, intentCoinItem, get(), get(), get(), get())
     }
     viewModel { (coinItem: CoinDataItem) -> TradeDetailsBuyViewModel(coinItem, get()) }
-    viewModel { (coinItem: CoinDataItem) -> CreateTradeViewModel(coinItem, get(), get()) }
-    viewModel { EditTradeViewModel() }
+    viewModel { (coinItem: CoinDataItem) -> TradeCreateViewModel(coinItem, get(), get()) }
+    viewModel { TradeEditViewModel() }
 }

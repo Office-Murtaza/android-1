@@ -7,7 +7,7 @@ import com.app.belcobtm.domain.transaction.interactor.trade.CreateSellTradeUseCa
 import com.app.belcobtm.domain.wallet.item.CoinDataItem
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
 
-class CreateTradeViewModel(
+class TradeCreateViewModel(
     val fromCoinItem: CoinDataItem,
     private val createTradeBuyUseCase: CreateBuyTradeUseCase,
     private val createTradeSellUseCase: CreateSellTradeUseCase
