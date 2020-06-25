@@ -1,8 +1,7 @@
 package com.batm.dto;
 
 import com.batm.entity.TransactionRecord;
-import com.batm.entity.TransactionRecordC2C;
-import com.batm.entity.TransactionRecordGift;
+import com.batm.entity.TransactionRecordWallet;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -19,6 +18,6 @@ import java.util.List;
 public class TxListDTO {
 
     List<TransactionRecord> buySellList = new ArrayList<>();
-    List<TransactionRecordGift> giftList = new ArrayList<>();
-    List<TransactionRecordC2C> c2cList = new ArrayList<>();
+    List<TransactionRecordWallet> giftList = new ArrayList<>();
+    List<TransactionRecordWallet> exchangeList = new ArrayList<>();
 }

@@ -3,8 +3,8 @@ package com.batm.util;
 import com.batm.dto.TransactionDetailsDTO;
 import com.batm.dto.TransactionListDTO;
 import com.batm.dto.TxListDTO;
-import com.batm.entity.BaseTxEntity;
 import com.batm.entity.TransactionRecord;
+import com.batm.entity.TransactionRecordWallet;
 import com.batm.model.TransactionGroupType;
 import com.batm.model.TransactionStatus;
 import com.batm.model.TransactionType;
@@ -18,7 +18,7 @@ public class TxUtil {
 
     public static TransactionListDTO buildTxs(Map<String, TransactionDetailsDTO> map, Integer startIndex, Integer limit, TxListDTO txDTO) {
         mergeGroupGroupTxs(map, txDTO.getGiftList(), TransactionGroupType.GIFT);
-        mergeGroupGroupTxs(map, txDTO.getC2cList(), TransactionGroupType.EXCHANGE);
+        mergeGroupGroupTxs(map, txDTO.getExchangeList(), TransactionGroupType.EXCHANGE);
         mergeBuySellTxs(map, txDTO.getBuySellList());
         List<TransactionDetailsDTO> list = convertAndSort(map);
 
@@ -29,7 +29,7 @@ public class TxUtil {
         return dto;
     }
 
-    private static void mergeGroupGroupTxs(Map<String, TransactionDetailsDTO> map, List<? extends BaseTxEntity> list, TransactionGroupType group) {
+    private static void mergeGroupGroupTxs(Map<String, TransactionDetailsDTO> map, List<TransactionRecordWallet> list, TransactionGroupType group) {
         if (list != null && !list.isEmpty()) {
             list.stream().forEach(e -> {
                 if (map.containsKey(e.getTxId())) {

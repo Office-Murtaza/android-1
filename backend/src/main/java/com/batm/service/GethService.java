@@ -55,6 +55,8 @@ public class GethService {
     private final String ETH_TX_COLL = "eth_transaction";
     private final String TOKEN_TX_COLL = "token_transaction";
 
+    private final long WATCH_TIME = 1800000; // 30 minutes
+
     @Value("${eth.node.url}")
     private String nodeUrl;
 
@@ -90,8 +92,8 @@ public class GethService {
     public void init() {
         web3 = Web3j.build(new HttpService(nodeUrl));
 
-        token = com.batm.contract.Token.load(contractAddress, web3,
-                Credentials.create(Numeric.toHexString(walletService.getPrivateKeyETH().data())), new DefaultGasProvider());
+//        token = com.batm.contract.Token.load(contractAddress, web3,
+//                Credentials.create(Numeric.toHexString(walletService.getPrivateKeyETH().data())), new DefaultGasProvider());
 
         if (!mongo.getCollection(ETH_TX_COLL).listIndexes().iterator().hasNext()) {
             mongo.getCollection(ETH_TX_COLL).createIndex(new Document("txId", 1).append("fromAddress", 1).append("toAddress", 1));
@@ -153,12 +155,12 @@ public class GethService {
     }
 
     @Scheduled(cron = "0 */1 * * * *")
-    public void updateSubmittedTransactions() {
+    public void updatePendingTransactions() {
         try {
             List<UpdateOneModel<Document>> ethTxs = new ArrayList<>();
             List<UpdateOneModel<Document>> tokenTxs = new ArrayList<>();
 
-            mongo.getCollection(ETH_TX_COLL).find(new Document("status", TransactionStatus.PENDING.getValue())).limit(10).into(new ArrayList<>()).stream().forEach(d -> {
+            mongo.getCollection(ETH_TX_COLL).find(new Document("status", TransactionStatus.PENDING.getValue()).append("timestamp", new Document("$gte", System.currentTimeMillis() - WATCH_TIME))).limit(10).into(new ArrayList<>()).stream().forEach(d -> {
                 org.web3j.protocol.core.methods.response.Transaction tx = getTransactionByHash(d.getString("txId"));
 
                 fetchEthTransaction(tx, System.currentTimeMillis(), TransactionStatus.COMPLETE, ethTxs, tokenTxs);
@@ -201,18 +203,7 @@ public class GethService {
 
     public String submitTransaction(String hex) {
         try {
-            String txId = web3.ethSendRawTransaction(hex).send().getTransactionHash();
-            org.web3j.protocol.core.methods.response.Transaction tx = getTransactionByHash(txId);
-
-            List<UpdateOneModel<Document>> ethTxs = new ArrayList<>();
-            List<UpdateOneModel<Document>> tokenTxs = new ArrayList<>();
-
-            fetchEthTransaction(tx, System.currentTimeMillis(), TransactionStatus.PENDING, ethTxs, tokenTxs);
-
-            bulkWrite(ETH_TX_COLL, ethTxs);
-            bulkWrite(TOKEN_TX_COLL, tokenTxs);
-
-            return txId;
+            return web3.ethSendRawTransaction(hex).send().getTransactionHash();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -220,7 +211,35 @@ public class GethService {
         return null;
     }
 
-    private BigDecimal getTxFee(Long gasLimit, Long gasPrice) {
+    public void addPendingEthTransaction(String txId, String fromAddress, String toAddress, BigDecimal amount, BigDecimal fee) {
+        Document doc = new Document("txId", txId)
+                .append("fromAddress", fromAddress)
+                .append("toAddress", toAddress)
+                .append("amount", amount)
+                .append("fee", fee)
+                .append("status", TransactionStatus.PENDING.getValue())
+                .append("blockTime", System.currentTimeMillis())
+                .append("timestamp", System.currentTimeMillis());
+
+        mongo.getCollection(ETH_TX_COLL).insertOne(doc);
+    }
+
+    public void addPendingTokenTransaction(String txId, String fromAddress, String toAddress, BigDecimal amount, BigDecimal fee) {
+        addPendingEthTransaction(txId, fromAddress, contractAddress, BigDecimal.ZERO, fee);
+
+        Document doc = new Document("txId", txId)
+                .append("fromAddress", fromAddress)
+                .append("toAddress", toAddress)
+                .append("amount", amount)
+                .append("fee", fee)
+                .append("status", TransactionStatus.PENDING.getValue())
+                .append("blockTime", System.currentTimeMillis())
+                .append("timestamp", System.currentTimeMillis());
+
+        mongo.getCollection(TOKEN_TX_COLL).insertOne(doc);
+    }
+
+    private BigDecimal calculateFee(Long gasLimit, Long gasPrice) {
         return new BigDecimal(gasLimit).multiply(new BigDecimal(gasPrice)).divide(Constant.ETH_DIVIDER).stripTrailingZeros();
     }
 
@@ -350,7 +369,7 @@ public class GethService {
         dto.setProfitC2C(coin.getProfitC2C().stripTrailingZeros());
         dto.setGasLimit(coin.getGasLimit());
         dto.setGasPrice(coin.getGasPrice());
-        dto.setTxFee(getTxFee(dto.getGasLimit(), dto.getGasPrice()));
+        dto.setTxFee(calculateFee(dto.getGasLimit(), dto.getGasPrice()));
         dto.setWalletAddress(walletAddress);
         dto.setContractAddress(contractAddress);
 
@@ -536,7 +555,8 @@ public class GethService {
     private Integer parseBlockNumber(org.web3j.protocol.core.methods.response.Transaction tx) {
         try {
             return tx.getBlockNumber().intValue();
-        } catch (Exception e) {}
+        } catch (Exception e) {
+        }
 
         return 0;
     }

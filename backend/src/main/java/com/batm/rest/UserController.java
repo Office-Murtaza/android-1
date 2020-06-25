@@ -7,6 +7,7 @@ import com.batm.model.Response;
 import com.batm.repository.TokenRep;
 import com.batm.security.TokenProvider;
 import com.batm.service.MessageService;
+import com.batm.service.TransactionService;
 import com.batm.service.UserService;
 import com.batm.util.Constant;
 import com.batm.util.Util;
@@ -51,6 +52,9 @@ public class UserController {
     private UserService userService;
 
     @Autowired
+    private TransactionService transactionService;
+
+    @Autowired
     private TokenRep refreshTokenRep;
 
     @Autowired
@@ -78,7 +82,7 @@ public class UserController {
                 return Response.serverError(4, "Phone is already registered");
             }
 
-            User user = userService.register(dto.getPhone(), dto.getPassword());
+            User user = userService.register(dto.getPhone(), dto.getPassword(), dto.getPlatform());
             messageService.sendVerificationCode(user);
             TokenDTO jwt = getJwt(user.getId(), user.getIdentity().getId(), dto.getPhone(), dto.getPassword());
 
@@ -127,6 +131,9 @@ public class UserController {
             token.setRefreshToken(jwt.getRefreshToken());
             token.setAccessToken(jwt.getAccessToken());
             refreshTokenRep.save(token);
+
+            user.setPlatform(dto.getPlatform());
+            userService.save(user);
 
             return Response.ok(jwt);
         } catch (Exception e) {
@@ -346,6 +353,16 @@ public class UserController {
     public Response updateLocation(@PathVariable Long userId, @RequestBody LocationDTO dto) {
         try {
             return Response.ok(userService.updateLocation(userId, dto));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Response.serverError();
+        }
+    }
+
+    @GetMapping("/user/{userId}/limits")
+    public Response getLimits(@PathVariable Long userId) {
+        try {
+            return Response.ok(transactionService.getLimits(userId));
         } catch (Exception e) {
             e.printStackTrace();
             return Response.serverError();

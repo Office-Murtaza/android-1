@@ -2,7 +2,9 @@ package com.batm.model;
 
 import com.fasterxml.jackson.annotation.JsonValue;
 import org.apache.commons.lang3.StringUtils;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public enum TransactionType {
@@ -18,7 +20,9 @@ public enum TransactionType {
     RECEIVE_EXCHANGE(9),
     RESERVE(10),
     RECALL(11),
-    SELF(12);
+    SELF(12),
+    STAKE(13),
+    UNSTAKE(14);
 
     private int value;
 
@@ -75,5 +79,13 @@ public enum TransactionType {
         }
 
         return null;
+    }
+
+    public static List<Integer> getGiftTypes() {
+        return Arrays.asList(SEND_GIFT.getValue(), RECEIVE_GIFT.getValue());
+    }
+
+    public static List<Integer> getExchangeTypes() {
+        return Arrays.asList(SEND_EXCHANGE.getValue(), RECEIVE_EXCHANGE.getValue());
     }
 }

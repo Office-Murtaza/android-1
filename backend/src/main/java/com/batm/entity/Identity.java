@@ -105,8 +105,5 @@ public class Identity extends BaseEntity {
     private List<TransactionRecord> transactionRecords;
 
     @OneToMany(mappedBy = "identity")
-    private List<TransactionRecordGift> transactionRecordGifts;
-
-    @OneToMany(mappedBy = "identity")
-    private List<TransactionRecordC2C> transactionRecordC2C;
+    private List<TransactionRecordWallet> transactionRecordWallets;
 }
