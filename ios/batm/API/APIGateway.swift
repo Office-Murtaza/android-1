@@ -32,7 +32,7 @@ protocol APIGateway {
   func unlink(userId: Int) -> Completable
   func getTransactions(userId: Int, type: CustomCoinType, page: Int) -> Single<Transactions>
   func getTransactionDetails(userId: Int, type: CustomCoinType, id: String) -> Single<TransactionDetails>
-  func getUtxos(userId: Int, type: CustomCoinType, xpub: String) -> Single<[Utxo]>
+  func getUtxos(type: CustomCoinType, xpub: String) -> Single<[Utxo]>
   func presubmitTransaction(userId: Int,
                             type: CustomCoinType,
                             coinAmount: Double,
@@ -41,19 +41,22 @@ protocol APIGateway {
                          type: CustomCoinType,
                          txType: TransactionType,
                          amount: Double,
+                         fee: Double?,
+                         fromAddress: String?,
+                         toAddress: String?,
                          phone: String?,
                          message: String?,
                          imageId: String?,
                          toCoinType: CustomCoinType?,
                          txhex: String?) -> Completable
   func requestCode(userId: Int) -> Completable
-  func getTronBlockHeader(userId: Int, type: CustomCoinType) -> Single<BTMTronBlockHeader>
-  func getGiftAddress(userId: Int, type: CustomCoinType, phone: String) -> Single<GiftAddress>
-  func getNonce(userId: Int, type: CustomCoinType, address: String) -> Single<Nonce>
-  func getBinanceAccountInfo(userId: Int, type: CustomCoinType) -> Single<BinanceAccountInfo>
-  func getRippleSequence(userId: Int, type: CustomCoinType) -> Single<RippleSequence>
+  func getTronBlockHeader(type: CustomCoinType) -> Single<BTMTronBlockHeader>
+  func getGiftAddress(type: CustomCoinType, phone: String) -> Single<GiftAddress>
+  func getNonce(type: CustomCoinType, address: String) -> Single<Nonce>
+  func getBinanceAccountInfo(type: CustomCoinType, address: String) -> Single<BinanceAccountInfo>
+  func getRippleSequence(type: CustomCoinType, address: String) -> Single<RippleSequence>
   func getSellAddress(userId: Int, type: CustomCoinType) -> Single<SellAddress>
-  func getSellDetails(userId: Int, type: CustomCoinType) -> Single<SellDetails>
+  func getSellDetails(userId: Int) -> Single<SellDetails>
   func getVerificationInfo(userId: Int) -> Single<VerificationInfo>
   func sendVerification(userId: Int, userData: VerificationUserData) -> Completable
   func sendVIPVerification(userId: Int, userData: VIPVerificationUserData) -> Completable
@@ -66,6 +69,7 @@ protocol APIGateway {
 }
 
 final class APIGatewayImpl: APIGateway {
+  
   let api: NetworkRequestExecutor
   
   required init(networkProvider api: NetworkRequestExecutor) {
@@ -292,8 +296,8 @@ final class APIGatewayImpl: APIGateway {
       }
   }
   
-  func getUtxos(userId: Int, type: CustomCoinType, xpub: String) -> Single<[Utxo]> {
-    let request = UtxosRequest(userId: userId, coinId: type.code, xpub: xpub)
+  func getUtxos(type: CustomCoinType, xpub: String) -> Single<[Utxo]> {
+    let request = UtxosRequest(coinId: type.code, xpub: xpub)
     return api.execute(request)
       .flatMap {
         switch $0 {
@@ -328,6 +332,9 @@ final class APIGatewayImpl: APIGateway {
                          type: CustomCoinType,
                          txType: TransactionType,
                          amount: Double,
+                         fee: Double?,
+                         fromAddress: String?,
+                         toAddress: String?,
                          phone: String?,
                          message: String?,
                          imageId: String?,
@@ -337,6 +344,9 @@ final class APIGatewayImpl: APIGateway {
                                            coinId: type.code,
                                            txType: txType,
                                            amount: amount,
+                                           fee: fee,
+                                           fromAddress: fromAddress,
+                                           toAddress: toAddress,
                                            phone: phone,
                                            message: message,
                                            imageId: imageId,
@@ -368,8 +378,8 @@ final class APIGatewayImpl: APIGateway {
       .toCompletable()
   }
   
-  func getTronBlockHeader(userId: Int, type: CustomCoinType) -> Single<BTMTronBlockHeader> {
-    let request = GetTronBlockHeaderRequest(userId: userId, coinId: type.code)
+  func getTronBlockHeader(type: CustomCoinType) -> Single<BTMTronBlockHeader> {
+    let request = GetTronBlockHeaderRequest(coinId: type.code)
     return api.execute(request)
       .flatMap {
         switch $0 {
@@ -381,8 +391,8 @@ final class APIGatewayImpl: APIGateway {
       }
   }
   
-  func getGiftAddress(userId: Int, type: CustomCoinType, phone: String) -> Single<GiftAddress> {
-    let request = GetGiftAddressRequest(userId: userId, coinId: type.code, phone: phone)
+  func getGiftAddress(type: CustomCoinType, phone: String) -> Single<GiftAddress> {
+    let request = GetGiftAddressRequest(coinId: type.code, phone: phone)
     return api.execute(request)
       .flatMap {
         switch $0 {
@@ -394,8 +404,8 @@ final class APIGatewayImpl: APIGateway {
       }
   }
   
-  func getNonce(userId: Int, type: CustomCoinType, address: String) -> Single<Nonce> {
-    let request = GetNonceRequest(userId: userId, coinId: type.code, address: address)
+  func getNonce(type: CustomCoinType, address: String) -> Single<Nonce> {
+    let request = GetNonceRequest(coinId: type.code, address: address)
     return api.execute(request)
       .flatMap {
         switch $0 {
@@ -407,8 +417,8 @@ final class APIGatewayImpl: APIGateway {
       }
   }
   
-  func getBinanceAccountInfo(userId: Int, type: CustomCoinType) -> Single<BinanceAccountInfo> {
-    let request = GetBinanceAccountInfoRequest(userId: userId, coinId: type.code)
+  func getBinanceAccountInfo(type: CustomCoinType, address: String) -> Single<BinanceAccountInfo> {
+    let request = GetBinanceAccountInfoRequest(coinId: type.code, address: address)
     return api.execute(request)
       .flatMap {
         switch $0 {
@@ -420,8 +430,8 @@ final class APIGatewayImpl: APIGateway {
       }
   }
   
-  func getRippleSequence(userId: Int, type: CustomCoinType) -> Single<RippleSequence> {
-    let request = GetRippleSequenceRequest(userId: userId, coinId: type.code)
+  func getRippleSequence(type: CustomCoinType, address: String) -> Single<RippleSequence> {
+    let request = GetRippleSequenceRequest(coinId: type.code, address: address)
     return api.execute(request)
       .flatMap {
         switch $0 {
@@ -446,8 +456,8 @@ final class APIGatewayImpl: APIGateway {
       }
   }
   
-  func getSellDetails(userId: Int, type: CustomCoinType) -> Single<SellDetails> {
-    let request = GetSellDetailsRequest(userId: userId, coinId: type.code)
+  func getSellDetails(userId: Int) -> Single<SellDetails> {
+    let request = GetSellDetailsRequest(userId: userId)
     return api.execute(request)
       .flatMap {
         switch $0 {
