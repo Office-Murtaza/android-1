@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.util.Date;
 
 @Getter
 @Setter
@@ -27,6 +28,7 @@ public class TransactionRecordWallet extends BaseEntity {
     private String phone;
     private String imageId;
     private String message;
+    private Date createDate;
 
     @Column(name = "profit")
     private BigDecimal profit;

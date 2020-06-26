@@ -9,6 +9,8 @@ import com.batm.util.Util;
 import net.sf.json.JSONObject;
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.joda.time.DateTime;
+import org.joda.time.Days;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
@@ -321,6 +323,66 @@ public class TransactionService {
         return null;
     }
 
+    public void stake(Long userId, CoinService.CoinEnum coinCode, String txId, BigDecimal amount) {
+        try{
+            TransactionRecordWallet record = new TransactionRecordWallet();
+            record.setIdentity(userService.findByUserId(userId));
+            record.setCoin(coinCode.getCoinEntity());
+            record.setType(TransactionType.STAKE.getValue());
+            record.setStatus(TransactionStatus.PENDING.getValue());
+            record.setAmount(amount);
+            record.setTxId(txId);
+
+            walletRep.save(record);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void unstake(Long userId, CoinService.CoinEnum coinCode, String txId, BigDecimal amount) {
+        try{
+            TransactionRecordWallet record = new TransactionRecordWallet();
+            record.setIdentity(userService.findByUserId(userId));
+            record.setCoin(coinCode.getCoinEntity());
+            record.setType(TransactionType.UNSTAKE.getValue());
+            record.setStatus(TransactionStatus.PENDING.getValue());
+            record.setAmount(amount);
+            record.setTxId(txId);
+
+            walletRep.save(record);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public StakeDetailsDTO getStakeDetails(Long userId, CoinService.CoinEnum coinCode) {
+        try {
+            Identity identity = userService.findByUserId(userId);
+            Coin coin = coinCode.getCoinEntity();
+
+            List<TransactionRecordWallet> records = walletRep.findAllByIdentityAndCoinAndTypeIn(identity, coin, Arrays.asList(TransactionType.STAKE.getValue()));
+
+            for(TransactionRecordWallet record: records) {
+                if(StringUtils.isBlank(record.getRefTxId())) {
+                    int days = Days.daysBetween(new DateTime(record.getCreateDate()), DateTime.now()).getDays();
+
+                    StakeDetailsDTO dto = new StakeDetailsDTO();
+                    dto.setExist(true);
+                    dto.setStakedAmount(record.getAmount());
+                    dto.setStakedDays(days);
+                    dto.setRewardsPercent(new BigDecimal(days).divide(new BigDecimal(365)).multiply(new BigDecimal(12)).stripTrailingZeros());
+                    dto.setRewardsAmount(record.getAmount().multiply(BigDecimal.ONE.add(dto.getRewardsPercent().divide(new BigDecimal(100)))).stripTrailingZeros());
+
+                    return dto;
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return new StakeDetailsDTO();
+    }
+
     @Scheduled(cron = "0 */5 * * * *")
     public void processCronTasks() {
         completePendingRecords();
@@ -348,6 +410,18 @@ public class TransactionService {
                     userCoin.setReservedBalance(userCoin.getReservedBalance().subtract(e.getAmount()));
 
                     userCoinRep.save(userCoin);
+                }
+
+                if(e.getType() == TransactionType.UNSTAKE.getValue()) {
+                    List<TransactionRecordWallet> stakedRecords = walletRep.findAllByIdentityAndCoinAndTypeIn(e.getIdentity(), e.getCoin(), Arrays.asList(TransactionType.STAKE.getValue()));
+
+                    for(TransactionRecordWallet record : stakedRecords) {
+                        record.setRefTxId(e.getTxId());
+
+                        walletRep.save(record);
+
+                        break;
+                    }
                 }
             });
 
@@ -393,7 +467,7 @@ public class TransactionService {
 
     private void deliverReservedExchange() {
         try {
-            List<TransactionRecordWallet> list = walletRep.findByTypeAndStatusAndRefTxIdNullAndHoursAgo(TransactionType.SEND_EXCHANGE.getValue(), TransactionStatus.COMPLETE.getValue(), 2, PageRequest.of(0, 10));
+            List<TransactionRecordWallet> list = walletRep.findAllByTypeAndStatusAndRefTxIdNullAndHoursAgo(TransactionType.SEND_EXCHANGE.getValue(), TransactionStatus.COMPLETE.getValue(), 2, PageRequest.of(0, 10));
             List<TransactionRecordWallet> confirmedList = new ArrayList<>();
 
             list.stream().forEach(t -> {
@@ -442,7 +516,7 @@ public class TransactionService {
 
     private void deliverReservedGifts() {
         try {
-            List<TransactionRecordWallet> list = walletRep.findByTypeAndStatusAndStepAndDaysAgo(
+            List<TransactionRecordWallet> list = walletRep.findAllByTypeAndStatusAndStepAndDaysAgo(
                     TransactionType.SEND_GIFT.getValue(),
                     TransactionStatus.COMPLETE.getValue(),
                     TransactionRecordWallet.RECEIVER_NOT_EXIST,

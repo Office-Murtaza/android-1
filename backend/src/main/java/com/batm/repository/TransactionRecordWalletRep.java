@@ -20,8 +20,8 @@ public interface TransactionRecordWalletRep extends JpaRepository<TransactionRec
     List<TransactionRecordWallet> findAllByStatusAndHoursAgo(@Param("status") Integer status, @Param("hoursAgo") Integer hours, Pageable page);
 
     @Query(value = "SELECT * FROM w_transactionrecordwallet WHERE type = :type AND status = :status AND receiver_status = :receiverStatus AND update_date > NOW() - INTERVAL :daysAgo DAY", nativeQuery = true)
-    List<TransactionRecordWallet> findByTypeAndStatusAndStepAndDaysAgo(@Param("type") Integer type, @Param("status") Integer status, @Param("receiverStatus") Integer receiverStatus, @Param("daysAgo") Integer days, Pageable page);
+    List<TransactionRecordWallet> findAllByTypeAndStatusAndStepAndDaysAgo(@Param("type") Integer type, @Param("status") Integer status, @Param("receiverStatus") Integer receiverStatus, @Param("daysAgo") Integer days, Pageable page);
 
     @Query(value = "SELECT * FROM w_transactionrecordwallet WHERE type = :type AND status = :status AND ref_tx_id IS NULL AND update_date > NOW() - INTERVAL :hoursAgo HOUR", nativeQuery = true)
-    List<TransactionRecordWallet> findByTypeAndStatusAndRefTxIdNullAndHoursAgo(@Param("type") Integer type, @Param("status") Integer status, @Param("hoursAgo") Integer hours, Pageable page);
+    List<TransactionRecordWallet> findAllByTypeAndStatusAndRefTxIdNullAndHoursAgo(@Param("type") Integer type, @Param("status") Integer status, @Param("hoursAgo") Integer hours, Pageable page);
 }

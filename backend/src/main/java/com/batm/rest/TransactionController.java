@@ -20,9 +20,6 @@ public class TransactionController {
     @Autowired
     private GethService geth;
 
-    /**
-     * Transaction History
-     */
     @GetMapping("/user/{userId}/coins/{coinCode}/transactions")
     public Response getTransactions(@PathVariable Long userId, @PathVariable CoinService.CoinEnum coinCode, @RequestParam(required = false) Integer index) {
         try {
@@ -35,9 +32,6 @@ public class TransactionController {
         }
     }
 
-    /**
-     * Transaction Details
-     */
     @GetMapping("/user/{userId}/coins/{coinCode}/transaction")
     public Response getTransaction(@PathVariable Long userId, @PathVariable CoinService.CoinEnum coinCode, @RequestParam String txId) {
         try {
@@ -84,7 +78,11 @@ public class TransactionController {
                     }
 
                     if (TransactionType.STAKE.getValue() == dto.getType()) {
-                        transactionService.reserve(userId, coinCode, txId, dto);
+                        transactionService.stake(userId, coinCode, txId, dto.getCryptoAmount());
+                    }
+
+                    if (TransactionType.UNSTAKE.getValue() == dto.getType()) {
+                        transactionService.unstake(userId, coinCode, txId, dto.getCryptoAmount());
                     }
 
                     if (coinCode == CoinService.CoinEnum.ETH) {
@@ -100,6 +98,16 @@ public class TransactionController {
             }
 
             return Response.error(2, coinCode.name() + " submit transaction error");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Response.serverError();
+        }
+    }
+
+    @GetMapping("/user/{userId}/coins/{coinCode}/transactions/stake-details")
+    public Response getStakeDetails(@PathVariable Long userId, @PathVariable CoinService.CoinEnum coinCode) {
+        try {
+            return Response.ok(transactionService.getStakeDetails(userId, coinCode));
         } catch (Exception e) {
             e.printStackTrace();
             return Response.serverError();
