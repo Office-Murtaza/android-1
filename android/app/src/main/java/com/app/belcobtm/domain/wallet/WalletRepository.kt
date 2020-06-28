@@ -2,18 +2,19 @@ package com.app.belcobtm.domain.wallet
 
 import com.app.belcobtm.domain.Either
 import com.app.belcobtm.domain.Failure
-import com.app.belcobtm.domain.wallet.item.BalanceDataItem
-import com.app.belcobtm.domain.wallet.item.ChartDataItem
-import com.app.belcobtm.domain.wallet.item.CoinFeeDataItem
-import com.app.belcobtm.domain.wallet.item.LocalCoinDataItem
+import com.app.belcobtm.domain.wallet.item.*
 
 interface WalletRepository {
 
     fun getCoinFeeMap(): Map<String, CoinFeeDataItem>
 
-    suspend fun getLocalCoinList(): List<LocalCoinDataItem>
+    fun getCoinFeeItemByCode(coinCode: String): CoinFeeDataItem
 
-    suspend fun updateCoin(dataItemLocal: LocalCoinDataItem): Either<Failure, Unit>
+    fun getCoinItemByCode(coinCode: String): CoinDataItem
+
+    suspend fun getAccountList(): List<AccountDataItem>
+
+    suspend fun updateAccount(accountDataItem: AccountDataItem): Either<Failure, Unit>
 
     suspend fun getBalanceItem(): Either<Failure, BalanceDataItem>
 

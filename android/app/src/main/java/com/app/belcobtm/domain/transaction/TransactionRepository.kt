@@ -48,9 +48,7 @@ interface TransactionRepository {
         message: String
     ): Either<Failure, Unit>
 
-    suspend fun sellGetLimits(
-        fromCoin: String
-    ): Either<Failure, SellLimitsDataItem>
+    suspend fun sellGetLimits(): Either<Failure, SellLimitsDataItem>
 
     suspend fun sellPreSubmit(
         smsCode: String,

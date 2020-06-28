@@ -8,7 +8,7 @@ import com.app.belcobtm.data.disk.database.CoinEntity
 import com.app.belcobtm.data.disk.database.mapToDataItem
 import com.app.belcobtm.data.disk.shared.preferences.SharedPreferencesHelper
 import com.app.belcobtm.domain.wallet.LocalCoinType
-import com.app.belcobtm.domain.wallet.item.LocalCoinDataItem
+import com.app.belcobtm.domain.wallet.item.AccountDataItem
 import com.app.belcobtm.mvp.BaseMvpDIPresenterImpl
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -50,7 +50,7 @@ class RecoverSeedPresenter : BaseMvpDIPresenterImpl<RecoverSeedContract.View, Au
         }
     }
 
-    private suspend fun createWalletDB(seed: String): List<LocalCoinDataItem> {
+    private suspend fun createWalletDB(seed: String): List<AccountDataItem> {
         val wallet = HDWallet(seed, "")
         val entityList = LocalCoinType.values().map { createCoinEntity(it, wallet) }
         prefsHelper.apiSeed = seed

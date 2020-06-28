@@ -1,18 +1,18 @@
 package com.app.belcobtm.api.model.param
 
-import com.app.belcobtm.domain.wallet.item.LocalCoinDataItem
+import com.app.belcobtm.domain.wallet.item.AccountDataItem
 import com.google.gson.annotations.SerializedName
 
 
 class AddCoinsParam(
-    dbLocalCoinDbs: List<LocalCoinDataItem>
+    dbAccountDbs: List<AccountDataItem>
 ) {
 
     @SerializedName("coins")
     var coins: ArrayList<Coin> = ArrayList()
 
     init {
-        dbLocalCoinDbs.forEach { coins.add(Coin(it)) }
+        dbAccountDbs.forEach { coins.add(Coin(it)) }
     }
 
     data class Coin(
@@ -21,6 +21,6 @@ class AddCoinsParam(
         @SerializedName("address")
         val publicKey: String
     ) {
-        constructor(dataItemLocal: LocalCoinDataItem) : this(dataItemLocal.type.name, dataItemLocal.publicKey)
+        constructor(dataItemLocal: AccountDataItem) : this(dataItemLocal.type.name, dataItemLocal.publicKey)
     }
 }

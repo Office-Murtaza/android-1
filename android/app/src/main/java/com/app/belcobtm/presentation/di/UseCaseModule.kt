@@ -51,4 +51,5 @@ val useCaseModule = module {
     single { GetTransactionListUseCase(get()) }
     single { UpdateCoinFeeUseCase(get()) }
     single { CreateWithdrawTransactionUseCase(get()) }
+    single { GetCoinByCodeUseCase(get()) }
 }

@@ -12,9 +12,6 @@ import retrofit2.http.Path
 
 interface ApiInterface {
 
-    @POST("recover")
-    fun recover(@Body registerParam: AuthParam): Observable<ServerResponse<AuthResponse>>
-
     @POST("user/{userId}/code/verify")
     fun verifySmsCode(
         @Path("userId") userId: String,
@@ -59,12 +56,6 @@ interface ApiInterface {
         @Path("userId") userId: String,
         @Body changePassParam: ChangePassParam
     ): Observable<ServerResponse<UpdateResponse>>
-
-    @GET("user/{userId}/coins/{coinId}/transactions/limits")
-    fun getLimits(
-        @Path("userId") userId: String,
-        @Path("coinId") coinId: String?
-    ): Observable<ServerResponse<LimitsResponse>>
 
     @GET("user/{userId}/coins/{coinId}/transaction/{txid}")
     fun getTransactionDetails(

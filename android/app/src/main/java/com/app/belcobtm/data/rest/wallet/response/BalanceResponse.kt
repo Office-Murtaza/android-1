@@ -14,7 +14,7 @@ data class CoinResponse(
     var id: Int,
     var price: UsdBalanceResponse,
     var address: String,
-    var reservedBalance: Double
+    var reservedBalance: Double?
 )
 
 data class UsdBalanceResponse(val USD: Double)
@@ -30,8 +30,8 @@ fun CoinResponse.mapToDataItem(): CoinDataItem =
         balanceCoin = balance,
         balanceUsd = balance * price.USD,
         priceUsd = price.USD,
-        reservedBalanceCoin = reservedBalance,
-        reservedBalanceUsd = reservedBalance * price.USD,
+        reservedBalanceCoin = reservedBalance ?: 0.0,
+        reservedBalanceUsd = reservedBalance ?: 0.0 * price.USD,
         publicKey = address,
         code = code
     )

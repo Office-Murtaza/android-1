@@ -4,7 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.app.belcobtm.domain.transaction.interactor.UpdateCoinUseCase
 import com.app.belcobtm.domain.wallet.interactor.GetLocalCoinListUseCase
-import com.app.belcobtm.domain.wallet.item.LocalCoinDataItem
+import com.app.belcobtm.domain.wallet.item.AccountDataItem
 import com.app.belcobtm.presentation.features.wallet.add.adapter.AddWalletCoinItem
 
 class AddWalletViewModel(
@@ -12,12 +12,12 @@ class AddWalletViewModel(
     private val updateCoinUseCase: UpdateCoinUseCase
 ) : ViewModel() {
     val coinListLiveData: MutableLiveData<List<AddWalletCoinItem>> = MutableLiveData()
-    private val localCoinDataList: MutableList<LocalCoinDataItem> = mutableListOf()
+    private val accountDataList: MutableList<AccountDataItem> = mutableListOf()
 
     init {
         coinListUseCase.invoke { result ->
-            localCoinDataList.addAll(result)
-            coinListLiveData.value = localCoinDataList.map {
+            accountDataList.addAll(result)
+            coinListLiveData.value = accountDataList.map {
                 AddWalletCoinItem(
                     it.type.name,
                     it.isEnabled
@@ -27,7 +27,7 @@ class AddWalletViewModel(
     }
 
     fun changeCoinState(position: Int, isChecked: Boolean) {
-        val coinDataItem = localCoinDataList[position]
+        val coinDataItem = accountDataList[position]
         coinDataItem.isEnabled = isChecked
         updateCoinUseCase.invoke(UpdateCoinUseCase.Params(coinDataItem))
     }

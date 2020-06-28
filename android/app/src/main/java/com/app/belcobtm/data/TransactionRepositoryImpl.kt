@@ -117,10 +117,8 @@ class TransactionRepositoryImpl(
         Either.Left(Failure.NetworkConnection)
     }
 
-    override suspend fun sellGetLimits(
-        fromCoin: String
-    ): Either<Failure, SellLimitsDataItem> = if (networkUtils.isNetworkAvailable()) {
-        apiService.sellGetLimitsAsync(fromCoin)
+    override suspend fun sellGetLimits(): Either<Failure, SellLimitsDataItem> = if (networkUtils.isNetworkAvailable()) {
+        apiService.sellGetLimitsAsync()
     } else {
         Either.Left(Failure.NetworkConnection)
     }

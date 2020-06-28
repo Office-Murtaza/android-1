@@ -89,7 +89,7 @@ class SellPresenter : BaseMvpDIPresenterImpl<SellContract.View, WithdrawDataMana
     }
 
     override fun getDetails() = limitsUseCase.invoke(
-        SellGetLimitsUseCase.Params(mCoin?.code ?: ""),
+        Unit,
         onSuccess = { mView?.showLimits(it) },
         onError = { errorResponse(it) }
     )
