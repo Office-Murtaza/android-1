@@ -61,31 +61,25 @@ public enum TransactionType {
         return null;
     }
 
-    public static TransactionType convert(TransactionType type, TransactionGroupType group) {
-        if (type != null) {
+    public static TransactionType convert(TransactionType type, TransactionType type2) {
+        if (type2 == SEND_GIFT || type2 == RECEIVE_GIFT) {
             if (type == WITHDRAW) {
-                if (group == TransactionGroupType.GIFT) {
-                    return SEND_GIFT;
-                } else if (group == TransactionGroupType.EXCHANGE) {
-                    return SEND_EXCHANGE;
-                }
+                return SEND_GIFT;
             } else if (type == DEPOSIT) {
-                if (group == TransactionGroupType.GIFT) {
-                    return RECEIVE_GIFT;
-                } else if (group == TransactionGroupType.EXCHANGE) {
-                    return RECEIVE_EXCHANGE;
-                }
+                return RECEIVE_GIFT;
+            }
+        } else if (type2 == SEND_EXCHANGE || type2 == RECEIVE_EXCHANGE) {
+            if (type == WITHDRAW) {
+                return SEND_EXCHANGE;
+            } else if (type == DEPOSIT) {
+                return RECEIVE_EXCHANGE;
             }
         }
 
-        return null;
+        return type2;
     }
 
-    public static List<Integer> getGiftTypes() {
-        return Arrays.asList(SEND_GIFT.getValue(), RECEIVE_GIFT.getValue());
-    }
-
-    public static List<Integer> getExchangeTypes() {
-        return Arrays.asList(SEND_EXCHANGE.getValue(), RECEIVE_EXCHANGE.getValue());
+    public static List<Integer> getWalletTypes() {
+        return Arrays.asList(SEND_GIFT.getValue(), RECEIVE_GIFT.getValue(), SEND_EXCHANGE.getValue(), RECEIVE_EXCHANGE.getValue(), RESERVE.getValue(), RECALL.getValue());
     }
 }

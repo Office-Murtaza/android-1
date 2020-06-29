@@ -65,8 +65,8 @@ public class TransactionService {
             buySellTx = recordRep.findOneByIdentityAndDetailAndCryptoCurrency(user.getIdentity(), txId, coinCode.name());
         }
 
-        Optional<TransactionRecordWallet> giftTx = walletRep.findFirstByIdentityAndCoinAndTxIdAndTypeIn(identity, coin, txId, TransactionType.getGiftTypes());
-        Optional<TransactionRecordWallet> exchangeTx = walletRep.findFirstByIdentityAndCoinAndTxIdAndTypeIn(identity, coin, txId, TransactionType.getExchangeTypes());
+        Optional<TransactionRecordWallet> giftTx = walletRep.findFirstByIdentityAndCoinAndTxIdAndTypeIn(identity, coin, txId, Arrays.asList(TransactionType.SEND_GIFT.getValue(), TransactionType.RECEIVE_GIFT.getValue()));
+        Optional<TransactionRecordWallet> exchangeTx = walletRep.findFirstByIdentityAndCoinAndTxIdAndTypeIn(identity, coin, txId, Arrays.asList(TransactionType.SEND_EXCHANGE.getValue(), TransactionType.RECEIVE_EXCHANGE.getValue()));
 
         if (giftTx.isPresent()) {
             TransactionRecordWallet gift = giftTx.get();
@@ -74,7 +74,7 @@ public class TransactionService {
             dto.setPhone(gift.getPhone());
             dto.setImageId(gift.getImageId());
             dto.setMessage(gift.getMessage());
-            dto.setType(TransactionType.convert(dto.getType(), TransactionGroupType.GIFT));
+            dto.setType(TransactionType.convert(dto.getType(), TransactionType.valueOf(gift.getType())));
         } else if (exchangeTx.isPresent()) {
             TransactionRecordWallet exchange = exchangeTx.get();
 
@@ -83,7 +83,7 @@ public class TransactionService {
             dto.setRefLink(CoinService.CoinEnum.valueOf(code).getExplorerUrl() + "/" + exchange.getRefTxId());
             dto.setRefCoin(code);
             dto.setRefCryptoAmount(exchange.getRefAmount());
-            dto.setType(TransactionType.convert(dto.getType(), TransactionGroupType.EXCHANGE));
+            dto.setType(TransactionType.convert(dto.getType(), TransactionType.valueOf(exchange.getType())));
         } else if (buySellTx.isPresent()) {
             TransactionRecord buySell = buySellTx.get();
 
@@ -122,9 +122,8 @@ public class TransactionService {
         String address = user.getCoinAddress(coinCode.name());
 
         TxListDTO txDTO = new TxListDTO();
-        txDTO.setBuySellList(recordRep.findAllByIdentityAndCryptoCurrency(user.getIdentity(), coinCode.name()));
-        txDTO.setGiftList(walletRep.findAllByIdentityAndCoinAndTypeIn(identity, coin, TransactionType.getGiftTypes()));
-        txDTO.setExchangeList(walletRep.findAllByIdentityAndCoinAndTypeIn(identity, coin, TransactionType.getExchangeTypes()));
+        txDTO.setTransactionRecords(recordRep.findAllByIdentityAndCryptoCurrency(user.getIdentity(), coinCode.name()));
+        txDTO.setTransactionRecordWallets(walletRep.findAllByIdentityAndCoinAndTypeIn(identity, coin, TransactionType.getWalletTypes()));
 
         return coinCode.getTransactionList(address, startIndex, Constant.TRANSACTIONS_COUNT, txDTO);
     }

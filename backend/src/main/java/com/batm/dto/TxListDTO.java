@@ -17,7 +17,6 @@ import java.util.List;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class TxListDTO {
 
-    List<TransactionRecord> buySellList = new ArrayList<>();
-    List<TransactionRecordWallet> giftList = new ArrayList<>();
-    List<TransactionRecordWallet> exchangeList = new ArrayList<>();
+    List<TransactionRecord> transactionRecords = new ArrayList<>();
+    List<TransactionRecordWallet> transactionRecordWallets = new ArrayList<>();
 }
