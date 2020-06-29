@@ -267,3 +267,6 @@
 "create_edit_trade.form.error.invalid_max_limit" = "Max limit should be greater than Min limit";
 "create_edit_trade.form.error.too_many_characters_in_terms" = "Trade terms is too long";
 "create_edit_trade.button.create" = "Create";
+
+"reserve.title" = "Reserve %@";
+"reserve.button.reserve" = "Reserve";

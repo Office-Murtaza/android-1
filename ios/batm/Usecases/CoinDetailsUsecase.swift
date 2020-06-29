@@ -25,6 +25,7 @@ protocol CoinDetailsUsecase {
                 with coinSettings: CoinSettings,
                 to toCoinType: CustomCoinType,
                 amount: Double) -> Completable
+  func reserve(from coin: BTMCoin, with coinSettings: CoinSettings, amount: Double) -> Completable
 }
 
 class CoinDetailsUsecaseImpl: CoinDetailsUsecase {
@@ -178,6 +179,27 @@ class CoinDetailsUsecaseImpl: CoinDetailsUsecase {
                            fromAddress: fromCoin.address,
                            toAddress: coinSettings.walletAddress,
                            toCoinType: toCoinType,
+                           transactionResultString: transactionResultString)
+      }
+  }
+  
+  func reserve(from coin: BTMCoin, with coinSettings: CoinSettings, amount: Double) -> Completable {
+    return accountStorage.get()
+      .flatMap { [walletService] account in
+        return walletService.getTransactionHex(for: coin,
+                                               with: coinSettings,
+                                               destination: coinSettings.walletAddress,
+                                               amount: amount)
+          .map { (account, $0) }
+      }
+      .flatMapCompletable { [unowned self] account, transactionResultString in
+        return self.submit(userId: account.userId,
+                           type: coin.type,
+                           txType: .reserve,
+                           amount: amount,
+                           fee: coinSettings.txFee,
+                           fromAddress: coin.address,
+                           toAddress: coinSettings.walletAddress,
                            transactionResultString: transactionResultString)
       }
   }

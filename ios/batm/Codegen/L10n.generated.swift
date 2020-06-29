@@ -117,6 +117,10 @@ enum L {
     static let annotation = "recover_seed_phrase.annotation"
   }
 
+  struct Reserve {
+    static let title = "reserve.title"
+  }
+
   struct SeedPhrase {
     static let annotation = "seed_phrase.annotation"
     static let title = "seed_phrase.title"
@@ -489,6 +493,12 @@ extension L.PinCode {
 
   struct Verification {
     static let title = "pin_code.verification.title"
+  }
+}
+extension L.Reserve {
+
+  struct Button {
+    static let reserve = "reserve.button.reserve"
   }
 }
 extension L.Shared {

@@ -105,9 +105,10 @@ final class CoinDetailsPresenter: ModulePresenter, CoinDetailsModule {
     
     input.trades
       .withLatestFrom(state)
-      .map { $0.coinBalance }
-      .filterNil()
-      .drive(onNext: { [delegate] in delegate?.showTradesScreen(coinBalance: $0) })
+      .filter { $0.coin != nil }
+      .drive(onNext: { [delegate] in delegate?.showTradesScreen(coin: $0.coin!,
+                                                                coinBalances: $0.coinBalances!,
+                                                                coinSettings: $0.coinSettings!) })
       .disposed(by: disposeBag)
     
     input.showMore

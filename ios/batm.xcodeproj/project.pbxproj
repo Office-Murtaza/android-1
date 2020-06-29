@@ -355,6 +355,12 @@
 		DB9D3ECF22C1535A008DC600 /* Poppins-Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = DB9D3EB722C151A9008DC600 /* Poppins-Thin.ttf */; };
 		DB9D3ED022C1535C008DC600 /* Poppins-ThinItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = DB9D3EB822C151A9008DC600 /* Poppins-ThinItalic.ttf */; };
 		DB9D3ED222C155B2008DC600 /* UITapGestureRecognizer+AttributedText.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB9D3ED122C155B2008DC600 /* UITapGestureRecognizer+AttributedText.swift */; };
+		DBA1B60D24A9C5B300A9A703 /* ReserveModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBA1B60924A9C5B300A9A703 /* ReserveModule.swift */; };
+		DBA1B60E24A9C5B300A9A703 /* ReserveViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBA1B60A24A9C5B300A9A703 /* ReserveViewController.swift */; };
+		DBA1B60F24A9C5B300A9A703 /* ReservePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBA1B60B24A9C5B300A9A703 /* ReservePresenter.swift */; };
+		DBA1B61024A9C5B300A9A703 /* ReserveAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBA1B60C24A9C5B300A9A703 /* ReserveAssembly.swift */; };
+		DBA1B61324A9C5E300A9A703 /* ReserveStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBA1B61224A9C5E300A9A703 /* ReserveStore.swift */; };
+		DBA1B61624A9C9D000A9A703 /* ReserveFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBA1B61524A9C9D000A9A703 /* ReserveFormView.swift */; };
 		DBA65C09244DBF1D0034678E /* FakeTextFied.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBA65C08244DBF1D0034678E /* FakeTextFied.swift */; };
 		DBA6842F22E42AF80079429E /* CoinsBalanceFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBA6842E22E42AF80079429E /* CoinsBalanceFlow.swift */; };
 		DBA6843122E42B450079429E /* CoinsBalanceFlowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBA6843022E42B450079429E /* CoinsBalanceFlowController.swift */; };
@@ -843,6 +849,12 @@
 		DB9D3EBD22C151AA008DC600 /* Poppins-ExtraLight.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Poppins-ExtraLight.ttf"; sourceTree = "<group>"; };
 		DB9D3EBE22C151AA008DC600 /* Poppins-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Poppins-Medium.ttf"; sourceTree = "<group>"; };
 		DB9D3ED122C155B2008DC600 /* UITapGestureRecognizer+AttributedText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITapGestureRecognizer+AttributedText.swift"; sourceTree = "<group>"; };
+		DBA1B60924A9C5B300A9A703 /* ReserveModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReserveModule.swift; sourceTree = "<group>"; };
+		DBA1B60A24A9C5B300A9A703 /* ReserveViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReserveViewController.swift; sourceTree = "<group>"; };
+		DBA1B60B24A9C5B300A9A703 /* ReservePresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReservePresenter.swift; sourceTree = "<group>"; };
+		DBA1B60C24A9C5B300A9A703 /* ReserveAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReserveAssembly.swift; sourceTree = "<group>"; };
+		DBA1B61224A9C5E300A9A703 /* ReserveStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReserveStore.swift; sourceTree = "<group>"; };
+		DBA1B61524A9C9D000A9A703 /* ReserveFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReserveFormView.swift; sourceTree = "<group>"; };
 		DBA65C08244DBF1D0034678E /* FakeTextFied.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FakeTextFied.swift; sourceTree = "<group>"; };
 		DBA6842E22E42AF80079429E /* CoinsBalanceFlow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinsBalanceFlow.swift; sourceTree = "<group>"; };
 		DBA6843022E42B450079429E /* CoinsBalanceFlowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinsBalanceFlowController.swift; sourceTree = "<group>"; };
@@ -1174,6 +1186,7 @@
 				DB1CFB4E246C513B00020104 /* TradesModule */,
 				DB6DC1B024877A8C00CD478D /* BuySellTradeDetailsModule */,
 				DB51F3092490CF82007F47B4 /* CreateEditTradeModule */,
+				DBA1B60824A9C55E00A9A703 /* ReserveModule */,
 			);
 			path = TradesFlow;
 			sourceTree = "<group>";
@@ -2264,6 +2277,27 @@
 			path = Poppins;
 			sourceTree = "<group>";
 		};
+		DBA1B60824A9C55E00A9A703 /* ReserveModule */ = {
+			isa = PBXGroup;
+			children = (
+				DBA1B61424A9C9C400A9A703 /* Views */,
+				DBA1B60A24A9C5B300A9A703 /* ReserveViewController.swift */,
+				DBA1B60B24A9C5B300A9A703 /* ReservePresenter.swift */,
+				DBA1B60924A9C5B300A9A703 /* ReserveModule.swift */,
+				DBA1B60C24A9C5B300A9A703 /* ReserveAssembly.swift */,
+				DBA1B61224A9C5E300A9A703 /* ReserveStore.swift */,
+			);
+			path = ReserveModule;
+			sourceTree = "<group>";
+		};
+		DBA1B61424A9C9C400A9A703 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				DBA1B61524A9C9D000A9A703 /* ReserveFormView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
 		DBA6842C22E42AA20079429E /* CoinsBalanceFlow */ = {
 			isa = PBXGroup;
 			children = (
@@ -2848,6 +2882,7 @@
 				DB0211BD22CCE48A004065E9 /* RecoverSeedPhrasePresenter.swift in Sources */,
 				DB167CDB230D85E800D9D66E /* Transactions.swift in Sources */,
 				DBECA62C22F7FB22002C2610 /* ChangePhoneFlowController.swift in Sources */,
+				DBA1B61024A9C5B300A9A703 /* ReserveAssembly.swift in Sources */,
 				DB33E9C4241D3B1D00764BF5 /* PriceChartPeriod+Mapping.swift in Sources */,
 				DB2F250D2360687800274C60 /* CoinSellDetailsCurrentAddressViewController.swift in Sources */,
 				DB86FD262477FBD5002FE22D /* LocationUpdateDateRecord+CoreDataClass.swift in Sources */,
@@ -2898,6 +2933,7 @@
 				DB0211C422CCE7FD004065E9 /* RecoverSeedPhraseView.swift in Sources */,
 				DB04E4CE22D85D41000E2D85 /* PinCodeRecord+CoreDataClass.swift in Sources */,
 				DBC8B45E23635AB200E7A799 /* SellDetails.swift in Sources */,
+				DBA1B61624A9C9D000A9A703 /* ReserveFormView.swift in Sources */,
 				DB70852322CFA39F00FFE4F7 /* CoinsBalanceModule.swift in Sources */,
 				DB95EB1E230AA48C0059C84C /* CoinDetailsCollectionViewDataSource.swift in Sources */,
 				DB3C03DA22CB5F360036F779 /* CodeView.swift in Sources */,
@@ -2954,6 +2990,7 @@
 				DBC620AF23475AF80007D412 /* BinanceAccountInfo.swift in Sources */,
 				DB83664222FAB7E200454F5C /* ChangePinPresenter.swift in Sources */,
 				DB2F2503236049DB00274C60 /* CoinSellDetailsInstructionView.swift in Sources */,
+				DBA1B61324A9C5E300A9A703 /* ReserveStore.swift in Sources */,
 				DB5B2DE4230A769300821713 /* CoinDetailsViewController.swift in Sources */,
 				DB59EA2922F9D2BD00EB64A7 /* ChangePasswordStore.swift in Sources */,
 				DB9616F922C7553D0078E92D /* StorageError.swift in Sources */,
@@ -3164,6 +3201,7 @@
 				DB9D3EA722C1476F008DC600 /* WelcomeSlideView.swift in Sources */,
 				DB5185AF231FE68300052229 /* CoinWithdrawPresenter.swift in Sources */,
 				DBC68CB922F8798F00473247 /* ChangePhoneModule.swift in Sources */,
+				DBA1B60D24A9C5B300A9A703 /* ReserveModule.swift in Sources */,
 				DB1CFB44246C4F5D00020104 /* TradesFlowController.swift in Sources */,
 				DBA6844E22E45A250079429E /* SettingsFlowController.swift in Sources */,
 				DB95EB22230AA6FE0059C84C /* TransactionCell.swift in Sources */,
@@ -3200,6 +3238,7 @@
 				DB33E9C2241D3A0D00764BF5 /* PriceChartPeriod.swift in Sources */,
 				DBBF299C22D3801500A5DE6A /* CoinsBalance.swift in Sources */,
 				DB51F30E2490CFC1007F47B4 /* CreateEditTradeModule.swift in Sources */,
+				DBA1B60E24A9C5B300A9A703 /* ReserveViewController.swift in Sources */,
 				DB4B9DCB22E5A4710016746A /* GoogleServicesInitializer.swift in Sources */,
 				DB3C03E122CB62320036F779 /* DummyButton.swift in Sources */,
 				DB51F31824913BA7007F47B4 /* CreateEditTradeTypeView.swift in Sources */,
@@ -3256,6 +3295,7 @@
 				DB5185AD231FE68300052229 /* CoinWithdrawModule.swift in Sources */,
 				DBDA966722C00424005B93DF /* ErrorTracker.swift in Sources */,
 				DB5B2DDB230A74D000821713 /* CoinDetailsFlow+Dependencies.swift in Sources */,
+				DBA1B60F24A9C5B300A9A703 /* ReservePresenter.swift in Sources */,
 				DB99BB9E2362E274006A75BE /* TransactionDetailsGiftSectionView.swift in Sources */,
 				DB8DC11E2412C151006AB4F5 /* VerificationFormView.swift in Sources */,
 				DB96172422C75E950078E92D /* Single+ObjectMapper.swift in Sources */,

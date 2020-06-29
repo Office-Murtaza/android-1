@@ -114,6 +114,12 @@ extension MDCButton {
     return button
   }
   
+  static var reserve: MDCButton {
+    let button = MDCButton.contained
+    button.setTitle(localize(L.Reserve.Button.reserve), for: .normal)
+    return button
+  }
+  
   func set(image: UIImage?, title: String?, spacing: CGFloat = 10) {
     setTitle(title, for: .normal)
     setImage(image, for: .normal)
