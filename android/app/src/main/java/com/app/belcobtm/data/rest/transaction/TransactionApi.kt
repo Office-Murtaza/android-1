@@ -24,7 +24,6 @@ interface TransactionApi {
         @Body body: WithdrawRequest
     ): Deferred<Response<ResponseBody>>
 
-    //@GET("user/{userId}/coins/{coinId}/giftaddress") TODO????
     @GET("coins/{coinId}/gift-address")
     fun getGiftAddressAsync(
         @Path("userId") userId: Int,
