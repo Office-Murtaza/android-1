@@ -12,7 +12,7 @@ protocol CoinDetailsUsecase {
                 with coinSettings: CoinSettings,
                 to destination: String,
                 amount: Double) -> Completable
-  func getSellDetails(for type: CustomCoinType) -> Single<SellDetails>
+  func getSellDetails() -> Single<SellDetails>
   func presubmit(for type: CustomCoinType, coinAmount: Double, currencyAmount: Double) -> Single<PreSubmitResponse>
   func sell(from coin: BTMCoin, with coinSettings: CoinSettings, amount: Double, to toAddress: String) -> Completable
   func sendGift(from coin: BTMCoin,
@@ -91,6 +91,9 @@ class CoinDetailsUsecaseImpl: CoinDetailsUsecase {
                            type: coin.type,
                            txType: .withdraw,
                            amount: amount,
+                           fee: coinSettings.txFee,
+                           fromAddress: coin.address,
+                           toAddress: destination,
                            transactionResultString: transactionResultString)
       }
   }
@@ -101,30 +104,34 @@ class CoinDetailsUsecaseImpl: CoinDetailsUsecase {
                 amount: Double,
                 message: String,
                 imageId: String?) -> Completable {
-    return accountStorage.get()
-      .flatMap { [api] account in
-        return api.getGiftAddress(userId: account.userId, type: coin.type, phone: phone)
-          .map { (account, $0.address) }
-      }
-      .flatMap { [walletService] account, destination in
+    return api.getGiftAddress(type: coin.type, phone: phone)
+      .map { $0.address }
+      .flatMap { [walletService] destination in
         return walletService.getTransactionHex(for: coin, with: coinSettings, destination: destination, amount: amount)
-          .map { (account, $0) }
+          .map { ($0, destination) }
       }
-      .flatMapCompletable { [unowned self] account, transactionResultString in
+      .flatMap { [accountStorage] transactionResultString, toAddress in
+        return accountStorage.get()
+          .map { ($0, transactionResultString, toAddress) }
+      }
+      .flatMapCompletable { [unowned self] account, transactionResultString, toAddress in
         return self.submit(userId: account.userId,
-                           type: coin.type,
-                           txType: .sendGift,
-                           amount: amount,
-                           phone: phone,
-                           message: message,
-                           imageId: imageId,
+                         type: coin.type,
+                         txType: .sendGift,
+                         amount: amount,
+                         fee: coinSettings.txFee,
+                         fromAddress: coin.address,
+                         toAddress: toAddress,
+                         phone: phone,
+                         message: message,
+                         imageId: imageId,
                            transactionResultString: transactionResultString)
       }
   }
   
-  func getSellDetails(for type: CustomCoinType) -> Single<SellDetails> {
+  func getSellDetails() -> Single<SellDetails> {
     return accountStorage.get()
-      .flatMap { [api] in api.getSellDetails(userId: $0.userId, type: type) }
+      .flatMap { [api] in api.getSellDetails(userId: $0.userId) }
   }
   
   func presubmit(for type: CustomCoinType, coinAmount: Double, currencyAmount: Double) -> Single<PreSubmitResponse> {
@@ -146,6 +153,9 @@ class CoinDetailsUsecaseImpl: CoinDetailsUsecase {
                            type: coin.type,
                            txType: .sell,
                            amount: amount,
+                           fee: coinSettings.txFee,
+                           fromAddress: coin.address,
+                           toAddress: toAddress,
                            transactionResultString: transactionResultString)
       }
   }
@@ -164,6 +174,9 @@ class CoinDetailsUsecaseImpl: CoinDetailsUsecase {
                            type: fromCoin.type,
                            txType: .sendC2C,
                            amount: amount,
+                           fee: coinSettings.txFee,
+                           fromAddress: fromCoin.address,
+                           toAddress: coinSettings.walletAddress,
                            toCoinType: toCoinType,
                            transactionResultString: transactionResultString)
       }
@@ -173,6 +186,9 @@ class CoinDetailsUsecaseImpl: CoinDetailsUsecase {
                       type: CustomCoinType,
                       txType: TransactionType,
                       amount: Double,
+                      fee: Double?,
+                      fromAddress: String?,
+                      toAddress: String?,
                       phone: String? = nil,
                       message: String? = nil,
                       imageId: String? = nil,
@@ -183,6 +199,9 @@ class CoinDetailsUsecaseImpl: CoinDetailsUsecase {
                                  type: type,
                                  txType: txType,
                                  amount: amount,
+                                 fee: fee,
+                                 fromAddress: fromAddress,
+                                 toAddress: toAddress,
                                  phone: phone,
                                  message: message,
                                  imageId: imageId,

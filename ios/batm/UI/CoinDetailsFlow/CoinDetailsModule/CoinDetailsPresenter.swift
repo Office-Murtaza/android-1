@@ -89,7 +89,7 @@ final class CoinDetailsPresenter: ModulePresenter, CoinDetailsModule {
       .filter { $0.coin != nil }
       .map { ($0.coin!, $0.coinBalances!, $0.coinSettings!) }
       .flatMap { [unowned self] coin, coinBalances, coinSettings in
-        return self.track(self.usecase.getSellDetails(for: coin.type))
+        return self.track(self.usecase.getSellDetails())
           .map { (coin, coinBalances, coinSettings, $0) }
       }
       .subscribe(onNext: { [delegate] in delegate?.showSellScreen(coin: $0, coinBalances: $1, coinSettings: $2, details: $3) })
