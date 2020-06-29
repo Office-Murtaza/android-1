@@ -18,6 +18,7 @@ import com.app.belcobtm.presentation.features.wallet.trade.details.TradeDetailsB
 import com.app.belcobtm.presentation.features.wallet.trade.edit.TradeEditViewModel
 import com.app.belcobtm.presentation.features.wallet.trade.main.TradeViewModel
 import com.app.belcobtm.presentation.features.wallet.trade.recall.TradeRecallViewModel
+import com.app.belcobtm.presentation.features.wallet.trade.reserve.TradeReserveViewModel
 import com.app.belcobtm.presentation.features.wallet.transactions.TransactionsViewModel
 import org.koin.android.viewmodel.dsl.viewModel
 import org.koin.dsl.module
@@ -46,7 +47,17 @@ val viewModelModule = module {
     viewModel { (coinCode: String) ->
         TradeRecallViewModel(
             get<WalletRepository>().getCoinItemByCode(coinCode),
-            get<WalletRepository>().getCoinFeeItemByCode(coinCode)
+            get<WalletRepository>().getCoinFeeItemByCode(coinCode),
+            get(),
+            get()
+        )
+    }
+    viewModel { (coinCode: String) ->
+        TradeReserveViewModel(
+            get<WalletRepository>().getCoinItemByCode(coinCode),
+            get<WalletRepository>().getCoinFeeItemByCode(coinCode),
+            get(),
+            get()
         )
     }
 }

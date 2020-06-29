@@ -1,11 +1,19 @@
 package com.app.belcobtm.presentation.features.wallet.trade.recall
 
+import android.content.Intent
 import android.os.Bundle
+import androidx.appcompat.app.AlertDialog
+import androidx.lifecycle.Observer
 import com.app.belcobtm.R
+import com.app.belcobtm.domain.Failure
 import com.app.belcobtm.presentation.core.extensions.*
+import com.app.belcobtm.presentation.core.mvvm.LoadingData
 import com.app.belcobtm.presentation.core.ui.BaseActivity
 import com.app.belcobtm.presentation.core.watcher.DoubleTextWatcher
+import com.app.belcobtm.presentation.features.authorization.pin.PinActivity
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.android.synthetic.main.activity_trade_recall.*
+import kotlinx.android.synthetic.main.view_material_sms_code_dialog.view.*
 import org.koin.android.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
@@ -63,6 +71,32 @@ class TradeRecallActivity : BaseActivity() {
         }
     )
 
+    private val smsDialog: AlertDialog by lazy {
+        val view = layoutInflater.inflate(R.layout.view_material_sms_code_dialog, null)
+        val smsCodeView = view.smsCodeView
+        val dialog = MaterialAlertDialogBuilder(this)
+            .setTitle(getString(R.string.verify_sms_code))
+            .setPositiveButton(R.string.next, null)
+            .setNegativeButton(R.string.cancel) { _, _ -> showProgress(false) }
+            .setView(view)
+            .create()
+        dialog.setCanceledOnTouchOutside(false)
+        dialog.setOnShowListener {
+            smsCodeView.clearText()
+            smsCodeView.clearError()
+            dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
+                if (smsCodeView.getString().length != 4) {
+                    smsCodeView.showError(R.string.error_sms_code_4_digits)
+                } else {
+                    smsCodeView.clearError()
+                    viewModel.completeTransaction(smsCodeView.getString())
+                    dialog.dismiss()
+                }
+            }
+        }
+        return@lazy dialog
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_trade_recall)
@@ -77,14 +111,50 @@ class TradeRecallActivity : BaseActivity() {
         maxUsdView.setOnClickListener { amountCryptoView.setText(viewModel.getMaxValue().toStringCoin()) }
         amountCryptoView.editText?.addTextChangedListener(doubleTextWatcher.firstTextWatcher)
         amountUsdView.editText?.addTextChangedListener(doubleTextWatcher.secondTextWatcher)
-//        amountCryptoView.actionDoneListener { validateAndSubmit() }
-//        nextButtonView.setOnClickListener { validateAndSubmit() }
+        recallButtonView.setOnClickListener { viewModel.createTransaction() }
     }
 
     private fun initObservers() {
+        viewModel.createTransactionLiveData.observe(this, Observer { loadingData ->
+            when (loadingData) {
+                is LoadingData.Loading -> progressView.show()
+                is LoadingData.Success -> {
+                    smsDialog.show()
+                    progressView.hide()
+                }
+                is LoadingData.Error -> {
+                    when (loadingData.errorType) {
+                        is Failure.TokenError -> startActivity(Intent(this, PinActivity::class.java))
+                        is Failure.MessageError -> showError(loadingData.errorType.message)
+                        is Failure.NetworkConnection -> showError(R.string.error_internet_unavailable)
+                        else -> showError(R.string.error_something_went_wrong)
+                    }
+                    progressView.hide()
+                }
+            }
+        })
+
+        viewModel.completeTransactionLiveData.observe(this, Observer
+        { loadingData ->
+            when (loadingData) {
+                is LoadingData.Loading -> progressView.show()
+                is LoadingData.Success -> finish()
+                is LoadingData.Error -> {
+                    when (loadingData.errorType) {
+                        is Failure.TokenError -> startActivity(Intent(this, PinActivity::class.java))
+                        is Failure.MessageError -> showError(loadingData.errorType.message)
+                        is Failure.NetworkConnection -> showError(R.string.error_internet_unavailable)
+                        else -> showError(R.string.error_something_went_wrong)
+                    }
+                    progressView.hide()
+                }
+            }
+        })
     }
 
     private fun initViews() {
+        setSupportActionBar(toolbarView)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
         priceUsdView.text = getString(R.string.transaction_price_usd, viewModel.coinItem.priceUsd.toStringUsd())
         balanceCryptoView.text = getString(
             R.string.transaction_crypto_balance,

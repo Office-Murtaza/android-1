@@ -265,7 +265,6 @@ class TransactionApiService(
         Either.Left(failure)
     }
 
-
     suspend fun sendTradeUserLocation(latitude: Double, longitude: Double): Either<Failure, Unit> = try {
         val requestBody = TradeLocationRequest(latitude, longitude)
         val request = api.tradeSendUserLocationAsync(prefHelper.userId, requestBody).await()
@@ -315,6 +314,24 @@ class TransactionApiService(
         Either.Left(failure)
     }
 
+    suspend fun submitRecall(coinCode: String, cryptoAmount: Double): Either<Failure, Unit> = try {
+        val requestBody = TradeRecallRequest(TRANSACTION_TRADE_RECALL, cryptoAmount)
+        val request = api.submitRecallAsync(prefHelper.userId, coinCode, requestBody).await()
+        request.body()?.let { Either.Right(Unit) } ?: Either.Left(Failure.ServerError())
+    } catch (failure: Failure) {
+        failure.printStackTrace()
+        Either.Left(failure)
+    }
+
+    suspend fun submitReserve(coinCode: String, cryptoAmount: Double, hex: String): Either<Failure, Unit> = try {
+        val requestBody = TradeReserveRequest(TRANSACTION_TRADE_RESERVE, cryptoAmount, hex)
+        val request = api.submitReserveAsync(prefHelper.userId, coinCode, requestBody).await()
+        request.body()?.let { Either.Right(Unit) } ?: Either.Left(Failure.ServerError())
+    } catch (failure: Failure) {
+        failure.printStackTrace()
+        Either.Left(failure)
+    }
+
     companion object {
         const val TRANSACTION_WITHDRAW = 2
         const val TRANSACTION_SEND_GIFT = 3
@@ -323,6 +340,8 @@ class TransactionApiService(
 
         const val TRANSACTION_TRADE_CREATE_BUY = 1
         const val TRANSACTION_TRADE_CREATE_SELL = 2
+        const val TRANSACTION_TRADE_RECALL = 11
+        const val TRANSACTION_TRADE_RESERVE = 10
         const val UNIT_USD = "USD"
     }
 }

@@ -124,35 +124,6 @@
                     app:layout_constraintTop_toTopOf="@id/reservedExchangeView"
                     tools:text="8.90 USD" />
 
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/coinAmountTitleView"
-                    style="@style/WalletTab.Title.Medium.Key"
-                    android:text="@string/trade_recall_screen_coin_amount"
-                    app:layout_constraintStart_toStartOf="@id/reservedTitleView"
-                    app:layout_constraintTop_toBottomOf="@id/reservedTitleView" />
-
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/coinAmountView"
-                    style="@style/WalletTab.Title.Medium.Value"
-                    app:layout_constraintStart_toStartOf="@id/reservedCryptoView"
-                    app:layout_constraintTop_toTopOf="@id/coinAmountTitleView"
-                    tools:text="0.05 BTC" />
-
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/fiatAmountTitleView"
-                    style="@style/WalletTab.Title.Medium.Key"
-                    android:text="@string/trade_recall_screen_fiat_amount"
-                    app:layout_constraintStart_toStartOf="@id/reservedTitleView"
-                    app:layout_constraintTop_toBottomOf="@id/coinAmountTitleView" />
-
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/limitsView"
-                    style="@style/WalletTab.Title.Medium.Value"
-                    app:layout_constraintStart_toStartOf="@id/reservedCryptoView"
-                    app:layout_constraintTop_toTopOf="@id/fiatAmountTitleView"
-                    tools:text="1000 USD" />
-
-
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/amountCryptoView"
                     style="@style/WalletTab.EditText.Container"
@@ -161,7 +132,7 @@
                     android:layout_marginEnd="16dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/fiatAmountTitleView">
+                    app:layout_constraintTop_toBottomOf="@id/reservedTitleView">
 
                     <com.google.android.material.textfield.TextInputEditText
                         style="@style/WalletTab.EditText.InputWithMax"
@@ -217,6 +188,7 @@
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="16dp"
                     android:layout_marginBottom="16dp"
+                    android:enabled="false"
                     android:paddingTop="12dp"
                     android:paddingBottom="12dp"
                     android:text="@string/trade_recall_screen_title"

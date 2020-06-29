@@ -8,9 +8,7 @@ import com.app.belcobtm.domain.settings.interactor.SendVerificationVipUseCase
 import com.app.belcobtm.domain.tools.interactor.SendSmsToDeviceUseCase
 import com.app.belcobtm.domain.tools.interactor.VerifySmsCodeUseCase
 import com.app.belcobtm.domain.transaction.interactor.*
-import com.app.belcobtm.domain.transaction.interactor.trade.CreateBuyTradeUseCase
-import com.app.belcobtm.domain.transaction.interactor.trade.CreateSellTradeUseCase
-import com.app.belcobtm.domain.transaction.interactor.trade.GetListTradeUseCase
+import com.app.belcobtm.domain.transaction.interactor.trade.*
 import com.app.belcobtm.domain.wallet.interactor.*
 import org.koin.dsl.module
 
@@ -52,4 +50,8 @@ val useCaseModule = module {
     single { UpdateCoinFeeUseCase(get()) }
     single { CreateWithdrawTransactionUseCase(get()) }
     single { GetCoinByCodeUseCase(get()) }
+    single { TradeRecallTransactionCompleteUseCase(get()) }
+    single { TradeReserveTransactionCompleteUseCase(get()) }
+    single { TradeReserveTransactionCreateUseCase(get()) }
+    single { TradeRecallTransactionCreateUseCase(get()) }
 }

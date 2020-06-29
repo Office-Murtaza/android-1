@@ -150,4 +150,18 @@ interface TransactionApi {
     fun getTronBlockHeaderAsync(
         @Path("coinCode") coinCode: String
     ): Deferred<Response<TronBlockResponse>>
+
+    @POST("user/{userId}/coins/{coinCode}/transactions/submit")
+    fun submitRecallAsync(
+        @Path("userId") userId: Int,
+        @Path("coinCode") coinCode: String,
+        @Body body: TradeRecallRequest
+    ): Deferred<Response<TronBlockResponse>>
+
+    @POST("user/{userId}/coins/{coinCode}/transactions/submit")
+    fun submitReserveAsync(
+        @Path("userId") userId: Int,
+        @Path("coinCode") coinCode: String,
+        @Body body: TradeReserveRequest
+    ): Deferred<Response<TronBlockResponse>>
 }

@@ -31,7 +31,7 @@ class ApiFactory(private val prefHelper: SharedPreferencesHelper) {
         .connectTimeout(WAIT_TIME_SECONDS, TimeUnit.SECONDS)
         .readTimeout(WAIT_TIME_SECONDS, TimeUnit.SECONDS)
         .addInterceptor(baseInterceptor)
-//        .addInterceptor(LogInterceptor())
+        .addInterceptor(LogInterceptor())
         .addInterceptor(ResponseInterceptor())
         .authenticator(AuthAuthenticator(prefHelper, createApi(AuthApi::class.java)))
         .build()
