@@ -51,6 +51,11 @@
 		DB1CFB55246C518200020104 /* TradesPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB1CFB51246C518200020104 /* TradesPresenter.swift */; };
 		DB1CFB56246C518200020104 /* TradesAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB1CFB52246C518200020104 /* TradesAssembly.swift */; };
 		DB1CFB58246C5C2800020104 /* TradesStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB1CFB57246C5C2800020104 /* TradesStore.swift */; };
+		DB21B1F124AA63AA008444D3 /* RecallModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB21B1ED24AA63AA008444D3 /* RecallModule.swift */; };
+		DB21B1F224AA63AA008444D3 /* RecallViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB21B1EE24AA63AA008444D3 /* RecallViewController.swift */; };
+		DB21B1F324AA63AA008444D3 /* RecallPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB21B1EF24AA63AA008444D3 /* RecallPresenter.swift */; };
+		DB21B1F424AA63AA008444D3 /* RecallAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB21B1F024AA63AA008444D3 /* RecallAssembly.swift */; };
+		DB21B1F624AA6577008444D3 /* RecallStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB21B1F524AA6577008444D3 /* RecallStore.swift */; };
 		DB226C5A22E99E3E0087E6C5 /* URLEncoding+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB226C5922E99E3E0087E6C5 /* URLEncoding+Extensions.swift */; };
 		DB247B412478F88C009802BB /* SplashViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB247B3D2478F88C009802BB /* SplashViewController.swift */; };
 		DB247B432478F88C009802BB /* SplashAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB247B3F2478F88C009802BB /* SplashAssembly.swift */; };
@@ -547,6 +552,11 @@
 		DB1CFB51246C518200020104 /* TradesPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TradesPresenter.swift; sourceTree = "<group>"; };
 		DB1CFB52246C518200020104 /* TradesAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TradesAssembly.swift; sourceTree = "<group>"; };
 		DB1CFB57246C5C2800020104 /* TradesStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TradesStore.swift; sourceTree = "<group>"; };
+		DB21B1ED24AA63AA008444D3 /* RecallModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecallModule.swift; sourceTree = "<group>"; };
+		DB21B1EE24AA63AA008444D3 /* RecallViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecallViewController.swift; sourceTree = "<group>"; };
+		DB21B1EF24AA63AA008444D3 /* RecallPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecallPresenter.swift; sourceTree = "<group>"; };
+		DB21B1F024AA63AA008444D3 /* RecallAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecallAssembly.swift; sourceTree = "<group>"; };
+		DB21B1F524AA6577008444D3 /* RecallStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecallStore.swift; sourceTree = "<group>"; };
 		DB226C5922E99E3E0087E6C5 /* URLEncoding+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URLEncoding+Extensions.swift"; sourceTree = "<group>"; };
 		DB247B3D2478F88C009802BB /* SplashViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashViewController.swift; sourceTree = "<group>"; };
 		DB247B3F2478F88C009802BB /* SplashAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashAssembly.swift; sourceTree = "<group>"; };
@@ -1187,6 +1197,7 @@
 				DB6DC1B024877A8C00CD478D /* BuySellTradeDetailsModule */,
 				DB51F3092490CF82007F47B4 /* CreateEditTradeModule */,
 				DBA1B60824A9C55E00A9A703 /* ReserveModule */,
+				DB21B1EC24AA628D008444D3 /* RecallModule */,
 			);
 			path = TradesFlow;
 			sourceTree = "<group>";
@@ -1202,6 +1213,18 @@
 				DB1CFB57246C5C2800020104 /* TradesStore.swift */,
 			);
 			path = TradesModule;
+			sourceTree = "<group>";
+		};
+		DB21B1EC24AA628D008444D3 /* RecallModule */ = {
+			isa = PBXGroup;
+			children = (
+				DB21B1EE24AA63AA008444D3 /* RecallViewController.swift */,
+				DB21B1EF24AA63AA008444D3 /* RecallPresenter.swift */,
+				DB21B1ED24AA63AA008444D3 /* RecallModule.swift */,
+				DB21B1F024AA63AA008444D3 /* RecallAssembly.swift */,
+				DB21B1F524AA6577008444D3 /* RecallStore.swift */,
+			);
+			path = RecallModule;
 			sourceTree = "<group>";
 		};
 		DB247B3B2478F870009802BB /* SplashModule */ = {
@@ -3042,6 +3065,7 @@
 				DB96168A22C50F350078E92D /* ValidationRule.swift in Sources */,
 				DB2F25152360A8F400274C60 /* TransactionDetailsModule.swift in Sources */,
 				DB8DC1222413009F006AB4F5 /* VIPVerificationStore.swift in Sources */,
+				DB21B1F324AA63AA008444D3 /* RecallPresenter.swift in Sources */,
 				DB8F078A24103E8F00770643 /* PickerFlow.swift in Sources */,
 				DB8D40A322C3ED9C00D5FBD0 /* LoginFlow.swift in Sources */,
 				DBA6845022E45A300079429E /* SettingsFlow+Dependencies.swift in Sources */,
@@ -3053,6 +3077,7 @@
 				DB59EA1B22F9C4BF00EB64A7 /* ChangePasswordFlowController.swift in Sources */,
 				DBAD539F22D7BA1D0005F682 /* PinCodeViewController.swift in Sources */,
 				DB59EA2222F9C51B00EB64A7 /* ChangePasswordViewController.swift in Sources */,
+				DB21B1F224AA63AA008444D3 /* RecallViewController.swift in Sources */,
 				DBC620AB2347493F0007D412 /* Nonce+Mapping.swift in Sources */,
 				DB96172722C761DA0078E92D /* APIRequest.swift in Sources */,
 				DB96173222C791690078E92D /* WalletService.swift in Sources */,
@@ -3102,6 +3127,7 @@
 				DB49463522DF2733001EE56E /* FilterCoinsCell.swift in Sources */,
 				DB8D40BB22C40AEE00D5FBD0 /* MainTextField.swift in Sources */,
 				DBCA52BE232BBDEF00483618 /* Utxos+Mapping.swift in Sources */,
+				DB21B1F624AA6577008444D3 /* RecallStore.swift in Sources */,
 				DB3142C3233F389D001E9DD6 /* BTMTronBlockHeader.swift in Sources */,
 				DB96171622C75E950078E92D /* NetworkService.swift in Sources */,
 				DB96168E22C52E3D0078E92D /* Observable+Extensions.swift in Sources */,
@@ -3198,6 +3224,7 @@
 				DB04E4CB22D85C50000E2D85 /* PinCodeStorage.swift in Sources */,
 				DB8D409822C3EA0400D5FBD0 /* BaseFlow.swift in Sources */,
 				DB0211BB22CCE42B004065E9 /* RecoverSeedPhraseModule.swift in Sources */,
+				DB21B1F424AA63AA008444D3 /* RecallAssembly.swift in Sources */,
 				DB9D3EA722C1476F008DC600 /* WelcomeSlideView.swift in Sources */,
 				DB5185AF231FE68300052229 /* CoinWithdrawPresenter.swift in Sources */,
 				DBC68CB922F8798F00473247 /* ChangePhoneModule.swift in Sources */,
@@ -3297,6 +3324,7 @@
 				DB5B2DDB230A74D000821713 /* CoinDetailsFlow+Dependencies.swift in Sources */,
 				DBA1B60F24A9C5B300A9A703 /* ReservePresenter.swift in Sources */,
 				DB99BB9E2362E274006A75BE /* TransactionDetailsGiftSectionView.swift in Sources */,
+				DB21B1F124AA63AA008444D3 /* RecallModule.swift in Sources */,
 				DB8DC11E2412C151006AB4F5 /* VerificationFormView.swift in Sources */,
 				DB96172422C75E950078E92D /* Single+ObjectMapper.swift in Sources */,
 				DBC37F4122C7F42200519153 /* PhoneNumberTextField.swift in Sources */,

@@ -26,6 +26,7 @@ protocol CoinDetailsUsecase {
                 to toCoinType: CustomCoinType,
                 amount: Double) -> Completable
   func reserve(from coin: BTMCoin, with coinSettings: CoinSettings, amount: Double) -> Completable
+  func recall(from coin: BTMCoin, amount: Double) -> Completable
 }
 
 class CoinDetailsUsecaseImpl: CoinDetailsUsecase {
@@ -204,13 +205,23 @@ class CoinDetailsUsecaseImpl: CoinDetailsUsecase {
       }
   }
   
+  func recall(from coin: BTMCoin, amount: Double) -> Completable {
+    return accountStorage.get()
+      .flatMapCompletable { [unowned self] account in
+        return self.submit(userId: account.userId,
+                           type: coin.type,
+                           txType: .recall,
+                           amount: amount)
+      }
+  }
+  
   private func submit(userId: Int,
                       type: CustomCoinType,
                       txType: TransactionType,
                       amount: Double,
-                      fee: Double?,
-                      fromAddress: String?,
-                      toAddress: String?,
+                      fee: Double? = nil,
+                      fromAddress: String? = nil,
+                      toAddress: String? = nil,
                       phone: String? = nil,
                       message: String? = nil,
                       imageId: String? = nil,
