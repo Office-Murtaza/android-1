@@ -366,7 +366,7 @@ public class GethService {
 
     public CoinSettingsDTO getCoinSettings(Coin coin, String walletAddress) {
         CoinSettingsDTO dto = new CoinSettingsDTO();
-        dto.setProfitC2C(coin.getProfitC2C().stripTrailingZeros());
+        dto.setProfitExchange(coin.getProfitExchange().stripTrailingZeros());
         dto.setGasLimit(coin.getGasLimit());
         dto.setGasPrice(coin.getGasPrice());
         dto.setTxFee(calculateFee(dto.getGasLimit(), dto.getGasPrice()));

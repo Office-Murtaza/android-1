@@ -144,15 +144,12 @@ public class UserController {
 
     @PostMapping("/refresh")
     public Response refresh(@RequestBody RefreshDTO refreshDTO) {
-        Long userId = null;
-
         try {
             Token refreshToken = refreshTokenRep.findByRefreshToken(refreshDTO.getRefreshToken());
 
             if (refreshToken != null) {
                 TokenDTO jwt = getJwt(refreshToken.getUser());
 
-                userId = refreshToken.getUser().getId();
                 Token token = refreshTokenRep.findByUserId(refreshToken.getUser().getId());
                 token.setRefreshToken(jwt.getRefreshToken());
                 token.setAccessToken(jwt.getAccessToken());
@@ -165,8 +162,19 @@ public class UserController {
             return Response.serverError();
         }
 
-        System.out.println("---------/refresh \n userId:" + userId + " \n refreshToken:" + refreshDTO.getRefreshToken() + "\n");
         throw new AccessDeniedException("Refresh token not exist");
+    }
+
+    @GetMapping("/user/{userId}/unlink")
+    public Response unlink(@PathVariable Long userId) {
+        try {
+            Unlink unlink = userService.unlinkUser(userId);
+
+            return Response.ok(unlink != null);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Response.serverError();
+        }
     }
 
     @GetMapping("/user/{userId}/code/send")
@@ -306,18 +314,6 @@ public class UserController {
             }
 
             return Response.ok(match);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return Response.serverError();
-        }
-    }
-
-    @GetMapping("/user/{userId}/unlink")
-    public Response unlink(@PathVariable Long userId) {
-        try {
-            Unlink unlink = userService.unlinkUser(userId);
-
-            return Response.ok(unlink != null);
         } catch (Exception e) {
             e.printStackTrace();
             return Response.serverError();

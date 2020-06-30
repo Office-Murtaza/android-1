@@ -1,0 +1,1 @@
+ALTER TABLE w_coin CHANGE profit_c2c profit_exchange DECIMAL(20, 2) DEFAULT 10.00;

@@ -19,7 +19,7 @@ public class CoinSettingsDTO {
     private BigDecimal byteFee;
     private Long gasPrice;
     private Long gasLimit;
-    private BigDecimal profitC2C;
+    private BigDecimal profitExchange;
     private String walletAddress;
     private String contractAddress;
 }

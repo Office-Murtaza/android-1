@@ -233,7 +233,7 @@ public class BlockbookService {
 
     public CoinSettingsDTO getCoinSettings(Coin coin, String walletAddress) {
         CoinSettingsDTO dto = new CoinSettingsDTO();
-        dto.setProfitC2C(coin.getProfitC2C().stripTrailingZeros());
+        dto.setProfitExchange(coin.getProfitExchange().stripTrailingZeros());
         dto.setByteFee(coin.getFee());
         dto.setTxFee(coin.getFee().multiply(BigDecimal.valueOf(1000)).stripTrailingZeros());
         dto.setWalletAddress(walletAddress);

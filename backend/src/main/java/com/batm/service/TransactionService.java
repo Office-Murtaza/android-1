@@ -256,13 +256,13 @@ public class TransactionService {
             record.setAmount(dto.getCryptoAmount());
             record.setType(TransactionType.SEND_EXCHANGE.getValue());
             record.setStatus(TransactionStatus.PENDING.getValue());
-            record.setProfit(coinCode.getCoinEntity().getProfitC2C());
+            record.setProfit(coinCode.getCoinEntity().getProfitExchange());
             record.setRefCoin(refCoinCode.getCoinEntity());
 
             BigDecimal refAmount = dto.getCryptoAmount()
                     .multiply(coinCode.getPrice())
                     .divide(refCoinCode.getPrice(), refCoinCode.getCoinEntity().getScale(), RoundingMode.HALF_DOWN)
-                    .multiply(BigDecimal.valueOf(100).subtract(coinCode.getCoinEntity().getProfitC2C()).divide(BigDecimal.valueOf(100)))
+                    .multiply(BigDecimal.valueOf(100).subtract(coinCode.getCoinEntity().getProfitExchange()).divide(BigDecimal.valueOf(100)))
                     .setScale(refCoinCode.getCoinEntity().getScale(), BigDecimal.ROUND_DOWN).stripTrailingZeros();
 
             record.setRefAmount(refAmount);
@@ -312,6 +312,11 @@ public class TransactionService {
 
                     walletRep.save(record);
 
+                    dto.setFromAddress(fromAddress);
+                    dto.setToAddress(toAddress);
+                    dto.setCryptoAmount(withdrawAmount);
+                    dto.setFee(txFee);
+
                     return txId;
                 }
             }
@@ -323,7 +328,7 @@ public class TransactionService {
     }
 
     public void stake(Long userId, CoinService.CoinEnum coinCode, String txId, BigDecimal amount) {
-        try{
+        try {
             TransactionRecordWallet record = new TransactionRecordWallet();
             record.setIdentity(userService.findByUserId(userId));
             record.setCoin(coinCode.getCoinEntity());
@@ -339,7 +344,7 @@ public class TransactionService {
     }
 
     public void unstake(Long userId, CoinService.CoinEnum coinCode, String txId, BigDecimal amount) {
-        try{
+        try {
             TransactionRecordWallet record = new TransactionRecordWallet();
             record.setIdentity(userService.findByUserId(userId));
             record.setCoin(coinCode.getCoinEntity());
@@ -361,8 +366,8 @@ public class TransactionService {
 
             List<TransactionRecordWallet> records = walletRep.findAllByIdentityAndCoinAndTypeIn(identity, coin, Arrays.asList(TransactionType.STAKE.getValue()));
 
-            for(TransactionRecordWallet record: records) {
-                if(StringUtils.isBlank(record.getRefTxId())) {
+            for (TransactionRecordWallet record : records) {
+                if (StringUtils.isBlank(record.getRefTxId())) {
                     int days = Days.daysBetween(new DateTime(record.getCreateDate()), DateTime.now()).getDays();
 
                     StakeDetailsDTO dto = new StakeDetailsDTO();
@@ -411,10 +416,10 @@ public class TransactionService {
                     userCoinRep.save(userCoin);
                 }
 
-                if(e.getType() == TransactionType.UNSTAKE.getValue()) {
+                if (e.getType() == TransactionType.UNSTAKE.getValue()) {
                     List<TransactionRecordWallet> stakedRecords = walletRep.findAllByIdentityAndCoinAndTypeIn(e.getIdentity(), e.getCoin(), Arrays.asList(TransactionType.STAKE.getValue()));
 
-                    for(TransactionRecordWallet record : stakedRecords) {
+                    for (TransactionRecordWallet record : stakedRecords) {
                         record.setRefTxId(e.getTxId());
 
                         walletRep.save(record);

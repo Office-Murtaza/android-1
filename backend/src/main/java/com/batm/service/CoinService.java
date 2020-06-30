@@ -66,7 +66,7 @@ public class CoinService {
 
     private static CoinSettingsDTO getAltCoinSettings(Coin coin, String walletAddress) {
         CoinSettingsDTO dto = new CoinSettingsDTO();
-        dto.setProfitC2C(coin.getProfitC2C().stripTrailingZeros());
+        dto.setProfitExchange(coin.getProfitExchange().stripTrailingZeros());
         dto.setTxFee(coin.getFee().stripTrailingZeros());
         dto.setWalletAddress(walletAddress);
 

@@ -55,46 +55,44 @@ public class TransactionController {
     @PostMapping("/user/{userId}/coins/{coinCode}/transactions/submit")
     public Response submit(@PathVariable Long userId, @PathVariable CoinService.CoinEnum coinCode, @RequestBody SubmitTransactionDTO dto) {
         try {
-            if (StringUtils.isBlank(dto.getHex())) {
-                if (TransactionType.RECALL.getValue() == dto.getType()) {
-                    String txId = transactionService.recall(userId, coinCode, dto);
+            String txId;
 
-                    return Response.ok("txId", txId);
-                }
+            if (TransactionType.RECALL.getValue() == dto.getType()) {
+                txId = transactionService.recall(userId, coinCode, dto);
             } else {
-                String txId = coinCode.submitTransaction(dto.getHex());
+                txId = coinCode.submitTransaction(dto.getHex());
+            }
 
-                if (StringUtils.isNotBlank(txId)) {
-                    if (TransactionType.SEND_GIFT.getValue() == dto.getType()) {
-                        transactionService.saveGift(userId, coinCode, txId, dto);
-                    }
-
-                    if (TransactionType.SEND_EXCHANGE.getValue() == dto.getType()) {
-                        transactionService.exchange(userId, coinCode, txId, dto);
-                    }
-
-                    if (TransactionType.RESERVE.getValue() == dto.getType()) {
-                        transactionService.reserve(userId, coinCode, txId, dto);
-                    }
-
-                    if (TransactionType.STAKE.getValue() == dto.getType()) {
-                        transactionService.stake(userId, coinCode, txId, dto.getCryptoAmount());
-                    }
-
-                    if (TransactionType.UNSTAKE.getValue() == dto.getType()) {
-                        transactionService.unstake(userId, coinCode, txId, dto.getCryptoAmount());
-                    }
-
-                    if (coinCode == CoinService.CoinEnum.ETH) {
-                        geth.addPendingEthTransaction(txId.toLowerCase(), dto.getFromAddress(), dto.getToAddress(), dto.getCryptoAmount(), dto.getFee());
-                    }
-
-                    if (coinCode == CoinService.CoinEnum.CATM) {
-                        geth.addPendingTokenTransaction(txId.toLowerCase(), dto.getFromAddress(), dto.getToAddress(), dto.getCryptoAmount(), dto.getFee());
-                    }
-
-                    return Response.ok("txId", txId);
+            if (StringUtils.isNotBlank(txId)) {
+                if (TransactionType.SEND_GIFT.getValue() == dto.getType()) {
+                    transactionService.saveGift(userId, coinCode, txId, dto);
                 }
+
+                if (TransactionType.SEND_EXCHANGE.getValue() == dto.getType()) {
+                    transactionService.exchange(userId, coinCode, txId, dto);
+                }
+
+                if (TransactionType.RESERVE.getValue() == dto.getType()) {
+                    transactionService.reserve(userId, coinCode, txId, dto);
+                }
+
+                if (TransactionType.STAKE.getValue() == dto.getType()) {
+                    transactionService.stake(userId, coinCode, txId, dto.getCryptoAmount());
+                }
+
+                if (TransactionType.UNSTAKE.getValue() == dto.getType()) {
+                    transactionService.unstake(userId, coinCode, txId, dto.getCryptoAmount());
+                }
+
+                if (coinCode == CoinService.CoinEnum.ETH) {
+                    geth.addPendingEthTransaction(txId.toLowerCase(), dto.getFromAddress(), dto.getToAddress(), dto.getCryptoAmount(), dto.getFee());
+                }
+
+                if (coinCode == CoinService.CoinEnum.CATM) {
+                    geth.addPendingTokenTransaction(txId.toLowerCase(), dto.getFromAddress(), dto.getToAddress(), dto.getCryptoAmount(), dto.getFee());
+                }
+
+                return Response.ok("txId", txId);
             }
 
             return Response.error(2, coinCode.name() + " submit transaction error");
