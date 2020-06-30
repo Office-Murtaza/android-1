@@ -1,7 +1,9 @@
 import Foundation
 
 enum TradesAction: Equatable {
-  case setupCoinBalance(CoinBalance)
+  case setupCoin(BTMCoin)
+  case setupCoinBalances([CoinBalance])
+  case setupCoinSettings(CoinSettings)
   case startFetchingBuyTrades
   case startFetchingSellTrades
   case finishFetchingBuyTradesWithError
@@ -16,7 +18,9 @@ enum TradesAction: Equatable {
 
 struct TradesState: Equatable {
   
-  var coinBalance: CoinBalance?
+  var coin: BTMCoin?
+  var coinBalances: [CoinBalance]?
+  var coinSettings: CoinSettings?
   var buyTrades: BuySellTrades?
   var sellTrades: BuySellTrades?
   var buyTradesPage: Int = 0
@@ -42,6 +46,10 @@ struct TradesState: Equatable {
     return sellTrades.trades.count >= sellTrades.total
   }
   
+  var coinBalance: CoinBalance? {
+    return coinBalances?.first { $0.type == coin?.type }
+  }
+  
 }
 
 final class TradesStore: ViewStore<TradesAction, TradesState> {
@@ -54,7 +62,9 @@ final class TradesStore: ViewStore<TradesAction, TradesState> {
     var state = state
     
     switch action {
-    case let .setupCoinBalance(coinBalance): state.coinBalance = coinBalance
+    case let .setupCoin(coin): state.coin = coin
+    case let .setupCoinBalances(coinBalances): state.coinBalances = coinBalances
+    case let .setupCoinSettings(coinSettings): state.coinSettings = coinSettings
     case .startFetchingBuyTrades: state.isFetchingBuyTrades = true
     case .startFetchingSellTrades: state.isFetchingSellTrades = true
     case .finishFetchingBuyTradesWithError: state.isFetchingBuyTrades = false

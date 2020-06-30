@@ -41,8 +41,8 @@ extension CoinDetailsFlowController: CoinDetailsModuleDelegate {
     step.accept(CoinDetailsFlow.Steps.exchange(coin, coinBalances, coinSettings))
   }
   
-  func showTradesScreen(coinBalance: CoinBalance) {
-    step.accept(CoinDetailsFlow.Steps.trades(coinBalance))
+  func showTradesScreen(coin: BTMCoin, coinBalances: [CoinBalance], coinSettings: CoinSettings) {
+    step.accept(CoinDetailsFlow.Steps.trades(coin, coinBalances, coinSettings))
   }
   
 }
