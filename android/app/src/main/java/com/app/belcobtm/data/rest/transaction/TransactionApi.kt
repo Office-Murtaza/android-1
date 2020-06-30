@@ -24,7 +24,7 @@ interface TransactionApi {
         @Body body: WithdrawRequest
     ): Deferred<Response<ResponseBody>>
 
-    @GET("user/{userId}/coins/{coinId}/giftaddress")
+    @GET("coins/{coinId}/gift-address")
     fun getGiftAddressAsync(
         @Path("userId") userId: Int,
         @Path("coinId") coinId: String,
@@ -38,13 +38,12 @@ interface TransactionApi {
         @Body body: SendGiftRequest
     ): Deferred<Response<ResponseBody>>
 
-    @GET("user/{userId}/coins/{coinId}/transactions/limits")
+    @GET("user/{userId}/limits")
     fun sellGetLimitsAsync(
-        @Path("userId") userId: Int,
-        @Path("coinId") coinId: String
+        @Path("userId") userId: Int
     ): Deferred<Response<LimitsResponse>>
 
-    @POST("user/{userId}/coins/{coinId}/transactions/presubmit")
+    @POST("user/{userId}/coins/{coinId}/transactions/pre-submit")
     fun sellPreSubmitAsync(
         @Path("userId") userId: Int,
         @Path("coinId") coinId: String,
@@ -123,32 +122,45 @@ interface TransactionApi {
         @Body request: TradeLocationRequest
     ): Deferred<Response<ResponseBody>>
 
-    @GET("user/{userId}/coins/{coinId}/transactions/utxo/{hex}")
+    @GET("coins/{coinCode}/utxo")
     fun getUtxoListAsync(
         @Path("userId") userId: Int,
         @Path("coinId") coinId: String,
-        @Path("hex") extendedPublicKey: String
+        @Query("xpub") extendedPublicKey: String
     ): Deferred<Response<UtxoListResponse>>
 
-    @GET("user/{userId}/coins/ETH/transactions/nonce")
+    @GET("coins/{coinCode}/nonce")
     fun getEthereumNonceAsync(
-        @Path("userId") userId: Int,
+        @Path("coinCode") coinId: String,
         @Query("address") toAddress: String
     ): Deferred<Response<EthereumResponse>>
 
-    @GET("user/{userId}/coins/XRP/transactions/currentaccount")
+    @GET("coins/XRP/current-account")
     fun getRippleBlockHeaderAsync(
-        @Path("userId") userId: Int
+        @Query("address") address: String
     ): Deferred<Response<RippleBlockResponse>>
 
-    @GET("user/{userId}/coins/BNB/transactions/currentaccount")
+    @GET("coins/BNB/current-account")
     fun getBinanceBlockHeaderAsync(
-        @Path("userId") userId: Int
+        @Query("address") address: String
     ): Deferred<Response<BinanceBlockResponse>>
 
-    @GET("user/{userId}/coins/{coinId}/transactions/currentblock")
+    @GET("coins/{coinCode}/current-block")
     fun getTronBlockHeaderAsync(
+        @Path("coinCode") coinCode: String
+    ): Deferred<Response<TronBlockResponse>>
+
+    @POST("user/{userId}/coins/{coinCode}/transactions/submit")
+    fun submitRecallAsync(
         @Path("userId") userId: Int,
-        @Path("coinId") coinId: String
+        @Path("coinCode") coinCode: String,
+        @Body body: TradeRecallRequest
+    ): Deferred<Response<TronBlockResponse>>
+
+    @POST("user/{userId}/coins/{coinCode}/transactions/submit")
+    fun submitReserveAsync(
+        @Path("userId") userId: Int,
+        @Path("coinCode") coinCode: String,
+        @Body body: TradeReserveRequest
     ): Deferred<Response<TronBlockResponse>>
 }

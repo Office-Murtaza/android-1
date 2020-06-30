@@ -9,10 +9,7 @@ import com.app.belcobtm.data.rest.wallet.WalletApiService
 import com.app.belcobtm.domain.Either
 import com.app.belcobtm.domain.Failure
 import com.app.belcobtm.domain.wallet.WalletRepository
-import com.app.belcobtm.domain.wallet.item.BalanceDataItem
-import com.app.belcobtm.domain.wallet.item.ChartDataItem
-import com.app.belcobtm.domain.wallet.item.CoinFeeDataItem
-import com.app.belcobtm.domain.wallet.item.LocalCoinDataItem
+import com.app.belcobtm.domain.wallet.item.*
 
 class WalletRepositoryImpl(
     private val apiService: WalletApiService,
@@ -20,19 +17,33 @@ class WalletRepositoryImpl(
     private val networkUtils: NetworkUtils,
     private val daoCoin: CoinDao
 ) : WalletRepository {
+    private val cachedCoinDataItemList: MutableList<CoinDataItem> = mutableListOf()
+
     override fun getCoinFeeMap(): Map<String, CoinFeeDataItem> = prefHelper.coinsFee
 
-    override suspend fun getLocalCoinList(): List<LocalCoinDataItem> =
+    override fun getCoinFeeItemByCode(coinCode: String): CoinFeeDataItem = prefHelper.coinsFee[coinCode] ?: error("")
+
+    override fun getCoinItemByCode(
+        coinCode: String
+    ): CoinDataItem = cachedCoinDataItemList.find { it.code == coinCode }!!
+
+    override suspend fun getAccountList(): List<AccountDataItem> =
         (daoCoin.getItemList() ?: emptyList()).map { it.mapToDataItem() }
 
-    override suspend fun updateCoin(dataItemLocal: LocalCoinDataItem): Either<Failure, Unit> {
-        daoCoin.updateItem(dataItemLocal.mapToEntity())
+    override suspend fun updateAccount(accountDataItem: AccountDataItem): Either<Failure, Unit> {
+        daoCoin.updateItem(accountDataItem.mapToEntity())
         return Either.Right(Unit)
     }
 
     override suspend fun getBalanceItem(): Either<Failure, BalanceDataItem> = if (networkUtils.isNetworkAvailable()) {
         val enabledCoinList = daoCoin.getItemList()?.filter { it.isEnabled }?.map { it.type.name } ?: emptyList()
-        apiService.getBalance(enabledCoinList)
+        val response = apiService.getBalance(enabledCoinList)
+        if (response.isRight) {
+            val balanceItem = (response as Either.Right).b
+            cachedCoinDataItemList.clear()
+            cachedCoinDataItemList.addAll(balanceItem.coinList)
+        }
+        response
     } else {
         Either.Left(Failure.NetworkConnection)
     }

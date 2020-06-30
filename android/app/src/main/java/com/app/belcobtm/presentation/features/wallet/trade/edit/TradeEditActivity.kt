@@ -6,12 +6,12 @@ import com.app.belcobtm.R
 import com.app.belcobtm.presentation.core.ui.BaseActivity
 import org.koin.android.viewmodel.ext.android.viewModel
 
-class EditTradeActivity : BaseActivity() {
-    private val viewModel: EditTradeViewModel by viewModel()
+class TradeEditActivity : BaseActivity() {
+    private val viewModel: TradeEditViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_create_trade)
+        setContentView(R.layout.activity_trade_create)
         initListeners()
         initObservers()
         initViews()

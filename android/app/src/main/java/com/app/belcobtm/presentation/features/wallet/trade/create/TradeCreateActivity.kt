@@ -7,16 +7,16 @@ import com.app.belcobtm.domain.Failure
 import com.app.belcobtm.presentation.core.extensions.*
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
 import com.app.belcobtm.presentation.core.ui.BaseActivity
-import kotlinx.android.synthetic.main.activity_create_trade.*
+import kotlinx.android.synthetic.main.activity_trade_create.*
 import org.koin.android.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
-class CreateTradeActivity : BaseActivity() {
-    private val viewModel: CreateTradeViewModel by viewModel { parametersOf(intent.getParcelableExtra(TAG_COIN_ITEM)) }
+class TradeCreateActivity : BaseActivity() {
+    private val viewModel: TradeCreateViewModel by viewModel { parametersOf(intent.getParcelableExtra(TAG_COIN_ITEM)) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_create_trade)
+        setContentView(R.layout.activity_trade_create)
         initListeners()
         initObservers()
         initViews()
