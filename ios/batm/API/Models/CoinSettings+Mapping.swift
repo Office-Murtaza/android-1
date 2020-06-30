@@ -14,7 +14,7 @@ extension CoinSettings: ImmutableMappable {
     byteFee = try map.value("byteFee")
     gasPrice = try map.value("gasPrice")
     gasLimit = try map.value("gasLimit")
-    profitC2C = try map.value("profitC2C")
+    profitExchange = try map.value("profitExchange")
     walletAddress = try map.value("walletAddress")
     contractAddress = try map.value("contractAddress")
   }

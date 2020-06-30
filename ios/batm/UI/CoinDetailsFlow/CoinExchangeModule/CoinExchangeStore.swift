@@ -32,9 +32,9 @@ struct CoinExchangeState: Equatable {
   var toCoinAmount: String? {
     guard let fromCoinAmountDouble = fromCoinAmount.doubleValue else { return nil }
     guard let fromCoinPrice = fromCoinBalance?.price, let toCoinPrice = toCoinBalance?.price else { return nil }
-    guard let profitC2C = coinSettings?.profitC2C else { return nil }
+    guard let profitExchange = coinSettings?.profitExchange else { return nil }
     
-    let toCoinAmountDouble = fromCoinAmountDouble * fromCoinPrice / toCoinPrice * (100 - profitC2C) / 100
+    let toCoinAmountDouble = fromCoinAmountDouble * fromCoinPrice / toCoinPrice * (100 - profitExchange) / 100
     return toCoinAmountDouble.coinFormatted
   }
   
