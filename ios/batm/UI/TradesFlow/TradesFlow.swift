@@ -8,6 +8,7 @@ class TradesFlow: BaseFlow<BTMNavigationController, TradesFlowController> {
       BuySellTradeDetailsAssembly(),
       CreateEditTradeAssembly(),
       ReserveAssembly(),
+      RecallAssembly(),
     ]
   }
   
@@ -16,6 +17,7 @@ class TradesFlow: BaseFlow<BTMNavigationController, TradesFlowController> {
     case buySellTradeDetails(CoinBalance, BuySellTrade, TradeType)
     case createEditTrade(CoinBalance)
     case reserve(BTMCoin, [CoinBalance], CoinSettings)
+    case recall(BTMCoin, [CoinBalance])
     case pop
   }
   
@@ -42,6 +44,10 @@ class TradesFlow: BaseFlow<BTMNavigationController, TradesFlowController> {
     case let .reserve(coin, coinBalances, coinSettings):
       let module = resolver.resolve(Module<ReserveModule>.self)!
       module.input.setup(coin: coin, coinBalances: coinBalances, coinSettings: coinSettings)
+      return push(module.controller)
+    case let .recall(coin, coinBalances):
+      let module = resolver.resolve(Module<RecallModule>.self)!
+      module.input.setup(coin: coin, coinBalances: coinBalances)
       return push(module.controller)
     case .pop: return pop()
     }

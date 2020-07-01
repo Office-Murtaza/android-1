@@ -120,6 +120,12 @@ extension MDCButton {
     return button
   }
   
+  static var recall: MDCButton {
+    let button = MDCButton.contained
+    button.setTitle(localize(L.Recall.Button.recall), for: .normal)
+    return button
+  }
+  
   func set(image: UIImage?, title: String?, spacing: CGFloat = 10) {
     setTitle(title, for: .normal)
     setImage(image, for: .normal)

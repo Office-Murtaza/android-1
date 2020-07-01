@@ -270,3 +270,6 @@
 
 "reserve.title" = "Reserve %@";
 "reserve.button.reserve" = "Reserve";
+
+"recall.title" = "Recall %@";
+"recall.button.recall" = "Recall";

@@ -103,14 +103,6 @@ final class TradesPresenter: ModulePresenter, TradesModule {
                                                                        type: .sell) })
       .disposed(by: disposeBag)
     
-    input.recall
-      .drive(onNext: { print("RECALL TAPPED!") })
-      .disposed(by: disposeBag)
-    
-    input.reserve
-    .drive(onNext: { print("RECALL TAPPED!") })
-    .disposed(by: disposeBag)
-    
     input.create
       .withLatestFrom(state)
       .drive(onNext: { [delegate] in delegate?.showCreateEditTrade(coinBalance: $0.coinBalance!) })
@@ -121,6 +113,12 @@ final class TradesPresenter: ModulePresenter, TradesModule {
       .drive(onNext: { [delegate] in delegate?.showReserve(coin: $0.coin!,
                                                            coinBalances: $0.coinBalances!,
                                                            coinSettings: $0.coinSettings!) })
+      .disposed(by: disposeBag)
+    
+    input.recall
+      .withLatestFrom(state)
+      .drive(onNext: { [delegate] in delegate?.showRecall(coin: $0.coin!,
+                                                          coinBalances: $0.coinBalances!) })
       .disposed(by: disposeBag)
     
     setupBindings()

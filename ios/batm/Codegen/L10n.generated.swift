@@ -109,6 +109,10 @@ enum L {
   struct PinCode {
   }
 
+  struct Recall {
+    static let title = "recall.title"
+  }
+
   struct Recover {
     static let title = "recover.title"
   }
@@ -493,6 +497,12 @@ extension L.PinCode {
 
   struct Verification {
     static let title = "pin_code.verification.title"
+  }
+}
+extension L.Recall {
+
+  struct Button {
+    static let recall = "recall.button.recall"
   }
 }
 extension L.Reserve {
