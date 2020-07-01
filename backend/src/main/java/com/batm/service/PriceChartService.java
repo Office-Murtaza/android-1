@@ -90,10 +90,11 @@ public class PriceChartService {
         if (periodPrices.isEmpty()) {
             return BigDecimal.ZERO;
         } else {
-            return currentPrice.divide(periodPrices.getFirst(), 3, RoundingMode.DOWN)
-                    .subtract(BigDecimal.ONE)
+            return currentPrice.subtract(periodPrices.getFirst())
+                    .divide(periodPrices.getFirst(), 3, RoundingMode.DOWN)
                     .multiply(new BigDecimal(100))
-                    .setScale(2, RoundingMode.DOWN);
+                    .setScale(2, RoundingMode.DOWN)
+                    .stripTrailingZeros();
         }
     }
 
