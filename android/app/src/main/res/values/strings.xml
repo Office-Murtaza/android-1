@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="google_maps_key">AIzaSyDGBWQKBBKloFJfQgY_5i-l-a7aT8oRWhw</string>
     <string name="file_provider" translatable="false">com.app.belcobtm.fileprovider</string>
 
@@ -9,10 +9,6 @@
     <string name="logo_text">Stay Ahead of the Crypto Future</string>
 
     <!--welcome-->
-    <string name="support">Support</string>
-    <string name="support_phone">+1-888-848-3033</string>
-    <string name="support_email">support@belcobtm.com</string>
-    <string name="copy"><u>Copy</u></string>
     <string name="please_accept_terms">Please, accept our Terms &amp; Conditions</string>
     <string name="welcome_screen_contact_support">Contact support</string>
     <string name="welcome_screen_create_new_wallet">Create New Wallet</string>
@@ -22,6 +18,11 @@
     <string name="welcome_screen_all_assets_in_one_place">All assets in one place</string>
     <string name="welcome_screen_private_and_secure">Private and secure</string>
     <string name="welcome_screen_buy_sell_and_trade_assets">Buy, sell and trade assets</string>
+    <string name="welcome_screen_support_title" tools:ignore="TypographyDashes">+1 (888) 776-6969\nsupport@belcobtm.com</string>
+    <string name="welcome_screen_support_call">Call</string>
+    <string name="welcome_screen_support_send_email">Send Email</string>
+    <string name="welcome_screen_support_phone" tools:ignore="TypographyDashes">+1 (888) 776-6969</string>
+    <string name="welcome_screen_support_email">support@belcobtm.com</string>
 
     <!-- Balance -->
     <string name="balance_screen_empty_balance">$ . . .</string>
