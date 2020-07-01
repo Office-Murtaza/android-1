@@ -60,7 +60,7 @@ public class TransactionService {
         if (org.apache.commons.lang.StringUtils.isNumeric(txId)) {  /** consider as txDbId */
             buySellTx = recordRep.findById(Long.valueOf(txId));
         } else {                                                    /** consider as txId */
-            String address = user.getCoinAddress(coinCode.name());
+            String address = user.getUserCoin(coinCode.name()).getAddress();
             dto = coinCode.getTransaction(txId, address);
             buySellTx = recordRep.findOneByIdentityAndDetailAndCryptoCurrency(user.getIdentity(), txId, coinCode.name());
         }
@@ -119,7 +119,7 @@ public class TransactionService {
         User user = userService.findById(userId);
         Identity identity = user.getIdentity();
         Coin coin = coinCode.getCoinEntity();
-        String address = user.getCoinAddress(coinCode.name());
+        String address = user.getUserCoin(coinCode.name()).getAddress();
 
         TxListDTO txDTO = new TxListDTO();
         txDTO.setTransactionRecords(recordRep.findAllByIdentityAndCryptoCurrency(user.getIdentity(), coinCode.name()));
@@ -291,11 +291,12 @@ public class TransactionService {
 
     public String recall(Long userId, CoinService.CoinEnum coinCode, SubmitTransactionDTO dto) {
         try {
+            BigDecimal reserved = userService.findById(userId).getUserCoin(coinCode.name()).getReservedBalance();
             BigDecimal txFee = coinCode.getCoinSettings().getTxFee();
             BigDecimal withdrawAmount = dto.getCryptoAmount().subtract(txFee);
             BigDecimal walletBalance = walletService.getBalance(coinCode);
 
-            if (walletBalance.compareTo(withdrawAmount.add(txFee)) >= 0) {
+            if (reserved.compareTo(dto.getCryptoAmount()) >= 0 && walletBalance.compareTo(withdrawAmount) >= 0) {
                 String fromAddress = coinCode.getWalletAddress();
                 String toAddress = userService.getUserCoin(userId, coinCode.name()).getAddress();
                 String hex = coinCode.sign(fromAddress, toAddress, withdrawAmount);
@@ -387,7 +388,7 @@ public class TransactionService {
         return new StakeDetailsDTO();
     }
 
-    @Scheduled(cron = "0 */5 * * * *")
+    @Scheduled(cron = "0 */1 * * * *")
     public void processCronTasks() {
         completePendingRecords();
 

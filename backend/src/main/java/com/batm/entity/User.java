@@ -46,7 +46,7 @@ public class User extends BaseEntity {
     private Identity identity;
 
     @Transient
-    public String getCoinAddress(String coinCode) {
-        return userCoins.stream().filter(e -> coinCode.equalsIgnoreCase(e.getCoin().getCode())).findFirst().get().getAddress();
+    public UserCoin getUserCoin(String coinCode) {
+        return userCoins.stream().filter(e -> coinCode.equalsIgnoreCase(e.getCoin().getCode())).findFirst().get();
     }
 }
