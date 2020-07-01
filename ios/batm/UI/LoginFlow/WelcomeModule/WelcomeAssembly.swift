@@ -1,5 +1,6 @@
 import Foundation
 import Swinject
+import MessageUI
 
 class WelcomeAssembly: Assembly {
   
@@ -7,23 +8,26 @@ class WelcomeAssembly: Assembly {
     container.register(UIAlertController.self) { (ioc, controller: UIViewController) in
       let phone = localize(L.Welcome.Support.phone)
       let email = localize(L.Welcome.Support.mail)
-      let title = localize(L.Welcome.Support.title)
       let message = String(format: localize(L.Welcome.Support.message), phone, email)
       
-      let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+      let alert = UIAlertController(title: nil, message: message, preferredStyle: .alert)
       
-      let showToast = {
-        controller.view.makeToast(localize(L.Shared.copied))
-      }
-      
-      alert.addAction(UIAlertAction(title: localize(L.Welcome.Support.copyPhone), style: .default) { _ in
-        UIPasteboard.general.string = phone
-        showToast()
+      alert.addAction(UIAlertAction(title: localize(L.Welcome.Support.call), style: .default) { _ in
+        let cleanPhone = "+" + phone.components(separatedBy: CharacterSet.decimalDigits.inverted).joined()
+        
+        if let url = URL(string: "tel://\(cleanPhone)"), UIApplication.shared.canOpenURL(url) {
+          UIApplication.shared.open(url, options: [:], completionHandler: nil)
+        }
       })
       
-      alert.addAction(UIAlertAction(title: localize(L.Welcome.Support.copyMail), style: .default) { _ in
-        UIPasteboard.general.string = email
-        showToast()
+      alert.addAction(UIAlertAction(title: localize(L.Welcome.Support.send), style: .default) { _ in
+        if MFMailComposeViewController.canSendMail(), let delegate = controller as? MFMailComposeViewControllerDelegate {
+            let mail = MFMailComposeViewController()
+            mail.mailComposeDelegate = delegate
+            mail.setToRecipients([email])
+
+            controller.present(mail, animated: true)
+        }
       })
       
       alert.addAction(UIAlertAction(title: localize(L.Shared.cancel), style: .cancel))

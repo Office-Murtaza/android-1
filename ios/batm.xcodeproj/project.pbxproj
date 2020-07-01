@@ -26,10 +26,7 @@
 		DB0BB5F722BD10B90035FF6C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB0BB5F622BD10B90035FF6C /* AppDelegate.swift */; };
 		DB0BB5FE22BD10BA0035FF6C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DB0BB5FD22BD10BA0035FF6C /* Assets.xcassets */; };
 		DB0BB60122BD10BA0035FF6C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DB0BB5FF22BD10BA0035FF6C /* LaunchScreen.storyboard */; };
-		DB130D6722C26EF20056E67E /* WelcomeSupportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB130D6622C26EF20056E67E /* WelcomeSupportView.swift */; };
-		DB130D6922C273B60056E67E /* WelcomeSupportCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB130D6822C273B60056E67E /* WelcomeSupportCellView.swift */; };
 		DB130D6B22C28AF60056E67E /* BackgroundDarkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB130D6A22C28AF60056E67E /* BackgroundDarkView.swift */; };
-		DB130D6E22C28CB70056E67E /* WelcomeTappableLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB130D6D22C28CB70056E67E /* WelcomeTappableLabel.swift */; };
 		DB156E2324A644F600E59F76 /* Platform.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB156E2224A644F600E59F76 /* Platform.swift */; };
 		DB167CD9230D85D900D9D66E /* Transaction+Mapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB167CD8230D85D900D9D66E /* Transaction+Mapping.swift */; };
 		DB167CDB230D85E800D9D66E /* Transactions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB167CDA230D85E800D9D66E /* Transactions.swift */; };
@@ -527,10 +524,7 @@
 		DB0BB5FD22BD10BA0035FF6C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		DB0BB60022BD10BA0035FF6C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		DB0BB60222BD10BA0035FF6C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		DB130D6622C26EF20056E67E /* WelcomeSupportView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeSupportView.swift; sourceTree = "<group>"; };
-		DB130D6822C273B60056E67E /* WelcomeSupportCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeSupportCellView.swift; sourceTree = "<group>"; };
 		DB130D6A22C28AF60056E67E /* BackgroundDarkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundDarkView.swift; sourceTree = "<group>"; };
-		DB130D6D22C28CB70056E67E /* WelcomeTappableLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeTappableLabel.swift; sourceTree = "<group>"; };
 		DB156E2224A644F600E59F76 /* Platform.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Platform.swift; sourceTree = "<group>"; };
 		DB167CD8230D85D900D9D66E /* Transaction+Mapping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Transaction+Mapping.swift"; sourceTree = "<group>"; };
 		DB167CDA230D85E800D9D66E /* Transactions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Transactions.swift; sourceTree = "<group>"; };
@@ -2251,9 +2245,6 @@
 				DB9D3EA622C1476F008DC600 /* WelcomeSlideView.swift */,
 				DB6A578422C1EE5600DEE38A /* WelcomeSliderView.swift */,
 				DB6A578622C1F00300DEE38A /* WelcomeButtonsView.swift */,
-				DB130D6822C273B60056E67E /* WelcomeSupportCellView.swift */,
-				DB130D6622C26EF20056E67E /* WelcomeSupportView.swift */,
-				DB130D6D22C28CB70056E67E /* WelcomeTappableLabel.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -3023,7 +3014,6 @@
 				DB38683B2476CA2B0070E13E /* LocationService.swift in Sources */,
 				DBD09E7523DA180C00439634 /* TransactionStatusView.swift in Sources */,
 				DB83661F22FAA01F00454F5C /* ShowSeedPhraseViewController.swift in Sources */,
-				DB130D6722C26EF20056E67E /* WelcomeSupportView.swift in Sources */,
 				DB167CD9230D85D900D9D66E /* Transaction+Mapping.swift in Sources */,
 				DB6DC1B824877AC600CD478D /* BuySellTradeDetailsAssembly.swift in Sources */,
 				DBEBC6BB2402987C00D7C8A6 /* ToastInitializer.swift in Sources */,
@@ -3150,7 +3140,6 @@
 				DB9616BA22C63F9B0078E92D /* APIGateway.swift in Sources */,
 				DBC620A923466B250007D412 /* GiftAddress+Mapping.swift in Sources */,
 				DBA6844622E44B930079429E /* ATMViewController.swift in Sources */,
-				DB130D6922C273B60056E67E /* WelcomeSupportCellView.swift in Sources */,
 				DBC68CBC22F8798F00473247 /* ChangePhoneAssembly.swift in Sources */,
 				DBF98D3E24502B0700AF6D5A /* CoinDepositModule.swift in Sources */,
 				DB9616D522C748610078E92D /* CoreDataStorage.swift in Sources */,
@@ -3329,7 +3318,6 @@
 				DB96172422C75E950078E92D /* Single+ObjectMapper.swift in Sources */,
 				DBC37F4122C7F42200519153 /* PhoneNumberTextField.swift in Sources */,
 				DB51F3162491298B007F47B4 /* CreateEditTradeHeaderView.swift in Sources */,
-				DB130D6E22C28CB70056E67E /* WelcomeTappableLabel.swift in Sources */,
 				DB96169922C5F52F0078E92D /* CreateWalletFormView.swift in Sources */,
 				DBF75DE6240D1A5300E12CB0 /* VerificationFilePickerView.swift in Sources */,
 				DBF98D4524502EF800AF6D5A /* FloatingActionButton.swift in Sources */,

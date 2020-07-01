@@ -33,12 +33,11 @@
 "welcome.recover_button.title" = "RECOVER OLD WALLET";
 "welcome.terms_and_conditions" = "Accept Terms & Conditions";
 "welcome.contact_support" = "Contact support";
-"welcome.support.title" = "Support";
-"welcome.support.phone" = "+1 - 888 - 848 - 3033";
+"welcome.support.phone" = "+1 (888) 776-6969";
 "welcome.support.mail" = "support@belcobtm.com";
-"welcome.support.message" = "Phone: %@\nEmail: %@";
-"welcome.support.copy_phone" = "Copy Phone";
-"welcome.support.copy_mail" = "Copy Email";
+"welcome.support.message" = "%@\n%@";
+"welcome.support.call" = "Call";
+"welcome.support.send" = "Send Email";
 
 "create_wallet.title" = "Create New Wallet";
 "create_wallet.form.password.placeholder" = "Password *";
