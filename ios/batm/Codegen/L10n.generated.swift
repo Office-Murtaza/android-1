@@ -670,12 +670,11 @@ extension L.Welcome {
   }
 
   struct Support {
-    static let copyMail = "welcome.support.copy_mail"
-    static let copyPhone = "welcome.support.copy_phone"
+    static let call = "welcome.support.call"
     static let mail = "welcome.support.mail"
     static let message = "welcome.support.message"
     static let phone = "welcome.support.phone"
-    static let title = "welcome.support.title"
+    static let send = "welcome.support.send"
   }
 
   struct ThirdSlide {
