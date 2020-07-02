@@ -66,6 +66,7 @@ protocol APIGateway {
   func updateLocation(userId: Int, latitude: Double, longitude: Double) -> Completable
   func submitTradeRequest(userId: Int, data: SubmitTradeRequestData) -> Completable
   func submitTrade(userId: Int, data: SubmitTradeData) -> Completable
+  func getStakeDetails(userId: Int, type: CustomCoinType) -> Single<StakeDetails>
 }
 
 final class APIGatewayImpl: APIGateway {
@@ -591,6 +592,19 @@ final class APIGatewayImpl: APIGateway {
       }
     }
     .toCompletable()
+  }
+  
+  func getStakeDetails(userId: Int, type: CustomCoinType) -> Single<StakeDetails> {
+    let request = StakeDetailsRequest(userId: userId, coinId: type.code)
+    return api.execute(request)
+      .flatMap {
+        switch $0 {
+        case let .response(response):
+          return Single.just(response)
+        case let .error(error):
+          return Single.error(error)
+        }
+      }
   }
   
 }

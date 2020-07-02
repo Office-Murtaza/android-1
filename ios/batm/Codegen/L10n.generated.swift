@@ -50,6 +50,7 @@ enum L {
     static let sell = "coin_details.sell"
     static let sendC2C = "coin_details.send_c_2_c"
     static let sendGift = "coin_details.send_gift"
+    static let staking = "coin_details.staking"
     static let threeMonths = "coin_details.three_months"
     static let trade = "coin_details.trade"
     static let unknown = "coin_details.unknown"
@@ -75,6 +76,10 @@ enum L {
 
   struct CoinSendGift {
     static let title = "coin_send_gift.title"
+  }
+
+  struct CoinStaking {
+    static let title = "coin_staking.title"
   }
 
   struct CoinWithdraw {

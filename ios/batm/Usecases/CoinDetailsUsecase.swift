@@ -27,6 +27,7 @@ protocol CoinDetailsUsecase {
                 amount: Double) -> Completable
   func reserve(from coin: BTMCoin, with coinSettings: CoinSettings, amount: Double) -> Completable
   func recall(from coin: BTMCoin, amount: Double) -> Completable
+  func getStakeDetails(for type: CustomCoinType) -> Single<StakeDetails>
 }
 
 class CoinDetailsUsecaseImpl: CoinDetailsUsecase {
@@ -240,6 +241,11 @@ class CoinDetailsUsecaseImpl: CoinDetailsUsecase {
                                  imageId: imageId,
                                  toCoinType: toCoinType,
                                  txhex: transactionResultString)
+  }
+  
+  func getStakeDetails(for type: CustomCoinType) -> Single<StakeDetails> {
+    return accountStorage.get()
+      .flatMap { [api] in api.getStakeDetails(userId: $0.userId, type: type) }
   }
   
 }

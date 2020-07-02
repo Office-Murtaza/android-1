@@ -151,6 +151,7 @@
 "coin_details.send_gift" = "Send Gift";
 "coin_details.exchange" = "Exchange";
 "coin_details.trade" = "Trade";
+"coin_details.staking" = "Staking";
 "coin_details.receive_gift" = "Receive Gift";
 "coin_details.buy" = "Buy";
 "coin_details.sell" = "Sell";
@@ -272,3 +273,5 @@
 
 "recall.title" = "Recall %@";
 "recall.button.recall" = "Recall";
+
+"coin_staking.title" = "%@";
