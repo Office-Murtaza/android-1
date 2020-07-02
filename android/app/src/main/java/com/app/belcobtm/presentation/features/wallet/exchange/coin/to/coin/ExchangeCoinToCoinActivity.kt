@@ -202,7 +202,7 @@ class ExchangeCoinToCoinActivity : BaseActivity() {
                         else fromCoinTemporaryValue
                     val toCoinRefPrice = viewModel.toCoinItem?.priceUsd ?: 0.0
                     val fromCoinPrice = viewModel.fromCoinItem.priceUsd
-                    val fromCoinProfitC2c = viewModel.coinFeeItem.profitC2C
+                    val fromCoinProfitC2c = viewModel.coinFeeItem.profitExchange
                     val toCoinAmount =
                         (fromCoinAmount * fromCoinPrice) / toCoinRefPrice * (100 - fromCoinProfitC2c) / 100
 

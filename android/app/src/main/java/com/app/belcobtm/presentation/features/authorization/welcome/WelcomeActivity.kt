@@ -94,16 +94,11 @@ class WelcomeActivity : AppCompatActivity() {
 
     private fun showSupportDialog() {
         val dialog = MaterialAlertDialogBuilder(this)
-            .setTitle(getString(R.string.support))
-            .setPositiveButton(android.R.string.ok, null)
             .setView(R.layout.view_support_dialog)
-            .create()
-
-        val supportEmail = getString(R.string.support_email)
-        val supportPhone = getString(R.string.support_phone)
-
-        dialog.show()
-        dialog.phoneButtonView.setOnClickListener {
+            .show()
+        val supportEmail = getString(R.string.welcome_screen_support_email)
+        val supportPhone = getString(R.string.welcome_screen_support_phone)
+        dialog.callButtonView.setOnClickListener {
             val intent = Intent(Intent.ACTION_DIAL)
             intent.data = Uri.parse("tel:$supportPhone")
             startActivity(intent)
@@ -117,5 +112,6 @@ class WelcomeActivity : AppCompatActivity() {
                 dialog.cancel()
             }
         }
+        dialog.cancelButtonView.setOnClickListener { dialog.cancel() }
     }
 }
