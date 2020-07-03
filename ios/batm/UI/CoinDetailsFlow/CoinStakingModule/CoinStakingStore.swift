@@ -64,27 +64,31 @@ final class CoinStakingStore: ViewStore<CoinStakingAction, CoinStakingState> {
   }
   
   private func validate(_ state: CoinStakingState) -> ValidationState {
-    guard state.coinAmount.isNotEmpty else {
-      return .invalid(localize(L.CreateWallet.Form.Error.allFieldsRequired))
+    if state.stakeDetails?.exist == true {
+      guard state.coinAmount.isNotEmpty else {
+        return .invalid(localize(L.CreateWallet.Form.Error.allFieldsRequired))
+      }
     }
     
-    guard let amount = state.coinAmount.doubleValue else {
-      return .invalid(localize(L.CoinWithdraw.Form.Error.invalidAmount))
-    }
-    
-    guard amount > 0 else {
-      return .invalid(localize(L.CoinWithdraw.Form.Error.tooLowAmount))
-    }
-    
-    guard amount.lessThanOrEqualTo(state.maxValue) else {
-      return .invalid(localize(L.CoinWithdraw.Form.Error.tooHighAmount))
-    }
-    
-    if state.coin?.type == .catm, let fee = state.coinSettings?.txFee {
-      let ethBalance = state.coinBalances?.first { $0.type == .ethereum }?.balance ?? 0
+    if state.stakeDetails?.exist == false {
+      guard let amount = state.coinAmount.doubleValue else {
+        return .invalid(localize(L.CoinWithdraw.Form.Error.invalidAmount))
+      }
       
-      if !ethBalance.greaterThanOrEqualTo(fee) {
-        return .invalid(localize(L.CoinWithdraw.Form.Error.insufficientETHBalance))
+      guard amount > 0 else {
+        return .invalid(localize(L.CoinWithdraw.Form.Error.tooLowAmount))
+      }
+      
+      guard amount.lessThanOrEqualTo(state.maxValue) else {
+        return .invalid(localize(L.CoinWithdraw.Form.Error.tooHighAmount))
+      }
+      
+      if state.coin?.type == .catm, let fee = state.coinSettings?.txFee {
+        let ethBalance = state.coinBalances?.first { $0.type == .ethereum }?.balance ?? 0
+        
+        if !ethBalance.greaterThanOrEqualTo(fee) {
+          return .invalid(localize(L.CoinWithdraw.Form.Error.insufficientETHBalance))
+        }
       }
     }
     

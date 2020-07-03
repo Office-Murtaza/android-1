@@ -28,6 +28,8 @@ protocol CoinDetailsUsecase {
   func reserve(from coin: BTMCoin, with coinSettings: CoinSettings, amount: Double) -> Completable
   func recall(from coin: BTMCoin, amount: Double) -> Completable
   func getStakeDetails(for type: CustomCoinType) -> Single<StakeDetails>
+  func stake(from coin: BTMCoin, with coinSettings: CoinSettings, amount: Double) -> Completable
+  func unstake(from coin: BTMCoin, with coinSettings: CoinSettings, stakeDetails: StakeDetails) -> Completable
 }
 
 class CoinDetailsUsecaseImpl: CoinDetailsUsecase {
@@ -86,7 +88,11 @@ class CoinDetailsUsecaseImpl: CoinDetailsUsecase {
                 amount: Double) -> Completable {
     return accountStorage.get()
       .flatMap { [walletService] account in
-        return walletService.getTransactionHex(for: coin, with: coinSettings, destination: destination, amount: amount)
+        return walletService.getTransactionHex(for: coin,
+                                               with: coinSettings,
+                                               destination: destination,
+                                               amount: amount,
+                                               stake: nil)
           .map { (account, $0) }
       }
       .flatMapCompletable { [unowned self] account, transactionResultString in
@@ -110,7 +116,11 @@ class CoinDetailsUsecaseImpl: CoinDetailsUsecase {
     return api.getGiftAddress(type: coin.type, phone: phone)
       .map { $0.address }
       .flatMap { [walletService] destination in
-        return walletService.getTransactionHex(for: coin, with: coinSettings, destination: destination, amount: amount)
+        return walletService.getTransactionHex(for: coin,
+                                               with: coinSettings,
+                                               destination: destination,
+                                               amount: amount,
+                                               stake: nil)
           .map { ($0, destination) }
       }
       .flatMap { [accountStorage] transactionResultString, toAddress in
@@ -148,7 +158,11 @@ class CoinDetailsUsecaseImpl: CoinDetailsUsecase {
   func sell(from coin: BTMCoin, with coinSettings: CoinSettings, amount: Double, to toAddress: String) -> Completable {
     return accountStorage.get()
       .flatMap { [walletService] account in
-        return walletService.getTransactionHex(for: coin, with: coinSettings, destination: toAddress, amount: amount)
+        return walletService.getTransactionHex(for: coin,
+                                               with: coinSettings,
+                                               destination: toAddress,
+                                               amount: amount,
+                                               stake: nil)
           .map { (account, $0) }
       }
       .flatMapCompletable { [unowned self] account, transactionResultString in
@@ -169,7 +183,8 @@ class CoinDetailsUsecaseImpl: CoinDetailsUsecase {
         return walletService.getTransactionHex(for: fromCoin,
                                                with: coinSettings,
                                                destination: coinSettings.walletAddress,
-                                               amount: amount)
+                                               amount: amount,
+                                               stake: nil)
           .map { (account, $0) }
       }
       .flatMapCompletable { [unowned self] account, transactionResultString in
@@ -191,7 +206,8 @@ class CoinDetailsUsecaseImpl: CoinDetailsUsecase {
         return walletService.getTransactionHex(for: coin,
                                                with: coinSettings,
                                                destination: coinSettings.walletAddress,
-                                               amount: amount)
+                                               amount: amount,
+                                               stake: nil)
           .map { (account, $0) }
       }
       .flatMapCompletable { [unowned self] account, transactionResultString in
@@ -213,6 +229,50 @@ class CoinDetailsUsecaseImpl: CoinDetailsUsecase {
                            type: coin.type,
                            txType: .recall,
                            amount: amount)
+      }
+  }
+  
+  func stake(from coin: BTMCoin, with coinSettings: CoinSettings, amount: Double) -> Completable {
+    return accountStorage.get()
+      .flatMap { [walletService] account in
+        return walletService.getTransactionHex(for: coin,
+                                               with: coinSettings,
+                                               destination: "",
+                                               amount: amount,
+                                               stake: true)
+          .map { (account, $0) }
+      }
+      .flatMapCompletable { [unowned self] account, transactionResultString in
+        return self.submit(userId: account.userId,
+                           type: coin.type,
+                           txType: .stake,
+                           amount: amount,
+                           fee: coinSettings.txFee,
+                           fromAddress: coin.address,
+                           toAddress: coinSettings.contractAddress,
+                           transactionResultString: transactionResultString)
+      }
+  }
+  
+  func unstake(from coin: BTMCoin, with coinSettings: CoinSettings, stakeDetails: StakeDetails) -> Completable {
+    return accountStorage.get()
+      .flatMap { [walletService] account in
+        return walletService.getTransactionHex(for: coin,
+                                               with: coinSettings,
+                                               destination: "",
+                                               amount: 0,
+                                               stake: false)
+          .map { (account, $0) }
+      }
+      .flatMapCompletable { [unowned self] account, transactionResultString in
+        return self.submit(userId: account.userId,
+                           type: coin.type,
+                           txType: .stake,
+                           amount: (stakeDetails.stakedAmount ?? 0) + (stakeDetails.rewardsAmount ?? 0),
+                           fee: coinSettings.txFee,
+                           fromAddress: coin.address,
+                           toAddress: coinSettings.contractAddress,
+                           transactionResultString: transactionResultString)
       }
   }
   

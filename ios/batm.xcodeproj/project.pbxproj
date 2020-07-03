@@ -205,6 +205,8 @@
 		DB70852F22CFAE5800FFE4F7 /* MainFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB70852E22CFAE5800FFE4F7 /* MainFlow.swift */; };
 		DB70853122CFAF1500FFE4F7 /* MainFlow+Dependencies.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB70853022CFAF1500FFE4F7 /* MainFlow+Dependencies.swift */; };
 		DB7A9D122459CEE800006B54 /* QRCodeCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB7A9D112459CEE800006B54 /* QRCodeCardView.swift */; };
+		DB82AD2724AF1524001F833E /* CoinStakingHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB82AD2624AF1524001F833E /* CoinStakingHeaderView.swift */; };
+		DB82AD2924AF18CF001F833E /* CoinStakingFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB82AD2824AF18CF001F833E /* CoinStakingFormView.swift */; };
 		DB83661522FA9FCB00454F5C /* ShowSeedPhraseFlow+Dependencies.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB83661222FA9FCB00454F5C /* ShowSeedPhraseFlow+Dependencies.swift */; };
 		DB83661622FA9FCB00454F5C /* ShowSeedPhraseFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB83661322FA9FCB00454F5C /* ShowSeedPhraseFlow.swift */; };
 		DB83661722FA9FCB00454F5C /* ShowSeedPhraseFlowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB83661422FA9FCB00454F5C /* ShowSeedPhraseFlowController.swift */; };
@@ -709,6 +711,8 @@
 		DB70852E22CFAE5800FFE4F7 /* MainFlow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainFlow.swift; sourceTree = "<group>"; };
 		DB70853022CFAF1500FFE4F7 /* MainFlow+Dependencies.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MainFlow+Dependencies.swift"; sourceTree = "<group>"; };
 		DB7A9D112459CEE800006B54 /* QRCodeCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCodeCardView.swift; sourceTree = "<group>"; };
+		DB82AD2624AF1524001F833E /* CoinStakingHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinStakingHeaderView.swift; sourceTree = "<group>"; };
+		DB82AD2824AF18CF001F833E /* CoinStakingFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinStakingFormView.swift; sourceTree = "<group>"; };
 		DB83661222FA9FCB00454F5C /* ShowSeedPhraseFlow+Dependencies.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ShowSeedPhraseFlow+Dependencies.swift"; sourceTree = "<group>"; };
 		DB83661322FA9FCB00454F5C /* ShowSeedPhraseFlow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowSeedPhraseFlow.swift; sourceTree = "<group>"; };
 		DB83661422FA9FCB00454F5C /* ShowSeedPhraseFlowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowSeedPhraseFlowController.swift; sourceTree = "<group>"; };
@@ -1226,6 +1230,7 @@
 		DB1D21E924AE6F13001E9696 /* CoinStakingModule */ = {
 			isa = PBXGroup;
 			children = (
+				DB82AD2524AF14DC001F833E /* Views */,
 				DB1D21EB24AE6F2A001E9696 /* CoinStakingViewController.swift */,
 				DB1D21EC24AE6F2A001E9696 /* CoinStakingPresenter.swift */,
 				DB1D21EA24AE6F2A001E9696 /* CoinStakingModule.swift */,
@@ -1709,6 +1714,15 @@
 			children = (
 				DBDD5D12235797F00012DFAA /* CoinSellAnotherAddressView.swift */,
 				DB5EB8DB2452C5CC00CD1C63 /* CoinSellFormView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		DB82AD2524AF14DC001F833E /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				DB82AD2624AF1524001F833E /* CoinStakingHeaderView.swift */,
+				DB82AD2824AF18CF001F833E /* CoinStakingFormView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -3045,6 +3059,7 @@
 				DBD09E7523DA180C00439634 /* TransactionStatusView.swift in Sources */,
 				DB83661F22FAA01F00454F5C /* ShowSeedPhraseViewController.swift in Sources */,
 				DB167CD9230D85D900D9D66E /* Transaction+Mapping.swift in Sources */,
+				DB82AD2724AF1524001F833E /* CoinStakingHeaderView.swift in Sources */,
 				DB6DC1B824877AC600CD478D /* BuySellTradeDetailsAssembly.swift in Sources */,
 				DBEBC6BB2402987C00D7C8A6 /* ToastInitializer.swift in Sources */,
 				DB904A9E22C00E2A007CB734 /* RxFlow+Extensions.swift in Sources */,
@@ -3163,6 +3178,7 @@
 				DB96174022C7CDA70078E92D /* BTMWalletRecord+CoreDataClass.swift in Sources */,
 				DB1AF0DA244362140037C998 /* CoinSendGiftFormView.swift in Sources */,
 				DB0211C622CD340A004065E9 /* TextFieldWithoutPaddings.swift in Sources */,
+				DB82AD2924AF18CF001F833E /* CoinStakingFormView.swift in Sources */,
 				DBC620AD234749B30007D412 /* Nonce.swift in Sources */,
 				DB1D21F424AE7296001E9696 /* CoinStakingStore.swift in Sources */,
 				DB1D21E624AE6C6A001E9696 /* StakeDetails.swift in Sources */,

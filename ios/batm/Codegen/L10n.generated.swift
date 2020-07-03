@@ -50,10 +50,12 @@ enum L {
     static let sell = "coin_details.sell"
     static let sendC2C = "coin_details.send_c_2_c"
     static let sendGift = "coin_details.send_gift"
+    static let stake = "coin_details.stake"
     static let staking = "coin_details.staking"
     static let threeMonths = "coin_details.three_months"
     static let trade = "coin_details.trade"
     static let unknown = "coin_details.unknown"
+    static let unstake = "coin_details.unstake"
     static let withdraw = "coin_details.withdraw"
     static let withdrawn = "coin_details.withdrawn"
   }
@@ -366,6 +368,31 @@ extension L.CoinSendGift.Form {
 
   struct Phone {
     static let placeholder = "coin_send_gift.form.phone.placeholder"
+  }
+}
+extension L.CoinStaking {
+
+  struct Button {
+    static let stake = "coin_staking.button.stake"
+    static let unstake = "coin_staking.button.unstake"
+  }
+
+  struct Header {
+  }
+}
+extension L.CoinStaking.Header {
+
+  struct Rewards {
+    static let title = "coin_staking.header.rewards.title"
+  }
+
+  struct Staked {
+    static let title = "coin_staking.header.staked.title"
+  }
+
+  struct Time {
+    static let title = "coin_staking.header.time.title"
+    static let value = "coin_staking.header.time.value"
   }
 }
 extension L.CoinWithdraw {
