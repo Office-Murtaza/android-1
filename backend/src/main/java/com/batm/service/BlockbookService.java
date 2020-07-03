@@ -173,18 +173,18 @@ public class BlockbookService {
 
     public String signBTCForks(CoinType coinType, String fromAddress, String toAddress, BigDecimal amount, BigDecimal fee, BigDecimal divider, List<JSONObject> utxos) {
         try {
-            Bitcoin.SigningInput.Builder signerBuilder = Bitcoin.SigningInput.newBuilder();
-            signerBuilder.setCoinType(coinType.value());
-            signerBuilder.setAmount(amount.multiply(divider).longValue());
-            signerBuilder.setByteFee(fee.multiply(divider).longValue());
-            signerBuilder.setHashType(coinType == CoinType.BITCOINCASH ? 65 : 1);
-            signerBuilder.setChangeAddress(fromAddress);
-            signerBuilder.setToAddress(toAddress);
-            signerBuilder.setUseMaxAmount(true);
+            Bitcoin.SigningInput.Builder input = Bitcoin.SigningInput.newBuilder();
+            input.setCoinType(coinType.value());
+            input.setAmount(amount.multiply(divider).longValue());
+            input.setByteFee(fee.multiply(divider).longValue());
+            input.setHashType(coinType == CoinType.BITCOINCASH ? 65 : 1);
+            input.setChangeAddress(fromAddress);
+            input.setToAddress(toAddress);
+            input.setUseMaxAmount(false);
 
             utxos.forEach(e -> {
                 PrivateKey privateKey = walletService.getWallet().getKey(e.optString("path"));
-                signerBuilder.addPrivateKey(ByteString.copyFrom(privateKey.data()));
+                input.addPrivateKey(ByteString.copyFrom(privateKey.data()));
             });
 
             utxos.forEach(e -> {
@@ -194,7 +194,7 @@ public class BlockbookService {
                 if (keyHash.length > 0) {
                     String key = Numeric.toHexString(keyHash);
                     ByteString scriptByteString = ByteString.copyFrom(redeemScript.data());
-                    signerBuilder.putScripts(key, scriptByteString);
+                    input.putScripts(key, scriptByteString);
                 }
             });
 
@@ -204,11 +204,11 @@ public class BlockbookService {
                 byte[] hash = Numeric.hexStringToByteArray(utxo.optString("txid"));
                 Collections.reverse(Arrays.asList(hash));
 
-                Bitcoin.OutPoint.Builder outPointBuilder = Bitcoin.OutPoint.newBuilder();
-                outPointBuilder.setHash(ByteString.copyFrom(hash));
-                outPointBuilder.setIndex(utxo.optInt("vout"));
-                outPointBuilder.setSequence(Integer.MAX_VALUE - utxos.size() + index);
-                Bitcoin.OutPoint outPoint = outPointBuilder.build();
+                Bitcoin.OutPoint.Builder output = Bitcoin.OutPoint.newBuilder();
+                output.setHash(ByteString.copyFrom(hash));
+                output.setIndex(utxo.optInt("vout"));
+                output.setSequence(Integer.MAX_VALUE - utxos.size() + index);
+                Bitcoin.OutPoint outPoint = output.build();
 
                 BitcoinScript redeemScript = BitcoinScript.lockScriptForAddress(utxo.optString("address"), coinType);
                 ByteString scriptByteString = ByteString.copyFrom(redeemScript.data());
@@ -219,12 +219,12 @@ public class BlockbookService {
                 unspent.setOutPoint(outPoint);
 
                 Bitcoin.UnspentTransaction unspentBuild = unspent.build();
-                signerBuilder.addUtxo(unspentBuild);
+                input.addUtxo(unspentBuild);
             }
 
-            Bitcoin.SigningOutput signer = AnySigner.sign(signerBuilder.build(), coinType, Bitcoin.SigningOutput.parser());
+            Bitcoin.SigningOutput signer = AnySigner.sign(input.build(), coinType, Bitcoin.SigningOutput.parser());
 
-            return signer.getTransactionId();
+            return Numeric.toHexString(signer.getEncoded().toByteArray()).substring(2);
         } catch (Exception e) {
             e.printStackTrace();
         }

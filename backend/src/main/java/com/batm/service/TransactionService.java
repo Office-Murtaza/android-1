@@ -303,6 +303,7 @@ public class TransactionService {
                 String fromAddress = coinCode.getWalletAddress();
                 String toAddress = userCoin.getAddress();
                 String hex = coinCode.sign(fromAddress, toAddress, withdrawAmount);
+                System.out.println(" --- hex: " + hex);
                 String txId = coinCode.submitTransaction(hex);
 
                 if (StringUtils.isNotBlank(txId)) {
