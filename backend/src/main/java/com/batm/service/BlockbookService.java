@@ -180,6 +180,7 @@ public class BlockbookService {
             signerBuilder.setHashType(coinType == CoinType.BITCOINCASH ? 65 : 1);
             signerBuilder.setChangeAddress(fromAddress);
             signerBuilder.setToAddress(toAddress);
+            signerBuilder.setUseMaxAmount(true);
 
             utxos.forEach(e -> {
                 PrivateKey privateKey = walletService.getWallet().getKey(e.optString("path"));
@@ -187,8 +188,8 @@ public class BlockbookService {
             });
 
             utxos.forEach(e -> {
-                BitcoinScript redeemScript = BitcoinScript.buildForAddress(e.optString("address"), coinType);
-                byte[] keyHash = redeemScript.isPayToWitnessScriptHash() ? redeemScript.matchPayToWitnessPublicKeyHash() : redeemScript.matchPayToPubkeyHash();
+                BitcoinScript redeemScript = BitcoinScript.lockScriptForAddress(e.optString("address"), coinType);
+                byte[] keyHash = redeemScript.isPayToWitnessPublicKeyHash() ? redeemScript.matchPayToWitnessPublicKeyHash() : redeemScript.matchPayToPubkeyHash();
 
                 if (keyHash.length > 0) {
                     String key = Numeric.toHexString(keyHash);
@@ -209,7 +210,7 @@ public class BlockbookService {
                 outPointBuilder.setSequence(Integer.MAX_VALUE - utxos.size() + index);
                 Bitcoin.OutPoint outPoint = outPointBuilder.build();
 
-                BitcoinScript redeemScript = BitcoinScript.buildForAddress(utxo.optString("address"), coinType);
+                BitcoinScript redeemScript = BitcoinScript.lockScriptForAddress(utxo.optString("address"), coinType);
                 ByteString scriptByteString = ByteString.copyFrom(redeemScript.data());
 
                 Bitcoin.UnspentTransaction.Builder unspent = Bitcoin.UnspentTransaction.newBuilder();

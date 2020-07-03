@@ -12,24 +12,25 @@ package wallet.core.jni;
 
 public enum HRP {
     UNKNOWN (0),
-    BINANCE (1),
-    BITCOIN (2),
-    BITCOINCASH (3),
-    BITCOINGOLD (4),
-    CARDANO (5),
-    COSMOS (6),
-    DIGIBYTE (7),
-    ELROND (8),
-    GROESTLCOIN (9),
-    HARMONY (10),
-    IOTEX (11),
-    KAVA (12),
-    LITECOIN (13),
-    MONACOIN (14),
-    QTUM (15),
-    TERRA (16),
-    VIACOIN (17),
-    ZILLIQA (18);
+    BANDCHAIN (1),
+    BINANCE (2),
+    BITCOIN (3),
+    BITCOINCASH (4),
+    BITCOINGOLD (5),
+    CARDANO (6),
+    COSMOS (7),
+    DIGIBYTE (8),
+    ELROND (9),
+    GROESTLCOIN (10),
+    HARMONY (11),
+    IOTEX (12),
+    KAVA (13),
+    LITECOIN (14),
+    MONACOIN (15),
+    QTUM (16),
+    TERRA (17),
+    VIACOIN (18),
+    ZILLIQA (19);
 
     private final int value;
     HRP(int value) {
@@ -40,24 +41,25 @@ public enum HRP {
     public static HRP createFromValue(int value) {
         switch (value) {
             case 0: return HRP.UNKNOWN;
-            case 1: return HRP.BINANCE;
-            case 2: return HRP.BITCOIN;
-            case 3: return HRP.BITCOINCASH;
-            case 4: return HRP.BITCOINGOLD;
-            case 5: return HRP.CARDANO;
-            case 6: return HRP.COSMOS;
-            case 7: return HRP.DIGIBYTE;
-            case 8: return HRP.ELROND;
-            case 9: return HRP.GROESTLCOIN;
-            case 10: return HRP.HARMONY;
-            case 11: return HRP.IOTEX;
-            case 12: return HRP.KAVA;
-            case 13: return HRP.LITECOIN;
-            case 14: return HRP.MONACOIN;
-            case 15: return HRP.QTUM;
-            case 16: return HRP.TERRA;
-            case 17: return HRP.VIACOIN;
-            case 18: return HRP.ZILLIQA;
+            case 1: return HRP.BANDCHAIN;
+            case 2: return HRP.BINANCE;
+            case 3: return HRP.BITCOIN;
+            case 4: return HRP.BITCOINCASH;
+            case 5: return HRP.BITCOINGOLD;
+            case 6: return HRP.CARDANO;
+            case 7: return HRP.COSMOS;
+            case 8: return HRP.DIGIBYTE;
+            case 9: return HRP.ELROND;
+            case 10: return HRP.GROESTLCOIN;
+            case 11: return HRP.HARMONY;
+            case 12: return HRP.IOTEX;
+            case 13: return HRP.KAVA;
+            case 14: return HRP.LITECOIN;
+            case 15: return HRP.MONACOIN;
+            case 16: return HRP.QTUM;
+            case 17: return HRP.TERRA;
+            case 18: return HRP.VIACOIN;
+            case 19: return HRP.ZILLIQA;
             default: return null;
         }
     }
@@ -66,6 +68,7 @@ public enum HRP {
     public String toString() {
         switch (this) {
         case UNKNOWN: return "";
+        case BANDCHAIN: return "band";
         case BINANCE: return "bnb";
         case BITCOIN: return "bc";
         case BITCOINCASH: return "bitcoincash";

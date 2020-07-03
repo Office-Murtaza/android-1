@@ -14,7 +14,7 @@ import java.math.BigDecimal;
 public class TestController {
 
     @Autowired
-    private MessageService messageService;
+    private TwilioService twilioService;
 
     @Autowired
     private UserService userService;
@@ -27,13 +27,13 @@ public class TestController {
 
     @GetMapping("/sms")
     public Response sendSMS(@RequestParam String phone) {
-        return Response.ok(messageService.sendMessage(phone, "Hey there, do you want to buy an elephant?"));
+        return Response.ok(twilioService.sendMessage(phone, "Hey there, do you want to buy an elephant?"));
     }
 
     @GetMapping("/code/{userId}")
     public Response getCode(@PathVariable Long userId) {
         JSONObject res = new JSONObject();
-        res.put("code", messageService.getVerificationCode(userId));
+        res.put("code", twilioService.getVerificationCode(userId));
 
         return Response.ok(res);
     }

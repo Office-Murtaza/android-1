@@ -20,10 +20,10 @@ import com.twilio.rest.api.v2010.account.Message;
 import com.twilio.type.PhoneNumber;
 
 @Service
-public class MessageService {
+public class TwilioService {
 
     @Value("${twilio.enabled}")
-    private Boolean twilioEnabled;
+    private Boolean enabled;
 
     @Value("${twilio.account-sid}")
     private String accountSid;
@@ -61,7 +61,7 @@ public class MessageService {
             Message.Status status = null;
             String code = Constant.DEFAULT_CODE;
 
-            if (twilioEnabled) {
+            if (enabled) {
                 code = RandomStringUtils.randomNumeric(4);
                 status = sendMessage(user.getPhone(), "Code: " + code);
             }

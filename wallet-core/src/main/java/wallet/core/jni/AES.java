@@ -24,9 +24,9 @@ public class AES {
     }
 
 
-    public static native byte[] cbcencrypt(byte[] key, byte[] data, byte[] iv);
-    public static native byte[] cbcdecrypt(byte[] key, byte[] data, byte[] iv);
-    public static native byte[] ctrencrypt(byte[] key, byte[] data, byte[] iv);
-    public static native byte[] ctrdecrypt(byte[] key, byte[] data, byte[] iv);
+    public static native byte[] encryptCBC(byte[] key, byte[] data, byte[] iv, AESPaddingMode mode);
+    public static native byte[] decryptCBC(byte[] key, byte[] data, byte[] iv, AESPaddingMode mode);
+    public static native byte[] encryptCTR(byte[] key, byte[] data, byte[] iv);
+    public static native byte[] decryptCTR(byte[] key, byte[] data, byte[] iv);
 
 }

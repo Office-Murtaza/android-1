@@ -69,7 +69,8 @@ public enum CoinType {
     KUSAMA (434),
     POLKADOT (354),
     FILECOIN (461),
-    ELROND (508);
+    ELROND (508),
+    BANDCHAIN (494);
 
     private final int value;
     CoinType(int value) {
@@ -138,6 +139,7 @@ public enum CoinType {
             case 354: return CoinType.POLKADOT;
             case 461: return CoinType.FILECOIN;
             case 508: return CoinType.ELROND;
+            case 494: return CoinType.BANDCHAIN;
             default: return null;
         }
     }
