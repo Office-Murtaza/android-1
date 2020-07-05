@@ -149,21 +149,21 @@ class DetailsActivity : BaseMvpActivity<DetailsContract.View, DetailsContract.Pr
         amountContainerView.hide()
     } else {
         amountContainerView.show()
-        amountView.text = getString(R.string.transition_details_balance_crypto, amount.toStringCoin(), coinCode)
+        amountView.text = getString(R.string.transition_details_screen_balance_crypto, amount.toStringCoin(), coinCode)
     }
 
     private fun showFiatAmountView(amount: Double?) = if (amount == null) {
         fiatAmountContainerView.hide()
     } else {
         fiatAmountContainerView.show()
-        fiatAmountView.text = getString(R.string.transition_details_balance_usd, amount.toStringUsd())
+        fiatAmountView.text = getString(R.string.transition_details_screen_balance_usd, amount.toStringUsd())
     }
 
     private fun showFeeView(fee: Double?) = if (fee == null) {
         feeContainerView.hide()
     } else {
         feeContainerView.show()
-        feeView.text = getString(R.string.transition_details_balance_crypto, fee.toStringCoin(), coinCode)
+        feeView.text = getString(R.string.transition_details_screen_balance_crypto, fee.toStringCoin(), coinCode)
     }
 
     private fun showDateView(date: String?) = if (date.isNullOrBlank()) {

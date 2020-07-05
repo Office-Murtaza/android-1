@@ -10,31 +10,31 @@ import retrofit2.http.*
 
 interface TransactionApi {
 
-    @GET("user/{userId}/coins/{coinId}/transactions")
+    @GET("user/{userId}/coins/{coinCode}/transactions")
     fun getTransactionsAsync(
         @Path("userId") userId: Int,
-        @Path("coinId") coinCode: String,
+        @Path("coinCode") coinCode: String,
         @Query("index") lastListIndex: Int
     ): Deferred<Response<GetTransactionsResponse>>
 
-    @POST("user/{userId}/coins/{coinId}/transactions/submit")
+    @POST("user/{userId}/coins/{coinCode}/transactions/submit")
     fun withdrawAsync(
         @Path("userId") userId: Int,
-        @Path("coinId") coinId: String,
+        @Path("coinCode") coinCode: String,
         @Body body: WithdrawRequest
     ): Deferred<Response<ResponseBody>>
 
-    @GET("coins/{coinId}/gift-address")
+    @GET("coins/{coinCode}/gift-address")
     fun getGiftAddressAsync(
         @Path("userId") userId: Int,
-        @Path("coinId") coinId: String,
+        @Path("coinCode") coinCode: String,
         @Query("phone") phone: String?
     ): Deferred<Response<GetGiftAddressResponse>>
 
-    @POST("user/{userId}/coins/{coinId}/transactions/submit")
+    @POST("user/{userId}/coins/{coinCode}/transactions/submit")
     fun sendGiftAsync(
         @Path("userId") userId: Int,
-        @Path("coinId") coinId: String,
+        @Path("coinCode") coinCode: String,
         @Body body: SendGiftRequest
     ): Deferred<Response<ResponseBody>>
 
@@ -43,17 +43,17 @@ interface TransactionApi {
         @Path("userId") userId: Int
     ): Deferred<Response<LimitsResponse>>
 
-    @POST("user/{userId}/coins/{coinId}/transactions/pre-submit")
+    @POST("user/{userId}/coins/{coinCode}/transactions/pre-submit")
     fun sellPreSubmitAsync(
         @Path("userId") userId: Int,
-        @Path("coinId") coinId: String,
+        @Path("coinCode") coinCode: String,
         @Body body: SellPreSubmitRequest
     ): Deferred<Response<SellPreSubmitResponse>>
 
-    @POST("user/{userId}/coins/{coinId}/transactions/submit")
+    @POST("user/{userId}/coins/{coinCode}/transactions/submit")
     fun sellAsync(
         @Path("userId") userId: Int,
-        @Path("coinId") coinId: String,
+        @Path("coinCode") coinCode: String,
         @Body body: SellRequest
     ): Deferred<Response<ResponseBody>>
 
@@ -124,14 +124,13 @@ interface TransactionApi {
 
     @GET("coins/{coinCode}/utxo")
     fun getUtxoListAsync(
-        @Path("userId") userId: Int,
-        @Path("coinId") coinId: String,
+        @Path("coinCode") coinCode: String,
         @Query("xpub") extendedPublicKey: String
     ): Deferred<Response<UtxoListResponse>>
 
     @GET("coins/{coinCode}/nonce")
     fun getEthereumNonceAsync(
-        @Path("coinCode") coinId: String,
+        @Path("coinCode") coinCode: String,
         @Query("address") toAddress: String
     ): Deferred<Response<EthereumResponse>>
 
@@ -163,4 +162,17 @@ interface TransactionApi {
         @Path("coinCode") coinCode: String,
         @Body body: TradeReserveRequest
     ): Deferred<Response<TronBlockResponse>>
+
+    @GET("user/{userId}/coins/{coinCode}/transactions/stake-details")
+    fun stakeDetailsAsync(
+        @Path("userId") userId: Int,
+        @Path("coinCode") coinCode: String
+    ): Deferred<Response<StakeDetailsRequest>>
+
+    @POST("user/{userId}/coins/{coinCode}/transactions/submit")
+    fun stakeOrUnStakeAsync(
+        @Path("userId") userId: Int,
+        @Path("coinCode") coinCode: String,
+        @Body body: StakeRequest
+    ): Deferred<Response<ResponseBody>>
 }

@@ -9,8 +9,8 @@ android {
         applicationId "com.app.belcobtm"
         minSdkVersion 23
         targetSdkVersion 29
-        versionCode 61
-        versionName "1.5.1"
+        versionCode 64
+        versionName "1.5.4"
         multiDexEnabled = true
     }
     buildTypes {

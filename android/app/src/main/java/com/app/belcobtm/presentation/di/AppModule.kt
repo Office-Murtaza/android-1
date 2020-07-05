@@ -1,5 +1,6 @@
 package com.app.belcobtm.presentation.di
 
+import com.app.belcobtm.domain.wallet.LocalCoinType
 import com.app.belcobtm.domain.wallet.WalletRepository
 import com.app.belcobtm.domain.wallet.interactor.GetCoinFeeMapUseCase
 import com.app.belcobtm.domain.wallet.item.CoinDataItem
@@ -13,6 +14,7 @@ import com.app.belcobtm.presentation.features.settings.verification.vip.Verifica
 import com.app.belcobtm.presentation.features.wallet.add.AddWalletViewModel
 import com.app.belcobtm.presentation.features.wallet.balance.BalanceViewModel
 import com.app.belcobtm.presentation.features.wallet.exchange.coin.to.coin.ExchangeCoinToCoinViewModel
+import com.app.belcobtm.presentation.features.wallet.staking.StakingViewModel
 import com.app.belcobtm.presentation.features.wallet.trade.create.TradeCreateViewModel
 import com.app.belcobtm.presentation.features.wallet.trade.details.TradeDetailsBuyViewModel
 import com.app.belcobtm.presentation.features.wallet.trade.edit.TradeEditViewModel
@@ -59,5 +61,10 @@ val viewModelModule = module {
             get(),
             get()
         )
+    }
+    viewModel {
+        val coinDataItem = get<WalletRepository>().getCoinItemByCode(LocalCoinType.CATM.name)
+        val coinFee = get<WalletRepository>().getCoinFeeItemByCode(LocalCoinType.CATM.name)
+        StakingViewModel(coinDataItem, coinFee, get(), get(), get(), get(), get(), get())
     }
 }

@@ -59,6 +59,26 @@ class TransactionHashHelper(
         )
     }
 
+    suspend fun createTransactionStakeHash(
+        fromCoinAmount: Double,
+        toAddress: String
+    ) = createTransactionHashETH(
+        toAddress,
+        LocalCoinType.CATM,
+        fromCoinAmount,
+        ETH_CATM_FUNCTION_NAME_CREATE_STAKE
+    )
+
+    suspend fun createTransactionUnStakeHash(
+        fromCoinAmount: Double,
+        toAddress: String
+    ) = createTransactionHashETH(
+        toAddress,
+        LocalCoinType.CATM,
+        fromCoinAmount,
+        ETH_CATM_FUNCTION_NAME_WITHDRAW_STAKE
+    )
+
     private suspend fun createTransactionHashBTCorLTCorBTH(
         toAddress: String,
         fromCoin: LocalCoinType,
@@ -102,7 +122,7 @@ class TransactionHashHelper(
                     redeemScript.matchPayToPubkeyHash()
                 }
 
-                if (keyHash.isNotEmpty()) {
+                if (keyHash != null && keyHash.isNotEmpty()) {
                     val key = Numeric.toHexString(keyHash)
                     val scriptByteString = ByteString.copyFrom(redeemScript.data())
                     input.putScripts(key, scriptByteString)
@@ -153,7 +173,8 @@ class TransactionHashHelper(
     private suspend fun createTransactionHashETH(
         toAddress: String,
         fromCoin: LocalCoinType,
-        fromCoinAmount: Double
+        fromCoinAmount: Double,
+        customFunctionName: String? = null
     ): Either<Failure, String> {
         val nonceAddress = daoCoin.getItem(fromCoin.name).publicKey
         val response = apiService.getEthereumNonce(fromCoin.name, nonceAddress)
@@ -175,9 +196,22 @@ class TransactionHashHelper(
             }
 
             if (fromCoin == LocalCoinType.CATM) {
-                val function = EthereumAbiEncoder.buildFunction("transfer")
-                function.addParamAddress(toAddress.toHexByteArray(), false)
-                function.addParamUInt256(amountMultipliedByDivider.toBigInteger().toByteArray(), false)
+                val function = when (customFunctionName) {
+                    ETH_CATM_FUNCTION_NAME_WITHDRAW_STAKE ->
+                        EthereumAbiEncoder.buildFunction(ETH_CATM_FUNCTION_NAME_WITHDRAW_STAKE)
+                    ETH_CATM_FUNCTION_NAME_CREATE_STAKE -> {
+                        val function = EthereumAbiEncoder.buildFunction(ETH_CATM_FUNCTION_NAME_CREATE_STAKE)
+                        function.addParamAddress(toAddress.toHexByteArray(), false)
+                        function.addParamUInt256(amountMultipliedByDivider.toBigInteger().toByteArray(), false)
+                        function
+                    }
+                    else -> {
+                        val function = EthereumAbiEncoder.buildFunction(ETH_CATM_FUNCTION_NAME_TRANSFER)
+                        function.addParamAddress(toAddress.toHexByteArray(), false)
+                        function.addParamUInt256(amountMultipliedByDivider.toBigInteger().toByteArray(), false)
+                        function
+                    }
+                }
 
                 input.payload = ByteString.copyFrom(EthereumAbiEncoder.encode(function))
                 input.toAddress = coinFee?.contractAddress
@@ -348,5 +382,11 @@ class TransactionHashHelper(
         } else {
             response as Either.Left
         }
+    }
+
+    private companion object {
+        private const val ETH_CATM_FUNCTION_NAME_TRANSFER: String = "transfer"
+        private const val ETH_CATM_FUNCTION_NAME_CREATE_STAKE: String = "createStake"
+        private const val ETH_CATM_FUNCTION_NAME_WITHDRAW_STAKE: String = "withdrawStake"
     }
 }

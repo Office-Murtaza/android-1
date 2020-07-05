@@ -2,10 +2,7 @@ package com.app.belcobtm.domain.transaction
 
 import com.app.belcobtm.domain.Either
 import com.app.belcobtm.domain.Failure
-import com.app.belcobtm.domain.transaction.item.SellLimitsDataItem
-import com.app.belcobtm.domain.transaction.item.SellPreSubmitDataItem
-import com.app.belcobtm.domain.transaction.item.TradeInfoDataItem
-import com.app.belcobtm.domain.transaction.item.TransactionDataItem
+import com.app.belcobtm.domain.transaction.item.*
 import com.app.belcobtm.domain.transaction.type.TradeSortType
 
 interface TransactionRepository {
@@ -150,5 +147,33 @@ interface TransactionRepository {
         coinCode: String,
         cryptoAmount: Double,
         hash: String
+    ): Either<Failure, Unit>
+
+    suspend fun stakeDetails(
+        coinCode: String
+    ): Either<Failure, StakeDetailsDataItem>
+
+    suspend fun stakeCreateTransaction(
+        coinCode: String,
+        cryptoAmount: Double
+    ): Either<Failure, String>
+
+    suspend fun stakeCompleteTransaction(
+        smsCode: String,
+        hash: String,
+        coinCode: String,
+        cryptoAmount: Double
+    ): Either<Failure, Unit>
+
+    suspend fun unStakeCreateTransaction(
+        coinCode: String,
+        cryptoAmount: Double
+    ): Either<Failure, String>
+
+    suspend fun unStakeCompleteTransaction(
+        smsCode: String,
+        hash: String,
+        coinCode: String,
+        cryptoAmount: Double
     ): Either<Failure, Unit>
 }

@@ -58,7 +58,7 @@
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/priceTitleView"
-                    style="@style/WalletTab.Title.Medium.Key"
+                    style="@style/Transaction.Title.Medium.Key"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="16dp"
                     android:text="@string/sell_screen_price"
@@ -67,7 +67,7 @@
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/priceUsdView"
-                    style="@style/WalletTab.Title.Medium.Value"
+                    style="@style/Transaction.Title.Medium.Value"
                     android:layout_marginStart="16dp"
                     app:layout_constraintStart_toEndOf="@id/priceBarrierView"
                     app:layout_constraintTop_toTopOf="@id/priceTitleView"
@@ -75,14 +75,14 @@
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/balanceTitleView"
-                    style="@style/WalletTab.Title.Medium.Key"
+                    style="@style/Transaction.Title.Medium.Key"
                     android:text="@string/sell_screen_balance"
                     app:layout_constraintStart_toStartOf="@id/priceTitleView"
                     app:layout_constraintTop_toBottomOf="@id/priceTitleView" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/balanceCryptoView"
-                    style="@style/WalletTab.Title.Medium.Value"
+                    style="@style/Transaction.Title.Medium.Value"
                     app:layout_constraintStart_toStartOf="@id/priceUsdView"
                     app:layout_constraintTop_toTopOf="@id/balanceTitleView"
                     tools:text="0.000902 BTC" />
@@ -114,28 +114,28 @@
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/dayLimitTitleView"
-                    style="@style/WalletTab.Title.Medium.Key"
+                    style="@style/Transaction.Title.Medium.Key"
                     android:text="@string/sell_screen_daily_limit"
                     app:layout_constraintStart_toStartOf="@id/balanceTitleView"
                     app:layout_constraintTop_toBottomOf="@id/balanceTitleView" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/dayLimitView"
-                    style="@style/WalletTab.Title.Medium.Value"
+                    style="@style/Transaction.Title.Medium.Value"
                     app:layout_constraintStart_toStartOf="@id/balanceCryptoView"
                     app:layout_constraintTop_toTopOf="@id/dayLimitTitleView"
                     tools:text="900 USD" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/txLimitTitleView"
-                    style="@style/WalletTab.Title.Medium.Key"
+                    style="@style/Transaction.Title.Medium.Key"
                     android:text="@string/sell_screen_tx_limit"
                     app:layout_constraintStart_toStartOf="@id/dayLimitTitleView"
                     app:layout_constraintTop_toBottomOf="@id/dayLimitTitleView" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/txLimitView"
-                    style="@style/WalletTab.Title.Medium.Value"
+                    style="@style/Transaction.Title.Medium.Value"
                     app:layout_constraintStart_toStartOf="@id/dayLimitView"
                     app:layout_constraintTop_toTopOf="@id/txLimitTitleView"
                     tools:text="20 USD" />
@@ -151,7 +151,7 @@
                     app:layout_constraintTop_toBottomOf="@id/txLimitTitleView">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        style="@style/WalletTab.EditText.InputWithMax"
+                        style="@style/Transaction.EditText.InputWithMax"
                         android:digits="1234567890"
                         android:hint="@string/sell_screen_usd_amount"
                         android:inputType="number"
@@ -160,7 +160,7 @@
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/maxUsdView"
-                    style="@style/WalletTab.EditText.TextLink"
+                    style="@style/Transaction.EditText.TextLink"
                     android:layout_marginEnd="10dp"
                     android:layout_marginBottom="10dp"
                     android:text="@string/max"
@@ -176,7 +176,7 @@
                     app:layout_constraintTop_toBottomOf="@id/amountUsdView">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        style="@style/WalletTab.EditText.InputWithMax"
+                        style="@style/Transaction.EditText.InputWithMax"
                         android:digits="1234567890."
                         android:focusableInTouchMode="false"
                         android:inputType="numberDecimal"

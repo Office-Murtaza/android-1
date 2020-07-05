@@ -29,7 +29,7 @@
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/priceTitleView"
-        style="@style/WalletTab.Title.Medium.Key"
+        style="@style/Transaction.Title.Medium.Key"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:text="@string/withdraw_screen_price"
@@ -38,7 +38,7 @@
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/priceUsdView"
-        style="@style/WalletTab.Title.Medium.Value"
+        style="@style/Transaction.Title.Medium.Value"
         android:layout_marginStart="16dp"
         app:layout_constraintStart_toEndOf="@id/priceBarrierView"
         app:layout_constraintTop_toTopOf="@id/priceTitleView"
@@ -46,14 +46,14 @@
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/balanceTitleView"
-        style="@style/WalletTab.Title.Medium.Key"
+        style="@style/Transaction.Title.Medium.Key"
         android:text="@string/withdraw_screen_balance"
         app:layout_constraintStart_toStartOf="@id/priceTitleView"
         app:layout_constraintTop_toBottomOf="@id/priceTitleView" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/balanceCryptoView"
-        style="@style/WalletTab.Title.Medium.Value"
+        style="@style/Transaction.Title.Medium.Value"
         app:layout_constraintStart_toEndOf="@id/priceBarrierView"
         app:layout_constraintStart_toStartOf="@id/priceUsdView"
         app:layout_constraintTop_toTopOf="@id/balanceTitleView"
@@ -72,7 +72,7 @@
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/balanceUsdView"
-        style="@style/WalletTab.Title.Medium.Value"
+        style="@style/Transaction.Title.Medium.Value"
         android:layout_marginStart="8dp"
         android:textColor="@color/blue_color"
         app:layout_constraintBottom_toBottomOf="@id/exchangeView"
@@ -121,7 +121,7 @@
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/addressPasteView"
-        style="@style/WalletTab.EditText.TextLink"
+        style="@style/Transaction.EditText.TextLink"
         android:layout_marginEnd="4dp"
         android:text="@string/paste"
         app:layout_constraintBottom_toBottomOf="@id/addressScanView"
@@ -136,7 +136,7 @@
         app:layout_constraintTop_toBottomOf="@id/addressView">
 
         <com.google.android.material.textfield.TextInputEditText
-            style="@style/WalletTab.EditText.InputWithMax"
+            style="@style/Transaction.EditText.InputWithMax"
             android:digits="1234567890."
             android:inputType="numberDecimal"
             android:nextFocusDown="@id/amountUsdView"
@@ -146,7 +146,7 @@
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/maxCryptoView"
-        style="@style/WalletTab.EditText.TextLink"
+        style="@style/Transaction.EditText.TextLink"
         android:layout_marginEnd="10dp"
         android:layout_marginBottom="10dp"
         android:text="@string/max"
@@ -162,7 +162,7 @@
         app:layout_constraintTop_toBottomOf="@id/amountCryptoView">
 
         <com.google.android.material.textfield.TextInputEditText
-            style="@style/WalletTab.EditText.InputWithMax"
+            style="@style/Transaction.EditText.InputWithMax"
             android:digits="1234567890."
             android:hint="@string/withdraw_screen_usd_amount"
             android:inputType="numberDecimal"
@@ -172,7 +172,7 @@
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/maxUsdView"
-        style="@style/WalletTab.EditText.TextLink"
+        style="@style/Transaction.EditText.TextLink"
         android:layout_marginEnd="10dp"
         android:layout_marginBottom="10dp"
         android:text="@string/max"

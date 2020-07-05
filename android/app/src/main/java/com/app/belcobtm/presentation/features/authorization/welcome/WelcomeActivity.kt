@@ -88,7 +88,7 @@ class WelcomeActivity : AppCompatActivity() {
 
     private fun showTermsErrorAlert(): Unit = Snackbar.make(
         container,
-        R.string.please_accept_terms,
+        R.string.welcome_screen_please_accept_tnc,
         Snackbar.LENGTH_SHORT
     ).also { it.view.setBackgroundColor(getColor(R.color.colorErrorSnackBar)) }.show()
 

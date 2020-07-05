@@ -30,7 +30,7 @@
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/priceTitleView"
-        style="@style/WalletTab.Title.Medium.Key"
+        style="@style/Transaction.Title.Medium.Key"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:text="@string/trade_screen_price"
@@ -39,7 +39,7 @@
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/priceUsdView"
-        style="@style/WalletTab.Title.Medium.Value"
+        style="@style/Transaction.Title.Medium.Value"
         android:layout_marginStart="16dp"
         app:layout_constraintStart_toEndOf="@id/priceBarrierView"
         app:layout_constraintTop_toTopOf="@id/priceTitleView"
@@ -47,14 +47,14 @@
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/balanceTitleView"
-        style="@style/WalletTab.Title.Medium.Key"
+        style="@style/Transaction.Title.Medium.Key"
         android:text="@string/trade_screen_balance"
         app:layout_constraintStart_toStartOf="@id/priceTitleView"
         app:layout_constraintTop_toBottomOf="@id/priceTitleView" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/balanceCryptoView"
-        style="@style/WalletTab.Title.Medium.Value"
+        style="@style/Transaction.Title.Medium.Value"
         app:layout_constraintStart_toStartOf="@id/priceUsdView"
         app:layout_constraintTop_toTopOf="@id/balanceTitleView"
         tools:text="0.000902 BTC" />
@@ -86,14 +86,14 @@
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/reserveTitleView"
-        style="@style/WalletTab.Title.Medium.Key"
+        style="@style/Transaction.Title.Medium.Key"
         android:text="@string/trade_screen_reserved"
         app:layout_constraintStart_toStartOf="@id/balanceTitleView"
         app:layout_constraintTop_toBottomOf="@id/balanceTitleView" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/reserveCryptoView"
-        style="@style/WalletTab.Title.Medium.Value"
+        style="@style/Transaction.Title.Medium.Value"
         app:layout_constraintStart_toStartOf="@id/balanceCryptoView"
         app:layout_constraintTop_toTopOf="@id/reserveTitleView"
         tools:text="0.000902 BTC" />
@@ -125,7 +125,7 @@
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/sortTitleView"
-        style="@style/WalletTab.Title.Medium.Key"
+        style="@style/Transaction.Title.Medium.Key"
         android:text="@string/add_edit_trade_screen_i_want_to"
         app:layout_constraintStart_toStartOf="@id/reserveTitleView"
         app:layout_constraintTop_toBottomOf="@id/reserveTitleView" />
@@ -143,7 +143,7 @@
 
         <androidx.appcompat.widget.AppCompatRadioButton
             android:id="@+id/priceButtonView"
-            style="@style/WalletTab.Title.Medium.Value"
+            style="@style/Transaction.Title.Medium.Value"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingStart="0dp"
@@ -152,7 +152,7 @@
 
         <androidx.appcompat.widget.AppCompatRadioButton
             android:id="@+id/distanceButtonView"
-            style="@style/WalletTab.Title.Medium.Value"
+            style="@style/Transaction.Title.Medium.Value"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingStart="0dp"
