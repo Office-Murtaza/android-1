@@ -177,7 +177,9 @@ public class BlockbookService {
             input.setCoinType(coinType.value());
             input.setAmount(amount.multiply(divider).longValue());
             input.setByteFee(fee.multiply(divider).longValue());
-            input.setHashType(coinType == CoinType.BITCOINCASH ? 65 : 1);
+
+            //input.setHashType(coinType == CoinType.BITCOINCASH ? 65 : 1);
+            input.setHashType(BitcoinScript.hashTypeForCoin(coinType).value());
             input.setChangeAddress(fromAddress);
             input.setToAddress(toAddress);
             input.setUseMaxAmount(false);
@@ -202,7 +204,12 @@ public class BlockbookService {
                 JSONObject utxo = utxos.get(index);
 
                 byte[] hash = Numeric.hexStringToByteArray(utxo.optString("txid"));
-                Collections.reverse(Arrays.asList(hash));
+
+                System.out.println("1: " + new String(hash));
+
+                Util.reverse(hash);
+
+                System.out.println("2: " + new String(hash));
 
                 Bitcoin.OutPoint.Builder output = Bitcoin.OutPoint.newBuilder();
                 output.setHash(ByteString.copyFrom(hash));

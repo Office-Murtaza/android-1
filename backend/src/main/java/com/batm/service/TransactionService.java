@@ -291,28 +291,26 @@ public class TransactionService {
 
     public String recall(Long userId, CoinService.CoinEnum coinCode, SubmitTransactionDTO dto) {
         try {
-            //System.out.println(" ---- 1111");
             UserCoin userCoin = userService.getUserCoin(userId, coinCode.name());
             BigDecimal reserved = userCoin.getReservedBalance();
-            BigDecimal txFee = coinCode.getCoinSettings().getTxFee();
-            BigDecimal withdrawAmount = dto.getCryptoAmount().subtract(txFee);
+            BigDecimal txFee = Util.nvl(coinCode.getCoinSettings().getRecallFee(), coinCode.getCoinSettings().getTxFee());
             BigDecimal walletBalance = walletService.getBalance(coinCode);
 
-            if (reserved.compareTo(dto.getCryptoAmount()) >= 0 && walletBalance.compareTo(withdrawAmount) >= 0) {
-                //System.out.println(" ---- 2222");
+            if (reserved.compareTo(dto.getCryptoAmount().add(txFee)) >= 0 && walletBalance.compareTo(dto.getCryptoAmount()) >= 0) {
                 String fromAddress = coinCode.getWalletAddress();
                 String toAddress = userCoin.getAddress();
-                String hex = coinCode.sign(fromAddress, toAddress, withdrawAmount);
-                System.out.println(" --- hex: " + hex);
+                String hex = coinCode.sign(fromAddress, toAddress, dto.getCryptoAmount());
+                System.out.println("hex: " + hex);
+
                 String txId = coinCode.submitTransaction(hex);
+                System.out.println("txId: " + txId);
 
                 if (StringUtils.isNotBlank(txId)) {
-                    System.out.println(" ---- 3333");
                     TransactionRecordWallet record = new TransactionRecordWallet();
                     record.setTxId(txId);
                     record.setIdentity(userService.findById(userId).getIdentity());
                     record.setCoin(coinCode.getCoinEntity());
-                    record.setAmount(withdrawAmount);
+                    record.setAmount(dto.getCryptoAmount());
                     record.setType(TransactionType.RECALL.getValue());
                     record.setStatus(TransactionStatus.PENDING.getValue());
 
@@ -320,7 +318,7 @@ public class TransactionService {
 
                     dto.setFromAddress(fromAddress);
                     dto.setToAddress(toAddress);
-                    dto.setCryptoAmount(withdrawAmount);
+                    dto.setCryptoAmount(dto.getCryptoAmount().add(txFee));
                     dto.setFee(txFee);
 
                     userCoin.setReservedBalance(userCoin.getReservedBalance().subtract(dto.getCryptoAmount()));
