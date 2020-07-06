@@ -5,7 +5,7 @@ class CoinFeeDataItem(
     val byteFee: Double,
     val gasPrice: Double,
     val gasLimit: Double,
-    val profitC2C: Double,
-    val walletAddress: String,
+    val profitExchange: Double,
+    val walletAddress: String, //server address
     val contractAddress: String
 )

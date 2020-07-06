@@ -79,13 +79,15 @@ public class UserService {
     private String documentUploadPath;
 
     @Transactional
-    public User register(String phone, String password) {
+    public User register(String phone, String password, Integer platform) {
         User existingUser = findByPhone(phone);
 
         User user = existingUser == null ? new User() : existingUser;
         user.setPhone(phone);
         user.setPassword(passwordEncoder.encode(password));
         user.setRole("ROLE_USER");
+        user.setPlatform(platform);
+
         User savedUser = userRep.save(user);
 
         Date date = new Date();
@@ -173,8 +175,8 @@ public class UserService {
         return phoneChangeRep.findByUserId(userId);
     }
 
-    public PhoneChange save(PhoneChange phoneChange) {
-        return phoneChangeRep.save(phoneChange);
+    public void save(PhoneChange phoneChange) {
+        phoneChangeRep.save(phoneChange);
     }
 
     public List<UserCoin> save(List<UserCoin> list) {
@@ -201,7 +203,7 @@ public class UserService {
         return userRep.findOneByPhone(phone);
     }
 
-    public GiftAddressDTO getUserGiftAddress(CoinService.CoinEnum coinCode, String phone) {
+    public GiftAddressDTO getCoinAddressByPhone(CoinService.CoinEnum coinCode, String phone) {
         User user = findByPhone(phone);
 
         if (user != null) {
@@ -551,6 +553,10 @@ public class UserService {
         userRep.save(user);
 
         return true;
+    }
+
+    public void save(User user) {
+        userRep.save(user);
     }
 
     private void addTransactionLimit(IdentityKycReview review, BigDecimal newTxLimit) {

@@ -3,9 +3,8 @@ package com.batm.util;
 import com.batm.dto.TransactionDetailsDTO;
 import com.batm.dto.TransactionListDTO;
 import com.batm.dto.TxListDTO;
-import com.batm.entity.BaseTxEntity;
 import com.batm.entity.TransactionRecord;
-import com.batm.model.TransactionGroupType;
+import com.batm.entity.TransactionRecordWallet;
 import com.batm.model.TransactionStatus;
 import com.batm.model.TransactionType;
 import org.apache.commons.lang.StringUtils;
@@ -17,9 +16,9 @@ import java.util.Map;
 public class TxUtil {
 
     public static TransactionListDTO buildTxs(Map<String, TransactionDetailsDTO> map, Integer startIndex, Integer limit, TxListDTO txDTO) {
-        mergeGroupGroupTxs(map, txDTO.getGiftList(), TransactionGroupType.GIFT);
-        mergeGroupGroupTxs(map, txDTO.getC2cList(), TransactionGroupType.EXCHANGE);
-        mergeBuySellTxs(map, txDTO.getBuySellList());
+        mergeTransactionRecordWallets(map, txDTO.getTransactionRecordWallets());
+        mergeTransactionRecords(map, txDTO.getTransactionRecords());
+
         List<TransactionDetailsDTO> list = convertAndSort(map);
 
         TransactionListDTO dto = new TransactionListDTO();
@@ -29,18 +28,18 @@ public class TxUtil {
         return dto;
     }
 
-    private static void mergeGroupGroupTxs(Map<String, TransactionDetailsDTO> map, List<? extends BaseTxEntity> list, TransactionGroupType group) {
+    private static void mergeTransactionRecordWallets(Map<String, TransactionDetailsDTO> map, List<TransactionRecordWallet> list) {
         if (list != null && !list.isEmpty()) {
             list.stream().forEach(e -> {
                 if (map.containsKey(e.getTxId())) {
                     TransactionType type = map.get(e.getTxId()).getType();
-                    map.get(e.getTxId()).setType(TransactionType.convert(type, group));
+                    map.get(e.getTxId()).setType(TransactionType.convert(type, TransactionType.valueOf(e.getType())));
                 }
             });
         }
     }
 
-    private static void mergeBuySellTxs(Map<String, TransactionDetailsDTO> map, List<TransactionRecord> txList) {
+    private static void mergeTransactionRecords(Map<String, TransactionDetailsDTO> map, List<TransactionRecord> txList) {
         if (txList != null && !txList.isEmpty()) {
             txList.stream().forEach(e -> {
                 TransactionType type = e.getTransactionType();

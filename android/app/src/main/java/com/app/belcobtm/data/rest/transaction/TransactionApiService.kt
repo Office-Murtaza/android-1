@@ -88,10 +88,8 @@ class TransactionApiService(
         Either.Left(failure)
     }
 
-    suspend fun sellGetLimitsAsync(
-        coinFrom: String
-    ): Either<Failure, SellLimitsDataItem> = try {
-        val request = api.sellGetLimitsAsync(prefHelper.userId, coinFrom).await()
+    suspend fun sellGetLimitsAsync(): Either<Failure, SellLimitsDataItem> = try {
+        val request = api.sellGetLimitsAsync(prefHelper.userId).await()
         request.body()?.let { Either.Right(it.mapToDataItem()) } ?: Either.Left(Failure.ServerError())
     } catch (failure: Failure) {
         failure.printStackTrace()
@@ -267,7 +265,6 @@ class TransactionApiService(
         Either.Left(failure)
     }
 
-
     suspend fun sendTradeUserLocation(latitude: Double, longitude: Double): Either<Failure, Unit> = try {
         val requestBody = TradeLocationRequest(latitude, longitude)
         val request = api.tradeSendUserLocationAsync(prefHelper.userId, requestBody).await()
@@ -285,24 +282,24 @@ class TransactionApiService(
         Either.Left(failure)
     }
 
-    suspend fun getEthereumNonce(toAddress: String): Either<Failure, Long?> = try {
-        val request = api.getEthereumNonceAsync(prefHelper.userId, toAddress).await()
+    suspend fun getEthereumNonce(coinCode: String, toAddress: String): Either<Failure, Long?> = try {
+        val request = api.getEthereumNonceAsync(coinCode, toAddress).await()
         request.body()?.let { Either.Right(it.nonce) } ?: Either.Left(Failure.ServerError())
     } catch (failure: Failure) {
         failure.printStackTrace()
         Either.Left(failure)
     }
 
-    suspend fun getRippleSequence(): Either<Failure, Long> = try {
-        val request = api.getRippleBlockHeaderAsync(prefHelper.userId).await()
+    suspend fun getRippleSequence(toAddress: String): Either<Failure, Long> = try {
+        val request = api.getRippleBlockHeaderAsync(toAddress).await()
         request.body()?.let { Either.Right(it.sequence ?: 0) } ?: Either.Left(Failure.ServerError())
     } catch (failure: Failure) {
         failure.printStackTrace()
         Either.Left(failure)
     }
 
-    suspend fun getBinanceBlockHeader(): Either<Failure, BinanceBlockResponse> = try {
-        val request = api.getBinanceBlockHeaderAsync(prefHelper.userId).await()
+    suspend fun getBinanceBlockHeader(toAddress: String): Either<Failure, BinanceBlockResponse> = try {
+        val request = api.getBinanceBlockHeaderAsync(toAddress).await()
         request.body()?.let { Either.Right(it) } ?: Either.Left(Failure.ServerError())
     } catch (failure: Failure) {
         failure.printStackTrace()
@@ -310,8 +307,26 @@ class TransactionApiService(
     }
 
     suspend fun getTronBlockHeader(coinId: String): Either<Failure, TronRawDataResponse?> = try {
-        val request = api.getTronBlockHeaderAsync(prefHelper.userId, coinId).await()
+        val request = api.getTronBlockHeaderAsync(coinId).await()
         request.body()?.let { Either.Right(it.blockHeader?.raw_data) } ?: Either.Left(Failure.ServerError())
+    } catch (failure: Failure) {
+        failure.printStackTrace()
+        Either.Left(failure)
+    }
+
+    suspend fun submitRecall(coinCode: String, cryptoAmount: Double): Either<Failure, Unit> = try {
+        val requestBody = TradeRecallRequest(TRANSACTION_TRADE_RECALL, cryptoAmount)
+        val request = api.submitRecallAsync(prefHelper.userId, coinCode, requestBody).await()
+        request.body()?.let { Either.Right(Unit) } ?: Either.Left(Failure.ServerError())
+    } catch (failure: Failure) {
+        failure.printStackTrace()
+        Either.Left(failure)
+    }
+
+    suspend fun submitReserve(coinCode: String, cryptoAmount: Double, hex: String): Either<Failure, Unit> = try {
+        val requestBody = TradeReserveRequest(TRANSACTION_TRADE_RESERVE, cryptoAmount, hex)
+        val request = api.submitReserveAsync(prefHelper.userId, coinCode, requestBody).await()
+        request.body()?.let { Either.Right(Unit) } ?: Either.Left(Failure.ServerError())
     } catch (failure: Failure) {
         failure.printStackTrace()
         Either.Left(failure)
@@ -325,6 +340,8 @@ class TransactionApiService(
 
         const val TRANSACTION_TRADE_CREATE_BUY = 1
         const val TRANSACTION_TRADE_CREATE_SELL = 2
+        const val TRANSACTION_TRADE_RECALL = 11
+        const val TRANSACTION_TRADE_RESERVE = 10
         const val UNIT_USD = "USD"
     }
 }

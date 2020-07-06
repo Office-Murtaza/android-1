@@ -24,6 +24,14 @@ extension TradesFlowController: TradesModuleDelegate {
     step.accept(TradesFlow.Steps.createEditTrade(coinBalance))
   }
   
+  func showReserve(coin: BTMCoin, coinBalances: [CoinBalance], coinSettings: CoinSettings) {
+    step.accept(TradesFlow.Steps.reserve(coin, coinBalances, coinSettings))
+  }
+  
+  func showRecall(coin: BTMCoin, coinBalances: [CoinBalance]) {
+    step.accept(TradesFlow.Steps.recall(coin, coinBalances))
+  }
+  
 }
 
 extension TradesFlowController: BuySellTradeDetailsModuleDelegate {
@@ -40,4 +48,20 @@ extension TradesFlowController: CreateEditTradeModuleDelegate {
     step.accept(TradesFlow.Steps.pop)
   }
   
+}
+
+extension TradesFlowController: ReserveModuleDelegate {
+  
+  func didFinishReserve() {
+    step.accept(TradesFlow.Steps.pop)
+  }
+
+}
+
+extension TradesFlowController: RecallModuleDelegate {
+  
+  func didFinishRecall() {
+    step.accept(TradesFlow.Steps.pop)
+  }
+
 }

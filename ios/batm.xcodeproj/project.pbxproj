@@ -26,10 +26,8 @@
 		DB0BB5F722BD10B90035FF6C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB0BB5F622BD10B90035FF6C /* AppDelegate.swift */; };
 		DB0BB5FE22BD10BA0035FF6C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DB0BB5FD22BD10BA0035FF6C /* Assets.xcassets */; };
 		DB0BB60122BD10BA0035FF6C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DB0BB5FF22BD10BA0035FF6C /* LaunchScreen.storyboard */; };
-		DB130D6722C26EF20056E67E /* WelcomeSupportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB130D6622C26EF20056E67E /* WelcomeSupportView.swift */; };
-		DB130D6922C273B60056E67E /* WelcomeSupportCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB130D6822C273B60056E67E /* WelcomeSupportCellView.swift */; };
 		DB130D6B22C28AF60056E67E /* BackgroundDarkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB130D6A22C28AF60056E67E /* BackgroundDarkView.swift */; };
-		DB130D6E22C28CB70056E67E /* WelcomeTappableLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB130D6D22C28CB70056E67E /* WelcomeTappableLabel.swift */; };
+		DB156E2324A644F600E59F76 /* Platform.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB156E2224A644F600E59F76 /* Platform.swift */; };
 		DB167CD9230D85D900D9D66E /* Transaction+Mapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB167CD8230D85D900D9D66E /* Transaction+Mapping.swift */; };
 		DB167CDB230D85E800D9D66E /* Transactions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB167CDA230D85E800D9D66E /* Transactions.swift */; };
 		DB16A870235F4438007E3B20 /* CoinSellDetailsAnotherAddressModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB16A86C235F4438007E3B20 /* CoinSellDetailsAnotherAddressModule.swift */; };
@@ -50,6 +48,18 @@
 		DB1CFB55246C518200020104 /* TradesPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB1CFB51246C518200020104 /* TradesPresenter.swift */; };
 		DB1CFB56246C518200020104 /* TradesAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB1CFB52246C518200020104 /* TradesAssembly.swift */; };
 		DB1CFB58246C5C2800020104 /* TradesStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB1CFB57246C5C2800020104 /* TradesStore.swift */; };
+		DB1D21E624AE6C6A001E9696 /* StakeDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB1D21E524AE6C6A001E9696 /* StakeDetails.swift */; };
+		DB1D21E824AE6CCB001E9696 /* StakeDetails+Mapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB1D21E724AE6CCB001E9696 /* StakeDetails+Mapping.swift */; };
+		DB1D21EE24AE6F2A001E9696 /* CoinStakingModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB1D21EA24AE6F2A001E9696 /* CoinStakingModule.swift */; };
+		DB1D21EF24AE6F2A001E9696 /* CoinStakingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB1D21EB24AE6F2A001E9696 /* CoinStakingViewController.swift */; };
+		DB1D21F024AE6F2A001E9696 /* CoinStakingPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB1D21EC24AE6F2A001E9696 /* CoinStakingPresenter.swift */; };
+		DB1D21F124AE6F2A001E9696 /* CoinStakingAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB1D21ED24AE6F2A001E9696 /* CoinStakingAssembly.swift */; };
+		DB1D21F424AE7296001E9696 /* CoinStakingStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB1D21F324AE7296001E9696 /* CoinStakingStore.swift */; };
+		DB21B1F124AA63AA008444D3 /* RecallModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB21B1ED24AA63AA008444D3 /* RecallModule.swift */; };
+		DB21B1F224AA63AA008444D3 /* RecallViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB21B1EE24AA63AA008444D3 /* RecallViewController.swift */; };
+		DB21B1F324AA63AA008444D3 /* RecallPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB21B1EF24AA63AA008444D3 /* RecallPresenter.swift */; };
+		DB21B1F424AA63AA008444D3 /* RecallAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB21B1F024AA63AA008444D3 /* RecallAssembly.swift */; };
+		DB21B1F624AA6577008444D3 /* RecallStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB21B1F524AA6577008444D3 /* RecallStore.swift */; };
 		DB226C5A22E99E3E0087E6C5 /* URLEncoding+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB226C5922E99E3E0087E6C5 /* URLEncoding+Extensions.swift */; };
 		DB247B412478F88C009802BB /* SplashViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB247B3D2478F88C009802BB /* SplashViewController.swift */; };
 		DB247B432478F88C009802BB /* SplashAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB247B3F2478F88C009802BB /* SplashAssembly.swift */; };
@@ -195,6 +205,8 @@
 		DB70852F22CFAE5800FFE4F7 /* MainFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB70852E22CFAE5800FFE4F7 /* MainFlow.swift */; };
 		DB70853122CFAF1500FFE4F7 /* MainFlow+Dependencies.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB70853022CFAF1500FFE4F7 /* MainFlow+Dependencies.swift */; };
 		DB7A9D122459CEE800006B54 /* QRCodeCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB7A9D112459CEE800006B54 /* QRCodeCardView.swift */; };
+		DB82AD2724AF1524001F833E /* CoinStakingHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB82AD2624AF1524001F833E /* CoinStakingHeaderView.swift */; };
+		DB82AD2924AF18CF001F833E /* CoinStakingFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB82AD2824AF18CF001F833E /* CoinStakingFormView.swift */; };
 		DB83661522FA9FCB00454F5C /* ShowSeedPhraseFlow+Dependencies.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB83661222FA9FCB00454F5C /* ShowSeedPhraseFlow+Dependencies.swift */; };
 		DB83661622FA9FCB00454F5C /* ShowSeedPhraseFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB83661322FA9FCB00454F5C /* ShowSeedPhraseFlow.swift */; };
 		DB83661722FA9FCB00454F5C /* ShowSeedPhraseFlowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB83661422FA9FCB00454F5C /* ShowSeedPhraseFlowController.swift */; };
@@ -354,6 +366,12 @@
 		DB9D3ECF22C1535A008DC600 /* Poppins-Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = DB9D3EB722C151A9008DC600 /* Poppins-Thin.ttf */; };
 		DB9D3ED022C1535C008DC600 /* Poppins-ThinItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = DB9D3EB822C151A9008DC600 /* Poppins-ThinItalic.ttf */; };
 		DB9D3ED222C155B2008DC600 /* UITapGestureRecognizer+AttributedText.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB9D3ED122C155B2008DC600 /* UITapGestureRecognizer+AttributedText.swift */; };
+		DBA1B60D24A9C5B300A9A703 /* ReserveModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBA1B60924A9C5B300A9A703 /* ReserveModule.swift */; };
+		DBA1B60E24A9C5B300A9A703 /* ReserveViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBA1B60A24A9C5B300A9A703 /* ReserveViewController.swift */; };
+		DBA1B60F24A9C5B300A9A703 /* ReservePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBA1B60B24A9C5B300A9A703 /* ReservePresenter.swift */; };
+		DBA1B61024A9C5B300A9A703 /* ReserveAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBA1B60C24A9C5B300A9A703 /* ReserveAssembly.swift */; };
+		DBA1B61324A9C5E300A9A703 /* ReserveStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBA1B61224A9C5E300A9A703 /* ReserveStore.swift */; };
+		DBA1B61624A9C9D000A9A703 /* ReserveFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBA1B61524A9C9D000A9A703 /* ReserveFormView.swift */; };
 		DBA65C09244DBF1D0034678E /* FakeTextFied.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBA65C08244DBF1D0034678E /* FakeTextFied.swift */; };
 		DBA6842F22E42AF80079429E /* CoinsBalanceFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBA6842E22E42AF80079429E /* CoinsBalanceFlow.swift */; };
 		DBA6843122E42B450079429E /* CoinsBalanceFlowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBA6843022E42B450079429E /* CoinsBalanceFlowController.swift */; };
@@ -515,10 +533,8 @@
 		DB0BB5FD22BD10BA0035FF6C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		DB0BB60022BD10BA0035FF6C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		DB0BB60222BD10BA0035FF6C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		DB130D6622C26EF20056E67E /* WelcomeSupportView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeSupportView.swift; sourceTree = "<group>"; };
-		DB130D6822C273B60056E67E /* WelcomeSupportCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeSupportCellView.swift; sourceTree = "<group>"; };
 		DB130D6A22C28AF60056E67E /* BackgroundDarkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundDarkView.swift; sourceTree = "<group>"; };
-		DB130D6D22C28CB70056E67E /* WelcomeTappableLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeTappableLabel.swift; sourceTree = "<group>"; };
+		DB156E2224A644F600E59F76 /* Platform.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Platform.swift; sourceTree = "<group>"; };
 		DB167CD8230D85D900D9D66E /* Transaction+Mapping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Transaction+Mapping.swift"; sourceTree = "<group>"; };
 		DB167CDA230D85E800D9D66E /* Transactions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Transactions.swift; sourceTree = "<group>"; };
 		DB16A86C235F4438007E3B20 /* CoinSellDetailsAnotherAddressModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinSellDetailsAnotherAddressModule.swift; sourceTree = "<group>"; };
@@ -539,6 +555,18 @@
 		DB1CFB51246C518200020104 /* TradesPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TradesPresenter.swift; sourceTree = "<group>"; };
 		DB1CFB52246C518200020104 /* TradesAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TradesAssembly.swift; sourceTree = "<group>"; };
 		DB1CFB57246C5C2800020104 /* TradesStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TradesStore.swift; sourceTree = "<group>"; };
+		DB1D21E524AE6C6A001E9696 /* StakeDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StakeDetails.swift; sourceTree = "<group>"; };
+		DB1D21E724AE6CCB001E9696 /* StakeDetails+Mapping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "StakeDetails+Mapping.swift"; sourceTree = "<group>"; };
+		DB1D21EA24AE6F2A001E9696 /* CoinStakingModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinStakingModule.swift; sourceTree = "<group>"; };
+		DB1D21EB24AE6F2A001E9696 /* CoinStakingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinStakingViewController.swift; sourceTree = "<group>"; };
+		DB1D21EC24AE6F2A001E9696 /* CoinStakingPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinStakingPresenter.swift; sourceTree = "<group>"; };
+		DB1D21ED24AE6F2A001E9696 /* CoinStakingAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinStakingAssembly.swift; sourceTree = "<group>"; };
+		DB1D21F324AE7296001E9696 /* CoinStakingStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinStakingStore.swift; sourceTree = "<group>"; };
+		DB21B1ED24AA63AA008444D3 /* RecallModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecallModule.swift; sourceTree = "<group>"; };
+		DB21B1EE24AA63AA008444D3 /* RecallViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecallViewController.swift; sourceTree = "<group>"; };
+		DB21B1EF24AA63AA008444D3 /* RecallPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecallPresenter.swift; sourceTree = "<group>"; };
+		DB21B1F024AA63AA008444D3 /* RecallAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecallAssembly.swift; sourceTree = "<group>"; };
+		DB21B1F524AA6577008444D3 /* RecallStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecallStore.swift; sourceTree = "<group>"; };
 		DB226C5922E99E3E0087E6C5 /* URLEncoding+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URLEncoding+Extensions.swift"; sourceTree = "<group>"; };
 		DB247B3D2478F88C009802BB /* SplashViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashViewController.swift; sourceTree = "<group>"; };
 		DB247B3F2478F88C009802BB /* SplashAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashAssembly.swift; sourceTree = "<group>"; };
@@ -683,6 +711,8 @@
 		DB70852E22CFAE5800FFE4F7 /* MainFlow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainFlow.swift; sourceTree = "<group>"; };
 		DB70853022CFAF1500FFE4F7 /* MainFlow+Dependencies.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MainFlow+Dependencies.swift"; sourceTree = "<group>"; };
 		DB7A9D112459CEE800006B54 /* QRCodeCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCodeCardView.swift; sourceTree = "<group>"; };
+		DB82AD2624AF1524001F833E /* CoinStakingHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinStakingHeaderView.swift; sourceTree = "<group>"; };
+		DB82AD2824AF18CF001F833E /* CoinStakingFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinStakingFormView.swift; sourceTree = "<group>"; };
 		DB83661222FA9FCB00454F5C /* ShowSeedPhraseFlow+Dependencies.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ShowSeedPhraseFlow+Dependencies.swift"; sourceTree = "<group>"; };
 		DB83661322FA9FCB00454F5C /* ShowSeedPhraseFlow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowSeedPhraseFlow.swift; sourceTree = "<group>"; };
 		DB83661422FA9FCB00454F5C /* ShowSeedPhraseFlowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowSeedPhraseFlowController.swift; sourceTree = "<group>"; };
@@ -841,6 +871,12 @@
 		DB9D3EBD22C151AA008DC600 /* Poppins-ExtraLight.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Poppins-ExtraLight.ttf"; sourceTree = "<group>"; };
 		DB9D3EBE22C151AA008DC600 /* Poppins-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Poppins-Medium.ttf"; sourceTree = "<group>"; };
 		DB9D3ED122C155B2008DC600 /* UITapGestureRecognizer+AttributedText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITapGestureRecognizer+AttributedText.swift"; sourceTree = "<group>"; };
+		DBA1B60924A9C5B300A9A703 /* ReserveModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReserveModule.swift; sourceTree = "<group>"; };
+		DBA1B60A24A9C5B300A9A703 /* ReserveViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReserveViewController.swift; sourceTree = "<group>"; };
+		DBA1B60B24A9C5B300A9A703 /* ReservePresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReservePresenter.swift; sourceTree = "<group>"; };
+		DBA1B60C24A9C5B300A9A703 /* ReserveAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReserveAssembly.swift; sourceTree = "<group>"; };
+		DBA1B61224A9C5E300A9A703 /* ReserveStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReserveStore.swift; sourceTree = "<group>"; };
+		DBA1B61524A9C9D000A9A703 /* ReserveFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReserveFormView.swift; sourceTree = "<group>"; };
 		DBA65C08244DBF1D0034678E /* FakeTextFied.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FakeTextFied.swift; sourceTree = "<group>"; };
 		DBA6842E22E42AF80079429E /* CoinsBalanceFlow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinsBalanceFlow.swift; sourceTree = "<group>"; };
 		DBA6843022E42B450079429E /* CoinsBalanceFlowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinsBalanceFlowController.swift; sourceTree = "<group>"; };
@@ -1172,6 +1208,8 @@
 				DB1CFB4E246C513B00020104 /* TradesModule */,
 				DB6DC1B024877A8C00CD478D /* BuySellTradeDetailsModule */,
 				DB51F3092490CF82007F47B4 /* CreateEditTradeModule */,
+				DBA1B60824A9C55E00A9A703 /* ReserveModule */,
+				DB21B1EC24AA628D008444D3 /* RecallModule */,
 			);
 			path = TradesFlow;
 			sourceTree = "<group>";
@@ -1187,6 +1225,31 @@
 				DB1CFB57246C5C2800020104 /* TradesStore.swift */,
 			);
 			path = TradesModule;
+			sourceTree = "<group>";
+		};
+		DB1D21E924AE6F13001E9696 /* CoinStakingModule */ = {
+			isa = PBXGroup;
+			children = (
+				DB82AD2524AF14DC001F833E /* Views */,
+				DB1D21EB24AE6F2A001E9696 /* CoinStakingViewController.swift */,
+				DB1D21EC24AE6F2A001E9696 /* CoinStakingPresenter.swift */,
+				DB1D21EA24AE6F2A001E9696 /* CoinStakingModule.swift */,
+				DB1D21ED24AE6F2A001E9696 /* CoinStakingAssembly.swift */,
+				DB1D21F324AE7296001E9696 /* CoinStakingStore.swift */,
+			);
+			path = CoinStakingModule;
+			sourceTree = "<group>";
+		};
+		DB21B1EC24AA628D008444D3 /* RecallModule */ = {
+			isa = PBXGroup;
+			children = (
+				DB21B1EE24AA63AA008444D3 /* RecallViewController.swift */,
+				DB21B1EF24AA63AA008444D3 /* RecallPresenter.swift */,
+				DB21B1ED24AA63AA008444D3 /* RecallModule.swift */,
+				DB21B1F024AA63AA008444D3 /* RecallAssembly.swift */,
+				DB21B1F524AA6577008444D3 /* RecallStore.swift */,
+			);
+			path = RecallModule;
 			sourceTree = "<group>";
 		};
 		DB247B3B2478F870009802BB /* SplashModule */ = {
@@ -1543,6 +1606,7 @@
 				DB16A86B235F4419007E3B20 /* CoinSellDetailsAnotherAddressModule */,
 				DB2F25072360685C00274C60 /* CoinSellDetailsCurrentAddressModule */,
 				DBADDE312438DCF200BFD806 /* CoinExchangeModule */,
+				DB1D21E924AE6F13001E9696 /* CoinStakingModule */,
 				DB2F25102360A8D800274C60 /* TransactionDetailsModule */,
 			);
 			path = CoinDetailsFlow;
@@ -1650,6 +1714,15 @@
 			children = (
 				DBDD5D12235797F00012DFAA /* CoinSellAnotherAddressView.swift */,
 				DB5EB8DB2452C5CC00CD1C63 /* CoinSellFormView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		DB82AD2524AF14DC001F833E /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				DB82AD2624AF1524001F833E /* CoinStakingHeaderView.swift */,
+				DB82AD2824AF18CF001F833E /* CoinStakingFormView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -2035,6 +2108,8 @@
 				DB33E9BD241D389400764BF5 /* PriceChartData.swift */,
 				DB5F18C32472B0DB00E37311 /* BuySellTrade.swift */,
 				DB66CEB12475AAB100FDB694 /* BuySellTrades.swift */,
+				DB156E2224A644F600E59F76 /* Platform.swift */,
+				DB1D21E524AE6C6A001E9696 /* StakeDetails.swift */,
 			);
 			path = Entities;
 			sourceTree = "<group>";
@@ -2163,6 +2238,7 @@
 				DB33E9C7241D3BC000764BF5 /* PriceChartData+Mapping.swift */,
 				DB5F18C52472B16A00E37311 /* BuySellTrade+Mapping.swift */,
 				DB66CEB32475AAF300FDB694 /* BuySellTrades+Mapping.swift */,
+				DB1D21E724AE6CCB001E9696 /* StakeDetails+Mapping.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -2212,9 +2288,6 @@
 				DB9D3EA622C1476F008DC600 /* WelcomeSlideView.swift */,
 				DB6A578422C1EE5600DEE38A /* WelcomeSliderView.swift */,
 				DB6A578622C1F00300DEE38A /* WelcomeButtonsView.swift */,
-				DB130D6822C273B60056E67E /* WelcomeSupportCellView.swift */,
-				DB130D6622C26EF20056E67E /* WelcomeSupportView.swift */,
-				DB130D6D22C28CB70056E67E /* WelcomeTappableLabel.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -2259,6 +2332,27 @@
 				DB9D3EB822C151A9008DC600 /* Poppins-ThinItalic.ttf */,
 			);
 			path = Poppins;
+			sourceTree = "<group>";
+		};
+		DBA1B60824A9C55E00A9A703 /* ReserveModule */ = {
+			isa = PBXGroup;
+			children = (
+				DBA1B61424A9C9C400A9A703 /* Views */,
+				DBA1B60A24A9C5B300A9A703 /* ReserveViewController.swift */,
+				DBA1B60B24A9C5B300A9A703 /* ReservePresenter.swift */,
+				DBA1B60924A9C5B300A9A703 /* ReserveModule.swift */,
+				DBA1B60C24A9C5B300A9A703 /* ReserveAssembly.swift */,
+				DBA1B61224A9C5E300A9A703 /* ReserveStore.swift */,
+			);
+			path = ReserveModule;
+			sourceTree = "<group>";
+		};
+		DBA1B61424A9C9C400A9A703 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				DBA1B61524A9C9D000A9A703 /* ReserveFormView.swift */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 		DBA6842C22E42AA20079429E /* CoinsBalanceFlow */ = {
@@ -2845,6 +2939,7 @@
 				DB0211BD22CCE48A004065E9 /* RecoverSeedPhrasePresenter.swift in Sources */,
 				DB167CDB230D85E800D9D66E /* Transactions.swift in Sources */,
 				DBECA62C22F7FB22002C2610 /* ChangePhoneFlowController.swift in Sources */,
+				DBA1B61024A9C5B300A9A703 /* ReserveAssembly.swift in Sources */,
 				DB33E9C4241D3B1D00764BF5 /* PriceChartPeriod+Mapping.swift in Sources */,
 				DB2F250D2360687800274C60 /* CoinSellDetailsCurrentAddressViewController.swift in Sources */,
 				DB86FD262477FBD5002FE22D /* LocationUpdateDateRecord+CoreDataClass.swift in Sources */,
@@ -2895,6 +2990,7 @@
 				DB0211C422CCE7FD004065E9 /* RecoverSeedPhraseView.swift in Sources */,
 				DB04E4CE22D85D41000E2D85 /* PinCodeRecord+CoreDataClass.swift in Sources */,
 				DBC8B45E23635AB200E7A799 /* SellDetails.swift in Sources */,
+				DBA1B61624A9C9D000A9A703 /* ReserveFormView.swift in Sources */,
 				DB70852322CFA39F00FFE4F7 /* CoinsBalanceModule.swift in Sources */,
 				DB95EB1E230AA48C0059C84C /* CoinDetailsCollectionViewDataSource.swift in Sources */,
 				DB3C03DA22CB5F360036F779 /* CodeView.swift in Sources */,
@@ -2951,6 +3047,7 @@
 				DBC620AF23475AF80007D412 /* BinanceAccountInfo.swift in Sources */,
 				DB83664222FAB7E200454F5C /* ChangePinPresenter.swift in Sources */,
 				DB2F2503236049DB00274C60 /* CoinSellDetailsInstructionView.swift in Sources */,
+				DBA1B61324A9C5E300A9A703 /* ReserveStore.swift in Sources */,
 				DB5B2DE4230A769300821713 /* CoinDetailsViewController.swift in Sources */,
 				DB59EA2922F9D2BD00EB64A7 /* ChangePasswordStore.swift in Sources */,
 				DB9616F922C7553D0078E92D /* StorageError.swift in Sources */,
@@ -2958,10 +3055,11 @@
 				DB70852522CFA3C500FFE4F7 /* CoinsBalancePresenter.swift in Sources */,
 				DB5E3DE023869EAF00D267E5 /* CoinSettings+Mapping.swift in Sources */,
 				DB38683B2476CA2B0070E13E /* LocationService.swift in Sources */,
+				DB1D21EE24AE6F2A001E9696 /* CoinStakingModule.swift in Sources */,
 				DBD09E7523DA180C00439634 /* TransactionStatusView.swift in Sources */,
 				DB83661F22FAA01F00454F5C /* ShowSeedPhraseViewController.swift in Sources */,
-				DB130D6722C26EF20056E67E /* WelcomeSupportView.swift in Sources */,
 				DB167CD9230D85D900D9D66E /* Transaction+Mapping.swift in Sources */,
+				DB82AD2724AF1524001F833E /* CoinStakingHeaderView.swift in Sources */,
 				DB6DC1B824877AC600CD478D /* BuySellTradeDetailsAssembly.swift in Sources */,
 				DBEBC6BB2402987C00D7C8A6 /* ToastInitializer.swift in Sources */,
 				DB904A9E22C00E2A007CB734 /* RxFlow+Extensions.swift in Sources */,
@@ -3002,6 +3100,7 @@
 				DB96168A22C50F350078E92D /* ValidationRule.swift in Sources */,
 				DB2F25152360A8F400274C60 /* TransactionDetailsModule.swift in Sources */,
 				DB8DC1222413009F006AB4F5 /* VIPVerificationStore.swift in Sources */,
+				DB21B1F324AA63AA008444D3 /* RecallPresenter.swift in Sources */,
 				DB8F078A24103E8F00770643 /* PickerFlow.swift in Sources */,
 				DB8D40A322C3ED9C00D5FBD0 /* LoginFlow.swift in Sources */,
 				DBA6845022E45A300079429E /* SettingsFlow+Dependencies.swift in Sources */,
@@ -3013,6 +3112,7 @@
 				DB59EA1B22F9C4BF00EB64A7 /* ChangePasswordFlowController.swift in Sources */,
 				DBAD539F22D7BA1D0005F682 /* PinCodeViewController.swift in Sources */,
 				DB59EA2222F9C51B00EB64A7 /* ChangePasswordViewController.swift in Sources */,
+				DB21B1F224AA63AA008444D3 /* RecallViewController.swift in Sources */,
 				DBC620AB2347493F0007D412 /* Nonce+Mapping.swift in Sources */,
 				DB96172722C761DA0078E92D /* APIRequest.swift in Sources */,
 				DB96173222C791690078E92D /* WalletService.swift in Sources */,
@@ -3062,6 +3162,7 @@
 				DB49463522DF2733001EE56E /* FilterCoinsCell.swift in Sources */,
 				DB8D40BB22C40AEE00D5FBD0 /* MainTextField.swift in Sources */,
 				DBCA52BE232BBDEF00483618 /* Utxos+Mapping.swift in Sources */,
+				DB21B1F624AA6577008444D3 /* RecallStore.swift in Sources */,
 				DB3142C3233F389D001E9DD6 /* BTMTronBlockHeader.swift in Sources */,
 				DB96171622C75E950078E92D /* NetworkService.swift in Sources */,
 				DB96168E22C52E3D0078E92D /* Observable+Extensions.swift in Sources */,
@@ -3071,19 +3172,22 @@
 				DB8D40B522C401DD00D5FBD0 /* GoldSeparatorView.swift in Sources */,
 				DB83664822FABFB800454F5C /* ChangePinFormView.swift in Sources */,
 				DB39FC332302DC2200FA2B5F /* RecoverSeedPhraseStore.swift in Sources */,
+				DB156E2324A644F600E59F76 /* Platform.swift in Sources */,
 				DB8D40B222C3F86500D5FBD0 /* CreateWalletAssembly.swift in Sources */,
 				DBAD539D22D7B95F0005F682 /* PinCodeStore.swift in Sources */,
 				DB96174022C7CDA70078E92D /* BTMWalletRecord+CoreDataClass.swift in Sources */,
 				DB1AF0DA244362140037C998 /* CoinSendGiftFormView.swift in Sources */,
 				DB0211C622CD340A004065E9 /* TextFieldWithoutPaddings.swift in Sources */,
+				DB82AD2924AF18CF001F833E /* CoinStakingFormView.swift in Sources */,
 				DBC620AD234749B30007D412 /* Nonce.swift in Sources */,
+				DB1D21F424AE7296001E9696 /* CoinStakingStore.swift in Sources */,
+				DB1D21E624AE6C6A001E9696 /* StakeDetails.swift in Sources */,
 				DBC68CA722F868E000473247 /* EnterPasswordModule.swift in Sources */,
 				DBECA63322F7FBE3002C2610 /* ShowPhoneModule.swift in Sources */,
 				DB16A870235F4438007E3B20 /* CoinSellDetailsAnotherAddressModule.swift in Sources */,
 				DB9616BA22C63F9B0078E92D /* APIGateway.swift in Sources */,
 				DBC620A923466B250007D412 /* GiftAddress+Mapping.swift in Sources */,
 				DBA6844622E44B930079429E /* ATMViewController.swift in Sources */,
-				DB130D6922C273B60056E67E /* WelcomeSupportCellView.swift in Sources */,
 				DBC68CBC22F8798F00473247 /* ChangePhoneAssembly.swift in Sources */,
 				DBF98D3E24502B0700AF6D5A /* CoinDepositModule.swift in Sources */,
 				DB9616D522C748610078E92D /* CoreDataStorage.swift in Sources */,
@@ -3120,6 +3224,7 @@
 				DB8D408922C3E4E100D5FBD0 /* Swinject.swift in Sources */,
 				DB5EB8DC2452C5CC00CD1C63 /* CoinSellFormView.swift in Sources */,
 				DB5F18C02472AC6B00E37311 /* BuySellTradesTableViewDataSource.swift in Sources */,
+				DB1D21F024AE6F2A001E9696 /* CoinStakingPresenter.swift in Sources */,
 				DBC68C9722F85E1300473247 /* PhoneNumber+Mapping.swift in Sources */,
 				DB5B2DDD230A74D000821713 /* CoinDetailsFlowController.swift in Sources */,
 				DBA65C09244DBF1D0034678E /* FakeTextFied.swift in Sources */,
@@ -3157,9 +3262,11 @@
 				DB04E4CB22D85C50000E2D85 /* PinCodeStorage.swift in Sources */,
 				DB8D409822C3EA0400D5FBD0 /* BaseFlow.swift in Sources */,
 				DB0211BB22CCE42B004065E9 /* RecoverSeedPhraseModule.swift in Sources */,
+				DB21B1F424AA63AA008444D3 /* RecallAssembly.swift in Sources */,
 				DB9D3EA722C1476F008DC600 /* WelcomeSlideView.swift in Sources */,
 				DB5185AF231FE68300052229 /* CoinWithdrawPresenter.swift in Sources */,
 				DBC68CB922F8798F00473247 /* ChangePhoneModule.swift in Sources */,
+				DBA1B60D24A9C5B300A9A703 /* ReserveModule.swift in Sources */,
 				DB1CFB44246C4F5D00020104 /* TradesFlowController.swift in Sources */,
 				DBA6844E22E45A250079429E /* SettingsFlowController.swift in Sources */,
 				DB95EB22230AA6FE0059C84C /* TransactionCell.swift in Sources */,
@@ -3185,6 +3292,7 @@
 				DB3C03D422CB5ADE0036F779 /* RecoverStore.swift in Sources */,
 				DB9616D622C748610078E92D /* FetchRequestBuilder.swift in Sources */,
 				DBDD5D13235797F00012DFAA /* CoinSellAnotherAddressView.swift in Sources */,
+				DB1D21E824AE6CCB001E9696 /* StakeDetails+Mapping.swift in Sources */,
 				DB5185AE231FE68300052229 /* CoinWithdrawViewController.swift in Sources */,
 				DB16A871235F4438007E3B20 /* CoinSellDetailsAnotherAddressViewController.swift in Sources */,
 				DB2F250C2360687800274C60 /* CoinSellDetailsCurrentAddressModule.swift in Sources */,
@@ -3196,6 +3304,7 @@
 				DB33E9C2241D3A0D00764BF5 /* PriceChartPeriod.swift in Sources */,
 				DBBF299C22D3801500A5DE6A /* CoinsBalance.swift in Sources */,
 				DB51F30E2490CFC1007F47B4 /* CreateEditTradeModule.swift in Sources */,
+				DBA1B60E24A9C5B300A9A703 /* ReserveViewController.swift in Sources */,
 				DB4B9DCB22E5A4710016746A /* GoogleServicesInitializer.swift in Sources */,
 				DB3C03E122CB62320036F779 /* DummyButton.swift in Sources */,
 				DB51F31824913BA7007F47B4 /* CreateEditTradeTypeView.swift in Sources */,
@@ -3215,6 +3324,7 @@
 				DBBF299422D3719500A5DE6A /* CoinsBalanceCollectionViewDataSource.swift in Sources */,
 				DB16A873235F4438007E3B20 /* CoinSellDetailsAnotherAddressAssembly.swift in Sources */,
 				DB5F18C22472B01500E37311 /* BuySellTradeCell.swift in Sources */,
+				DB1D21F124AE6F2A001E9696 /* CoinStakingAssembly.swift in Sources */,
 				DB83661722FA9FCB00454F5C /* ShowSeedPhraseFlowController.swift in Sources */,
 				DB70852922CFADDE00FFE4F7 /* CoinsBalanceAssembly.swift in Sources */,
 				DB86FD2A2477FF7B002FE22D /* LocationUpdateDateConverter.swift in Sources */,
@@ -3252,12 +3362,14 @@
 				DB5185AD231FE68300052229 /* CoinWithdrawModule.swift in Sources */,
 				DBDA966722C00424005B93DF /* ErrorTracker.swift in Sources */,
 				DB5B2DDB230A74D000821713 /* CoinDetailsFlow+Dependencies.swift in Sources */,
+				DBA1B60F24A9C5B300A9A703 /* ReservePresenter.swift in Sources */,
 				DB99BB9E2362E274006A75BE /* TransactionDetailsGiftSectionView.swift in Sources */,
+				DB21B1F124AA63AA008444D3 /* RecallModule.swift in Sources */,
 				DB8DC11E2412C151006AB4F5 /* VerificationFormView.swift in Sources */,
 				DB96172422C75E950078E92D /* Single+ObjectMapper.swift in Sources */,
+				DB1D21EF24AE6F2A001E9696 /* CoinStakingViewController.swift in Sources */,
 				DBC37F4122C7F42200519153 /* PhoneNumberTextField.swift in Sources */,
 				DB51F3162491298B007F47B4 /* CreateEditTradeHeaderView.swift in Sources */,
-				DB130D6E22C28CB70056E67E /* WelcomeTappableLabel.swift in Sources */,
 				DB96169922C5F52F0078E92D /* CreateWalletFormView.swift in Sources */,
 				DBF75DE6240D1A5300E12CB0 /* VerificationFilePickerView.swift in Sources */,
 				DBF98D4524502EF800AF6D5A /* FloatingActionButton.swift in Sources */,
@@ -3443,7 +3555,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 46;
+				CURRENT_PROJECT_VERSION = 50;
 				DEVELOPMENT_TEAM = 2RUJ559RK4;
 				INFOPLIST_FILE = batm/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -3451,7 +3563,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.5;
+				MARKETING_VERSION = 1.6;
 				PRODUCT_BUNDLE_IDENTIFIER = com.belcobtm.BelcoWallet;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = BelcoWalletDevelopmentProfile;
@@ -3467,7 +3579,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 46;
+				CURRENT_PROJECT_VERSION = 50;
 				DEVELOPMENT_TEAM = 2RUJ559RK4;
 				INFOPLIST_FILE = batm/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -3475,7 +3587,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.5;
+				MARKETING_VERSION = 1.6;
 				PRODUCT_BUNDLE_IDENTIFIER = com.belcobtm.BelcoWallet;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = BelcoWalletAppStoreProfile;

@@ -4,6 +4,7 @@ import com.batm.dto.SubmitTransactionDTO;
 import com.batm.model.Response;
 import com.batm.model.TransactionType;
 import com.batm.service.CoinService;
+import com.batm.service.GethService;
 import com.batm.service.TransactionService;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,9 +17,9 @@ public class TransactionController {
     @Autowired
     private TransactionService transactionService;
 
-    /**
-     * Transaction History
-     */
+    @Autowired
+    private GethService geth;
+
     @GetMapping("/user/{userId}/coins/{coinCode}/transactions")
     public Response getTransactions(@PathVariable Long userId, @PathVariable CoinService.CoinEnum coinCode, @RequestParam(required = false) Integer index) {
         try {
@@ -31,11 +32,8 @@ public class TransactionController {
         }
     }
 
-    /**
-     * Transaction Details
-     */
-    @GetMapping("/user/{userId}/coins/{coinCode}/transaction/{txId}")
-    public Response getTransaction(@PathVariable Long userId, @PathVariable CoinService.CoinEnum coinCode, @PathVariable String txId) {
+    @GetMapping("/user/{userId}/coins/{coinCode}/transaction")
+    public Response getTransaction(@PathVariable Long userId, @PathVariable CoinService.CoinEnum coinCode, @RequestParam String txId) {
         try {
             return Response.ok(transactionService.getTransactionDetails(userId, coinCode, txId));
         } catch (Exception e) {
@@ -44,73 +42,7 @@ public class TransactionController {
         }
     }
 
-    @GetMapping("/user/{userId}/coins/{coinCode}/transactions/utxo/{xpub}")
-    public Response getUtxo(@PathVariable Long userId, @PathVariable CoinService.CoinEnum coinCode, @PathVariable String xpub) {
-        try {
-            if (coinCode == CoinService.CoinEnum.BTC || coinCode == CoinService.CoinEnum.BCH || coinCode == CoinService.CoinEnum.LTC) {
-                return Response.ok(coinCode.getUTXO(xpub));
-            } else {
-                return Response.error(2, coinCode.name() + " not allowed");
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            return Response.serverError();
-        }
-    }
-
-    @GetMapping("/user/{userId}/coins/{coinCode}/transactions/nonce")
-    public Response getNonce(@PathVariable Long userId, @PathVariable CoinService.CoinEnum coinCode, @RequestParam String address) {
-        try {
-            if (coinCode == CoinService.CoinEnum.ETH || coinCode == CoinService.CoinEnum.CATM) {
-                return Response.ok(coinCode.getNonce(address));
-            } else {
-                return Response.error(2, coinCode.name() + " not allowed");
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            return Response.serverError();
-        }
-    }
-
-    @GetMapping("/user/{userId}/coins/{coinCode}/transactions/currentaccount")
-    public Response getCurrentAccount(@PathVariable Long userId, @PathVariable CoinService.CoinEnum coinCode) {
-        try {
-            if (coinCode == CoinService.CoinEnum.BNB || coinCode == CoinService.CoinEnum.XRP) {
-                return Response.ok(coinCode.getCurrentAccount(userId));
-            } else {
-                return Response.error(2, coinCode.name() + " not allowed");
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            return Response.serverError();
-        }
-    }
-
-    @GetMapping("/user/{userId}/coins/{coinCode}/transactions/currentblock")
-    public Response getCurrentBlock(@PathVariable Long userId, @PathVariable CoinService.CoinEnum coinCode) {
-        try {
-            if (coinCode == CoinService.CoinEnum.TRX) {
-                return Response.ok(coinCode.getCurrentBlock());
-            } else {
-                return Response.error(2, coinCode.name() + " not allowed");
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            return Response.serverError();
-        }
-    }
-
-    @GetMapping("/user/{userId}/coins/{coinCode}/transactions/limits")
-    public Response getLimits(@PathVariable Long userId, @PathVariable CoinService.CoinEnum coinCode) {
-        try {
-            return Response.ok(transactionService.getUserTransactionLimits(userId));
-        } catch (Exception e) {
-            e.printStackTrace();
-            return Response.serverError();
-        }
-    }
-
-    @PostMapping("/user/{userId}/coins/{coinCode}/transactions/presubmit")
+    @PostMapping("/user/{userId}/coins/{coinCode}/transactions/pre-submit")
     public Response preSubmit(@PathVariable Long userId, @PathVariable CoinService.CoinEnum coinCode, @RequestBody SubmitTransactionDTO dto) {
         try {
             return Response.ok(transactionService.preSubmit(userId, coinCode, dto));
@@ -123,33 +55,57 @@ public class TransactionController {
     @PostMapping("/user/{userId}/coins/{coinCode}/transactions/submit")
     public Response submit(@PathVariable Long userId, @PathVariable CoinService.CoinEnum coinCode, @RequestBody SubmitTransactionDTO dto) {
         try {
-            if (StringUtils.isBlank(dto.getHex())) {
-                if (TransactionType.RECALL.getValue() == dto.getType()) {
-                    String txId = transactionService.recall(userId, coinCode, dto);
+            String txId;
 
-                    return Response.ok("txId", txId);
-                }
+            if (TransactionType.RECALL.getValue() == dto.getType()) {
+                txId = transactionService.recall(userId, coinCode, dto);
             } else {
-                String txId = coinCode.submitTransaction(dto.getHex());
+                txId = coinCode.submitTransaction(dto.getHex());
+            }
 
-                if (StringUtils.isNotBlank(txId)) {
-                    if (TransactionType.SEND_GIFT.getValue() == dto.getType()) {
-                        transactionService.saveGift(userId, coinCode, txId, dto);
-                    }
-
-                    if (TransactionType.SEND_EXCHANGE.getValue() == dto.getType()) {
-                        transactionService.exchange(userId, coinCode, txId, dto);
-                    }
-
-                    if (TransactionType.RESERVE.getValue() == dto.getType()) {
-                        transactionService.reserve(userId, coinCode, txId, dto);
-                    }
-
-                    return Response.ok("txId", txId);
+            if (StringUtils.isNotBlank(txId)) {
+                if (TransactionType.SEND_GIFT.getValue() == dto.getType()) {
+                    transactionService.saveGift(userId, coinCode, txId, dto);
                 }
+
+                if (TransactionType.SEND_EXCHANGE.getValue() == dto.getType()) {
+                    transactionService.exchange(userId, coinCode, txId, dto);
+                }
+
+                if (TransactionType.RESERVE.getValue() == dto.getType()) {
+                    transactionService.reserve(userId, coinCode, txId, dto);
+                }
+
+                if (TransactionType.STAKE.getValue() == dto.getType()) {
+                    transactionService.stake(userId, coinCode, txId, dto.getCryptoAmount());
+                }
+
+                if (TransactionType.UNSTAKE.getValue() == dto.getType()) {
+                    transactionService.unstake(userId, coinCode, txId, dto.getCryptoAmount());
+                }
+
+                if (coinCode == CoinService.CoinEnum.ETH) {
+                    geth.addPendingEthTransaction(txId.toLowerCase(), dto.getFromAddress(), dto.getToAddress(), dto.getCryptoAmount(), dto.getFee());
+                }
+
+                if (coinCode == CoinService.CoinEnum.CATM) {
+                    geth.addPendingTokenTransaction(txId.toLowerCase(), dto.getFromAddress(), dto.getToAddress(), dto.getCryptoAmount(), dto.getFee());
+                }
+
+                return Response.ok("txId", txId);
             }
 
             return Response.error(2, coinCode.name() + " submit transaction error");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Response.serverError();
+        }
+    }
+
+    @GetMapping("/user/{userId}/coins/{coinCode}/transactions/stake-details")
+    public Response getStakeDetails(@PathVariable Long userId, @PathVariable CoinService.CoinEnum coinCode) {
+        try {
+            return Response.ok(transactionService.getStakeDetails(userId, coinCode));
         } catch (Exception e) {
             e.printStackTrace();
             return Response.serverError();

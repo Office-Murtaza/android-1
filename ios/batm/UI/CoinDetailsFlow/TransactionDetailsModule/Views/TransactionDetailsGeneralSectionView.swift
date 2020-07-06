@@ -72,7 +72,9 @@ class TransactionDetailsGeneralSectionView: UIView, HasDisposeBag {
     
     let fiatAmount = details.fiatAmount.flatMap { $0.fiatSellFormatted.withUSD }
     let cryptoAmount = details.cryptoAmount.flatMap { "\($0.coinFormatted) \(type.code)" }
-    let cryptoFee = details.cryptoFee.flatMap { "\($0.coinFormatted) \(type.code)" }
+    
+    let feeCode = type == .catm ? CustomCoinType.ethereum.code : type.code
+    let cryptoFee = details.cryptoFee.flatMap { "\($0.coinFormatted) \(feeCode)" }
     
     fiatAmount.flatMap { addTextRow(text: $0, title: localize(L.TransactionDetails.fiatAmount)) }
     cryptoAmount.flatMap { addTextRow(text: $0, title: localize(L.TransactionDetails.cryptoAmount)) }

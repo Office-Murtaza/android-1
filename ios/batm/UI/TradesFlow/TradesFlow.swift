@@ -7,13 +7,17 @@ class TradesFlow: BaseFlow<BTMNavigationController, TradesFlowController> {
       TradesAssembly(),
       BuySellTradeDetailsAssembly(),
       CreateEditTradeAssembly(),
+      ReserveAssembly(),
+      RecallAssembly(),
     ]
   }
   
   enum Steps: Step, Equatable {
-    case trades(CoinBalance)
+    case trades(BTMCoin, [CoinBalance], CoinSettings)
     case buySellTradeDetails(CoinBalance, BuySellTrade, TradeType)
     case createEditTrade(CoinBalance)
+    case reserve(BTMCoin, [CoinBalance], CoinSettings)
+    case recall(BTMCoin, [CoinBalance])
     case pop
   }
   
@@ -25,9 +29,9 @@ class TradesFlow: BaseFlow<BTMNavigationController, TradesFlowController> {
   
   private func handleFlow(step: Steps) -> NextFlowItems {
     switch step {
-    case let .trades(coinBalance):
+    case let .trades(coin, coinBalances, coinSettings):
       let module = resolver.resolve(Module<TradesModule>.self)!
-      module.input.setup(coinBalance: coinBalance)
+      module.input.setup(coin: coin, coinBalances: coinBalances, coinSettings: coinSettings)
       return push(module.controller)
     case let .buySellTradeDetails(coinBalance, trade, type):
       let module = resolver.resolve(Module<BuySellTradeDetailsModule>.self)!
@@ -36,6 +40,14 @@ class TradesFlow: BaseFlow<BTMNavigationController, TradesFlowController> {
     case let .createEditTrade(coinBalance):
       let module = resolver.resolve(Module<CreateEditTradeModule>.self)!
       module.input.setup(coinBalance: coinBalance)
+      return push(module.controller)
+    case let .reserve(coin, coinBalances, coinSettings):
+      let module = resolver.resolve(Module<ReserveModule>.self)!
+      module.input.setup(coin: coin, coinBalances: coinBalances, coinSettings: coinSettings)
+      return push(module.controller)
+    case let .recall(coin, coinBalances):
+      let module = resolver.resolve(Module<RecallModule>.self)!
+      module.input.setup(coin: coin, coinBalances: coinBalances)
       return push(module.controller)
     case .pop: return pop()
     }

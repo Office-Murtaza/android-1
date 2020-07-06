@@ -50,9 +50,12 @@ enum L {
     static let sell = "coin_details.sell"
     static let sendC2C = "coin_details.send_c_2_c"
     static let sendGift = "coin_details.send_gift"
+    static let stake = "coin_details.stake"
+    static let staking = "coin_details.staking"
     static let threeMonths = "coin_details.three_months"
     static let trade = "coin_details.trade"
     static let unknown = "coin_details.unknown"
+    static let unstake = "coin_details.unstake"
     static let withdraw = "coin_details.withdraw"
     static let withdrawn = "coin_details.withdrawn"
   }
@@ -75,6 +78,10 @@ enum L {
 
   struct CoinSendGift {
     static let title = "coin_send_gift.title"
+  }
+
+  struct CoinStaking {
+    static let title = "coin_staking.title"
   }
 
   struct CoinWithdraw {
@@ -109,12 +116,20 @@ enum L {
   struct PinCode {
   }
 
+  struct Recall {
+    static let title = "recall.title"
+  }
+
   struct Recover {
     static let title = "recover.title"
   }
 
   struct RecoverSeedPhrase {
     static let annotation = "recover_seed_phrase.annotation"
+  }
+
+  struct Reserve {
+    static let title = "reserve.title"
   }
 
   struct SeedPhrase {
@@ -355,6 +370,31 @@ extension L.CoinSendGift.Form {
     static let placeholder = "coin_send_gift.form.phone.placeholder"
   }
 }
+extension L.CoinStaking {
+
+  struct Button {
+    static let stake = "coin_staking.button.stake"
+    static let unstake = "coin_staking.button.unstake"
+  }
+
+  struct Header {
+  }
+}
+extension L.CoinStaking.Header {
+
+  struct Rewards {
+    static let title = "coin_staking.header.rewards.title"
+  }
+
+  struct Staked {
+    static let title = "coin_staking.header.staked.title"
+  }
+
+  struct Time {
+    static let title = "coin_staking.header.time.title"
+    static let value = "coin_staking.header.time.value"
+  }
+}
 extension L.CoinWithdraw {
 
   struct Form {
@@ -489,6 +529,18 @@ extension L.PinCode {
 
   struct Verification {
     static let title = "pin_code.verification.title"
+  }
+}
+extension L.Recall {
+
+  struct Button {
+    static let recall = "recall.button.recall"
+  }
+}
+extension L.Reserve {
+
+  struct Button {
+    static let reserve = "reserve.button.reserve"
   }
 }
 extension L.Shared {
@@ -650,12 +702,11 @@ extension L.Welcome {
   }
 
   struct Support {
-    static let copyMail = "welcome.support.copy_mail"
-    static let copyPhone = "welcome.support.copy_phone"
+    static let call = "welcome.support.call"
     static let mail = "welcome.support.mail"
     static let message = "welcome.support.message"
     static let phone = "welcome.support.phone"
-    static let title = "welcome.support.title"
+    static let send = "welcome.support.send"
   }
 
   struct ThirdSlide {

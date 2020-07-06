@@ -4,16 +4,10 @@ import com.app.belcobtm.api.model.ServerResponse
 import com.app.belcobtm.api.model.param.*
 import com.app.belcobtm.api.model.response.*
 import io.reactivex.Observable
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.POST
-import retrofit2.http.Path
+import retrofit2.http.*
 
 
 interface ApiInterface {
-
-    @POST("recover")
-    fun recover(@Body registerParam: AuthParam): Observable<ServerResponse<AuthResponse>>
 
     @POST("user/{userId}/code/verify")
     fun verifySmsCode(
@@ -60,23 +54,17 @@ interface ApiInterface {
         @Body changePassParam: ChangePassParam
     ): Observable<ServerResponse<UpdateResponse>>
 
-    @GET("user/{userId}/coins/{coinId}/transactions/limits")
-    fun getLimits(
-        @Path("userId") userId: String,
-        @Path("coinId") coinId: String?
-    ): Observable<ServerResponse<LimitsResponse>>
-
-    @GET("user/{userId}/coins/{coinId}/transaction/{txid}")
+    @GET("user/{userId}/coins/{coinId}/transaction")
     fun getTransactionDetails(
         @Path("userId") userId: String?,
         @Path("coinId") coinId: String?,
-        @Path("txid") txid: String?
+        @Query("txid") txid: String?
     ): Observable<ServerResponse<TransactionDetailsResponse>>
 
-    @GET("user/{userId}/coins/{coinId}/transaction/{txDbId}")
+    @GET("user/{userId}/coins/{coinId}/transaction")
     fun getTransactionDetailsByTxDbId(
         @Path("userId") userId: String?,
         @Path("coinId") coinId: String?,
-        @Path("txDbId") txDbId: String?
+        @Query("txid") txDbId: String?
     ): Observable<ServerResponse<TransactionDetailsResponse>>
 }

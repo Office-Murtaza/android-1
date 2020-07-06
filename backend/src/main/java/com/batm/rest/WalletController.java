@@ -23,6 +23,9 @@ public class WalletController {
     @Value("${wallet.api.secret}")
     private String apiSecret;
 
+    @Value("${wallet.api.security.enabled}")
+    private Boolean enabled;
+
     @Autowired
     private WalletService walletService;
 
@@ -30,7 +33,7 @@ public class WalletController {
     public ResponseEntity<WalletDTO> getValidate(@RequestParam CoinService.CoinEnum coinCode, @RequestParam String address, @RequestParam long timestamp, @RequestParam String signature) {
         String signature2 = Util.sign("validate", coinCode.name(), timestamp, apiKey, apiSecret);
 
-        if (!signature2.equals(signature)) {
+        if (enabled && !signature2.equals(signature)) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
 
@@ -44,7 +47,7 @@ public class WalletController {
     public ResponseEntity<WalletDTO> getPrice(@RequestParam CoinService.CoinEnum coinCode, @RequestParam long timestamp, @RequestParam String signature) {
         String signature2 = Util.sign("price", coinCode.name(), timestamp, apiKey, apiSecret);
 
-        if (!signature2.equals(signature)) {
+        if (enabled && !signature2.equals(signature)) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
 
@@ -58,7 +61,7 @@ public class WalletController {
     public ResponseEntity<WalletDTO> getBalance(@RequestParam CoinService.CoinEnum coinCode, @RequestParam long timestamp, @RequestParam String signature) {
         String signature2 = Util.sign("balance", coinCode.name(), timestamp, apiKey, apiSecret);
 
-        if (!signature2.equals(signature)) {
+        if (enabled && !signature2.equals(signature)) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
 
@@ -72,7 +75,7 @@ public class WalletController {
     public ResponseEntity<WalletDTO> getSettings(@RequestParam CoinService.CoinEnum coinCode, @RequestParam long timestamp, @RequestParam String signature) {
         String signature2 = Util.sign("settings", coinCode.name(), timestamp, apiKey, apiSecret);
 
-        if (!signature2.equals(signature)) {
+        if (enabled && !signature2.equals(signature)) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
 
@@ -89,7 +92,7 @@ public class WalletController {
     public ResponseEntity<WalletDTO> generateNewAddress(@RequestParam CoinService.CoinEnum coinCode, @RequestParam long timestamp, @RequestParam String signature) {
         String signature2 = Util.sign("generate-new-address", coinCode.name(), timestamp, apiKey, apiSecret);
 
-        if (!signature2.equals(signature)) {
+        if (enabled && !signature2.equals(signature)) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
 
@@ -103,7 +106,7 @@ public class WalletController {
     public ResponseEntity<WalletDTO> getTransaction(@RequestParam CoinService.CoinEnum coinCode, @RequestParam String txId, @RequestParam long timestamp, @RequestParam String signature) {
         String signature2 = Util.sign("transaction", coinCode.name(), timestamp, apiKey, apiSecret);
 
-        if (!signature2.equals(signature)) {
+        if (enabled && !signature2.equals(signature)) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
 
@@ -123,7 +126,7 @@ public class WalletController {
     public ResponseEntity<WalletDTO> getReceivedAddresses(@RequestParam CoinService.CoinEnum coinCode, @RequestParam Set<String> addresses, @RequestParam long timestamp, @RequestParam String signature) {
         String signature2 = Util.sign("received-addresses", coinCode.name(), timestamp, apiKey, apiSecret);
 
-        if (!signature2.equals(signature)) {
+        if (enabled && !signature2.equals(signature)) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
 
@@ -137,7 +140,7 @@ public class WalletController {
     public ResponseEntity<WalletDTO> sendCoins(@RequestParam CoinService.CoinEnum coinCode, @RequestParam String fromAddress, @RequestParam String toAddress, @RequestParam BigDecimal amount, @RequestParam long timestamp, @RequestParam String signature) {
         String signature2 = Util.sign("send", coinCode.name(), timestamp, apiKey, apiSecret);
 
-        if (!signature2.equals(signature)) {
+        if (enabled && !signature2.equals(signature)) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
 

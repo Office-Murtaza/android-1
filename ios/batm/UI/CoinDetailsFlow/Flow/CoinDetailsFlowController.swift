@@ -41,8 +41,12 @@ extension CoinDetailsFlowController: CoinDetailsModuleDelegate {
     step.accept(CoinDetailsFlow.Steps.exchange(coin, coinBalances, coinSettings))
   }
   
-  func showTradesScreen(coinBalance: CoinBalance) {
-    step.accept(CoinDetailsFlow.Steps.trades(coinBalance))
+  func showTradesScreen(coin: BTMCoin, coinBalances: [CoinBalance], coinSettings: CoinSettings) {
+    step.accept(CoinDetailsFlow.Steps.trades(coin, coinBalances, coinSettings))
+  }
+  
+  func showStakingScreen(coin: BTMCoin, coinBalances: [CoinBalance], coinSettings: CoinSettings, stakeDetails: StakeDetails) {
+    step.accept(CoinDetailsFlow.Steps.staking(coin, coinBalances, coinSettings, stakeDetails))
   }
   
 }
@@ -106,6 +110,14 @@ extension CoinDetailsFlowController: CoinSellDetailsCurrentAddressModuleDelegate
 extension CoinDetailsFlowController: CoinExchangeModuleDelegate {
   
   func didFinishCoinExchange() {
+    step.accept(CoinDetailsFlow.Steps.pop)
+  }
+  
+}
+
+extension CoinDetailsFlowController: CoinStakingModuleDelegate {
+  
+  func didFinishCoinStaking() {
     step.accept(CoinDetailsFlow.Steps.pop)
   }
   

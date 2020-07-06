@@ -12,7 +12,10 @@ import java.math.BigDecimal;
 public class SubmitTransactionDTO {
 
     private Integer type;
+    private String fromAddress;
+    private String toAddress;
     private BigDecimal cryptoAmount;
+    private BigDecimal fee;
     private Integer fiatAmount;
     private String fiatCurrency;
     private String phone;

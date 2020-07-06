@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import javax.persistence.*;
+import java.math.BigDecimal;
+import java.util.Date;
 
 @Getter
 @Setter
@@ -12,17 +14,41 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Entity
 @Table(name = "w_transactionrecordwallet")
-public class TransactionRecordWallet extends BaseTxEntity {
+public class TransactionRecordWallet extends BaseEntity {
+
+    public static final int RECEIVER_NOT_EXIST = 0;
+    public static final int RECEIVER_EXIST = 1;
+
+    private Integer type;
+    private Integer status;
+    private BigDecimal amount;
+    private BigDecimal refAmount;
+    private String txId;
+    private Integer receiverStatus;
+    private String phone;
+    private String imageId;
+    private String message;
+    private Date createDate;
+
+    @Column(name = "profit")
+    private BigDecimal profit;
+
+    @Column(name = "ref_tx_id")
+    private String refTxId;
+
+    @ManyToOne
+    @JoinColumn(name = "coin_id")
+    private Coin coin;
+
+    @ManyToOne
+    @JoinColumn(name = "ref_coin_id")
+    private Coin refCoin;
 
     @OneToOne
     @JoinColumn(name = "coinpath_id")
     private CoinPath coinPath;
 
-    @OneToOne
-    @JoinColumn(name = "transactionrecordgift_id")
-    private TransactionRecordGift transactionRecordGift;
-
-    @OneToOne
-    @JoinColumn(name = "transactionrecordc2c_id")
-    private TransactionRecordC2C transactionRecordC2C;
+    @ManyToOne
+    @JoinColumn(name = "identity_id")
+    private Identity identity;
 }

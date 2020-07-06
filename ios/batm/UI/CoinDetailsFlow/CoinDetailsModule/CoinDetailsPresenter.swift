@@ -16,6 +16,7 @@ final class CoinDetailsPresenter: ModulePresenter, CoinDetailsModule {
     var sell: Driver<Void>
     var exchange: Driver<Void>
     var trades: Driver<Void>
+    var staking: Driver<Void>
     var showMore: Driver<Void>
     var transactionSelected: Driver<IndexPath>
     var updateSelectedPeriod: Driver<SelectedPeriod>
@@ -89,7 +90,7 @@ final class CoinDetailsPresenter: ModulePresenter, CoinDetailsModule {
       .filter { $0.coin != nil }
       .map { ($0.coin!, $0.coinBalances!, $0.coinSettings!) }
       .flatMap { [unowned self] coin, coinBalances, coinSettings in
-        return self.track(self.usecase.getSellDetails(for: coin.type))
+        return self.track(self.usecase.getSellDetails())
           .map { (coin, coinBalances, coinSettings, $0) }
       }
       .subscribe(onNext: { [delegate] in delegate?.showSellScreen(coin: $0, coinBalances: $1, coinSettings: $2, details: $3) })
@@ -105,9 +106,23 @@ final class CoinDetailsPresenter: ModulePresenter, CoinDetailsModule {
     
     input.trades
       .withLatestFrom(state)
-      .map { $0.coinBalance }
-      .filterNil()
-      .drive(onNext: { [delegate] in delegate?.showTradesScreen(coinBalance: $0) })
+      .filter { $0.coin != nil }
+      .drive(onNext: { [delegate] in delegate?.showTradesScreen(coin: $0.coin!,
+                                                                coinBalances: $0.coinBalances!,
+                                                                coinSettings: $0.coinSettings!) })
+      .disposed(by: disposeBag)
+    
+    input.staking
+      .withLatestFrom(state)
+      .filter { $0.coin != nil }
+      .flatMap { [unowned self] state in
+        return self.track(self.usecase.getStakeDetails(for: state.coin!.type))
+          .map { (state, $0) }
+      }
+      .drive(onNext: { [delegate] in delegate?.showStakingScreen(coin: $0.coin!,
+                                                                 coinBalances: $0.coinBalances!,
+                                                                 coinSettings: $0.coinSettings!,
+                                                                 stakeDetails: $1) })
       .disposed(by: disposeBag)
     
     input.showMore

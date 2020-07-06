@@ -15,4 +15,5 @@ public class AuthenticationDTO {
 
     private String phone;
     private String password;
+    private Integer platform;
 }

@@ -2,35 +2,51 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:paddingTop="16dp">
+    android:orientation="vertical">
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/phoneButtonView"
+    <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?android:selectableItemBackground"
-        android:clickable="true"
-        android:focusable="true"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center"
         android:paddingStart="24dp"
-        android:paddingTop="12dp"
+        android:paddingTop="24dp"
         android:paddingEnd="24dp"
         android:paddingBottom="12dp"
-        android:text="@string/support_phone"
-        android:textSize="16sp" />
+        android:textColor="@android:color/black"
+        android:text="@string/welcome_screen_support_title"
+        android:textSize="16sp"
+        android:textStyle="bold" />
 
-    <androidx.appcompat.widget.AppCompatTextView
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/callButtonView"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:layout_marginEnd="16dp"
+        android:gravity="end|center_vertical"
+        android:text="@string/welcome_screen_support_call" />
+
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/emailButtonView"
-        android:layout_width="match_parent"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="?android:selectableItemBackground"
-        android:clickable="true"
-        android:focusable="true"
-        android:paddingStart="24dp"
-        android:paddingTop="12dp"
-        android:paddingEnd="24dp"
-        android:paddingBottom="12dp"
-        android:text="@string/support_email"
-        android:textSize="16sp" />
+        android:layout_gravity="end"
+        android:layout_marginEnd="16dp"
+        android:gravity="end|center_vertical"
+        android:text="@string/welcome_screen_support_send_email" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/cancelButtonView"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="8dp"
+        android:gravity="end|center_vertical"
+        android:text="@string/cancel" />
 
 </LinearLayout>

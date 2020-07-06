@@ -136,7 +136,7 @@ extension String {
   }
   
   var fiatFormatted: String {
-    return withFractionDigits(min: 2, max: 2, trailingZeros: false)
+    return withFractionDigits(min: 2, max: 2)
   }
   
   var fiatWithdrawFormatted: String {
@@ -192,11 +192,9 @@ extension Double {
   }
   
   var fiatFormatted: String {
-    return NSNumber(value: self).decimalValue.description.fiatFormatted
-  }
-  
-  var fiatWithdrawFormatted: String {
-    return String(self).fiatWithdrawFormatted
+    let number = NSNumber(value: self)
+    let string = NumberFormatter.fiatFormatter.string(from: number) ?? ""
+    return string.fiatFormatted
   }
   
   var fiatSellFormatted: String {
@@ -204,11 +202,9 @@ extension Double {
   }
   
   var coinFormatted: String {
-    return NSNumber(value: self).decimalValue.description.coinFormatted
-  }
-  
-  var coinWithdrawFormatted: String {
-    return String(self).coinWithdrawFormatted
+    let number = NSNumber(value: self)
+    let string = NumberFormatter.coinFormatter.string(from: number) ?? ""
+    return string.coinFormatted
   }
   
   var nearestNumberThatCanBeGivenByTwentyAndFifty: Double {
@@ -242,5 +238,27 @@ extension Int {
     var a = self
     (2...n).forEach { _ in a *= self }
     return a
+  }
+}
+
+extension NumberFormatter {
+  static var defaultCurrencyFormatter: NumberFormatter {
+    let formatter = NumberFormatter()
+    formatter.numberStyle = .decimal
+    formatter.groupingSeparator = ""
+    formatter.roundingMode = .halfUp
+    return formatter
+  }
+  
+  static var fiatFormatter: NumberFormatter {
+    let formatter = defaultCurrencyFormatter
+    formatter.maximumFractionDigits = 2
+    return formatter
+  }
+  
+  static var coinFormatter: NumberFormatter {
+    let formatter = defaultCurrencyFormatter
+    formatter.maximumFractionDigits = CustomCoinType.maxNumberOfFractionDigits
+    return formatter
   }
 }

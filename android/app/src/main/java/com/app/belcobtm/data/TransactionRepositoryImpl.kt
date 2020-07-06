@@ -117,10 +117,8 @@ class TransactionRepositoryImpl(
         Either.Left(Failure.NetworkConnection)
     }
 
-    override suspend fun sellGetLimits(
-        fromCoin: String
-    ): Either<Failure, SellLimitsDataItem> = if (networkUtils.isNetworkAvailable()) {
-        apiService.sellGetLimitsAsync(fromCoin)
+    override suspend fun sellGetLimits(): Either<Failure, SellLimitsDataItem> = if (networkUtils.isNetworkAvailable()) {
+        apiService.sellGetLimitsAsync()
     } else {
         Either.Left(Failure.NetworkConnection)
     }
@@ -276,6 +274,63 @@ class TransactionRepositoryImpl(
         terms: String
     ): Either<Failure, Unit> = if (networkUtils.isNetworkAvailable()) {
         apiService.tradeSellCreate(coinCode, paymentMethod, margin, minLimit, maxLimit, terms)
+    } else {
+        Either.Left(Failure.NetworkConnection)
+    }
+
+    override suspend fun tradeRecallTransactionCreate(
+        coinCode: String,
+        cryptoAmount: Double
+    ): Either<Failure, Unit> = if (networkUtils.isNetworkAvailable()) {
+        toolsRepository.sendSmsToDevice()
+    } else {
+        Either.Left(Failure.NetworkConnection)
+    }
+
+    override suspend fun tradeRecallTransactionComplete(
+        smsCode: String,
+        coinCode: String,
+        cryptoAmount: Double
+    ): Either<Failure, Unit> = if (networkUtils.isNetworkAvailable()) {
+        val smsCodeVerifyResponse = toolsRepository.verifySmsCode(smsCode)
+        if (smsCodeVerifyResponse.isRight) {
+            apiService.submitRecall(coinCode, cryptoAmount)
+        } else {
+            smsCodeVerifyResponse as Either.Left
+        }
+    } else {
+        Either.Left(Failure.NetworkConnection)
+    }
+
+    override suspend fun tradeReserveTransactionCreate(
+        coinCode: String,
+        cryptoAmount: Double
+    ): Either<Failure, String> = if (networkUtils.isNetworkAvailable()) {
+        val toAddress = prefHelper.coinsFee[coinCode]?.walletAddress ?: ""
+        val coinType = LocalCoinType.valueOf(coinCode)
+        val hashResponse = transactionHashRepository.createTransactionHash(coinType, cryptoAmount, toAddress)
+        val sendSmsToDeviceResponse = toolsRepository.sendSmsToDevice()
+        when {
+            hashResponse.isRight && sendSmsToDeviceResponse.isRight -> hashResponse as Either.Right
+            sendSmsToDeviceResponse.isLeft -> sendSmsToDeviceResponse as Either.Left
+            else -> hashResponse as Either.Left
+        }
+    } else {
+        Either.Left(Failure.NetworkConnection)
+    }
+
+    override suspend fun tradeReserveTransactionComplete(
+        smsCode: String,
+        coinCode: String,
+        cryptoAmount: Double,
+        hash: String
+    ): Either<Failure, Unit> = if (networkUtils.isNetworkAvailable()) {
+        val smsCodeVerifyResponse = toolsRepository.verifySmsCode(smsCode)
+        if (smsCodeVerifyResponse.isRight) {
+            apiService.submitReserve(coinCode, cryptoAmount, hash)
+        } else {
+            smsCodeVerifyResponse as Either.Left
+        }
     } else {
         Either.Left(Failure.NetworkConnection)
     }

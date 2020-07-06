@@ -16,7 +16,6 @@ import com.app.belcobtm.presentation.features.wallet.trade.main.item.TradeDetail
 import kotlinx.android.synthetic.main.activity_trade_details.*
 import org.koin.android.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
-import kotlin.math.floor
 import kotlin.math.roundToInt
 
 class TradeDetailsBuyActivity : BaseActivity() {

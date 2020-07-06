@@ -66,7 +66,7 @@ public class CoinService {
 
     private static CoinSettingsDTO getAltCoinSettings(Coin coin, String walletAddress) {
         CoinSettingsDTO dto = new CoinSettingsDTO();
-        dto.setProfitC2C(coin.getProfitC2C().stripTrailingZeros());
+        dto.setProfitExchange(coin.getProfitExchange().stripTrailingZeros());
         dto.setTxFee(coin.getFee().stripTrailingZeros());
         dto.setWalletAddress(walletAddress);
 
@@ -193,7 +193,7 @@ public class CoinService {
             }
 
             @Override
-            public CurrentAccountDTO getCurrentAccount(Long userId) {
+            public CurrentAccountDTO getCurrentAccount(String address) {
                 return null;
             }
 
@@ -291,7 +291,7 @@ public class CoinService {
             }
 
             @Override
-            public CurrentAccountDTO getCurrentAccount(Long userId) {
+            public CurrentAccountDTO getCurrentAccount(String address) {
                 return null;
             }
 
@@ -389,7 +389,7 @@ public class CoinService {
             }
 
             @Override
-            public CurrentAccountDTO getCurrentAccount(Long userId) {
+            public CurrentAccountDTO getCurrentAccount(String address) {
                 return null;
             }
 
@@ -487,7 +487,7 @@ public class CoinService {
             }
 
             @Override
-            public CurrentAccountDTO getCurrentAccount(Long userId) {
+            public CurrentAccountDTO getCurrentAccount(String address) {
                 return null;
             }
 
@@ -585,7 +585,7 @@ public class CoinService {
             }
 
             @Override
-            public CurrentAccountDTO getCurrentAccount(Long userId) {
+            public CurrentAccountDTO getCurrentAccount(String address) {
                 return null;
             }
 
@@ -683,10 +683,7 @@ public class CoinService {
             }
 
             @Override
-            public CurrentAccountDTO getCurrentAccount(Long userId) {
-                User user = userService.findById(userId);
-                String address = user.getCoinAddress(name());
-
+            public CurrentAccountDTO getCurrentAccount(String address) {
                 return binance.getCurrentAccount(address);
             }
 
@@ -782,10 +779,7 @@ public class CoinService {
             }
 
             @Override
-            public CurrentAccountDTO getCurrentAccount(Long userId) {
-                User user = userService.findById(userId);
-                String address = user.getCoinAddress(name());
-
+            public CurrentAccountDTO getCurrentAccount(String address) {
                 return rippled.getCurrentAccount(address);
             }
 
@@ -889,7 +883,7 @@ public class CoinService {
             }
 
             @Override
-            public CurrentAccountDTO getCurrentAccount(Long userId) {
+            public CurrentAccountDTO getCurrentAccount(String address) {
                 return null;
             }
 
@@ -957,7 +951,7 @@ public class CoinService {
 
         public abstract NonceDTO getNonce(String address);
 
-        public abstract CurrentAccountDTO getCurrentAccount(Long userId);
+        public abstract CurrentAccountDTO getCurrentAccount(String address);
 
         public abstract CurrentBlockDTO getCurrentBlock();
 

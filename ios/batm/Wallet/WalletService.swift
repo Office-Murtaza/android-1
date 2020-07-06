@@ -13,7 +13,8 @@ protocol WalletService {
   func getTransactionHex(for coin: BTMCoin,
                          with coinSettings: CoinSettings,
                          destination: String,
-                         amount: Double) -> Single<String>
+                         amount: Double,
+                         stake: Bool?) -> Single<String>
 }
 
 class WalletServiceImpl: WalletService {
@@ -29,7 +30,7 @@ class WalletServiceImpl: WalletService {
     self.accountStorage = accountStorage
     self.walletStorage = walletStorage
   }
-
+  
   func createWallet() -> Completable {
     let hdWallet = HDWallet(strength: BTMWallet.seedPhraseStrength, passphrase: "")
     let btmWallet = BTMWallet(hdWallet: hdWallet)
@@ -47,12 +48,13 @@ class WalletServiceImpl: WalletService {
   func getTransactionHex(for coin: BTMCoin,
                          with coinSettings: CoinSettings,
                          destination: String,
-                         amount: Double) -> Single<String> {
+                         amount: Double,
+                         stake: Bool? = nil) -> Single<String> {
     switch coin.type {
     case .bitcoin, .bitcoinCash, .litecoin:
       return getBitcoinLikeTransactionHex(for: coin, with: coinSettings, to: destination, amount: amount)
     case .ethereum, .catm:
-      return getEthereumTransactionHex(for: coin, with: coinSettings, to: destination, amount: amount)
+      return getEthereumTransactionHex(for: coin, with: coinSettings, to: destination, amount: amount, stake: stake)
     case .tron:
       return getTronTransactionHex(for: coin, with: coinSettings, to: destination, amount: amount)
     case .binance:
@@ -66,24 +68,20 @@ class WalletServiceImpl: WalletService {
                                     with coinSettings: CoinSettings,
                                     to destination: String,
                                     amount: Double) -> Single<String> {
-    return accountStorage.get()
-      .flatMap { [walletStorage] account in
-        return walletStorage.get()
-          .map { HDWallet(mnemonic: $0.seedPhrase, passphrase: "") }
-          .map { ($0.getExtendedPublicKey(purpose: coin.type.customPurpose,
-                                          coin: coin.type.defaultCoinType,
-                                          version: coin.type.customVersion), $0) }
-          .map { (account, $0, $1) }
-      }
-      .flatMap { [api] account, xpub, wallet in
-        return api.getUtxos(userId: account.userId, type: coin.type, xpub: xpub)
+    return walletStorage.get()
+      .map { HDWallet(mnemonic: $0.seedPhrase, passphrase: "") }
+      .map { ($0.getExtendedPublicKey(purpose: coin.type.customPurpose,
+                                      coin: coin.type.defaultCoinType,
+                                      version: coin.type.customVersion), $0) }
+      .flatMap { [api] xpub, wallet in
+        return api.getUtxos(type: coin.type, xpub: xpub)
           .map { [unowned self] in try self.getBitcoinLikeTransactionHex(coin: coin,
                                                                          coinSettings: coinSettings,
                                                                          toAddress: destination,
                                                                          amount: amount,
                                                                          utxos: $0,
                                                                          wallet: wallet) }
-      }
+    }
   }
   
   private func getBitcoinLikeTransactionHex(coin: BTMCoin,
@@ -158,21 +156,23 @@ class WalletServiceImpl: WalletService {
   func getEthereumTransactionHex(for coin: BTMCoin,
                                  with coinSettings: CoinSettings,
                                  to destination: String,
-                                 amount: Double) -> Single<String> {
-    return accountStorage.get()
-      .flatMap { [api] in api.getNonce(userId: $0.userId, type: coin.type, address: coin.address) }
+                                 amount: Double,
+                                 stake: Bool? = nil) -> Single<String> {
+    return api.getNonce(type: coin.type, address: coin.address)
       .map { [unowned self] in try self.getEthereumTransactionHex(coin: coin,
                                                                   coinSettings: coinSettings,
                                                                   toAddress: destination,
                                                                   amount: amount,
-                                                                  nonce: $0.nonce) }
+                                                                  nonce: $0.nonce,
+                                                                  stake: stake) }
   }
   
   private func getEthereumTransactionHex(coin: BTMCoin,
                                          coinSettings: CoinSettings,
                                          toAddress: String,
                                          amount: Double,
-                                         nonce: Int) throws -> String {
+                                         nonce: Int,
+                                         stake: Bool? = nil) throws -> String {
     let divider: Int64 = Int64(10.pow(CustomCoinType.maxNumberOfFractionDigits))
     
     let dividerthUnit = coin.type.unit / divider
@@ -201,9 +201,20 @@ class WalletServiceImpl: WalletService {
     }
     
     if coin.type == .catm {
-      let function = EthereumAbiEncoder.buildFunction(name: "transfer")!
-      function.addParamAddress(val: Data(hexString: toAddress)!, isOutput: false)
-      function.addParamUInt256(val: dataAmount, isOutput: false)
+      let function: EthereumAbiFunction
+      
+      if let stake = stake {
+        if stake {
+          function = EthereumAbiEncoder.buildFunction(name: "createStake")!
+          function.addParamUInt256(val: dataAmount, isOutput: false)
+        } else {
+          function = EthereumAbiEncoder.buildFunction(name: "withdrawStake")!
+        }
+      } else {
+        function = EthereumAbiEncoder.buildFunction(name: "transfer")!
+        function.addParamAddress(val: Data(hexString: toAddress)!, isOutput: false)
+        function.addParamUInt256(val: dataAmount, isOutput: false)
+      }
       
       input.payload = EthereumAbiEncoder.encode(func_in: function)
       input.toAddress = coinSettings.contractAddress ?? ""
@@ -222,8 +233,7 @@ class WalletServiceImpl: WalletService {
                              with coinSettings: CoinSettings,
                              to destination: String,
                              amount: Double) -> Single<String> {
-    return accountStorage.get()
-      .flatMap { [unowned self] in self.api.getTronBlockHeader(userId: $0.userId, type: coin.type) }
+    return api.getTronBlockHeader(type: coin.type)
       .map { [unowned self] in try self.getTronTransactionJson(coin: coin,
                                                                coinSettings: coinSettings,
                                                                toAddress: destination,
@@ -231,11 +241,11 @@ class WalletServiceImpl: WalletService {
                                                                blockHeader: $0) }
   }
   
-    private func getTronTransactionJson(coin: BTMCoin,
-                                        coinSettings: CoinSettings,
-                                        toAddress: String,
-                                        amount: Double,
-                                        blockHeader: BTMTronBlockHeader) throws -> String {
+  private func getTronTransactionJson(coin: BTMCoin,
+                                      coinSettings: CoinSettings,
+                                      toAddress: String,
+                                      amount: Double,
+                                      blockHeader: BTMTronBlockHeader) throws -> String {
     let amountInUnits = Int64(amount * Double(coin.type.unit))
     
     guard let privateKey = Data(hexString: coin.privateKey) else {
@@ -280,8 +290,7 @@ class WalletServiceImpl: WalletService {
   }
   
   func getBinanceTransactionHex(for coin: BTMCoin, to destination: String, amount: Double) -> Single<String> {
-    return accountStorage.get()
-      .flatMap { [unowned self] in self.api.getBinanceAccountInfo(userId: $0.userId, type: coin.type) }
+    return api.getBinanceAccountInfo(type: coin.type, address: coin.address)
       .map { [unowned self] in try self.getBinanceTransactionHex(coin: coin,
                                                                  toAddress: destination,
                                                                  amount: amount,
@@ -336,8 +345,7 @@ class WalletServiceImpl: WalletService {
                                with coinSettings: CoinSettings,
                                to destination: String,
                                amount: Double) -> Single<String> {
-    return accountStorage.get()
-      .flatMap { [unowned self] in self.api.getRippleSequence(userId: $0.userId, type: coin.type) }
+    return api.getRippleSequence(type: coin.type, address: coin.address)
       .map { [unowned self] in try self.getRippleTransactionHex(coin: coin,
                                                                 coinSettings: coinSettings,
                                                                 toAddress: destination,

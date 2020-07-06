@@ -29,6 +29,13 @@ extension MDCButton {
     return button
   }
   
+  static var secondaryText: MDCButton {
+    let button = MDCButton.default
+    button.applyTextTheme(withScheme: MDCContainerScheme.default)
+    button.setBackgroundColor(MDCContainerScheme.default.colorScheme.primaryColor.withAlphaComponent(0.08))
+    return button
+  }
+  
   static var max: MDCButton {
     let button = MDCButton.text
     button.setTitle(localize(L.Shared.Button.max), for: .normal)
@@ -111,6 +118,30 @@ extension MDCButton {
   static var create: MDCButton {
     let button = MDCButton.contained
     button.setTitle(localize(L.CreateEditTrade.Button.create), for: .normal)
+    return button
+  }
+  
+  static var reserve: MDCButton {
+    let button = MDCButton.contained
+    button.setTitle(localize(L.Reserve.Button.reserve), for: .normal)
+    return button
+  }
+  
+  static var recall: MDCButton {
+    let button = MDCButton.contained
+    button.setTitle(localize(L.Recall.Button.recall), for: .normal)
+    return button
+  }
+  
+  static var stake: MDCButton {
+    let button = MDCButton.contained
+    button.setTitle(localize(L.CoinStaking.Button.stake), for: .normal)
+    return button
+  }
+  
+  static var unstake: MDCButton {
+    let button = MDCButton.secondaryText
+    button.setTitle(localize(L.CoinStaking.Button.unstake), for: .normal)
     return button
   }
   

@@ -7,7 +7,7 @@ struct CoinSettings: Equatable {
   var byteFee: Double?
   var gasPrice: Int?
   var gasLimit: Int?
-  var profitC2C: Double
+  var profitExchange: Double
   var walletAddress: String
   var contractAddress: String?
 }

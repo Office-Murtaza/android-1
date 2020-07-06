@@ -3,8 +3,9 @@ import RxSwift
 import RxCocoa
 import SnapKit
 import MaterialComponents
+import MessageUI
 
-class WelcomeViewController: ModuleViewController<WelcomePresenter> {
+class WelcomeViewController: ModuleViewController<WelcomePresenter>, MFMailComposeViewControllerDelegate {
   
   let sliderView = WelcomeSliderView()
   let buttonsView = WelcomeButtonsView()
@@ -49,5 +50,9 @@ class WelcomeViewController: ModuleViewController<WelcomePresenter> {
                                                  create: createDriver,
                                                  recover: recoverDriver,
                                                  contactSupport: contactSupportDriver))
+  }
+  
+  func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
+    dismiss(animated: true)
   }
 }

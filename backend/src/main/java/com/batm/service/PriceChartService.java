@@ -40,19 +40,19 @@ public class PriceChartService {
 
             mongo.getCollection(Util.getPriceDayColl(coin)).insertOne(doc);
 
-            if (count % (7 * 24) == 0) {
+            if (count % 7 == 0) {
                 mongo.getCollection(Util.getPriceWeekColl(coin)).insertOne(doc);
             }
 
-            if (count % (30 * 24) == 0) {
+            if (count % 24 == 0) {
                 mongo.getCollection(Util.getPriceMonthColl(coin)).insertOne(doc);
             }
 
-            if (count % (90 * 24) == 0) {
+            if (count % (3 * 24) == 0) {
                 mongo.getCollection(Util.getPrice3MonthColl(coin)).insertOne(doc);
             }
 
-            if (count % (365 * 24) == 0) {
+            if (count % (12 * 24) == 0) {
                 mongo.getCollection(Util.getPriceYearColl(coin)).insertOne(doc);
             }
         });
@@ -90,10 +90,11 @@ public class PriceChartService {
         if (periodPrices.isEmpty()) {
             return BigDecimal.ZERO;
         } else {
-            return currentPrice.divide(periodPrices.getFirst(), 3, RoundingMode.DOWN)
-                    .subtract(BigDecimal.ONE)
+            return currentPrice.subtract(periodPrices.getFirst())
+                    .divide(periodPrices.getFirst(), 3, RoundingMode.DOWN)
                     .multiply(new BigDecimal(100))
-                    .setScale(2, RoundingMode.DOWN);
+                    .setScale(2, RoundingMode.DOWN)
+                    .stripTrailingZeros();
         }
     }
 

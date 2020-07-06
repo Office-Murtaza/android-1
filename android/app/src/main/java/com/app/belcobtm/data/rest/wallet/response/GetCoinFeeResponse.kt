@@ -7,14 +7,14 @@ data class GetCoinFeeResponse(
     val byteFee: Double?,
     val gasPrice: Double?,
     val gasLimit: Double?,
-    val profitC2C: Double,
+    val profitExchange: Double,
     val walletAddress: String?,
     val contractAddress: String?
 )
 
 fun GetCoinFeeResponse.mapToDataItem(): CoinFeeDataItem = CoinFeeDataItem(
     txFee = txFee,
-    profitC2C = profitC2C,
+    profitExchange = profitExchange,
     byteFee = byteFee ?: 0.0,
     gasPrice = gasPrice ?: 0.0,
     gasLimit = gasLimit ?: 0.0,

@@ -11,6 +11,7 @@ final class CoinDetailsViewController: NavigationScreenViewController<CoinDetail
   let didTapSellRelay = PublishRelay<Void>()
   let didTapExchangeRelay = PublishRelay<Void>()
   let didTapTradesRelay = PublishRelay<Void>()
+  let didTapStakingRelay = PublishRelay<Void>()
   
   var dataSource: CoinDetailsCollectionViewDataSource!
   
@@ -77,6 +78,18 @@ final class CoinDetailsViewController: NavigationScreenViewController<CoinDetail
     dataSource.collectionView = collectionView
     
     presenter.state
+      .map { $0.coin?.type == .catm }
+      .filter { $0 }
+      .asObservable()
+      .take(1)
+      .subscribe(onNext: { [unowned self] _ in
+        self.fab.view.addItem(title: localize(L.CoinDetails.staking), image: UIImage(named: "fab_staking")) { [unowned self] _ in
+          self.didTapStakingRelay.accept(())
+        }
+      })
+      .disposed(by: disposeBag)
+    
+    presenter.state
       .map { $0.coinBalance }
       .filterNil()
       .drive(onNext: { [unowned self] in self.customView.setTitle($0.type.verboseValue) })
@@ -116,6 +129,7 @@ final class CoinDetailsViewController: NavigationScreenViewController<CoinDetail
     let sellDriver = didTapSellRelay.asDriver(onErrorDriveWith: .empty())
     let exchangeDriver = didTapExchangeRelay.asDriver(onErrorDriveWith: .empty())
     let tradesDriver = didTapTradesRelay.asDriver(onErrorDriveWith: .empty())
+    let stakingDriver = didTapStakingRelay.asDriver(onErrorDriveWith: .empty())
     let showMoreDriver = collectionView.rx.willDisplayLastCell.asDriver(onErrorDriveWith: .empty())
     let transactionSelectedDriver = collectionView.rx.itemSelected.asDriver()
     let updateSelectedPeriodDriver = dataSource.rx.selectedPeriod
@@ -128,6 +142,7 @@ final class CoinDetailsViewController: NavigationScreenViewController<CoinDetail
                                                      sell: sellDriver,
                                                      exchange: exchangeDriver,
                                                      trades: tradesDriver,
+                                                     staking: stakingDriver,
                                                      showMore: showMoreDriver,
                                                      transactionSelected: transactionSelectedDriver,
                                                      updateSelectedPeriod: updateSelectedPeriodDriver))

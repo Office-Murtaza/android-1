@@ -28,7 +28,7 @@ public class CacheService {
 
     @Cacheable(cacheNames = {"price-chart"}, key = "#coin")
     public CoinPriceListDTO fetchCoinPrices(String coin) {
-        Document sort = new Document("timestamp", 1);
+        Document sort = new Document("timestamp", -1);
         int limit = 24;
 
         List<Document> dayCoinPrice = mongo.getCollection(Util.getPriceDayColl(coin))

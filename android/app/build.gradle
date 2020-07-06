@@ -9,8 +9,8 @@ android {
         applicationId "com.app.belcobtm"
         minSdkVersion 23
         targetSdkVersion 29
-        versionCode 60
-        versionName "1.5"
+        versionCode 61
+        versionName "1.5.1"
         multiDexEnabled = true
     }
     buildTypes {
@@ -44,7 +44,7 @@ dependencies {
     implementation 'me.relex:circleindicator:2.1.4'
 
     //swipe refresh layout
-    implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
+    implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
 
     implementation 'androidx.multidex:multidex:2.0.1'
 

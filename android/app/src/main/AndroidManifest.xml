@@ -138,7 +138,17 @@
             android:theme="@style/AppThemeNoActionBar" />
 
         <activity
-            android:name=".presentation.features.wallet.trade.create.CreateTradeActivity"
+            android:name=".presentation.features.wallet.trade.create.TradeCreateActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppThemeNoActionBar" />
+
+        <activity
+            android:name=".presentation.features.wallet.trade.recall.TradeRecallActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppThemeNoActionBar" />
+
+        <activity
+            android:name=".presentation.features.wallet.trade.reserve.TradeReserveActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppThemeNoActionBar" />
 

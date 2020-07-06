@@ -100,7 +100,7 @@ public class MessageService {
         return null;
     }
 
-    public Message.Status sendGiftMessage(CoinService.CoinEnum coinCode, SubmitTransactionDTO dto, Boolean receiverExists) {
+    public Message.Status sendGiftMessage(CoinService.CoinEnum coinCode, SubmitTransactionDTO dto, boolean receiverExists) {
         try {
             StringBuilder body = new StringBuilder();
 
