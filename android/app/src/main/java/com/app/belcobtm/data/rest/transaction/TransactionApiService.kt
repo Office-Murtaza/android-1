@@ -8,10 +8,7 @@ import com.app.belcobtm.data.rest.transaction.response.hash.UtxoItemResponse
 import com.app.belcobtm.data.rest.transaction.response.mapToDataItem
 import com.app.belcobtm.domain.Either
 import com.app.belcobtm.domain.Failure
-import com.app.belcobtm.domain.transaction.item.SellLimitsDataItem
-import com.app.belcobtm.domain.transaction.item.SellPreSubmitDataItem
-import com.app.belcobtm.domain.transaction.item.TradeInfoDataItem
-import com.app.belcobtm.domain.transaction.item.TransactionDataItem
+import com.app.belcobtm.domain.transaction.item.*
 import com.app.belcobtm.domain.transaction.type.TradeSortType
 
 class TransactionApiService(
@@ -275,7 +272,7 @@ class TransactionApiService(
     }
 
     suspend fun getUtxoList(coinId: String, publicKey: String): Either<Failure, List<UtxoItemResponse>> = try {
-        val request = api.getUtxoListAsync(prefHelper.userId, coinId, publicKey).await()
+        val request = api.getUtxoListAsync(coinId, publicKey).await()
         request.body()?.utxos?.let { Either.Right(it) } ?: Either.Left(Failure.ServerError())
     } catch (failure: Failure) {
         failure.printStackTrace()
@@ -332,11 +329,53 @@ class TransactionApiService(
         Either.Left(failure)
     }
 
+    suspend fun stakeDetails(coinCode: String): Either<Failure, StakeDetailsDataItem> = try {
+        val request = api.stakeDetailsAsync(prefHelper.userId, coinCode).await()
+        request.body()?.let { Either.Right(it.mapToDataItem()) } ?: Either.Left(Failure.ServerError())
+    } catch (failure: Failure) {
+        failure.printStackTrace()
+        Either.Left(failure)
+    }
+
+    suspend fun stake(
+        coinCode: String,
+        fromAddress: String,
+        toAddress: String,
+        cryptoAmount: Double,
+        fee: Double,
+        hex: String
+    ): Either<Failure, Unit> = try {
+        val requestBody = StakeRequest(TRANSACTION_STAKE, fromAddress, toAddress, cryptoAmount, fee, hex)
+        val request = api.stakeOrUnStakeAsync(prefHelper.userId, coinCode, requestBody).await()
+        request.body()?.let { Either.Right(Unit) } ?: Either.Left(Failure.ServerError())
+    } catch (failure: Failure) {
+        failure.printStackTrace()
+        Either.Left(failure)
+    }
+
+    suspend fun unStake(
+        coinCode: String,
+        fromAddress: String,
+        toAddress: String,
+        cryptoAmount: Double,
+        fee: Double,
+        hex: String
+    ): Either<Failure, Unit> = try {
+        val requestBody = StakeRequest(TRANSACTION_UNSTAKE, fromAddress, toAddress, cryptoAmount, fee, hex)
+        val request = api.stakeOrUnStakeAsync(prefHelper.userId, coinCode, requestBody).await()
+        request.body()?.let { Either.Right(Unit) } ?: Either.Left(Failure.ServerError())
+    } catch (failure: Failure) {
+        failure.printStackTrace()
+        Either.Left(failure)
+    }
+
     companion object {
         const val TRANSACTION_WITHDRAW = 2
         const val TRANSACTION_SEND_GIFT = 3
         const val TRANSACTION_SELL = 6
         const val TRANSACTION_SEND_COIN_TO_COIN = 8
+        const val TRANSACTION_STAKE = 13
+        const val TRANSACTION_UNSTAKE = 14
 
         const val TRANSACTION_TRADE_CREATE_BUY = 1
         const val TRANSACTION_TRADE_CREATE_SELL = 2

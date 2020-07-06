@@ -199,6 +199,12 @@
         app:menu_labels_textColor="#58585a">
 
         <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/stakingButtonView"
+            style="@style/TransactionsScreen.FloatingActionButtonChild"
+            android:src="@drawable/ic_money"
+            app:fab_label="@string/transitions_staking" />
+
+        <com.github.clans.fab.FloatingActionButton
             android:id="@+id/tradeButtonView"
             style="@style/TransactionsScreen.FloatingActionButtonChild"
             android:src="@drawable/ic_trade"

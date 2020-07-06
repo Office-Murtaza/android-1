@@ -20,6 +20,7 @@ import com.app.belcobtm.presentation.core.ui.BaseActivity
 import com.app.belcobtm.presentation.features.authorization.pin.PinActivity
 import com.app.belcobtm.presentation.features.wallet.deposit.DepositActivity
 import com.app.belcobtm.presentation.features.wallet.exchange.coin.to.coin.ExchangeCoinToCoinActivity
+import com.app.belcobtm.presentation.features.wallet.staking.StakingActivity
 import com.app.belcobtm.presentation.features.wallet.trade.main.TradeActivity
 import com.app.belcobtm.presentation.features.wallet.transactions.adapter.TransactionsAdapter
 import com.app.belcobtm.ui.main.coins.details.DetailsActivity
@@ -151,6 +152,18 @@ class TransactionsActivity : BaseActivity() {
 
         tradeButtonView.setOnClickListener { tradeOpenWithPermissionCheck() }
 
+        stakingButtonView.setOnClickListener {
+            if (isCorrectCoinId()) {
+                startActivity(Intent(this, StakingActivity::class.java))
+            } else {
+                AlertHelper.showToastShort(
+                    c2cExchangeButtonView.context,
+                    "In progress. Only BTC, BCH, XRP, BNB and LTC withdraw available"
+                )
+            }
+            fabMenuView.close(false)
+        }
+
         fabMenuView.setOnMenuToggleListener {
             fabMenuView.isClickable = it
             if (it) {
@@ -206,6 +219,11 @@ class TransactionsActivity : BaseActivity() {
         listView.addItemDecoration(dividerItemDecoration)
         listView.adapter = adapter
         initChart()
+        if (viewModel.coinCode == LocalCoinType.CATM.name) {
+            stakingButtonView.show()
+        } else {
+            stakingButtonView.hide()
+        }
     }
 
     private fun initChart() {

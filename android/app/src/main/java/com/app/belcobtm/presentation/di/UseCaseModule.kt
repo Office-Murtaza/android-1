@@ -54,4 +54,9 @@ val useCaseModule = module {
     single { TradeReserveTransactionCompleteUseCase(get()) }
     single { TradeReserveTransactionCreateUseCase(get()) }
     single { TradeRecallTransactionCreateUseCase(get()) }
+    single { StakeDetailsGetUseCase(get()) }
+    single { StakeCreateTransactionUseCase(get()) }
+    single { StakeCompleteTransactionUseCase(get()) }
+    single { UnStakeCreateTransactionUseCase(get()) }
+    single { UnStakeCompleteTransactionUseCase(get()) }
 }

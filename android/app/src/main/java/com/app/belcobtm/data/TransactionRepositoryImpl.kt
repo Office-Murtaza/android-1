@@ -8,10 +8,7 @@ import com.app.belcobtm.domain.Either
 import com.app.belcobtm.domain.Failure
 import com.app.belcobtm.domain.tools.ToolsRepository
 import com.app.belcobtm.domain.transaction.TransactionRepository
-import com.app.belcobtm.domain.transaction.item.SellLimitsDataItem
-import com.app.belcobtm.domain.transaction.item.SellPreSubmitDataItem
-import com.app.belcobtm.domain.transaction.item.TradeInfoDataItem
-import com.app.belcobtm.domain.transaction.item.TransactionDataItem
+import com.app.belcobtm.domain.transaction.item.*
 import com.app.belcobtm.domain.transaction.type.TradeSortType
 import com.app.belcobtm.domain.wallet.LocalCoinType
 
@@ -328,6 +325,84 @@ class TransactionRepositoryImpl(
         val smsCodeVerifyResponse = toolsRepository.verifySmsCode(smsCode)
         if (smsCodeVerifyResponse.isRight) {
             apiService.submitReserve(coinCode, cryptoAmount, hash)
+        } else {
+            smsCodeVerifyResponse as Either.Left
+        }
+    } else {
+        Either.Left(Failure.NetworkConnection)
+    }
+
+    override suspend fun stakeDetails(
+        coinCode: String
+    ): Either<Failure, StakeDetailsDataItem> = if (networkUtils.isNetworkAvailable()) {
+        apiService.stakeDetails(coinCode)
+    } else {
+        Either.Left(Failure.NetworkConnection)
+    }
+
+    override suspend fun stakeCreateTransaction(
+        coinCode: String,
+        cryptoAmount: Double
+    ): Either<Failure, String> = if (networkUtils.isNetworkAvailable()) {
+        val toAddress = prefHelper.coinsFee[coinCode]?.walletAddress ?: ""
+        val hashResponse = transactionHashRepository.createTransactionStakeHash(cryptoAmount, toAddress)
+        val sendSmsToDeviceResponse = toolsRepository.sendSmsToDevice()
+        when {
+            hashResponse.isRight && sendSmsToDeviceResponse.isRight -> hashResponse as Either.Right
+            sendSmsToDeviceResponse.isLeft -> sendSmsToDeviceResponse as Either.Left
+            else -> hashResponse as Either.Left
+        }
+    } else {
+        Either.Left(Failure.NetworkConnection)
+    }
+
+    override suspend fun stakeCompleteTransaction(
+        smsCode: String,
+        hash: String,
+        coinCode: String,
+        cryptoAmount: Double
+    ): Either<Failure, Unit> = if (networkUtils.isNetworkAvailable()) {
+        val smsCodeVerifyResponse = toolsRepository.verifySmsCode(smsCode)
+        if (smsCodeVerifyResponse.isRight) {
+            val fromAddress = prefHelper.coinsFee[coinCode]?.walletAddress ?: ""
+            val toAddress = prefHelper.coinsFee[coinCode]?.contractAddress ?: ""
+            val coinFee = prefHelper.coinsFee[coinCode]?.txFee ?: 0.0
+            apiService.stake(coinCode, fromAddress, toAddress, cryptoAmount, coinFee, hash)
+        } else {
+            smsCodeVerifyResponse as Either.Left
+        }
+    } else {
+        Either.Left(Failure.NetworkConnection)
+    }
+
+    override suspend fun unStakeCreateTransaction(
+        coinCode: String,
+        cryptoAmount: Double
+    ): Either<Failure, String> = if (networkUtils.isNetworkAvailable()) {
+        val toAddress = prefHelper.coinsFee[coinCode]?.walletAddress ?: ""
+        val hashResponse = transactionHashRepository.createTransactionUnStakeHash(cryptoAmount, toAddress)
+        val sendSmsToDeviceResponse = toolsRepository.sendSmsToDevice()
+        when {
+            hashResponse.isRight && sendSmsToDeviceResponse.isRight -> hashResponse as Either.Right
+            sendSmsToDeviceResponse.isLeft -> sendSmsToDeviceResponse as Either.Left
+            else -> hashResponse as Either.Left
+        }
+    } else {
+        Either.Left(Failure.NetworkConnection)
+    }
+
+    override suspend fun unStakeCompleteTransaction(
+        smsCode: String,
+        hash: String,
+        coinCode: String,
+        cryptoAmount: Double
+    ): Either<Failure, Unit> = if (networkUtils.isNetworkAvailable()) {
+        val smsCodeVerifyResponse = toolsRepository.verifySmsCode(smsCode)
+        if (smsCodeVerifyResponse.isRight) {
+            val fromAddress = prefHelper.coinsFee[coinCode]?.walletAddress ?: ""
+            val toAddress = prefHelper.coinsFee[coinCode]?.contractAddress ?: ""
+            val coinFee = prefHelper.coinsFee[coinCode]?.txFee ?: 0.0
+            apiService.unStake(coinCode, fromAddress, toAddress, cryptoAmount, coinFee, hash)
         } else {
             smsCodeVerifyResponse as Either.Left
         }
