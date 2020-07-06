@@ -86,7 +86,7 @@ public class UserController {
             twilioService.sendVerificationCode(user);
             TokenDTO jwt = getJwt(user.getId(), user.getIdentity().getId(), dto.getPhone(), dto.getPassword());
 
-            Token token = new Token();
+            Token token = user.getRefreshToken() == null ? new Token() : user.getRefreshToken();
             token.setRefreshToken(jwt.getRefreshToken());
             token.setAccessToken(jwt.getAccessToken());
             token.setUser(user);

@@ -370,6 +370,7 @@ public class GethService {
         dto.setGasLimit(coin.getGasLimit());
         dto.setGasPrice(coin.getGasPrice());
         dto.setTxFee(calculateFee(dto.getGasLimit(), dto.getGasPrice()));
+        dto.setRecallFee(coin.getRecallFee());
         dto.setWalletAddress(walletAddress);
         dto.setContractAddress(contractAddress);
 
