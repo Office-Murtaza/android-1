@@ -536,6 +536,15 @@ extension L.Recall {
   struct Button {
     static let recall = "recall.button.recall"
   }
+
+  struct Form {
+  }
+}
+extension L.Recall.Form {
+
+  struct Error {
+    static let tooLowAmount = "recall.form.error.too_low_amount"
+  }
 }
 extension L.Reserve {
 

@@ -28,8 +28,8 @@ extension TradesFlowController: TradesModuleDelegate {
     step.accept(TradesFlow.Steps.reserve(coin, coinBalances, coinSettings))
   }
   
-  func showRecall(coin: BTMCoin, coinBalances: [CoinBalance]) {
-    step.accept(TradesFlow.Steps.recall(coin, coinBalances))
+  func showRecall(coin: BTMCoin, coinBalances: [CoinBalance], coinSettings: CoinSettings) {
+    step.accept(TradesFlow.Steps.recall(coin, coinBalances, coinSettings))
   }
   
 }

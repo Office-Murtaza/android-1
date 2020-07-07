@@ -4,6 +4,7 @@ import TrustWalletCore
 struct CoinSettings: Equatable {
   var type: CustomCoinType
   var txFee: Double
+  var recallFee: Double?
   var byteFee: Double?
   var gasPrice: Int?
   var gasLimit: Int?
