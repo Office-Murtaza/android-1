@@ -11,6 +11,7 @@ extension CoinSettings: ImmutableMappable {
     
     type = mappedType
     txFee = try map.value("txFee")
+    recallFee = try map.value("recallFee")
     byteFee = try map.value("byteFee")
     gasPrice = try map.value("gasPrice")
     gasLimit = try map.value("gasLimit")
