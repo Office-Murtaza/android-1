@@ -318,6 +318,7 @@
     <string name="trade_reserve_screen_title">Reserve</string>
     <string name="trade_reserve_screen_coin_amount">Coin amount</string>
     <string name="trade_reserve_screen_fiat_amount">Fiat amount</string>
+    <string name="trade_reserve_screen_not_enough_reserved_amount">Reserved amount is lower than transaction fee</string>
 
     <string name="unit_dynamic">%1$s %2$s</string>
     <string name="unit_usd_dynamic">%1$s USD</string>

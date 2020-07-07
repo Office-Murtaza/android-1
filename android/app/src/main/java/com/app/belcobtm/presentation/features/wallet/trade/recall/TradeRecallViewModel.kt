@@ -43,6 +43,9 @@ class TradeRecallViewModel(
     fun getMaxValue(): Double = if (coinDataItem.code == LocalCoinType.CATM.name) {
         coinDataItem.balanceCoin
     } else {
-        0.0.coerceAtLeast(coinDataItem.balanceCoin - feeDataItem.txFee)
+        0.0.coerceAtLeast(coinDataItem.reservedBalanceCoin - feeDataItem.txFee)
     }
+
+    fun isEnoughReservedAmount(): Boolean =
+        coinDataItem.reservedBalanceCoin > feeDataItem.recallFee ?: feeDataItem.txFee
 }

@@ -36,8 +36,16 @@ val viewModelModule = module {
     viewModel { VerificationBlankViewModel(get(), get()) }
     viewModel { VerificationVipViewModel(get()) }
     viewModel { (coinItem: CoinDataItem, coinItemArrayList: ArrayList<CoinDataItem>) ->
-        val feeMap = (get() as GetCoinFeeMapUseCase).getCoinFeeMap()[coinItem.code]
-        ExchangeCoinToCoinViewModel(feeMap!!, coinItem, coinItemArrayList, get(), get())
+        val feeMap = (get() as GetCoinFeeMapUseCase).getCoinFeeMap()
+        val fromCoinFee = feeMap[coinItem.code]
+        ExchangeCoinToCoinViewModel(
+            fromCoinFee!!,
+            coinItem,
+            coinItemArrayList,
+            feeMap,
+            get(),
+            get()
+        )
     }
     viewModel { AddWalletViewModel(get(), get()) }
     viewModel { (latitude: Double, longitude: Double, intentCoinItem: CoinDataItem) ->

@@ -35,7 +35,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     app:barrierDirection="end"
-                    app:constraint_referenced_ids="balanceTitleView,priceTitleView,reservedTitleView,coinAmountTitleView,fiatAmountTitleView" />
+                    app:constraint_referenced_ids="balanceTitleView,priceTitleView,reservedTitleView" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/priceTitleView"
@@ -124,34 +124,6 @@
                     app:layout_constraintTop_toTopOf="@id/reservedExchangeView"
                     tools:text="8.90 USD" />
 
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/coinAmountTitleView"
-                    style="@style/Transaction.Title.Medium.Key"
-                    android:text="@string/trade_reserve_screen_coin_amount"
-                    app:layout_constraintStart_toStartOf="@id/reservedTitleView"
-                    app:layout_constraintTop_toBottomOf="@id/reservedTitleView" />
-
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/coinAmountView"
-                    style="@style/Transaction.Title.Medium.Value"
-                    app:layout_constraintStart_toStartOf="@id/reservedCryptoView"
-                    app:layout_constraintTop_toTopOf="@id/coinAmountTitleView"
-                    tools:text="0.05 BTC" />
-
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/fiatAmountTitleView"
-                    style="@style/Transaction.Title.Medium.Key"
-                    android:text="@string/trade_reserve_screen_fiat_amount"
-                    app:layout_constraintStart_toStartOf="@id/reservedTitleView"
-                    app:layout_constraintTop_toBottomOf="@id/coinAmountTitleView" />
-
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/limitsView"
-                    style="@style/Transaction.Title.Medium.Value"
-                    app:layout_constraintStart_toStartOf="@id/reservedCryptoView"
-                    app:layout_constraintTop_toTopOf="@id/fiatAmountTitleView"
-                    tools:text="1000 USD" />
-
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/amountCryptoView"
                     style="@style/WalletTab.EditText.Container"
@@ -160,7 +132,7 @@
                     android:layout_marginEnd="16dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/fiatAmountTitleView">
+                    app:layout_constraintTop_toBottomOf="@id/reservedUsdView">
 
                     <com.google.android.material.textfield.TextInputEditText
                         style="@style/Transaction.EditText.InputWithMax"

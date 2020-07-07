@@ -324,7 +324,10 @@ class TransactionRepositoryImpl(
     ): Either<Failure, Unit> = if (networkUtils.isNetworkAvailable()) {
         val smsCodeVerifyResponse = toolsRepository.verifySmsCode(smsCode)
         if (smsCodeVerifyResponse.isRight) {
-            apiService.submitReserve(coinCode, cryptoAmount, hash)
+            val fromAddress = prefHelper.coinsFee[coinCode]?.walletAddress ?: ""
+            val toAddress = prefHelper.coinsFee[coinCode]?.contractAddress ?: ""
+            val fee = prefHelper.coinsFee[coinCode]?.txFee ?: 0.0
+            apiService.submitReserve(coinCode, fromAddress, toAddress, cryptoAmount, fee, hash)
         } else {
             smsCodeVerifyResponse as Either.Left
         }

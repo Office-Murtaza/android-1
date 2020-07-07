@@ -4,22 +4,23 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.app.belcobtm.domain.transaction.interactor.CoinToCoinExchangeUseCase
 import com.app.belcobtm.domain.transaction.interactor.CreateTransactionUseCase
+import com.app.belcobtm.domain.wallet.LocalCoinType
 import com.app.belcobtm.domain.wallet.item.CoinDataItem
 import com.app.belcobtm.domain.wallet.item.CoinFeeDataItem
-import com.app.belcobtm.presentation.core.extensions.code
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
-import wallet.core.jni.CoinType
 
 class ExchangeCoinToCoinViewModel(
-    val coinFeeItem: CoinFeeDataItem,
+    val fromCoinFeeItem: CoinFeeDataItem,
     val fromCoinItem: CoinDataItem,
     val coinItemList: List<CoinDataItem>,
+    val coinFeeItemList: Map<String, CoinFeeDataItem>,
     private val exchangeUseCase: CoinToCoinExchangeUseCase,
     private val createTransactionUseCase: CreateTransactionUseCase
 ) : ViewModel() {
     private var transactionHash: String = ""
     val exchangeLiveData: MutableLiveData<LoadingData<String>> = MutableLiveData()
-    var toCoinItem: CoinDataItem? = coinItemList.find { it.code == CoinType.BITCOIN.code() }
+    var toCoinItem: CoinDataItem? = coinItemList.find { it.code == LocalCoinType.BTC.name }
+    var toCoinFeeItem: CoinFeeDataItem? = coinFeeItemList[LocalCoinType.BTC.name]
 
     fun createTransaction(fromCoinAmount: Double) {
         exchangeLiveData.value = LoadingData.Loading()
@@ -29,7 +30,7 @@ class ExchangeCoinToCoinViewModel(
                 transactionHash = hash
                 exchangeLiveData.value = LoadingData.Success(TRANSACTION_CREATED)
             },
-            onError = { exchangeLiveData.value = LoadingData.Error(it) }
+            onError = { exchangeLiveData.value = LoadingData.Error(it, TRANSACTION_CREATED) }
         )
     }
 
@@ -47,7 +48,7 @@ class ExchangeCoinToCoinViewModel(
                 transactionHash
             ),
             onSuccess = { exchangeLiveData.value = LoadingData.Success(TRANSACTION_EXCHANGED) },
-            onError = { exchangeLiveData.value = LoadingData.Error(it) }
+            onError = { exchangeLiveData.value = LoadingData.Error(it, TRANSACTION_EXCHANGED) }
         )
     }
 

@@ -2,10 +2,8 @@ package com.app.belcobtm.presentation.features.wallet.exchange.coin.to.coin
 
 import android.content.Intent
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.MenuItem
-import androidx.appcompat.app.AlertDialog
+import androidx.core.os.bundleOf
 import androidx.lifecycle.Observer
 import com.app.belcobtm.R
 import com.app.belcobtm.domain.Failure
@@ -14,10 +12,11 @@ import com.app.belcobtm.domain.wallet.item.CoinDataItem
 import com.app.belcobtm.presentation.core.extensions.*
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
 import com.app.belcobtm.presentation.core.ui.BaseActivity
+import com.app.belcobtm.presentation.core.ui.SmsDialogFragment
+import com.app.belcobtm.presentation.core.watcher.DoubleTextWatcher
 import com.app.belcobtm.presentation.features.authorization.pin.PinActivity
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.android.synthetic.main.activity_exchange_coin_to_coin.*
-import kotlinx.android.synthetic.main.view_material_sms_code_dialog.view.*
 import org.koin.android.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
@@ -28,34 +27,63 @@ class ExchangeCoinToCoinActivity : BaseActivity() {
             intent.getParcelableArrayListExtra<CoinDataItem>(TAG_COIN_ITEM_LIST)
         )
     }
-    private val smsDialog: AlertDialog by lazy {
-        val view = layoutInflater.inflate(R.layout.view_material_sms_code_dialog, null)
-        val smsCodeView = view.smsCodeView
-        val dialog = MaterialAlertDialogBuilder(this)
-            .setTitle(getString(R.string.verify_sms_code))
-            .setPositiveButton(R.string.next, null)
-            .setNegativeButton(R.string.cancel) { _, _ -> showProgress(false) }
-            .setView(view)
-            .create()
-        dialog.setCanceledOnTouchOutside(false)
-        dialog.setOnShowListener {
-            smsCodeView.clearText()
-            smsCodeView.clearError()
-            dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
-                if (smsCodeView.getString().length != 4) {
-                    smsCodeView.showError(R.string.error_sms_code_4_digits)
-                } else {
-                    smsCodeView.clearError()
-                    viewModel.exchangeTransaction(
-                        smsCodeView.getString(),
-                        amountCoinFromView.getString().toDouble()
-                    )
-                    dialog.dismiss()
-                }
+
+    private fun getExchangeValue(): Double {
+        val fromCoinPrice = viewModel.fromCoinItem.priceUsd
+        val fromCoinProfitC2c = viewModel.fromCoinFeeItem.profitExchange
+        val toCoinRefPrice = viewModel.toCoinItem?.priceUsd ?: 0.0
+        return fromCoinPrice / toCoinRefPrice * (100 - fromCoinProfitC2c) / 100
+    }
+
+    private val doubleTextWatcher: DoubleTextWatcher = DoubleTextWatcher(
+        maxCharsAfterDotFirst = DoubleTextWatcher.MAX_CHARS_AFTER_DOT_CRYPTO,
+        maxCharsAfterDotSecond = DoubleTextWatcher.MAX_CHARS_AFTER_DOT_CRYPTO,
+        firstTextWatcher = { editable ->
+            val fromCoinAmountTemporary = editable.getDouble()
+            val fromCoinAmount: Double =
+                if (fromCoinAmountTemporary > viewModel.fromCoinItem.balanceCoin) viewModel.fromCoinItem.balanceCoin
+                else fromCoinAmountTemporary
+            val toCoinAmount = fromCoinAmount * getExchangeValue()
+            val fromMaxValue = getMaxValueFromCoin()
+
+            if (fromCoinAmountTemporary > fromMaxValue) {
+                editable.clear()
+                editable.insert(0, fromMaxValue.toStringCoin())
+            }
+
+            if (fromCoinAmountTemporary > 0) {
+                amountCoinToView.setText(toCoinAmount.toStringCoin())
+                nextButtonView.isEnabled = true
+            } else {
+                amountCoinToView.clearText()
+                nextButtonView.isEnabled = false
+            }
+        },
+        secondTextWatcher = { editable ->
+            val toCoinAmountMaxValue = viewModel.fromCoinItem.balanceCoin * getExchangeValue()
+            val toCoinAmountTemporary = editable.getDouble()
+            val toCoinAmount =
+                if (toCoinAmountTemporary > toCoinAmountMaxValue) viewModel.fromCoinItem.balanceCoin
+                else toCoinAmountTemporary
+            val fromCoinAmount =
+                if (toCoinAmountTemporary > toCoinAmountMaxValue) getMaxValueFromCoin()
+                else toCoinAmount / getExchangeValue()
+            val toCoinMaxValue = getMaxValueToCoin()
+
+            if (toCoinAmountTemporary > toCoinMaxValue) {
+                editable.clear()
+                editable.insert(0, toCoinMaxValue.toStringCoin())
+            }
+
+            if (toCoinAmountTemporary > 0) {
+                amountCoinFromView.setText(fromCoinAmount.toStringCoin())
+                nextButtonView.isEnabled = true
+            } else {
+                amountCoinFromView.clearText()
+                nextButtonView.isEnabled = false
             }
         }
-        return@lazy dialog
-    }
+    )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -72,6 +100,10 @@ class ExchangeCoinToCoinActivity : BaseActivity() {
         }
         return super.onOptionsItemSelected(item)
     }
+
+    private fun getMaxValueFromCoin(): Double = viewModel.fromCoinItem.balanceCoin - viewModel.fromCoinFeeItem.txFee
+
+    private fun getMaxValueToCoin(): Double = getMaxValueFromCoin() * getExchangeValue()
 
     private fun initListeners() {
         pickCoinButtonView.editText?.keyListener = null
@@ -90,21 +122,18 @@ class ExchangeCoinToCoinActivity : BaseActivity() {
                         LocalCoinType.values()[which].name
                     )
                     viewModel.toCoinItem = viewModel.coinItemList.find { it.code == LocalCoinType.values()[which].name }
+                    viewModel.toCoinFeeItem = viewModel.coinFeeItemList[LocalCoinType.values()[which].name]
                     amountCoinFromView?.editText?.setText(amountCoinFromView.getString())
                 }
                 .create()
                 .show()
         }
-        amountCoinFromView?.editText?.addTextChangedListener(coinFromTextWatcher)
-        amountCoinToView?.editText?.keyListener = null
-        amountCoinToView?.editText?.afterTextChanged {
-            nextButtonView.isEnabled = it.isNotEmpty() && it.toString().toDouble() > 0
-        }
-        maxCoinFromView.setOnClickListener {
-            amountCoinFromView.setText(viewModel.fromCoinItem.balanceCoin.toStringCoin())
-        }
+        amountCoinFromView?.editText?.addTextChangedListener(doubleTextWatcher.firstTextWatcher)
+        amountCoinToView?.editText?.addTextChangedListener(doubleTextWatcher.secondTextWatcher)
+        maxCoinFromView.setOnClickListener { amountCoinFromView.setText(getMaxValueFromCoin().toStringCoin()) }
+        maxCoinToView.setOnClickListener { amountCoinToView.setText(getMaxValueToCoin().toStringCoin()) }
         nextButtonView.setOnClickListener {
-            val amount = amountCoinFromView.getString().toDouble() + viewModel.coinFeeItem.txFee
+            val amount = amountCoinFromView.getString().toDouble() + viewModel.fromCoinFeeItem.txFee
             viewModel.createTransaction(amount)
         }
     }
@@ -115,7 +144,7 @@ class ExchangeCoinToCoinActivity : BaseActivity() {
                 is LoadingData.Loading -> progressView.show()
                 is LoadingData.Success -> {
                     when (it.data) {
-                        ExchangeCoinToCoinViewModel.TRANSACTION_CREATED -> smsDialog.show()
+                        ExchangeCoinToCoinViewModel.TRANSACTION_CREATED -> showSmsDialog()
                         ExchangeCoinToCoinViewModel.TRANSACTION_EXCHANGED -> finish()
                     }
                     progressView.hide()
@@ -123,7 +152,11 @@ class ExchangeCoinToCoinActivity : BaseActivity() {
                 is LoadingData.Error -> {
                     when (it.errorType) {
                         is Failure.TokenError -> startActivity(Intent(this, PinActivity::class.java))
-                        is Failure.MessageError -> showError(it.errorType.message)
+                        is Failure.MessageError -> if (it.data == ExchangeCoinToCoinViewModel.TRANSACTION_CREATED) {
+                            showError(it.errorType.message)
+                        } else {
+                            showSmsDialog(it.errorType.message)
+                        }
                         is Failure.NetworkConnection -> showError(R.string.error_internet_unavailable)
                         else -> showError(R.string.error_something_went_wrong)
                     }
@@ -164,65 +197,17 @@ class ExchangeCoinToCoinActivity : BaseActivity() {
         }
     }
 
-    private val coinFromTextWatcher = object : TextWatcher {
-        var isRunning = false
-        var isDeleting = false
-
-        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-            isDeleting = count > after
-        }
-
-        override fun onTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) = Unit
-
-        override fun afterTextChanged(editable: Editable) {
-            if (isRunning) return
-            isRunning = true
-
-            when {
-                editable.isNotEmpty() && editable.first() == DOT_CHAR -> editable.insert(0, "0")
-                editable.isNotEmpty() && editable.last() == DOT_CHAR && editable.count { it == DOT_CHAR } > 1 -> editable.delete(
-                    editable.lastIndex,
-                    editable.length
-                )
-                editable.contains(DOT_CHAR) && (editable.lastIndex - editable.indexOf(DOT_CHAR)) > MAX_CHARS_AFTER_DOT ->
-                    editable.delete(editable.lastIndex - 1, editable.lastIndex)
-                editable.isEmpty() || editable.toString().replace(DOT_CHAR.toString(), "").toInt() <= 0 -> {
-                    val isContainsDot = editable.contains(DOT_CHAR)
-                    val indexOfDot = editable.indexOf(DOT_CHAR)
-                    when {
-                        isContainsDot && indexOfDot > 1 -> editable.delete(0, indexOfDot - 1)
-                        !isContainsDot && editable.length > 1 -> editable.delete(0, editable.length - 1)
-                    }
-                    amountCoinToView.clearText()
-                }
-                else -> {
-                    val fromCoinTemporaryValue = amountCoinFromView.getString().toDouble()
-                    val fromCoinAmount: Double =
-                        if (fromCoinTemporaryValue > viewModel.fromCoinItem.balanceCoin) viewModel.fromCoinItem.balanceCoin
-                        else fromCoinTemporaryValue
-                    val toCoinRefPrice = viewModel.toCoinItem?.priceUsd ?: 0.0
-                    val fromCoinPrice = viewModel.fromCoinItem.priceUsd
-                    val fromCoinProfitC2c = viewModel.coinFeeItem.profitExchange
-                    val toCoinAmount =
-                        (fromCoinAmount * fromCoinPrice) / toCoinRefPrice * (100 - fromCoinProfitC2c) / 100
-
-                    val maxValueWithFee = viewModel.fromCoinItem.balanceCoin - viewModel.coinFeeItem.txFee
-                    if (fromCoinTemporaryValue > maxValueWithFee) {
-                        editable.clear()
-                        editable.insert(0, maxValueWithFee.toStringCoin())
-                    }
-                    amountCoinToView.setText(toCoinAmount.toStringCoin())
-                }
-            }
-
-            isRunning = false
+    private fun showSmsDialog(errorMessage: String? = null) {
+        val fragment = SmsDialogFragment()
+        fragment.arguments = bundleOf(SmsDialogFragment.TAG_ERROR to errorMessage)
+        fragment.show(supportFragmentManager, SmsDialogFragment::class.simpleName)
+        fragment.setDialogListener { smsCode ->
+            viewModel.exchangeTransaction(smsCode, amountCoinFromView.getString().toDouble())
         }
     }
 
     companion object {
         const val TAG_COIN_ITEM = "tag_coin_item"
         const val TAG_COIN_ITEM_LIST = "tag_coin_item_list"
-        const val MAX_CHARS_AFTER_DOT = 6
-        const val DOT_CHAR: Char = '.'
     }
 }

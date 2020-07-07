@@ -2,18 +2,17 @@ package com.app.belcobtm.presentation.features.wallet.trade.reserve
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.appcompat.app.AlertDialog
+import androidx.core.os.bundleOf
 import androidx.lifecycle.Observer
 import com.app.belcobtm.R
 import com.app.belcobtm.domain.Failure
 import com.app.belcobtm.presentation.core.extensions.*
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
 import com.app.belcobtm.presentation.core.ui.BaseActivity
+import com.app.belcobtm.presentation.core.ui.SmsDialogFragment
 import com.app.belcobtm.presentation.core.watcher.DoubleTextWatcher
 import com.app.belcobtm.presentation.features.authorization.pin.PinActivity
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.android.synthetic.main.activity_trade_reserve.*
-import kotlinx.android.synthetic.main.view_material_sms_code_dialog.view.*
 import org.koin.android.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
@@ -71,32 +70,6 @@ class TradeReserveActivity : BaseActivity() {
         }
     )
 
-    private val smsDialog: AlertDialog by lazy {
-        val view = layoutInflater.inflate(R.layout.view_material_sms_code_dialog, null)
-        val smsCodeView = view.smsCodeView
-        val dialog = MaterialAlertDialogBuilder(this)
-            .setTitle(getString(R.string.verify_sms_code))
-            .setPositiveButton(R.string.next, null)
-            .setNegativeButton(R.string.cancel) { _, _ -> showProgress(false) }
-            .setView(view)
-            .create()
-        dialog.setCanceledOnTouchOutside(false)
-        dialog.setOnShowListener {
-            smsCodeView.clearText()
-            smsCodeView.clearError()
-            dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
-                if (smsCodeView.getString().length != 4) {
-                    smsCodeView.showError(R.string.error_sms_code_4_digits)
-                } else {
-                    smsCodeView.clearError()
-                    viewModel.completeTransaction(smsCodeView.getString())
-                    dialog.dismiss()
-                }
-            }
-        }
-        return@lazy dialog
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_trade_reserve)
@@ -119,7 +92,7 @@ class TradeReserveActivity : BaseActivity() {
             when (loadingData) {
                 is LoadingData.Loading -> progressView.show()
                 is LoadingData.Success -> {
-                    smsDialog.show()
+                    showSmsDialog()
                     progressView.hide()
                 }
                 is LoadingData.Error -> {
@@ -142,7 +115,7 @@ class TradeReserveActivity : BaseActivity() {
                 is LoadingData.Error -> {
                     when (loadingData.errorType) {
                         is Failure.TokenError -> startActivity(Intent(this, PinActivity::class.java))
-                        is Failure.MessageError -> showError(loadingData.errorType.message)
+                        is Failure.MessageError -> showSmsDialog(loadingData.errorType.message)
                         is Failure.NetworkConnection -> showError(R.string.error_internet_unavailable)
                         else -> showError(R.string.error_something_went_wrong)
                     }
@@ -172,6 +145,13 @@ class TradeReserveActivity : BaseActivity() {
             viewModel.coinItem.reservedBalanceUsd.toStringUsd()
         )
         amountCryptoView.hint = getString(R.string.withdraw_screen_crypto_amount, viewModel.coinItem.code)
+    }
+
+    private fun showSmsDialog(errorMessage: String? = null) {
+        val fragment = SmsDialogFragment()
+        fragment.arguments = bundleOf(SmsDialogFragment.TAG_ERROR to errorMessage)
+        fragment.show(supportFragmentManager, SmsDialogFragment::class.simpleName)
+        fragment.setDialogListener { smsCode -> viewModel.completeTransaction(smsCode) }
     }
 
     companion object {

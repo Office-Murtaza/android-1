@@ -95,8 +95,7 @@
             android:digits="1234567890."
             android:inputType="numberDecimal"
             android:nextFocusDown="@id/amountUsdView"
-            tools:hint="@string/exchange_coin_to_coin_screen_crypto_amount"
-            tools:ignore="RtlSymmetry" />
+            tools:hint="@string/exchange_coin_to_coin_screen_crypto_amount" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <androidx.appcompat.widget.AppCompatTextView
@@ -138,15 +137,20 @@
         <com.google.android.material.textfield.TextInputEditText
             style="@style/Transaction.EditText.InputWithMax"
             android:digits="1234567890."
-            android:focusableInTouchMode="false"
             android:hint="@string/exchange_coin_to_coin_screen_crypto_amount"
-            android:inputType="numberDecimal"
-            android:paddingStart="12dp"
-            android:paddingEnd="12dp"
-            android:textAllCaps="true"
-            tools:ignore="RtlSymmetry" />
+            android:inputType="numberDecimal" />
 
     </com.google.android.material.textfield.TextInputLayout>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/maxCoinToView"
+        style="@style/Transaction.EditText.TextLink"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
+        android:text="@string/max"
+        app:layout_constraintBottom_toBottomOf="@id/amountCoinToView"
+        app:layout_constraintEnd_toEndOf="@id/amountCoinToView"
+        app:layout_constraintTop_toTopOf="@id/amountCoinToView" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/nextButtonView"
