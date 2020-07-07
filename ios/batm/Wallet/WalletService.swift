@@ -13,7 +13,8 @@ protocol WalletService {
   func getTransactionHex(for coin: BTMCoin,
                          with coinSettings: CoinSettings,
                          destination: String,
-                         amount: Double) -> Single<String>
+                         amount: Double,
+                         stake: Bool?) -> Single<String>
 }
 
 class WalletServiceImpl: WalletService {
@@ -47,12 +48,13 @@ class WalletServiceImpl: WalletService {
   func getTransactionHex(for coin: BTMCoin,
                          with coinSettings: CoinSettings,
                          destination: String,
-                         amount: Double) -> Single<String> {
+                         amount: Double,
+                         stake: Bool? = nil) -> Single<String> {
     switch coin.type {
     case .bitcoin, .bitcoinCash, .litecoin:
       return getBitcoinLikeTransactionHex(for: coin, with: coinSettings, to: destination, amount: amount)
     case .ethereum, .catm:
-      return getEthereumTransactionHex(for: coin, with: coinSettings, to: destination, amount: amount)
+      return getEthereumTransactionHex(for: coin, with: coinSettings, to: destination, amount: amount, stake: stake)
     case .tron:
       return getTronTransactionHex(for: coin, with: coinSettings, to: destination, amount: amount)
     case .binance:
@@ -154,20 +156,23 @@ class WalletServiceImpl: WalletService {
   func getEthereumTransactionHex(for coin: BTMCoin,
                                  with coinSettings: CoinSettings,
                                  to destination: String,
-                                 amount: Double) -> Single<String> {
+                                 amount: Double,
+                                 stake: Bool? = nil) -> Single<String> {
     return api.getNonce(type: coin.type, address: coin.address)
       .map { [unowned self] in try self.getEthereumTransactionHex(coin: coin,
                                                                   coinSettings: coinSettings,
                                                                   toAddress: destination,
                                                                   amount: amount,
-                                                                  nonce: $0.nonce) }
+                                                                  nonce: $0.nonce,
+                                                                  stake: stake) }
   }
   
   private func getEthereumTransactionHex(coin: BTMCoin,
                                          coinSettings: CoinSettings,
                                          toAddress: String,
                                          amount: Double,
-                                         nonce: Int) throws -> String {
+                                         nonce: Int,
+                                         stake: Bool? = nil) throws -> String {
     let divider: Int64 = Int64(10.pow(CustomCoinType.maxNumberOfFractionDigits))
     
     let dividerthUnit = coin.type.unit / divider
@@ -196,9 +201,20 @@ class WalletServiceImpl: WalletService {
     }
     
     if coin.type == .catm {
-      let function = EthereumAbiEncoder.buildFunction(name: "transfer")!
-      function.addParamAddress(val: Data(hexString: toAddress)!, isOutput: false)
-      function.addParamUInt256(val: dataAmount, isOutput: false)
+      let function: EthereumAbiFunction
+      
+      if let stake = stake {
+        if stake {
+          function = EthereumAbiEncoder.buildFunction(name: "createStake")!
+          function.addParamUInt256(val: dataAmount, isOutput: false)
+        } else {
+          function = EthereumAbiEncoder.buildFunction(name: "withdrawStake")!
+        }
+      } else {
+        function = EthereumAbiEncoder.buildFunction(name: "transfer")!
+        function.addParamAddress(val: Data(hexString: toAddress)!, isOutput: false)
+        function.addParamUInt256(val: dataAmount, isOutput: false)
+      }
       
       input.payload = EthereumAbiEncoder.encode(func_in: function)
       input.toAddress = coinSettings.contractAddress ?? ""

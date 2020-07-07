@@ -14,6 +14,8 @@ enum TransactionType {
   case reserve
   case recall
   case `self`
+  case stake
+  case unstake
   
   var verboseValue: String {
     switch self {
@@ -30,24 +32,28 @@ enum TransactionType {
     case .reserve: return localize(L.CoinDetails.reserve)
     case .recall: return localize(L.CoinDetails.recall)
     case .self: return localize(L.CoinDetails.se1f)
+    case .stake: return localize(L.CoinDetails.stake)
+    case .unstake: return localize(L.CoinDetails.unstake)
     }
   }
   
   var rawValue: Int {
     switch self {
-      case .unknown: return 0
-      case .deposit: return 1
-      case .withdraw: return 2
-      case .sendGift: return 3
-      case .receiveGift: return 4
-      case .buy: return 5
-      case .sell: return 6
-      case .move: return 7
-      case .sendC2C: return 8
-      case .receiveC2C: return 9
-      case .reserve: return 10
-      case .recall: return 11
-      case .self: return 12
+    case .unknown: return 0
+    case .deposit: return 1
+    case .withdraw: return 2
+    case .sendGift: return 3
+    case .receiveGift: return 4
+    case .buy: return 5
+    case .sell: return 6
+    case .move: return 7
+    case .sendC2C: return 8
+    case .receiveC2C: return 9
+    case .reserve: return 10
+    case .recall: return 11
+    case .self: return 12
+    case .stake: return 13
+    case .unstake: return 14
     }
   }
   
@@ -66,6 +72,8 @@ enum TransactionType {
     case 10: self = .reserve
     case 11: self = .recall
     case 12: self = .self
+    case 13: self = .stake
+    case 14: self = .unstake
     default: self = .unknown
     }
   }

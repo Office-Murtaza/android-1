@@ -577,3 +577,17 @@ struct SubmitTradeRequest: AuthorizedAPIRequest {
                               encoding: JSONEncoding.default)
   }
 }
+
+struct StakeDetailsRequest: AuthorizedAPIRequest {
+  typealias ResponseType = APIResponse<StakeDetails>
+  typealias ResponseTrait = SingleResponseTrait
+  
+  let userId: Int
+  let coinId: String
+  
+  var path: String { return "/user/\(userId)/coins/\(coinId)/transactions/stake-details" }
+  var method: HTTPMethod { return .get }
+  var task: HTTPTask {
+    return .requestPlain
+  }
+}

@@ -151,6 +151,7 @@
 "coin_details.send_gift" = "Send Gift";
 "coin_details.exchange" = "Exchange";
 "coin_details.trade" = "Trade";
+"coin_details.staking" = "Staking";
 "coin_details.receive_gift" = "Receive Gift";
 "coin_details.buy" = "Buy";
 "coin_details.sell" = "Sell";
@@ -160,6 +161,8 @@
 "coin_details.reserve" = "Reserve";
 "coin_details.recall" = "Recall";
 "coin_details.se1f" = "Self";
+"coin_details.stake" = "Stake";
+"coin_details.unstake" = "Unstake";
 "coin_details.pending" = "Pending";
 "coin_details.complete" = "Complete";
 "coin_details.fail" = "Fail";
@@ -272,3 +275,11 @@
 
 "recall.title" = "Recall %@";
 "recall.button.recall" = "Recall";
+
+"coin_staking.title" = "%@";
+"coin_staking.header.staked.title" = "Staked";
+"coin_staking.header.rewards.title" = "Rewards";
+"coin_staking.header.time.title" = "Time";
+"coin_staking.header.time.value" = "%d days";
+"coin_staking.button.stake" = "Stake";
+"coin_staking.button.unstake" = "Unstake";
