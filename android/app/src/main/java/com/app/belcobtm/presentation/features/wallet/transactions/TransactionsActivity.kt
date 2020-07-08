@@ -60,6 +60,11 @@ class TransactionsActivity : BaseActivity() {
         initViews()
     }
 
+    override fun onResume() {
+        super.onResume()
+        viewModel.updateData()
+    }
+
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         // NOTE: delegate the permission handling to generated method
@@ -327,7 +332,7 @@ class TransactionsActivity : BaseActivity() {
     private fun showTradeScreen(latitude: Double = 0.0, longitude: Double = 0.0) {
         if (isCorrectCoinId()) {
             val intent = Intent(this, TradeActivity::class.java)
-            intent.putExtra(TradeActivity.TAG_COIN_ITEM, viewModel.coinDataItem)
+            intent.putExtra(TradeActivity.TAG_COIN_CODE, this.intent.getStringExtra(KEY_COIN_CODE))
             intent.putExtra(TradeActivity.TAG_LATITUDE, latitude)
             intent.putExtra(TradeActivity.TAG_LONGITUDE, longitude)
             startActivity(intent)

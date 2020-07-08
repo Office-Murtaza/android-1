@@ -48,11 +48,16 @@ val viewModelModule = module {
         )
     }
     viewModel { AddWalletViewModel(get(), get()) }
-    viewModel { (latitude: Double, longitude: Double, intentCoinItem: CoinDataItem) ->
-        TradeViewModel(latitude, longitude, intentCoinItem, get(), get(), get(), get())
+    viewModel { (latitude: Double, longitude: Double, coinCode: String) ->
+        TradeViewModel(coinCode, latitude, longitude, get(), get(), get(), get(), get())
     }
-    viewModel { (coinItem: CoinDataItem) -> TradeDetailsBuyViewModel(coinItem, get()) }
-    viewModel { (coinItem: CoinDataItem) -> TradeCreateViewModel(coinItem, get(), get()) }
+    viewModel { (coinCode: String) ->
+        val coinDataItem = get<WalletRepository>().getCoinItemByCode(coinCode)
+        TradeDetailsBuyViewModel(coinDataItem, get())
+    }
+    viewModel { (coinCode: String) ->
+        TradeCreateViewModel(get<WalletRepository>().getCoinItemByCode(coinCode), get(), get())
+    }
     viewModel { TradeEditViewModel() }
     viewModel { (coinCode: String) ->
         TradeRecallViewModel(

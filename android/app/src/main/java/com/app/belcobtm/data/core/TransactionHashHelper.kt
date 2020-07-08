@@ -294,21 +294,11 @@ class TransactionHashHelper(
                 it.amount = (fromCoinAmount * CoinType.BINANCE.unit()).toLong()
             }
             val input = Binance.SendOrder.Input.newBuilder().also {
-                it.address = ByteString.copyFrom(
-                    AnyAddress(
-                        publicKey,
-                        CoinType.BINANCE
-                    ).data()
-                )
+                it.address = ByteString.copyFrom(AnyAddress(publicKey, CoinType.BINANCE).data())
                 it.addAllCoins(listOf(token.build()))
             }
             val output = Binance.SendOrder.Output.newBuilder().also {
-                it.address = ByteString.copyFrom(
-                    AnyAddress(
-                        toAddress,
-                        CoinType.BINANCE
-                    ).data()
-                )
+                it.address = ByteString.copyFrom(AnyAddress(toAddress, CoinType.BINANCE).data())
                 it.addAllCoins(listOf(token.build()))
             }
             val sendOrder = Binance.SendOrder.newBuilder().also {

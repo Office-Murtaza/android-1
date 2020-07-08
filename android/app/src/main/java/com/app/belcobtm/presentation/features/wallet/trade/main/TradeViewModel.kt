@@ -4,6 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.app.belcobtm.domain.transaction.interactor.trade.GetListTradeUseCase
 import com.app.belcobtm.domain.transaction.type.TradeSortType
+import com.app.belcobtm.domain.wallet.interactor.GetFreshCoinUseCase
 import com.app.belcobtm.domain.wallet.item.CoinDataItem
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
 import com.app.belcobtm.presentation.features.wallet.trade.main.item.TradeDetailsItem
@@ -12,20 +13,29 @@ import com.app.belcobtm.presentation.features.wallet.trade.main.item.mapToUiMyIt
 import com.app.belcobtm.presentation.features.wallet.trade.main.item.mapToUiOpenItem
 
 class TradeViewModel(
+    private val coinCode: String,
     private val latitude: Double,
     private val longitude: Double,
-    val fromCoinItem: CoinDataItem,
+    private val freshCoinUseCase: GetFreshCoinUseCase,
     private val getBuyListUseCase: GetListTradeUseCase.Buy,
     private val getSellListUseCase: GetListTradeUseCase.Sell,
     private val getMyListUseCase: GetListTradeUseCase.My,
     private val getOpenListUseCase: GetListTradeUseCase.Open
 ) : ViewModel() {
     private var sortType: TradeSortType = TradeSortType.PRICE
-
+    val fromCoinLiveData: MutableLiveData<LoadingData<CoinDataItem>> = MutableLiveData()
     val buyListLiveData: MutableLiveData<LoadingData<Pair<Int, List<TradeDetailsItem.BuySell>>>> = MutableLiveData()
     val sellListLiveData: MutableLiveData<LoadingData<Pair<Int, List<TradeDetailsItem.BuySell>>>> = MutableLiveData()
     val myListLiveData: MutableLiveData<LoadingData<Pair<Int, List<TradeDetailsItem.My>>>> = MutableLiveData()
     val openListLiveData: MutableLiveData<LoadingData<Pair<Int, List<TradeDetailsItem.Open>>>> = MutableLiveData()
+
+    fun updateDataItem() {
+        fromCoinLiveData.value = LoadingData.Loading()
+        freshCoinUseCase.invoke(params = GetFreshCoinUseCase.Params(coinCode),
+            onSuccess = { fromCoinLiveData.value = LoadingData.Success(it) },
+            onError = { fromCoinLiveData.value = LoadingData.Error(it) }
+        )
+    }
 
     fun updateSorting(sortType: TradeSortType?) {
         this.sortType = sortType ?: this.sortType
@@ -88,5 +98,5 @@ class TradeViewModel(
     }
 
     private fun createGetTradeListParams(paginationStep: Int) =
-        GetListTradeUseCase.Params(latitude, longitude, fromCoinItem.code, sortType, paginationStep)
+        GetListTradeUseCase.Params(latitude, longitude, coinCode, sortType, paginationStep)
 }

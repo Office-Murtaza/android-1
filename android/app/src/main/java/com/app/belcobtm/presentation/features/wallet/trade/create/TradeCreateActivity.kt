@@ -12,7 +12,7 @@ import org.koin.android.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
 class TradeCreateActivity : BaseActivity() {
-    private val viewModel: TradeCreateViewModel by viewModel { parametersOf(intent.getParcelableExtra(TAG_COIN_ITEM)) }
+    private val viewModel: TradeCreateViewModel by viewModel { parametersOf(intent.getStringExtra(TAG_COIN_CODE)) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -104,6 +104,6 @@ class TradeCreateActivity : BaseActivity() {
     private fun isCorrectMargin(): Boolean = marginView.getString().toDouble() <= 100
 
     companion object {
-        const val TAG_COIN_ITEM = "tag_coin_item"
+        const val TAG_COIN_CODE = "tag_coin_code"
     }
 }

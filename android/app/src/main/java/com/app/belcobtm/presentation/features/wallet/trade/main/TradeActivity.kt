@@ -7,7 +7,8 @@ import androidx.lifecycle.Observer
 import com.app.belcobtm.R
 import com.app.belcobtm.domain.Failure
 import com.app.belcobtm.domain.transaction.type.TradeSortType
-import com.app.belcobtm.domain.wallet.item.CoinDataItem
+import com.app.belcobtm.presentation.core.extensions.hide
+import com.app.belcobtm.presentation.core.extensions.show
 import com.app.belcobtm.presentation.core.extensions.toStringCoin
 import com.app.belcobtm.presentation.core.extensions.toStringUsd
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
@@ -30,7 +31,7 @@ class TradeActivity : BaseActivity() {
         parametersOf(
             intent.getDoubleExtra(TAG_LATITUDE, 0.0),
             intent.getDoubleExtra(TAG_LONGITUDE, 0.0),
-            intent.getParcelableExtra(TAG_COIN_ITEM)
+            intent.getStringExtra(TAG_COIN_CODE)
         )
     }
     private val tradePageAdapter = TradePageAdapter({ tradeListItem ->
@@ -40,8 +41,8 @@ class TradeActivity : BaseActivity() {
             is TradeDetailsItem.BuySell -> {
                 val intent = Intent(this, TradeDetailsBuyActivity::class.java)
                 intent.putExtra(
-                    TradeDetailsBuyActivity.TAG_COIN_ITEM,
-                    this.intent.getParcelableExtra<CoinDataItem>(TAG_COIN_ITEM)
+                    TradeDetailsBuyActivity.TAG_COIN_CODE,
+                    this.intent.getStringExtra(TAG_COIN_CODE)
                 )
                 intent.putExtra(TradeDetailsBuyActivity.TAG_TRADE_DETAILS_ITEM, tradeListItem)
                 startActivity(intent)
@@ -88,6 +89,7 @@ class TradeActivity : BaseActivity() {
         super.onResume()
         tradePageAdapter.clearData()
         viewModel.updateSorting(null)
+        viewModel.updateDataItem()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -111,28 +113,19 @@ class TradeActivity : BaseActivity() {
         }
         createButtonView.setOnClickListener {
             val intent = Intent(this, TradeCreateActivity::class.java)
-            intent.putExtra(
-                TradeCreateActivity.TAG_COIN_ITEM,
-                this.intent.getParcelableExtra<CoinDataItem>(TAG_COIN_ITEM)
-            )
+            intent.putExtra(TradeCreateActivity.TAG_COIN_CODE, this.intent.getStringExtra(TAG_COIN_CODE))
             startActivity(intent)
             fabMenuView.close(true)
         }
         reverseButtonView.setOnClickListener {
             val intent = Intent(this, TradeReserveActivity::class.java)
-            intent.putExtra(
-                TradeReserveActivity.TAG_COIN_CODE,
-                this.intent.getParcelableExtra<CoinDataItem>(TAG_COIN_ITEM)?.code ?: ""
-            )
+            intent.putExtra(TradeReserveActivity.TAG_COIN_CODE, this.intent.getStringExtra(TAG_COIN_CODE))
             startActivity(intent)
             fabMenuView.close(true)
         }
         recallButtonView.setOnClickListener {
             val intent = Intent(this, TradeRecallActivity::class.java)
-            intent.putExtra(
-                TradeRecallActivity.TAG_COIN_CODE,
-                this.intent.getParcelableExtra<CoinDataItem>(TAG_COIN_ITEM)?.code ?: ""
-            )
+            intent.putExtra(TradeRecallActivity.TAG_COIN_CODE, this.intent.getStringExtra(TAG_COIN_CODE))
             startActivity(intent)
             fabMenuView.close(true)
         }
@@ -198,35 +191,47 @@ class TradeActivity : BaseActivity() {
                 is LoadingData.Error -> tradePageAdapter.setOpenList(listOf(TradeDetailsItem.Error))
             }
         })
+
+        viewModel.fromCoinLiveData.observe(this, Observer { loadingData ->
+            when (loadingData) {
+                is LoadingData.Loading -> progressView.show()
+                is LoadingData.Success -> with(loadingData.data) {
+                    priceUsdView.text = getString(
+                        R.string.exchange_coin_to_coin_screen_price_value,
+                        priceUsd.toStringUsd()
+                    )
+                    balanceCryptoView.text = getString(
+                        R.string.exchange_coin_to_coin_screen_balance_crypto,
+                        balanceCoin.toStringCoin(),
+                        code
+                    )
+                    balanceUsdView.text = getString(
+                        R.string.exchange_coin_to_coin_screen_balance_usd,
+                        balanceUsd.toStringUsd()
+                    )
+                    reserveCryptoView.text = getString(
+                        R.string.exchange_coin_to_coin_screen_balance_crypto,
+                        reservedBalanceCoin.toStringCoin(),
+                        code
+                    )
+                    reserveUsdView.text = getString(
+                        R.string.exchange_coin_to_coin_screen_balance_usd,
+                        reservedBalanceUsd.toStringUsd()
+                    )
+                    progressView.hide()
+                }
+                is LoadingData.Error -> {
+                    errorResponse(loadingData.errorType)
+                    progressView.hide()
+                }
+            }
+        })
     }
 
     private fun initViews() {
         setSupportActionBar(toolbarView)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.title = getString(R.string.trade_screen_title, viewModel.fromCoinItem.code)
-
-        priceUsdView.text = getString(
-            R.string.exchange_coin_to_coin_screen_price_value,
-            viewModel.fromCoinItem.priceUsd.toStringUsd()
-        )
-        balanceCryptoView.text = getString(
-            R.string.exchange_coin_to_coin_screen_balance_crypto,
-            viewModel.fromCoinItem.balanceCoin.toStringCoin(),
-            viewModel.fromCoinItem.code
-        )
-        balanceUsdView.text = getString(
-            R.string.exchange_coin_to_coin_screen_balance_usd,
-            viewModel.fromCoinItem.balanceUsd.toStringUsd()
-        )
-        reserveCryptoView.text = getString(
-            R.string.exchange_coin_to_coin_screen_balance_crypto,
-            viewModel.fromCoinItem.reservedBalanceCoin.toStringCoin(),
-            viewModel.fromCoinItem.code
-        )
-        reserveUsdView.text = getString(
-            R.string.exchange_coin_to_coin_screen_balance_usd,
-            viewModel.fromCoinItem.reservedBalanceUsd.toStringUsd()
-        )
+        supportActionBar?.title = getString(R.string.trade_screen_title, intent.getStringExtra(TAG_COIN_CODE))
         pagerView.adapter = tradePageAdapter
         TabLayoutMediator(tabLayoutView, pagerView) { tab, position ->
             tab.text = when (position) {
@@ -249,7 +254,7 @@ class TradeActivity : BaseActivity() {
     }
 
     companion object {
-        const val TAG_COIN_ITEM = "tag_coin_item"
+        const val TAG_COIN_CODE = "tag_coin_code"
         const val TAG_LATITUDE = "tag_latitude"
         const val TAG_LONGITUDE = "tag_longitude"
     }
