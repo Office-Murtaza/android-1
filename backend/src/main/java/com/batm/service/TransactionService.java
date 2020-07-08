@@ -291,12 +291,21 @@ public class TransactionService {
 
     public String recall(Long userId, CoinService.CoinEnum coinCode, SubmitTransactionDTO dto) {
         try {
+            System.out.println("CryptoAmount: " + dto.getCryptoAmount());
             UserCoin userCoin = userService.getUserCoin(userId, coinCode.name());
             BigDecimal reserved = userCoin.getReservedBalance();
-            BigDecimal txFee = Util.nvl(coinCode.getCoinSettings().getRecallFee(), coinCode.getCoinSettings().getTxFee());
-            BigDecimal walletBalance = walletService.getBalance(coinCode);
+            System.out.println("reserved: " + reserved);
 
-            if (reserved.compareTo(dto.getCryptoAmount().add(txFee)) >= 0 && walletBalance.compareTo(dto.getCryptoAmount()) >= 0) {
+            BigDecimal txFee = Util.nvl(coinCode.getCoinSettings().getRecallFee(), coinCode.getCoinSettings().getTxFee());
+            System.out.println("txFee: " + txFee);
+
+            BigDecimal walletBalance = walletService.getBalance(coinCode);
+            System.out.println("walletBalance: " + walletBalance);
+
+            System.out.println("1: " + (reserved.compareTo(dto.getCryptoAmount().add(txFee)) >= 0));
+            System.out.println("2: " + (walletBalance.compareTo(dto.getCryptoAmount().add(txFee)) >= 0));
+
+            if (reserved.compareTo(dto.getCryptoAmount().add(txFee)) >= 0 && walletBalance.compareTo(dto.getCryptoAmount().add(txFee)) >= 0) {
                 String fromAddress = coinCode.getWalletAddress();
                 String toAddress = userCoin.getAddress();
                 String hex = coinCode.sign(fromAddress, toAddress, dto.getCryptoAmount());
@@ -318,7 +327,7 @@ public class TransactionService {
 
                     dto.setFromAddress(fromAddress);
                     dto.setToAddress(toAddress);
-                    dto.setCryptoAmount(dto.getCryptoAmount().add(txFee));
+                    dto.setCryptoAmount(dto.getCryptoAmount());
                     dto.setFee(txFee);
 
                     userCoin.setReservedBalance(userCoin.getReservedBalance().subtract(dto.getCryptoAmount()));
@@ -443,7 +452,7 @@ public class TransactionService {
                 CoinService.CoinEnum coinId = CoinService.CoinEnum.valueOf(t.getCoin().getCode());
                 TransactionStatus status = coinId.getTransactionStatus(t.getTxId());
 
-                if (status == TransactionStatus.COMPLETE) {
+                if (status != TransactionStatus.PENDING) {
                     t.setStatus(status.getValue());
 
                     confirmedList.add(t);

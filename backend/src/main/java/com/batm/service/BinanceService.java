@@ -1,7 +1,6 @@
 package com.batm.service;
 
 import com.batm.dto.*;
-import com.batm.entity.Coin;
 import com.batm.model.TransactionStatus;
 import com.batm.util.Constant;
 import com.batm.util.TxUtil;
@@ -81,7 +80,11 @@ public class BinanceService {
 
             JSONObject res = JSONArray.fromObject(rest.postForObject(nodeUrl + "/api/v1/broadcast", hex, String.class)).getJSONObject(0);
 
-            return res.optString("hash");
+            String txId = res.optString("hash");
+
+            if(isTransactionExist(txId)) {
+                return txId;
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -105,6 +108,8 @@ public class BinanceService {
             dto.setCryptoAmount(getAmount(msg.optJSONObject("value").optJSONArray("inputs").getJSONObject(0).getJSONArray("coins").getJSONObject(0).optString("amount")));
             dto.setCryptoFee(getAmount("1000000"));
         } catch (Exception e) {
+            dto.setStatus(TransactionStatus.FAIL);
+
             e.printStackTrace();
         }
 
@@ -231,5 +236,17 @@ public class BinanceService {
 
     private BigDecimal getAmount(String amount) {
         return new BigDecimal(amount).divide(Constant.BNB_DIVIDER).stripTrailingZeros();
+    }
+
+    private boolean isTransactionExist(String txId) {
+        try {
+            rest.getForObject(nodeUrl + "/api/v1/tx/" + txId + "?format=json", JSONObject.class);
+
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return false;
     }
 }

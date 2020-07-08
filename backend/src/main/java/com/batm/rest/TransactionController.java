@@ -85,11 +85,11 @@ public class TransactionController {
                 }
 
                 if (coinCode == CoinService.CoinEnum.ETH) {
-                    geth.addPendingEthTransaction(txId.toLowerCase(), dto.getFromAddress(), dto.getToAddress(), dto.getCryptoAmount(), dto.getFee());
+                    geth.addPendingEthTransaction(txId, dto.getFromAddress(), dto.getToAddress(), dto.getCryptoAmount(), dto.getFee());
                 }
 
                 if (coinCode == CoinService.CoinEnum.CATM) {
-                    geth.addPendingTokenTransaction(txId.toLowerCase(), dto.getFromAddress(), dto.getToAddress(), dto.getCryptoAmount(), dto.getFee());
+                    geth.addPendingTokenTransaction(txId, dto.getFromAddress(), dto.getToAddress(), dto.getCryptoAmount(), dto.getFee());
                 }
 
                 return Response.ok("txId", txId);

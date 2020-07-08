@@ -212,9 +212,9 @@ public class GethService {
     }
 
     public void addPendingEthTransaction(String txId, String fromAddress, String toAddress, BigDecimal amount, BigDecimal fee) {
-        Document doc = new Document("txId", txId)
-                .append("fromAddress", fromAddress)
-                .append("toAddress", toAddress)
+        Document doc = new Document("txId", txId.toLowerCase())
+                .append("fromAddress", fromAddress.toLowerCase())
+                .append("toAddress", toAddress.toLowerCase())
                 .append("amount", amount)
                 .append("fee", fee)
                 .append("status", TransactionStatus.PENDING.getValue())
@@ -227,9 +227,9 @@ public class GethService {
     public void addPendingTokenTransaction(String txId, String fromAddress, String toAddress, BigDecimal amount, BigDecimal fee) {
         addPendingEthTransaction(txId, fromAddress, contractAddress, BigDecimal.ZERO, fee);
 
-        Document doc = new Document("txId", txId)
-                .append("fromAddress", fromAddress)
-                .append("toAddress", toAddress)
+        Document doc = new Document("txId", txId.toLowerCase())
+                .append("fromAddress", fromAddress.toLowerCase())
+                .append("toAddress", toAddress.toLowerCase())
                 .append("amount", amount)
                 .append("fee", fee)
                 .append("status", TransactionStatus.PENDING.getValue())
@@ -521,6 +521,10 @@ public class GethService {
                     fromAddress = Util.nvl(fromAddress, tokenDoc.getString("fromAddress"));
                     toAddress = Util.nvl(toAddress, tokenDoc.getString("toAddress"));
 
+                    if(tx.getBlockNumber() != null) {
+                        tokenDoc.append("status", status.getValue());
+                    }
+
                     UpdateOneModel tokenUpdate = new UpdateOneModel(new Document("txId", tokenDoc.getString("txId")), new Document("$set", tokenDoc));
                     tokenUpdate.getOptions().upsert(true);
 
@@ -534,9 +538,12 @@ public class GethService {
                     .append("toAddress", toAddress)
                     .append("amount", amount)
                     .append("fee", fee)
-                    .append("status", status.getValue())
                     .append("blockTime", timestamp)
                     .append("timestamp", System.currentTimeMillis());
+
+            if(tx.getBlockNumber() != null) {
+                doc.append("status", status.getValue());
+            }
 
             UpdateOneModel update = new UpdateOneModel(new Document("txId", doc.getString("txId")), new Document("$set", doc));
             update.getOptions().upsert(true);
