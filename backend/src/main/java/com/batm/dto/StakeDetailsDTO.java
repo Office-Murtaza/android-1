@@ -15,6 +15,7 @@ import java.math.BigDecimal;
 public class StakeDetailsDTO {
 
     private boolean exist;
+    private boolean unstakeAvailable;
     private BigDecimal stakedAmount;
     private BigDecimal rewardsAmount;
     private BigDecimal rewardsPercent;

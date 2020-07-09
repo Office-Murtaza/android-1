@@ -25,6 +25,9 @@ import java.util.*;
 @EnableScheduling
 public class TransactionService {
 
+    private static final int STAKE_ANNUAL_PERCENT = 12;
+    private static final int STAKE_MIN_DAYS = 21;
+
     @Autowired
     private TransactionRecordRep recordRep;
 
@@ -262,7 +265,7 @@ public class TransactionService {
             BigDecimal refAmount = dto.getCryptoAmount()
                     .multiply(coinCode.getPrice())
                     .divide(refCoinCode.getPrice(), refCoinCode.getCoinEntity().getScale(), RoundingMode.HALF_DOWN)
-                    .multiply(BigDecimal.valueOf(100).subtract(coinCode.getCoinEntity().getProfitExchange()).divide(BigDecimal.valueOf(100)))
+                    .multiply(Constant.HUNDRED.subtract(coinCode.getCoinEntity().getProfitExchange()).divide(Constant.HUNDRED))
                     .setScale(refCoinCode.getCoinEntity().getScale(), BigDecimal.ROUND_DOWN).stripTrailingZeros();
 
             record.setRefAmount(refAmount);
@@ -390,8 +393,9 @@ public class TransactionService {
                     dto.setExist(true);
                     dto.setStakedAmount(record.getAmount());
                     dto.setStakedDays(days);
-                    dto.setRewardsPercent(new BigDecimal(days).divide(new BigDecimal(365)).multiply(new BigDecimal(12)).stripTrailingZeros());
-                    dto.setRewardsAmount(record.getAmount().multiply(BigDecimal.ONE.add(dto.getRewardsPercent().divide(new BigDecimal(100)))).stripTrailingZeros());
+                    dto.setUnstakeAvailable(days >= STAKE_MIN_DAYS);
+                    dto.setRewardsPercent(new BigDecimal(days).multiply(new BigDecimal(STAKE_ANNUAL_PERCENT)).divide(new BigDecimal(365), 2, RoundingMode.HALF_DOWN).stripTrailingZeros());
+                    dto.setRewardsAmount(record.getAmount().multiply(dto.getRewardsPercent().divide(Constant.HUNDRED)).stripTrailingZeros());
 
                     return dto;
                 }
@@ -418,6 +422,7 @@ public class TransactionService {
             List<TransactionRecordWallet> completeRecords = massStatusCheck(pendingRecords);
 
             completeRecords.forEach(e -> {
+                if(e.getStatus() == TransactionStatus.COMPLETE.getValue()){
                 if (e.getType() == TransactionType.RESERVE.getValue()) {
                     UserCoin userCoin = userService.getUserCoin(e.getIdentity().getUser().getId(), e.getCoin().getCode());
                     userCoin.setReservedBalance(userCoin.getReservedBalance().add(e.getAmount()));
@@ -436,6 +441,7 @@ public class TransactionService {
                         break;
                     }
                 }
+            }
             });
 
             walletRep.saveAll(completeRecords);
