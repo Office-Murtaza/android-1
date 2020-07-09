@@ -58,7 +58,7 @@ interface ApiInterface {
     fun getTransactionDetails(
         @Path("userId") userId: String?,
         @Path("coinCode") coinCode: String?,
-        @Query("txid") txid: String?
+        @Query("txId") txId: String?
     ): Observable<ServerResponse<TransactionDetailsResponse>>
 
     @GET("user/{userId}/coins/{coinCode}/transaction")

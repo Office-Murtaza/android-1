@@ -264,14 +264,14 @@ class TransactionHashHelper(
                 it.fee = ((prefsHelper.coinsFee[CoinType.XRP.code()]?.txFee?.toBigDecimal()
                     ?: BigDecimal(0.000020)) * BigDecimal.valueOf(CoinType.XRP.unit())).toLong()
                 it.privateKey = ByteString.copyFrom(privateKey.data())
-            }.build()
+            }
             val signBytes = AnySigner.sign(
-                signingInput,
+                signingInput.build(),
                 CoinType.XRP,
                 Ripple.SigningOutput.parser()
             ).encoded.toByteArray()
-            val hash = Numeric.toHexString(signBytes)
-            Either.Right(hash.substring(2))
+            val hash = Numeric.toHexString(signBytes).substring(2)
+            Either.Right(hash)
         } else {
             response as Either.Left
         }
@@ -287,14 +287,14 @@ class TransactionHashHelper(
 
         return if (response.isRight) {
             val privateKey = PrivateKey(coinEntity.privateKey.toHexByteArray())
-            val publicKey = privateKey.getPublicKeySecp256k1(true)
+            val fromAddress = privateKey.getPublicKeySecp256k1(true)
 
             val token = Binance.SendOrder.Token.newBuilder().also {
                 it.denom = CoinType.BINANCE.code()
                 it.amount = (fromCoinAmount * CoinType.BINANCE.unit()).toLong()
             }
             val input = Binance.SendOrder.Input.newBuilder().also {
-                it.address = ByteString.copyFrom(AnyAddress(publicKey, CoinType.BINANCE).data())
+                it.address = ByteString.copyFrom(AnyAddress(fromAddress, CoinType.BINANCE).data())
                 it.addAllCoins(listOf(token.build()))
             }
             val output = Binance.SendOrder.Output.newBuilder().also {
@@ -311,15 +311,15 @@ class TransactionHashHelper(
                 it.sequence = response.b.sequence ?: 0
                 it.privateKey = ByteString.copyFrom(privateKey.data())
                 it.sendOrder = sendOrder.build()
-            }.build()
+            }
 
             val signBytes = AnySigner.sign(
-                signingInput,
+                signingInput.build(),
                 CoinType.BINANCE,
                 Binance.SigningOutput.parser()
             ).encoded.toByteArray()
-            val hash = Numeric.toHexString(signBytes)
-            Either.Right(hash.substring(2))
+            val hash = Numeric.toHexString(signBytes).substring(2)
+            Either.Right(hash)
         } else {
             response as Either.Left
         }
