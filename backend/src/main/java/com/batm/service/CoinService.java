@@ -267,7 +267,7 @@ public class CoinService {
 
             @Override
             public TransactionStatus getTransactionStatus(String txId) {
-                return getTransaction(txId, StringUtils.EMPTY).getStatus();
+                return geth.getTransactionStatus(txId);
             }
 
             @Override
@@ -365,7 +365,7 @@ public class CoinService {
 
             @Override
             public TransactionStatus getTransactionStatus(String txId) {
-                return getTransaction(txId, StringUtils.EMPTY).getStatus();
+                return geth.getTransactionStatus(txId);
             }
 
             @Override

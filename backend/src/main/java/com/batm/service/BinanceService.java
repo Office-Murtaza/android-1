@@ -80,11 +80,7 @@ public class BinanceService {
 
             JSONObject res = JSONArray.fromObject(rest.postForObject(nodeUrl + "/api/v1/broadcast", hex, String.class)).getJSONObject(0);
 
-            String txId = res.optString("hash");
-
-            if(isTransactionExist(txId)) {
-                return txId;
-            }
+            return res.optString("hash");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -236,17 +232,5 @@ public class BinanceService {
 
     private BigDecimal getAmount(String amount) {
         return new BigDecimal(amount).divide(Constant.BNB_DIVIDER).stripTrailingZeros();
-    }
-
-    private boolean isTransactionExist(String txId) {
-        try {
-            rest.getForObject(nodeUrl + "/api/v1/tx/" + txId + "?format=json", JSONObject.class);
-
-            return true;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return false;
     }
 }

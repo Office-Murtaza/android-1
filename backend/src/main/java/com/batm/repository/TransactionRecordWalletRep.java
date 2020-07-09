@@ -16,6 +16,8 @@ public interface TransactionRecordWalletRep extends JpaRepository<TransactionRec
 
     List<TransactionRecordWallet> findAllByIdentityAndCoinAndTypeIn(Identity identity, Coin coin, List<Integer> types);
 
+    List<TransactionRecordWallet> findAllByIdentityAndCoin(Identity identity, Coin coin);
+
     @Query(value = "SELECT * FROM w_transactionrecordwallet WHERE status = :status AND update_date > NOW() - INTERVAL :hoursAgo HOUR", nativeQuery = true)
     List<TransactionRecordWallet> findAllByStatusAndHoursAgo(@Param("status") Integer status, @Param("hoursAgo") Integer hours, Pageable page);
 

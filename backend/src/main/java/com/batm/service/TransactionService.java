@@ -126,7 +126,7 @@ public class TransactionService {
 
         TxListDTO txDTO = new TxListDTO();
         txDTO.setTransactionRecords(recordRep.findAllByIdentityAndCryptoCurrency(user.getIdentity(), coinCode.name()));
-        txDTO.setTransactionRecordWallets(walletRep.findAllByIdentityAndCoinAndTypeIn(identity, coin, TransactionType.getWalletTypes()));
+        txDTO.setTransactionRecordWallets(walletRep.findAllByIdentityAndCoin(identity, coin));
 
         return coinCode.getTransactionList(address, startIndex, Constant.TRANSACTIONS_COUNT, txDTO);
     }
@@ -386,18 +386,20 @@ public class TransactionService {
             List<TransactionRecordWallet> records = walletRep.findAllByIdentityAndCoinAndTypeIn(identity, coin, Arrays.asList(TransactionType.STAKE.getValue()));
 
             for (TransactionRecordWallet record : records) {
-                if (StringUtils.isBlank(record.getRefTxId())) {
-                    int days = Days.daysBetween(new DateTime(record.getCreateDate()), DateTime.now()).getDays();
+                if(record.getStatus() == TransactionStatus.PENDING.getValue() || record.getStatus() == TransactionStatus.COMPLETE.getValue()) {
+                    if (StringUtils.isBlank(record.getRefTxId())) {
+                        int days = Days.daysBetween(new DateTime(record.getCreateDate()), DateTime.now()).getDays();
 
-                    StakeDetailsDTO dto = new StakeDetailsDTO();
-                    dto.setExist(true);
-                    dto.setStakedAmount(record.getAmount());
-                    dto.setStakedDays(days);
-                    dto.setUnstakeAvailable(days >= STAKE_MIN_DAYS);
-                    dto.setRewardsPercent(new BigDecimal(days).multiply(new BigDecimal(STAKE_ANNUAL_PERCENT)).divide(new BigDecimal(365), 2, RoundingMode.HALF_DOWN).stripTrailingZeros());
-                    dto.setRewardsAmount(record.getAmount().multiply(dto.getRewardsPercent().divide(Constant.HUNDRED)).stripTrailingZeros());
+                        StakeDetailsDTO dto = new StakeDetailsDTO();
+                        dto.setExist(true);
+                        dto.setStakedAmount(record.getAmount());
+                        dto.setStakedDays(days);
+                        dto.setUnstakeAvailable(days >= STAKE_MIN_DAYS);
+                        dto.setRewardsPercent(new BigDecimal(days).multiply(new BigDecimal(STAKE_ANNUAL_PERCENT)).divide(new BigDecimal(365), 2, RoundingMode.HALF_DOWN).stripTrailingZeros());
+                        dto.setRewardsAmount(record.getAmount().multiply(dto.getRewardsPercent().divide(Constant.HUNDRED)).stripTrailingZeros());
 
-                    return dto;
+                        return dto;
+                    }
                 }
             }
         } catch (Exception e) {

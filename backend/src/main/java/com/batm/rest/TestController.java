@@ -1,6 +1,5 @@
 package com.batm.rest;
 
-import com.batm.entity.Coin;
 import com.batm.service.*;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,11 +58,17 @@ public class TestController {
         return Response.ok(coinCode.getPrice());
     }
 
-    @GetMapping("/wallet/{coinCode}/sign")
-    public Response sign(@PathVariable CoinService.CoinEnum coinCode, @RequestParam String toAddress, @RequestParam BigDecimal amount) {
-        return Response.ok(coinCode.sign(coinCode.getWalletAddress(), toAddress, amount));
+    @GetMapping("/coins/{coinCode}/sign")
+    public Response sign(@PathVariable CoinService.CoinEnum coinCode, @RequestParam String fromAddress, @RequestParam String toAddress, @RequestParam BigDecimal amount) {
+        return Response.ok(coinCode.sign(fromAddress, toAddress, amount));
     }
 
+    @GetMapping("/coins/{coinCode}/submit")
+    public Response submit(@PathVariable CoinService.CoinEnum coinCode, @RequestParam String hex) {
+        return Response.ok(coinCode.submitTransaction(hex));
+    }
+
+    /*
     @GetMapping("/coins/store-node-txs")
     public Response storeNodeTxs() {
         geth.storeNodeTransactions();
@@ -100,6 +105,7 @@ public class TestController {
         return Response.ok(geth.submitTransaction(hex));
     }
 
+    */
     @GetMapping("/coins/eth-nonce")
     public Response ethNonce(@RequestParam String address) {
         return Response.ok(geth.getNonce(address));
