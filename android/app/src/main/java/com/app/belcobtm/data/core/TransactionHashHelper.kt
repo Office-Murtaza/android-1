@@ -251,8 +251,8 @@ class TransactionHashHelper(
         fromCoin: LocalCoinType,
         fromCoinAmount: Double
     ): Either<Failure, String> {
-        val response = apiService.getRippleSequence(toAddress)
         val coinEntity = daoCoin.getItem(fromCoin.name)
+        val response = apiService.getRippleSequence(coinEntity.publicKey)
 
         return if (response.isRight) {
             val privateKey = PrivateKey(coinEntity.privateKey.toHexByteArray())
@@ -282,8 +282,8 @@ class TransactionHashHelper(
         fromCoin: LocalCoinType,
         fromCoinAmount: Double
     ): Either<Failure, String> {
-        val response = apiService.getBinanceBlockHeader(toAddress)
         val coinEntity = daoCoin.getItem(fromCoin.name)
+        val response = apiService.getBinanceBlockHeader(coinEntity.publicKey)
 
         return if (response.isRight) {
             val privateKey = PrivateKey(coinEntity.privateKey.toHexByteArray())

@@ -287,8 +287,8 @@ class TransactionApiService(
         Either.Left(failure)
     }
 
-    suspend fun getRippleSequence(toAddress: String): Either<Failure, Long> = try {
-        val request = api.getRippleBlockHeaderAsync(toAddress).await()
+    suspend fun getRippleSequence(fromAddress: String): Either<Failure, Long> = try {
+        val request = api.getRippleBlockHeaderAsync(fromAddress).await()
         request.body()?.let { Either.Right(it.sequence ?: 0) } ?: Either.Left(Failure.ServerError())
     } catch (failure: Failure) {
         failure.printStackTrace()
