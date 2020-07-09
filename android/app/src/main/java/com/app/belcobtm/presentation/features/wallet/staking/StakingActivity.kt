@@ -2,7 +2,6 @@ package com.app.belcobtm.presentation.features.wallet.staking
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.View
 import androidx.core.os.bundleOf
 import androidx.lifecycle.Observer
 import com.app.belcobtm.R
@@ -19,7 +18,6 @@ import org.koin.android.viewmodel.ext.android.viewModel
 
 class StakingActivity : BaseActivity() {
     private val viewModel: StakingViewModel by viewModel()
-    private val smsDialogView: View by lazy { layoutInflater.inflate(R.layout.view_material_sms_code_dialog, null) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

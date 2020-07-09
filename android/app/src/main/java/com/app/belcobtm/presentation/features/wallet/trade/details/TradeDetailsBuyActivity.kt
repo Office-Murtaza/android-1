@@ -6,7 +6,6 @@ import android.view.MenuItem
 import androidx.lifecycle.Observer
 import com.app.belcobtm.R
 import com.app.belcobtm.domain.Failure
-import com.app.belcobtm.domain.wallet.item.CoinDataItem
 import com.app.belcobtm.presentation.core.extensions.*
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
 import com.app.belcobtm.presentation.core.ui.BaseActivity
@@ -21,7 +20,7 @@ import kotlin.math.roundToInt
 class TradeDetailsBuyActivity : BaseActivity() {
     private lateinit var tradeDetailsItem: TradeDetailsItem.BuySell
     private val viewModel: TradeDetailsBuyViewModel by viewModel {
-        parametersOf(intent.getParcelableExtra(TAG_COIN_ITEM))
+        parametersOf(intent.getStringExtra(TAG_COIN_CODE))
     }
     private val doubleTextWatcher: DoubleTextWatcher = DoubleTextWatcher(
         maxCharsAfterDotFirst = DoubleTextWatcher.MAX_CHARS_AFTER_DOT_CRYPTO,
@@ -132,15 +131,14 @@ class TradeDetailsBuyActivity : BaseActivity() {
     }
 
     private fun initViews() {
-        val intentCoinItem = intent.getParcelableExtra<CoinDataItem>(TAG_COIN_ITEM)!!
         tradeDetailsItem = intent.getParcelableExtra(TAG_TRADE_DETAILS_ITEM)!!
 
         setSupportActionBar(toolbarView)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.title = if (tradeDetailsItem.isBuyType) {
-            getString(R.string.trade_screen_title_buy, intentCoinItem.code)
+            getString(R.string.trade_screen_title_buy, intent.getStringExtra(TAG_COIN_CODE))
         } else {
-            getString(R.string.trade_screen_title_sell, intentCoinItem.code)
+            getString(R.string.trade_screen_title_sell, intent.getStringExtra(TAG_COIN_CODE))
         }
 
         priceUsdView.text = getString(R.string.unit_usd_dynamic, tradeDetailsItem.price.toStringUsd())
@@ -155,11 +153,11 @@ class TradeDetailsBuyActivity : BaseActivity() {
         limitsView.text =
             getString(R.string.unit_usd_dynamic, "${tradeDetailsItem.minLimit} - ${tradeDetailsItem.maxLimit}")
         termsView.text = tradeDetailsItem.terms
-        amountCryptoView.hint = getString(R.string.crypto_amount, intentCoinItem.code)
+        amountCryptoView.hint = getString(R.string.crypto_amount, intent.getStringExtra(TAG_COIN_CODE))
     }
 
     companion object {
-        const val TAG_COIN_ITEM = "tag_coin_item"
+        const val TAG_COIN_CODE = "tag_coin_code"
         const val TAG_TRADE_DETAILS_ITEM = "tag_trade_details_item"
     }
 }

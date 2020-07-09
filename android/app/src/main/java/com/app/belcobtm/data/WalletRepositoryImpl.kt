@@ -35,6 +35,28 @@ class WalletRepositoryImpl(
         return Either.Right(Unit)
     }
 
+    override suspend fun getFreshCoinDataItem(
+        coinCode: String
+    ): Either<Failure, CoinDataItem> = if (networkUtils.isNetworkAvailable()) {
+        val enabledCoinList = daoCoin.getItemList()?.filter { it.isEnabled }?.map { it.type.name } ?: emptyList()
+        val response = apiService.getBalance(enabledCoinList)
+        if (response.isRight) {
+            val balanceItem = (response as Either.Right).b
+            cachedCoinDataItemList.clear()
+            cachedCoinDataItemList.addAll(balanceItem.coinList)
+            val coinDataItem = balanceItem.coinList.find { it.code == coinCode }
+            if (coinDataItem == null) {
+                Either.Left(Failure.MessageError("Data error"))
+            } else {
+                Either.Right(coinDataItem)
+            }
+        } else {
+            response as Either.Left
+        }
+    } else {
+        Either.Left(Failure.NetworkConnection)
+    }
+
     override suspend fun getBalanceItem(): Either<Failure, BalanceDataItem> = if (networkUtils.isNetworkAvailable()) {
         val enabledCoinList = daoCoin.getItemList()?.filter { it.isEnabled }?.map { it.type.name } ?: emptyList()
         val response = apiService.getBalance(enabledCoinList)

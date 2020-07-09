@@ -320,8 +320,14 @@ class TransactionApiService(
         Either.Left(failure)
     }
 
-    suspend fun submitReserve(coinCode: String, cryptoAmount: Double, hex: String): Either<Failure, Unit> = try {
-        val requestBody = TradeReserveRequest(TRANSACTION_TRADE_RESERVE, cryptoAmount, hex)
+    suspend fun submitReserve(
+        coinCode: String, fromAddress: String,
+        toAddress: String,
+        cryptoAmount: Double,
+        fee: Double,
+        hex: String
+    ): Either<Failure, Unit> = try {
+        val requestBody = TradeReserveRequest(TRANSACTION_TRADE_RESERVE, fromAddress, toAddress, cryptoAmount, fee, hex)
         val request = api.submitReserveAsync(prefHelper.userId, coinCode, requestBody).await()
         request.body()?.let { Either.Right(Unit) } ?: Either.Left(Failure.ServerError())
     } catch (failure: Failure) {

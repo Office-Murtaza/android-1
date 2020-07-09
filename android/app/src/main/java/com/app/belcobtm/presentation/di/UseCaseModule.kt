@@ -59,4 +59,5 @@ val useCaseModule = module {
     single { StakeCompleteTransactionUseCase(get()) }
     single { UnStakeCreateTransactionUseCase(get()) }
     single { UnStakeCompleteTransactionUseCase(get()) }
+    single { GetFreshCoinUseCase(get()) }
 }

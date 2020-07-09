@@ -35,7 +35,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     app:barrierDirection="end"
-                    app:constraint_referenced_ids="balanceTitleView,priceTitleView,reservedTitleView,coinAmountTitleView,fiatAmountTitleView" />
+                    app:constraint_referenced_ids="balanceTitleView,priceTitleView,reservedTitleView" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/priceTitleView"

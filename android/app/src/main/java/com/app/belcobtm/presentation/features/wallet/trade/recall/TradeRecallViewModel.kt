@@ -4,7 +4,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.app.belcobtm.domain.transaction.interactor.trade.TradeRecallTransactionCompleteUseCase
 import com.app.belcobtm.domain.transaction.interactor.trade.TradeRecallTransactionCreateUseCase
-import com.app.belcobtm.domain.wallet.LocalCoinType
 import com.app.belcobtm.domain.wallet.item.CoinDataItem
 import com.app.belcobtm.domain.wallet.item.CoinFeeDataItem
 import com.app.belcobtm.presentation.core.item.CoinScreenItem
@@ -40,9 +39,9 @@ class TradeRecallViewModel(
         )
     }
 
-    fun getMaxValue(): Double = if (coinDataItem.code == LocalCoinType.CATM.name) {
-        coinDataItem.balanceCoin
-    } else {
-        0.0.coerceAtLeast(coinDataItem.balanceCoin - feeDataItem.txFee)
-    }
+    fun getMaxValue(): Double =
+        0.0.coerceAtLeast(coinDataItem.reservedBalanceCoin - (feeDataItem.recallFee ?: feeDataItem.txFee))
+
+    fun isEnoughReservedAmount(): Boolean =
+        coinDataItem.reservedBalanceCoin > feeDataItem.recallFee ?: feeDataItem.txFee
 }
