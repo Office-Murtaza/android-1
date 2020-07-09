@@ -20,4 +20,14 @@ public class TokenDTO {
     private Long expires;
     private String refreshToken;
     private List<String> roles;
+    private BalanceDTO balance;
+
+    public TokenDTO(Long userId, Long identityId, String accessToken, Long expires, String refreshToken, List<String> roles) {
+        this.userId = userId;
+        this.identityId = identityId;
+        this.accessToken = accessToken;
+        this.expires = expires;
+        this.refreshToken = refreshToken;
+        this.roles = roles;
+    }
 }

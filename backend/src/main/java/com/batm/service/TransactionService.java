@@ -193,8 +193,8 @@ public class TransactionService {
 
     public UserLimitDTO getLimits(Long userId) {
         UserLimitDTO dto = new UserLimitDTO();
-        dto.setDailyLimit(new AmountDTO(BigDecimal.ZERO));
-        dto.setTxLimit(new AmountDTO(BigDecimal.ZERO));
+        dto.setDailyLimit(BigDecimal.ZERO);
+        dto.setTxLimit(BigDecimal.ZERO);
         dto.setSellProfitRate(BigDecimal.ONE);
 
         try {
@@ -213,8 +213,8 @@ public class TransactionService {
                 dailyLimit.subtract(txAmount);
             }
 
-            dto.setDailyLimit(new AmountDTO(Util.format2(dailyLimit)));
-            dto.setTxLimit(new AmountDTO(Util.format2(txLimit)));
+            dto.setDailyLimit(Util.format2(dailyLimit));
+            dto.setTxLimit(Util.format2(txLimit));
             dto.setSellProfitRate(new BigDecimal("1.05"));
         } catch (Exception e) {
             e.printStackTrace();

@@ -56,16 +56,24 @@ public class TwilioService {
         return null;
     }
 
-    public Message.Status sendVerificationCode(User user) {
+    public String sendVerificationCode(String phone) {
         try {
-            Message.Status status = null;
-            String code = Constant.DEFAULT_CODE;
-
             if (enabled) {
-                code = RandomStringUtils.randomNumeric(4);
-                status = sendMessage(user.getPhone(), "Code: " + code);
-            }
+                String code = RandomStringUtils.randomNumeric(4);
+                sendMessage(phone, "Code: " + code);
 
+                return code;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    public void sendVerificationCode(User user) {
+        try {
+            String code = sendVerificationCode(user.getPhone());
             CodeVerify codeVerify = codeVerifyRep.findByUserId(user.getId());
 
             if (codeVerify == null) {
@@ -81,13 +89,9 @@ public class TwilioService {
             codeVerify.setUpdateDate(new Date());
 
             codeVerifyRep.save(codeVerify);
-
-            return status;
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-        return null;
     }
 
     public String getVerificationCode(Long userId) {

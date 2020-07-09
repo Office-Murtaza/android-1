@@ -11,8 +11,8 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class UserCoinDTO {
+public class CheckResponseDTO {
 
-    private String code;
-    private String address;
+    private boolean phoneExist;
+    private boolean passwordMatch;
 }
