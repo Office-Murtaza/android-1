@@ -21,4 +21,7 @@ interface CoinDao {
 
     @Query("DELETE FROM CoinEntity")
     suspend fun clearTable()
+
+    @Query("SELECT * FROM CoinEntity LIMIT 1")
+    suspend fun isTableHasItems(): CoinEntity?
 }

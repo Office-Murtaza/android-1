@@ -13,7 +13,7 @@ import com.app.belcobtm.presentation.core.extensions.hide
 import com.app.belcobtm.presentation.core.extensions.show
 import com.app.belcobtm.presentation.core.extensions.toStringUsd
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
-import com.app.belcobtm.presentation.core.ui.BaseFragment
+import com.app.belcobtm.presentation.core.ui.BaseFragmentOld
 import com.app.belcobtm.presentation.features.authorization.pin.PinActivity
 import com.app.belcobtm.presentation.features.wallet.add.AddWalletActivity
 import com.app.belcobtm.presentation.features.wallet.balance.adapter.BalanceListItem
@@ -22,7 +22,7 @@ import com.app.belcobtm.presentation.features.wallet.transactions.TransactionsAc
 import kotlinx.android.synthetic.main.fragment_balance.*
 import org.koin.android.viewmodel.ext.android.viewModel
 
-class BalanceFragment : BaseFragment() {
+class BalanceFragment : BaseFragmentOld() {
     private val viewModel: BalanceViewModel by viewModel()
     private val adapter: CoinsAdapter = CoinsAdapter {
         when (it) {

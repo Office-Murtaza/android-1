@@ -13,8 +13,6 @@ import com.app.belcobtm.ui.main.coins.settings.check_pass.CheckPassContract
 import com.app.belcobtm.ui.main.coins.settings.phone.ShowPhoneContract
 import com.app.belcobtm.ui.main.coins.withdraw.WithdrawContract
 import com.app.belcobtm.ui.main.coins.withdraw.WithdrawPresenter
-import com.app.belcobtm.ui.main.main_activity.MainContract
-import com.app.belcobtm.ui.main.main_activity.MainPresenter
 import com.app.belcobtm.ui.main.settings.change_pass.ChangePassPresenter
 import com.app.belcobtm.ui.main.settings.check_pass.CheckPassPresenter
 import com.app.belcobtm.ui.main.settings.phone.ShowPhonePresenter
@@ -26,9 +24,6 @@ class ActivityModule {
 
     @Provides
     fun provideRecoverSeedPresenter(): RecoverSeedContract.Presenter = RecoverSeedPresenter()
-
-    @Provides
-    fun provideBalancePresenter(): MainContract.Presenter = MainPresenter()
 
     @Provides
     fun provideCheckPassPresenter(): CheckPassContract.Presenter = CheckPassPresenter()

@@ -13,6 +13,7 @@ import com.app.belcobtm.domain.wallet.interactor.*
 import org.koin.dsl.module
 
 val useCaseModule = module {
+    single { AuthorizationStatusGetUseCase(get()) }
     single { ClearAppDataUseCase(get()) }
     single { RecoverWalletUseCase(get()) }
     single { RecoverWalletVerifySmsCodeUseCase(get()) }

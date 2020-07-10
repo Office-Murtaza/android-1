@@ -8,7 +8,7 @@ import com.app.belcobtm.R
 import com.app.belcobtm.presentation.core.helper.AlertHelper
 import com.google.android.material.snackbar.Snackbar
 
-abstract class BaseFragment : Fragment() {
+abstract class BaseFragmentOld : Fragment() {
 
     private fun showError(error: String?, duration: Int) {
         activity?.runOnUiThread {

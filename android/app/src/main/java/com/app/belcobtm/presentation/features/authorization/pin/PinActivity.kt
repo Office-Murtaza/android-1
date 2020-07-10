@@ -18,7 +18,6 @@ import com.app.belcobtm.presentation.core.extensions.onTextChanged
 import com.app.belcobtm.presentation.core.helper.AlertHelper
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
 import com.app.belcobtm.presentation.core.ui.BaseActivity
-import com.app.belcobtm.presentation.features.authorization.welcome.WelcomeActivity
 import kotlinx.android.synthetic.main.activity_pin.*
 import org.koin.android.viewmodel.ext.android.viewModel
 
@@ -88,15 +87,14 @@ class PinActivity : BaseActivity() {
                     when (it.errorType) {
                         is Failure.TokenError -> {
                             finishAffinity()
-                            startActivity(Intent(this, WelcomeActivity::class.java))
+//                            startActivity(Intent(this, WelcomeFragment::class.java)) //TODO it's fragment now
                         }
                         is Failure.MessageError -> showError(it.errorType.message)
                         is Failure.NetworkConnection -> showError(R.string.error_internet_unavailable)
                         else -> {
                             finishAffinity()
-                            startActivity(Intent(this, WelcomeActivity::class.java))
+//                            startActivity(Intent(this, WelcomeFragment::class.java))//TODO it's fragment now
                         }
-//                            showError(R.string.error_something_went_wrong)
                     }
                     showProgress(false)
                 }

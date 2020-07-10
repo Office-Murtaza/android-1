@@ -9,4 +9,7 @@
     <dimen name="margin_quoter">4dp</dimen>
 
     <dimen name="photo_picker_column_size">100dp</dimen>
+
+
+    <integer name="slide_animation_duration">300</integer>
 </resources>

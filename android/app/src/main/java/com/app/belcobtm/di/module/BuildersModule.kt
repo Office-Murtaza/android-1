@@ -4,7 +4,6 @@ import com.app.belcobtm.di.ActivityScope
 import com.app.belcobtm.di.FragmentScope
 import com.app.belcobtm.presentation.features.authorization.pin.PinActivity
 import com.app.belcobtm.presentation.features.authorization.wallet.create.CreateWalletActivity
-import com.app.belcobtm.presentation.features.authorization.wallet.recover.RecoverWalletActivity
 import com.app.belcobtm.presentation.features.wallet.add.AddWalletActivity
 import com.app.belcobtm.presentation.features.wallet.balance.BalanceFragment
 import com.app.belcobtm.ui.auth.recover_seed.RecoverSeedActivity
@@ -29,10 +28,6 @@ abstract class BuildersModule {
     @ActivityScope
     @ContributesAndroidInjector(modules = [ActivityModule::class])
     internal abstract fun bindRecoverSeedPhraseActivity(): RecoverSeedActivity
-
-    @ActivityScope
-    @ContributesAndroidInjector(modules = [ActivityModule::class])
-    internal abstract fun bindRecoverWalletActivity(): RecoverWalletActivity
 
     @ActivityScope
     @ContributesAndroidInjector(modules = [ActivityModule::class])

@@ -2,15 +2,16 @@ package com.app.belcobtm.ui.main.main_activity
 
 import android.content.Intent
 import android.os.Bundle
+import android.preference.PreferenceManager
 import android.view.MenuItem
 import androidx.fragment.app.Fragment
+import com.app.belcobtm.App
 import com.app.belcobtm.R
+import com.app.belcobtm.data.disk.shared.preferences.SharedPreferencesHelper
 import com.app.belcobtm.domain.authorization.interactor.ClearAppDataUseCase
-import com.app.belcobtm.domain.wallet.LocalCoinType
 import com.app.belcobtm.domain.wallet.interactor.GetLocalCoinListUseCase
-import com.app.belcobtm.mvp.BaseMvpActivity
+import com.app.belcobtm.presentation.core.ui.BaseActivity
 import com.app.belcobtm.presentation.features.authorization.pin.PinActivity
-import com.app.belcobtm.presentation.features.authorization.welcome.WelcomeActivity
 import com.app.belcobtm.presentation.features.wallet.balance.BalanceFragment
 import com.app.belcobtm.ui.auth.recover_seed.RecoverSeedActivity
 import com.app.belcobtm.ui.main.atm.AtmFragment
@@ -19,16 +20,18 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.activity_main.*
 import org.koin.android.ext.android.inject
 
-class MainActivity : BaseMvpActivity<MainContract.View, MainContract.Presenter>(), MainContract.View,
-    BottomNavigationView.OnNavigationItemSelectedListener {
+class MainActivity : BaseActivity(), BottomNavigationView.OnNavigationItemSelectedListener {
     private val coinListUseCase: GetLocalCoinListUseCase by inject()
     private val clearAppDataUseCase: ClearAppDataUseCase by inject()
+    private val prefsHelper: SharedPreferencesHelper by lazy {
+        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(App.appContext())
+        SharedPreferencesHelper(sharedPreferences)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         coinListUseCase.invoke { dataItemList ->
-            val isHasCATMCoin: Boolean = dataItemList.firstOrNull { it.type == LocalCoinType.CATM } != null
-            if (dataItemList.isEmpty() && !mPresenter.isApiSeedEmpty() || !isHasCATMCoin) {
+            if (dataItemList.isEmpty() && prefsHelper.apiSeed.isNotEmpty()) {
                 clearAppDataUseCase.invoke {
                     launchData()
                 }
@@ -41,7 +44,7 @@ class MainActivity : BaseMvpActivity<MainContract.View, MainContract.Presenter>(
     private fun launchData() {
         setTheme(R.style.AppThemeNoActionBar)
         setContentView(R.layout.activity_main)
-        mPresenter.checkPinEntered()
+        checkPinEntered()
         bottom_bar.setOnNavigationItemSelectedListener(this)
         setFragment(BalanceFragment())
     }
@@ -72,24 +75,23 @@ class MainActivity : BaseMvpActivity<MainContract.View, MainContract.Presenter>(
         fragmentTransaction.commit()
     }
 
-    override fun onTokenNotSaved() {
-        finishAffinity()
-        startActivity(Intent(this, WelcomeActivity::class.java))
-    }
-
-    override fun onPinSaved() {
-        val mode = PinActivity.Companion.Mode.MODE_PIN
-        val intent = PinActivity.getIntent(this, mode)
-        startActivityForResult(intent, mode.ordinal)
-    }
-
-    override fun onPinNotSaved() {
-        val mode = PinActivity.Companion.Mode.MODE_CREATE_PIN
-        val intent = PinActivity.getIntent(this, mode)
-        startActivityForResult(intent, mode.ordinal)
-    }
-
-    override fun onSeedNotSaved() {
-        startActivity(Intent(this, RecoverSeedActivity::class.java))
+    private fun checkPinEntered() {
+        when {
+            prefsHelper.accessToken.isEmpty() -> {
+                finishAffinity()
+                // startActivity(Intent(this, WelcomeFragment::class.java))//TODO it's fragment now
+            }
+            prefsHelper.apiSeed.isEmpty() -> startActivity(Intent(this, RecoverSeedActivity::class.java))
+            prefsHelper.userPin.isNotBlank() -> {
+                val mode = PinActivity.Companion.Mode.MODE_PIN
+                val intent = PinActivity.getIntent(this, mode)
+                startActivityForResult(intent, mode.ordinal)
+            }
+            else -> {
+                val mode = PinActivity.Companion.Mode.MODE_CREATE_PIN
+                val intent = PinActivity.getIntent(this, mode)
+                startActivityForResult(intent, mode.ordinal)
+            }
+        }
     }
 }

@@ -3,8 +3,13 @@
     <string name="file_provider" translatable="false">com.app.belcobtm.fileprovider</string>
 
     <string name="app_name">Belco Wallet</string>
-    <!-- Strings related to login -->
 
+    <!-- Bottom navigation -->
+    <string name="bottom_menu_atm">ATM</string>
+    <string name="bottom_menu_settings">Settings</string>
+    <string name="bottom_menu_wallet">Wallet</string>
+
+    <!-- Strings related to login -->
     <string name="logo_text">Stay Ahead of the Crypto Future</string>
 
     <!--welcome-->

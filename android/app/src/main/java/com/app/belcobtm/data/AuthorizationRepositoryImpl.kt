@@ -9,7 +9,12 @@ import com.app.belcobtm.data.rest.authorization.AuthApiService
 import com.app.belcobtm.domain.Either
 import com.app.belcobtm.domain.Failure
 import com.app.belcobtm.domain.authorization.AuthorizationRepository
+import com.app.belcobtm.domain.authorization.AuthorizationStatus
 import com.app.belcobtm.domain.wallet.LocalCoinType
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import org.web3j.utils.Numeric
 import wallet.core.jni.*
 
@@ -20,14 +25,27 @@ class AuthorizationRepositoryImpl(
     private val daoCoin: CoinDao
 ) : AuthorizationRepository {
 
-    override suspend fun clearAppData(): Unit {
+    override fun getAuthorizationStatus(): AuthorizationStatus {
+        val isEmptyAccountList: Boolean = runBlocking { daoCoin.isTableHasItems() } != null
+        if (isEmptyAccountList && prefHelper.apiSeed.isNotEmpty()) {
+            clearAppData()
+        }
+        return when {
+            prefHelper.accessToken.isEmpty() -> AuthorizationStatus.UNAUTHORIZED //Welcome fragment
+            prefHelper.apiSeed.isEmpty() -> AuthorizationStatus.SEED_PHRASE_ENTER//RecoverSeedActivity
+            //AuthorizationStatus.SEED_PHRASE_CREATE
+            prefHelper.userPin.isNotBlank() -> AuthorizationStatus.PIN_CODE_ENTER //PinActivity
+            else -> AuthorizationStatus.PIN_CODE_CREATE
+        }
+    }
+
+    override fun clearAppData() {
         prefHelper.accessToken = ""
         prefHelper.refreshToken = ""
         prefHelper.apiSeed = ""
         prefHelper.userPin = ""
         prefHelper.userId = -1
-        daoCoin.clearTable()
-        return Unit
+        CoroutineScope(Dispatchers.IO).launch { daoCoin.clearTable() }
     }
 
     override suspend fun recoverWallet(

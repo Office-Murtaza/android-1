@@ -13,7 +13,6 @@ import androidx.appcompat.widget.AppCompatEditText
 import com.app.belcobtm.R
 import com.app.belcobtm.mvp.BaseMvpActivity
 import com.app.belcobtm.presentation.core.helper.AlertHelper
-import com.app.belcobtm.presentation.features.authorization.welcome.WelcomeActivity
 import com.app.belcobtm.ui.auth.seed.SeedPhraseActivity
 import com.app.belcobtm.ui.main.coins.settings.check_pass.CheckPassContract
 import com.google.android.material.textfield.TextInputLayout
@@ -185,7 +184,7 @@ class CheckPassActivity : BaseMvpActivity<CheckPassContract.View, CheckPassContr
 
     override fun onUnlinkSuccess() {
         finishAffinity()
-        startActivity(Intent(this, WelcomeActivity::class.java))
+//        startActivity(Intent(this, WelcomeFragment::class.java))//TODO it's fragment now
         finish()
     }
 }
