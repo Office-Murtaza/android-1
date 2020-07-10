@@ -22,7 +22,6 @@ class StakingViewModel(
 ) : ViewModel() {
     private var hash: String = ""
     private var stakeDetailsDataItem: StakeDetailsDataItem? = null
-    val coinBalance: Double = coinDataItem.balanceCoin
     val stakeDetailsLiveData: MutableLiveData<LoadingData<StakingScreenItem>> = MutableLiveData()
     val transactionLiveData: MutableLiveData<LoadingData<TransactionState>> = MutableLiveData()
 
@@ -39,6 +38,7 @@ class StakingViewModel(
                         balanceCoin = coinDataItem.balanceCoin,
                         balanceUsd = coinDataItem.balanceUsd,
                         isExist = stakeDataItem.exist,
+                        isUnStakeAvailable = stakeDataItem.isUnStakeAvailable,
                         staked = stakeDataItem.stakedAmount,
                         rewardsAmount = stakeDataItem.rewardsAmount,
                         rewardsPercent = stakeDataItem.rewardsPercent,

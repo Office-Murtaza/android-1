@@ -4,6 +4,7 @@ import com.app.belcobtm.domain.transaction.item.StakeDetailsDataItem
 
 class StakeDetailsRequest(
     val exist: Boolean,
+    val unstakeAvailable: Boolean,
     val stakedDays: Int,
     val stakedAmount: Double,
     val rewardsAmount: Double,
@@ -12,6 +13,7 @@ class StakeDetailsRequest(
 
 fun StakeDetailsRequest.mapToDataItem(): StakeDetailsDataItem = StakeDetailsDataItem(
     exist = exist,
+    isUnStakeAvailable = unstakeAvailable,
     stakedDays = stakedDays,
     stakedAmount = stakedAmount,
     rewardsAmount = rewardsAmount,

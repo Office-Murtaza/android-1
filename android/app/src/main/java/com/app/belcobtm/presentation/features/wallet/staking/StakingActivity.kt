@@ -41,8 +41,12 @@ class StakingActivity : BaseActivity() {
         }
         unstakeButtonView.setOnClickListener { viewModel.unstakeCreateTransaction() }
         amountCryptoView.editText?.afterTextChanged {
-            stakeButtonView.isEnabled = amountCryptoView.getDouble() > 0
-                    && amountCryptoView.getDouble() <= viewModel.coinBalance
+            val loadingData = viewModel.stakeDetailsLiveData.value
+            stakeButtonView.isEnabled = if (loadingData is LoadingData.Success) {
+                amountCryptoView.getDouble() > 0 && amountCryptoView.getDouble() <= loadingData.data.balanceCoin
+            } else {
+                false
+            }
         }
     }
 
@@ -64,7 +68,7 @@ class StakingActivity : BaseActivity() {
                     timeView.text = resources.getQuantityString(R.plurals.staking_screen_time_value, time, time)
 
                     editStakeGroupView.toggle(!isExist)
-                    unstakeButtonView.toggle(isExist && time >= UNSTAKE_BUTTON_START_VALUE)
+                    unstakeButtonView.toggle(isExist && isUnStakeAvailable)
                     progressView.hide()
                 }
                 is LoadingData.Error -> {
@@ -129,9 +133,5 @@ class StakingActivity : BaseActivity() {
                 else -> Unit
             }
         }
-    }
-
-    companion object {
-        private const val UNSTAKE_BUTTON_START_VALUE = 21
     }
 }
