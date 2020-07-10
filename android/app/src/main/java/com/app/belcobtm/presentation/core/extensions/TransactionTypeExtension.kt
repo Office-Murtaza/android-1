@@ -17,4 +17,6 @@ fun TransactionType.getResText(): Int = when (this) {
     TransactionType.RESERVE -> R.string.transaction_type_reserve
     TransactionType.RECALL -> R.string.transaction_type_recall
     TransactionType.SELF -> R.string.transaction_type_self
+    TransactionType.STAKE -> R.string.transaction_type_stake
+    TransactionType.UNSTAKE -> R.string.transaction_type_unstake
 }
