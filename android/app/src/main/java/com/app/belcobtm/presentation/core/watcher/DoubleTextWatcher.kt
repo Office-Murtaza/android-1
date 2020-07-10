@@ -60,7 +60,7 @@ class DoubleTextWatcher(
             }
             editable.contains(DOT_CHAR) && (editable.lastIndex - editable.indexOf(DOT_CHAR)) > maxCharsAfterDot -> {
                 editable.delete(editable.lastIndex - 1, editable.lastIndex)
-                false
+                true
             }
             else -> {
                 true

@@ -39,7 +39,7 @@ class WithdrawActivity : BaseMvpActivity<WithdrawContract.View, WithdrawContract
                 cryptoAmount = cryptoAmountTemporary
             }
 
-            if (cryptoAmountTemporary > 0) {
+            if (cryptoAmount > 0) {
                 amountUsdView.setText((cryptoAmount * coinDataItem.priceUsd).toStringUsd())
                 nextButtonView.isEnabled = true
             } else {
@@ -48,8 +48,7 @@ class WithdrawActivity : BaseMvpActivity<WithdrawContract.View, WithdrawContract
             }
         },
         secondTextWatcher = {
-            val maxCryptoAmount = getMaxValue()
-            val maxUsdAmount = maxCryptoAmount * coinDataItem.priceUsd
+            val maxUsdAmount = getMaxValue() * coinDataItem.priceUsd
             val usdAmountTemporary = it.getDouble()
             val usdAmount: Double
 

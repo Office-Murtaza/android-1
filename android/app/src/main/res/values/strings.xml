@@ -175,6 +175,8 @@
     <string name="transaction_type_reserve">Reserve</string>
     <string name="transaction_type_recall">Recall</string>
     <string name="transaction_type_self">Self</string>
+    <string name="transaction_type_stake">Stake</string>
+    <string name="transaction_type_unstake">Unstake</string>
 
     <!--transaction type-->
     <string name="withdraw">Withdraw</string>
@@ -339,7 +341,7 @@
     <string name="error_something_went_wrong">Something went wrong</string>
     <string name="error_transaction_cannot_be_created">The transaction can not be created</string>
 
-    <string name="staking_screen_title">CATM</string>
+    <string name="staking_screen_title">Staking CATM</string>
     <string name="staking_screen_price">Price</string>
     <string name="staking_screen_balance">Balance</string>
     <string name="staking_screen_staked">Staked</string>
