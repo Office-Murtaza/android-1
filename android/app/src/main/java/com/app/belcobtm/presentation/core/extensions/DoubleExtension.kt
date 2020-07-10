@@ -1,12 +1,25 @@
 package com.app.belcobtm.presentation.core.extensions
 
+import java.math.RoundingMode
+import java.text.DecimalFormat
 
-fun Double.toStringUsd(): String = trimValue(2, this)
+fun Double.toStringUsd(): String = if (this > 0) {
+    val df = DecimalFormat("#.##")
+    df.roundingMode = RoundingMode.FLOOR
+    val trimmed = df.format(this).trimEnd('0')
+    when (trimmed.last()) {
+        ',' -> trimmed.trimEnd(',')
+        '.' -> trimmed.trimEnd('.')
+        else -> trimmed.replaceFirst(',', '.')
+    }
+} else {
+    "0"
+}
 
-fun Double.toStringCoin(): String = trimValue(6, this)
-
-private fun trimValue(charsAfterDot: Int, value: Double): String = if (value > 0) {
-    val trimmed = String.format("%." + charsAfterDot + "f", value).trimEnd('0')
+fun Double.toStringCoin(): String = if (this > 0) {
+    val df = DecimalFormat("#.######")
+    df.roundingMode = RoundingMode.FLOOR
+    val trimmed = df.format(this).trimEnd('0')
     when (trimmed.last()) {
         ',' -> trimmed.trimEnd(',')
         '.' -> trimmed.trimEnd('.')
