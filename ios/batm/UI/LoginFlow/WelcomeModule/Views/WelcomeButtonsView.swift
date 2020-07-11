@@ -5,13 +5,6 @@ import MaterialComponents
 
 class WelcomeButtonsView: UIView, HasDisposeBag {
   
-  let errorView: ErrorView = {
-    let view = ErrorView()
-    view.configure(for: localize(L.Welcome.Error.title))
-    view.isHidden = true
-    return view
-  }()
-  
   let createButton = MDCButton.createNewWallet
   let recoverButton = MDCButton.recoverMyWallet
   let termsAndConditionsView = TermsAndConditionsView()
@@ -31,19 +24,14 @@ class WelcomeButtonsView: UIView, HasDisposeBag {
   private func setupUI() {
     translatesAutoresizingMaskIntoConstraints = false
     
-    addSubviews(errorView,
-                createButton,
+    addSubviews(createButton,
                 recoverButton,
                 termsAndConditionsView)
   }
   
   private func setupLayout() {
-    errorView.snp.makeConstraints {
-      $0.top.equalToSuperview()
-      $0.centerX.equalToSuperview()
-    }
     createButton.snp.makeConstraints {
-      $0.top.equalToSuperview().offset(15)
+      $0.top.equalToSuperview()
       $0.left.right.equalToSuperview()
       $0.height.equalTo(48)
     }
@@ -60,16 +48,11 @@ class WelcomeButtonsView: UIView, HasDisposeBag {
   }
   
   private func setupBindings() {
-    createButton.rx.tap
-      .asObservable()
-      .withLatestFrom(termsAndConditionsView.rx.isAccepted)
-      .bind(to: errorView.rx.isHidden)
-      .disposed(by: disposeBag)
-    
-    recoverButton.rx.tap
-      .asObservable()
-      .withLatestFrom(termsAndConditionsView.rx.isAccepted)
-      .bind(to: errorView.rx.isHidden)
+    termsAndConditionsView.rx.isAccepted
+      .drive(onNext: { [unowned self] in
+        self.createButton.isEnabled = $0
+        self.recoverButton.isEnabled = $0
+      })
       .disposed(by: disposeBag)
   }
 }
