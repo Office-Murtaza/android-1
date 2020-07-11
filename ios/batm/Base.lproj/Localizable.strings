@@ -21,7 +21,7 @@
 "shared.button.next" = "Next";
 "shared.button.done" = "Done";
 "shared.error.title" = "Error";
-"shared.error.message" = "Server Error, Try Later";
+"shared.error.message" = "Server error, try again later";
 "shared.error.no_connection.message" = "No Internet Connection";
 
 "welcome.tagline" = "Stay Ahead of the Crypto Future";
