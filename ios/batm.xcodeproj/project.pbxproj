@@ -474,7 +474,6 @@
 		DBDA966222BFDB6E005B93DF /* ModulePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBDA966122BFDB6E005B93DF /* ModulePresenter.swift */; };
 		DBDA966722C00424005B93DF /* ErrorTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBDA966622C00424005B93DF /* ErrorTracker.swift */; };
 		DBDA966922C0043F005B93DF /* ActivityTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBDA966822C0043F005B93DF /* ActivityTracker.swift */; };
-		DBDD5D112357928D0012DFAA /* CheckboxView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBDD5D102357928D0012DFAA /* CheckboxView.swift */; };
 		DBDD5D13235797F00012DFAA /* CoinSellAnotherAddressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBDD5D12235797F00012DFAA /* CoinSellAnotherAddressView.swift */; };
 		DBEBC6BB2402987C00D7C8A6 /* ToastInitializer.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBEBC6BA2402987C00D7C8A6 /* ToastInitializer.swift */; };
 		DBEC45BB2321366500BB05B2 /* CoinWithdrawStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBEC45BA2321366500BB05B2 /* CoinWithdrawStore.swift */; };
@@ -984,7 +983,6 @@
 		DBDA966122BFDB6E005B93DF /* ModulePresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModulePresenter.swift; sourceTree = "<group>"; };
 		DBDA966622C00424005B93DF /* ErrorTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorTracker.swift; sourceTree = "<group>"; };
 		DBDA966822C0043F005B93DF /* ActivityTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityTracker.swift; sourceTree = "<group>"; };
-		DBDD5D102357928D0012DFAA /* CheckboxView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckboxView.swift; sourceTree = "<group>"; };
 		DBDD5D12235797F00012DFAA /* CoinSellAnotherAddressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinSellAnotherAddressView.swift; sourceTree = "<group>"; };
 		DBEBC6BA2402987C00D7C8A6 /* ToastInitializer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastInitializer.swift; sourceTree = "<group>"; };
 		DBEC45BA2321366500BB05B2 /* CoinWithdrawStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinWithdrawStore.swift; sourceTree = "<group>"; };
@@ -1169,7 +1167,6 @@
 				DB3C03E022CB62320036F779 /* DummyButton.swift */,
 				DB0211C522CD340A004065E9 /* TextFieldWithoutPaddings.swift */,
 				DB8A195F235729A0003E8F7D /* NavigationScreenView.swift */,
-				DBDD5D102357928D0012DFAA /* CheckboxView.swift */,
 				DBC8B45B23634EB900E7A799 /* Divider.swift */,
 				DBA65C08244DBF1D0034678E /* FakeTextFied.swift */,
 				DB5EB8DD2452D80F00CD1C63 /* MaterialCheckBoxView.swift */,
@@ -2955,7 +2952,6 @@
 				DB4D7BC12409A133008C2BD5 /* VerificationFlow+Dependencies.swift in Sources */,
 				DBA7A4A5235662AD000BE997 /* CoinSellModule.swift in Sources */,
 				DB96169422C5678E0078E92D /* MainButton.swift in Sources */,
-				DBDD5D112357928D0012DFAA /* CheckboxView.swift in Sources */,
 				DB5B2DE6230A769300821713 /* CoinDetailsAssembly.swift in Sources */,
 				DBADDE372438DD6600BFD806 /* CoinExchangeViewController.swift in Sources */,
 				DB38281C240CF9BA00418D3D /* VIPVerificationModule.swift in Sources */,
