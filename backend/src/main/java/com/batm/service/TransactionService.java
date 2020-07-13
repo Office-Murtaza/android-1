@@ -333,7 +333,7 @@ public class TransactionService {
                     dto.setCryptoAmount(dto.getCryptoAmount());
                     dto.setFee(txFee);
 
-                    userCoin.setReservedBalance(userCoin.getReservedBalance().subtract(dto.getCryptoAmount()));
+                    userCoin.setReservedBalance(userCoin.getReservedBalance().subtract(dto.getCryptoAmount().add(txFee)));
                     userCoinRep.save(userCoin);
 
                     return txId;
@@ -386,7 +386,7 @@ public class TransactionService {
             List<TransactionRecordWallet> records = walletRep.findAllByIdentityAndCoinAndTypeIn(identity, coin, Arrays.asList(TransactionType.STAKE.getValue()));
 
             for (TransactionRecordWallet record : records) {
-                if(record.getStatus() == TransactionStatus.PENDING.getValue() || record.getStatus() == TransactionStatus.COMPLETE.getValue()) {
+                if (record.getStatus() == TransactionStatus.PENDING.getValue() || record.getStatus() == TransactionStatus.COMPLETE.getValue()) {
                     if (StringUtils.isBlank(record.getRefTxId())) {
                         int days = Days.daysBetween(new DateTime(record.getCreateDate()), DateTime.now()).getDays();
 
@@ -424,26 +424,26 @@ public class TransactionService {
             List<TransactionRecordWallet> completeRecords = massStatusCheck(pendingRecords);
 
             completeRecords.forEach(e -> {
-                if(e.getStatus() == TransactionStatus.COMPLETE.getValue()){
-                if (e.getType() == TransactionType.RESERVE.getValue()) {
-                    UserCoin userCoin = userService.getUserCoin(e.getIdentity().getUser().getId(), e.getCoin().getCode());
-                    userCoin.setReservedBalance(userCoin.getReservedBalance().add(e.getAmount()));
+                if (e.getStatus() == TransactionStatus.COMPLETE.getValue()) {
+                    if (e.getType() == TransactionType.RESERVE.getValue()) {
+                        UserCoin userCoin = userService.getUserCoin(e.getIdentity().getUser().getId(), e.getCoin().getCode());
+                        userCoin.setReservedBalance(userCoin.getReservedBalance().add(e.getAmount()));
 
-                    userCoinRep.save(userCoin);
-                }
+                        userCoinRep.save(userCoin);
+                    }
 
-                if (e.getType() == TransactionType.UNSTAKE.getValue()) {
-                    List<TransactionRecordWallet> stakedRecords = walletRep.findAllByIdentityAndCoinAndTypeIn(e.getIdentity(), e.getCoin(), Arrays.asList(TransactionType.STAKE.getValue()));
+                    if (e.getType() == TransactionType.UNSTAKE.getValue()) {
+                        List<TransactionRecordWallet> stakedRecords = walletRep.findAllByIdentityAndCoinAndTypeIn(e.getIdentity(), e.getCoin(), Arrays.asList(TransactionType.STAKE.getValue()));
 
-                    for (TransactionRecordWallet record : stakedRecords) {
-                        record.setRefTxId(e.getTxId());
+                        for (TransactionRecordWallet record : stakedRecords) {
+                            record.setRefTxId(e.getTxId());
 
-                        walletRep.save(record);
+                            walletRep.save(record);
 
-                        break;
+                            break;
+                        }
                     }
                 }
-            }
             });
 
             walletRep.saveAll(completeRecords);

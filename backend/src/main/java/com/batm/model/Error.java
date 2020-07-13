@@ -13,6 +13,6 @@ import lombok.Setter;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Error {
 
-    private Integer errorCode;
-    private String errorMsg;
+    private Integer code;
+    private String message;
 }
