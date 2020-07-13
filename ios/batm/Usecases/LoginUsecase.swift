@@ -11,7 +11,8 @@ enum LoginState {
 protocol LoginUsecase {
   func getLogoutObservable() -> Observable<Void>
   func getLoginState() -> Single<LoginState>
-  func checkAndVerifyAccount(phoneNumber: String, password: String) -> Single<PhoneVerificationResponse>
+  func checkAndVerifyCreatingAccount(phoneNumber: String, password: String) -> Single<PhoneVerificationResponse>
+  func checkAndVerifyRecoveringAccount(phoneNumber: String, password: String) -> Single<PhoneVerificationResponse>
   func createWallet() -> Completable
   func createAccount(phoneNumber: String, password: String) -> Completable
   func recoverWallet(phoneNumber: String, password: String) -> Completable
@@ -70,11 +71,26 @@ class LoginUsecaseImpl: LoginUsecase {
       }
   }
   
-  func checkAndVerifyAccount(phoneNumber: String, password: String) -> Single<PhoneVerificationResponse> {
+  func checkAndVerifyCreatingAccount(phoneNumber: String, password: String) -> Single<PhoneVerificationResponse> {
     return api.checkAccount(phoneNumber: phoneNumber, password: password)
       .flatMap { [api] in
         if $0.phoneExist {
           return .error(APIError.serverError(localize(L.CreateWallet.Form.Error.existedPhoneNumber)))
+        }
+        
+        return api.verifyPhone(phoneNumber: phoneNumber)
+      }
+  }
+  
+  func checkAndVerifyRecoveringAccount(phoneNumber: String, password: String) -> Single<PhoneVerificationResponse> {
+    return api.checkAccount(phoneNumber: phoneNumber, password: password)
+      .flatMap { [api] in
+        if !$0.phoneExist {
+          return .error(APIError.serverError(localize(L.Recover.Form.Error.notExistedPhoneNumber)))
+        }
+        
+        if !$0.passwordMatch {
+          return .error(APIError.serverError(localize(L.Recover.Form.Error.notMatchPassword)))
         }
         
         return api.verifyPhone(phoneNumber: phoneNumber)

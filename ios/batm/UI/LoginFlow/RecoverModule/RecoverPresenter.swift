@@ -7,12 +7,9 @@ class RecoverPresenter: ModulePresenter, RecoverModule {
   typealias Store = ViewStore<RecoverAction, RecoverState>
   
   struct Input {
-    var updatePhone: Driver<ValidatablePhoneNumber>
+    var updatePhoneNumber: Driver<String?>
     var updatePassword: Driver<String?>
-    var updateCode: Driver<String?>
-    var cancel: Driver<Void>
-    var recoverWallet: Driver<Void>
-    var confirmCode: Driver<Void>
+    var next: Driver<Void>
   }
   
   let usecase: LoginUsecase
@@ -31,9 +28,9 @@ class RecoverPresenter: ModulePresenter, RecoverModule {
   }
   
   func bind(input: Input) {
-    input.updatePhone
+    input.updatePhoneNumber
       .asObservable()
-      .map { RecoverAction.updatePhone($0) }
+      .map { RecoverAction.updatePhoneNumber($0) }
       .bind(to: store.action)
       .disposed(by: disposeBag)
     
@@ -43,57 +40,26 @@ class RecoverPresenter: ModulePresenter, RecoverModule {
       .bind(to: store.action)
       .disposed(by: disposeBag)
     
-    input.updateCode
-      .asObservable()
-      .map { RecoverAction.updateCode($0) }
-      .bind(to: store.action)
-      .disposed(by: disposeBag)
-    
-    input.cancel
-      .drive(onNext: { [delegate] in delegate?.didCancelRecovering() })
-      .disposed(by: disposeBag)
-    
-    input.recoverWallet
+    input.next
       .asObservable()
       .doOnNext { [store] in store.action.accept(.updateValidationState) }
       .withLatestFrom(state)
       .filter { $0.validationState.isValid }
-      .map { ($0.validatablePhone.phoneE164, $0.password) }
-      .flatMap { [unowned self] in self.track(self.recoverWallet(phoneNumber: $0.0, password: $0.1)) }
-      .subscribe(onNext: { [store] in store.action.accept(.showCodePopup) })
-      .disposed(by: disposeBag)
-    
-    input.confirmCode
-      .asObservable()
-      .doOnNext { [store] in store.action.accept(.updateValidationState) }
-      .withLatestFrom(state)
-      .filter { $0.validationState.isValid }
-      .map { $0.code }
-      .flatMap { [unowned self] in self.track(self.verifyCode(code: $0)) }
-      .subscribe(onNext: { [delegate] in delegate?.finishRecovering() })
+      .map { ($0.phoneE164, $0.password) }
+      .flatMap { [unowned self] in self.track(self.checkAndVerify(phoneNumber: $0.0, password: $0.1)) }
+      .subscribe(onNext: { [delegate] _ in delegate?.finishRecovering() })
       .disposed(by: disposeBag)
   }
   
-  private func recoverWallet(phoneNumber: String, password: String) -> Completable {
-    return usecase.recoverWallet(phoneNumber: phoneNumber, password: password)
+  private func checkAndVerify(phoneNumber: String, password: String) -> Single<PhoneVerificationResponse> {
+    return usecase.checkAndVerifyRecoveringAccount(phoneNumber: phoneNumber, password: password)
       .catchError { [store] in
         if let apiError = $0 as? APIError, case let .serverError(error) = apiError {
           store.action.accept(.makeInvalidState(error))
         }
-        
+
         throw $0
-    }
-  }
-  
-  private func verifyCode(code: String) -> Completable {
-    return usecase.verifyCode(code: code)
-      .catchError { [store] in
-        if let apiError = $0 as? APIError, case let .serverError(error) = apiError {
-          store.action.accept(.makeInvalidState(error))
-        }
-        
-        throw $0
-    }
+      }
   }
   
 }

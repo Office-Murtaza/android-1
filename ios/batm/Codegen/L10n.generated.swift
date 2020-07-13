@@ -552,6 +552,18 @@ extension L.Recall.Form {
     static let tooLowAmount = "recall.form.error.too_low_amount"
   }
 }
+extension L.Recover {
+
+  struct Form {
+  }
+}
+extension L.Recover.Form {
+
+  struct Error {
+    static let notExistedPhoneNumber = "recover.form.error.not_existed_phone_number"
+    static let notMatchPassword = "recover.form.error.not_match_password"
+  }
+}
 extension L.Reserve {
 
   struct Button {
