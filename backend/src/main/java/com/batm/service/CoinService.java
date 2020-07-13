@@ -73,25 +73,6 @@ public class CoinService {
         return dto;
     }
 
-//    public BalanceDTO getCoinsBalance(Long userId) {
-//        List<UserCoin> userCoins = userService.getUserCoins(userId);
-//
-//        List<CompletableFuture<CoinBalanceDTO>> futures = userCoins.stream()
-//                .map(dto -> callAsync(dto))
-//                .collect(Collectors.toList());
-//
-//        List<CoinBalanceDTO> balances = futures.stream()
-//                .map(CompletableFuture::join)
-//                .sorted(Comparator.comparing(CoinBalanceDTO::getId))
-//                .collect(Collectors.toList());
-//
-//        BigDecimal totalBalance = Util.format2(balances.stream()
-//                .map(it -> it.getPrice().multiply(it.getBalance().add(it.getReservedBalance())))
-//                .reduce(BigDecimal.ZERO, BigDecimal::add));
-//
-//        return new BalanceDTO(totalBalance, balances);
-//    }
-
     public BalanceDTO getCoinsBalance(Long userId, List<String> coins) {
         List<UserCoin> userCoins = userService.getUserCoins(userId);
 
@@ -102,7 +83,7 @@ public class CoinService {
 
         List<CoinBalanceDTO> balances = futures.stream()
                 .map(CompletableFuture::join)
-                .sorted(Comparator.comparing(CoinBalanceDTO::getId))
+                .sorted(Comparator.comparing(CoinBalanceDTO::getOrder))
                 .collect(Collectors.toList());
 
         BigDecimal totalBalance = Util.format2(balances.stream()
@@ -120,7 +101,14 @@ public class CoinService {
             BigDecimal coinPrice = coinEnum.getPrice();
             BigDecimal coinBalance = coinEnum.getBalance(userCoin.getAddress()).setScale(scale, BigDecimal.ROUND_DOWN).stripTrailingZeros();
 
-            return new CoinBalanceDTO(userCoin.getCoin().getId(), userCoin.getCoin().getCode(), userCoin.getAddress(), coinBalance, userCoin.getReservedBalance().stripTrailingZeros(), coinPrice);
+            return CoinBalanceDTO.builder()
+                    .id(userCoin.getCoin().getId())
+                    .code(userCoin.getCoin().getCode())
+                    .order(userCoin.getCoin().getOrder())
+                    .address(userCoin.getAddress())
+                    .balance(coinBalance)
+                    .reservedBalance(userCoin.getReservedBalance().stripTrailingZeros())
+                    .price(coinPrice).build();
         });
     }
 
@@ -139,30 +127,6 @@ public class CoinService {
 
         userService.save(userCoins);
     }
-
-//    public void save(CoinAbcDTO dto, Long userId) {
-//        User user = userService.findById(userId);
-//        List<UserCoin> userCoins = userService.getUserCoins(userId);
-//        List<UserCoin> newCoins = new ArrayList<>();
-//
-//        dto.getCoins().stream().forEach(coinDTO -> {
-//            Coin coin = coinMap.get(coinDTO.getCode());
-//
-//            if (coin != null) {
-//                UserCoin userCoin = new UserCoin(user, coin, coinDTO.getAddress(), BigDecimal.ZERO);
-//
-//                if (userCoins.indexOf(userCoin) < 0) {
-//                    newCoins.add(userCoin);
-//                }
-//
-//                if (CoinEnum.valueOf(coinDTO.getCode()) == CoinEnum.ETH) {
-//                    geth.addAddressToJournal(coinDTO.getAddress());
-//                }
-//            }
-//        });
-//
-//        userService.save(newCoins);
-//    }
 
     public boolean isCoinsAddressMatch(User user, List<CoinDTO> coins) {
         for (CoinDTO reqCoin : coins) {

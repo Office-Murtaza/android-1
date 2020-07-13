@@ -47,7 +47,7 @@ public class Response {
         return Response.error(new Error(1, "Server error"));
     }
 
-    public static Response serverError(Integer code, String message) {
-        return Response.error(new Error(code, message));
+    public static Response defaultError(String message) {
+        return Response.error(new Error(2, message));
     }
 }

@@ -2,13 +2,11 @@ package com.batm.rest;
 
 import java.util.List;
 import com.batm.dto.CoinSettingsDTO;
-import com.batm.model.Error;
 import com.batm.service.PriceChartService;
 import com.batm.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import com.batm.model.Response;
-import com.batm.dto.CoinAbcDTO;
 import com.batm.service.CoinService;
 
 @RestController
@@ -53,7 +51,7 @@ public class CoinController {
             if (coinCode == CoinService.CoinEnum.BTC || coinCode == CoinService.CoinEnum.BCH || coinCode == CoinService.CoinEnum.LTC) {
                 return Response.ok(coinCode.getUTXO(xpub));
             } else {
-                return Response.error(coinCode.name() + " not allowed");
+                return Response.defaultError(coinCode.name() + " not allowed");
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -67,7 +65,7 @@ public class CoinController {
             if (coinCode == CoinService.CoinEnum.ETH || coinCode == CoinService.CoinEnum.CATM) {
                 return Response.ok(coinCode.getNonce(address));
             } else {
-                return Response.error(coinCode.name() + " not allowed");
+                return Response.defaultError(coinCode.name() + " not allowed");
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -81,7 +79,7 @@ public class CoinController {
             if (coinCode == CoinService.CoinEnum.BNB || coinCode == CoinService.CoinEnum.XRP) {
                 return Response.ok(coinCode.getCurrentAccount(address));
             } else {
-                return Response.error(coinCode.name() + " not allowed");
+                return Response.defaultError(coinCode.name() + " not allowed");
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -95,47 +93,13 @@ public class CoinController {
             if (coinCode == CoinService.CoinEnum.TRX) {
                 return Response.ok(coinCode.getCurrentBlock());
             } else {
-                return Response.error(coinCode.name() + " not allowed");
+                return Response.defaultError(coinCode.name() + " not allowed");
             }
         } catch (Exception e) {
             e.printStackTrace();
             return Response.serverError();
         }
     }
-
-//    @PostMapping("/user/{userId}/coins/add")
-//    public Response addCoins(@RequestBody CoinAbcDTO coinAbcDTO, @PathVariable Long userId) {
-//        try {
-//            if (coinAbcDTO.getCoins().isEmpty()) {
-//                return Response.error(new Error("Empty coin list"));
-//            }
-//
-//            coinService.save(coinAbcDTO, userId);
-//
-//            return Response.ok(true);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            return Response.serverError();
-//        }
-//    }
-
-//    @PostMapping("/user/{userId}/coins/compare")
-//    public Response compareCoins(@RequestBody CoinAbcDTO coinAbcDTO, @PathVariable Long userId) {
-//        try {
-//            if (coinAbcDTO.getCoins().isEmpty()) {
-//                return Response.error(new Error("Empty coin list"));
-//            }
-//
-//            if (coinService.compareCoins(coinAbcDTO, userId)) {
-//                return Response.ok(true);
-//            } else {
-//                return Response.error(new Error("Coins do not match"));
-//            }
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            return Response.serverError();
-//        }
-//    }
 
     @GetMapping("/user/{userId}/coins/balance")
     public Response getCoinsBalance(@PathVariable Long userId, @RequestParam List<String> coins) {

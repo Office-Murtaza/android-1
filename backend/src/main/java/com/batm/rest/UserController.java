@@ -2,7 +2,6 @@ package com.batm.rest;
 
 import com.batm.dto.*;
 import com.batm.entity.*;
-import com.batm.model.Error;
 import com.batm.model.Response;
 import com.batm.repository.TokenRep;
 import com.batm.security.TokenProvider;
@@ -12,7 +11,6 @@ import com.batm.service.TransactionService;
 import com.batm.service.UserService;
 import com.batm.util.Constant;
 import com.batm.util.Util;
-import net.sf.json.JSONObject;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Hibernate;
@@ -89,8 +87,8 @@ public class UserController {
             VerificationResponseDTO res = new VerificationResponseDTO();
             String code = twilioService.sendVerificationCode(req.getPhone());
 
-            if(StringUtils.isBlank(code)) {
-                return Response.error("Phone country is not supported");
+            if (StringUtils.isBlank(code)) {
+                return Response.defaultError("Phone country is not supported");
             }
 
             res.setCode(code);
@@ -106,13 +104,13 @@ public class UserController {
     public Response register(@RequestBody AuthenticationDTO req) {
         try {
             if (req.getCoins().isEmpty()) {
-                return Response.error(new Error("Empty coin list"));
+                return Response.defaultError("Empty coin list");
             }
 
             User existingUser = userService.findByPhone(req.getPhone());
 
             if (existingUser != null) {
-                return Response.error("Phone is already registered");
+                return Response.error(3, "Phone is already registered");
             }
 
             User user = userService.register(req.getPhone(), req.getPassword(), req.getPlatform(), req.getCoins());
@@ -141,22 +139,22 @@ public class UserController {
     public Response recover(@RequestBody AuthenticationDTO req) {
         try {
             if (req.getCoins().isEmpty()) {
-                return Response.error(new Error("Empty coin list"));
+                return Response.defaultError("Empty coin list");
             }
 
             User user = userService.findByPhone(req.getPhone());
             if (user == null) {
-                return Response.error("Phone doesn't exist");
+                return Response.error(3, "Phone doesn't exist");
             }
 
             boolean isPasswordMatch = passwordEncoder.matches(req.getPassword(), user.getPassword());
             if (!isPasswordMatch) {
-                return Response.error("Incorrect password");
+                return Response.error(4, "Incorrect password");
             }
 
             boolean isCoinAddressesMatch = coinService.isCoinsAddressMatch(user, req.getCoins());
-            if(!isCoinAddressesMatch) {
-                return Response.error("Coins address doesn't match");
+            if (!isCoinAddressesMatch) {
+                return Response.error(5, "Coins address doesn't match");
             }
 
             TokenDTO jwt = getJwt(user.getId(), user.getIdentity().getId(), req.getPhone(), req.getPassword());
@@ -181,9 +179,9 @@ public class UserController {
     }
 
     @PostMapping("/refresh")
-    public Response refresh(@RequestBody RefreshDTO refreshDTO) {
+    public Response refresh(@RequestBody RefreshDTO dto) {
         try {
-            Token refreshToken = refreshTokenRep.findByRefreshToken(refreshDTO.getRefreshToken());
+            Token refreshToken = refreshTokenRep.findByRefreshToken(dto.getRefreshToken());
 
             if (refreshToken != null) {
                 TokenDTO jwt = getJwt(refreshToken.getUser());
@@ -235,15 +233,15 @@ public class UserController {
 
             if (!StringUtils.isEmpty(codeVerify.getCode())
                     && codeVerify.getUpdateDate().getTime() < timestamp) {
-                return Response.error("Code is expired");
+                return Response.defaultError("Code is expired");
             }
 
             if (codeVerify.getStatus() == 1) {
-                return Response.error("Code is already used");
+                return Response.error(3, "Code is already used");
             }
 
             if (!StringUtils.equals(validateOtpVM.getCode(), codeVerify.getCode())) {
-                return Response.error("Wrong code");
+                return Response.error(4, "Wrong code");
             }
 
             codeVerify.setStatus(1);
@@ -261,10 +259,7 @@ public class UserController {
         try {
             User user = userService.findById(userId);
 
-            JSONObject res = new JSONObject();
-            res.put("phone", user.getPhone());
-
-            return Response.ok(res);
+            return Response.ok("phone", user.getPhone());
         } catch (Exception e) {
             e.printStackTrace();
             return Response.serverError();
@@ -272,12 +267,12 @@ public class UserController {
     }
 
     @PostMapping("/user/{userId}/phone/update")
-    public Response updatePhone(@RequestBody PhoneDTO phoneRequest, @PathVariable Long userId) {
+    public Response updatePhone(@PathVariable Long userId, @RequestBody PhoneDTO phoneRequest) {
         try {
             Boolean isPhoneExist = userService.isPhoneExist(phoneRequest.getPhone(), userId);
 
             if (isPhoneExist) {
-                return Response.error("Phone is already registered");
+                return Response.defaultError("Phone is already registered");
             }
 
             userService.updatePhone(phoneRequest, userId);
@@ -296,17 +291,17 @@ public class UserController {
             phoneChange = (PhoneChange) Hibernate.unproxy(phoneChange);
 
             if (phoneChange.getStatus() == null || phoneChange.getStatus().intValue() == 1) {
-                return Response.error("Invalid request");
+                return Response.defaultError("Invalid request");
             }
 
             CodeVerify codeVerify = userService.getCodeByUserId(userId);
 
             if (codeVerify.getStatus() == 1) {
-                return Response.error("Verification code is already used");
+                return Response.error(3, "Verification code is already used");
             }
 
             if (!StringUtils.equals(validateOtpVM.getCode(), codeVerify.getCode())) {
-                return Response.error("Wrong verification code");
+                return Response.error(4, "Wrong verification code");
             }
 
             userService.updatePhone(phoneChange.getPhone(), userId);
@@ -328,7 +323,7 @@ public class UserController {
             Boolean match = passwordEncoder.matches(changePasswordRequest.getOldPassword(), user.getPassword());
 
             if (!match) {
-                return Response.error("Old password does not match");
+                return Response.defaultError("Old password does not match");
             }
 
             String encodedPassword = passwordEncoder.encode(changePasswordRequest.getNewPassword());
@@ -359,7 +354,7 @@ public class UserController {
     }
 
     @GetMapping("/user/{userId}/kyc")
-    public Response getUserVerificationState(@PathVariable Long userId) {
+    public Response getKycState(@PathVariable Long userId) {
         try {
             VerificationStateDTO verificationStateDTO = userService.getVerificationState(userId);
             return Response.ok(verificationStateDTO);
@@ -370,13 +365,10 @@ public class UserController {
     }
 
     @PostMapping("/user/{userId}/kyc")
-    public Response submitVerificationData(@PathVariable Long userId, @Valid @RequestBody @ModelAttribute UserVerificationDTO verificationData) {
+    public Response submitKyc(@PathVariable Long userId, @Valid @RequestBody @ModelAttribute UserVerificationDTO verificationData) {
         try {
             userService.submitVerification(userId, verificationData);
             return Response.ok(Boolean.TRUE);
-        } catch (IllegalStateException ise) {
-            ise.printStackTrace();
-            return Response.error(ise.getMessage());
         } catch (Exception e) {
             e.printStackTrace();
             return Response.serverError();
@@ -431,18 +423,13 @@ public class UserController {
         return new TokenDTO(user.getId(), user.getIdentity().getId(), jwt, System.currentTimeMillis() + tokenDuration, refreshToken,
                 authentication.getAuthorities().stream().map(role -> role.getAuthority()).collect(Collectors.toList()));
     }
-//
-//    private static boolean checkPasswordLength(String password) {
-//        return !StringUtils.isEmpty(password) && password.length() >= Constant.PASSWORD_MIN_LENGTH
-//                && password.length() <= Constant.PASSWORD_MAX_LENGTH;
-//    }
 
     @ResponseStatus(HttpStatus.OK)
     @ExceptionHandler(BindException.class)
-    public Response handleValidationExceptions(
-            BindException ex) {
-        FieldError fieldError = (FieldError) ex.getBindingResult().getAllErrors().get(0); // just get first error from List
+    public Response handleValidationExceptions(BindException ex) {
+        FieldError fieldError = (FieldError) ex.getBindingResult().getAllErrors().get(0);
         String errorMessage = fieldError.getDefaultMessage();
-        return Response.error(errorMessage);
+
+        return Response.defaultError(errorMessage);
     }
 }

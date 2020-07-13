@@ -95,7 +95,7 @@ public class TransactionController {
                 return Response.ok("txId", txId);
             }
 
-            return Response.error(coinCode.name() + " submit transaction error");
+            return Response.defaultError(coinCode.name() + " submit transaction error");
         } catch (Exception e) {
             e.printStackTrace();
             return Response.serverError();
