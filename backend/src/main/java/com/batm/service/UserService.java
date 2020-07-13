@@ -75,14 +75,15 @@ public class UserService {
     @Autowired
     private IdentityPieceSelfieRep identityPieceSelfieRep;
 
+    @Autowired
+    private CoinService coinService;
+
     @Value("${document.upload.path}")
     private String documentUploadPath;
 
     @Transactional
-    public User register(String phone, String password, Integer platform) {
-        User existingUser = findByPhone(phone);
-
-        User user = existingUser == null ? new User() : existingUser;
+    public User register(String phone, String password, Integer platform, List<CoinDTO> coins) {
+        User user = new User();
         user.setPhone(phone);
         user.setPassword(passwordEncoder.encode(password));
         user.setRole("ROLE_USER");
@@ -100,6 +101,8 @@ public class UserService {
         } else {
             user.setIdentity(selectFromExistingIdentities(savedUser, pieceCellPhones));
         }
+
+        coinService.addUserCoins(user, coins);
 
         return user;
     }

@@ -62,9 +62,9 @@ public class PriceChartService {
         CoinBalanceDTO coinBalanceDTO = coinService.getCoinsBalance(userId, Arrays.asList(coinCode.name())).getCoins().get(0);
 
         return ChartPriceDTO.builder()
-                .price(coinBalanceDTO.getPrice().getUsd())
+                .price(coinBalanceDTO.getPrice())
                 .balance(coinBalanceDTO.getBalance())
-                .chart(buildPriceChart(coinCode, coinBalanceDTO.getPrice().getUsd()))
+                .chart(buildPriceChart(coinCode, coinBalanceDTO.getPrice()))
                 .build();
     }
 

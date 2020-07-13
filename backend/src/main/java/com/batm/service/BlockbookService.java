@@ -204,12 +204,7 @@ public class BlockbookService {
                 JSONObject utxo = utxos.get(index);
 
                 byte[] hash = Numeric.hexStringToByteArray(utxo.optString("txid"));
-
-                System.out.println("1: " + new String(hash));
-
                 Util.reverse(hash);
-
-                System.out.println("2: " + new String(hash));
 
                 Bitcoin.OutPoint.Builder output = Bitcoin.OutPoint.newBuilder();
                 output.setHash(ByteString.copyFrom(hash));

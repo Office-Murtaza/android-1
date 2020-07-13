@@ -14,7 +14,7 @@ import java.math.BigDecimal;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class UserLimitDTO {
 
-    private AmountDTO dailyLimit;
-    private AmountDTO txLimit;
+    private BigDecimal dailyLimit;
+    private BigDecimal txLimit;
     private BigDecimal sellProfitRate;
 }

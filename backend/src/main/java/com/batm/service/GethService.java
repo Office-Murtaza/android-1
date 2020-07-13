@@ -92,8 +92,8 @@ public class GethService {
     public void init() {
         web3 = Web3j.build(new HttpService(nodeUrl));
 
-        token = com.batm.contract.Token.load(contractAddress, web3,
-                Credentials.create(Numeric.toHexString(walletService.getPrivateKeyETH().data())), new DefaultGasProvider());
+//        token = com.batm.contract.Token.load(contractAddress, web3,
+//                Credentials.create(Numeric.toHexString(walletService.getPrivateKeyETH().data())), new DefaultGasProvider());
 
         if (!mongo.getCollection(ETH_TX_COLL).listIndexes().iterator().hasNext()) {
             mongo.getCollection(ETH_TX_COLL).createIndex(new Document("txId", 1).append("fromAddress", 1).append("toAddress", 1));

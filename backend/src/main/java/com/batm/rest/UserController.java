@@ -6,6 +6,7 @@ import com.batm.model.Error;
 import com.batm.model.Response;
 import com.batm.repository.TokenRep;
 import com.batm.security.TokenProvider;
+import com.batm.service.CoinService;
 import com.batm.service.TwilioService;
 import com.batm.service.TransactionService;
 import com.batm.service.UserService;
@@ -29,7 +30,7 @@ import org.springframework.validation.BindException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
-import java.util.regex.Pattern;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
@@ -63,35 +64,71 @@ public class UserController {
     @Autowired
     private TwilioService twilioService;
 
-    @PostMapping("/register")
-    public Response register(@RequestBody AuthenticationDTO dto) {
+    @Autowired
+    private CoinService coinService;
+
+    @PostMapping("/check")
+    public Response check(@RequestBody CheckDTO req) {
         try {
-            Pattern phonePattern = Pattern.compile(Constant.REGEX_PHONE);
+            CheckResponseDTO res = new CheckResponseDTO();
+            User user = userService.findByPhone(req.getPhone());
 
-            if (!phonePattern.matcher(dto.getPhone()).matches()) {
-                return Response.serverError(2, "Invalid phone number");
+            res.setPhoneExist(user != null);
+            res.setPasswordMatch(user != null && passwordEncoder.matches(req.getPassword(), user.getPassword()));
+
+            return Response.ok(res);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Response.serverError();
+        }
+    }
+
+    @PostMapping("/verify")
+    public Response verify(@RequestBody VerificationDTO req) {
+        try {
+            VerificationResponseDTO res = new VerificationResponseDTO();
+            String code = twilioService.sendVerificationCode(req.getPhone());
+
+            if(StringUtils.isBlank(code)) {
+                return Response.error("Phone country is not supported");
             }
 
-            if (!checkPasswordLength(dto.getPassword())) {
-                return Response.serverError(3, "Password length should be from 6 to 15");
+            res.setCode(code);
+
+            return Response.ok(res);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Response.serverError();
+        }
+    }
+
+    @PostMapping("/register")
+    public Response register(@RequestBody AuthenticationDTO req) {
+        try {
+            if (req.getCoins().isEmpty()) {
+                return Response.error(new Error("Empty coin list"));
             }
 
-            User existingUser = userService.findByPhone(dto.getPhone());
+            User existingUser = userService.findByPhone(req.getPhone());
 
-            if (existingUser != null && !existingUser.getUserCoins().isEmpty()) {
-                return Response.serverError(4, "Phone is already registered");
+            if (existingUser != null) {
+                return Response.error("Phone is already registered");
             }
 
-            User user = userService.register(dto.getPhone(), dto.getPassword(), dto.getPlatform());
-            twilioService.sendVerificationCode(user);
-            TokenDTO jwt = getJwt(user.getId(), user.getIdentity().getId(), dto.getPhone(), dto.getPassword());
+            User user = userService.register(req.getPhone(), req.getPassword(), req.getPlatform(), req.getCoins());
 
-            Token token = user.getRefreshToken() == null ? new Token() : user.getRefreshToken();
+            TokenDTO jwt = getJwt(user.getId(), user.getIdentity().getId(), req.getPhone(), req.getPassword());
+
+            Token token = new Token();
             token.setRefreshToken(jwt.getRefreshToken());
             token.setAccessToken(jwt.getAccessToken());
             token.setUser(user);
 
             refreshTokenRep.save(token);
+
+            List<String> coins = req.getCoins().stream().map(e -> e.getCode()).collect(Collectors.toList());
+
+            jwt.setBalance(coinService.getCoinsBalance(user.getId(), coins));
 
             return Response.ok(jwt);
         } catch (Exception e) {
@@ -101,39 +138,40 @@ public class UserController {
     }
 
     @PostMapping("/recover")
-    public Response recover(@RequestBody AuthenticationDTO dto) {
+    public Response recover(@RequestBody AuthenticationDTO req) {
         try {
-            Pattern phonePattern = Pattern.compile(Constant.REGEX_PHONE);
-
-            if (!phonePattern.matcher(dto.getPhone()).matches()) {
-                return Response.serverError(2, "Invalid phone number");
+            if (req.getCoins().isEmpty()) {
+                return Response.error(new Error("Empty coin list"));
             }
 
-            if (!checkPasswordLength(dto.getPassword())) {
-                return Response.serverError(3, "Password length should be from 6 to 15");
-            }
-
-            User user = userService.findByPhone(dto.getPhone());
+            User user = userService.findByPhone(req.getPhone());
             if (user == null) {
-                return Response.error(new Error(2, "Phone not found"));
+                return Response.error("Phone doesn't exist");
             }
 
-            boolean passwordMatch = passwordEncoder.matches(dto.getPassword(), user.getPassword());
-            if (!passwordMatch) {
-                return Response.error(new Error(3, "Wrong password"));
+            boolean isPasswordMatch = passwordEncoder.matches(req.getPassword(), user.getPassword());
+            if (!isPasswordMatch) {
+                return Response.error("Incorrect password");
             }
 
-            TokenDTO jwt = getJwt(user.getId(), user.getIdentity().getId(), dto.getPhone(), dto.getPassword());
+            boolean isCoinAddressesMatch = coinService.isCoinsAddressMatch(user, req.getCoins());
+            if(!isCoinAddressesMatch) {
+                return Response.error("Coins address doesn't match");
+            }
 
-            twilioService.sendVerificationCode(user);
+            TokenDTO jwt = getJwt(user.getId(), user.getIdentity().getId(), req.getPhone(), req.getPassword());
 
             Token token = refreshTokenRep.findByUserId(user.getId());
             token.setRefreshToken(jwt.getRefreshToken());
             token.setAccessToken(jwt.getAccessToken());
             refreshTokenRep.save(token);
 
-            user.setPlatform(dto.getPlatform());
+            user.setPlatform(req.getPlatform());
             userService.save(user);
+
+            List<String> coins = req.getCoins().stream().map(e -> e.getCode()).collect(Collectors.toList());
+
+            jwt.setBalance(coinService.getCoinsBalance(user.getId(), coins));
 
             return Response.ok(jwt);
         } catch (Exception e) {
@@ -197,15 +235,15 @@ public class UserController {
 
             if (!StringUtils.isEmpty(codeVerify.getCode())
                     && codeVerify.getUpdateDate().getTime() < timestamp) {
-                return Response.error(new Error(2, "Code is expired"));
+                return Response.error("Code is expired");
             }
 
             if (codeVerify.getStatus() == 1) {
-                return Response.error(new Error(3, "Code is already used"));
+                return Response.error("Code is already used");
             }
 
             if (!StringUtils.equals(validateOtpVM.getCode(), codeVerify.getCode())) {
-                return Response.error(new Error(4, "Wrong code"));
+                return Response.error("Wrong code");
             }
 
             codeVerify.setStatus(1);
@@ -239,7 +277,7 @@ public class UserController {
             Boolean isPhoneExist = userService.isPhoneExist(phoneRequest.getPhone(), userId);
 
             if (isPhoneExist) {
-                return Response.error(new Error(2, "Phone is already registered"));
+                return Response.error("Phone is already registered");
             }
 
             userService.updatePhone(phoneRequest, userId);
@@ -258,17 +296,17 @@ public class UserController {
             phoneChange = (PhoneChange) Hibernate.unproxy(phoneChange);
 
             if (phoneChange.getStatus() == null || phoneChange.getStatus().intValue() == 1) {
-                return Response.error(new Error(2, "Invalid request"));
+                return Response.error("Invalid request");
             }
 
             CodeVerify codeVerify = userService.getCodeByUserId(userId);
 
             if (codeVerify.getStatus() == 1) {
-                return Response.error(new Error(3, "Verification code is already used"));
+                return Response.error("Verification code is already used");
             }
 
             if (!StringUtils.equals(validateOtpVM.getCode(), codeVerify.getCode())) {
-                return Response.error(new Error(2, "Wrong verification code"));
+                return Response.error("Wrong verification code");
             }
 
             userService.updatePhone(phoneChange.getPhone(), userId);
@@ -290,7 +328,7 @@ public class UserController {
             Boolean match = passwordEncoder.matches(changePasswordRequest.getOldPassword(), user.getPassword());
 
             if (!match) {
-                return Response.error(new Error(2, "Old password does not match."));
+                return Response.error("Old password does not match");
             }
 
             String encodedPassword = passwordEncoder.encode(changePasswordRequest.getNewPassword());
@@ -338,7 +376,7 @@ public class UserController {
             return Response.ok(Boolean.TRUE);
         } catch (IllegalStateException ise) {
             ise.printStackTrace();
-            return Response.error(new Error(1, ise.getMessage()));
+            return Response.error(ise.getMessage());
         } catch (Exception e) {
             e.printStackTrace();
             return Response.serverError();
@@ -393,12 +431,11 @@ public class UserController {
         return new TokenDTO(user.getId(), user.getIdentity().getId(), jwt, System.currentTimeMillis() + tokenDuration, refreshToken,
                 authentication.getAuthorities().stream().map(role -> role.getAuthority()).collect(Collectors.toList()));
     }
-
-    private static boolean checkPasswordLength(String password) {
-        return !StringUtils.isEmpty(password) && password.length() >= Constant.PASSWORD_MIN_LENGTH
-                && password.length() <= Constant.PASSWORD_MAX_LENGTH;
-    }
-
+//
+//    private static boolean checkPasswordLength(String password) {
+//        return !StringUtils.isEmpty(password) && password.length() >= Constant.PASSWORD_MIN_LENGTH
+//                && password.length() <= Constant.PASSWORD_MAX_LENGTH;
+//    }
 
     @ResponseStatus(HttpStatus.OK)
     @ExceptionHandler(BindException.class)
@@ -406,6 +443,6 @@ public class UserController {
             BindException ex) {
         FieldError fieldError = (FieldError) ex.getBindingResult().getAllErrors().get(0); // just get first error from List
         String errorMessage = fieldError.getDefaultMessage();
-        return Response.error(new Error(2, errorMessage));
+        return Response.error(errorMessage);
     }
 }

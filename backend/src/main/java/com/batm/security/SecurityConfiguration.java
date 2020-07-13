@@ -87,6 +87,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     public void configure(HttpSecurity http) throws Exception {
         if (securityEnabled) {
             http.csrf().disable().authorizeRequests()
+                    .antMatchers("/api/v1/check").permitAll()
+                    .antMatchers("/api/v1/verification").permitAll()
                     .antMatchers("/api/v1/register").permitAll()
                     .antMatchers("/api/v1/recover").permitAll()
                     .antMatchers("/api/v1/refresh").permitAll()
@@ -98,6 +100,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                     .sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().apply(securityConfigurerAdapter());
         } else {
             http.csrf().disable().authorizeRequests()
+                    .antMatchers("/api/v1/check").permitAll()
+                    .antMatchers("/api/v1/verification").permitAll()
                     .antMatchers("/api/v1/register").permitAll()
                     .antMatchers("/api/v1/recover").permitAll()
                     .antMatchers("/api/v1/refresh").permitAll()

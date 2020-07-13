@@ -20,6 +20,6 @@ public class FileUploadExceptionAdvice {
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public Response handleMaxSizeException(MaxUploadSizeExceededException e) {
-        return Response.error(new Error(2, "File should be up to " + maxUploadSize));
+        return Response.error("File should be up to " + maxUploadSize);
     }
 }
