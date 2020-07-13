@@ -7,10 +7,12 @@ import android.text.SpannableString
 import android.text.Spanned
 import android.text.TextUtils
 import android.text.method.LinkMovementMethod
+import android.view.View
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.app.belcobtm.R
+import com.app.belcobtm.domain.authorization.AuthorizationStatus
 import com.app.belcobtm.presentation.core.Const.TERMS_URL
 import com.app.belcobtm.presentation.core.helper.SimpleClickableSpan
 import com.app.belcobtm.presentation.core.ui.fragment.BaseFragment
@@ -24,6 +26,7 @@ class WelcomeFragment : BaseFragment() {
     private val viewModel: WelcomeViewModel by viewModel()
     override val isToolbarEnabled: Boolean = false
     override val resourceLayout: Int = R.layout.fragment_welcome
+    override val backPressedListener: View.OnClickListener = View.OnClickListener { requireActivity().finish() }
 
     override fun onStart() {
         super.onStart()
@@ -31,13 +34,20 @@ class WelcomeFragment : BaseFragment() {
     }
 
     override fun initViews() {
-        initTncView()
-        pagerView.apply {
-            adapter = WelcomePagerAdapter()
-            adapter?.registerAdapterDataObserver(pagerIndicatorView.adapterDataObserver)
-            (getChildAt(0) as RecyclerView).overScrollMode = RecyclerView.OVER_SCROLL_NEVER
+        val authorizationStatus = requireArguments().getInt(TAG_AUTHORIZATION_STATUS, -1)
+        requireArguments().remove(TAG_AUTHORIZATION_STATUS)
+        when (authorizationStatus) {
+            AuthorizationStatus.SEED_PHRASE_ENTER.ordinal -> navigate(R.id.to_recover_seed_fragment)
+            else -> {
+                initTncView()
+                pagerView.apply {
+                    adapter = WelcomePagerAdapter()
+                    adapter?.registerAdapterDataObserver(pagerIndicatorView.adapterDataObserver)
+                    (getChildAt(0) as RecyclerView).overScrollMode = RecyclerView.OVER_SCROLL_NEVER
+                }
+                pagerIndicatorView.setViewPager(pagerView)
+            }
         }
-        pagerIndicatorView.setViewPager(pagerView)
     }
 
     override fun initListeners() {
@@ -112,5 +122,9 @@ class WelcomeFragment : BaseFragment() {
         }
         dialog.cancelButtonView.setOnClickListener { dialog.cancel() }
         dialog.setCanceledOnTouchOutside(false)
+    }
+
+    companion object {
+        const val TAG_AUTHORIZATION_STATUS = "tag_authorization_status"
     }
 }

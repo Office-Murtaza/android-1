@@ -9,8 +9,8 @@ android {
         applicationId "com.app.belcobtm"
         minSdkVersion 23
         targetSdkVersion 29
-        versionCode 67
-        versionName "1.5.7"
+        versionCode 68
+        versionName "1.5.8"
         multiDexEnabled = true
     }
     buildTypes {
@@ -90,6 +90,16 @@ dependencies {
 
     //code country phone picker
     implementation 'com.hbb20:ccp:2.2.9'
+
+    //phone mask
+    implementation 'com.redmadrobot:input-mask-android:6.0.0'
+
+    //sms code edit text
+    implementation ('com.alimuzaffar.lib:pinentryedittext:2.0.6') {
+        // Exclude is only needed if you already have
+        // androidx.appcompat as a dependency in your app.
+        exclude group: 'androidx.appcompat', module: 'appcompat'
+    }
 
     //cryptography
     implementation 'com.yakivmospan:scytale:1.0.1'

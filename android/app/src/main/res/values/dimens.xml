@@ -12,4 +12,10 @@
 
 
     <integer name="slide_animation_duration">300</integer>
+
+    <dimen name="chip_default_height">22sp</dimen>
+    <dimen name="chip_default_padding_edge">10dp</dimen>
+    <dimen name="chip_default_padding_between_image">8dp</dimen>
+    <dimen name="chip_default_left_margin">0dp</dimen>
+    <dimen name="chip_default_right_margin">0dp</dimen>
 </resources>

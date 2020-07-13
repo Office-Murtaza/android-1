@@ -1,4 +1,4 @@
-package com.app.belcobtm.ui.auth.recover_seed
+package com.app.belcobtm.presentation.features.authorization.seed.recover
 
 import android.preference.PreferenceManager
 import com.app.belcobtm.App

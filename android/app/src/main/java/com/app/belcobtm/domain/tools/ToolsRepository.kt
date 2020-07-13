@@ -5,7 +5,9 @@ import com.app.belcobtm.domain.Failure
 
 interface ToolsRepository {
 
-    suspend fun sendSmsToDevice(): Either<Failure, Unit>
+    suspend fun sendSmsToDevice(phone: String): Either<Failure, String>
 
-    suspend fun verifySmsCode(smsCode: String): Either<Failure, Unit>
+    suspend fun sendSmsToDeviceOld(): Either<Failure, Unit>
+
+    suspend fun verifySmsCodeOld(smsCode: String): Either<Failure, Unit>
 }

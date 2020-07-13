@@ -1,9 +1,7 @@
 package com.app.belcobtm.data.rest.authorization
 
 import com.app.belcobtm.data.rest.authorization.request.*
-import com.app.belcobtm.data.rest.authorization.response.AddCoinsResponse
-import com.app.belcobtm.data.rest.authorization.response.RecoverWalletResponse
-import com.app.belcobtm.data.rest.authorization.response.AuthorizationResponse
+import com.app.belcobtm.data.rest.authorization.response.*
 import kotlinx.coroutines.Deferred
 import okhttp3.ResponseBody
 import retrofit2.Response
@@ -12,6 +10,16 @@ import retrofit2.http.POST
 import retrofit2.http.Path
 
 interface AuthApi {
+    @POST("check")
+    fun checkCredentialsAsync(
+        @Body request: CheckCredentialsRequest
+    ): Deferred<Response<CheckCredentialsResponse>>
+
+    @POST("verify")
+    fun verifyPhoneAsync(
+        @Body request: VerifyPhoneRequest
+    ): Deferred<Response<VerifyPhoneResponse>>
+
     @POST("register")
     fun createWalletAsync(
         @Body request: CreateWalletRequest

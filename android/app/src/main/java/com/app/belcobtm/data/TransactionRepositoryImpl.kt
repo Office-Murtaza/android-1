@@ -39,7 +39,7 @@ class TransactionRepositoryImpl(
         val hashResponse = transactionHashRepository.createTransactionHash(coinType, fromCoinAmount, toAddress)
         when {
             isNeedSendSms && hashResponse.isRight -> {
-                val sendSmsToDeviceResponse = toolsRepository.sendSmsToDevice()
+                val sendSmsToDeviceResponse = toolsRepository.sendSmsToDeviceOld()
                 if (sendSmsToDeviceResponse.isRight) {
                     hashResponse as Either.Right
                 } else {
@@ -60,7 +60,7 @@ class TransactionRepositoryImpl(
     ): Either<Failure, String> = if (networkUtils.isNetworkAvailable()) {
         val coinType = LocalCoinType.valueOf(fromCoin)
         val hashResponse = transactionHashRepository.createTransactionHash(coinType, fromCoinAmount, toAddress)
-        val sendSmsToDeviceResponse = toolsRepository.sendSmsToDevice()
+        val sendSmsToDeviceResponse = toolsRepository.sendSmsToDeviceOld()
         when {
             hashResponse.isRight && sendSmsToDeviceResponse.isRight -> hashResponse as Either.Right
             sendSmsToDeviceResponse.isLeft -> sendSmsToDeviceResponse as Either.Left
@@ -76,7 +76,7 @@ class TransactionRepositoryImpl(
         fromCoin: String,
         fromCoinAmount: Double
     ): Either<Failure, Unit> = if (networkUtils.isNetworkAvailable()) {
-        val smsCodeVerifyResponse = toolsRepository.verifySmsCode(smsCode)
+        val smsCodeVerifyResponse = toolsRepository.verifySmsCodeOld(smsCode)
         if (smsCodeVerifyResponse.isRight) {
             apiService.withdraw(hash, fromCoin, fromCoinAmount)
         } else {
@@ -104,7 +104,7 @@ class TransactionRepositoryImpl(
         phone: String,
         message: String
     ): Either<Failure, Unit> = if (networkUtils.isNetworkAvailable()) {
-        val smsCodeVerifyResponse = toolsRepository.verifySmsCode(smsCode)
+        val smsCodeVerifyResponse = toolsRepository.verifySmsCodeOld(smsCode)
         if (smsCodeVerifyResponse.isRight) {
             apiService.sendGift(hash, fromCoin, fromCoinAmount, giftId, phone, message)
         } else {
@@ -126,7 +126,7 @@ class TransactionRepositoryImpl(
         cryptoAmount: Double,
         toUsdAmount: Int
     ): Either<Failure, SellPreSubmitDataItem> = if (networkUtils.isNetworkAvailable()) {
-        val smsCodeVerifyResponse = toolsRepository.verifySmsCode(smsCode)
+        val smsCodeVerifyResponse = toolsRepository.verifySmsCodeOld(smsCode)
         if (smsCodeVerifyResponse.isRight) {
             apiService.sellPreSubmit(fromCoin, cryptoAmount, toUsdAmount)
         } else {
@@ -158,7 +158,7 @@ class TransactionRepositoryImpl(
         coinTo: String,
         hex: String
     ): Either<Failure, Unit> = if (networkUtils.isNetworkAvailable()) {
-        val smsCodeVerifyResponse = toolsRepository.verifySmsCode(smsCode)
+        val smsCodeVerifyResponse = toolsRepository.verifySmsCodeOld(smsCode)
         if (smsCodeVerifyResponse.isRight) {
             apiService.coinToCoinExchange(fromCoinAmount, fromCoin, coinTo, hex)
         } else {
@@ -279,7 +279,7 @@ class TransactionRepositoryImpl(
         coinCode: String,
         cryptoAmount: Double
     ): Either<Failure, Unit> = if (networkUtils.isNetworkAvailable()) {
-        toolsRepository.sendSmsToDevice()
+        toolsRepository.sendSmsToDeviceOld()
     } else {
         Either.Left(Failure.NetworkConnection)
     }
@@ -289,7 +289,7 @@ class TransactionRepositoryImpl(
         coinCode: String,
         cryptoAmount: Double
     ): Either<Failure, Unit> = if (networkUtils.isNetworkAvailable()) {
-        val smsCodeVerifyResponse = toolsRepository.verifySmsCode(smsCode)
+        val smsCodeVerifyResponse = toolsRepository.verifySmsCodeOld(smsCode)
         if (smsCodeVerifyResponse.isRight) {
             apiService.submitRecall(coinCode, cryptoAmount)
         } else {
@@ -306,7 +306,7 @@ class TransactionRepositoryImpl(
         val toAddress = prefHelper.coinsFee[coinCode]?.walletAddress ?: ""
         val coinType = LocalCoinType.valueOf(coinCode)
         val hashResponse = transactionHashRepository.createTransactionHash(coinType, cryptoAmount, toAddress)
-        val sendSmsToDeviceResponse = toolsRepository.sendSmsToDevice()
+        val sendSmsToDeviceResponse = toolsRepository.sendSmsToDeviceOld()
         when {
             hashResponse.isRight && sendSmsToDeviceResponse.isRight -> hashResponse as Either.Right
             sendSmsToDeviceResponse.isLeft -> sendSmsToDeviceResponse as Either.Left
@@ -322,7 +322,7 @@ class TransactionRepositoryImpl(
         cryptoAmount: Double,
         hash: String
     ): Either<Failure, Unit> = if (networkUtils.isNetworkAvailable()) {
-        val smsCodeVerifyResponse = toolsRepository.verifySmsCode(smsCode)
+        val smsCodeVerifyResponse = toolsRepository.verifySmsCodeOld(smsCode)
         if (smsCodeVerifyResponse.isRight) {
             val fromAddress = prefHelper.coinsFee[coinCode]?.walletAddress ?: ""
             val toAddress = prefHelper.coinsFee[coinCode]?.contractAddress ?: ""
@@ -349,7 +349,7 @@ class TransactionRepositoryImpl(
     ): Either<Failure, String> = if (networkUtils.isNetworkAvailable()) {
         val toAddress = prefHelper.coinsFee[coinCode]?.walletAddress ?: ""
         val hashResponse = transactionHashRepository.createTransactionStakeHash(cryptoAmount, toAddress)
-        val sendSmsToDeviceResponse = toolsRepository.sendSmsToDevice()
+        val sendSmsToDeviceResponse = toolsRepository.sendSmsToDeviceOld()
         when {
             hashResponse.isRight && sendSmsToDeviceResponse.isRight -> hashResponse as Either.Right
             sendSmsToDeviceResponse.isLeft -> sendSmsToDeviceResponse as Either.Left
@@ -365,7 +365,7 @@ class TransactionRepositoryImpl(
         coinCode: String,
         cryptoAmount: Double
     ): Either<Failure, Unit> = if (networkUtils.isNetworkAvailable()) {
-        val smsCodeVerifyResponse = toolsRepository.verifySmsCode(smsCode)
+        val smsCodeVerifyResponse = toolsRepository.verifySmsCodeOld(smsCode)
         if (smsCodeVerifyResponse.isRight) {
             val fromAddress = prefHelper.coinsFee[coinCode]?.walletAddress ?: ""
             val toAddress = prefHelper.coinsFee[coinCode]?.contractAddress ?: ""
@@ -384,7 +384,7 @@ class TransactionRepositoryImpl(
     ): Either<Failure, String> = if (networkUtils.isNetworkAvailable()) {
         val toAddress = prefHelper.coinsFee[coinCode]?.walletAddress ?: ""
         val hashResponse = transactionHashRepository.createTransactionUnStakeHash(cryptoAmount, toAddress)
-        val sendSmsToDeviceResponse = toolsRepository.sendSmsToDevice()
+        val sendSmsToDeviceResponse = toolsRepository.sendSmsToDeviceOld()
         when {
             hashResponse.isRight && sendSmsToDeviceResponse.isRight -> hashResponse as Either.Right
             sendSmsToDeviceResponse.isLeft -> sendSmsToDeviceResponse as Either.Left
@@ -400,7 +400,7 @@ class TransactionRepositoryImpl(
         coinCode: String,
         cryptoAmount: Double
     ): Either<Failure, Unit> = if (networkUtils.isNetworkAvailable()) {
-        val smsCodeVerifyResponse = toolsRepository.verifySmsCode(smsCode)
+        val smsCodeVerifyResponse = toolsRepository.verifySmsCodeOld(smsCode)
         if (smsCodeVerifyResponse.isRight) {
             val fromAddress = prefHelper.coinsFee[coinCode]?.walletAddress ?: ""
             val toAddress = prefHelper.coinsFee[coinCode]?.contractAddress ?: ""

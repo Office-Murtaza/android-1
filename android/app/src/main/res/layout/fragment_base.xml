@@ -10,17 +10,12 @@
         android:id="@+id/toolbarView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:elevation="0dp"
         android:minHeight="?attr/actionBarSize"
+        android:background="#FFFFFF"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <View
-        android:id="@+id/toolbarDividerView"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="#4c000000" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:titleTextColor="@color/colorText" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -57,11 +52,11 @@
 
         <Button
             android:id="@+id/retryButtonView"
+            style="@style/Button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Retry"
             android:visibility="gone"
-            style="@style/Button"
             app:layout_constraintBottom_toBottomOf="@id/contentContainerView"
             app:layout_constraintEnd_toEndOf="@id/contentContainerView"
             app:layout_constraintStart_toStartOf="@id/contentContainerView"

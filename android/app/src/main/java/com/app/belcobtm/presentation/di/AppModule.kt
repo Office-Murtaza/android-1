@@ -11,6 +11,7 @@ import com.app.belcobtm.presentation.features.authorization.welcome.WelcomeViewM
 import com.app.belcobtm.presentation.features.settings.verification.blank.VerificationBlankViewModel
 import com.app.belcobtm.presentation.features.settings.verification.info.VerificationInfoViewModel
 import com.app.belcobtm.presentation.features.settings.verification.vip.VerificationVipViewModel
+import com.app.belcobtm.presentation.features.sms.code.SmsCodeViewModel
 import com.app.belcobtm.presentation.features.wallet.add.AddWalletViewModel
 import com.app.belcobtm.presentation.features.wallet.balance.BalanceViewModel
 import com.app.belcobtm.presentation.features.wallet.exchange.coin.to.coin.ExchangeCoinToCoinViewModel
@@ -79,5 +80,8 @@ val viewModelModule = module {
         val coinDataItem = get<WalletRepository>().getCoinItemByCode(LocalCoinType.CATM.name)
         val coinFee = get<WalletRepository>().getCoinFeeItemByCode(LocalCoinType.CATM.name)
         StakingViewModel(coinDataItem, coinFee, get(), get(), get(), get(), get(), get())
+    }
+    viewModel { (phone: String) ->
+        SmsCodeViewModel(phone, get())
     }
 }

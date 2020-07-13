@@ -82,7 +82,7 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/addressView"
-        style="@style/WalletTab.EditText.Container"
+        style="@style/TextInputLayoutOutline"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
@@ -121,7 +121,7 @@
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/addressPasteView"
-        style="@style/Transaction.EditText.TextLink"
+        style="@style/EditText.TextLink"
         android:layout_marginEnd="4dp"
         android:text="@string/paste"
         app:layout_constraintBottom_toBottomOf="@id/addressScanView"
@@ -130,13 +130,13 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/amountCryptoView"
-        style="@style/WalletTab.EditText.Container"
+        style="@style/TextInputLayoutOutline"
         app:layout_constraintEnd_toEndOf="@id/addressView"
         app:layout_constraintStart_toStartOf="@id/addressView"
         app:layout_constraintTop_toBottomOf="@id/addressView">
 
         <com.google.android.material.textfield.TextInputEditText
-            style="@style/Transaction.EditText.InputWithMax"
+            style="@style/EditText.InputWithMax"
             android:digits="1234567890."
             android:inputType="numberDecimal"
             android:nextFocusDown="@id/amountUsdView"
@@ -146,7 +146,7 @@
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/maxCryptoView"
-        style="@style/Transaction.EditText.TextLink"
+        style="@style/EditText.TextLink"
         android:layout_marginEnd="10dp"
         android:layout_marginBottom="10dp"
         android:text="@string/max"
@@ -156,13 +156,13 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/amountUsdView"
-        style="@style/WalletTab.EditText.Container"
+        style="@style/TextInputLayoutOutline"
         app:layout_constraintEnd_toEndOf="@id/addressView"
         app:layout_constraintStart_toStartOf="@id/addressView"
         app:layout_constraintTop_toBottomOf="@id/amountCryptoView">
 
         <com.google.android.material.textfield.TextInputEditText
-            style="@style/Transaction.EditText.InputWithMax"
+            style="@style/EditText.InputWithMax"
             android:digits="1234567890."
             android:hint="@string/withdraw_screen_usd_amount"
             android:inputType="numberDecimal"
@@ -172,7 +172,7 @@
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/maxUsdView"
-        style="@style/Transaction.EditText.TextLink"
+        style="@style/EditText.TextLink"
         android:layout_marginEnd="10dp"
         android:layout_marginBottom="10dp"
         android:text="@string/max"

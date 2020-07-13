@@ -1,26 +1,25 @@
 package com.app.belcobtm.presentation.features
 
-import android.content.BroadcastReceiver
-import android.content.Context
-import android.content.Intent
 import android.content.IntentFilter
 import android.os.Build
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.os.bundleOf
 import androidx.navigation.fragment.NavHostFragment
 import com.app.belcobtm.R
 import com.app.belcobtm.domain.authorization.AuthorizationStatus
 import com.app.belcobtm.domain.authorization.interactor.AuthorizationStatusGetUseCase
+import com.app.belcobtm.presentation.features.authorization.welcome.WelcomeFragment
 import org.koin.android.ext.android.inject
 
 class HostActivity : AppCompatActivity() {
     private val authorizationStatusUseCase: AuthorizationStatusGetUseCase by inject()
     private lateinit var currentNavFragment: NavHostFragment
-    private val authorizationBroadcast: BroadcastReceiver = object : BroadcastReceiver() {
-        override fun onReceive(context: Context?, intent: Intent?) = showAuthorizationScreen()
-    }
+//    private val authorizationBroadcast: BroadcastReceiver = object : BroadcastReceiver() {
+//        override fun onReceive(context: Context?, intent: Intent?) = showAuthorizationScreen()
+//    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(R.style.AppTheme)
@@ -32,30 +31,20 @@ class HostActivity : AppCompatActivity() {
             View.SYSTEM_UI_FLAG_LAYOUT_STABLE
         }
 
-        when (authorizationStatusUseCase.invoke()) {
+        when (val status = authorizationStatusUseCase.invoke()) {
             AuthorizationStatus.AUTHORIZED -> showMainScreen()
-            AuthorizationStatus.UNAUTHORIZED -> showAuthorizationScreen()
-            AuthorizationStatus.SEED_PHRASE_CREATE -> {
-            }
-            AuthorizationStatus.SEED_PHRASE_ENTER -> {
-            }
-            AuthorizationStatus.PIN_CODE_CREATE -> {
-            }
-            AuthorizationStatus.PIN_CODE_ENTER -> {
-            }
+            AuthorizationStatus.UNAUTHORIZED,
+            AuthorizationStatus.SEED_PHRASE_CREATE,
+            AuthorizationStatus.SEED_PHRASE_ENTER,
+            AuthorizationStatus.PIN_CODE_CREATE,
+            AuthorizationStatus.PIN_CODE_ENTER -> showAuthorizationScreen(status)
         }
     }
+
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         super.onOptionsItemSelected(item)
         return false
-    }
-
-    override fun onBackPressed() {
-        val isPopBackStack = currentNavFragment.navController.popBackStack()
-        if (!isPopBackStack) {
-            super.onBackPressed()
-        }
     }
 
     override fun onResume() {
@@ -66,9 +55,16 @@ class HostActivity : AppCompatActivity() {
 
     fun showMainScreen() = setHostFragment(HostNavigationFragment())
 
-    fun showAuthorizationScreen() {
-        setHostFragment(NavHostFragment.create(R.navigation.nav_authorization))
-//        clearUseCase.invoke()
+    fun showAuthorizationScreen(authorizationStatus: AuthorizationStatus? = null) {
+        val navFragment = if (authorizationStatus != null) {
+            NavHostFragment.create(
+                R.navigation.nav_authorization,
+                bundleOf(WelcomeFragment.TAG_AUTHORIZATION_STATUS to authorizationStatus.ordinal)
+            )
+        } else {
+            NavHostFragment.create(R.navigation.nav_authorization)
+        }
+        setHostFragment(navFragment)
     }
 
     private fun setHostFragment(fragment: NavHostFragment) {

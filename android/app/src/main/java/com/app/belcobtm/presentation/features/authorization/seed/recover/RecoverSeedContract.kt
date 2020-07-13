@@ -1,4 +1,4 @@
-package com.app.belcobtm.ui.auth.recover_seed
+package com.app.belcobtm.presentation.features.authorization.seed.recover
 
 import com.app.belcobtm.mvp.BaseMvpPresenter
 import com.app.belcobtm.mvp.BaseMvpView

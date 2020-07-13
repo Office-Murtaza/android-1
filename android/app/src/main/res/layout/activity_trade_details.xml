@@ -133,7 +133,7 @@
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/amountCryptoView"
-                    style="@style/WalletTab.EditText.Container"
+                    style="@style/TextInputLayoutOutline"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="16dp"
                     android:layout_marginEnd="16dp"
@@ -142,7 +142,7 @@
                     app:layout_constraintTop_toBottomOf="@id/termsView">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        style="@style/Transaction.EditText.InputWithMax"
+                        style="@style/EditText.InputWithMax"
                         android:digits="1234567890."
                         android:inputType="numberDecimal"
                         android:nextFocusDown="@id/amountUsdView"
@@ -152,7 +152,7 @@
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/maxCryptoView"
-                    style="@style/Transaction.EditText.TextLink"
+                    style="@style/EditText.TextLink"
                     android:layout_marginEnd="10dp"
                     android:layout_marginBottom="10dp"
                     android:text="@string/max"
@@ -162,13 +162,13 @@
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/amountUsdView"
-                    style="@style/WalletTab.EditText.Container"
+                    style="@style/TextInputLayoutOutline"
                     app:layout_constraintEnd_toEndOf="@id/amountCryptoView"
                     app:layout_constraintStart_toStartOf="@id/amountCryptoView"
                     app:layout_constraintTop_toBottomOf="@id/amountCryptoView">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        style="@style/Transaction.EditText.InputWithMax"
+                        style="@style/EditText.InputWithMax"
                         android:digits="1234567890"
                         android:hint="@string/usd_amount"
                         android:inputType="number"
@@ -179,7 +179,7 @@
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/maxUsdView"
-                    style="@style/Transaction.EditText.TextLink"
+                    style="@style/EditText.TextLink"
                     android:layout_marginEnd="10dp"
                     android:layout_marginBottom="10dp"
                     android:text="@string/max"
@@ -189,7 +189,7 @@
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/tradeDetailsView"
-                    style="@style/WalletTab.EditText.Container"
+                    style="@style/TextInputLayoutOutline"
                     android:layout_width="0dp"
                     android:layout_height="106dp"
                     app:layout_constraintEnd_toEndOf="@id/amountUsdView"
@@ -197,7 +197,7 @@
                     app:layout_constraintTop_toBottomOf="@id/amountUsdView">
 
                     <androidx.appcompat.widget.AppCompatEditText
-                        style="@style/Transaction.EditText.InputWithMax"
+                        style="@style/EditText.InputWithMax"
                         android:layout_height="match_parent"
                         android:gravity="start|top"
                         android:hint="@string/trade_screen_request_details"

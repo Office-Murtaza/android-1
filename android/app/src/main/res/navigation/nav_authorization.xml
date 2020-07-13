@@ -23,5 +23,34 @@
         android:id="@+id/recover_wallet_fragment"
         android:name="com.app.belcobtm.presentation.features.authorization.wallet.recover.RecoverWalletFragment"
         android:label="RecoverWalletFragment"
-        tools:layout="@layout/activity_recover_wallet" />
+        tools:layout="@layout/fragment_recover_wallet">
+        <action
+            android:id="@+id/to_sms_code_fragment"
+            app:destination="@id/sms_code_fragment"
+            app:enterAnim="@anim/slide_from_right"
+            app:exitAnim="@anim/slide_to_left"
+            app:popEnterAnim="@anim/slide_from_left"
+            app:popExitAnim="@anim/slide_to_right" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/recover_seed_fragment"
+        android:name="com.app.belcobtm.presentation.features.authorization.seed.recover.RecoverSeedFragment"
+        android:label="RecoverSeedFragment"
+        tools:layout="@layout/fragment_recover_seed" />
+
+    <fragment
+        android:id="@+id/sms_code_fragment"
+        android:name="com.app.belcobtm.presentation.features.sms.code.SmsCodeFragment"
+        android:label="SmsCodeFragment"
+        tools:layout="@layout/fragment_sms_code">
+        <action
+            android:id="@+id/to_recover_seed_fragment"
+            app:destination="@id/recover_seed_fragment"
+            app:enterAnim="@anim/slide_from_right"
+            app:exitAnim="@anim/slide_to_left"
+            app:popEnterAnim="@anim/slide_from_left"
+            app:popExitAnim="@anim/slide_to_right" />
+    </fragment>
+
 </navigation>

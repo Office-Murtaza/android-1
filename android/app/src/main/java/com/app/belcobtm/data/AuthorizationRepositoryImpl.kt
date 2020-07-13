@@ -52,15 +52,18 @@ class AuthorizationRepositoryImpl(
         phone: String,
         password: String
     ): Either<Failure, Unit> = if (networkUtils.isNetworkAvailable()) {
-        val response = apiService.recoverWallet(phone, password)
+        val response = apiService.checkCredentials(phone, password)
 
         if (response.isRight) {
             val body = (response as Either.Right).b
-            prefHelper.accessToken = body.accessToken
-            prefHelper.refreshToken = body.refreshToken
-            prefHelper.userId = body.userId
-
-            Either.Right(Unit)
+            when {
+                !body.first -> Either.Left(Failure.IncorrectLogin)
+                !body.second -> Either.Left(Failure.IncorrectPassword)
+                else -> Either.Right(Unit)
+            }
+            //prefHelper.accessToken = body.accessToken
+            //prefHelper.refreshToken = body.refreshToken
+            //prefHelper.userId = body.userId
         } else {
             response as Either.Left
         }

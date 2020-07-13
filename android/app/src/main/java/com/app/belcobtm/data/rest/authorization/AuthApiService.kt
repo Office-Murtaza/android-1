@@ -9,6 +9,24 @@ import com.app.belcobtm.domain.Failure
 import com.app.belcobtm.domain.wallet.item.AccountDataItem
 
 class AuthApiService(private val authApi: AuthApi) {
+
+    suspend fun checkCredentials(phone: String, password: String): Either<Failure, Pair<Boolean, Boolean>> = try {
+        val request = authApi.checkCredentialsAsync(CheckCredentialsRequest(phone, password)).await()
+        request.body()?.let { Either.Right(Pair(it.phoneExist, it.passwordMatch)) }
+            ?: Either.Left(Failure.ServerError())
+    } catch (failure: Failure) {
+        Either.Left(failure)
+    }
+
+    suspend fun verifyPhone(phone: String): Either<Failure, String> = try {
+        val request = authApi.verifyPhoneAsync(VerifyPhoneRequest(phone)).await()
+        request.body()?.let { Either.Right(it.code) }
+            ?: Either.Left(Failure.ServerError())
+    } catch (failure: Failure) {
+        Either.Left(failure)
+    }
+
+
     suspend fun recoverWallet(phone: String, password: String): Either<Failure, RecoverWalletResponse> = try {
         val request = authApi.recoverWalletAsync(RecoverWalletRequest(phone, password)).await()
         request.body()?.let { Either.Right(it) } ?: Either.Left(Failure.ServerError())

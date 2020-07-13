@@ -1,7 +1,7 @@
 package com.app.belcobtm.di.module
 
-import com.app.belcobtm.ui.auth.recover_seed.RecoverSeedContract
-import com.app.belcobtm.ui.auth.recover_seed.RecoverSeedPresenter
+import com.app.belcobtm.presentation.features.authorization.seed.recover.RecoverSeedContract
+import com.app.belcobtm.presentation.features.authorization.seed.recover.RecoverSeedPresenter
 import com.app.belcobtm.ui.main.coins.details.DetailsContract
 import com.app.belcobtm.ui.main.coins.details.DetailsPresenter
 import com.app.belcobtm.ui.main.coins.sell.SellContract

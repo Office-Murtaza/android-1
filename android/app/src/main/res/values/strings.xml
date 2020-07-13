@@ -1,6 +1,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <string name="google_maps_key">AIzaSyDGBWQKBBKloFJfQgY_5i-l-a7aT8oRWhw</string>
     <string name="file_provider" translatable="false">com.app.belcobtm.fileprovider</string>
+    <string name="chip_ellipsis">&#8230;</string>
 
     <string name="app_name">Belco Wallet</string>
 
@@ -11,6 +12,15 @@
 
     <!-- Strings related to login -->
     <string name="logo_text">Stay Ahead of the Crypto Future</string>
+
+    <!-- Sms code -->
+    <string name="sms_code_screen_title">Verify phone</string>
+    <string name="sms_code_screen_description">Enter the 4 digit code we sent you\nvia SMS to continue</string>
+    <string name="sms_code_screen_did_not_get_the_code">Didn\'t get the code? </string>
+    <string name="sms_code_screen_resend_code">Resend code</string>
+    <string name="sms_code_screen_invalid_code">Wrong code</string>
+    <string name="sms_code_screen_resend_title">New code</string>
+    <string name="sms_code_screen_resend_description">We sent you new code, please enter it to the form</string>
 
     <!--welcome-->
     <string name="welcome_screen_please_accept_tnc">Please, accept our Terms &amp; Conditions</string>
@@ -28,6 +38,14 @@
     <string name="welcome_screen_support_phone" tools:ignore="TypographyDashes">+1 (888) 776-6969</string>
     <string name="welcome_screen_support_email">support@belcobtm.com</string>
 
+    <!-- Recover Wallet -->
+    <string name="recover_wallet_screen_title">Recover old Wallet</string>
+    <string name="recover_wallet_phone">Phone</string>
+    <string name="recover_wallet_password">Password *</string>
+    <string name="recover_wallet_incorrect_login">Phone doesn\'t exist</string>
+    <string name="recover_wallet_incorrect_password">Incorrect password</string>
+    <string name="recover_wallet_password_min_max_length">Password must be between 6 and 20 characters</string>
+
     <!-- Balance -->
     <string name="balance_screen_empty_balance">$ . . .</string>
     <string name="balance_screen_unit_usd">USD %1$s</string>
@@ -35,8 +53,6 @@
 
     <!--create wallet-->
     <string name="verify_sms_code">Enter SMS Code</string>
-    <string name="next">Next</string>
-    <string name="cancel">Cancel</string>
     <string name="phone_number">201-555-0123</string>
     <string name="pass">Password *</string>
     <string name="confirm_pass">Confirm Password *</string>
@@ -50,17 +66,16 @@
     <string name="sms_code">SMS code</string>
 
     <!--seed phrase-->
-    <string name="done">Done</string>
     <string name="seed_phrase">Seed Phrase</string>
     <string name="seed_info">If you lost your seed phrase you will not be able to recover your wallet</string>
     <string name="seed_clipboard">Seed phrase copied to clipboard</string>
     <string name="seed_phrase_screen_copy">Copy</string>
     <string name="seed_phrase_screen_done">Done</string>
 
-    <!--recover seed phrase-->
-    <string name="paste">Paste</string>
-    <string name="paste_seed_info">Enter your secret 12 world phrase here to restore your wallet</string>
-    <string name="enter_seed_first">Enter seed first</string>
+    <!--Recover seed phrase screen-->
+    <string name="recover_seed_title">Seed phrase</string>
+    <string name="recover_seed_description">Enter your secret 12 world phrase\nhere to restore your wallet</string>
+
 
     <!--balance-->
     <string name="balance_screen_title_screen">Total Balance</string>
@@ -357,4 +372,10 @@
         <item quantity="few">%d days</item>
         <item quantity="other">%d days</item>
     </plurals>
+
+
+    <string name="paste">Paste</string>
+    <string name="next">Next</string>
+    <string name="cancel">Cancel</string>
+    <string name="done">Done</string>
 </resources>

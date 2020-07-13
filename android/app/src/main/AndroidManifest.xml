@@ -52,7 +52,7 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppThemeNoActionBar" />
         <activity
-            android:name=".ui.auth.recover_seed.RecoverSeedActivity"
+            android:name="com.app.belcobtm.presentation.features.authorization.seed.recover.RecoverSeedFragment"
             android:screenOrientation="portrait"
             android:theme="@style/AppThemeNoActionBar" />
         <activity

@@ -1,42 +1,56 @@
 package com.app.belcobtm.presentation.features.authorization.wallet.recover
 
-import android.content.Intent
 import android.view.inputmethod.EditorInfo
 import android.widget.TextView
-import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.widget.AppCompatEditText
+import androidx.core.os.bundleOf
 import androidx.lifecycle.Observer
 import com.app.belcobtm.R
 import com.app.belcobtm.domain.Failure
+import com.app.belcobtm.presentation.core.extensions.afterTextChanged
+import com.app.belcobtm.presentation.core.extensions.clearError
 import com.app.belcobtm.presentation.core.extensions.getString
+import com.app.belcobtm.presentation.core.extensions.showError
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
 import com.app.belcobtm.presentation.core.ui.fragment.BaseFragment
-import com.app.belcobtm.ui.auth.recover_seed.RecoverSeedActivity
-import com.google.android.material.textfield.TextInputLayout
-import kotlinx.android.synthetic.main.activity_create_wallet.*
+import com.app.belcobtm.presentation.features.sms.code.SmsCodeFragment
+import com.redmadrobot.inputmask.MaskedTextChangedListener
+import kotlinx.android.synthetic.main.fragment_recover_wallet.*
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class RecoverWalletFragment : BaseFragment() {
     private val viewModel: RecoverWalletViewModel by viewModel()
-    override val isToolbarEnabled: Boolean = false
-
-    override val resourceLayout: Int = R.layout.activity_recover_wallet
+    override val isToolbarEnabled: Boolean = true
+    override val isHomeButtonEnabled: Boolean = true
+    override val resourceLayout: Int = R.layout.fragment_recover_wallet
 
     override fun initViews() {
-        phonePickerView.registerCarrierNumberEditText(phoneView.editText)
+        super.initViews()
+        setToolbarTitle(R.string.recover_wallet_screen_title)
     }
 
     override fun initListeners() {
-        cancelButtonView.setOnClickListener { popBackStack() }
-        nextButtonView.setOnClickListener { recoverWallet() }
+        nextButtonView.setOnClickListener {
+            phoneContainerView.clearError()
+            passwordView.clearError()
+            recoverWallet()
+        }
+        phoneContainerView.editText?.afterTextChanged {
+            nextButtonView.isEnabled =
+                phoneContainerView.getString().isNotEmpty() && passwordView.getString().isNotEmpty()
+        }
+        passwordView.editText?.afterTextChanged {
+            nextButtonView.isEnabled =
+                phoneContainerView.getString().isNotEmpty() && passwordView.getString().isNotEmpty()
+        }
         passwordView.editText?.setOnEditorActionListener(TextView.OnEditorActionListener { _, id, _ ->
             if (id == EditorInfo.IME_ACTION_DONE || id == EditorInfo.IME_NULL) {
-//                hideSoftKeyboard()
+                hideKeyboard()
                 recoverWallet()
                 return@OnEditorActionListener true
             }
             false
         })
+        MaskedTextChangedListener.installOn(phoneView, PHONE_MASK)
     }
 
     override fun initObservers() {
@@ -44,7 +58,35 @@ class RecoverWalletFragment : BaseFragment() {
             when (it) {
                 is LoadingData.Loading -> showProgress()
                 is LoadingData.Success -> {
-                    showSmsCodeDialog()
+                    navigate(
+                        R.id.to_sms_code_fragment,
+                        bundleOf(
+                            SmsCodeFragment.TAG_PHONE to getPhone(),
+                            SmsCodeFragment.TAG_NEXT_FRAGMENT_ID to R.id.to_recover_seed_fragment
+                        )
+                    )
+                    showContent()
+                    viewModel.recoverWalletLiveData.value = null
+                }
+                is LoadingData.Error -> {
+                    when (it.errorType) {
+                        is Failure.IncorrectLogin -> phoneContainerView.showError(R.string.recover_wallet_incorrect_login)
+                        is Failure.IncorrectPassword -> passwordView.showError(R.string.recover_wallet_incorrect_password)
+                        is Failure.MessageError -> showSnackBar(it.errorType.message)
+                        is Failure.NetworkConnection -> showSnackBar(R.string.error_internet_unavailable)
+                        else -> showSnackBar(R.string.error_something_went_wrong)
+                    }
+                    showContent()
+                }
+            }
+        })
+        viewModel.smsCodeLiveData.observe(this, Observer {
+            when (it) {
+                is LoadingData.Loading -> showProgress()
+                is LoadingData.Success -> {
+                    viewModel.recoverWalletLiveData.value = null
+                    viewModel.smsCodeLiveData.value = null
+                    navigate(R.id.to_recover_seed_fragment)
                     showContent()
                 }
                 is LoadingData.Error -> {
@@ -53,48 +95,10 @@ class RecoverWalletFragment : BaseFragment() {
                         is Failure.NetworkConnection -> showSnackBar(R.string.error_internet_unavailable)
                         else -> showSnackBar(R.string.error_something_went_wrong)
                     }
-                    showProgress()
-                }
-            }
-        })
-        viewModel.smsCodeLiveData.observe(this, Observer {
-            when (it) {
-                is LoadingData.Loading -> showProgress()
-                is LoadingData.Success -> {
-                    startActivity(Intent(activity, RecoverSeedActivity::class.java))
-//                    finish()
-                }
-                is LoadingData.Error -> {
-                    when (it.errorType) {
-                        is Failure.MessageError -> showSmsCodeDialog(it.errorType.message)
-                        is Failure.NetworkConnection -> showSnackBar(R.string.error_internet_unavailable)
-                        else -> showSnackBar(R.string.error_something_went_wrong)
-                    }
                     showContent()
                 }
             }
         })
-    }
-
-    private fun showSmsCodeDialog(error: String? = null) {
-        val view = layoutInflater.inflate(R.layout.view_sms_code_dialog, null)
-        AlertDialog
-            .Builder(requireContext())
-            .setTitle(getString(R.string.verify_sms_code))
-            .setPositiveButton(R.string.next)
-            { _, _ ->
-                val smsCode = view.findViewById<AppCompatEditText>(R.id.sms_code).text.toString()
-                if (smsCode.length != 4) {
-                    showSmsCodeDialog(getString(R.string.error_sms_code_4_digits))
-                } else {
-                    viewModel.verifySmsCode(smsCode)
-                }
-            }
-            .setNegativeButton(R.string.cancel) { _, _ -> }
-            .setView(view)
-            .create()
-            .show()
-        view.findViewById<TextInputLayout>(R.id.til_sms_code).error = error
     }
 
     private fun isValidFields(phone: String, password: String): Boolean {
@@ -108,11 +112,17 @@ class RecoverWalletFragment : BaseFragment() {
     }
 
     private fun recoverWallet() {
-        val phone = phonePickerView.formattedFullNumber.replace("[- ]".toRegex(), "")
+        val phone = getPhone()
         val password = passwordView.getString()
 
         if (isValidFields(phone, password)) {
             viewModel.recoverWallet(phone, password)
         }
+    }
+
+    private fun getPhone(): String = phoneContainerView.getString().replace("[-() ]".toRegex(), "")
+
+    private companion object {
+        const val PHONE_MASK: String = "+[0] ([000]) [000]-[00]-[00]"
     }
 }

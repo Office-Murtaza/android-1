@@ -12,8 +12,8 @@ import com.app.belcobtm.domain.authorization.interactor.ClearAppDataUseCase
 import com.app.belcobtm.domain.wallet.interactor.GetLocalCoinListUseCase
 import com.app.belcobtm.presentation.core.ui.BaseActivity
 import com.app.belcobtm.presentation.features.authorization.pin.PinActivity
+import com.app.belcobtm.presentation.features.authorization.seed.recover.RecoverSeedFragment
 import com.app.belcobtm.presentation.features.wallet.balance.BalanceFragment
-import com.app.belcobtm.ui.auth.recover_seed.RecoverSeedActivity
 import com.app.belcobtm.ui.main.atm.AtmFragment
 import com.app.belcobtm.ui.main.settings.SettingsFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -81,7 +81,7 @@ class MainActivity : BaseActivity(), BottomNavigationView.OnNavigationItemSelect
                 finishAffinity()
                 // startActivity(Intent(this, WelcomeFragment::class.java))//TODO it's fragment now
             }
-            prefsHelper.apiSeed.isEmpty() -> startActivity(Intent(this, RecoverSeedActivity::class.java))
+            prefsHelper.apiSeed.isEmpty() -> startActivity(Intent(this, RecoverSeedFragment::class.java))
             prefsHelper.userPin.isNotBlank() -> {
                 val mode = PinActivity.Companion.Mode.MODE_PIN
                 val intent = PinActivity.getIntent(this, mode)

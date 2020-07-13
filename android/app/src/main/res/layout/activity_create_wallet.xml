@@ -124,8 +124,8 @@
                 app:ccp_autoFormatNumber="true"
                 app:ccp_defaultNameCode="US"
                 app:ccp_showNameCode="false"
-                app:layout_constraintBottom_toBottomOf="@id/phoneView"
-                app:layout_constraintEnd_toStartOf="@id/phoneView"
+                app:layout_constraintBottom_toBottomOf="@id/phoneContainerView"
+                app:layout_constraintEnd_toStartOf="@id/phoneContainerView"
                 app:layout_constraintStart_toStartOf="parent" />
 
             <View
@@ -138,7 +138,7 @@
                 app:layout_constraintTop_toTopOf="@id/phonePickerView" />
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/phoneView"
+                android:id="@+id/phoneContainerView"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/margin_half"

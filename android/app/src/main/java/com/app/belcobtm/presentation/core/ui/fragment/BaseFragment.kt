@@ -25,7 +25,6 @@ import com.app.belcobtm.presentation.features.HostNavigationFragment
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_base.*
 import kotlinx.android.synthetic.main.fragment_base.view.*
-import kotlinx.android.synthetic.main.fragment_welcome.*
 import org.koin.android.ext.android.get
 import org.koin.core.parameter.parametersOf
 
@@ -37,24 +36,19 @@ abstract class BaseFragment : Fragment() {
     protected open val isMenuEnabled: Boolean = false
     protected open val homeButtonDrawable: Int = R.drawable.ic_arrow_back
     protected open val retryListener: View.OnClickListener? = null
-    protected open val backPressedListener: View.OnClickListener? = null
+    protected open val backPressedListener: View.OnClickListener = View.OnClickListener { popBackStack() }
 
     protected abstract val resourceLayout: Int
-    protected abstract fun initViews()
-    protected abstract fun initListeners()
-    protected open fun initObservers() = Unit
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(isToolbarEnabled)
-        backPressedListener?.let {
-            val callback: OnBackPressedCallback = object : OnBackPressedCallback(true) {
-                override fun handleOnBackPressed() {
-                    it.onClick(null)
-                }
+        val callback: OnBackPressedCallback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                backPressedListener.onClick(null)
             }
-            requireActivity().onBackPressedDispatcher.addCallback(this, callback)
         }
+        requireActivity().onBackPressedDispatcher.addCallback(this, callback)
     }
 
     override fun onCreateView(
@@ -73,11 +67,10 @@ abstract class BaseFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         this.navController = Navigation.findNavController(view)
         retryButtonView.setOnClickListener(retryListener)
-        showContent()
-
         initListeners()
         initObservers()
         initViews()
+        showContent()
     }
 
     override fun onResume() {
@@ -97,10 +90,8 @@ abstract class BaseFragment : Fragment() {
                 drawable?.setTint(ContextCompat.getColor(activity.applicationContext, R.color.colorPrimary))
                 (activity as HostActivity).supportActionBar?.setHomeAsUpIndicator(drawable)
                 actionBar.show()
-                toolbarDividerView.show()
             } else {
                 actionBar.hide()
-                toolbarDividerView.hide()
             }
 
             actionBar.setDisplayShowHomeEnabled(isHomeButtonEnabled && isToolbarEnabled)
@@ -155,17 +146,17 @@ abstract class BaseFragment : Fragment() {
         fillToolbarTitle()
     }
 
-    protected fun showSnackBar(resMessage: Int): Unit = Snackbar.make(
-        requireActivity().findViewById(android.R.id.content),
+    protected fun showSnackBar(resMessage: Int) = Snackbar.make(
+        requireActivity().findViewById<ViewGroup>(android.R.id.content),
         resMessage,
         Snackbar.LENGTH_SHORT
-    ).also { it.view.setBackgroundColor(ContextCompat.getColor(container.context, R.color.colorErrorSnackBar)) }.show()
+    ).also { it.view.setBackgroundColor(ContextCompat.getColor(it.view.context, R.color.colorErrorSnackBar)) }.show()
 
     protected fun showSnackBar(message: String?): Unit = Snackbar.make(
-        requireActivity().findViewById(android.R.id.content),
+        requireActivity().findViewById<ViewGroup>(android.R.id.content),
         message ?: "",
         Snackbar.LENGTH_SHORT
-    ).also { it.view.setBackgroundColor(ContextCompat.getColor(container.context, R.color.colorErrorSnackBar)) }.show()
+    ).also { it.view.setBackgroundColor(ContextCompat.getColor(it.view.context, R.color.colorErrorSnackBar)) }.show()
 
     private fun fillToolbarTitle() = (activity as? HostActivity)?.let {
         it.supportActionBar?.title = if (cachedToolbarTitle.isBlank()) "" else cachedToolbarTitle
@@ -175,6 +166,12 @@ abstract class BaseFragment : Fragment() {
         val imm = activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
         imm?.hideSoftInputFromWindow(focus.windowToken, 0)
     }
+
+    protected open fun initViews() = Unit
+
+    protected open fun initListeners() = Unit
+
+    protected open fun initObservers() = Unit
 
     protected open fun showContent() {
         errorView.hide()

@@ -28,7 +28,7 @@ class CreateWalletActivity : BaseActivity() {
     }
 
     private fun initViews() {
-        phonePickerView.registerCarrierNumberEditText(phoneView.editText)
+        phonePickerView.registerCarrierNumberEditText(phoneContainerView.editText)
     }
 
     private fun initListeners() {

@@ -82,7 +82,7 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/amountCoinFromView"
-        style="@style/WalletTab.EditText.Container"
+        style="@style/TextInputLayoutOutline"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
@@ -91,7 +91,7 @@
         app:layout_constraintTop_toBottomOf="@id/balanceTitleView">
 
         <com.google.android.material.textfield.TextInputEditText
-            style="@style/Transaction.EditText.InputWithMax"
+            style="@style/EditText.InputWithMax"
             android:digits="1234567890."
             android:inputType="numberDecimal"
             android:nextFocusDown="@id/amountUsdView"
@@ -100,7 +100,7 @@
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/maxCoinFromView"
-        style="@style/Transaction.EditText.TextLink"
+        style="@style/EditText.TextLink"
         android:layout_marginEnd="10dp"
         android:layout_marginBottom="10dp"
         android:text="@string/max"
@@ -110,13 +110,13 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/pickCoinButtonView"
-        style="@style/WalletTab.EditText.Container"
+        style="@style/TextInputLayoutOutline"
         app:layout_constraintEnd_toEndOf="@id/amountCoinFromView"
         app:layout_constraintStart_toStartOf="@id/amountCoinFromView"
         app:layout_constraintTop_toBottomOf="@id/amountCoinFromView">
 
         <com.google.android.material.textfield.TextInputEditText
-            style="@style/Transaction.EditText.InputWithMax"
+            style="@style/EditText.InputWithMax"
             android:drawableEnd="@drawable/ic_arrow_drop_down"
             android:drawablePadding="8dp"
             android:focusableInTouchMode="false"
@@ -129,13 +129,13 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/amountCoinToView"
-        style="@style/WalletTab.EditText.Container"
+        style="@style/TextInputLayoutOutline"
         app:layout_constraintEnd_toEndOf="@id/pickCoinButtonView"
         app:layout_constraintStart_toStartOf="@id/pickCoinButtonView"
         app:layout_constraintTop_toBottomOf="@id/pickCoinButtonView">
 
         <com.google.android.material.textfield.TextInputEditText
-            style="@style/Transaction.EditText.InputWithMax"
+            style="@style/EditText.InputWithMax"
             android:digits="1234567890."
             android:hint="@string/exchange_coin_to_coin_screen_crypto_amount"
             android:inputType="numberDecimal" />
@@ -144,7 +144,7 @@
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/maxCoinToView"
-        style="@style/Transaction.EditText.TextLink"
+        style="@style/EditText.TextLink"
         android:layout_marginEnd="10dp"
         android:layout_marginBottom="10dp"
         android:text="@string/max"

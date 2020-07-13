@@ -17,7 +17,7 @@ class RecoverWalletViewModel(
         recoverWalletLiveData.value = LoadingData.Loading()
         recoverWalletUseCase.invoke(
             RecoverWalletUseCase.Params(phone, password),
-            onSuccess = { recoverWalletLiveData.value = LoadingData.Success(Unit) },
+            onSuccess = { recoverWalletLiveData.value = LoadingData.Success(it) },
             onError = { recoverWalletLiveData.value = LoadingData.Error(it) }
         )
     }

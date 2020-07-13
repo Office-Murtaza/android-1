@@ -54,8 +54,8 @@ class SendGiftActivity : BaseMvpActivity<SendGiftContract.View, SendGiftContract
     }
 
     private fun initListeners() {
-        phoneView?.editText?.addTextChangedListener(PhoneNumberFormattingTextWatcher())
-        pastePhoneView.setOnClickListener { phoneView.setText(getTextFromClipboard()) }
+        phoneContainerView?.editText?.addTextChangedListener(PhoneNumberFormattingTextWatcher())
+        pastePhoneView.setOnClickListener { phoneContainerView.setText(getTextFromClipboard()) }
         maxUsdView.setOnClickListener { selectMaxPrice() }
         maxCryptoView.setOnClickListener { selectMaxPrice() }
         addGifButtonView.setOnClickListener { openGify() }
@@ -76,7 +76,7 @@ class SendGiftActivity : BaseMvpActivity<SendGiftContract.View, SendGiftContract
     }
 
     private fun initView() {
-        phonePickerView.registerCarrierNumberEditText(phoneView.editText)
+        phonePickerView.registerCarrierNumberEditText(phoneContainerView.editText)
 
         amountCryptoView.hint = getString(R.string.send_gift_screen_crypto_amount, coinDataItem.code)
         val settings = GPHSettings(
@@ -137,7 +137,7 @@ class SendGiftActivity : BaseMvpActivity<SendGiftContract.View, SendGiftContract
 
     private fun validateAndSubmit() {
         amountCryptoView.error = null
-        phoneView.error = null
+        phoneContainerView.error = null
 
 
         val phoneStrng = phonePickerView.formattedFullNumber
