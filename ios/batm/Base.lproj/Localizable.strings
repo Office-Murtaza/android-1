@@ -40,13 +40,16 @@
 "welcome.support.send" = "Send Email";
 
 "create_wallet.title" = "Create New Wallet";
+"create_wallet.form.phone.placeholder" = "Phone *";
 "create_wallet.form.password.placeholder" = "Password *";
-"create_wallet.form.confirm_password.placeholder" = "Confirm Password *";
+"create_wallet.form.confirm_password.placeholder" = "Confirm password *";
 "create_wallet.form.error.all_fields_required" = "All fields are required";
-"create_wallet.form.error.not_valid_phone_number" = "Invalid phone number";
-"create_wallet.form.error.not_equal_passwords" = "Passwords do not match";
+"create_wallet.form.error.not_valid_phone_number" = "Incorrect phone number";
+"create_wallet.form.error.existed_phone_number" = "Phone is already registered";
+"create_wallet.form.error.not_valid_password" = "Password must be between 6 and 20 characters";
+"create_wallet.form.error.not_equal_passwords" = "Passwords don't match";
 "create_wallet.code.placeholder" = "SMS Code";
-"create_wallet.code.error.title" = "Code should have 4 digits";
+"create_wallet.code.error.title" = "Invalid code";
 
 "seed_phrase.title" = "Seed Phrase";
 "seed_phrase.annotation" = "If you lost your seed phrase you will not be able to recover your wallet";

@@ -15,6 +15,36 @@ struct RefreshTokenRequest: APIRequest {
   }
 }
 
+struct CheckAccountRequest: APIRequest {
+  typealias ResponseType = APIResponse<CheckAccountResponse>
+  typealias ResponseTrait = SingleResponseTrait
+  
+  let phoneNumber: String
+  let password: String
+  
+  var path: String { return "/check" }
+  var method: HTTPMethod { return .post }
+  var task: HTTPTask {
+    return .requestParameters(parameters: ["phone": phoneNumber,
+                                           "password": password],
+                              encoding: JSONEncoding.default)
+  }
+}
+
+struct PhoneVerificationRequest: AuthorizedAPIRequest {
+  typealias ResponseType = APIResponse<PhoneVerificationResponse>
+  typealias ResponseTrait = SingleResponseTrait
+  
+  let phoneNumber: String
+  
+  var path: String { return "/verify" }
+  var method: HTTPMethod { return .post }
+  var task: HTTPTask {
+    return .requestParameters(parameters: ["phone": phoneNumber],
+                              encoding: JSONEncoding.default)
+  }
+}
+
 struct CreateAccountRequest: APIRequest {
   typealias ResponseType = APIResponse<Account>
   typealias ResponseTrait = SingleResponseTrait
@@ -335,19 +365,6 @@ struct SubmitTransactionRequest: AuthorizedAPIRequest {
                                            "refCoin": toCoinId as Any,
                                            "hex": txhex as Any],
                               encoding: JSONEncoding.default)
-  }
-}
-
-struct RequestCodeRequest: AuthorizedAPIRequest {
-  typealias ResponseType = APIEmptyResponse
-  typealias ResponseTrait = SingleResponseTrait
-  
-  let userId: Int
-  
-  var path: String { return "/user/\(userId)/code/send" }
-  var method: HTTPMethod { return .get }
-  var task: HTTPTask {
-    return .requestPlain
   }
 }
 

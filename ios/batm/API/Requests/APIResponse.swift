@@ -12,7 +12,7 @@ enum APIEmptyResponse {
 
 extension APIResponse: ImmutableMappable {
   init(map: Map) throws {
-    if let error: String = try? map.value("error.errorMsg") {
+    if let code: Int = try? map.value("error.code"), let error: String = try? map.value("error.errorMsg"), code != 1 {
       self = .error(.serverError(error))
       return
     }

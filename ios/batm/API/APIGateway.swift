@@ -1,6 +1,7 @@
 import Foundation
 import TrustWalletCore
 import RxSwift
+import ObjectMapper
 
 enum APIError: Error, Equatable {
   case noConnection
@@ -16,6 +17,8 @@ enum APIError: Error, Equatable {
 
 protocol APIGateway {
   
+  func checkAccount(phoneNumber: String, password: String) -> Single<CheckAccountResponse>
+  func verifyPhone(phoneNumber: String) -> Single<PhoneVerificationResponse>
   func createAccount(phoneNumber: String, password: String) -> Single<Account>
   func recoverWallet(phoneNumber: String, password: String) -> Single<Account>
   func verifyCode(userId: Int, code: String) -> Completable
@@ -49,7 +52,6 @@ protocol APIGateway {
                          imageId: String?,
                          toCoinType: CustomCoinType?,
                          txhex: String?) -> Completable
-  func requestCode(userId: Int) -> Completable
   func getTronBlockHeader(type: CustomCoinType) -> Single<BTMTronBlockHeader>
   func getGiftAddress(type: CustomCoinType, phone: String) -> Single<GiftAddress>
   func getNonce(type: CustomCoinType, address: String) -> Single<Nonce>
@@ -77,72 +79,66 @@ final class APIGatewayImpl: APIGateway {
     self.api = api
   }
   
+  func execute<Response: ImmutableMappable, Request: APIRequest>(_ request: Request) -> Single<Response>
+    where Request.ResponseType == APIResponse<Response>, Request.ResponseTrait == SingleResponseTrait {
+      return api.execute(request)
+        .flatMap {
+          switch $0 {
+          case let .response(response):
+            return Single.just(response)
+          case let .error(error):
+            return Single.error(error)
+          }
+        }
+  }
+  
+  func execute<Request: APIRequest>(_ request: Request) -> Completable
+    where Request.ResponseType == APIEmptyResponse, Request.ResponseTrait == SingleResponseTrait {
+      return api.execute(request)
+        .map { apiResponse -> Void in
+          switch apiResponse {
+          case .response:
+            return Void()
+          case let .error(error):
+            throw error
+          }
+        }
+        .toCompletable()
+  }
+  
+  func checkAccount(phoneNumber: String, password: String) -> Single<CheckAccountResponse> {
+    let request = CheckAccountRequest(phoneNumber: phoneNumber, password: password)
+    return execute(request)
+  }
+  
+  func verifyPhone(phoneNumber: String) -> Single<PhoneVerificationResponse> {
+    let request = PhoneVerificationRequest(phoneNumber: phoneNumber)
+    return execute(request)
+  }
+  
   func createAccount(phoneNumber: String, password: String) -> Single<Account> {
     let request = CreateAccountRequest(phoneNumber: phoneNumber, password: password)
-    return api.execute(request)
-      .flatMap {
-        switch $0 {
-        case let .response(response):
-          return Single.just(response)
-        case let .error(error):
-          return Single.error(error)
-        }
-    }
+    return execute(request)
   }
   
   func recoverWallet(phoneNumber: String, password: String) -> Single<Account> {
     let request = RecoverWalletRequest(phoneNumber: phoneNumber, password: password)
-    return api.execute(request)
-      .flatMap {
-        switch $0 {
-        case let .response(response):
-          return Single.just(response)
-        case let .error(error):
-          return Single.error(error)
-        }
-    }
+    return execute(request)
   }
   
   func verifyCode(userId: Int, code: String) -> Completable {
     let request = VerifyCodeRequest(userId: userId, code: code)
-    return api.execute(request)
-      .map { apiResponse -> Void in
-        switch apiResponse {
-        case .response:
-          return Void()
-        case let .error(error):
-          throw error
-        }
-      }
-      .toCompletable()
+    return execute(request)
   }
   
   func addCoins(userId: Int, coinAddresses: [CoinAddress]) -> Completable {
     let request = AddCoinsRequest(userId: userId, coinAddresses: coinAddresses)
-    return api.execute(request)
-      .map { apiResponse -> Void in
-        switch apiResponse {
-        case .response:
-          return Void()
-        case let .error(error):
-          throw error
-        }
-      }
-      .toCompletable()
+    return execute(request)
   }
   
   func compareCoins(userId: Int, coinAddresses: [CoinAddress]) -> Completable {
     let request = CompareCoinsRequest(userId: userId, coinAddresses: coinAddresses)
-    return api.execute(request)
-      .map { apiResponse -> Void in
-        switch apiResponse {
-        case .response:
-          return Void()
-        case let .error(error):
-          throw error
-        }
-      }
-      .toCompletable()
+    return execute(request)
   }
   
   func getCoinsBalance(userId: Int, coins: [BTMCoin]) -> Single<CoinsBalance> {
@@ -151,163 +147,63 @@ final class APIGatewayImpl: APIGateway {
     }
     
     let request = CoinsBalanceRequest(userId: userId, coins: coins)
-    return api.execute(request)
-      .flatMap {
-        switch $0 {
-        case let .response(response):
-          return Single.just(response)
-        case let .error(error):
-          return Single.error(error)
-        }
-      }
+    return execute(request)
   }
   
   func getCoinSettings(type: CustomCoinType) -> Single<CoinSettings> {
     let request = CoinSettingsRequest(coinId: type.code)
-    return api.execute(request)
-      .flatMap {
-        switch $0 {
-        case let .response(response):
-          return Single.just(response)
-        case let .error(error):
-          return Single.error(error)
-        }
-      }
+    return execute(request)
   }
   
   func getMapAddresses() -> Single<MapAddresses> {
     let request = MapAddressesRequest()
-    return api.execute(request)
-      .flatMap {
-        switch $0 {
-        case let .response(response):
-          return Single.just(response)
-        case let .error(error):
-          return Single.error(error)
-        }
-    }
+    return execute(request)
   }
   
   func getPhoneNumber(userId: Int) -> Single<PhoneNumber> {
     let request = GetPhoneNumberRequest(userId: userId)
-    return api.execute(request)
-      .flatMap {
-        switch $0 {
-        case let .response(response):
-          return Single.just(response)
-        case let .error(error):
-          return Single.error(error)
-        }
-    }
+    return execute(request)
   }
   
   func checkPassword(userId: Int, password: String) -> Single<Bool> {
     let request = CheckPasswordRequest(userId: userId, password: password)
-    return api.execute(request)
-      .map { apiResponse -> Bool in
-        switch apiResponse {
-        case let .response(response):
-          return response.result
-        case let .error(error):
-          throw error
-        }
-      }
+    return execute(request).map { $0.result }
   }
   
   func changePhone(userId: Int, phoneNumber: String) -> Completable {
     let request = ChangePhoneRequest(userId: userId, phoneNumber: phoneNumber)
-    return api.execute(request)
-      .map { apiResponse -> Void in
-        switch apiResponse {
-        case .response:
-          return Void()
-        case let .error(error):
-          throw error
-        }
-      }
-      .toCompletable()
+    return execute(request)
   }
   
   func confirmPhone(userId: Int, phoneNumber: String, code: String) -> Completable {
     let request = ConfirmPhoneRequest(userId: userId, phoneNumber: phoneNumber, code: code)
-    return api.execute(request)
-      .map { apiResponse -> Void in
-        switch apiResponse {
-        case .response:
-          return Void()
-        case let .error(error):
-          throw error
-        }
-      }
-      .toCompletable()
+    return execute(request)
   }
   
   func changePassword(userId: Int, oldPassword: String, newPassword: String) -> Completable {
     let request = ChangePasswordRequest(userId: userId, oldPassword: oldPassword, newPassword: newPassword)
-    return api.execute(request)
-      .map { apiResponse -> Void in
-        switch apiResponse {
-        case .response:
-          return Void()
-        case let .error(error):
-          throw error
-        }
-      }
-      .toCompletable()
+    return execute(request)
   }
   
   func unlink(userId: Int) -> Completable {
     let request = UnlinkRequest(userId: userId)
-    return api.execute(request)
-      .map { apiResponse -> Void in
-        switch apiResponse {
-        case .response:
-          return Void()
-        case let .error(error):
-          throw error
-        }
-      }
-      .toCompletable()
+    return execute(request)
   }
   
   func getTransactions(userId: Int, type: CustomCoinType, page: Int) -> Single<Transactions> {
     let index = page * 10 + 1
     let request = TransactionsRequest(userId: userId, coinId: type.code, index: index)
-    return api.execute(request)
-      .flatMap {
-        switch $0 {
-        case let .response(response):
-          return Single.just(response)
-        case let .error(error):
-          return Single.error(error)
-        }
-      }
+    return execute(request)
   }
   
   func getTransactionDetails(userId: Int, type: CustomCoinType, id: String) -> Single<TransactionDetails> {
     let request = TransactionDetailsRequest(userId: userId, coinId: type.code, id: id)
-    return api.execute(request)
-      .flatMap {
-        switch $0 {
-        case let .response(response):
-          return Single.just(response)
-        case let .error(error):
-          return Single.error(error)
-        }
-      }
+    return execute(request)
   }
   
   func getUtxos(type: CustomCoinType, xpub: String) -> Single<[Utxo]> {
     let request = UtxosRequest(coinId: type.code, xpub: xpub)
-    return api.execute(request)
-      .flatMap {
-        switch $0 {
-        case let .response(response):
-          return Single.just(response.utxos)
-        case let .error(error):
-          return Single.error(error)
-        }
-      }
+    return execute(request).map { $0.utxos }
   }
   
   func presubmitTransaction(userId: Int,
@@ -318,15 +214,7 @@ final class APIGatewayImpl: APIGateway {
                                               coinId: type.code,
                                               coinAmount: coinAmount,
                                               currencyAmount: currencyAmount)
-    return api.execute(request)
-      .flatMap {
-        switch $0 {
-        case let .response(response):
-          return Single.just(response)
-        case let .error(error):
-          return Single.error(error)
-        }
-      }
+    return execute(request)
   }
   
   func submitTransaction(userId: Int,
@@ -353,258 +241,94 @@ final class APIGatewayImpl: APIGateway {
                                            imageId: imageId,
                                            toCoinId: toCoinType?.code,
                                            txhex: txhex)
-    return api.execute(request)
-      .map { apiResponse -> Void in
-        switch apiResponse {
-        case .response:
-          return Void()
-        case let .error(error):
-          throw error
-        }
-      }
-      .toCompletable()
-  }
-  
-  func requestCode(userId: Int) -> Completable {
-    let request = RequestCodeRequest(userId: userId)
-    return api.execute(request)
-      .map { apiResponse -> Void in
-        switch apiResponse {
-        case .response:
-          return Void()
-        case let .error(error):
-          throw error
-        }
-      }
-      .toCompletable()
+    return execute(request)
   }
   
   func getTronBlockHeader(type: CustomCoinType) -> Single<BTMTronBlockHeader> {
     let request = GetTronBlockHeaderRequest(coinId: type.code)
-    return api.execute(request)
-      .flatMap {
-        switch $0 {
-        case let .response(response):
-          return Single.just(response)
-        case let .error(error):
-          return Single.error(error)
-        }
-      }
+    return execute(request)
   }
   
   func getGiftAddress(type: CustomCoinType, phone: String) -> Single<GiftAddress> {
     let request = GetGiftAddressRequest(coinId: type.code, phone: phone)
-    return api.execute(request)
-      .flatMap {
-        switch $0 {
-        case let .response(response):
-          return Single.just(response)
-        case let .error(error):
-          return Single.error(error)
-        }
-      }
+    return execute(request)
   }
   
   func getNonce(type: CustomCoinType, address: String) -> Single<Nonce> {
     let request = GetNonceRequest(coinId: type.code, address: address)
-    return api.execute(request)
-      .flatMap {
-        switch $0 {
-        case let .response(response):
-          return Single.just(response)
-        case let .error(error):
-          return Single.error(error)
-        }
-      }
+    return execute(request)
   }
   
   func getBinanceAccountInfo(type: CustomCoinType, address: String) -> Single<BinanceAccountInfo> {
     let request = GetBinanceAccountInfoRequest(coinId: type.code, address: address)
-    return api.execute(request)
-      .flatMap {
-        switch $0 {
-        case let .response(response):
-          return Single.just(response)
-        case let .error(error):
-          return Single.error(error)
-        }
-      }
+    return execute(request)
   }
   
   func getRippleSequence(type: CustomCoinType, address: String) -> Single<RippleSequence> {
     let request = GetRippleSequenceRequest(coinId: type.code, address: address)
-    return api.execute(request)
-      .flatMap {
-        switch $0 {
-        case let .response(response):
-          return Single.just(response)
-        case let .error(error):
-          return Single.error(error)
-        }
-      }
+    return execute(request)
   }
   
   func getSellAddress(userId: Int, type: CustomCoinType) -> Single<SellAddress> {
     let request = GetSellAddressRequest(userId: userId, coinId: type.code)
-    return api.execute(request)
-      .flatMap {
-        switch $0 {
-        case let .response(response):
-          return Single.just(response)
-        case let .error(error):
-          return Single.error(error)
-        }
-      }
+    return execute(request)
   }
   
   func getSellDetails(userId: Int) -> Single<SellDetails> {
     let request = GetSellDetailsRequest(userId: userId)
-    return api.execute(request)
-      .flatMap {
-        switch $0 {
-        case let .response(response):
-          return Single.just(response)
-        case let .error(error):
-          return Single.error(error)
-        }
-      }
+    return execute(request)
   }
   
   func getVerificationInfo(userId: Int) -> Single<VerificationInfo> {
     let request = GetVerificationInfoRequest(userId: userId)
-    return api.execute(request)
-      .flatMap {
-        switch $0 {
-        case let .response(response):
-          return Single.just(response)
-        case let .error(error):
-          return Single.error(error)
-        }
-    }
+    return execute(request)
   }
   
   func sendVerification(userId: Int, userData: VerificationUserData) -> Completable {
     let request = SendVerificationRequest(userId: userId, userData: userData)
-    return api.execute(request)
-      .map { apiResponse -> Void in
-        switch apiResponse {
-        case .response:
-          return Void()
-        case let .error(error):
-          throw error
-        }
-      }
-      .toCompletable()
+    return execute(request)
   }
   
   func sendVIPVerification(userId: Int, userData: VIPVerificationUserData) -> Completable {
     let request = SendVIPVerificationRequest(userId: userId, userData: userData)
-    return api.execute(request)
-      .map { apiResponse -> Void in
-        switch apiResponse {
-        case .response:
-          return Void()
-        case let .error(error):
-          throw error
-        }
-      }
-      .toCompletable()
+    return execute(request)
   }
   
   func getPriceChartData(userId: Int, type: CustomCoinType) -> Single<PriceChartData> {
     let request = GetPriceChartDataRequest(userId: userId, coinId: type.code)
-    return api.execute(request)
-      .flatMap {
-        switch $0 {
-        case let .response(response):
-          return Single.just(response)
-        case let .error(error):
-          return Single.error(error)
-        }
-    }
+    return execute(request)
   }
   
   func getBuyTrades(userId: Int, type: CustomCoinType, page: Int) -> Single<BuySellTrades> {
     let index = page * 10 + 1
     let request = BuySellTradesRequest(userId: userId, coinId: type.code, type: TradeType.buy, index: index)
-    return api.execute(request)
-      .flatMap {
-        switch $0 {
-        case let .response(response):
-          return Single.just(response)
-        case let .error(error):
-          return Single.error(error)
-        }
-      }
+    return execute(request)
   }
   
   func getSellTrades(userId: Int, type: CustomCoinType, page: Int) -> Single<BuySellTrades> {
     let index = page * 10 + 1
     let request = BuySellTradesRequest(userId: userId, coinId: type.code, type: TradeType.sell, index: index)
-    return api.execute(request)
-      .flatMap {
-        switch $0 {
-        case let .response(response):
-          return Single.just(response)
-        case let .error(error):
-          return Single.error(error)
-        }
-      }
+    return execute(request)
   }
   
   func updateLocation(userId: Int, latitude: Double, longitude: Double) -> Completable {
     let request = UpdateLocationRequest(userId: userId, latitude: latitude, longitude: longitude)
-    return api.execute(request)
-    .map { apiResponse -> Void in
-      switch apiResponse {
-      case .response:
-        return Void()
-      case let .error(error):
-        throw error
-      }
-    }
-    .toCompletable()
+    return execute(request)
   }
   
   func submitTradeRequest(userId: Int, data: SubmitTradeRequestData) -> Completable {
     let request = SubmitTradeRequestRequest(userId: userId, data: data)
-    return api.execute(request)
-    .map { apiResponse -> Void in
-      switch apiResponse {
-      case .response:
-        return Void()
-      case let .error(error):
-        throw error
-      }
-    }
-    .toCompletable()
+    return execute(request)
   }
   
   func submitTrade(userId: Int, data: SubmitTradeData) -> Completable {
     let request = SubmitTradeRequest(userId: userId, data: data)
-    return api.execute(request)
-    .map { apiResponse -> Void in
-      switch apiResponse {
-      case .response:
-        return Void()
-      case let .error(error):
-        throw error
-      }
-    }
-    .toCompletable()
+    return execute(request)
   }
   
   func getStakeDetails(userId: Int, type: CustomCoinType) -> Single<StakeDetails> {
     let request = StakeDetailsRequest(userId: userId, coinId: type.code)
-    return api.execute(request)
-      .flatMap {
-        switch $0 {
-        case let .response(response):
-          return Single.just(response)
-        case let .error(error):
-          return Single.error(error)
-        }
-      }
+    return execute(request)
   }
   
 }

@@ -12,6 +12,7 @@ class RootFlow: BaseFlow<UIWindow, RootFlowController> {
   enum Steps: Step, Equatable {
     case splash
     case login
+    case seedPhrase
     case pinCode(PinCodeStage)
     case main
   }
@@ -30,6 +31,11 @@ class RootFlow: BaseFlow<UIWindow, RootFlowController> {
     case .login:
       let loginFlow = LoginFlow(view: BTMNavigationController(), parent: self)
       return replaceRoot(with: loginFlow)
+    case .seedPhrase:
+      let loginFlow = LoginFlow(view: BTMNavigationController(), parent: self)
+      let nextItem = replaceRoot(with: loginFlow)
+      loginFlow.controller.step.accept(LoginFlow.Steps.seedPhrase)
+      return nextItem
     case let .pinCode(stage):
       let module = resolver.resolve(Module<PinCodeModule>.self)!
       module.input.setup(for: stage)

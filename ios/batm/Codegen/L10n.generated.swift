@@ -498,12 +498,18 @@ extension L.CreateWallet.Form {
 
   struct Error {
     static let allFieldsRequired = "create_wallet.form.error.all_fields_required"
+    static let existedPhoneNumber = "create_wallet.form.error.existed_phone_number"
     static let notEqualPasswords = "create_wallet.form.error.not_equal_passwords"
+    static let notValidPassword = "create_wallet.form.error.not_valid_password"
     static let notValidPhoneNumber = "create_wallet.form.error.not_valid_phone_number"
   }
 
   struct Password {
     static let placeholder = "create_wallet.form.password.placeholder"
+  }
+
+  struct Phone {
+    static let placeholder = "create_wallet.form.phone.placeholder"
   }
 }
 extension L.EnterPassword {

@@ -23,6 +23,9 @@
 		DB04E4D422D85EE5000E2D85 /* PinCodeUsecase.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB04E4D322D85EE5000E2D85 /* PinCodeUsecase.swift */; };
 		DB04E4D722D880B5000E2D85 /* PinCodeService.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB04E4D622D880B5000E2D85 /* PinCodeService.swift */; };
 		DB04E4D922D8AC4D000E2D85 /* PinCodeAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB04E4D822D8AC4D000E2D85 /* PinCodeAssembly.swift */; };
+		DB0AD1D624BA1F4C00806282 /* PasswordTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB0AD1D524BA1F4C00806282 /* PasswordTextField.swift */; };
+		DB0AD1D824BA2A6B00806282 /* LoginNavigationScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB0AD1D724BA2A6B00806282 /* LoginNavigationScreenView.swift */; };
+		DB0AD1DA24BA2C1F00806282 /* RootScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB0AD1D924BA2C1F00806282 /* RootScrollView.swift */; };
 		DB0BB5F722BD10B90035FF6C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB0BB5F622BD10B90035FF6C /* AppDelegate.swift */; };
 		DB0BB5FE22BD10BA0035FF6C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DB0BB5FD22BD10BA0035FF6C /* Assets.xcassets */; };
 		DB0BB60122BD10BA0035FF6C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DB0BB5FF22BD10BA0035FF6C /* LaunchScreen.storyboard */; };
@@ -433,6 +436,10 @@
 		DBBF29AE22D3C0CC00A5DE6A /* CoinsBalanceUsecase.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBBF29AD22D3C0CC00A5DE6A /* CoinsBalanceUsecase.swift */; };
 		DBBF29B022D3EE6200A5DE6A /* LogoutUsecase.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBBF29AF22D3EE6200A5DE6A /* LogoutUsecase.swift */; };
 		DBC37F4122C7F42200519153 /* PhoneNumberTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC37F4022C7F42200519153 /* PhoneNumberTextField.swift */; };
+		DBC3FF4F24BB348300198597 /* CheckAccountResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC3FF4E24BB348300198597 /* CheckAccountResponse.swift */; };
+		DBC3FF5124BB34BD00198597 /* CheckAccountResponse+Mapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC3FF5024BB34BD00198597 /* CheckAccountResponse+Mapping.swift */; };
+		DBC3FF5324BB375B00198597 /* PhoneVerificationResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC3FF5224BB375B00198597 /* PhoneVerificationResponse.swift */; };
+		DBC3FF5524BB37A200198597 /* PhoneVerificationResponse+Mapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC3FF5424BB37A200198597 /* PhoneVerificationResponse+Mapping.swift */; };
 		DBC620A723466B000007D412 /* GiftAddress.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC620A623466B000007D412 /* GiftAddress.swift */; };
 		DBC620A923466B250007D412 /* GiftAddress+Mapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC620A823466B250007D412 /* GiftAddress+Mapping.swift */; };
 		DBC620AB2347493F0007D412 /* Nonce+Mapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC620AA2347493F0007D412 /* Nonce+Mapping.swift */; };
@@ -527,6 +534,9 @@
 		DB04E4D322D85EE5000E2D85 /* PinCodeUsecase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinCodeUsecase.swift; sourceTree = "<group>"; };
 		DB04E4D622D880B5000E2D85 /* PinCodeService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinCodeService.swift; sourceTree = "<group>"; };
 		DB04E4D822D8AC4D000E2D85 /* PinCodeAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinCodeAssembly.swift; sourceTree = "<group>"; };
+		DB0AD1D524BA1F4C00806282 /* PasswordTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordTextField.swift; sourceTree = "<group>"; };
+		DB0AD1D724BA2A6B00806282 /* LoginNavigationScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginNavigationScreenView.swift; sourceTree = "<group>"; };
+		DB0AD1D924BA2C1F00806282 /* RootScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootScrollView.swift; sourceTree = "<group>"; };
 		DB0BB5F322BD10B90035FF6C /* batm.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = batm.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DB0BB5F622BD10B90035FF6C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		DB0BB5FD22BD10BA0035FF6C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -939,6 +949,10 @@
 		DBBF29AD22D3C0CC00A5DE6A /* CoinsBalanceUsecase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinsBalanceUsecase.swift; sourceTree = "<group>"; };
 		DBBF29AF22D3EE6200A5DE6A /* LogoutUsecase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogoutUsecase.swift; sourceTree = "<group>"; };
 		DBC37F4022C7F42200519153 /* PhoneNumberTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneNumberTextField.swift; sourceTree = "<group>"; };
+		DBC3FF4E24BB348300198597 /* CheckAccountResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckAccountResponse.swift; sourceTree = "<group>"; };
+		DBC3FF5024BB34BD00198597 /* CheckAccountResponse+Mapping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CheckAccountResponse+Mapping.swift"; sourceTree = "<group>"; };
+		DBC3FF5224BB375B00198597 /* PhoneVerificationResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneVerificationResponse.swift; sourceTree = "<group>"; };
+		DBC3FF5424BB37A200198597 /* PhoneVerificationResponse+Mapping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PhoneVerificationResponse+Mapping.swift"; sourceTree = "<group>"; };
 		DBC620A623466B000007D412 /* GiftAddress.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GiftAddress.swift; sourceTree = "<group>"; };
 		DBC620A823466B250007D412 /* GiftAddress+Mapping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GiftAddress+Mapping.swift"; sourceTree = "<group>"; };
 		DBC620AA2347493F0007D412 /* Nonce+Mapping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Nonce+Mapping.swift"; sourceTree = "<group>"; };
@@ -1172,6 +1186,9 @@
 				DB5EB8DD2452D80F00CD1C63 /* MaterialCheckBoxView.swift */,
 				DB7A9D112459CEE800006B54 /* QRCodeCardView.swift */,
 				DBF98D4424502EF800AF6D5A /* FloatingActionButton.swift */,
+				DB0AD1D524BA1F4C00806282 /* PasswordTextField.swift */,
+				DB0AD1D724BA2A6B00806282 /* LoginNavigationScreenView.swift */,
+				DB0AD1D924BA2C1F00806282 /* RootScrollView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -2075,6 +2092,8 @@
 			isa = PBXGroup;
 			children = (
 				DB9616B722C63E270078E92D /* Account.swift */,
+				DBC3FF4E24BB348300198597 /* CheckAccountResponse.swift */,
+				DBC3FF5224BB375B00198597 /* PhoneVerificationResponse.swift */,
 				DB96172822C76E360078E92D /* BTMWallet.swift */,
 				DBB5B38E22E0CD5800222640 /* BTMCoin.swift */,
 				DBBF299F22D3814300A5DE6A /* CoinAddress.swift */,
@@ -2207,6 +2226,8 @@
 			children = (
 				DBBF29A522D386B500A5DE6A /* ObjectMapperError.swift */,
 				DB96170B22C75E950078E92D /* Account+Mapping.swift */,
+				DBC3FF5024BB34BD00198597 /* CheckAccountResponse+Mapping.swift */,
+				DBC3FF5424BB37A200198597 /* PhoneVerificationResponse+Mapping.swift */,
 				DBBF299D22D3810200A5DE6A /* CoinAddress+Mapping.swift */,
 				DBBF29A322D3848F00A5DE6A /* CoinBalance+Mapping.swift */,
 				DBBF29A722D3872D00A5DE6A /* CoinsBalance+Mapping.swift */,
@@ -2942,6 +2963,7 @@
 				DB86FD262477FBD5002FE22D /* LocationUpdateDateRecord+CoreDataClass.swift in Sources */,
 				DB1AF0E224436D6D0037C998 /* MDCContainerScheme+Extensions.swift in Sources */,
 				DB308EBB22E738FC003D91AF /* MapAddresses+Mapping.swift in Sources */,
+				DB0AD1D824BA2A6B00806282 /* LoginNavigationScreenView.swift in Sources */,
 				DB1CFB43246C4F5D00020104 /* TradesFlow.swift in Sources */,
 				DBA6844222E44AE40079429E /* ATMPresenter.swift in Sources */,
 				DB8F078924103E8F00770643 /* PickerFlow+Dependencies.swift in Sources */,
@@ -3126,6 +3148,7 @@
 				DB96172322C75E950078E92D /* Observable+ObjectMapper.swift in Sources */,
 				DBC620A723466B000007D412 /* GiftAddress.swift in Sources */,
 				DBA6845722E45AE70079429E /* SettingsViewController.swift in Sources */,
+				DBC3FF5124BB34BD00198597 /* CheckAccountResponse+Mapping.swift in Sources */,
 				DB96171722C75E950078E92D /* RefreshCredentialsService.swift in Sources */,
 				DB33E9B8241CE52500764BF5 /* CoinDetailsBalanceView.swift in Sources */,
 				DB95EB1A230A982F0059C84C /* CoinDetailsButtonsView.swift in Sources */,
@@ -3138,6 +3161,7 @@
 				DB2C972023449B3D006E7D61 /* CoinSendGiftStore.swift in Sources */,
 				DBEC45BB2321366500BB05B2 /* CoinWithdrawStore.swift in Sources */,
 				DB51F3102490CFC1007F47B4 /* CreateEditTradePresenter.swift in Sources */,
+				DBC3FF5524BB37A200198597 /* PhoneVerificationResponse+Mapping.swift in Sources */,
 				DB308EB922E73888003D91AF /* MapAddress+Mapping.swift in Sources */,
 				DBAD53A422D7C5610005F682 /* PinCodeView.swift in Sources */,
 				DB5EB8DA2452B23D00CD1C63 /* MDCTextInputControllerBase+Extensions.swift in Sources */,
@@ -3166,6 +3190,7 @@
 				DB308EB322E73793003D91AF /* MapAddress.swift in Sources */,
 				DBA6843D22E44A880079429E /* ATMFlow+Dependencies.swift in Sources */,
 				DB8D40B522C401DD00D5FBD0 /* GoldSeparatorView.swift in Sources */,
+				DBC3FF5324BB375B00198597 /* PhoneVerificationResponse.swift in Sources */,
 				DB83664822FABFB800454F5C /* ChangePinFormView.swift in Sources */,
 				DB39FC332302DC2200FA2B5F /* RecoverSeedPhraseStore.swift in Sources */,
 				DB156E2324A644F600E59F76 /* Platform.swift in Sources */,
@@ -3175,6 +3200,7 @@
 				DB1AF0DA244362140037C998 /* CoinSendGiftFormView.swift in Sources */,
 				DB0211C622CD340A004065E9 /* TextFieldWithoutPaddings.swift in Sources */,
 				DB82AD2924AF18CF001F833E /* CoinStakingFormView.swift in Sources */,
+				DBC3FF4F24BB348300198597 /* CheckAccountResponse.swift in Sources */,
 				DBC620AD234749B30007D412 /* Nonce.swift in Sources */,
 				DB1D21F424AE7296001E9696 /* CoinStakingStore.swift in Sources */,
 				DB1D21E624AE6C6A001E9696 /* StakeDetails.swift in Sources */,
@@ -3361,6 +3387,7 @@
 				DBA1B60F24A9C5B300A9A703 /* ReservePresenter.swift in Sources */,
 				DB99BB9E2362E274006A75BE /* TransactionDetailsGiftSectionView.swift in Sources */,
 				DB21B1F124AA63AA008444D3 /* RecallModule.swift in Sources */,
+				DB0AD1DA24BA2C1F00806282 /* RootScrollView.swift in Sources */,
 				DB8DC11E2412C151006AB4F5 /* VerificationFormView.swift in Sources */,
 				DB96172422C75E950078E92D /* Single+ObjectMapper.swift in Sources */,
 				DB1D21EF24AE6F2A001E9696 /* CoinStakingViewController.swift in Sources */,
@@ -3379,6 +3406,7 @@
 				DB1CFB55246C518200020104 /* TradesPresenter.swift in Sources */,
 				DB2F250E2360687800274C60 /* CoinSellDetailsCurrentAddressPresenter.swift in Sources */,
 				DB8A1960235729A0003E8F7D /* NavigationScreenView.swift in Sources */,
+				DB0AD1D624BA1F4C00806282 /* PasswordTextField.swift in Sources */,
 				DB8D408122C3DBA700D5FBD0 /* CreateWalletModule.swift in Sources */,
 				DBC68CAA22F868E000473247 /* EnterPasswordAssembly.swift in Sources */,
 				DB9616DD22C748610078E92D /* NSManagedObject+ActiveRecord.swift in Sources */,

@@ -3,6 +3,7 @@ import RxSwift
 
 enum LoginState {
   case loggedOut
+  case seedPhrase
   case setupPinCode
   case loggedIn
 }
@@ -10,10 +11,11 @@ enum LoginState {
 protocol LoginUsecase {
   func getLogoutObservable() -> Observable<Void>
   func getLoginState() -> Single<LoginState>
+  func checkAndVerifyAccount(phoneNumber: String, password: String) -> Single<PhoneVerificationResponse>
+  func createWallet() -> Completable
   func createAccount(phoneNumber: String, password: String) -> Completable
   func recoverWallet(phoneNumber: String, password: String) -> Completable
   func verifyCode(code: String) -> Completable
-  func createWallet() -> Completable
   func recoverWallet(seedPhrase: String) -> Completable
   func addCoins() -> Completable
   func getSeedPhrase() -> Single<String>
@@ -47,17 +49,40 @@ class LoginUsecaseImpl: LoginUsecase {
   }
   
   func getLoginState() -> Single<LoginState> {
-    return accountStorage.get()
-      .flatMap { [walletStorage] _ in walletStorage.get() }
+    return walletStorage.get()
+      .flatMap { [accountStorage] _ in accountStorage.get() }
       .flatMap { [pinCodeStorage] _ in pinCodeStorage.get() }
       .map { _ in return .loggedIn }
       .catchError { error in
+        if let error = error as? BTMWalletStorageError, error == .notFound {
+          return .just(.loggedOut)
+        }
+        
+        if let error = error as? AccountStorageError, error == .notFound {
+          return .just(.seedPhrase)
+        }
+        
         if let error = error as? PinCodeStorageError, error == .notFound {
           return .just(.setupPinCode)
         }
         
         return .just(.loggedOut)
       }
+  }
+  
+  func checkAndVerifyAccount(phoneNumber: String, password: String) -> Single<PhoneVerificationResponse> {
+    return api.checkAccount(phoneNumber: phoneNumber, password: password)
+      .flatMap { [api] in
+        if $0.phoneExist {
+          return .error(APIError.serverError(localize(L.CreateWallet.Form.Error.existedPhoneNumber)))
+        }
+        
+        return api.verifyPhone(phoneNumber: phoneNumber)
+      }
+  }
+  
+  func createWallet() -> Completable {
+    return walletService.createWallet()
   }
   
   func createAccount(phoneNumber: String, password: String) -> Completable {
@@ -79,10 +104,6 @@ class LoginUsecaseImpl: LoginUsecase {
       .asObservable()
       .flatMap { [api] in api.verifyCode(userId: $0.userId, code: code).andThen(Observable.just(())) }
       .toCompletable()
-  }
-  
-  func createWallet() -> Completable {
-    return walletService.createWallet()
   }
   
   func recoverWallet(seedPhrase: String) -> Completable {

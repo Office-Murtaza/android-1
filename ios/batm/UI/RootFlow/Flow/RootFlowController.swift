@@ -19,6 +19,8 @@ class RootFlowController: FlowController, FlowActivator, HasDisposeBag {
         switch $0 {
         case .loggedOut:
           return .just(RootFlow.Steps.login)
+        case .seedPhrase:
+          return .just(RootFlow.Steps.seedPhrase)
         case .setupPinCode:
           return .just(RootFlow.Steps.pinCode(.setup))
         case .loggedIn:
