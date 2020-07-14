@@ -25,6 +25,11 @@ class SeedPhrasePresenter: ModulePresenter, SeedPhraseModule {
     self.store = store
   }
   
+  func setup(phoneNumber: String, password: String) {
+    store.action.accept(.setupPhoneNumber(phoneNumber))
+    store.action.accept(.setupPassword(password))
+  }
+  
   func bind(input: Input) {
     input.copy
       .withLatestFrom(state)
@@ -52,14 +57,13 @@ class SeedPhrasePresenter: ModulePresenter, SeedPhraseModule {
   }
   
   private func createAccount(for state: SeedPhraseState) -> Completable {
-      return .empty()
-  //    return usecase.recoverWallet(seedPhrase: seedPhrase)
-  //      .catchError { [store] in
-  //        if let apiError = $0 as? APIError, case let .serverError(error) = apiError {
-  //          store.action.accept(.makeInvalidState(error))
-  //        }
-  //
-  //        throw $0
-  //      }
+    return usecase.createAccount(phoneNumber: state.phoneNumber, password: state.password)
+      .catchError { [store] in
+        if let apiError = $0 as? APIError, case let .serverError(error) = apiError {
+          store.action.accept(.makeInvalidState(error))
+        }
+        
+        throw $0
     }
+  }
 }

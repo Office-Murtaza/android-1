@@ -17,9 +17,9 @@ final class LoginFlow: BaseFlow<BTMNavigationController, LoginFlowController> {
   enum Steps: Step, Equatable {
     case welcome
     case createWallet
-    case seedPhrase
+    case seedPhrase(String, String)
     case recover
-    case recoverSeedPhrase
+    case recoverSeedPhrase(String, String)
     case pinCode(PinCodeStage)
     case backToWelcome
     case contactSupport
@@ -40,14 +40,16 @@ final class LoginFlow: BaseFlow<BTMNavigationController, LoginFlowController> {
     case .createWallet:
       let module = resolver.resolve(Module<CreateWalletModule>.self)!
       return push(module.controller)
-    case .seedPhrase:
+    case let .seedPhrase(phoneNumber, password):
       let module = resolver.resolve(Module<SeedPhraseModule>.self)!
+      module.input.setup(phoneNumber: phoneNumber, password: password)
       return push(module.controller)
     case .recover:
       let module = resolver.resolve(Module<RecoverModule>.self)!
       return push(module.controller)
-    case .recoverSeedPhrase:
+    case let .recoverSeedPhrase(phoneNumber, password):
       let module = resolver.resolve(Module<RecoverSeedPhraseModule>.self)!
+      module.input.setup(phoneNumber: phoneNumber, password: password)
       return push(module.controller)
     case let .pinCode(stage):
       let module = resolver.resolve(Module<PinCodeModule>.self)!

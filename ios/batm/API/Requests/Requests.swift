@@ -51,13 +51,15 @@ struct CreateAccountRequest: APIRequest {
   
   let phoneNumber: String
   let password: String
+  let coinAddresses: [CoinAddress]
   
   var path: String { return "/register" }
   var method: HTTPMethod { return .post }
   var task: HTTPTask {
     return .requestParameters(parameters: ["phone": phoneNumber,
                                            "password": password,
-                                           "platform": MobilePlatform.iOS.rawValue],
+                                           "platform": MobilePlatform.iOS.rawValue,
+                                           "coins": coinAddresses.toJSON()],
                               encoding: JSONEncoding.default)
   }
 }
@@ -68,13 +70,15 @@ struct RecoverWalletRequest: APIRequest {
   
   let phoneNumber: String
   let password: String
+  let coinAddresses: [CoinAddress]
   
   var path: String { return "/recover" }
   var method: HTTPMethod { return .post }
   var task: HTTPTask {
     return .requestParameters(parameters: ["phone": phoneNumber,
                                            "password": password,
-                                           "platform": MobilePlatform.iOS.rawValue],
+                                           "platform": MobilePlatform.iOS.rawValue,
+                                           "coins": coinAddresses.toJSON()],
                               encoding: JSONEncoding.default)
   }
 }
@@ -90,36 +94,6 @@ struct VerifyCodeRequest: AuthorizedAPIRequest {
   var method: HTTPMethod { return .post }
   var task: HTTPTask {
     return .requestParameters(parameters: ["code": code],
-                              encoding: JSONEncoding.default)
-  }
-}
-
-struct AddCoinsRequest: AuthorizedAPIRequest {
-  typealias ResponseType = APIEmptyResponse
-  typealias ResponseTrait = SingleResponseTrait
-  
-  let userId: Int
-  let coinAddresses: [CoinAddress]
-  
-  var path: String { return "/user/\(userId)/coins/add" }
-  var method: HTTPMethod { return .post }
-  var task: HTTPTask {
-    return .requestParameters(parameters: ["coins": coinAddresses.toJSON()],
-                              encoding: JSONEncoding.default)
-  }
-}
-
-struct CompareCoinsRequest: AuthorizedAPIRequest {
-  typealias ResponseType = APIEmptyResponse
-  typealias ResponseTrait = SingleResponseTrait
-  
-  let userId: Int
-  let coinAddresses: [CoinAddress]
-  
-  var path: String { return "/user/\(userId)/coins/compare" }
-  var method: HTTPMethod { return .post }
-  var task: HTTPTask {
-    return .requestParameters(parameters: ["coins": coinAddresses.toJSON()],
                               encoding: JSONEncoding.default)
   }
 }

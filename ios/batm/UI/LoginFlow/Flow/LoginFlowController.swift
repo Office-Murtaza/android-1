@@ -35,8 +35,8 @@ extension LoginFlowController: CreateWalletModuleDelegate {
     step.accept(LoginFlow.Steps.pop)
   }
   
-  func finishCreatingWallet() {
-    step.accept(LoginFlow.Steps.seedPhrase)
+  func finishCreatingWallet(phoneNumber: String, password: String) {
+    step.accept(LoginFlow.Steps.seedPhrase(phoneNumber, password))
   }
   
 }
@@ -55,8 +55,8 @@ extension LoginFlowController: RecoverModuleDelegate {
     step.accept(LoginFlow.Steps.pop)
   }
   
-  func finishRecovering() {
-    step.accept(LoginFlow.Steps.recoverSeedPhrase)
+  func finishRecovering(phoneNumber: String, password: String) {
+    step.accept(LoginFlow.Steps.recoverSeedPhrase(phoneNumber, password))
   }
   
 }

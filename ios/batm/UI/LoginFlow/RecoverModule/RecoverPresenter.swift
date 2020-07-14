@@ -46,8 +46,8 @@ class RecoverPresenter: ModulePresenter, RecoverModule {
       .withLatestFrom(state)
       .filter { $0.validationState.isValid }
       .map { ($0.phoneE164, $0.password) }
-      .flatMap { [unowned self] in self.track(self.checkAndVerify(phoneNumber: $0.0, password: $0.1)) }
-      .subscribe(onNext: { [delegate] _ in delegate?.finishRecovering() })
+      .flatMap { [unowned self] data in self.track(self.checkAndVerify(phoneNumber: data.0, password: data.1).map { _ in data }) }
+      .subscribe(onNext: { [delegate] in delegate?.finishRecovering(phoneNumber: $0.0, password: $0.1) })
       .disposed(by: disposeBag)
   }
   

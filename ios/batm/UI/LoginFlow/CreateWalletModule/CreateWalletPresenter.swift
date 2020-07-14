@@ -53,9 +53,9 @@ class CreateWalletPresenter: ModulePresenter, CreateWalletModule {
       .withLatestFrom(state)
       .filter { $0.validationState.isValid }
       .map { ($0.phoneE164, $0.password) }
-      .flatMap { [unowned self] in self.track(self.checkAndVerify(phoneNumber: $0.0, password: $0.1)) }
-      .flatMap { [unowned self] _ in self.track(self.usecase.createWallet()) }
-      .subscribe(onNext: { [delegate] in delegate?.finishCreatingWallet() })
+      .flatMap { [unowned self] data in self.track(self.checkAndVerify(phoneNumber: data.0, password: data.1)).map { _ in data } }
+      .flatMap { [unowned self] data in self.track(self.usecase.createWallet()).map { _ in data } }
+      .subscribe(onNext: { [delegate] in delegate?.finishCreatingWallet(phoneNumber: $0.0, password: $0.1) })
       .disposed(by: disposeBag)
   }
   

@@ -25,6 +25,11 @@ class RecoverSeedPhrasePresenter: ModulePresenter, RecoverSeedPhraseModule {
     self.store = store
   }
   
+  func setup(phoneNumber: String, password: String) {
+    store.action.accept(.setupPhoneNumber(phoneNumber))
+    store.action.accept(.setupPassword(password))
+  }
+  
   func bind(input: Input) {
     input.updateSeedPhrase
       .asObservable()
@@ -43,14 +48,15 @@ class RecoverSeedPhrasePresenter: ModulePresenter, RecoverSeedPhraseModule {
   }
   
   private func recoverWallet(for state: RecoverSeedPhraseState) -> Completable {
-    return .empty()
-//    return usecase.recoverWallet(seedPhrase: seedPhrase)
-//      .catchError { [store] in
-//        if let apiError = $0 as? APIError, case let .serverError(error) = apiError {
-//          store.action.accept(.makeInvalidState(error))
-//        }
-//
-//        throw $0
-//      }
+    return usecase.recoverWallet(phoneNumber: state.phoneNumber,
+                                 password: state.password,
+                                 seedPhrase: state.fullSeedPhrase)
+      .catchError { [store] in
+        if let apiError = $0 as? APIError, case let .serverError(error) = apiError {
+          store.action.accept(.makeInvalidState(error))
+        }
+
+        throw $0
+      }
   }
 }

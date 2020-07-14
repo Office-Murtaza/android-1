@@ -19,11 +19,9 @@ protocol APIGateway {
   
   func checkAccount(phoneNumber: String, password: String) -> Single<CheckAccountResponse>
   func verifyPhone(phoneNumber: String) -> Single<PhoneVerificationResponse>
-  func createAccount(phoneNumber: String, password: String) -> Single<Account>
-  func recoverWallet(phoneNumber: String, password: String) -> Single<Account>
+  func createAccount(phoneNumber: String, password: String, coinAddresses: [CoinAddress]) -> Single<Account>
+  func recoverWallet(phoneNumber: String, password: String, coinAddresses: [CoinAddress]) -> Single<Account>
   func verifyCode(userId: Int, code: String) -> Completable
-  func addCoins(userId: Int, coinAddresses: [CoinAddress]) -> Completable
-  func compareCoins(userId: Int, coinAddresses: [CoinAddress]) -> Completable
   func getCoinsBalance(userId: Int, coins: [BTMCoin]) -> Single<CoinsBalance>
   func getCoinSettings(type: CustomCoinType) -> Single<CoinSettings>
   func getMapAddresses() -> Single<MapAddresses>
@@ -116,28 +114,18 @@ final class APIGatewayImpl: APIGateway {
     return execute(request)
   }
   
-  func createAccount(phoneNumber: String, password: String) -> Single<Account> {
-    let request = CreateAccountRequest(phoneNumber: phoneNumber, password: password)
+  func createAccount(phoneNumber: String, password: String, coinAddresses: [CoinAddress]) -> Single<Account> {
+    let request = CreateAccountRequest(phoneNumber: phoneNumber, password: password, coinAddresses: coinAddresses)
     return execute(request)
   }
   
-  func recoverWallet(phoneNumber: String, password: String) -> Single<Account> {
-    let request = RecoverWalletRequest(phoneNumber: phoneNumber, password: password)
+  func recoverWallet(phoneNumber: String, password: String, coinAddresses: [CoinAddress]) -> Single<Account> {
+    let request = RecoverWalletRequest(phoneNumber: phoneNumber, password: password, coinAddresses: coinAddresses)
     return execute(request)
   }
   
   func verifyCode(userId: Int, code: String) -> Completable {
     let request = VerifyCodeRequest(userId: userId, code: code)
-    return execute(request)
-  }
-  
-  func addCoins(userId: Int, coinAddresses: [CoinAddress]) -> Completable {
-    let request = AddCoinsRequest(userId: userId, coinAddresses: coinAddresses)
-    return execute(request)
-  }
-  
-  func compareCoins(userId: Int, coinAddresses: [CoinAddress]) -> Completable {
-    let request = CompareCoinsRequest(userId: userId, coinAddresses: coinAddresses)
     return execute(request)
   }
   

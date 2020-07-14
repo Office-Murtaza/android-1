@@ -13,12 +13,9 @@ protocol LoginUsecase {
   func checkAndVerifyCreatingAccount(phoneNumber: String, password: String) -> Single<PhoneVerificationResponse>
   func checkAndVerifyRecoveringAccount(phoneNumber: String, password: String) -> Single<PhoneVerificationResponse>
   func createWallet() -> Completable
-  func createAccount(phoneNumber: String, password: String) -> Completable
-  func recoverWallet(phoneNumber: String, password: String) -> Completable
-  func verifyCode(code: String) -> Completable
-  func recoverWallet(seedPhrase: String) -> Completable
-  func addCoins() -> Completable
   func getSeedPhrase() -> Single<String>
+  func createAccount(phoneNumber: String, password: String) -> Completable
+  func recoverWallet(phoneNumber: String, password: String, seedPhrase: String) -> Completable
 }
 
 class LoginUsecaseImpl: LoginUsecase {
@@ -97,56 +94,28 @@ class LoginUsecaseImpl: LoginUsecase {
     return walletService.createWallet()
   }
   
-  func createAccount(phoneNumber: String, password: String) -> Completable {
-    return api.createAccount(phoneNumber: phoneNumber, password: password)
-      .asObservable()
-      .flatMap { [accountStorage] in accountStorage.save(account: $0).andThen(Observable.just($0)) }
-      .toCompletable()
-  }
-  
-  func recoverWallet(phoneNumber: String, password: String) -> Completable {
-    return api.recoverWallet(phoneNumber: phoneNumber, password: password)
-      .asObservable()
-      .flatMap { [accountStorage] in accountStorage.save(account: $0).andThen(Observable.just($0)) }
-      .toCompletable()
-  }
-  
-  func verifyCode(code: String) -> Completable {
-    return accountStorage.get()
-      .asObservable()
-      .flatMap { [api] in api.verifyCode(userId: $0.userId, code: code).andThen(Observable.just(())) }
-      .toCompletable()
-  }
-  
-  func recoverWallet(seedPhrase: String) -> Completable {
-    return walletService.recoverWallet(seedPhrase: seedPhrase)
-      .andThen(compareCoins())
-      .catchError { [walletStorage] in walletStorage.delete().andThen(Completable.error($0)) }
-  }
-  
-  func compareCoins() -> Completable {
-    return Observable.combineLatest(accountStorage.get().asObservable(),
-                                    walletStorage.get().asObservable())
-      .flatMap { [api] (account, wallet) -> Observable<Void> in
-        let coinAddresses = wallet.coins.map { CoinAddress(coin: $0) }
-        return api.compareCoins(userId: account.userId, coinAddresses: coinAddresses).andThen(Observable.just(()))
-      }
-      .toCompletable()
-  }
-  
-  func addCoins() -> Completable {
-    return Observable.combineLatest(accountStorage.get().asObservable(),
-                                    walletStorage.get().asObservable())
-      .flatMap { [api] (account, wallet) -> Observable<Void> in
-        let coinAddresses = wallet.coins.map { CoinAddress(coin: $0) }
-        return api.addCoins(userId: account.userId, coinAddresses: coinAddresses).andThen(Observable.just(()))
-      }
-      .toCompletable()
-  }
-  
   func getSeedPhrase() -> Single<String> {
     return walletStorage.get()
       .map { $0.seedPhrase }
+  }
+  
+  func createAccount(phoneNumber: String, password: String) -> Completable {
+    return walletStorage.get()
+      .map { $0.coins.map { CoinAddress(coin: $0) } }
+      .flatMap { [api] in api.createAccount(phoneNumber: phoneNumber, password: password, coinAddresses: $0) }
+      .asObservable()
+      .flatMap { [accountStorage] in accountStorage.save(account: $0).andThen(Observable.just($0)) }
+      .toCompletable()
+  }
+  
+  func recoverWallet(phoneNumber: String, password: String, seedPhrase: String) -> Completable {
+    return walletService.recoverWallet(seedPhrase: seedPhrase)
+      .andThen(walletStorage.get())
+      .map { $0.coins.map { CoinAddress(coin: $0) } }
+      .flatMap { [api] in api.recoverWallet(phoneNumber: phoneNumber, password: password, coinAddresses: $0) }
+      .asObservable()
+      .flatMap { [accountStorage] in accountStorage.save(account: $0).andThen(Observable.just($0)) }
+      .toCompletable()
   }
   
 }
