@@ -48,38 +48,13 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
+        android:layout_marginBottom="54dp"
         android:paddingTop="12dp"
         android:paddingBottom="12dp"
         android:text="@string/welcome_screen_recover_old_wallet"
-        app:layout_constraintBottom_toTopOf="@id/tncCheckBoxView"
+        app:layout_constraintBottom_toTopOf="@id/contactSupportButtonView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
-
-    <com.google.android.material.checkbox.MaterialCheckBox
-        android:id="@+id/tncCheckBoxView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="12dp"
-        android:layout_marginBottom="32dp"
-        android:background="@android:color/transparent"
-        android:linksClickable="true"
-        android:minWidth="0dp"
-        app:layout_constraintBottom_toTopOf="@id/contactSupportButtonView"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/tncTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:gravity="center_vertical"
-        android:paddingStart="8dp"
-        android:paddingEnd="8dp"
-        android:text="@string/welcome_screen_accept_terms_and_conditions"
-        android:textColor="#58585a"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@id/tncCheckBoxView"
-        app:layout_constraintStart_toEndOf="@id/tncCheckBoxView"
-        app:layout_constraintTop_toTopOf="@id/tncCheckBoxView" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/contactSupportButtonView"

@@ -4,9 +4,10 @@ import com.app.belcobtm.domain.wallet.LocalCoinType
 import com.app.belcobtm.domain.wallet.WalletRepository
 import com.app.belcobtm.domain.wallet.interactor.GetCoinFeeMapUseCase
 import com.app.belcobtm.domain.wallet.item.CoinDataItem
+import com.app.belcobtm.presentation.features.authorization.create.CreateWalletViewModel
 import com.app.belcobtm.presentation.features.authorization.pin.PinViewModel
-import com.app.belcobtm.presentation.features.authorization.wallet.create.CreateWalletViewModel
-import com.app.belcobtm.presentation.features.authorization.wallet.recover.RecoverWalletViewModel
+import com.app.belcobtm.presentation.features.authorization.recover.seed.RecoverSeedViewModel
+import com.app.belcobtm.presentation.features.authorization.recover.wallet.RecoverWalletViewModel
 import com.app.belcobtm.presentation.features.authorization.welcome.WelcomeViewModel
 import com.app.belcobtm.presentation.features.settings.verification.blank.VerificationBlankViewModel
 import com.app.belcobtm.presentation.features.settings.verification.info.VerificationInfoViewModel
@@ -84,4 +85,5 @@ val viewModelModule = module {
     viewModel { (phone: String) ->
         SmsCodeViewModel(phone, get())
     }
+    viewModel { RecoverSeedViewModel(get()) }
 }

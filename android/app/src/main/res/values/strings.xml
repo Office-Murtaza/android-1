@@ -46,24 +46,33 @@
     <string name="recover_wallet_incorrect_password">Incorrect password</string>
     <string name="recover_wallet_password_min_max_length">Password must be between 6 and 20 characters</string>
 
+    <!-- Recover Seed Screen -->
+    <string name="recover_seed_screen_error_length">Password must be 12 words</string>
+    <!--    <string name="recover_seed_screen_"></string>-->
+    <!--    <string name="recover_seed_screen_"></string>-->
+    <!--    <string name="recover_seed_screen_"></string>-->
+
     <!-- Balance -->
     <string name="balance_screen_empty_balance">$ . . .</string>
     <string name="balance_screen_unit_usd">USD %1$s</string>
     <string name="balance_screen_add_wallet">+ Add wallet</string>
 
-    <!--create wallet-->
+    <!--create wallet screen-->
     <string name="verify_sms_code">Enter SMS Code</string>
     <string name="phone_number">201-555-0123</string>
-    <string name="pass">Password *</string>
-    <string name="confirm_pass">Confirm Password *</string>
-    <string name="error_all_fields_required">All fields are required</string>
-    <string name="error_confirm_pass">Passwords do not match</string>
+    <string name="create_wallet_screen_title">Create a new wallet</string>
+    <string name="create_wallet_screen_phone">Phone</string>
+    <string name="create_wallet_screen_password">Password *</string>
+    <string name="create_wallet_screen_confirm_password">Confirm Password *</string>
+    <string name="create_wallet_error_all_fields_required">All fields are required</string>
+    <string name="create_wallet_error_confirm_pass">Passwords do not match</string>
     <string name="error_short_pin">PIN should contain 6 digits</string>
     <string name="error_confirm_pin">PIN do not match</string>
-    <string name="error_short_pass">Password length should be from 6 to 15</string>
+    <string name="create_wallet_error_short_pass">Password length should be from 6 to 15</string>
     <string name="error_sms_code_4_digits">Code should have 4 digits</string>
-    <string name="error_invalid_phone_number">Invalid phone number</string>
+    <string name="create_wallet_error_invalid_phone_number">Invalid phone number</string>
     <string name="sms_code">SMS code</string>
+    <string name="create_wallet_error_phone_registered">Phone is already registered</string>
 
     <!--seed phrase-->
     <string name="seed_phrase">Seed Phrase</string>

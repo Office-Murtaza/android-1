@@ -31,6 +31,10 @@ val dataModule = module {
     single { FileHelper(get()) }
     single { AssetsDataStore(get()) }
     single { TransactionHashHelper(get(), get(), get()) }
-    single { Room.databaseBuilder(get(), AppDatabase::class.java, "belco_database").build() }
+    single {
+        Room.databaseBuilder(get(), AppDatabase::class.java, "belco_database")
+            .fallbackToDestructiveMigration()
+            .build()
+    }
     single { (get() as AppDatabase).getCoinDao() }
 }

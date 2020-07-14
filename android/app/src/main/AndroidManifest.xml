@@ -26,7 +26,8 @@
             android:name=".presentation.features.HostActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
-            android:theme="@style/SplashTheme">
+            android:theme="@style/SplashTheme"
+            android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -34,10 +35,6 @@
             </intent-filter>
         </activity>
 
-        <activity
-            android:name=".presentation.features.authorization.wallet.create.CreateWalletActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppThemeNoActionBar" />
         <activity
             android:name=".ui.auth.seed.SeedPhraseActivity"
             android:screenOrientation="portrait"
@@ -49,10 +46,6 @@
 
         <activity
             android:name=".ui.main.coins.sell.SellActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppThemeNoActionBar" />
-        <activity
-            android:name="com.app.belcobtm.presentation.features.authorization.seed.recover.RecoverSeedFragment"
             android:screenOrientation="portrait"
             android:theme="@style/AppThemeNoActionBar" />
         <activity

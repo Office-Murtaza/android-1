@@ -1,4 +1,4 @@
-package com.app.belcobtm.presentation.features.authorization.seed.recover
+package com.app.belcobtm.presentation.features.authorization.recover.seed
 
 import android.content.Context
 import android.text.Editable
@@ -23,7 +23,10 @@ class RecoverSeedWatcher(private val context: Context) : TextWatcher {
 
     override fun afterTextChanged(editable: Editable) {
         val wordList: List<String> = editable.toString()
-            .replace(CHAR_NEXT_LINE, CHAR_SPACE)
+            .replace(
+                CHAR_NEXT_LINE,
+                CHAR_SPACE
+            )
             .splitToSequence(" ")
             .filter { it.isNotEmpty() }
             .toList()
@@ -41,7 +44,12 @@ class RecoverSeedWatcher(private val context: Context) : TextWatcher {
                         val startIndex = editable.indexOf(word, endIndex, true)
                         endIndex = startIndex + word.length
                         editable.setSpan(
-                            ChipSpan(context, word, null, null),
+                            ChipSpan(
+                                context,
+                                word,
+                                null,
+                                null
+                            ),
                             startIndex,
                             endIndex,
                             Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
@@ -73,7 +81,12 @@ class RecoverSeedWatcher(private val context: Context) : TextWatcher {
             val startIndex = editable.indexOf(word, endIndex, true)
             endIndex = startIndex + word.length
             editable.setSpan(
-                ChipSpan(context, word, null, null),
+                ChipSpan(
+                    context,
+                    word,
+                    null,
+                    null
+                ),
                 startIndex,
                 endIndex,
                 Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
@@ -82,7 +95,7 @@ class RecoverSeedWatcher(private val context: Context) : TextWatcher {
     }
 
     companion object {
-        private const val CHAR_NEXT_LINE: String = "\n"
-        private const val CHAR_SPACE: String = " "
+        const val CHAR_NEXT_LINE: String = "\n"
+        const val CHAR_SPACE: String = " "
     }
 }

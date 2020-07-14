@@ -1,7 +1,7 @@
 package com.app.belcobtm.data
 
 import com.app.belcobtm.data.core.NetworkUtils
-import com.app.belcobtm.data.disk.database.CoinDao
+import com.app.belcobtm.data.disk.database.AccountDao
 import com.app.belcobtm.data.disk.database.mapToDataItem
 import com.app.belcobtm.data.disk.database.mapToEntity
 import com.app.belcobtm.data.disk.shared.preferences.SharedPreferencesHelper
@@ -15,7 +15,7 @@ class WalletRepositoryImpl(
     private val apiService: WalletApiService,
     private val prefHelper: SharedPreferencesHelper,
     private val networkUtils: NetworkUtils,
-    private val daoCoin: CoinDao
+    private val daoAccount: AccountDao
 ) : WalletRepository {
     private val cachedCoinDataItemList: MutableList<CoinDataItem> = mutableListOf()
 
@@ -28,17 +28,17 @@ class WalletRepositoryImpl(
     ): CoinDataItem = cachedCoinDataItemList.find { it.code == coinCode }!!
 
     override suspend fun getAccountList(): List<AccountDataItem> =
-        (daoCoin.getItemList() ?: emptyList()).map { it.mapToDataItem() }
+        (daoAccount.getItemList() ?: emptyList()).map { it.mapToDataItem() }
 
     override suspend fun updateAccount(accountDataItem: AccountDataItem): Either<Failure, Unit> {
-        daoCoin.updateItem(accountDataItem.mapToEntity())
+        daoAccount.updateItem(accountDataItem.mapToEntity())
         return Either.Right(Unit)
     }
 
     override suspend fun getFreshCoinDataItem(
         coinCode: String
     ): Either<Failure, CoinDataItem> = if (networkUtils.isNetworkAvailable()) {
-        val enabledCoinList = daoCoin.getItemList()?.filter { it.isEnabled }?.map { it.type.name } ?: emptyList()
+        val enabledCoinList = daoAccount.getItemList()?.filter { it.isEnabled }?.map { it.type.name } ?: emptyList()
         val response = apiService.getBalance(enabledCoinList)
         if (response.isRight) {
             val balanceItem = (response as Either.Right).b
@@ -58,7 +58,7 @@ class WalletRepositoryImpl(
     }
 
     override suspend fun getBalanceItem(): Either<Failure, BalanceDataItem> = if (networkUtils.isNetworkAvailable()) {
-        val enabledCoinList = daoCoin.getItemList()?.filter { it.isEnabled }?.map { it.type.name } ?: emptyList()
+        val enabledCoinList = daoAccount.getItemList()?.filter { it.isEnabled }?.map { it.type.name } ?: emptyList()
         val response = apiService.getBalance(enabledCoinList)
         if (response.isRight) {
             val balanceItem = (response as Either.Right).b

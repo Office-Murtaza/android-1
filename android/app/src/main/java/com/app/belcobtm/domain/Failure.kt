@@ -11,7 +11,6 @@ sealed class Failure : IOException() {
     object TokenError : Failure()
 
     //Authorization
-    object IncorrectLogin : Failure()
     object IncorrectPassword : Failure()
 
 

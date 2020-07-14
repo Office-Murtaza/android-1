@@ -15,17 +15,23 @@
         android:text="@string/recover_seed_description"
         android:textSize="16sp" />
 
-    <androidx.appcompat.widget.AppCompatEditText
-        android:id="@+id/seedView"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/seedContainerView"
+        style="@style/TextInputLayoutOutline"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:background="@drawable/bg_stroke_gray"
-        android:gravity="top"
-        android:inputType="textMultiLine"
-        android:minHeight="150dp"
-        android:padding="16dp" />
+        android:layout_marginEnd="16dp">
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/seedView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="top"
+            android:inputType="textMultiLine"
+            android:minHeight="150dp" />
+    </com.google.android.material.textfield.TextInputLayout>
+
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/pasteButtonView"

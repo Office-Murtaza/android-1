@@ -5,11 +5,12 @@ import com.app.belcobtm.domain.Failure
 import com.app.belcobtm.domain.UseCase
 import com.app.belcobtm.domain.authorization.AuthorizationRepository
 
-class RecoverWalletVerifySmsCodeUseCase(
+class AuthorizationVerifySmsCodeUseCase(
     private val repository: AuthorizationRepository
-) : UseCase<Unit, RecoverWalletVerifySmsCodeUseCase.Params>() {
+) : UseCase<Unit, AuthorizationVerifySmsCodeUseCase.Params>() {
 
-    override suspend fun run(params: Params): Either<Failure, Unit> = repository.recoverWalletVerifySmsCode(params.smsCode)
+    override suspend fun run(params: Params): Either<Failure, Unit> =
+        repository.authorizationVerifySmsCode(params.smsCode)
 
     data class Params(val smsCode: String)
 }

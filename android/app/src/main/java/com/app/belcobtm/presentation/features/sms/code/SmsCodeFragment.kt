@@ -66,9 +66,8 @@ class SmsCodeFragment : BaseFragment() {
         val isSuccessLoadingData =
             (viewModel.smsLiveData.value as? LoadingData.Success)?.data == pinEntryView.getString()
         when {
-            isSuccessLoadingData -> navigate(requireArguments().getInt(TAG_NEXT_FRAGMENT_ID))
-            !isSuccessLoadingData && pinEntryView.getString().length == SMS_CODE_LENGTH ->
-                showSnackBar(R.string.sms_code_screen_invalid_code)
+            isSuccessLoadingData -> navigate(requireArguments().getInt(TAG_NEXT_FRAGMENT_ID), requireArguments())
+            !isSuccessLoadingData && pinEntryView.getString().length == SMS_CODE_LENGTH -> showSnackBar(R.string.sms_code_screen_invalid_code)
         }
     }
 

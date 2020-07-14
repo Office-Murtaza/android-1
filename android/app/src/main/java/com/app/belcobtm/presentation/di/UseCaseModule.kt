@@ -16,8 +16,8 @@ import org.koin.dsl.module
 val useCaseModule = module {
     single { AuthorizationStatusGetUseCase(get()) }
     single { ClearAppDataUseCase(get()) }
-    single { RecoverWalletUseCase(get()) }
-    single { RecoverWalletVerifySmsCodeUseCase(get()) }
+    single { AuthorizationCheckCredentialsUseCase(get()) }
+    single { AuthorizationVerifySmsCodeUseCase(get()) }
     single { CreateWalletUseCase(get()) }
     single { CreateWalletVerifySmsCodeUseCase(get()) }
     single { AuthorizeUseCase(get()) }
@@ -63,4 +63,5 @@ val useCaseModule = module {
     single { UnStakeCreateTransactionUseCase(get()) }
     single { UnStakeCompleteTransactionUseCase(get()) }
     single { GetFreshCoinUseCase(get()) }
+    single { RecoverWalletUseCase(get()) }
 }

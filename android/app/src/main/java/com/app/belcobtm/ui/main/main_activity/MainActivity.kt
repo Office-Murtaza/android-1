@@ -12,7 +12,7 @@ import com.app.belcobtm.domain.authorization.interactor.ClearAppDataUseCase
 import com.app.belcobtm.domain.wallet.interactor.GetLocalCoinListUseCase
 import com.app.belcobtm.presentation.core.ui.BaseActivity
 import com.app.belcobtm.presentation.features.authorization.pin.PinActivity
-import com.app.belcobtm.presentation.features.authorization.seed.recover.RecoverSeedFragment
+import com.app.belcobtm.presentation.features.authorization.recover.seed.RecoverSeedFragment
 import com.app.belcobtm.presentation.features.wallet.balance.BalanceFragment
 import com.app.belcobtm.ui.main.atm.AtmFragment
 import com.app.belcobtm.ui.main.settings.SettingsFragment

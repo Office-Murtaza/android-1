@@ -8,8 +8,10 @@ interface AuthorizationRepository {
     fun getAuthorizePin(): String
     fun setAuthorizePin(pinCode: String)
     fun clearAppData(): Unit
-    suspend fun recoverWallet(phone: String, password: String): Either<Failure, Unit>
-    suspend fun recoverWalletVerifySmsCode(smsCode: String): Either<Failure, Unit>
+    suspend fun authorizationCheckCredentials(phone: String, password: String): Either<Failure, Boolean>
+    suspend fun authorizationVerifySmsCode(smsCode: String): Either<Failure, Unit>
+    suspend fun recoverWallet(seed: String, phone: String, password: String): Either<Failure, Unit>
+
     suspend fun createWallet(phone: String, password: String): Either<Failure, Unit>
     suspend fun createWalletVerifySmsCode(smsCode: String): Either<Failure, String>
     suspend fun authorize(): Either<Failure, Unit>

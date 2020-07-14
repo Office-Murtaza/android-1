@@ -1,4 +1,4 @@
-package com.app.belcobtm.presentation.features.authorization.seed.recover;
+package com.app.belcobtm.presentation.features.authorization.recover.seed;
 
 import android.content.Context;
 import android.content.res.ColorStateList;

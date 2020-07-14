@@ -1,7 +1,7 @@
 package com.app.belcobtm.data.core
 
 import com.app.belcobtm.api.model.param.trx.Trx
-import com.app.belcobtm.data.disk.database.CoinDao
+import com.app.belcobtm.data.disk.database.AccountDao
 import com.app.belcobtm.data.disk.shared.preferences.SharedPreferencesHelper
 import com.app.belcobtm.data.rest.transaction.TransactionApiService
 import com.app.belcobtm.domain.Either
@@ -21,7 +21,7 @@ import java.util.*
 class TransactionHashHelper(
     private val apiService: TransactionApiService,
     private val prefsHelper: SharedPreferencesHelper,
-    private val daoCoin: CoinDao
+    private val daoAccount: AccountDao
 ) {
 
     suspend fun createTransactionHash(
@@ -95,7 +95,7 @@ class TransactionHashHelper(
 
         return if (response.isRight) {
             val utxos = (response as Either.Right).b
-            val publicKeyFrom = daoCoin.getItem(fromCoin.name).publicKey
+            val publicKeyFrom = daoAccount.getItem(fromCoin.name).publicKey
             val cryptoToSatoshi = fromCoinAmount * CoinType.BITCOIN.unit()
             val amount: Long = cryptoToSatoshi.toLong()
             val byteFee = getByteFee(fromCoin.name)
@@ -176,7 +176,7 @@ class TransactionHashHelper(
         fromCoinAmount: Double,
         customFunctionName: String? = null
     ): Either<Failure, String> {
-        val nonceAddress = daoCoin.getItem(fromCoin.name).publicKey
+        val nonceAddress = daoAccount.getItem(fromCoin.name).publicKey
         val response = apiService.getEthereumNonce(fromCoin.name, nonceAddress)
 
         return if (response.isRight) {
@@ -192,7 +192,7 @@ class TransactionHashHelper(
                 it.nonce = ByteString.copyFrom(hexNonce)
                 it.gasLimit = ByteString.copyFrom(hexGasLimit)
                 it.gasPrice = ByteString.copyFrom(hexGasPrice)
-                it.privateKey = daoCoin.getItem(fromCoin.name).privateKey.toHexBytesInByteString()
+                it.privateKey = daoAccount.getItem(fromCoin.name).privateKey.toHexBytesInByteString()
             }
 
             if (fromCoin == LocalCoinType.CATM) {
@@ -251,7 +251,7 @@ class TransactionHashHelper(
         fromCoin: LocalCoinType,
         fromCoinAmount: Double
     ): Either<Failure, String> {
-        val coinEntity = daoCoin.getItem(fromCoin.name)
+        val coinEntity = daoAccount.getItem(fromCoin.name)
         val response = apiService.getRippleSequence(coinEntity.publicKey)
 
         return if (response.isRight) {
@@ -282,7 +282,7 @@ class TransactionHashHelper(
         fromCoin: LocalCoinType,
         fromCoinAmount: Double
     ): Either<Failure, String> {
-        val coinEntity = daoCoin.getItem(fromCoin.name)
+        val coinEntity = daoAccount.getItem(fromCoin.name)
         val response = apiService.getBinanceBlockHeader(coinEntity.publicKey)
 
         return if (response.isRight) {
@@ -331,7 +331,7 @@ class TransactionHashHelper(
         fromCoinAmount: Double
     ): Either<Failure, String> {
         val response = apiService.getTronBlockHeader(fromCoin.name)
-        val coinEntity = daoCoin.getItem(fromCoin.name)
+        val coinEntity = daoAccount.getItem(fromCoin.name)
 
         return if (response.isRight) {
             val rawData = (response as Either.Right).b

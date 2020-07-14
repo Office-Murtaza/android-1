@@ -23,11 +23,11 @@ class ChangePassPresenter : BaseMvpDIPresenterImpl<ChangePassContract.View, Sett
 
     override fun changePass(oldPass: String, newPass: String, confirmNewPass: String) {
         if (oldPass.isEmpty() || newPass.isEmpty() || confirmNewPass.isEmpty()) {
-            mView?.showError(R.string.error_all_fields_required)
+            mView?.showError(R.string.create_wallet_error_all_fields_required)
         } else if (newPass.length < 6) {
-            mView?.showError(R.string.error_short_pass)
+            mView?.showError(R.string.create_wallet_error_short_pass)
         } else if (newPass != confirmNewPass) {
-            mView?.showError(R.string.error_confirm_pass)
+            mView?.showError(R.string.create_wallet_error_confirm_pass)
         } else {
             mView?.showProgress(true)
             mDataManager.changePass(prefsHelper.userId.toString(), oldPass, newPass).subscribe(
@@ -47,7 +47,7 @@ class ChangePassPresenter : BaseMvpDIPresenterImpl<ChangePassContract.View, Sett
 
     override fun changePin(oldPin: String, newPin: String, confirmNewPin: String) {
         if (oldPin.isEmpty() || newPin.isEmpty() || confirmNewPin.isEmpty()) {
-            mView?.showError(R.string.error_all_fields_required)
+            mView?.showError(R.string.create_wallet_error_all_fields_required)
         } else if (oldPin != prefsHelper.userPin) {
             mView?.showError(R.string.error_wrong_old_pin)
         } else if (newPin.length < 6) {

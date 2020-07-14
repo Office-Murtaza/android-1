@@ -2,9 +2,9 @@ package com.app.belcobtm.di.module
 
 import com.app.belcobtm.di.ActivityScope
 import com.app.belcobtm.di.FragmentScope
+import com.app.belcobtm.presentation.features.authorization.create.CreateWalletFragment
 import com.app.belcobtm.presentation.features.authorization.pin.PinActivity
-import com.app.belcobtm.presentation.features.authorization.seed.recover.RecoverSeedFragment
-import com.app.belcobtm.presentation.features.authorization.wallet.create.CreateWalletActivity
+import com.app.belcobtm.presentation.features.authorization.recover.seed.RecoverSeedFragment
 import com.app.belcobtm.presentation.features.wallet.add.AddWalletActivity
 import com.app.belcobtm.presentation.features.wallet.balance.BalanceFragment
 import com.app.belcobtm.ui.main.atm.AtmFragment
@@ -23,7 +23,7 @@ import dagger.android.ContributesAndroidInjector
 abstract class BuildersModule {
     @ActivityScope
     @ContributesAndroidInjector(modules = [ActivityModule::class])
-    internal abstract fun bindCreateWalletActivity(): CreateWalletActivity
+    internal abstract fun bindCreateWalletActivity(): CreateWalletFragment
 
     @ActivityScope
     @ContributesAndroidInjector(modules = [ActivityModule::class])
