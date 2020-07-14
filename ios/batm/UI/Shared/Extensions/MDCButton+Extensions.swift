@@ -97,6 +97,12 @@ extension MDCButton {
     return button
   }
   
+  static var secondaryCopy: MDCButton {
+     let button = MDCButton.secondaryText
+     button.setTitle(localize(L.Shared.Button.copy), for: .normal)
+     return button
+   }
+  
   static var createNewWallet: MDCButton {
     let button = MDCButton.contained
     button.setTitle(localize(L.Welcome.CreateButton.title), for: .normal)
