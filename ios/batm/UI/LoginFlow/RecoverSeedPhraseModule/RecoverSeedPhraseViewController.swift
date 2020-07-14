@@ -2,125 +2,106 @@ import UIKit
 import RxSwift
 import RxCocoa
 import SnapKit
+import MaterialComponents
 
 class RecoverSeedPhraseViewController: ModuleViewController<RecoverSeedPhrasePresenter> {
   
-  let tapRecognizer = UITapGestureRecognizer()
+  let rootScrollView = RootScrollView()
   
-  let rootScrollView: UIScrollView = {
-    let scrollView = UIScrollView()
-    scrollView.bounces = false
-    scrollView.contentInsetAdjustmentBehavior = .never
-    scrollView.keyboardDismissMode = .interactive
-    return scrollView
-  }()
+  let errorView = ErrorView()
   
-  let contentView = UIView()
+  let annotationLabel: UILabel = {
+    let paragraphStyle = NSMutableParagraphStyle()
+    paragraphStyle.lineSpacing = 10
+    
+    let text = localize(L.RecoverSeedPhrase.annotation)
+    let attributedString = NSAttributedString(string: text, attributes: [.foregroundColor: UIColor.warmGrey,
+                                                                         .font: UIFont.systemFont(ofSize: 16),
+                                                                         .paragraphStyle: paragraphStyle])
   
-  let backgroundImageView: UIImageView = {
-    let imageView = UIImageView(image: UIImage(named: "login_background"))
-    imageView.contentMode = .scaleAspectFill
-    imageView.clipsToBounds = true
-    return imageView
-  }()
-  
-  let titleLabel: UILabel = {
     let label = UILabel()
-    label.text = localize(L.Recover.title)
-    label.textColor = .white
-    label.font = .poppinsSemibold22
+    label.attributedText = attributedString
+    label.textAlignment = .center
+    label.numberOfLines = 2
     return label
   }()
   
-  let separatorView = GoldSeparatorView()
+  let formView = RecoverSeedPhraseFormView()
   
-  let mainView = RecoverSeedPhraseView()
+  let pasteButton = MDCButton.secondaryPaste
   
-  override var preferredStatusBarStyle: UIStatusBarStyle {
-    return .lightContent
-  }
+  let nextButton = MDCButton.next
   
-  private func registerForKeyboardNotifications() {
-    NotificationCenter.default.addObserver(self,
-                                           selector: #selector(adjustForKeyboard),
-                                           name: UIResponder.keyboardWillShowNotification,
-                                           object: nil)
-    NotificationCenter.default.addObserver(self,
-                                           selector: #selector(adjustForKeyboard),
-                                           name: UIResponder.keyboardWillHideNotification,
-                                           object: nil)
-  }
-  
-  @objc private func adjustForKeyboard(notification: Notification) {
-    guard let keyboardValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else { return }
-    
-    let keyboardHeight = keyboardValue.cgRectValue.size.height
-    
-    if notification.name == UIResponder.keyboardWillHideNotification {
-      rootScrollView.contentInset = .zero
-    } else {
-      rootScrollView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: keyboardHeight + 15, right: 0)
-    }
-    
-    rootScrollView.scrollIndicatorInsets = rootScrollView.contentInset
-  }
+  override var shouldShowNavigationBar: Bool { return true }
   
   override func setupUI() {
-    registerForKeyboardNotifications()
+    title = localize(L.RecoverSeedPhrase.title)
     
-    view.backgroundColor = .whiteTwo
+    view.addSubviews(rootScrollView)
     
-    view.addSubview(rootScrollView)
-    rootScrollView.addSubview(contentView)
-    contentView.addSubviews(backgroundImageView,
-                     titleLabel,
-                     separatorView,
-                     mainView)
-    contentView.addGestureRecognizer(tapRecognizer)
+    rootScrollView.contentInsetAdjustmentBehavior = .never
+    rootScrollView.contentView.addSubviews(errorView,
+                                           annotationLabel,
+                                           formView,
+                                           pasteButton,
+                                           nextButton)
+    
+    setupDefaultKeyboardHandling()
   }
   
   override func setupLayout() {
     rootScrollView.snp.makeConstraints {
-      $0.edges.equalToSuperview()
+      $0.top.equalTo(view.safeAreaLayoutGuide)
+      $0.left.right.bottom.equalToSuperview()
     }
-    contentView.snp.makeConstraints {
-      $0.edges.equalToSuperview()
-      $0.size.equalToSuperview()
+    rootScrollView.contentView.snp.makeConstraints {
+      $0.height.equalToSuperview()
     }
-    backgroundImageView.snp.makeConstraints {
-      $0.top.left.right.equalToSuperview()
-      $0.height.equalTo(187)
-    }
-    titleLabel.snp.makeConstraints {
-      $0.top.equalToSuperview().offset(63)
+    errorView.snp.makeConstraints {
+      $0.top.equalToSuperview().offset(5)
       $0.centerX.equalToSuperview()
     }
-    separatorView.snp.makeConstraints {
-      $0.top.equalTo(titleLabel.snp.bottom).offset(15)
+    annotationLabel.snp.makeConstraints {
+      $0.top.equalToSuperview().offset(30)
       $0.centerX.equalToSuperview()
+      $0.left.greaterThanOrEqualToSuperview().offset(70)
+      $0.right.lessThanOrEqualToSuperview().offset(-70)
     }
-    mainView.snp.makeConstraints {
-      $0.top.equalTo(separatorView.snp.bottom).offset(15)
+    formView.snp.makeConstraints {
+      $0.top.equalTo(annotationLabel.snp.bottom).offset(25)
       $0.left.right.equalToSuperview().inset(15)
-      $0.bottom.equalToSuperview().offset(-30)
+    }
+    pasteButton.snp.makeConstraints {
+      $0.top.equalTo(formView.snp.bottom).offset(20)
+      $0.centerX.equalToSuperview()
+      $0.bottom.lessThanOrEqualTo(nextButton.snp.top).offset(-20)
+      $0.width.equalTo(75)
+      $0.height.equalTo(36)
+    }
+    nextButton.snp.makeConstraints {
+      $0.height.equalTo(50)
+      $0.left.right.equalToSuperview().inset(15)
+      $0.bottom.equalToSuperview().offset(-40)
     }
   }
   
   private func setupUIBindings() {
     presenter.state
-      .asObservable()
       .map { $0.validationState }
       .mapToErrorMessage()
-      .bind(to: mainView.rx.error)
+      .drive(onNext: { [errorView] in
+        errorView.isHidden = $0 == nil
+        errorView.configure(for: $0)
+      })
       .disposed(by: disposeBag)
     
-    presenter.seedPhraseWordsRelay
-      .observeOn(MainScheduler.instance)
-      .subscribe(onNext: { [mainView] in mainView.configure(for: $0) })
+    pasteButton.rx.tap.asDriver()
+      .map { UIPasteboard.general.string ?? "" }
+      .map { $0.separatedWords }
+      .drive(onNext: { [formView] in formView.configure(for: $0) })
       .disposed(by: disposeBag)
     
-    tapRecognizer.rx.event.asDriver()
-      .map { _ in () }
+    nextButton.rx.tap.asDriver()
       .drive(onNext: { [view] in view?.endEditing(true) })
       .disposed(by: disposeBag)
   }
@@ -128,9 +109,9 @@ class RecoverSeedPhraseViewController: ModuleViewController<RecoverSeedPhrasePre
   override func setupBindings() {
     setupUIBindings()
     
-    let pasteDriver = mainView.rx.pasteTap
-    let doneDriver = mainView.rx.doneTap
-    presenter.bind(input: RecoverSeedPhrasePresenter.Input(paste: pasteDriver,
-                                                           done: doneDriver))
+    let updateSeedPhraseDriver = formView.rx.seedPhrase
+    let nextDriver = nextButton.rx.tap.asDriver()
+    presenter.bind(input: RecoverSeedPhrasePresenter.Input(updateSeedPhrase: updateSeedPhraseDriver,
+                                                           next: nextDriver))
   }
 }

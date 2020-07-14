@@ -53,6 +53,12 @@ extension MDCButton {
     return button
   }
   
+  static var secondaryPaste: MDCButton {
+    let button = MDCButton.secondaryText
+    button.setTitle(localize(L.Shared.Button.paste), for: .normal)
+    return button
+  }
+  
   static var scan: MDCButton {
     let button = MDCButton.text
     button.setImage(UIImage(named: "scan"), for: .normal)

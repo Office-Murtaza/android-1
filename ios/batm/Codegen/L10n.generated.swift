@@ -126,6 +126,7 @@ enum L {
 
   struct RecoverSeedPhrase {
     static let annotation = "recover_seed_phrase.annotation"
+    static let title = "recover_seed_phrase.title"
   }
 
   struct Reserve {
@@ -562,6 +563,17 @@ extension L.Recover.Form {
   struct Error {
     static let notExistedPhoneNumber = "recover.form.error.not_existed_phone_number"
     static let notMatchPassword = "recover.form.error.not_match_password"
+  }
+}
+extension L.RecoverSeedPhrase {
+
+  struct Form {
+  }
+}
+extension L.RecoverSeedPhrase.Form {
+
+  struct Error {
+    static let notValidLength = "recover_seed_phrase.form.error.not_valid_length"
   }
 }
 extension L.Reserve {

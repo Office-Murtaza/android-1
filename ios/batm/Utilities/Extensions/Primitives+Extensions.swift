@@ -184,6 +184,10 @@ extension String {
   var intValue: Int? {
     return Int(self)
   }
+  
+  var separatedWords: [String] {
+    return components(separatedBy: CharacterSet.letters.inverted).filter { $0.isNotEmpty }
+  }
 }
 
 extension Double {

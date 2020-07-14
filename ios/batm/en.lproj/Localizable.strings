@@ -58,8 +58,9 @@
 "recover.form.error.not_existed_phone_number" = "Phone doesn't exist";
 "recover.form.error.not_match_password" = "Incorrect password";
 
-
+"recover_seed_phrase.title" = "Seed Phrase";
 "recover_seed_phrase.annotation" = "Enter your secret 12 word phrase here to restore your wallet";
+"recover_seed_phrase.form.error.not_valid_length" = "Enter 12 words seed phrase";
 
 "pin_code.setup.title" = "Setup PIN Code";
 "pin_code.confirmation.title" = "Confirm PIN Code";

@@ -3,7 +3,6 @@ import RxSwift
 
 enum LoginState {
   case loggedOut
-  case seedPhrase
   case setupPinCode
   case loggedIn
 }
@@ -50,17 +49,14 @@ class LoginUsecaseImpl: LoginUsecase {
   }
   
   func getLoginState() -> Single<LoginState> {
-    return walletStorage.get()
-      .flatMap { [accountStorage] _ in accountStorage.get() }
+    return accountStorage.get()
+      .flatMap { [walletStorage] _ in walletStorage.get() }
       .flatMap { [pinCodeStorage] _ in pinCodeStorage.get() }
       .map { _ in return .loggedIn }
       .catchError { error in
-        if let error = error as? BTMWalletStorageError, error == .notFound {
+        if let accountError = error as? AccountStorageError, accountError == .notFound,
+          let walletError = error as? BTMWalletStorageError, walletError == .notFound {
           return .just(.loggedOut)
-        }
-        
-        if let error = error as? AccountStorageError, error == .notFound {
-          return .just(.seedPhrase)
         }
         
         if let error = error as? PinCodeStorageError, error == .notFound {

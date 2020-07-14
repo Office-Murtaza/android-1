@@ -14,7 +14,7 @@
 		DB0211BD22CCE48A004065E9 /* RecoverSeedPhrasePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB0211BC22CCE48A004065E9 /* RecoverSeedPhrasePresenter.swift */; };
 		DB0211BF22CCE5A6004065E9 /* RecoverSeedPhraseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB0211BE22CCE5A6004065E9 /* RecoverSeedPhraseViewController.swift */; };
 		DB0211C122CCE6EC004065E9 /* RecoverSeedPhraseAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB0211C022CCE6EC004065E9 /* RecoverSeedPhraseAssembly.swift */; };
-		DB0211C422CCE7FD004065E9 /* RecoverSeedPhraseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB0211C322CCE7FD004065E9 /* RecoverSeedPhraseView.swift */; };
+		DB0211C422CCE7FD004065E9 /* RecoverSeedPhraseFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB0211C322CCE7FD004065E9 /* RecoverSeedPhraseFormView.swift */; };
 		DB0211C622CD340A004065E9 /* TextFieldWithoutPaddings.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB0211C522CD340A004065E9 /* TextFieldWithoutPaddings.swift */; };
 		DB04E4CB22D85C50000E2D85 /* PinCodeStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB04E4CA22D85C50000E2D85 /* PinCodeStorage.swift */; };
 		DB04E4CE22D85D41000E2D85 /* PinCodeRecord+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB04E4CD22D85D41000E2D85 /* PinCodeRecord+CoreDataClass.swift */; };
@@ -525,7 +525,7 @@
 		DB0211BC22CCE48A004065E9 /* RecoverSeedPhrasePresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecoverSeedPhrasePresenter.swift; sourceTree = "<group>"; };
 		DB0211BE22CCE5A6004065E9 /* RecoverSeedPhraseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecoverSeedPhraseViewController.swift; sourceTree = "<group>"; };
 		DB0211C022CCE6EC004065E9 /* RecoverSeedPhraseAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecoverSeedPhraseAssembly.swift; sourceTree = "<group>"; };
-		DB0211C322CCE7FD004065E9 /* RecoverSeedPhraseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecoverSeedPhraseView.swift; sourceTree = "<group>"; };
+		DB0211C322CCE7FD004065E9 /* RecoverSeedPhraseFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecoverSeedPhraseFormView.swift; sourceTree = "<group>"; };
 		DB0211C522CD340A004065E9 /* TextFieldWithoutPaddings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldWithoutPaddings.swift; sourceTree = "<group>"; };
 		DB04E4CA22D85C50000E2D85 /* PinCodeStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinCodeStorage.swift; sourceTree = "<group>"; };
 		DB04E4CD22D85D41000E2D85 /* PinCodeRecord+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PinCodeRecord+CoreDataClass.swift"; sourceTree = "<group>"; };
@@ -1087,7 +1087,7 @@
 		DB0211C222CCE7EB004065E9 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				DB0211C322CCE7FD004065E9 /* RecoverSeedPhraseView.swift */,
+				DB0211C322CCE7FD004065E9 /* RecoverSeedPhraseFormView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -3005,7 +3005,7 @@
 				DB62B5DF248BE65B002CC2A4 /* BuySellTradeDetailsPaymentView.swift in Sources */,
 				DBA7A4A8235662AD000BE997 /* CoinSellAssembly.swift in Sources */,
 				DB2C971B23449109006E7D61 /* CoinSendGiftModule.swift in Sources */,
-				DB0211C422CCE7FD004065E9 /* RecoverSeedPhraseView.swift in Sources */,
+				DB0211C422CCE7FD004065E9 /* RecoverSeedPhraseFormView.swift in Sources */,
 				DB04E4CE22D85D41000E2D85 /* PinCodeRecord+CoreDataClass.swift in Sources */,
 				DBC8B45E23635AB200E7A799 /* SellDetails.swift in Sources */,
 				DBA1B61624A9C9D000A9A703 /* ReserveFormView.swift in Sources */,
