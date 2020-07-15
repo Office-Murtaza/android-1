@@ -20,4 +20,5 @@ public class StakeDetailsDTO {
     private BigDecimal rewardsAmount;
     private BigDecimal rewardsPercent;
     private Integer stakedDays;
+    private Integer stakingMinDays;
 }

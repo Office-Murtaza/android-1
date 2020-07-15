@@ -83,7 +83,7 @@ public class CoinService {
 
         List<CoinBalanceDTO> balances = futures.stream()
                 .map(CompletableFuture::join)
-                .sorted(Comparator.comparing(CoinBalanceDTO::getOrder))
+                .sorted(Comparator.comparing(CoinBalanceDTO::getIdx))
                 .collect(Collectors.toList());
 
         BigDecimal totalBalance = Util.format2(balances.stream()
@@ -104,7 +104,7 @@ public class CoinService {
             return CoinBalanceDTO.builder()
                     .id(userCoin.getCoin().getId())
                     .code(userCoin.getCoin().getCode())
-                    .order(userCoin.getCoin().getOrder())
+                    .idx(userCoin.getCoin().getIdx())
                     .address(userCoin.getAddress())
                     .balance(coinBalance)
                     .reservedBalance(userCoin.getReservedBalance().stripTrailingZeros())

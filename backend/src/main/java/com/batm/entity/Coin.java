@@ -17,7 +17,7 @@ public class Coin extends BaseEntity {
 
     private String code;
     private String name;
-    private Integer order;
+    private Integer idx;
     private BigDecimal fee;
     private BigDecimal recallFee;
     private Long gasLimit;

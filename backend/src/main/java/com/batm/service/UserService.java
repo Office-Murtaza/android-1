@@ -43,12 +43,6 @@ public class UserService {
     private PhoneChangeRep phoneChangeRep;
 
     @Autowired
-    private TwilioService twilioService;
-
-    @Autowired
-    private CodeVerifyRep codeValidatorRepository;
-
-    @Autowired
     private IdentityRep identityRep;
 
     @Autowired
@@ -115,12 +109,16 @@ public class UserService {
         return findById(userId).getIdentity();
     }
 
-    public void updatePassword(String encodedPassword, Long userId) {
-        userRep.updatePassword(encodedPassword, userId);
+    public void updatePassword(Long userId, String encodedPassword) {
+        User user = userRep.findById(userId).get();
+        user.setPassword(encodedPassword);
+        userRep.save(user);
     }
 
-    public void updatePhone(String phone, Long userId) {
-        userRep.updatePhone(phone, userId);
+    public void updatePhone(Long userId, String phone) {
+        User user = userRep.findById(userId).get();
+        user.setPhone(phone);
+        userRep.save(user);
 
         Identity identity = findByUserId(userId);
         IdentityPiece identityPiece = identityPieceRep.findFirstByIdentityAndPieceTypeOrderByIdDesc(identity, IdentityPiece.TYPE_CELLPHONE);
@@ -130,10 +128,24 @@ public class UserService {
         identityPieceCellPhoneRep.save(identityPieceCellPhone);
     }
 
-    public Boolean isPhoneExist(String phone, Long userId) {
-        User user = userRep.isPhoneExist(phone, userId);
+    public Boolean isPhoneExist(Long userId, String phone) {
+        User user = userRep.findOneByPhone(phone);
 
-        return user != null ? true : false;
+        if (user != null && user.getId() != userId) {
+            return true;
+        }
+
+        List<IdentityPieceCellPhone> identityPieceCellPhones = identityPieceCellPhoneRep.findByPhoneNumber(Util.formatPhone(phone));
+
+        for (IdentityPieceCellPhone ipcp : identityPieceCellPhones) {
+            if (ipcp.getIdentity().getId() != user.getIdentity().getId()) {
+                if (ipcp.getPhoneNumber().equalsIgnoreCase(Util.formatPhone(phone))) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 
     public Unlink unlinkUser(Long userId) {
@@ -155,39 +167,13 @@ public class UserService {
         return null;
     }
 
-    public PhoneChange updatePhone(PhoneDTO phoneRequest, Long userId) {
-        User user = userRep.getOne(userId);
-        PhoneChange phoneChange = user.getPhoneChange();
-
-        if (phoneChange == null || phoneChange.getId() == null) {
-            phoneChange = new PhoneChange();
-        }
-
-        phoneChange.setUser(user);
-        phoneChange.setPhone(phoneRequest.getPhone());
-        phoneChange.setStatus(0);
-
-        phoneChangeRep.save(phoneChange);
-        twilioService.sendVerificationCode(user);
-
-        return phoneChange;
-    }
-
     @Transactional
     public PhoneChange getUpdatePhone(Long userId) {
         return phoneChangeRep.findByUserId(userId);
     }
 
-    public void save(PhoneChange phoneChange) {
-        phoneChangeRep.save(phoneChange);
-    }
-
     public List<UserCoin> save(List<UserCoin> list) {
         return userCoinRep.saveAll(list);
-    }
-
-    public CodeVerify getCodeByUserId(Long userId) {
-        return codeValidatorRepository.findByUserId(userId);
     }
 
     public List<UserCoin> getUserCoins(Long userId) {
@@ -196,10 +182,6 @@ public class UserService {
 
     public UserCoin getUserCoin(Long userId, String coinCode) {
         return userCoinRep.findByUserIdAndCoinCode(userId, coinCode);
-    }
-
-    public void save(CodeVerify codeVerify) {
-        codeValidatorRepository.save(codeVerify);
     }
 
     public User findByPhone(String phone) {

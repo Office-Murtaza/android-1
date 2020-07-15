@@ -11,9 +11,9 @@ import com.batm.service.TransactionService;
 import com.batm.service.UserService;
 import com.batm.util.Constant;
 import com.batm.util.Util;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.StringUtils;
-import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
@@ -31,6 +31,7 @@ import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Slf4j
 @RestController
 @RequestMapping("/api/v1")
 public class UserController {
@@ -93,6 +94,8 @@ public class UserController {
 
             res.setCode(code);
 
+            log.info("phone: " + req.getPhone() + ", code: " + code);
+
             return Response.ok(res);
         } catch (Exception e) {
             e.printStackTrace();
@@ -105,6 +108,10 @@ public class UserController {
         try {
             if (req.getCoins().isEmpty()) {
                 return Response.defaultError("Empty coin list");
+            }
+
+            if (req.getCoins().size() != 8) {
+                return Response.defaultError("Some coin is missed");
             }
 
             User existingUser = userService.findByPhone(req.getPhone());
@@ -140,6 +147,10 @@ public class UserController {
         try {
             if (req.getCoins().isEmpty()) {
                 return Response.defaultError("Empty coin list");
+            }
+
+            if (req.getCoins().size() != 8) {
+                return Response.defaultError("Some coin is missed");
             }
 
             User user = userService.findByPhone(req.getPhone());
@@ -198,7 +209,7 @@ public class UserController {
             return Response.serverError();
         }
 
-        throw new AccessDeniedException("Refresh token not exist");
+        throw new AccessDeniedException("Refresh token doesn't exist");
     }
 
     @GetMapping("/user/{userId}/unlink")
@@ -213,69 +224,28 @@ public class UserController {
         }
     }
 
-    @GetMapping("/user/{userId}/code/send")
-    public Response sendCode(@PathVariable Long userId) {
-        try {
-            twilioService.sendVerificationCode(userService.findById(userId));
-
-            return Response.ok(true);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return Response.serverError();
-        }
-    }
-
-    @PostMapping("/user/{userId}/code/verify")
-    public Response verify(@RequestBody ValidateDTO validateOtpVM, @PathVariable Long userId) {
-        try {
-            CodeVerify codeVerify = userService.getCodeByUserId(userId);
-            Long timestamp = System.currentTimeMillis() - verificationCodeValidity;
-
-            if (!StringUtils.isEmpty(codeVerify.getCode())
-                    && codeVerify.getUpdateDate().getTime() < timestamp) {
-                return Response.defaultError("Code is expired");
-            }
-
-            if (codeVerify.getStatus() == 1) {
-                return Response.error(3, "Code is already used");
-            }
-
-            if (!StringUtils.equals(validateOtpVM.getCode(), codeVerify.getCode())) {
-                return Response.error(4, "Wrong code");
-            }
-
-            codeVerify.setStatus(1);
-            userService.save(codeVerify);
-
-            return Response.ok(true);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return Response.serverError();
-        }
-    }
-
     @GetMapping("/user/{userId}/phone")
     public Response getPhone(@PathVariable Long userId) {
         try {
             User user = userService.findById(userId);
 
-            return Response.ok("phone", user.getPhone());
+            return Response.ok(new PhoneDTO(user.getPhone()));
         } catch (Exception e) {
             e.printStackTrace();
             return Response.serverError();
         }
     }
 
-    @PostMapping("/user/{userId}/phone/update")
-    public Response updatePhone(@PathVariable Long userId, @RequestBody PhoneDTO phoneRequest) {
+    @PostMapping("/user/{userId}/phone")
+    public Response updatePhone(@PathVariable Long userId, @RequestBody PhoneDTO req) {
         try {
-            Boolean isPhoneExist = userService.isPhoneExist(phoneRequest.getPhone(), userId);
+            Boolean isPhoneExist = userService.isPhoneExist(userId, req.getPhone());
 
             if (isPhoneExist) {
                 return Response.defaultError("Phone is already registered");
+            } else {
+                userService.updatePhone(userId, req.getPhone());
             }
-
-            userService.updatePhone(phoneRequest, userId);
 
             return Response.ok(true);
         } catch (Exception e) {
@@ -284,69 +254,19 @@ public class UserController {
         }
     }
 
-    @PostMapping("/user/{userId}/phone/verify")
-    public Response confirmPhone(@RequestBody ValidateDTO validateOtpVM, @PathVariable Long userId) {
-        try {
-            PhoneChange phoneChange = userService.getUpdatePhone(userId);
-            phoneChange = (PhoneChange) Hibernate.unproxy(phoneChange);
-
-            if (phoneChange.getStatus() == null || phoneChange.getStatus().intValue() == 1) {
-                return Response.defaultError("Invalid request");
-            }
-
-            CodeVerify codeVerify = userService.getCodeByUserId(userId);
-
-            if (codeVerify.getStatus() == 1) {
-                return Response.error(3, "Verification code is already used");
-            }
-
-            if (!StringUtils.equals(validateOtpVM.getCode(), codeVerify.getCode())) {
-                return Response.error(4, "Wrong verification code");
-            }
-
-            userService.updatePhone(phoneChange.getPhone(), userId);
-
-            phoneChange.setStatus(1);
-            userService.save(phoneChange);
-
-            return Response.ok(true);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return Response.serverError();
-        }
-    }
-
-    @PostMapping("/user/{userId}/password/update")
-    public Response updatePassword(@RequestBody ChangePasswordDTO changePasswordRequest, @PathVariable Long userId) {
+    @PostMapping("/user/{userId}/password")
+    public Response updatePassword(@PathVariable Long userId, @RequestBody ChangePasswordDTO req) {
         try {
             User user = userService.findById(userId);
-            Boolean match = passwordEncoder.matches(changePasswordRequest.getOldPassword(), user.getPassword());
+            Boolean isMatch = passwordEncoder.matches(req.getOldPassword(), user.getPassword());
 
-            if (!match) {
-                return Response.defaultError("Old password does not match");
+            if (!isMatch) {
+                return Response.defaultError("Old password doesn't match");
+            } else {
+                userService.updatePassword(userId, passwordEncoder.encode(req.getNewPassword()));
             }
-
-            String encodedPassword = passwordEncoder.encode(changePasswordRequest.getNewPassword());
-            userService.updatePassword(encodedPassword, userId);
 
             return Response.ok(true);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return Response.serverError();
-        }
-    }
-
-    @PostMapping("/user/{userId}/password/verify")
-    public Response checkPassword(@RequestBody CheckPasswordDTO checkPasswordRequest, @PathVariable Long userId) {
-        try {
-            Boolean match = Boolean.FALSE;
-            User user = userService.findById(userId);
-
-            if (user != null) {
-                match = passwordEncoder.matches(checkPasswordRequest.getPassword(), user.getPassword());
-            }
-
-            return Response.ok(match);
         } catch (Exception e) {
             e.printStackTrace();
             return Response.serverError();

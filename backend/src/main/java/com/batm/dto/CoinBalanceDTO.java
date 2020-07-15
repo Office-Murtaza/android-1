@@ -14,7 +14,7 @@ public class CoinBalanceDTO {
 
     private Long id;
     private String code;
-    private Integer order;
+    private Integer idx;
     private String address;
     private BigDecimal balance;
     private BigDecimal reservedBalance;

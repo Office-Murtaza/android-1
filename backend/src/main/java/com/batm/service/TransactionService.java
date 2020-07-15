@@ -25,8 +25,8 @@ import java.util.*;
 @EnableScheduling
 public class TransactionService {
 
-    private static final int STAKE_ANNUAL_PERCENT = 12;
-    private static final int STAKE_MIN_DAYS = 21;
+    private static final int STAKING_ANNUAL_PERCENT = 12;
+    private static final int STAKING_MIN_DAYS = 21;
 
     @Autowired
     private TransactionRecordRep recordRep;
@@ -394,8 +394,9 @@ public class TransactionService {
                         dto.setExist(true);
                         dto.setStakedAmount(record.getAmount());
                         dto.setStakedDays(days);
-                        dto.setUnstakeAvailable(days >= STAKE_MIN_DAYS);
-                        dto.setRewardsPercent(new BigDecimal(days).multiply(new BigDecimal(STAKE_ANNUAL_PERCENT)).divide(new BigDecimal(365), 2, RoundingMode.HALF_DOWN).stripTrailingZeros());
+                        dto.setStakingMinDays(STAKING_MIN_DAYS);
+                        dto.setUnstakeAvailable(days >= STAKING_MIN_DAYS);
+                        dto.setRewardsPercent(new BigDecimal(days).multiply(new BigDecimal(STAKING_ANNUAL_PERCENT)).divide(new BigDecimal(365), 2, RoundingMode.HALF_DOWN).stripTrailingZeros());
                         dto.setRewardsAmount(record.getAmount().multiply(dto.getRewardsPercent().divide(Constant.HUNDRED)).stripTrailingZeros());
 
                         return dto;
