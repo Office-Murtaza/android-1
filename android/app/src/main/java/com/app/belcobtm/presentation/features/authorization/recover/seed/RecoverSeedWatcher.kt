@@ -23,11 +23,8 @@ class RecoverSeedWatcher(private val context: Context) : TextWatcher {
 
     override fun afterTextChanged(editable: Editable) {
         val wordList: List<String> = editable.toString()
-            .replace(
-                CHAR_NEXT_LINE,
-                CHAR_SPACE
-            )
-            .splitToSequence(" ")
+            .replace(CHAR_NEXT_LINE, CHAR_SPACE)
+            .splitToSequence(CHAR_SPACE)
             .filter { it.isNotEmpty() }
             .toList()
 
@@ -61,13 +58,13 @@ class RecoverSeedWatcher(private val context: Context) : TextWatcher {
                     if (spanList.isEmpty()) {
                         setSpanForAll(editable, wordList)
                         if (end == editable.length) {
-                            editable.insert(end, " ")
+                            editable.insert(end, CHAR_SPACE)
                         }
                     } else {
                         spanList.forEach { editable.removeSpan(it) }
                         setSpanForAll(editable, wordList)
                         if (end == editable.length) {
-                            editable.insert(end, " ")
+                            editable.insert(end, CHAR_SPACE)
                         }
                     }
                 }

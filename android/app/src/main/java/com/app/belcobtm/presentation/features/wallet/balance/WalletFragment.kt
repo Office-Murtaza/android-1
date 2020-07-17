@@ -14,7 +14,6 @@ import com.app.belcobtm.presentation.core.extensions.show
 import com.app.belcobtm.presentation.core.extensions.toStringUsd
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
 import com.app.belcobtm.presentation.core.ui.BaseFragmentOld
-import com.app.belcobtm.presentation.features.authorization.pin.PinActivity
 import com.app.belcobtm.presentation.features.wallet.add.AddWalletActivity
 import com.app.belcobtm.presentation.features.wallet.balance.adapter.BalanceListItem
 import com.app.belcobtm.presentation.features.wallet.balance.adapter.CoinsAdapter
@@ -22,8 +21,8 @@ import com.app.belcobtm.presentation.features.wallet.transactions.TransactionsAc
 import kotlinx.android.synthetic.main.fragment_balance.*
 import org.koin.android.viewmodel.ext.android.viewModel
 
-class BalanceFragment : BaseFragmentOld() {
-    private val viewModel: BalanceViewModel by viewModel()
+class WalletFragment : BaseFragmentOld() {
+    private val viewModel: WalletViewModel by viewModel()
     private val adapter: CoinsAdapter = CoinsAdapter {
         when (it) {
             is BalanceListItem.Coin -> {
@@ -69,7 +68,6 @@ class BalanceFragment : BaseFragmentOld() {
                 }
                 is LoadingData.Error -> {
                     when (it.errorType) {
-                        is Failure.TokenError -> startActivity(Intent(activity, PinActivity::class.java))
                         is Failure.MessageError -> showError(it.errorType.message)
                         is Failure.NetworkConnection -> showError(R.string.error_internet_unavailable)
                         else -> showError(R.string.error_something_went_wrong)

@@ -6,7 +6,7 @@ import com.app.belcobtm.domain.wallet.interactor.GetBalanceUseCase
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
 import com.app.belcobtm.presentation.features.wallet.balance.adapter.BalanceListItem
 
-class BalanceViewModel(private val balanceUseCase: GetBalanceUseCase) : ViewModel() {
+class WalletViewModel(private val balanceUseCase: GetBalanceUseCase) : ViewModel() {
     val balanceLiveData: MutableLiveData<LoadingData<Pair<Double, List<BalanceListItem.Coin>>>> = MutableLiveData()
 
     fun updateBalanceData() {

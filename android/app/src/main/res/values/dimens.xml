@@ -18,4 +18,6 @@
     <dimen name="chip_default_padding_between_image">8dp</dimen>
     <dimen name="chip_default_left_margin">0dp</dimen>
     <dimen name="chip_default_right_margin">0dp</dimen>
+    <dimen name="chip_create_seed_horizontal_spacing">16dp</dimen>
+    <dimen name="chip_create_seed_vertical_spacing">0dp</dimen>
 </resources>

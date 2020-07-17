@@ -44,7 +44,15 @@
         android:id="@+id/recover_seed_fragment"
         android:name="com.app.belcobtm.presentation.features.authorization.recover.seed.RecoverSeedFragment"
         android:label="RecoverSeedFragment"
-        tools:layout="@layout/fragment_recover_seed" />
+        tools:layout="@layout/fragment_recover_seed">
+        <action
+            android:id="@+id/to_pin_code_fragment"
+            app:destination="@id/pin_code_fragment"
+            app:enterAnim="@anim/slide_from_right"
+            app:exitAnim="@anim/slide_to_left"
+            app:popEnterAnim="@anim/slide_from_left"
+            app:popExitAnim="@anim/slide_to_right" />
+    </fragment>
 
     <fragment
         android:id="@+id/sms_code_fragment"
@@ -58,15 +66,47 @@
             app:exitAnim="@anim/slide_to_left"
             app:popEnterAnim="@anim/slide_from_left"
             app:popExitAnim="@anim/slide_to_right" />
+        <action
+            android:id="@+id/to_create_seed_fragment"
+            app:destination="@id/create_seed_fragment"
+            app:enterAnim="@anim/slide_from_right"
+            app:exitAnim="@anim/slide_to_left"
+            app:popEnterAnim="@anim/slide_from_left"
+            app:popExitAnim="@anim/slide_to_right" />
     </fragment>
+
     <fragment
         android:id="@+id/create_wallet_fragment"
-        android:name="com.app.belcobtm.presentation.features.authorization.create.CreateWalletFragment"
+        android:name="com.app.belcobtm.presentation.features.authorization.create.wallet.CreateWalletFragment"
         android:label="CreateWalletFragment"
-        tools:layout="@layout/activity_create_wallet">
+        tools:layout="@layout/fragment_create_wallet">
         <action
             android:id="@+id/to_sms_code_fragment"
-            app:destination="@id/sms_code_fragment" />
+            app:destination="@id/sms_code_fragment"
+            app:enterAnim="@anim/slide_from_right"
+            app:exitAnim="@anim/slide_to_left"
+            app:popEnterAnim="@anim/slide_from_left"
+            app:popExitAnim="@anim/slide_to_right" />
     </fragment>
+
+    <fragment
+        android:id="@+id/create_seed_fragment"
+        android:name="com.app.belcobtm.presentation.features.authorization.create.seed.CreateSeedFragment"
+        android:label="CreateSeedFragment"
+        tools:layout="@layout/fragment_create_seed">
+        <action
+            android:id="@+id/to_pin_code_fragment"
+            app:destination="@id/pin_code_fragment"
+            app:enterAnim="@anim/slide_from_right"
+            app:exitAnim="@anim/slide_to_left"
+            app:popEnterAnim="@anim/slide_from_left"
+            app:popExitAnim="@anim/slide_to_right" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/pin_code_fragment"
+        android:name="com.app.belcobtm.presentation.features.pin.code.PinCodeFragment"
+        android:label="PinCodeFragment"
+        tools:layout="@layout/fragment_pin_code" />
 
 </navigation>

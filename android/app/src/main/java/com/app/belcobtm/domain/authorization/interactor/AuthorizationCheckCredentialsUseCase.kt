@@ -7,8 +7,8 @@ import com.app.belcobtm.domain.authorization.AuthorizationRepository
 
 class AuthorizationCheckCredentialsUseCase(
     private val repository: AuthorizationRepository
-) : UseCase<Boolean, AuthorizationCheckCredentialsUseCase.Params>() {
-    override suspend fun run(params: Params): Either<Failure, Boolean> =
+) : UseCase<Pair<Boolean, Boolean>, AuthorizationCheckCredentialsUseCase.Params>() {
+    override suspend fun run(params: Params): Either<Failure, Pair<Boolean, Boolean>> =
         repository.authorizationCheckCredentials(params.phone, params.password)
 
     data class Params(val phone: String, val password: String)

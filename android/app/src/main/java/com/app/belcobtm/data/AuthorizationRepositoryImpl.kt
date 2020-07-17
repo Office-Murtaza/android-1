@@ -24,16 +24,17 @@ class AuthorizationRepositoryImpl(
     private val networkUtils: NetworkUtils,
     private val daoAccount: AccountDao
 ) : AuthorizationRepository {
+    private val temporaryCoinMap: MutableMap<LocalCoinType, Pair<String, String>> by lazy {
+        return@lazy mutableMapOf<LocalCoinType, Pair<String, String>>()
+    }
 
     override fun getAuthorizationStatus(): AuthorizationStatus {
-        val isEmptyAccountList: Boolean = runBlocking { daoAccount.isTableHasItems() } != null
+        val isEmptyAccountList: Boolean = runBlocking { daoAccount.isTableHasItems() } == null
         if (isEmptyAccountList && prefHelper.apiSeed.isNotEmpty()) {
             clearAppData()
         }
         return when {
             prefHelper.accessToken.isEmpty() -> AuthorizationStatus.UNAUTHORIZED //Welcome fragment
-            prefHelper.apiSeed.isEmpty() -> AuthorizationStatus.SEED_PHRASE_ENTER//RecoverSeedActivity
-            //AuthorizationStatus.SEED_PHRASE_CREATE
             prefHelper.userPin.isNotBlank() -> AuthorizationStatus.PIN_CODE_ENTER //PinActivity
             else -> AuthorizationStatus.PIN_CODE_CREATE
         }
@@ -51,15 +52,12 @@ class AuthorizationRepositoryImpl(
     override suspend fun authorizationCheckCredentials(
         phone: String,
         password: String
-    ): Either<Failure, Boolean> = if (networkUtils.isNetworkAvailable()) {
-        val response = apiService.recoverWalletCheckCredentials(phone, password)
+    ): Either<Failure, Pair<Boolean, Boolean>> = if (networkUtils.isNetworkAvailable()) {
+        val response = apiService.authorizationCheckCredentials(phone, password)
 
         if (response.isRight) {
             val body = (response as Either.Right).b
-            when {
-                !body.second -> Either.Left(Failure.IncorrectPassword)
-                else -> Either.Right(body.first)
-            }
+            Either.Right(Pair(body.first, body.second))
         } else {
             response as Either.Left
         }
@@ -67,27 +65,35 @@ class AuthorizationRepositoryImpl(
         Either.Left(Failure.NetworkConnection)
     }
 
-    override suspend fun authorizationVerifySmsCode(
-        smsCode: String
-    ): Either<Failure, Unit> = if (networkUtils.isNetworkAvailable()) {
-        apiService.recoverWalletVerifySmsCode(prefHelper.userId, smsCode)
-    } else {
-        Either.Left(Failure.NetworkConnection)
+    override suspend fun createSeedPhrase(): Either<Failure, String> {
+        val wallet = HDWallet(128, "")
+        temporaryCoinMap.clear()
+        temporaryCoinMap.putAll(LocalCoinType.values().map { Pair(it, createTemporaryAccount(it, wallet)) }.toMap())
+        prefHelper.apiSeed = wallet.mnemonic()
+        return Either.Right(prefHelper.apiSeed)
     }
 
-    private fun createAccountEntityList(
-        temporaryCoinMap: Map<LocalCoinType, Pair<String, String>>,
-        responseCoinList: List<RecoverWalletCoinResponse>
-    ): List<AccountEntity> {
-        val entityList: MutableList<AccountEntity> = mutableListOf()
-        temporaryCoinMap.forEach { (localCoinType, value) ->
-            val publicKey: String = value.first
-            val privateKey: String = value.second
-            responseCoinList.find { it.code == localCoinType.name }?.let { responseItem ->
-                entityList.add(AccountEntity(responseItem.id, localCoinType, publicKey, privateKey, true))
-            }
+    override suspend fun createWallet(
+        phone: String,
+        password: String
+    ): Either<Failure, Unit> = if (networkUtils.isNetworkAvailable()) {
+        val response =
+            apiService.createWallet(phone, password, temporaryCoinMap.map { it.key.name to it.value.first }.toMap())
+
+        if (response.isRight) {
+            val result = (response as Either.Right).b
+            val accountList = createAccountEntityList(temporaryCoinMap, result.balance.coins)
+            daoAccount.insertItemList(accountList)
+            prefHelper.accessToken = result.accessToken
+            prefHelper.refreshToken = result.refreshToken
+            prefHelper.userId = result.userId
+            temporaryCoinMap.clear()
+            Either.Right(Unit)
+        } else {
+            response as Either.Left
         }
-        return entityList
+    } else {
+        Either.Left(Failure.NetworkConnection)
     }
 
     override suspend fun recoverWallet(
@@ -96,7 +102,8 @@ class AuthorizationRepositoryImpl(
         password: String
     ): Either<Failure, Unit> = if (networkUtils.isNetworkAvailable()) {
         val wallet = HDWallet(seed, "")
-        val temporaryCoinMap = LocalCoinType.values().map { Pair(it, createTemporaryCoin(it, wallet)) }.toMap()
+        temporaryCoinMap.clear()
+        temporaryCoinMap.putAll(LocalCoinType.values().map { Pair(it, createTemporaryAccount(it, wallet)) }.toMap())
         val recoverResponse =
             apiService.recoverWallet(phone, password, temporaryCoinMap.map { it.key.name to it.value.first }.toMap())
 
@@ -108,44 +115,11 @@ class AuthorizationRepositoryImpl(
             prefHelper.accessToken = result.accessToken
             prefHelper.refreshToken = result.refreshToken
             prefHelper.userId = result.userId
-        }
-        Either.Right(Unit)
-    } else {
-        Either.Left(Failure.NetworkConnection)
-    }
-
-    override suspend fun createWallet(phone: String, password: String): Either<Failure, Unit> =
-        if (networkUtils.isNetworkAvailable()) {
-            val response = apiService.registerWallet(phone, password)
-            if (response.isRight) {
-                val body = (response as Either.Right).b
-                prefHelper.accessToken = body.accessToken
-                prefHelper.refreshToken = body.refreshToken
-                prefHelper.userId = body.userId
-                Either.Right(Unit)
-            } else {
-                response as Either.Left
-            }
+            temporaryCoinMap.clear()
+            Either.Right(Unit)
         } else {
-            Either.Left(Failure.NetworkConnection)
+            recoverResponse as Either.Left
         }
-
-    override suspend fun createWalletVerifySmsCode(
-        smsCode: String
-    ): Either<Failure, String> = if (networkUtils.isNetworkAvailable()) {
-//        val response = apiService.createWalletVerifySmsCode(prefHelper.userId, smsCode)
-//        if (response.isRight) {
-//            val coinList = createWalletDB()
-//            val coinListResponse = apiService.addCoins(prefHelper.userId, coinList.map { it.mapToDataItem() })
-//            if (coinListResponse.isRight) {
-//                Either.Right(prefHelper.apiSeed)
-//            } else {
-//                coinListResponse as Either.Left
-//            }
-//        } else {
-//            response as Either.Left
-//        }
-        Either.Left(Failure.MessageError("deprecated"))
     } else {
         Either.Left(Failure.NetworkConnection)
     }
@@ -172,29 +146,7 @@ class AuthorizationRepositoryImpl(
         prefHelper.userPin = pinCode
     }
 
-//    private suspend fun createWalletDB(): List<AccountEntity> {
-//        val wallet = HDWallet(128, "")
-//        val entityList = LocalCoinType.values().map { createCoinEntity(it, wallet) }
-//        prefHelper.apiSeed = wallet.mnemonic()
-//        daoAccount.insertItemList(entityList)
-//        return entityList
-//    }
-
-//    private fun createCoinEntity(coinType: LocalCoinType, wallet: HDWallet): AccountEntity {
-//        val privateKey: PrivateKey = wallet.getKeyForCoin(coinType.trustWalletType)
-//        val address: String = when (coinType) {
-//            LocalCoinType.BTC -> {
-//                val extBitcoinPublicKey =
-//                    wallet.getExtendedPublicKey(Purpose.BIP44, coinType.trustWalletType, HDVersion.XPUB)
-//                val bitcoinPublicKey = HDWallet.getPublicKeyFromExtended(extBitcoinPublicKey, "m/44'/0'/0'/0/0")
-//                BitcoinAddress(bitcoinPublicKey, coinType.trustWalletType.p2pkhPrefix()).description()
-//            }
-//            else -> coinType.trustWalletType.deriveAddress(privateKey)
-//        }
-//        return AccountEntity(coinType, address, Numeric.toHexStringNoPrefix(privateKey.data()))
-//    }
-
-    private fun createTemporaryCoin(coinType: LocalCoinType, wallet: HDWallet): Pair<String, String> {
+    private fun createTemporaryAccount(coinType: LocalCoinType, wallet: HDWallet): Pair<String, String> {
         val privateKey: PrivateKey = wallet.getKeyForCoin(coinType.trustWalletType)
         val publicKey: String = when (coinType) {
             LocalCoinType.BTC -> {
@@ -206,5 +158,20 @@ class AuthorizationRepositoryImpl(
             else -> coinType.trustWalletType.deriveAddress(privateKey)
         }
         return Pair(publicKey, Numeric.toHexStringNoPrefix(privateKey.data()))
+    }
+
+    private fun createAccountEntityList(
+        temporaryCoinMap: Map<LocalCoinType, Pair<String, String>>,
+        responseCoinList: List<RecoverWalletCoinResponse>
+    ): List<AccountEntity> {
+        val entityList: MutableList<AccountEntity> = mutableListOf()
+        temporaryCoinMap.forEach { (localCoinType, value) ->
+            val publicKey: String = value.first
+            val privateKey: String = value.second
+            responseCoinList.find { it.code == localCoinType.name }?.let { responseItem ->
+                entityList.add(AccountEntity(responseItem.id, localCoinType, publicKey, privateKey, true))
+            }
+        }
+        return entityList
     }
 }

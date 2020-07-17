@@ -5,38 +5,23 @@ import android.net.Uri
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.app.belcobtm.R
-import com.app.belcobtm.domain.authorization.AuthorizationStatus
 import com.app.belcobtm.presentation.core.ui.fragment.BaseFragment
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.android.synthetic.main.fragment_welcome.*
 import kotlinx.android.synthetic.main.view_support_dialog.*
-import org.koin.android.viewmodel.ext.android.viewModel
 
 class WelcomeFragment : BaseFragment() {
-    private val viewModel: WelcomeViewModel by viewModel()
     override val isToolbarEnabled: Boolean = false
     override val resourceLayout: Int = R.layout.fragment_welcome
     override val backPressedListener: View.OnClickListener = View.OnClickListener { requireActivity().finish() }
 
-    override fun onStart() {
-        super.onStart()
-        viewModel.clearAppData()
-    }
-
     override fun initViews() {
-        val authorizationStatus = requireArguments().getInt(TAG_AUTHORIZATION_STATUS, -1)
-        requireArguments().remove(TAG_AUTHORIZATION_STATUS)
-        when (authorizationStatus) {
-            AuthorizationStatus.SEED_PHRASE_ENTER.ordinal -> navigate(R.id.to_recover_seed_fragment)
-            else -> {
-                pagerView.apply {
-                    adapter = WelcomePagerAdapter()
-                    adapter?.registerAdapterDataObserver(pagerIndicatorView.adapterDataObserver)
-                    (getChildAt(0) as RecyclerView).overScrollMode = RecyclerView.OVER_SCROLL_NEVER
-                }
-                pagerIndicatorView.setViewPager(pagerView)
-            }
+        pagerView.apply {
+            adapter = WelcomePagerAdapter()
+            adapter?.registerAdapterDataObserver(pagerIndicatorView.adapterDataObserver)
+            (getChildAt(0) as RecyclerView).overScrollMode = RecyclerView.OVER_SCROLL_NEVER
         }
+        pagerIndicatorView.setViewPager(pagerView)
     }
 
     override fun initListeners() {
@@ -67,9 +52,5 @@ class WelcomeFragment : BaseFragment() {
         }
         dialog.cancelButtonView.setOnClickListener { dialog.cancel() }
         dialog.setCanceledOnTouchOutside(false)
-    }
-
-    companion object {
-        const val TAG_AUTHORIZATION_STATUS = "tag_authorization_status"
     }
 }

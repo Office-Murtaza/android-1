@@ -12,7 +12,7 @@ import android.widget.FrameLayout
 import androidx.fragment.app.Fragment
 import com.app.belcobtm.R
 import com.app.belcobtm.presentation.core.helper.AlertHelper
-import com.app.belcobtm.presentation.features.authorization.pin.PinActivity
+import com.app.belcobtm.presentation.features.HostActivity
 import com.google.android.material.snackbar.Snackbar
 import dagger.android.support.AndroidSupportInjection
 import javax.inject.Inject
@@ -27,7 +27,7 @@ abstract class BaseMvpFragment<in V : BaseMvpView, T : BaseMvpPresenter<V>>
         mPresenter.attachView(this as V)
     }
 
-    override fun getContext(): Context = activity!!
+    override fun getContext(): Context = requireActivity()
 
     @Inject
     protected lateinit var mPresenter: T
@@ -110,7 +110,10 @@ abstract class BaseMvpFragment<in V : BaseMvpView, T : BaseMvpPresenter<V>>
     }
 
     override fun onRefreshTokenFailed() {
-        if (isVisible)
-            startActivity(Intent(context, PinActivity::class.java))
+        if (isVisible) {
+            val intent = Intent(requireActivity(), HostActivity::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+            startActivity(intent)
+        }
     }
 }

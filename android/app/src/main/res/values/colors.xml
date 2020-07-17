@@ -5,6 +5,8 @@
     <color name="colorAccent">#0074e5</color>
     <color name="colorStatusBar">#f4f4f4</color>
     <color name="colorText">#58585a</color>
+    <color name="colorPinSelectedIndicator">@color/colorPrimary</color>
+    <color name="colorPinUnselectedIndicator">#e0e0e0</color>
 
     <color name="edit_text_drawable_tint">#c6c6c6</color>
     <color name="toast_background">#80000000</color>

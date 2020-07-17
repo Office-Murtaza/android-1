@@ -14,7 +14,7 @@ import android.widget.FrameLayout
 import androidx.appcompat.app.AppCompatActivity
 import com.app.belcobtm.R
 import com.app.belcobtm.presentation.core.helper.AlertHelper
-import com.app.belcobtm.presentation.features.authorization.pin.PinActivity
+import com.app.belcobtm.presentation.features.HostActivity
 import com.google.android.material.snackbar.Snackbar
 import dagger.android.AndroidInjection
 import javax.inject.Inject
@@ -101,7 +101,9 @@ abstract class BaseMvpActivity<in V : BaseMvpView, T : BaseMvpPresenter<V>>
     }
 
     override fun onRefreshTokenFailed() {
-        startActivity(Intent(this, PinActivity::class.java))
+        val intent = Intent(this, HostActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+        startActivity(intent)
     }
 
     override fun onDestroy() {

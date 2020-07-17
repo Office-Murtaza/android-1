@@ -4,17 +4,18 @@ import com.app.belcobtm.domain.wallet.LocalCoinType
 import com.app.belcobtm.domain.wallet.WalletRepository
 import com.app.belcobtm.domain.wallet.interactor.GetCoinFeeMapUseCase
 import com.app.belcobtm.domain.wallet.item.CoinDataItem
-import com.app.belcobtm.presentation.features.authorization.create.CreateWalletViewModel
+import com.app.belcobtm.presentation.features.authorization.create.seed.CreateSeedViewModel
+import com.app.belcobtm.presentation.features.authorization.create.wallet.CreateWalletViewModel
 import com.app.belcobtm.presentation.features.authorization.pin.PinViewModel
 import com.app.belcobtm.presentation.features.authorization.recover.seed.RecoverSeedViewModel
 import com.app.belcobtm.presentation.features.authorization.recover.wallet.RecoverWalletViewModel
-import com.app.belcobtm.presentation.features.authorization.welcome.WelcomeViewModel
+import com.app.belcobtm.presentation.features.pin.code.PinCodeViewModel
 import com.app.belcobtm.presentation.features.settings.verification.blank.VerificationBlankViewModel
 import com.app.belcobtm.presentation.features.settings.verification.info.VerificationInfoViewModel
 import com.app.belcobtm.presentation.features.settings.verification.vip.VerificationVipViewModel
 import com.app.belcobtm.presentation.features.sms.code.SmsCodeViewModel
 import com.app.belcobtm.presentation.features.wallet.add.AddWalletViewModel
-import com.app.belcobtm.presentation.features.wallet.balance.BalanceViewModel
+import com.app.belcobtm.presentation.features.wallet.balance.WalletViewModel
 import com.app.belcobtm.presentation.features.wallet.exchange.coin.to.coin.ExchangeCoinToCoinViewModel
 import com.app.belcobtm.presentation.features.wallet.staking.StakingViewModel
 import com.app.belcobtm.presentation.features.wallet.trade.create.TradeCreateViewModel
@@ -28,12 +29,12 @@ import org.koin.android.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
 val viewModelModule = module {
-    viewModel { WelcomeViewModel(get()) }
-    viewModel { BalanceViewModel(get()) }
+    viewModel { WalletViewModel(get()) }
     viewModel { (coinCode: String) -> TransactionsViewModel(coinCode, get(), get(), get(), get()) }
-    viewModel { RecoverWalletViewModel(get(), get()) }
-    viewModel { CreateWalletViewModel(get(), get()) }
+    viewModel { RecoverWalletViewModel(get()) }
+    viewModel { CreateWalletViewModel(get()) }
     viewModel { PinViewModel(get(), get(), get()) }
+    viewModel { PinCodeViewModel(get(), get(), get()) }
     viewModel { VerificationInfoViewModel(get()) }
     viewModel { VerificationBlankViewModel(get(), get()) }
     viewModel { VerificationVipViewModel(get()) }
@@ -86,4 +87,5 @@ val viewModelModule = module {
         SmsCodeViewModel(phone, get())
     }
     viewModel { RecoverSeedViewModel(get()) }
+    viewModel { CreateSeedViewModel(get(), get()) }
 }

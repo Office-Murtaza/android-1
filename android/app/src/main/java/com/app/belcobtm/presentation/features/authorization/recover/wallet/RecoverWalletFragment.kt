@@ -1,5 +1,7 @@
 package com.app.belcobtm.presentation.features.authorization.recover.wallet
 
+import android.telephony.PhoneNumberFormattingTextWatcher
+import android.telephony.PhoneNumberUtils
 import androidx.core.os.bundleOf
 import androidx.lifecycle.Observer
 import com.app.belcobtm.R
@@ -9,9 +11,12 @@ import com.app.belcobtm.presentation.core.mvvm.LoadingData
 import com.app.belcobtm.presentation.core.ui.fragment.BaseFragment
 import com.app.belcobtm.presentation.features.authorization.recover.seed.RecoverSeedFragment
 import com.app.belcobtm.presentation.features.sms.code.SmsCodeFragment
-import com.redmadrobot.inputmask.MaskedTextChangedListener
+import kotlinx.android.synthetic.main.fragment_create_wallet.*
 import kotlinx.android.synthetic.main.fragment_recover_wallet.*
+import kotlinx.android.synthetic.main.fragment_recover_wallet.nextButtonView
+import kotlinx.android.synthetic.main.fragment_recover_wallet.passwordView
 import org.koin.android.viewmodel.ext.android.viewModel
+
 
 class RecoverWalletFragment : BaseFragment() {
     private val viewModel: RecoverWalletViewModel by viewModel()
@@ -36,7 +41,11 @@ class RecoverWalletFragment : BaseFragment() {
             hideKeyboard()
             checkCredentials()
         }
-        MaskedTextChangedListener.installOn(phoneView, PHONE_MASK)
+        phoneEditView.afterTextChanged {
+            it.clear()
+            it.insert(0, PhoneNumberUtils.stripSeparators(it.toString().trim()))
+        }
+        phoneEditView.addTextChangedListener(PhoneNumberFormattingTextWatcher())
     }
 
     override fun initObservers() {
@@ -44,24 +53,25 @@ class RecoverWalletFragment : BaseFragment() {
             when (it) {
                 is LoadingData.Loading -> showProgress()
                 is LoadingData.Success -> {
-                    if (it.data) {
-                        navigate(
-                            R.id.to_sms_code_fragment,
-                            bundleOf(
-                                SmsCodeFragment.TAG_PHONE to getPhone(),
-                                RecoverSeedFragment.TAG_PASSWORD to passwordView.getString(),
-                                SmsCodeFragment.TAG_NEXT_FRAGMENT_ID to R.id.to_recover_seed_fragment
+                    when {
+                        it.data.first -> {
+                            navigate(
+                                R.id.to_sms_code_fragment,
+                                bundleOf(
+                                    SmsCodeFragment.TAG_PHONE to getPhone(),
+                                    RecoverSeedFragment.TAG_PASSWORD to passwordView.getString(),
+                                    SmsCodeFragment.TAG_NEXT_FRAGMENT_ID to R.id.to_recover_seed_fragment
+                                )
                             )
-                        )
-                        viewModel.checkCredentialsLiveData.value = null
-                    } else {
-                        phoneContainerView.showError(R.string.recover_wallet_incorrect_login)
+                            viewModel.checkCredentialsLiveData.value = null
+                        }
+                        it.data.second -> passwordView.showError(R.string.recover_wallet_incorrect_password)
+                        else -> phoneContainerView.showError(R.string.recover_wallet_incorrect_login)
                     }
                     showContent()
                 }
                 is LoadingData.Error -> {
                     when (it.errorType) {
-                        is Failure.IncorrectPassword -> passwordView.showError(R.string.recover_wallet_incorrect_password)
                         is Failure.MessageError -> showSnackBar(it.errorType.message)
                         is Failure.NetworkConnection -> showSnackBar(R.string.error_internet_unavailable)
                         else -> showSnackBar(R.string.error_something_went_wrong)

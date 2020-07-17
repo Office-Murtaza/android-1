@@ -53,8 +53,6 @@ class HostNavigationFragment : NavHostFragment() {
         return false
     }
 
-    fun selectJobRequests() = bottomNavigationView?.findViewById<View>(R.id.nav_job_requests)?.performClick()
-
     fun showBottomMenu() = bottomNavigationView.show()
 
     fun hideBottomMenu() = bottomNavigationView.hide()

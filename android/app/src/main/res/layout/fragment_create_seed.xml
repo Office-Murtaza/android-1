@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/rootView"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:focusable="true"
+    android:orientation="vertical">
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:gravity="center"
+        android:text="@string/create_seed_screen_description"
+        android:textSize="16sp" />
+
+    <com.app.belcobtm.presentation.features.authorization.create.seed.ChipGroupCenter
+        android:id="@+id/chipGroupView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp">
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/word1"
+            style="@style/Button.ChipSeed"
+            tools:text="first" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/word2"
+            style="@style/Button.ChipSeed"
+            tools:text="second" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/word3"
+            style="@style/Button.ChipSeed"
+            tools:text="third" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/word4"
+            style="@style/Button.ChipSeed"
+            tools:text="fourth" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/word5"
+            style="@style/Button.ChipSeed"
+            tools:text="fifth" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/word6"
+            style="@style/Button.ChipSeed"
+            tools:text="sixth" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/word7"
+            style="@style/Button.ChipSeed"
+            tools:text="seventh" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/word8"
+            style="@style/Button.ChipSeed"
+            tools:text="eighth" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/word9"
+            style="@style/Button.ChipSeed"
+            tools:text="ninth" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/word10"
+            style="@style/Button.ChipSeed"
+            tools:text="tenth" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/word11"
+            style="@style/Button.ChipSeed"
+            tools:text="eleventh" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/word12"
+            style="@style/Button.ChipSeed"
+            tools:text="twelfth" />
+    </com.app.belcobtm.presentation.features.authorization.create.seed.ChipGroupCenter>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/copyButtonView"
+        style="@style/Button.Secondary"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="16dp"
+        android:text="@android:string/copy" />
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/nextButtonView"
+        style="@style/Button.Primary"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/next" />
+
+</androidx.appcompat.widget.LinearLayoutCompat>

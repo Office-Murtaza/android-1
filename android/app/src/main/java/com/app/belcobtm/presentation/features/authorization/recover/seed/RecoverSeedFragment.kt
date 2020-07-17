@@ -5,7 +5,7 @@ import android.content.ClipboardManager
 import android.content.Context
 import android.view.MenuItem
 import android.view.View
-import android.widget.Toast
+import androidx.core.os.bundleOf
 import androidx.lifecycle.Observer
 import com.app.belcobtm.R
 import com.app.belcobtm.domain.Failure
@@ -14,6 +14,7 @@ import com.app.belcobtm.presentation.core.extensions.getString
 import com.app.belcobtm.presentation.core.extensions.showError
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
 import com.app.belcobtm.presentation.core.ui.fragment.BaseFragment
+import com.app.belcobtm.presentation.features.pin.code.PinCodeFragment
 import com.app.belcobtm.presentation.features.sms.code.SmsCodeFragment
 import kotlinx.android.synthetic.main.fragment_recover_seed.*
 import org.koin.android.viewmodel.ext.android.viewModel
@@ -30,7 +31,7 @@ class RecoverSeedFragment : BaseFragment() {
 
     override fun initViews() {
         super.initViews()
-        setToolbarTitle(R.string.recover_seed_title)
+        setToolbarTitle(R.string.recover_seed_screen_title)
     }
 
     override fun initObservers() {
@@ -38,9 +39,10 @@ class RecoverSeedFragment : BaseFragment() {
             when (it) {
                 is LoadingData.Loading -> showProgress()
                 is LoadingData.Success -> {
-
-//                    navigate(R.id.to_recover_seed_fragment)
-                    Toast.makeText(requireContext(), "success", Toast.LENGTH_LONG).show()
+                    navigate(
+                        R.id.to_pin_code_fragment,
+                        bundleOf(PinCodeFragment.TAG_PIN_MODE to PinCodeFragment.KEY_PIN_MODE_CREATE)
+                    )
                     showContent()
                 }
                 is LoadingData.Error -> {
@@ -62,11 +64,8 @@ class RecoverSeedFragment : BaseFragment() {
         seedView.addTextChangedListener(watcher)
         nextButtonView.setOnClickListener {
             val wordList: List<String> = seedView.getString()
-                .replace(
-                    RecoverSeedWatcher.CHAR_NEXT_LINE,
-                    RecoverSeedWatcher.CHAR_SPACE
-                )
-                .splitToSequence(" ")
+                .replace(RecoverSeedWatcher.CHAR_NEXT_LINE, RecoverSeedWatcher.CHAR_SPACE)
+                .splitToSequence(RecoverSeedWatcher.CHAR_SPACE)
                 .filter { it.isNotEmpty() }
                 .toList()
 
@@ -93,10 +92,6 @@ class RecoverSeedFragment : BaseFragment() {
         true
     } else {
         false
-    }
-
-    fun onSeedVerifyed() {
-//        startActivity(Intent(this, MainActivity::class.java))
     }
 
     private fun getTextFromClipboard(): String {

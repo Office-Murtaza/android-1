@@ -11,19 +11,24 @@ import retrofit2.http.Path
 
 interface AuthApi {
     @POST("check")
-    fun checkCredentialsAsync(
+    fun authorizationCheckCredentialsAsync(
         @Body request: CheckCredentialsRequest
     ): Deferred<Response<CheckCredentialsResponse>>
 
     @POST("verify")
-    fun verifyPhoneAsync(
+    fun authorizationVerifySmsCodeAsync(
         @Body request: VerifyPhoneRequest
     ): Deferred<Response<VerifyPhoneResponse>>
 
     @POST("register")
     fun createWalletAsync(
         @Body request: CreateWalletRequest
-    ): Deferred<Response<AuthorizationResponse>>
+    ): Deferred<Response<CreateRecoverWalletResponse>>
+
+    @POST("recover")
+    fun recoverWalletAsync(
+        @Body request: RecoverWalletRequest
+    ): Deferred<Response<CreateRecoverWalletResponse>>
 
     @POST("user/{userId}/code/verify")
     fun createWalletVerifySmsCodeAsync(
@@ -31,16 +36,11 @@ interface AuthApi {
         @Body request: CreateWalletVerifySmsCodeRequest
     ): Deferred<Response<ResponseBody>>
 
-    @POST("recover")
-    fun recoverWalletAsync(
-        @Body request: RecoverWalletRequest
-    ): Deferred<Response<RecoverWalletResponse>>
-
-    @POST("user/{userId}/code/verify")
-    fun recoverWalletVerifySmsCodeAsync(
-        @Path("userId") userId: Int,
-        @Body request: VerifySmsCodeRequest
-    ): Deferred<Response<ResponseBody>>
+//    @POST("user/{userId}/code/verify")
+//    fun authorizationVerifySmsCodeAsync(
+//        @Path("userId") userId: Int,
+//        @Body request: VerifySmsCodeRequest
+//    ): Deferred<Response<ResponseBody>>
 
     @POST("user/{userId}/coins/add")
     fun addCoinsAsync(

@@ -57,7 +57,7 @@
                     android:layout_height="match_parent"
                     android:layout_gravity="center_horizontal"
                     android:scaleType="center"
-                    android:src="@drawable/ic_add" />
+                    app:srcCompat="@drawable/ic_add" />
             </androidx.cardview.widget.CardView>
 
             <LinearLayout

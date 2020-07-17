@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/logo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="100dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_logo_main" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/titleView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="50dp"
+        android:text="@string/pin_code_screen_enter_pin"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@id/dot1View"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/dot1View"
+        style="@style/Background.PinCodeIndicator"
+        android:layout_marginBottom="24dp"
+        app:layout_constraintBottom_toTopOf="@id/keyboardView"
+        app:layout_constraintEnd_toStartOf="@id/dot2View"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="@id/keyboardView" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/dot2View"
+        style="@style/Background.PinCodeIndicator"
+        app:layout_constraintBottom_toBottomOf="@id/dot1View"
+        app:layout_constraintEnd_toStartOf="@id/dot3View"
+        app:layout_constraintStart_toEndOf="@id/dot1View"
+        app:layout_constraintTop_toTopOf="@id/dot1View" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/dot3View"
+        style="@style/Background.PinCodeIndicator"
+        app:layout_constraintBottom_toBottomOf="@id/dot2View"
+        app:layout_constraintEnd_toStartOf="@id/dot4View"
+        app:layout_constraintStart_toEndOf="@id/dot2View"
+        app:layout_constraintTop_toTopOf="@id/dot2View" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/dot4View"
+        style="@style/Background.PinCodeIndicator"
+        app:layout_constraintBottom_toBottomOf="@id/dot3View"
+        app:layout_constraintEnd_toStartOf="@id/dot5View"
+        app:layout_constraintStart_toEndOf="@id/dot3View"
+        app:layout_constraintTop_toTopOf="@id/dot3View" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/dot5View"
+        style="@style/Background.PinCodeIndicator"
+        app:layout_constraintBottom_toBottomOf="@id/dot4View"
+        app:layout_constraintEnd_toStartOf="@id/dot6View"
+        app:layout_constraintStart_toEndOf="@id/dot4View"
+        app:layout_constraintTop_toTopOf="@id/dot4View" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/dot6View"
+        style="@style/Background.PinCodeIndicator"
+        app:layout_constraintBottom_toBottomOf="@id/dot5View"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/dot5View"
+        app:layout_constraintTop_toTopOf="@id/dot5View" />
+
+    <TableLayout
+        android:id="@+id/keyboardView"
+        android:layout_width="match_parent"
+        android:layout_height="240dp"
+        android:background="#f5f5f5"
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:ignore="HardcodedText">
+
+        <TableRow android:layout_weight="1">
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/key1View"
+                style="@style/Button.PinCodeKeyboard"
+                android:tag="1"
+                android:text="1" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/key2View"
+                style="@style/Button.PinCodeKeyboard"
+                android:tag="2"
+                android:text="2" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/key3View"
+                style="@style/Button.PinCodeKeyboard"
+                android:tag="3"
+                android:text="3" />
+        </TableRow>
+
+        <TableRow android:layout_weight="1">
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/key4View"
+                style="@style/Button.PinCodeKeyboard"
+                android:tag="4"
+                android:text="4" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/key5View"
+                style="@style/Button.PinCodeKeyboard"
+                android:tag="5"
+                android:text="5" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/key6View"
+                style="@style/Button.PinCodeKeyboard"
+                android:tag="6"
+                android:text="6" />
+        </TableRow>
+
+        <TableRow android:layout_weight="1">
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/key7View"
+                style="@style/Button.PinCodeKeyboard"
+                android:tag="7"
+                android:text="7" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/key8View"
+                style="@style/Button.PinCodeKeyboard"
+                android:tag="8"
+                android:text="8" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/key9View"
+                style="@style/Button.PinCodeKeyboard"
+                android:tag="9"
+                android:text="9" />
+        </TableRow>
+
+        <TableRow android:layout_weight="1">
+
+            <androidx.appcompat.widget.AppCompatButton
+                style="@style/Button.PinCodeKeyboard"
+                android:visibility="invisible" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/key0View"
+                style="@style/Button.PinCodeKeyboard"
+                android:gravity="center"
+                android:tag="0"
+                android:text="0" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/keyEraseView"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/selector_bg_hollow_non_stroke"
+                android:clickable="true"
+                android:focusable="true"
+                android:scaleType="center"
+                app:srcCompat="@drawable/ic_arrow_left"
+                app:tint="@color/colorText" />
+        </TableRow>
+    </TableLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+

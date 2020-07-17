@@ -113,7 +113,7 @@
         android:clickable="true"
         android:focusable="true"
         android:padding="4dp"
-        android:src="@drawable/ic_center_focus"
+        app:srcCompat="@drawable/ic_center_focus"
         app:layout_constraintBottom_toBottomOf="@id/addressView"
         app:layout_constraintEnd_toEndOf="@id/addressView"
         app:layout_constraintTop_toTopOf="@id/addressView"

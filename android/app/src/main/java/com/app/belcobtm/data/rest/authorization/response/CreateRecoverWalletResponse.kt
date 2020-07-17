@@ -1,6 +1,6 @@
 package com.app.belcobtm.data.rest.authorization.response
 
-data class RecoverWalletResponse(
+data class CreateRecoverWalletResponse(
     val userId: Int,
     val identityId: Int,
     val accessToken: String,
@@ -20,6 +20,6 @@ data class RecoverWalletCoinResponse(
     val code: String,
     val address: String,
     val balance: Double,
-    val reservedBalance: Int,
+    val reservedBalance: Double,
     val price: Double
 )

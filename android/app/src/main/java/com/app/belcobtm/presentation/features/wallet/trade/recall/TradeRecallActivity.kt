@@ -11,7 +11,7 @@ import com.app.belcobtm.presentation.core.mvvm.LoadingData
 import com.app.belcobtm.presentation.core.ui.BaseActivity
 import com.app.belcobtm.presentation.core.ui.SmsDialogFragment
 import com.app.belcobtm.presentation.core.watcher.DoubleTextWatcher
-import com.app.belcobtm.presentation.features.authorization.pin.PinActivity
+import com.app.belcobtm.presentation.features.HostActivity
 import kotlinx.android.synthetic.main.activity_trade_recall.*
 import org.koin.android.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
@@ -103,7 +103,11 @@ class TradeRecallActivity : BaseActivity() {
                 }
                 is LoadingData.Error -> {
                     when (loadingData.errorType) {
-                        is Failure.TokenError -> startActivity(Intent(this, PinActivity::class.java))
+                        is Failure.TokenError -> {
+                            val intent = Intent(this, HostActivity::class.java)
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                            startActivity(intent)
+                        }
                         is Failure.MessageError -> showError(loadingData.errorType.message)
                         is Failure.NetworkConnection -> showError(R.string.error_internet_unavailable)
                         else -> showError(R.string.error_something_went_wrong)
@@ -120,7 +124,11 @@ class TradeRecallActivity : BaseActivity() {
                 is LoadingData.Success -> finish()
                 is LoadingData.Error -> {
                     when (loadingData.errorType) {
-                        is Failure.TokenError -> startActivity(Intent(this, PinActivity::class.java))
+                        is Failure.TokenError -> {
+                            val intent = Intent(this, HostActivity::class.java)
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                            startActivity(intent)
+                        }
                         is Failure.MessageError -> showSmsDialog(loadingData.errorType.message)
                         is Failure.NetworkConnection -> showError(R.string.error_internet_unavailable)
                         else -> showError(R.string.error_something_went_wrong)

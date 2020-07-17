@@ -1,7 +1,8 @@
-package com.app.belcobtm.presentation.features.authorization.create
+package com.app.belcobtm.presentation.features.authorization.create.wallet
 
 import android.graphics.Color
 import android.net.Uri
+import android.telephony.PhoneNumberFormattingTextWatcher
 import android.text.SpannableString
 import android.text.Spanned
 import android.text.TextUtils
@@ -20,15 +21,15 @@ import com.app.belcobtm.presentation.core.extensions.showError
 import com.app.belcobtm.presentation.core.helper.SimpleClickableSpan
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
 import com.app.belcobtm.presentation.core.ui.fragment.BaseFragment
-import com.app.belcobtm.presentation.features.authorization.recover.seed.RecoverSeedFragment
+import com.app.belcobtm.presentation.features.authorization.create.seed.CreateSeedFragment
 import com.app.belcobtm.presentation.features.sms.code.SmsCodeFragment
-import com.redmadrobot.inputmask.MaskedTextChangedListener
-import kotlinx.android.synthetic.main.activity_create_wallet.*
+import kotlinx.android.synthetic.main.fragment_create_wallet.*
 import org.koin.android.viewmodel.ext.android.viewModel
+
 
 class CreateWalletFragment : BaseFragment() {
     private val viewModel: CreateWalletViewModel by viewModel()
-    override val resourceLayout: Int = R.layout.activity_create_wallet
+    override val resourceLayout: Int = R.layout.fragment_create_wallet
     override val isToolbarEnabled: Boolean = true
     override val isHomeButtonEnabled: Boolean = true
 
@@ -49,7 +50,8 @@ class CreateWalletFragment : BaseFragment() {
         passwordView.editText?.afterTextChanged { updateNextButton() }
         passwordConfirmView.editText?.afterTextChanged { updateNextButton() }
         tncCheckBoxView.setOnCheckedChangeListener { _, _ -> updateNextButton() }
-        MaskedTextChangedListener.installOn(phoneEditView, PHONE_MASK)
+
+        phoneEditView.addTextChangedListener(PhoneNumberFormattingTextWatcher())
     }
 
     override fun initObservers() {
@@ -57,18 +59,18 @@ class CreateWalletFragment : BaseFragment() {
             when (it) {
                 is LoadingData.Loading -> showProgress()
                 is LoadingData.Success -> {
-                    if (it.data) {
-                        phoneView.showError(R.string.create_wallet_error_phone_registered)
-                    } else {
+                    if (!it.data.first) {
                         navigate(
                             R.id.to_sms_code_fragment,
                             bundleOf(
                                 SmsCodeFragment.TAG_PHONE to getPhone(),
-                                RecoverSeedFragment.TAG_PASSWORD to passwordView.getString(),
-                                SmsCodeFragment.TAG_NEXT_FRAGMENT_ID to R.id.to_recover_seed_fragment
+                                CreateSeedFragment.TAG_PASSWORD to passwordView.getString(),
+                                SmsCodeFragment.TAG_NEXT_FRAGMENT_ID to R.id.to_create_seed_fragment
                             )
                         )
                         viewModel.checkCredentialsLiveData.value = null
+                    } else {
+                        phoneView.showError(R.string.create_wallet_error_phone_registered)
                     }
                     showContent()
                 }
@@ -137,7 +139,7 @@ class CreateWalletFragment : BaseFragment() {
     }
 
     private fun isValidFields(): Boolean = when {
-        passwordView.getString().length in (PASSWORD_MAX_LENGTH + 1) until PASSWORD_MIN_LENGTH -> {
+        passwordView.getString().length < PASSWORD_MIN_LENGTH || passwordView.getString().length > PASSWORD_MAX_LENGTH -> {
             passwordConfirmView.showError(R.string.create_wallet_error_short_pass)
             false
         }
@@ -149,11 +151,11 @@ class CreateWalletFragment : BaseFragment() {
     }
 
     private fun updateNextButton() {
-        nextButtonView.isEnabled = getPhone().length == PHONE_LENGTH
-                && phoneView.getString().isNotEmpty()
-                && passwordView.getString().isNotEmpty()
-                && passwordConfirmView.getString().isNotEmpty()
-                && tncCheckBoxView.isChecked
+        nextButtonView.isEnabled =// getPhone().length == PHONE_LENGTH &&
+            phoneView.getString().isNotEmpty()
+                    && passwordView.getString().isNotEmpty()
+                    && passwordConfirmView.getString().isNotEmpty()
+                    && tncCheckBoxView.isChecked
     }
 
     private fun getPhone(): String = phoneView.getString().replace("[-() ]".toRegex(), "")
@@ -161,7 +163,5 @@ class CreateWalletFragment : BaseFragment() {
     companion object {
         private const val PASSWORD_MIN_LENGTH: Int = 6
         private const val PASSWORD_MAX_LENGTH: Int = 20
-        private const val PHONE_LENGTH: Int = 12
-        private const val PHONE_MASK: String = "+[0] ([000]) [000]-[00]-[00]"
     }
 }

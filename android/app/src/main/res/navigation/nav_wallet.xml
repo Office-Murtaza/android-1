@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/nav_wallet">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_wallet"
+    app:startDestination="@id/wallet_fragment">
 
+    <fragment
+        android:id="@+id/wallet_fragment"
+        android:name="com.app.belcobtm.presentation.features.wallet.balance.WalletFragment"
+        android:label="WalletFragment"
+        tools:layout="@layout/fragment_balance" />
 </navigation>
