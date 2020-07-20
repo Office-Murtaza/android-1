@@ -52,44 +52,5 @@ class AuthApiService(private val authApi: AuthApi) {
         failure.printStackTrace()
         Either.Left(failure)
     }
-
-
-//    suspend fun verifyPhone(phone: String): Either<Failure, String> = try {
-//        val request = authApi.verifyPhoneAsync(VerifyPhoneRequest(phone)).await()
-//        request.body()?.let { Either.Right(it.code) }
-//            ?: Either.Left(Failure.ServerError())
-//    } catch (failure: Failure) {
-//        Either.Left(failure)
-//    }
-//
-//
-//    suspend fun registerWallet(phone: String, password: String): Either<Failure, AuthorizationResponse> = try {
-//        val request = authApi.createWalletAsync(CreateWalletRequest(phone, password)).await()
-//        request.body()?.let { Either.Right(it) } ?: Either.Left(Failure.ServerError())
-//    } catch (failure: Failure) {
-//        failure.printStackTrace()
-//        Either.Left(failure)
-//    }
-//
-//    suspend fun createWalletVerifySmsCode(userId: Int, smsCode: String): Either<Failure, Unit> = try {
-//        authApi.createWalletVerifySmsCodeAsync(userId, CreateWalletVerifySmsCodeRequest(smsCode)).await()
-//        Either.Right(Unit)
-//    } catch (failure: Failure) {
-//        failure.printStackTrace()
-//        Either.Left(failure)
-//    }
-//
-//    suspend fun addCoins(userId: Int, accountList: List<AccountDataItem>): Either<Failure, AddCoinsResponse> = try {
-//        val request = authApi.addCoinsAsync(
-//            userId,
-//            AddCoinsRequest(accountList.map { CoinRequest(it.type.name, it.publicKey) })
-//        ).await()
-//        request.body()?.let { Either.Right(it) } ?: Either.Left(Failure.ServerError())
-//    } catch (failure: Failure) {
-//        failure.printStackTrace()
-//        Either.Left(failure)
-//    }
-
-
 }
 

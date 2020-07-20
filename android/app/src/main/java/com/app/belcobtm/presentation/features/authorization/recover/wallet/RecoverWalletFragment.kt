@@ -1,7 +1,6 @@
 package com.app.belcobtm.presentation.features.authorization.recover.wallet
 
 import android.telephony.PhoneNumberFormattingTextWatcher
-import android.telephony.PhoneNumberUtils
 import androidx.core.os.bundleOf
 import androidx.lifecycle.Observer
 import com.app.belcobtm.R
@@ -11,10 +10,7 @@ import com.app.belcobtm.presentation.core.mvvm.LoadingData
 import com.app.belcobtm.presentation.core.ui.fragment.BaseFragment
 import com.app.belcobtm.presentation.features.authorization.recover.seed.RecoverSeedFragment
 import com.app.belcobtm.presentation.features.sms.code.SmsCodeFragment
-import kotlinx.android.synthetic.main.fragment_create_wallet.*
 import kotlinx.android.synthetic.main.fragment_recover_wallet.*
-import kotlinx.android.synthetic.main.fragment_recover_wallet.nextButtonView
-import kotlinx.android.synthetic.main.fragment_recover_wallet.passwordView
 import org.koin.android.viewmodel.ext.android.viewModel
 
 
@@ -31,19 +27,15 @@ class RecoverWalletFragment : BaseFragment() {
 
     override fun initListeners() {
         nextButtonView.setOnClickListener {
-            phoneContainerView.clearError()
+            phoneView.clearError()
             passwordView.clearError()
             checkCredentials()
         }
-        phoneContainerView.editText?.afterTextChanged { updateNextButton() }
+        phoneView.editText?.afterTextChanged { updateNextButton() }
         passwordView.editText?.afterTextChanged { updateNextButton() }
         passwordView.editText?.actionDoneListener {
             hideKeyboard()
             checkCredentials()
-        }
-        phoneEditView.afterTextChanged {
-            it.clear()
-            it.insert(0, PhoneNumberUtils.stripSeparators(it.toString().trim()))
         }
         phoneEditView.addTextChangedListener(PhoneNumberFormattingTextWatcher())
     }
@@ -66,7 +58,7 @@ class RecoverWalletFragment : BaseFragment() {
                             viewModel.checkCredentialsLiveData.value = null
                         }
                         it.data.second -> passwordView.showError(R.string.recover_wallet_incorrect_password)
-                        else -> phoneContainerView.showError(R.string.recover_wallet_incorrect_login)
+                        else -> phoneView.showError(R.string.recover_wallet_incorrect_login)
                     }
                     showContent()
                 }
@@ -121,12 +113,12 @@ class RecoverWalletFragment : BaseFragment() {
     }
 
     private fun updateNextButton() {
-        nextButtonView.isEnabled = getPhone().length == PHONE_LENGTH
-                && phoneContainerView.getString().isNotEmpty()
-                && passwordView.getString().isNotEmpty()
+        nextButtonView.isEnabled = //getPhone().length == PHONE_LENGTH &&
+            phoneView.getString().isNotEmpty()
+                    && passwordView.getString().isNotEmpty()
     }
 
-    private fun getPhone(): String = phoneContainerView.getString().replace("[-() ]".toRegex(), "")
+    private fun getPhone(): String = phoneView.getString().replace("[-() ]".toRegex(), "")
 
     private companion object {
         const val PHONE_MASK: String = "+[0] ([000]) [000]-[00]-[00]"

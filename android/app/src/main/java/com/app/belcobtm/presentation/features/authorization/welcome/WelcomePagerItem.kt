@@ -1,4 +1,4 @@
-package com.app.belcobtm.model
+package com.app.belcobtm.presentation.features.authorization.welcome
 
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes

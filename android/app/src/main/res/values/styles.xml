@@ -104,6 +104,26 @@
         <item name="tint">@color/colorPinUnselectedIndicator</item>
     </style>
 
+    <style name="EditText" />
+
+    <style name="EditText.InputWithMax">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingEnd">54dp</item>
+    </style>
+
+    <style name="EditText.TextLink">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">?attr/selectableItemBackgroundBorderless</item>
+        <item name="android:clickable">true</item>
+        <item name="android:focusable">true</item>
+        <item name="android:padding">4dp</item>
+        <item name="android:textColor">#0073e4</item>
+        <item name="android:textStyle">bold</item>
+        <item name="textAllCaps">true</item>
+    </style>
+
     <style name="Widget.MaterialComponents.TextInputLayout.FilledBox" parent="Widget.Design.TextInputLayout" />
 
     <style name="Widget.MaterialComponents.TextInputEditText.FilledBox" parent="Widget.Design.TextInputLayout" tools:ignore="PrivateResource" />
@@ -278,26 +298,6 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="errorEnabled">true</item>
         <item name="errorIconDrawable">@null</item>
-    </style>
-
-    <style name="EditText" />
-
-    <style name="EditText.InputWithMax">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:paddingEnd">54dp</item>
-    </style>
-
-    <style name="EditText.TextLink">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:background">?attr/selectableItemBackgroundBorderless</item>
-        <item name="android:clickable">true</item>
-        <item name="android:focusable">true</item>
-        <item name="android:padding">4dp</item>
-        <item name="android:textColor">#0073e4</item>
-        <item name="android:textStyle">bold</item>
-        <item name="textAllCaps">true</item>
     </style>
 
 </resources>
