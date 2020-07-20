@@ -30,87 +30,87 @@ public class WalletController {
     private WalletService walletService;
 
     @GetMapping("/validate")
-    public ResponseEntity<WalletDTO> getValidate(@RequestParam CoinService.CoinEnum coinCode, @RequestParam String address, @RequestParam long timestamp, @RequestParam String signature) {
-        String signature2 = Util.sign("validate", coinCode.name(), timestamp, apiKey, apiSecret);
+    public ResponseEntity<WalletDTO> getValidate(@RequestParam CoinService.CoinEnum coin, @RequestParam String address, @RequestParam long timestamp, @RequestParam String signature) {
+        String signature2 = Util.sign("validate", coin.name(), timestamp, apiKey, apiSecret);
 
         if (enabled && !signature2.equals(signature)) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
 
         WalletDTO dto = new WalletDTO();
-        dto.setValid(coinCode.getCoinType().validate(address));
+        dto.setValid(coin.getCoinType().validate(address));
 
         return ResponseEntity.ok(dto);
     }
 
     @GetMapping("/price")
-    public ResponseEntity<WalletDTO> getPrice(@RequestParam CoinService.CoinEnum coinCode, @RequestParam long timestamp, @RequestParam String signature) {
-        String signature2 = Util.sign("price", coinCode.name(), timestamp, apiKey, apiSecret);
+    public ResponseEntity<WalletDTO> getPrice(@RequestParam CoinService.CoinEnum coin, @RequestParam long timestamp, @RequestParam String signature) {
+        String signature2 = Util.sign("price", coin.name(), timestamp, apiKey, apiSecret);
 
         if (enabled && !signature2.equals(signature)) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
 
         WalletDTO dto = new WalletDTO();
-        dto.setPrice(coinCode.getPrice());
+        dto.setPrice(coin.getPrice());
 
         return ResponseEntity.ok(dto);
     }
 
     @GetMapping("/balance")
-    public ResponseEntity<WalletDTO> getBalance(@RequestParam CoinService.CoinEnum coinCode, @RequestParam long timestamp, @RequestParam String signature) {
-        String signature2 = Util.sign("balance", coinCode.name(), timestamp, apiKey, apiSecret);
+    public ResponseEntity<WalletDTO> getBalance(@RequestParam CoinService.CoinEnum coin, @RequestParam long timestamp, @RequestParam String signature) {
+        String signature2 = Util.sign("balance", coin.name(), timestamp, apiKey, apiSecret);
 
         if (enabled && !signature2.equals(signature)) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
 
         WalletDTO dto = new WalletDTO();
-        dto.setBalance(walletService.getBalance(coinCode));
+        dto.setBalance(walletService.getBalance(coin));
 
         return ResponseEntity.ok(dto);
     }
 
     @GetMapping("/settings")
-    public ResponseEntity<WalletDTO> getSettings(@RequestParam CoinService.CoinEnum coinCode, @RequestParam long timestamp, @RequestParam String signature) {
-        String signature2 = Util.sign("settings", coinCode.name(), timestamp, apiKey, apiSecret);
+    public ResponseEntity<WalletDTO> getSettings(@RequestParam CoinService.CoinEnum coin, @RequestParam long timestamp, @RequestParam String signature) {
+        String signature2 = Util.sign("settings", coin.name(), timestamp, apiKey, apiSecret);
 
         if (enabled && !signature2.equals(signature)) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
 
         WalletDTO dto = new WalletDTO();
-        dto.setAddress(coinCode.getWalletAddress());
-        dto.setTxFee(coinCode.getCoinSettings().getTxFee());
-        dto.setTxTolerance(coinCode.getCoinEntity().getTolerance().stripTrailingZeros());
-        dto.setScale(coinCode.getCoinEntity().getScale());
+        dto.setAddress(coin.getWalletAddress());
+        dto.setTxFee(coin.getCoinSettings().getTxFee());
+        dto.setTxTolerance(coin.getCoinEntity().getTolerance().stripTrailingZeros());
+        dto.setScale(coin.getCoinEntity().getScale());
 
         return ResponseEntity.ok(dto);
     }
 
     @GetMapping("/generate-new-address")
-    public ResponseEntity<WalletDTO> generateNewAddress(@RequestParam CoinService.CoinEnum coinCode, @RequestParam long timestamp, @RequestParam String signature) {
-        String signature2 = Util.sign("generate-new-address", coinCode.name(), timestamp, apiKey, apiSecret);
+    public ResponseEntity<WalletDTO> generateNewAddress(@RequestParam CoinService.CoinEnum coin, @RequestParam long timestamp, @RequestParam String signature) {
+        String signature2 = Util.sign("generate-new-address", coin.name(), timestamp, apiKey, apiSecret);
 
         if (enabled && !signature2.equals(signature)) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
 
         WalletDTO dto = new WalletDTO();
-        dto.setNewAddress(walletService.generateNewAddress(coinCode));
+        dto.setNewAddress(walletService.generateNewAddress(coin));
 
         return ResponseEntity.ok(dto);
     }
 
     @GetMapping("/transaction")
-    public ResponseEntity<WalletDTO> getTransaction(@RequestParam CoinService.CoinEnum coinCode, @RequestParam String txId, @RequestParam long timestamp, @RequestParam String signature) {
-        String signature2 = Util.sign("transaction", coinCode.name(), timestamp, apiKey, apiSecret);
+    public ResponseEntity<WalletDTO> getTransaction(@RequestParam CoinService.CoinEnum coin, @RequestParam String txId, @RequestParam String address, @RequestParam long timestamp, @RequestParam String signature) {
+        String signature2 = Util.sign("transaction", coin.name(), timestamp, apiKey, apiSecret);
 
         if (enabled && !signature2.equals(signature)) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
 
-        TransactionDetailsDTO transaction = coinCode.getTransaction(txId, null);
+        TransactionDetailsDTO transaction = coin.getTransaction(txId, address);
 
         WalletDTO dto = new WalletDTO();
         dto.setTxId(txId);
@@ -123,29 +123,29 @@ public class WalletController {
     }
 
     @GetMapping("/received-addresses")
-    public ResponseEntity<WalletDTO> getReceivedAddresses(@RequestParam CoinService.CoinEnum coinCode, @RequestParam Set<String> addresses, @RequestParam long timestamp, @RequestParam String signature) {
-        String signature2 = Util.sign("received-addresses", coinCode.name(), timestamp, apiKey, apiSecret);
+    public ResponseEntity<WalletDTO> getReceivedAddresses(@RequestParam CoinService.CoinEnum coin, @RequestParam Set<String> addresses, @RequestParam long timestamp, @RequestParam String signature) {
+        String signature2 = Util.sign("received-addresses", coin.name(), timestamp, apiKey, apiSecret);
 
         if (enabled && !signature2.equals(signature)) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
 
         WalletDTO dto = new WalletDTO();
-        dto.setReceivedAddresses(walletService.getReceivedAddresses(coinCode, addresses));
+        dto.setReceivedAddresses(walletService.getReceivedAddresses(coin, addresses));
 
         return ResponseEntity.ok(dto);
     }
 
     @GetMapping("/send")
-    public ResponseEntity<WalletDTO> sendCoins(@RequestParam CoinService.CoinEnum coinCode, @RequestParam String fromAddress, @RequestParam String toAddress, @RequestParam BigDecimal amount, @RequestParam long timestamp, @RequestParam String signature) {
-        String signature2 = Util.sign("send", coinCode.name(), timestamp, apiKey, apiSecret);
+    public ResponseEntity<WalletDTO> sendCoins(@RequestParam CoinService.CoinEnum coin, @RequestParam String fromAddress, @RequestParam String toAddress, @RequestParam BigDecimal amount, @RequestParam long timestamp, @RequestParam String signature) {
+        String signature2 = Util.sign("send", coin.name(), timestamp, apiKey, apiSecret);
 
         if (enabled && !signature2.equals(signature)) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
 
         WalletDTO dto = new WalletDTO();
-        dto.setTxId(walletService.sendCoins(coinCode, fromAddress, toAddress, amount));
+        dto.setTxId(walletService.sendCoins(coin, fromAddress, toAddress, amount));
 
         return ResponseEntity.ok(dto);
     }

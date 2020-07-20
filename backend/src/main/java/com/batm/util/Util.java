@@ -126,7 +126,7 @@ public class Util {
                 .orElse(StringUtils.EMPTY);
     }
 
-    public static String sign(String method, String coin, long timestamp, String apiKey, String apiSecret) {//(String message, String secret) {
+    public static String sign(String method, String coin, long timestamp, String apiKey, String apiSecret) {
         try {
             String message = method + "," + apiKey + "," + coin + "," + timestamp;
 
@@ -140,11 +140,14 @@ public class Util {
 
             for (int i = 0; i < bytes.length; i++) {
                 String hex = Integer.toHexString(0xFF & bytes[i]);
+
                 if (hex.length() == 1) {
                     hash.append('0');
                 }
+
                 hash.append(hex);
             }
+
             return hash.toString();
         } catch (Exception e) {
             throw new RuntimeException("Unable to sign message", e);
