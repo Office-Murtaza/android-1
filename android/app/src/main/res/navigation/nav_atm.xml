@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_atm"
+    app:startDestination="@id/atm_fragment">
+
+    <fragment
+        android:id="@+id/atm_fragment"
+        android:name="com.app.belcobtm.ui.main.atm.AtmFragment"
+        android:label="AtmFragment"
+        tools:layout="@layout/fragment_atm" />
+</navigation>

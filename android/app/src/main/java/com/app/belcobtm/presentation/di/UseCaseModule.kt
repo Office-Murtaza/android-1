@@ -5,19 +5,19 @@ import com.app.belcobtm.domain.settings.interactor.GetVerificationCountryListUse
 import com.app.belcobtm.domain.settings.interactor.GetVerificationInfoUseCase
 import com.app.belcobtm.domain.settings.interactor.SendVerificationBlankUseCase
 import com.app.belcobtm.domain.settings.interactor.SendVerificationVipUseCase
+import com.app.belcobtm.domain.tools.interactor.OldSendSmsToDeviceUseCase
+import com.app.belcobtm.domain.tools.interactor.OldVerifySmsCodeUseCase
 import com.app.belcobtm.domain.tools.interactor.SendSmsToDeviceUseCase
-import com.app.belcobtm.domain.tools.interactor.VerifySmsCodeUseCase
 import com.app.belcobtm.domain.transaction.interactor.*
 import com.app.belcobtm.domain.transaction.interactor.trade.*
 import com.app.belcobtm.domain.wallet.interactor.*
 import org.koin.dsl.module
 
 val useCaseModule = module {
+    single { AuthorizationStatusGetUseCase(get()) }
     single { ClearAppDataUseCase(get()) }
-    single { RecoverWalletUseCase(get()) }
-    single { RecoverWalletVerifySmsCodeUseCase(get()) }
+    single { AuthorizationCheckCredentialsUseCase(get()) }
     single { CreateWalletUseCase(get()) }
-    single { CreateWalletVerifySmsCodeUseCase(get()) }
     single { AuthorizeUseCase(get()) }
     single { GetAuthorizePinUseCase(get()) }
     single { SaveAuthorizePinUseCase(get()) }
@@ -31,8 +31,9 @@ val useCaseModule = module {
     single { WithdrawUseCase(get()) }
     single { GetGiftAddressUseCase(get()) }
     single { SendGiftUseCase(get()) }
+    single { OldSendSmsToDeviceUseCase(get()) }
+    single { OldVerifySmsCodeUseCase(get()) }
     single { SendSmsToDeviceUseCase(get()) }
-    single { VerifySmsCodeUseCase(get()) }
     single { SellPreSubmitUseCase(get()) }
     single { SellGetLimitsUseCase(get()) }
     single { GetLocalCoinListUseCase(get()) }
@@ -60,4 +61,6 @@ val useCaseModule = module {
     single { UnStakeCreateTransactionUseCase(get()) }
     single { UnStakeCompleteTransactionUseCase(get()) }
     single { GetFreshCoinUseCase(get()) }
+    single { RecoverWalletUseCase(get()) }
+    single { CreateSeedUseCase(get()) }
 }

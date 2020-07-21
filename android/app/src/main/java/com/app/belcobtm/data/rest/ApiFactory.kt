@@ -1,5 +1,6 @@
 package com.app.belcobtm.data.rest
 
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.app.belcobtm.data.disk.shared.preferences.SharedPreferencesHelper
 import com.app.belcobtm.data.rest.authorization.AuthApi
 import com.app.belcobtm.data.rest.interceptor.AuthAuthenticator
@@ -15,7 +16,10 @@ import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import java.util.concurrent.TimeUnit
 
-class ApiFactory(private val prefHelper: SharedPreferencesHelper) {
+class ApiFactory(
+    private val prefHelper: SharedPreferencesHelper,
+    private val localBroadcastManager: LocalBroadcastManager
+) {
     private val baseInterceptor: Interceptor = Interceptor {
         val request = it.request()
             .newBuilder()
@@ -32,7 +36,7 @@ class ApiFactory(private val prefHelper: SharedPreferencesHelper) {
         .readTimeout(WAIT_TIME_SECONDS, TimeUnit.SECONDS)
         .addInterceptor(baseInterceptor)
         .addInterceptor(LogInterceptor())
-        .addInterceptor(ResponseInterceptor())
+        .addInterceptor(ResponseInterceptor(localBroadcastManager))
         .authenticator(AuthAuthenticator(prefHelper, createApi(AuthApi::class.java)))
         .build()
 

@@ -3,6 +3,10 @@
     <color name="colorPrimary">#0073e4</color>
     <color name="colorPrimaryDark">#004ba0</color>
     <color name="colorAccent">#0074e5</color>
+    <color name="colorStatusBar">#f4f4f4</color>
+    <color name="colorText">#58585a</color>
+    <color name="colorPinSelectedIndicator">@color/colorPrimary</color>
+    <color name="colorPinUnselectedIndicator">#e0e0e0</color>
 
     <color name="edit_text_drawable_tint">#c6c6c6</color>
     <color name="toast_background">#80000000</color>
@@ -43,5 +47,6 @@
     <color name="chart_changes_up">#48be53</color>
     <color name="chart_changes_down">#e02d2d</color>
 
-
+    <color name="chip_default_text_color">#DE000000</color>
+    <color name="chip_default_icon_background_color">#517FA4</color>
 </resources>

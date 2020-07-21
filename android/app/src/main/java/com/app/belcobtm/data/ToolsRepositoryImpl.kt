@@ -11,14 +11,21 @@ class ToolsRepositoryImpl(
     private val networkUtils: NetworkUtils
 ) : ToolsRepository {
 
-    override suspend fun sendSmsToDevice(): Either<Failure, Unit> =
-        if (networkUtils.isNetworkAvailable()) {
-            apiService.sendToDeviceSmsCode()
-        } else {
-            Either.Left(Failure.NetworkConnection)
-        }
+    override suspend fun sendSmsToDevice(
+        phone: String
+    ): Either<Failure, String> = if (networkUtils.isNetworkAvailable()) {
+        apiService.verifyPhone(phone)
+    } else {
+        Either.Left(Failure.NetworkConnection)
+    }
 
-    override suspend fun verifySmsCode(
+    override suspend fun sendSmsToDeviceOld(): Either<Failure, Unit> = if (networkUtils.isNetworkAvailable()) {
+        apiService.sendToDeviceSmsCode()
+    } else {
+        Either.Left(Failure.NetworkConnection)
+    }
+
+    override suspend fun verifySmsCodeOld(
         smsCode: String
     ): Either<Failure, Unit> = if (networkUtils.isNetworkAvailable()) {
         apiService.verifySmsCode(smsCode)

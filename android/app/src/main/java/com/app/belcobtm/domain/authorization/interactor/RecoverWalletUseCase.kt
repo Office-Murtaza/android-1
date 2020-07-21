@@ -8,7 +8,8 @@ import com.app.belcobtm.domain.authorization.AuthorizationRepository
 class RecoverWalletUseCase(
     private val repository: AuthorizationRepository
 ) : UseCase<Unit, RecoverWalletUseCase.Params>() {
-    override suspend fun run(params: Params): Either<Failure, Unit> = repository.recoverWallet(params.phone, params.password)
+    override suspend fun run(params: Params): Either<Failure, Unit> =
+        repository.recoverWallet(params.seed, params.phone, params.password)
 
-    data class Params(val phone: String, val password: String)
+    data class Params(val seed: String, val phone: String, val password: String)
 }

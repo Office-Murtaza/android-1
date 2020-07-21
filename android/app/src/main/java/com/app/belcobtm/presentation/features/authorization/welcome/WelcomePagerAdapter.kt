@@ -5,14 +5,22 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.app.belcobtm.R
-import com.app.belcobtm.model.WelcomePagerItem
 import kotlinx.android.synthetic.main.item_welcome_pager.view.*
 
 class WelcomePagerAdapter : RecyclerView.Adapter<WelcomePagerAdapter.Holder>() {
     private val itemList: List<WelcomePagerItem> = listOf(
-        WelcomePagerItem(R.drawable.ic_welcome_slide_1, R.string.welcome_screen_all_assets_in_one_place),
-        WelcomePagerItem(R.drawable.ic_welcome_slide_2, R.string.welcome_screen_private_and_secure),
-        WelcomePagerItem(R.drawable.ic_welcome_slide_3, R.string.welcome_screen_buy_sell_and_trade_assets)
+        WelcomePagerItem(
+            R.drawable.ic_welcome_slide_1,
+            R.string.welcome_screen_all_assets_in_one_place
+        ),
+        WelcomePagerItem(
+            R.drawable.ic_welcome_slide_2,
+            R.string.welcome_screen_private_and_secure
+        ),
+        WelcomePagerItem(
+            R.drawable.ic_welcome_slide_3,
+            R.string.welcome_screen_buy_sell_and_trade_assets
+        )
     )
 
     override fun getItemCount(): Int = itemList.size

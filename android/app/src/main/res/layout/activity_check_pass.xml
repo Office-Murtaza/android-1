@@ -79,7 +79,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:drawableTint="@color/edit_text_drawable_tint"
-            android:hint="@string/pass"
+            android:hint="@string/create_wallet_screen_password"
             android:inputType="textPassword"
             android:lines="1"
             android:nextFocusDown="@id/nextButtonView" />

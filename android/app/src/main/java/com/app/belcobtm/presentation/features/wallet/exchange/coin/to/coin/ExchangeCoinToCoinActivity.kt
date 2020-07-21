@@ -14,7 +14,7 @@ import com.app.belcobtm.presentation.core.mvvm.LoadingData
 import com.app.belcobtm.presentation.core.ui.BaseActivity
 import com.app.belcobtm.presentation.core.ui.SmsDialogFragment
 import com.app.belcobtm.presentation.core.watcher.DoubleTextWatcher
-import com.app.belcobtm.presentation.features.authorization.pin.PinActivity
+import com.app.belcobtm.presentation.features.HostActivity
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.android.synthetic.main.activity_exchange_coin_to_coin.*
 import org.koin.android.viewmodel.ext.android.viewModel
@@ -151,7 +151,11 @@ class ExchangeCoinToCoinActivity : BaseActivity() {
                 }
                 is LoadingData.Error -> {
                     when (it.errorType) {
-                        is Failure.TokenError -> startActivity(Intent(this, PinActivity::class.java))
+                        is Failure.TokenError -> {
+                            val intent = Intent(this, HostActivity::class.java)
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                            startActivity(intent)
+                        }
                         is Failure.MessageError -> if (it.data == ExchangeCoinToCoinViewModel.TRANSACTION_CREATED) {
                             showError(it.errorType.message)
                         } else {

@@ -11,7 +11,6 @@ import android.text.style.ForegroundColorSpan
 import androidx.appcompat.app.AppCompatActivity
 import com.app.belcobtm.R
 import com.app.belcobtm.presentation.core.helper.AlertHelper
-import com.app.belcobtm.ui.main.main_activity.MainActivity
 import kotlinx.android.synthetic.main.activity_seed_phrase.*
 
 
@@ -64,14 +63,7 @@ class SeedPhraseActivity : AppCompatActivity() {
             doneButtonView.text = "Done"
         }
 
-        doneButtonView.setOnClickListener {
-            if (mFromSettings) {
-                onBackPressed()
-            } else {
-                finishAffinity()
-                startActivity(Intent(this, MainActivity::class.java))
-            }
-        }
+        doneButtonView.setOnClickListener { onBackPressed() }
     }
 
     private fun addColorText(text: String, addingText: String): SpannableStringBuilder {

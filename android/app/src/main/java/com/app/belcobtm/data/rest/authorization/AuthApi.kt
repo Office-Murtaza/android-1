@@ -1,44 +1,32 @@
 package com.app.belcobtm.data.rest.authorization
 
-import com.app.belcobtm.data.rest.authorization.request.*
-import com.app.belcobtm.data.rest.authorization.response.AddCoinsResponse
-import com.app.belcobtm.data.rest.authorization.response.RecoverWalletResponse
+import com.app.belcobtm.data.rest.authorization.request.CheckCredentialsRequest
+import com.app.belcobtm.data.rest.authorization.request.CreateWalletRequest
+import com.app.belcobtm.data.rest.authorization.request.RecoverWalletRequest
+import com.app.belcobtm.data.rest.authorization.request.RefreshTokenRequest
 import com.app.belcobtm.data.rest.authorization.response.AuthorizationResponse
+import com.app.belcobtm.data.rest.authorization.response.CheckCredentialsResponse
+import com.app.belcobtm.data.rest.authorization.response.CreateRecoverWalletResponse
 import kotlinx.coroutines.Deferred
-import okhttp3.ResponseBody
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.POST
-import retrofit2.http.Path
 
 interface AuthApi {
+    @POST("check")
+    fun authorizationCheckCredentialsAsync(
+        @Body request: CheckCredentialsRequest
+    ): Deferred<Response<CheckCredentialsResponse>>
+
     @POST("register")
     fun createWalletAsync(
         @Body request: CreateWalletRequest
-    ): Deferred<Response<AuthorizationResponse>>
-
-    @POST("user/{userId}/code/verify")
-    fun createWalletVerifySmsCodeAsync(
-        @Path("userId") userId: Int,
-        @Body request: CreateWalletVerifySmsCodeRequest
-    ): Deferred<Response<ResponseBody>>
+    ): Deferred<Response<CreateRecoverWalletResponse>>
 
     @POST("recover")
     fun recoverWalletAsync(
         @Body request: RecoverWalletRequest
-    ): Deferred<Response<RecoverWalletResponse>>
-
-    @POST("user/{userId}/code/verify")
-    fun recoverWalletVerifySmsCodeAsync(
-        @Path("userId") userId: Int,
-        @Body request: VerifySmsCodeRequest
-    ): Deferred<Response<ResponseBody>>
-
-    @POST("user/{userId}/coins/add")
-    fun addCoinsAsync(
-        @Path("userId") userId: Int,
-        @Body request: AddCoinsRequest
-    ): Deferred<Response<AddCoinsResponse>>
+    ): Deferred<Response<CreateRecoverWalletResponse>>
 
     @POST("refresh")
     fun signInByRefreshTokenAsync(@Body request: RefreshTokenRequest): Deferred<Response<AuthorizationResponse>>

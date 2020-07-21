@@ -18,8 +18,8 @@ import com.app.belcobtm.presentation.core.extensions.onTextChanged
 import com.app.belcobtm.presentation.core.helper.AlertHelper
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
 import com.app.belcobtm.presentation.core.ui.BaseActivity
-import com.app.belcobtm.presentation.features.authorization.welcome.WelcomeActivity
-import kotlinx.android.synthetic.main.activity_pin.*
+import com.app.belcobtm.presentation.features.HostActivity
+import kotlinx.android.synthetic.main.activity_pin_old.*
 import org.koin.android.viewmodel.ext.android.viewModel
 
 
@@ -31,7 +31,7 @@ class PinActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_pin)
+        setContentView(R.layout.activity_pin_old)
         initViews()
         initListeners()
         initObservers()
@@ -52,7 +52,7 @@ class PinActivity : BaseActivity() {
         mMode = Mode.valueOfInt(intent.getIntExtra(KEY_MODE, Mode.MODE_PIN.ordinal))
 
         if (mMode == Mode.MODE_PIN) {
-            iconTextView.text = getString(R.string.enter_pin_code)
+            iconTextView.text = getString(R.string.pin_code_screen_enter_pin)
         }
     }
 
@@ -86,17 +86,13 @@ class PinActivity : BaseActivity() {
                 }
                 is LoadingData.Error -> {
                     when (it.errorType) {
-                        is Failure.TokenError -> {
-                            finishAffinity()
-                            startActivity(Intent(this, WelcomeActivity::class.java))
-                        }
                         is Failure.MessageError -> showError(it.errorType.message)
                         is Failure.NetworkConnection -> showError(R.string.error_internet_unavailable)
                         else -> {
-                            finishAffinity()
-                            startActivity(Intent(this, WelcomeActivity::class.java))
+                            val intent = Intent(this, HostActivity::class.java)
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                            startActivity(intent)
                         }
-//                            showError(R.string.error_something_went_wrong)
                     }
                     showProgress(false)
                 }
@@ -149,7 +145,7 @@ class PinActivity : BaseActivity() {
         }
         mPin1 == null -> {//first create/change pin screen
             mPin1 = codeView.text.toString()
-            iconTextView.setText(R.string.confirm_pin_code)
+            iconTextView.setText(R.string.pin_code_screen_confirm_pin)
             codeView.setText("")
             vibrate(100)
         }

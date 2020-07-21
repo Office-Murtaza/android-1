@@ -1,5 +1,7 @@
 package com.app.belcobtm.data.rest.tools
 
+import com.app.belcobtm.data.rest.authorization.request.VerifyPhoneRequest
+import com.app.belcobtm.data.rest.authorization.response.VerifyPhoneResponse
 import com.app.belcobtm.data.rest.transaction.request.VerifySmsCodeRequest
 import com.app.belcobtm.data.rest.transaction.response.SendSmsCodeResponse
 import kotlinx.coroutines.Deferred
@@ -11,6 +13,11 @@ import retrofit2.http.POST
 import retrofit2.http.Path
 
 interface ToolsApi {
+    @POST("verify")
+    fun verifyPhoneAsync(
+        @Body request: VerifyPhoneRequest
+    ): Deferred<Response<VerifyPhoneResponse>>
+
     @GET("user/{userId}/code/send")
     fun sendSmsCodeAsync(
         @Path("userId") userId: Int

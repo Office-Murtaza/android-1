@@ -10,7 +10,7 @@ import com.app.belcobtm.presentation.core.extensions.*
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
 import com.app.belcobtm.presentation.core.ui.BaseActivity
 import com.app.belcobtm.presentation.core.watcher.DoubleTextWatcher
-import com.app.belcobtm.presentation.features.authorization.pin.PinActivity
+import com.app.belcobtm.presentation.features.HostActivity
 import com.app.belcobtm.presentation.features.wallet.trade.main.item.TradeDetailsItem
 import kotlinx.android.synthetic.main.activity_trade_details.*
 import org.koin.android.viewmodel.ext.android.viewModel
@@ -119,7 +119,11 @@ class TradeDetailsBuyActivity : BaseActivity() {
                 }
                 is LoadingData.Error -> {
                     when (it.errorType) {
-                        is Failure.TokenError -> startActivity(Intent(this, PinActivity::class.java))
+                        is Failure.TokenError -> {
+                            val intent = Intent(this, HostActivity::class.java)
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                            startActivity(intent)
+                        }
                         is Failure.MessageError -> showError(it.errorType.message)
                         is Failure.NetworkConnection -> showError(R.string.error_internet_unavailable)
                         else -> showError(R.string.error_something_went_wrong)

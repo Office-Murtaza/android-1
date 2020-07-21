@@ -1,8 +1,9 @@
 package com.app.belcobtm.data.rest.interceptor
 
 
+import android.content.Intent
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.app.belcobtm.domain.Failure
-import com.squareup.moshi.Moshi
 import okhttp3.Interceptor
 import okhttp3.Response
 import okhttp3.ResponseBody
@@ -11,7 +12,8 @@ import org.json.JSONObject
 import java.net.HttpURLConnection
 
 
-class ResponseInterceptor : Interceptor {
+class ResponseInterceptor(private val broadcastManager: LocalBroadcastManager) : Interceptor {
+
     override fun intercept(chain: Interceptor.Chain): Response? {
         val request = chain.request()
         request.header("Content-Type: application/json")
@@ -34,7 +36,10 @@ class ResponseInterceptor : Interceptor {
                     }
                 }
                 HttpURLConnection.HTTP_NOT_FOUND -> throw Failure.ServerError("Not found")
-                HttpURLConnection.HTTP_FORBIDDEN -> Failure.TokenError
+                HttpURLConnection.HTTP_FORBIDDEN -> {
+                    broadcastManager.sendBroadcast(Intent(TAG_USER_UNAUTHORIZED))
+                    throw Failure.TokenError
+                }
 //                    response.newBuilder()
 //                    .body(response.body())
 //                    .code(HttpURLConnection.HTTP_UNAUTHORIZED)
@@ -52,5 +57,6 @@ class ResponseInterceptor : Interceptor {
         private const val RESPONSE_FIELD = "response"
         private const val ERROR_FIELD = "error"
         private const val ERROR_SUB_FIELD = "errorMsg"
+        private const val TAG_USER_UNAUTHORIZED = "tag_broadcast_user_unauthorized"
     }
 }

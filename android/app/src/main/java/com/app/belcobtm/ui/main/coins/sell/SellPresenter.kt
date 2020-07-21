@@ -3,7 +3,7 @@ package com.app.belcobtm.ui.main.coins.sell
 import com.app.belcobtm.R
 import com.app.belcobtm.api.data_manager.WithdrawDataManager
 import com.app.belcobtm.domain.Failure
-import com.app.belcobtm.domain.tools.interactor.SendSmsToDeviceUseCase
+import com.app.belcobtm.domain.tools.interactor.OldSendSmsToDeviceUseCase
 import com.app.belcobtm.domain.transaction.interactor.SellGetLimitsUseCase
 import com.app.belcobtm.domain.transaction.interactor.SellPreSubmitUseCase
 import com.app.belcobtm.domain.transaction.interactor.SellUseCase
@@ -15,7 +15,7 @@ import org.koin.core.inject
 class SellPresenter : BaseMvpDIPresenterImpl<SellContract.View, WithdrawDataManager>(), SellContract.Presenter,
     KoinComponent {
     private val limitsUseCase: SellGetLimitsUseCase by inject()
-    private val sendSmsUseCase: SendSmsToDeviceUseCase by inject()
+    private val sendSmsUseCase: OldSendSmsToDeviceUseCase by inject()
     private val preSubmitUseCase: SellPreSubmitUseCase by inject()
     private val sellUseCase: SellUseCase by inject()
 

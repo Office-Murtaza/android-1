@@ -1,6 +1,7 @@
 package com.app.belcobtm.data.di
 
 import android.preference.PreferenceManager
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.room.Room
 import com.app.belcobtm.data.core.FileHelper
 import com.app.belcobtm.data.core.NetworkUtils
@@ -21,7 +22,7 @@ val dataModule = module {
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(get())
         SharedPreferencesHelper(sharedPreferences)
     }
-    single { ApiFactory(get()) }
+    single { ApiFactory(get(), LocalBroadcastManager.getInstance(get())) }
     single { AuthApiService((get() as ApiFactory).authApi) }
     single { SettingsApiService(get(), (get() as ApiFactory).settingsApi) }
     single { WalletApiService((get() as ApiFactory).walletApi, get()) }
@@ -31,6 +32,10 @@ val dataModule = module {
     single { FileHelper(get()) }
     single { AssetsDataStore(get()) }
     single { TransactionHashHelper(get(), get(), get()) }
-    single { Room.databaseBuilder(get(), AppDatabase::class.java, "belco_database").build() }
+    single {
+        Room.databaseBuilder(get(), AppDatabase::class.java, "belco_database")
+            .fallbackToDestructiveMigration()
+            .build()
+    }
     single { (get() as AppDatabase).getCoinDao() }
 }

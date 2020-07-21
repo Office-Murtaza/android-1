@@ -36,10 +36,10 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="24dp"
-                android:textStyle="bold"
                 android:text="@string/verification_id_scan"
                 android:textColor="#58585a"
                 android:textSize="14sp"
+                android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/toolbarView" />
 
@@ -57,7 +57,7 @@
                     android:layout_height="match_parent"
                     android:layout_gravity="center_horizontal"
                     android:scaleType="center"
-                    android:src="@drawable/ic_add" />
+                    app:srcCompat="@drawable/ic_add" />
             </androidx.cardview.widget.CardView>
 
             <LinearLayout
@@ -205,8 +205,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp"
                 android:layout_marginTop="24dp"
+                android:layout_marginEnd="16dp"
                 android:layout_marginBottom="24dp"
                 android:background="@drawable/button_blue"
                 android:elevation="0dp"

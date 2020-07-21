@@ -13,7 +13,7 @@ import com.app.belcobtm.presentation.core.extensions.toStringCoin
 import com.app.belcobtm.presentation.core.extensions.toStringUsd
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
 import com.app.belcobtm.presentation.core.ui.BaseActivity
-import com.app.belcobtm.presentation.features.authorization.pin.PinActivity
+import com.app.belcobtm.presentation.features.HostActivity
 import com.app.belcobtm.presentation.features.wallet.trade.create.TradeCreateActivity
 import com.app.belcobtm.presentation.features.wallet.trade.details.TradeDetailsBuyActivity
 import com.app.belcobtm.presentation.features.wallet.trade.main.adapter.TradePageAdapter
@@ -246,7 +246,11 @@ class TradeActivity : BaseActivity() {
 
     private fun errorResponse(failure: Exception?) {
         when (failure) {
-            is Failure.TokenError -> startActivity(Intent(this, PinActivity::class.java))
+            is Failure.TokenError -> {
+                val intent = Intent(this, HostActivity::class.java)
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                startActivity(intent)
+            }
             is Failure.MessageError -> showError(failure.message)
             is Failure.NetworkConnection -> showError(R.string.error_internet_unavailable)
             else -> showError(R.string.error_something_went_wrong)
