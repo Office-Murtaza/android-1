@@ -66,9 +66,11 @@ class StakingActivity : BaseActivity() {
                     rewardsView.text =
                         getString(R.string.staking_screen_rewards_amount, rewardsAmount.toStringCoin(), rewardsPercent)
                     timeView.text = resources.getQuantityString(R.plurals.staking_screen_time_value, time, time)
+                    stackingMinDays.text = stakingMinDays.toString()
 
                     editStakeGroupView.toggle(!isExist)
-                    unstakeButtonView.toggle(isExist && isUnStakeAvailable)
+                    unstakeButtonView.toggle(isExist)
+                    unstakeButtonView.isEnabled = isUnStakeAvailable
                     progressView.hide()
                 }
                 is LoadingData.Error -> {

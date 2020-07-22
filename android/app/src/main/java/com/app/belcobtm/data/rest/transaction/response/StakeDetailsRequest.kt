@@ -8,7 +8,8 @@ class StakeDetailsRequest(
     val stakedDays: Int,
     val stakedAmount: Double,
     val rewardsAmount: Double,
-    val rewardsPercent: Double
+    val rewardsPercent: Double,
+    val stakingMinDays: Int
 )
 
 fun StakeDetailsRequest.mapToDataItem(): StakeDetailsDataItem = StakeDetailsDataItem(
@@ -17,5 +18,6 @@ fun StakeDetailsRequest.mapToDataItem(): StakeDetailsDataItem = StakeDetailsData
     stakedDays = stakedDays,
     stakedAmount = stakedAmount,
     rewardsAmount = rewardsAmount,
-    rewardsPercent = rewardsPercent
+    rewardsPercent = rewardsPercent,
+    stakingMinDays = stakingMinDays
 )

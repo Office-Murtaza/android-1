@@ -9,5 +9,6 @@ data class StakingScreenItem(
     val staked: Double,
     val rewardsAmount: Double,
     val rewardsPercent: Double,
-    val time: Int
+    val time: Int,
+    val stakingMinDays: Int
 )
