@@ -6,7 +6,7 @@ import com.batm.model.Error;
 import com.batm.model.Response;
 import com.batm.repository.TokenRep;
 import com.batm.security.TokenProvider;
-import com.batm.service.MessageService;
+import com.batm.service.TwilioService;
 import com.batm.service.TransactionService;
 import com.batm.service.UserService;
 import com.batm.util.Constant;
@@ -61,7 +61,7 @@ public class UserController {
     private PasswordEncoder passwordEncoder;
 
     @Autowired
-    private MessageService messageService;
+    private TwilioService twilioService;
 
     @PostMapping("/register")
     public Response register(@RequestBody AuthenticationDTO dto) {
@@ -83,10 +83,10 @@ public class UserController {
             }
 
             User user = userService.register(dto.getPhone(), dto.getPassword(), dto.getPlatform());
-            messageService.sendVerificationCode(user);
+            twilioService.sendVerificationCode(user);
             TokenDTO jwt = getJwt(user.getId(), user.getIdentity().getId(), dto.getPhone(), dto.getPassword());
 
-            Token token = new Token();
+            Token token = user.getRefreshToken() == null ? new Token() : user.getRefreshToken();
             token.setRefreshToken(jwt.getRefreshToken());
             token.setAccessToken(jwt.getAccessToken());
             token.setUser(user);
@@ -125,7 +125,7 @@ public class UserController {
 
             TokenDTO jwt = getJwt(user.getId(), user.getIdentity().getId(), dto.getPhone(), dto.getPassword());
 
-            messageService.sendVerificationCode(user);
+            twilioService.sendVerificationCode(user);
 
             Token token = refreshTokenRep.findByUserId(user.getId());
             token.setRefreshToken(jwt.getRefreshToken());
@@ -180,7 +180,7 @@ public class UserController {
     @GetMapping("/user/{userId}/code/send")
     public Response sendCode(@PathVariable Long userId) {
         try {
-            messageService.sendVerificationCode(userService.findById(userId));
+            twilioService.sendVerificationCode(userService.findById(userId));
 
             return Response.ok(true);
         } catch (Exception e) {

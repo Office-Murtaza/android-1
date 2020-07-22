@@ -17,6 +17,7 @@ public class CoinSettingsDTO {
     private String code;
     private BigDecimal txFee;
     private BigDecimal byteFee;
+    private BigDecimal recallFee;
     private Long gasPrice;
     private Long gasLimit;
     private BigDecimal profitExchange;

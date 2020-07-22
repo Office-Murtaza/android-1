@@ -101,7 +101,7 @@ public class TrongridService {
 
     public NodeTransactionsDTO getNodeTransactions(String address) {
         try {
-            JSONObject res = rest.getForObject(nodeUrl + "/v1/accounts/" + address + "/transactions?limit=200", JSONObject.class);
+            JSONObject res = rest.getForObject(nodeUrl + "/v1/accounts/" + address + "/transactions", JSONObject.class);
             JSONArray array = res.optJSONArray("data");
             Map<String, TransactionDetailsDTO> map = collectNodeTxs(array, address);
 

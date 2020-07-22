@@ -165,6 +165,14 @@ public class Util {
         return (int) Math.ceil(dist);
     }
 
+    public static void reverse(byte[] array) {
+        for (int i = 0; i < array.length / 2; i++) {
+            byte temp = array[i];
+            array[i] = array[array.length - i - 1];
+            array[array.length - i - 1] = temp;
+        }
+    }
+
     private static double deg2rad(double deg) {
         return (deg * Math.PI / 180.0);
     }

@@ -118,7 +118,8 @@ final class TradesPresenter: ModulePresenter, TradesModule {
     input.recall
       .withLatestFrom(state)
       .drive(onNext: { [delegate] in delegate?.showRecall(coin: $0.coin!,
-                                                          coinBalances: $0.coinBalances!) })
+                                                          coinBalances: $0.coinBalances!,
+                                                          coinSettings: $0.coinSettings!) })
       .disposed(by: disposeBag)
     
     setupBindings()

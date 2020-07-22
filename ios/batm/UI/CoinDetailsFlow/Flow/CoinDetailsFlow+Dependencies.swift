@@ -20,6 +20,7 @@ extension CoinDetailsFlow {
         .implements(CoinSellDetailsAnotherAddressModuleDelegate.self,
                     CoinSellDetailsCurrentAddressModuleDelegate.self,
                     CoinExchangeModuleDelegate.self,
+                    CoinStakingModuleDelegate.self,
                     TransactionDetailsModuleDelegate.self,
                     TradesFlowControllerDelegate.self)
     }

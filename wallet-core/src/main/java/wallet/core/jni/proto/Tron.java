@@ -1941,12 +1941,12 @@ public final class Tron {
 
     /**
      * <pre>
-     * Amount to send.
+     * Amount to send, uint256, big-endian.
      * </pre>
      *
-     * <code>int64 amount = 4;</code>
+     * <code>bytes amount = 4;</code>
      */
-    long getAmount();
+    com.google.protobuf.ByteString getAmount();
   }
   /**
    * Protobuf type {@code TW.Tron.Proto.TransferTRC20Contract}
@@ -1964,6 +1964,7 @@ public final class Tron {
       contractAddress_ = "";
       ownerAddress_ = "";
       toAddress_ = "";
+      amount_ = com.google.protobuf.ByteString.EMPTY;
     }
 
     @java.lang.Override
@@ -2014,9 +2015,9 @@ public final class Tron {
               toAddress_ = s;
               break;
             }
-            case 32: {
+            case 34: {
 
-              amount_ = input.readInt64();
+              amount_ = input.readBytes();
               break;
             }
             default: {
@@ -2178,15 +2179,15 @@ public final class Tron {
     }
 
     public static final int AMOUNT_FIELD_NUMBER = 4;
-    private long amount_;
+    private com.google.protobuf.ByteString amount_;
     /**
      * <pre>
-     * Amount to send.
+     * Amount to send, uint256, big-endian.
      * </pre>
      *
-     * <code>int64 amount = 4;</code>
+     * <code>bytes amount = 4;</code>
      */
-    public long getAmount() {
+    public com.google.protobuf.ByteString getAmount() {
       return amount_;
     }
 
@@ -2213,8 +2214,8 @@ public final class Tron {
       if (!getToAddressBytes().isEmpty()) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 3, toAddress_);
       }
-      if (amount_ != 0L) {
-        output.writeInt64(4, amount_);
+      if (!amount_.isEmpty()) {
+        output.writeBytes(4, amount_);
       }
       unknownFields.writeTo(output);
     }
@@ -2234,9 +2235,9 @@ public final class Tron {
       if (!getToAddressBytes().isEmpty()) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, toAddress_);
       }
-      if (amount_ != 0L) {
+      if (!amount_.isEmpty()) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt64Size(4, amount_);
+          .computeBytesSize(4, amount_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -2259,8 +2260,8 @@ public final class Tron {
           .equals(other.getOwnerAddress())) return false;
       if (!getToAddress()
           .equals(other.getToAddress())) return false;
-      if (getAmount()
-          != other.getAmount()) return false;
+      if (!getAmount()
+          .equals(other.getAmount())) return false;
       if (!unknownFields.equals(other.unknownFields)) return false;
       return true;
     }
@@ -2279,8 +2280,7 @@ public final class Tron {
       hash = (37 * hash) + TO_ADDRESS_FIELD_NUMBER;
       hash = (53 * hash) + getToAddress().hashCode();
       hash = (37 * hash) + AMOUNT_FIELD_NUMBER;
-      hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
-          getAmount());
+      hash = (53 * hash) + getAmount().hashCode();
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -2420,7 +2420,7 @@ public final class Tron {
 
         toAddress_ = "";
 
-        amount_ = 0L;
+        amount_ = com.google.protobuf.ByteString.EMPTY;
 
         return this;
       }
@@ -2512,7 +2512,7 @@ public final class Tron {
           toAddress_ = other.toAddress_;
           onChanged();
         }
-        if (other.getAmount() != 0L) {
+        if (other.getAmount() != com.google.protobuf.ByteString.EMPTY) {
           setAmount(other.getAmount());
         }
         this.mergeUnknownFields(other.unknownFields);
@@ -2811,40 +2811,43 @@ public final class Tron {
         return this;
       }
 
-      private long amount_ ;
+      private com.google.protobuf.ByteString amount_ = com.google.protobuf.ByteString.EMPTY;
       /**
        * <pre>
-       * Amount to send.
+       * Amount to send, uint256, big-endian.
        * </pre>
        *
-       * <code>int64 amount = 4;</code>
+       * <code>bytes amount = 4;</code>
        */
-      public long getAmount() {
+      public com.google.protobuf.ByteString getAmount() {
         return amount_;
       }
       /**
        * <pre>
-       * Amount to send.
+       * Amount to send, uint256, big-endian.
        * </pre>
        *
-       * <code>int64 amount = 4;</code>
+       * <code>bytes amount = 4;</code>
        */
-      public Builder setAmount(long value) {
-        
+      public Builder setAmount(com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
         amount_ = value;
         onChanged();
         return this;
       }
       /**
        * <pre>
-       * Amount to send.
+       * Amount to send, uint256, big-endian.
        * </pre>
        *
-       * <code>int64 amount = 4;</code>
+       * <code>bytes amount = 4;</code>
        */
       public Builder clearAmount() {
         
-        amount_ = 0L;
+        amount_ = getDefaultInstance().getAmount();
         onChanged();
         return this;
       }
@@ -15331,7 +15334,7 @@ public final class Tron {
       "_address\030\002 \001(\t\022\022\n\nto_address\030\003 \001(\t\022\016\n\006am" +
       "ount\030\004 \001(\003\"l\n\025TransferTRC20Contract\022\030\n\020c" +
       "ontract_address\030\001 \001(\t\022\025\n\rowner_address\030\002" +
-      " \001(\t\022\022\n\nto_address\030\003 \001(\t\022\016\n\006amount\030\004 \001(\003" +
+      " \001(\t\022\022\n\nto_address\030\003 \001(\t\022\016\n\006amount\030\004 \001(\014" +
       "\"\213\001\n\025FreezeBalanceContract\022\025\n\rowner_addr" +
       "ess\030\001 \001(\t\022\026\n\016frozen_balance\030\002 \001(\003\022\027\n\017fro" +
       "zen_duration\030\003 \001(\003\022\020\n\010resource\030\n \001(\t\022\030\n\020" +

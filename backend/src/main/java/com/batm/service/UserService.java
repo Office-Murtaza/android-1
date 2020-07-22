@@ -43,7 +43,7 @@ public class UserService {
     private PhoneChangeRep phoneChangeRep;
 
     @Autowired
-    private MessageService messageService;
+    private TwilioService twilioService;
 
     @Autowired
     private CodeVerifyRep codeValidatorRepository;
@@ -165,7 +165,7 @@ public class UserService {
         phoneChange.setStatus(0);
 
         phoneChangeRep.save(phoneChange);
-        messageService.sendVerificationCode(user);
+        twilioService.sendVerificationCode(user);
 
         return phoneChange;
     }

@@ -2,62 +2,57 @@ import Foundation
 import RxSwift
 import RxCocoa
 
-final class RecallPresenter: ModulePresenter, RecallModule {
+final class CoinStakingPresenter: ModulePresenter, CoinStakingModule {
   
-  typealias Store = ViewStore<RecallAction, RecallState>
+  typealias Store = ViewStore<CoinStakingAction, CoinStakingState>
 
   struct Input {
     var back: Driver<Void>
-    var updateCurrencyAmount: Driver<String?>
     var updateCoinAmount: Driver<String?>
     var updateCode: Driver<String?>
     var cancel: Driver<Void>
     var max: Driver<Void>
-    var recall: Driver<Void>
+    var stake: Driver<Void>
+    var unstake: Driver<Void>
     var sendCode: Driver<Void>
   }
   
   private let usecase: CoinDetailsUsecase
   private let store: Store
 
-  weak var delegate: RecallModuleDelegate?
+  weak var delegate: CoinStakingModuleDelegate?
   
-  var state: Driver<RecallState> {
+  var state: Driver<CoinStakingState> {
     return store.state
   }
   
   init(usecase: CoinDetailsUsecase,
-       store: Store = RecallStore()) {
+       store: Store = CoinStakingStore()) {
     self.usecase = usecase
     self.store = store
   }
   
-  func setup(coin: BTMCoin, coinBalances: [CoinBalance], coinSettings: CoinSettings) {
+  func setup(coin: BTMCoin, coinBalances: [CoinBalance], coinSettings: CoinSettings, stakeDetails: StakeDetails) {
     store.action.accept(.setupCoin(coin))
     store.action.accept(.setupCoinBalances(coinBalances))
     store.action.accept(.setupCoinSettings(coinSettings))
+    store.action.accept(.setupStakeDetails(stakeDetails))
   }
 
   func bind(input: Input) {
     Driver.merge(input.back, input.cancel)
-      .drive(onNext: { [delegate] in delegate?.didFinishRecall() })
-      .disposed(by: disposeBag)
-    
-    input.updateCurrencyAmount
-      .asObservable()
-      .map { RecallAction.updateCurrencyAmount($0) }
-      .bind(to: store.action)
+      .drive(onNext: { [delegate] in delegate?.didFinishCoinStaking() })
       .disposed(by: disposeBag)
     
     input.updateCoinAmount
       .asObservable()
-      .map { RecallAction.updateCoinAmount($0) }
+      .map { CoinStakingAction.updateCoinAmount($0) }
       .bind(to: store.action)
       .disposed(by: disposeBag)
     
     input.updateCode
       .asObservable()
-      .map { RecallAction.updateCode($0) }
+      .map { CoinStakingAction.updateCode($0) }
       .bind(to: store.action)
       .disposed(by: disposeBag)
     
@@ -65,11 +60,11 @@ final class RecallPresenter: ModulePresenter, RecallModule {
       .asObservable()
       .withLatestFrom(state)
       .map { $0.maxValue.coinFormatted }
-      .map { RecallAction.updateCoinAmount($0) }
+      .map { CoinStakingAction.updateCoinAmount($0) }
       .bind(to: store.action)
       .disposed(by: disposeBag)
     
-    input.recall
+    Driver.merge(input.stake, input.unstake)
       .asObservable()
       .doOnNext { [store] in store.action.accept(.updateValidationState) }
       .withLatestFrom(state)
@@ -83,8 +78,8 @@ final class RecallPresenter: ModulePresenter, RecallModule {
       .doOnNext { [store] in store.action.accept(.updateValidationState) }
       .withLatestFrom(state)
       .filter { $0.validationState.isValid }
-      .flatMap { [unowned self] in self.track(self.recall(for: $0)) }
-      .subscribe(onNext: { [delegate] in delegate?.didFinishRecall() })
+      .flatMap { [unowned self] in self.track(self.stakeOrUnstake(for: $0)) }
+      .subscribe(onNext: { [delegate] in delegate?.didFinishCoinStaking() })
       .disposed(by: disposeBag)
   }
   
@@ -99,10 +94,18 @@ final class RecallPresenter: ModulePresenter, RecallModule {
       }
   }
   
-  private func recall(for state: RecallState) -> Completable {
+  private func stakeOrUnstake(for state: CoinStakingState) -> Completable {
+    let coin = state.coin!
+    let coinSettings = state.coinSettings!
+    let coinAmount = state.coinAmount.doubleValue ?? 0.0
+    let stakeDetails = state.stakeDetails!
+    
+    let usecaseCall = stakeDetails.exist
+      ? usecase.unstake(from: coin, with: coinSettings, stakeDetails: stakeDetails)
+      : usecase.stake(from: coin, with: coinSettings, amount: coinAmount)
+    
     return usecase.verifyCode(code: state.code)
-      .andThen(usecase.recall(from: state.coin!,
-                              amount: state.coinAmount.doubleValue ?? 0.0))
+      .andThen(usecaseCall)
       .catchError { [store] in
         if let apiError = $0 as? APIError, case let .serverError(error) = apiError {
           store.action.accept(.makeInvalidState(error))

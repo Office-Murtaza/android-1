@@ -24,6 +24,7 @@ public class Constant {
     public static final BigDecimal BNB_DIVIDER = BigDecimal.valueOf(100_000_000L);
 
     public static final int TRANSACTIONS_COUNT = 10;
+    public static final BigDecimal HUNDRED = new BigDecimal(100);
 
     public static final BigDecimal DAILY_LIMIT = BigDecimal.valueOf(900);
     public static final BigDecimal TX_LIMIT = BigDecimal.valueOf(900);

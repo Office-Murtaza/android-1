@@ -73,7 +73,11 @@ public class RippledService {
 
             JSONObject res = rest.postForObject(nodeUrl, req, JSONObject.class);
 
-            return res.optJSONObject("result").optJSONObject("tx_json").optString("hash");
+            String txId = res.optJSONObject("result").optJSONObject("tx_json").optString("hash");
+
+            if(isTransactionExist(txId)) {
+                return txId;
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -131,6 +135,8 @@ public class RippledService {
             dto.setStatus(getStatus(tx.optJSONObject("meta").optString("TransactionResult")));
             dto.setDate2(new Date((tx.optLong("date") + 946684800L) * 1000));
         } catch (Exception e) {
+            dto.setStatus(TransactionStatus.FAIL);
+
             e.printStackTrace();
         }
 
@@ -223,6 +229,8 @@ public class RippledService {
                 String toAddress = tx.optString("Destination");
                 TransactionType type = TransactionType.getType(tx.optString("Account"), tx.optString("Destination"), address);
                 BigDecimal amount = Util.format6(getAmount(tx.optString("Amount")));
+
+                System.out.println(" iiiii: " + tx.optString("Amount"));
                 Date date1 = new Date((tx.optLong("date") + 946684800L) * 1000);
 
                 map.put(txId, new TransactionDetailsDTO(txId, amount, fromAddress, toAddress, type, status, date1));
@@ -242,5 +250,28 @@ public class RippledService {
 
     private BigDecimal getAmount(String amount) {
         return new BigDecimal(amount).divide(Constant.XRP_DIVIDER).stripTrailingZeros();
+    }
+
+    private boolean isTransactionExist(String txId) {
+        try {
+                JSONObject param = new JSONObject();
+                param.put("transaction", txId);
+
+                JSONArray params = new JSONArray();
+                params.add(param);
+
+                JSONObject req = new JSONObject();
+                req.put("method", "tx");
+                req.put("params", params);
+
+                JSONObject res = rest.postForObject(nodeUrl, req, JSONObject.class);
+                JSONObject tx = res.optJSONObject("result");
+
+                return !tx.optString("status").equalsIgnoreCase("error");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return false;
     }
 }

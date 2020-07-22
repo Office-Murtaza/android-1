@@ -3,6 +3,7 @@ import Foundation
 enum RecallAction: Equatable {
   case setupCoin(BTMCoin)
   case setupCoinBalances([CoinBalance])
+  case setupCoinSettings(CoinSettings)
   case updateCurrencyAmount(String?)
   case updateCoinAmount(String?)
   case updateCode(String?)
@@ -15,6 +16,7 @@ struct RecallState: Equatable {
   
   var coin: BTMCoin?
   var coinBalances: [CoinBalance]?
+  var coinSettings: CoinSettings?
   var currencyAmount: String = ""
   var coinAmount: String = ""
   var code: String = ""
@@ -25,8 +27,16 @@ struct RecallState: Equatable {
     return coinBalances?.first { $0.type == coin?.type }
   }
   
-  var maxValue: Double {
+  var reservedBalance: Double {
     return coinBalance?.reservedBalance ?? 0
+  }
+  
+  var fee: Double {
+    return coinSettings?.recallFee ?? coinSettings?.txFee ?? 0
+  }
+  
+  var maxValue: Double {
+    return max(0, reservedBalance - fee)
   }
   
 }
@@ -43,6 +53,7 @@ final class RecallStore: ViewStore<RecallAction, RecallState> {
     switch action {
     case let .setupCoin(coin): state.coin = coin
     case let .setupCoinBalances(coinBalances): state.coinBalances = coinBalances
+    case let .setupCoinSettings(coinSettings): state.coinSettings = coinSettings
     case let .updateCurrencyAmount(amount):
       let currencyAmount = (amount ?? "").fiatWithdrawFormatted
       let doubleCurrencyAmount = currencyAmount.doubleValue
@@ -77,8 +88,8 @@ final class RecallStore: ViewStore<RecallAction, RecallState> {
       return .invalid(localize(L.CoinWithdraw.Form.Error.invalidAmount))
     }
     
-    guard amount > 0 else {
-      return .invalid(localize(L.CoinWithdraw.Form.Error.tooLowAmount))
+    guard state.reservedBalance > state.fee else {
+      return .invalid(localize(L.Recall.Form.Error.tooLowAmount))
     }
     
     guard amount.lessThanOrEqualTo(state.maxValue) else {

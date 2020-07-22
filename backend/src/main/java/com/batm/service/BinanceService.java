@@ -1,7 +1,6 @@
 package com.batm.service;
 
 import com.batm.dto.*;
-import com.batm.entity.Coin;
 import com.batm.model.TransactionStatus;
 import com.batm.util.Constant;
 import com.batm.util.TxUtil;
@@ -105,6 +104,8 @@ public class BinanceService {
             dto.setCryptoAmount(getAmount(msg.optJSONObject("value").optJSONArray("inputs").getJSONObject(0).getJSONArray("coins").getJSONObject(0).optString("amount")));
             dto.setCryptoFee(getAmount("1000000"));
         } catch (Exception e) {
+            dto.setStatus(TransactionStatus.FAIL);
+
             e.printStackTrace();
         }
 

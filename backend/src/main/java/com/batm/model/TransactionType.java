@@ -78,8 +78,4 @@ public enum TransactionType {
 
         return type2;
     }
-
-    public static List<Integer> getWalletTypes() {
-        return Arrays.asList(SEND_GIFT.getValue(), RECEIVE_GIFT.getValue(), SEND_EXCHANGE.getValue(), RECEIVE_EXCHANGE.getValue(), RESERVE.getValue(), RECALL.getValue());
-    }
 }
