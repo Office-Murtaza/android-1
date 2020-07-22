@@ -1,6 +1,5 @@
 package com.batm.config;
 
-import com.batm.model.Error;
 import com.batm.model.Response;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -20,6 +19,6 @@ public class FileUploadExceptionAdvice {
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public Response handleMaxSizeException(MaxUploadSizeExceededException e) {
-        return Response.error(new Error(2, "File should be up to " + maxUploadSize));
+        return Response.defaultError("File should be up to " + maxUploadSize);
     }
 }

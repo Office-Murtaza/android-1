@@ -145,10 +145,10 @@ public class WalletService {
         return null;
     }
 
-    public String generateNewAddress(CoinService.CoinEnum coinCode) {
+    public String generateNewAddress(CoinService.CoinEnum coin) {
         try {
-            CoinType coinType = coinCode.getCoinType();
-            Coin coinEntity = coinCode.getCoinEntity();
+            CoinType coinType = coin.getCoinType();
+            Coin coinEntity = coin.getCoinEntity();
 
             CoinPath existingFreePath = coinPathRep.findFirstByCoinIdAndHoursAgo(coinEntity.getId(), 1);
 
@@ -180,19 +180,19 @@ public class WalletService {
         return null;
     }
 
-    public BigDecimal getBalance(CoinService.CoinEnum coinCode) {
+    public BigDecimal getBalance(CoinService.CoinEnum coin) {
         try {
-            String walletAddress = coinCode.getWalletAddress();
-            BigDecimal balance = coinCode.getBalance(walletAddress);
-            NodeTransactionsDTO nodeTransactionsDTO = coinCode.getNodeTransactions(walletAddress);
+            String walletAddress = coin.getWalletAddress();
+            BigDecimal balance = coin.getBalance(walletAddress);
+            NodeTransactionsDTO nodeTransactionsDTO = coin.getNodeTransactions(walletAddress);
 
             BigDecimal pendingSum = nodeTransactionsDTO.getMap().values().stream()
                     .filter(e -> e.getType() == TransactionType.WITHDRAW && e.getStatus() == TransactionStatus.PENDING)
                     .map(TransactionDetailsDTO::getCryptoAmount)
                     .reduce(BigDecimal.ZERO, BigDecimal::add);
 
-            if (coinCode == CoinService.CoinEnum.XRP) {
-                pendingSum.add(new BigDecimal(20));
+            if (coin == CoinService.CoinEnum.XRP) {
+                pendingSum = pendingSum.add(new BigDecimal(20));
             }
 
             return balance.subtract(pendingSum);
@@ -224,27 +224,31 @@ public class WalletService {
         return list;
     }
 
-    public String sendCoins(CoinService.CoinEnum coinCode, String fromAddress, String toAddress, BigDecimal amount) {
+    public String sendCoins(CoinService.CoinEnum coin, String fromAddress, String toAddress, BigDecimal amount) {
         try {
-            String hex = coinCode.sign(fromAddress, toAddress, amount);
-            String txId = coinCode.submitTransaction(hex);
+            BigDecimal balance = getBalance(coin);
 
-            TransactionRecordWallet wallet = new TransactionRecordWallet();
-            wallet.setCoin(coinCode.getCoinEntity());
-            wallet.setAmount(amount);
+            if (balance.compareTo(amount) >= 0 && amount.compareTo(BigDecimal.ZERO) > 0) {
+                String hex = coin.sign(fromAddress, toAddress, amount);
+                String txId = coin.submitTransaction(hex);
 
-            if (isServerAddress(fromAddress)) {
-                wallet.setType(TransactionType.SELL.getValue());
-            } else {
-                wallet.setType(TransactionType.MOVE.getValue());
+                TransactionRecordWallet wallet = new TransactionRecordWallet();
+                wallet.setCoin(coin.getCoinEntity());
+                wallet.setAmount(amount);
+
+                if (isServerAddress(fromAddress)) {
+                    wallet.setType(TransactionType.SELL.getValue());
+                } else {
+                    wallet.setType(TransactionType.MOVE.getValue());
+                }
+
+                wallet.setTxId(txId);
+                wallet.setStatus(coin.getTransactionStatus(txId).getValue());
+
+                transactionRecordWalletRep.save(wallet);
+
+                return txId;
             }
-
-            wallet.setTxId(txId);
-            wallet.setStatus(coinCode.getTransactionStatus(txId).getValue());
-
-            transactionRecordWalletRep.save(wallet);
-
-            return txId;
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -2,19 +2,18 @@ package com.batm.rest;
 
 import com.batm.dto.*;
 import com.batm.entity.*;
-import com.batm.model.Error;
 import com.batm.model.Response;
 import com.batm.repository.TokenRep;
 import com.batm.security.TokenProvider;
+import com.batm.service.CoinService;
 import com.batm.service.TwilioService;
 import com.batm.service.TransactionService;
 import com.batm.service.UserService;
 import com.batm.util.Constant;
 import com.batm.util.Util;
-import net.sf.json.JSONObject;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.StringUtils;
-import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
@@ -29,9 +28,10 @@ import org.springframework.validation.BindException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
-import java.util.regex.Pattern;
+import java.util.List;
 import java.util.stream.Collectors;
 
+@Slf4j
 @RestController
 @RequestMapping("/api/v1")
 public class UserController {
@@ -63,35 +63,77 @@ public class UserController {
     @Autowired
     private TwilioService twilioService;
 
-    @PostMapping("/register")
-    public Response register(@RequestBody AuthenticationDTO dto) {
+    @Autowired
+    private CoinService coinService;
+
+    @PostMapping("/check")
+    public Response check(@RequestBody CheckDTO req) {
         try {
-            Pattern phonePattern = Pattern.compile(Constant.REGEX_PHONE);
+            CheckResponseDTO res = new CheckResponseDTO();
+            User user = userService.findByPhone(req.getPhone());
 
-            if (!phonePattern.matcher(dto.getPhone()).matches()) {
-                return Response.serverError(2, "Invalid phone number");
+            res.setPhoneExist(user != null);
+            res.setPasswordMatch(user != null && passwordEncoder.matches(req.getPassword(), user.getPassword()));
+
+            return Response.ok(res);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Response.serverError();
+        }
+    }
+
+    @PostMapping("/verify")
+    public Response verify(@RequestBody VerificationDTO req) {
+        try {
+            VerificationResponseDTO res = new VerificationResponseDTO();
+            String code = twilioService.sendVerificationCode(req.getPhone());
+
+            if (StringUtils.isBlank(code)) {
+                return Response.defaultError("Phone country is not supported");
             }
 
-            if (!checkPasswordLength(dto.getPassword())) {
-                return Response.serverError(3, "Password length should be from 6 to 15");
+            res.setCode(code);
+
+            log.info("phone: " + req.getPhone() + ", code: " + code);
+
+            return Response.ok(res);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Response.serverError();
+        }
+    }
+
+    @PostMapping("/register")
+    public Response register(@RequestBody AuthenticationDTO req) {
+        try {
+            if (req.getCoins().isEmpty()) {
+                return Response.defaultError("Empty coin list");
             }
 
-            User existingUser = userService.findByPhone(dto.getPhone());
-
-            if (existingUser != null && !existingUser.getUserCoins().isEmpty()) {
-                return Response.serverError(4, "Phone is already registered");
+            if (req.getCoins().size() != 8) {
+                return Response.defaultError("Some coin is missed");
             }
 
-            User user = userService.register(dto.getPhone(), dto.getPassword(), dto.getPlatform());
-            twilioService.sendVerificationCode(user);
-            TokenDTO jwt = getJwt(user.getId(), user.getIdentity().getId(), dto.getPhone(), dto.getPassword());
+            User existingUser = userService.findByPhone(req.getPhone());
 
-            Token token = user.getRefreshToken() == null ? new Token() : user.getRefreshToken();
+            if (existingUser != null) {
+                return Response.error(3, "Phone is already registered");
+            }
+
+            User user = userService.register(req.getPhone(), req.getPassword(), req.getPlatform(), req.getCoins());
+
+            TokenDTO jwt = getJwt(user.getId(), user.getIdentity().getId(), req.getPhone(), req.getPassword());
+
+            Token token = new Token();
             token.setRefreshToken(jwt.getRefreshToken());
             token.setAccessToken(jwt.getAccessToken());
             token.setUser(user);
 
             refreshTokenRep.save(token);
+
+            List<String> coins = req.getCoins().stream().map(e -> e.getCode()).collect(Collectors.toList());
+
+            jwt.setBalance(coinService.getCoinsBalance(user.getId(), coins));
 
             return Response.ok(jwt);
         } catch (Exception e) {
@@ -101,39 +143,44 @@ public class UserController {
     }
 
     @PostMapping("/recover")
-    public Response recover(@RequestBody AuthenticationDTO dto) {
+    public Response recover(@RequestBody AuthenticationDTO req) {
         try {
-            Pattern phonePattern = Pattern.compile(Constant.REGEX_PHONE);
-
-            if (!phonePattern.matcher(dto.getPhone()).matches()) {
-                return Response.serverError(2, "Invalid phone number");
+            if (req.getCoins().isEmpty()) {
+                return Response.defaultError("Empty coin list");
             }
 
-            if (!checkPasswordLength(dto.getPassword())) {
-                return Response.serverError(3, "Password length should be from 6 to 15");
+            if (req.getCoins().size() != 8) {
+                return Response.defaultError("Some coin is missed");
             }
 
-            User user = userService.findByPhone(dto.getPhone());
+            User user = userService.findByPhone(req.getPhone());
             if (user == null) {
-                return Response.error(new Error(2, "Phone not found"));
+                return Response.error(3, "Phone doesn't exist");
             }
 
-            boolean passwordMatch = passwordEncoder.matches(dto.getPassword(), user.getPassword());
-            if (!passwordMatch) {
-                return Response.error(new Error(3, "Wrong password"));
+            boolean isPasswordMatch = passwordEncoder.matches(req.getPassword(), user.getPassword());
+            if (!isPasswordMatch) {
+                return Response.error(4, "Incorrect password");
             }
 
-            TokenDTO jwt = getJwt(user.getId(), user.getIdentity().getId(), dto.getPhone(), dto.getPassword());
+            boolean isCoinAddressesMatch = coinService.isCoinsAddressMatch(user, req.getCoins());
+            if (!isCoinAddressesMatch) {
+                return Response.error(5, "Coins address doesn't match");
+            }
 
-            twilioService.sendVerificationCode(user);
+            TokenDTO jwt = getJwt(user.getId(), user.getIdentity().getId(), req.getPhone(), req.getPassword());
 
             Token token = refreshTokenRep.findByUserId(user.getId());
             token.setRefreshToken(jwt.getRefreshToken());
             token.setAccessToken(jwt.getAccessToken());
             refreshTokenRep.save(token);
 
-            user.setPlatform(dto.getPlatform());
+            user.setPlatform(req.getPlatform());
             userService.save(user);
+
+            List<String> coins = req.getCoins().stream().map(e -> e.getCode()).collect(Collectors.toList());
+
+            jwt.setBalance(coinService.getCoinsBalance(user.getId(), coins));
 
             return Response.ok(jwt);
         } catch (Exception e) {
@@ -143,9 +190,9 @@ public class UserController {
     }
 
     @PostMapping("/refresh")
-    public Response refresh(@RequestBody RefreshDTO refreshDTO) {
+    public Response refresh(@RequestBody RefreshDTO dto) {
         try {
-            Token refreshToken = refreshTokenRep.findByRefreshToken(refreshDTO.getRefreshToken());
+            Token refreshToken = refreshTokenRep.findByRefreshToken(dto.getRefreshToken());
 
             if (refreshToken != null) {
                 TokenDTO jwt = getJwt(refreshToken.getUser());
@@ -162,7 +209,7 @@ public class UserController {
             return Response.serverError();
         }
 
-        throw new AccessDeniedException("Refresh token not exist");
+        throw new AccessDeniedException("Refresh token doesn't exist");
     }
 
     @GetMapping("/user/{userId}/unlink")
@@ -177,72 +224,28 @@ public class UserController {
         }
     }
 
-    @GetMapping("/user/{userId}/code/send")
-    public Response sendCode(@PathVariable Long userId) {
-        try {
-            twilioService.sendVerificationCode(userService.findById(userId));
-
-            return Response.ok(true);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return Response.serverError();
-        }
-    }
-
-    @PostMapping("/user/{userId}/code/verify")
-    public Response verify(@RequestBody ValidateDTO validateOtpVM, @PathVariable Long userId) {
-        try {
-            CodeVerify codeVerify = userService.getCodeByUserId(userId);
-            Long timestamp = System.currentTimeMillis() - verificationCodeValidity;
-
-            if (!StringUtils.isEmpty(codeVerify.getCode())
-                    && codeVerify.getUpdateDate().getTime() < timestamp) {
-                return Response.error(new Error(2, "Code is expired"));
-            }
-
-            if (codeVerify.getStatus() == 1) {
-                return Response.error(new Error(3, "Code is already used"));
-            }
-
-            if (!StringUtils.equals(validateOtpVM.getCode(), codeVerify.getCode())) {
-                return Response.error(new Error(4, "Wrong code"));
-            }
-
-            codeVerify.setStatus(1);
-            userService.save(codeVerify);
-
-            return Response.ok(true);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return Response.serverError();
-        }
-    }
-
     @GetMapping("/user/{userId}/phone")
     public Response getPhone(@PathVariable Long userId) {
         try {
             User user = userService.findById(userId);
 
-            JSONObject res = new JSONObject();
-            res.put("phone", user.getPhone());
-
-            return Response.ok(res);
+            return Response.ok(new PhoneDTO(user.getPhone()));
         } catch (Exception e) {
             e.printStackTrace();
             return Response.serverError();
         }
     }
 
-    @PostMapping("/user/{userId}/phone/update")
-    public Response updatePhone(@RequestBody PhoneDTO phoneRequest, @PathVariable Long userId) {
+    @PostMapping("/user/{userId}/phone")
+    public Response updatePhone(@PathVariable Long userId, @RequestBody PhoneDTO req) {
         try {
-            Boolean isPhoneExist = userService.isPhoneExist(phoneRequest.getPhone(), userId);
+            Boolean isPhoneExist = userService.isPhoneExist(userId, req.getPhone());
 
             if (isPhoneExist) {
-                return Response.error(new Error(2, "Phone is already registered"));
+                return Response.defaultError("Phone is already registered");
+            } else {
+                userService.updatePhone(userId, req.getPhone());
             }
-
-            userService.updatePhone(phoneRequest, userId);
 
             return Response.ok(true);
         } catch (Exception e) {
@@ -251,69 +254,19 @@ public class UserController {
         }
     }
 
-    @PostMapping("/user/{userId}/phone/verify")
-    public Response confirmPhone(@RequestBody ValidateDTO validateOtpVM, @PathVariable Long userId) {
-        try {
-            PhoneChange phoneChange = userService.getUpdatePhone(userId);
-            phoneChange = (PhoneChange) Hibernate.unproxy(phoneChange);
-
-            if (phoneChange.getStatus() == null || phoneChange.getStatus().intValue() == 1) {
-                return Response.error(new Error(2, "Invalid request"));
-            }
-
-            CodeVerify codeVerify = userService.getCodeByUserId(userId);
-
-            if (codeVerify.getStatus() == 1) {
-                return Response.error(new Error(3, "Verification code is already used"));
-            }
-
-            if (!StringUtils.equals(validateOtpVM.getCode(), codeVerify.getCode())) {
-                return Response.error(new Error(2, "Wrong verification code"));
-            }
-
-            userService.updatePhone(phoneChange.getPhone(), userId);
-
-            phoneChange.setStatus(1);
-            userService.save(phoneChange);
-
-            return Response.ok(true);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return Response.serverError();
-        }
-    }
-
-    @PostMapping("/user/{userId}/password/update")
-    public Response updatePassword(@RequestBody ChangePasswordDTO changePasswordRequest, @PathVariable Long userId) {
+    @PostMapping("/user/{userId}/password")
+    public Response updatePassword(@PathVariable Long userId, @RequestBody ChangePasswordDTO req) {
         try {
             User user = userService.findById(userId);
-            Boolean match = passwordEncoder.matches(changePasswordRequest.getOldPassword(), user.getPassword());
+            Boolean isMatch = passwordEncoder.matches(req.getOldPassword(), user.getPassword());
 
-            if (!match) {
-                return Response.error(new Error(2, "Old password does not match."));
+            if (!isMatch) {
+                return Response.defaultError("Old password doesn't match");
+            } else {
+                userService.updatePassword(userId, passwordEncoder.encode(req.getNewPassword()));
             }
-
-            String encodedPassword = passwordEncoder.encode(changePasswordRequest.getNewPassword());
-            userService.updatePassword(encodedPassword, userId);
 
             return Response.ok(true);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return Response.serverError();
-        }
-    }
-
-    @PostMapping("/user/{userId}/password/verify")
-    public Response checkPassword(@RequestBody CheckPasswordDTO checkPasswordRequest, @PathVariable Long userId) {
-        try {
-            Boolean match = Boolean.FALSE;
-            User user = userService.findById(userId);
-
-            if (user != null) {
-                match = passwordEncoder.matches(checkPasswordRequest.getPassword(), user.getPassword());
-            }
-
-            return Response.ok(match);
         } catch (Exception e) {
             e.printStackTrace();
             return Response.serverError();
@@ -321,7 +274,7 @@ public class UserController {
     }
 
     @GetMapping("/user/{userId}/kyc")
-    public Response getUserVerificationState(@PathVariable Long userId) {
+    public Response getKycState(@PathVariable Long userId) {
         try {
             VerificationStateDTO verificationStateDTO = userService.getVerificationState(userId);
             return Response.ok(verificationStateDTO);
@@ -332,13 +285,10 @@ public class UserController {
     }
 
     @PostMapping("/user/{userId}/kyc")
-    public Response submitVerificationData(@PathVariable Long userId, @Valid @RequestBody @ModelAttribute UserVerificationDTO verificationData) {
+    public Response submitKyc(@PathVariable Long userId, @Valid @RequestBody @ModelAttribute UserVerificationDTO verificationData) {
         try {
             userService.submitVerification(userId, verificationData);
             return Response.ok(Boolean.TRUE);
-        } catch (IllegalStateException ise) {
-            ise.printStackTrace();
-            return Response.error(new Error(1, ise.getMessage()));
         } catch (Exception e) {
             e.printStackTrace();
             return Response.serverError();
@@ -394,18 +344,12 @@ public class UserController {
                 authentication.getAuthorities().stream().map(role -> role.getAuthority()).collect(Collectors.toList()));
     }
 
-    private static boolean checkPasswordLength(String password) {
-        return !StringUtils.isEmpty(password) && password.length() >= Constant.PASSWORD_MIN_LENGTH
-                && password.length() <= Constant.PASSWORD_MAX_LENGTH;
-    }
-
-
     @ResponseStatus(HttpStatus.OK)
     @ExceptionHandler(BindException.class)
-    public Response handleValidationExceptions(
-            BindException ex) {
-        FieldError fieldError = (FieldError) ex.getBindingResult().getAllErrors().get(0); // just get first error from List
+    public Response handleValidationExceptions(BindException ex) {
+        FieldError fieldError = (FieldError) ex.getBindingResult().getAllErrors().get(0);
         String errorMessage = fieldError.getDefaultMessage();
-        return Response.error(new Error(2, errorMessage));
+
+        return Response.defaultError(errorMessage);
     }
 }

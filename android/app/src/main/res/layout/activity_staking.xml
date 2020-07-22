@@ -25,7 +25,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:barrierDirection="end"
-        app:constraint_referenced_ids="balanceTitleView,priceTitleView,stakedTitleView,rewardsTitleView,timeTitleView" />
+        app:constraint_referenced_ids="balanceTitleView,priceTitleView,stakedTitleView,rewardsTitleView,timeTitleView,stackingMinDaysTitleView" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/priceTitleView"
@@ -132,6 +132,23 @@
         app:layout_constraintTop_toTopOf="@id/timeTitleView"
         tools:text="14 days" />
 
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/stackingMinDaysTitleView"
+        style="@style/Transaction.Title.Medium.Key"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/staking_screen_min_days"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/timeTitleView" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/stackingMinDays"
+        style="@style/Transaction.Title.Medium.Value"
+        android:layout_marginStart="16dp"
+        app:layout_constraintStart_toEndOf="@id/priceBarrierView"
+        app:layout_constraintTop_toTopOf="@id/stackingMinDaysTitleView"
+        tools:text="14 days" />
+
     <Space
         android:id="@+id/timeSpaceView"
         android:layout_width="0dp"
@@ -139,7 +156,7 @@
         android:layout_marginTop="24dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/timeTitleView" />
+        app:layout_constraintTop_toBottomOf="@id/stackingMinDaysTitleView" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/amountCryptoView"

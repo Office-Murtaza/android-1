@@ -229,8 +229,6 @@ public class RippledService {
                 String toAddress = tx.optString("Destination");
                 TransactionType type = TransactionType.getType(tx.optString("Account"), tx.optString("Destination"), address);
                 BigDecimal amount = Util.format6(getAmount(tx.optString("Amount")));
-
-                System.out.println(" iiiii: " + tx.optString("Amount"));
                 Date date1 = new Date((tx.optLong("date") + 946684800L) * 1000);
 
                 map.put(txId, new TransactionDetailsDTO(txId, amount, fromAddress, toAddress, type, status, date1));

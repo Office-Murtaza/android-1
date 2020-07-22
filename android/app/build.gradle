@@ -2,6 +2,11 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'com.google.gms.google-services'
+apply plugin: 'com.google.firebase.crashlytics'
+apply plugin: 'com.google.firebase.firebase-perf'
+
+def lib = rootProject.ext.libraries
 
 android {
     compileSdkVersion 29
@@ -28,6 +33,22 @@ android {
 
     kotlinOptions {
         jvmTarget = "1.8"
+    }
+
+    flavorDimensions "version"
+    productFlavors {
+        prod {
+            applicationId "com.app.belcobtm"
+            dimension "version"
+            buildConfigField 'String', 'BASE_URL', "\"https://prod.belcobtm.com\""
+            buildConfigField 'String', 'API_VERSION', "\"1\""
+        }
+        dev {
+            applicationId "com.app.belcobtm.dev"
+            dimension "version"
+            buildConfigField 'String', 'BASE_URL', "\"http://test.belcobtm.com\""
+            buildConfigField 'String', 'API_VERSION', "\"1\""
+        }
     }
 }
 
@@ -146,6 +167,15 @@ dependencies {
     //conflict 2020, need remove in future
     implementation 'com.google.guava:listenablefuture:9999.0-empty-to-avoid-conflict-with-guava'
 
-
+    //number validation
     implementation 'io.michaelrocks:libphonenumber-android:8.12.7'
+
+    //firebase
+    implementation "com.google.firebase:firebase-crashlytics:$lib.crashlytics"
+    implementation "com.google.firebase:firebase-analytics-ktx:$lib.firebaseAnalytics"
+    implementation ("com.google.firebase:firebase-perf:$lib.performance", {
+        // protobuf-lite that firebase-config and Tink depends on.
+        exclude group: 'com.google.protobuf'
+    })
+
 }

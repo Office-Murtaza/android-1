@@ -204,12 +204,7 @@ public class BlockbookService {
                 JSONObject utxo = utxos.get(index);
 
                 byte[] hash = Numeric.hexStringToByteArray(utxo.optString("txid"));
-
-                System.out.println("1: " + new String(hash));
-
                 Util.reverse(hash);
-
-                System.out.println("2: " + new String(hash));
 
                 Bitcoin.OutPoint.Builder output = Bitcoin.OutPoint.newBuilder();
                 output.setHash(ByteString.copyFrom(hash));
@@ -279,17 +274,24 @@ public class BlockbookService {
     }
 
     private BigDecimal getAmount(TransactionType type, String fromAddress, String toAddress, JSONArray voutArray, BigDecimal divider) {
+        BigDecimal amount = BigDecimal.ZERO;
+
         for (int i = 0; i < voutArray.size(); i++) {
             JSONObject json = voutArray.getJSONObject(i);
 
-            if ((type == TransactionType.WITHDRAW && !json.optJSONArray("addresses").toString().toLowerCase().contains(fromAddress.toLowerCase())) ||
-                    (type == TransactionType.DEPOSIT && json.optJSONArray("addresses").toString().toLowerCase().contains(toAddress.toLowerCase()))) {
-
-                return new BigDecimal(json.optString("value")).divide(divider).stripTrailingZeros();
+            if (type == TransactionType.WITHDRAW) {
+                if(!json.optJSONArray("addresses").toString().toLowerCase().contains(fromAddress.toLowerCase())) {
+                    amount = new BigDecimal(json.optString("value")).divide(divider);
+                    break;
+                }
+            } else if(type == TransactionType.DEPOSIT || type == TransactionType.SELF) {
+                if(json.optJSONArray("addresses").toString().toLowerCase().contains(toAddress.toLowerCase())) {
+                    amount = amount.add(new BigDecimal(json.optString("value")).divide(divider));
+                }
             }
         }
 
-        return BigDecimal.ZERO;
+        return amount.stripTrailingZeros();
     }
 
     private String getFromAddress(JSONArray vinArray, String address) {

@@ -1,5 +1,6 @@
 package com.batm.dto;
 
+import java.math.BigDecimal;
 import java.util.List;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
@@ -14,7 +15,6 @@ import lombok.Setter;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class BalanceDTO {
 
-    private Long userId;
-    private AmountDTO totalBalance;
+    private BigDecimal totalBalance;
     private List<CoinBalanceDTO> coins;
 }
