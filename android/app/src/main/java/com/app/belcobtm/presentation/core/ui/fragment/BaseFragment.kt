@@ -13,13 +13,16 @@ import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.navigation.Navigator
 import com.app.belcobtm.R
+import com.app.belcobtm.domain.Failure
 import com.app.belcobtm.presentation.core.extensions.hide
-import com.app.belcobtm.presentation.core.extensions.setDrawableTop
 import com.app.belcobtm.presentation.core.extensions.show
+import com.app.belcobtm.presentation.core.mvvm.LoadingData
 import com.app.belcobtm.presentation.features.HostActivity
 import com.app.belcobtm.presentation.features.HostNavigationFragment
 import com.google.android.material.snackbar.Snackbar
@@ -35,7 +38,6 @@ abstract class BaseFragment : Fragment() {
     protected open val isHomeButtonEnabled: Boolean = false
     protected open val isMenuEnabled: Boolean = false
     protected open val homeButtonDrawable: Int = R.drawable.ic_arrow_back
-    protected open val retryListener: View.OnClickListener? = null
     protected open val backPressedListener: View.OnClickListener = View.OnClickListener { popBackStack() }
 
     protected abstract val resourceLayout: Int
@@ -66,7 +68,6 @@ abstract class BaseFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         this.navController = Navigation.findNavController(view)
-        retryButtonView.setOnClickListener(retryListener)
         initListeners()
         initObservers()
         initViews()
@@ -174,38 +175,54 @@ abstract class BaseFragment : Fragment() {
 
     protected open fun initObservers() = Unit
 
-    protected open fun showContent() {
-        errorView.hide()
-        retryButtonView.hide()
-        progressView.hide()
-        contentContainerView.show()
-    }
-
-    protected open fun showProgress() {
+    protected open fun showLoading() {
         hideKeyboard()
         view?.clearFocus()
         view?.requestFocus()
-        errorView.hide()
-        retryButtonView.hide()
         contentContainerView.hide()
         progressView.show()
     }
 
-    protected open fun showServerError() {
-        contentContainerView.hide()
+    protected open fun showContent() {
         progressView.hide()
-        errorView.setDrawableTop(R.drawable.ic_internet_unavailable)
-        errorView.text = "Server error"//R.string.error_server_unavailable)
-        errorView.show()
-        retryButtonView.show()
+        contentContainerView.show()
     }
 
-    protected open fun showInternetUnavailable() {
+    protected open fun showError(message: String) {
         contentContainerView.hide()
         progressView.hide()
-        errorView.setDrawableTop(R.drawable.ic_internet_unavailable)
-        errorView.setText(R.string.error_internet_unavailable)
-        errorView.show()
-        retryButtonView.show()
+        showSnackBar(message)
+    }
+
+    protected open fun showError(resMessage: Int) {
+        contentContainerView.hide()
+        progressView.hide()
+        showSnackBar(resMessage)
+    }
+
+    protected fun <T> MutableLiveData<LoadingData<T>>.listen(
+        success: (data: T) -> Unit,
+        error: ((error: Failure?) -> Unit)? = null
+    ) {
+        this.observe(viewLifecycleOwner, Observer { loadingData ->
+            when (loadingData) {
+                is LoadingData.Loading<T> -> showLoading()
+                is LoadingData.Success<T> -> {
+                    success.invoke(loadingData.data)
+                    showContent()
+                }
+                is LoadingData.Error<T> -> if (error == null) {
+                    when (loadingData.errorType) {
+                        is Failure.NetworkConnection -> showError(R.string.error_internet_unavailable)
+                        is Failure.MessageError,
+                        is Failure.ServerError -> showError(loadingData.errorType.message ?: "")
+                        else -> showError(R.string.error_something_went_wrong)
+                    }
+                } else {
+                    error.invoke(loadingData.errorType)
+                    showContent()
+                }
+            }
+        })
     }
 }

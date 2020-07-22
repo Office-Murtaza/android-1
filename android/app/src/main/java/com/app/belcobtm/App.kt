@@ -2,6 +2,7 @@ package com.app.belcobtm
 
 import android.app.Activity
 import android.content.Context
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
 import androidx.multidex.MultiDexApplication
 import com.app.belcobtm.data.di.dataModule
@@ -37,6 +38,7 @@ class App
 
     override fun onCreate() {
         super.onCreate()
+        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true)
         System.loadLibrary("TrustWalletCore")
 
         startKoin {

@@ -29,7 +29,7 @@ class AuthorizationRepositoryImpl(
     }
 
     override fun getAuthorizationStatus(): AuthorizationStatus {
-        val isEmptyAccountList: Boolean = runBlocking { daoAccount.isTableHasItems() } == null
+        val isEmptyAccountList = runBlocking { daoAccount.isTableHasItems() } == null
         if (isEmptyAccountList && prefHelper.apiSeed.isNotEmpty()) {
             clearAppData()
         }
@@ -77,8 +77,11 @@ class AuthorizationRepositoryImpl(
         phone: String,
         password: String
     ): Either<Failure, Unit> = if (networkUtils.isNetworkAvailable()) {
-        val response =
-            apiService.createWallet(phone, password, temporaryCoinMap.map { it.key.name to it.value.first }.toMap())
+        val response = apiService.createWallet(
+            phone = phone,
+            password = password,
+            coinMap = temporaryCoinMap.map { it.key.name to it.value.first }.toMap()
+        )
 
         if (response.isRight) {
             val result = (response as Either.Right).b

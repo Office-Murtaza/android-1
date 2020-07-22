@@ -1,6 +1,5 @@
 package com.app.belcobtm.presentation.features.sms.code
 
-import android.view.View
 import androidx.lifecycle.Observer
 import com.app.belcobtm.R
 import com.app.belcobtm.domain.Failure
@@ -17,7 +16,6 @@ import org.koin.core.parameter.parametersOf
 class SmsCodeFragment : BaseFragment() {
     private val viewModel: SmsCodeViewModel by viewModel { parametersOf(arguments?.getString(TAG_PHONE)) }
     private var isResendClicked: Boolean = false
-    override val retryListener: View.OnClickListener = View.OnClickListener { viewModel.sendSmsToDevice() }
     override val resourceLayout: Int = R.layout.fragment_sms_code
     override val isToolbarEnabled: Boolean = true
     override val isHomeButtonEnabled: Boolean = true
@@ -40,7 +38,7 @@ class SmsCodeFragment : BaseFragment() {
     override fun initObservers() {
         viewModel.smsLiveData.observe(viewLifecycleOwner, Observer {
             when (it) {
-                is LoadingData.Loading -> showProgress()
+                is LoadingData.Loading -> showLoading()
                 is LoadingData.Success -> {
                     if (isResendClicked) {
                         showResendDialog()

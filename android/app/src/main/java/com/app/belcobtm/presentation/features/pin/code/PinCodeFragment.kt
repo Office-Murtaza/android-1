@@ -46,7 +46,7 @@ class PinCodeFragment : BaseFragment() {
     override fun initObservers() {
         viewModel.authorizationLiveData.observe(this, Observer {
             when (it) {
-                is LoadingData.Loading -> showProgress()
+                is LoadingData.Loading -> showLoading()
                 is LoadingData.Success -> {
                     (requireActivity() as HostActivity).showMainScreen()
                     showContent()

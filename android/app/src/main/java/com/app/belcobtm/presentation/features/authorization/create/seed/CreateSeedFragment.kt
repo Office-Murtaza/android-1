@@ -65,7 +65,7 @@ class CreateSeedFragment : BaseFragment() {
         })
         viewModel.createWalletLiveData.observe(viewLifecycleOwner, Observer {
             when (it) {
-                is LoadingData.Loading -> showProgress()
+                is LoadingData.Loading -> showLoading()
                 is LoadingData.Success -> {
                     navigate(
                         R.id.to_pin_code_fragment,

@@ -2,20 +2,21 @@ package com.app.belcobtm.presentation.features.authorization.recover.wallet
 
 import android.telephony.PhoneNumberFormattingTextWatcher
 import androidx.core.os.bundleOf
-import androidx.lifecycle.Observer
 import com.app.belcobtm.R
-import com.app.belcobtm.domain.Failure
 import com.app.belcobtm.presentation.core.extensions.*
-import com.app.belcobtm.presentation.core.mvvm.LoadingData
 import com.app.belcobtm.presentation.core.ui.fragment.BaseFragment
 import com.app.belcobtm.presentation.features.authorization.recover.seed.RecoverSeedFragment
 import com.app.belcobtm.presentation.features.sms.code.SmsCodeFragment
+import io.michaelrocks.libphonenumber.android.NumberParseException
+import io.michaelrocks.libphonenumber.android.PhoneNumberUtil
 import kotlinx.android.synthetic.main.fragment_recover_wallet.*
 import org.koin.android.viewmodel.ext.android.viewModel
 
 
 class RecoverWalletFragment : BaseFragment() {
     private val viewModel: RecoverWalletViewModel by viewModel()
+    private val phoneUtil: PhoneNumberUtil by lazy { PhoneNumberUtil.createInstance(requireContext()) }
+
     override val isToolbarEnabled: Boolean = true
     override val isHomeButtonEnabled: Boolean = true
     override val resourceLayout: Int = R.layout.fragment_recover_wallet
@@ -41,66 +42,50 @@ class RecoverWalletFragment : BaseFragment() {
     }
 
     override fun initObservers() {
-        viewModel.checkCredentialsLiveData.observe(this, Observer {
-            when (it) {
-                is LoadingData.Loading -> showProgress()
-                is LoadingData.Success -> {
-                    when {
-                        it.data.first -> {
-                            navigate(
-                                R.id.to_sms_code_fragment,
-                                bundleOf(
-                                    SmsCodeFragment.TAG_PHONE to getPhone(),
-                                    RecoverSeedFragment.TAG_PASSWORD to passwordView.getString(),
-                                    SmsCodeFragment.TAG_NEXT_FRAGMENT_ID to R.id.to_recover_seed_fragment
-                                )
-                            )
-                            viewModel.checkCredentialsLiveData.value = null
-                        }
-                        it.data.second -> passwordView.showError(R.string.recover_wallet_incorrect_password)
-                        else -> phoneView.showError(R.string.recover_wallet_incorrect_login)
-                    }
-                    showContent()
-                }
-                is LoadingData.Error -> {
-                    when (it.errorType) {
-                        is Failure.MessageError -> showSnackBar(it.errorType.message)
-                        is Failure.NetworkConnection -> showSnackBar(R.string.error_internet_unavailable)
-                        else -> showSnackBar(R.string.error_something_went_wrong)
-                    }
-                    showContent()
-                }
+        viewModel.checkCredentialsLiveData.listen({
+            var isValid = true
+
+            if (!it.first) {
+                isValid = false
+                phoneView.showError(R.string.recover_wallet_incorrect_login)
+            } else {
+                phoneView.clearError()
+            }
+
+            if (!it.second) {
+                isValid = false
+                passwordView.showError(R.string.recover_wallet_incorrect_password)
+            } else {
+                passwordView.clearError()
+            }
+
+            if (isValid) {
+                viewModel.checkCredentialsLiveData.value = null
+                navigate(
+                    R.id.to_sms_code_fragment,
+                    bundleOf(
+                        SmsCodeFragment.TAG_PHONE to getPhone(),
+                        RecoverSeedFragment.TAG_PASSWORD to passwordView.getString(),
+                        SmsCodeFragment.TAG_NEXT_FRAGMENT_ID to R.id.to_recover_seed_fragment
+                    )
+                )
             }
         })
-        viewModel.smsCodeLiveData.observe(this, Observer {
-            when (it) {
-                is LoadingData.Loading -> showProgress()
-                is LoadingData.Success -> {
-                    viewModel.checkCredentialsLiveData.value = null
-                    viewModel.smsCodeLiveData.value = null
-                    navigate(R.id.to_recover_seed_fragment)
-                    showContent()
-                }
-                is LoadingData.Error -> {
-                    when (it.errorType) {
-                        is Failure.MessageError -> showSnackBar(it.errorType.message)
-                        is Failure.NetworkConnection -> showSnackBar(R.string.error_internet_unavailable)
-                        else -> showSnackBar(R.string.error_something_went_wrong)
-                    }
-                    showContent()
-                }
-            }
+        viewModel.smsCodeLiveData.listen({
+            viewModel.checkCredentialsLiveData.value = null
+            viewModel.smsCodeLiveData.value = null
+            navigate(R.id.to_recover_seed_fragment)
+            showContent()
         })
     }
 
     private fun isValidFields(phone: String, password: String): Boolean {
-        if (phone.isEmpty() || password.isEmpty()) {
-            showSnackBar(R.string.create_wallet_error_all_fields_required)
-        } else if (password.length < 4) {
-            showSnackBar(R.string.create_wallet_error_short_pass)
+        val isFieldsNotEmpty = phone.isNotEmpty() && password.isNotEmpty()
+        if (isFieldsNotEmpty) {
+            showSnackBar(R.string.recover_wallet_error_all_fields_required)
         }
 
-        return phone.isNotBlank() && password.isNotBlank() && password.length >= 4
+        return isFieldsNotEmpty
     }
 
     private fun checkCredentials() {
@@ -113,15 +98,21 @@ class RecoverWalletFragment : BaseFragment() {
     }
 
     private fun updateNextButton() {
-        nextButtonView.isEnabled = //getPhone().length == PHONE_LENGTH &&
-            phoneView.getString().isNotEmpty()
-                    && passwordView.getString().isNotEmpty()
+        nextButtonView.isEnabled = phoneView.getString().isNotEmpty()
+                && isValidMobileNumber(phoneView.getString())
+                && passwordView.getString().isNotEmpty()
+    }
+
+    private fun isValidMobileNumber(phone: String): Boolean = if (phone.isNotBlank()) {
+        try {
+            val number = PhoneNumberUtil.createInstance(requireContext()).parse(phone, "")
+            phoneUtil.isValidNumber(number)
+        } catch (e: NumberParseException) {
+            false
+        }
+    } else {
+        false
     }
 
     private fun getPhone(): String = phoneView.getString().replace("[-() ]".toRegex(), "")
-
-    private companion object {
-        const val PHONE_MASK: String = "+[0] ([000]) [000]-[00]-[00]"
-        private const val PHONE_LENGTH: Int = 12
-    }
 }
