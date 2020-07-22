@@ -12,10 +12,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import com.app.belcobtm.R
 import com.app.belcobtm.presentation.core.Const
-import com.app.belcobtm.presentation.core.extensions.afterTextChanged
-import com.app.belcobtm.presentation.core.extensions.clearError
-import com.app.belcobtm.presentation.core.extensions.getString
-import com.app.belcobtm.presentation.core.extensions.showError
+import com.app.belcobtm.presentation.core.extensions.*
 import com.app.belcobtm.presentation.core.helper.SimpleClickableSpan
 import com.app.belcobtm.presentation.core.ui.fragment.BaseFragment
 import com.app.belcobtm.presentation.features.authorization.create.seed.CreateSeedFragment
@@ -58,7 +55,6 @@ class CreateWalletFragment : BaseFragment() {
             if (it.first) {
                 phoneView.showError(R.string.create_wallet_error_phone_registered)
             } else {
-                phoneView.clearError()
                 navigate(
                     R.id.to_sms_code_fragment,
                     bundleOf(
@@ -67,13 +63,12 @@ class CreateWalletFragment : BaseFragment() {
                         SmsCodeFragment.TAG_NEXT_FRAGMENT_ID to R.id.to_create_seed_fragment
                     )
                 )
+                tncCheckBoxView.isChecked = false
+                phoneView.clearError()
+                passwordConfirmView.clearError()
+                phoneView.clearText()
                 viewModel.checkCredentialsLiveData.value = null
             }
-        })
-        viewModel.smsCodeLiveData.listen({
-            viewModel.checkCredentialsLiveData.value = null
-            viewModel.smsCodeLiveData.value = null
-            navigate(R.id.to_recover_seed_fragment)
         })
     }
 

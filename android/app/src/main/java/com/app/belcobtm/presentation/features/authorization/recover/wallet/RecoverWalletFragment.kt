@@ -60,7 +60,6 @@ class RecoverWalletFragment : BaseFragment() {
             }
 
             if (isValid) {
-                viewModel.checkCredentialsLiveData.value = null
                 navigate(
                     R.id.to_sms_code_fragment,
                     bundleOf(
@@ -69,23 +68,20 @@ class RecoverWalletFragment : BaseFragment() {
                         SmsCodeFragment.TAG_NEXT_FRAGMENT_ID to R.id.to_recover_seed_fragment
                     )
                 )
+                phoneView.clearText()
+                passwordView.clearText()
+                viewModel.checkCredentialsLiveData.value = null
             }
-        })
-        viewModel.smsCodeLiveData.listen({
-            viewModel.checkCredentialsLiveData.value = null
-            viewModel.smsCodeLiveData.value = null
-            navigate(R.id.to_recover_seed_fragment)
-            showContent()
         })
     }
 
     private fun isValidFields(phone: String, password: String): Boolean {
-        val isFieldsNotEmpty = phone.isNotEmpty() && password.isNotEmpty()
-        if (isFieldsNotEmpty) {
+        val isEmptyFields = phone.isEmpty() || password.isEmpty()
+        if (isEmptyFields) {
             showSnackBar(R.string.recover_wallet_error_all_fields_required)
         }
 
-        return isFieldsNotEmpty
+        return !isEmptyFields
     }
 
     private fun checkCredentials() {

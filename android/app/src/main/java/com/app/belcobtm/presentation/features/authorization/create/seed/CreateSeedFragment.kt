@@ -8,8 +8,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.os.bundleOf
 import androidx.lifecycle.Observer
 import com.app.belcobtm.R
-import com.app.belcobtm.domain.Failure
-import com.app.belcobtm.presentation.core.mvvm.LoadingData
 import com.app.belcobtm.presentation.core.ui.fragment.BaseFragment
 import com.app.belcobtm.presentation.features.pin.code.PinCodeFragment
 import com.app.belcobtm.presentation.features.sms.code.SmsCodeFragment
@@ -63,25 +61,11 @@ class CreateSeedFragment : BaseFragment() {
             word11.text = wordList[10]
             word12.text = wordList[11]
         })
-        viewModel.createWalletLiveData.observe(viewLifecycleOwner, Observer {
-            when (it) {
-                is LoadingData.Loading -> showLoading()
-                is LoadingData.Success -> {
-                    navigate(
-                        R.id.to_pin_code_fragment,
-                        bundleOf(PinCodeFragment.TAG_PIN_MODE to PinCodeFragment.KEY_PIN_MODE_CREATE)
-                    )
-                    showContent()
-                }
-                is LoadingData.Error -> {
-                    when (it.errorType) {
-                        is Failure.MessageError -> showSnackBar(it.errorType.message)
-                        is Failure.NetworkConnection -> showSnackBar(R.string.error_internet_unavailable)
-                        else -> showSnackBar(R.string.error_something_went_wrong)
-                    }
-                    showContent()
-                }
-            }
+        viewModel.createWalletLiveData.listen({
+            navigate(
+                R.id.to_pin_code_fragment,
+                bundleOf(PinCodeFragment.TAG_PIN_MODE to PinCodeFragment.KEY_PIN_MODE_CREATE)
+            )
         })
     }
 

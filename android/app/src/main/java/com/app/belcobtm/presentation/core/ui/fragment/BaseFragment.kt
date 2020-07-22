@@ -13,7 +13,7 @@ import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
@@ -152,13 +152,13 @@ abstract class BaseFragment : Fragment() {
         requireActivity().findViewById<ViewGroup>(android.R.id.content),
         resMessage,
         Snackbar.LENGTH_SHORT
-    ).also { it.view.setBackgroundColor(ContextCompat.getColor(it.view.context, R.color.colorErrorSnackBar)) }.show()
+    ).show()
 
     protected fun showSnackBar(message: String?): Unit = Snackbar.make(
         requireActivity().findViewById<ViewGroup>(android.R.id.content),
         message ?: "",
         Snackbar.LENGTH_SHORT
-    ).also { it.view.setBackgroundColor(ContextCompat.getColor(it.view.context, R.color.colorErrorSnackBar)) }.show()
+    ).show()
 
     private fun fillToolbarTitle() = (activity as? HostActivity)?.let {
         it.supportActionBar?.title = if (cachedToolbarTitle.isBlank()) "" else cachedToolbarTitle
@@ -189,18 +189,18 @@ abstract class BaseFragment : Fragment() {
     }
 
     protected open fun showError(message: String) {
-        contentContainerView.hide()
+        contentContainerView.show()
         progressView.hide()
         showSnackBar(message)
     }
 
     protected open fun showError(resMessage: Int) {
-        contentContainerView.hide()
+        contentContainerView.show()
         progressView.hide()
         showSnackBar(resMessage)
     }
 
-    protected fun <T> MutableLiveData<LoadingData<T>>.listen(
+    protected fun <T> LiveData<LoadingData<T>>.listen(
         success: (data: T) -> Unit,
         error: ((error: Failure?) -> Unit)? = null
     ) {

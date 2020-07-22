@@ -22,7 +22,8 @@ import com.app.belcobtm.presentation.features.HostActivity
 import kotlinx.android.synthetic.main.activity_pin_old.*
 import org.koin.android.viewmodel.ext.android.viewModel
 
-
+/**New screen is  [com.app.belcobtm.presentation.features.pin.code.PinCodeFragment]*/
+@Deprecated("Candidate to remove.")
 class PinActivity : BaseActivity() {
     private val viewModel: PinViewModel by viewModel()
     private lateinit var mMode: Mode

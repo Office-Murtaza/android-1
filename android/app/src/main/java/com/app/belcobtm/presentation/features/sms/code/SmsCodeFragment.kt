@@ -1,8 +1,6 @@
 package com.app.belcobtm.presentation.features.sms.code
 
-import androidx.lifecycle.Observer
 import com.app.belcobtm.R
-import com.app.belcobtm.domain.Failure
 import com.app.belcobtm.presentation.core.extensions.actionDoneListener
 import com.app.belcobtm.presentation.core.extensions.afterTextChanged
 import com.app.belcobtm.presentation.core.extensions.getString
@@ -14,7 +12,7 @@ import org.koin.android.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
 class SmsCodeFragment : BaseFragment() {
-    private val viewModel: SmsCodeViewModel by viewModel { parametersOf(arguments?.getString(TAG_PHONE)) }
+    private val viewModel: SmsCodeViewModel by viewModel { parametersOf(requireArguments().getString(TAG_PHONE)) }
     private var isResendClicked: Boolean = false
     override val resourceLayout: Int = R.layout.fragment_sms_code
     override val isToolbarEnabled: Boolean = true
@@ -36,27 +34,13 @@ class SmsCodeFragment : BaseFragment() {
     }
 
     override fun initObservers() {
-        viewModel.smsLiveData.observe(viewLifecycleOwner, Observer {
-            when (it) {
-                is LoadingData.Loading -> showLoading()
-                is LoadingData.Success -> {
-                    if (isResendClicked) {
-                        showResendDialog()
-                    }
-                    showContent()
-
-                    //TODO for remove
-                    println("SMS code " + it.data)
-                }
-                is LoadingData.Error -> {
-                    when (it.errorType) {
-                        is Failure.MessageError -> showSnackBar(it.errorType.message)
-                        is Failure.NetworkConnection -> showSnackBar(R.string.error_internet_unavailable)
-                        else -> showSnackBar(R.string.error_something_went_wrong)
-                    }
-                    showContent()
-                }
+        viewModel.smsLiveData.listen({
+            if (isResendClicked) {
+                showResendDialog()
             }
+
+            //TODO for remove
+            println("SMS code $it")
         })
     }
 

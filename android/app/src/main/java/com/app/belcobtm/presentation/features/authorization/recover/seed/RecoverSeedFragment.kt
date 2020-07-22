@@ -6,19 +6,15 @@ import android.content.Context
 import android.view.MenuItem
 import android.view.View
 import androidx.core.os.bundleOf
-import androidx.lifecycle.Observer
 import com.app.belcobtm.R
-import com.app.belcobtm.domain.Failure
 import com.app.belcobtm.presentation.core.extensions.clearError
 import com.app.belcobtm.presentation.core.extensions.getString
 import com.app.belcobtm.presentation.core.extensions.showError
-import com.app.belcobtm.presentation.core.mvvm.LoadingData
 import com.app.belcobtm.presentation.core.ui.fragment.BaseFragment
 import com.app.belcobtm.presentation.features.pin.code.PinCodeFragment
 import com.app.belcobtm.presentation.features.sms.code.SmsCodeFragment
 import kotlinx.android.synthetic.main.fragment_recover_seed.*
 import org.koin.android.viewmodel.ext.android.viewModel
-
 
 class RecoverSeedFragment : BaseFragment() {
     private val viewModel: RecoverSeedViewModel by viewModel()
@@ -35,25 +31,11 @@ class RecoverSeedFragment : BaseFragment() {
     }
 
     override fun initObservers() {
-        viewModel.recoverWalletLiveData.observe(viewLifecycleOwner, Observer {
-            when (it) {
-                is LoadingData.Loading -> showLoading()
-                is LoadingData.Success -> {
-                    navigate(
-                        R.id.to_pin_code_fragment,
-                        bundleOf(PinCodeFragment.TAG_PIN_MODE to PinCodeFragment.KEY_PIN_MODE_CREATE)
-                    )
-                    showContent()
-                }
-                is LoadingData.Error -> {
-                    when (it.errorType) {
-                        is Failure.MessageError -> showSnackBar(it.errorType.message)
-                        is Failure.NetworkConnection -> showSnackBar(R.string.error_internet_unavailable)
-                        else -> showSnackBar(R.string.error_something_went_wrong)
-                    }
-                    showContent()
-                }
-            }
+        viewModel.recoverWalletLiveData.listen({
+            navigate(
+                R.id.to_pin_code_fragment,
+                bundleOf(PinCodeFragment.TAG_PIN_MODE to PinCodeFragment.KEY_PIN_MODE_CREATE)
+            )
         })
     }
 

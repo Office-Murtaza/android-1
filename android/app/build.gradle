@@ -14,8 +14,8 @@ android {
         applicationId "com.app.belcobtm"
         minSdkVersion 23
         targetSdkVersion 29
-        versionCode 72
-        versionName "1.5.12"
+        versionCode 73
+        versionName "1.5.13"
         multiDexEnabled = true
         vectorDrawables.useSupportLibrary = true
     }
