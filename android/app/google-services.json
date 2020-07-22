@@ -1,0 +1,69 @@
+{
+  "project_info": {
+    "project_number": "1081646718412",
+    "firebase_url": "https://belcobatm.firebaseio.com",
+    "project_id": "belcobatm",
+    "storage_bucket": "belcobatm.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1081646718412:android:f56e2fa7edc7957fef9169",
+        "android_client_info": {
+          "package_name": "com.app.belcobtm"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1081646718412-d2rqena84f1dbjv96bo9ooub6sd6mto8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCbiVh6LcLaAmOiETJi39WvEPnfufDc3JQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1081646718412-d2rqena84f1dbjv96bo9ooub6sd6mto8.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1081646718412:android:27a7afdf467fb362ef9169",
+        "android_client_info": {
+          "package_name": "com.app.belcobtm.dev"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1081646718412-d2rqena84f1dbjv96bo9ooub6sd6mto8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCbiVh6LcLaAmOiETJi39WvEPnfufDc3JQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1081646718412-d2rqena84f1dbjv96bo9ooub6sd6mto8.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

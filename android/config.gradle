@@ -1,0 +1,9 @@
+ext {
+    libraries = [
+            //Firebase
+            firebaseAnalytics : '17.4.4', //https://firebase.google.com/support/release-notes/android
+            crashlytics       : '17.1.1', //https://firebase.google.com/support/release-notes/android
+            performance       : '19.0.8', //https://firebase.google.com/support/release-notes/android
+    ]
+}
+

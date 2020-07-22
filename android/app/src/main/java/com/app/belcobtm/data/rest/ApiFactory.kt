@@ -1,5 +1,6 @@
 package com.app.belcobtm.data.rest
 
+import com.app.belcobtm.BuildConfig
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.app.belcobtm.data.disk.shared.preferences.SharedPreferencesHelper
 import com.app.belcobtm.data.rest.authorization.AuthApi
@@ -62,12 +63,7 @@ class ApiFactory(
         .create(clazz)
 
     companion object {
-        // private const val BASE_URL = "https://prod.belcobtm.com"
-        private const val BASE_URL = "http://test.belcobtm.com"
-
-        // private const val BASE_URL = "http://161.35.22.9"
-        private const val API_VERSION = 1
-        const val SERVER_URL = "$BASE_URL/api/v$API_VERSION/"
+        val SERVER_URL = "${BuildConfig.BASE_URL}/api/v${BuildConfig.API_VERSION}/"
 
         private const val HEADER_CONTENT_TYPE_KEY = "Content-Type"
         private const val HEADER_CONTENT_TYPE_VALUE = "application/json"
