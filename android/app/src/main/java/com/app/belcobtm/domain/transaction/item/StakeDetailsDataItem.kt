@@ -6,5 +6,6 @@ class StakeDetailsDataItem(
     val stakedDays: Int,
     val stakedAmount: Double,
     val rewardsAmount: Double,
-    val rewardsPercent: Double
+    val rewardsPercent: Double,
+    val stakingMinDays: Int
 )
