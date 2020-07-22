@@ -369,8 +369,8 @@
     <string name="staking_screen_balance">Balance</string>
     <string name="staking_screen_staked">Staked</string>
     <string name="staking_screen_rewards">Rewards</string>
-    <string name="staking_screen_time">Time</string>
-    <string name="staking_screen_min_days">Stacking min days</string>
+    <string name="staking_screen_time">Duration</string>
+    <string name="staking_screen_min_days">Min duration</string>
     <string name="staking_screen_stake">Stake</string>
     <string name="staking_screen_unstake">Unstake</string>
     <string name="staking_screen_hint_catm_amount">CATM Amount</string>
