@@ -29,10 +29,10 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: Dev
-          path: ${{ env.working-directory }}app/build/outputs/apk/dev/debug/app-dev-debug.apk
+          path: ${{ env.working-directory }}/app/build/outputs/apk/dev/debug/app-dev-debug.apk
 
       - name: Upload APK prod
         uses: actions/upload-artifact@v2
         with:
           name: Prod
-          path: ${{ env.working-directory }}app/build/outputs/apk/prod/debug/app-prod-debug.apk
+          path: ${{ env.working-directory }}/app/build/outputs/apk/prod/debug/app-prod-debug.apk
