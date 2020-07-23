@@ -22,16 +22,17 @@ jobs:
         with:
           java-version: 1.8
       - name: Build Debug APKs
-        run: bash ./android/gradlew :app:assembleDebug
+        run: bash ./gradlew :app:assembleDebug
+        working-directory: ${{ env.working-directory }}
 
       - name: Upload APK dev
         uses: actions/upload-artifact@v2
         with:
           name: Dev
-          path: ${{ github.workspace }}app/build/outputs/apk/dev/debug/app-dev-debug.apk
+          path: ${{ env.working-directory }}app/build/outputs/apk/dev/debug/app-dev-debug.apk
 
       - name: Upload APK prod
         uses: actions/upload-artifact@v2
         with:
           name: Prod
-          path: ${{ github.workspace }}app/build/outputs/apk/prod/debug/app-prod-debug.apk
+          path: ${{ env.working-directory }}app/build/outputs/apk/prod/debug/app-prod-debug.apk
