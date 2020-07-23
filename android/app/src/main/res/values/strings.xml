@@ -86,7 +86,7 @@
 
     <!-- Recover Seed Screen -->
     <string name="recover_seed_screen_title">Seed phrase</string>
-    <string name="recover_seed_screen_description">Enter your secret 12 world phrase\nhere to restore your wallet</string>
+    <string name="recover_seed_screen_description">Enter your secret 12 words phrase\nhere to restore your wallet</string>
     <string name="recover_seed_screen_error_length">Seed phrase must be 12 words</string>
 
     <!-- Create Seed Screen-->
