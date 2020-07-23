@@ -22,7 +22,7 @@ jobs:
         with:
           java-version: 1.8
       - name: Build Debug APKs
-        run: bash ./gradlew :app:assembleDebug
+        run: bash ./android/gradlew :app:assembleDebug
 
       - name: Upload APK dev
         uses: actions/upload-artifact@v2
