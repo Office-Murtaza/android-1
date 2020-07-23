@@ -10,6 +10,7 @@ def lib = rootProject.ext.libraries
 
 android {
     compileSdkVersion 29
+    ndkVersion "21.3.6528147"
     defaultConfig {
         applicationId "com.app.belcobtm"
         minSdkVersion 23
