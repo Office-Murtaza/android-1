@@ -9,13 +9,13 @@ import retrofit2.Response
 import retrofit2.http.*
 
 interface SettingsApi {
-    @GET("user/{userId}/kyc")
+    @GET("user/{userId}/kyc-details")
     fun getVerificationInfoAsync(
         @Path("userId") userId: Int
     ): Deferred<Response<VerificationInfoResponse>>
 
     @Multipart
-    @POST("user/{userId}/kyc")
+    @POST("user/{userId}/kyc-submit")
     fun sendVerificationBlankAsync(
         @Path("userId") userId: Int,
         @Part("tierId") tierId: Int,
@@ -31,7 +31,7 @@ interface SettingsApi {
     ): Deferred<Response<ResponseBody>>
 
     @Multipart
-    @POST("user/{userId}/kyc")
+    @POST("user/{userId}/kyc-submit")
     fun sendVerificationVipAsync(
         @Path("userId") userId: Int,
         @Part("tierId") tierId: Int,

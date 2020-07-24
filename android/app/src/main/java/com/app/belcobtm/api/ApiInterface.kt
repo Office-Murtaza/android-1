@@ -54,14 +54,14 @@ interface ApiInterface {
         @Body changePassParam: ChangePassParam
     ): Observable<ServerResponse<UpdateResponse>>
 
-    @GET("user/{userId}/coins/{coinCode}/transaction")
+    @GET("user/{userId}/coin/{coinCode}/transaction-details")
     fun getTransactionDetails(
         @Path("userId") userId: String?,
         @Path("coinCode") coinCode: String?,
         @Query("txId") txId: String?
     ): Observable<ServerResponse<TransactionDetailsResponse>>
 
-    @GET("user/{userId}/coins/{coinCode}/transaction")
+    @GET("user/{userId}/coin/{coinCode}/transaction-details")
     fun getTransactionDetailsByTxDbId(
         @Path("userId") userId: String?,
         @Path("coinCode") coinCode: String?,
