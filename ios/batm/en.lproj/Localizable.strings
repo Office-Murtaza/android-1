@@ -51,6 +51,11 @@
 "create_wallet.code.placeholder" = "SMS Code";
 "create_wallet.code.error.title" = "Invalid code";
 
+"phone_verification.title" = "Verify phone";
+"phone_verification.enter_code" = "Enter the 4 digit code we sent you via SMS to continue";
+"phone_verification.resend_code" = "Didn`t get the code? Resend code";
+"phone_verification.error.invalid_code" = "Invalid code";
+
 "seed_phrase.title" = "Seed Phrase";
 "seed_phrase.annotation" = "If you lost your seed phrase you will not be able to recover your wallet";
 

@@ -46,13 +46,13 @@ class RecoverPresenter: ModulePresenter, RecoverModule {
       .withLatestFrom(state)
       .filter { $0.validationState.isValid }
       .map { ($0.phoneE164, $0.password) }
-      .flatMap { [unowned self] data in self.track(self.checkAndVerify(phoneNumber: data.0, password: data.1).map { _ in data }) }
+      .flatMap { [unowned self] data in self.track(self.check(phoneNumber: data.0, password: data.1)).map { data } }
       .subscribe(onNext: { [delegate] in delegate?.finishRecovering(phoneNumber: $0.0, password: $0.1) })
       .disposed(by: disposeBag)
   }
   
-  private func checkAndVerify(phoneNumber: String, password: String) -> Single<PhoneVerificationResponse> {
-    return usecase.checkAndVerifyRecoveringAccount(phoneNumber: phoneNumber, password: password)
+  private func check(phoneNumber: String, password: String) -> Completable {
+    return usecase.checkRecoveringAccount(phoneNumber: phoneNumber, password: password)
       .catchError { [store] in
         if let apiError = $0 as? APIError, case let .serverError(error) = apiError {
           store.action.accept(.makeInvalidState(error))

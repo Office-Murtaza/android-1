@@ -10,8 +10,9 @@ enum LoginState {
 protocol LoginUsecase {
   func getLogoutObservable() -> Observable<Void>
   func getLoginState() -> Single<LoginState>
-  func checkAndVerifyCreatingAccount(phoneNumber: String, password: String) -> Single<PhoneVerificationResponse>
-  func checkAndVerifyRecoveringAccount(phoneNumber: String, password: String) -> Single<PhoneVerificationResponse>
+  func checkCreatingAccount(phoneNumber: String, password: String) -> Completable
+  func checkRecoveringAccount(phoneNumber: String, password: String) -> Completable
+  func verifyAccount(phoneNumber: String) -> Single<PhoneVerificationResponse>
   func createWallet() -> Completable
   func getSeedPhrase() -> Single<String>
   func createAccount(phoneNumber: String, password: String) -> Completable
@@ -64,20 +65,20 @@ class LoginUsecaseImpl: LoginUsecase {
       }
   }
   
-  func checkAndVerifyCreatingAccount(phoneNumber: String, password: String) -> Single<PhoneVerificationResponse> {
+  func checkCreatingAccount(phoneNumber: String, password: String) -> Completable {
     return api.checkAccount(phoneNumber: phoneNumber, password: password)
-      .flatMap { [api] in
+      .flatMapCompletable {
         if $0.phoneExist {
           return .error(APIError.serverError(localize(L.CreateWallet.Form.Error.existedPhoneNumber)))
         }
         
-        return api.verifyPhone(phoneNumber: phoneNumber)
+        return .empty()
       }
   }
   
-  func checkAndVerifyRecoveringAccount(phoneNumber: String, password: String) -> Single<PhoneVerificationResponse> {
+  func checkRecoveringAccount(phoneNumber: String, password: String) -> Completable {
     return api.checkAccount(phoneNumber: phoneNumber, password: password)
-      .flatMap { [api] in
+      .flatMapCompletable {
         if !$0.phoneExist {
           return .error(APIError.serverError(localize(L.Recover.Form.Error.notExistedPhoneNumber)))
         }
@@ -86,8 +87,12 @@ class LoginUsecaseImpl: LoginUsecase {
           return .error(APIError.serverError(localize(L.Recover.Form.Error.notMatchPassword)))
         }
         
-        return api.verifyPhone(phoneNumber: phoneNumber)
+        return .empty()
       }
+  }
+  
+  func verifyAccount(phoneNumber: String) -> Single<PhoneVerificationResponse> {
+    return api.verifyPhone(phoneNumber: phoneNumber)
   }
   
   func createWallet() -> Completable {

@@ -113,6 +113,12 @@ enum L {
     static let title = "filter_coins.title"
   }
 
+  struct PhoneVerification {
+    static let enterCode = "phone_verification.enter_code"
+    static let resendCode = "phone_verification.resend_code"
+    static let title = "phone_verification.title"
+  }
+
   struct PinCode {
   }
 
@@ -522,6 +528,12 @@ extension L.EnterPassword.Form {
 
   struct Error {
     static let wrongPassword = "enter_password.form.error.wrong_password"
+  }
+}
+extension L.PhoneVerification {
+
+  struct Error {
+    static let invalidCode = "phone_verification.error.invalid_code"
   }
 }
 extension L.PinCode {

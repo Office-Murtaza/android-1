@@ -49,7 +49,7 @@ class SeedPhrasePresenter: ModulePresenter, SeedPhraseModule {
   }
   
   private func setupBindings() {
-    self.track(usecase.getSeedPhrase())
+    self.track(usecase.createWallet().andThen(usecase.getSeedPhrase()))
       .asObservable()
       .map { SeedPhraseAction.setupSeedPhrase($0) }
       .bind(to: store.action)

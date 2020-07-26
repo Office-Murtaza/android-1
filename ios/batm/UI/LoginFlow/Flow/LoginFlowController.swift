@@ -9,6 +9,8 @@ final class LoginFlowController: FlowController, FlowActivator {
   
   var initialStep: Step = LoginFlow.Steps.welcome
   
+  var isCreatingAccount = true
+  
   weak var delegate: LoginFlowControllerDelegate?
   
 }
@@ -36,7 +38,20 @@ extension LoginFlowController: CreateWalletModuleDelegate {
   }
   
   func finishCreatingWallet(phoneNumber: String, password: String) {
-    step.accept(LoginFlow.Steps.seedPhrase(phoneNumber, password))
+    isCreatingAccount = true
+    step.accept(LoginFlow.Steps.phoneVerification(phoneNumber, password))
+  }
+  
+}
+
+extension LoginFlowController: PhoneVerificationModuleDelegate {
+  
+  func didFinishPhoneVerification(phoneNumber: String, password: String) {
+    if isCreatingAccount {
+      step.accept(LoginFlow.Steps.seedPhrase(phoneNumber, password))
+    } else {
+      step.accept(LoginFlow.Steps.recoverSeedPhrase(phoneNumber, password))
+    }
   }
   
 }
@@ -56,7 +71,8 @@ extension LoginFlowController: RecoverModuleDelegate {
   }
   
   func finishRecovering(phoneNumber: String, password: String) {
-    step.accept(LoginFlow.Steps.recoverSeedPhrase(phoneNumber, password))
+    isCreatingAccount = false
+    step.accept(LoginFlow.Steps.phoneVerification(phoneNumber, password))
   }
   
 }
