@@ -2,9 +2,11 @@ import UIKit
 import RxSwift
 import RxCocoa
 
-class PinCodeView: UIView {
+class PinCodeDotsView: UIView {
   
   static let numberOfDots = 6
+  static let normalColor = UIColor.brownishGrey.withAlphaComponent(0.2)
+  static let activeColor = UIColor.ceruleanBlue
   
   let stackView: UIStackView = {
     let stackView = UIStackView()
@@ -16,7 +18,7 @@ class PinCodeView: UIView {
   let dots: [UIView] = {
     return Array(0..<numberOfDots).map { _ in
       let view = PinCodeDotView()
-      view.backgroundColor = .cadetBlue
+      view.backgroundColor = normalColor
       return view
     }
   }()
@@ -46,12 +48,12 @@ class PinCodeView: UIView {
   }
 }
 
-extension Reactive where Base == PinCodeView {
+extension Reactive where Base == PinCodeDotsView {
   var currentCount: Binder<Int> {
     return Binder(base) { target, count in
-      let maxCount = min(max(0, count), PinCodeView.numberOfDots)
-      target.dots.forEach { $0.backgroundColor = .cadetBlue }
-      (0..<maxCount).forEach { target.dots[$0].backgroundColor = .lightGold }
+      let maxCount = min(max(0, count), PinCodeDotsView.numberOfDots)
+      target.dots.forEach { $0.backgroundColor = PinCodeDotsView.normalColor }
+      (0..<maxCount).forEach { target.dots[$0].backgroundColor = PinCodeDotsView.activeColor }
     }
   }
 }

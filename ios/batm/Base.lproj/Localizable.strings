@@ -67,9 +67,9 @@
 "recover_seed_phrase.annotation" = "Enter your secret 12 word phrase here to restore your wallet";
 "recover_seed_phrase.form.error.not_valid_length" = "Enter 12 words seed phrase";
 
-"pin_code.setup.title" = "Setup PIN Code";
-"pin_code.confirmation.title" = "Confirm PIN Code";
-"pin_code.verification.title" = "Enter PIN Code";
+"pin_code.setup.title" = "Setup PIN";
+"pin_code.confirmation.title" = "Confirm PIN";
+"pin_code.verification.title" = "Enter PIN";
 
 "coins_balance.title" = "Wallet";
 "coins_balance.total_balance" = "Total Balance:";

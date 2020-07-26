@@ -385,6 +385,10 @@
 		DBA1B61024A9C5B300A9A703 /* ReserveAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBA1B60C24A9C5B300A9A703 /* ReserveAssembly.swift */; };
 		DBA1B61324A9C5E300A9A703 /* ReserveStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBA1B61224A9C5E300A9A703 /* ReserveStore.swift */; };
 		DBA1B61624A9C9D000A9A703 /* ReserveFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBA1B61524A9C9D000A9A703 /* ReserveFormView.swift */; };
+		DBA4F4A324CDDE4200E6FAAB /* PinCodeKeyboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBA4F4A224CDDE4200E6FAAB /* PinCodeKeyboardView.swift */; };
+		DBA4F4A524CDDF3C00E6FAAB /* PinCodeKeyboardDigitButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBA4F4A424CDDF3C00E6FAAB /* PinCodeKeyboardDigitButton.swift */; };
+		DBA4F4A724CE2F1000E6FAAB /* PinCodeKeyboardBackButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBA4F4A624CE2F1000E6FAAB /* PinCodeKeyboardBackButton.swift */; };
+		DBA4F4A924CE2FFF00E6FAAB /* PinCodeKeyboardDummyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBA4F4A824CE2FFF00E6FAAB /* PinCodeKeyboardDummyView.swift */; };
 		DBA65C09244DBF1D0034678E /* FakeTextFied.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBA65C08244DBF1D0034678E /* FakeTextFied.swift */; };
 		DBA6842F22E42AF80079429E /* CoinsBalanceFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBA6842E22E42AF80079429E /* CoinsBalanceFlow.swift */; };
 		DBA6843122E42B450079429E /* CoinsBalanceFlowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBA6843022E42B450079429E /* CoinsBalanceFlowController.swift */; };
@@ -418,7 +422,7 @@
 		DBAD539B22D7B8870005F682 /* PinCodePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBAD539A22D7B8870005F682 /* PinCodePresenter.swift */; };
 		DBAD539D22D7B95F0005F682 /* PinCodeStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBAD539C22D7B95F0005F682 /* PinCodeStore.swift */; };
 		DBAD539F22D7BA1D0005F682 /* PinCodeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBAD539E22D7BA1D0005F682 /* PinCodeViewController.swift */; };
-		DBAD53A422D7C5610005F682 /* PinCodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBAD53A322D7C5610005F682 /* PinCodeView.swift */; };
+		DBAD53A422D7C5610005F682 /* PinCodeDotsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBAD53A322D7C5610005F682 /* PinCodeDotsView.swift */; };
 		DBAD53A622D7C63A0005F682 /* PinCodeDotView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBAD53A522D7C63A0005F682 /* PinCodeDotView.swift */; };
 		DBAD53A822D7CC500005F682 /* KeyboardHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBAD53A722D7CC500005F682 /* KeyboardHelper.swift */; };
 		DBADDE362438DD6600BFD806 /* CoinExchangeModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBADDE322438DD6600BFD806 /* CoinExchangeModule.swift */; };
@@ -908,6 +912,10 @@
 		DBA1B60C24A9C5B300A9A703 /* ReserveAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReserveAssembly.swift; sourceTree = "<group>"; };
 		DBA1B61224A9C5E300A9A703 /* ReserveStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReserveStore.swift; sourceTree = "<group>"; };
 		DBA1B61524A9C9D000A9A703 /* ReserveFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReserveFormView.swift; sourceTree = "<group>"; };
+		DBA4F4A224CDDE4200E6FAAB /* PinCodeKeyboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinCodeKeyboardView.swift; sourceTree = "<group>"; };
+		DBA4F4A424CDDF3C00E6FAAB /* PinCodeKeyboardDigitButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinCodeKeyboardDigitButton.swift; sourceTree = "<group>"; };
+		DBA4F4A624CE2F1000E6FAAB /* PinCodeKeyboardBackButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinCodeKeyboardBackButton.swift; sourceTree = "<group>"; };
+		DBA4F4A824CE2FFF00E6FAAB /* PinCodeKeyboardDummyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinCodeKeyboardDummyView.swift; sourceTree = "<group>"; };
 		DBA65C08244DBF1D0034678E /* FakeTextFied.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FakeTextFied.swift; sourceTree = "<group>"; };
 		DBA6842E22E42AF80079429E /* CoinsBalanceFlow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinsBalanceFlow.swift; sourceTree = "<group>"; };
 		DBA6843022E42B450079429E /* CoinsBalanceFlowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinsBalanceFlowController.swift; sourceTree = "<group>"; };
@@ -942,7 +950,7 @@
 		DBAD539A22D7B8870005F682 /* PinCodePresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinCodePresenter.swift; sourceTree = "<group>"; };
 		DBAD539C22D7B95F0005F682 /* PinCodeStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinCodeStore.swift; sourceTree = "<group>"; };
 		DBAD539E22D7BA1D0005F682 /* PinCodeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinCodeViewController.swift; sourceTree = "<group>"; };
-		DBAD53A322D7C5610005F682 /* PinCodeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinCodeView.swift; sourceTree = "<group>"; };
+		DBAD53A322D7C5610005F682 /* PinCodeDotsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinCodeDotsView.swift; sourceTree = "<group>"; };
 		DBAD53A522D7C63A0005F682 /* PinCodeDotView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinCodeDotView.swift; sourceTree = "<group>"; };
 		DBAD53A722D7CC500005F682 /* KeyboardHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardHelper.swift; sourceTree = "<group>"; };
 		DBADDE322438DD6600BFD806 /* CoinExchangeModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinExchangeModule.swift; sourceTree = "<group>"; };
@@ -2567,7 +2575,11 @@
 			isa = PBXGroup;
 			children = (
 				DBAD53A522D7C63A0005F682 /* PinCodeDotView.swift */,
-				DBAD53A322D7C5610005F682 /* PinCodeView.swift */,
+				DBAD53A322D7C5610005F682 /* PinCodeDotsView.swift */,
+				DBA4F4A224CDDE4200E6FAAB /* PinCodeKeyboardView.swift */,
+				DBA4F4A424CDDF3C00E6FAAB /* PinCodeKeyboardDigitButton.swift */,
+				DBA4F4A624CE2F1000E6FAAB /* PinCodeKeyboardBackButton.swift */,
+				DBA4F4A824CE2FFF00E6FAAB /* PinCodeKeyboardDummyView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -3122,6 +3134,7 @@
 				DB1CFB54246C518200020104 /* TradesViewController.swift in Sources */,
 				DB904AA722C011B1007CB734 /* WelcomeModule.swift in Sources */,
 				DB3C03D622CB5B960036F779 /* RecoverPresenter.swift in Sources */,
+				DBA4F4A524CDDF3C00E6FAAB /* PinCodeKeyboardDigitButton.swift in Sources */,
 				DB51F30F2490CFC1007F47B4 /* CreateEditTradeViewController.swift in Sources */,
 				DB8D409422C3E9A500D5FBD0 /* DIProvider.swift in Sources */,
 				DB904AA522C01189007CB734 /* WelcomePresenter.swift in Sources */,
@@ -3231,7 +3244,7 @@
 				DB51F3102490CFC1007F47B4 /* CreateEditTradePresenter.swift in Sources */,
 				DBC3FF5524BB37A200198597 /* PhoneVerificationResponse+Mapping.swift in Sources */,
 				DB308EB922E73888003D91AF /* MapAddress+Mapping.swift in Sources */,
-				DBAD53A422D7C5610005F682 /* PinCodeView.swift in Sources */,
+				DBAD53A422D7C5610005F682 /* PinCodeDotsView.swift in Sources */,
 				DB5EB8DA2452B23D00CD1C63 /* MDCTextInputControllerBase+Extensions.swift in Sources */,
 				DB247B412478F88C009802BB /* SplashViewController.swift in Sources */,
 				DB3C03DD22CB5F7C0036F779 /* RecoverFormView.swift in Sources */,
@@ -3327,10 +3340,12 @@
 				DB83661622FA9FCB00454F5C /* ShowSeedPhraseFlow.swift in Sources */,
 				DBDA966222BFDB6E005B93DF /* ModulePresenter.swift in Sources */,
 				DBCFBD5224BE53420045B9B4 /* SeedPhraseStore.swift in Sources */,
+				DBA4F4A324CDDE4200E6FAAB /* PinCodeKeyboardView.swift in Sources */,
 				DB95EB20230AA52A0059C84C /* Transaction.swift in Sources */,
 				DB2C971E23449109006E7D61 /* CoinSendGiftAssembly.swift in Sources */,
 				DB8D40A922C3EEDE00D5FBD0 /* LoginFlow+Dependencies.swift in Sources */,
 				DBBF299822D3748C00A5DE6A /* UICollectionView+ReusableView.swift in Sources */,
+				DBA4F4A724CE2F1000E6FAAB /* PinCodeKeyboardBackButton.swift in Sources */,
 				DB5B2DDC230A74D000821713 /* CoinDetailsFlow.swift in Sources */,
 				DBC68CBF22F87A0A00473247 /* ChangePhoneFormView.swift in Sources */,
 				DB96174422C7D1070078E92D /* BTMWalletConverter.swift in Sources */,
@@ -3449,6 +3464,7 @@
 				DBA6843122E42B450079429E /* CoinsBalanceFlowController.swift in Sources */,
 				DB5F18C62472B16A00E37311 /* BuySellTrade+Mapping.swift in Sources */,
 				DB9616C422C746F70078E92D /* AccountRecord+CoreDataClass.swift in Sources */,
+				DBA4F4A924CE2FFF00E6FAAB /* PinCodeKeyboardDummyView.swift in Sources */,
 				DBA7A4AA2356649C000BE997 /* CoinSellStore.swift in Sources */,
 				DB83663022FAA76B00454F5C /* UnlinkViewController.swift in Sources */,
 				DBECA62E22F7FB6C002C2610 /* ChangePhoneFlow.swift in Sources */,

@@ -7,7 +7,8 @@ class PinCodePresenter: ModulePresenter, PinCodeModule {
   typealias Store = ViewStore<PinCodeAction, PinCodeState>
   
   struct Input {
-    var updateCode: Driver<String?>
+    var addDigit: Driver<String>
+    var removeDigit: Driver<Void>
   }
   
   private let usecase: PinCodeUsecase
@@ -30,10 +31,15 @@ class PinCodePresenter: ModulePresenter, PinCodeModule {
   }
   
   func bind(input: Input) {
-    input.updateCode
+    input.addDigit
       .asObservable()
-      .distinctUntilChanged()
-      .map { PinCodeAction.updateCode($0) }
+      .map { PinCodeAction.addDigit($0) }
+      .bind(to: store.action)
+      .disposed(by: disposeBag)
+    
+    input.removeDigit
+      .asObservable()
+      .map { PinCodeAction.removeDigit }
       .bind(to: store.action)
       .disposed(by: disposeBag)
     
@@ -42,7 +48,7 @@ class PinCodePresenter: ModulePresenter, PinCodeModule {
   
   private func setupBindings() {
     state
-      .filter { $0.code.count == PinCodeView.numberOfDots }
+      .filter { $0.code.count == PinCodeDotsView.numberOfDots }
       .asObservable()
       .flatMap { [unowned self] state -> Driver<PinCodeState> in
         switch state.stage {
