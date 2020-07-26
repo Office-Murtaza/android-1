@@ -1,6 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <string name="google_maps_key">AIzaSyDGBWQKBBKloFJfQgY_5i-l-a7aT8oRWhw</string>
-    <string name="file_provider" translatable="false">com.app.belcobtm.fileprovider</string>
+    <string name="file_provider" translatable="false">${applicationId}.fileprovider</string>
     <string name="chip_ellipsis">&#8230;</string>
 
     <string name="app_name">Belco Wallet</string>
