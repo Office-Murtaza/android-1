@@ -1,9 +1,7 @@
 package com.app.belcobtm.presentation.features.sms.code
 
 import com.app.belcobtm.R
-import com.app.belcobtm.presentation.core.extensions.actionDoneListener
-import com.app.belcobtm.presentation.core.extensions.afterTextChanged
-import com.app.belcobtm.presentation.core.extensions.getString
+import com.app.belcobtm.presentation.core.extensions.*
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
 import com.app.belcobtm.presentation.core.ui.fragment.BaseFragment
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -30,7 +28,11 @@ class SmsCodeFragment : BaseFragment() {
         }
         nextButtonView.setOnClickListener { openNextScreen() }
         pinEntryView.actionDoneListener { openNextScreen() }
-        pinEntryView.afterTextChanged { nextButtonView.isEnabled = pinEntryView.getString().length >= SMS_CODE_LENGTH }
+        pinEntryView.afterTextChanged {
+            nextButtonView.isEnabled = pinEntryView.getString().length >= SMS_CODE_LENGTH
+            errorMessageView.invisible()
+            pinEntryView.isError = false
+        }
     }
 
     override fun initObservers() {
@@ -49,7 +51,10 @@ class SmsCodeFragment : BaseFragment() {
             (viewModel.smsLiveData.value as? LoadingData.Success)?.data == pinEntryView.getString()
         when {
             isSuccessLoadingData -> navigate(requireArguments().getInt(TAG_NEXT_FRAGMENT_ID), requireArguments())
-            !isSuccessLoadingData && pinEntryView.getString().length == SMS_CODE_LENGTH -> showSnackBar(R.string.sms_code_screen_invalid_code)
+            !isSuccessLoadingData && pinEntryView.getString().length == SMS_CODE_LENGTH -> {
+                errorMessageView.show()
+                pinEntryView.isError = true
+            }
         }
     }
 
