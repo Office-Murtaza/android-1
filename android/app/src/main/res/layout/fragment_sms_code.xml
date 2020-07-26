@@ -45,6 +45,7 @@
             android:cursorVisible="false"
             android:digits="1234567890"
             android:imeOptions="actionDone"
+            android:importantForAutofill="no"
             android:inputType="number"
             android:maxLength="4"
             android:minWidth="200dp"

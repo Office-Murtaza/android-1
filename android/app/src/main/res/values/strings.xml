@@ -88,6 +88,7 @@
     <string name="recover_seed_screen_title">Seed phrase</string>
     <string name="recover_seed_screen_description">Enter your secret 12 words phrase\nhere to restore your wallet</string>
     <string name="recover_seed_screen_error_length">Seed phrase must be 12 words</string>
+    <string name="recover_seed_screen_incorrect_phrase">Seed Phrase you entered is invalid. Please try again</string>
 
     <!-- Create Seed Screen-->
     <string name="create_seed_screen_title">Seed phrase</string>

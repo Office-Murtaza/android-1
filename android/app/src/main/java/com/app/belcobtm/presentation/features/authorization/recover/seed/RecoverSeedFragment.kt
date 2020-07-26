@@ -7,6 +7,7 @@ import android.view.MenuItem
 import android.view.View
 import androidx.core.os.bundleOf
 import com.app.belcobtm.R
+import com.app.belcobtm.domain.Failure
 import com.app.belcobtm.presentation.core.extensions.clearError
 import com.app.belcobtm.presentation.core.extensions.getString
 import com.app.belcobtm.presentation.core.extensions.showError
@@ -31,12 +32,26 @@ class RecoverSeedFragment : BaseFragment() {
     }
 
     override fun initObservers() {
-        viewModel.recoverWalletLiveData.listen({
-            navigate(
-                R.id.to_pin_code_fragment,
-                bundleOf(PinCodeFragment.TAG_PIN_MODE to PinCodeFragment.KEY_PIN_MODE_CREATE)
-            )
-        })
+        viewModel.recoverWalletLiveData.listen(
+            success = {
+                navigate(
+                    R.id.to_pin_code_fragment,
+                    bundleOf(PinCodeFragment.TAG_PIN_MODE to PinCodeFragment.KEY_PIN_MODE_CREATE)
+                )
+            },
+            error = {
+                when (it) {
+                    is Failure.NetworkConnection -> showError(R.string.error_internet_unavailable)
+                    is Failure.MessageError,
+                    is Failure.ServerError -> if (it.message.equals("No value for errorMsg", true)) {
+                        seedContainerView.showError(R.string.recover_seed_screen_incorrect_phrase)
+                    } else {
+                        showError(it.message ?: "")
+                    }
+                    else -> showError(R.string.error_something_went_wrong)
+                }
+            }
+        )
     }
 
     @SuppressLint("SetTextI18n")
@@ -66,6 +81,7 @@ class RecoverSeedFragment : BaseFragment() {
             seedView.setText("")
             seedView.setText(text)
             seedView.setSelection(text.length)
+            seedContainerView.clearError()
         }
     }
 
@@ -80,7 +96,7 @@ class RecoverSeedFragment : BaseFragment() {
         val clipboard = requireContext().getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
         val clipData = clipboard.primaryClip
         val item = clipData?.getItemAt(0)
-        return item?.text.toString() + " "
+        return if (item?.text.isNullOrBlank()) "" else item?.text.toString() + " "
     }
 
     companion object {
