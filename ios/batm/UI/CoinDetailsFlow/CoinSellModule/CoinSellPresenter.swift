@@ -133,7 +133,7 @@ final class CoinSellPresenter: ModulePresenter, CoinSellModule {
     return usecase.requestCode()
       .catchError { [store] in
         if let apiError = $0 as? APIError, case let .serverError(error) = apiError {
-          store.action.accept(.makeInvalidState(error))
+          store.action.accept(.makeInvalidState(error.message))
         }
         
         throw $0
@@ -149,7 +149,7 @@ final class CoinSellPresenter: ModulePresenter, CoinSellModule {
       .andThen(usecase.presubmit(for: type, coinAmount: coinAmount, currencyAmount: currencyAmount))
       .catchError { [store] in
         if let apiError = $0 as? APIError, case let .serverError(error) = apiError {
-          store.action.accept(.makeInvalidState(error))
+          store.action.accept(.makeInvalidState(error.message))
         }
         
         throw $0
@@ -165,7 +165,7 @@ final class CoinSellPresenter: ModulePresenter, CoinSellModule {
     return usecase.sell(from: coin, with: coinSettings, amount: amount, to: address)
       .catchError { [store] in
         if let apiError = $0 as? APIError, case let .serverError(error) = apiError {
-          store.action.accept(.makeInvalidState(error))
+          store.action.accept(.makeInvalidState(error.message))
         }
 
         throw $0

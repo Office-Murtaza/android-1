@@ -55,7 +55,7 @@ class RecoverPresenter: ModulePresenter, RecoverModule {
     return usecase.checkRecoveringAccount(phoneNumber: phoneNumber, password: password)
       .catchError { [store] in
         if let apiError = $0 as? APIError, case let .serverError(error) = apiError {
-          store.action.accept(.makeInvalidState(error))
+          store.action.accept(.makeInvalidState(error.message))
         }
 
         throw $0

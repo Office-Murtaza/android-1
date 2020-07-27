@@ -87,7 +87,7 @@ final class CoinStakingPresenter: ModulePresenter, CoinStakingModule {
     return usecase.requestCode()
       .catchError { [store] in
         if let apiError = $0 as? APIError, case let .serverError(error) = apiError {
-          store.action.accept(.makeInvalidState(error))
+          store.action.accept(.makeInvalidState(error.message))
         }
         
         throw $0
@@ -108,7 +108,7 @@ final class CoinStakingPresenter: ModulePresenter, CoinStakingModule {
       .andThen(usecaseCall)
       .catchError { [store] in
         if let apiError = $0 as? APIError, case let .serverError(error) = apiError {
-          store.action.accept(.makeInvalidState(error))
+          store.action.accept(.makeInvalidState(error.message))
         }
         
         throw $0

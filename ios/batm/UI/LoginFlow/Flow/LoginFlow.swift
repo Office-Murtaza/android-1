@@ -22,7 +22,7 @@ final class LoginFlow: BaseFlow<BTMNavigationController, LoginFlowController> {
     case seedPhrase(String, String)
     case recover
     case recoverSeedPhrase(String, String)
-    case pinCode(PinCodeStage)
+    case pinCode(PinCodeStage, String? = nil)
     case backToWelcome
     case contactSupport
     case pop
@@ -57,9 +57,14 @@ final class LoginFlow: BaseFlow<BTMNavigationController, LoginFlowController> {
       let module = resolver.resolve(Module<RecoverSeedPhraseModule>.self)!
       module.input.setup(phoneNumber: phoneNumber, password: password)
       return push(module.controller)
-    case let .pinCode(stage):
+    case let .pinCode(stage, pinCode):
       let module = resolver.resolve(Module<PinCodeModule>.self)!
       module.input.setup(for: stage)
+      
+      if let pinCode = pinCode {
+        module.input.setup(with: pinCode)
+      }
+      
       return push(module.controller)
     case .backToWelcome:
       let module = resolver.resolve(Module<WelcomeModule>.self)!

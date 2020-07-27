@@ -248,6 +248,8 @@
 		DB86FD2A2477FF7B002FE22D /* LocationUpdateDateConverter.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB86FD292477FF7B002FE22D /* LocationUpdateDateConverter.swift */; };
 		DB86FD2C2477FFC4002FE22D /* LocationUpdateDateStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB86FD2B2477FFC4002FE22D /* LocationUpdateDateStorage.swift */; };
 		DB8A1960235729A0003E8F7D /* NavigationScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB8A195F235729A0003E8F7D /* NavigationScreenView.swift */; };
+		DB8BAE0624CF53A700CA8EC1 /* ServerError.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB8BAE0524CF53A700CA8EC1 /* ServerError.swift */; };
+		DB8BAE0824CF53D500CA8EC1 /* ServerError+Mapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB8BAE0724CF53D500CA8EC1 /* ServerError+Mapping.swift */; };
 		DB8D408122C3DBA700D5FBD0 /* CreateWalletModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB8D408022C3DBA700D5FBD0 /* CreateWalletModule.swift */; };
 		DB8D408322C3DBC000D5FBD0 /* CreateWalletPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB8D408222C3DBC000D5FBD0 /* CreateWalletPresenter.swift */; };
 		DB8D408522C3DBF200D5FBD0 /* CreateWalletViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB8D408422C3DBF200D5FBD0 /* CreateWalletViewController.swift */; };
@@ -776,6 +778,8 @@
 		DB86FD292477FF7B002FE22D /* LocationUpdateDateConverter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationUpdateDateConverter.swift; sourceTree = "<group>"; };
 		DB86FD2B2477FFC4002FE22D /* LocationUpdateDateStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationUpdateDateStorage.swift; sourceTree = "<group>"; };
 		DB8A195F235729A0003E8F7D /* NavigationScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationScreenView.swift; sourceTree = "<group>"; };
+		DB8BAE0524CF53A700CA8EC1 /* ServerError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerError.swift; sourceTree = "<group>"; };
+		DB8BAE0724CF53D500CA8EC1 /* ServerError+Mapping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ServerError+Mapping.swift"; sourceTree = "<group>"; };
 		DB8D408022C3DBA700D5FBD0 /* CreateWalletModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateWalletModule.swift; sourceTree = "<group>"; };
 		DB8D408222C3DBC000D5FBD0 /* CreateWalletPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateWalletPresenter.swift; sourceTree = "<group>"; };
 		DB8D408422C3DBF200D5FBD0 /* CreateWalletViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateWalletViewController.swift; sourceTree = "<group>"; };
@@ -2194,6 +2198,7 @@
 				DB66CEB12475AAB100FDB694 /* BuySellTrades.swift */,
 				DB156E2224A644F600E59F76 /* Platform.swift */,
 				DB1D21E524AE6C6A001E9696 /* StakeDetails.swift */,
+				DB8BAE0524CF53A700CA8EC1 /* ServerError.swift */,
 			);
 			path = Entities;
 			sourceTree = "<group>";
@@ -2325,6 +2330,7 @@
 				DB5F18C52472B16A00E37311 /* BuySellTrade+Mapping.swift */,
 				DB66CEB32475AAF300FDB694 /* BuySellTrades+Mapping.swift */,
 				DB1D21E724AE6CCB001E9696 /* StakeDetails+Mapping.swift */,
+				DB8BAE0724CF53D500CA8EC1 /* ServerError+Mapping.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -3030,6 +3036,7 @@
 				DB167CDB230D85E800D9D66E /* Transactions.swift in Sources */,
 				DBECA62C22F7FB22002C2610 /* ChangePhoneFlowController.swift in Sources */,
 				DBA1B61024A9C5B300A9A703 /* ReserveAssembly.swift in Sources */,
+				DB8BAE0624CF53A700CA8EC1 /* ServerError.swift in Sources */,
 				DB33E9C4241D3B1D00764BF5 /* PriceChartPeriod+Mapping.swift in Sources */,
 				DB2F250D2360687800274C60 /* CoinSellDetailsCurrentAddressViewController.swift in Sources */,
 				DB86FD262477FBD5002FE22D /* LocationUpdateDateRecord+CoreDataClass.swift in Sources */,
@@ -3459,6 +3466,7 @@
 				DB8D409622C3E9BF00D5FBD0 /* FlowController.swift in Sources */,
 				DB9616B522C63D6E0078E92D /* LoginUsecase.swift in Sources */,
 				DB1AF0DE24436B4A0037C998 /* MDCButton+Extensions.swift in Sources */,
+				DB8BAE0824CF53D500CA8EC1 /* ServerError+Mapping.swift in Sources */,
 				DBC68CBA22F8798F00473247 /* ChangePhoneViewController.swift in Sources */,
 				DB4D7BC22409A133008C2BD5 /* VerificationFlow.swift in Sources */,
 				DBA6843122E42B450079429E /* CoinsBalanceFlowController.swift in Sources */,

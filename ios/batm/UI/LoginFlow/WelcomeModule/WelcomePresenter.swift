@@ -4,7 +4,6 @@ import RxCocoa
 
 class WelcomePresenter: ModulePresenter, WelcomeModule {
   struct Input {
-    var openTermsAndConditions: Driver<Void>
     var create: Driver<Void>
     var recover: Driver<Void>
     var contactSupport: Driver<Void>
@@ -13,10 +12,6 @@ class WelcomePresenter: ModulePresenter, WelcomeModule {
   weak var delegate: WelcomeModuleDelegate?
   
   func bind(input: Input) {
-    input.openTermsAndConditions
-      .drive(onNext: { UIApplication.shared.open(URL.privacyPolicy) })
-      .disposed(by: disposeBag)
-    
     input.create
       .drive(onNext: { [delegate] in delegate?.showCreateWalletScreen() })
       .disposed(by: disposeBag)

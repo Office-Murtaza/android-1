@@ -92,7 +92,7 @@ final class RecallPresenter: ModulePresenter, RecallModule {
     return usecase.requestCode()
       .catchError { [store] in
         if let apiError = $0 as? APIError, case let .serverError(error) = apiError {
-          store.action.accept(.makeInvalidState(error))
+          store.action.accept(.makeInvalidState(error.message))
         }
         
         throw $0
@@ -105,7 +105,7 @@ final class RecallPresenter: ModulePresenter, RecallModule {
                               amount: state.coinAmount.doubleValue ?? 0.0))
       .catchError { [store] in
         if let apiError = $0 as? APIError, case let .serverError(error) = apiError {
-          store.action.accept(.makeInvalidState(error))
+          store.action.accept(.makeInvalidState(error.message))
         }
         
         throw $0

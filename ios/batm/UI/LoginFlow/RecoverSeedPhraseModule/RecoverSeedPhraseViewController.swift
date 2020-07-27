@@ -22,7 +22,7 @@ class RecoverSeedPhraseViewController: ModuleViewController<RecoverSeedPhrasePre
     let label = UILabel()
     label.attributedText = attributedString
     label.textAlignment = .center
-    label.numberOfLines = 2
+    label.numberOfLines = 0
     return label
   }()
   
@@ -64,8 +64,8 @@ class RecoverSeedPhraseViewController: ModuleViewController<RecoverSeedPhrasePre
     annotationLabel.snp.makeConstraints {
       $0.top.equalToSuperview().offset(30)
       $0.centerX.equalToSuperview()
-      $0.left.greaterThanOrEqualToSuperview().offset(70)
-      $0.right.lessThanOrEqualToSuperview().offset(-70)
+      $0.left.greaterThanOrEqualToSuperview().offset(50)
+      $0.right.lessThanOrEqualToSuperview().offset(-50)
     }
     formView.snp.makeConstraints {
       $0.top.equalTo(annotationLabel.snp.bottom).offset(25)

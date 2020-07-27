@@ -79,6 +79,10 @@ extension LoginFlowController: RecoverModuleDelegate {
 
 extension LoginFlowController: RecoverSeedPhraseModuleDelegate {
   
+  func cancelRecoveringSeedPhrase() {
+    step.accept(LoginFlow.Steps.backToWelcome)
+  }
+  
   func finishRecoveringSeedPhrase() {
     step.accept(LoginFlow.Steps.pinCode(.setup))
   }
@@ -87,9 +91,9 @@ extension LoginFlowController: RecoverSeedPhraseModuleDelegate {
 
 extension LoginFlowController: PinCodeModuleDelegate {
   
-  func didFinishPinCode(for stage: PinCodeStage) {
+  func didFinishPinCode(for stage: PinCodeStage, with pinCode: String) {
     switch stage {
-    case .setup: step.accept(LoginFlow.Steps.pinCode(.confirmation))
+    case .setup: step.accept(LoginFlow.Steps.pinCode(.confirmation, pinCode))
     case .confirmation, .verification:
       delegate?.didFinishLogin()
     }

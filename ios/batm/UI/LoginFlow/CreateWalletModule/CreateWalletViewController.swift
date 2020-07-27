@@ -12,6 +12,8 @@ class CreateWalletViewController: ModuleViewController<CreateWalletPresenter> {
   
   let formView = CreateWalletFormView()
   
+  let termsAndConditionsView = TermsAndConditionsView()
+  
   let nextButton = MDCButton.next
   
   override var shouldShowNavigationBar: Bool { return true }
@@ -24,6 +26,7 @@ class CreateWalletViewController: ModuleViewController<CreateWalletPresenter> {
     rootScrollView.contentInsetAdjustmentBehavior = .never
     rootScrollView.contentView.addSubviews(errorView,
                                            formView,
+                                           termsAndConditionsView,
                                            nextButton)
     
     setupDefaultKeyboardHandling()
@@ -44,6 +47,10 @@ class CreateWalletViewController: ModuleViewController<CreateWalletPresenter> {
     formView.snp.makeConstraints {
       $0.top.equalToSuperview().offset(20)
       $0.left.right.equalToSuperview().inset(15)
+    }
+    termsAndConditionsView.snp.makeConstraints {
+      $0.left.equalToSuperview().inset(15)
+      $0.bottom.equalTo(nextButton.snp.top).offset(-30)
     }
     nextButton.snp.makeConstraints {
       $0.height.equalTo(50)
@@ -80,6 +87,10 @@ class CreateWalletViewController: ModuleViewController<CreateWalletPresenter> {
       })
       .disposed(by: disposeBag)
     
+    termsAndConditionsView.rx.isAccepted
+      .drive(onNext: { [unowned self] in self.nextButton.isEnabled = $0 })
+      .disposed(by: disposeBag)
+    
     nextButton.rx.tap.asDriver()
       .drive(onNext: { [view] in view?.endEditing(true) })
       .disposed(by: disposeBag)
@@ -91,10 +102,12 @@ class CreateWalletViewController: ModuleViewController<CreateWalletPresenter> {
     let updatePhoneNumberDriver = formView.rx.phoneNumberText.asDriver()
     let updatePasswordDriver = formView.rx.passwordText.asDriver()
     let updateConfirmPasswordDriver = formView.rx.confirmPasswordText.asDriver()
+    let openTermsAndConditionsDriver = termsAndConditionsView.rx.termsAndConditionsTap
     let nextDriver = nextButton.rx.tap.asDriver()
     presenter.bind(input: CreateWalletPresenter.Input(updatePhoneNumber: updatePhoneNumberDriver,
                                                       updatePassword: updatePasswordDriver,
                                                       updateConfirmPassword: updateConfirmPasswordDriver,
+                                                      openTermsAndConditions: openTermsAndConditionsDriver,
                                                       next: nextDriver))
   }
 }

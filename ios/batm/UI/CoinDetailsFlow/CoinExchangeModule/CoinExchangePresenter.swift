@@ -91,7 +91,7 @@ final class CoinExchangePresenter: ModulePresenter, CoinExchangeModule {
     return usecase.requestCode()
       .catchError { [store] in
         if let apiError = $0 as? APIError, case let .serverError(error) = apiError {
-          store.action.accept(.makeInvalidState(error))
+          store.action.accept(.makeInvalidState(error.message))
         }
         
         throw $0
@@ -106,7 +106,7 @@ final class CoinExchangePresenter: ModulePresenter, CoinExchangeModule {
                                 amount: state.fromCoinAmount.doubleValue ?? 0.0))
       .catchError { [store] in
         if let apiError = $0 as? APIError, case let .serverError(error) = apiError {
-          store.action.accept(.makeInvalidState(error))
+          store.action.accept(.makeInvalidState(error.message))
         }
         
         throw $0

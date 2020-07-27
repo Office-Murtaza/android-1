@@ -12,7 +12,7 @@ enum APIError: Error, Equatable {
   case conflict
   case notValid
   case unknown
-  case serverError(String)
+  case serverError(ServerError)
 }
 
 protocol APIGateway {

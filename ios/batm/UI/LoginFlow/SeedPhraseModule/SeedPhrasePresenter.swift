@@ -60,7 +60,7 @@ class SeedPhrasePresenter: ModulePresenter, SeedPhraseModule {
     return usecase.createAccount(phoneNumber: state.phoneNumber, password: state.password)
       .catchError { [store] in
         if let apiError = $0 as? APIError, case let .serverError(error) = apiError {
-          store.action.accept(.makeInvalidState(error))
+          store.action.accept(.makeInvalidState(error.message))
         }
         
         throw $0

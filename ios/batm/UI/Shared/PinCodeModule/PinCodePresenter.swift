@@ -9,6 +9,7 @@ class PinCodePresenter: ModulePresenter, PinCodeModule {
   struct Input {
     var addDigit: Driver<String>
     var removeDigit: Driver<Void>
+    var didDisappear: Driver<Void>
   }
   
   private let usecase: PinCodeUsecase
@@ -30,6 +31,10 @@ class PinCodePresenter: ModulePresenter, PinCodeModule {
     store.action.accept(.updateStage(stage))
   }
   
+  func setup(with correctCode: String) {
+    store.action.accept(.setupCorrectCode(correctCode))
+  }
+  
   func bind(input: Input) {
     input.addDigit
       .asObservable()
@@ -43,6 +48,12 @@ class PinCodePresenter: ModulePresenter, PinCodeModule {
       .bind(to: store.action)
       .disposed(by: disposeBag)
     
+    input.didDisappear
+      .asObservable()
+      .map { PinCodeAction.clearCode }
+      .bind(to: store.action)
+      .disposed(by: disposeBag)
+    
     setupBindings()
   }
   
@@ -52,13 +63,33 @@ class PinCodePresenter: ModulePresenter, PinCodeModule {
       .asObservable()
       .flatMap { [unowned self] state -> Driver<PinCodeState> in
         switch state.stage {
-        case .setup: return self.track(self.usecase.save(pinCode: state.code)).map { state }
-        case .confirmation, .verification:
-          return self.track(self.usecase.verify(pinCode: state.code).andThen(self.usecase.refresh())).map { state }
+        case .confirmation:
+          return self.track(self.confirmPin(for: state)).map { state }
+        case .verification:
+          return self.track(self.verifyPin(for: state)).map { state }
+        default:
+          return .just(state)
         }
-      }
-      .subscribe(onNext: { [delegate] in delegate?.didFinishPinCode(for: $0.stage) })
-      .disposed(by: disposeBag)
+    }
+      
+    .subscribe(onNext: { [delegate] in delegate?.didFinishPinCode(for: $0.stage, with: $0.code) })
+    .disposed(by: disposeBag)
+  }
+  
+  private func confirmPin(for state: PinCodeState) -> Completable {
+    guard state.code == state.correctCode else {
+      store.action.accept(.clearCode)
+      return .error(PinCodeError.notMatch)
+    }
+    
+    return usecase.save(pinCode: state.code)
+  }
+  
+  private func verifyPin(for state: PinCodeState) -> Completable {
+    return usecase.verify(pinCode: state.code).andThen(usecase.refresh())
+      .do(onError: { [store] _ in
+        store.action.accept(.clearCode)
+      })
   }
   
 }

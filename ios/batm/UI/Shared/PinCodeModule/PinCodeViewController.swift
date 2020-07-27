@@ -5,6 +5,8 @@ import SnapKit
 
 class PinCodeViewController: ModuleViewController<PinCodePresenter>, UITextFieldDelegate {
   
+  let didDisappearRelay = PublishRelay<Void>()
+  
   let logoImageView: UIImageView = {
     let imageView = UIImageView(image: UIImage(named: "login_logo"))
     imageView.contentMode = .scaleAspectFit
@@ -26,6 +28,12 @@ class PinCodeViewController: ModuleViewController<PinCodePresenter>, UITextField
   
   override var shouldShowNavigationBar: Bool {
     return shouldShowNavBar
+  }
+  
+  override func viewDidDisappear(_ animated: Bool) {
+    super.viewDidDisappear(animated)
+    
+    didDisappearRelay.accept(())
   }
   
   override func setupUI() {
@@ -78,8 +86,10 @@ class PinCodeViewController: ModuleViewController<PinCodePresenter>, UITextField
     
     let addDigitDriver = keyboardView.rx.digitTapped
     let removeDigitDriver = keyboardView.rx.backTapped
+    let didDisappearDriver = didDisappearRelay.asDriver(onErrorDriveWith: .empty())
     
     presenter.bind(input: PinCodePresenter.Input(addDigit: addDigitDriver,
-                                                 removeDigit: removeDigitDriver))
+                                                 removeDigit: removeDigitDriver,
+                                                 didDisappear: didDisappearDriver))
   }
 }

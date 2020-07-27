@@ -69,7 +69,8 @@ class LoginUsecaseImpl: LoginUsecase {
     return api.checkAccount(phoneNumber: phoneNumber, password: password)
       .flatMapCompletable {
         if $0.phoneExist {
-          return .error(APIError.serverError(localize(L.CreateWallet.Form.Error.existedPhoneNumber)))
+          let error = ServerError(code: nil, message: localize(L.CreateWallet.Form.Error.existedPhoneNumber))
+          return .error(APIError.serverError(error))
         }
         
         return .empty()
@@ -80,11 +81,13 @@ class LoginUsecaseImpl: LoginUsecase {
     return api.checkAccount(phoneNumber: phoneNumber, password: password)
       .flatMapCompletable {
         if !$0.phoneExist {
-          return .error(APIError.serverError(localize(L.Recover.Form.Error.notExistedPhoneNumber)))
+          let error = ServerError(code: nil, message: localize(L.Recover.Form.Error.notExistedPhoneNumber))
+          return .error(APIError.serverError(error))
         }
         
         if !$0.passwordMatch {
-          return .error(APIError.serverError(localize(L.Recover.Form.Error.notMatchPassword)))
+          let error = ServerError(code: nil, message: localize(L.Recover.Form.Error.notMatchPassword))
+          return .error(APIError.serverError(error))
         }
         
         return .empty()

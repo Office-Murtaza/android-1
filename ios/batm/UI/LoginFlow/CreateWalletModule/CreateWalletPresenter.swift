@@ -10,6 +10,7 @@ class CreateWalletPresenter: ModulePresenter, CreateWalletModule {
     var updatePhoneNumber: Driver<String?>
     var updatePassword: Driver<String?>
     var updateConfirmPassword: Driver<String?>
+    var openTermsAndConditions: Driver<Void>
     var next: Driver<Void>
   }
   
@@ -47,6 +48,10 @@ class CreateWalletPresenter: ModulePresenter, CreateWalletModule {
       .bind(to: store.action)
       .disposed(by: disposeBag)
     
+    input.openTermsAndConditions
+      .drive(onNext: { UIApplication.shared.open(URL.privacyPolicy) })
+      .disposed(by: disposeBag)
+    
     input.next
       .asObservable()
       .doOnNext { [store] in store.action.accept(.updateValidationState) }
@@ -62,7 +67,7 @@ class CreateWalletPresenter: ModulePresenter, CreateWalletModule {
     return usecase.checkCreatingAccount(phoneNumber: phoneNumber, password: password)
       .catchError { [store] in
         if let apiError = $0 as? APIError, case let .serverError(error) = apiError {
-          store.action.accept(.makeInvalidState(error))
+          store.action.accept(.makeInvalidState(error.message))
         }
 
         throw $0
