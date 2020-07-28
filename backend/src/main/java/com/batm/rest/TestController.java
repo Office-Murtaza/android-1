@@ -26,15 +26,7 @@ public class TestController {
 
     @GetMapping("/sms")
     public Response sendSMS(@RequestParam String phone) {
-        return Response.ok(twilioService.sendMessage(phone, "Hey there, do you want to buy an elephant?"));
-    }
-
-    @GetMapping("/code/{userId}")
-    public Response getCode(@PathVariable Long userId) {
-        JSONObject res = new JSONObject();
-        res.put("code", twilioService.getVerificationCode(userId));
-
-        return Response.ok(res);
+        return Response.ok(twilioService.sendMessage(phone, "This is a test message"));
     }
 
     @GetMapping("/wallet")
@@ -68,52 +60,14 @@ public class TestController {
         return Response.ok(coinCode.submitTransaction(hex));
     }
 
-    /*
-    @GetMapping("/coins/store-node-txs")
-    public Response storeNodeTxs() {
-        geth.storeNodeTransactions();
-
-        return Response.ok(true);
-    }
-
-    @GetMapping("/coins/exists")
-    public Response exists(@RequestParam String fromAddress, @RequestParam String toAddress) {
-        return Response.ok(geth.existsInJournal(fromAddress, toAddress));
-    }
-
-    @GetMapping("/coins/token-balance")
-    public Response getTokenBalance(@RequestParam String address) {
-        return Response.ok(geth.getTokenBalance(address));
-    }
-
-    @GetMapping("/coins/eth-sign")
-    public Response ethSign(@RequestParam String fromAddress, @RequestParam String toAddress, @RequestParam BigDecimal amount) {
-        Coin coin = CoinService.CoinEnum.ETH.getCoinEntity();
-
-        return Response.ok(geth.ethSign(fromAddress, toAddress, amount, coin.getGasLimit(), coin.getGasPrice()));
-    }
-
-    @GetMapping("/coins/token-sign")
-    public Response tokenSign(@RequestParam String fromAddress, @RequestParam String toAddress, @RequestParam BigDecimal amount) {
-        Coin coin = CoinService.CoinEnum.CATM.getCoinEntity();
-
-        return Response.ok(geth.tokenSign(fromAddress, toAddress, amount, coin.getGasLimit(), coin.getGasPrice()));
-    }
-
-    @GetMapping("/coins/eth-submit")
-    public Response ethSubmit(@RequestParam String hex) {
-        return Response.ok(geth.submitTransaction(hex));
-    }
-
-    */
     @GetMapping("/coins/eth-nonce")
     public Response ethNonce(@RequestParam String address) {
         return Response.ok(geth.getNonce(address));
     }
 
-    @GetMapping("/user/{userId}/kyc/delete")
+    @GetMapping("/user/{userId}/kyc-delete")
     public Response deleteKyc(@PathVariable Long userId) {
-        return Response.ok(userService.resetVerificationsForUser(userId));
+        return Response.ok(userService.deleteKyc(userId));
     }
 
     private JSONObject getCoinJson(String address, BigDecimal balance, String path) {

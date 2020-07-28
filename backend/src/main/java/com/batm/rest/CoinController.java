@@ -22,11 +22,11 @@ public class CoinController {
     @Autowired
     private PriceChartService chartService;
 
-    @GetMapping("/coins/{coinCode}/settings")
-    public Response getCoinsSettings(@PathVariable CoinService.CoinEnum coinCode) {
+    @GetMapping("/coin/{coin}/settings")
+    public Response getSettings(@PathVariable CoinService.CoinEnum coin) {
         try {
-            CoinSettingsDTO dto = coinCode.getCoinSettings();
-            dto.setCode(coinCode.name());
+            CoinSettingsDTO dto = coin.getCoinSettings();
+            dto.setCode(coin.name());
 
             return Response.ok(dto);
         } catch (Exception e) {
@@ -35,23 +35,23 @@ public class CoinController {
         }
     }
 
-    @GetMapping("/coins/{coinCode}/gift-address")
-    public Response getCoinAddressByPhone(@PathVariable CoinService.CoinEnum coinCode, @RequestParam String phone) {
+    @GetMapping("/coin/{coin}/gift-address")
+    public Response getAddressByPhone(@PathVariable CoinService.CoinEnum coin, @RequestParam String phone) {
         try {
-            return Response.ok(userService.getCoinAddressByPhone(coinCode, phone));
+            return Response.ok(userService.getCoinAddressByPhone(coin, phone));
         } catch (Exception e) {
             e.printStackTrace();
             return Response.serverError();
         }
     }
 
-    @GetMapping("/coins/{coinCode}/utxo")
-    public Response getUtxo(@PathVariable CoinService.CoinEnum coinCode, @RequestParam String xpub) {
+    @GetMapping("/coin/{coin}/utxo")
+    public Response getUtxo(@PathVariable CoinService.CoinEnum coin, @RequestParam String xpub) {
         try {
-            if (coinCode == CoinService.CoinEnum.BTC || coinCode == CoinService.CoinEnum.BCH || coinCode == CoinService.CoinEnum.LTC) {
-                return Response.ok(coinCode.getUTXO(xpub));
+            if (coin == CoinService.CoinEnum.BTC || coin == CoinService.CoinEnum.BCH || coin == CoinService.CoinEnum.LTC) {
+                return Response.ok(coin.getUTXO(xpub));
             } else {
-                return Response.defaultError(coinCode.name() + " not allowed");
+                return Response.defaultError(coin.name() + " not allowed");
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -59,13 +59,13 @@ public class CoinController {
         }
     }
 
-    @GetMapping("/coins/{coinCode}/nonce")
-    public Response getNonce(@PathVariable CoinService.CoinEnum coinCode, @RequestParam String address) {
+    @GetMapping("/coin/{coin}/nonce")
+    public Response getNonce(@PathVariable CoinService.CoinEnum coin, @RequestParam String address) {
         try {
-            if (coinCode == CoinService.CoinEnum.ETH || coinCode == CoinService.CoinEnum.CATM) {
-                return Response.ok(coinCode.getNonce(address));
+            if (coin == CoinService.CoinEnum.ETH || coin == CoinService.CoinEnum.CATM) {
+                return Response.ok(coin.getNonce(address));
             } else {
-                return Response.defaultError(coinCode.name() + " not allowed");
+                return Response.defaultError(coin.name() + " not allowed");
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -73,13 +73,13 @@ public class CoinController {
         }
     }
 
-    @GetMapping("/coins/{coinCode}/current-account")
-    public Response getCurrentAccount(@PathVariable CoinService.CoinEnum coinCode, @RequestParam String address) {
+    @GetMapping("/coin/{coin}/current-account")
+    public Response getCurrentAccount(@PathVariable CoinService.CoinEnum coin, @RequestParam String address) {
         try {
-            if (coinCode == CoinService.CoinEnum.BNB || coinCode == CoinService.CoinEnum.XRP) {
-                return Response.ok(coinCode.getCurrentAccount(address));
+            if (coin == CoinService.CoinEnum.BNB || coin == CoinService.CoinEnum.XRP) {
+                return Response.ok(coin.getCurrentAccount(address));
             } else {
-                return Response.defaultError(coinCode.name() + " not allowed");
+                return Response.defaultError(coin.name() + " not allowed");
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -87,13 +87,13 @@ public class CoinController {
         }
     }
 
-    @GetMapping("/coins/{coinCode}/current-block")
-    public Response getCurrentBlock(@PathVariable CoinService.CoinEnum coinCode) {
+    @GetMapping("/coin/{coin}/current-block")
+    public Response getCurrentBlock(@PathVariable CoinService.CoinEnum coin) {
         try {
-            if (coinCode == CoinService.CoinEnum.TRX) {
-                return Response.ok(coinCode.getCurrentBlock());
+            if (coin == CoinService.CoinEnum.TRX) {
+                return Response.ok(coin.getCurrentBlock());
             } else {
-                return Response.defaultError(coinCode.name() + " not allowed");
+                return Response.defaultError(coin.name() + " not allowed");
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -101,8 +101,8 @@ public class CoinController {
         }
     }
 
-    @GetMapping("/user/{userId}/coins/balance")
-    public Response getCoinsBalance(@PathVariable Long userId, @RequestParam List<String> coins) {
+    @GetMapping("/user/{userId}/balance")
+    public Response getBalance(@PathVariable Long userId, @RequestParam List<String> coins) {
         try {
             return Response.ok(coinService.getCoinsBalance(userId, coins));
         } catch (Exception e) {
@@ -111,10 +111,10 @@ public class CoinController {
         }
     }
 
-    @GetMapping("/user/{userId}/coins/{coinCode}/price-chart")
-    public Response getPriceChart(@PathVariable Long userId, @PathVariable CoinService.CoinEnum coinCode) {
+    @GetMapping("/user/{userId}/coin/{coin}/price-chart")
+    public Response getPriceChart(@PathVariable Long userId, @PathVariable CoinService.CoinEnum coin) {
         try {
-            return Response.ok(chartService.getPriceChart(userId, coinCode));
+            return Response.ok(chartService.getPriceChart(userId, coin));
         } catch (Exception e) {
             e.printStackTrace();
             return Response.serverError();

@@ -1,21 +1,16 @@
 package com.batm.service;
 
 import com.batm.dto.SubmitTransactionDTO;
-import com.batm.entity.CodeVerify;
-import com.batm.entity.User;
-import com.batm.repository.CodeVerifyRep;
 import com.batm.util.Constant;
 import com.twilio.Twilio;
 import com.twilio.rest.api.v2010.account.MessageCreator;
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import javax.annotation.PostConstruct;
 import java.net.URI;
 import java.util.Arrays;
-import java.util.Date;
 import com.twilio.rest.api.v2010.account.Message;
 import com.twilio.type.PhoneNumber;
 
@@ -33,9 +28,6 @@ public class TwilioService {
 
     @Value("${twilio.from-number}")
     private String fromNumber;
-
-    @Autowired
-    private CodeVerifyRep codeVerifyRep;
 
     @PostConstruct
     public void init() {
@@ -64,39 +56,6 @@ public class TwilioService {
 
                 return code;
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return null;
-    }
-
-    public void sendVerificationCode(User user) {
-        try {
-            String code = sendVerificationCode(user.getPhone());
-            CodeVerify codeVerify = codeVerifyRep.findByUserId(user.getId());
-
-            if (codeVerify == null) {
-                codeVerify = new CodeVerify();
-                codeVerify.setUser(user);
-                codeVerify.setCode(code);
-                codeVerify.setStatus(0);
-            } else {
-                codeVerify.setStatus(0);
-                codeVerify.setCode(code);
-            }
-
-            codeVerify.setUpdateDate(new Date());
-
-            codeVerifyRep.save(codeVerify);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    public String getVerificationCode(Long userId) {
-        try {
-            return codeVerifyRep.findByUserId(userId).getCode();
         } catch (Exception e) {
             e.printStackTrace();
         }

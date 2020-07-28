@@ -4,7 +4,6 @@ import com.batm.dto.*;
 import com.batm.model.TransactionStatus;
 import com.batm.model.TransactionType;
 import com.batm.util.Base58;
-import com.batm.util.Constant;
 import com.batm.util.TxUtil;
 import com.batm.util.Util;
 import com.google.protobuf.ByteString;
@@ -28,6 +27,8 @@ import java.util.*;
 @Service
 public class TrongridService {
 
+    private static final BigDecimal TRX_DIVIDER = BigDecimal.valueOf(1_000_000L);
+
     @Autowired
     private RestTemplate rest;
 
@@ -48,9 +49,10 @@ public class TrongridService {
             if (!data.isEmpty()) {
                 String balance = data.getJSONObject(0).getString("balance");
 
-                return Util.format6(new BigDecimal(balance).divide(Constant.TRX_DIVIDER));
+                return Util.format6(new BigDecimal(balance).divide(TRX_DIVIDER));
             }
-        } catch (Exception e) {}
+        } catch (Exception e) {
+        }
 
         return BigDecimal.ZERO;
     }
@@ -163,13 +165,13 @@ public class TrongridService {
             Tron.TransferContract.Builder transferBuilder = Tron.TransferContract.newBuilder();
             transferBuilder.setOwnerAddress(fromAddress);
             transferBuilder.setToAddress(toAddress);
-            transferBuilder.setAmount(amount.multiply(Constant.TRX_DIVIDER).longValue());
+            transferBuilder.setAmount(amount.multiply(TRX_DIVIDER).longValue());
 
             Tron.Transaction.Builder transactionBuilder = Tron.Transaction.newBuilder();
             transactionBuilder.setTransfer(transferBuilder.build());
             transactionBuilder.setTimestamp(System.currentTimeMillis());
             transactionBuilder.setExpiration(transactionBuilder.getTimestamp() + 36000000);
-            transactionBuilder.setFeeLimit(fee.multiply(Constant.TRX_DIVIDER).longValue());
+            transactionBuilder.setFeeLimit(fee.multiply(TRX_DIVIDER).longValue());
             transactionBuilder.setBlockHeader(headerBuilder.build());
 
             Tron.SigningInput.Builder sign = Tron.SigningInput.newBuilder();
@@ -224,6 +226,6 @@ public class TrongridService {
     }
 
     private BigDecimal getAmount(Long amount) {
-        return BigDecimal.valueOf(amount).divide(Constant.TRX_DIVIDER).stripTrailingZeros();
+        return BigDecimal.valueOf(amount).divide(TRX_DIVIDER).stripTrailingZeros();
     }
 }

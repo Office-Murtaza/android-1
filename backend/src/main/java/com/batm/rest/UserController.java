@@ -17,17 +17,13 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.validation.BindException;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
-import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -67,13 +63,13 @@ public class UserController {
     private CoinService coinService;
 
     @PostMapping("/check")
-    public Response check(@RequestBody CheckDTO req) {
+    public Response check(@RequestBody CheckDTO dto) {
         try {
             CheckResponseDTO res = new CheckResponseDTO();
-            User user = userService.findByPhone(req.getPhone());
+            User user = userService.findByPhone(dto.getPhone());
 
             res.setPhoneExist(user != null);
-            res.setPasswordMatch(user != null && passwordEncoder.matches(req.getPassword(), user.getPassword()));
+            res.setPasswordMatch(user != null && passwordEncoder.matches(dto.getPassword(), user.getPassword()));
 
             return Response.ok(res);
         } catch (Exception e) {
@@ -83,10 +79,10 @@ public class UserController {
     }
 
     @PostMapping("/verify")
-    public Response verify(@RequestBody VerificationDTO req) {
+    public Response verify(@RequestBody VerificationDTO dto) {
         try {
             VerificationResponseDTO res = new VerificationResponseDTO();
-            String code = twilioService.sendVerificationCode(req.getPhone());
+            String code = twilioService.sendVerificationCode(dto.getPhone());
 
             if (StringUtils.isBlank(code)) {
                 return Response.defaultError("Phone country is not supported");
@@ -94,7 +90,7 @@ public class UserController {
 
             res.setCode(code);
 
-            log.info("phone: " + req.getPhone() + ", code: " + code);
+            log.info("phone: " + dto.getPhone() + ", code: " + code);
 
             return Response.ok(res);
         } catch (Exception e) {
@@ -104,25 +100,25 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public Response register(@RequestBody AuthenticationDTO req) {
+    public Response register(@RequestBody AuthenticationDTO dto) {
         try {
-            if (req.getCoins().isEmpty()) {
+            if (dto.getCoins().isEmpty()) {
                 return Response.defaultError("Empty coin list");
             }
 
-            if (req.getCoins().size() != 8) {
+            if (dto.getCoins().size() != 8) {
                 return Response.defaultError("Some coin is missed");
             }
 
-            User existingUser = userService.findByPhone(req.getPhone());
+            User existingUser = userService.findByPhone(dto.getPhone());
 
             if (existingUser != null) {
                 return Response.error(3, "Phone is already registered");
             }
 
-            User user = userService.register(req.getPhone(), req.getPassword(), req.getPlatform(), req.getCoins());
+            User user = userService.register(dto.getPhone(), dto.getPassword(), dto.getPlatform(), dto.getCoins());
 
-            TokenDTO jwt = getJwt(user.getId(), user.getIdentity().getId(), req.getPhone(), req.getPassword());
+            TokenDTO jwt = getJwt(user.getId(), user.getIdentity().getId(), dto.getPhone(), dto.getPassword());
 
             Token token = new Token();
             token.setRefreshToken(jwt.getRefreshToken());
@@ -131,7 +127,7 @@ public class UserController {
 
             refreshTokenRep.save(token);
 
-            List<String> coins = req.getCoins().stream().map(e -> e.getCode()).collect(Collectors.toList());
+            List<String> coins = dto.getCoins().stream().map(e -> e.getCode()).collect(Collectors.toList());
 
             jwt.setBalance(coinService.getCoinsBalance(user.getId(), coins));
 
@@ -143,42 +139,42 @@ public class UserController {
     }
 
     @PostMapping("/recover")
-    public Response recover(@RequestBody AuthenticationDTO req) {
+    public Response recover(@RequestBody AuthenticationDTO dto) {
         try {
-            if (req.getCoins().isEmpty()) {
+            if (dto.getCoins().isEmpty()) {
                 return Response.defaultError("Empty coin list");
             }
 
-            if (req.getCoins().size() != 8) {
+            if (dto.getCoins().size() != 8) {
                 return Response.defaultError("Some coin is missed");
             }
 
-            User user = userService.findByPhone(req.getPhone());
+            User user = userService.findByPhone(dto.getPhone());
             if (user == null) {
                 return Response.error(3, "Phone doesn't exist");
             }
 
-            boolean isPasswordMatch = passwordEncoder.matches(req.getPassword(), user.getPassword());
+            boolean isPasswordMatch = passwordEncoder.matches(dto.getPassword(), user.getPassword());
             if (!isPasswordMatch) {
                 return Response.error(4, "Incorrect password");
             }
 
-            boolean isCoinAddressesMatch = coinService.isCoinsAddressMatch(user, req.getCoins());
+            boolean isCoinAddressesMatch = coinService.isCoinsAddressMatch(user, dto.getCoins());
             if (!isCoinAddressesMatch) {
                 return Response.error(5, "Coins address doesn't match");
             }
 
-            TokenDTO jwt = getJwt(user.getId(), user.getIdentity().getId(), req.getPhone(), req.getPassword());
+            TokenDTO jwt = getJwt(user.getId(), user.getIdentity().getId(), dto.getPhone(), dto.getPassword());
 
             Token token = refreshTokenRep.findByUserId(user.getId());
             token.setRefreshToken(jwt.getRefreshToken());
             token.setAccessToken(jwt.getAccessToken());
             refreshTokenRep.save(token);
 
-            user.setPlatform(req.getPlatform());
+            user.setPlatform(dto.getPlatform());
             userService.save(user);
 
-            List<String> coins = req.getCoins().stream().map(e -> e.getCode()).collect(Collectors.toList());
+            List<String> coins = dto.getCoins().stream().map(e -> e.getCode()).collect(Collectors.toList());
 
             jwt.setBalance(coinService.getCoinsBalance(user.getId(), coins));
 
@@ -237,14 +233,14 @@ public class UserController {
     }
 
     @PostMapping("/user/{userId}/phone")
-    public Response updatePhone(@PathVariable Long userId, @RequestBody PhoneDTO req) {
+    public Response updatePhone(@PathVariable Long userId, @RequestBody PhoneDTO dto) {
         try {
-            Boolean isPhoneExist = userService.isPhoneExist(userId, req.getPhone());
+            Boolean isPhoneExist = userService.isPhoneExist(userId, dto.getPhone());
 
             if (isPhoneExist) {
                 return Response.defaultError("Phone is already registered");
             } else {
-                userService.updatePhone(userId, req.getPhone());
+                userService.updatePhone(userId, dto.getPhone());
             }
 
             return Response.ok(true);
@@ -255,15 +251,15 @@ public class UserController {
     }
 
     @PostMapping("/user/{userId}/password")
-    public Response updatePassword(@PathVariable Long userId, @RequestBody ChangePasswordDTO req) {
+    public Response updatePassword(@PathVariable Long userId, @RequestBody ChangePasswordDTO dto) {
         try {
             User user = userService.findById(userId);
-            Boolean isMatch = passwordEncoder.matches(req.getOldPassword(), user.getPassword());
+            Boolean isMatch = passwordEncoder.matches(dto.getOldPassword(), user.getPassword());
 
             if (!isMatch) {
                 return Response.defaultError("Old password doesn't match");
             } else {
-                userService.updatePassword(userId, passwordEncoder.encode(req.getNewPassword()));
+                userService.updatePassword(userId, passwordEncoder.encode(dto.getNewPassword()));
             }
 
             return Response.ok(true);
@@ -273,22 +269,20 @@ public class UserController {
         }
     }
 
-    @GetMapping("/user/{userId}/kyc")
-    public Response getKycState(@PathVariable Long userId) {
+    @GetMapping("/user/{userId}/kyc-details")
+    public Response getKycDetails(@PathVariable Long userId) {
         try {
-            VerificationStateDTO verificationStateDTO = userService.getVerificationState(userId);
-            return Response.ok(verificationStateDTO);
+            return Response.ok(userService.getKycDetails(userId));
         } catch (Exception e) {
             e.printStackTrace();
             return Response.serverError();
         }
     }
 
-    @PostMapping("/user/{userId}/kyc")
-    public Response submitKyc(@PathVariable Long userId, @Valid @RequestBody @ModelAttribute UserVerificationDTO verificationData) {
+    @PostMapping("/user/{userId}/kyc-submit")
+    public Response submitKyc(@PathVariable Long userId, @RequestBody @ModelAttribute SubmitKycDTO dto) {
         try {
-            userService.submitVerification(userId, verificationData);
-            return Response.ok(Boolean.TRUE);
+            return Response.ok(userService.submitKyc(userId, dto));
         } catch (Exception e) {
             e.printStackTrace();
             return Response.serverError();
@@ -342,14 +336,5 @@ public class UserController {
 
         return new TokenDTO(user.getId(), user.getIdentity().getId(), jwt, System.currentTimeMillis() + tokenDuration, refreshToken,
                 authentication.getAuthorities().stream().map(role -> role.getAuthority()).collect(Collectors.toList()));
-    }
-
-    @ResponseStatus(HttpStatus.OK)
-    @ExceptionHandler(BindException.class)
-    public Response handleValidationExceptions(BindException ex) {
-        FieldError fieldError = (FieldError) ex.getBindingResult().getAllErrors().get(0);
-        String errorMessage = fieldError.getDefaultMessage();
-
-        return Response.defaultError(errorMessage);
     }
 }
