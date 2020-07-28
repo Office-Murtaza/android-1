@@ -88,12 +88,13 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         if (securityEnabled) {
             http.csrf().disable().authorizeRequests()
                     .antMatchers("/api/v1/check").permitAll()
-                    .antMatchers("/api/v1/verification").permitAll()
+                    .antMatchers("/api/v1/verify").permitAll()
                     .antMatchers("/api/v1/register").permitAll()
                     .antMatchers("/api/v1/recover").permitAll()
                     .antMatchers("/api/v1/refresh").permitAll()
                     .antMatchers("/api/v1/test/**").permitAll()
                     .antMatchers("/api/v1/wallet/**").permitAll()
+                    .antMatchers("/api/v1/ws/**").permitAll()
                     .antMatchers("/api/v1/**").authenticated()
 
                     .and().exceptionHandling().and().headers().frameOptions().disable().and().sessionManagement()
@@ -101,11 +102,13 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         } else {
             http.csrf().disable().authorizeRequests()
                     .antMatchers("/api/v1/check").permitAll()
-                    .antMatchers("/api/v1/verification").permitAll()
+                    .antMatchers("/api/v1/verify").permitAll()
                     .antMatchers("/api/v1/register").permitAll()
                     .antMatchers("/api/v1/recover").permitAll()
                     .antMatchers("/api/v1/refresh").permitAll()
                     .antMatchers("/api/v1/test/**").permitAll()
+                    .antMatchers("/api/v1/wallet/**").permitAll()
+                    .antMatchers("/api/v1/ws/**").permitAll()
                     .antMatchers("/api/v1/**").permitAll()
 
                     .and().exceptionHandling().and().headers().frameOptions().disable().and().sessionManagement()

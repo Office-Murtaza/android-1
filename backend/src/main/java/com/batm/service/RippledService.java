@@ -3,7 +3,6 @@ package com.batm.service;
 import com.batm.dto.*;
 import com.batm.model.TransactionStatus;
 import com.batm.model.TransactionType;
-import com.batm.util.Constant;
 import com.batm.util.TxUtil;
 import com.batm.util.Util;
 import com.google.protobuf.ByteString;
@@ -25,6 +24,8 @@ import java.util.*;
 @Getter
 @Service
 public class RippledService {
+
+    private static final BigDecimal XRP_DIVIDER = BigDecimal.valueOf(1_000_000L);
 
     @Autowired
     private RestTemplate rest;
@@ -53,8 +54,9 @@ public class RippledService {
             JSONObject res = rest.postForObject(nodeUrl, req, JSONObject.class);
             String balance = res.getJSONObject("result").getJSONObject("account_data").getString("Balance");
 
-            return Util.format6(new BigDecimal(balance).divide(Constant.XRP_DIVIDER));
-        } catch (Exception e) {}
+            return Util.format6(new BigDecimal(balance).divide(XRP_DIVIDER));
+        } catch (Exception e) {
+        }
 
         return BigDecimal.ZERO;
     }
@@ -75,7 +77,7 @@ public class RippledService {
 
             String txId = res.optJSONObject("result").optJSONObject("tx_json").optString("hash");
 
-            if(isTransactionExist(txId)) {
+            if (isTransactionExist(txId)) {
                 return txId;
             }
         } catch (Exception e) {
@@ -198,8 +200,8 @@ public class RippledService {
             Ripple.SigningInput.Builder builder = Ripple.SigningInput.newBuilder();
             builder.setAccount(fromAddress);
             builder.setDestination(toAddress);
-            builder.setAmount(amount.multiply(Constant.XRP_DIVIDER).longValue());
-            builder.setFee(fee.multiply(Constant.XRP_DIVIDER).longValue());
+            builder.setAmount(amount.multiply(XRP_DIVIDER).longValue());
+            builder.setFee(fee.multiply(XRP_DIVIDER).longValue());
             builder.setSequence(accountDTO.getSequence());
             builder.setPrivateKey(ByteString.copyFrom(privateKey.data()));
 
@@ -247,25 +249,25 @@ public class RippledService {
     }
 
     private BigDecimal getAmount(String amount) {
-        return new BigDecimal(amount).divide(Constant.XRP_DIVIDER).stripTrailingZeros();
+        return new BigDecimal(amount).divide(XRP_DIVIDER).stripTrailingZeros();
     }
 
     private boolean isTransactionExist(String txId) {
         try {
-                JSONObject param = new JSONObject();
-                param.put("transaction", txId);
+            JSONObject param = new JSONObject();
+            param.put("transaction", txId);
 
-                JSONArray params = new JSONArray();
-                params.add(param);
+            JSONArray params = new JSONArray();
+            params.add(param);
 
-                JSONObject req = new JSONObject();
-                req.put("method", "tx");
-                req.put("params", params);
+            JSONObject req = new JSONObject();
+            req.put("method", "tx");
+            req.put("params", params);
 
-                JSONObject res = rest.postForObject(nodeUrl, req, JSONObject.class);
-                JSONObject tx = res.optJSONObject("result");
+            JSONObject res = rest.postForObject(nodeUrl, req, JSONObject.class);
+            JSONObject tx = res.optJSONObject("result");
 
-                return !tx.optString("status").equalsIgnoreCase("error");
+            return !tx.optString("status").equalsIgnoreCase("error");
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
 import java.util.HashMap;
 import java.util.Map;
 
-public enum VerificationStatus {
+public enum KycStatus {
 
     NOT_VERIFIED(1),
     VERIFICATION_PENDING(2),
@@ -16,15 +16,15 @@ public enum VerificationStatus {
 
     private int value;
 
-    private static final Map<Integer, VerificationStatus> map = new HashMap<>();
+    private static final Map<Integer, KycStatus> map = new HashMap<>();
 
     static {
-        for (VerificationStatus type : VerificationStatus.values()) {
+        for (KycStatus type : KycStatus.values()) {
             map.put(type.value, type);
         }
     }
 
-    VerificationStatus(int value) {
+    KycStatus(int value) {
         this.value = value;
     }
 
@@ -33,7 +33,7 @@ public enum VerificationStatus {
         return value;
     }
 
-    public static VerificationStatus valueOf(Integer value) {
+    public static KycStatus valueOf(Integer value) {
         return map.get(value);
     }
 }

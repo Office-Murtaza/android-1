@@ -2,7 +2,6 @@ package com.batm.service;
 
 import com.batm.dto.*;
 import com.batm.model.TransactionStatus;
-import com.batm.util.Constant;
 import com.batm.util.TxUtil;
 import com.batm.util.Util;
 import com.binance.api.client.BinanceApiRestClient;
@@ -38,6 +37,9 @@ import java.util.concurrent.TimeUnit;
 @Service
 public class BinanceService {
 
+    private static final String CHAIN_ID = "Binance-Chain-Tigris";
+    private static final BigDecimal BNB_DIVIDER = BigDecimal.valueOf(100_000_000L);
+
     @Autowired
     private BinanceDexApiRestClient binanceDex;
 
@@ -68,7 +70,8 @@ public class BinanceService {
                     .filter(e -> "BNB".equals(e.getSymbol()))
                     .map(it -> new BigDecimal(it.getFree()).add(new BigDecimal(it.getLocked())))
                     .reduce(BigDecimal.ZERO, BigDecimal::add));
-        } catch (Exception e) {}
+        } catch (Exception e) {
+        }
 
         return BigDecimal.ZERO;
     }
@@ -148,7 +151,7 @@ public class BinanceService {
         try {
             Account account = binanceDex.getAccount(address);
 
-            return new CurrentAccountDTO(account.getAccountNumber(), account.getSequence().intValue(), Constant.BNB_CHAIN_ID);
+            return new CurrentAccountDTO(account.getAccountNumber(), account.getSequence().intValue(), CHAIN_ID);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -177,7 +180,7 @@ public class BinanceService {
 
             Binance.SendOrder.Token.Builder token = Binance.SendOrder.Token.newBuilder();
             token.setDenom("BNB");
-            token.setAmount(amount.multiply(Constant.BNB_DIVIDER).longValue());
+            token.setAmount(amount.multiply(BNB_DIVIDER).longValue());
 
             Binance.SendOrder.Input.Builder input = Binance.SendOrder.Input.newBuilder();
             input.setAddress(ByteString.copyFrom(new AnyAddress(fromAddress, CoinType.BINANCE).data()));
@@ -231,6 +234,6 @@ public class BinanceService {
     }
 
     private BigDecimal getAmount(String amount) {
-        return new BigDecimal(amount).divide(Constant.BNB_DIVIDER).stripTrailingZeros();
+        return new BigDecimal(amount).divide(BNB_DIVIDER).stripTrailingZeros();
     }
 }

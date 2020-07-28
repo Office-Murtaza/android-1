@@ -2,8 +2,8 @@ package com.batm.util;
 
 import com.batm.entity.User;
 import net.sf.json.JSONObject;
-import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.springframework.web.multipart.MultipartFile;
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 import javax.net.ssl.HttpsURLConnection;
@@ -11,13 +11,15 @@ import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Optional;
 
 public class Util {
 
@@ -118,12 +120,8 @@ public class Util {
         return phone.substring(0, length - 10) + " " + phone.substring(length - 10, length - 7) + "-" + phone.substring(length - 7, length - 4) + "-" + phone.substring(length - 4, length);
     }
 
-    //TODO: rewrite
-    public static String getExtensionByStringHandling(String filename) {
-        return Optional.ofNullable(filename)
-                .filter(f -> f.contains("."))
-                .map(f -> f.substring(filename.lastIndexOf(".")))
-                .orElse(StringUtils.EMPTY);
+    public static void uploadFile(MultipartFile file, Path path) throws IOException {
+        Files.write(path, file.getBytes());
     }
 
     public static String sign(String method, String coin, long timestamp, String apiKey, String apiSecret) {

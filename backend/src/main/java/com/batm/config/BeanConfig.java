@@ -38,8 +38,8 @@ public class BeanConfig {
     @Bean
     public BinanceApiRestClient getBinanceApiRestClient() {
         BinanceApiClientFactory factory = BinanceApiClientFactory.newInstance(binanceApiKey, binanceSecretKey);
-        BinanceApiRestClient client = factory.newRestClient();
-        return client;
+
+        return factory.newRestClient();
     }
 
     @Bean
@@ -49,11 +49,10 @@ public class BeanConfig {
 
     @Bean
     public MessageSource messageSource() {
-        ReloadableResourceBundleMessageSource messageSource
-                = new ReloadableResourceBundleMessageSource();
-
+        ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
         messageSource.setBasename("classpath:messages");
         messageSource.setDefaultEncoding("UTF-8");
+
         return messageSource;
     }
 
@@ -61,6 +60,7 @@ public class BeanConfig {
     public LocalValidatorFactoryBean getValidator() {
         LocalValidatorFactoryBean bean = new LocalValidatorFactoryBean();
         bean.setValidationMessageSource(messageSource());
+
         return bean;
     }
 }

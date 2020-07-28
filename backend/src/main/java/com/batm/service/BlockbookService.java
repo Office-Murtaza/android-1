@@ -25,6 +25,10 @@ import java.util.*;
 @Service
 public class BlockbookService {
 
+    public static final BigDecimal BTC_DIVIDER = BigDecimal.valueOf(100_000_000L);
+    public static final BigDecimal BCH_DIVIDER = BigDecimal.valueOf(100_000_000L);
+    public static final BigDecimal LTC_DIVIDER = BigDecimal.valueOf(100_000_000L);
+
     @Value("${btc.node.url}")
     private String btcNodeUrl;
 

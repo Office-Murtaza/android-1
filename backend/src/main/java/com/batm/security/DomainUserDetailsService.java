@@ -35,7 +35,7 @@ public class DomainUserDetailsService implements UserDetailsService {
         Set<GrantedAuthority> authorities = new HashSet<>();
         authorities.add(new SimpleGrantedAuthority(user.getRole()));
 
-        return new org.springframework.security.core.userdetails.User(user.getPassword(), user.getPassword(),
+        return new org.springframework.security.core.userdetails.User(user.getPhone(), user.getPassword(),
                 authorities);
     }
 }

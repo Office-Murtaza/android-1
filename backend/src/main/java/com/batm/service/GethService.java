@@ -7,7 +7,6 @@ import com.batm.model.TransactionType;
 import com.batm.repository.CoinPathRep;
 import com.batm.repository.CoinRep;
 import com.batm.repository.UserCoinRep;
-import com.batm.util.Constant;
 import com.batm.util.TxUtil;
 import com.batm.util.Util;
 import com.google.protobuf.ByteString;
@@ -46,6 +45,8 @@ import java.util.*;
 @Service
 @EnableScheduling
 public class GethService {
+
+    private static final BigDecimal ETH_DIVIDER = BigDecimal.valueOf(1_000_000_000_000_000_000L);
 
     private final int START_BLOCK = 10290000;
     private final int MAX_BLOCK_COUNT = 500;
@@ -177,7 +178,7 @@ public class GethService {
         try {
             EthGetBalance getBalance = web3.ethGetBalance(address, DefaultBlockParameterName.LATEST).send();
 
-            return new BigDecimal(getBalance.getBalance()).divide(Constant.ETH_DIVIDER);
+            return new BigDecimal(getBalance.getBalance()).divide(ETH_DIVIDER);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -193,7 +194,7 @@ public class GethService {
 
             BigDecimal balanceWei = new BigDecimal(Numeric.decodeQuantity(web3.ethCall(tr, DefaultBlockParameterName.LATEST).send().getValue()));
 
-            return balanceWei.divide(Constant.ETH_DIVIDER);
+            return balanceWei.divide(ETH_DIVIDER);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -240,7 +241,7 @@ public class GethService {
     }
 
     private BigDecimal calculateFee(Long gasLimit, Long gasPrice) {
-        return new BigDecimal(gasLimit).multiply(new BigDecimal(gasPrice)).divide(Constant.ETH_DIVIDER).stripTrailingZeros();
+        return new BigDecimal(gasLimit).multiply(new BigDecimal(gasPrice)).divide(ETH_DIVIDER).stripTrailingZeros();
     }
 
     public Integer getNonce(String address) {
@@ -323,7 +324,7 @@ public class GethService {
             input.setNonce(ByteString.copyFrom(Numeric.hexStringToByteArray(Integer.toHexString(nonce))));
             input.setGasLimit(ByteString.copyFrom(Numeric.hexStringToByteArray(Long.toHexString(gasLimit))));
             input.setGasPrice(ByteString.copyFrom(Numeric.hexStringToByteArray(Long.toHexString(gasPrice))));
-            input.setAmount(ByteString.copyFrom(Numeric.hexStringToByteArray(Long.toHexString(amount.multiply(Constant.ETH_DIVIDER).longValue()))));
+            input.setAmount(ByteString.copyFrom(Numeric.hexStringToByteArray(Long.toHexString(amount.multiply(ETH_DIVIDER).longValue()))));
 
             Ethereum.SigningOutput output = AnySigner.sign(input.build(), CoinType.ETHEREUM, Ethereum.SigningOutput.parser());
 
@@ -356,7 +357,7 @@ public class GethService {
             input.setGasPrice(ByteString.copyFrom(Numeric.hexStringToByteArray(Long.toHexString(gasPrice))));
 
             EthereumAbiFunction function = EthereumAbiEncoder.buildFunction("transfer");
-            byte[] amountBytes = amount.multiply(Constant.ETH_DIVIDER).toBigInteger().toByteArray();
+            byte[] amountBytes = amount.multiply(ETH_DIVIDER).toBigInteger().toByteArray();
             function.addParamAddress(Numeric.hexStringToByteArray(toAddress), false);
             function.addParamUInt256(amountBytes, false);
             byte[] encode = EthereumAbiEncoder.encode(function);
@@ -531,15 +532,8 @@ public class GethService {
             String toAddress = tx.getTo();
 
             if (existsInJournal(fromAddress, toAddress)) {
-                BigDecimal amount = new BigDecimal(tx.getValue())
-                        .divide(Constant.ETH_DIVIDER)
-                        .stripTrailingZeros();
-
-                BigDecimal fee = new BigDecimal(tx.getGasPrice())
-                        .multiply(new BigDecimal(tx.getGas()))
-                        .divide(Constant.ETH_DIVIDER)
-                        .stripTrailingZeros();
-
+                BigDecimal amount = new BigDecimal(tx.getValue()).divide(ETH_DIVIDER).stripTrailingZeros();
+                BigDecimal fee = new BigDecimal(tx.getGasPrice()).multiply(new BigDecimal(tx.getGas())).divide(ETH_DIVIDER).stripTrailingZeros();
                 Integer blockNumber = parseBlockNumber(tx);
 
                 TransactionReceipt receipt = web3.ethGetTransactionReceipt(txId).send().getTransactionReceipt().get();
@@ -584,7 +578,7 @@ public class GethService {
             return BigDecimal.ZERO;
         }
 
-        return new BigDecimal(Numeric.toBigInt(data)).divide(Constant.ETH_DIVIDER).stripTrailingZeros();
+        return new BigDecimal(Numeric.toBigInt(data)).divide(ETH_DIVIDER).stripTrailingZeros();
     }
 
     private Integer parseBlockNumber(org.web3j.protocol.core.methods.response.Transaction tx) {
