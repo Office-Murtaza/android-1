@@ -11,11 +11,8 @@ final class CoinExchangePresenter: ModulePresenter, CoinExchangeModule {
     var back: Driver<Void>
     var updateFromCoinAmount: Driver<String?>
     var updatePickerItem: Driver<CustomCoinType>
-    var updateCode: Driver<String?>
-    var cancel: Driver<Void>
     var max: Driver<Void>
     var next: Driver<Void>
-    var sendCode: Driver<Void>
   }
   
   private let usecase: CoinDetailsUsecase
@@ -40,7 +37,7 @@ final class CoinExchangePresenter: ModulePresenter, CoinExchangeModule {
   }
 
   func bind(input: Input) {
-    Driver.merge(input.back, input.cancel)
+    input.back
       .drive(onNext: { [delegate] in delegate?.didFinishCoinExchange() })
       .disposed(by: disposeBag)
     
@@ -52,12 +49,6 @@ final class CoinExchangePresenter: ModulePresenter, CoinExchangeModule {
     
     input.updatePickerItem
       .drive(onNext: { [store] in store.action.accept(.updateToCoinType($0)) })
-      .disposed(by: disposeBag)
-    
-    input.updateCode
-      .asObservable()
-      .map { CoinExchangeAction.updateCode($0) }
-      .bind(to: store.action)
       .disposed(by: disposeBag)
     
     input.max
@@ -73,37 +64,16 @@ final class CoinExchangePresenter: ModulePresenter, CoinExchangeModule {
       .doOnNext { [store] in store.action.accept(.updateValidationState) }
       .withLatestFrom(state)
       .filter { $0.validationState.isValid }
-      .flatMap { [unowned self] _ in self.track(self.requestCode()) }
-      .subscribe(onNext: { [store] in store.action.accept(.showCodePopup) })
-      .disposed(by: disposeBag)
-    
-    input.sendCode
-      .asObservable()
-      .doOnNext { [store] in store.action.accept(.updateValidationState) }
-      .withLatestFrom(state)
-      .filter { $0.validationState.isValid }
       .flatMap { [unowned self] in self.track(self.exchange(for: $0)) }
       .subscribe(onNext: { [delegate] in delegate?.didFinishCoinExchange() })
       .disposed(by: disposeBag)
   }
   
-  private func requestCode() -> Completable {
-    return usecase.requestCode()
-      .catchError { [store] in
-        if let apiError = $0 as? APIError, case let .serverError(error) = apiError {
-          store.action.accept(.makeInvalidState(error.message))
-        }
-        
-        throw $0
-      }
-  }
-  
   private func exchange(for state: CoinExchangeState) -> Completable {
-    return usecase.verifyCode(code: state.code)
-      .andThen(usecase.exchange(from: state.fromCoin!,
+    return usecase.exchange(from: state.fromCoin!,
                                 with: state.coinSettings!,
                                 to: state.toCoinType!,
-                                amount: state.fromCoinAmount.doubleValue ?? 0.0))
+                                amount: state.fromCoinAmount.doubleValue ?? 0.0)
       .catchError { [store] in
         if let apiError = $0 as? APIError, case let .serverError(error) = apiError {
           store.action.accept(.makeInvalidState(error.message))

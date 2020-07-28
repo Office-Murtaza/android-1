@@ -105,7 +105,7 @@ struct CoinsBalanceRequest: AuthorizedAPIRequest {
   let userId: Int
   let coins: [BTMCoin]
   
-  var path: String { return "/user/\(userId)/coins/balance" }
+  var path: String { return "/user/\(userId)/balance" }
   var method: HTTPMethod { return .get }
   var task: HTTPTask {
     return .requestParameters(parameters: ["coins": coins.map { $0.type.code }],
@@ -119,7 +119,7 @@ struct CoinSettingsRequest: AuthorizedAPIRequest {
   
   let coinId: String
   
-  var path: String { return "/coins/\(coinId)/settings" }
+  var path: String { return "/coin/\(coinId)/settings" }
   var method: HTTPMethod { return .get }
   var task: HTTPTask {
     return .requestPlain
@@ -235,7 +235,7 @@ struct TransactionsRequest: AuthorizedAPIRequest {
   let coinId: String
   let index: Int
   
-  var path: String { return "/user/\(userId)/coins/\(coinId)/transactions" }
+  var path: String { return "/user/\(userId)/coin/\(coinId)/transaction-history" }
   var method: HTTPMethod { return .get }
   var task: HTTPTask {
     return .requestParameters(parameters: ["index": index],
@@ -251,7 +251,7 @@ struct TransactionDetailsRequest: AuthorizedAPIRequest {
   let coinId: String
   let id: String
   
-  var path: String { return "/user/\(userId)/coins/\(coinId)/transaction" }
+  var path: String { return "/user/\(userId)/coin/\(coinId)/transaction-details" }
   var method: HTTPMethod { return .get }
   var task: HTTPTask {
     return .requestParameters(parameters: ["txId": id],
@@ -266,7 +266,7 @@ struct UtxosRequest: AuthorizedAPIRequest {
   let coinId: String
   let xpub: String
   
-  var path: String { return "/coins/\(coinId)/utxo" }
+  var path: String { return "/coin/\(coinId)/utxo" }
   var method: HTTPMethod { return .get }
   var task: HTTPTask {
     return .requestParameters(parameters: ["xpub": xpub],
@@ -281,7 +281,7 @@ struct GetNonceRequest: AuthorizedAPIRequest {
   let coinId: String
   let address: String
   
-  var path: String { return "/coins/\(coinId)/nonce" }
+  var path: String { return "/coin/\(coinId)/nonce" }
   var method: HTTPMethod { return .get }
   var task: HTTPTask {
     return .requestParameters(parameters: ["address": address],
@@ -298,7 +298,7 @@ struct PreSubmitTransactionRequest: AuthorizedAPIRequest {
   let coinAmount: Double
   let currencyAmount: Double
   
-  var path: String { return "/user/\(userId)/coins/\(coinId)/transactions/pre-submit" }
+  var path: String { return "/user/\(userId)/coin/\(coinId)/pre-submit" }
   var method: HTTPMethod { return .post }
   var task: HTTPTask {
     return .requestParameters(parameters: ["cryptoAmount": coinAmount,
@@ -325,7 +325,7 @@ struct SubmitTransactionRequest: AuthorizedAPIRequest {
   let toCoinId: String?
   let txhex: String?
   
-  var path: String { return "/user/\(userId)/coins/\(coinId)/transactions/submit" }
+  var path: String { return "/user/\(userId)/coin/\(coinId)/submit" }
   var method: HTTPMethod { return .post }
   var task: HTTPTask {
     return .requestParameters(parameters: ["type": txType.rawValue,
@@ -348,7 +348,7 @@ struct GetTronBlockHeaderRequest: AuthorizedAPIRequest {
   
   let coinId: String
   
-  var path: String { return "/coins/\(coinId)/current-block" }
+  var path: String { return "/coin/\(coinId)/current-block" }
   var method: HTTPMethod { return .get }
   var task: HTTPTask {
     return .requestPlain
@@ -362,7 +362,7 @@ struct GetBinanceAccountInfoRequest: AuthorizedAPIRequest {
   let coinId: String
   let address: String
   
-  var path: String { return "/coins/\(coinId)/current-account" }
+  var path: String { return "/coin/\(coinId)/current-account" }
   var method: HTTPMethod { return .get }
   var task: HTTPTask {
     return .requestParameters(parameters: ["address": address], encoding: URLEncoding.customDefault)
@@ -376,7 +376,7 @@ struct GetRippleSequenceRequest: AuthorizedAPIRequest {
   let coinId: String
   let address: String
   
-  var path: String { return "/coins/\(coinId)/current-account" }
+  var path: String { return "/coin/\(coinId)/current-account" }
   var method: HTTPMethod { return .get }
   var task: HTTPTask {
     return .requestParameters(parameters: ["address": address], encoding: URLEncoding.customDefault)
@@ -390,24 +390,10 @@ struct GetGiftAddressRequest: AuthorizedAPIRequest {
   let coinId: String
   let phone: String
   
-  var path: String { return "/coins/\(coinId)/gift-address" }
+  var path: String { return "/coin/\(coinId)/gift-address" }
   var method: HTTPMethod { return .get }
   var task: HTTPTask {
     return .requestParameters(parameters: ["phone": phone], encoding: URLEncoding.customDefault)
-  }
-}
-
-struct GetSellAddressRequest: AuthorizedAPIRequest {
-  typealias ResponseType = APIResponse<SellAddress>
-  typealias ResponseTrait = SingleResponseTrait
-  
-  let userId: Int
-  let coinId: String
-  
-  var path: String { return "/user/\(userId)/coins/\(coinId)/transactions/selldetails" }
-  var method: HTTPMethod { return .get }
-  var task: HTTPTask {
-    return .requestPlain
   }
 }
 
@@ -430,7 +416,7 @@ struct GetVerificationInfoRequest: AuthorizedAPIRequest {
   
   let userId: Int
   
-  var path: String { return "/user/\(userId)/kyc" }
+  var path: String { return "/user/\(userId)/kyc-details" }
   var method: HTTPMethod { return .get }
   var task: HTTPTask {
     return .requestPlain
@@ -444,7 +430,7 @@ struct SendVerificationRequest: AuthorizedAPIRequest {
   let userId: Int
   let userData: VerificationUserData
   
-  var path: String { return "/user/\(userId)/kyc" }
+  var path: String { return "/user/\(userId)/kyc-submit" }
   var method: HTTPMethod { return .post }
   var task: HTTPTask {
     return .uploadMultipart([
@@ -469,7 +455,7 @@ struct SendVIPVerificationRequest: AuthorizedAPIRequest {
   let userId: Int
   let userData: VIPVerificationUserData
   
-  var path: String { return "/user/\(userId)/kyc" }
+  var path: String { return "/user/\(userId)/kyc-submit" }
   var method: HTTPMethod { return .post }
   var task: HTTPTask {
     return .uploadMultipart([
@@ -487,7 +473,7 @@ struct GetPriceChartDataRequest: AuthorizedAPIRequest {
   let userId: Int
   let coinId: String
   
-  var path: String { return "/user/\(userId)/coins/\(coinId)/price-chart" }
+  var path: String { return "/user/\(userId)/coin/\(coinId)/price-chart" }
   var method: HTTPMethod { return .get }
   var task: HTTPTask {
     return .requestPlain
@@ -503,7 +489,7 @@ struct BuySellTradesRequest: AuthorizedAPIRequest {
   let type: TradeType
   let index: Int
   
-  var path: String { return "/user/\(userId)/coins/\(coinId)/trades" }
+  var path: String { return "/user/\(userId)/coin/\(coinId)/trade-history" }
   var method: HTTPMethod { return .get }
   var task: HTTPTask {
     return .requestParameters(parameters: ["tab": type.rawValue,
@@ -537,7 +523,7 @@ struct SubmitTradeRequestRequest: AuthorizedAPIRequest {
   let userId: Int
   let data: SubmitTradeRequestData
   
-  var path: String { return "/user/\(userId)/coins/\(data.coinType.code)/trade-request" }
+  var path: String { return "/user/\(userId)/coin/\(data.coinType.code)/trade-request" }
   var method: HTTPMethod { return .post }
   var task: HTTPTask {
     return .requestParameters(parameters: ["tradeId": data.trade.id,
@@ -556,7 +542,7 @@ struct SubmitTradeRequest: AuthorizedAPIRequest {
   let userId: Int
   let data: SubmitTradeData
   
-  var path: String { return "/user/\(userId)/coins/\(data.coinType.code)/trade" }
+  var path: String { return "/user/\(userId)/coin/\(data.coinType.code)/trade" }
   var method: HTTPMethod { return .post }
   var task: HTTPTask {
     return .requestParameters(parameters: ["type": data.tradeType.rawValue,
@@ -576,7 +562,7 @@ struct StakeDetailsRequest: AuthorizedAPIRequest {
   let userId: Int
   let coinId: String
   
-  var path: String { return "/user/\(userId)/coins/\(coinId)/transactions/stake-details" }
+  var path: String { return "/user/\(userId)/coin/\(coinId)/stake-details" }
   var method: HTTPMethod { return .get }
   var task: HTTPTask {
     return .requestPlain

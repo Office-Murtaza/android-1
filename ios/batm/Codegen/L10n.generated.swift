@@ -389,17 +389,22 @@ extension L.CoinStaking {
 }
 extension L.CoinStaking.Header {
 
+  struct Duration {
+    static let title = "coin_staking.header.duration.title"
+    static let value = "coin_staking.header.duration.value"
+  }
+
+  struct MinDuration {
+    static let title = "coin_staking.header.min_duration.title"
+    static let value = "coin_staking.header.min_duration.value"
+  }
+
   struct Rewards {
     static let title = "coin_staking.header.rewards.title"
   }
 
   struct Staked {
     static let title = "coin_staking.header.staked.title"
-  }
-
-  struct Time {
-    static let title = "coin_staking.header.time.title"
-    static let value = "coin_staking.header.time.value"
   }
 }
 extension L.CoinWithdraw {

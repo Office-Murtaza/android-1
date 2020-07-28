@@ -55,7 +55,6 @@ protocol APIGateway {
   func getNonce(type: CustomCoinType, address: String) -> Single<Nonce>
   func getBinanceAccountInfo(type: CustomCoinType, address: String) -> Single<BinanceAccountInfo>
   func getRippleSequence(type: CustomCoinType, address: String) -> Single<RippleSequence>
-  func getSellAddress(userId: Int, type: CustomCoinType) -> Single<SellAddress>
   func getSellDetails(userId: Int) -> Single<SellDetails>
   func getVerificationInfo(userId: Int) -> Single<VerificationInfo>
   func sendVerification(userId: Int, userData: VerificationUserData) -> Completable
@@ -254,11 +253,6 @@ final class APIGatewayImpl: APIGateway {
   
   func getRippleSequence(type: CustomCoinType, address: String) -> Single<RippleSequence> {
     let request = GetRippleSequenceRequest(coinId: type.code, address: address)
-    return execute(request)
-  }
-  
-  func getSellAddress(userId: Int, type: CustomCoinType) -> Single<SellAddress> {
-    let request = GetSellAddressRequest(userId: userId, coinId: type.code)
     return execute(request)
   }
   

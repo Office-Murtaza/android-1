@@ -292,7 +292,9 @@
 "coin_staking.title" = "%@";
 "coin_staking.header.staked.title" = "Staked";
 "coin_staking.header.rewards.title" = "Rewards";
-"coin_staking.header.time.title" = "Time";
-"coin_staking.header.time.value" = "%d days";
+"coin_staking.header.duration.title" = "Duration";
+"coin_staking.header.duration.value" = "%d days";
+"coin_staking.header.min_duration.title" = "Min duration";
+"coin_staking.header.min_duration.value" = "%d days";
 "coin_staking.button.stake" = "Stake";
 "coin_staking.button.unstake" = "Unstake";

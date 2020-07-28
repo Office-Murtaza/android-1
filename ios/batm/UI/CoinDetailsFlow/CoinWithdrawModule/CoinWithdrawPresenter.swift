@@ -12,11 +12,8 @@ final class CoinWithdrawPresenter: ModulePresenter, CoinWithdrawModule {
     var updateCurrencyAmount: Driver<String?>
     var updateCoinAmount: Driver<String?>
     var pasteAddress: Driver<Void>
-    var updateCode: Driver<String?>
-    var cancel: Driver<Void>
     var max: Driver<Void>
     var next: Driver<Void>
-    var sendCode: Driver<Void>
   }
   
   private let usecase: CoinDetailsUsecase
@@ -41,7 +38,7 @@ final class CoinWithdrawPresenter: ModulePresenter, CoinWithdrawModule {
   }
 
   func bind(input: Input) {
-    Driver.merge(input.back, input.cancel)
+    input.back
       .drive(onNext: { [delegate] in delegate?.didFinishCoinWithdraw() })
       .disposed(by: disposeBag)
     
@@ -70,12 +67,6 @@ final class CoinWithdrawPresenter: ModulePresenter, CoinWithdrawModule {
       .bind(to: store.action)
       .disposed(by: disposeBag)
     
-    input.updateCode
-      .asObservable()
-      .map { CoinWithdrawAction.updateCode($0) }
-      .bind(to: store.action)
-      .disposed(by: disposeBag)
-    
     input.max
       .asObservable()
       .withLatestFrom(state)
@@ -89,37 +80,16 @@ final class CoinWithdrawPresenter: ModulePresenter, CoinWithdrawModule {
       .doOnNext { [store] in store.action.accept(.updateValidationState) }
       .withLatestFrom(state)
       .filter { $0.validationState.isValid }
-      .flatMap { [unowned self] _ in self.track(self.requestCode()) }
-      .subscribe(onNext: { [store] in store.action.accept(.showCodePopup) })
-      .disposed(by: disposeBag)
-    
-    input.sendCode
-      .asObservable()
-      .doOnNext { [store] in store.action.accept(.updateValidationState) }
-      .withLatestFrom(state)
-      .filter { $0.validationState.isValid }
       .flatMap { [unowned self] in self.track(self.withdraw(for: $0)) }
       .subscribe(onNext: { [delegate] in delegate?.didFinishCoinWithdraw() })
       .disposed(by: disposeBag)
   }
   
-  private func requestCode() -> Completable {
-    return usecase.requestCode()
-      .catchError { [store] in
-        if let apiError = $0 as? APIError, case let .serverError(error) = apiError {
-          store.action.accept(.makeInvalidState(error.message))
-        }
-        
-        throw $0
-      }
-  }
-  
   private func withdraw(for state: CoinWithdrawState) -> Completable {
-    return usecase.verifyCode(code: state.code)
-      .andThen(usecase.withdraw(from: state.coin!,
+    return usecase.withdraw(from: state.coin!,
                                 with: state.coinSettings!,
                                 to: state.address,
-                                amount: state.coinAmount.doubleValue ?? 0.0))
+                                amount: state.coinAmount.doubleValue ?? 0.0)
       .catchError { [store] in
         if let apiError = $0 as? APIError, case let .serverError(error) = apiError {
           store.action.accept(.makeInvalidState(error.message))
