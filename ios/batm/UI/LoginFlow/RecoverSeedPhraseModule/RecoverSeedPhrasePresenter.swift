@@ -6,14 +6,12 @@ class RecoverSeedPhrasePresenter: ModulePresenter, RecoverSeedPhraseModule {
   typealias Store = ViewStore<RecoverSeedPhraseAction, RecoverSeedPhraseState>
   
   struct Input {
-    var paste: Driver<Void>
-    var done: Driver<[String]>
+    var updateSeedPhrase: Driver<[String]>
+    var next: Driver<Void>
   }
   
   private let usecase: LoginUsecase
   private let store: Store
-  
-  let seedPhraseWordsRelay = BehaviorRelay<[String]>(value: [])
   
   weak var delegate: RecoverSeedPhraseModuleDelegate?
   
@@ -27,33 +25,41 @@ class RecoverSeedPhrasePresenter: ModulePresenter, RecoverSeedPhraseModule {
     self.store = store
   }
   
+  func setup(phoneNumber: String, password: String) {
+    store.action.accept(.setupPhoneNumber(phoneNumber))
+    store.action.accept(.setupPassword(password))
+  }
+  
   func bind(input: Input) {
-    input.paste
-      .map { UIPasteboard.general.string }
-      .filterNil()
-      .map { $0.split(separator: " ").map { String($0) } }
-      .map { Array($0.prefix(BTMWallet.seedPhraseLength)) }
-      .drive(onNext: { [seedPhraseWordsRelay] in seedPhraseWordsRelay.accept($0) })
+    input.updateSeedPhrase
+      .asObservable()
+      .map { RecoverSeedPhraseAction.updateSeedPhrase($0) }
+      .bind(to: store.action)
       .disposed(by: disposeBag)
-    input.done
-      .filter { $0.count == BTMWallet.seedPhraseLength }
-      .map { $0.map { $0.trimmingCharacters(in: .whitespaces) } }
-      .map { $0.joined(separator: " ") }
+    
+    input.next
       .asObservable()
       .doOnNext { [store] _ in store.action.accept(.updateValidationState) }
-      .flatFilter(state.map { $0.validationState.isValid })
-      .flatMap { [unowned self] in self.track(self.recoverWallet(seedPhrase: $0)) }
-      .subscribe(onNext: { [delegate] in delegate?.finishRecoveringSeedPhrase() })
+      .withLatestFrom(state)
+      .filter { $0.validationState.isValid }
+      .flatMap { [unowned self] in self.track(self.recoverWallet(for: $0)) }
+      .subscribe(onNext: { [delegate] _ in delegate?.finishRecoveringSeedPhrase() })
       .disposed(by: disposeBag)
   }
   
-  private func recoverWallet(seedPhrase: String) -> Completable {
-    return usecase.recoverWallet(seedPhrase: seedPhrase)
-      .catchError { [store] in
+  private func recoverWallet(for state: RecoverSeedPhraseState) -> Completable {
+    return usecase.recoverWallet(phoneNumber: state.phoneNumber,
+                                 password: state.password,
+                                 seedPhrase: state.fullSeedPhrase)
+      .catchError { [store, delegate] in
         if let apiError = $0 as? APIError, case let .serverError(error) = apiError {
-          store.action.accept(.makeInvalidState(error))
+          if error.code == 1 {
+            delegate?.cancelRecoveringSeedPhrase()
+          } else {
+            store.action.accept(.makeInvalidState(error.message))
+          }
         }
-        
+
         throw $0
       }
   }

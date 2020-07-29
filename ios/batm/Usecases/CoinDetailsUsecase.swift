@@ -73,8 +73,9 @@ class CoinDetailsUsecaseImpl: CoinDetailsUsecase {
   }
   
   func requestCode() -> Completable {
-    return accountStorage.get()
-      .flatMapCompletable { [api] in api.requestCode(userId: $0.userId) }
+    return .empty()
+//    return accountStorage.get()
+//      .flatMapCompletable { [api] in api.requestCode(userId: $0.userId) }
   }
   
   func verifyCode(code: String) -> Completable {

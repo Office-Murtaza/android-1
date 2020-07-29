@@ -3,5 +3,5 @@ import Foundation
 protocol CreateWalletModule: class {}
 protocol CreateWalletModuleDelegate: class {
   func didCancelCreatingWallet()
-  func finishCreatingWallet()
+  func finishCreatingWallet(phoneNumber: String, password: String)
 }

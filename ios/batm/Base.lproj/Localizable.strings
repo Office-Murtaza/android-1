@@ -21,7 +21,7 @@
 "shared.button.next" = "Next";
 "shared.button.done" = "Done";
 "shared.error.title" = "Error";
-"shared.error.message" = "Server Error, Try Later";
+"shared.error.message" = "Server error, try again later";
 "shared.error.no_connection.message" = "No Internet Connection";
 
 "welcome.tagline" = "Stay Ahead of the Crypto Future";
@@ -40,24 +40,36 @@
 "welcome.support.send" = "Send Email";
 
 "create_wallet.title" = "Create New Wallet";
+"create_wallet.form.phone.placeholder" = "Phone *";
 "create_wallet.form.password.placeholder" = "Password *";
-"create_wallet.form.confirm_password.placeholder" = "Confirm Password *";
+"create_wallet.form.confirm_password.placeholder" = "Confirm password *";
 "create_wallet.form.error.all_fields_required" = "All fields are required";
-"create_wallet.form.error.not_valid_phone_number" = "Invalid phone number";
-"create_wallet.form.error.not_equal_passwords" = "Passwords do not match";
+"create_wallet.form.error.not_valid_phone_number" = "Incorrect phone number";
+"create_wallet.form.error.existed_phone_number" = "Phone is already registered";
+"create_wallet.form.error.not_valid_password" = "Password must be between 6 and 20 characters";
+"create_wallet.form.error.not_equal_passwords" = "Passwords don't match";
 "create_wallet.code.placeholder" = "SMS Code";
-"create_wallet.code.error.title" = "Code should have 4 digits";
+"create_wallet.code.error.title" = "Invalid code";
+
+"phone_verification.title" = "Verify phone";
+"phone_verification.enter_code" = "Enter the 4 digit code we sent you via SMS to continue";
+"phone_verification.resend_code" = "Didn`t get the code? Resend code";
+"phone_verification.error.invalid_code" = "Invalid code";
 
 "seed_phrase.title" = "Seed Phrase";
 "seed_phrase.annotation" = "If you lost your seed phrase you will not be able to recover your wallet";
 
 "recover.title" = "Recover Old Wallet";
+"recover.form.error.not_existed_phone_number" = "Phone doesn't exist";
+"recover.form.error.not_match_password" = "Incorrect password";
 
+"recover_seed_phrase.title" = "Seed Phrase";
 "recover_seed_phrase.annotation" = "Enter your secret 12 word phrase here to restore your wallet";
+"recover_seed_phrase.form.error.not_valid_length" = "Enter 12 words seed phrase";
 
-"pin_code.setup.title" = "Setup PIN Code";
-"pin_code.confirmation.title" = "Confirm PIN Code";
-"pin_code.verification.title" = "Enter PIN Code";
+"pin_code.setup.title" = "Setup PIN";
+"pin_code.confirmation.title" = "Confirm PIN";
+"pin_code.verification.title" = "Enter PIN";
 
 "coins_balance.title" = "Wallet";
 "coins_balance.total_balance" = "Total Balance:";
@@ -280,7 +292,9 @@
 "coin_staking.title" = "%@";
 "coin_staking.header.staked.title" = "Staked";
 "coin_staking.header.rewards.title" = "Rewards";
-"coin_staking.header.time.title" = "Time";
-"coin_staking.header.time.value" = "%d days";
+"coin_staking.header.duration.title" = "Duration";
+"coin_staking.header.duration.value" = "%d days";
+"coin_staking.header.min_duration.title" = "Min duration";
+"coin_staking.header.min_duration.value" = "%d days";
 "coin_staking.button.stake" = "Stake";
 "coin_staking.button.unstake" = "Unstake";

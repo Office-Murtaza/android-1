@@ -8,11 +8,15 @@ enum PinCodeStage {
 }
 
 enum PinCodeAction: Equatable {
-  case updateCode(String?)
+  case addDigit(String)
+  case removeDigit
+  case clearCode
   case updateStage(PinCodeStage)
+  case setupCorrectCode(String)
 }
 
 struct PinCodeState: Equatable {
+  var correctCode = ""
   var code = ""
   var stage: PinCodeStage = .setup
   
@@ -35,8 +39,11 @@ final class PinCodeStore: ViewStore<PinCodeAction, PinCodeState> {
     var state = state
     
     switch action {
-    case let .updateCode(code): state.code = code ?? ""
+    case let .addDigit(digit): state.code += digit
+    case .removeDigit: _ = state.code.popLast()
+    case .clearCode: state.code = ""
     case let .updateStage(stage): state.stage = stage
+    case let .setupCorrectCode(correctCode): state.correctCode = correctCode
     }
     
     return state

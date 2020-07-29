@@ -7,6 +7,7 @@ import com.app.belcobtm.domain.authorization.interactor.GetAuthorizePinUseCase
 import com.app.belcobtm.domain.authorization.interactor.SaveAuthorizePinUseCase
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
 
+@Deprecated("Candidate to remove.")
 class PinViewModel(
     private val authorizeUseCase: AuthorizeUseCase,
     private val authorizePinUseCase: GetAuthorizePinUseCase,
