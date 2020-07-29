@@ -41,6 +41,7 @@ abstract class BaseFragment : Fragment() {
     protected open val homeButtonDrawable: Int = R.drawable.ic_arrow_back
     protected open val retryListener: View.OnClickListener? = null
     protected open val backPressedListener: View.OnClickListener = View.OnClickListener { popBackStack() }
+    protected open var isBackButtonEnabled: Boolean = isHomeButtonEnabled && isToolbarEnabled
 
 
     protected abstract val resourceLayout: Int
@@ -88,7 +89,7 @@ abstract class BaseFragment : Fragment() {
             }
         }
 
-        val activity = activity as AppCompatActivity
+        val activity = requireActivity() as AppCompatActivity
         activity.supportActionBar?.let { actionBar ->
             if (isToolbarEnabled) {
                 val drawable = ContextCompat.getDrawable(activity.applicationContext, homeButtonDrawable)
@@ -99,8 +100,7 @@ abstract class BaseFragment : Fragment() {
                 actionBar.hide()
             }
 
-            actionBar.setDisplayShowHomeEnabled(isHomeButtonEnabled && isToolbarEnabled)
-            actionBar.setDisplayHomeAsUpEnabled(isHomeButtonEnabled && isToolbarEnabled)
+            showBackButton(isBackButtonEnabled)
             fillToolbarTitle()
         }
         activity.invalidateOptionsMenu()
@@ -152,6 +152,10 @@ abstract class BaseFragment : Fragment() {
         fillToolbarTitle()
     }
 
+    protected fun showBackButton(show: Boolean) {
+        (requireActivity() as AppCompatActivity).supportActionBar?.setDisplayShowHomeEnabled(show)
+        (requireActivity() as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(show)
+    }
     protected fun showSnackBar(resMessage: Int) = Snackbar.make(
         requireActivity().findViewById<ViewGroup>(android.R.id.content),
         resMessage,

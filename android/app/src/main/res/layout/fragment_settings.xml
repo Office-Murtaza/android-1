@@ -1,73 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/container"
+<ViewFlipper xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/flipper"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/bg_color"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
-    <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/toolbar_container"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="@drawable/bg_toolbar"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+    <include layout="@layout/layout_settings_main" />
 
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:title="@string/settings" />
-    </com.google.android.material.appbar.AppBarLayout>
+    <include layout="@layout/layout_settings_security" />
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/settings_phone"
-        style="@style/SettingsItemStyle"
-        android:drawableStart="@drawable/ic_settings_phone"
-        android:text="Change Phone" />
+    <include layout="@layout/layout_settings_about" />
 
-    <include layout="@layout/item_divider" />
-
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/settings_change_pass"
-        style="@style/SettingsItemStyle"
-        android:drawableStart="@drawable/ic_settings_change_password"
-        android:text="Change Password" />
-
-    <include layout="@layout/item_divider" />
-
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/settings_change_pin"
-        style="@style/SettingsItemStyle"
-        android:drawableStart="@drawable/ic_settings_change_pin"
-        android:text="@string/settings_pin" />
-
-    <include layout="@layout/item_divider" />
-
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/verificationButtonView"
-        style="@style/SettingsItemStyle"
-        android:drawableStart="@drawable/ic_settings_verification"
-        android:text="@string/settings_verification" />
-
-    <include layout="@layout/item_divider" />
-
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/settings_seed"
-        style="@style/SettingsItemStyle"
-        android:drawableStart="@drawable/ic_settings_seed_phrase"
-        android:text="@string/seed_phrase" />
-
-    <include layout="@layout/item_divider" />
-
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/settings_unlink"
-        style="@style/SettingsItemStyle"
-        android:drawableStart="@drawable/ic_settings_unlick_wallet"
-        android:text="@string/settings_unlink" />
-
-</androidx.appcompat.widget.LinearLayoutCompat>
+</ViewFlipper>

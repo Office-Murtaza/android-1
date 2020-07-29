@@ -15,6 +15,8 @@ import com.app.belcobtm.data.rest.settings.SettingsApiService
 import com.app.belcobtm.data.rest.tools.ToolsApiService
 import com.app.belcobtm.data.rest.transaction.TransactionApiService
 import com.app.belcobtm.data.rest.wallet.WalletApiService
+import com.app.belcobtm.domain.tools.IntentActions
+import com.app.belcobtm.domain.tools.IntentActionsImpl
 import org.koin.dsl.module
 
 val dataModule = module {
@@ -38,4 +40,5 @@ val dataModule = module {
             .build()
     }
     single { (get() as AppDatabase).getCoinDao() }
+    single<IntentActions> { IntentActionsImpl(get()) }
 }

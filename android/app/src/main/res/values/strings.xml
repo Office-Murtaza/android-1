@@ -401,4 +401,18 @@
     <string name="copied">Copied</string>
     <string name="retry">Retry</string>
     <string name="copy_text">Copy</string>
+    <string name="clipboard">Copied</string>
+
+    //settings
+    <string name="security_label">Security</string>
+    <string name="kyc_label">KYC</string>
+    <string name="about_label">About</string>
+    <string name="terms_label">Terms &amp; Conditions</string>
+    <string name="support_label">Support</string>
+    <string name="version_label">Version</string>
+    <string name="update_phone_label">Update phone</string>
+    <string name="update_pass_label">Update password</string>
+    <string name="update_pin_label">Update PIN</string>
+    <string name="seed_phrase_label">Seed phrase</string>
+    <string name="unlink_wallet_label">Unlink wallet</string>
 </resources>
