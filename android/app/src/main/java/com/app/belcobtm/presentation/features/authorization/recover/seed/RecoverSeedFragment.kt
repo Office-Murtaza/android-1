@@ -25,6 +25,7 @@ class RecoverSeedFragment : BaseFragment() {
     override val resourceLayout: Int = R.layout.fragment_recover_seed
     override val backPressedListener: View.OnClickListener =
         View.OnClickListener { popBackStack(R.id.recover_wallet_fragment, false) }
+    override val retryListener: View.OnClickListener = View.OnClickListener { recoverWallet() }
 
     override fun initViews() {
         super.initViews()
@@ -59,23 +60,7 @@ class RecoverSeedFragment : BaseFragment() {
         super.initListeners()
         watcher = RecoverSeedWatcher(requireContext())
         seedView.addTextChangedListener(watcher)
-        nextButtonView.setOnClickListener {
-            val wordList: List<String> = seedView.getString()
-                .replace(RecoverSeedWatcher.CHAR_NEXT_LINE, RecoverSeedWatcher.CHAR_SPACE)
-                .splitToSequence(RecoverSeedWatcher.CHAR_SPACE)
-                .filter { it.isNotEmpty() }
-                .toList()
-
-            seedContainerView.clearError()
-            if (wordList.size == SEED_PHRASE_WORDS_SIZE) {
-                val seed = wordList.joinToString(separator = " ")
-                val phone = requireArguments().getString(SmsCodeFragment.TAG_PHONE, "")
-                val password = requireArguments().getString(TAG_PASSWORD, "")
-                viewModel.recoverWallet(seed, phone, password)
-            } else {
-                seedContainerView.showError(R.string.recover_seed_screen_error_length)
-            }
-        }
+        nextButtonView.setOnClickListener { recoverWallet() }
         pasteButtonView.setOnClickListener {
             val text = getTextFromClipboard()
             seedView.setText("")
@@ -90,6 +75,24 @@ class RecoverSeedFragment : BaseFragment() {
         true
     } else {
         false
+    }
+
+    private fun recoverWallet() {
+        val wordList: List<String> = seedView.getString()
+            .replace(RecoverSeedWatcher.CHAR_NEXT_LINE, RecoverSeedWatcher.CHAR_SPACE)
+            .splitToSequence(RecoverSeedWatcher.CHAR_SPACE)
+            .filter { it.isNotEmpty() }
+            .toList()
+
+        seedContainerView.clearError()
+        if (wordList.size == SEED_PHRASE_WORDS_SIZE) {
+            val seed = wordList.joinToString(separator = " ")
+            val phone = requireArguments().getString(SmsCodeFragment.TAG_PHONE, "")
+            val password = requireArguments().getString(TAG_PASSWORD, "")
+            viewModel.recoverWallet(seed, phone, password)
+        } else {
+            seedContainerView.showError(R.string.recover_seed_screen_error_length)
+        }
     }
 
     private fun getTextFromClipboard(): String {
