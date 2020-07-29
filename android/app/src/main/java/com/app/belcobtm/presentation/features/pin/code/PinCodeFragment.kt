@@ -46,7 +46,7 @@ class PinCodeFragment : BaseFragment() {
     override fun initObservers() {
         viewModel.authorizationLiveData.observe(this, Observer {
             when (it) {
-                is LoadingData.Loading -> showProgress()
+                is LoadingData.Loading -> showLoading()
                 is LoadingData.Success -> {
                     (requireActivity() as HostActivity).showMainScreen()
                     showContent()
@@ -147,10 +147,6 @@ class PinCodeFragment : BaseFragment() {
             pinMode != KEY_PIN_MODE_ENTER && viewModel.enteredCreatePinCode == viewModel.enteredPinCode -> {
                 vibrate(300)
                 viewModel.savePinCode(viewModel.enteredPinCode)
-                when (pinMode) {
-                    KEY_PIN_MODE_CHANGE -> showSnackBar(R.string.code_changed)
-                    KEY_PIN_MODE_CREATE -> showSnackBar(R.string.code_created)
-                }
                 (requireActivity() as HostActivity).showMainScreen()
             }
             pinMode == KEY_PIN_MODE_ENTER && pinCode == viewModel.getSavedPinCode() -> {

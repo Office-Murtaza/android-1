@@ -1,6 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <string name="google_maps_key">AIzaSyDGBWQKBBKloFJfQgY_5i-l-a7aT8oRWhw</string>
-    <string name="file_provider" translatable="false">com.app.belcobtm.fileprovider</string>
+    <string name="file_provider" translatable="false">${applicationId}.fileprovider</string>
     <string name="chip_ellipsis">&#8230;</string>
 
     <string name="app_name">Belco Wallet</string>
@@ -58,6 +58,7 @@
     <string name="recover_wallet_incorrect_login">Phone doesn\'t exist</string>
     <string name="recover_wallet_incorrect_password">Incorrect password</string>
     <string name="recover_wallet_password_min_max_length">Password must be between 6 and 20 characters</string>
+    <string name="recover_wallet_error_all_fields_required">All fields are required</string>
 
     <!--create wallet screen-->
     <string name="verify_sms_code">Enter SMS Code</string>
@@ -78,15 +79,16 @@
 
     <!--seed phrase-->
     <string name="seed_phrase">Seed Phrase</string>
-    <string name="seed_info">If you lost your seed phrase you will not be able to recover your wallet</string>
+    <string name="seed_info">If you lost your seed phrase you would not be able to recover your wallet</string>
     <string name="seed_clipboard">Seed phrase copied to clipboard</string>
     <string name="seed_phrase_screen_copy">Copy</string>
     <string name="seed_phrase_screen_done">Done</string>
 
     <!-- Recover Seed Screen -->
     <string name="recover_seed_screen_title">Seed phrase</string>
-    <string name="recover_seed_screen_description">Enter your secret 12 world phrase\nhere to restore your wallet</string>
+    <string name="recover_seed_screen_description">Enter your secret 12 words phrase\nhere to restore your wallet</string>
     <string name="recover_seed_screen_error_length">Seed phrase must be 12 words</string>
+    <string name="recover_seed_screen_incorrect_phrase">Seed Phrase you entered is invalid. Please try again</string>
 
     <!-- Create Seed Screen-->
     <string name="create_seed_screen_title">Seed phrase</string>

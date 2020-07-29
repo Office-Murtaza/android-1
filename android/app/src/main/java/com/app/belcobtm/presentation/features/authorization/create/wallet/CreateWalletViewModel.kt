@@ -9,7 +9,6 @@ class CreateWalletViewModel(
     private val checkCredentialsUseCase: AuthorizationCheckCredentialsUseCase
 ) : ViewModel() {
     val checkCredentialsLiveData: MutableLiveData<LoadingData<Pair<Boolean, Boolean>>> = MutableLiveData()
-    val smsCodeLiveData: MutableLiveData<LoadingData<Unit>> = MutableLiveData()
 
     fun checkCredentials(phone: String, password: String) {
         checkCredentialsLiveData.value = LoadingData.Loading()

@@ -15,9 +15,10 @@ android {
         applicationId "com.app.belcobtm"
         minSdkVersion 23
         targetSdkVersion 29
-        versionCode 70
-        versionName "1.5.10"
+        versionCode 74
+        versionName "1.5.14"
         multiDexEnabled = true
+        vectorDrawables.useSupportLibrary = true
     }
     buildTypes {
         release {
@@ -166,6 +167,9 @@ dependencies {
 
     //conflict 2020, need remove in future
     implementation 'com.google.guava:listenablefuture:9999.0-empty-to-avoid-conflict-with-guava'
+
+    //number validation
+    implementation 'io.michaelrocks:libphonenumber-android:8.12.7'
 
     //firebase
     implementation "com.google.firebase:firebase-crashlytics:$lib.crashlytics"
