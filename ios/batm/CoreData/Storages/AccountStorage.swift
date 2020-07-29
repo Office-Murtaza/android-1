@@ -10,6 +10,10 @@ protocol AccountStorage: ClearOnLogoutStorage {
   var stateObservable: Observable<Account?> { get }
 }
 
+enum AccountStorageError: Error {
+  case notFound
+}
+
 class AccountStorageImpl: CoreDataStorage<AccountStorageUtils>, AccountStorage {
   
   let stateSubject = PublishSubject<Account?>()
@@ -60,7 +64,7 @@ class AccountStorageUtils: StorageUtils {
   
   func get() throws -> Account {
     guard let accountRecord = try AccountRecord.fetchFirst(in: context) else {
-      throw StorageError.notFound
+      throw AccountStorageError.notFound
     }
     
     return try converter.convert(model: accountRecord)

@@ -54,7 +54,7 @@ final class EnterPasswordPresenter: ModulePresenter, EnterPasswordModule {
     return usecase.checkPassword(password: password)
       .catchError { [store] in
         if let apiError = $0 as? APIError, case let .serverError(error) = apiError {
-          store.action.accept(.makeInvalidState(error))
+          store.action.accept(.makeInvalidState(error.message))
         }
         
         throw $0

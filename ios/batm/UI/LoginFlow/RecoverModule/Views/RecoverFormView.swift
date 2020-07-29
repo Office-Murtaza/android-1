@@ -1,25 +1,26 @@
 import UIKit
 import RxSwift
 import RxCocoa
+import MaterialComponents
 
-class RecoverFormView: UIView {
+final class RecoverFormView: UIView, HasDisposeBag {
   
-  let phoneNumberTextField = PhoneNumberTextField()
-  
-  let passwordTextField: MainTextField = {
-    let textField = MainTextField()
-    textField.configure(for: .password)
-    return textField
+  let stackView: UIStackView = {
+    let stackView = UIStackView()
+    stackView.axis = .vertical
+    return stackView
   }()
   
-  lazy var formView: MainFormView = {
-    let view = MainFormView()
-    view.configure(for: [phoneNumberTextField,
-                         passwordTextField])
-    return view
-  }()
+  let phoneNumberTextField = MDCTextField.phone
+  let passwordTextField = MDCTextField.password
+  
+  let phoneNumberTextFieldController: ThemedTextInputControllerOutlined
+  let passwordTextFieldController: ThemedTextInputControllerOutlined
   
   override init(frame: CGRect) {
+    phoneNumberTextFieldController = ThemedTextInputControllerOutlined(textInput: phoneNumberTextField)
+    passwordTextFieldController = ThemedTextInputControllerOutlined(textInput: passwordTextField)
+    
     super.init(frame: frame)
     
     setupUI()
@@ -33,24 +34,26 @@ class RecoverFormView: UIView {
   private func setupUI() {
     translatesAutoresizingMaskIntoConstraints = false
     
-    addSubview(formView)
+    addSubviews(stackView)
+    stackView.addArrangedSubviews(phoneNumberTextField,
+                                  passwordTextField)
+    
+    phoneNumberTextFieldController.placeholderText = localize(L.CreateWallet.Form.Phone.placeholder)
+    passwordTextFieldController.placeholderText = localize(L.CreateWallet.Form.Password.placeholder)
   }
   
   private func setupLayout() {
-    formView.snp.makeConstraints {
+    stackView.snp.makeConstraints {
       $0.edges.equalToSuperview()
     }
   }
 }
 
 extension Reactive where Base == RecoverFormView {
-  var cancelTap: Driver<Void> {
-    return base.formView.rx.cancelTap
+  var phoneNumberText: ControlProperty<String?> {
+    return base.phoneNumberTextField.rx.text
   }
-  var nextTap: Driver<Void> {
-    return base.formView.rx.nextTap
-  }
-  var error: Binder<String?> {
-    return base.formView.rx.error
+  var passwordText: ControlProperty<String?> {
+    return base.passwordTextField.rx.text
   }
 }

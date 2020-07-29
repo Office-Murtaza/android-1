@@ -76,7 +76,7 @@ final class BuySellTradeDetailsPresenter: ModulePresenter, BuySellTradeDetailsMo
     return usecase.submitTradeRequest(for: data)
       .catchError { [store] in
         if let apiError = $0 as? APIError, case let .serverError(error) = apiError {
-          store.action.accept(.makeInvalidState(error))
+          store.action.accept(.makeInvalidState(error.message))
         }
         
         throw $0

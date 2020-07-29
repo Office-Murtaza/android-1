@@ -25,7 +25,28 @@ extension MDCTextField {
   
   static var phone: MDCTextField {
     let textField = MDCTextField.default
-    textField.keyboardType = .numberPad
+    textField.keyboardType = .phonePad
+    textField.setRightView(UIImageView(image: UIImage(named: "login_phone")))
+    return textField
+  }
+  
+  static var password: PasswordTextField {
+    let textField = PasswordTextField()
+    textField.backgroundColor = .white
+    textField.textContentType = .password
+    return textField
+  }
+  
+  static var newPassword: PasswordTextField {
+    let textField = PasswordTextField()
+    textField.backgroundColor = .white
+    
+    if #available(iOS 12.0, *) {
+      textField.textContentType = .newPassword
+    } else {
+      textField.textContentType = .password
+    }
+    
     return textField
   }
   

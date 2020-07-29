@@ -148,6 +148,13 @@ extension BaseFlow where T == UIWindow {
     }
     return next(flow: flow)
   }
+  
+  func replaceRoot<P: UIViewController, C>(with flow: BaseFlow<P, C>, step: Step, animated: Bool = false) -> NextFlowItems {
+    Flows.whenReady(flow1: flow) { [weak self] (root: P) in
+      self?.view.setRootViewController(root, animated: animated)
+    }
+    return next(flow: flow, step: step)
+  }
 }
 
 extension BaseFlow where T: UINavigationController {

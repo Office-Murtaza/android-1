@@ -9,10 +9,8 @@ enum CoinSellAction: Equatable {
   case updateFromAnotherAddress(Bool)
   case updateCurrencyAmount(String?)
   case makeMaxCurrencyAmount
-  case updateCode(String?)
   case updateValidationState
   case makeInvalidState(String)
-  case showCodePopup
 }
 
 struct CoinSellState: Equatable {
@@ -24,9 +22,7 @@ struct CoinSellState: Equatable {
   var presubmitResponse: PreSubmitResponse?
   var fromAnotherAddress: Bool = false
   var currencyAmount: String = ""
-  var code: String = ""
   var validationState: ValidationState = .unknown
-  var shouldShowCodePopup: Bool = false
   
   var coinBalance: CoinBalance? {
     return coinBalances?.first { $0.type == coin?.type }
@@ -113,10 +109,8 @@ final class CoinSellStore: ViewStore<CoinSellAction, CoinSellState> {
     case let .updateFromAnotherAddress(fromAnotherAddress): state.fromAnotherAddress = fromAnotherAddress
     case let .updateCurrencyAmount(amount): state.currencyAmount = (amount ?? "").fiatSellFormatted
     case .makeMaxCurrencyAmount: state.currencyAmount = state.maxCurrencyValue.fiatSellFormatted
-    case let .updateCode(code): state.code = code ?? ""
     case .updateValidationState: state.validationState = validate(state)
     case let .makeInvalidState(error): state.validationState = .invalid(error)
-    case .showCodePopup: state.shouldShowCodePopup = true
     }
     
     return state
@@ -153,10 +147,6 @@ final class CoinSellStore: ViewStore<CoinSellAction, CoinSellState> {
       if !ethBalance.greaterThanOrEqualTo(fee) {
         return .invalid(localize(L.CoinWithdraw.Form.Error.insufficientETHBalance))
       }
-    }
-    
-    guard !state.shouldShowCodePopup || state.code.count == 4 else {
-      return .invalid(localize(L.CreateWallet.Code.Error.title))
     }
     
     if !state.isValidIfResponseExists {

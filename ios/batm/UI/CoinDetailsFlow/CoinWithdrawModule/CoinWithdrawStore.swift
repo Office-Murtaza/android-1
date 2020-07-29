@@ -7,10 +7,8 @@ enum CoinWithdrawAction: Equatable {
   case updateAddress(String?)
   case updateCurrencyAmount(String?)
   case updateCoinAmount(String?)
-  case updateCode(String?)
   case updateValidationState
   case makeInvalidState(String)
-  case showCodePopup
 }
 
 struct CoinWithdrawState: Equatable {
@@ -21,9 +19,7 @@ struct CoinWithdrawState: Equatable {
   var address: String = ""
   var currencyAmount: String = ""
   var coinAmount: String = ""
-  var code: String = ""
   var validationState: ValidationState = .unknown
-  var shouldShowCodePopup: Bool = false
   
   var coinBalance: CoinBalance? {
     return coinBalances?.first { $0.type == coin?.type }
@@ -71,10 +67,8 @@ final class CoinWithdrawStore: ViewStore<CoinWithdrawAction, CoinWithdrawState> 
       
       state.coinAmount = coinAmount
       state.currencyAmount = currencyAmount
-    case let .updateCode(code): state.code = code ?? ""
     case .updateValidationState: state.validationState = validate(state)
     case let .makeInvalidState(error): state.validationState = .invalid(error)
-    case .showCodePopup: state.shouldShowCodePopup = true
     }
     
     return state
@@ -107,10 +101,6 @@ final class CoinWithdrawStore: ViewStore<CoinWithdrawAction, CoinWithdrawState> 
       if !ethBalance.greaterThanOrEqualTo(fee) {
         return .invalid(localize(L.CoinWithdraw.Form.Error.insufficientETHBalance))
       }
-    }
-    
-    guard !state.shouldShowCodePopup || state.code.count == 4 else {
-      return .invalid(localize(L.CreateWallet.Code.Error.title))
     }
     
     return .valid
