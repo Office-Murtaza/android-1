@@ -6,10 +6,8 @@ enum RecallAction: Equatable {
   case setupCoinSettings(CoinSettings)
   case updateCurrencyAmount(String?)
   case updateCoinAmount(String?)
-  case updateCode(String?)
   case updateValidationState
   case makeInvalidState(String)
-  case showCodePopup
 }
 
 struct RecallState: Equatable {
@@ -19,9 +17,7 @@ struct RecallState: Equatable {
   var coinSettings: CoinSettings?
   var currencyAmount: String = ""
   var coinAmount: String = ""
-  var code: String = ""
   var validationState: ValidationState = .unknown
-  var shouldShowCodePopup: Bool = false
   
   var coinBalance: CoinBalance? {
     return coinBalances?.first { $0.type == coin?.type }
@@ -70,10 +66,8 @@ final class RecallStore: ViewStore<RecallAction, RecallState> {
       
       state.coinAmount = coinAmount
       state.currencyAmount = currencyAmount
-    case let .updateCode(code): state.code = code ?? ""
     case .updateValidationState: state.validationState = validate(state)
     case let .makeInvalidState(error): state.validationState = .invalid(error)
-    case .showCodePopup: state.shouldShowCodePopup = true
     }
     
     return state
@@ -94,10 +88,6 @@ final class RecallStore: ViewStore<RecallAction, RecallState> {
     
     guard amount.lessThanOrEqualTo(state.maxValue) else {
       return .invalid(localize(L.CoinWithdraw.Form.Error.tooHighAmount))
-    }
-    
-    guard !state.shouldShowCodePopup || state.code.count == 4 else {
-      return .invalid(localize(L.CreateWallet.Code.Error.title))
     }
     
     return .valid

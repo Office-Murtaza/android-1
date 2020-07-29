@@ -113,6 +113,12 @@ enum L {
     static let title = "filter_coins.title"
   }
 
+  struct PhoneVerification {
+    static let enterCode = "phone_verification.enter_code"
+    static let resendCode = "phone_verification.resend_code"
+    static let title = "phone_verification.title"
+  }
+
   struct PinCode {
   }
 
@@ -126,6 +132,7 @@ enum L {
 
   struct RecoverSeedPhrase {
     static let annotation = "recover_seed_phrase.annotation"
+    static let title = "recover_seed_phrase.title"
   }
 
   struct Reserve {
@@ -382,17 +389,22 @@ extension L.CoinStaking {
 }
 extension L.CoinStaking.Header {
 
+  struct Duration {
+    static let title = "coin_staking.header.duration.title"
+    static let value = "coin_staking.header.duration.value"
+  }
+
+  struct MinDuration {
+    static let title = "coin_staking.header.min_duration.title"
+    static let value = "coin_staking.header.min_duration.value"
+  }
+
   struct Rewards {
     static let title = "coin_staking.header.rewards.title"
   }
 
   struct Staked {
     static let title = "coin_staking.header.staked.title"
-  }
-
-  struct Time {
-    static let title = "coin_staking.header.time.title"
-    static let value = "coin_staking.header.time.value"
   }
 }
 extension L.CoinWithdraw {
@@ -498,12 +510,18 @@ extension L.CreateWallet.Form {
 
   struct Error {
     static let allFieldsRequired = "create_wallet.form.error.all_fields_required"
+    static let existedPhoneNumber = "create_wallet.form.error.existed_phone_number"
     static let notEqualPasswords = "create_wallet.form.error.not_equal_passwords"
+    static let notValidPassword = "create_wallet.form.error.not_valid_password"
     static let notValidPhoneNumber = "create_wallet.form.error.not_valid_phone_number"
   }
 
   struct Password {
     static let placeholder = "create_wallet.form.password.placeholder"
+  }
+
+  struct Phone {
+    static let placeholder = "create_wallet.form.phone.placeholder"
   }
 }
 extension L.EnterPassword {
@@ -515,6 +533,12 @@ extension L.EnterPassword.Form {
 
   struct Error {
     static let wrongPassword = "enter_password.form.error.wrong_password"
+  }
+}
+extension L.PhoneVerification {
+
+  struct Error {
+    static let invalidCode = "phone_verification.error.invalid_code"
   }
 }
 extension L.PinCode {
@@ -544,6 +568,29 @@ extension L.Recall.Form {
 
   struct Error {
     static let tooLowAmount = "recall.form.error.too_low_amount"
+  }
+}
+extension L.Recover {
+
+  struct Form {
+  }
+}
+extension L.Recover.Form {
+
+  struct Error {
+    static let notExistedPhoneNumber = "recover.form.error.not_existed_phone_number"
+    static let notMatchPassword = "recover.form.error.not_match_password"
+  }
+}
+extension L.RecoverSeedPhrase {
+
+  struct Form {
+  }
+}
+extension L.RecoverSeedPhrase.Form {
+
+  struct Error {
+    static let notValidLength = "recover_seed_phrase.form.error.not_valid_length"
   }
 }
 extension L.Reserve {

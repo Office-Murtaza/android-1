@@ -184,6 +184,18 @@ extension String {
   var intValue: Int? {
     return Int(self)
   }
+  
+  var separatedWords: [String] {
+    return components(separatedBy: CharacterSet.letters.inverted).filter { $0.isNotEmpty }
+  }
+  
+  func truncate(length: Int, trailing: String = "") -> String {
+    if count > length {
+      return String(prefix(length)) + trailing
+    } else {
+      return self
+    }
+  }
 }
 
 extension Double {

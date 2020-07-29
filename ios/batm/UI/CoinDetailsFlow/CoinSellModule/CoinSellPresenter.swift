@@ -20,11 +20,8 @@ final class CoinSellPresenter: ModulePresenter, CoinSellModule {
     var back: Driver<Void>
     var updateFromAnotherAddress: Driver<Bool>
     var updateCurrencyAmount: Driver<String?>
-    var updateCode: Driver<String?>
-    var cancel: Driver<Void>
     var max: Driver<Void>
     var next: Driver<Void>
-    var sendCode: Driver<Void>
   }
   
   private let usecase: CoinDetailsUsecase
@@ -50,7 +47,7 @@ final class CoinSellPresenter: ModulePresenter, CoinSellModule {
   }
 
   func bind(input: Input) {
-    Driver.merge(input.back, input.cancel)
+    input.back
       .drive(onNext: { [delegate] in delegate?.didFinishCoinSell() })
       .disposed(by: disposeBag)
     
@@ -66,12 +63,6 @@ final class CoinSellPresenter: ModulePresenter, CoinSellModule {
       .bind(to: store.action)
       .disposed(by: disposeBag)
     
-    input.updateCode
-      .asObservable()
-      .map { CoinSellAction.updateCode($0) }
-      .bind(to: store.action)
-      .disposed(by: disposeBag)
-    
     input.max
       .asObservable()
       .map { CoinSellAction.makeMaxCurrencyAmount }
@@ -79,15 +70,6 @@ final class CoinSellPresenter: ModulePresenter, CoinSellModule {
       .disposed(by: disposeBag)
     
     input.next
-      .asObservable()
-      .doOnNext { [store] in store.action.accept(.updateValidationState) }
-      .withLatestFrom(state)
-      .filter { $0.validationState.isValid }
-      .flatMap { [unowned self] _ in self.track(self.requestCode()) }
-      .subscribe(onNext: { [store] in store.action.accept(.showCodePopup) })
-      .disposed(by: disposeBag)
-    
-    input.sendCode
       .asObservable()
       .doOnNext { [store] in store.action.accept(.updateValidationState) }
       .withLatestFrom(state)
@@ -129,27 +111,15 @@ final class CoinSellPresenter: ModulePresenter, CoinSellModule {
       .disposed(by: disposeBag)
   }
   
-  private func requestCode() -> Completable {
-    return usecase.requestCode()
-      .catchError { [store] in
-        if let apiError = $0 as? APIError, case let .serverError(error) = apiError {
-          store.action.accept(.makeInvalidState(error))
-        }
-        
-        throw $0
-      }
-  }
-  
   private func presubmit(for state: CoinSellState) -> Single<PreSubmitResponse> {
     let type = state.coin!.type
     let coinAmount = state.coinAmount.doubleValue ?? 0.0
     let currencyAmount = state.currencyAmount.doubleValue ?? 0
     
-    return usecase.verifyCode(code: state.code)
-      .andThen(usecase.presubmit(for: type, coinAmount: coinAmount, currencyAmount: currencyAmount))
+    return usecase.presubmit(for: type, coinAmount: coinAmount, currencyAmount: currencyAmount)
       .catchError { [store] in
         if let apiError = $0 as? APIError, case let .serverError(error) = apiError {
-          store.action.accept(.makeInvalidState(error))
+          store.action.accept(.makeInvalidState(error.message))
         }
         
         throw $0
@@ -165,7 +135,7 @@ final class CoinSellPresenter: ModulePresenter, CoinSellModule {
     return usecase.sell(from: coin, with: coinSettings, amount: amount, to: address)
       .catchError { [store] in
         if let apiError = $0 as? APIError, case let .serverError(error) = apiError {
-          store.action.accept(.makeInvalidState(error))
+          store.action.accept(.makeInvalidState(error.message))
         }
 
         throw $0

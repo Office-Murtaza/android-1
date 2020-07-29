@@ -11,6 +11,10 @@ protocol BTMWalletStorage: ClearOnLogoutStorage {
   func delete() -> Completable
 }
 
+enum BTMWalletStorageError: Error {
+  case notFound
+}
+
 class BTMWalletStorageImpl: CoreDataStorage<BTMWalletStorageUtils>, BTMWalletStorage {
   
   func save(wallet: BTMWallet) -> Completable {
@@ -65,7 +69,7 @@ class BTMWalletStorageUtils: StorageUtils {
   
   func get() throws -> BTMWallet {
     guard let walletRecord = try BTMWalletRecord.fetchFirst(in: context) else {
-      throw StorageError.notFound
+      throw BTMWalletStorageError.notFound
     }
     
     return try converter.convert(model: walletRecord)
@@ -73,12 +77,12 @@ class BTMWalletStorageUtils: StorageUtils {
   
   func changeVisibility(of coin: BTMCoin) throws {
     guard let walletRecord = try BTMWalletRecord.fetchFirst(in: context) else {
-      throw StorageError.notFound
+      throw BTMWalletStorageError.notFound
     }
     
     let coinRecord = walletRecord.coins.first { $0.type == coin.type.code }
     guard let unwrappedCoinRecord = coinRecord else {
-      throw StorageError.notFound
+      throw BTMWalletStorageError.notFound
     }
     
     unwrappedCoinRecord.visible.toggle()
@@ -86,12 +90,12 @@ class BTMWalletStorageUtils: StorageUtils {
   
   func changeIndex(of type: CustomCoinType, with index: Int) throws {
     guard let walletRecord = try BTMWalletRecord.fetchFirst(in: context) else {
-      throw StorageError.notFound
+      throw BTMWalletStorageError.notFound
     }
     
     let coinRecord = walletRecord.coins.first { $0.type == type.code }
     guard let unwrappedCoinRecord = coinRecord else {
-      throw StorageError.notFound
+      throw BTMWalletStorageError.notFound
     }
     
     unwrappedCoinRecord.index = Int32(index)

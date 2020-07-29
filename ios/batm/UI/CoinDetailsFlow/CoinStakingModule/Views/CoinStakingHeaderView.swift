@@ -53,9 +53,13 @@ class CoinStakingHeaderView: UIView {
   let rewardsTitleLabel = defaultTitleLabel(localize(L.CoinStaking.Header.Rewards.title))
   let rewardsValueLabel = defaultValueLabel
   
-  let timeTitleView = UIView()
-  let timeTitleLabel = defaultTitleLabel(localize(L.CoinStaking.Header.Time.title))
-  let timeValueLabel = defaultValueLabel
+  let durationTitleView = UIView()
+  let durationTitleLabel = defaultTitleLabel(localize(L.CoinStaking.Header.Duration.title))
+  let durationValueLabel = defaultValueLabel
+  
+  let minDurationTitleView = UIView()
+  let minDurationTitleLabel = defaultTitleLabel(localize(L.CoinStaking.Header.MinDuration.title))
+  let minDurationValueLabel = defaultValueLabel
   
   override init(frame: CGRect) {
     super.init(frame: frame)
@@ -80,19 +84,22 @@ class CoinStakingHeaderView: UIView {
     balanceTitleView.addSubview(balanceTitleLabel)
     stakedTitleView.addSubview(stakedTitleLabel)
     rewardsTitleView.addSubview(rewardsTitleLabel)
-    timeTitleView.addSubview(timeTitleLabel)
+    durationTitleView.addSubview(durationTitleLabel)
+    minDurationTitleView.addSubview(minDurationTitleLabel)
     
     titleStackView.addArrangedSubviews(priceTitleView,
                                        balanceTitleView,
                                        stakedTitleView,
                                        rewardsTitleView,
-                                       timeTitleView)
+                                       durationTitleView,
+                                       minDurationTitleView)
     
     valueStackView.addArrangedSubviews(priceValueLabel,
                                        balanceValueView,
                                        stakedValueLabel,
                                        rewardsValueLabel,
-                                       timeValueLabel)
+                                       durationValueLabel,
+                                       minDurationValueLabel)
   }
   
   private func setupLayout() {
@@ -104,7 +111,8 @@ class CoinStakingHeaderView: UIView {
      balanceTitleLabel,
      stakedTitleLabel,
      rewardsTitleLabel,
-     timeTitleLabel].forEach {
+     durationTitleLabel,
+     minDurationTitleLabel].forEach {
       $0.snp.makeConstraints {
         $0.top.left.right.equalToSuperview()
       }
@@ -122,14 +130,17 @@ class CoinStakingHeaderView: UIView {
     balanceValueView.configure(for: coinBalance)
     stakedValueLabel.text = "\(stakeDetails.stakedAmount ?? 0) \(coinBalance.type.code)"
     rewardsValueLabel.text = "\(stakeDetails.rewardsAmount ?? 0) \(coinBalance.type.code), \(stakeDetails.rewardsPercent ?? 0) %"
-    timeValueLabel.text = String(format: localize(L.CoinStaking.Header.Time.value), stakeDetails.stakedDays ?? 0)
+    durationValueLabel.text = String(format: localize(L.CoinStaking.Header.Duration.value), stakeDetails.stakedDays ?? 0)
+    minDurationValueLabel.text = String(format: localize(L.CoinStaking.Header.MinDuration.value), stakeDetails.stakingMinDays ?? 0)
     
     [stakedTitleView,
      stakedValueLabel,
      rewardsTitleView,
      rewardsValueLabel,
-     timeTitleView,
-     timeValueLabel].forEach {
+     durationTitleView,
+     durationValueLabel,
+     minDurationTitleView,
+     minDurationValueLabel].forEach {
       $0.isHidden = !stakeDetails.exist
     }
   }

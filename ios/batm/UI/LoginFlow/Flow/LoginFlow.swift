@@ -8,6 +8,7 @@ final class LoginFlow: BaseFlow<BTMNavigationController, LoginFlowController> {
       Dependencies(),
       WelcomeAssembly(),
       CreateWalletAssembly(),
+      PhoneVerificationAssembly(),
       SeedPhraseAssembly(),
       RecoverAssembly(),
       RecoverSeedPhraseAssembly(),
@@ -17,10 +18,11 @@ final class LoginFlow: BaseFlow<BTMNavigationController, LoginFlowController> {
   enum Steps: Step, Equatable {
     case welcome
     case createWallet
-    case seedPhrase
+    case phoneVerification(String, String)
+    case seedPhrase(String, String)
     case recover
-    case recoverSeedPhrase
-    case pinCode(PinCodeStage)
+    case recoverSeedPhrase(String, String)
+    case pinCode(PinCodeStage, String? = nil)
     case backToWelcome
     case contactSupport
     case pop
@@ -40,18 +42,29 @@ final class LoginFlow: BaseFlow<BTMNavigationController, LoginFlowController> {
     case .createWallet:
       let module = resolver.resolve(Module<CreateWalletModule>.self)!
       return push(module.controller)
-    case .seedPhrase:
+    case let .phoneVerification(phoneNumber, password):
+      let module = resolver.resolve(Module<PhoneVerificationModule>.self)!
+      module.input.setup(phoneNumber: phoneNumber, password: password)
+      return push(module.controller)
+    case let .seedPhrase(phoneNumber, password):
       let module = resolver.resolve(Module<SeedPhraseModule>.self)!
+      module.input.setup(phoneNumber: phoneNumber, password: password)
       return push(module.controller)
     case .recover:
       let module = resolver.resolve(Module<RecoverModule>.self)!
       return push(module.controller)
-    case .recoverSeedPhrase:
+    case let .recoverSeedPhrase(phoneNumber, password):
       let module = resolver.resolve(Module<RecoverSeedPhraseModule>.self)!
+      module.input.setup(phoneNumber: phoneNumber, password: password)
       return push(module.controller)
-    case let .pinCode(stage):
+    case let .pinCode(stage, pinCode):
       let module = resolver.resolve(Module<PinCodeModule>.self)!
       module.input.setup(for: stage)
+      
+      if let pinCode = pinCode {
+        module.input.setup(with: pinCode)
+      }
+      
       return push(module.controller)
     case .backToWelcome:
       let module = resolver.resolve(Module<WelcomeModule>.self)!

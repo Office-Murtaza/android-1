@@ -71,7 +71,7 @@ class PinCodeServiceImpl: PinCodeService {
 }
 
 extension PinCodeServiceImpl: PinCodeVerificationModuleDelegate {
-  func didFinishPinCode(for stage: PinCodeStage) {
+  func didFinishPinCode(for stage: PinCodeStage, with pinCode: String) {
     didVerifyPinCodeRelay.accept(())
   }
 }

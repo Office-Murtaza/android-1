@@ -9,7 +9,7 @@ extension Reactive where Base: UIViewController {
         return
       }
       
-      if let apiError = error as? APIError, case .serverError = apiError {
+      if let apiError = error as? APIError, case let .serverError(serverError) = apiError, serverError.code != 1 {
         return
       }
       

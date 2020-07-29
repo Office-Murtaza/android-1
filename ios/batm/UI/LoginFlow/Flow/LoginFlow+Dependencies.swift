@@ -15,6 +15,7 @@ extension LoginFlow {
         .inObjectScope(.container)
         .implements(WelcomeModuleDelegate.self,
                     CreateWalletModuleDelegate.self,
+                    PhoneVerificationModuleDelegate.self,
                     SeedPhraseModuleDelegate.self,
                     RecoverModuleDelegate.self,
                     RecoverSeedPhraseModuleDelegate.self,

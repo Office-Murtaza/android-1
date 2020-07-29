@@ -42,12 +42,10 @@ class WelcomeViewController: ModuleViewController<WelcomePresenter>, MFMailCompo
   override func setupBindings() {
     setupUIBindings()
     
-    let openTermsAndConditionsDriver = buttonsView.termsAndConditionsView.rx.termsAndConditionsTap
     let createDriver = buttonsView.rx.createTap
     let recoverDriver = buttonsView.rx.recoverTap
     let contactSupportDriver = contactSupportButton.rx.tap.asDriver()
-    presenter.bind(input: WelcomePresenter.Input(openTermsAndConditions: openTermsAndConditionsDriver,
-                                                 create: createDriver,
+    presenter.bind(input: WelcomePresenter.Input(create: createDriver,
                                                  recover: recoverDriver,
                                                  contactSupport: contactSupportDriver))
   }

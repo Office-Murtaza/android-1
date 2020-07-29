@@ -11,19 +11,19 @@ import retrofit2.http.Query
 
 interface WalletApi {
 
-    @GET("user/{userId}/coins/balance")
+    @GET("user/{userId}/balance")
     fun getBalanceAsync(
         @Path("userId") userId: Int,
         @Query("coins") coins: List<String>
     ): Deferred<Response<BalanceResponse>>
 
-    @GET("user/{userId}/coins/{coinId}/price-chart")
+    @GET("user/{userId}/coin/{coinId}/price-chart")
     fun getChartAsync(
         @Path("userId") userId: Int,
         @Path("coinId") coinCode: String
     ): Deferred<Response<ChartResponse>>
 
-    @GET("coins/{coinId}/settings")
+    @GET("coin/{coinId}/settings")
     fun getCoinFeeAsync(
         @Path("coinId") coinCode: String
     ): Deferred<Response<GetCoinFeeResponse>>

@@ -1,32 +1,29 @@
 import UIKit
 import RxSwift
 import RxCocoa
+import MaterialComponents
 
-class CreateWalletFormView: UIView {
+final class CreateWalletFormView: UIView, HasDisposeBag {
   
-  let phoneNumberTextField = PhoneNumberTextField()
-  
-  let passwordTextField: MainTextField = {
-    let textField = MainTextField()
-    textField.configure(for: .password)
-    return textField
+  let stackView: UIStackView = {
+    let stackView = UIStackView()
+    stackView.axis = .vertical
+    return stackView
   }()
   
-  let confirmPasswordTextField: MainTextField = {
-    let textField = MainTextField()
-    textField.configure(for: .confirmPassword)
-    return textField
-  }()
+  let phoneNumberTextField = MDCTextField.phone
+  let passwordTextField = MDCTextField.password
+  let confirmPasswordTextField = MDCTextField.password
   
-  lazy var formView: MainFormView = {
-    let view = MainFormView()
-    view.configure(for: [phoneNumberTextField,
-                         passwordTextField,
-                         confirmPasswordTextField])
-    return view
-  }()
+  let phoneNumberTextFieldController: ThemedTextInputControllerOutlined
+  let passwordTextFieldController: ThemedTextInputControllerOutlined
+  let confirmPasswordTextFieldController: ThemedTextInputControllerOutlined
   
   override init(frame: CGRect) {
+    phoneNumberTextFieldController = ThemedTextInputControllerOutlined(textInput: phoneNumberTextField)
+    passwordTextFieldController = ThemedTextInputControllerOutlined(textInput: passwordTextField)
+    confirmPasswordTextFieldController = ThemedTextInputControllerOutlined(textInput: confirmPasswordTextField)
+    
     super.init(frame: frame)
     
     setupUI()
@@ -40,24 +37,31 @@ class CreateWalletFormView: UIView {
   private func setupUI() {
     translatesAutoresizingMaskIntoConstraints = false
     
-    addSubview(formView)
+    addSubviews(stackView)
+    stackView.addArrangedSubviews(phoneNumberTextField,
+                                  passwordTextField,
+                                  confirmPasswordTextField)
+    
+    phoneNumberTextFieldController.placeholderText = localize(L.CreateWallet.Form.Phone.placeholder)
+    passwordTextFieldController.placeholderText = localize(L.CreateWallet.Form.Password.placeholder)
+    confirmPasswordTextFieldController.placeholderText = localize(L.CreateWallet.Form.ConfirmPassword.placeholder)
   }
   
   private func setupLayout() {
-    formView.snp.makeConstraints {
+    stackView.snp.makeConstraints {
       $0.edges.equalToSuperview()
     }
   }
 }
 
 extension Reactive where Base == CreateWalletFormView {
-  var cancelTap: Driver<Void> {
-    return base.formView.rx.cancelTap
+  var phoneNumberText: ControlProperty<String?> {
+    return base.phoneNumberTextField.rx.text
   }
-  var nextTap: Driver<Void> {
-    return base.formView.rx.nextTap
+  var passwordText: ControlProperty<String?> {
+    return base.passwordTextField.rx.text
   }
-  var error: Binder<String?> {
-    return base.formView.rx.error
+  var confirmPasswordText: ControlProperty<String?> {
+    return base.confirmPasswordTextField.rx.text
   }
 }

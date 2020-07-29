@@ -9,6 +9,8 @@ final class LoginFlowController: FlowController, FlowActivator {
   
   var initialStep: Step = LoginFlow.Steps.welcome
   
+  var isCreatingAccount = true
+  
   weak var delegate: LoginFlowControllerDelegate?
   
 }
@@ -35,8 +37,21 @@ extension LoginFlowController: CreateWalletModuleDelegate {
     step.accept(LoginFlow.Steps.pop)
   }
   
-  func finishCreatingWallet() {
-    step.accept(LoginFlow.Steps.seedPhrase)
+  func finishCreatingWallet(phoneNumber: String, password: String) {
+    isCreatingAccount = true
+    step.accept(LoginFlow.Steps.phoneVerification(phoneNumber, password))
+  }
+  
+}
+
+extension LoginFlowController: PhoneVerificationModuleDelegate {
+  
+  func didFinishPhoneVerification(phoneNumber: String, password: String) {
+    if isCreatingAccount {
+      step.accept(LoginFlow.Steps.seedPhrase(phoneNumber, password))
+    } else {
+      step.accept(LoginFlow.Steps.recoverSeedPhrase(phoneNumber, password))
+    }
   }
   
 }
@@ -55,13 +70,18 @@ extension LoginFlowController: RecoverModuleDelegate {
     step.accept(LoginFlow.Steps.pop)
   }
   
-  func finishRecovering() {
-    step.accept(LoginFlow.Steps.recoverSeedPhrase)
+  func finishRecovering(phoneNumber: String, password: String) {
+    isCreatingAccount = false
+    step.accept(LoginFlow.Steps.phoneVerification(phoneNumber, password))
   }
   
 }
 
 extension LoginFlowController: RecoverSeedPhraseModuleDelegate {
+  
+  func cancelRecoveringSeedPhrase() {
+    step.accept(LoginFlow.Steps.backToWelcome)
+  }
   
   func finishRecoveringSeedPhrase() {
     step.accept(LoginFlow.Steps.pinCode(.setup))
@@ -71,9 +91,9 @@ extension LoginFlowController: RecoverSeedPhraseModuleDelegate {
 
 extension LoginFlowController: PinCodeModuleDelegate {
   
-  func didFinishPinCode(for stage: PinCodeStage) {
+  func didFinishPinCode(for stage: PinCodeStage, with pinCode: String) {
     switch stage {
-    case .setup: step.accept(LoginFlow.Steps.pinCode(.confirmation))
+    case .setup: step.accept(LoginFlow.Steps.pinCode(.confirmation, pinCode))
     case .confirmation, .verification:
       delegate?.didFinishLogin()
     }

@@ -14,18 +14,6 @@ final class CoinSellViewController: NavigationScreenViewController<CoinSellPrese
   
   let nextButton = MDCButton.next
   
-  let backgroundDarkView: BackgroundDarkView = {
-    let view = BackgroundDarkView()
-    view.alpha = 0
-    return view
-  }()
-  
-  let codeView: CodeView = {
-    let view = CodeView()
-    view.alpha = 0
-    return view
-  }()
-  
   override var preferredStatusBarStyle: UIStatusBarStyle {
     return .lightContent
   }
@@ -36,8 +24,6 @@ final class CoinSellViewController: NavigationScreenViewController<CoinSellPrese
                                        headerView,
                                        formView,
                                        nextButton)
-    view.addSubviews(backgroundDarkView,
-                     codeView)
     
     setupDefaultKeyboardHandling()
   }
@@ -63,20 +49,6 @@ final class CoinSellViewController: NavigationScreenViewController<CoinSellPrese
       $0.height.equalTo(50)
       $0.top.equalTo(formView.snp.bottom).offset(30)
       $0.left.right.equalToSuperview().inset(15)
-    }
-    backgroundDarkView.snp.makeConstraints {
-      $0.edges.equalToSuperview()
-    }
-    codeView.snp.makeConstraints {
-      $0.left.right.equalToSuperview().inset(30)
-      $0.bottom.equalTo(view.safeAreaLayoutGuide).offset(-30)
-    }
-  }
-  
-  private func showCodeView() {
-    UIView.animate(withDuration: 0.3) {
-      self.backgroundDarkView.alpha = 1
-      self.codeView.alpha = 1
     }
   }
   
@@ -121,42 +93,15 @@ final class CoinSellViewController: NavigationScreenViewController<CoinSellPrese
       .disposed(by: disposeBag)
     
     presenter.state
-      .asObservable()
-      .map { $0.code }
-      .bind(to: codeView.smsCodeTextField.rx.text)
-      .disposed(by: disposeBag)
-    
-    
-    let errorMessageDriverObservable = presenter.state.asObservable()
       .map { $0.validationState }
       .mapToErrorMessage()
-    let shouldShowCodePopupObservable = presenter.state.asObservable()
-      .map { $0.shouldShowCodePopup }
-    
-    let combinedObservable = Observable.combineLatest(shouldShowCodePopupObservable,
-                                                      errorMessageDriverObservable)
-    
-    combinedObservable
-      .map { $0 ? nil : $1 }
-      .subscribe(onNext: { [errorView] in
+      .drive(onNext: { [errorView] in
         errorView.isHidden = $0 == nil
         errorView.configure(for: $0)
       })
       .disposed(by: disposeBag)
     
-    combinedObservable
-      .map { $0 ? $1 : nil }
-      .bind(to: codeView.rx.error)
-      .disposed(by: disposeBag)
-    
-    presenter.state
-      .map { $0.shouldShowCodePopup }
-      .filter { $0 }
-      .drive(onNext: { [unowned self] _ in self.showCodeView() })
-      .disposed(by: disposeBag)
-    
-    Driver.merge(backgroundDarkView.rx.tap,
-                 nextButton.rx.tap.asDriver())
+    nextButton.rx.tap.asDriver()
       .drive(onNext: { [view] in view?.endEditing(true) })
       .disposed(by: disposeBag)
   }
@@ -167,19 +112,13 @@ final class CoinSellViewController: NavigationScreenViewController<CoinSellPrese
     let backDriver = customView.backButton.rx.tap.asDriver()
     let updateFromAnotherAddressDriver = formView.rx.isAnotherAddress
     let updateCurrencyAmountDriver = formView.rx.currencyText.asDriver(onErrorDriveWith: .empty())
-    let updateCodeDriver = codeView.smsCodeTextField.rx.text.asDriver()
-    let cancelDriver = codeView.rx.cancelTap
     let maxDriver = formView.rx.maxTap
     let nextDriver = nextButton.rx.tap.asDriver()
-    let sendCodeDriver = codeView.rx.nextTap
     
     presenter.bind(input: CoinSellPresenter.Input(back: backDriver,
                                                   updateFromAnotherAddress: updateFromAnotherAddressDriver,
                                                   updateCurrencyAmount: updateCurrencyAmountDriver,
-                                                  updateCode: updateCodeDriver,
-                                                  cancel: cancelDriver,
                                                   max: maxDriver,
-                                                  next: nextDriver,
-                                                  sendCode: sendCodeDriver))
+                                                  next: nextDriver))
   }
 }

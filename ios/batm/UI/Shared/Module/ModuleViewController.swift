@@ -6,14 +6,45 @@ import MBProgressHUD
 typealias ModuleViewController<P: ModulePresenter> = GenericModuleViewController<P, UIView>
 typealias NavigationScreenViewController<P: ModulePresenter> = GenericModuleViewController<P, NavigationScreenView>
 
-class GenericModuleViewController<PresenterType: ModulePresenter, View: UIView>: UIViewController, NavigationBarVisibility {
+class GenericModuleViewController<PresenterType: ModulePresenter, View: UIView>: UIViewController, NavigationBarVisibility, NavigationBarAppearance {
   
   final var presenter: PresenterType!
   
   final var didSetupConstraints: Bool = false
+  
+  // MARK: - NavigationBarVisibility
    
   var shouldShowNavigationBar: Bool {
     return false
+  }
+  
+  // MARK: - NavigationBarAppearance
+  var navBarLargeTitleModeEnabled: Bool {
+    return false
+  }
+  
+  var navBarBackgroundColor: UIColor? {
+    return nil
+  }
+  
+  var navBarTitleTextAttributes: [NSAttributedString.Key: Any]? {
+    return [.foregroundColor: UIColor.slateGrey]
+  }
+  
+  var navBarTintColor: UIColor {
+    return .ceruleanBlue
+  }
+  
+  var navBarBarTintColor: UIColor {
+    return .white
+  }
+  
+  var navBarIsTranslucent: Bool {
+    return false
+  }
+  
+  var navBarStyle: UIBarStyle {
+    return .default
   }
   
   var customView: View {
@@ -22,7 +53,10 @@ class GenericModuleViewController<PresenterType: ModulePresenter, View: UIView>:
   }
   
   override func loadView() {
-    self.view = View(frame: UIScreen.main.bounds)
+    let view = View(frame: UIScreen.main.bounds)
+    view.backgroundColor = .white
+    self.view = view
+    
   }
   
   final override func viewDidLoad() {
