@@ -1,5 +1,6 @@
 package com.app.belcobtm.presentation.features.sms.code
 
+import android.view.View
 import com.app.belcobtm.R
 import com.app.belcobtm.presentation.core.extensions.*
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
@@ -15,6 +16,7 @@ class SmsCodeFragment : BaseFragment() {
     override val resourceLayout: Int = R.layout.fragment_sms_code
     override val isToolbarEnabled: Boolean = true
     override val isHomeButtonEnabled: Boolean = true
+    override val retryListener: View.OnClickListener = View.OnClickListener { viewModel.sendSmsToDevice() }
 
     override fun initViews() {
         setToolbarTitle(R.string.sms_code_screen_title)

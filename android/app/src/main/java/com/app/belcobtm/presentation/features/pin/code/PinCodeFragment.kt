@@ -24,6 +24,7 @@ class PinCodeFragment : BaseFragment() {
     override val resourceLayout: Int = R.layout.fragment_pin_code
     override val isToolbarEnabled: Boolean = false
     override val backPressedListener: View.OnClickListener = View.OnClickListener { /**empty**/ }
+    override val retryListener: View.OnClickListener = View.OnClickListener { viewModel.authorize() }
 
     override fun initViews() {
         refreshTitle()

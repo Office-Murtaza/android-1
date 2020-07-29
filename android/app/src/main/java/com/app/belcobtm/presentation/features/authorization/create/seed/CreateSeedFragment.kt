@@ -22,6 +22,7 @@ class CreateSeedFragment : BaseFragment() {
     override val backPressedListener: View.OnClickListener = View.OnClickListener {
         popBackStack(R.id.create_wallet_fragment, false)
     }
+    override val retryListener: View.OnClickListener = View.OnClickListener { createWallet() }
 
     override fun initViews() {
         setToolbarTitle(R.string.create_seed_screen_title)
@@ -32,12 +33,7 @@ class CreateSeedFragment : BaseFragment() {
             copyToClipboard(viewModel.seedLiveData.value ?: "")
             showSnackBar(R.string.clipboard)
         }
-        nextButtonView.setOnClickListener {
-            viewModel.createWallet(
-                requireArguments().getString(SmsCodeFragment.TAG_PHONE, ""),
-                requireArguments().getString(TAG_PASSWORD, "")
-            )
-        }
+        nextButtonView.setOnClickListener { createWallet() }
     }
 
     override fun initObservers() {
@@ -80,6 +76,13 @@ class CreateSeedFragment : BaseFragment() {
         val clipboard = requireContext().getSystemService(AppCompatActivity.CLIPBOARD_SERVICE) as ClipboardManager
         val clip = ClipData.newPlainText(copiedText, copiedText)
         clipboard.setPrimaryClip(clip)
+    }
+
+    private fun createWallet() {
+        viewModel.createWallet(
+            requireArguments().getString(SmsCodeFragment.TAG_PHONE, ""),
+            requireArguments().getString(TAG_PASSWORD, "")
+        )
     }
 
     companion object {

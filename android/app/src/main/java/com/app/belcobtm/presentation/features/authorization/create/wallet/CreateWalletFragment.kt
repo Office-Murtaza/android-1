@@ -7,6 +7,7 @@ import android.text.SpannableString
 import android.text.Spanned
 import android.text.TextUtils
 import android.text.method.LinkMovementMethod
+import android.view.View
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
@@ -28,6 +29,7 @@ class CreateWalletFragment : BaseFragment() {
     override val resourceLayout: Int = R.layout.fragment_create_wallet
     override val isToolbarEnabled: Boolean = true
     override val isHomeButtonEnabled: Boolean = true
+    override val retryListener: View.OnClickListener = View.OnClickListener { checkCredentials() }
 
     override fun initViews() {
         setToolbarTitle(R.string.create_wallet_screen_title)
@@ -35,13 +37,7 @@ class CreateWalletFragment : BaseFragment() {
     }
 
     override fun initListeners() {
-        nextButtonView.setOnClickListener {
-            phoneView.clearError()
-            passwordView.clearError()
-            if (isValidFields()) {
-                viewModel.checkCredentials(getPhone(), passwordView.getString())
-            }
-        }
+        nextButtonView.setOnClickListener { checkCredentials() }
         phoneView.editText?.afterTextChanged { updateNextButton() }
         passwordView.editText?.afterTextChanged { updateNextButton() }
         passwordConfirmView.editText?.afterTextChanged { updateNextButton() }
@@ -139,6 +135,14 @@ class CreateWalletFragment : BaseFragment() {
     }
 
     private fun getPhone(): String = phoneView.getString().replace("[-() ]".toRegex(), "")
+
+    private fun checkCredentials() {
+        phoneView.clearError()
+        passwordView.clearError()
+        if (isValidFields()) {
+            viewModel.checkCredentials(getPhone(), passwordView.getString())
+        }
+    }
 
     companion object {
         private const val PASSWORD_MIN_LENGTH: Int = 6

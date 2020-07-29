@@ -42,7 +42,11 @@ class AuthApiService(private val authApi: AuthApi) {
         request.body()?.let { Either.Right(it) } ?: Either.Left(Failure.ServerError())
     } catch (failure: Failure) {
         failure.printStackTrace()
-        Either.Left(failure)
+        if (failure.message == "No value for errorMsg") {
+            Either.Left(Failure.MessageError(failure.message))
+        } else {
+            Either.Left(failure)
+        }
     }
 
     suspend fun authorizeByRefreshToken(refreshToken: String): Either<Failure, AuthorizationResponse> = try {

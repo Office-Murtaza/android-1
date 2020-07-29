@@ -42,14 +42,16 @@ class RecoverSeedFragment : BaseFragment() {
             },
             error = {
                 when (it) {
-                    is Failure.NetworkConnection -> showError(R.string.error_internet_unavailable)
-                    is Failure.MessageError,
-                    is Failure.ServerError -> if (it.message.equals("No value for errorMsg", true)) {
+                    is Failure.NetworkConnection -> showErrorNoInternetConnection()
+                    is Failure.ServerError -> showErrorServerError()
+                    is Failure.MessageError -> if (it.message.equals("No value for errorMsg", true)) {
                         seedContainerView.showError(R.string.recover_seed_screen_incorrect_phrase)
+                        showContent()
                     } else {
                         showError(it.message ?: "")
+                        showContent()
                     }
-                    else -> showError(R.string.error_something_went_wrong)
+                    else -> showErrorSomethingWrong()
                 }
             }
         )

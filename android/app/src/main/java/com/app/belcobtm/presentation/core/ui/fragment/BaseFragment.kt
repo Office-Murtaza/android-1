@@ -250,7 +250,6 @@ abstract class BaseFragment : Fragment() {
                     }
                 } else {
                     error.invoke(loadingData.errorType)
-                    showContent()
                 }
             }
         })
