@@ -170,6 +170,7 @@ enum L {
     static let scan = "shared.scan"
     static let select = "shared.select"
     static let send = "shared.send"
+    static let termsAndConditions = "shared.terms_and_conditions"
   }
 
   struct ShowPhone {
@@ -233,8 +234,6 @@ enum L {
 
   struct Welcome {
     static let contactSupport = "welcome.contact_support"
-    static let tagline = "welcome.tagline"
-    static let termsAndConditions = "welcome.terms_and_conditions"
   }
 }
 // Extensions
@@ -489,17 +488,7 @@ extension L.CreateEditTrade.Form {
 }
 extension L.CreateWallet {
 
-  struct Code {
-    static let placeholder = "create_wallet.code.placeholder"
-  }
-
   struct Form {
-  }
-}
-extension L.CreateWallet.Code {
-
-  struct Error {
-    static let title = "create_wallet.code.error.title"
   }
 }
 extension L.CreateWallet.Form {
@@ -739,10 +728,6 @@ extension L.Welcome {
 
   struct CreateButton {
     static let title = "welcome.create_button.title"
-  }
-
-  struct Error {
-    static let title = "welcome.error.title"
   }
 
   struct FirstSlide {

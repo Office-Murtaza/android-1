@@ -87,8 +87,11 @@ class CreateWalletViewController: ModuleViewController<CreateWalletPresenter> {
       })
       .disposed(by: disposeBag)
     
-    termsAndConditionsView.rx.isAccepted
-      .drive(onNext: { [unowned self] in self.nextButton.isEnabled = $0 })
+    Driver.combineLatest(termsAndConditionsView.rx.isAccepted,
+                         presenter.state.map { $0.phoneE164.count > 0 })
+      .drive(onNext: { [unowned self] isAccepted, isPhoneValid in
+        self.nextButton.isEnabled = isAccepted && isPhoneValid
+      })
       .disposed(by: disposeBag)
     
     nextButton.rx.tap.asDriver()
