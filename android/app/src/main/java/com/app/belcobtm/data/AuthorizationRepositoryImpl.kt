@@ -176,4 +176,16 @@ class AuthorizationRepositoryImpl(
         }
         return entityList
     }
+
+    override suspend fun checkPass(userId: String, password: String): Either<Failure, Boolean> =
+        if (networkUtils.isNetworkAvailable()) {
+            val response = apiService.checkPass(userId, password)
+            if (response.isRight) {
+                Either.Right((response as Either.Right).b.match)
+            } else {
+                response as Either.Left
+            }
+        } else {
+            Either.Left(Failure.NetworkConnection)
+        }
 }

@@ -3,8 +3,12 @@ package com.app.belcobtm.presentation.features.settings
 import android.content.Context
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.navigation.NavDirections
+import com.app.belcobtm.R
 import com.app.belcobtm.domain.tools.IntentActions
 import com.app.belcobtm.presentation.core.Const
+import com.app.belcobtm.presentation.core.SingleLiveData
+import com.app.belcobtm.presentation.features.authorization.create.seed.CreateSeedFragment
 import com.app.belcobtm.presentation.features.settings.SettingsFragment.Companion.SETTINGS_ABOUT
 import com.app.belcobtm.presentation.features.settings.SettingsFragment.Companion.SETTINGS_MAIN
 import com.app.belcobtm.presentation.features.settings.SettingsFragment.Companion.SETTINGS_SECURITY
@@ -19,6 +23,8 @@ class SettingsViewModel(val appContext: Context, val intentActions: IntentAction
             ).versionName
         )
     )
+
+    val actionData = SingleLiveData<SettingsAction>()
 
     fun onSectionClick(section: SettingsSections) {
         when (section) {
@@ -62,11 +68,21 @@ class SettingsViewModel(val appContext: Context, val intentActions: IntentAction
 
     fun onSecurityItemClick(securityItem: SecurityItems) {
         when (securityItem) {
-            SecurityItems.PHONE -> TODO()
-            SecurityItems.PASS -> TODO()
-            SecurityItems.PIN -> TODO()
-            SecurityItems.SEED -> TODO()
-            SecurityItems.UNLINK -> TODO()
+            SecurityItems.PHONE -> {
+                actionData.value = SettingsAction.NavigateAction(SettingsFragmentDirections.settingsToDisplayPhone())
+            }
+            SecurityItems.PASS -> {
+                actionData.value = SettingsAction.NavigateAction(SettingsFragmentDirections.settingsToUpdatePassword())
+            }
+            SecurityItems.PIN -> {
+                actionData.value = SettingsAction.NavigateAction(SettingsFragmentDirections.settingsToPinCode())
+            }
+            SecurityItems.SEED -> {
+                actionData.value = SettingsAction.NavigateAction(SettingsFragmentDirections.toPassword(R.id.password_to_create_seed_fragment, R.string.seed_phrase_label, CreateSeedFragment.MODE_SETTINGS))
+            }
+            SecurityItems.UNLINK -> {
+                actionData.value = SettingsAction.NavigateAction(SettingsFragmentDirections.toPassword(R.id.password_to_unlink_fragment, R.string.unlink_wallet_label))
+            }
         }
     }
 }
@@ -95,3 +111,7 @@ data class SettingsState(
     val versionName: String,
     val showBackButton: Boolean = false
 )
+
+sealed class SettingsAction {
+    data class NavigateAction(val navDirections: NavDirections): SettingsAction()
+}

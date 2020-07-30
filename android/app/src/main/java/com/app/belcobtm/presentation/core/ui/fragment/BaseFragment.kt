@@ -15,9 +15,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
-import androidx.navigation.NavController
-import androidx.navigation.Navigation
-import androidx.navigation.Navigator
+import androidx.navigation.*
 import com.app.belcobtm.R
 import com.app.belcobtm.domain.Failure
 import com.app.belcobtm.presentation.core.extensions.hide
@@ -41,7 +39,7 @@ abstract class BaseFragment : Fragment() {
     protected open val homeButtonDrawable: Int = R.drawable.ic_arrow_back
     protected open val retryListener: View.OnClickListener? = null
     protected open val backPressedListener: View.OnClickListener = View.OnClickListener { popBackStack() }
-    protected open var isBackButtonEnabled: Boolean = isHomeButtonEnabled && isToolbarEnabled
+    protected open var isBackButtonEnabled: Boolean = false //field used for dynamic setting of back button because we handle it on resume
 
 
     protected abstract val resourceLayout: Int
@@ -100,7 +98,7 @@ abstract class BaseFragment : Fragment() {
                 actionBar.hide()
             }
 
-            showBackButton(isBackButtonEnabled)
+            showBackButton(isBackButtonEnabled || (isToolbarEnabled && isHomeButtonEnabled))
             fillToolbarTitle()
         }
         activity.invalidateOptionsMenu()
@@ -130,6 +128,10 @@ abstract class BaseFragment : Fragment() {
 
     protected fun navigate(resId: Int, args: Bundle, extras: Navigator.Extras) {
         navController?.navigate(resId, args, null, extras)
+    }
+
+    protected fun navigate(navDestination: NavDirections) {
+        navController?.navigate(navDestination)
     }
 
     protected fun setGraph(graphResId: Int) {
@@ -264,4 +266,10 @@ abstract class BaseFragment : Fragment() {
     protected open fun initListeners() = Unit
 
     protected open fun initObservers() = Unit
+
+    fun <T> T.doIfChanged(old: T?, action: (T) -> Unit) {
+        if (this != old) {
+            action(this)
+        }
+    }
 }

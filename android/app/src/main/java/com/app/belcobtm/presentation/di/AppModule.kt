@@ -11,6 +11,7 @@ import com.app.belcobtm.presentation.features.authorization.recover.seed.Recover
 import com.app.belcobtm.presentation.features.authorization.recover.wallet.RecoverWalletViewModel
 import com.app.belcobtm.presentation.features.pin.code.PinCodeViewModel
 import com.app.belcobtm.presentation.features.settings.SettingsViewModel
+import com.app.belcobtm.presentation.features.settings.password.PasswordViewModel
 import com.app.belcobtm.presentation.features.settings.verification.blank.VerificationBlankViewModel
 import com.app.belcobtm.presentation.features.settings.verification.info.VerificationInfoViewModel
 import com.app.belcobtm.presentation.features.settings.verification.vip.VerificationVipViewModel
@@ -90,4 +91,5 @@ val viewModelModule = module {
     viewModel { RecoverSeedViewModel(get()) }
     viewModel { CreateSeedViewModel(get(), get()) }
     viewModel { SettingsViewModel(get(), get()) }
+    viewModel { PasswordViewModel(get(), get()) }
 }

@@ -63,6 +63,13 @@ class SettingsFragment : BaseFragment() {
             })
             appliedState = state
         })
+
+        viewModel.actionData.observe(this, Observer { action ->
+            when(action) {
+                is SettingsAction.NavigateAction -> navigate(action.navDirections)
+            }
+
+        })
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -84,11 +91,5 @@ class SettingsFragment : BaseFragment() {
 
     private fun onSecurityItemClick(securityItem: SecurityItems) {
         viewModel.onSecurityItemClick(securityItem)
-    }
-}
-
-fun <T> T.doIfChanged(old: T?, action: (T) -> Unit) {
-    if (this != old) {
-        action(this)
     }
 }
