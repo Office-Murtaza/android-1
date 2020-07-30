@@ -37,7 +37,10 @@ class ResponseInterceptor(private val broadcastManager: LocalBroadcastManager) :
                 }
                 HttpURLConnection.HTTP_NOT_FOUND -> throw Failure.ServerError("Not found")
                 HttpURLConnection.HTTP_FORBIDDEN -> {
-                    broadcastManager.sendBroadcast(Intent(TAG_USER_UNAUTHORIZED))
+                    val isUserUnauthorized = request.url().encodedPath().equals(REQUEST_REFRESH_PATH, true)
+                    val intent = Intent(TAG_USER_AUTHORIZATION)
+                    intent.putExtra(KEY_IS_USER_UNAUTHORIZED, isUserUnauthorized)
+                    broadcastManager.sendBroadcast(intent)
                     throw Failure.TokenError
                 }
 //                    response.newBuilder()
@@ -57,6 +60,8 @@ class ResponseInterceptor(private val broadcastManager: LocalBroadcastManager) :
         private const val RESPONSE_FIELD = "response"
         private const val ERROR_FIELD = "error"
         private const val ERROR_SUB_FIELD = "errorMsg"
-        private const val TAG_USER_UNAUTHORIZED = "tag_broadcast_user_unauthorized"
+        private const val REQUEST_REFRESH_PATH = "/api/v1/refresh"
+        private const val TAG_USER_AUTHORIZATION = "tag_broadcast_user_unauthorized"
+        private const val KEY_IS_USER_UNAUTHORIZED = "key_is_user_unauthorized"
     }
 }

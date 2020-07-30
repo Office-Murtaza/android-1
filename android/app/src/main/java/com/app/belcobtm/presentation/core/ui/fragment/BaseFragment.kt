@@ -243,7 +243,7 @@ abstract class BaseFragment : Fragment() {
                         is Failure.NetworkConnection -> showErrorNoInternetConnection()
                         is Failure.MessageError -> {
                             showSnackBar(loadingData.errorType.message ?: "")
-                            updateContentContainer(isContentVisible = true)
+                            showContent()
                         }
                         is Failure.ServerError -> showErrorServerError()
                         else -> showErrorSomethingWrong()

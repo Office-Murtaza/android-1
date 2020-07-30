@@ -90,7 +90,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="16dp"
-        android:text="@android:string/copy" />
+        android:text="@string/copy_text" />
 
     <Space
         android:layout_width="match_parent"

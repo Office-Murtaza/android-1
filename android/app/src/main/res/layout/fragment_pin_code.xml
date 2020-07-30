@@ -6,77 +6,80 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/backButtonView"
+        android:layout_width="?android:attr/actionBarSize"
+        android:layout_height="?android:attr/actionBarSize"
+        android:background="?selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true"
+        android:scaleType="center"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_arrow_back"
+        app:tint="@color/colorPrimary"
+        tools:visibility="visible" />
 
     <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/logo"
+        android:id="@+id/logoView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="80dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_logo_main" />
 
-    <androidx.appcompat.widget.AppCompatTextView
+    <TextView
         android:id="@+id/titleView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="50dp"
+        android:layout_marginBottom="44dp"
         android:text="@string/pin_code_screen_enter_pin"
         android:textSize="20sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@id/dot1View"
+        app:layout_constraintBottom_toTopOf="@id/pinIndicatorsView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/dot1View"
-        style="@style/Background.PinCodeIndicator"
+    <TextView
+        android:id="@+id/errorView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:text="@string/code_not_match"
+        android:textColor="@android:color/holo_red_light"
+        android:textSize="12sp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@id/pinIndicatorsView"
+        app:layout_constraintEnd_toEndOf="@id/titleView"
+        app:layout_constraintStart_toStartOf="@id/titleView" />
+
+    <com.alimuzaffar.lib.pin.PinEntryEditText
+        android:id="@+id/pinIndicatorsView"
+        android:layout_width="88dp"
+        android:layout_height="8dp"
+        android:layout_gravity="center_horizontal"
         android:layout_marginBottom="24dp"
+        android:background="@null"
+        android:clickable="false"
+        android:cursorVisible="false"
+        android:digits="1234567890"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
+        android:inputType="number"
+        android:maxLength="6"
+        android:textColor="@android:color/transparent"
+        android:textIsSelectable="false"
+        android:textSize="0px"
         app:layout_constraintBottom_toTopOf="@id/keyboardView"
-        app:layout_constraintEnd_toStartOf="@id/dot2View"
-        app:layout_constraintHorizontal_chainStyle="packed"
-        app:layout_constraintStart_toStartOf="@id/keyboardView" />
-
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/dot2View"
-        style="@style/Background.PinCodeIndicator"
-        app:layout_constraintBottom_toBottomOf="@id/dot1View"
-        app:layout_constraintEnd_toStartOf="@id/dot3View"
-        app:layout_constraintStart_toEndOf="@id/dot1View"
-        app:layout_constraintTop_toTopOf="@id/dot1View" />
-
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/dot3View"
-        style="@style/Background.PinCodeIndicator"
-        app:layout_constraintBottom_toBottomOf="@id/dot2View"
-        app:layout_constraintEnd_toStartOf="@id/dot4View"
-        app:layout_constraintStart_toEndOf="@id/dot2View"
-        app:layout_constraintTop_toTopOf="@id/dot2View" />
-
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/dot4View"
-        style="@style/Background.PinCodeIndicator"
-        app:layout_constraintBottom_toBottomOf="@id/dot3View"
-        app:layout_constraintEnd_toStartOf="@id/dot5View"
-        app:layout_constraintStart_toEndOf="@id/dot3View"
-        app:layout_constraintTop_toTopOf="@id/dot3View" />
-
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/dot5View"
-        style="@style/Background.PinCodeIndicator"
-        app:layout_constraintBottom_toBottomOf="@id/dot4View"
-        app:layout_constraintEnd_toStartOf="@id/dot6View"
-        app:layout_constraintStart_toEndOf="@id/dot4View"
-        app:layout_constraintTop_toTopOf="@id/dot4View" />
-
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/dot6View"
-        style="@style/Background.PinCodeIndicator"
-        app:layout_constraintBottom_toBottomOf="@id/dot5View"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/dot5View"
-        app:layout_constraintTop_toTopOf="@id/dot5View" />
+        app:layout_constraintEnd_toEndOf="@id/titleView"
+        app:layout_constraintStart_toStartOf="@id/titleView"
+        app:pinBackgroundDrawable="@drawable/bg_pin_round"
+        app:pinBackgroundIsSquare="true"
+        app:pinCharacterSpacing="8dp"
+        app:pinTextBottomPadding="4dp" />
 
     <TableLayout
         android:id="@+id/keyboardView"

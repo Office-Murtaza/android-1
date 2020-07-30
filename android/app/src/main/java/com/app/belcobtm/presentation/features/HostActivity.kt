@@ -24,7 +24,14 @@ class HostActivity : AppCompatActivity() {
     private val clearAppDataUseCase: ClearAppDataUseCase by inject()
     private lateinit var currentNavFragment: NavHostFragment
     private val authorizationBroadcast: BroadcastReceiver = object : BroadcastReceiver() {
-        override fun onReceive(context: Context?, intent: Intent?) = showPinScreen()
+        override fun onReceive(
+            context: Context,
+            intent: Intent
+        ) = if (intent.getBooleanExtra(KEY_IS_USER_UNAUTHORIZED, false)) {
+            showAuthorizationScreen()
+        } else {
+            showPinScreen()
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -51,7 +58,7 @@ class HostActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        val intentFilter = IntentFilter(TAG_USER_UNAUTHORIZED)
+        val intentFilter = IntentFilter(TAG_USER_AUTHORIZATION)
         LocalBroadcastManager.getInstance(applicationContext).registerReceiver(authorizationBroadcast, intentFilter)
     }
 
@@ -84,6 +91,7 @@ class HostActivity : AppCompatActivity() {
     }
 
     companion object {
-        const val TAG_USER_UNAUTHORIZED = "tag_broadcast_user_unauthorized"
+        private const val TAG_USER_AUTHORIZATION = "tag_broadcast_user_unauthorized"
+        private const val KEY_IS_USER_UNAUTHORIZED = "key_is_user_unauthorized"
     }
 }

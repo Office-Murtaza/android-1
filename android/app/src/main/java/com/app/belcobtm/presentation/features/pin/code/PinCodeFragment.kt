@@ -5,14 +5,11 @@ import android.os.Build
 import android.os.VibrationEffect
 import android.os.Vibrator
 import android.view.View
-import androidx.appcompat.widget.AppCompatImageView
-import androidx.core.content.ContextCompat
-import androidx.core.widget.ImageViewCompat
-import androidx.lifecycle.Observer
 import com.app.belcobtm.App
 import com.app.belcobtm.R
-import com.app.belcobtm.domain.Failure
-import com.app.belcobtm.presentation.core.mvvm.LoadingData
+import com.app.belcobtm.presentation.core.extensions.hide
+import com.app.belcobtm.presentation.core.extensions.show
+import com.app.belcobtm.presentation.core.extensions.toggle
 import com.app.belcobtm.presentation.core.ui.fragment.BaseFragment
 import com.app.belcobtm.presentation.features.HostActivity
 import kotlinx.android.synthetic.main.fragment_pin_code.*
@@ -42,25 +39,19 @@ class PinCodeFragment : BaseFragment() {
         key9View.setOnClickListener { addPinSymbol(it) }
         key0View.setOnClickListener { addPinSymbol(it) }
         keyEraseView.setOnClickListener { removePinSymbol() }
+        backButtonView.setOnClickListener {
+            pinIndicatorsView.setText("")
+            viewModel.enteredPinCode = ""
+            viewModel.enteredCreatePinCode = ""
+            errorView.hide()
+            refreshTitle()
+            refreshBackButton()
+        }
     }
 
     override fun initObservers() {
-        viewModel.authorizationLiveData.observe(this, Observer {
-            when (it) {
-                is LoadingData.Loading -> showLoading()
-                is LoadingData.Success -> {
-                    (requireActivity() as HostActivity).showMainScreen()
-                    showContent()
-                }
-                is LoadingData.Error -> {
-                    when (it.errorType) {
-                        is Failure.MessageError -> showSnackBar(it.errorType.message)
-                        is Failure.NetworkConnection -> showSnackBar(R.string.error_internet_unavailable)
-                        else -> (requireActivity() as HostActivity).showAuthorizationScreen()
-                    }
-                    showContent()
-                }
-            }
+        viewModel.authorizationLiveData.listen({
+            (requireActivity() as HostActivity).showMainScreen()
         })
     }
 
@@ -89,61 +80,25 @@ class PinCodeFragment : BaseFragment() {
         onPinChange()
     }
 
-
-    private fun unselectTintDot(tintGrayDot: AppCompatImageView) = ImageViewCompat.setImageTintList(
-        tintGrayDot,
-        ContextCompat.getColorStateList(requireContext(), R.color.colorPinUnselectedIndicator)
-    )
-
-    private fun selectTintDot(tintDot: AppCompatImageView, whiteDot: AppCompatImageView? = null) {
-        ImageViewCompat.setImageTintList(
-            tintDot,
-            ContextCompat.getColorStateList(requireContext(), R.color.colorPinSelectedIndicator)
-        )
-        if (whiteDot != null) {
-            ImageViewCompat.setImageTintList(
-                whiteDot,
-                ContextCompat.getColorStateList(requireContext(), R.color.colorPinUnselectedIndicator)
-            )
-        }
-    }
-
-    private fun clearIndicators() {
-        unselectTintDot(dot1View)
-        unselectTintDot(dot2View)
-        unselectTintDot(dot3View)
-        unselectTintDot(dot4View)
-        unselectTintDot(dot5View)
-        unselectTintDot(dot6View)
-    }
-
     private fun onPinChange() {
         val pinCode = when {
             pinMode != KEY_PIN_MODE_ENTER && viewModel.enteredPinCode.length == PIN_CODE_LENGTH -> viewModel.enteredCreatePinCode
             else -> viewModel.enteredPinCode
         }
-
-        when {
-            pinCode.isEmpty() -> clearIndicators()
-            pinCode.length == 1 -> selectTintDot(dot1View, dot2View)
-            pinCode.length == 2 -> selectTintDot(dot2View, dot3View)
-            pinCode.length == 3 -> selectTintDot(dot3View, dot4View)
-            pinCode.length == 4 -> selectTintDot(dot4View, dot5View)
-            pinCode.length == 5 -> selectTintDot(dot5View, dot6View)
-            pinCode.length == 6 -> {
-                selectTintDot(dot6View)
-                onPinEntered(pinCode)
-            }
-            else -> Unit
-        }
+        errorView.hide()
+        refreshBackButton()
         refreshTitle()
+        pinIndicatorsView.setText(pinCode)
+        if (pinCode.length == PIN_CODE_LENGTH) {
+            onPinEntered(pinCode)
+        }
     }
 
     private fun onPinEntered(pinCode: String) {
         when {
             pinMode != KEY_PIN_MODE_ENTER && viewModel.enteredCreatePinCode.isBlank() -> {//first create/change pin screen
                 vibrate(100)
-                clearIndicators()
+                pinIndicatorsView.setText("")
             }
             pinMode != KEY_PIN_MODE_ENTER && viewModel.enteredCreatePinCode == viewModel.enteredPinCode -> {
                 vibrate(300)
@@ -156,18 +111,22 @@ class PinCodeFragment : BaseFragment() {
             }
             pinMode == KEY_PIN_MODE_ENTER && pinCode != viewModel.getSavedPinCode() -> {
                 viewModel.enteredPinCode = ""
-                showSnackBar(R.string.code_not_match)
+                pinIndicatorsView.isError = true
+                errorView.show()
                 vibrateError()
-                clearIndicators()
             }
             else -> {//second create/change pin screen. pin doesn't phone
                 viewModel.enteredPinCode = ""
                 viewModel.enteredCreatePinCode = ""
-                showSnackBar(R.string.code_not_match)
-                clearIndicators()
+                pinIndicatorsView.isError = true
+                errorView.show()
+                vibrateError()
             }
         }
     }
+
+    private fun refreshBackButton() =
+        backButtonView.toggle(pinMode != KEY_PIN_MODE_ENTER && viewModel.enteredPinCode.length == PIN_CODE_LENGTH)
 
     private fun refreshTitle() {
         when {

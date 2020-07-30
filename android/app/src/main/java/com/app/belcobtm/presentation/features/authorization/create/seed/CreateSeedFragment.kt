@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.os.bundleOf
 import androidx.lifecycle.Observer
 import com.app.belcobtm.R
+import com.app.belcobtm.presentation.core.helper.AlertHelper
 import com.app.belcobtm.presentation.core.ui.fragment.BaseFragment
 import com.app.belcobtm.presentation.features.pin.code.PinCodeFragment
 import com.app.belcobtm.presentation.features.sms.code.SmsCodeFragment
@@ -31,7 +32,6 @@ class CreateSeedFragment : BaseFragment() {
     override fun initListeners() {
         copyButtonView.setOnClickListener {
             copyToClipboard(viewModel.seedLiveData.value ?: "")
-            showSnackBar(R.string.clipboard)
         }
         nextButtonView.setOnClickListener { createWallet() }
     }
@@ -76,6 +76,7 @@ class CreateSeedFragment : BaseFragment() {
         val clipboard = requireContext().getSystemService(AppCompatActivity.CLIPBOARD_SERVICE) as ClipboardManager
         val clip = ClipData.newPlainText(copiedText, copiedText)
         clipboard.setPrimaryClip(clip)
+        AlertHelper.showToastShort(requireContext(), R.string.copied)
     }
 
     private fun createWallet() {
