@@ -41,7 +41,7 @@ class PasswordViewModel(
         return when (arguments.destination) {
             R.id.password_to_create_seed_fragment -> PasswordFragmentDirections.passwordToCreateSeedFragment(CreateSeedFragment.MODE_SETTINGS)
             R.id.password_to_change_phone_fragment -> PasswordFragmentDirections.passwordToChangePhoneFragment()
-            R.id.password_to_unlink_fragment -> PasswordFragmentDirections.passwordToChangePhoneFragment()
+            R.id.password_to_unlink_fragment -> PasswordFragmentDirections.passwordToUnlinkFragment()
             else -> throw IllegalArgumentException("wrong direction passed")
         }
     }

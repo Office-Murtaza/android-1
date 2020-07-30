@@ -64,4 +64,5 @@ val useCaseModule = module {
     single { RecoverWalletUseCase(get()) }
     single { CreateSeedUseCase(get()) }
     single { CheckPassUseCase(get()) }
+    single { UnlinkUseCase(get()) }
 }

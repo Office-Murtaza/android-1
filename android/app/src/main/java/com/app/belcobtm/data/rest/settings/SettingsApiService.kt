@@ -61,6 +61,18 @@ class SettingsApiService(private val fileHelper: FileHelper, private val api: Se
         Either.Left(failure)
     }
 
+    suspend fun unlink(
+        userId: Int
+    ): Either<Failure, Boolean> = try {
+        val request = api.unlink(userId.toString()).await()
+
+        val updated = request.body()?.result?: false
+        request.body()?.let { Either.Right(updated) } ?: Either.Left(Failure.ServerError())
+    } catch (failure: Failure) {
+        failure.printStackTrace()
+        Either.Left(failure)
+    }
+
     companion object {
         private const val VERIFICATION = 1
         private const val VIP_VERIFICATION = 2

@@ -1,5 +1,6 @@
 package com.app.belcobtm.data.rest.settings
 
+import com.app.belcobtm.data.rest.settings.response.UnlinkResponse
 import com.app.belcobtm.data.rest.settings.response.VerificationInfoResponse
 import kotlinx.coroutines.Deferred
 import okhttp3.MultipartBody
@@ -38,4 +39,7 @@ interface SettingsApi {
         @Part("ssn") ssn: Int,
         @Part file: MultipartBody.Part
     ): Deferred<Response<ResponseBody>>
+
+    @GET("user/{userId}/unlink")
+    fun unlink(@Path("userId") userId: String): Deferred<Response<UnlinkResponse>>
 }

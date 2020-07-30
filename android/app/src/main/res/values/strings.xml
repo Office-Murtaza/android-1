@@ -416,4 +416,7 @@
     <string name="seed_phrase_label">Seed phrase</string>
     <string name="unlink_wallet_label">Unlink wallet</string>
     <string name="password_hint">Password</string>
+
+    //unlink
+    <string name="unlink_text_top">Make sure you stored your credentials and seed phrase before unlinking the wallet, otherwise, you will lose all assets</string>
 </resources>

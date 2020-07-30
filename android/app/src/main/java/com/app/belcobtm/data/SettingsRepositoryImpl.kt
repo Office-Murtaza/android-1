@@ -56,4 +56,11 @@ class SettingsRepositoryImpl(
     } else {
         Either.Left(Failure.NetworkConnection)
     }
+
+    override suspend fun unlink(uesrId: String): Either<Failure, Boolean> =
+        if (networkUtils.isNetworkAvailable()) {
+            apiService.unlink(prefHelper.userId)
+        } else {
+            Either.Left(Failure.NetworkConnection)
+        }
 }

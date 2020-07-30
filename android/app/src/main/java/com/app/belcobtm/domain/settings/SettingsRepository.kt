@@ -12,4 +12,5 @@ interface SettingsRepository {
     suspend fun sendVerificationBlank(blankDataItem: VerificationBlankDataItem): Either<Failure, Unit>
     fun getVerificationCountries(): List<VerificationCountryDataItem>
     suspend fun sendVerificationVip(vipDataItem: VerificationVipDataItem): Either<Failure, Unit>
+    suspend fun unlink(userId: String): Either<Failure, Boolean>
 }
