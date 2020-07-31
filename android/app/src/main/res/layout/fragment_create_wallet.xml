@@ -25,15 +25,14 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <androidx.appcompat.widget.AppCompatEditText
+            <com.app.belcobtm.presentation.core.ui.view.EditTextNoAutoFill
                 android:id="@+id/phoneEditView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:drawableEnd="@drawable/ic_phone"
                 android:drawableTint="@color/colorPrimary"
                 android:hint="@string/create_wallet_screen_phone"
-                android:importantForAutofill="no"
-                android:inputType="phone|textNoSuggestions"
+                android:inputType="phone"
                 android:lines="1"
                 android:nextFocusDown="@id/passwordView" />
         </com.google.android.material.textfield.TextInputLayout>
@@ -49,12 +48,11 @@
             app:passwordToggleEnabled="true"
             app:passwordToggleTint="@color/colorPrimary">
 
-            <androidx.appcompat.widget.AppCompatEditText
+            <com.app.belcobtm.presentation.core.ui.view.EditTextNoAutoFill
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/create_wallet_screen_password"
-                android:importantForAutofill="no"
-                android:inputType="textPassword|textNoSuggestions"
+                android:inputType="textPassword"
                 android:lines="1"
                 android:nextFocusDown="@id/passwordConfirmView" />
 
@@ -71,12 +69,11 @@
             app:passwordToggleEnabled="true"
             app:passwordToggleTint="@color/colorPrimary">
 
-            <androidx.appcompat.widget.AppCompatEditText
+            <com.app.belcobtm.presentation.core.ui.view.EditTextNoAutoFill
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/create_wallet_screen_confirm_password"
-                android:importantForAutofill="no"
-                android:inputType="textPassword|textNoSuggestions"
+                android:inputType="textPassword"
                 android:lines="1"
                 android:nextFocusDown="@id/tncCheckBoxView" />
 
