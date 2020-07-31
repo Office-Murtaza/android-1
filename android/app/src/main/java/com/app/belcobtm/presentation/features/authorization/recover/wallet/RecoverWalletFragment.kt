@@ -1,6 +1,7 @@
 package com.app.belcobtm.presentation.features.authorization.recover.wallet
 
 import android.telephony.PhoneNumberFormattingTextWatcher
+import android.view.View
 import androidx.core.os.bundleOf
 import com.app.belcobtm.R
 import com.app.belcobtm.presentation.core.extensions.*
@@ -20,6 +21,7 @@ class RecoverWalletFragment : BaseFragment() {
     override val isToolbarEnabled: Boolean = true
     override val isHomeButtonEnabled: Boolean = true
     override val resourceLayout: Int = R.layout.fragment_recover_wallet
+    override val retryListener: View.OnClickListener = View.OnClickListener { checkCredentials() }
 
     override fun initViews() {
         super.initViews()

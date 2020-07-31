@@ -22,6 +22,7 @@ import com.app.belcobtm.R
 import com.app.belcobtm.domain.Failure
 import com.app.belcobtm.presentation.core.extensions.hide
 import com.app.belcobtm.presentation.core.extensions.show
+import com.app.belcobtm.presentation.core.extensions.toggle
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
 import com.app.belcobtm.presentation.features.HostActivity
 import com.app.belcobtm.presentation.features.HostNavigationFragment
@@ -38,7 +39,9 @@ abstract class BaseFragment : Fragment() {
     protected open val isHomeButtonEnabled: Boolean = false
     protected open val isMenuEnabled: Boolean = false
     protected open val homeButtonDrawable: Int = R.drawable.ic_arrow_back
+    protected open val retryListener: View.OnClickListener? = null
     protected open val backPressedListener: View.OnClickListener = View.OnClickListener { popBackStack() }
+
 
     protected abstract val resourceLayout: Int
 
@@ -68,6 +71,7 @@ abstract class BaseFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         this.navController = Navigation.findNavController(view)
+        errorRetryButtonView.setOnClickListener(retryListener)
         initListeners()
         initObservers()
         initViews()
@@ -169,23 +173,15 @@ abstract class BaseFragment : Fragment() {
         imm?.hideSoftInputFromWindow(focus.windowToken, 0)
     }
 
-    protected open fun initViews() = Unit
-
-    protected open fun initListeners() = Unit
-
-    protected open fun initObservers() = Unit
-
     protected open fun showLoading() {
         hideKeyboard()
         view?.clearFocus()
         view?.requestFocus()
-        contentContainerView.hide()
-        progressView.show()
+        updateContentContainer(isProgressVisible = true)
     }
 
     protected open fun showContent() {
-        progressView.hide()
-        contentContainerView.show()
+        updateContentContainer(isContentVisible = true)
     }
 
     protected open fun showError(message: String) {
@@ -198,6 +194,37 @@ abstract class BaseFragment : Fragment() {
         contentContainerView.show()
         progressView.hide()
         showSnackBar(resMessage)
+    }
+
+    protected open fun showErrorNoInternetConnection() {
+        errorImageView.setImageResource(R.drawable.ic_screen_state_no_internet)
+        errorTitleView.setText(R.string.base_screen_no_internet_title)
+        errorDescriptionView.setText(R.string.base_screen_no_internet_description)
+        updateContentContainer(isErrorVisible = true)
+    }
+
+    protected open fun showErrorServerError() {
+        errorImageView.setImageResource(R.drawable.ic_screen_state_server_error)
+        errorTitleView.setText(R.string.base_screen_server_error_title)
+        errorDescriptionView.setText(R.string.base_screen_server_error_description)
+        updateContentContainer(isErrorVisible = true)
+    }
+
+    protected open fun showErrorSomethingWrong() {
+        errorImageView.setImageResource(R.drawable.ic_screen_state_something_wrong)
+        errorTitleView.setText(R.string.base_screen_something_wrong_title)
+        errorDescriptionView.setText(R.string.base_screen_something_wrong_description)
+        updateContentContainer(isErrorVisible = true)
+    }
+
+    private fun updateContentContainer(
+        isContentVisible: Boolean = false,
+        isProgressVisible: Boolean = false,
+        isErrorVisible: Boolean = false
+    ) {
+        contentContainerView.toggle(isContentVisible)
+        progressView.toggle(isProgressVisible)
+        errorContainerView.toggle(isErrorVisible)
     }
 
     protected fun <T> LiveData<LoadingData<T>>.listen(
@@ -213,16 +240,24 @@ abstract class BaseFragment : Fragment() {
                 }
                 is LoadingData.Error<T> -> if (error == null) {
                     when (loadingData.errorType) {
-                        is Failure.NetworkConnection -> showError(R.string.error_internet_unavailable)
-                        is Failure.MessageError,
-                        is Failure.ServerError -> showError(loadingData.errorType.message ?: "")
-                        else -> showError(R.string.error_something_went_wrong)
+                        is Failure.NetworkConnection -> showErrorNoInternetConnection()
+                        is Failure.MessageError -> {
+                            showSnackBar(loadingData.errorType.message ?: "")
+                            showContent()
+                        }
+                        is Failure.ServerError -> showErrorServerError()
+                        else -> showErrorSomethingWrong()
                     }
                 } else {
                     error.invoke(loadingData.errorType)
-                    showContent()
                 }
             }
         })
     }
+
+    protected open fun initViews() = Unit
+
+    protected open fun initListeners() = Unit
+
+    protected open fun initObservers() = Unit
 }

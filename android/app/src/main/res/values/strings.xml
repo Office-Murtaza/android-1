@@ -10,6 +10,14 @@
     <string name="bottom_menu_settings">Settings</string>
     <string name="bottom_menu_wallet">Wallet</string>
 
+    <!-- Base screen -->
+    <string name="base_screen_no_internet_title">No internet connection</string>
+    <string name="base_screen_no_internet_description">Connect to WiFi or turn on mobile data.</string>
+    <string name="base_screen_server_error_title">Server error</string>
+    <string name="base_screen_server_error_description">Our server goes down. Please, try again later.</string>
+    <string name="base_screen_something_wrong_title">Something wrong</string>
+    <string name="base_screen_something_wrong_description">Our app runs into an issue. Please, try again later.</string>
+
     <!-- Strings related to login -->
     <string name="logo_text">Stay Ahead of the Crypto Future</string>
 
@@ -90,10 +98,11 @@
     <string name="recover_seed_screen_error_length">Seed phrase must be 12 words</string>
     <string name="recover_seed_screen_incorrect_phrase">Seed Phrase you entered is invalid. Please try again</string>
 
+
     <!-- Create Seed Screen-->
     <string name="create_seed_screen_title">Seed phrase</string>
     <string name="create_seed_screen_description">If you lost your seed phrase you will\nnot be able your wallet</string>
-    <!--    <string name="create_seed_screen_"></string>-->
+    <string name="create_seed_screen_seed_phrase_copied">Seed phrase copied</string>
     <!--    <string name="create_seed_screen_"></string>-->
 
     <!--balance-->
@@ -389,5 +398,7 @@
     <string name="next">Next</string>
     <string name="cancel">Cancel</string>
     <string name="done">Done</string>
-    <string name="clipboard">Copied</string>
+    <string name="copied">Copied</string>
+    <string name="retry">Retry</string>
+    <string name="copy_text">Copy</string>
 </resources>
