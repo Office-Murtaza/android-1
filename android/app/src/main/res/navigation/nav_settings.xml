@@ -136,7 +136,7 @@
     <fragment
         android:id="@+id/change_phone_fragment"
         android:name="com.app.belcobtm.presentation.features.settings.phone.PhoneChangeFragment"
-        android:label="PhoneDisplayFragment">
+        android:label="ChangePhoneFragment">
 
         <action
             android:id="@+id/phone_change_to_sms_fragment"
@@ -151,8 +151,8 @@
 
     <fragment
         android:id="@+id/sms_code_fragment"
-        android:name="com.app.belcobtm.presentation.features.settings.phone.PhoneDisplayFragment"
-        android:label="PhoneDisplayFragment">
+        android:name="com.app.belcobtm.presentation.features.sms.code.SmsCodeFragment"
+        android:label="SmsCodeFragment">
 
         <action
             android:id="@+id/sms_code_to_settings_fragment"

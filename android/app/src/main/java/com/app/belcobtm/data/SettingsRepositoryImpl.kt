@@ -75,4 +75,10 @@ class SettingsRepositoryImpl(
             Either.Left(Failure.NetworkConnection)
         }
 
+    override suspend fun getPhone(): Either<Failure, String>  =
+        if (networkUtils.isNetworkAvailable()) {
+            apiService.getPhone(prefHelper.userId)
+        } else {
+            Either.Left(Failure.NetworkConnection)
+        }
 }

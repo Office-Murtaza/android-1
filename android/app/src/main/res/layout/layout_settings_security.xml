@@ -15,7 +15,7 @@
         android:id="@+id/updatePhoneItem"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:src="@drawable/ic_update_phone"
+        app:src="@drawable/ic_phone_waves"
         app:text="@string/update_phone_label" />
 
     <View

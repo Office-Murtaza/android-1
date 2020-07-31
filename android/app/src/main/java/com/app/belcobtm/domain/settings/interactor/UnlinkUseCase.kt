@@ -1,4 +1,4 @@
-package com.app.belcobtm.domain.authorization.interactor
+package com.app.belcobtm.domain.settings.interactor
 
 import com.app.belcobtm.domain.Either
 import com.app.belcobtm.domain.Failure

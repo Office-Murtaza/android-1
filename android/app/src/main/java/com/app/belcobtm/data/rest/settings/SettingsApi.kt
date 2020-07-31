@@ -1,6 +1,7 @@
 package com.app.belcobtm.data.rest.settings
 
 import com.app.belcobtm.data.rest.settings.request.ChangePassBody
+import com.app.belcobtm.data.rest.settings.response.GetPhoneResponse
 import com.app.belcobtm.data.rest.settings.response.UpdateResponse
 import com.app.belcobtm.data.rest.settings.response.VerificationInfoResponse
 import kotlinx.coroutines.Deferred
@@ -49,4 +50,7 @@ interface SettingsApi {
         @Path("userId") userId: String,
         @Body changePassParam: ChangePassBody
     ): Deferred<Response<UpdateResponse>>
+
+    @GET("user/{userId}/phone")
+    fun getPhone(@Path("userId") userId: String): Deferred<Response<GetPhoneResponse>>
 }

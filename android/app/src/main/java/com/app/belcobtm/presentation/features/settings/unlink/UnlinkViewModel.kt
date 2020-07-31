@@ -1,8 +1,7 @@
 package com.app.belcobtm.presentation.features.settings.unlink
 
 import androidx.lifecycle.ViewModel
-import com.app.belcobtm.data.disk.shared.preferences.SharedPreferencesHelper
-import com.app.belcobtm.domain.authorization.interactor.UnlinkUseCase
+import com.app.belcobtm.domain.settings.interactor.UnlinkUseCase
 import com.app.belcobtm.presentation.core.SingleLiveData
 
 class UnlinkViewModel(

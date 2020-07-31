@@ -2,7 +2,7 @@ package com.app.belcobtm.presentation.features.settings.update_password
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.app.belcobtm.domain.authorization.interactor.ChangePassUseCase
+import com.app.belcobtm.domain.settings.interactor.ChangePassUseCase
 
 class UpdatePasswordViewModel(
     val changePassUseCase: ChangePassUseCase
