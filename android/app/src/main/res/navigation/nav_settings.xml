@@ -193,7 +193,23 @@
     <fragment
         android:id="@+id/pin_code_fragment"
         android:name="com.app.belcobtm.presentation.features.pin.code.PinCodeFragment"
-        android:label="PinCodeFragment" />
+        android:label="PinCodeFragment">
+
+        <action
+            android:id="@+id/pin_code_to_settings_fragment"
+            app:destination="@id/settings_fragment"
+            app:enterAnim="@anim/slide_from_right"
+            app:exitAnim="@anim/slide_to_left"
+            app:popEnterAnim="@anim/slide_from_left"
+            app:popExitAnim="@anim/slide_to_right"
+            app:popUpTo="@id/settings_fragment"
+            app:popUpToInclusive="true" />
+
+        <argument
+            android:name="tag_pin_mode"
+            android:defaultValue="key_pin_mode_change"
+            app:argType="string" />
+    </fragment>
 
     <fragment
         android:id="@+id/update_password_fragment"

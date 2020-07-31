@@ -24,6 +24,9 @@
     <!-- Pin code -->
     <string name="pin_code_screen_enter_pin">Enter PIN</string>
     <string name="pin_code_screen_confirm_pin">Confirm PIN</string>
+    <string name="pin_code_screen_old_pin">Enter old PIN</string>
+    <string name="pin_code_screen_new_pin">Enter new PIN</string>
+    <string name="pin_code_screen_new_pin_confirm">Confirm new PIN</string>
     <string name="code_created">Code created successfully</string>
     <string name="code_changed">Code changed successfully</string>
     <string name="code_not_match">Codes don\'t match. Please, try again</string>
