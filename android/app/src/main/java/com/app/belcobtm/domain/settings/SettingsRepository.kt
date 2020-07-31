@@ -15,4 +15,5 @@ interface SettingsRepository {
     suspend fun unlink(): Either<Failure, Boolean>
     suspend fun getPhone(): Either<Failure, String>
     suspend fun changePass(oldPassword: String, newPassword: String): Either<Failure, Boolean>
+    suspend fun updatePhone(phone: String): Either<Failure, Boolean>
 }

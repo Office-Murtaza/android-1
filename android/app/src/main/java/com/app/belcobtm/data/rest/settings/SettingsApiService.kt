@@ -2,6 +2,7 @@ package com.app.belcobtm.data.rest.settings
 
 import com.app.belcobtm.data.core.FileHelper
 import com.app.belcobtm.data.rest.settings.request.ChangePassBody
+import com.app.belcobtm.data.rest.settings.response.UpdatePhoneParam
 import com.app.belcobtm.data.rest.settings.response.VerificationInfoResponse
 import com.app.belcobtm.domain.Either
 import com.app.belcobtm.domain.Failure
@@ -93,6 +94,17 @@ class SettingsApiService(private val fileHelper: FileHelper, private val api: Se
         Either.Left(failure)
     }
 
+    suspend fun updatePhone(
+        userId: Int,
+        newPhone: String
+    ): Either<Failure, Boolean> = try {
+        val request = api.updatePhone(userId.toString(), UpdatePhoneParam(newPhone)).await()
+
+        request.body()?.let { Either.Right(it.result) } ?: Either.Left(Failure.ServerError())
+    } catch (failure: Failure) {
+        failure.printStackTrace()
+        Either.Left(failure)
+    }
     companion object {
         private const val VERIFICATION = 1
         private const val VIP_VERIFICATION = 2

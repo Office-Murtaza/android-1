@@ -31,7 +31,7 @@ interface AuthApi {
     @POST("refresh")
     fun signInByRefreshTokenAsync(@Body request: RefreshTokenRequest): Deferred<Response<AuthorizationResponse>>
 
-    @POST("user/{userId}/password/verify")
+    @POST("user/{userId}/password-verify")
     fun checkPass(
         @Path("userId") userId: String,
         @Body checkPassParam: CheckPassRequest

@@ -7,12 +7,13 @@
 
     <ImageView
         android:id="@+id/phoneImage"
-        android:layout_width="@dimen/margin_x3"
-        android:layout_height="@dimen/margin_x3"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
         android:layout_marginTop="@dimen/margin_main"
         android:background="@drawable/circle_light_blue"
         android:src="@drawable/ic_phone_waves"
         android:tint="@color/colorPrimary"
+        android:padding="@dimen/margin_main"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

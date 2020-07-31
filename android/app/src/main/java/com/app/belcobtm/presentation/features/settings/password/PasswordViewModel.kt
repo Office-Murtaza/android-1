@@ -8,6 +8,7 @@ import com.app.belcobtm.data.disk.shared.preferences.SharedPreferencesHelper
 import com.app.belcobtm.domain.authorization.interactor.CheckPassUseCase
 import com.app.belcobtm.presentation.core.SingleLiveData
 import com.app.belcobtm.presentation.features.authorization.create.seed.CreateSeedFragment
+import com.app.belcobtm.presentation.features.settings.phone.PhoneChangeState
 
 class PasswordViewModel(
     val checkPassUseCase: CheckPassUseCase,
@@ -26,7 +27,11 @@ class PasswordViewModel(
         stateData.value = PasswordState.Loading
         checkPassUseCase.invoke(CheckPassUseCase.Params(prefsHelper.userId.toString(), pass),
         onSuccess = {
-            actionData.value = PasswordAction.NavigateAction(getDireciton())
+            if (it) {
+                actionData.value = PasswordAction.NavigateAction(getDireciton())
+            } else {
+                stateData.value = PasswordState.Ready(isError = true, isButtonEnabled = false)
+            }
         },
         onError = {
             stateData.value = PasswordState.Ready(isButtonEnabled = false, isError = true)

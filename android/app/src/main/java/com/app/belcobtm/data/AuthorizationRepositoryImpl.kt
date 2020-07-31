@@ -181,7 +181,7 @@ class AuthorizationRepositoryImpl(
         if (networkUtils.isNetworkAvailable()) {
             val response = apiService.checkPass(userId, password)
             if (response.isRight) {
-                Either.Right((response as Either.Right).b.match)
+                Either.Right((response as Either.Right).b.result)
             } else {
                 response as Either.Left
             }
