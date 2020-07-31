@@ -250,8 +250,18 @@ public class UserController {
         }
     }
 
+    @PostMapping("/user/{userId}/phone-verify")
+    public Response verifyPhone(@PathVariable Long userId, @RequestBody PhoneDTO dto) {
+        try {
+            return Response.ok(userService.isPhoneExist(userId, dto.getPhone()));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Response.serverError();
+        }
+    }
+
     @PostMapping("/user/{userId}/password")
-    public Response updatePassword(@PathVariable Long userId, @RequestBody ChangePasswordDTO dto) {
+    public Response updatePassword(@PathVariable Long userId, @RequestBody PasswordDTO dto) {
         try {
             User user = userService.findById(userId);
             Boolean isMatch = passwordEncoder.matches(dto.getOldPassword(), user.getPassword());
@@ -263,6 +273,18 @@ public class UserController {
             }
 
             return Response.ok(true);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Response.serverError();
+        }
+    }
+
+    @PostMapping("/user/{userId}/password-verify")
+    public Response verifyPassword(@PathVariable Long userId, @RequestBody PasswordDTO dto) {
+        try {
+            User user = userService.findById(userId);
+
+            return Response.ok(passwordEncoder.matches(dto.getPassword(), user.getPassword()));
         } catch (Exception e) {
             e.printStackTrace();
             return Response.serverError();

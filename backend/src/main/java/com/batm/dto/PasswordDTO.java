@@ -11,8 +11,9 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class ChangePasswordDTO {
+public class PasswordDTO {
 
     private String oldPassword;
     private String newPassword;
+    private String password;
 }

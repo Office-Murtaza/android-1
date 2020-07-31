@@ -133,14 +133,14 @@ public class UserService {
     public Boolean isPhoneExist(Long userId, String phone) {
         User user = userRep.findOneByPhone(phone);
 
-        if (user != null && user.getId() != userId) {
+        if (user != null && !user.getId().equals(userId)) {
             return true;
         }
 
         List<IdentityPieceCellPhone> identityPieceCellPhones = identityPieceCellPhoneRep.findByPhoneNumber(Util.formatPhone(phone));
 
         for (IdentityPieceCellPhone ipcp : identityPieceCellPhones) {
-            if (ipcp.getIdentity().getId() != user.getIdentity().getId()) {
+            if (!ipcp.getIdentity().getId().equals(user.getIdentity().getId())) {
                 if (ipcp.getPhoneNumber().equalsIgnoreCase(Util.formatPhone(phone))) {
                     return true;
                 }
