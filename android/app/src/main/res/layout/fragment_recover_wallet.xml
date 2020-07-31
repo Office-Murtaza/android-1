@@ -24,6 +24,8 @@
             android:drawableEnd="@drawable/ic_phone"
             android:drawableTint="@color/colorPrimary"
             android:hint="@string/recover_wallet_phone"
+            android:importantForAutofill="no"
+            android:autofillHints="@null"
             android:inputType="phone"
             android:lines="1" />
     </com.google.android.material.textfield.TextInputLayout>
@@ -33,7 +35,6 @@
         style="@style/TextInputLayoutOutline"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:importantForAutofill="no"
         app:layout_constraintEnd_toEndOf="@id/phoneView"
         app:layout_constraintStart_toStartOf="@id/phoneView"
         app:layout_constraintTop_toBottomOf="@id/phoneView"
@@ -44,7 +45,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/recover_wallet_password"
-            android:inputType="textPassword"
+            android:importantForAutofill="no"
+            android:inputType="textPassword|textNoSuggestions"
             android:lines="1"
             android:nextFocusDown="@id/nextButtonView" />
 

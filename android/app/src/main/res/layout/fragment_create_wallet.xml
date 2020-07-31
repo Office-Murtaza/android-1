@@ -32,7 +32,8 @@
                 android:drawableEnd="@drawable/ic_phone"
                 android:drawableTint="@color/colorPrimary"
                 android:hint="@string/create_wallet_screen_phone"
-                android:inputType="phone"
+                android:importantForAutofill="no"
+                android:inputType="phone|textNoSuggestions"
                 android:lines="1"
                 android:nextFocusDown="@id/passwordView" />
         </com.google.android.material.textfield.TextInputLayout>
@@ -52,7 +53,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/create_wallet_screen_password"
-                android:inputType="textPassword"
+                android:importantForAutofill="no"
+                android:inputType="textPassword|textNoSuggestions"
                 android:lines="1"
                 android:nextFocusDown="@id/passwordConfirmView" />
 
