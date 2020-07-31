@@ -6,15 +6,14 @@ import com.app.belcobtm.domain.authorization.interactor.UnlinkUseCase
 import com.app.belcobtm.presentation.core.SingleLiveData
 
 class UnlinkViewModel(
-    private val unlinkUseCase: UnlinkUseCase,
-    private val prefsHelper: SharedPreferencesHelper
+    private val unlinkUseCase: UnlinkUseCase
 ) : ViewModel() {
 
     val actionData = SingleLiveData<UnlinkAction>()
 
     fun unlink() {
         actionData.value = UnlinkAction.Loading
-        unlinkUseCase.invoke(UnlinkUseCase.Params(prefsHelper.userId.toString()),
+        unlinkUseCase.invoke(Unit,
         onSuccess = {
             if (it) {
                 actionData.value = UnlinkAction.Success

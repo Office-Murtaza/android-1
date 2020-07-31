@@ -1,6 +1,7 @@
 package com.app.belcobtm.data.rest.settings
 
-import com.app.belcobtm.data.rest.settings.response.UnlinkResponse
+import com.app.belcobtm.data.rest.settings.request.ChangePassBody
+import com.app.belcobtm.data.rest.settings.response.UpdateResponse
 import com.app.belcobtm.data.rest.settings.response.VerificationInfoResponse
 import kotlinx.coroutines.Deferred
 import okhttp3.MultipartBody
@@ -41,5 +42,11 @@ interface SettingsApi {
     ): Deferred<Response<ResponseBody>>
 
     @GET("user/{userId}/unlink")
-    fun unlink(@Path("userId") userId: String): Deferred<Response<UnlinkResponse>>
+    fun unlink(@Path("userId") userId: String): Deferred<Response<UpdateResponse>>
+
+    @POST("user/{userId}/password")
+    fun changePass(
+        @Path("userId") userId: String,
+        @Body changePassParam: ChangePassBody
+    ): Deferred<Response<UpdateResponse>>
 }

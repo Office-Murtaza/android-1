@@ -190,5 +190,17 @@
     <fragment
         android:id="@+id/update_password_fragment"
         android:name="com.app.belcobtm.presentation.features.settings.update_password.UpdatePasswordFragment"
-        android:label="UpdatePasswordFragment" />
+        android:label="UpdatePasswordFragment">
+
+        <action
+            android:id="@+id/update_to_settings_fragment"
+            app:destination="@id/settings_fragment"
+            app:enterAnim="@anim/slide_from_right"
+            app:exitAnim="@anim/slide_to_left"
+            app:popEnterAnim="@anim/slide_from_left"
+            app:popExitAnim="@anim/slide_to_right"
+            app:popUpTo="@id/settings_fragment"
+            app:popUpToInclusive="true" />
+
+    </fragment>
 </navigation>

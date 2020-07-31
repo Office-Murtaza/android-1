@@ -5,12 +5,11 @@ import com.app.belcobtm.domain.Failure
 import com.app.belcobtm.domain.UseCase
 import com.app.belcobtm.domain.settings.SettingsRepository
 
-class UnlinkUseCase(private val repository: SettingsRepository):
-    UseCase<Boolean, UnlinkUseCase.Params>() {
+class ChangePassUseCase(private val settingsRepository: SettingsRepository): UseCase<Boolean, ChangePassUseCase.Params>() {
 
     override suspend fun run(params: Params): Either<Failure, Boolean> {
-        return repository.unlink(params.userId)
+        return settingsRepository.changePass(params.oldPassword, params.newPassword)
     }
 
-    data class Params(val userId: String)
+    data class Params(val oldPassword: String, val newPassword: String)
 }

@@ -6,6 +6,7 @@ import androidx.navigation.fragment.navArgs
 import com.app.belcobtm.presentation.core.ui.fragment.BaseFragment
 import com.app.belcobtm.R
 import kotlinx.android.synthetic.main.layout_password.*
+import kotlinx.android.synthetic.main.layout_password.nextButton
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class PasswordFragment : BaseFragment() {
@@ -14,7 +15,6 @@ class PasswordFragment : BaseFragment() {
     private val appliedState: PasswordState? = null
 
     override val resourceLayout: Int = R.layout.layout_password
-    override val isMenuEnabled = true
     override val isHomeButtonEnabled = true
 
     override fun initViews() {
@@ -40,10 +40,12 @@ class PasswordFragment : BaseFragment() {
                         showContent()
                     })
                     state.isError.doIfChanged((appliedState as? PasswordState.Ready)?.isError, {
-                        passwordContainerView.isErrorEnabled = it
-                    })
-                    state.errorText?.doIfChanged((appliedState as? PasswordState.Ready)?.errorText, {
-                        passwordContainerView.error = it
+                        with (passwordContainerView) {
+                            isErrorEnabled = it
+                            if (it) {
+                                error = getString(R.string.password_doesnt_match)
+                            }
+                        }
                     })
                     state.isButtonEnabled.doIfChanged((appliedState as? PasswordState.Ready)?.isButtonEnabled) {
                         nextButton.isEnabled = it

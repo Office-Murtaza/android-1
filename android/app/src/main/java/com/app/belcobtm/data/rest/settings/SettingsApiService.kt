@@ -1,6 +1,7 @@
 package com.app.belcobtm.data.rest.settings
 
 import com.app.belcobtm.data.core.FileHelper
+import com.app.belcobtm.data.rest.settings.request.ChangePassBody
 import com.app.belcobtm.data.rest.settings.response.VerificationInfoResponse
 import com.app.belcobtm.domain.Either
 import com.app.belcobtm.domain.Failure
@@ -66,8 +67,16 @@ class SettingsApiService(private val fileHelper: FileHelper, private val api: Se
     ): Either<Failure, Boolean> = try {
         val request = api.unlink(userId.toString()).await()
 
-        val updated = request.body()?.result?: false
-        request.body()?.let { Either.Right(updated) } ?: Either.Left(Failure.ServerError())
+        request.body()?.let { Either.Right(it.result) } ?: Either.Left(Failure.ServerError())
+    } catch (failure: Failure) {
+        failure.printStackTrace()
+        Either.Left(failure)
+    }
+
+    suspend fun changePass(userId: Int, oldPassword: String, newPassword: String) : Either<Failure, Boolean> = try {
+        val request = api.changePass(userId.toString(), ChangePassBody(newPassword, oldPassword)).await()
+
+        request.body()?.let { Either.Right(it.result) } ?: Either.Left(Failure.ServerError())
     } catch (failure: Failure) {
         failure.printStackTrace()
         Either.Left(failure)

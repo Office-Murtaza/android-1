@@ -29,7 +29,7 @@ class PasswordViewModel(
             actionData.value = PasswordAction.NavigateAction(getDireciton())
         },
         onError = {
-            stateData.value = PasswordState.Ready(isButtonEnabled = false, isError = true, errorText = "Password is wrong")
+            stateData.value = PasswordState.Ready(isButtonEnabled = false, isError = true)
         })
     }
 
@@ -48,7 +48,7 @@ class PasswordViewModel(
 }
 
 sealed class PasswordState {
-    data class Ready(val isButtonEnabled: Boolean = false, val isError: Boolean = false, val errorText: String? = null): PasswordState()
+    data class Ready(val isButtonEnabled: Boolean = false, val isError: Boolean = false): PasswordState()
     object Loading: PasswordState()
 }
 

@@ -65,4 +65,5 @@ val useCaseModule = module {
     single { CreateSeedUseCase(get()) }
     single { CheckPassUseCase(get()) }
     single { UnlinkUseCase(get()) }
+    single { ChangePassUseCase(get())}
 }

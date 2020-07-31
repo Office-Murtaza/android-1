@@ -57,10 +57,22 @@ class SettingsRepositoryImpl(
         Either.Left(Failure.NetworkConnection)
     }
 
-    override suspend fun unlink(uesrId: String): Either<Failure, Boolean> =
+    override suspend fun unlink(): Either<Failure, Boolean> =
         if (networkUtils.isNetworkAvailable()) {
             apiService.unlink(prefHelper.userId)
         } else {
             Either.Left(Failure.NetworkConnection)
         }
+
+    override suspend fun changePass(
+        oldPassword: String,
+        newPassword: String
+    ): Either<Failure, Boolean> =
+        if (networkUtils.isNetworkAvailable()) {
+
+            apiService.changePass(prefHelper.userId, oldPassword, newPassword)
+        } else {
+            Either.Left(Failure.NetworkConnection)
+        }
+
 }

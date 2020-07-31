@@ -13,6 +13,7 @@ import com.app.belcobtm.presentation.features.pin.code.PinCodeViewModel
 import com.app.belcobtm.presentation.features.settings.SettingsViewModel
 import com.app.belcobtm.presentation.features.settings.password.PasswordViewModel
 import com.app.belcobtm.presentation.features.settings.unlink.UnlinkViewModel
+import com.app.belcobtm.presentation.features.settings.update_password.UpdatePasswordViewModel
 import com.app.belcobtm.presentation.features.settings.verification.blank.VerificationBlankViewModel
 import com.app.belcobtm.presentation.features.settings.verification.info.VerificationInfoViewModel
 import com.app.belcobtm.presentation.features.settings.verification.vip.VerificationVipViewModel
@@ -93,5 +94,6 @@ val viewModelModule = module {
     viewModel { CreateSeedViewModel(get(), get()) }
     viewModel { SettingsViewModel(get(), get()) }
     viewModel { PasswordViewModel(get(), get()) }
-    viewModel { UnlinkViewModel(get(), get()) }
+    viewModel { UnlinkViewModel(get()) }
+    viewModel { UpdatePasswordViewModel(get()) }
 }
