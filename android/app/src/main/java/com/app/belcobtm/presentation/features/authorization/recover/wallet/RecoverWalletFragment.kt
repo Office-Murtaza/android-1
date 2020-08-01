@@ -70,7 +70,6 @@ class RecoverWalletFragment : BaseFragment() {
                         SmsCodeFragment.TAG_NEXT_FRAGMENT_ID to R.id.to_recover_seed_fragment
                     )
                 )
-                phoneView.clearText()
                 passwordView.clearText()
                 viewModel.checkCredentialsLiveData.value = null
             }

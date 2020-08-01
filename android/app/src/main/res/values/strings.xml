@@ -29,12 +29,12 @@
     <string name="pin_code_screen_new_pin_confirm">Confirm new PIN</string>
     <string name="code_created">Code created successfully</string>
     <string name="code_changed">Code changed successfully</string>
-    <string name="code_not_match">Codes don\'t match. Please, try again</string>
+    <string name="pin_code_do_not_match">PINS don\'t match. Please try again</string>
     <string name="setup_pin_code">Setup PIN Code</string>
 
     <!-- Sms code -->
     <string name="sms_code_screen_title">Verify phone</string>
-    <string name="sms_code_screen_description">Enter the 4 digit code we sent you\nvia SMS to continue</string>
+    <string name="sms_code_screen_description">Enter the 4-digit code we sent you\nvia SMS to continue</string>
     <string name="sms_code_screen_did_not_get_the_code">Didn\'t get the code? </string>
     <string name="sms_code_screen_resend_code">Resend code</string>
     <string name="sms_code_screen_invalid_code">Wrong code</string>
@@ -99,7 +99,7 @@
     <string name="recover_seed_screen_title">Seed phrase</string>
     <string name="recover_seed_screen_description">Enter your secret 12 words phrase\nhere to restore your wallet</string>
     <string name="recover_seed_screen_error_length">Seed phrase must be 12 words</string>
-    <string name="recover_seed_screen_incorrect_phrase">Seed Phrase you entered is invalid. Please try again</string>
+    <string name="recover_seed_screen_incorrect_phrase">Seed phrase you entered is invalid. Please try again</string>
 
 
     <!-- Create Seed Screen-->
