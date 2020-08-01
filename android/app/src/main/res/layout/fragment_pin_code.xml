@@ -48,7 +48,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
-        android:text="@string/code_not_match"
+        android:text="@string/pin_code_do_not_match"
         android:textColor="@android:color/holo_red_light"
         android:textSize="12sp"
         android:visibility="gone"

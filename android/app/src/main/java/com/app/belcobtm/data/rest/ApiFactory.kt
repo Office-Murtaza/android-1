@@ -1,7 +1,7 @@
 package com.app.belcobtm.data.rest
 
-import com.app.belcobtm.BuildConfig
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
+import com.app.belcobtm.BuildConfig
 import com.app.belcobtm.data.disk.shared.preferences.SharedPreferencesHelper
 import com.app.belcobtm.data.rest.authorization.AuthApi
 import com.app.belcobtm.data.rest.interceptor.AuthAuthenticator
@@ -35,6 +35,8 @@ class ApiFactory(
     private val sessionHttpClient = OkHttpClient().newBuilder()
         .connectTimeout(WAIT_TIME_SECONDS, TimeUnit.SECONDS)
         .readTimeout(WAIT_TIME_SECONDS, TimeUnit.SECONDS)
+        .callTimeout(WAIT_TIME_SECONDS, TimeUnit.SECONDS)
+        .writeTimeout(WAIT_TIME_SECONDS, TimeUnit.SECONDS)
         .addInterceptor(baseInterceptor)
         .addInterceptor(LogInterceptor())
         .addInterceptor(ResponseInterceptor(localBroadcastManager))

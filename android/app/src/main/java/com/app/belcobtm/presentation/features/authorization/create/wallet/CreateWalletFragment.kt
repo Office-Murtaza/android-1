@@ -60,9 +60,8 @@ class CreateWalletFragment : BaseFragment() {
                     )
                 )
                 tncCheckBoxView.isChecked = false
-                phoneView.clearError()
+                passwordView.clearText()
                 passwordConfirmView.clearError()
-                phoneView.clearText()
                 viewModel.checkCredentialsLiveData.value = null
             }
         })
