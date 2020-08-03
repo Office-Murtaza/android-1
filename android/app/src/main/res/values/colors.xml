@@ -51,4 +51,16 @@
     <color name="chip_default_icon_background_color">#517FA4</color>
 
     <color name="thin_divider">#11000000</color>
+
+    //verification
+    <color name="vip_verified_background">#effff0</color>
+    <color name="vip_verified_border">#48be53</color>
+    <color name="verified_background">#f8ffed</color>
+    <color name="verified_border">#9fd256</color>
+    <color name="pending_background">#fffcf3</color>
+    <color name="pending_border">#ffcd4c</color>
+    <color name="rejected_background">#fff2f2</color>
+    <color name="rejected_border">#e02d2d</color>
+    <color name="not_verified_background">#f3f3f3</color>
+    <color name="not_verified_border">#ababab</color>
 </resources>

@@ -429,4 +429,7 @@
 
     //unlink
     <string name="unlink_text_top">Make sure you stored your credentials and seed phrase before unlinking the wallet, otherwise, you will lose all assets</string>
+
+    //verification
+    <string name="verification_limit">In order to increase daily limit to 3000 USD, please upload a copy of your driver license.</string>
 </resources>

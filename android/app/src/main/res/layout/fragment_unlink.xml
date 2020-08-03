@@ -21,7 +21,8 @@
         android:layout_marginStart="@dimen/margin_main"
         android:layout_marginTop="@dimen/margin_x2"
         android:layout_marginEnd="@dimen/margin_main"
-        android:background="#ebf4fd"
+        android:paddingBottom="@dimen/margin_large"
+        android:background="@drawable/message_view_round_bg"
         app:layout_constraintHeight_default="wrap"
         android:gravity="center_horizontal"
         android:orientation="vertical"
@@ -36,13 +37,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_main"
+            android:tint="@color/colorPrimary"
             android:src="@drawable/ic_warning" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_main"
-            android:layout_marginBottom="@dimen/margin_main"
+            android:layout_margin="@dimen/margin_main"
             android:text="@string/unlink_text_top"
             android:textAlignment="center"
             android:textColor="@color/colorPrimary"

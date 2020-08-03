@@ -35,7 +35,7 @@ class SettingsViewModel(val appContext: Context, val intentActions: IntentAction
                 )
             }
             SettingsSections.KYC -> {
-
+                actionData.value = SettingsAction.NavigateAction(SettingsFragmentDirections.settingsToVerificationInfoFragment())
             }
             SettingsSections.ABOUT -> {
                 stateData.value = stateData.value?.copy(
