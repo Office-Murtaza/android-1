@@ -3,6 +3,7 @@ package com.app.belcobtm.presentation.features.settings
 import android.view.MenuItem
 import android.view.View
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.navArgs
 import com.app.belcobtm.R
 import com.app.belcobtm.presentation.core.ui.fragment.BaseFragment
 import kotlinx.android.synthetic.main.fragment_settings.*
@@ -13,6 +14,7 @@ import org.koin.android.viewmodel.ext.android.viewModel
 
 class SettingsFragment : BaseFragment() {
     val viewModel by viewModel<SettingsViewModel>()
+    val settingsArgs: SettingsFragmentArgs by navArgs()
     private var appliedState: SettingsState? = null
     override val resourceLayout = R.layout.fragment_settings
     override val isMenuEnabled = true
@@ -29,6 +31,7 @@ class SettingsFragment : BaseFragment() {
 
     override fun initViews() {
         setToolbarTitle(R.string.settings)
+        viewModel.processArgs(settingsArgs)
     }
 
     override fun initListeners() {
@@ -51,9 +54,9 @@ class SettingsFragment : BaseFragment() {
 
     override fun initObservers() {
         viewModel.stateData.observe(this, Observer { state ->
-            state.viewFlipperValue.doIfChanged(appliedState?.viewFlipperValue, {
-                flipper.displayedChild = it
-            })
+//            state.viewFlipperValue.doIfChanged(appliedState?.viewFlipperValue, {
+                flipper.displayedChild = state.viewFlipperValue
+//            })
             state.versionName.doIfChanged(appliedState?.versionName, {
                 versionItem.setValue(it)
             })

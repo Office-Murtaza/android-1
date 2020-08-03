@@ -24,7 +24,13 @@ class PinCodeFragment : BaseFragment() {
     }
     override val resourceLayout: Int = R.layout.fragment_pin_code
     override val isToolbarEnabled: Boolean = false
-    override val backPressedListener: View.OnClickListener = View.OnClickListener { /**empty**/ }
+    override val backPressedListener: View.OnClickListener = View.OnClickListener {
+        if (pinMode == KEY_PIN_MODE_CHANGE) {
+            popBackStack()
+        } else {
+            //do nothing, user need to enter/create pin
+        }
+    }
     override val retryListener: View.OnClickListener =
         View.OnClickListener { viewModel.authorize() }
 

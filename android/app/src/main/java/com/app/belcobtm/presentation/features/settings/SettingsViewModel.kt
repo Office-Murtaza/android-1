@@ -48,7 +48,7 @@ class SettingsViewModel(val appContext: Context, val intentActions: IntentAction
 
     fun onBackPress() {
         if (stateData.value?.viewFlipperValue != SETTINGS_MAIN) {
-            stateData.value = stateData.value?.copy(
+            stateData.value = stateData.value!!.copy(
                 viewFlipperValue = SETTINGS_MAIN,
                 showBackButton = false
             )
@@ -84,6 +84,10 @@ class SettingsViewModel(val appContext: Context, val intentActions: IntentAction
                 actionData.value = SettingsAction.NavigateAction(SettingsFragmentDirections.toPassword(R.id.password_to_unlink_fragment, R.string.unlink_wallet_label))
             }
         }
+    }
+
+    fun processArgs(settingsArgs: SettingsFragmentArgs) {
+        stateData.value = stateData.value!!.copy(viewFlipperValue = settingsArgs.viewFlipperValue, showBackButton = settingsArgs.viewFlipperValue != 0)
     }
 }
 
