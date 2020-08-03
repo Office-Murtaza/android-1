@@ -64,6 +64,8 @@ class GenericModuleViewController<PresenterType: ModulePresenter, View: UIView>:
     
     view.setNeedsUpdateConstraints()
     
+    navigationItem.backBarButtonItem = UIBarButtonItem(title: "Back", style: .plain, target: nil, action: nil)
+    
     setupUI()
     setupDefaultBindings()
     setupBindings()

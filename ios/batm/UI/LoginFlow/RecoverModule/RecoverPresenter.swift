@@ -7,6 +7,7 @@ class RecoverPresenter: ModulePresenter, RecoverModule {
   typealias Store = ViewStore<RecoverAction, RecoverState>
   
   struct Input {
+    var didDisappear: Driver<Void>
     var updatePhoneNumber: Driver<String?>
     var updatePassword: Driver<String?>
     var next: Driver<Void>
@@ -28,6 +29,12 @@ class RecoverPresenter: ModulePresenter, RecoverModule {
   }
   
   func bind(input: Input) {
+    input.didDisappear
+      .drive(onNext: { [store] in
+        store.action.accept(.updatePassword(nil))
+      })
+      .disposed(by: disposeBag)
+    
     input.updatePhoneNumber
       .asObservable()
       .map { RecoverAction.updatePhoneNumber($0) }

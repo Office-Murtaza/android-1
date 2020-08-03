@@ -6,6 +6,8 @@ import MaterialComponents
 
 class RecoverViewController: ModuleViewController<RecoverPresenter> {
   
+  let didDisappearRelay = PublishRelay<Void>()
+  
   let rootScrollView = RootScrollView()
   
   let errorView = ErrorView()
@@ -15,6 +17,12 @@ class RecoverViewController: ModuleViewController<RecoverPresenter> {
   let nextButton = MDCButton.next
   
   override var shouldShowNavigationBar: Bool { return true }
+  
+  override func viewDidDisappear(_ animated: Bool) {
+    super.viewDidDisappear(animated)
+    
+    didDisappearRelay.accept(())
+  }
   
   override func setupUI() {
     title = localize(L.Recover.title)
@@ -70,7 +78,7 @@ class RecoverViewController: ModuleViewController<RecoverPresenter> {
       .map { $0.phoneE164.count > 0 && $0.isAllFieldsNotEmpty }
       .bind(to: nextButton.rx.isEnabled)
       .disposed(by: disposeBag)
-      
+    
     presenter.state
       .map { $0.validationState }
       .mapToErrorMessage()
@@ -88,10 +96,12 @@ class RecoverViewController: ModuleViewController<RecoverPresenter> {
   override func setupBindings() {
     setupUIBindings()
     
+    let didDisappearDriver = didDisappearRelay.asDriver(onErrorDriveWith: .empty())
     let updatePhoneNumberDriver = formView.rx.phoneNumberText.asDriver()
     let updatePasswordDriver = formView.rx.passwordText.asDriver()
     let nextDriver = nextButton.rx.tap.asDriver()
-    presenter.bind(input: RecoverPresenter.Input(updatePhoneNumber: updatePhoneNumberDriver,
+    presenter.bind(input: RecoverPresenter.Input(didDisappear: didDisappearDriver,
+                                                 updatePhoneNumber: updatePhoneNumberDriver,
                                                  updatePassword: updatePasswordDriver,
                                                  next: nextDriver))
   }

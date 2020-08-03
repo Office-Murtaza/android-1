@@ -91,7 +91,8 @@ final class PhoneVerificationViewController: ModuleViewController<PhoneVerificat
       })
       .disposed(by: disposeBag)
     
-    resendCodeLabel.rx.tap
+    presenter.didSendNewCode
+      .asDriver(onErrorDriveWith: .empty())
       .drive(onNext: { [view] in view?.makeToast(localize(L.PhoneVerification.codeSent)) })
       .disposed(by: disposeBag)
     
