@@ -42,7 +42,15 @@ class VerificationInfoViewModel(
     }
 
     fun onNextClick() {
-
+        actionData.value = VerificationInfoAction.NavigateAction(
+            when (status) {
+                VerificationStatus.NOT_VERIFIED,
+                VerificationStatus.VERIFICATION_REJECTED -> VerificationInfoFragmentDirections.verificationInfoToVerify()
+                VerificationStatus.VERIFIED,
+                VerificationStatus.VIP_VERIFICATION_REJECTED -> VerificationInfoFragmentDirections.verificationInfoToVipVerify()
+                else -> throw IllegalStateException("Not available for verification for this state")
+            }
+        )
     }
 
     private fun isButtonEnabled(verificationInfoDataItem: VerificationInfoDataItem): Boolean {
@@ -58,11 +66,23 @@ class VerificationInfoViewModel(
     private fun getColorByStatus(status: VerificationStatus): Pair<Int, Int> {
         return when (status) {
             VerificationStatus.VERIFICATION_PENDING,
-            VerificationStatus.VIP_VERIFICATION_PENDING -> Pair(R.color.pending_border, R.color.pending_border)
+            VerificationStatus.VIP_VERIFICATION_PENDING -> Pair(
+                R.color.pending_border,
+                R.color.pending_border
+            )
             VerificationStatus.VIP_VERIFICATION_REJECTED,
-            VerificationStatus.VERIFICATION_REJECTED -> Pair(R.color.rejected_border, R.color.rejected_background)
-            VerificationStatus.VIP_VERIFIED -> Pair(R.color.vip_verified_border, R.color.vip_verified_background)
-            VerificationStatus.VERIFIED -> Pair(R.color.verified_border, R.color.verified_background)
+            VerificationStatus.VERIFICATION_REJECTED -> Pair(
+                R.color.rejected_border,
+                R.color.rejected_background
+            )
+            VerificationStatus.VIP_VERIFIED -> Pair(
+                R.color.vip_verified_border,
+                R.color.vip_verified_background
+            )
+            VerificationStatus.VERIFIED -> Pair(
+                R.color.verified_border,
+                R.color.verified_background
+            )
             else -> Pair(R.color.not_verified_border, R.color.not_verified_background)
         }
     }

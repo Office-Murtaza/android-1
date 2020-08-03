@@ -243,23 +243,29 @@
 
         <action
             android:id="@+id/verification_info_to_verify"
-            app:destination="@id/settings_fragment"
+            app:destination="@id/verification_blank_fragment"
             app:enterAnim="@anim/slide_from_right"
             app:exitAnim="@anim/slide_to_left"
             app:popEnterAnim="@anim/slide_from_left"
-            app:popExitAnim="@anim/slide_to_right"
-            app:popUpTo="@id/settings_fragment"
-            app:popUpToInclusive="true" />
+            app:popExitAnim="@anim/slide_to_right"/>
 
         <action
             android:id="@+id/verification_info_to_vip_verify"
-            app:destination="@id/settings_fragment"
+            app:destination="@id/verification_vip_fragment"
             app:enterAnim="@anim/slide_from_right"
             app:exitAnim="@anim/slide_to_left"
             app:popEnterAnim="@anim/slide_from_left"
-            app:popExitAnim="@anim/slide_to_right"
-            app:popUpTo="@id/settings_fragment"
-            app:popUpToInclusive="true" />
+            app:popExitAnim="@anim/slide_to_right" />
     </fragment>
+
+    <fragment
+        android:id="@+id/verification_blank_fragment"
+        android:name="com.app.belcobtm.presentation.features.settings.verification.blank.VerificationBlankFragment"
+        android:label="VerificationBlankFragment"/>
+
+    <fragment
+        android:id="@+id/verification_vip_fragment"
+        android:name="com.app.belcobtm.presentation.features.settings.verification.vip.VerificationVipFragment"
+        android:label="VerificationVipFragment"/>
 
 </navigation>

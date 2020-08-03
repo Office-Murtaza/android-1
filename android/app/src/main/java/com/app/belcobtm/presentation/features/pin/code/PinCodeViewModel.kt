@@ -46,7 +46,7 @@ class PinCodeViewModel(
     private var enteredPin = ""
 
     private var mode = KEY_PIN_MODE_ENTER
-    private var step = STEP_VERIFY
+    private var step = STEP_CREATE
     private var currentPin = ""
     private var isError = false
 
@@ -79,9 +79,9 @@ class PinCodeViewModel(
 
     fun onPinEntered() {
         when {
+            mode == KEY_PIN_MODE_ENTER -> validateUsualPinEnter()
             step == STEP_CREATE -> saveFirstPinVersion()
             step == STEP_CONFIRM -> validateConfirmedPin()
-            step == STEP_VERIFY && mode == KEY_PIN_MODE_ENTER -> validateUsualPinEnter()
             step == STEP_VERIFY && mode == KEY_PIN_MODE_CHANGE -> validateOnChange()
             else -> throw IllegalStateException("Wrong logic case, fix on dev side")
         }
