@@ -114,6 +114,7 @@ enum L {
   }
 
   struct PhoneVerification {
+    static let codeSent = "phone_verification.code_sent"
     static let enterCode = "phone_verification.enter_code"
     static let resendCode = "phone_verification.resend_code"
     static let title = "phone_verification.title"

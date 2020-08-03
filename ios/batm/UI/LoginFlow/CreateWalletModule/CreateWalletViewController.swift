@@ -88,9 +88,9 @@ class CreateWalletViewController: ModuleViewController<CreateWalletPresenter> {
       .disposed(by: disposeBag)
     
     Driver.combineLatest(termsAndConditionsView.rx.isAccepted,
-                         presenter.state.map { $0.phoneE164.count > 0 })
-      .drive(onNext: { [unowned self] isAccepted, isPhoneValid in
-        self.nextButton.isEnabled = isAccepted && isPhoneValid
+                         presenter.state.map { $0.phoneE164.count > 0 && $0.isAllFieldsNotEmpty })
+      .drive(onNext: { [unowned self] isAccepted, isStateValid in
+        self.nextButton.isEnabled = isAccepted && isStateValid
       })
       .disposed(by: disposeBag)
     

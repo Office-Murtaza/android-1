@@ -64,6 +64,12 @@ class RecoverViewController: ModuleViewController<RecoverPresenter> {
       .map { $0.password }
       .bind(to: formView.rx.passwordText)
       .disposed(by: disposeBag)
+    
+    presenter.state
+      .asObservable()
+      .map { $0.phoneE164.count > 0 && $0.isAllFieldsNotEmpty }
+      .bind(to: nextButton.rx.isEnabled)
+      .disposed(by: disposeBag)
       
     presenter.state
       .map { $0.validationState }

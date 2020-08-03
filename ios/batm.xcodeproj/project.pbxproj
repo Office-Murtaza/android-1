@@ -67,6 +67,7 @@
 		DB26C00B24D1E3F4007FE258 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = DB26C00A24D1E3F4007FE258 /* GoogleService-Info.plist */; };
 		DB26C00D24D1E4BD007FE258 /* FirebaseInitializer.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB26C00C24D1E4BD007FE258 /* FirebaseInitializer.swift */; };
 		DB2A0DF324CD655C009C9D1C /* PhoneVerificationStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB2A0DF224CD655C009C9D1C /* PhoneVerificationStore.swift */; };
+		DB2C699A24D88DDF0043C344 /* PhoneVerificationResendCodeLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB2C699924D88DDF0043C344 /* PhoneVerificationResendCodeLabel.swift */; };
 		DB2C971B23449109006E7D61 /* CoinSendGiftModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB2C971723449109006E7D61 /* CoinSendGiftModule.swift */; };
 		DB2C971C23449109006E7D61 /* CoinSendGiftViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB2C971823449109006E7D61 /* CoinSendGiftViewController.swift */; };
 		DB2C971D23449109006E7D61 /* CoinSendGiftPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB2C971923449109006E7D61 /* CoinSendGiftPresenter.swift */; };
@@ -595,6 +596,7 @@
 		DB26C00A24D1E3F4007FE258 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		DB26C00C24D1E4BD007FE258 /* FirebaseInitializer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseInitializer.swift; sourceTree = "<group>"; };
 		DB2A0DF224CD655C009C9D1C /* PhoneVerificationStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneVerificationStore.swift; sourceTree = "<group>"; };
+		DB2C699924D88DDF0043C344 /* PhoneVerificationResendCodeLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneVerificationResendCodeLabel.swift; sourceTree = "<group>"; };
 		DB2C971723449109006E7D61 /* CoinSendGiftModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinSendGiftModule.swift; sourceTree = "<group>"; };
 		DB2C971823449109006E7D61 /* CoinSendGiftViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinSendGiftViewController.swift; sourceTree = "<group>"; };
 		DB2C971923449109006E7D61 /* CoinSendGiftPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinSendGiftPresenter.swift; sourceTree = "<group>"; };
@@ -1787,6 +1789,7 @@
 			children = (
 				DB83624B24C205B700A5FEFC /* CodeInput */,
 				DB83624724C1E11A00A5FEFC /* PhoneVerificationFormView.swift */,
+				DB2C699924D88DDF0043C344 /* PhoneVerificationResendCodeLabel.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -3183,6 +3186,7 @@
 				DB96168A22C50F350078E92D /* ValidationRule.swift in Sources */,
 				DB2F25152360A8F400274C60 /* TransactionDetailsModule.swift in Sources */,
 				DB8DC1222413009F006AB4F5 /* VIPVerificationStore.swift in Sources */,
+				DB2C699A24D88DDF0043C344 /* PhoneVerificationResendCodeLabel.swift in Sources */,
 				DB21B1F324AA63AA008444D3 /* RecallPresenter.swift in Sources */,
 				DB8F078A24103E8F00770643 /* PickerFlow.swift in Sources */,
 				DB8D40A322C3ED9C00D5FBD0 /* LoginFlow.swift in Sources */,

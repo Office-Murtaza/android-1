@@ -14,6 +14,7 @@ final class PhoneVerificationPresenter: ModulePresenter, PhoneVerificationModule
   
   let usecase: LoginUsecase
   let store: Store
+  let didTypeWrongCode = PublishRelay<Void>()
   
   var state: Driver<PhoneVerificationState> {
     return store.state
@@ -62,9 +63,10 @@ final class PhoneVerificationPresenter: ModulePresenter, PhoneVerificationModule
   
   private func verify(for state: PhoneVerificationState) -> Single<PhoneVerificationResponse> {
     return usecase.verifyAccount(phoneNumber: state.phoneNumber)
-      .catchError { [store] in
+      .catchError { [unowned self] in
         if let apiError = $0 as? APIError, case let .serverError(error) = apiError {
-          store.action.accept(.makeInvalidState(error.message))
+          self.store.action.accept(.makeInvalidState(error.message))
+          self.didTypeWrongCode.accept(())
         }
 
         throw $0

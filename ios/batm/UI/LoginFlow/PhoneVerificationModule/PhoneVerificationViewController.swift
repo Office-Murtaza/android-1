@@ -14,24 +14,7 @@ final class PhoneVerificationViewController: ModuleViewController<PhoneVerificat
   
   let nextButton = MDCButton.next
   
-  static let resendCodeRange = NSRange(location:21, length: 11)
-  
-  let resendCodeLabel: UILabel = {
-    let label = UILabel()
-    let title = localize(L.PhoneVerification.resendCode)
-    let attributes: [NSAttributedString.Key: Any] = [.font: UIFont.systemFont(ofSize: 15, weight: .medium)]
-    let attributedText = NSMutableAttributedString(string: title, attributes: attributes)
-    attributedText.addAttribute(.foregroundColor,
-                                value: UIColor.slateGrey,
-                                range: NSRange(location:0,length:21))
-    attributedText.addAttributes([.foregroundColor: UIColor.ceruleanBlue],
-                                 range: resendCodeRange)
-    label.attributedText = attributedText
-    label.isUserInteractionEnabled = true
-    return label
-  }()
-  
-  let resendCodeTapRecognizer = UITapGestureRecognizer()
+  let resendCodeLabel = PhoneVerificationResendCodeLabel()
   
   override var shouldShowNavigationBar: Bool { return true }
 
@@ -45,7 +28,6 @@ final class PhoneVerificationViewController: ModuleViewController<PhoneVerificat
                                            formView,
                                            nextButton,
                                            resendCodeLabel)
-    resendCodeLabel.addGestureRecognizer(resendCodeTapRecognizer)
     
     setupDefaultKeyboardHandling()
   }
@@ -79,7 +61,19 @@ final class PhoneVerificationViewController: ModuleViewController<PhoneVerificat
     }
   }
   
+  private func triggerWrongCodeHapticFeedback() {
+    let notificationFeedbackGenerator = UINotificationFeedbackGenerator()
+    notificationFeedbackGenerator.prepare()
+    notificationFeedbackGenerator.notificationOccurred(.error)
+  }
+  
   func setupUIBindings() {
+    presenter.state
+      .asObservable()
+      .map { $0.isCodeFilled }
+      .bind(to: nextButton.rx.isEnabled)
+      .disposed(by: disposeBag)
+    
     presenter.state
       .map { $0.validationState }
       .mapToErrorMessage()
@@ -87,6 +81,18 @@ final class PhoneVerificationViewController: ModuleViewController<PhoneVerificat
         errorView.isHidden = $0 == nil
         errorView.configure(for: $0)
       })
+      .disposed(by: disposeBag)
+    
+    presenter.didTypeWrongCode
+      .asDriver(onErrorDriveWith: .empty())
+      .drive(onNext: { [unowned self] in
+        self.formView.codeTextField.shake()
+        self.triggerWrongCodeHapticFeedback()
+      })
+      .disposed(by: disposeBag)
+    
+    resendCodeLabel.rx.tap
+      .drive(onNext: { [view] in view?.makeToast(localize(L.PhoneVerification.codeSent)) })
       .disposed(by: disposeBag)
     
     nextButton.rx.tap.asDriver()
@@ -99,12 +105,7 @@ final class PhoneVerificationViewController: ModuleViewController<PhoneVerificat
     
     let codeDriver = formView.rx.codeText
     let nextDriver = nextButton.rx.tap.asDriver()
-    let resendCodeDriver = resendCodeTapRecognizer.rx.event
-      .asDriver()
-      .filter { [unowned self] tapRecognizer in
-        return tapRecognizer.didTapAttributedTextInLabel(label: self.resendCodeLabel, inRange: Self.resendCodeRange)
-      }
-      .map { _ in () }
+    let resendCodeDriver = resendCodeLabel.rx.tap
     
     presenter.bind(input: PhoneVerificationPresenter.Input(code: codeDriver,
                                                            next: nextDriver,
