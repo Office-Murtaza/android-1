@@ -5,6 +5,7 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.navArgs
 import com.app.belcobtm.presentation.core.ui.fragment.BaseFragment
 import com.app.belcobtm.R
+import com.app.belcobtm.presentation.core.mvvm.LoadingData
 import kotlinx.android.synthetic.main.layout_password.*
 import kotlinx.android.synthetic.main.layout_password.nextButton
 import org.koin.android.viewmodel.ext.android.viewModel
@@ -12,7 +13,7 @@ import org.koin.android.viewmodel.ext.android.viewModel
 class PasswordFragment : BaseFragment() {
     private val viewModel by viewModel<PasswordViewModel>()
     private val args:  PasswordFragmentArgs by navArgs()
-    private val appliedState: PasswordState? = null
+    private val appliedState: LoadingData<PasswordState>? = null
 
     override val resourceLayout: Int = R.layout.layout_password
     override val isHomeButtonEnabled = true
@@ -34,22 +35,20 @@ class PasswordFragment : BaseFragment() {
     override fun initObservers() {
         viewModel.stateData.observe(this, Observer { state ->
             when (state) {
-                is PasswordState.Loading -> showLoading()
-                is PasswordState.Ready -> {
+                is LoadingData.Loading -> showLoading()
+                is LoadingData.Success -> {
                     state.doIfChanged(appliedState, {
                         showContent()
+                        passwordContainerView.isErrorEnabled = false
                     })
-                    state.isError.doIfChanged((appliedState as? PasswordState.Ready)?.isError, {
-                        with (passwordContainerView) {
-                            isErrorEnabled = it
-                            if (it) {
-                                error = getString(R.string.password_doesnt_match)
-                            }
-                        }
-                    })
-                    state.isButtonEnabled.doIfChanged((appliedState as? PasswordState.Ready)?.isButtonEnabled) {
+                    state.data.isButtonEnabled.doIfChanged(appliedState?.commonData?.isButtonEnabled) {
                         nextButton.isEnabled = it
                     }
+                }
+                is LoadingData.Error -> {
+                    showContent()
+                    passwordContainerView.isErrorEnabled = true
+                    passwordContainerView.error = getString(R.string.password_doesnt_match)
                 }
             }
         })

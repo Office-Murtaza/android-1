@@ -7,6 +7,7 @@ import androidx.navigation.NavDirections
 import com.app.belcobtm.R
 import com.app.belcobtm.domain.settings.interactor.UpdatePhoneUseCase
 import com.app.belcobtm.presentation.core.SingleLiveData
+import com.app.belcobtm.presentation.core.mvvm.LoadingData
 import io.michaelrocks.libphonenumber.android.NumberParseException
 import io.michaelrocks.libphonenumber.android.PhoneNumberUtil
 
@@ -14,14 +15,14 @@ class PhoneChangeViewModel(
     private val changePhoneUseCase: UpdatePhoneUseCase,
     private val appContext: Context
 ) : ViewModel() {
-    val stateData = MutableLiveData<PhoneChangeState>(PhoneChangeState.Ready())
+    val stateData = MutableLiveData<LoadingData<PhoneChangeState>>(LoadingData.Success(PhoneChangeState()))
     val actionData = SingleLiveData<PhoneChangeAction>()
     private var phone = ""
     private val phoneUtil: PhoneNumberUtil by lazy { PhoneNumberUtil.createInstance(appContext) }
 
     fun onPhoneInput(text: String) {
         phone = text
-        stateData.value = PhoneChangeState.Ready(isValidMobileNumber(phone))
+        stateData.value = LoadingData.Success(PhoneChangeState(isValidMobileNumber(phone)))
     }
 
     fun onNextClick() {
@@ -36,11 +37,11 @@ class PhoneChangeViewModel(
                         )
                     )
                 } else {
-                    stateData.value = PhoneChangeState.Error
+                    stateData.value = LoadingData.Error(data = stateData.value?.commonData)
                 }
             },
             onError = {
-                stateData.value = PhoneChangeState.Error
+                stateData.value = LoadingData.Error(data = stateData.value?.commonData)
             })
     }
 
@@ -56,11 +57,7 @@ class PhoneChangeViewModel(
     }
 }
 
-sealed class PhoneChangeState {
-    object Loading : PhoneChangeState()
-    object Error : PhoneChangeState()
-    data class Ready(val isNextButtonEnabled: Boolean = false) : PhoneChangeState()
-}
+data class PhoneChangeState(val isNextButtonEnabled: Boolean = false)
 
 sealed class PhoneChangeAction {
     class NavigateAction(val navDirections: NavDirections) : PhoneChangeAction()

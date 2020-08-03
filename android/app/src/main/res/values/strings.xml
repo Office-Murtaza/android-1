@@ -417,6 +417,7 @@
     <string name="update_pin_label">Update PIN</string>
     <string name="seed_phrase_label">Seed phrase</string>
     <string name="unlink_wallet_label">Unlink wallet</string>
+    <string name="phone_changed">Phone changed</string>
     
     //pass
     <string name="password_hint">Password</string>

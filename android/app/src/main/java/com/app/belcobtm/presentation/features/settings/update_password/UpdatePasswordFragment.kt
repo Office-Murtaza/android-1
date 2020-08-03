@@ -3,13 +3,14 @@ package com.app.belcobtm.presentation.features.settings.update_password
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.observe
 import com.app.belcobtm.R
+import com.app.belcobtm.presentation.core.mvvm.LoadingData
 import com.app.belcobtm.presentation.core.ui.fragment.BaseFragment
 import kotlinx.android.synthetic.main.fragment_update_password.*
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class UpdatePasswordFragment : BaseFragment() {
     val viewModel by viewModel<UpdatePasswordViewModel>()
-    private var appliedState: UpdatePasswordState? = null
+    private var appliedState: LoadingData<UpdatePasswordState>? = null
 
     override val resourceLayout = R.layout.fragment_update_password
     override val isHomeButtonEnabled = true
@@ -35,41 +36,48 @@ class UpdatePasswordFragment : BaseFragment() {
 
     override fun initObservers() {
         viewModel.stateData.observe(this) {state ->
-            state.isLoading.doIfChanged(appliedState?.isLoading, {
-                if (it) {
-                    showLoading()
-                } else {
-                    showContent()
-                }
-            })
-            state.isOldPasswordError.doIfChanged(appliedState?.isOldPasswordError, {
-                with (oldPasswordContainerView) {
-                    isErrorEnabled = it
-                    if (it) {
-                        error = getString(R.string.password_doesnt_match)
+            when (state) {
+                is LoadingData.Loading -> showLoading()
+                is LoadingData.Error -> showError(R.string.error_something_went_wrong)
+                is LoadingData.Success -> {
+                    state.doIfChanged(appliedState) {
+                        showContent()
                     }
+                    state.data.isOldPasswordError.doIfChanged(appliedState?.commonData?.isOldPasswordError, {
+                        with (oldPasswordContainerView) {
+                            isErrorEnabled = it
+                            if (it) {
+                                error = getString(R.string.password_doesnt_match)
+                            }
+                        }
+                    })
+                    state.data.isOldPasswordError.doIfChanged(appliedState?.commonData?.isOldPasswordError, {
+                        with (oldPasswordContainerView) {
+                            isErrorEnabled = it
+                            if (it) {
+                                error = getString(R.string.password_doesnt_match)
+                            }
+                        }
+                    })
+                    state.data.isNewPasswordMatches.doIfChanged(appliedState?.commonData?.isNewPasswordMatches, {
+                        with (newPasswordConfirmContainerView) {
+                            isErrorEnabled = !it
+                            if (!it) {
+                                error = getString(R.string.password_confirm_not_match)
+                            }
+                        }
+                    })
+                    state.data.isNextButtonEnabled.doIfChanged(appliedState?.commonData?.isNextButtonEnabled, {
+                        nextButton.isEnabled = it
+                    })
                 }
-            })
-            state.isNewPasswordMatches.doIfChanged(appliedState?.isNewPasswordMatches, {
-                with (newPasswordConfirmContainerView) {
-                    isErrorEnabled = !it
-                    if (!it) {
-                        error = getString(R.string.password_confirm_not_match)
-                    }
-                }
-            })
-            state.isNextButtonEnabled.doIfChanged(appliedState?.isNextButtonEnabled, {
-                nextButton.isEnabled = it
-            })
+            }
         }
         viewModel.actionData.observe(this) {action ->
             when (action) {
                 is UpdatePasswordAction.Success -> {
-                    showContent()
+                    showSnackBar(R.string.password_changed)
                     navigate(R.id.update_to_settings_fragment)
-                }
-                is UpdatePasswordAction.Failure -> {
-                    showError(R.string.error_something_went_wrong)
                 }
             }
         }

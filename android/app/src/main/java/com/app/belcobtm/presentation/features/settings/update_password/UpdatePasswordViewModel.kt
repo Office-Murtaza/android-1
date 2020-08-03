@@ -3,6 +3,7 @@ package com.app.belcobtm.presentation.features.settings.update_password
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.app.belcobtm.domain.settings.interactor.ChangePassUseCase
+import com.app.belcobtm.presentation.core.mvvm.LoadingData
 
 class UpdatePasswordViewModel(
     val changePassUseCase: ChangePassUseCase
@@ -11,40 +12,48 @@ class UpdatePasswordViewModel(
     private var newPass = ""
     private var newPassConfirm = ""
 
-    val stateData = MutableLiveData<UpdatePasswordState>(UpdatePasswordState())
+    val stateData = MutableLiveData<LoadingData<UpdatePasswordState>>(LoadingData.Success(UpdatePasswordState()))
     val actionData = MutableLiveData<UpdatePasswordAction>()
 
     fun onOldPassTextChanged(text: String) {
         oldPass = text
-        stateData.value = stateData.value!!.copy(
+        stateData.value = LoadingData.Success(stateData.value!!.commonData!!.copy(
             isOldPasswordError = false,
             isNextButtonEnabled = isButtonEnabled(),
             isLoading = false
-        )
+        ))
     }
 
     fun onNewPassTextChanged(text: String) {
         newPass = text
-        stateData.value = stateData.value!!.copy(
-            isNewPasswordMatches = newPass == newPassConfirm,
-            isNextButtonEnabled = isButtonEnabled(),
-            isLoading = false
+        stateData.value = LoadingData.Success(
+            stateData.value?.commonData?.copy(
+                isNewPasswordMatches = newPass == newPassConfirm,
+                isNextButtonEnabled = isButtonEnabled(),
+                isLoading = false
+            )?: UpdatePasswordState(
+                isNewPasswordMatches = newPass == newPassConfirm,
+                isNextButtonEnabled = isButtonEnabled(),
+                isLoading = false
+            )
         )
     }
 
     fun onNewPassConfirmTextChanged(text: String) {
         newPassConfirm = text
-        stateData.value = stateData.value!!.copy(
+        stateData.value = LoadingData.Success(stateData.value?.commonData?.copy(
             isNewPasswordMatches = newPass == newPassConfirm,
             isNextButtonEnabled = isButtonEnabled(),
             isLoading = false
-        )
+        )?: UpdatePasswordState(
+            isNewPasswordMatches = newPass == newPassConfirm,
+            isNextButtonEnabled = isButtonEnabled(),
+            isLoading = false
+        ))
     }
 
     fun onNextClick() {
-        stateData.value = stateData.value!!.copy(
-            isLoading = true
-        )
+        stateData.value = LoadingData.Loading(stateData.value?.commonData)
         changePassUseCase.invoke(
             ChangePassUseCase.Params(
                 oldPassword = oldPass,
@@ -52,15 +61,13 @@ class UpdatePasswordViewModel(
             ),
             onSuccess = {
                 if (it) {
-                    stateData.value = stateData.value!!.copy(isLoading = false)
                     actionData.value = UpdatePasswordAction.Success
                 } else {
-                    stateData.value = stateData.value!!.copy(isLoading = false)
-                    actionData.value = UpdatePasswordAction.Failure
+                    stateData.value = LoadingData.Error(data = stateData.value?.commonData)
                 }
             },
             onError = {
-                actionData.value = UpdatePasswordAction.Failure
+                stateData.value = LoadingData.Error(data = stateData.value?.commonData)
             }
         )
     }
@@ -82,5 +89,4 @@ data class UpdatePasswordState(
 
 sealed class UpdatePasswordAction {
     object Success : UpdatePasswordAction()
-    object Failure : UpdatePasswordAction()
 }
