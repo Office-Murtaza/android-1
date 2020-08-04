@@ -24,12 +24,10 @@
 		DB04E4D722D880B5000E2D85 /* PinCodeService.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB04E4D622D880B5000E2D85 /* PinCodeService.swift */; };
 		DB04E4D922D8AC4D000E2D85 /* PinCodeAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB04E4D822D8AC4D000E2D85 /* PinCodeAssembly.swift */; };
 		DB0AD1D624BA1F4C00806282 /* PasswordTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB0AD1D524BA1F4C00806282 /* PasswordTextField.swift */; };
-		DB0AD1D824BA2A6B00806282 /* LoginNavigationScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB0AD1D724BA2A6B00806282 /* LoginNavigationScreenView.swift */; };
 		DB0AD1DA24BA2C1F00806282 /* RootScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB0AD1D924BA2C1F00806282 /* RootScrollView.swift */; };
 		DB0BB5F722BD10B90035FF6C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB0BB5F622BD10B90035FF6C /* AppDelegate.swift */; };
 		DB0BB5FE22BD10BA0035FF6C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DB0BB5FD22BD10BA0035FF6C /* Assets.xcassets */; };
 		DB0BB60122BD10BA0035FF6C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DB0BB5FF22BD10BA0035FF6C /* LaunchScreen.storyboard */; };
-		DB130D6B22C28AF60056E67E /* BackgroundDarkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB130D6A22C28AF60056E67E /* BackgroundDarkView.swift */; };
 		DB156E2324A644F600E59F76 /* Platform.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB156E2224A644F600E59F76 /* Platform.swift */; };
 		DB167CD9230D85D900D9D66E /* Transaction+Mapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB167CD8230D85D900D9D66E /* Transaction+Mapping.swift */; };
 		DB167CDB230D85E800D9D66E /* Transactions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB167CDA230D85E800D9D66E /* Transactions.swift */; };
@@ -66,7 +64,10 @@
 		DB226C5A22E99E3E0087E6C5 /* URLEncoding+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB226C5922E99E3E0087E6C5 /* URLEncoding+Extensions.swift */; };
 		DB247B412478F88C009802BB /* SplashViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB247B3D2478F88C009802BB /* SplashViewController.swift */; };
 		DB247B432478F88C009802BB /* SplashAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB247B3F2478F88C009802BB /* SplashAssembly.swift */; };
+		DB26C00B24D1E3F4007FE258 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = DB26C00A24D1E3F4007FE258 /* GoogleService-Info.plist */; };
+		DB26C00D24D1E4BD007FE258 /* FirebaseInitializer.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB26C00C24D1E4BD007FE258 /* FirebaseInitializer.swift */; };
 		DB2A0DF324CD655C009C9D1C /* PhoneVerificationStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB2A0DF224CD655C009C9D1C /* PhoneVerificationStore.swift */; };
+		DB2C699A24D88DDF0043C344 /* PhoneVerificationResendCodeLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB2C699924D88DDF0043C344 /* PhoneVerificationResendCodeLabel.swift */; };
 		DB2C971B23449109006E7D61 /* CoinSendGiftModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB2C971723449109006E7D61 /* CoinSendGiftModule.swift */; };
 		DB2C971C23449109006E7D61 /* CoinSendGiftViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB2C971823449109006E7D61 /* CoinSendGiftViewController.swift */; };
 		DB2C971D23449109006E7D61 /* CoinSendGiftPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB2C971923449109006E7D61 /* CoinSendGiftPresenter.swift */; };
@@ -121,7 +122,6 @@
 		DB3C03D422CB5ADE0036F779 /* RecoverStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB3C03D322CB5ADE0036F779 /* RecoverStore.swift */; };
 		DB3C03D622CB5B960036F779 /* RecoverPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB3C03D522CB5B960036F779 /* RecoverPresenter.swift */; };
 		DB3C03D822CB5DCE0036F779 /* RecoverViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB3C03D722CB5DCE0036F779 /* RecoverViewController.swift */; };
-		DB3C03DA22CB5F360036F779 /* CodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB3C03D922CB5F360036F779 /* CodeView.swift */; };
 		DB3C03DD22CB5F7C0036F779 /* RecoverFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB3C03DC22CB5F7C0036F779 /* RecoverFormView.swift */; };
 		DB3C03DF22CB60960036F779 /* RecoverAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB3C03DE22CB60960036F779 /* RecoverAssembly.swift */; };
 		DB3C03E122CB62320036F779 /* DummyButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB3C03E022CB62320036F779 /* DummyButton.swift */; };
@@ -271,7 +271,6 @@
 		DB8D40AD22C3EFFF00D5FBD0 /* WelcomeAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB8D40AC22C3EFFF00D5FBD0 /* WelcomeAssembly.swift */; };
 		DB8D40B022C3F4D700D5FBD0 /* BTMNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB8D40AF22C3F4D700D5FBD0 /* BTMNavigationController.swift */; };
 		DB8D40B222C3F86500D5FBD0 /* CreateWalletAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB8D40B122C3F86500D5FBD0 /* CreateWalletAssembly.swift */; };
-		DB8D40B522C401DD00D5FBD0 /* GoldSeparatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB8D40B422C401DD00D5FBD0 /* GoldSeparatorView.swift */; };
 		DB8D40B722C4027500D5FBD0 /* MainFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB8D40B622C4027500D5FBD0 /* MainFormView.swift */; };
 		DB8D40BB22C40AEE00D5FBD0 /* MainTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB8D40BA22C40AEE00D5FBD0 /* MainTextField.swift */; };
 		DB8DC11E2412C151006AB4F5 /* VerificationFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB8DC11D2412C151006AB4F5 /* VerificationFormView.swift */; };
@@ -296,7 +295,6 @@
 		DB95EB22230AA6FE0059C84C /* TransactionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB95EB21230AA6FE0059C84C /* TransactionCell.swift */; };
 		DB95EB24230AB1650059C84C /* CoinDetailsStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB95EB23230AB1650059C84C /* CoinDetailsStore.swift */; };
 		DB95EB26230ABC6A0059C84C /* CoinDetailsUsecase.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB95EB25230ABC6A0059C84C /* CoinDetailsUsecase.swift */; };
-		DB95EB28230AECA10059C84C /* CoinDetailsDepositView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB95EB27230AECA10059C84C /* CoinDetailsDepositView.swift */; };
 		DB95EB2A230AEFEA0059C84C /* UIImage+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB95EB29230AEFEA0059C84C /* UIImage+Extensions.swift */; };
 		DB96168622C50E330078E92D /* ViewStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB96168522C50E330078E92D /* ViewStore.swift */; };
 		DB96168822C50E720078E92D /* CreateWalletStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB96168722C50E720078E92D /* CreateWalletStore.swift */; };
@@ -553,14 +551,12 @@
 		DB04E4D622D880B5000E2D85 /* PinCodeService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinCodeService.swift; sourceTree = "<group>"; };
 		DB04E4D822D8AC4D000E2D85 /* PinCodeAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinCodeAssembly.swift; sourceTree = "<group>"; };
 		DB0AD1D524BA1F4C00806282 /* PasswordTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordTextField.swift; sourceTree = "<group>"; };
-		DB0AD1D724BA2A6B00806282 /* LoginNavigationScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginNavigationScreenView.swift; sourceTree = "<group>"; };
 		DB0AD1D924BA2C1F00806282 /* RootScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootScrollView.swift; sourceTree = "<group>"; };
 		DB0BB5F322BD10B90035FF6C /* batm.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = batm.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DB0BB5F622BD10B90035FF6C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		DB0BB5FD22BD10BA0035FF6C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		DB0BB60022BD10BA0035FF6C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		DB0BB60222BD10BA0035FF6C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		DB130D6A22C28AF60056E67E /* BackgroundDarkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundDarkView.swift; sourceTree = "<group>"; };
 		DB156E2224A644F600E59F76 /* Platform.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Platform.swift; sourceTree = "<group>"; };
 		DB167CD8230D85D900D9D66E /* Transaction+Mapping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Transaction+Mapping.swift"; sourceTree = "<group>"; };
 		DB167CDA230D85E800D9D66E /* Transactions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Transactions.swift; sourceTree = "<group>"; };
@@ -597,7 +593,10 @@
 		DB226C5922E99E3E0087E6C5 /* URLEncoding+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URLEncoding+Extensions.swift"; sourceTree = "<group>"; };
 		DB247B3D2478F88C009802BB /* SplashViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashViewController.swift; sourceTree = "<group>"; };
 		DB247B3F2478F88C009802BB /* SplashAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashAssembly.swift; sourceTree = "<group>"; };
+		DB26C00A24D1E3F4007FE258 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		DB26C00C24D1E4BD007FE258 /* FirebaseInitializer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseInitializer.swift; sourceTree = "<group>"; };
 		DB2A0DF224CD655C009C9D1C /* PhoneVerificationStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneVerificationStore.swift; sourceTree = "<group>"; };
+		DB2C699924D88DDF0043C344 /* PhoneVerificationResendCodeLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneVerificationResendCodeLabel.swift; sourceTree = "<group>"; };
 		DB2C971723449109006E7D61 /* CoinSendGiftModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinSendGiftModule.swift; sourceTree = "<group>"; };
 		DB2C971823449109006E7D61 /* CoinSendGiftViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinSendGiftViewController.swift; sourceTree = "<group>"; };
 		DB2C971923449109006E7D61 /* CoinSendGiftPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinSendGiftPresenter.swift; sourceTree = "<group>"; };
@@ -652,7 +651,6 @@
 		DB3C03D322CB5ADE0036F779 /* RecoverStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecoverStore.swift; sourceTree = "<group>"; };
 		DB3C03D522CB5B960036F779 /* RecoverPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecoverPresenter.swift; sourceTree = "<group>"; };
 		DB3C03D722CB5DCE0036F779 /* RecoverViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecoverViewController.swift; sourceTree = "<group>"; };
-		DB3C03D922CB5F360036F779 /* CodeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeView.swift; sourceTree = "<group>"; };
 		DB3C03DC22CB5F7C0036F779 /* RecoverFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecoverFormView.swift; sourceTree = "<group>"; };
 		DB3C03DE22CB60960036F779 /* RecoverAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecoverAssembly.swift; sourceTree = "<group>"; };
 		DB3C03E022CB62320036F779 /* DummyButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DummyButton.swift; sourceTree = "<group>"; };
@@ -801,7 +799,6 @@
 		DB8D40AC22C3EFFF00D5FBD0 /* WelcomeAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeAssembly.swift; sourceTree = "<group>"; };
 		DB8D40AF22C3F4D700D5FBD0 /* BTMNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTMNavigationController.swift; sourceTree = "<group>"; };
 		DB8D40B122C3F86500D5FBD0 /* CreateWalletAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateWalletAssembly.swift; sourceTree = "<group>"; };
-		DB8D40B422C401DD00D5FBD0 /* GoldSeparatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoldSeparatorView.swift; sourceTree = "<group>"; };
 		DB8D40B622C4027500D5FBD0 /* MainFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainFormView.swift; sourceTree = "<group>"; };
 		DB8D40BA22C40AEE00D5FBD0 /* MainTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTextField.swift; sourceTree = "<group>"; };
 		DB8DC11D2412C151006AB4F5 /* VerificationFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerificationFormView.swift; sourceTree = "<group>"; };
@@ -826,7 +823,6 @@
 		DB95EB21230AA6FE0059C84C /* TransactionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionCell.swift; sourceTree = "<group>"; };
 		DB95EB23230AB1650059C84C /* CoinDetailsStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinDetailsStore.swift; sourceTree = "<group>"; };
 		DB95EB25230ABC6A0059C84C /* CoinDetailsUsecase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinDetailsUsecase.swift; sourceTree = "<group>"; };
-		DB95EB27230AECA10059C84C /* CoinDetailsDepositView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinDetailsDepositView.swift; sourceTree = "<group>"; };
 		DB95EB29230AEFEA0059C84C /* UIImage+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Extensions.swift"; sourceTree = "<group>"; };
 		DB96168522C50E330078E92D /* ViewStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewStore.swift; sourceTree = "<group>"; };
 		DB96168722C50E720078E92D /* CreateWalletStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateWalletStore.swift; sourceTree = "<group>"; };
@@ -1185,6 +1181,7 @@
 				DB0BB5FF22BD10BA0035FF6C /* LaunchScreen.storyboard */,
 				DBA7393422C33D0C00CEFD57 /* Localizable.strings */,
 				DB0BB60222BD10BA0035FF6C /* Info.plist */,
+				DB26C00A24D1E3F4007FE258 /* GoogleService-Info.plist */,
 			);
 			path = batm;
 			sourceTree = "<group>";
@@ -1204,8 +1201,6 @@
 		DB130D6C22C28B5F0056E67E /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				DB130D6A22C28AF60056E67E /* BackgroundDarkView.swift */,
-				DB8D40B422C401DD00D5FBD0 /* GoldSeparatorView.swift */,
 				DB96169122C538500078E92D /* ErrorView.swift */,
 				DB96169322C5678E0078E92D /* MainButton.swift */,
 				DB8D40BA22C40AEE00D5FBD0 /* MainTextField.swift */,
@@ -1213,7 +1208,6 @@
 				DB8D40B622C4027500D5FBD0 /* MainFormView.swift */,
 				DB9616A222C5FFC10078E92D /* RoundedView.swift */,
 				DB9616B122C610280078E92D /* UnderlinedLabelView.swift */,
-				DB3C03D922CB5F360036F779 /* CodeView.swift */,
 				DB3C03E022CB62320036F779 /* DummyButton.swift */,
 				DB0211C522CD340A004065E9 /* TextFieldWithoutPaddings.swift */,
 				DB8A195F235729A0003E8F7D /* NavigationScreenView.swift */,
@@ -1223,8 +1217,8 @@
 				DB7A9D112459CEE800006B54 /* QRCodeCardView.swift */,
 				DBF98D4424502EF800AF6D5A /* FloatingActionButton.swift */,
 				DB0AD1D524BA1F4C00806282 /* PasswordTextField.swift */,
-				DB0AD1D724BA2A6B00806282 /* LoginNavigationScreenView.swift */,
 				DB0AD1D924BA2C1F00806282 /* RootScrollView.swift */,
+				DB9D3EA422C13078008DC600 /* TermsAndConditionsView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -1677,7 +1671,6 @@
 			isa = PBXGroup;
 			children = (
 				DB95EB1B230AA4720059C84C /* CollectionViewRelated */,
-				DB95EB16230A8CDE0059C84C /* Views */,
 				DB5B2DE0230A769300821713 /* CoinDetailsViewController.swift */,
 				DB5B2DE1230A769300821713 /* CoinDetailsPresenter.swift */,
 				DB5B2DDF230A769300821713 /* CoinDetailsModule.swift */,
@@ -1796,6 +1789,7 @@
 			children = (
 				DB83624B24C205B700A5FEFC /* CodeInput */,
 				DB83624724C1E11A00A5FEFC /* PhoneVerificationFormView.swift */,
+				DB2C699924D88DDF0043C344 /* PhoneVerificationResendCodeLabel.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -1959,6 +1953,7 @@
 				DB4B9DCA22E5A4710016746A /* GoogleServicesInitializer.swift */,
 				DB2C97232344CE8B006E7D61 /* GiphyInitializer.swift */,
 				DBEBC6BA2402987C00D7C8A6 /* ToastInitializer.swift */,
+				DB26C00C24D1E4BD007FE258 /* FirebaseInitializer.swift */,
 			);
 			path = Initializers;
 			sourceTree = "<group>";
@@ -2086,13 +2081,6 @@
 				DB83624924C2049600A5FEFC /* CALayer+Extensions.swift */,
 			);
 			path = Extensions;
-			sourceTree = "<group>";
-		};
-		DB95EB16230A8CDE0059C84C /* Views */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Views;
 			sourceTree = "<group>";
 		};
 		DB95EB1B230AA4720059C84C /* CollectionViewRelated */ = {
@@ -2376,7 +2364,6 @@
 		DB9D3EA122C12D18008DC600 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				DB9D3EA422C13078008DC600 /* TermsAndConditionsView.swift */,
 				DB9D3EA622C1476F008DC600 /* WelcomeSlideView.swift */,
 				DB6A578422C1EE5600DEE38A /* WelcomeSliderView.swift */,
 				DB6A578622C1F00300DEE38A /* WelcomeButtonsView.swift */,
@@ -2779,7 +2766,6 @@
 			children = (
 				DB95EB17230A8CF60059C84C /* CoinDetailsChartView.swift */,
 				DB95EB19230A982F0059C84C /* CoinDetailsButtonsView.swift */,
-				DB95EB27230AECA10059C84C /* CoinDetailsDepositView.swift */,
 				DB33E9B7241CE52500764BF5 /* CoinDetailsBalanceView.swift */,
 				DB5413CC24346EDB002DDD2F /* CoinDetailsBalanceValueView.swift */,
 				DB33E9BB241CFADB00764BF5 /* CoinDetailsPeriodButtonsView.swift */,
@@ -2895,6 +2881,7 @@
 				DB9D3EC622C15349008DC600 /* Poppins-ExtraLightItalic.ttf in Resources */,
 				DB64DA5C2416BBD90019D38B /* countries.json in Resources */,
 				DB9D3EBF22C1533B008DC600 /* Poppins-Black.ttf in Resources */,
+				DB26C00B24D1E3F4007FE258 /* GoogleService-Info.plist in Resources */,
 				DB9D3ECC22C15354008DC600 /* Poppins-Regular.ttf in Resources */,
 				DBA7393622C33D0C00CEFD57 /* Localizable.strings in Resources */,
 				DB9D3EC522C15347008DC600 /* Poppins-ExtraLight.ttf in Resources */,
@@ -3042,7 +3029,6 @@
 				DB86FD262477FBD5002FE22D /* LocationUpdateDateRecord+CoreDataClass.swift in Sources */,
 				DB1AF0E224436D6D0037C998 /* MDCContainerScheme+Extensions.swift in Sources */,
 				DB308EBB22E738FC003D91AF /* MapAddresses+Mapping.swift in Sources */,
-				DB0AD1D824BA2A6B00806282 /* LoginNavigationScreenView.swift in Sources */,
 				DB1CFB43246C4F5D00020104 /* TradesFlow.swift in Sources */,
 				DBA6844222E44AE40079429E /* ATMPresenter.swift in Sources */,
 				DB8F078924103E8F00770643 /* PickerFlow+Dependencies.swift in Sources */,
@@ -3093,7 +3079,6 @@
 				DBA1B61624A9C9D000A9A703 /* ReserveFormView.swift in Sources */,
 				DB70852322CFA39F00FFE4F7 /* CoinsBalanceModule.swift in Sources */,
 				DB95EB1E230AA48C0059C84C /* CoinDetailsCollectionViewDataSource.swift in Sources */,
-				DB3C03DA22CB5F360036F779 /* CodeView.swift in Sources */,
 				DBBF29AC22D39DB000A5DE6A /* CoinsBalanceStore.swift in Sources */,
 				DB5F18C42472B0DB00E37311 /* BuySellTrade.swift in Sources */,
 				DB38281D240CF9BA00418D3D /* VIPVerificationViewController.swift in Sources */,
@@ -3146,7 +3131,6 @@
 				DB8D409422C3E9A500D5FBD0 /* DIProvider.swift in Sources */,
 				DB904AA522C01189007CB734 /* WelcomePresenter.swift in Sources */,
 				DB9616C122C745980078E92D /* Database.xcdatamodeld in Sources */,
-				DB130D6B22C28AF60056E67E /* BackgroundDarkView.swift in Sources */,
 				DBC620AF23475AF80007D412 /* BinanceAccountInfo.swift in Sources */,
 				DB83664222FAB7E200454F5C /* ChangePinPresenter.swift in Sources */,
 				DB2F2503236049DB00274C60 /* CoinSellDetailsInstructionView.swift in Sources */,
@@ -3170,7 +3154,6 @@
 				DB9616EE22C74EB40078E92D /* RecursiveLock+Extensions.swift in Sources */,
 				DB83661E22FAA01F00454F5C /* ShowSeedPhraseModule.swift in Sources */,
 				DBC8B45A23634DF400E7A799 /* TransactionDetailsSellInfoSectionView.swift in Sources */,
-				DB95EB28230AECA10059C84C /* CoinDetailsDepositView.swift in Sources */,
 				DB04E4D422D85EE5000E2D85 /* PinCodeUsecase.swift in Sources */,
 				DBFAED912326C7CC004B6D79 /* Utxo+Mapping.swift in Sources */,
 				DBBF299622D3725D00A5DE6A /* UITableView+ReusableView.swift in Sources */,
@@ -3203,6 +3186,7 @@
 				DB96168A22C50F350078E92D /* ValidationRule.swift in Sources */,
 				DB2F25152360A8F400274C60 /* TransactionDetailsModule.swift in Sources */,
 				DB8DC1222413009F006AB4F5 /* VIPVerificationStore.swift in Sources */,
+				DB2C699A24D88DDF0043C344 /* PhoneVerificationResendCodeLabel.swift in Sources */,
 				DB21B1F324AA63AA008444D3 /* RecallPresenter.swift in Sources */,
 				DB8F078A24103E8F00770643 /* PickerFlow.swift in Sources */,
 				DB8D40A322C3ED9C00D5FBD0 /* LoginFlow.swift in Sources */,
@@ -3277,7 +3261,6 @@
 				DB4F395722DEFD3B00D53BF3 /* FilterCoinsViewController.swift in Sources */,
 				DB308EB322E73793003D91AF /* MapAddress.swift in Sources */,
 				DBA6843D22E44A880079429E /* ATMFlow+Dependencies.swift in Sources */,
-				DB8D40B522C401DD00D5FBD0 /* GoldSeparatorView.swift in Sources */,
 				DBC3FF5324BB375B00198597 /* PhoneVerificationResponse.swift in Sources */,
 				DB83664822FABFB800454F5C /* ChangePinFormView.swift in Sources */,
 				DB39FC332302DC2200FA2B5F /* RecoverSeedPhraseStore.swift in Sources */,
@@ -3406,6 +3389,7 @@
 				DB9616D622C748610078E92D /* FetchRequestBuilder.swift in Sources */,
 				DBDD5D13235797F00012DFAA /* CoinSellAnotherAddressView.swift in Sources */,
 				DB1D21E824AE6CCB001E9696 /* StakeDetails+Mapping.swift in Sources */,
+				DB26C00D24D1E4BD007FE258 /* FirebaseInitializer.swift in Sources */,
 				DB5185AE231FE68300052229 /* CoinWithdrawViewController.swift in Sources */,
 				DB16A871235F4438007E3B20 /* CoinSellDetailsAnotherAddressViewController.swift in Sources */,
 				DB2F250C2360687800274C60 /* CoinSellDetailsCurrentAddressModule.swift in Sources */,
@@ -3674,8 +3658,9 @@
 			baseConfigurationReference = 92EFAEC3F34F5098AD0B7F2B /* Pods-batm.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 54;
+				CURRENT_PROJECT_VERSION = 57;
 				DEVELOPMENT_TEAM = 2RUJ559RK4;
 				INFOPLIST_FILE = batm/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -3699,7 +3684,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 54;
+				CURRENT_PROJECT_VERSION = 57;
 				DEVELOPMENT_TEAM = 2RUJ559RK4;
 				INFOPLIST_FILE = batm/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;

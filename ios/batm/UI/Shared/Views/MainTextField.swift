@@ -8,7 +8,6 @@ enum MainTextFieldType {
   case confirmNewPassword
   case password
   case confirmPassword
-  case smsCode
   case oldPin
   case newPin
   case confirmNewPin
@@ -150,13 +149,6 @@ class MainTextField: UITextField, HasDisposeBag {
     case .confirmPassword:
       placeholder = localize(L.CreateWallet.Form.ConfirmPassword.placeholder)
       setUpForPassword()
-    case .smsCode:
-      placeholder = localize(L.CreateWallet.Code.placeholder)
-      setImage(UIImage(named: "login_sms_code"))
-      keyboardType = .numberPad
-      if #available(iOS 12.0, *) {
-        textContentType = .oneTimeCode
-      }
     case .oldPin:
       placeholder = localize(L.ChangePin.Form.OldPin.placeholder)
       setUpForPinCode()

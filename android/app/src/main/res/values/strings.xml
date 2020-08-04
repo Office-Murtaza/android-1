@@ -24,6 +24,9 @@
     <!-- Pin code -->
     <string name="pin_code_screen_enter_pin">Enter PIN</string>
     <string name="pin_code_screen_confirm_pin">Confirm PIN</string>
+    <string name="pin_code_screen_old_pin">Enter old PIN</string>
+    <string name="pin_code_screen_new_pin">Enter new PIN</string>
+    <string name="pin_code_screen_new_pin_confirm">Confirm new PIN</string>
     <string name="code_created">Code created successfully</string>
     <string name="code_changed">Code changed successfully</string>
     <string name="pin_code_do_not_match">PINS don\'t match. Please try again</string>
@@ -127,7 +130,6 @@
     <string name="unlink_warning2">Please, make sure you have been stored your credentials and seed phrase before unlinking the wallet.</string>
     <string name="change_phone">Change Phone</string>
     <string name="open_seed">Enter Password</string>
-    <string name="password_doesnt_match">Password doesn\'t match</string>
     <string name="change">Change</string>
     <string name="new_phone_number">New Phone Number</string>
     <string name="change_password">Change Password</string>
@@ -401,4 +403,36 @@
     <string name="copied">Copied</string>
     <string name="retry">Retry</string>
     <string name="copy_text">Copy</string>
+    <string name="clipboard">Copied</string>
+
+    //settings
+    <string name="security_label">Security</string>
+    <string name="kyc_label">KYC</string>
+    <string name="about_label">About</string>
+    <string name="terms_label">Terms &amp; Conditions</string>
+    <string name="support_label">Support</string>
+    <string name="version_label">Version</string>
+    <string name="update_phone_label">Update phone</string>
+    <string name="update_pass_label">Update password</string>
+    <string name="update_pin_label">Update PIN</string>
+    <string name="seed_phrase_label">Seed phrase</string>
+    <string name="unlink_wallet_label">Unlink wallet</string>
+    <string name="phone_changed">Phone changed</string>
+    
+    //pass
+    <string name="password_hint">Password</string>
+    <string name="password_doesnt_match">Password doesn\'t match</string>
+    <string name="password_confirm_not_match">New passwords doesn\'t match</string>
+    <string name="old_pass_hint">Old password</string>
+    <string name="new_pass_hint">New password</string>
+    <string name="new_pass_confirm_hint">Confirm new password</string>
+    <string name="update_pass_action">Update</string>
+
+    //unlink
+    <string name="unlink_text_top">Make sure you stored your credentials and seed phrase before unlinking the wallet, otherwise, you will lose all assets</string>
+
+    //verification
+    <string name="verification_limit">In order to increase daily limit to 3000 USD, please upload a copy of your driver license.</string>
+    <string name="verify_label">Verify</string>
+    <string name="vip_verify_label">VIP Verify</string>
 </resources>

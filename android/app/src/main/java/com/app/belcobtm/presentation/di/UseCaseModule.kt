@@ -1,10 +1,7 @@
 package com.app.belcobtm.presentation.di
 
 import com.app.belcobtm.domain.authorization.interactor.*
-import com.app.belcobtm.domain.settings.interactor.GetVerificationCountryListUseCase
-import com.app.belcobtm.domain.settings.interactor.GetVerificationInfoUseCase
-import com.app.belcobtm.domain.settings.interactor.SendVerificationBlankUseCase
-import com.app.belcobtm.domain.settings.interactor.SendVerificationVipUseCase
+import com.app.belcobtm.domain.settings.interactor.*
 import com.app.belcobtm.domain.tools.interactor.OldSendSmsToDeviceUseCase
 import com.app.belcobtm.domain.tools.interactor.OldVerifySmsCodeUseCase
 import com.app.belcobtm.domain.tools.interactor.SendSmsToDeviceUseCase
@@ -63,4 +60,9 @@ val useCaseModule = module {
     single { GetFreshCoinUseCase(get()) }
     single { RecoverWalletUseCase(get()) }
     single { CreateSeedUseCase(get()) }
+    single { CheckPassUseCase(get()) }
+    single { UnlinkUseCase(get()) }
+    single { ChangePassUseCase(get()) }
+    single { GetPhoneUseCase(get()) }
+    single { UpdatePhoneUseCase(get()) }
 }

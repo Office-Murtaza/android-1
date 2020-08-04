@@ -10,6 +10,12 @@ import com.app.belcobtm.presentation.features.authorization.pin.PinViewModel
 import com.app.belcobtm.presentation.features.authorization.recover.seed.RecoverSeedViewModel
 import com.app.belcobtm.presentation.features.authorization.recover.wallet.RecoverWalletViewModel
 import com.app.belcobtm.presentation.features.pin.code.PinCodeViewModel
+import com.app.belcobtm.presentation.features.settings.SettingsViewModel
+import com.app.belcobtm.presentation.features.settings.password.PasswordViewModel
+import com.app.belcobtm.presentation.features.settings.phone.PhoneChangeViewModel
+import com.app.belcobtm.presentation.features.settings.phone.PhoneDisplayViewModel
+import com.app.belcobtm.presentation.features.settings.unlink.UnlinkViewModel
+import com.app.belcobtm.presentation.features.settings.update_password.UpdatePasswordViewModel
 import com.app.belcobtm.presentation.features.settings.verification.blank.VerificationBlankViewModel
 import com.app.belcobtm.presentation.features.settings.verification.info.VerificationInfoViewModel
 import com.app.belcobtm.presentation.features.settings.verification.vip.VerificationVipViewModel
@@ -88,4 +94,10 @@ val viewModelModule = module {
     }
     viewModel { RecoverSeedViewModel(get()) }
     viewModel { CreateSeedViewModel(get(), get()) }
+    viewModel { SettingsViewModel(get(), get()) }
+    viewModel { PasswordViewModel(get(), get()) }
+    viewModel { UnlinkViewModel(get()) }
+    viewModel { UpdatePasswordViewModel(get()) }
+    viewModel { PhoneDisplayViewModel(get()) }
+    viewModel { PhoneChangeViewModel(get(), get()) }
 }

@@ -10,7 +10,7 @@ class TermsAndConditionsView: UIView, HasDisposeBag {
   
   let titleLabel: UILabel = {
     let label = UILabel()
-    let title = localize(L.Welcome.termsAndConditions)
+    let title = localize(L.Shared.termsAndConditions)
     let attributes: [NSAttributedString.Key: Any] = [.font: UIFont.systemFont(ofSize: 15, weight: .medium)]
     let attributedText = NSMutableAttributedString(string: title, attributes: attributes)
     attributedText.addAttribute(.foregroundColor,

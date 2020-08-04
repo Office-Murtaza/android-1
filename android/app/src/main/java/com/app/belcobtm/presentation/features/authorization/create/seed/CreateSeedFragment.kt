@@ -7,33 +7,37 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.os.bundleOf
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.navArgs
 import com.app.belcobtm.R
 import com.app.belcobtm.presentation.core.helper.AlertHelper
 import com.app.belcobtm.presentation.core.ui.fragment.BaseFragment
 import com.app.belcobtm.presentation.features.pin.code.PinCodeFragment
+import com.app.belcobtm.presentation.features.settings.SettingsFragment.Companion.SETTINGS_SECURITY
 import com.app.belcobtm.presentation.features.sms.code.SmsCodeFragment
 import kotlinx.android.synthetic.main.fragment_create_seed.*
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class CreateSeedFragment : BaseFragment() {
     private val viewModel: CreateSeedViewModel by viewModel()
+    val args: CreateSeedFragmentArgs by navArgs()
     override val resourceLayout: Int = R.layout.fragment_create_seed
     override val isToolbarEnabled: Boolean = true
     override val isHomeButtonEnabled: Boolean = true
     override val backPressedListener: View.OnClickListener = View.OnClickListener {
-        popBackStack(R.id.create_wallet_fragment, false)
+        goBack()
     }
     override val retryListener: View.OnClickListener = View.OnClickListener { createWallet() }
 
     override fun initViews() {
         setToolbarTitle(R.string.create_seed_screen_title)
+        initNextButton()
+        showBackButton(true)
     }
 
     override fun initListeners() {
         copyButtonView.setOnClickListener {
             copyToClipboard(viewModel.seedLiveData.value ?: "")
         }
-        nextButtonView.setOnClickListener { createWallet() }
     }
 
     override fun initObservers() {
@@ -66,10 +70,37 @@ class CreateSeedFragment : BaseFragment() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean = if (item.itemId == android.R.id.home) {
-        popBackStack(R.id.create_wallet_fragment, false)
+        goBack()
         true
     } else {
         false
+    }
+
+    private fun goBack() {
+        when (args.mode) {
+            MODE_SETTINGS -> {
+                navigate(CreateSeedFragmentDirections.seedToSettingsFragment(SETTINGS_SECURITY))
+            }
+            MODE_DEFAULT -> {
+                popBackStack(R.id.create_wallet_fragment, false)
+            }
+        }
+    }
+
+    private fun initNextButton() {
+        when (args.mode) {
+            MODE_SETTINGS -> {
+                nextButtonView.text = getString(R.string.done)
+                nextButtonView.setOnClickListener {
+                    navigate(R.id.seed_to_settings_fragment)
+                }
+            }
+            MODE_DEFAULT -> {
+                nextButtonView.setOnClickListener {
+                    createWallet()
+                }
+            }
+        }
     }
 
     private fun copyToClipboard(copiedText: String) {
@@ -87,6 +118,8 @@ class CreateSeedFragment : BaseFragment() {
     }
 
     companion object {
+        const val MODE_SETTINGS = 1
+        const val MODE_DEFAULT = -1
         const val TAG_PASSWORD = "tag_create_seed_password"
         const val CHAR_NEXT_LINE: String = "\n"
         const val CHAR_SPACE: String = " "

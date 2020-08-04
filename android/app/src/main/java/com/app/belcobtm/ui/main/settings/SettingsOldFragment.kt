@@ -11,16 +11,16 @@ import com.app.belcobtm.ui.main.settings.change_pass.ChangePassActivity
 import com.app.belcobtm.ui.main.settings.check_pass.CheckPassActivity
 import com.app.belcobtm.ui.main.settings.phone.ShowPhoneActivity
 import com.app.belcobtm.presentation.features.settings.verification.info.VerificationInfoActivity
-import kotlinx.android.synthetic.main.fragment_settings.*
+import kotlinx.android.synthetic.main.fragment_settings_old.*
 
 
-class SettingsFragment : Fragment() {
+class SettingsOldFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_settings, container, false)
+        return inflater.inflate(R.layout.fragment_settings_old, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

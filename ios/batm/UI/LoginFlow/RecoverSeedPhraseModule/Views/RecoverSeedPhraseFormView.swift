@@ -55,15 +55,26 @@ class RecoverSeedPhraseFormView: UIView, MDCChipFieldDelegate {
     updateSeedPhrase()
   }
   
+  func chipField(_ chipField: MDCChipField, didChangeInput input: String?) {
+    guard let words = input?.separatedWords, words.count > 1 else { return }
+    
+    addChips(for: words)
+  }
+  
   func chipField(_ chipField: MDCChipField, didRemoveChip chip: MDCChipView) {
     updateSeedPhrase()
   }
   
   func configure(for seedPhrase: [String]) {
-    chipField.clearTextInput()
     chipField.chips.forEach { chipField.removeChip($0) }
     
-    seedPhrase.forEach {
+    addChips(for: seedPhrase)
+  }
+  
+  func addChips(for words: [String]) {
+    chipField.clearTextInput()
+    
+    words.forEach {
       let chipView = MDCChipView()
       chipView.titleLabel.text = $0
       chipField.addChip(chipView)

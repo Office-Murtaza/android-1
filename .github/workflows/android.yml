@@ -1,12 +1,9 @@
 name: Android CI
 
 on:
-  push:
-    branches:
-      - 'android/**'
   pull_request:
     branches:
-      - dev
+      - 'android/**'
 
 jobs:
   build:
@@ -30,9 +27,3 @@ jobs:
         with:
           name: Dev
           path: ${{ env.working-directory }}/app/build/outputs/apk/dev/debug/app-dev-debug.apk
-
-      - name: Upload APK prod
-        uses: actions/upload-artifact@v2
-        with:
-          name: Prod
-          path: ${{ env.working-directory }}/app/build/outputs/apk/prod/debug/app-prod-debug.apk

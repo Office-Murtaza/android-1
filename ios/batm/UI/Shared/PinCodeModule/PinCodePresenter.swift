@@ -15,6 +15,8 @@ class PinCodePresenter: ModulePresenter, PinCodeModule {
   private let usecase: PinCodeUsecase
   private let store: Store
   
+  let didTypeWrongPinCode = PublishRelay<Void>()
+  
   var state: Driver<PinCodeState> {
     return store.state
   }
@@ -57,6 +59,11 @@ class PinCodePresenter: ModulePresenter, PinCodeModule {
     setupBindings()
   }
   
+  private func clearCode() {
+    store.action.accept(.clearCode)
+    didTypeWrongPinCode.accept(())
+  }
+  
   private func setupBindings() {
     state
       .filter { $0.code.count == PinCodeDotsView.numberOfDots }
@@ -78,7 +85,7 @@ class PinCodePresenter: ModulePresenter, PinCodeModule {
   
   private func confirmPin(for state: PinCodeState) -> Completable {
     guard state.code == state.correctCode else {
-      store.action.accept(.clearCode)
+      clearCode()
       return .error(PinCodeError.notMatch)
     }
     
@@ -87,9 +94,7 @@ class PinCodePresenter: ModulePresenter, PinCodeModule {
   
   private func verifyPin(for state: PinCodeState) -> Completable {
     return usecase.verify(pinCode: state.code).andThen(usecase.refresh())
-      .do(onError: { [store] _ in
-        store.action.accept(.clearCode)
-      })
+      .do(onError: { [unowned self] _ in self.clearCode() })
   }
   
 }

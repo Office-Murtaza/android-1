@@ -79,7 +79,7 @@ class VerificationBlankActivity : BaseActivity(), BottomSheetImagePicker.OnImage
 
     private fun initViews() {
         setContentView(R.layout.activity_verification_blank)
-        setSupportActionBar(toolbarView)
+//        setSupportActionBar(toolbarView)
         supportActionBar?.let { toolbar ->
             toolbar.setDisplayHomeAsUpEnabled(true)
             toolbar.setDisplayShowHomeEnabled(true)
@@ -147,10 +147,10 @@ class VerificationBlankActivity : BaseActivity(), BottomSheetImagePicker.OnImage
     private fun initObservers() {
         viewModel.uploadingLiveData.observe(this, Observer { loadingData ->
             when (loadingData) {
-                is LoadingData.Loading -> progressView.show()
+//                is LoadingData.Loading -> progressView.show()
                 is LoadingData.Success -> {
                     finish()
-                    progressView.hide()
+//                    progressView.hide()
                 }
                 is LoadingData.Error -> {
                     when (loadingData.errorType) {
@@ -158,7 +158,7 @@ class VerificationBlankActivity : BaseActivity(), BottomSheetImagePicker.OnImage
                         is Failure.NetworkConnection -> showError(R.string.error_internet_unavailable)
                         else -> showError(R.string.error_something_went_wrong)
                     }
-                    progressView.hide()
+//                    progressView.hide()
                 }
             }
         })

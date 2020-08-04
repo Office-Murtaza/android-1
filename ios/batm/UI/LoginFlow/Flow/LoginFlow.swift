@@ -49,14 +49,14 @@ final class LoginFlow: BaseFlow<BTMNavigationController, LoginFlowController> {
     case let .seedPhrase(phoneNumber, password):
       let module = resolver.resolve(Module<SeedPhraseModule>.self)!
       module.input.setup(phoneNumber: phoneNumber, password: password)
-      return push(module.controller)
+      return replaceLast(module.controller)
     case .recover:
       let module = resolver.resolve(Module<RecoverModule>.self)!
       return push(module.controller)
     case let .recoverSeedPhrase(phoneNumber, password):
       let module = resolver.resolve(Module<RecoverSeedPhraseModule>.self)!
       module.input.setup(phoneNumber: phoneNumber, password: password)
-      return push(module.controller)
+      return replaceLast(module.controller)
     case let .pinCode(stage, pinCode):
       let module = resolver.resolve(Module<PinCodeModule>.self)!
       module.input.setup(for: stage)

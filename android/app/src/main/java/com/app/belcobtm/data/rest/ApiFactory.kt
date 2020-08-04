@@ -13,6 +13,7 @@ import com.app.belcobtm.data.rest.wallet.WalletApi
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import java.util.concurrent.TimeUnit
@@ -39,6 +40,9 @@ class ApiFactory(
         .writeTimeout(WAIT_TIME_SECONDS, TimeUnit.SECONDS)
         .addInterceptor(baseInterceptor)
         .addInterceptor(LogInterceptor())
+        .addInterceptor(HttpLoggingInterceptor().apply {
+            level = HttpLoggingInterceptor.Level.BODY
+        })
         .addInterceptor(ResponseInterceptor(localBroadcastManager))
         .authenticator(AuthAuthenticator(prefHelper, createApi(AuthApi::class.java)))
         .build()

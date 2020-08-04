@@ -31,6 +31,9 @@ target 'batm' do
   pod 'RxCocoa', '4.5.0'
   pod 'RxReachability', '0.1.8'
   
+  # Firebase
+  pod 'Firebase/Analytics', '6.29.0'
+  
   target 'batmTests' do
     inherit! :search_paths
   end

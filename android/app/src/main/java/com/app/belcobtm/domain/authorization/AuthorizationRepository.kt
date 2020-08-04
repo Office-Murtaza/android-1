@@ -13,4 +13,5 @@ interface AuthorizationRepository {
     suspend fun createWallet(phone: String, password: String): Either<Failure, Unit>
     suspend fun recoverWallet(seed: String, phone: String, password: String): Either<Failure, Unit>
     suspend fun authorize(): Either<Failure, Unit>
+    suspend fun checkPass(userId: String, password: String): Either<Failure, Boolean>
 }

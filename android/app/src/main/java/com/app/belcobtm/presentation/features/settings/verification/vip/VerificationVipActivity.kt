@@ -66,7 +66,7 @@ class VerificationVipActivity : BaseActivity(), BottomSheetImagePicker.OnImagesS
 
     private fun initViews() {
         setContentView(R.layout.activity_verification_vip)
-        setSupportActionBar(toolbarView)
+//        setSupportActionBar(toolbarView)
         supportActionBar?.let { toolbar ->
             toolbar.setDisplayHomeAsUpEnabled(true)
             toolbar.setDisplayShowHomeEnabled(true)
@@ -89,23 +89,23 @@ class VerificationVipActivity : BaseActivity(), BottomSheetImagePicker.OnImagesS
     }
 
     private fun initObservers() {
-        viewModel.uploadingLiveData.observe(this, Observer { loadingData ->
-            when (loadingData) {
-                is LoadingData.Loading -> progressView.show()
-                is LoadingData.Success -> {
-                    finish()
-                    progressView.hide()
-                }
-                is LoadingData.Error -> {
-                    when (loadingData.errorType) {
-                        is Failure.MessageError -> showError(loadingData.errorType.message)
-                        is Failure.NetworkConnection -> showError(R.string.error_internet_unavailable)
-                        else -> showError(R.string.error_something_went_wrong)
-                    }
-                    progressView.hide()
-                }
-            }
-        })
+//        viewModel.uploadingLiveData.observe(this, Observer { loadingData ->
+//            when (loadingData) {
+//                is LoadingData.Loading -> progressView.show()
+//                is LoadingData.Success -> {
+//                    finish()
+//                    progressView.hide()
+//                }
+//                is LoadingData.Error -> {
+//                    when (loadingData.errorType) {
+//                        is Failure.MessageError -> showError(loadingData.errorType.message)
+//                        is Failure.NetworkConnection -> showError(R.string.error_internet_unavailable)
+//                        else -> showError(R.string.error_something_went_wrong)
+//                    }
+//                    progressView.hide()
+//                }
+//            }
+//        })
     }
 
     private fun sendVip() {

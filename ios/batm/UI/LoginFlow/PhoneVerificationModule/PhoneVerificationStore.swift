@@ -18,6 +18,10 @@ struct PhoneVerificationState: Equatable {
   var code: String = ""
   var validationState: ValidationState = .unknown
   
+  var isCodeFilled: Bool {
+    return code.count == 4
+  }
+  
 }
 
 final class PhoneVerificationStore: ViewStore<PhoneVerificationAction, PhoneVerificationState> {
@@ -42,7 +46,7 @@ final class PhoneVerificationStore: ViewStore<PhoneVerificationAction, PhoneVeri
   }
   
   private func validate(_ state: PhoneVerificationState) -> ValidationState {
-    guard state.code.count == 4 && state.code == state.correctCode else {
+    guard state.isCodeFilled && state.code == state.correctCode else {
       return .invalid(localize(L.PhoneVerification.Error.invalidCode))
     }
     
