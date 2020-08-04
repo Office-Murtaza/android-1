@@ -23,7 +23,6 @@ class CreateSeedFragment : BaseFragment() {
     override val resourceLayout: Int = R.layout.fragment_create_seed
     override val isToolbarEnabled: Boolean = true
     override val isHomeButtonEnabled: Boolean = true
-    override val isMenuEnabled: Boolean = true
     override val backPressedListener: View.OnClickListener = View.OnClickListener {
         goBack()
     }
