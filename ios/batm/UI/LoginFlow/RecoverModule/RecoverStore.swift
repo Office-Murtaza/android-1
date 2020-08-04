@@ -21,6 +21,10 @@ struct RecoverState: Equatable {
     return PhoneNumberKit.default.format(phoneNumber, toType: .e164)
   }
   
+  var isAllFieldsNotEmpty: Bool {
+    return phoneNumber.count > 0 && password.count > 0
+  }
+  
 }
 
 final class RecoverStore: ViewStore<RecoverAction, RecoverState> {
@@ -43,7 +47,7 @@ final class RecoverStore: ViewStore<RecoverAction, RecoverState> {
   }
   
   private func validate(_ state: RecoverState) -> ValidationState {
-    guard state.phoneNumber.count > 0 && state.password.count > 0 else {
+    guard state.isAllFieldsNotEmpty else {
       return .invalid(localize(L.CreateWallet.Form.Error.allFieldsRequired))
     }
     

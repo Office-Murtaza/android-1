@@ -33,6 +33,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
   private var initializers: [Initializer] {
     return [
       DIInitializer(),
+      FirebaseInitializer(),
       GoogleServicesInitializer(),
       GiphyInitializer(),
       ToastInitializer(),

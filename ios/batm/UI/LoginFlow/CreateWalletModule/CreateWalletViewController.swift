@@ -6,6 +6,8 @@ import MaterialComponents
 
 class CreateWalletViewController: ModuleViewController<CreateWalletPresenter> {
   
+  let didDisappearRelay = PublishRelay<Void>()
+  
   let rootScrollView = RootScrollView()
   
   let errorView = ErrorView()
@@ -17,6 +19,12 @@ class CreateWalletViewController: ModuleViewController<CreateWalletPresenter> {
   let nextButton = MDCButton.next
   
   override var shouldShowNavigationBar: Bool { return true }
+  
+  override func viewDidDisappear(_ animated: Bool) {
+    super.viewDidDisappear(animated)
+    
+    didDisappearRelay.accept(())
+  }
   
   override func setupUI() {
     title = localize(L.CreateWallet.title)
@@ -77,7 +85,7 @@ class CreateWalletViewController: ModuleViewController<CreateWalletPresenter> {
       .map { $0.confirmPassword }
       .bind(to: formView.rx.confirmPasswordText)
       .disposed(by: disposeBag)
-      
+    
     presenter.state
       .map { $0.validationState }
       .mapToErrorMessage()
@@ -87,8 +95,11 @@ class CreateWalletViewController: ModuleViewController<CreateWalletPresenter> {
       })
       .disposed(by: disposeBag)
     
-    termsAndConditionsView.rx.isAccepted
-      .drive(onNext: { [unowned self] in self.nextButton.isEnabled = $0 })
+    Driver.combineLatest(termsAndConditionsView.rx.isAccepted,
+                         presenter.state.map { $0.phoneE164.count > 0 && $0.isAllFieldsNotEmpty })
+      .drive(onNext: { [unowned self] isAccepted, isStateValid in
+        self.nextButton.isEnabled = isAccepted && isStateValid
+      })
       .disposed(by: disposeBag)
     
     nextButton.rx.tap.asDriver()
@@ -99,12 +110,14 @@ class CreateWalletViewController: ModuleViewController<CreateWalletPresenter> {
   override func setupBindings() {
     setupUIBindings()
     
+    let didDisappearDriver = didDisappearRelay.asDriver(onErrorDriveWith: .empty())
     let updatePhoneNumberDriver = formView.rx.phoneNumberText.asDriver()
     let updatePasswordDriver = formView.rx.passwordText.asDriver()
     let updateConfirmPasswordDriver = formView.rx.confirmPasswordText.asDriver()
     let openTermsAndConditionsDriver = termsAndConditionsView.rx.termsAndConditionsTap
     let nextDriver = nextButton.rx.tap.asDriver()
-    presenter.bind(input: CreateWalletPresenter.Input(updatePhoneNumber: updatePhoneNumberDriver,
+    presenter.bind(input: CreateWalletPresenter.Input(didDisappear: didDisappearDriver,
+                                                      updatePhoneNumber: updatePhoneNumberDriver,
                                                       updatePassword: updatePasswordDriver,
                                                       updateConfirmPassword: updateConfirmPasswordDriver,
                                                       openTermsAndConditions: openTermsAndConditionsDriver,

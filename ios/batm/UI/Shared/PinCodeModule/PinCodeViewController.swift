@@ -62,6 +62,12 @@ class PinCodeViewController: ModuleViewController<PinCodePresenter>, UITextField
     }
   }
   
+  private func triggerWrongPinCodeHapticFeedback() {
+    let notificationFeedbackGenerator = UINotificationFeedbackGenerator()
+    notificationFeedbackGenerator.prepare()
+    notificationFeedbackGenerator.notificationOccurred(.error)
+  }
+  
   private func setupUIBindings() {
     presenter.state
       .map { $0.stage == .confirmation }
@@ -78,6 +84,14 @@ class PinCodeViewController: ModuleViewController<PinCodePresenter>, UITextField
       .asObservable()
       .map { $0.code.count }
       .bind(to: dotsView.rx.currentCount)
+      .disposed(by: disposeBag)
+    
+    presenter.didTypeWrongPinCode
+      .asDriver(onErrorDriveWith: .empty())
+      .drive(onNext: { [unowned self] in
+        self.dotsView.shake()
+        self.triggerWrongPinCodeHapticFeedback()
+      })
       .disposed(by: disposeBag)
   }
   

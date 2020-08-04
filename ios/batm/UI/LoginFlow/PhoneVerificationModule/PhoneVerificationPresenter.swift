@@ -14,6 +14,8 @@ final class PhoneVerificationPresenter: ModulePresenter, PhoneVerificationModule
   
   let usecase: LoginUsecase
   let store: Store
+  let didTypeWrongCode = PublishRelay<Void>()
+  let didSendNewCode = PublishRelay<Void>()
   
   var state: Driver<PhoneVerificationState> {
     return store.state
@@ -43,6 +45,11 @@ final class PhoneVerificationPresenter: ModulePresenter, PhoneVerificationModule
       .asObservable()
       .doOnNext { [store] in store.action.accept(.updateValidationState) }
       .withLatestFrom(state)
+      .doOnNext { [unowned self] state in
+        if !state.validationState.isValid {
+          self.didTypeWrongCode.accept(())
+        }
+      }
       .filter { $0.validationState.isValid }
       .subscribe(onNext: { [delegate] in delegate?.didFinishPhoneVerification(phoneNumber: $0.phoneNumber,
                                                                               password: $0.password) })
@@ -52,7 +59,10 @@ final class PhoneVerificationPresenter: ModulePresenter, PhoneVerificationModule
       .asObservable()
       .withLatestFrom(state)
       .flatMap { [unowned self] in self.track(self.verify(for: $0)) }
-      .subscribe(onNext: { [store] in store.action.accept(.updateCorrectCode($0.code)) })
+      .subscribe(onNext: { [unowned self] in
+        self.store.action.accept(.updateCorrectCode($0.code))
+        self.didSendNewCode.accept(())
+      })
       .disposed(by: disposeBag)
     
     track(verify(for: store.currentState))
@@ -62,9 +72,9 @@ final class PhoneVerificationPresenter: ModulePresenter, PhoneVerificationModule
   
   private func verify(for state: PhoneVerificationState) -> Single<PhoneVerificationResponse> {
     return usecase.verifyAccount(phoneNumber: state.phoneNumber)
-      .catchError { [store] in
+      .catchError { [unowned self] in
         if let apiError = $0 as? APIError, case let .serverError(error) = apiError {
-          store.action.accept(.makeInvalidState(error.message))
+          self.store.action.accept(.makeInvalidState(error.message))
         }
 
         throw $0

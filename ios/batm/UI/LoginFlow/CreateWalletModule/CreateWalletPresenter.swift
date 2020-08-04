@@ -7,6 +7,7 @@ class CreateWalletPresenter: ModulePresenter, CreateWalletModule {
   typealias Store = ViewStore<CreateWalletAction, CreateWalletState>
   
   struct Input {
+    var didDisappear: Driver<Void>
     var updatePhoneNumber: Driver<String?>
     var updatePassword: Driver<String?>
     var updateConfirmPassword: Driver<String?>
@@ -30,6 +31,13 @@ class CreateWalletPresenter: ModulePresenter, CreateWalletModule {
   }
   
   func bind(input: Input) {
+    input.didDisappear
+      .drive(onNext: { [store] in
+        store.action.accept(.updatePassword(nil))
+        store.action.accept(.updateConfirmPassword(nil))
+      })
+      .disposed(by: disposeBag)
+    
     input.updatePhoneNumber
       .asObservable()
       .map { CreateWalletAction.updatePhoneNumber($0) }
