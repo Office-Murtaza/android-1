@@ -22,7 +22,7 @@ class SeedPhraseViewController: ModuleViewController<SeedPhrasePresenter> {
     let label = UILabel()
     label.attributedText = attributedString
     label.textAlignment = .center
-    label.numberOfLines = 2
+    label.numberOfLines = 0
     return label
   }()
   
