@@ -38,8 +38,7 @@
     <string name="sms_code_screen_did_not_get_the_code">Didn\'t get the code? </string>
     <string name="sms_code_screen_resend_code">Resend code</string>
     <string name="sms_code_screen_invalid_code">Wrong code</string>
-    <string name="sms_code_screen_resend_title">New code</string>
-    <string name="sms_code_screen_resend_description">We sent you new code, please enter it to the form</string>
+    <string name="sms_code_screen_resend">New code was sent</string>
 
     <!--welcome-->
     <string name="welcome_screen_please_accept_tnc">Please, accept our Terms &amp; Conditions</string>

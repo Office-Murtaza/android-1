@@ -3,9 +3,9 @@ package com.app.belcobtm.presentation.features.sms.code
 import android.view.View
 import com.app.belcobtm.R
 import com.app.belcobtm.presentation.core.extensions.*
+import com.app.belcobtm.presentation.core.helper.AlertHelper
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
 import com.app.belcobtm.presentation.core.ui.fragment.BaseFragment
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.android.synthetic.main.fragment_sms_code.*
 import org.koin.android.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
@@ -62,11 +62,7 @@ class SmsCodeFragment : BaseFragment() {
 
     private fun showResendDialog() {
         isResendClicked = false
-        MaterialAlertDialogBuilder(requireContext())
-            .setTitle(R.string.sms_code_screen_resend_title)
-            .setMessage(R.string.sms_code_screen_resend_description)
-            .setNegativeButton(android.R.string.ok, null)
-            .show()
+        AlertHelper.showToastShort(requireContext(), R.string.sms_code_screen_resend)
     }
 
     companion object {
