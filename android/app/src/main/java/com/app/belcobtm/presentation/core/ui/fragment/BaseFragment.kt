@@ -15,9 +15,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
-import androidx.navigation.NavController
-import androidx.navigation.Navigation
-import androidx.navigation.Navigator
+import androidx.navigation.*
 import com.app.belcobtm.R
 import com.app.belcobtm.domain.Failure
 import com.app.belcobtm.presentation.core.extensions.hide
@@ -41,6 +39,7 @@ abstract class BaseFragment : Fragment() {
     protected open val homeButtonDrawable: Int = R.drawable.ic_arrow_back
     protected open val retryListener: View.OnClickListener? = null
     protected open val backPressedListener: View.OnClickListener = View.OnClickListener { popBackStack() }
+    protected open var isBackButtonEnabled: Boolean = false //field used for dynamic setting of back button because we handle it on resume
 
 
     protected abstract val resourceLayout: Int
@@ -88,7 +87,7 @@ abstract class BaseFragment : Fragment() {
             }
         }
 
-        val activity = activity as AppCompatActivity
+        val activity = requireActivity() as AppCompatActivity
         activity.supportActionBar?.let { actionBar ->
             if (isToolbarEnabled) {
                 val drawable = ContextCompat.getDrawable(activity.applicationContext, homeButtonDrawable)
@@ -99,8 +98,7 @@ abstract class BaseFragment : Fragment() {
                 actionBar.hide()
             }
 
-            actionBar.setDisplayShowHomeEnabled(isHomeButtonEnabled && isToolbarEnabled)
-            actionBar.setDisplayHomeAsUpEnabled(isHomeButtonEnabled && isToolbarEnabled)
+            showBackButton(isBackButtonEnabled || (isToolbarEnabled && isHomeButtonEnabled))
             fillToolbarTitle()
         }
         activity.invalidateOptionsMenu()
@@ -132,6 +130,10 @@ abstract class BaseFragment : Fragment() {
         navController?.navigate(resId, args, null, extras)
     }
 
+    protected fun navigate(navDestination: NavDirections) {
+        navController?.navigate(navDestination)
+    }
+
     protected fun setGraph(graphResId: Int) {
         navController?.setGraph(graphResId)
     }
@@ -152,6 +154,10 @@ abstract class BaseFragment : Fragment() {
         fillToolbarTitle()
     }
 
+    protected fun showBackButton(show: Boolean) {
+        (requireActivity() as AppCompatActivity).supportActionBar?.setDisplayShowHomeEnabled(show)
+        (requireActivity() as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(show)
+    }
     protected fun showSnackBar(resMessage: Int) = Snackbar.make(
         requireActivity().findViewById<ViewGroup>(android.R.id.content),
         resMessage,
@@ -260,4 +266,10 @@ abstract class BaseFragment : Fragment() {
     protected open fun initListeners() = Unit
 
     protected open fun initObservers() = Unit
+
+    fun <T> T.doIfChanged(old: T?, action: (T) -> Unit) {
+        if (this != old) {
+            action(this)
+        }
+    }
 }

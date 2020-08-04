@@ -5,18 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbarView"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="@drawable/bg_toolbar"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-        app:elevation="6dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:navigationIcon="@drawable/gph_ic_back"
-        tools:title="Toolbar title" />
 
     <androidx.constraintlayout.widget.Barrier
         android:id="@+id/barrierView"
@@ -28,31 +16,32 @@
     <TextView
         android:id="@+id/statusKeyView"
         style="@style/VerificationInfoScreen.Key"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="0dp"
         android:text="@string/verification_status"
+        app:layout_constraintBottom_toBottomOf="@id/statusValueView"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/toolbarView" />
+        app:layout_constraintTop_toTopOf="@id/statusValueView" />
 
     <TextView
         android:id="@+id/statusValueView"
         style="@style/VerificationInfoScreen.Value"
+        android:layout_marginTop="24dp"
+        android:paddingStart="10dp"
+        android:paddingTop="6dp"
+        android:paddingEnd="10dp"
+        android:paddingBottom="6dp"
+        android:textSize="12sp"
         app:layout_constraintStart_toEndOf="@id/barrierView"
-        app:layout_constraintTop_toTopOf="@id/statusKeyView"
+        app:layout_constraintTop_toTopOf="parent"
         tools:text="Verified" />
-
-    <View
-        android:id="@+id/statusDividerView"
-        style="@style/VerificationInfoScreen.Divider"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/statusKeyView" />
 
     <TextView
         android:id="@+id/txLimitKeyView"
         style="@style/VerificationInfoScreen.Key"
+        android:layout_marginTop="@dimen/margin_large"
         android:text="@string/verification_tx_limit"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/statusDividerView" />
+        app:layout_constraintTop_toBottomOf="@id/statusKeyView" />
 
     <TextView
         android:id="@+id/txLimitValueView"
@@ -75,64 +64,57 @@
         app:layout_constraintTop_toTopOf="@id/dailyLimitKeyView"
         tools:text="1000 USD" />
 
-    <View
-        android:id="@+id/dailyLimitDividerView"
-        style="@style/VerificationInfoScreen.Divider"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/dailyLimitKeyView" />
-
-    <androidx.appcompat.widget.AppCompatTextView
+    <androidx.appcompat.widget.LinearLayoutCompat
         android:id="@+id/messageView"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:textColor="#8d8d8d"
-        android:textSize="12sp"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginStart="@dimen/margin_main"
+        android:layout_marginTop="@dimen/margin_x2"
+        android:layout_marginEnd="@dimen/margin_main"
+        android:paddingBottom="@dimen/margin_large"
+        android:background="@drawable/message_view_round_bg"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@id/nextButton"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_default="wrap"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/dailyLimitDividerView"
-        tools:text="In order to increase daily limit to 3000 USD, please upload a copy of your driver license." />
+        app:layout_constraintTop_toBottomOf="@id/dailyLimitKeyView"
+        app:layout_constraintVertical_bias="0">
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/verifyButtonView"
-        android:layout_width="160dp"
+        <ImageView
+            android:id="@+id/warning"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_main"
+            android:src="@drawable/ic_warning"
+            android:tint="@color/colorPrimary" />
+
+        <TextView
+            android:id="@+id/messageViewText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin_main"
+            android:textAlignment="center"
+            android:textColor="@color/colorPrimary"
+            android:textSize="16sp"
+            android:text="@string/verification_limit" />
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/nextButton"
+        style="@style/Button.Primary"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="@dimen/margin_main"
         android:layout_marginTop="16dp"
-        android:background="@drawable/selector_blue_button"
-        android:elevation="0dp"
-        android:textStyle="bold"
-        android:paddingStart="16dp"
-        android:paddingTop="18dp"
-        android:paddingEnd="16dp"
-        android:paddingBottom="14dp"
         android:text="@string/verification_verify"
         android:textAllCaps="false"
         android:textColor="#ffffff"
-        android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/messageView" />
-
-    <FrameLayout
-        android:id="@+id/progressView"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:background="@color/gray_progress"
-        android:clickable="true"
-        android:focusable="true"
-        android:visibility="gone"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintStart_toStartOf="parent" />
 
-        <ProgressBar
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center" />
-    </FrameLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -5,6 +5,7 @@ apply plugin: 'kotlin-android-extensions'
 apply plugin: 'com.google.gms.google-services'
 apply plugin: 'com.google.firebase.crashlytics'
 apply plugin: 'com.google.firebase.firebase-perf'
+apply plugin: "androidx.navigation.safeargs.kotlin"
 
 def lib = rootProject.ext.libraries
 

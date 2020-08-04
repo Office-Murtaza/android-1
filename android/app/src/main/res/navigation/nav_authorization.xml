@@ -94,6 +94,12 @@
         android:name="com.app.belcobtm.presentation.features.authorization.create.seed.CreateSeedFragment"
         android:label="CreateSeedFragment"
         tools:layout="@layout/fragment_create_seed">
+
+        <argument
+            android:name="mode"
+            android:defaultValue="-1"
+            app:argType="integer" />
+
         <action
             android:id="@+id/to_pin_code_fragment"
             app:destination="@id/pin_code_fragment"

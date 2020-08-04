@@ -2,6 +2,7 @@ package com.app.belcobtm.data.rest.authorization
 
 import com.app.belcobtm.data.rest.authorization.request.*
 import com.app.belcobtm.data.rest.authorization.response.AuthorizationResponse
+import com.app.belcobtm.data.rest.authorization.response.CheckPassResponse
 import com.app.belcobtm.data.rest.authorization.response.CreateRecoverWalletResponse
 import com.app.belcobtm.domain.Either
 import com.app.belcobtm.domain.Failure
@@ -56,5 +57,14 @@ class AuthApiService(private val authApi: AuthApi) {
         failure.printStackTrace()
         Either.Left(failure)
     }
+
+    suspend fun checkPass(userId: String, password: String): Either<Failure, CheckPassResponse> =
+        try {
+            val request = authApi.checkPass(userId, CheckPassRequest(password)).await()
+            request.body()?.let { Either.Right(it) } ?: Either.Left(Failure.ServerError())
+        } catch (failure: Failure) {
+            failure.printStackTrace()
+            Either.Left(failure)
+        }
 }
 

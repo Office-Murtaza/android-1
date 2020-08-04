@@ -43,54 +43,54 @@ class VerificationInfoActivity : BaseActivity() {
     }
 
     private fun initViews() {
-        setSupportActionBar(toolbarView)
-        supportActionBar?.let { toolbar ->
-            toolbar.setDisplayHomeAsUpEnabled(true)
-            toolbar.setDisplayShowHomeEnabled(true)
-            toolbar.setTitle(R.string.verification_screen_title)
-        }
+//        setSupportActionBar(toolbarView)
+//        supportActionBar?.let { toolbar ->
+//            toolbar.setDisplayHomeAsUpEnabled(true)
+//            toolbar.setDisplayShowHomeEnabled(true)
+//            toolbar.setTitle(R.string.verification_screen_title)
+//        }
     }
 
     private fun initListeners() {
-        verifyButtonView.setOnClickListener {
-            val loadingData = viewModel.verificationInfoLiveData.value
-
-            when {
-                loadingData is LoadingData.Success && (loadingData.data.status == VerificationStatus.VERIFIED
-                        || loadingData.data.status == VerificationStatus.VIP_VERIFICATION_REJECTED) -> {
-                    startActivity(Intent(this, VerificationVipActivity::class.java))
-                }
-                loadingData is LoadingData.Success && (loadingData.data.status == VerificationStatus.NOT_VERIFIED
-                        || loadingData.data.status == VerificationStatus.VERIFICATION_REJECTED) -> {
-                    startActivity(Intent(this, VerificationBlankActivity::class.java))
-                }
-            }
-        }
+//        verifyButtonView.setOnClickListener {
+//            val loadingData = viewModel.stateData.value
+//
+//            when {
+//                loadingData is LoadingData.Success && (loadingData.data.status == VerificationStatus.VERIFIED
+//                        || loadingData.data.status == VerificationStatus.VIP_VERIFICATION_REJECTED) -> {
+//                    startActivity(Intent(this, VerificationVipActivity::class.java))
+//                }
+//                loadingData is LoadingData.Success && (loadingData.data.status == VerificationStatus.NOT_VERIFIED
+//                        || loadingData.data.status == VerificationStatus.VERIFICATION_REJECTED) -> {
+//                    startActivity(Intent(this, VerificationBlankActivity::class.java))
+//                }
+//            }
+//        }
     }
 
     private fun initObservers() {
-        viewModel.verificationInfoLiveData.observe(this, Observer { loadingData ->
-            when (loadingData) {
-                is LoadingData.Loading -> progressView.show()
-                is LoadingData.Success -> with(loadingData.data) {
-                    statusValueView.setTextColor(getColorByStatus(status))
-                    rebuildVerifyButton(status)
-                    statusValueView.text = resources.getStringArray(R.array.verification_status_array)[status.code]
-                    txLimitValueView.text = getString(R.string.verification_unit_usd, txLimit.toString())
-                    dailyLimitValueView.text = getString(R.string.verification_unit_usd, dayLimit.toString())
-                    messageView.text = message
-                    progressView.hide()
-                }
-                is LoadingData.Error -> {
-                    when (loadingData.errorType) {
-                        is Failure.MessageError -> showError(loadingData.errorType.message)
-                        is Failure.NetworkConnection -> showError(R.string.error_internet_unavailable)
-                        else -> showError(R.string.error_something_went_wrong)
-                    }
-                    progressView.hide()
-                }
-            }
-        })
+//        viewModel.stateData.observe(this, Observer { loadingData ->
+//            when (loadingData) {
+//                is LoadingData.Loading -> progressView.show()
+//                is LoadingData.Success -> with(loadingData.data) {
+//                    statusValueView.setTextColor(getColorByStatus(status))
+//                    rebuildVerifyButton(status)
+//                    statusValueView.text = resources.getStringArray(R.array.verification_status_array)[loadingData.data.verificationInfoDataItem.status.code]
+//                    txLimitValueView.text = getString(R.string.verification_unit_usd, txLimit.toString())
+//                    dailyLimitValueView.text = getString(R.string.verification_unit_usd, dayLimit.toString())
+//                    messageView.text = loadingData.data.verificationInfoDataItem?.message
+//                    progressView.hide()
+//                }
+//                is LoadingData.Error -> {
+//                    when (loadingData.errorType) {
+//                        is Failure.MessageError -> showError(loadingData.errorType.message)
+//                        is Failure.NetworkConnection -> showError(R.string.error_internet_unavailable)
+//                        else -> showError(R.string.error_something_went_wrong)
+//                    }
+//                    progressView.hide()
+//                }
+//            }
+//        })
     }
 
     private fun getColorByStatus(status: VerificationStatus): Int = ContextCompat.getColor(
@@ -106,19 +106,21 @@ class VerificationInfoActivity : BaseActivity() {
         }
     )
 
-    private fun rebuildVerifyButton(status: VerificationStatus) = when (status) {
-        VerificationStatus.VERIFIED,
-        VerificationStatus.VIP_VERIFICATION_REJECTED -> {
-            verifyButtonView.setText(R.string.verification_vip_verify)
-            verifyButtonView.show()
-        }
-        VerificationStatus.NOT_VERIFIED,
-        VerificationStatus.VERIFICATION_REJECTED -> {
-            verifyButtonView.setText(R.string.verification_verify)
-            verifyButtonView.show()
-        }
-        VerificationStatus.VIP_VERIFIED,
-        VerificationStatus.VERIFICATION_PENDING,
-        VerificationStatus.VIP_VERIFICATION_PENDING -> verifyButtonView.hide()
+    private fun rebuildVerifyButton(status: VerificationStatus) {
+        
+        //when (status) {
+//        VerificationStatus.VERIFIED,
+//        VerificationStatus.VIP_VERIFICATION_REJECTED -> {
+//            verifyButtonView.setText(R.string.verification_vip_verify)
+//            verifyButtonView.show()
+//        }
+//        VerificationStatus.NOT_VERIFIED,
+//        VerificationStatus.VERIFICATION_REJECTED -> {
+//            verifyButtonView.setText(R.string.verification_verify)
+//            verifyButtonView.show()
+//        }
+//        VerificationStatus.VIP_VERIFIED,
+//        VerificationStatus.VERIFICATION_PENDING,
+//        VerificationStatus.VIP_VERIFICATION_PENDING -> verifyButtonView.hide()
     }
 }

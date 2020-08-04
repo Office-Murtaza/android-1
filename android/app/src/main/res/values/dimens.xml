@@ -7,6 +7,8 @@
     <dimen name="margin_main">16dp</dimen>
     <dimen name="margin_half">8dp</dimen>
     <dimen name="margin_quoter">4dp</dimen>
+    <dimen name="margin_large">24dp</dimen>
+    <dimen name="divider_size">1dp</dimen>
 
     <dimen name="photo_picker_column_size">100dp</dimen>
 
@@ -20,4 +22,7 @@
     <dimen name="chip_default_right_margin">0dp</dimen>
     <dimen name="chip_create_seed_horizontal_spacing">16dp</dimen>
     <dimen name="chip_create_seed_vertical_spacing">0dp</dimen>
+
+    //settings
+    <dimen name="settings_item_height">56dp</dimen>
 </resources>
