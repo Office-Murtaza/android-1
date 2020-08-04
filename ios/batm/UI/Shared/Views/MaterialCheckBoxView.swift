@@ -11,7 +11,7 @@ class MaterialCheckBoxView: UIView, HasDisposeBag {
   let checkboxButton: UIButton = {
     let button = UIButton(type: .system)
     button.layer.borderWidth = 1
-    button.layer.cornerRadius = 2
+    button.layer.cornerRadius = 3
     return button
   }()
   
@@ -43,10 +43,7 @@ class MaterialCheckBoxView: UIView, HasDisposeBag {
       $0.size.equalTo(22)
     }
     checkmarkImageView.snp.makeConstraints {
-      $0.left.equalToSuperview()
-      $0.bottom.equalToSuperview().inset(1)
-      $0.width.equalTo(22)
-      $0.keepRatio(for: checkmarkImageView)
+      $0.center.equalToSuperview()
     }
   }
   
