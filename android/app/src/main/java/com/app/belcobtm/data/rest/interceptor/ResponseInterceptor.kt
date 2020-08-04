@@ -3,57 +3,60 @@ package com.app.belcobtm.data.rest.interceptor
 
 import android.content.Intent
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
+import com.app.belcobtm.data.core.NetworkUtils
 import com.app.belcobtm.domain.Failure
 import okhttp3.Interceptor
 import okhttp3.Response
 import okhttp3.ResponseBody
 import org.json.JSONException
 import org.json.JSONObject
+import java.io.IOException
 import java.net.HttpURLConnection
 
 
-class ResponseInterceptor(private val broadcastManager: LocalBroadcastManager) : Interceptor {
+class ResponseInterceptor(
+    private val broadcastManager: LocalBroadcastManager,
+    private val networkUtils: NetworkUtils
+) : Interceptor {
 
-    override fun intercept(chain: Interceptor.Chain): Response? {
+    @Throws(IOException::class)
+    override fun intercept(chain: Interceptor.Chain): Response? = try {
         val request = chain.request()
         request.header("Content-Type: application/json")
-        val response = chain.proceed(request)
-        try {
-            when (response.code()) {
-                HttpURLConnection.HTTP_OK -> response.body()?.let {
-                    val json = it.string()
-                    when {
-                        response.isSuccessful && !JSONObject(json).isNull(RESPONSE_FIELD) -> {
-                            val resultJson = JSONObject(json).get(RESPONSE_FIELD)
-                            val newBody = ResponseBody.create(it.contentType(), resultJson.toString())
-                            return response.newBuilder().body(newBody).build()
-                        }
-                        response.isSuccessful && !JSONObject(json).isNull(ERROR_FIELD) -> {
-                            val resultJson = JSONObject(json).getJSONObject(ERROR_FIELD).getString(ERROR_SUB_FIELD)
-                            throw Failure.MessageError(resultJson.toString())
-                        }
-                        else -> Unit
+        val response: Response = chain.proceed(request)
+        when (response.code()) {
+            HttpURLConnection.HTTP_OK -> response.body()?.let {
+                val json = it.string()
+                when {
+                    response.isSuccessful && !JSONObject(json).isNull(RESPONSE_FIELD) -> {
+                        val resultJson = JSONObject(json).get(RESPONSE_FIELD)
+                        val newBody = ResponseBody.create(it.contentType(), resultJson.toString())
+                        return response.newBuilder().body(newBody).build()
                     }
+                    response.isSuccessful && !JSONObject(json).isNull(ERROR_FIELD) -> {
+                        val resultJson = JSONObject(json).getJSONObject(ERROR_FIELD).getString(ERROR_SUB_FIELD)
+                        throw Failure.MessageError(resultJson.toString())
+                    }
+                    else -> Unit
                 }
-                HttpURLConnection.HTTP_NOT_FOUND -> throw Failure.ServerError("Not found")
-                HttpURLConnection.HTTP_FORBIDDEN -> {
-                    val isUserUnauthorized = request.url().encodedPath().equals(REQUEST_REFRESH_PATH, true)
-                    val intent = Intent(TAG_USER_AUTHORIZATION)
-                    intent.putExtra(KEY_IS_USER_UNAUTHORIZED, isUserUnauthorized)
-                    broadcastManager.sendBroadcast(intent)
-                    throw Failure.TokenError
-                }
-//                    response.newBuilder()
-//                    .body(response.body())
-//                    .code(HttpURLConnection.HTTP_UNAUTHORIZED)
-//                    .build()
-                else -> Unit
             }
-        } catch (e: JSONException) {
-            throw Failure.ServerError(e.message)
+            HttpURLConnection.HTTP_NOT_FOUND -> throw Failure.ServerError("Not found")
+            HttpURLConnection.HTTP_FORBIDDEN -> {
+                val isUserUnauthorized = request.url().encodedPath().equals(REQUEST_REFRESH_PATH, true)
+                val intent = Intent(TAG_USER_AUTHORIZATION)
+                intent.putExtra(KEY_IS_USER_UNAUTHORIZED, isUserUnauthorized)
+                broadcastManager.sendBroadcast(intent)
+                throw Failure.TokenError
+            }
+            else -> Unit
         }
-
-        return response
+        response
+    } catch (e: JSONException) {
+        if (networkUtils.isNetworkAvailable()) {
+            throw Failure.ServerError(e.message)
+        } else {
+            throw Failure.NetworkConnection
+        }
     }
 
     companion object {

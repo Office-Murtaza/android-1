@@ -11,6 +11,10 @@ import com.app.belcobtm.data.disk.database.AppDatabase
 import com.app.belcobtm.data.disk.shared.preferences.SharedPreferencesHelper
 import com.app.belcobtm.data.rest.ApiFactory
 import com.app.belcobtm.data.rest.authorization.AuthApiService
+import com.app.belcobtm.data.rest.interceptor.BaseInterceptor
+import com.app.belcobtm.data.rest.interceptor.LogInterceptor
+import com.app.belcobtm.data.rest.interceptor.NoConnectionInterceptor
+import com.app.belcobtm.data.rest.interceptor.ResponseInterceptor
 import com.app.belcobtm.data.rest.settings.SettingsApiService
 import com.app.belcobtm.data.rest.tools.ToolsApiService
 import com.app.belcobtm.data.rest.transaction.TransactionApiService
@@ -24,7 +28,11 @@ val dataModule = module {
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(get())
         SharedPreferencesHelper(sharedPreferences)
     }
-    single { ApiFactory(get(), LocalBroadcastManager.getInstance(get())) }
+    single { LogInterceptor(get()) }
+    single { BaseInterceptor(get(), get()) }
+    single { NoConnectionInterceptor(get()) }
+    single { ResponseInterceptor(LocalBroadcastManager.getInstance(get()), get()) }
+    single { ApiFactory(get(), get(), get(), get()) }
     single { AuthApiService((get() as ApiFactory).authApi) }
     single { SettingsApiService(get(), (get() as ApiFactory).settingsApi) }
     single { WalletApiService((get() as ApiFactory).walletApi, get()) }
