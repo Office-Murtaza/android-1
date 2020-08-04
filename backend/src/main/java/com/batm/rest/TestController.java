@@ -21,9 +21,6 @@ public class TestController {
     @Autowired
     private WalletService walletService;
 
-    @Autowired
-    private GethService geth;
-
     @GetMapping("/sms")
     public Response sendSMS(@RequestParam String phone) {
         return Response.ok(twilioService.sendMessage(phone, "This is a test message"));
@@ -45,24 +42,19 @@ public class TestController {
         return Response.ok(res);
     }
 
-    @GetMapping("/coins/{coinCode}/price")
-    public Response price(@PathVariable CoinService.CoinEnum coinCode) {
-        return Response.ok(coinCode.getPrice());
+    @GetMapping("/coin/{coin}/price")
+    public Response price(@PathVariable CoinService.CoinEnum coin) {
+        return Response.ok(coin.getPrice());
     }
 
-    @GetMapping("/coins/{coinCode}/sign")
-    public Response sign(@PathVariable CoinService.CoinEnum coinCode, @RequestParam String fromAddress, @RequestParam String toAddress, @RequestParam BigDecimal amount) {
-        return Response.ok(coinCode.sign(fromAddress, toAddress, amount));
+    @GetMapping("/coin/{coin}/sign")
+    public Response sign(@PathVariable CoinService.CoinEnum coin, @RequestParam String fromAddress, @RequestParam String toAddress, @RequestParam BigDecimal amount) {
+        return Response.ok(coin.sign(fromAddress, toAddress, amount));
     }
 
-    @GetMapping("/coins/{coinCode}/submit")
-    public Response submit(@PathVariable CoinService.CoinEnum coinCode, @RequestParam String hex) {
-        return Response.ok(coinCode.submitTransaction(hex));
-    }
-
-    @GetMapping("/coins/eth-nonce")
-    public Response ethNonce(@RequestParam String address) {
-        return Response.ok(geth.getNonce(address));
+    @GetMapping("/coin/{coin}/submit")
+    public Response submit(@PathVariable CoinService.CoinEnum coin, @RequestParam String hex) {
+        return Response.ok(coin.submitTransaction(hex));
     }
 
     @GetMapping("/user/{userId}/kyc-delete")

@@ -161,7 +161,7 @@ public class UserController {
 
             boolean isCoinAddressesMatch = coinService.isCoinsAddressMatch(user, dto.getCoins());
             if (!isCoinAddressesMatch) {
-                return Response.error(5, "Coins address doesn't match");
+                return Response.error(5, "Seed phrase you entered is invalid. Please try again");
             }
 
             TokenDTO jwt = getJwt(user.getId(), user.getIdentity().getId(), dto.getPhone(), dto.getPassword());
