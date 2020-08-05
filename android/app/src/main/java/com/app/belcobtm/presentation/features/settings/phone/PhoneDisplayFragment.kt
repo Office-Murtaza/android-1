@@ -54,7 +54,7 @@ class PhoneDisplayFragment : BaseFragment() {
     }
 
     override fun popBackStack(): Boolean {
-        getNavController()?.navigate(PhoneDisplayFragmentDirections.phoneDisplayToSettingsFragment(SETTINGS_SECURITY))
+        navigate(PhoneDisplayFragmentDirections.phoneDisplayToSettingsFragment(SETTINGS_SECURITY))
         return true
     }
 }
