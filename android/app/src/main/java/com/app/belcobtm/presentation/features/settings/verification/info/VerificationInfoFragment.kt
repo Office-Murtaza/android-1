@@ -7,6 +7,7 @@ import com.app.belcobtm.R
 import com.app.belcobtm.domain.Failure
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
 import com.app.belcobtm.presentation.core.ui.fragment.BaseFragment
+import com.app.belcobtm.presentation.features.settings.SettingsFragment.Companion.SETTINGS_MAIN
 import kotlinx.android.synthetic.main.activity_verification_info.*
 import org.koin.android.viewmodel.ext.android.viewModel
 
@@ -81,5 +82,10 @@ class VerificationInfoFragment: BaseFragment() {
             }
             appliedState = state
         }
+    }
+
+    override fun popBackStack(): Boolean {
+        navigate(VerificationInfoFragmentDirections.verificationToSettingsFragment(SETTINGS_MAIN))
+        return true
     }
 }

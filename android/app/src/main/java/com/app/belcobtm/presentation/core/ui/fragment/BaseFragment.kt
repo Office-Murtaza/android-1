@@ -41,7 +41,6 @@ abstract class BaseFragment : Fragment() {
     protected open val backPressedListener: View.OnClickListener = View.OnClickListener { popBackStack() }
     protected open var isBackButtonEnabled: Boolean = false //field used for dynamic setting of back button because we handle it on resume
 
-
     protected abstract val resourceLayout: Int
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -118,20 +117,37 @@ abstract class BaseFragment : Fragment() {
 
     protected fun getNavController(): NavController? = navController
 
+    //catch exceptions in this block for simultaneous tap and navigation issue based on destination change
     protected fun navigate(resId: Int) {
-        navController?.navigate(resId)
+        try {
+            navController?.navigate(resId)
+        } catch (e: Exception) {
+            //catch exception for navigation
+        }
     }
 
     protected fun navigate(resId: Int, args: Bundle) {
-        navController?.navigate(resId, args)
+        try {
+            navController?.navigate(resId, args)
+        } catch (e: Exception) {
+            //catch exception for navigation
+        }
     }
 
     protected fun navigate(resId: Int, args: Bundle, extras: Navigator.Extras) {
-        navController?.navigate(resId, args, null, extras)
+        try {
+            navController?.navigate(resId, args, null, extras)
+        } catch (e: Exception) {
+            //catch exception for navigation
+        }
     }
 
     protected fun navigate(navDestination: NavDirections) {
-        navController?.navigate(navDestination)
+        try {
+            navController?.navigate(navDestination)
+        } catch (e: Exception) {
+            //catch exception for navigation
+        }
     }
 
     protected fun setGraph(graphResId: Int) {
@@ -235,7 +251,8 @@ abstract class BaseFragment : Fragment() {
 
     protected fun <T> LiveData<LoadingData<T>>.listen(
         success: (data: T) -> Unit,
-        error: ((error: Failure?) -> Unit)? = null
+        error: ((error: Failure?) -> Unit)? = null,
+        onUpdate: ((LoadingData<T>) -> Unit)? = null
     ) {
         this.observe(viewLifecycleOwner, Observer { loadingData ->
             when (loadingData) {
@@ -258,6 +275,7 @@ abstract class BaseFragment : Fragment() {
                     error.invoke(loadingData.errorType)
                 }
             }
+            onUpdate?.invoke(loadingData)
         })
     }
 

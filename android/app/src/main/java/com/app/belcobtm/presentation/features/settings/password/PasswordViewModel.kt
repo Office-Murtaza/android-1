@@ -42,7 +42,7 @@ class PasswordViewModel(
     fun onTextChanged(text: String) {
         stateData.value =
             LoadingData.Success(
-                stateData.value?.commonData?.copy(isButtonEnabled = text.isNotEmpty())
+                stateData.value?.commonData?.copy(isButtonEnabled = text.length >= 6)
                     ?: PasswordState(isButtonEnabled = text.isNotEmpty())
             )
     }
@@ -50,7 +50,8 @@ class PasswordViewModel(
     private fun getDireciton(): NavDirections {
         return when (arguments.destination) {
             R.id.password_to_create_seed_fragment -> PasswordFragmentDirections.passwordToCreateSeedFragment(
-                CreateSeedFragment.MODE_SETTINGS
+                mode = CreateSeedFragment.MODE_SETTINGS,
+                seed = prefsHelper.apiSeed
             )
             R.id.password_to_change_phone_fragment -> PasswordFragmentDirections.passwordToChangePhoneFragment()
             R.id.password_to_unlink_fragment -> PasswordFragmentDirections.passwordToUnlinkFragment()

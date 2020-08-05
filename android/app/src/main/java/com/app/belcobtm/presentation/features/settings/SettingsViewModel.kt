@@ -31,7 +31,8 @@ class SettingsViewModel(val appContext: Context, val intentActions: IntentAction
             SettingsSections.SECURITY -> {
                 stateData.value = stateData.value?.copy(
                     viewFlipperValue = SETTINGS_SECURITY,
-                    showBackButton = true
+                    showBackButton = true,
+                    toolbarRes = getToolbarRes(SETTINGS_SECURITY)
                 )
             }
             SettingsSections.KYC -> {
@@ -40,7 +41,8 @@ class SettingsViewModel(val appContext: Context, val intentActions: IntentAction
             SettingsSections.ABOUT -> {
                 stateData.value = stateData.value?.copy(
                     viewFlipperValue = SETTINGS_ABOUT,
-                    showBackButton = true
+                    showBackButton = true,
+                    toolbarRes = getToolbarRes(SETTINGS_ABOUT)
                 )
             }
         }
@@ -50,7 +52,8 @@ class SettingsViewModel(val appContext: Context, val intentActions: IntentAction
         if (stateData.value?.viewFlipperValue != SETTINGS_MAIN) {
             stateData.value = stateData.value!!.copy(
                 viewFlipperValue = SETTINGS_MAIN,
-                showBackButton = false
+                showBackButton = false,
+                toolbarRes = getToolbarRes(SETTINGS_MAIN)
             )
         }
     }
@@ -69,25 +72,51 @@ class SettingsViewModel(val appContext: Context, val intentActions: IntentAction
     fun onSecurityItemClick(securityItem: SecurityItems) {
         when (securityItem) {
             SecurityItems.PHONE -> {
-                actionData.value = SettingsAction.NavigateAction(SettingsFragmentDirections.settingsToDisplayPhone())
+                actionData.value =
+                    SettingsAction.NavigateAction(SettingsFragmentDirections.settingsToDisplayPhone())
             }
             SecurityItems.PASS -> {
-                actionData.value = SettingsAction.NavigateAction(SettingsFragmentDirections.settingsToUpdatePassword())
+                actionData.value =
+                    SettingsAction.NavigateAction(SettingsFragmentDirections.settingsToUpdatePassword())
             }
             SecurityItems.PIN -> {
-                actionData.value = SettingsAction.NavigateAction(SettingsFragmentDirections.settingsToPinCode())
+                actionData.value =
+                    SettingsAction.NavigateAction(SettingsFragmentDirections.settingsToPinCode())
             }
             SecurityItems.SEED -> {
-                actionData.value = SettingsAction.NavigateAction(SettingsFragmentDirections.toPassword(R.id.password_to_create_seed_fragment, R.string.seed_phrase_label, CreateSeedFragment.MODE_SETTINGS))
+                actionData.value = SettingsAction.NavigateAction(
+                    SettingsFragmentDirections.toPassword(
+                        R.id.password_to_create_seed_fragment,
+                        R.string.seed_phrase_label,
+                        CreateSeedFragment.MODE_SETTINGS
+                    )
+                )
             }
             SecurityItems.UNLINK -> {
-                actionData.value = SettingsAction.NavigateAction(SettingsFragmentDirections.toPassword(R.id.password_to_unlink_fragment, R.string.unlink_wallet_label))
+                actionData.value = SettingsAction.NavigateAction(
+                    SettingsFragmentDirections.toPassword(
+                        R.id.password_to_unlink_fragment,
+                        R.string.unlink_wallet_label
+                    )
+                )
             }
         }
     }
 
     fun processArgs(settingsArgs: SettingsFragmentArgs) {
-        stateData.value = stateData.value!!.copy(viewFlipperValue = settingsArgs.viewFlipperValue, showBackButton = settingsArgs.viewFlipperValue != 0)
+        stateData.value = stateData.value!!.copy(
+            viewFlipperValue = settingsArgs.viewFlipperValue,
+            showBackButton = settingsArgs.viewFlipperValue != 0,
+            toolbarRes = getToolbarRes(settingsArgs.viewFlipperValue)
+        )
+    }
+
+    private fun getToolbarRes(viewFlipperValue: Int): Int {
+        return when (viewFlipperValue) {
+            SETTINGS_SECURITY -> R.string.security_label
+            SETTINGS_ABOUT -> R.string.about_label
+            else -> R.string.settings
+        }
     }
 }
 
@@ -113,9 +142,10 @@ enum class SecurityItems {
 data class SettingsState(
     val viewFlipperValue: Int = 0,
     val versionName: String,
-    val showBackButton: Boolean = false
+    val showBackButton: Boolean = false,
+    val toolbarRes: Int = R.string.settings
 )
 
 sealed class SettingsAction {
-    data class NavigateAction(val navDirections: NavDirections): SettingsAction()
+    data class NavigateAction(val navDirections: NavDirections) : SettingsAction()
 }

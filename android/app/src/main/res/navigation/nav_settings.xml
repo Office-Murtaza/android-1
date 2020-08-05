@@ -90,6 +90,15 @@
             app:popUpTo="@id/settings_fragment"
             app:popUpToInclusive="true" />
 
+        <action
+            android:id="@+id/password_to_settings_fragment"
+            app:destination="@id/settings_fragment"
+            app:enterAnim="@anim/slide_from_left"
+            app:exitAnim="@anim/slide_to_right"
+            app:popEnterAnim="@anim/slide_from_right"
+            app:popExitAnim="@anim/slide_to_left"
+            app:popUpTo="@id/settings_fragment"
+            app:popUpToInclusive="true" />
         <argument
             android:name="destination"
             android:defaultValue="-1"
@@ -126,6 +135,20 @@
             android:name="mode"
             android:defaultValue="-1"
             app:argType="integer" />
+
+        <argument
+            android:name="seed"
+            android:defaultValue="@null"
+            app:nullable="true"
+            app:argType="string" />
+
+        <action
+            android:id="@+id/to_pin_code_fragment"
+            app:destination="@id/pin_code_fragment"
+            app:enterAnim="@anim/slide_from_right"
+            app:exitAnim="@anim/slide_to_left"
+            app:popEnterAnim="@anim/slide_from_left"
+            app:popExitAnim="@anim/slide_to_right" />
     </fragment>
 
     <fragment
@@ -228,10 +251,12 @@
         <action
             android:id="@+id/pin_code_to_settings_fragment"
             app:destination="@id/settings_fragment"
-            app:enterAnim="@anim/slide_from_right"
-            app:exitAnim="@anim/slide_to_left"
-            app:popEnterAnim="@anim/slide_from_left"
-            app:popExitAnim="@anim/slide_to_right" />
+            app:enterAnim="@anim/slide_from_left"
+            app:exitAnim="@anim/slide_to_right"
+            app:popEnterAnim="@anim/slide_from_right"
+            app:popExitAnim="@anim/slide_to_left"
+            app:popUpTo="@id/settings_fragment"
+            app:popUpToInclusive="true" />
 
         <argument
             android:name="tag_pin_mode"
@@ -276,6 +301,17 @@
             app:exitAnim="@anim/slide_to_left"
             app:popEnterAnim="@anim/slide_from_left"
             app:popExitAnim="@anim/slide_to_right" />
+
+
+        <action
+            android:id="@+id/verification_to_settings_fragment"
+            app:destination="@id/settings_fragment"
+            app:enterAnim="@anim/slide_from_left"
+            app:exitAnim="@anim/slide_to_right"
+            app:popEnterAnim="@anim/slide_from_right"
+            app:popExitAnim="@anim/slide_to_left"
+            app:popUpTo="@id/settings_fragment"
+            app:popUpToInclusive="true" />
     </fragment>
 
     <fragment

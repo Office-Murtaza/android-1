@@ -95,10 +95,26 @@
         android:label="CreateSeedFragment"
         tools:layout="@layout/fragment_create_seed">
 
+        <action
+            android:id="@+id/seed_to_settings_fragment"
+            app:destination="@id/settings_fragment"
+            app:enterAnim="@anim/slide_from_left"
+            app:exitAnim="@anim/slide_to_right"
+            app:popEnterAnim="@anim/slide_from_right"
+            app:popExitAnim="@anim/slide_to_left"
+            app:popUpTo="@id/settings_fragment"
+            app:popUpToInclusive="true" />
+
         <argument
             android:name="mode"
             android:defaultValue="-1"
             app:argType="integer" />
+
+        <argument
+            android:name="seed"
+            android:defaultValue="@null"
+            app:nullable="true"
+            app:argType="string" />
 
         <action
             android:id="@+id/to_pin_code_fragment"
@@ -114,5 +130,15 @@
         android:name="com.app.belcobtm.presentation.features.pin.code.PinCodeFragment"
         android:label="PinCodeFragment"
         tools:layout="@layout/fragment_pin_code" />
+    <fragment
+        android:id="@+id/settings_fragment"
+        android:name="com.app.belcobtm.presentation.features.settings.SettingsFragment"
+        android:label="SettingsFragment"
+        tools:layout="@layout/fragment_settings">
+        <argument
+            android:name="view_flipper_value"
+            android:defaultValue="0"
+            app:argType="integer" />
 
+    </fragment>
 </navigation>

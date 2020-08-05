@@ -31,23 +31,22 @@ class PhoneDisplayFragment : BaseFragment() {
     }
 
     override fun initObservers() {
-        viewModel.stateData.observe(this) { state ->
-            when (state) {
-                is LoadingData.Loading -> showLoading()
-                is LoadingData.Error -> showError(R.string.error_something_went_wrong)
-                is LoadingData.Success -> {
-                    state.doIfChanged(appliedState) {
-                        showContent()
-                    }
-                    state.data.phone.doIfChanged((appliedState)?.commonData?.phone) {
-                        phoneNumber.text = it
-                    }
-                    state.data.isNextButtonEnabled.doIfChanged((appliedState)?.commonData?.isNextButtonEnabled) {
-                        nextButton.isEnabled = it
-                    }
+        viewModel.stateData.listen(
+            success = { state ->
+                state.doIfChanged(appliedState) {
+                    showContent()
                 }
+                state.phone.doIfChanged((appliedState)?.commonData?.phone) {
+                    phoneNumber.text = it
+                }
+                state.isNextButtonEnabled.doIfChanged((appliedState)?.commonData?.isNextButtonEnabled) {
+                    nextButton.isEnabled = it
+                }
+            },
+            onUpdate = {
+                appliedState = it
             }
-        }
+        )
     }
 
     override fun popBackStack(): Boolean {

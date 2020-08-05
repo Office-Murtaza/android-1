@@ -35,17 +35,10 @@ class UnlinkFragment : BaseFragment() {
     }
 
     override fun initObservers() {
-        viewModel.actionData.observe(this) { action ->
-            when (action) {
-                is LoadingData.Loading -> showLoading()
-                is LoadingData.Error -> {
-                    showContent()
-                    showError(R.string.error_something_went_wrong)
-                }
-                is LoadingData.Success -> {
-                    (requireActivity() as? HostActivity)?.showAuthorizationScreen()
-                }
+        viewModel.actionData.listen(
+            success = {
+                (requireActivity() as? HostActivity)?.showAuthorizationScreen()
             }
-        }
+        )
     }
 }

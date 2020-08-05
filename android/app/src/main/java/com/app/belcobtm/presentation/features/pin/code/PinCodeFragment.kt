@@ -11,6 +11,7 @@ import com.app.belcobtm.R
 import com.app.belcobtm.presentation.core.extensions.toggle
 import com.app.belcobtm.presentation.core.ui.fragment.BaseFragment
 import com.app.belcobtm.presentation.features.HostActivity
+import com.app.belcobtm.presentation.features.settings.SettingsFragment.Companion.SETTINGS_SECURITY
 import kotlinx.android.synthetic.main.fragment_pin_code.*
 import org.koin.android.viewmodel.ext.android.viewModel
 
@@ -26,7 +27,7 @@ class PinCodeFragment : BaseFragment() {
     override val isToolbarEnabled: Boolean = false
     override val backPressedListener: View.OnClickListener = View.OnClickListener {
         if (pinMode == KEY_PIN_MODE_CHANGE) {
-            popBackStack()
+            navigate(PinCodeFragmentDirections.pinCodeToSettingsFragment(SETTINGS_SECURITY))
         } else {
             //do nothing, user need to enter/create pin
         }
@@ -88,7 +89,7 @@ class PinCodeFragment : BaseFragment() {
                     (requireActivity() as HostActivity).showMainScreen()
                 }
                 is PinCodeAction.ChangedPin -> {
-                    navigate(R.id.pin_code_to_settings_fragment)
+                    navigate(PinCodeFragmentDirections.pinCodeToSettingsFragment(SETTINGS_SECURITY))
                 }
                 is PinCodeAction.Vibrate -> {
                     vibrate(action.duration)
