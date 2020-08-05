@@ -85,7 +85,7 @@ public class UserController {
             String code = twilioService.sendVerificationCode(dto.getPhone());
 
             if (StringUtils.isBlank(code)) {
-                return Response.defaultError("Phone country is not supported");
+                return Response.defaultError("Not supported phone number");
             }
 
             res.setCode(code);

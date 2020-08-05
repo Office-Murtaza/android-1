@@ -17,6 +17,8 @@ import com.twilio.type.PhoneNumber;
 @Service
 public class TwilioService {
 
+    private static final String DEFAULT_CODE = "1234";
+
     @Value("${twilio.enabled}")
     private Boolean enabled;
 
@@ -52,9 +54,13 @@ public class TwilioService {
         try {
             if (enabled) {
                 String code = RandomStringUtils.randomNumeric(4);
-                sendMessage(phone, "Code: " + code);
+                Message.Status status = sendMessage(phone, "Code: " + code);
 
-                return code;
+                if (status != null && status == Message.Status.QUEUED) {
+                    return code;
+                }
+            } else {
+                return DEFAULT_CODE;
             }
         } catch (Exception e) {
             e.printStackTrace();
