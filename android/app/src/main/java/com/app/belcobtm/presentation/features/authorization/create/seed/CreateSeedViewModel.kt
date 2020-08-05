@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import com.app.belcobtm.domain.authorization.interactor.CreateSeedUseCase
 import com.app.belcobtm.domain.authorization.interactor.CreateWalletUseCase
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
+import com.app.belcobtm.presentation.features.authorization.create.seed.CreateSeedFragment.Companion.MODE_SETTINGS
 
 class CreateSeedViewModel(
     private val createPhraseUseCase: CreateSeedUseCase,
@@ -13,7 +14,7 @@ class CreateSeedViewModel(
     val seedLiveData: MutableLiveData<String> = MutableLiveData()
     val createWalletLiveData: MutableLiveData<LoadingData<Unit>> = MutableLiveData()
 
-    init {
+    private fun createSeed() {
         createPhraseUseCase.invoke(
             params = Unit,
             onSuccess = { seedLiveData.value = it }
@@ -27,5 +28,11 @@ class CreateSeedViewModel(
             onSuccess = { createWalletLiveData.value = LoadingData.Success(it) },
             onError = { createWalletLiveData.value = LoadingData.Error(it) }
         )
+    }
+
+    fun passArgs(args: CreateSeedFragmentArgs) {
+        if (args.mode != MODE_SETTINGS) {
+            createSeed()
+        }
     }
 }

@@ -64,6 +64,9 @@ class SettingsFragment : BaseFragment() {
                 isBackButtonEnabled = it
                 showBackButton(it)
             })
+            state.toolbarRes.doIfChanged(appliedState?.toolbarRes) {
+                setToolbarTitle(it)
+            }
             appliedState = state
         })
 

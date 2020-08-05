@@ -32,6 +32,12 @@ class CreateSeedFragment : BaseFragment() {
         setToolbarTitle(R.string.create_seed_screen_title)
         initNextButton()
         showBackButton(true)
+        viewModel.passArgs(args)
+        if (args.mode == MODE_SETTINGS) {
+            args.seed?.run {
+                showSeed(this)
+            }
+        }
     }
 
     override fun initListeners() {
@@ -42,24 +48,9 @@ class CreateSeedFragment : BaseFragment() {
 
     override fun initObservers() {
         viewModel.seedLiveData.observe(viewLifecycleOwner, Observer { seedPhrase ->
-            val wordList: List<String> = seedPhrase
-                .replace(CHAR_NEXT_LINE, CHAR_SPACE)
-                .splitToSequence(CHAR_SPACE)
-                .filter { it.isNotEmpty() }
-                .toList()
-
-            word1.text = wordList[0]
-            word2.text = wordList[1]
-            word3.text = wordList[2]
-            word4.text = wordList[3]
-            word5.text = wordList[4]
-            word6.text = wordList[5]
-            word7.text = wordList[6]
-            word8.text = wordList[7]
-            word9.text = wordList[8]
-            word10.text = wordList[9]
-            word11.text = wordList[10]
-            word12.text = wordList[11]
+            if (args.mode != MODE_SETTINGS) {
+                showSeed(seedPhrase)
+            }
         })
         viewModel.createWalletLiveData.listen({
             navigate(
@@ -67,6 +58,27 @@ class CreateSeedFragment : BaseFragment() {
                 bundleOf(PinCodeFragment.TAG_PIN_MODE to PinCodeFragment.KEY_PIN_MODE_CREATE)
             )
         })
+    }
+
+    private fun showSeed(seedPhrase: String) {
+        val wordList: List<String> = seedPhrase
+            .replace(CHAR_NEXT_LINE, CHAR_SPACE)
+            .splitToSequence(CHAR_SPACE)
+            .filter { it.isNotEmpty() }
+            .toList()
+
+        word1.text = wordList[0]
+        word2.text = wordList[1]
+        word3.text = wordList[2]
+        word4.text = wordList[3]
+        word5.text = wordList[4]
+        word6.text = wordList[5]
+        word7.text = wordList[6]
+        word8.text = wordList[7]
+        word9.text = wordList[8]
+        word10.text = wordList[9]
+        word11.text = wordList[10]
+        word12.text = wordList[11]
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean = if (item.itemId == android.R.id.home) {

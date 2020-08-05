@@ -52,6 +52,11 @@ class PinCodeViewModel(
 
     fun setMode(mode: String) {
         this.mode = mode
+        when (mode) {
+            KEY_PIN_MODE_ENTER -> step = STEP_VERIFY
+            KEY_PIN_MODE_CHANGE -> step = STEP_VERIFY
+            KEY_PIN_MODE_CREATE -> step - STEP_CREATE
+        }
         updateState()
     }
 
@@ -141,7 +146,10 @@ class PinCodeViewModel(
     }
 
     private fun matchedPin() {
-        actionData.value = PinCodeAction.Success
+        when {
+            mode == KEY_PIN_MODE_ENTER || mode == KEY_PIN_MODE_CREATE -> actionData.value = PinCodeAction.Success
+            mode == KEY_PIN_MODE_CHANGE -> actionData.value = PinCodeAction.ChangedPin
+        }
     }
 
     private fun wrongPin() {
@@ -158,7 +166,7 @@ class PinCodeViewModel(
             visiblePin = currentPin,
             labelResource = getTitleRes(),
             isError = isError,
-            backButtonVisible = mode != KEY_PIN_MODE_ENTER && currentPin.length == PIN_CODE_LENGTH
+            backButtonVisible = step == STEP_CONFIRM
         ) ?: PinCodeState()
     }
 
