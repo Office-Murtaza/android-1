@@ -96,14 +96,14 @@
 
     <!-- Recover Seed Screen -->
     <string name="recover_seed_screen_title">Seed phrase</string>
-    <string name="recover_seed_screen_description">Enter your secret 12 words phrase\nhere to restore your wallet</string>
+    <string name="recover_seed_screen_description">Enter your secret 12-word phrase\nhere to restore your wallet</string>
     <string name="recover_seed_screen_error_length">Seed phrase must be 12 words</string>
     <string name="recover_seed_screen_incorrect_phrase">Seed phrase you entered is invalid. Please try again</string>
 
 
     <!-- Create Seed Screen-->
     <string name="create_seed_screen_title">Seed phrase</string>
-    <string name="create_seed_screen_description">If you lost your seed phrase you will\nnot be able your wallet</string>
+    <string name="create_seed_screen_description">If you lost your seed phrase you would\nnot be able to recover your wallet</string>
     <string name="create_seed_screen_seed_phrase_copied">Seed phrase copied</string>
     <!--    <string name="create_seed_screen_"></string>-->
 
