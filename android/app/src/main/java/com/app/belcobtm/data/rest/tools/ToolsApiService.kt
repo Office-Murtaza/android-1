@@ -16,11 +16,7 @@ class ToolsApiService(
         request.body()?.let { Either.Right(it.code) }
             ?: Either.Left(Failure.ServerError())
     } catch (failure: Failure) {
-        if (failure.message.equals("No value for errorMsg", true)) {
-            Either.Left(Failure.MessageError("Incorrect phone number"))
-        } else {
-            Either.Left(failure)
-        }
+        Either.Left(failure)
     }
 
     suspend fun sendToDeviceSmsCode(): Either<Failure, Unit> = try {

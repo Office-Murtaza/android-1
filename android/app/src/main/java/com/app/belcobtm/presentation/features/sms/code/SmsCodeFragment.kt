@@ -2,6 +2,7 @@ package com.app.belcobtm.presentation.features.sms.code
 
 import android.view.View
 import com.app.belcobtm.R
+import com.app.belcobtm.domain.Failure
 import com.app.belcobtm.presentation.core.extensions.*
 import com.app.belcobtm.presentation.core.helper.AlertHelper
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
@@ -38,14 +39,32 @@ class SmsCodeFragment : BaseFragment() {
     }
 
     override fun initObservers() {
-        viewModel.smsLiveData.listen({
-            if (isResendClicked) {
-                showResendDialog()
-            }
+        viewModel.smsLiveData.listen(
+            success = {
+                if (isResendClicked) {
+                    showResendDialog()
+                }
 
-            //TODO for remove
-            println("SMS code $it")
-        })
+                //TODO for remove
+                println("SMS code $it")
+            },
+            error = {
+                when (it) {
+                    is Failure.NetworkConnection -> showErrorNoInternetConnection()
+                    is Failure.MessageError -> {
+                        showSnackBar(it.message ?: "")
+                        showContent()
+                    }
+                    is Failure.ServerError -> if (it.message.equals("No value for errorMsg", true)) {
+                        showSnackBar("Incorrect phone number")
+                        showContent()
+                        popBackStack()
+                    } else {
+                        showErrorServerError()
+                    }
+                    else -> showErrorSomethingWrong()
+                }
+            })
     }
 
     private fun openNextScreen() {
