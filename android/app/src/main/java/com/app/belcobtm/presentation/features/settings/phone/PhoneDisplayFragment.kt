@@ -1,5 +1,6 @@
 package com.app.belcobtm.presentation.features.settings.phone
 
+import android.view.View
 import androidx.lifecycle.observe
 import com.app.belcobtm.R
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
@@ -12,6 +13,9 @@ class PhoneDisplayFragment : BaseFragment() {
     val viewModel by viewModel<PhoneDisplayViewModel>()
     private var appliedState: LoadingData<PhoneDisplayState>? = null
     override val resourceLayout = R.layout.fragment_display_phone
+    override val retryListener = View.OnClickListener {
+        viewModel.getPhone()
+    }
 
     override val isHomeButtonEnabled = true
 
