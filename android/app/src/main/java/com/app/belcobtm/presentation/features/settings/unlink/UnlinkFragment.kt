@@ -1,5 +1,6 @@
 package com.app.belcobtm.presentation.features.settings.unlink
 
+import android.view.View
 import androidx.lifecycle.observe
 import com.app.belcobtm.R
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
@@ -12,6 +13,9 @@ import org.koin.android.viewmodel.ext.android.viewModel
 
 class UnlinkFragment : BaseFragment() {
     val viewModel by viewModel<UnlinkViewModel>()
+    override val retryListener = View.OnClickListener {
+        viewModel.unlink()
+    }
 
     override val resourceLayout = R.layout.fragment_unlink
 

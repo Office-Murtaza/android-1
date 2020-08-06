@@ -1,5 +1,6 @@
 package com.app.belcobtm.presentation.features.settings.update_password
 
+import android.view.View
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.observe
 import com.app.belcobtm.R
@@ -11,6 +12,9 @@ import org.koin.android.viewmodel.ext.android.viewModel
 class UpdatePasswordFragment : BaseFragment() {
     val viewModel by viewModel<UpdatePasswordViewModel>()
     private var appliedState: LoadingData<UpdatePasswordState>? = null
+    override val retryListener = View.OnClickListener {
+        viewModel.onNextClick()
+    }
 
     override val resourceLayout = R.layout.fragment_update_password
     override val isHomeButtonEnabled = true

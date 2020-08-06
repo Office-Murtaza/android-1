@@ -6,6 +6,8 @@ import androidx.navigation.NavDirections
 import com.app.belcobtm.R
 import com.app.belcobtm.data.disk.shared.preferences.SharedPreferencesHelper
 import com.app.belcobtm.domain.authorization.interactor.CheckPassUseCase
+import com.app.belcobtm.presentation.core.Const.MAX_PASS
+import com.app.belcobtm.presentation.core.Const.MIN_PASS
 import com.app.belcobtm.presentation.core.SingleLiveData
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
 import com.app.belcobtm.presentation.features.authorization.create.seed.CreateSeedFragment
@@ -42,7 +44,7 @@ class PasswordViewModel(
     fun onTextChanged(text: String) {
         stateData.value =
             LoadingData.Success(
-                stateData.value?.commonData?.copy(isButtonEnabled = text.length >= 6)
+                stateData.value?.commonData?.copy(isButtonEnabled = text.length in MIN_PASS..MAX_PASS)
                     ?: PasswordState(isButtonEnabled = text.isNotEmpty())
             )
     }

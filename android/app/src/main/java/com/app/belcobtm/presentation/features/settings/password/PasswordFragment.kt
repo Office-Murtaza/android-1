@@ -1,5 +1,6 @@
 package com.app.belcobtm.presentation.features.settings.password
 
+import android.view.View
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.navArgs
@@ -16,6 +17,9 @@ class PasswordFragment : BaseFragment() {
     private val viewModel by viewModel<PasswordViewModel>()
     private val args:  PasswordFragmentArgs by navArgs()
     private var appliedState: LoadingData<PasswordState>? = null
+    override val retryListener = View.OnClickListener {
+        viewModel.onNextClick(passwordView.text?.toString().orEmpty())
+    }
 
     override val resourceLayout: Int = R.layout.layout_password
     override val isHomeButtonEnabled = true
