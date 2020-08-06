@@ -11,6 +11,7 @@ import com.app.belcobtm.presentation.core.Const.MIN_PASS
 import com.app.belcobtm.presentation.core.SingleLiveData
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
 import com.app.belcobtm.presentation.features.authorization.create.seed.CreateSeedFragment
+import com.app.belcobtm.presentation.features.settings.SettingsFragment.Companion.SETTINGS_SECURITY
 
 class PasswordViewModel(
     val checkPassUseCase: CheckPassUseCase,
@@ -55,10 +56,25 @@ class PasswordViewModel(
                 mode = CreateSeedFragment.MODE_SETTINGS,
                 seed = prefsHelper.apiSeed
             )
-            R.id.password_to_change_phone_fragment -> PasswordFragmentDirections.passwordToChangePhoneFragment()
+            R.id.password_to_change_phone_fragment -> PasswordFragmentDirections.passwordToPhoneDisplayFragment()
             R.id.password_to_unlink_fragment -> PasswordFragmentDirections.passwordToUnlinkFragment()
             else -> throw IllegalArgumentException("wrong direction passed")
         }
+    }
+
+    fun popBackStack() {
+        actionData.value = PasswordAction.NavigateAction(
+            when (arguments.destination) {
+                R.id.password_to_create_seed_fragment -> PasswordFragmentDirections.passwordToSettingsFragment(
+                    SETTINGS_SECURITY
+                )
+                R.id.password_to_change_phone_fragment -> PasswordFragmentDirections.passwordToChangePhoneFragment()
+                R.id.password_to_unlink_fragment -> PasswordFragmentDirections.passwordToSettingsFragment(
+                    SETTINGS_SECURITY
+                )
+                else -> throw IllegalArgumentException("wrong direction passed")
+            }
+        )
     }
 }
 

@@ -74,7 +74,7 @@ class PasswordFragment : BaseFragment() {
     }
 
     override fun popBackStack(): Boolean {
-        navigate(PasswordFragmentDirections.passwordToSettingsFragment(SETTINGS_SECURITY))
+        viewModel.popBackStack()
         return true
     }
 }
