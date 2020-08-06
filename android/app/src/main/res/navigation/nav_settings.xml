@@ -99,6 +99,15 @@
             app:popExitAnim="@anim/slide_to_left"
             app:popUpTo="@id/settings_fragment"
             app:popUpToInclusive="true" />
+
+        <action
+            android:id="@+id/password_to_phone_display_fragment"
+            app:destination="@id/display_phone_fragment"
+            app:enterAnim="@anim/slide_from_left"
+            app:exitAnim="@anim/slide_to_right"
+            app:popEnterAnim="@anim/slide_from_right"
+            app:popExitAnim="@anim/slide_to_left" />
+
         <argument
             android:name="destination"
             android:defaultValue="-1"
@@ -139,8 +148,8 @@
         <argument
             android:name="seed"
             android:defaultValue="@null"
-            app:nullable="true"
-            app:argType="string" />
+            app:argType="string"
+            app:nullable="true" />
 
         <action
             android:id="@+id/to_pin_code_fragment"
