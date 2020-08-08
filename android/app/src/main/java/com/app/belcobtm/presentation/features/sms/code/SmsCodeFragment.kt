@@ -2,10 +2,11 @@ package com.app.belcobtm.presentation.features.sms.code
 
 import android.view.View
 import com.app.belcobtm.R
+import com.app.belcobtm.domain.Failure
 import com.app.belcobtm.presentation.core.extensions.*
+import com.app.belcobtm.presentation.core.helper.AlertHelper
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
 import com.app.belcobtm.presentation.core.ui.fragment.BaseFragment
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.android.synthetic.main.fragment_sms_code.*
 import org.koin.android.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
@@ -38,14 +39,32 @@ class SmsCodeFragment : BaseFragment() {
     }
 
     override fun initObservers() {
-        viewModel.smsLiveData.listen({
-            if (isResendClicked) {
-                showResendDialog()
-            }
+        viewModel.smsLiveData.listen(
+            success = {
+                if (isResendClicked) {
+                    showResendDialog()
+                }
 
-            //TODO for remove
-            println("SMS code $it")
-        })
+                //TODO for remove
+                println("SMS code $it")
+            },
+            error = {
+                when (it) {
+                    is Failure.NetworkConnection -> showErrorNoInternetConnection()
+                    is Failure.MessageError -> {
+                        showSnackBar(it.message ?: "")
+                        showContent()
+                    }
+                    is Failure.ServerError -> if (it.message.equals("No value for errorMsg", true)) {
+                        showSnackBar("Incorrect phone number")
+                        showContent()
+                        popBackStack()
+                    } else {
+                        showErrorServerError()
+                    }
+                    else -> showErrorSomethingWrong()
+                }
+            })
     }
 
     private fun openNextScreen() {
@@ -62,11 +81,7 @@ class SmsCodeFragment : BaseFragment() {
 
     private fun showResendDialog() {
         isResendClicked = false
-        MaterialAlertDialogBuilder(requireContext())
-            .setTitle(R.string.sms_code_screen_resend_title)
-            .setMessage(R.string.sms_code_screen_resend_description)
-            .setNegativeButton(android.R.string.ok, null)
-            .show()
+        AlertHelper.showToastShort(requireContext(), R.string.sms_code_screen_resend)
     }
 
     companion object {

@@ -207,7 +207,7 @@ class PinActivity : BaseActivity() {
     }
 
     private fun pinNotMatch() {
-        showError(R.string.code_not_match)
+        showError(R.string.pin_code_do_not_match)
         vibrateError()
         codeView.setText("")
     }

@@ -14,7 +14,6 @@ val repositoryModule = module {
         AuthorizationRepositoryImpl(
             get(),
             get(),
-            get(),
             (get() as AppDatabase).getCoinDao()
         )
     }

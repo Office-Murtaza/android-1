@@ -25,7 +25,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <androidx.appcompat.widget.AppCompatEditText
+            <com.app.belcobtm.presentation.core.ui.view.EditTextNoAutoFill
                 android:id="@+id/phoneEditView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -49,7 +49,7 @@
             app:passwordToggleEnabled="true"
             app:passwordToggleTint="@color/colorPrimary">
 
-            <androidx.appcompat.widget.AppCompatEditText
+            <com.app.belcobtm.presentation.core.ui.view.EditTextNoAutoFill
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/create_wallet_screen_password"
@@ -71,12 +71,11 @@
             app:passwordToggleEnabled="true"
             app:passwordToggleTint="@color/colorPrimary">
 
-            <androidx.appcompat.widget.AppCompatEditText
+            <com.app.belcobtm.presentation.core.ui.view.EditTextNoAutoFill
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/create_wallet_screen_confirm_password"
-                android:importantForAutofill="no"
-                android:inputType="textPassword|textNoSuggestions"
+                android:inputType="textPassword"
                 android:lines="1"
                 android:nextFocusDown="@id/tncCheckBoxView" />
 

@@ -1,6 +1,5 @@
 package com.app.belcobtm.data
 
-import com.app.belcobtm.data.core.NetworkUtils
 import com.app.belcobtm.data.disk.database.AccountDao
 import com.app.belcobtm.data.disk.database.AccountEntity
 import com.app.belcobtm.data.disk.shared.preferences.SharedPreferencesHelper
@@ -21,7 +20,6 @@ import wallet.core.jni.*
 class AuthorizationRepositoryImpl(
     private val prefHelper: SharedPreferencesHelper,
     private val apiService: AuthApiService,
-    private val networkUtils: NetworkUtils,
     private val daoAccount: AccountDao
 ) : AuthorizationRepository {
     private val temporaryCoinMap: MutableMap<LocalCoinType, Pair<String, String>> by lazy {
@@ -52,17 +50,14 @@ class AuthorizationRepositoryImpl(
     override suspend fun authorizationCheckCredentials(
         phone: String,
         password: String
-    ): Either<Failure, Pair<Boolean, Boolean>> = if (networkUtils.isNetworkAvailable()) {
+    ): Either<Failure, Pair<Boolean, Boolean>> {
         val response = apiService.authorizationCheckCredentials(phone, password)
-
-        if (response.isRight) {
+        return if (response.isRight) {
             val body = (response as Either.Right).b
             Either.Right(Pair(body.first, body.second))
         } else {
             response as Either.Left
         }
-    } else {
-        Either.Left(Failure.NetworkConnection)
     }
 
     override suspend fun createSeedPhrase(): Either<Failure, String> {
@@ -76,14 +71,14 @@ class AuthorizationRepositoryImpl(
     override suspend fun createWallet(
         phone: String,
         password: String
-    ): Either<Failure, Unit> = if (networkUtils.isNetworkAvailable()) {
+    ): Either<Failure, Unit> {
         val response = apiService.createWallet(
             phone = phone,
             password = password,
             coinMap = temporaryCoinMap.map { it.key.name to it.value.first }.toMap()
         )
 
-        if (response.isRight) {
+        return if (response.isRight) {
             val result = (response as Either.Right).b
             val accountList = createAccountEntityList(temporaryCoinMap, result.balance.coins)
             daoAccount.insertItemList(accountList)
@@ -95,22 +90,20 @@ class AuthorizationRepositoryImpl(
         } else {
             response as Either.Left
         }
-    } else {
-        Either.Left(Failure.NetworkConnection)
     }
 
     override suspend fun recoverWallet(
         seed: String,
         phone: String,
         password: String
-    ): Either<Failure, Unit> = if (networkUtils.isNetworkAvailable()) {
+    ): Either<Failure, Unit> {
         val wallet = HDWallet(seed, "")
         temporaryCoinMap.clear()
         temporaryCoinMap.putAll(LocalCoinType.values().map { Pair(it, createTemporaryAccount(it, wallet)) }.toMap())
         val recoverResponse =
             apiService.recoverWallet(phone, password, temporaryCoinMap.map { it.key.name to it.value.first }.toMap())
 
-        if (recoverResponse.isRight) {
+        return if (recoverResponse.isRight) {
             val result = (recoverResponse as Either.Right).b
             val accountList = createAccountEntityList(temporaryCoinMap, result.balance.coins)
             daoAccount.insertItemList(accountList)
@@ -123,13 +116,11 @@ class AuthorizationRepositoryImpl(
         } else {
             recoverResponse as Either.Left
         }
-    } else {
-        Either.Left(Failure.NetworkConnection)
     }
 
-    override suspend fun authorize(): Either<Failure, Unit> = if (networkUtils.isNetworkAvailable()) {
+    override suspend fun authorize(): Either<Failure, Unit> {
         val response = apiService.authorizeByRefreshToken(prefHelper.refreshToken)
-        if (response.isRight) {
+        return if (response.isRight) {
             val body = (response as Either.Right).b
             prefHelper.accessToken = body.accessToken
             prefHelper.refreshToken = body.refreshToken
@@ -138,8 +129,6 @@ class AuthorizationRepositoryImpl(
         } else {
             response as Either.Left
         }
-    } else {
-        Either.Left(Failure.NetworkConnection)
     }
 
     override fun getAuthorizePin(): String = prefHelper.userPin
@@ -177,15 +166,12 @@ class AuthorizationRepositoryImpl(
         return entityList
     }
 
-    override suspend fun checkPass(userId: String, password: String): Either<Failure, Boolean> =
-        if (networkUtils.isNetworkAvailable()) {
-            val response = apiService.checkPass(userId, password)
-            if (response.isRight) {
-                Either.Right((response as Either.Right).b.result)
-            } else {
-                response as Either.Left
-            }
+    override suspend fun checkPass(userId: String, password: String): Either<Failure, Boolean> {
+        val response = apiService.checkPass(userId, password)
+        return if (response.isRight) {
+            Either.Right((response as Either.Right).b.result)
         } else {
-            Either.Left(Failure.NetworkConnection)
+            response as Either.Left
         }
+    }
 }

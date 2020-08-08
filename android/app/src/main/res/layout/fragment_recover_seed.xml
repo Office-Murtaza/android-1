@@ -19,7 +19,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
+            android:background="@drawable/bg_rounded"
+            android:backgroundTint="#ebf4fd"
+            android:drawableTop="@drawable/ic_warning"
+            android:drawablePadding="8dp"
+            android:drawableTint="@color/colorPrimary"
             android:gravity="center"
+            android:textColor="@color/colorPrimary"
+            android:padding="16dp"
             android:text="@string/recover_seed_screen_description"
             android:textSize="16sp" />
 
@@ -31,7 +38,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp">
 
-            <androidx.appcompat.widget.AppCompatEditText
+            <com.app.belcobtm.presentation.core.ui.view.EditTextNoAutoFill
                 android:id="@+id/seedView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -40,7 +47,6 @@
                 android:inputType="textMultiLine|textNoSuggestions"
                 android:minHeight="150dp" />
         </com.google.android.material.textfield.TextInputLayout>
-
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/pasteButtonView"

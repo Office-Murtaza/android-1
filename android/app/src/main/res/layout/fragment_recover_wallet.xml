@@ -17,7 +17,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <androidx.appcompat.widget.AppCompatEditText
+        <com.app.belcobtm.presentation.core.ui.view.EditTextNoAutoFill
             android:id="@+id/phoneEditView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -25,7 +25,8 @@
             android:drawableTint="@color/colorPrimary"
             android:hint="@string/recover_wallet_phone"
             android:importantForAutofill="no"
-            android:inputType="phone|textNoSuggestions"
+            android:autofillHints="@null"
+            android:inputType="phone"
             android:lines="1" />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -40,7 +41,7 @@
         app:passwordToggleEnabled="true"
         app:passwordToggleTint="@color/colorPrimary">
 
-        <androidx.appcompat.widget.AppCompatEditText
+        <com.app.belcobtm.presentation.core.ui.view.EditTextNoAutoFill
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/recover_wallet_password"
