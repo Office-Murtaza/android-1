@@ -1,6 +1,6 @@
 import Foundation
 import Swinject
-import Firebase
+import FirebaseCore
 
 class FirebaseInitializer: Initializer {
   

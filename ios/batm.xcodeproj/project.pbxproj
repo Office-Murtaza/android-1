@@ -431,6 +431,7 @@
 		DBADDE392438DD6600BFD806 /* CoinExchangeAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBADDE352438DD6600BFD806 /* CoinExchangeAssembly.swift */; };
 		DBADDE3C2438DEED00BFD806 /* CoinExchangeFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBADDE3B2438DEED00BFD806 /* CoinExchangeFormView.swift */; };
 		DBADDE3E2438E42100BFD806 /* CoinExchangeStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBADDE3D2438E42100BFD806 /* CoinExchangeStore.swift */; };
+		DBAEA6CD24D9E7EB004001C9 /* InfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBAEA6CC24D9E7EB004001C9 /* InfoView.swift */; };
 		DBB5B38F22E0CD5800222640 /* BTMCoin.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBB5B38E22E0CD5800222640 /* BTMCoin.swift */; };
 		DBB5B39122E1A59000222640 /* FilterCoinsUsecase.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBB5B39022E1A59000222640 /* FilterCoinsUsecase.swift */; };
 		DBBD06E12369FEDB0096B674 /* PreSubmitResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBBD06E02369FEDB0096B674 /* PreSubmitResponse.swift */; };
@@ -959,6 +960,7 @@
 		DBADDE352438DD6600BFD806 /* CoinExchangeAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinExchangeAssembly.swift; sourceTree = "<group>"; };
 		DBADDE3B2438DEED00BFD806 /* CoinExchangeFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinExchangeFormView.swift; sourceTree = "<group>"; };
 		DBADDE3D2438E42100BFD806 /* CoinExchangeStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinExchangeStore.swift; sourceTree = "<group>"; };
+		DBAEA6CC24D9E7EB004001C9 /* InfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoView.swift; sourceTree = "<group>"; };
 		DBAF8B192494E64B008322E7 /* Database_v1.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Database_v1.xcdatamodel; sourceTree = "<group>"; };
 		DBB5B38E22E0CD5800222640 /* BTMCoin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTMCoin.swift; sourceTree = "<group>"; };
 		DBB5B39022E1A59000222640 /* FilterCoinsUsecase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterCoinsUsecase.swift; sourceTree = "<group>"; };
@@ -1219,6 +1221,7 @@
 				DB0AD1D524BA1F4C00806282 /* PasswordTextField.swift */,
 				DB0AD1D924BA2C1F00806282 /* RootScrollView.swift */,
 				DB9D3EA422C13078008DC600 /* TermsAndConditionsView.swift */,
+				DBAEA6CC24D9E7EB004001C9 /* InfoView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -3302,6 +3305,7 @@
 				DB96173D22C7B57F0078E92D /* CoinType+Extensions.swift in Sources */,
 				DB96169D22C5FABC0078E92D /* SeedPhraseModule.swift in Sources */,
 				DB8D408522C3DBF200D5FBD0 /* CreateWalletViewController.swift in Sources */,
+				DBAEA6CD24D9E7EB004001C9 /* InfoView.swift in Sources */,
 				DBA6845922E45B600079429E /* SettingsAssembly.swift in Sources */,
 				DB8D409122C3E89C00D5FBD0 /* RootFlow.swift in Sources */,
 				DB33E9BA241CF75000764BF5 /* UILabel+Extensions.swift in Sources */,
@@ -3660,7 +3664,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 57;
+				CURRENT_PROJECT_VERSION = 59;
 				DEVELOPMENT_TEAM = 2RUJ559RK4;
 				INFOPLIST_FILE = batm/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -3684,7 +3688,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 57;
+				CURRENT_PROJECT_VERSION = 59;
 				DEVELOPMENT_TEAM = 2RUJ559RK4;
 				INFOPLIST_FILE = batm/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;

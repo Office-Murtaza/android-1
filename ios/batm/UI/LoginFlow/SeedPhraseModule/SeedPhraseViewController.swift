@@ -10,20 +10,10 @@ class SeedPhraseViewController: ModuleViewController<SeedPhrasePresenter> {
   
   let errorView = ErrorView()
   
-  let annotationLabel: UILabel = {
-    let paragraphStyle = NSMutableParagraphStyle()
-    paragraphStyle.lineSpacing = 10
-    
-    let text = localize(L.SeedPhrase.annotation)
-    let attributedString = NSAttributedString(string: text, attributes: [.foregroundColor: UIColor.warmGrey,
-                                                                         .font: UIFont.systemFont(ofSize: 16),
-                                                                         .paragraphStyle: paragraphStyle])
-  
-    let label = UILabel()
-    label.attributedText = attributedString
-    label.textAlignment = .center
-    label.numberOfLines = 2
-    return label
+  let infoView: InfoView = {
+    let view = InfoView()
+    view.setup(with: localize(L.SeedPhrase.annotation))
+    return view
   }()
   
   let formView = SeedPhraseFormView()
@@ -41,7 +31,7 @@ class SeedPhraseViewController: ModuleViewController<SeedPhrasePresenter> {
     
     rootScrollView.contentInsetAdjustmentBehavior = .never
     rootScrollView.contentView.addSubviews(errorView,
-                                           annotationLabel,
+                                           infoView,
                                            formView,
                                            copyButton,
                                            nextButton)
@@ -61,14 +51,12 @@ class SeedPhraseViewController: ModuleViewController<SeedPhrasePresenter> {
       $0.top.equalToSuperview().offset(5)
       $0.centerX.equalToSuperview()
     }
-    annotationLabel.snp.makeConstraints {
+    infoView.snp.makeConstraints {
       $0.top.equalToSuperview().offset(30)
-      $0.centerX.equalToSuperview()
-      $0.left.greaterThanOrEqualToSuperview().offset(70)
-      $0.right.lessThanOrEqualToSuperview().offset(-70)
+      $0.left.right.equalToSuperview().inset(15)
     }
     formView.snp.makeConstraints {
-      $0.top.equalTo(annotationLabel.snp.bottom).offset(5)
+      $0.top.equalTo(infoView.snp.bottom).offset(5)
       $0.left.right.equalToSuperview().inset(15)
     }
     copyButton.snp.makeConstraints {
