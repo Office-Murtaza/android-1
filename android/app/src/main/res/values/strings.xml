@@ -103,7 +103,7 @@
 
     <!-- Create Seed Screen-->
     <string name="create_seed_screen_title">Seed phrase</string>
-    <string name="create_seed_screen_description">If you lost your seed phrase you would\nnot be able to recover your wallet</string>
+    <string name="create_seed_screen_description">If you lost your seed phrase you would not be able to recover your wallet</string>
     <string name="create_seed_screen_seed_phrase_copied">Seed phrase copied</string>
     <!--    <string name="create_seed_screen_"></string>-->
 
