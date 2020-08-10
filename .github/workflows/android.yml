@@ -1,9 +1,6 @@
 name: Android CI
 
-on:
-  push:
-    branches:
-      - dev
+on: push
 
 jobs:
   build:
@@ -26,6 +23,6 @@ jobs:
         uses: wzieba/Firebase-Distribution-Github-Action@v1
         with:
           appId: "1:1081646718412:android:27a7afdf467fb362ef9169"
-          token: "1//0cyZChbd5pVhgCgYIARAAGAwSNQF-L9IrUx4NJuRsrsFiVI0TdliPuOx__30HKclGxK3jS1hi1iDDn58PrcD5NnFKhRoOo0ed"
+          token: "1//0c04dNO5p2YAhCgYIARAAGAwSNQF-L9Iri0u9JtpVmVAJIFR8y3pahZ_wreApzolGja_uiG4inSG3hjPxHTdy2rUTmveuHyXf"
           groups: testers
           file: ${{ env.working-directory }}/app/build/outputs/apk/dev/debug/app-dev-debug.apk
