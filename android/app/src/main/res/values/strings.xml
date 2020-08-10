@@ -103,7 +103,7 @@
 
     <!-- Create Seed Screen-->
     <string name="create_seed_screen_title">Seed phrase</string>
-    <string name="create_seed_screen_description">If you lost your seed phrase you would\nnot be able to recover your wallet</string>
+    <string name="create_seed_screen_description">If you lost your seed phrase you would not be able to recover your wallet</string>
     <string name="create_seed_screen_seed_phrase_copied">Seed phrase copied</string>
     <!--    <string name="create_seed_screen_"></string>-->
 
@@ -428,7 +428,7 @@
     <string name="update_pass_action">Update</string>
 
     //unlink
-    <string name="unlink_text_top">Make sure you stored your credentials and seed phrase before unlinking the wallet, otherwise, you will lose all assets</string>
+    <string name="unlink_text_top">Please, make sure you have stored your credentials and seed phrase before unlinking the wallet. Otherwise, you may lose all assets</string>
 
     //verification
     <string name="verification_limit">In order to increase daily limit to 3000 USD, please upload a copy of your driver license.</string>

@@ -1,5 +1,6 @@
 package com.app.belcobtm.presentation.features.settings.update_password
 
+import android.view.View
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.observe
 import com.app.belcobtm.R
@@ -11,6 +12,9 @@ import org.koin.android.viewmodel.ext.android.viewModel
 class UpdatePasswordFragment : BaseFragment() {
     val viewModel by viewModel<UpdatePasswordViewModel>()
     private var appliedState: LoadingData<UpdatePasswordState>? = null
+    override val retryListener = View.OnClickListener {
+        viewModel.onNextClick()
+    }
 
     override val resourceLayout = R.layout.fragment_update_password
     override val isHomeButtonEnabled = true
@@ -35,44 +39,43 @@ class UpdatePasswordFragment : BaseFragment() {
     }
 
     override fun initObservers() {
-        viewModel.stateData.observe(this) {state ->
-            when (state) {
-                is LoadingData.Loading -> showLoading()
-                is LoadingData.Error -> showError(R.string.error_something_went_wrong)
-                is LoadingData.Success -> {
-                    state.doIfChanged(appliedState) {
-                        showContent()
-                    }
-                    state.data.isOldPasswordError.doIfChanged(appliedState?.commonData?.isOldPasswordError, {
-                        with (oldPasswordContainerView) {
-                            isErrorEnabled = it
-                            if (it) {
-                                error = getString(R.string.password_doesnt_match)
-                            }
-                        }
-                    })
-                    state.data.isOldPasswordError.doIfChanged(appliedState?.commonData?.isOldPasswordError, {
-                        with (oldPasswordContainerView) {
-                            isErrorEnabled = it
-                            if (it) {
-                                error = getString(R.string.password_doesnt_match)
-                            }
-                        }
-                    })
-                    state.data.isNewPasswordMatches.doIfChanged(appliedState?.commonData?.isNewPasswordMatches, {
-                        with (newPasswordConfirmContainerView) {
-                            isErrorEnabled = !it
-                            if (!it) {
-                                error = getString(R.string.password_confirm_not_match)
-                            }
-                        }
-                    })
-                    state.data.isNextButtonEnabled.doIfChanged(appliedState?.commonData?.isNextButtonEnabled, {
-                        nextButton.isEnabled = it
-                    })
+        viewModel.stateData.listen(
+            success = { state ->
+                state.doIfChanged(appliedState) {
+                    showContent()
                 }
+                state.isOldPasswordError.doIfChanged(appliedState?.commonData?.isOldPasswordError, {
+                    with (oldPasswordContainerView) {
+                        isErrorEnabled = it
+                        if (it) {
+                            error = getString(R.string.password_doesnt_match)
+                        }
+                    }
+                })
+                state.isOldPasswordError.doIfChanged(appliedState?.commonData?.isOldPasswordError, {
+                    with (oldPasswordContainerView) {
+                        isErrorEnabled = it
+                        if (it) {
+                            error = getString(R.string.password_doesnt_match)
+                        }
+                    }
+                })
+                state.isNewPasswordMatches.doIfChanged(appliedState?.commonData?.isNewPasswordMatches, {
+                    with (newPasswordConfirmContainerView) {
+                        isErrorEnabled = !it
+                        if (!it) {
+                            error = getString(R.string.password_confirm_not_match)
+                        }
+                    }
+                })
+                state.isNextButtonEnabled.doIfChanged(appliedState?.commonData?.isNextButtonEnabled, {
+                    nextButton.isEnabled = it
+                })
+            },
+            onUpdate = {
+                appliedState = it
             }
-        }
+        )
         viewModel.actionData.observe(this) {action ->
             when (action) {
                 is UpdatePasswordAction.Success -> {

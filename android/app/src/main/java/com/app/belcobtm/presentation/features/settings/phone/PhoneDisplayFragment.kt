@@ -1,5 +1,6 @@
 package com.app.belcobtm.presentation.features.settings.phone
 
+import android.view.View
 import androidx.lifecycle.observe
 import com.app.belcobtm.R
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
@@ -12,6 +13,9 @@ class PhoneDisplayFragment : BaseFragment() {
     val viewModel by viewModel<PhoneDisplayViewModel>()
     private var appliedState: LoadingData<PhoneDisplayState>? = null
     override val resourceLayout = R.layout.fragment_display_phone
+    override val retryListener = View.OnClickListener {
+        viewModel.getPhone()
+    }
 
     override val isHomeButtonEnabled = true
 
@@ -31,27 +35,26 @@ class PhoneDisplayFragment : BaseFragment() {
     }
 
     override fun initObservers() {
-        viewModel.stateData.observe(this) { state ->
-            when (state) {
-                is LoadingData.Loading -> showLoading()
-                is LoadingData.Error -> showError(R.string.error_something_went_wrong)
-                is LoadingData.Success -> {
-                    state.doIfChanged(appliedState) {
-                        showContent()
-                    }
-                    state.data.phone.doIfChanged((appliedState)?.commonData?.phone) {
-                        phoneNumber.text = it
-                    }
-                    state.data.isNextButtonEnabled.doIfChanged((appliedState)?.commonData?.isNextButtonEnabled) {
-                        nextButton.isEnabled = it
-                    }
+        viewModel.stateData.listen(
+            success = { state ->
+                state.doIfChanged(appliedState) {
+                    showContent()
                 }
+                state.phone.doIfChanged((appliedState)?.commonData?.phone) {
+                    phoneNumber.text = it
+                }
+                state.isNextButtonEnabled.doIfChanged((appliedState)?.commonData?.isNextButtonEnabled) {
+                    nextButton.isEnabled = it
+                }
+            },
+            onUpdate = {
+                appliedState = it
             }
-        }
+        )
     }
 
     override fun popBackStack(): Boolean {
-        getNavController()?.navigate(PhoneDisplayFragmentDirections.phoneDisplayToSettingsFragment(SETTINGS_SECURITY))
+        navigate(PhoneDisplayFragmentDirections.phoneDisplayToSettingsFragment(SETTINGS_SECURITY))
         return true
     }
 }

@@ -3,6 +3,8 @@ package com.app.belcobtm.presentation.features.settings.update_password
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.app.belcobtm.domain.settings.interactor.ChangePassUseCase
+import com.app.belcobtm.presentation.core.Const.MAX_PASS
+import com.app.belcobtm.presentation.core.Const.MIN_PASS
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
 
 class UpdatePasswordViewModel(
@@ -74,7 +76,7 @@ class UpdatePasswordViewModel(
 
     private fun isButtonEnabled(): Boolean {
         return oldPass.isNotEmpty()
-                && newPass.isNotEmpty()
+                && newPass.length in MIN_PASS..MAX_PASS
                 && newPassConfirm.isNotEmpty()
                 && newPass == newPassConfirm
     }

@@ -1,5 +1,6 @@
 package com.app.belcobtm.presentation.features.settings.unlink
 
+import android.view.View
 import androidx.lifecycle.observe
 import com.app.belcobtm.R
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
@@ -12,6 +13,9 @@ import org.koin.android.viewmodel.ext.android.viewModel
 
 class UnlinkFragment : BaseFragment() {
     val viewModel by viewModel<UnlinkViewModel>()
+    override val retryListener = View.OnClickListener {
+        viewModel.unlink()
+    }
 
     override val resourceLayout = R.layout.fragment_unlink
 
@@ -35,17 +39,10 @@ class UnlinkFragment : BaseFragment() {
     }
 
     override fun initObservers() {
-        viewModel.actionData.observe(this) { action ->
-            when (action) {
-                is LoadingData.Loading -> showLoading()
-                is LoadingData.Error -> {
-                    showContent()
-                    showError(R.string.error_something_went_wrong)
-                }
-                is LoadingData.Success -> {
-                    (requireActivity() as? HostActivity)?.showAuthorizationScreen()
-                }
+        viewModel.actionData.listen(
+            success = {
+                (requireActivity() as? HostActivity)?.showAuthorizationScreen()
             }
-        }
+        )
     }
 }
