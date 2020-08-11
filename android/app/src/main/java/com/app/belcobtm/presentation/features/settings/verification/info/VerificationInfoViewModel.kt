@@ -1,6 +1,5 @@
 package com.app.belcobtm.presentation.features.settings.verification.info
 
-import androidx.core.content.ContextCompat
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavDirections
@@ -31,7 +30,8 @@ class VerificationInfoViewModel(
                         statusTextCode = it.status.code,
                         txLimit = it.txLimit.toString(),
                         dailyLimit = it.dayLimit.toString(),
-                        isButtonEnabled = isButtonEnabled(it)
+                        isButtonEnabled = isButtonEnabled(it),
+                        message = it.message
                     )
                 )
             },
@@ -104,7 +104,8 @@ data class VerificationInfoState(
     val statusTextCode: Int = 0,
     val txLimit: String = "",
     val dailyLimit: String = "",
-    val isButtonEnabled: Boolean = false
+    val isButtonEnabled: Boolean = false,
+    val message: String = ""
 )
 
 sealed class VerificationInfoAction {

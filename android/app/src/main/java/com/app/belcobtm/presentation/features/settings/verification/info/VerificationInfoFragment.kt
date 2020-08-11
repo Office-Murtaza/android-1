@@ -5,6 +5,7 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.observe
 import com.app.belcobtm.R
 import com.app.belcobtm.domain.Failure
+import com.app.belcobtm.presentation.core.extensions.toggle
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
 import com.app.belcobtm.presentation.core.ui.fragment.BaseFragment
 import com.app.belcobtm.presentation.features.settings.SettingsFragment.Companion.SETTINGS_MAIN
@@ -19,7 +20,7 @@ class VerificationInfoFragment: BaseFragment() {
     private var appliedState: LoadingData<VerificationInfoState>? = null
 
     override fun initViews() {
-        super.initViews()
+        appliedState = null
         setToolbarTitle(R.string.kyc_label)
         viewModel.updateData()
     }
@@ -65,6 +66,10 @@ class VerificationInfoFragment: BaseFragment() {
                         shape.setColor(ContextCompat.getColor(requireContext(), it.second))
                         statusValueView.setTextColor(ContextCompat.getColor(requireContext(), it.first))
                         statusValueView.background = shape
+                    }
+                    state.data.message.doIfChanged((appliedState as? LoadingData.Success<VerificationInfoState>)?.data?.message) {
+                        messageView.toggle(it.isNotEmpty())
+                        messageViewText.text = it
                     }
                 }
                 is LoadingData.Loading -> {

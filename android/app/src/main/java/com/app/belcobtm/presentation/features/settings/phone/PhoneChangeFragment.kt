@@ -20,6 +20,7 @@ class PhoneChangeFragment : BaseFragment() {
         viewModel.onNextClick()
     }
     override fun initViews() {
+        appliedState = null
         setToolbarTitle(R.string.update_phone_label)
     }
 

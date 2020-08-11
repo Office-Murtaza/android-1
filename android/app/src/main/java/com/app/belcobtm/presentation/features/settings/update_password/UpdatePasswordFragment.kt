@@ -20,6 +20,7 @@ class UpdatePasswordFragment : BaseFragment() {
     override val isHomeButtonEnabled = true
 
     override fun initViews() {
+        appliedState = null
         setToolbarTitle(R.string.update_pass_label)
     }
 

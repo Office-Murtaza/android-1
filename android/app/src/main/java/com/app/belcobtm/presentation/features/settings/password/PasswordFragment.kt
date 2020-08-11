@@ -25,6 +25,7 @@ class PasswordFragment : BaseFragment() {
     override val isHomeButtonEnabled = true
 
     override fun initViews() {
+        appliedState = null
         setToolbarTitle(args.title)
         viewModel.passArgs(args)
     }
@@ -68,6 +69,10 @@ class PasswordFragment : BaseFragment() {
                 is PasswordAction.NavigateAction -> {
                     showContent()
                     navigate(action.navDirections)
+                }
+                is PasswordAction.BackStackAction -> {
+                    showContent()
+                    getNavController()?.popBackStack()
                 }
             }
         })

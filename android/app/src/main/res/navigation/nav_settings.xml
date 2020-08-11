@@ -51,6 +51,14 @@
             app:popEnterAnim="@anim/slide_from_left"
             app:popExitAnim="@anim/slide_to_right" />
 
+        <action
+            android:id="@+id/settings_to_unlink"
+            app:destination="@id/unlink_fragment"
+            app:enterAnim="@anim/slide_from_right"
+            app:exitAnim="@anim/slide_to_left"
+            app:popEnterAnim="@anim/slide_from_left"
+            app:popExitAnim="@anim/slide_to_right" />
+
         <argument
             android:name="view_flipper_value"
             android:defaultValue="0"
@@ -79,16 +87,6 @@
             app:exitAnim="@anim/slide_to_left"
             app:popEnterAnim="@anim/slide_from_left"
             app:popExitAnim="@anim/slide_to_right" />
-
-        <action
-            android:id="@+id/password_to_unlink_fragment"
-            app:destination="@id/unlink_fragment"
-            app:enterAnim="@anim/slide_from_right"
-            app:exitAnim="@anim/slide_to_left"
-            app:popEnterAnim="@anim/slide_from_left"
-            app:popExitAnim="@anim/slide_to_right"
-            app:popUpTo="@id/settings_fragment"
-            app:popUpToInclusive="true" />
 
         <action
             android:id="@+id/password_to_settings_fragment"

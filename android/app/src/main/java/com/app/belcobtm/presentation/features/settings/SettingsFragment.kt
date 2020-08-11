@@ -30,6 +30,7 @@ class SettingsFragment : BaseFragment() {
     }
 
     override fun initViews() {
+        appliedState = null
         setToolbarTitle(R.string.settings)
         viewModel.processArgs(settingsArgs)
     }

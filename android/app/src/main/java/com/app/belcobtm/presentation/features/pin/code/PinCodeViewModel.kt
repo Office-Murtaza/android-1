@@ -166,7 +166,7 @@ class PinCodeViewModel(
             visiblePin = currentPin,
             labelResource = getTitleRes(),
             isError = isError,
-            backButtonVisible = step == STEP_CONFIRM
+            backButtonVisible = step == STEP_CONFIRM || (step == STEP_CREATE && mode == KEY_PIN_MODE_CHANGE)
         ) ?: PinCodeState()
     }
 
