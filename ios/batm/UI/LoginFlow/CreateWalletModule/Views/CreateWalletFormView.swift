@@ -64,4 +64,19 @@ extension Reactive where Base == CreateWalletFormView {
   var confirmPasswordText: ControlProperty<String?> {
     return base.confirmPasswordTextField.rx.text
   }
+  var phoneNumberErrorText: Binder<String?> {
+    return Binder(base) { target, value in
+      target.phoneNumberTextFieldController.setErrorText(value, errorAccessibilityValue: value)
+    }
+  }
+  var passwordErrorText: Binder<String?> {
+    return Binder(base) { target, value in
+      target.passwordTextFieldController.setErrorText(value, errorAccessibilityValue: value)
+    }
+  }
+  var confirmPasswordErrorText: Binder<String?> {
+    return Binder(base) { target, value in
+      target.confirmPasswordTextFieldController.setErrorText(value, errorAccessibilityValue: value)
+    }
+  }
 }

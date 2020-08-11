@@ -117,6 +117,12 @@
 		DB38281E240CF9BA00418D3D /* VIPVerificationPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB38281A240CF9BA00418D3D /* VIPVerificationPresenter.swift */; };
 		DB38281F240CF9BA00418D3D /* VIPVerificationAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB38281B240CF9BA00418D3D /* VIPVerificationAssembly.swift */; };
 		DB38683B2476CA2B0070E13E /* LocationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB38683A2476CA2B0070E13E /* LocationService.swift */; };
+		DB39DF4624E1765100468ADA /* ErrorService.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB39DF4524E1765100468ADA /* ErrorService.swift */; };
+		DB39DF4824E17C1700468ADA /* UIViewController+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB39DF4724E17C1700468ADA /* UIViewController+Extensions.swift */; };
+		DB39DF5724E17FC700468ADA /* ErrorModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB39DF5324E17FC700468ADA /* ErrorModule.swift */; };
+		DB39DF5824E17FC700468ADA /* ErrorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB39DF5424E17FC700468ADA /* ErrorViewController.swift */; };
+		DB39DF5924E17FC700468ADA /* ErrorPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB39DF5524E17FC700468ADA /* ErrorPresenter.swift */; };
+		DB39DF5A24E17FC700468ADA /* ErrorAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB39DF5624E17FC700468ADA /* ErrorAssembly.swift */; };
 		DB39FC332302DC2200FA2B5F /* RecoverSeedPhraseStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB39FC322302DC2200FA2B5F /* RecoverSeedPhraseStore.swift */; };
 		DB3C03D222CB5AA00036F779 /* RecoverModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB3C03D122CB5AA00036F779 /* RecoverModule.swift */; };
 		DB3C03D422CB5ADE0036F779 /* RecoverStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB3C03D322CB5ADE0036F779 /* RecoverStore.swift */; };
@@ -284,7 +290,6 @@
 		DB8F078A24103E8F00770643 /* PickerFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB8F078524103E8F00770643 /* PickerFlow.swift */; };
 		DB8F078D24104B2800770643 /* VerificationStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB8F078C24104B2800770643 /* VerificationStore.swift */; };
 		DB904A9E22C00E2A007CB734 /* RxFlow+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB904A9D22C00E2A007CB734 /* RxFlow+Extensions.swift */; };
-		DB904AA122C00EEA007CB734 /* UIViewController+Errors.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB904AA022C00EEA007CB734 /* UIViewController+Errors.swift */; };
 		DB904AA322C00FC7007CB734 /* UIView+MBProgressHUD.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB904AA222C00FC7007CB734 /* UIView+MBProgressHUD.swift */; };
 		DB904AA522C01189007CB734 /* WelcomePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB904AA422C01189007CB734 /* WelcomePresenter.swift */; };
 		DB904AA722C011B1007CB734 /* WelcomeModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB904AA622C011B1007CB734 /* WelcomeModule.swift */; };
@@ -647,6 +652,12 @@
 		DB38281A240CF9BA00418D3D /* VIPVerificationPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VIPVerificationPresenter.swift; sourceTree = "<group>"; };
 		DB38281B240CF9BA00418D3D /* VIPVerificationAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VIPVerificationAssembly.swift; sourceTree = "<group>"; };
 		DB38683A2476CA2B0070E13E /* LocationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationService.swift; sourceTree = "<group>"; };
+		DB39DF4524E1765100468ADA /* ErrorService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorService.swift; sourceTree = "<group>"; };
+		DB39DF4724E17C1700468ADA /* UIViewController+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extensions.swift"; sourceTree = "<group>"; };
+		DB39DF5324E17FC700468ADA /* ErrorModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorModule.swift; sourceTree = "<group>"; };
+		DB39DF5424E17FC700468ADA /* ErrorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorViewController.swift; sourceTree = "<group>"; };
+		DB39DF5524E17FC700468ADA /* ErrorPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorPresenter.swift; sourceTree = "<group>"; };
+		DB39DF5624E17FC700468ADA /* ErrorAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorAssembly.swift; sourceTree = "<group>"; };
 		DB39FC322302DC2200FA2B5F /* RecoverSeedPhraseStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecoverSeedPhraseStore.swift; sourceTree = "<group>"; };
 		DB3C03D122CB5AA00036F779 /* RecoverModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecoverModule.swift; sourceTree = "<group>"; };
 		DB3C03D322CB5ADE0036F779 /* RecoverStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecoverStore.swift; sourceTree = "<group>"; };
@@ -813,7 +824,6 @@
 		DB8F078524103E8F00770643 /* PickerFlow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PickerFlow.swift; sourceTree = "<group>"; };
 		DB8F078C24104B2800770643 /* VerificationStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerificationStore.swift; sourceTree = "<group>"; };
 		DB904A9D22C00E2A007CB734 /* RxFlow+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RxFlow+Extensions.swift"; sourceTree = "<group>"; };
-		DB904AA022C00EEA007CB734 /* UIViewController+Errors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Errors.swift"; sourceTree = "<group>"; };
 		DB904AA222C00FC7007CB734 /* UIView+MBProgressHUD.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+MBProgressHUD.swift"; sourceTree = "<group>"; };
 		DB904AA422C01189007CB734 /* WelcomePresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomePresenter.swift; sourceTree = "<group>"; };
 		DB904AA622C011B1007CB734 /* WelcomeModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeModule.swift; sourceTree = "<group>"; };
@@ -1138,6 +1148,7 @@
 		DB04E4D522D8809B000E2D85 /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				DB39DF4524E1765100468ADA /* ErrorService.swift */,
 				DB04E4D622D880B5000E2D85 /* PinCodeService.swift */,
 				DB38683A2476CA2B0070E13E /* LocationService.swift */,
 			);
@@ -1409,6 +1420,17 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
+		DB39DF5224E17FB200468ADA /* ErrorModule */ = {
+			isa = PBXGroup;
+			children = (
+				DB39DF5424E17FC700468ADA /* ErrorViewController.swift */,
+				DB39DF5524E17FC700468ADA /* ErrorPresenter.swift */,
+				DB39DF5324E17FC700468ADA /* ErrorModule.swift */,
+				DB39DF5624E17FC700468ADA /* ErrorAssembly.swift */,
+			);
+			path = ErrorModule;
+			sourceTree = "<group>";
+		};
 		DB3C03D022CB5A340036F779 /* RecoverModule */ = {
 			isa = PBXGroup;
 			children = (
@@ -1506,6 +1528,7 @@
 				DB904A9F22C00ED9007CB734 /* Extensions */,
 				DB497AFA22BFD5C4008CE4A8 /* Module */,
 				DBAD539722D7A8A70005F682 /* PinCodeModule */,
+				DB39DF5224E17FB200468ADA /* ErrorModule */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -2063,7 +2086,7 @@
 		DB904A9F22C00ED9007CB734 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				DB904AA022C00EEA007CB734 /* UIViewController+Errors.swift */,
+				DB39DF4724E17C1700468ADA /* UIViewController+Extensions.swift */,
 				DB904AA222C00FC7007CB734 /* UIView+MBProgressHUD.swift */,
 				DB9D3E9F22C0F6BA008DC600 /* UIColor+Additions.swift */,
 				DB9D3EA822C14FDB008DC600 /* UIFont+Additions.swift */,
@@ -3023,7 +3046,9 @@
 				DB66CEB62475AF2300FDB694 /* TradesUsecase.swift in Sources */,
 				DBC68CA822F868E000473247 /* EnterPasswordViewController.swift in Sources */,
 				DB0211BD22CCE48A004065E9 /* RecoverSeedPhrasePresenter.swift in Sources */,
+				DB39DF4624E1765100468ADA /* ErrorService.swift in Sources */,
 				DB167CDB230D85E800D9D66E /* Transactions.swift in Sources */,
+				DB39DF5724E17FC700468ADA /* ErrorModule.swift in Sources */,
 				DBECA62C22F7FB22002C2610 /* ChangePhoneFlowController.swift in Sources */,
 				DBA1B61024A9C5B300A9A703 /* ReserveAssembly.swift in Sources */,
 				DB8BAE0624CF53A700CA8EC1 /* ServerError.swift in Sources */,
@@ -3053,6 +3078,7 @@
 				DB2F251B2360AC9A00274C60 /* TransactionDetailsRowView.swift in Sources */,
 				DBBF299E22D3810200A5DE6A /* CoinAddress+Mapping.swift in Sources */,
 				DB1AF0E024436B5C0037C998 /* MDCTextField+Extensions.swift in Sources */,
+				DB39DF5824E17FC700468ADA /* ErrorViewController.swift in Sources */,
 				DB9616F022C74FCB0078E92D /* Executor.swift in Sources */,
 				DB04E4D222D85E92000E2D85 /* PinCodeConverter.swift in Sources */,
 				DB1743C6235E2C6300E7DACB /* SellAddress.swift in Sources */,
@@ -3147,6 +3173,7 @@
 				DB38683B2476CA2B0070E13E /* LocationService.swift in Sources */,
 				DB1D21EE24AE6F2A001E9696 /* CoinStakingModule.swift in Sources */,
 				DBD09E7523DA180C00439634 /* TransactionStatusView.swift in Sources */,
+				DB39DF5924E17FC700468ADA /* ErrorPresenter.swift in Sources */,
 				DB83661F22FAA01F00454F5C /* ShowSeedPhraseViewController.swift in Sources */,
 				DB167CD9230D85D900D9D66E /* Transaction+Mapping.swift in Sources */,
 				DB82AD2724AF1524001F833E /* CoinStakingHeaderView.swift in Sources */,
@@ -3346,6 +3373,7 @@
 				DB49463A22DF2B0C001EE56E /* FilterCoinsAssembly.swift in Sources */,
 				DB83664322FAB7E200454F5C /* ChangePinAssembly.swift in Sources */,
 				DBBF29A422D3848F00A5DE6A /* CoinBalance+Mapping.swift in Sources */,
+				DB39DF4824E17C1700468ADA /* UIViewController+Extensions.swift in Sources */,
 				DB96171522C75E950078E92D /* BTMNetworkService.swift in Sources */,
 				DB70852722CFA3EC00FFE4F7 /* CoinsBalanceViewController.swift in Sources */,
 				DB83661522FA9FCB00454F5C /* ShowSeedPhraseFlow+Dependencies.swift in Sources */,
@@ -3361,6 +3389,7 @@
 				DB49463E22DF7C0D001EE56E /* CoinsBalanceFooterView.swift in Sources */,
 				DB04E4CB22D85C50000E2D85 /* PinCodeStorage.swift in Sources */,
 				DB8D409822C3EA0400D5FBD0 /* BaseFlow.swift in Sources */,
+				DB39DF5A24E17FC700468ADA /* ErrorAssembly.swift in Sources */,
 				DB0211BB22CCE42B004065E9 /* RecoverSeedPhraseModule.swift in Sources */,
 				DB21B1F424AA63AA008444D3 /* RecallAssembly.swift in Sources */,
 				DB9D3EA722C1476F008DC600 /* WelcomeSlideView.swift in Sources */,
@@ -3450,7 +3479,6 @@
 				DBA6845522E45AAC0079429E /* SettingsPresenter.swift in Sources */,
 				DB2F250F2360687800274C60 /* CoinSellDetailsCurrentAddressAssembly.swift in Sources */,
 				DB3142C5233F41B7001E9DD6 /* BTMTronBlockHeader+Mapping.swift in Sources */,
-				DB904AA122C00EEA007CB734 /* UIViewController+Errors.swift in Sources */,
 				DB8D409622C3E9BF00D5FBD0 /* FlowController.swift in Sources */,
 				DB9616B522C63D6E0078E92D /* LoginUsecase.swift in Sources */,
 				DB1AF0DE24436B4A0037C998 /* MDCButton+Extensions.swift in Sources */,

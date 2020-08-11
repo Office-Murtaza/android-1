@@ -75,9 +75,11 @@ class CreateWalletPresenter: ModulePresenter, CreateWalletModule {
     return usecase.checkCreatingAccount(phoneNumber: phoneNumber, password: password)
       .catchError { [store] in
         if let apiError = $0 as? APIError, case let .serverError(error) = apiError {
-          store.action.accept(.makeInvalidState(error.message))
+          if error.code == 2 {
+            store.action.accept(.updatePhoneNumberError(error.message))
+          }
         }
-
+        
         throw $0
       }
   }

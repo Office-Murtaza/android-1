@@ -33,11 +33,13 @@ final class AppAssembly: Assembly {
       let logoutUsecase = ioc.resolve(LogoutUsecase.self)!
       let pinCodeService = ioc.resolve(PinCodeService.self)!
       let refreshCredentialsService = ioc.resolve(RefreshCredentialsService.self)!
+      let errorService = ioc.resolve(ErrorService.self)!
       return BTMNetworkService(networkService: network,
                                accountStorage: accountStorage,
                                logoutUsecase: logoutUsecase,
                                pinCodeService: pinCodeService,
-                               refreshCredentialsService: refreshCredentialsService)
+                               refreshCredentialsService: refreshCredentialsService,
+                               errorService: errorService)
       }
       .inObjectScope(.transient)
     container.register(RefreshCredentialsService.self) { ioc in
@@ -181,6 +183,12 @@ final class AppAssembly: Assembly {
       }
       .inObjectScope(.container)
       .implements(PinCodeVerificationModuleDelegate.self)
+    container.register(ErrorService.self) { ioc in
+      let getModule = { return ioc.resolve(Module<ErrorModule>.self)! }
+      return ErrorServiceImpl(getModule: getModule)
+      }
+      .inObjectScope(.container)
+      .implements(ErrorModuleDelegate.self)
     container.register(LocationService.self) { ioc in
       let api = ioc.resolve(APIGateway.self)!
       let accountStorage = ioc.resolve(AccountStorage.self)!
