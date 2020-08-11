@@ -94,10 +94,7 @@ class SettingsViewModel(val appContext: Context, val intentActions: IntentAction
             }
             SecurityItems.UNLINK -> {
                 actionData.value = SettingsAction.NavigateAction(
-                    SettingsFragmentDirections.toPassword(
-                        R.id.password_to_unlink_fragment,
-                        R.string.unlink_wallet_label
-                    )
+                    SettingsFragmentDirections.settingsToUnlink()
                 )
             }
         }

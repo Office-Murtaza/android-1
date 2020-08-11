@@ -38,6 +38,7 @@ class PinCodeFragment : BaseFragment() {
     private var appliedState: PinCodeState? = null
 
     override fun initViews() {
+        appliedState = null
         viewModel.setMode(pinMode)
     }
 
