@@ -13,7 +13,7 @@ import org.koin.dsl.module
 val useCaseModule = module {
     single { AuthorizationStatusGetUseCase(get()) }
     single { ClearAppDataUseCase(get()) }
-    single { AuthorizationCheckCredentialsUseCase(get()) }
+    single { AuthorizationCheckCredentialsUseCase(get(), get()) }
     single { CreateWalletUseCase(get()) }
     single { AuthorizeUseCase(get()) }
     single { GetAuthorizePinUseCase(get()) }

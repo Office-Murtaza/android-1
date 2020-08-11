@@ -12,6 +12,8 @@ import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import com.app.belcobtm.R
+import com.app.belcobtm.domain.Failure
+import com.app.belcobtm.domain.authorization.interactor.AUTH_ERROR_PHONE_NOT_SUPPORTED
 import com.app.belcobtm.presentation.core.Const
 import com.app.belcobtm.presentation.core.extensions.*
 import com.app.belcobtm.presentation.core.helper.SimpleClickableSpan
@@ -47,24 +49,33 @@ class CreateWalletFragment : BaseFragment() {
     }
 
     override fun initObservers() {
-        viewModel.checkCredentialsLiveData.listen({
-            if (it.first) {
-                phoneView.showError(R.string.create_wallet_error_phone_registered)
-            } else {
-                navigate(
-                    R.id.to_sms_code_fragment,
-                    bundleOf(
-                        SmsCodeFragment.TAG_PHONE to getPhone(),
-                        CreateSeedFragment.TAG_PASSWORD to passwordView.getString(),
-                        SmsCodeFragment.TAG_NEXT_FRAGMENT_ID to R.id.to_create_seed_fragment
+        viewModel.checkCredentialsLiveData.listen(
+            success = {
+                if (it.first) {
+                    phoneView.showError(R.string.create_wallet_error_phone_registered)
+                } else {
+                    navigate(
+                        R.id.to_sms_code_fragment,
+                        bundleOf(
+                            SmsCodeFragment.TAG_PHONE to getPhone(),
+                            CreateSeedFragment.TAG_PASSWORD to passwordView.getString(),
+                            SmsCodeFragment.TAG_NEXT_FRAGMENT_ID to R.id.to_create_seed_fragment
+                        )
                     )
-                )
-                tncCheckBoxView.isChecked = false
-                passwordView.clearText()
-                passwordConfirmView.clearError()
-                viewModel.checkCredentialsLiveData.value = null
-            }
-        })
+                    tncCheckBoxView.isChecked = false
+                    passwordView.clearText()
+                    passwordConfirmView.clearError()
+                    viewModel.checkCredentialsLiveData.value = null
+                }
+            },
+            error = {
+                when ((it as? Failure.MessageError)?.code) {
+                    AUTH_ERROR_PHONE_NOT_SUPPORTED -> {
+                       phoneView.showError(R.string.not_supported_phone)
+                    }
+                    else -> baseErrorHandler(it)
+                }
+            })
     }
 
     private fun initTncView() {

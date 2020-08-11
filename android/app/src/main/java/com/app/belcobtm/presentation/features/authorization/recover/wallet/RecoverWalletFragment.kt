@@ -4,13 +4,20 @@ import android.telephony.PhoneNumberFormattingTextWatcher
 import android.view.View
 import androidx.core.os.bundleOf
 import com.app.belcobtm.R
+import com.app.belcobtm.domain.Failure
+import com.app.belcobtm.domain.authorization.interactor.AUTH_ERROR_PHONE_NOT_SUPPORTED
 import com.app.belcobtm.presentation.core.extensions.*
 import com.app.belcobtm.presentation.core.ui.fragment.BaseFragment
 import com.app.belcobtm.presentation.features.authorization.recover.seed.RecoverSeedFragment
 import com.app.belcobtm.presentation.features.sms.code.SmsCodeFragment
 import io.michaelrocks.libphonenumber.android.NumberParseException
 import io.michaelrocks.libphonenumber.android.PhoneNumberUtil
+import kotlinx.android.synthetic.main.fragment_create_wallet.*
 import kotlinx.android.synthetic.main.fragment_recover_wallet.*
+import kotlinx.android.synthetic.main.fragment_recover_wallet.nextButtonView
+import kotlinx.android.synthetic.main.fragment_recover_wallet.passwordView
+import kotlinx.android.synthetic.main.fragment_recover_wallet.phoneEditView
+import kotlinx.android.synthetic.main.fragment_recover_wallet.phoneView
 import org.koin.android.viewmodel.ext.android.viewModel
 
 
@@ -44,7 +51,7 @@ class RecoverWalletFragment : BaseFragment() {
     }
 
     override fun initObservers() {
-        viewModel.checkCredentialsLiveData.listen({
+        viewModel.checkCredentialsLiveData.listen(success = {
             var isValid = true
 
             if (!it.first) {
@@ -73,7 +80,15 @@ class RecoverWalletFragment : BaseFragment() {
                 passwordView.clearText()
                 viewModel.checkCredentialsLiveData.value = null
             }
-        })
+        },
+            error = {
+                when ((it as? Failure.MessageError)?.code) {
+                    AUTH_ERROR_PHONE_NOT_SUPPORTED -> {
+                        phoneView.showError(R.string.not_supported_phone)
+                    }
+                    else -> baseErrorHandler(it)
+                }
+            })
     }
 
     private fun isValidFields(phone: String, password: String): Boolean {
