@@ -4,6 +4,8 @@ import android.view.View
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.observe
 import com.app.belcobtm.R
+import com.app.belcobtm.domain.Failure
+import com.app.belcobtm.domain.settings.interactor.CHANGE_PASS_ERROR_OLD_PASS
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
 import com.app.belcobtm.presentation.core.ui.fragment.BaseFragment
 import com.app.belcobtm.presentation.features.settings.SettingsFragment.Companion.SETTINGS_SECURITY
@@ -50,15 +52,7 @@ class UpdatePasswordFragment : BaseFragment() {
                     with (oldPasswordContainerView) {
                         isErrorEnabled = it
                         if (it) {
-                            error = getString(R.string.password_doesnt_match)
-                        }
-                    }
-                })
-                state.isOldPasswordError.doIfChanged(appliedState?.commonData?.isOldPasswordError, {
-                    with (oldPasswordContainerView) {
-                        isErrorEnabled = it
-                        if (it) {
-                            error = getString(R.string.password_doesnt_match)
+                            error = getString(R.string.old_password_doesnt_match)
                         }
                     }
                 })

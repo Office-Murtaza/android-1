@@ -434,4 +434,7 @@
     <string name="verification_limit">In order to increase daily limit to 3000 USD, please upload a copy of your driver license.</string>
     <string name="verify_label">Verify</string>
     <string name="vip_verify_label">VIP Verify</string>
+
+    //error validation
+    <string name="old_password_doesnt_match">Old passwords doesn\'t match</string>
 </resources>

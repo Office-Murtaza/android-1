@@ -2,6 +2,8 @@ package com.app.belcobtm.presentation.features.settings.update_password
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.app.belcobtm.domain.Failure
+import com.app.belcobtm.domain.settings.interactor.CHANGE_PASS_ERROR_OLD_PASS
 import com.app.belcobtm.domain.settings.interactor.ChangePassUseCase
 import com.app.belcobtm.presentation.core.Const.MAX_PASS
 import com.app.belcobtm.presentation.core.Const.MIN_PASS
@@ -69,7 +71,11 @@ class UpdatePasswordViewModel(
                 }
             },
             onError = {
-                stateData.value = LoadingData.Error(data = stateData.value?.commonData)
+                if (it is Failure.MessageError && it.code == CHANGE_PASS_ERROR_OLD_PASS) {
+                    stateData.value = LoadingData.Success(stateData.value?.commonData?.copy(isOldPasswordError = true)?: UpdatePasswordState(isOldPasswordError = true))
+                } else {
+                    stateData.value = LoadingData.Error(data = stateData.value?.commonData, errorType = it)
+                }
             }
         )
     }
