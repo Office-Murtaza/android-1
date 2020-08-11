@@ -96,7 +96,7 @@ class PinCodeViewModel(
         currentPin = ""
         enteredPin = ""
         isError = false
-        step = STEP_CREATE
+        step--
         updateState()
     }
 
