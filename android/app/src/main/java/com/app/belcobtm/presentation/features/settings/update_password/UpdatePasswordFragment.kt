@@ -6,6 +6,7 @@ import androidx.lifecycle.observe
 import com.app.belcobtm.R
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
 import com.app.belcobtm.presentation.core.ui.fragment.BaseFragment
+import com.app.belcobtm.presentation.features.settings.SettingsFragment.Companion.SETTINGS_SECURITY
 import kotlinx.android.synthetic.main.fragment_update_password.*
 import org.koin.android.viewmodel.ext.android.viewModel
 
@@ -85,5 +86,10 @@ class UpdatePasswordFragment : BaseFragment() {
                 }
             }
         }
+    }
+
+    override fun popBackStack(): Boolean {
+        navigate(UpdatePasswordFragmentDirections.updateToSettingsFragment(SETTINGS_SECURITY))
+        return true
     }
 }
