@@ -208,6 +208,15 @@ final class AppAssembly: Assembly {
       
       return Module<PinCodeModule>(controller: viewController, input: presenter)
     }
+    container.register(Module<ErrorModule>.self) { resolver in
+      let viewController = ErrorViewController()
+      let presenter = ErrorPresenter()
+      
+      presenter.delegate = resolver.resolve(ErrorModuleDelegate.self)
+      viewController.presenter = presenter
+      
+      return Module<ErrorModule>(controller: viewController, input: presenter)
+    }
   }
 }
 // swiftlint:enable type_body_length

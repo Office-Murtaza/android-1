@@ -1,7 +1,7 @@
 import Moya
 import TrustWalletCore
 
-struct RefreshTokenRequest: APIRequest {
+struct RefreshTokenRequest: RetriableAPIRequest {
   typealias ResponseType = APIResponse<Account>
   typealias ResponseTrait = SingleResponseTrait
   
@@ -15,7 +15,7 @@ struct RefreshTokenRequest: APIRequest {
   }
 }
 
-struct CheckAccountRequest: APIRequest {
+struct CheckAccountRequest: RetriableAPIRequest {
   typealias ResponseType = APIResponse<CheckAccountResponse>
   typealias ResponseTrait = SingleResponseTrait
   
@@ -45,7 +45,7 @@ struct PhoneVerificationRequest: AuthorizedAPIRequest {
   }
 }
 
-struct CreateAccountRequest: APIRequest {
+struct CreateAccountRequest: RetriableAPIRequest {
   typealias ResponseType = APIResponse<Account>
   typealias ResponseTrait = SingleResponseTrait
   
@@ -64,7 +64,7 @@ struct CreateAccountRequest: APIRequest {
   }
 }
 
-struct RecoverWalletRequest: APIRequest {
+struct RecoverWalletRequest: RetriableAPIRequest {
   typealias ResponseType = APIResponse<Account>
   typealias ResponseTrait = SingleResponseTrait
   

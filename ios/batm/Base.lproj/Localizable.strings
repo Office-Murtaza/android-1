@@ -300,10 +300,10 @@
 "coin_staking.button.unstake" = "Unstake";
 
 "error.server_error.title" = "Server Error";
-"error.server_error.subtitle" = "Our server goes down. Please, try again later.";
+"error.server_error.subtitle" = "Our server goes down. Please,\ntry again later.";
 
 "error.something_went_wrong.title" = "Something went wrong";
-"error.something_went_wrong.subtitle" = "Our app runs into an issue. Please, try again later.";
+"error.something_went_wrong.subtitle" = "Our app runs into an issue. Please,\ntry again later.";
 
 "error.no_connection.title" = "No internet connection";
 "error.no_connection.subtitle" = "Connect to WiFi or turn on mobile data.";
