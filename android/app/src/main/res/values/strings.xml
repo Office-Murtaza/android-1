@@ -438,4 +438,5 @@
     //error validation
     <string name="old_password_doesnt_match">Old passwords doesn\'t match</string>
     <string name="not_supported_phone">Not supported phone number</string>
+    <string name="phone_is_already_used">Phone is already used</string>
 </resources>
