@@ -12,8 +12,6 @@ import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import com.app.belcobtm.R
-import com.app.belcobtm.domain.Failure
-import com.app.belcobtm.domain.authorization.interactor.AUTH_ERROR_PHONE_NOT_SUPPORTED
 import com.app.belcobtm.presentation.core.Const
 import com.app.belcobtm.presentation.core.extensions.*
 import com.app.belcobtm.presentation.core.helper.SimpleClickableSpan
@@ -66,14 +64,6 @@ class CreateWalletFragment : BaseFragment() {
                     passwordView.clearText()
                     passwordConfirmView.clearError()
                     viewModel.checkCredentialsLiveData.value = null
-                }
-            },
-            error = {
-                when ((it as? Failure.MessageError)?.code) {
-                    AUTH_ERROR_PHONE_NOT_SUPPORTED -> {
-                       phoneView.showError(R.string.not_supported_phone)
-                    }
-                    else -> baseErrorHandler(it)
                 }
             })
     }

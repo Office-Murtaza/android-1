@@ -3,6 +3,7 @@ package com.app.belcobtm.presentation.features.sms.code
 import android.view.View
 import com.app.belcobtm.R
 import com.app.belcobtm.domain.Failure
+import com.app.belcobtm.domain.authorization.interactor.AUTH_ERROR_PHONE_NOT_SUPPORTED
 import com.app.belcobtm.presentation.core.extensions.*
 import com.app.belcobtm.presentation.core.helper.AlertHelper
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
@@ -41,6 +42,7 @@ class SmsCodeFragment : BaseFragment() {
     override fun initObservers() {
         viewModel.smsLiveData.listen(
             success = {
+                errorTextView.hide()
                 if (isResendClicked) {
                     showResendDialog()
                 }
@@ -52,8 +54,12 @@ class SmsCodeFragment : BaseFragment() {
                 when (it) {
                     is Failure.NetworkConnection -> showErrorNoInternetConnection()
                     is Failure.MessageError -> {
-                        showSnackBar(it.message ?: "")
-                        showContent()
+                        if (it.code == AUTH_ERROR_PHONE_NOT_SUPPORTED) {
+                            errorTextView.show()
+                        } else {
+                            showSnackBar(it.message ?: "")
+                            showContent()
+                        }
                     }
                     is Failure.ServerError -> if (it.message.equals("No value for errorMsg", true)) {
                         showSnackBar("Incorrect phone number")
