@@ -5,6 +5,8 @@ import com.app.belcobtm.domain.Failure
 import com.app.belcobtm.domain.UseCase
 import com.app.belcobtm.domain.settings.SettingsRepository
 
+const val CHANGE_PASS_ERROR_OLD_PASS = 2
+
 class ChangePassUseCase(private val settingsRepository: SettingsRepository): UseCase<Boolean, ChangePassUseCase.Params>() {
 
     override suspend fun run(params: Params): Either<Failure, Boolean> {

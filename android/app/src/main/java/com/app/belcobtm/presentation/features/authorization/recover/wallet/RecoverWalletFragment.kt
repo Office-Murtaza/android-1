@@ -44,7 +44,7 @@ class RecoverWalletFragment : BaseFragment() {
     }
 
     override fun initObservers() {
-        viewModel.checkCredentialsLiveData.listen({
+        viewModel.checkCredentialsLiveData.listen(success = {
             var isValid = true
 
             if (!it.first) {

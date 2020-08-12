@@ -47,24 +47,25 @@ class CreateWalletFragment : BaseFragment() {
     }
 
     override fun initObservers() {
-        viewModel.checkCredentialsLiveData.listen({
-            if (it.first) {
-                phoneView.showError(R.string.create_wallet_error_phone_registered)
-            } else {
-                navigate(
-                    R.id.to_sms_code_fragment,
-                    bundleOf(
-                        SmsCodeFragment.TAG_PHONE to getPhone(),
-                        CreateSeedFragment.TAG_PASSWORD to passwordView.getString(),
-                        SmsCodeFragment.TAG_NEXT_FRAGMENT_ID to R.id.to_create_seed_fragment
+        viewModel.checkCredentialsLiveData.listen(
+            success = {
+                if (it.first) {
+                    phoneView.showError(R.string.create_wallet_error_phone_registered)
+                } else {
+                    navigate(
+                        R.id.to_sms_code_fragment,
+                        bundleOf(
+                            SmsCodeFragment.TAG_PHONE to getPhone(),
+                            CreateSeedFragment.TAG_PASSWORD to passwordView.getString(),
+                            SmsCodeFragment.TAG_NEXT_FRAGMENT_ID to R.id.to_create_seed_fragment
+                        )
                     )
-                )
-                tncCheckBoxView.isChecked = false
-                passwordView.clearText()
-                passwordConfirmView.clearError()
-                viewModel.checkCredentialsLiveData.value = null
-            }
-        })
+                    tncCheckBoxView.isChecked = false
+                    passwordView.clearText()
+                    passwordConfirmView.clearError()
+                    viewModel.checkCredentialsLiveData.value = null
+                }
+            })
     }
 
     private fun initTncView() {

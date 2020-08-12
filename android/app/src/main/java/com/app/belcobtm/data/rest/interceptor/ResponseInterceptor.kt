@@ -34,8 +34,17 @@ class ResponseInterceptor(
                         return response.newBuilder().body(newBody).build()
                     }
                     response.isSuccessful && !JSONObject(json).isNull(ERROR_FIELD) -> {
-                        val resultJson = JSONObject(json).getJSONObject(ERROR_FIELD).getString(ERROR_SUB_FIELD)
-                        throw Failure.MessageError(resultJson.toString())
+                        val message = try {
+                            JSONObject(json).getJSONObject(ERROR_FIELD).getString(ERROR_SUB_FIELD)
+                        } catch (e: Exception) {
+                            null
+                        }
+                        val code = try {
+                            JSONObject(json).getJSONObject(ERROR_FIELD).getInt(ERROR_SUB_FIELD_CODE)
+                        } catch (e: Exception) {
+                            null
+                        }
+                        throw Failure.MessageError(message, code)
                     }
                     else -> Unit
                 }
@@ -62,7 +71,8 @@ class ResponseInterceptor(
     companion object {
         private const val RESPONSE_FIELD = "response"
         private const val ERROR_FIELD = "error"
-        private const val ERROR_SUB_FIELD = "errorMsg"
+        private const val ERROR_SUB_FIELD = "message"
+        private const val ERROR_SUB_FIELD_CODE = "code"
         private const val REQUEST_REFRESH_PATH = "/api/v1/refresh"
         private const val TAG_USER_AUTHORIZATION = "tag_broadcast_user_unauthorized"
         private const val KEY_IS_USER_UNAUTHORIZED = "key_is_user_unauthorized"

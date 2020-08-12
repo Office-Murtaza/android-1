@@ -12,6 +12,7 @@ import com.app.belcobtm.data.rest.transaction.TransactionApi
 import com.app.belcobtm.data.rest.wallet.WalletApi
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import java.util.concurrent.TimeUnit
@@ -29,6 +30,9 @@ class ApiFactory(
         .addInterceptor(baseInterceptor)
         .addInterceptor(logInterceptor)
         .addInterceptor(responseInterceptor)
+        .addInterceptor(HttpLoggingInterceptor().apply {
+            level = HttpLoggingInterceptor.Level.BODY
+        })
         .build()
 
     val authApi: AuthApi = createApiWithSessionClient(AuthApi::class.java)

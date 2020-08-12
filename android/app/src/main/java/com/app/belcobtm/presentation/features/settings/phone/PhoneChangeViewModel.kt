@@ -15,7 +15,8 @@ class PhoneChangeViewModel(
     private val changePhoneUseCase: UpdatePhoneUseCase,
     private val appContext: Context
 ) : ViewModel() {
-    val stateData = MutableLiveData<LoadingData<PhoneChangeState>>(LoadingData.Success(PhoneChangeState()))
+    val stateData =
+        MutableLiveData<LoadingData<PhoneChangeState>>(LoadingData.Success(PhoneChangeState()))
     val actionData = SingleLiveData<PhoneChangeAction>()
     private var phone = ""
     private val phoneUtil: PhoneNumberUtil by lazy { PhoneNumberUtil.createInstance(appContext) }
@@ -57,7 +58,10 @@ class PhoneChangeViewModel(
     }
 }
 
-data class PhoneChangeState(val isNextButtonEnabled: Boolean = false)
+data class PhoneChangeState(
+    val isNextButtonEnabled: Boolean = false,
+    val isPhoneError: Boolean = false
+)
 
 sealed class PhoneChangeAction {
     class NavigateAction(val navDirections: NavDirections) : PhoneChangeAction()

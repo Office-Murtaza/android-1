@@ -13,7 +13,9 @@ class RecoverSeedViewModel(private val recoverWalletUseCase: RecoverWalletUseCas
         recoverWalletUseCase.invoke(
             params = RecoverWalletUseCase.Params(seed, phone, password),
             onSuccess = { recoverWalletLiveData.value = LoadingData.Success(it) },
-            onError = { recoverWalletLiveData.value = LoadingData.Error(it) }
+            onError = {
+                recoverWalletLiveData.value = LoadingData.Error(it)
+            }
         )
     }
 }

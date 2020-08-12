@@ -8,6 +8,7 @@ import android.view.View
 import androidx.core.os.bundleOf
 import com.app.belcobtm.R
 import com.app.belcobtm.domain.Failure
+import com.app.belcobtm.domain.authorization.interactor.*
 import com.app.belcobtm.presentation.core.extensions.clearError
 import com.app.belcobtm.presentation.core.extensions.getString
 import com.app.belcobtm.presentation.core.extensions.showError
@@ -41,17 +42,26 @@ class RecoverSeedFragment : BaseFragment() {
                 )
             },
             error = {
-                when (it) {
-                    is Failure.NetworkConnection -> showErrorNoInternetConnection()
-                    is Failure.ServerError -> showErrorServerError()
-                    is Failure.MessageError -> if (it.message.equals("No value for errorMsg", true)) {
+                when ((it as? Failure.MessageError)?.code) {
+                    RECOVER_ERROR_EMPTY_COINS -> {
+                        //show common error for now. It's impossible to get it because coins are hardcoded
+                        showErrorServerError()
+                    }
+                    RECOVER_ERROR_MISSED_COINS -> {
+                        //show common error for now. It's impossible to get it because coins are hardcoded
+                        showErrorServerError()
+                    }
+                    RECOVER_ERROR_PHONE_DOESNT_EXISTS -> {
+                        //nothing to do because we check pass on previous step
+                    }
+                    RECOVER_ERROR_INCORRECT_PASSWORD -> {
+                        //nothing to do because we check pass on previous step
+                    }
+                    RECOVER_ERROR_SEED_PHRASE -> {
                         seedContainerView.showError(R.string.recover_seed_screen_incorrect_phrase)
                         showContent()
-                    } else {
-                        showError(it.message ?: "")
-                        showContent()
                     }
-                    else -> showErrorSomethingWrong()
+                    else -> baseErrorHandler(it)
                 }
             }
         )

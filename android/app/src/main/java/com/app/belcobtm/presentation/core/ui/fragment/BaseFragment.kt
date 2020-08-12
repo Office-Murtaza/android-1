@@ -43,6 +43,18 @@ abstract class BaseFragment : Fragment() {
 
     protected abstract val resourceLayout: Int
 
+    protected val baseErrorHandler: (error: Failure?) -> Unit = {error ->
+        when (error) {
+            is Failure.NetworkConnection -> showErrorNoInternetConnection()
+            is Failure.MessageError -> {
+                showSnackBar(error.message ?: "")
+                showContent()
+            }
+            is Failure.ServerError -> showErrorServerError()
+            else -> showErrorSomethingWrong()
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(isToolbarEnabled)
@@ -251,7 +263,7 @@ abstract class BaseFragment : Fragment() {
 
     protected fun <T> LiveData<LoadingData<T>>.listen(
         success: (data: T) -> Unit,
-        error: ((error: Failure?) -> Unit)? = null,
+        error: (error: Failure?) -> Unit = baseErrorHandler,
         onUpdate: ((LoadingData<T>) -> Unit)? = null
     ) {
         this.observe(viewLifecycleOwner, Observer { loadingData ->
@@ -261,19 +273,7 @@ abstract class BaseFragment : Fragment() {
                     success.invoke(loadingData.data)
                     showContent()
                 }
-                is LoadingData.Error<T> -> if (error == null) {
-                    when (loadingData.errorType) {
-                        is Failure.NetworkConnection -> showErrorNoInternetConnection()
-                        is Failure.MessageError -> {
-                            showSnackBar(loadingData.errorType.message ?: "")
-                            showContent()
-                        }
-                        is Failure.ServerError -> showErrorServerError()
-                        else -> showErrorSomethingWrong()
-                    }
-                } else {
-                    error.invoke(loadingData.errorType)
-                }
+                is LoadingData.Error<T> -> error.invoke(loadingData.errorType)
             }
             onUpdate?.invoke(loadingData)
         })
