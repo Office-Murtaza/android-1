@@ -5,18 +5,22 @@ class SettingsFlow: BaseFlow<BTMNavigationController, SettingsFlowController> {
   override func assemblies() -> [Assembly] {
     return [
       Dependencies(),
-      SettingsAssembly()
+      SettingsAssembly(),
+      SecurityAssembly(),
+      AboutAssembly(),
     ]
   }
   
   enum Steps: Step, Equatable {
     case settings
-    case phone(PhoneNumber)
-    case changePassword
-    case changePin
-    case verification(VerificationInfo)
-    case showSeedPhrase
-    case unlink
+    case security
+    case kyc(VerificationInfo)
+    case about
+    case updatePhone(PhoneNumber)
+    case updatePassword
+    case updatePIN
+    case seedPhrase
+    case unlinkWallet
     case popToRoot
   }
   
@@ -34,27 +38,33 @@ class SettingsFlow: BaseFlow<BTMNavigationController, SettingsFlowController> {
       module.controller.tabBarItem.image = UIImage(named: "tab_bar_settings")
       module.controller.tabBarItem.selectedImage = UIImage(named: "tab_bar_active_settings")
       return push(module.controller, animated: false)
-    case let .phone(phoneNumber):
+    case .security:
+      let module = resolver.resolve(Module<SecurityModule>.self)!
+      return push(module.controller)
+    case .about:
+      let module = resolver.resolve(Module<AboutModule>.self)!
+      return push(module.controller)
+    case let .updatePhone(phoneNumber):
       let flow = ChangePhoneFlow(view: view, parent: self)
       let step = ChangePhoneFlow.Steps.showPhone(phoneNumber)
       return next(flow: flow, step: step)
-    case .changePassword:
+    case .updatePassword:
       let flow = ChangePasswordFlow(view: view, parent: self)
       let step = ChangePasswordFlow.Steps.changePassword
       return next(flow: flow, step: step)
-    case .changePin:
+    case .updatePIN:
       let flow = ChangePinFlow(view: view, parent: self)
       let step = ChangePinFlow.Steps.changePin
       return next(flow: flow, step: step)
-    case let .verification(info):
+    case let .kyc(info):
       let flow = VerificationFlow(view: view, parent: self)
       let step = VerificationFlow.Steps.info(info)
       return next(flow: flow, step: step)
-    case .showSeedPhrase:
+    case .seedPhrase:
       let flow = ShowSeedPhraseFlow(view: view, parent: self)
       let step = ShowSeedPhraseFlow.Steps.enterPassword
       return next(flow: flow, step: step)
-    case .unlink:
+    case .unlinkWallet:
       let flow = UnlinkFlow(view: view, parent: self)
       let step = UnlinkFlow.Steps.unlink
       return next(flow: flow, step: step)

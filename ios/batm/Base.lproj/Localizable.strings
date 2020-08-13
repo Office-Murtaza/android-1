@@ -83,12 +83,21 @@
 "atm.info_window.open_now" = "Open Now:";
 
 "settings.title" = "Settings";
-"settings.change_phone" = "Change Phone";
-"settings.change_password" = "Change Password";
-"settings.change_pin" = "Change PIN";
-"settings.verification" = "Verification";
-"settings.show_seed_phrase" = "Show Seed Phrase";
-"settings.unlink_wallet" = "Unlink Wallet";
+"settings.cell.security" = "Security";
+"settings.cell.kyc" = "KYC";
+"settings.cell.about" = "About";
+
+"security.title" = "Security";
+"security.cell.update_phone" = "Update phone";
+"security.cell.update_password" = "Update password";
+"security.cell.update_p_i_n" = "Update PIN";
+"security.cell.seed_phrase" = "Seed phrase";
+"security.cell.unlink_wallet" = "Unlink wallet";
+
+"about.title" = "About";
+"about.cell.terms_and_conditions" = "Terms & Conditions";
+"about.cell.support" = "Support";
+"about.cell.version" = "Version";
 
 "show_phone.title" = "Phone";
 

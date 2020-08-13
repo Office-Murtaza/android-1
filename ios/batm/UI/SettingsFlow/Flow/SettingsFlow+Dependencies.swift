@@ -14,6 +14,8 @@ extension SettingsFlow {
         }
         .inObjectScope(.container)
         .implements(SettingsModuleDelegate.self,
+                    SecurityModuleDelegate.self,
+                    AboutModuleDelegate.self,
                     ChangePhoneFlowControllerDelegate.self,
                     ChangePasswordFlowControllerDelegate.self,
                     ChangePinFlowControllerDelegate.self,

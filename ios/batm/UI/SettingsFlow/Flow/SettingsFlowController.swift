@@ -13,29 +13,55 @@ class SettingsFlowController: FlowController, FlowActivator {
 }
 
 extension SettingsFlowController: SettingsModuleDelegate {
-  
-  func didSelectPhone(_ phoneNumber: PhoneNumber) {
-    step.accept(SettingsFlow.Steps.phone(phoneNumber))
+  func didSelectSecurity() {
+    step.accept(SettingsFlow.Steps.security)
   }
   
-  func didSelectChangePassword() {
-    step.accept(SettingsFlow.Steps.changePassword)
+  func didSelectKYC(_ info: VerificationInfo) {
+    step.accept(SettingsFlow.Steps.kyc(info))
   }
   
-  func didSelectChangePin() {
-    step.accept(SettingsFlow.Steps.changePin)
+  func didSelectAbout() {
+    step.accept(SettingsFlow.Steps.about)
+  }
+}
+
+extension SettingsFlowController: SecurityModuleDelegate {
+  
+  func didSelectUpdatePhone(_ phoneNumber: PhoneNumber) {
+    step.accept(SettingsFlow.Steps.updatePhone(phoneNumber))
   }
   
-  func didSelectVerification(_ info: VerificationInfo) {
-    step.accept(SettingsFlow.Steps.verification(info))
+  func didSelectUpdatePassword() {
+    step.accept(SettingsFlow.Steps.updatePassword)
   }
   
-  func didSelectShowSeedPhrase() {
-    step.accept(SettingsFlow.Steps.showSeedPhrase)
+  func didSelectUpdatePIN() {
+    step.accept(SettingsFlow.Steps.updatePIN)
   }
   
-  func didSelectUnlink() {
-    step.accept(SettingsFlow.Steps.unlink)
+  func didSelectSeedPhrase() {
+    step.accept(SettingsFlow.Steps.seedPhrase)
+  }
+  
+  func didSelectUnlinkWallet() {
+    step.accept(SettingsFlow.Steps.unlinkWallet)
+  }
+  
+}
+
+extension SettingsFlowController: AboutModuleDelegate {
+  
+  func didSelectTermsAndConditions() {
+    
+  }
+  
+  func didSelectSupport() {
+    
+  }
+  
+  func didSelectVersion() {
+    
   }
   
 }

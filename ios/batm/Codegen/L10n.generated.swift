@@ -1,6 +1,10 @@
 // Root structs 
 enum L {
 
+  struct About {
+    static let title = "about.title"
+  }
+
   struct Atm {
     static let title = "atm.title"
   }
@@ -143,19 +147,17 @@ enum L {
     static let title = "reserve.title"
   }
 
+  struct Security {
+    static let title = "security.title"
+  }
+
   struct SeedPhrase {
     static let annotation = "seed_phrase.annotation"
     static let title = "seed_phrase.title"
   }
 
   struct Settings {
-    static let changePassword = "settings.change_password"
-    static let changePhone = "settings.change_phone"
-    static let changePin = "settings.change_pin"
-    static let showSeedPhrase = "settings.show_seed_phrase"
     static let title = "settings.title"
-    static let unlinkWallet = "settings.unlink_wallet"
-    static let verification = "settings.verification"
   }
 
   struct Shared {
@@ -241,6 +243,14 @@ enum L {
   }
 }
 // Extensions
+extension L.About {
+
+  struct Cell {
+    static let support = "about.cell.support"
+    static let termsAndConditions = "about.cell.terms_and_conditions"
+    static let version = "about.cell.version"
+  }
+}
 extension L.Atm {
 
   struct InfoWindow {
@@ -608,6 +618,24 @@ extension L.Reserve {
 
   struct Button {
     static let reserve = "reserve.button.reserve"
+  }
+}
+extension L.Security {
+
+  struct Cell {
+    static let seedPhrase = "security.cell.seed_phrase"
+    static let unlinkWallet = "security.cell.unlink_wallet"
+    static let updatePIN = "security.cell.update_p_i_n"
+    static let updatePassword = "security.cell.update_password"
+    static let updatePhone = "security.cell.update_phone"
+  }
+}
+extension L.Settings {
+
+  struct Cell {
+    static let about = "settings.cell.about"
+    static let kyc = "settings.cell.kyc"
+    static let security = "settings.cell.security"
   }
 }
 extension L.Shared {

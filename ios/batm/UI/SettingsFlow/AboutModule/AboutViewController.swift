@@ -3,7 +3,9 @@ import RxSwift
 import RxCocoa
 import SnapKit
 
-class SettingsViewController: ModuleViewController<SettingsPresenter> {
+class AboutViewController: ModuleViewController<AboutPresenter> {
+  
+  let logoImageView = UIImageView(image: UIImage(named: "about_logo"))
   
   var dataSource: SettingsTableViewDataSource!
   
@@ -12,14 +14,21 @@ class SettingsViewController: ModuleViewController<SettingsPresenter> {
   override var shouldShowNavigationBar: Bool { return true }
   
   override func setupUI() {
+    title = localize(L.About.title)
     view.backgroundColor = .white
     
-    view.addSubviews(tableView)
+    view.addSubviews(logoImageView,
+                     tableView)
   }
   
   override func setupLayout() {
+    logoImageView.snp.makeConstraints {
+      $0.top.equalTo(view.safeAreaLayoutGuide).offset(60)
+      $0.centerX.equalToSuperview()
+    }
     tableView.snp.makeConstraints {
-      $0.edges.equalToSuperview()
+      $0.top.equalTo(logoImageView.snp.bottom).offset(60)
+      $0.left.right.bottom.equalToSuperview()
     }
   }
   
@@ -34,7 +43,7 @@ class SettingsViewController: ModuleViewController<SettingsPresenter> {
     
     let selectDriver = tableView.rx.itemSelected.asDriver()
     
-    presenter.bind(input: SettingsPresenter.Input(select: selectDriver))
+    presenter.bind(input: AboutPresenter.Input(select: selectDriver))
   }
   
 }

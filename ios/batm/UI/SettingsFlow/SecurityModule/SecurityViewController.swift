@@ -3,7 +3,7 @@ import RxSwift
 import RxCocoa
 import SnapKit
 
-class SettingsViewController: ModuleViewController<SettingsPresenter> {
+class SecurityViewController: ModuleViewController<SecurityPresenter> {
   
   var dataSource: SettingsTableViewDataSource!
   
@@ -12,6 +12,7 @@ class SettingsViewController: ModuleViewController<SettingsPresenter> {
   override var shouldShowNavigationBar: Bool { return true }
   
   override func setupUI() {
+    title = localize(L.Security.title)
     view.backgroundColor = .white
     
     view.addSubviews(tableView)
@@ -34,7 +35,7 @@ class SettingsViewController: ModuleViewController<SettingsPresenter> {
     
     let selectDriver = tableView.rx.itemSelected.asDriver()
     
-    presenter.bind(input: SettingsPresenter.Input(select: selectDriver))
+    presenter.bind(input: SecurityPresenter.Input(select: selectDriver))
   }
   
 }
