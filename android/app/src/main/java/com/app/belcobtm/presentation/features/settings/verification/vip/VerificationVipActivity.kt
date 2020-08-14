@@ -6,21 +6,15 @@ import android.os.Bundle
 import android.view.MenuItem
 import android.widget.ImageView
 import androidx.core.content.ContextCompat
-import androidx.core.view.isNotEmpty
-import androidx.lifecycle.Observer
 import com.app.belcobtm.R
-import com.app.belcobtm.domain.Failure
 import com.app.belcobtm.presentation.core.extensions.*
-import com.app.belcobtm.presentation.core.mvvm.LoadingData
 import com.app.belcobtm.presentation.core.ui.BaseActivity
 import com.kroegerama.imgpicker.BottomSheetImagePicker
 import com.kroegerama.imgpicker.ButtonType
-import kotlinx.android.synthetic.main.activity_verification_vip.*
+import kotlinx.android.synthetic.main.fragment_verification_vip.*
 import org.koin.android.viewmodel.ext.android.viewModel
-import org.koin.core.parameter.parametersOf
 import permissions.dispatcher.NeedsPermission
 import permissions.dispatcher.RuntimePermissions
-import kotlin.text.isNotBlank
 
 @RuntimePermissions
 class VerificationVipActivity : BaseActivity(), BottomSheetImagePicker.OnImagesSelectedListener {
@@ -65,7 +59,7 @@ class VerificationVipActivity : BaseActivity(), BottomSheetImagePicker.OnImagesS
     }
 
     private fun initViews() {
-        setContentView(R.layout.activity_verification_vip)
+        setContentView(R.layout.fragment_verification_vip)
 //        setSupportActionBar(toolbarView)
         supportActionBar?.let { toolbar ->
             toolbar.setDisplayHomeAsUpEnabled(true)

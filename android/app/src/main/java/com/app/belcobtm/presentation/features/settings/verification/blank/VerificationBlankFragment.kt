@@ -14,7 +14,7 @@ import com.app.belcobtm.presentation.core.mvvm.LoadingData
 import com.app.belcobtm.presentation.core.ui.fragment.BaseFragment
 import com.kroegerama.imgpicker.BottomSheetImagePicker
 import com.kroegerama.imgpicker.ButtonType
-import kotlinx.android.synthetic.main.activity_verification_blank.*
+import kotlinx.android.synthetic.main.fragment_verification_blank.*
 import org.koin.android.viewmodel.ext.android.viewModel
 import permissions.dispatcher.NeedsPermission
 import permissions.dispatcher.OnNeverAskAgain
@@ -24,7 +24,7 @@ import permissions.dispatcher.RuntimePermissions
 class VerificationBlankFragment : BaseFragment(), BottomSheetImagePicker.OnImagesSelectedListener {
     private val viewModel: VerificationBlankViewModel by viewModel()
 
-    override val resourceLayout = R.layout.activity_verification_blank
+    override val resourceLayout = R.layout.fragment_verification_blank
     override val isHomeButtonEnabled = true
 
     override fun onImagesSelected(uris: List<Uri>, tag: String?) {

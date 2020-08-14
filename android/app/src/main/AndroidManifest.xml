@@ -36,10 +36,6 @@
         </activity>
 
         <activity
-            android:name=".ui.auth.seed.SeedPhraseActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppThemeNoActionBar" />
-        <activity
             android:name=".ui.main.coins.details.DetailsActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppThemeNoActionBar" />
@@ -56,10 +52,6 @@
         <activity
             android:name=".presentation.features.authorization.pin.PinActivity"
             android:launchMode="singleInstance"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppThemeNoActionBar" />
-        <activity
-            android:name=".ui.main.settings.UnlinkActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppThemeNoActionBar" />
         <activity
@@ -90,20 +82,6 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppThemeNoActionBar" />
 
-        <activity
-            android:name=".presentation.features.settings.verification.info.VerificationInfoActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppThemeNoActionBar" />
-
-        <activity
-            android:name=".presentation.features.settings.verification.blank.VerificationBlankActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppThemeNoActionBar" />
-
-        <activity
-            android:name=".presentation.features.settings.verification.vip.VerificationVipActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppThemeNoActionBar" />
 
         <activity
             android:name=".presentation.features.wallet.exchange.coin.to.coin.ExchangeCoinToCoinActivity"

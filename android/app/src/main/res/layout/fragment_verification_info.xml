@@ -109,7 +109,6 @@
         android:layout_margin="@dimen/margin_main"
         android:layout_marginTop="16dp"
         android:text="@string/verification_verify"
-        android:textAllCaps="false"
         android:textColor="#ffffff"
         android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"

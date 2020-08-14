@@ -4,18 +4,17 @@ import android.graphics.drawable.GradientDrawable
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.observe
 import com.app.belcobtm.R
-import com.app.belcobtm.domain.Failure
 import com.app.belcobtm.presentation.core.extensions.toggle
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
 import com.app.belcobtm.presentation.core.ui.fragment.BaseFragment
 import com.app.belcobtm.presentation.features.settings.SettingsFragment.Companion.SETTINGS_MAIN
-import kotlinx.android.synthetic.main.activity_verification_info.*
+import kotlinx.android.synthetic.main.fragment_verification_info.*
 import org.koin.android.viewmodel.ext.android.viewModel
 
 
 class VerificationInfoFragment: BaseFragment() {
     val viewModel by viewModel<VerificationInfoViewModel>()
-    override val resourceLayout = R.layout.activity_verification_info
+    override val resourceLayout = R.layout.fragment_verification_info
     override val isHomeButtonEnabled = true
     private var appliedState: LoadingData<VerificationInfoState>? = null
 
@@ -37,56 +36,44 @@ class VerificationInfoFragment: BaseFragment() {
                 is VerificationInfoAction.NavigateAction -> navigate(action.navDirections)
             }
         }
-        viewModel.stateData.observe(this) { state ->
-            when (state) {
-                is LoadingData.Success -> {
-                    state.doIfChanged(appliedState) {
-                        showContent()
-                    }
-                    state.data.isButtonEnabled.doIfChanged((appliedState as? LoadingData.Success<VerificationInfoState>)?.data?.isButtonEnabled) {
-                        nextButton.isEnabled = it
-                    }
-                    state.data.buttonText.doIfChanged((appliedState as? LoadingData.Success<VerificationInfoState>)?.data?.buttonText) {
-                        nextButton.setText(it)
-                    }
-                    state.data.statusTextCode.doIfChanged((appliedState as? LoadingData.Success<VerificationInfoState>)?.data?.statusTextCode) {
-                        statusValueView.text = resources.getStringArray(R.array.verification_status_array)[it]
-                    }
-                    state.data.txLimit.doIfChanged((appliedState as? LoadingData.Success<VerificationInfoState>)?.data?.txLimit) {
-                        txLimitValueView.text = it
-                    }
-                    state.data.dailyLimit.doIfChanged((appliedState as? LoadingData.Success<VerificationInfoState>)?.data?.dailyLimit) {
-                        dailyLimitValueView.text = it
-                    }
-                    state.data.statusColor.doIfChanged((appliedState as? LoadingData.Success<VerificationInfoState>)?.data?.statusColor) {
-                        val shape = GradientDrawable()
-                        shape.shape = GradientDrawable.RECTANGLE
-                        shape.cornerRadii = floatArrayOf(8f, 8f, 8f, 8f, 8f, 8f, 8f, 8f)
-                        shape.setStroke(3, ContextCompat.getColor(requireContext(), it.first))
-                        shape.setColor(ContextCompat.getColor(requireContext(), it.second))
-                        statusValueView.setTextColor(ContextCompat.getColor(requireContext(), it.first))
-                        statusValueView.background = shape
-                    }
-                    state.data.message.doIfChanged((appliedState as? LoadingData.Success<VerificationInfoState>)?.data?.message) {
-                        messageView.toggle(it.isNotEmpty())
-                        messageViewText.text = it
-                    }
+        viewModel.stateData.listen(
+            success = { state ->
+                state.doIfChanged(appliedState) {
+                    showContent()
                 }
-                is LoadingData.Loading -> {
-                    showLoading()
+                state.isButtonEnabled.doIfChanged(appliedState?.commonData?.isButtonEnabled) {
+                    nextButton.isEnabled = it
                 }
-                is LoadingData.Error -> {
-                    state.doIfChanged(appliedState) {
-                        when (state.errorType) {
-                            is Failure.MessageError -> showError(state.errorType.message?: getString(R.string.error_something_went_wrong))
-                            is Failure.NetworkConnection -> showError(R.string.error_internet_unavailable)
-                            else -> showError(R.string.error_something_went_wrong)
-                        }
-                    }
+                state.buttonText.doIfChanged(appliedState?.commonData?.buttonText) {
+                    nextButton.setText(it)
                 }
+                state.statusTextCode.doIfChanged(appliedState?.commonData?.statusTextCode) {
+                    statusValueView.text = resources.getStringArray(R.array.verification_status_array)[it]
+                }
+                state.txLimit.doIfChanged(appliedState?.commonData?.txLimit) {
+                    txLimitValueView.text = getString(R.string.verification_unit_usd, it)
+                }
+                state.dailyLimit.doIfChanged(appliedState?.commonData?.dailyLimit) {
+                    dailyLimitValueView.text = getString(R.string.verification_unit_usd, it)
+                }
+                state.statusColor.doIfChanged(appliedState?.commonData?.statusColor) {
+                    val shape = GradientDrawable()
+                    shape.shape = GradientDrawable.RECTANGLE
+                    shape.cornerRadii = floatArrayOf(8f, 8f, 8f, 8f, 8f, 8f, 8f, 8f)
+                    shape.setStroke(3, ContextCompat.getColor(requireContext(), it.first))
+                    shape.setColor(ContextCompat.getColor(requireContext(), it.second))
+                    statusValueView.setTextColor(ContextCompat.getColor(requireContext(), it.first))
+                    statusValueView.background = shape
+                }
+                state.message.doIfChanged(appliedState?.commonData?.message) {
+                    messageView.toggle(it.isNotEmpty())
+                    messageViewText.text = it
+                }
+            },
+            onUpdate = {
+                appliedState = it
             }
-            appliedState = state
-        }
+        )
     }
 
     override fun popBackStack(): Boolean {

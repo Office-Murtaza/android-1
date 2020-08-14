@@ -28,8 +28,8 @@ class VerificationInfoViewModel(
                         statusColor = getColorByStatus(it.status),
                         buttonText = getButtonTextByStatus(it.status),
                         statusTextCode = it.status.code,
-                        txLimit = it.txLimit.toString(),
-                        dailyLimit = it.dayLimit.toString(),
+                        txLimit = it.txLimit.toInt().toString(),
+                        dailyLimit = it.dayLimit.toInt().toString(),
                         isButtonEnabled = isButtonEnabled(it),
                         message = it.message
                     )

@@ -146,7 +146,7 @@
     <!-- Verification -->
     <string name="verification_screen_title">Verification</string>
     <string name="verification_status">Status</string>
-    <string name="verification_tx_limit">Tx Limit</string>
+    <string name="verification_tx_limit">Transaction Limit</string>
     <string name="verification_daily_limit">Daily Limit</string>
     <string name="verification_vip_verify">VIP Verify</string>
     <string name="verification_verify">Verify</string>

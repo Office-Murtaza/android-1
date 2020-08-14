@@ -1,20 +1,11 @@
 package com.app.belcobtm.presentation.features.settings.verification.info
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.Observer
 import com.app.belcobtm.R
-import com.app.belcobtm.domain.Failure
 import com.app.belcobtm.domain.settings.type.VerificationStatus
-import com.app.belcobtm.presentation.core.extensions.hide
-import com.app.belcobtm.presentation.core.extensions.show
-import com.app.belcobtm.presentation.core.mvvm.LoadingData
 import com.app.belcobtm.presentation.core.ui.BaseActivity
-import com.app.belcobtm.presentation.features.settings.verification.blank.VerificationBlankActivity
-import com.app.belcobtm.presentation.features.settings.verification.vip.VerificationVipActivity
-import kotlinx.android.synthetic.main.activity_verification_info.*
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class VerificationInfoActivity : BaseActivity() {
@@ -22,7 +13,7 @@ class VerificationInfoActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_verification_info)
+        setContentView(R.layout.fragment_verification_info)
         initViews()
         initListeners()
         initObservers()
