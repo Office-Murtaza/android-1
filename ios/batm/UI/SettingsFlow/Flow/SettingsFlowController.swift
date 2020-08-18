@@ -50,21 +50,7 @@ extension SettingsFlowController: SecurityModuleDelegate {
   
 }
 
-extension SettingsFlowController: AboutModuleDelegate {
-  
-  func didSelectTermsAndConditions() {
-    
-  }
-  
-  func didSelectSupport() {
-    
-  }
-  
-  func didSelectVersion() {
-    
-  }
-  
-}
+extension SettingsFlowController: AboutModuleDelegate {}
 
 extension SettingsFlowController: ChangePhoneFlowControllerDelegate {
   

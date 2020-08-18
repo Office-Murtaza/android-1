@@ -516,6 +516,7 @@
 		DBDA966922C0043F005B93DF /* ActivityTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBDA966822C0043F005B93DF /* ActivityTracker.swift */; };
 		DBDD5D13235797F00012DFAA /* CoinSellAnotherAddressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBDD5D12235797F00012DFAA /* CoinSellAnotherAddressView.swift */; };
 		DBEBC6BB2402987C00D7C8A6 /* ToastInitializer.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBEBC6BA2402987C00D7C8A6 /* ToastInitializer.swift */; };
+		DBEC2C3624EC3D50000590B9 /* UIApplication+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBEC2C3524EC3D50000590B9 /* UIApplication+Extensions.swift */; };
 		DBEC45BB2321366500BB05B2 /* CoinWithdrawStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBEC45BA2321366500BB05B2 /* CoinWithdrawStore.swift */; };
 		DBECA62C22F7FB22002C2610 /* ChangePhoneFlowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBECA62B22F7FB22002C2610 /* ChangePhoneFlowController.swift */; };
 		DBECA62E22F7FB6C002C2610 /* ChangePhoneFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBECA62D22F7FB6C002C2610 /* ChangePhoneFlow.swift */; };
@@ -1065,6 +1066,7 @@
 		DBDA966822C0043F005B93DF /* ActivityTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityTracker.swift; sourceTree = "<group>"; };
 		DBDD5D12235797F00012DFAA /* CoinSellAnotherAddressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinSellAnotherAddressView.swift; sourceTree = "<group>"; };
 		DBEBC6BA2402987C00D7C8A6 /* ToastInitializer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastInitializer.swift; sourceTree = "<group>"; };
+		DBEC2C3524EC3D50000590B9 /* UIApplication+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIApplication+Extensions.swift"; sourceTree = "<group>"; };
 		DBEC45BA2321366500BB05B2 /* CoinWithdrawStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinWithdrawStore.swift; sourceTree = "<group>"; };
 		DBECA62B22F7FB22002C2610 /* ChangePhoneFlowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangePhoneFlowController.swift; sourceTree = "<group>"; };
 		DBECA62D22F7FB6C002C2610 /* ChangePhoneFlow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangePhoneFlow.swift; sourceTree = "<group>"; };
@@ -2127,6 +2129,7 @@
 				DB1AF0E124436D6D0037C998 /* MDCContainerScheme+Extensions.swift */,
 				DB66CEB72475BAC200FDB694 /* UITableView+Extensions.swift */,
 				DB83624924C2049600A5FEFC /* CALayer+Extensions.swift */,
+				DBEC2C3524EC3D50000590B9 /* UIApplication+Extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -3283,6 +3286,7 @@
 				DB5413CB24346D59002DDD2F /* CoinWithdrawHeaderView.swift in Sources */,
 				DB9616DC22C748610078E92D /* StorageTransaction.swift in Sources */,
 				DB8D408C22C3E54200D5FBD0 /* Initializer.swift in Sources */,
+				DBEC2C3624EC3D50000590B9 /* UIApplication+Extensions.swift in Sources */,
 				DB83664122FAB7E200454F5C /* ChangePinViewController.swift in Sources */,
 				DB96168A22C50F350078E92D /* ValidationRule.swift in Sources */,
 				DB2F25152360A8F400274C60 /* TransactionDetailsModule.swift in Sources */,

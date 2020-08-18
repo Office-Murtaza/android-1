@@ -12,6 +12,18 @@ enum AboutCellType: CaseIterable, SettingsCellTypeRepresentable {
     case .version: return localize(L.About.Cell.version)
     }
   }
-
-  var image: UIImage? { return nil }
+  
+  var value: String? {
+    switch self {
+    case .version: return UIApplication.appVersion
+    default: return nil
+    }
+  }
+  
+  var isEnabled: Bool {
+    switch self {
+    case .version: return false
+    default: return true
+    }
+  }
 }

@@ -11,6 +11,12 @@ class SecurityViewController: ModuleViewController<SecurityPresenter> {
   
   override var shouldShowNavigationBar: Bool { return true }
   
+  override func viewWillAppear(_ animated: Bool) {
+    if let index = self.tableView.indexPathForSelectedRow {
+      self.tableView.deselectRow(at: index, animated: true)
+    }
+  }
+  
   override func setupUI() {
     title = localize(L.Security.title)
     view.backgroundColor = .white

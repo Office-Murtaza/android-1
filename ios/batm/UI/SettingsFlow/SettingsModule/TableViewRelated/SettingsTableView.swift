@@ -4,6 +4,15 @@ import RxCocoa
 
 class SettingsTableView: UITableView, UITableViewDelegate {
   
+  lazy var headerView: UIView = {
+    let line = UIView(frame: CGRect(x: 0,
+                                    y: 0,
+                                    width: self.frame.size.width,
+                                    height: 1 / UIScreen.main.scale))
+    line.backgroundColor = self.separatorColor
+    return line
+  }()
+  
   override init(frame: CGRect, style: UITableView.Style) {
     super.init(frame: frame, style: style)
 
@@ -12,7 +21,7 @@ class SettingsTableView: UITableView, UITableViewDelegate {
     rowHeight = 55
     delegate = self
     separatorInset = .zero
-    tableHeaderView = UIView()
+    tableHeaderView = headerView
     tableFooterView = UIView()
     bounces = false
   }

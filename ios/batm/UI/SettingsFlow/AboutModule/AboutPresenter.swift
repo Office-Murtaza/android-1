@@ -16,11 +16,11 @@ class AboutPresenter: ModulePresenter, AboutModule {
     input.select
       .asObservable()
       .map { [types] in types[$0.item] }
-      .subscribe(onNext: { [delegate] in
+      .subscribe(onNext: {
         switch $0 {
-        case .termsAndConditions: delegate?.didSelectTermsAndConditions()
-        case .support: delegate?.didSelectSupport()
-        case .version: delegate?.didSelectVersion()
+        case .termsAndConditions: UIApplication.shared.open(URL.privacyPolicy)
+        case .support: UIApplication.shared.open(URL.support)
+        default: break
         }
       })
       .disposed(by: disposeBag)

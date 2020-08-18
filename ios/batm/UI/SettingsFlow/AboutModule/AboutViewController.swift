@@ -13,6 +13,12 @@ class AboutViewController: ModuleViewController<AboutPresenter> {
   
   override var shouldShowNavigationBar: Bool { return true }
   
+  override func viewWillAppear(_ animated: Bool) {
+    if let index = self.tableView.indexPathForSelectedRow {
+      self.tableView.deselectRow(at: index, animated: true)
+    }
+  }
+  
   override func setupUI() {
     title = localize(L.About.title)
     view.backgroundColor = .white
@@ -36,6 +42,10 @@ class AboutViewController: ModuleViewController<AboutPresenter> {
     dataSource.values = presenter.types
     tableView.dataSource = dataSource
     dataSource.tableView = tableView
+    
+    tableView.rx.itemSelected.asDriver()
+      .drive(onNext: { [tableView] in tableView.deselectRow(at: $0, animated: true) })
+      .disposed(by: disposeBag)
   }
   
   override func setupBindings() {

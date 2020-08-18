@@ -2,6 +2,19 @@ import UIKit
 import RxSwift
 import RxCocoa
 
+protocol SettingsCellTypeRepresentable {
+  var title: String { get }
+  var image: UIImage? { get }
+  var value: String? { get }
+  var isEnabled: Bool { get }
+}
+
+extension SettingsCellTypeRepresentable {
+  var image: UIImage? { return nil }
+  var value: String? { return nil }
+  var isEnabled: Bool { return true }
+}
+
 enum SettingsCellType: CaseIterable, SettingsCellTypeRepresentable {
   case security
   case kyc
@@ -24,17 +37,74 @@ enum SettingsCellType: CaseIterable, SettingsCellTypeRepresentable {
   }
 }
 
-protocol SettingsCellTypeRepresentable {
-  var title: String { get }
-  var image: UIImage? { get }
-}
-
 final class SettingsCell: UITableViewCell {
   
+  let stackView: UIStackView = {
+    let stackView = UIStackView()
+    stackView.axis = .horizontal
+    stackView.alignment = .center
+    stackView.spacing = 15
+    return stackView
+  }()
+  
+  let iconImageView = UIImageView(image: nil)
+  
+  let titleLabel: UILabel = {
+    let label = UILabel()
+    label.font = .systemFont(ofSize: 16, weight: .medium)
+    label.textColor = .slateGrey
+    return label
+  }()
+  
+  let valueLabel: UILabel = {
+    let label = UILabel()
+    label.font = .systemFont(ofSize: 16, weight: .medium)
+    label.textColor = .warmGrey
+    return label
+  }()
+  
+  override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+    super.init(style: style, reuseIdentifier: reuseIdentifier)
+    
+    setupUI()
+    setupLayout()
+  }
+  
+  required init?(coder aDecoder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
+  }
+  
+  override func prepareForReuse() {
+    super.prepareForReuse()
+    iconImageView.image = nil
+    titleLabel.text = nil
+    valueLabel.text = nil
+  }
+  
+  private func setupUI() {
+    contentView.addSubviews(stackView,
+                            valueLabel)
+    stackView.addArrangedSubviews(iconImageView,
+                                  titleLabel)
+  }
+  
+  private func setupLayout() {
+    stackView.snp.makeConstraints {
+      $0.left.equalToSuperview().offset(15)
+      $0.centerY.equalToSuperview()
+    }
+    valueLabel.snp.makeConstraints {
+      $0.right.equalToSuperview().offset(-15)
+      $0.centerY.equalToSuperview()
+    }
+  }
+  
   func configure(for type: SettingsCellTypeRepresentable) {
-    imageView?.image = type.image
-    textLabel?.text = type.title
-    textLabel?.textColor = .slateGrey
-    textLabel?.font = .systemFont(ofSize: 16, weight: .medium)
+    iconImageView.image = type.image
+    iconImageView.isHidden = type.image == nil
+    titleLabel.text = type.title
+    valueLabel.text = type.value
+    valueLabel.isHidden = type.value == nil
+    isUserInteractionEnabled = type.isEnabled
   }
 }
