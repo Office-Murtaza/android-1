@@ -26,8 +26,8 @@ protocol APIGateway {
   func getCoinSettings(type: CustomCoinType) -> Single<CoinSettings>
   func getMapAddresses() -> Single<MapAddresses>
   func getPhoneNumber(userId: Int) -> Single<PhoneNumber>
-  func checkPassword(userId: Int, password: String) -> Single<Bool>
-  func changePhone(userId: Int, phoneNumber: String) -> Completable
+  func verifyPassword(userId: Int, password: String) -> Single<Bool>
+  func updatePhone(userId: Int, phoneNumber: String) -> Completable
   func confirmPhone(userId: Int, phoneNumber: String, code: String) -> Completable
   func changePassword(userId: Int, oldPassword: String, newPassword: String) -> Completable
   func unlink(userId: Int) -> Completable
@@ -152,13 +152,13 @@ final class APIGatewayImpl: APIGateway {
     return execute(request)
   }
   
-  func checkPassword(userId: Int, password: String) -> Single<Bool> {
-    let request = CheckPasswordRequest(userId: userId, password: password)
+  func verifyPassword(userId: Int, password: String) -> Single<Bool> {
+    let request = VerifyPasswordRequest(userId: userId, password: password)
     return execute(request).map { $0.result }
   }
   
-  func changePhone(userId: Int, phoneNumber: String) -> Completable {
-    let request = ChangePhoneRequest(userId: userId, phoneNumber: phoneNumber)
+  func updatePhone(userId: Int, phoneNumber: String) -> Completable {
+    let request = UpdatePhoneRequest(userId: userId, phoneNumber: phoneNumber)
     return execute(request)
   }
   

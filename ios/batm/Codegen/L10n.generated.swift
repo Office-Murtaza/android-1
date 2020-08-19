@@ -17,10 +17,6 @@ enum L {
     static let title = "change_password.title"
   }
 
-  struct ChangePhone {
-    static let title = "change_phone.title"
-  }
-
   struct ChangePin {
     static let title = "change_pin.title"
   }
@@ -222,6 +218,10 @@ enum L {
     static let annotation = "unlink.annotation"
     static let title = "unlink.title"
     static let warning = "unlink.warning"
+  }
+
+  struct UpdatePhone {
+    static let title = "update_phone.title"
   }
 
   struct VIPVerification {
@@ -538,6 +538,10 @@ extension L.EnterPassword.Form {
   struct Error {
     static let wrongPassword = "enter_password.form.error.wrong_password"
   }
+
+  struct Password {
+    static let placeholder = "enter_password.form.password.placeholder"
+  }
 }
 extension L.Error {
 
@@ -650,6 +654,7 @@ extension L.Shared {
     static let paste = "shared.button.paste"
     static let remove = "shared.button.remove"
     static let retry = "shared.button.retry"
+    static let update = "shared.button.update"
   }
 
   struct Error {

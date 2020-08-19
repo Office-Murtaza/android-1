@@ -1,5 +1,5 @@
 import Foundation
 
-struct CheckPassword: Equatable {
+struct VerifyPassword: Equatable {
   let result: Bool
 }

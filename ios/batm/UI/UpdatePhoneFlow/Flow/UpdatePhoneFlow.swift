@@ -1,19 +1,19 @@
 import RxFlow
 
-class ChangePhoneFlow: BaseFlow<BTMNavigationController, ChangePhoneFlowController> {
+class UpdatePhoneFlow: BaseFlow<BTMNavigationController, UpdatePhoneFlowController> {
   override func assemblies() -> [Assembly] {
     return [
       Dependencies(),
       ShowPhoneAssembly(),
       EnterPasswordAssembly(),
-      ChangePhoneAssembly()
+      UpdatePhoneAssembly()
     ]
   }
   
   enum Steps: Step, Equatable {
     case showPhone(PhoneNumber)
     case enterPassword
-    case changePhone
+    case updatePhone
   }
   
   override func route(to step: Step) -> NextFlowItems {
@@ -30,10 +30,11 @@ class ChangePhoneFlow: BaseFlow<BTMNavigationController, ChangePhoneFlowControll
       return push(module.controller)
     case .enterPassword:
       let module = resolver.resolve(Module<EnterPasswordModule>.self)!
+      module.controller.title = localize(L.ShowPhone.title)
       return push(module.controller)
-    case .changePhone:
-      let module = resolver.resolve(Module<ChangePhoneModule>.self)!
-      return push(module.controller)
+    case .updatePhone:
+      let module = resolver.resolve(Module<UpdatePhoneModule>.self)!
+      return replaceLast(module.controller)
     }
   }
 }

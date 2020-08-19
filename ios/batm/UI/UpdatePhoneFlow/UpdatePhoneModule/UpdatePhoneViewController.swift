@@ -3,9 +3,9 @@ import RxCocoa
 import RxSwift
 import SnapKit
 
-final class ChangePhoneViewController: NavigationScreenViewController<ChangePhonePresenter> {
+final class UpdatePhoneViewController: NavigationScreenViewController<UpdatePhonePresenter> {
   
-  let formView = ChangePhoneFormView()
+  let formView = UpdatePhoneFormView()
   
   override var preferredStatusBarStyle: UIStatusBarStyle {
     return .lightContent
@@ -13,7 +13,7 @@ final class ChangePhoneViewController: NavigationScreenViewController<ChangePhon
 
   override func setupUI() {
     customView.contentView.addSubview(formView)
-    customView.setTitle(localize(L.ChangePhone.title))
+    customView.setTitle(localize(L.UpdatePhone.title))
     
     setupDefaultKeyboardHandling()
   }
@@ -36,14 +36,10 @@ final class ChangePhoneViewController: NavigationScreenViewController<ChangePhon
   override func setupBindings() {
     setupUIBindings()
     
-    let backDriver = customView.backButton.rx.tap.asDriver()
     let updatePhoneDriver = formView.phoneNumberTextField.rx.validatablePhoneNumber
-    let cancelDriver = formView.rx.cancelTap
-    let changePhoneDriver = formView.rx.nextTap
+    let nextDriver = formView.rx.nextTap
     
-    presenter.bind(input: ChangePhonePresenter.Input(back: backDriver,
-                                                     updatePhone: updatePhoneDriver,
-                                                     cancel: cancelDriver,
-                                                     changePhone: changePhoneDriver))
+    presenter.bind(input: UpdatePhonePresenter.Input(updatePhone: updatePhoneDriver,
+                                                     next: nextDriver))
   }
 }

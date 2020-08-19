@@ -22,6 +22,7 @@
 "shared.button.done" = "Done";
 "shared.button.go_back" = "Go Back";
 "shared.button.retry" = "Retry";
+"shared.button.update" = "Update";
 "shared.error.title" = "Error";
 "shared.error.message" = "Server error, try again later";
 "shared.error.no_connection.message" = "No Internet Connection";
@@ -99,12 +100,13 @@
 "about.cell.support" = "Support";
 "about.cell.version" = "Version";
 
-"show_phone.title" = "Phone";
+"show_phone.title" = "Update Phone";
 
 "enter_password.title" = "Enter Password";
 "enter_password.form.error.wrong_password" = "Wrong password";
+"enter_password.form.password.placeholder" = "Password";
 
-"change_phone.title" = "Change Phone";
+"update_phone.title" = "Update Phone";
 
 "change_password.title" = "Change Password";
 "change_password.form.old_password.placeholder" = "Old Password *";

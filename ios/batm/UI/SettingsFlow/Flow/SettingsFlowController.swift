@@ -52,9 +52,9 @@ extension SettingsFlowController: SecurityModuleDelegate {
 
 extension SettingsFlowController: AboutModuleDelegate {}
 
-extension SettingsFlowController: ChangePhoneFlowControllerDelegate {
+extension SettingsFlowController: UpdatePhoneFlowControllerDelegate {
   
-  func didFinishChangePhoneFlow() {
+  func didFinishUpdatePhoneFlow() {
     step.accept(SettingsFlow.Steps.popToRoot)
   }
   

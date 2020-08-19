@@ -1,20 +1,20 @@
 import Swinject
 
-extension ChangePhoneFlow {
+extension UpdatePhoneFlow {
   
   class Dependencies: Assembly {
     
     func assemble(container: Container) {
       container
-        .register(ChangePhoneFlowController.self) { ioc in
-          let flowController = ChangePhoneFlowController()
-          flowController.delegate = ioc.resolve(ChangePhoneFlowControllerDelegate.self)
+        .register(UpdatePhoneFlowController.self) { ioc in
+          let flowController = UpdatePhoneFlowController()
+          flowController.delegate = ioc.resolve(UpdatePhoneFlowControllerDelegate.self)
           return flowController
         }
         .inObjectScope(.container)
         .implements(ShowPhoneModuleDelegate.self,
                     EnterPasswordModuleDelegate.self,
-                    ChangePhoneModuleDelegate.self)
+                    UpdatePhoneModuleDelegate.self)
     }
   }
 }

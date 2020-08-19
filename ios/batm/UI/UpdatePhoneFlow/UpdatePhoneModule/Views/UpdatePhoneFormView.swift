@@ -2,17 +2,13 @@ import UIKit
 import RxSwift
 import RxCocoa
 
-class EnterPasswordFormView: UIView {
+class UpdatePhoneFormView: UIView {
   
-  let passwordTextField: MainTextField = {
-    let textField = MainTextField()
-    textField.configure(for: .password)
-    return textField
-  }()
+  let phoneNumberTextField = PhoneNumberTextField()
   
   lazy var formView: MainFormView = {
     let view = MainFormView(flat: true)
-    view.configure(for: [passwordTextField])
+    view.configure(for: [phoneNumberTextField])
     return view
   }()
   
@@ -40,10 +36,7 @@ class EnterPasswordFormView: UIView {
   }
 }
 
-extension Reactive where Base == EnterPasswordFormView {
-  var cancelTap: Driver<Void> {
-    return base.formView.rx.cancelTap
-  }
+extension Reactive where Base == UpdatePhoneFormView {
   var nextTap: Driver<Void> {
     return base.formView.rx.nextTap
   }

@@ -16,7 +16,7 @@ extension SettingsFlow {
         .implements(SettingsModuleDelegate.self,
                     SecurityModuleDelegate.self,
                     AboutModuleDelegate.self,
-                    ChangePhoneFlowControllerDelegate.self,
+                    UpdatePhoneFlowControllerDelegate.self,
                     ChangePasswordFlowControllerDelegate.self,
                     ChangePinFlowControllerDelegate.self,
                     VerificationFlowControllerDelegate.self,

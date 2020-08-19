@@ -3,8 +3,8 @@ import RxSwift
 
 protocol SettingsUsecase {
   func getPhoneNumber() -> Single<PhoneNumber>
-  func checkPassword(password: String) -> Single<Bool>
-  func changePhone(phoneNumber: String) -> Completable
+  func verifyPassword(password: String) -> Single<Bool>
+  func updatePhone(phoneNumber: String) -> Completable
   func confirmPhone(phoneNumber: String, code: String) -> Completable
   func changePassword(oldPassword: String, newPassword: String) -> Completable
   func changePin(oldPin: String, newPin: String) -> Completable
@@ -42,14 +42,14 @@ class SettingsUsecaseImpl: SettingsUsecase {
       .flatMap { [api] in api.getPhoneNumber(userId: $0.userId) }
   }
   
-  func checkPassword(password: String) -> Single<Bool> {
+  func verifyPassword(password: String) -> Single<Bool> {
     return accountStorage.get()
-      .flatMap { [api] in api.checkPassword(userId: $0.userId, password: password) }
+      .flatMap { [api] in api.verifyPassword(userId: $0.userId, password: password) }
   }
   
-  func changePhone(phoneNumber: String) -> Completable {
+  func updatePhone(phoneNumber: String) -> Completable {
     return accountStorage.get()
-      .flatMapCompletable { [api] in api.changePhone(userId: $0.userId,
+      .flatMapCompletable { [api] in api.updatePhone(userId: $0.userId,
                                                      phoneNumber: phoneNumber) }
   }
   

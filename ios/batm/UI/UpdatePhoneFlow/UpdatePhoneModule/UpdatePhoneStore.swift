@@ -1,26 +1,26 @@
 import Foundation
 import RxSwift
 
-enum ChangePhoneAction: Equatable {
+enum UpdatePhoneAction: Equatable {
   case updatePhone(ValidatablePhoneNumber)
   case updateValidationState
   case makeInvalidState(String)
 }
 
-struct ChangePhoneState: Equatable {
+struct UpdatePhoneState: Equatable {
   
   var validatablePhone = ValidatablePhoneNumber()
   var validationState: ValidationState = .unknown
   
 }
 
-final class ChangePhoneStore: ViewStore<ChangePhoneAction, ChangePhoneState> {
+final class UpdatePhoneStore: ViewStore<UpdatePhoneAction, UpdatePhoneState> {
   
-  override var initialState: ChangePhoneState {
-    return ChangePhoneState()
+  override var initialState: UpdatePhoneState {
+    return UpdatePhoneState()
   }
   
-  override func reduce(state: ChangePhoneState, action: ChangePhoneAction) -> ChangePhoneState {
+  override func reduce(state: UpdatePhoneState, action: UpdatePhoneAction) -> UpdatePhoneState {
     var state = state
     
     switch action {
@@ -32,7 +32,7 @@ final class ChangePhoneStore: ViewStore<ChangePhoneAction, ChangePhoneState> {
     return state
   }
   
-  private func validate(_ state: ChangePhoneState) -> ValidationState {
+  private func validate(_ state: UpdatePhoneState) -> ValidationState {
     guard state.validatablePhone.phone.count > 0 else {
       return .invalid(localize(L.CreateWallet.Form.Error.allFieldsRequired))
     }
