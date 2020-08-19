@@ -60,7 +60,7 @@
             android:background="@drawable/white_round_bg"
             android:tint="@color/colorPrimary"
             android:visibility="gone"
-            app:srcCompat="@drawable/ic_remove" />
+            app:srcCompat="@drawable/ic_clear_mark" />
     </androidx.cardview.widget.CardView>
 
     <com.google.android.material.textfield.TextInputLayout

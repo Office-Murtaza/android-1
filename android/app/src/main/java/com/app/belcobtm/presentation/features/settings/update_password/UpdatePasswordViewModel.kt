@@ -15,6 +15,7 @@ class UpdatePasswordViewModel(
     private var oldPass = ""
     private var newPass = ""
     private var newPassConfirm = ""
+    private var startValidation = false
 
     val stateData = MutableLiveData<LoadingData<UpdatePasswordState>>(LoadingData.Success(UpdatePasswordState()))
     val actionData = MutableLiveData<UpdatePasswordAction>()
@@ -32,11 +33,11 @@ class UpdatePasswordViewModel(
         newPass = text
         stateData.value = LoadingData.Success(
             stateData.value?.commonData?.copy(
-                isNewPasswordMatches = newPass == newPassConfirm,
+                isNewPasswordMatches = newPass == newPassConfirm || !startValidation,
                 isNextButtonEnabled = isButtonEnabled(),
                 isLoading = false
             )?: UpdatePasswordState(
-                isNewPasswordMatches = newPass == newPassConfirm,
+                isNewPasswordMatches = newPass == newPassConfirm || !startValidation,
                 isNextButtonEnabled = isButtonEnabled(),
                 isLoading = false
             )
@@ -46,17 +47,32 @@ class UpdatePasswordViewModel(
     fun onNewPassConfirmTextChanged(text: String) {
         newPassConfirm = text
         stateData.value = LoadingData.Success(stateData.value?.commonData?.copy(
-            isNewPasswordMatches = newPass == newPassConfirm,
+            isNewPasswordMatches = newPass == newPassConfirm || !startValidation,
             isNextButtonEnabled = isButtonEnabled(),
             isLoading = false
         )?: UpdatePasswordState(
-            isNewPasswordMatches = newPass == newPassConfirm,
+            isNewPasswordMatches = newPass == newPassConfirm || !startValidation,
             isNextButtonEnabled = isButtonEnabled(),
             isLoading = false
         ))
     }
 
     fun onNextClick() {
+        if (!startValidation) {
+            startValidation = true
+        }
+        if (newPassConfirm != newPass) {
+            stateData.value = LoadingData.Success(stateData.value?.commonData?.copy(
+                isNewPasswordMatches = newPass == newPassConfirm || !startValidation,
+                isNextButtonEnabled = isButtonEnabled(),
+                isLoading = false
+            )?: UpdatePasswordState(
+                isNewPasswordMatches = newPass == newPassConfirm || !startValidation,
+                isNextButtonEnabled = isButtonEnabled(),
+                isLoading = false
+            ))
+            return
+        }
         stateData.value = LoadingData.Loading(stateData.value?.commonData)
         changePassUseCase.invoke(
             ChangePassUseCase.Params(
@@ -84,7 +100,7 @@ class UpdatePasswordViewModel(
         return oldPass.isNotEmpty()
                 && newPass.length in MIN_PASS..MAX_PASS
                 && newPassConfirm.isNotEmpty()
-                && newPass == newPassConfirm
+                && (!startValidation || (newPass == newPassConfirm))
     }
 }
 
