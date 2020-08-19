@@ -12,7 +12,7 @@ import com.app.belcobtm.presentation.core.mvvm.LoadingData
 import com.app.belcobtm.presentation.core.ui.fragment.BaseFragment
 import com.kroegerama.imgpicker.BottomSheetImagePicker
 import com.kroegerama.imgpicker.ButtonType
-import kotlinx.android.synthetic.main.activity_verification_vip.*
+import kotlinx.android.synthetic.main.fragment_verification_vip.*
 import org.koin.android.viewmodel.ext.android.viewModel
 import permissions.dispatcher.NeedsPermission
 import permissions.dispatcher.RuntimePermissions
@@ -20,7 +20,7 @@ import permissions.dispatcher.RuntimePermissions
 @RuntimePermissions
 class VerificationVipFragment : BaseFragment(), BottomSheetImagePicker.OnImagesSelectedListener {
     private val viewModel: VerificationVipViewModel by viewModel()
-    override val resourceLayout = R.layout.activity_verification_vip
+    override val resourceLayout = R.layout.fragment_verification_vip
     override val isHomeButtonEnabled = true
 
     override fun onImagesSelected(uris: List<Uri>, tag: String?) {

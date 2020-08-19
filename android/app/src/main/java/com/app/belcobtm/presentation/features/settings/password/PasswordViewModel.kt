@@ -56,7 +56,7 @@ class PasswordViewModel(
                 mode = CreateSeedFragment.MODE_SETTINGS,
                 seed = prefsHelper.apiSeed
             )
-            R.id.password_to_change_phone_fragment -> PasswordFragmentDirections.passwordToPhoneDisplayFragment()
+            R.id.password_to_change_phone_fragment -> PasswordFragmentDirections.passwordToChangePhoneFragment()
             else -> throw IllegalArgumentException("wrong direction passed")
         }
     }

@@ -12,9 +12,6 @@ import com.app.belcobtm.ui.main.coins.details.DetailsActivity
 import com.app.belcobtm.ui.main.coins.sell.SellActivity
 import com.app.belcobtm.ui.main.coins.send_gift.SendGiftActivity
 import com.app.belcobtm.ui.main.coins.withdraw.WithdrawActivity
-import com.app.belcobtm.ui.main.settings.change_pass.ChangePassActivity
-import com.app.belcobtm.ui.main.settings.check_pass.CheckPassActivity
-import com.app.belcobtm.ui.main.settings.phone.ShowPhoneActivity
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 
@@ -35,18 +32,6 @@ abstract class BuildersModule {
     @ActivityScope
     @ContributesAndroidInjector(modules = [ActivityModule::class])
     internal abstract fun bindVisibilityCoinsActivity(): AddWalletActivity
-
-    @ActivityScope
-    @ContributesAndroidInjector(modules = [ActivityModule::class])
-    internal abstract fun bindCheckPassActivity(): CheckPassActivity
-
-    @ActivityScope
-    @ContributesAndroidInjector(modules = [ActivityModule::class])
-    internal abstract fun bindChangePassActivity(): ChangePassActivity
-
-    @ActivityScope
-    @ContributesAndroidInjector(modules = [ActivityModule::class])
-    internal abstract fun bindShowPhoneActivity(): ShowPhoneActivity
 
     @FragmentScope
     @ContributesAndroidInjector(modules = [FragmentModule::class])

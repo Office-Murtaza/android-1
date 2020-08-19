@@ -16,7 +16,7 @@ import com.app.belcobtm.presentation.core.mvvm.LoadingData
 import com.app.belcobtm.presentation.core.ui.BaseActivity
 import com.kroegerama.imgpicker.BottomSheetImagePicker
 import com.kroegerama.imgpicker.ButtonType
-import kotlinx.android.synthetic.main.activity_verification_blank.*
+import kotlinx.android.synthetic.main.fragment_verification_blank.*
 import org.koin.android.viewmodel.ext.android.viewModel
 import permissions.dispatcher.*
 
@@ -78,7 +78,7 @@ class VerificationBlankActivity : BaseActivity(), BottomSheetImagePicker.OnImage
     }
 
     private fun initViews() {
-        setContentView(R.layout.activity_verification_blank)
+        setContentView(R.layout.fragment_verification_blank)
 //        setSupportActionBar(toolbarView)
         supportActionBar?.let { toolbar ->
             toolbar.setDisplayHomeAsUpEnabled(true)

@@ -146,24 +146,24 @@
     <!-- Verification -->
     <string name="verification_screen_title">Verification</string>
     <string name="verification_status">Status</string>
-    <string name="verification_tx_limit">Tx Limit</string>
+    <string name="verification_tx_limit">Transaction Limit</string>
     <string name="verification_daily_limit">Daily Limit</string>
     <string name="verification_vip_verify">VIP Verify</string>
     <string name="verification_verify">Verify</string>
     <string name="verification_unit_usd">%1$s USD</string>
     <string-array name="verification_status_array">
-        <item>Incorrect Status</item>
-        <item>Not Verified</item>
-        <item>Verification Pending</item>
-        <item>Verification Rejected</item>
+        <item>Incorrect status</item>
+        <item>Not verified</item>
+        <item>Verification pending</item>
+        <item>Verification rejected</item>
         <item>Verified</item>
-        <item>VIP Verification Pending</item>
-        <item>VIP Verification Rejected</item>
-        <item>VIP Verified</item>
+        <item>VIP verification pending</item>
+        <item>VIP verification rejected</item>
+        <item>VIP verified</item>
     </string-array>
     <string name="verification_select">Select</string>
     <string name="verification_remove">Remove</string>
-    <string name="verification_id_number">ID Number *</string>
+    <string name="verification_id_number">ID number *</string>
     <string name="verification_first_name">First Name *</string>
     <string name="verification_last_name">Last Name *</string>
     <string name="verification_address">Address *</string>
@@ -177,9 +177,9 @@
     <string name="verification_alert_state_title">Please pick province</string>
     <string name="verification_alert_city_title">Please pick city</string>
     <string name="verification_alert_please_fill_fields">Please fill all fields</string>
-    <string name="verification_id_scan">ID Scan</string>
-    <string name="verification_id_selfie">ID Selfie</string>
-    <string name="verification_snn">SNN *</string>
+    <string name="verification_id_scan">ID scan</string>
+    <string name="verification_id_selfie">ID selfie</string>
+    <string name="verification_snn">SNN</string>
     <string name="verification_please_on_permissions">Please on permissions in app settings</string>
 
     <!--transactions-->
@@ -421,7 +421,7 @@
     //pass
     <string name="password_hint">Password</string>
     <string name="password_doesnt_match">Password doesn\'t match</string>
-    <string name="password_confirm_not_match">New passwords doesn\'t match</string>
+    <string name="password_confirm_not_match">New passwords don\'t match</string>
     <string name="old_pass_hint">Old password</string>
     <string name="new_pass_hint">New password</string>
     <string name="new_pass_confirm_hint">Confirm new password</string>

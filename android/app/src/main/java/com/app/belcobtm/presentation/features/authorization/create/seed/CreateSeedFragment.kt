@@ -27,6 +27,7 @@ class CreateSeedFragment : BaseFragment() {
         goBack()
     }
     override val retryListener: View.OnClickListener = View.OnClickListener { createWallet() }
+    private var seedPhrase = ""
 
     override fun initViews() {
         setToolbarTitle(R.string.create_seed_screen_title)
@@ -42,7 +43,7 @@ class CreateSeedFragment : BaseFragment() {
 
     override fun initListeners() {
         copyButtonView.setOnClickListener {
-            copyToClipboard(viewModel.seedLiveData.value ?: "")
+            copyToClipboard(seedPhrase)
         }
     }
 
@@ -61,6 +62,7 @@ class CreateSeedFragment : BaseFragment() {
     }
 
     private fun showSeed(seedPhrase: String) {
+        this.seedPhrase = seedPhrase
         val wordList: List<String> = seedPhrase
             .replace(CHAR_NEXT_LINE, CHAR_SPACE)
             .splitToSequence(CHAR_SPACE)
