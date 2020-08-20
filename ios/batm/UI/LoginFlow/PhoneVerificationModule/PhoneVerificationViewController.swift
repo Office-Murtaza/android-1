@@ -8,9 +8,16 @@ final class PhoneVerificationViewController: ModuleViewController<PhoneVerificat
   
   let rootScrollView = RootScrollView()
   
-  let errorView = ErrorView()
-  
   let formView = PhoneVerificationFormView()
+  
+  let errorLabel: UILabel = {
+    let label = UILabel()
+    label.textColor = .tomato
+    label.textAlignment = .center
+    label.font = .systemFont(ofSize: 16)
+    label.numberOfLines = 0
+    return label
+  }()
   
   let nextButton = MDCButton.next
   
@@ -24,8 +31,8 @@ final class PhoneVerificationViewController: ModuleViewController<PhoneVerificat
     view.addSubviews(rootScrollView)
     
     rootScrollView.contentInsetAdjustmentBehavior = .never
-    rootScrollView.contentView.addSubviews(errorView,
-                                           formView,
+    rootScrollView.contentView.addSubviews(formView,
+                                           errorLabel,
                                            nextButton,
                                            resendCodeLabel)
     
@@ -40,15 +47,15 @@ final class PhoneVerificationViewController: ModuleViewController<PhoneVerificat
     rootScrollView.contentView.snp.makeConstraints {
       $0.height.equalToSuperview()
     }
-    errorView.snp.makeConstraints {
-      $0.top.equalToSuperview().offset(5)
-      $0.centerX.equalToSuperview()
-    }
     formView.snp.makeConstraints {
       $0.top.equalToSuperview().offset(40)
       $0.left.right.equalToSuperview().inset(40)
-      $0.bottom.lessThanOrEqualTo(nextButton.snp.top).offset(-20)
+      $0.bottom.lessThanOrEqualTo(errorLabel.snp.top).offset(-20)
       $0.bottom.lessThanOrEqualTo(view.safeAreaLayoutGuide).offset(-20)
+    }
+    errorLabel.snp.makeConstraints {
+      $0.left.right.equalToSuperview().inset(15)
+      $0.bottom.equalTo(nextButton.snp.top).offset(-25)
     }
     nextButton.snp.makeConstraints {
       $0.height.equalTo(50)
@@ -75,12 +82,9 @@ final class PhoneVerificationViewController: ModuleViewController<PhoneVerificat
       .disposed(by: disposeBag)
     
     presenter.state
-      .map { $0.validationState }
-      .mapToErrorMessage()
-      .drive(onNext: { [errorView] in
-        errorView.isHidden = $0 == nil
-        errorView.configure(for: $0)
-      })
+      .asObservable()
+      .map { $0.codeError }
+      .bind(to: errorLabel.rx.text)
       .disposed(by: disposeBag)
     
     presenter.didTypeWrongCode

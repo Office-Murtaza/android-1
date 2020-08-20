@@ -477,8 +477,8 @@
 		DBC68CAA22F868E000473247 /* EnterPasswordAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC68CA622F868E000473247 /* EnterPasswordAssembly.swift */; };
 		DBC68CAD22F86C5F00473247 /* EnterPasswordFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC68CAC22F86C5F00473247 /* EnterPasswordFormView.swift */; };
 		DBC68CAF22F86E0000473247 /* EnterPasswordStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC68CAE22F86E0000473247 /* EnterPasswordStore.swift */; };
-		DBC68CB122F8755000473247 /* VerifyPassword.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC68CB022F8755000473247 /* VerifyPassword.swift */; };
-		DBC68CB322F8759100473247 /* VerifyPassword+Mapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC68CB222F8759100473247 /* VerifyPassword+Mapping.swift */; };
+		DBC68CB122F8755000473247 /* VerificationResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC68CB022F8755000473247 /* VerificationResult.swift */; };
+		DBC68CB322F8759100473247 /* VerificationResult+Mapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC68CB222F8759100473247 /* VerificationResult+Mapping.swift */; };
 		DBC68CB922F8798F00473247 /* UpdatePhoneModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC68CB522F8798F00473247 /* UpdatePhoneModule.swift */; };
 		DBC68CBA22F8798F00473247 /* UpdatePhoneViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC68CB622F8798F00473247 /* UpdatePhoneViewController.swift */; };
 		DBC68CBB22F8798F00473247 /* UpdatePhonePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC68CB722F8798F00473247 /* UpdatePhonePresenter.swift */; };
@@ -1024,8 +1024,8 @@
 		DBC68CA622F868E000473247 /* EnterPasswordAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnterPasswordAssembly.swift; sourceTree = "<group>"; };
 		DBC68CAC22F86C5F00473247 /* EnterPasswordFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnterPasswordFormView.swift; sourceTree = "<group>"; };
 		DBC68CAE22F86E0000473247 /* EnterPasswordStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnterPasswordStore.swift; sourceTree = "<group>"; };
-		DBC68CB022F8755000473247 /* VerifyPassword.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerifyPassword.swift; sourceTree = "<group>"; };
-		DBC68CB222F8759100473247 /* VerifyPassword+Mapping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "VerifyPassword+Mapping.swift"; sourceTree = "<group>"; };
+		DBC68CB022F8755000473247 /* VerificationResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerificationResult.swift; sourceTree = "<group>"; };
+		DBC68CB222F8759100473247 /* VerificationResult+Mapping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "VerificationResult+Mapping.swift"; sourceTree = "<group>"; };
 		DBC68CB522F8798F00473247 /* UpdatePhoneModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdatePhoneModule.swift; sourceTree = "<group>"; };
 		DBC68CB622F8798F00473247 /* UpdatePhoneViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdatePhoneViewController.swift; sourceTree = "<group>"; };
 		DBC68CB722F8798F00473247 /* UpdatePhonePresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdatePhonePresenter.swift; sourceTree = "<group>"; };
@@ -2215,7 +2215,7 @@
 				DB308EB222E73793003D91AF /* MapAddress.swift */,
 				DB308EB022E73762003D91AF /* MapAddresses.swift */,
 				DBC68C9422F85DF700473247 /* PhoneNumber.swift */,
-				DBC68CB022F8755000473247 /* VerifyPassword.swift */,
+				DBC68CB022F8755000473247 /* VerificationResult.swift */,
 				DB95EB1F230AA52A0059C84C /* Transaction.swift */,
 				DBC9E06223618CDB0008E0A6 /* TransactionDetails.swift */,
 				DB167CDA230D85E800D9D66E /* Transactions.swift */,
@@ -2348,7 +2348,7 @@
 				DB308EB822E73888003D91AF /* MapAddress+Mapping.swift */,
 				DB308EBA22E738FC003D91AF /* MapAddresses+Mapping.swift */,
 				DBC68C9622F85E1300473247 /* PhoneNumber+Mapping.swift */,
-				DBC68CB222F8759100473247 /* VerifyPassword+Mapping.swift */,
+				DBC68CB222F8759100473247 /* VerificationResult+Mapping.swift */,
 				DB167CD8230D85D900D9D66E /* Transaction+Mapping.swift */,
 				DBC9E06423618E270008E0A6 /* TransactionDetails+Mapping.swift */,
 				DBEE1370230E80680020E211 /* Transactions+Mapping.swift */,
@@ -3262,7 +3262,7 @@
 				DBBF299622D3725D00A5DE6A /* UITableView+ReusableView.swift in Sources */,
 				DB64DA5A2416B8890019D38B /* VerificationConstants.swift in Sources */,
 				DBC620B3234769120007D412 /* RippleSequence+Mapping.swift in Sources */,
-				DBC68CB322F8759100473247 /* VerifyPassword+Mapping.swift in Sources */,
+				DBC68CB322F8759100473247 /* VerificationResult+Mapping.swift in Sources */,
 				DB8D40B722C4027500D5FBD0 /* MainFormView.swift in Sources */,
 				DB8E744B2435C362002B5F6D /* CoinWithdrawFormView.swift in Sources */,
 				DB6DC1B724877AC600CD478D /* BuySellTradeDetailsPresenter.swift in Sources */,
@@ -3300,7 +3300,7 @@
 				DB4D7BCB2409A17E008C2BD5 /* VerificationInfoViewController.swift in Sources */,
 				DB4F395522DEFCBB00D53BF3 /* FilterCoinsPresenter.swift in Sources */,
 				DB9616F322C750CA0078E92D /* Converter.swift in Sources */,
-				DBC68CB122F8755000473247 /* VerifyPassword.swift in Sources */,
+				DBC68CB122F8755000473247 /* VerificationResult.swift in Sources */,
 				DB59EA1B22F9C4BF00EB64A7 /* ChangePasswordFlowController.swift in Sources */,
 				DBAD539F22D7BA1D0005F682 /* PinCodeViewController.swift in Sources */,
 				DB59EA2222F9C51B00EB64A7 /* ChangePasswordViewController.swift in Sources */,

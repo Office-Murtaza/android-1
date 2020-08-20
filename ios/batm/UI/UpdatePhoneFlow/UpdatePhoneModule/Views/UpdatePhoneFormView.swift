@@ -1,18 +1,17 @@
 import UIKit
 import RxSwift
 import RxCocoa
+import MaterialComponents
 
-class UpdatePhoneFormView: UIView {
+final class UpdatePhoneFormView: UIView, HasDisposeBag {
   
-  let phoneNumberTextField = PhoneNumberTextField()
+  let phoneNumberTextField = MDCTextField.phone
   
-  lazy var formView: MainFormView = {
-    let view = MainFormView(flat: true)
-    view.configure(for: [phoneNumberTextField])
-    return view
-  }()
+  let phoneNumberTextFieldController: ThemedTextInputControllerOutlined
   
   override init(frame: CGRect) {
+    phoneNumberTextFieldController = ThemedTextInputControllerOutlined(textInput: phoneNumberTextField)
+    
     super.init(frame: frame)
     
     setupUI()
@@ -26,21 +25,25 @@ class UpdatePhoneFormView: UIView {
   private func setupUI() {
     translatesAutoresizingMaskIntoConstraints = false
     
-    addSubview(formView)
+    addSubview(phoneNumberTextField)
+    
+    phoneNumberTextFieldController.placeholderText = localize(L.UpdatePhone.Form.Phone.placeholder)
   }
   
   private func setupLayout() {
-    formView.snp.makeConstraints {
+    phoneNumberTextField.snp.makeConstraints {
       $0.edges.equalToSuperview()
     }
   }
 }
 
 extension Reactive where Base == UpdatePhoneFormView {
-  var nextTap: Driver<Void> {
-    return base.formView.rx.nextTap
+  var phoneNumberText: ControlProperty<String?> {
+    return base.phoneNumberTextField.rx.text
   }
-  var error: Binder<String?> {
-    return base.formView.rx.error
+  var phoneNumberErrorText: Binder<String?> {
+    return Binder(base) { target, value in
+      target.phoneNumberTextFieldController.setErrorText(value, errorAccessibilityValue: value)
+    }
   }
 }

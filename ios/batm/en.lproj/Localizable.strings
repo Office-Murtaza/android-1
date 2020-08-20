@@ -107,6 +107,9 @@
 "enter_password.form.password.placeholder" = "Password";
 
 "update_phone.title" = "Update Phone";
+"update_phone.form.phone.placeholder" = "New phone number";
+"update_phone.form.error.phone_used" = "Phone already is used";
+"update_phone.form.error.same_phone" = "New phone is the same as the old one";
 
 "change_password.title" = "Change Password";
 "change_password.form.old_password.placeholder" = "Old Password *";

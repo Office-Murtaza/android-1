@@ -71,7 +71,7 @@ final class EnterPasswordViewController: ModuleViewController<EnterPasswordPrese
   override func setupBindings() {
     setupUIBindings()
     
-    let updatePasswordDriver = formView.passwordTextField.rx.text.asDriver()
+    let updatePasswordDriver = formView.rx.passwordText.asDriver()
     let verifyPasswordDriver = nextButton.rx.tap.asDriver()
     
     presenter.bind(input: EnterPasswordPresenter.Input(updatePassword: updatePasswordDriver,

@@ -14,7 +14,8 @@ extension UpdatePhoneFlow {
         .inObjectScope(.container)
         .implements(ShowPhoneModuleDelegate.self,
                     EnterPasswordModuleDelegate.self,
-                    UpdatePhoneModuleDelegate.self)
+                    UpdatePhoneModuleDelegate.self,
+                    PhoneVerificationModuleDelegate.self)
     }
   }
 }

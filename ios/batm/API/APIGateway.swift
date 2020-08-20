@@ -27,6 +27,7 @@ protocol APIGateway {
   func getMapAddresses() -> Single<MapAddresses>
   func getPhoneNumber(userId: Int) -> Single<PhoneNumber>
   func verifyPassword(userId: Int, password: String) -> Single<Bool>
+  func verifyPhone(userId: Int, phoneNumber: String) -> Single<Bool>
   func updatePhone(userId: Int, phoneNumber: String) -> Completable
   func confirmPhone(userId: Int, phoneNumber: String, code: String) -> Completable
   func changePassword(userId: Int, oldPassword: String, newPassword: String) -> Completable
@@ -154,6 +155,11 @@ final class APIGatewayImpl: APIGateway {
   
   func verifyPassword(userId: Int, password: String) -> Single<Bool> {
     let request = VerifyPasswordRequest(userId: userId, password: password)
+    return execute(request).map { $0.result }
+  }
+  
+  func verifyPhone(userId: Int, phoneNumber: String) -> Single<Bool> {
+    let request = VerifyPhoneRequest(userId: userId, phoneNumber: phoneNumber)
     return execute(request).map { $0.result }
   }
   

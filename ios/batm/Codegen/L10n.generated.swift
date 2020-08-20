@@ -674,6 +674,22 @@ extension L.Unlink {
     static let title = "unlink.button.title"
   }
 }
+extension L.UpdatePhone {
+
+  struct Form {
+  }
+}
+extension L.UpdatePhone.Form {
+
+  struct Error {
+    static let phoneUsed = "update_phone.form.error.phone_used"
+    static let samePhone = "update_phone.form.error.same_phone"
+  }
+
+  struct Phone {
+    static let placeholder = "update_phone.form.phone.placeholder"
+  }
+}
 extension L.VIPVerification {
 
   struct Form {

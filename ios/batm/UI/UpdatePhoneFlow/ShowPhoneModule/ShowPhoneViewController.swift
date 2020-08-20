@@ -56,7 +56,7 @@ class ShowPhoneViewController: ModuleViewController<ShowPhonePresenter> {
   }
   
   private func setupUIBindings() {
-    phoneNumberLabel.text = presenter.phoneNumber
+    phoneNumberLabel.text = presenter.formattedPhoneNumber
   }
   
   override func setupBindings() {

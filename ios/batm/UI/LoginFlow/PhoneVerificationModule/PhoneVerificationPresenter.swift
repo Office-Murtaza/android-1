@@ -12,7 +12,7 @@ final class PhoneVerificationPresenter: ModulePresenter, PhoneVerificationModule
     var resendCode: Driver<Void>
   }
   
-  let usecase: LoginUsecase
+  let usecase: SettingsUsecase
   let store: Store
   let didTypeWrongCode = PublishRelay<Void>()
   let didSendNewCode = PublishRelay<Void>()
@@ -23,15 +23,15 @@ final class PhoneVerificationPresenter: ModulePresenter, PhoneVerificationModule
 
   weak var delegate: PhoneVerificationModuleDelegate?
   
-  init(usecase: LoginUsecase,
+  init(usecase: SettingsUsecase,
        store: Store = PhoneVerificationStore()) {
     self.usecase = usecase
     self.store = store
   }
   
-  func setup(phoneNumber: String, password: String) {
+  func setup(phoneNumber: String, for mode: PhoneVerificationMode) {
+    store.action.accept(.setupMode(mode))
     store.action.accept(.setupPhoneNumber(phoneNumber))
-    store.action.accept(.setupPassword(password))
   }
 
   func bind(input: Input) {
@@ -51,8 +51,13 @@ final class PhoneVerificationPresenter: ModulePresenter, PhoneVerificationModule
         }
       }
       .filter { $0.validationState.isValid }
-      .subscribe(onNext: { [delegate] in delegate?.didFinishPhoneVerification(phoneNumber: $0.phoneNumber,
-                                                                              password: $0.password) })
+      .flatMap { [unowned self] state -> Driver<PhoneVerificationState> in
+        switch state.mode {
+        case .create: return .just(state)
+        case .update: return self.track(self.update(for: state)).map { state }
+        }
+      }
+      .subscribe(onNext: { [delegate] in delegate?.didFinishPhoneVerification(phoneNumber: $0.phoneNumber) })
       .disposed(by: disposeBag)
     
     input.resendCode
@@ -73,8 +78,19 @@ final class PhoneVerificationPresenter: ModulePresenter, PhoneVerificationModule
   private func verify(for state: PhoneVerificationState) -> Single<PhoneVerificationResponse> {
     return usecase.verifyAccount(phoneNumber: state.phoneNumber)
       .catchError { [unowned self] in
-        if let apiError = $0 as? APIError, case let .serverError(error) = apiError {
-          self.store.action.accept(.makeInvalidState(error.message))
+        if let apiError = $0 as? APIError, case let .serverError(error) = apiError, let code = error.code, code > 1 {
+          self.store.action.accept(.updateCodeError(error.message))
+        }
+
+        throw $0
+      }
+  }
+  
+  private func update(for state: PhoneVerificationState) -> Completable {
+    return usecase.updatePhone(phoneNumber: state.phoneNumber)
+      .catchError { [unowned self] in
+        if let apiError = $0 as? APIError, case let .serverError(error) = apiError, let code = error.code, code > 1 {
+          self.store.action.accept(.updateCodeError(error.message))
         }
 
         throw $0

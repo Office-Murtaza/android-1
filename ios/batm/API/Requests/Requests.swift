@@ -151,7 +151,7 @@ struct GetPhoneNumberRequest: AuthorizedAPIRequest {
 }
 
 struct VerifyPasswordRequest: AuthorizedAPIRequest {
-  typealias ResponseType = APIResponse<VerifyPassword>
+  typealias ResponseType = APIResponse<VerificationResult>
   typealias ResponseTrait = SingleResponseTrait
   
   let userId: Int
@@ -161,6 +161,21 @@ struct VerifyPasswordRequest: AuthorizedAPIRequest {
   var method: HTTPMethod { return .post }
   var task: HTTPTask {
     return .requestParameters(parameters: ["password": password],
+                              encoding: JSONEncoding.default)
+  }
+}
+
+struct VerifyPhoneRequest: AuthorizedAPIRequest {
+  typealias ResponseType = APIResponse<VerificationResult>
+  typealias ResponseTrait = SingleResponseTrait
+  
+  let userId: Int
+  let phoneNumber: String
+  
+  var path: String { return "/user/\(userId)/phone-verify" }
+  var method: HTTPMethod { return .post }
+  var task: HTTPTask {
+    return .requestParameters(parameters: ["phone": phoneNumber],
                               encoding: JSONEncoding.default)
   }
 }

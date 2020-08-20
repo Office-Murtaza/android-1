@@ -1,16 +1,26 @@
 import Foundation
 import RxSwift
+import PhoneNumberKit
 
 enum UpdatePhoneAction: Equatable {
-  case updatePhone(ValidatablePhoneNumber)
+  case setupOldPhoneNumber(String)
+  case updatePhoneNumber(String?)
+  case updatePhoneNumberError(String?)
   case updateValidationState
-  case makeInvalidState(String)
 }
 
 struct UpdatePhoneState: Equatable {
   
-  var validatablePhone = ValidatablePhoneNumber()
+  var oldPhoneNumber: String = ""
+  var phoneNumber: String = ""
+  var phoneNumberError: String?
   var validationState: ValidationState = .unknown
+  
+  var phoneE164: String {
+    guard let phoneNumber = try? PhoneNumberKit.default.parse(phoneNumber) else { return "" }
+    
+    return PhoneNumberKit.default.format(phoneNumber, toType: .e164)
+  }
   
 }
 
@@ -24,23 +34,34 @@ final class UpdatePhoneStore: ViewStore<UpdatePhoneAction, UpdatePhoneState> {
     var state = state
     
     switch action {
-    case let .updatePhone(validatablePhone): state.validatablePhone = validatablePhone
-    case .updateValidationState: state.validationState = validate(state)
-    case let .makeInvalidState(error): state.validationState = .invalid(error)
+    case let .setupOldPhoneNumber(oldPhoneNumber): state.oldPhoneNumber = oldPhoneNumber
+    case let .updatePhoneNumber(phoneNumber):
+      state.phoneNumber = PartialFormatter.default.formatPartial(phoneNumber ?? "")
+      state.phoneNumberError = nil
+    case let .updatePhoneNumberError(phoneNumberError): state.phoneNumberError = phoneNumberError
+    case .updateValidationState: validate(&state)
     }
     
     return state
   }
   
-  private func validate(_ state: UpdatePhoneState) -> ValidationState {
-    guard state.validatablePhone.phone.count > 0 else {
-      return .invalid(localize(L.CreateWallet.Form.Error.allFieldsRequired))
-    }
+  private func validate(_ state: inout UpdatePhoneState) {
+    state.validationState = .valid
     
-    guard state.validatablePhone.isValid else {
-      return .invalid(localize(L.CreateWallet.Form.Error.notValidPhoneNumber))
+    if state.phoneNumber.count == 0 {
+      let errorString = localize(L.CreateWallet.Form.Error.fieldRequired)
+      state.phoneNumberError = errorString
+      state.validationState = .invalid(errorString)
+    } else if state.phoneE164.count == 0 {
+      let errorString = localize(L.CreateWallet.Form.Error.notValidPhoneNumber)
+      state.phoneNumberError = errorString
+      state.validationState = .invalid(errorString)
+    } else if state.phoneE164 == state.oldPhoneNumber {
+      let errorString = localize(L.UpdatePhone.Form.Error.samePhone)
+      state.phoneNumberError = errorString
+      state.validationState = .invalid(errorString)
+    } else {
+      state.phoneNumberError = nil
     }
-    
-    return .valid
   }
 }

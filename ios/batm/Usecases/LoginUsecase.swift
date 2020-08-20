@@ -12,7 +12,6 @@ protocol LoginUsecase {
   func getLoginState() -> Single<LoginState>
   func checkCreatingAccount(phoneNumber: String, password: String) -> Completable
   func checkRecoveringAccount(phoneNumber: String, password: String) -> Completable
-  func verifyAccount(phoneNumber: String) -> Single<PhoneVerificationResponse>
   func createWallet() -> Completable
   func getSeedPhrase() -> Single<String>
   func createAccount(phoneNumber: String, password: String) -> Completable
@@ -92,10 +91,6 @@ class LoginUsecaseImpl: LoginUsecase {
         
         return .empty()
       }
-  }
-  
-  func verifyAccount(phoneNumber: String) -> Single<PhoneVerificationResponse> {
-    return api.verifyPhone(phoneNumber: phoneNumber)
   }
   
   func createWallet() -> Completable {

@@ -5,15 +5,15 @@ import RxCocoa
 final class UpdatePhonePresenter: ModulePresenter, UpdatePhoneModule {
   
   typealias Store = ViewStore<UpdatePhoneAction, UpdatePhoneState>
-
+  
   struct Input {
-    var updatePhone: Driver<ValidatablePhoneNumber>
+    var updatePhoneNumber: Driver<String?>
     var next: Driver<Void>
   }
   
   private let usecase: SettingsUsecase
   private let store: Store
-
+  
   weak var delegate: UpdatePhoneModuleDelegate?
   
   var state: Driver<UpdatePhoneState> {
@@ -25,11 +25,15 @@ final class UpdatePhonePresenter: ModulePresenter, UpdatePhoneModule {
     self.usecase = usecase
     self.store = store
   }
-
+  
+  func setup(oldPhoneNumber: String) {
+    store.action.accept(.setupOldPhoneNumber(oldPhoneNumber))
+  }
+  
   func bind(input: Input) {
-    input.updatePhone
+    input.updatePhoneNumber
       .asObservable()
-      .map { UpdatePhoneAction.updatePhone($0) }
+      .map { UpdatePhoneAction.updatePhoneNumber($0) }
       .bind(to: store.action)
       .disposed(by: disposeBag)
     
@@ -38,20 +42,22 @@ final class UpdatePhonePresenter: ModulePresenter, UpdatePhoneModule {
       .doOnNext { [store] in store.action.accept(.updateValidationState) }
       .withLatestFrom(state)
       .filter { $0.validationState.isValid }
-      .map { $0.validatablePhone.phoneE164 }
+      .map { $0.phoneE164 }
       .flatMap { [unowned self] in self.track(self.updatePhone(phoneNumber: $0)) }
-      .subscribe(onNext: { [delegate] in delegate?.didUpdatePhone() })
+      .subscribe()
       .disposed(by: disposeBag)
   }
   
   private func updatePhone(phoneNumber: String) -> Completable {
-    return usecase.updatePhone(phoneNumber: phoneNumber)
-      .catchError { [store] in
-        if let apiError = $0 as? APIError, case let .serverError(error) = apiError {
-          store.action.accept(.makeInvalidState(error.message))
+    return usecase.verifyPhone(phoneNumber: phoneNumber)
+      .do(onSuccess: { [delegate, store] matched in
+        if matched {
+          let error = localize(L.UpdatePhone.Form.Error.phoneUsed)
+          store.action.accept(.updatePhoneNumberError(error))
+        } else {
+          delegate?.didNotMatchNewPhoneNumber(phoneNumber)
         }
-        
-        throw $0
-      }
+      })
+      .asCompletable()
   }
 }

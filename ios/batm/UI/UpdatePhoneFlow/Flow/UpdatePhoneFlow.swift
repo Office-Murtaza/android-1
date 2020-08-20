@@ -6,14 +6,16 @@ class UpdatePhoneFlow: BaseFlow<BTMNavigationController, UpdatePhoneFlowControll
       Dependencies(),
       ShowPhoneAssembly(),
       EnterPasswordAssembly(),
-      UpdatePhoneAssembly()
+      UpdatePhoneAssembly(),
+      PhoneVerificationAssembly()
     ]
   }
   
   enum Steps: Step, Equatable {
     case showPhone(PhoneNumber)
     case enterPassword
-    case updatePhone
+    case updatePhone(String)
+    case verifyPhone(String)
   }
   
   override func route(to step: Step) -> NextFlowItems {
@@ -32,8 +34,13 @@ class UpdatePhoneFlow: BaseFlow<BTMNavigationController, UpdatePhoneFlowControll
       let module = resolver.resolve(Module<EnterPasswordModule>.self)!
       module.controller.title = localize(L.ShowPhone.title)
       return push(module.controller)
-    case .updatePhone:
+    case let .updatePhone(oldPhoneNumber):
       let module = resolver.resolve(Module<UpdatePhoneModule>.self)!
+      module.input.setup(oldPhoneNumber: oldPhoneNumber)
+      return replaceLast(module.controller)
+    case let .verifyPhone(phoneNumber):
+      let module = resolver.resolve(Module<PhoneVerificationModule>.self)!
+      module.input.setup(phoneNumber: phoneNumber, for: .update)
       return replaceLast(module.controller)
     }
   }
