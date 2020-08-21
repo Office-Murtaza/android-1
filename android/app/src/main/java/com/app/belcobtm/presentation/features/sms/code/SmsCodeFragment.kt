@@ -22,6 +22,7 @@ class SmsCodeFragment : BaseFragment() {
 
     override fun initViews() {
         setToolbarTitle(R.string.sms_code_screen_title)
+        setNextButtonTitle()
     }
 
     override fun initListeners() {
@@ -76,6 +77,9 @@ class SmsCodeFragment : BaseFragment() {
     private fun openNextScreen() {
         val isSuccessLoadingData =
             (viewModel.smsLiveData.value as? LoadingData.Success)?.data == pinEntryView.getString()
+        if (requireArguments().getInt(TAG_NEXT_FRAGMENT_ID) == R.id.sms_code_to_settings_fragment) {
+            showSnackBar(R.string.phone_updated)
+        }
         when {
             isSuccessLoadingData -> navigate(requireArguments().getInt(TAG_NEXT_FRAGMENT_ID), requireArguments())
             !isSuccessLoadingData && pinEntryView.getString().length == SMS_CODE_LENGTH -> {
@@ -88,6 +92,15 @@ class SmsCodeFragment : BaseFragment() {
     private fun showResendDialog() {
         isResendClicked = false
         AlertHelper.showToastShort(requireContext(), R.string.sms_code_screen_resend)
+    }
+
+    private fun setNextButtonTitle() {
+        nextButtonView.text = getString(
+            when (requireArguments().getInt(TAG_NEXT_FRAGMENT_ID)) {
+                R.id.sms_code_to_settings_fragment -> R.string.done
+                else -> R.string.next
+            }
+        )
     }
 
     companion object {

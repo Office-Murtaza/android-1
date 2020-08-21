@@ -42,6 +42,7 @@ class UnlinkFragment : BaseFragment() {
     override fun initObservers() {
         viewModel.actionData.listen(
             success = {
+                showSnackBar(R.string.wallet_unlinked)
                 (requireActivity() as? HostActivity)?.showAuthorizationScreen()
             }
         )

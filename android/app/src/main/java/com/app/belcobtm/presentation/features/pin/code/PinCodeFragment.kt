@@ -90,6 +90,7 @@ class PinCodeFragment : BaseFragment() {
                     (requireActivity() as HostActivity).showMainScreen()
                 }
                 is PinCodeAction.ChangedPin -> {
+                    showSnackBar(R.string.pin_updated)
                     navigate(PinCodeFragmentDirections.pinCodeToSettingsFragment(SETTINGS_SECURITY))
                 }
                 is PinCodeAction.Vibrate -> {
