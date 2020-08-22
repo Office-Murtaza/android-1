@@ -9,6 +9,8 @@ import com.app.belcobtm.presentation.core.Const.MAX_PASS
 import com.app.belcobtm.presentation.core.Const.MIN_PASS
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
 
+const val ERROR_PASSWORDS_SAME = 1
+
 class UpdatePasswordViewModel(
     val changePassUseCase: ChangePassUseCase
 ) : ViewModel() {
@@ -71,6 +73,10 @@ class UpdatePasswordViewModel(
                 isNextButtonEnabled = isButtonEnabled(),
                 isLoading = false
             ))
+            return
+        }
+        if (oldPass == newPass) {
+            stateData.value = LoadingData.Error(data = stateData.value?.commonData, errorType = Failure.MessageError(code = ERROR_PASSWORDS_SAME, message = null))
             return
         }
         stateData.value = LoadingData.Loading(stateData.value?.commonData)

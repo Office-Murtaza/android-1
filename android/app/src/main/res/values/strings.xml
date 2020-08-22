@@ -139,16 +139,15 @@
     <string name="new_pin">New PIN *</string>
     <string name="old_pin">Old PIN *</string>
     <string name="confirm_new_pin"> Confirm New PIN *</string>
-    <string name="password_changed">Password changed</string>
     <string name="pin_changed">PIN changed</string>
     <string name="error_wrong_old_pin">Wrong old PIN</string>
 
     <!-- Verification -->
     <string name="verification_screen_title">Verification</string>
     <string name="verification_status">Status</string>
-    <string name="verification_tx_limit">Transaction Limit</string>
-    <string name="verification_daily_limit">Daily Limit</string>
-    <string name="verification_vip_verify">VIP Verify</string>
+    <string name="verification_tx_limit">Transaction limit</string>
+    <string name="verification_daily_limit">Daily limit</string>
+    <string name="verification_vip_verify">VIP verify</string>
     <string name="verification_verify">Verify</string>
     <string name="verification_unit_usd">%1$s USD</string>
     <string-array name="verification_status_array">
@@ -163,14 +162,14 @@
     </string-array>
     <string name="verification_select">Select</string>
     <string name="verification_remove">Remove</string>
-    <string name="verification_id_number">ID number *</string>
-    <string name="verification_first_name">First Name *</string>
-    <string name="verification_last_name">Last Name *</string>
-    <string name="verification_address">Address *</string>
-    <string name="verification_city">City *</string>
-    <string name="verification_country">Country *</string>
-    <string name="verification_province">Province *</string>
-    <string name="verification_zip_code">Zip Code *</string>
+    <string name="verification_id_number">ID number</string>
+    <string name="verification_first_name">First name</string>
+    <string name="verification_last_name">Last name</string>
+    <string name="verification_address">Address</string>
+    <string name="verification_city">City</string>
+    <string name="verification_country">Country</string>
+    <string name="verification_province">Province</string>
+    <string name="verification_zip_code">Zip Code</string>
     <string name="verification_send">Send</string>
     <string name="verification_select_photo_please">Select photo please</string>
     <string name="verification_alert_country_title">Please pick country</string>
@@ -420,12 +419,19 @@
     
     //pass
     <string name="password_hint">Password</string>
-    <string name="password_doesnt_match">Password doesn\'t match</string>
-    <string name="password_confirm_not_match">New passwords don\'t match</string>
+    <string name="password_doesnt_match">Wrong password</string>
+    <string name="password_confirm_not_match">Passwords don\'t match</string>
     <string name="old_pass_hint">Old password</string>
     <string name="new_pass_hint">New password</string>
     <string name="new_pass_confirm_hint">Confirm new password</string>
     <string name="update_pass_action">Update</string>
+    <string name="same_password">New password is the same as the old one</string>
+
+    //updates
+    <string name="pin_updated">PIN was successfully updated</string>
+    <string name="phone_updated">Phone was successfully updated</string>
+    <string name="password_changed">Password Password was successfully updated</string>
+    <string name="wallet_unlinked">Wallet was successfully deleted from the device</string>
 
     //unlink
     <string name="unlink_text_top">Please, make sure you have stored your credentials and seed phrase before unlinking the wallet. Otherwise, you may lose all assets</string>
@@ -439,4 +445,5 @@
     <string name="old_password_doesnt_match">Old passwords doesn\'t match</string>
     <string name="not_supported_phone">Not supported phone number</string>
     <string name="phone_is_already_used">Phone is already used</string>
+    <string name="phone_is_the_same">New phone is the same as the old one</string>
 </resources>

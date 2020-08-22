@@ -5,6 +5,7 @@ import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.observe
 import com.app.belcobtm.R
 import com.app.belcobtm.domain.Failure
+import com.app.belcobtm.domain.settings.interactor.ERROR_UPDATE_PHONE_IS_SAME
 import com.app.belcobtm.domain.settings.interactor.ERROR_UPDATE_PHONE_IS_USED
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
 import com.app.belcobtm.presentation.core.ui.fragment.BaseFragment
@@ -49,6 +50,7 @@ class PhoneChangeFragment : BaseFragment() {
             success = { state ->
                 state.doIfChanged(appliedState) {
                     showContent()
+                    phoneContainerView.isErrorEnabled = false
                 }
                 state.isNextButtonEnabled.doIfChanged(appliedState?.commonData?.isNextButtonEnabled) {
                     nextButton.isEnabled = it
@@ -63,6 +65,10 @@ class PhoneChangeFragment : BaseFragment() {
                         phoneContainerView.isErrorEnabled = true
                         phoneContainerView.error = getString(R.string.phone_is_already_used)
                     }
+                    ERROR_UPDATE_PHONE_IS_SAME -> {
+                        phoneContainerView.isErrorEnabled = true
+                        phoneContainerView.error = getString(R.string.phone_is_the_same)
+                    }
                     else -> baseErrorHandler(it)
                 }
             },
@@ -73,7 +79,6 @@ class PhoneChangeFragment : BaseFragment() {
         viewModel.actionData.observe(this) { action ->
             when (action) {
                 is PhoneChangeAction.NavigateAction -> {
-                    showSnackBar(R.string.phone_changed)
                     navigate(action.navDirections)
                 }
             }

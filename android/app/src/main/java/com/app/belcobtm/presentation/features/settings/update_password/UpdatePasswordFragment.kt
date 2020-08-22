@@ -6,10 +6,14 @@ import androidx.lifecycle.observe
 import com.app.belcobtm.R
 import com.app.belcobtm.domain.Failure
 import com.app.belcobtm.domain.settings.interactor.CHANGE_PASS_ERROR_OLD_PASS
+import com.app.belcobtm.domain.settings.interactor.ERROR_UPDATE_PHONE_IS_SAME
+import com.app.belcobtm.domain.settings.interactor.ERROR_UPDATE_PHONE_IS_USED
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
 import com.app.belcobtm.presentation.core.ui.fragment.BaseFragment
 import com.app.belcobtm.presentation.features.settings.SettingsFragment.Companion.SETTINGS_SECURITY
+import kotlinx.android.synthetic.main.fragment_change_phone.*
 import kotlinx.android.synthetic.main.fragment_update_password.*
+import kotlinx.android.synthetic.main.fragment_update_password.nextButton
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class UpdatePasswordFragment : BaseFragment() {
@@ -67,6 +71,15 @@ class UpdatePasswordFragment : BaseFragment() {
                 state.isNextButtonEnabled.doIfChanged(appliedState?.commonData?.isNextButtonEnabled, {
                     nextButton.isEnabled = it
                 })
+            },
+            error = {
+                when ((it as? Failure.MessageError)?.code) {
+                    ERROR_PASSWORDS_SAME -> {
+                        newPasswordContainerView.isErrorEnabled = true
+                        newPasswordContainerView.error = getString(R.string.same_password)
+                    }
+                    else -> baseErrorHandler(it)
+                }
             },
             onUpdate = {
                 appliedState = it
