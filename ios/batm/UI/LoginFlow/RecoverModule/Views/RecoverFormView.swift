@@ -56,4 +56,14 @@ extension Reactive where Base == RecoverFormView {
   var passwordText: ControlProperty<String?> {
     return base.passwordTextField.rx.text
   }
+  var phoneNumberErrorText: Binder<String?> {
+    return Binder(base) { target, value in
+      target.phoneNumberTextFieldController.setErrorText(value, errorAccessibilityValue: value)
+    }
+  }
+  var passwordErrorText: Binder<String?> {
+    return Binder(base) { target, value in
+      target.passwordTextFieldController.setErrorText(value, errorAccessibilityValue: value)
+    }
+  }
 }

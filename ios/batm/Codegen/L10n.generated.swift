@@ -107,6 +107,9 @@ enum L {
     static let title = "enter_password.title"
   }
 
+  struct Error {
+  }
+
   struct FilterCoins {
     static let hide = "filter_coins.hide"
     static let show = "filter_coins.show"
@@ -501,6 +504,7 @@ extension L.CreateWallet.Form {
   struct Error {
     static let allFieldsRequired = "create_wallet.form.error.all_fields_required"
     static let existedPhoneNumber = "create_wallet.form.error.existed_phone_number"
+    static let fieldRequired = "create_wallet.form.error.field_required"
     static let notEqualPasswords = "create_wallet.form.error.not_equal_passwords"
     static let notValidPassword = "create_wallet.form.error.not_valid_password"
     static let notValidPhoneNumber = "create_wallet.form.error.not_valid_phone_number"
@@ -523,6 +527,23 @@ extension L.EnterPassword.Form {
 
   struct Error {
     static let wrongPassword = "enter_password.form.error.wrong_password"
+  }
+}
+extension L.Error {
+
+  struct NoConnection {
+    static let subtitle = "error.no_connection.subtitle"
+    static let title = "error.no_connection.title"
+  }
+
+  struct ServerError {
+    static let subtitle = "error.server_error.subtitle"
+    static let title = "error.server_error.title"
+  }
+
+  struct SomethingWentWrong {
+    static let subtitle = "error.something_went_wrong.subtitle"
+    static let title = "error.something_went_wrong.title"
   }
 }
 extension L.PhoneVerification {
@@ -595,10 +616,12 @@ extension L.Shared {
     static let add = "shared.button.add"
     static let copy = "shared.button.copy"
     static let done = "shared.button.done"
+    static let goBack = "shared.button.go_back"
     static let max = "shared.button.max"
     static let next = "shared.button.next"
     static let paste = "shared.button.paste"
     static let remove = "shared.button.remove"
+    static let retry = "shared.button.retry"
   }
 
   struct Error {

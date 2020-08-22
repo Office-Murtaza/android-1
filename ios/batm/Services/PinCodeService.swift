@@ -43,16 +43,7 @@ class PinCodeServiceImpl: PinCodeService {
         let module = self.getModule()
         self.module = module
         
-        var topRootViewController: UIViewController = (UIApplication.shared.keyWindow?.rootViewController)!
-        while(topRootViewController.presentedViewController != nil){
-          topRootViewController = topRootViewController.presentedViewController!
-        }
-        
-        guard !module.controller.isBeingPresented &&
-          module.controller.presentingViewController == nil else { return }
-        
-        module.controller.modalPresentationStyle = .fullScreen
-        topRootViewController.present(module.controller, animated: true, completion: nil)
+        UIViewController.presentModuleIfNeeded(module)
       }
       .flatMap { [didVerifyPinCodeRelay] in didVerifyPinCodeRelay }
       .take(1)
@@ -61,9 +52,7 @@ class PinCodeServiceImpl: PinCodeService {
       .do(onCompleted: { [unowned self] in
         guard let module = self.module else { return }
         
-        if module.controller.presentingViewController != nil && !module.controller.isBeingDismissed {
-          module.controller.dismiss(animated: true, completion: nil)
-        }
+        UIViewController.dismissModuleIfNeeded(module)
         
         self.module = nil
       })

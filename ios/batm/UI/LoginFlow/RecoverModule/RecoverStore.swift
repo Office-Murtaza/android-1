@@ -5,14 +5,17 @@ import PhoneNumberKit
 enum RecoverAction: Equatable {
   case updatePhoneNumber(String?)
   case updatePassword(String?)
+  case updatePhoneNumberError(String?)
+  case updatePasswordError(String?)
   case updateValidationState
-  case makeInvalidState(String)
 }
 
 struct RecoverState: Equatable {
   
   var phoneNumber: String = ""
   var password: String = ""
+  var phoneNumberError: String?
+  var passwordError: String?
   var validationState: ValidationState = .unknown
   
   var phoneE164: String {
@@ -37,24 +40,41 @@ final class RecoverStore: ViewStore<RecoverAction, RecoverState> {
     var state = state
     
     switch action {
-    case let .updatePhoneNumber(phoneNumber): state.phoneNumber = PartialFormatter.default.formatPartial(phoneNumber ?? "")
-    case let .updatePassword(password): state.password = password ?? ""
-    case .updateValidationState: state.validationState = validate(state)
-    case let .makeInvalidState(error): state.validationState = .invalid(error)
+    case let .updatePhoneNumber(phoneNumber):
+      state.phoneNumber = PartialFormatter.default.formatPartial(phoneNumber ?? "")
+      state.phoneNumberError = nil
+    case let .updatePassword(password):
+      state.password = password ?? ""
+      state.passwordError = nil
+    case let .updatePhoneNumberError(phoneNumberError): state.phoneNumberError = phoneNumberError
+    case let .updatePasswordError(passwordError): state.passwordError = passwordError
+    case .updateValidationState: validate(&state)
     }
     
     return state
   }
   
-  private func validate(_ state: RecoverState) -> ValidationState {
-    guard state.isAllFieldsNotEmpty else {
-      return .invalid(localize(L.CreateWallet.Form.Error.allFieldsRequired))
+  private func validate(_ state: inout RecoverState) {
+    state.validationState = .valid
+    
+    if state.phoneNumber.count == 0 {
+      let errorString = localize(L.CreateWallet.Form.Error.fieldRequired)
+      state.phoneNumberError = errorString
+      state.validationState = .invalid(errorString)
+    } else if state.phoneE164.count == 0 {
+      let errorString = localize(L.CreateWallet.Form.Error.notValidPhoneNumber)
+      state.phoneNumberError = errorString
+      state.validationState = .invalid(errorString)
+    } else {
+      state.phoneNumberError = nil
     }
     
-    guard state.phoneE164.count > 0 else {
-      return .invalid(localize(L.CreateWallet.Form.Error.notValidPhoneNumber))
+    if state.password.count == 0 {
+      let errorString = localize(L.CreateWallet.Form.Error.fieldRequired)
+      state.passwordError = errorString
+      state.validationState = .invalid(errorString)
+    } else {
+      state.passwordError = nil
     }
-    
-    return .valid
   }
 }

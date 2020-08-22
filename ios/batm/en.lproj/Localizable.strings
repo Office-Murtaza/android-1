@@ -20,6 +20,8 @@
 "shared.button.copy" = "Copy";
 "shared.button.next" = "Next";
 "shared.button.done" = "Done";
+"shared.button.go_back" = "Go Back";
+"shared.button.retry" = "Retry";
 "shared.error.title" = "Error";
 "shared.error.message" = "Server error, try again later";
 "shared.error.no_connection.message" = "No Internet Connection";
@@ -42,6 +44,7 @@
 "create_wallet.form.password.placeholder" = "Password";
 "create_wallet.form.confirm_password.placeholder" = "Confirm password";
 "create_wallet.form.error.all_fields_required" = "All fields are required";
+"create_wallet.form.error.field_required" = "This field is required";
 "create_wallet.form.error.not_valid_phone_number" = "Incorrect phone number";
 "create_wallet.form.error.existed_phone_number" = "Phone is already registered";
 "create_wallet.form.error.not_valid_password" = "Password length should be from 6 to 15";
@@ -295,3 +298,12 @@
 "coin_staking.header.min_duration.value" = "%d days";
 "coin_staking.button.stake" = "Stake";
 "coin_staking.button.unstake" = "Unstake";
+
+"error.server_error.title" = "Server Error";
+"error.server_error.subtitle" = "Our server goes down. Please,\ntry again later.";
+
+"error.something_went_wrong.title" = "Something went wrong";
+"error.something_went_wrong.subtitle" = "Our app runs into an issue. Please,\ntry again later.";
+
+"error.no_connection.title" = "No internet connection";
+"error.no_connection.subtitle" = "Connect to WiFi or turn on mobile data.";

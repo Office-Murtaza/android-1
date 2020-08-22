@@ -85,7 +85,6 @@ class GenericModuleViewController<PresenterType: ModulePresenter, View: UIView>:
   private func setupDefaultBindings() {
     rxVisible.bind(to: presenter.visible).disposed(by: disposeBag)
     presenter.activity.drive(view.rx.showHUD).disposed(by: disposeBag)
-    presenter.errors.drive(rx.errors).disposed(by: disposeBag)
   }
   
   func setupLayout() {

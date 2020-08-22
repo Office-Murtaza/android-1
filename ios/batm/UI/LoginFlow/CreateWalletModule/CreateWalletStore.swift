@@ -6,8 +6,10 @@ enum CreateWalletAction: Equatable {
   case updatePhoneNumber(String?)
   case updatePassword(String?)
   case updateConfirmPassword(String?)
+  case updatePhoneNumberError(String?)
+  case updatePasswordError(String?)
+  case updateConfirmPasswordError(String?)
   case updateValidationState
-  case makeInvalidState(String)
 }
 
 struct CreateWalletState: Equatable {
@@ -15,6 +17,9 @@ struct CreateWalletState: Equatable {
   var phoneNumber: String = ""
   var password: String = ""
   var confirmPassword: String = ""
+  var phoneNumberError: String?
+  var passwordError: String?
+  var confirmPasswordError: String?
   var validationState: ValidationState = .unknown
   
   var phoneE164: String {
@@ -39,33 +44,61 @@ final class CreateWalletStore: ViewStore<CreateWalletAction, CreateWalletState> 
     var state = state
     
     switch action {
-    case let .updatePhoneNumber(phoneNumber): state.phoneNumber = PartialFormatter.default.formatPartial(phoneNumber ?? "")
-    case let .updatePassword(password): state.password = password ?? ""
-    case let .updateConfirmPassword(confirmPassword): state.confirmPassword = confirmPassword ?? ""
-    case .updateValidationState: state.validationState = validate(state)
-    case let .makeInvalidState(error): state.validationState = .invalid(error)
+    case let .updatePhoneNumber(phoneNumber):
+      state.phoneNumber = PartialFormatter.default.formatPartial(phoneNumber ?? "")
+      state.phoneNumberError = nil
+    case let .updatePassword(password):
+      state.password = password ?? ""
+      state.passwordError = nil
+    case let .updateConfirmPassword(confirmPassword):
+      state.confirmPassword = confirmPassword ?? ""
+      state.confirmPasswordError = nil
+    case let .updatePhoneNumberError(phoneNumberError): state.phoneNumberError = phoneNumberError
+    case let .updatePasswordError(passwordError): state.passwordError = passwordError
+    case let .updateConfirmPasswordError(confirmPasswordError): state.confirmPasswordError = confirmPasswordError
+    case .updateValidationState: validate(&state)
     }
     
     return state
   }
   
-  private func validate(_ state: CreateWalletState) -> ValidationState {
-    guard state.isAllFieldsNotEmpty else {
-      return .invalid(localize(L.CreateWallet.Form.Error.allFieldsRequired))
+  private func validate(_ state: inout CreateWalletState) {
+    state.validationState = .valid
+    
+    if state.phoneNumber.count == 0 {
+      let errorString = localize(L.CreateWallet.Form.Error.fieldRequired)
+      state.phoneNumberError = errorString
+      state.validationState = .invalid(errorString)
+    } else if state.phoneE164.count == 0 {
+      let errorString = localize(L.CreateWallet.Form.Error.notValidPhoneNumber)
+      state.phoneNumberError = errorString
+      state.validationState = .invalid(errorString)
+    } else {
+      state.phoneNumberError = nil
     }
     
-    guard state.phoneE164.count > 0 else {
-      return .invalid(localize(L.CreateWallet.Form.Error.notValidPhoneNumber))
+    if state.password.count == 0 {
+      let errorString = localize(L.CreateWallet.Form.Error.fieldRequired)
+      state.passwordError = errorString
+      state.validationState = .invalid(errorString)
+    } else if state.password.count < 6 || state.password.count > 20 {
+      let errorString = localize(L.CreateWallet.Form.Error.notValidPassword)
+      state.passwordError = errorString
+      state.validationState = .invalid(errorString)
+    } else {
+      state.passwordError = nil
     }
     
-    guard state.password.count >= 6 && state.password.count <= 20 else {
-      return .invalid(localize(L.CreateWallet.Form.Error.notValidPassword))
+    if state.confirmPassword.count == 0 {
+      let errorString = localize(L.CreateWallet.Form.Error.fieldRequired)
+      state.confirmPasswordError = errorString
+      state.validationState = .invalid(errorString)
+    } else if state.password != state.confirmPassword {
+      let errorString = localize(L.CreateWallet.Form.Error.notEqualPasswords)
+      state.confirmPasswordError = errorString
+      state.validationState = .invalid(errorString)
+    } else {
+      state.confirmPasswordError = nil
     }
-    
-    guard state.password == state.confirmPassword else {
-      return .invalid(localize(L.CreateWallet.Form.Error.notEqualPasswords))
-    }
-    
-    return .valid
   }
 }
