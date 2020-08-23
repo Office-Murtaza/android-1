@@ -25,7 +25,7 @@ class SecurityPresenter: ModulePresenter, SecurityModule {
         switch $0 {
         case .updatePhone: self.fetchPhoneNumber()
         case .updatePassword: delegate?.didSelectUpdatePassword()
-        case .updatePIN: delegate?.didSelectUpdatePIN()
+        case .updatePIN: self.fetchPinCode()
         case .seedPhrase: delegate?.didSelectSeedPhrase()
         case .unlinkWallet: delegate?.didSelectUnlinkWallet()
         }
@@ -36,6 +36,12 @@ class SecurityPresenter: ModulePresenter, SecurityModule {
   private func fetchPhoneNumber() {
     track(usecase.getPhoneNumber())
       .drive(onNext: { [delegate] in delegate?.didSelectUpdatePhone($0) })
+      .disposed(by: disposeBag)
+  }
+  
+  private func fetchPinCode() {
+    track(usecase.getPinCode())
+      .drive(onNext: { [delegate] in delegate?.didSelectUpdatePIN($0) })
       .disposed(by: disposeBag)
   }
 }

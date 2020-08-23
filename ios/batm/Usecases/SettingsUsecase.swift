@@ -9,7 +9,7 @@ protocol SettingsUsecase {
   func updatePhone(phoneNumber: String) -> Completable
   func confirmPhone(phoneNumber: String, code: String) -> Completable
   func updatePassword(oldPassword: String, newPassword: String) -> Completable
-  func changePin(oldPin: String, newPin: String) -> Completable
+  func getPinCode() -> Single<String>
   func unlink() -> Completable
   func getVerificationInfo() -> Single<VerificationInfo>
   func sendVerification(userData: VerificationUserData) -> Completable
@@ -82,9 +82,8 @@ class SettingsUsecaseImpl: SettingsUsecase {
       .flatMapCompletable { [refreshCredentialsService] _ in refreshCredentialsService.refresh() }
   }
   
-  func changePin(oldPin: String, newPin: String) -> Completable {
-    return pinCodeUsecase.verify(pinCode: oldPin)
-      .andThen(pinCodeUsecase.save(pinCode: newPin))
+  func getPinCode() -> Single<String> {
+    return pinCodeUsecase.get()
   }
   
   func unlink() -> Completable {

@@ -36,8 +36,8 @@ extension SettingsFlowController: SecurityModuleDelegate {
     step.accept(SettingsFlow.Steps.updatePassword)
   }
   
-  func didSelectUpdatePIN() {
-    step.accept(SettingsFlow.Steps.updatePIN)
+  func didSelectUpdatePIN(_ pinCode: String) {
+    step.accept(SettingsFlow.Steps.updatePIN(pinCode))
   }
   
   func didSelectSeedPhrase() {
@@ -68,9 +68,9 @@ extension SettingsFlowController: UpdatePasswordFlowControllerDelegate {
   
 }
 
-extension SettingsFlowController: ChangePinFlowControllerDelegate {
+extension SettingsFlowController: UpdatePinFlowControllerDelegate {
   
-  func didFinishChangePinFlow() {
+  func didFinishUpdatePinFlow() {
     step.accept(SettingsFlow.Steps.popToRoot)
   }
   

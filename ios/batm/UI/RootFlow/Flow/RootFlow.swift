@@ -34,6 +34,10 @@ class RootFlow: BaseFlow<UIWindow, RootFlowController> {
       let module = resolver.resolve(Module<PinCodeModule>.self)!
       module.input.setup(for: stage)
       
+      if stage == .confirmation {
+        module.input.setup(shouldShowNavBar: true)
+      }
+      
       if let pinCode = pinCode {
         module.input.setup(with: pinCode)
       }

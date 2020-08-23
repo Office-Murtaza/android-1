@@ -30,11 +30,19 @@ class PinCodePresenter: ModulePresenter, PinCodeModule {
   }
   
   func setup(for stage: PinCodeStage) {
-    store.action.accept(.updateStage(stage))
+    store.action.accept(.setupStage(stage))
+  }
+  
+  func setup(for type: PinCodeType) {
+    store.action.accept(.setupType(type))
   }
   
   func setup(with correctCode: String) {
     store.action.accept(.setupCorrectCode(correctCode))
+  }
+  
+  func setup(shouldShowNavBar: Bool) {
+    store.action.accept(.setupShouldShowNavBar(shouldShowNavBar))
   }
   
   func bind(input: Input) {

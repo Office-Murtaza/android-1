@@ -18,7 +18,7 @@ class SettingsFlow: BaseFlow<BTMNavigationController, SettingsFlowController> {
     case about
     case updatePhone(PhoneNumber)
     case updatePassword
-    case updatePIN
+    case updatePIN(String)
     case seedPhrase
     case unlinkWallet
     case popToRoot
@@ -52,9 +52,9 @@ class SettingsFlow: BaseFlow<BTMNavigationController, SettingsFlowController> {
       let flow = UpdatePasswordFlow(view: view, parent: self)
       let step = UpdatePasswordFlow.Steps.updatePassword
       return next(flow: flow, step: step)
-    case .updatePIN:
-      let flow = ChangePinFlow(view: view, parent: self)
-      let step = ChangePinFlow.Steps.changePin
+    case let .updatePIN(pinCode):
+      let flow = UpdatePinFlow(view: view, parent: self)
+      let step = UpdatePinFlow.Steps.oldPin(pinCode)
       return next(flow: flow, step: step)
     case let .kyc(info):
       let flow = VerificationFlow(view: view, parent: self)

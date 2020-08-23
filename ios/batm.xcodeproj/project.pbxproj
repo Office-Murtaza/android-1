@@ -240,15 +240,9 @@
 		DB83663022FAA76B00454F5C /* UnlinkViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB83662C22FAA76B00454F5C /* UnlinkViewController.swift */; };
 		DB83663122FAA76B00454F5C /* UnlinkPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB83662D22FAA76B00454F5C /* UnlinkPresenter.swift */; };
 		DB83663222FAA76B00454F5C /* UnlinkAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB83662E22FAA76B00454F5C /* UnlinkAssembly.swift */; };
-		DB83663822FAB7CE00454F5C /* ChangePinFlow+Dependencies.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB83663522FAB7CE00454F5C /* ChangePinFlow+Dependencies.swift */; };
-		DB83663922FAB7CE00454F5C /* ChangePinFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB83663622FAB7CE00454F5C /* ChangePinFlow.swift */; };
-		DB83663A22FAB7CE00454F5C /* ChangePinFlowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB83663722FAB7CE00454F5C /* ChangePinFlowController.swift */; };
-		DB83664022FAB7E200454F5C /* ChangePinModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB83663C22FAB7E200454F5C /* ChangePinModule.swift */; };
-		DB83664122FAB7E200454F5C /* ChangePinViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB83663D22FAB7E200454F5C /* ChangePinViewController.swift */; };
-		DB83664222FAB7E200454F5C /* ChangePinPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB83663E22FAB7E200454F5C /* ChangePinPresenter.swift */; };
-		DB83664322FAB7E200454F5C /* ChangePinAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB83663F22FAB7E200454F5C /* ChangePinAssembly.swift */; };
-		DB83664522FABB0C00454F5C /* ChangePinStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB83664422FABB0C00454F5C /* ChangePinStore.swift */; };
-		DB83664822FABFB800454F5C /* ChangePinFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB83664722FABFB800454F5C /* ChangePinFormView.swift */; };
+		DB83663822FAB7CE00454F5C /* UpdatePinFlow+Dependencies.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB83663522FAB7CE00454F5C /* UpdatePinFlow+Dependencies.swift */; };
+		DB83663922FAB7CE00454F5C /* UpdatePinFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB83663622FAB7CE00454F5C /* UpdatePinFlow.swift */; };
+		DB83663A22FAB7CE00454F5C /* UpdatePinFlowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB83663722FAB7CE00454F5C /* UpdatePinFlowController.swift */; };
 		DB86FD262477FBD5002FE22D /* LocationUpdateDateRecord+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB86FD252477FBD5002FE22D /* LocationUpdateDateRecord+CoreDataClass.swift */; };
 		DB86FD282477FBE6002FE22D /* LocationUpdateDateRecord+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB86FD272477FBE6002FE22D /* LocationUpdateDateRecord+CoreDataProperties.swift */; };
 		DB86FD2A2477FF7B002FE22D /* LocationUpdateDateConverter.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB86FD292477FF7B002FE22D /* LocationUpdateDateConverter.swift */; };
@@ -786,15 +780,9 @@
 		DB83662C22FAA76B00454F5C /* UnlinkViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnlinkViewController.swift; sourceTree = "<group>"; };
 		DB83662D22FAA76B00454F5C /* UnlinkPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnlinkPresenter.swift; sourceTree = "<group>"; };
 		DB83662E22FAA76B00454F5C /* UnlinkAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnlinkAssembly.swift; sourceTree = "<group>"; };
-		DB83663522FAB7CE00454F5C /* ChangePinFlow+Dependencies.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ChangePinFlow+Dependencies.swift"; sourceTree = "<group>"; };
-		DB83663622FAB7CE00454F5C /* ChangePinFlow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangePinFlow.swift; sourceTree = "<group>"; };
-		DB83663722FAB7CE00454F5C /* ChangePinFlowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangePinFlowController.swift; sourceTree = "<group>"; };
-		DB83663C22FAB7E200454F5C /* ChangePinModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangePinModule.swift; sourceTree = "<group>"; };
-		DB83663D22FAB7E200454F5C /* ChangePinViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangePinViewController.swift; sourceTree = "<group>"; };
-		DB83663E22FAB7E200454F5C /* ChangePinPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangePinPresenter.swift; sourceTree = "<group>"; };
-		DB83663F22FAB7E200454F5C /* ChangePinAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangePinAssembly.swift; sourceTree = "<group>"; };
-		DB83664422FABB0C00454F5C /* ChangePinStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangePinStore.swift; sourceTree = "<group>"; };
-		DB83664722FABFB800454F5C /* ChangePinFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangePinFormView.swift; sourceTree = "<group>"; };
+		DB83663522FAB7CE00454F5C /* UpdatePinFlow+Dependencies.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UpdatePinFlow+Dependencies.swift"; sourceTree = "<group>"; };
+		DB83663622FAB7CE00454F5C /* UpdatePinFlow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdatePinFlow.swift; sourceTree = "<group>"; };
+		DB83663722FAB7CE00454F5C /* UpdatePinFlowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdatePinFlowController.swift; sourceTree = "<group>"; };
 		DB86FD252477FBD5002FE22D /* LocationUpdateDateRecord+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LocationUpdateDateRecord+CoreDataClass.swift"; sourceTree = "<group>"; };
 		DB86FD272477FBE6002FE22D /* LocationUpdateDateRecord+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LocationUpdateDateRecord+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		DB86FD292477FF7B002FE22D /* LocationUpdateDateConverter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationUpdateDateConverter.swift; sourceTree = "<group>"; };
@@ -1507,7 +1495,7 @@
 				DBA6844922E45A040079429E /* SettingsFlow */,
 				DBECA62922F7FADF002C2610 /* UpdatePhoneFlow */,
 				DB59EA0E22F9B7B400EB64A7 /* UpdatePasswordFlow */,
-				DB83663322FAB7A300454F5C /* ChangePinFlow */,
+				DB83663322FAB7A300454F5C /* UpdatePinFlow */,
 				DB4D7BBD2409A116008C2BD5 /* VerificationFlow */,
 				DB83661022FA9ECC00454F5C /* ShowSeedPhraseFlow */,
 				DB83662222FAA73B00454F5C /* UnlinkFlow */,
@@ -1914,44 +1902,22 @@
 			path = UnlinkModule;
 			sourceTree = "<group>";
 		};
-		DB83663322FAB7A300454F5C /* ChangePinFlow */ = {
+		DB83663322FAB7A300454F5C /* UpdatePinFlow */ = {
 			isa = PBXGroup;
 			children = (
 				DB83663422FAB7C300454F5C /* Flow */,
-				DB83663B22FAB7D300454F5C /* ChangePinModule */,
 			);
-			path = ChangePinFlow;
+			path = UpdatePinFlow;
 			sourceTree = "<group>";
 		};
 		DB83663422FAB7C300454F5C /* Flow */ = {
 			isa = PBXGroup;
 			children = (
-				DB83663622FAB7CE00454F5C /* ChangePinFlow.swift */,
-				DB83663722FAB7CE00454F5C /* ChangePinFlowController.swift */,
-				DB83663522FAB7CE00454F5C /* ChangePinFlow+Dependencies.swift */,
+				DB83663622FAB7CE00454F5C /* UpdatePinFlow.swift */,
+				DB83663722FAB7CE00454F5C /* UpdatePinFlowController.swift */,
+				DB83663522FAB7CE00454F5C /* UpdatePinFlow+Dependencies.swift */,
 			);
 			path = Flow;
-			sourceTree = "<group>";
-		};
-		DB83663B22FAB7D300454F5C /* ChangePinModule */ = {
-			isa = PBXGroup;
-			children = (
-				DB83664622FABFA800454F5C /* Views */,
-				DB83663D22FAB7E200454F5C /* ChangePinViewController.swift */,
-				DB83663E22FAB7E200454F5C /* ChangePinPresenter.swift */,
-				DB83663C22FAB7E200454F5C /* ChangePinModule.swift */,
-				DB83663F22FAB7E200454F5C /* ChangePinAssembly.swift */,
-				DB83664422FABB0C00454F5C /* ChangePinStore.swift */,
-			);
-			path = ChangePinModule;
-			sourceTree = "<group>";
-		};
-		DB83664622FABFA800454F5C /* Views */ = {
-			isa = PBXGroup;
-			children = (
-				DB83664722FABFB800454F5C /* ChangePinFormView.swift */,
-			);
-			path = Views;
 			sourceTree = "<group>";
 		};
 		DB86FD242477FBA9002FE22D /* LocationUpdateDateRecord */ = {
@@ -3233,7 +3199,6 @@
 				DB904AA522C01189007CB734 /* WelcomePresenter.swift in Sources */,
 				DB9616C122C745980078E92D /* Database.xcdatamodeld in Sources */,
 				DBC620AF23475AF80007D412 /* BinanceAccountInfo.swift in Sources */,
-				DB83664222FAB7E200454F5C /* ChangePinPresenter.swift in Sources */,
 				DB2F2503236049DB00274C60 /* CoinSellDetailsInstructionView.swift in Sources */,
 				DBA1B61324A9C5E300A9A703 /* ReserveStore.swift in Sources */,
 				DB5B2DE4230A769300821713 /* CoinDetailsViewController.swift in Sources */,
@@ -3272,7 +3237,7 @@
 				DBADDE382438DD6600BFD806 /* CoinExchangePresenter.swift in Sources */,
 				DB5EB8DE2452D80F00CD1C63 /* MaterialCheckBoxView.swift in Sources */,
 				DBC68C9522F85DF700473247 /* PhoneNumber.swift in Sources */,
-				DB83663A22FAB7CE00454F5C /* ChangePinFlowController.swift in Sources */,
+				DB83663A22FAB7CE00454F5C /* UpdatePinFlowController.swift in Sources */,
 				DB247B432478F88C009802BB /* SplashAssembly.swift in Sources */,
 				DB96173722C7B1140078E92D /* BTMCoinRecord+CoreDataProperties.swift in Sources */,
 				DB2F25172360A8F400274C60 /* TransactionDetailsPresenter.swift in Sources */,
@@ -3287,7 +3252,6 @@
 				DB9616DC22C748610078E92D /* StorageTransaction.swift in Sources */,
 				DB8D408C22C3E54200D5FBD0 /* Initializer.swift in Sources */,
 				DBEC2C3624EC3D50000590B9 /* UIApplication+Extensions.swift in Sources */,
-				DB83664122FAB7E200454F5C /* ChangePinViewController.swift in Sources */,
 				DB96168A22C50F350078E92D /* ValidationRule.swift in Sources */,
 				DB2F25152360A8F400274C60 /* TransactionDetailsModule.swift in Sources */,
 				DB8DC1222413009F006AB4F5 /* VIPVerificationStore.swift in Sources */,
@@ -3369,7 +3333,6 @@
 				DB308EB322E73793003D91AF /* MapAddress.swift in Sources */,
 				DBA6843D22E44A880079429E /* ATMFlow+Dependencies.swift in Sources */,
 				DBC3FF5324BB375B00198597 /* PhoneVerificationResponse.swift in Sources */,
-				DB83664822FABFB800454F5C /* ChangePinFormView.swift in Sources */,
 				DBDA456C24E5C1BD002A3AF5 /* AboutAssembly.swift in Sources */,
 				DB39FC332302DC2200FA2B5F /* RecoverSeedPhraseStore.swift in Sources */,
 				DB156E2324A644F600E59F76 /* Platform.swift in Sources */,
@@ -3393,7 +3356,7 @@
 				DBF98D3E24502B0700AF6D5A /* CoinDepositModule.swift in Sources */,
 				DB9616D522C748610078E92D /* CoreDataStorage.swift in Sources */,
 				DB33E9C0241D391900764BF5 /* PriceChartPeriods.swift in Sources */,
-				DB83663822FAB7CE00454F5C /* ChangePinFlow+Dependencies.swift in Sources */,
+				DB83663822FAB7CE00454F5C /* UpdatePinFlow+Dependencies.swift in Sources */,
 				DB96171E22C75E950078E92D /* Account+Mapping.swift in Sources */,
 				DB96172D22C78BF30078E92D /* AppAssembly.swift in Sources */,
 				DB6A578722C1F00300DEE38A /* WelcomeButtonsView.swift in Sources */,
@@ -3450,7 +3413,6 @@
 				DBC68CBF22F87A0A00473247 /* UpdatePhoneFormView.swift in Sources */,
 				DB96174422C7D1070078E92D /* BTMWalletConverter.swift in Sources */,
 				DB49463A22DF2B0C001EE56E /* FilterCoinsAssembly.swift in Sources */,
-				DB83664322FAB7E200454F5C /* ChangePinAssembly.swift in Sources */,
 				DBBF29A422D3848F00A5DE6A /* CoinBalance+Mapping.swift in Sources */,
 				DB39DF4824E17C1700468ADA /* UIViewController+Extensions.swift in Sources */,
 				DB96171522C75E950078E92D /* BTMNetworkService.swift in Sources */,
@@ -3506,7 +3468,7 @@
 				DB16A871235F4438007E3B20 /* CoinSellDetailsAnotherAddressViewController.swift in Sources */,
 				DB2F250C2360687800274C60 /* CoinSellDetailsCurrentAddressModule.swift in Sources */,
 				DB904AA322C00FC7007CB734 /* UIView+MBProgressHUD.swift in Sources */,
-				DB83663922FAB7CE00454F5C /* ChangePinFlow.swift in Sources */,
+				DB83663922FAB7CE00454F5C /* UpdatePinFlow.swift in Sources */,
 				DB9616BD22C67FCA0078E92D /* AccountStorage.swift in Sources */,
 				DBCAC39422F7384F00B77841 /* SettingsCell.swift in Sources */,
 				DB51F3112490CFC1007F47B4 /* CreateEditTradeAssembly.swift in Sources */,
@@ -3524,7 +3486,6 @@
 				DB96173522C7B0C90078E92D /* BTMCoinRecord+CoreDataClass.swift in Sources */,
 				DB9616C722C747200078E92D /* AccountRecord+CoreDataProperties.swift in Sources */,
 				DB308EB522E737FA003D91AF /* OpenHour.swift in Sources */,
-				DB83664522FABB0C00454F5C /* ChangePinStore.swift in Sources */,
 				DBECA63722F7FC36002C2610 /* ShowPhoneViewController.swift in Sources */,
 				DB66CEB82475BAC200FDB694 /* UITableView+Extensions.swift in Sources */,
 				DB1CFB53246C518200020104 /* TradesModule.swift in Sources */,
@@ -3606,7 +3567,6 @@
 				DB382816240CF7D600418D3D /* VerificationAssembly.swift in Sources */,
 				DBC68C9322F85C9900473247 /* SettingsUsecase.swift in Sources */,
 				DBDA966922C0043F005B93DF /* ActivityTracker.swift in Sources */,
-				DB83664022FAB7E200454F5C /* ChangePinModule.swift in Sources */,
 				DB4D7BCC2409A17E008C2BD5 /* VerificationInfoPresenter.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

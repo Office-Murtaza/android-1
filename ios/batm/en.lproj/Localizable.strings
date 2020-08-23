@@ -68,9 +68,12 @@
 "recover_seed_phrase.annotation" = "Enter your secret 12-word phrase here to restore your wallet";
 "recover_seed_phrase.form.error.not_valid_length" = "Seed phrase must be 12 words";
 
-"pin_code.setup.title" = "Setup PIN";
-"pin_code.confirmation.title" = "Confirm PIN";
-"pin_code.verification.title" = "Enter PIN";
+"pin_code.stage.setup.title" = "Enter%@PIN";
+"pin_code.stage.confirmation.title" = "Confirm%@PIN";
+"pin_code.stage.verification.title" = "Enter%@PIN";
+"pin_code.pin_type.old.title" = " old ";
+"pin_code.pin_type.current.title" = " ";
+"pin_code.pin_type.new.title" = " new ";
 
 "coins_balance.title" = "Wallet";
 "coins_balance.total_balance" = "Total Balance:";
@@ -115,14 +118,6 @@
 "update_password.form.new_password.placeholder" = "New password";
 "update_password.form.confirm_new_password.placeholder" = "Confirm new password";
 "update_password.form.error.same_password" = "New password is the same as the old one";
-
-"change_pin.title" = "Change PIN";
-"change_pin.form.old_pin.placeholder" = "Old PIN *";
-"change_pin.form.new_pin.placeholder" = "New PIN *";
-"change_pin.form.confirm_new_pin.placeholder" = "Confirm New PIN *";
-"change_pin.form.error.wrong_length" = "PIN should contain 6 digits";
-"change_pin.form.error.not_equal_pins" = "PINs do not match";
-"change_pin.form.error.not_match" = "Wrong old PIN";
 
 "verification_info.title" = "Verification";
 "verification_info.tx_limit_row.title" = "Tx Limit";

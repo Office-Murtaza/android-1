@@ -13,10 +13,6 @@ enum L {
     static let title = "buy_sell_trade_details.title"
   }
 
-  struct ChangePin {
-    static let title = "change_pin.title"
-  }
-
   struct CoinDeposit {
     static let title = "coin_deposit.title"
   }
@@ -284,31 +280,6 @@ extension L.BuySellTradeDetails.Form {
     static let placeholder = "buy_sell_trade_details.form.request_details.placeholder"
   }
 }
-extension L.ChangePin {
-
-  struct Form {
-  }
-}
-extension L.ChangePin.Form {
-
-  struct ConfirmNewPin {
-    static let placeholder = "change_pin.form.confirm_new_pin.placeholder"
-  }
-
-  struct Error {
-    static let notEqualPins = "change_pin.form.error.not_equal_pins"
-    static let notMatch = "change_pin.form.error.not_match"
-    static let wrongLength = "change_pin.form.error.wrong_length"
-  }
-
-  struct NewPin {
-    static let placeholder = "change_pin.form.new_pin.placeholder"
-  }
-
-  struct OldPin {
-    static let placeholder = "change_pin.form.old_pin.placeholder"
-  }
-}
 extension L.CoinExchange {
 
   struct Form {
@@ -548,16 +519,38 @@ extension L.PhoneVerification {
 }
 extension L.PinCode {
 
+  struct PinType {
+  }
+
+  struct Stage {
+  }
+}
+extension L.PinCode.PinType {
+
+  struct Current {
+    static let title = "pin_code.pin_type.current.title"
+  }
+
+  struct New {
+    static let title = "pin_code.pin_type.new.title"
+  }
+
+  struct Old {
+    static let title = "pin_code.pin_type.old.title"
+  }
+}
+extension L.PinCode.Stage {
+
   struct Confirmation {
-    static let title = "pin_code.confirmation.title"
+    static let title = "pin_code.stage.confirmation.title"
   }
 
   struct Setup {
-    static let title = "pin_code.setup.title"
+    static let title = "pin_code.stage.setup.title"
   }
 
   struct Verification {
-    static let title = "pin_code.verification.title"
+    static let title = "pin_code.stage.verification.title"
   }
 }
 extension L.Recall {
