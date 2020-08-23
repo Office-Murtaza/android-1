@@ -100,21 +100,21 @@
 "about.cell.support" = "Support";
 "about.cell.version" = "Version";
 
-"show_phone.title" = "Update Phone";
+"show_phone.title" = "Update phone";
 
-"enter_password.title" = "Enter Password";
 "enter_password.form.error.wrong_password" = "Wrong password";
 "enter_password.form.password.placeholder" = "Password";
 
-"update_phone.title" = "Update Phone";
+"update_phone.title" = "Update phone";
 "update_phone.form.phone.placeholder" = "New phone number";
 "update_phone.form.error.phone_used" = "Phone already is used";
 "update_phone.form.error.same_phone" = "New phone is the same as the old one";
 
-"change_password.title" = "Change Password";
-"change_password.form.old_password.placeholder" = "Old Password *";
-"change_password.form.new_password.placeholder" = "New Password *";
-"change_password.form.confirm_new_password.placeholder" = "Confirm New Password *";
+"update_password.title" = "Update password";
+"update_password.form.old_password.placeholder" = "Old password";
+"update_password.form.new_password.placeholder" = "New password";
+"update_password.form.confirm_new_password.placeholder" = "Confirm new password";
+"update_password.form.error.same_password" = "New password is the same as the old one";
 
 "change_pin.title" = "Change PIN";
 "change_pin.form.old_pin.placeholder" = "Old PIN *";

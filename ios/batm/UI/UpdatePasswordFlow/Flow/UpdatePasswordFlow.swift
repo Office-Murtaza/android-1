@@ -1,15 +1,15 @@
 import RxFlow
 
-class ChangePasswordFlow: BaseFlow<BTMNavigationController, ChangePasswordFlowController> {
+class UpdatePasswordFlow: BaseFlow<BTMNavigationController, UpdatePasswordFlowController> {
   override func assemblies() -> [Assembly] {
     return [
       Dependencies(),
-      ChangePasswordAssembly()
+      UpdatePasswordAssembly()
     ]
   }
   
   enum Steps: Step, Equatable {
-    case changePassword
+    case updatePassword
   }
   
   override func route(to step: Step) -> NextFlowItems {
@@ -20,8 +20,8 @@ class ChangePasswordFlow: BaseFlow<BTMNavigationController, ChangePasswordFlowCo
   
   private func handleFlow(step: Steps) -> NextFlowItems {
     switch step {
-    case .changePassword:
-      let module = resolver.resolve(Module<ChangePasswordModule>.self)!
+    case .updatePassword:
+      let module = resolver.resolve(Module<UpdatePasswordModule>.self)!
       return push(module.controller)
     }
   }

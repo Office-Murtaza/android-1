@@ -18,7 +18,7 @@ class AboutPresenter: ModulePresenter, AboutModule {
       .map { [types] in types[$0.item] }
       .subscribe(onNext: {
         switch $0 {
-        case .termsAndConditions: UIApplication.shared.open(URL.privacyPolicy)
+        case .termsAndConditions: UIApplication.shared.open(URL.termsAndConditions)
         case .support: UIApplication.shared.open(URL.support)
         default: break
         }

@@ -12,7 +12,7 @@ final class CreateWalletFormView: UIView, HasDisposeBag {
   }()
   
   let phoneNumberTextField = MDCTextField.phone
-  let passwordTextField = MDCTextField.password
+  let passwordTextField = MDCTextField.newPassword
   let confirmPasswordTextField = MDCTextField.password
   
   let phoneNumberTextFieldController: ThemedTextInputControllerOutlined

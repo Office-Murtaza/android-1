@@ -13,10 +13,6 @@ enum L {
     static let title = "buy_sell_trade_details.title"
   }
 
-  struct ChangePassword {
-    static let title = "change_password.title"
-  }
-
   struct ChangePin {
     static let title = "change_pin.title"
   }
@@ -104,7 +100,6 @@ enum L {
   }
 
   struct EnterPassword {
-    static let title = "enter_password.title"
   }
 
   struct Error {
@@ -220,6 +215,10 @@ enum L {
     static let warning = "unlink.warning"
   }
 
+  struct UpdatePassword {
+    static let title = "update_password.title"
+  }
+
   struct UpdatePhone {
     static let title = "update_phone.title"
   }
@@ -283,25 +282,6 @@ extension L.BuySellTradeDetails.Form {
 
   struct RequestDetails {
     static let placeholder = "buy_sell_trade_details.form.request_details.placeholder"
-  }
-}
-extension L.ChangePassword {
-
-  struct Form {
-  }
-}
-extension L.ChangePassword.Form {
-
-  struct ConfirmNewPassword {
-    static let placeholder = "change_password.form.confirm_new_password.placeholder"
-  }
-
-  struct NewPassword {
-    static let placeholder = "change_password.form.new_password.placeholder"
-  }
-
-  struct OldPassword {
-    static let placeholder = "change_password.form.old_password.placeholder"
   }
 }
 extension L.ChangePin {
@@ -672,6 +652,29 @@ extension L.Unlink {
 
   struct Button {
     static let title = "unlink.button.title"
+  }
+}
+extension L.UpdatePassword {
+
+  struct Form {
+  }
+}
+extension L.UpdatePassword.Form {
+
+  struct ConfirmNewPassword {
+    static let placeholder = "update_password.form.confirm_new_password.placeholder"
+  }
+
+  struct Error {
+    static let samePassword = "update_password.form.error.same_password"
+  }
+
+  struct NewPassword {
+    static let placeholder = "update_password.form.new_password.placeholder"
+  }
+
+  struct OldPassword {
+    static let placeholder = "update_password.form.old_password.placeholder"
   }
 }
 extension L.UpdatePhone {

@@ -163,15 +163,15 @@
 		DB51F31A2491606C007F47B4 /* CreateEditTradeFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB51F3192491606C007F47B4 /* CreateEditTradeFormView.swift */; };
 		DB5413CB24346D59002DDD2F /* CoinWithdrawHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB5413CA24346D59002DDD2F /* CoinWithdrawHeaderView.swift */; };
 		DB5413CD24346EDB002DDD2F /* CoinDetailsBalanceValueView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB5413CC24346EDB002DDD2F /* CoinDetailsBalanceValueView.swift */; };
-		DB59EA1922F9C4BF00EB64A7 /* ChangePasswordFlow+Dependencies.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB59EA1622F9C4BF00EB64A7 /* ChangePasswordFlow+Dependencies.swift */; };
-		DB59EA1A22F9C4BF00EB64A7 /* ChangePasswordFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB59EA1722F9C4BF00EB64A7 /* ChangePasswordFlow.swift */; };
-		DB59EA1B22F9C4BF00EB64A7 /* ChangePasswordFlowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB59EA1822F9C4BF00EB64A7 /* ChangePasswordFlowController.swift */; };
-		DB59EA2122F9C51B00EB64A7 /* ChangePasswordModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB59EA1D22F9C51B00EB64A7 /* ChangePasswordModule.swift */; };
-		DB59EA2222F9C51B00EB64A7 /* ChangePasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB59EA1E22F9C51B00EB64A7 /* ChangePasswordViewController.swift */; };
-		DB59EA2322F9C51B00EB64A7 /* ChangePasswordPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB59EA1F22F9C51B00EB64A7 /* ChangePasswordPresenter.swift */; };
-		DB59EA2422F9C51B00EB64A7 /* ChangePasswordAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB59EA2022F9C51B00EB64A7 /* ChangePasswordAssembly.swift */; };
-		DB59EA2722F9D01900EB64A7 /* ChangePasswordFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB59EA2622F9D01900EB64A7 /* ChangePasswordFormView.swift */; };
-		DB59EA2922F9D2BD00EB64A7 /* ChangePasswordStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB59EA2822F9D2BD00EB64A7 /* ChangePasswordStore.swift */; };
+		DB59EA1922F9C4BF00EB64A7 /* UpdatePasswordFlow+Dependencies.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB59EA1622F9C4BF00EB64A7 /* UpdatePasswordFlow+Dependencies.swift */; };
+		DB59EA1A22F9C4BF00EB64A7 /* UpdatePasswordFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB59EA1722F9C4BF00EB64A7 /* UpdatePasswordFlow.swift */; };
+		DB59EA1B22F9C4BF00EB64A7 /* UpdatePasswordFlowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB59EA1822F9C4BF00EB64A7 /* UpdatePasswordFlowController.swift */; };
+		DB59EA2122F9C51B00EB64A7 /* UpdatePasswordModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB59EA1D22F9C51B00EB64A7 /* UpdatePasswordModule.swift */; };
+		DB59EA2222F9C51B00EB64A7 /* UpdatePasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB59EA1E22F9C51B00EB64A7 /* UpdatePasswordViewController.swift */; };
+		DB59EA2322F9C51B00EB64A7 /* UpdatePasswordPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB59EA1F22F9C51B00EB64A7 /* UpdatePasswordPresenter.swift */; };
+		DB59EA2422F9C51B00EB64A7 /* UpdatePasswordAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB59EA2022F9C51B00EB64A7 /* UpdatePasswordAssembly.swift */; };
+		DB59EA2722F9D01900EB64A7 /* UpdatePasswordFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB59EA2622F9D01900EB64A7 /* UpdatePasswordFormView.swift */; };
+		DB59EA2922F9D2BD00EB64A7 /* UpdatePasswordStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB59EA2822F9D2BD00EB64A7 /* UpdatePasswordStore.swift */; };
 		DB5B2DDB230A74D000821713 /* CoinDetailsFlow+Dependencies.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB5B2DD8230A74D000821713 /* CoinDetailsFlow+Dependencies.swift */; };
 		DB5B2DDC230A74D000821713 /* CoinDetailsFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB5B2DD9230A74D000821713 /* CoinDetailsFlow.swift */; };
 		DB5B2DDD230A74D000821713 /* CoinDetailsFlowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB5B2DDA230A74D000821713 /* CoinDetailsFlowController.swift */; };
@@ -710,15 +710,15 @@
 		DB51F3192491606C007F47B4 /* CreateEditTradeFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateEditTradeFormView.swift; sourceTree = "<group>"; };
 		DB5413CA24346D59002DDD2F /* CoinWithdrawHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinWithdrawHeaderView.swift; sourceTree = "<group>"; };
 		DB5413CC24346EDB002DDD2F /* CoinDetailsBalanceValueView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinDetailsBalanceValueView.swift; sourceTree = "<group>"; };
-		DB59EA1622F9C4BF00EB64A7 /* ChangePasswordFlow+Dependencies.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ChangePasswordFlow+Dependencies.swift"; sourceTree = "<group>"; };
-		DB59EA1722F9C4BF00EB64A7 /* ChangePasswordFlow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangePasswordFlow.swift; sourceTree = "<group>"; };
-		DB59EA1822F9C4BF00EB64A7 /* ChangePasswordFlowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangePasswordFlowController.swift; sourceTree = "<group>"; };
-		DB59EA1D22F9C51B00EB64A7 /* ChangePasswordModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangePasswordModule.swift; sourceTree = "<group>"; };
-		DB59EA1E22F9C51B00EB64A7 /* ChangePasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangePasswordViewController.swift; sourceTree = "<group>"; };
-		DB59EA1F22F9C51B00EB64A7 /* ChangePasswordPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangePasswordPresenter.swift; sourceTree = "<group>"; };
-		DB59EA2022F9C51B00EB64A7 /* ChangePasswordAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangePasswordAssembly.swift; sourceTree = "<group>"; };
-		DB59EA2622F9D01900EB64A7 /* ChangePasswordFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangePasswordFormView.swift; sourceTree = "<group>"; };
-		DB59EA2822F9D2BD00EB64A7 /* ChangePasswordStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangePasswordStore.swift; sourceTree = "<group>"; };
+		DB59EA1622F9C4BF00EB64A7 /* UpdatePasswordFlow+Dependencies.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UpdatePasswordFlow+Dependencies.swift"; sourceTree = "<group>"; };
+		DB59EA1722F9C4BF00EB64A7 /* UpdatePasswordFlow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdatePasswordFlow.swift; sourceTree = "<group>"; };
+		DB59EA1822F9C4BF00EB64A7 /* UpdatePasswordFlowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdatePasswordFlowController.swift; sourceTree = "<group>"; };
+		DB59EA1D22F9C51B00EB64A7 /* UpdatePasswordModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdatePasswordModule.swift; sourceTree = "<group>"; };
+		DB59EA1E22F9C51B00EB64A7 /* UpdatePasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdatePasswordViewController.swift; sourceTree = "<group>"; };
+		DB59EA1F22F9C51B00EB64A7 /* UpdatePasswordPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdatePasswordPresenter.swift; sourceTree = "<group>"; };
+		DB59EA2022F9C51B00EB64A7 /* UpdatePasswordAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdatePasswordAssembly.swift; sourceTree = "<group>"; };
+		DB59EA2622F9D01900EB64A7 /* UpdatePasswordFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdatePasswordFormView.swift; sourceTree = "<group>"; };
+		DB59EA2822F9D2BD00EB64A7 /* UpdatePasswordStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdatePasswordStore.swift; sourceTree = "<group>"; };
 		DB5B2DD8230A74D000821713 /* CoinDetailsFlow+Dependencies.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CoinDetailsFlow+Dependencies.swift"; sourceTree = "<group>"; };
 		DB5B2DD9230A74D000821713 /* CoinDetailsFlow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinDetailsFlow.swift; sourceTree = "<group>"; };
 		DB5B2DDA230A74D000821713 /* CoinDetailsFlowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinDetailsFlowController.swift; sourceTree = "<group>"; };
@@ -1506,7 +1506,7 @@
 				DBA6843622E449A20079429E /* ATMFlow */,
 				DBA6844922E45A040079429E /* SettingsFlow */,
 				DBECA62922F7FADF002C2610 /* UpdatePhoneFlow */,
-				DB59EA0E22F9B7B400EB64A7 /* ChangePasswordFlow */,
+				DB59EA0E22F9B7B400EB64A7 /* UpdatePasswordFlow */,
 				DB83663322FAB7A300454F5C /* ChangePinFlow */,
 				DB4D7BBD2409A116008C2BD5 /* VerificationFlow */,
 				DB83661022FA9ECC00454F5C /* ShowSeedPhraseFlow */,
@@ -1649,42 +1649,42 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
-		DB59EA0E22F9B7B400EB64A7 /* ChangePasswordFlow */ = {
+		DB59EA0E22F9B7B400EB64A7 /* UpdatePasswordFlow */ = {
 			isa = PBXGroup;
 			children = (
 				DB59EA1522F9C16A00EB64A7 /* Flow */,
-				DB59EA1C22F9C50800EB64A7 /* ChangePasswordModule */,
+				DB59EA1C22F9C50800EB64A7 /* UpdatePasswordModule */,
 			);
-			path = ChangePasswordFlow;
+			path = UpdatePasswordFlow;
 			sourceTree = "<group>";
 		};
 		DB59EA1522F9C16A00EB64A7 /* Flow */ = {
 			isa = PBXGroup;
 			children = (
-				DB59EA1722F9C4BF00EB64A7 /* ChangePasswordFlow.swift */,
-				DB59EA1822F9C4BF00EB64A7 /* ChangePasswordFlowController.swift */,
-				DB59EA1622F9C4BF00EB64A7 /* ChangePasswordFlow+Dependencies.swift */,
+				DB59EA1722F9C4BF00EB64A7 /* UpdatePasswordFlow.swift */,
+				DB59EA1822F9C4BF00EB64A7 /* UpdatePasswordFlowController.swift */,
+				DB59EA1622F9C4BF00EB64A7 /* UpdatePasswordFlow+Dependencies.swift */,
 			);
 			path = Flow;
 			sourceTree = "<group>";
 		};
-		DB59EA1C22F9C50800EB64A7 /* ChangePasswordModule */ = {
+		DB59EA1C22F9C50800EB64A7 /* UpdatePasswordModule */ = {
 			isa = PBXGroup;
 			children = (
 				DB59EA2522F9D00C00EB64A7 /* Views */,
-				DB59EA1E22F9C51B00EB64A7 /* ChangePasswordViewController.swift */,
-				DB59EA1F22F9C51B00EB64A7 /* ChangePasswordPresenter.swift */,
-				DB59EA1D22F9C51B00EB64A7 /* ChangePasswordModule.swift */,
-				DB59EA2022F9C51B00EB64A7 /* ChangePasswordAssembly.swift */,
-				DB59EA2822F9D2BD00EB64A7 /* ChangePasswordStore.swift */,
+				DB59EA1E22F9C51B00EB64A7 /* UpdatePasswordViewController.swift */,
+				DB59EA1F22F9C51B00EB64A7 /* UpdatePasswordPresenter.swift */,
+				DB59EA1D22F9C51B00EB64A7 /* UpdatePasswordModule.swift */,
+				DB59EA2022F9C51B00EB64A7 /* UpdatePasswordAssembly.swift */,
+				DB59EA2822F9D2BD00EB64A7 /* UpdatePasswordStore.swift */,
 			);
-			path = ChangePasswordModule;
+			path = UpdatePasswordModule;
 			sourceTree = "<group>";
 		};
 		DB59EA2522F9D00C00EB64A7 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				DB59EA2622F9D01900EB64A7 /* ChangePasswordFormView.swift */,
+				DB59EA2622F9D01900EB64A7 /* UpdatePasswordFormView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -3105,7 +3105,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				DB308EAF22E71402003D91AF /* ATMInfoView.swift in Sources */,
-				DB59EA2722F9D01900EB64A7 /* ChangePasswordFormView.swift in Sources */,
+				DB59EA2722F9D01900EB64A7 /* UpdatePasswordFormView.swift in Sources */,
 				DB9D3EA922C14FDB008DC600 /* UIFont+Additions.swift in Sources */,
 				DBBF29AE22D3C0CC00A5DE6A /* CoinsBalanceUsecase.swift in Sources */,
 				DBA6842F22E42AF80079429E /* CoinsBalanceFlow.swift in Sources */,
@@ -3205,14 +3205,14 @@
 				DBBF29A622D386B500A5DE6A /* ObjectMapperError.swift in Sources */,
 				DB83624324C1DF3300A5FEFC /* PhoneVerificationViewController.swift in Sources */,
 				DB9D3ED222C155B2008DC600 /* UITapGestureRecognizer+AttributedText.swift in Sources */,
-				DB59EA2422F9C51B00EB64A7 /* ChangePasswordAssembly.swift in Sources */,
+				DB59EA2422F9C51B00EB64A7 /* UpdatePasswordAssembly.swift in Sources */,
 				DB1743C8235E2C7E00E7DACB /* SellAddress+Mapping.swift in Sources */,
 				DBF98D4124502B0700AF6D5A /* CoinDepositAssembly.swift in Sources */,
 				DB5B2DE3230A769300821713 /* CoinDetailsModule.swift in Sources */,
 				DBD8C212240AF44B00BD8A74 /* VerificationInfoRowView.swift in Sources */,
 				DBAD53A822D7CC500005F682 /* KeyboardHelper.swift in Sources */,
 				DB4D7BCA2409A17E008C2BD5 /* VerificationInfoModule.swift in Sources */,
-				DB59EA2122F9C51B00EB64A7 /* ChangePasswordModule.swift in Sources */,
+				DB59EA2122F9C51B00EB64A7 /* UpdatePasswordModule.swift in Sources */,
 				DB51F3132490D34F007F47B4 /* CreateEditTradeStore.swift in Sources */,
 				DB350532248E7C170074DCF8 /* BuySellTradeDetailsFormView.swift in Sources */,
 				DBEE1371230E80680020E211 /* Transactions+Mapping.swift in Sources */,
@@ -3220,7 +3220,7 @@
 				DB5185B0231FE68300052229 /* CoinWithdrawAssembly.swift in Sources */,
 				DB8D40AD22C3EFFF00D5FBD0 /* WelcomeAssembly.swift in Sources */,
 				DB95EB24230AB1650059C84C /* CoinDetailsStore.swift in Sources */,
-				DB59EA1A22F9C4BF00EB64A7 /* ChangePasswordFlow.swift in Sources */,
+				DB59EA1A22F9C4BF00EB64A7 /* UpdatePasswordFlow.swift in Sources */,
 				DBBF299A22D3764100A5DE6A /* CoinsBalanceCell.swift in Sources */,
 				DB0BB5F722BD10B90035FF6C /* AppDelegate.swift in Sources */,
 				DBA6843322E42B920079429E /* CoinsBalanceFlow+Dependencies.swift in Sources */,
@@ -3237,7 +3237,7 @@
 				DB2F2503236049DB00274C60 /* CoinSellDetailsInstructionView.swift in Sources */,
 				DBA1B61324A9C5E300A9A703 /* ReserveStore.swift in Sources */,
 				DB5B2DE4230A769300821713 /* CoinDetailsViewController.swift in Sources */,
-				DB59EA2922F9D2BD00EB64A7 /* ChangePasswordStore.swift in Sources */,
+				DB59EA2922F9D2BD00EB64A7 /* UpdatePasswordStore.swift in Sources */,
 				DB9616F922C7553D0078E92D /* StorageError.swift in Sources */,
 				DBAD539B22D7B8870005F682 /* PinCodePresenter.swift in Sources */,
 				DB70852522CFA3C500FFE4F7 /* CoinsBalancePresenter.swift in Sources */,
@@ -3301,9 +3301,9 @@
 				DB4F395522DEFCBB00D53BF3 /* FilterCoinsPresenter.swift in Sources */,
 				DB9616F322C750CA0078E92D /* Converter.swift in Sources */,
 				DBC68CB122F8755000473247 /* VerificationResult.swift in Sources */,
-				DB59EA1B22F9C4BF00EB64A7 /* ChangePasswordFlowController.swift in Sources */,
+				DB59EA1B22F9C4BF00EB64A7 /* UpdatePasswordFlowController.swift in Sources */,
 				DBAD539F22D7BA1D0005F682 /* PinCodeViewController.swift in Sources */,
-				DB59EA2222F9C51B00EB64A7 /* ChangePasswordViewController.swift in Sources */,
+				DB59EA2222F9C51B00EB64A7 /* UpdatePasswordViewController.swift in Sources */,
 				DB21B1F224AA63AA008444D3 /* RecallViewController.swift in Sources */,
 				DBC620AB2347493F0007D412 /* Nonce+Mapping.swift in Sources */,
 				DB96172722C761DA0078E92D /* APIRequest.swift in Sources */,
@@ -3397,7 +3397,7 @@
 				DB96171E22C75E950078E92D /* Account+Mapping.swift in Sources */,
 				DB96172D22C78BF30078E92D /* AppAssembly.swift in Sources */,
 				DB6A578722C1F00300DEE38A /* WelcomeButtonsView.swift in Sources */,
-				DB59EA2322F9C51B00EB64A7 /* ChangePasswordPresenter.swift in Sources */,
+				DB59EA2322F9C51B00EB64A7 /* UpdatePasswordPresenter.swift in Sources */,
 				DBC620B5234769330007D412 /* RippleSequence.swift in Sources */,
 				DB9616FB22C757D30078E92D /* LogoutStorageRegistry.swift in Sources */,
 				DB308EB722E73837003D91AF /* OpenHour+Mapping.swift in Sources */,
@@ -3406,7 +3406,7 @@
 				DBADDE3C2438DEED00BFD806 /* CoinExchangeFormView.swift in Sources */,
 				DBC8B45C23634EB900E7A799 /* Divider.swift in Sources */,
 				DB83662022FAA01F00454F5C /* ShowSeedPhrasePresenter.swift in Sources */,
-				DB59EA1922F9C4BF00EB64A7 /* ChangePasswordFlow+Dependencies.swift in Sources */,
+				DB59EA1922F9C4BF00EB64A7 /* UpdatePasswordFlow+Dependencies.swift in Sources */,
 				DB96173D22C7B57F0078E92D /* CoinType+Extensions.swift in Sources */,
 				DB96169D22C5FABC0078E92D /* SeedPhraseModule.swift in Sources */,
 				DB8D408522C3DBF200D5FBD0 /* CreateWalletViewController.swift in Sources */,

@@ -17,7 +17,7 @@ extension SettingsFlow {
                     SecurityModuleDelegate.self,
                     AboutModuleDelegate.self,
                     UpdatePhoneFlowControllerDelegate.self,
-                    ChangePasswordFlowControllerDelegate.self,
+                    UpdatePasswordFlowControllerDelegate.self,
                     ChangePinFlowControllerDelegate.self,
                     VerificationFlowControllerDelegate.self,
                     ShowSeedPhraseFlowControllerDelegate.self,

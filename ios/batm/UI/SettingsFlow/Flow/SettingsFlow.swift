@@ -49,8 +49,8 @@ class SettingsFlow: BaseFlow<BTMNavigationController, SettingsFlowController> {
       let step = UpdatePhoneFlow.Steps.showPhone(phoneNumber)
       return next(flow: flow, step: step)
     case .updatePassword:
-      let flow = ChangePasswordFlow(view: view, parent: self)
-      let step = ChangePasswordFlow.Steps.changePassword
+      let flow = UpdatePasswordFlow(view: view, parent: self)
+      let step = UpdatePasswordFlow.Steps.updatePassword
       return next(flow: flow, step: step)
     case .updatePIN:
       let flow = ChangePinFlow(view: view, parent: self)

@@ -30,7 +30,7 @@ protocol APIGateway {
   func verifyPhone(userId: Int, phoneNumber: String) -> Single<Bool>
   func updatePhone(userId: Int, phoneNumber: String) -> Completable
   func confirmPhone(userId: Int, phoneNumber: String, code: String) -> Completable
-  func changePassword(userId: Int, oldPassword: String, newPassword: String) -> Completable
+  func updatePassword(userId: Int, oldPassword: String, newPassword: String) -> Completable
   func unlink(userId: Int) -> Completable
   func getTransactions(userId: Int, type: CustomCoinType, page: Int) -> Single<Transactions>
   func getTransactionDetails(userId: Int, type: CustomCoinType, id: String) -> Single<TransactionDetails>
@@ -173,8 +173,8 @@ final class APIGatewayImpl: APIGateway {
     return execute(request)
   }
   
-  func changePassword(userId: Int, oldPassword: String, newPassword: String) -> Completable {
-    let request = ChangePasswordRequest(userId: userId, oldPassword: oldPassword, newPassword: newPassword)
+  func updatePassword(userId: Int, oldPassword: String, newPassword: String) -> Completable {
+    let request = UpdatePasswordRequest(userId: userId, oldPassword: oldPassword, newPassword: newPassword)
     return execute(request)
   }
   

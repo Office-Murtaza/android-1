@@ -60,9 +60,9 @@ extension SettingsFlowController: UpdatePhoneFlowControllerDelegate {
   
 }
 
-extension SettingsFlowController: ChangePasswordFlowControllerDelegate {
+extension SettingsFlowController: UpdatePasswordFlowControllerDelegate {
   
-  func didFinishChangePasswordFlow() {
+  func didFinishUpdatePasswordFlow() {
     step.accept(SettingsFlow.Steps.popToRoot)
   }
   

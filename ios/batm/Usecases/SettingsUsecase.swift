@@ -8,7 +8,7 @@ protocol SettingsUsecase {
   func verifyPhone(phoneNumber: String) -> Single<Bool>
   func updatePhone(phoneNumber: String) -> Completable
   func confirmPhone(phoneNumber: String, code: String) -> Completable
-  func changePassword(oldPassword: String, newPassword: String) -> Completable
+  func updatePassword(oldPassword: String, newPassword: String) -> Completable
   func changePin(oldPin: String, newPin: String) -> Completable
   func unlink() -> Completable
   func getVerificationInfo() -> Single<VerificationInfo>
@@ -73,10 +73,10 @@ class SettingsUsecaseImpl: SettingsUsecase {
       .flatMapCompletable { [refreshCredentialsService] _ in refreshCredentialsService.refresh() }
   }
   
-  func changePassword(oldPassword: String, newPassword: String) -> Completable {
+  func updatePassword(oldPassword: String, newPassword: String) -> Completable {
     return accountStorage.get()
       .flatMap { [api] in
-        return api.changePassword(userId: $0.userId, oldPassword: oldPassword, newPassword: newPassword)
+        return api.updatePassword(userId: $0.userId, oldPassword: oldPassword, newPassword: newPassword)
           .andThen(Single.just($0))
       }
       .flatMapCompletable { [refreshCredentialsService] _ in refreshCredentialsService.refresh() }

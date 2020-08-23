@@ -212,7 +212,7 @@ struct ConfirmPhoneRequest: AuthorizedAPIRequest {
   }
 }
 
-struct ChangePasswordRequest: AuthorizedAPIRequest {
+struct UpdatePasswordRequest: AuthorizedAPIRequest {
   typealias ResponseType = APIEmptyResponse
   typealias ResponseTrait = SingleResponseTrait
   
@@ -220,7 +220,7 @@ struct ChangePasswordRequest: AuthorizedAPIRequest {
   let oldPassword: String
   let newPassword: String
   
-  var path: String { return "/user/\(userId)/password/update" }
+  var path: String { return "/user/\(userId)/password" }
   var method: HTTPMethod { return .post }
   var task: HTTPTask {
     return .requestParameters(parameters: ["oldPassword": oldPassword,
