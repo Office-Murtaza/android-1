@@ -45,7 +45,7 @@ class SeedPhraseViewController: ModuleViewController<SeedPhrasePresenter> {
       $0.left.right.bottom.equalToSuperview()
     }
     rootScrollView.contentView.snp.makeConstraints {
-      $0.height.equalToSuperview()
+      $0.height.greaterThanOrEqualToSuperview()
     }
     errorView.snp.makeConstraints {
       $0.top.equalToSuperview().offset(5)
@@ -85,6 +85,18 @@ class SeedPhraseViewController: ModuleViewController<SeedPhrasePresenter> {
       .drive(onNext: { [errorView] in
         errorView.isHidden = $0 == nil
         errorView.configure(for: $0)
+      })
+      .disposed(by: disposeBag)
+    
+    presenter.state
+      .map { $0.mode }
+      .drive(onNext: { [nextButton] mode in
+        switch mode {
+        case .creation:
+          nextButton.setTitle(localize(L.Shared.Button.next), for: .normal)
+        case .showing:
+          nextButton.setTitle(localize(L.Shared.Button.done), for: .normal)
+        }
       })
       .disposed(by: disposeBag)
     

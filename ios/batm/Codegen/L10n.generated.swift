@@ -170,10 +170,6 @@ enum L {
     static let title = "show_phone.title"
   }
 
-  struct ShowSeedPhrase {
-    static let title = "show_seed_phrase.title"
-  }
-
   struct Trades {
     static let buy = "trades.buy"
     static let create = "trades.create"

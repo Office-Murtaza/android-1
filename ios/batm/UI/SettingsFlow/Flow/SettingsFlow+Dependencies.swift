@@ -20,7 +20,7 @@ extension SettingsFlow {
                     UpdatePasswordFlowControllerDelegate.self,
                     UpdatePinFlowControllerDelegate.self,
                     VerificationFlowControllerDelegate.self,
-                    ShowSeedPhraseFlowControllerDelegate.self,
+                    SeedPhraseFlowControllerDelegate.self,
                     UnlinkFlowControllerDelegate.self)
     }
   }

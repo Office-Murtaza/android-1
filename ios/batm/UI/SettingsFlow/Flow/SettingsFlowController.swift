@@ -84,9 +84,9 @@ extension SettingsFlowController: VerificationFlowControllerDelegate {
   
 }
 
-extension SettingsFlowController: ShowSeedPhraseFlowControllerDelegate {
+extension SettingsFlowController: SeedPhraseFlowControllerDelegate {
   
-  func didFinishShowSeedPhraseFlow() {
+  func didFinishSeedPhraseFlow() {
     step.accept(SettingsFlow.Steps.popToRoot)
   }
   

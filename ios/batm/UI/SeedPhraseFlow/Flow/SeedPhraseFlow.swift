@@ -1,17 +1,17 @@
 import RxFlow
 
-class ShowSeedPhraseFlow: BaseFlow<BTMNavigationController, ShowSeedPhraseFlowController> {
+class SeedPhraseFlow: BaseFlow<BTMNavigationController, SeedPhraseFlowController> {
   override func assemblies() -> [Assembly] {
     return [
       Dependencies(),
       EnterPasswordAssembly(),
-      ShowSeedPhraseAssembly()
+      SeedPhraseAssembly()
     ]
   }
   
   enum Steps: Step, Equatable {
     case enterPassword
-    case showSeedPhrase
+    case seedPhrase
   }
   
   override func route(to step: Step) -> NextFlowItems {
@@ -24,9 +24,11 @@ class ShowSeedPhraseFlow: BaseFlow<BTMNavigationController, ShowSeedPhraseFlowCo
     switch step {
     case .enterPassword:
       let module = resolver.resolve(Module<EnterPasswordModule>.self)!
+      module.controller.title = localize(L.SeedPhrase.title)
       return push(module.controller)
-    case .showSeedPhrase:
-      let module = resolver.resolve(Module<ShowSeedPhraseModule>.self)!
+    case .seedPhrase:
+      let module = resolver.resolve(Module<SeedPhraseModule>.self)!
+      module.input.setup(for: .showing)
       return push(module.controller)
     }
   }

@@ -56,17 +56,17 @@ class SettingsFlow: BaseFlow<BTMNavigationController, SettingsFlowController> {
       let flow = UpdatePinFlow(view: view, parent: self)
       let step = UpdatePinFlow.Steps.oldPin(pinCode)
       return next(flow: flow, step: step)
-    case let .kyc(info):
-      let flow = VerificationFlow(view: view, parent: self)
-      let step = VerificationFlow.Steps.info(info)
-      return next(flow: flow, step: step)
     case .seedPhrase:
-      let flow = ShowSeedPhraseFlow(view: view, parent: self)
-      let step = ShowSeedPhraseFlow.Steps.enterPassword
+      let flow = SeedPhraseFlow(view: view, parent: self)
+      let step = SeedPhraseFlow.Steps.enterPassword
       return next(flow: flow, step: step)
     case .unlinkWallet:
       let flow = UnlinkFlow(view: view, parent: self)
       let step = UnlinkFlow.Steps.unlink
+      return next(flow: flow, step: step)
+    case let .kyc(info):
+      let flow = VerificationFlow(view: view, parent: self)
+      let step = VerificationFlow.Steps.info(info)
       return next(flow: flow, step: step)
     case .popToRoot:
       view.popToRootViewController(animated: true)

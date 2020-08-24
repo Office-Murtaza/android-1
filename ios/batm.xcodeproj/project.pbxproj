@@ -226,13 +226,9 @@
 		DB83624F24C205B700A5FEFC /* CodeInputView+Rx.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB83624C24C205B700A5FEFC /* CodeInputView+Rx.swift */; };
 		DB83625024C205B700A5FEFC /* CodeInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB83624D24C205B700A5FEFC /* CodeInputView.swift */; };
 		DB83625124C205B700A5FEFC /* CodeSymbolView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB83624E24C205B700A5FEFC /* CodeSymbolView.swift */; };
-		DB83661522FA9FCB00454F5C /* ShowSeedPhraseFlow+Dependencies.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB83661222FA9FCB00454F5C /* ShowSeedPhraseFlow+Dependencies.swift */; };
-		DB83661622FA9FCB00454F5C /* ShowSeedPhraseFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB83661322FA9FCB00454F5C /* ShowSeedPhraseFlow.swift */; };
-		DB83661722FA9FCB00454F5C /* ShowSeedPhraseFlowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB83661422FA9FCB00454F5C /* ShowSeedPhraseFlowController.swift */; };
-		DB83661E22FAA01F00454F5C /* ShowSeedPhraseModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB83661A22FAA01F00454F5C /* ShowSeedPhraseModule.swift */; };
-		DB83661F22FAA01F00454F5C /* ShowSeedPhraseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB83661B22FAA01F00454F5C /* ShowSeedPhraseViewController.swift */; };
-		DB83662022FAA01F00454F5C /* ShowSeedPhrasePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB83661C22FAA01F00454F5C /* ShowSeedPhrasePresenter.swift */; };
-		DB83662122FAA01F00454F5C /* ShowSeedPhraseAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB83661D22FAA01F00454F5C /* ShowSeedPhraseAssembly.swift */; };
+		DB83661522FA9FCB00454F5C /* SeedPhraseFlow+Dependencies.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB83661222FA9FCB00454F5C /* SeedPhraseFlow+Dependencies.swift */; };
+		DB83661622FA9FCB00454F5C /* SeedPhraseFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB83661322FA9FCB00454F5C /* SeedPhraseFlow.swift */; };
+		DB83661722FA9FCB00454F5C /* SeedPhraseFlowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB83661422FA9FCB00454F5C /* SeedPhraseFlowController.swift */; };
 		DB83662722FAA75100454F5C /* UnlinkFlow+Dependencies.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB83662422FAA75100454F5C /* UnlinkFlow+Dependencies.swift */; };
 		DB83662822FAA75100454F5C /* UnlinkFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB83662522FAA75100454F5C /* UnlinkFlow.swift */; };
 		DB83662922FAA75100454F5C /* UnlinkFlowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB83662622FAA75100454F5C /* UnlinkFlowController.swift */; };
@@ -766,13 +762,9 @@
 		DB83624C24C205B700A5FEFC /* CodeInputView+Rx.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CodeInputView+Rx.swift"; sourceTree = "<group>"; };
 		DB83624D24C205B700A5FEFC /* CodeInputView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CodeInputView.swift; sourceTree = "<group>"; };
 		DB83624E24C205B700A5FEFC /* CodeSymbolView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CodeSymbolView.swift; sourceTree = "<group>"; };
-		DB83661222FA9FCB00454F5C /* ShowSeedPhraseFlow+Dependencies.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ShowSeedPhraseFlow+Dependencies.swift"; sourceTree = "<group>"; };
-		DB83661322FA9FCB00454F5C /* ShowSeedPhraseFlow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowSeedPhraseFlow.swift; sourceTree = "<group>"; };
-		DB83661422FA9FCB00454F5C /* ShowSeedPhraseFlowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowSeedPhraseFlowController.swift; sourceTree = "<group>"; };
-		DB83661A22FAA01F00454F5C /* ShowSeedPhraseModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowSeedPhraseModule.swift; sourceTree = "<group>"; };
-		DB83661B22FAA01F00454F5C /* ShowSeedPhraseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowSeedPhraseViewController.swift; sourceTree = "<group>"; };
-		DB83661C22FAA01F00454F5C /* ShowSeedPhrasePresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowSeedPhrasePresenter.swift; sourceTree = "<group>"; };
-		DB83661D22FAA01F00454F5C /* ShowSeedPhraseAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowSeedPhraseAssembly.swift; sourceTree = "<group>"; };
+		DB83661222FA9FCB00454F5C /* SeedPhraseFlow+Dependencies.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SeedPhraseFlow+Dependencies.swift"; sourceTree = "<group>"; };
+		DB83661322FA9FCB00454F5C /* SeedPhraseFlow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeedPhraseFlow.swift; sourceTree = "<group>"; };
+		DB83661422FA9FCB00454F5C /* SeedPhraseFlowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeedPhraseFlowController.swift; sourceTree = "<group>"; };
 		DB83662422FAA75100454F5C /* UnlinkFlow+Dependencies.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UnlinkFlow+Dependencies.swift"; sourceTree = "<group>"; };
 		DB83662522FAA75100454F5C /* UnlinkFlow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnlinkFlow.swift; sourceTree = "<group>"; };
 		DB83662622FAA75100454F5C /* UnlinkFlowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnlinkFlowController.swift; sourceTree = "<group>"; };
@@ -1497,7 +1489,7 @@
 				DB59EA0E22F9B7B400EB64A7 /* UpdatePasswordFlow */,
 				DB83663322FAB7A300454F5C /* UpdatePinFlow */,
 				DB4D7BBD2409A116008C2BD5 /* VerificationFlow */,
-				DB83661022FA9ECC00454F5C /* ShowSeedPhraseFlow */,
+				DB83661022FA9ECC00454F5C /* SeedPhraseFlow */,
 				DB83662222FAA73B00454F5C /* UnlinkFlow */,
 				DB8F078024103E8F00770643 /* PickerFlow */,
 			);
@@ -1842,34 +1834,22 @@
 			path = CodeInput;
 			sourceTree = "<group>";
 		};
-		DB83661022FA9ECC00454F5C /* ShowSeedPhraseFlow */ = {
+		DB83661022FA9ECC00454F5C /* SeedPhraseFlow */ = {
 			isa = PBXGroup;
 			children = (
 				DB83661122FA9F5500454F5C /* Flow */,
-				DB83661922FAA00B00454F5C /* ShowSeedPhraseModule */,
 			);
-			path = ShowSeedPhraseFlow;
+			path = SeedPhraseFlow;
 			sourceTree = "<group>";
 		};
 		DB83661122FA9F5500454F5C /* Flow */ = {
 			isa = PBXGroup;
 			children = (
-				DB83661322FA9FCB00454F5C /* ShowSeedPhraseFlow.swift */,
-				DB83661422FA9FCB00454F5C /* ShowSeedPhraseFlowController.swift */,
-				DB83661222FA9FCB00454F5C /* ShowSeedPhraseFlow+Dependencies.swift */,
+				DB83661322FA9FCB00454F5C /* SeedPhraseFlow.swift */,
+				DB83661422FA9FCB00454F5C /* SeedPhraseFlowController.swift */,
+				DB83661222FA9FCB00454F5C /* SeedPhraseFlow+Dependencies.swift */,
 			);
 			path = Flow;
-			sourceTree = "<group>";
-		};
-		DB83661922FAA00B00454F5C /* ShowSeedPhraseModule */ = {
-			isa = PBXGroup;
-			children = (
-				DB83661B22FAA01F00454F5C /* ShowSeedPhraseViewController.swift */,
-				DB83661C22FAA01F00454F5C /* ShowSeedPhrasePresenter.swift */,
-				DB83661A22FAA01F00454F5C /* ShowSeedPhraseModule.swift */,
-				DB83661D22FAA01F00454F5C /* ShowSeedPhraseAssembly.swift */,
-			);
-			path = ShowSeedPhraseModule;
 			sourceTree = "<group>";
 		};
 		DB83662222FAA73B00454F5C /* UnlinkFlow */ = {
@@ -3125,7 +3105,6 @@
 				DBDA455F24E5BD83002A3AF5 /* SecurityPresenter.swift in Sources */,
 				DB96171422C75E950078E92D /* Requests.swift in Sources */,
 				DB3C03D222CB5AA00036F779 /* RecoverModule.swift in Sources */,
-				DB83662122FAA01F00454F5C /* ShowSeedPhraseAssembly.swift in Sources */,
 				DB382813240CF7D600418D3D /* VerificationModule.swift in Sources */,
 				DBC68CA922F868E000473247 /* EnterPasswordPresenter.swift in Sources */,
 				DBBF29A822D3872D00A5DE6A /* CoinsBalance+Mapping.swift in Sources */,
@@ -3211,7 +3190,6 @@
 				DB1D21EE24AE6F2A001E9696 /* CoinStakingModule.swift in Sources */,
 				DBD09E7523DA180C00439634 /* TransactionStatusView.swift in Sources */,
 				DB39DF5924E17FC700468ADA /* ErrorPresenter.swift in Sources */,
-				DB83661F22FAA01F00454F5C /* ShowSeedPhraseViewController.swift in Sources */,
 				DB167CD9230D85D900D9D66E /* Transaction+Mapping.swift in Sources */,
 				DB82AD2724AF1524001F833E /* CoinStakingHeaderView.swift in Sources */,
 				DB6DC1B824877AC600CD478D /* BuySellTradeDetailsAssembly.swift in Sources */,
@@ -3220,7 +3198,6 @@
 				DBDA456024E5BD83002A3AF5 /* SecurityAssembly.swift in Sources */,
 				DB5E3DDC23869DFC00D267E5 /* CoinSettings.swift in Sources */,
 				DB9616EE22C74EB40078E92D /* RecursiveLock+Extensions.swift in Sources */,
-				DB83661E22FAA01F00454F5C /* ShowSeedPhraseModule.swift in Sources */,
 				DBC8B45A23634DF400E7A799 /* TransactionDetailsSellInfoSectionView.swift in Sources */,
 				DB04E4D422D85EE5000E2D85 /* PinCodeUsecase.swift in Sources */,
 				DBFAED912326C7CC004B6D79 /* Utxo+Mapping.swift in Sources */,
@@ -3368,7 +3345,6 @@
 				DBBD06E12369FEDB0096B674 /* PreSubmitResponse.swift in Sources */,
 				DBADDE3C2438DEED00BFD806 /* CoinExchangeFormView.swift in Sources */,
 				DBC8B45C23634EB900E7A799 /* Divider.swift in Sources */,
-				DB83662022FAA01F00454F5C /* ShowSeedPhrasePresenter.swift in Sources */,
 				DB59EA1922F9C4BF00EB64A7 /* UpdatePasswordFlow+Dependencies.swift in Sources */,
 				DB96173D22C7B57F0078E92D /* CoinType+Extensions.swift in Sources */,
 				DB96169D22C5FABC0078E92D /* SeedPhraseModule.swift in Sources */,
@@ -3399,7 +3375,7 @@
 				DBA7393D22C3482E00CEFD57 /* L10n.generated.swift in Sources */,
 				DB4D7BCD2409A17E008C2BD5 /* VerificationInfoAssembly.swift in Sources */,
 				DB3C03D822CB5DCE0036F779 /* RecoverViewController.swift in Sources */,
-				DB83661622FA9FCB00454F5C /* ShowSeedPhraseFlow.swift in Sources */,
+				DB83661622FA9FCB00454F5C /* SeedPhraseFlow.swift in Sources */,
 				DBDA966222BFDB6E005B93DF /* ModulePresenter.swift in Sources */,
 				DBCFBD5224BE53420045B9B4 /* SeedPhraseStore.swift in Sources */,
 				DBA4F4A324CDDE4200E6FAAB /* PinCodeKeyboardView.swift in Sources */,
@@ -3417,7 +3393,7 @@
 				DB39DF4824E17C1700468ADA /* UIViewController+Extensions.swift in Sources */,
 				DB96171522C75E950078E92D /* BTMNetworkService.swift in Sources */,
 				DB70852722CFA3EC00FFE4F7 /* CoinsBalanceViewController.swift in Sources */,
-				DB83661522FA9FCB00454F5C /* ShowSeedPhraseFlow+Dependencies.swift in Sources */,
+				DB83661522FA9FCB00454F5C /* SeedPhraseFlow+Dependencies.swift in Sources */,
 				DBBD06E32369FF0E0096B674 /* PreSubmitResponse+Mapping.swift in Sources */,
 				DB04E4D022D85D5C000E2D85 /* PinCodeRecord+CoreDataProperties.swift in Sources */,
 				DB83662922FAA75100454F5C /* UnlinkFlowController.swift in Sources */,
@@ -3497,7 +3473,7 @@
 				DBDA455D24E5BD83002A3AF5 /* SecurityModule.swift in Sources */,
 				DB5F18C22472B01500E37311 /* BuySellTradeCell.swift in Sources */,
 				DB1D21F124AE6F2A001E9696 /* CoinStakingAssembly.swift in Sources */,
-				DB83661722FA9FCB00454F5C /* ShowSeedPhraseFlowController.swift in Sources */,
+				DB83661722FA9FCB00454F5C /* SeedPhraseFlowController.swift in Sources */,
 				DB70852922CFADDE00FFE4F7 /* CoinsBalanceAssembly.swift in Sources */,
 				DB86FD2A2477FF7B002FE22D /* LocationUpdateDateConverter.swift in Sources */,
 				DBC8B46023635AE000E7A799 /* SellDetails+Mapping.swift in Sources */,

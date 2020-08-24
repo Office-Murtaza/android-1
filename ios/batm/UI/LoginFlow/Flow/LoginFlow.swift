@@ -48,7 +48,7 @@ final class LoginFlow: BaseFlow<BTMNavigationController, LoginFlowController> {
       return push(module.controller)
     case let .seedPhrase(phoneNumber, password):
       let module = resolver.resolve(Module<SeedPhraseModule>.self)!
-      module.input.setup(phoneNumber: phoneNumber, password: password)
+      module.input.setup(for: .creation(phoneNumber, password))
       return replaceLast(module.controller)
     case .recover:
       let module = resolver.resolve(Module<RecoverModule>.self)!

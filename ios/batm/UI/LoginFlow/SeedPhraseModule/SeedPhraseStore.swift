@@ -1,8 +1,12 @@
 import Foundation
 
+enum SeedPhraseMode: Equatable {
+  case creation(String, String)
+  case showing
+}
+
 enum SeedPhraseAction: Equatable {
-  case setupPhoneNumber(String)
-  case setupPassword(String)
+  case setupMode(SeedPhraseMode)
   case setupSeedPhrase(String)
   case updateValidationState
   case makeInvalidState(String)
@@ -10,8 +14,7 @@ enum SeedPhraseAction: Equatable {
 
 struct SeedPhraseState: Equatable {
   
-  var phoneNumber: String = ""
-  var password: String = ""
+  var mode: SeedPhraseMode = .showing
   var seedPhrase: String = ""
   var validationState: ValidationState = .unknown
   
@@ -27,8 +30,7 @@ final class SeedPhraseStore: ViewStore<SeedPhraseAction, SeedPhraseState> {
     var state = state
     
     switch action {
-    case let .setupPhoneNumber(phoneNumber): state.phoneNumber = phoneNumber
-    case let .setupPassword(password): state.password = password
+    case let .setupMode(mode): state.mode = mode
     case let .setupSeedPhrase(seedPhrase): state.seedPhrase = seedPhrase
     case .updateValidationState: state.validationState = validate(state)
     case let .makeInvalidState(error): state.validationState = .invalid(error)

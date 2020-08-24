@@ -119,6 +119,11 @@
 "update_password.form.confirm_new_password.placeholder" = "Confirm new password";
 "update_password.form.error.same_password" = "New password is the same as the old one";
 
+"unlink.title" = "Unlink Wallet";
+"unlink.annotation" = "Unlink the wallet from the current device means clear all local data(seed phrase, public and private keys). You can recover the wallet any time and on any device using your credentials and seed phrase.";
+"unlink.warning" = "Please, make sure you have been stored your credentials and seed phrase before unlinking the wallet.";
+"unlink.button.title" = "Unlink";
+
 "verification_info.title" = "Verification";
 "verification_info.tx_limit_row.title" = "Tx Limit";
 "verification_info.daily_limit_row.title" = "Daily Limit";
@@ -157,13 +162,6 @@
 "v_i_p_verification.form.s_s_n.placeholder" = "SSN *";
 "v_i_p_verification.form.error.id_selfie_required" = "ID Selfie is required";
 "v_i_p_verification.form.error.ssn_wrong_length" = "SSN should contain 9 digits";
-
-"show_seed_phrase.title" = "Seed Phrase";
-
-"unlink.title" = "Unlink Wallet";
-"unlink.annotation" = "Unlink the wallet from the current device means clear all local data(seed phrase, public and private keys). You can recover the wallet any time and on any device using your credentials and seed phrase.";
-"unlink.warning" = "Please, make sure you have been stored your credentials and seed phrase before unlinking the wallet.";
-"unlink.button.title" = "Unlink";
 
 "coin_details.price" = "Price";
 "coin_details.balance" = "Balance";

@@ -60,7 +60,7 @@ extension LoginFlowController: PhoneVerificationModuleDelegate {
 
 extension LoginFlowController: SeedPhraseModuleDelegate {
   
-  func finishCopyingSeedPhrase() {
+  func didFinishCopyingSeedPhrase() {
     step.accept(LoginFlow.Steps.pinCode(.setup))
   }
   
