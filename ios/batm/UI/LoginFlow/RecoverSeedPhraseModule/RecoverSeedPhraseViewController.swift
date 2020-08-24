@@ -45,7 +45,7 @@ class RecoverSeedPhraseViewController: ModuleViewController<RecoverSeedPhrasePre
       $0.left.right.bottom.equalToSuperview()
     }
     rootScrollView.contentView.snp.makeConstraints {
-      $0.height.equalToSuperview()
+      $0.height.greaterThanOrEqualToSuperview()
     }
     errorView.snp.makeConstraints {
       $0.top.equalToSuperview().offset(5)
