@@ -163,6 +163,12 @@ extension MDCButton {
     return button
   }
   
+  static var unlink: MDCButton {
+    let button = MDCButton.contained
+    button.setTitle(localize(L.Shared.Button.unlink), for: .normal)
+    return button
+  }
+  
   func set(image: UIImage?, title: String?, spacing: CGFloat = 10) {
     setTitle(title, for: .normal)
     setImage(image, for: .normal)

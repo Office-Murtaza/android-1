@@ -10,7 +10,6 @@ enum MainButtonType {
   case done
   case change
   case send
-  case unlink
   case verify
   case vipVerify
 }
@@ -77,8 +76,6 @@ class MainButton: UIButton {
       title = localize(L.Shared.change)
     case .send:
       title = localize(L.Shared.send)
-    case .unlink:
-      title = localize(L.Unlink.Button.title)
     case .verify:
       title = localize(L.VerificationInfo.Button.verify)
     case .vipVerify:

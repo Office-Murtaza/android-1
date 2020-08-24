@@ -304,8 +304,6 @@
 		DB9616A122C5FD1D0078E92D /* SeedPhraseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB9616A022C5FD1D0078E92D /* SeedPhraseViewController.swift */; };
 		DB9616A322C5FFC10078E92D /* RoundedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB9616A222C5FFC10078E92D /* RoundedView.swift */; };
 		DB9616A522C602CC0078E92D /* SeedPhraseAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB9616A422C602CC0078E92D /* SeedPhraseAssembly.swift */; };
-		DB9616A822C606530078E92D /* SeedPhraseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB9616A722C606530078E92D /* SeedPhraseView.swift */; };
-		DB9616AA22C608DD0078E92D /* SeedPhraseWordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB9616A922C608DD0078E92D /* SeedPhraseWordView.swift */; };
 		DB9616AE22C60ECA0078E92D /* UIView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB9616AD22C60ECA0078E92D /* UIView+Extensions.swift */; };
 		DB9616B022C60EFB0078E92D /* UIStackView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB9616AF22C60EFB0078E92D /* UIStackView+Extensions.swift */; };
 		DB9616B222C610280078E92D /* UnderlinedLabelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB9616B122C610280078E92D /* UnderlinedLabelView.swift */; };
@@ -840,8 +838,6 @@
 		DB9616A022C5FD1D0078E92D /* SeedPhraseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeedPhraseViewController.swift; sourceTree = "<group>"; };
 		DB9616A222C5FFC10078E92D /* RoundedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedView.swift; sourceTree = "<group>"; };
 		DB9616A422C602CC0078E92D /* SeedPhraseAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeedPhraseAssembly.swift; sourceTree = "<group>"; };
-		DB9616A722C606530078E92D /* SeedPhraseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeedPhraseView.swift; sourceTree = "<group>"; };
-		DB9616A922C608DD0078E92D /* SeedPhraseWordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeedPhraseWordView.swift; sourceTree = "<group>"; };
 		DB9616AD22C60ECA0078E92D /* UIView+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Extensions.swift"; sourceTree = "<group>"; };
 		DB9616AF22C60EFB0078E92D /* UIStackView+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIStackView+Extensions.swift"; sourceTree = "<group>"; };
 		DB9616B122C610280078E92D /* UnderlinedLabelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnderlinedLabelView.swift; sourceTree = "<group>"; };
@@ -2122,8 +2118,6 @@
 		DB9616A622C606440078E92D /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				DB9616A922C608DD0078E92D /* SeedPhraseWordView.swift */,
-				DB9616A722C606530078E92D /* SeedPhraseView.swift */,
 				DBCFBD5324BE53E90045B9B4 /* SeedPhraseFormView.swift */,
 			);
 			path = Views;
@@ -3249,7 +3243,6 @@
 				DBC620AB2347493F0007D412 /* Nonce+Mapping.swift in Sources */,
 				DB96172722C761DA0078E92D /* APIRequest.swift in Sources */,
 				DB96173222C791690078E92D /* WalletService.swift in Sources */,
-				DB9616AA22C608DD0078E92D /* SeedPhraseWordView.swift in Sources */,
 				DB83625024C205B700A5FEFC /* CodeInputView.swift in Sources */,
 				DB8D409C22C3EBF700D5FBD0 /* Module.swift in Sources */,
 				DB226C5A22E99E3E0087E6C5 /* URLEncoding+Extensions.swift in Sources */,
@@ -3457,7 +3450,6 @@
 				DB51F31824913BA7007F47B4 /* CreateEditTradeTypeView.swift in Sources */,
 				DBECA63922F7FDB0002C2610 /* ShowPhoneAssembly.swift in Sources */,
 				DB2F25182360A8F400274C60 /* TransactionDetailsAssembly.swift in Sources */,
-				DB9616A822C606530078E92D /* SeedPhraseView.swift in Sources */,
 				DB3C03DF22CB60960036F779 /* RecoverAssembly.swift in Sources */,
 				DB96173522C7B0C90078E92D /* BTMCoinRecord+CoreDataClass.swift in Sources */,
 				DB9616C722C747200078E92D /* AccountRecord+CoreDataProperties.swift in Sources */,

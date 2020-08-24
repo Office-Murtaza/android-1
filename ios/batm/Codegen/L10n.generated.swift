@@ -204,7 +204,6 @@ enum L {
   struct Unlink {
     static let annotation = "unlink.annotation"
     static let title = "unlink.title"
-    static let warning = "unlink.warning"
   }
 
   struct UpdatePassword {
@@ -623,6 +622,7 @@ extension L.Shared {
     static let paste = "shared.button.paste"
     static let remove = "shared.button.remove"
     static let retry = "shared.button.retry"
+    static let unlink = "shared.button.unlink"
     static let update = "shared.button.update"
   }
 
@@ -635,12 +635,6 @@ extension L.Shared.Error {
 
   struct NoConnection {
     static let message = "shared.error.no_connection.message"
-  }
-}
-extension L.Unlink {
-
-  struct Button {
-    static let title = "unlink.button.title"
   }
 }
 extension L.UpdatePassword {

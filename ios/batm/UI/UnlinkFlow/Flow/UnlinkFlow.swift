@@ -4,14 +4,12 @@ class UnlinkFlow: BaseFlow<BTMNavigationController, UnlinkFlowController> {
   override func assemblies() -> [Assembly] {
     return [
       Dependencies(),
-      UnlinkAssembly(),
-      EnterPasswordAssembly()
+      UnlinkAssembly()
     ]
   }
   
   enum Steps: Step, Equatable {
     case unlink
-    case enterPassword
   }
   
   override func route(to step: Step) -> NextFlowItems {
@@ -24,9 +22,6 @@ class UnlinkFlow: BaseFlow<BTMNavigationController, UnlinkFlowController> {
     switch step {
     case .unlink:
       let module = resolver.resolve(Module<UnlinkModule>.self)!
-      return push(module.controller)
-    case .enterPassword:
-      let module = resolver.resolve(Module<EnterPasswordModule>.self)!
       return push(module.controller)
     }
   }

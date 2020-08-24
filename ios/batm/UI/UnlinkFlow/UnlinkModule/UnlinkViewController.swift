@@ -1,117 +1,74 @@
 import UIKit
-import RxCocoa
 import RxSwift
+import RxCocoa
 import SnapKit
+import MaterialComponents
 
-final class UnlinkViewController: ModuleViewController<UnlinkPresenter> {
+class UnlinkViewController: ModuleViewController<UnlinkPresenter> {
   
-  let backgroundImageView: UIImageView = {
-    let imageView = UIImageView(image: UIImage(named: "login_background"))
-    imageView.contentMode = .scaleAspectFill
-    imageView.clipsToBounds = true
-    return imageView
+  let rootScrollView = RootScrollView()
+  
+  let imageView = UIImageView(image: UIImage(named: "unlink"))
+  
+  let infoView: InfoView = {
+    let view = InfoView()
+    view.setup(with: localize(L.Unlink.annotation))
+    return view
   }()
   
-  let safeAreaContainer = UIView()
+  let unlinkButton = MDCButton.unlink
   
-  let backButton: UIButton = {
-    let button = UIButton()
-    button.setImage(UIImage(named: "back"), for: .normal)
-    return button
-  }()
+  override var shouldShowNavigationBar: Bool { return true }
   
-  let titleLabel: UILabel = {
-    let label = UILabel()
-    label.text = localize(L.Unlink.title)
-    label.textColor = .white
-    label.font = .poppinsSemibold20
-    return label
-  }()
-  
-  let annotationLabel: UILabel = {
-    let label = UILabel()
-    label.text = localize(L.Unlink.annotation)
-    label.textColor = .slateGrey
-    label.textAlignment = .center
-    label.font = .poppinsMedium14
-    label.numberOfLines = 0
-    return label
-  }()
-  
-  let warningLabel: UILabel = {
-    let label = UILabel()
-    label.text = localize(L.Unlink.warning)
-    label.textColor = .slateGrey
-    label.textAlignment = .center
-    label.font = .poppinsBold14
-    label.numberOfLines = 0
-    return label
-  }()
-  
-  let unlinkButton: MainButton = {
-    let button = MainButton()
-    button.configure(for: .unlink)
-    return button
-  }()
-  
-  override var preferredStatusBarStyle: UIStatusBarStyle {
-    return .lightContent
-  }
-
   override func setupUI() {
-    view.backgroundColor = .white
+    title = localize(L.Unlink.title)
     
-    view.addSubviews(backgroundImageView,
-                     safeAreaContainer,
-                     annotationLabel,
-                     warningLabel,
-                     unlinkButton)
-    safeAreaContainer.addSubviews(backButton,
-                                  titleLabel)
+    view.addSubviews(rootScrollView)
+    
+    rootScrollView.contentInsetAdjustmentBehavior = .never
+    rootScrollView.contentView.addSubviews(imageView,
+                                           infoView,
+                                           unlinkButton)
   }
-
+  
   override func setupLayout() {
-    backgroundImageView.snp.makeConstraints {
-      $0.top.left.right.equalToSuperview()
-      $0.bottom.equalTo(view.safeAreaLayoutGuide.snp.top).offset(44)
-    }
-    safeAreaContainer.snp.makeConstraints {
-      $0.left.right.bottom.equalTo(backgroundImageView)
+    rootScrollView.snp.makeConstraints {
       $0.top.equalTo(view.safeAreaLayoutGuide)
+      $0.left.right.bottom.equalToSuperview()
     }
-    backButton.snp.makeConstraints {
-      $0.centerY.equalTo(titleLabel)
-      $0.left.equalToSuperview().offset(15)
-      $0.size.equalTo(45)
+    rootScrollView.contentView.snp.makeConstraints {
+      $0.height.equalToSuperview()
     }
-    titleLabel.snp.makeConstraints {
-      $0.center.equalToSuperview()
+    imageView.snp.makeConstraints {
+      $0.top.equalTo(view.safeAreaLayoutGuide).offset(40)
+      $0.centerX.equalToSuperview()
+      $0.keepRatio(for: imageView)
     }
-    annotationLabel.snp.makeConstraints {
-      $0.top.equalTo(backgroundImageView.snp.bottom).offset(30)
-      $0.left.right.equalToSuperview().inset(25)
-    }
-    warningLabel.snp.makeConstraints {
-      $0.top.equalTo(annotationLabel.snp.bottom).offset(30)
-      $0.left.right.equalToSuperview().inset(25)
+    imageView.setContentCompressionResistancePriority(.defaultLow, for: .vertical)
+    imageView.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
+    infoView.snp.makeConstraints {
+      $0.top.equalTo(imageView.snp.bottom).offset(40)
+      $0.left.right.equalToSuperview().inset(15)
+      $0.bottom.lessThanOrEqualTo(unlinkButton.snp.top).offset(-40)
     }
     unlinkButton.snp.makeConstraints {
-      $0.top.equalTo(warningLabel.snp.bottom).offset(30)
-      $0.left.right.equalToSuperview().inset(45)
+      $0.height.equalTo(50)
+      $0.left.right.equalToSuperview().inset(15)
+      $0.bottom.equalToSuperview().offset(-40)
     }
   }
   
-  func setupUIBindings() {
-    
+  private func setupUIBindings() {
+    unlinkButton.rx.tap.asDriver()
+      .drive(onNext: { [view] in view?.endEditing(true) })
+      .disposed(by: disposeBag)
   }
-
+  
   override func setupBindings() {
     setupUIBindings()
     
-    let backDriver = backButton.rx.tap.asDriver()
     let unlinkDriver = unlinkButton.rx.tap.asDriver()
     
-    presenter.bind(input: UnlinkPresenter.Input(back: backDriver,
-                                                unlink: unlinkDriver))
+    presenter.bind(input: UnlinkPresenter.Input(unlink: unlinkDriver))
   }
 }
