@@ -9,6 +9,7 @@ import com.batm.util.Util;
 import net.sf.json.JSONObject;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -43,7 +44,7 @@ public class CoinService {
     private static SimpMessagingTemplate simp;
 
     public CoinService(@Autowired final WalletService walletService,
-                       @Autowired final UserService userService,
+                       @Autowired @Lazy final UserService userService,
                        @Autowired final CoinRep coinRep,
                        @Autowired final CacheService cache,
                        @Autowired final SimpMessagingTemplate simp,

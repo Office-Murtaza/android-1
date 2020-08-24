@@ -107,13 +107,13 @@ public class UserController {
             }
 
             if (dto.getCoins().size() != 8) {
-                return Response.defaultError("Some coin is missed");
+                return Response.error(3, "Some coin is missed");
             }
 
             User existingUser = userService.findByPhone(dto.getPhone());
 
             if (existingUser != null) {
-                return Response.error(3, "Phone is already registered");
+                return Response.error(4, "Phone is already used");
             }
 
             User user = userService.register(dto.getPhone(), dto.getPassword(), dto.getPlatform(), dto.getCoins());
@@ -146,22 +146,22 @@ public class UserController {
             }
 
             if (dto.getCoins().size() != 8) {
-                return Response.defaultError("Some coin is missed");
+                return Response.error(3, "Some coin is missed");
             }
 
             User user = userService.findByPhone(dto.getPhone());
             if (user == null) {
-                return Response.error(3, "Phone doesn't exist");
+                return Response.error(4, "Phone doesn't exist");
             }
 
             boolean isPasswordMatch = passwordEncoder.matches(dto.getPassword(), user.getPassword());
             if (!isPasswordMatch) {
-                return Response.error(4, "Incorrect password");
+                return Response.error(5, "Incorrect password");
             }
 
             boolean isCoinAddressesMatch = coinService.isCoinsAddressMatch(user, dto.getCoins());
             if (!isCoinAddressesMatch) {
-                return Response.error(5, "Seed phrase you entered is invalid. Please try again");
+                return Response.error(6, "Seed phrase you entered is invalid. Please try again");
             }
 
             TokenDTO jwt = getJwt(user.getId(), user.getIdentity().getId(), dto.getPhone(), dto.getPassword());
@@ -238,7 +238,7 @@ public class UserController {
             Boolean isPhoneExist = userService.isPhoneExist(userId, dto.getPhone());
 
             if (isPhoneExist) {
-                return Response.defaultError("Phone is already registered");
+                return Response.defaultError("Phone is already used");
             } else {
                 userService.updatePhone(userId, dto.getPhone());
             }
@@ -267,7 +267,7 @@ public class UserController {
             Boolean isMatch = passwordEncoder.matches(dto.getOldPassword(), user.getPassword());
 
             if (!isMatch) {
-                return Response.defaultError("Old password doesn't match");
+                return Response.defaultError("Old passwords doesn't match");
             } else {
                 userService.updatePassword(userId, passwordEncoder.encode(dto.getNewPassword()));
             }
