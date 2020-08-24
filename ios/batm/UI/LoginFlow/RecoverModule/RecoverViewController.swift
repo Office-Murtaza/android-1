@@ -10,8 +10,6 @@ class RecoverViewController: ModuleViewController<RecoverPresenter> {
   
   let rootScrollView = RootScrollView()
   
-  let errorView = ErrorView()
-  
   let formView = RecoverFormView()
   
   let nextButton = MDCButton.next
@@ -30,8 +28,7 @@ class RecoverViewController: ModuleViewController<RecoverPresenter> {
     view.addSubviews(rootScrollView)
     
     rootScrollView.contentInsetAdjustmentBehavior = .never
-    rootScrollView.contentView.addSubviews(errorView,
-                                           formView,
+    rootScrollView.contentView.addSubviews(formView,
                                            nextButton)
     
     setupDefaultKeyboardHandling()
@@ -44,10 +41,6 @@ class RecoverViewController: ModuleViewController<RecoverPresenter> {
     }
     rootScrollView.contentView.snp.makeConstraints {
       $0.height.equalToSuperview()
-    }
-    errorView.snp.makeConstraints {
-      $0.top.equalToSuperview().offset(5)
-      $0.centerX.equalToSuperview()
     }
     formView.snp.makeConstraints {
       $0.top.equalToSuperview().offset(20)
@@ -75,17 +68,20 @@ class RecoverViewController: ModuleViewController<RecoverPresenter> {
     
     presenter.state
       .asObservable()
-      .map { $0.phoneE164.count > 0 && $0.isAllFieldsNotEmpty }
-      .bind(to: nextButton.rx.isEnabled)
+      .map { $0.phoneNumberError }
+      .bind(to: formView.rx.phoneNumberErrorText)
       .disposed(by: disposeBag)
     
     presenter.state
-      .map { $0.validationState }
-      .mapToErrorMessage()
-      .drive(onNext: { [errorView] in
-        errorView.isHidden = $0 == nil
-        errorView.configure(for: $0)
-      })
+      .asObservable()
+      .map { $0.passwordError }
+      .bind(to: formView.rx.passwordErrorText)
+      .disposed(by: disposeBag)
+    
+    presenter.state
+      .asObservable()
+      .map { $0.phoneE164.count > 0 && $0.isAllFieldsNotEmpty }
+      .bind(to: nextButton.rx.isEnabled)
       .disposed(by: disposeBag)
     
     nextButton.rx.tap.asDriver()

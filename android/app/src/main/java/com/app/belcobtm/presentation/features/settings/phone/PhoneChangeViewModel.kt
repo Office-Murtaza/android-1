@@ -5,6 +5,10 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavDirections
 import com.app.belcobtm.R
+import com.app.belcobtm.data.disk.shared.preferences.SharedPreferencesHelper
+import com.app.belcobtm.domain.Failure
+import com.app.belcobtm.domain.settings.interactor.ERROR_UPDATE_PHONE_IS_SAME
+import com.app.belcobtm.domain.settings.interactor.ERROR_UPDATE_PHONE_IS_USED
 import com.app.belcobtm.domain.settings.interactor.UpdatePhoneUseCase
 import com.app.belcobtm.presentation.core.SingleLiveData
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
@@ -13,7 +17,8 @@ import io.michaelrocks.libphonenumber.android.PhoneNumberUtil
 
 class PhoneChangeViewModel(
     private val changePhoneUseCase: UpdatePhoneUseCase,
-    private val appContext: Context
+    private val appContext: Context,
+    private val prefsHelper: SharedPreferencesHelper
 ) : ViewModel() {
     val stateData =
         MutableLiveData<LoadingData<PhoneChangeState>>(LoadingData.Success(PhoneChangeState()))
@@ -27,6 +32,13 @@ class PhoneChangeViewModel(
     }
 
     fun onNextClick() {
+        if (phone == prefsHelper.userPhone) {
+            stateData.value = LoadingData.Error(
+                data = stateData.value?.commonData,
+                errorType = Failure.MessageError(code = ERROR_UPDATE_PHONE_IS_SAME, message = null)
+            )
+            return
+        }
         changePhoneUseCase.invoke(
             UpdatePhoneUseCase.Params(phone),
             onSuccess = {
@@ -42,7 +54,7 @@ class PhoneChangeViewModel(
                 }
             },
             onError = {
-                stateData.value = LoadingData.Error(data = stateData.value?.commonData)
+                stateData.value = LoadingData.Error(data = stateData.value?.commonData, errorType = it)
             })
     }
 

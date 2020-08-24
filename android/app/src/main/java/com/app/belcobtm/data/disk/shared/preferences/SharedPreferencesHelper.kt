@@ -41,6 +41,9 @@ class SharedPreferencesHelper(private val sharedPreferences: SharedPreferences) 
             val json = sharedPreferences[COINS_FEE] ?: ""
             return if (json.isBlank()) emptyMap() else jsonAdapter.fromJson(json) ?: emptyMap()
         }
+    var userPhone: String
+        set(value) = sharedPreferences.set(USER_PHONE, value)
+        get() = sharedPreferences[USER_PHONE] ?: ""
 
     var tradeLocationExpirationTime: Long
         set(value) = sharedPreferences.set(TRADE_LOCATION_EXPIRATION_TIME, value)
@@ -54,6 +57,7 @@ class SharedPreferencesHelper(private val sharedPreferences: SharedPreferences) 
         private const val API_SEED = "KEY_API_SEED"
         private const val USER_ID = "KEY_USER_ID"
         private const val USER_PIN = "KEY_PIN"
+        private const val USER_PHONE = "KEY_PHONE"
         private const val COINS_FEE = "PREF_KEY_COINS_FEE"
         private const val TRADE_LOCATION_EXPIRATION_TIME = "trade_location_expiration_time"
     }

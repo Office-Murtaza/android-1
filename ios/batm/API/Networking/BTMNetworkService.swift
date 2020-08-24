@@ -9,17 +9,20 @@ final class BTMNetworkService: NetworkRequestExecutor {
   let logoutUsecase: LogoutUsecase
   let pinCodeService: PinCodeService
   let refreshCredentialsService: RefreshCredentialsService
+  let errorService: ErrorService
   
   init(networkService: NetworkService,
        accountStorage: AccountStorage,
        logoutUsecase: LogoutUsecase,
        pinCodeService: PinCodeService,
-       refreshCredentialsService: RefreshCredentialsService) {
+       refreshCredentialsService: RefreshCredentialsService,
+       errorService: ErrorService) {
     self.network = networkService
     self.accountStorage = accountStorage
     self.logoutUsecase = logoutUsecase
     self.pinCodeService = pinCodeService
     self.refreshCredentialsService = refreshCredentialsService
+    self.errorService = errorService
   }
   
   // MARK: - NetworkRequestExecutor
@@ -56,9 +59,21 @@ final class BTMNetworkService: NetworkRequestExecutor {
       let requestSignal = headers(for: request)
         .asObservable()
         .flatMap { execute(request, $0) }
-        .catchError { throw $0.mapToAPIError() }
       
       return retry(request, signal: requestSignal)
+        .catchError { [unowned self] error in
+          let mappedError = error.mapToAPIError()
+          
+          if case let .serverError(serverError) = mappedError {
+            if serverError.code == 1 {
+              return self.errorService.showError(for: .serverError).andThen(.error(mappedError))
+            }
+            
+            return .error(mappedError)
+          }
+          
+          return self.errorService.showError(for: .somethingWentWrong).andThen(.error(mappedError))
+      }
   }
   
   private func retry<Request, O>(_ request: Request, signal: O) -> Observable<O.E>
@@ -66,10 +81,24 @@ final class BTMNetworkService: NetworkRequestExecutor {
       if request is Retriable {
         return signal
           .asObservable()
+          .retryWhen { [unowned self] in self.retryNoConnection(errors: $0) }
           .retryWhen { [unowned self] in self.retryNotAuthorized(errors: $0) }
       }
       
       return signal.asObservable()
+  }
+  
+  private func retryNoConnection(errors: Observable<Error>) -> Observable<Void> {
+    return errors
+      .map { $0.mapToAPIError() }
+      .flatMap { [unowned self] error -> Observable<Void> in
+        if error == .noConnection {
+          return self.errorService.showError(for: .noConnection).andThen(Observable.just(()).delayed(1))
+        }
+        
+        return .error(error)
+    }
+    .toVoid()
   }
   
   private func retryNotAuthorized(errors: Observable<Error>) -> Observable<Void> {
@@ -81,8 +110,8 @@ final class BTMNetworkService: NetworkRequestExecutor {
         }
         
         return .error(error)
-      }
-      .toVoid()
+    }
+    .toVoid()
   }
   
   private func refreshCredentials() -> Completable {

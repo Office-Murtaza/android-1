@@ -98,6 +98,6 @@ val viewModelModule = module {
     viewModel { PasswordViewModel(get(), get()) }
     viewModel { UnlinkViewModel(get()) }
     viewModel { UpdatePasswordViewModel(get()) }
-    viewModel { PhoneDisplayViewModel(get()) }
-    viewModel { PhoneChangeViewModel(get(), get()) }
+    viewModel { PhoneDisplayViewModel(get(), get()) }
+    viewModel { PhoneChangeViewModel(get(), get(), get()) }
 }

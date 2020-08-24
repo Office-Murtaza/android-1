@@ -10,8 +10,6 @@ class CreateWalletViewController: ModuleViewController<CreateWalletPresenter> {
   
   let rootScrollView = RootScrollView()
   
-  let errorView = ErrorView()
-  
   let formView = CreateWalletFormView()
   
   let termsAndConditionsView = TermsAndConditionsView()
@@ -32,8 +30,7 @@ class CreateWalletViewController: ModuleViewController<CreateWalletPresenter> {
     view.addSubviews(rootScrollView)
     
     rootScrollView.contentInsetAdjustmentBehavior = .never
-    rootScrollView.contentView.addSubviews(errorView,
-                                           formView,
+    rootScrollView.contentView.addSubviews(formView,
                                            termsAndConditionsView,
                                            nextButton)
     
@@ -47,10 +44,6 @@ class CreateWalletViewController: ModuleViewController<CreateWalletPresenter> {
     }
     rootScrollView.contentView.snp.makeConstraints {
       $0.height.equalToSuperview()
-    }
-    errorView.snp.makeConstraints {
-      $0.top.equalToSuperview().offset(5)
-      $0.centerX.equalToSuperview()
     }
     formView.snp.makeConstraints {
       $0.top.equalToSuperview().offset(20)
@@ -87,12 +80,21 @@ class CreateWalletViewController: ModuleViewController<CreateWalletPresenter> {
       .disposed(by: disposeBag)
     
     presenter.state
-      .map { $0.validationState }
-      .mapToErrorMessage()
-      .drive(onNext: { [errorView] in
-        errorView.isHidden = $0 == nil
-        errorView.configure(for: $0)
-      })
+      .asObservable()
+      .map { $0.phoneNumberError }
+      .bind(to: formView.rx.phoneNumberErrorText)
+      .disposed(by: disposeBag)
+    
+    presenter.state
+      .asObservable()
+      .map { $0.passwordError }
+      .bind(to: formView.rx.passwordErrorText)
+      .disposed(by: disposeBag)
+    
+    presenter.state
+      .asObservable()
+      .map { $0.confirmPasswordError }
+      .bind(to: formView.rx.confirmPasswordErrorText)
       .disposed(by: disposeBag)
     
     Driver.combineLatest(termsAndConditionsView.rx.isAccepted,
