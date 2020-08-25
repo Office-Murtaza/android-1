@@ -95,7 +95,7 @@ final class VerificationPresenter: ModulePresenter, VerificationModule {
       .disposed(by: disposeBag)
   }
   
-  private func sendVerification(state: VerificationState) -> Single<VerificationInfo> {
+  private func sendVerification(state: VerificationState) -> Single<KYC> {
     return Single.just(state)
       .map { VerificationUserData(scanData: $0.selectedImageData!,
                                   idNumber: $0.idNumber,
@@ -107,7 +107,7 @@ final class VerificationPresenter: ModulePresenter, VerificationModule {
                                   city: $0.city,
                                   zipCode: $0.zipCode) }
       .flatMapCompletable { [usecase] in usecase.sendVerification(userData: $0) }
-      .andThen(usecase.getVerificationInfo())
+      .andThen(usecase.getKYC())
       .catchError { [store] in
         if let apiError = $0 as? APIError, case let .serverError(error) = apiError {
           store.action.accept(.makeInvalidState(error.message))

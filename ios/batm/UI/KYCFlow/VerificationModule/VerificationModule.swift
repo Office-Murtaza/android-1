@@ -5,5 +5,5 @@ protocol VerificationModule: class {
 }
 protocol VerificationModuleDelegate: class {
   func showPicker(from module: VerificationModule)
-  func didFinishVerification(with info: VerificationInfo?)
+  func didFinishVerification(with kyc: KYC?)
 }

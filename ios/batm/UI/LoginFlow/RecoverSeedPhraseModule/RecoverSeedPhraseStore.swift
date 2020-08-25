@@ -4,8 +4,8 @@ enum RecoverSeedPhraseAction: Equatable {
   case setupPhoneNumber(String)
   case setupPassword(String)
   case updateSeedPhrase([String])
+  case updateSeedPhraseError(String?)
   case updateValidationState
-  case makeInvalidState(String)
 }
 
 struct RecoverSeedPhraseState: Equatable {
@@ -13,6 +13,7 @@ struct RecoverSeedPhraseState: Equatable {
   var phoneNumber: String = ""
   var password: String = ""
   var seedPhrase: [String] = []
+  var seedPhraseError: String?
   var validationState: ValidationState = .unknown
   
   var fullSeedPhrase: String {
@@ -33,19 +34,24 @@ final class RecoverSeedPhraseStore: ViewStore<RecoverSeedPhraseAction, RecoverSe
     switch action {
     case let .setupPhoneNumber(phoneNumber): state.phoneNumber = phoneNumber
     case let .setupPassword(password): state.password = password
-    case let .updateSeedPhrase(seedPhrase): state.seedPhrase = seedPhrase
-    case .updateValidationState: state.validationState = validate(state)
-    case let .makeInvalidState(error): state.validationState = .invalid(error)
+    case let .updateSeedPhrase(seedPhrase):
+      state.seedPhrase = seedPhrase
+      state.seedPhraseError = nil
+    case let .updateSeedPhraseError(seedPhraseError): state.seedPhraseError = seedPhraseError
+    case .updateValidationState: validate(&state)
     }
     
     return state
   }
   
-  private func validate(_ state: RecoverSeedPhraseState) -> ValidationState {
-    guard state.seedPhrase.count == BTMWallet.seedPhraseLength else {
-      return .invalid(localize(L.RecoverSeedPhrase.Form.Error.notValidLength))
-    }
+  private func validate(_ state: inout RecoverSeedPhraseState) {
+    state.validationState = .valid
     
-    return .valid
+    if state.seedPhrase.count != BTMWallet.seedPhraseLength {
+      let errorString = localize(L.RecoverSeedPhrase.Form.Error.notValidLength)
+      state.validationState = .invalid(errorString)
+      state.seedPhraseError = errorString
+    }
   }
+
 }

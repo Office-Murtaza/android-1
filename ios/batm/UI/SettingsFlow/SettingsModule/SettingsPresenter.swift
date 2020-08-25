@@ -32,7 +32,7 @@ class SettingsPresenter: ModulePresenter, SettingsModule {
   }
   
   private func fetchVerificationInfo() {
-    track(usecase.getVerificationInfo())
+    track(usecase.getKYC())
       .drive(onNext: { [delegate] in delegate?.didSelectKYC($0) })
       .disposed(by: disposeBag)
   }

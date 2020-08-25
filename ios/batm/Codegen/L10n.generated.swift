@@ -107,6 +107,10 @@ enum L {
     static let title = "filter_coins.title"
   }
 
+  struct KYC {
+    static let title = "k_y_c.title"
+  }
+
   struct PhoneVerification {
     static let codeSent = "phone_verification.code_sent"
     static let enterCode = "phone_verification.enter_code"
@@ -222,10 +226,6 @@ enum L {
   struct Verification {
     static let idScan = "verification.id_scan"
     static let title = "verification.title"
-  }
-
-  struct VerificationInfo {
-    static let title = "verification_info.title"
   }
 
   struct Welcome {
@@ -506,6 +506,43 @@ extension L.Error {
     static let title = "error.something_went_wrong.title"
   }
 }
+extension L.KYC {
+
+  struct Button {
+    static let verify = "k_y_c.button.verify"
+    static let vipVerify = "k_y_c.button.vip_verify"
+  }
+
+  struct Header {
+  }
+}
+extension L.KYC.Header {
+
+  struct DailyLimit {
+    static let title = "k_y_c.header.daily_limit.title"
+  }
+
+  struct Status {
+    static let title = "k_y_c.header.status.title"
+  }
+
+  struct TransactionLimit {
+    static let title = "k_y_c.header.transaction_limit.title"
+  }
+}
+extension L.KYC.Header.Status {
+
+  struct Value {
+    static let notVerified = "k_y_c.header.status.value.not_verified"
+    static let unknown = "k_y_c.header.status.value.unknown"
+    static let verificationPending = "k_y_c.header.status.value.verification_pending"
+    static let verificationRejected = "k_y_c.header.status.value.verification_rejected"
+    static let verified = "k_y_c.header.status.value.verified"
+    static let vipVerificationPending = "k_y_c.header.status.value.vip_verification_pending"
+    static let vipVerificationRejected = "k_y_c.header.status.value.vip_verification_rejected"
+    static let vipVerified = "k_y_c.header.status.value.vip_verified"
+  }
+}
 extension L.PhoneVerification {
 
   struct Error {
@@ -749,38 +786,6 @@ extension L.Verification.Picker {
 
   struct LibraryOption {
     static let title = "verification.picker.library_option.title"
-  }
-}
-extension L.VerificationInfo {
-
-  struct Button {
-    static let verify = "verification_info.button.verify"
-    static let vipVerify = "verification_info.button.vip_verify"
-  }
-
-  struct DailyLimitRow {
-    static let title = "verification_info.daily_limit_row.title"
-  }
-
-  struct StatusRow {
-    static let title = "verification_info.status_row.title"
-  }
-
-  struct TxLimitRow {
-    static let title = "verification_info.tx_limit_row.title"
-  }
-}
-extension L.VerificationInfo.StatusRow {
-
-  struct Value {
-    static let notVerified = "verification_info.status_row.value.not_verified"
-    static let unknown = "verification_info.status_row.value.unknown"
-    static let verificationPending = "verification_info.status_row.value.verification_pending"
-    static let verificationRejected = "verification_info.status_row.value.verification_rejected"
-    static let verified = "verification_info.status_row.value.verified"
-    static let vipVerificationPending = "verification_info.status_row.value.vip_verification_pending"
-    static let vipVerificationRejected = "verification_info.status_row.value.vip_verification_rejected"
-    static let vipVerified = "verification_info.status_row.value.vip_verified"
   }
 }
 extension L.Welcome {

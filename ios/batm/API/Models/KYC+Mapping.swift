@@ -1,10 +1,10 @@
 import ObjectMapper
 
-extension VerificationInfo: ImmutableMappable {
+extension KYC: ImmutableMappable {
   init(map: Map) throws {
     txLimit = try map.value("txLimit")
     dailyLimit = try map.value("dailyLimit")
-    status = VerificationStatus(rawValue: try map.value("status"))
+    status = KYCStatus(rawValue: try map.value("status"))
     message = try map.value("message")
   }
 }

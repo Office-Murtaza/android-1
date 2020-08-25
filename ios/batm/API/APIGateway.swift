@@ -57,7 +57,7 @@ protocol APIGateway {
   func getBinanceAccountInfo(type: CustomCoinType, address: String) -> Single<BinanceAccountInfo>
   func getRippleSequence(type: CustomCoinType, address: String) -> Single<RippleSequence>
   func getSellDetails(userId: Int) -> Single<SellDetails>
-  func getVerificationInfo(userId: Int) -> Single<VerificationInfo>
+  func getKYC(userId: Int) -> Single<KYC>
   func sendVerification(userId: Int, userData: VerificationUserData) -> Completable
   func sendVIPVerification(userId: Int, userData: VIPVerificationUserData) -> Completable
   func getPriceChartData(userId: Int, type: CustomCoinType) -> Single<PriceChartData>
@@ -267,8 +267,8 @@ final class APIGatewayImpl: APIGateway {
     return execute(request)
   }
   
-  func getVerificationInfo(userId: Int) -> Single<VerificationInfo> {
-    let request = GetVerificationInfoRequest(userId: userId)
+  func getKYC(userId: Int) -> Single<KYC> {
+    let request = KYCRequest(userId: userId)
     return execute(request)
   }
   

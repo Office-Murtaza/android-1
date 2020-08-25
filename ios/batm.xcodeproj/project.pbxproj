@@ -138,13 +138,13 @@
 		DB497AF722BF6AA0008CE4A8 /* WelcomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB497AF622BF6AA0008CE4A8 /* WelcomeViewController.swift */; };
 		DB497AFC22BFD5F7008CE4A8 /* ModuleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB497AFB22BFD5F7008CE4A8 /* ModuleViewController.swift */; };
 		DB4B9DCB22E5A4710016746A /* GoogleServicesInitializer.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB4B9DCA22E5A4710016746A /* GoogleServicesInitializer.swift */; };
-		DB4D7BC12409A133008C2BD5 /* VerificationFlow+Dependencies.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB4D7BBE2409A133008C2BD5 /* VerificationFlow+Dependencies.swift */; };
-		DB4D7BC22409A133008C2BD5 /* VerificationFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB4D7BBF2409A133008C2BD5 /* VerificationFlow.swift */; };
-		DB4D7BC32409A133008C2BD5 /* VerificationFlowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB4D7BC02409A133008C2BD5 /* VerificationFlowController.swift */; };
-		DB4D7BCA2409A17E008C2BD5 /* VerificationInfoModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB4D7BC62409A17E008C2BD5 /* VerificationInfoModule.swift */; };
-		DB4D7BCB2409A17E008C2BD5 /* VerificationInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB4D7BC72409A17E008C2BD5 /* VerificationInfoViewController.swift */; };
-		DB4D7BCC2409A17E008C2BD5 /* VerificationInfoPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB4D7BC82409A17E008C2BD5 /* VerificationInfoPresenter.swift */; };
-		DB4D7BCD2409A17E008C2BD5 /* VerificationInfoAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB4D7BC92409A17E008C2BD5 /* VerificationInfoAssembly.swift */; };
+		DB4D7BC12409A133008C2BD5 /* KYCFlow+Dependencies.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB4D7BBE2409A133008C2BD5 /* KYCFlow+Dependencies.swift */; };
+		DB4D7BC22409A133008C2BD5 /* KYCFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB4D7BBF2409A133008C2BD5 /* KYCFlow.swift */; };
+		DB4D7BC32409A133008C2BD5 /* KYCFlowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB4D7BC02409A133008C2BD5 /* KYCFlowController.swift */; };
+		DB4D7BCA2409A17E008C2BD5 /* KYCModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB4D7BC62409A17E008C2BD5 /* KYCModule.swift */; };
+		DB4D7BCB2409A17E008C2BD5 /* KYCViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB4D7BC72409A17E008C2BD5 /* KYCViewController.swift */; };
+		DB4D7BCC2409A17E008C2BD5 /* KYCPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB4D7BC82409A17E008C2BD5 /* KYCPresenter.swift */; };
+		DB4D7BCD2409A17E008C2BD5 /* KYCAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB4D7BC92409A17E008C2BD5 /* KYCAssembly.swift */; };
 		DB4F395122DEFA2600D53BF3 /* FilterCoinsModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB4F395022DEFA2600D53BF3 /* FilterCoinsModule.swift */; };
 		DB4F395322DEFA4100D53BF3 /* FilterCoinsStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB4F395222DEFA4100D53BF3 /* FilterCoinsStore.swift */; };
 		DB4F395522DEFCBB00D53BF3 /* FilterCoinsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB4F395422DEFCBB00D53BF3 /* FilterCoinsPresenter.swift */; };
@@ -217,6 +217,7 @@
 		DB7A9D122459CEE800006B54 /* QRCodeCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB7A9D112459CEE800006B54 /* QRCodeCardView.swift */; };
 		DB82AD2724AF1524001F833E /* CoinStakingHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB82AD2624AF1524001F833E /* CoinStakingHeaderView.swift */; };
 		DB82AD2924AF18CF001F833E /* CoinStakingFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB82AD2824AF18CF001F833E /* CoinStakingFormView.swift */; };
+		DB8325B524F46AFA00AFD577 /* KYCHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB8325B424F46AFA00AFD577 /* KYCHeaderView.swift */; };
 		DB83624224C1DF3300A5FEFC /* PhoneVerificationModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB83623E24C1DF3300A5FEFC /* PhoneVerificationModule.swift */; };
 		DB83624324C1DF3300A5FEFC /* PhoneVerificationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB83623F24C1DF3300A5FEFC /* PhoneVerificationViewController.swift */; };
 		DB83624424C1DF3300A5FEFC /* PhoneVerificationPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB83624024C1DF3300A5FEFC /* PhoneVerificationPresenter.swift */; };
@@ -410,7 +411,7 @@
 		DBA7A4A7235662AD000BE997 /* CoinSellPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBA7A4A3235662AD000BE997 /* CoinSellPresenter.swift */; };
 		DBA7A4A8235662AD000BE997 /* CoinSellAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBA7A4A4235662AD000BE997 /* CoinSellAssembly.swift */; };
 		DBA7A4AA2356649C000BE997 /* CoinSellStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBA7A4A92356649C000BE997 /* CoinSellStore.swift */; };
-		DBAB1CF3240C336500DDF9F5 /* VerificationInfo+Mapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBAB1CF2240C336500DDF9F5 /* VerificationInfo+Mapping.swift */; };
+		DBAB1CF3240C336500DDF9F5 /* KYC+Mapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBAB1CF2240C336500DDF9F5 /* KYC+Mapping.swift */; };
 		DBAD539922D7B7D10005F682 /* PinCodeModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBAD539822D7B7D10005F682 /* PinCodeModule.swift */; };
 		DBAD539B22D7B8870005F682 /* PinCodePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBAD539A22D7B8870005F682 /* PinCodePresenter.swift */; };
 		DBAD539D22D7B95F0005F682 /* PinCodeStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBAD539C22D7B95F0005F682 /* PinCodeStore.swift */; };
@@ -486,8 +487,8 @@
 		DBCFBD5224BE53420045B9B4 /* SeedPhraseStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBCFBD5124BE53420045B9B4 /* SeedPhraseStore.swift */; };
 		DBCFBD5424BE53E90045B9B4 /* SeedPhraseFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBCFBD5324BE53E90045B9B4 /* SeedPhraseFormView.swift */; };
 		DBD09E7523DA180C00439634 /* TransactionStatusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD09E7423DA180C00439634 /* TransactionStatusView.swift */; };
-		DBD8C212240AF44B00BD8A74 /* VerificationInfoRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD8C211240AF44B00BD8A74 /* VerificationInfoRowView.swift */; };
-		DBD8C214240AF52300BD8A74 /* VerificationStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD8C213240AF52300BD8A74 /* VerificationStatus.swift */; };
+		DBD8C212240AF44B00BD8A74 /* KYCStatusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD8C211240AF44B00BD8A74 /* KYCStatusView.swift */; };
+		DBD8C214240AF52300BD8A74 /* KYC.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD8C213240AF52300BD8A74 /* KYC.swift */; };
 		DBDA455724E5BB94002A3AF5 /* SettingsTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBDA455624E5BB94002A3AF5 /* SettingsTableView.swift */; };
 		DBDA455D24E5BD83002A3AF5 /* SecurityModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBDA455924E5BD82002A3AF5 /* SecurityModule.swift */; };
 		DBDA455E24E5BD83002A3AF5 /* SecurityViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBDA455A24E5BD82002A3AF5 /* SecurityViewController.swift */; };
@@ -673,13 +674,13 @@
 		DB497AF622BF6AA0008CE4A8 /* WelcomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeViewController.swift; sourceTree = "<group>"; };
 		DB497AFB22BFD5F7008CE4A8 /* ModuleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModuleViewController.swift; sourceTree = "<group>"; };
 		DB4B9DCA22E5A4710016746A /* GoogleServicesInitializer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleServicesInitializer.swift; sourceTree = "<group>"; };
-		DB4D7BBE2409A133008C2BD5 /* VerificationFlow+Dependencies.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "VerificationFlow+Dependencies.swift"; sourceTree = "<group>"; };
-		DB4D7BBF2409A133008C2BD5 /* VerificationFlow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerificationFlow.swift; sourceTree = "<group>"; };
-		DB4D7BC02409A133008C2BD5 /* VerificationFlowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerificationFlowController.swift; sourceTree = "<group>"; };
-		DB4D7BC62409A17E008C2BD5 /* VerificationInfoModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerificationInfoModule.swift; sourceTree = "<group>"; };
-		DB4D7BC72409A17E008C2BD5 /* VerificationInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerificationInfoViewController.swift; sourceTree = "<group>"; };
-		DB4D7BC82409A17E008C2BD5 /* VerificationInfoPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerificationInfoPresenter.swift; sourceTree = "<group>"; };
-		DB4D7BC92409A17E008C2BD5 /* VerificationInfoAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerificationInfoAssembly.swift; sourceTree = "<group>"; };
+		DB4D7BBE2409A133008C2BD5 /* KYCFlow+Dependencies.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "KYCFlow+Dependencies.swift"; sourceTree = "<group>"; };
+		DB4D7BBF2409A133008C2BD5 /* KYCFlow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KYCFlow.swift; sourceTree = "<group>"; };
+		DB4D7BC02409A133008C2BD5 /* KYCFlowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KYCFlowController.swift; sourceTree = "<group>"; };
+		DB4D7BC62409A17E008C2BD5 /* KYCModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KYCModule.swift; sourceTree = "<group>"; };
+		DB4D7BC72409A17E008C2BD5 /* KYCViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KYCViewController.swift; sourceTree = "<group>"; };
+		DB4D7BC82409A17E008C2BD5 /* KYCPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KYCPresenter.swift; sourceTree = "<group>"; };
+		DB4D7BC92409A17E008C2BD5 /* KYCAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KYCAssembly.swift; sourceTree = "<group>"; };
 		DB4F395022DEFA2600D53BF3 /* FilterCoinsModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterCoinsModule.swift; sourceTree = "<group>"; };
 		DB4F395222DEFA4100D53BF3 /* FilterCoinsStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterCoinsStore.swift; sourceTree = "<group>"; };
 		DB4F395422DEFCBB00D53BF3 /* FilterCoinsPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterCoinsPresenter.swift; sourceTree = "<group>"; };
@@ -751,6 +752,7 @@
 		DB7A9D112459CEE800006B54 /* QRCodeCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCodeCardView.swift; sourceTree = "<group>"; };
 		DB82AD2624AF1524001F833E /* CoinStakingHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinStakingHeaderView.swift; sourceTree = "<group>"; };
 		DB82AD2824AF18CF001F833E /* CoinStakingFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinStakingFormView.swift; sourceTree = "<group>"; };
+		DB8325B424F46AFA00AFD577 /* KYCHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KYCHeaderView.swift; sourceTree = "<group>"; };
 		DB83623E24C1DF3300A5FEFC /* PhoneVerificationModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneVerificationModule.swift; sourceTree = "<group>"; };
 		DB83623F24C1DF3300A5FEFC /* PhoneVerificationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneVerificationViewController.swift; sourceTree = "<group>"; };
 		DB83624024C1DF3300A5FEFC /* PhoneVerificationPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneVerificationPresenter.swift; sourceTree = "<group>"; };
@@ -944,7 +946,7 @@
 		DBA7A4A3235662AD000BE997 /* CoinSellPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinSellPresenter.swift; sourceTree = "<group>"; };
 		DBA7A4A4235662AD000BE997 /* CoinSellAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinSellAssembly.swift; sourceTree = "<group>"; };
 		DBA7A4A92356649C000BE997 /* CoinSellStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinSellStore.swift; sourceTree = "<group>"; };
-		DBAB1CF2240C336500DDF9F5 /* VerificationInfo+Mapping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "VerificationInfo+Mapping.swift"; sourceTree = "<group>"; };
+		DBAB1CF2240C336500DDF9F5 /* KYC+Mapping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "KYC+Mapping.swift"; sourceTree = "<group>"; };
 		DBAD539822D7B7D10005F682 /* PinCodeModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinCodeModule.swift; sourceTree = "<group>"; };
 		DBAD539A22D7B8870005F682 /* PinCodePresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinCodePresenter.swift; sourceTree = "<group>"; };
 		DBAD539C22D7B95F0005F682 /* PinCodeStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinCodeStore.swift; sourceTree = "<group>"; };
@@ -1024,8 +1026,8 @@
 		DBD1750222BD26860021A05E /* batmTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = batmTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		DBD1750622BD26860021A05E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		DBD1750C22BD26CB0021A05E /* BTMWallet+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "BTMWallet+Extensions.swift"; sourceTree = "<group>"; };
-		DBD8C211240AF44B00BD8A74 /* VerificationInfoRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerificationInfoRowView.swift; sourceTree = "<group>"; };
-		DBD8C213240AF52300BD8A74 /* VerificationStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerificationStatus.swift; sourceTree = "<group>"; };
+		DBD8C211240AF44B00BD8A74 /* KYCStatusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KYCStatusView.swift; sourceTree = "<group>"; };
+		DBD8C213240AF52300BD8A74 /* KYC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KYC.swift; sourceTree = "<group>"; };
 		DBDA455624E5BB94002A3AF5 /* SettingsTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTableView.swift; sourceTree = "<group>"; };
 		DBDA455924E5BD82002A3AF5 /* SecurityModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecurityModule.swift; sourceTree = "<group>"; };
 		DBDA455A24E5BD82002A3AF5 /* SecurityViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecurityViewController.swift; sourceTree = "<group>"; };
@@ -1484,7 +1486,7 @@
 				DBECA62922F7FADF002C2610 /* UpdatePhoneFlow */,
 				DB59EA0E22F9B7B400EB64A7 /* UpdatePasswordFlow */,
 				DB83663322FAB7A300454F5C /* UpdatePinFlow */,
-				DB4D7BBD2409A116008C2BD5 /* VerificationFlow */,
+				DB4D7BBD2409A116008C2BD5 /* KYCFlow */,
 				DB83661022FA9ECC00454F5C /* SeedPhraseFlow */,
 				DB83662222FAA73B00454F5C /* UnlinkFlow */,
 				DB8F078024103E8F00770643 /* PickerFlow */,
@@ -1543,37 +1545,37 @@
 			path = Module;
 			sourceTree = "<group>";
 		};
-		DB4D7BBD2409A116008C2BD5 /* VerificationFlow */ = {
+		DB4D7BBD2409A116008C2BD5 /* KYCFlow */ = {
 			isa = PBXGroup;
 			children = (
 				DB4D7BC42409A14D008C2BD5 /* Flow */,
-				DB4D7BC52409A157008C2BD5 /* VerificationInfoModule */,
+				DB4D7BC52409A157008C2BD5 /* KYCModule */,
 				DB38280E240CF7B200418D3D /* VerificationModule */,
 				DB382817240CF9A800418D3D /* VIPVerificationModule */,
 			);
-			path = VerificationFlow;
+			path = KYCFlow;
 			sourceTree = "<group>";
 		};
 		DB4D7BC42409A14D008C2BD5 /* Flow */ = {
 			isa = PBXGroup;
 			children = (
-				DB4D7BBF2409A133008C2BD5 /* VerificationFlow.swift */,
-				DB4D7BC02409A133008C2BD5 /* VerificationFlowController.swift */,
-				DB4D7BBE2409A133008C2BD5 /* VerificationFlow+Dependencies.swift */,
+				DB4D7BBF2409A133008C2BD5 /* KYCFlow.swift */,
+				DB4D7BC02409A133008C2BD5 /* KYCFlowController.swift */,
+				DB4D7BBE2409A133008C2BD5 /* KYCFlow+Dependencies.swift */,
 			);
 			path = Flow;
 			sourceTree = "<group>";
 		};
-		DB4D7BC52409A157008C2BD5 /* VerificationInfoModule */ = {
+		DB4D7BC52409A157008C2BD5 /* KYCModule */ = {
 			isa = PBXGroup;
 			children = (
 				DBD8C210240AF42600BD8A74 /* Views */,
-				DB4D7BC72409A17E008C2BD5 /* VerificationInfoViewController.swift */,
-				DB4D7BC82409A17E008C2BD5 /* VerificationInfoPresenter.swift */,
-				DB4D7BC62409A17E008C2BD5 /* VerificationInfoModule.swift */,
-				DB4D7BC92409A17E008C2BD5 /* VerificationInfoAssembly.swift */,
+				DB4D7BC72409A17E008C2BD5 /* KYCViewController.swift */,
+				DB4D7BC82409A17E008C2BD5 /* KYCPresenter.swift */,
+				DB4D7BC62409A17E008C2BD5 /* KYCModule.swift */,
+				DB4D7BC92409A17E008C2BD5 /* KYCAssembly.swift */,
 			);
-			path = VerificationInfoModule;
+			path = KYCModule;
 			sourceTree = "<group>";
 		};
 		DB4F394F22DEFA0600D53BF3 /* FilterCoinsModule */ = {
@@ -2169,7 +2171,7 @@
 				DB1743C5235E2C6300E7DACB /* SellAddress.swift */,
 				DBC8B45D23635AB200E7A799 /* SellDetails.swift */,
 				DBBD06E02369FEDB0096B674 /* PreSubmitResponse.swift */,
-				DBD8C213240AF52300BD8A74 /* VerificationStatus.swift */,
+				DBD8C213240AF52300BD8A74 /* KYC.swift */,
 				DB33E9C1241D3A0D00764BF5 /* PriceChartPeriod.swift */,
 				DB33E9BF241D391900764BF5 /* PriceChartPeriods.swift */,
 				DB33E9BD241D389400764BF5 /* PriceChartData.swift */,
@@ -2302,7 +2304,7 @@
 				DB1743C7235E2C7E00E7DACB /* SellAddress+Mapping.swift */,
 				DBC8B45F23635AE000E7A799 /* SellDetails+Mapping.swift */,
 				DBBD06E22369FF0E0096B674 /* PreSubmitResponse+Mapping.swift */,
-				DBAB1CF2240C336500DDF9F5 /* VerificationInfo+Mapping.swift */,
+				DBAB1CF2240C336500DDF9F5 /* KYC+Mapping.swift */,
 				DB33E9C3241D3B1D00764BF5 /* PriceChartPeriod+Mapping.swift */,
 				DB33E9C5241D3B7900764BF5 /* PriceChartPeriods+Mapping.swift */,
 				DB33E9C7241D3BC000764BF5 /* PriceChartData+Mapping.swift */,
@@ -2680,7 +2682,8 @@
 		DBD8C210240AF42600BD8A74 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				DBD8C211240AF44B00BD8A74 /* VerificationInfoRowView.swift */,
+				DBD8C211240AF44B00BD8A74 /* KYCStatusView.swift */,
+				DB8325B424F46AFA00AFD577 /* KYCHeaderView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -3062,6 +3065,7 @@
 				DB8BAE0624CF53A700CA8EC1 /* ServerError.swift in Sources */,
 				DB33E9C4241D3B1D00764BF5 /* PriceChartPeriod+Mapping.swift in Sources */,
 				DB2F250D2360687800274C60 /* CoinSellDetailsCurrentAddressViewController.swift in Sources */,
+				DB8325B524F46AFA00AFD577 /* KYCHeaderView.swift in Sources */,
 				DBDA456A24E5C1BD002A3AF5 /* AboutViewController.swift in Sources */,
 				DB86FD262477FBD5002FE22D /* LocationUpdateDateRecord+CoreDataClass.swift in Sources */,
 				DB1AF0E224436D6D0037C998 /* MDCContainerScheme+Extensions.swift in Sources */,
@@ -3074,7 +3078,7 @@
 				DBC68CAD22F86C5F00473247 /* EnterPasswordFormView.swift in Sources */,
 				DB2A0DF324CD655C009C9D1C /* PhoneVerificationStore.swift in Sources */,
 				DB9616A322C5FFC10078E92D /* RoundedView.swift in Sources */,
-				DB4D7BC12409A133008C2BD5 /* VerificationFlow+Dependencies.swift in Sources */,
+				DB4D7BC12409A133008C2BD5 /* KYCFlow+Dependencies.swift in Sources */,
 				DBA7A4A5235662AD000BE997 /* CoinSellModule.swift in Sources */,
 				DB96169422C5678E0078E92D /* MainButton.swift in Sources */,
 				DB5B2DE6230A769300821713 /* CoinDetailsAssembly.swift in Sources */,
@@ -3123,8 +3127,8 @@
 				DB5F18C42472B0DB00E37311 /* BuySellTrade.swift in Sources */,
 				DB38281D240CF9BA00418D3D /* VIPVerificationViewController.swift in Sources */,
 				DB67D1B62394FB3E008EFB0D /* Error+Extensions.swift in Sources */,
-				DBD8C214240AF52300BD8A74 /* VerificationStatus.swift in Sources */,
-				DB4D7BC32409A133008C2BD5 /* VerificationFlowController.swift in Sources */,
+				DBD8C214240AF52300BD8A74 /* KYC.swift in Sources */,
+				DB4D7BC32409A133008C2BD5 /* KYCFlowController.swift in Sources */,
 				DB8D409E22C3EC9D00D5FBD0 /* UIWindow+Transitions.swift in Sources */,
 				DB83624F24C205B700A5FEFC /* CodeInputView+Rx.swift in Sources */,
 				DB9616B022C60EFB0078E92D /* UIStackView+Extensions.swift in Sources */,
@@ -3148,9 +3152,9 @@
 				DB1743C8235E2C7E00E7DACB /* SellAddress+Mapping.swift in Sources */,
 				DBF98D4124502B0700AF6D5A /* CoinDepositAssembly.swift in Sources */,
 				DB5B2DE3230A769300821713 /* CoinDetailsModule.swift in Sources */,
-				DBD8C212240AF44B00BD8A74 /* VerificationInfoRowView.swift in Sources */,
+				DBD8C212240AF44B00BD8A74 /* KYCStatusView.swift in Sources */,
 				DBAD53A822D7CC500005F682 /* KeyboardHelper.swift in Sources */,
-				DB4D7BCA2409A17E008C2BD5 /* VerificationInfoModule.swift in Sources */,
+				DB4D7BCA2409A17E008C2BD5 /* KYCModule.swift in Sources */,
 				DB59EA2122F9C51B00EB64A7 /* UpdatePasswordModule.swift in Sources */,
 				DB51F3132490D34F007F47B4 /* CreateEditTradeStore.swift in Sources */,
 				DB350532248E7C170074DCF8 /* BuySellTradeDetailsFormView.swift in Sources */,
@@ -3232,7 +3236,7 @@
 				DB8D40A322C3ED9C00D5FBD0 /* LoginFlow.swift in Sources */,
 				DBA6845022E45A300079429E /* SettingsFlow+Dependencies.swift in Sources */,
 				DBA6844022E44AC70079429E /* ATMModule.swift in Sources */,
-				DB4D7BCB2409A17E008C2BD5 /* VerificationInfoViewController.swift in Sources */,
+				DB4D7BCB2409A17E008C2BD5 /* KYCViewController.swift in Sources */,
 				DB4F395522DEFCBB00D53BF3 /* FilterCoinsPresenter.swift in Sources */,
 				DB9616F322C750CA0078E92D /* Converter.swift in Sources */,
 				DBC68CB122F8755000473247 /* VerificationResult.swift in Sources */,
@@ -3366,7 +3370,7 @@
 				DB99BB9C2362E0F9006A75BE /* TransactionDetailsGeneralSectionView.swift in Sources */,
 				DB9D3EA022C0F6BA008DC600 /* UIColor+Additions.swift in Sources */,
 				DBA7393D22C3482E00CEFD57 /* L10n.generated.swift in Sources */,
-				DB4D7BCD2409A17E008C2BD5 /* VerificationInfoAssembly.swift in Sources */,
+				DB4D7BCD2409A17E008C2BD5 /* KYCAssembly.swift in Sources */,
 				DB3C03D822CB5DCE0036F779 /* RecoverViewController.swift in Sources */,
 				DB83661622FA9FCB00454F5C /* SeedPhraseFlow.swift in Sources */,
 				DBDA966222BFDB6E005B93DF /* ModulePresenter.swift in Sources */,
@@ -3395,7 +3399,7 @@
 				DB33E9C8241D3BC000764BF5 /* PriceChartData+Mapping.swift in Sources */,
 				DB6DC1B624877AC600CD478D /* BuySellTradeDetailsViewController.swift in Sources */,
 				DB497AFC22BFD5F7008CE4A8 /* ModuleViewController.swift in Sources */,
-				DBAB1CF3240C336500DDF9F5 /* VerificationInfo+Mapping.swift in Sources */,
+				DBAB1CF3240C336500DDF9F5 /* KYC+Mapping.swift in Sources */,
 				DB49463E22DF7C0D001EE56E /* CoinsBalanceFooterView.swift in Sources */,
 				DB04E4CB22D85C50000E2D85 /* PinCodeStorage.swift in Sources */,
 				DB8D409822C3EA0400D5FBD0 /* BaseFlow.swift in Sources */,
@@ -3493,7 +3497,7 @@
 				DB1AF0DE24436B4A0037C998 /* MDCButton+Extensions.swift in Sources */,
 				DB8BAE0824CF53D500CA8EC1 /* ServerError+Mapping.swift in Sources */,
 				DBC68CBA22F8798F00473247 /* UpdatePhoneViewController.swift in Sources */,
-				DB4D7BC22409A133008C2BD5 /* VerificationFlow.swift in Sources */,
+				DB4D7BC22409A133008C2BD5 /* KYCFlow.swift in Sources */,
 				DBA6843122E42B450079429E /* CoinsBalanceFlowController.swift in Sources */,
 				DB5F18C62472B16A00E37311 /* BuySellTrade+Mapping.swift in Sources */,
 				DB9616C422C746F70078E92D /* AccountRecord+CoreDataClass.swift in Sources */,
@@ -3535,7 +3539,7 @@
 				DB382816240CF7D600418D3D /* VerificationAssembly.swift in Sources */,
 				DBC68C9322F85C9900473247 /* SettingsUsecase.swift in Sources */,
 				DBDA966922C0043F005B93DF /* ActivityTracker.swift in Sources */,
-				DB4D7BCC2409A17E008C2BD5 /* VerificationInfoPresenter.swift in Sources */,
+				DB4D7BCC2409A17E008C2BD5 /* KYCPresenter.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

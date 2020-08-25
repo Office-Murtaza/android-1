@@ -1,17 +1,17 @@
 import RxFlow
 
-class VerificationFlow: BaseFlow<BTMNavigationController, VerificationFlowController> {
+class KYCFlow: BaseFlow<BTMNavigationController, KYCFlowController> {
   override func assemblies() -> [Assembly] {
     return [
       Dependencies(),
-      VerificationInfoAssembly(),
+      KYCAssembly(),
       VerificationAssembly(),
       VIPVerificationAssembly()
     ]
   }
   
   enum Steps: Step, Equatable {
-    case info(VerificationInfo)
+    case kyc(KYC)
     case verification
     case vipVerification
     case showPicker
@@ -26,9 +26,9 @@ class VerificationFlow: BaseFlow<BTMNavigationController, VerificationFlowContro
   
   private func handleFlow(step: Steps) -> NextFlowItems {
     switch step {
-    case let .info(info):
-      let module = resolver.resolve(Module<VerificationInfoModule>.self)!
-      module.input.setup(with: info)
+    case let .kyc(kyc):
+      let module = resolver.resolve(Module<KYCModule>.self)!
+      module.input.setup(with: kyc)
       return push(module.controller)
     case .verification:
       let module = resolver.resolve(Module<VerificationModule>.self)!

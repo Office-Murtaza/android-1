@@ -10,8 +10,6 @@ enum MainButtonType {
   case done
   case change
   case send
-  case verify
-  case vipVerify
 }
 
 class MainButton: UIButton {
@@ -76,10 +74,6 @@ class MainButton: UIButton {
       title = localize(L.Shared.change)
     case .send:
       title = localize(L.Shared.send)
-    case .verify:
-      title = localize(L.VerificationInfo.Button.verify)
-    case .vipVerify:
-      title = localize(L.VerificationInfo.Button.vipVerify)
     }
     
     let attributes: [NSAttributedString.Key: Any] = [

@@ -19,7 +19,7 @@ extension SettingsFlow {
                     UpdatePhoneFlowControllerDelegate.self,
                     UpdatePasswordFlowControllerDelegate.self,
                     UpdatePinFlowControllerDelegate.self,
-                    VerificationFlowControllerDelegate.self,
+                    KYCFlowControllerDelegate.self,
                     SeedPhraseFlowControllerDelegate.self,
                     UnlinkFlowControllerDelegate.self)
     }

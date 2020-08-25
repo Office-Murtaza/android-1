@@ -17,8 +17,8 @@ extension SettingsFlowController: SettingsModuleDelegate {
     step.accept(SettingsFlow.Steps.security)
   }
   
-  func didSelectKYC(_ info: VerificationInfo) {
-    step.accept(SettingsFlow.Steps.kyc(info))
+  func didSelectKYC(_ kyc: KYC) {
+    step.accept(SettingsFlow.Steps.kyc(kyc))
   }
   
   func didSelectAbout() {
@@ -76,9 +76,9 @@ extension SettingsFlowController: UpdatePinFlowControllerDelegate {
   
 }
 
-extension SettingsFlowController: VerificationFlowControllerDelegate {
+extension SettingsFlowController: KYCFlowControllerDelegate {
   
-  func didFinishVerificationFlow() {
+  func didFinishKYCFlow() {
     step.accept(SettingsFlow.Steps.popToRoot)
   }
   

@@ -11,7 +11,7 @@ protocol SettingsUsecase {
   func updatePassword(oldPassword: String, newPassword: String) -> Completable
   func getPinCode() -> Single<String>
   func unlink() -> Completable
-  func getVerificationInfo() -> Single<VerificationInfo>
+  func getKYC() -> Single<KYC>
   func sendVerification(userData: VerificationUserData) -> Completable
   func sendVIPVerification(userData: VIPVerificationUserData) -> Completable
 }
@@ -93,9 +93,9 @@ class SettingsUsecaseImpl: SettingsUsecase {
       .asCompletable()
   }
   
-  func getVerificationInfo() -> Single<VerificationInfo> {
+  func getKYC() -> Single<KYC> {
     return accountStorage.get()
-      .flatMap { [api] in api.getVerificationInfo(userId: $0.userId) }
+      .flatMap { [api] in api.getKYC(userId: $0.userId) }
   }
   
   func sendVerification(userData: VerificationUserData) -> Completable {

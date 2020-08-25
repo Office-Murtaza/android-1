@@ -1,18 +1,18 @@
 import Swinject
 
-extension VerificationFlow {
+extension KYCFlow {
   
   class Dependencies: Assembly {
     
     func assemble(container: Container) {
       container
-        .register(VerificationFlowController.self) { ioc in
-          let flowController = VerificationFlowController()
-          flowController.delegate = ioc.resolve(VerificationFlowControllerDelegate.self)
+        .register(KYCFlowController.self) { ioc in
+          let flowController = KYCFlowController()
+          flowController.delegate = ioc.resolve(KYCFlowControllerDelegate.self)
           return flowController
         }
         .inObjectScope(.container)
-        .implements(VerificationInfoModuleDelegate.self,
+        .implements(KYCModuleDelegate.self,
                     VerificationModuleDelegate.self,
                     VIPVerificationModuleDelegate.self,
                     PickerFlowControllerDelegate.self)

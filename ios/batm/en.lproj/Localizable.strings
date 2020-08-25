@@ -123,21 +123,20 @@
 "unlink.title" = "Unlink";
 "unlink.annotation" = "Make sure you stored your credentials and seed phrase before unlinking the wallet, otherwise, you would lose all assets.";
 
-"verification_info.title" = "Verification";
-"verification_info.tx_limit_row.title" = "Tx Limit";
-"verification_info.daily_limit_row.title" = "Daily Limit";
-"verification_info.tx_limit_row.title" = "Tx Limit";
-"verification_info.status_row.title" = "Status";
-"verification_info.status_row.value.unknown" = "Unknown";
-"verification_info.status_row.value.not_verified" = "Not Verified";
-"verification_info.status_row.value.verification_pending" = "Verification Pending";
-"verification_info.status_row.value.verification_rejected" = "Verification Rejected";
-"verification_info.status_row.value.verified" = "Verified";
-"verification_info.status_row.value.vip_verification_pending" = "VIP Verification Pending";
-"verification_info.status_row.value.vip_verification_rejected" = "VIP Verification Rejected";
-"verification_info.status_row.value.vip_verified" = "VIP Verified";
-"verification_info.button.verify" = "Verify";
-"verification_info.button.vip_verify" = "VIP Verify";
+"k_y_c.title" = "KYC";
+"k_y_c.header.status.title" = "Status";
+"k_y_c.header.transaction_limit.title" = "Transaction Limit";
+"k_y_c.header.daily_limit.title" = "Daily Limit";
+"k_y_c.header.status.value.unknown" = "Unknown";
+"k_y_c.header.status.value.not_verified" = "Not verified";
+"k_y_c.header.status.value.verification_pending" = "Verification pending";
+"k_y_c.header.status.value.verification_rejected" = "Verification rejected";
+"k_y_c.header.status.value.verified" = "Verified";
+"k_y_c.header.status.value.vip_verification_pending" = "VIP verification pending";
+"k_y_c.header.status.value.vip_verification_rejected" = "VIP verification rejected";
+"k_y_c.header.status.value.vip_verified" = "VIP verified";
+"k_y_c.button.verify" = "Verify";
+"k_y_c.button.vip_verify" = "VIP Verify";
 
 "verification.title" = "Verification";
 "verification.id_scan" = "ID Scan";

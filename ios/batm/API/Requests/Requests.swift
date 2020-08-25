@@ -425,8 +425,8 @@ struct GetSellDetailsRequest: AuthorizedAPIRequest {
   }
 }
 
-struct GetVerificationInfoRequest: AuthorizedAPIRequest {
-  typealias ResponseType = APIResponse<VerificationInfo>
+struct KYCRequest: AuthorizedAPIRequest {
+  typealias ResponseType = APIResponse<KYC>
   typealias ResponseTrait = SingleResponseTrait
   
   let userId: Int

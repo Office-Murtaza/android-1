@@ -14,7 +14,7 @@ class SettingsFlow: BaseFlow<BTMNavigationController, SettingsFlowController> {
   enum Steps: Step, Equatable {
     case settings
     case security
-    case kyc(VerificationInfo)
+    case kyc(KYC)
     case about
     case updatePhone(PhoneNumber)
     case updatePassword
@@ -64,9 +64,9 @@ class SettingsFlow: BaseFlow<BTMNavigationController, SettingsFlowController> {
       let flow = UnlinkFlow(view: view, parent: self)
       let step = UnlinkFlow.Steps.unlink
       return next(flow: flow, step: step)
-    case let .kyc(info):
-      let flow = VerificationFlow(view: view, parent: self)
-      let step = VerificationFlow.Steps.info(info)
+    case let .kyc(kyc):
+      let flow = KYCFlow(view: view, parent: self)
+      let step = KYCFlow.Steps.kyc(kyc)
       return next(flow: flow, step: step)
     case .popToRoot:
       view.popToRootViewController(animated: true)

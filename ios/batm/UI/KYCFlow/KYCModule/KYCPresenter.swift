@@ -2,29 +2,24 @@ import Foundation
 import RxSwift
 import RxCocoa
 
-final class VerificationInfoPresenter: ModulePresenter, VerificationInfoModule {
+final class KYCPresenter: ModulePresenter, KYCModule {
 
   struct Input {
-    var back: Driver<Void>
     var verify: Driver<Void>
   }
 
-  weak var delegate: VerificationInfoModuleDelegate?
+  weak var delegate: KYCModuleDelegate?
   
-  let infoRelay = BehaviorRelay(value: VerificationInfo.empty)
+  let kycRelay = BehaviorRelay(value: KYC.empty)
   
-  func setup(with info: VerificationInfo) {
-    infoRelay.accept(info)
+  func setup(with kyc: KYC) {
+    kycRelay.accept(kyc)
   }
 
   func bind(input: Input) {
-    input.back
-      .drive(onNext: { [delegate] in delegate?.didFinishVerificationInfo() })
-      .disposed(by: disposeBag)
-    
     input.verify
       .asObservable()
-      .withLatestFrom(infoRelay)
+      .withLatestFrom(kycRelay)
       .subscribe(onNext: { [unowned self] info in
         if info.status.needVerification {
           self.delegate?.didSelectVerify(from: self)

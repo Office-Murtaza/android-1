@@ -40,7 +40,7 @@ class UnlinkViewController: ModuleViewController<UnlinkPresenter> {
       $0.height.equalToSuperview()
     }
     imageView.snp.makeConstraints {
-      $0.top.equalTo(view.safeAreaLayoutGuide).offset(40)
+      $0.top.equalToSuperview().offset(40)
       $0.centerX.equalToSuperview()
       $0.keepRatio(for: imageView)
     }

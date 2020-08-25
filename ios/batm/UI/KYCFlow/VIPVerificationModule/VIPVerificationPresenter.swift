@@ -62,9 +62,9 @@ final class VIPVerificationPresenter: ModulePresenter, VIPVerificationModule {
       .disposed(by: disposeBag)
   }
   
-  private func sendVIPVerification(userData: VIPVerificationUserData) -> Single<VerificationInfo> {
+  private func sendVIPVerification(userData: VIPVerificationUserData) -> Single<KYC> {
     return usecase.sendVIPVerification(userData: userData)
-      .andThen(usecase.getVerificationInfo())
+      .andThen(usecase.getKYC())
       .catchError { [store] in
         if let apiError = $0 as? APIError, case let .serverError(error) = apiError {
           store.action.accept(.makeInvalidState(error.message))

@@ -51,13 +51,9 @@ class RecoverSeedPhrasePresenter: ModulePresenter, RecoverSeedPhraseModule {
     return usecase.recoverWallet(phoneNumber: state.phoneNumber,
                                  password: state.password,
                                  seedPhrase: state.fullSeedPhrase)
-      .catchError { [store, delegate] in
-        if let apiError = $0 as? APIError, case let .serverError(error) = apiError {
-          if error.code == 1 {
-            delegate?.cancelRecoveringSeedPhrase()
-          } else {
-            store.action.accept(.makeInvalidState(error.message))
-          }
+      .catchError { [store] in
+        if let apiError = $0 as? APIError, case let .serverError(error) = apiError, let code = error.code, code > 1 {
+          store.action.accept(.updateSeedPhraseError(error.message))
         }
 
         throw $0
