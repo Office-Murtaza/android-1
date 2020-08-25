@@ -65,4 +65,5 @@ val useCaseModule = module {
     single { ChangePassUseCase(get()) }
     single { GetPhoneUseCase(get()) }
     single { UpdatePhoneUseCase(get()) }
+    single { GetTransactionDetailsUseCase(get()) }
 }

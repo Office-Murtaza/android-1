@@ -412,4 +412,9 @@ class TransactionRepositoryImpl(
     } else {
         Either.Left(Failure.NetworkConnection)
     }
+
+    override suspend fun getTransactionDetails(
+        txId: String,
+        coinCode: String
+    ): Either<Failure, TransactionDetailsDataItem> = apiService.getTransactionDetails(txId, coinCode)
 }

@@ -1,0 +1,333 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp">
+
+        <TableRow
+            android:id="@+id/txIdContainerView"
+            style="@style/CoinDetails.Table.Row"
+            android:visibility="gone">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                style="@style/CoinDetails.Table.Key"
+                android:text="@string/transition_details_screen_id" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/txIdView"
+                style="@style/CoinDetails.Table.Value"
+                android:background="?android:selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true"
+                android:maxLines="5"
+                android:textColor="#0073e4"
+                tools:text="b28e2673ead88289a2e5a354bce0630483780098631e688cabe9ee06dd325074" />
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/txDbldContainerView"
+            style="@style/CoinDetails.Table.Row"
+            android:visibility="gone"
+            tools:visibility="visible">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                style="@style/CoinDetails.Table.Key"
+                android:text="@string/transition_details_screen_id" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/txDbldView"
+                style="@style/CoinDetails.Table.Value"
+                tools:text="1273" />
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/typeContainerView"
+            style="@style/CoinDetails.Table.Row">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                style="@style/CoinDetails.Table.Key"
+                android:text="@string/transition_details_screen_type" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/typeView"
+                style="@style/CoinDetails.Table.Value"
+                tools:text="Deposit" />
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/statusContainerView"
+            style="@style/CoinDetails.Table.Row">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                style="@style/CoinDetails.Table.Key"
+                android:layout_gravity="center_vertical"
+                android:text="@string/transition_details_screen_status" />
+
+            <FrameLayout
+                style="@style/CoinDetails.Table.Value"
+                android:layout_gravity="center_vertical">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/statusView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:background="@drawable/bg_status_complete"
+                    android:gravity="center"
+                    android:paddingStart="4dp"
+                    android:paddingTop="2dp"
+                    android:paddingEnd="4dp"
+                    android:paddingBottom="2dp"
+                    android:textSize="11sp"
+                    android:textStyle="bold"
+                    tools:ignore="SmallSp"
+                    tools:text="Pending"
+                    tools:textColor="@color/colorStatusComplete" />
+            </FrameLayout>
+
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/cashStatusContainerView"
+            style="@style/CoinDetails.Table.Row"
+            tools:visibility="visible">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                style="@style/CoinDetails.Table.Key"
+                android:text="@string/transition_details_screen_cash_status" />
+
+            <FrameLayout
+                style="@style/CoinDetails.Table.Value"
+                android:layout_gravity="center_vertical">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/cashStatusView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:background="@drawable/bg_status_fail"
+                    android:gravity="center"
+                    android:paddingStart="4dp"
+                    android:paddingTop="2dp"
+                    android:paddingEnd="4dp"
+                    android:paddingBottom="2dp"
+                    android:textSize="11sp"
+                    android:textStyle="bold"
+                    tools:ignore="SmallSp"
+                    tools:text="Not Available"
+                    tools:textColor="@color/colorStatusFail" />
+            </FrameLayout>
+
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/amountContainerView"
+            style="@style/CoinDetails.Table.Row">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                style="@style/CoinDetails.Table.Key"
+                android:text="@string/transition_details_screen_amount" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/amountView"
+                style="@style/CoinDetails.Table.Value"
+                tools:text="0.5 BTC" />
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/fiatAmountContainerView"
+            style="@style/CoinDetails.Table.Row">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                style="@style/CoinDetails.Table.Key"
+                android:text="@string/transition_details_screen_fiat_amount" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/fiatAmountView"
+                style="@style/CoinDetails.Table.Value"
+                tools:text="100 usd" />
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/feeContainerView"
+            style="@style/CoinDetails.Table.Row">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                style="@style/CoinDetails.Table.Key"
+                android:text="@string/transition_details_screen_fee" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/feeView"
+                style="@style/CoinDetails.Table.Value"
+                tools:text="0.001 BTC" />
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/dateContainerView"
+            style="@style/CoinDetails.Table.Row">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                style="@style/CoinDetails.Table.Key"
+                android:text="@string/transition_details_screen_date" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/dateView"
+                style="@style/CoinDetails.Table.Value"
+                tools:text="2019.10.08 06:32:58 PM" />
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/fromAddressContainerView"
+            style="@style/CoinDetails.Table.Row">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                style="@style/CoinDetails.Table.Key"
+                android:text="@string/transition_details_screen_from_address" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/fromAddressView"
+                style="@style/CoinDetails.Table.Value"
+                android:layout_weight="2"
+                android:maxLines="3"
+                tools:text="123400438568459684598645946fdsfsdf" />
+
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/toAddressContainerView"
+            style="@style/CoinDetails.Table.Row">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                style="@style/CoinDetails.Table.Key"
+                android:text="@string/transition_details_screen_to_address" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/toAddressView"
+                style="@style/CoinDetails.Table.Value"
+                android:maxLines="3"
+                tools:text="1256400438568459684598645946fdsfsdf" />
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/phoneContainerView"
+            style="@style/CoinDetails.Table.Row"
+            android:visibility="gone"
+            tools:visibility="visible">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                style="@style/CoinDetails.Table.Key"
+                android:text="@string/transition_details_screen_phone" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/phoneView"
+                style="@style/CoinDetails.Table.Value"
+                tools:text="+1 (800) 123 456 789" />
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/imageContainerView"
+            style="@style/CoinDetails.Table.Row"
+            android:visibility="gone"
+            tools:visibility="visible">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                style="@style/CoinDetails.Table.Key"
+                android:text="@string/transition_details_screen_image" />
+
+            <FrameLayout style="@style/CoinDetails.Table.Value">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/imageView"
+                    android:layout_width="95dp"
+                    android:layout_height="95dp"
+                    app:tint="#b7b7b7"
+                    tools:src="@drawable/ic_gift" />
+            </FrameLayout>
+
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/messageContainerView"
+            style="@style/CoinDetails.Table.Row"
+            android:visibility="gone"
+            tools:visibility="visible">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                style="@style/CoinDetails.Table.Key"
+                android:text="@string/transition_details_screen_message" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/messageView"
+                style="@style/CoinDetails.Table.Value"
+                tools:text="Happy Birthday!" />
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/refTxIdContainerView"
+            style="@style/CoinDetails.Table.Row">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                style="@style/CoinDetails.Table.Key"
+                android:text="@string/transition_details_screen_ref_tax_id" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/refTxIdView"
+                style="@style/CoinDetails.Table.Value"
+                android:background="?android:selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true"
+                android:maxLines="5"
+                android:textColor="#0073e4"
+                tools:text="b28e2673ead88289a2e5a354bce0630483780098631e688cabe9ee06dd325074" />
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/refCoinContainerView"
+            style="@style/CoinDetails.Table.Row"
+            android:visibility="gone"
+            tools:visibility="visible">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                style="@style/CoinDetails.Table.Key"
+                android:text="@string/transition_details_screen_ref_coin" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/refCoinView"
+                style="@style/CoinDetails.Table.Value"
+                tools:text="1 BTC" />
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/refAmountContainerView"
+            style="@style/CoinDetails.Table.Row"
+            android:visibility="gone"
+            tools:visibility="visible">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                style="@style/CoinDetails.Table.Key"
+                android:text="@string/transition_details_screen_ref_amount" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/refAmountView"
+                style="@style/CoinDetails.Table.Value"
+                tools:text="Happy Birthday!" />
+        </TableRow>
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/qrCodeView"
+            style="@style/CoinDetails.Table.Row"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="8dp"
+            tools:src="@drawable/ic_gift" />
+    </TableLayout>
+
+</ScrollView>

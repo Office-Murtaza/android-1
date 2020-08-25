@@ -176,4 +176,9 @@ interface TransactionRepository {
         coinCode: String,
         cryptoAmount: Double
     ): Either<Failure, Unit>
+
+    suspend fun getTransactionDetails(
+        txId: String,
+        coinCode: String
+    ): Either<Failure, TransactionDetailsDataItem>
 }

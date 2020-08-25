@@ -175,4 +175,11 @@ interface TransactionApi {
         @Path("coinCode") coinCode: String,
         @Body body: StakeRequest
     ): Deferred<Response<ResponseBody>>
+
+    @GET("user/{userId}/coin/{coinCode}/transaction-details")
+    fun getTransactionDetailsAsync(
+        @Path("userId") userId: Int,
+        @Path("coinCode") coinCode: String,
+        @Query("txId") txId: String
+    ): Deferred<Response<TransactionDetailsResponse>>
 }

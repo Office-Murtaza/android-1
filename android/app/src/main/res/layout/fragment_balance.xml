@@ -3,46 +3,56 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/bg_color">
+    android:layout_height="match_parent">
 
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/appCompatImageView"
-        android:layout_width="match_parent"
-        android:layout_height="150dp"
-        android:scaleType="centerCrop"
+    <View
+        android:id="@+id/headerPlaceholderView"
+        android:layout_width="0dp"
+        android:layout_height="120dp"
+        android:background="@android:color/white"
+        android:elevation="1dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/bg_auth" />
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/logoView"
+        android:layout_width="160dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:elevation="2dp"
+        app:layout_constraintBottom_toBottomOf="@id/headerPlaceholderView"
+        app:layout_constraintStart_toStartOf="@id/headerPlaceholderView"
+        app:layout_constraintTop_toTopOf="@id/headerPlaceholderView"
+        app:srcCompat="@drawable/ic_logo_main" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/balanceTitleView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:elevation="2dp"
         android:text="@string/balance_screen_title_screen"
-        android:textColor="@android:color/white"
-        android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@id/balanceView"
-        app:layout_constraintEnd_toEndOf="@id/appCompatImageView"
-        app:layout_constraintStart_toStartOf="@id/appCompatImageView"
-        app:layout_constraintTop_toTopOf="@id/appCompatImageView"
+        app:layout_constraintEnd_toEndOf="@id/headerPlaceholderView"
+        app:layout_constraintTop_toTopOf="@id/headerPlaceholderView"
         app:layout_constraintVertical_chainStyle="packed" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/balanceView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="14sp"
+        android:layout_marginTop="4dp"
+        android:elevation="2dp"
         android:text="@string/balance_screen_empty_balance"
-        android:textColor="@android:color/white"
-        android:textSize="20sp"
+        android:textColor="@color/colorPrimary"
+        android:textSize="22sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@id/appCompatImageView"
-        app:layout_constraintEnd_toEndOf="@id/appCompatImageView"
-        app:layout_constraintStart_toStartOf="@id/appCompatImageView"
-        app:layout_constraintTop_toBottomOf="@id/balanceTitleView" />
+        app:layout_constraintBottom_toBottomOf="@id/headerPlaceholderView"
+        app:layout_constraintEnd_toEndOf="@id/balanceTitleView"
+        app:layout_constraintTop_toBottomOf="@id/balanceTitleView"
+        tools:text="15 232 $" />
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/swipeToRefreshView"
@@ -51,46 +61,16 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/appCompatImageView">
+        app:layout_constraintTop_toBottomOf="@id/headerPlaceholderView">
 
-        <androidx.core.widget.NestedScrollView
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/listView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/listView"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:clipToPadding="false"
-                android:overScrollMode="never"
-                android:paddingTop="8dp"
-                android:paddingBottom="8dp"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                tools:listitem="@layout/item_balance_coin" />
-
-        </androidx.core.widget.NestedScrollView>
+            android:layout_height="match_parent"
+            android:overScrollMode="never"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:listitem="@layout/item_balance_coin" />
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
-    <FrameLayout
-        android:id="@+id/progressView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/gray_progress"
-        android:clickable="true"
-        android:elevation="15dp"
-        android:focusable="true"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <ProgressBar
-            style="?android:attr/progressBarStyleLarge"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginBottom="8dp" />
-    </FrameLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

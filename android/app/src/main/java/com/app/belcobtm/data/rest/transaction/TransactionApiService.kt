@@ -375,6 +375,17 @@ class TransactionApiService(
         Either.Left(failure)
     }
 
+    suspend fun getTransactionDetails(
+        txId: String,
+        coinCode: String
+    ): Either<Failure, TransactionDetailsDataItem> = try {
+        val request = api.getTransactionDetailsAsync(prefHelper.userId, coinCode, txId).await()
+        request.body()?.let { Either.Right(it.mapToDataItem()) } ?: Either.Left(Failure.ServerError())
+    } catch (failure: Failure) {
+        failure.printStackTrace()
+        Either.Left(failure)
+    }
+
     companion object {
         const val TRANSACTION_WITHDRAW = 2
         const val TRANSACTION_SEND_GIFT = 3

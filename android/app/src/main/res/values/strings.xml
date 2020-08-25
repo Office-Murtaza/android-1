@@ -57,9 +57,9 @@
     <string name="welcome_screen_support_email">support@belcobtm.com</string>
 
     <!-- Balance -->
-    <string name="balance_screen_empty_balance">$ . . .</string>
+    <string name="balance_screen_empty_balance">$…</string>
     <string name="balance_screen_unit_usd">USD %1$s</string>
-    <string name="balance_screen_add_wallet">+ Add wallet</string>
+    <string name="balance_screen_manage_wallets">Manage wallets</string>
 
     <!-- Recover Wallet -->
     <string name="recover_wallet_screen_title">Recover old wallet</string>
@@ -108,14 +108,14 @@
     <!--    <string name="create_seed_screen_"></string>-->
 
     <!--balance-->
-    <string name="balance_screen_title_screen">Total Balance</string>
+    <string name="balance_screen_title_screen">Total</string>
     <string name="balance_screen_balance">$ %1$s</string>
     <string name="atm">ATM</string>
     <string name="settings">Settings</string>
     <string name="wallet">Wallet</string>
 
-    <!--visibility coins-->
-    <string name="add_wallets">Add Wallets</string>
+    <!-- Manage Wallets Screen-->
+    <string name="manage_wallets_screen_title">Manage wallets</string>
 
     <!--atm-->
     <string name="open_now">Open Now:</string>
@@ -212,6 +212,10 @@
     <string name="transaction_type_stake">Stake</string>
     <string name="transaction_type_unstake">Unstake</string>
 
+    <!-- Transaction Details -->
+    <string name="transaction_details">Transaction Details %1$s</string>
+
+
     <!--transaction type-->
     <string name="withdraw">Withdraw</string>
     <string name="send_gift">Send Gift</string>
@@ -233,8 +237,7 @@
     <string name="not_enough_balance">Not enough balance</string>
 
     <!-- Transition details screen -->
-    <string name="transition_details_screen_tx_id">TxId</string>
-    <string name="transition_details_screen_tx_dbld">TxDbld</string>
+    <string name="transition_details_screen_id">ID</string>
     <string name="transition_details_screen_type">Type</string>
     <string name="transition_details_screen_status">Status</string>
     <string name="transition_details_screen_cash_status">Cash Status</string>
@@ -363,6 +366,7 @@
 
     <string name="unit_dynamic">%1$s %2$s</string>
     <string name="unit_usd_dynamic">%1$s USD</string>
+    <string name="unit_usd_dynamic_symbol">%1$s $</string>
     <string name="usd_amount">USD Amount</string>
     <string name="crypto_amount">%1$s Amount</string>
     <string name="button_next">Next</string>

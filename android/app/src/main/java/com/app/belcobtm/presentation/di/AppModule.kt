@@ -30,6 +30,7 @@ import com.app.belcobtm.presentation.features.wallet.trade.edit.TradeEditViewMod
 import com.app.belcobtm.presentation.features.wallet.trade.main.TradeViewModel
 import com.app.belcobtm.presentation.features.wallet.trade.recall.TradeRecallViewModel
 import com.app.belcobtm.presentation.features.wallet.trade.reserve.TradeReserveViewModel
+import com.app.belcobtm.presentation.features.wallet.transaction.details.TransactionDetailsViewModel
 import com.app.belcobtm.presentation.features.wallet.transactions.TransactionsViewModel
 import org.koin.android.viewmodel.dsl.viewModel
 import org.koin.dsl.module
@@ -100,4 +101,5 @@ val viewModelModule = module {
     viewModel { UpdatePasswordViewModel(get()) }
     viewModel { PhoneDisplayViewModel(get(), get()) }
     viewModel { PhoneChangeViewModel(get(), get(), get()) }
+    viewModel { (txId: String, coinCode: String) -> TransactionDetailsViewModel(txId, coinCode, get()) }
 }

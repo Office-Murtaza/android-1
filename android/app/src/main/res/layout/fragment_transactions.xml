@@ -5,38 +5,35 @@
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/bg_color"
     tools:context=".ui.main.settings.phone.ShowPhoneActivity">
 
     <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbarView"
+        android:id="@+id/customToolbarView"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="@drawable/bg_toolbar"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-        app:elevation="6dp"
+        android:layout_height="wrap_content"
+        android:background="@android:color/white"
+        android:minHeight="?attr/actionBarSize"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:navigationIcon="@drawable/gph_ic_back"
+        app:titleTextColor="@color/colorText"
         tools:title="Bitcoin" />
 
     <View
         android:id="@+id/chartPlaceHolderView"
         android:layout_width="0dp"
-        android:layout_height="320dp"
-        android:background="@android:color/white"
+        android:layout_height="300dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/toolbarView" />
+        app:layout_constraintTop_toBottomOf="@id/customToolbarView" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/priceUsdView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:textColor="@color/gray_text_color"
-        android:textSize="18sp"
+        android:layout_marginTop="8dp"
+        android:textColor="@color/colorPrimary"
+        android:textSize="22sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@id/changesView"
         app:layout_constraintEnd_toEndOf="@id/chartPlaceHolderView"
@@ -52,7 +49,6 @@
         android:drawableStart="@drawable/ic_arrow_drop_down"
         android:drawableTint="#e02d2d"
         android:textColor="#e02d2d"
-        android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@id/chartView"
         app:layout_constraintEnd_toEndOf="@id/chartPlaceHolderView"
         app:layout_constraintStart_toStartOf="@id/chartPlaceHolderView"
@@ -82,28 +78,28 @@
 
         <com.google.android.material.chip.Chip
             android:id="@+id/oneDayChipView"
-            style="@style/TransactionsScreen.Chip"
+            style="@style/Button.Chip"
             android:text="@string/transition_details_screen_one_day"
             tools:checked="true" />
 
         <com.google.android.material.chip.Chip
             android:id="@+id/oneWeekChipView"
-            style="@style/TransactionsScreen.Chip"
+            style="@style/Button.Chip"
             android:text="@string/transition_details_screen_one_week" />
 
         <com.google.android.material.chip.Chip
             android:id="@+id/oneMonthChipView"
-            style="@style/TransactionsScreen.Chip"
+            style="@style/Button.Chip"
             android:text="@string/transition_details_screen_one_month" />
 
         <com.google.android.material.chip.Chip
             android:id="@+id/threeMonthChipView"
-            style="@style/TransactionsScreen.Chip"
+            style="@style/Button.Chip"
             android:text="@string/transition_details_screen_three_month" />
 
         <com.google.android.material.chip.Chip
             android:id="@+id/oneYearChipView"
-            style="@style/TransactionsScreen.Chip"
+            style="@style/Button.Chip"
             android:text="@string/transition_details_screen_one_year" />
 
     </com.google.android.material.chip.ChipGroup>
@@ -115,7 +111,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="16dp"
         android:text="@string/balance"
-        android:textColor="#58585a"
+        android:textColor="#8d8d8d"
         android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@id/chartPlaceHolderView"
@@ -128,7 +124,6 @@
         android:id="@+id/balanceCryptoView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="#8d8d8d"
         android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@id/balanceTitleView"
@@ -162,6 +157,14 @@
         app:layout_constraintStart_toEndOf="@id/exchangeView"
         app:layout_constraintTop_toTopOf="@id/balanceTitleView"
         tools:text="8.90 USD" />
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:background="@drawable/bg_divider"
+        app:layout_constraintEnd_toEndOf="@id/swipeToRefreshView"
+        app:layout_constraintStart_toStartOf="@id/swipeToRefreshView"
+        app:layout_constraintTop_toTopOf="@id/swipeToRefreshView" />
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/swipeToRefreshView"
@@ -240,26 +243,4 @@
             android:src="@drawable/ic_file_download"
             app:fab_label="@string/deposit" />
     </com.github.clans.fab.FloatingActionMenu>
-
-    <FrameLayout
-        android:id="@+id/progressView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/gray_progress"
-        android:clickable="true"
-        android:elevation="15dp"
-        android:focusable="true"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/toolbarView">
-
-        <ProgressBar
-            style="?android:attr/progressBarStyleLarge"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginBottom="8dp" />
-    </FrameLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

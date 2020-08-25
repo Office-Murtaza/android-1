@@ -9,5 +9,76 @@
         android:id="@+id/wallet_fragment"
         android:name="com.app.belcobtm.presentation.features.wallet.balance.WalletFragment"
         android:label="WalletFragment"
-        tools:layout="@layout/fragment_balance" />
+        tools:layout="@layout/fragment_balance">
+        <action
+            android:id="@+id/to_manage_wallets_fragment"
+            app:destination="@id/manage_wallets_fragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+        <action
+            android:id="@+id/to_transactions_fragment"
+            app:destination="@id/transactions_fragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/manage_wallets_fragment"
+        android:name="com.app.belcobtm.presentation.features.wallet.add.ManageWalletsFragment"
+        android:label="AddWalletFragment"
+        tools:layout="@layout/fragment_manage_wallets" />
+
+    <fragment
+        android:id="@+id/transactions_fragment"
+        android:name="com.app.belcobtm.presentation.features.wallet.transactions.TransactionsFragment"
+        android:label="TransactionsFragment"
+        tools:layout="@layout/fragment_transactions">
+        <argument
+            android:name="coin_code"
+            app:argType="string" />
+        <action
+            android:id="@+id/to_deposit_fragment"
+            app:destination="@id/deposit_fragment"
+            app:enterAnim="@anim/slide_from_right"
+            app:exitAnim="@anim/slide_to_left"
+            app:popEnterAnim="@anim/slide_from_left"
+            app:popExitAnim="@anim/slide_to_right" />
+        <action
+            android:id="@+id/to_transaction_details_fragment"
+            app:destination="@id/transaction_details_fragment"
+            app:enterAnim="@anim/slide_from_right"
+            app:exitAnim="@anim/slide_to_left"
+            app:popEnterAnim="@anim/slide_from_left"
+            app:popExitAnim="@anim/slide_to_right" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/deposit_fragment"
+        android:name="com.app.belcobtm.presentation.features.wallet.deposit.DepositFragment"
+        android:label="DepositFragment"
+        tools:layout="@layout/activity_deposit">
+        <argument
+            android:name="coin_code"
+            app:argType="string" />
+        <argument
+            android:name="coin_address"
+            app:argType="string" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/transaction_details_fragment"
+        android:name="com.app.belcobtm.presentation.features.wallet.transaction.details.TransactionDetailsFragment"
+        android:label="DetailsTransactionFragment"
+        tools:layout="@layout/fragment_transaction_details">
+        <argument
+            android:name="coin_code"
+            app:argType="string" />
+        <argument
+            android:name="tx_id"
+            app:argType="string" />
+    </fragment>
 </navigation>

@@ -1,7 +1,5 @@
 package com.app.belcobtm.di.module
 
-import com.app.belcobtm.ui.main.coins.details.DetailsContract
-import com.app.belcobtm.ui.main.coins.details.DetailsPresenter
 import com.app.belcobtm.ui.main.coins.sell.SellContract
 import com.app.belcobtm.ui.main.coins.sell.SellPresenter
 import com.app.belcobtm.ui.main.coins.send_gift.SendGiftContract
@@ -22,7 +20,4 @@ class ActivityModule {
 
     @Provides
     fun provideSellPresenter(): SellContract.Presenter = SellPresenter()
-
-    @Provides
-    fun provideDetailsPresenter(): DetailsContract.Presenter = DetailsPresenter()
 }
