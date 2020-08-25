@@ -722,8 +722,7 @@ extension L.VIPVerification {
 extension L.VIPVerification.Form {
 
   struct Error {
-    static let idSelfieRequired = "v_i_p_verification.form.error.id_selfie_required"
-    static let ssnWrongLength = "v_i_p_verification.form.error.ssn_wrong_length"
+    static let notValidSSN = "v_i_p_verification.form.error.not_valid_s_s_n"
   }
 
   struct SSN {

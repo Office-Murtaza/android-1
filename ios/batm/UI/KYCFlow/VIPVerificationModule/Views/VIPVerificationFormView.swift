@@ -1,29 +1,17 @@
 import UIKit
 import RxSwift
 import RxCocoa
+import MaterialComponents
 
 class VIPVerificationFormView: UIView {
   
-  let stackView: UIStackView = {
-    let stackView = UIStackView()
-    stackView.axis = .vertical
-    stackView.spacing = 15
-    return stackView
-  }()
+  let ssnTextField = MDCTextField.zipCode
   
-  let ssnTextField: MainTextField = {
-    let textField = MainTextField()
-    textField.configure(for: .ssn)
-    return textField
-  }()
-  
-  let sendButton: MainButton = {
-    let button = MainButton()
-    button.configure(for: .send)
-    return button
-  }()
+  let ssnTextFieldController: ThemedTextInputControllerOutlined
   
   override init(frame: CGRect) {
+    ssnTextFieldController = ThemedTextInputControllerOutlined(textInput: ssnTextField)
+    
     super.init(frame: frame)
     
     setupUI()
@@ -37,14 +25,25 @@ class VIPVerificationFormView: UIView {
   private func setupUI() {
     translatesAutoresizingMaskIntoConstraints = false
     
-    addSubview(stackView)
-    stackView.addArrangedSubviews(ssnTextField,
-                                  sendButton)
+    addSubview(ssnTextField)
+    
+    ssnTextFieldController.placeholderText = localize(L.VIPVerification.Form.SSN.placeholder)
   }
   
   private func setupLayout() {
-    stackView.snp.makeConstraints {
+    ssnTextField.snp.makeConstraints {
       $0.edges.equalToSuperview()
+    }
+  }
+}
+
+extension Reactive where Base == VIPVerificationFormView {
+  var ssnText: ControlProperty<String?> {
+    return base.ssnTextField.rx.text
+  }
+  var ssnErrorText: Binder<String?> {
+    return Binder(base) { target, value in
+      target.ssnTextFieldController.setErrorText(value, errorAccessibilityValue: value)
     }
   }
 }

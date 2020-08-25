@@ -163,11 +163,10 @@
 "verification.picker.camera_option.title" = "Take Photo";
 "verification.picker.library_option.title" = "Photo Library";
 
-"v_i_p_verification.title" = "VIP Verification";
-"v_i_p_verification.id_selfie" = "ID Selfie";
-"v_i_p_verification.form.s_s_n.placeholder" = "SSN *";
-"v_i_p_verification.form.error.id_selfie_required" = "ID Selfie is required";
-"v_i_p_verification.form.error.ssn_wrong_length" = "SSN should contain 9 digits";
+"v_i_p_verification.title" = "VIP verify";
+"v_i_p_verification.id_selfie" = "ID selfie";
+"v_i_p_verification.form.s_s_n.placeholder" = "SSN";
+"v_i_p_verification.form.error.not_valid_s_s_n" = "SSN should be 9 digits";
 
 "coin_details.price" = "Price";
 "coin_details.balance" = "Balance";

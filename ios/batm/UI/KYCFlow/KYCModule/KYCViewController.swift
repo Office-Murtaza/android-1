@@ -58,10 +58,8 @@ final class KYCViewController: ModuleViewController<KYCPresenter> {
   
   private func update(with kyc: KYC) {
     headerView.configure(for: kyc)
-    kyc.message.flatMap {
-      infoView.setup(with: $0)
-      infoView.isHidden = false
-    }
+    infoView.isHidden = kyc.message == nil
+    infoView.setup(with: kyc.message ?? "")
     verifyButton.isHidden = !kyc.status.needAnyVerification
     
     if kyc.status.needVerification {

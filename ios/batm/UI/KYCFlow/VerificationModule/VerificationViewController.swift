@@ -25,7 +25,7 @@ final class VerificationViewController: ModuleViewController<VerificationPresent
   override var shouldShowNavigationBar: Bool { return true }
   
   override func setupUI() {
-    title = localize(L.Recover.title)
+    title = localize(L.Verification.title)
     
     view.addSubviews(rootScrollView)
     

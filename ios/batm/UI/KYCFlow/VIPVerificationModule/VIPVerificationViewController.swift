@@ -2,54 +2,67 @@ import UIKit
 import RxCocoa
 import RxSwift
 import SnapKit
+import MaterialComponents
 
-final class VIPVerificationViewController: NavigationScreenViewController<VIPVerificationPresenter> {
+final class VIPVerificationViewController: ModuleViewController<VIPVerificationPresenter> {
   
-  let errorView = ErrorView()
+  let rootScrollView = RootScrollView()
   
   let scanLabel: UILabel = {
     let label = UILabel()
     label.text = localize(L.VIPVerification.idSelfie)
-    label.textColor = .slateGrey
-    label.font = .poppinsSemibold16
+    label.textColor = .warmGrey
+    label.font = .systemFont(ofSize: 16, weight: .medium)
     return label
   }()
   
-  let pickerView = VerificationFilePickerView()
+  let filePickerView = VerificationFilePickerView()
   
   let formView = VIPVerificationFormView()
   
-  override var preferredStatusBarStyle: UIStatusBarStyle {
-    return .lightContent
-  }
+  let sendButton = MDCButton.send
+  
+  override var shouldShowNavigationBar: Bool { return true }
   
   override func setupUI() {
-    customView.setTitle(localize(L.VIPVerification.title))
-    customView.contentView.addSubviews(errorView,
-                                       scanLabel,
-                                       pickerView,
-                                       formView)
+    title = localize(L.VIPVerification.title)
+    
+    view.addSubviews(rootScrollView)
+    
+    rootScrollView.contentInsetAdjustmentBehavior = .never
+    rootScrollView.contentView.addSubviews(scanLabel,
+                                           filePickerView,
+                                           formView,
+                                           sendButton)
+    
+    setupDefaultKeyboardHandling()
   }
   
   override func setupLayout() {
-    errorView.snp.makeConstraints {
-      $0.top.equalToSuperview().offset(10)
-      $0.centerX.equalToSuperview()
+    rootScrollView.snp.makeConstraints {
+      $0.top.equalTo(view.safeAreaLayoutGuide)
+      $0.left.right.bottom.equalToSuperview()
+    }
+    rootScrollView.contentView.snp.makeConstraints {
+      $0.height.greaterThanOrEqualToSuperview()
     }
     scanLabel.snp.makeConstraints {
-      $0.top.equalToSuperview().offset(35)
+      $0.top.equalToSuperview().offset(30)
       $0.centerX.equalToSuperview()
     }
-    pickerView.snp.makeConstraints {
+    filePickerView.snp.makeConstraints {
       $0.top.equalTo(scanLabel.snp.bottom).offset(15)
-      $0.left.greaterThanOrEqualToSuperview().offset(30)
-      $0.right.lessThanOrEqualToSuperview().offset(-30)
-      $0.centerX.equalToSuperview()
+      $0.left.right.equalToSuperview().inset(15)
     }
     formView.snp.makeConstraints {
-      $0.top.equalTo(pickerView.snp.bottom).offset(35)
-      $0.left.right.equalToSuperview().inset(30)
-      $0.bottom.equalToSuperview().offset(-35)
+      $0.top.equalTo(filePickerView.snp.bottom).offset(15)
+      $0.left.right.equalToSuperview().inset(15)
+      $0.bottom.lessThanOrEqualTo(sendButton.snp.top).offset(-5)
+    }
+    sendButton.snp.makeConstraints {
+      $0.height.equalTo(50)
+      $0.left.right.equalToSuperview().inset(15)
+      $0.bottom.equalToSuperview().offset(-40)
     }
   }
   
@@ -57,32 +70,45 @@ final class VIPVerificationViewController: NavigationScreenViewController<VIPVer
     presenter.state
       .asObservable()
       .map { $0.selectedImage }
-      .bind(to: pickerView.rx.image)
+      .bind(to: filePickerView.rx.image)
       .disposed(by: disposeBag)
     
     presenter.state
-      .map { $0.validationState }
-      .mapToErrorMessage()
-      .drive(onNext: { [errorView] in
-        errorView.isHidden = $0 == nil
-        errorView.configure(for: $0)
-      })
+      .asObservable()
+      .map { $0.imageError }
+      .bind(to: filePickerView.rx.imageErrorText)
+      .disposed(by: disposeBag)
+    
+    presenter.state
+      .asObservable()
+      .map { $0.ssn }
+      .bind(to: formView.rx.ssnText)
+      .disposed(by: disposeBag)
+    
+    presenter.state
+      .asObservable()
+      .map { $0.ssnError }
+      .bind(to: formView.rx.ssnErrorText)
+      .disposed(by: disposeBag)
+    
+    Driver.merge(filePickerView.rx.select,
+                 filePickerView.rx.remove,
+                 sendButton.rx.tap.asDriver())
+      .drive(onNext: { [unowned self] in self.view.endEditing(true) })
       .disposed(by: disposeBag)
   }
   
   override func setupBindings() {
     setupUIBindings()
     
-    let backDriver = customView.backButton.rx.tap.asDriver()
-    let selectDriver = pickerView.rx.select
-    let removeDriver = pickerView.rx.remove
+    let selectDriver = filePickerView.rx.select
+    let removeDriver = filePickerView.rx.remove
     let updateSSNDriver = formView.ssnTextField.rx.text.asDriver()
-    let sendDriver = formView.sendButton.rx.tap.asDriver()
+    let sendDriver = sendButton.rx.tap.asDriver()
     
-    presenter.bind(input: VIPVerificationPresenter.Input(back: backDriver,
-                                                        select: selectDriver,
-                                                        remove: removeDriver,
-                                                        updateSSN: updateSSNDriver,
-                                                        send: sendDriver))
+    presenter.bind(input: VIPVerificationPresenter.Input(select: selectDriver,
+                                                         remove: removeDriver,
+                                                         updateSSN: updateSSNDriver,
+                                                         send: sendDriver))
   }
 }

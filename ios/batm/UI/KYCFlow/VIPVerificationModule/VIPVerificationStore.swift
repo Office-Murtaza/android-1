@@ -11,13 +11,16 @@ struct VIPVerificationUserData {
 enum VIPVerificationAction: Equatable {
   case updateSelectedImage(UIImage?)
   case updateSSN(String?)
+  case updateImageError(String?)
+  case updateSSNError(String?)
   case updateValidationState
-  case makeInvalidState(String)
 }
 
 struct VIPVerificationState: Equatable {
   var selectedImage: UIImage?
   var ssn: String = ""
+  var imageError: String?
+  var ssnError: String?
   var validationState: ValidationState = .unknown
   
   var selectedImageData: Data? {
@@ -35,28 +38,41 @@ final class VIPVerificationStore: ViewStore<VIPVerificationAction, VIPVerificati
     var state = state
     
     switch action {
-    case let .updateSelectedImage(image): state.selectedImage = image
-    case let .updateSSN(ssn): state.ssn = ssn ?? ""
-    case .updateValidationState: state.validationState = validate(state)
-    case let .makeInvalidState(error): state.validationState = .invalid(error)
+    case let .updateSelectedImage(image):
+      state.selectedImage = image
+      state.imageError = nil
+    case let .updateSSN(ssn):
+      state.ssn = ssn ?? ""
+      state.ssnError = nil
+    case let .updateImageError(imageError): state.imageError = imageError
+    case let .updateSSNError(ssnError): state.ssnError = ssnError
+    case .updateValidationState: validate(&state)
     }
     
     return state
   }
   
-  private func validate(_ state: VIPVerificationState) -> ValidationState {
-    guard state.ssn.isNotEmpty else {
-      return .invalid(localize(L.CreateWallet.Form.Error.allFieldsRequired))
+  private func validate(_ state: inout VIPVerificationState) {
+    state.validationState = .valid
+    
+    if state.selectedImage == nil {
+      let errorString = localize(L.Verification.Form.Error.idScanRequired)
+      state.validationState = .invalid(errorString)
+      state.imageError = errorString
+    } else if state.selectedImageData == nil {
+      let errorString = localize(L.Verification.Form.Error.imageBroken)
+      state.validationState = .invalid(errorString)
+      state.imageError = errorString
+    } else {
+      state.imageError = nil
     }
     
-    guard state.selectedImage != nil else {
-      return .invalid(localize(L.VIPVerification.Form.Error.idSelfieRequired))
+    if state.ssn.count != 9 || state.ssn.rangeOfCharacter(from: CharacterSet.decimalDigits.inverted) != nil {
+      let errorString = localize(L.VIPVerification.Form.Error.notValidSSN)
+      state.validationState = .invalid(errorString)
+      state.ssnError = errorString
+    } else {
+      state.ssnError = nil
     }
-    
-    guard state.selectedImageData != nil else {
-      return .invalid(localize(L.Verification.Form.Error.imageBroken))
-    }
-    
-    return .valid
   }
 }

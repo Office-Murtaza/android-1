@@ -7,7 +7,6 @@ final class VIPVerificationPresenter: ModulePresenter, VIPVerificationModule {
   typealias Store = ViewStore<VIPVerificationAction, VIPVerificationState>
   
   struct Input {
-    var back: Driver<Void>
     var select: Driver<Void>
     var remove: Driver<Void>
     var updateSSN: Driver<String?>
@@ -34,10 +33,6 @@ final class VIPVerificationPresenter: ModulePresenter, VIPVerificationModule {
   }
   
   func bind(input: Input) {
-    input.back
-      .drive(onNext: { [delegate] in delegate?.didFinishVIPVerification(with: nil) })
-      .disposed(by: disposeBag)
-    
     input.select
       .drive(onNext: { [unowned self] in self.delegate?.showPicker(from: self) })
       .disposed(by: disposeBag)
@@ -66,8 +61,8 @@ final class VIPVerificationPresenter: ModulePresenter, VIPVerificationModule {
     return usecase.sendVIPVerification(userData: userData)
       .andThen(usecase.getKYC())
       .catchError { [store] in
-        if let apiError = $0 as? APIError, case let .serverError(error) = apiError {
-          store.action.accept(.makeInvalidState(error.message))
+        if let apiError = $0 as? APIError, case let .serverError(error) = apiError, let code = error.code, code > 1 {
+          store.action.accept(.updateSSNError(error.message))
         }
         
         throw $0
