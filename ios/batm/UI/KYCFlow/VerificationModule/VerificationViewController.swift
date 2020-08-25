@@ -2,16 +2,17 @@ import UIKit
 import RxCocoa
 import RxSwift
 import SnapKit
+import MaterialComponents
 
-final class VerificationViewController: NavigationScreenViewController<VerificationPresenter> {
+final class VerificationViewController: ModuleViewController<VerificationPresenter> {
   
-  let errorView = ErrorView()
+  let rootScrollView = RootScrollView()
   
   let scanLabel: UILabel = {
     let label = UILabel()
     label.text = localize(L.Verification.idScan)
-    label.textColor = .slateGrey
-    label.font = .poppinsSemibold16
+    label.textColor = .warmGrey
+    label.font = .systemFont(ofSize: 16, weight: .medium)
     return label
   }()
   
@@ -19,38 +20,49 @@ final class VerificationViewController: NavigationScreenViewController<Verificat
   
   let formView = VerificationFormView()
   
-  override var preferredStatusBarStyle: UIStatusBarStyle {
-    return .lightContent
-  }
+  let sendButton = MDCButton.send
+  
+  override var shouldShowNavigationBar: Bool { return true }
   
   override func setupUI() {
-    customView.rootScrollView.canCancelContentTouches = false
-    customView.setTitle(localize(L.Verification.title))
-    customView.contentView.addSubviews(errorView,
-                                       scanLabel,
-                                       filePickerView,
-                                       formView)
+    title = localize(L.Recover.title)
+    
+    view.addSubviews(rootScrollView)
+    
+    rootScrollView.contentInsetAdjustmentBehavior = .never
+    rootScrollView.contentView.addSubviews(scanLabel,
+                                           filePickerView,
+                                           formView,
+                                           sendButton)
+    
+    setupDefaultKeyboardHandling()
   }
   
   override func setupLayout() {
-    errorView.snp.makeConstraints {
-      $0.top.equalToSuperview().offset(10)
-      $0.centerX.equalToSuperview()
+    rootScrollView.snp.makeConstraints {
+      $0.top.equalTo(view.safeAreaLayoutGuide)
+      $0.left.right.bottom.equalToSuperview()
+    }
+    rootScrollView.contentView.snp.makeConstraints {
+      $0.height.greaterThanOrEqualToSuperview()
     }
     scanLabel.snp.makeConstraints {
-      $0.top.equalToSuperview().offset(35)
+      $0.top.equalToSuperview().offset(30)
       $0.centerX.equalToSuperview()
     }
     filePickerView.snp.makeConstraints {
       $0.top.equalTo(scanLabel.snp.bottom).offset(15)
-      $0.left.greaterThanOrEqualToSuperview().offset(30)
-      $0.right.lessThanOrEqualToSuperview().offset(-30)
-      $0.centerX.equalToSuperview()
+      $0.left.right.equalToSuperview().inset(15)
     }
     formView.snp.makeConstraints {
-      $0.top.equalTo(filePickerView.snp.bottom).offset(35)
-      $0.left.right.equalToSuperview().inset(30)
-      $0.bottom.equalToSuperview().offset(-35)
+      $0.top.equalTo(filePickerView.snp.bottom).offset(15)
+      $0.left.right.equalToSuperview().inset(15)
+      $0.bottom.lessThanOrEqualTo(sendButton.snp.top).offset(-5)
+    }
+    sendButton.snp.makeConstraints {
+      $0.height.equalTo(50)
+      $0.left.right.equalToSuperview().inset(15)
+      $0.bottom.equalToSuperview().offset(-40)
     }
   }
   
@@ -63,20 +75,56 @@ final class VerificationViewController: NavigationScreenViewController<Verificat
     
     presenter.state
       .asObservable()
+      .map { $0.imageError }
+      .bind(to: filePickerView.rx.imageErrorText)
+      .disposed(by: disposeBag)
+    
+    presenter.state
+      .asObservable()
+      .map { $0.idNumber }
+      .bind(to: formView.rx.idNumberText)
+      .disposed(by: disposeBag)
+    
+    presenter.state
+      .asObservable()
+      .map { $0.firstName }
+      .bind(to: formView.rx.firstNameText)
+      .disposed(by: disposeBag)
+    
+    presenter.state
+      .asObservable()
+      .map { $0.lastName }
+      .bind(to: formView.rx.lastNameText)
+      .disposed(by: disposeBag)
+    
+    presenter.state
+      .asObservable()
+      .map { $0.address }
+      .bind(to: formView.rx.addressText)
+      .disposed(by: disposeBag)
+    
+    presenter.state
+      .asObservable()
+      .map { $0.idNumber }
+      .bind(to: formView.rx.idNumberText)
+      .disposed(by: disposeBag)
+    
+    presenter.state
+      .asObservable()
       .map { $0.country }
-      .bind(to: formView.countryTextField.rx.text)
+      .bind(to: formView.rx.countryText)
       .disposed(by: disposeBag)
     
     presenter.state
       .asObservable()
       .map { $0.province }
-      .bind(to: formView.provinceTextField.rx.text)
+      .bind(to: formView.rx.provinceText)
       .disposed(by: disposeBag)
     
     presenter.state
       .asObservable()
       .map { $0.city }
-      .bind(to: formView.cityTextField.rx.text)
+      .bind(to: formView.rx.cityText)
       .disposed(by: disposeBag)
     
     presenter.state
@@ -101,17 +149,56 @@ final class VerificationViewController: NavigationScreenViewController<Verificat
       .disposed(by: disposeBag)
     
     presenter.state
-      .map { $0.validationState }
-      .mapToErrorMessage()
-      .drive(onNext: { [errorView] in
-        errorView.isHidden = $0 == nil
-        errorView.configure(for: $0)
-      })
+      .asObservable()
+      .map { $0.idNumberError }
+      .bind(to: formView.rx.idNumberErrorText)
+      .disposed(by: disposeBag)
+    
+    presenter.state
+      .asObservable()
+      .map { $0.firstNameError }
+      .bind(to: formView.rx.firstNameErrorText)
+      .disposed(by: disposeBag)
+    
+    presenter.state
+      .asObservable()
+      .map { $0.lastNameError }
+      .bind(to: formView.rx.lastNameErrorText)
+      .disposed(by: disposeBag)
+    
+    presenter.state
+      .asObservable()
+      .map { $0.addressError }
+      .bind(to: formView.rx.addressErrorText)
+      .disposed(by: disposeBag)
+    
+    presenter.state
+      .asObservable()
+      .map { $0.countryError }
+      .bind(to: formView.rx.countryErrorText)
+      .disposed(by: disposeBag)
+    
+    presenter.state
+      .asObservable()
+      .map { $0.provinceError }
+      .bind(to: formView.rx.provinceErrorText)
+      .disposed(by: disposeBag)
+    
+    presenter.state
+      .asObservable()
+      .map { $0.cityError }
+      .bind(to: formView.rx.cityErrorText)
+      .disposed(by: disposeBag)
+    
+    presenter.state
+      .asObservable()
+      .map { $0.zipCodeError }
+      .bind(to: formView.rx.zipCodeErrorText)
       .disposed(by: disposeBag)
     
     Driver.merge(filePickerView.rx.select,
                  filePickerView.rx.remove,
-                 formView.sendButton.rx.tap.asDriver())
+                 sendButton.rx.tap.asDriver())
       .drive(onNext: { [unowned self] in self.view.endEditing(true) })
       .disposed(by: disposeBag)
   }
@@ -119,21 +206,19 @@ final class VerificationViewController: NavigationScreenViewController<Verificat
   override func setupBindings() {
     setupUIBindings()
     
-    let backDriver = customView.backButton.rx.tap.asDriver()
     let selectDriver = filePickerView.rx.select
     let removeDriver = filePickerView.rx.remove
-    let updateIDNumberDriver = formView.idNumberTextField.rx.text.asDriver()
-    let updateFirstNameDriver = formView.firstNameTextField.rx.text.asDriver()
-    let updateLastNameDriver = formView.lastNameTextField.rx.text.asDriver()
-    let updateAddressDriver = formView.addressTextField.rx.text.asDriver()
-    let updateZipCodeDriver = formView.zipCodeTextField.rx.text.asDriver()
+    let updateIDNumberDriver = formView.rx.idNumberText.asDriver()
+    let updateFirstNameDriver = formView.rx.firstNameText.asDriver()
+    let updateLastNameDriver = formView.rx.lastNameText.asDriver()
+    let updateAddressDriver = formView.rx.addressText.asDriver()
+    let updateZipCodeDriver = formView.rx.zipCodeText.asDriver()
     let selectCountryDriver = formView.rx.selectCountry
     let selectProvinceDriver = formView.rx.selectProvince
     let selectCityDriver = formView.rx.selectCity
-    let sendDriver = formView.sendButton.rx.tap.asDriver()
+    let sendDriver = sendButton.rx.tap.asDriver()
     
-    presenter.bind(input: VerificationPresenter.Input(back: backDriver,
-                                                      select: selectDriver,
+    presenter.bind(input: VerificationPresenter.Input(select: selectDriver,
                                                       remove: removeDriver,
                                                       updateIDNumber: updateIDNumberDriver,
                                                       updateFirstName: updateFirstNameDriver,

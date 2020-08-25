@@ -9,8 +9,8 @@ extension FlowController {
   }
   
   func complete(action: () -> Void) {
-    action()
     step.accept(completedStep)
+    action()
   }
 }
 

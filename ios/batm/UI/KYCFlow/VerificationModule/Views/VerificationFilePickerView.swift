@@ -1,48 +1,33 @@
 import UIKit
 import RxSwift
 import RxCocoa
+import MaterialComponents
 
 final class VerificationFilePickerView: UIView, HasDisposeBag {
   
   struct Metrics {
-    static let height: CGFloat = 160
+    static let height: CGFloat = 190
   }
   
   let container: UIView = {
     let view = UIView()
+    view.backgroundColor = .duckEggBlue
     view.layer.masksToBounds = true
-    view.layer.cornerRadius = 16
+    view.layer.cornerRadius = 4
     return view
   }()
   
   let selectedImageView = UIImageView(image: nil)
   
-  let scanPlaceholderView: UIView = {
-    let view = UIView()
-    view.backgroundColor = .whiteTwo
-    return view
-  }()
+  let removeButton = MDCButton.close
+  let selectButton = MDCButton.plus
   
-  let scanPlaceholderImageView = UIImageView(image: UIImage(named: "grey_plus"))
-  
-  let selectStackView: UIStackView = {
-    let stackView = UIStackView()
-    stackView.axis = .horizontal
-    stackView.alignment = .fill
-    stackView.spacing = 50
-    return stackView
-  }()
-  
-  let selectLabel: UnderlinedLabelView = {
-    let label = UnderlinedLabelView()
-    label.configure(for: .select)
-    return label
-  }()
-  
-  let removeLabel: UnderlinedLabelView = {
-    let label = UnderlinedLabelView()
-    label.configure(for: .remove)
-    label.isHidden = true
+  let errorLabel: UILabel = {
+    let label = UILabel()
+    label.textColor = .tomato
+    label.textAlignment = .center
+    label.font = .systemFont(ofSize: 16)
+    label.numberOfLines = 0
     return label
   }()
   
@@ -61,23 +46,22 @@ final class VerificationFilePickerView: UIView, HasDisposeBag {
     translatesAutoresizingMaskIntoConstraints = false
     
     addSubviews(container,
-                selectStackView)
-    scanPlaceholderView.addSubview(scanPlaceholderImageView)
-    selectStackView.addArrangedSubviews(selectLabel,
-                                        removeLabel)
+                errorLabel)
+    container.addSubviews(removeButton,
+                          selectButton)
   }
   
-  private func setupLayout() {
-    container.snp.makeConstraints {
-      $0.top.left.right.equalToSuperview()
-      $0.height.equalTo(160)
+  private func setupLayout() {    
+    [removeButton, selectButton].forEach {
+      $0.snp.makeConstraints {
+        $0.size.equalTo(35)
+        $0.bottom.right.equalToSuperview().inset(10)
+      }
     }
-    scanPlaceholderImageView.snp.makeConstraints {
-      $0.center.equalToSuperview()
-    }
-    selectStackView.snp.makeConstraints {
+    
+    errorLabel.snp.makeConstraints {
       $0.top.equalTo(container.snp.bottom).offset(15)
-      $0.bottom.centerX.equalToSuperview()
+      $0.left.right.bottom.equalToSuperview()
     }
     
     removeImage()
@@ -85,41 +69,47 @@ final class VerificationFilePickerView: UIView, HasDisposeBag {
   
   func showImage(_ image: UIImage) {
     selectedImageView.image = image
-    removeLabel.isHidden = false
     
     if selectedImageView.superview == nil {
-      container.subviews.forEach { $0.removeFromSuperview() }
-      container.addSubview(selectedImageView)
+      container.insertSubview(selectedImageView, at: 0)
     }
     
     selectedImageView.snp.remakeConstraints {
       $0.edges.equalToSuperview()
       $0.keepRatio(for: selectedImageView)
     }
+    
+    container.snp.remakeConstraints {
+      $0.top.centerX.equalToSuperview()
+      $0.left.greaterThanOrEqualToSuperview()
+      $0.right.lessThanOrEqualToSuperview()
+      $0.height.equalTo(Metrics.height)
+    }
+    
+    removeButton.isHidden = false
+    selectButton.isHidden = true
   }
   
   func removeImage() {
     selectedImageView.image = nil
-    removeLabel.isHidden = true
+    selectedImageView.removeFromSuperview()
     
-    if scanPlaceholderView.superview == nil {
-      container.subviews.forEach { $0.removeFromSuperview() }
-      container.addSubview(scanPlaceholderView)
+    container.snp.remakeConstraints {
+      $0.top.centerX.equalToSuperview()
+      $0.size.equalTo(Metrics.height)
     }
     
-    scanPlaceholderView.snp.remakeConstraints {
-      $0.edges.equalToSuperview()
-      $0.width.equalTo(scanPlaceholderView.snp.height)
-    }
+    removeButton.isHidden = true
+    selectButton.isHidden = false
   }
 }
 
 extension Reactive where Base == VerificationFilePickerView {
   var select: Driver<Void> {
-    return base.selectLabel.rx.tap
+    return base.selectButton.rx.tap.asDriver()
   }
   var remove: Driver<Void> {
-    return base.removeLabel.rx.tap
+    return base.removeButton.rx.tap.asDriver()
   }
   var image: Binder<UIImage?> {
     return Binder(base) { target, value in
@@ -128,6 +118,11 @@ extension Reactive where Base == VerificationFilePickerView {
       } else {
         target.removeImage()
       }
+    }
+  }
+  var imageErrorText: Binder<String?> {
+    return Binder(base) { target, value in
+      target.errorLabel.text = value
     }
   }
 }

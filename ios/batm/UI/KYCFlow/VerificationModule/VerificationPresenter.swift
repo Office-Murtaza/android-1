@@ -7,7 +7,6 @@ final class VerificationPresenter: ModulePresenter, VerificationModule {
   typealias Store = ViewStore<VerificationAction, VerificationState>
   
   struct Input {
-    var back: Driver<Void>
     var select: Driver<Void>
     var remove: Driver<Void>
     var updateIDNumber: Driver<String?>
@@ -41,10 +40,6 @@ final class VerificationPresenter: ModulePresenter, VerificationModule {
   }
   
   func bind(input: Input) {
-    input.back
-      .drive(onNext: { [delegate] in delegate?.didFinishVerification(with: nil) })
-      .disposed(by: disposeBag)
-    
     input.select
       .drive(onNext: { [unowned self] in self.delegate?.showPicker(from: self) })
       .disposed(by: disposeBag)
@@ -109,8 +104,8 @@ final class VerificationPresenter: ModulePresenter, VerificationModule {
       .flatMapCompletable { [usecase] in usecase.sendVerification(userData: $0) }
       .andThen(usecase.getKYC())
       .catchError { [store] in
-        if let apiError = $0 as? APIError, case let .serverError(error) = apiError {
-          store.action.accept(.makeInvalidState(error.message))
+        if let apiError = $0 as? APIError, case let .serverError(error) = apiError, let code = error.code, code > 1 {
+          store.action.accept(.updateZipCodeError(error.message))
         }
 
         throw $0

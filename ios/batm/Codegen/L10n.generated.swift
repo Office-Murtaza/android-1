@@ -659,6 +659,7 @@ extension L.Shared {
     static let paste = "shared.button.paste"
     static let remove = "shared.button.remove"
     static let retry = "shared.button.retry"
+    static let send = "shared.button.send"
     static let unlink = "shared.button.unlink"
     static let update = "shared.button.update"
   }
@@ -753,9 +754,16 @@ extension L.Verification.Form {
   }
 
   struct Error {
+    static let cityRequired = "verification.form.error.city_required"
+    static let countryRequired = "verification.form.error.country_required"
     static let idScanRequired = "verification.form.error.id_scan_required"
     static let imageBroken = "verification.form.error.image_broken"
-    static let zipCodeWrongLength = "verification.form.error.zip_code_wrong_length"
+    static let notValidAddress = "verification.form.error.not_valid_address"
+    static let notValidFirstName = "verification.form.error.not_valid_first_name"
+    static let notValidIdNumber = "verification.form.error.not_valid_id_number"
+    static let notValidLastName = "verification.form.error.not_valid_last_name"
+    static let notValidZipCode = "verification.form.error.not_valid_zip_code"
+    static let provinceRequired = "verification.form.error.province_required"
   }
 
   struct FirstName {

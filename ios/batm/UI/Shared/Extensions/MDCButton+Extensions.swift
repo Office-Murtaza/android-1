@@ -175,6 +175,26 @@ extension MDCButton {
     return button
   }
   
+  static var send: MDCButton {
+    let button = MDCButton.contained
+    button.setTitle(localize(L.Shared.Button.send), for: .normal)
+    return button
+  }
+  
+  static var plus: MDCButton {
+    let button = MDCButton.contained
+    button.setImage(UIImage(named: "colored_plus"), for: .normal)
+    button.setBackgroundColor(.white)
+    return button
+  }
+  
+  static var close: MDCButton {
+    let button = MDCButton.contained
+    button.setImage(UIImage(named: "colored_close"), for: .normal)
+    button.setBackgroundColor(.white)
+    return button
+  }
+  
   func set(image: UIImage?, title: String?, spacing: CGFloat = 10) {
     setTitle(title, for: .normal)
     setImage(image, for: .normal)

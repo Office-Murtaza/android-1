@@ -17,12 +17,11 @@ extension PickerFlowController: PickerActionSheetDelegate {
 
 extension PickerFlowController: PickerDelegate {
   func didSelect(image: UIImage) {
-    complete { [delegate] in
-      delegate?.didPick(image: image)
-    }
+    delegate?.didPick(image: image)
+    step.accept(PickerFlow.Steps.dismiss)
   }
   
   func didCancel() {
-    complete {}
+    step.accept(PickerFlow.Steps.dismiss)
   }
 }

@@ -1,6 +1,7 @@
 import UIKit
 import RxSwift
 import RxCocoa
+import MaterialComponents
 
 class VerificationFormView: UIView, UIPickerViewDelegate, UIPickerViewDataSource {
   
@@ -11,45 +12,26 @@ class VerificationFormView: UIView, UIPickerViewDelegate, UIPickerViewDataSource
   let stackView: UIStackView = {
     let stackView = UIStackView()
     stackView.axis = .vertical
-    stackView.spacing = 15
     return stackView
   }()
   
-  let idNumberTextField: MainTextField = {
-    let textField = MainTextField()
-    textField.configure(for: .idNumber)
-    return textField
-  }()
+  let idNumberTextField = MDCTextField.idNumber
+  let firstNameTextField = MDCTextField.default
+  let lastNameTextField = MDCTextField.default
+  let addressTextField = MDCTextField.default
+  let countryTextField = MDCTextField.dropdown
+  let provinceTextField = MDCTextField.dropdown
+  let cityTextField = MDCTextField.dropdown
+  let zipCodeTextField = MDCTextField.zipCode
   
-  let firstNameTextField: MainTextField = {
-    let textField = MainTextField()
-    textField.configure(for: .firstName)
-    return textField
-  }()
-  
-  let lastNameTextField: MainTextField = {
-    let textField = MainTextField()
-    textField.configure(for: .lastName)
-    return textField
-  }()
-  
-  let countryTextField: MainTextField = {
-    let textField = MainTextField()
-    textField.configure(for: .country)
-    return textField
-  }()
-  
-  let provinceTextField: MainTextField = {
-    let textField = MainTextField()
-    textField.configure(for: .province)
-    return textField
-  }()
-  
-  let cityTextField: MainTextField = {
-    let textField = MainTextField()
-    textField.configure(for: .city)
-    return textField
-  }()
+  let idNumberTextFieldController: ThemedTextInputControllerOutlined
+  let firstNameTextFieldController: ThemedTextInputControllerOutlined
+  let lastNameTextFieldController: ThemedTextInputControllerOutlined
+  let addressTextFieldController: ThemedTextInputControllerOutlined
+  let countryTextFieldController: ThemedTextInputControllerOutlined
+  let provinceTextFieldController: ThemedTextInputControllerOutlined
+  let cityTextFieldController: ThemedTextInputControllerOutlined
+  let zipCodeTextFieldController: ThemedTextInputControllerOutlined
   
   let countryTextFieldContainer = UIView()
   let provinceTextFieldContainer = UIView()
@@ -62,34 +44,6 @@ class VerificationFormView: UIView, UIPickerViewDelegate, UIPickerViewDataSource
   let countriesPickerView = UIPickerView()
   let provincesPickerView = UIPickerView()
   let citiesPickerView = UIPickerView()
-  
-  let zipCodeTextField: MainTextField = {
-    let textField = MainTextField()
-    textField.configure(for: .zipCode)
-    return textField
-  }()
-  
-  let addressTextField: MainTextField = {
-    let textField = MainTextField()
-    textField.configure(for: .address)
-    return textField
-  }()
-  
-  let sendButton: MainButton = {
-    let button = MainButton()
-    button.configure(for: .send)
-    return button
-  }()
-  
-  var typeableFields: [MainTextField] {
-    return [
-      idNumberTextField,
-      firstNameTextField,
-      lastNameTextField,
-      zipCodeTextField,
-      addressTextField
-    ]
-  }
   
   var countries: [String] = [] {
     didSet {
@@ -113,6 +67,15 @@ class VerificationFormView: UIView, UIPickerViewDelegate, UIPickerViewDataSource
   }
   
   override init(frame: CGRect) {
+    idNumberTextFieldController = ThemedTextInputControllerOutlined(textInput: idNumberTextField)
+    firstNameTextFieldController = ThemedTextInputControllerOutlined(textInput: firstNameTextField)
+    lastNameTextFieldController = ThemedTextInputControllerOutlined(textInput: lastNameTextField)
+    addressTextFieldController = ThemedTextInputControllerOutlined(textInput: addressTextField)
+    countryTextFieldController = ThemedTextInputControllerOutlined(textInput: countryTextField)
+    provinceTextFieldController = ThemedTextInputControllerOutlined(textInput: provinceTextField)
+    cityTextFieldController = ThemedTextInputControllerOutlined(textInput: cityTextField)
+    zipCodeTextFieldController = ThemedTextInputControllerOutlined(textInput: zipCodeTextField)
+    
     super.init(frame: frame)
     
     setupUI()
@@ -130,12 +93,11 @@ class VerificationFormView: UIView, UIPickerViewDelegate, UIPickerViewDataSource
     stackView.addArrangedSubviews(idNumberTextField,
                                   firstNameTextField,
                                   lastNameTextField,
+                                  addressTextField,
                                   countryTextFieldContainer,
                                   provinceTextFieldContainer,
                                   cityTextFieldContainer,
-                                  zipCodeTextField,
-                                  addressTextField,
-                                  sendButton)
+                                  zipCodeTextField)
     
     countryTextFieldContainer.addSubviews(countryTextField,
                                           fakeCountryTextField)
@@ -145,6 +107,15 @@ class VerificationFormView: UIView, UIPickerViewDelegate, UIPickerViewDataSource
     
     cityTextFieldContainer.addSubviews(cityTextField,
                                        fakeCityTextField)
+    
+    idNumberTextFieldController.placeholderText = localize(L.Verification.Form.IDNumber.placeholder)
+    firstNameTextFieldController.placeholderText = localize(L.Verification.Form.FirstName.placeholder)
+    lastNameTextFieldController.placeholderText = localize(L.Verification.Form.LastName.placeholder)
+    addressTextFieldController.placeholderText = localize(L.Verification.Form.Address.placeholder)
+    countryTextFieldController.placeholderText = localize(L.Verification.Form.Country.placeholder)
+    provinceTextFieldController.placeholderText = localize(L.Verification.Form.Province.placeholder)
+    cityTextFieldController.placeholderText = localize(L.Verification.Form.City.placeholder)
+    zipCodeTextFieldController.placeholderText = localize(L.Verification.Form.ZipCode.placeholder)
   }
   
   private func setupLayout() {
@@ -231,6 +202,70 @@ extension Reactive where Base == VerificationFormView {
   var cities: Binder<[String]> {
     return Binder(base) { target, value in
       target.cities = value
+    }
+  }
+  var idNumberText: ControlProperty<String?> {
+    return base.idNumberTextField.rx.text
+  }
+  var firstNameText: ControlProperty<String?> {
+    return base.firstNameTextField.rx.text
+  }
+  var lastNameText: ControlProperty<String?> {
+    return base.lastNameTextField.rx.text
+  }
+  var addressText: ControlProperty<String?> {
+    return base.addressTextField.rx.text
+  }
+  var countryText: ControlProperty<String?> {
+    return base.countryTextField.rx.text
+  }
+  var provinceText: ControlProperty<String?> {
+    return base.provinceTextField.rx.text
+  }
+  var cityText: ControlProperty<String?> {
+    return base.cityTextField.rx.text
+  }
+  var zipCodeText: ControlProperty<String?> {
+    return base.zipCodeTextField.rx.text
+  }
+  var idNumberErrorText: Binder<String?> {
+    return Binder(base) { target, value in
+      target.idNumberTextFieldController.setErrorText(value, errorAccessibilityValue: value)
+    }
+  }
+  var firstNameErrorText: Binder<String?> {
+    return Binder(base) { target, value in
+      target.firstNameTextFieldController.setErrorText(value, errorAccessibilityValue: value)
+    }
+  }
+  var lastNameErrorText: Binder<String?> {
+    return Binder(base) { target, value in
+      target.lastNameTextFieldController.setErrorText(value, errorAccessibilityValue: value)
+    }
+  }
+  var addressErrorText: Binder<String?> {
+    return Binder(base) { target, value in
+      target.addressTextFieldController.setErrorText(value, errorAccessibilityValue: value)
+    }
+  }
+  var countryErrorText: Binder<String?> {
+    return Binder(base) { target, value in
+      target.countryTextFieldController.setErrorText(value, errorAccessibilityValue: value)
+    }
+  }
+  var provinceErrorText: Binder<String?> {
+    return Binder(base) { target, value in
+      target.provinceTextFieldController.setErrorText(value, errorAccessibilityValue: value)
+    }
+  }
+  var cityErrorText: Binder<String?> {
+    return Binder(base) { target, value in
+      target.cityTextFieldController.setErrorText(value, errorAccessibilityValue: value)
+    }
+  }
+  var zipCodeErrorText: Binder<String?> {
+    return Binder(base) { target, value in
+      target.zipCodeTextFieldController.setErrorText(value, errorAccessibilityValue: value)
     }
   }
 }

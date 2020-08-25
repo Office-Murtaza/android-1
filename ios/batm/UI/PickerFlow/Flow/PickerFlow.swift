@@ -12,16 +12,13 @@ class PickerFlow: BaseFlow<BTMNavigationController, PickerFlowController> {
   enum Steps: Step, Equatable {
     case start(PickerConfig)
     case takePhoto(PickerConfig.PickerItem)
+    case dismiss
   }
   
   override func route(to step: Step) -> NextFlowItems {
     return castable(step)
       .map(handlePickerFlow(step:))
       .extract(NextFlowItems.none)
-  }
-  
-  override func onComplete() {
-    view.dismiss(animated: true, completion: nil)
   }
   
   private func handlePickerFlow(step: Steps) -> NextFlowItems {
@@ -34,6 +31,8 @@ class PickerFlow: BaseFlow<BTMNavigationController, PickerFlowController> {
       let picker = resolver.resolve(UIImagePickerController.self, argument: item)!
       view.topViewController?.present(picker, animated: true, completion: nil)
       return .none
+    case .dismiss:
+      return dismiss()
     }
   }
 }
