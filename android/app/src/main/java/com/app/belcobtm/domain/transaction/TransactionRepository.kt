@@ -30,9 +30,10 @@ interface TransactionRepository {
         fromCoinAmount: Double
     ): Either<Failure, Unit>
 
-    suspend fun getGiftAddress(
+    suspend fun sendGiftTransactionCreate(
+        phone: String,
         fromCoin: String,
-        phone: String
+        fromCoinAmount: Double
     ): Either<Failure, String>
 
     suspend fun sendGift(

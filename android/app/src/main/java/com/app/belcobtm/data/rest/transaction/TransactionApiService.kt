@@ -55,7 +55,7 @@ class TransactionApiService(
         coinFrom: String,
         phone: String
     ): Either<Failure, String> = try {
-        val request = api.getGiftAddressAsync(prefHelper.userId, coinFrom, phone).await()
+        val request = api.getGiftAddressAsync(coinFrom, phone).await()
         request.body()?.let { Either.Right(it.address ?: "") } ?: Either.Left(Failure.ServerError())
     } catch (failure: Failure) {
         failure.printStackTrace()

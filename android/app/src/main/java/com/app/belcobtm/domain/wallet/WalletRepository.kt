@@ -12,6 +12,8 @@ interface WalletRepository {
 
     fun getCoinItemByCode(coinCode: String): CoinDataItem
 
+    fun getCoinItemList(): List<CoinDataItem>
+
     suspend fun getAccountList(): List<AccountDataItem>
 
     suspend fun updateAccount(accountDataItem: AccountDataItem): Either<Failure, Unit>

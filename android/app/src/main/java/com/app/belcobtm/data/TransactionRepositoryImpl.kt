@@ -86,13 +86,26 @@ class TransactionRepositoryImpl(
         Either.Left(Failure.NetworkConnection)
     }
 
-    override suspend fun getGiftAddress(
+    override suspend fun sendGiftTransactionCreate(
+        phone: String,
         fromCoin: String,
-        phone: String
-    ): Either<Failure, String> = if (networkUtils.isNetworkAvailable()) {
-        apiService.getGiftAddress(fromCoin, phone)
-    } else {
-        Either.Left(Failure.NetworkConnection)
+        fromCoinAmount: Double
+    ): Either<Failure, String> {
+        val giftAddressResponse = apiService.getGiftAddress(fromCoin, phone)
+        return if (giftAddressResponse.isRight) {
+            val coinType = LocalCoinType.valueOf(fromCoin)
+            val toAddress = (giftAddressResponse as Either.Right).b
+            val hashResponse = transactionHashRepository.createTransactionHash(coinType, fromCoinAmount, toAddress)
+            if (hashResponse.isRight) {
+                val sendSmsToDeviceResponse = toolsRepository.sendSmsToDeviceOld()
+                if (sendSmsToDeviceResponse.isRight) hashResponse as Either.Right
+                else sendSmsToDeviceResponse as Either.Left
+            } else {
+                hashResponse as Either.Left
+            }
+        } else {
+            giftAddressResponse as Either.Left
+        }
     }
 
     override suspend fun sendGift(

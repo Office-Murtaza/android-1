@@ -26,8 +26,8 @@ val useCaseModule = module {
     single { CoinToCoinExchangeUseCase(get()) }
     single { CreateTransactionUseCase(get()) }
     single { WithdrawUseCase(get()) }
-    single { GetGiftAddressUseCase(get()) }
-    single { SendGiftUseCase(get()) }
+    single { SendGiftTransactionCreateUseCase(get()) }
+    single { SendGiftTransactionComplteUseCase(get()) }
     single { OldSendSmsToDeviceUseCase(get()) }
     single { OldVerifySmsCodeUseCase(get()) }
     single { SendSmsToDeviceUseCase(get()) }
@@ -66,4 +66,5 @@ val useCaseModule = module {
     single { GetPhoneUseCase(get()) }
     single { UpdatePhoneUseCase(get()) }
     single { GetTransactionDetailsUseCase(get()) }
+    single { GetCoinListUseCase(get()) }
 }

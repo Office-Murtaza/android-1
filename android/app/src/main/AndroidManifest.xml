@@ -69,7 +69,7 @@
             android:theme="@style/AppThemeNoActionBar" />
 
         <activity
-            android:name=".ui.main.coins.send_gift.SendGiftActivity"
+            android:name=".ui.main.coins.send_gift.SendGiftFragment"
             android:screenOrientation="portrait"
             android:theme="@style/AppThemeNoActionBar" />
 

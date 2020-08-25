@@ -3,6 +3,7 @@ package com.app.belcobtm.presentation.di
 import com.app.belcobtm.domain.wallet.LocalCoinType
 import com.app.belcobtm.domain.wallet.WalletRepository
 import com.app.belcobtm.domain.wallet.interactor.GetCoinFeeMapUseCase
+import com.app.belcobtm.domain.wallet.interactor.GetCoinListUseCase
 import com.app.belcobtm.domain.wallet.item.CoinDataItem
 import com.app.belcobtm.presentation.features.authorization.create.seed.CreateSeedViewModel
 import com.app.belcobtm.presentation.features.authorization.create.wallet.CreateWalletViewModel
@@ -32,6 +33,7 @@ import com.app.belcobtm.presentation.features.wallet.trade.recall.TradeRecallVie
 import com.app.belcobtm.presentation.features.wallet.trade.reserve.TradeReserveViewModel
 import com.app.belcobtm.presentation.features.wallet.transaction.details.TransactionDetailsViewModel
 import com.app.belcobtm.presentation.features.wallet.transactions.TransactionsViewModel
+import com.app.belcobtm.ui.main.coins.send_gift.SendGiftViewModel
 import org.koin.android.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
@@ -102,4 +104,10 @@ val viewModelModule = module {
     viewModel { PhoneDisplayViewModel(get(), get()) }
     viewModel { PhoneChangeViewModel(get(), get(), get()) }
     viewModel { (txId: String, coinCode: String) -> TransactionDetailsViewModel(txId, coinCode, get()) }
+    viewModel { (coinCode: String) ->
+        val coinList = (get() as GetCoinListUseCase).invoke()
+        val fromCoinDataItem = coinList.find { it.code == coinCode }!!
+        val fromCoinFee = get<WalletRepository>().getCoinFeeItemByCode(coinCode)
+        SendGiftViewModel(get(), get(), fromCoinDataItem, fromCoinFee, coinList)
+    }
 }

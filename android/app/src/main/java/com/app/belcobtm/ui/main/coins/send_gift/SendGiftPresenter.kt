@@ -5,8 +5,8 @@ import com.app.belcobtm.R
 import com.app.belcobtm.api.data_manager.WithdrawDataManager
 import com.app.belcobtm.domain.Failure
 import com.app.belcobtm.domain.transaction.interactor.CreateTransactionUseCase
-import com.app.belcobtm.domain.transaction.interactor.GetGiftAddressUseCase
-import com.app.belcobtm.domain.transaction.interactor.SendGiftUseCase
+import com.app.belcobtm.domain.transaction.interactor.SendGiftTransactionComplteUseCase
+import com.app.belcobtm.domain.transaction.interactor.SendGiftTransactionCreateUseCase
 import com.app.belcobtm.domain.wallet.item.CoinDataItem
 import com.app.belcobtm.mvp.BaseMvpDIPresenterImpl
 import com.giphy.sdk.core.models.Media
@@ -15,9 +15,9 @@ import org.koin.core.inject
 
 class SendGiftPresenter : BaseMvpDIPresenterImpl<SendGiftContract.View, WithdrawDataManager>(),
     SendGiftContract.Presenter, KoinComponent {
-    private val getGiftAddressUseCase: GetGiftAddressUseCase by inject()
+    private val getGiftAddressUseCase: SendGiftTransactionCreateUseCase by inject()
     private val createTransactionUseCase: CreateTransactionUseCase by inject()
-    private val sendGiftAddressUseCase: SendGiftUseCase by inject()
+    private val sendGiftAddressUseCase: SendGiftTransactionComplteUseCase by inject()
     private var coinFromCode: String = ""
     private var transactionHash: String = ""
     private var fromAddress: String = ""
@@ -56,7 +56,7 @@ class SendGiftPresenter : BaseMvpDIPresenterImpl<SendGiftContract.View, Withdraw
 
         mView?.showProgress(true)
         getGiftAddressUseCase.invoke(
-            GetGiftAddressUseCase.Params(coinFromCode, phoneEncoded),
+            SendGiftTransactionCreateUseCase.Params(phoneEncoded, coinFromCode, 0.0),
             onSuccess = { giftAddress ->
                 this.fromAddress = giftAddress
                 createTransaction(coinFromCode, coinAmount)
@@ -68,7 +68,7 @@ class SendGiftPresenter : BaseMvpDIPresenterImpl<SendGiftContract.View, Withdraw
     override fun completeTransaction(smsCode: String) {
         mView?.showProgress(true)
         sendGiftAddressUseCase.invoke(
-            SendGiftUseCase.Params(
+            SendGiftTransactionComplteUseCase.Params(
                 smsCode = smsCode,
                 hash = transactionHash,
                 coinFrom = coinFromCode,

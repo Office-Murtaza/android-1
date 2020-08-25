@@ -20,7 +20,6 @@ import com.app.belcobtm.presentation.features.wallet.staking.StakingActivity
 import com.app.belcobtm.presentation.features.wallet.trade.main.TradeActivity
 import com.app.belcobtm.presentation.features.wallet.transactions.adapter.TransactionsAdapter
 import com.app.belcobtm.ui.main.coins.sell.SellActivity
-import com.app.belcobtm.ui.main.coins.send_gift.SendGiftActivity
 import com.app.belcobtm.ui.main.coins.withdraw.WithdrawActivity
 import com.github.mikephil.charting.data.BarEntry
 import com.github.mikephil.charting.data.LineData
@@ -108,7 +107,7 @@ class TransactionsFragment : BaseFragment() {
         }
         sendGiftButtonView.setOnClickListener {
             if (isCorrectCoinId()) {
-                SendGiftActivity.start(requireContext(), viewModel.coinDataItem, viewModel.coinDataItemList)
+                navigate(TransactionsFragmentDirections.toSendGiftFragment(viewModel.coinDataItem?.code ?: ""))
             } else {
                 AlertHelper.showToastShort(
                     sendGiftButtonView.context,

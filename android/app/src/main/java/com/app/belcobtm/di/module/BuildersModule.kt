@@ -10,7 +10,7 @@ import com.app.belcobtm.presentation.features.wallet.balance.WalletFragment
 import com.app.belcobtm.presentation.features.wallet.transaction.details.TransactionDetailsFragment
 import com.app.belcobtm.ui.main.atm.AtmFragment
 import com.app.belcobtm.ui.main.coins.sell.SellActivity
-import com.app.belcobtm.ui.main.coins.send_gift.SendGiftActivity
+import com.app.belcobtm.ui.main.coins.send_gift.SendGiftFragment
 import com.app.belcobtm.ui.main.coins.withdraw.WithdrawActivity
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
@@ -47,7 +47,7 @@ abstract class BuildersModule {
 
     @ActivityScope
     @ContributesAndroidInjector(modules = [ActivityModule::class])
-    internal abstract fun bindSendGiftActivity(): SendGiftActivity
+    internal abstract fun bindSendGiftActivity(): SendGiftFragment
 
     @ActivityScope
     @ContributesAndroidInjector(modules = [ActivityModule::class])

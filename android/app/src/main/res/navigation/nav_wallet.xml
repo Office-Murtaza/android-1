@@ -54,6 +54,9 @@
             app:exitAnim="@anim/slide_to_left"
             app:popEnterAnim="@anim/slide_from_left"
             app:popExitAnim="@anim/slide_to_right" />
+        <action
+            android:id="@+id/to_send_gift_fragment"
+            app:destination="@id/send_gift_fragment" />
     </fragment>
 
     <fragment
@@ -79,6 +82,16 @@
             app:argType="string" />
         <argument
             android:name="tx_id"
+            app:argType="string" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/send_gift_fragment"
+        android:name="com.app.belcobtm.ui.main.coins.send_gift.SendGiftFragment"
+        android:label="SendGiftFragment"
+        tools:layout="@layout/activity_send_gift">
+        <argument
+            android:name="coin_code"
             app:argType="string" />
     </fragment>
 </navigation>

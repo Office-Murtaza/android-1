@@ -5,7 +5,8 @@ import com.app.belcobtm.domain.Failure
 import com.app.belcobtm.domain.UseCase
 import com.app.belcobtm.domain.transaction.TransactionRepository
 
-class SendGiftUseCase(private val repository: TransactionRepository) : UseCase<Unit, SendGiftUseCase.Params>() {
+class SendGiftTransactionComplteUseCase(private val repository: TransactionRepository) :
+    UseCase<Unit, SendGiftTransactionComplteUseCase.Params>() {
     override suspend fun run(params: Params): Either<Failure, Unit> = repository.sendGift(
         smsCode = params.smsCode,
         hash = params.hash,
