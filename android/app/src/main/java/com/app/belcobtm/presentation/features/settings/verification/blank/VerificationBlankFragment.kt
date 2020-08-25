@@ -5,6 +5,7 @@ import android.net.Uri
 import android.widget.ImageView
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
+import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.Observer
 import com.app.belcobtm.R
 import com.app.belcobtm.domain.Failure
@@ -15,6 +16,11 @@ import com.app.belcobtm.presentation.core.ui.fragment.BaseFragment
 import com.kroegerama.imgpicker.BottomSheetImagePicker
 import com.kroegerama.imgpicker.ButtonType
 import kotlinx.android.synthetic.main.fragment_verification_blank.*
+import kotlinx.android.synthetic.main.fragment_verification_blank.imageContainer
+import kotlinx.android.synthetic.main.fragment_verification_blank.imageView
+import kotlinx.android.synthetic.main.fragment_verification_blank.removeImageButtonView
+import kotlinx.android.synthetic.main.fragment_verification_blank.selectImageButtonView
+import kotlinx.android.synthetic.main.fragment_verification_blank.verifyButtonView
 import org.koin.android.viewmodel.ext.android.viewModel
 import permissions.dispatcher.NeedsPermission
 import permissions.dispatcher.OnNeverAskAgain
@@ -27,10 +33,13 @@ class VerificationBlankFragment : BaseFragment(), BottomSheetImagePicker.OnImage
     override val resourceLayout = R.layout.fragment_verification_blank
     override val isHomeButtonEnabled = true
 
+    private var validated = false
+
     override fun onImagesSelected(uris: List<Uri>, tag: String?) {
         viewModel.fileUri = uris.first()
         imageView.scaleType = ImageView.ScaleType.CENTER_CROP
         imageView.setImageURI(viewModel.fileUri)
+        validatePhoto()
         removeImageButtonView.show()
         selectImageButtonView.hide()
     }
@@ -136,6 +145,47 @@ class VerificationBlankFragment : BaseFragment(), BottomSheetImagePicker.OnImage
                 R.string.verification_alert_state_title
             )
         }
+
+        idNumberView.editText?.addTextChangedListener {
+            if (validated) {
+                validateIdNumber()
+            }
+        }
+        firstNameView.editText?.addTextChangedListener {
+            if (validated) {
+                validateFirstName()
+            }
+        }
+        lastNameView.editText?.addTextChangedListener {
+            if (validated) {
+                validateLastName()
+            }
+        }
+        addressView.editText?.addTextChangedListener {
+            if (validated) {
+                validateAddress()
+            }
+        }
+        countryView.editText?.addTextChangedListener {
+            if (validated) {
+                validateCountry()
+            }
+        }
+        cityView.editText?.addTextChangedListener {
+            if (validated) {
+                validateCity()
+            }
+        }
+        provinceView.editText?.addTextChangedListener {
+            if (validated) {
+                validateProvince()
+            }
+        }
+        zipCodeView.editText?.addTextChangedListener {
+            if (validated) {
+                validateZipCode()
+            }
+        }
     }
 
     override fun initObservers() {
@@ -160,6 +210,7 @@ class VerificationBlankFragment : BaseFragment(), BottomSheetImagePicker.OnImage
     }
 
     private fun sendBlank() {
+        validated = true
         if (isValidFields()) {
             viewModel.fileUri?.let { imageUri ->
                 viewModel.sendBlank(
@@ -174,18 +225,125 @@ class VerificationBlankFragment : BaseFragment(), BottomSheetImagePicker.OnImage
                     zipCodeView.getString()
                 )
             }
-        } else {
-            showError(R.string.verification_alert_please_fill_fields)
         }
     }
 
-    private fun isValidFields(): Boolean = viewModel.fileUri != null
-            && idNumberView.isNotBlank()
-            && firstNameView.isNotBlank()
-            && lastNameView.isNotBlank()
-            && addressView.isNotBlank()
-            && cityView.isNotBlank()
-            && countryView.isNotBlank()
-            && provinceView.isNotBlank()
-            && zipCodeView.isNotBlank()
+    private fun isValidFields(): Boolean {
+        val photo = validatePhoto()
+        val idNumber = validateIdNumber()
+        val firstName = validateFirstName()
+        val lastName = validateLastName()
+        val address = validateAddress()
+        val city = validateCity()
+        val country = validateCountry()
+        val province = validateProvince()
+        val zip = validateZipCode()
+        return photo
+                && idNumber
+                && firstName
+                && lastName
+                && address
+                && city
+                && country
+                && province
+                && zip
+    }
+
+    private fun validatePhoto(): Boolean {
+        if (viewModel.fileUri == null) {
+            photoErrorView.toggle(true)
+            return false
+        } else {
+            photoErrorView.toggle(false)
+            return true
+        }
+    }
+
+    private fun validateIdNumber(): Boolean {
+        return if (idNumberView.getString().length > 9) {
+            idNumberView.isErrorEnabled = true
+            idNumberView.error = getString(R.string.id_number_validation_text)
+            false
+        } else {
+            idNumberView.isErrorEnabled = false
+            true
+        }
+    }
+
+    private fun validateFirstName(): Boolean {
+        return if (firstNameView.getString().length > 255 || firstNameView.getString().isEmpty()) {
+            firstNameView.isErrorEnabled = true
+            firstNameView.error = getString(R.string.first_name_validation_text)
+            false
+        } else {
+            firstNameView.isErrorEnabled = false
+            true
+        }
+    }
+
+    private fun validateLastName(): Boolean {
+        return if (lastNameView.getString().length > 255 || lastNameView.getString().isEmpty()) {
+            lastNameView.isErrorEnabled = true
+            lastNameView.error = getString(R.string.last_name_validation_text)
+            false
+        } else {
+            lastNameView.isErrorEnabled = false
+            true
+        }
+    }
+
+    private fun validateAddress(): Boolean {
+        return if (addressView.getString().length > 255 || addressView.getString().isEmpty()) {
+            addressView.isErrorEnabled = true
+            addressView.error = getString(R.string.address_validation_text)
+            false
+        } else {
+            addressView.isErrorEnabled = false
+            true
+        }
+    }
+
+    private fun validateCity(): Boolean {
+        return if (cityView.getString().isEmpty()) {
+            cityView.isErrorEnabled = true
+            cityView.error = getString(R.string.city_validation_text)
+            false
+        } else {
+            cityView.isErrorEnabled = false
+            true
+        }
+    }
+
+    private fun validateCountry(): Boolean {
+        return if (countryView.getString().isEmpty()) {
+            countryView.isErrorEnabled = true
+            countryView.error = getString(R.string.country_validation_text)
+            false
+        } else {
+            countryView.isErrorEnabled = false
+            true
+        }
+    }
+
+    private fun validateProvince(): Boolean {
+        return if (provinceView.getString().isEmpty()) {
+            provinceView.isErrorEnabled = true
+            provinceView.error = getString(R.string.province_validation_text)
+            false
+        } else {
+            provinceView.isErrorEnabled = false
+            true
+        }
+    }
+
+    private fun validateZipCode(): Boolean {
+        return if (zipCodeView.getString().length == 5 && zipCodeView.getString().toInt() >= 10000) {
+            zipCodeView.isErrorEnabled = false
+            true
+        } else {
+            zipCodeView.isErrorEnabled = true
+            zipCodeView.error = getString(R.string.zip_validation_text)
+            false
+        }
+    }
 }
