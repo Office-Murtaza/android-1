@@ -1,6 +1,7 @@
 package com.app.belcobtm.data.rest
 
 import com.app.belcobtm.BuildConfig
+import com.app.belcobtm.data.rest.atm.AtmApi
 import com.app.belcobtm.data.rest.authorization.AuthApi
 import com.app.belcobtm.data.rest.interceptor.BaseInterceptor
 import com.app.belcobtm.data.rest.interceptor.LogInterceptor
@@ -40,6 +41,7 @@ class ApiFactory(
     val walletApi: WalletApi = createApiWithSessionClient(WalletApi::class.java)
     val transactionApi: TransactionApi = createApiWithSessionClient(TransactionApi::class.java)
     val toolsApi: ToolsApi = createApiWithSessionClient(ToolsApi::class.java)
+    val atmApi: AtmApi = createApiWithSessionClient(AtmApi::class.java)
 
     private fun <T> createApiWithSessionClient(clazz: Class<T>): T = Retrofit.Builder()
         .baseUrl(SERVER_URL)
