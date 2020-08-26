@@ -149,7 +149,7 @@
     <string name="verification_daily_limit">Daily limit</string>
     <string name="verification_vip_verify">VIP verify</string>
     <string name="verification_verify">Verify</string>
-    <string name="verification_unit_usd">%1$s USD</string>
+    <string name="verification_unit_usd">%1$s $</string>
     <string-array name="verification_status_array">
         <item>Incorrect status</item>
         <item>Not verified</item>
@@ -401,6 +401,7 @@
 
     <string name="paste">Paste</string>
     <string name="next">Next</string>
+    <string name="update">Update</string>
     <string name="cancel">Cancel</string>
     <string name="done">Done</string>
     <string name="copied">Copied</string>
@@ -416,6 +417,7 @@
     <string name="support_label">Support</string>
     <string name="version_label">Version</string>
     <string name="update_phone_label">Update phone</string>
+    <string name="update_phone_hint">New phone</string>
     <string name="update_pass_label">Update password</string>
     <string name="update_pin_label">Update PIN</string>
     <string name="seed_phrase_label">Seed phrase</string>

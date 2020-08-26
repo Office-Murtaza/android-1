@@ -268,9 +268,9 @@ public class UserService {
         }
 
         if(dto.getStatus() == KycStatus.NOT_VERIFIED) {
-            dto.setMessage("Your current limits are 900$ per transaction and 900$ per day. To increase them to 3000$ per transaction and 10000$ per day verify your account");
+            dto.setMessage("To increase your limits to 3000$ per transaction and 10000$ per day, please verify your account");
         } else if(dto.getStatus() == KycStatus.VERIFIED) {
-            dto.setMessage("Your current limits are 3000$ per transaction and 10000$ per day. To increase them to 10000$ per transaction and 20000$ per day VIP verify your account");
+            dto.setMessage("To increase your limits to 10000$ per transaction and 20000$ per day, please VIP verify your account");
         }
 
         dto.setDailyLimit(getLastLimit(user.getIdentity().getLimitCashPerDay()));

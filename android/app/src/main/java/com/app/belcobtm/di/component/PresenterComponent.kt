@@ -10,7 +10,6 @@ import dagger.Component
 @Component(modules = [PresenterModule::class])
 interface PresenterComponent {
 
-    fun inject(presenter: AtmPresenter)
     fun inject(presenter: WithdrawPresenter)
     fun inject(presenter: SendGiftPresenter)
     fun inject(sellPresenter: SellPresenter)

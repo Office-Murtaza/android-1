@@ -1,14 +1,11 @@
 package com.app.belcobtm.di.module
 
 import com.app.belcobtm.di.ActivityScope
-import com.app.belcobtm.di.FragmentScope
 import com.app.belcobtm.presentation.features.authorization.create.wallet.CreateWalletFragment
 import com.app.belcobtm.presentation.features.authorization.pin.PinActivity
 import com.app.belcobtm.presentation.features.authorization.recover.seed.RecoverSeedFragment
-import com.app.belcobtm.presentation.features.wallet.add.ManageWalletsFragment
-import com.app.belcobtm.presentation.features.wallet.balance.WalletFragment
-import com.app.belcobtm.presentation.features.wallet.transaction.details.TransactionDetailsFragment
-import com.app.belcobtm.ui.main.atm.AtmFragment
+import com.app.belcobtm.presentation.features.wallet.add.AddWalletActivity
+import com.app.belcobtm.ui.main.coins.details.DetailsActivity
 import com.app.belcobtm.ui.main.coins.sell.SellActivity
 import com.app.belcobtm.ui.main.coins.send_gift.SendGiftFragment
 import com.app.belcobtm.ui.main.coins.withdraw.WithdrawActivity
@@ -32,14 +29,6 @@ abstract class BuildersModule {
     @ActivityScope
     @ContributesAndroidInjector(modules = [ActivityModule::class])
     internal abstract fun bindVisibilityCoinsActivity(): ManageWalletsFragment
-
-    @FragmentScope
-    @ContributesAndroidInjector(modules = [FragmentModule::class])
-    internal abstract fun bindBalanceFragment(): WalletFragment
-
-    @FragmentScope
-    @ContributesAndroidInjector(modules = [FragmentModule::class])
-    internal abstract fun bindAtmFragment(): AtmFragment
 
     @ActivityScope
     @ContributesAndroidInjector(modules = [ActivityModule::class])

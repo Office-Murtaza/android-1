@@ -17,7 +17,6 @@
         android:text="@string/verification_id_selfie"
         android:textColor="#58585a"
         android:textSize="14sp"
-        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/toolbarView" />
 
