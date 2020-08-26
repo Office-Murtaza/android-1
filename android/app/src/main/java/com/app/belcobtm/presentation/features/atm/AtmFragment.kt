@@ -49,7 +49,7 @@ class AtmFragment : BaseFragment()
     }
 
     override fun onInfoWindowClick(marker: Marker?) {
-        AlertHelper.showToastShort(requireContext(),  "Info window clicked")
+//        AlertHelper.showToastShort(requireContext(),  "Info window clicked")
     }
 
     override fun initObservers() {
