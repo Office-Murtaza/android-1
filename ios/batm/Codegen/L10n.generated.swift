@@ -208,13 +208,20 @@ enum L {
   struct Unlink {
     static let annotation = "unlink.annotation"
     static let title = "unlink.title"
+    static let unlinked = "unlink.unlinked"
+  }
+
+  struct UpdatePIN {
+    static let pinUpdated = "update_p_i_n.pin_updated"
   }
 
   struct UpdatePassword {
+    static let passwordUpdated = "update_password.password_updated"
     static let title = "update_password.title"
   }
 
   struct UpdatePhone {
+    static let phoneUpdated = "update_phone.phone_updated"
     static let title = "update_phone.title"
   }
 

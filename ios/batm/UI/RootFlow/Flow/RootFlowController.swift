@@ -27,7 +27,7 @@ class RootFlowController: FlowController, FlowActivator, HasDisposeBag {
       }
       .asObservable()
     let logoutStepObservable: Observable<Step> = loginUsecase.getLogoutObservable()
-      .replace(RootFlow.Steps.login)
+      .replace(RootFlow.Steps.logout)
     
     Observable.merge(initialStepObservable,
                      restoreSessionStepObservable,

@@ -21,7 +21,7 @@ class SettingsFlow: BaseFlow<BTMNavigationController, SettingsFlowController> {
     case updatePIN(String)
     case seedPhrase
     case unlinkWallet
-    case popToRoot
+    case popToRoot(String?)
   }
   
   override func route(to step: Step) -> NextFlowItems {
@@ -68,8 +68,13 @@ class SettingsFlow: BaseFlow<BTMNavigationController, SettingsFlowController> {
       let flow = KYCFlow(view: view, parent: self)
       let step = KYCFlow.Steps.kyc(kyc)
       return next(flow: flow, step: step)
-    case .popToRoot:
+    case let .popToRoot(toastMessage):
       view.popToRootViewController(animated: true)
+      toastMessage.flatMap { message in
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+          self.view.topViewController?.view.makeToast(message)
+        }
+      }
       return .none
     }
   }

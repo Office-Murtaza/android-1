@@ -12,6 +12,7 @@ class RootFlow: BaseFlow<UIWindow, RootFlowController> {
   enum Steps: Step, Equatable {
     case splash
     case login
+    case logout
     case pinCode(PinCodeStage, String? = nil)
     case main
   }
@@ -30,6 +31,10 @@ class RootFlow: BaseFlow<UIWindow, RootFlowController> {
     case .login:
       let loginFlow = LoginFlow(view: BTMNavigationController(), parent: self)
       return replaceRoot(with: loginFlow)
+    case .logout:
+      let loginFlow = LoginFlow(view: BTMNavigationController(), parent: self)
+      let toastMessage = localize(L.Unlink.unlinked)
+      return replaceRoot(with: loginFlow, step: LoginFlow.Steps.welcome(toastMessage))
     case let .pinCode(stage, pinCode):
       let module = resolver.resolve(Module<PinCodeModule>.self)!
       module.input.setup(for: stage)

@@ -55,7 +55,7 @@ extension SettingsFlowController: AboutModuleDelegate {}
 extension SettingsFlowController: UpdatePhoneFlowControllerDelegate {
   
   func didFinishUpdatePhoneFlow() {
-    step.accept(SettingsFlow.Steps.popToRoot)
+    step.accept(SettingsFlow.Steps.popToRoot(localize(L.UpdatePhone.phoneUpdated)))
   }
   
 }
@@ -63,7 +63,7 @@ extension SettingsFlowController: UpdatePhoneFlowControllerDelegate {
 extension SettingsFlowController: UpdatePasswordFlowControllerDelegate {
   
   func didFinishUpdatePasswordFlow() {
-    step.accept(SettingsFlow.Steps.popToRoot)
+    step.accept(SettingsFlow.Steps.popToRoot(localize(L.UpdatePassword.passwordUpdated)))
   }
   
 }
@@ -71,7 +71,7 @@ extension SettingsFlowController: UpdatePasswordFlowControllerDelegate {
 extension SettingsFlowController: UpdatePinFlowControllerDelegate {
   
   func didFinishUpdatePinFlow() {
-    step.accept(SettingsFlow.Steps.popToRoot)
+    step.accept(SettingsFlow.Steps.popToRoot(localize(L.UpdatePIN.pinUpdated)))
   }
   
 }
@@ -79,7 +79,7 @@ extension SettingsFlowController: UpdatePinFlowControllerDelegate {
 extension SettingsFlowController: KYCFlowControllerDelegate {
   
   func didFinishKYCFlow() {
-    step.accept(SettingsFlow.Steps.popToRoot)
+    step.accept(SettingsFlow.Steps.popToRoot(nil))
   }
   
 }
@@ -87,7 +87,7 @@ extension SettingsFlowController: KYCFlowControllerDelegate {
 extension SettingsFlowController: SeedPhraseFlowControllerDelegate {
   
   func didFinishSeedPhraseFlow() {
-    step.accept(SettingsFlow.Steps.popToRoot)
+    step.accept(SettingsFlow.Steps.popToRoot(nil))
   }
   
 }
@@ -95,7 +95,7 @@ extension SettingsFlowController: SeedPhraseFlowControllerDelegate {
 extension SettingsFlowController: UnlinkFlowControllerDelegate {
   
   func didFinishUnlinkFlow() {
-    step.accept(SettingsFlow.Steps.popToRoot)
+    step.accept(SettingsFlow.Steps.popToRoot(nil))
   }
   
 }

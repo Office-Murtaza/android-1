@@ -7,7 +7,7 @@ protocol LoginFlowControllerDelegate: class {
 
 final class LoginFlowController: FlowController, FlowActivator {
   
-  var initialStep: Step = LoginFlow.Steps.welcome
+  var initialStep: Step = LoginFlow.Steps.welcome(nil)
   
   var isCreatingAccount = true
   var password = ""
@@ -81,10 +81,6 @@ extension LoginFlowController: RecoverModuleDelegate {
 }
 
 extension LoginFlowController: RecoverSeedPhraseModuleDelegate {
-  
-  func cancelRecoveringSeedPhrase() {
-    step.accept(LoginFlow.Steps.backToWelcome)
-  }
   
   func finishRecoveringSeedPhrase() {
     step.accept(LoginFlow.Steps.pinCode(.setup))
