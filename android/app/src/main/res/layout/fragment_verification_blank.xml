@@ -8,6 +8,10 @@
     <ScrollView
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:focusable="true"
+        android:id="@+id/keyboardClickView"
+        android:clickable="true"
+        android:focusableInTouchMode="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -26,7 +30,6 @@
                 android:text="@string/verification_id_scan"
                 android:textColor="#58585a"
                 android:textSize="14sp"
-                android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/toolbarView" />
 
@@ -89,6 +92,7 @@
                     style="@style/VerificationBlankScreen.EditText"
                     android:hint="@string/verification_id_number"
                     android:inputType="text"
+                    android:maxLength="9"
                     android:nextFocusDown="@id/firstNameView" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -139,9 +143,7 @@
                     android:focusableInTouchMode="false"
                     android:hint="@string/verification_country"
                     android:inputType="textPostalAddress"
-                    android:nextFocusDown="@id/provinceView"
-                    android:paddingStart="4dp"
-                    android:paddingEnd="12dp" />
+                    android:nextFocusDown="@id/provinceView" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -155,9 +157,7 @@
                     android:focusableInTouchMode="false"
                     android:hint="@string/verification_province"
                     android:inputType="textPostalAddress"
-                    android:nextFocusDown="@id/zipCodeView"
-                    android:paddingStart="4dp"
-                    android:paddingEnd="12dp" />
+                    android:nextFocusDown="@id/zipCodeView"/>
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -171,9 +171,7 @@
                     android:focusableInTouchMode="false"
                     android:hint="@string/verification_city"
                     android:inputType="textPostalAddress"
-                    android:nextFocusDown="@id/countryView"
-                    android:paddingStart="4dp"
-                    android:paddingEnd="12dp" />
+                    android:nextFocusDown="@id/countryView"/>
 
             </com.google.android.material.textfield.TextInputLayout>
 

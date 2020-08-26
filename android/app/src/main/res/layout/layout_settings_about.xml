@@ -36,7 +36,7 @@
         android:id="@+id/supportItem"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:text="@string/about_label" />
+        app:text="@string/support_label" />
 
     <View
         android:layout_width="match_parent"

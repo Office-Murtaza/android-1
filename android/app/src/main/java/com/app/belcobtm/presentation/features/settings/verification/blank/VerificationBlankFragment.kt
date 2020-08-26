@@ -73,6 +73,10 @@ class VerificationBlankFragment : BaseFragment(), BottomSheetImagePicker.OnImage
     }
 
     override fun initListeners() {
+        keyboardClickView.setOnTouchListener { view, motionEvent ->
+            hideKeyboard()
+            true
+        }
         selectImageButtonView.setOnClickListener {
             showFilePickerWithPermissionCheck()
         }
@@ -260,7 +264,7 @@ class VerificationBlankFragment : BaseFragment(), BottomSheetImagePicker.OnImage
     }
 
     private fun validateIdNumber(): Boolean {
-        return if (idNumberView.getString().length > 9) {
+        return if (idNumberView.getString().length <= 9) {
             idNumberView.isErrorEnabled = true
             idNumberView.error = getString(R.string.id_number_validation_text)
             false

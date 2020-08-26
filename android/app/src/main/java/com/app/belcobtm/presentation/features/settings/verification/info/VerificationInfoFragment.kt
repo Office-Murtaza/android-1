@@ -42,7 +42,7 @@ class VerificationInfoFragment: BaseFragment() {
                     showContent()
                 }
                 state.isButtonEnabled.doIfChanged(appliedState?.commonData?.isButtonEnabled) {
-                    nextButton.isEnabled = it
+                    nextButton.toggle(it)
                 }
                 state.buttonText.doIfChanged(appliedState?.commonData?.buttonText) {
                     nextButton.setText(it)
