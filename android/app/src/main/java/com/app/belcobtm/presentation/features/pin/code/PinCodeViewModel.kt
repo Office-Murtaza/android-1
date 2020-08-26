@@ -7,7 +7,6 @@ import com.app.belcobtm.domain.authorization.interactor.AuthorizeUseCase
 import com.app.belcobtm.domain.authorization.interactor.GetAuthorizePinUseCase
 import com.app.belcobtm.domain.authorization.interactor.SaveAuthorizePinUseCase
 import com.app.belcobtm.presentation.core.SingleLiveData
-import com.app.belcobtm.presentation.core.mvvm.LoadingData
 import com.app.belcobtm.presentation.features.pin.code.PinCodeFragment.Companion.KEY_PIN_MODE_CHANGE
 import com.app.belcobtm.presentation.features.pin.code.PinCodeFragment.Companion.KEY_PIN_MODE_CREATE
 import com.app.belcobtm.presentation.features.pin.code.PinCodeFragment.Companion.KEY_PIN_MODE_ENTER
@@ -93,11 +92,15 @@ class PinCodeViewModel(
     }
 
     fun onBackClick() {
-        currentPin = ""
-        enteredPin = ""
-        isError = false
-        step--
-        updateState()
+        if (step > STEP_VERIFY) {
+            currentPin = ""
+            enteredPin = ""
+            isError = false
+            step--
+            updateState()
+        } else {
+            actionData.postValue(PinCodeAction.BackPress)
+        }
     }
 
     private fun validateOnChange() {
@@ -147,7 +150,8 @@ class PinCodeViewModel(
 
     private fun matchedPin() {
         when {
-            mode == KEY_PIN_MODE_ENTER || mode == KEY_PIN_MODE_CREATE -> actionData.value = PinCodeAction.Success
+            mode == KEY_PIN_MODE_ENTER || mode == KEY_PIN_MODE_CREATE -> actionData.value =
+                PinCodeAction.Success
             mode == KEY_PIN_MODE_CHANGE -> actionData.value = PinCodeAction.ChangedPin
         }
     }
@@ -166,7 +170,7 @@ class PinCodeViewModel(
             visiblePin = currentPin,
             labelResource = getTitleRes(),
             isError = isError,
-            backButtonVisible = step == STEP_CONFIRM || (step == STEP_CREATE && mode == KEY_PIN_MODE_CHANGE)
+            backButtonVisible = mode == KEY_PIN_MODE_CHANGE || step == STEP_CONFIRM
         ) ?: PinCodeState()
     }
 
@@ -196,4 +200,5 @@ sealed class PinCodeAction {
     object Success : PinCodeAction()
     object ChangedPin : PinCodeAction()
     object AuthorizeError : PinCodeAction()
+    object BackPress : PinCodeAction()
 }
