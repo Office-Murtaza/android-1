@@ -1,5 +1,6 @@
 package com.app.belcobtm.presentation.di
 
+import com.app.belcobtm.domain.atm.interactor.GetAtmsUseCase
 import com.app.belcobtm.domain.authorization.interactor.*
 import com.app.belcobtm.domain.settings.interactor.*
 import com.app.belcobtm.domain.tools.interactor.OldSendSmsToDeviceUseCase
@@ -65,4 +66,5 @@ val useCaseModule = module {
     single { ChangePassUseCase(get()) }
     single { GetPhoneUseCase(get()) }
     single { UpdatePhoneUseCase(get()) }
+    single { GetAtmsUseCase(get()) }
 }
