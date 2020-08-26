@@ -13,11 +13,9 @@ import com.app.belcobtm.presentation.core.mvvm.LoadingData
 import com.app.belcobtm.presentation.core.ui.fragment.BaseFragment
 import com.kroegerama.imgpicker.BottomSheetImagePicker
 import com.kroegerama.imgpicker.ButtonType
-import kotlinx.android.synthetic.main.fragment_verification_blank.*
 import kotlinx.android.synthetic.main.fragment_verification_vip.*
 import kotlinx.android.synthetic.main.fragment_verification_vip.imageContainer
 import kotlinx.android.synthetic.main.fragment_verification_vip.imageView
-import kotlinx.android.synthetic.main.fragment_verification_vip.keyboardClickView
 import kotlinx.android.synthetic.main.fragment_verification_vip.photoErrorView
 import kotlinx.android.synthetic.main.fragment_verification_vip.removeImageButtonView
 import kotlinx.android.synthetic.main.fragment_verification_vip.selectImageButtonView
@@ -63,9 +61,6 @@ class VerificationVipFragment : BaseFragment(), BottomSheetImagePicker.OnImagesS
     }
 
     override fun initListeners() {
-        keyboardClickView.setOnClickListener {
-            hideKeyboard()
-        }
         selectImageButtonView.setOnClickListener {
             showFilePickerWithPermissionCheck()
         }
