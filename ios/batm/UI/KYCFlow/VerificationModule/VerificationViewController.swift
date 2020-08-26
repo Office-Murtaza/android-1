@@ -115,6 +115,30 @@ final class VerificationViewController: ModuleViewController<VerificationPresent
       .bind(to: formView.rx.countryText)
       .disposed(by: disposeBag)
     
+    let emptyCountryDriver = presenter.state
+      .asObservable()
+      .map { $0.country.count > 0 }
+    
+    emptyCountryDriver
+      .bind(to: formView.fakeProvinceTextField.rx.isEnabled)
+      .disposed(by: disposeBag)
+    
+    emptyCountryDriver
+      .bind(to: formView.provinceTextField.rx.isEnabled)
+      .disposed(by: disposeBag)
+    
+    let emptyProvinceDriver = presenter.state
+      .asObservable()
+      .map { $0.province.count > 0 }
+    
+    emptyProvinceDriver
+      .bind(to: formView.fakeCityTextField.rx.isEnabled)
+      .disposed(by: disposeBag)
+    
+    emptyProvinceDriver
+      .bind(to: formView.cityTextField.rx.isEnabled)
+      .disposed(by: disposeBag)
+    
     presenter.state
       .asObservable()
       .map { $0.province }

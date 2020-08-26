@@ -6,5 +6,5 @@ protocol SecurityModuleDelegate: class {
   func didSelectUpdatePassword()
   func didSelectUpdatePIN(_ pinCode: String)
   func didSelectSeedPhrase()
-  func didSelectUnlinkWallet()
+  func didSelectUnlink()
 }

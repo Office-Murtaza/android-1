@@ -2,30 +2,7 @@ import UIKit
 import RxSwift
 import RxCocoa
 
-class KYCHeaderView: UIView {
-  
-  static var defaultVerticalStackView: UIStackView {
-    let stackView = UIStackView()
-    stackView.axis = .vertical
-    stackView.alignment = .leading
-    stackView.spacing = 15
-    return stackView
-  }
-  
-  static func defaultTitleLabel(_ title: String) -> UILabel {
-    let label = UILabel()
-    label.text = title
-    label.textColor = .slateGrey
-    label.font = UIFont.systemFont(ofSize: 16, weight: .medium)
-    return label
-  }
-  
-  static var defaultValueLabel: UILabel {
-    let label = UILabel()
-    label.textColor = .warmGrey
-    label.font = UIFont.systemFont(ofSize: 16, weight: .medium)
-    return label
-  }
+class HeaderView: UIView {
   
   let mainStackView: UIStackView = {
     let stackView = UIStackView()
@@ -34,20 +11,21 @@ class KYCHeaderView: UIView {
     return stackView
   }()
   
-  let titleStackView = defaultVerticalStackView
-  let valueStackView = defaultVerticalStackView
+  let titleStackView: UIStackView = {
+    let stackView = UIStackView()
+    stackView.axis = .vertical
+    stackView.alignment = .leading
+    stackView.spacing = 15
+    return stackView
+  }()
   
-  let statusTitleView = UIView()
-  let statusTitleLabel = defaultTitleLabel(localize(L.KYC.Header.Status.title))
-  let statusValueLabel = KYCStatusView()
-  
-  let transactionLimitTitleView = UIView()
-  let transactionLimitTitleLabel = defaultTitleLabel(localize(L.KYC.Header.TransactionLimit.title))
-  let transactionLimitValueLabel = defaultValueLabel
-  
-  let dailyLimitTitleView = UIView()
-  let dailyLimitTitleLabel = defaultTitleLabel(localize(L.KYC.Header.DailyLimit.title))
-  let dailyLimitValueLabel = defaultValueLabel
+  let valueStackView: UIStackView = {
+    let stackView = UIStackView()
+    stackView.axis = .vertical
+    stackView.alignment = .leading
+    stackView.spacing = 15
+    return stackView
+  }()
   
   override init(frame: CGRect) {
     super.init(frame: frame)
@@ -67,43 +45,48 @@ class KYCHeaderView: UIView {
     
     mainStackView.addArrangedSubviews(titleStackView,
                                       valueStackView)
-    
-    statusTitleView.addSubview(statusTitleLabel)
-    transactionLimitTitleView.addSubview(transactionLimitTitleLabel)
-    dailyLimitTitleView.addSubview(dailyLimitTitleLabel)
-    
-    titleStackView.addArrangedSubviews(statusTitleView,
-                                       transactionLimitTitleView,
-                                       dailyLimitTitleView)
-    
-    valueStackView.addArrangedSubviews(statusValueLabel,
-                                       transactionLimitValueLabel,
-                                       dailyLimitValueLabel)
   }
   
   private func setupLayout() {
     mainStackView.snp.makeConstraints {
       $0.edges.equalToSuperview()
     }
+  }
+  
+  func removeAll() {
+    titleStackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
+    valueStackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
+  }
+  
+  func add(title: String, valueView: UIView) {
+    let titleView = UIView()
     
-    [statusTitleLabel,
-     transactionLimitTitleLabel,
-     dailyLimitTitleLabel].forEach {
-      $0.snp.makeConstraints {
-        $0.top.left.right.equalToSuperview()
-      }
+    let titleLabel = UILabel()
+    titleLabel.text = title
+    titleLabel.textColor = .warmGrey
+    titleLabel.font = UIFont.systemFont(ofSize: 16, weight: .medium)
+    
+    titleView.addSubview(titleLabel)
+    
+    titleLabel.snp.makeConstraints {
+      $0.top.left.right.equalToSuperview()
     }
     
-    titleStackView.arrangedSubviews.enumerated().forEach { index, subview in
-      subview.snp.makeConstraints {
-        $0.height.equalTo(valueStackView.arrangedSubviews[index])
-      }
+    titleStackView.addArrangedSubview(titleView)
+    valueStackView.addArrangedSubview(valueView)
+    
+    titleView.snp.makeConstraints {
+      $0.height.equalTo(valueView)
     }
   }
   
-  func configure(for kyc: KYC) {
-    statusValueLabel.configure(for: kyc.status)
-    transactionLimitValueLabel.text = kyc.txLimit.fiatSellFormatted.withUSD
-    dailyLimitValueLabel.text = kyc.dailyLimit.fiatSellFormatted.withUSD
+  func add(title: String, value: String, applyStyle: ((UILabel) -> Void)? = nil) {
+    let valueLabel = UILabel()
+    valueLabel.text = value
+    valueLabel.textColor = .slateGrey
+    valueLabel.font = UIFont.systemFont(ofSize: 16, weight: .medium)
+    applyStyle?(valueLabel)
+    
+    add(title: title, valueView: valueLabel)
   }
 }

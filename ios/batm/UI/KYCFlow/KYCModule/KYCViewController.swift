@@ -8,7 +8,7 @@ final class KYCViewController: ModuleViewController<KYCPresenter> {
   
   let rootScrollView = RootScrollView()
   
-  let headerView = KYCHeaderView()
+  let headerView = HeaderView()
   
   let infoView: InfoView = {
     let view = InfoView()
@@ -57,9 +57,17 @@ final class KYCViewController: ModuleViewController<KYCPresenter> {
   }
   
   private func update(with kyc: KYC) {
-    headerView.configure(for: kyc)
+    let statusView = KYCStatusView()
+    statusView.configure(for: kyc.status)
+    
+    headerView.removeAll()
+    headerView.add(title: localize(L.KYC.Header.Status.title), valueView: statusView)
+    headerView.add(title: localize(L.KYC.Header.TransactionLimit.title), value: kyc.txLimit.fiatSellFormatted.withUSD)
+    headerView.add(title: localize(L.KYC.Header.DailyLimit.title), value: kyc.dailyLimit.fiatSellFormatted.withUSD)
+    
     infoView.isHidden = kyc.message == nil
     infoView.setup(with: kyc.message ?? "")
+    
     verifyButton.isHidden = !kyc.status.needAnyVerification
     
     if kyc.status.needVerification {

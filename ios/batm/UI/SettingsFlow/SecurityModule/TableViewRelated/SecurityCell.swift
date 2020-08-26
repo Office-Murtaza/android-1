@@ -5,7 +5,7 @@ enum SecurityCellType: CaseIterable, SettingsCellTypeRepresentable {
   case updatePassword
   case updatePIN
   case seedPhrase
-  case unlinkWallet
+  case unlink
 
   var title: String {
     switch self {
@@ -13,7 +13,7 @@ enum SecurityCellType: CaseIterable, SettingsCellTypeRepresentable {
     case .updatePassword: return localize(L.Security.Cell.updatePassword)
     case .updatePIN: return localize(L.Security.Cell.updatePIN)
     case .seedPhrase: return localize(L.Security.Cell.seedPhrase)
-    case .unlinkWallet: return localize(L.Security.Cell.unlinkWallet)
+    case .unlink: return localize(L.Security.Cell.unlink)
     }
   }
 
@@ -23,7 +23,7 @@ enum SecurityCellType: CaseIterable, SettingsCellTypeRepresentable {
     case .updatePassword: return UIImage(named: "security_password")
     case .updatePIN: return UIImage(named: "security_pin")
     case .seedPhrase: return UIImage(named: "security_seed_phrase")
-    case .unlinkWallet: return UIImage(named: "security_unlink")
+    case .unlink: return UIImage(named: "security_unlink")
     }
   }
 }

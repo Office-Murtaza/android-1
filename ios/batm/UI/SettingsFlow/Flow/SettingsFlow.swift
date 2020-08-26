@@ -20,7 +20,7 @@ class SettingsFlow: BaseFlow<BTMNavigationController, SettingsFlowController> {
     case updatePassword
     case updatePIN(String)
     case seedPhrase
-    case unlinkWallet
+    case unlink
     case popToRoot(String?)
   }
   
@@ -60,7 +60,7 @@ class SettingsFlow: BaseFlow<BTMNavigationController, SettingsFlowController> {
       let flow = SeedPhraseFlow(view: view, parent: self)
       let step = SeedPhraseFlow.Steps.enterPassword
       return next(flow: flow, step: step)
-    case .unlinkWallet:
+    case .unlink:
       let flow = UnlinkFlow(view: view, parent: self)
       let step = UnlinkFlow.Steps.unlink
       return next(flow: flow, step: step)

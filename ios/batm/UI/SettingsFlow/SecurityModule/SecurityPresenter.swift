@@ -27,7 +27,7 @@ class SecurityPresenter: ModulePresenter, SecurityModule {
         case .updatePassword: delegate?.didSelectUpdatePassword()
         case .updatePIN: self.fetchPinCode()
         case .seedPhrase: delegate?.didSelectSeedPhrase()
-        case .unlinkWallet: delegate?.didSelectUnlinkWallet()
+        case .unlink: delegate?.didSelectUnlink()
         }
       })
       .disposed(by: disposeBag)

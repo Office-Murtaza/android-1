@@ -640,7 +640,7 @@ extension L.Security {
 
   struct Cell {
     static let seedPhrase = "security.cell.seed_phrase"
-    static let unlinkWallet = "security.cell.unlink_wallet"
+    static let unlink = "security.cell.unlink"
     static let updatePIN = "security.cell.update_p_i_n"
     static let updatePassword = "security.cell.update_password"
     static let updatePhone = "security.cell.update_phone"
