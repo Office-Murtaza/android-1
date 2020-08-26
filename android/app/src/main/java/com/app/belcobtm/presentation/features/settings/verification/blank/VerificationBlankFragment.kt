@@ -80,7 +80,6 @@ class VerificationBlankFragment : BaseFragment(), BottomSheetImagePicker.OnImage
             showFilePickerWithPermissionCheck()
         }
         verifyButtonView.setOnClickListener { sendBlank() }
-        addressView.actionDoneListener { sendBlank() }
 
         removeImageButtonView.setOnClickListener {
             viewModel.fileUri = null
