@@ -1,15 +1,15 @@
 package com.app.belcobtm.data.rest.atm.response
 
 data class AtmResponse(
-    val addresses: ArrayList<AtmAddress>
+    val addresses: List<AtmAddress>
 ) {
     data class AtmAddress(
-        val address: String,
         val id: Int,
-        val latitude: Double,
         val name: String,
+        val address: String,
+        val latitude: Double,
         val longitude: Double,
-        val hours: ArrayList<OpenHour>
+        val hours: List<OpenHour>
     ) {
         data class OpenHour(
             val days: String,

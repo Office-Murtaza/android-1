@@ -10,6 +10,7 @@ import com.app.belcobtm.data.disk.AssetsDataStore
 import com.app.belcobtm.data.disk.database.AppDatabase
 import com.app.belcobtm.data.disk.shared.preferences.SharedPreferencesHelper
 import com.app.belcobtm.data.rest.ApiFactory
+import com.app.belcobtm.data.rest.atm.AtmApiService
 import com.app.belcobtm.data.rest.authorization.AuthApiService
 import com.app.belcobtm.data.rest.interceptor.BaseInterceptor
 import com.app.belcobtm.data.rest.interceptor.LogInterceptor
@@ -49,4 +50,5 @@ val dataModule = module {
     }
     single { (get() as AppDatabase).getCoinDao() }
     single<IntentActions> { IntentActionsImpl(get()) }
+    single { AtmApiService((get() as ApiFactory).atmApi) }
 }

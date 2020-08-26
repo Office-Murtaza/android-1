@@ -1,12 +1,12 @@
 package com.app.belcobtm.data.rest.atm
 
-import com.app.belcobtm.api.model.ServerResponse
-import com.app.belcobtm.api.model.response.AtmResponse
-import io.reactivex.Observable
+import com.app.belcobtm.data.rest.atm.response.AtmResponse
+import kotlinx.coroutines.Deferred
+import retrofit2.Response
 import retrofit2.http.GET
 
 interface AtmApi {
 
     @GET("terminal/locations")
-    fun getAtmAddress(): Observable<ServerResponse<AtmResponse>>
+    fun getAtmAddress(): Deferred<Response<AtmResponse>>
 }

@@ -8,7 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import androidx.appcompat.widget.AppCompatTextView
 import com.app.belcobtm.R
-import com.app.belcobtm.api.model.response.AtmResponse
+import com.app.belcobtm.data.rest.atm.response.AtmResponse
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.Marker
 import kotlinx.android.synthetic.main.atm_info_window.view.*
@@ -22,11 +22,11 @@ class AtmInfoWindowAdapter(val context: Context) : GoogleMap.InfoWindowAdapter {
 
         val atmAddress = marker.tag as AtmResponse.AtmAddress
 
-        view.atm_name.text = atmAddress.locationName
+        view.atm_name.text = atmAddress.name
         view.atm_address.text = atmAddress.address
 
         view.atm_open_hours_container.removeAllViews()
-        atmAddress.openHours.forEach { openHour ->
+        atmAddress.hours.forEach { openHour ->
             val openHourText = getOpenHoursColorText(openHour.days, openHour.hours)
             val textView = AppCompatTextView(context)
             textView.text = openHourText

@@ -1,6 +1,7 @@
 package com.app.belcobtm.presentation.features.atm
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.Context
 import android.location.Criteria
 import android.location.Location
@@ -9,6 +10,7 @@ import android.location.LocationManager
 import android.os.Bundle
 import android.view.View
 import com.app.belcobtm.R
+import com.app.belcobtm.data.rest.atm.response.AtmResponse
 import com.app.belcobtm.presentation.core.helper.AlertHelper
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
 import com.app.belcobtm.presentation.core.ui.fragment.BaseFragment
@@ -32,12 +34,15 @@ class AtmFragment : BaseFragment()
     private val viewModel by viewModel<AtmViewModel>()
 
     override val resourceLayout = R.layout.fragment_atm
+    override val isMenuEnabled = true
+    override val isToolbarEnabled = false
 
     private var map: GoogleMap? = null
     private var locationManager: LocationManager? = null
-    private var appliedState: LoadingData<AtmState>? = null
+    private var appliedState: LoadingData<List<AtmResponse.AtmAddress>>? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         val mapFragment = childFragmentManager
             .findFragmentById(com.app.belcobtm.R.id.map) as SupportMapFragment?
         mapFragment?.getMapAsync(this)
@@ -51,7 +56,7 @@ class AtmFragment : BaseFragment()
         super.initObservers()
         viewModel.stateData.listen(
             success = {state ->
-                state.atms.doIfChanged(appliedState?.commonData?.atms) {
+                state.doIfChanged(appliedState?.commonData) {
                     initMarkers(it)
                 }
             },
@@ -66,17 +71,18 @@ class AtmFragment : BaseFragment()
         this.map?.setInfoWindowAdapter(AtmInfoWindowAdapter(requireContext()))
         this.map?.setOnInfoWindowClickListener(this)
 
-        onLocationPermissionGranted()
+        onLocationPermissionGrantedWithPermissionCheck()
 
         viewModel.requestAtms()
     }
 
+    @SuppressLint("MissingPermission")
     @NeedsPermission(
         Manifest.permission.READ_EXTERNAL_STORAGE,
         Manifest.permission.WRITE_EXTERNAL_STORAGE,
         Manifest.permission.CAMERA
     )
-    private fun onLocationPermissionGranted() {
+    fun onLocationPermissionGranted() {
         this.map?.isMyLocationEnabled = true
         locationManager =
             activity?.getSystemService(Context.LOCATION_SERVICE) as LocationManager
@@ -128,13 +134,13 @@ class AtmFragment : BaseFragment()
 
     override fun onProviderDisabled(provider: String?) {}
 
-    private fun initMarkers(atms: List<AtmItem>) {
+    private fun initMarkers(atms: List<AtmResponse.AtmAddress>) {
         if (map != null) {
             atms.forEach { atmItem ->
                 val marker = map?.addMarker(
                     MarkerOptions()
-                        .position(atmItem.latLng)
-                        .title(atmItem.title)
+                        .position(LatLng(atmItem.latitude, atmItem.longitude))
+                        .title(atmItem.name)
                 )
                 marker?.tag = atmItem
             }
