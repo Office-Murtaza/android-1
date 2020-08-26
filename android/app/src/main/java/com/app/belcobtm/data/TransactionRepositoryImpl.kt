@@ -95,14 +95,7 @@ class TransactionRepositoryImpl(
         return if (giftAddressResponse.isRight) {
             val coinType = LocalCoinType.valueOf(fromCoin)
             val toAddress = (giftAddressResponse as Either.Right).b
-            val hashResponse = transactionHashRepository.createTransactionHash(coinType, fromCoinAmount, toAddress)
-            if (hashResponse.isRight) {
-                val sendSmsToDeviceResponse = toolsRepository.sendSmsToDeviceOld()
-                if (sendSmsToDeviceResponse.isRight) hashResponse as Either.Right
-                else sendSmsToDeviceResponse as Either.Left
-            } else {
-                hashResponse as Either.Left
-            }
+            transactionHashRepository.createTransactionHash(coinType, fromCoinAmount, toAddress)
         } else {
             giftAddressResponse as Either.Left
         }
