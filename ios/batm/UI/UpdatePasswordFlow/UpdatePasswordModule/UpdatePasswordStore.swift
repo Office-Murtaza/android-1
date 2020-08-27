@@ -69,7 +69,7 @@ final class UpdatePasswordStore: ViewStore<UpdatePasswordAction, UpdatePasswordS
       let errorString = localize(L.CreateWallet.Form.Error.fieldRequired)
       state.newPasswordError = errorString
       state.validationState = .invalid(errorString)
-    } else if state.newPassword.count < 6 || state.newPassword.count > 20 {
+    } else if state.newPassword.count < 6 || state.newPassword.count > 15 {
       let errorString = localize(L.CreateWallet.Form.Error.notValidPassword)
       state.newPasswordError = errorString
       state.validationState = .invalid(errorString)

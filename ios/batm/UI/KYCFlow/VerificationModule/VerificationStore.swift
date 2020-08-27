@@ -126,7 +126,11 @@ final class VerificationStore: ViewStore<VerificationAction, VerificationState> 
       state.city = city ?? ""
       state.cityError = nil
     case let .updateZipCode(zipCode):
-      state.zipCode = zipCode ?? ""
+      if let zipCode = zipCode?.prefix(5) {
+        state.zipCode = String(zipCode)
+      } else {
+        state.zipCode = ""
+      }
       state.zipCodeError = nil
     case let .updateImageError(imageError): state.imageError = imageError
     case let .updateIDNumberError(idNumberError): state.idNumberError = idNumberError
@@ -166,7 +170,7 @@ final class VerificationStore: ViewStore<VerificationAction, VerificationState> 
       state.idNumberError = nil
     }
     
-    if state.firstName.count == 0 || state.firstName.count > 255 || state.firstName.rangeOfCharacter(from: CharacterSet.letters.inverted) != nil {
+    if state.firstName.count == 0 || state.firstName.count > 255 {
       let errorString = localize(L.Verification.Form.Error.notValidFirstName)
       state.validationState = .invalid(errorString)
       state.firstNameError = errorString
@@ -174,7 +178,7 @@ final class VerificationStore: ViewStore<VerificationAction, VerificationState> 
       state.firstNameError = nil
     }
     
-    if state.lastName.count == 0 || state.lastName.count > 255 || state.lastName.rangeOfCharacter(from: CharacterSet.letters.inverted) != nil {
+    if state.lastName.count == 0 || state.lastName.count > 255 {
       let errorString = localize(L.Verification.Form.Error.notValidLastName)
       state.validationState = .invalid(errorString)
       state.lastNameError = errorString

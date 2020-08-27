@@ -176,6 +176,10 @@ extension String {
     return self.appending(" USD")
   }
   
+  var withDollarSign: String {
+    return self.appending(" $")
+  }
+  
   var intValue: Int? {
     return Int(self)
   }

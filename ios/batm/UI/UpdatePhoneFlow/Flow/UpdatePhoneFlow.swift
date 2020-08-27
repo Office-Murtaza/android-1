@@ -40,7 +40,7 @@ class UpdatePhoneFlow: BaseFlow<BTMNavigationController, UpdatePhoneFlowControll
       return replaceLast(module.controller)
     case let .verifyPhone(phoneNumber):
       let module = resolver.resolve(Module<PhoneVerificationModule>.self)!
-      module.input.setup(phoneNumber: phoneNumber, for: .update)
+      module.input.setup(phoneNumber: phoneNumber, for: .updating)
       return replaceLast(module.controller)
     }
   }
