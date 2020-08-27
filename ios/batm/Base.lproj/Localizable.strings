@@ -22,6 +22,9 @@
 "shared.button.done" = "Done";
 "shared.button.go_back" = "Go Back";
 "shared.button.retry" = "Retry";
+"shared.button.update" = "Update";
+"shared.button.unlink" = "Unlink";
+"shared.button.send" = "Send";
 "shared.error.title" = "Error";
 "shared.error.message" = "Server error, try again later";
 "shared.error.no_connection.message" = "No Internet Connection";
@@ -47,7 +50,7 @@
 "create_wallet.form.error.field_required" = "This field is required";
 "create_wallet.form.error.not_valid_phone_number" = "Incorrect phone number";
 "create_wallet.form.error.existed_phone_number" = "Phone is already registered";
-"create_wallet.form.error.not_valid_password" = "Password length should be from 6 to 15";
+"create_wallet.form.error.not_valid_password" = "Password length should be from 6 to 20";
 "create_wallet.form.error.not_equal_passwords" = "Passwords do not match";
 
 "phone_verification.title" = "Verify phone";
@@ -67,9 +70,12 @@
 "recover_seed_phrase.annotation" = "Enter your secret 12-word phrase here to restore your wallet";
 "recover_seed_phrase.form.error.not_valid_length" = "Seed phrase must be 12 words";
 
-"pin_code.setup.title" = "Setup PIN";
-"pin_code.confirmation.title" = "Confirm PIN";
-"pin_code.verification.title" = "Enter PIN";
+"pin_code.stage.setup.title" = "Enter%@PIN";
+"pin_code.stage.confirmation.title" = "Confirm%@PIN";
+"pin_code.stage.verification.title" = "Enter%@PIN";
+"pin_code.pin_type.old.title" = " old ";
+"pin_code.pin_type.current.title" = " ";
+"pin_code.pin_type.new.title" = " new ";
 
 "coins_balance.title" = "Wallet";
 "coins_balance.total_balance" = "Total Balance:";
@@ -83,78 +89,89 @@
 "atm.info_window.open_now" = "Open Now:";
 
 "settings.title" = "Settings";
-"settings.change_phone" = "Change Phone";
-"settings.change_password" = "Change Password";
-"settings.change_pin" = "Change PIN";
-"settings.verification" = "Verification";
-"settings.show_seed_phrase" = "Show Seed Phrase";
-"settings.unlink_wallet" = "Unlink Wallet";
+"settings.cell.security" = "Security";
+"settings.cell.kyc" = "KYC";
+"settings.cell.about" = "About";
 
-"show_phone.title" = "Phone";
+"security.title" = "Security";
+"security.cell.update_phone" = "Update phone";
+"security.cell.update_password" = "Update password";
+"security.cell.update_p_i_n" = "Update PIN";
+"security.cell.seed_phrase" = "Seed phrase";
+"security.cell.unlink" = "Unlink";
 
-"enter_password.title" = "Enter Password";
+"about.title" = "About";
+"about.cell.terms_and_conditions" = "Terms & Conditions";
+"about.cell.support" = "Support";
+"about.cell.version" = "Version";
+
+"show_phone.title" = "Update phone";
+
 "enter_password.form.error.wrong_password" = "Wrong password";
+"enter_password.form.password.placeholder" = "Password";
 
-"change_phone.title" = "Change Phone";
+"update_phone.title" = "Update phone";
+"update_phone.form.phone.placeholder" = "New phone number";
+"update_phone.form.error.phone_used" = "Phone already is used";
+"update_phone.form.error.same_phone" = "New phone is the same as the old one";
+"update_phone.phone_updated" = "Phone was successfully updated";
 
-"change_password.title" = "Change Password";
-"change_password.form.old_password.placeholder" = "Old Password *";
-"change_password.form.new_password.placeholder" = "New Password *";
-"change_password.form.confirm_new_password.placeholder" = "Confirm New Password *";
+"update_password.title" = "Update password";
+"update_password.form.old_password.placeholder" = "Old password";
+"update_password.form.new_password.placeholder" = "New password";
+"update_password.form.confirm_new_password.placeholder" = "Confirm new password";
+"update_password.form.error.same_password" = "New password is the same as the old one";
+"update_password.password_updated" = "Password was successfully updated";
 
-"change_pin.title" = "Change PIN";
-"change_pin.form.old_pin.placeholder" = "Old PIN *";
-"change_pin.form.new_pin.placeholder" = "New PIN *";
-"change_pin.form.confirm_new_pin.placeholder" = "Confirm New PIN *";
-"change_pin.form.error.wrong_length" = "PIN should contain 6 digits";
-"change_pin.form.error.not_equal_pins" = "PINs do not match";
-"change_pin.form.error.not_match" = "Wrong old PIN";
+"update_p_i_n.pin_updated" = "PIN was successfully updated";
 
-"verification_info.title" = "Verification";
-"verification_info.tx_limit_row.title" = "Tx Limit";
-"verification_info.daily_limit_row.title" = "Daily Limit";
-"verification_info.tx_limit_row.title" = "Tx Limit";
-"verification_info.status_row.title" = "Status";
-"verification_info.status_row.value.unknown" = "Unknown";
-"verification_info.status_row.value.not_verified" = "Not Verified";
-"verification_info.status_row.value.verification_pending" = "Verification Pending";
-"verification_info.status_row.value.verification_rejected" = "Verification Rejected";
-"verification_info.status_row.value.verified" = "Verified";
-"verification_info.status_row.value.vip_verification_pending" = "VIP Verification Pending";
-"verification_info.status_row.value.vip_verification_rejected" = "VIP Verification Rejected";
-"verification_info.status_row.value.vip_verified" = "VIP Verified";
-"verification_info.button.verify" = "Verify";
-"verification_info.button.vip_verify" = "VIP Verify";
+"unlink.title" = "Unlink";
+"unlink.annotation" = "Make sure you stored your credentials and seed phrase before unlinking the wallet, otherwise, you would lose all assets.";
+"unlink.unlinked" = "Wallet was successfully deleted from the device";
 
-"verification.title" = "Verification";
-"verification.id_scan" = "ID Scan";
-"verification.form.i_d_number.placeholder" = "ID Number *";
-"verification.form.first_name.placeholder" = "First Name *";
-"verification.form.last_name.placeholder" = "Last Name *";
-"verification.form.address.placeholder" = "Address *";
-"verification.form.country.placeholder" = "Country *";
-"verification.form.province.placeholder" = "Province *";
-"verification.form.city.placeholder" = "City *";
-"verification.form.zip_code.placeholder" = "Zip Code *";
-"verification.form.error.id_scan_required" = "ID Scan is required";
-"verification.form.error.image_broken" = "Image is broken";
-"verification.form.error.zip_code_wrong_length" = "Zip Code should contain 5 digits";
+"k_y_c.title" = "KYC";
+"k_y_c.header.status.title" = "Status";
+"k_y_c.header.transaction_limit.title" = "Transaction Limit";
+"k_y_c.header.daily_limit.title" = "Daily Limit";
+"k_y_c.header.status.value.unknown" = "Unknown";
+"k_y_c.header.status.value.not_verified" = "Not verified";
+"k_y_c.header.status.value.verification_pending" = "Verification pending";
+"k_y_c.header.status.value.verification_rejected" = "Verification rejected";
+"k_y_c.header.status.value.verified" = "Verified";
+"k_y_c.header.status.value.vip_verification_pending" = "VIP verification pending";
+"k_y_c.header.status.value.vip_verification_rejected" = "VIP verification rejected";
+"k_y_c.header.status.value.vip_verified" = "VIP verified";
+"k_y_c.button.verify" = "Verify";
+"k_y_c.button.vip_verify" = "VIP Verify";
+
+"verification.title" = "Verify";
+"verification.id_scan" = "ID scan";
+"verification.form.i_d_number.placeholder" = "ID number";
+"verification.form.first_name.placeholder" = "First name";
+"verification.form.last_name.placeholder" = "Last name";
+"verification.form.address.placeholder" = "Address";
+"verification.form.country.placeholder" = "Country";
+"verification.form.province.placeholder" = "Province";
+"verification.form.city.placeholder" = "City";
+"verification.form.zip_code.placeholder" = "ZIP code";
+"verification.form.error.id_scan_required" = "Please, upload ID scan image";
+"verification.form.error.image_broken" = "ID scan image is broken";
+"verification.form.error.not_valid_id_number" = "ID number should be up to 9 numbers and letters";
+"verification.form.error.not_valid_first_name" = "First name should be up to 255 letters";
+"verification.form.error.not_valid_last_name" = "Last name should be up to 255 letters";
+"verification.form.error.not_valid_address" = "Address should be up to 255 numbers and letters";
+"verification.form.error.country_required" = "Please, provide the country";
+"verification.form.error.province_required" = "Please, provide the province";
+"verification.form.error.city_required" = "Please, provide the city";
+"verification.form.error.not_valid_zip_code" = "ZIP code should be 5 digits";
 "verification.picker.title" = "Upload Photo";
 "verification.picker.camera_option.title" = "Take Photo";
 "verification.picker.library_option.title" = "Photo Library";
 
-"v_i_p_verification.title" = "VIP Verification";
-"v_i_p_verification.id_selfie" = "ID Selfie";
-"v_i_p_verification.form.s_s_n.placeholder" = "SSN *";
-"v_i_p_verification.form.error.id_selfie_required" = "ID Selfie is required";
-"v_i_p_verification.form.error.ssn_wrong_length" = "SSN should contain 9 digits";
-
-"show_seed_phrase.title" = "Seed Phrase";
-
-"unlink.title" = "Unlink Wallet";
-"unlink.annotation" = "Unlink the wallet from the current device means clear all local data(seed phrase, public and private keys). You can recover the wallet any time and on any device using your credentials and seed phrase.";
-"unlink.warning" = "Please, make sure you have been stored your credentials and seed phrase before unlinking the wallet.";
-"unlink.button.title" = "Unlink";
+"v_i_p_verification.title" = "VIP verify";
+"v_i_p_verification.id_selfie" = "ID selfie";
+"v_i_p_verification.form.s_s_n.placeholder" = "SSN";
+"v_i_p_verification.form.error.not_valid_s_s_n" = "SSN should be 9 digits";
 
 "coin_details.price" = "Price";
 "coin_details.balance" = "Balance";

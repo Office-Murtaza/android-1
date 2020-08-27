@@ -13,7 +13,7 @@ final class TradesViewController: NavigationScreenViewController<TradesPresenter
   var buyTradesDataSource: BuySellTradesTableViewDataSource!
   var sellTradesDataSource: BuySellTradesTableViewDataSource!
   
-  let headerView = CoinWithdrawHeaderView()
+  let headerView = HeaderView()
   
   let buyTradesItem = UITabBarItem(title: "BUY TRADES", image: nil, tag: 0)
   let sellTradesItem = UITabBarItem(title: "SELL TRADES", image: nil, tag: 1)
@@ -117,7 +117,18 @@ final class TradesViewController: NavigationScreenViewController<TradesPresenter
     presenter.state
       .map { $0.coinBalance }
       .filterNil()
-      .drive(onNext: { [headerView] in headerView.configure(for: $0, useReserved: true) })
+      .drive(onNext: { [headerView] coinBalance in
+        let balanceView = CoinDetailsBalanceValueView()
+        balanceView.configure(for: coinBalance)
+        
+        let reservedBalanceView = CoinDetailsBalanceValueView()
+        reservedBalanceView.configure(for: coinBalance, useReserved: true)
+        
+        headerView.removeAll()
+        headerView.add(title: localize(L.CoinDetails.price), value: coinBalance.price.fiatFormatted.withUSD)
+        headerView.add(title: localize(L.CoinDetails.balance), valueView: balanceView)
+        headerView.add(title: localize(L.Trades.reserved), valueView: reservedBalanceView)
+      })
       .disposed(by: disposeBag)
     
     presenter.state

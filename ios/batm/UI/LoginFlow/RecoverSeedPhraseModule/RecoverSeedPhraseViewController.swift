@@ -8,8 +8,6 @@ class RecoverSeedPhraseViewController: ModuleViewController<RecoverSeedPhrasePre
   
   let rootScrollView = RootScrollView()
   
-  let errorView = ErrorView()
-  
   let infoView: InfoView = {
     let view = InfoView()
     view.setup(with: localize(L.RecoverSeedPhrase.annotation))
@@ -19,6 +17,15 @@ class RecoverSeedPhraseViewController: ModuleViewController<RecoverSeedPhrasePre
   let formView = RecoverSeedPhraseFormView()
   
   let pasteButton = MDCButton.secondaryPaste
+  
+  let errorLabel: UILabel = {
+    let label = UILabel()
+    label.textColor = .tomato
+    label.textAlignment = .center
+    label.font = .systemFont(ofSize: 16)
+    label.numberOfLines = 0
+    return label
+  }()
   
   let nextButton = MDCButton.next
   
@@ -30,10 +37,10 @@ class RecoverSeedPhraseViewController: ModuleViewController<RecoverSeedPhrasePre
     view.addSubviews(rootScrollView)
     
     rootScrollView.contentInsetAdjustmentBehavior = .never
-    rootScrollView.contentView.addSubviews(errorView,
-                                           infoView,
+    rootScrollView.contentView.addSubviews(infoView,
                                            formView,
                                            pasteButton,
+                                           errorLabel,
                                            nextButton)
     
     setupDefaultKeyboardHandling()
@@ -45,11 +52,7 @@ class RecoverSeedPhraseViewController: ModuleViewController<RecoverSeedPhrasePre
       $0.left.right.bottom.equalToSuperview()
     }
     rootScrollView.contentView.snp.makeConstraints {
-      $0.height.equalToSuperview()
-    }
-    errorView.snp.makeConstraints {
-      $0.top.equalToSuperview().offset(5)
-      $0.centerX.equalToSuperview()
+      $0.height.greaterThanOrEqualToSuperview()
     }
     infoView.snp.makeConstraints {
       $0.top.equalToSuperview().offset(30)
@@ -62,9 +65,13 @@ class RecoverSeedPhraseViewController: ModuleViewController<RecoverSeedPhrasePre
     pasteButton.snp.makeConstraints {
       $0.top.equalTo(formView.snp.bottom).offset(20)
       $0.centerX.equalToSuperview()
-      $0.bottom.lessThanOrEqualTo(nextButton.snp.top).offset(-20)
+      $0.bottom.lessThanOrEqualTo(errorLabel.snp.top).offset(-20)
       $0.width.equalTo(75)
       $0.height.equalTo(36)
+    }
+    errorLabel.snp.makeConstraints {
+      $0.left.right.equalToSuperview().inset(15)
+      $0.bottom.equalTo(nextButton.snp.top).offset(-25)
     }
     nextButton.snp.makeConstraints {
       $0.height.equalTo(50)
@@ -75,12 +82,9 @@ class RecoverSeedPhraseViewController: ModuleViewController<RecoverSeedPhrasePre
   
   private func setupUIBindings() {
     presenter.state
-      .map { $0.validationState }
-      .mapToErrorMessage()
-      .drive(onNext: { [errorView] in
-        errorView.isHidden = $0 == nil
-        errorView.configure(for: $0)
-      })
+      .asObservable()
+      .map { $0.seedPhraseError }
+      .bind(to: errorLabel.rx.text)
       .disposed(by: disposeBag)
     
     pasteButton.rx.tap.asDriver()

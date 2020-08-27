@@ -30,6 +30,19 @@ extension MDCTextField {
     return textField
   }
   
+  static var idNumber: MDCTextField {
+    let textField = MDCTextField.default
+    textField.keyboardType = .namePhonePad
+    textField.autocorrectionType = .no
+    return textField
+  }
+  
+  static var zipCode: MDCTextField {
+    let textField = MDCTextField.default
+    textField.keyboardType = .numberPad
+    return textField
+  }
+  
   static var password: PasswordTextField {
     let textField = PasswordTextField()
     textField.backgroundColor = .white

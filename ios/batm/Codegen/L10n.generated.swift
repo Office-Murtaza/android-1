@@ -1,24 +1,16 @@
 // Root structs 
 enum L {
 
+  struct About {
+    static let title = "about.title"
+  }
+
   struct Atm {
     static let title = "atm.title"
   }
 
   struct BuySellTradeDetails {
     static let title = "buy_sell_trade_details.title"
-  }
-
-  struct ChangePassword {
-    static let title = "change_password.title"
-  }
-
-  struct ChangePhone {
-    static let title = "change_phone.title"
-  }
-
-  struct ChangePin {
-    static let title = "change_pin.title"
   }
 
   struct CoinDeposit {
@@ -104,7 +96,6 @@ enum L {
   }
 
   struct EnterPassword {
-    static let title = "enter_password.title"
   }
 
   struct Error {
@@ -114,6 +105,10 @@ enum L {
     static let hide = "filter_coins.hide"
     static let show = "filter_coins.show"
     static let title = "filter_coins.title"
+  }
+
+  struct KYC {
+    static let title = "k_y_c.title"
   }
 
   struct PhoneVerification {
@@ -143,19 +138,17 @@ enum L {
     static let title = "reserve.title"
   }
 
+  struct Security {
+    static let title = "security.title"
+  }
+
   struct SeedPhrase {
     static let annotation = "seed_phrase.annotation"
     static let title = "seed_phrase.title"
   }
 
   struct Settings {
-    static let changePassword = "settings.change_password"
-    static let changePhone = "settings.change_phone"
-    static let changePin = "settings.change_pin"
-    static let showSeedPhrase = "settings.show_seed_phrase"
     static let title = "settings.title"
-    static let unlinkWallet = "settings.unlink_wallet"
-    static let verification = "settings.verification"
   }
 
   struct Shared {
@@ -179,10 +172,6 @@ enum L {
 
   struct ShowPhone {
     static let title = "show_phone.title"
-  }
-
-  struct ShowSeedPhrase {
-    static let title = "show_seed_phrase.title"
   }
 
   struct Trades {
@@ -219,7 +208,21 @@ enum L {
   struct Unlink {
     static let annotation = "unlink.annotation"
     static let title = "unlink.title"
-    static let warning = "unlink.warning"
+    static let unlinked = "unlink.unlinked"
+  }
+
+  struct UpdatePIN {
+    static let pinUpdated = "update_p_i_n.pin_updated"
+  }
+
+  struct UpdatePassword {
+    static let passwordUpdated = "update_password.password_updated"
+    static let title = "update_password.title"
+  }
+
+  struct UpdatePhone {
+    static let phoneUpdated = "update_phone.phone_updated"
+    static let title = "update_phone.title"
   }
 
   struct VIPVerification {
@@ -232,15 +235,19 @@ enum L {
     static let title = "verification.title"
   }
 
-  struct VerificationInfo {
-    static let title = "verification_info.title"
-  }
-
   struct Welcome {
     static let contactSupport = "welcome.contact_support"
   }
 }
 // Extensions
+extension L.About {
+
+  struct Cell {
+    static let support = "about.cell.support"
+    static let termsAndConditions = "about.cell.terms_and_conditions"
+    static let version = "about.cell.version"
+  }
+}
 extension L.Atm {
 
   struct InfoWindow {
@@ -273,50 +280,6 @@ extension L.BuySellTradeDetails.Form {
 
   struct RequestDetails {
     static let placeholder = "buy_sell_trade_details.form.request_details.placeholder"
-  }
-}
-extension L.ChangePassword {
-
-  struct Form {
-  }
-}
-extension L.ChangePassword.Form {
-
-  struct ConfirmNewPassword {
-    static let placeholder = "change_password.form.confirm_new_password.placeholder"
-  }
-
-  struct NewPassword {
-    static let placeholder = "change_password.form.new_password.placeholder"
-  }
-
-  struct OldPassword {
-    static let placeholder = "change_password.form.old_password.placeholder"
-  }
-}
-extension L.ChangePin {
-
-  struct Form {
-  }
-}
-extension L.ChangePin.Form {
-
-  struct ConfirmNewPin {
-    static let placeholder = "change_pin.form.confirm_new_pin.placeholder"
-  }
-
-  struct Error {
-    static let notEqualPins = "change_pin.form.error.not_equal_pins"
-    static let notMatch = "change_pin.form.error.not_match"
-    static let wrongLength = "change_pin.form.error.wrong_length"
-  }
-
-  struct NewPin {
-    static let placeholder = "change_pin.form.new_pin.placeholder"
-  }
-
-  struct OldPin {
-    static let placeholder = "change_pin.form.old_pin.placeholder"
   }
 }
 extension L.CoinExchange {
@@ -528,6 +491,10 @@ extension L.EnterPassword.Form {
   struct Error {
     static let wrongPassword = "enter_password.form.error.wrong_password"
   }
+
+  struct Password {
+    static let placeholder = "enter_password.form.password.placeholder"
+  }
 }
 extension L.Error {
 
@@ -546,6 +513,43 @@ extension L.Error {
     static let title = "error.something_went_wrong.title"
   }
 }
+extension L.KYC {
+
+  struct Button {
+    static let verify = "k_y_c.button.verify"
+    static let vipVerify = "k_y_c.button.vip_verify"
+  }
+
+  struct Header {
+  }
+}
+extension L.KYC.Header {
+
+  struct DailyLimit {
+    static let title = "k_y_c.header.daily_limit.title"
+  }
+
+  struct Status {
+    static let title = "k_y_c.header.status.title"
+  }
+
+  struct TransactionLimit {
+    static let title = "k_y_c.header.transaction_limit.title"
+  }
+}
+extension L.KYC.Header.Status {
+
+  struct Value {
+    static let notVerified = "k_y_c.header.status.value.not_verified"
+    static let unknown = "k_y_c.header.status.value.unknown"
+    static let verificationPending = "k_y_c.header.status.value.verification_pending"
+    static let verificationRejected = "k_y_c.header.status.value.verification_rejected"
+    static let verified = "k_y_c.header.status.value.verified"
+    static let vipVerificationPending = "k_y_c.header.status.value.vip_verification_pending"
+    static let vipVerificationRejected = "k_y_c.header.status.value.vip_verification_rejected"
+    static let vipVerified = "k_y_c.header.status.value.vip_verified"
+  }
+}
 extension L.PhoneVerification {
 
   struct Error {
@@ -554,16 +558,38 @@ extension L.PhoneVerification {
 }
 extension L.PinCode {
 
+  struct PinType {
+  }
+
+  struct Stage {
+  }
+}
+extension L.PinCode.PinType {
+
+  struct Current {
+    static let title = "pin_code.pin_type.current.title"
+  }
+
+  struct New {
+    static let title = "pin_code.pin_type.new.title"
+  }
+
+  struct Old {
+    static let title = "pin_code.pin_type.old.title"
+  }
+}
+extension L.PinCode.Stage {
+
   struct Confirmation {
-    static let title = "pin_code.confirmation.title"
+    static let title = "pin_code.stage.confirmation.title"
   }
 
   struct Setup {
-    static let title = "pin_code.setup.title"
+    static let title = "pin_code.stage.setup.title"
   }
 
   struct Verification {
-    static let title = "pin_code.verification.title"
+    static let title = "pin_code.stage.verification.title"
   }
 }
 extension L.Recall {
@@ -610,6 +636,24 @@ extension L.Reserve {
     static let reserve = "reserve.button.reserve"
   }
 }
+extension L.Security {
+
+  struct Cell {
+    static let seedPhrase = "security.cell.seed_phrase"
+    static let unlink = "security.cell.unlink"
+    static let updatePIN = "security.cell.update_p_i_n"
+    static let updatePassword = "security.cell.update_password"
+    static let updatePhone = "security.cell.update_phone"
+  }
+}
+extension L.Settings {
+
+  struct Cell {
+    static let about = "settings.cell.about"
+    static let kyc = "settings.cell.kyc"
+    static let security = "settings.cell.security"
+  }
+}
 extension L.Shared {
 
   struct Button {
@@ -622,6 +666,9 @@ extension L.Shared {
     static let paste = "shared.button.paste"
     static let remove = "shared.button.remove"
     static let retry = "shared.button.retry"
+    static let send = "shared.button.send"
+    static let unlink = "shared.button.unlink"
+    static let update = "shared.button.update"
   }
 
   struct Error {
@@ -635,10 +682,43 @@ extension L.Shared.Error {
     static let message = "shared.error.no_connection.message"
   }
 }
-extension L.Unlink {
+extension L.UpdatePassword {
 
-  struct Button {
-    static let title = "unlink.button.title"
+  struct Form {
+  }
+}
+extension L.UpdatePassword.Form {
+
+  struct ConfirmNewPassword {
+    static let placeholder = "update_password.form.confirm_new_password.placeholder"
+  }
+
+  struct Error {
+    static let samePassword = "update_password.form.error.same_password"
+  }
+
+  struct NewPassword {
+    static let placeholder = "update_password.form.new_password.placeholder"
+  }
+
+  struct OldPassword {
+    static let placeholder = "update_password.form.old_password.placeholder"
+  }
+}
+extension L.UpdatePhone {
+
+  struct Form {
+  }
+}
+extension L.UpdatePhone.Form {
+
+  struct Error {
+    static let phoneUsed = "update_phone.form.error.phone_used"
+    static let samePhone = "update_phone.form.error.same_phone"
+  }
+
+  struct Phone {
+    static let placeholder = "update_phone.form.phone.placeholder"
   }
 }
 extension L.VIPVerification {
@@ -649,8 +729,7 @@ extension L.VIPVerification {
 extension L.VIPVerification.Form {
 
   struct Error {
-    static let idSelfieRequired = "v_i_p_verification.form.error.id_selfie_required"
-    static let ssnWrongLength = "v_i_p_verification.form.error.ssn_wrong_length"
+    static let notValidSSN = "v_i_p_verification.form.error.not_valid_s_s_n"
   }
 
   struct SSN {
@@ -681,9 +760,16 @@ extension L.Verification.Form {
   }
 
   struct Error {
+    static let cityRequired = "verification.form.error.city_required"
+    static let countryRequired = "verification.form.error.country_required"
     static let idScanRequired = "verification.form.error.id_scan_required"
     static let imageBroken = "verification.form.error.image_broken"
-    static let zipCodeWrongLength = "verification.form.error.zip_code_wrong_length"
+    static let notValidAddress = "verification.form.error.not_valid_address"
+    static let notValidFirstName = "verification.form.error.not_valid_first_name"
+    static let notValidIdNumber = "verification.form.error.not_valid_id_number"
+    static let notValidLastName = "verification.form.error.not_valid_last_name"
+    static let notValidZipCode = "verification.form.error.not_valid_zip_code"
+    static let provinceRequired = "verification.form.error.province_required"
   }
 
   struct FirstName {
@@ -714,38 +800,6 @@ extension L.Verification.Picker {
 
   struct LibraryOption {
     static let title = "verification.picker.library_option.title"
-  }
-}
-extension L.VerificationInfo {
-
-  struct Button {
-    static let verify = "verification_info.button.verify"
-    static let vipVerify = "verification_info.button.vip_verify"
-  }
-
-  struct DailyLimitRow {
-    static let title = "verification_info.daily_limit_row.title"
-  }
-
-  struct StatusRow {
-    static let title = "verification_info.status_row.title"
-  }
-
-  struct TxLimitRow {
-    static let title = "verification_info.tx_limit_row.title"
-  }
-}
-extension L.VerificationInfo.StatusRow {
-
-  struct Value {
-    static let notVerified = "verification_info.status_row.value.not_verified"
-    static let unknown = "verification_info.status_row.value.unknown"
-    static let verificationPending = "verification_info.status_row.value.verification_pending"
-    static let verificationRejected = "verification_info.status_row.value.verification_rejected"
-    static let verified = "verification_info.status_row.value.verified"
-    static let vipVerificationPending = "verification_info.status_row.value.vip_verification_pending"
-    static let vipVerificationRejected = "verification_info.status_row.value.vip_verification_rejected"
-    static let vipVerified = "verification_info.status_row.value.vip_verified"
   }
 }
 extension L.Welcome {

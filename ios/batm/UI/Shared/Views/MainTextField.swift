@@ -8,9 +8,6 @@ enum MainTextFieldType {
   case confirmNewPassword
   case password
   case confirmPassword
-  case oldPin
-  case newPin
-  case confirmNewPin
   case message
   case idNumber
   case firstName
@@ -117,13 +114,6 @@ class MainTextField: UITextField, HasDisposeBag {
     }
   }
   
-  private func setUpForPinCode() {
-    setImage(UIImage(named: "settings_pin"))
-    imageView.tintColor = .whiteFive
-    keyboardType = .numberPad
-    isSecureTextEntry = true
-  }
-  
   private func setUpForPicker() {
     setImage(UIImage(named: "arrow_down"))
   }
@@ -135,13 +125,13 @@ class MainTextField: UITextField, HasDisposeBag {
     
     switch type {
     case .oldPassword:
-      placeholder = localize(L.ChangePassword.Form.OldPassword.placeholder)
+      placeholder = localize(L.UpdatePassword.Form.OldPassword.placeholder)
       setUpForPassword()
     case .newPassword:
-      placeholder = localize(L.ChangePassword.Form.NewPassword.placeholder)
+      placeholder = localize(L.UpdatePassword.Form.NewPassword.placeholder)
       setUpForPassword(new: true)
     case .confirmNewPassword:
-      placeholder = localize(L.ChangePassword.Form.ConfirmNewPassword.placeholder)
+      placeholder = localize(L.UpdatePassword.Form.ConfirmNewPassword.placeholder)
       setUpForPassword()
     case .password:
       placeholder = localize(L.CreateWallet.Form.Password.placeholder)
@@ -149,15 +139,6 @@ class MainTextField: UITextField, HasDisposeBag {
     case .confirmPassword:
       placeholder = localize(L.CreateWallet.Form.ConfirmPassword.placeholder)
       setUpForPassword()
-    case .oldPin:
-      placeholder = localize(L.ChangePin.Form.OldPin.placeholder)
-      setUpForPinCode()
-    case .newPin:
-      placeholder = localize(L.ChangePin.Form.NewPin.placeholder)
-      setUpForPinCode()
-    case .confirmNewPin:
-      placeholder = localize(L.ChangePin.Form.ConfirmNewPin.placeholder)
-      setUpForPinCode()
     case .message:
       placeholder = localize(L.CoinSendGift.Form.Message.placeholder)
       textAlignment = .center

@@ -150,14 +150,14 @@ struct GetPhoneNumberRequest: AuthorizedAPIRequest {
   }
 }
 
-struct CheckPasswordRequest: AuthorizedAPIRequest {
-  typealias ResponseType = APIResponse<CheckPassword>
+struct VerifyPasswordRequest: AuthorizedAPIRequest {
+  typealias ResponseType = APIResponse<VerificationResult>
   typealias ResponseTrait = SingleResponseTrait
   
   let userId: Int
   let password: String
   
-  var path: String { return "/user/\(userId)/password/verify" }
+  var path: String { return "/user/\(userId)/password-verify" }
   var method: HTTPMethod { return .post }
   var task: HTTPTask {
     return .requestParameters(parameters: ["password": password],
@@ -165,14 +165,29 @@ struct CheckPasswordRequest: AuthorizedAPIRequest {
   }
 }
 
-struct ChangePhoneRequest: AuthorizedAPIRequest {
+struct VerifyPhoneRequest: AuthorizedAPIRequest {
+  typealias ResponseType = APIResponse<VerificationResult>
+  typealias ResponseTrait = SingleResponseTrait
+  
+  let userId: Int
+  let phoneNumber: String
+  
+  var path: String { return "/user/\(userId)/phone-verify" }
+  var method: HTTPMethod { return .post }
+  var task: HTTPTask {
+    return .requestParameters(parameters: ["phone": phoneNumber],
+                              encoding: JSONEncoding.default)
+  }
+}
+
+struct UpdatePhoneRequest: AuthorizedAPIRequest {
   typealias ResponseType = APIEmptyResponse
   typealias ResponseTrait = SingleResponseTrait
   
   let userId: Int
   let phoneNumber: String
   
-  var path: String { return "/user/\(userId)/phone/update" }
+  var path: String { return "/user/\(userId)/phone" }
   var method: HTTPMethod { return .post }
   var task: HTTPTask {
     return .requestParameters(parameters: ["phone": phoneNumber],
@@ -197,7 +212,7 @@ struct ConfirmPhoneRequest: AuthorizedAPIRequest {
   }
 }
 
-struct ChangePasswordRequest: AuthorizedAPIRequest {
+struct UpdatePasswordRequest: AuthorizedAPIRequest {
   typealias ResponseType = APIEmptyResponse
   typealias ResponseTrait = SingleResponseTrait
   
@@ -205,7 +220,7 @@ struct ChangePasswordRequest: AuthorizedAPIRequest {
   let oldPassword: String
   let newPassword: String
   
-  var path: String { return "/user/\(userId)/password/update" }
+  var path: String { return "/user/\(userId)/password" }
   var method: HTTPMethod { return .post }
   var task: HTTPTask {
     return .requestParameters(parameters: ["oldPassword": oldPassword,
@@ -410,8 +425,8 @@ struct GetSellDetailsRequest: AuthorizedAPIRequest {
   }
 }
 
-struct GetVerificationInfoRequest: AuthorizedAPIRequest {
-  typealias ResponseType = APIResponse<VerificationInfo>
+struct KYCRequest: AuthorizedAPIRequest {
+  typealias ResponseType = APIResponse<KYC>
   typealias ResponseTrait = SingleResponseTrait
   
   let userId: Int

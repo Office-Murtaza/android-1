@@ -12,8 +12,7 @@ extension UnlinkFlow {
           return flowController
         }
         .inObjectScope(.container)
-        .implements(UnlinkModuleDelegate.self,
-                    EnterPasswordModuleDelegate.self)
+        .implements(UnlinkModuleDelegate.self)
     }
   }
 }

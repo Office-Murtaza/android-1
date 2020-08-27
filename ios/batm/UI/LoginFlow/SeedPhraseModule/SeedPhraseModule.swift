@@ -1,8 +1,8 @@
 import Foundation
 
 protocol SeedPhraseModule: class {
-  func setup(phoneNumber: String, password: String)
+  func setup(for mode: SeedPhraseMode)
 }
 protocol SeedPhraseModuleDelegate: class {
-  func finishCopyingSeedPhrase()
+  func didFinishCopyingSeedPhrase()
 }

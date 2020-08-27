@@ -8,7 +8,7 @@ final class CoinStakingViewController: NavigationScreenViewController<CoinStakin
   
   let errorView = ErrorView()
   
-  let headerView = CoinStakingHeaderView()
+  let headerView = HeaderView()
   
   let formView = CoinStakingFormView()
   
@@ -19,7 +19,7 @@ final class CoinStakingViewController: NavigationScreenViewController<CoinStakin
   override var preferredStatusBarStyle: UIStatusBarStyle {
     return .lightContent
   }
-
+  
   override func setupUI() {
     customView.rootScrollView.contentInsetAdjustmentBehavior = .never
     customView.contentView.addSubviews(errorView,
@@ -30,7 +30,7 @@ final class CoinStakingViewController: NavigationScreenViewController<CoinStakin
     
     setupDefaultKeyboardHandling()
   }
-
+  
   override func setupLayout() {
     errorView.snp.makeConstraints {
       $0.top.equalToSuperview().offset(5)
@@ -74,7 +74,28 @@ final class CoinStakingViewController: NavigationScreenViewController<CoinStakin
       .filterNil()
     
     Driver.combineLatest(coinBalanceDriver, stakeDetailsDriver)
-      .drive(onNext: { [headerView] in headerView.configure(for: $0, stakeDetails: $1) })
+      .drive(onNext: { [headerView] coinBalance, stakeDetails in
+        let balanceView = CoinDetailsBalanceValueView()
+        balanceView.configure(for: coinBalance)
+        
+        headerView.removeAll()
+        headerView.add(title: localize(L.CoinDetails.price), value: coinBalance.price.fiatFormatted.withUSD)
+        headerView.add(title: localize(L.CoinDetails.balance), value: coinBalance.price.fiatFormatted.withUSD)
+        
+        if stakeDetails.exist {
+          headerView.add(title: localize(L.CoinStaking.Header.Staked.title),
+                         value: "\(stakeDetails.stakedAmount ?? 0) \(coinBalance.type.code)")
+          
+          headerView.add(title: localize(L.CoinStaking.Header.Rewards.title),
+                         value: "\(stakeDetails.rewardsAmount ?? 0) \(coinBalance.type.code), \(stakeDetails.rewardsPercent ?? 0) %")
+          
+          headerView.add(title: localize(L.CoinStaking.Header.Duration.title),
+                         value: String(format: localize(L.CoinStaking.Header.Duration.value), stakeDetails.stakedDays ?? 0))
+          
+          headerView.add(title: localize(L.CoinStaking.Header.MinDuration.title),
+                         value: String(format: localize(L.CoinStaking.Header.MinDuration.value), stakeDetails.stakingMinDays ?? 0))
+        }
+      })
       .disposed(by: disposeBag)
     
     Driver.combineLatest(coinBalanceDriver, stakeDetailsDriver)
@@ -119,7 +140,7 @@ final class CoinStakingViewController: NavigationScreenViewController<CoinStakin
       .drive(onNext: { [view] in view?.endEditing(true) })
       .disposed(by: disposeBag)
   }
-
+  
   override func setupBindings() {
     setupUIBindings()
     

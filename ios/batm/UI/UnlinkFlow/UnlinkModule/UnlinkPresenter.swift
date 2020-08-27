@@ -5,7 +5,6 @@ import RxCocoa
 final class UnlinkPresenter: ModulePresenter, UnlinkModule {
 
   struct Input {
-    var back: Driver<Void>
     var unlink: Driver<Void>
   }
   
@@ -16,20 +15,16 @@ final class UnlinkPresenter: ModulePresenter, UnlinkModule {
   init(usecase: SettingsUsecase) {
     self.usecase = usecase
   }
-  
-  func unlink() {
-    self.track(usecase.unlink())
-      .drive()
-      .disposed(by: disposeBag)
-  }
 
   func bind(input: Input) {
-    input.back
-      .drive(onNext: { [delegate] in delegate?.didFinishUnlink() })
-      .disposed(by: disposeBag)
-    
     input.unlink
-      .drive(onNext: { [unowned self] in self.delegate?.didUnlink(from: self) })
+      .asObservable()
+      .flatMap { [unowned self] in self.track(self.unlink()) }
+      .subscribe()
       .disposed(by: disposeBag)
+  }
+  
+  private func unlink() -> Completable {
+    return usecase.unlink()
   }
 }
