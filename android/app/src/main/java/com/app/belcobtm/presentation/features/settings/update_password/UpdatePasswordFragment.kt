@@ -56,7 +56,7 @@ class UpdatePasswordFragment : BaseFragment() {
                     with (oldPasswordContainerView) {
                         isErrorEnabled = it
                         if (it) {
-                            error = getString(R.string.old_password_doesnt_match)
+                            error = getString(R.string.password_doesnt_match)
                         }
                     }
                 })
