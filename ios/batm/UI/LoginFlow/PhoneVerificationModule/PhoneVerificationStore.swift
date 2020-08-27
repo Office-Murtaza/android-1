@@ -2,8 +2,8 @@ import Foundation
 import RxSwift
 
 enum PhoneVerificationMode {
-  case create
-  case update
+  case creation
+  case updating
 }
 
 enum PhoneVerificationAction: Equatable {
@@ -17,7 +17,7 @@ enum PhoneVerificationAction: Equatable {
 
 struct PhoneVerificationState: Equatable {
   
-  var mode: PhoneVerificationMode = .create
+  var mode: PhoneVerificationMode = .creation
   var phoneNumber: String = ""
   var correctCode: String = ""
   var code: String = ""

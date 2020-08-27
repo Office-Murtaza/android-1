@@ -53,8 +53,8 @@ final class PhoneVerificationPresenter: ModulePresenter, PhoneVerificationModule
       .filter { $0.validationState.isValid }
       .flatMap { [unowned self] state -> Driver<PhoneVerificationState> in
         switch state.mode {
-        case .create: return .just(state)
-        case .update: return self.track(self.update(for: state)).map { state }
+        case .creation: return .just(state)
+        case .updating: return self.track(self.update(for: state)).map { state }
         }
       }
       .subscribe(onNext: { [delegate] in delegate?.didFinishPhoneVerification(phoneNumber: $0.phoneNumber) })

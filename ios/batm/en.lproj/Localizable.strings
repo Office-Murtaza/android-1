@@ -50,7 +50,7 @@
 "create_wallet.form.error.field_required" = "This field is required";
 "create_wallet.form.error.not_valid_phone_number" = "Incorrect phone number";
 "create_wallet.form.error.existed_phone_number" = "Phone is already registered";
-"create_wallet.form.error.not_valid_password" = "Password length should be from 6 to 20";
+"create_wallet.form.error.not_valid_password" = "Password length should be from 6 to 15";
 "create_wallet.form.error.not_equal_passwords" = "Passwords do not match";
 
 "phone_verification.title" = "Verify phone";
@@ -131,8 +131,8 @@
 
 "k_y_c.title" = "KYC";
 "k_y_c.header.status.title" = "Status";
-"k_y_c.header.transaction_limit.title" = "Transaction Limit";
-"k_y_c.header.daily_limit.title" = "Daily Limit";
+"k_y_c.header.transaction_limit.title" = "Transaction limit";
+"k_y_c.header.daily_limit.title" = "Daily limit";
 "k_y_c.header.status.value.unknown" = "Unknown";
 "k_y_c.header.status.value.not_verified" = "Not verified";
 "k_y_c.header.status.value.verification_pending" = "Verification pending";

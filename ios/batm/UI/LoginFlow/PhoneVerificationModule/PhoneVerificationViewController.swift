@@ -24,10 +24,8 @@ final class PhoneVerificationViewController: ModuleViewController<PhoneVerificat
   let resendCodeLabel = PhoneVerificationResendCodeLabel()
   
   override var shouldShowNavigationBar: Bool { return true }
-
+  
   override func setupUI() {
-    title = localize(L.PhoneVerification.title)
-    
     view.addSubviews(rootScrollView)
     
     rootScrollView.contentInsetAdjustmentBehavior = .never
@@ -38,7 +36,7 @@ final class PhoneVerificationViewController: ModuleViewController<PhoneVerificat
     
     setupDefaultKeyboardHandling()
   }
-
+  
   override func setupLayout() {
     rootScrollView.snp.makeConstraints {
       $0.top.equalTo(view.safeAreaLayoutGuide)
@@ -100,11 +98,35 @@ final class PhoneVerificationViewController: ModuleViewController<PhoneVerificat
       .drive(onNext: { [view] in view?.makeToast(localize(L.PhoneVerification.codeSent)) })
       .disposed(by: disposeBag)
     
+    presenter.state
+      .map { $0.mode }
+      .drive(onNext: { [unowned self] mode in
+        switch mode {
+        case .creation:
+          self.title = localize(L.PhoneVerification.title)
+        case .updating:
+          self.title = localize(L.UpdatePhone.title)
+        }
+      })
+      .disposed(by: disposeBag)
+    
+    presenter.state
+      .map { $0.mode }
+      .drive(onNext: { [nextButton] mode in
+        switch mode {
+        case .creation:
+          nextButton.setTitle(localize(L.Shared.Button.next), for: .normal)
+        case .updating:
+          nextButton.setTitle(localize(L.Shared.Button.done), for: .normal)
+        }
+      })
+      .disposed(by: disposeBag)
+    
     nextButton.rx.tap.asDriver()
       .drive(onNext: { [view] in view?.endEditing(true) })
       .disposed(by: disposeBag)
   }
-
+  
   override func setupBindings() {
     setupUIBindings()
     

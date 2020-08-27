@@ -213,7 +213,7 @@
 		DB70853122CFAF1500FFE4F7 /* MainFlow+Dependencies.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB70853022CFAF1500FFE4F7 /* MainFlow+Dependencies.swift */; };
 		DB7A9D122459CEE800006B54 /* QRCodeCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB7A9D112459CEE800006B54 /* QRCodeCardView.swift */; };
 		DB82AD2924AF18CF001F833E /* CoinStakingFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB82AD2824AF18CF001F833E /* CoinStakingFormView.swift */; };
-		DB8325B524F46AFA00AFD577 /* KYCHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB8325B424F46AFA00AFD577 /* KYCHeaderView.swift */; };
+		DB8325B524F46AFA00AFD577 /* HeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB8325B424F46AFA00AFD577 /* HeaderView.swift */; };
 		DB83624224C1DF3300A5FEFC /* PhoneVerificationModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB83623E24C1DF3300A5FEFC /* PhoneVerificationModule.swift */; };
 		DB83624324C1DF3300A5FEFC /* PhoneVerificationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB83623F24C1DF3300A5FEFC /* PhoneVerificationViewController.swift */; };
 		DB83624424C1DF3300A5FEFC /* PhoneVerificationPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB83624024C1DF3300A5FEFC /* PhoneVerificationPresenter.swift */; };
@@ -744,7 +744,7 @@
 		DB70853022CFAF1500FFE4F7 /* MainFlow+Dependencies.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MainFlow+Dependencies.swift"; sourceTree = "<group>"; };
 		DB7A9D112459CEE800006B54 /* QRCodeCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCodeCardView.swift; sourceTree = "<group>"; };
 		DB82AD2824AF18CF001F833E /* CoinStakingFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinStakingFormView.swift; sourceTree = "<group>"; };
-		DB8325B424F46AFA00AFD577 /* KYCHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KYCHeaderView.swift; sourceTree = "<group>"; };
+		DB8325B424F46AFA00AFD577 /* HeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderView.swift; sourceTree = "<group>"; };
 		DB83623E24C1DF3300A5FEFC /* PhoneVerificationModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneVerificationModule.swift; sourceTree = "<group>"; };
 		DB83623F24C1DF3300A5FEFC /* PhoneVerificationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneVerificationViewController.swift; sourceTree = "<group>"; };
 		DB83624024C1DF3300A5FEFC /* PhoneVerificationPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneVerificationPresenter.swift; sourceTree = "<group>"; };
@@ -1227,6 +1227,7 @@
 				DB0AD1D924BA2C1F00806282 /* RootScrollView.swift */,
 				DB9D3EA422C13078008DC600 /* TermsAndConditionsView.swift */,
 				DBAEA6CC24D9E7EB004001C9 /* InfoView.swift */,
+				DB8325B424F46AFA00AFD577 /* HeaderView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -2672,7 +2673,6 @@
 			isa = PBXGroup;
 			children = (
 				DBD8C211240AF44B00BD8A74 /* KYCStatusView.swift */,
-				DB8325B424F46AFA00AFD577 /* KYCHeaderView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -3053,7 +3053,7 @@
 				DB8BAE0624CF53A700CA8EC1 /* ServerError.swift in Sources */,
 				DB33E9C4241D3B1D00764BF5 /* PriceChartPeriod+Mapping.swift in Sources */,
 				DB2F250D2360687800274C60 /* CoinSellDetailsCurrentAddressViewController.swift in Sources */,
-				DB8325B524F46AFA00AFD577 /* KYCHeaderView.swift in Sources */,
+				DB8325B524F46AFA00AFD577 /* HeaderView.swift in Sources */,
 				DBDA456A24E5C1BD002A3AF5 /* AboutViewController.swift in Sources */,
 				DB86FD262477FBD5002FE22D /* LocationUpdateDateRecord+CoreDataClass.swift in Sources */,
 				DB1AF0E224436D6D0037C998 /* MDCContainerScheme+Extensions.swift in Sources */,

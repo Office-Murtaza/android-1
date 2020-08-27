@@ -131,8 +131,8 @@
 
 "k_y_c.title" = "KYC";
 "k_y_c.header.status.title" = "Status";
-"k_y_c.header.transaction_limit.title" = "Transaction Limit";
-"k_y_c.header.daily_limit.title" = "Daily Limit";
+"k_y_c.header.transaction_limit.title" = "Transaction limit";
+"k_y_c.header.daily_limit.title" = "Daily limit";
 "k_y_c.header.status.value.unknown" = "Unknown";
 "k_y_c.header.status.value.not_verified" = "Not verified";
 "k_y_c.header.status.value.verification_pending" = "Verification pending";

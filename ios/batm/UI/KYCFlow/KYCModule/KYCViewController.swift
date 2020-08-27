@@ -62,8 +62,8 @@ final class KYCViewController: ModuleViewController<KYCPresenter> {
     
     headerView.removeAll()
     headerView.add(title: localize(L.KYC.Header.Status.title), valueView: statusView)
-    headerView.add(title: localize(L.KYC.Header.TransactionLimit.title), value: kyc.txLimit.fiatSellFormatted.withUSD)
-    headerView.add(title: localize(L.KYC.Header.DailyLimit.title), value: kyc.dailyLimit.fiatSellFormatted.withUSD)
+    headerView.add(title: localize(L.KYC.Header.TransactionLimit.title), value: kyc.txLimit.fiatSellFormatted.withDollarSign)
+    headerView.add(title: localize(L.KYC.Header.DailyLimit.title), value: kyc.dailyLimit.fiatSellFormatted.withDollarSign)
     
     infoView.isHidden = kyc.message == nil
     infoView.setup(with: kyc.message ?? "")
