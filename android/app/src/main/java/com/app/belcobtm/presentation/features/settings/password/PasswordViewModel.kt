@@ -38,7 +38,7 @@ class PasswordViewModel(
                 }
             },
             onError = {
-                stateData.value = LoadingData.Error(data = stateData.value?.commonData)
+                stateData.value = LoadingData.Error(data = stateData.value?.commonData, errorType = it)
             })
     }
 
