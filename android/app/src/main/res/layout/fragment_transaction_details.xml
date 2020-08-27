@@ -135,24 +135,36 @@
                 style="@style/CoinDetails.Table.Key"
                 android:text="@string/transition_details_screen_amount" />
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/amountView"
+            <LinearLayout
                 style="@style/CoinDetails.Table.Value"
-                tools:text="0.5 BTC" />
-        </TableRow>
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
 
-        <TableRow
-            android:id="@+id/fiatAmountContainerView"
-            style="@style/CoinDetails.Table.Row">
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/amountCryptoView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    tools:text="0.5 BTC" />
 
-            <androidx.appcompat.widget.AppCompatTextView
-                style="@style/CoinDetails.Table.Key"
-                android:text="@string/transition_details_screen_fiat_amount" />
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginEnd="4dp"
+                    app:srcCompat="@drawable/ic_compare_arrows" />
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/fiatAmountView"
-                style="@style/CoinDetails.Table.Value"
-                tools:text="100 usd" />
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/amountUsdView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    tools:text="6000 $" />
+            </LinearLayout>
+
         </TableRow>
 
         <TableRow
@@ -320,6 +332,13 @@
                 tools:text="Happy Birthday!" />
         </TableRow>
 
+        <TextView
+            android:id="@+id/qrCodeTitleView"
+            android:visibility="gone"
+            android:layout_marginTop="6dp"
+            style="@style/CoinDetails.Table.Key"
+            android:text="@string/transition_details_screen_sell_qr_code" />
+
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/qrCodeView"
             style="@style/CoinDetails.Table.Row"
@@ -327,7 +346,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="8dp"
-            tools:src="@drawable/ic_gift" />
+            android:visibility="gone"
+            tools:src="@drawable/ic_center_focus" />
     </TableLayout>
 
 </ScrollView>

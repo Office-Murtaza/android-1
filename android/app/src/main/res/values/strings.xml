@@ -241,7 +241,7 @@
     <string name="transition_details_screen_type">Type</string>
     <string name="transition_details_screen_status">Status</string>
     <string name="transition_details_screen_cash_status">Cash Status</string>
-    <string name="transition_details_screen_amount">Crypto Amount</string>
+    <string name="transition_details_screen_amount">Amount</string>
     <string name="transition_details_screen_fiat_amount">Fiat Amount</string>
     <string name="transition_details_screen_fee">Fee</string>
     <string name="transition_details_screen_date">Date</string>
@@ -266,8 +266,10 @@
     <string name="transition_details_screen_one_month">1m</string>
     <string name="transition_details_screen_three_month">3m</string>
     <string name="transition_details_screen_one_year">1y</string>
+    <string name="transition_details_screen_sell_qr_code">Sell QR code</string>
 
     <!-- Withdraw screen -->
+    <string name="withdraw_screen_screen_title">Withdraw %1$s</string>
     <string name="withdraw_screen_price">Price</string>
     <string name="withdraw_screen_balance">Balance</string>
     <string name="withdraw_screen_recipient_address">Recipient Address</string>
@@ -302,7 +304,7 @@
     <string name="send_gift_screen_remove">Remove</string>
 
     <!-- Coin to coin screen -->
-    <string name="exchange_coin_to_coin_screen_title">Exchange</string>
+    <string name="exchange_coin_to_coin_screen_title">Exchange %1$s</string>
     <string name="exchange_coin_to_coin_screen_price">Price</string>
     <string name="exchange_coin_to_coin_screen_price_value">%1$s USD</string>
     <string name="exchange_coin_to_coin_screen_balance">Balance</string>

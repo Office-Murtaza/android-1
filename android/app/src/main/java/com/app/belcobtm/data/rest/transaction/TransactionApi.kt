@@ -57,7 +57,7 @@ interface TransactionApi {
     ): Deferred<Response<ResponseBody>>
 
     @POST("user/{userId}/coin/{coinCode}/submit")
-    fun coinToCoinExchangeAsync(
+    fun exchangeAsync(
         @Path("userId") userId: Int,
         @Path("coinCode") coinFrom: String,
         @Body request: CoinToCoinExchangeRequest

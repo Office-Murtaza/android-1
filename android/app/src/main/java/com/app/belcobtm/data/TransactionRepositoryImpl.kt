@@ -2,6 +2,7 @@ package com.app.belcobtm.data
 
 import com.app.belcobtm.data.core.NetworkUtils
 import com.app.belcobtm.data.core.TransactionHashHelper
+import com.app.belcobtm.data.disk.database.AccountDao
 import com.app.belcobtm.data.disk.shared.preferences.SharedPreferencesHelper
 import com.app.belcobtm.data.rest.transaction.TransactionApiService
 import com.app.belcobtm.domain.Either
@@ -17,7 +18,8 @@ class TransactionRepositoryImpl(
     private val prefHelper: SharedPreferencesHelper,
     private val toolsRepository: ToolsRepository,
     private val transactionHashRepository: TransactionHashHelper,
-    private val networkUtils: NetworkUtils
+    private val networkUtils: NetworkUtils,
+    private val daoAccount: AccountDao
 ) : TransactionRepository {
 
     override suspend fun getTransactionList(
@@ -53,71 +55,47 @@ class TransactionRepositoryImpl(
         Either.Left(Failure.NetworkConnection)
     }
 
-    override suspend fun createWithdrawTransaction(
+    override suspend fun withdraw(
         fromCoin: String,
         fromCoinAmount: Double,
         toAddress: String
-    ): Either<Failure, String> = if (networkUtils.isNetworkAvailable()) {
+    ): Either<Failure, Unit> = if (networkUtils.isNetworkAvailable()) {
         val coinType = LocalCoinType.valueOf(fromCoin)
         val hashResponse = transactionHashRepository.createTransactionHash(coinType, fromCoinAmount, toAddress)
-        val sendSmsToDeviceResponse = toolsRepository.sendSmsToDeviceOld()
-        when {
-            hashResponse.isRight && sendSmsToDeviceResponse.isRight -> hashResponse as Either.Right
-            sendSmsToDeviceResponse.isLeft -> sendSmsToDeviceResponse as Either.Left
-            else -> hashResponse as Either.Left
+        if (hashResponse.isRight) {
+            val fee = prefHelper.coinsFee[fromCoin]?.txFee ?: 0.0
+            val fromAddress = daoAccount.getItem(fromCoin).publicKey
+            apiService.withdraw((hashResponse as Either.Right).b, fromCoin, fromCoinAmount, fee, fromAddress, toAddress)
+        } else {
+            hashResponse as Either.Left
         }
     } else {
         Either.Left(Failure.NetworkConnection)
-    }
-
-    override suspend fun withdraw(
-        smsCode: String,
-        hash: String,
-        fromCoin: String,
-        fromCoinAmount: Double
-    ): Either<Failure, Unit> = if (networkUtils.isNetworkAvailable()) {
-        val smsCodeVerifyResponse = toolsRepository.verifySmsCodeOld(smsCode)
-        if (smsCodeVerifyResponse.isRight) {
-            apiService.withdraw(hash, fromCoin, fromCoinAmount)
-        } else {
-            smsCodeVerifyResponse as Either.Left
-        }
-    } else {
-        Either.Left(Failure.NetworkConnection)
-    }
-
-    override suspend fun sendGiftTransactionCreate(
-        phone: String,
-        fromCoin: String,
-        fromCoinAmount: Double
-    ): Either<Failure, String> {
-        val giftAddressResponse = apiService.getGiftAddress(fromCoin, phone)
-        return if (giftAddressResponse.isRight) {
-            val coinType = LocalCoinType.valueOf(fromCoin)
-            val toAddress = (giftAddressResponse as Either.Right).b
-            transactionHashRepository.createTransactionHash(coinType, fromCoinAmount, toAddress)
-        } else {
-            giftAddressResponse as Either.Left
-        }
     }
 
     override suspend fun sendGift(
-        smsCode: String,
-        hash: String,
-        fromCoin: String,
-        fromCoinAmount: Double,
+        amount: Double,
+        coinCode: String,
         giftId: String,
         phone: String,
         message: String
-    ): Either<Failure, Unit> = if (networkUtils.isNetworkAvailable()) {
-        val smsCodeVerifyResponse = toolsRepository.verifySmsCodeOld(smsCode)
-        if (smsCodeVerifyResponse.isRight) {
-            apiService.sendGift(hash, fromCoin, fromCoinAmount, giftId, phone, message)
+    ): Either<Failure, Unit> {
+        val giftAddressResponse = apiService.getGiftAddress(coinCode, phone)
+        return if (giftAddressResponse.isRight) {
+            val coinType = LocalCoinType.valueOf(coinCode)
+            val toAddress = (giftAddressResponse as Either.Right).b
+            val hashResponse = transactionHashRepository.createTransactionHash(coinType, amount, toAddress)
+            if (hashResponse.isRight) {
+                val fee = prefHelper.coinsFee[coinCode]?.txFee ?: 0.0
+                val fromAddress = daoAccount.getItem(coinCode).publicKey
+                val hash = (hashResponse as Either.Right).b
+                apiService.sendGift(hash, coinCode, amount, giftId, phone, message, fee, fromAddress, toAddress)
+            } else {
+                hashResponse as Either.Left
+            }
         } else {
-            smsCodeVerifyResponse as Either.Left
+            giftAddressResponse as Either.Left
         }
-    } else {
-        Either.Left(Failure.NetworkConnection)
     }
 
     override suspend fun sellGetLimits(): Either<Failure, SellLimitsDataItem> = if (networkUtils.isNetworkAvailable()) {
@@ -157,21 +135,22 @@ class TransactionRepositoryImpl(
         Either.Left(Failure.NetworkConnection)
     }
 
-    override suspend fun exchangeCoinToCoin(
-        smsCode: String,
+    override suspend fun exchange(
         fromCoinAmount: Double,
         fromCoin: String,
-        coinTo: String,
-        hex: String
-    ): Either<Failure, Unit> = if (networkUtils.isNetworkAvailable()) {
-        val smsCodeVerifyResponse = toolsRepository.verifySmsCodeOld(smsCode)
-        if (smsCodeVerifyResponse.isRight) {
-            apiService.coinToCoinExchange(fromCoinAmount, fromCoin, coinTo, hex)
+        coinTo: String
+    ): Either<Failure, Unit> {
+        val coinType = LocalCoinType.valueOf(fromCoin)
+        val toAddress = daoAccount.getItem(coinTo).publicKey
+        val hashResponse = transactionHashRepository.createTransactionHash(coinType, fromCoinAmount, toAddress)
+        return if (hashResponse.isRight) {
+            val fee = prefHelper.coinsFee[fromCoin]?.txFee ?: 0.0
+            val fromAddress = daoAccount.getItem(fromCoin).publicKey
+            val hash = (hashResponse as Either.Right).b
+            apiService.exchange(fromCoinAmount, fromCoin, coinTo, hash, fee, fromAddress, toAddress)
         } else {
-            smsCodeVerifyResponse as Either.Left
+            hashResponse as Either.Left
         }
-    } else {
-        Either.Left(Failure.NetworkConnection)
     }
 
     override suspend fun tradeGetBuyList(

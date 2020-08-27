@@ -5,19 +5,17 @@ import com.app.belcobtm.domain.Failure
 import com.app.belcobtm.domain.UseCase
 import com.app.belcobtm.domain.transaction.TransactionRepository
 
-class CoinToCoinExchangeUseCase(
+class ExchangeUseCase(
     private val repository: TransactionRepository
 ) :
-    UseCase<Unit, CoinToCoinExchangeUseCase.Params>() {
+    UseCase<Unit, ExchangeUseCase.Params>() {
 
     override suspend fun run(params: Params): Either<Failure, Unit> =
-        repository.exchangeCoinToCoin(params.smsCode, params.coinFromAmount, params.coinFrom, params.coinTo, params.hex)
+        repository.exchange(params.coinFromAmount, params.coinFrom, params.coinTo)
 
     data class Params(
-        val smsCode: String,
         val coinFromAmount: Double,
         val coinFrom: String,
-        val coinTo: String,
-        val hex: String
+        val coinTo: String
     )
 }

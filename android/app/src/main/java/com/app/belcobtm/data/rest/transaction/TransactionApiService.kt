@@ -32,19 +32,20 @@ class TransactionApiService(
     suspend fun withdraw(
         hash: String,
         coinFrom: String,
-        coinFromAmount: Double
+        coinFromAmount: Double,
+        fee: Double?,
+        fromAddress: String?,
+        toAddress: String?
     ): Either<Failure, Unit> = try {
         val requestBody = WithdrawRequest(
             type = TRANSACTION_WITHDRAW,
             cryptoAmount = coinFromAmount,
-            hex = hash
+            hex = hash,
+            fee = fee,
+            fromAddress = fromAddress,
+            toAddress = toAddress
         )
-        val request = api.withdrawAsync(
-            prefHelper.userId,
-            coinFrom,
-            requestBody
-        ).await()
-
+        val request = api.withdrawAsync(prefHelper.userId, coinFrom, requestBody).await()
         request.body()?.let { Either.Right(Unit) } ?: Either.Left(Failure.ServerError())
     } catch (failure: Failure) {
         failure.printStackTrace()
@@ -68,7 +69,10 @@ class TransactionApiService(
         coinFromAmount: Double,
         giftId: String,
         phone: String,
-        message: String
+        message: String,
+        fee: Double?,
+        fromAddress: String?,
+        toAddress: String?
     ): Either<Failure, Unit> = try {
         val requestBody = SendGiftRequest(
             TRANSACTION_SEND_GIFT,
@@ -76,7 +80,10 @@ class TransactionApiService(
             phone,
             message,
             giftId,
-            hash
+            hash,
+            fee,
+            fromAddress,
+            toAddress
         )
         val request = api.sendGiftAsync(prefHelper.userId, coinFrom, requestBody).await()
         request.body()?.let { Either.Right(Unit) } ?: Either.Left(Failure.ServerError())
@@ -132,24 +139,25 @@ class TransactionApiService(
         Either.Left(failure)
     }
 
-    suspend fun coinToCoinExchange(
+    suspend fun exchange(
         coinFromAmount: Double,
         coinFrom: String,
         coinTo: String,
-        hash: String
+        hash: String,
+        fee: Double?,
+        fromAddress: String?,
+        toAddress: String?
     ): Either<Failure, Unit> = try {
         val requestBody = CoinToCoinExchangeRequest(
             type = TRANSACTION_SEND_COIN_TO_COIN,
             cryptoAmount = coinFromAmount,
             refCoin = coinTo,
-            hex = hash
+            hex = hash,
+            fee = fee,
+            fromAddress = fromAddress,
+            toAddress = toAddress
         )
-        val request = api.coinToCoinExchangeAsync(
-            prefHelper.userId,
-            coinFrom,
-            requestBody
-        ).await()
-
+        val request = api.exchangeAsync(prefHelper.userId, coinFrom, requestBody).await()
         request.body()?.let { Either.Right(Unit) } ?: Either.Left(Failure.ServerError())
     } catch (failure: Failure) {
         failure.printStackTrace()

@@ -7,20 +7,17 @@ import android.content.Intent
 import android.location.Location
 import android.location.LocationManager
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.app.belcobtm.R
 import com.app.belcobtm.domain.wallet.LocalCoinType
-import com.app.belcobtm.presentation.core.extensions.*
+import com.app.belcobtm.presentation.core.extensions.setDrawableStart
+import com.app.belcobtm.presentation.core.extensions.toStringCoin
+import com.app.belcobtm.presentation.core.extensions.toStringUsd
 import com.app.belcobtm.presentation.core.helper.AlertHelper
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
 import com.app.belcobtm.presentation.core.ui.fragment.BaseFragment
-import com.app.belcobtm.presentation.features.wallet.exchange.coin.to.coin.ExchangeCoinToCoinActivity
-import com.app.belcobtm.presentation.features.wallet.staking.StakingActivity
 import com.app.belcobtm.presentation.features.wallet.trade.main.TradeActivity
 import com.app.belcobtm.presentation.features.wallet.transactions.adapter.TransactionsAdapter
-import com.app.belcobtm.ui.main.coins.sell.SellActivity
-import com.app.belcobtm.ui.main.coins.withdraw.WithdrawActivity
 import com.github.mikephil.charting.data.BarEntry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
@@ -50,6 +47,7 @@ class TransactionsFragment : BaseFragment() {
     override val isHomeButtonEnabled: Boolean = true
     override val isMenuEnabled: Boolean = false
     override val customToolbarId: Int = R.id.customToolbarView
+    override val isFirstShowContent: Boolean = false
 
     override fun onResume() {
         super.onResume()
@@ -71,11 +69,11 @@ class TransactionsFragment : BaseFragment() {
         }
         listView.adapter = adapter
         initChart()
-        if (viewModel.coinCode == LocalCoinType.CATM.name) {
-            stakingButtonView.show()
-        } else {
-            stakingButtonView.hide()
-        }
+//        if (viewModel.coinCode == LocalCoinType.CATM.name) {
+//            stakingButtonView.show()
+//        } else {
+//            stakingButtonView.hide()
+//        }
     }
 
     override fun initListeners() {
@@ -96,7 +94,7 @@ class TransactionsFragment : BaseFragment() {
         }
         withdrawButtonView.setOnClickListener {
             if (isCorrectCoinId()) {
-                WithdrawActivity.start(requireContext(), viewModel.coinDataItem, viewModel.coinDataItemList)
+                navigate(TransactionsFragmentDirections.toWithdrawFragment(viewModel.coinDataItem?.code ?: ""))
             } else {
                 AlertHelper.showToastShort(
                     withdrawButtonView.context,
@@ -117,48 +115,42 @@ class TransactionsFragment : BaseFragment() {
             fabMenuView.close(false)
         }
 
-        sellButtonView.setOnClickListener {
-            if (isCorrectCoinId()) {
-                SellActivity.start(requireContext(), viewModel.coinDataItem, viewModel.coinDataItemList)
-            } else {
-                AlertHelper.showToastShort(
-                    sellButtonView.context,
-                    "In progress. Only BTC, BCH, XRP, BNB and LTC withdraw available"
-                )
-            }
-            fabMenuView.close(false)
-        }
-        c2cExchangeButtonView.setOnClickListener {
-            if (isCorrectCoinId()) {
-                val intent = Intent(requireContext(), ExchangeCoinToCoinActivity::class.java)
-                intent.putExtra(ExchangeCoinToCoinActivity.TAG_COIN_ITEM, viewModel.coinDataItem)
-                intent.putParcelableArrayListExtra(
-                    ExchangeCoinToCoinActivity.TAG_COIN_ITEM_LIST,
-                    viewModel.coinDataItemList
-                )
-                startActivity(intent)
-            } else {
-                AlertHelper.showToastShort(
-                    c2cExchangeButtonView.context,
-                    "In progress. Only BTC, BCH, XRP, BNB and LTC withdraw available"
-                )
-            }
-            fabMenuView.close(false)
-        }
-
-        tradeButtonView.setOnClickListener { tradeOpenWithPermissionCheck() }
-
-        stakingButtonView.setOnClickListener {
-            if (isCorrectCoinId()) {
-                startActivity(Intent(requireContext(), StakingActivity::class.java))
-            } else {
-                AlertHelper.showToastShort(
-                    c2cExchangeButtonView.context,
-                    "In progress. Only BTC, BCH, XRP, BNB and LTC withdraw available"
-                )
-            }
-            fabMenuView.close(false)
-        }
+//        sellButtonView.setOnClickListener {
+//            if (isCorrectCoinId()) {
+//                SellActivity.start(requireContext(), viewModel.coinDataItem, viewModel.coinDataItemList)
+//            } else {
+//                AlertHelper.showToastShort(
+//                    sellButtonView.context,
+//                    "In progress. Only BTC, BCH, XRP, BNB and LTC withdraw available"
+//                )
+//            }
+//            fabMenuView.close(false)
+//        }
+//        c2cExchangeButtonView.setOnClickListener {
+//            if (isCorrectCoinId()) {
+//                navigate(TransactionsFragmentDirections.toExchangeFragment(viewModel.coinDataItem?.code ?: ""))
+//            } else {
+//                AlertHelper.showToastShort(
+//                    c2cExchangeButtonView.context,
+//                    "In progress. Only BTC, BCH, XRP, BNB and LTC withdraw available"
+//                )
+//            }
+//            fabMenuView.close(false)
+//        }
+//
+//        tradeButtonView.setOnClickListener { tradeOpenWithPermissionCheck() }
+//
+//        stakingButtonView.setOnClickListener {
+//            if (isCorrectCoinId()) {
+//                startActivity(Intent(requireContext(), StakingActivity::class.java))
+//            } else {
+//                AlertHelper.showToastShort(
+//                    c2cExchangeButtonView.context,
+//                    "In progress. Only BTC, BCH, XRP, BNB and LTC withdraw available"
+//                )
+//            }
+//            fabMenuView.close(false)
+//        }
 
         fabMenuView.setOnMenuToggleListener {
             fabMenuView?.isClickable = it
@@ -178,9 +170,9 @@ class TransactionsFragment : BaseFragment() {
             priceUsdView.text = getString(R.string.transaction_price_usd, it.priceUsd.toStringUsd())
             balanceCryptoView.text =
                 getString(R.string.transaction_crypto_balance, it.balance.toStringCoin(), viewModel.coinCode)
-            balanceUsdView.text = getString(R.string.transaction_price_usd, (it.balance * it.priceUsd).toStringUsd())
+            balanceUsdView.text = getString(R.string.unit_usd_dynamic_symbol, (it.balance * it.priceUsd).toStringUsd())
         })
-        viewModel.transactionListLiveData.observe(this, Observer {
+        viewModel.transactionListLiveData.observe(this, {
             adapter.setItemList(it)
             swipeToRefreshView.isRefreshing = false
         })

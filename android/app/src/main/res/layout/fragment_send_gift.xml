@@ -94,7 +94,8 @@
                 android:drawableEnd="@drawable/ic_phone"
                 android:drawableTint="@color/colorPrimary"
                 android:hint="@string/send_gift_screen_recipient_address"
-                android:inputType="phone" />
+                android:inputType="phone"
+                android:nextFocusDown="@id/amountCryptoView" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -107,10 +108,11 @@
             <com.google.android.material.textfield.TextInputEditText
                 style="@style/EditText.InputWithMax"
                 android:digits="1234567890."
+                android:imeOptions="actionNext"
                 android:inputType="numberDecimal"
-                android:nextFocusDown="@id/amountUsdView"
-                tools:hint="@string/send_gift_screen_crypto_amount"
-                tools:ignore="RtlSymmetry" />
+                android:nextFocusUp="@id/messageView"
+                android:nextFocusDown="@id/messageView"
+                tools:hint="@string/send_gift_screen_crypto_amount" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <androidx.appcompat.widget.AppCompatTextView
@@ -184,25 +186,27 @@
                 android:layout_height="match_parent"
                 android:gravity="start|top"
                 android:hint="@string/send_gift_screen_message"
+                android:imeOptions="actionDone"
                 android:inputType="textMultiLine"
                 android:maxLength="160" />
         </com.google.android.material.textfield.TextInputLayout>
 
+        <Space
+            android:id="@+id/spaceView"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toTopOf="@id/nextButtonView"
+            app:layout_constraintTop_toBottomOf="@id/messageView" />
+
         <com.google.android.material.button.MaterialButton
             android:id="@+id/nextButtonView"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
+            style="@style/Button.Primary"
             android:enabled="false"
-            android:paddingTop="12dp"
-            android:paddingBottom="12dp"
             android:text="@string/button_next"
-            android:textColor="@android:color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/messageView" />
+            app:layout_constraintTop_toBottomOf="@id/spaceView" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

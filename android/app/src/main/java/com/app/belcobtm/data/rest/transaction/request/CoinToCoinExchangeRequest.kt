@@ -4,5 +4,8 @@ data class CoinToCoinExchangeRequest(
     val type: Int,
     val cryptoAmount: Double,
     val refCoin: String,
-    val hex: String
+    val hex: String,
+    val fee: Double?,
+    val fromAddress: String?,
+    val toAddress: String?
 )

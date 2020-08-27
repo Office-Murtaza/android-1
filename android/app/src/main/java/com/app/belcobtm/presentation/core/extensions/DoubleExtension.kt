@@ -4,7 +4,7 @@ import java.math.RoundingMode
 import java.text.DecimalFormat
 
 fun Double.toStringUsd(): String = if (this > 0) {
-    val df = DecimalFormat("#.##")
+    val df = DecimalFormat("#.###")
     df.roundingMode = RoundingMode.FLOOR
     val trimmed = df.format(this).trimEnd('0')
     if (trimmed.isNotBlank()) {

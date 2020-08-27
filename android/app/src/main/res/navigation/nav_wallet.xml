@@ -61,6 +61,20 @@
             app:exitAnim="@anim/slide_to_left"
             app:popEnterAnim="@anim/slide_from_left"
             app:popExitAnim="@anim/slide_to_right" />
+        <action
+            android:id="@+id/to_withdraw_fragment"
+            app:destination="@id/withdraw_fragment"
+            app:enterAnim="@anim/slide_from_right"
+            app:exitAnim="@anim/slide_to_left"
+            app:popEnterAnim="@anim/slide_from_left"
+            app:popExitAnim="@anim/slide_to_right" />
+        <action
+            android:id="@+id/to_exchange_fragment"
+            app:destination="@id/exchange_fragment"
+            app:enterAnim="@anim/slide_from_right"
+            app:exitAnim="@anim/slide_to_left"
+            app:popEnterAnim="@anim/slide_from_left"
+            app:popExitAnim="@anim/slide_to_right" />
     </fragment>
 
     <fragment
@@ -91,21 +105,31 @@
 
     <fragment
         android:id="@+id/send_gift_fragment"
-        android:name="com.app.belcobtm.ui.main.coins.send_gift.SendGiftFragment"
+        android:name="com.app.belcobtm.presentation.features.wallet.send.gift.SendGiftFragment"
         android:label="SendGiftFragment"
-        tools:layout="@layout/activity_send_gift">
+        tools:layout="@layout/fragment_send_gift">
         <argument
             android:name="coin_code"
             app:argType="string" />
     </fragment>
 
     <fragment
-        android:id="@+id/sms_code_fragment"
-        android:name="com.app.belcobtm.presentation.features.sms.code.SmsCodeFragment"
-        android:label="SmsCodeFragment"
-        tools:layout="@layout/fragment_sms_code" />
+        android:id="@+id/withdraw_fragment"
+        android:name="com.app.belcobtm.presentation.features.wallet.withdraw.WithdrawFragment"
+        android:label="WithdrawFragment"
+        tools:layout="@layout/fragment_withdraw">
+        <argument
+            android:name="coin_code"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/exchange_fragment"
+        android:name="com.app.belcobtm.presentation.features.wallet.exchange.coin.to.coin.ExchangeFragment"
+        android:label="ExchangeFragment"
+        tools:layout="@layout/fragment_exchange">
+        <argument
+            android:name="coin_code"
+            app:argType="string" />
+    </fragment>
 
-    <action
-        android:id="@+id/to_sms_code_fragment"
-        app:destination="@id/sms_code_fragment" />
 </navigation>

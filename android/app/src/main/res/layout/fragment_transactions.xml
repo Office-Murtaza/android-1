@@ -18,14 +18,6 @@
         app:titleTextColor="@color/colorText"
         tools:title="Bitcoin" />
 
-    <View
-        android:id="@+id/chartPlaceHolderView"
-        android:layout_width="0dp"
-        android:layout_height="300dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/customToolbarView" />
-
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/priceUsdView"
         android:layout_width="wrap_content"
@@ -34,10 +26,9 @@
         android:textColor="@color/colorPrimary"
         android:textSize="22sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@id/changesView"
-        app:layout_constraintEnd_toEndOf="@id/chartPlaceHolderView"
-        app:layout_constraintStart_toStartOf="@id/chartPlaceHolderView"
-        app:layout_constraintTop_toTopOf="@id/chartPlaceHolderView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/customToolbarView"
         tools:text="245876543 USD" />
 
     <androidx.appcompat.widget.AppCompatTextView
@@ -48,18 +39,16 @@
         android:drawableStart="@drawable/ic_arrow_drop_down"
         android:drawableTint="#e02d2d"
         android:textColor="#e02d2d"
-        app:layout_constraintBottom_toTopOf="@id/chartView"
-        app:layout_constraintEnd_toEndOf="@id/chartPlaceHolderView"
-        app:layout_constraintStart_toStartOf="@id/chartPlaceHolderView"
+        app:layout_constraintEnd_toEndOf="@id/priceUsdView"
+        app:layout_constraintStart_toStartOf="@id/priceUsdView"
         app:layout_constraintTop_toBottomOf="@id/priceUsdView"
         tools:text="2.18 %" />
 
     <com.github.mikephil.charting.charts.LineChart
         android:id="@+id/chartView"
         android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_height="140dp"
         android:layout_marginTop="8dp"
-        app:layout_constraintBottom_toTopOf="@id/chartChipGroupView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/changesView" />
@@ -68,8 +57,6 @@
         android:id="@+id/chartChipGroupView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toTopOf="@id/balanceTitleView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/chartView"
@@ -103,31 +90,40 @@
 
     </com.google.android.material.chip.ChipGroup>
 
+    <View
+        android:id="@+id/graphDividerView"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginTop="4dp"
+        android:background="@drawable/bg_divider"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/chartChipGroupView" />
+
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/balanceTitleView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="16dp"
         android:text="@string/balance"
         android:textColor="#8d8d8d"
         android:textSize="16sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@id/chartPlaceHolderView"
-        app:layout_constraintEnd_toStartOf="@id/balanceCryptoView"
-        app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/chartChipGroupView" />
+        app:layout_constraintTop_toBottomOf="@id/graphDividerView" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/balanceCryptoView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
         android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@id/balanceTitleView"
         app:layout_constraintEnd_toStartOf="@id/exchangeView"
-        app:layout_constraintStart_toEndOf="@id/balanceTitleView"
         app:layout_constraintTop_toTopOf="@id/balanceTitleView"
         tools:text="0.000902 BTC" />
 
@@ -135,35 +131,35 @@
         android:id="@+id/exchangeView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
         android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="@id/balanceTitleView"
+        app:layout_constraintBottom_toBottomOf="@id/balanceCryptoView"
         app:layout_constraintEnd_toStartOf="@id/balanceUsdView"
-        app:layout_constraintStart_toEndOf="@id/balanceCryptoView"
-        app:layout_constraintTop_toTopOf="@id/balanceTitleView"
+        app:layout_constraintTop_toTopOf="@id/balanceCryptoView"
         app:srcCompat="@drawable/ic_compare_arrows" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/balanceUsdView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
         android:textColor="@color/blue_color"
         android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@id/balanceTitleView"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/exchangeView"
         app:layout_constraintTop_toTopOf="@id/balanceTitleView"
-        tools:text="8.90 USD" />
+        tools:text="8.90 $" />
 
     <View
+        android:id="@+id/balanceDividerView"
         android:layout_width="0dp"
         android:layout_height="1dp"
+        android:layout_marginTop="16dp"
         android:background="@drawable/bg_divider"
         app:layout_constraintEnd_toEndOf="@id/swipeToRefreshView"
         app:layout_constraintStart_toStartOf="@id/swipeToRefreshView"
-        app:layout_constraintTop_toTopOf="@id/swipeToRefreshView" />
+        app:layout_constraintTop_toBottomOf="@id/balanceTitleView" />
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/swipeToRefreshView"
@@ -172,7 +168,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/chartPlaceHolderView">
+        app:layout_constraintTop_toBottomOf="@id/balanceDividerView">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/listView"
@@ -200,29 +196,29 @@
         app:menu_labels_showAnimation="@anim/fab_scale_up"
         app:menu_labels_textColor="#58585a">
 
-        <com.github.clans.fab.FloatingActionButton
-            android:id="@+id/stakingButtonView"
-            style="@style/TransactionsScreen.FloatingActionButtonChild"
-            android:src="@drawable/ic_money"
-            app:fab_label="@string/transitions_staking" />
+        <!--        <com.github.clans.fab.FloatingActionButton-->
+        <!--            android:id="@+id/stakingButtonView"-->
+        <!--            style="@style/TransactionsScreen.FloatingActionButtonChild"-->
+        <!--            android:src="@drawable/ic_money"-->
+        <!--            app:fab_label="@string/transitions_staking" />-->
 
-        <com.github.clans.fab.FloatingActionButton
-            android:id="@+id/tradeButtonView"
-            style="@style/TransactionsScreen.FloatingActionButtonChild"
-            android:src="@drawable/ic_trade"
-            app:fab_label="@string/transitions_trade" />
+        <!--        <com.github.clans.fab.FloatingActionButton-->
+        <!--            android:id="@+id/tradeButtonView"-->
+        <!--            style="@style/TransactionsScreen.FloatingActionButtonChild"-->
+        <!--            android:src="@drawable/ic_trade"-->
+        <!--            app:fab_label="@string/transitions_trade" />-->
 
-        <com.github.clans.fab.FloatingActionButton
-            android:id="@+id/c2cExchangeButtonView"
-            style="@style/TransactionsScreen.FloatingActionButtonChild"
-            android:src="@drawable/ic_exchange"
-            app:fab_label="@string/transitions_exchange" />
+        <!--        <com.github.clans.fab.FloatingActionButton-->
+        <!--            android:id="@+id/c2cExchangeButtonView"-->
+        <!--            style="@style/TransactionsScreen.FloatingActionButtonChild"-->
+        <!--            android:src="@drawable/ic_exchange"-->
+        <!--            app:fab_label="@string/transitions_exchange" />-->
 
-        <com.github.clans.fab.FloatingActionButton
-            android:id="@+id/sellButtonView"
-            style="@style/TransactionsScreen.FloatingActionButtonChild"
-            android:src="@drawable/ic_shopping_cart"
-            app:fab_label="@string/sell" />
+        <!--        <com.github.clans.fab.FloatingActionButton-->
+        <!--            android:id="@+id/sellButtonView"-->
+        <!--            style="@style/TransactionsScreen.FloatingActionButtonChild"-->
+        <!--            android:src="@drawable/ic_shopping_cart"-->
+        <!--            app:fab_label="@string/sell" />-->
 
         <com.github.clans.fab.FloatingActionButton
             android:id="@+id/sendGiftButtonView"

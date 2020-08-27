@@ -45,8 +45,7 @@ class TransactionDetailsFragment : BaseFragment() {
             showTypeView(it.type)
             showStatusView(it.statusType)
             showCashStatus(it.cashStatusType)
-            showAmountView(it.cryptoAmount)
-            showFiatAmountView(it.fiatAmount)
+            showAmountView(it.cryptoAmount, it.fiatAmount)
             showFeeView(it.cryptoFee)
             showDateView(it.date)
             showFromAddressView(it.fromAddress)
@@ -144,19 +143,14 @@ class TransactionDetailsFragment : BaseFragment() {
         else -> cashStatusContainerView.hide()
     }
 
-    private fun showAmountView(amount: Double) = if (amount < 0) {
+    private fun showAmountView(cryptoAmount: Double, fiatAmount: Double) = if (cryptoAmount < 0 || fiatAmount < 0) {
         amountContainerView.hide()
     } else {
         val coinCode = TransactionDetailsFragmentArgs.fromBundle(requireArguments()).coinCode
         amountContainerView.show()
-        amountView.text = getString(R.string.transition_details_screen_balance_crypto, amount.toStringCoin(), coinCode)
-    }
-
-    private fun showFiatAmountView(amount: Double) = if (amount < 0) {
-        fiatAmountContainerView.hide()
-    } else {
-        fiatAmountContainerView.show()
-        fiatAmountView.text = getString(R.string.transition_details_screen_balance_usd, amount.toStringUsd())
+        amountCryptoView.text =
+            getString(R.string.transition_details_screen_balance_crypto, cryptoAmount.toStringCoin(), coinCode)
+        amountUsdView.text = getString(R.string.transition_details_screen_balance_usd, cryptoAmount.toStringUsd())
     }
 
     private fun showFeeView(fee: Double) = if (fee < 0) {
@@ -212,11 +206,13 @@ class TransactionDetailsFragment : BaseFragment() {
     }
 
     private fun showSellInfoView(sellInfo: String) = if (sellInfo.isBlank()) {
+        qrCodeTitleView.hide()
         qrCodeView.hide()
     } else {
         val point = Point().also { requireActivity().windowManager.defaultDisplay.getSize(it) }
         val qrCodeSize = (if (point.x > point.y) point.y else point.x) / 2
         qrCodeView?.setImageBitmap(getSpacelessQR(sellInfo, qrCodeSize, qrCodeSize))
+        qrCodeTitleView.show()
         qrCodeView.show()
     }
 

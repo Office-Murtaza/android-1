@@ -43,6 +43,7 @@ abstract class BaseFragment : Fragment() {
     protected open val retryListener: View.OnClickListener? = null
     protected open val backPressedListener: View.OnClickListener = View.OnClickListener { popBackStack() }
     protected open val customToolbarId: Int = 0
+    protected open val isFirstShowContent: Boolean = true
 
     //field used for dynamic setting of back button because we handle it on resume
     protected open var isBackButtonEnabled: Boolean = false
@@ -91,11 +92,14 @@ abstract class BaseFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         this.navController = Navigation.findNavController(view)
+        updateActionBar()
         errorRetryButtonView.setOnClickListener(retryListener)
         initListeners()
         initObservers()
         initViews()
-        showContent()
+        if (isFirstShowContent) {
+            showContent()
+        }
     }
 
     override fun onResume() {
@@ -107,22 +111,6 @@ abstract class BaseFragment : Fragment() {
                 (it as HostNavigationFragment).hideBottomMenu()
             }
         }
-
-        val activity = requireActivity() as AppCompatActivity
-        activity.supportActionBar?.let { actionBar ->
-            if (isToolbarEnabled) {
-                val drawable = ContextCompat.getDrawable(activity.applicationContext, homeButtonDrawable)
-                drawable?.setTint(ContextCompat.getColor(activity.applicationContext, R.color.colorPrimary))
-                (activity as HostActivity).supportActionBar?.setHomeAsUpIndicator(drawable)
-                actionBar.show()
-            } else {
-                actionBar.hide()
-            }
-
-            showBackButton(isBackButtonEnabled || (isToolbarEnabled && isHomeButtonEnabled))
-            fillToolbarTitle()
-        }
-        activity.invalidateOptionsMenu()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean = if (item.itemId == android.R.id.home) {
@@ -301,5 +289,23 @@ abstract class BaseFragment : Fragment() {
         if (this != old) {
             action(this)
         }
+    }
+
+    private fun updateActionBar() {
+        val activity = requireActivity() as AppCompatActivity
+        activity.supportActionBar?.let { actionBar ->
+            if (isToolbarEnabled) {
+                val drawable = ContextCompat.getDrawable(activity.applicationContext, homeButtonDrawable)
+                drawable?.setTint(ContextCompat.getColor(activity.applicationContext, R.color.colorPrimary))
+                (activity as HostActivity).supportActionBar?.setHomeAsUpIndicator(drawable)
+                actionBar.show()
+            } else {
+                actionBar.hide()
+            }
+
+            showBackButton(isBackButtonEnabled || (isToolbarEnabled && isHomeButtonEnabled))
+            fillToolbarTitle()
+        }
+        activity.invalidateOptionsMenu()
     }
 }

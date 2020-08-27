@@ -14,15 +14,14 @@ class WalletFragment : BaseFragment() {
     private val viewModel: WalletViewModel by viewModel()
     private val adapter: CoinsAdapter = CoinsAdapter {
         when (it) {
-            is BalanceListItem.Coin -> {
-                navigate(WalletFragmentDirections.toTransactionsFragment(it.code))
-            }
+            is BalanceListItem.Coin -> navigate(WalletFragmentDirections.toTransactionsFragment(it.code))
             is BalanceListItem.AddButton -> navigate(WalletFragmentDirections.toManageWalletsFragment())
         }
     }
     override val resourceLayout: Int = R.layout.fragment_balance
     override val isToolbarEnabled: Boolean = false
     override val isMenuEnabled: Boolean = true
+    override val isFirstShowContent: Boolean = false
 
     override fun onResume() {
         super.onResume()

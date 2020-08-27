@@ -17,30 +17,15 @@ interface TransactionRepository {
         isNeedSendSms: Boolean
     ): Either<Failure, String>
 
-    suspend fun createWithdrawTransaction(
+    suspend fun withdraw(
         fromCoin: String,
         fromCoinAmount: Double,
         toAddress: String
-    ): Either<Failure, String>
-
-    suspend fun withdraw(
-        smsCode: String,
-        hash: String,
-        fromCoin: String,
-        fromCoinAmount: Double
     ): Either<Failure, Unit>
 
-    suspend fun sendGiftTransactionCreate(
-        phone: String,
-        fromCoin: String,
-        fromCoinAmount: Double
-    ): Either<Failure, String>
-
     suspend fun sendGift(
-        smsCode: String,
-        hash: String,
-        fromCoin: String,
-        fromCoinAmount: Double,
+        amount: Double,
+        coinCode: String,
         giftId: String,
         phone: String,
         message: String
@@ -60,12 +45,10 @@ interface TransactionRepository {
         fromCoinAmount: Double
     ): Either<Failure, Unit>
 
-    suspend fun exchangeCoinToCoin(
-        smsCode: String,
+    suspend fun exchange(
         fromCoinAmount: Double,
         fromCoin: String,
-        coinTo: String,
-        hex: String
+        coinTo: String
     ): Either<Failure, Unit>
 
     suspend fun tradeGetBuyList(
