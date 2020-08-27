@@ -432,7 +432,7 @@
     //updates
     <string name="pin_updated">PIN was successfully updated</string>
     <string name="phone_updated">Phone was successfully updated</string>
-    <string name="password_changed">Password Password was successfully updated</string>
+    <string name="password_changed">Password was successfully updated</string>
     <string name="wallet_unlinked">Wallet was successfully deleted from the device</string>
 
     //unlink
