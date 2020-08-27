@@ -11,6 +11,10 @@ struct CoinsBalanceState: Equatable {
   var coinsBalance: CoinsBalance?
   var isFetching: Bool = false
   
+  var coins: [CoinBalance]? {
+    return coinsBalance?.coins.sorted()
+  }
+  
 }
 
 final class CoinsBalanceStore: ViewStore<CoinsBalanceAction, CoinsBalanceState> {

@@ -3,106 +3,75 @@ import RxSwift
 import RxCocoa
 import SnapKit
 
-class CoinsBalanceViewController: ModuleViewController<CoinsBalancePresenter>, UICollectionViewDelegateFlowLayout {
+class CoinsBalanceViewController: ModuleViewController<CoinsBalancePresenter> {
   
-  var dataSource: CoinsBalanceCollectionViewDataSource!
+  var dataSource: CoinsBalanceTableViewDataSource!
   
-  let backgroundImageView: UIImageView = {
-    let imageView = UIImageView(image: UIImage(named: "login_background"))
-    imageView.contentMode = .scaleAspectFill
-    imageView.clipsToBounds = true
-    return imageView
-  }()
+  let headerView = CoinsBalanceHeaderView()
   
-  let topSafeAreaContainer = UIView()
+  let tableView = CoinsBalanceTableView()
   
-  let balanceContainer = UIView()
-  
-  let titleLabel: UILabel = {
-    let label = UILabel()
-    label.text = localize(L.CoinsBalance.totalBalance)
-    label.textColor = .lightGold
-    label.font = .poppinsSemibold16
-    return label
-  }()
-  
-  let balanceLabel: UILabel = {
-    let label = UILabel()
-    label.textColor = .white
-    label.font = .poppinsSemibold28
-    return label
-  }()
+  let footerView = CoinsBalanceFooterView()
   
   let refreshControl = UIRefreshControl()
   
-  let collectionView: UICollectionView = {
-    let layout = UICollectionViewFlowLayout()
-    let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-    collectionView.contentInset = UIEdgeInsets(top: 25, left: 0, bottom: 25, right: 0)
-    return collectionView
-  }()
+  override var shouldShowNavigationBar: Bool { return false }
   
-  override var preferredStatusBarStyle: UIStatusBarStyle {
-    return .lightContent
+  override func viewWillAppear(_ animated: Bool) {
+    if let index = self.tableView.indexPathForSelectedRow {
+      self.tableView.deselectRow(at: index, animated: true)
+    }
+  }
+  
+  override func viewDidLayoutSubviews() {
+    super.viewDidLayoutSubviews()
+    
+    guard let footerView = self.tableView.tableFooterView else { return }
+    
+    let width = self.tableView.bounds.size.width
+    let size = footerView.systemLayoutSizeFitting(CGSize(width: width, height: UIView.layoutFittingCompressedSize.height))
+    
+    if footerView.frame.size.height != size.height {
+      footerView.frame.size.height = size.height
+      self.tableView.tableFooterView = footerView
+    }
   }
   
   override func setupUI() {
-    view.backgroundColor = .whiteThree
+    view.addSubviews(headerView,
+                     tableView)
     
-    view.addSubviews(backgroundImageView,
-                     topSafeAreaContainer,
-                     collectionView)
+    headerView.divider.backgroundColor = tableView.separatorColor
+    footerView.divider.backgroundColor = tableView.separatorColor
     
-    topSafeAreaContainer.addSubview(balanceContainer)
-    
-    balanceContainer.addSubviews(titleLabel,
-                                 balanceLabel)
-    
-    collectionView.backgroundColor = .clear
-    collectionView.refreshControl = refreshControl
-    collectionView.delegate = self
+    tableView.tableFooterView = footerView
+    tableView.refreshControl = refreshControl
   }
   
   override func setupLayout() {
-    backgroundImageView.snp.makeConstraints {
-      $0.top.left.right.equalToSuperview()
-      $0.height.equalTo(187)
-    }
-    topSafeAreaContainer.snp.makeConstraints {
+    headerView.snp.makeConstraints {
       $0.top.equalTo(view.safeAreaLayoutGuide)
       $0.left.right.equalToSuperview()
-      $0.bottom.equalTo(backgroundImageView)
+      $0.height.equalTo(125)
     }
-    balanceContainer.snp.makeConstraints {
-      $0.left.right.centerY.equalToSuperview()
-    }
-    titleLabel.snp.makeConstraints {
-      $0.top.centerX.equalToSuperview()
-    }
-    balanceLabel.snp.makeConstraints {
-      $0.top.equalTo(titleLabel.snp.bottom)
-      $0.centerX.bottom.equalToSuperview()
-    }
-    collectionView.snp.makeConstraints {
-      $0.top.equalTo(backgroundImageView.snp.bottom)
+    tableView.snp.makeConstraints {
+      $0.top.equalTo(headerView.snp.bottom)
       $0.left.right.bottom.equalToSuperview()
     }
   }
   
   private func setupUIBindings() {
-    collectionView.dataSource = dataSource
-    dataSource.collectionView = collectionView
+    tableView.dataSource = dataSource
+    dataSource.tableView = tableView
     
     presenter.state
-      .map { $0.coinsBalance?.totalBalance }
+      .map { $0.coinsBalance }
       .filterNil()
-      .map { "$ \($0.fiatFormatted)" }
-      .asObservable()
-      .bind(to: balanceLabel.rx.text)
+      .drive(onNext: { [headerView] in headerView.configure(for: $0) })
       .disposed(by: disposeBag)
     
     presenter.state
-      .map { $0.coinsBalance?.coins.sorted() }
+      .map { $0.coins }
       .filterNil()
       .asObservable()
       .bind(to: dataSource.coinBalancesRelay)
@@ -119,28 +88,11 @@ class CoinsBalanceViewController: ModuleViewController<CoinsBalancePresenter>, U
     setupUIBindings()
     
     let refreshDriver = refreshControl.rx.controlEvent(.valueChanged).asDriver()
-    let filterCoinsTapDriver = dataSource.footerTap.asDriver(onErrorDriveWith: .empty())
-    let coinTap = dataSource.coinTap.asDriver(onErrorDriveWith: .empty())
+    let manageWalletsDriver = footerView.rx.manageWallets
+    let coinSelectedDriver = tableView.rx.itemSelected.asDriver()
     
     presenter.bind(input: CoinsBalancePresenter.Input(refresh: refreshDriver,
-                                                      filterCoinsTap: filterCoinsTapDriver,
-                                                      coinTap: coinTap))
+                                                      manageWallets: manageWalletsDriver,
+                                                      coinSelected: coinSelectedDriver))
   }
-  
-  func collectionView(_ collectionView: UICollectionView,
-                      layout collectionViewLayout: UICollectionViewLayout,
-                      sizeForItemAt indexPath: IndexPath) -> CGSize {
-    return CGSize(width: collectionView.bounds.width - 25, height: 86)
-  }
-  
-  func collectionView(_ collectionView: UICollectionView,
-                      layout collectionViewLayout: UICollectionViewLayout,
-                      minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-    return 13
-  }
-  
-  func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForFooterInSection section: Int) -> CGSize {
-    return CGSize(width: collectionView.bounds.width, height: 70)
-  }
-  
 }

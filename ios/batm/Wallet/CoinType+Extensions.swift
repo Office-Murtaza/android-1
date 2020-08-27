@@ -40,6 +40,19 @@ enum CustomCoinType: CaseIterable {
     }
   }
   
+  var mediumLogo: UIImage? {
+    switch self {
+    case .bitcoin: return UIImage(named: "coins_bitcoin_medium")
+    case .bitcoinCash: return UIImage(named: "coins_bitcoin_cash_medium")
+    case .litecoin: return UIImage(named: "coins_litecoin_medium")
+    case .ethereum: return UIImage(named: "coins_ethereum_medium")
+    case .catm: return UIImage(named: "coins_catm_medium")
+    case .binance: return UIImage(named: "coins_binance_medium")
+    case .tron: return UIImage(named: "coins_tron_medium")
+    case .ripple: return UIImage(named: "coins_ripple_medium")
+    }
+  }
+  
   var smallLogo: UIImage? {
     switch self {
     case .bitcoin: return UIImage(named: "coins_bitcoin_small")

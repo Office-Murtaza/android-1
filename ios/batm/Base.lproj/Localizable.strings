@@ -78,12 +78,10 @@
 "pin_code.pin_type.new.title" = " new ";
 
 "coins_balance.title" = "Wallet";
-"coins_balance.total_balance" = "Total Balance:";
-"coins_balance.footer.title" = "Add Wallets";
+"coins_balance.header.title" = "Total";
+"coins_balance.footer.button.manage_wallets" = "Manage wallets";
 
-"filter_coins.title" = "Add Wallets";
-"filter_coins.show" = "Show";
-"filter_coins.hide" = "Hide";
+"manage_wallets.title" = "Manage wallets";
 
 "atm.title" = "ATM";
 "atm.info_window.open_now" = "Open Now:";

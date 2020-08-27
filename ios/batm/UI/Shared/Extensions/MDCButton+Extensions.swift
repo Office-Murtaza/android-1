@@ -195,6 +195,12 @@ extension MDCButton {
     return button
   }
   
+  static var manageWallets: MDCButton {
+    let button = MDCButton.outlined
+    button.setTitle(localize(L.CoinsBalance.Footer.Button.manageWallets), for: .normal)
+    return button
+  }
+  
   func set(image: UIImage?, title: String?, spacing: CGFloat = 10) {
     setTitle(title, for: .normal)
     setImage(image, for: .normal)

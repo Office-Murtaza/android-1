@@ -5,7 +5,7 @@ class CoinsBalanceAssembly: Assembly {
   
   func assemble(container: Container) {
     container.register(Module<CoinsBalanceModule>.self) { resolver in
-      let dataSource = CoinsBalanceCollectionViewDataSource()
+      let dataSource = CoinsBalanceTableViewDataSource()
       let viewController = CoinsBalanceViewController()
       let usecase = resolver.resolve(CoinsBalanceUsecase.self)!
       let presenter = CoinsBalancePresenter(usecase: usecase)

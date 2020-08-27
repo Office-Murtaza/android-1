@@ -82,7 +82,6 @@ enum L {
 
   struct CoinsBalance {
     static let title = "coins_balance.title"
-    static let totalBalance = "coins_balance.total_balance"
   }
 
   struct CreateEditTrade {
@@ -101,14 +100,12 @@ enum L {
   struct Error {
   }
 
-  struct FilterCoins {
-    static let hide = "filter_coins.hide"
-    static let show = "filter_coins.show"
-    static let title = "filter_coins.title"
-  }
-
   struct KYC {
     static let title = "k_y_c.title"
+  }
+
+  struct ManageWallets {
+    static let title = "manage_wallets.title"
   }
 
   struct PhoneVerification {
@@ -411,7 +408,16 @@ extension L.CoinWithdraw.Form {
 extension L.CoinsBalance {
 
   struct Footer {
-    static let title = "coins_balance.footer.title"
+  }
+
+  struct Header {
+    static let title = "coins_balance.header.title"
+  }
+}
+extension L.CoinsBalance.Footer {
+
+  struct Button {
+    static let manageWallets = "coins_balance.footer.button.manage_wallets"
   }
 }
 extension L.CreateEditTrade {

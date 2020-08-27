@@ -15,9 +15,9 @@ class CoinsBalanceFlowController: FlowController, FlowActivator {
 
 extension CoinsBalanceFlowController: CoinsBalanceModuleDelegate {
   
-  func showFilterCoins(from module: CoinsBalanceModule) {
+  func showManageWallets(from module: CoinsBalanceModule) {
     self.module = module
-    step.accept(CoinsBalanceFlow.Steps.filterCoins)
+    step.accept(CoinsBalanceFlow.Steps.manageWallets)
   }
   
   func showCoinDetails(coinBalances: [CoinBalance], coinSettings: CoinSettings, data: PriceChartData) {
@@ -26,11 +26,7 @@ extension CoinsBalanceFlowController: CoinsBalanceModuleDelegate {
   
 }
 
-extension CoinsBalanceFlowController: FilterCoinsModuleDelegate {
-  func didFinishFiltering() {
-    step.accept(CoinsBalanceFlow.Steps.pop)
-  }
-  
+extension CoinsBalanceFlowController: ManageWalletsModuleDelegate {
   func didChangeVisibility() {
     module?.fetchCoinsBalance()
   }

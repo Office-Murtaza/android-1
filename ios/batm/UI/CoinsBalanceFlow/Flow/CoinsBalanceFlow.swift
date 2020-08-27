@@ -6,13 +6,13 @@ class CoinsBalanceFlow: BaseFlow<BTMNavigationController, CoinsBalanceFlowContro
     return [
       Dependencies(),
       CoinsBalanceAssembly(),
-      FIlterCoinsAssembly()
+      ManageWalletsAssembly()
     ]
   }
   
   enum Steps: Step, Equatable {
     case coinsBalance
-    case filterCoins
+    case manageWallets
     case coinDetails([CoinBalance], CoinSettings, PriceChartData)
     case pop
   }
@@ -31,8 +31,8 @@ class CoinsBalanceFlow: BaseFlow<BTMNavigationController, CoinsBalanceFlowContro
       module.controller.tabBarItem.image = UIImage(named: "tab_bar_wallet")
       module.controller.tabBarItem.selectedImage = UIImage(named: "tab_bar_active_wallet")
       return push(module.controller, animated: false)
-    case .filterCoins:
-      let module = resolver.resolve(Module<FilterCoinsModule>.self)!
+    case .manageWallets:
+      let module = resolver.resolve(Module<ManageWalletsModule>.self)!
       return push(module.controller)
     case let .coinDetails(coinBalances, coinSettings, data):
       let flow = CoinDetailsFlow(view: view, parent: self)

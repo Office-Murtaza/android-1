@@ -50,7 +50,7 @@
 "create_wallet.form.error.field_required" = "This field is required";
 "create_wallet.form.error.not_valid_phone_number" = "Incorrect phone number";
 "create_wallet.form.error.existed_phone_number" = "Phone is already registered";
-"create_wallet.form.error.not_valid_password" = "Password length should be from 6 to 15";
+"create_wallet.form.error.not_valid_password" = "Password length should be from 6 to 20";
 "create_wallet.form.error.not_equal_passwords" = "Passwords do not match";
 
 "phone_verification.title" = "Verify phone";
@@ -78,12 +78,10 @@
 "pin_code.pin_type.new.title" = " new ";
 
 "coins_balance.title" = "Wallet";
-"coins_balance.total_balance" = "Total Balance:";
-"coins_balance.footer.title" = "Add Wallets";
+"coins_balance.header.title" = "Total";
+"coins_balance.footer.button.manage_wallets" = "Manage wallets";
 
-"filter_coins.title" = "Add Wallets";
-"filter_coins.show" = "Show";
-"filter_coins.hide" = "Hide";
+"manage_wallets.title" = "Manage wallets";
 
 "atm.title" = "ATM";
 "atm.info_window.open_now" = "Open Now:";

@@ -4,6 +4,6 @@ protocol CoinsBalanceModule: class {
   func fetchCoinsBalance()
 }
 protocol CoinsBalanceModuleDelegate: class {
-  func showFilterCoins(from module: CoinsBalanceModule)
+  func showManageWallets(from module: CoinsBalanceModule)
   func showCoinDetails(coinBalances: [CoinBalance], coinSettings: CoinSettings, data: PriceChartData)
 }

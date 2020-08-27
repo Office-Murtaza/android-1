@@ -8,8 +8,8 @@ class CoinsBalancePresenter: ModulePresenter, CoinsBalanceModule {
   
   struct Input {
     var refresh: Driver<Void>
-    var filterCoinsTap: Driver<Void>
-    var coinTap: Driver<CoinBalance>
+    var manageWallets: Driver<Void>
+    var coinSelected: Driver<IndexPath>
   }
   
   private let usecase: CoinsBalanceUsecase
@@ -44,12 +44,14 @@ class CoinsBalancePresenter: ModulePresenter, CoinsBalanceModule {
       .bind(to: store.action)
       .disposed(by: disposeBag)
     
-    input.filterCoinsTap
-      .drive(onNext: { [unowned self] in self.delegate?.showFilterCoins(from: self) })
+    input.manageWallets
+      .drive(onNext: { [unowned self] in self.delegate?.showManageWallets(from: self) })
       .disposed(by: disposeBag)
     
-    input.coinTap
+    input.coinSelected
       .asObservable()
+      .withLatestFrom(state) { indexPath, state in state.coins?[indexPath.item] }
+      .filterNil()
       .flatMap { [unowned self] coinBalance in
         return self.track(self.usecase.getCoinSettings(for: coinBalance.type))
         .map { (coinBalance, $0) }
