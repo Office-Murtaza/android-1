@@ -2,7 +2,7 @@ import UIKit
 import RxSwift
 import RxCocoa
 
-final class TransactionCell: UICollectionViewCell {
+final class TransactionCell: UITableViewCell {
   
   let stackView: UIStackView = {
     let stackView = UIStackView()
@@ -14,7 +14,7 @@ final class TransactionCell: UICollectionViewCell {
   
   let dateLabel: UILabel = {
     let label = UILabel()
-    label.font = .poppinsSemibold10
+    label.font = .systemFont(ofSize: 13)
     label.textColor = .slateGrey
     label.textAlignment = .center
     label.adjustsFontSizeToFitWidth = true
@@ -24,8 +24,8 @@ final class TransactionCell: UICollectionViewCell {
   
   let typeLabel: UILabel = {
     let label = UILabel()
-    label.font = .poppinsSemibold10
-    label.textColor = .slateGrey
+    label.font = .systemFont(ofSize: 13)
+    label.textColor = .warmGrey
     label.textAlignment = .center
     label.adjustsFontSizeToFitWidth = true
     label.minimumScaleFactor = 0.7
@@ -34,26 +34,20 @@ final class TransactionCell: UICollectionViewCell {
   
   let statusViewContainer = UIView()
   
-  let statusView = TransactionStatusView()
+  let statusView = StatusView()
   
   let amountLabel: UILabel = {
     let label = UILabel()
-    label.font = .poppinsSemibold10
-    label.textColor = .slateGrey
+    label.font = .systemFont(ofSize: 13)
+    label.textColor = .warmGrey
     label.textAlignment = .center
     label.adjustsFontSizeToFitWidth = true
     label.minimumScaleFactor = 0.7
     return label
   }()
   
-  let divider: UIView = {
-    let view = UIView()
-    view.backgroundColor = UIColor.black.withAlphaComponent(0.1)
-    return view
-  }()
-  
-  override init(frame: CGRect) {
-    super.init(frame: frame)
+  override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+    super.init(style: style, reuseIdentifier: reuseIdentifier)
     
     setupUI()
     setupLayout()
@@ -68,15 +62,10 @@ final class TransactionCell: UICollectionViewCell {
     dateLabel.text = nil
     typeLabel.text = nil
     amountLabel.text = nil
-    
-    statusView.reset()
   }
   
   private func setupUI() {
-    contentView.backgroundColor = .clear
-    
-    contentView.addSubviews(stackView,
-                            divider)
+    contentView.addSubviews(stackView)
     stackView.addArrangedSubviews(dateLabel,
                                   typeLabel,
                                   statusViewContainer,
@@ -91,17 +80,13 @@ final class TransactionCell: UICollectionViewCell {
     statusView.snp.makeConstraints {
       $0.center.equalToSuperview()
     }
-    divider.snp.makeConstraints {
-      $0.left.right.bottom.equalToSuperview()
-      $0.height.equalTo(1)
-    }
   }
   
   func configure(for model: Transaction) {
     dateLabel.text = model.dateString
-    typeLabel.text = model.type.verboseValue.uppercased()
-    amountLabel.text = "\(model.amount.coinFormatted)"
+    typeLabel.text = model.type.verboseValue
+    amountLabel.text = model.amount.coinFormatted
     
-    statusView.configure(for: model.status)
+    statusView.configure(text: model.status.verboseValue, color: model.status.associatedColor)
   }
 }

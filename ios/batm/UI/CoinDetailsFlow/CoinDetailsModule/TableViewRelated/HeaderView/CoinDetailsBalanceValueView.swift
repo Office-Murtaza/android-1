@@ -4,7 +4,7 @@ final class CoinDetailsBalanceValueView: UIView {
   
   let balanceCoinLabel: UILabel = {
     let label = UILabel()
-    label.textColor = .warmGrey
+    label.textColor = .slateGrey
     label.font = UIFont.systemFont(ofSize: 16, weight: .medium)
     label.adjustsFontSizeToFitWidth = true
     label.minimumScaleFactor = 0.5
@@ -77,7 +77,7 @@ final class CoinDetailsBalanceValueView: UIView {
   func configure(for coinBalance: CoinBalance, useReserved: Bool = false) {
     let balance = useReserved ? coinBalance.reservedBalance : coinBalance.balance
     
-    balanceCoinLabel.text = "\(balance.coinFormatted) \(coinBalance.type.code)"
-    balanceCurrencyLabel.text = (balance * coinBalance.price).fiatFormatted.withUSD
+    balanceCoinLabel.text = balance.coinFormatted.withCoinType(coinBalance.type)
+    balanceCurrencyLabel.text = (balance * coinBalance.price).fiatFormatted.withDollarSign
   }
 }

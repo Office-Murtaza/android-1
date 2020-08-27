@@ -14,7 +14,6 @@ class CoinsBalanceFlow: BaseFlow<BTMNavigationController, CoinsBalanceFlowContro
     case coinsBalance
     case manageWallets
     case coinDetails([CoinBalance], CoinSettings, PriceChartData)
-    case pop
   }
   
   override func route(to step: Step) -> NextFlowItems {
@@ -38,7 +37,6 @@ class CoinsBalanceFlow: BaseFlow<BTMNavigationController, CoinsBalanceFlowContro
       let flow = CoinDetailsFlow(view: view, parent: self)
       let step = CoinDetailsFlow.Steps.coinDetails(coinBalances, coinSettings, data)
       return next(flow: flow, step: step)
-    case .pop: return pop()
     }
   }
 }

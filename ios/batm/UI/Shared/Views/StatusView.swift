@@ -1,13 +1,10 @@
 import UIKit
-import RxSwift
-import RxCocoa
 
-final class TransactionStatusView: UIView {
+class StatusView: UIView {
   
-  let statusLabel: UILabel = {
+  let titleLabel: UILabel = {
     let label = UILabel()
-    label.font = .poppinsSemibold10
-    label.textColor = .white
+    label.font = .systemFont(ofSize: 11, weight: .bold)
     label.adjustsFontSizeToFitWidth = true
     label.minimumScaleFactor = 0.7
     return label
@@ -25,25 +22,25 @@ final class TransactionStatusView: UIView {
   }
   
   private func setupUI() {
+    translatesAutoresizingMaskIntoConstraints = false
+    
+    layer.borderWidth = 1
     layer.cornerRadius = 3
     
-    addSubview(statusLabel)
+    addSubview(titleLabel)
   }
   
   private func setupLayout() {
-    statusLabel.snp.makeConstraints {
-      $0.top.bottom.equalToSuperview().inset(2)
+    titleLabel.snp.makeConstraints {
+      $0.top.bottom.equalToSuperview().inset(4)
       $0.left.right.equalToSuperview().inset(5)
     }
   }
   
-  func configure(for status: TransactionStatus) {
-    backgroundColor = status.associatedColor
-    statusLabel.text = status.verboseValue
-  }
-  
-  func reset() {
-    backgroundColor = nil
-    statusLabel.text = nil
+  func configure(text: String, color: UIColor) {
+    titleLabel.text = text
+    titleLabel.textColor = color
+    layer.borderColor = color.cgColor
+    backgroundColor = color.withAlphaComponent(0.05)
   }
 }

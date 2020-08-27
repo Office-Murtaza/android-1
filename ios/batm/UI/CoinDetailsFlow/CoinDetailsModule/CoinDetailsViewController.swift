@@ -3,7 +3,7 @@ import RxCocoa
 import RxSwift
 import SnapKit
 
-final class CoinDetailsViewController: NavigationScreenViewController<CoinDetailsPresenter>, UICollectionViewDelegateFlowLayout {
+final class CoinDetailsViewController: ModuleViewController<CoinDetailsPresenter> {
   
   let didTapDepositRelay = PublishRelay<Void>()
   let didTapWithdrawRelay = PublishRelay<Void>()
@@ -13,31 +13,37 @@ final class CoinDetailsViewController: NavigationScreenViewController<CoinDetail
   let didTapTradesRelay = PublishRelay<Void>()
   let didTapStakingRelay = PublishRelay<Void>()
   
-  var dataSource: CoinDetailsCollectionViewDataSource!
+  let didSelectPeriodRelay = PublishRelay<SelectedPeriod>()
   
-  let collectionView: UICollectionView = {
-    let layout = UICollectionViewFlowLayout()
-    let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-    return collectionView
-  }()
+  var dataSource: CoinDetailsTableViewDataSource!
+  
+  let headerView = CoinDetailsHeaderView()
+  
+  let tableView = CoinDetailsTableView()
   
   let refreshControl = UIRefreshControl()
   
   let fab = FloatingActionButton()
   
-  override var preferredStatusBarStyle: UIStatusBarStyle {
-    return .lightContent
+  override var shouldShowNavigationBar: Bool { return true }
+  
+  override func viewWillAppear(_ animated: Bool) {
+    if let index = self.tableView.indexPathForSelectedRow {
+      self.tableView.deselectRow(at: index, animated: true)
+    }
   }
-
+  
   override func setupUI() {
-    view.backgroundColor = .whiteTwo
-    
-    view.addSubviews(collectionView,
+    view.addSubviews(tableView,
                      fab.view)
     
-    collectionView.backgroundColor = .clear
-    collectionView.refreshControl = refreshControl
-    collectionView.delegate = self
+    headerView.delegate = self
+    
+    tableView.refreshControl = refreshControl
+    tableView.tableHeaderView = headerView
+    
+    headerView.topDivider.backgroundColor = tableView.separatorColor
+    headerView.bottomDivider.backgroundColor = tableView.separatorColor
     
     setupFAB()
   }
@@ -52,56 +58,66 @@ final class CoinDetailsViewController: NavigationScreenViewController<CoinDetail
     fab.view.addItem(title: localize(L.CoinDetails.sendGift), image: UIImage(named: "fab_send_gift")) { [unowned self] _ in
       self.didTapSendGiftRelay.accept(())
     }
-    fab.view.addItem(title: localize(L.CoinDetails.sell), image: UIImage(named: "fab_sell")) { [unowned self] _ in
-      self.didTapSellRelay.accept(())
-    }
-    fab.view.addItem(title: localize(L.CoinDetails.exchange), image: UIImage(named: "fab_exchange")) { [unowned self] _ in
-      self.didTapExchangeRelay.accept(())
-    }
-    fab.view.addItem(title: localize(L.CoinDetails.trade), image: UIImage(named: "fab_trade")) { [unowned self] _ in
-      self.didTapTradesRelay.accept(())
-    }
+    
+    // TODO: enable other actions when ready
+    //    fab.view.addItem(title: localize(L.CoinDetails.sell), image: UIImage(named: "fab_sell")) { [unowned self] _ in
+    //      self.didTapSellRelay.accept(())
+    //    }
+    //    fab.view.addItem(title: localize(L.CoinDetails.exchange), image: UIImage(named: "fab_exchange")) { [unowned self] _ in
+    //      self.didTapExchangeRelay.accept(())
+    //    }
+    //    fab.view.addItem(title: localize(L.CoinDetails.trade), image: UIImage(named: "fab_trade")) { [unowned self] _ in
+    //      self.didTapTradesRelay.accept(())
+    //    }
   }
-
+  
   override func setupLayout() {
-    collectionView.snp.makeConstraints {
-      $0.top.equalTo(customView.backgroundImageView.snp.bottom)
+    tableView.snp.makeConstraints {
+      $0.top.equalTo(view.safeAreaLayoutGuide)
       $0.left.right.bottom.equalToSuperview()
     }
+    
+    headerView.snp.makeConstraints {
+      $0.centerX.width.equalTo(tableView)
+      $0.top.equalTo(tableView)
+    }
+    headerView.layoutIfNeeded()
+    tableView.tableHeaderView = headerView
+    
     fab.view.snp.makeConstraints {
       $0.right.bottom.equalTo(view.safeAreaLayoutGuide).inset(16)
     }
   }
   
   func setupUIBindings() {
-    collectionView.dataSource = dataSource
-    dataSource.collectionView = collectionView
+    tableView.dataSource = dataSource
+    dataSource.tableView = tableView
     
-    presenter.state
-      .map { $0.coin?.type == .catm }
-      .filter { $0 }
-      .asObservable()
-      .take(1)
-      .subscribe(onNext: { [unowned self] _ in
-        self.fab.view.addItem(title: localize(L.CoinDetails.staking), image: UIImage(named: "fab_staking")) { [unowned self] _ in
-          self.didTapStakingRelay.accept(())
-        }
-      })
-      .disposed(by: disposeBag)
+    // TODO: enable staking when ready
+    //    presenter.state
+    //      .map { $0.coin?.type == .catm }
+    //      .filter { $0 }
+    //      .asObservable()
+    //      .take(1)
+    //      .subscribe(onNext: { [unowned self] _ in
+    //        self.fab.view.addItem(title: localize(L.CoinDetails.staking), image: UIImage(named: "fab_staking")) { [unowned self] _ in
+    //          self.didTapStakingRelay.accept(())
+    //        }
+    //      })
+    //      .disposed(by: disposeBag)
     
     presenter.state
       .map { $0.coinBalance }
       .filterNil()
-      .drive(onNext: { [unowned self] in self.customView.setTitle($0.type.verboseValue) })
+      .drive(onNext: { [unowned self] in self.title = $0.type.verboseValue })
       .disposed(by: disposeBag)
     
     presenter.state
-      .asObservable()
       .filter { $0.coinBalance != nil && $0.priceChartData != nil }
       .map { CoinDetailsHeaderViewConfig(coinBalance: $0.coinBalance!,
                                          priceChartData: $0.priceChartData!,
                                          selectedPeriod: $0.selectedPeriod) }
-      .bind(to: dataSource.headerViewConfigRelay)
+      .drive(onNext: { [headerView] in headerView.configure(with: $0) })
       .disposed(by: disposeBag)
     
     presenter.state
@@ -117,11 +133,10 @@ final class CoinDetailsViewController: NavigationScreenViewController<CoinDetail
       .bind(to: refreshControl.rx.isRefreshing)
       .disposed(by: disposeBag)
   }
-
+  
   override func setupBindings() {
     setupUIBindings()
     
-    let backDriver = customView.backButton.rx.tap.asDriver()
     let refreshDriver = refreshControl.rx.controlEvent(.valueChanged).asDriver()
     let depositDriver = didTapDepositRelay.asDriver(onErrorDriveWith: .empty())
     let withdrawDriver = didTapWithdrawRelay.asDriver(onErrorDriveWith: .empty())
@@ -130,12 +145,11 @@ final class CoinDetailsViewController: NavigationScreenViewController<CoinDetail
     let exchangeDriver = didTapExchangeRelay.asDriver(onErrorDriveWith: .empty())
     let tradesDriver = didTapTradesRelay.asDriver(onErrorDriveWith: .empty())
     let stakingDriver = didTapStakingRelay.asDriver(onErrorDriveWith: .empty())
-    let showMoreDriver = collectionView.rx.willDisplayLastCell.asDriver(onErrorDriveWith: .empty())
-    let transactionSelectedDriver = collectionView.rx.itemSelected.asDriver()
-    let updateSelectedPeriodDriver = dataSource.rx.selectedPeriod
+    let showMoreDriver = tableView.rx.willDisplayLastCell.asDriver(onErrorDriveWith: .empty())
+    let transactionSelectedDriver = tableView.rx.itemSelected.asDriver()
+    let updateSelectedPeriodDriver = didSelectPeriodRelay.asDriver(onErrorDriveWith: .empty())
     
-    presenter.bind(input: CoinDetailsPresenter.Input(back: backDriver,
-                                                     refresh: refreshDriver,
+    presenter.bind(input: CoinDetailsPresenter.Input(refresh: refreshDriver,
                                                      deposit: depositDriver,
                                                      withdraw: withdrawDriver,
                                                      sendGift: sendGiftDriver,
@@ -147,16 +161,12 @@ final class CoinDetailsViewController: NavigationScreenViewController<CoinDetail
                                                      transactionSelected: transactionSelectedDriver,
                                                      updateSelectedPeriod: updateSelectedPeriodDriver))
   }
+}
+
+extension CoinDetailsViewController: CoinDetailsHeaderViewDelegate {
   
-  func collectionView(_ collectionView: UICollectionView,
-                      layout collectionViewLayout: UICollectionViewLayout,
-                      sizeForItemAt indexPath: IndexPath) -> CGSize {
-    return CGSize(width: collectionView.bounds.width - 20, height: 50)
+  func didSelectPeriod(_ period: SelectedPeriod) {
+    didSelectPeriodRelay.accept(period)
   }
   
-  func collectionView(_ collectionView: UICollectionView,
-                      layout collectionViewLayout: UICollectionViewLayout,
-                      referenceSizeForHeaderInSection section: Int) -> CGSize {
-    return CGSize(width: collectionView.bounds.width, height: 390)
-  }
 }

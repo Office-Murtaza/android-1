@@ -1,9 +1,7 @@
 import RxFlow
 import TrustWalletCore
 
-protocol CoinDetailsFlowControllerDelegate: class {
-  func didFinishCoinDetailsFlow()
-}
+protocol CoinDetailsFlowControllerDelegate: class {}
 
 class CoinDetailsFlowController: FlowController {
   
@@ -12,10 +10,6 @@ class CoinDetailsFlowController: FlowController {
 }
 
 extension CoinDetailsFlowController: CoinDetailsModuleDelegate {
-  
-  func didFinishCoinDetails() {
-    delegate?.didFinishCoinDetailsFlow()
-  }
   
   func showDepositScreen(coin: BTMCoin) {
     step.accept(CoinDetailsFlow.Steps.deposit(coin))

@@ -103,8 +103,8 @@ class TransactionDetailsRowView: UIView, HasDisposeBag {
   }
   
   private func addStatus(with status: TransactionStatus) {
-    let view = TransactionStatusView()
-    view.configure(for: status)
+    let view = StatusView()
+    view.configure(text: status.verboseValue, color: status.associatedColor)
     
     addSubview(view)
     

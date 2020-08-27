@@ -8,7 +8,6 @@ final class CoinDetailsPresenter: ModulePresenter, CoinDetailsModule {
   typealias Store = ViewStore<CoinDetailsAction, CoinDetailsState>
 
   struct Input {
-    var back: Driver<Void>
     var refresh: Driver<Void>
     var deposit: Driver<Void>
     var withdraw: Driver<Void>
@@ -45,10 +44,6 @@ final class CoinDetailsPresenter: ModulePresenter, CoinDetailsModule {
   }
 
   func bind(input: Input) {
-    input.back
-      .drive(onNext: { [delegate] in delegate?.didFinishCoinDetails() })
-      .disposed(by: disposeBag)
-    
     input.refresh
       .asObservable()
       .flatFilter(activity.not())

@@ -10,7 +10,7 @@ final class CoinDetailsAssembly: Assembly {
       let usecase = resolver.resolve(CoinDetailsUsecase.self)!
       let presenter = CoinDetailsPresenter(usecase: usecase)
       
-      let dataSource = CoinDetailsCollectionViewDataSource()
+      let dataSource = CoinDetailsTableViewDataSource()
       viewController.dataSource = dataSource
       
       presenter.delegate = resolver.resolve(CoinDetailsModuleDelegate.self)

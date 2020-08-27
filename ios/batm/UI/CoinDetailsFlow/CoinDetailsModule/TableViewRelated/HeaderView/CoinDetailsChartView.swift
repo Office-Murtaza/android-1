@@ -5,8 +5,8 @@ class CoinDetailsChartView: UIView {
   
   let priceLabel: UILabel = {
     let label = UILabel()
-    label.textColor = .slateGrey
-    label.font = .systemFont(ofSize: 18, weight: .bold)
+    label.textColor = .ceruleanBlue
+    label.font = .systemFont(ofSize: 22, weight: .bold)
     return label
   }()
   
@@ -16,7 +16,7 @@ class CoinDetailsChartView: UIView {
   
   let changeRateLabel: UILabel = {
     let label = UILabel()
-    label.font = .systemFont(ofSize: 14, weight: .medium)
+    label.font = .systemFont(ofSize: 14)
     return label
   }()
   
@@ -31,14 +31,12 @@ class CoinDetailsChartView: UIView {
     view.rightAxis.enabled = false
     view.legend.enabled = false
     view.minOffset = 0
-    view.setExtraOffsets(left: 0, top: 5, right: 35, bottom: 5)
+    view.setExtraOffsets(left: 0, top: 5, right: 0, bottom: 5)
     view.clipDataToContentEnabled = false
     return view
   }()
   
   let periodButtonsView = CoinDetailsPeriodButtonsView()
-  
-  let balanceView = CoinDetailsBalanceView()
   
   override init(frame: CGRect) {
     super.init(frame: frame)
@@ -58,15 +56,14 @@ class CoinDetailsChartView: UIView {
     addSubviews(chartView,
                 priceLabel,
                 changeRateContainer,
-                periodButtonsView,
-                balanceView)
+                periodButtonsView)
     changeRateContainer.addSubviews(changeRateImageView,
                                     changeRateLabel)
   }
   
   private func setupLayout() {
     priceLabel.snp.makeConstraints {
-      $0.top.equalToSuperview().offset(35)
+      $0.top.equalToSuperview().offset(25)
       $0.centerX.equalToSuperview()
     }
     changeRateContainer.snp.makeConstraints {
@@ -87,13 +84,7 @@ class CoinDetailsChartView: UIView {
     periodButtonsView.snp.makeConstraints {
       $0.top.equalTo(chartView.snp.bottom).offset(40)
       $0.centerX.equalToSuperview()
-    }
-    balanceView.snp.makeConstraints {
-      $0.top.equalTo(periodButtonsView.snp.bottom).offset(30)
-      $0.centerX.equalToSuperview()
-      $0.left.greaterThanOrEqualToSuperview().offset(10)
-      $0.right.lessThanOrEqualToSuperview().offset(-10)
-      $0.bottom.equalToSuperview().offset(-30)
+      $0.bottom.equalToSuperview().offset(-15)
     }
   }
   
@@ -108,7 +99,7 @@ class CoinDetailsChartView: UIView {
     case .oneYear: period = data.periods.oneYearPeriod
     }
     
-    priceLabel.text = data.price.fiatFormatted.withUSD
+    priceLabel.text = data.price.fiatFormatted.withDollarSign
     changeRateImageView.image = period.changeRate < 0
       ? UIImage(named: "change_rate_down")
       : UIImage(named: "change_rate_up")
@@ -130,16 +121,7 @@ class CoinDetailsChartView: UIView {
     dataSet.drawCirclesEnabled = false
     dataSet.setColor(.skyBlue)
     
-    let lastPointEntries = entries.last.flatMap { [$0] }
-    let lastPointDataSet = LineChartDataSet(entries: lastPointEntries)
-    lastPointDataSet.drawValuesEnabled = false
-    lastPointDataSet.setColor(.skyBlue)
-    lastPointDataSet.setCircleColor(.carolinaBlue)
-    lastPointDataSet.drawCircleHoleEnabled = false
-    lastPointDataSet.circleRadius = 3
-    
-    let data = LineChartData(dataSets: [dataSet, lastPointDataSet])
-    chartView.data = data
+    chartView.data = LineChartData(dataSet: dataSet)
   }
 }
 

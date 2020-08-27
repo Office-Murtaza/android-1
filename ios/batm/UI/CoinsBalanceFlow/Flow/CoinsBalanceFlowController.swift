@@ -32,8 +32,4 @@ extension CoinsBalanceFlowController: ManageWalletsModuleDelegate {
   }
 }
 
-extension CoinsBalanceFlowController: CoinDetailsFlowControllerDelegate {
-  func didFinishCoinDetailsFlow() {
-    step.accept(CoinsBalanceFlow.Steps.pop)
-  }
-}
+extension CoinsBalanceFlowController: CoinDetailsFlowControllerDelegate {}
