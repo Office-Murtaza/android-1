@@ -15,7 +15,10 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
-import androidx.navigation.*
+import androidx.navigation.NavController
+import androidx.navigation.NavDirections
+import androidx.navigation.Navigation
+import androidx.navigation.Navigator
 import com.app.belcobtm.R
 import com.app.belcobtm.domain.Failure
 import com.app.belcobtm.presentation.core.extensions.hide
@@ -39,11 +42,14 @@ abstract class BaseFragment : Fragment() {
     protected open val homeButtonDrawable: Int = R.drawable.ic_arrow_back
     protected open val retryListener: View.OnClickListener? = null
     protected open val backPressedListener: View.OnClickListener = View.OnClickListener { popBackStack() }
-    protected open var isBackButtonEnabled: Boolean = false //field used for dynamic setting of back button because we handle it on resume
+    protected open val customToolbarId: Int = 0
+    protected open val isFirstShowContent: Boolean = true
 
+    //field used for dynamic setting of back button because we handle it on resume
+    protected open var isBackButtonEnabled: Boolean = false
     protected abstract val resourceLayout: Int
 
-    protected val baseErrorHandler: (error: Failure?) -> Unit = {error ->
+    protected val baseErrorHandler: (error: Failure?) -> Unit = { error ->
         when (error) {
             is Failure.NetworkConnection -> showErrorNoInternetConnection()
             is Failure.MessageError -> {
@@ -73,7 +79,12 @@ abstract class BaseFragment : Fragment() {
     ): View? {
         val rootView = inflater.inflate(R.layout.fragment_base, container, false)
         inflater.inflate(resourceLayout, rootView.findViewById<FrameLayout>(R.id.contentContainerView), true)
-        (activity as AppCompatActivity).setSupportActionBar(rootView.toolbarView)
+        if (customToolbarId != 0) {
+            rootView.toolbarView.hide()
+            (activity as AppCompatActivity).setSupportActionBar(rootView.findViewById(customToolbarId))
+        } else {
+            (activity as AppCompatActivity).setSupportActionBar(rootView.toolbarView)
+        }
 
         return rootView
     }
@@ -81,11 +92,14 @@ abstract class BaseFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         this.navController = Navigation.findNavController(view)
+        updateActionBar()
         errorRetryButtonView.setOnClickListener(retryListener)
         initListeners()
         initObservers()
         initViews()
-        showContent()
+        if (isFirstShowContent) {
+            showContent()
+        }
     }
 
     override fun onResume() {
@@ -97,22 +111,6 @@ abstract class BaseFragment : Fragment() {
                 (it as HostNavigationFragment).hideBottomMenu()
             }
         }
-
-        val activity = requireActivity() as AppCompatActivity
-        activity.supportActionBar?.let { actionBar ->
-            if (isToolbarEnabled) {
-                val drawable = ContextCompat.getDrawable(activity.applicationContext, homeButtonDrawable)
-                drawable?.setTint(ContextCompat.getColor(activity.applicationContext, R.color.colorPrimary))
-                (activity as HostActivity).supportActionBar?.setHomeAsUpIndicator(drawable)
-                actionBar.show()
-            } else {
-                actionBar.hide()
-            }
-
-            showBackButton(isBackButtonEnabled || (isToolbarEnabled && isHomeButtonEnabled))
-            fillToolbarTitle()
-        }
-        activity.invalidateOptionsMenu()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean = if (item.itemId == android.R.id.home) {
@@ -158,6 +156,7 @@ abstract class BaseFragment : Fragment() {
         try {
             navController?.navigate(navDestination)
         } catch (e: Exception) {
+            e.printStackTrace()
             //catch exception for navigation
         }
     }
@@ -186,6 +185,7 @@ abstract class BaseFragment : Fragment() {
         (requireActivity() as AppCompatActivity).supportActionBar?.setDisplayShowHomeEnabled(show)
         (requireActivity() as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(show)
     }
+
     protected fun showSnackBar(resMessage: Int) = Snackbar.make(
         requireActivity().findViewById<ViewGroup>(android.R.id.content),
         resMessage,
@@ -289,5 +289,23 @@ abstract class BaseFragment : Fragment() {
         if (this != old) {
             action(this)
         }
+    }
+
+    private fun updateActionBar() {
+        val activity = requireActivity() as AppCompatActivity
+        activity.supportActionBar?.let { actionBar ->
+            if (isToolbarEnabled) {
+                val drawable = ContextCompat.getDrawable(activity.applicationContext, homeButtonDrawable)
+                drawable?.setTint(ContextCompat.getColor(activity.applicationContext, R.color.colorPrimary))
+                (activity as HostActivity).supportActionBar?.setHomeAsUpIndicator(drawable)
+                actionBar.show()
+            } else {
+                actionBar.hide()
+            }
+
+            showBackButton(isBackButtonEnabled || (isToolbarEnabled && isHomeButtonEnabled))
+            fillToolbarTitle()
+        }
+        activity.invalidateOptionsMenu()
     }
 }

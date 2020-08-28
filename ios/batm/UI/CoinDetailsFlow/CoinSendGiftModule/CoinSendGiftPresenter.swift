@@ -8,14 +8,10 @@ final class CoinSendGiftPresenter: ModulePresenter, CoinSendGiftModule {
   typealias Store = ViewStore<CoinSendGiftAction, CoinSendGiftState>
 
   struct Input {
-    var back: Driver<Void>
-    var updateCountry: Driver<FPNCountry>
     var updatePhone: Driver<String?>
-    var updateCurrencyAmount: Driver<String?>
     var updateCoinAmount: Driver<String?>
     var updateMessage: Driver<String?>
     var updateImageId: Driver<String?>
-    var pastePhone: Driver<Void>
     var max: Driver<Void>
     var next: Driver<Void>
   }
@@ -42,39 +38,15 @@ final class CoinSendGiftPresenter: ModulePresenter, CoinSendGiftModule {
   }
 
   func bind(input: Input) {
-    input.back
-      .drive(onNext: { [delegate] in delegate?.didFinishCoinSendGift() })
-      .disposed(by: disposeBag)
-    
-    input.updateCountry
-      .asObservable()
-      .map { CoinSendGiftAction.updateCountry($0) }
-      .bind(to: store.action)
-      .disposed(by: disposeBag)
-    
     input.updatePhone
       .asObservable()
       .map { CoinSendGiftAction.updatePhone($0) }
       .bind(to: store.action)
       .disposed(by: disposeBag)
     
-    input.updateCurrencyAmount
-      .asObservable()
-      .map { CoinSendGiftAction.updateCurrencyAmount($0) }
-      .bind(to: store.action)
-      .disposed(by: disposeBag)
-    
     input.updateCoinAmount
       .asObservable()
       .map { CoinSendGiftAction.updateCoinAmount($0) }
-      .bind(to: store.action)
-      .disposed(by: disposeBag)
-    
-    input.pastePhone
-      .asObservable()
-      .map { UIPasteboard.general.string }
-      .filterNil()
-      .map { CoinSendGiftAction.pastePhone($0) }
       .bind(to: store.action)
       .disposed(by: disposeBag)
     
@@ -116,8 +88,8 @@ final class CoinSendGiftPresenter: ModulePresenter, CoinSendGiftModule {
                                 message: state.message,
                                 imageId: state.imageId)
       .catchError { [store] in
-        if let apiError = $0 as? APIError, case let .serverError(error) = apiError {
-          store.action.accept(.makeInvalidState(error.message))
+        if let apiError = $0 as? APIError, case let .serverError(error) = apiError, let code = error.code, code > 1 {
+          store.action.accept(.updatePhoneError(error.message))
         }
         
         throw $0

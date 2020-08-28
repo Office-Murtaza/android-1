@@ -57,9 +57,9 @@
     <string name="welcome_screen_support_email">support@belcobtm.com</string>
 
     <!-- Balance -->
-    <string name="balance_screen_empty_balance">$ . . .</string>
+    <string name="balance_screen_empty_balance">$…</string>
     <string name="balance_screen_unit_usd">USD %1$s</string>
-    <string name="balance_screen_add_wallet">+ Add wallet</string>
+    <string name="balance_screen_manage_wallets">Manage wallets</string>
 
     <!-- Recover Wallet -->
     <string name="recover_wallet_screen_title">Recover old wallet</string>
@@ -108,14 +108,14 @@
     <!--    <string name="create_seed_screen_"></string>-->
 
     <!--balance-->
-    <string name="balance_screen_title_screen">Total Balance</string>
+    <string name="balance_screen_title_screen">Total</string>
     <string name="balance_screen_balance">$ %1$s</string>
     <string name="atm">ATM</string>
     <string name="settings">Settings</string>
     <string name="wallet">Wallet</string>
 
-    <!--visibility coins-->
-    <string name="add_wallets">Add Wallets</string>
+    <!-- Manage Wallets Screen-->
+    <string name="manage_wallets_screen_title">Manage wallets</string>
 
     <!--atm-->
     <string name="open_now">Open Now:</string>
@@ -169,7 +169,7 @@
     <string name="verification_city">City</string>
     <string name="verification_country">Country</string>
     <string name="verification_province">Province</string>
-    <string name="verification_zip_code">Zip Code</string>
+    <string name="verification_zip_code">ZIP code</string>
     <string name="verification_send">Send</string>
     <string name="verification_select_photo_please">Select photo please</string>
     <string name="verification_alert_country_title">Please pick country</string>
@@ -212,6 +212,10 @@
     <string name="transaction_type_stake">Stake</string>
     <string name="transaction_type_unstake">Unstake</string>
 
+    <!-- Transaction Details -->
+    <string name="transaction_details">Transaction Details %1$s</string>
+
+
     <!--transaction type-->
     <string name="withdraw">Withdraw</string>
     <string name="send_gift">Send Gift</string>
@@ -233,12 +237,11 @@
     <string name="not_enough_balance">Not enough balance</string>
 
     <!-- Transition details screen -->
-    <string name="transition_details_screen_tx_id">TxId</string>
-    <string name="transition_details_screen_tx_dbld">TxDbld</string>
+    <string name="transition_details_screen_id">ID</string>
     <string name="transition_details_screen_type">Type</string>
     <string name="transition_details_screen_status">Status</string>
     <string name="transition_details_screen_cash_status">Cash Status</string>
-    <string name="transition_details_screen_amount">Crypto Amount</string>
+    <string name="transition_details_screen_amount">Amount</string>
     <string name="transition_details_screen_fiat_amount">Fiat Amount</string>
     <string name="transition_details_screen_fee">Fee</string>
     <string name="transition_details_screen_date">Date</string>
@@ -263,8 +266,10 @@
     <string name="transition_details_screen_one_month">1m</string>
     <string name="transition_details_screen_three_month">3m</string>
     <string name="transition_details_screen_one_year">1y</string>
+    <string name="transition_details_screen_sell_qr_code">Sell QR code</string>
 
     <!-- Withdraw screen -->
+    <string name="withdraw_screen_screen_title">Withdraw %1$s</string>
     <string name="withdraw_screen_price">Price</string>
     <string name="withdraw_screen_balance">Balance</string>
     <string name="withdraw_screen_recipient_address">Recipient Address</string>
@@ -288,6 +293,7 @@
     <string name="sell_screen_instructions_4">Scan QR code from transaction details popup.</string>
 
     <!-- Send gift screen -->
+    <string name="send_gift_screen_title">Send Gift %1$s</string>
     <string name="send_gift_screen_price">Price</string>
     <string name="send_gift_screen_balance">Balance</string>
     <string name="send_gift_screen_recipient_address">Phone</string>
@@ -298,7 +304,7 @@
     <string name="send_gift_screen_remove">Remove</string>
 
     <!-- Coin to coin screen -->
-    <string name="exchange_coin_to_coin_screen_title">Exchange</string>
+    <string name="exchange_coin_to_coin_screen_title">Exchange %1$s</string>
     <string name="exchange_coin_to_coin_screen_price">Price</string>
     <string name="exchange_coin_to_coin_screen_price_value">%1$s USD</string>
     <string name="exchange_coin_to_coin_screen_balance">Balance</string>
@@ -363,6 +369,7 @@
 
     <string name="unit_dynamic">%1$s %2$s</string>
     <string name="unit_usd_dynamic">%1$s USD</string>
+    <string name="unit_usd_dynamic_symbol">%1$s $</string>
     <string name="usd_amount">USD Amount</string>
     <string name="crypto_amount">%1$s Amount</string>
     <string name="button_next">Next</string>
@@ -432,7 +439,7 @@
     //updates
     <string name="pin_updated">PIN was successfully updated</string>
     <string name="phone_updated">Phone was successfully updated</string>
-    <string name="password_changed">Password Password was successfully updated</string>
+    <string name="password_changed">Password was successfully updated</string>
     <string name="wallet_unlinked">Wallet was successfully deleted from the device</string>
 
     //unlink

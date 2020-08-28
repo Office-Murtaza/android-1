@@ -27,6 +27,8 @@ class WalletRepositoryImpl(
         coinCode: String
     ): CoinDataItem = cachedCoinDataItemList.find { it.code == coinCode }!!
 
+    override fun getCoinItemList(): List<CoinDataItem> = cachedCoinDataItemList
+
     override suspend fun getAccountList(): List<AccountDataItem> =
         (daoAccount.getItemList() ?: emptyList()).map { it.mapToDataItem() }
 

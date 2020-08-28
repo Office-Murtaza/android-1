@@ -4,10 +4,10 @@ import android.text.Editable
 import android.text.TextWatcher
 
 class DoubleTextWatcher(
-    maxCharsAfterDotFirst: Int,
-    maxCharsAfterDotSecond: Int,
+    maxCharsAfterDotFirst: Int = MAX_CHARS_AFTER_DOT_CRYPTO,
+    maxCharsAfterDotSecond: Int = MAX_CHARS_AFTER_DOT_USD,
     firstTextWatcher: (editable: Editable) -> Unit,
-    secondTextWatcher: (editable: Editable) -> Unit
+    secondTextWatcher: (editable: Editable) -> Unit = {}
 ) {
     var isRunning = false
     var isDeleting = false

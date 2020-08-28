@@ -104,6 +104,7 @@ class VerificationBlankFragment : BaseFragment(), BottomSheetImagePicker.OnImage
                     countryView.setText(countryList[which].name)
                     provinceView.clearText()
                     cityView.clearText()
+                    checkCountry()
                 }
                 .create().show()
         }
@@ -118,13 +119,11 @@ class VerificationBlankFragment : BaseFragment(), BottomSheetImagePicker.OnImage
                         .setItems(stateList.map { it.name }.toTypedArray()) { _, which ->
                             provinceView.setText(stateList[which].name)
                             cityView.clearText()
+                            checkProvince()
                         }
                         .create()
                         .show()
-                } ?: AlertHelper.showToastShort(
-                requireContext(),
-                R.string.verification_alert_country_title
-            )
+                } ?: checkCountry()
         }
 
         cityView.editText?.keyListener = null
@@ -139,10 +138,7 @@ class VerificationBlankFragment : BaseFragment(), BottomSheetImagePicker.OnImage
                         .setItems(cities.toTypedArray()) { _, which -> cityView.setText(cities[which]) }
                         .create()
                         .show()
-                } ?: AlertHelper.showToastShort(
-                requireContext(),
-                R.string.verification_alert_state_title
-            )
+                } ?: checkProvince()
         }
 
         idNumberView.editText?.addTextChangedListener {
@@ -208,6 +204,14 @@ class VerificationBlankFragment : BaseFragment(), BottomSheetImagePicker.OnImage
         })
     }
 
+    private fun checkCountry() {
+        validateCountry()
+    }
+
+    private fun checkProvince() {
+        validateProvince()
+    }
+
     private fun sendBlank() {
         validated = true
         if (isValidFields()) {
@@ -259,7 +263,7 @@ class VerificationBlankFragment : BaseFragment(), BottomSheetImagePicker.OnImage
     }
 
     private fun validateIdNumber(): Boolean {
-        return if (idNumberView.getString().length > 9) {
+        return if (idNumberView.getString().length > 9 || idNumberView.getString().isEmpty()) {
             idNumberView.isErrorEnabled = true
             idNumberView.error = getString(R.string.id_number_validation_text)
             false

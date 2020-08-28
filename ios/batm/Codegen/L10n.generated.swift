@@ -80,11 +80,6 @@ enum L {
     static let title = "coin_withdraw.title"
   }
 
-  struct CoinsBalance {
-    static let title = "coins_balance.title"
-    static let totalBalance = "coins_balance.total_balance"
-  }
-
   struct CreateEditTrade {
     static let createTitle = "create_edit_trade.create_title"
     static let editTitle = "create_edit_trade.edit_title"
@@ -101,14 +96,12 @@ enum L {
   struct Error {
   }
 
-  struct FilterCoins {
-    static let hide = "filter_coins.hide"
-    static let show = "filter_coins.show"
-    static let title = "filter_coins.title"
-  }
-
   struct KYC {
     static let title = "k_y_c.title"
+  }
+
+  struct ManageWallets {
+    static let title = "manage_wallets.title"
   }
 
   struct PhoneVerification {
@@ -185,24 +178,7 @@ enum L {
   }
 
   struct TransactionDetails {
-    static let cashStatus = "transaction_details.cash_status"
-    static let cryptoAmount = "transaction_details.crypto_amount"
-    static let date = "transaction_details.date"
-    static let fee = "transaction_details.fee"
-    static let fiatAmount = "transaction_details.fiat_amount"
-    static let fromAddress = "transaction_details.from_address"
-    static let image = "transaction_details.image"
-    static let message = "transaction_details.message"
-    static let phone = "transaction_details.phone"
-    static let refAmount = "transaction_details.ref_amount"
-    static let refCoin = "transaction_details.ref_coin"
-    static let refTxId = "transaction_details.ref_tx_id"
-    static let status = "transaction_details.status"
     static let title = "transaction_details.title"
-    static let toAddress = "transaction_details.to_address"
-    static let txDbId = "transaction_details.tx_db_id"
-    static let txId = "transaction_details.tx_id"
-    static let type = "transaction_details.type"
   }
 
   struct Unlink {
@@ -233,6 +209,10 @@ enum L {
   struct Verification {
     static let idScan = "verification.id_scan"
     static let title = "verification.title"
+  }
+
+  struct Wallet {
+    static let title = "wallet.title"
   }
 
   struct Welcome {
@@ -280,6 +260,12 @@ extension L.BuySellTradeDetails.Form {
 
   struct RequestDetails {
     static let placeholder = "buy_sell_trade_details.form.request_details.placeholder"
+  }
+}
+extension L.CoinDetails {
+
+  struct Transactions {
+    static let empty = "coin_details.transactions.empty"
   }
 }
 extension L.CoinExchange {
@@ -406,12 +392,6 @@ extension L.CoinWithdraw.Form {
 
   struct RecipientAddress {
     static let placeholder = "coin_withdraw.form.recipient_address.placeholder"
-  }
-}
-extension L.CoinsBalance {
-
-  struct Footer {
-    static let title = "coins_balance.footer.title"
   }
 }
 extension L.CreateEditTrade {
@@ -682,6 +662,77 @@ extension L.Shared.Error {
     static let message = "shared.error.no_connection.message"
   }
 }
+extension L.TransactionDetails {
+
+  struct Header {
+  }
+}
+extension L.TransactionDetails.Header {
+
+  struct Amount {
+    static let title = "transaction_details.header.amount.title"
+  }
+
+  struct CashStatus {
+    static let title = "transaction_details.header.cash_status.title"
+  }
+
+  struct Date {
+    static let title = "transaction_details.header.date.title"
+  }
+
+  struct Fee {
+    static let title = "transaction_details.header.fee.title"
+  }
+
+  struct FromAddress {
+    static let title = "transaction_details.header.from_address.title"
+  }
+
+  struct ID {
+    static let title = "transaction_details.header.i_d.title"
+  }
+
+  struct Image {
+    static let title = "transaction_details.header.image.title"
+  }
+
+  struct Message {
+    static let title = "transaction_details.header.message.title"
+  }
+
+  struct Phone {
+    static let title = "transaction_details.header.phone.title"
+  }
+
+  struct RefAmount {
+    static let title = "transaction_details.header.ref_amount.title"
+  }
+
+  struct RefCoin {
+    static let title = "transaction_details.header.ref_coin.title"
+  }
+
+  struct RefID {
+    static let title = "transaction_details.header.ref_i_d.title"
+  }
+
+  struct SellQRCode {
+    static let title = "transaction_details.header.sell_q_r_code.title"
+  }
+
+  struct Status {
+    static let title = "transaction_details.header.status.title"
+  }
+
+  struct ToAddress {
+    static let title = "transaction_details.header.to_address.title"
+  }
+
+  struct TxType {
+    static let title = "transaction_details.header.tx_type.title"
+  }
+}
 extension L.UpdatePassword {
 
   struct Form {
@@ -800,6 +851,21 @@ extension L.Verification.Picker {
 
   struct LibraryOption {
     static let title = "verification.picker.library_option.title"
+  }
+}
+extension L.Wallet {
+
+  struct Footer {
+  }
+
+  struct Header {
+    static let title = "wallet.header.title"
+  }
+}
+extension L.Wallet.Footer {
+
+  struct Button {
+    static let manageWallets = "wallet.footer.button.manage_wallets"
   }
 }
 extension L.Welcome {

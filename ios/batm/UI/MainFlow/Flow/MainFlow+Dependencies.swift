@@ -13,7 +13,7 @@ extension MainFlow {
           return flowController
         }
         .inObjectScope(.container)
-        .implements(CoinsBalanceFlowControllerDelegate.self,
+        .implements(WalletFlowControllerDelegate.self,
                     ATMFlowControllerDelegate.self,
                     SettingsFlowControllerDelegate.self)
     }

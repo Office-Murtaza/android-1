@@ -26,7 +26,6 @@ interface TransactionApi {
 
     @GET("coin/{coinCode}/gift-address")
     fun getGiftAddressAsync(
-        @Path("userId") userId: Int,
         @Path("coinCode") coinCode: String,
         @Query("phone") phone: String?
     ): Deferred<Response<GetGiftAddressResponse>>
@@ -58,7 +57,7 @@ interface TransactionApi {
     ): Deferred<Response<ResponseBody>>
 
     @POST("user/{userId}/coin/{coinCode}/submit")
-    fun coinToCoinExchangeAsync(
+    fun exchangeAsync(
         @Path("userId") userId: Int,
         @Path("coinCode") coinFrom: String,
         @Body request: CoinToCoinExchangeRequest
@@ -175,4 +174,11 @@ interface TransactionApi {
         @Path("coinCode") coinCode: String,
         @Body body: StakeRequest
     ): Deferred<Response<ResponseBody>>
+
+    @GET("user/{userId}/coin/{coinCode}/transaction-details")
+    fun getTransactionDetailsAsync(
+        @Path("userId") userId: Int,
+        @Path("coinCode") coinCode: String,
+        @Query("txId") txId: String
+    ): Deferred<Response<TransactionDetailsResponse>>
 }

@@ -1,6 +1,11 @@
 package com.app.belcobtm.presentation.core.extensions
 
+import android.graphics.Bitmap
+import android.graphics.drawable.BitmapDrawable
+import android.graphics.drawable.Drawable
 import android.view.inputmethod.EditorInfo
+import androidx.core.content.ContextCompat
+import androidx.core.graphics.drawable.toBitmap
 import com.google.android.material.textfield.TextInputLayout
 
 fun TextInputLayout.showError(resText: Int?) = if (resText == null) {
@@ -36,6 +41,21 @@ fun TextInputLayout.actionDoneListener(listener: () -> Unit) {
         }
         false
     }
+}
+
+fun TextInputLayout.setResizedDrawableStart(resDrawable: Int, resDrawableEnd: Int = 0) {
+    val imageSize: Int = (24 * resources.displayMetrics.density).toInt()
+    val drawableStart: Drawable? = BitmapDrawable(
+        resources,
+        Bitmap.createScaledBitmap(
+            ContextCompat.getDrawable(context, resDrawable)!!.toBitmap(),
+            imageSize,
+            imageSize,
+            false
+        )
+    )
+    val drawableEnd: Drawable? = ContextCompat.getDrawable(context, resDrawableEnd)
+    editText?.setCompoundDrawablesRelativeWithIntrinsicBounds(drawableStart, null, drawableEnd, null)
 }
 
 fun TextInputLayout.setDrawableStartEnd(resDrawableStart: Int, resDrawableEnd: Int) =

@@ -3,6 +3,7 @@ package com.app.belcobtm.presentation.features.wallet.transactions.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.app.belcobtm.R
@@ -36,26 +37,32 @@ class TransactionsAdapter(
 
         val transactionStatusBgId: Int
         val transactionStatusTextId: Int
+        val transactionStatusTextColor: Int
         when (item.status) {
             TransactionStatusType.PENDING -> {
-                transactionStatusBgId = R.drawable.bg_transaction_status_pending
+                transactionStatusBgId = R.drawable.bg_status_pending
                 transactionStatusTextId = R.string.transaction_status_pending
+                transactionStatusTextColor = R.color.colorStatusPending
             }
             TransactionStatusType.COMPLETE -> {
-                transactionStatusBgId = R.drawable.bg_transaction_status_complete
+                transactionStatusBgId = R.drawable.bg_status_complete
+                transactionStatusTextColor = R.color.colorStatusComplete
                 transactionStatusTextId = R.string.transaction_status_complete
             }
             TransactionStatusType.FAIL -> {
-                transactionStatusBgId = R.drawable.bg_transaction_status_fail
+                transactionStatusBgId = R.drawable.bg_status_fail
+                transactionStatusTextColor = R.color.colorStatusFail
                 transactionStatusTextId = R.string.transaction_status_fail
             }
             else -> {
-                transactionStatusBgId = R.drawable.bg_transaction_status_unkown
+                transactionStatusBgId = R.drawable.bg_status_unkown
+                transactionStatusTextColor = R.color.colorStatusUnknown
                 transactionStatusTextId = R.string.transaction_status_unknown
             }
         }
         holder.itemView.transaction_date.text = item.date
         holder.itemView.transaction_status.text = context.getString(transactionStatusTextId)
+        holder.itemView.transaction_status.setTextColor(ContextCompat.getColor(context, transactionStatusTextColor))
         holder.itemView.transaction_status.background = context.getDrawable(transactionStatusBgId)
         holder.itemView.transaction_type.text = context.getString(item.type.getResText())
         holder.itemView.amountView.text = item.cryptoAmount.toStringCoin()

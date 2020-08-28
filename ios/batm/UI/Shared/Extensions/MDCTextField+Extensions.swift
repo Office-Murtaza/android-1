@@ -86,6 +86,7 @@ extension MDCOutlinedTextArea {
   static var `default`: MDCOutlinedTextArea {
     let textField = MDCOutlinedTextArea()
     textField.applyTheme(withScheme: MDCContainerScheme.default)
+    textField.setLeadingAssistiveLabel(.tomato, for: .normal)
     textField.setOutlineColor(MDCContainerScheme.default.colorScheme.onSurfaceColor.withAlphaComponent(0.6), for: .normal)
     
     textField.snp.makeConstraints {
@@ -122,6 +123,16 @@ extension MDCOutlinedTextArea {
                                                left: textView.contentInset.left,
                                                bottom: textView.contentInset.bottom,
                                                right: textView.contentInset.right + rightInset)
+  }
+  
+  func setErrorText(_ errorText: String?) {
+    if let errorText = errorText {
+      setOutlineColor(.tomato, for: .normal)
+      leadingAssistiveLabel.text = errorText
+    } else {
+      setOutlineColor(MDCContainerScheme.default.colorScheme.onSurfaceColor.withAlphaComponent(0.6), for: .normal)
+      leadingAssistiveLabel.text = nil
+    }
   }
   
 }

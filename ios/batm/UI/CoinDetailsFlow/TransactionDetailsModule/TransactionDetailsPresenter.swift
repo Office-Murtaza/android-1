@@ -5,11 +5,7 @@ import TrustWalletCore
 
 final class TransactionDetailsPresenter: ModulePresenter, TransactionDetailsModule {
 
-  struct Input {
-    var back: Driver<Void>
-    var openTxIdLink: Driver<Void>
-    var openRefTxIdLink: Driver<Void>
-  }
+  struct Input {}
 
   weak var delegate: TransactionDetailsModuleDelegate?
   
@@ -21,25 +17,5 @@ final class TransactionDetailsPresenter: ModulePresenter, TransactionDetailsModu
     self.type = type
   }
 
-  func bind(input: Input) {
-    input.back
-      .drive(onNext: { [delegate] in delegate?.didFinishTransactionDetails() })
-      .disposed(by: disposeBag)
-    
-    input.openTxIdLink
-      .map { [unowned self] in self.details.link }
-      .filterNil()
-      .map { URL(string: $0) }
-      .filterNil()
-      .drive(onNext: { UIApplication.shared.open($0) })
-      .disposed(by: disposeBag)
-    
-    input.openRefTxIdLink
-      .map { [unowned self] in self.details.refLink }
-      .filterNil()
-      .map { URL(string: $0) }
-      .filterNil()
-      .drive(onNext: { UIApplication.shared.open($0) })
-      .disposed(by: disposeBag)
-  }
+  func bind(input: Input) {}
 }

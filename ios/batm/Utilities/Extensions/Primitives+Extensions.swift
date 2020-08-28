@@ -136,11 +136,11 @@ extension String {
   }
   
   var fiatFormatted: String {
-    return withFractionDigits(min: 2, max: 2)
+    return withFractionDigits(max: Double.maxNumberOfFractionDigits, trailingZeros: false)
   }
   
   var fiatWithdrawFormatted: String {
-    return withFractionDigits(max: 2)
+    return withFractionDigits(max: Double.maxNumberOfFractionDigits)
   }
   
   var fiatSellFormatted: String {
@@ -180,6 +180,10 @@ extension String {
     return self.appending(" $")
   }
   
+  func withCoinType(_ type: CustomCoinType) -> String {
+    return self.appending(" \(type.code)")
+  }
+  
   var intValue: Int? {
     return Int(self)
   }
@@ -198,6 +202,8 @@ extension String {
 }
 
 extension Double {
+  static let maxNumberOfFractionDigits = 3
+  
   var numberOfFractionDigits: Int {
     return String(self).numberOfFractionDigits
   }
@@ -257,13 +263,14 @@ extension NumberFormatter {
     let formatter = NumberFormatter()
     formatter.numberStyle = .decimal
     formatter.groupingSeparator = ""
+    formatter.decimalSeparator = "."
     formatter.roundingMode = .halfUp
     return formatter
   }
   
   static var fiatFormatter: NumberFormatter {
     let formatter = defaultCurrencyFormatter
-    formatter.maximumFractionDigits = 2
+    formatter.maximumFractionDigits = Double.maxNumberOfFractionDigits
     return formatter
   }
   

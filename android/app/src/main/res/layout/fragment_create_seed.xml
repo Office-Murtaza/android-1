@@ -31,62 +31,84 @@
 
         <com.google.android.material.chip.Chip
             android:id="@+id/word1"
-            style="@style/Button.ChipSeed"
+            style="@style/Button.Chip"
+            android:clickable="false"
+            android:focusable="false"
             tools:text="first" />
 
         <com.google.android.material.chip.Chip
             android:id="@+id/word2"
-            style="@style/Button.ChipSeed"
+            style="@style/Button.Chip"
+            android:clickable="false"
+            android:focusable="false"
             tools:text="second" />
 
         <com.google.android.material.chip.Chip
             android:id="@+id/word3"
-            style="@style/Button.ChipSeed"
+            style="@style/Button.Chip"
+            android:clickable="false"
+            android:focusable="false"
             tools:text="third" />
 
         <com.google.android.material.chip.Chip
             android:id="@+id/word4"
-            style="@style/Button.ChipSeed"
+            style="@style/Button.Chip"
+            android:clickable="false"
+            android:focusable="false"
             tools:text="fourth" />
 
         <com.google.android.material.chip.Chip
             android:id="@+id/word5"
-            style="@style/Button.ChipSeed"
+            style="@style/Button.Chip"
+            android:clickable="false"
+            android:focusable="false"
             tools:text="fifth" />
 
         <com.google.android.material.chip.Chip
             android:id="@+id/word6"
-            style="@style/Button.ChipSeed"
+            style="@style/Button.Chip"
+            android:clickable="false"
+            android:focusable="false"
             tools:text="sixth" />
 
         <com.google.android.material.chip.Chip
             android:id="@+id/word7"
-            style="@style/Button.ChipSeed"
+            style="@style/Button.Chip"
+            android:clickable="false"
+            android:focusable="false"
             tools:text="seventh" />
 
         <com.google.android.material.chip.Chip
             android:id="@+id/word8"
-            style="@style/Button.ChipSeed"
+            style="@style/Button.Chip"
             tools:text="eighth" />
 
         <com.google.android.material.chip.Chip
             android:id="@+id/word9"
-            style="@style/Button.ChipSeed"
+            style="@style/Button.Chip"
+            android:clickable="false"
+            android:focusable="false"
             tools:text="ninth" />
 
         <com.google.android.material.chip.Chip
             android:id="@+id/word10"
-            style="@style/Button.ChipSeed"
+            style="@style/Button.Chip"
+            android:clickable="false"
+            android:focusable="false"
             tools:text="tenth" />
 
         <com.google.android.material.chip.Chip
             android:id="@+id/word11"
-            style="@style/Button.ChipSeed"
+            style="@style/Button.Chip"
+            android:clickable="false"
+            android:focusable="false"
             tools:text="eleventh" />
 
         <com.google.android.material.chip.Chip
             android:id="@+id/word12"
-            style="@style/Button.ChipSeed"
+            style="@style/Button.Chip"
+            android:clickable="false"
+            android:focusable="false"
             tools:text="twelfth" />
     </com.app.belcobtm.presentation.features.authorization.create.seed.ChipGroupCenter>
 

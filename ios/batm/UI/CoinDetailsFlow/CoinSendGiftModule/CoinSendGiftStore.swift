@@ -1,20 +1,18 @@
 import Foundation
 import PhoneNumberKit
-import FlagPhoneNumber
 
 enum CoinSendGiftAction: Equatable {
   case setupCoin(BTMCoin)
   case setupCoinBalances([CoinBalance])
   case setupCoinSettings(CoinSettings)
-  case updateCountry(FPNCountry)
   case updatePhone(String?)
-  case pastePhone(String)
-  case updateCurrencyAmount(String?)
   case updateCoinAmount(String?)
   case updateMessage(String?)
+  case updatePhoneError(String?)
+  case updateCoinAmountError(String?)
+  case updateMessageError(String?)
   case updateImageId(String?)
   case updateValidationState
-  case makeInvalidState(String)
 }
 
 struct CoinSendGiftState: Equatable {
@@ -22,11 +20,12 @@ struct CoinSendGiftState: Equatable {
   var coin: BTMCoin?
   var coinBalances: [CoinBalance]?
   var coinSettings: CoinSettings?
-  var country: FPNCountry?
   var phone: String = ""
-  var currencyAmount: String = ""
   var coinAmount: String = ""
   var message: String = ""
+  var phoneError: String?
+  var coinAmountError: String?
+  var messageError: String?
   var imageId: String?
   var validationState: ValidationState = .unknown
   
@@ -37,23 +36,31 @@ struct CoinSendGiftState: Equatable {
   var maxValue: Double {
     guard let type = coin?.type, let balance = coinBalance?.balance, let fee = coinSettings?.txFee else { return 0 }
     
-    if type == .catm {
+    switch type {
+    case .catm:
       return balance
+    case .ripple:
+      return max(0, balance - fee - 20)
+    default:
+      return max(0, balance - fee)
     }
+  }
+  
+  var fiatAmount: String {
+    let coinAmountDouble = coinAmount.doubleValue ?? 0
+    let price = coinBalance?.price ?? 0
     
-    return max(0, balance - fee)
+    return (coinAmountDouble * price).fiatFormatted.withDollarSign
   }
   
   var phoneE164: String {
-    guard let region = country?.code.rawValue else { return "" }
-    guard let phoneNumber = try? PhoneNumberKit.default.parse(phone, withRegion: region) else { return "" }
+    guard let phoneNumber = try? PhoneNumberKit.default.parse(phone) else { return "" }
     
     return PhoneNumberKit.default.format(phoneNumber, toType: .e164)
   }
   
-  var partialFormatter: PartialFormatter {
-    let region = country?.code.rawValue ?? "US"
-    return PartialFormatter(defaultRegion: region, withPrefix: false)
+  var isAllRequiredFieldsNotEmpty: Bool {
+    return phoneE164.count > 0 && coinAmount.count > 0
   }
   
 }
@@ -71,65 +78,68 @@ final class CoinSendGiftStore: ViewStore<CoinSendGiftAction, CoinSendGiftState> 
     case let .setupCoin(coin): state.coin = coin
     case let .setupCoinBalances(coinBalances): state.coinBalances = coinBalances
     case let .setupCoinSettings(coinSettings): state.coinSettings = coinSettings
-    case let .updateCountry(country):
-      state.country = country
-      state.phone = state.partialFormatter.formatPartial(state.phone)
-    case let .updatePhone(phone): state.phone = state.partialFormatter.formatPartial(phone ?? "")
-    case let .pastePhone(phone): state.phone = state.partialFormatter.formatPartial(phone)
-    case let .updateCurrencyAmount(amount):
-      let currencyAmount = (amount ?? "").fiatWithdrawFormatted
-      let doubleCurrencyAmount = currencyAmount.doubleValue
-      let price = state.coinBalance!.price
-      let coinAmount = doubleCurrencyAmount == nil ? "" : (doubleCurrencyAmount! / price).coinFormatted
-      
-      state.coinAmount = coinAmount
-      state.currencyAmount = currencyAmount
+    case let .updatePhone(phone):
+      state.phone = PartialFormatter.default.formatPartial(phone ?? "")
+      state.phoneError = nil
     case let .updateCoinAmount(amount):
-      let coinAmount = (amount ?? "").coinWithdrawFormatted
-      let doubleCoinAmount = coinAmount.doubleValue
-      let price = state.coinBalance!.price
-      let currencyAmount = doubleCoinAmount == nil ? "" : (doubleCoinAmount! * price).fiatFormatted
-      
-      state.coinAmount = coinAmount
-      state.currencyAmount = currencyAmount
-    case let .updateMessage(message): state.message = message ?? ""
+      state.coinAmount = (amount ?? "").coinWithdrawFormatted
+      state.coinAmountError = nil
+    case let .updateMessage(message):
+      state.message = message ?? ""
+      state.messageError = nil
+    case let .updatePhoneError(phoneError): state.phoneError = phoneError
+    case let .updateCoinAmountError(coinAmountError): state.coinAmountError = coinAmountError
+    case let .updateMessageError(messageError): state.messageError = messageError
     case let .updateImageId(imageId): state.imageId = imageId
-    case .updateValidationState: state.validationState = validate(state)
-    case let .makeInvalidState(error): state.validationState = .invalid(error)
+    case .updateValidationState: validate(&state)
     }
     
     return state
   }
   
-  private func validate(_ state: CoinSendGiftState) -> ValidationState {
-    guard state.country != nil && state.phone.count > 0 && state.coinAmount.count > 0 else {
-      return .invalid(localize(L.CreateWallet.Form.Error.allFieldsRequired))
+  private func validate(_ state: inout CoinSendGiftState) {
+    state.validationState = .valid
+    
+    if state.phone.count == 0 {
+      let errorString = localize(L.CreateWallet.Form.Error.fieldRequired)
+      state.phoneError = errorString
+      state.validationState = .invalid(errorString)
+    } else if state.phoneE164.count == 0 {
+      let errorString = localize(L.CreateWallet.Form.Error.notValidPhoneNumber)
+      state.phoneError = errorString
+      state.validationState = .invalid(errorString)
+    } else {
+      state.phoneError = nil
     }
     
-    guard state.phoneE164.count > 0 else {
-      return .invalid(localize(L.CoinSendGift.Form.Error.invalidPhone))
-    }
-    
-    guard let amount = state.coinAmount.doubleValue else {
-      return .invalid(localize(L.CoinWithdraw.Form.Error.invalidAmount))
-    }
-    
-    guard amount > 0 else {
-      return .invalid(localize(L.CoinWithdraw.Form.Error.tooLowAmount))
-    }
-    
-    guard amount.lessThanOrEqualTo(state.maxValue) else {
-      return .invalid(localize(L.CoinWithdraw.Form.Error.tooHighAmount))
-    }
-    
-    if state.coin?.type == .catm, let fee = state.coinSettings?.txFee {
-      let ethBalance = state.coinBalances?.first { $0.type == .ethereum }?.balance ?? 0
+    if state.coinAmount.count == 0 {
+      let errorString = localize(L.CreateWallet.Form.Error.fieldRequired)
+      state.coinAmountError = errorString
+      state.validationState = .invalid(errorString)
+    } else if state.coinAmount.doubleValue == nil {
+      let errorString = localize(L.CoinWithdraw.Form.Error.invalidAmount)
+      state.coinAmountError = errorString
+      state.validationState = .invalid(errorString)
+    } else if state.coinAmount.doubleValue! <= 0 {
+      let errorString = localize(L.CoinWithdraw.Form.Error.tooLowAmount)
+      state.coinAmountError = errorString
+      state.validationState = .invalid(errorString)
+    } else if !state.coinAmount.doubleValue!.lessThanOrEqualTo(state.maxValue) {
+      let errorString = localize(L.CoinWithdraw.Form.Error.tooHighAmount)
+      state.coinAmountError = errorString
+      state.validationState = .invalid(errorString)
+    } else {
+      state.coinAmountError = nil
       
-      if !ethBalance.greaterThanOrEqualTo(fee) {
-        return .invalid(localize(L.CoinWithdraw.Form.Error.insufficientETHBalance))
+      if state.coin?.type == .catm, let fee = state.coinSettings?.txFee {
+        let ethBalance = state.coinBalances?.first { $0.type == .ethereum }?.balance ?? 0
+        
+        if !ethBalance.greaterThanOrEqualTo(fee) {
+          let errorString = localize(L.CoinWithdraw.Form.Error.insufficientETHBalance)
+          state.coinAmountError = errorString
+          state.validationState = .invalid(errorString)
+        }
       }
     }
-    
-    return .valid
   }
 }
