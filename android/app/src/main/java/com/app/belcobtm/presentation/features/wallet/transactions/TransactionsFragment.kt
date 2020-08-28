@@ -45,7 +45,7 @@ class TransactionsFragment : BaseFragment() {
     override val resourceLayout: Int = R.layout.fragment_transactions
     override val isToolbarEnabled: Boolean = true
     override val isHomeButtonEnabled: Boolean = true
-    override val isMenuEnabled: Boolean = false
+    override var isMenuEnabled: Boolean = false
     override val customToolbarId: Int = R.id.customToolbarView
     override val isFirstShowContent: Boolean = false
 

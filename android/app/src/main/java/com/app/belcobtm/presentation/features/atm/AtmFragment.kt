@@ -34,7 +34,7 @@ class AtmFragment : BaseFragment()
     private val viewModel by viewModel<AtmViewModel>()
 
     override val resourceLayout = R.layout.fragment_atm
-    override val isMenuEnabled = true
+    override var isMenuEnabled = true
     override val isToolbarEnabled = false
 
     private var map: GoogleMap? = null

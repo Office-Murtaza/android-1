@@ -18,6 +18,7 @@ class PhoneDisplayFragment : BaseFragment() {
     }
 
     override val isHomeButtonEnabled = true
+    override var isMenuEnabled = true
 
     override fun initViews() {
         appliedState = null
