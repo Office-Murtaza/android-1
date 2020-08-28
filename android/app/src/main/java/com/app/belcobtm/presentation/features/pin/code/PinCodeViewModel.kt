@@ -170,7 +170,8 @@ class PinCodeViewModel(
             visiblePin = currentPin,
             labelResource = getTitleRes(),
             isError = isError,
-            backButtonVisible = mode == KEY_PIN_MODE_CHANGE || step == STEP_CONFIRM
+            backButtonVisible = mode == KEY_PIN_MODE_CHANGE || step == STEP_CONFIRM,
+            showMenu = mode == KEY_PIN_MODE_CHANGE
         ) ?: PinCodeState()
     }
 
@@ -192,7 +193,8 @@ data class PinCodeState(
     val labelResource: Int = R.string.pin_code_screen_enter_pin,
     val isError: Boolean = false,
     val backButtonVisible: Boolean = false,
-    val isLoading: Boolean = false
+    val isLoading: Boolean = false,
+    val showMenu: Boolean = false
 )
 
 sealed class PinCodeAction {

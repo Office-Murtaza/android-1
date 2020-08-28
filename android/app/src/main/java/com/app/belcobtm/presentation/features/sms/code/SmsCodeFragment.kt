@@ -22,6 +22,7 @@ class SmsCodeFragment : BaseFragment() {
 
     override fun initViews() {
         setToolbarTitle(R.string.sms_code_screen_title)
+        setToolbarTitle()
         setNextButtonTitle()
     }
 
@@ -92,6 +93,13 @@ class SmsCodeFragment : BaseFragment() {
     private fun showResendDialog() {
         isResendClicked = false
         AlertHelper.showToastShort(requireContext(), R.string.sms_code_screen_resend)
+    }
+
+    private fun setToolbarTitle() {
+        when (requireArguments().getInt(TAG_NEXT_FRAGMENT_ID)) {
+            R.id.sms_code_to_settings_fragment -> setToolbarTitle(R.string.update_phone_label)
+            else -> setToolbarTitle(R.string.sms_code_screen_title)
+        }
     }
 
     private fun setNextButtonTitle() {
