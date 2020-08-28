@@ -158,12 +158,7 @@ extension String {
   var phoneFormatted: String {
     guard let phoneNumber = try? PhoneNumberKit.default.parse(self) else { return self }
     
-    let phoneNumberString = PhoneNumberKit.default.format(phoneNumber, toType: .international)
-    let formattedPhoneNumber = phoneNumberString
-      .split { $0 == " " || $0 == "-" }
-      .joined(separator: " - ")
-    
-    return formattedPhoneNumber
+    return PhoneNumberKit.default.format(phoneNumber, toType: .international)
   }
   
   var doubleValue: Double? {
@@ -179,6 +174,10 @@ extension String {
   
   var withUSD: String {
     return self.appending(" USD")
+  }
+  
+  var withDollarSign: String {
+    return self.appending(" $")
   }
   
   var intValue: Int? {

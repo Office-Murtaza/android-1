@@ -8,30 +8,35 @@ final class PhoneVerificationViewController: ModuleViewController<PhoneVerificat
   
   let rootScrollView = RootScrollView()
   
-  let errorView = ErrorView()
-  
   let formView = PhoneVerificationFormView()
+  
+  let errorLabel: UILabel = {
+    let label = UILabel()
+    label.textColor = .tomato
+    label.textAlignment = .center
+    label.font = .systemFont(ofSize: 16)
+    label.numberOfLines = 0
+    return label
+  }()
   
   let nextButton = MDCButton.next
   
   let resendCodeLabel = PhoneVerificationResendCodeLabel()
   
   override var shouldShowNavigationBar: Bool { return true }
-
+  
   override func setupUI() {
-    title = localize(L.PhoneVerification.title)
-    
     view.addSubviews(rootScrollView)
     
     rootScrollView.contentInsetAdjustmentBehavior = .never
-    rootScrollView.contentView.addSubviews(errorView,
-                                           formView,
+    rootScrollView.contentView.addSubviews(formView,
+                                           errorLabel,
                                            nextButton,
                                            resendCodeLabel)
     
     setupDefaultKeyboardHandling()
   }
-
+  
   override func setupLayout() {
     rootScrollView.snp.makeConstraints {
       $0.top.equalTo(view.safeAreaLayoutGuide)
@@ -40,15 +45,15 @@ final class PhoneVerificationViewController: ModuleViewController<PhoneVerificat
     rootScrollView.contentView.snp.makeConstraints {
       $0.height.equalToSuperview()
     }
-    errorView.snp.makeConstraints {
-      $0.top.equalToSuperview().offset(5)
-      $0.centerX.equalToSuperview()
-    }
     formView.snp.makeConstraints {
       $0.top.equalToSuperview().offset(40)
       $0.left.right.equalToSuperview().inset(40)
-      $0.bottom.lessThanOrEqualTo(nextButton.snp.top).offset(-20)
+      $0.bottom.lessThanOrEqualTo(errorLabel.snp.top).offset(-20)
       $0.bottom.lessThanOrEqualTo(view.safeAreaLayoutGuide).offset(-20)
+    }
+    errorLabel.snp.makeConstraints {
+      $0.left.right.equalToSuperview().inset(15)
+      $0.bottom.equalTo(nextButton.snp.top).offset(-25)
     }
     nextButton.snp.makeConstraints {
       $0.height.equalTo(50)
@@ -75,12 +80,9 @@ final class PhoneVerificationViewController: ModuleViewController<PhoneVerificat
       .disposed(by: disposeBag)
     
     presenter.state
-      .map { $0.validationState }
-      .mapToErrorMessage()
-      .drive(onNext: { [errorView] in
-        errorView.isHidden = $0 == nil
-        errorView.configure(for: $0)
-      })
+      .asObservable()
+      .map { $0.codeError }
+      .bind(to: errorLabel.rx.text)
       .disposed(by: disposeBag)
     
     presenter.didTypeWrongCode
@@ -96,11 +98,35 @@ final class PhoneVerificationViewController: ModuleViewController<PhoneVerificat
       .drive(onNext: { [view] in view?.makeToast(localize(L.PhoneVerification.codeSent)) })
       .disposed(by: disposeBag)
     
+    presenter.state
+      .map { $0.mode }
+      .drive(onNext: { [unowned self] mode in
+        switch mode {
+        case .creation:
+          self.title = localize(L.PhoneVerification.title)
+        case .updating:
+          self.title = localize(L.UpdatePhone.title)
+        }
+      })
+      .disposed(by: disposeBag)
+    
+    presenter.state
+      .map { $0.mode }
+      .drive(onNext: { [nextButton] mode in
+        switch mode {
+        case .creation:
+          nextButton.setTitle(localize(L.Shared.Button.next), for: .normal)
+        case .updating:
+          nextButton.setTitle(localize(L.Shared.Button.done), for: .normal)
+        }
+      })
+      .disposed(by: disposeBag)
+    
     nextButton.rx.tap.asDriver()
       .drive(onNext: { [view] in view?.endEditing(true) })
       .disposed(by: disposeBag)
   }
-
+  
   override func setupBindings() {
     setupUIBindings()
     

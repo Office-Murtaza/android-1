@@ -6,6 +6,7 @@ enum PinCodeError: Error {
 }
 
 protocol PinCodeUsecase {
+  func get() -> Single<String>
   func save(pinCode: String) -> Completable
   func verify(pinCode: String) -> Completable
   func refresh() -> Completable
@@ -20,6 +21,10 @@ class PinCodeUsecaseImpl: PinCodeUsecase {
        refreshService: RefreshCredentialsService) {
     self.pinCodeStorage = pinCodeStorage
     self.refreshService = refreshService
+  }
+  
+  func get() -> Single<String> {
+    return pinCodeStorage.get()
   }
   
   func save(pinCode: String) -> Completable {

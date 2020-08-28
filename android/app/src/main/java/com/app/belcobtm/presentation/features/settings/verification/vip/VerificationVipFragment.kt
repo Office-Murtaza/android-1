@@ -68,7 +68,6 @@ class VerificationVipFragment : BaseFragment(), BottomSheetImagePicker.OnImagesS
             showFilePickerWithPermissionCheck()
         }
         verifyButtonView.setOnClickListener { sendVip() }
-        snnView.actionDoneListener { sendVip() }
 
         removeImageButtonView.setOnClickListener {
             viewModel.fileUri = null

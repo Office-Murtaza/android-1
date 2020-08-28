@@ -11,7 +11,7 @@ final class CoinWithdrawViewController: NavigationScreenViewController<CoinWithd
   
   let errorView = ErrorView()
   
-  let headerView = CoinWithdrawHeaderView()
+  let headerView = HeaderView()
   
   let formView = CoinWithdrawFormView()
   
@@ -59,7 +59,14 @@ final class CoinWithdrawViewController: NavigationScreenViewController<CoinWithd
     presenter.state
       .map { $0.coinBalance }
       .filterNil()
-      .drive(onNext: { [headerView] in headerView.configure(for: $0) })
+      .drive(onNext: { [headerView] coinBalance in
+        let balanceView = CoinDetailsBalanceValueView()
+        balanceView.configure(for: coinBalance)
+        
+        headerView.removeAll()
+        headerView.add(title: localize(L.CoinDetails.price), value: coinBalance.price.fiatFormatted.withUSD)
+        headerView.add(title: localize(L.CoinDetails.balance), valueView: balanceView)
+      })
       .disposed(by: disposeBag)
     
     presenter.state

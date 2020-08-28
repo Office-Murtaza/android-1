@@ -3,7 +3,7 @@ import UIKit
 import SnapKit
 import RxSwift
 
-class RootScrollView: UIScrollView, HasDisposeBag, UIGestureRecognizerDelegate {
+class RootScrollView: UIScrollView, HasDisposeBag {
   
   let tapRecognizer = UITapGestureRecognizer()
   
@@ -51,10 +51,10 @@ class RootScrollView: UIScrollView, HasDisposeBag, UIGestureRecognizerDelegate {
     
     bounces = false
     keyboardDismissMode = .interactive
+    canCancelContentTouches = true
     
     addSubview(contentView)
     addGestureRecognizer(tapRecognizer)
-    tapRecognizer.delegate = self
   }
   
   private func setupLayout() {
@@ -68,22 +68,5 @@ class RootScrollView: UIScrollView, HasDisposeBag, UIGestureRecognizerDelegate {
     tapRecognizer.rx.event.asDriver().map { _ in () }
       .drive(onNext: { [unowned self] in self.endEditing(true) })
       .disposed(by: disposeBag)
-  }
-  
-  func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
-    if touch.view == gestureRecognizer.view || touch.view == contentView {
-      return true
-    }
-    
-    var view = touch.view
-    while view != gestureRecognizer.view  {
-      if view?.gestureRecognizers != nil || view is UIControl {
-        return false
-      } else {
-        view = view?.superview
-      }
-    }
-    
-    return true
   }
 }

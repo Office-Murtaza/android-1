@@ -34,10 +34,6 @@ final class ErrorViewController: ModuleViewController<ErrorPresenter> {
     return false
   }
   
-  override var preferredStatusBarStyle: UIStatusBarStyle {
-    return .lightContent
-  }
-  
   override func setupUI() {
     view.backgroundColor = .white
     

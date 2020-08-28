@@ -16,14 +16,13 @@ final class LoginFlow: BaseFlow<BTMNavigationController, LoginFlowController> {
   }
   
   enum Steps: Step, Equatable {
-    case welcome
+    case welcome(String?)
     case createWallet
-    case phoneVerification(String, String)
+    case phoneVerification(String)
     case seedPhrase(String, String)
     case recover
     case recoverSeedPhrase(String, String)
     case pinCode(PinCodeStage, String? = nil)
-    case backToWelcome
     case contactSupport
     case pop
   }
@@ -36,19 +35,24 @@ final class LoginFlow: BaseFlow<BTMNavigationController, LoginFlowController> {
   
   private func handleLoginFlow(step: Steps) -> NextFlowItems {
     switch step {
-    case .welcome:
+    case let .welcome(toastMessage):
       let module = resolver.resolve(Module<WelcomeModule>.self)!
+      toastMessage.flatMap { message in
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+          self.view.topViewController?.view.makeToast(message)
+        }
+      }
       return replaceRoot(module.controller, animated: false)
     case .createWallet:
       let module = resolver.resolve(Module<CreateWalletModule>.self)!
       return push(module.controller)
-    case let .phoneVerification(phoneNumber, password):
+    case let .phoneVerification(phoneNumber):
       let module = resolver.resolve(Module<PhoneVerificationModule>.self)!
-      module.input.setup(phoneNumber: phoneNumber, password: password)
+      module.input.setup(phoneNumber: phoneNumber, for: .creation)
       return push(module.controller)
     case let .seedPhrase(phoneNumber, password):
       let module = resolver.resolve(Module<SeedPhraseModule>.self)!
-      module.input.setup(phoneNumber: phoneNumber, password: password)
+      module.input.setup(for: .creation(phoneNumber, password))
       return replaceLast(module.controller)
     case .recover:
       let module = resolver.resolve(Module<RecoverModule>.self)!
@@ -61,14 +65,15 @@ final class LoginFlow: BaseFlow<BTMNavigationController, LoginFlowController> {
       let module = resolver.resolve(Module<PinCodeModule>.self)!
       module.input.setup(for: stage)
       
+      if stage == .confirmation {
+        module.input.setup(shouldShowNavBar: true)
+      }
+      
       if let pinCode = pinCode {
         module.input.setup(with: pinCode)
       }
       
       return push(module.controller)
-    case .backToWelcome:
-      let module = resolver.resolve(Module<WelcomeModule>.self)!
-      return replaceRoot(module.controller, animated: true)
     case .contactSupport:
       let alert = resolver.resolve(UIAlertController.self, argument: view.topViewController!)!
       return present(alert, animated: true)

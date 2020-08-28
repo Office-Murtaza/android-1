@@ -99,6 +99,9 @@ class PinCodeFragment : BaseFragment() {
                 is PinCodeAction.AuthorizeError -> {
                     showErrorServerError()
                 }
+                is PinCodeAction.BackPress -> {
+                    navigate(PinCodeFragmentDirections.pinCodeToSettingsFragment(SETTINGS_SECURITY))
+                }
             }
         }
     }

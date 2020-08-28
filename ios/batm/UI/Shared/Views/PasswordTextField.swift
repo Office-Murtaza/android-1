@@ -20,7 +20,7 @@ class PasswordTextField: MDCTextField, HasDisposeBag {
   
   override var isSecureTextEntry: Bool {
     didSet {
-      let imageName = isSecureTextEntry ? "login_password" : "login_password_hidden"
+      let imageName = isSecureTextEntry ? "login_password_hidden" : "login_password"
       button.setImage(UIImage(named: imageName), for: .normal)
     }
   }

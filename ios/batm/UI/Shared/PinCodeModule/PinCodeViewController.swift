@@ -24,7 +24,7 @@ class PinCodeViewController: ModuleViewController<PinCodePresenter>, UITextField
   
   let keyboardView = PinCodeKeyboardView()
   
-  var shouldShowNavBar = false
+  private var shouldShowNavBar = false
   
   override var shouldShowNavigationBar: Bool {
     return shouldShowNavBar
@@ -70,7 +70,7 @@ class PinCodeViewController: ModuleViewController<PinCodePresenter>, UITextField
   
   private func setupUIBindings() {
     presenter.state
-      .map { $0.stage == .confirmation }
+      .map { $0.shouldShowNavBar }
       .drive(onNext: { [unowned self] in self.shouldShowNavBar = $0 })
       .disposed(by: disposeBag)
     

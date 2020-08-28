@@ -8,7 +8,7 @@ final class BuySellTradeDetailsViewController: NavigationScreenViewController<Bu
   
   let errorView = ErrorView()
   
-  let headerView = BuySellTradeDetailsHeaderView()
+  let headerView = HeaderView()
   
   let formView = BuySellTradeDetailsFormView()
   
@@ -69,7 +69,23 @@ final class BuySellTradeDetailsViewController: NavigationScreenViewController<Bu
     presenter.state
       .map { $0.trade }
       .filterNil()
-      .drive(onNext: { [headerView] in headerView.configure(for: $0) })
+      .drive(onNext: { [headerView] trade in
+        let paymentView = BuySellTradeDetailsPaymentView()
+        paymentView.configure(for: trade.paymentMethod)
+        
+        headerView.removeAll()
+        headerView.add(title: localize(L.BuySellTradeDetails.Header.price), value: trade.price.fiatFormatted.withUSD) {
+          $0.textColor = .darkMint
+        }
+        headerView.add(title: localize(L.BuySellTradeDetails.Header.user), value: "\(trade.username)\n\(trade.userStats)") {
+          $0.numberOfLines = 0
+        }
+        headerView.add(title: localize(L.BuySellTradeDetails.Header.payment), valueView: paymentView)
+        headerView.add(title: localize(L.BuySellTradeDetails.Header.limits), value: trade.formattedLimits)
+        headerView.add(title: localize(L.BuySellTradeDetails.Header.terms), value: trade.terms) {
+          $0.numberOfLines = 0
+        }
+      })
       .disposed(by: disposeBag)
     
     coinCodeDriver

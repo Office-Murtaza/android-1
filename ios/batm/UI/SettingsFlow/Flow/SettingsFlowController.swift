@@ -13,25 +13,35 @@ class SettingsFlowController: FlowController, FlowActivator {
 }
 
 extension SettingsFlowController: SettingsModuleDelegate {
-  
-  func didSelectPhone(_ phoneNumber: PhoneNumber) {
-    step.accept(SettingsFlow.Steps.phone(phoneNumber))
+  func didSelectSecurity() {
+    step.accept(SettingsFlow.Steps.security)
   }
   
-  func didSelectChangePassword() {
-    step.accept(SettingsFlow.Steps.changePassword)
+  func didSelectKYC(_ kyc: KYC) {
+    step.accept(SettingsFlow.Steps.kyc(kyc))
   }
   
-  func didSelectChangePin() {
-    step.accept(SettingsFlow.Steps.changePin)
+  func didSelectAbout() {
+    step.accept(SettingsFlow.Steps.about)
+  }
+}
+
+extension SettingsFlowController: SecurityModuleDelegate {
+  
+  func didSelectUpdatePhone(_ phoneNumber: PhoneNumber) {
+    step.accept(SettingsFlow.Steps.updatePhone(phoneNumber))
   }
   
-  func didSelectVerification(_ info: VerificationInfo) {
-    step.accept(SettingsFlow.Steps.verification(info))
+  func didSelectUpdatePassword() {
+    step.accept(SettingsFlow.Steps.updatePassword)
   }
   
-  func didSelectShowSeedPhrase() {
-    step.accept(SettingsFlow.Steps.showSeedPhrase)
+  func didSelectUpdatePIN(_ pinCode: String) {
+    step.accept(SettingsFlow.Steps.updatePIN(pinCode))
+  }
+  
+  func didSelectSeedPhrase() {
+    step.accept(SettingsFlow.Steps.seedPhrase)
   }
   
   func didSelectUnlink() {
@@ -40,42 +50,44 @@ extension SettingsFlowController: SettingsModuleDelegate {
   
 }
 
-extension SettingsFlowController: ChangePhoneFlowControllerDelegate {
+extension SettingsFlowController: AboutModuleDelegate {}
+
+extension SettingsFlowController: UpdatePhoneFlowControllerDelegate {
   
-  func didFinishChangePhoneFlow() {
-    step.accept(SettingsFlow.Steps.popToRoot)
+  func didFinishUpdatePhoneFlow() {
+    step.accept(SettingsFlow.Steps.popToRoot(localize(L.UpdatePhone.phoneUpdated)))
   }
   
 }
 
-extension SettingsFlowController: ChangePasswordFlowControllerDelegate {
+extension SettingsFlowController: UpdatePasswordFlowControllerDelegate {
   
-  func didFinishChangePasswordFlow() {
-    step.accept(SettingsFlow.Steps.popToRoot)
+  func didFinishUpdatePasswordFlow() {
+    step.accept(SettingsFlow.Steps.popToRoot(localize(L.UpdatePassword.passwordUpdated)))
   }
   
 }
 
-extension SettingsFlowController: ChangePinFlowControllerDelegate {
+extension SettingsFlowController: UpdatePinFlowControllerDelegate {
   
-  func didFinishChangePinFlow() {
-    step.accept(SettingsFlow.Steps.popToRoot)
+  func didFinishUpdatePinFlow() {
+    step.accept(SettingsFlow.Steps.popToRoot(localize(L.UpdatePIN.pinUpdated)))
   }
   
 }
 
-extension SettingsFlowController: VerificationFlowControllerDelegate {
+extension SettingsFlowController: KYCFlowControllerDelegate {
   
-  func didFinishVerificationFlow() {
-    step.accept(SettingsFlow.Steps.popToRoot)
+  func didFinishKYCFlow() {
+    step.accept(SettingsFlow.Steps.popToRoot(nil))
   }
   
 }
 
-extension SettingsFlowController: ShowSeedPhraseFlowControllerDelegate {
+extension SettingsFlowController: SeedPhraseFlowControllerDelegate {
   
-  func didFinishShowSeedPhraseFlow() {
-    step.accept(SettingsFlow.Steps.popToRoot)
+  func didFinishSeedPhraseFlow() {
+    step.accept(SettingsFlow.Steps.popToRoot(nil))
   }
   
 }
@@ -83,7 +95,7 @@ extension SettingsFlowController: ShowSeedPhraseFlowControllerDelegate {
 extension SettingsFlowController: UnlinkFlowControllerDelegate {
   
   func didFinishUnlinkFlow() {
-    step.accept(SettingsFlow.Steps.popToRoot)
+    step.accept(SettingsFlow.Steps.popToRoot(nil))
   }
   
 }

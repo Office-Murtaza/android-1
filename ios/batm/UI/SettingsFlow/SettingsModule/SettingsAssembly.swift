@@ -5,7 +5,7 @@ class SettingsAssembly: Assembly {
   
   func assemble(container: Container) {
     container.register(Module<SettingsModule>.self) { resolver in
-      let dataSource = SettingsCollectionViewDataSource()
+      let dataSource = SettingsTableViewDataSource()
       let viewController = SettingsViewController()
       let usecase = resolver.resolve(SettingsUsecase.self)!
       let presenter = SettingsPresenter(usecase: usecase)

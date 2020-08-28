@@ -8,7 +8,9 @@ final class CreateEditTradeViewController: NavigationScreenViewController<Create
   
   let errorView = ErrorView()
   
-  let headerView = CreateEditTradeHeaderView()
+  let headerView = HeaderView()
+  
+  let tradeTypeView = CreateEditTradeTypeView()
   
   let formView = CreateEditTradeFormView()
   
@@ -75,7 +77,21 @@ final class CreateEditTradeViewController: NavigationScreenViewController<Create
       .disposed(by: disposeBag)
     
     Driver.combineLatest(coinBalanceDriver, tradeDriver)
-      .drive(onNext: { [headerView] in headerView.configure(for: $0, trade: $1) })
+      .drive(onNext: { [headerView, tradeTypeView] coinBalance, trade in
+        let balanceView = CoinDetailsBalanceValueView()
+        balanceView.configure(for: coinBalance)
+        
+        let reservedBalanceView = CoinDetailsBalanceValueView()
+        reservedBalanceView.configure(for: coinBalance, useReserved: true)
+        
+        trade.flatMap { tradeTypeView.configure(for: $0) }
+        
+        headerView.removeAll()
+        headerView.add(title: localize(L.CoinDetails.price), value: coinBalance.price.fiatFormatted.withUSD)
+        headerView.add(title: localize(L.CoinDetails.balance), valueView: balanceView)
+        headerView.add(title: localize(L.Trades.reserved), valueView: reservedBalanceView)
+        headerView.add(title: localize(L.CreateEditTrade.type), valueView: tradeTypeView)
+      })
       .disposed(by: disposeBag)
     
     presenter.state
@@ -126,7 +142,7 @@ final class CreateEditTradeViewController: NavigationScreenViewController<Create
     setupUIBindings()
     
     let backDriver = customView.backButton.rx.tap.asDriver()
-    let updateSelectedTypeDriver = headerView.typeValueView.rx.acceptedType
+    let updateSelectedTypeDriver = tradeTypeView.rx.acceptedType
     let updatePaymentDriver = formView.rx.paymentText.asDriver()
     let updateMarginDriver = formView.rx.marginText.asDriver()
     let updateMinLimitDriver = formView.rx.minLimitText.asDriver()

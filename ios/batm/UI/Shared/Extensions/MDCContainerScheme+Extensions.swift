@@ -9,6 +9,7 @@ extension MDCContainerScheme {
     scheme.colorScheme.primaryColor = .ceruleanBlue
     scheme.colorScheme.onPrimaryColor = .white
     scheme.colorScheme.onSurfaceColor = .blackThree
+    scheme.colorScheme.errorColor = .tomato
     return scheme
   }
   

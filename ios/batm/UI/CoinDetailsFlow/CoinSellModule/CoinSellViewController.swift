@@ -8,7 +8,7 @@ final class CoinSellViewController: NavigationScreenViewController<CoinSellPrese
   
   let errorView = ErrorView()
   
-  let headerView = CoinWithdrawHeaderView()
+  let headerView = HeaderView()
   
   let formView = CoinSellFormView()
   
@@ -62,16 +62,25 @@ final class CoinSellViewController: NavigationScreenViewController<CoinSellPrese
       })
       .disposed(by: disposeBag)
     
-    presenter.state
+    let coinBalanceDriver =  presenter.state
       .map { $0.coinBalance }
       .filterNil()
-      .drive(onNext: { [headerView] in headerView.configure(for: $0) })
-      .disposed(by: disposeBag)
     
-    presenter.state
+    let detailsDriver = presenter.state
       .map { $0.details }
       .filterNil()
-      .drive(onNext: { [headerView] in headerView.configure(for: $0) })
+   
+    Driver.combineLatest(coinBalanceDriver, detailsDriver)
+      .drive(onNext: { [headerView] coinBalance, details in
+        let balanceView = CoinDetailsBalanceValueView()
+        balanceView.configure(for: coinBalance)
+        
+        headerView.removeAll()
+        headerView.add(title: localize(L.CoinDetails.price), value: coinBalance.price.fiatFormatted.withUSD)
+        headerView.add(title: localize(L.CoinDetails.balance), valueView: balanceView)
+        headerView.add(title: localize(L.CoinSell.dailyLimit), value: details.dailyLimit.fiatFormatted.withUSD)
+        headerView.add(title: localize(L.CoinSell.txLimit), value: details.transactionLimit.fiatFormatted.withUSD)
+      })
       .disposed(by: disposeBag)
     
     presenter.state

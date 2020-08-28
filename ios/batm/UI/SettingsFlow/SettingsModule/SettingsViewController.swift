@@ -3,85 +3,44 @@ import RxSwift
 import RxCocoa
 import SnapKit
 
-class SettingsViewController: ModuleViewController<SettingsPresenter>, UICollectionViewDelegateFlowLayout {
+class SettingsViewController: ModuleViewController<SettingsPresenter> {
   
-  var dataSource: SettingsCollectionViewDataSource!
+  var dataSource: SettingsTableViewDataSource!
   
-  let backgroundImageView: UIImageView = {
-    let imageView = UIImageView(image: UIImage(named: "login_background"))
-    imageView.contentMode = .scaleAspectFill
-    imageView.clipsToBounds = true
-    return imageView
-  }()
+  let tableView = SettingsTableView()
   
-  let safeAreaContainer = UIView()
+  override var shouldShowNavigationBar: Bool { return true }
   
-  let titleLabel: UILabel = {
-    let label = UILabel()
-    label.text = localize(L.Settings.title)
-    label.textColor = .white
-    label.font = .poppinsSemibold20
-    return label
-  }()
-  
-  let collectionView: UICollectionView = {
-    let layout = UICollectionViewFlowLayout()
-    let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-    return collectionView
-  }()
-  
-  override var preferredStatusBarStyle: UIStatusBarStyle {
-    return .lightContent
+  override func viewWillAppear(_ animated: Bool) {
+    if let index = self.tableView.indexPathForSelectedRow {
+      self.tableView.deselectRow(at: index, animated: true)
+    }
   }
   
   override func setupUI() {
     view.backgroundColor = .white
     
-    view.addSubviews(backgroundImageView,
-                     safeAreaContainer,
-                     collectionView)
-    safeAreaContainer.addSubview(titleLabel)
-    
-    collectionView.backgroundColor = .clear
-    collectionView.delegate = self
+    view.addSubviews(tableView)
   }
   
   override func setupLayout() {
-    backgroundImageView.snp.makeConstraints {
-      $0.top.left.right.equalToSuperview()
-      $0.bottom.equalTo(view.safeAreaLayoutGuide.snp.top).offset(44)
-    }
-    safeAreaContainer.snp.makeConstraints {
-      $0.left.right.bottom.equalTo(backgroundImageView)
-      $0.top.equalTo(view.safeAreaLayoutGuide)
-    }
-    titleLabel.snp.makeConstraints {
-      $0.center.equalToSuperview()
-    }
-    collectionView.snp.makeConstraints {
-      $0.top.equalTo(backgroundImageView.snp.bottom)
-      $0.left.right.bottom.equalToSuperview()
+    tableView.snp.makeConstraints {
+      $0.edges.equalToSuperview()
     }
   }
   
   private func setupUIBindings() {
     dataSource.values = presenter.types
-    collectionView.dataSource = dataSource
-    dataSource.collectionView = collectionView
+    tableView.dataSource = dataSource
+    dataSource.tableView = tableView
   }
   
   override func setupBindings() {
     setupUIBindings()
     
-    let selectDriver = collectionView.rx.itemSelected.asDriver()
+    let selectDriver = tableView.rx.itemSelected.asDriver()
     
     presenter.bind(input: SettingsPresenter.Input(select: selectDriver))
-  }
-  
-  func collectionView(_ collectionView: UICollectionView,
-                      layout collectionViewLayout: UICollectionViewLayout,
-                      sizeForItemAt indexPath: IndexPath) -> CGSize {
-    return CGSize(width: collectionView.bounds.width - 50, height: 55)
   }
   
 }

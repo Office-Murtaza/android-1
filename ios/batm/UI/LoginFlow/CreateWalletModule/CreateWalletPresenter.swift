@@ -57,7 +57,7 @@ class CreateWalletPresenter: ModulePresenter, CreateWalletModule {
       .disposed(by: disposeBag)
     
     input.openTermsAndConditions
-      .drive(onNext: { UIApplication.shared.open(URL.privacyPolicy) })
+      .drive(onNext: { UIApplication.shared.open(URL.termsAndConditions) })
       .disposed(by: disposeBag)
     
     input.next

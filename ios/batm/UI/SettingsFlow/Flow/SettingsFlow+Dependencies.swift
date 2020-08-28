@@ -14,11 +14,13 @@ extension SettingsFlow {
         }
         .inObjectScope(.container)
         .implements(SettingsModuleDelegate.self,
-                    ChangePhoneFlowControllerDelegate.self,
-                    ChangePasswordFlowControllerDelegate.self,
-                    ChangePinFlowControllerDelegate.self,
-                    VerificationFlowControllerDelegate.self,
-                    ShowSeedPhraseFlowControllerDelegate.self,
+                    SecurityModuleDelegate.self,
+                    AboutModuleDelegate.self,
+                    UpdatePhoneFlowControllerDelegate.self,
+                    UpdatePasswordFlowControllerDelegate.self,
+                    UpdatePinFlowControllerDelegate.self,
+                    KYCFlowControllerDelegate.self,
+                    SeedPhraseFlowControllerDelegate.self,
                     UnlinkFlowControllerDelegate.self)
     }
   }

@@ -52,6 +52,10 @@ class GenericModuleViewController<PresenterType: ModulePresenter, View: UIView>:
     return casted
   }
   
+  override var preferredStatusBarStyle: UIStatusBarStyle {
+    return .default
+  }
+  
   override func loadView() {
     let view = View(frame: UIScreen.main.bounds)
     view.backgroundColor = .white
