@@ -263,6 +263,7 @@ extension NumberFormatter {
     let formatter = NumberFormatter()
     formatter.numberStyle = .decimal
     formatter.groupingSeparator = ""
+    formatter.decimalSeparator = "."
     formatter.roundingMode = .halfUp
     return formatter
   }
