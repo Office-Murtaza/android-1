@@ -156,7 +156,7 @@ public class UserController {
 
             boolean isPasswordMatch = passwordEncoder.matches(dto.getPassword(), user.getPassword());
             if (!isPasswordMatch) {
-                return Response.error(5, "Incorrect password");
+                return Response.error(5, "Wrong password");
             }
 
             boolean isCoinAddressesMatch = coinService.isCoinsAddressMatch(user, dto.getCoins());
@@ -267,7 +267,7 @@ public class UserController {
             Boolean isMatch = passwordEncoder.matches(dto.getOldPassword(), user.getPassword());
 
             if (!isMatch) {
-                return Response.defaultError("Old passwords doesn't match");
+                return Response.defaultError("Wrong password");
             } else {
                 userService.updatePassword(userId, passwordEncoder.encode(dto.getNewPassword()));
             }
