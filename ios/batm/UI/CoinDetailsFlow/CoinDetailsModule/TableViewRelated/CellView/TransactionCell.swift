@@ -12,6 +12,8 @@ final class TransactionCell: UITableViewCell {
     return stackView
   }()
   
+  let dateContainer = UIView()
+  
   let dateLabel: UILabel = {
     let label = UILabel()
     label.font = .systemFont(ofSize: 13)
@@ -21,6 +23,8 @@ final class TransactionCell: UITableViewCell {
     label.minimumScaleFactor = 0.7
     return label
   }()
+  
+  let typeContainer = UIView()
   
   let typeLabel: UILabel = {
     let label = UILabel()
@@ -35,6 +39,8 @@ final class TransactionCell: UITableViewCell {
   let statusViewContainer = UIView()
   
   let statusView = StatusView()
+  
+  let amountContainer = UIView()
   
   let amountLabel: UILabel = {
     let label = UILabel()
@@ -66,19 +72,36 @@ final class TransactionCell: UITableViewCell {
   
   private func setupUI() {
     contentView.addSubviews(stackView)
-    stackView.addArrangedSubviews(dateLabel,
-                                  typeLabel,
+    stackView.addArrangedSubviews(dateContainer,
+                                  typeContainer,
                                   statusViewContainer,
-                                  amountLabel)
+                                  amountContainer)
+    dateContainer.addSubview(dateLabel)
+    typeContainer.addSubview(typeLabel)
     statusViewContainer.addSubview(statusView)
+    amountContainer.addSubview(amountLabel)
   }
   
   private func setupLayout() {
     stackView.snp.makeConstraints {
-      $0.edges.equalToSuperview()
+      $0.top.bottom.equalToSuperview()
+      $0.left.right.equalToSuperview().inset(15)
+    }
+    dateLabel.snp.makeConstraints {
+      $0.left.centerY.equalToSuperview()
+      $0.right.lessThanOrEqualToSuperview()
+    }
+    typeLabel.snp.makeConstraints {
+      $0.center.equalToSuperview()
+      $0.left.greaterThanOrEqualToSuperview()
+      $0.right.lessThanOrEqualToSuperview()
     }
     statusView.snp.makeConstraints {
       $0.center.equalToSuperview()
+    }
+    amountLabel.snp.makeConstraints {
+      $0.right.centerY.equalToSuperview()
+      $0.left.greaterThanOrEqualToSuperview()
     }
   }
   
