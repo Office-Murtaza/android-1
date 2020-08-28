@@ -45,13 +45,7 @@ extension CoinDetailsFlowController: CoinDetailsModuleDelegate {
   
 }
 
-extension CoinDetailsFlowController: CoinDepositModuleDelegate {
-  
-  func didFinishCoinDeposit() {
-    step.accept(CoinDetailsFlow.Steps.pop)
-  }
-  
-}
+extension CoinDetailsFlowController: CoinDepositModuleDelegate {}
 
 extension CoinDetailsFlowController: CoinWithdrawModuleDelegate {
   
