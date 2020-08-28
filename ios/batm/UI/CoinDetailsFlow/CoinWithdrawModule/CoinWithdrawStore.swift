@@ -28,11 +28,14 @@ struct CoinWithdrawState: Equatable {
   var maxValue: Double {
     guard let type = coin?.type, let balance = coinBalance?.balance, let fee = coinSettings?.txFee else { return 0 }
     
-    if type == .catm {
+    switch type {
+    case .catm:
       return balance
+    case .ripple:
+      return max(0, balance - fee - 20)
+    default:
+      return max(0, balance - fee)
     }
-    
-    return max(0, balance - fee)
   }
   
 }

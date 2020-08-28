@@ -74,10 +74,15 @@ final class CoinDetailsBalanceValueView: UIView {
     }
   }
   
+  func configure(cryptoAmount: Double, fiatAmount: Double, type: CustomCoinType) {
+    balanceCoinLabel.text = cryptoAmount.coinFormatted.withCoinType(type)
+    balanceCurrencyLabel.text = fiatAmount.fiatFormatted.withDollarSign
+  }
+  
   func configure(for coinBalance: CoinBalance, useReserved: Bool = false) {
-    let balance = useReserved ? coinBalance.reservedBalance : coinBalance.balance
+    let cryptoAmount = useReserved ? coinBalance.reservedBalance : coinBalance.balance
+    let fiatAmount = cryptoAmount * coinBalance.price
     
-    balanceCoinLabel.text = balance.coinFormatted.withCoinType(coinBalance.type)
-    balanceCurrencyLabel.text = (balance * coinBalance.price).fiatFormatted.withDollarSign
+    configure(cryptoAmount: cryptoAmount, fiatAmount: fiatAmount, type: coinBalance.type)
   }
 }

@@ -85,7 +85,6 @@
 		DB2F25162360A8F400274C60 /* TransactionDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB2F25122360A8F400274C60 /* TransactionDetailsViewController.swift */; };
 		DB2F25172360A8F400274C60 /* TransactionDetailsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB2F25132360A8F400274C60 /* TransactionDetailsPresenter.swift */; };
 		DB2F25182360A8F400274C60 /* TransactionDetailsAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB2F25142360A8F400274C60 /* TransactionDetailsAssembly.swift */; };
-		DB2F251B2360AC9A00274C60 /* TransactionDetailsRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB2F251A2360AC9A00274C60 /* TransactionDetailsRowView.swift */; };
 		DB308EAF22E71402003D91AF /* ATMInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB308EAE22E71402003D91AF /* ATMInfoView.swift */; };
 		DB308EB122E73762003D91AF /* MapAddresses.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB308EB022E73762003D91AF /* MapAddresses.swift */; };
 		DB308EB322E73793003D91AF /* MapAddress.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB308EB222E73793003D91AF /* MapAddress.swift */; };
@@ -202,7 +201,6 @@
 		DB6DC1B724877AC600CD478D /* BuySellTradeDetailsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB6DC1B324877AC600CD478D /* BuySellTradeDetailsPresenter.swift */; };
 		DB6DC1B824877AC600CD478D /* BuySellTradeDetailsAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB6DC1B424877AC600CD478D /* BuySellTradeDetailsAssembly.swift */; };
 		DB6DC1BA24877B2900CD478D /* BuySellTradeDetailsStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB6DC1B924877B2900CD478D /* BuySellTradeDetailsStore.swift */; };
-		DB6F184C243D99230024B886 /* TransactionDetailsExchangeSectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB6F184B243D99230024B886 /* TransactionDetailsExchangeSectionView.swift */; };
 		DB70851D22CF8A7600FFE4F7 /* BTMWallet+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD1750C22BD26CB0021A05E /* BTMWallet+Extensions.swift */; };
 		DB70852322CFA39F00FFE4F7 /* CoinsBalanceModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB70852222CFA39F00FFE4F7 /* CoinsBalanceModule.swift */; };
 		DB70852522CFA3C500FFE4F7 /* CoinsBalancePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB70852422CFA3C500FFE4F7 /* CoinsBalancePresenter.swift */; };
@@ -344,8 +342,6 @@
 		DB96174022C7CDA70078E92D /* BTMWalletRecord+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB96173F22C7CDA70078E92D /* BTMWalletRecord+CoreDataClass.swift */; };
 		DB96174222C7CDE00078E92D /* BTMWalletRecord+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB96174122C7CDE00078E92D /* BTMWalletRecord+CoreDataProperties.swift */; };
 		DB96174422C7D1070078E92D /* BTMWalletConverter.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB96174322C7D1070078E92D /* BTMWalletConverter.swift */; };
-		DB99BB9C2362E0F9006A75BE /* TransactionDetailsGeneralSectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB99BB9B2362E0F9006A75BE /* TransactionDetailsGeneralSectionView.swift */; };
-		DB99BB9E2362E274006A75BE /* TransactionDetailsGiftSectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB99BB9D2362E274006A75BE /* TransactionDetailsGiftSectionView.swift */; };
 		DB9D3EA022C0F6BA008DC600 /* UIColor+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB9D3E9F22C0F6BA008DC600 /* UIColor+Additions.swift */; };
 		DB9D3EA522C13078008DC600 /* TermsAndConditionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB9D3EA422C13078008DC600 /* TermsAndConditionsView.swift */; };
 		DB9D3EA722C1476F008DC600 /* WelcomeSlideView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB9D3EA622C1476F008DC600 /* WelcomeSlideView.swift */; };
@@ -473,7 +469,6 @@
 		DBC68CBC22F8798F00473247 /* UpdatePhoneAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC68CB822F8798F00473247 /* UpdatePhoneAssembly.swift */; };
 		DBC68CBF22F87A0A00473247 /* UpdatePhoneFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC68CBE22F87A0A00473247 /* UpdatePhoneFormView.swift */; };
 		DBC68CC222F87A3B00473247 /* UpdatePhoneStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC68CC122F87A3B00473247 /* UpdatePhoneStore.swift */; };
-		DBC8B45A23634DF400E7A799 /* TransactionDetailsSellInfoSectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC8B45923634DF400E7A799 /* TransactionDetailsSellInfoSectionView.swift */; };
 		DBC8B45C23634EB900E7A799 /* Divider.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC8B45B23634EB900E7A799 /* Divider.swift */; };
 		DBC8B45E23635AB200E7A799 /* SellDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC8B45D23635AB200E7A799 /* SellDetails.swift */; };
 		DBC8B46023635AE000E7A799 /* SellDetails+Mapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC8B45F23635AE000E7A799 /* SellDetails+Mapping.swift */; };
@@ -620,7 +615,6 @@
 		DB2F25122360A8F400274C60 /* TransactionDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionDetailsViewController.swift; sourceTree = "<group>"; };
 		DB2F25132360A8F400274C60 /* TransactionDetailsPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionDetailsPresenter.swift; sourceTree = "<group>"; };
 		DB2F25142360A8F400274C60 /* TransactionDetailsAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionDetailsAssembly.swift; sourceTree = "<group>"; };
-		DB2F251A2360AC9A00274C60 /* TransactionDetailsRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionDetailsRowView.swift; sourceTree = "<group>"; };
 		DB308EAE22E71402003D91AF /* ATMInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ATMInfoView.swift; sourceTree = "<group>"; };
 		DB308EB022E73762003D91AF /* MapAddresses.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapAddresses.swift; sourceTree = "<group>"; };
 		DB308EB222E73793003D91AF /* MapAddress.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapAddress.swift; sourceTree = "<group>"; };
@@ -737,7 +731,6 @@
 		DB6DC1B324877AC600CD478D /* BuySellTradeDetailsPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuySellTradeDetailsPresenter.swift; sourceTree = "<group>"; };
 		DB6DC1B424877AC600CD478D /* BuySellTradeDetailsAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuySellTradeDetailsAssembly.swift; sourceTree = "<group>"; };
 		DB6DC1B924877B2900CD478D /* BuySellTradeDetailsStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuySellTradeDetailsStore.swift; sourceTree = "<group>"; };
-		DB6F184B243D99230024B886 /* TransactionDetailsExchangeSectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionDetailsExchangeSectionView.swift; sourceTree = "<group>"; };
 		DB70852222CFA39F00FFE4F7 /* CoinsBalanceModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinsBalanceModule.swift; sourceTree = "<group>"; };
 		DB70852422CFA3C500FFE4F7 /* CoinsBalancePresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinsBalancePresenter.swift; sourceTree = "<group>"; };
 		DB70852622CFA3EC00FFE4F7 /* CoinsBalanceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinsBalanceViewController.swift; sourceTree = "<group>"; };
@@ -877,8 +870,6 @@
 		DB96173F22C7CDA70078E92D /* BTMWalletRecord+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BTMWalletRecord+CoreDataClass.swift"; sourceTree = "<group>"; };
 		DB96174122C7CDE00078E92D /* BTMWalletRecord+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BTMWalletRecord+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		DB96174322C7D1070078E92D /* BTMWalletConverter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTMWalletConverter.swift; sourceTree = "<group>"; };
-		DB99BB9B2362E0F9006A75BE /* TransactionDetailsGeneralSectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionDetailsGeneralSectionView.swift; sourceTree = "<group>"; };
-		DB99BB9D2362E274006A75BE /* TransactionDetailsGiftSectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionDetailsGiftSectionView.swift; sourceTree = "<group>"; };
 		DB9D3E9F22C0F6BA008DC600 /* UIColor+Additions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+Additions.swift"; sourceTree = "<group>"; };
 		DB9D3EA422C13078008DC600 /* TermsAndConditionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TermsAndConditionsView.swift; sourceTree = "<group>"; };
 		DB9D3EA622C1476F008DC600 /* WelcomeSlideView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeSlideView.swift; sourceTree = "<group>"; };
@@ -1008,7 +999,6 @@
 		DBC68CB822F8798F00473247 /* UpdatePhoneAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdatePhoneAssembly.swift; sourceTree = "<group>"; };
 		DBC68CBE22F87A0A00473247 /* UpdatePhoneFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdatePhoneFormView.swift; sourceTree = "<group>"; };
 		DBC68CC122F87A3B00473247 /* UpdatePhoneStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdatePhoneStore.swift; sourceTree = "<group>"; };
-		DBC8B45923634DF400E7A799 /* TransactionDetailsSellInfoSectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionDetailsSellInfoSectionView.swift; sourceTree = "<group>"; };
 		DBC8B45B23634EB900E7A799 /* Divider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Divider.swift; sourceTree = "<group>"; };
 		DBC8B45D23635AB200E7A799 /* SellDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SellDetails.swift; sourceTree = "<group>"; };
 		DBC8B45F23635AE000E7A799 /* SellDetails+Mapping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SellDetails+Mapping.swift"; sourceTree = "<group>"; };
@@ -1357,25 +1347,12 @@
 		DB2F25102360A8D800274C60 /* TransactionDetailsModule */ = {
 			isa = PBXGroup;
 			children = (
-				DB2F25192360AC2600274C60 /* Views */,
 				DB2F25122360A8F400274C60 /* TransactionDetailsViewController.swift */,
 				DB2F25132360A8F400274C60 /* TransactionDetailsPresenter.swift */,
 				DB2F25112360A8F400274C60 /* TransactionDetailsModule.swift */,
 				DB2F25142360A8F400274C60 /* TransactionDetailsAssembly.swift */,
 			);
 			path = TransactionDetailsModule;
-			sourceTree = "<group>";
-		};
-		DB2F25192360AC2600274C60 /* Views */ = {
-			isa = PBXGroup;
-			children = (
-				DB2F251A2360AC9A00274C60 /* TransactionDetailsRowView.swift */,
-				DB99BB9B2362E0F9006A75BE /* TransactionDetailsGeneralSectionView.swift */,
-				DB99BB9D2362E274006A75BE /* TransactionDetailsGiftSectionView.swift */,
-				DBC8B45923634DF400E7A799 /* TransactionDetailsSellInfoSectionView.swift */,
-				DB6F184B243D99230024B886 /* TransactionDetailsExchangeSectionView.swift */,
-			);
-			path = Views;
 			sourceTree = "<group>";
 		};
 		DB308EAD22E713E8003D91AF /* Views */ = {
@@ -3077,7 +3054,6 @@
 				DB04E4D722D880B5000E2D85 /* PinCodeService.swift in Sources */,
 				DBECA63522F7FC11002C2610 /* ShowPhonePresenter.swift in Sources */,
 				DB16A872235F4438007E3B20 /* CoinSellDetailsAnotherAddressPresenter.swift in Sources */,
-				DB2F251B2360AC9A00274C60 /* TransactionDetailsRowView.swift in Sources */,
 				DBBF299E22D3810200A5DE6A /* CoinAddress+Mapping.swift in Sources */,
 				DB1AF0E024436B5C0037C998 /* MDCTextField+Extensions.swift in Sources */,
 				DB39DF5824E17FC700468ADA /* ErrorViewController.swift in Sources */,
@@ -3184,7 +3160,6 @@
 				DBDA456024E5BD83002A3AF5 /* SecurityAssembly.swift in Sources */,
 				DB5E3DDC23869DFC00D267E5 /* CoinSettings.swift in Sources */,
 				DB9616EE22C74EB40078E92D /* RecursiveLock+Extensions.swift in Sources */,
-				DBC8B45A23634DF400E7A799 /* TransactionDetailsSellInfoSectionView.swift in Sources */,
 				DB04E4D422D85EE5000E2D85 /* PinCodeUsecase.swift in Sources */,
 				DBFAED912326C7CC004B6D79 /* Utxo+Mapping.swift in Sources */,
 				DBBF299622D3725D00A5DE6A /* UITableView+ReusableView.swift in Sources */,
@@ -3355,7 +3330,6 @@
 				DB5B2DDD230A74D000821713 /* CoinDetailsFlowController.swift in Sources */,
 				DBA65C09244DBF1D0034678E /* FakeTextFied.swift in Sources */,
 				DBA6844822E44C390079429E /* ATMAssembly.swift in Sources */,
-				DB99BB9C2362E0F9006A75BE /* TransactionDetailsGeneralSectionView.swift in Sources */,
 				DB9D3EA022C0F6BA008DC600 /* UIColor+Additions.swift in Sources */,
 				DBA7393D22C3482E00CEFD57 /* L10n.generated.swift in Sources */,
 				DB4D7BCD2409A17E008C2BD5 /* KYCAssembly.swift in Sources */,
@@ -3416,7 +3390,6 @@
 				DB8F077D24102DAE00770643 /* PickerConfig.swift in Sources */,
 				DB0211C122CCE6EC004065E9 /* RecoverSeedPhraseAssembly.swift in Sources */,
 				DB2C97222344B4BA006E7D61 /* Primitives+Extensions.swift in Sources */,
-				DB6F184C243D99230024B886 /* TransactionDetailsExchangeSectionView.swift in Sources */,
 				DB86FD282477FBE6002FE22D /* LocationUpdateDateRecord+CoreDataProperties.swift in Sources */,
 				DB9616D822C748610078E92D /* NSPersistentContainer+RecoverLoad.swift in Sources */,
 				DB8D40A022C3ED0400D5FBD0 /* RootFlowController.swift in Sources */,
@@ -3499,7 +3472,6 @@
 				DBDA966722C00424005B93DF /* ErrorTracker.swift in Sources */,
 				DB5B2DDB230A74D000821713 /* CoinDetailsFlow+Dependencies.swift in Sources */,
 				DBA1B60F24A9C5B300A9A703 /* ReservePresenter.swift in Sources */,
-				DB99BB9E2362E274006A75BE /* TransactionDetailsGiftSectionView.swift in Sources */,
 				DB21B1F124AA63AA008444D3 /* RecallModule.swift in Sources */,
 				DB0AD1DA24BA2C1F00806282 /* RootScrollView.swift in Sources */,
 				DB8DC11E2412C151006AB4F5 /* VerificationFormView.swift in Sources */,
