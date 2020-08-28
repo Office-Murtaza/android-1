@@ -44,11 +44,14 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
                 serverHttpRequest.getHeaders().setUpgrade("WebSocket");
                 serverHttpRequest.getHeaders().setConnection("Upgrade");
 
+                System.out.println(" ==== " + serverHttpRequest.getHeaders().keySet());
+
                 return true;
             }
 
             @Override
             public void afterHandshake(ServerHttpRequest serverHttpRequest, ServerHttpResponse serverHttpResponse, WebSocketHandler webSocketHandler, @Nullable Exception e) {
+                System.out.println(" ++++ " + serverHttpRequest.getHeaders().keySet());
             }
         });
     }

@@ -17,6 +17,8 @@ public class CoinBalanceDTO {
     private Integer idx;
     private String address;
     private BigDecimal balance;
+    private BigDecimal fiatBalance;
     private BigDecimal reservedBalance;
+    private BigDecimal reservedFiatBalance;
     private BigDecimal price;
 }

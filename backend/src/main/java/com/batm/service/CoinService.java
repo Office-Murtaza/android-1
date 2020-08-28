@@ -133,6 +133,9 @@ public class CoinService {
             Integer scale = coinEnum.getCoinEntity().getScale();
             BigDecimal coinPrice = coinEnum.getPrice();
             BigDecimal coinBalance = coinEnum.getBalance(userCoin.getAddress()).setScale(scale, BigDecimal.ROUND_DOWN).stripTrailingZeros();
+            BigDecimal coinFiatBalance = Util.format(coinBalance.multiply(coinPrice), 3);
+            BigDecimal reservedBalance = userCoin.getReservedBalance().stripTrailingZeros();
+            BigDecimal reservedFiatBalance = Util.format(reservedBalance.multiply(coinPrice), 3);
 
             return CoinBalanceDTO.builder()
                     .id(userCoin.getCoin().getId())
@@ -140,7 +143,9 @@ public class CoinService {
                     .idx(userCoin.getCoin().getIdx())
                     .address(userCoin.getAddress())
                     .balance(coinBalance)
-                    .reservedBalance(userCoin.getReservedBalance().stripTrailingZeros())
+                    .fiatBalance(coinFiatBalance)
+                    .reservedBalance(reservedBalance)
+                    .reservedFiatBalance(reservedFiatBalance)
                     .price(coinPrice).build();
         });
     }
