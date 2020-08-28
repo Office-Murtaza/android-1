@@ -111,6 +111,12 @@ final class CoinWithdrawViewController: ModuleViewController<CoinWithdrawPresent
       .bind(to: formView.rx.coinAmountErrorText)
       .disposed(by: disposeBag)
     
+    presenter.state
+      .asObservable()
+      .map { $0.isAllFieldsNotEmpty }
+      .bind(to: nextButton.rx.isEnabled)
+      .disposed(by: disposeBag)
+    
     nextButton.rx.tap.asDriver()
       .drive(onNext: { [view] in view?.endEditing(true) })
       .disposed(by: disposeBag)

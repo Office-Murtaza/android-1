@@ -65,20 +65,6 @@ extension MDCButton {
     return button
   }
   
-  static var add: MDCButton {
-    let button = MDCButton.text
-    button.contentEdgeInsets = .zero
-    button.setTitle(localize(L.Shared.Button.add), for: .normal)
-    return button
-  }
-  
-  static var remove: MDCButton {
-    let button = MDCButton.text
-    button.contentEdgeInsets = .zero
-    button.setTitle(localize(L.Shared.Button.remove), for: .normal)
-    return button
-  }
-  
   static var next: MDCButton {
     let button = MDCButton.contained
     button.setTitle(localize(L.Shared.Button.next), for: .normal)

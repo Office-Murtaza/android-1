@@ -46,6 +46,10 @@ struct CoinWithdrawState: Equatable {
     return (coinAmountDouble * price).fiatFormatted.withDollarSign
   }
   
+  var isAllFieldsNotEmpty: Bool {
+    return address.count > 0 && coinAmount.count > 0
+  }
+  
 }
 
 final class CoinWithdrawStore: ViewStore<CoinWithdrawAction, CoinWithdrawState> {

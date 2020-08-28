@@ -81,7 +81,7 @@ extension Reactive where Base == CoinWithdrawFormView {
   }
   var coinAmountErrorText: Binder<String?> {
     return Binder(base) { target, value in
-      target.coinAmountTextFieldView.coinAmountTextFieldController.setErrorText(value, errorAccessibilityValue: value)
+      target.coinAmountTextFieldView.rx.coinAmountErrorText
     }
   }
   var addressErrorText: Binder<String?> {

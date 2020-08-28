@@ -63,9 +63,14 @@ extension Reactive where Base == CoinAmountTextFieldView {
   var coinAmountText: ControlProperty<String?> {
     return base.coinAmountTextField.rx.text
   }
+  var coinAmountErrorText: Binder<String?> {
+    return Binder(base) { target, value in
+      target.coinAmountTextFieldController.setErrorText(value, errorAccessibilityValue: value)
+    }
+  }
   var fiatAmountText: Binder<String?> {
      return base.fiatAmountLabel.rx.text
-   }
+  }
   var maxTap: Driver<Void> {
     return base.maxButton.rx.tap.asDriver()
   }
