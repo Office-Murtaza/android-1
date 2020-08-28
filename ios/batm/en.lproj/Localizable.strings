@@ -77,9 +77,9 @@
 "pin_code.pin_type.current.title" = " ";
 "pin_code.pin_type.new.title" = " new ";
 
-"coins_balance.title" = "Wallet";
-"coins_balance.header.title" = "Total";
-"coins_balance.footer.button.manage_wallets" = "Manage wallets";
+"wallet.title" = "Wallet";
+"wallet.header.title" = "Total";
+"wallet.footer.button.manage_wallets" = "Manage wallets";
 
 "manage_wallets.title" = "Manage wallets";
 
@@ -175,11 +175,11 @@
 "coin_details.balance" = "Balance";
 "coin_details.deposit" = "Deposit";
 "coin_details.withdraw" = "Withdraw";
-"coin_details.send_gift" = "Send Gift";
+"coin_details.send_gift" = "Send gift";
 "coin_details.exchange" = "Exchange";
 "coin_details.trade" = "Trade";
 "coin_details.staking" = "Staking";
-"coin_details.receive_gift" = "Receive Gift";
+"coin_details.receive_gift" = "Receive gift";
 "coin_details.buy" = "Buy";
 "coin_details.sell" = "Sell";
 "coin_details.move" = "Move";
@@ -195,7 +195,7 @@
 "coin_details.fail" = "Fail";
 "coin_details.unknown" = "Unknown";
 "coin_details.address" = "Address";
-"coin_details.not_available" = "Not Available";
+"coin_details.not_available" = "Not available";
 "coin_details.available" = "Available";
 "coin_details.withdrawn" = "Withdrawn";
 "coin_details.one_day" = "1d";
@@ -203,13 +203,14 @@
 "coin_details.one_month" = "1m";
 "coin_details.three_months" = "3m";
 "coin_details.one_year" = "1y";
+"coin_details.transactions.empty" = "Your transactions will appear here";
 
 "coin_deposit.title" = "Deposit %@";
 
 "coin_withdraw.title" = "Withdraw %@";
-"coin_withdraw.form.recipient_address.placeholder" = "Recipient Address";
+"coin_withdraw.form.recipient_address.placeholder" = "Recipient address";
 "coin_withdraw.form.coin_amount.placeholder" = "Amount";
-"coin_withdraw.form.currency_amount.placeholder" = "USD Amount";
+"coin_withdraw.form.currency_amount.placeholder" = "USD amount";
 "coin_withdraw.form.address.title" = "Address";
 "coin_withdraw.form.amount.title" = "Amount";
 "coin_withdraw.form.error.invalid_address" = "Invalid address";
@@ -218,15 +219,15 @@
 "coin_withdraw.form.error.too_high_amount" = "Amount can't be higher than your balance";
 "coin_withdraw.form.error.insufficient_e_t_h_balance" = "Insufficient ETH balance for transaction fee";
 
-"coin_send_gift.title" = "Send Gift %@";
+"coin_send_gift.title" = "Send gift %@";
 "coin_send_gift.form.code.placeholder" = "Code";
 "coin_send_gift.form.phone.placeholder" = "Phone";
 "coin_send_gift.form.message.placeholder" = "Message...";
 "coin_send_gift.form.error.invalid_phone" = "Invalid phone";
 
 "coin_sell.title" = "Sell %@";
-"coin_sell.daily_limit" = "Daily Limit";
-"coin_sell.tx_limit" = "Tx Limit";
+"coin_sell.daily_limit" = "Daily limit";
+"coin_sell.tx_limit" = "Tx limit";
 "coin_sell.sell_from_another" = "Sell from another address";
 "coin_sell.annotation" = "ATM contains only\n20 and 50 banknotes";
 "coin_sell.form.error.not_multiple" = "ATM contains only 20 and 50 banknotes";
@@ -260,7 +261,7 @@
 "transaction_details.header.sell_q_r_code.title" = "Sell QR code";
 
 "coin_exchange.title" = "Exchange %@";
-"coin_exchange.form.amount.placeholder" = "%@ Amount";
+"coin_exchange.form.amount.placeholder" = "%@ amount";
 
 "trades.title" = "Trade %@";
 "trades.reserved" = "Reserved";
@@ -313,7 +314,7 @@
 "coin_staking.button.stake" = "Stake";
 "coin_staking.button.unstake" = "Unstake";
 
-"error.server_error.title" = "Server Error";
+"error.server_error.title" = "Server error";
 "error.server_error.subtitle" = "Our server goes down. Please,\ntry again later.";
 
 "error.something_went_wrong.title" = "Something went wrong";

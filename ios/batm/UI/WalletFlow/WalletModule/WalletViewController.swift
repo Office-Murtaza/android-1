@@ -3,15 +3,15 @@ import RxSwift
 import RxCocoa
 import SnapKit
 
-class CoinsBalanceViewController: ModuleViewController<CoinsBalancePresenter> {
+class WalletViewController: ModuleViewController<WalletPresenter> {
   
-  var dataSource: CoinsBalanceTableViewDataSource!
+  var dataSource: WalletTableViewDataSource!
   
-  let headerView = CoinsBalanceHeaderView()
+  let headerView = WalletHeaderView()
   
-  let tableView = CoinsBalanceTableView()
+  let tableView = WalletTableView()
   
-  let footerView = CoinsBalanceFooterView()
+  let footerView = WalletFooterView()
   
   let refreshControl = UIRefreshControl()
   
@@ -66,13 +66,11 @@ class CoinsBalanceViewController: ModuleViewController<CoinsBalancePresenter> {
     
     presenter.state
       .map { $0.coinsBalance }
-      .filterNil()
       .drive(onNext: { [headerView] in headerView.configure(for: $0) })
       .disposed(by: disposeBag)
     
     presenter.state
       .map { $0.coins }
-      .filterNil()
       .asObservable()
       .bind(to: dataSource.coinBalancesRelay)
       .disposed(by: disposeBag)
@@ -91,8 +89,8 @@ class CoinsBalanceViewController: ModuleViewController<CoinsBalancePresenter> {
     let manageWalletsDriver = footerView.rx.manageWallets
     let coinSelectedDriver = tableView.rx.itemSelected.asDriver()
     
-    presenter.bind(input: CoinsBalancePresenter.Input(refresh: refreshDriver,
-                                                      manageWallets: manageWalletsDriver,
-                                                      coinSelected: coinSelectedDriver))
+    presenter.bind(input: WalletPresenter.Input(refresh: refreshDriver,
+                                                manageWallets: manageWalletsDriver,
+                                                coinSelected: coinSelectedDriver))
   }
 }

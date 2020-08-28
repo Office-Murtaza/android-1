@@ -72,17 +72,17 @@ final class TransactionDetailsViewController: ModuleViewController<TransactionDe
     }
     
     if let cryptoAmount = details.cryptoAmount, let fiatAmount = details.fiatAmount {
-      let balanceView = CoinDetailsBalanceValueView()
-      balanceView.configure(cryptoAmount: cryptoAmount, fiatAmount: fiatAmount, type: coinType)
-      headerView.add(title: localize(L.TransactionDetails.Header.Amount.title), valueView: balanceView)
+      let amountView = CryptoFiatAmountView()
+      amountView.configure(cryptoAmount: cryptoAmount, fiatAmount: fiatAmount, type: coinType)
+      headerView.add(title: localize(L.TransactionDetails.Header.Amount.title), valueView: amountView)
     }
     
     if let cryptoFee = details.cryptoFee, let fiatFee = details.fiatFee {
-      let balanceView = CoinDetailsBalanceValueView()
+      let amountView = CryptoFiatAmountView()
       let coinType = coinType == .catm ? CustomCoinType.ethereum : coinType
       
-      balanceView.configure(cryptoAmount: cryptoFee, fiatAmount: fiatFee, type: coinType)
-      headerView.add(title: localize(L.TransactionDetails.Header.Fee.title), valueView: balanceView)
+      amountView.configure(cryptoAmount: cryptoFee, fiatAmount: fiatFee, type: coinType)
+      headerView.add(title: localize(L.TransactionDetails.Header.Fee.title), valueView: amountView)
     }
     
     if let date = details.dateString {

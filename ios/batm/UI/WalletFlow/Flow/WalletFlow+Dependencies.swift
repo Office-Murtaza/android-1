@@ -1,19 +1,19 @@
 import Foundation
 import Swinject
 
-extension CoinsBalanceFlow {
+extension WalletFlow {
   
   class Dependencies: Assembly {
     
     func assemble(container: Container) {
       container
-        .register(CoinsBalanceFlowController.self) { ioc in
-          let flowController = CoinsBalanceFlowController()
-          flowController.delegate = ioc.resolve(CoinsBalanceFlowControllerDelegate.self)
+        .register(WalletFlowController.self) { ioc in
+          let flowController = WalletFlowController()
+          flowController.delegate = ioc.resolve(WalletFlowControllerDelegate.self)
           return flowController
         }
         .inObjectScope(.container)
-        .implements(CoinsBalanceModuleDelegate.self,
+        .implements(WalletModuleDelegate.self,
                     ManageWalletsModuleDelegate.self,
                     CoinDetailsFlowControllerDelegate.self)
     }

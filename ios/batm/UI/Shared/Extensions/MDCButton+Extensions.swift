@@ -197,7 +197,7 @@ extension MDCButton {
   
   static var manageWallets: MDCButton {
     let button = MDCButton.outlined
-    button.setTitle(localize(L.CoinsBalance.Footer.Button.manageWallets), for: .normal)
+    button.setTitle(localize(L.Wallet.Footer.Button.manageWallets), for: .normal)
     return button
   }
   

@@ -75,12 +75,12 @@ final class CoinStakingViewController: NavigationScreenViewController<CoinStakin
     
     Driver.combineLatest(coinBalanceDriver, stakeDetailsDriver)
       .drive(onNext: { [headerView] coinBalance, stakeDetails in
-        let balanceView = CoinDetailsBalanceValueView()
-        balanceView.configure(for: coinBalance)
+        let amountView = CryptoFiatAmountView()
+        amountView.configure(for: coinBalance)
         
         headerView.removeAll()
         headerView.add(title: localize(L.CoinDetails.price), value: coinBalance.price.fiatFormatted.withUSD)
-        headerView.add(title: localize(L.CoinDetails.balance), value: coinBalance.price.fiatFormatted.withUSD)
+        headerView.add(title: localize(L.CoinDetails.balance), valueView: amountView)
         
         if stakeDetails.exist {
           headerView.add(title: localize(L.CoinStaking.Header.Staked.title),

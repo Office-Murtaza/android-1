@@ -2,13 +2,13 @@ import Foundation
 import RxSwift
 import TrustWalletCore
 
-protocol CoinsBalanceUsecase {
+protocol WalletUsecase {
   func getCoinsBalance() -> Single<CoinsBalance>
   func getCoinSettings(for type: CustomCoinType) -> Single<CoinSettings>
   func getPriceChartData(for type: CustomCoinType) -> Single<PriceChartData>
 }
 
-class CoinsBalanceUsecaseImpl: CoinsBalanceUsecase, HasDisposeBag {
+class WalletUsecaseImpl: WalletUsecase, HasDisposeBag {
   
   let api: APIGateway
   let accountStorage: AccountStorage

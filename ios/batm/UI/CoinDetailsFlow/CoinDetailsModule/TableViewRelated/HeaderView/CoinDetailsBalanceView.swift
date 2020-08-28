@@ -10,7 +10,7 @@ final class CoinDetailsBalanceView: UIView {
     return label
   }()
   
-  let balanceValueView = CoinDetailsBalanceValueView()
+  let amountView = CryptoFiatAmountView()
   
   override init(frame: CGRect) {
     super.init(frame: frame)
@@ -26,7 +26,7 @@ final class CoinDetailsBalanceView: UIView {
   private func setupUI() {
     translatesAutoresizingMaskIntoConstraints = false
     
-    addSubviews(balanceLabel, balanceValueView)
+    addSubviews(balanceLabel, amountView)
   }
   
   private func setupLayout() {
@@ -35,7 +35,7 @@ final class CoinDetailsBalanceView: UIView {
       $0.centerY.equalToSuperview()
     }
     balanceLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
-    balanceValueView.snp.makeConstraints {
+    amountView.snp.makeConstraints {
       $0.left.greaterThanOrEqualTo(balanceLabel.snp.right).offset(15)
       $0.right.equalToSuperview().offset(-15)
       $0.centerY.equalToSuperview()
@@ -43,6 +43,6 @@ final class CoinDetailsBalanceView: UIView {
   }
   
   func configure(for coinBalance: CoinBalance) {
-    balanceValueView.configure(for: coinBalance)
+    amountView.configure(for: coinBalance)
   }
 }

@@ -2,9 +2,9 @@ import Foundation
 import RxSwift
 import RxCocoa
 
-class CoinsBalancePresenter: ModulePresenter, CoinsBalanceModule {
+class WalletPresenter: ModulePresenter, WalletModule {
   
-  typealias Store = ViewStore<CoinsBalanceAction, CoinsBalanceState>
+  typealias Store = ViewStore<WalletAction, WalletState>
   
   struct Input {
     var refresh: Driver<Void>
@@ -12,18 +12,18 @@ class CoinsBalancePresenter: ModulePresenter, CoinsBalanceModule {
     var coinSelected: Driver<IndexPath>
   }
   
-  private let usecase: CoinsBalanceUsecase
+  private let usecase: WalletUsecase
   private let store: Store
   private let fetchCoinsBalanceRelay = PublishRelay<Void>()
   
-  var state: Driver<CoinsBalanceState> {
+  var state: Driver<WalletState> {
     return store.state
   }
   
-  weak var delegate: CoinsBalanceModuleDelegate?
+  weak var delegate: WalletModuleDelegate?
   
-  init(usecase: CoinsBalanceUsecase,
-       store: Store = CoinsBalanceStore()) {
+  init(usecase: WalletUsecase,
+       store: Store = WalletStore()) {
     self.usecase = usecase
     self.store = store
   }
@@ -40,7 +40,7 @@ class CoinsBalancePresenter: ModulePresenter, CoinsBalanceModule {
         self.track(self.usecase.getCoinsBalance())
           .do(onCompleted: { self.store.action.accept(.finishFetching) })
       }
-      .map { CoinsBalanceAction.finishFetchingCoinsBalance($0) }
+      .map { WalletAction.finishFetchingCoinsBalance($0) }
       .bind(to: store.action)
       .disposed(by: disposeBag)
     
@@ -50,8 +50,7 @@ class CoinsBalancePresenter: ModulePresenter, CoinsBalanceModule {
     
     input.coinSelected
       .asObservable()
-      .withLatestFrom(state) { indexPath, state in state.coins?[indexPath.item] }
-      .filterNil()
+      .withLatestFrom(state) { indexPath, state in state.coins[indexPath.item] }
       .flatMap { [unowned self] coinBalance in
         return self.track(self.usecase.getCoinSettings(for: coinBalance.type))
         .map { (coinBalance, $0) }
@@ -61,7 +60,7 @@ class CoinsBalancePresenter: ModulePresenter, CoinsBalanceModule {
           .map { (coinSettings, $0) }
       }
       .withLatestFrom(state) { ($1, $0.0, $0.1) }
-      .subscribe(onNext: { [delegate] in delegate?.showCoinDetails(coinBalances: $0.coinsBalance!.coins,
+      .subscribe(onNext: { [delegate] in delegate?.showCoinDetails(coinBalances: $0.coinsBalance.coins,
                                                                    coinSettings: $1,
                                                                    data: $2) })
       .disposed(by: disposeBag)
@@ -74,7 +73,7 @@ class CoinsBalancePresenter: ModulePresenter, CoinsBalanceModule {
     fetchCoinsBalanceRelay
       .throttle(2.0, scheduler: MainScheduler.instance)
       .flatMap { [unowned self] in self.track(self.usecase.getCoinsBalance()) }
-      .map { CoinsBalanceAction.finishFetchingCoinsBalance($0) }
+      .map { WalletAction.finishFetchingCoinsBalance($0) }
       .bind(to: store.action)
       .disposed(by: disposeBag)
   }

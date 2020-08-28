@@ -72,12 +72,12 @@ final class CoinSendGiftViewController: NavigationScreenViewController<CoinSendG
       .map { $0.coinBalance }
       .filterNil()
       .drive(onNext: { [headerView] coinBalance in
-        let balanceView = CoinDetailsBalanceValueView()
-        balanceView.configure(for: coinBalance)
+        let amountView = CryptoFiatAmountView()
+        amountView.configure(for: coinBalance)
         
         headerView.removeAll()
         headerView.add(title: localize(L.CoinDetails.price), value: coinBalance.price.fiatFormatted.withUSD)
-        headerView.add(title: localize(L.CoinDetails.balance), valueView: balanceView)
+        headerView.add(title: localize(L.CoinDetails.balance), valueView: amountView)
       })
       .disposed(by: disposeBag)
     

@@ -78,18 +78,18 @@ final class CreateEditTradeViewController: NavigationScreenViewController<Create
     
     Driver.combineLatest(coinBalanceDriver, tradeDriver)
       .drive(onNext: { [headerView, tradeTypeView] coinBalance, trade in
-        let balanceView = CoinDetailsBalanceValueView()
-        balanceView.configure(for: coinBalance)
+        let amountView = CryptoFiatAmountView()
+        amountView.configure(for: coinBalance)
         
-        let reservedBalanceView = CoinDetailsBalanceValueView()
-        reservedBalanceView.configure(for: coinBalance, useReserved: true)
+        let reservedAmountView = CryptoFiatAmountView()
+        reservedAmountView.configure(for: coinBalance, useReserved: true)
         
         trade.flatMap { tradeTypeView.configure(for: $0) }
         
         headerView.removeAll()
         headerView.add(title: localize(L.CoinDetails.price), value: coinBalance.price.fiatFormatted.withUSD)
-        headerView.add(title: localize(L.CoinDetails.balance), valueView: balanceView)
-        headerView.add(title: localize(L.Trades.reserved), valueView: reservedBalanceView)
+        headerView.add(title: localize(L.CoinDetails.balance), valueView: amountView)
+        headerView.add(title: localize(L.Trades.reserved), valueView: reservedAmountView)
         headerView.add(title: localize(L.CreateEditTrade.type), valueView: tradeTypeView)
       })
       .disposed(by: disposeBag)

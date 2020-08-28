@@ -80,10 +80,6 @@ enum L {
     static let title = "coin_withdraw.title"
   }
 
-  struct CoinsBalance {
-    static let title = "coins_balance.title"
-  }
-
   struct CreateEditTrade {
     static let createTitle = "create_edit_trade.create_title"
     static let editTitle = "create_edit_trade.edit_title"
@@ -215,6 +211,10 @@ enum L {
     static let title = "verification.title"
   }
 
+  struct Wallet {
+    static let title = "wallet.title"
+  }
+
   struct Welcome {
     static let contactSupport = "welcome.contact_support"
   }
@@ -260,6 +260,12 @@ extension L.BuySellTradeDetails.Form {
 
   struct RequestDetails {
     static let placeholder = "buy_sell_trade_details.form.request_details.placeholder"
+  }
+}
+extension L.CoinDetails {
+
+  struct Transactions {
+    static let empty = "coin_details.transactions.empty"
   }
 }
 extension L.CoinExchange {
@@ -386,21 +392,6 @@ extension L.CoinWithdraw.Form {
 
   struct RecipientAddress {
     static let placeholder = "coin_withdraw.form.recipient_address.placeholder"
-  }
-}
-extension L.CoinsBalance {
-
-  struct Footer {
-  }
-
-  struct Header {
-    static let title = "coins_balance.header.title"
-  }
-}
-extension L.CoinsBalance.Footer {
-
-  struct Button {
-    static let manageWallets = "coins_balance.footer.button.manage_wallets"
   }
 }
 extension L.CreateEditTrade {
@@ -860,6 +851,21 @@ extension L.Verification.Picker {
 
   struct LibraryOption {
     static let title = "verification.picker.library_option.title"
+  }
+}
+extension L.Wallet {
+
+  struct Footer {
+  }
+
+  struct Header {
+    static let title = "wallet.header.title"
+  }
+}
+extension L.Wallet.Footer {
+
+  struct Button {
+    static let manageWallets = "wallet.footer.button.manage_wallets"
   }
 }
 extension L.Welcome {

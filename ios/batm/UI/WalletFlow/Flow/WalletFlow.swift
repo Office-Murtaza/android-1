@@ -1,17 +1,17 @@
 import RxFlow
 import RxSwift
 
-class CoinsBalanceFlow: BaseFlow<BTMNavigationController, CoinsBalanceFlowController> {
+class WalletFlow: BaseFlow<BTMNavigationController, WalletFlowController> {
   override func assemblies() -> [Assembly] {
     return [
       Dependencies(),
-      CoinsBalanceAssembly(),
+      WalletAssembly(),
       ManageWalletsAssembly()
     ]
   }
   
   enum Steps: Step, Equatable {
-    case coinsBalance
+    case wallet
     case manageWallets
     case coinDetails([CoinBalance], CoinSettings, PriceChartData)
   }
@@ -24,9 +24,9 @@ class CoinsBalanceFlow: BaseFlow<BTMNavigationController, CoinsBalanceFlowContro
   
   private func handleFlow(step: Steps) -> NextFlowItems {
     switch step {
-    case .coinsBalance:
-      let module = resolver.resolve(Module<CoinsBalanceModule>.self)!
-      module.controller.title = localize(L.CoinsBalance.title)
+    case .wallet:
+      let module = resolver.resolve(Module<WalletModule>.self)!
+      module.controller.title = localize(L.Wallet.title)
       module.controller.tabBarItem.image = UIImage(named: "tab_bar_wallet")
       module.controller.tabBarItem.selectedImage = UIImage(named: "tab_bar_active_wallet")
       return push(module.controller, animated: false)

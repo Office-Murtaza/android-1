@@ -3,7 +3,7 @@ import RxSwift
 import RxCocoa
 import MaterialComponents
 
-final class CoinsBalanceFooterView: UIView {
+final class WalletFooterView: UIView {
   
   let divider = UIView()
   
@@ -41,7 +41,7 @@ final class CoinsBalanceFooterView: UIView {
   }
 }
 
-extension Reactive where Base == CoinsBalanceFooterView {
+extension Reactive where Base == WalletFooterView {
   var manageWallets: Driver<Void> {
     return base.manageWalletsButton.rx.tap.asDriver()
   }

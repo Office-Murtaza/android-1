@@ -2,7 +2,7 @@ import UIKit
 import RxSwift
 import RxCocoa
 
-final class CoinsBalanceTableViewDataSource: NSObject, UITableViewDataSource, HasDisposeBag {
+final class WalletTableViewDataSource: NSObject, UITableViewDataSource, HasDisposeBag {
   
   let coinBalancesRelay = BehaviorRelay<[CoinBalance]>(value: [])
   
@@ -15,7 +15,7 @@ final class CoinsBalanceTableViewDataSource: NSObject, UITableViewDataSource, Ha
   weak var tableView: UITableView? {
     didSet {
       guard let tableView = tableView else { return }
-      tableView.register(CoinsBalanceCell.self)
+      tableView.register(WalletCell.self)
       tableView.reloadData()
     }
   }
@@ -38,7 +38,7 @@ final class CoinsBalanceTableViewDataSource: NSObject, UITableViewDataSource, Ha
   
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     let model = values[indexPath.item]
-    let cell = tableView.dequeueReusableCell(CoinsBalanceCell.self, for: indexPath)
+    let cell = tableView.dequeueReusableCell(WalletCell.self, for: indexPath)
     cell.configure(for: model)
     return cell
   }

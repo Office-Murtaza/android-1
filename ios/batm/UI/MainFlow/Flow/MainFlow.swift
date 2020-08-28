@@ -21,12 +21,12 @@ class MainFlow: BaseFlow<BTMTabBarController, MainFlowController> {
   private func handleFlow(step: Steps) -> NextFlowItems {
     switch step {
     case .main:
-      let coinsBalance = CoinsBalanceFlow(view: BTMNavigationController(), parent: self)
+      let wallet = WalletFlow(view: BTMNavigationController(), parent: self)
       let atm = ATMFlow(view: BTMNavigationController(), parent: self)
       let settings = SettingsFlow(view: BTMNavigationController(), parent: self)
       
-      return setTabs(with: [coinsBalance, atm, settings],
-                     steppers: [coinsBalance.stepper, atm.stepper, settings.stepper])
+      return setTabs(with: [wallet, atm, settings],
+                     steppers: [wallet.stepper, atm.stepper, settings.stepper])
     }
   }
 }

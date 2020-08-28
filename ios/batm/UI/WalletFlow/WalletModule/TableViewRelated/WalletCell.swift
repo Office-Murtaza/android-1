@@ -1,6 +1,6 @@
 import UIKit
 
-final class CoinsBalanceCell: UITableViewCell {
+final class WalletCell: UITableViewCell {
   
   let typeImageView = UIImageView(image: nil)
   

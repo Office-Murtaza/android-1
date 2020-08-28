@@ -1,6 +1,6 @@
 import UIKit
 
-final class CoinDetailsBalanceValueView: UIView {
+final class CryptoFiatAmountView: UIView {
   
   let balanceCoinLabel: UILabel = {
     let label = UILabel()

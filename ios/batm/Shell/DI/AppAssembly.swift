@@ -121,13 +121,13 @@ final class AppAssembly: Assembly {
       return LogoutUsecaseImpl(storageRegistry: registry)
       }
       .inObjectScope(.container)
-    container.register(CoinsBalanceUsecase.self) { ioc in
+    container.register(WalletUsecase.self) { ioc in
       let api = ioc.resolve(APIGateway.self)!
       let accountStorage = ioc.resolve(AccountStorage.self)!
       let walletStorage = ioc.resolve(BTMWalletStorage.self)!
-      return CoinsBalanceUsecaseImpl(api: api,
-                                     accountStorage: accountStorage,
-                                     walletStorage: walletStorage)
+      return WalletUsecaseImpl(api: api,
+                               accountStorage: accountStorage,
+                               walletStorage: walletStorage)
       }.inObjectScope(.container)
     container.register(ATMUsecase.self) { ioc in
       let api = ioc.resolve(APIGateway.self)!

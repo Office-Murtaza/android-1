@@ -2,7 +2,7 @@ import UIKit
 import RxSwift
 import RxCocoa
 
-final class CoinsBalanceHeaderView: UIView {
+final class WalletHeaderView: UIView {
   
   let logoImageView = UIImageView(image: UIImage(named: "main_logo"))
   
@@ -18,7 +18,7 @@ final class CoinsBalanceHeaderView: UIView {
     let label = UILabel()
     label.font = .systemFont(ofSize: 14, weight: .medium)
     label.textColor = .slateGrey
-    label.text = localize(L.CoinsBalance.Header.title)
+    label.text = localize(L.Wallet.Header.title)
     return label
   }()
   
