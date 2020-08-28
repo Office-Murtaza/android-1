@@ -21,7 +21,7 @@ class CoinsAdapter(private val listener: (item: BalanceListItem) -> Unit) :
 
     override fun getItemViewType(position: Int): Int = when (itemList[position]) {
         is BalanceListItem.Coin -> R.layout.item_balance_coin
-        is BalanceListItem.AddButton -> R.layout.item_balance_button_add
+        is BalanceListItem.AddButton -> R.layout.item_balance_button_manage_wallets
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, layout: Int): RecyclerView.ViewHolder {
@@ -31,7 +31,7 @@ class CoinsAdapter(private val listener: (item: BalanceListItem) -> Unit) :
             R.layout.item_balance_coin -> {
                 view.containerView.setOnClickListener { listener.invoke(itemList[holder.adapterPosition]) }
             }
-            R.layout.item_balance_button_add -> {
+            R.layout.item_balance_button_manage_wallets -> {
                 view.setOnClickListener { listener.invoke(itemList[holder.adapterPosition]) }
             }
         }
@@ -44,8 +44,10 @@ class CoinsAdapter(private val listener: (item: BalanceListItem) -> Unit) :
             with(holder.itemView) {
                 imageView.setImageResource(LocalCoinType.valueOf(item.code).resIcon())
                 nameView.text = LocalCoinType.valueOf(item.code).fullName
-                balanceView.text =
+                balanceCryptoView.text =
                     context.getString(R.string.unit_dynamic, item.balanceCrypto.toStringCoin(), item.code)
+                balanceFiatView.text =
+                    context.getString(R.string.unit_usd_dynamic_symbol, item.balanceCrypto.toStringUsd())
                 priceView.text = context.getString(R.string.balance_screen_unit_usd, item.priceUsd.toStringUsd())
             }
         }

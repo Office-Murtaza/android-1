@@ -35,48 +35,9 @@
             </intent-filter>
         </activity>
 
-        <activity
-            android:name=".ui.main.coins.details.DetailsActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppThemeNoActionBar" />
 
         <activity
             android:name=".ui.main.coins.sell.SellActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppThemeNoActionBar" />
-
-        <activity
-            android:name=".presentation.features.wallet.add.AddWalletActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppThemeNoActionBar" />
-        <activity
-            android:name=".presentation.features.authorization.pin.PinActivity"
-            android:launchMode="singleInstance"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppThemeNoActionBar" />
-        <activity
-            android:name="com.app.belcobtm.presentation.features.wallet.transactions.TransactionsActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppThemeNoActionBar" />
-
-        <activity
-            android:name=".ui.main.coins.withdraw.WithdrawActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppThemeNoActionBar" />
-
-        <activity
-            android:name=".ui.main.coins.send_gift.SendGiftActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppThemeNoActionBar" />
-
-
-        <activity
-            android:name=".presentation.features.wallet.exchange.coin.to.coin.ExchangeCoinToCoinActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppThemeNoActionBar" />
-
-        <activity
-            android:name=".presentation.features.wallet.deposit.DepositActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppThemeNoActionBar" />
 

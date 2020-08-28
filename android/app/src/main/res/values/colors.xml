@@ -28,6 +28,11 @@
     <color name="transaction_green">#48be53</color>
     <color name="transaction_red">#e02d2d</color>
 
+    <color name="colorStatusComplete">#48be53</color>
+    <color name="colorStatusPending">#ffcd4c</color>
+    <color name="colorStatusFail">#e02d2d</color>
+    <color name="colorStatusUnknown">#afb0ab</color>
+
     <color name="pin_gray_unchecked">#4d6c91</color>
 
     <color name="cash_status_not_available">#e02d2d</color>

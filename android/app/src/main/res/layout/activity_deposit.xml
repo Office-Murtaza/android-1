@@ -1,62 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="wrap_content"
+    android:layout_margin="16dp"
+    android:backgroundTint="@android:color/white"
+    app:cardCornerRadius="6dp"
+    app:cardElevation="6dp">
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbarView"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="@drawable/bg_toolbar"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-        app:elevation="6dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:navigationIcon="@drawable/gph_ic_back"
-        tools:title="Deposit" />
-
-    <com.google.android.material.card.MaterialCardView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:backgroundTint="@android:color/white"
-        app:cardCornerRadius="6dp"
-        app:cardElevation="6dp">
+        android:orientation="vertical">
 
-        <LinearLayout
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/imageView"
+            android:layout_width="match_parent"
+            android:layout_height="400dp"
+            android:padding="16dp"
+            android:scaleType="fitXY"
+            tools:src="@drawable/ic_coin_binance" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/addressView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:gravity="center_horizontal"
+            android:textStyle="bold"
+            tools:text="ltc1qcnwkv3p6yj5523pzqhruk5hlqaszem3vn2qg25" />
 
-            <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/imageView"
-                android:layout_width="match_parent"
-                android:layout_height="400dp"
-                android:padding="16dp"
-                android:scaleType="fitXY"
-                tools:src="@drawable/ic_coin_binance" />
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/copyButtonView"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/gph_copy" />
+    </LinearLayout>
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/addressView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
-                android:textStyle="bold"
-                tools:text="ltc1qcnwkv3p6yj5523pzqhruk5hlqaszem3vn2qg25" />
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/copyButtonView"
-                style="@style/Widget.MaterialComponents.Button.TextButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="@string/gph_copy" />
-        </LinearLayout>
-
-    </com.google.android.material.card.MaterialCardView>
-
-</LinearLayout>
+</com.google.android.material.card.MaterialCardView>

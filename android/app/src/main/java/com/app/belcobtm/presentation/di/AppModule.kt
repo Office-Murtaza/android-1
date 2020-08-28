@@ -2,12 +2,10 @@ package com.app.belcobtm.presentation.di
 
 import com.app.belcobtm.domain.wallet.LocalCoinType
 import com.app.belcobtm.domain.wallet.WalletRepository
-import com.app.belcobtm.domain.wallet.interactor.GetCoinFeeMapUseCase
-import com.app.belcobtm.domain.wallet.item.CoinDataItem
+import com.app.belcobtm.domain.wallet.interactor.GetCoinListUseCase
 import com.app.belcobtm.presentation.features.atm.AtmViewModel
 import com.app.belcobtm.presentation.features.authorization.create.seed.CreateSeedViewModel
 import com.app.belcobtm.presentation.features.authorization.create.wallet.CreateWalletViewModel
-import com.app.belcobtm.presentation.features.authorization.pin.PinViewModel
 import com.app.belcobtm.presentation.features.authorization.recover.seed.RecoverSeedViewModel
 import com.app.belcobtm.presentation.features.authorization.recover.wallet.RecoverWalletViewModel
 import com.app.belcobtm.presentation.features.pin.code.PinCodeViewModel
@@ -23,7 +21,8 @@ import com.app.belcobtm.presentation.features.settings.verification.vip.Verifica
 import com.app.belcobtm.presentation.features.sms.code.SmsCodeViewModel
 import com.app.belcobtm.presentation.features.wallet.add.AddWalletViewModel
 import com.app.belcobtm.presentation.features.wallet.balance.WalletViewModel
-import com.app.belcobtm.presentation.features.wallet.exchange.coin.to.coin.ExchangeCoinToCoinViewModel
+import com.app.belcobtm.presentation.features.wallet.exchange.coin.to.coin.ExchangeViewModel
+import com.app.belcobtm.presentation.features.wallet.send.gift.SendGiftViewModel
 import com.app.belcobtm.presentation.features.wallet.staking.StakingViewModel
 import com.app.belcobtm.presentation.features.wallet.trade.create.TradeCreateViewModel
 import com.app.belcobtm.presentation.features.wallet.trade.details.TradeDetailsBuyViewModel
@@ -31,7 +30,9 @@ import com.app.belcobtm.presentation.features.wallet.trade.edit.TradeEditViewMod
 import com.app.belcobtm.presentation.features.wallet.trade.main.TradeViewModel
 import com.app.belcobtm.presentation.features.wallet.trade.recall.TradeRecallViewModel
 import com.app.belcobtm.presentation.features.wallet.trade.reserve.TradeReserveViewModel
+import com.app.belcobtm.presentation.features.wallet.transaction.details.TransactionDetailsViewModel
 import com.app.belcobtm.presentation.features.wallet.transactions.TransactionsViewModel
+import com.app.belcobtm.presentation.features.wallet.withdraw.WithdrawViewModel
 import org.koin.android.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
@@ -40,21 +41,21 @@ val viewModelModule = module {
     viewModel { (coinCode: String) -> TransactionsViewModel(coinCode, get(), get(), get(), get()) }
     viewModel { RecoverWalletViewModel(get()) }
     viewModel { CreateWalletViewModel(get()) }
-    viewModel { PinViewModel(get(), get(), get()) }
     viewModel { PinCodeViewModel(get(), get(), get()) }
     viewModel { VerificationInfoViewModel(get()) }
     viewModel { VerificationBlankViewModel(get(), get()) }
     viewModel { VerificationVipViewModel(get()) }
-    viewModel { (coinItem: CoinDataItem, coinItemArrayList: ArrayList<CoinDataItem>) ->
-        val feeMap = (get() as GetCoinFeeMapUseCase).getCoinFeeMap()
-        val fromCoinFee = feeMap[coinItem.code]
-        ExchangeCoinToCoinViewModel(
-            fromCoinFee!!,
-            coinItem,
-            coinItemArrayList,
-            feeMap,
+    viewModel { (coinCode: String) ->
+        val coinList = (get() as GetCoinListUseCase).invoke()
+        val fromCoinDataItem = coinList.find { it.code == coinCode }!!
+        val feeMap = get<WalletRepository>().getCoinFeeMap()
+        val fromCoinFee = feeMap[coinCode] ?: error("")
+        ExchangeViewModel(
             get(),
-            get()
+            fromCoinDataItem,
+            coinList,
+            fromCoinFee,
+            feeMap
         )
     }
     viewModel { AddWalletViewModel(get(), get()) }
@@ -102,4 +103,17 @@ val viewModelModule = module {
     viewModel { PhoneDisplayViewModel(get(), get()) }
     viewModel { PhoneChangeViewModel(get(), get(), get()) }
     viewModel { AtmViewModel(get()) }
+    viewModel { (txId: String, coinCode: String) -> TransactionDetailsViewModel(txId, coinCode, get()) }
+    viewModel { (coinCode: String) ->
+        val coinList = (get() as GetCoinListUseCase).invoke()
+        val fromCoinDataItem = coinList.find { it.code == coinCode }!!
+        val fromCoinFee = get<WalletRepository>().getCoinFeeItemByCode(coinCode)
+        SendGiftViewModel(get(), fromCoinDataItem, fromCoinFee)
+    }
+    viewModel { (coinCode: String) ->
+        val coinList = (get() as GetCoinListUseCase).invoke()
+        val fromCoinDataItem = coinList.find { it.code == coinCode }!!
+        val fromCoinFee = get<WalletRepository>().getCoinFeeItemByCode(coinCode)
+        WithdrawViewModel(get(), fromCoinDataItem, fromCoinFee, coinList)
+    }
 }

@@ -14,7 +14,14 @@ class WalletViewModel(private val balanceUseCase: GetBalanceUseCase) : ViewModel
         balanceUseCase.invoke(
             Unit,
             onSuccess = { dataItem ->
-                val coinList = dataItem.coinList.map { BalanceListItem.Coin(it.code, it.balanceCoin, it.priceUsd) }
+                val coinList = dataItem.coinList.map {
+                    BalanceListItem.Coin(
+                        code = it.code,
+                        balanceCrypto = it.balanceCoin,
+                        balanceFiat = it.balanceUsd,
+                        priceUsd = it.priceUsd
+                    )
+                }
                 balanceLiveData.value = LoadingData.Success(Pair(dataItem.balance, coinList))
             },
             onError = { balanceLiveData.value = LoadingData.Error(it) }

@@ -1,6 +1,8 @@
 package com.app.belcobtm.presentation.features.sms.code
 
 import android.view.View
+import androidx.core.os.bundleOf
+import androidx.fragment.app.setFragmentResult
 import com.app.belcobtm.R
 import com.app.belcobtm.domain.Failure
 import com.app.belcobtm.domain.authorization.interactor.AUTH_ERROR_PHONE_NOT_SUPPORTED
@@ -82,7 +84,15 @@ class SmsCodeFragment : BaseFragment() {
             showSnackBar(R.string.phone_updated)
         }
         when {
-            isSuccessLoadingData -> navigate(requireArguments().getInt(TAG_NEXT_FRAGMENT_ID), requireArguments())
+            isSuccessLoadingData -> {
+                val nextScreenId = requireArguments().getInt(TAG_NEXT_FRAGMENT_ID, -1)
+                if (nextScreenId >= 0) {
+                    navigate(requireArguments().getInt(TAG_NEXT_FRAGMENT_ID), requireArguments())
+                } else {
+                    setFragmentResult(REQUEST_KEY, bundleOf(REQUEST_TAG_IS_SUCCESS to true))
+                    popBackStack()
+                }
+            }
             !isSuccessLoadingData && pinEntryView.getString().length == SMS_CODE_LENGTH -> {
                 errorMessageView.show()
                 pinEntryView.isError = true
@@ -115,5 +125,8 @@ class SmsCodeFragment : BaseFragment() {
         private const val SMS_CODE_LENGTH: Int = 4
         const val TAG_PHONE: String = "sms_code_screen_phone"
         const val TAG_NEXT_FRAGMENT_ID: String = "sms_code_screen_next_fragment_id"
+
+        const val REQUEST_KEY = "sms_code_request_key"
+        const val REQUEST_TAG_IS_SUCCESS = "sms_code_is_success"
     }
 }
