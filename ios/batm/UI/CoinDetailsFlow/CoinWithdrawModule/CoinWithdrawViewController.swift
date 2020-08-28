@@ -5,11 +5,11 @@ import SnapKit
 import QRCodeReader
 import MaterialComponents
 
-final class CoinWithdrawViewController: NavigationScreenViewController<CoinWithdrawPresenter>, QRCodeReaderViewControllerDelegate {
+final class CoinWithdrawViewController: ModuleViewController<CoinWithdrawPresenter>, QRCodeReaderViewControllerDelegate {
   
   private let didScanAddressRelay = PublishRelay<String?>()
   
-  let errorView = ErrorView()
+  let rootScrollView = RootScrollView()
   
   let headerView = HeaderView()
   
@@ -17,27 +17,24 @@ final class CoinWithdrawViewController: NavigationScreenViewController<CoinWithd
   
   let nextButton = MDCButton.next
   
-  override var preferredStatusBarStyle: UIStatusBarStyle {
-    return .lightContent
-  }
+  override var shouldShowNavigationBar: Bool { return true }
   
   override func setupUI() {
-    customView.rootScrollView.contentInsetAdjustmentBehavior = .never
-    customView.contentView.addSubviews(errorView,
-                                       headerView,
-                                       formView,
-                                       nextButton)
+    view.addSubview(rootScrollView)
+    rootScrollView.contentView.addSubviews(headerView,
+                                           formView,
+                                           nextButton)
     
     setupDefaultKeyboardHandling()
   }
 
   override func setupLayout() {
-    customView.contentView.snp.makeConstraints {
-      $0.height.equalToSuperview()
+    rootScrollView.snp.makeConstraints {
+      $0.top.equalTo(view.safeAreaLayoutGuide)
+      $0.left.right.bottom.equalToSuperview()
     }
-    errorView.snp.makeConstraints {
-      $0.top.equalToSuperview().offset(5)
-      $0.centerX.equalToSuperview()
+    rootScrollView.contentView.snp.makeConstraints {
+      $0.height.equalToSuperview()
     }
     headerView.snp.makeConstraints {
       $0.top.equalToSuperview().offset(25)
@@ -45,13 +42,13 @@ final class CoinWithdrawViewController: NavigationScreenViewController<CoinWithd
       $0.right.lessThanOrEqualToSuperview().offset(-15)
     }
     formView.snp.makeConstraints {
-      $0.top.equalTo(headerView.snp.bottom).offset(20)
+      $0.top.equalTo(headerView.snp.bottom).offset(30)
       $0.left.right.equalToSuperview().inset(15)
     }
     nextButton.snp.makeConstraints {
       $0.height.equalTo(50)
-      $0.top.equalTo(formView.snp.bottom).offset(15)
       $0.left.right.equalToSuperview().inset(15)
+      $0.bottom.equalToSuperview().offset(-40)
     }
   }
   
@@ -64,7 +61,7 @@ final class CoinWithdrawViewController: NavigationScreenViewController<CoinWithd
         amountView.configure(for: coinBalance)
         
         headerView.removeAll()
-        headerView.add(title: localize(L.CoinDetails.price), value: coinBalance.price.fiatFormatted.withUSD)
+        headerView.add(title: localize(L.CoinDetails.price), value: coinBalance.price.fiatFormatted.withDollarSign)
         headerView.add(title: localize(L.CoinDetails.balance), valueView: amountView)
       })
       .disposed(by: disposeBag)
@@ -73,8 +70,8 @@ final class CoinWithdrawViewController: NavigationScreenViewController<CoinWithd
       .map { $0.coin?.type.code }
       .filterNil()
       .distinctUntilChanged()
-      .drive(onNext: { [customView] in
-        customView.setTitle(String(format: localize(L.CoinWithdraw.title), $0))
+      .drive(onNext: { [unowned self] in
+        self.title = String(format: localize(L.CoinWithdraw.title), $0)
       })
       .disposed(by: disposeBag)
     
@@ -92,23 +89,26 @@ final class CoinWithdrawViewController: NavigationScreenViewController<CoinWithd
     
     presenter.state
       .asObservable()
-      .map { $0.currencyAmount }
-      .bind(to: formView.rx.currencyText)
+      .map { $0.coinAmount }
+      .bind(to: formView.rx.coinAmountText)
       .disposed(by: disposeBag)
     
     presenter.state
       .asObservable()
-      .map { $0.coinAmount }
-      .bind(to: formView.rx.coinText)
+      .map { $0.fiatAmount }
+      .bind(to: formView.rx.fiatAmountText)
       .disposed(by: disposeBag)
     
-   presenter.state
-      .map { $0.validationState }
-      .mapToErrorMessage()
-      .drive(onNext: { [errorView] in
-        errorView.isHidden = $0 == nil
-        errorView.configure(for: $0)
-      })
+    presenter.state
+      .asObservable()
+      .map { $0.addressError }
+      .bind(to: formView.rx.addressErrorText)
+      .disposed(by: disposeBag)
+    
+    presenter.state
+      .asObservable()
+      .map { $0.coinAmountError }
+      .bind(to: formView.rx.coinAmountErrorText)
       .disposed(by: disposeBag)
     
     nextButton.rx.tap.asDriver()
@@ -123,18 +123,14 @@ final class CoinWithdrawViewController: NavigationScreenViewController<CoinWithd
   override func setupBindings() {
     setupUIBindings()
     
-    let backDriver = customView.backButton.rx.tap.asDriver()
     let updateAddressDriver = Driver.merge(formView.rx.addressText.asDriver(),
                                            didScanAddressRelay.asDriver(onErrorJustReturn: ""))
-    let updateCurrencyAmountDriver = formView.rx.currencyText.asDriver()
-    let updateCoinAmountDriver = formView.rx.coinText.asDriver()
+    let updateCoinAmountDriver = formView.rx.coinAmountText.asDriver()
     let pasteAddressDriver = formView.rx.pasteTap
     let maxDriver = formView.rx.maxTap
     let nextDriver = nextButton.rx.tap.asDriver()
     
-    presenter.bind(input: CoinWithdrawPresenter.Input(back: backDriver,
-                                                      updateAddress: updateAddressDriver,
-                                                      updateCurrencyAmount: updateCurrencyAmountDriver,
+    presenter.bind(input: CoinWithdrawPresenter.Input(updateAddress: updateAddressDriver,
                                                       updateCoinAmount: updateCoinAmountDriver,
                                                       pasteAddress: pasteAddressDriver,
                                                       max: maxDriver,

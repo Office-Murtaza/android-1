@@ -421,6 +421,7 @@
 		DBB5B38F22E0CD5800222640 /* BTMCoin.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBB5B38E22E0CD5800222640 /* BTMCoin.swift */; };
 		DBB5B39122E1A59000222640 /* ManageWalletsUsecase.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBB5B39022E1A59000222640 /* ManageWalletsUsecase.swift */; };
 		DBB99D1A24F8476C008CC21B /* CoinDetailsTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBB99D1924F8476C008CC21B /* CoinDetailsTableView.swift */; };
+		DBB99D1C24F89D38008CC21B /* CoinAmountTextFieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBB99D1B24F89D38008CC21B /* CoinAmountTextFieldView.swift */; };
 		DBBD06E12369FEDB0096B674 /* PreSubmitResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBBD06E02369FEDB0096B674 /* PreSubmitResponse.swift */; };
 		DBBD06E32369FF0E0096B674 /* PreSubmitResponse+Mapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBBD06E22369FF0E0096B674 /* PreSubmitResponse+Mapping.swift */; };
 		DBBD6AA724F723E800610A4E /* WalletHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBBD6AA624F723E800610A4E /* WalletHeaderView.swift */; };
@@ -951,6 +952,7 @@
 		DBB5B38E22E0CD5800222640 /* BTMCoin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTMCoin.swift; sourceTree = "<group>"; };
 		DBB5B39022E1A59000222640 /* ManageWalletsUsecase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageWalletsUsecase.swift; sourceTree = "<group>"; };
 		DBB99D1924F8476C008CC21B /* CoinDetailsTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinDetailsTableView.swift; sourceTree = "<group>"; };
+		DBB99D1B24F89D38008CC21B /* CoinAmountTextFieldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinAmountTextFieldView.swift; sourceTree = "<group>"; };
 		DBBD06E02369FEDB0096B674 /* PreSubmitResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreSubmitResponse.swift; sourceTree = "<group>"; };
 		DBBD06E22369FF0E0096B674 /* PreSubmitResponse+Mapping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PreSubmitResponse+Mapping.swift"; sourceTree = "<group>"; };
 		DBBD6AA624F723E800610A4E /* WalletHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletHeaderView.swift; sourceTree = "<group>"; };
@@ -1226,6 +1228,7 @@
 				DB8325B424F46AFA00AFD577 /* HeaderView.swift */,
 				DBD8C211240AF44B00BD8A74 /* StatusView.swift */,
 				DB5413CC24346EDB002DDD2F /* CryptoFiatAmountView.swift */,
+				DBB99D1B24F89D38008CC21B /* CoinAmountTextFieldView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -3049,6 +3052,7 @@
 				DB96169422C5678E0078E92D /* MainButton.swift in Sources */,
 				DB5B2DE6230A769300821713 /* CoinDetailsAssembly.swift in Sources */,
 				DBADDE372438DD6600BFD806 /* CoinExchangeViewController.swift in Sources */,
+				DBB99D1C24F89D38008CC21B /* CoinAmountTextFieldView.swift in Sources */,
 				DB38281C240CF9BA00418D3D /* VIPVerificationModule.swift in Sources */,
 				DBECA63022F7FBA9002C2610 /* UpdatePhoneFlow+Dependencies.swift in Sources */,
 				DB04E4D722D880B5000E2D85 /* PinCodeService.swift in Sources */,
