@@ -80,9 +80,7 @@ extension Reactive where Base == CoinWithdrawFormView {
     return base.addressTextField.rx.text
   }
   var coinAmountErrorText: Binder<String?> {
-    return Binder(base) { target, value in
-      target.coinAmountTextFieldView.rx.coinAmountErrorText
-    }
+    return base.coinAmountTextFieldView.rx.coinAmountErrorText
   }
   var addressErrorText: Binder<String?> {
     return Binder(base) { target, value in

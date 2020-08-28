@@ -30,7 +30,6 @@ final class CoinSendGiftFormView: UIView, HasDisposeBag {
     return view
   }()
   
-  let maxButton = MDCButton.max
   let addButton = MDCButton.plus
   let removeButton = MDCButton.close
   
@@ -139,7 +138,7 @@ extension Reactive where Base == CoinSendGiftFormView {
     }
   }
   var maxTap: Driver<Void> {
-    return base.maxButton.rx.tap.asDriver()
+    return base.coinAmountTextFieldView.rx.maxTap
   }
   var addGifTap: Driver<Void> {
     return base.addButton.rx.tap.asDriver()
