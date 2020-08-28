@@ -121,6 +121,25 @@ final class CoinDetailsViewController: ModuleViewController<CoinDetailsPresenter
       .disposed(by: disposeBag)
     
     presenter.state
+      .map { $0.transactions?.transactions.count ?? 0 }
+      .map { $0 > 0 }
+      .distinctUntilChanged()
+      .drive(onNext: { [headerView, tableView] in
+        if $0 {
+          headerView.hideEmptyLabel()
+          tableView.separatorStyle = .singleLine
+        } else {
+          headerView.showEmptyLabel()
+          tableView.separatorStyle = .none
+        }
+        
+        headerView.layoutIfNeeded()
+        tableView.tableHeaderView = headerView
+        tableView.layoutIfNeeded()
+      })
+      .disposed(by: disposeBag)
+    
+    presenter.state
       .map { $0.transactions?.transactions }
       .filterNil()
       .asObservable()

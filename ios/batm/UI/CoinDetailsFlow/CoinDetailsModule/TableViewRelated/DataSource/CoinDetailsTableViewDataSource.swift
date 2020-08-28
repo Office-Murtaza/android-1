@@ -37,12 +37,6 @@ final class CoinDetailsTableViewDataSource: NSObject, UITableViewDataSource, Has
   }
   
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    if values.isEmpty {
-      tableView.setEmptyMessage(localize(L.CoinDetails.Transactions.empty))
-    } else {
-      tableView.restore()
-    }
-    
     return values.count
   }
   
