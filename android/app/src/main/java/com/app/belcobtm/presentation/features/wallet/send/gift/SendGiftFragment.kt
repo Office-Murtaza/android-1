@@ -59,7 +59,7 @@ class SendGiftFragment : BaseFragment(), GiphyDialogFragment.GifSelectionListene
     override val resourceLayout: Int = R.layout.fragment_send_gift
     override val isToolbarEnabled: Boolean = true
     override val isHomeButtonEnabled: Boolean = true
-    override val isMenuEnabled: Boolean = false
+    override var isMenuEnabled: Boolean = false
     override val retryListener: View.OnClickListener = View.OnClickListener { sendGift() }
 
     override fun onAttach(context: Context) {

@@ -27,7 +27,7 @@ class PinCodeFragment : BaseFragment() {
     }
     override val resourceLayout: Int = R.layout.fragment_pin_code
     override val isToolbarEnabled: Boolean = false
-    override val isMenuEnabled: Boolean = true
+    override var isMenuEnabled: Boolean = true
     override val backPressedListener: View.OnClickListener = View.OnClickListener {
         if (pinMode == KEY_PIN_MODE_CHANGE) {
             navigate(PinCodeFragmentDirections.pinCodeToSettingsFragment(SETTINGS_SECURITY))

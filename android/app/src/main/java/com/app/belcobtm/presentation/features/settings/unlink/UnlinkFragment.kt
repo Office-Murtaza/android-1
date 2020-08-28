@@ -14,6 +14,7 @@ import org.koin.android.viewmodel.ext.android.viewModel
 class UnlinkFragment : BaseFragment() {
     val viewModel by viewModel<UnlinkViewModel>()
     override val isHomeButtonEnabled = true
+    override var isMenuEnabled = true
     override val retryListener = View.OnClickListener {
         viewModel.unlink()
     }

@@ -32,6 +32,7 @@ class VerificationBlankFragment : BaseFragment(), BottomSheetImagePicker.OnImage
 
     override val resourceLayout = R.layout.fragment_verification_blank
     override val isHomeButtonEnabled = true
+    override var isMenuEnabled = true
 
     private var validated = false
 

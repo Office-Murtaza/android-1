@@ -25,6 +25,7 @@ class UpdatePasswordFragment : BaseFragment() {
 
     override val resourceLayout = R.layout.fragment_update_password
     override val isHomeButtonEnabled = true
+    override var isMenuEnabled = true
 
     override fun initViews() {
         appliedState = null
