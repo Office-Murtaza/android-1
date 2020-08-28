@@ -70,7 +70,11 @@ class HeaderView: UIView {
     
     titleLabel.snp.makeConstraints {
       $0.top.left.right.equalToSuperview()
+      $0.bottom.lessThanOrEqualToSuperview()
     }
+    
+    titleLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
+    titleLabel.setContentCompressionResistancePriority(.required, for: .vertical)
     
     titleStackView.addArrangedSubview(titleView)
     valueStackView.addArrangedSubview(valueView)
@@ -85,6 +89,7 @@ class HeaderView: UIView {
     valueLabel.text = value
     valueLabel.textColor = .slateGrey
     valueLabel.font = UIFont.systemFont(ofSize: 16, weight: .medium)
+    valueLabel.numberOfLines = 0
     applyStyle?(valueLabel)
     
     add(title: title, valueView: valueLabel)

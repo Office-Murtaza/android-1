@@ -72,12 +72,12 @@ final class CoinSellViewController: NavigationScreenViewController<CoinSellPrese
    
     Driver.combineLatest(coinBalanceDriver, detailsDriver)
       .drive(onNext: { [headerView] coinBalance, details in
-        let balanceView = CoinDetailsBalanceValueView()
-        balanceView.configure(for: coinBalance)
+        let amountView = CryptoFiatAmountView()
+        amountView.configure(for: coinBalance)
         
         headerView.removeAll()
         headerView.add(title: localize(L.CoinDetails.price), value: coinBalance.price.fiatFormatted.withUSD)
-        headerView.add(title: localize(L.CoinDetails.balance), valueView: balanceView)
+        headerView.add(title: localize(L.CoinDetails.balance), valueView: amountView)
         headerView.add(title: localize(L.CoinSell.dailyLimit), value: details.dailyLimit.fiatFormatted.withUSD)
         headerView.add(title: localize(L.CoinSell.txLimit), value: details.transactionLimit.fiatFormatted.withUSD)
       })

@@ -6,9 +6,9 @@ import MaterialComponents
 import GiphyUISDK
 import GiphyCoreSDK
 
-final class CoinSendGiftViewController: NavigationScreenViewController<CoinSendGiftPresenter> {
+final class CoinSendGiftViewController: ModuleViewController<CoinSendGiftPresenter> {
   
-  let errorView = ErrorView()
+  let rootScrollView = RootScrollView()
   
   let headerView = HeaderView()
   
@@ -22,24 +22,24 @@ final class CoinSendGiftViewController: NavigationScreenViewController<CoinSendG
     return didUpdateImageRelay.asDriver(onErrorJustReturn: nil)
   }
   
-  override var preferredStatusBarStyle: UIStatusBarStyle {
-    return .lightContent
-  }
+  override var shouldShowNavigationBar: Bool { return true }
   
   override func setupUI() {
-    customView.rootScrollView.contentInsetAdjustmentBehavior = .never
-    customView.contentView.addSubviews(errorView,
-                                       headerView,
-                                       formView,
-                                       nextButton)
+    view.addSubview(rootScrollView)
+    rootScrollView.contentView.addSubviews(headerView,
+                                           formView,
+                                           nextButton)
     
     setupDefaultKeyboardHandling()
   }
 
   override func setupLayout() {
-    errorView.snp.makeConstraints {
-      $0.top.equalToSuperview().offset(5)
-      $0.centerX.equalToSuperview()
+    rootScrollView.snp.makeConstraints {
+      $0.top.equalTo(view.safeAreaLayoutGuide)
+      $0.left.right.bottom.equalToSuperview()
+    }
+    rootScrollView.contentView.snp.makeConstraints {
+      $0.height.greaterThanOrEqualToSuperview()
     }
     headerView.snp.makeConstraints {
       $0.top.equalToSuperview().offset(25)
@@ -47,14 +47,14 @@ final class CoinSendGiftViewController: NavigationScreenViewController<CoinSendG
       $0.right.lessThanOrEqualToSuperview().offset(-15)
     }
     formView.snp.makeConstraints {
-      $0.top.equalTo(headerView.snp.bottom).offset(20)
+      $0.top.equalTo(headerView.snp.bottom).offset(30)
       $0.left.right.equalToSuperview().inset(15)
+      $0.bottom.lessThanOrEqualTo(nextButton.snp.top).offset(-30)
     }
     nextButton.snp.makeConstraints {
       $0.height.equalTo(50)
-      $0.top.equalTo(formView.snp.bottom).offset(15)
       $0.left.right.equalToSuperview().inset(15)
-      $0.bottom.lessThanOrEqualToSuperview().offset(-30)
+      $0.bottom.equalToSuperview().offset(-40)
     }
   }
   
@@ -63,8 +63,8 @@ final class CoinSendGiftViewController: NavigationScreenViewController<CoinSendG
       .map { $0.coin?.type.code }
       .filterNil()
       .distinctUntilChanged()
-      .drive(onNext: { [customView] in
-        customView.setTitle(String(format: localize(L.CoinSendGift.title), $0))
+      .drive(onNext: { [unowned self] in
+        self.title = String(format: localize(L.CoinSendGift.title), $0)
       })
       .disposed(by: disposeBag)
     
@@ -72,12 +72,12 @@ final class CoinSendGiftViewController: NavigationScreenViewController<CoinSendG
       .map { $0.coinBalance }
       .filterNil()
       .drive(onNext: { [headerView] coinBalance in
-        let balanceView = CoinDetailsBalanceValueView()
-        balanceView.configure(for: coinBalance)
+        let amountView = CryptoFiatAmountView()
+        amountView.configure(for: coinBalance)
         
         headerView.removeAll()
         headerView.add(title: localize(L.CoinDetails.price), value: coinBalance.price.fiatFormatted.withUSD)
-        headerView.add(title: localize(L.CoinDetails.balance), valueView: balanceView)
+        headerView.add(title: localize(L.CoinDetails.balance), valueView: amountView)
       })
       .disposed(by: disposeBag)
     
@@ -95,14 +95,38 @@ final class CoinSendGiftViewController: NavigationScreenViewController<CoinSendG
     
     presenter.state
       .asObservable()
-      .map { $0.currencyAmount }
-      .bind(to: formView.rx.currencyText)
+      .map { $0.fiatAmount }
+      .bind(to: formView.rx.fiatAmountText)
       .disposed(by: disposeBag)
     
     presenter.state
       .asObservable()
       .map { $0.coinAmount }
-      .bind(to: formView.rx.coinText)
+      .bind(to: formView.rx.coinAmountText)
+      .disposed(by: disposeBag)
+    
+    presenter.state
+      .asObservable()
+      .map { $0.message }
+      .bind(to: formView.rx.messageText)
+      .disposed(by: disposeBag)
+    
+    presenter.state
+      .asObservable()
+      .map { $0.phoneError }
+      .bind(to: formView.rx.phoneErrorText)
+      .disposed(by: disposeBag)
+    
+    presenter.state
+      .asObservable()
+      .map { $0.coinAmountError }
+      .bind(to: formView.rx.coinAmountErrorText)
+      .disposed(by: disposeBag)
+    
+    presenter.state
+      .asObservable()
+      .map { $0.messageError }
+      .bind(to: formView.rx.messageErrorText)
       .disposed(by: disposeBag)
     
     didUpdateImageDriver
@@ -123,12 +147,9 @@ final class CoinSendGiftViewController: NavigationScreenViewController<CoinSendG
       .disposed(by: disposeBag)
     
     presenter.state
-      .map { $0.validationState }
-      .mapToErrorMessage()
-      .drive(onNext: { [errorView] in
-        errorView.isHidden = $0 == nil
-        errorView.configure(for: $0)
-      })
+      .asObservable()
+      .map { $0.isAllRequiredFieldsNotEmpty }
+      .bind(to: nextButton.rx.isEnabled)
       .disposed(by: disposeBag)
     
     nextButton.rx.tap.asDriver()
@@ -139,25 +160,17 @@ final class CoinSendGiftViewController: NavigationScreenViewController<CoinSendG
   override func setupBindings() {
     setupUIBindings()
     
-    let backDriver = customView.backButton.rx.tap.asDriver()
-    let updateCountryDriver = formView.rx.country
     let updatePhoneDriver = formView.rx.phoneText.asDriver()
-    let updateCurrencyAmountDriver = formView.rx.currencyText.asDriver()
-    let updateCoinAmountDriver = formView.rx.coinText.asDriver()
+    let updateCoinAmountDriver = formView.rx.coinAmountText.asDriver()
     let updateMessageDriver = formView.rx.messageText.asDriver()
     let updateImageIdDriver = didUpdateImageDriver.map { $0?.id }
-    let pastePhoneDriver = formView.rx.pasteTap
     let maxDriver = formView.rx.maxTap
     let nextDriver = nextButton.rx.tap.asDriver()
     
-    presenter.bind(input: CoinSendGiftPresenter.Input(back: backDriver,
-                                                      updateCountry: updateCountryDriver,
-                                                      updatePhone: updatePhoneDriver,
-                                                      updateCurrencyAmount: updateCurrencyAmountDriver,
+    presenter.bind(input: CoinSendGiftPresenter.Input(updatePhone: updatePhoneDriver,
                                                       updateCoinAmount: updateCoinAmountDriver,
                                                       updateMessage: updateMessageDriver,
                                                       updateImageId: updateImageIdDriver,
-                                                      pastePhone: pastePhoneDriver,
                                                       max: maxDriver,
                                                       next: nextDriver))
   }

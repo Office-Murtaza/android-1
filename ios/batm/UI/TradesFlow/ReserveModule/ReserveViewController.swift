@@ -66,16 +66,16 @@ final class ReserveViewController: NavigationScreenViewController<ReservePresent
       .map { $0.coinBalance }
       .filterNil()
       .drive(onNext: { [headerView] coinBalance in
-        let balanceView = CoinDetailsBalanceValueView()
-        balanceView.configure(for: coinBalance)
+        let amountView = CryptoFiatAmountView()
+        amountView.configure(for: coinBalance)
         
-        let reservedBalanceView = CoinDetailsBalanceValueView()
-        reservedBalanceView.configure(for: coinBalance, useReserved: true)
+        let reservedAmountView = CryptoFiatAmountView()
+        reservedAmountView.configure(for: coinBalance, useReserved: true)
         
         headerView.removeAll()
         headerView.add(title: localize(L.CoinDetails.price), value: coinBalance.price.fiatFormatted.withUSD)
-        headerView.add(title: localize(L.CoinDetails.balance), valueView: balanceView)
-        headerView.add(title: localize(L.Trades.reserved), valueView: reservedBalanceView)
+        headerView.add(title: localize(L.CoinDetails.balance), valueView: amountView)
+        headerView.add(title: localize(L.Trades.reserved), valueView: reservedAmountView)
       })
       .disposed(by: disposeBag)
     
