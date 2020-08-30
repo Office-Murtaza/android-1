@@ -6,9 +6,9 @@
         android:title="@string/bottom_menu_wallet" />
 
     <item
-        android:id="@+id/nav_atm"
-        android:icon="@drawable/ic_menu_atm"
-        android:title="@string/bottom_menu_atm" />
+        android:id="@+id/nav_locations"
+        android:icon="@drawable/ic_menu_location"
+        android:title="@string/bottom_menu_locations" />
 
     <item
         android:id="@+id/nav_settings"

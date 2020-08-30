@@ -70,9 +70,9 @@ class TransactionApiService(
         giftId: String,
         phone: String,
         message: String,
-        fee: Double?,
-        fromAddress: String?,
-        toAddress: String?
+        fee: Double? = null,
+        fromAddress: String? = null,
+        toAddress: String? = null
     ): Either<Failure, Unit> = try {
         val requestBody = SendGiftRequest(
             TRANSACTION_SEND_GIFT,

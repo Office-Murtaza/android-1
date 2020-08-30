@@ -6,7 +6,7 @@
     <string name="app_name">Belco Wallet</string>
 
     <!-- Bottom navigation -->
-    <string name="bottom_menu_atm">ATM</string>
+    <string name="bottom_menu_locations">Locations</string>
     <string name="bottom_menu_settings">Settings</string>
     <string name="bottom_menu_wallet">Wallet</string>
 
@@ -40,7 +40,7 @@
     <string name="sms_code_screen_invalid_code">Wrong code</string>
     <string name="sms_code_screen_resend">New code was sent</string>
 
-    <!--welcome-->
+    <!-- Welcome -->
     <string name="welcome_screen_please_accept_tnc">Please, accept our Terms &amp; Conditions</string>
     <string name="welcome_screen_contact_support">Contact support</string>
     <string name="welcome_screen_create_new_wallet">Create New Wallet</string>
@@ -184,7 +184,7 @@
     <!--transactions-->
     <string name="deposit">Deposit</string>
     <string name="wallet_code_clipboard">Wallet code copied to clipboard</string>
-    <string name="balance">Balance:</string>
+    <string name="transactions_screen_balance">Balance</string>
     <string name="transaction_changes_percent">%1$s %%</string>
     <string name="transaction_price_usd">%1$s USD</string>
     <string name="transaction_crypto_balance">%1$s %2$s</string>
@@ -213,6 +213,7 @@
     <string name="transaction_type_unstake">Unstake</string>
 
     <!-- Transaction Details -->
+    <string name="transaction_details_screen_title">Transaction details</string>
     <string name="transaction_details">Transaction Details %1$s</string>
 
 

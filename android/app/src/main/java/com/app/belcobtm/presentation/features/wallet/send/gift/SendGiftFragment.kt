@@ -178,6 +178,7 @@ class SendGiftFragment : BaseFragment(), GiphyDialogFragment.GifSelectionListene
         nextButtonView.isEnabled = phoneContainerView.getString().isNotEmpty()
                 && isValidMobileNumber(phoneContainerView.getString())
                 && amountCryptoView.isNotBlank()
+                && cryptoBalanceToSend > viewModel.getTransactionFee()
     }
 
     private fun sendGift() {

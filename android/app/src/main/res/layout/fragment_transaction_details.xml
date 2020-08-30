@@ -149,11 +149,14 @@
                     tools:text="0.5 BTC" />
 
                 <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/amountArrowsView"
                     android:layout_width="18dp"
                     android:layout_height="18dp"
                     android:layout_marginStart="4dp"
                     android:layout_marginEnd="4dp"
-                    app:srcCompat="@drawable/ic_compare_arrows" />
+                    android:visibility="gone"
+                    app:srcCompat="@drawable/ic_compare_arrows"
+                    tools:visibility="visible" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/amountUsdView"
@@ -162,7 +165,9 @@
                     android:textColor="@color/colorPrimary"
                     android:textSize="16sp"
                     android:textStyle="bold"
-                    tools:text="6000 $" />
+                    android:visibility="gone"
+                    tools:text="6000 $"
+                    tools:visibility="visible" />
             </LinearLayout>
 
         </TableRow>
@@ -334,10 +339,10 @@
 
         <TextView
             android:id="@+id/qrCodeTitleView"
-            android:visibility="gone"
-            android:layout_marginTop="6dp"
             style="@style/CoinDetails.Table.Key"
-            android:text="@string/transition_details_screen_sell_qr_code" />
+            android:layout_marginTop="6dp"
+            android:text="@string/transition_details_screen_sell_qr_code"
+            android:visibility="gone" />
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/qrCodeView"

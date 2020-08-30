@@ -35,14 +35,12 @@ class WithdrawFragment : BaseFragment() {
                 cryptoAmount = fromCoinAmountTemporary
             }
 
-            if (cryptoAmount > 0) {
-                amountUsdView.text =
-                    getString(R.string.unit_usd_dynamic_symbol, (cryptoAmount * viewModel.getUsdPrice()).toStringUsd())
-                nextButtonView.isEnabled = isValidAddress()
+            amountUsdView.text = if (cryptoAmount > 0) {
+                getString(R.string.unit_usd_dynamic_symbol, (cryptoAmount * viewModel.getUsdPrice()).toStringUsd())
             } else {
-                amountUsdView.text = getString(R.string.unit_usd_dynamic_symbol, "0.0")
-                nextButtonView.isEnabled = false
+                getString(R.string.unit_usd_dynamic_symbol, "0.0")
             }
+            updateNextButton()
         }
     )
 
@@ -68,7 +66,7 @@ class WithdrawFragment : BaseFragment() {
     }
 
     override fun initListeners() {
-        addressScanView.setOnClickListener { IntentIntegrator(requireActivity()).initiateScan() }
+        addressScanView.setOnClickListener { IntentIntegrator.forSupportFragment(this).initiateScan() }
         addressPasteView.setOnClickListener { addressView.setText(getTextFromClipboard()) }
         maxCryptoView.setOnClickListener { amountCryptoView.setText(viewModel.getMaxValue().toStringCoin()) }
         amountCryptoView.editText?.addTextChangedListener(doubleTextWatcher.firstTextWatcher)
@@ -127,4 +125,8 @@ class WithdrawFragment : BaseFragment() {
     private fun isValidAddress(): Boolean = CoinTypeExtension.getTypeByCode(
         if (LocalCoinType.CATM.name == viewModel.getCoinCode()) LocalCoinType.ETH.name else viewModel.getCoinCode()
     )?.validate(addressView.getString()) ?: false
+
+    private fun updateNextButton() {
+        nextButtonView.isEnabled = cryptoBalanceToSend > viewModel.getTransactionFee() && isValidAddress()
+    }
 }

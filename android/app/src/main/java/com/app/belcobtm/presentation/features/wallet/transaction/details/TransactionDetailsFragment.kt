@@ -34,8 +34,7 @@ class TransactionDetailsFragment : BaseFragment() {
     override val retryListener: View.OnClickListener = View.OnClickListener { viewModel.getTransactionDetails() }
 
     override fun initViews() {
-        val coinCode = TransactionDetailsFragmentArgs.fromBundle(requireArguments()).coinCode
-        setToolbarTitle(getString(R.string.transaction_details, coinCode))
+        setToolbarTitle(getString(R.string.transaction_details_screen_title))
         GiphyCoreUI.configure(requireContext(), GIPHY_API_KEY)
     }
 
@@ -143,14 +142,16 @@ class TransactionDetailsFragment : BaseFragment() {
         else -> cashStatusContainerView.hide()
     }
 
-    private fun showAmountView(cryptoAmount: Double, fiatAmount: Double) = if (cryptoAmount < 0 || fiatAmount < 0) {
+    private fun showAmountView(cryptoAmount: Double, fiatAmount: Double) = if (cryptoAmount < 0) {
         amountContainerView.hide()
     } else {
         val coinCode = TransactionDetailsFragmentArgs.fromBundle(requireArguments()).coinCode
         amountContainerView.show()
         amountCryptoView.text =
             getString(R.string.transition_details_screen_balance_crypto, cryptoAmount.toStringCoin(), coinCode)
-        amountUsdView.text = getString(R.string.transition_details_screen_balance_usd, cryptoAmount.toStringUsd())
+        amountUsdView.text = getString(R.string.transition_details_screen_balance_usd, fiatAmount.toStringUsd())
+        amountArrowsView.toggle(fiatAmount >= 0)
+        amountUsdView.toggle(fiatAmount >= 0)
     }
 
     private fun showFeeView(fee: Double) = if (fee < 0) {
