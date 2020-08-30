@@ -25,6 +25,7 @@ class UpdatePasswordFragment : BaseFragment() {
 
     override val resourceLayout = R.layout.fragment_update_password
     override val isHomeButtonEnabled = true
+    override var isMenuEnabled = true
 
     override fun initViews() {
         appliedState = null
@@ -56,7 +57,7 @@ class UpdatePasswordFragment : BaseFragment() {
                     with (oldPasswordContainerView) {
                         isErrorEnabled = it
                         if (it) {
-                            error = getString(R.string.old_password_doesnt_match)
+                            error = getString(R.string.password_doesnt_match)
                         }
                     }
                 })

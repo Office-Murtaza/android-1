@@ -16,6 +16,7 @@ class VerificationInfoFragment: BaseFragment() {
     val viewModel by viewModel<VerificationInfoViewModel>()
     override val resourceLayout = R.layout.fragment_verification_info
     override val isHomeButtonEnabled = true
+    override var isMenuEnabled = true
     private var appliedState: LoadingData<VerificationInfoState>? = null
 
     override fun initViews() {

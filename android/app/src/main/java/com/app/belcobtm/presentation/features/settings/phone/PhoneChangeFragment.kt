@@ -19,6 +19,7 @@ class PhoneChangeFragment : BaseFragment() {
     private var appliedState: LoadingData<PhoneChangeState>? = null
     override val resourceLayout = R.layout.fragment_change_phone
     override val isHomeButtonEnabled = true
+    override var isMenuEnabled = true
     override val retryListener = View.OnClickListener {
         viewModel.onNextClick()
     }

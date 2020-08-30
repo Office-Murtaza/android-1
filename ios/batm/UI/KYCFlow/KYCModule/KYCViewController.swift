@@ -57,8 +57,8 @@ final class KYCViewController: ModuleViewController<KYCPresenter> {
   }
   
   private func update(with kyc: KYC) {
-    let statusView = KYCStatusView()
-    statusView.configure(for: kyc.status)
+    let statusView = StatusView()
+    statusView.configure(text: kyc.status.verboseValue, color: kyc.status.associatedColor)
     
     headerView.removeAll()
     headerView.add(title: localize(L.KYC.Header.Status.title), valueView: statusView)

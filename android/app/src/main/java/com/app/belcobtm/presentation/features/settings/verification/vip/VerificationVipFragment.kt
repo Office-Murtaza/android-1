@@ -29,6 +29,7 @@ class VerificationVipFragment : BaseFragment(), BottomSheetImagePicker.OnImagesS
     private val viewModel: VerificationVipViewModel by viewModel()
     override val resourceLayout = R.layout.fragment_verification_vip
     override val isHomeButtonEnabled = true
+    override var isMenuEnabled = true
 
     private var validated = false
 

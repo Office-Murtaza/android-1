@@ -65,20 +65,6 @@ extension MDCButton {
     return button
   }
   
-  static var add: MDCButton {
-    let button = MDCButton.text
-    button.contentEdgeInsets = .zero
-    button.setTitle(localize(L.Shared.Button.add), for: .normal)
-    return button
-  }
-  
-  static var remove: MDCButton {
-    let button = MDCButton.text
-    button.contentEdgeInsets = .zero
-    button.setTitle(localize(L.Shared.Button.remove), for: .normal)
-    return button
-  }
-  
   static var next: MDCButton {
     let button = MDCButton.contained
     button.setTitle(localize(L.Shared.Button.next), for: .normal)
@@ -192,6 +178,12 @@ extension MDCButton {
     let button = MDCButton.contained
     button.setImage(UIImage(named: "colored_close"), for: .normal)
     button.setBackgroundColor(.white)
+    return button
+  }
+  
+  static var manageWallets: MDCButton {
+    let button = MDCButton.outlined
+    button.setTitle(localize(L.Wallet.Footer.Button.manageWallets), for: .normal)
     return button
   }
   

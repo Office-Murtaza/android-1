@@ -169,7 +169,7 @@
     <string name="verification_city">City</string>
     <string name="verification_country">Country</string>
     <string name="verification_province">Province</string>
-    <string name="verification_zip_code">Zip Code</string>
+    <string name="verification_zip_code">ZIP code</string>
     <string name="verification_send">Send</string>
     <string name="verification_select_photo_please">Select photo please</string>
     <string name="verification_alert_country_title">Please pick country</string>
@@ -439,7 +439,7 @@
     //updates
     <string name="pin_updated">PIN was successfully updated</string>
     <string name="phone_updated">Phone was successfully updated</string>
-    <string name="password_changed">Password Password was successfully updated</string>
+    <string name="password_changed">Password was successfully updated</string>
     <string name="wallet_unlinked">Wallet was successfully deleted from the device</string>
 
     //unlink

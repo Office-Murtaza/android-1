@@ -4,29 +4,25 @@ import RxSwift
 import SnapKit
 import MaterialComponents
 
-final class CoinDepositViewController: NavigationScreenViewController<CoinDepositPresenter> {
+final class CoinDepositViewController: ModuleViewController<CoinDepositPresenter> {
   
   let qrCodeCardView = QRCodeCardView()
   
-  override var preferredStatusBarStyle: UIStatusBarStyle {
-    return .lightContent
-  }
+  override var shouldShowNavigationBar: Bool { return true }
 
   override func setupUI() {
-    customView.setTitle(String(format: localize(L.CoinDeposit.title), presenter.coin.type.code))
-    customView.contentView.addSubview(qrCodeCardView)
+    view.addSubview(qrCodeCardView)
   }
 
   override func setupLayout() {
-    customView.contentView.snp.makeConstraints {
-      $0.height.equalToSuperview()
-    }
     qrCodeCardView.snp.makeConstraints {
       $0.top.left.right.equalToSuperview().inset(30)
     }
   }
   
   func setupUIBindings() {
+    title = String(format: localize(L.CoinDeposit.title), presenter.coin.type.code)
+    
     qrCodeCardView.configure(for: presenter.coin.address)
     
     qrCodeCardView.rx.copy
@@ -37,10 +33,8 @@ final class CoinDepositViewController: NavigationScreenViewController<CoinDeposi
   override func setupBindings() {
     setupUIBindings()
     
-    let backDriver = customView.backButton.rx.tap.asDriver()
     let copyDriver = qrCodeCardView.rx.copy
     
-    presenter.bind(input: CoinDepositPresenter.Input(back: backDriver,
-                                                     copy: copyDriver))
+    presenter.bind(input: CoinDepositPresenter.Input(copy: copyDriver))
   }
 }

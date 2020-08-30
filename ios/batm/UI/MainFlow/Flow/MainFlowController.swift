@@ -12,6 +12,6 @@ class MainFlowController: FlowController, FlowActivator {
   
 }
 
-extension MainFlowController: CoinsBalanceFlowControllerDelegate {}
+extension MainFlowController: WalletFlowControllerDelegate {}
 extension MainFlowController: ATMFlowControllerDelegate {}
 extension MainFlowController: SettingsFlowControllerDelegate {}

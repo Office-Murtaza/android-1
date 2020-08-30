@@ -7,9 +7,7 @@ final class CoinWithdrawPresenter: ModulePresenter, CoinWithdrawModule {
   typealias Store = ViewStore<CoinWithdrawAction, CoinWithdrawState>
 
   struct Input {
-    var back: Driver<Void>
     var updateAddress: Driver<String?>
-    var updateCurrencyAmount: Driver<String?>
     var updateCoinAmount: Driver<String?>
     var pasteAddress: Driver<Void>
     var max: Driver<Void>
@@ -38,19 +36,12 @@ final class CoinWithdrawPresenter: ModulePresenter, CoinWithdrawModule {
   }
 
   func bind(input: Input) {
-    input.back
-      .drive(onNext: { [delegate] in delegate?.didFinishCoinWithdraw() })
-      .disposed(by: disposeBag)
-    
     input.updateAddress
       .asObservable()
+      .withLatestFrom(state) { ($0, $1) }
+      .filter { $0 != $1.address }
+      .map { $0.0 }
       .map { CoinWithdrawAction.updateAddress($0) }
-      .bind(to: store.action)
-      .disposed(by: disposeBag)
-    
-    input.updateCurrencyAmount
-      .asObservable()
-      .map { CoinWithdrawAction.updateCurrencyAmount($0) }
       .bind(to: store.action)
       .disposed(by: disposeBag)
     
@@ -91,8 +82,8 @@ final class CoinWithdrawPresenter: ModulePresenter, CoinWithdrawModule {
                                 to: state.address,
                                 amount: state.coinAmount.doubleValue ?? 0.0)
       .catchError { [store] in
-        if let apiError = $0 as? APIError, case let .serverError(error) = apiError {
-          store.action.accept(.makeInvalidState(error.message))
+        if let apiError = $0 as? APIError, case let .serverError(error) = apiError, let code = error.code, code > 1 {
+          store.action.accept(.updateAddressError(error.message))
         }
         
         throw $0

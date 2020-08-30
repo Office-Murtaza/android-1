@@ -5,12 +5,14 @@ import android.os.Build
 import android.os.VibrationEffect
 import android.os.Vibrator
 import android.view.View
+import android.widget.TableLayout
 import androidx.lifecycle.observe
 import com.app.belcobtm.App
 import com.app.belcobtm.R
 import com.app.belcobtm.presentation.core.extensions.toggle
 import com.app.belcobtm.presentation.core.ui.fragment.BaseFragment
 import com.app.belcobtm.presentation.features.HostActivity
+import com.app.belcobtm.presentation.features.HostNavigationFragment
 import com.app.belcobtm.presentation.features.settings.SettingsFragment.Companion.SETTINGS_SECURITY
 import kotlinx.android.synthetic.main.fragment_pin_code.*
 import org.koin.android.viewmodel.ext.android.viewModel
@@ -25,6 +27,7 @@ class PinCodeFragment : BaseFragment() {
     }
     override val resourceLayout: Int = R.layout.fragment_pin_code
     override val isToolbarEnabled: Boolean = false
+    override var isMenuEnabled: Boolean = true
     override val backPressedListener: View.OnClickListener = View.OnClickListener {
         if (pinMode == KEY_PIN_MODE_CHANGE) {
             navigate(PinCodeFragmentDirections.pinCodeToSettingsFragment(SETTINGS_SECURITY))
@@ -66,6 +69,16 @@ class PinCodeFragment : BaseFragment() {
                     showLoading()
                 } else {
                     showContent()
+                }
+            }
+            state.showMenu.doIfChanged(appliedState?.showMenu) {
+                if (it) {
+                    keyboardView.layoutParams = keyboardView.layoutParams.apply {
+                        height = TableLayout.LayoutParams.WRAP_CONTENT
+                    }
+                    activity?.supportFragmentManager?.findFragmentByTag(HostNavigationFragment::class.java.name)?.let {
+                        (it as? HostNavigationFragment)?.showBottomMenu()
+                    }
                 }
             }
             state.visiblePin.doIfChanged(appliedState?.visiblePin) {

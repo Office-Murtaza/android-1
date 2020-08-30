@@ -77,14 +77,10 @@ final class BuySellTradeDetailsViewController: NavigationScreenViewController<Bu
         headerView.add(title: localize(L.BuySellTradeDetails.Header.price), value: trade.price.fiatFormatted.withUSD) {
           $0.textColor = .darkMint
         }
-        headerView.add(title: localize(L.BuySellTradeDetails.Header.user), value: "\(trade.username)\n\(trade.userStats)") {
-          $0.numberOfLines = 0
-        }
+        headerView.add(title: localize(L.BuySellTradeDetails.Header.user), value: "\(trade.username)\n\(trade.userStats)")
         headerView.add(title: localize(L.BuySellTradeDetails.Header.payment), valueView: paymentView)
         headerView.add(title: localize(L.BuySellTradeDetails.Header.limits), value: trade.formattedLimits)
-        headerView.add(title: localize(L.BuySellTradeDetails.Header.terms), value: trade.terms) {
-          $0.numberOfLines = 0
-        }
+        headerView.add(title: localize(L.BuySellTradeDetails.Header.terms), value: trade.terms)
       })
       .disposed(by: disposeBag)
     

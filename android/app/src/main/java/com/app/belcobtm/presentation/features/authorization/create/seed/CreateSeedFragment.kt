@@ -35,6 +35,8 @@ class CreateSeedFragment : BaseFragment() {
         showBackButton(true)
         viewModel.passArgs(args)
         if (args.mode == MODE_SETTINGS) {
+            isMenuEnabled = true
+            showBottomMenu()
             args.seed?.run {
                 showSeed(this)
             }
