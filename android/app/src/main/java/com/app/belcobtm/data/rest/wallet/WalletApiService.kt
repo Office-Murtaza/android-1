@@ -15,7 +15,9 @@ class WalletApiService(
 
     suspend fun getBalance(enabledCoinList: List<String>): Either<Failure, BalanceDataItem> = try {
         val request = api.getBalanceAsync(prefHelper.userId, enabledCoinList).await()
-        request.body()?.let { Either.Right(it.mapToDataItem()) } ?: Either.Left(Failure.ServerError())
+        request.body()?.let {
+            Either.Right(it.mapToDataItem())
+        } ?: Either.Left(Failure.ServerError())
     } catch (failure: Failure) {
         failure.printStackTrace()
         Either.Left(failure)

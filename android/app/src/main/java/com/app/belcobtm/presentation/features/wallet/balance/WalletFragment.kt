@@ -1,6 +1,7 @@
 package com.app.belcobtm.presentation.features.wallet.balance
 
 import android.graphics.Color
+import android.view.View
 import com.app.belcobtm.R
 import com.app.belcobtm.domain.Failure
 import com.app.belcobtm.presentation.core.extensions.toStringUsd
@@ -22,6 +23,7 @@ class WalletFragment : BaseFragment() {
     override val isToolbarEnabled: Boolean = false
     override val isMenuEnabled: Boolean = true
     override val isFirstShowContent: Boolean = false
+    override val retryListener: View.OnClickListener = View.OnClickListener { viewModel.updateBalanceData() }
 
     override fun onResume() {
         super.onResume()

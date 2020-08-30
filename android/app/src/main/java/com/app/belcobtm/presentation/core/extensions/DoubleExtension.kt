@@ -6,7 +6,7 @@ import java.text.DecimalFormat
 fun Double.toStringUsd(): String = if (this > 0) {
     val df = DecimalFormat("#.###")
     df.roundingMode = RoundingMode.FLOOR
-    val trimmed = df.format(this).trimEnd('0')
+    val trimmed = df.format(this)
     if (trimmed.isNotBlank()) {
         when (trimmed.last()) {
             ',' -> trimmed.trimEnd(',')
@@ -23,7 +23,7 @@ fun Double.toStringUsd(): String = if (this > 0) {
 fun Double.toStringCoin(): String = if (this > 0) {
     val df = DecimalFormat("#.######")
     df.roundingMode = RoundingMode.FLOOR
-    val trimmed = df.format(this).trimEnd('0')
+    val trimmed = df.format(this)
     if (trimmed.isNotBlank()) {
         when (trimmed.last()) {
             ',' -> trimmed.trimEnd(',')

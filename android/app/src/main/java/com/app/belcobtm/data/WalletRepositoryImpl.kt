@@ -30,7 +30,7 @@ class WalletRepositoryImpl(
     override fun getCoinItemList(): List<CoinDataItem> = cachedCoinDataItemList
 
     override suspend fun getAccountList(): List<AccountDataItem> =
-        (daoAccount.getItemList() ?: emptyList()).map { it.mapToDataItem() }
+        (daoAccount.getItemList() ?: emptyList()).sortedBy { it.id }.map { it.mapToDataItem() }
 
     override suspend fun updateAccount(accountDataItem: AccountDataItem): Either<Failure, Unit> {
         daoAccount.updateItem(accountDataItem.mapToEntity())

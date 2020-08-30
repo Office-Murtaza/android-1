@@ -1,7 +1,6 @@
 package com.app.belcobtm.presentation.features.wallet.add
 
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.app.belcobtm.R
 import com.app.belcobtm.presentation.core.ui.fragment.BaseFragment
@@ -10,7 +9,7 @@ import kotlinx.android.synthetic.main.fragment_manage_wallets.*
 import org.koin.android.ext.android.inject
 
 class ManageWalletsFragment : BaseFragment() {
-    private val viewModel: AddWalletViewModel by inject()
+    private val viewModel: ManageWalletsViewModel by inject()
     private val adapter: AddWalletCoinsAdapter = AddWalletCoinsAdapter { position, isChecked ->
         viewModel.changeCoinState(position, isChecked)
     }
@@ -21,7 +20,7 @@ class ManageWalletsFragment : BaseFragment() {
     override val isMenuEnabled: Boolean = false
 
     override fun initObservers() {
-        viewModel.coinListLiveData.observe(this, Observer { adapter.setItemList(it) })
+        viewModel.coinListLiveData.observe(this, { adapter.setItemList(it) })
     }
 
     override fun initViews() {
