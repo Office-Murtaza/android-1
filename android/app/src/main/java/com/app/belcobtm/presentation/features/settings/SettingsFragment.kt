@@ -17,7 +17,7 @@ class SettingsFragment : BaseFragment() {
     val settingsArgs: SettingsFragmentArgs by navArgs()
     private var appliedState: SettingsState? = null
     override val resourceLayout = R.layout.fragment_settings
-    override val isMenuEnabled = true
+    override var isMenuEnabled = true
 
     override val backPressedListener = View.OnClickListener {
         viewModel.onBackPress()

@@ -49,7 +49,7 @@ class WithdrawFragment : BaseFragment() {
     override val resourceLayout: Int = R.layout.fragment_withdraw
     override val isToolbarEnabled: Boolean = true
     override val isHomeButtonEnabled: Boolean = true
-    override val isMenuEnabled: Boolean = false
+    override var isMenuEnabled: Boolean = false
     override val retryListener: View.OnClickListener = View.OnClickListener { }
 
     override fun initViews() {

@@ -38,7 +38,7 @@ abstract class BaseFragment : Fragment() {
     private var navController: NavController? = null
     protected open val isToolbarEnabled: Boolean = true
     protected open val isHomeButtonEnabled: Boolean = false
-    protected open val isMenuEnabled: Boolean = false
+    protected open var isMenuEnabled: Boolean = false
     protected open val homeButtonDrawable: Int = R.drawable.ic_arrow_back
     protected open val retryListener: View.OnClickListener? = null
     protected open val backPressedListener: View.OnClickListener = View.OnClickListener { popBackStack() }
@@ -104,13 +104,7 @@ abstract class BaseFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        activity?.supportFragmentManager?.findFragmentByTag(HostNavigationFragment::class.java.name)?.let {
-            if (isMenuEnabled) {
-                (it as HostNavigationFragment).showBottomMenu()
-            } else {
-                (it as HostNavigationFragment).hideBottomMenu()
-            }
-        }
+        showBottomMenu()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean = if (item.itemId == android.R.id.home) {
@@ -249,6 +243,17 @@ abstract class BaseFragment : Fragment() {
         errorTitleView.setText(R.string.base_screen_something_wrong_title)
         errorDescriptionView.setText(R.string.base_screen_something_wrong_description)
         updateContentContainer(isErrorVisible = true)
+    }
+
+    protected fun showBottomMenu() {
+        activity?.supportFragmentManager?.findFragmentByTag(HostNavigationFragment::class.java.name)
+            ?.let {
+                if (isMenuEnabled) {
+                    (it as HostNavigationFragment).showBottomMenu()
+                } else {
+                    (it as HostNavigationFragment).hideBottomMenu()
+                }
+            }
     }
 
     private fun updateContentContainer(

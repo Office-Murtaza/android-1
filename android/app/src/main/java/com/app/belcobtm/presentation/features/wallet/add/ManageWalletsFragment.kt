@@ -18,7 +18,7 @@ class ManageWalletsFragment : BaseFragment() {
     override val resourceLayout: Int = R.layout.fragment_manage_wallets
     override val isToolbarEnabled: Boolean = true
     override val isHomeButtonEnabled: Boolean = true
-    override val isMenuEnabled: Boolean = false
+    override var isMenuEnabled: Boolean = false
 
     override fun initObservers() {
         viewModel.coinListLiveData.observe(this, Observer { adapter.setItemList(it) })

@@ -26,6 +26,7 @@ class SmsCodeFragment : BaseFragment() {
         setToolbarTitle(R.string.sms_code_screen_title)
         setToolbarTitle()
         setNextButtonTitle()
+        isMenuEnabled = requireArguments().getInt(TAG_NEXT_FRAGMENT_ID) == R.id.sms_code_to_settings_fragment
     }
 
     override fun initListeners() {
@@ -59,6 +60,7 @@ class SmsCodeFragment : BaseFragment() {
                     is Failure.NetworkConnection -> showErrorNoInternetConnection()
                     is Failure.MessageError -> {
                         if (it.code == AUTH_ERROR_PHONE_NOT_SUPPORTED) {
+                            showContent()
                             errorTextView.show()
                         } else {
                             showSnackBar(it.message ?: "")
@@ -119,6 +121,15 @@ class SmsCodeFragment : BaseFragment() {
                 else -> R.string.next
             }
         )
+    }
+
+    override fun popBackStack(): Boolean {
+        return if (requireArguments().getInt(TAG_NEXT_FRAGMENT_ID) == R.id.sms_code_to_settings_fragment) {
+            navigate(R.id.sms_code_to_settings_fragment)
+            true
+        } else {
+            super.popBackStack()
+        }
     }
 
     companion object {
