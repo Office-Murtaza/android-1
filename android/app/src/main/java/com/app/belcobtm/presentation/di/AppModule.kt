@@ -92,7 +92,7 @@ val viewModelModule = module {
         StakingViewModel(coinDataItem, coinFee, get(), get(), get(), get(), get(), get())
     }
     viewModel { (phone: String) ->
-        SmsCodeViewModel(phone, get())
+        SmsCodeViewModel(phone, get(), get())
     }
     viewModel { RecoverSeedViewModel(get()) }
     viewModel { CreateSeedViewModel(get(), get()) }
