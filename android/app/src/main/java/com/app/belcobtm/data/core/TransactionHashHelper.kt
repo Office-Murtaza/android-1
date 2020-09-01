@@ -7,8 +7,11 @@ import com.app.belcobtm.data.rest.transaction.TransactionApiService
 import com.app.belcobtm.domain.Either
 import com.app.belcobtm.domain.Failure
 import com.app.belcobtm.domain.wallet.LocalCoinType
-import com.app.belcobtm.presentation.core.*
+import com.app.belcobtm.presentation.core.Numeric
 import com.app.belcobtm.presentation.core.extensions.*
+import com.app.belcobtm.presentation.core.toHexByteArray
+import com.app.belcobtm.presentation.core.toHexBytes
+import com.app.belcobtm.presentation.core.toHexBytesInByteString
 import com.google.gson.Gson
 import com.google.protobuf.ByteString
 import wallet.core.java.AnySigner
@@ -95,19 +98,20 @@ class TransactionHashHelper(
 
         return if (response.isRight) {
             val utxos = (response as Either.Right).b
-            val publicKeyFrom = daoAccount.getItem(fromCoin.name).publicKey
+            val fromAddress = daoAccount.getItem(fromCoin.name).publicKey
             val cryptoToSatoshi = fromCoinAmount * CoinType.BITCOIN.unit()
             val amount: Long = cryptoToSatoshi.toLong()
             val byteFee = getByteFee(fromCoin.name)
-            val sngHash = TWBitcoinSigHashType.getCryptoHash(fromCoin.trustWalletType)
-            val cointypeValue = fromCoin.trustWalletType.value()
+            val sngHash = BitcoinScript.hashTypeForCoin(trustWalletCoin)
+            val cointypeValue = trustWalletCoin.value()
             val input = Bitcoin.SigningInput.newBuilder()
-                .setAmount(amount)
-                .setHashType(sngHash)
-                .setToAddress(toAddress)
-                .setChangeAddress(publicKeyFrom)
-                .setByteFee(byteFee)
                 .setCoinType(cointypeValue)
+                .setAmount(amount)
+                .setByteFee(byteFee)
+                .setHashType(sngHash)
+                .setChangeAddress(fromAddress)
+                .setToAddress(toAddress)
+                .setUseMaxAmount(false)
 
             utxos.forEach {
                 val privateKey = hdWallet.getKey(it.path)
@@ -115,7 +119,7 @@ class TransactionHashHelper(
             }
 
             utxos.forEach {
-                val redeemScript = BitcoinScript.buildForAddress(it.address, trustWalletCoin)
+                val redeemScript = BitcoinScript.lockScriptForAddress(it.address, trustWalletCoin)
                 val keyHash = if (redeemScript.isPayToWitnessScriptHash) {
                     redeemScript.matchPayToWitnessPublicKeyHash()
                 } else {
@@ -141,7 +145,7 @@ class TransactionHashHelper(
                     .setSequence(sequence)
                     .build()
                 val utxoAmount = utxo.value.toLong()
-                val redeemScript = BitcoinScript.buildForAddress(utxo.address, trustWalletCoin)
+                val redeemScript = BitcoinScript.lockScriptForAddress(utxo.address, trustWalletCoin)
                 val scriptByteString = ByteString.copyFrom(redeemScript.data())
                 val utxo0 = Bitcoin.UnspentTransaction.newBuilder()
                     .setScript(scriptByteString)
@@ -154,7 +158,7 @@ class TransactionHashHelper(
 
             val signBytes = AnySigner.sign(
                 input.build(),
-                CoinType.BITCOIN,
+                trustWalletCoin,
                 Bitcoin.SigningOutput.parser()
             ).encoded.toByteArray()
             val hash = Numeric.toHexString(signBytes)
