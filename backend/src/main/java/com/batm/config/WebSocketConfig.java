@@ -22,8 +22,10 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.socket.WebSocketHandler;
 import org.springframework.web.socket.config.annotation.*;
 import org.springframework.web.socket.server.HandshakeInterceptor;
+
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 @Configuration
 @EnableWebSocketMessageBroker
@@ -44,14 +46,26 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
                 serverHttpRequest.getHeaders().setUpgrade("WebSocket");
                 serverHttpRequest.getHeaders().setConnection("Upgrade");
 
-                System.out.println(" ==== " + serverHttpRequest.getHeaders().keySet());
+                Set<String> keySet = serverHttpRequest.getHeaders().keySet();
+
+                for (String key : keySet) {
+                    System.out.println(" 5555 " + key + ":" + serverHttpRequest.getHeaders().getFirst(key));
+                }
+
+                map.forEach((k, v) -> {
+                    System.out.println(" 6666 " + k + ":" + v);
+                });
 
                 return true;
             }
 
             @Override
             public void afterHandshake(ServerHttpRequest serverHttpRequest, ServerHttpResponse serverHttpResponse, WebSocketHandler webSocketHandler, @Nullable Exception e) {
-                System.out.println(" ++++ " + serverHttpRequest.getHeaders().keySet());
+                Set<String> keySet = serverHttpRequest.getHeaders().keySet();
+
+                for (String key : keySet) {
+                    System.out.println(" 7777 " + key + ":" + serverHttpRequest.getHeaders().getFirst(key));
+                }
             }
         });
     }
@@ -68,15 +82,19 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
             @Override
             public Message<?> preSend(Message<?> message, MessageChannel channel) {
+                System.out.println(" ---- 1111111 ");
                 StompHeaderAccessor accessor = MessageHeaderAccessor.getAccessor(message, StompHeaderAccessor.class);
 
                 if (StompCommand.CONNECT.equals(accessor.getCommand())) {
+                    System.out.println(" ---- 2222222 ");
                     if (accessor.getNativeHeader("Authorization") != null) {
+                        System.out.println(" ---- 3333333 ");
                         List<String> authorization = accessor.getNativeHeader("Authorization");
 
                         String accessToken = authorization.get(0).split(" ")[1];
 
                         if (tokenProvider.validateToken(accessToken)) {
+                            System.out.println(" ---- 4444444 ");
                             Authentication authentication = tokenProvider.getAuthentication(accessToken);
 
                             if (SecurityContextHolder.getContext().getAuthentication() == null) {

@@ -15,11 +15,9 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import wallet.core.jni.CoinType;
+
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
@@ -77,6 +75,10 @@ public class CoinService {
     }
 
     public BalanceDTO getCoinsBalance(Long userId, List<String> coins) {
+        if (coins == null || coins.isEmpty()) {
+            return new BalanceDTO(BigDecimal.ZERO, Collections.EMPTY_LIST);
+        }
+
         List<UserCoin> userCoins = userService.getUserCoins(userId);
 
         List<CompletableFuture<CoinBalanceDTO>> futures = userCoins.stream()

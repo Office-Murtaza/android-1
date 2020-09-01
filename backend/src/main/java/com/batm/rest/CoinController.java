@@ -1,8 +1,10 @@
 package com.batm.rest;
 
 import java.util.List;
+
 import com.batm.dto.CoinSettingsDTO;
 import com.batm.service.PriceChartService;
+import com.batm.service.RippledService;
 import com.batm.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +20,9 @@ public class CoinController {
 
     @Autowired
     private CoinService coinService;
+
+    @Autowired
+    private RippledService rippledService;
 
     @Autowired
     private PriceChartService chartService;
@@ -87,6 +92,20 @@ public class CoinController {
         }
     }
 
+    @GetMapping("/coin/{coin}/current-account-activated")
+    public Response getCurrentAccountActivated(@PathVariable CoinService.CoinEnum coin, @RequestParam String address) {
+        try {
+            if (coin == CoinService.CoinEnum.XRP) {
+                return Response.ok(!rippledService.getNodeTransactions(address).getMap().isEmpty());
+            } else {
+                return Response.defaultError(coin.name() + " not allowed");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Response.serverError();
+        }
+    }
+
     @GetMapping("/coin/{coin}/current-block")
     public Response getCurrentBlock(@PathVariable CoinService.CoinEnum coin) {
         try {
@@ -102,7 +121,7 @@ public class CoinController {
     }
 
     @GetMapping("/user/{userId}/balance")
-    public Response getBalance(@PathVariable Long userId, @RequestParam List<String> coins) {
+    public Response getBalance(@PathVariable Long userId, @RequestParam(required = false) List<String> coins) {
         try {
             return Response.ok(coinService.getCoinsBalance(userId, coins));
         } catch (Exception e) {

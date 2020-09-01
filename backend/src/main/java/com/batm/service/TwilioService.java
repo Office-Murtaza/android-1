@@ -8,9 +8,11 @@ import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+
 import javax.annotation.PostConstruct;
 import java.net.URI;
 import java.util.Arrays;
+
 import com.twilio.rest.api.v2010.account.Message;
 import com.twilio.type.PhoneNumber;
 
@@ -44,10 +46,9 @@ public class TwilioService {
 
             return message.getStatus();
         } catch (Exception e) {
-            e.printStackTrace();
         }
 
-        return null;
+        return Message.Status.FAILED;
     }
 
     public String sendVerificationCode(String phone) {
@@ -56,7 +57,7 @@ public class TwilioService {
                 String code = RandomStringUtils.randomNumeric(4);
                 Message.Status status = sendMessage(phone, "Code: " + code);
 
-                if (status != null && status == Message.Status.QUEUED) {
+                if (status == Message.Status.QUEUED) {
                     return code;
                 }
             } else {
@@ -102,6 +103,6 @@ public class TwilioService {
             e.printStackTrace();
         }
 
-        return null;
+        return Message.Status.FAILED;
     }
 }

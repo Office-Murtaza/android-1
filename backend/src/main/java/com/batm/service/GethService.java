@@ -36,6 +36,7 @@ import org.web3j.utils.Numeric;
 import wallet.core.java.AnySigner;
 import wallet.core.jni.*;
 import wallet.core.jni.proto.Ethereum;
+
 import javax.annotation.PostConstruct;
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -256,7 +257,11 @@ public class GethService {
 
     public TransactionStatus getTransactionStatus(String txId) {
         try {
-            return getTransactionStatus(web3.ethGetTransactionReceipt(txId).send().getTransactionReceipt().get());
+            Optional<TransactionReceipt> receiptOptional = web3.ethGetTransactionReceipt(txId).send().getTransactionReceipt();
+
+            if (receiptOptional.isPresent()) {
+                return getTransactionStatus(receiptOptional.get());
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -536,37 +541,41 @@ public class GethService {
                 BigDecimal fee = new BigDecimal(tx.getGasPrice()).multiply(new BigDecimal(tx.getGas())).divide(ETH_DIVIDER).stripTrailingZeros();
                 Integer blockNumber = parseBlockNumber(tx);
 
-                TransactionReceipt receipt = web3.ethGetTransactionReceipt(txId).send().getTransactionReceipt().get();
-                TransactionStatus status = getTransactionStatus(receipt);
+                Optional<TransactionReceipt> receiptOptional = web3.ethGetTransactionReceipt(txId).send().getTransactionReceipt();
 
-                if (amount.compareTo(BigDecimal.ZERO) == 0) {
-                    Document tokenDoc = fetchTokenTransaction(txId, blockNumber, timestamp, fee, status, receipt);
+                if (receiptOptional.isPresent()) {
+                    TransactionReceipt receipt = receiptOptional.get();
+                    TransactionStatus status = getTransactionStatus(receipt);
 
-                    if (tokenDoc != null) {
-                        fromAddress = Util.nvl(fromAddress, tokenDoc.getString("fromAddress"));
-                        toAddress = Util.nvl(toAddress, tokenDoc.getString("toAddress"));
+                    if (amount.compareTo(BigDecimal.ZERO) == 0) {
+                        Document tokenDoc = fetchTokenTransaction(txId, blockNumber, timestamp, fee, status, receipt);
 
-                        UpdateOneModel tokenUpdate = new UpdateOneModel(new Document("txId", tokenDoc.getString("txId")), new Document("$set", tokenDoc));
-                        tokenUpdate.getOptions().upsert(true);
+                        if (tokenDoc != null) {
+                            fromAddress = Util.nvl(fromAddress, tokenDoc.getString("fromAddress"));
+                            toAddress = Util.nvl(toAddress, tokenDoc.getString("toAddress"));
 
-                        tokenTxs.add(tokenUpdate);
+                            UpdateOneModel tokenUpdate = new UpdateOneModel(new Document("txId", tokenDoc.getString("txId")), new Document("$set", tokenDoc));
+                            tokenUpdate.getOptions().upsert(true);
+
+                            tokenTxs.add(tokenUpdate);
+                        }
                     }
+
+                    Document doc = new Document("txId", txId)
+                            .append("blockNumber", blockNumber)
+                            .append("fromAddress", fromAddress)
+                            .append("toAddress", toAddress)
+                            .append("status", status.getValue())
+                            .append("amount", amount)
+                            .append("fee", fee)
+                            .append("blockTime", timestamp)
+                            .append("timestamp", System.currentTimeMillis());
+
+                    UpdateOneModel update = new UpdateOneModel(new Document("txId", doc.getString("txId")), new Document("$set", doc));
+                    update.getOptions().upsert(true);
+
+                    ethTxs.add(update);
                 }
-
-                Document doc = new Document("txId", txId)
-                        .append("blockNumber", blockNumber)
-                        .append("fromAddress", fromAddress)
-                        .append("toAddress", toAddress)
-                        .append("status", status.getValue())
-                        .append("amount", amount)
-                        .append("fee", fee)
-                        .append("blockTime", timestamp)
-                        .append("timestamp", System.currentTimeMillis());
-
-                UpdateOneModel update = new UpdateOneModel(new Document("txId", doc.getString("txId")), new Document("$set", doc));
-                update.getOptions().upsert(true);
-
-                ethTxs.add(update);
             }
         } catch (Exception e) {
             e.printStackTrace();
