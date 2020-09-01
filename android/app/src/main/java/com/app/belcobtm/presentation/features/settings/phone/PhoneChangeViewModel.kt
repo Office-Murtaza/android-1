@@ -10,13 +10,14 @@ import com.app.belcobtm.domain.Failure
 import com.app.belcobtm.domain.settings.interactor.ERROR_UPDATE_PHONE_IS_SAME
 import com.app.belcobtm.domain.settings.interactor.ERROR_UPDATE_PHONE_IS_USED
 import com.app.belcobtm.domain.settings.interactor.UpdatePhoneUseCase
+import com.app.belcobtm.domain.settings.interactor.VerifyPhoneUseCase
 import com.app.belcobtm.presentation.core.SingleLiveData
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
 import io.michaelrocks.libphonenumber.android.NumberParseException
 import io.michaelrocks.libphonenumber.android.PhoneNumberUtil
 
 class PhoneChangeViewModel(
-    private val changePhoneUseCase: UpdatePhoneUseCase,
+    private val verifyPhoneUseCase: VerifyPhoneUseCase,
     private val appContext: Context,
     private val prefsHelper: SharedPreferencesHelper
 ) : ViewModel() {
@@ -39,18 +40,18 @@ class PhoneChangeViewModel(
             )
             return
         }
-        changePhoneUseCase.invoke(
-            UpdatePhoneUseCase.Params(phone),
+        verifyPhoneUseCase.invoke(
+            VerifyPhoneUseCase.Params(phone),
             onSuccess = {
                 if (it) {
+                    stateData.value = LoadingData.Error(data = stateData.value?.commonData, errorType = Failure.MessageError(code = ERROR_UPDATE_PHONE_IS_USED, message = null))
+                } else {
                     actionData.value = PhoneChangeAction.NavigateAction(
                         PhoneChangeFragmentDirections.phoneChangeToSmsFragment(
                             phone,
                             R.id.sms_code_to_settings_fragment
                         )
                     )
-                } else {
-                    stateData.value = LoadingData.Error(data = stateData.value?.commonData)
                 }
             },
             onError = {
