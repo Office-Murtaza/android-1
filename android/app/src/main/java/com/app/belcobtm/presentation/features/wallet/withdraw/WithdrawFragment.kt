@@ -26,7 +26,7 @@ class WithdrawFragment : BaseFragment() {
             val fromCoinAmountTemporary = editable.getDouble()
             val cryptoAmount: Double
 
-            if (fromCoinAmountTemporary > fromMaxValue) {
+            if (fromCoinAmountTemporary >= fromMaxValue) {
                 cryptoBalanceToSend = viewModel.getCoinBalance()
                 cryptoAmount = fromMaxValue
                 editable.clear()
@@ -68,8 +68,11 @@ class WithdrawFragment : BaseFragment() {
 
     override fun initListeners() {
         addressScanView.setOnClickListener { IntentIntegrator.forSupportFragment(this).initiateScan() }
-        addressPasteView.setOnClickListener { addressView.setText(getTextFromClipboard()) }
-        maxCryptoView.setOnClickListener { amountCryptoView.setText(viewModel.getMaxValue().toStringCoin()) }
+        addressPasteView.setOnClickListener {
+            addressView.setText(getTextFromClipboard())
+            updateNextButton()
+        }
+        maxCryptoView.setOnClickListener { amountCryptoView.setText(viewModel.getCoinBalance().toStringCoin()) }
         amountCryptoView.editText?.addTextChangedListener(doubleTextWatcher.firstTextWatcher)
     }
 

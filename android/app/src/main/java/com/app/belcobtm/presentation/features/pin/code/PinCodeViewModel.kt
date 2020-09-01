@@ -3,6 +3,7 @@ package com.app.belcobtm.presentation.features.pin.code
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.app.belcobtm.R
+import com.app.belcobtm.domain.Failure
 import com.app.belcobtm.domain.authorization.interactor.AuthorizeUseCase
 import com.app.belcobtm.domain.authorization.interactor.GetAuthorizePinUseCase
 import com.app.belcobtm.domain.authorization.interactor.SaveAuthorizePinUseCase
@@ -34,7 +35,7 @@ class PinCodeViewModel(
                 enteredPin = ""
                 currentPin = ""
                 updateState()
-                actionData.value = PinCodeAction.AuthorizeError
+                actionData.value = PinCodeAction.AuthorizeError(it)
             }
         )
     }
@@ -201,6 +202,6 @@ sealed class PinCodeAction {
     data class Vibrate(val duration: Long) : PinCodeAction()
     object Success : PinCodeAction()
     object ChangedPin : PinCodeAction()
-    object AuthorizeError : PinCodeAction()
+    data class AuthorizeError(val failure: Failure) : PinCodeAction()
     object BackPress : PinCodeAction()
 }

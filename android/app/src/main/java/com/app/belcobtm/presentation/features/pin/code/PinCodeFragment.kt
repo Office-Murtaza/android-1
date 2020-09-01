@@ -9,6 +9,7 @@ import android.widget.TableLayout
 import androidx.lifecycle.observe
 import com.app.belcobtm.App
 import com.app.belcobtm.R
+import com.app.belcobtm.domain.Failure
 import com.app.belcobtm.presentation.core.extensions.toggle
 import com.app.belcobtm.presentation.core.ui.fragment.BaseFragment
 import com.app.belcobtm.presentation.features.HostActivity
@@ -35,8 +36,7 @@ class PinCodeFragment : BaseFragment() {
             //do nothing, user need to enter/create pin
         }
     }
-    override val retryListener: View.OnClickListener =
-        View.OnClickListener { viewModel.authorize() }
+    override val retryListener: View.OnClickListener = View.OnClickListener { viewModel.authorize() }
 
     private var appliedState: PinCodeState? = null
 
@@ -76,9 +76,10 @@ class PinCodeFragment : BaseFragment() {
                     keyboardView.layoutParams = keyboardView.layoutParams.apply {
                         height = TableLayout.LayoutParams.WRAP_CONTENT
                     }
-                    activity?.supportFragmentManager?.findFragmentByTag(HostNavigationFragment::class.java.name)?.let {
-                        (it as? HostNavigationFragment)?.showBottomMenu()
-                    }
+                    activity
+                        ?.supportFragmentManager
+                        ?.findFragmentByTag(HostNavigationFragment::class.java.name)
+                        ?.let { fragment -> (fragment as? HostNavigationFragment)?.showBottomMenu() }
                 }
             }
             state.visiblePin.doIfChanged(appliedState?.visiblePin) {
@@ -99,22 +100,23 @@ class PinCodeFragment : BaseFragment() {
         }
         viewModel.actionData.observe(this) { action ->
             when (action) {
-                is PinCodeAction.Success -> {
-                    (requireActivity() as HostActivity).showMainScreen()
-                }
+                is PinCodeAction.Success -> (requireActivity() as HostActivity).showMainScreen()
                 is PinCodeAction.ChangedPin -> {
                     showSnackBar(R.string.pin_updated)
                     navigate(PinCodeFragmentDirections.pinCodeToSettingsFragment(SETTINGS_SECURITY))
                 }
-                is PinCodeAction.Vibrate -> {
-                    vibrate(action.duration)
+                is PinCodeAction.Vibrate -> vibrate(action.duration)
+                is PinCodeAction.AuthorizeError -> when (action.failure) {
+                    is Failure.NetworkConnection -> showErrorNoInternetConnection()
+                    is Failure.MessageError -> {
+                        showSnackBar(action.failure.message ?: "")
+                        showContent()
+                    }
+                    is Failure.ServerError -> showErrorServerError()
+                    else -> showErrorSomethingWrong()
                 }
-                is PinCodeAction.AuthorizeError -> {
-                    showErrorServerError()
-                }
-                is PinCodeAction.BackPress -> {
+                is PinCodeAction.BackPress ->
                     navigate(PinCodeFragmentDirections.pinCodeToSettingsFragment(SETTINGS_SECURITY))
-                }
             }
         }
     }

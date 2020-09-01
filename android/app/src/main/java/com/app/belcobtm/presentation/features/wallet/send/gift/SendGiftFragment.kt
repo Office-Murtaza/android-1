@@ -35,7 +35,7 @@ class SendGiftFragment : BaseFragment(), GiphyDialogFragment.GifSelectionListene
             val fromCoinAmountTemporary = editable.getDouble()
             val cryptoAmount: Double
 
-            if (fromCoinAmountTemporary > fromMaxValue) {
+            if (fromCoinAmountTemporary >= fromMaxValue) {
                 cryptoBalanceToSend = viewModel.getCoinBalance()
                 cryptoAmount = fromMaxValue
                 editable.clear()
@@ -114,7 +114,7 @@ class SendGiftFragment : BaseFragment(), GiphyDialogFragment.GifSelectionListene
         })
     }
 
-    private fun selectMaxPrice() = amountCryptoView.setText(viewModel.getMaxValue().toStringCoin())
+    private fun selectMaxPrice() = amountCryptoView.setText(viewModel.getCoinBalance().toStringCoin())
 
     private fun openGify() {
         gifsDialog.show(childFragmentManager, "gifs_dialog")

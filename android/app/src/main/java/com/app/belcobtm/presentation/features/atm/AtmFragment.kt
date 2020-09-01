@@ -27,15 +27,16 @@ import permissions.dispatcher.OnNeverAskAgain
 import permissions.dispatcher.RuntimePermissions
 
 @RuntimePermissions
-class AtmFragment : BaseFragment()
-    , GoogleMap.OnInfoWindowClickListener
-    , OnMapReadyCallback
-    , LocationListener {
+class AtmFragment : BaseFragment(),
+    GoogleMap.OnInfoWindowClickListener,
+    OnMapReadyCallback,
+    LocationListener {
     private val viewModel by viewModel<AtmViewModel>()
 
     override val resourceLayout = R.layout.fragment_atm
     override var isMenuEnabled = true
     override val isToolbarEnabled = false
+    override val retryListener: View.OnClickListener = View.OnClickListener { viewModel.requestAtms() }
 
     private var map: GoogleMap? = null
     private var locationManager: LocationManager? = null
@@ -44,7 +45,7 @@ class AtmFragment : BaseFragment()
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val mapFragment = childFragmentManager
-            .findFragmentById(com.app.belcobtm.R.id.map) as SupportMapFragment?
+            .findFragmentById(R.id.map) as SupportMapFragment?
         mapFragment?.getMapAsync(this)
     }
 
@@ -55,7 +56,7 @@ class AtmFragment : BaseFragment()
     override fun initObservers() {
         super.initObservers()
         viewModel.stateData.listen(
-            success = {state ->
+            success = { state ->
                 state.doIfChanged(appliedState?.commonData) {
                     initMarkers(it)
                 }
@@ -109,11 +110,11 @@ class AtmFragment : BaseFragment()
 
     @OnNeverAskAgain(
         Manifest.permission.ACCESS_FINE_LOCATION,
-        Manifest.permission.ACCESS_COARSE_LOCATION)
+        Manifest.permission.ACCESS_COARSE_LOCATION
+    )
     fun permissionsNeverAskAgain() {
         AlertHelper.showToastShort(requireContext(), R.string.verification_please_on_permissions)
     }
-
 
     //    LocationListener start
     override fun onLocationChanged(location: Location) {
