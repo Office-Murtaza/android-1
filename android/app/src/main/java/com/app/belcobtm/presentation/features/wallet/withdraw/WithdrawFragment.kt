@@ -7,6 +7,7 @@ import android.view.View
 import com.app.belcobtm.R
 import com.app.belcobtm.domain.wallet.LocalCoinType
 import com.app.belcobtm.presentation.core.extensions.*
+import com.app.belcobtm.presentation.core.helper.AlertHelper
 import com.app.belcobtm.presentation.core.ui.fragment.BaseFragment
 import com.app.belcobtm.presentation.core.watcher.DoubleTextWatcher
 import com.google.zxing.integration.android.IntentIntegrator
@@ -48,7 +49,7 @@ class WithdrawFragment : BaseFragment() {
     override val isToolbarEnabled: Boolean = true
     override val isHomeButtonEnabled: Boolean = true
     override var isMenuEnabled: Boolean = false
-    override val retryListener: View.OnClickListener = View.OnClickListener { }
+    override val retryListener: View.OnClickListener = View.OnClickListener { validateAndSubmit() }
 
     override fun initViews() {
         setToolbarTitle(getString(R.string.withdraw_screen_screen_title, viewModel.getCoinCode()))
@@ -73,7 +74,10 @@ class WithdrawFragment : BaseFragment() {
     }
 
     override fun initObservers() {
-        viewModel.transactionLiveData.listen({ popBackStack() })
+        viewModel.transactionLiveData.listen({
+            AlertHelper.showToastShort(requireContext(), R.string.transactions_screen_transaction_created)
+            popBackStack()
+        })
     }
 
     private fun getTextFromClipboard(): String {

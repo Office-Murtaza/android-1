@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.Intent
 import android.location.Location
 import android.location.LocationManager
+import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.app.belcobtm.R
@@ -48,6 +49,7 @@ class TransactionsFragment : BaseFragment() {
     override var isMenuEnabled: Boolean = false
     override val customToolbarId: Int = R.id.customToolbarView
     override val isFirstShowContent: Boolean = false
+    override val retryListener: View.OnClickListener = View.OnClickListener { viewModel.updateData() }
 
     override fun onResume() {
         super.onResume()

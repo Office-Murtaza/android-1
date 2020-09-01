@@ -6,6 +6,7 @@ import android.view.View
 import com.app.belcobtm.R
 import com.app.belcobtm.presentation.core.Const.GIPHY_API_KEY
 import com.app.belcobtm.presentation.core.extensions.*
+import com.app.belcobtm.presentation.core.helper.AlertHelper
 import com.app.belcobtm.presentation.core.ui.fragment.BaseFragment
 import com.app.belcobtm.presentation.core.watcher.DoubleTextWatcher
 import com.giphy.sdk.core.models.Media
@@ -108,6 +109,7 @@ class SendGiftFragment : BaseFragment(), GiphyDialogFragment.GifSelectionListene
 
     override fun initObservers() {
         viewModel.sendGiftLiveData.listen({
+            AlertHelper.showToastShort(requireContext(), R.string.transactions_screen_transaction_created)
             popBackStack()
         })
     }

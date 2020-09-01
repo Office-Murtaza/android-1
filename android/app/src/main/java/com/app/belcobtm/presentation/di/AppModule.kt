@@ -112,7 +112,7 @@ val viewModelModule = module {
     }
     viewModel { (coinCode: String) ->
         val coinList = (get() as GetCoinListUseCase).invoke()
-        val fromCoinDataItem = coinList.find { it.code == coinCode }!!
+        val fromCoinDataItem = coinList.find { it.code == coinCode }
         val fromCoinFee = get<WalletRepository>().getCoinFeeItemByCode(coinCode)
         WithdrawViewModel(get(), fromCoinDataItem, fromCoinFee, coinList)
     }

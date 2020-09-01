@@ -42,7 +42,7 @@ class WalletFragment : BaseFragment() {
     override fun initObservers() {
         viewModel.balanceLiveData.listen(
             success = {
-                balanceView.text = getString(R.string.balance_screen_balance, it.first.toStringUsd())
+                balanceView.text = getString(R.string.unit_usd_dynamic_symbol, it.first.toStringUsd())
                 adapter.setItemList(it.second)
                 swipeToRefreshView.isRefreshing = false
             },
