@@ -143,7 +143,8 @@ class AuthorizationRepositoryImpl(
             LocalCoinType.BTC -> {
                 val extBitcoinPublicKey =
                     wallet.getExtendedPublicKey(Purpose.BIP44, coinType.trustWalletType, HDVersion.XPUB)
-                val bitcoinPublicKey = HDWallet.getPublicKeyFromExtended(extBitcoinPublicKey, "m/44'/0'/0'/0/0")
+                val bitcoinPublicKey =
+                    HDWallet.getPublicKeyFromExtended(extBitcoinPublicKey, coinType.trustWalletType, "m/44'/0'/0'/0/0")
                 BitcoinAddress(bitcoinPublicKey, coinType.trustWalletType.p2pkhPrefix()).description()
             }
             else -> coinType.trustWalletType.deriveAddress(privateKey)

@@ -119,9 +119,9 @@ class WithdrawFragment : BaseFragment() {
             showError(R.string.withdraw_screen_where_money_libovski)
         }
 
-        if (!isCatm && cryptoBalanceToSend > (viewModel.getCoinBalance() - viewModel.getTransactionFee())) {
+        if (!isCatm && cryptoBalanceToSend > viewModel.getCoinBalance()) {
             errors++
-            showError(R.string.not_enough_balance)
+            amountCryptoView.showError(R.string.insufficient_balance)
         }
 
         if (errors == 0) {

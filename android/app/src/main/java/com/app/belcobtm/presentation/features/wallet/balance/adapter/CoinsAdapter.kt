@@ -47,7 +47,7 @@ class CoinsAdapter(private val listener: (item: BalanceListItem) -> Unit) :
                 balanceCryptoView.text =
                     context.getString(R.string.unit_dynamic, item.balanceCrypto.toStringCoin(), item.code)
                 balanceFiatView.text =
-                    context.getString(R.string.unit_usd_dynamic_symbol, item.balanceCrypto.toStringUsd())
+                    context.getString(R.string.unit_usd_dynamic_symbol, item.balanceFiat.toStringUsd())
                 priceView.text = context.getString(R.string.unit_usd_dynamic_symbol, item.priceUsd.toStringUsd())
             }
         }

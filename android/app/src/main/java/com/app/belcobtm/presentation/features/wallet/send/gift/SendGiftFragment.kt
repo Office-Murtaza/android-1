@@ -46,8 +46,10 @@ class SendGiftFragment : BaseFragment(), GiphyDialogFragment.GifSelectionListene
             }
 
             if (cryptoAmount > 0) {
-                amountUsdView.text =
-                    getString(R.string.unit_usd_dynamic_symbol, (cryptoAmount * viewModel.getUsdPrice()).toStringUsd())
+                amountUsdView.text = getString(
+                    R.string.unit_usd_dynamic_symbol,
+                    (cryptoAmount * viewModel.getUsdPrice()).toStringUsd()
+                )
             } else {
                 amountUsdView.text = getString(R.string.unit_usd_dynamic_symbol, "0.0")
             }

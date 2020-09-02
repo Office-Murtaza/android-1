@@ -237,6 +237,7 @@
     <string name="wrong_address">Wrong address</string>
     <string name="should_be_filled">Should be filled</string>
     <string name="not_enough_balance">Not enough balance</string>
+    <string name="insufficient_balance">Insufficient balance</string>
 
     <!-- Transition details screen -->
     <string name="transition_details_screen_id">ID</string>

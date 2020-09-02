@@ -114,7 +114,7 @@ class TransactionHashHelper(
                 .setUseMaxAmount(false)
 
             utxos.forEach {
-                val privateKey = hdWallet.getKey(it.path)
+                val privateKey = hdWallet.getKey(trustWalletCoin, it.path)
                 input.addPrivateKey(ByteString.copyFrom(privateKey.data()))
             }
 
@@ -201,23 +201,21 @@ class TransactionHashHelper(
 
             if (fromCoin == LocalCoinType.CATM) {
                 val function = when (customFunctionName) {
-                    ETH_CATM_FUNCTION_NAME_WITHDRAW_STAKE ->
-                        EthereumAbiEncoder.buildFunction(ETH_CATM_FUNCTION_NAME_WITHDRAW_STAKE)
+                    ETH_CATM_FUNCTION_NAME_WITHDRAW_STAKE -> EthereumAbiFunction(ETH_CATM_FUNCTION_NAME_WITHDRAW_STAKE)
                     ETH_CATM_FUNCTION_NAME_CREATE_STAKE -> {
-                        val function = EthereumAbiEncoder.buildFunction(ETH_CATM_FUNCTION_NAME_CREATE_STAKE)
+                        val function = EthereumAbiFunction(ETH_CATM_FUNCTION_NAME_CREATE_STAKE)
                         function.addParamAddress(toAddress.toHexByteArray(), false)
                         function.addParamUInt256(amountMultipliedByDivider.toBigInteger().toByteArray(), false)
                         function
                     }
                     else -> {
-                        val function = EthereumAbiEncoder.buildFunction(ETH_CATM_FUNCTION_NAME_TRANSFER)
+                        val function = EthereumAbiFunction(ETH_CATM_FUNCTION_NAME_TRANSFER)
                         function.addParamAddress(toAddress.toHexByteArray(), false)
                         function.addParamUInt256(amountMultipliedByDivider.toBigInteger().toByteArray(), false)
                         function
                     }
                 }
-
-                input.payload = ByteString.copyFrom(EthereumAbiEncoder.encode(function))
+                input.payload = ByteString.copyFrom(EthereumAbi.encode(function))
                 input.toAddress = coinFee?.contractAddress
             } else {
                 input.amount = ByteString.copyFrom(hexAmount)
@@ -231,7 +229,6 @@ class TransactionHashHelper(
             response as Either.Left
         }
     }
-
 
     /**
      * custom implementation of adding leading zeroes
