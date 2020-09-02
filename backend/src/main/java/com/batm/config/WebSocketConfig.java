@@ -6,9 +6,6 @@ import com.batm.security.TokenProvider;
 import com.batm.service.CoinService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.server.ServerHttpRequest;
-import org.springframework.http.server.ServerHttpResponse;
-import org.springframework.lang.Nullable;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.simp.config.ChannelRegistration;
@@ -19,13 +16,8 @@ import org.springframework.messaging.support.ChannelInterceptor;
 import org.springframework.messaging.support.MessageHeaderAccessor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.socket.WebSocketHandler;
 import org.springframework.web.socket.config.annotation.*;
-import org.springframework.web.socket.server.HandshakeInterceptor;
-
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 @Configuration
 @EnableWebSocketMessageBroker
@@ -39,35 +31,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-        registry.addEndpoint("/api/v1/ws").addInterceptors(new HandshakeInterceptor() {
-
-            @Override
-            public boolean beforeHandshake(ServerHttpRequest serverHttpRequest, ServerHttpResponse serverHttpResponse, WebSocketHandler webSocketHandler, Map<String, Object> map) throws Exception {
-                serverHttpRequest.getHeaders().setUpgrade("WebSocket");
-                serverHttpRequest.getHeaders().setConnection("Upgrade");
-
-                Set<String> keySet = serverHttpRequest.getHeaders().keySet();
-
-                for (String key : keySet) {
-                    System.out.println(" 5555 " + key + ":" + serverHttpRequest.getHeaders().getFirst(key));
-                }
-
-                map.forEach((k, v) -> {
-                    System.out.println(" 6666 " + k + ":" + v);
-                });
-
-                return true;
-            }
-
-            @Override
-            public void afterHandshake(ServerHttpRequest serverHttpRequest, ServerHttpResponse serverHttpResponse, WebSocketHandler webSocketHandler, @Nullable Exception e) {
-                Set<String> keySet = serverHttpRequest.getHeaders().keySet();
-
-                for (String key : keySet) {
-                    System.out.println(" 7777 " + key + ":" + serverHttpRequest.getHeaders().getFirst(key));
-                }
-            }
-        });
+        registry.addEndpoint("/api/v1/ws").setAllowedOrigins("*");
     }
 
     @Override
@@ -82,19 +46,14 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
             @Override
             public Message<?> preSend(Message<?> message, MessageChannel channel) {
-                System.out.println(" ---- 1111111 ");
                 StompHeaderAccessor accessor = MessageHeaderAccessor.getAccessor(message, StompHeaderAccessor.class);
 
                 if (StompCommand.CONNECT.equals(accessor.getCommand())) {
-                    System.out.println(" ---- 2222222 ");
                     if (accessor.getNativeHeader("Authorization") != null) {
-                        System.out.println(" ---- 3333333 ");
                         List<String> authorization = accessor.getNativeHeader("Authorization");
-
                         String accessToken = authorization.get(0).split(" ")[1];
 
                         if (tokenProvider.validateToken(accessToken)) {
-                            System.out.println(" ---- 4444444 ");
                             Authentication authentication = tokenProvider.getAuthentication(accessToken);
 
                             if (SecurityContextHolder.getContext().getAuthentication() == null) {
