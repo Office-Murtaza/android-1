@@ -85,11 +85,11 @@ class SendGiftFragment : BaseFragment(), GiphyDialogFragment.GifSelectionListene
             viewModel.getCoinCode()
         )
         balanceUsdView.text = getString(R.string.unit_usd_dynamic_symbol, viewModel.getUsdBalance().toStringUsd())
-//        amountCryptoView.helperText = getString(
-//            R.string.transaction_helper_text_commission,
-//            viewModel.getTransactionFee().toStringCoin(),
-//            viewModel.getCoinCode()
-//        )
+        amountCryptoView.helperText = getString(
+            R.string.transaction_helper_text_commission,
+            viewModel.getTransactionFee().toStringCoin(),
+            if (viewModel.getCoinCode() == LocalCoinType.CATM.name) LocalCoinType.ETH.name else viewModel.getCoinCode()
+        )
     }
 
     override fun initListeners() {
@@ -172,7 +172,7 @@ class SendGiftFragment : BaseFragment(), GiphyDialogFragment.GifSelectionListene
         nextButtonView.isEnabled = phoneContainerView.getString().isNotEmpty()
                 && isValidMobileNumber(phoneContainerView.getString())
                 && amountCryptoView.isNotBlank()
-                && amountCryptoView.getDouble() > viewModel.getTransactionFee()
+                && amountCryptoView.getDouble() > 0
                 && amountCryptoView.getDouble() <= (viewModel.getCoinBalance() - viewModel.getTransactionFee())
     }
 

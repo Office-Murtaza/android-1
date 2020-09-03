@@ -116,6 +116,7 @@
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/amountCryptoView"
         style="@style/TextInputLayoutOutline"
+        app:helperTextEnabled="true"
         app:layout_constraintEnd_toEndOf="@id/addressView"
         app:layout_constraintStart_toStartOf="@id/addressView"
         app:layout_constraintTop_toBottomOf="@id/addressView">

@@ -61,6 +61,11 @@ class WithdrawFragment : BaseFragment() {
         amountCryptoView.hint = getString(R.string.withdraw_screen_crypto_amount, viewModel.getCoinCode())
         amountCryptoView.actionDoneListener { validateAndSubmit() }
         nextButtonView.setOnClickListener { validateAndSubmit() }
+        amountCryptoView.helperText = getString(
+            R.string.transaction_helper_text_commission,
+            viewModel.getTransactionFee().toStringCoin(),
+            if (viewModel.getCoinCode() == LocalCoinType.CATM.name) LocalCoinType.ETH.name else viewModel.getCoinCode()
+        )
     }
 
     override fun initListeners() {
@@ -131,7 +136,8 @@ class WithdrawFragment : BaseFragment() {
     )?.validate(addressView.getString()) ?: false
 
     private fun updateNextButton() {
-        nextButtonView.isEnabled = amountCryptoView.getDouble() > viewModel.getTransactionFee()
+        nextButtonView.isEnabled = amountCryptoView.isNotBlank()
+                && amountCryptoView.getDouble() > 0
                 && amountCryptoView.getDouble() <= (viewModel.getCoinBalance() - viewModel.getTransactionFee())
                 && isValidAddress()
     }
