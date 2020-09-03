@@ -19,7 +19,6 @@ class WithdrawFragment : BaseFragment() {
     private val viewModel: WithdrawViewModel by viewModel {
         parametersOf(WithdrawFragmentArgs.fromBundle(requireArguments()).coinCode)
     }
-    private var cryptoBalanceToSend = 0.0
     private val doubleTextWatcher: DoubleTextWatcher = DoubleTextWatcher(
         firstTextWatcher = { editable ->
             val fromMaxValue = viewModel.getMaxValue()
@@ -27,12 +26,10 @@ class WithdrawFragment : BaseFragment() {
             val cryptoAmount: Double
 
             if (fromCoinAmountTemporary >= fromMaxValue) {
-                cryptoBalanceToSend = viewModel.getCoinBalance()
                 cryptoAmount = fromMaxValue
                 editable.clear()
                 editable.insert(0, cryptoAmount.toStringCoin())
             } else {
-                cryptoBalanceToSend = fromCoinAmountTemporary
                 cryptoAmount = fromCoinAmountTemporary
             }
 
@@ -48,7 +45,7 @@ class WithdrawFragment : BaseFragment() {
     override val resourceLayout: Int = R.layout.fragment_withdraw
     override val isToolbarEnabled: Boolean = true
     override val isHomeButtonEnabled: Boolean = true
-    override var isMenuEnabled: Boolean = false
+    override var isMenuEnabled: Boolean = true
     override val retryListener: View.OnClickListener = View.OnClickListener { validateAndSubmit() }
 
     override fun initViews() {
@@ -116,16 +113,16 @@ class WithdrawFragment : BaseFragment() {
         //Validate CATM by ETH commission
         if (isCatm && viewModel.isNotEnoughBalanceETH()) {
             errors++
-            showError(R.string.withdraw_screen_where_money_libovski)
+            amountCryptoView.showError(R.string.withdraw_screen_where_money_libovski)
         }
 
-        if (!isCatm && cryptoBalanceToSend > viewModel.getCoinBalance()) {
+        if (!isCatm && amountCryptoView.getDouble() > (viewModel.getCoinBalance() - viewModel.getTransactionFee())) {
             errors++
             amountCryptoView.showError(R.string.insufficient_balance)
         }
 
         if (errors == 0) {
-            viewModel.withdraw(addressView.getString(), cryptoBalanceToSend)
+            viewModel.withdraw(addressView.getString(), amountCryptoView.getDouble())
         }
     }
 
@@ -134,6 +131,8 @@ class WithdrawFragment : BaseFragment() {
     )?.validate(addressView.getString()) ?: false
 
     private fun updateNextButton() {
-        nextButtonView.isEnabled = cryptoBalanceToSend > viewModel.getTransactionFee() && isValidAddress()
+        nextButtonView.isEnabled = amountCryptoView.getDouble() > viewModel.getTransactionFee()
+                && amountCryptoView.getDouble() <= (viewModel.getCoinBalance() - viewModel.getTransactionFee())
+                && isValidAddress()
     }
 }

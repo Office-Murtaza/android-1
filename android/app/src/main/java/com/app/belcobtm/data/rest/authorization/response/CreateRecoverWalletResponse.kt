@@ -17,6 +17,7 @@ data class RecoverWalletBalanceResponse(
 
 data class RecoverWalletCoinResponse(
     val id: Int,
+    val idx: Int,
     val code: String,
     val address: String,
     val balance: Double,

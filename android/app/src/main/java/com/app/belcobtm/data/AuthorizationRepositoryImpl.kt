@@ -161,7 +161,7 @@ class AuthorizationRepositoryImpl(
             val publicKey: String = value.first
             val privateKey: String = value.second
             responseCoinList.find { it.code == localCoinType.name }?.let { responseItem ->
-                entityList.add(AccountEntity(responseItem.id, localCoinType, publicKey, privateKey, true))
+                entityList.add(AccountEntity(responseItem.idx, localCoinType, publicKey, privateKey, true))
             }
         }
         return entityList

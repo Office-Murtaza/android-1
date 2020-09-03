@@ -9,10 +9,11 @@ data class BalanceResponse(
 )
 
 data class CoinResponse(
+    var id: Int,
+    val idx: Int,
     var balance: Double,
     var fiatBalance: Double,
     var code: String,
-    var id: Int,
     var price: Double,
     var address: String,
     var reservedBalance: Double?,
@@ -21,7 +22,7 @@ data class CoinResponse(
 
 fun BalanceResponse.mapToDataItem(): BalanceDataItem = BalanceDataItem(
     balance = totalBalance,
-    coinList = coins.map { it.mapToDataItem() }
+    coinList = coins.sortedBy { it.idx }.map { it.mapToDataItem() }
 )
 
 fun CoinResponse.mapToDataItem(): CoinDataItem = CoinDataItem(

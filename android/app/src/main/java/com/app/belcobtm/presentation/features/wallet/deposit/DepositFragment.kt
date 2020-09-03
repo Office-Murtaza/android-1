@@ -14,7 +14,7 @@ class DepositFragment : BaseFragment() {
     override val resourceLayout: Int = R.layout.activity_deposit
     override val isToolbarEnabled: Boolean = true
     override val isHomeButtonEnabled: Boolean = true
-    override var isMenuEnabled: Boolean = false
+    override var isMenuEnabled: Boolean = true
 
     override fun initListeners() {
         val address = DepositFragmentArgs.fromBundle(requireArguments()).coinAddress

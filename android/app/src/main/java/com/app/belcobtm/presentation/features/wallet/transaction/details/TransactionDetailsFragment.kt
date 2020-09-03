@@ -30,7 +30,7 @@ class TransactionDetailsFragment : BaseFragment() {
     override val resourceLayout: Int = R.layout.fragment_transaction_details
     override val isToolbarEnabled: Boolean = true
     override val isHomeButtonEnabled: Boolean = true
-    override var isMenuEnabled: Boolean = false
+    override var isMenuEnabled: Boolean = true
     override val retryListener: View.OnClickListener = View.OnClickListener { viewModel.getTransactionDetails() }
 
     override fun initViews() {

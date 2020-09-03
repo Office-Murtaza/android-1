@@ -253,28 +253,38 @@ class TransactionHashHelper(
         fromCoinAmount: Double
     ): Either<Failure, String> {
         val coinEntity = daoAccount.getItem(fromCoin.name)
-        val response = apiService.getRippleSequence(coinEntity.publicKey)
+        val checkActivationResponse = apiService.checkRippleAccountActivation(coinEntity.publicKey)
 
-        return if (response.isRight) {
-            val privateKey = PrivateKey(coinEntity.privateKey.toHexByteArray())
-            val signingInput = Ripple.SigningInput.newBuilder().also {
-                it.sequence = (response as Either.Right).b.toInt()
-                it.account = coinEntity.publicKey
-                it.amount = (fromCoinAmount * CoinType.XRP.unit()).toLong()
-                it.destination = toAddress
-                it.fee = ((prefsHelper.coinsFee[CoinType.XRP.code()]?.txFee?.toBigDecimal()
-                    ?: BigDecimal(0.000020)) * BigDecimal.valueOf(CoinType.XRP.unit())).toLong()
-                it.privateKey = ByteString.copyFrom(privateKey.data())
+        return if (checkActivationResponse.isRight) {
+            if ((checkActivationResponse as Either.Right).b) {
+                val response = apiService.getRippleSequence(coinEntity.publicKey)
+
+                return if (response.isRight) {
+                    val privateKey = PrivateKey(coinEntity.privateKey.toHexByteArray())
+                    val signingInput = Ripple.SigningInput.newBuilder().also {
+                        it.sequence = (response as Either.Right).b.toInt()
+                        it.account = coinEntity.publicKey
+                        it.amount = (fromCoinAmount * CoinType.XRP.unit()).toLong()
+                        it.destination = toAddress
+                        it.fee = ((prefsHelper.coinsFee[CoinType.XRP.code()]?.txFee?.toBigDecimal()
+                            ?: BigDecimal(0.000020)) * BigDecimal.valueOf(CoinType.XRP.unit())).toLong()
+                        it.privateKey = ByteString.copyFrom(privateKey.data())
+                    }
+                    val signBytes = AnySigner.sign(
+                        signingInput.build(),
+                        CoinType.XRP,
+                        Ripple.SigningOutput.parser()
+                    ).encoded.toByteArray()
+                    val hash = Numeric.toHexString(signBytes).substring(2)
+                    Either.Right(hash)
+                } else {
+                    response as Either.Left
+                }
+            } else {
+                Either.Left(Failure.MessageError("Amount is not enough to activate receiver address"))
             }
-            val signBytes = AnySigner.sign(
-                signingInput.build(),
-                CoinType.XRP,
-                Ripple.SigningOutput.parser()
-            ).encoded.toByteArray()
-            val hash = Numeric.toHexString(signBytes).substring(2)
-            Either.Right(hash)
         } else {
-            response as Either.Left
+            checkActivationResponse as Either.Left
         }
     }
 

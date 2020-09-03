@@ -303,6 +303,14 @@ class TransactionApiService(
         Either.Left(failure)
     }
 
+    suspend fun checkRippleAccountActivation(fromAddress: String): Either<Failure, Boolean> = try {
+        val request = api.checkRippleAccountActivationAsync(fromAddress).await()
+        request.body()?.let { Either.Right(it.result ?: false) } ?: Either.Left(Failure.ServerError())
+    } catch (failure: Failure) {
+        failure.printStackTrace()
+        Either.Left(failure)
+    }
+
     suspend fun getBinanceBlockHeader(toAddress: String): Either<Failure, BinanceBlockResponse> = try {
         val request = api.getBinanceBlockHeaderAsync(toAddress).await()
         request.body()?.let { Either.Right(it) } ?: Either.Left(Failure.ServerError())

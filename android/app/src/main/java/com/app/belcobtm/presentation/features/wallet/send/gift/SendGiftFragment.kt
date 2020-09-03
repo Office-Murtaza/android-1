@@ -4,6 +4,7 @@ import android.content.Context
 import android.telephony.PhoneNumberFormattingTextWatcher
 import android.view.View
 import com.app.belcobtm.R
+import com.app.belcobtm.domain.wallet.LocalCoinType
 import com.app.belcobtm.presentation.core.Const.GIPHY_API_KEY
 import com.app.belcobtm.presentation.core.extensions.*
 import com.app.belcobtm.presentation.core.helper.AlertHelper
@@ -28,7 +29,6 @@ class SendGiftFragment : BaseFragment(), GiphyDialogFragment.GifSelectionListene
         parametersOf(SendGiftFragmentArgs.fromBundle(requireArguments()).coinCode)
     }
     private val phoneUtil: PhoneNumberUtil by lazy { PhoneNumberUtil.createInstance(requireContext()) }
-    private var cryptoBalanceToSend = 0.0
     private val doubleTextWatcher: DoubleTextWatcher = DoubleTextWatcher(
         firstTextWatcher = { editable ->
             val fromMaxValue = viewModel.getMaxValue()
@@ -36,12 +36,10 @@ class SendGiftFragment : BaseFragment(), GiphyDialogFragment.GifSelectionListene
             val cryptoAmount: Double
 
             if (fromCoinAmountTemporary >= fromMaxValue) {
-                cryptoBalanceToSend = viewModel.getCoinBalance()
                 cryptoAmount = fromMaxValue
                 editable.clear()
                 editable.insert(0, fromMaxValue.toStringCoin())
             } else {
-                cryptoBalanceToSend = fromCoinAmountTemporary
                 cryptoAmount = fromCoinAmountTemporary
             }
 
@@ -62,7 +60,7 @@ class SendGiftFragment : BaseFragment(), GiphyDialogFragment.GifSelectionListene
     override val resourceLayout: Int = R.layout.fragment_send_gift
     override val isToolbarEnabled: Boolean = true
     override val isHomeButtonEnabled: Boolean = true
-    override var isMenuEnabled: Boolean = false
+    override var isMenuEnabled: Boolean = true
     override val retryListener: View.OnClickListener = View.OnClickListener { sendGift() }
 
     override fun onAttach(context: Context) {
@@ -87,6 +85,11 @@ class SendGiftFragment : BaseFragment(), GiphyDialogFragment.GifSelectionListene
             viewModel.getCoinCode()
         )
         balanceUsdView.text = getString(R.string.unit_usd_dynamic_symbol, viewModel.getUsdBalance().toStringUsd())
+//        amountCryptoView.helperText = getString(
+//            R.string.transaction_helper_text_commission,
+//            viewModel.getTransactionFee().toStringCoin(),
+//            viewModel.getCoinCode()
+//        )
     }
 
     override fun initListeners() {
@@ -127,31 +130,18 @@ class SendGiftFragment : BaseFragment(), GiphyDialogFragment.GifSelectionListene
         amountCryptoView.error = null
         phoneContainerView.error = null
 
-        val phoneStrng = phoneContainerView
-            .getString()
-            .replace("-", "")
-            .replace("(", "")
-            .replace(")", "")
-            .replace(" ", "")
-
         var errors = 0
+        val isCatm = viewModel.getCoinCode() == LocalCoinType.CATM.name
 
-        //Validate amount
-        if (amountCryptoView.getDouble() <= 0) {
+        //Validate CATM by ETH commission
+        if (isCatm && viewModel.isNotEnoughBalanceETH()) {
             errors++
-            amountCryptoView.error = getString(R.string.should_be_filled)
+            amountCryptoView.showError(R.string.withdraw_screen_where_money_libovski)
         }
 
-        //Validate max amount
-        if (amountCryptoView.getDouble() > (viewModel.getCoinBalance() - viewModel.getTransactionFee())) {
+        if (!isCatm && amountCryptoView.getDouble() > (viewModel.getCoinBalance() - viewModel.getTransactionFee())) {
             errors++
-            amountCryptoView.error = "Not enough balance"
-        }
-
-        //Validate amount
-        if (!isValidMobileNumber(phoneStrng)) {
-            errors++
-            showError("Wrong phone number")
+            amountCryptoView.showError(R.string.insufficient_balance)
         }
 
         if (errors == 0) {
@@ -182,7 +172,8 @@ class SendGiftFragment : BaseFragment(), GiphyDialogFragment.GifSelectionListene
         nextButtonView.isEnabled = phoneContainerView.getString().isNotEmpty()
                 && isValidMobileNumber(phoneContainerView.getString())
                 && amountCryptoView.isNotBlank()
-                && cryptoBalanceToSend > viewModel.getTransactionFee()
+                && amountCryptoView.getDouble() > viewModel.getTransactionFee()
+                && amountCryptoView.getDouble() <= (viewModel.getCoinBalance() - viewModel.getTransactionFee())
     }
 
     private fun sendGift() {
@@ -193,7 +184,7 @@ class SendGiftFragment : BaseFragment(), GiphyDialogFragment.GifSelectionListene
             .replace(")", "")
             .replace(" ", "")
         viewModel.sendGift(
-            cryptoBalanceToSend,
+            amountCryptoView.getDouble(),
             phone,
             messageView.getString(),
             gifMedia?.id ?: ""
