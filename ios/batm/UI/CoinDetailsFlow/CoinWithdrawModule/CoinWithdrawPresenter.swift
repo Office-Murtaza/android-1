@@ -11,7 +11,7 @@ final class CoinWithdrawPresenter: ModulePresenter, CoinWithdrawModule {
     var updateCoinAmount: Driver<String?>
     var pasteAddress: Driver<Void>
     var max: Driver<Void>
-    var next: Driver<Void>
+    var submit: Driver<Void>
   }
   
   private let usecase: CoinDetailsUsecase
@@ -66,7 +66,7 @@ final class CoinWithdrawPresenter: ModulePresenter, CoinWithdrawModule {
       .bind(to: store.action)
       .disposed(by: disposeBag)
     
-    input.next
+    input.submit
       .asObservable()
       .doOnNext { [store] in store.action.accept(.updateValidationState) }
       .withLatestFrom(state)

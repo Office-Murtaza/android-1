@@ -25,6 +25,7 @@
 "shared.button.update" = "Update";
 "shared.button.unlink" = "Unlink";
 "shared.button.send" = "Send";
+"shared.button.submit" = "Submit";
 "shared.error.title" = "Error";
 "shared.error.message" = "Server error, try again later";
 "shared.error.no_connection.message" = "No Internet Connection";

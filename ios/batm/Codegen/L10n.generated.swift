@@ -647,6 +647,7 @@ extension L.Shared {
     static let remove = "shared.button.remove"
     static let retry = "shared.button.retry"
     static let send = "shared.button.send"
+    static let submit = "shared.button.submit"
     static let unlink = "shared.button.unlink"
     static let update = "shared.button.update"
   }

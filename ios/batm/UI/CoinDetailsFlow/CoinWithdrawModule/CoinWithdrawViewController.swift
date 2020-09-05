@@ -15,7 +15,7 @@ final class CoinWithdrawViewController: ModuleViewController<CoinWithdrawPresent
   
   let formView = CoinWithdrawFormView()
   
-  let nextButton = MDCButton.next
+  let submitButton = MDCButton.submit
   
   override var shouldShowNavigationBar: Bool { return true }
   
@@ -23,7 +23,7 @@ final class CoinWithdrawViewController: ModuleViewController<CoinWithdrawPresent
     view.addSubview(rootScrollView)
     rootScrollView.contentView.addSubviews(headerView,
                                            formView,
-                                           nextButton)
+                                           submitButton)
     
     setupDefaultKeyboardHandling()
   }
@@ -45,7 +45,7 @@ final class CoinWithdrawViewController: ModuleViewController<CoinWithdrawPresent
       $0.top.equalTo(headerView.snp.bottom).offset(30)
       $0.left.right.equalToSuperview().inset(15)
     }
-    nextButton.snp.makeConstraints {
+    submitButton.snp.makeConstraints {
       $0.height.equalTo(50)
       $0.left.right.equalToSuperview().inset(15)
       $0.bottom.equalToSuperview().offset(-40)
@@ -114,10 +114,10 @@ final class CoinWithdrawViewController: ModuleViewController<CoinWithdrawPresent
     presenter.state
       .asObservable()
       .map { $0.isAllFieldsNotEmpty }
-      .bind(to: nextButton.rx.isEnabled)
+      .bind(to: submitButton.rx.isEnabled)
       .disposed(by: disposeBag)
     
-    nextButton.rx.tap.asDriver()
+    submitButton.rx.tap.asDriver()
       .drive(onNext: { [view] in view?.endEditing(true) })
       .disposed(by: disposeBag)
     
@@ -134,13 +134,13 @@ final class CoinWithdrawViewController: ModuleViewController<CoinWithdrawPresent
     let updateCoinAmountDriver = formView.rx.coinAmountText.asDriver()
     let pasteAddressDriver = formView.rx.pasteTap
     let maxDriver = formView.rx.maxTap
-    let nextDriver = nextButton.rx.tap.asDriver()
+    let submitDriver = submitButton.rx.tap.asDriver()
     
     presenter.bind(input: CoinWithdrawPresenter.Input(updateAddress: updateAddressDriver,
                                                       updateCoinAmount: updateCoinAmountDriver,
                                                       pasteAddress: pasteAddressDriver,
                                                       max: maxDriver,
-                                                      next: nextDriver))
+                                                      submit: submitDriver))
   }
   
   // MARK: QRReader
