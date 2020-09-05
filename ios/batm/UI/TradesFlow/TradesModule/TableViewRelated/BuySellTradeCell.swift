@@ -96,7 +96,7 @@ final class BuySellTradeCell: UITableViewCell {
   func configure(for trade: BuySellTrade) {
     titleLabel.text = trade.userInfo
     subtitleLabel.text = trade.paymentMethod
-    priceLabel.text = trade.price.fiatFormatted.withUSD
+    priceLabel.text = trade.price.fiatFormatted.withDollarSign
     limitsLabel.text = trade.formattedLimits
   }
 }

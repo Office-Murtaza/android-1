@@ -87,7 +87,7 @@ final class CreateEditTradeViewController: NavigationScreenViewController<Create
         trade.flatMap { tradeTypeView.configure(for: $0) }
         
         headerView.removeAll()
-        headerView.add(title: localize(L.CoinDetails.price), value: coinBalance.price.fiatFormatted.withUSD)
+        headerView.add(title: localize(L.CoinDetails.price), value: coinBalance.price.fiatFormatted.withDollarSign)
         headerView.add(title: localize(L.CoinDetails.balance), valueView: amountView)
         headerView.add(title: localize(L.Trades.reserved), valueView: reservedAmountView)
         headerView.add(title: localize(L.CreateEditTrade.type), valueView: tradeTypeView)

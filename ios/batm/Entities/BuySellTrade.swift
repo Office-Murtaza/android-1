@@ -45,7 +45,7 @@ struct BuySellTrade: Equatable {
   var terms: String
   
   var formattedLimits: String {
-    return "\(minLimit) - \(maxLimit)".withUSD
+    return "\(minLimit) - \(maxLimit)".withDollarSign
   }
   
   var formattedTradeCount: String {
