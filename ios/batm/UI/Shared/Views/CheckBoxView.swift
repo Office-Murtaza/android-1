@@ -2,7 +2,7 @@ import UIKit
 import RxSwift
 import RxCocoa
 
-class MaterialCheckBoxView: UIView, HasDisposeBag {
+class CheckBoxView: UIView, HasDisposeBag {
   
   let isAcceptedRelay = BehaviorRelay<Bool>(value: false)
   
@@ -66,7 +66,7 @@ class MaterialCheckBoxView: UIView, HasDisposeBag {
   }
 }
 
-extension Reactive where Base == MaterialCheckBoxView {
+extension Reactive where Base == CheckBoxView {
   var isAccepted: Driver<Bool> {
     return base.isAcceptedRelay.asDriver()
   }

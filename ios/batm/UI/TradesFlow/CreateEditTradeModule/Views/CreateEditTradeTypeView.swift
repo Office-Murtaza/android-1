@@ -8,7 +8,7 @@ final class CreateEditTradeTypeView: UIView, HasDisposeBag {
   
   let buyContainer = UIView()
   
-  let buyCheckboxView = MaterialCheckBoxView()
+  let buyCheckboxView = CheckBoxView()
   
   let buyTitleLabel: UILabel = {
     let label = UILabel()
@@ -20,7 +20,7 @@ final class CreateEditTradeTypeView: UIView, HasDisposeBag {
   
   let sellContainer = UIView()
   
-  let sellCheckboxView = MaterialCheckBoxView()
+  let sellCheckboxView = CheckBoxView()
   
   let sellTitleLabel: UILabel = {
     let label = UILabel()

@@ -4,7 +4,7 @@ import RxCocoa
 
 class CoinSellAnotherAddressView: UIView {
   
-  let checkboxView = MaterialCheckBoxView()
+  let checkboxView = CheckBoxView()
   
   let titleLabel: UILabel = {
     let label = UILabel()

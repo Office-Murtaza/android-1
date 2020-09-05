@@ -15,7 +15,6 @@
 		DB0211BF22CCE5A6004065E9 /* RecoverSeedPhraseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB0211BE22CCE5A6004065E9 /* RecoverSeedPhraseViewController.swift */; };
 		DB0211C122CCE6EC004065E9 /* RecoverSeedPhraseAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB0211C022CCE6EC004065E9 /* RecoverSeedPhraseAssembly.swift */; };
 		DB0211C422CCE7FD004065E9 /* RecoverSeedPhraseFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB0211C322CCE7FD004065E9 /* RecoverSeedPhraseFormView.swift */; };
-		DB0211C622CD340A004065E9 /* TextFieldWithoutPaddings.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB0211C522CD340A004065E9 /* TextFieldWithoutPaddings.swift */; };
 		DB04E4CB22D85C50000E2D85 /* PinCodeStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB04E4CA22D85C50000E2D85 /* PinCodeStorage.swift */; };
 		DB04E4CE22D85D41000E2D85 /* PinCodeRecord+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB04E4CD22D85D41000E2D85 /* PinCodeRecord+CoreDataClass.swift */; };
 		DB04E4D022D85D5C000E2D85 /* PinCodeRecord+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB04E4CF22D85D5C000E2D85 /* PinCodeRecord+CoreDataProperties.swift */; };
@@ -130,7 +129,6 @@
 		DB3C03D822CB5DCE0036F779 /* RecoverViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB3C03D722CB5DCE0036F779 /* RecoverViewController.swift */; };
 		DB3C03DD22CB5F7C0036F779 /* RecoverFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB3C03DC22CB5F7C0036F779 /* RecoverFormView.swift */; };
 		DB3C03DF22CB60960036F779 /* RecoverAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB3C03DE22CB60960036F779 /* RecoverAssembly.swift */; };
-		DB3C03E122CB62320036F779 /* DummyButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB3C03E022CB62320036F779 /* DummyButton.swift */; };
 		DB49463522DF2733001EE56E /* ManageWalletsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB49463422DF2733001EE56E /* ManageWalletsCell.swift */; };
 		DB49463822DF274B001EE56E /* ManageWalletsTableViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB49463722DF274B001EE56E /* ManageWalletsTableViewDataSource.swift */; };
 		DB49463A22DF2B0C001EE56E /* ManageWalletsAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB49463922DF2B0C001EE56E /* ManageWalletsAssembly.swift */; };
@@ -181,7 +179,7 @@
 		DB5E3DE023869EAF00D267E5 /* CoinSettings+Mapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB5E3DDF23869EAF00D267E5 /* CoinSettings+Mapping.swift */; };
 		DB5EB8DA2452B23D00CD1C63 /* MDCTextInputControllerBase+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB5EB8D92452B23D00CD1C63 /* MDCTextInputControllerBase+Extensions.swift */; };
 		DB5EB8DC2452C5CC00CD1C63 /* CoinSellFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB5EB8DB2452C5CC00CD1C63 /* CoinSellFormView.swift */; };
-		DB5EB8DE2452D80F00CD1C63 /* MaterialCheckBoxView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB5EB8DD2452D80F00CD1C63 /* MaterialCheckBoxView.swift */; };
+		DB5EB8DE2452D80F00CD1C63 /* CheckBoxView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB5EB8DD2452D80F00CD1C63 /* CheckBoxView.swift */; };
 		DB5F18C02472AC6B00E37311 /* BuySellTradesTableViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB5F18BF2472AC6B00E37311 /* BuySellTradesTableViewDataSource.swift */; };
 		DB5F18C22472B01500E37311 /* BuySellTradeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB5F18C12472B01500E37311 /* BuySellTradeCell.swift */; };
 		DB5F18C42472B0DB00E37311 /* BuySellTrade.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB5F18C32472B0DB00E37311 /* BuySellTrade.swift */; };
@@ -263,8 +261,6 @@
 		DB8D40AD22C3EFFF00D5FBD0 /* WelcomeAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB8D40AC22C3EFFF00D5FBD0 /* WelcomeAssembly.swift */; };
 		DB8D40B022C3F4D700D5FBD0 /* BTMNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB8D40AF22C3F4D700D5FBD0 /* BTMNavigationController.swift */; };
 		DB8D40B222C3F86500D5FBD0 /* CreateWalletAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB8D40B122C3F86500D5FBD0 /* CreateWalletAssembly.swift */; };
-		DB8D40B722C4027500D5FBD0 /* MainFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB8D40B622C4027500D5FBD0 /* MainFormView.swift */; };
-		DB8D40BB22C40AEE00D5FBD0 /* MainTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB8D40BA22C40AEE00D5FBD0 /* MainTextField.swift */; };
 		DB8DC11E2412C151006AB4F5 /* VerificationFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB8DC11D2412C151006AB4F5 /* VerificationFormView.swift */; };
 		DB8DC1222413009F006AB4F5 /* VIPVerificationStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB8DC1212413009F006AB4F5 /* VIPVerificationStore.swift */; };
 		DB8DC12524130225006AB4F5 /* VIPVerificationFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB8DC12424130225006AB4F5 /* VIPVerificationFormView.swift */; };
@@ -293,16 +289,14 @@
 		DB96168C22C517C80078E92D /* PhoneNumberKit+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB96168B22C517C80078E92D /* PhoneNumberKit+Extensions.swift */; };
 		DB96168E22C52E3D0078E92D /* Observable+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB96168D22C52E3D0078E92D /* Observable+Extensions.swift */; };
 		DB96169222C538500078E92D /* ErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB96169122C538500078E92D /* ErrorView.swift */; };
-		DB96169422C5678E0078E92D /* MainButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB96169322C5678E0078E92D /* MainButton.swift */; };
 		DB96169922C5F52F0078E92D /* CreateWalletFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB96169822C5F52F0078E92D /* CreateWalletFormView.swift */; };
 		DB96169D22C5FABC0078E92D /* SeedPhraseModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB96169C22C5FABC0078E92D /* SeedPhraseModule.swift */; };
 		DB96169F22C5FC2E0078E92D /* SeedPhrasePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB96169E22C5FC2E0078E92D /* SeedPhrasePresenter.swift */; };
 		DB9616A122C5FD1D0078E92D /* SeedPhraseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB9616A022C5FD1D0078E92D /* SeedPhraseViewController.swift */; };
-		DB9616A322C5FFC10078E92D /* RoundedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB9616A222C5FFC10078E92D /* RoundedView.swift */; };
 		DB9616A522C602CC0078E92D /* SeedPhraseAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB9616A422C602CC0078E92D /* SeedPhraseAssembly.swift */; };
 		DB9616AE22C60ECA0078E92D /* UIView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB9616AD22C60ECA0078E92D /* UIView+Extensions.swift */; };
 		DB9616B022C60EFB0078E92D /* UIStackView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB9616AF22C60EFB0078E92D /* UIStackView+Extensions.swift */; };
-		DB9616B222C610280078E92D /* UnderlinedLabelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB9616B122C610280078E92D /* UnderlinedLabelView.swift */; };
+		DB9616B222C610280078E92D /* LinkButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB9616B122C610280078E92D /* LinkButton.swift */; };
 		DB9616B522C63D6E0078E92D /* LoginUsecase.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB9616B422C63D6E0078E92D /* LoginUsecase.swift */; };
 		DB9616B822C63E270078E92D /* Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB9616B722C63E270078E92D /* Account.swift */; };
 		DB9616BA22C63F9B0078E92D /* APIGateway.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB9616B922C63F9B0078E92D /* APIGateway.swift */; };
@@ -441,7 +435,6 @@
 		DBBF29AC22D39DB000A5DE6A /* WalletStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBBF29AB22D39DB000A5DE6A /* WalletStore.swift */; };
 		DBBF29AE22D3C0CC00A5DE6A /* WalletUsecase.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBBF29AD22D3C0CC00A5DE6A /* WalletUsecase.swift */; };
 		DBBF29B022D3EE6200A5DE6A /* LogoutUsecase.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBBF29AF22D3EE6200A5DE6A /* LogoutUsecase.swift */; };
-		DBC37F4122C7F42200519153 /* PhoneNumberTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC37F4022C7F42200519153 /* PhoneNumberTextField.swift */; };
 		DBC3FF4F24BB348300198597 /* CheckAccountResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC3FF4E24BB348300198597 /* CheckAccountResponse.swift */; };
 		DBC3FF5124BB34BD00198597 /* CheckAccountResponse+Mapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC3FF5024BB34BD00198597 /* CheckAccountResponse+Mapping.swift */; };
 		DBC3FF5324BB375B00198597 /* PhoneVerificationResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC3FF5224BB375B00198597 /* PhoneVerificationResponse.swift */; };
@@ -471,7 +464,6 @@
 		DBC68CBC22F8798F00473247 /* UpdatePhoneAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC68CB822F8798F00473247 /* UpdatePhoneAssembly.swift */; };
 		DBC68CBF22F87A0A00473247 /* UpdatePhoneFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC68CBE22F87A0A00473247 /* UpdatePhoneFormView.swift */; };
 		DBC68CC222F87A3B00473247 /* UpdatePhoneStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC68CC122F87A3B00473247 /* UpdatePhoneStore.swift */; };
-		DBC8B45C23634EB900E7A799 /* Divider.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC8B45B23634EB900E7A799 /* Divider.swift */; };
 		DBC8B45E23635AB200E7A799 /* SellDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC8B45D23635AB200E7A799 /* SellDetails.swift */; };
 		DBC8B46023635AE000E7A799 /* SellDetails+Mapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC8B45F23635AE000E7A799 /* SellDetails+Mapping.swift */; };
 		DBC9E06323618CDB0008E0A6 /* TransactionDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC9E06223618CDB0008E0A6 /* TransactionDetails.swift */; };
@@ -545,7 +537,6 @@
 		DB0211BE22CCE5A6004065E9 /* RecoverSeedPhraseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecoverSeedPhraseViewController.swift; sourceTree = "<group>"; };
 		DB0211C022CCE6EC004065E9 /* RecoverSeedPhraseAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecoverSeedPhraseAssembly.swift; sourceTree = "<group>"; };
 		DB0211C322CCE7FD004065E9 /* RecoverSeedPhraseFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecoverSeedPhraseFormView.swift; sourceTree = "<group>"; };
-		DB0211C522CD340A004065E9 /* TextFieldWithoutPaddings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldWithoutPaddings.swift; sourceTree = "<group>"; };
 		DB04E4CA22D85C50000E2D85 /* PinCodeStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinCodeStorage.swift; sourceTree = "<group>"; };
 		DB04E4CD22D85D41000E2D85 /* PinCodeRecord+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PinCodeRecord+CoreDataClass.swift"; sourceTree = "<group>"; };
 		DB04E4CF22D85D5C000E2D85 /* PinCodeRecord+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PinCodeRecord+CoreDataProperties.swift"; sourceTree = "<group>"; };
@@ -662,7 +653,6 @@
 		DB3C03D722CB5DCE0036F779 /* RecoverViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecoverViewController.swift; sourceTree = "<group>"; };
 		DB3C03DC22CB5F7C0036F779 /* RecoverFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecoverFormView.swift; sourceTree = "<group>"; };
 		DB3C03DE22CB60960036F779 /* RecoverAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecoverAssembly.swift; sourceTree = "<group>"; };
-		DB3C03E022CB62320036F779 /* DummyButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DummyButton.swift; sourceTree = "<group>"; };
 		DB49463422DF2733001EE56E /* ManageWalletsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageWalletsCell.swift; sourceTree = "<group>"; };
 		DB49463722DF274B001EE56E /* ManageWalletsTableViewDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageWalletsTableViewDataSource.swift; sourceTree = "<group>"; };
 		DB49463922DF2B0C001EE56E /* ManageWalletsAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageWalletsAssembly.swift; sourceTree = "<group>"; };
@@ -713,7 +703,7 @@
 		DB5E3DDF23869EAF00D267E5 /* CoinSettings+Mapping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CoinSettings+Mapping.swift"; sourceTree = "<group>"; };
 		DB5EB8D92452B23D00CD1C63 /* MDCTextInputControllerBase+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MDCTextInputControllerBase+Extensions.swift"; sourceTree = "<group>"; };
 		DB5EB8DB2452C5CC00CD1C63 /* CoinSellFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinSellFormView.swift; sourceTree = "<group>"; };
-		DB5EB8DD2452D80F00CD1C63 /* MaterialCheckBoxView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MaterialCheckBoxView.swift; sourceTree = "<group>"; };
+		DB5EB8DD2452D80F00CD1C63 /* CheckBoxView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckBoxView.swift; sourceTree = "<group>"; };
 		DB5F18BF2472AC6B00E37311 /* BuySellTradesTableViewDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuySellTradesTableViewDataSource.swift; sourceTree = "<group>"; };
 		DB5F18C12472B01500E37311 /* BuySellTradeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuySellTradeCell.swift; sourceTree = "<group>"; };
 		DB5F18C32472B0DB00E37311 /* BuySellTrade.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuySellTrade.swift; sourceTree = "<group>"; };
@@ -794,8 +784,6 @@
 		DB8D40AC22C3EFFF00D5FBD0 /* WelcomeAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeAssembly.swift; sourceTree = "<group>"; };
 		DB8D40AF22C3F4D700D5FBD0 /* BTMNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTMNavigationController.swift; sourceTree = "<group>"; };
 		DB8D40B122C3F86500D5FBD0 /* CreateWalletAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateWalletAssembly.swift; sourceTree = "<group>"; };
-		DB8D40B622C4027500D5FBD0 /* MainFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainFormView.swift; sourceTree = "<group>"; };
-		DB8D40BA22C40AEE00D5FBD0 /* MainTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTextField.swift; sourceTree = "<group>"; };
 		DB8DC11D2412C151006AB4F5 /* VerificationFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerificationFormView.swift; sourceTree = "<group>"; };
 		DB8DC1212413009F006AB4F5 /* VIPVerificationStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VIPVerificationStore.swift; sourceTree = "<group>"; };
 		DB8DC12424130225006AB4F5 /* VIPVerificationFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VIPVerificationFormView.swift; sourceTree = "<group>"; };
@@ -824,16 +812,14 @@
 		DB96168B22C517C80078E92D /* PhoneNumberKit+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PhoneNumberKit+Extensions.swift"; sourceTree = "<group>"; };
 		DB96168D22C52E3D0078E92D /* Observable+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Observable+Extensions.swift"; sourceTree = "<group>"; };
 		DB96169122C538500078E92D /* ErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorView.swift; sourceTree = "<group>"; };
-		DB96169322C5678E0078E92D /* MainButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainButton.swift; sourceTree = "<group>"; };
 		DB96169822C5F52F0078E92D /* CreateWalletFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateWalletFormView.swift; sourceTree = "<group>"; };
 		DB96169C22C5FABC0078E92D /* SeedPhraseModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeedPhraseModule.swift; sourceTree = "<group>"; };
 		DB96169E22C5FC2E0078E92D /* SeedPhrasePresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeedPhrasePresenter.swift; sourceTree = "<group>"; };
 		DB9616A022C5FD1D0078E92D /* SeedPhraseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeedPhraseViewController.swift; sourceTree = "<group>"; };
-		DB9616A222C5FFC10078E92D /* RoundedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedView.swift; sourceTree = "<group>"; };
 		DB9616A422C602CC0078E92D /* SeedPhraseAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeedPhraseAssembly.swift; sourceTree = "<group>"; };
 		DB9616AD22C60ECA0078E92D /* UIView+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Extensions.swift"; sourceTree = "<group>"; };
 		DB9616AF22C60EFB0078E92D /* UIStackView+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIStackView+Extensions.swift"; sourceTree = "<group>"; };
-		DB9616B122C610280078E92D /* UnderlinedLabelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnderlinedLabelView.swift; sourceTree = "<group>"; };
+		DB9616B122C610280078E92D /* LinkButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkButton.swift; sourceTree = "<group>"; };
 		DB9616B422C63D6E0078E92D /* LoginUsecase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginUsecase.swift; sourceTree = "<group>"; };
 		DB9616B722C63E270078E92D /* Account.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Account.swift; sourceTree = "<group>"; };
 		DB9616B922C63F9B0078E92D /* APIGateway.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIGateway.swift; sourceTree = "<group>"; };
@@ -973,7 +959,6 @@
 		DBBF29AB22D39DB000A5DE6A /* WalletStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletStore.swift; sourceTree = "<group>"; };
 		DBBF29AD22D3C0CC00A5DE6A /* WalletUsecase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletUsecase.swift; sourceTree = "<group>"; };
 		DBBF29AF22D3EE6200A5DE6A /* LogoutUsecase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogoutUsecase.swift; sourceTree = "<group>"; };
-		DBC37F4022C7F42200519153 /* PhoneNumberTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneNumberTextField.swift; sourceTree = "<group>"; };
 		DBC3FF4E24BB348300198597 /* CheckAccountResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckAccountResponse.swift; sourceTree = "<group>"; };
 		DBC3FF5024BB34BD00198597 /* CheckAccountResponse+Mapping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CheckAccountResponse+Mapping.swift"; sourceTree = "<group>"; };
 		DBC3FF5224BB375B00198597 /* PhoneVerificationResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneVerificationResponse.swift; sourceTree = "<group>"; };
@@ -1003,7 +988,6 @@
 		DBC68CB822F8798F00473247 /* UpdatePhoneAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdatePhoneAssembly.swift; sourceTree = "<group>"; };
 		DBC68CBE22F87A0A00473247 /* UpdatePhoneFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdatePhoneFormView.swift; sourceTree = "<group>"; };
 		DBC68CC122F87A3B00473247 /* UpdatePhoneStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdatePhoneStore.swift; sourceTree = "<group>"; };
-		DBC8B45B23634EB900E7A799 /* Divider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Divider.swift; sourceTree = "<group>"; };
 		DBC8B45D23635AB200E7A799 /* SellDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SellDetails.swift; sourceTree = "<group>"; };
 		DBC8B45F23635AE000E7A799 /* SellDetails+Mapping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SellDetails+Mapping.swift"; sourceTree = "<group>"; };
 		DBC9E06223618CDB0008E0A6 /* TransactionDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionDetails.swift; sourceTree = "<group>"; };
@@ -1209,18 +1193,10 @@
 			isa = PBXGroup;
 			children = (
 				DB96169122C538500078E92D /* ErrorView.swift */,
-				DB96169322C5678E0078E92D /* MainButton.swift */,
-				DB8D40BA22C40AEE00D5FBD0 /* MainTextField.swift */,
-				DBC37F4022C7F42200519153 /* PhoneNumberTextField.swift */,
-				DB8D40B622C4027500D5FBD0 /* MainFormView.swift */,
-				DB9616A222C5FFC10078E92D /* RoundedView.swift */,
-				DB9616B122C610280078E92D /* UnderlinedLabelView.swift */,
-				DB3C03E022CB62320036F779 /* DummyButton.swift */,
-				DB0211C522CD340A004065E9 /* TextFieldWithoutPaddings.swift */,
+				DB9616B122C610280078E92D /* LinkButton.swift */,
 				DB8A195F235729A0003E8F7D /* NavigationScreenView.swift */,
-				DBC8B45B23634EB900E7A799 /* Divider.swift */,
 				DBA65C08244DBF1D0034678E /* FakeTextFied.swift */,
-				DB5EB8DD2452D80F00CD1C63 /* MaterialCheckBoxView.swift */,
+				DB5EB8DD2452D80F00CD1C63 /* CheckBoxView.swift */,
 				DB7A9D112459CEE800006B54 /* QRCodeCardView.swift */,
 				DBF98D4424502EF800AF6D5A /* FloatingActionButton.swift */,
 				DB0AD1D524BA1F4C00806282 /* PasswordTextField.swift */,
@@ -3057,10 +3033,8 @@
 				DB95EB18230A8CF60059C84C /* CoinDetailsChartView.swift in Sources */,
 				DBC68CAD22F86C5F00473247 /* EnterPasswordFormView.swift in Sources */,
 				DB2A0DF324CD655C009C9D1C /* PhoneVerificationStore.swift in Sources */,
-				DB9616A322C5FFC10078E92D /* RoundedView.swift in Sources */,
 				DB4D7BC12409A133008C2BD5 /* KYCFlow+Dependencies.swift in Sources */,
 				DBA7A4A5235662AD000BE997 /* CoinSellModule.swift in Sources */,
-				DB96169422C5678E0078E92D /* MainButton.swift in Sources */,
 				DB5B2DE6230A769300821713 /* CoinDetailsAssembly.swift in Sources */,
 				DBADDE372438DD6600BFD806 /* CoinExchangeViewController.swift in Sources */,
 				DBB99D1C24F89D38008CC21B /* CoinAmountTextFieldView.swift in Sources */,
@@ -3181,13 +3155,12 @@
 				DB64DA5A2416B8890019D38B /* VerificationConstants.swift in Sources */,
 				DBC620B3234769120007D412 /* RippleSequence+Mapping.swift in Sources */,
 				DBC68CB322F8759100473247 /* VerificationResult+Mapping.swift in Sources */,
-				DB8D40B722C4027500D5FBD0 /* MainFormView.swift in Sources */,
 				DB8E744B2435C362002B5F6D /* CoinWithdrawFormView.swift in Sources */,
 				DB6DC1B724877AC600CD478D /* BuySellTradeDetailsPresenter.swift in Sources */,
 				DBDA455E24E5BD83002A3AF5 /* SecurityViewController.swift in Sources */,
 				DB8DC12524130225006AB4F5 /* VIPVerificationFormView.swift in Sources */,
 				DBADDE382438DD6600BFD806 /* CoinExchangePresenter.swift in Sources */,
-				DB5EB8DE2452D80F00CD1C63 /* MaterialCheckBoxView.swift in Sources */,
+				DB5EB8DE2452D80F00CD1C63 /* CheckBoxView.swift in Sources */,
 				DBC68C9522F85DF700473247 /* PhoneNumber.swift in Sources */,
 				DB83663A22FAB7CE00454F5C /* UpdatePinFlowController.swift in Sources */,
 				DB247B432478F88C009802BB /* SplashAssembly.swift in Sources */,
@@ -3228,7 +3201,7 @@
 				DB83625024C205B700A5FEFC /* CodeInputView.swift in Sources */,
 				DB8D409C22C3EBF700D5FBD0 /* Module.swift in Sources */,
 				DB226C5A22E99E3E0087E6C5 /* URLEncoding+Extensions.swift in Sources */,
-				DB9616B222C610280078E92D /* UnderlinedLabelView.swift in Sources */,
+				DB9616B222C610280078E92D /* LinkButton.swift in Sources */,
 				DBEE2E6623F5B7C700EBB915 /* ValidationPhoneNumber.swift in Sources */,
 				DB83625124C205B700A5FEFC /* CodeSymbolView.swift in Sources */,
 				DB9616A522C602CC0078E92D /* SeedPhraseAssembly.swift in Sources */,
@@ -3276,7 +3249,6 @@
 				DB4F395322DEFA4100D53BF3 /* ManageWalletsStore.swift in Sources */,
 				DB6A578522C1EE5600DEE38A /* WelcomeSliderView.swift in Sources */,
 				DB49463522DF2733001EE56E /* ManageWalletsCell.swift in Sources */,
-				DB8D40BB22C40AEE00D5FBD0 /* MainTextField.swift in Sources */,
 				DBCA52BE232BBDEF00483618 /* Utxos+Mapping.swift in Sources */,
 				DB21B1F624AA6577008444D3 /* RecallStore.swift in Sources */,
 				DB3142C3233F389D001E9DD6 /* BTMTronBlockHeader.swift in Sources */,
@@ -3293,7 +3265,6 @@
 				DBAD539D22D7B95F0005F682 /* PinCodeStore.swift in Sources */,
 				DB96174022C7CDA70078E92D /* BTMWalletRecord+CoreDataClass.swift in Sources */,
 				DB1AF0DA244362140037C998 /* CoinSendGiftFormView.swift in Sources */,
-				DB0211C622CD340A004065E9 /* TextFieldWithoutPaddings.swift in Sources */,
 				DB82AD2924AF18CF001F833E /* CoinStakingFormView.swift in Sources */,
 				DBC3FF4F24BB348300198597 /* CheckAccountResponse.swift in Sources */,
 				DBC620AD234749B30007D412 /* Nonce.swift in Sources */,
@@ -3320,7 +3291,6 @@
 				DB020DAA246D9A760036B413 /* TradesTableView.swift in Sources */,
 				DBBD06E12369FEDB0096B674 /* PreSubmitResponse.swift in Sources */,
 				DBADDE3C2438DEED00BFD806 /* CoinExchangeFormView.swift in Sources */,
-				DBC8B45C23634EB900E7A799 /* Divider.swift in Sources */,
 				DB59EA1922F9C4BF00EB64A7 /* UpdatePasswordFlow+Dependencies.swift in Sources */,
 				DB96173D22C7B57F0078E92D /* CoinType+Extensions.swift in Sources */,
 				DB96169D22C5FABC0078E92D /* SeedPhraseModule.swift in Sources */,
@@ -3427,7 +3397,6 @@
 				DB51F30E2490CFC1007F47B4 /* CreateEditTradeModule.swift in Sources */,
 				DBA1B60E24A9C5B300A9A703 /* ReserveViewController.swift in Sources */,
 				DB4B9DCB22E5A4710016746A /* GoogleServicesInitializer.swift in Sources */,
-				DB3C03E122CB62320036F779 /* DummyButton.swift in Sources */,
 				DB51F31824913BA7007F47B4 /* CreateEditTradeTypeView.swift in Sources */,
 				DBECA63922F7FDB0002C2610 /* ShowPhoneAssembly.swift in Sources */,
 				DB2F25182360A8F400274C60 /* TransactionDetailsAssembly.swift in Sources */,
@@ -3493,7 +3462,6 @@
 				DB8DC11E2412C151006AB4F5 /* VerificationFormView.swift in Sources */,
 				DB96172422C75E950078E92D /* Single+ObjectMapper.swift in Sources */,
 				DB1D21EF24AE6F2A001E9696 /* CoinStakingViewController.swift in Sources */,
-				DBC37F4122C7F42200519153 /* PhoneNumberTextField.swift in Sources */,
 				DB96169922C5F52F0078E92D /* CreateWalletFormView.swift in Sources */,
 				DBF75DE6240D1A5300E12CB0 /* VerificationFilePickerView.swift in Sources */,
 				DBF98D4524502EF800AF6D5A /* FloatingActionButton.swift in Sources */,

@@ -4,6 +4,7 @@ import RxSwift
 import SnapKit
 import GiphyUISDK
 import GiphyCoreSDK
+import MaterialComponents
 
 final class TransactionDetailsViewController: ModuleViewController<TransactionDetailsPresenter> {
   
@@ -52,11 +53,25 @@ final class TransactionDetailsViewController: ModuleViewController<TransactionDe
   }
   
   func setupUIBindings() {
+    setupGeneralSection()
+    setupGiftSection()
+    setupExchangeSection()
+    setupSellSection()
+  }
+  
+  private func setupGeneralSection() {
     let details = presenter.details!
     let coinType = presenter.type!
     
-    if let id = details.txId ?? details.txDbId {
-      headerView.add(title: localize(L.TransactionDetails.Header.ID.title), value: id)
+    (details.txId ?? details.txDbId).flatMap { id in
+      if let link = details.link, let linkURL = URL(string: link) {
+        let linkButton = LinkButton()
+        linkButton.configure(text: id, link: linkURL)
+        
+        headerView.add(title: localize(L.TransactionDetails.Header.ID.title), valueView: linkButton)
+      } else {
+        headerView.add(title: localize(L.TransactionDetails.Header.ID.title), value: id)
+      }
     }
     
     headerView.add(title: localize(L.TransactionDetails.Header.TxType.title), value: details.type.verboseValue)
@@ -108,6 +123,10 @@ final class TransactionDetailsViewController: ModuleViewController<TransactionDe
     if let toAddress = details.toAddress {
       headerView.add(title: localize(L.TransactionDetails.Header.ToAddress.title), value: toAddress)
     }
+  }
+  
+  private func setupGiftSection() {
+    let details = presenter.details!
     
     if let phone = details.phone {
       headerView.add(title: localize(L.TransactionDetails.Header.Phone.title), value: phone)
@@ -136,9 +155,20 @@ final class TransactionDetailsViewController: ModuleViewController<TransactionDe
     if let message = details.message, message.count > 0 {
       headerView.add(title: localize(L.TransactionDetails.Header.Message.title), value: message)
     }
+  }
+  
+  private func setupExchangeSection() {
+    let details = presenter.details!
     
-    if let refId = details.refTxId {
-      headerView.add(title: localize(L.TransactionDetails.Header.RefID.title), value: refId)
+    details.refTxId.flatMap { id in
+      if let link = details.refLink, let linkURL = URL(string: link) {
+        let linkButton = LinkButton()
+        linkButton.configure(text: id, link: linkURL)
+        
+        headerView.add(title: localize(L.TransactionDetails.Header.RefID.title), valueView: linkButton)
+      } else {
+        headerView.add(title: localize(L.TransactionDetails.Header.RefID.title), value: id)
+      }
     }
     
     if let refCoin = details.refCoin, let refCryptoAmount = details.refCryptoAmount {
@@ -147,6 +177,10 @@ final class TransactionDetailsViewController: ModuleViewController<TransactionDe
       let amount = refCryptoAmount.coinFormatted.withCoinType(refCoin)
       headerView.add(title: localize(L.TransactionDetails.Header.RefAmount.title), value: amount)
     }
+  }
+  
+  private func setupSellSection() {
+    let details = presenter.details!
     
     if let sellInfo = details.sellInfo {
       headerView.add(title: localize(L.TransactionDetails.Header.SellQRCode.title), value: "")
