@@ -29,7 +29,7 @@ class SeedPhraseFlow: BaseFlow<BTMNavigationController, SeedPhraseFlowController
     case .seedPhrase:
       let module = resolver.resolve(Module<SeedPhraseModule>.self)!
       module.input.setup(for: .showing)
-      return push(module.controller)
+      return replaceLast(module.controller)
     }
   }
 }
