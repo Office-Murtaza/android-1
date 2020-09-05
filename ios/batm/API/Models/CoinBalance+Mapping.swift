@@ -12,6 +12,7 @@ extension CoinBalance: ImmutableMappable {
     type = mappedType
     address = try map.value("address")
     balance = try map.value("balance")
+    fiatBalance = try map.value("fiatBalance")
     reservedBalance = try map.value("reservedBalance")
     price = try map.value("price.USD")
     index = try map.value("id")

@@ -76,7 +76,7 @@ final class CoinSendGiftViewController: ModuleViewController<CoinSendGiftPresent
         amountView.configure(for: coinBalance)
         
         headerView.removeAll()
-        headerView.add(title: localize(L.CoinDetails.price), value: coinBalance.price.fiatFormatted.withUSD)
+        headerView.add(title: localize(L.CoinDetails.price), value: coinBalance.price.fiatFormatted.withDollarSign)
         headerView.add(title: localize(L.CoinDetails.balance), valueView: amountView)
       })
       .disposed(by: disposeBag)

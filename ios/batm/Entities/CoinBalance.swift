@@ -5,6 +5,7 @@ struct CoinBalance: Equatable {
   let type: CustomCoinType
   let address: String
   let balance: Double
+  let fiatBalance: Double
   let reservedBalance: Double
   let price: Double
   let index: Int
