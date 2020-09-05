@@ -133,7 +133,7 @@ final class TransactionDetailsViewController: ModuleViewController<TransactionDe
       headerView.add(title: localize(L.TransactionDetails.Header.Image.title), valueView: mediaView)
     }
     
-    if let message = details.message {
+    if let message = details.message, message.count > 0 {
       headerView.add(title: localize(L.TransactionDetails.Header.Message.title), value: message)
     }
     
