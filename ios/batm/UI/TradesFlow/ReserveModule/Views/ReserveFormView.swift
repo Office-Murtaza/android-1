@@ -55,7 +55,7 @@ final class ReserveFormView: UIView, HasDisposeBag {
   }
   
   func configure(with coinCode: String) {
-    coinAmountTextFieldController.placeholderText = "\(coinCode) \(localize(L.CoinWithdraw.Form.CoinAmount.placeholder))"
+    coinAmountTextFieldController.placeholderText = String(format: localize(L.CoinWithdraw.Form.CoinAmount.placeholder), coinCode)
   }
 }
 

@@ -91,7 +91,7 @@ final class CoinExchangeFormView: UIView, UIPickerViewDelegate, UIPickerViewData
   }
   
   func configure(for coin: CustomCoinType, and otherCoins: [CustomCoinType]) {
-    fromCoinAmountTextFieldController.placeholderText = String(format: localize(L.CoinExchange.Form.Amount.placeholder), coin.code)
+    fromCoinAmountTextFieldController.placeholderText = String(format: localize(L.CoinWithdraw.Form.CoinAmount.placeholder), coin.code)
     coins = otherCoins
   }
   
@@ -120,7 +120,7 @@ extension Reactive where Base == CoinExchangeFormView {
     return Binder(base) { target, value in
       target.toCoinTextField.setLeftView(UIImageView(image: value.smallLogo))
       target.toCoinTextFieldController.placeholderText = value.verboseValue
-      target.toCoinAmountTextFieldController.placeholderText = String(format: localize(L.CoinExchange.Form.Amount.placeholder),
+      target.toCoinAmountTextFieldController.placeholderText = String(format: localize(L.CoinWithdraw.Form.CoinAmount.placeholder),
                                                                       value.code)
     }
   }

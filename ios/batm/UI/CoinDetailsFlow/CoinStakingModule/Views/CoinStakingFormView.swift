@@ -46,7 +46,7 @@ final class CoinStakingFormView: UIView {
   }
   
   func configure(with coinCode: String, stakeDetails: StakeDetails) {
-    coinAmountTextFieldController.placeholderText = "\(coinCode) \(localize(L.CoinWithdraw.Form.CoinAmount.placeholder))"
+    coinAmountTextFieldController.placeholderText = String(format: localize(L.CoinWithdraw.Form.CoinAmount.placeholder), coinCode)
     
     coinAmountTextField.isHidden = stakeDetails.exist
   }

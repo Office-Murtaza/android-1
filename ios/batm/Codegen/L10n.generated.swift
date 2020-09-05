@@ -268,17 +268,6 @@ extension L.CoinDetails {
     static let empty = "coin_details.transactions.empty"
   }
 }
-extension L.CoinExchange {
-
-  struct Form {
-  }
-}
-extension L.CoinExchange.Form {
-
-  struct Amount {
-    static let placeholder = "coin_exchange.form.amount.placeholder"
-  }
-}
 extension L.CoinSell {
 
   struct Form {

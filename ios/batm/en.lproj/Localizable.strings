@@ -210,7 +210,7 @@
 
 "coin_withdraw.title" = "Withdraw %@";
 "coin_withdraw.form.recipient_address.placeholder" = "Recipient address";
-"coin_withdraw.form.coin_amount.placeholder" = "Amount";
+"coin_withdraw.form.coin_amount.placeholder" = "%@ amount";
 "coin_withdraw.form.currency_amount.placeholder" = "USD amount";
 "coin_withdraw.form.address.title" = "Address";
 "coin_withdraw.form.amount.title" = "Amount";
@@ -262,7 +262,6 @@
 "transaction_details.header.sell_q_r_code.title" = "Sell QR code";
 
 "coin_exchange.title" = "Exchange %@";
-"coin_exchange.form.amount.placeholder" = "%@ amount";
 
 "trades.title" = "Trade %@";
 "trades.reserved" = "Reserved";
