@@ -87,6 +87,11 @@ struct VerificationState: Equatable {
 
 final class VerificationStore: ViewStore<VerificationAction, VerificationState> {
   
+  struct Constants {
+    static let maxIdNumberCharacters = 9
+    static let maxZipCodeCharacters = 5
+  }
+  
   override var initialState: VerificationState {
     return VerificationState()
   }
@@ -99,6 +104,11 @@ final class VerificationStore: ViewStore<VerificationAction, VerificationState> 
       state.selectedImage = image
       state.imageError = nil
     case let .updateIDNumber(idNumber):
+      if let idNumber = idNumber?.prefix(Constants.maxIdNumberCharacters) {
+        state.idNumber = String(idNumber)
+      } else {
+        state.idNumber = ""
+      }
       state.idNumber = idNumber ?? ""
       state.idNumberError = nil
     case let .updateFirstName(firstName):
@@ -126,7 +136,7 @@ final class VerificationStore: ViewStore<VerificationAction, VerificationState> 
       state.city = city ?? ""
       state.cityError = nil
     case let .updateZipCode(zipCode):
-      if let zipCode = zipCode?.prefix(5) {
+      if let zipCode = zipCode?.prefix(Constants.maxZipCodeCharacters) {
         state.zipCode = String(zipCode)
       } else {
         state.zipCode = ""

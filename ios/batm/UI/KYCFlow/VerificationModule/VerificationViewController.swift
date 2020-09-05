@@ -111,6 +111,12 @@ final class VerificationViewController: ModuleViewController<VerificationPresent
     
     presenter.state
       .asObservable()
+      .map { $0.zipCode }
+      .bind(to: formView.rx.zipCodeText)
+      .disposed(by: disposeBag)
+    
+    presenter.state
+      .asObservable()
       .map { $0.country }
       .bind(to: formView.rx.countryText)
       .disposed(by: disposeBag)
