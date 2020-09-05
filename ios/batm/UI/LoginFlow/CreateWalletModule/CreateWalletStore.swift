@@ -29,7 +29,9 @@ struct CreateWalletState: Equatable {
   }
   
   var isAllFieldsNotEmpty: Bool {
-    return phoneNumber.count > 0 && password.count > 0 && confirmPassword.count > 0
+    return phoneNumber.count > 0
+      && password.count >= GlobalConstants.minPasswordLength
+      && confirmPassword.count >= GlobalConstants.minPasswordLength
   }
   
 }
@@ -48,10 +50,18 @@ final class CreateWalletStore: ViewStore<CreateWalletAction, CreateWalletState> 
       state.phoneNumber = PartialFormatter.default.formatPartial(phoneNumber ?? "")
       state.phoneNumberError = nil
     case let .updatePassword(password):
-      state.password = password ?? ""
+      if let password = password?.prefix(GlobalConstants.maxPasswordLength) {
+        state.password = String(password)
+      } else {
+        state.password = ""
+      }
       state.passwordError = nil
     case let .updateConfirmPassword(confirmPassword):
-      state.confirmPassword = confirmPassword ?? ""
+      if let confirmPassword = confirmPassword?.prefix(GlobalConstants.maxPasswordLength) {
+        state.confirmPassword = String(confirmPassword)
+      } else {
+        state.confirmPassword = ""
+      }
       state.confirmPasswordError = nil
     case let .updatePhoneNumberError(phoneNumberError): state.phoneNumberError = phoneNumberError
     case let .updatePasswordError(passwordError): state.passwordError = passwordError
@@ -81,7 +91,7 @@ final class CreateWalletStore: ViewStore<CreateWalletAction, CreateWalletState> 
       let errorString = localize(L.CreateWallet.Form.Error.fieldRequired)
       state.passwordError = errorString
       state.validationState = .invalid(errorString)
-    } else if state.password.count < 6 || state.password.count > 15 {
+    } else if state.password.count < GlobalConstants.minPasswordLength || state.password.count > GlobalConstants.minPasswordLength {
       let errorString = localize(L.CreateWallet.Form.Error.notValidPassword)
       state.passwordError = errorString
       state.validationState = .invalid(errorString)

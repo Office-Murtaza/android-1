@@ -41,6 +41,7 @@
 		DB1AF0DE24436B4A0037C998 /* MDCButton+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB1AF0DD24436B4A0037C998 /* MDCButton+Extensions.swift */; };
 		DB1AF0E024436B5C0037C998 /* MDCTextField+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB1AF0DF24436B5C0037C998 /* MDCTextField+Extensions.swift */; };
 		DB1AF0E224436D6D0037C998 /* MDCContainerScheme+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB1AF0E124436D6D0037C998 /* MDCContainerScheme+Extensions.swift */; };
+		DB1BAEF52503E70200D65477 /* GlobalConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB1BAEF42503E70200D65477 /* GlobalConstants.swift */; };
 		DB1CFB42246C4F5D00020104 /* TradesFlow+Dependencies.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB1CFB3F246C4F5D00020104 /* TradesFlow+Dependencies.swift */; };
 		DB1CFB43246C4F5D00020104 /* TradesFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB1CFB40246C4F5D00020104 /* TradesFlow.swift */; };
 		DB1CFB44246C4F5D00020104 /* TradesFlowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB1CFB41246C4F5D00020104 /* TradesFlowController.swift */; };
@@ -572,6 +573,7 @@
 		DB1AF0DD24436B4A0037C998 /* MDCButton+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MDCButton+Extensions.swift"; sourceTree = "<group>"; };
 		DB1AF0DF24436B5C0037C998 /* MDCTextField+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MDCTextField+Extensions.swift"; sourceTree = "<group>"; };
 		DB1AF0E124436D6D0037C998 /* MDCContainerScheme+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MDCContainerScheme+Extensions.swift"; sourceTree = "<group>"; };
+		DB1BAEF42503E70200D65477 /* GlobalConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalConstants.swift; sourceTree = "<group>"; };
 		DB1CFB3F246C4F5D00020104 /* TradesFlow+Dependencies.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TradesFlow+Dependencies.swift"; sourceTree = "<group>"; };
 		DB1CFB40246C4F5D00020104 /* TradesFlow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TradesFlow.swift; sourceTree = "<group>"; };
 		DB1CFB41246C4F5D00020104 /* TradesFlowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TradesFlowController.swift; sourceTree = "<group>"; };
@@ -1253,6 +1255,14 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
+		DB1BAEF32503E6EA00D65477 /* Constants */ = {
+			isa = PBXGroup;
+			children = (
+				DB1BAEF42503E70200D65477 /* GlobalConstants.swift */,
+			);
+			path = Constants;
+			sourceTree = "<group>";
+		};
 		DB1CFB3E246C4F3D00020104 /* TradesFlow */ = {
 			isa = PBXGroup;
 			children = (
@@ -1901,6 +1911,7 @@
 		DB8D408622C3E48800D5FBD0 /* Shell */ = {
 			isa = PBXGroup;
 			children = (
+				DB1BAEF32503E6EA00D65477 /* Constants */,
 				DB8D408A22C3E53100D5FBD0 /* Initializers */,
 				DB8D408722C3E4CC00D5FBD0 /* DI */,
 			);
@@ -3206,6 +3217,7 @@
 				DB4F395522DEFCBB00D53BF3 /* ManageWalletsPresenter.swift in Sources */,
 				DB9616F322C750CA0078E92D /* Converter.swift in Sources */,
 				DBC68CB122F8755000473247 /* VerificationResult.swift in Sources */,
+				DB1BAEF52503E70200D65477 /* GlobalConstants.swift in Sources */,
 				DB59EA1B22F9C4BF00EB64A7 /* UpdatePasswordFlowController.swift in Sources */,
 				DBAD539F22D7BA1D0005F682 /* PinCodeViewController.swift in Sources */,
 				DB59EA2222F9C51B00EB64A7 /* UpdatePasswordViewController.swift in Sources */,
