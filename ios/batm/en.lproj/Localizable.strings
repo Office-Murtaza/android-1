@@ -205,6 +205,7 @@
 "coin_details.three_months" = "3m";
 "coin_details.one_year" = "1y";
 "coin_details.transactions.empty" = "Your transactions will appear here";
+"coin_details.transaction_created" = "Transaction was successfully created";
 
 "coin_deposit.title" = "Deposit %@";
 

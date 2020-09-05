@@ -71,8 +71,8 @@ class SettingsFlow: BaseFlow<BTMNavigationController, SettingsFlowController> {
     case let .popToRoot(toastMessage):
       view.popToRootViewController(animated: true)
       toastMessage.flatMap { message in
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-          self.view.topViewController?.view.makeToast(message)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [weak self] in
+          self?.view.topViewController?.view.makeToast(message)
         }
       }
       return .none

@@ -46,6 +46,7 @@ enum L {
     static let staking = "coin_details.staking"
     static let threeMonths = "coin_details.three_months"
     static let trade = "coin_details.trade"
+    static let transactionCreated = "coin_details.transaction_created"
     static let unknown = "coin_details.unknown"
     static let unstake = "coin_details.unstake"
     static let withdraw = "coin_details.withdraw"
