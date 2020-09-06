@@ -81,7 +81,7 @@ final class CryptoFiatAmountView: UIView {
   
   func configure(for coinBalance: CoinBalance, useReserved: Bool = false) {
     let cryptoAmount = useReserved ? coinBalance.reservedBalance : coinBalance.balance
-    let fiatAmount = coinBalance.fiatBalance
+    let fiatAmount = useReserved ? coinBalance.reservedFiatBalance : coinBalance.fiatBalance
     
     configure(cryptoAmount: cryptoAmount, fiatAmount: fiatAmount, type: coinBalance.type)
   }

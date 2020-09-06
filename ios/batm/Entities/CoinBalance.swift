@@ -7,6 +7,7 @@ struct CoinBalance: Equatable {
   let balance: Double
   let fiatBalance: Double
   let reservedBalance: Double
+  let reservedFiatBalance: Double
   let price: Double
   let index: Int
 }

@@ -14,7 +14,8 @@ extension CoinBalance: ImmutableMappable {
     balance = try map.value("balance")
     fiatBalance = try map.value("fiatBalance")
     reservedBalance = try map.value("reservedBalance")
-    price = try map.value("price.USD")
-    index = try map.value("id")
+    reservedFiatBalance = try map.value("reservedFiatBalance")
+    price = try map.value("price")
+    index = try map.value("idx")
   }
 }
