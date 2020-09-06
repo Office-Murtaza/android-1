@@ -136,23 +136,23 @@ class TradeReserveActivity : BaseActivity() {
     private fun initViews() {
         setSupportActionBar(toolbarView)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        priceUsdView.text = getString(R.string.transaction_price_usd, viewModel.coinItem.priceUsd.toStringUsd())
+        priceUsdView.text = getString(R.string.text_usd, viewModel.coinItem.priceUsd.toStringUsd())
         balanceCryptoView.text = getString(
-            R.string.transaction_crypto_balance,
+            R.string.text_text,
             viewModel.coinItem.balanceCoin.toStringCoin(),
             viewModel.coinItem.code
         )
-        balanceUsdView.text = getString(R.string.transaction_price_usd, viewModel.coinItem.balanceUsd.toStringUsd())
+        balanceUsdView.text = getString(R.string.text_usd, viewModel.coinItem.balanceUsd.toStringUsd())
         reservedCryptoView.text = getString(
-            R.string.exchange_coin_to_coin_screen_balance_crypto,
+            R.string.text_text,
             viewModel.coinItem.reservedBalanceCoin.toStringCoin(),
             viewModel.coinItem.code
         )
         reservedUsdView.text = getString(
-            R.string.exchange_coin_to_coin_screen_balance_usd,
+            R.string.text_usd,
             viewModel.coinItem.reservedBalanceUsd.toStringUsd()
         )
-        amountCryptoView.hint = getString(R.string.withdraw_screen_crypto_amount, viewModel.coinItem.code)
+        amountCryptoView.hint = getString(R.string.text_amount, viewModel.coinItem.code)
     }
 
     private fun showSmsDialog(errorMessage: String? = null) {

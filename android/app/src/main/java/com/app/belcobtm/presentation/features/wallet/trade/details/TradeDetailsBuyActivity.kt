@@ -145,7 +145,7 @@ class TradeDetailsBuyActivity : BaseActivity() {
             getString(R.string.trade_screen_title_sell, intent.getStringExtra(TAG_COIN_CODE))
         }
 
-        priceUsdView.text = getString(R.string.unit_usd_dynamic, tradeDetailsItem.price.toStringUsd())
+        priceUsdView.text = getString(R.string.text_usd, tradeDetailsItem.price.toStringUsd())
         userView.text = getString(
             R.string.trade_screen_user_field_ln,
             tradeDetailsItem.userName,
@@ -155,9 +155,9 @@ class TradeDetailsBuyActivity : BaseActivity() {
         )
         paymentMethodView.text = tradeDetailsItem.paymentMethod
         limitsView.text =
-            getString(R.string.unit_usd_dynamic, "${tradeDetailsItem.minLimit} - ${tradeDetailsItem.maxLimit}")
+            getString(R.string.text_usd, "${tradeDetailsItem.minLimit} - ${tradeDetailsItem.maxLimit}")
         termsView.text = tradeDetailsItem.terms
-        amountCryptoView.hint = getString(R.string.crypto_amount, intent.getStringExtra(TAG_COIN_CODE))
+        amountCryptoView.hint = getString(R.string.text_amount, intent.getStringExtra(TAG_COIN_CODE))
     }
 
     companion object {

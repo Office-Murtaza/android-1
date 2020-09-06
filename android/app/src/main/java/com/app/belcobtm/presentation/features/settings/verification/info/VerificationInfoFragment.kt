@@ -52,10 +52,10 @@ class VerificationInfoFragment: BaseFragment() {
                     statusValueView.text = resources.getStringArray(R.array.verification_status_array)[it]
                 }
                 state.txLimit.doIfChanged(appliedState?.commonData?.txLimit) {
-                    txLimitValueView.text = getString(R.string.verification_unit_usd, it)
+                    txLimitValueView.text = getString(R.string.text_usd, it)
                 }
                 state.dailyLimit.doIfChanged(appliedState?.commonData?.dailyLimit) {
-                    dailyLimitValueView.text = getString(R.string.verification_unit_usd, it)
+                    dailyLimitValueView.text = getString(R.string.text_usd, it)
                 }
                 state.statusColor.doIfChanged(appliedState?.commonData?.statusColor) {
                     val shape = GradientDrawable()

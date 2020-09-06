@@ -58,7 +58,6 @@
 
     <!-- Balance -->
     <string name="balance_screen_empty_balance">$…</string>
-    <string name="balance_screen_unit_usd">USD %1$s</string>
     <string name="balance_screen_manage_wallets">Manage wallets</string>
 
     <!-- Recover Wallet -->
@@ -149,7 +148,6 @@
     <string name="verification_daily_limit">Daily limit</string>
     <string name="verification_vip_verify">VIP verify</string>
     <string name="verification_verify">Verify</string>
-    <string name="verification_unit_usd">%1$s $</string>
     <string-array name="verification_status_array">
         <item>Incorrect status</item>
         <item>Not verified</item>
@@ -187,9 +185,7 @@
     <string name="transactions_screen_balance">Balance</string>
     <string name="transactions_screen_transaction_created">Transaction was successfully created</string>
     <string name="transaction_changes_percent">%1$s %%</string>
-    <string name="transaction_price_usd">%1$s USD</string>
-    <string name="transaction_crypto_balance">%1$s %2$s</string>
-    <string name="transaction_helper_text_commission">Commission %1$s %2$s</string>
+    <string name="transaction_helper_text_commission">Fee %1$s %2$s</string>
 
     <!--transaction status-->
     <string name="transaction_status_unknown">Unknown</string>
@@ -217,7 +213,6 @@
     <!-- Transaction Details -->
     <string name="transaction_details_screen_title">Transaction details</string>
     <string name="transaction_details">Transaction details %1$s</string>
-
 
     <!--transaction type-->
     <string name="withdraw">Withdraw</string>
@@ -257,8 +252,6 @@
     <string name="transition_details_screen_ref_tax_id">Ref txId</string>
     <string name="transition_details_screen_ref_coin">Ref coin</string>
     <string name="transition_details_screen_ref_amount">Ref amount</string>>
-    <string name="transition_details_screen_balance_crypto">%1$s %2$s</string>
-    <string name="transition_details_screen_balance_usd">%1$s USD</string>
     <string name="transition_details_screen_pending">Pending</string>
     <string name="transition_details_screen_complete">Complete</string>
     <string name="transition_details_screen_fail">Fail</string>
@@ -277,8 +270,6 @@
     <string name="withdraw_screen_price">Price</string>
     <string name="withdraw_screen_balance">Balance</string>
     <string name="withdraw_screen_recipient_address">Recipient address</string>
-    <string name="withdraw_screen_usd_amount">USD amount</string>
-    <string name="withdraw_screen_crypto_amount">%1$s amount</string>
     <string name="withdraw_screen_where_money_libovski">Insufficient ETH balance for transaction fee</string>
 
     <!-- Sell screen -->
@@ -286,8 +277,6 @@
     <string name="sell_screen_balance">Balance</string>
     <string name="sell_screen_daily_limit">Daily Limit</string>
     <string name="sell_screen_tx_limit">Tx Limit</string>
-    <string name="sell_screen_usd_amount">USD Amount</string>
-    <string name="sell_screen_crypto_amount">%1$s Amount</string>
     <string name="sell_screen_not_enough_tradable_balance">Not enough on a tradable balance</string>
     <string name="sell_screen_atm_contains_only_count_banknotes">ATM contains only 20 and 50 banknotes</string>
     <string name="sell_screen_sell_from_another_address">Sell from another address</string>
@@ -301,8 +290,6 @@
     <string name="send_gift_screen_price">Price</string>
     <string name="send_gift_screen_balance">Balance</string>
     <string name="send_gift_screen_recipient_address">Phone</string>
-    <string name="send_gift_screen_usd_amount">USD amount</string>
-    <string name="send_gift_screen_crypto_amount">%1$s amount</string>
     <string name="send_gift_screen_message">Message…</string>
     <string name="send_gift_screen_add">Add</string>
     <string name="send_gift_screen_remove">Remove</string>
@@ -310,11 +297,7 @@
     <!-- Coin to coin screen -->
     <string name="exchange_coin_to_coin_screen_title">Exchange %1$s</string>
     <string name="exchange_coin_to_coin_screen_price">Price</string>
-    <string name="exchange_coin_to_coin_screen_price_value">%1$s USD</string>
     <string name="exchange_coin_to_coin_screen_balance">Balance</string>
-    <string name="exchange_coin_to_coin_screen_balance_crypto">%1$s %2$s</string>
-    <string name="exchange_coin_to_coin_screen_balance_usd">%1$s USD</string>
-    <string name="exchange_coin_to_coin_screen_crypto_amount">%1$s amount</string>
     <string name="exchange_coin_to_coin_screen_select_coin">Select coin please</string>
 
     <!-- Deposit -->
@@ -334,7 +317,6 @@
     <string name="trade_screen_empty">Empty</string>
     <string name="trade_screen_oops">Oops</string>
     <string name="trade_screen_recall">Recall</string>
-    <string name="trade_screen_create">Create</string>
     <string name="trade_screen_reserve">Reserve</string>
     <string name="trade_screen_post">Post</string>
     <string name="trade_screen_user">User</string>
@@ -371,17 +353,6 @@
     <string name="trade_reserve_screen_fiat_amount">Fiat amount</string>
     <string name="trade_reserve_screen_not_enough_reserved_amount">Reserved amount is lower than transaction fee</string>
 
-    <string name="unit_dynamic">%1$s %2$s</string>
-    <string name="unit_usd_dynamic">%1$s USD</string>
-    <string name="unit_usd_dynamic_symbol">%1$s $</string>
-    <string name="usd_amount">USD amount</string>
-    <string name="crypto_amount">%1$s amount</string>
-    <string name="button_next">Next</string>
-    <string name="button_create">Create</string>
-    <string name="button_submit">Submit</string>
-
-    <string name="alert_copy_to_clipboard">Copied</string>
-
     <string name="error_please_fill_all_fields">Please fill all fields</string>
     <string name="error_internet_unavailable">Internet connection is unavailable</string>
     <string name="error_something_went_wrong">Something went wrong</string>
@@ -405,7 +376,8 @@
         <item quantity="other">%d days</item>
     </plurals>
 
-
+    <string name="create">Create</string>
+    <string name="submit">Submit</string>
     <string name="paste">Paste</string>
     <string name="next">Next</string>
     <string name="update">Update</string>
@@ -415,6 +387,11 @@
     <string name="retry">Retry</string>
     <string name="copy_text">Copy</string>
     <string name="clipboard">Copied</string>
+
+    <string name="text_text">%1$s %2$s</string>
+    <string name="text_usd">%1$s $</string>
+    <string name="text_amount">%1$s amount</string>
+    <string name="usd_amount">USD amount</string>
 
     //settings
     <string name="security_label">Security</string>

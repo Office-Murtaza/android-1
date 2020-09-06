@@ -148,8 +148,8 @@ class TransactionDetailsFragment : BaseFragment() {
         val coinCode = TransactionDetailsFragmentArgs.fromBundle(requireArguments()).coinCode
         amountContainerView.show()
         amountCryptoView.text =
-            getString(R.string.transition_details_screen_balance_crypto, cryptoAmount.toStringCoin(), coinCode)
-        amountUsdView.text = getString(R.string.transition_details_screen_balance_usd, fiatAmount.toStringUsd())
+            getString(R.string.text_text, cryptoAmount.toStringCoin(), coinCode)
+        amountUsdView.text = getString(R.string.text_usd, fiatAmount.toStringUsd())
         amountArrowsView.toggle(fiatAmount >= 0)
         amountUsdView.toggle(fiatAmount >= 0)
     }
@@ -159,7 +159,7 @@ class TransactionDetailsFragment : BaseFragment() {
     } else {
         val coinCode = TransactionDetailsFragmentArgs.fromBundle(requireArguments()).coinCode
         feeContainerView.show()
-        feeView.text = getString(R.string.transition_details_screen_balance_crypto, fee.toStringCoin(), coinCode)
+        feeView.text = getString(R.string.text_text, fee.toStringCoin(), coinCode)
     }
 
     private fun showDateView(date: String) = if (date.isBlank()) {

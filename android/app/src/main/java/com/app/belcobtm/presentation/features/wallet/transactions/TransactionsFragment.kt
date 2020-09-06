@@ -169,10 +169,10 @@ class TransactionsFragment : BaseFragment() {
     override fun initObservers() {
         viewModel.chartLiveData.listen({
             updateChartByPeriod()
-            priceUsdView.text = getString(R.string.unit_usd_dynamic_symbol, it.priceUsd.toStringUsd())
+            priceUsdView.text = getString(R.string.text_usd, it.priceUsd.toStringUsd())
             balanceCryptoView.text =
-                getString(R.string.transaction_crypto_balance, it.balance.toStringCoin(), viewModel.coinCode)
-            balanceUsdView.text = getString(R.string.unit_usd_dynamic_symbol, (it.balance * it.priceUsd).toStringUsd())
+                getString(R.string.text_text, it.balance.toStringCoin(), viewModel.coinCode)
+            balanceUsdView.text = getString(R.string.text_usd, (it.balance * it.priceUsd).toStringUsd())
         })
         viewModel.transactionListLiveData.observe(this, {
             adapter.setItemList(it)

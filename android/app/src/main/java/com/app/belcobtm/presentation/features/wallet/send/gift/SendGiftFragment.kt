@@ -45,11 +45,11 @@ class SendGiftFragment : BaseFragment(), GiphyDialogFragment.GifSelectionListene
 
             if (cryptoAmount > 0) {
                 amountUsdView.text = getString(
-                    R.string.unit_usd_dynamic_symbol,
+                    R.string.text_usd,
                     (cryptoAmount * viewModel.getUsdPrice()).toStringUsd()
                 )
             } else {
-                amountUsdView.text = getString(R.string.unit_usd_dynamic_symbol, "0.0")
+                amountUsdView.text = getString(R.string.text_usd, "0.0")
             }
             updateNextButton()
         }
@@ -69,7 +69,7 @@ class SendGiftFragment : BaseFragment(), GiphyDialogFragment.GifSelectionListene
     }
 
     override fun initViews() {
-        amountCryptoView.hint = getString(R.string.send_gift_screen_crypto_amount, viewModel.getCoinCode())
+        amountCryptoView.hint = getString(R.string.text_amount, viewModel.getCoinCode())
         setToolbarTitle(getString(R.string.send_gift_screen_title, viewModel.getCoinCode()))
         val settings = GPHSettings(
             gridType = GridType.waterfall,
@@ -78,13 +78,13 @@ class SendGiftFragment : BaseFragment(), GiphyDialogFragment.GifSelectionListene
             mediaTypeConfig = arrayOf(GPHContentType.gif)
         )
         gifsDialog = GiphyDialogFragment.newInstance(settings)
-        priceUsdView.text = getString(R.string.unit_usd_dynamic_symbol, viewModel.getUsdPrice().toStringUsd())
+        priceUsdView.text = getString(R.string.text_usd, viewModel.getUsdPrice().toStringUsd())
         balanceCryptoView.text = getString(
-            R.string.transaction_crypto_balance,
+            R.string.text_text,
             viewModel.getCoinBalance().toStringCoin(),
             viewModel.getCoinCode()
         )
-        balanceUsdView.text = getString(R.string.unit_usd_dynamic_symbol, viewModel.getUsdBalance().toStringUsd())
+        balanceUsdView.text = getString(R.string.text_usd, viewModel.getUsdBalance().toStringUsd())
         amountCryptoView.helperText = getString(
             R.string.transaction_helper_text_commission,
             viewModel.getTransactionFee().toStringCoin(),

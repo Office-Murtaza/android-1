@@ -32,7 +32,7 @@ class ExchangeFragment : BaseFragment() {
             }
 
             nextButtonView.isEnabled = fromCoinAmountTemporary > 0
-            amountCoinToView.text = getString(R.string.unit_usd_dynamic_symbol, toCoinAmount.toStringCoin())
+            amountCoinToView.text = getString(R.string.text_usd, toCoinAmount.toStringCoin())
         }
     )
 
@@ -45,29 +45,29 @@ class ExchangeFragment : BaseFragment() {
     override fun initViews() {
         setToolbarTitle(getString(R.string.exchange_coin_to_coin_screen_title, viewModel.fromCoinItem.code))
         priceUsdView.text = getString(
-            R.string.exchange_coin_to_coin_screen_price_value,
+            R.string.text_usd,
             viewModel.fromCoinItem.priceUsd.toStringUsd()
         )
         balanceCryptoView.text = getString(
-            R.string.exchange_coin_to_coin_screen_balance_crypto,
+            R.string.text_text,
             viewModel.fromCoinItem.balanceCoin.toStringCoin(),
             viewModel.fromCoinItem.code
         )
         balanceUsdView.text =
-            getString(R.string.unit_usd_dynamic_symbol, viewModel.fromCoinItem.balanceUsd.toStringUsd())
+            getString(R.string.text_usd, viewModel.fromCoinItem.balanceUsd.toStringUsd())
         amountCoinFromView.hint = getString(
-            R.string.exchange_coin_to_coin_screen_crypto_amount,
+            R.string.text_amount,
             viewModel.fromCoinItem.code
         )
         amountCoinToView.hint = getString(
-            R.string.exchange_coin_to_coin_screen_crypto_amount,
+            R.string.text_amount,
             viewModel.toCoinItem?.code ?: ""
         )
         LocalCoinType.values().find { it.name == viewModel.toCoinItem?.code }?.let { coinType ->
             pickCoinButtonView.setText(coinType.fullName)
             pickCoinButtonView.setResizedDrawableStart(coinType.resIcon(), R.drawable.ic_arrow_drop_down)
         }
-        amountCoinToView.text = getString(R.string.unit_usd_dynamic_symbol, "0.0")
+        amountCoinToView.text = getString(R.string.text_usd, "0.0")
         updateBalanceToView()
     }
 
@@ -84,7 +84,7 @@ class ExchangeFragment : BaseFragment() {
                         R.drawable.ic_arrow_drop_down
                     )
                     amountCoinToView.hint = getString(
-                        R.string.exchange_coin_to_coin_screen_crypto_amount,
+                        R.string.text_amount,
                         LocalCoinType.values()[which].name
                     )
                     viewModel.toCoinItem = viewModel.coinItemList.find { it.code == LocalCoinType.values()[which].name }
@@ -111,7 +111,7 @@ class ExchangeFragment : BaseFragment() {
 
     private fun updateBalanceToView() {
         balanceCoinToView.text = getString(
-            R.string.unit_dynamic,
+            R.string.text_text,
             viewModel.toCoinItem?.balanceCoin?.toStringCoin() ?: "",
             viewModel.toCoinItem?.code ?: ""
         )

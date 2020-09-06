@@ -20,7 +20,7 @@ class DepositFragment : BaseFragment() {
         val address = DepositFragmentArgs.fromBundle(requireArguments()).coinAddress
         copyButtonView.setOnClickListener {
             copyToClipboard(getString(R.string.wallet_code_clipboard), address)
-            AlertHelper.showToastLong(requireContext(), R.string.alert_copy_to_clipboard)
+            AlertHelper.showToastLong(requireContext(), R.string.clipboard)
         }
         imageView.viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
             override fun onGlobalLayout() {

@@ -146,7 +146,7 @@
                         android:digits="1234567890."
                         android:inputType="numberDecimal"
                         android:nextFocusDown="@id/amountUsdView"
-                        tools:hint="@string/crypto_amount"
+                        tools:hint="@string/text_amount"
                         tools:ignore="RtlSymmetry" />
                 </com.google.android.material.textfield.TextInputLayout>
 

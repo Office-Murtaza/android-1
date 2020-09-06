@@ -80,7 +80,7 @@
             android:digits="1234567890."
             android:inputType="numberDecimal"
             android:nextFocusDown="@id/amountUsdView"
-            tools:hint="@string/exchange_coin_to_coin_screen_crypto_amount" />
+            tools:hint="@string/text_amount" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <androidx.appcompat.widget.AppCompatTextView
@@ -139,7 +139,7 @@
         android:id="@+id/nextButtonView"
         style="@style/Button.Primary"
         android:enabled="false"
-        android:text="@string/button_next"
+        android:text="@string/next"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

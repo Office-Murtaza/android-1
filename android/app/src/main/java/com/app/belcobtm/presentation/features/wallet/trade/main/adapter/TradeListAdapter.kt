@@ -108,8 +108,8 @@ class TradeListAdapter(
         view.userNameView.text =
             view.context.getString(R.string.trade_screen_user_field, userName, tradeCount, rate.toString(), distance)
         view.paymentMethodView.text = paymentMethod
-        view.priceView.text = view.context.getString(R.string.unit_usd_dynamic, price.toStringUsd())
-        view.priceLimitView.text = view.context.getString(R.string.unit_usd_dynamic, "$minLimit - $maxLimit")
+        view.priceView.text = view.context.getString(R.string.text_usd, price.toStringUsd())
+        view.priceLimitView.text = view.context.getString(R.string.text_usd, "$minLimit - $maxLimit")
     }
 
     class Holder(view: View) : RecyclerView.ViewHolder(view)

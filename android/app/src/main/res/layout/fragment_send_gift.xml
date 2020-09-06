@@ -104,7 +104,7 @@
             android:inputType="numberDecimal"
             android:nextFocusUp="@id/messageView"
             android:nextFocusDown="@id/messageView"
-            tools:hint="@string/send_gift_screen_crypto_amount" />
+            tools:hint="@string/text_amount" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <androidx.appcompat.widget.AppCompatTextView
@@ -194,7 +194,7 @@
         android:id="@+id/nextButtonView"
         style="@style/Button.Primary"
         android:enabled="false"
-        android:text="@string/button_submit"
+        android:text="@string/submit"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

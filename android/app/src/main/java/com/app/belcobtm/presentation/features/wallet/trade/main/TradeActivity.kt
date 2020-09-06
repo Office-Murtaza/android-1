@@ -197,25 +197,25 @@ class TradeActivity : BaseActivity() {
                 is LoadingData.Loading -> progressView.show()
                 is LoadingData.Success -> with(loadingData.data) {
                     priceUsdView.text = getString(
-                        R.string.exchange_coin_to_coin_screen_price_value,
+                        R.string.text_usd,
                         priceUsd.toStringUsd()
                     )
                     balanceCryptoView.text = getString(
-                        R.string.exchange_coin_to_coin_screen_balance_crypto,
+                        R.string.text_text,
                         balanceCoin.toStringCoin(),
                         code
                     )
                     balanceUsdView.text = getString(
-                        R.string.exchange_coin_to_coin_screen_balance_usd,
+                        R.string.text_usd,
                         balanceUsd.toStringUsd()
                     )
                     reserveCryptoView.text = getString(
-                        R.string.exchange_coin_to_coin_screen_balance_crypto,
+                        R.string.text_text,
                         reservedBalanceCoin.toStringCoin(),
                         code
                     )
                     reserveUsdView.text = getString(
-                        R.string.exchange_coin_to_coin_screen_balance_usd,
+                        R.string.text_usd,
                         reservedBalanceUsd.toStringUsd()
                     )
                     progressView.hide()

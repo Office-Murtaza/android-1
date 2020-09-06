@@ -34,9 +34,9 @@ class WithdrawFragment : BaseFragment() {
             }
 
             amountUsdView.text = if (cryptoAmount > 0) {
-                getString(R.string.unit_usd_dynamic_symbol, (cryptoAmount * viewModel.getUsdPrice()).toStringUsd())
+                getString(R.string.text_usd, (cryptoAmount * viewModel.getUsdPrice()).toStringUsd())
             } else {
-                getString(R.string.unit_usd_dynamic_symbol, "0.0")
+                getString(R.string.text_usd, "0.0")
             }
             updateNextButton()
         }
@@ -50,15 +50,15 @@ class WithdrawFragment : BaseFragment() {
 
     override fun initViews() {
         setToolbarTitle(getString(R.string.withdraw_screen_screen_title, viewModel.getCoinCode()))
-        priceUsdView.text = getString(R.string.unit_usd_dynamic_symbol, viewModel.getUsdPrice().toStringUsd())
+        priceUsdView.text = getString(R.string.text_usd, viewModel.getUsdPrice().toStringUsd())
         balanceCryptoView.text =
             getString(
-                R.string.transaction_crypto_balance,
+                R.string.text_text,
                 viewModel.getCoinBalance().toStringCoin(),
                 viewModel.getCoinCode()
             )
-        balanceUsdView.text = getString(R.string.transaction_price_usd, viewModel.getUsdBalance().toStringUsd())
-        amountCryptoView.hint = getString(R.string.withdraw_screen_crypto_amount, viewModel.getCoinCode())
+        balanceUsdView.text = getString(R.string.text_usd, viewModel.getUsdBalance().toStringUsd())
+        amountCryptoView.hint = getString(R.string.text_amount, viewModel.getCoinCode())
         amountCryptoView.actionDoneListener { validateAndSubmit() }
         nextButtonView.setOnClickListener { validateAndSubmit() }
         amountCryptoView.helperText = getString(
