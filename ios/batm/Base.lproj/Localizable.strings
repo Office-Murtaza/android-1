@@ -220,6 +220,7 @@
 "coin_withdraw.form.error.too_low_amount" = "Amount can't be zero or lower";
 "coin_withdraw.form.error.too_high_amount" = "Amount can't be higher than your balance";
 "coin_withdraw.form.error.insufficient_e_t_h_balance" = "Insufficient ETH balance for transaction fee";
+"coin_withdraw.form.error.not_enough_to_activate" = "Amount is not enough to activate receiver address";
 
 "coin_send_gift.title" = "Send gift %@";
 "coin_send_gift.form.code.placeholder" = "Code";

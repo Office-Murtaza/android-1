@@ -1,6 +1,6 @@
 import ObjectMapper
 
-extension VerificationResult: ImmutableMappable {
+extension ResponseResult: ImmutableMappable {
   init(map: Map) throws {
     result = try map.value("result")
   }

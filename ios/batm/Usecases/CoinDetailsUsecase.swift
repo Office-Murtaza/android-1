@@ -6,7 +6,6 @@ protocol CoinDetailsUsecase {
   func getTransactions(for type: CustomCoinType, from page: Int) -> Single<Transactions>
   func getTransactionDetails(for type: CustomCoinType, by id: String) -> Single<TransactionDetails>
   func getCoin(for type: CustomCoinType) -> Single<BTMCoin>
-  func requestCode() -> Completable
   func verifyCode(code: String) -> Completable
   func withdraw(from coin: BTMCoin,
                 with coinSettings: CoinSettings,
@@ -72,12 +71,6 @@ class CoinDetailsUsecaseImpl: CoinDetailsUsecase {
       }
   }
   
-  func requestCode() -> Completable {
-    return .empty()
-//    return accountStorage.get()
-//      .flatMapCompletable { [api] in api.requestCode(userId: $0.userId) }
-  }
-  
   func verifyCode(code: String) -> Completable {
     return accountStorage.get()
       .flatMapCompletable { [api] in api.verifyCode(userId: $0.userId, code: code) }
@@ -87,7 +80,22 @@ class CoinDetailsUsecaseImpl: CoinDetailsUsecase {
                 with coinSettings: CoinSettings,
                 to destination: String,
                 amount: Double) -> Completable {
-    return accountStorage.get()
+    return Single.just(coin.type)
+      .flatMap { [api] type -> Single<Void> in
+        if type != .ripple {
+          return .just(())
+        }
+        
+        return api.getCurrentAccountActivated(type: type, address: destination)
+          .map { isActivated in
+            if !isActivated && amount < 20 {
+              throw APIError.serverError(ServerError(code: 3, message: localize(L.CoinWithdraw.Form.Error.notEnoughToActivate)))
+            }
+            
+            return Void()
+          }
+      }
+      .flatMap { [accountStorage] in accountStorage.get() }
       .flatMap { [walletService] account in
         return walletService.getTransactionHex(for: coin,
                                                with: coinSettings,

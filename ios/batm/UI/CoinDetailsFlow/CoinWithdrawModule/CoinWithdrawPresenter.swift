@@ -83,7 +83,11 @@ final class CoinWithdrawPresenter: ModulePresenter, CoinWithdrawModule {
                                 amount: state.coinAmount.doubleValue ?? 0.0)
       .catchError { [store] in
         if let apiError = $0 as? APIError, case let .serverError(error) = apiError, let code = error.code, code > 1 {
-          store.action.accept(.updateAddressError(error.message))
+          if code == 3 {
+            store.action.accept(.updateCoinAmountError(error.message))
+          } else {
+            store.action.accept(.updateAddressError(error.message))
+          }
         }
         
         throw $0

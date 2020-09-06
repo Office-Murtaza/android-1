@@ -1,5 +1,5 @@
 import Foundation
 
-struct VerificationResult: Equatable {
+struct ResponseResult: Equatable {
   let result: Bool
 }
