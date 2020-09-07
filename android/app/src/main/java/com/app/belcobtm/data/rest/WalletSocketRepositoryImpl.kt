@@ -40,21 +40,18 @@ class WalletSocketRepositoryImpl(private val socketClient: SocketClient) : Walle
         socketClient.onFailure = onFailureListener
     }
 
-    override fun close() {
-        channel?.close()
-        socketClient.disconnect()
+    override fun unsubscribe() {
+        socketClient.unSubscribe(balanceEndpoint)
     }
 
-    override fun open() {
-        if (!socketClient.isConnected()) {
-            channel = getChannel()
-            socketClient.getTopicHandler(balanceEndpoint)?.removeListener(onMessageListener)
-            socketClient.subscribe(balanceEndpoint).addListener(onMessageListener)
-            socketClient.connect()
-        }
+    override fun subscribe() {
+        socketClient.getTopicHandler(balanceEndpoint)
+            ?.removeListener(onMessageListener)
+        socketClient.subscribe(balanceEndpoint)
+            .addListener(onMessageListener)
     }
 
-    override suspend fun getBalanceFlow(): Channel<Either<Failure, BalanceDataItem>> {
+    override suspend fun getBalanceChannel(): Channel<Either<Failure, BalanceDataItem>> {
         return channel ?: getChannel()
     }
 

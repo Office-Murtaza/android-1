@@ -23,12 +23,19 @@ class WalletViewModel(
 
     init {
         balanceLiveData.value = LoadingData.Loading()
+        balanceUseCase.invoke(Unit,
+            onSuccess = {
+                updateCoinsItems(it)
+            },
+            onError = {
+                updateOnError(it)
+            })
     }
 
     fun subscribeToChannel() {
-        walletSocketRepository.open()
+        walletSocketRepository.subscribe()
         GlobalScope.launch {
-            for (it in walletSocketRepository.getBalanceFlow()) {
+            for (it in walletSocketRepository.getBalanceChannel()) {
                 if (it.isLeft) {
                     CoroutineScope(Dispatchers.Main).launch {
                         updateOnError((it as Either.Left).a)
@@ -44,7 +51,7 @@ class WalletViewModel(
     }
 
     fun closeChannel() {
-        walletSocketRepository.close()
+        walletSocketRepository.unsubscribe()
     }
 
     private fun updateOnError(it: Failure) {

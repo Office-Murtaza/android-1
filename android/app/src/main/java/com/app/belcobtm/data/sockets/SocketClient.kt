@@ -1,5 +1,6 @@
 package com.app.belcobtm.data.sockets
 
+import android.util.Log
 import com.app.belcobtm.data.disk.shared.preferences.SharedPreferencesHelper
 import com.app.belcobtm.data.rest.ApiFactory
 import com.app.belcobtm.domain.Failure
@@ -20,7 +21,7 @@ class SocketClient(
     var onConnected: () -> Unit = {}
 
     fun connect() {
-        Timber.d("socket connect called")
+        Log.d("SOCKETCLIENT","socket connect called")
         val request = Request.Builder()
             .url(ApiFactory.SOCKET_URL)
             .build()
@@ -28,16 +29,26 @@ class SocketClient(
     }
 
     fun subscribe(topic: String): SubscriptionsHandler {
+        Log.d("SOCKETCLIENT","Susbscribe called for $topic")
+        topics[topic]?.let {
+            return it
+        }
         val handler = SubscriptionsHandler(topic)
         topics[topic] = handler
-        if (webSocket != null) {
+        if (webSocket != null && isConnected) {
             sendSubscribeMessage(webSocket!!, topic)
+        } else {
+            connect()
         }
         return handler
     }
 
-    fun unSubscribe(topic: String?) {
+    fun unSubscribe(topic: String) {
+        Log.d("SOCKETCLIENT","Unsubscribe called for $topic")
         topics.remove(topic)
+        if (webSocket != null && isConnected) {
+            sendUnSubscribeMessage(webSocket!!, topic)
+        }
     }
 
     fun getTopicHandler(topic: String?): SubscriptionsHandler? {
@@ -64,6 +75,13 @@ class SocketClient(
         webSocket.send(SocketMessageSerializer.serialize(message))
     }
 
+    private fun sendUnSubscribeMessage(webSocket: WebSocket, topic: String) {
+        val message = SocketMessage("UNSUBSCRIBE")
+        message.put("id", sharedPreferencesHelper.userPhone)
+        message.put("destination", topic)
+        webSocket.send(SocketMessageSerializer.serialize(message))
+    }
+
     fun disconnect() {
         webSocket?.close(1000, "socket closed")
     }
@@ -73,7 +91,7 @@ class SocketClient(
     }
 
     override fun onOpen(webSocket: WebSocket, response: Response?) {
-        Timber.d("socket is opened")
+        Log.d("SOCKETCLIENT","socket is opened")
         this.webSocket = webSocket
         isConnected = true
         onConnected()
@@ -84,7 +102,7 @@ class SocketClient(
     }
 
     override fun onMessage(webSocket: WebSocket?, text: String?) {
-        Timber.d("socket message: $text")
+        Log.d("SOCKETCLIENT","socket message: $text")
         text?.run {
             val message = SocketMessageSerializer.deserialize(this)
             val topic = message.getHeader("destination")
@@ -95,11 +113,13 @@ class SocketClient(
     }
 
     override fun onClosing(webSocket: WebSocket, code: Int, reason: String) {
+        Log.d("SOCKETCLIENT", "closing called")
         webSocket.close(1000, null)
     }
 
     override fun onClosed(webSocket: WebSocket, code: Int, reason: String) {
         super.onClosed(webSocket, code, reason)
+        Log.d("SOCKETCLIENT", "closed socket")
         isConnected = false
         this.webSocket = null
     }
@@ -109,7 +129,7 @@ class SocketClient(
         t: Throwable,
         response: Response?
     ) {
-        Timber.w(t, "failure")
+        Log.w("SOCKETCLIENT", "failure", t)
         onFailure(Failure.ServerError())
     }
 }

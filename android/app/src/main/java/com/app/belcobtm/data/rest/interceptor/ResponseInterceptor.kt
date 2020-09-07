@@ -24,42 +24,46 @@ class ResponseInterceptor(
         val request = chain.request()
         request.header("Content-Type: application/json")
         val response: Response = chain.proceed(request)
-        when (response.code()) {
-            HttpURLConnection.HTTP_OK -> response.body()?.let {
-                val json = it.string()
-                when {
-                    response.isSuccessful && !JSONObject(json).isNull(RESPONSE_FIELD) -> {
-                        val resultJson = JSONObject(json).get(RESPONSE_FIELD)
-                        val newBody = ResponseBody.create(it.contentType(), resultJson.toString())
-                        return response.newBuilder().body(newBody).build()
-                    }
-                    response.isSuccessful && !JSONObject(json).isNull(ERROR_FIELD) -> {
-                        val message = try {
-                            JSONObject(json).getJSONObject(ERROR_FIELD).getString(ERROR_SUB_FIELD)
-                        } catch (e: Exception) {
-                            null
+        if (!request.url().url().toString().contains("/ws")) {
+            when (response.code()) {
+                HttpURLConnection.HTTP_OK -> response.body()?.let {
+                    val json = it.string()
+                    when {
+                        response.isSuccessful && !JSONObject(json).isNull(RESPONSE_FIELD) -> {
+                            val resultJson = JSONObject(json).get(RESPONSE_FIELD)
+                            val newBody = ResponseBody.create(it.contentType(), resultJson.toString())
+                            return response.newBuilder().body(newBody).build()
                         }
-                        val code = try {
-                            JSONObject(json).getJSONObject(ERROR_FIELD).getInt(ERROR_SUB_FIELD_CODE)
-                        } catch (e: Exception) {
-                            null
+                        response.isSuccessful && !JSONObject(json).isNull(ERROR_FIELD) -> {
+                            val message = try {
+                                JSONObject(json).getJSONObject(ERROR_FIELD).getString(ERROR_SUB_FIELD)
+                            } catch (e: Exception) {
+                                null
+                            }
+                            val code = try {
+                                JSONObject(json).getJSONObject(ERROR_FIELD).getInt(ERROR_SUB_FIELD_CODE)
+                            } catch (e: Exception) {
+                                null
+                            }
+                            throw Failure.MessageError(message, code)
                         }
-                        throw Failure.MessageError(message, code)
+                        else -> Unit
                     }
-                    else -> Unit
                 }
+                HttpURLConnection.HTTP_NOT_FOUND -> throw Failure.ServerError("Not found")
+                HttpURLConnection.HTTP_FORBIDDEN -> {
+                    val isUserUnauthorized = request.url().encodedPath().equals(REQUEST_REFRESH_PATH, true)
+                    val intent = Intent(TAG_USER_AUTHORIZATION)
+                    intent.putExtra(KEY_IS_USER_UNAUTHORIZED, isUserUnauthorized)
+                    broadcastManager.sendBroadcast(intent)
+                    throw Failure.TokenError
+                }
+                else -> Unit
             }
-            HttpURLConnection.HTTP_NOT_FOUND -> throw Failure.ServerError("Not found")
-            HttpURLConnection.HTTP_FORBIDDEN -> {
-                val isUserUnauthorized = request.url().encodedPath().equals(REQUEST_REFRESH_PATH, true)
-                val intent = Intent(TAG_USER_AUTHORIZATION)
-                intent.putExtra(KEY_IS_USER_UNAUTHORIZED, isUserUnauthorized)
-                broadcastManager.sendBroadcast(intent)
-                throw Failure.TokenError
-            }
-            else -> Unit
+            response
+        } else {
+            response
         }
-        response
     } catch (e: JSONException) {
         if (networkUtils.isNetworkAvailable()) {
             throw Failure.ServerError(e.message)

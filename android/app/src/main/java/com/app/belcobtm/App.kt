@@ -4,10 +4,15 @@ import android.app.Activity
 import android.content.Context
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleObserver
+import androidx.lifecycle.OnLifecycleEvent
+import androidx.lifecycle.ProcessLifecycleOwner
 import androidx.multidex.MultiDexApplication
 import com.app.belcobtm.data.di.dataModule
 import com.app.belcobtm.data.di.repositoryModule
 import com.app.belcobtm.data.disk.shared.preferences.SharedPreferencesHelper
+import com.app.belcobtm.data.sockets.SocketClient
 import com.app.belcobtm.di.component.DaggerAppComponent
 import com.app.belcobtm.presentation.di.useCaseModule
 import com.app.belcobtm.presentation.di.viewModelModule
@@ -23,8 +28,9 @@ import javax.inject.Singleton
 
 @Singleton
 class App
-@Inject constructor() : MultiDexApplication(), HasActivityInjector, HasSupportFragmentInjector {
+@Inject constructor() : MultiDexApplication(), HasActivityInjector, HasSupportFragmentInjector, LifecycleObserver {
     private val prefHelper: SharedPreferencesHelper by inject()
+    private val socketClient: SocketClient by inject()
 
     @Inject
     lateinit var dispatchingAndroidInjector: DispatchingAndroidInjector<Activity>
@@ -38,6 +44,7 @@ class App
 
     override fun onCreate() {
         super.onCreate()
+        ProcessLifecycleOwner.get().lifecycle.addObserver(this)
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true)
         System.loadLibrary("TrustWalletCore")
 
@@ -70,6 +77,21 @@ class App
         return fragmentDispatchingAndroidInjector
     }
 
+    @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
+    fun onAppBackgrounded() {
+        socketClient.disconnect()
+    }
+
+    @OnLifecycleEvent(Lifecycle.Event.ON_START)
+    fun onAppForegrounded() {
+        connectSocket()
+    }
+
+    fun connectSocket() {
+        if (!socketClient.isConnected()) {
+            socketClient.connect()
+        }
+    }
 
     companion object {
         private var instance: App? = null
