@@ -132,7 +132,7 @@ final class TransactionDetailsViewController: ModuleViewController<TransactionDe
       headerView.add(title: localize(L.TransactionDetails.Header.Phone.title), value: phone)
     }
     
-    if let imageId = details.imageId {
+    if let imageId = details.imageId, imageId.count > 0 {
       let mediaView = GPHMediaView()
       
       GiphyCore.shared.gifByID(imageId) { (response, error) in
