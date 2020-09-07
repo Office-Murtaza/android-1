@@ -112,16 +112,16 @@ final class TransactionDetailsViewController: ModuleViewController<TransactionDe
       break
     }
     
-    if let date = details.dateString {
-      headerView.add(title: localize(L.TransactionDetails.Header.Date.title), value: date)
-    }
-    
     if let fromAddress = details.fromAddress {
       headerView.add(title: localize(L.TransactionDetails.Header.FromAddress.title), value: fromAddress)
     }
     
     if let toAddress = details.toAddress {
       headerView.add(title: localize(L.TransactionDetails.Header.ToAddress.title), value: toAddress)
+    }
+    
+    if let date = details.dateString {
+      headerView.add(title: localize(L.TransactionDetails.Header.Date.title), value: date)
     }
   }
   
