@@ -1,16 +1,23 @@
 import UIKit
 import MaterialComponents
 
-class LinkButton: MDCButton, HasDisposeBag {
+class LinkView: UIView, HasDisposeBag {
+  
+  let label: UILabel = {
+    let label = UILabel()
+    label.numberOfLines = 0
+    return label
+  }()
+  
+  let button = DummyButton()
   
   var link: URL?
   
   override init(frame: CGRect) {
     super.init(frame: frame)
     
-    contentEdgeInsets = .zero
-    applyTextTheme(withScheme: MDCContainerScheme.default)
-    
+    setupUI()
+    setupLayout()
     setupBindings()
   }
   
@@ -26,12 +33,27 @@ class LinkButton: MDCButton, HasDisposeBag {
                                                      .underlineStyle: NSUnderlineStyle.single.rawValue]
     let attributedText = NSAttributedString(string: text, attributes: attributes)
     
-    setAttributedTitle(attributedText, for: .normal)
-    titleLabel?.numberOfLines = 0
+    label.attributedText = attributedText
+  }
+  
+  private func setupUI() {
+    translatesAutoresizingMaskIntoConstraints = false
+    
+    addSubviews(label,
+                button)
+  }
+  
+  private func setupLayout() {
+    label.snp.makeConstraints {
+      $0.edges.equalToSuperview()
+    }
+    button.snp.makeConstraints {
+      $0.edges.equalToSuperview()
+    }
   }
   
   private func setupBindings() {
-    rx.tap.asDriver()
+    button.rx.tap.asDriver()
       .drive(onNext: { [unowned self] in
         if let link = self.link, UIApplication.shared.canOpenURL(link) {
           UIApplication.shared.open(link)

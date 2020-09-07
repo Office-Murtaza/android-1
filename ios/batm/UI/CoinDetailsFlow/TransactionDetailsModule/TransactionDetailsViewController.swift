@@ -65,10 +65,10 @@ final class TransactionDetailsViewController: ModuleViewController<TransactionDe
     
     (details.txId ?? details.txDbId).flatMap { id in
       if let link = details.link, let linkURL = URL(string: link) {
-        let linkButton = LinkButton()
-        linkButton.configure(text: id, link: linkURL)
+        let linkView = LinkView()
+        linkView.configure(text: id, link: linkURL)
         
-        headerView.add(title: localize(L.TransactionDetails.Header.ID.title), valueView: linkButton)
+        headerView.add(title: localize(L.TransactionDetails.Header.ID.title), valueView: linkView)
       } else {
         headerView.add(title: localize(L.TransactionDetails.Header.ID.title), value: id)
       }
@@ -162,10 +162,10 @@ final class TransactionDetailsViewController: ModuleViewController<TransactionDe
     
     details.refTxId.flatMap { id in
       if let link = details.refLink, let linkURL = URL(string: link) {
-        let linkButton = LinkButton()
-        linkButton.configure(text: id, link: linkURL)
+        let linkView = LinkView()
+        linkView.configure(text: id, link: linkURL)
         
-        headerView.add(title: localize(L.TransactionDetails.Header.RefID.title), valueView: linkButton)
+        headerView.add(title: localize(L.TransactionDetails.Header.RefID.title), valueView: linkView)
       } else {
         headerView.add(title: localize(L.TransactionDetails.Header.RefID.title), value: id)
       }
