@@ -78,7 +78,7 @@ class ResponseInterceptor(
         private const val ERROR_SUB_FIELD = "message"
         private const val ERROR_SUB_FIELD_CODE = "code"
         private const val REQUEST_REFRESH_PATH = "/api/v1/refresh"
-        private const val TAG_USER_AUTHORIZATION = "tag_broadcast_user_unauthorized"
-        private const val KEY_IS_USER_UNAUTHORIZED = "key_is_user_unauthorized"
+        const val TAG_USER_AUTHORIZATION = "tag_broadcast_user_unauthorized"
+        const val KEY_IS_USER_UNAUTHORIZED = "key_is_user_unauthorized"
     }
 }

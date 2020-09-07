@@ -1,8 +1,13 @@
 package com.app.belcobtm.data.sockets
 
+import android.content.Intent
 import android.util.Log
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.app.belcobtm.data.disk.shared.preferences.SharedPreferencesHelper
 import com.app.belcobtm.data.rest.ApiFactory
+import com.app.belcobtm.data.rest.interceptor.ResponseInterceptor
+import com.app.belcobtm.data.rest.interceptor.ResponseInterceptor.Companion.KEY_IS_USER_UNAUTHORIZED
+import com.app.belcobtm.data.rest.interceptor.ResponseInterceptor.Companion.TAG_USER_AUTHORIZATION
 import com.app.belcobtm.domain.Failure
 import okhttp3.*
 import timber.log.Timber
@@ -10,7 +15,8 @@ import java.util.*
 
 class SocketClient(
     private val okHttpClient: OkHttpClient,
-    private val sharedPreferencesHelper: SharedPreferencesHelper
+    private val sharedPreferencesHelper: SharedPreferencesHelper,
+    private val broadcastManager: LocalBroadcastManager
 ) : WebSocketListener() {
 
     private val topics: MutableMap<String, SubscriptionsHandler?> = HashMap()
@@ -82,6 +88,12 @@ class SocketClient(
         webSocket.send(SocketMessageSerializer.serialize(message))
     }
 
+    private fun goToLogin() {
+        val intent = Intent(TAG_USER_AUTHORIZATION)
+        intent.putExtra(KEY_IS_USER_UNAUTHORIZED, true)
+        broadcastManager.sendBroadcast(intent)
+    }
+
     fun disconnect() {
         webSocket?.close(1000, "socket closed")
     }
@@ -130,6 +142,8 @@ class SocketClient(
         response: Response?
     ) {
         Log.w("SOCKETCLIENT", "failure", t)
+        isConnected = false
+        this.webSocket = null
         onFailure(Failure.ServerError())
     }
 }
