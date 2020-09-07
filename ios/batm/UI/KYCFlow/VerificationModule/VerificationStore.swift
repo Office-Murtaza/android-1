@@ -109,7 +109,6 @@ final class VerificationStore: ViewStore<VerificationAction, VerificationState> 
       } else {
         state.idNumber = ""
       }
-      state.idNumber = idNumber ?? ""
       state.idNumberError = nil
     case let .updateFirstName(firstName):
       state.firstName = firstName ?? ""
