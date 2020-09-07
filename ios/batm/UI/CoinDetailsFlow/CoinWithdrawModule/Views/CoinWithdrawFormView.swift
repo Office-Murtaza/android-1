@@ -64,8 +64,8 @@ final class CoinWithdrawFormView: UIView, HasDisposeBag {
       .disposed(by: disposeBag)
   }
   
-  func configure(with coinCode: String) {
-    coinAmountTextFieldView.configure(with: coinCode)
+  func configure(coinType: CustomCoinType, fee: Decimal?) {
+    coinAmountTextFieldView.configure(coinType: coinType, fee: fee)
   }
 }
 

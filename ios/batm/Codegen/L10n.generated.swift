@@ -365,6 +365,7 @@ extension L.CoinWithdraw.Form {
   }
 
   struct CoinAmount {
+    static let helper = "coin_withdraw.form.coin_amount.helper"
     static let placeholder = "coin_withdraw.form.coin_amount.placeholder"
   }
 

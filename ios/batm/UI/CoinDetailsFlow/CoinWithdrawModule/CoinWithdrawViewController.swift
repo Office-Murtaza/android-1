@@ -75,10 +75,15 @@ final class CoinWithdrawViewController: ModuleViewController<CoinWithdrawPresent
       })
       .disposed(by: disposeBag)
     
-    presenter.state
-      .map { $0.coin?.type.code }
+    let coinTypeDriver = presenter.state
+      .map { $0.coin?.type }
       .filterNil()
-      .drive(onNext: { [formView] in formView.configure(with: $0) })
+    
+    let feeDriver = presenter.state
+      .map { $0.coinSettings?.txFee }
+    
+    Driver.combineLatest(coinTypeDriver, feeDriver)
+      .drive(onNext: { [formView] in formView.configure(coinType: $0, fee: $1) })
       .disposed(by: disposeBag)
     
     presenter.state

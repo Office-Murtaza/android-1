@@ -212,6 +212,7 @@
 "coin_withdraw.title" = "Withdraw %@";
 "coin_withdraw.form.recipient_address.placeholder" = "Recipient address";
 "coin_withdraw.form.coin_amount.placeholder" = "%@ amount";
+"coin_withdraw.form.coin_amount.helper" = "Fee ~ %@";
 "coin_withdraw.form.currency_amount.placeholder" = "USD amount";
 "coin_withdraw.form.address.title" = "Address";
 "coin_withdraw.form.amount.title" = "Amount";
