@@ -86,6 +86,24 @@ final class TransactionDetailsViewController: ModuleViewController<TransactionDe
       headerView.add(title: localize(L.TransactionDetails.Header.CashStatus.title), valueView: cashStatusView)
     }
     
+    switch (details.cryptoAmount, details.fiatAmount) {
+    case (.some(let cryptoAmount), .none):
+      let value = cryptoAmount.coinFormatted.withCoinType(coinType)
+      
+      headerView.add(title: localize(L.TransactionDetails.Header.Amount.title), value: value)
+    case (.none, .some(let fiatAmount)):
+      let value = fiatAmount.fiatFormatted.withDollarSign
+      
+      headerView.add(title: localize(L.TransactionDetails.Header.Amount.title), value: value)
+    case (.some(let cryptoAmount), .some(let fiatAmount)):
+      let amountView = CryptoFiatAmountView()
+      
+      amountView.configure(cryptoAmount: cryptoAmount, fiatAmount: fiatAmount, type: coinType)
+      headerView.add(title: localize(L.TransactionDetails.Header.Amount.title), valueView: amountView)
+    default:
+      break
+    }
+    
     if let cryptoAmount = details.cryptoAmount, let fiatAmount = details.fiatAmount {
       let amountView = CryptoFiatAmountView()
       amountView.configure(cryptoAmount: cryptoAmount, fiatAmount: fiatAmount, type: coinType)
