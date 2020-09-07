@@ -23,7 +23,7 @@ struct ReserveState: Equatable {
     return coinBalances?.first { $0.type == coin?.type }
   }
   
-  var maxValue: Double {
+  var maxValue: Decimal {
     guard let type = coin?.type, let balance = coinBalance?.balance, let fee = coinSettings?.txFee else { return 0 }
     
     if type == .catm {
@@ -50,17 +50,17 @@ final class ReserveStore: ViewStore<ReserveAction, ReserveState> {
     case let .setupCoinSettings(coinSettings): state.coinSettings = coinSettings
     case let .updateCurrencyAmount(amount):
       let currencyAmount = (amount ?? "").fiatWithdrawFormatted
-      let doubleCurrencyAmount = currencyAmount.doubleValue
+      let decimalCurrencyAmount = currencyAmount.decimalValue
       let price = state.coinBalance!.price
-      let coinAmount = doubleCurrencyAmount == nil ? "" : (doubleCurrencyAmount! / price).coinFormatted
+      let coinAmount = decimalCurrencyAmount == nil ? "" : (decimalCurrencyAmount! / price).coinFormatted
       
       state.coinAmount = coinAmount
       state.currencyAmount = currencyAmount
     case let .updateCoinAmount(amount):
       let coinAmount = (amount ?? "").coinWithdrawFormatted
-      let doubleCoinAmount = coinAmount.doubleValue
+      let decimalCoinAmount = coinAmount.decimalValue
       let price = state.coinBalance!.price
-      let currencyAmount = doubleCoinAmount == nil ? "" : (doubleCoinAmount! * price).fiatFormatted
+      let currencyAmount = decimalCoinAmount == nil ? "" : (decimalCoinAmount! * price).fiatFormatted
       
       state.coinAmount = coinAmount
       state.currencyAmount = currencyAmount
@@ -76,7 +76,7 @@ final class ReserveStore: ViewStore<ReserveAction, ReserveState> {
       return .invalid(localize(L.CreateWallet.Form.Error.allFieldsRequired))
     }
     
-    guard let amount = state.coinAmount.doubleValue else {
+    guard let amount = state.coinAmount.decimalValue else {
       return .invalid(localize(L.CoinWithdraw.Form.Error.invalidAmount))
     }
     

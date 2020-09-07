@@ -37,13 +37,13 @@ protocol APIGateway {
   func getUtxos(type: CustomCoinType, xpub: String) -> Single<[Utxo]>
   func presubmitTransaction(userId: Int,
                             type: CustomCoinType,
-                            coinAmount: Double,
-                            currencyAmount: Double) -> Single<PreSubmitResponse>
+                            coinAmount: Decimal,
+                            currencyAmount: Decimal) -> Single<PreSubmitResponse>
   func submitTransaction(userId: Int,
                          type: CustomCoinType,
                          txType: TransactionType,
-                         amount: Double,
-                         fee: Double?,
+                         amount: Decimal,
+                         fee: Decimal?,
                          fromAddress: String?,
                          toAddress: String?,
                          phone: String?,
@@ -202,8 +202,8 @@ final class APIGatewayImpl: APIGateway {
   
   func presubmitTransaction(userId: Int,
                             type: CustomCoinType,
-                            coinAmount: Double,
-                            currencyAmount: Double) -> Single<PreSubmitResponse> {
+                            coinAmount: Decimal,
+                            currencyAmount: Decimal) -> Single<PreSubmitResponse> {
     let request = PreSubmitTransactionRequest(userId: userId,
                                               coinId: type.code,
                                               coinAmount: coinAmount,
@@ -214,8 +214,8 @@ final class APIGatewayImpl: APIGateway {
   func submitTransaction(userId: Int,
                          type: CustomCoinType,
                          txType: TransactionType,
-                         amount: Double,
-                         fee: Double?,
+                         amount: Decimal,
+                         fee: Decimal?,
                          fromAddress: String?,
                          toAddress: String?,
                          phone: String?,

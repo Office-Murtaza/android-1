@@ -129,6 +129,7 @@
 		DB3C03D822CB5DCE0036F779 /* RecoverViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB3C03D722CB5DCE0036F779 /* RecoverViewController.swift */; };
 		DB3C03DD22CB5F7C0036F779 /* RecoverFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB3C03DC22CB5F7C0036F779 /* RecoverFormView.swift */; };
 		DB3C03DF22CB60960036F779 /* RecoverAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB3C03DE22CB60960036F779 /* RecoverAssembly.swift */; };
+		DB3EB7742506C0E700B6A75D /* DecimalTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB3EB7732506C0E700B6A75D /* DecimalTransform.swift */; };
 		DB49463522DF2733001EE56E /* ManageWalletsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB49463422DF2733001EE56E /* ManageWalletsCell.swift */; };
 		DB49463822DF274B001EE56E /* ManageWalletsTableViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB49463722DF274B001EE56E /* ManageWalletsTableViewDataSource.swift */; };
 		DB49463A22DF2B0C001EE56E /* ManageWalletsAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB49463922DF2B0C001EE56E /* ManageWalletsAssembly.swift */; };
@@ -654,6 +655,7 @@
 		DB3C03D722CB5DCE0036F779 /* RecoverViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecoverViewController.swift; sourceTree = "<group>"; };
 		DB3C03DC22CB5F7C0036F779 /* RecoverFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecoverFormView.swift; sourceTree = "<group>"; };
 		DB3C03DE22CB60960036F779 /* RecoverAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecoverAssembly.swift; sourceTree = "<group>"; };
+		DB3EB7732506C0E700B6A75D /* DecimalTransform.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DecimalTransform.swift; sourceTree = "<group>"; };
 		DB49463422DF2733001EE56E /* ManageWalletsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageWalletsCell.swift; sourceTree = "<group>"; };
 		DB49463722DF274B001EE56E /* ManageWalletsTableViewDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageWalletsTableViewDataSource.swift; sourceTree = "<group>"; };
 		DB49463922DF2B0C001EE56E /* ManageWalletsAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageWalletsAssembly.swift; sourceTree = "<group>"; };
@@ -2291,6 +2293,7 @@
 				DB96171122C75E950078E92D /* Observable+ObjectMapper.swift */,
 				DB96171222C75E950078E92D /* Single+ObjectMapper.swift */,
 				DB96171322C75E950078E92D /* Response+ObjectMapper.swift */,
+				DB3EB7732506C0E700B6A75D /* DecimalTransform.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -3361,6 +3364,7 @@
 				DB5185AF231FE68300052229 /* CoinWithdrawPresenter.swift in Sources */,
 				DBC68CB922F8798F00473247 /* UpdatePhoneModule.swift in Sources */,
 				DBA1B60D24A9C5B300A9A703 /* ReserveModule.swift in Sources */,
+				DB3EB7742506C0E700B6A75D /* DecimalTransform.swift in Sources */,
 				DB1CFB44246C4F5D00020104 /* TradesFlowController.swift in Sources */,
 				DBA6844E22E45A250079429E /* SettingsFlowController.swift in Sources */,
 				DB95EB22230AA6FE0059C84C /* TransactionCell.swift in Sources */,

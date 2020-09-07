@@ -68,7 +68,7 @@ final class CoinStakingPresenter: ModulePresenter, CoinStakingModule {
   private func stakeOrUnstake(for state: CoinStakingState) -> Completable {
     let coin = state.coin!
     let coinSettings = state.coinSettings!
-    let coinAmount = state.coinAmount.doubleValue ?? 0.0
+    let coinAmount = state.coinAmount.decimalValue ?? 0.0
     let stakeDetails = state.stakeDetails!
     
     let usecaseCall = stakeDetails.exist

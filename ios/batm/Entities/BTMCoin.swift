@@ -20,8 +20,8 @@ struct BTMCoin: Equatable {
     self.index = index
   }
   
-  func transactionFee(fee: Double) -> Int64 {
-    return Int64(fee * Double(type.unit))
+  func transactionFee(fee: Decimal) -> Int64 {
+    return (fee * Decimal(type.unit)).int64Value ?? 0
   }
 }
 

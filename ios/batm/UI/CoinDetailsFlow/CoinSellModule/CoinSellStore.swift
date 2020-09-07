@@ -28,7 +28,7 @@ struct CoinSellState: Equatable {
     return coinBalances?.first { $0.type == coin?.type }
   }
   
-  var maxCurrencyLimit: Double {
+  var maxCurrencyLimit: Decimal {
     guard
       let dailyLimit = details?.dailyLimit,
       let transactionLimit = details?.transactionLimit
@@ -37,7 +37,7 @@ struct CoinSellState: Equatable {
     return min(dailyLimit, transactionLimit)
   }
   
-  var maxCurrencyValue: Double {
+  var maxCurrencyValue: Decimal {
     if fromAnotherAddress { return maxCurrencyLimit.nearestNumberThatCanBeGivenByTwentyAndFifty }
     
     guard
@@ -47,7 +47,7 @@ struct CoinSellState: Equatable {
       let price = coinBalance?.price,
       let profitRate = details?.profitRate
     else { return 0 }
-    let balanceMaxValue: Double
+    let balanceMaxValue: Decimal
     
     if type == .catm {
       balanceMaxValue = balance
@@ -61,7 +61,7 @@ struct CoinSellState: Equatable {
     return maxCurrencyValue.nearestNumberThatCanBeGivenByTwentyAndFifty
   }
   
-  var maxValue: Double {
+  var maxValue: Decimal {
     guard
       let price = coinBalance?.price,
       let profitRate = details?.profitRate
@@ -74,7 +74,7 @@ struct CoinSellState: Equatable {
     guard
       let price = coinBalance?.price,
       let profitRate = details?.profitRate,
-      let currencyAmount = currencyAmount.doubleValue
+      let currencyAmount = currencyAmount.decimalValue
     else { return "" }
     
     let coinAmount = currencyAmount / price * profitRate
@@ -121,15 +121,15 @@ final class CoinSellStore: ViewStore<CoinSellAction, CoinSellState> {
       return .invalid(localize(L.CreateWallet.Form.Error.allFieldsRequired))
     }
     
-    guard let currencyAmount = state.currencyAmount.doubleValue else {
+    guard let currencyAmount = state.currencyAmount.decimalValue else {
       return .invalid(localize(L.CoinWithdraw.Form.Error.invalidAmount))
     }
     
-    guard Int(currencyAmount.nearestNumberThatCanBeGivenByTwentyAndFifty) == Int(currencyAmount) else {
+    guard currencyAmount.nearestNumberThatCanBeGivenByTwentyAndFifty.intValue == currencyAmount.intValue else {
       return .invalid(localize(L.CoinSell.Form.Error.notMultiple))
     }
     
-    guard let amount = state.coinAmount.doubleValue else {
+    guard let amount = state.coinAmount.decimalValue else {
       return .invalid(localize(L.CoinWithdraw.Form.Error.invalidAmount))
     }
     

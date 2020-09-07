@@ -78,7 +78,7 @@ extension Character {
 
 extension String {
   var numberOfFractionDigits: Int {
-    guard let _ = self.doubleValue else { return 0 }
+    guard let _ = self.decimalValue else { return 0 }
     
     var numberOfFractionDigits = 0
     var isDecimalSeparatorVisited = false
@@ -95,7 +95,7 @@ extension String {
   }
   
   func withFractionDigits(min minFractionDigits: Int = 0, max maxFractionDigits: Int = Int.max, trailingZeros: Bool = true) -> String {
-    guard let _ = self.doubleValue else { return self }
+    guard let _ = self.decimalValue else { return self }
     
     var newString = ""
     var numberOfFractionDigits = 0
@@ -172,6 +172,17 @@ extension String {
     return Double(newString)
   }
   
+  var decimalValue: Decimal? {
+    if let decimal = Decimal(string: self) { return decimal }
+    
+    var newString = ""
+    for i in self {
+      newString.append(i.isDecimalSeparator ? "." : i)
+    }
+    
+    return Decimal(string: newString)
+  }
+  
   var withDollarSign: String {
     return self.appending(" $")
   }
@@ -194,6 +205,49 @@ extension String {
     } else {
       return self
     }
+  }
+}
+
+extension Decimal {
+  var fiatFormatted: String {
+    let number = NSDecimalNumber(decimal: self)
+    let string = NumberFormatter.fiatFormatter.string(from: number) ?? ""
+    return string.fiatFormatted
+  }
+  
+  var fiatSellFormatted: String {
+    return NSDecimalNumber(decimal: self).stringValue
+  }
+  
+  var coinFormatted: String {
+    let number = NSDecimalNumber(decimal: self)
+    let string = NumberFormatter.coinFormatter.string(from: number) ?? ""
+    return string.coinFormatted
+  }
+  
+  var intValue: Int? {
+    return Int(exactly: NSDecimalNumber(decimal: self))
+  }
+  
+  var int64Value: Int64? {
+    return Int64(exactly: NSDecimalNumber(decimal: self))
+  }
+  
+  var nearestNumberThatCanBeGivenByTwentyAndFifty: Decimal {
+    guard let integer = intValue else { return 0 }
+    
+    guard integer >= 20 else { return 0 }
+    guard integer >= 40 else { return 20 }
+    
+    return Decimal(integer / 10 * 10)
+  }
+  
+  func lessThanOrEqualTo(_ decimal: Decimal) -> Bool {
+    return isLessThanOrEqualTo(decimal)
+  }
+  
+  func greaterThanOrEqualTo(_ decimal: Decimal) -> Bool {
+    return !isLessThanOrEqualTo(decimal) || isEqual(to: decimal)
   }
 }
 

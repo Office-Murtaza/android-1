@@ -6,7 +6,7 @@ extension BuySellTrade: ImmutableMappable {
     type = TradeType(rawValue: try map.value("type"))
     username = try map.value("trader.username")
     paymentMethod = try map.value("paymentMethod")
-    price = try map.value("price")
+    price = try map.value("price", using: DecimalDoubleTransform())
     distance = try map.value("trader.distance")
     tradeCount = try map.value("trader.tradeCount")
     tradeRate = try map.value("trader.tradeRate")

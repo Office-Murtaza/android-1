@@ -26,15 +26,15 @@ struct CoinExchangeState: Equatable {
   var validationState: ValidationState = .unknown
   
   var toCoinAmount: String? {
-    guard let fromCoinAmountDouble = fromCoinAmount.doubleValue else { return nil }
+    guard let fromCoinAmountDecimal = fromCoinAmount.decimalValue else { return nil }
     guard let fromCoinPrice = fromCoinBalance?.price, let toCoinPrice = toCoinBalance?.price else { return nil }
     guard let profitExchange = coinSettings?.profitExchange else { return nil }
     
-    let toCoinAmountDouble = fromCoinAmountDouble * fromCoinPrice / toCoinPrice * (100 - profitExchange) / 100
-    return toCoinAmountDouble.coinFormatted
+    let toCoinAmountDecimal = fromCoinAmountDecimal * fromCoinPrice / toCoinPrice * (100 - profitExchange) / 100
+    return toCoinAmountDecimal.coinFormatted
   }
   
-  var maxValue: Double {
+  var maxValue: Decimal {
     guard let type = fromCoin?.type, let balance = fromCoinBalance?.balance, let fee = coinSettings?.txFee else { return 0 }
     
     if type == .catm {
@@ -89,7 +89,7 @@ final class CoinExchangeStore: ViewStore<CoinExchangeAction, CoinExchangeState> 
       return .invalid(localize(L.CreateWallet.Form.Error.allFieldsRequired))
     }
     
-    guard let amount = state.fromCoinAmount.doubleValue else {
+    guard let amount = state.fromCoinAmount.decimalValue else {
       return .invalid(localize(L.CoinWithdraw.Form.Error.invalidAmount))
     }
     

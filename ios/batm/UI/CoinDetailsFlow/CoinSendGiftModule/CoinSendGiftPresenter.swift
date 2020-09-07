@@ -84,7 +84,7 @@ final class CoinSendGiftPresenter: ModulePresenter, CoinSendGiftModule {
     return usecase.sendGift(from: state.coin!,
                                 with: state.coinSettings!,
                                 to: state.phoneE164,
-                                amount: state.coinAmount.doubleValue ?? 0.0,
+                                amount: state.coinAmount.decimalValue ?? 0.0,
                                 message: state.message,
                                 imageId: state.imageId)
       .catchError { [store] in

@@ -74,7 +74,7 @@ final class CryptoFiatAmountView: UIView {
     }
   }
   
-  func configure(cryptoAmount: Double, fiatAmount: Double, type: CustomCoinType) {
+  func configure(cryptoAmount: Decimal, fiatAmount: Decimal, type: CustomCoinType) {
     balanceCoinLabel.text = cryptoAmount.coinFormatted.withCoinType(type)
     balanceCurrencyLabel.text = fiatAmount.fiatFormatted.withDollarSign
   }

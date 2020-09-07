@@ -8,10 +8,10 @@ extension TransactionDetails: ImmutableMappable {
     link = try map.value("link")
     type = TransactionType(rawValue: try map.value("type"))
     status = TransactionStatus(rawValue: try map.value("status"))
-    cryptoAmount = try map.value("cryptoAmount")
-    fiatAmount = try map.value("fiatAmount")
-    cryptoFee = try map.value("cryptoFee")
-    fiatFee = try map.value("fiatFee")
+    cryptoAmount = try? map.value("cryptoAmount", using: DecimalDoubleTransform())
+    fiatAmount = try? map.value("fiatAmount", using: DecimalDoubleTransform())
+    cryptoFee = try? map.value("cryptoFee", using: DecimalDoubleTransform())
+    fiatFee = try? map.value("fiatFee", using: DecimalDoubleTransform())
     dateString = try map.value("date2")
     fromAddress = try map.value("fromAddress")
     toAddress = try map.value("toAddress")
@@ -20,7 +20,7 @@ extension TransactionDetails: ImmutableMappable {
     message = try map.value("message")
     refTxId = try map.value("refTxId")
     refLink = try map.value("refLink")
-    refCryptoAmount = try map.value("refCryptoAmount")
+    refCryptoAmount = try? map.value("refCryptoAmount", using: DecimalDoubleTransform())
     sellInfo = try map.value("sellInfo")
     
     if let cashStatusRawValue: Int = try? map.value("cashStatus") {

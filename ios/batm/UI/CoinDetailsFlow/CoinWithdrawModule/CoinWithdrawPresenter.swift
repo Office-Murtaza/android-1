@@ -80,7 +80,7 @@ final class CoinWithdrawPresenter: ModulePresenter, CoinWithdrawModule {
     return usecase.withdraw(from: state.coin!,
                                 with: state.coinSettings!,
                                 to: state.address,
-                                amount: state.coinAmount.doubleValue ?? 0.0)
+                                amount: state.coinAmount.decimalValue ?? 0.0)
       .catchError { [store] in
         if let apiError = $0 as? APIError, case let .serverError(error) = apiError, let code = error.code, code > 1 {
           if code == 3 {

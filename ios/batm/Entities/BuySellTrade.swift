@@ -39,7 +39,7 @@ struct BuySellTrade: Equatable {
   var tradeRate: Double
   var distance: Int?
   var paymentMethod: String
-  var price: Double
+  var price: Decimal
   var minLimit: Int
   var maxLimit: Int
   var terms: String

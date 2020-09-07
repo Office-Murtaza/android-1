@@ -7,6 +7,6 @@ extension Transaction: ImmutableMappable {
     dateString = try map.value("date1")
     type = TransactionType(rawValue: try map.value("type"))
     status = TransactionStatus(rawValue: try map.value("status"))
-    amount = try map.value("cryptoAmount")
+    amount = try map.value("cryptoAmount", using: DecimalDoubleTransform())
   }
 }

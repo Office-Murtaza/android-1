@@ -310,8 +310,8 @@ struct PreSubmitTransactionRequest: AuthorizedAPIRequest {
   
   let userId: Int
   let coinId: String
-  let coinAmount: Double
-  let currencyAmount: Double
+  let coinAmount: Decimal
+  let currencyAmount: Decimal
   
   var path: String { return "/user/\(userId)/coin/\(coinId)/pre-submit" }
   var method: HTTPMethod { return .post }
@@ -330,8 +330,8 @@ struct SubmitTransactionRequest: AuthorizedAPIRequest {
   let userId: Int
   let coinId: String
   let txType: TransactionType
-  let amount: Double
-  let fee: Double?
+  let amount: Decimal
+  let fee: Decimal?
   let fromAddress: String?
   let toAddress: String?
   let phone: String?

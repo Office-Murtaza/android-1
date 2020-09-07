@@ -4,8 +4,8 @@ import TrustWalletCore
 struct SubmitTradeRequestData {
   var coinType: CustomCoinType
   var trade: BuySellTrade
-  var coinAmount: Double
-  var currencyAmount: Double
+  var coinAmount: Decimal
+  var currencyAmount: Decimal
   var details: String
 }
 
@@ -30,15 +30,15 @@ struct BuySellTradeDetailsState: Equatable {
   var requestDetails: String = ""
   var validationState: ValidationState = .unknown
   
-  var maxValue: Double {
+  var maxValue: Decimal {
     return coinBalance?.reservedBalance ?? 0
   }
   
   var data: SubmitTradeRequestData? {
     guard let coinType = coinBalance?.type,
       let trade = trade,
-      let coinAmount = coinAmount.doubleValue,
-      let currencyAmount = currencyAmount.doubleValue else {
+      let coinAmount = coinAmount.decimalValue,
+      let currencyAmount = currencyAmount.decimalValue else {
       return nil
     }
     
@@ -66,17 +66,17 @@ final class BuySellTradeDetailsStore: ViewStore<BuySellTradeDetailsAction, BuySe
     case let .setupType(type): state.type = type
     case let .updateCurrencyAmount(amount):
       let currencyAmount = (amount ?? "").fiatWithdrawFormatted
-      let doubleCurrencyAmount = currencyAmount.doubleValue
+      let decimalCurrencyAmount = currencyAmount.decimalValue
       let price = state.trade!.price
-      let coinAmount = doubleCurrencyAmount == nil ? "" : (doubleCurrencyAmount! / price).coinFormatted
+      let coinAmount = decimalCurrencyAmount == nil ? "" : (decimalCurrencyAmount! / price).coinFormatted
       
       state.coinAmount = coinAmount
       state.currencyAmount = currencyAmount
     case let .updateCoinAmount(amount):
       let coinAmount = (amount ?? "").coinWithdrawFormatted
-      let doubleCoinAmount = coinAmount.doubleValue
+      let decimalCoinAmount = coinAmount.decimalValue
       let price = state.trade!.price
-      let currencyAmount = doubleCoinAmount == nil ? "" : (doubleCoinAmount! * price).fiatFormatted
+      let currencyAmount = decimalCoinAmount == nil ? "" : (decimalCoinAmount! * price).fiatFormatted
       
       state.coinAmount = coinAmount
       state.currencyAmount = currencyAmount
@@ -93,7 +93,7 @@ final class BuySellTradeDetailsStore: ViewStore<BuySellTradeDetailsAction, BuySe
       return .invalid(localize(L.CreateWallet.Form.Error.allFieldsRequired))
     }
     
-    guard let coinAmount = state.coinAmount.doubleValue, let currencyAmount = state.currencyAmount.doubleValue else {
+    guard let coinAmount = state.coinAmount.decimalValue, let currencyAmount = state.currencyAmount.decimalValue else {
       return .invalid(localize(L.CoinWithdraw.Form.Error.invalidAmount))
     }
     
@@ -105,7 +105,7 @@ final class BuySellTradeDetailsStore: ViewStore<BuySellTradeDetailsAction, BuySe
       return .invalid(localize(L.CoinWithdraw.Form.Error.tooHighAmount))
     }
     
-    guard let trade = state.trade, currencyAmount.greaterThanOrEqualTo(Double(trade.minLimit)), currencyAmount.lessThanOrEqualTo(Double(trade.maxLimit)) else {
+    guard let trade = state.trade, currencyAmount.greaterThanOrEqualTo(Decimal(trade.minLimit)), currencyAmount.lessThanOrEqualTo(Decimal(trade.maxLimit)) else {
       return .invalid(localize(L.BuySellTradeDetails.Form.Error.notWithinLimits))
     }
     
