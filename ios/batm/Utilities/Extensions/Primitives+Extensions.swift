@@ -108,7 +108,9 @@ extension String {
         numberOfFractionDigits += 1
       }
       
-      if (!isDecimalSeparatorVisited || maxFractionDigits > 0) && numberOfFractionDigits <= maxFractionDigits {
+      if i.isDecimalSeparator {
+        newString.append(".")
+      } else if (!isDecimalSeparatorVisited || maxFractionDigits > 0) && numberOfFractionDigits <= maxFractionDigits {
         newString.append(i)
       }
       
@@ -205,6 +207,12 @@ extension String {
     } else {
       return self
     }
+  }
+  
+  var isFirstCharacterDigit: Bool {
+    guard let firstCharacter = first else { return false }
+    
+    return String(firstCharacter).rangeOfCharacter(from: CharacterSet.decimalDigits) != nil
   }
 }
 

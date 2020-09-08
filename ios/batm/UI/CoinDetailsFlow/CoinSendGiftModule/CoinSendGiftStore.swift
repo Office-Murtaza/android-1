@@ -82,7 +82,11 @@ final class CoinSendGiftStore: ViewStore<CoinSendGiftAction, CoinSendGiftState> 
       state.phone = PartialFormatter.default.formatPartial(phone ?? "")
       state.phoneError = nil
     case let .updateCoinAmount(amount):
-      state.coinAmount = (amount ?? "").coinWithdrawFormatted
+     if let amount = amount, amount.isFirstCharacterDigit {
+        state.coinAmount = amount.coinWithdrawFormatted
+      } else {
+        state.coinAmount = ""
+      }
       state.coinAmountError = nil
     case let .updateMessage(message):
       state.message = message ?? ""

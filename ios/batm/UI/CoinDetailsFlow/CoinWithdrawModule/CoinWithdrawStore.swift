@@ -69,7 +69,11 @@ final class CoinWithdrawStore: ViewStore<CoinWithdrawAction, CoinWithdrawState> 
       state.address = address ?? ""
       state.addressError = nil
     case let .updateCoinAmount(amount):
-      state.coinAmount = (amount ?? "").coinWithdrawFormatted
+      if let amount = amount, amount.isFirstCharacterDigit {
+        state.coinAmount = amount.coinWithdrawFormatted
+      } else {
+        state.coinAmount = ""
+      }
       state.coinAmountError = nil
     case let .updateAddressError(addressError): state.addressError = addressError
     case let .updateCoinAmountError(coinAmountError): state.coinAmountError = coinAmountError
