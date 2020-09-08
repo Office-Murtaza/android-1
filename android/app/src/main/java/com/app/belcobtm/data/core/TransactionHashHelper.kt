@@ -253,10 +253,12 @@ class TransactionHashHelper(
         fromCoinAmount: Double
     ): Either<Failure, String> {
         val coinEntity = daoAccount.getItem(fromCoin.name)
-        val checkActivationResponse = apiService.checkRippleAccountActivation(coinEntity.publicKey)
+        val checkActivationResponse = apiService.checkRippleAccountActivation(toAddress)
 
         return if (checkActivationResponse.isRight) {
             if ((checkActivationResponse as Either.Right).b) {
+                println("MAMAMA = " + checkActivationResponse.b)
+
                 val response = apiService.getRippleSequence(coinEntity.publicKey)
 
                 return if (response.isRight) {
@@ -281,7 +283,7 @@ class TransactionHashHelper(
                     response as Either.Left
                 }
             } else {
-                Either.Left(Failure.MessageError("Amount is not enough to activate receiver address"))
+                Either.Left(Failure.XRPLowAmountToSend)
             }
         } else {
             checkActivationResponse as Either.Left

@@ -9,6 +9,10 @@ import com.app.belcobtm.presentation.features.wallet.balance.adapter.BalanceList
 class WalletViewModel(private val balanceUseCase: GetBalanceUseCase) : ViewModel() {
     val balanceLiveData: MutableLiveData<LoadingData<Pair<Double, List<BalanceListItem.Coin>>>> = MutableLiveData()
 
+    init {
+        updateBalanceData()
+    }
+
     fun updateBalanceData() {
         balanceLiveData.value = LoadingData.Loading()
         balanceUseCase.invoke(

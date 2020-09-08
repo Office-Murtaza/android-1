@@ -27,6 +27,10 @@ class TransactionsViewModel(
     var coinDataItemList: ArrayList<CoinDataItem>? = null
     var coinDataItem: CoinDataItem? = null
 
+    init {
+        updateData()
+    }
+
     fun updateData() {
         chartLiveData.value = LoadingData.Loading()
         chartUseCase.invoke(

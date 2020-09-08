@@ -25,11 +25,6 @@ class WalletFragment : BaseFragment() {
     override val isFirstShowContent: Boolean = false
     override val retryListener: View.OnClickListener = View.OnClickListener { viewModel.updateBalanceData() }
 
-    override fun onResume() {
-        super.onResume()
-        viewModel.updateBalanceData()
-    }
-
     override fun initViews() {
         listView.adapter = adapter
         swipeToRefreshView.setColorSchemeColors(Color.RED, Color.GREEN, Color.BLUE)

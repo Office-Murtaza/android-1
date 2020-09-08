@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.view.View
 import com.app.belcobtm.R
+import com.app.belcobtm.domain.Failure
 import com.app.belcobtm.domain.wallet.LocalCoinType
 import com.app.belcobtm.presentation.core.extensions.*
 import com.app.belcobtm.presentation.core.helper.AlertHelper
@@ -79,10 +80,27 @@ class WithdrawFragment : BaseFragment() {
     }
 
     override fun initObservers() {
-        viewModel.transactionLiveData.listen({
-            AlertHelper.showToastShort(requireContext(), R.string.transactions_screen_transaction_created)
-            popBackStack()
-        })
+        viewModel.transactionLiveData.listen(
+            success = {
+                AlertHelper.showToastShort(requireContext(), R.string.transactions_screen_transaction_created)
+                popBackStack()
+            },
+            error = {
+                when (it) {
+                    is Failure.NetworkConnection -> showErrorNoInternetConnection()
+                    is Failure.MessageError -> {
+                        showSnackBar(it.message ?: "")
+                        showContent()
+                    }
+                    is Failure.ServerError -> showErrorServerError()
+                    is Failure.XRPLowAmountToSend -> {
+                        amountCryptoView.showError(R.string.error_xrp_amount_is_not_enough)
+                        showContent()
+                    }
+                    else -> showErrorSomethingWrong()
+                }
+            }
+        )
     }
 
     private fun getTextFromClipboard(): String {

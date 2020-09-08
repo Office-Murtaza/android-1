@@ -185,7 +185,7 @@
     <string name="transactions_screen_balance">Balance</string>
     <string name="transactions_screen_transaction_created">Transaction was successfully created</string>
     <string name="transaction_changes_percent">%1$s %%</string>
-    <string name="transaction_helper_text_commission">Fee %1$s %2$s</string>
+    <string name="transaction_helper_text_commission">Fee ~ %1$s %2$s</string>
 
     <!--transaction status-->
     <string name="transaction_status_unknown">Unknown</string>
@@ -289,7 +289,7 @@
     <string name="send_gift_screen_title">Send gift %1$s</string>
     <string name="send_gift_screen_price">Price</string>
     <string name="send_gift_screen_balance">Balance</string>
-    <string name="send_gift_screen_recipient_address">Recipient Phone</string>
+    <string name="send_gift_screen_recipient_address">Recipient phone</string>
     <string name="send_gift_screen_message">Message</string>
     <string name="send_gift_screen_add">Add</string>
     <string name="send_gift_screen_remove">Remove</string>
@@ -357,6 +357,7 @@
     <string name="error_internet_unavailable">Internet connection is unavailable</string>
     <string name="error_something_went_wrong">Something went wrong</string>
     <string name="error_transaction_cannot_be_created">The transaction can not be created</string>
+    <string name="error_xrp_amount_is_not_enough">Amount is not enough to activate receiver address</string>
 
     <string name="staking_screen_title">Staking CATM</string>
     <string name="staking_screen_price">Price</string>

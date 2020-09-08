@@ -9,6 +9,7 @@ import java.io.IOException
 sealed class Failure : IOException() {
     object NetworkConnection : Failure()
     object TokenError : Failure()
+    object XRPLowAmountToSend : Failure()
 
     data class ServerError(override val message: String? = null) : Failure()
     data class MessageError(override val message: String?, val code: Int? = null) : Failure()

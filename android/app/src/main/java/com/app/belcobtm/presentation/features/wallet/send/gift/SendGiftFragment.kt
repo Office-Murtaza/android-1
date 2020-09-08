@@ -4,6 +4,7 @@ import android.content.Context
 import android.telephony.PhoneNumberFormattingTextWatcher
 import android.view.View
 import com.app.belcobtm.R
+import com.app.belcobtm.domain.Failure
 import com.app.belcobtm.domain.wallet.LocalCoinType
 import com.app.belcobtm.presentation.core.Const.GIPHY_API_KEY
 import com.app.belcobtm.presentation.core.extensions.*
@@ -102,7 +103,7 @@ class SendGiftFragment : BaseFragment(), GiphyDialogFragment.GifSelectionListene
                 gifView.setMedia(null, RenditionType.original)
                 gifView.hide()
             } else {
-                openGify()
+                openGift()
                 gifView.show()
             }
         }
@@ -113,22 +114,38 @@ class SendGiftFragment : BaseFragment(), GiphyDialogFragment.GifSelectionListene
     }
 
     override fun initObservers() {
-        viewModel.sendGiftLiveData.listen({
-            AlertHelper.showToastShort(requireContext(), R.string.transactions_screen_transaction_created)
-            popBackStack()
-        })
+        viewModel.sendGiftLiveData.listen(
+            success = {
+                AlertHelper.showToastShort(requireContext(), R.string.transactions_screen_transaction_created)
+                popBackStack()
+            },
+            error = {
+                when (it) {
+                    is Failure.NetworkConnection -> showErrorNoInternetConnection()
+                    is Failure.MessageError -> {
+                        showSnackBar(it.message ?: "")
+                        showContent()
+                    }
+                    is Failure.ServerError -> showErrorServerError()
+                    is Failure.XRPLowAmountToSend -> {
+                        amountCryptoView.showError(R.string.error_xrp_amount_is_not_enough)
+                        showContent()
+                    }
+                    else -> showErrorSomethingWrong()
+                }
+            })
     }
 
     private fun selectMaxPrice() = amountCryptoView.setText(viewModel.getCoinBalance().toStringCoin())
 
-    private fun openGify() {
+    private fun openGift() {
         gifsDialog.show(childFragmentManager, "gifs_dialog")
         gifsDialog.gifSelectionListener = this
     }
 
     private fun validateAndSubmit() {
-        amountCryptoView.error = null
-        phoneContainerView.error = null
+        amountCryptoView.clearError()
+        phoneContainerView.clearError()
 
         var errors = 0
         val isCatm = viewModel.getCoinCode() == LocalCoinType.CATM.name

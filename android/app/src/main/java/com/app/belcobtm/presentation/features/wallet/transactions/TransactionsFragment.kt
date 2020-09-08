@@ -49,11 +49,6 @@ class TransactionsFragment : BaseFragment() {
     override val isFirstShowContent: Boolean = false
     override val retryListener: View.OnClickListener = View.OnClickListener { viewModel.updateData() }
 
-    override fun onResume() {
-        super.onResume()
-        viewModel.updateData()
-    }
-
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         // NOTE: delegate the permission handling to generated method
