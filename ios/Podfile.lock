@@ -729,14 +729,14 @@ PODS:
     - RxSwift (~> 4)
   - RxSwift (4.5.0)
   - SnapKit (5.0.1)
-  - SwiftProtobuf (1.10.2)
+  - SwiftProtobuf (1.12.0)
   - Swinject (2.7.1)
   - Toast-Swift (5.0.1)
-  - TrustWalletCore (2.0.10):
-    - TrustWalletCore/Core (= 2.0.10)
-  - TrustWalletCore/Core (2.0.10):
+  - TrustWalletCore (2.2.9):
+    - TrustWalletCore/Core (= 2.2.9)
+  - TrustWalletCore/Core (2.2.9):
     - TrustWalletCore/Types
-  - TrustWalletCore/Types (2.0.10):
+  - TrustWalletCore/Types (2.2.9):
     - SwiftProtobuf
 
 DEPENDENCIES:
@@ -761,7 +761,7 @@ DEPENDENCIES:
   - SnapKit (= 5.0.1)
   - Swinject (= 2.7.1)
   - Toast-Swift (= 5.0.1)
-  - TrustWalletCore (= 2.0.10)
+  - TrustWalletCore (= 2.2.9)
 
 SPEC REPOS:
   trunk:
@@ -855,11 +855,11 @@ SPEC CHECKSUMS:
   RxReachability: 053f2d913db44998242ade488ccaef558f3ce7cb
   RxSwift: f172070dfd1a93d70a9ab97a5a01166206e1c575
   SnapKit: 97b92857e3df3a0c71833cce143274bf6ef8e5eb
-  SwiftProtobuf: bec1ae7d686ff73dd09d79866154f4970b891410
+  SwiftProtobuf: 4ef85479c18ca85b5482b343df9c319c62bda699
   Swinject: ddf78b8486dd9b71a667b852cad919ab4484478e
   Toast-Swift: 9b6a70f28b3bf0b96c40d46c0c4b9d6639846711
-  TrustWalletCore: bab25728671e43a5b9356a13adae7b12bfa48f73
+  TrustWalletCore: 6bf9821db20951be01a4d69f8703a5cf36560f36
 
-PODFILE CHECKSUM: b58ab21bf7fc74196eae1545a9e0d2e803401cc4
+PODFILE CHECKSUM: 01c58a0e9894ba31c94f873124e2bdf5debe939e
 
 COCOAPODS: 1.9.3

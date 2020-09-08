@@ -19,8 +19,8 @@ extension BTMWallet {
       switch $0 {
       case .bitcoin:
         let extPubKey = hdWallet.getExtendedPublicKey(purpose: .bip44, coin: coinType, version: .xpub)
-        let path = DerivationPath(purpose: .bip44, coinType: coinType).description
-        let publicKey = HDWallet.getPublicKeyFromExtended(extended: extPubKey, derivationPath: path)!
+        let path = DerivationPath(purpose: .bip44, coin: coinType.slip44Id).description
+        let publicKey = HDWallet.getPublicKeyFromExtended(extended: extPubKey, coin: coinType, derivationPath: path)!
         address = BitcoinAddress(publicKey: publicKey, prefix: coinType.p2pkhPrefix)!.description
       default:
         address = coinType.deriveAddress(privateKey: privateKey)

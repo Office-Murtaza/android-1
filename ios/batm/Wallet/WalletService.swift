@@ -104,12 +104,12 @@ class WalletServiceImpl: WalletService {
     }
     
     utxos.compactMap { DerivationPath($0.path) }.forEach {
-      let privateKey = wallet.getKey(at: $0)
+      let privateKey = wallet.getKey(coin: coin.type.defaultCoinType, derivationPath: $0.description)
       input.privateKey.append(privateKey.data)
     }
     
     utxos.forEach {
-      let redeemScript = BitcoinScript.buildForAddress(address: $0.address, coin: coin.type.defaultCoinType)
+      let redeemScript = BitcoinScript.lockScriptForAddress(address: $0.address, coin: coin.type.defaultCoinType)
       let keyHash: Data?
       
       if (redeemScript.isPayToWitnessScriptHash) {
@@ -140,7 +140,7 @@ class WalletServiceImpl: WalletService {
       guard let amount = Int64(utxo.value) else {
         throw CreateTransactionError.cantCreate
       }
-      let redeemScript = BitcoinScript.buildForAddress(address: utxo.address, coin: coin.type.defaultCoinType)
+      let redeemScript = BitcoinScript.lockScriptForAddress(address: utxo.address, coin: coin.type.defaultCoinType)
       
       let utxo0 = BitcoinUnspentTransaction.with {
         $0.script = redeemScript.data
@@ -209,18 +209,18 @@ class WalletServiceImpl: WalletService {
       
       if let stake = stake {
         if stake {
-          function = EthereumAbiEncoder.buildFunction(name: "createStake")!
+          function = EthereumAbiFunction(name: "createStake")
           function.addParamUInt256(val: dataAmount, isOutput: false)
         } else {
-          function = EthereumAbiEncoder.buildFunction(name: "withdrawStake")!
+          function = EthereumAbiFunction(name: "withdrawStake")
         }
       } else {
-        function = EthereumAbiEncoder.buildFunction(name: "transfer")!
+        function = EthereumAbiFunction(name: "transfer")
         function.addParamAddress(val: Data(hexString: toAddress)!, isOutput: false)
         function.addParamUInt256(val: dataAmount, isOutput: false)
       }
       
-      input.payload = EthereumAbiEncoder.encode(func_in: function)
+      input.payload = EthereumAbi.encode(fn: function)
       input.toAddress = coinSettings.contractAddress ?? ""
     } else {
       input.amount = dataAmount
