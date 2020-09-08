@@ -3,20 +3,14 @@ package com.app.belcobtm.data.rest
 import com.app.belcobtm.BuildConfig
 import com.app.belcobtm.data.rest.atm.AtmApi
 import com.app.belcobtm.data.rest.authorization.AuthApi
-import com.app.belcobtm.data.rest.interceptor.BaseInterceptor
-import com.app.belcobtm.data.rest.interceptor.LogInterceptor
-import com.app.belcobtm.data.rest.interceptor.NoConnectionInterceptor
-import com.app.belcobtm.data.rest.interceptor.ResponseInterceptor
 import com.app.belcobtm.data.rest.settings.SettingsApi
 import com.app.belcobtm.data.rest.tools.ToolsApi
 import com.app.belcobtm.data.rest.transaction.TransactionApi
 import com.app.belcobtm.data.rest.wallet.WalletApi
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import okhttp3.OkHttpClient
-import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
-import java.util.concurrent.TimeUnit
 
 class ApiFactory(
     private val okHttpClient: OkHttpClient

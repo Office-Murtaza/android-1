@@ -1,10 +1,12 @@
 package com.app.belcobtm.presentation.features.wallet.balance
 
 import android.view.View
+import androidx.fragment.app.setFragmentResultListener
 import com.app.belcobtm.R
 import com.app.belcobtm.domain.Failure
 import com.app.belcobtm.presentation.core.extensions.toStringUsd
 import com.app.belcobtm.presentation.core.ui.fragment.BaseFragment
+import com.app.belcobtm.presentation.features.wallet.add.ManageWalletsFragment
 import com.app.belcobtm.presentation.features.wallet.balance.adapter.BalanceListItem
 import com.app.belcobtm.presentation.features.wallet.balance.adapter.CoinsAdapter
 import kotlinx.android.synthetic.main.fragment_balance.*
@@ -17,7 +19,12 @@ class WalletFragment : BaseFragment() {
     private val adapter: CoinsAdapter = CoinsAdapter {
         when (it) {
             is BalanceListItem.Coin -> navigate(WalletFragmentDirections.toTransactionsFragment(it.code))
-            is BalanceListItem.AddButton -> navigate(WalletFragmentDirections.toManageWalletsFragment())
+            is BalanceListItem.AddButton -> {
+                setFragmentResultListener(ManageWalletsFragment.REQUEST_KEY) { _, _ ->
+                    viewModel.updateBalanceData()
+                }
+                navigate(WalletFragmentDirections.toManageWalletsFragment())
+            }
         }
     }
     override val resourceLayout: Int = R.layout.fragment_balance
@@ -60,6 +67,7 @@ class WalletFragment : BaseFragment() {
             view?.requestFocus()
         }
     }
+
     override fun onDestroyView() {
         super.onDestroyView()
         viewModel.closeChannel()
