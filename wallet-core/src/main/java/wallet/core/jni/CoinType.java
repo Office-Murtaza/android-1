@@ -70,7 +70,8 @@ public enum CoinType {
     POLKADOT (354),
     FILECOIN (461),
     ELROND (508),
-    BANDCHAIN (494);
+    BANDCHAIN (494),
+    BINANCESMARTCHAIN (10000714);
 
     private final int value;
     CoinType(int value) {
@@ -140,6 +141,7 @@ public enum CoinType {
             case 461: return CoinType.FILECOIN;
             case 508: return CoinType.ELROND;
             case 494: return CoinType.BANDCHAIN;
+            case 10000714: return CoinType.BINANCESMARTCHAIN;
             default: return null;
         }
     }
@@ -153,6 +155,7 @@ public enum CoinType {
     public native byte p2pkhPrefix();
     public native byte p2shPrefix();
     public native byte staticPrefix();
+    public native int slip44Id();
     public native boolean validate(String address);
     public native String derivationPath();
     public native String deriveAddress(PrivateKey privateKey);

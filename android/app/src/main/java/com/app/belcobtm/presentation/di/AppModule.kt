@@ -37,7 +37,7 @@ import org.koin.android.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
 val viewModelModule = module {
-    viewModel { WalletViewModel(get()) }
+    viewModel { WalletViewModel(get(), get()) }
     viewModel { (coinCode: String) -> TransactionsViewModel(coinCode, get(), get(), get(), get()) }
     viewModel { RecoverWalletViewModel(get()) }
     viewModel { CreateWalletViewModel(get()) }
@@ -92,7 +92,7 @@ val viewModelModule = module {
         StakingViewModel(coinDataItem, coinFee, get(), get(), get(), get(), get(), get())
     }
     viewModel { (phone: String) ->
-        SmsCodeViewModel(phone, get())
+        SmsCodeViewModel(phone, get(), get())
     }
     viewModel { RecoverSeedViewModel(get()) }
     viewModel { CreateSeedViewModel(get(), get()) }

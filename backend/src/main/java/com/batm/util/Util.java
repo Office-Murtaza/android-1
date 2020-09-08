@@ -62,7 +62,7 @@ public class Util {
         return format(value, 6);
     }
 
-    private static BigDecimal format(BigDecimal value, int scale) {
+    public static BigDecimal format(BigDecimal value, int scale) {
         if (value == null) {
             return null;
         }

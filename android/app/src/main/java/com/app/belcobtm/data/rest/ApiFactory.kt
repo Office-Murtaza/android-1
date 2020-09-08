@@ -19,22 +19,8 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 import java.util.concurrent.TimeUnit
 
 class ApiFactory(
-    noConnectionInterceptor: NoConnectionInterceptor,
-    baseInterceptor: BaseInterceptor,
-    responseInterceptor: ResponseInterceptor,
-    logInterceptor: LogInterceptor
+    private val okHttpClient: OkHttpClient
 ) {
-    private val sessionHttpClient = OkHttpClient().newBuilder()
-        .connectTimeout(WAIT_TIME_SECONDS, TimeUnit.SECONDS)
-        .readTimeout(WAIT_TIME_SECONDS, TimeUnit.SECONDS)
-        .addInterceptor(noConnectionInterceptor)
-        .addInterceptor(baseInterceptor)
-        .addInterceptor(logInterceptor)
-        .addInterceptor(responseInterceptor)
-        .addInterceptor(HttpLoggingInterceptor().apply {
-            level = HttpLoggingInterceptor.Level.BODY
-        })
-        .build()
 
     val authApi: AuthApi = createApiWithSessionClient(AuthApi::class.java)
     val settingsApi: SettingsApi = createApiWithSessionClient(SettingsApi::class.java)
@@ -47,13 +33,13 @@ class ApiFactory(
         .baseUrl(SERVER_URL)
         .addConverterFactory(MoshiConverterFactory.create())
         .addCallAdapterFactory(CoroutineCallAdapterFactory())
-        .client(sessionHttpClient)
+        .client(okHttpClient)
         .build()
         .create(clazz)
 
     companion object {
         const val SERVER_URL = "${BuildConfig.BASE_URL}/api/v${BuildConfig.API_VERSION}/"
-        private const val WAIT_TIME_SECONDS = 60L
+        const val SOCKET_URL = "${BuildConfig.BASE_URL}/api/v${BuildConfig.API_VERSION}/ws"
     }
 }
 

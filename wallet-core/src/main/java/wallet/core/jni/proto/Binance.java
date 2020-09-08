@@ -15876,6 +15876,3522 @@ public final class Binance {
 
   }
 
+  public interface TransferOutOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:TW.Binance.Proto.TransferOut)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>bytes from = 1;</code>
+     */
+    com.google.protobuf.ByteString getFrom();
+
+    /**
+     * <code>bytes to = 2;</code>
+     */
+    com.google.protobuf.ByteString getTo();
+
+    /**
+     * <code>.TW.Binance.Proto.SendOrder.Token amount = 3;</code>
+     */
+    boolean hasAmount();
+    /**
+     * <code>.TW.Binance.Proto.SendOrder.Token amount = 3;</code>
+     */
+    wallet.core.jni.proto.Binance.SendOrder.Token getAmount();
+    /**
+     * <code>.TW.Binance.Proto.SendOrder.Token amount = 3;</code>
+     */
+    wallet.core.jni.proto.Binance.SendOrder.TokenOrBuilder getAmountOrBuilder();
+
+    /**
+     * <code>int64 expire_time = 4;</code>
+     */
+    long getExpireTime();
+  }
+  /**
+   * Protobuf type {@code TW.Binance.Proto.TransferOut}
+   */
+  public  static final class TransferOut extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:TW.Binance.Proto.TransferOut)
+      TransferOutOrBuilder {
+  private static final long serialVersionUID = 0L;
+    // Use TransferOut.newBuilder() to construct.
+    private TransferOut(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private TransferOut() {
+      from_ = com.google.protobuf.ByteString.EMPTY;
+      to_ = com.google.protobuf.ByteString.EMPTY;
+    }
+
+    @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new TransferOut();
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return this.unknownFields;
+    }
+    private TransferOut(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            case 10: {
+
+              from_ = input.readBytes();
+              break;
+            }
+            case 18: {
+
+              to_ = input.readBytes();
+              break;
+            }
+            case 26: {
+              wallet.core.jni.proto.Binance.SendOrder.Token.Builder subBuilder = null;
+              if (amount_ != null) {
+                subBuilder = amount_.toBuilder();
+              }
+              amount_ = input.readMessage(wallet.core.jni.proto.Binance.SendOrder.Token.parser(), extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(amount_);
+                amount_ = subBuilder.buildPartial();
+              }
+
+              break;
+            }
+            case 32: {
+
+              expireTime_ = input.readInt64();
+              break;
+            }
+            default: {
+              if (!parseUnknownField(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return wallet.core.jni.proto.Binance.internal_static_TW_Binance_Proto_TransferOut_descriptor;
+    }
+
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return wallet.core.jni.proto.Binance.internal_static_TW_Binance_Proto_TransferOut_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              wallet.core.jni.proto.Binance.TransferOut.class, wallet.core.jni.proto.Binance.TransferOut.Builder.class);
+    }
+
+    public static final int FROM_FIELD_NUMBER = 1;
+    private com.google.protobuf.ByteString from_;
+    /**
+     * <code>bytes from = 1;</code>
+     */
+    public com.google.protobuf.ByteString getFrom() {
+      return from_;
+    }
+
+    public static final int TO_FIELD_NUMBER = 2;
+    private com.google.protobuf.ByteString to_;
+    /**
+     * <code>bytes to = 2;</code>
+     */
+    public com.google.protobuf.ByteString getTo() {
+      return to_;
+    }
+
+    public static final int AMOUNT_FIELD_NUMBER = 3;
+    private wallet.core.jni.proto.Binance.SendOrder.Token amount_;
+    /**
+     * <code>.TW.Binance.Proto.SendOrder.Token amount = 3;</code>
+     */
+    public boolean hasAmount() {
+      return amount_ != null;
+    }
+    /**
+     * <code>.TW.Binance.Proto.SendOrder.Token amount = 3;</code>
+     */
+    public wallet.core.jni.proto.Binance.SendOrder.Token getAmount() {
+      return amount_ == null ? wallet.core.jni.proto.Binance.SendOrder.Token.getDefaultInstance() : amount_;
+    }
+    /**
+     * <code>.TW.Binance.Proto.SendOrder.Token amount = 3;</code>
+     */
+    public wallet.core.jni.proto.Binance.SendOrder.TokenOrBuilder getAmountOrBuilder() {
+      return getAmount();
+    }
+
+    public static final int EXPIRE_TIME_FIELD_NUMBER = 4;
+    private long expireTime_;
+    /**
+     * <code>int64 expire_time = 4;</code>
+     */
+    public long getExpireTime() {
+      return expireTime_;
+    }
+
+    private byte memoizedIsInitialized = -1;
+    @java.lang.Override
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    @java.lang.Override
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (!from_.isEmpty()) {
+        output.writeBytes(1, from_);
+      }
+      if (!to_.isEmpty()) {
+        output.writeBytes(2, to_);
+      }
+      if (amount_ != null) {
+        output.writeMessage(3, getAmount());
+      }
+      if (expireTime_ != 0L) {
+        output.writeInt64(4, expireTime_);
+      }
+      unknownFields.writeTo(output);
+    }
+
+    @java.lang.Override
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (!from_.isEmpty()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(1, from_);
+      }
+      if (!to_.isEmpty()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(2, to_);
+      }
+      if (amount_ != null) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(3, getAmount());
+      }
+      if (expireTime_ != 0L) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt64Size(4, expireTime_);
+      }
+      size += unknownFields.getSerializedSize();
+      memoizedSize = size;
+      return size;
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof wallet.core.jni.proto.Binance.TransferOut)) {
+        return super.equals(obj);
+      }
+      wallet.core.jni.proto.Binance.TransferOut other = (wallet.core.jni.proto.Binance.TransferOut) obj;
+
+      if (!getFrom()
+          .equals(other.getFrom())) return false;
+      if (!getTo()
+          .equals(other.getTo())) return false;
+      if (hasAmount() != other.hasAmount()) return false;
+      if (hasAmount()) {
+        if (!getAmount()
+            .equals(other.getAmount())) return false;
+      }
+      if (getExpireTime()
+          != other.getExpireTime()) return false;
+      if (!unknownFields.equals(other.unknownFields)) return false;
+      return true;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptor().hashCode();
+      hash = (37 * hash) + FROM_FIELD_NUMBER;
+      hash = (53 * hash) + getFrom().hashCode();
+      hash = (37 * hash) + TO_FIELD_NUMBER;
+      hash = (53 * hash) + getTo().hashCode();
+      if (hasAmount()) {
+        hash = (37 * hash) + AMOUNT_FIELD_NUMBER;
+        hash = (53 * hash) + getAmount().hashCode();
+      }
+      hash = (37 * hash) + EXPIRE_TIME_FIELD_NUMBER;
+      hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
+          getExpireTime());
+      hash = (29 * hash) + unknownFields.hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static wallet.core.jni.proto.Binance.TransferOut parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static wallet.core.jni.proto.Binance.TransferOut parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static wallet.core.jni.proto.Binance.TransferOut parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static wallet.core.jni.proto.Binance.TransferOut parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static wallet.core.jni.proto.Binance.TransferOut parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static wallet.core.jni.proto.Binance.TransferOut parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static wallet.core.jni.proto.Binance.TransferOut parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static wallet.core.jni.proto.Binance.TransferOut parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static wallet.core.jni.proto.Binance.TransferOut parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static wallet.core.jni.proto.Binance.TransferOut parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static wallet.core.jni.proto.Binance.TransferOut parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static wallet.core.jni.proto.Binance.TransferOut parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    @java.lang.Override
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(wallet.core.jni.proto.Binance.TransferOut prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    @java.lang.Override
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code TW.Binance.Proto.TransferOut}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:TW.Binance.Proto.TransferOut)
+        wallet.core.jni.proto.Binance.TransferOutOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return wallet.core.jni.proto.Binance.internal_static_TW_Binance_Proto_TransferOut_descriptor;
+      }
+
+      @java.lang.Override
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return wallet.core.jni.proto.Binance.internal_static_TW_Binance_Proto_TransferOut_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                wallet.core.jni.proto.Binance.TransferOut.class, wallet.core.jni.proto.Binance.TransferOut.Builder.class);
+      }
+
+      // Construct using wallet.core.jni.proto.Binance.TransferOut.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+        }
+      }
+      @java.lang.Override
+      public Builder clear() {
+        super.clear();
+        from_ = com.google.protobuf.ByteString.EMPTY;
+
+        to_ = com.google.protobuf.ByteString.EMPTY;
+
+        if (amountBuilder_ == null) {
+          amount_ = null;
+        } else {
+          amount_ = null;
+          amountBuilder_ = null;
+        }
+        expireTime_ = 0L;
+
+        return this;
+      }
+
+      @java.lang.Override
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return wallet.core.jni.proto.Binance.internal_static_TW_Binance_Proto_TransferOut_descriptor;
+      }
+
+      @java.lang.Override
+      public wallet.core.jni.proto.Binance.TransferOut getDefaultInstanceForType() {
+        return wallet.core.jni.proto.Binance.TransferOut.getDefaultInstance();
+      }
+
+      @java.lang.Override
+      public wallet.core.jni.proto.Binance.TransferOut build() {
+        wallet.core.jni.proto.Binance.TransferOut result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      @java.lang.Override
+      public wallet.core.jni.proto.Binance.TransferOut buildPartial() {
+        wallet.core.jni.proto.Binance.TransferOut result = new wallet.core.jni.proto.Binance.TransferOut(this);
+        result.from_ = from_;
+        result.to_ = to_;
+        if (amountBuilder_ == null) {
+          result.amount_ = amount_;
+        } else {
+          result.amount_ = amountBuilder_.build();
+        }
+        result.expireTime_ = expireTime_;
+        onBuilt();
+        return result;
+      }
+
+      @java.lang.Override
+      public Builder clone() {
+        return super.clone();
+      }
+      @java.lang.Override
+      public Builder setField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.setField(field, value);
+      }
+      @java.lang.Override
+      public Builder clearField(
+          com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return super.clearField(field);
+      }
+      @java.lang.Override
+      public Builder clearOneof(
+          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return super.clearOneof(oneof);
+      }
+      @java.lang.Override
+      public Builder setRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          int index, java.lang.Object value) {
+        return super.setRepeatedField(field, index, value);
+      }
+      @java.lang.Override
+      public Builder addRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.addRepeatedField(field, value);
+      }
+      @java.lang.Override
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof wallet.core.jni.proto.Binance.TransferOut) {
+          return mergeFrom((wallet.core.jni.proto.Binance.TransferOut)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(wallet.core.jni.proto.Binance.TransferOut other) {
+        if (other == wallet.core.jni.proto.Binance.TransferOut.getDefaultInstance()) return this;
+        if (other.getFrom() != com.google.protobuf.ByteString.EMPTY) {
+          setFrom(other.getFrom());
+        }
+        if (other.getTo() != com.google.protobuf.ByteString.EMPTY) {
+          setTo(other.getTo());
+        }
+        if (other.hasAmount()) {
+          mergeAmount(other.getAmount());
+        }
+        if (other.getExpireTime() != 0L) {
+          setExpireTime(other.getExpireTime());
+        }
+        this.mergeUnknownFields(other.unknownFields);
+        onChanged();
+        return this;
+      }
+
+      @java.lang.Override
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      @java.lang.Override
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        wallet.core.jni.proto.Binance.TransferOut parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (wallet.core.jni.proto.Binance.TransferOut) e.getUnfinishedMessage();
+          throw e.unwrapIOException();
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+
+      private com.google.protobuf.ByteString from_ = com.google.protobuf.ByteString.EMPTY;
+      /**
+       * <code>bytes from = 1;</code>
+       */
+      public com.google.protobuf.ByteString getFrom() {
+        return from_;
+      }
+      /**
+       * <code>bytes from = 1;</code>
+       */
+      public Builder setFrom(com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        from_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>bytes from = 1;</code>
+       */
+      public Builder clearFrom() {
+        
+        from_ = getDefaultInstance().getFrom();
+        onChanged();
+        return this;
+      }
+
+      private com.google.protobuf.ByteString to_ = com.google.protobuf.ByteString.EMPTY;
+      /**
+       * <code>bytes to = 2;</code>
+       */
+      public com.google.protobuf.ByteString getTo() {
+        return to_;
+      }
+      /**
+       * <code>bytes to = 2;</code>
+       */
+      public Builder setTo(com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        to_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>bytes to = 2;</code>
+       */
+      public Builder clearTo() {
+        
+        to_ = getDefaultInstance().getTo();
+        onChanged();
+        return this;
+      }
+
+      private wallet.core.jni.proto.Binance.SendOrder.Token amount_;
+      private com.google.protobuf.SingleFieldBuilderV3<
+          wallet.core.jni.proto.Binance.SendOrder.Token, wallet.core.jni.proto.Binance.SendOrder.Token.Builder, wallet.core.jni.proto.Binance.SendOrder.TokenOrBuilder> amountBuilder_;
+      /**
+       * <code>.TW.Binance.Proto.SendOrder.Token amount = 3;</code>
+       */
+      public boolean hasAmount() {
+        return amountBuilder_ != null || amount_ != null;
+      }
+      /**
+       * <code>.TW.Binance.Proto.SendOrder.Token amount = 3;</code>
+       */
+      public wallet.core.jni.proto.Binance.SendOrder.Token getAmount() {
+        if (amountBuilder_ == null) {
+          return amount_ == null ? wallet.core.jni.proto.Binance.SendOrder.Token.getDefaultInstance() : amount_;
+        } else {
+          return amountBuilder_.getMessage();
+        }
+      }
+      /**
+       * <code>.TW.Binance.Proto.SendOrder.Token amount = 3;</code>
+       */
+      public Builder setAmount(wallet.core.jni.proto.Binance.SendOrder.Token value) {
+        if (amountBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          amount_ = value;
+          onChanged();
+        } else {
+          amountBuilder_.setMessage(value);
+        }
+
+        return this;
+      }
+      /**
+       * <code>.TW.Binance.Proto.SendOrder.Token amount = 3;</code>
+       */
+      public Builder setAmount(
+          wallet.core.jni.proto.Binance.SendOrder.Token.Builder builderForValue) {
+        if (amountBuilder_ == null) {
+          amount_ = builderForValue.build();
+          onChanged();
+        } else {
+          amountBuilder_.setMessage(builderForValue.build());
+        }
+
+        return this;
+      }
+      /**
+       * <code>.TW.Binance.Proto.SendOrder.Token amount = 3;</code>
+       */
+      public Builder mergeAmount(wallet.core.jni.proto.Binance.SendOrder.Token value) {
+        if (amountBuilder_ == null) {
+          if (amount_ != null) {
+            amount_ =
+              wallet.core.jni.proto.Binance.SendOrder.Token.newBuilder(amount_).mergeFrom(value).buildPartial();
+          } else {
+            amount_ = value;
+          }
+          onChanged();
+        } else {
+          amountBuilder_.mergeFrom(value);
+        }
+
+        return this;
+      }
+      /**
+       * <code>.TW.Binance.Proto.SendOrder.Token amount = 3;</code>
+       */
+      public Builder clearAmount() {
+        if (amountBuilder_ == null) {
+          amount_ = null;
+          onChanged();
+        } else {
+          amount_ = null;
+          amountBuilder_ = null;
+        }
+
+        return this;
+      }
+      /**
+       * <code>.TW.Binance.Proto.SendOrder.Token amount = 3;</code>
+       */
+      public wallet.core.jni.proto.Binance.SendOrder.Token.Builder getAmountBuilder() {
+        
+        onChanged();
+        return getAmountFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>.TW.Binance.Proto.SendOrder.Token amount = 3;</code>
+       */
+      public wallet.core.jni.proto.Binance.SendOrder.TokenOrBuilder getAmountOrBuilder() {
+        if (amountBuilder_ != null) {
+          return amountBuilder_.getMessageOrBuilder();
+        } else {
+          return amount_ == null ?
+              wallet.core.jni.proto.Binance.SendOrder.Token.getDefaultInstance() : amount_;
+        }
+      }
+      /**
+       * <code>.TW.Binance.Proto.SendOrder.Token amount = 3;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilderV3<
+          wallet.core.jni.proto.Binance.SendOrder.Token, wallet.core.jni.proto.Binance.SendOrder.Token.Builder, wallet.core.jni.proto.Binance.SendOrder.TokenOrBuilder> 
+          getAmountFieldBuilder() {
+        if (amountBuilder_ == null) {
+          amountBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+              wallet.core.jni.proto.Binance.SendOrder.Token, wallet.core.jni.proto.Binance.SendOrder.Token.Builder, wallet.core.jni.proto.Binance.SendOrder.TokenOrBuilder>(
+                  getAmount(),
+                  getParentForChildren(),
+                  isClean());
+          amount_ = null;
+        }
+        return amountBuilder_;
+      }
+
+      private long expireTime_ ;
+      /**
+       * <code>int64 expire_time = 4;</code>
+       */
+      public long getExpireTime() {
+        return expireTime_;
+      }
+      /**
+       * <code>int64 expire_time = 4;</code>
+       */
+      public Builder setExpireTime(long value) {
+        
+        expireTime_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>int64 expire_time = 4;</code>
+       */
+      public Builder clearExpireTime() {
+        
+        expireTime_ = 0L;
+        onChanged();
+        return this;
+      }
+      @java.lang.Override
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.setUnknownFields(unknownFields);
+      }
+
+      @java.lang.Override
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.mergeUnknownFields(unknownFields);
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:TW.Binance.Proto.TransferOut)
+    }
+
+    // @@protoc_insertion_point(class_scope:TW.Binance.Proto.TransferOut)
+    private static final wallet.core.jni.proto.Binance.TransferOut DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new wallet.core.jni.proto.Binance.TransferOut();
+    }
+
+    public static wallet.core.jni.proto.Binance.TransferOut getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static final com.google.protobuf.Parser<TransferOut>
+        PARSER = new com.google.protobuf.AbstractParser<TransferOut>() {
+      @java.lang.Override
+      public TransferOut parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new TransferOut(input, extensionRegistry);
+      }
+    };
+
+    public static com.google.protobuf.Parser<TransferOut> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<TransferOut> getParserForType() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public wallet.core.jni.proto.Binance.TransferOut getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
+  public interface SideChainDelegateOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:TW.Binance.Proto.SideChainDelegate)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>bytes delegator_addr = 1;</code>
+     */
+    com.google.protobuf.ByteString getDelegatorAddr();
+
+    /**
+     * <code>bytes validator_addr = 2;</code>
+     */
+    com.google.protobuf.ByteString getValidatorAddr();
+
+    /**
+     * <code>.TW.Binance.Proto.SendOrder.Token delegation = 3;</code>
+     */
+    boolean hasDelegation();
+    /**
+     * <code>.TW.Binance.Proto.SendOrder.Token delegation = 3;</code>
+     */
+    wallet.core.jni.proto.Binance.SendOrder.Token getDelegation();
+    /**
+     * <code>.TW.Binance.Proto.SendOrder.Token delegation = 3;</code>
+     */
+    wallet.core.jni.proto.Binance.SendOrder.TokenOrBuilder getDelegationOrBuilder();
+
+    /**
+     * <code>string chain_id = 4;</code>
+     */
+    java.lang.String getChainId();
+    /**
+     * <code>string chain_id = 4;</code>
+     */
+    com.google.protobuf.ByteString
+        getChainIdBytes();
+  }
+  /**
+   * Protobuf type {@code TW.Binance.Proto.SideChainDelegate}
+   */
+  public  static final class SideChainDelegate extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:TW.Binance.Proto.SideChainDelegate)
+      SideChainDelegateOrBuilder {
+  private static final long serialVersionUID = 0L;
+    // Use SideChainDelegate.newBuilder() to construct.
+    private SideChainDelegate(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private SideChainDelegate() {
+      delegatorAddr_ = com.google.protobuf.ByteString.EMPTY;
+      validatorAddr_ = com.google.protobuf.ByteString.EMPTY;
+      chainId_ = "";
+    }
+
+    @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new SideChainDelegate();
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return this.unknownFields;
+    }
+    private SideChainDelegate(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            case 10: {
+
+              delegatorAddr_ = input.readBytes();
+              break;
+            }
+            case 18: {
+
+              validatorAddr_ = input.readBytes();
+              break;
+            }
+            case 26: {
+              wallet.core.jni.proto.Binance.SendOrder.Token.Builder subBuilder = null;
+              if (delegation_ != null) {
+                subBuilder = delegation_.toBuilder();
+              }
+              delegation_ = input.readMessage(wallet.core.jni.proto.Binance.SendOrder.Token.parser(), extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(delegation_);
+                delegation_ = subBuilder.buildPartial();
+              }
+
+              break;
+            }
+            case 34: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              chainId_ = s;
+              break;
+            }
+            default: {
+              if (!parseUnknownField(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return wallet.core.jni.proto.Binance.internal_static_TW_Binance_Proto_SideChainDelegate_descriptor;
+    }
+
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return wallet.core.jni.proto.Binance.internal_static_TW_Binance_Proto_SideChainDelegate_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              wallet.core.jni.proto.Binance.SideChainDelegate.class, wallet.core.jni.proto.Binance.SideChainDelegate.Builder.class);
+    }
+
+    public static final int DELEGATOR_ADDR_FIELD_NUMBER = 1;
+    private com.google.protobuf.ByteString delegatorAddr_;
+    /**
+     * <code>bytes delegator_addr = 1;</code>
+     */
+    public com.google.protobuf.ByteString getDelegatorAddr() {
+      return delegatorAddr_;
+    }
+
+    public static final int VALIDATOR_ADDR_FIELD_NUMBER = 2;
+    private com.google.protobuf.ByteString validatorAddr_;
+    /**
+     * <code>bytes validator_addr = 2;</code>
+     */
+    public com.google.protobuf.ByteString getValidatorAddr() {
+      return validatorAddr_;
+    }
+
+    public static final int DELEGATION_FIELD_NUMBER = 3;
+    private wallet.core.jni.proto.Binance.SendOrder.Token delegation_;
+    /**
+     * <code>.TW.Binance.Proto.SendOrder.Token delegation = 3;</code>
+     */
+    public boolean hasDelegation() {
+      return delegation_ != null;
+    }
+    /**
+     * <code>.TW.Binance.Proto.SendOrder.Token delegation = 3;</code>
+     */
+    public wallet.core.jni.proto.Binance.SendOrder.Token getDelegation() {
+      return delegation_ == null ? wallet.core.jni.proto.Binance.SendOrder.Token.getDefaultInstance() : delegation_;
+    }
+    /**
+     * <code>.TW.Binance.Proto.SendOrder.Token delegation = 3;</code>
+     */
+    public wallet.core.jni.proto.Binance.SendOrder.TokenOrBuilder getDelegationOrBuilder() {
+      return getDelegation();
+    }
+
+    public static final int CHAIN_ID_FIELD_NUMBER = 4;
+    private volatile java.lang.Object chainId_;
+    /**
+     * <code>string chain_id = 4;</code>
+     */
+    public java.lang.String getChainId() {
+      java.lang.Object ref = chainId_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        chainId_ = s;
+        return s;
+      }
+    }
+    /**
+     * <code>string chain_id = 4;</code>
+     */
+    public com.google.protobuf.ByteString
+        getChainIdBytes() {
+      java.lang.Object ref = chainId_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        chainId_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    private byte memoizedIsInitialized = -1;
+    @java.lang.Override
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    @java.lang.Override
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (!delegatorAddr_.isEmpty()) {
+        output.writeBytes(1, delegatorAddr_);
+      }
+      if (!validatorAddr_.isEmpty()) {
+        output.writeBytes(2, validatorAddr_);
+      }
+      if (delegation_ != null) {
+        output.writeMessage(3, getDelegation());
+      }
+      if (!getChainIdBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 4, chainId_);
+      }
+      unknownFields.writeTo(output);
+    }
+
+    @java.lang.Override
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (!delegatorAddr_.isEmpty()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(1, delegatorAddr_);
+      }
+      if (!validatorAddr_.isEmpty()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(2, validatorAddr_);
+      }
+      if (delegation_ != null) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(3, getDelegation());
+      }
+      if (!getChainIdBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(4, chainId_);
+      }
+      size += unknownFields.getSerializedSize();
+      memoizedSize = size;
+      return size;
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof wallet.core.jni.proto.Binance.SideChainDelegate)) {
+        return super.equals(obj);
+      }
+      wallet.core.jni.proto.Binance.SideChainDelegate other = (wallet.core.jni.proto.Binance.SideChainDelegate) obj;
+
+      if (!getDelegatorAddr()
+          .equals(other.getDelegatorAddr())) return false;
+      if (!getValidatorAddr()
+          .equals(other.getValidatorAddr())) return false;
+      if (hasDelegation() != other.hasDelegation()) return false;
+      if (hasDelegation()) {
+        if (!getDelegation()
+            .equals(other.getDelegation())) return false;
+      }
+      if (!getChainId()
+          .equals(other.getChainId())) return false;
+      if (!unknownFields.equals(other.unknownFields)) return false;
+      return true;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptor().hashCode();
+      hash = (37 * hash) + DELEGATOR_ADDR_FIELD_NUMBER;
+      hash = (53 * hash) + getDelegatorAddr().hashCode();
+      hash = (37 * hash) + VALIDATOR_ADDR_FIELD_NUMBER;
+      hash = (53 * hash) + getValidatorAddr().hashCode();
+      if (hasDelegation()) {
+        hash = (37 * hash) + DELEGATION_FIELD_NUMBER;
+        hash = (53 * hash) + getDelegation().hashCode();
+      }
+      hash = (37 * hash) + CHAIN_ID_FIELD_NUMBER;
+      hash = (53 * hash) + getChainId().hashCode();
+      hash = (29 * hash) + unknownFields.hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static wallet.core.jni.proto.Binance.SideChainDelegate parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static wallet.core.jni.proto.Binance.SideChainDelegate parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static wallet.core.jni.proto.Binance.SideChainDelegate parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static wallet.core.jni.proto.Binance.SideChainDelegate parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static wallet.core.jni.proto.Binance.SideChainDelegate parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static wallet.core.jni.proto.Binance.SideChainDelegate parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static wallet.core.jni.proto.Binance.SideChainDelegate parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static wallet.core.jni.proto.Binance.SideChainDelegate parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static wallet.core.jni.proto.Binance.SideChainDelegate parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static wallet.core.jni.proto.Binance.SideChainDelegate parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static wallet.core.jni.proto.Binance.SideChainDelegate parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static wallet.core.jni.proto.Binance.SideChainDelegate parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    @java.lang.Override
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(wallet.core.jni.proto.Binance.SideChainDelegate prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    @java.lang.Override
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code TW.Binance.Proto.SideChainDelegate}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:TW.Binance.Proto.SideChainDelegate)
+        wallet.core.jni.proto.Binance.SideChainDelegateOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return wallet.core.jni.proto.Binance.internal_static_TW_Binance_Proto_SideChainDelegate_descriptor;
+      }
+
+      @java.lang.Override
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return wallet.core.jni.proto.Binance.internal_static_TW_Binance_Proto_SideChainDelegate_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                wallet.core.jni.proto.Binance.SideChainDelegate.class, wallet.core.jni.proto.Binance.SideChainDelegate.Builder.class);
+      }
+
+      // Construct using wallet.core.jni.proto.Binance.SideChainDelegate.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+        }
+      }
+      @java.lang.Override
+      public Builder clear() {
+        super.clear();
+        delegatorAddr_ = com.google.protobuf.ByteString.EMPTY;
+
+        validatorAddr_ = com.google.protobuf.ByteString.EMPTY;
+
+        if (delegationBuilder_ == null) {
+          delegation_ = null;
+        } else {
+          delegation_ = null;
+          delegationBuilder_ = null;
+        }
+        chainId_ = "";
+
+        return this;
+      }
+
+      @java.lang.Override
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return wallet.core.jni.proto.Binance.internal_static_TW_Binance_Proto_SideChainDelegate_descriptor;
+      }
+
+      @java.lang.Override
+      public wallet.core.jni.proto.Binance.SideChainDelegate getDefaultInstanceForType() {
+        return wallet.core.jni.proto.Binance.SideChainDelegate.getDefaultInstance();
+      }
+
+      @java.lang.Override
+      public wallet.core.jni.proto.Binance.SideChainDelegate build() {
+        wallet.core.jni.proto.Binance.SideChainDelegate result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      @java.lang.Override
+      public wallet.core.jni.proto.Binance.SideChainDelegate buildPartial() {
+        wallet.core.jni.proto.Binance.SideChainDelegate result = new wallet.core.jni.proto.Binance.SideChainDelegate(this);
+        result.delegatorAddr_ = delegatorAddr_;
+        result.validatorAddr_ = validatorAddr_;
+        if (delegationBuilder_ == null) {
+          result.delegation_ = delegation_;
+        } else {
+          result.delegation_ = delegationBuilder_.build();
+        }
+        result.chainId_ = chainId_;
+        onBuilt();
+        return result;
+      }
+
+      @java.lang.Override
+      public Builder clone() {
+        return super.clone();
+      }
+      @java.lang.Override
+      public Builder setField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.setField(field, value);
+      }
+      @java.lang.Override
+      public Builder clearField(
+          com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return super.clearField(field);
+      }
+      @java.lang.Override
+      public Builder clearOneof(
+          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return super.clearOneof(oneof);
+      }
+      @java.lang.Override
+      public Builder setRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          int index, java.lang.Object value) {
+        return super.setRepeatedField(field, index, value);
+      }
+      @java.lang.Override
+      public Builder addRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.addRepeatedField(field, value);
+      }
+      @java.lang.Override
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof wallet.core.jni.proto.Binance.SideChainDelegate) {
+          return mergeFrom((wallet.core.jni.proto.Binance.SideChainDelegate)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(wallet.core.jni.proto.Binance.SideChainDelegate other) {
+        if (other == wallet.core.jni.proto.Binance.SideChainDelegate.getDefaultInstance()) return this;
+        if (other.getDelegatorAddr() != com.google.protobuf.ByteString.EMPTY) {
+          setDelegatorAddr(other.getDelegatorAddr());
+        }
+        if (other.getValidatorAddr() != com.google.protobuf.ByteString.EMPTY) {
+          setValidatorAddr(other.getValidatorAddr());
+        }
+        if (other.hasDelegation()) {
+          mergeDelegation(other.getDelegation());
+        }
+        if (!other.getChainId().isEmpty()) {
+          chainId_ = other.chainId_;
+          onChanged();
+        }
+        this.mergeUnknownFields(other.unknownFields);
+        onChanged();
+        return this;
+      }
+
+      @java.lang.Override
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      @java.lang.Override
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        wallet.core.jni.proto.Binance.SideChainDelegate parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (wallet.core.jni.proto.Binance.SideChainDelegate) e.getUnfinishedMessage();
+          throw e.unwrapIOException();
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+
+      private com.google.protobuf.ByteString delegatorAddr_ = com.google.protobuf.ByteString.EMPTY;
+      /**
+       * <code>bytes delegator_addr = 1;</code>
+       */
+      public com.google.protobuf.ByteString getDelegatorAddr() {
+        return delegatorAddr_;
+      }
+      /**
+       * <code>bytes delegator_addr = 1;</code>
+       */
+      public Builder setDelegatorAddr(com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        delegatorAddr_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>bytes delegator_addr = 1;</code>
+       */
+      public Builder clearDelegatorAddr() {
+        
+        delegatorAddr_ = getDefaultInstance().getDelegatorAddr();
+        onChanged();
+        return this;
+      }
+
+      private com.google.protobuf.ByteString validatorAddr_ = com.google.protobuf.ByteString.EMPTY;
+      /**
+       * <code>bytes validator_addr = 2;</code>
+       */
+      public com.google.protobuf.ByteString getValidatorAddr() {
+        return validatorAddr_;
+      }
+      /**
+       * <code>bytes validator_addr = 2;</code>
+       */
+      public Builder setValidatorAddr(com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        validatorAddr_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>bytes validator_addr = 2;</code>
+       */
+      public Builder clearValidatorAddr() {
+        
+        validatorAddr_ = getDefaultInstance().getValidatorAddr();
+        onChanged();
+        return this;
+      }
+
+      private wallet.core.jni.proto.Binance.SendOrder.Token delegation_;
+      private com.google.protobuf.SingleFieldBuilderV3<
+          wallet.core.jni.proto.Binance.SendOrder.Token, wallet.core.jni.proto.Binance.SendOrder.Token.Builder, wallet.core.jni.proto.Binance.SendOrder.TokenOrBuilder> delegationBuilder_;
+      /**
+       * <code>.TW.Binance.Proto.SendOrder.Token delegation = 3;</code>
+       */
+      public boolean hasDelegation() {
+        return delegationBuilder_ != null || delegation_ != null;
+      }
+      /**
+       * <code>.TW.Binance.Proto.SendOrder.Token delegation = 3;</code>
+       */
+      public wallet.core.jni.proto.Binance.SendOrder.Token getDelegation() {
+        if (delegationBuilder_ == null) {
+          return delegation_ == null ? wallet.core.jni.proto.Binance.SendOrder.Token.getDefaultInstance() : delegation_;
+        } else {
+          return delegationBuilder_.getMessage();
+        }
+      }
+      /**
+       * <code>.TW.Binance.Proto.SendOrder.Token delegation = 3;</code>
+       */
+      public Builder setDelegation(wallet.core.jni.proto.Binance.SendOrder.Token value) {
+        if (delegationBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          delegation_ = value;
+          onChanged();
+        } else {
+          delegationBuilder_.setMessage(value);
+        }
+
+        return this;
+      }
+      /**
+       * <code>.TW.Binance.Proto.SendOrder.Token delegation = 3;</code>
+       */
+      public Builder setDelegation(
+          wallet.core.jni.proto.Binance.SendOrder.Token.Builder builderForValue) {
+        if (delegationBuilder_ == null) {
+          delegation_ = builderForValue.build();
+          onChanged();
+        } else {
+          delegationBuilder_.setMessage(builderForValue.build());
+        }
+
+        return this;
+      }
+      /**
+       * <code>.TW.Binance.Proto.SendOrder.Token delegation = 3;</code>
+       */
+      public Builder mergeDelegation(wallet.core.jni.proto.Binance.SendOrder.Token value) {
+        if (delegationBuilder_ == null) {
+          if (delegation_ != null) {
+            delegation_ =
+              wallet.core.jni.proto.Binance.SendOrder.Token.newBuilder(delegation_).mergeFrom(value).buildPartial();
+          } else {
+            delegation_ = value;
+          }
+          onChanged();
+        } else {
+          delegationBuilder_.mergeFrom(value);
+        }
+
+        return this;
+      }
+      /**
+       * <code>.TW.Binance.Proto.SendOrder.Token delegation = 3;</code>
+       */
+      public Builder clearDelegation() {
+        if (delegationBuilder_ == null) {
+          delegation_ = null;
+          onChanged();
+        } else {
+          delegation_ = null;
+          delegationBuilder_ = null;
+        }
+
+        return this;
+      }
+      /**
+       * <code>.TW.Binance.Proto.SendOrder.Token delegation = 3;</code>
+       */
+      public wallet.core.jni.proto.Binance.SendOrder.Token.Builder getDelegationBuilder() {
+        
+        onChanged();
+        return getDelegationFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>.TW.Binance.Proto.SendOrder.Token delegation = 3;</code>
+       */
+      public wallet.core.jni.proto.Binance.SendOrder.TokenOrBuilder getDelegationOrBuilder() {
+        if (delegationBuilder_ != null) {
+          return delegationBuilder_.getMessageOrBuilder();
+        } else {
+          return delegation_ == null ?
+              wallet.core.jni.proto.Binance.SendOrder.Token.getDefaultInstance() : delegation_;
+        }
+      }
+      /**
+       * <code>.TW.Binance.Proto.SendOrder.Token delegation = 3;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilderV3<
+          wallet.core.jni.proto.Binance.SendOrder.Token, wallet.core.jni.proto.Binance.SendOrder.Token.Builder, wallet.core.jni.proto.Binance.SendOrder.TokenOrBuilder> 
+          getDelegationFieldBuilder() {
+        if (delegationBuilder_ == null) {
+          delegationBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+              wallet.core.jni.proto.Binance.SendOrder.Token, wallet.core.jni.proto.Binance.SendOrder.Token.Builder, wallet.core.jni.proto.Binance.SendOrder.TokenOrBuilder>(
+                  getDelegation(),
+                  getParentForChildren(),
+                  isClean());
+          delegation_ = null;
+        }
+        return delegationBuilder_;
+      }
+
+      private java.lang.Object chainId_ = "";
+      /**
+       * <code>string chain_id = 4;</code>
+       */
+      public java.lang.String getChainId() {
+        java.lang.Object ref = chainId_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          chainId_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>string chain_id = 4;</code>
+       */
+      public com.google.protobuf.ByteString
+          getChainIdBytes() {
+        java.lang.Object ref = chainId_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          chainId_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>string chain_id = 4;</code>
+       */
+      public Builder setChainId(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        chainId_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string chain_id = 4;</code>
+       */
+      public Builder clearChainId() {
+        
+        chainId_ = getDefaultInstance().getChainId();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string chain_id = 4;</code>
+       */
+      public Builder setChainIdBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        chainId_ = value;
+        onChanged();
+        return this;
+      }
+      @java.lang.Override
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.setUnknownFields(unknownFields);
+      }
+
+      @java.lang.Override
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.mergeUnknownFields(unknownFields);
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:TW.Binance.Proto.SideChainDelegate)
+    }
+
+    // @@protoc_insertion_point(class_scope:TW.Binance.Proto.SideChainDelegate)
+    private static final wallet.core.jni.proto.Binance.SideChainDelegate DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new wallet.core.jni.proto.Binance.SideChainDelegate();
+    }
+
+    public static wallet.core.jni.proto.Binance.SideChainDelegate getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static final com.google.protobuf.Parser<SideChainDelegate>
+        PARSER = new com.google.protobuf.AbstractParser<SideChainDelegate>() {
+      @java.lang.Override
+      public SideChainDelegate parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new SideChainDelegate(input, extensionRegistry);
+      }
+    };
+
+    public static com.google.protobuf.Parser<SideChainDelegate> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<SideChainDelegate> getParserForType() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public wallet.core.jni.proto.Binance.SideChainDelegate getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
+  public interface SideChainRedelegateOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:TW.Binance.Proto.SideChainRedelegate)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>bytes delegator_addr = 1;</code>
+     */
+    com.google.protobuf.ByteString getDelegatorAddr();
+
+    /**
+     * <code>bytes validator_src_addr = 2;</code>
+     */
+    com.google.protobuf.ByteString getValidatorSrcAddr();
+
+    /**
+     * <code>bytes validator_dst_addr = 3;</code>
+     */
+    com.google.protobuf.ByteString getValidatorDstAddr();
+
+    /**
+     * <code>.TW.Binance.Proto.SendOrder.Token amount = 4;</code>
+     */
+    boolean hasAmount();
+    /**
+     * <code>.TW.Binance.Proto.SendOrder.Token amount = 4;</code>
+     */
+    wallet.core.jni.proto.Binance.SendOrder.Token getAmount();
+    /**
+     * <code>.TW.Binance.Proto.SendOrder.Token amount = 4;</code>
+     */
+    wallet.core.jni.proto.Binance.SendOrder.TokenOrBuilder getAmountOrBuilder();
+
+    /**
+     * <code>string chain_id = 5;</code>
+     */
+    java.lang.String getChainId();
+    /**
+     * <code>string chain_id = 5;</code>
+     */
+    com.google.protobuf.ByteString
+        getChainIdBytes();
+  }
+  /**
+   * Protobuf type {@code TW.Binance.Proto.SideChainRedelegate}
+   */
+  public  static final class SideChainRedelegate extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:TW.Binance.Proto.SideChainRedelegate)
+      SideChainRedelegateOrBuilder {
+  private static final long serialVersionUID = 0L;
+    // Use SideChainRedelegate.newBuilder() to construct.
+    private SideChainRedelegate(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private SideChainRedelegate() {
+      delegatorAddr_ = com.google.protobuf.ByteString.EMPTY;
+      validatorSrcAddr_ = com.google.protobuf.ByteString.EMPTY;
+      validatorDstAddr_ = com.google.protobuf.ByteString.EMPTY;
+      chainId_ = "";
+    }
+
+    @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new SideChainRedelegate();
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return this.unknownFields;
+    }
+    private SideChainRedelegate(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            case 10: {
+
+              delegatorAddr_ = input.readBytes();
+              break;
+            }
+            case 18: {
+
+              validatorSrcAddr_ = input.readBytes();
+              break;
+            }
+            case 26: {
+
+              validatorDstAddr_ = input.readBytes();
+              break;
+            }
+            case 34: {
+              wallet.core.jni.proto.Binance.SendOrder.Token.Builder subBuilder = null;
+              if (amount_ != null) {
+                subBuilder = amount_.toBuilder();
+              }
+              amount_ = input.readMessage(wallet.core.jni.proto.Binance.SendOrder.Token.parser(), extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(amount_);
+                amount_ = subBuilder.buildPartial();
+              }
+
+              break;
+            }
+            case 42: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              chainId_ = s;
+              break;
+            }
+            default: {
+              if (!parseUnknownField(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return wallet.core.jni.proto.Binance.internal_static_TW_Binance_Proto_SideChainRedelegate_descriptor;
+    }
+
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return wallet.core.jni.proto.Binance.internal_static_TW_Binance_Proto_SideChainRedelegate_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              wallet.core.jni.proto.Binance.SideChainRedelegate.class, wallet.core.jni.proto.Binance.SideChainRedelegate.Builder.class);
+    }
+
+    public static final int DELEGATOR_ADDR_FIELD_NUMBER = 1;
+    private com.google.protobuf.ByteString delegatorAddr_;
+    /**
+     * <code>bytes delegator_addr = 1;</code>
+     */
+    public com.google.protobuf.ByteString getDelegatorAddr() {
+      return delegatorAddr_;
+    }
+
+    public static final int VALIDATOR_SRC_ADDR_FIELD_NUMBER = 2;
+    private com.google.protobuf.ByteString validatorSrcAddr_;
+    /**
+     * <code>bytes validator_src_addr = 2;</code>
+     */
+    public com.google.protobuf.ByteString getValidatorSrcAddr() {
+      return validatorSrcAddr_;
+    }
+
+    public static final int VALIDATOR_DST_ADDR_FIELD_NUMBER = 3;
+    private com.google.protobuf.ByteString validatorDstAddr_;
+    /**
+     * <code>bytes validator_dst_addr = 3;</code>
+     */
+    public com.google.protobuf.ByteString getValidatorDstAddr() {
+      return validatorDstAddr_;
+    }
+
+    public static final int AMOUNT_FIELD_NUMBER = 4;
+    private wallet.core.jni.proto.Binance.SendOrder.Token amount_;
+    /**
+     * <code>.TW.Binance.Proto.SendOrder.Token amount = 4;</code>
+     */
+    public boolean hasAmount() {
+      return amount_ != null;
+    }
+    /**
+     * <code>.TW.Binance.Proto.SendOrder.Token amount = 4;</code>
+     */
+    public wallet.core.jni.proto.Binance.SendOrder.Token getAmount() {
+      return amount_ == null ? wallet.core.jni.proto.Binance.SendOrder.Token.getDefaultInstance() : amount_;
+    }
+    /**
+     * <code>.TW.Binance.Proto.SendOrder.Token amount = 4;</code>
+     */
+    public wallet.core.jni.proto.Binance.SendOrder.TokenOrBuilder getAmountOrBuilder() {
+      return getAmount();
+    }
+
+    public static final int CHAIN_ID_FIELD_NUMBER = 5;
+    private volatile java.lang.Object chainId_;
+    /**
+     * <code>string chain_id = 5;</code>
+     */
+    public java.lang.String getChainId() {
+      java.lang.Object ref = chainId_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        chainId_ = s;
+        return s;
+      }
+    }
+    /**
+     * <code>string chain_id = 5;</code>
+     */
+    public com.google.protobuf.ByteString
+        getChainIdBytes() {
+      java.lang.Object ref = chainId_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        chainId_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    private byte memoizedIsInitialized = -1;
+    @java.lang.Override
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    @java.lang.Override
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (!delegatorAddr_.isEmpty()) {
+        output.writeBytes(1, delegatorAddr_);
+      }
+      if (!validatorSrcAddr_.isEmpty()) {
+        output.writeBytes(2, validatorSrcAddr_);
+      }
+      if (!validatorDstAddr_.isEmpty()) {
+        output.writeBytes(3, validatorDstAddr_);
+      }
+      if (amount_ != null) {
+        output.writeMessage(4, getAmount());
+      }
+      if (!getChainIdBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 5, chainId_);
+      }
+      unknownFields.writeTo(output);
+    }
+
+    @java.lang.Override
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (!delegatorAddr_.isEmpty()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(1, delegatorAddr_);
+      }
+      if (!validatorSrcAddr_.isEmpty()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(2, validatorSrcAddr_);
+      }
+      if (!validatorDstAddr_.isEmpty()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(3, validatorDstAddr_);
+      }
+      if (amount_ != null) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(4, getAmount());
+      }
+      if (!getChainIdBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(5, chainId_);
+      }
+      size += unknownFields.getSerializedSize();
+      memoizedSize = size;
+      return size;
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof wallet.core.jni.proto.Binance.SideChainRedelegate)) {
+        return super.equals(obj);
+      }
+      wallet.core.jni.proto.Binance.SideChainRedelegate other = (wallet.core.jni.proto.Binance.SideChainRedelegate) obj;
+
+      if (!getDelegatorAddr()
+          .equals(other.getDelegatorAddr())) return false;
+      if (!getValidatorSrcAddr()
+          .equals(other.getValidatorSrcAddr())) return false;
+      if (!getValidatorDstAddr()
+          .equals(other.getValidatorDstAddr())) return false;
+      if (hasAmount() != other.hasAmount()) return false;
+      if (hasAmount()) {
+        if (!getAmount()
+            .equals(other.getAmount())) return false;
+      }
+      if (!getChainId()
+          .equals(other.getChainId())) return false;
+      if (!unknownFields.equals(other.unknownFields)) return false;
+      return true;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptor().hashCode();
+      hash = (37 * hash) + DELEGATOR_ADDR_FIELD_NUMBER;
+      hash = (53 * hash) + getDelegatorAddr().hashCode();
+      hash = (37 * hash) + VALIDATOR_SRC_ADDR_FIELD_NUMBER;
+      hash = (53 * hash) + getValidatorSrcAddr().hashCode();
+      hash = (37 * hash) + VALIDATOR_DST_ADDR_FIELD_NUMBER;
+      hash = (53 * hash) + getValidatorDstAddr().hashCode();
+      if (hasAmount()) {
+        hash = (37 * hash) + AMOUNT_FIELD_NUMBER;
+        hash = (53 * hash) + getAmount().hashCode();
+      }
+      hash = (37 * hash) + CHAIN_ID_FIELD_NUMBER;
+      hash = (53 * hash) + getChainId().hashCode();
+      hash = (29 * hash) + unknownFields.hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static wallet.core.jni.proto.Binance.SideChainRedelegate parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static wallet.core.jni.proto.Binance.SideChainRedelegate parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static wallet.core.jni.proto.Binance.SideChainRedelegate parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static wallet.core.jni.proto.Binance.SideChainRedelegate parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static wallet.core.jni.proto.Binance.SideChainRedelegate parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static wallet.core.jni.proto.Binance.SideChainRedelegate parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static wallet.core.jni.proto.Binance.SideChainRedelegate parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static wallet.core.jni.proto.Binance.SideChainRedelegate parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static wallet.core.jni.proto.Binance.SideChainRedelegate parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static wallet.core.jni.proto.Binance.SideChainRedelegate parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static wallet.core.jni.proto.Binance.SideChainRedelegate parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static wallet.core.jni.proto.Binance.SideChainRedelegate parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    @java.lang.Override
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(wallet.core.jni.proto.Binance.SideChainRedelegate prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    @java.lang.Override
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code TW.Binance.Proto.SideChainRedelegate}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:TW.Binance.Proto.SideChainRedelegate)
+        wallet.core.jni.proto.Binance.SideChainRedelegateOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return wallet.core.jni.proto.Binance.internal_static_TW_Binance_Proto_SideChainRedelegate_descriptor;
+      }
+
+      @java.lang.Override
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return wallet.core.jni.proto.Binance.internal_static_TW_Binance_Proto_SideChainRedelegate_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                wallet.core.jni.proto.Binance.SideChainRedelegate.class, wallet.core.jni.proto.Binance.SideChainRedelegate.Builder.class);
+      }
+
+      // Construct using wallet.core.jni.proto.Binance.SideChainRedelegate.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+        }
+      }
+      @java.lang.Override
+      public Builder clear() {
+        super.clear();
+        delegatorAddr_ = com.google.protobuf.ByteString.EMPTY;
+
+        validatorSrcAddr_ = com.google.protobuf.ByteString.EMPTY;
+
+        validatorDstAddr_ = com.google.protobuf.ByteString.EMPTY;
+
+        if (amountBuilder_ == null) {
+          amount_ = null;
+        } else {
+          amount_ = null;
+          amountBuilder_ = null;
+        }
+        chainId_ = "";
+
+        return this;
+      }
+
+      @java.lang.Override
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return wallet.core.jni.proto.Binance.internal_static_TW_Binance_Proto_SideChainRedelegate_descriptor;
+      }
+
+      @java.lang.Override
+      public wallet.core.jni.proto.Binance.SideChainRedelegate getDefaultInstanceForType() {
+        return wallet.core.jni.proto.Binance.SideChainRedelegate.getDefaultInstance();
+      }
+
+      @java.lang.Override
+      public wallet.core.jni.proto.Binance.SideChainRedelegate build() {
+        wallet.core.jni.proto.Binance.SideChainRedelegate result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      @java.lang.Override
+      public wallet.core.jni.proto.Binance.SideChainRedelegate buildPartial() {
+        wallet.core.jni.proto.Binance.SideChainRedelegate result = new wallet.core.jni.proto.Binance.SideChainRedelegate(this);
+        result.delegatorAddr_ = delegatorAddr_;
+        result.validatorSrcAddr_ = validatorSrcAddr_;
+        result.validatorDstAddr_ = validatorDstAddr_;
+        if (amountBuilder_ == null) {
+          result.amount_ = amount_;
+        } else {
+          result.amount_ = amountBuilder_.build();
+        }
+        result.chainId_ = chainId_;
+        onBuilt();
+        return result;
+      }
+
+      @java.lang.Override
+      public Builder clone() {
+        return super.clone();
+      }
+      @java.lang.Override
+      public Builder setField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.setField(field, value);
+      }
+      @java.lang.Override
+      public Builder clearField(
+          com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return super.clearField(field);
+      }
+      @java.lang.Override
+      public Builder clearOneof(
+          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return super.clearOneof(oneof);
+      }
+      @java.lang.Override
+      public Builder setRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          int index, java.lang.Object value) {
+        return super.setRepeatedField(field, index, value);
+      }
+      @java.lang.Override
+      public Builder addRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.addRepeatedField(field, value);
+      }
+      @java.lang.Override
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof wallet.core.jni.proto.Binance.SideChainRedelegate) {
+          return mergeFrom((wallet.core.jni.proto.Binance.SideChainRedelegate)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(wallet.core.jni.proto.Binance.SideChainRedelegate other) {
+        if (other == wallet.core.jni.proto.Binance.SideChainRedelegate.getDefaultInstance()) return this;
+        if (other.getDelegatorAddr() != com.google.protobuf.ByteString.EMPTY) {
+          setDelegatorAddr(other.getDelegatorAddr());
+        }
+        if (other.getValidatorSrcAddr() != com.google.protobuf.ByteString.EMPTY) {
+          setValidatorSrcAddr(other.getValidatorSrcAddr());
+        }
+        if (other.getValidatorDstAddr() != com.google.protobuf.ByteString.EMPTY) {
+          setValidatorDstAddr(other.getValidatorDstAddr());
+        }
+        if (other.hasAmount()) {
+          mergeAmount(other.getAmount());
+        }
+        if (!other.getChainId().isEmpty()) {
+          chainId_ = other.chainId_;
+          onChanged();
+        }
+        this.mergeUnknownFields(other.unknownFields);
+        onChanged();
+        return this;
+      }
+
+      @java.lang.Override
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      @java.lang.Override
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        wallet.core.jni.proto.Binance.SideChainRedelegate parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (wallet.core.jni.proto.Binance.SideChainRedelegate) e.getUnfinishedMessage();
+          throw e.unwrapIOException();
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+
+      private com.google.protobuf.ByteString delegatorAddr_ = com.google.protobuf.ByteString.EMPTY;
+      /**
+       * <code>bytes delegator_addr = 1;</code>
+       */
+      public com.google.protobuf.ByteString getDelegatorAddr() {
+        return delegatorAddr_;
+      }
+      /**
+       * <code>bytes delegator_addr = 1;</code>
+       */
+      public Builder setDelegatorAddr(com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        delegatorAddr_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>bytes delegator_addr = 1;</code>
+       */
+      public Builder clearDelegatorAddr() {
+        
+        delegatorAddr_ = getDefaultInstance().getDelegatorAddr();
+        onChanged();
+        return this;
+      }
+
+      private com.google.protobuf.ByteString validatorSrcAddr_ = com.google.protobuf.ByteString.EMPTY;
+      /**
+       * <code>bytes validator_src_addr = 2;</code>
+       */
+      public com.google.protobuf.ByteString getValidatorSrcAddr() {
+        return validatorSrcAddr_;
+      }
+      /**
+       * <code>bytes validator_src_addr = 2;</code>
+       */
+      public Builder setValidatorSrcAddr(com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        validatorSrcAddr_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>bytes validator_src_addr = 2;</code>
+       */
+      public Builder clearValidatorSrcAddr() {
+        
+        validatorSrcAddr_ = getDefaultInstance().getValidatorSrcAddr();
+        onChanged();
+        return this;
+      }
+
+      private com.google.protobuf.ByteString validatorDstAddr_ = com.google.protobuf.ByteString.EMPTY;
+      /**
+       * <code>bytes validator_dst_addr = 3;</code>
+       */
+      public com.google.protobuf.ByteString getValidatorDstAddr() {
+        return validatorDstAddr_;
+      }
+      /**
+       * <code>bytes validator_dst_addr = 3;</code>
+       */
+      public Builder setValidatorDstAddr(com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        validatorDstAddr_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>bytes validator_dst_addr = 3;</code>
+       */
+      public Builder clearValidatorDstAddr() {
+        
+        validatorDstAddr_ = getDefaultInstance().getValidatorDstAddr();
+        onChanged();
+        return this;
+      }
+
+      private wallet.core.jni.proto.Binance.SendOrder.Token amount_;
+      private com.google.protobuf.SingleFieldBuilderV3<
+          wallet.core.jni.proto.Binance.SendOrder.Token, wallet.core.jni.proto.Binance.SendOrder.Token.Builder, wallet.core.jni.proto.Binance.SendOrder.TokenOrBuilder> amountBuilder_;
+      /**
+       * <code>.TW.Binance.Proto.SendOrder.Token amount = 4;</code>
+       */
+      public boolean hasAmount() {
+        return amountBuilder_ != null || amount_ != null;
+      }
+      /**
+       * <code>.TW.Binance.Proto.SendOrder.Token amount = 4;</code>
+       */
+      public wallet.core.jni.proto.Binance.SendOrder.Token getAmount() {
+        if (amountBuilder_ == null) {
+          return amount_ == null ? wallet.core.jni.proto.Binance.SendOrder.Token.getDefaultInstance() : amount_;
+        } else {
+          return amountBuilder_.getMessage();
+        }
+      }
+      /**
+       * <code>.TW.Binance.Proto.SendOrder.Token amount = 4;</code>
+       */
+      public Builder setAmount(wallet.core.jni.proto.Binance.SendOrder.Token value) {
+        if (amountBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          amount_ = value;
+          onChanged();
+        } else {
+          amountBuilder_.setMessage(value);
+        }
+
+        return this;
+      }
+      /**
+       * <code>.TW.Binance.Proto.SendOrder.Token amount = 4;</code>
+       */
+      public Builder setAmount(
+          wallet.core.jni.proto.Binance.SendOrder.Token.Builder builderForValue) {
+        if (amountBuilder_ == null) {
+          amount_ = builderForValue.build();
+          onChanged();
+        } else {
+          amountBuilder_.setMessage(builderForValue.build());
+        }
+
+        return this;
+      }
+      /**
+       * <code>.TW.Binance.Proto.SendOrder.Token amount = 4;</code>
+       */
+      public Builder mergeAmount(wallet.core.jni.proto.Binance.SendOrder.Token value) {
+        if (amountBuilder_ == null) {
+          if (amount_ != null) {
+            amount_ =
+              wallet.core.jni.proto.Binance.SendOrder.Token.newBuilder(amount_).mergeFrom(value).buildPartial();
+          } else {
+            amount_ = value;
+          }
+          onChanged();
+        } else {
+          amountBuilder_.mergeFrom(value);
+        }
+
+        return this;
+      }
+      /**
+       * <code>.TW.Binance.Proto.SendOrder.Token amount = 4;</code>
+       */
+      public Builder clearAmount() {
+        if (amountBuilder_ == null) {
+          amount_ = null;
+          onChanged();
+        } else {
+          amount_ = null;
+          amountBuilder_ = null;
+        }
+
+        return this;
+      }
+      /**
+       * <code>.TW.Binance.Proto.SendOrder.Token amount = 4;</code>
+       */
+      public wallet.core.jni.proto.Binance.SendOrder.Token.Builder getAmountBuilder() {
+        
+        onChanged();
+        return getAmountFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>.TW.Binance.Proto.SendOrder.Token amount = 4;</code>
+       */
+      public wallet.core.jni.proto.Binance.SendOrder.TokenOrBuilder getAmountOrBuilder() {
+        if (amountBuilder_ != null) {
+          return amountBuilder_.getMessageOrBuilder();
+        } else {
+          return amount_ == null ?
+              wallet.core.jni.proto.Binance.SendOrder.Token.getDefaultInstance() : amount_;
+        }
+      }
+      /**
+       * <code>.TW.Binance.Proto.SendOrder.Token amount = 4;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilderV3<
+          wallet.core.jni.proto.Binance.SendOrder.Token, wallet.core.jni.proto.Binance.SendOrder.Token.Builder, wallet.core.jni.proto.Binance.SendOrder.TokenOrBuilder> 
+          getAmountFieldBuilder() {
+        if (amountBuilder_ == null) {
+          amountBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+              wallet.core.jni.proto.Binance.SendOrder.Token, wallet.core.jni.proto.Binance.SendOrder.Token.Builder, wallet.core.jni.proto.Binance.SendOrder.TokenOrBuilder>(
+                  getAmount(),
+                  getParentForChildren(),
+                  isClean());
+          amount_ = null;
+        }
+        return amountBuilder_;
+      }
+
+      private java.lang.Object chainId_ = "";
+      /**
+       * <code>string chain_id = 5;</code>
+       */
+      public java.lang.String getChainId() {
+        java.lang.Object ref = chainId_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          chainId_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>string chain_id = 5;</code>
+       */
+      public com.google.protobuf.ByteString
+          getChainIdBytes() {
+        java.lang.Object ref = chainId_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          chainId_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>string chain_id = 5;</code>
+       */
+      public Builder setChainId(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        chainId_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string chain_id = 5;</code>
+       */
+      public Builder clearChainId() {
+        
+        chainId_ = getDefaultInstance().getChainId();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string chain_id = 5;</code>
+       */
+      public Builder setChainIdBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        chainId_ = value;
+        onChanged();
+        return this;
+      }
+      @java.lang.Override
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.setUnknownFields(unknownFields);
+      }
+
+      @java.lang.Override
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.mergeUnknownFields(unknownFields);
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:TW.Binance.Proto.SideChainRedelegate)
+    }
+
+    // @@protoc_insertion_point(class_scope:TW.Binance.Proto.SideChainRedelegate)
+    private static final wallet.core.jni.proto.Binance.SideChainRedelegate DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new wallet.core.jni.proto.Binance.SideChainRedelegate();
+    }
+
+    public static wallet.core.jni.proto.Binance.SideChainRedelegate getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static final com.google.protobuf.Parser<SideChainRedelegate>
+        PARSER = new com.google.protobuf.AbstractParser<SideChainRedelegate>() {
+      @java.lang.Override
+      public SideChainRedelegate parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new SideChainRedelegate(input, extensionRegistry);
+      }
+    };
+
+    public static com.google.protobuf.Parser<SideChainRedelegate> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<SideChainRedelegate> getParserForType() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public wallet.core.jni.proto.Binance.SideChainRedelegate getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
+  public interface SideChainUndelegateOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:TW.Binance.Proto.SideChainUndelegate)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>bytes delegator_addr = 1;</code>
+     */
+    com.google.protobuf.ByteString getDelegatorAddr();
+
+    /**
+     * <code>bytes validator_addr = 2;</code>
+     */
+    com.google.protobuf.ByteString getValidatorAddr();
+
+    /**
+     * <code>.TW.Binance.Proto.SendOrder.Token amount = 3;</code>
+     */
+    boolean hasAmount();
+    /**
+     * <code>.TW.Binance.Proto.SendOrder.Token amount = 3;</code>
+     */
+    wallet.core.jni.proto.Binance.SendOrder.Token getAmount();
+    /**
+     * <code>.TW.Binance.Proto.SendOrder.Token amount = 3;</code>
+     */
+    wallet.core.jni.proto.Binance.SendOrder.TokenOrBuilder getAmountOrBuilder();
+
+    /**
+     * <code>string chain_id = 4;</code>
+     */
+    java.lang.String getChainId();
+    /**
+     * <code>string chain_id = 4;</code>
+     */
+    com.google.protobuf.ByteString
+        getChainIdBytes();
+  }
+  /**
+   * Protobuf type {@code TW.Binance.Proto.SideChainUndelegate}
+   */
+  public  static final class SideChainUndelegate extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:TW.Binance.Proto.SideChainUndelegate)
+      SideChainUndelegateOrBuilder {
+  private static final long serialVersionUID = 0L;
+    // Use SideChainUndelegate.newBuilder() to construct.
+    private SideChainUndelegate(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private SideChainUndelegate() {
+      delegatorAddr_ = com.google.protobuf.ByteString.EMPTY;
+      validatorAddr_ = com.google.protobuf.ByteString.EMPTY;
+      chainId_ = "";
+    }
+
+    @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new SideChainUndelegate();
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return this.unknownFields;
+    }
+    private SideChainUndelegate(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            case 10: {
+
+              delegatorAddr_ = input.readBytes();
+              break;
+            }
+            case 18: {
+
+              validatorAddr_ = input.readBytes();
+              break;
+            }
+            case 26: {
+              wallet.core.jni.proto.Binance.SendOrder.Token.Builder subBuilder = null;
+              if (amount_ != null) {
+                subBuilder = amount_.toBuilder();
+              }
+              amount_ = input.readMessage(wallet.core.jni.proto.Binance.SendOrder.Token.parser(), extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(amount_);
+                amount_ = subBuilder.buildPartial();
+              }
+
+              break;
+            }
+            case 34: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              chainId_ = s;
+              break;
+            }
+            default: {
+              if (!parseUnknownField(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return wallet.core.jni.proto.Binance.internal_static_TW_Binance_Proto_SideChainUndelegate_descriptor;
+    }
+
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return wallet.core.jni.proto.Binance.internal_static_TW_Binance_Proto_SideChainUndelegate_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              wallet.core.jni.proto.Binance.SideChainUndelegate.class, wallet.core.jni.proto.Binance.SideChainUndelegate.Builder.class);
+    }
+
+    public static final int DELEGATOR_ADDR_FIELD_NUMBER = 1;
+    private com.google.protobuf.ByteString delegatorAddr_;
+    /**
+     * <code>bytes delegator_addr = 1;</code>
+     */
+    public com.google.protobuf.ByteString getDelegatorAddr() {
+      return delegatorAddr_;
+    }
+
+    public static final int VALIDATOR_ADDR_FIELD_NUMBER = 2;
+    private com.google.protobuf.ByteString validatorAddr_;
+    /**
+     * <code>bytes validator_addr = 2;</code>
+     */
+    public com.google.protobuf.ByteString getValidatorAddr() {
+      return validatorAddr_;
+    }
+
+    public static final int AMOUNT_FIELD_NUMBER = 3;
+    private wallet.core.jni.proto.Binance.SendOrder.Token amount_;
+    /**
+     * <code>.TW.Binance.Proto.SendOrder.Token amount = 3;</code>
+     */
+    public boolean hasAmount() {
+      return amount_ != null;
+    }
+    /**
+     * <code>.TW.Binance.Proto.SendOrder.Token amount = 3;</code>
+     */
+    public wallet.core.jni.proto.Binance.SendOrder.Token getAmount() {
+      return amount_ == null ? wallet.core.jni.proto.Binance.SendOrder.Token.getDefaultInstance() : amount_;
+    }
+    /**
+     * <code>.TW.Binance.Proto.SendOrder.Token amount = 3;</code>
+     */
+    public wallet.core.jni.proto.Binance.SendOrder.TokenOrBuilder getAmountOrBuilder() {
+      return getAmount();
+    }
+
+    public static final int CHAIN_ID_FIELD_NUMBER = 4;
+    private volatile java.lang.Object chainId_;
+    /**
+     * <code>string chain_id = 4;</code>
+     */
+    public java.lang.String getChainId() {
+      java.lang.Object ref = chainId_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        chainId_ = s;
+        return s;
+      }
+    }
+    /**
+     * <code>string chain_id = 4;</code>
+     */
+    public com.google.protobuf.ByteString
+        getChainIdBytes() {
+      java.lang.Object ref = chainId_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        chainId_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    private byte memoizedIsInitialized = -1;
+    @java.lang.Override
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    @java.lang.Override
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (!delegatorAddr_.isEmpty()) {
+        output.writeBytes(1, delegatorAddr_);
+      }
+      if (!validatorAddr_.isEmpty()) {
+        output.writeBytes(2, validatorAddr_);
+      }
+      if (amount_ != null) {
+        output.writeMessage(3, getAmount());
+      }
+      if (!getChainIdBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 4, chainId_);
+      }
+      unknownFields.writeTo(output);
+    }
+
+    @java.lang.Override
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (!delegatorAddr_.isEmpty()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(1, delegatorAddr_);
+      }
+      if (!validatorAddr_.isEmpty()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(2, validatorAddr_);
+      }
+      if (amount_ != null) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(3, getAmount());
+      }
+      if (!getChainIdBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(4, chainId_);
+      }
+      size += unknownFields.getSerializedSize();
+      memoizedSize = size;
+      return size;
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof wallet.core.jni.proto.Binance.SideChainUndelegate)) {
+        return super.equals(obj);
+      }
+      wallet.core.jni.proto.Binance.SideChainUndelegate other = (wallet.core.jni.proto.Binance.SideChainUndelegate) obj;
+
+      if (!getDelegatorAddr()
+          .equals(other.getDelegatorAddr())) return false;
+      if (!getValidatorAddr()
+          .equals(other.getValidatorAddr())) return false;
+      if (hasAmount() != other.hasAmount()) return false;
+      if (hasAmount()) {
+        if (!getAmount()
+            .equals(other.getAmount())) return false;
+      }
+      if (!getChainId()
+          .equals(other.getChainId())) return false;
+      if (!unknownFields.equals(other.unknownFields)) return false;
+      return true;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptor().hashCode();
+      hash = (37 * hash) + DELEGATOR_ADDR_FIELD_NUMBER;
+      hash = (53 * hash) + getDelegatorAddr().hashCode();
+      hash = (37 * hash) + VALIDATOR_ADDR_FIELD_NUMBER;
+      hash = (53 * hash) + getValidatorAddr().hashCode();
+      if (hasAmount()) {
+        hash = (37 * hash) + AMOUNT_FIELD_NUMBER;
+        hash = (53 * hash) + getAmount().hashCode();
+      }
+      hash = (37 * hash) + CHAIN_ID_FIELD_NUMBER;
+      hash = (53 * hash) + getChainId().hashCode();
+      hash = (29 * hash) + unknownFields.hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static wallet.core.jni.proto.Binance.SideChainUndelegate parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static wallet.core.jni.proto.Binance.SideChainUndelegate parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static wallet.core.jni.proto.Binance.SideChainUndelegate parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static wallet.core.jni.proto.Binance.SideChainUndelegate parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static wallet.core.jni.proto.Binance.SideChainUndelegate parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static wallet.core.jni.proto.Binance.SideChainUndelegate parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static wallet.core.jni.proto.Binance.SideChainUndelegate parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static wallet.core.jni.proto.Binance.SideChainUndelegate parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static wallet.core.jni.proto.Binance.SideChainUndelegate parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static wallet.core.jni.proto.Binance.SideChainUndelegate parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static wallet.core.jni.proto.Binance.SideChainUndelegate parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static wallet.core.jni.proto.Binance.SideChainUndelegate parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    @java.lang.Override
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(wallet.core.jni.proto.Binance.SideChainUndelegate prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    @java.lang.Override
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code TW.Binance.Proto.SideChainUndelegate}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:TW.Binance.Proto.SideChainUndelegate)
+        wallet.core.jni.proto.Binance.SideChainUndelegateOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return wallet.core.jni.proto.Binance.internal_static_TW_Binance_Proto_SideChainUndelegate_descriptor;
+      }
+
+      @java.lang.Override
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return wallet.core.jni.proto.Binance.internal_static_TW_Binance_Proto_SideChainUndelegate_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                wallet.core.jni.proto.Binance.SideChainUndelegate.class, wallet.core.jni.proto.Binance.SideChainUndelegate.Builder.class);
+      }
+
+      // Construct using wallet.core.jni.proto.Binance.SideChainUndelegate.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+        }
+      }
+      @java.lang.Override
+      public Builder clear() {
+        super.clear();
+        delegatorAddr_ = com.google.protobuf.ByteString.EMPTY;
+
+        validatorAddr_ = com.google.protobuf.ByteString.EMPTY;
+
+        if (amountBuilder_ == null) {
+          amount_ = null;
+        } else {
+          amount_ = null;
+          amountBuilder_ = null;
+        }
+        chainId_ = "";
+
+        return this;
+      }
+
+      @java.lang.Override
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return wallet.core.jni.proto.Binance.internal_static_TW_Binance_Proto_SideChainUndelegate_descriptor;
+      }
+
+      @java.lang.Override
+      public wallet.core.jni.proto.Binance.SideChainUndelegate getDefaultInstanceForType() {
+        return wallet.core.jni.proto.Binance.SideChainUndelegate.getDefaultInstance();
+      }
+
+      @java.lang.Override
+      public wallet.core.jni.proto.Binance.SideChainUndelegate build() {
+        wallet.core.jni.proto.Binance.SideChainUndelegate result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      @java.lang.Override
+      public wallet.core.jni.proto.Binance.SideChainUndelegate buildPartial() {
+        wallet.core.jni.proto.Binance.SideChainUndelegate result = new wallet.core.jni.proto.Binance.SideChainUndelegate(this);
+        result.delegatorAddr_ = delegatorAddr_;
+        result.validatorAddr_ = validatorAddr_;
+        if (amountBuilder_ == null) {
+          result.amount_ = amount_;
+        } else {
+          result.amount_ = amountBuilder_.build();
+        }
+        result.chainId_ = chainId_;
+        onBuilt();
+        return result;
+      }
+
+      @java.lang.Override
+      public Builder clone() {
+        return super.clone();
+      }
+      @java.lang.Override
+      public Builder setField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.setField(field, value);
+      }
+      @java.lang.Override
+      public Builder clearField(
+          com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return super.clearField(field);
+      }
+      @java.lang.Override
+      public Builder clearOneof(
+          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return super.clearOneof(oneof);
+      }
+      @java.lang.Override
+      public Builder setRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          int index, java.lang.Object value) {
+        return super.setRepeatedField(field, index, value);
+      }
+      @java.lang.Override
+      public Builder addRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.addRepeatedField(field, value);
+      }
+      @java.lang.Override
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof wallet.core.jni.proto.Binance.SideChainUndelegate) {
+          return mergeFrom((wallet.core.jni.proto.Binance.SideChainUndelegate)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(wallet.core.jni.proto.Binance.SideChainUndelegate other) {
+        if (other == wallet.core.jni.proto.Binance.SideChainUndelegate.getDefaultInstance()) return this;
+        if (other.getDelegatorAddr() != com.google.protobuf.ByteString.EMPTY) {
+          setDelegatorAddr(other.getDelegatorAddr());
+        }
+        if (other.getValidatorAddr() != com.google.protobuf.ByteString.EMPTY) {
+          setValidatorAddr(other.getValidatorAddr());
+        }
+        if (other.hasAmount()) {
+          mergeAmount(other.getAmount());
+        }
+        if (!other.getChainId().isEmpty()) {
+          chainId_ = other.chainId_;
+          onChanged();
+        }
+        this.mergeUnknownFields(other.unknownFields);
+        onChanged();
+        return this;
+      }
+
+      @java.lang.Override
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      @java.lang.Override
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        wallet.core.jni.proto.Binance.SideChainUndelegate parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (wallet.core.jni.proto.Binance.SideChainUndelegate) e.getUnfinishedMessage();
+          throw e.unwrapIOException();
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+
+      private com.google.protobuf.ByteString delegatorAddr_ = com.google.protobuf.ByteString.EMPTY;
+      /**
+       * <code>bytes delegator_addr = 1;</code>
+       */
+      public com.google.protobuf.ByteString getDelegatorAddr() {
+        return delegatorAddr_;
+      }
+      /**
+       * <code>bytes delegator_addr = 1;</code>
+       */
+      public Builder setDelegatorAddr(com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        delegatorAddr_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>bytes delegator_addr = 1;</code>
+       */
+      public Builder clearDelegatorAddr() {
+        
+        delegatorAddr_ = getDefaultInstance().getDelegatorAddr();
+        onChanged();
+        return this;
+      }
+
+      private com.google.protobuf.ByteString validatorAddr_ = com.google.protobuf.ByteString.EMPTY;
+      /**
+       * <code>bytes validator_addr = 2;</code>
+       */
+      public com.google.protobuf.ByteString getValidatorAddr() {
+        return validatorAddr_;
+      }
+      /**
+       * <code>bytes validator_addr = 2;</code>
+       */
+      public Builder setValidatorAddr(com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        validatorAddr_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>bytes validator_addr = 2;</code>
+       */
+      public Builder clearValidatorAddr() {
+        
+        validatorAddr_ = getDefaultInstance().getValidatorAddr();
+        onChanged();
+        return this;
+      }
+
+      private wallet.core.jni.proto.Binance.SendOrder.Token amount_;
+      private com.google.protobuf.SingleFieldBuilderV3<
+          wallet.core.jni.proto.Binance.SendOrder.Token, wallet.core.jni.proto.Binance.SendOrder.Token.Builder, wallet.core.jni.proto.Binance.SendOrder.TokenOrBuilder> amountBuilder_;
+      /**
+       * <code>.TW.Binance.Proto.SendOrder.Token amount = 3;</code>
+       */
+      public boolean hasAmount() {
+        return amountBuilder_ != null || amount_ != null;
+      }
+      /**
+       * <code>.TW.Binance.Proto.SendOrder.Token amount = 3;</code>
+       */
+      public wallet.core.jni.proto.Binance.SendOrder.Token getAmount() {
+        if (amountBuilder_ == null) {
+          return amount_ == null ? wallet.core.jni.proto.Binance.SendOrder.Token.getDefaultInstance() : amount_;
+        } else {
+          return amountBuilder_.getMessage();
+        }
+      }
+      /**
+       * <code>.TW.Binance.Proto.SendOrder.Token amount = 3;</code>
+       */
+      public Builder setAmount(wallet.core.jni.proto.Binance.SendOrder.Token value) {
+        if (amountBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          amount_ = value;
+          onChanged();
+        } else {
+          amountBuilder_.setMessage(value);
+        }
+
+        return this;
+      }
+      /**
+       * <code>.TW.Binance.Proto.SendOrder.Token amount = 3;</code>
+       */
+      public Builder setAmount(
+          wallet.core.jni.proto.Binance.SendOrder.Token.Builder builderForValue) {
+        if (amountBuilder_ == null) {
+          amount_ = builderForValue.build();
+          onChanged();
+        } else {
+          amountBuilder_.setMessage(builderForValue.build());
+        }
+
+        return this;
+      }
+      /**
+       * <code>.TW.Binance.Proto.SendOrder.Token amount = 3;</code>
+       */
+      public Builder mergeAmount(wallet.core.jni.proto.Binance.SendOrder.Token value) {
+        if (amountBuilder_ == null) {
+          if (amount_ != null) {
+            amount_ =
+              wallet.core.jni.proto.Binance.SendOrder.Token.newBuilder(amount_).mergeFrom(value).buildPartial();
+          } else {
+            amount_ = value;
+          }
+          onChanged();
+        } else {
+          amountBuilder_.mergeFrom(value);
+        }
+
+        return this;
+      }
+      /**
+       * <code>.TW.Binance.Proto.SendOrder.Token amount = 3;</code>
+       */
+      public Builder clearAmount() {
+        if (amountBuilder_ == null) {
+          amount_ = null;
+          onChanged();
+        } else {
+          amount_ = null;
+          amountBuilder_ = null;
+        }
+
+        return this;
+      }
+      /**
+       * <code>.TW.Binance.Proto.SendOrder.Token amount = 3;</code>
+       */
+      public wallet.core.jni.proto.Binance.SendOrder.Token.Builder getAmountBuilder() {
+        
+        onChanged();
+        return getAmountFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>.TW.Binance.Proto.SendOrder.Token amount = 3;</code>
+       */
+      public wallet.core.jni.proto.Binance.SendOrder.TokenOrBuilder getAmountOrBuilder() {
+        if (amountBuilder_ != null) {
+          return amountBuilder_.getMessageOrBuilder();
+        } else {
+          return amount_ == null ?
+              wallet.core.jni.proto.Binance.SendOrder.Token.getDefaultInstance() : amount_;
+        }
+      }
+      /**
+       * <code>.TW.Binance.Proto.SendOrder.Token amount = 3;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilderV3<
+          wallet.core.jni.proto.Binance.SendOrder.Token, wallet.core.jni.proto.Binance.SendOrder.Token.Builder, wallet.core.jni.proto.Binance.SendOrder.TokenOrBuilder> 
+          getAmountFieldBuilder() {
+        if (amountBuilder_ == null) {
+          amountBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+              wallet.core.jni.proto.Binance.SendOrder.Token, wallet.core.jni.proto.Binance.SendOrder.Token.Builder, wallet.core.jni.proto.Binance.SendOrder.TokenOrBuilder>(
+                  getAmount(),
+                  getParentForChildren(),
+                  isClean());
+          amount_ = null;
+        }
+        return amountBuilder_;
+      }
+
+      private java.lang.Object chainId_ = "";
+      /**
+       * <code>string chain_id = 4;</code>
+       */
+      public java.lang.String getChainId() {
+        java.lang.Object ref = chainId_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          chainId_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>string chain_id = 4;</code>
+       */
+      public com.google.protobuf.ByteString
+          getChainIdBytes() {
+        java.lang.Object ref = chainId_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          chainId_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>string chain_id = 4;</code>
+       */
+      public Builder setChainId(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        chainId_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string chain_id = 4;</code>
+       */
+      public Builder clearChainId() {
+        
+        chainId_ = getDefaultInstance().getChainId();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string chain_id = 4;</code>
+       */
+      public Builder setChainIdBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        chainId_ = value;
+        onChanged();
+        return this;
+      }
+      @java.lang.Override
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.setUnknownFields(unknownFields);
+      }
+
+      @java.lang.Override
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.mergeUnknownFields(unknownFields);
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:TW.Binance.Proto.SideChainUndelegate)
+    }
+
+    // @@protoc_insertion_point(class_scope:TW.Binance.Proto.SideChainUndelegate)
+    private static final wallet.core.jni.proto.Binance.SideChainUndelegate DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new wallet.core.jni.proto.Binance.SideChainUndelegate();
+    }
+
+    public static wallet.core.jni.proto.Binance.SideChainUndelegate getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static final com.google.protobuf.Parser<SideChainUndelegate>
+        PARSER = new com.google.protobuf.AbstractParser<SideChainUndelegate>() {
+      @java.lang.Override
+      public SideChainUndelegate parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new SideChainUndelegate(input, extensionRegistry);
+      }
+    };
+
+    public static com.google.protobuf.Parser<SideChainUndelegate> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<SideChainUndelegate> getParserForType() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public wallet.core.jni.proto.Binance.SideChainUndelegate getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
   public interface SigningInputOrBuilder extends
       // @@protoc_insertion_point(interface_extends:TW.Binance.Proto.SigningInput)
       com.google.protobuf.MessageOrBuilder {
@@ -16075,6 +19591,58 @@ public final class Binance {
      * <code>.TW.Binance.Proto.TokenBurnOrder burn_order = 19;</code>
      */
     wallet.core.jni.proto.Binance.TokenBurnOrderOrBuilder getBurnOrderOrBuilder();
+
+    /**
+     * <code>.TW.Binance.Proto.TransferOut transfer_out_order = 20;</code>
+     */
+    boolean hasTransferOutOrder();
+    /**
+     * <code>.TW.Binance.Proto.TransferOut transfer_out_order = 20;</code>
+     */
+    wallet.core.jni.proto.Binance.TransferOut getTransferOutOrder();
+    /**
+     * <code>.TW.Binance.Proto.TransferOut transfer_out_order = 20;</code>
+     */
+    wallet.core.jni.proto.Binance.TransferOutOrBuilder getTransferOutOrderOrBuilder();
+
+    /**
+     * <code>.TW.Binance.Proto.SideChainDelegate side_delegate_order = 21;</code>
+     */
+    boolean hasSideDelegateOrder();
+    /**
+     * <code>.TW.Binance.Proto.SideChainDelegate side_delegate_order = 21;</code>
+     */
+    wallet.core.jni.proto.Binance.SideChainDelegate getSideDelegateOrder();
+    /**
+     * <code>.TW.Binance.Proto.SideChainDelegate side_delegate_order = 21;</code>
+     */
+    wallet.core.jni.proto.Binance.SideChainDelegateOrBuilder getSideDelegateOrderOrBuilder();
+
+    /**
+     * <code>.TW.Binance.Proto.SideChainRedelegate side_redelegate_order = 22;</code>
+     */
+    boolean hasSideRedelegateOrder();
+    /**
+     * <code>.TW.Binance.Proto.SideChainRedelegate side_redelegate_order = 22;</code>
+     */
+    wallet.core.jni.proto.Binance.SideChainRedelegate getSideRedelegateOrder();
+    /**
+     * <code>.TW.Binance.Proto.SideChainRedelegate side_redelegate_order = 22;</code>
+     */
+    wallet.core.jni.proto.Binance.SideChainRedelegateOrBuilder getSideRedelegateOrderOrBuilder();
+
+    /**
+     * <code>.TW.Binance.Proto.SideChainUndelegate side_undelegate_order = 23;</code>
+     */
+    boolean hasSideUndelegateOrder();
+    /**
+     * <code>.TW.Binance.Proto.SideChainUndelegate side_undelegate_order = 23;</code>
+     */
+    wallet.core.jni.proto.Binance.SideChainUndelegate getSideUndelegateOrder();
+    /**
+     * <code>.TW.Binance.Proto.SideChainUndelegate side_undelegate_order = 23;</code>
+     */
+    wallet.core.jni.proto.Binance.SideChainUndelegateOrBuilder getSideUndelegateOrderOrBuilder();
 
     public wallet.core.jni.proto.Binance.SigningInput.OrderOneofCase getOrderOneofCase();
   }
@@ -16330,6 +19898,62 @@ public final class Binance {
               orderOneofCase_ = 19;
               break;
             }
+            case 162: {
+              wallet.core.jni.proto.Binance.TransferOut.Builder subBuilder = null;
+              if (orderOneofCase_ == 20) {
+                subBuilder = ((wallet.core.jni.proto.Binance.TransferOut) orderOneof_).toBuilder();
+              }
+              orderOneof_ =
+                  input.readMessage(wallet.core.jni.proto.Binance.TransferOut.parser(), extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom((wallet.core.jni.proto.Binance.TransferOut) orderOneof_);
+                orderOneof_ = subBuilder.buildPartial();
+              }
+              orderOneofCase_ = 20;
+              break;
+            }
+            case 170: {
+              wallet.core.jni.proto.Binance.SideChainDelegate.Builder subBuilder = null;
+              if (orderOneofCase_ == 21) {
+                subBuilder = ((wallet.core.jni.proto.Binance.SideChainDelegate) orderOneof_).toBuilder();
+              }
+              orderOneof_ =
+                  input.readMessage(wallet.core.jni.proto.Binance.SideChainDelegate.parser(), extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom((wallet.core.jni.proto.Binance.SideChainDelegate) orderOneof_);
+                orderOneof_ = subBuilder.buildPartial();
+              }
+              orderOneofCase_ = 21;
+              break;
+            }
+            case 178: {
+              wallet.core.jni.proto.Binance.SideChainRedelegate.Builder subBuilder = null;
+              if (orderOneofCase_ == 22) {
+                subBuilder = ((wallet.core.jni.proto.Binance.SideChainRedelegate) orderOneof_).toBuilder();
+              }
+              orderOneof_ =
+                  input.readMessage(wallet.core.jni.proto.Binance.SideChainRedelegate.parser(), extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom((wallet.core.jni.proto.Binance.SideChainRedelegate) orderOneof_);
+                orderOneof_ = subBuilder.buildPartial();
+              }
+              orderOneofCase_ = 22;
+              break;
+            }
+            case 186: {
+              wallet.core.jni.proto.Binance.SideChainUndelegate.Builder subBuilder = null;
+              if (orderOneofCase_ == 23) {
+                subBuilder = ((wallet.core.jni.proto.Binance.SideChainUndelegate) orderOneof_).toBuilder();
+              }
+              orderOneof_ =
+                  input.readMessage(wallet.core.jni.proto.Binance.SideChainUndelegate.parser(), extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom((wallet.core.jni.proto.Binance.SideChainUndelegate) orderOneof_);
+                orderOneof_ = subBuilder.buildPartial();
+              }
+              orderOneofCase_ = 23;
+              break;
+            }
             default: {
               if (!parseUnknownField(
                   input, unknownFields, extensionRegistry, tag)) {
@@ -16378,6 +20002,10 @@ public final class Binance {
       ISSUE_ORDER(17),
       MINT_ORDER(18),
       BURN_ORDER(19),
+      TRANSFER_OUT_ORDER(20),
+      SIDE_DELEGATE_ORDER(21),
+      SIDE_REDELEGATE_ORDER(22),
+      SIDE_UNDELEGATE_ORDER(23),
       ORDERONEOF_NOT_SET(0);
       private final int value;
       private OrderOneofCase(int value) {
@@ -16405,6 +20033,10 @@ public final class Binance {
           case 17: return ISSUE_ORDER;
           case 18: return MINT_ORDER;
           case 19: return BURN_ORDER;
+          case 20: return TRANSFER_OUT_ORDER;
+          case 21: return SIDE_DELEGATE_ORDER;
+          case 22: return SIDE_REDELEGATE_ORDER;
+          case 23: return SIDE_UNDELEGATE_ORDER;
           case 0: return ORDERONEOF_NOT_SET;
           default: return null;
         }
@@ -16836,6 +20468,110 @@ public final class Binance {
       return wallet.core.jni.proto.Binance.TokenBurnOrder.getDefaultInstance();
     }
 
+    public static final int TRANSFER_OUT_ORDER_FIELD_NUMBER = 20;
+    /**
+     * <code>.TW.Binance.Proto.TransferOut transfer_out_order = 20;</code>
+     */
+    public boolean hasTransferOutOrder() {
+      return orderOneofCase_ == 20;
+    }
+    /**
+     * <code>.TW.Binance.Proto.TransferOut transfer_out_order = 20;</code>
+     */
+    public wallet.core.jni.proto.Binance.TransferOut getTransferOutOrder() {
+      if (orderOneofCase_ == 20) {
+         return (wallet.core.jni.proto.Binance.TransferOut) orderOneof_;
+      }
+      return wallet.core.jni.proto.Binance.TransferOut.getDefaultInstance();
+    }
+    /**
+     * <code>.TW.Binance.Proto.TransferOut transfer_out_order = 20;</code>
+     */
+    public wallet.core.jni.proto.Binance.TransferOutOrBuilder getTransferOutOrderOrBuilder() {
+      if (orderOneofCase_ == 20) {
+         return (wallet.core.jni.proto.Binance.TransferOut) orderOneof_;
+      }
+      return wallet.core.jni.proto.Binance.TransferOut.getDefaultInstance();
+    }
+
+    public static final int SIDE_DELEGATE_ORDER_FIELD_NUMBER = 21;
+    /**
+     * <code>.TW.Binance.Proto.SideChainDelegate side_delegate_order = 21;</code>
+     */
+    public boolean hasSideDelegateOrder() {
+      return orderOneofCase_ == 21;
+    }
+    /**
+     * <code>.TW.Binance.Proto.SideChainDelegate side_delegate_order = 21;</code>
+     */
+    public wallet.core.jni.proto.Binance.SideChainDelegate getSideDelegateOrder() {
+      if (orderOneofCase_ == 21) {
+         return (wallet.core.jni.proto.Binance.SideChainDelegate) orderOneof_;
+      }
+      return wallet.core.jni.proto.Binance.SideChainDelegate.getDefaultInstance();
+    }
+    /**
+     * <code>.TW.Binance.Proto.SideChainDelegate side_delegate_order = 21;</code>
+     */
+    public wallet.core.jni.proto.Binance.SideChainDelegateOrBuilder getSideDelegateOrderOrBuilder() {
+      if (orderOneofCase_ == 21) {
+         return (wallet.core.jni.proto.Binance.SideChainDelegate) orderOneof_;
+      }
+      return wallet.core.jni.proto.Binance.SideChainDelegate.getDefaultInstance();
+    }
+
+    public static final int SIDE_REDELEGATE_ORDER_FIELD_NUMBER = 22;
+    /**
+     * <code>.TW.Binance.Proto.SideChainRedelegate side_redelegate_order = 22;</code>
+     */
+    public boolean hasSideRedelegateOrder() {
+      return orderOneofCase_ == 22;
+    }
+    /**
+     * <code>.TW.Binance.Proto.SideChainRedelegate side_redelegate_order = 22;</code>
+     */
+    public wallet.core.jni.proto.Binance.SideChainRedelegate getSideRedelegateOrder() {
+      if (orderOneofCase_ == 22) {
+         return (wallet.core.jni.proto.Binance.SideChainRedelegate) orderOneof_;
+      }
+      return wallet.core.jni.proto.Binance.SideChainRedelegate.getDefaultInstance();
+    }
+    /**
+     * <code>.TW.Binance.Proto.SideChainRedelegate side_redelegate_order = 22;</code>
+     */
+    public wallet.core.jni.proto.Binance.SideChainRedelegateOrBuilder getSideRedelegateOrderOrBuilder() {
+      if (orderOneofCase_ == 22) {
+         return (wallet.core.jni.proto.Binance.SideChainRedelegate) orderOneof_;
+      }
+      return wallet.core.jni.proto.Binance.SideChainRedelegate.getDefaultInstance();
+    }
+
+    public static final int SIDE_UNDELEGATE_ORDER_FIELD_NUMBER = 23;
+    /**
+     * <code>.TW.Binance.Proto.SideChainUndelegate side_undelegate_order = 23;</code>
+     */
+    public boolean hasSideUndelegateOrder() {
+      return orderOneofCase_ == 23;
+    }
+    /**
+     * <code>.TW.Binance.Proto.SideChainUndelegate side_undelegate_order = 23;</code>
+     */
+    public wallet.core.jni.proto.Binance.SideChainUndelegate getSideUndelegateOrder() {
+      if (orderOneofCase_ == 23) {
+         return (wallet.core.jni.proto.Binance.SideChainUndelegate) orderOneof_;
+      }
+      return wallet.core.jni.proto.Binance.SideChainUndelegate.getDefaultInstance();
+    }
+    /**
+     * <code>.TW.Binance.Proto.SideChainUndelegate side_undelegate_order = 23;</code>
+     */
+    public wallet.core.jni.proto.Binance.SideChainUndelegateOrBuilder getSideUndelegateOrderOrBuilder() {
+      if (orderOneofCase_ == 23) {
+         return (wallet.core.jni.proto.Binance.SideChainUndelegate) orderOneof_;
+      }
+      return wallet.core.jni.proto.Binance.SideChainUndelegate.getDefaultInstance();
+    }
+
     private byte memoizedIsInitialized = -1;
     @java.lang.Override
     public final boolean isInitialized() {
@@ -16903,6 +20639,18 @@ public final class Binance {
       }
       if (orderOneofCase_ == 19) {
         output.writeMessage(19, (wallet.core.jni.proto.Binance.TokenBurnOrder) orderOneof_);
+      }
+      if (orderOneofCase_ == 20) {
+        output.writeMessage(20, (wallet.core.jni.proto.Binance.TransferOut) orderOneof_);
+      }
+      if (orderOneofCase_ == 21) {
+        output.writeMessage(21, (wallet.core.jni.proto.Binance.SideChainDelegate) orderOneof_);
+      }
+      if (orderOneofCase_ == 22) {
+        output.writeMessage(22, (wallet.core.jni.proto.Binance.SideChainRedelegate) orderOneof_);
+      }
+      if (orderOneofCase_ == 23) {
+        output.writeMessage(23, (wallet.core.jni.proto.Binance.SideChainUndelegate) orderOneof_);
       }
       unknownFields.writeTo(output);
     }
@@ -16983,6 +20731,22 @@ public final class Binance {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(19, (wallet.core.jni.proto.Binance.TokenBurnOrder) orderOneof_);
       }
+      if (orderOneofCase_ == 20) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(20, (wallet.core.jni.proto.Binance.TransferOut) orderOneof_);
+      }
+      if (orderOneofCase_ == 21) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(21, (wallet.core.jni.proto.Binance.SideChainDelegate) orderOneof_);
+      }
+      if (orderOneofCase_ == 22) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(22, (wallet.core.jni.proto.Binance.SideChainRedelegate) orderOneof_);
+      }
+      if (orderOneofCase_ == 23) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(23, (wallet.core.jni.proto.Binance.SideChainUndelegate) orderOneof_);
+      }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
       return size;
@@ -17059,6 +20823,22 @@ public final class Binance {
         case 19:
           if (!getBurnOrder()
               .equals(other.getBurnOrder())) return false;
+          break;
+        case 20:
+          if (!getTransferOutOrder()
+              .equals(other.getTransferOutOrder())) return false;
+          break;
+        case 21:
+          if (!getSideDelegateOrder()
+              .equals(other.getSideDelegateOrder())) return false;
+          break;
+        case 22:
+          if (!getSideRedelegateOrder()
+              .equals(other.getSideRedelegateOrder())) return false;
+          break;
+        case 23:
+          if (!getSideUndelegateOrder()
+              .equals(other.getSideUndelegateOrder())) return false;
           break;
         case 0:
         default:
@@ -17137,6 +20917,22 @@ public final class Binance {
         case 19:
           hash = (37 * hash) + BURN_ORDER_FIELD_NUMBER;
           hash = (53 * hash) + getBurnOrder().hashCode();
+          break;
+        case 20:
+          hash = (37 * hash) + TRANSFER_OUT_ORDER_FIELD_NUMBER;
+          hash = (53 * hash) + getTransferOutOrder().hashCode();
+          break;
+        case 21:
+          hash = (37 * hash) + SIDE_DELEGATE_ORDER_FIELD_NUMBER;
+          hash = (53 * hash) + getSideDelegateOrder().hashCode();
+          break;
+        case 22:
+          hash = (37 * hash) + SIDE_REDELEGATE_ORDER_FIELD_NUMBER;
+          hash = (53 * hash) + getSideRedelegateOrder().hashCode();
+          break;
+        case 23:
+          hash = (37 * hash) + SIDE_UNDELEGATE_ORDER_FIELD_NUMBER;
+          hash = (53 * hash) + getSideUndelegateOrder().hashCode();
           break;
         case 0:
         default:
@@ -17408,6 +21204,34 @@ public final class Binance {
             result.orderOneof_ = burnOrderBuilder_.build();
           }
         }
+        if (orderOneofCase_ == 20) {
+          if (transferOutOrderBuilder_ == null) {
+            result.orderOneof_ = orderOneof_;
+          } else {
+            result.orderOneof_ = transferOutOrderBuilder_.build();
+          }
+        }
+        if (orderOneofCase_ == 21) {
+          if (sideDelegateOrderBuilder_ == null) {
+            result.orderOneof_ = orderOneof_;
+          } else {
+            result.orderOneof_ = sideDelegateOrderBuilder_.build();
+          }
+        }
+        if (orderOneofCase_ == 22) {
+          if (sideRedelegateOrderBuilder_ == null) {
+            result.orderOneof_ = orderOneof_;
+          } else {
+            result.orderOneof_ = sideRedelegateOrderBuilder_.build();
+          }
+        }
+        if (orderOneofCase_ == 23) {
+          if (sideUndelegateOrderBuilder_ == null) {
+            result.orderOneof_ = orderOneof_;
+          } else {
+            result.orderOneof_ = sideUndelegateOrderBuilder_.build();
+          }
+        }
         result.orderOneofCase_ = orderOneofCase_;
         onBuilt();
         return result;
@@ -17524,6 +21348,22 @@ public final class Binance {
           }
           case BURN_ORDER: {
             mergeBurnOrder(other.getBurnOrder());
+            break;
+          }
+          case TRANSFER_OUT_ORDER: {
+            mergeTransferOutOrder(other.getTransferOutOrder());
+            break;
+          }
+          case SIDE_DELEGATE_ORDER: {
+            mergeSideDelegateOrder(other.getSideDelegateOrder());
+            break;
+          }
+          case SIDE_REDELEGATE_ORDER: {
+            mergeSideRedelegateOrder(other.getSideRedelegateOrder());
+            break;
+          }
+          case SIDE_UNDELEGATE_ORDER: {
+            mergeSideUndelegateOrder(other.getSideUndelegateOrder());
             break;
           }
           case ORDERONEOF_NOT_SET: {
@@ -19450,6 +23290,550 @@ public final class Binance {
         onChanged();;
         return burnOrderBuilder_;
       }
+
+      private com.google.protobuf.SingleFieldBuilderV3<
+          wallet.core.jni.proto.Binance.TransferOut, wallet.core.jni.proto.Binance.TransferOut.Builder, wallet.core.jni.proto.Binance.TransferOutOrBuilder> transferOutOrderBuilder_;
+      /**
+       * <code>.TW.Binance.Proto.TransferOut transfer_out_order = 20;</code>
+       */
+      public boolean hasTransferOutOrder() {
+        return orderOneofCase_ == 20;
+      }
+      /**
+       * <code>.TW.Binance.Proto.TransferOut transfer_out_order = 20;</code>
+       */
+      public wallet.core.jni.proto.Binance.TransferOut getTransferOutOrder() {
+        if (transferOutOrderBuilder_ == null) {
+          if (orderOneofCase_ == 20) {
+            return (wallet.core.jni.proto.Binance.TransferOut) orderOneof_;
+          }
+          return wallet.core.jni.proto.Binance.TransferOut.getDefaultInstance();
+        } else {
+          if (orderOneofCase_ == 20) {
+            return transferOutOrderBuilder_.getMessage();
+          }
+          return wallet.core.jni.proto.Binance.TransferOut.getDefaultInstance();
+        }
+      }
+      /**
+       * <code>.TW.Binance.Proto.TransferOut transfer_out_order = 20;</code>
+       */
+      public Builder setTransferOutOrder(wallet.core.jni.proto.Binance.TransferOut value) {
+        if (transferOutOrderBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          orderOneof_ = value;
+          onChanged();
+        } else {
+          transferOutOrderBuilder_.setMessage(value);
+        }
+        orderOneofCase_ = 20;
+        return this;
+      }
+      /**
+       * <code>.TW.Binance.Proto.TransferOut transfer_out_order = 20;</code>
+       */
+      public Builder setTransferOutOrder(
+          wallet.core.jni.proto.Binance.TransferOut.Builder builderForValue) {
+        if (transferOutOrderBuilder_ == null) {
+          orderOneof_ = builderForValue.build();
+          onChanged();
+        } else {
+          transferOutOrderBuilder_.setMessage(builderForValue.build());
+        }
+        orderOneofCase_ = 20;
+        return this;
+      }
+      /**
+       * <code>.TW.Binance.Proto.TransferOut transfer_out_order = 20;</code>
+       */
+      public Builder mergeTransferOutOrder(wallet.core.jni.proto.Binance.TransferOut value) {
+        if (transferOutOrderBuilder_ == null) {
+          if (orderOneofCase_ == 20 &&
+              orderOneof_ != wallet.core.jni.proto.Binance.TransferOut.getDefaultInstance()) {
+            orderOneof_ = wallet.core.jni.proto.Binance.TransferOut.newBuilder((wallet.core.jni.proto.Binance.TransferOut) orderOneof_)
+                .mergeFrom(value).buildPartial();
+          } else {
+            orderOneof_ = value;
+          }
+          onChanged();
+        } else {
+          if (orderOneofCase_ == 20) {
+            transferOutOrderBuilder_.mergeFrom(value);
+          }
+          transferOutOrderBuilder_.setMessage(value);
+        }
+        orderOneofCase_ = 20;
+        return this;
+      }
+      /**
+       * <code>.TW.Binance.Proto.TransferOut transfer_out_order = 20;</code>
+       */
+      public Builder clearTransferOutOrder() {
+        if (transferOutOrderBuilder_ == null) {
+          if (orderOneofCase_ == 20) {
+            orderOneofCase_ = 0;
+            orderOneof_ = null;
+            onChanged();
+          }
+        } else {
+          if (orderOneofCase_ == 20) {
+            orderOneofCase_ = 0;
+            orderOneof_ = null;
+          }
+          transferOutOrderBuilder_.clear();
+        }
+        return this;
+      }
+      /**
+       * <code>.TW.Binance.Proto.TransferOut transfer_out_order = 20;</code>
+       */
+      public wallet.core.jni.proto.Binance.TransferOut.Builder getTransferOutOrderBuilder() {
+        return getTransferOutOrderFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>.TW.Binance.Proto.TransferOut transfer_out_order = 20;</code>
+       */
+      public wallet.core.jni.proto.Binance.TransferOutOrBuilder getTransferOutOrderOrBuilder() {
+        if ((orderOneofCase_ == 20) && (transferOutOrderBuilder_ != null)) {
+          return transferOutOrderBuilder_.getMessageOrBuilder();
+        } else {
+          if (orderOneofCase_ == 20) {
+            return (wallet.core.jni.proto.Binance.TransferOut) orderOneof_;
+          }
+          return wallet.core.jni.proto.Binance.TransferOut.getDefaultInstance();
+        }
+      }
+      /**
+       * <code>.TW.Binance.Proto.TransferOut transfer_out_order = 20;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilderV3<
+          wallet.core.jni.proto.Binance.TransferOut, wallet.core.jni.proto.Binance.TransferOut.Builder, wallet.core.jni.proto.Binance.TransferOutOrBuilder> 
+          getTransferOutOrderFieldBuilder() {
+        if (transferOutOrderBuilder_ == null) {
+          if (!(orderOneofCase_ == 20)) {
+            orderOneof_ = wallet.core.jni.proto.Binance.TransferOut.getDefaultInstance();
+          }
+          transferOutOrderBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+              wallet.core.jni.proto.Binance.TransferOut, wallet.core.jni.proto.Binance.TransferOut.Builder, wallet.core.jni.proto.Binance.TransferOutOrBuilder>(
+                  (wallet.core.jni.proto.Binance.TransferOut) orderOneof_,
+                  getParentForChildren(),
+                  isClean());
+          orderOneof_ = null;
+        }
+        orderOneofCase_ = 20;
+        onChanged();;
+        return transferOutOrderBuilder_;
+      }
+
+      private com.google.protobuf.SingleFieldBuilderV3<
+          wallet.core.jni.proto.Binance.SideChainDelegate, wallet.core.jni.proto.Binance.SideChainDelegate.Builder, wallet.core.jni.proto.Binance.SideChainDelegateOrBuilder> sideDelegateOrderBuilder_;
+      /**
+       * <code>.TW.Binance.Proto.SideChainDelegate side_delegate_order = 21;</code>
+       */
+      public boolean hasSideDelegateOrder() {
+        return orderOneofCase_ == 21;
+      }
+      /**
+       * <code>.TW.Binance.Proto.SideChainDelegate side_delegate_order = 21;</code>
+       */
+      public wallet.core.jni.proto.Binance.SideChainDelegate getSideDelegateOrder() {
+        if (sideDelegateOrderBuilder_ == null) {
+          if (orderOneofCase_ == 21) {
+            return (wallet.core.jni.proto.Binance.SideChainDelegate) orderOneof_;
+          }
+          return wallet.core.jni.proto.Binance.SideChainDelegate.getDefaultInstance();
+        } else {
+          if (orderOneofCase_ == 21) {
+            return sideDelegateOrderBuilder_.getMessage();
+          }
+          return wallet.core.jni.proto.Binance.SideChainDelegate.getDefaultInstance();
+        }
+      }
+      /**
+       * <code>.TW.Binance.Proto.SideChainDelegate side_delegate_order = 21;</code>
+       */
+      public Builder setSideDelegateOrder(wallet.core.jni.proto.Binance.SideChainDelegate value) {
+        if (sideDelegateOrderBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          orderOneof_ = value;
+          onChanged();
+        } else {
+          sideDelegateOrderBuilder_.setMessage(value);
+        }
+        orderOneofCase_ = 21;
+        return this;
+      }
+      /**
+       * <code>.TW.Binance.Proto.SideChainDelegate side_delegate_order = 21;</code>
+       */
+      public Builder setSideDelegateOrder(
+          wallet.core.jni.proto.Binance.SideChainDelegate.Builder builderForValue) {
+        if (sideDelegateOrderBuilder_ == null) {
+          orderOneof_ = builderForValue.build();
+          onChanged();
+        } else {
+          sideDelegateOrderBuilder_.setMessage(builderForValue.build());
+        }
+        orderOneofCase_ = 21;
+        return this;
+      }
+      /**
+       * <code>.TW.Binance.Proto.SideChainDelegate side_delegate_order = 21;</code>
+       */
+      public Builder mergeSideDelegateOrder(wallet.core.jni.proto.Binance.SideChainDelegate value) {
+        if (sideDelegateOrderBuilder_ == null) {
+          if (orderOneofCase_ == 21 &&
+              orderOneof_ != wallet.core.jni.proto.Binance.SideChainDelegate.getDefaultInstance()) {
+            orderOneof_ = wallet.core.jni.proto.Binance.SideChainDelegate.newBuilder((wallet.core.jni.proto.Binance.SideChainDelegate) orderOneof_)
+                .mergeFrom(value).buildPartial();
+          } else {
+            orderOneof_ = value;
+          }
+          onChanged();
+        } else {
+          if (orderOneofCase_ == 21) {
+            sideDelegateOrderBuilder_.mergeFrom(value);
+          }
+          sideDelegateOrderBuilder_.setMessage(value);
+        }
+        orderOneofCase_ = 21;
+        return this;
+      }
+      /**
+       * <code>.TW.Binance.Proto.SideChainDelegate side_delegate_order = 21;</code>
+       */
+      public Builder clearSideDelegateOrder() {
+        if (sideDelegateOrderBuilder_ == null) {
+          if (orderOneofCase_ == 21) {
+            orderOneofCase_ = 0;
+            orderOneof_ = null;
+            onChanged();
+          }
+        } else {
+          if (orderOneofCase_ == 21) {
+            orderOneofCase_ = 0;
+            orderOneof_ = null;
+          }
+          sideDelegateOrderBuilder_.clear();
+        }
+        return this;
+      }
+      /**
+       * <code>.TW.Binance.Proto.SideChainDelegate side_delegate_order = 21;</code>
+       */
+      public wallet.core.jni.proto.Binance.SideChainDelegate.Builder getSideDelegateOrderBuilder() {
+        return getSideDelegateOrderFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>.TW.Binance.Proto.SideChainDelegate side_delegate_order = 21;</code>
+       */
+      public wallet.core.jni.proto.Binance.SideChainDelegateOrBuilder getSideDelegateOrderOrBuilder() {
+        if ((orderOneofCase_ == 21) && (sideDelegateOrderBuilder_ != null)) {
+          return sideDelegateOrderBuilder_.getMessageOrBuilder();
+        } else {
+          if (orderOneofCase_ == 21) {
+            return (wallet.core.jni.proto.Binance.SideChainDelegate) orderOneof_;
+          }
+          return wallet.core.jni.proto.Binance.SideChainDelegate.getDefaultInstance();
+        }
+      }
+      /**
+       * <code>.TW.Binance.Proto.SideChainDelegate side_delegate_order = 21;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilderV3<
+          wallet.core.jni.proto.Binance.SideChainDelegate, wallet.core.jni.proto.Binance.SideChainDelegate.Builder, wallet.core.jni.proto.Binance.SideChainDelegateOrBuilder> 
+          getSideDelegateOrderFieldBuilder() {
+        if (sideDelegateOrderBuilder_ == null) {
+          if (!(orderOneofCase_ == 21)) {
+            orderOneof_ = wallet.core.jni.proto.Binance.SideChainDelegate.getDefaultInstance();
+          }
+          sideDelegateOrderBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+              wallet.core.jni.proto.Binance.SideChainDelegate, wallet.core.jni.proto.Binance.SideChainDelegate.Builder, wallet.core.jni.proto.Binance.SideChainDelegateOrBuilder>(
+                  (wallet.core.jni.proto.Binance.SideChainDelegate) orderOneof_,
+                  getParentForChildren(),
+                  isClean());
+          orderOneof_ = null;
+        }
+        orderOneofCase_ = 21;
+        onChanged();;
+        return sideDelegateOrderBuilder_;
+      }
+
+      private com.google.protobuf.SingleFieldBuilderV3<
+          wallet.core.jni.proto.Binance.SideChainRedelegate, wallet.core.jni.proto.Binance.SideChainRedelegate.Builder, wallet.core.jni.proto.Binance.SideChainRedelegateOrBuilder> sideRedelegateOrderBuilder_;
+      /**
+       * <code>.TW.Binance.Proto.SideChainRedelegate side_redelegate_order = 22;</code>
+       */
+      public boolean hasSideRedelegateOrder() {
+        return orderOneofCase_ == 22;
+      }
+      /**
+       * <code>.TW.Binance.Proto.SideChainRedelegate side_redelegate_order = 22;</code>
+       */
+      public wallet.core.jni.proto.Binance.SideChainRedelegate getSideRedelegateOrder() {
+        if (sideRedelegateOrderBuilder_ == null) {
+          if (orderOneofCase_ == 22) {
+            return (wallet.core.jni.proto.Binance.SideChainRedelegate) orderOneof_;
+          }
+          return wallet.core.jni.proto.Binance.SideChainRedelegate.getDefaultInstance();
+        } else {
+          if (orderOneofCase_ == 22) {
+            return sideRedelegateOrderBuilder_.getMessage();
+          }
+          return wallet.core.jni.proto.Binance.SideChainRedelegate.getDefaultInstance();
+        }
+      }
+      /**
+       * <code>.TW.Binance.Proto.SideChainRedelegate side_redelegate_order = 22;</code>
+       */
+      public Builder setSideRedelegateOrder(wallet.core.jni.proto.Binance.SideChainRedelegate value) {
+        if (sideRedelegateOrderBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          orderOneof_ = value;
+          onChanged();
+        } else {
+          sideRedelegateOrderBuilder_.setMessage(value);
+        }
+        orderOneofCase_ = 22;
+        return this;
+      }
+      /**
+       * <code>.TW.Binance.Proto.SideChainRedelegate side_redelegate_order = 22;</code>
+       */
+      public Builder setSideRedelegateOrder(
+          wallet.core.jni.proto.Binance.SideChainRedelegate.Builder builderForValue) {
+        if (sideRedelegateOrderBuilder_ == null) {
+          orderOneof_ = builderForValue.build();
+          onChanged();
+        } else {
+          sideRedelegateOrderBuilder_.setMessage(builderForValue.build());
+        }
+        orderOneofCase_ = 22;
+        return this;
+      }
+      /**
+       * <code>.TW.Binance.Proto.SideChainRedelegate side_redelegate_order = 22;</code>
+       */
+      public Builder mergeSideRedelegateOrder(wallet.core.jni.proto.Binance.SideChainRedelegate value) {
+        if (sideRedelegateOrderBuilder_ == null) {
+          if (orderOneofCase_ == 22 &&
+              orderOneof_ != wallet.core.jni.proto.Binance.SideChainRedelegate.getDefaultInstance()) {
+            orderOneof_ = wallet.core.jni.proto.Binance.SideChainRedelegate.newBuilder((wallet.core.jni.proto.Binance.SideChainRedelegate) orderOneof_)
+                .mergeFrom(value).buildPartial();
+          } else {
+            orderOneof_ = value;
+          }
+          onChanged();
+        } else {
+          if (orderOneofCase_ == 22) {
+            sideRedelegateOrderBuilder_.mergeFrom(value);
+          }
+          sideRedelegateOrderBuilder_.setMessage(value);
+        }
+        orderOneofCase_ = 22;
+        return this;
+      }
+      /**
+       * <code>.TW.Binance.Proto.SideChainRedelegate side_redelegate_order = 22;</code>
+       */
+      public Builder clearSideRedelegateOrder() {
+        if (sideRedelegateOrderBuilder_ == null) {
+          if (orderOneofCase_ == 22) {
+            orderOneofCase_ = 0;
+            orderOneof_ = null;
+            onChanged();
+          }
+        } else {
+          if (orderOneofCase_ == 22) {
+            orderOneofCase_ = 0;
+            orderOneof_ = null;
+          }
+          sideRedelegateOrderBuilder_.clear();
+        }
+        return this;
+      }
+      /**
+       * <code>.TW.Binance.Proto.SideChainRedelegate side_redelegate_order = 22;</code>
+       */
+      public wallet.core.jni.proto.Binance.SideChainRedelegate.Builder getSideRedelegateOrderBuilder() {
+        return getSideRedelegateOrderFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>.TW.Binance.Proto.SideChainRedelegate side_redelegate_order = 22;</code>
+       */
+      public wallet.core.jni.proto.Binance.SideChainRedelegateOrBuilder getSideRedelegateOrderOrBuilder() {
+        if ((orderOneofCase_ == 22) && (sideRedelegateOrderBuilder_ != null)) {
+          return sideRedelegateOrderBuilder_.getMessageOrBuilder();
+        } else {
+          if (orderOneofCase_ == 22) {
+            return (wallet.core.jni.proto.Binance.SideChainRedelegate) orderOneof_;
+          }
+          return wallet.core.jni.proto.Binance.SideChainRedelegate.getDefaultInstance();
+        }
+      }
+      /**
+       * <code>.TW.Binance.Proto.SideChainRedelegate side_redelegate_order = 22;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilderV3<
+          wallet.core.jni.proto.Binance.SideChainRedelegate, wallet.core.jni.proto.Binance.SideChainRedelegate.Builder, wallet.core.jni.proto.Binance.SideChainRedelegateOrBuilder> 
+          getSideRedelegateOrderFieldBuilder() {
+        if (sideRedelegateOrderBuilder_ == null) {
+          if (!(orderOneofCase_ == 22)) {
+            orderOneof_ = wallet.core.jni.proto.Binance.SideChainRedelegate.getDefaultInstance();
+          }
+          sideRedelegateOrderBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+              wallet.core.jni.proto.Binance.SideChainRedelegate, wallet.core.jni.proto.Binance.SideChainRedelegate.Builder, wallet.core.jni.proto.Binance.SideChainRedelegateOrBuilder>(
+                  (wallet.core.jni.proto.Binance.SideChainRedelegate) orderOneof_,
+                  getParentForChildren(),
+                  isClean());
+          orderOneof_ = null;
+        }
+        orderOneofCase_ = 22;
+        onChanged();;
+        return sideRedelegateOrderBuilder_;
+      }
+
+      private com.google.protobuf.SingleFieldBuilderV3<
+          wallet.core.jni.proto.Binance.SideChainUndelegate, wallet.core.jni.proto.Binance.SideChainUndelegate.Builder, wallet.core.jni.proto.Binance.SideChainUndelegateOrBuilder> sideUndelegateOrderBuilder_;
+      /**
+       * <code>.TW.Binance.Proto.SideChainUndelegate side_undelegate_order = 23;</code>
+       */
+      public boolean hasSideUndelegateOrder() {
+        return orderOneofCase_ == 23;
+      }
+      /**
+       * <code>.TW.Binance.Proto.SideChainUndelegate side_undelegate_order = 23;</code>
+       */
+      public wallet.core.jni.proto.Binance.SideChainUndelegate getSideUndelegateOrder() {
+        if (sideUndelegateOrderBuilder_ == null) {
+          if (orderOneofCase_ == 23) {
+            return (wallet.core.jni.proto.Binance.SideChainUndelegate) orderOneof_;
+          }
+          return wallet.core.jni.proto.Binance.SideChainUndelegate.getDefaultInstance();
+        } else {
+          if (orderOneofCase_ == 23) {
+            return sideUndelegateOrderBuilder_.getMessage();
+          }
+          return wallet.core.jni.proto.Binance.SideChainUndelegate.getDefaultInstance();
+        }
+      }
+      /**
+       * <code>.TW.Binance.Proto.SideChainUndelegate side_undelegate_order = 23;</code>
+       */
+      public Builder setSideUndelegateOrder(wallet.core.jni.proto.Binance.SideChainUndelegate value) {
+        if (sideUndelegateOrderBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          orderOneof_ = value;
+          onChanged();
+        } else {
+          sideUndelegateOrderBuilder_.setMessage(value);
+        }
+        orderOneofCase_ = 23;
+        return this;
+      }
+      /**
+       * <code>.TW.Binance.Proto.SideChainUndelegate side_undelegate_order = 23;</code>
+       */
+      public Builder setSideUndelegateOrder(
+          wallet.core.jni.proto.Binance.SideChainUndelegate.Builder builderForValue) {
+        if (sideUndelegateOrderBuilder_ == null) {
+          orderOneof_ = builderForValue.build();
+          onChanged();
+        } else {
+          sideUndelegateOrderBuilder_.setMessage(builderForValue.build());
+        }
+        orderOneofCase_ = 23;
+        return this;
+      }
+      /**
+       * <code>.TW.Binance.Proto.SideChainUndelegate side_undelegate_order = 23;</code>
+       */
+      public Builder mergeSideUndelegateOrder(wallet.core.jni.proto.Binance.SideChainUndelegate value) {
+        if (sideUndelegateOrderBuilder_ == null) {
+          if (orderOneofCase_ == 23 &&
+              orderOneof_ != wallet.core.jni.proto.Binance.SideChainUndelegate.getDefaultInstance()) {
+            orderOneof_ = wallet.core.jni.proto.Binance.SideChainUndelegate.newBuilder((wallet.core.jni.proto.Binance.SideChainUndelegate) orderOneof_)
+                .mergeFrom(value).buildPartial();
+          } else {
+            orderOneof_ = value;
+          }
+          onChanged();
+        } else {
+          if (orderOneofCase_ == 23) {
+            sideUndelegateOrderBuilder_.mergeFrom(value);
+          }
+          sideUndelegateOrderBuilder_.setMessage(value);
+        }
+        orderOneofCase_ = 23;
+        return this;
+      }
+      /**
+       * <code>.TW.Binance.Proto.SideChainUndelegate side_undelegate_order = 23;</code>
+       */
+      public Builder clearSideUndelegateOrder() {
+        if (sideUndelegateOrderBuilder_ == null) {
+          if (orderOneofCase_ == 23) {
+            orderOneofCase_ = 0;
+            orderOneof_ = null;
+            onChanged();
+          }
+        } else {
+          if (orderOneofCase_ == 23) {
+            orderOneofCase_ = 0;
+            orderOneof_ = null;
+          }
+          sideUndelegateOrderBuilder_.clear();
+        }
+        return this;
+      }
+      /**
+       * <code>.TW.Binance.Proto.SideChainUndelegate side_undelegate_order = 23;</code>
+       */
+      public wallet.core.jni.proto.Binance.SideChainUndelegate.Builder getSideUndelegateOrderBuilder() {
+        return getSideUndelegateOrderFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>.TW.Binance.Proto.SideChainUndelegate side_undelegate_order = 23;</code>
+       */
+      public wallet.core.jni.proto.Binance.SideChainUndelegateOrBuilder getSideUndelegateOrderOrBuilder() {
+        if ((orderOneofCase_ == 23) && (sideUndelegateOrderBuilder_ != null)) {
+          return sideUndelegateOrderBuilder_.getMessageOrBuilder();
+        } else {
+          if (orderOneofCase_ == 23) {
+            return (wallet.core.jni.proto.Binance.SideChainUndelegate) orderOneof_;
+          }
+          return wallet.core.jni.proto.Binance.SideChainUndelegate.getDefaultInstance();
+        }
+      }
+      /**
+       * <code>.TW.Binance.Proto.SideChainUndelegate side_undelegate_order = 23;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilderV3<
+          wallet.core.jni.proto.Binance.SideChainUndelegate, wallet.core.jni.proto.Binance.SideChainUndelegate.Builder, wallet.core.jni.proto.Binance.SideChainUndelegateOrBuilder> 
+          getSideUndelegateOrderFieldBuilder() {
+        if (sideUndelegateOrderBuilder_ == null) {
+          if (!(orderOneofCase_ == 23)) {
+            orderOneof_ = wallet.core.jni.proto.Binance.SideChainUndelegate.getDefaultInstance();
+          }
+          sideUndelegateOrderBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+              wallet.core.jni.proto.Binance.SideChainUndelegate, wallet.core.jni.proto.Binance.SideChainUndelegate.Builder, wallet.core.jni.proto.Binance.SideChainUndelegateOrBuilder>(
+                  (wallet.core.jni.proto.Binance.SideChainUndelegate) orderOneof_,
+                  getParentForChildren(),
+                  isClean());
+          orderOneof_ = null;
+        }
+        orderOneofCase_ = 23;
+        onChanged();;
+        return sideUndelegateOrderBuilder_;
+      }
       @java.lang.Override
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
@@ -20106,6 +24490,26 @@ public final class Binance {
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_TW_Binance_Proto_RefundHTLTOrder_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_TW_Binance_Proto_TransferOut_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_TW_Binance_Proto_TransferOut_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_TW_Binance_Proto_SideChainDelegate_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_TW_Binance_Proto_SideChainDelegate_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_TW_Binance_Proto_SideChainRedelegate_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_TW_Binance_Proto_SideChainRedelegate_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_TW_Binance_Proto_SideChainUndelegate_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_TW_Binance_Proto_SideChainUndelegate_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_TW_Binance_Proto_SigningInput_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
@@ -20164,29 +24568,50 @@ public final class Binance {
       "(\014\"E\n\rClaimHTLOrder\022\014\n\004from\030\001 \001(\014\022\017\n\007swa" +
       "p_id\030\002 \001(\014\022\025\n\rrandom_number\030\003 \001(\014\"0\n\017Ref" +
       "undHTLTOrder\022\014\n\004from\030\001 \001(\014\022\017\n\007swap_id\030\002 " +
-      "\001(\014\"\313\006\n\014SigningInput\022\020\n\010chain_id\030\001 \001(\t\022\026" +
-      "\n\016account_number\030\002 \001(\003\022\020\n\010sequence\030\003 \001(\003" +
-      "\022\016\n\006source\030\004 \001(\003\022\014\n\004memo\030\005 \001(\t\022\023\n\013privat" +
-      "e_key\030\006 \001(\014\0223\n\013trade_order\030\010 \001(\0132\034.TW.Bi" +
-      "nance.Proto.TradeOrderH\000\022@\n\022cancel_trade" +
-      "_order\030\t \001(\0132\".TW.Binance.Proto.CancelTr" +
-      "adeOrderH\000\0221\n\nsend_order\030\n \001(\0132\033.TW.Bina" +
-      "nce.Proto.SendOrderH\000\022:\n\014freeze_order\030\013 " +
-      "\001(\0132\".TW.Binance.Proto.TokenFreezeOrderH" +
-      "\000\022>\n\016unfreeze_order\030\014 \001(\0132$.TW.Binance.P" +
-      "roto.TokenUnfreezeOrderH\000\0221\n\nhtlt_order\030" +
-      "\r \001(\0132\033.TW.Binance.Proto.HTLTOrderH\000\022?\n\021" +
-      "depositHTLT_order\030\016 \001(\0132\".TW.Binance.Pro" +
-      "to.DepositHTLTOrderH\000\022:\n\017claimHTLT_order" +
-      "\030\017 \001(\0132\037.TW.Binance.Proto.ClaimHTLOrderH" +
-      "\000\022=\n\020refundHTLT_order\030\020 \001(\0132!.TW.Binance" +
-      ".Proto.RefundHTLTOrderH\000\0228\n\013issue_order\030" +
-      "\021 \001(\0132!.TW.Binance.Proto.TokenIssueOrder" +
-      "H\000\0226\n\nmint_order\030\022 \001(\0132 .TW.Binance.Prot" +
-      "o.TokenMintOrderH\000\0226\n\nburn_order\030\023 \001(\0132 " +
-      ".TW.Binance.Proto.TokenBurnOrderH\000B\r\n\013or" +
-      "der_oneof\" \n\rSigningOutput\022\017\n\007encoded\030\001 " +
-      "\001(\014B\027\n\025wallet.core.jni.protob\006proto3"
+      "\001(\014\"o\n\013TransferOut\022\014\n\004from\030\001 \001(\014\022\n\n\002to\030\002" +
+      " \001(\014\0221\n\006amount\030\003 \001(\0132!.TW.Binance.Proto." +
+      "SendOrder.Token\022\023\n\013expire_time\030\004 \001(\003\"\214\001\n" +
+      "\021SideChainDelegate\022\026\n\016delegator_addr\030\001 \001" +
+      "(\014\022\026\n\016validator_addr\030\002 \001(\014\0225\n\ndelegation" +
+      "\030\003 \001(\0132!.TW.Binance.Proto.SendOrder.Toke" +
+      "n\022\020\n\010chain_id\030\004 \001(\t\"\252\001\n\023SideChainRedeleg" +
+      "ate\022\026\n\016delegator_addr\030\001 \001(\014\022\032\n\022validator" +
+      "_src_addr\030\002 \001(\014\022\032\n\022validator_dst_addr\030\003 " +
+      "\001(\014\0221\n\006amount\030\004 \001(\0132!.TW.Binance.Proto.S" +
+      "endOrder.Token\022\020\n\010chain_id\030\005 \001(\t\"\212\001\n\023Sid" +
+      "eChainUndelegate\022\026\n\016delegator_addr\030\001 \001(\014" +
+      "\022\026\n\016validator_addr\030\002 \001(\014\0221\n\006amount\030\003 \001(\013" +
+      "2!.TW.Binance.Proto.SendOrder.Token\022\020\n\010c" +
+      "hain_id\030\004 \001(\t\"\334\010\n\014SigningInput\022\020\n\010chain_" +
+      "id\030\001 \001(\t\022\026\n\016account_number\030\002 \001(\003\022\020\n\010sequ" +
+      "ence\030\003 \001(\003\022\016\n\006source\030\004 \001(\003\022\014\n\004memo\030\005 \001(\t" +
+      "\022\023\n\013private_key\030\006 \001(\014\0223\n\013trade_order\030\010 \001" +
+      "(\0132\034.TW.Binance.Proto.TradeOrderH\000\022@\n\022ca" +
+      "ncel_trade_order\030\t \001(\0132\".TW.Binance.Prot" +
+      "o.CancelTradeOrderH\000\0221\n\nsend_order\030\n \001(\013" +
+      "2\033.TW.Binance.Proto.SendOrderH\000\022:\n\014freez" +
+      "e_order\030\013 \001(\0132\".TW.Binance.Proto.TokenFr" +
+      "eezeOrderH\000\022>\n\016unfreeze_order\030\014 \001(\0132$.TW" +
+      ".Binance.Proto.TokenUnfreezeOrderH\000\0221\n\nh" +
+      "tlt_order\030\r \001(\0132\033.TW.Binance.Proto.HTLTO" +
+      "rderH\000\022?\n\021depositHTLT_order\030\016 \001(\0132\".TW.B" +
+      "inance.Proto.DepositHTLTOrderH\000\022:\n\017claim" +
+      "HTLT_order\030\017 \001(\0132\037.TW.Binance.Proto.Clai" +
+      "mHTLOrderH\000\022=\n\020refundHTLT_order\030\020 \001(\0132!." +
+      "TW.Binance.Proto.RefundHTLTOrderH\000\0228\n\013is" +
+      "sue_order\030\021 \001(\0132!.TW.Binance.Proto.Token" +
+      "IssueOrderH\000\0226\n\nmint_order\030\022 \001(\0132 .TW.Bi" +
+      "nance.Proto.TokenMintOrderH\000\0226\n\nburn_ord" +
+      "er\030\023 \001(\0132 .TW.Binance.Proto.TokenBurnOrd" +
+      "erH\000\022;\n\022transfer_out_order\030\024 \001(\0132\035.TW.Bi" +
+      "nance.Proto.TransferOutH\000\022B\n\023side_delega" +
+      "te_order\030\025 \001(\0132#.TW.Binance.Proto.SideCh" +
+      "ainDelegateH\000\022F\n\025side_redelegate_order\030\026" +
+      " \001(\0132%.TW.Binance.Proto.SideChainRedeleg" +
+      "ateH\000\022F\n\025side_undelegate_order\030\027 \001(\0132%.T" +
+      "W.Binance.Proto.SideChainUndelegateH\000B\r\n" +
+      "\013order_oneof\" \n\rSigningOutput\022\017\n\007encoded" +
+      "\030\001 \001(\014B\027\n\025wallet.core.jni.protob\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -20300,14 +24725,38 @@ public final class Binance {
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_TW_Binance_Proto_RefundHTLTOrder_descriptor,
         new java.lang.String[] { "From", "SwapId", });
-    internal_static_TW_Binance_Proto_SigningInput_descriptor =
+    internal_static_TW_Binance_Proto_TransferOut_descriptor =
       getDescriptor().getMessageTypes().get(14);
+    internal_static_TW_Binance_Proto_TransferOut_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_TW_Binance_Proto_TransferOut_descriptor,
+        new java.lang.String[] { "From", "To", "Amount", "ExpireTime", });
+    internal_static_TW_Binance_Proto_SideChainDelegate_descriptor =
+      getDescriptor().getMessageTypes().get(15);
+    internal_static_TW_Binance_Proto_SideChainDelegate_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_TW_Binance_Proto_SideChainDelegate_descriptor,
+        new java.lang.String[] { "DelegatorAddr", "ValidatorAddr", "Delegation", "ChainId", });
+    internal_static_TW_Binance_Proto_SideChainRedelegate_descriptor =
+      getDescriptor().getMessageTypes().get(16);
+    internal_static_TW_Binance_Proto_SideChainRedelegate_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_TW_Binance_Proto_SideChainRedelegate_descriptor,
+        new java.lang.String[] { "DelegatorAddr", "ValidatorSrcAddr", "ValidatorDstAddr", "Amount", "ChainId", });
+    internal_static_TW_Binance_Proto_SideChainUndelegate_descriptor =
+      getDescriptor().getMessageTypes().get(17);
+    internal_static_TW_Binance_Proto_SideChainUndelegate_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_TW_Binance_Proto_SideChainUndelegate_descriptor,
+        new java.lang.String[] { "DelegatorAddr", "ValidatorAddr", "Amount", "ChainId", });
+    internal_static_TW_Binance_Proto_SigningInput_descriptor =
+      getDescriptor().getMessageTypes().get(18);
     internal_static_TW_Binance_Proto_SigningInput_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_TW_Binance_Proto_SigningInput_descriptor,
-        new java.lang.String[] { "ChainId", "AccountNumber", "Sequence", "Source", "Memo", "PrivateKey", "TradeOrder", "CancelTradeOrder", "SendOrder", "FreezeOrder", "UnfreezeOrder", "HtltOrder", "DepositHTLTOrder", "ClaimHTLTOrder", "RefundHTLTOrder", "IssueOrder", "MintOrder", "BurnOrder", "OrderOneof", });
+        new java.lang.String[] { "ChainId", "AccountNumber", "Sequence", "Source", "Memo", "PrivateKey", "TradeOrder", "CancelTradeOrder", "SendOrder", "FreezeOrder", "UnfreezeOrder", "HtltOrder", "DepositHTLTOrder", "ClaimHTLTOrder", "RefundHTLTOrder", "IssueOrder", "MintOrder", "BurnOrder", "TransferOutOrder", "SideDelegateOrder", "SideRedelegateOrder", "SideUndelegateOrder", "OrderOneof", });
     internal_static_TW_Binance_Proto_SigningOutput_descriptor =
-      getDescriptor().getMessageTypes().get(15);
+      getDescriptor().getMessageTypes().get(19);
     internal_static_TW_Binance_Proto_SigningOutput_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_TW_Binance_Proto_SigningOutput_descriptor,

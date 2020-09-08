@@ -148,7 +148,7 @@ public class TrongridService {
                 privateKey = walletService.getPrivateKeyTRX();
             } else {
                 String path = walletService.getPath(fromAddress);
-                privateKey = walletService.getWallet().getKey(path);
+                privateKey = walletService.getWallet().getKey(CoinType.TRON, path);
             }
 
             CurrentBlockDTO currentBlockDTO = getCurrentBlock();

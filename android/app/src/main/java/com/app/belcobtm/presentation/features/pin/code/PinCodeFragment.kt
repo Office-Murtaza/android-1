@@ -100,7 +100,10 @@ class PinCodeFragment : BaseFragment() {
         }
         viewModel.actionData.observe(this) { action ->
             when (action) {
-                is PinCodeAction.Success -> (requireActivity() as HostActivity).showMainScreen()
+                is PinCodeAction.Success -> {
+                    (context?.applicationContext as? App)?.onLogin()
+                    (requireActivity() as HostActivity).showMainScreen()
+                }
                 is PinCodeAction.ChangedPin -> {
                     showSnackBar(R.string.pin_updated)
                     navigate(PinCodeFragmentDirections.pinCodeToSettingsFragment(SETTINGS_SECURITY))

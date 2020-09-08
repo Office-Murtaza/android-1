@@ -26,7 +26,7 @@ class SmsCodeFragment : BaseFragment() {
         setToolbarTitle(R.string.sms_code_screen_title)
         setToolbarTitle()
         setNextButtonTitle()
-        isMenuEnabled = requireArguments().getInt(TAG_NEXT_FRAGMENT_ID) == R.id.sms_code_to_settings_fragment
+        isMenuEnabled = isPhoneChange()
     }
 
     override fun initListeners() {
@@ -35,8 +35,8 @@ class SmsCodeFragment : BaseFragment() {
             pinEntryView.setText("")
             viewModel.sendSmsToDevice()
         }
-        nextButtonView.setOnClickListener { openNextScreen() }
-        pinEntryView.actionDoneListener { openNextScreen() }
+        nextButtonView.setOnClickListener { onNextClick() }
+        pinEntryView.actionDoneListener  {onNextClick() }
         pinEntryView.afterTextChanged {
             nextButtonView.isEnabled = pinEntryView.getString().length >= SMS_CODE_LENGTH
             errorMessageView.invisible()
@@ -77,14 +77,29 @@ class SmsCodeFragment : BaseFragment() {
                     else -> showErrorSomethingWrong()
                 }
             })
+        viewModel.phoneUpdateData.listen(
+            success = {
+                if (it) {
+                    showSnackBar(R.string.phone_updated)
+                    openNextScreen()
+                } else {
+                    baseErrorHandler(Failure.ServerError())
+                }
+            }
+        )
+    }
+
+    private fun onNextClick() {
+        if (isPhoneChange()) {
+            viewModel.changePhone()
+        } else {
+            openNextScreen()
+        }
     }
 
     private fun openNextScreen() {
         val isSuccessLoadingData =
             (viewModel.smsLiveData.value as? LoadingData.Success)?.data == pinEntryView.getString()
-        if (requireArguments().getInt(TAG_NEXT_FRAGMENT_ID) == R.id.sms_code_to_settings_fragment) {
-            showSnackBar(R.string.phone_updated)
-        }
         when {
             isSuccessLoadingData -> {
                 val nextScreenId = requireArguments().getInt(TAG_NEXT_FRAGMENT_ID, -1)
@@ -123,14 +138,8 @@ class SmsCodeFragment : BaseFragment() {
         )
     }
 
-    override fun popBackStack(): Boolean {
-        return if (requireArguments().getInt(TAG_NEXT_FRAGMENT_ID) == R.id.sms_code_to_settings_fragment) {
-            navigate(R.id.sms_code_to_settings_fragment)
-            true
-        } else {
-            super.popBackStack()
-        }
-    }
+    private fun isPhoneChange() =
+        requireArguments().getInt(TAG_NEXT_FRAGMENT_ID) == R.id.sms_code_to_settings_fragment
 
     companion object {
         private const val SMS_CODE_LENGTH: Int = 4

@@ -18,6 +18,7 @@ import org.web3j.utils.Numeric;
 import wallet.core.java.AnySigner;
 import wallet.core.jni.*;
 import wallet.core.jni.proto.Bitcoin;
+
 import java.math.BigDecimal;
 import java.util.*;
 
@@ -58,7 +59,8 @@ public class BlockbookService {
             JSONObject res = rest.getForObject(url + "/api/v2/address/" + address + "?details=basic", JSONObject.class);
 
             return Util.format6(new BigDecimal(res.optString("balance")).divide(divider));
-        } catch (Exception e) {}
+        } catch (Exception e) {
+        }
 
         return BigDecimal.ZERO;
     }
@@ -181,15 +183,13 @@ public class BlockbookService {
             input.setCoinType(coinType.value());
             input.setAmount(amount.multiply(divider).longValue());
             input.setByteFee(fee.multiply(divider).longValue());
-
-            //input.setHashType(coinType == CoinType.BITCOINCASH ? 65 : 1);
-            input.setHashType(BitcoinScript.hashTypeForCoin(coinType).value());
+            input.setHashType(BitcoinScript.hashTypeForCoin(coinType));
             input.setChangeAddress(fromAddress);
             input.setToAddress(toAddress);
             input.setUseMaxAmount(false);
 
             utxos.forEach(e -> {
-                PrivateKey privateKey = walletService.getWallet().getKey(e.optString("path"));
+                PrivateKey privateKey = walletService.getWallet().getKey(coinType, e.optString("path"));
                 input.addPrivateKey(ByteString.copyFrom(privateKey.data()));
             });
 
@@ -284,12 +284,12 @@ public class BlockbookService {
             JSONObject json = voutArray.getJSONObject(i);
 
             if (type == TransactionType.WITHDRAW) {
-                if(!json.optJSONArray("addresses").toString().toLowerCase().contains(fromAddress.toLowerCase())) {
+                if (!json.optJSONArray("addresses").toString().toLowerCase().contains(fromAddress.toLowerCase())) {
                     amount = new BigDecimal(json.optString("value")).divide(divider);
                     break;
                 }
-            } else if(type == TransactionType.DEPOSIT || type == TransactionType.SELF) {
-                if(json.optJSONArray("addresses").toString().toLowerCase().contains(toAddress.toLowerCase())) {
+            } else if (type == TransactionType.DEPOSIT || type == TransactionType.SELF) {
+                if (json.optJSONArray("addresses").toString().toLowerCase().contains(toAddress.toLowerCase())) {
                     amount = amount.add(new BigDecimal(json.optString("value")).divide(divider));
                 }
             }

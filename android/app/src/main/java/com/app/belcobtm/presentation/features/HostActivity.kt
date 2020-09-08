@@ -12,7 +12,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.os.bundleOf
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.navigation.fragment.NavHostFragment
+import com.app.belcobtm.App
 import com.app.belcobtm.R
+import com.app.belcobtm.data.rest.interceptor.ResponseInterceptor.Companion.KEY_IS_USER_UNAUTHORIZED
+import com.app.belcobtm.data.rest.interceptor.ResponseInterceptor.Companion.TAG_USER_AUTHORIZATION
 import com.app.belcobtm.domain.authorization.AuthorizationStatus
 import com.app.belcobtm.domain.authorization.interactor.AuthorizationStatusGetUseCase
 import com.app.belcobtm.domain.authorization.interactor.ClearAppDataUseCase
@@ -80,6 +83,7 @@ class HostActivity : AppCompatActivity() {
 
     fun showAuthorizationScreen() {
         clearAppDataUseCase.invoke()
+        (application as App).onLogout()
         setHostFragment(NavHostFragment.create(R.navigation.nav_authorization))
     }
 
@@ -88,10 +92,5 @@ class HostActivity : AppCompatActivity() {
         supportFragmentManager.beginTransaction()
             .replace(android.R.id.content, fragment, fragment.javaClass.name)
             .commit()
-    }
-
-    companion object {
-        private const val TAG_USER_AUTHORIZATION = "tag_broadcast_user_unauthorized"
-        private const val KEY_IS_USER_UNAUTHORIZED = "key_is_user_unauthorized"
     }
 }

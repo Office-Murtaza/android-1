@@ -72,6 +72,21 @@ public final class Elrond {
      */
     com.google.protobuf.ByteString
         getDataBytes();
+
+    /**
+     * <code>string chain_id = 8;</code>
+     */
+    java.lang.String getChainId();
+    /**
+     * <code>string chain_id = 8;</code>
+     */
+    com.google.protobuf.ByteString
+        getChainIdBytes();
+
+    /**
+     * <code>uint32 version = 9;</code>
+     */
+    int getVersion();
   }
   /**
    * <pre>
@@ -94,6 +109,7 @@ public final class Elrond {
       receiver_ = "";
       sender_ = "";
       data_ = "";
+      chainId_ = "";
     }
 
     @java.lang.Override
@@ -163,6 +179,17 @@ public final class Elrond {
               java.lang.String s = input.readStringRequireUtf8();
 
               data_ = s;
+              break;
+            }
+            case 66: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              chainId_ = s;
+              break;
+            }
+            case 72: {
+
+              version_ = input.readUInt32();
               break;
             }
             default: {
@@ -360,6 +387,49 @@ public final class Elrond {
       }
     }
 
+    public static final int CHAIN_ID_FIELD_NUMBER = 8;
+    private volatile java.lang.Object chainId_;
+    /**
+     * <code>string chain_id = 8;</code>
+     */
+    public java.lang.String getChainId() {
+      java.lang.Object ref = chainId_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        chainId_ = s;
+        return s;
+      }
+    }
+    /**
+     * <code>string chain_id = 8;</code>
+     */
+    public com.google.protobuf.ByteString
+        getChainIdBytes() {
+      java.lang.Object ref = chainId_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        chainId_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int VERSION_FIELD_NUMBER = 9;
+    private int version_;
+    /**
+     * <code>uint32 version = 9;</code>
+     */
+    public int getVersion() {
+      return version_;
+    }
+
     private byte memoizedIsInitialized = -1;
     @java.lang.Override
     public final boolean isInitialized() {
@@ -395,6 +465,12 @@ public final class Elrond {
       if (!getDataBytes().isEmpty()) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 7, data_);
       }
+      if (!getChainIdBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 8, chainId_);
+      }
+      if (version_ != 0) {
+        output.writeUInt32(9, version_);
+      }
       unknownFields.writeTo(output);
     }
 
@@ -428,6 +504,13 @@ public final class Elrond {
       if (!getDataBytes().isEmpty()) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(7, data_);
       }
+      if (!getChainIdBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(8, chainId_);
+      }
+      if (version_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(9, version_);
+      }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
       return size;
@@ -457,6 +540,10 @@ public final class Elrond {
           != other.getGasLimit()) return false;
       if (!getData()
           .equals(other.getData())) return false;
+      if (!getChainId()
+          .equals(other.getChainId())) return false;
+      if (getVersion()
+          != other.getVersion()) return false;
       if (!unknownFields.equals(other.unknownFields)) return false;
       return true;
     }
@@ -485,6 +572,10 @@ public final class Elrond {
           getGasLimit());
       hash = (37 * hash) + DATA_FIELD_NUMBER;
       hash = (53 * hash) + getData().hashCode();
+      hash = (37 * hash) + CHAIN_ID_FIELD_NUMBER;
+      hash = (53 * hash) + getChainId().hashCode();
+      hash = (37 * hash) + VERSION_FIELD_NUMBER;
+      hash = (53 * hash) + getVersion();
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -636,6 +727,10 @@ public final class Elrond {
 
         data_ = "";
 
+        chainId_ = "";
+
+        version_ = 0;
+
         return this;
       }
 
@@ -669,6 +764,8 @@ public final class Elrond {
         result.gasPrice_ = gasPrice_;
         result.gasLimit_ = gasLimit_;
         result.data_ = data_;
+        result.chainId_ = chainId_;
+        result.version_ = version_;
         onBuilt();
         return result;
       }
@@ -741,6 +838,13 @@ public final class Elrond {
         if (!other.getData().isEmpty()) {
           data_ = other.data_;
           onChanged();
+        }
+        if (!other.getChainId().isEmpty()) {
+          chainId_ = other.chainId_;
+          onChanged();
+        }
+        if (other.getVersion() != 0) {
+          setVersion(other.getVersion());
         }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
@@ -1121,6 +1225,101 @@ public final class Elrond {
   checkByteStringIsUtf8(value);
         
         data_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object chainId_ = "";
+      /**
+       * <code>string chain_id = 8;</code>
+       */
+      public java.lang.String getChainId() {
+        java.lang.Object ref = chainId_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          chainId_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>string chain_id = 8;</code>
+       */
+      public com.google.protobuf.ByteString
+          getChainIdBytes() {
+        java.lang.Object ref = chainId_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          chainId_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>string chain_id = 8;</code>
+       */
+      public Builder setChainId(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        chainId_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string chain_id = 8;</code>
+       */
+      public Builder clearChainId() {
+        
+        chainId_ = getDefaultInstance().getChainId();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string chain_id = 8;</code>
+       */
+      public Builder setChainIdBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        chainId_ = value;
+        onChanged();
+        return this;
+      }
+
+      private int version_ ;
+      /**
+       * <code>uint32 version = 9;</code>
+       */
+      public int getVersion() {
+        return version_;
+      }
+      /**
+       * <code>uint32 version = 9;</code>
+       */
+      public Builder setVersion(int value) {
+        
+        version_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>uint32 version = 9;</code>
+       */
+      public Builder clearVersion() {
+        
+        version_ = 0;
         onChanged();
         return this;
       }
@@ -2678,16 +2877,17 @@ public final class Elrond {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\014Elrond.proto\022\017TW.Elrond.Proto\"\210\001\n\022Tran" +
+      "\n\014Elrond.proto\022\017TW.Elrond.Proto\"\253\001\n\022Tran" +
       "sactionMessage\022\r\n\005nonce\030\001 \001(\004\022\r\n\005value\030\002" +
       " \001(\t\022\020\n\010receiver\030\003 \001(\t\022\016\n\006sender\030\004 \001(\t\022\021" +
       "\n\tgas_price\030\005 \001(\004\022\021\n\tgas_limit\030\006 \001(\004\022\014\n\004" +
-      "data\030\007 \001(\t\"p\n\014SigningInput\022\023\n\013private_ke" +
-      "y\030\001 \001(\014\022:\n\013transaction\030\002 \001(\0132#.TW.Elrond" +
-      ".Proto.TransactionMessageH\000B\017\n\rmessage_o" +
-      "neof\"3\n\rSigningOutput\022\017\n\007encoded\030\001 \001(\t\022\021" +
-      "\n\tsignature\030\002 \001(\tB\027\n\025wallet.core.jni.pro" +
-      "tob\006proto3"
+      "data\030\007 \001(\t\022\020\n\010chain_id\030\010 \001(\t\022\017\n\007version\030" +
+      "\t \001(\r\"p\n\014SigningInput\022\023\n\013private_key\030\001 \001" +
+      "(\014\022:\n\013transaction\030\002 \001(\0132#.TW.Elrond.Prot" +
+      "o.TransactionMessageH\000B\017\n\rmessage_oneof\"" +
+      "3\n\rSigningOutput\022\017\n\007encoded\030\001 \001(\t\022\021\n\tsig" +
+      "nature\030\002 \001(\tB\027\n\025wallet.core.jni.protob\006p" +
+      "roto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -2698,7 +2898,7 @@ public final class Elrond {
     internal_static_TW_Elrond_Proto_TransactionMessage_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_TW_Elrond_Proto_TransactionMessage_descriptor,
-        new java.lang.String[] { "Nonce", "Value", "Receiver", "Sender", "GasPrice", "GasLimit", "Data", });
+        new java.lang.String[] { "Nonce", "Value", "Receiver", "Sender", "GasPrice", "GasLimit", "Data", "ChainId", "Version", });
     internal_static_TW_Elrond_Proto_SigningInput_descriptor =
       getDescriptor().getMessageTypes().get(1);
     internal_static_TW_Elrond_Proto_SigningInput_fieldAccessorTable = new
