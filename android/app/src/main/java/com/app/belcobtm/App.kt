@@ -31,6 +31,7 @@ class App
 @Inject constructor() : MultiDexApplication(), HasActivityInjector, HasSupportFragmentInjector, LifecycleObserver {
     private val prefHelper: SharedPreferencesHelper by inject()
     private val socketClient: SocketClient by inject()
+    private var loggedIn = false
 
     @Inject
     lateinit var dispatchingAndroidInjector: DispatchingAndroidInjector<Activity>
@@ -84,13 +85,27 @@ class App
 
     @OnLifecycleEvent(Lifecycle.Event.ON_START)
     fun onAppForegrounded() {
-        connectSocket()
+        connect()
     }
 
-    fun connectSocket() {
-        if (!socketClient.isConnected()) {
+    fun onLogin() {
+        loggedIn = true
+        connect()
+    }
+
+    fun onLogout() {
+        loggedIn = false
+        disconnect()
+    }
+
+    private fun connect() {
+        if (!socketClient.isConnected() && loggedIn) {
             socketClient.connect()
         }
+    }
+
+    private fun disconnect() {
+        socketClient.disconnect()
     }
 
     companion object {

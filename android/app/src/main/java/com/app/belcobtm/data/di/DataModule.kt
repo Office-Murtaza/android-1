@@ -55,5 +55,5 @@ val dataModule = module {
     single { (get() as AppDatabase).getCoinDao() }
     single<IntentActions> { IntentActionsImpl(get()) }
     single { AtmApiService((get() as ApiFactory).atmApi) }
-    single { SocketClient(get(), get()) }
+    single { SocketClient(get(), get(),LocalBroadcastManager.getInstance(get())) }
 }

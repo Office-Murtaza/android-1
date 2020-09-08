@@ -100,7 +100,7 @@ class PinCodeFragment : BaseFragment() {
         viewModel.actionData.observe(this) { action ->
             when (action) {
                 is PinCodeAction.Success -> {
-                    (context?.applicationContext as? App)?.connectSocket()
+                    (context?.applicationContext as? App)?.onLogin()
                     (requireActivity() as HostActivity).showMainScreen()
                 }
                 is PinCodeAction.ChangedPin -> {
