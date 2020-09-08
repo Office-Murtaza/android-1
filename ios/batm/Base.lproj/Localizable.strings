@@ -225,8 +225,8 @@
 
 "coin_send_gift.title" = "Send gift %@";
 "coin_send_gift.form.code.placeholder" = "Code";
-"coin_send_gift.form.phone.placeholder" = "Phone";
-"coin_send_gift.form.message.placeholder" = "Message...";
+"coin_send_gift.form.phone.placeholder" = "Recipient phone";
+"coin_send_gift.form.message.placeholder" = "Message";
 "coin_send_gift.form.error.invalid_phone" = "Invalid phone";
 
 "coin_sell.title" = "Sell %@";
