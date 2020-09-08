@@ -1,6 +1,5 @@
 package com.app.belcobtm.presentation.features.wallet.balance
 
-import android.graphics.Color
 import android.view.View
 import com.app.belcobtm.R
 import com.app.belcobtm.domain.Failure

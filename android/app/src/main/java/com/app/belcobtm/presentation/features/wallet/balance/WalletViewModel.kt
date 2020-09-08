@@ -22,14 +22,20 @@ class WalletViewModel(
         MutableLiveData()
 
     init {
+        updateBalanceData()
+    }
+
+    fun updateBalanceData() {
         balanceLiveData.value = LoadingData.Loading()
-        balanceUseCase.invoke(Unit,
+        balanceUseCase.invoke(
+            Unit,
             onSuccess = {
                 updateCoinsItems(it)
             },
             onError = {
                 updateOnError(it)
-            })
+            }
+        )
     }
 
     fun subscribeToChannel() {

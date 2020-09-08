@@ -70,8 +70,8 @@
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/balanceExchangeView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
                     android:layout_marginStart="8dp"
                     app:layout_constraintBottom_toBottomOf="@id/balanceCryptoView"
                     app:layout_constraintEnd_toStartOf="@id/balanceUsdView"
@@ -105,8 +105,8 @@
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/reservedExchangeView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
                     android:layout_marginStart="8dp"
                     app:layout_constraintBottom_toBottomOf="@id/reservedCryptoView"
                     app:layout_constraintEnd_toStartOf="@id/reservedUsdView"
