@@ -32,13 +32,13 @@ public class HDWallet {
     static native void nativeDelete(long handle);
 
     public static native boolean isValid(String mnemonic);
-    public static native PublicKey getPublicKeyFromExtended(String extended, String derivationPath);
+    public static native PublicKey getPublicKeyFromExtended(String extended, CoinType coin, String derivationPath);
     public native byte[] seed();
     public native String mnemonic();
     public native PrivateKey getMasterKey(Curve curve);
     public native PrivateKey getKeyForCoin(CoinType coin);
     public native String getAddressForCoin(CoinType coin);
-    public native PrivateKey getKey(String derivationPath);
+    public native PrivateKey getKey(CoinType coin, String derivationPath);
     public native PrivateKey getKeyBIP44(CoinType coin, int account, int change, int address);
     public native String getExtendedPrivateKey(Purpose purpose, CoinType coin, HDVersion version);
     public native String getExtendedPublicKey(Purpose purpose, CoinType coin, HDVersion version);

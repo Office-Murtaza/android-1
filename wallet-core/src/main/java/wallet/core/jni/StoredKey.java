@@ -40,7 +40,7 @@ public class StoredKey {
     public native Account account(int index);
     public native Account accountForCoin(CoinType coin, HDWallet wallet);
     public native void removeAccountForCoin(CoinType coin);
-    public native void addAccount(String address, String derivationPath, String extetndedPublicKey);
+    public native void addAccount(String address, CoinType coin, String derivationPath, String extetndedPublicKey);
     public native boolean store(String path);
     public native byte[] decryptPrivateKey(byte[] password);
     public native String decryptMnemonic(byte[] password);

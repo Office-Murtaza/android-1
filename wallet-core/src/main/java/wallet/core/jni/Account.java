@@ -26,7 +26,7 @@ public class Account {
         return instance;
     }
 
-    static native long nativeCreate(String address, String derivationPath, String extendedPublicKey);
+    static native long nativeCreate(String address, CoinType coin, String derivationPath, String extendedPublicKey);
     static native void nativeDelete(long handle);
 
     public native String address();
@@ -34,8 +34,8 @@ public class Account {
     public native String extendedPublicKey();
     public native CoinType coin();
 
-    public Account(String address, String derivationPath, String extendedPublicKey) {
-        nativeHandle = nativeCreate(address, derivationPath, extendedPublicKey);
+    public Account(String address, CoinType coin, String derivationPath, String extendedPublicKey) {
+        nativeHandle = nativeCreate(address, coin, derivationPath, extendedPublicKey);
         if (nativeHandle == 0) {
             throw new InvalidParameterException();
         }

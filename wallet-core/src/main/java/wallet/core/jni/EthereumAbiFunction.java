@@ -46,7 +46,7 @@ public class EthereumAbiFunction {
     public native int addParamString(String val, boolean isOutput);
     public native int addParamAddress(byte[] val, boolean isOutput);
     public native int addParamBytes(byte[] val, boolean isOutput);
-    public native int addParamBytesFix(int count_in, byte[] val, boolean isOutput);
+    public native int addParamBytesFix(int size, byte[] val, boolean isOutput);
     public native int addParamArray(boolean isOutput);
     public native byte getParamUInt8(int idx, boolean isOutput);
     public native long getParamUInt64(int idx, boolean isOutput);
@@ -70,7 +70,7 @@ public class EthereumAbiFunction {
     public native int addInArrayParamString(int arrayIdx, String val);
     public native int addInArrayParamAddress(int arrayIdx, byte[] val);
     public native int addInArrayParamBytes(int arrayIdx, byte[] val);
-    public native int addInArrayParamBytesFix(int arrayIdx, int count_in, byte[] val);
+    public native int addInArrayParamBytesFix(int arrayIdx, int size, byte[] val);
 
     public EthereumAbiFunction(String name) {
         nativeHandle = nativeCreateWithString(name);

@@ -12,15 +12,15 @@ package wallet.core.jni;
 import java.security.InvalidParameterException;
 import java.util.HashSet;
 
-public class EthereumAbiValueEncoder {
+public class EthereumAbiValue {
     private long nativeHandle;
 
-    private EthereumAbiValueEncoder() {
+    private EthereumAbiValue() {
         nativeHandle = 0;
     }
 
-    static EthereumAbiValueEncoder createFromNative(long nativeHandle) {
-        EthereumAbiValueEncoder instance = new EthereumAbiValueEncoder();
+    static EthereumAbiValue createFromNative(long nativeHandle) {
+        EthereumAbiValue instance = new EthereumAbiValue();
         instance.nativeHandle = nativeHandle;
         return instance;
     }
@@ -35,6 +35,7 @@ public class EthereumAbiValueEncoder {
     public static native byte[] encodeString(String value);
     public static native byte[] encodeBytes(byte[] value);
     public static native byte[] encodeBytesDyn(byte[] value);
+    public static native String decodeUInt256(byte[] input);
 
 }
 

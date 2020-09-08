@@ -12,21 +12,23 @@ package wallet.core.jni;
 import java.security.InvalidParameterException;
 import java.util.HashSet;
 
-public class EthereumAbiValueDecoder {
+public class EthereumAbi {
     private long nativeHandle;
 
-    private EthereumAbiValueDecoder() {
+    private EthereumAbi() {
         nativeHandle = 0;
     }
 
-    static EthereumAbiValueDecoder createFromNative(long nativeHandle) {
-        EthereumAbiValueDecoder instance = new EthereumAbiValueDecoder();
+    static EthereumAbi createFromNative(long nativeHandle) {
+        EthereumAbi instance = new EthereumAbi();
         instance.nativeHandle = nativeHandle;
         return instance;
     }
 
 
-    public static native String decodeUInt256(byte[] input);
+    public static native byte[] encode(EthereumAbiFunction fn);
+    public static native boolean decodeOutput(EthereumAbiFunction fn, byte[] encoded);
+    public static native String decodeCall(byte[] data, String abi);
 
 }
 

@@ -89,6 +89,15 @@ public final class Aion {
      * <code>bytes private_key = 7;</code>
      */
     com.google.protobuf.ByteString getPrivateKey();
+
+    /**
+     * <pre>
+     * Timestamp
+     * </pre>
+     *
+     * <code>uint64 timestamp = 8;</code>
+     */
+    long getTimestamp();
   }
   /**
    * <pre>
@@ -180,6 +189,11 @@ public final class Aion {
             case 58: {
 
               privateKey_ = input.readBytes();
+              break;
+            }
+            case 64: {
+
+              timestamp_ = input.readUInt64();
               break;
             }
             default: {
@@ -334,6 +348,19 @@ public final class Aion {
       return privateKey_;
     }
 
+    public static final int TIMESTAMP_FIELD_NUMBER = 8;
+    private long timestamp_;
+    /**
+     * <pre>
+     * Timestamp
+     * </pre>
+     *
+     * <code>uint64 timestamp = 8;</code>
+     */
+    public long getTimestamp() {
+      return timestamp_;
+    }
+
     private byte memoizedIsInitialized = -1;
     @java.lang.Override
     public final boolean isInitialized() {
@@ -368,6 +395,9 @@ public final class Aion {
       }
       if (!privateKey_.isEmpty()) {
         output.writeBytes(7, privateKey_);
+      }
+      if (timestamp_ != 0L) {
+        output.writeUInt64(8, timestamp_);
       }
       unknownFields.writeTo(output);
     }
@@ -405,6 +435,10 @@ public final class Aion {
         size += com.google.protobuf.CodedOutputStream
           .computeBytesSize(7, privateKey_);
       }
+      if (timestamp_ != 0L) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt64Size(8, timestamp_);
+      }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
       return size;
@@ -434,6 +468,8 @@ public final class Aion {
           .equals(other.getPayload())) return false;
       if (!getPrivateKey()
           .equals(other.getPrivateKey())) return false;
+      if (getTimestamp()
+          != other.getTimestamp()) return false;
       if (!unknownFields.equals(other.unknownFields)) return false;
       return true;
     }
@@ -459,6 +495,9 @@ public final class Aion {
       hash = (53 * hash) + getPayload().hashCode();
       hash = (37 * hash) + PRIVATE_KEY_FIELD_NUMBER;
       hash = (53 * hash) + getPrivateKey().hashCode();
+      hash = (37 * hash) + TIMESTAMP_FIELD_NUMBER;
+      hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
+          getTimestamp());
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -610,6 +649,8 @@ public final class Aion {
 
         privateKey_ = com.google.protobuf.ByteString.EMPTY;
 
+        timestamp_ = 0L;
+
         return this;
       }
 
@@ -643,6 +684,7 @@ public final class Aion {
         result.amount_ = amount_;
         result.payload_ = payload_;
         result.privateKey_ = privateKey_;
+        result.timestamp_ = timestamp_;
         onBuilt();
         return result;
       }
@@ -712,6 +754,9 @@ public final class Aion {
         }
         if (other.getPrivateKey() != com.google.protobuf.ByteString.EMPTY) {
           setPrivateKey(other.getPrivateKey());
+        }
+        if (other.getTimestamp() != 0L) {
+          setTimestamp(other.getTimestamp());
         }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
@@ -1073,6 +1118,44 @@ public final class Aion {
       public Builder clearPrivateKey() {
         
         privateKey_ = getDefaultInstance().getPrivateKey();
+        onChanged();
+        return this;
+      }
+
+      private long timestamp_ ;
+      /**
+       * <pre>
+       * Timestamp
+       * </pre>
+       *
+       * <code>uint64 timestamp = 8;</code>
+       */
+      public long getTimestamp() {
+        return timestamp_;
+      }
+      /**
+       * <pre>
+       * Timestamp
+       * </pre>
+       *
+       * <code>uint64 timestamp = 8;</code>
+       */
+      public Builder setTimestamp(long value) {
+        
+        timestamp_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Timestamp
+       * </pre>
+       *
+       * <code>uint64 timestamp = 8;</code>
+       */
+      public Builder clearTimestamp() {
+        
+        timestamp_ = 0L;
         onChanged();
         return this;
       }
@@ -1746,13 +1829,13 @@ public final class Aion {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\nAion.proto\022\rTW.Aion.Proto\"\215\001\n\014SigningI" +
+      "\n\nAion.proto\022\rTW.Aion.Proto\"\240\001\n\014SigningI" +
       "nput\022\r\n\005nonce\030\001 \001(\014\022\021\n\tgas_price\030\002 \001(\014\022\021" +
       "\n\tgas_limit\030\003 \001(\014\022\022\n\nto_address\030\004 \001(\t\022\016\n" +
       "\006amount\030\005 \001(\014\022\017\n\007payload\030\006 \001(\014\022\023\n\013privat" +
-      "e_key\030\007 \001(\014\"3\n\rSigningOutput\022\017\n\007encoded\030" +
-      "\001 \001(\014\022\021\n\tsignature\030\002 \001(\014B\027\n\025wallet.core." +
-      "jni.protob\006proto3"
+      "e_key\030\007 \001(\014\022\021\n\ttimestamp\030\010 \001(\004\"3\n\rSignin" +
+      "gOutput\022\017\n\007encoded\030\001 \001(\014\022\021\n\tsignature\030\002 " +
+      "\001(\014B\027\n\025wallet.core.jni.protob\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -1763,7 +1846,7 @@ public final class Aion {
     internal_static_TW_Aion_Proto_SigningInput_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_TW_Aion_Proto_SigningInput_descriptor,
-        new java.lang.String[] { "Nonce", "GasPrice", "GasLimit", "ToAddress", "Amount", "Payload", "PrivateKey", });
+        new java.lang.String[] { "Nonce", "GasPrice", "GasLimit", "ToAddress", "Amount", "Payload", "PrivateKey", "Timestamp", });
     internal_static_TW_Aion_Proto_SigningOutput_descriptor =
       getDescriptor().getMessageTypes().get(1);
     internal_static_TW_Aion_Proto_SigningOutput_fieldAccessorTable = new
