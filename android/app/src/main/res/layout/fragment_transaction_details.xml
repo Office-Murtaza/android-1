@@ -145,7 +145,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="16sp"
-                    android:textStyle="bold"
                     tools:text="0.5 BTC" />
 
                 <androidx.appcompat.widget.AppCompatImageView
@@ -164,7 +163,6 @@
                     android:layout_height="wrap_content"
                     android:textColor="@color/colorPrimary"
                     android:textSize="16sp"
-                    android:textStyle="bold"
                     android:visibility="gone"
                     tools:text="6000 $"
                     tools:visibility="visible" />

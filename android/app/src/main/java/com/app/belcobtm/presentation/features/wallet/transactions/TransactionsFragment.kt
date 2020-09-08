@@ -11,9 +11,7 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.app.belcobtm.R
 import com.app.belcobtm.domain.wallet.LocalCoinType
-import com.app.belcobtm.presentation.core.extensions.setDrawableStart
-import com.app.belcobtm.presentation.core.extensions.toStringCoin
-import com.app.belcobtm.presentation.core.extensions.toStringUsd
+import com.app.belcobtm.presentation.core.extensions.*
 import com.app.belcobtm.presentation.core.helper.AlertHelper
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
 import com.app.belcobtm.presentation.core.ui.fragment.BaseFragment
@@ -177,6 +175,18 @@ class TransactionsFragment : BaseFragment() {
         viewModel.transactionListLiveData.observe(this, {
             adapter.setItemList(it)
             swipeToRefreshView.isRefreshing = false
+        })
+        viewModel.feeLiveData.observe(this, { loadingData ->
+            when (loadingData) {
+                is LoadingData.Success -> {
+                    sendGiftButtonView.show()
+                    withdrawButtonView.show()
+                }
+                is LoadingData.Error -> {
+                    sendGiftButtonView.hide()
+                    withdrawButtonView.hide()
+                }
+            }
         })
     }
 

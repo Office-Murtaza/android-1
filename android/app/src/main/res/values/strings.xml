@@ -289,8 +289,8 @@
     <string name="send_gift_screen_title">Send gift %1$s</string>
     <string name="send_gift_screen_price">Price</string>
     <string name="send_gift_screen_balance">Balance</string>
-    <string name="send_gift_screen_recipient_address">Phone</string>
-    <string name="send_gift_screen_message">Message…</string>
+    <string name="send_gift_screen_recipient_address">Recipient Phone</string>
+    <string name="send_gift_screen_message">Message</string>
     <string name="send_gift_screen_add">Add</string>
     <string name="send_gift_screen_remove">Remove</string>
 
