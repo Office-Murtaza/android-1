@@ -47,7 +47,7 @@ final class CoinAmountTextFieldView: UIView, HasDisposeBag {
       $0.top.left.right.equalToSuperview()
     }
     fiatAmountLabel.snp.makeConstraints {
-      $0.top.equalTo(coinAmountTextField.snp.bottom).offset(-10)
+      $0.top.equalTo(coinAmountTextField.snp.bottom)
       $0.right.equalToSuperview().offset(-17)
       $0.left.greaterThanOrEqualToSuperview()
       $0.bottom.equalToSuperview()
