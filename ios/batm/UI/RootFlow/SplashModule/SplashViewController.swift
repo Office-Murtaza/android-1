@@ -6,7 +6,7 @@ protocol SplashModule: class { }
 
 final class SplashViewController: UIViewController, SplashModule {
 
-  let logoImageView = UIImageView(image: UIImage(named: "splash_logo"))
+  let logoImageView = UIImageView(image: UIImage(named: "logo"))
 
   // MARK: Life cycle
   

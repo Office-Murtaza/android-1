@@ -1,15 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "sms-code.pdf",
+      "filename" : "phone_verification.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
+      "filename" : "phone_verification@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
+      "filename" : "phone_verification@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

@@ -1,15 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "call24Px.pdf",
+      "filename" : "call24Px.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
+      "filename" : "call24Px@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
+      "filename" : "call24Px@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

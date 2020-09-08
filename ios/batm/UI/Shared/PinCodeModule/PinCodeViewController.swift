@@ -8,7 +8,7 @@ class PinCodeViewController: ModuleViewController<PinCodePresenter>, UITextField
   let didDisappearRelay = PublishRelay<Void>()
   
   let logoImageView: UIImageView = {
-    let imageView = UIImageView(image: UIImage(named: "login_logo"))
+    let imageView = UIImageView(image: UIImage(named: "logo"))
     imageView.contentMode = .scaleAspectFit
     return imageView
   }()
