@@ -62,7 +62,7 @@ public class WalletService {
         wallet = new HDWallet(seed, "");
 
         privateKeyBTC = wallet.getKeyForCoin(CoinType.BITCOIN);
-        PublicKey publicKeyBTC = wallet.getPublicKeyFromExtended(getXPUB(CoinType.BITCOIN), getPath(CoinType.BITCOIN));
+        PublicKey publicKeyBTC = HDWallet.getPublicKeyFromExtended(getXPUB(CoinType.BITCOIN), CoinType.BITCOIN, getPath(CoinType.BITCOIN));
         addressBTC = new BitcoinAddress(publicKeyBTC, CoinType.BITCOIN.p2pkhPrefix()).description();
         serverAddresses.add(addressBTC);
 
@@ -117,27 +117,27 @@ public class WalletService {
 
     public String generateNewAddress(CoinType coinType, String newPath) {
         if (coinType == CoinType.BITCOIN) {
-            PublicKey publicKey = wallet.getPublicKeyFromExtended(getXPUB(coinType), newPath);
+            PublicKey publicKey = HDWallet.getPublicKeyFromExtended(getXPUB(coinType), CoinType.BITCOIN, newPath);
 
             return new BitcoinAddress(publicKey, CoinType.BITCOIN.p2pkhPrefix()).description();
         } else if (coinType == CoinType.BITCOINCASH || coinType == CoinType.LITECOIN) {
-            PublicKey publicKey = wallet.getPublicKeyFromExtended(getXPUB(coinType), newPath);
+            PublicKey publicKey = HDWallet.getPublicKeyFromExtended(getXPUB(coinType), coinType, newPath);
 
             return coinType.deriveAddressFromPublicKey(publicKey);
         } else if (coinType == CoinType.XRP) {
-            PublicKey publicKey = wallet.getPublicKeyFromExtended(getXPUB(coinType), newPath);
+            PublicKey publicKey = HDWallet.getPublicKeyFromExtended(getXPUB(coinType), coinType, newPath);
 
             return new AnyAddress(publicKey, coinType).description();
         } else if (coinType == CoinType.ETHEREUM) {
-            PrivateKey privateKey = wallet.getKey(newPath);
+            PrivateKey privateKey = wallet.getKey(coinType, newPath);
 
             return new AnyAddress(privateKey.getPublicKeySecp256k1(false), coinType).description();
         } else if (coinType == CoinType.TRON) {
-            PrivateKey privateKey = wallet.getKey(newPath);
+            PrivateKey privateKey = wallet.getKey(coinType, newPath);
 
             return new AnyAddress(privateKey.getPublicKeySecp256k1(false), coinType).description();
         } else if (coinType == CoinType.BINANCE) {
-            PrivateKey privateKey = wallet.getKey(newPath);
+            PrivateKey privateKey = wallet.getKey(coinType, newPath);
 
             return new AnyAddress(privateKey.getPublicKeySecp256k1(true), coinType).description();
         }

@@ -317,7 +317,7 @@ public class GethService {
                 privateKey = walletService.getPrivateKeyETH();
             } else {
                 String path = walletService.getPath(fromAddress);
-                privateKey = walletService.getWallet().getKey(path);
+                privateKey = walletService.getWallet().getKey(CoinType.ETHEREUM, path);
             }
 
             Integer nonce = getNonce(fromAddress);
@@ -349,7 +349,7 @@ public class GethService {
                 privateKey = walletService.getPrivateKeyETH();
             } else {
                 String path = walletService.getPath(fromAddress);
-                privateKey = walletService.getWallet().getKey(path);
+                privateKey = walletService.getWallet().getKey(CoinType.ETHEREUM, path);
             }
 
             Integer nonce = getNonce(fromAddress);
@@ -361,11 +361,11 @@ public class GethService {
             input.setGasLimit(ByteString.copyFrom(Numeric.hexStringToByteArray(Long.toHexString(gasLimit))));
             input.setGasPrice(ByteString.copyFrom(Numeric.hexStringToByteArray(Long.toHexString(gasPrice))));
 
-            EthereumAbiFunction function = EthereumAbiEncoder.buildFunction("transfer");
+            EthereumAbiFunction function = new EthereumAbiFunction("transfer");
             byte[] amountBytes = amount.multiply(ETH_DIVIDER).toBigInteger().toByteArray();
             function.addParamAddress(Numeric.hexStringToByteArray(toAddress), false);
             function.addParamUInt256(amountBytes, false);
-            byte[] encode = EthereumAbiEncoder.encode(function);
+            byte[] encode = EthereumAbi.encode(function);
 
             input.setPayload(ByteString.copyFrom(encode));
 

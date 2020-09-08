@@ -5,8 +5,6 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
 
 @Getter
-@Setter
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -17,8 +15,54 @@ public class CoinBalanceDTO {
     private Integer idx;
     private String address;
     private BigDecimal balance;
+    private String balanceStr;
     private BigDecimal fiatBalance;
+    private String fiatBalanceStr;
     private BigDecimal reservedBalance;
+    private String reservedBalanceStr;
     private BigDecimal reservedFiatBalance;
+    private String reservedFiatBalanceStr;
     private BigDecimal price;
+    private String priceStr;
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    public void setIdx(Integer idx) {
+        this.idx = idx;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public void setBalance(BigDecimal balance) {
+        this.balance = balance;
+        this.balanceStr = balance.toString();
+    }
+
+    public void setFiatBalance(BigDecimal fiatBalance) {
+        this.fiatBalance = fiatBalance;
+        this.fiatBalanceStr = fiatBalance.toString();
+    }
+
+    public void setReservedBalance(BigDecimal reservedBalance) {
+        this.reservedBalance = reservedBalance;
+        this.reservedBalanceStr = reservedBalance.toString();
+    }
+
+    public void setReservedFiatBalance(BigDecimal reservedFiatBalance) {
+        this.reservedFiatBalance = reservedFiatBalance;
+        this.reservedFiatBalanceStr = reservedFiatBalance.toString();
+    }
+
+    public void setPrice(BigDecimal price) {
+        this.price = price;
+        this.priceStr = price.toString();
+    }
 }

@@ -183,13 +183,13 @@ public class BlockbookService {
             input.setCoinType(coinType.value());
             input.setAmount(amount.multiply(divider).longValue());
             input.setByteFee(fee.multiply(divider).longValue());
-            input.setHashType(BitcoinScript.hashTypeForCoin(coinType).value());
+            input.setHashType(BitcoinScript.hashTypeForCoin(coinType));
             input.setChangeAddress(fromAddress);
             input.setToAddress(toAddress);
             input.setUseMaxAmount(false);
 
             utxos.forEach(e -> {
-                PrivateKey privateKey = walletService.getWallet().getKey(e.optString("path"));
+                PrivateKey privateKey = walletService.getWallet().getKey(coinType, e.optString("path"));
                 input.addPrivateKey(ByteString.copyFrom(privateKey.data()));
             });
 

@@ -167,7 +167,7 @@ public class BinanceService {
                 privateKey = walletService.getPrivateKeyBNB();
             } else {
                 String path = walletService.getPath(fromAddress);
-                privateKey = walletService.getWallet().getKey(path);
+                privateKey = walletService.getWallet().getKey(CoinType.BINANCE, path);
             }
 
             CurrentAccountDTO currentDTO = getCurrentAccount(fromAddress);

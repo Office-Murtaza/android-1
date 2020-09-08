@@ -192,7 +192,7 @@ public class RippledService {
                 privateKey = walletService.getPrivateKeyXRP();
             } else {
                 String path = walletService.getPath(fromAddress);
-                privateKey = walletService.getWallet().getKey(path);
+                privateKey = walletService.getWallet().getKey(CoinType.XRP, path);
             }
 
             CurrentAccountDTO accountDTO = getCurrentAccount(fromAddress);

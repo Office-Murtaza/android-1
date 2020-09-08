@@ -68,15 +68,19 @@ public class CoinService {
     }
 
     @Scheduled(cron = "*/5 * * * * *")
-    public void wsBalance() {
+    public void wsStompBalance() {
+        wsMap.forEach((k, v) -> sendStompBalance(k, v));
+    }
+
+    public void sendStompBalance(String phone, Long userId) {
         List<String> coins = new ArrayList<>(coinMap.keySet());
 
-        wsMap.forEach((k, v) -> simp.convertAndSendToUser(k, "/queue/balance", getCoinsBalance(v, coins)));
+        simp.convertAndSendToUser(phone, "/queue/balance", getCoinsBalance(userId, coins));
     }
 
     public BalanceDTO getCoinsBalance(Long userId, List<String> coins) {
         if (coins == null || coins.isEmpty()) {
-            return new BalanceDTO(BigDecimal.ZERO, Collections.EMPTY_LIST);
+            return new BalanceDTO(BigDecimal.ZERO, BigDecimal.ZERO.toString(), Collections.EMPTY_LIST);
         }
 
         List<UserCoin> userCoins = userService.getUserCoins(userId);
@@ -95,7 +99,7 @@ public class CoinService {
                 .map(it -> it.getPrice().multiply(it.getBalance().add(it.getReservedBalance())))
                 .reduce(BigDecimal.ZERO, BigDecimal::add));
 
-        return new BalanceDTO(totalBalance, balances);
+        return new BalanceDTO(totalBalance, totalBalance.toString(), balances);
     }
 
     public void addUserCoins(User user, List<CoinDTO> coins) {
@@ -139,16 +143,18 @@ public class CoinService {
             BigDecimal reservedBalance = userCoin.getReservedBalance().stripTrailingZeros();
             BigDecimal reservedFiatBalance = Util.format(reservedBalance.multiply(coinPrice), 3);
 
-            return CoinBalanceDTO.builder()
-                    .id(userCoin.getCoin().getId())
-                    .code(userCoin.getCoin().getCode())
-                    .idx(userCoin.getCoin().getIdx())
-                    .address(userCoin.getAddress())
-                    .balance(coinBalance)
-                    .fiatBalance(coinFiatBalance)
-                    .reservedBalance(reservedBalance)
-                    .reservedFiatBalance(reservedFiatBalance)
-                    .price(coinPrice).build();
+            CoinBalanceDTO dto = new CoinBalanceDTO();
+            dto.setId(userCoin.getCoin().getId());
+            dto.setCode(userCoin.getCoin().getCode());
+            dto.setIdx(userCoin.getCoin().getIdx());
+            dto.setAddress(userCoin.getAddress());
+            dto.setBalance(coinBalance);
+            dto.setFiatBalance(coinFiatBalance);
+            dto.setReservedBalance(reservedBalance);
+            dto.setReservedFiatBalance(reservedFiatBalance);
+            dto.setPrice(coinPrice);
+
+            return dto;
         });
     }
 
