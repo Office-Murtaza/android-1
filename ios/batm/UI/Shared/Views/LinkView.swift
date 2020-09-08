@@ -28,7 +28,7 @@ class LinkView: UIView, HasDisposeBag {
   func configure(text: String, link: URL) {
     self.link = link
     
-    let attributes: [NSAttributedString.Key: Any] = [.font: UIFont.systemFont(ofSize: 16, weight: .medium),
+    let attributes: [NSAttributedString.Key: Any] = [.font: UIFont.systemFont(ofSize: 16),
                                                      .foregroundColor: UIColor.ceruleanBlue,
                                                      .underlineStyle: NSUnderlineStyle.single.rawValue]
     let attributedText = NSAttributedString(string: text, attributes: attributes)
