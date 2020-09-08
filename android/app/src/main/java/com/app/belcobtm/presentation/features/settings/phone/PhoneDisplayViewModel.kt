@@ -21,7 +21,7 @@ class PhoneDisplayViewModel(private val getPhoneUseCase: GetPhoneUseCase, privat
                     LoadingData.Success(PhoneDisplayState(phone = it, isNextButtonEnabled = true))
             },
             onError = {
-                stateData.value = LoadingData.Error()
+                stateData.value = LoadingData.Error(errorType = it)
             })
     }
 }

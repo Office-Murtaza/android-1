@@ -22,7 +22,7 @@ class UnlinkViewModel(
             }
         },
         onError = {
-            actionData.value = LoadingData.Error()
+            actionData.value = LoadingData.Error(errorType = it)
         })
     }
 }
