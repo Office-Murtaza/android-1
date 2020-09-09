@@ -7,8 +7,11 @@ import com.app.belcobtm.data.rest.transaction.TransactionApiService
 import com.app.belcobtm.domain.Either
 import com.app.belcobtm.domain.Failure
 import com.app.belcobtm.domain.wallet.LocalCoinType
-import com.app.belcobtm.presentation.core.*
+import com.app.belcobtm.presentation.core.Numeric
 import com.app.belcobtm.presentation.core.extensions.*
+import com.app.belcobtm.presentation.core.toHexByteArray
+import com.app.belcobtm.presentation.core.toHexBytes
+import com.app.belcobtm.presentation.core.toHexBytesInByteString
 import com.google.gson.Gson
 import com.google.protobuf.ByteString
 import wallet.core.java.AnySigner
@@ -95,27 +98,28 @@ class TransactionHashHelper(
 
         return if (response.isRight) {
             val utxos = (response as Either.Right).b
-            val publicKeyFrom = daoAccount.getItem(fromCoin.name).publicKey
+            val fromAddress = daoAccount.getItem(fromCoin.name).publicKey
             val cryptoToSatoshi = fromCoinAmount * CoinType.BITCOIN.unit()
             val amount: Long = cryptoToSatoshi.toLong()
             val byteFee = getByteFee(fromCoin.name)
-            val sngHash = TWBitcoinSigHashType.getCryptoHash(fromCoin.trustWalletType)
-            val cointypeValue = fromCoin.trustWalletType.value()
+            val sngHash = BitcoinScript.hashTypeForCoin(trustWalletCoin)
+            val coinTypeValue = trustWalletCoin.value()
             val input = Bitcoin.SigningInput.newBuilder()
+                .setCoinType(coinTypeValue)
                 .setAmount(amount)
-                .setHashType(sngHash)
-                .setToAddress(toAddress)
-                .setChangeAddress(publicKeyFrom)
                 .setByteFee(byteFee)
-                .setCoinType(cointypeValue)
+                .setHashType(sngHash)
+                .setChangeAddress(fromAddress)
+                .setToAddress(toAddress)
+                .setUseMaxAmount(false)
 
             utxos.forEach {
-                val privateKey = hdWallet.getKey(it.path)
+                val privateKey = hdWallet.getKey(trustWalletCoin, it.path)
                 input.addPrivateKey(ByteString.copyFrom(privateKey.data()))
             }
 
             utxos.forEach {
-                val redeemScript = BitcoinScript.buildForAddress(it.address, trustWalletCoin)
+                val redeemScript = BitcoinScript.lockScriptForAddress(it.address, trustWalletCoin)
                 val keyHash = if (redeemScript.isPayToWitnessScriptHash) {
                     redeemScript.matchPayToWitnessPublicKeyHash()
                 } else {
@@ -141,7 +145,7 @@ class TransactionHashHelper(
                     .setSequence(sequence)
                     .build()
                 val utxoAmount = utxo.value.toLong()
-                val redeemScript = BitcoinScript.buildForAddress(utxo.address, trustWalletCoin)
+                val redeemScript = BitcoinScript.lockScriptForAddress(utxo.address, trustWalletCoin)
                 val scriptByteString = ByteString.copyFrom(redeemScript.data())
                 val utxo0 = Bitcoin.UnspentTransaction.newBuilder()
                     .setScript(scriptByteString)
@@ -154,7 +158,7 @@ class TransactionHashHelper(
 
             val signBytes = AnySigner.sign(
                 input.build(),
-                CoinType.BITCOIN,
+                trustWalletCoin,
                 Bitcoin.SigningOutput.parser()
             ).encoded.toByteArray()
             val hash = Numeric.toHexString(signBytes)
@@ -197,23 +201,21 @@ class TransactionHashHelper(
 
             if (fromCoin == LocalCoinType.CATM) {
                 val function = when (customFunctionName) {
-                    ETH_CATM_FUNCTION_NAME_WITHDRAW_STAKE ->
-                        EthereumAbiEncoder.buildFunction(ETH_CATM_FUNCTION_NAME_WITHDRAW_STAKE)
+                    ETH_CATM_FUNCTION_NAME_WITHDRAW_STAKE -> EthereumAbiFunction(ETH_CATM_FUNCTION_NAME_WITHDRAW_STAKE)
                     ETH_CATM_FUNCTION_NAME_CREATE_STAKE -> {
-                        val function = EthereumAbiEncoder.buildFunction(ETH_CATM_FUNCTION_NAME_CREATE_STAKE)
+                        val function = EthereumAbiFunction(ETH_CATM_FUNCTION_NAME_CREATE_STAKE)
                         function.addParamAddress(toAddress.toHexByteArray(), false)
                         function.addParamUInt256(amountMultipliedByDivider.toBigInteger().toByteArray(), false)
                         function
                     }
                     else -> {
-                        val function = EthereumAbiEncoder.buildFunction(ETH_CATM_FUNCTION_NAME_TRANSFER)
+                        val function = EthereumAbiFunction(ETH_CATM_FUNCTION_NAME_TRANSFER)
                         function.addParamAddress(toAddress.toHexByteArray(), false)
                         function.addParamUInt256(amountMultipliedByDivider.toBigInteger().toByteArray(), false)
                         function
                     }
                 }
-
-                input.payload = ByteString.copyFrom(EthereumAbiEncoder.encode(function))
+                input.payload = ByteString.copyFrom(EthereumAbi.encode(function))
                 input.toAddress = coinFee?.contractAddress
             } else {
                 input.amount = ByteString.copyFrom(hexAmount)
@@ -227,7 +229,6 @@ class TransactionHashHelper(
             response as Either.Left
         }
     }
-
 
     /**
      * custom implementation of adding leading zeroes
@@ -252,28 +253,40 @@ class TransactionHashHelper(
         fromCoinAmount: Double
     ): Either<Failure, String> {
         val coinEntity = daoAccount.getItem(fromCoin.name)
-        val response = apiService.getRippleSequence(coinEntity.publicKey)
+        val checkActivationResponse = apiService.checkRippleAccountActivation(toAddress)
 
-        return if (response.isRight) {
-            val privateKey = PrivateKey(coinEntity.privateKey.toHexByteArray())
-            val signingInput = Ripple.SigningInput.newBuilder().also {
-                it.sequence = (response as Either.Right).b.toInt()
-                it.account = coinEntity.publicKey
-                it.amount = (fromCoinAmount * CoinType.XRP.unit()).toLong()
-                it.destination = toAddress
-                it.fee = ((prefsHelper.coinsFee[CoinType.XRP.code()]?.txFee?.toBigDecimal()
-                    ?: BigDecimal(0.000020)) * BigDecimal.valueOf(CoinType.XRP.unit())).toLong()
-                it.privateKey = ByteString.copyFrom(privateKey.data())
+        return if (checkActivationResponse.isRight) {
+            if ((checkActivationResponse as Either.Right).b) {
+                println("MAMAMA = " + checkActivationResponse.b)
+
+                val response = apiService.getRippleSequence(coinEntity.publicKey)
+
+                return if (response.isRight) {
+                    val privateKey = PrivateKey(coinEntity.privateKey.toHexByteArray())
+                    val signingInput = Ripple.SigningInput.newBuilder().also {
+                        it.sequence = (response as Either.Right).b.toInt()
+                        it.account = coinEntity.publicKey
+                        it.amount = (fromCoinAmount * CoinType.XRP.unit()).toLong()
+                        it.destination = toAddress
+                        it.fee = ((prefsHelper.coinsFee[CoinType.XRP.code()]?.txFee?.toBigDecimal()
+                            ?: BigDecimal(0.000020)) * BigDecimal.valueOf(CoinType.XRP.unit())).toLong()
+                        it.privateKey = ByteString.copyFrom(privateKey.data())
+                    }
+                    val signBytes = AnySigner.sign(
+                        signingInput.build(),
+                        CoinType.XRP,
+                        Ripple.SigningOutput.parser()
+                    ).encoded.toByteArray()
+                    val hash = Numeric.toHexString(signBytes).substring(2)
+                    Either.Right(hash)
+                } else {
+                    response as Either.Left
+                }
+            } else {
+                Either.Left(Failure.XRPLowAmountToSend)
             }
-            val signBytes = AnySigner.sign(
-                signingInput.build(),
-                CoinType.XRP,
-                Ripple.SigningOutput.parser()
-            ).encoded.toByteArray()
-            val hash = Numeric.toHexString(signBytes).substring(2)
-            Either.Right(hash)
         } else {
-            response as Either.Left
+            checkActivationResponse as Either.Left
         }
     }
 

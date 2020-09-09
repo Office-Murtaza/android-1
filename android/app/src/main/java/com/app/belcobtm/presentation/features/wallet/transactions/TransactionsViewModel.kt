@@ -21,10 +21,15 @@ class TransactionsViewModel(
 ) : ViewModel() {
     val chartLiveData: MutableLiveData<LoadingData<TransactionsScreenItem>> = MutableLiveData()
     val transactionListLiveData: MutableLiveData<List<TransactionsAdapterItem>> = MutableLiveData()
+    val feeLiveData: MutableLiveData<LoadingData<Unit>> = MutableLiveData()
     var currentChartPeriodType = ChartPeriodType.DAY
     var totalTransactionListSize: Int = 0
     var coinDataItemList: ArrayList<CoinDataItem>? = null
     var coinDataItem: CoinDataItem? = null
+
+    init {
+        updateData()
+    }
 
     fun updateData() {
         chartLiveData.value = LoadingData.Loading()
@@ -45,7 +50,15 @@ class TransactionsViewModel(
             },
             onError = { chartLiveData.value = LoadingData.Error(it) }
         )
-        updateCoinFeeUseCase.invoke(UpdateCoinFeeUseCase.Params(coinCode))
+        updateCoinFeeUseCase.invoke(
+            params = UpdateCoinFeeUseCase.Params(coinCode),
+            onSuccess = {
+                feeLiveData.value = LoadingData.Success(Unit)
+            },
+            onError = {
+                feeLiveData.value = LoadingData.Error(it)
+            }
+        )
         refreshTransactionList()
 
         //Todo need find best way

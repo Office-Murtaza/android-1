@@ -138,6 +138,11 @@ interface TransactionApi {
         @Query("address") address: String
     ): Deferred<Response<RippleBlockResponse>>
 
+    @GET("coin/XRP/current-account-activated")
+    fun checkRippleAccountActivationAsync(
+        @Query("address") address: String
+    ): Deferred<Response<XRPAccountActivatedResponse>>
+
     @GET("coin/BNB/current-account")
     fun getBinanceBlockHeaderAsync(
         @Query("address") address: String

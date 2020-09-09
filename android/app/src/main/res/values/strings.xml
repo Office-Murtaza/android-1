@@ -6,7 +6,7 @@
     <string name="app_name">Belco Wallet</string>
 
     <!-- Bottom navigation -->
-    <string name="bottom_menu_atm">ATM</string>
+    <string name="bottom_menu_locations">Locations</string>
     <string name="bottom_menu_settings">Settings</string>
     <string name="bottom_menu_wallet">Wallet</string>
 
@@ -30,7 +30,7 @@
     <string name="code_created">Code created successfully</string>
     <string name="code_changed">Code changed successfully</string>
     <string name="pin_code_do_not_match">PINS don\'t match. Please try again</string>
-    <string name="setup_pin_code">Setup PIN Code</string>
+    <string name="setup_pin_code">Setup PIN code</string>
 
     <!-- Sms code -->
     <string name="sms_code_screen_title">Verify phone</string>
@@ -40,11 +40,11 @@
     <string name="sms_code_screen_invalid_code">Wrong code</string>
     <string name="sms_code_screen_resend">New code was sent</string>
 
-    <!--welcome-->
+    <!-- Welcome -->
     <string name="welcome_screen_please_accept_tnc">Please, accept our Terms &amp; Conditions</string>
     <string name="welcome_screen_contact_support">Contact support</string>
-    <string name="welcome_screen_create_new_wallet">Create New Wallet</string>
-    <string name="welcome_screen_recover_old_wallet">Recover Old Wallet</string>
+    <string name="welcome_screen_create_new_wallet">Create new Wallet</string>
+    <string name="welcome_screen_recover_old_wallet">Recover old Wallet</string>
     <string name="welcome_screen_accept_terms_and_conditions">Accept Terms &amp; Conditions</string>
     <string name="welcome_screen_terms_and_conditions">Terms &amp; Conditions</string>
     <string name="welcome_screen_all_assets_in_one_place">All assets in one place</string>
@@ -58,7 +58,6 @@
 
     <!-- Balance -->
     <string name="balance_screen_empty_balance">$…</string>
-    <string name="balance_screen_unit_usd">USD %1$s</string>
     <string name="balance_screen_manage_wallets">Manage wallets</string>
 
     <!-- Recover Wallet -->
@@ -71,7 +70,7 @@
     <string name="recover_wallet_error_all_fields_required">All fields are required</string>
 
     <!--create wallet screen-->
-    <string name="verify_sms_code">Enter SMS Code</string>
+    <string name="verify_sms_code">Enter SMS code</string>
     <string name="phone_number">201-555-0123</string>
     <string name="create_wallet_screen_title">Create new wallet</string>
     <string name="create_wallet_screen_phone">Phone</string>
@@ -118,27 +117,27 @@
     <string name="manage_wallets_screen_title">Manage wallets</string>
 
     <!--atm-->
-    <string name="open_now">Open Now:</string>
+    <string name="open_now">Open now:</string>
 
     <!--settings-->
     <string name="settings_phone">Phone</string>
     <string name="settings_pin">Change PIN</string>
     <string name="settings_verification">Verification</string>
-    <string name="settings_unlink">Unlink Wallet</string>
+    <string name="settings_unlink">Unlink wallet</string>
     <string name="unlink_warning">Unlink the wallet from the current device means clear all local data(seed phrase, public and private keys). You can recover the wallet any time and on any device using your credentials and seed phrase.\n\n</string>
     <string name="unlink_warning2">Please, make sure you have been stored your credentials and seed phrase before unlinking the wallet.</string>
     <string name="change_phone">Change Phone</string>
     <string name="open_seed">Enter Password</string>
     <string name="change">Change</string>
-    <string name="new_phone_number">New Phone Number</string>
-    <string name="change_password">Change Password</string>
+    <string name="new_phone_number">New phone number</string>
+    <string name="change_password">Change password</string>
     <string name="new_pass">New Password *</string>
     <string name="old_pass">Old Password *</string>
-    <string name="confirm_new_pass"> Confirm New Password *</string>
+    <string name="confirm_new_pass"> Confirm new password *</string>
     <string name="change_pin">Change PIN</string>
     <string name="new_pin">New PIN *</string>
     <string name="old_pin">Old PIN *</string>
-    <string name="confirm_new_pin"> Confirm New PIN *</string>
+    <string name="confirm_new_pin"> Confirm new PIN *</string>
     <string name="pin_changed">PIN changed</string>
     <string name="error_wrong_old_pin">Wrong old PIN</string>
 
@@ -149,7 +148,6 @@
     <string name="verification_daily_limit">Daily limit</string>
     <string name="verification_vip_verify">VIP verify</string>
     <string name="verification_verify">Verify</string>
-    <string name="verification_unit_usd">%1$s $</string>
     <string-array name="verification_status_array">
         <item>Incorrect status</item>
         <item>Not verified</item>
@@ -184,10 +182,10 @@
     <!--transactions-->
     <string name="deposit">Deposit</string>
     <string name="wallet_code_clipboard">Wallet code copied to clipboard</string>
-    <string name="balance">Balance:</string>
+    <string name="transactions_screen_balance">Balance</string>
+    <string name="transactions_screen_transaction_created">Transaction was successfully created</string>
     <string name="transaction_changes_percent">%1$s %%</string>
-    <string name="transaction_price_usd">%1$s USD</string>
-    <string name="transaction_crypto_balance">%1$s %2$s</string>
+    <string name="transaction_helper_text_commission">Fee ~ %1$s %2$s</string>
 
     <!--transaction status-->
     <string name="transaction_status_unknown">Unknown</string>
@@ -195,17 +193,17 @@
     <string name="transaction_status_complete">Complete</string>
     <string name="transaction_status_fail">Fail</string>
 
-    <!--transaction status-->
+    <!--transaction type-->
     <string name="transaction_type_unknown">Unknown</string>
     <string name="transaction_type_deposit">Deposit</string>
     <string name="transaction_type_withdraw">Withdraw</string>
-    <string name="transaction_type_send_gift">Send Gift</string>
-    <string name="transaction_type_receive_gift">Receive Gift</string>
+    <string name="transaction_type_send_gift">Send gift</string>
+    <string name="transaction_type_receive_gift">Receive gift</string>
     <string name="transaction_type_buy">Buy</string>
     <string name="transaction_type_sell">Sell</string>
     <string name="transaction_type_move">Move</string>
-    <string name="transaction_type_send_exchange">Send Exchange</string>
-    <string name="transaction_type_receive_exchange">Receive Exchange</string>
+    <string name="transaction_type_send_exchange">Send exchange</string>
+    <string name="transaction_type_receive_exchange">Receive exchange</string>
     <string name="transaction_type_reserve">Reserve</string>
     <string name="transaction_type_recall">Recall</string>
     <string name="transaction_type_self">Self</string>
@@ -213,13 +211,13 @@
     <string name="transaction_type_unstake">Unstake</string>
 
     <!-- Transaction Details -->
-    <string name="transaction_details">Transaction Details %1$s</string>
-
+    <string name="transaction_details_screen_title">Transaction details</string>
+    <string name="transaction_details">Transaction details %1$s</string>
 
     <!--transaction type-->
     <string name="withdraw">Withdraw</string>
-    <string name="send_gift">Send Gift</string>
-    <string name="receive_gift">Receive Gift</string>
+    <string name="send_gift">Send gift</string>
+    <string name="receive_gift">Receive gift</string>
     <string name="buy">Buy</string>
     <string name="sell">Sell</string>
     <string name="send_exchange">Send C2C</string>
@@ -229,36 +227,35 @@
     <string name="transitions_staking">Staking</string>
 
     <string name="title_withdraw">Withdraw</string>
-    <string name="title_trans_details">Transaction Details</string>
+    <string name="title_trans_details">Transaction details</string>
     <string name="cancelled">Cancelled</string>
     <string name="max">Max</string>
     <string name="wrong_address">Wrong address</string>
     <string name="should_be_filled">Should be filled</string>
     <string name="not_enough_balance">Not enough balance</string>
+    <string name="insufficient_balance">Insufficient balance</string>
 
     <!-- Transition details screen -->
     <string name="transition_details_screen_id">ID</string>
     <string name="transition_details_screen_type">Type</string>
     <string name="transition_details_screen_status">Status</string>
-    <string name="transition_details_screen_cash_status">Cash Status</string>
+    <string name="transition_details_screen_cash_status">Cash status</string>
     <string name="transition_details_screen_amount">Amount</string>
-    <string name="transition_details_screen_fiat_amount">Fiat Amount</string>
+    <string name="transition_details_screen_fiat_amount">Fiat amount</string>
     <string name="transition_details_screen_fee">Fee</string>
     <string name="transition_details_screen_date">Date</string>
-    <string name="transition_details_screen_from_address">From Address</string>
-    <string name="transition_details_screen_to_address">To Address</string>
+    <string name="transition_details_screen_from_address">From address</string>
+    <string name="transition_details_screen_to_address">To address</string>
     <string name="transition_details_screen_phone">Phone</string>
     <string name="transition_details_screen_image">Image</string>
     <string name="transition_details_screen_message">Message</string>
-    <string name="transition_details_screen_ref_tax_id">Ref TxId</string>
-    <string name="transition_details_screen_ref_coin">Ref Coin</string>
-    <string name="transition_details_screen_ref_amount">Ref Amount</string>>
-    <string name="transition_details_screen_balance_crypto">%1$s %2$s</string>
-    <string name="transition_details_screen_balance_usd">%1$s USD</string>
+    <string name="transition_details_screen_ref_tax_id">Ref txId</string>
+    <string name="transition_details_screen_ref_coin">Ref coin</string>
+    <string name="transition_details_screen_ref_amount">Ref amount</string>>
     <string name="transition_details_screen_pending">Pending</string>
     <string name="transition_details_screen_complete">Complete</string>
     <string name="transition_details_screen_fail">Fail</string>
-    <string name="transition_details_screen_not_available">Not Available</string>
+    <string name="transition_details_screen_not_available">Not available</string>
     <string name="transition_details_screen_available">Available</string>
     <string name="transition_details_screen_withdrawn">Withdrawn</string>
     <string name="transition_details_screen_one_day">1d</string>
@@ -272,9 +269,7 @@
     <string name="withdraw_screen_screen_title">Withdraw %1$s</string>
     <string name="withdraw_screen_price">Price</string>
     <string name="withdraw_screen_balance">Balance</string>
-    <string name="withdraw_screen_recipient_address">Recipient Address</string>
-    <string name="withdraw_screen_usd_amount">USD Amount</string>
-    <string name="withdraw_screen_crypto_amount">%1$s Amount</string>
+    <string name="withdraw_screen_recipient_address">Recipient address</string>
     <string name="withdraw_screen_where_money_libovski">Insufficient ETH balance for transaction fee</string>
 
     <!-- Sell screen -->
@@ -282,8 +277,6 @@
     <string name="sell_screen_balance">Balance</string>
     <string name="sell_screen_daily_limit">Daily Limit</string>
     <string name="sell_screen_tx_limit">Tx Limit</string>
-    <string name="sell_screen_usd_amount">USD Amount</string>
-    <string name="sell_screen_crypto_amount">%1$s Amount</string>
     <string name="sell_screen_not_enough_tradable_balance">Not enough on a tradable balance</string>
     <string name="sell_screen_atm_contains_only_count_banknotes">ATM contains only 20 and 50 banknotes</string>
     <string name="sell_screen_sell_from_another_address">Sell from another address</string>
@@ -293,24 +286,18 @@
     <string name="sell_screen_instructions_4">Scan QR code from transaction details popup.</string>
 
     <!-- Send gift screen -->
-    <string name="send_gift_screen_title">Send Gift %1$s</string>
+    <string name="send_gift_screen_title">Send gift %1$s</string>
     <string name="send_gift_screen_price">Price</string>
     <string name="send_gift_screen_balance">Balance</string>
-    <string name="send_gift_screen_recipient_address">Phone</string>
-    <string name="send_gift_screen_usd_amount">USD Amount</string>
-    <string name="send_gift_screen_crypto_amount">%1$s Amount</string>
-    <string name="send_gift_screen_message">Message…</string>
+    <string name="send_gift_screen_recipient_address">Recipient phone</string>
+    <string name="send_gift_screen_message">Message</string>
     <string name="send_gift_screen_add">Add</string>
     <string name="send_gift_screen_remove">Remove</string>
 
     <!-- Coin to coin screen -->
     <string name="exchange_coin_to_coin_screen_title">Exchange %1$s</string>
     <string name="exchange_coin_to_coin_screen_price">Price</string>
-    <string name="exchange_coin_to_coin_screen_price_value">%1$s USD</string>
     <string name="exchange_coin_to_coin_screen_balance">Balance</string>
-    <string name="exchange_coin_to_coin_screen_balance_crypto">%1$s %2$s</string>
-    <string name="exchange_coin_to_coin_screen_balance_usd">%1$s USD</string>
-    <string name="exchange_coin_to_coin_screen_crypto_amount">%1$s Amount</string>
     <string name="exchange_coin_to_coin_screen_select_coin">Select coin please</string>
 
     <!-- Deposit -->
@@ -330,7 +317,6 @@
     <string name="trade_screen_empty">Empty</string>
     <string name="trade_screen_oops">Oops</string>
     <string name="trade_screen_recall">Recall</string>
-    <string name="trade_screen_create">Create</string>
     <string name="trade_screen_reserve">Reserve</string>
     <string name="trade_screen_post">Post</string>
     <string name="trade_screen_user">User</string>
@@ -367,20 +353,11 @@
     <string name="trade_reserve_screen_fiat_amount">Fiat amount</string>
     <string name="trade_reserve_screen_not_enough_reserved_amount">Reserved amount is lower than transaction fee</string>
 
-    <string name="unit_dynamic">%1$s %2$s</string>
-    <string name="unit_usd_dynamic">%1$s USD</string>
-    <string name="unit_usd_dynamic_symbol">%1$s $</string>
-    <string name="usd_amount">USD Amount</string>
-    <string name="crypto_amount">%1$s Amount</string>
-    <string name="button_next">Next</string>
-    <string name="button_create">Create</string>
-
-    <string name="alert_copy_to_clipboard">Copied</string>
-
     <string name="error_please_fill_all_fields">Please fill all fields</string>
     <string name="error_internet_unavailable">Internet connection is unavailable</string>
     <string name="error_something_went_wrong">Something went wrong</string>
     <string name="error_transaction_cannot_be_created">The transaction can not be created</string>
+    <string name="error_xrp_amount_is_not_enough">Amount is not enough to activate receiver address</string>
 
     <string name="staking_screen_title">Staking CATM</string>
     <string name="staking_screen_price">Price</string>
@@ -391,7 +368,7 @@
     <string name="staking_screen_min_days">Min duration</string>
     <string name="staking_screen_stake">Stake</string>
     <string name="staking_screen_unstake">Unstake</string>
-    <string name="staking_screen_hint_catm_amount">CATM Amount</string>
+    <string name="staking_screen_hint_catm_amount">CATM amount</string>
     <string name="staking_screen_staked_amount">%1$s CATM</string>
     <string name="staking_screen_rewards_amount">%1$s CATM,  %2$.2f %%</string>
     <plurals name="staking_screen_time_value">
@@ -400,7 +377,8 @@
         <item quantity="other">%d days</item>
     </plurals>
 
-
+    <string name="create">Create</string>
+    <string name="submit">Submit</string>
     <string name="paste">Paste</string>
     <string name="next">Next</string>
     <string name="update">Update</string>
@@ -411,11 +389,16 @@
     <string name="copy_text">Copy</string>
     <string name="clipboard">Copied</string>
 
+    <string name="text_text">%1$s %2$s</string>
+    <string name="text_usd">%1$s $</string>
+    <string name="text_amount">%1$s amount</string>
+    <string name="usd_amount">USD amount</string>
+
     //settings
     <string name="security_label">Security</string>
     <string name="kyc_label">KYC</string>
     <string name="about_label">About</string>
-    <string name="terms_label">Terms &amp; Conditions</string>
+    <string name="terms_label">Terms &amp; conditions</string>
     <string name="support_label">Support</string>
     <string name="version_label">Version</string>
     <string name="update_phone_label">Update phone</string>

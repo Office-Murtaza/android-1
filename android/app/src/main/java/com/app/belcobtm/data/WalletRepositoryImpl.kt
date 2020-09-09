@@ -1,6 +1,5 @@
 package com.app.belcobtm.data
 
-import com.app.belcobtm.data.core.NetworkUtils
 import com.app.belcobtm.data.disk.database.AccountDao
 import com.app.belcobtm.data.disk.database.mapToDataItem
 import com.app.belcobtm.data.disk.database.mapToEntity
@@ -14,7 +13,6 @@ import com.app.belcobtm.domain.wallet.item.*
 class WalletRepositoryImpl(
     private val apiService: WalletApiService,
     private val prefHelper: SharedPreferencesHelper,
-    private val networkUtils: NetworkUtils,
     private val daoAccount: AccountDao
 ) : WalletRepository {
     private val cachedCoinDataItemList: MutableList<CoinDataItem> = mutableListOf()
@@ -30,7 +28,7 @@ class WalletRepositoryImpl(
     override fun getCoinItemList(): List<CoinDataItem> = cachedCoinDataItemList
 
     override suspend fun getAccountList(): List<AccountDataItem> =
-        (daoAccount.getItemList() ?: emptyList()).map { it.mapToDataItem() }
+        (daoAccount.getItemList() ?: emptyList()).sortedBy { it.id }.map { it.mapToDataItem() }
 
     override suspend fun updateAccount(accountDataItem: AccountDataItem): Either<Failure, Unit> {
         daoAccount.updateItem(accountDataItem.mapToEntity())
@@ -39,10 +37,10 @@ class WalletRepositoryImpl(
 
     override suspend fun getFreshCoinDataItem(
         coinCode: String
-    ): Either<Failure, CoinDataItem> = if (networkUtils.isNetworkAvailable()) {
+    ): Either<Failure, CoinDataItem> {
         val enabledCoinList = daoAccount.getItemList()?.filter { it.isEnabled }?.map { it.type.name } ?: emptyList()
         val response = apiService.getBalance(enabledCoinList)
-        if (response.isRight) {
+        return if (response.isRight) {
             val balanceItem = (response as Either.Right).b
             cachedCoinDataItemList.clear()
             cachedCoinDataItemList.addAll(balanceItem.coinList)
@@ -55,11 +53,9 @@ class WalletRepositoryImpl(
         } else {
             response as Either.Left
         }
-    } else {
-        Either.Left(Failure.NetworkConnection)
     }
 
-    override suspend fun getBalanceItem(): Either<Failure, BalanceDataItem> = if (networkUtils.isNetworkAvailable()) {
+    override suspend fun getBalanceItem(): Either<Failure, BalanceDataItem> {
         val enabledCoinList = daoAccount.getItemList()?.filter { it.isEnabled }?.map { it.type.name } ?: emptyList()
         val response = apiService.getBalance(enabledCoinList)
         if (response.isRight) {
@@ -67,28 +63,22 @@ class WalletRepositoryImpl(
             cachedCoinDataItemList.clear()
             cachedCoinDataItemList.addAll(balanceItem.coinList)
         }
-        response
-    } else {
-        Either.Left(Failure.NetworkConnection)
+        return response
     }
 
     override suspend fun getChart(
         coinCode: String
-    ): Either<Failure, ChartDataItem> = if (networkUtils.isNetworkAvailable()) {
-        apiService.getChart(coinCode)
-    } else {
-        Either.Left(Failure.NetworkConnection)
-    }
+    ): Either<Failure, ChartDataItem> = apiService.getChart(coinCode)
 
     override suspend fun updateCoinFee(
         coinCode: String
-    ): Either<Failure, CoinFeeDataItem> = if (networkUtils.isNetworkAvailable()) {
+    ): Either<Failure, CoinFeeDataItem> {
         val response = apiService.getCoinFee(coinCode)
-        val mutableCoinsFeeMap = prefHelper.coinsFee.toMutableMap()
-        mutableCoinsFeeMap[coinCode] = (response as Either.Right).b
-        prefHelper.coinsFee = mutableCoinsFeeMap
-        response
-    } else {
-        Either.Left(Failure.NetworkConnection)
+        if (response.isRight) {
+            val mutableCoinsFeeMap = prefHelper.coinsFee.toMutableMap()
+            mutableCoinsFeeMap[coinCode] = (response as Either.Right).b
+            prefHelper.coinsFee = mutableCoinsFeeMap
+        }
+        return response
     }
 }

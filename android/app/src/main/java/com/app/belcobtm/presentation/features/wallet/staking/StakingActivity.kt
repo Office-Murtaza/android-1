@@ -55,13 +55,13 @@ class StakingActivity : BaseActivity() {
             when (loadingData) {
                 is LoadingData.Loading -> progressView.show()
                 is LoadingData.Success -> with(loadingData.data) {
-                    priceUsdView.text = getString(R.string.transaction_price_usd, price.toStringUsd())
+                    priceUsdView.text = getString(R.string.text_usd, price.toStringUsd())
                     balanceCryptoView.text = getString(
-                        R.string.transaction_crypto_balance,
+                        R.string.text_text,
                         balanceCoin.toStringCoin(),
                         LocalCoinType.CATM.name
                     )
-                    balanceUsdView.text = getString(R.string.transaction_price_usd, balanceUsd.toStringUsd())
+                    balanceUsdView.text = getString(R.string.text_usd, balanceUsd.toStringUsd())
                     stakedView.text = getString(R.string.staking_screen_staked_amount, staked.toStringCoin())
                     rewardsView.text =
                         getString(R.string.staking_screen_rewards_amount, rewardsAmount.toStringCoin(), rewardsPercent)

@@ -5,8 +5,7 @@
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".ui.main.settings.phone.ShowPhoneActivity">
+    android:orientation="vertical">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbarView"
@@ -89,8 +88,8 @@
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/exchangeView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
                     android:layout_marginStart="8dp"
                     app:layout_constraintBottom_toBottomOf="@id/balanceCryptoView"
                     app:layout_constraintEnd_toStartOf="@id/balanceUsdView"
@@ -153,7 +152,7 @@
                     <com.google.android.material.textfield.TextInputEditText
                         style="@style/EditText.InputWithMax"
                         android:digits="1234567890"
-                        android:hint="@string/sell_screen_usd_amount"
+                        android:hint="@string/usd_amount"
                         android:inputType="number"
                         tools:ignore="RtlSymmetry" />
                 </com.google.android.material.textfield.TextInputLayout>
@@ -180,7 +179,7 @@
                         android:digits="1234567890."
                         android:focusableInTouchMode="false"
                         android:inputType="numberDecimal"
-                        tools:hint="@string/sell_screen_crypto_amount"
+                        tools:hint="@string/text_amount"
                         tools:ignore="RtlSymmetry" />
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -203,7 +202,7 @@
                     android:layout_marginEnd="16dp"
                     android:paddingTop="12dp"
                     android:paddingBottom="12dp"
-                    android:text="@string/button_next"
+                    android:text="@string/next"
                     android:textColor="@android:color/white"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"

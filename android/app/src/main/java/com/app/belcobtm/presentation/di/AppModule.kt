@@ -19,7 +19,7 @@ import com.app.belcobtm.presentation.features.settings.verification.blank.Verifi
 import com.app.belcobtm.presentation.features.settings.verification.info.VerificationInfoViewModel
 import com.app.belcobtm.presentation.features.settings.verification.vip.VerificationVipViewModel
 import com.app.belcobtm.presentation.features.sms.code.SmsCodeViewModel
-import com.app.belcobtm.presentation.features.wallet.add.AddWalletViewModel
+import com.app.belcobtm.presentation.features.wallet.add.ManageWalletsViewModel
 import com.app.belcobtm.presentation.features.wallet.balance.WalletViewModel
 import com.app.belcobtm.presentation.features.wallet.exchange.coin.to.coin.ExchangeViewModel
 import com.app.belcobtm.presentation.features.wallet.send.gift.SendGiftViewModel
@@ -58,7 +58,7 @@ val viewModelModule = module {
             feeMap
         )
     }
-    viewModel { AddWalletViewModel(get(), get()) }
+    viewModel { ManageWalletsViewModel(get(), get()) }
     viewModel { (latitude: Double, longitude: Double, coinCode: String) ->
         TradeViewModel(coinCode, latitude, longitude, get(), get(), get(), get(), get())
     }
@@ -108,11 +108,11 @@ val viewModelModule = module {
         val coinList = (get() as GetCoinListUseCase).invoke()
         val fromCoinDataItem = coinList.find { it.code == coinCode }!!
         val fromCoinFee = get<WalletRepository>().getCoinFeeItemByCode(coinCode)
-        SendGiftViewModel(get(), fromCoinDataItem, fromCoinFee)
+        SendGiftViewModel(get(), fromCoinDataItem, fromCoinFee, coinList)
     }
     viewModel { (coinCode: String) ->
         val coinList = (get() as GetCoinListUseCase).invoke()
-        val fromCoinDataItem = coinList.find { it.code == coinCode }!!
+        val fromCoinDataItem = coinList.find { it.code == coinCode }
         val fromCoinFee = get<WalletRepository>().getCoinFeeItemByCode(coinCode)
         WithdrawViewModel(get(), fromCoinDataItem, fromCoinFee, coinList)
     }

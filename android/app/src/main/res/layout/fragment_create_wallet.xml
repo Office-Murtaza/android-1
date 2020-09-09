@@ -121,11 +121,10 @@
             android:id="@+id/nextButtonView"
             style="@style/Button.Primary"
             android:enabled="false"
-            android:text="@string/button_next"
+            android:text="@string/next"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
-
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

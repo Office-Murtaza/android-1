@@ -1,7 +1,10 @@
 package com.app.belcobtm.presentation.features.wallet.add
 
+import android.view.MenuItem
+import android.view.View
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.Observer
+import androidx.core.os.bundleOf
+import androidx.fragment.app.setFragmentResult
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.app.belcobtm.R
 import com.app.belcobtm.presentation.core.ui.fragment.BaseFragment
@@ -10,18 +13,30 @@ import kotlinx.android.synthetic.main.fragment_manage_wallets.*
 import org.koin.android.ext.android.inject
 
 class ManageWalletsFragment : BaseFragment() {
-    private val viewModel: AddWalletViewModel by inject()
+    private val viewModel: ManageWalletsViewModel by inject()
     private val adapter: AddWalletCoinsAdapter = AddWalletCoinsAdapter { position, isChecked ->
         viewModel.changeCoinState(position, isChecked)
     }
-
+    override val backPressedListener: View.OnClickListener = View.OnClickListener {
+        setFragmentResult(REQUEST_KEY, bundleOf())
+        popBackStack()
+    }
     override val resourceLayout: Int = R.layout.fragment_manage_wallets
     override val isToolbarEnabled: Boolean = true
     override val isHomeButtonEnabled: Boolean = true
-    override var isMenuEnabled: Boolean = false
+    override var isMenuEnabled: Boolean = true
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean = if (item.itemId == android.R.id.home) {
+        setFragmentResult(REQUEST_KEY, bundleOf())
+        hideKeyboard()
+        popBackStack()
+        true
+    } else {
+        false
+    }
 
     override fun initObservers() {
-        viewModel.coinListLiveData.observe(this, Observer { adapter.setItemList(it) })
+        viewModel.coinListLiveData.observe(this, { adapter.setItemList(it) })
     }
 
     override fun initViews() {
@@ -32,5 +47,9 @@ class ManageWalletsFragment : BaseFragment() {
             coinListView.addItemDecoration(itemDecorator)
         }
         coinListView.adapter = adapter
+    }
+
+    companion object {
+        const val REQUEST_KEY = "request_key_manage_wallets_fragment"
     }
 }

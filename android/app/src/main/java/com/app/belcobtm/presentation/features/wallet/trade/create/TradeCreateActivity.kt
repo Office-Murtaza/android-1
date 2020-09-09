@@ -55,23 +55,23 @@ class TradeCreateActivity : BaseActivity() {
         }
         with(viewModel) {
             toolbarView.title = getString(R.string.add_edit_trade_screen_title_create, fromCoinItem.code)
-            priceUsdView.text = getString(R.string.unit_usd_dynamic, fromCoinItem.priceUsd.toStringUsd())
+            priceUsdView.text = getString(R.string.text_usd, fromCoinItem.priceUsd.toStringUsd())
             balanceCryptoView.text = getString(
-                R.string.exchange_coin_to_coin_screen_balance_crypto,
+                R.string.text_text,
                 fromCoinItem.balanceCoin.toStringCoin(),
                 fromCoinItem.code
             )
             balanceUsdView.text = getString(
-                R.string.exchange_coin_to_coin_screen_balance_usd,
+                R.string.text_usd,
                 fromCoinItem.balanceUsd.toStringUsd()
             )
             reservedCryptoView.text = getString(
-                R.string.exchange_coin_to_coin_screen_balance_crypto,
+                R.string.text_text,
                 fromCoinItem.reservedBalanceCoin.toStringCoin(),
                 fromCoinItem.code
             )
             reservedUsdView.text = getString(
-                R.string.exchange_coin_to_coin_screen_balance_usd,
+                R.string.text_usd,
                 fromCoinItem.reservedBalanceUsd.toStringUsd()
             )
         }

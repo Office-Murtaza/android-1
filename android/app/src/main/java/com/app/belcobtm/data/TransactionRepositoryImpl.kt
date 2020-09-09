@@ -89,7 +89,12 @@ class TransactionRepositoryImpl(
                 val fee = prefHelper.coinsFee[coinCode]?.txFee ?: 0.0
                 val fromAddress = daoAccount.getItem(coinCode).publicKey
                 val hash = (hashResponse as Either.Right).b
-                apiService.sendGift(hash, coinCode, amount, giftId, phone, message, fee, fromAddress, toAddress)
+                if (coinCode == LocalCoinType.ETH.name || coinCode == LocalCoinType.CATM.name) {
+                    apiService.sendGift(hash, coinCode, amount, giftId, phone, message, fee, fromAddress, toAddress)
+                } else {
+                    apiService.sendGift(hash, coinCode, amount, giftId, phone, message)
+                }
+
             } else {
                 hashResponse as Either.Left
             }

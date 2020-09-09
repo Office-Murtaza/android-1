@@ -1,213 +1,203 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/rootView"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:fillViewport="true"
-    android:isScrollContainer="true"
-    android:overScrollMode="never"
-    android:scrollbars="none">
+    android:layout_height="match_parent">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp">
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/priceBarrierView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="end"
+        app:constraint_referenced_ids="balanceTitleView,priceTitleView" />
 
-        <androidx.constraintlayout.widget.Barrier
-            android:id="@+id/priceBarrierView"
-            android:layout_width="wrap_content"
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/priceTitleView"
+        style="@style/Transaction.Title.Medium.Key"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/send_gift_screen_price"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/priceUsdView"
+        style="@style/Transaction.Title.Medium.Value"
+        android:layout_marginStart="16dp"
+        app:layout_constraintStart_toEndOf="@id/priceBarrierView"
+        app:layout_constraintTop_toTopOf="@id/priceTitleView"
+        tools:text="2525.31 USD" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/balanceTitleView"
+        style="@style/Transaction.Title.Medium.Key"
+        android:text="@string/send_gift_screen_balance"
+        app:layout_constraintStart_toStartOf="@id/priceTitleView"
+        app:layout_constraintTop_toBottomOf="@id/priceTitleView" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/balanceCryptoView"
+        style="@style/Transaction.Title.Medium.Value"
+        app:layout_constraintEnd_toStartOf="@id/exchangeView"
+        app:layout_constraintStart_toStartOf="@id/priceUsdView"
+        app:layout_constraintTop_toTopOf="@id/balanceTitleView"
+        tools:text="0.000902 BTC" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/exchangeView"
+        android:layout_width="16dp"
+        android:layout_height="16dp"
+        android:layout_marginStart="8dp"
+        app:layout_constraintBottom_toBottomOf="@id/balanceCryptoView"
+        app:layout_constraintEnd_toStartOf="@id/balanceUsdView"
+        app:layout_constraintStart_toEndOf="@id/balanceCryptoView"
+        app:layout_constraintTop_toTopOf="@id/balanceCryptoView"
+        app:srcCompat="@drawable/ic_compare_arrows" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/balanceUsdView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:textColor="@color/blue_color"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintBottom_toBottomOf="@id/exchangeView"
+        app:layout_constraintStart_toEndOf="@id/exchangeView"
+        app:layout_constraintTop_toTopOf="@id/exchangeView"
+        tools:text="8.90 USD" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/phoneContainerView"
+        style="@style/TextInputLayoutOutline"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/balanceTitleView">
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:barrierDirection="end"
-            app:constraint_referenced_ids="balanceTitleView,priceTitleView" />
+            android:drawableEnd="@drawable/ic_phone"
+            android:drawableTint="@color/colorPrimary"
+            android:hint="@string/send_gift_screen_recipient_address"
+            android:inputType="phone"
+            android:nextFocusDown="@id/amountCryptoView" />
+    </com.google.android.material.textfield.TextInputLayout>
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/priceTitleView"
-            style="@style/Transaction.Title.Medium.Key"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:text="@string/send_gift_screen_price"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/amountCryptoView"
+        style="@style/TextInputLayoutOutline"
+        app:layout_constraintEnd_toEndOf="@id/phoneContainerView"
+        app:helperTextEnabled="true"
+        app:layout_constraintStart_toStartOf="@id/phoneContainerView"
+        app:layout_constraintTop_toBottomOf="@id/phoneContainerView">
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/priceUsdView"
-            style="@style/Transaction.Title.Medium.Value"
-            android:layout_marginStart="16dp"
-            app:layout_constraintStart_toEndOf="@id/priceBarrierView"
-            app:layout_constraintTop_toTopOf="@id/priceTitleView"
-            tools:text="2525.31 USD" />
+        <com.google.android.material.textfield.TextInputEditText
+            style="@style/EditText.InputWithMax"
+            android:digits="1234567890."
+            android:imeOptions="actionNext"
+            android:inputType="numberDecimal"
+            android:nextFocusUp="@id/messageView"
+            android:nextFocusDown="@id/messageView"
+            tools:hint="@string/text_amount" />
+    </com.google.android.material.textfield.TextInputLayout>
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/balanceTitleView"
-            style="@style/Transaction.Title.Medium.Key"
-            android:text="@string/send_gift_screen_balance"
-            app:layout_constraintStart_toStartOf="@id/priceTitleView"
-            app:layout_constraintTop_toBottomOf="@id/priceTitleView" />
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/maxCryptoView"
+        style="@style/EditText.TextLink"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
+        android:text="@string/max"
+        app:layout_constraintBottom_toBottomOf="@id/amountCryptoView"
+        app:layout_constraintEnd_toEndOf="@id/amountCryptoView"
+        app:layout_constraintTop_toTopOf="@id/amountCryptoView" />
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/balanceCryptoView"
-            style="@style/Transaction.Title.Medium.Value"
-            app:layout_constraintEnd_toStartOf="@id/exchangeView"
-            app:layout_constraintStart_toStartOf="@id/priceUsdView"
-            app:layout_constraintTop_toTopOf="@id/balanceTitleView"
-            tools:text="0.000902 BTC" />
+    <TextView
+        android:id="@id/amountUsdView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="0.00 $"
+        android:textColor="@color/colorPrimary"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@id/amountCryptoView"
+        app:layout_constraintTop_toBottomOf="@id/amountCryptoView" />
 
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/exchangeView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            app:layout_constraintBottom_toBottomOf="@id/balanceCryptoView"
-            app:layout_constraintEnd_toStartOf="@id/balanceUsdView"
-            app:layout_constraintStart_toEndOf="@id/balanceCryptoView"
-            app:layout_constraintTop_toTopOf="@id/balanceCryptoView"
-            app:srcCompat="@drawable/ic_compare_arrows" />
+    <androidx.cardview.widget.CardView
+        android:id="@+id/gifContainerView"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="16dp"
+        android:backgroundTint="#ebf4fd"
+        android:elevation="0dp"
+        app:cardElevation="0dp"
+        app:layout_constraintStart_toStartOf="@id/amountCryptoView"
+        app:layout_constraintTop_toBottomOf="@id/amountUsdView">
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/balanceUsdView"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:textColor="@color/blue_color"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            app:layout_constrainedWidth="true"
-            app:layout_constraintBottom_toBottomOf="@id/exchangeView"
-            app:layout_constraintStart_toEndOf="@id/exchangeView"
-            app:layout_constraintTop_toTopOf="@id/exchangeView"
-            tools:text="8.90 USD" />
+        <com.giphy.sdk.ui.views.GifView
+            android:id="@+id/gifView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            app:gphKeepGifRatio="true" />
+    </androidx.cardview.widget.CardView>
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/phoneContainerView"
-            style="@style/TextInputLayoutOutline"
-            android:layout_marginStart="12dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/balanceTitleView">
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/addOrRemoveButtonView"
+        android:layout_width="34dp"
+        android:layout_height="34dp"
+        android:layout_margin="10dp"
+        android:background="@drawable/bg_rounded"
+        android:clickable="true"
+        android:elevation="4dp"
+        android:focusable="true"
+        android:padding="4dp"
+        app:layout_constraintBottom_toBottomOf="@id/gifContainerView"
+        app:layout_constraintEnd_toEndOf="@id/gifContainerView"
+        app:srcCompat="@drawable/ic_add"
+        app:tint="@color/colorPrimary" />
 
-            <androidx.appcompat.widget.AppCompatEditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:drawableEnd="@drawable/ic_phone"
-                android:drawableTint="@color/colorPrimary"
-                android:hint="@string/send_gift_screen_recipient_address"
-                android:inputType="phone"
-                android:nextFocusDown="@id/amountCryptoView" />
-        </com.google.android.material.textfield.TextInputLayout>
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/messageView"
+        style="@style/TextInputLayoutOutline"
+        android:layout_width="0dp"
+        android:layout_height="106dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="10dp"
+        app:layout_constraintEnd_toEndOf="@id/amountUsdView"
+        app:layout_constraintStart_toEndOf="@id/gifContainerView"
+        app:layout_constraintTop_toBottomOf="@id/amountUsdView">
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/amountCryptoView"
-            style="@style/TextInputLayoutOutline"
-            app:layout_constraintEnd_toEndOf="@id/phoneContainerView"
-            app:layout_constraintStart_toStartOf="@id/phoneContainerView"
-            app:layout_constraintTop_toBottomOf="@id/phoneContainerView">
+        <androidx.appcompat.widget.AppCompatEditText
+            style="@style/EditText.InputWithMax"
+            android:layout_height="match_parent"
+            android:gravity="start|top"
+            android:hint="@string/send_gift_screen_message"
+            android:imeOptions="actionDone"
+            android:inputType="textMultiLine"
+            android:maxLength="160" />
+    </com.google.android.material.textfield.TextInputLayout>
 
-            <com.google.android.material.textfield.TextInputEditText
-                style="@style/EditText.InputWithMax"
-                android:digits="1234567890."
-                android:imeOptions="actionNext"
-                android:inputType="numberDecimal"
-                android:nextFocusUp="@id/messageView"
-                android:nextFocusDown="@id/messageView"
-                tools:hint="@string/send_gift_screen_crypto_amount" />
-        </com.google.android.material.textfield.TextInputLayout>
+    <Space
+        android:id="@+id/spaceView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@id/nextButtonView"
+        app:layout_constraintTop_toBottomOf="@id/messageView" />
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/maxCryptoView"
-            style="@style/EditText.TextLink"
-            android:layout_marginEnd="10dp"
-            android:layout_marginBottom="10dp"
-            android:text="@string/max"
-            app:layout_constraintBottom_toBottomOf="@id/amountCryptoView"
-            app:layout_constraintEnd_toEndOf="@id/amountCryptoView"
-            app:layout_constraintTop_toTopOf="@id/amountCryptoView" />
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/nextButtonView"
+        style="@style/Button.Primary"
+        android:enabled="false"
+        android:text="@string/submit"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/spaceView" />
 
-        <TextView
-            android:id="@id/amountUsdView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="0.00 $"
-            android:textColor="@color/colorPrimary"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="@id/amountCryptoView"
-            app:layout_constraintTop_toBottomOf="@id/amountCryptoView" />
-
-        <androidx.cardview.widget.CardView
-            android:id="@+id/gifContainerView"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_marginTop="16dp"
-            android:backgroundTint="#ebf4fd"
-            android:elevation="0dp"
-            app:cardElevation="0dp"
-            app:layout_constraintStart_toStartOf="@id/amountCryptoView"
-            app:layout_constraintTop_toBottomOf="@id/amountUsdView">
-
-            <com.giphy.sdk.ui.views.GifView
-                android:id="@+id/gifView"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                app:gphKeepGifRatio="true" />
-        </androidx.cardview.widget.CardView>
-
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/addOrRemoveButtonView"
-            android:layout_width="34dp"
-            android:layout_height="34dp"
-            android:layout_margin="10dp"
-            android:background="@drawable/bg_rounded"
-            android:clickable="true"
-            android:elevation="4dp"
-            android:focusable="true"
-            android:padding="4dp"
-            app:layout_constraintBottom_toBottomOf="@id/gifContainerView"
-            app:layout_constraintEnd_toEndOf="@id/gifContainerView"
-            app:srcCompat="@drawable/ic_add"
-            app:tint="@color/colorPrimary" />
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/messageView"
-            style="@style/TextInputLayoutOutline"
-            android:layout_width="0dp"
-            android:layout_height="106dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="10dp"
-            app:layout_constraintEnd_toEndOf="@id/amountUsdView"
-            app:layout_constraintStart_toEndOf="@id/gifContainerView"
-            app:layout_constraintTop_toBottomOf="@id/amountUsdView">
-
-            <androidx.appcompat.widget.AppCompatEditText
-                style="@style/EditText.InputWithMax"
-                android:layout_height="match_parent"
-                android:gravity="start|top"
-                android:hint="@string/send_gift_screen_message"
-                android:imeOptions="actionDone"
-                android:inputType="textMultiLine"
-                android:maxLength="160" />
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <Space
-            android:id="@+id/spaceView"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            app:layout_constraintBottom_toTopOf="@id/nextButtonView"
-            app:layout_constraintTop_toBottomOf="@id/messageView" />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/nextButtonView"
-            style="@style/Button.Primary"
-            android:enabled="false"
-            android:text="@string/button_next"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/spaceView" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-</ScrollView>
-
+</androidx.constraintlayout.widget.ConstraintLayout>

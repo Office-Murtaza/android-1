@@ -14,13 +14,13 @@ class DepositFragment : BaseFragment() {
     override val resourceLayout: Int = R.layout.activity_deposit
     override val isToolbarEnabled: Boolean = true
     override val isHomeButtonEnabled: Boolean = true
-    override var isMenuEnabled: Boolean = false
+    override var isMenuEnabled: Boolean = true
 
     override fun initListeners() {
         val address = DepositFragmentArgs.fromBundle(requireArguments()).coinAddress
         copyButtonView.setOnClickListener {
             copyToClipboard(getString(R.string.wallet_code_clipboard), address)
-            AlertHelper.showToastLong(requireContext(), R.string.alert_copy_to_clipboard)
+            AlertHelper.showToastLong(requireContext(), R.string.clipboard)
         }
         imageView.viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
             override fun onGlobalLayout() {

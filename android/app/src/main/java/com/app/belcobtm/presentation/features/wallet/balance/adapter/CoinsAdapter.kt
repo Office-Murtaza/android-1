@@ -45,10 +45,10 @@ class CoinsAdapter(private val listener: (item: BalanceListItem) -> Unit) :
                 imageView.setImageResource(LocalCoinType.valueOf(item.code).resIcon())
                 nameView.text = LocalCoinType.valueOf(item.code).fullName
                 balanceCryptoView.text =
-                    context.getString(R.string.unit_dynamic, item.balanceCrypto.toStringCoin(), item.code)
+                    context.getString(R.string.text_text, item.balanceCrypto.toStringCoin(), item.code)
                 balanceFiatView.text =
-                    context.getString(R.string.unit_usd_dynamic_symbol, item.balanceCrypto.toStringUsd())
-                priceView.text = context.getString(R.string.balance_screen_unit_usd, item.priceUsd.toStringUsd())
+                    context.getString(R.string.text_usd, item.balanceFiat.toStringUsd())
+                priceView.text = context.getString(R.string.text_usd, item.priceUsd.toStringUsd())
             }
         }
     }

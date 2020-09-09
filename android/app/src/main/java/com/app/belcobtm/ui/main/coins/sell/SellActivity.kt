@@ -51,8 +51,8 @@ class SellActivity : BaseMvpActivity<SellContract.View, SellContract.Presenter>(
 
     override fun showLimits(limitsItem: SellLimitsDataItem) {
         this.limits = limitsItem
-        dayLimitView.text = getString(R.string.transaction_price_usd, limitsItem.usdDailyLimit.toStringUsd())
-        txLimitView.text = getString(R.string.transaction_price_usd, limitsItem.usdTxLimit.toStringUsd())
+        dayLimitView.text = getString(R.string.text_usd, limitsItem.usdDailyLimit.toStringUsd())
+        txLimitView.text = getString(R.string.text_usd, limitsItem.usdTxLimit.toStringUsd())
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -133,19 +133,19 @@ class SellActivity : BaseMvpActivity<SellContract.View, SellContract.Presenter>(
 
     private fun initViews() {
         sellContainerGroupView.visibility = View.VISIBLE
-        amountCryptoView.hint = getString(R.string.sell_screen_crypto_amount, coinDataItem.code)
+        amountCryptoView.hint = getString(R.string.text_amount, coinDataItem.code)
         initPrice()
         initBalance()
     }
 
     private fun initPrice() {
-        priceUsdView.text = getString(R.string.transaction_price_usd, coinDataItem.priceUsd.toStringUsd())
+        priceUsdView.text = getString(R.string.text_usd, coinDataItem.priceUsd.toStringUsd())
     }
 
     private fun initBalance() {
         balanceCryptoView.text =
-            getString(R.string.transaction_crypto_balance, coinDataItem.balanceCoin.toStringCoin(), coinDataItem.code)
-        balanceUsdView.text = getString(R.string.transaction_price_usd, coinDataItem.balanceUsd.toStringUsd())
+            getString(R.string.text_text, coinDataItem.balanceCoin.toStringCoin(), coinDataItem.code)
+        balanceUsdView.text = getString(R.string.text_usd, coinDataItem.balanceUsd.toStringUsd())
     }
 
     private fun getMaxCurrencyValue(): Int {
@@ -265,7 +265,7 @@ class SellActivity : BaseMvpActivity<SellContract.View, SellContract.Presenter>(
 
         addressView.text = addressDestination
         amountView.text =
-            getString(R.string.transaction_crypto_balance, cryptoAmount.toStringCoin(), coinDataItem.code)
+            getString(R.string.text_text, cryptoAmount.toStringCoin(), coinDataItem.code)
         imageView.viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
             override fun onGlobalLayout() {
                 val params = imageView.layoutParams
@@ -278,7 +278,7 @@ class SellActivity : BaseMvpActivity<SellContract.View, SellContract.Presenter>(
         })
         copyAddressButtonView.setOnClickListener {
             copyToClipboard(addressDestination ?: "", addressDestination ?: "")
-            AlertHelper.showToastLong(applicationContext, R.string.alert_copy_to_clipboard)
+            AlertHelper.showToastLong(applicationContext, R.string.clipboard)
         }
     }
 

@@ -12,7 +12,8 @@ import kotlin.math.max
 class SendGiftViewModel(
     private val transactionCreateUseCase: SendGiftTransactionCreateUseCase,
     private val fromCoinDataItem: CoinDataItem,
-    private val fromCoinFeeDataItem: CoinFeeDataItem
+    private val fromCoinFeeDataItem: CoinFeeDataItem,
+    private val coinDataItemList: List<CoinDataItem>
 ) : ViewModel() {
     val sendGiftLiveData: SingleLiveData<LoadingData<Unit>> = SingleLiveData()
 
@@ -51,4 +52,7 @@ class SendGiftViewModel(
     fun getUsdPrice(): Double = fromCoinDataItem.priceUsd
 
     fun getCoinCode(): String = fromCoinDataItem.code
+
+    fun isNotEnoughBalanceETH(): Boolean =
+        coinDataItemList.find { LocalCoinType.ETH.name == it.code }?.balanceCoin ?: 0.0 < getTransactionFee()
 }

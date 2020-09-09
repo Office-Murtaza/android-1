@@ -6,13 +6,12 @@ import android.content.Context
 import android.content.Intent
 import android.location.Location
 import android.location.LocationManager
+import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.app.belcobtm.R
 import com.app.belcobtm.domain.wallet.LocalCoinType
-import com.app.belcobtm.presentation.core.extensions.setDrawableStart
-import com.app.belcobtm.presentation.core.extensions.toStringCoin
-import com.app.belcobtm.presentation.core.extensions.toStringUsd
+import com.app.belcobtm.presentation.core.extensions.*
 import com.app.belcobtm.presentation.core.helper.AlertHelper
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
 import com.app.belcobtm.presentation.core.ui.fragment.BaseFragment
@@ -45,14 +44,10 @@ class TransactionsFragment : BaseFragment() {
     override val resourceLayout: Int = R.layout.fragment_transactions
     override val isToolbarEnabled: Boolean = true
     override val isHomeButtonEnabled: Boolean = true
-    override var isMenuEnabled: Boolean = false
+    override var isMenuEnabled: Boolean = true
     override val customToolbarId: Int = R.id.customToolbarView
     override val isFirstShowContent: Boolean = false
-
-    override fun onResume() {
-        super.onResume()
-        viewModel.updateData()
-    }
+    override val retryListener: View.OnClickListener = View.OnClickListener { viewModel.updateData() }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
@@ -167,14 +162,26 @@ class TransactionsFragment : BaseFragment() {
     override fun initObservers() {
         viewModel.chartLiveData.listen({
             updateChartByPeriod()
-            priceUsdView.text = getString(R.string.transaction_price_usd, it.priceUsd.toStringUsd())
+            priceUsdView.text = getString(R.string.text_usd, it.priceUsd.toStringUsd())
             balanceCryptoView.text =
-                getString(R.string.transaction_crypto_balance, it.balance.toStringCoin(), viewModel.coinCode)
-            balanceUsdView.text = getString(R.string.unit_usd_dynamic_symbol, (it.balance * it.priceUsd).toStringUsd())
+                getString(R.string.text_text, it.balance.toStringCoin(), viewModel.coinCode)
+            balanceUsdView.text = getString(R.string.text_usd, (it.balance * it.priceUsd).toStringUsd())
         })
         viewModel.transactionListLiveData.observe(this, {
             adapter.setItemList(it)
             swipeToRefreshView.isRefreshing = false
+        })
+        viewModel.feeLiveData.observe(this, { loadingData ->
+            when (loadingData) {
+                is LoadingData.Success -> {
+                    sendGiftButtonView.show()
+                    withdrawButtonView.show()
+                }
+                is LoadingData.Error -> {
+                    sendGiftButtonView.hide()
+                    withdrawButtonView.hide()
+                }
+            }
         })
     }
 

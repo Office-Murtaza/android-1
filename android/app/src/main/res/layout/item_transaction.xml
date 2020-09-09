@@ -15,7 +15,6 @@
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        android:gravity="center"
         android:lines="1"
         android:textSize="13sp"
         tools:text="12.12.2045" />
@@ -61,7 +60,7 @@
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:ellipsize="end"
-        android:gravity="center"
+        android:gravity="end"
         android:lines="1"
         android:textColor="#8d8d8d"
         android:textSize="13sp"

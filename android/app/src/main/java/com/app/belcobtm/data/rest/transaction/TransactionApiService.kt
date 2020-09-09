@@ -70,9 +70,9 @@ class TransactionApiService(
         giftId: String,
         phone: String,
         message: String,
-        fee: Double?,
-        fromAddress: String?,
-        toAddress: String?
+        fee: Double? = null,
+        fromAddress: String? = null,
+        toAddress: String? = null
     ): Either<Failure, Unit> = try {
         val requestBody = SendGiftRequest(
             TRANSACTION_SEND_GIFT,
@@ -298,6 +298,14 @@ class TransactionApiService(
     suspend fun getRippleSequence(fromAddress: String): Either<Failure, Long> = try {
         val request = api.getRippleBlockHeaderAsync(fromAddress).await()
         request.body()?.let { Either.Right(it.sequence ?: 0) } ?: Either.Left(Failure.ServerError())
+    } catch (failure: Failure) {
+        failure.printStackTrace()
+        Either.Left(failure)
+    }
+
+    suspend fun checkRippleAccountActivation(fromAddress: String): Either<Failure, Boolean> = try {
+        val request = api.checkRippleAccountActivationAsync(fromAddress).await()
+        request.body()?.let { Either.Right(it.result ?: false) } ?: Either.Left(Failure.ServerError())
     } catch (failure: Failure) {
         failure.printStackTrace()
         Either.Left(failure)

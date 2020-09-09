@@ -91,7 +91,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             android:textColor="#e02d2d"
             android:text="@string/not_supported_phone"
-            app:layout_constraintStart_toStartOf="parent"/>
+            app:layout_constraintStart_toStartOf="parent" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/nextButtonView"

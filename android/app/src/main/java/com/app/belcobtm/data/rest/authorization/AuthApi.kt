@@ -1,6 +1,5 @@
 package com.app.belcobtm.data.rest.authorization
 
-import com.app.belcobtm.api.model.param.CheckPassParam
 import com.app.belcobtm.data.rest.authorization.request.*
 import com.app.belcobtm.data.rest.authorization.response.AuthorizationResponse
 import com.app.belcobtm.data.rest.authorization.response.CheckCredentialsResponse

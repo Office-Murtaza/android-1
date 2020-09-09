@@ -61,8 +61,8 @@
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/exchangeView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="16dp"
+        android:layout_height="16dp"
         android:layout_marginStart="8dp"
         app:layout_constraintBottom_toBottomOf="@id/balanceCryptoView"
         app:layout_constraintEnd_toStartOf="@id/balanceUsdView"
@@ -100,8 +100,8 @@
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/reserveExchangeView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="16dp"
+        android:layout_height="16dp"
         android:layout_marginStart="8dp"
         app:layout_constraintBottom_toBottomOf="@id/reserveCryptoView"
         app:layout_constraintEnd_toStartOf="@id/reserveUsdView"
@@ -216,7 +216,7 @@
             android:id="@+id/createButtonView"
             style="@style/TransactionsScreen.FloatingActionButtonChild"
             android:src="@drawable/ic_create"
-            app:fab_label="@string/trade_screen_create" />
+            app:fab_label="@string/create" />
 
     </com.github.clans.fab.FloatingActionMenu>
 

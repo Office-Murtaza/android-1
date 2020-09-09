@@ -11,7 +11,7 @@ import kotlin.math.max
 
 class WithdrawViewModel(
     private val withdrawUseCase: WithdrawUseCase,
-    private val fromCoinDataItem: CoinDataItem,
+    private val fromCoinDataItem: CoinDataItem?,
     private val fromCoinFeeDataItem: CoinFeeDataItem,
     private val coinDataItemList: List<CoinDataItem>
 ) : ViewModel() {
@@ -24,7 +24,7 @@ class WithdrawViewModel(
     ) {
         transactionLiveData.value = LoadingData.Loading()
         withdrawUseCase.invoke(
-            WithdrawUseCase.Params(fromCoinDataItem.code, coinAmount, toAddress),
+            params = WithdrawUseCase.Params(fromCoinDataItem?.code ?: "", coinAmount, toAddress),
             onSuccess = { transactionLiveData.value = LoadingData.Success(it) },
             onError = { transactionLiveData.value = LoadingData.Error(it) }
         )
@@ -38,13 +38,13 @@ class WithdrawViewModel(
 
     fun getTransactionFee(): Double = fromCoinFeeDataItem.txFee
 
-    fun getCoinBalance(): Double = fromCoinDataItem.balanceCoin
+    fun getCoinBalance(): Double = fromCoinDataItem?.balanceCoin ?: 0.0
 
-    fun getUsdBalance(): Double = fromCoinDataItem.balanceUsd
+    fun getUsdBalance(): Double = fromCoinDataItem?.balanceUsd ?: 0.0
 
-    fun getUsdPrice(): Double = fromCoinDataItem.priceUsd
+    fun getUsdPrice(): Double = fromCoinDataItem?.priceUsd ?: 0.0
 
-    fun getCoinCode(): String = fromCoinDataItem.code
+    fun getCoinCode(): String = fromCoinDataItem?.code ?: ""
 
     fun isNotEnoughBalanceETH(): Boolean =
         coinDataItemList.find { LocalCoinType.ETH.name == it.code }?.balanceCoin ?: 0.0 < getTransactionFee()
