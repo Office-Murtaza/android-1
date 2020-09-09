@@ -3,12 +3,12 @@ import TrustWalletCore
 
 struct CoinSettings: Equatable {
   var type: CustomCoinType
-  var txFee: Double
-  var recallFee: Double?
-  var byteFee: Double?
+  var txFee: Decimal
+  var recallFee: Decimal?
+  var byteFee: Decimal?
   var gasPrice: Int?
   var gasLimit: Int?
-  var profitExchange: Double
+  var profitExchange: Decimal
   var walletAddress: String
   var contractAddress: String?
 }

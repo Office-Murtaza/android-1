@@ -151,7 +151,7 @@ struct GetPhoneNumberRequest: AuthorizedAPIRequest {
 }
 
 struct VerifyPasswordRequest: AuthorizedAPIRequest {
-  typealias ResponseType = APIResponse<VerificationResult>
+  typealias ResponseType = APIResponse<ResponseResult>
   typealias ResponseTrait = SingleResponseTrait
   
   let userId: Int
@@ -166,7 +166,7 @@ struct VerifyPasswordRequest: AuthorizedAPIRequest {
 }
 
 struct VerifyPhoneRequest: AuthorizedAPIRequest {
-  typealias ResponseType = APIResponse<VerificationResult>
+  typealias ResponseType = APIResponse<ResponseResult>
   typealias ResponseTrait = SingleResponseTrait
   
   let userId: Int
@@ -310,8 +310,8 @@ struct PreSubmitTransactionRequest: AuthorizedAPIRequest {
   
   let userId: Int
   let coinId: String
-  let coinAmount: Double
-  let currencyAmount: Double
+  let coinAmount: Decimal
+  let currencyAmount: Decimal
   
   var path: String { return "/user/\(userId)/coin/\(coinId)/pre-submit" }
   var method: HTTPMethod { return .post }
@@ -330,8 +330,8 @@ struct SubmitTransactionRequest: AuthorizedAPIRequest {
   let userId: Int
   let coinId: String
   let txType: TransactionType
-  let amount: Double
-  let fee: Double?
+  let amount: Decimal
+  let fee: Decimal?
   let fromAddress: String?
   let toAddress: String?
   let phone: String?
@@ -409,6 +409,20 @@ struct GetGiftAddressRequest: AuthorizedAPIRequest {
   var method: HTTPMethod { return .get }
   var task: HTTPTask {
     return .requestParameters(parameters: ["phone": phone], encoding: URLEncoding.customDefault)
+  }
+}
+
+struct GetCurrentAccountActivatedRequest: AuthorizedAPIRequest {
+  typealias ResponseType = APIResponse<ResponseResult>
+  typealias ResponseTrait = SingleResponseTrait
+  
+  let coinId: String
+  let address: String
+  
+  var path: String { return "/coin/\(coinId)/current-account-activated" }
+  var method: HTTPMethod { return .get }
+  var task: HTTPTask {
+    return .requestParameters(parameters: ["address": address], encoding: URLEncoding.customDefault)
   }
 }
 

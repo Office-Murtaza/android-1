@@ -106,8 +106,8 @@ final class CoinSendGiftFormView: UIView, HasDisposeBag {
     }
   }
   
-  func configure(with coinCode: String) {
-    coinAmountTextFieldView.configure(with: coinCode)
+  func configure(coinType: CustomCoinType, fee: Decimal?) {
+    coinAmountTextFieldView.configure(coinType: coinType, fee: fee)
   }
 }
 

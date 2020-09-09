@@ -46,6 +46,7 @@ enum L {
     static let staking = "coin_details.staking"
     static let threeMonths = "coin_details.three_months"
     static let trade = "coin_details.trade"
+    static let transactionCreated = "coin_details.transaction_created"
     static let unknown = "coin_details.unknown"
     static let unstake = "coin_details.unstake"
     static let withdraw = "coin_details.withdraw"
@@ -268,17 +269,6 @@ extension L.CoinDetails {
     static let empty = "coin_details.transactions.empty"
   }
 }
-extension L.CoinExchange {
-
-  struct Form {
-  }
-}
-extension L.CoinExchange.Form {
-
-  struct Amount {
-    static let placeholder = "coin_exchange.form.amount.placeholder"
-  }
-}
 extension L.CoinSell {
 
   struct Form {
@@ -375,6 +365,7 @@ extension L.CoinWithdraw.Form {
   }
 
   struct CoinAmount {
+    static let helper = "coin_withdraw.form.coin_amount.helper"
     static let placeholder = "coin_withdraw.form.coin_amount.placeholder"
   }
 
@@ -386,6 +377,7 @@ extension L.CoinWithdraw.Form {
     static let insufficientETHBalance = "coin_withdraw.form.error.insufficient_e_t_h_balance"
     static let invalidAddress = "coin_withdraw.form.error.invalid_address"
     static let invalidAmount = "coin_withdraw.form.error.invalid_amount"
+    static let notEnoughToActivate = "coin_withdraw.form.error.not_enough_to_activate"
     static let tooHighAmount = "coin_withdraw.form.error.too_high_amount"
     static let tooLowAmount = "coin_withdraw.form.error.too_low_amount"
   }
@@ -647,6 +639,7 @@ extension L.Shared {
     static let remove = "shared.button.remove"
     static let retry = "shared.button.retry"
     static let send = "shared.button.send"
+    static let submit = "shared.button.submit"
     static let unlink = "shared.button.unlink"
     static let update = "shared.button.update"
   }

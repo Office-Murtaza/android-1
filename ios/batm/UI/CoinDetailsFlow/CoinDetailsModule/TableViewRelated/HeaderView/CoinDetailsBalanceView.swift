@@ -43,6 +43,6 @@ final class CoinDetailsBalanceView: UIView {
   }
   
   func configure(for coinBalance: CoinBalance) {
-    amountView.configure(for: coinBalance)
+    amountView.configure(for: coinBalance, weighted: true)
   }
 }

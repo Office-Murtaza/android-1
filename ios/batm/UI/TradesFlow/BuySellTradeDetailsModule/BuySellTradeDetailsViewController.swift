@@ -74,7 +74,7 @@ final class BuySellTradeDetailsViewController: NavigationScreenViewController<Bu
         paymentView.configure(for: trade.paymentMethod)
         
         headerView.removeAll()
-        headerView.add(title: localize(L.BuySellTradeDetails.Header.price), value: trade.price.fiatFormatted.withUSD) {
+        headerView.add(title: localize(L.BuySellTradeDetails.Header.price), value: trade.price.fiatFormatted.withDollarSign) {
           $0.textColor = .darkMint
         }
         headerView.add(title: localize(L.BuySellTradeDetails.Header.user), value: "\(trade.username)\n\(trade.userStats)")

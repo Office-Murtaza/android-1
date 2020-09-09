@@ -4,7 +4,7 @@ import RxCocoa
 
 final class WalletHeaderView: UIView {
   
-  let logoImageView = UIImageView(image: UIImage(named: "main_logo"))
+  let logoImageView = UIImageView(image: UIImage(named: "logo"))
   
   let textStackView: UIStackView = {
     let stackView = UIStackView()

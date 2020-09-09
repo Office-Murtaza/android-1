@@ -73,7 +73,7 @@ final class ReserveViewController: NavigationScreenViewController<ReservePresent
         reservedAmountView.configure(for: coinBalance, useReserved: true)
         
         headerView.removeAll()
-        headerView.add(title: localize(L.CoinDetails.price), value: coinBalance.price.fiatFormatted.withUSD)
+        headerView.add(title: localize(L.CoinDetails.price), value: coinBalance.price.fiatFormatted.withDollarSign)
         headerView.add(title: localize(L.CoinDetails.balance), valueView: amountView)
         headerView.add(title: localize(L.Trades.reserved), valueView: reservedAmountView)
       })

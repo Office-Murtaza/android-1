@@ -30,7 +30,7 @@ class CoinDetailsFlow: BaseFlow<BTMNavigationController, CoinDetailsFlowControll
     case exchange(BTMCoin, [CoinBalance], CoinSettings)
     case trades(BTMCoin, [CoinBalance], CoinSettings)
     case staking(BTMCoin, [CoinBalance], CoinSettings, StakeDetails)
-    case pop
+    case pop(String? = nil)
   }
   
   override func route(to step: Step) -> NextFlowItems {
@@ -85,7 +85,13 @@ class CoinDetailsFlow: BaseFlow<BTMNavigationController, CoinDetailsFlowControll
       let module = resolver.resolve(Module<CoinStakingModule>.self)!
       module.input.setup(coin: coin, coinBalances: coinBalances, coinSettings: coinSettings, stakeDetails: stakeDetails)
       return push(module.controller)
-    case .pop: return pop()
+    case let .pop(toastMessage):
+      toastMessage.flatMap { message in
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [weak self] in
+          self?.view.topViewController?.view.makeToast(message)
+        }
+      }
+      return pop()
     }
   }
 }

@@ -6,29 +6,28 @@ protocol CoinDetailsUsecase {
   func getTransactions(for type: CustomCoinType, from page: Int) -> Single<Transactions>
   func getTransactionDetails(for type: CustomCoinType, by id: String) -> Single<TransactionDetails>
   func getCoin(for type: CustomCoinType) -> Single<BTMCoin>
-  func requestCode() -> Completable
   func verifyCode(code: String) -> Completable
   func withdraw(from coin: BTMCoin,
                 with coinSettings: CoinSettings,
                 to destination: String,
-                amount: Double) -> Completable
+                amount: Decimal) -> Completable
   func getSellDetails() -> Single<SellDetails>
-  func presubmit(for type: CustomCoinType, coinAmount: Double, currencyAmount: Double) -> Single<PreSubmitResponse>
-  func sell(from coin: BTMCoin, with coinSettings: CoinSettings, amount: Double, to toAddress: String) -> Completable
+  func presubmit(for type: CustomCoinType, coinAmount: Decimal, currencyAmount: Decimal) -> Single<PreSubmitResponse>
+  func sell(from coin: BTMCoin, with coinSettings: CoinSettings, amount: Decimal, to toAddress: String) -> Completable
   func sendGift(from coin: BTMCoin,
                 with coinSettings: CoinSettings,
                 to phone: String,
-                amount: Double,
+                amount: Decimal,
                 message: String,
                 imageId: String?) -> Completable
   func exchange(from fromCoin: BTMCoin,
                 with coinSettings: CoinSettings,
                 to toCoinType: CustomCoinType,
-                amount: Double) -> Completable
-  func reserve(from coin: BTMCoin, with coinSettings: CoinSettings, amount: Double) -> Completable
-  func recall(from coin: BTMCoin, amount: Double) -> Completable
+                amount: Decimal) -> Completable
+  func reserve(from coin: BTMCoin, with coinSettings: CoinSettings, amount: Decimal) -> Completable
+  func recall(from coin: BTMCoin, amount: Decimal) -> Completable
   func getStakeDetails(for type: CustomCoinType) -> Single<StakeDetails>
-  func stake(from coin: BTMCoin, with coinSettings: CoinSettings, amount: Double) -> Completable
+  func stake(from coin: BTMCoin, with coinSettings: CoinSettings, amount: Decimal) -> Completable
   func unstake(from coin: BTMCoin, with coinSettings: CoinSettings, stakeDetails: StakeDetails) -> Completable
 }
 
@@ -72,12 +71,6 @@ class CoinDetailsUsecaseImpl: CoinDetailsUsecase {
       }
   }
   
-  func requestCode() -> Completable {
-    return .empty()
-//    return accountStorage.get()
-//      .flatMapCompletable { [api] in api.requestCode(userId: $0.userId) }
-  }
-  
   func verifyCode(code: String) -> Completable {
     return accountStorage.get()
       .flatMapCompletable { [api] in api.verifyCode(userId: $0.userId, code: code) }
@@ -86,8 +79,23 @@ class CoinDetailsUsecaseImpl: CoinDetailsUsecase {
   func withdraw(from coin: BTMCoin,
                 with coinSettings: CoinSettings,
                 to destination: String,
-                amount: Double) -> Completable {
-    return accountStorage.get()
+                amount: Decimal) -> Completable {
+    return Single.just(coin.type)
+      .flatMap { [api] type -> Single<Void> in
+        if type != .ripple {
+          return .just(())
+        }
+        
+        return api.getCurrentAccountActivated(type: type, address: destination)
+          .map { isActivated in
+            if !isActivated && amount < 20 {
+              throw APIError.serverError(ServerError(code: 3, message: localize(L.CoinWithdraw.Form.Error.notEnoughToActivate)))
+            }
+            
+            return Void()
+          }
+      }
+      .flatMap { [accountStorage] in accountStorage.get() }
       .flatMap { [walletService] account in
         return walletService.getTransactionHex(for: coin,
                                                with: coinSettings,
@@ -111,7 +119,7 @@ class CoinDetailsUsecaseImpl: CoinDetailsUsecase {
   func sendGift(from coin: BTMCoin,
                 with coinSettings: CoinSettings,
                 to phone: String,
-                amount: Double,
+                amount: Decimal,
                 message: String,
                 imageId: String?) -> Completable {
     return api.getGiftAddress(type: coin.type, phone: phone)
@@ -148,7 +156,7 @@ class CoinDetailsUsecaseImpl: CoinDetailsUsecase {
       .flatMap { [api] in api.getSellDetails(userId: $0.userId) }
   }
   
-  func presubmit(for type: CustomCoinType, coinAmount: Double, currencyAmount: Double) -> Single<PreSubmitResponse> {
+  func presubmit(for type: CustomCoinType, coinAmount: Decimal, currencyAmount: Decimal) -> Single<PreSubmitResponse> {
     return accountStorage.get()
       .flatMap { [api] in api.presubmitTransaction(userId: $0.userId,
                                                    type: type,
@@ -156,7 +164,7 @@ class CoinDetailsUsecaseImpl: CoinDetailsUsecase {
                                                    currencyAmount: currencyAmount) }
   }
   
-  func sell(from coin: BTMCoin, with coinSettings: CoinSettings, amount: Double, to toAddress: String) -> Completable {
+  func sell(from coin: BTMCoin, with coinSettings: CoinSettings, amount: Decimal, to toAddress: String) -> Completable {
     return accountStorage.get()
       .flatMap { [walletService] account in
         return walletService.getTransactionHex(for: coin,
@@ -178,7 +186,7 @@ class CoinDetailsUsecaseImpl: CoinDetailsUsecase {
       }
   }
   
-  func exchange(from fromCoin: BTMCoin, with coinSettings: CoinSettings, to toCoinType: CustomCoinType, amount: Double) -> Completable {
+  func exchange(from fromCoin: BTMCoin, with coinSettings: CoinSettings, to toCoinType: CustomCoinType, amount: Decimal) -> Completable {
     return accountStorage.get()
       .flatMap { [walletService] account in
         return walletService.getTransactionHex(for: fromCoin,
@@ -201,7 +209,7 @@ class CoinDetailsUsecaseImpl: CoinDetailsUsecase {
       }
   }
   
-  func reserve(from coin: BTMCoin, with coinSettings: CoinSettings, amount: Double) -> Completable {
+  func reserve(from coin: BTMCoin, with coinSettings: CoinSettings, amount: Decimal) -> Completable {
     return accountStorage.get()
       .flatMap { [walletService] account in
         return walletService.getTransactionHex(for: coin,
@@ -223,7 +231,7 @@ class CoinDetailsUsecaseImpl: CoinDetailsUsecase {
       }
   }
   
-  func recall(from coin: BTMCoin, amount: Double) -> Completable {
+  func recall(from coin: BTMCoin, amount: Decimal) -> Completable {
     return accountStorage.get()
       .flatMapCompletable { [unowned self] account in
         return self.submit(userId: account.userId,
@@ -233,7 +241,7 @@ class CoinDetailsUsecaseImpl: CoinDetailsUsecase {
       }
   }
   
-  func stake(from coin: BTMCoin, with coinSettings: CoinSettings, amount: Double) -> Completable {
+  func stake(from coin: BTMCoin, with coinSettings: CoinSettings, amount: Decimal) -> Completable {
     return accountStorage.get()
       .flatMap { [walletService] account in
         return walletService.getTransactionHex(for: coin,
@@ -280,8 +288,8 @@ class CoinDetailsUsecaseImpl: CoinDetailsUsecase {
   private func submit(userId: Int,
                       type: CustomCoinType,
                       txType: TransactionType,
-                      amount: Double,
-                      fee: Double? = nil,
+                      amount: Decimal,
+                      fee: Decimal? = nil,
                       fromAddress: String? = nil,
                       toAddress: String? = nil,
                       phone: String? = nil,

@@ -4,9 +4,11 @@ import TrustWalletCore
 struct CoinBalance: Equatable {
   let type: CustomCoinType
   let address: String
-  let balance: Double
-  let reservedBalance: Double
-  let price: Double
+  let balance: Decimal
+  let fiatBalance: Decimal
+  let reservedBalance: Decimal
+  let reservedFiatBalance: Decimal
+  let price: Decimal
   let index: Int
 }
 

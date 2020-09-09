@@ -12,6 +12,7 @@ class ManageWalletsTableView: UITableView {
     rowHeight = 65
     separatorInset = .zero
     tableHeaderView = UIView()
+    tableFooterView = UIView()
     allowsSelection = false
   }
   

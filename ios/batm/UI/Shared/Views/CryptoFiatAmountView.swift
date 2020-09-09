@@ -5,7 +5,7 @@ final class CryptoFiatAmountView: UIView {
   let balanceCoinLabel: UILabel = {
     let label = UILabel()
     label.textColor = .slateGrey
-    label.font = UIFont.systemFont(ofSize: 16, weight: .medium)
+    label.font = UIFont.systemFont(ofSize: 16)
     label.adjustsFontSizeToFitWidth = true
     label.minimumScaleFactor = 0.5
     return label
@@ -16,7 +16,7 @@ final class CryptoFiatAmountView: UIView {
   let balanceCurrencyLabel: UILabel = {
     let label = UILabel()
     label.textColor = .ceruleanBlue
-    label.font = UIFont.systemFont(ofSize: 16, weight: .medium)
+    label.font = UIFont.systemFont(ofSize: 16)
     label.adjustsFontSizeToFitWidth = true
     label.minimumScaleFactor = 0.5
     return label
@@ -74,15 +74,19 @@ final class CryptoFiatAmountView: UIView {
     }
   }
   
-  func configure(cryptoAmount: Double, fiatAmount: Double, type: CustomCoinType) {
+  func configure(cryptoAmount: Decimal, fiatAmount: Decimal, type: CustomCoinType, weighted: Bool = false) {
     balanceCoinLabel.text = cryptoAmount.coinFormatted.withCoinType(type)
     balanceCurrencyLabel.text = fiatAmount.fiatFormatted.withDollarSign
+    
+    let font = UIFont.systemFont(ofSize: 16, weight: weighted ? .medium : .regular)
+    balanceCoinLabel.font = font
+    balanceCurrencyLabel.font = font
   }
   
-  func configure(for coinBalance: CoinBalance, useReserved: Bool = false) {
+  func configure(for coinBalance: CoinBalance, useReserved: Bool = false, weighted: Bool = false) {
     let cryptoAmount = useReserved ? coinBalance.reservedBalance : coinBalance.balance
-    let fiatAmount = cryptoAmount * coinBalance.price
+    let fiatAmount = useReserved ? coinBalance.reservedFiatBalance : coinBalance.fiatBalance
     
-    configure(cryptoAmount: cryptoAmount, fiatAmount: fiatAmount, type: coinBalance.type)
+    configure(cryptoAmount: cryptoAmount, fiatAmount: fiatAmount, type: coinBalance.type, weighted: weighted)
   }
 }

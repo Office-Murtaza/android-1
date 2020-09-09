@@ -26,7 +26,7 @@ struct CoinWithdrawState: Equatable {
     return coinBalances?.first { $0.type == coin?.type }
   }
   
-  var maxValue: Double {
+  var maxValue: Decimal {
     guard let type = coin?.type, let balance = coinBalance?.balance, let fee = coinSettings?.txFee else { return 0 }
     
     switch type {
@@ -40,10 +40,10 @@ struct CoinWithdrawState: Equatable {
   }
   
   var fiatAmount: String {
-    let coinAmountDouble = coinAmount.doubleValue ?? 0
+    let coinAmountDecimal = coinAmount.decimalValue ?? 0
     let price = coinBalance?.price ?? 0
     
-    return (coinAmountDouble * price).fiatFormatted.withDollarSign
+    return (coinAmountDecimal * price).fiatFormatted.withDollarSign
   }
   
   var isAllFieldsNotEmpty: Bool {
@@ -69,7 +69,11 @@ final class CoinWithdrawStore: ViewStore<CoinWithdrawAction, CoinWithdrawState> 
       state.address = address ?? ""
       state.addressError = nil
     case let .updateCoinAmount(amount):
-      state.coinAmount = (amount ?? "").coinWithdrawFormatted
+      if let amount = amount, amount.isFirstCharacterDigit {
+        state.coinAmount = amount.coinWithdrawFormatted
+      } else {
+        state.coinAmount = ""
+      }
       state.coinAmountError = nil
     case let .updateAddressError(addressError): state.addressError = addressError
     case let .updateCoinAmountError(coinAmountError): state.coinAmountError = coinAmountError
@@ -98,15 +102,15 @@ final class CoinWithdrawStore: ViewStore<CoinWithdrawAction, CoinWithdrawState> 
       let errorString = localize(L.CreateWallet.Form.Error.fieldRequired)
       state.coinAmountError = errorString
       state.validationState = .invalid(errorString)
-    } else if state.coinAmount.doubleValue == nil {
+    } else if state.coinAmount.decimalValue == nil {
       let errorString = localize(L.CoinWithdraw.Form.Error.invalidAmount)
       state.coinAmountError = errorString
       state.validationState = .invalid(errorString)
-    } else if state.coinAmount.doubleValue! <= 0 {
+    } else if state.coinAmount.decimalValue! <= 0 {
       let errorString = localize(L.CoinWithdraw.Form.Error.tooLowAmount)
       state.coinAmountError = errorString
       state.validationState = .invalid(errorString)
-    } else if !state.coinAmount.doubleValue!.lessThanOrEqualTo(state.maxValue) {
+    } else if !state.coinAmount.decimalValue!.lessThanOrEqualTo(state.maxValue) {
       let errorString = localize(L.CoinWithdraw.Form.Error.tooHighAmount)
       state.coinAmountError = errorString
       state.validationState = .invalid(errorString)

@@ -14,11 +14,11 @@ class FloatingActionButton: ReactiveCompatible, JJFloatingActionButtonDelegate {
   private func setupUI() {
     view.buttonDiameter = 56
     view.overlayView.backgroundColor = UIColor(white: 0, alpha: 0.6)
-    view.buttonImage = UIImage(named: "fab_plus")
+    view.buttonImage = UIImage(named: "plus")
     view.buttonColor = .ceruleanBlue
     view.buttonImageColor = .white
     
-    let fabCancelImage = UIImage(named: "fab_cancel")
+    let fabCancelImage = UIImage(named: "colored_close")
     fabCancelImage.flatMap { view.buttonAnimationConfiguration = .transition(toImage: $0) }
     view.itemAnimationConfiguration = .slideIn(withInterItemSpacing: 15)
     

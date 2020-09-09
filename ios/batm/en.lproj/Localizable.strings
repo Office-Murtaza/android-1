@@ -25,6 +25,7 @@
 "shared.button.update" = "Update";
 "shared.button.unlink" = "Unlink";
 "shared.button.send" = "Send";
+"shared.button.submit" = "Submit";
 "shared.error.title" = "Error";
 "shared.error.message" = "Server error, try again later";
 "shared.error.no_connection.message" = "No Internet Connection";
@@ -83,7 +84,7 @@
 
 "manage_wallets.title" = "Manage wallets";
 
-"atm.title" = "ATM";
+"atm.title" = "Locations";
 "atm.info_window.open_now" = "Open Now:";
 
 "settings.title" = "Settings";
@@ -204,12 +205,14 @@
 "coin_details.three_months" = "3m";
 "coin_details.one_year" = "1y";
 "coin_details.transactions.empty" = "Your transactions will appear here";
+"coin_details.transaction_created" = "Transaction was successfully created";
 
 "coin_deposit.title" = "Deposit %@";
 
 "coin_withdraw.title" = "Withdraw %@";
 "coin_withdraw.form.recipient_address.placeholder" = "Recipient address";
-"coin_withdraw.form.coin_amount.placeholder" = "Amount";
+"coin_withdraw.form.coin_amount.placeholder" = "%@ amount";
+"coin_withdraw.form.coin_amount.helper" = "Fee ~ %@";
 "coin_withdraw.form.currency_amount.placeholder" = "USD amount";
 "coin_withdraw.form.address.title" = "Address";
 "coin_withdraw.form.amount.title" = "Amount";
@@ -218,11 +221,12 @@
 "coin_withdraw.form.error.too_low_amount" = "Amount can't be zero or lower";
 "coin_withdraw.form.error.too_high_amount" = "Amount can't be higher than your balance";
 "coin_withdraw.form.error.insufficient_e_t_h_balance" = "Insufficient ETH balance for transaction fee";
+"coin_withdraw.form.error.not_enough_to_activate" = "Amount is not enough to activate receiver address";
 
 "coin_send_gift.title" = "Send gift %@";
 "coin_send_gift.form.code.placeholder" = "Code";
-"coin_send_gift.form.phone.placeholder" = "Phone";
-"coin_send_gift.form.message.placeholder" = "Message...";
+"coin_send_gift.form.phone.placeholder" = "Recipient phone";
+"coin_send_gift.form.message.placeholder" = "Message";
 "coin_send_gift.form.error.invalid_phone" = "Invalid phone";
 
 "coin_sell.title" = "Sell %@";
@@ -261,7 +265,6 @@
 "transaction_details.header.sell_q_r_code.title" = "Sell QR code";
 
 "coin_exchange.title" = "Exchange %@";
-"coin_exchange.form.amount.placeholder" = "%@ amount";
 
 "trades.title" = "Trade %@";
 "trades.reserved" = "Reserved";

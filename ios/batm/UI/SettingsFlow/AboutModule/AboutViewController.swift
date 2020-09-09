@@ -5,7 +5,7 @@ import SnapKit
 
 class AboutViewController: ModuleViewController<AboutPresenter> {
   
-  let logoImageView = UIImageView(image: UIImage(named: "about_logo"))
+  let logoImageView = UIImageView(image: UIImage(named: "logo"))
   
   var dataSource: SettingsTableViewDataSource!
   

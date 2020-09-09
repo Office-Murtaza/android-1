@@ -76,10 +76,10 @@ final class CoinSellViewController: NavigationScreenViewController<CoinSellPrese
         amountView.configure(for: coinBalance)
         
         headerView.removeAll()
-        headerView.add(title: localize(L.CoinDetails.price), value: coinBalance.price.fiatFormatted.withUSD)
+        headerView.add(title: localize(L.CoinDetails.price), value: coinBalance.price.fiatFormatted.withDollarSign)
         headerView.add(title: localize(L.CoinDetails.balance), valueView: amountView)
-        headerView.add(title: localize(L.CoinSell.dailyLimit), value: details.dailyLimit.fiatFormatted.withUSD)
-        headerView.add(title: localize(L.CoinSell.txLimit), value: details.transactionLimit.fiatFormatted.withUSD)
+        headerView.add(title: localize(L.CoinSell.dailyLimit), value: details.dailyLimit.fiatFormatted.withDollarSign)
+        headerView.add(title: localize(L.CoinSell.txLimit), value: details.transactionLimit.fiatFormatted.withDollarSign)
       })
       .disposed(by: disposeBag)
     

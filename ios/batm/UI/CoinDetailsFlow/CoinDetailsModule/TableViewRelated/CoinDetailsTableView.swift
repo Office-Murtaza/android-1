@@ -11,6 +11,7 @@ class CoinDetailsTableView: UITableView {
     backgroundColor = .white
     rowHeight = 50
     separatorInset = .zero
+    tableFooterView = UIView()
   }
   
   required init?(coder aDecoder: NSCoder) {

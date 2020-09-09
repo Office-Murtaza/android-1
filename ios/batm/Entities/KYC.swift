@@ -61,8 +61,8 @@ enum KYCStatus {
 }
 
 struct KYC: Equatable {
-  var txLimit: Double
-  var dailyLimit: Double
+  var txLimit: Decimal
+  var dailyLimit: Decimal
   var status: KYCStatus
   var message: String?
   

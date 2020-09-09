@@ -1,15 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "chain1.pdf",
+      "filename" : "chain1.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
+      "filename" : "chain1@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
+      "filename" : "chain1@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

@@ -47,15 +47,21 @@ final class CoinAmountTextFieldView: UIView, HasDisposeBag {
       $0.top.left.right.equalToSuperview()
     }
     fiatAmountLabel.snp.makeConstraints {
-      $0.top.equalTo(coinAmountTextField.snp.bottom).offset(-10)
+      $0.top.equalTo(coinAmountTextField.snp.bottom)
       $0.right.equalToSuperview().offset(-17)
       $0.left.greaterThanOrEqualToSuperview()
       $0.bottom.equalToSuperview()
     }
   }
   
-  func configure(with coinCode: String) {
-    coinAmountTextFieldController.placeholderText = "\(coinCode) \(localize(L.CoinWithdraw.Form.CoinAmount.placeholder))"
+  func configure(coinType: CustomCoinType, fee: Decimal?) {
+    coinAmountTextFieldController.placeholderText = String(format: localize(L.CoinWithdraw.Form.CoinAmount.placeholder), coinType.code)
+    
+    let coinType = coinType == .catm ? CustomCoinType.ethereum : coinType
+    let helperValueText = (fee ?? 0).coinFormatted.withCoinType(coinType)
+    let helperText = String(format: localize(L.CoinWithdraw.Form.CoinAmount.helper), helperValueText)
+    
+    coinAmountTextFieldController.setHelperText(helperText, helperAccessibilityLabel: helperText)
   }
 }
 

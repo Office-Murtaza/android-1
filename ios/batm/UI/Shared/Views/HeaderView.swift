@@ -64,7 +64,7 @@ class HeaderView: UIView {
     let titleLabel = UILabel()
     titleLabel.text = title
     titleLabel.textColor = .warmGrey
-    titleLabel.font = UIFont.systemFont(ofSize: 16, weight: .medium)
+    titleLabel.font = .systemFont(ofSize: 16)
     
     titleView.addSubview(titleLabel)
     
@@ -88,7 +88,7 @@ class HeaderView: UIView {
     let valueLabel = UILabel()
     valueLabel.text = value
     valueLabel.textColor = .slateGrey
-    valueLabel.font = UIFont.systemFont(ofSize: 16, weight: .medium)
+    valueLabel.font = .systemFont(ofSize: 16)
     valueLabel.numberOfLines = 0
     applyStyle?(valueLabel)
     

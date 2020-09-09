@@ -50,7 +50,7 @@ extension CoinDetailsFlowController: CoinDepositModuleDelegate {}
 extension CoinDetailsFlowController: CoinWithdrawModuleDelegate {
   
   func didFinishCoinWithdraw() {
-    step.accept(CoinDetailsFlow.Steps.pop)
+    step.accept(CoinDetailsFlow.Steps.pop(localize(L.CoinDetails.transactionCreated)))
   }
   
 }
@@ -58,7 +58,7 @@ extension CoinDetailsFlowController: CoinWithdrawModuleDelegate {
 extension CoinDetailsFlowController: CoinSendGiftModuleDelegate {
   
   func didFinishCoinSendGift() {
-    step.accept(CoinDetailsFlow.Steps.pop)
+    step.accept(CoinDetailsFlow.Steps.pop(localize(L.CoinDetails.transactionCreated)))
   }
   
 }
@@ -74,7 +74,7 @@ extension CoinDetailsFlowController: CoinSellModuleDelegate {
   }
   
   func didFinishCoinSell() {
-    step.accept(CoinDetailsFlow.Steps.pop)
+    step.accept(CoinDetailsFlow.Steps.pop(nil))
   }
   
 }
@@ -82,7 +82,7 @@ extension CoinDetailsFlowController: CoinSellModuleDelegate {
 extension CoinDetailsFlowController: CoinSellDetailsAnotherAddressModuleDelegate {
   
   func didFinishCoinSellDetailsAnotherAddress() {
-    step.accept(CoinDetailsFlow.Steps.pop)
+    step.accept(CoinDetailsFlow.Steps.pop(nil))
   }
   
 }
@@ -90,7 +90,7 @@ extension CoinDetailsFlowController: CoinSellDetailsAnotherAddressModuleDelegate
 extension CoinDetailsFlowController: CoinSellDetailsCurrentAddressModuleDelegate {
   
   func didFinishCoinSellDetailsCurrentAddress() {
-    step.accept(CoinDetailsFlow.Steps.pop)
+    step.accept(CoinDetailsFlow.Steps.pop(nil))
   }
   
 }
@@ -98,7 +98,7 @@ extension CoinDetailsFlowController: CoinSellDetailsCurrentAddressModuleDelegate
 extension CoinDetailsFlowController: CoinExchangeModuleDelegate {
   
   func didFinishCoinExchange() {
-    step.accept(CoinDetailsFlow.Steps.pop)
+    step.accept(CoinDetailsFlow.Steps.pop(nil))
   }
   
 }
@@ -106,7 +106,7 @@ extension CoinDetailsFlowController: CoinExchangeModuleDelegate {
 extension CoinDetailsFlowController: CoinStakingModuleDelegate {
   
   func didFinishCoinStaking() {
-    step.accept(CoinDetailsFlow.Steps.pop)
+    step.accept(CoinDetailsFlow.Steps.pop(nil))
   }
   
 }
@@ -114,7 +114,7 @@ extension CoinDetailsFlowController: CoinStakingModuleDelegate {
 extension CoinDetailsFlowController: TransactionDetailsModuleDelegate {
   
   func didFinishTransactionDetails() {
-    step.accept(CoinDetailsFlow.Steps.pop)
+    step.accept(CoinDetailsFlow.Steps.pop(nil))
   }
   
 }
@@ -122,7 +122,7 @@ extension CoinDetailsFlowController: TransactionDetailsModuleDelegate {
 extension CoinDetailsFlowController: TradesFlowControllerDelegate {
   
   func didFinishTradesFlow() {
-    step.accept(CoinDetailsFlow.Steps.pop)
+    step.accept(CoinDetailsFlow.Steps.pop(nil))
   }
   
 }

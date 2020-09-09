@@ -13,7 +13,7 @@ final class CoinSendGiftPresenter: ModulePresenter, CoinSendGiftModule {
     var updateMessage: Driver<String?>
     var updateImageId: Driver<String?>
     var max: Driver<Void>
-    var next: Driver<Void>
+    var submit: Driver<Void>
   }
   
   private let usecase: CoinDetailsUsecase
@@ -70,7 +70,7 @@ final class CoinSendGiftPresenter: ModulePresenter, CoinSendGiftModule {
       .bind(to: store.action)
       .disposed(by: disposeBag)
     
-    input.next
+    input.submit
       .asObservable()
       .doOnNext { [store] in store.action.accept(.updateValidationState) }
       .withLatestFrom(state)
@@ -84,7 +84,7 @@ final class CoinSendGiftPresenter: ModulePresenter, CoinSendGiftModule {
     return usecase.sendGift(from: state.coin!,
                                 with: state.coinSettings!,
                                 to: state.phoneE164,
-                                amount: state.coinAmount.doubleValue ?? 0.0,
+                                amount: state.coinAmount.decimalValue ?? 0.0,
                                 message: state.message,
                                 imageId: state.imageId)
       .catchError { [store] in

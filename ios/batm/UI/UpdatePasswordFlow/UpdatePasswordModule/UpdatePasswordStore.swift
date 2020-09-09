@@ -21,7 +21,9 @@ struct UpdatePasswordState: Equatable {
   var validationState: ValidationState = .unknown
   
   var isAllFieldsNotEmpty: Bool {
-    return oldPassword.count > 0 && newPassword.count > 0 && confirmNewPassword.count > 0
+    return oldPassword.count > 0
+      && newPassword.count >= GlobalConstants.minPasswordLength
+      && confirmNewPassword.count >= GlobalConstants.minPasswordLength
   }
   
 }
@@ -39,11 +41,19 @@ final class UpdatePasswordStore: ViewStore<UpdatePasswordAction, UpdatePasswordS
     case let .updateOldPassword(password):
       state.oldPassword = password ?? ""
       state.oldPasswordError = nil
-    case let .updateNewPassword(password):
-      state.newPassword = password ?? ""
+    case let .updateNewPassword(newPassword):
+      if let newPassword = newPassword?.prefix(GlobalConstants.maxPasswordLength) {
+        state.newPassword = String(newPassword)
+      } else {
+        state.newPassword = ""
+      }
       state.newPasswordError = nil
-    case let .updateConfirmNewPassword(password):
-      state.confirmNewPassword = password ?? ""
+    case let .updateConfirmNewPassword(confirmNewPassword):
+      if let confirmNewPassword = confirmNewPassword?.prefix(GlobalConstants.maxPasswordLength) {
+        state.confirmNewPassword = String(confirmNewPassword)
+      } else {
+        state.confirmNewPassword = ""
+      }
       state.confirmNewPasswordError = nil
     case let .updateOldPasswordError(oldPasswordError): state.oldPasswordError = oldPasswordError
     case let .updateNewPasswordError(newPasswordError): state.newPasswordError = newPasswordError

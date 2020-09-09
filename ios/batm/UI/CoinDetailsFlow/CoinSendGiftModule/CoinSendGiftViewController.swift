@@ -14,7 +14,7 @@ final class CoinSendGiftViewController: ModuleViewController<CoinSendGiftPresent
   
   let formView = CoinSendGiftFormView()
   
-  let nextButton = MDCButton.next
+  let submitButton = MDCButton.submit
   
   private let didUpdateImageRelay = PublishRelay<GPHMedia?>()
   
@@ -28,7 +28,7 @@ final class CoinSendGiftViewController: ModuleViewController<CoinSendGiftPresent
     view.addSubview(rootScrollView)
     rootScrollView.contentView.addSubviews(headerView,
                                            formView,
-                                           nextButton)
+                                           submitButton)
     
     setupDefaultKeyboardHandling()
   }
@@ -49,9 +49,9 @@ final class CoinSendGiftViewController: ModuleViewController<CoinSendGiftPresent
     formView.snp.makeConstraints {
       $0.top.equalTo(headerView.snp.bottom).offset(30)
       $0.left.right.equalToSuperview().inset(15)
-      $0.bottom.lessThanOrEqualTo(nextButton.snp.top).offset(-30)
+      $0.bottom.lessThanOrEqualTo(submitButton.snp.top).offset(-30)
     }
-    nextButton.snp.makeConstraints {
+    submitButton.snp.makeConstraints {
       $0.height.equalTo(50)
       $0.left.right.equalToSuperview().inset(15)
       $0.bottom.equalToSuperview().offset(-40)
@@ -76,15 +76,20 @@ final class CoinSendGiftViewController: ModuleViewController<CoinSendGiftPresent
         amountView.configure(for: coinBalance)
         
         headerView.removeAll()
-        headerView.add(title: localize(L.CoinDetails.price), value: coinBalance.price.fiatFormatted.withUSD)
+        headerView.add(title: localize(L.CoinDetails.price), value: coinBalance.price.fiatFormatted.withDollarSign)
         headerView.add(title: localize(L.CoinDetails.balance), valueView: amountView)
       })
       .disposed(by: disposeBag)
     
-    presenter.state
-      .map { $0.coin?.type.code }
+    let coinTypeDriver = presenter.state
+      .map { $0.coin?.type }
       .filterNil()
-      .drive(onNext: { [formView] in formView.configure(with: $0) })
+    
+    let feeDriver = presenter.state
+      .map { $0.coinSettings?.txFee }
+    
+    Driver.combineLatest(coinTypeDriver, feeDriver)
+      .drive(onNext: { [formView] in formView.configure(coinType: $0, fee: $1) })
       .disposed(by: disposeBag)
     
     presenter.state
@@ -149,10 +154,10 @@ final class CoinSendGiftViewController: ModuleViewController<CoinSendGiftPresent
     presenter.state
       .asObservable()
       .map { $0.isAllRequiredFieldsNotEmpty }
-      .bind(to: nextButton.rx.isEnabled)
+      .bind(to: submitButton.rx.isEnabled)
       .disposed(by: disposeBag)
     
-    nextButton.rx.tap.asDriver()
+    submitButton.rx.tap.asDriver()
       .drive(onNext: { [view] in view?.endEditing(true) })
       .disposed(by: disposeBag)
   }
@@ -165,14 +170,14 @@ final class CoinSendGiftViewController: ModuleViewController<CoinSendGiftPresent
     let updateMessageDriver = formView.rx.messageText.asDriver()
     let updateImageIdDriver = didUpdateImageDriver.map { $0?.id }
     let maxDriver = formView.rx.maxTap
-    let nextDriver = nextButton.rx.tap.asDriver()
+    let submitDriver = submitButton.rx.tap.asDriver()
     
     presenter.bind(input: CoinSendGiftPresenter.Input(updatePhone: updatePhoneDriver,
                                                       updateCoinAmount: updateCoinAmountDriver,
                                                       updateMessage: updateMessageDriver,
                                                       updateImageId: updateImageIdDriver,
                                                       max: maxDriver,
-                                                      next: nextDriver))
+                                                      submit: submitDriver))
   }
 }
 

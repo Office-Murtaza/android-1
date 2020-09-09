@@ -4,6 +4,7 @@ import RxSwift
 import SnapKit
 import GiphyUISDK
 import GiphyCoreSDK
+import MaterialComponents
 
 final class TransactionDetailsViewController: ModuleViewController<TransactionDetailsPresenter> {
   
@@ -52,11 +53,25 @@ final class TransactionDetailsViewController: ModuleViewController<TransactionDe
   }
   
   func setupUIBindings() {
+    setupGeneralSection()
+    setupGiftSection()
+    setupExchangeSection()
+    setupSellSection()
+  }
+  
+  private func setupGeneralSection() {
     let details = presenter.details!
     let coinType = presenter.type!
     
-    if let id = details.txId ?? details.txDbId {
-      headerView.add(title: localize(L.TransactionDetails.Header.ID.title), value: id)
+    (details.txId ?? details.txDbId).flatMap { id in
+      if let link = details.link, let linkURL = URL(string: link) {
+        let linkView = LinkView()
+        linkView.configure(text: id, link: linkURL)
+        
+        headerView.add(title: localize(L.TransactionDetails.Header.ID.title), valueView: linkView)
+      } else {
+        headerView.add(title: localize(L.TransactionDetails.Header.ID.title), value: id)
+      }
     }
     
     headerView.add(title: localize(L.TransactionDetails.Header.TxType.title), value: details.type.verboseValue)
@@ -71,22 +86,48 @@ final class TransactionDetailsViewController: ModuleViewController<TransactionDe
       headerView.add(title: localize(L.TransactionDetails.Header.CashStatus.title), valueView: cashStatusView)
     }
     
+    switch (details.cryptoAmount, details.fiatAmount) {
+    case (.some(let cryptoAmount), .none):
+      let value = cryptoAmount.coinFormatted.withCoinType(coinType)
+      
+      headerView.add(title: localize(L.TransactionDetails.Header.Amount.title), value: value)
+    case (.none, .some(let fiatAmount)):
+      let value = fiatAmount.fiatFormatted.withDollarSign
+      
+      headerView.add(title: localize(L.TransactionDetails.Header.Amount.title), value: value)
+    case (.some(let cryptoAmount), .some(let fiatAmount)):
+      let amountView = CryptoFiatAmountView()
+      
+      amountView.configure(cryptoAmount: cryptoAmount, fiatAmount: fiatAmount, type: coinType)
+      headerView.add(title: localize(L.TransactionDetails.Header.Amount.title), valueView: amountView)
+    default:
+      break
+    }
+    
     if let cryptoAmount = details.cryptoAmount, let fiatAmount = details.fiatAmount {
       let amountView = CryptoFiatAmountView()
       amountView.configure(cryptoAmount: cryptoAmount, fiatAmount: fiatAmount, type: coinType)
       headerView.add(title: localize(L.TransactionDetails.Header.Amount.title), valueView: amountView)
     }
     
-    if let cryptoFee = details.cryptoFee, let fiatFee = details.fiatFee {
+    switch (details.cryptoFee, details.fiatFee) {
+    case (.some(let cryptoFee), .none):
+      let coinType = coinType == .catm ? CustomCoinType.ethereum : coinType
+      let value = cryptoFee.coinFormatted.withCoinType(coinType)
+      
+      headerView.add(title: localize(L.TransactionDetails.Header.Fee.title), value: value)
+    case (.none, .some(let fiatFee)):
+      let value = fiatFee.fiatFormatted.withDollarSign
+      
+      headerView.add(title: localize(L.TransactionDetails.Header.Fee.title), value: value)
+    case (.some(let cryptoFee), .some(let fiatFee)):
       let amountView = CryptoFiatAmountView()
       let coinType = coinType == .catm ? CustomCoinType.ethereum : coinType
       
       amountView.configure(cryptoAmount: cryptoFee, fiatAmount: fiatFee, type: coinType)
       headerView.add(title: localize(L.TransactionDetails.Header.Fee.title), valueView: amountView)
-    }
-    
-    if let date = details.dateString {
-      headerView.add(title: localize(L.TransactionDetails.Header.Date.title), value: date)
+    default:
+      break
     }
     
     if let fromAddress = details.fromAddress {
@@ -97,11 +138,19 @@ final class TransactionDetailsViewController: ModuleViewController<TransactionDe
       headerView.add(title: localize(L.TransactionDetails.Header.ToAddress.title), value: toAddress)
     }
     
+    if let date = details.dateString {
+      headerView.add(title: localize(L.TransactionDetails.Header.Date.title), value: date)
+    }
+  }
+  
+  private func setupGiftSection() {
+    let details = presenter.details!
+    
     if let phone = details.phone {
       headerView.add(title: localize(L.TransactionDetails.Header.Phone.title), value: phone)
     }
     
-    if let imageId = details.imageId {
+    if let imageId = details.imageId, imageId.count > 0 {
       let mediaView = GPHMediaView()
       
       GiphyCore.shared.gifByID(imageId) { (response, error) in
@@ -121,12 +170,23 @@ final class TransactionDetailsViewController: ModuleViewController<TransactionDe
       headerView.add(title: localize(L.TransactionDetails.Header.Image.title), valueView: mediaView)
     }
     
-    if let message = details.message {
+    if let message = details.message, message.count > 0 {
       headerView.add(title: localize(L.TransactionDetails.Header.Message.title), value: message)
     }
+  }
+  
+  private func setupExchangeSection() {
+    let details = presenter.details!
     
-    if let refId = details.refTxId {
-      headerView.add(title: localize(L.TransactionDetails.Header.RefID.title), value: refId)
+    details.refTxId.flatMap { id in
+      if let link = details.refLink, let linkURL = URL(string: link) {
+        let linkView = LinkView()
+        linkView.configure(text: id, link: linkURL)
+        
+        headerView.add(title: localize(L.TransactionDetails.Header.RefID.title), valueView: linkView)
+      } else {
+        headerView.add(title: localize(L.TransactionDetails.Header.RefID.title), value: id)
+      }
     }
     
     if let refCoin = details.refCoin, let refCryptoAmount = details.refCryptoAmount {
@@ -135,6 +195,10 @@ final class TransactionDetailsViewController: ModuleViewController<TransactionDe
       let amount = refCryptoAmount.coinFormatted.withCoinType(refCoin)
       headerView.add(title: localize(L.TransactionDetails.Header.RefAmount.title), value: amount)
     }
+  }
+  
+  private func setupSellSection() {
+    let details = presenter.details!
     
     if let sellInfo = details.sellInfo {
       headerView.add(title: localize(L.TransactionDetails.Header.SellQRCode.title), value: "")

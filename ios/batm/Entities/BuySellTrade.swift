@@ -39,13 +39,13 @@ struct BuySellTrade: Equatable {
   var tradeRate: Double
   var distance: Int?
   var paymentMethod: String
-  var price: Double
+  var price: Decimal
   var minLimit: Int
   var maxLimit: Int
   var terms: String
   
   var formattedLimits: String {
-    return "\(minLimit) - \(maxLimit)".withUSD
+    return "\(minLimit) - \(maxLimit)".withDollarSign
   }
   
   var formattedTradeCount: String {

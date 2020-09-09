@@ -30,6 +30,10 @@ struct VIPVerificationState: Equatable {
 
 final class VIPVerificationStore: ViewStore<VIPVerificationAction, VIPVerificationState> {
   
+  struct Constants {
+    static let maxSSNCharacters = 9
+  }
+  
   override var initialState: VIPVerificationState {
     return VIPVerificationState()
   }
@@ -42,7 +46,11 @@ final class VIPVerificationStore: ViewStore<VIPVerificationAction, VIPVerificati
       state.selectedImage = image
       state.imageError = nil
     case let .updateSSN(ssn):
-      state.ssn = ssn ?? ""
+      if let ssn = ssn?.prefix(Constants.maxSSNCharacters) {
+        state.ssn = String(ssn)
+      } else {
+        state.ssn = ""
+      }
       state.ssnError = nil
     case let .updateImageError(imageError): state.imageError = imageError
     case let .updateSSNError(ssnError): state.ssnError = ssnError

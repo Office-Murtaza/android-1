@@ -154,5 +154,5 @@ struct Transaction: Equatable {
   let dateString: String
   let type: TransactionType
   let status: TransactionStatus
-  let amount: Double
+  let amount: Decimal
 }

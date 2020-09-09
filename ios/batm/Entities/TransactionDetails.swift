@@ -8,10 +8,10 @@ struct TransactionDetails: Equatable {
   let type: TransactionType
   let status: TransactionStatus
   let cashStatus: TransactionCashStatus?
-  let cryptoAmount: Double?
-  let fiatAmount: Double?
-  let cryptoFee: Double?
-  let fiatFee: Double?
+  let cryptoAmount: Decimal?
+  let fiatAmount: Decimal?
+  let cryptoFee: Decimal?
+  let fiatFee: Decimal?
   let dateString: String?
   let fromAddress: String?
   let toAddress: String?
@@ -21,6 +21,6 @@ struct TransactionDetails: Equatable {
   let refTxId: String?
   let refLink: String?
   let refCoin: CustomCoinType?
-  let refCryptoAmount: Double?
+  let refCryptoAmount: Decimal?
   let sellInfo: String?
 }

@@ -11,7 +11,7 @@ final class CoinWithdrawPresenter: ModulePresenter, CoinWithdrawModule {
     var updateCoinAmount: Driver<String?>
     var pasteAddress: Driver<Void>
     var max: Driver<Void>
-    var next: Driver<Void>
+    var submit: Driver<Void>
   }
   
   private let usecase: CoinDetailsUsecase
@@ -66,7 +66,7 @@ final class CoinWithdrawPresenter: ModulePresenter, CoinWithdrawModule {
       .bind(to: store.action)
       .disposed(by: disposeBag)
     
-    input.next
+    input.submit
       .asObservable()
       .doOnNext { [store] in store.action.accept(.updateValidationState) }
       .withLatestFrom(state)
@@ -80,10 +80,14 @@ final class CoinWithdrawPresenter: ModulePresenter, CoinWithdrawModule {
     return usecase.withdraw(from: state.coin!,
                                 with: state.coinSettings!,
                                 to: state.address,
-                                amount: state.coinAmount.doubleValue ?? 0.0)
+                                amount: state.coinAmount.decimalValue ?? 0.0)
       .catchError { [store] in
         if let apiError = $0 as? APIError, case let .serverError(error) = apiError, let code = error.code, code > 1 {
-          store.action.accept(.updateAddressError(error.message))
+          if code == 3 {
+            store.action.accept(.updateCoinAmountError(error.message))
+          } else {
+            store.action.accept(.updateAddressError(error.message))
+          }
         }
         
         throw $0

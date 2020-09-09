@@ -1,21 +1,23 @@
 {
   "images" : [
     {
+      "filename" : "publish24Px.png",
       "idiom" : "universal",
-      "filename" : "publish24Px (1).pdf",
       "scale" : "1x"
     },
     {
+      "filename" : "publish24Px@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
+      "filename" : "publish24Px@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }
   ],
   "info" : {
-    "version" : 1,
-    "author" : "xcode"
+    "author" : "xcode",
+    "version" : 1
   }
 }

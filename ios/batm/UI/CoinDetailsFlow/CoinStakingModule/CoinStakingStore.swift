@@ -23,7 +23,7 @@ struct CoinStakingState: Equatable {
     return coinBalances?.first { $0.type == coin?.type }
   }
   
-  var maxValue: Double {
+  var maxValue: Decimal {
     guard let type = coin?.type, let balance = coinBalance?.balance, let fee = coinSettings?.txFee else { return 0 }
     
     if type == .catm {
@@ -65,7 +65,7 @@ final class CoinStakingStore: ViewStore<CoinStakingAction, CoinStakingState> {
     }
     
     if state.stakeDetails?.exist == false {
-      guard let amount = state.coinAmount.doubleValue else {
+      guard let amount = state.coinAmount.decimalValue else {
         return .invalid(localize(L.CoinWithdraw.Form.Error.invalidAmount))
       }
       

@@ -5,7 +5,7 @@ import RxCocoa
 struct SellDetailsForAnotherAddress: Equatable {
   let coin: BTMCoin
   let address: String
-  let amount: Double
+  let amount: Decimal
 }
 
 struct SellDetailsForCurrentAddress: Equatable {
@@ -113,8 +113,8 @@ final class CoinSellPresenter: ModulePresenter, CoinSellModule {
   
   private func presubmit(for state: CoinSellState) -> Single<PreSubmitResponse> {
     let type = state.coin!.type
-    let coinAmount = state.coinAmount.doubleValue ?? 0.0
-    let currencyAmount = state.currencyAmount.doubleValue ?? 0
+    let coinAmount = state.coinAmount.decimalValue ?? 0.0
+    let currencyAmount = state.currencyAmount.decimalValue ?? 0
     
     return usecase.presubmit(for: type, coinAmount: coinAmount, currencyAmount: currencyAmount)
       .catchError { [store] in

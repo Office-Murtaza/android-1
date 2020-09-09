@@ -6,7 +6,7 @@ class TermsAndConditionsView: UIView, HasDisposeBag {
   
   let tapRecognizer = UITapGestureRecognizer()
   
-  let checkboxView = MaterialCheckBoxView()
+  let checkboxView = CheckBoxView()
   
   let titleLabel: UILabel = {
     let label = UILabel()
