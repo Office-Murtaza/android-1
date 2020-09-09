@@ -39,25 +39,27 @@ class WalletViewModel(
     }
 
     fun subscribeToChannel() {
-        walletSocketRepository.subscribe()
-        GlobalScope.launch {
-            for (it in walletSocketRepository.getBalanceChannel()) {
-                if (it.isLeft) {
-                    CoroutineScope(Dispatchers.Main).launch {
-                        updateOnError((it as Either.Left).a)
-                    }
-                } else {
-                    CoroutineScope(Dispatchers.Main).launch {
-                        updateCoinsItems((it as Either.Right).b)
-                    }
-
-                }
-            }
-        }
+        //todo uncomment after release
+//        walletSocketRepository.subscribe()
+//        GlobalScope.launch {
+//            for (it in walletSocketRepository.getBalanceChannel()) {
+//                if (it.isLeft) {
+//                    CoroutineScope(Dispatchers.Main).launch {
+//                        updateOnError((it as Either.Left).a)
+//                    }
+//                } else {
+//                    CoroutineScope(Dispatchers.Main).launch {
+//                        updateCoinsItems((it as Either.Right).b)
+//                    }
+//
+//                }
+//            }
+//        }
     }
 
     fun closeChannel() {
-        walletSocketRepository.unsubscribe()
+        //todo uncomment after release
+//        walletSocketRepository.unsubscribe()
     }
 
     private fun updateOnError(it: Failure) {

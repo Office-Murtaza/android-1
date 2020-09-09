@@ -37,6 +37,11 @@ class WalletFragment : BaseFragment() {
         listView.adapter = adapter
     }
 
+    override fun onResume() {
+        super.onResume()
+        viewModel.updateBalanceData()
+    }
+
     override fun initObservers() {
         viewModel.balanceLiveData.listen(
             success = {

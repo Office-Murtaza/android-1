@@ -99,13 +99,15 @@ class App
     }
 
     private fun connect() {
-        if (!socketClient.isConnected() && loggedIn) {
-            socketClient.connect()
-        }
+        //todo uncomment after release
+//        if (!socketClient.isConnected() && loggedIn) {
+//            socketClient.connect()
+//        }
     }
 
     private fun disconnect() {
-        socketClient.disconnect()
+        //todo uncomment after release
+//        socketClient.disconnect()
     }
 
     companion object {
