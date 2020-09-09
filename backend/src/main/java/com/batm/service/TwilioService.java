@@ -78,7 +78,7 @@ public class TwilioService {
                 body.append("\"").append(dto.getMessage()).append("\"").append("\n");
             }
 
-            body.append("\n").append("Congrats, you've just received " + dto.getCryptoAmount() + " " + coinCode.name() + " gift");
+            body.append("\n").append("Congrats, you've just received " + dto.getCryptoAmount().stripTrailingZeros() + " " + coinCode.name() + " gift");
 
             if (!receiverExists) {
                 body.append("\n\n").append("To receive it, install Belco Wallet from a link");
