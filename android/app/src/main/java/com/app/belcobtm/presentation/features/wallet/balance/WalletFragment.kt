@@ -1,5 +1,6 @@
 package com.app.belcobtm.presentation.features.wallet.balance
 
+import android.graphics.Color
 import android.view.View
 import androidx.fragment.app.setFragmentResultListener
 import com.app.belcobtm.R
@@ -35,6 +36,7 @@ class WalletFragment : BaseFragment() {
 
     override fun initViews() {
         listView.adapter = adapter
+        swipeToRefreshView.setColorSchemeColors(Color.RED, Color.GREEN, Color.BLUE)
     }
 
     override fun onResume() {
@@ -42,13 +44,22 @@ class WalletFragment : BaseFragment() {
         viewModel.updateBalanceData()
     }
 
+    override fun initListeners() {
+        super.initListeners()
+        swipeToRefreshView.setOnRefreshListener {
+            viewModel.updateBalanceData()
+        }
+    }
+
     override fun initObservers() {
         viewModel.balanceLiveData.listen(
             success = {
                 balanceView.text = getString(R.string.text_usd, it.first.toStringUsd())
                 adapter.setItemList(it.second)
+                swipeToRefreshView.isRefreshing = false
             },
             error = {
+                swipeToRefreshView.isRefreshing = false
                 when (it) {
                     is Failure.NetworkConnection -> showErrorNoInternetConnection()
                     is Failure.MessageError -> {
@@ -70,6 +81,7 @@ class WalletFragment : BaseFragment() {
             hideKeyboard()
             view?.clearFocus()
             view?.requestFocus()
+            swipeToRefreshView.isRefreshing = true
         }
     }
 
