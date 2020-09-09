@@ -285,14 +285,15 @@ public class BlockbookService {
 
             if(type == TransactionType.SELF) {
                 if (json.optJSONArray("addresses").toString().toLowerCase().contains(toAddress.toLowerCase())) {
-                    amount = amount.add(new BigDecimal(json.optString("value")));
+                    amount = new BigDecimal(json.optString("value"));
+                    break;
                 }
             } else if (type == TransactionType.WITHDRAW) {
                 if (!json.optJSONArray("addresses").toString().toLowerCase().contains(fromAddress.toLowerCase())) {
                     amount = new BigDecimal(json.optString("value"));
                     break;
                 }
-            } else if (type == TransactionType.DEPOSIT || type == TransactionType.SELF) {
+            } else if (type == TransactionType.DEPOSIT) {
                 if (json.optJSONArray("addresses").toString().toLowerCase().contains(toAddress.toLowerCase())) {
                     amount = amount.add(new BigDecimal(json.optString("value")));
                 }
