@@ -19,7 +19,7 @@ public class BalanceDTO {
 
     public void setTotalBalance(BigDecimal totalBalance) {
         this.totalBalance = totalBalance;
-        this.totalBalanceStr = totalBalance.toString();
+        this.totalBalanceStr = totalBalance == null ? null : totalBalance.toString();
     }
 
     public void setCoins(List<CoinBalanceDTO> coins) {

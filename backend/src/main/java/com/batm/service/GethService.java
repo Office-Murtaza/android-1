@@ -247,7 +247,7 @@ public class GethService {
 
     public Integer getNonce(String address) {
         try {
-            return web3.ethGetTransactionCount(address, DefaultBlockParameterName.LATEST).send().getTransactionCount().intValue();
+            return web3.ethGetTransactionCount(address, DefaultBlockParameterName.PENDING).send().getTransactionCount().intValue();
         } catch (Exception e) {
             e.printStackTrace();
         }

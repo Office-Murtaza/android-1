@@ -283,19 +283,23 @@ public class BlockbookService {
         for (int i = 0; i < voutArray.size(); i++) {
             JSONObject json = voutArray.getJSONObject(i);
 
-            if (type == TransactionType.WITHDRAW) {
+            if(type == TransactionType.SELF) {
+                if (json.optJSONArray("addresses").toString().toLowerCase().contains(toAddress.toLowerCase())) {
+                    amount = amount.add(new BigDecimal(json.optString("value")));
+                }
+            } else if (type == TransactionType.WITHDRAW) {
                 if (!json.optJSONArray("addresses").toString().toLowerCase().contains(fromAddress.toLowerCase())) {
-                    amount = new BigDecimal(json.optString("value")).divide(divider);
+                    amount = new BigDecimal(json.optString("value"));
                     break;
                 }
             } else if (type == TransactionType.DEPOSIT || type == TransactionType.SELF) {
                 if (json.optJSONArray("addresses").toString().toLowerCase().contains(toAddress.toLowerCase())) {
-                    amount = amount.add(new BigDecimal(json.optString("value")).divide(divider));
+                    amount = amount.add(new BigDecimal(json.optString("value")));
                 }
             }
         }
 
-        return amount.stripTrailingZeros();
+        return amount.divide(divider).stripTrailingZeros();
     }
 
     private String getFromAddress(JSONArray vinArray, String address) {

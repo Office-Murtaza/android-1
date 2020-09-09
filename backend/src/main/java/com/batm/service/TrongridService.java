@@ -20,6 +20,7 @@ import wallet.core.java.AnySigner;
 import wallet.core.jni.CoinType;
 import wallet.core.jni.PrivateKey;
 import wallet.core.jni.proto.Tron;
+
 import java.math.BigDecimal;
 import java.util.*;
 
@@ -43,14 +44,13 @@ public class TrongridService {
 
     public BigDecimal getBalance(String address) {
         try {
-            JSONObject res = rest.getForObject(nodeUrl + "/v1/accounts/" + address, JSONObject.class);
-            JSONArray data = res.getJSONArray("data");
+            JSONObject json = new JSONObject();
+            json.put("address", Base58.toHex(address));
 
-            if (!data.isEmpty()) {
-                String balance = data.getJSONObject(0).getString("balance");
+            JSONObject res = JSONObject.fromObject(rest.postForObject(nodeUrl + "/wallet/getaccount", json, String.class));
+            String balance = res.optString("balance");
 
-                return Util.format6(new BigDecimal(balance).divide(TRX_DIVIDER));
-            }
+            return Util.format6(new BigDecimal(balance).divide(TRX_DIVIDER));
         } catch (Exception e) {
         }
 
@@ -103,7 +103,7 @@ public class TrongridService {
 
     public NodeTransactionsDTO getNodeTransactions(String address) {
         try {
-            JSONObject res = rest.getForObject(nodeUrl + "/v1/accounts/" + address + "/transactions", JSONObject.class);
+            JSONObject res = rest.getForObject(nodeUrl + "/v1/accounts/" + address + "/transactions?limit=200&search_internal=true", JSONObject.class);
             JSONArray array = res.optJSONArray("data");
             Map<String, TransactionDetailsDTO> map = collectNodeTxs(array, address);
 

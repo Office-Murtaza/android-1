@@ -28,22 +28,22 @@ public class CoinSettingsDTO {
 
     public void setTxFee(BigDecimal txFee) {
         this.txFee = txFee;
-        this.txFeeStr = txFee.toString();
+        this.txFeeStr = txFee == null ? null : txFee.toString();
     }
 
     public void setByteFee(BigDecimal byteFee) {
         this.byteFee = byteFee;
-        this.byteFeeStr = byteFee.toString();
+        this.byteFeeStr = byteFee == null ? null : byteFee.toString();
     }
 
     public void setRecallFee(BigDecimal recallFee) {
         this.recallFee = recallFee;
-        this.recallFeeStr = recallFee.toString();
+        this.recallFeeStr = recallFee == null ? null : recallFee.toString();
     }
 
     public void setProfitExchange(BigDecimal profitExchange) {
         this.profitExchange = profitExchange;
-        this.profitExchangeStr = profitExchange.toString();
+        this.profitExchangeStr = profitExchange == null ? null : profitExchange.toString();
     }
 
     public void setCode(String code) {

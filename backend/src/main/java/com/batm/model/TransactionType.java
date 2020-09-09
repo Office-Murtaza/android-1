@@ -2,9 +2,7 @@ package com.batm.model;
 
 import com.fasterxml.jackson.annotation.JsonValue;
 import org.apache.commons.lang3.StringUtils;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public enum TransactionType {
@@ -62,7 +60,9 @@ public enum TransactionType {
     }
 
     public static TransactionType convert(TransactionType type, TransactionType type2) {
-        if (type2 == SEND_GIFT || type2 == RECEIVE_GIFT) {
+        if (type == TransactionType.SELF) {
+            return type;
+        } else if (type2 == SEND_GIFT || type2 == RECEIVE_GIFT) {
             if (type == WITHDRAW) {
                 return SEND_GIFT;
             } else if (type == DEPOSIT) {

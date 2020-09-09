@@ -43,26 +43,26 @@ public class CoinBalanceDTO {
 
     public void setBalance(BigDecimal balance) {
         this.balance = balance;
-        this.balanceStr = balance.toString();
+        this.balanceStr = balance == null ? null : balance.toString();
     }
 
     public void setFiatBalance(BigDecimal fiatBalance) {
         this.fiatBalance = fiatBalance;
-        this.fiatBalanceStr = fiatBalance.toString();
+        this.fiatBalanceStr = fiatBalance == null ? null : fiatBalance.toString();
     }
 
     public void setReservedBalance(BigDecimal reservedBalance) {
         this.reservedBalance = reservedBalance;
-        this.reservedBalanceStr = reservedBalance.toString();
+        this.reservedBalanceStr = reservedBalance == null ? null : reservedBalance.toString();
     }
 
     public void setReservedFiatBalance(BigDecimal reservedFiatBalance) {
         this.reservedFiatBalance = reservedFiatBalance;
-        this.reservedFiatBalanceStr = reservedFiatBalance.toString();
+        this.reservedFiatBalanceStr = reservedFiatBalance == null ? null : reservedFiatBalance.toString();
     }
 
     public void setPrice(BigDecimal price) {
         this.price = price;
-        this.priceStr = price.toString();
+        this.priceStr = price == null ? null : price.toString();
     }
 }
