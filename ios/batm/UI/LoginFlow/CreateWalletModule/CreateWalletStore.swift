@@ -91,7 +91,7 @@ final class CreateWalletStore: ViewStore<CreateWalletAction, CreateWalletState> 
       let errorString = localize(L.CreateWallet.Form.Error.fieldRequired)
       state.passwordError = errorString
       state.validationState = .invalid(errorString)
-    } else if state.password.count < GlobalConstants.minPasswordLength || state.password.count > GlobalConstants.minPasswordLength {
+    } else if state.password.count < GlobalConstants.minPasswordLength || state.password.count > GlobalConstants.maxPasswordLength {
       let errorString = localize(L.CreateWallet.Form.Error.notValidPassword)
       state.passwordError = errorString
       state.validationState = .invalid(errorString)
