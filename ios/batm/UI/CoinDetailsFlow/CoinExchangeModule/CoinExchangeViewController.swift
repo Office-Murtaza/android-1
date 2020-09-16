@@ -4,35 +4,34 @@ import RxSwift
 import SnapKit
 import MaterialComponents
 
-final class CoinExchangeViewController: NavigationScreenViewController<CoinExchangePresenter> {
+final class CoinExchangeViewController: ModuleViewController<CoinExchangePresenter> {
   
-  let errorView = ErrorView()
+  let rootScrollView = RootScrollView()
   
   let headerView = HeaderView()
   
   let formView = CoinExchangeFormView()
   
-  let nextButton = MDCButton.next
+  let submitButton = MDCButton.submit
   
-  override var preferredStatusBarStyle: UIStatusBarStyle {
-    return .lightContent
-  }
+  override var shouldShowNavigationBar: Bool { return true }
 
   override func setupUI() {
-    customView.rootScrollView.canCancelContentTouches = false
-    customView.rootScrollView.contentInsetAdjustmentBehavior = .never
-    customView.contentView.addSubviews(errorView,
-                                       headerView,
-                                       formView,
-                                       nextButton)
+    view.addSubview(rootScrollView)
+    rootScrollView.contentView.addSubviews(headerView,
+                                           formView,
+                                           submitButton)
     
     setupDefaultKeyboardHandling()
   }
 
   override func setupLayout() {
-    errorView.snp.makeConstraints {
-      $0.top.equalToSuperview().offset(5)
-      $0.centerX.equalToSuperview()
+    rootScrollView.snp.makeConstraints {
+      $0.top.equalTo(view.safeAreaLayoutGuide)
+      $0.left.right.bottom.equalToSuperview()
+    }
+    rootScrollView.contentView.snp.makeConstraints {
+      $0.height.equalToSuperview()
     }
     headerView.snp.makeConstraints {
       $0.top.equalToSuperview().offset(25)
@@ -40,14 +39,13 @@ final class CoinExchangeViewController: NavigationScreenViewController<CoinExcha
       $0.right.lessThanOrEqualToSuperview().offset(-15)
     }
     formView.snp.makeConstraints {
-      $0.top.equalTo(headerView.snp.bottom).offset(20)
+      $0.top.equalTo(headerView.snp.bottom).offset(30)
       $0.left.right.equalToSuperview().inset(15)
     }
-    nextButton.snp.makeConstraints {
+    submitButton.snp.makeConstraints {
       $0.height.equalTo(50)
-      $0.top.equalTo(formView.snp.bottom).offset(15)
       $0.left.right.equalToSuperview().inset(15)
-      $0.bottom.equalToSuperview().inset(25)
+      $0.bottom.equalToSuperview().offset(-40)
     }
   }
   
@@ -69,8 +67,8 @@ final class CoinExchangeViewController: NavigationScreenViewController<CoinExcha
       .map { $0.fromCoin?.type.code }
       .filterNil()
       .distinctUntilChanged()
-      .drive(onNext: { [customView] in
-        customView.setTitle(String(format: localize(L.CoinExchange.title), $0))
+      .drive(onNext: { [unowned self] in
+        self.title = String(format: localize(L.CoinExchange.title), $0)
       })
       .disposed(by: disposeBag)
     
@@ -84,14 +82,23 @@ final class CoinExchangeViewController: NavigationScreenViewController<CoinExcha
       .filterNil()
       .distinctUntilChanged()
     
-    Driver.combineLatest(fromCoinDriver, otherCoinBalancesDriver)
-      .drive(onNext: { [formView] in formView.configure(for: $0, and: $1) })
+    let feeDriver = presenter.state
+    .map { $0.coinSettings?.txFee }
+    
+    Driver.combineLatest(fromCoinDriver, otherCoinBalancesDriver, feeDriver)
+      .drive(onNext: { [formView] in formView.configure(coin: $0, otherCoins: $1, fee: $2) })
       .disposed(by: disposeBag)
     
     presenter.state
       .asObservable()
       .map { $0.fromCoinAmount }
       .bind(to: formView.rx.fromCoinAmountText)
+      .disposed(by: disposeBag)
+    
+    presenter.state
+      .asObservable()
+      .map { $0.fromCoinFiatAmount }
+      .bind(to: formView.rx.fromCoinFiatAmountText)
       .disposed(by: disposeBag)
     
     presenter.state
@@ -108,15 +115,18 @@ final class CoinExchangeViewController: NavigationScreenViewController<CoinExcha
       .disposed(by: disposeBag)
     
     presenter.state
-      .map { $0.validationState }
-      .mapToErrorMessage()
-      .drive(onNext: { [errorView] in
-        errorView.isHidden = $0 == nil
-        errorView.configure(for: $0)
-      })
+      .asObservable()
+      .map { $0.fromCoinAmountError }
+      .bind(to: formView.rx.fromCoinAmountErrorText)
+      .disposed(by: disposeBag)
+
+    presenter.state
+      .asObservable()
+      .map { $0.toCoinTypeError }
+      .bind(to: formView.rx.toCoinErrorText)
       .disposed(by: disposeBag)
     
-    nextButton.rx.tap.asDriver()
+    submitButton.rx.tap.asDriver()
       .drive(onNext: { [unowned self] in self.view.endEditing(true) })
       .disposed(by: disposeBag)
   }
@@ -124,16 +134,14 @@ final class CoinExchangeViewController: NavigationScreenViewController<CoinExcha
   override func setupBindings() {
     setupUIBindings()
     
-    let backDriver = customView.backButton.rx.tap.asDriver()
     let updateFromCoinAmountDriver = formView.rx.fromCoinAmountText.asDriver()
     let updatePickerItemDriver = formView.rx.selectPickerItem
     let maxDriver = formView.rx.maxTap
-    let nextDriver = nextButton.rx.tap.asDriver()
+    let submitDriver = submitButton.rx.tap.asDriver()
     
-    presenter.bind(input: CoinExchangePresenter.Input(back: backDriver,
-                                                      updateFromCoinAmount: updateFromCoinAmountDriver,
+    presenter.bind(input: CoinExchangePresenter.Input(updateFromCoinAmount: updateFromCoinAmountDriver,
                                                       updatePickerItem: updatePickerItemDriver,
                                                       max: maxDriver,
-                                                      next: nextDriver))
+                                                      submit: submitDriver))
   }
 }

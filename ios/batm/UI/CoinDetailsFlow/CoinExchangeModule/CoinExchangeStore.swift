@@ -12,8 +12,9 @@ enum CoinExchangeAction: Equatable {
   case setupCoinSettings(CoinSettings)
   case updateFromCoinAmount(String?)
   case updateToCoinType(CustomCoinType)
+  case updateFromCoinAmountError(String?)
+  case updateToCoinTypeError(String?)
   case updateValidationState
-  case makeInvalidState(String)
 }
 
 struct CoinExchangeState: Equatable {
@@ -23,25 +24,43 @@ struct CoinExchangeState: Equatable {
   var coinBalances: [CoinBalance]?
   var coinSettings: CoinSettings?
   var fromCoinAmount: String = ""
+  var fromCoinAmountError: String?
+  var toCoinTypeError: String?
   var validationState: ValidationState = .unknown
   
-  var toCoinAmount: String? {
-    guard let fromCoinAmountDecimal = fromCoinAmount.decimalValue else { return nil }
-    guard let fromCoinPrice = fromCoinBalance?.price, let toCoinPrice = toCoinBalance?.price else { return nil }
-    guard let profitExchange = coinSettings?.profitExchange else { return nil }
+  var fromCoinFiatAmount: String {
+    let fromCoinAmountDecimal = fromCoinAmount.decimalValue ?? 0
+    let price = fromCoinBalance?.price ?? 0
+    
+    return (fromCoinAmountDecimal * price).fiatFormatted.withDollarSign
+  }
+  
+  var toCoinAmount: String {
+    guard let toCoinType = toCoinType else { return "" }
+    
+    guard
+      let fromCoinAmountDecimal = fromCoinAmount.decimalValue,
+      let fromCoinPrice = fromCoinBalance?.price, let toCoinPrice = toCoinBalance?.price,
+      let profitExchange = coinSettings?.profitExchange
+    else {
+      return 0.0.coinFormatted.withCoinType(toCoinType)
+    }
     
     let toCoinAmountDecimal = fromCoinAmountDecimal * fromCoinPrice / toCoinPrice * (100 - profitExchange) / 100
-    return toCoinAmountDecimal.coinFormatted
+    return toCoinAmountDecimal.coinFormatted.withCoinType(toCoinType)
   }
   
   var maxValue: Decimal {
     guard let type = fromCoin?.type, let balance = fromCoinBalance?.balance, let fee = coinSettings?.txFee else { return 0 }
     
-    if type == .catm {
+    switch type {
+    case .catm:
       return balance
+    case .ripple:
+      return max(0, balance - fee - 20)
+    default:
+      return max(0, balance - fee)
     }
-    
-    return max(0, balance - fee)
   }
   
   var fromCoinBalance: CoinBalance? {
@@ -75,40 +94,51 @@ final class CoinExchangeStore: ViewStore<CoinExchangeAction, CoinExchangeState> 
       state.coinBalances = coinBalances
       state.toCoinType = coinBalances.first(where: { $0.type != state.fromCoin?.type })?.type
     case let .setupCoinSettings(coinSettings): state.coinSettings = coinSettings
-    case let .updateFromCoinAmount(amount): state.fromCoinAmount = (amount ?? "").coinWithdrawFormatted
-    case let .updateToCoinType(coinType): state.toCoinType = coinType
-    case .updateValidationState: state.validationState = validate(state)
-    case let .makeInvalidState(error): state.validationState = .invalid(error)
+    case let .updateFromCoinAmount(amount):
+      state.fromCoinAmount = (amount ?? "").coinWithdrawFormatted
+      state.fromCoinAmountError = nil
+    case let .updateToCoinType(coinType):
+      state.toCoinType = coinType
+      state.toCoinTypeError = nil
+    case let .updateFromCoinAmountError(fromCoinAmountError): state.fromCoinAmountError = fromCoinAmountError
+    case let .updateToCoinTypeError(toCoinTypeError): state.toCoinTypeError = toCoinTypeError
+    case .updateValidationState: validate(&state)
     }
     
     return state
   }
   
-  private func validate(_ state: CoinExchangeState) -> ValidationState {
-    guard state.fromCoinAmount.isNotEmpty else {
-      return .invalid(localize(L.CreateWallet.Form.Error.allFieldsRequired))
-    }
+  private func validate(_ state: inout CoinExchangeState) {
+    state.validationState = .valid
     
-    guard let amount = state.fromCoinAmount.decimalValue else {
-      return .invalid(localize(L.CoinWithdraw.Form.Error.invalidAmount))
-    }
-    
-    guard amount > 0 else {
-      return .invalid(localize(L.CoinWithdraw.Form.Error.tooLowAmount))
-    }
-    
-    guard amount.lessThanOrEqualTo(state.maxValue) else {
-      return .invalid(localize(L.CoinWithdraw.Form.Error.tooHighAmount))
-    }
-    
-    if state.fromCoin?.type == .catm, let fee = state.coinSettings?.txFee {
-      let ethBalance = state.coinBalances?.first { $0.type == .ethereum }?.balance ?? 0
+    if state.fromCoinAmount.count == 0 {
+      let errorString = localize(L.CreateWallet.Form.Error.fieldRequired)
+      state.fromCoinAmountError = errorString
+      state.validationState = .invalid(errorString)
+    } else if state.fromCoinAmount.decimalValue == nil {
+      let errorString = localize(L.CoinWithdraw.Form.Error.invalidAmount)
+      state.fromCoinAmountError = errorString
+      state.validationState = .invalid(errorString)
+    } else if state.fromCoinAmount.decimalValue! <= 0 {
+      let errorString = localize(L.CoinWithdraw.Form.Error.tooLowAmount)
+      state.fromCoinAmountError = errorString
+      state.validationState = .invalid(errorString)
+    } else if !state.fromCoinAmount.decimalValue!.lessThanOrEqualTo(state.maxValue) {
+      let errorString = localize(L.CoinWithdraw.Form.Error.tooHighAmount)
+      state.fromCoinAmountError = errorString
+      state.validationState = .invalid(errorString)
+    } else {
+      state.fromCoinAmountError = nil
       
-      if !ethBalance.greaterThanOrEqualTo(fee) {
-        return .invalid(localize(L.CoinWithdraw.Form.Error.insufficientETHBalance))
+      if state.fromCoin?.type == .catm, let fee = state.coinSettings?.txFee {
+        let ethBalance = state.coinBalances?.first { $0.type == .ethereum }?.balance ?? 0
+        
+        if !ethBalance.greaterThanOrEqualTo(fee) {
+          let errorString = localize(L.CoinWithdraw.Form.Error.insufficientETHBalance)
+          state.fromCoinAmountError = errorString
+          state.validationState = .invalid(errorString)
+        }
       }
     }
-    
-    return .valid
   }
 }
