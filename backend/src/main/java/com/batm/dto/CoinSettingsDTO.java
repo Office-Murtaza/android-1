@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
 import java.math.BigDecimal;
 
 @Getter
@@ -15,8 +16,7 @@ public class CoinSettingsDTO {
     private String code;
     private BigDecimal txFee;
     private String txFeeStr;
-    private BigDecimal byteFee;
-    private String byteFeeStr;
+    private Long byteFee;
     private BigDecimal recallFee;
     private String recallFeeStr;
     private Long gasPrice;
@@ -31,9 +31,8 @@ public class CoinSettingsDTO {
         this.txFeeStr = txFee == null ? null : txFee.toString();
     }
 
-    public void setByteFee(BigDecimal byteFee) {
+    public void setByteFee(Long byteFee) {
         this.byteFee = byteFee;
-        this.byteFeeStr = byteFee == null ? null : byteFee.toString();
     }
 
     public void setRecallFee(BigDecimal recallFee) {

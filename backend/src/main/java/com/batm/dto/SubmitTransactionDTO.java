@@ -2,6 +2,7 @@ package com.batm.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
+
 import java.math.BigDecimal;
 
 @Getter
@@ -15,6 +16,7 @@ public class SubmitTransactionDTO {
     private String fromAddress;
     private String toAddress;
     private BigDecimal cryptoAmount;
+    private BigDecimal refCryptoAmount;
     private BigDecimal fee;
     private Integer fiatAmount;
     private String fiatCurrency;

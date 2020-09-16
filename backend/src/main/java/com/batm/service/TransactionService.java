@@ -17,6 +17,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.*;
@@ -25,7 +26,7 @@ import java.util.*;
 @EnableScheduling
 public class TransactionService {
 
-    private static final int STAKING_ANNUAL_PERCENT = 12;
+    private static final BigDecimal STAKING_ANNUAL_PERCENT = new BigDecimal(12);
     private static final int STAKING_MIN_DAYS = 21;
 
     @Autowired
@@ -248,27 +249,20 @@ public class TransactionService {
         return dto;
     }
 
-    public void exchange(Long userId, CoinService.CoinEnum coinCode, String txId, SubmitTransactionDTO dto) {
+    public void exchange(Long userId, CoinService.CoinEnum coin, String txId, SubmitTransactionDTO dto) {
         try {
-            CoinService.CoinEnum refCoinCode = CoinService.CoinEnum.valueOf(dto.getRefCoin());
+            CoinService.CoinEnum refCoin = CoinService.CoinEnum.valueOf(dto.getRefCoin());
 
             TransactionRecordWallet record = new TransactionRecordWallet();
             record.setTxId(txId);
             record.setIdentity(userService.findById(userId).getIdentity());
-            record.setCoin(coinCode.getCoinEntity());
+            record.setCoin(coin.getCoinEntity());
             record.setAmount(dto.getCryptoAmount());
             record.setType(TransactionType.SEND_EXCHANGE.getValue());
             record.setStatus(TransactionStatus.PENDING.getValue());
-            record.setProfit(coinCode.getCoinEntity().getProfitExchange());
-            record.setRefCoin(refCoinCode.getCoinEntity());
-
-            BigDecimal refAmount = dto.getCryptoAmount()
-                    .multiply(coinCode.getPrice())
-                    .divide(refCoinCode.getPrice(), refCoinCode.getCoinEntity().getScale(), RoundingMode.HALF_DOWN)
-                    .multiply(Constant.HUNDRED.subtract(coinCode.getCoinEntity().getProfitExchange()).divide(Constant.HUNDRED))
-                    .setScale(refCoinCode.getCoinEntity().getScale(), BigDecimal.ROUND_DOWN).stripTrailingZeros();
-
-            record.setRefAmount(refAmount);
+            record.setProfit(coin.getCoinEntity().getProfitExchange());
+            record.setRefCoin(refCoin.getCoinEntity());
+            record.setRefAmount(dto.getRefCryptoAmount());
 
             walletRep.save(record);
         } catch (Exception e) {
@@ -390,16 +384,20 @@ public class TransactionService {
                     if (StringUtils.isBlank(record.getRefTxId())) {
                         int days = Days.daysBetween(new DateTime(record.getCreateDate()), DateTime.now()).getDays();
 
-                        StakeDetailsDTO dto = new StakeDetailsDTO();
-                        dto.setExist(true);
-                        dto.setStakedAmount(record.getAmount());
-                        dto.setStakedDays(days);
-                        dto.setStakingMinDays(STAKING_MIN_DAYS);
-                        dto.setUnstakeAvailable(days >= STAKING_MIN_DAYS);
-                        dto.setRewardsPercent(new BigDecimal(days).multiply(new BigDecimal(STAKING_ANNUAL_PERCENT)).divide(new BigDecimal(365), 2, RoundingMode.HALF_DOWN).stripTrailingZeros());
-                        dto.setRewardsAmount(record.getAmount().multiply(dto.getRewardsPercent().divide(Constant.HUNDRED)).stripTrailingZeros());
+                        BigDecimal rewardPercent = new BigDecimal(days)
+                                .multiply(STAKING_ANNUAL_PERCENT)
+                                .divide(new BigDecimal(365), 2, RoundingMode.HALF_DOWN)
+                                .stripTrailingZeros();
 
-                        return dto;
+                        return StakeDetailsDTO.builder()
+                                .exist(true)
+                                .amount(record.getAmount())
+                                .rewardAmount(record.getAmount().multiply(rewardPercent.divide(Constant.HUNDRED)).stripTrailingZeros())
+                                .rewardPercent(rewardPercent)
+                                .rewardAnnualAmount(record.getAmount().multiply(STAKING_ANNUAL_PERCENT.divide(Constant.HUNDRED)).stripTrailingZeros())
+                                .rewardAnnualPercent(STAKING_ANNUAL_PERCENT)
+                                .days(days)
+                                .minDays(STAKING_MIN_DAYS).build();
                     }
                 }
             }

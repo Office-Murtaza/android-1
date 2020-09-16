@@ -180,7 +180,7 @@ public class CoinService {
 
             @Override
             public BigDecimal getBalance(String address) {
-                return blockbook.getBalance(blockbook.getBtcNodeUrl(), address, BlockbookService.BTC_DIVIDER);
+                return blockbook.getBalance(blockbook.getBtcNodeUrl(), address);
             }
 
             @Override
@@ -190,7 +190,7 @@ public class CoinService {
 
             @Override
             public TransactionNumberDTO getTransactionNumber(String address, BigDecimal amount, TransactionType type) {
-                return blockbook.getTransactionNumber(blockbook.getBtcNodeUrl(), address, amount, BlockbookService.BTC_DIVIDER, type);
+                return blockbook.getTransactionNumber(blockbook.getBtcNodeUrl(), address, amount, type);
             }
 
             @Override
@@ -200,12 +200,12 @@ public class CoinService {
 
             @Override
             public TransactionDetailsDTO getTransaction(String txId, String address) {
-                return blockbook.getTransaction(blockbook.getBtcNodeUrl(), getExplorerUrl(), txId, address, BlockbookService.BTC_DIVIDER);
+                return blockbook.getTransaction(blockbook.getBtcNodeUrl(), getExplorerUrl(), txId, address);
             }
 
             @Override
             public TransactionListDTO getTransactionList(String address, Integer startIndex, Integer limit, TxListDTO txDTO) {
-                return blockbook.getTransactionList(blockbook.getBtcNodeUrl(), address, BlockbookService.BTC_DIVIDER, startIndex, limit, txDTO);
+                return blockbook.getTransactionList(blockbook.getBtcNodeUrl(), address, startIndex, limit, txDTO);
             }
 
             @Override
@@ -236,8 +236,9 @@ public class CoinService {
             @Override
             public String sign(String fromAddress, String toAddress, BigDecimal amount) {
                 List<JSONObject> utxos = getUTXO(walletService.getXPUB(CoinType.BITCOIN)).getUtxos();
+                Long byteFee = blockbook.getByteFee(blockbook.getBtcNodeUrl());
 
-                return blockbook.signBTCForks(getCoinType(), fromAddress, toAddress, amount, getCoinEntity().getFee(), BlockbookService.BTC_DIVIDER, utxos);
+                return blockbook.signBTCForks(getCoinType(), fromAddress, toAddress, amount, byteFee, utxos);
             }
 
             @Override
@@ -252,7 +253,7 @@ public class CoinService {
 
             @Override
             public NodeTransactionsDTO getNodeTransactions(String address) {
-                return blockbook.getNodeTransactions(blockbook.getBtcNodeUrl(), address, BlockbookService.BTC_DIVIDER);
+                return blockbook.getNodeTransactions(blockbook.getBtcNodeUrl(), address);
             }
 
             @Override
@@ -262,7 +263,7 @@ public class CoinService {
 
             @Override
             public CoinSettingsDTO getCoinSettings() {
-                return blockbook.getCoinSettings(getCoinEntity(), getWalletAddress());
+                return blockbook.getCoinSettings(blockbook.getBtcNodeUrl(), getCoinEntity().getProfitExchange(), getWalletAddress());
             }
 
             @Override
@@ -474,7 +475,7 @@ public class CoinService {
 
             @Override
             public BigDecimal getBalance(String address) {
-                return blockbook.getBalance(blockbook.getBchNodeUrl(), address, BlockbookService.BCH_DIVIDER);
+                return blockbook.getBalance(blockbook.getBchNodeUrl(), address);
             }
 
             @Override
@@ -484,7 +485,7 @@ public class CoinService {
 
             @Override
             public TransactionNumberDTO getTransactionNumber(String address, BigDecimal amount, TransactionType type) {
-                return blockbook.getTransactionNumber(blockbook.getBchNodeUrl(), address, amount, BlockbookService.BCH_DIVIDER, type);
+                return blockbook.getTransactionNumber(blockbook.getBchNodeUrl(), address, amount, type);
             }
 
             @Override
@@ -494,12 +495,12 @@ public class CoinService {
 
             @Override
             public TransactionDetailsDTO getTransaction(String txId, String address) {
-                return blockbook.getTransaction(blockbook.getBchNodeUrl(), getExplorerUrl(), txId, address, BlockbookService.BCH_DIVIDER);
+                return blockbook.getTransaction(blockbook.getBchNodeUrl(), getExplorerUrl(), txId, address);
             }
 
             @Override
             public TransactionListDTO getTransactionList(String address, Integer startIndex, Integer limit, TxListDTO txDTO) {
-                return blockbook.getTransactionList(blockbook.getBchNodeUrl(), address, BlockbookService.BCH_DIVIDER, startIndex, limit, txDTO);
+                return blockbook.getTransactionList(blockbook.getBchNodeUrl(), address, startIndex, limit, txDTO);
             }
 
             @Override
@@ -530,8 +531,9 @@ public class CoinService {
             @Override
             public String sign(String fromAddress, String toAddress, BigDecimal amount) {
                 List<JSONObject> utxos = getUTXO(walletService.getXPUB(CoinType.BITCOINCASH)).getUtxos();
+                Long byteFee = blockbook.getByteFee(blockbook.getBchNodeUrl());
 
-                return blockbook.signBTCForks(getCoinType(), fromAddress, toAddress, amount, getCoinEntity().getFee(), BlockbookService.BCH_DIVIDER, utxos);
+                return blockbook.signBTCForks(getCoinType(), fromAddress, toAddress, amount, byteFee, utxos);
             }
 
             @Override
@@ -546,7 +548,7 @@ public class CoinService {
 
             @Override
             public NodeTransactionsDTO getNodeTransactions(String address) {
-                return blockbook.getNodeTransactions(blockbook.getBchNodeUrl(), address, BlockbookService.BCH_DIVIDER);
+                return blockbook.getNodeTransactions(blockbook.getBchNodeUrl(), address);
             }
 
             @Override
@@ -556,7 +558,7 @@ public class CoinService {
 
             @Override
             public CoinSettingsDTO getCoinSettings() {
-                return blockbook.getCoinSettings(getCoinEntity(), getWalletAddress());
+                return blockbook.getCoinSettings(blockbook.getBchNodeUrl(), getCoinEntity().getProfitExchange(), getWalletAddress());
             }
 
             @Override
@@ -572,7 +574,7 @@ public class CoinService {
 
             @Override
             public BigDecimal getBalance(String address) {
-                return blockbook.getBalance(blockbook.getLtcNodeUrl(), address, BlockbookService.LTC_DIVIDER);
+                return blockbook.getBalance(blockbook.getLtcNodeUrl(), address);
             }
 
             @Override
@@ -582,7 +584,7 @@ public class CoinService {
 
             @Override
             public TransactionNumberDTO getTransactionNumber(String address, BigDecimal amount, TransactionType type) {
-                return blockbook.getTransactionNumber(blockbook.getLtcNodeUrl(), address, amount, BlockbookService.LTC_DIVIDER, type);
+                return blockbook.getTransactionNumber(blockbook.getLtcNodeUrl(), address, amount, type);
             }
 
             @Override
@@ -592,12 +594,12 @@ public class CoinService {
 
             @Override
             public TransactionDetailsDTO getTransaction(String txId, String address) {
-                return blockbook.getTransaction(blockbook.getLtcNodeUrl(), getExplorerUrl(), txId, address, BlockbookService.LTC_DIVIDER);
+                return blockbook.getTransaction(blockbook.getLtcNodeUrl(), getExplorerUrl(), txId, address);
             }
 
             @Override
             public TransactionListDTO getTransactionList(String address, Integer startIndex, Integer limit, TxListDTO txDTO) {
-                return blockbook.getTransactionList(blockbook.getLtcNodeUrl(), address, BlockbookService.LTC_DIVIDER, startIndex, limit, txDTO);
+                return blockbook.getTransactionList(blockbook.getLtcNodeUrl(), address, startIndex, limit, txDTO);
             }
 
             @Override
@@ -628,8 +630,9 @@ public class CoinService {
             @Override
             public String sign(String fromAddress, String toAddress, BigDecimal amount) {
                 List<JSONObject> utxos = getUTXO(walletService.getXPUB(CoinType.LITECOIN)).getUtxos();
+                Long byteFee = blockbook.getByteFee(blockbook.getLtcNodeUrl());
 
-                return blockbook.signBTCForks(getCoinType(), fromAddress, toAddress, amount, getCoinEntity().getFee(), BlockbookService.LTC_DIVIDER, utxos);
+                return blockbook.signBTCForks(getCoinType(), fromAddress, toAddress, amount, byteFee, utxos);
             }
 
             @Override
@@ -644,7 +647,7 @@ public class CoinService {
 
             @Override
             public NodeTransactionsDTO getNodeTransactions(String address) {
-                return blockbook.getNodeTransactions(blockbook.getLtcNodeUrl(), address, BlockbookService.LTC_DIVIDER);
+                return blockbook.getNodeTransactions(blockbook.getLtcNodeUrl(), address);
             }
 
             @Override
@@ -654,7 +657,7 @@ public class CoinService {
 
             @Override
             public CoinSettingsDTO getCoinSettings() {
-                return blockbook.getCoinSettings(getCoinEntity(), getWalletAddress());
+                return blockbook.getCoinSettings(blockbook.getLtcNodeUrl(), getCoinEntity().getProfitExchange(), getWalletAddress());
             }
 
             @Override
