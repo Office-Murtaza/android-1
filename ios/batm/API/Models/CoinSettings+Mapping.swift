@@ -14,12 +14,11 @@ extension CoinSettings: ImmutableMappable {
     }
     
     let recallFee: String? = try map.value("recallFeeStr")
-    let byteFee: String? = try map.value("byteFeeStr")
     
     type = mappedType
     self.txFee = txFee
     self.recallFee = recallFee.flatMap { Decimal(string: $0) }
-    self.byteFee = byteFee.flatMap { Decimal(string: $0) }
+    byteFee = try map.value("byteFee")
     gasPrice = try map.value("gasPrice")
     gasLimit = try map.value("gasLimit")
     self.profitExchange = profitExchange
