@@ -15,7 +15,8 @@ struct TransactionDetails: Equatable {
   let dateString: String?
   let fromAddress: String?
   let toAddress: String?
-  let phone: String?
+  let fromPhone: String?
+  let toPhone: String?
   let imageId: String?
   let message: String?
   let refTxId: String?

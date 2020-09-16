@@ -256,7 +256,8 @@
 "transaction_details.header.date.title" = "Date";
 "transaction_details.header.from_address.title" = "From address";
 "transaction_details.header.to_address.title" = "To address";
-"transaction_details.header.phone.title" = "Phone";
+"transaction_details.header.from_user.title" = "From user";
+"transaction_details.header.to_user.title" = "To user";
 "transaction_details.header.image.title" = "Image";
 "transaction_details.header.message.title" = "Message";
 "transaction_details.header.ref_i_d.title" = "Ref ID";
