@@ -371,42 +371,34 @@ class TransactionRepositoryImpl(
         coinCode: String,
         cryptoAmount: Double
     ): Either<Failure, String> = if (networkUtils.isNetworkAvailable()) {
-        transactionHashRepository.createTransactionStakeHash(cryptoAmount, prefHelper.coinsFee[coinCode]?.walletAddress ?: "")
+        val toAddress = prefHelper.coinsFee[coinCode]?.walletAddress ?: ""
+        val hashResponse =
+            transactionHashRepository.createTransactionStakeHash(cryptoAmount, toAddress)
+        val sendSmsToDeviceResponse = toolsRepository.sendSmsToDeviceOld()
+        when {
+            hashResponse.isRight && sendSmsToDeviceResponse.isRight -> hashResponse as Either.Right
+            sendSmsToDeviceResponse.isLeft -> sendSmsToDeviceResponse as Either.Left
+            else -> hashResponse as Either.Left
+        }
     } else {
         Either.Left(Failure.NetworkConnection)
     }
 
     override suspend fun stakeCompleteTransaction(
+        smsCode: String,
         hash: String,
         coinCode: String,
         cryptoAmount: Double
     ): Either<Failure, Unit> = if (networkUtils.isNetworkAvailable()) {
-        val fromAddress = prefHelper.coinsFee[coinCode]?.walletAddress ?: ""
-        val toAddress = prefHelper.coinsFee[coinCode]?.contractAddress ?: ""
-        val coinFee = prefHelper.coinsFee[coinCode]?.txFee ?: 0.0
-        apiService.stake(coinCode, fromAddress, toAddress, cryptoAmount, coinFee, hash)
-    } else {
-        Either.Left(Failure.NetworkConnection)
-    }
-
-    override suspend fun stakeCancelCreateTransaction(
-        coinCode: String,
-        cryptoAmount: Double
-    ): Either<Failure, String> = if (networkUtils.isNetworkAvailable()) {
-        transactionHashRepository.createTransactionStakeCancelHash(cryptoAmount, prefHelper.coinsFee[coinCode]?.walletAddress ?: "")
-    } else {
-        Either.Left(Failure.NetworkConnection)
-    }
-
-    override suspend fun stakeCancelCompleteTransaction(
-        hash: String,
-        coinCode: String,
-        cryptoAmount: Double
-    ): Either<Failure, Unit> = if (networkUtils.isNetworkAvailable()) {
-        val fromAddress = prefHelper.coinsFee[coinCode]?.walletAddress ?: ""
-        val toAddress = prefHelper.coinsFee[coinCode]?.contractAddress ?: ""
-        val coinFee = prefHelper.coinsFee[coinCode]?.txFee ?: 0.0
-        apiService.stakeCancel(coinCode, fromAddress, toAddress, cryptoAmount, coinFee, hash)
+        val smsCodeVerifyResponse = toolsRepository.verifySmsCodeOld(smsCode)
+        if (smsCodeVerifyResponse.isRight) {
+            val fromAddress = prefHelper.coinsFee[coinCode]?.walletAddress ?: ""
+            val toAddress = prefHelper.coinsFee[coinCode]?.contractAddress ?: ""
+            val coinFee = prefHelper.coinsFee[coinCode]?.txFee ?: 0.0
+            apiService.stake(coinCode, fromAddress, toAddress, cryptoAmount, coinFee, hash)
+        } else {
+            smsCodeVerifyResponse as Either.Left
+        }
     } else {
         Either.Left(Failure.NetworkConnection)
     }
@@ -415,20 +407,34 @@ class TransactionRepositoryImpl(
         coinCode: String,
         cryptoAmount: Double
     ): Either<Failure, String> = if (networkUtils.isNetworkAvailable()) {
-        transactionHashRepository.createTransactionUnStakeHash(cryptoAmount, prefHelper.coinsFee[coinCode]?.walletAddress ?: "")
+        val toAddress = prefHelper.coinsFee[coinCode]?.walletAddress ?: ""
+        val hashResponse =
+            transactionHashRepository.createTransactionUnStakeHash(cryptoAmount, toAddress)
+        val sendSmsToDeviceResponse = toolsRepository.sendSmsToDeviceOld()
+        when {
+            hashResponse.isRight && sendSmsToDeviceResponse.isRight -> hashResponse as Either.Right
+            sendSmsToDeviceResponse.isLeft -> sendSmsToDeviceResponse as Either.Left
+            else -> hashResponse as Either.Left
+        }
     } else {
         Either.Left(Failure.NetworkConnection)
     }
 
     override suspend fun unStakeCompleteTransaction(
+        smsCode: String,
         hash: String,
         coinCode: String,
         cryptoAmount: Double
     ): Either<Failure, Unit> = if (networkUtils.isNetworkAvailable()) {
-        val fromAddress = prefHelper.coinsFee[coinCode]?.walletAddress ?: ""
-        val toAddress = prefHelper.coinsFee[coinCode]?.contractAddress ?: ""
-        val coinFee = prefHelper.coinsFee[coinCode]?.txFee ?: 0.0
-        apiService.unStake(coinCode, fromAddress, toAddress, cryptoAmount, coinFee, hash)
+        val smsCodeVerifyResponse = toolsRepository.verifySmsCodeOld(smsCode)
+        if (smsCodeVerifyResponse.isRight) {
+            val fromAddress = prefHelper.coinsFee[coinCode]?.walletAddress ?: ""
+            val toAddress = prefHelper.coinsFee[coinCode]?.contractAddress ?: ""
+            val coinFee = prefHelper.coinsFee[coinCode]?.txFee ?: 0.0
+            apiService.unStake(coinCode, fromAddress, toAddress, cryptoAmount, coinFee, hash)
+        } else {
+            smsCodeVerifyResponse as Either.Left
+        }
     } else {
         Either.Left(Failure.NetworkConnection)
     }

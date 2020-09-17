@@ -423,22 +423,6 @@ class TransactionApiService(
         Either.Left(failure)
     }
 
-    suspend fun stakeCancel(
-        coinCode: String,
-        fromAddress: String,
-        toAddress: String,
-        cryptoAmount: Double,
-        fee: Double,
-        hex: String
-    ): Either<Failure, Unit> = try {
-        val requestBody = StakeRequest(TRANSACTION_STAKE_CANCEL, fromAddress, toAddress, cryptoAmount, fee, hex)
-        val request = api.stakeOrUnStakeAsync(prefHelper.userId, coinCode, requestBody).await()
-        request.body()?.let { Either.Right(Unit) } ?: Either.Left(Failure.ServerError())
-    } catch (failure: Failure) {
-        failure.printStackTrace()
-        Either.Left(failure)
-    }
-
     suspend fun unStake(
         coinCode: String,
         fromAddress: String,
@@ -447,7 +431,8 @@ class TransactionApiService(
         fee: Double,
         hex: String
     ): Either<Failure, Unit> = try {
-        val requestBody = StakeRequest(TRANSACTION_WITHTRADW_STAKE, fromAddress, toAddress, cryptoAmount, fee, hex)
+        val requestBody =
+            StakeRequest(TRANSACTION_UNSTAKE, fromAddress, toAddress, cryptoAmount, fee, hex)
         val request = api.stakeOrUnStakeAsync(prefHelper.userId, coinCode, requestBody).await()
         request.body()?.let { Either.Right(Unit) } ?: Either.Left(Failure.ServerError())
     } catch (failure: Failure) {
@@ -473,8 +458,7 @@ class TransactionApiService(
         const val TRANSACTION_SELL = 6
         const val TRANSACTION_SEND_COIN_TO_COIN = 8
         const val TRANSACTION_STAKE = 13
-        const val TRANSACTION_STAKE_CANCEL = 14
-        const val TRANSACTION_WITHTRADW_STAKE = 15
+        const val TRANSACTION_UNSTAKE = 14
 
         const val TRANSACTION_TRADE_CREATE_BUY = 1
         const val TRANSACTION_TRADE_CREATE_SELL = 2
