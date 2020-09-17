@@ -25,11 +25,12 @@ class TransactionRepositoryImpl(
     override suspend fun getTransactionList(
         coinCode: String,
         currentListSize: Int
-    ): Either<Failure, Pair<Int, List<TransactionDataItem>>> = if (networkUtils.isNetworkAvailable()) {
-        apiService.getTransactions(coinCode, currentListSize)
-    } else {
-        Either.Left(Failure.NetworkConnection)
-    }
+    ): Either<Failure, Pair<Int, List<TransactionDataItem>>> =
+        if (networkUtils.isNetworkAvailable()) {
+            apiService.getTransactions(coinCode, currentListSize)
+        } else {
+            Either.Left(Failure.NetworkConnection)
+        }
 
     override suspend fun createTransaction(
         fromCoin: String,
@@ -38,7 +39,8 @@ class TransactionRepositoryImpl(
     ): Either<Failure, String> = if (networkUtils.isNetworkAvailable()) {
         val toAddress = prefHelper.coinsFee[fromCoin]?.walletAddress ?: ""
         val coinType = LocalCoinType.valueOf(fromCoin)
-        val hashResponse = transactionHashRepository.createTransactionHash(coinType, fromCoinAmount, toAddress)
+        val hashResponse =
+            transactionHashRepository.createTransactionHash(coinType, fromCoinAmount, toAddress)
         when {
             isNeedSendSms && hashResponse.isRight -> {
                 val sendSmsToDeviceResponse = toolsRepository.sendSmsToDeviceOld()
@@ -61,11 +63,19 @@ class TransactionRepositoryImpl(
         toAddress: String
     ): Either<Failure, Unit> = if (networkUtils.isNetworkAvailable()) {
         val coinType = LocalCoinType.valueOf(fromCoin)
-        val hashResponse = transactionHashRepository.createTransactionHash(coinType, fromCoinAmount, toAddress)
+        val hashResponse =
+            transactionHashRepository.createTransactionHash(coinType, fromCoinAmount, toAddress)
         if (hashResponse.isRight) {
             val fee = prefHelper.coinsFee[fromCoin]?.txFee ?: 0.0
             val fromAddress = daoAccount.getItem(fromCoin).publicKey
-            apiService.withdraw((hashResponse as Either.Right).b, fromCoin, fromCoinAmount, fee, fromAddress, toAddress)
+            apiService.withdraw(
+                (hashResponse as Either.Right).b,
+                fromCoin,
+                fromCoinAmount,
+                fee,
+                fromAddress,
+                toAddress
+            )
         } else {
             hashResponse as Either.Left
         }
@@ -84,13 +94,24 @@ class TransactionRepositoryImpl(
         return if (giftAddressResponse.isRight) {
             val coinType = LocalCoinType.valueOf(coinCode)
             val toAddress = (giftAddressResponse as Either.Right).b
-            val hashResponse = transactionHashRepository.createTransactionHash(coinType, amount, toAddress)
+            val hashResponse =
+                transactionHashRepository.createTransactionHash(coinType, amount, toAddress)
             if (hashResponse.isRight) {
                 val fee = prefHelper.coinsFee[coinCode]?.txFee ?: 0.0
                 val fromAddress = daoAccount.getItem(coinCode).publicKey
                 val hash = (hashResponse as Either.Right).b
                 if (coinCode == LocalCoinType.ETH.name || coinCode == LocalCoinType.CATM.name) {
-                    apiService.sendGift(hash, coinCode, amount, giftId, phone, message, fee, fromAddress, toAddress)
+                    apiService.sendGift(
+                        hash,
+                        coinCode,
+                        amount,
+                        giftId,
+                        phone,
+                        message,
+                        fee,
+                        fromAddress,
+                        toAddress
+                    )
                 } else {
                     apiService.sendGift(hash, coinCode, amount, giftId, phone, message)
                 }
@@ -103,11 +124,12 @@ class TransactionRepositoryImpl(
         }
     }
 
-    override suspend fun sellGetLimits(): Either<Failure, SellLimitsDataItem> = if (networkUtils.isNetworkAvailable()) {
-        apiService.sellGetLimitsAsync()
-    } else {
-        Either.Left(Failure.NetworkConnection)
-    }
+    override suspend fun sellGetLimits(): Either<Failure, SellLimitsDataItem> =
+        if (networkUtils.isNetworkAvailable()) {
+            apiService.sellGetLimitsAsync()
+        } else {
+            Either.Left(Failure.NetworkConnection)
+        }
 
     override suspend fun sellPreSubmit(
         smsCode: String,
@@ -142,17 +164,28 @@ class TransactionRepositoryImpl(
 
     override suspend fun exchange(
         fromCoinAmount: Double,
+        toCoinAmount: Double,
         fromCoin: String,
         coinTo: String
     ): Either<Failure, Unit> {
         val coinType = LocalCoinType.valueOf(fromCoin)
         val toAddress = daoAccount.getItem(coinTo).publicKey
-        val hashResponse = transactionHashRepository.createTransactionHash(coinType, fromCoinAmount, toAddress)
+        val hashResponse =
+            transactionHashRepository.createTransactionHash(coinType, fromCoinAmount, toAddress)
         return if (hashResponse.isRight) {
             val fee = prefHelper.coinsFee[fromCoin]?.txFee ?: 0.0
             val fromAddress = daoAccount.getItem(fromCoin).publicKey
             val hash = (hashResponse as Either.Right).b
-            apiService.exchange(fromCoinAmount, fromCoin, coinTo, hash, fee, fromAddress, toAddress)
+            apiService.exchange(
+                fromCoinAmount,
+                toCoinAmount,
+                fromCoin,
+                coinTo,
+                hash,
+                fee,
+                fromAddress,
+                toAddress
+            )
         } else {
             hashResponse as Either.Left
         }
@@ -295,7 +328,8 @@ class TransactionRepositoryImpl(
     ): Either<Failure, String> = if (networkUtils.isNetworkAvailable()) {
         val toAddress = prefHelper.coinsFee[coinCode]?.walletAddress ?: ""
         val coinType = LocalCoinType.valueOf(coinCode)
-        val hashResponse = transactionHashRepository.createTransactionHash(coinType, cryptoAmount, toAddress)
+        val hashResponse =
+            transactionHashRepository.createTransactionHash(coinType, cryptoAmount, toAddress)
         val sendSmsToDeviceResponse = toolsRepository.sendSmsToDeviceOld()
         when {
             hashResponse.isRight && sendSmsToDeviceResponse.isRight -> hashResponse as Either.Right
@@ -338,7 +372,8 @@ class TransactionRepositoryImpl(
         cryptoAmount: Double
     ): Either<Failure, String> = if (networkUtils.isNetworkAvailable()) {
         val toAddress = prefHelper.coinsFee[coinCode]?.walletAddress ?: ""
-        val hashResponse = transactionHashRepository.createTransactionStakeHash(cryptoAmount, toAddress)
+        val hashResponse =
+            transactionHashRepository.createTransactionStakeHash(cryptoAmount, toAddress)
         val sendSmsToDeviceResponse = toolsRepository.sendSmsToDeviceOld()
         when {
             hashResponse.isRight && sendSmsToDeviceResponse.isRight -> hashResponse as Either.Right
@@ -373,7 +408,8 @@ class TransactionRepositoryImpl(
         cryptoAmount: Double
     ): Either<Failure, String> = if (networkUtils.isNetworkAvailable()) {
         val toAddress = prefHelper.coinsFee[coinCode]?.walletAddress ?: ""
-        val hashResponse = transactionHashRepository.createTransactionUnStakeHash(cryptoAmount, toAddress)
+        val hashResponse =
+            transactionHashRepository.createTransactionUnStakeHash(cryptoAmount, toAddress)
         val sendSmsToDeviceResponse = toolsRepository.sendSmsToDeviceOld()
         when {
             hashResponse.isRight && sendSmsToDeviceResponse.isRight -> hashResponse as Either.Right
@@ -406,5 +442,6 @@ class TransactionRepositoryImpl(
     override suspend fun getTransactionDetails(
         txId: String,
         coinCode: String
-    ): Either<Failure, TransactionDetailsDataItem> = apiService.getTransactionDetails(txId, coinCode)
+    ): Either<Failure, TransactionDetailsDataItem> =
+        apiService.getTransactionDetails(txId, coinCode)
 }

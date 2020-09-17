@@ -168,11 +168,7 @@ class TransactionHashHelper(
         }
     }
 
-    private fun getByteFee(coinName: String?): Long {
-        val coinTypeUnit: Long = CoinTypeExtension.getTypeByCode(coinName ?: "")?.unit() ?: 0
-        val byteFee = prefsHelper.coinsFee[coinName]?.byteFee ?: Double.MIN_VALUE
-        return (byteFee * coinTypeUnit).toLong()
-    }
+    private fun getByteFee(coinName: String?): Long = prefsHelper.coinsFee[coinName]?.byteFee ?: Long.MIN_VALUE
 
     private suspend fun createTransactionHashETH(
         toAddress: String,

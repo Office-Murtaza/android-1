@@ -47,6 +47,7 @@ interface TransactionRepository {
 
     suspend fun exchange(
         fromCoinAmount: Double,
+        toCoinAmount: Double,
         fromCoin: String,
         coinTo: String
     ): Either<Failure, Unit>

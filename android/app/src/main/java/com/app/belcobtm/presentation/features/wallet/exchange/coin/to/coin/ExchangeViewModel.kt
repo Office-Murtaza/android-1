@@ -16,15 +16,26 @@ class ExchangeViewModel(
     val coinFeeItemList: Map<String, CoinFeeDataItem>
 ) : ViewModel() {
     val exchangeLiveData: MutableLiveData<LoadingData<Unit>> = MutableLiveData()
-    var toCoinItem: CoinDataItem? = coinItemList.find { it.code == LocalCoinType.BTC.name }
-    var toCoinFeeItem: CoinFeeDataItem? = coinFeeItemList[LocalCoinType.BTC.name]
+    var toCoinItem: CoinDataItem? = coinItemList.first { it.code != fromCoinItem.code }
+    var toCoinFeeItem: CoinFeeDataItem? =
+        coinFeeItemList[toCoinItem?.code ?: LocalCoinType.BTC.name]
 
     fun exchange(fromCoinAmount: Double) {
+        val toCoinAmount: Double = getCoinToAmount(fromCoinAmount)
         exchangeLiveData.value = LoadingData.Loading()
         exchangeUseCase.invoke(
-            ExchangeUseCase.Params(fromCoinAmount, fromCoinItem.code, toCoinItem?.code ?: ""),
+            params = ExchangeUseCase.Params(
+                fromCoinAmount,
+                toCoinAmount,
+                fromCoinItem.code,
+                toCoinItem?.code ?: ""
+            ),
             onSuccess = { exchangeLiveData.value = LoadingData.Success(it) },
             onError = { exchangeLiveData.value = LoadingData.Error(it) }
         )
     }
+
+    fun getCoinToAmount(fromCoinAmount: Double): Double =
+        fromCoinAmount * fromCoinItem.priceUsd / (toCoinItem?.priceUsd
+            ?: 0.0) * (100 - (toCoinFeeItem?.profitExchange ?: 0.0)) / 100
 }

@@ -8,6 +8,11 @@ import com.app.belcobtm.presentation.core.ui.fragment.BaseFragment
 import com.app.belcobtm.presentation.core.watcher.DoubleTextWatcher
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.android.synthetic.main.fragment_exchange.*
+import kotlinx.android.synthetic.main.fragment_exchange.balanceCryptoView
+import kotlinx.android.synthetic.main.fragment_exchange.balanceUsdView
+import kotlinx.android.synthetic.main.fragment_exchange.nextButtonView
+import kotlinx.android.synthetic.main.fragment_exchange.priceUsdView
+import kotlinx.android.synthetic.main.fragment_send_gift.*
 import org.koin.android.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
@@ -20,19 +25,27 @@ class ExchangeFragment : BaseFragment() {
         maxCharsAfterDotSecond = DoubleTextWatcher.MAX_CHARS_AFTER_DOT_CRYPTO,
         firstTextWatcher = { editable ->
             val fromCoinAmountTemporary = editable.getDouble()
-            val fromCoinAmount: Double =
-                if (fromCoinAmountTemporary > viewModel.fromCoinItem.balanceCoin) viewModel.fromCoinItem.balanceCoin
-                else fromCoinAmountTemporary
-            val toCoinAmount = fromCoinAmount * getExchangeValue()
             val fromMaxValue = getMaxValueFromCoin()
+            val cryptoAmount: Double
 
-            if (fromCoinAmountTemporary > fromMaxValue) {
+            if (fromCoinAmountTemporary >= fromMaxValue) {
+                cryptoAmount = fromMaxValue
                 editable.clear()
                 editable.insert(0, fromMaxValue.toStringCoin())
+            } else {
+                cryptoAmount = fromCoinAmountTemporary
             }
 
             nextButtonView.isEnabled = fromCoinAmountTemporary > 0
-            amountCoinToView.text = getString(R.string.text_usd, toCoinAmount.toStringCoin())
+            amountCoinToView.text = getString(
+                R.string.text_usd,
+                (cryptoAmount * viewModel.fromCoinItem.priceUsd).toStringCoin()
+            )
+            balanceCoinToView.text = getString(
+                R.string.text_text,
+                viewModel.getCoinToAmount(cryptoAmount).toStringCoin(),
+                viewModel.toCoinItem?.code ?: ""
+            )
         }
     )
 
@@ -43,7 +56,12 @@ class ExchangeFragment : BaseFragment() {
     override val retryListener: View.OnClickListener = View.OnClickListener { }
 
     override fun initViews() {
-        setToolbarTitle(getString(R.string.exchange_coin_to_coin_screen_title, viewModel.fromCoinItem.code))
+        setToolbarTitle(
+            getString(
+                R.string.exchange_coin_to_coin_screen_title,
+                viewModel.fromCoinItem.code
+            )
+        )
         priceUsdView.text = getString(
             R.string.text_usd,
             viewModel.fromCoinItem.priceUsd.toStringUsd()
@@ -63,34 +81,50 @@ class ExchangeFragment : BaseFragment() {
             R.string.text_amount,
             viewModel.toCoinItem?.code ?: ""
         )
-        LocalCoinType.values().find { it.name == viewModel.toCoinItem?.code }?.let { coinType ->
-            pickCoinButtonView.setText(coinType.fullName)
-            pickCoinButtonView.setResizedDrawableStart(coinType.resIcon(), R.drawable.ic_arrow_drop_down)
-        }
-        amountCoinToView.text = getString(R.string.text_usd, "0.0")
-        updateBalanceToView()
+        LocalCoinType
+            .values()
+            .first { it.name == viewModel.toCoinItem?.code }
+            .let { coinType ->
+                pickCoinButtonView.setText(coinType.fullName)
+                pickCoinButtonView.setResizedDrawableStart(
+                    coinType.resIcon(),
+                    R.drawable.ic_arrow_drop_down
+                )
+                balanceCoinToView.text = getString(R.string.text_text, "0.0", coinType.name)
+                amountCoinToView.text = getString(R.string.text_usd, "0.0")
+            }
+        amountCoinFromView.helperText = getString(
+            R.string.transaction_helper_text_commission,
+            viewModel.fromCoinFeeItem.txFee.toStringCoin(),
+            if (viewModel.fromCoinItem.code == LocalCoinType.CATM.name) LocalCoinType.ETH.name else viewModel.fromCoinItem.code
+        )
     }
 
     override fun initListeners() {
         pickCoinButtonView.editText?.keyListener = null
         pickCoinButtonView.editText?.setOnClickListener {
-            val coinAdapter = CoinDialogAdapter(pickCoinButtonView.context)
+            val itemList: List<LocalCoinType> = LocalCoinType
+                .values()
+                .filter { it.name != viewModel.fromCoinItem.code }
+            val coinAdapter = CoinDialogAdapter(pickCoinButtonView.context, itemList)
             MaterialAlertDialogBuilder(pickCoinButtonView.context)
                 .setTitle(R.string.exchange_coin_to_coin_screen_select_coin)
                 .setAdapter(coinAdapter) { _, which ->
-                    pickCoinButtonView.setText(LocalCoinType.values()[which].fullName)
+                    val selectedItem: LocalCoinType = itemList[which]
+                    pickCoinButtonView.setText(selectedItem.fullName)
                     pickCoinButtonView.setResizedDrawableStart(
-                        LocalCoinType.values()[which].resIcon(),
+                        selectedItem.resIcon(),
                         R.drawable.ic_arrow_drop_down
                     )
                     amountCoinToView.hint = getString(
                         R.string.text_amount,
-                        LocalCoinType.values()[which].name
+                        selectedItem.name
                     )
-                    viewModel.toCoinItem = viewModel.coinItemList.find { it.code == LocalCoinType.values()[which].name }
-                    viewModel.toCoinFeeItem = viewModel.coinFeeItemList[LocalCoinType.values()[which].name]
+                    viewModel.toCoinItem =
+                        viewModel.coinItemList.find { it.code == selectedItem.name }
+                    viewModel.toCoinFeeItem =
+                        viewModel.coinFeeItemList[selectedItem.name]
                     amountCoinFromView?.editText?.setText(amountCoinFromView.getString())
-                    updateBalanceToView()
                 }
                 .create()
                 .show()
@@ -98,8 +132,7 @@ class ExchangeFragment : BaseFragment() {
         amountCoinFromView?.editText?.addTextChangedListener(doubleTextWatcher.firstTextWatcher)
         maxCoinFromView.setOnClickListener { amountCoinFromView.setText(getMaxValueFromCoin().toStringCoin()) }
         nextButtonView.setOnClickListener {
-            val amount = amountCoinFromView.getString().toDouble() + viewModel.fromCoinFeeItem.txFee
-            viewModel.exchange(amount)
+            viewModel.exchange(amountCoinFromView.getString().toDouble())
         }
     }
 
@@ -107,20 +140,6 @@ class ExchangeFragment : BaseFragment() {
         viewModel.exchangeLiveData.listen({ popBackStack() })
     }
 
-    private fun getMaxValueFromCoin(): Double = viewModel.fromCoinItem.balanceCoin - viewModel.fromCoinFeeItem.txFee
-
-    private fun updateBalanceToView() {
-        balanceCoinToView.text = getString(
-            R.string.text_text,
-            viewModel.toCoinItem?.balanceCoin?.toStringCoin() ?: "",
-            viewModel.toCoinItem?.code ?: ""
-        )
-    }
-
-    private fun getExchangeValue(): Double {
-        val fromCoinPrice = viewModel.fromCoinItem.priceUsd
-        val fromCoinProfitC2c = viewModel.fromCoinFeeItem.profitExchange
-        val toCoinRefPrice = viewModel.toCoinItem?.priceUsd ?: 0.0
-        return fromCoinPrice / toCoinRefPrice * (100 - fromCoinProfitC2c) / 100
-    }
+    private fun getMaxValueFromCoin(): Double =
+        viewModel.fromCoinItem.balanceCoin - viewModel.fromCoinFeeItem.txFee
 }

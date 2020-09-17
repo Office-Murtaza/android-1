@@ -94,7 +94,8 @@ class TransactionApiService(
 
     suspend fun sellGetLimitsAsync(): Either<Failure, SellLimitsDataItem> = try {
         val request = api.sellGetLimitsAsync(prefHelper.userId).await()
-        request.body()?.let { Either.Right(it.mapToDataItem()) } ?: Either.Left(Failure.ServerError())
+        request.body()?.let { Either.Right(it.mapToDataItem()) }
+            ?: Either.Left(Failure.ServerError())
     } catch (failure: Failure) {
         failure.printStackTrace()
         Either.Left(failure)
@@ -116,7 +117,8 @@ class TransactionApiService(
             requestBody
         ).await()
 
-        request.body()?.let { Either.Right(it.mapToDataItem()) } ?: Either.Left(Failure.ServerError())
+        request.body()?.let { Either.Right(it.mapToDataItem()) }
+            ?: Either.Left(Failure.ServerError())
     } catch (failure: Failure) {
         failure.printStackTrace()
         Either.Left(failure)
@@ -141,6 +143,7 @@ class TransactionApiService(
 
     suspend fun exchange(
         coinFromAmount: Double,
+        coinToAmount: Double,
         coinFrom: String,
         coinTo: String,
         hash: String,
@@ -150,12 +153,13 @@ class TransactionApiService(
     ): Either<Failure, Unit> = try {
         val requestBody = CoinToCoinExchangeRequest(
             type = TRANSACTION_SEND_COIN_TO_COIN,
+            hex = hash,
+            fromAddress = fromAddress,
+            toAddress = toAddress,
             cryptoAmount = coinFromAmount,
             refCoin = coinTo,
-            hex = hash,
+            refCryptoAmount = coinToAmount,
             fee = fee,
-            fromAddress = fromAddress,
-            toAddress = toAddress
         )
         val request = api.exchangeAsync(prefHelper.userId, coinFrom, requestBody).await()
         request.body()?.let { Either.Right(Unit) } ?: Either.Left(Failure.ServerError())
@@ -166,7 +170,8 @@ class TransactionApiService(
 
     suspend fun getTradeInfo(coinFrom: String): Either<Failure, TradeInfoDataItem> = try {
         val request = api.tradeGetInfoAsync(prefHelper.userId, coinFrom).await()
-        request.body()?.let { Either.Right(it.mapToDataItem()) } ?: Either.Left(Failure.ServerError())
+        request.body()?.let { Either.Right(it.mapToDataItem()) }
+            ?: Either.Left(Failure.ServerError())
     } catch (failure: Failure) {
         failure.printStackTrace()
         Either.Left(failure)
@@ -177,8 +182,11 @@ class TransactionApiService(
         sortType: TradeSortType,
         paginationStep: Int
     ): Either<Failure, TradeInfoDataItem> = try {
-        val request = api.getBuyTradeListAsync(prefHelper.userId, coinFrom, sortType.code, paginationStep).await()
-        request.body()?.let { Either.Right(it.mapToDataItem()) } ?: Either.Left(Failure.ServerError())
+        val request =
+            api.getBuyTradeListAsync(prefHelper.userId, coinFrom, sortType.code, paginationStep)
+                .await()
+        request.body()?.let { Either.Right(it.mapToDataItem()) }
+            ?: Either.Left(Failure.ServerError())
     } catch (failure: Failure) {
         failure.printStackTrace()
         Either.Left(failure)
@@ -189,8 +197,11 @@ class TransactionApiService(
         sortType: TradeSortType,
         paginationStep: Int
     ): Either<Failure, TradeInfoDataItem> = try {
-        val request = api.getSellTradeListAsync(prefHelper.userId, coinFrom, sortType.code, paginationStep).await()
-        request.body()?.let { Either.Right(it.mapToDataItem()) } ?: Either.Left(Failure.ServerError())
+        val request =
+            api.getSellTradeListAsync(prefHelper.userId, coinFrom, sortType.code, paginationStep)
+                .await()
+        request.body()?.let { Either.Right(it.mapToDataItem()) }
+            ?: Either.Left(Failure.ServerError())
     } catch (failure: Failure) {
         failure.printStackTrace()
         Either.Left(failure)
@@ -201,8 +212,11 @@ class TransactionApiService(
         sortType: TradeSortType,
         paginationStep: Int
     ): Either<Failure, TradeInfoDataItem> = try {
-        val request = api.getMyTradeListAsync(prefHelper.userId, coinFrom, sortType.code, paginationStep).await()
-        request.body()?.let { Either.Right(it.mapToDataItem()) } ?: Either.Left(Failure.ServerError())
+        val request =
+            api.getMyTradeListAsync(prefHelper.userId, coinFrom, sortType.code, paginationStep)
+                .await()
+        request.body()?.let { Either.Right(it.mapToDataItem()) }
+            ?: Either.Left(Failure.ServerError())
     } catch (failure: Failure) {
         failure.printStackTrace()
         Either.Left(failure)
@@ -213,8 +227,11 @@ class TransactionApiService(
         sortType: TradeSortType,
         paginationStep: Int
     ): Either<Failure, TradeInfoDataItem> = try {
-        val request = api.getOpenTradeListAsync(prefHelper.userId, coinFrom, sortType.code, paginationStep).await()
-        request.body()?.let { Either.Right(it.mapToDataItem()) } ?: Either.Left(Failure.ServerError())
+        val request =
+            api.getOpenTradeListAsync(prefHelper.userId, coinFrom, sortType.code, paginationStep)
+                .await()
+        request.body()?.let { Either.Right(it.mapToDataItem()) }
+            ?: Either.Left(Failure.ServerError())
     } catch (failure: Failure) {
         failure.printStackTrace()
         Either.Left(failure)
@@ -245,7 +262,14 @@ class TransactionApiService(
         terms: String
     ): Either<Failure, Unit> = try {
         val requestBody =
-            TradeCreateRequest(TRANSACTION_TRADE_CREATE_BUY, paymentMethod, margin, minLimit, maxLimit, terms)
+            TradeCreateRequest(
+                TRANSACTION_TRADE_CREATE_BUY,
+                paymentMethod,
+                margin,
+                minLimit,
+                maxLimit,
+                terms
+            )
         val request = api.tradeCreateAsync(prefHelper.userId, coinCode, requestBody).await()
         request.body()?.let { Either.Right(Unit) } ?: Either.Left(Failure.ServerError())
     } catch (failure: Failure) {
@@ -262,7 +286,14 @@ class TransactionApiService(
         terms: String
     ): Either<Failure, Unit> = try {
         val requestBody =
-            TradeCreateRequest(TRANSACTION_TRADE_CREATE_SELL, paymentMethod, margin, minLimit, maxLimit, terms)
+            TradeCreateRequest(
+                TRANSACTION_TRADE_CREATE_SELL,
+                paymentMethod,
+                margin,
+                minLimit,
+                maxLimit,
+                terms
+            )
         val request = api.tradeCreateAsync(prefHelper.userId, coinCode, requestBody).await()
         request.body()?.let { Either.Right(Unit) } ?: Either.Left(Failure.ServerError())
     } catch (failure: Failure) {
@@ -270,16 +301,20 @@ class TransactionApiService(
         Either.Left(failure)
     }
 
-    suspend fun sendTradeUserLocation(latitude: Double, longitude: Double): Either<Failure, Unit> = try {
-        val requestBody = TradeLocationRequest(latitude, longitude)
-        val request = api.tradeSendUserLocationAsync(prefHelper.userId, requestBody).await()
-        request.body()?.let { Either.Right(Unit) } ?: Either.Left(Failure.ServerError())
-    } catch (failure: Failure) {
-        failure.printStackTrace()
-        Either.Left(failure)
-    }
+    suspend fun sendTradeUserLocation(latitude: Double, longitude: Double): Either<Failure, Unit> =
+        try {
+            val requestBody = TradeLocationRequest(latitude, longitude)
+            val request = api.tradeSendUserLocationAsync(prefHelper.userId, requestBody).await()
+            request.body()?.let { Either.Right(Unit) } ?: Either.Left(Failure.ServerError())
+        } catch (failure: Failure) {
+            failure.printStackTrace()
+            Either.Left(failure)
+        }
 
-    suspend fun getUtxoList(coinId: String, publicKey: String): Either<Failure, List<UtxoItemResponse>> = try {
+    suspend fun getUtxoList(
+        coinId: String,
+        publicKey: String
+    ): Either<Failure, List<UtxoItemResponse>> = try {
         val request = api.getUtxoListAsync(coinId, publicKey).await()
         request.body()?.utxos?.let { Either.Right(it) } ?: Either.Left(Failure.ServerError())
     } catch (failure: Failure) {
@@ -287,13 +322,14 @@ class TransactionApiService(
         Either.Left(failure)
     }
 
-    suspend fun getEthereumNonce(coinCode: String, toAddress: String): Either<Failure, Long?> = try {
-        val request = api.getEthereumNonceAsync(coinCode, toAddress).await()
-        request.body()?.let { Either.Right(it.nonce) } ?: Either.Left(Failure.ServerError())
-    } catch (failure: Failure) {
-        failure.printStackTrace()
-        Either.Left(failure)
-    }
+    suspend fun getEthereumNonce(coinCode: String, toAddress: String): Either<Failure, Long?> =
+        try {
+            val request = api.getEthereumNonceAsync(coinCode, toAddress).await()
+            request.body()?.let { Either.Right(it.nonce) } ?: Either.Left(Failure.ServerError())
+        } catch (failure: Failure) {
+            failure.printStackTrace()
+            Either.Left(failure)
+        }
 
     suspend fun getRippleSequence(fromAddress: String): Either<Failure, Long> = try {
         val request = api.getRippleBlockHeaderAsync(fromAddress).await()
@@ -305,23 +341,26 @@ class TransactionApiService(
 
     suspend fun checkRippleAccountActivation(fromAddress: String): Either<Failure, Boolean> = try {
         val request = api.checkRippleAccountActivationAsync(fromAddress).await()
-        request.body()?.let { Either.Right(it.result ?: false) } ?: Either.Left(Failure.ServerError())
+        request.body()?.let { Either.Right(it.result ?: false) }
+            ?: Either.Left(Failure.ServerError())
     } catch (failure: Failure) {
         failure.printStackTrace()
         Either.Left(failure)
     }
 
-    suspend fun getBinanceBlockHeader(toAddress: String): Either<Failure, BinanceBlockResponse> = try {
-        val request = api.getBinanceBlockHeaderAsync(toAddress).await()
-        request.body()?.let { Either.Right(it) } ?: Either.Left(Failure.ServerError())
-    } catch (failure: Failure) {
-        failure.printStackTrace()
-        Either.Left(failure)
-    }
+    suspend fun getBinanceBlockHeader(toAddress: String): Either<Failure, BinanceBlockResponse> =
+        try {
+            val request = api.getBinanceBlockHeaderAsync(toAddress).await()
+            request.body()?.let { Either.Right(it) } ?: Either.Left(Failure.ServerError())
+        } catch (failure: Failure) {
+            failure.printStackTrace()
+            Either.Left(failure)
+        }
 
     suspend fun getTronBlockHeader(coinId: String): Either<Failure, TronRawDataResponse?> = try {
         val request = api.getTronBlockHeaderAsync(coinId).await()
-        request.body()?.let { Either.Right(it.blockHeader?.raw_data) } ?: Either.Left(Failure.ServerError())
+        request.body()?.let { Either.Right(it.blockHeader?.raw_data) }
+            ?: Either.Left(Failure.ServerError())
     } catch (failure: Failure) {
         failure.printStackTrace()
         Either.Left(failure)
@@ -343,7 +382,14 @@ class TransactionApiService(
         fee: Double,
         hex: String
     ): Either<Failure, Unit> = try {
-        val requestBody = TradeReserveRequest(TRANSACTION_TRADE_RESERVE, fromAddress, toAddress, cryptoAmount, fee, hex)
+        val requestBody = TradeReserveRequest(
+            TRANSACTION_TRADE_RESERVE,
+            fromAddress,
+            toAddress,
+            cryptoAmount,
+            fee,
+            hex
+        )
         val request = api.submitReserveAsync(prefHelper.userId, coinCode, requestBody).await()
         request.body()?.let { Either.Right(Unit) } ?: Either.Left(Failure.ServerError())
     } catch (failure: Failure) {
@@ -353,7 +399,8 @@ class TransactionApiService(
 
     suspend fun stakeDetails(coinCode: String): Either<Failure, StakeDetailsDataItem> = try {
         val request = api.stakeDetailsAsync(prefHelper.userId, coinCode).await()
-        request.body()?.let { Either.Right(it.mapToDataItem()) } ?: Either.Left(Failure.ServerError())
+        request.body()?.let { Either.Right(it.mapToDataItem()) }
+            ?: Either.Left(Failure.ServerError())
     } catch (failure: Failure) {
         failure.printStackTrace()
         Either.Left(failure)
@@ -367,7 +414,8 @@ class TransactionApiService(
         fee: Double,
         hex: String
     ): Either<Failure, Unit> = try {
-        val requestBody = StakeRequest(TRANSACTION_STAKE, fromAddress, toAddress, cryptoAmount, fee, hex)
+        val requestBody =
+            StakeRequest(TRANSACTION_STAKE, fromAddress, toAddress, cryptoAmount, fee, hex)
         val request = api.stakeOrUnStakeAsync(prefHelper.userId, coinCode, requestBody).await()
         request.body()?.let { Either.Right(Unit) } ?: Either.Left(Failure.ServerError())
     } catch (failure: Failure) {
@@ -383,7 +431,8 @@ class TransactionApiService(
         fee: Double,
         hex: String
     ): Either<Failure, Unit> = try {
-        val requestBody = StakeRequest(TRANSACTION_UNSTAKE, fromAddress, toAddress, cryptoAmount, fee, hex)
+        val requestBody =
+            StakeRequest(TRANSACTION_UNSTAKE, fromAddress, toAddress, cryptoAmount, fee, hex)
         val request = api.stakeOrUnStakeAsync(prefHelper.userId, coinCode, requestBody).await()
         request.body()?.let { Either.Right(Unit) } ?: Either.Left(Failure.ServerError())
     } catch (failure: Failure) {
@@ -396,7 +445,8 @@ class TransactionApiService(
         coinCode: String
     ): Either<Failure, TransactionDetailsDataItem> = try {
         val request = api.getTransactionDetailsAsync(prefHelper.userId, coinCode, txId).await()
-        request.body()?.let { Either.Right(it.mapToDataItem()) } ?: Either.Left(Failure.ServerError())
+        request.body()?.let { Either.Right(it.mapToDataItem()) }
+            ?: Either.Left(Failure.ServerError())
     } catch (failure: Failure) {
         failure.printStackTrace()
         Either.Left(failure)

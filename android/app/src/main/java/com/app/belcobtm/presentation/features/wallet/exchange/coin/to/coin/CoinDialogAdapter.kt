@@ -10,11 +10,15 @@ import com.app.belcobtm.domain.wallet.LocalCoinType
 import com.app.belcobtm.presentation.core.extensions.resIcon
 import kotlinx.android.synthetic.main.item_coin_to_coin.view.*
 
-class CoinDialogAdapter(context: Context) :
-    ArrayAdapter<LocalCoinType>(context, R.layout.item_coin_to_coin, LocalCoinType.values()) {
+class CoinDialogAdapter(
+    context: Context,
+    itemList: List<LocalCoinType>
+) :
+    ArrayAdapter<LocalCoinType>(context, R.layout.item_coin_to_coin, itemList) {
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
-        val view = convertView ?: LayoutInflater.from(context).inflate(R.layout.item_coin_to_coin, parent, false)
+        val view = convertView ?: LayoutInflater.from(context)
+            .inflate(R.layout.item_coin_to_coin, parent, false)
         getItem(position)?.let { coinType ->
             view.imageView.setImageResource(coinType.resIcon())
             view.textView.text = coinType.fullName

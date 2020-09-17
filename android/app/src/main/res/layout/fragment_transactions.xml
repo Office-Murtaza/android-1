@@ -208,11 +208,11 @@
         <!--            android:src="@drawable/ic_trade"-->
         <!--            app:fab_label="@string/transitions_trade" />-->
 
-        <!--        <com.github.clans.fab.FloatingActionButton-->
-        <!--            android:id="@+id/c2cExchangeButtonView"-->
-        <!--            style="@style/TransactionsScreen.FloatingActionButtonChild"-->
-        <!--            android:src="@drawable/ic_exchange"-->
-        <!--            app:fab_label="@string/transitions_exchange" />-->
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/c2cExchangeButtonView"
+            style="@style/TransactionsScreen.FloatingActionButtonChild"
+            android:src="@drawable/ic_exchange"
+            app:fab_label="@string/transitions_exchange" />
 
         <!--        <com.github.clans.fab.FloatingActionButton-->
         <!--            android:id="@+id/sellButtonView"-->
