@@ -146,8 +146,12 @@ final class TransactionDetailsViewController: ModuleViewController<TransactionDe
   private func setupGiftSection() {
     let details = presenter.details!
     
-    if let phone = details.phone {
-      headerView.add(title: localize(L.TransactionDetails.Header.Phone.title), value: phone)
+    if let fromPhone = details.fromPhone {
+      headerView.add(title: localize(L.TransactionDetails.Header.FromUser.title), value: fromPhone.phoneFormatted)
+    }
+    
+    if let toPhone = details.toPhone {
+      headerView.add(title: localize(L.TransactionDetails.Header.ToUser.title), value: toPhone.phoneFormatted)
     }
     
     if let imageId = details.imageId, imageId.count > 0 {

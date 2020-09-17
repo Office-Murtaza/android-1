@@ -493,6 +493,7 @@
 		DBDA966722C00424005B93DF /* ErrorTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBDA966622C00424005B93DF /* ErrorTracker.swift */; };
 		DBDA966922C0043F005B93DF /* ActivityTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBDA966822C0043F005B93DF /* ActivityTracker.swift */; };
 		DBDD5D13235797F00012DFAA /* CoinSellAnotherAddressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBDD5D12235797F00012DFAA /* CoinSellAnotherAddressView.swift */; };
+		DBE4942C25122B680025FEF9 /* CoinExchangeTextFieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBE4942B25122B680025FEF9 /* CoinExchangeTextFieldView.swift */; };
 		DBEBC6BB2402987C00D7C8A6 /* ToastInitializer.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBEBC6BA2402987C00D7C8A6 /* ToastInitializer.swift */; };
 		DBEC2C3624EC3D50000590B9 /* UIApplication+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBEC2C3524EC3D50000590B9 /* UIApplication+Extensions.swift */; };
 		DBEC45BB2321366500BB05B2 /* CoinWithdrawStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBEC45BA2321366500BB05B2 /* CoinWithdrawStore.swift */; };
@@ -1022,6 +1023,7 @@
 		DBDA966622C00424005B93DF /* ErrorTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorTracker.swift; sourceTree = "<group>"; };
 		DBDA966822C0043F005B93DF /* ActivityTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityTracker.swift; sourceTree = "<group>"; };
 		DBDD5D12235797F00012DFAA /* CoinSellAnotherAddressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinSellAnotherAddressView.swift; sourceTree = "<group>"; };
+		DBE4942B25122B680025FEF9 /* CoinExchangeTextFieldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinExchangeTextFieldView.swift; sourceTree = "<group>"; };
 		DBEBC6BA2402987C00D7C8A6 /* ToastInitializer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastInitializer.swift; sourceTree = "<group>"; };
 		DBEC2C3524EC3D50000590B9 /* UIApplication+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIApplication+Extensions.swift"; sourceTree = "<group>"; };
 		DBEC45BA2321366500BB05B2 /* CoinWithdrawStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinWithdrawStore.swift; sourceTree = "<group>"; };
@@ -2561,6 +2563,7 @@
 			isa = PBXGroup;
 			children = (
 				DBADDE3B2438DEED00BFD806 /* CoinExchangeFormView.swift */,
+				DBE4942B25122B680025FEF9 /* CoinExchangeTextFieldView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -3130,6 +3133,7 @@
 				DBA6843322E42B920079429E /* WalletFlow+Dependencies.swift in Sources */,
 				DB1CFB54246C518200020104 /* TradesViewController.swift in Sources */,
 				DB904AA722C011B1007CB734 /* WelcomeModule.swift in Sources */,
+				DBE4942C25122B680025FEF9 /* CoinExchangeTextFieldView.swift in Sources */,
 				DB3C03D622CB5B960036F779 /* RecoverPresenter.swift in Sources */,
 				DBA4F4A524CDDF3C00E6FAAB /* PinCodeKeyboardDigitButton.swift in Sources */,
 				DB51F30F2490CFC1007F47B4 /* CreateEditTradeViewController.swift in Sources */,
@@ -3656,7 +3660,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 72;
+				CURRENT_PROJECT_VERSION = 73;
 				DEVELOPMENT_TEAM = 2RUJ559RK4;
 				INFOPLIST_FILE = batm/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -3664,7 +3668,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.6.1;
+				MARKETING_VERSION = 1.7;
 				PRODUCT_BUNDLE_IDENTIFIER = com.belcobtm.BelcoWallet;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = BelcoWalletDevelopmentProfile;
@@ -3680,7 +3684,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 72;
+				CURRENT_PROJECT_VERSION = 73;
 				DEVELOPMENT_TEAM = 2RUJ559RK4;
 				INFOPLIST_FILE = batm/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -3688,7 +3692,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.6.1;
+				MARKETING_VERSION = 1.7;
 				PRODUCT_BUNDLE_IDENTIFIER = com.belcobtm.BelcoWallet;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = BelcoWalletAppStoreProfile;

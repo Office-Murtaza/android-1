@@ -682,6 +682,10 @@ extension L.TransactionDetails.Header {
     static let title = "transaction_details.header.from_address.title"
   }
 
+  struct FromUser {
+    static let title = "transaction_details.header.from_user.title"
+  }
+
   struct ID {
     static let title = "transaction_details.header.i_d.title"
   }
@@ -692,10 +696,6 @@ extension L.TransactionDetails.Header {
 
   struct Message {
     static let title = "transaction_details.header.message.title"
-  }
-
-  struct Phone {
-    static let title = "transaction_details.header.phone.title"
   }
 
   struct RefAmount {
@@ -720,6 +720,10 @@ extension L.TransactionDetails.Header {
 
   struct ToAddress {
     static let title = "transaction_details.header.to_address.title"
+  }
+
+  struct ToUser {
+    static let title = "transaction_details.header.to_user.title"
   }
 
   struct TxType {

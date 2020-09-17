@@ -98,7 +98,7 @@ extension CoinDetailsFlowController: CoinSellDetailsCurrentAddressModuleDelegate
 extension CoinDetailsFlowController: CoinExchangeModuleDelegate {
   
   func didFinishCoinExchange() {
-    step.accept(CoinDetailsFlow.Steps.pop(nil))
+    step.accept(CoinDetailsFlow.Steps.pop(localize(L.CoinDetails.transactionCreated)))
   }
   
 }

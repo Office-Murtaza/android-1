@@ -4,9 +4,7 @@ import RxCocoa
 import MaterialComponents
 import TrustWalletCore
 
-final class CoinExchangeFormView: UIView, UIPickerViewDelegate, UIPickerViewDataSource, HasDisposeBag {
-  
-  let didSelectPickerRow = PublishRelay<CustomCoinType>()
+final class CoinExchangeFormView: UIView, HasDisposeBag {
   
   let stackView: UIStackView = {
     let stackView = UIStackView()
@@ -14,37 +12,10 @@ final class CoinExchangeFormView: UIView, UIPickerViewDelegate, UIPickerViewData
     return stackView
   }()
   
-  let maxButton = MDCButton.max
-  
-  let fromCoinAmountTextField = MDCTextField.amount
-  
-  let toCoinTextFieldContainer = UIView()
-  let toCoinTextField = MDCTextField.dropdown
-  let fakeToCoinTextField = FakeTextField()
-  
-  let toCoinPickerView = UIPickerView()
-  
-  let toCoinAmountTextField: MDCTextField = {
-    let textField = MDCTextField.amount
-    textField.isEnabled = false
-    return textField
-  }()
-  
-  let fromCoinAmountTextFieldController: MDCTextInputControllerOutlined
-  let toCoinTextFieldController: MDCTextInputControllerOutlined
-  let toCoinAmountTextFieldController: MDCTextInputControllerOutlined
-  
-  var coins: [CustomCoinType] = [] {
-    didSet {
-      toCoinPickerView.reloadAllComponents()
-    }
-  }
+  let fromCoinAmountTextFieldView = CoinAmountTextFieldView()
+  let toCoinTextFieldView = CoinExchangeTextFieldView()
   
   override init(frame: CGRect) {
-    fromCoinAmountTextFieldController = ThemedTextInputControllerOutlined(textInput: fromCoinAmountTextField)
-    toCoinTextFieldController = ThemedTextInputControllerOutlined(textInput: toCoinTextField)
-    toCoinAmountTextFieldController = ThemedTextInputControllerOutlined(textInput: toCoinAmountTextField)
-    
     super.init(frame: frame)
     
     setupUI()
@@ -59,78 +30,45 @@ final class CoinExchangeFormView: UIView, UIPickerViewDelegate, UIPickerViewData
     translatesAutoresizingMaskIntoConstraints = false
     
     addSubview(stackView)
-    stackView.addArrangedSubviews(fromCoinAmountTextField,
-                                  toCoinTextFieldContainer,
-                                  toCoinAmountTextField)
-    
-    toCoinTextFieldContainer.addSubviews(toCoinTextField,
-                                         fakeToCoinTextField)
-
-    fromCoinAmountTextField.setRightView(maxButton)
+    stackView.addArrangedSubviews(fromCoinAmountTextFieldView,
+                                  toCoinTextFieldView)
   }
   
   private func setupLayout() {
     stackView.snp.makeConstraints {
       $0.edges.equalToSuperview()
     }
-    toCoinTextField.snp.makeConstraints {
-      $0.edges.equalToSuperview()
-    }
-    fakeToCoinTextField.snp.makeConstraints {
-      $0.edges.equalToSuperview()
-    }
-    
-    setupPicker()
   }
   
-  func setupPicker() {
-    fakeToCoinTextField.inputView = toCoinPickerView
-    
-    toCoinPickerView.delegate = self
-    toCoinPickerView.dataSource = self
-  }
-  
-  func configure(for coin: CustomCoinType, and otherCoins: [CustomCoinType]) {
-    fromCoinAmountTextFieldController.placeholderText = String(format: localize(L.CoinWithdraw.Form.CoinAmount.placeholder), coin.code)
-    coins = otherCoins
-  }
-  
-  func numberOfComponents(in pickerView: UIPickerView) -> Int {
-    return 1
-  }
-  
-  func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-    return coins.count
-  }
-  
-  func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-    return coins[row].verboseValue
-  }
-  
-  func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-    return didSelectPickerRow.accept(coins[row])
+  func configure(coin: CustomCoinType, otherCoins: [CustomCoinType], fee: Decimal?) {
+    fromCoinAmountTextFieldView.configure(coinType: coin, fee: fee)
+    toCoinTextFieldView.configure(for: otherCoins)
   }
 }
 
 extension Reactive where Base == CoinExchangeFormView {
   var fromCoinAmountText: ControlProperty<String?> {
-    return base.fromCoinAmountTextField.rx.text
+    return base.fromCoinAmountTextFieldView.rx.coinAmountText
+  }
+  var fromCoinAmountErrorText: Binder<String?> {
+    return base.fromCoinAmountTextFieldView.rx.coinAmountErrorText
+  }
+  var fromCoinFiatAmountText: Binder<String?> {
+     return base.fromCoinAmountTextFieldView.rx.fiatAmountText
   }
   var toCoin: Binder<CustomCoinType> {
-    return Binder(base) { target, value in
-      target.toCoinTextField.setLeftView(UIImageView(image: value.smallLogo))
-      target.toCoinTextFieldController.placeholderText = value.verboseValue
-      target.toCoinAmountTextFieldController.placeholderText = String(format: localize(L.CoinWithdraw.Form.CoinAmount.placeholder),
-                                                                      value.code)
-    }
+    return base.toCoinTextFieldView.rx.toCoin
+  }
+  var toCoinErrorText: Binder<String?> {
+    return base.toCoinTextFieldView.rx.toCoinErrorText
   }
   var selectPickerItem: Driver<CustomCoinType> {
-    return base.didSelectPickerRow.asDriver(onErrorDriveWith: .empty())
+    return base.toCoinTextFieldView.rx.selectPickerItem
   }
-  var toCoinAmountText: ControlProperty<String?> {
-    return base.toCoinAmountTextField.rx.text
+  var toCoinAmountText: Binder<String?> {
+    return base.toCoinTextFieldView.rx.toCoinAmountText
   }
   var maxTap: Driver<Void> {
-    return base.maxButton.rx.tap.asDriver()
+    return base.fromCoinAmountTextFieldView.rx.maxTap
   }
 }

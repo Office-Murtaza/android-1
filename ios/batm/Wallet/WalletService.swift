@@ -97,7 +97,7 @@ class WalletServiceImpl: WalletService {
     var input = BitcoinSigningInput.with {
       $0.hashType = coin.type.hashType
       $0.amount = amountInUnits
-      $0.byteFee = coin.transactionFee(fee: coinSettings.byteFee ?? 0)
+      $0.byteFee = Int64(coinSettings.byteFee ?? 0)
       $0.changeAddress = coin.address
       $0.toAddress = toAddress
       $0.coinType = coin.type.defaultCoinType.rawValue

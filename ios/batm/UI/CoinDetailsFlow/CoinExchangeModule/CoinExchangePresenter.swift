@@ -8,11 +8,10 @@ final class CoinExchangePresenter: ModulePresenter, CoinExchangeModule {
   typealias Store = ViewStore<CoinExchangeAction, CoinExchangeState>
 
   struct Input {
-    var back: Driver<Void>
     var updateFromCoinAmount: Driver<String?>
     var updatePickerItem: Driver<CustomCoinType>
     var max: Driver<Void>
-    var next: Driver<Void>
+    var submit: Driver<Void>
   }
   
   private let usecase: CoinDetailsUsecase
@@ -37,10 +36,6 @@ final class CoinExchangePresenter: ModulePresenter, CoinExchangeModule {
   }
 
   func bind(input: Input) {
-    input.back
-      .drive(onNext: { [delegate] in delegate?.didFinishCoinExchange() })
-      .disposed(by: disposeBag)
-    
     input.updateFromCoinAmount
       .asObservable()
       .map { CoinExchangeAction.updateFromCoinAmount($0) }
@@ -59,7 +54,7 @@ final class CoinExchangePresenter: ModulePresenter, CoinExchangeModule {
       .bind(to: store.action)
       .disposed(by: disposeBag)
     
-    input.next
+    input.submit
       .asObservable()
       .doOnNext { [store] in store.action.accept(.updateValidationState) }
       .withLatestFrom(state)
@@ -75,8 +70,8 @@ final class CoinExchangePresenter: ModulePresenter, CoinExchangeModule {
                                 to: state.toCoinType!,
                                 amount: state.fromCoinAmount.decimalValue ?? 0.0)
       .catchError { [store] in
-        if let apiError = $0 as? APIError, case let .serverError(error) = apiError {
-          store.action.accept(.makeInvalidState(error.message))
+        if let apiError = $0 as? APIError, case let .serverError(error) = apiError, let code = error.code, code > 1 {
+          store.action.accept(.updateFromCoinAmountError(error.message))
         }
         
         throw $0
