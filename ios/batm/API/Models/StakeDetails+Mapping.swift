@@ -2,7 +2,7 @@ import ObjectMapper
 
 extension StakeDetails: ImmutableMappable {
   init(map: Map) throws {
-    guard let rewardAnnualPercent = Decimal(string: try map.value("rewardAnnualPercent")) else {
+    guard let rewardAnnualPercent = Decimal(string: try map.value("rewardAnnualPercentStr")) else {
       throw ObjectMapperError.couldNotMap
     }
     
