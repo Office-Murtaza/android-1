@@ -1,6 +1,8 @@
 package com.batm.dto;
 
 import java.math.BigDecimal;
+
+import com.batm.util.Util;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
 
@@ -43,26 +45,26 @@ public class CoinBalanceDTO {
 
     public void setBalance(BigDecimal balance) {
         this.balance = balance;
-        this.balanceStr = balance == null ? null : balance.toString();
+        this.balanceStr = Util.convert(balance);
     }
 
     public void setFiatBalance(BigDecimal fiatBalance) {
         this.fiatBalance = fiatBalance;
-        this.fiatBalanceStr = fiatBalance == null ? null : fiatBalance.toString();
+        this.fiatBalanceStr = Util.convert(fiatBalance);
     }
 
     public void setReservedBalance(BigDecimal reservedBalance) {
         this.reservedBalance = reservedBalance;
-        this.reservedBalanceStr = reservedBalance == null ? null : reservedBalance.toString();
+        this.reservedBalanceStr = Util.convert(reservedBalance);
     }
 
     public void setReservedFiatBalance(BigDecimal reservedFiatBalance) {
         this.reservedFiatBalance = reservedFiatBalance;
-        this.reservedFiatBalanceStr = reservedFiatBalance == null ? null : reservedFiatBalance.toString();
+        this.reservedFiatBalanceStr = Util.convert(reservedFiatBalance);
     }
 
     public void setPrice(BigDecimal price) {
         this.price = price;
-        this.priceStr = price == null ? null : price.toString();
+        this.priceStr = Util.convert(price);
     }
 }

@@ -25,7 +25,8 @@ public class TransactionRecordWallet extends BaseEntity {
     private BigDecimal refAmount;
     private String txId;
     private Integer receiverStatus;
-    private String phone;
+    private String fromPhone;
+    private String toPhone;
     private String imageId;
     private String message;
     private Date createDate = new Date();
