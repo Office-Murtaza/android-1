@@ -11,13 +11,9 @@ final class CoinStakingFormView: UIView {
     return stackView
   }()
   
-  let coinMaxButton = MDCButton.max
-  let coinAmountTextField = MDCTextField.amount
-  let coinAmountTextFieldController: MDCTextInputControllerOutlined
+  let coinAmountTextFieldView = CoinAmountTextFieldView()
   
   override init(frame: CGRect) {
-    coinAmountTextFieldController = ThemedTextInputControllerOutlined(textInput: coinAmountTextField)
-    
     super.init(frame: frame)
     
     setupUI()
@@ -31,12 +27,8 @@ final class CoinStakingFormView: UIView {
   private func setupUI() {
     translatesAutoresizingMaskIntoConstraints = false
     
-    addSubviews(stackView)
-    stackView.addArrangedSubviews(coinAmountTextField)
-    
-    coinAmountTextField.setRightView(coinMaxButton)
-    
-    coinAmountTextFieldController.placeholderText = localize(L.CoinWithdraw.Form.CoinAmount.placeholder)
+    addSubview(stackView)
+    stackView.addArrangedSubview(coinAmountTextFieldView)
   }
   
   private func setupLayout() {
@@ -45,18 +37,23 @@ final class CoinStakingFormView: UIView {
     }
   }
   
-  func configure(with coinCode: String, stakeDetails: StakeDetails) {
-    coinAmountTextFieldController.placeholderText = String(format: localize(L.CoinWithdraw.Form.CoinAmount.placeholder), coinCode)
-    
-    coinAmountTextField.isHidden = stakeDetails.exist
+  func configure(coinType: CustomCoinType, stakeDetails: StakeDetails, fee: Decimal?) {
+    coinAmountTextFieldView.configure(coinType: coinType, fee: fee)
+    coinAmountTextFieldView.isHidden = stakeDetails.exist
   }
 }
 
 extension Reactive where Base == CoinStakingFormView {
-  var coinText: ControlProperty<String?> {
-    return base.coinAmountTextField.rx.text
+  var coinAmountText: ControlProperty<String?> {
+    return base.coinAmountTextFieldView.rx.coinAmountText
+  }
+  var coinAmountErrorText: Binder<String?> {
+    return base.coinAmountTextFieldView.rx.coinAmountErrorText
+  }
+  var fiatAmountText: Binder<String?> {
+     return base.coinAmountTextFieldView.rx.fiatAmountText
   }
   var maxTap: Driver<Void> {
-    return base.coinMaxButton.rx.tap.asDriver()
+    return base.coinAmountTextFieldView.rx.maxTap
   }
 }
