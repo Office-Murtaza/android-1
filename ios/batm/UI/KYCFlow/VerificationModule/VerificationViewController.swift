@@ -22,8 +22,6 @@ final class VerificationViewController: ModuleViewController<VerificationPresent
   
   let sendButton = MDCButton.send
   
-  override var shouldShowNavigationBar: Bool { return true }
-  
   override func setupUI() {
     title = localize(L.Verification.title)
     

@@ -24,8 +24,6 @@ class ShowPhoneViewController: ModuleViewController<ShowPhonePresenter> {
   
   let updateButton = MDCButton.update
   
-  override var shouldShowNavigationBar: Bool { return true }
-  
   override func setupUI() {
     title = localize(L.ShowPhone.title)
     

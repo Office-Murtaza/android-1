@@ -23,8 +23,6 @@ final class PhoneVerificationViewController: ModuleViewController<PhoneVerificat
   
   let resendCodeLabel = PhoneVerificationResendCodeLabel()
   
-  override var shouldShowNavigationBar: Bool { return true }
-  
   override func setupUI() {
     view.addSubviews(rootScrollView)
     

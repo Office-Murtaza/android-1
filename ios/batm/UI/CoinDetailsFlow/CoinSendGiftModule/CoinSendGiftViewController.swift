@@ -22,8 +22,6 @@ final class CoinSendGiftViewController: ModuleViewController<CoinSendGiftPresent
     return didUpdateImageRelay.asDriver(onErrorJustReturn: nil)
   }
   
-  override var shouldShowNavigationBar: Bool { return true }
-  
   override func setupUI() {
     view.addSubview(rootScrollView)
     rootScrollView.contentView.addSubviews(headerView,

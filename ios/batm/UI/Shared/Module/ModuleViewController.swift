@@ -15,7 +15,7 @@ class GenericModuleViewController<PresenterType: ModulePresenter, View: UIView>:
   // MARK: - NavigationBarVisibility
    
   var shouldShowNavigationBar: Bool {
-    return false
+    return true
   }
   
   // MARK: - NavigationBarAppearance

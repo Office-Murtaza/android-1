@@ -19,6 +19,8 @@ final class CreateEditTradeViewController: NavigationScreenViewController<Create
   override var preferredStatusBarStyle: UIStatusBarStyle {
     return .lightContent
   }
+  
+  override var shouldShowNavigationBar: Bool { return false }
 
   override func setupUI() {
     customView.rootScrollView.contentInsetAdjustmentBehavior = .never

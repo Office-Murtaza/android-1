@@ -44,6 +44,8 @@ final class TradesViewController: NavigationScreenViewController<TradesPresenter
   override var preferredStatusBarStyle: UIStatusBarStyle {
     return .lightContent
   }
+  
+  override var shouldShowNavigationBar: Bool { return false }
 
   override func setupUI() {
     tabBar.delegate = self

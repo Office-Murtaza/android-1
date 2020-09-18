@@ -17,8 +17,6 @@ final class KYCViewController: ModuleViewController<KYCPresenter> {
   }()
   
   let verifyButton = MDCButton.verify
-  
-  override var shouldShowNavigationBar: Bool { return true }
 
   override func setupUI() {
     title = localize(L.KYC.title)

@@ -16,8 +16,6 @@ final class CoinStakingViewController: ModuleViewController<CoinStakingPresenter
   
   let unstakeButton = MDCButton.unstake
   
-  override var shouldShowNavigationBar: Bool { return true }
-  
   override func setupUI() {
     view.addSubview(rootScrollView)
     rootScrollView.contentView.addSubviews(headerView,

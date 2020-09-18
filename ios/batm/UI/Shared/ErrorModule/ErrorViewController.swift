@@ -30,9 +30,7 @@ final class ErrorViewController: ModuleViewController<ErrorPresenter> {
   
   let actionButton = MDCButton.contained
   
-  override var shouldShowNavigationBar: Bool {
-    return false
-  }
+  override var shouldShowNavigationBar: Bool { return false }
   
   override func setupUI() {
     view.backgroundColor = .white

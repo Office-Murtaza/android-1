@@ -25,8 +25,6 @@ final class CoinDetailsViewController: ModuleViewController<CoinDetailsPresenter
   
   let fab = FloatingActionButton()
   
-  override var shouldShowNavigationBar: Bool { return true }
-  
   override func viewWillAppear(_ animated: Bool) {
     if let index = self.tableView.indexPathForSelectedRow {
       self.tableView.deselectRow(at: index, animated: true)
