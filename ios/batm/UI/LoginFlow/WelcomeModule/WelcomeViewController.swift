@@ -11,6 +11,8 @@ class WelcomeViewController: ModuleViewController<WelcomePresenter>, MFMailCompo
   let buttonsView = WelcomeButtonsView()
   let contactSupportButton = MDCButton.contactSupport
   
+  override var shouldShowNavigationBar: Bool { return false }
+  
   override func setupUI() {
     view.backgroundColor = .white
     
