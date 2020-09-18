@@ -309,11 +309,12 @@
 "recall.form.error.too_low_amount" = "Reserved amount is lower than transaction fee";
 
 "coin_staking.title" = "%@";
-"coin_staking.header.staked.title" = "Staked";
-"coin_staking.header.rewards.title" = "Rewards";
+"coin_staking.header.amount.title" = "Amount";
+"coin_staking.header.reward.title" = "Reward";
+"coin_staking.header.reward_annual.title" = "Reward\n(annual)";
 "coin_staking.header.duration.title" = "Duration";
 "coin_staking.header.duration.value" = "%d days";
-"coin_staking.header.min_duration.title" = "Min duration";
+"coin_staking.header.min_duration.title" = "Duration\n(min)";
 "coin_staking.header.min_duration.value" = "%d days";
 "coin_staking.button.stake" = "Stake";
 "coin_staking.button.unstake" = "Unstake";

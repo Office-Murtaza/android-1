@@ -276,8 +276,8 @@ class CoinDetailsUsecaseImpl: CoinDetailsUsecase {
       .flatMapCompletable { [unowned self] account, transactionResultString in
         return self.submit(userId: account.userId,
                            type: coin.type,
-                           txType: .stake,
-                           amount: (stakeDetails.stakedAmount ?? 0) + (stakeDetails.rewardsAmount ?? 0),
+                           txType: .unstake,
+                           amount: (stakeDetails.amount ?? 0) + (stakeDetails.rewardAmount ?? 0),
                            fee: coinSettings.txFee,
                            fromAddress: coin.address,
                            toAddress: coinSettings.contractAddress,

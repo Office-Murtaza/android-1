@@ -65,6 +65,7 @@ class HeaderView: UIView {
     titleLabel.text = title
     titleLabel.textColor = .warmGrey
     titleLabel.font = .systemFont(ofSize: 16)
+    titleLabel.numberOfLines = 0
     
     titleView.addSubview(titleLabel)
     

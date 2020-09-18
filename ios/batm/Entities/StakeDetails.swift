@@ -2,10 +2,11 @@ import Foundation
 
 struct StakeDetails: Equatable {
   var exist: Bool
-  var unstakeAvailable: Bool
-  var stakedAmount: Decimal?
-  var rewardsAmount: Decimal?
-  var rewardsPercent: Decimal?
-  var stakedDays: Int?
-  var stakingMinDays: Int?
+  var amount: Decimal?
+  var rewardAmount: Decimal?
+  var rewardPercent: Decimal?
+  var rewardAnnualAmount: Decimal?
+  var rewardAnnualPercent: Decimal
+  var days: Int?
+  var minDays: Int
 }

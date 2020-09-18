@@ -84,18 +84,24 @@ final class CoinStakingViewController: ModuleViewController<CoinStakingPresenter
         headerView.add(title: localize(L.CoinDetails.balance), valueView: amountView)
         
         if stakeDetails.exist {
-          headerView.add(title: localize(L.CoinStaking.Header.Staked.title),
-                         value: "\(stakeDetails.stakedAmount ?? 0) \(coinBalance.type.code)")
+          headerView.add(title: localize(L.CoinStaking.Header.Amount.title),
+                         value: "\(stakeDetails.amount ?? 0) \(coinBalance.type.code)")
           
-          headerView.add(title: localize(L.CoinStaking.Header.Rewards.title),
-                         value: "\(stakeDetails.rewardsAmount ?? 0) \(coinBalance.type.code), \(stakeDetails.rewardsPercent ?? 0) %")
+          headerView.add(title: localize(L.CoinStaking.Header.Reward.title),
+                         value: "\(stakeDetails.rewardAmount ?? 0) \(coinBalance.type.code), \(stakeDetails.rewardPercent ?? 0)%")
+          
+          headerView.add(title: localize(L.CoinStaking.Header.RewardAnnual.title),
+                         value: "\(stakeDetails.rewardAnnualAmount ?? 0) \(coinBalance.type.code), \(stakeDetails.rewardAnnualPercent)%")
           
           headerView.add(title: localize(L.CoinStaking.Header.Duration.title),
-                         value: String(format: localize(L.CoinStaking.Header.Duration.value), stakeDetails.stakedDays ?? 0))
-          
-          headerView.add(title: localize(L.CoinStaking.Header.MinDuration.title),
-                         value: String(format: localize(L.CoinStaking.Header.MinDuration.value), stakeDetails.stakingMinDays ?? 0))
+                         value: String(format: localize(L.CoinStaking.Header.Duration.value), stakeDetails.days ?? 0))
+        } else {
+          headerView.add(title: localize(L.CoinStaking.Header.RewardAnnual.title),
+                         value: "\(stakeDetails.rewardAnnualPercent)%")
         }
+        
+        headerView.add(title: localize(L.CoinStaking.Header.MinDuration.title),
+                       value: String(format: localize(L.CoinStaking.Header.MinDuration.value), stakeDetails.minDays))
       })
       .disposed(by: disposeBag)
     
@@ -135,7 +141,7 @@ final class CoinStakingViewController: ModuleViewController<CoinStakingPresenter
     
     stakeDetailsDriver
       .asObservable()
-      .map { $0.unstakeAvailable }
+      .map { ($0.days ?? 0) >= $0.minDays }
       .bind(to: unstakeButton.rx.isEnabled)
       .disposed(by: disposeBag)
     
