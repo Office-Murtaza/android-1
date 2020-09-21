@@ -35,7 +35,7 @@ val dataModule = module {
     single { LogInterceptor(get()) }
     single { BaseInterceptor(get(), get()) }
     single { NoConnectionInterceptor(get()) }
-    single { ResponseInterceptor(LocalBroadcastManager.getInstance(get()), get()) }
+    single { ResponseInterceptor(LocalBroadcastManager.getInstance(get()), get(), get()) }
     single { ApiFactory(get()) }
     single { OkHttpClientProvider().provideOkHttpClient(get(), get(), get(), get()) }
     single { AuthApiService((get() as ApiFactory).authApi) }
