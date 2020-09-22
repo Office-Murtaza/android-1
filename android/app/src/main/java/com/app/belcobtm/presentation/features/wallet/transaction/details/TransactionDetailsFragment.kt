@@ -3,6 +3,7 @@ package com.app.belcobtm.presentation.features.wallet.transaction.details
 import android.content.Intent
 import android.graphics.Point
 import android.net.Uri
+import android.telephony.PhoneNumberFormattingTextWatcher
 import android.telephony.PhoneNumberUtils
 import android.text.SpannableString
 import android.text.style.UnderlineSpan
@@ -18,7 +19,9 @@ import com.app.belcobtm.presentation.core.extensions.*
 import com.app.belcobtm.presentation.core.ui.fragment.BaseFragment
 import com.giphy.sdk.ui.GiphyCoreUI
 import com.giphy.sdk.ui.views.GPHMediaView
+import kotlinx.android.synthetic.main.fragment_recover_wallet.*
 import kotlinx.android.synthetic.main.fragment_transaction_details.*
+import kotlinx.android.synthetic.main.fragment_transaction_details.phoneView
 import org.koin.android.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
@@ -35,6 +38,9 @@ class TransactionDetailsFragment : BaseFragment() {
 
     override fun initViews() {
         setToolbarTitle(getString(R.string.transaction_details_screen_title))
+        fromPhoneView.addTextChangedListener(PhoneNumberFormattingTextWatcher())
+        toPhoneView.addTextChangedListener(PhoneNumberFormattingTextWatcher())
+
         GiphyCoreUI.configure(requireContext(), GIPHY_API_KEY)
     }
 
@@ -47,7 +53,9 @@ class TransactionDetailsFragment : BaseFragment() {
             showAmountView(it.cryptoAmount, it.fiatAmount)
             showFeeView(it.cryptoFee)
             showDateView(it.date)
+            showFromPhoneView(it.fromPhone)
             showFromAddressView(it.fromAddress)
+            showToPhoneView(it.toPhone)
             showToAddressView(it.toAddress)
             showPhoneView(it.phone)
             showImageView(it.imageId)
@@ -167,6 +175,20 @@ class TransactionDetailsFragment : BaseFragment() {
     } else {
         dateContainerView.show()
         dateView.text = date
+    }
+
+    private fun showFromPhoneView(fromPhone: String) = if (fromPhone.isBlank()) {
+        fromPhoneContainerView.hide()
+    } else {
+        fromPhoneContainerView.show()
+        fromPhoneView.text = fromPhone
+    }
+
+    private fun showToPhoneView(fromPhone: String) = if (fromPhone.isBlank()) {
+        toPhoneContainerView.hide()
+    } else {
+        toPhoneContainerView.show()
+        toPhoneView.text = fromPhone
     }
 
     private fun showFromAddressView(fromAddress: String) = if (fromAddress.isBlank()) {

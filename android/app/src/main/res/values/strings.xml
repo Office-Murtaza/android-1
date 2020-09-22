@@ -244,6 +244,8 @@
     <string name="transition_details_screen_fiat_amount">Fiat amount</string>
     <string name="transition_details_screen_fee">Fee</string>
     <string name="transition_details_screen_date">Date</string>
+    <string name="transition_details_screen_from_phone">From phone</string>
+    <string name="transition_details_screen_to_phone">To phone</string>
     <string name="transition_details_screen_from_address">From address</string>
     <string name="transition_details_screen_to_address">To address</string>
     <string name="transition_details_screen_phone">Phone</string>

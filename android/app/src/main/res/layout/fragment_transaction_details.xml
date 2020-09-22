@@ -185,6 +185,23 @@
         </TableRow>
 
         <TableRow
+            android:id="@+id/fromPhoneContainerView"
+            style="@style/CoinDetails.Table.Row">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                style="@style/CoinDetails.Table.Key"
+                android:text="@string/transition_details_screen_from_phone" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/fromPhoneView"
+                style="@style/CoinDetails.Table.Value"
+                android:layout_weight="2"
+                android:maxLines="3"
+                tools:text="+3809999999" />
+
+        </TableRow>
+
+        <TableRow
             android:id="@+id/fromAddressContainerView"
             style="@style/CoinDetails.Table.Row">
 
@@ -198,6 +215,23 @@
                 android:layout_weight="2"
                 android:maxLines="3"
                 tools:text="123400438568459684598645946fdsfsdf" />
+
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/toPhoneContainerView"
+            style="@style/CoinDetails.Table.Row">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                style="@style/CoinDetails.Table.Key"
+                android:text="@string/transition_details_screen_to_phone" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/toPhoneView"
+                style="@style/CoinDetails.Table.Value"
+                android:layout_weight="2"
+                android:maxLines="3"
+                tools:text="+3809999999" />
 
         </TableRow>
 
