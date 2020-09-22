@@ -377,7 +377,6 @@
     <string name="staking_screen_stake_cancel">Cancel</string>
     <string name="staking_screen_unstake">Withdraw</string>
     <string name="staking_screen_hint_catm_amount">CATM amount</string>
-    <string name="staking_screen_hint_catm_fiat">CATM fiat</string>
     <string name="staking_screen_staked_amount">%1$s CATM</string>
     <string name="staking_screen_rewards_amount">%1$s CATM,  %2$.2f %%</string>
     <string name="staking_screen_null_price">0.00$</string>
