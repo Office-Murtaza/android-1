@@ -4,28 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/container"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ui.main.settings.phone.ShowPhoneActivity">
-
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbarView"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="@drawable/bg_toolbar"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-        app:elevation="6dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:title="@string/staking_screen_title"
-        tools:navigationIcon="@drawable/gph_ic_back" />
+    android:layout_height="match_parent">
 
     <androidx.constraintlayout.widget.Barrier
         android:id="@+id/priceBarrierView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:barrierDirection="end"
-        app:constraint_referenced_ids="balanceTitleView,priceTitleView,stakedTitleView,rewardsTitleView,timeTitleView,stackingMinDaysTitleView" />
+        app:constraint_referenced_ids="balanceTitleView,priceTitleView,stakedTitleView,rewardsTitleView,timeTitleView,stackingMinDaysTitleView,stackingMinDaysTitleView" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/priceTitleView"
@@ -34,7 +20,7 @@
         android:layout_marginTop="16dp"
         android:text="@string/staking_screen_price"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/toolbarView" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/priceUsdView"
@@ -116,13 +102,30 @@
         tools:text="5 CATM,  2.3 %" />
 
     <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/rewardAnnualTitleView"
+        style="@style/Transaction.Title.Medium.Key"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/staking_screen_rewards_annual"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/rewardsTitleView" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/rewardAnnualView"
+        style="@style/Transaction.Title.Medium.Value"
+        android:layout_marginStart="16dp"
+        app:layout_constraintStart_toEndOf="@id/priceBarrierView"
+        app:layout_constraintTop_toTopOf="@id/rewardAnnualTitleView"
+        tools:text="12 CATM, 12%" />
+
+    <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/timeTitleView"
         style="@style/Transaction.Title.Medium.Key"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:text="@string/staking_screen_time"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/rewardsTitleView" />
+        app:layout_constraintTop_toBottomOf="@id/rewardAnnualTitleView" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/timeView"
@@ -179,11 +182,22 @@
         android:id="@+id/maxView"
         style="@style/EditText.TextLink"
         android:layout_marginEnd="10dp"
+        android:padding="0dp"
         android:layout_marginBottom="10dp"
         android:text="@string/max"
         app:layout_constraintBottom_toBottomOf="@id/amountCryptoView"
         app:layout_constraintEnd_toEndOf="@id/amountCryptoView"
         app:layout_constraintTop_toTopOf="@id/amountCryptoView" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/fiatView"
+        style="@style/EditText.TextLink"
+        android:text="@string/max"
+        tools:text="0.00$"
+        android:padding="0dp"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="@id/maxView"
+        app:layout_constraintTop_toBottomOf="@id/amountCryptoView" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/stakeButtonView"
@@ -192,7 +206,7 @@
         android:text="@string/staking_screen_stake"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/amountCryptoView" />
+        app:layout_constraintTop_toBottomOf="@id/fiatView" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/unstakeButtonView"
@@ -206,28 +220,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/stakeButtonView"
         tools:visibility="visible" />
-
-    <FrameLayout
-        android:id="@+id/progressView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/gray_progress"
-        android:clickable="true"
-        android:elevation="15dp"
-        android:focusable="true"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/toolbarView">
-
-        <ProgressBar
-            style="?android:attr/progressBarStyleLarge"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginBottom="8dp" />
-    </FrameLayout>
 
     <androidx.constraintlayout.widget.Group
         android:id="@+id/editStakeGroupView"

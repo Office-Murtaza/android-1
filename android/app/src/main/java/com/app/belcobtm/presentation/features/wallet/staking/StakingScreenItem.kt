@@ -8,7 +8,9 @@ data class StakingScreenItem(
     val balanceUsd: Double,
     val staked: Double,
     val rewardsAmount: Double,
+    val rewardsAmountAnnual: Double,
     val rewardsPercent: Double,
+    val rewardsPercentAnnual: Double,
     val time: Int,
     val stakingMinDays: Int
 )

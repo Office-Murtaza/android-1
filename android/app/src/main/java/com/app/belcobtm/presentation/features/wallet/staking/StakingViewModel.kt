@@ -42,6 +42,8 @@ class StakingViewModel(
                         staked = stakeDataItem.stakedAmount,
                         rewardsAmount = stakeDataItem.rewardsAmount,
                         rewardsPercent = stakeDataItem.rewardsPercent,
+                        rewardsAmountAnnual = stakeDataItem.rewardsAnnualAmount,
+                        rewardsPercentAnnual = stakeDataItem.rewardsAnnualPercent,
                         time = stakeDataItem.stakedDays,
                         stakingMinDays = stakeDataItem.stakingMinDays
                     )

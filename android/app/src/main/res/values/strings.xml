@@ -364,13 +364,15 @@
     <string name="staking_screen_title">Staking CATM</string>
     <string name="staking_screen_price">Price</string>
     <string name="staking_screen_balance">Balance</string>
-    <string name="staking_screen_staked">Staked</string>
+    <string name="staking_screen_staked">Amount</string>
     <string name="staking_screen_rewards">Rewards</string>
+    <string name="staking_screen_rewards_annual">Rewards\n(annual)</string>
     <string name="staking_screen_time">Duration</string>
-    <string name="staking_screen_min_days">Min duration</string>
+    <string name="staking_screen_min_days">Duration\n(min)</string>
     <string name="staking_screen_stake">Stake</string>
     <string name="staking_screen_unstake">Unstake</string>
     <string name="staking_screen_hint_catm_amount">CATM amount</string>
+    <string name="staking_screen_hint_catm_fiat">CATM fiat</string>
     <string name="staking_screen_staked_amount">%1$s CATM</string>
     <string name="staking_screen_rewards_amount">%1$s CATM,  %2$.2f %%</string>
     <plurals name="staking_screen_time_value">
