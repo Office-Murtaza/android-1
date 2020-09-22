@@ -16,8 +16,6 @@ class StakingViewModel(
     private val getCoinByCodeUseCase: GetCoinByCodeUseCase,
     private val stakeCreateTransactionUseCase: StakeCreateTransactionUseCase,
     private val stakeCompleteTransactionUseCase: StakeCompleteTransactionUseCase,
-    private val stakeCancelCreateTransactionUseCase: StakeCancelCreateTransactionUseCase,
-    private val stakeCancelCompleteTransactionUseCase: StakeCancelCompleteTransactionUseCase,
     private val unStakeCreateTransactionUseCase: UnStakeCreateTransactionUseCase,
     private val unStakeCompleteTransactionUseCase: UnStakeCompleteTransactionUseCase,
     stakeDetailsUseCase: StakeDetailsGetUseCase
@@ -39,17 +37,15 @@ class StakingViewModel(
                         price = coinDataItem.priceUsd,
                         balanceCoin = coinDataItem.balanceCoin,
                         balanceUsd = coinDataItem.balanceUsd,
-                        amount = stakeDataItem.amount,
-                        status = stakeDataItem.getStakeStatus(),
+                        isExist = stakeDataItem.exist,
+                        isUnStakeAvailable = stakeDataItem.isUnStakeAvailable,
+                        staked = stakeDataItem.stakedAmount,
                         rewardsAmount = stakeDataItem.rewardsAmount,
                         rewardsPercent = stakeDataItem.rewardsPercent,
                         rewardsAmountAnnual = stakeDataItem.rewardsAnnualAmount,
                         rewardsPercentAnnual = stakeDataItem.rewardsAnnualPercent,
-                        createDate = stakeDataItem.createDate,
-                        cancelDate = stakeDataItem.cancelDate,
-                        duration = stakeDataItem.duration,
-                        cancelPeriod = stakeDataItem.cancelPeriod,
-                        untilWithdraw = stakeDataItem.untilWithdraw
+                        time = stakeDataItem.stakedDays,
+                        stakingMinDays = stakeDataItem.stakingMinDays
                     )
                 )
             }
@@ -62,94 +58,41 @@ class StakingViewModel(
             params = StakeCreateTransactionUseCase.Params(coinDataItem.code, amount),
             onSuccess = {
                 hash = it
-                stakeCompleteTransaction(amount)
+                transactionLiveData.value = LoadingData.Success(TransactionState.STAKE_CREATE)
             },
-            onError = {
-                transactionLiveData.value = LoadingData.Error(it, TransactionState.STAKE_COMPLETE)
-            }
+            onError = { transactionLiveData.value = LoadingData.Error(it, TransactionState.STAKE_CREATE) }
         )
     }
 
-    private fun stakeCompleteTransaction(amount: Double) {
+    fun stakeCompleteTransaction(smsCode: String) {
+        val amount = (stakeDetailsDataItem?.stakedAmount ?: 0.0) + (stakeDetailsDataItem?.rewardsAmount ?: 0.0)
         transactionLiveData.value = LoadingData.Loading()
         stakeCompleteTransactionUseCase.invoke(
-            params = StakeCompleteTransactionUseCase.Params(
-                hash,
-                coinDataItem.code,
-                amount
-            ),
-            onSuccess = {
-                transactionLiveData.value = LoadingData.Success(TransactionState.STAKE_COMPLETE)
-            },
-            onError = {
-                transactionLiveData.value = LoadingData.Error(it, TransactionState.STAKE_COMPLETE)
-            }
-        )
-    }
-
-    fun stakeCancelCreateTransaction() {
-        transactionLiveData.value = LoadingData.Loading()
-        stakeCancelCreateTransactionUseCase.invoke(
-            params = StakeCancelCreateTransactionUseCase.Params(coinDataItem.code, 0.0),
-            onSuccess = {
-                hash = it
-                stakeCancelCompleteTransaction()
-            },
-            onError = {
-                transactionLiveData.value = LoadingData.Error(it, TransactionState.STAKE_CANCEL_COMPLETE)
-            }
-        )
-    }
-
-    private fun stakeCancelCompleteTransaction() {
-        val amount =
-            (stakeDetailsDataItem?.amount ?: 0.0) + (stakeDetailsDataItem?.rewardsAmount ?: 0.0)
-        transactionLiveData.value = LoadingData.Loading()
-        stakeCancelCompleteTransactionUseCase.invoke(
-            params = StakeCancelCompleteTransactionUseCase.Params(
-                hash,
-                coinDataItem.code,
-                amount
-            ),
-            onSuccess = {
-                transactionLiveData.value = LoadingData.Success(TransactionState.STAKE_CANCEL_COMPLETE)
-            },
-            onError = {
-                transactionLiveData.value = LoadingData.Error(it, TransactionState.STAKE_CANCEL_COMPLETE)
-            }
+            params = StakeCompleteTransactionUseCase.Params(smsCode, hash, coinDataItem.code, amount),
+            onSuccess = { transactionLiveData.value = LoadingData.Success(TransactionState.STAKE_COMPLETE) },
+            onError = { transactionLiveData.value = LoadingData.Error(it, TransactionState.STAKE_COMPLETE) }
         )
     }
 
     fun unstakeCreateTransaction() {
-        val amount =
-            (stakeDetailsDataItem?.amount ?: 0.0) + (stakeDetailsDataItem?.rewardsAmount ?: 0.0)
+        val amount = (stakeDetailsDataItem?.stakedAmount ?: 0.0) + (stakeDetailsDataItem?.rewardsAmount ?: 0.0)
         transactionLiveData.value = LoadingData.Loading()
         unStakeCreateTransactionUseCase.invoke(
             params = UnStakeCreateTransactionUseCase.Params(coinDataItem.code, amount),
             onSuccess = {
                 hash = it
-                unstakeCompleteTransaction(amount)
+                transactionLiveData.value = LoadingData.Success(TransactionState.UNSTAKE_CREATE)
             },
-            onError = {
-                transactionLiveData.value = LoadingData.Error(it, TransactionState.UNSTAKE_COMPLETE)
-            }
+            onError = { transactionLiveData.value = LoadingData.Error(it, TransactionState.UNSTAKE_CREATE) }
         )
     }
 
-    private fun unstakeCompleteTransaction(amount: Double) {
+    fun unstakeCompleteTransaction(smsCode: String, amount: Double) {
         transactionLiveData.value = LoadingData.Loading()
         unStakeCompleteTransactionUseCase.invoke(
-            params = UnStakeCompleteTransactionUseCase.Params(
-                hash,
-                coinDataItem.code,
-                amount
-            ),
-            onSuccess = {
-                transactionLiveData.value = LoadingData.Success(TransactionState.UNSTAKE_COMPLETE)
-            },
-            onError = {
-                transactionLiveData.value = LoadingData.Error(it, TransactionState.UNSTAKE_COMPLETE)
-            }
+            params = UnStakeCompleteTransactionUseCase.Params(smsCode, hash, coinDataItem.code, amount),
+            onSuccess = { transactionLiveData.value = LoadingData.Success(TransactionState.UNSTAKE_COMPLETE) },
+            onError = { transactionLiveData.value = LoadingData.Error(it, TransactionState.UNSTAKE_COMPLETE) }
         )
     }
 
@@ -163,6 +106,6 @@ class StakingViewModel(
     }
 
     enum class TransactionState {
-        STAKE_COMPLETE, UNSTAKE_COMPLETE, STAKE_CANCEL_COMPLETE
+        STAKE_CREATE, STAKE_COMPLETE, UNSTAKE_CREATE, UNSTAKE_COMPLETE
     }
 }
