@@ -4,7 +4,7 @@ import com.app.belcobtm.domain.wallet.item.CoinFeeDataItem
 
 data class GetCoinFeeResponse(
     val txFee: Double,
-    val byteFee: Double?,
+    val byteFee: Long?,
     val recallFee: Double?,
     val gasPrice: Double?,
     val gasLimit: Double?,
@@ -16,7 +16,7 @@ data class GetCoinFeeResponse(
 fun GetCoinFeeResponse.mapToDataItem(): CoinFeeDataItem = CoinFeeDataItem(
     txFee = txFee,
     profitExchange = profitExchange,
-    byteFee = byteFee ?: 0.0,
+    byteFee = byteFee ?: 0,
     recallFee = recallFee,
     gasPrice = gasPrice ?: 0.0,
     gasLimit = gasLimit ?: 0.0,

@@ -10,11 +10,16 @@ class ExchangeUseCase(
 ) :
     UseCase<Unit, ExchangeUseCase.Params>() {
 
-    override suspend fun run(params: Params): Either<Failure, Unit> =
-        repository.exchange(params.coinFromAmount, params.coinFrom, params.coinTo)
+    override suspend fun run(params: Params): Either<Failure, Unit> = repository.exchange(
+        params.coinFromAmount,
+        params.coinToAmount,
+        params.coinFrom,
+        params.coinTo
+    )
 
     data class Params(
         val coinFromAmount: Double,
+        val coinToAmount: Double,
         val coinFrom: String,
         val coinTo: String
     )

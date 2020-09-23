@@ -14,6 +14,8 @@ data class TransactionDetailsFragmentItem(
     val refCryptoAmount: Double,
     val link: String,
     val date: String,
+    val fromPhone: String,
+    val toPhone: String,
     val fromAddress: String,
     val toAddress: String,
     val imageId: String,
@@ -28,25 +30,28 @@ data class TransactionDetailsFragmentItem(
     val cashStatusType: TransactionCashStatusType
 )
 
-fun TransactionDetailsDataItem.mapToUiItem(): TransactionDetailsFragmentItem = TransactionDetailsFragmentItem(
-    txId = txId,
-    txDbId = txDbId,
-    cryptoAmount = cryptoAmount,
-    fiatAmount = fiatAmount,
-    cryptoFee = cryptoFee,
-    refCryptoAmount = refCryptoAmount,
-    link = link,
-    date = date,
-    fromAddress = fromAddress,
-    toAddress = toAddress,
-    imageId = imageId,
-    message = message,
-    phone = phone,
-    sellInfo = sellInfo,
-    refTxId = refTxId,
-    refLink = refLink,
-    refCoin = refCoin,
-    type = type,
-    statusType = statusType,
-    cashStatusType = cashStatusType
-)
+fun TransactionDetailsDataItem.mapToUiItem(): TransactionDetailsFragmentItem =
+    TransactionDetailsFragmentItem(
+        txId = txId,
+        txDbId = txDbId,
+        cryptoAmount = cryptoAmount,
+        fiatAmount = fiatAmount,
+        cryptoFee = cryptoFee,
+        refCryptoAmount = refCryptoAmount,
+        link = link,
+        date = date,
+        fromPhone = fromPhone,
+        toPhone = toPhone,
+        fromAddress = fromAddress,
+        toAddress = toAddress,
+        imageId = imageId,
+        message = message,
+        phone = phone,
+        sellInfo = sellInfo,
+        refTxId = refTxId,
+        refLink = refLink,
+        refCoin = refCoin,
+        type = type,
+        statusType = statusType,
+        cashStatusType = cashStatusType
+    )

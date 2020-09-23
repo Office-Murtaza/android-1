@@ -121,17 +121,17 @@ class TransactionsFragment : BaseFragment() {
 //            }
 //            fabMenuView.close(false)
 //        }
-//        c2cExchangeButtonView.setOnClickListener {
-//            if (isCorrectCoinId()) {
-//                navigate(TransactionsFragmentDirections.toExchangeFragment(viewModel.coinDataItem?.code ?: ""))
-//            } else {
-//                AlertHelper.showToastShort(
-//                    c2cExchangeButtonView.context,
-//                    "In progress. Only BTC, BCH, XRP, BNB and LTC withdraw available"
-//                )
-//            }
-//            fabMenuView.close(false)
-//        }
+        c2cExchangeButtonView.setOnClickListener {
+            if (isCorrectCoinId()) {
+                navigate(TransactionsFragmentDirections.toExchangeFragment(viewModel.coinDataItem?.code ?: ""))
+            } else {
+                AlertHelper.showToastShort(
+                    c2cExchangeButtonView.context,
+                    "In progress. Only BTC, BCH, XRP, BNB and LTC withdraw available"
+                )
+            }
+            fabMenuView.close(false)
+        }
 //
 //        tradeButtonView.setOnClickListener { tradeOpenWithPermissionCheck() }
 //

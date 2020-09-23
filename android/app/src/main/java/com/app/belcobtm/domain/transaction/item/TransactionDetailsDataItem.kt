@@ -13,6 +13,8 @@ data class TransactionDetailsDataItem(
     val refCryptoAmount: Double,
     val link: String,
     val date: String,
+    val fromPhone: String,
+    val toPhone: String,
     val fromAddress: String,
     val toAddress: String,
     val imageId: String,

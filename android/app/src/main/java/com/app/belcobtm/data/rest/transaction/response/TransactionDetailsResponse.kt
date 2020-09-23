@@ -16,6 +16,8 @@ data class TransactionDetailsResponse(
     val fiatAmount: Double?,
     val cryptoFee: Double?,
     val date2: String?,
+    val fromPhone: String?,
+    val toPhone: String?,
     val fromAddress: String?,
     val toAddress: String?,
     val imageId: String?,
@@ -28,26 +30,30 @@ data class TransactionDetailsResponse(
     val refCryptoAmount: Double?
 )
 
-fun TransactionDetailsResponse.mapToDataItem(): TransactionDetailsDataItem = TransactionDetailsDataItem(
-    cryptoAmount = cryptoAmount ?: -1.0,
-    fiatAmount = fiatAmount ?: -1.0,
-    cryptoFee = cryptoFee ?: -1.0,
-    refCryptoAmount = refCryptoAmount ?: -1.0,
-    txId = txId ?: "",
-    txDbId = txDbId ?: "",
-    link = link ?: "",
-    date = date2 ?: "",
-    fromAddress = fromAddress ?: "",
-    toAddress = toAddress ?: "",
-    imageId = imageId ?: "",
-    message = message ?: "",
-    phone = phone ?: "",
-    sellInfo = sellInfo ?: "",
-    refTxId = refTxId ?: "",
-    refLink = refLink ?: "",
-    refCoin = refCoin ?: "",
-    type = TransactionType.values().firstOrNull { it.code == type } ?: TransactionType.UNKNOWN,
-    statusType = TransactionStatusType.values().firstOrNull { it.code == status } ?: TransactionStatusType.UNKNOWN,
-    cashStatusType = TransactionCashStatusType.values().firstOrNull { it.code == cashStatus }
-        ?: TransactionCashStatusType.UNKNOWN
-)
+fun TransactionDetailsResponse.mapToDataItem(): TransactionDetailsDataItem =
+    TransactionDetailsDataItem(
+        cryptoAmount = cryptoAmount ?: -1.0,
+        fiatAmount = fiatAmount ?: -1.0,
+        cryptoFee = cryptoFee ?: -1.0,
+        refCryptoAmount = refCryptoAmount ?: -1.0,
+        txId = txId ?: "",
+        txDbId = txDbId ?: "",
+        link = link ?: "",
+        date = date2 ?: "",
+        fromPhone = fromPhone ?: "",
+        toPhone = toPhone ?: "",
+        fromAddress = fromAddress ?: "",
+        toAddress = toAddress ?: "",
+        imageId = imageId ?: "",
+        message = message ?: "",
+        phone = phone ?: "",
+        sellInfo = sellInfo ?: "",
+        refTxId = refTxId ?: "",
+        refLink = refLink ?: "",
+        refCoin = refCoin ?: "",
+        type = TransactionType.values().firstOrNull { it.code == type } ?: TransactionType.UNKNOWN,
+        statusType = TransactionStatusType.values().firstOrNull { it.code == status }
+            ?: TransactionStatusType.UNKNOWN,
+        cashStatusType = TransactionCashStatusType.values().firstOrNull { it.code == cashStatus }
+            ?: TransactionCashStatusType.UNKNOWN
+    )
