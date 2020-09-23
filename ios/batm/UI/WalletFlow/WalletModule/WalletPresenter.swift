@@ -52,12 +52,8 @@ class WalletPresenter: ModulePresenter, WalletModule {
       .asObservable()
       .withLatestFrom(state) { indexPath, state in state.coins[indexPath.item] }
       .flatMap { [unowned self] coinBalance in
-        return self.track(self.usecase.getCoinSettings(for: coinBalance.type))
-        .map { (coinBalance, $0) }
-      }
-      .flatMap { [unowned self] coinBalance, coinSettings in
-        return self.track(self.usecase.getPriceChartData(for: coinBalance.type))
-          .map { (coinSettings, $0) }
+        return self.track(Observable.combineLatest(self.usecase.getCoinSettings(for: coinBalance.type).asObservable(),
+                                                   self.usecase.getPriceChartData(for: coinBalance.type).asObservable()))
       }
       .withLatestFrom(state) { ($1, $0.0, $0.1) }
       .subscribe(onNext: { [delegate] in delegate?.showCoinDetails(coinBalances: $0.coinsBalance.coins,
