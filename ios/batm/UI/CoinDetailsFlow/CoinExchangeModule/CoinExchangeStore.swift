@@ -140,5 +140,11 @@ final class CoinExchangeStore: ViewStore<CoinExchangeAction, CoinExchangeState> 
         }
       }
     }
+    
+    if state.toCoinType == nil {
+      let errorString = localize(L.CreateWallet.Form.Error.fieldRequired)
+      state.toCoinTypeError = errorString
+      state.validationState = .invalid(errorString)
+    }
   }
 }

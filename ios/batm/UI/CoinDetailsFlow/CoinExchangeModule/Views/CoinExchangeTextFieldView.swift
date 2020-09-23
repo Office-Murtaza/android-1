@@ -25,6 +25,8 @@ final class CoinExchangeTextFieldView: UIView, UIPickerViewDelegate, UIPickerVie
   var coins: [CustomCoinType] = [] {
     didSet {
       toCoinPickerView.reloadAllComponents()
+      toCoinTextField.isEnabled = coins.isNotEmpty
+      fakeToCoinTextField.isEnabled = coins.isNotEmpty
     }
   }
   
