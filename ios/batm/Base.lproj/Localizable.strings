@@ -308,7 +308,7 @@
 "recall.button.recall" = "Recall";
 "recall.form.error.too_low_amount" = "Reserved amount is lower than transaction fee";
 
-"coin_staking.title" = "%@";
+"coin_staking.title" = "Staking %@";
 "coin_staking.header.amount.title" = "Amount";
 "coin_staking.header.reward.title" = "Reward";
 "coin_staking.header.reward_annual.title" = "Reward\n(annual)";
