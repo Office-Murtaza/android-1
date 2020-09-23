@@ -75,7 +75,12 @@ public class TransactionService {
         if (giftTx.isPresent()) {
             TransactionRecordWallet gift = giftTx.get();
 
-            dto.setPhone(gift.getPhone());
+            if (gift.getType() == TransactionType.SEND_GIFT.getValue()) {
+                dto.setToPhone(gift.getToPhone());
+            } else if (gift.getType() == TransactionType.RECEIVE_GIFT.getValue()) {
+                dto.setFromPhone(gift.getFromPhone());
+            }
+
             dto.setImageId(gift.getImageId());
             dto.setMessage(gift.getMessage());
             dto.setType(TransactionType.convert(dto.getType(), TransactionType.valueOf(gift.getType())));
@@ -143,7 +148,8 @@ public class TransactionService {
                 record.setTxId(txId);
                 record.setType(TransactionType.RECEIVE_GIFT.getValue());
                 record.setStatus(TransactionStatus.PENDING.getValue());
-                record.setPhone(dto.getPhone());
+                record.setFromPhone(user.getPhone());
+                record.setToPhone(dto.getPhone());
                 record.setMessage(dto.getMessage());
                 record.setImageId(dto.getImageId());
                 record.setReceiverStatus(TransactionRecordWallet.RECEIVER_EXIST);
@@ -158,10 +164,11 @@ public class TransactionService {
 
                 TransactionRecordWallet sendRecord = new TransactionRecordWallet();
                 sendRecord.setTxId(txId);
-                sendRecord.setType(dto.getType());
+                sendRecord.setType(TransactionType.SEND_GIFT.getValue());
                 sendRecord.setAmount(dto.getCryptoAmount());
                 sendRecord.setStatus(TransactionStatus.PENDING.getValue());
-                sendRecord.setPhone(dto.getPhone());
+                sendRecord.setFromPhone(user.getPhone());
+                sendRecord.setToPhone(dto.getPhone());
                 sendRecord.setMessage(dto.getMessage());
                 sendRecord.setImageId(dto.getImageId());
                 sendRecord.setReceiverStatus(receiverExists ? TransactionRecordWallet.RECEIVER_EXIST : TransactionRecordWallet.RECEIVER_NOT_EXIST);
@@ -176,7 +183,8 @@ public class TransactionService {
                     receiveRecord.setTxId(sendRecord.getTxId());
                     receiveRecord.setType(TransactionType.RECEIVE_GIFT.getValue());
                     receiveRecord.setStatus(TransactionStatus.PENDING.getValue());
-                    receiveRecord.setPhone(sendRecord.getPhone());
+                    receiveRecord.setFromPhone(sendRecord.getFromPhone());
+                    receiveRecord.setToPhone(sendRecord.getToPhone());
                     receiveRecord.setMessage(sendRecord.getMessage());
                     receiveRecord.setImageId(sendRecord.getImageId());
                     receiveRecord.setReceiverStatus(TransactionRecordWallet.RECEIVER_EXIST);
@@ -389,15 +397,15 @@ public class TransactionService {
                                 .divide(new BigDecimal(365), 2, RoundingMode.HALF_DOWN)
                                 .stripTrailingZeros();
 
-                        return StakeDetailsDTO.builder()
-                                .exist(true)
-                                .amount(record.getAmount())
-                                .rewardAmount(record.getAmount().multiply(rewardPercent.divide(Constant.HUNDRED)).stripTrailingZeros())
-                                .rewardPercent(rewardPercent)
-                                .rewardAnnualAmount(record.getAmount().multiply(STAKING_ANNUAL_PERCENT.divide(Constant.HUNDRED)).stripTrailingZeros())
-                                .rewardAnnualPercent(STAKING_ANNUAL_PERCENT)
-                                .days(days)
-                                .minDays(STAKING_MIN_DAYS).build();
+                        StakeDetailsDTO dto = new StakeDetailsDTO();
+                        dto.setExist(true);
+                        dto.setAmount(record.getAmount());
+                        dto.setRewardAmount(record.getAmount().multiply(rewardPercent.divide(Constant.HUNDRED)).stripTrailingZeros());
+                        dto.setRewardPercent(rewardPercent);
+                        dto.setRewardAnnualAmount(record.getAmount().multiply(STAKING_ANNUAL_PERCENT.divide(Constant.HUNDRED)).stripTrailingZeros());
+                        dto.setRewardAnnualPercent(STAKING_ANNUAL_PERCENT);
+                        dto.setDays(days);
+                        dto.setMinDays(STAKING_MIN_DAYS);
                     }
                 }
             }
@@ -405,7 +413,12 @@ public class TransactionService {
             e.printStackTrace();
         }
 
-        return new StakeDetailsDTO();
+        StakeDetailsDTO dto = new StakeDetailsDTO();
+        dto.setExist(false);
+        dto.setRewardAnnualPercent(STAKING_ANNUAL_PERCENT);
+        dto.setMinDays(STAKING_MIN_DAYS);
+
+        return dto;
     }
 
     @Scheduled(cron = "0 */1 * * * *")
@@ -505,19 +518,19 @@ public class TransactionService {
                         String txId = coinCode.submitTransaction(hex);
 
                         if (StringUtils.isNotBlank(txId)) {
-                            TransactionRecordWallet c2cRec = new TransactionRecordWallet();
-                            c2cRec.setTxId(txId);
-                            c2cRec.setIdentity(identity);
-                            c2cRec.setCoin(coinCode.getCoinEntity());
-                            c2cRec.setAmount(t.getRefAmount());
-                            c2cRec.setType(TransactionType.RECEIVE_EXCHANGE.getValue());
-                            c2cRec.setStatus(TransactionStatus.PENDING.getValue());
-                            c2cRec.setProfit(t.getProfit());
-                            c2cRec.setRefCoin(t.getCoin());
-                            c2cRec.setRefAmount(t.getAmount());
-                            c2cRec.setRefTxId(t.getTxId());
+                            TransactionRecordWallet rec = new TransactionRecordWallet();
+                            rec.setTxId(txId);
+                            rec.setIdentity(identity);
+                            rec.setCoin(coinCode.getCoinEntity());
+                            rec.setAmount(t.getRefAmount());
+                            rec.setType(TransactionType.RECEIVE_EXCHANGE.getValue());
+                            rec.setStatus(TransactionStatus.PENDING.getValue());
+                            rec.setProfit(t.getProfit());
+                            rec.setRefCoin(t.getCoin());
+                            rec.setRefAmount(t.getAmount());
+                            rec.setRefTxId(t.getTxId());
 
-                            walletRep.save(c2cRec);
+                            walletRep.save(rec);
 
                             t.setRefTxId(txId);
                             confirmedList.add(t);
@@ -546,7 +559,7 @@ public class TransactionService {
 
             list.stream().forEach(t -> {
                 try {
-                    User receiver = userService.findByPhone(t.getPhone());
+                    User receiver = userService.findByPhone(t.getToPhone());
 
                     if (receiver != null) {
                         CoinService.CoinEnum coinCode = CoinService.CoinEnum.valueOf(t.getCoin().getCode());
@@ -564,7 +577,7 @@ public class TransactionService {
                             dto.setCryptoAmount(withdrawAmount);
                             dto.setRefTxId(t.getTxId());
                             dto.setType(TransactionType.SEND_GIFT.getValue());
-                            dto.setPhone(t.getPhone());
+                            dto.setPhone(t.getToPhone());
                             dto.setImageId(t.getImageId());
                             dto.setMessage(t.getMessage());
                             dto.setFromServerWallet(true);

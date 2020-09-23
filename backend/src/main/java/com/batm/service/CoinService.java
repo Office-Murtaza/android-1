@@ -531,7 +531,7 @@ public class CoinService {
             @Override
             public String sign(String fromAddress, String toAddress, BigDecimal amount) {
                 List<JSONObject> utxos = getUTXO(walletService.getXPUB(CoinType.BITCOINCASH)).getUtxos();
-                Long byteFee = blockbook.getByteFee(blockbook.getBchNodeUrl());
+                Long byteFee = 2L;//blockbook.getByteFee(blockbook.getBchNodeUrl());
 
                 return blockbook.signBTCForks(getCoinType(), fromAddress, toAddress, amount, byteFee, utxos);
             }

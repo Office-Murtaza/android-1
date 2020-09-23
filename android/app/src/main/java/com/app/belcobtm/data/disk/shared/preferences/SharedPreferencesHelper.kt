@@ -1,6 +1,7 @@
 package com.app.belcobtm.data.disk.shared.preferences
 
 import android.content.SharedPreferences
+import com.app.belcobtm.data.rest.authorization.response.AuthorizationResponse
 import com.app.belcobtm.domain.wallet.item.CoinFeeDataItem
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi
@@ -48,6 +49,14 @@ class SharedPreferencesHelper(private val sharedPreferences: SharedPreferences) 
     var tradeLocationExpirationTime: Long
         set(value) = sharedPreferences.set(TRADE_LOCATION_EXPIRATION_TIME, value)
         get() = sharedPreferences[TRADE_LOCATION_EXPIRATION_TIME] ?: -1
+
+    fun processAuthResponse(authorizationResponse: AuthorizationResponse) {
+        authorizationResponse.let {
+            accessToken = it.accessToken
+            refreshToken = it.refreshToken
+            userId = it.userId
+        }
+    }
 
     companion object {
         private const val ACCESS_TOKEN = "KEY_API_SESSION_TOKEN"

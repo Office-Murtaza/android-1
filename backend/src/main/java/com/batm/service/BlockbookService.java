@@ -198,7 +198,7 @@ public class BlockbookService {
             input.setToAddress(toAddress);
             input.setUseMaxAmount(false);
 
-            utxos = utxos.stream().filter(e-> Long.parseLong(e.optString("value")) > byteFee * 180).collect(Collectors.toList());
+            utxos = utxos.stream().filter(e -> Long.parseLong(e.optString("value")) > byteFee * 180).collect(Collectors.toList());
 
             utxos.forEach(e -> {
                 PrivateKey privateKey = walletService.getWallet().getKey(coinType, e.optString("path"));

@@ -2,6 +2,8 @@ package com.batm.dto;
 
 import java.math.BigDecimal;
 import java.util.List;
+
+import com.batm.util.Util;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -19,7 +21,7 @@ public class BalanceDTO {
 
     public void setTotalBalance(BigDecimal totalBalance) {
         this.totalBalance = totalBalance;
-        this.totalBalanceStr = totalBalance == null ? null : totalBalance.toString();
+        this.totalBalanceStr = Util.convert(totalBalance);
     }
 
     public void setCoins(List<CoinBalanceDTO> coins) {

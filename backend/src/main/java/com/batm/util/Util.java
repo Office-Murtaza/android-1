@@ -27,6 +27,14 @@ public class Util {
         return new BigDecimal(str).setScale(3, RoundingMode.DOWN).stripTrailingZeros();
     }
 
+    public static String convert(BigDecimal value) {
+        if(value != null) {
+           return value.toString();
+        }
+
+        return null;
+    }
+
     public static <T> T nvl(T var1, T var2) {
         if (var1 == null) {
             return var2;

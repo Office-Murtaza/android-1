@@ -122,9 +122,7 @@ class AuthorizationRepositoryImpl(
         val response = apiService.authorizeByRefreshToken(prefHelper.refreshToken)
         return if (response.isRight) {
             val body = (response as Either.Right).b
-            prefHelper.accessToken = body.accessToken
-            prefHelper.refreshToken = body.refreshToken
-            prefHelper.userId = body.userId
+            prefHelper.processAuthResponse(body)
             Either.Right(Unit)
         } else {
             response as Either.Left

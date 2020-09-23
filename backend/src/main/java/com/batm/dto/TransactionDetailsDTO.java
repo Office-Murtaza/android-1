@@ -27,7 +27,8 @@ public class TransactionDetailsDTO {
     private BigDecimal cryptoFee;
     private String fromAddress;
     private String toAddress;
-    private String phone;
+    private String fromPhone;
+    private String toPhone;
     private String imageId;
     private String message;
     private String sellInfo;

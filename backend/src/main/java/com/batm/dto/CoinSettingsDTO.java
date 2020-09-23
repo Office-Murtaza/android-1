@@ -1,5 +1,6 @@
 package com.batm.dto;
 
+import com.batm.util.Util;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -28,7 +29,7 @@ public class CoinSettingsDTO {
 
     public void setTxFee(BigDecimal txFee) {
         this.txFee = txFee;
-        this.txFeeStr = txFee == null ? null : txFee.toString();
+        this.txFeeStr = Util.convert(txFee);
     }
 
     public void setByteFee(Long byteFee) {
@@ -37,12 +38,12 @@ public class CoinSettingsDTO {
 
     public void setRecallFee(BigDecimal recallFee) {
         this.recallFee = recallFee;
-        this.recallFeeStr = recallFee == null ? null : recallFee.toString();
+        this.recallFeeStr = Util.convert(recallFee);
     }
 
     public void setProfitExchange(BigDecimal profitExchange) {
         this.profitExchange = profitExchange;
-        this.profitExchangeStr = profitExchange == null ? null : profitExchange.toString();
+        this.profitExchangeStr = Util.convert(profitExchange);
     }
 
     public void setCode(String code) {
