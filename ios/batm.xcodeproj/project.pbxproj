@@ -3003,7 +3003,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "cd \"${PROJECT_DIR}/scripts/l10n/\"\nswift build --configuration release\nplutil -convert json -o - ../../batm/Base.lproj/Localizable.strings | ./.build/release/l10n\n";
+			shellScript = "cd \"${PROJECT_DIR}/scripts/l10n/\"\n/usr/bin/xcrun --sdk macosx swift build --configuration release\nplutil -convert json -o - ../../batm/Base.lproj/Localizable.strings | ./.build/release/l10n\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
