@@ -68,7 +68,8 @@ final class CoinExchangePresenter: ModulePresenter, CoinExchangeModule {
     return usecase.exchange(from: state.fromCoin!,
                                 with: state.coinSettings!,
                                 to: state.toCoinType!,
-                                amount: state.fromCoinAmount.decimalValue ?? 0.0)
+                                amount: state.fromCoinAmount.decimalValue ?? 0.0,
+                                toCoinAmount: state.toCoinAmount.decimalValue ?? 0.0)
       .catchError { [store] in
         if let apiError = $0 as? APIError, case let .serverError(error) = apiError, let code = error.code, code > 1 {
           store.action.accept(.updateFromCoinAmountError(error.message))

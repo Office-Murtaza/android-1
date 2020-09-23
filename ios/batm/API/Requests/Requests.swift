@@ -338,6 +338,7 @@ struct SubmitTransactionRequest: AuthorizedAPIRequest {
   let message: String?
   let imageId: String?
   let toCoinId: String?
+  let toCoinAmount: Decimal?
   let txhex: String?
   
   var path: String { return "/user/\(userId)/coin/\(coinId)/submit" }
@@ -352,6 +353,7 @@ struct SubmitTransactionRequest: AuthorizedAPIRequest {
                                            "message": message as Any,
                                            "imageId": imageId as Any,
                                            "refCoin": toCoinId as Any,
+                                           "refCryptoAmount": toCoinAmount as Any,
                                            "hex": txhex as Any],
                               encoding: JSONEncoding.default)
   }

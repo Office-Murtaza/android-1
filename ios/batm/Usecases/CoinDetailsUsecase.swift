@@ -23,7 +23,8 @@ protocol CoinDetailsUsecase {
   func exchange(from fromCoin: BTMCoin,
                 with coinSettings: CoinSettings,
                 to toCoinType: CustomCoinType,
-                amount: Decimal) -> Completable
+                amount: Decimal,
+                toCoinAmount: Decimal) -> Completable
   func reserve(from coin: BTMCoin, with coinSettings: CoinSettings, amount: Decimal) -> Completable
   func recall(from coin: BTMCoin, amount: Decimal) -> Completable
   func getStakeDetails(for type: CustomCoinType) -> Single<StakeDetails>
@@ -186,7 +187,11 @@ class CoinDetailsUsecaseImpl: CoinDetailsUsecase {
       }
   }
   
-  func exchange(from fromCoin: BTMCoin, with coinSettings: CoinSettings, to toCoinType: CustomCoinType, amount: Decimal) -> Completable {
+  func exchange(from fromCoin: BTMCoin,
+                with coinSettings: CoinSettings,
+                to toCoinType: CustomCoinType,
+                amount: Decimal,
+                toCoinAmount: Decimal) -> Completable {
     return accountStorage.get()
       .flatMap { [walletService] account in
         return walletService.getTransactionHex(for: fromCoin,
@@ -205,6 +210,7 @@ class CoinDetailsUsecaseImpl: CoinDetailsUsecase {
                            fromAddress: fromCoin.address,
                            toAddress: coinSettings.walletAddress,
                            toCoinType: toCoinType,
+                           toCoinAmount: toCoinAmount,
                            transactionResultString: transactionResultString)
       }
   }
@@ -296,6 +302,7 @@ class CoinDetailsUsecaseImpl: CoinDetailsUsecase {
                       message: String? = nil,
                       imageId: String? = nil,
                       toCoinType: CustomCoinType? = nil,
+                      toCoinAmount: Decimal? = nil,
                       transactionResultString: String? = nil) -> Completable {
     
     return api.submitTransaction(userId: userId,
@@ -309,6 +316,7 @@ class CoinDetailsUsecaseImpl: CoinDetailsUsecase {
                                  message: message,
                                  imageId: imageId,
                                  toCoinType: toCoinType,
+                                 toCoinAmount: toCoinAmount,
                                  txhex: transactionResultString)
   }
   
