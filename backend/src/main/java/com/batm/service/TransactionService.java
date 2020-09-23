@@ -50,6 +50,9 @@ public class TransactionService {
     @Autowired
     private WalletService walletService;
 
+    @Autowired
+    private GethService geth;
+
     @Value("${gb.url}")
     private String gbUrl;
 
@@ -296,28 +299,23 @@ public class TransactionService {
 
     public String recall(Long userId, CoinService.CoinEnum coinCode, SubmitTransactionDTO dto) {
         try {
-            System.out.println("CryptoAmount: " + dto.getCryptoAmount());
             UserCoin userCoin = userService.getUserCoin(userId, coinCode.name());
             BigDecimal reserved = userCoin.getReservedBalance();
-            System.out.println("reserved: " + reserved);
+            BigDecimal txFee = coinCode == CoinService.CoinEnum.CATM ? coinCode.getCoinSettings().getRecallFee() : coinCode.getCoinSettings().getTxFee();
 
-            BigDecimal txFee = Util.nvl(coinCode.getCoinSettings().getRecallFee(), coinCode.getCoinSettings().getTxFee());
-            System.out.println("txFee: " + txFee);
-
-            BigDecimal walletBalance = walletService.getBalance(coinCode);
-            System.out.println("walletBalance: " + walletBalance);
-
-            System.out.println("1: " + (reserved.compareTo(dto.getCryptoAmount().add(txFee)) >= 0));
-            System.out.println("2: " + (walletBalance.compareTo(dto.getCryptoAmount().add(txFee)) >= 0));
-
-            if (reserved.compareTo(dto.getCryptoAmount().add(txFee)) >= 0 && walletBalance.compareTo(dto.getCryptoAmount().add(txFee)) >= 0) {
+            if (walletService.isEnoughBalance(coinCode, dto.getCryptoAmount()) && reserved.compareTo(dto.getCryptoAmount().add(txFee)) >= 0) {
                 String fromAddress = coinCode.getWalletAddress();
                 String toAddress = userCoin.getAddress();
                 String hex = coinCode.sign(fromAddress, toAddress, dto.getCryptoAmount());
-                System.out.println("hex: " + hex);
 
-                String txId = coinCode.submitTransaction(hex);
-                System.out.println("txId: " + txId);
+                SubmitTransactionDTO submit = new SubmitTransactionDTO();
+                submit.setHex(hex);
+                submit.setFromAddress(fromAddress);
+                submit.setToAddress(toAddress);
+                submit.setCryptoAmount(dto.getCryptoAmount());
+                submit.setFee(txFee);
+
+                String txId = coinCode.submitTransaction(submit);
 
                 if (StringUtils.isNotBlank(txId)) {
                     TransactionRecordWallet record = new TransactionRecordWallet();
@@ -383,29 +381,34 @@ public class TransactionService {
     public StakeDetailsDTO getStakeDetails(Long userId, CoinService.CoinEnum coinCode) {
         try {
             Identity identity = userService.findByUserId(userId);
+            String address = userService.getUserCoin(userId, CoinService.CoinEnum.CATM.name()).getAddress();
             Coin coin = coinCode.getCoinEntity();
 
-            List<TransactionRecordWallet> records = walletRep.findAllByIdentityAndCoinAndTypeIn(identity, coin, Arrays.asList(TransactionType.STAKE.getValue()));
+            if (geth.isStakeholder(address)) {
+                List<TransactionRecordWallet> records = walletRep.findAllByIdentityAndCoinAndTypeIn(identity, coin, Arrays.asList(TransactionType.STAKE.getValue()));
 
-            for (TransactionRecordWallet record : records) {
-                if (record.getStatus() == TransactionStatus.PENDING.getValue() || record.getStatus() == TransactionStatus.COMPLETE.getValue()) {
-                    if (StringUtils.isBlank(record.getRefTxId())) {
-                        int days = Days.daysBetween(new DateTime(record.getCreateDate()), DateTime.now()).getDays();
+                for (TransactionRecordWallet record : records) {
+                    if (record.getStatus() == TransactionStatus.PENDING.getValue() || record.getStatus() == TransactionStatus.COMPLETE.getValue()) {
+                        if (StringUtils.isBlank(record.getRefTxId())) {
+                            int days = Days.daysBetween(new DateTime(record.getCreateDate()), DateTime.now()).getDays();
 
-                        BigDecimal rewardPercent = new BigDecimal(days)
-                                .multiply(STAKING_ANNUAL_PERCENT)
-                                .divide(new BigDecimal(365), 2, RoundingMode.HALF_DOWN)
-                                .stripTrailingZeros();
+                            BigDecimal rewardPercent = new BigDecimal(days)
+                                    .multiply(STAKING_ANNUAL_PERCENT)
+                                    .divide(new BigDecimal(365), 2, RoundingMode.HALF_DOWN)
+                                    .stripTrailingZeros();
 
-                        StakeDetailsDTO dto = new StakeDetailsDTO();
-                        dto.setExist(true);
-                        dto.setAmount(record.getAmount());
-                        dto.setRewardAmount(record.getAmount().multiply(rewardPercent.divide(Constant.HUNDRED)).stripTrailingZeros());
-                        dto.setRewardPercent(rewardPercent);
-                        dto.setRewardAnnualAmount(record.getAmount().multiply(STAKING_ANNUAL_PERCENT.divide(Constant.HUNDRED)).stripTrailingZeros());
-                        dto.setRewardAnnualPercent(STAKING_ANNUAL_PERCENT);
-                        dto.setDays(days);
-                        dto.setMinDays(STAKING_MIN_DAYS);
+                            StakeDetailsDTO dto = new StakeDetailsDTO();
+                            dto.setExist(true);
+                            dto.setAmount(record.getAmount());
+                            dto.setRewardAmount(record.getAmount().multiply(rewardPercent.divide(Constant.HUNDRED)).stripTrailingZeros());
+                            dto.setRewardPercent(rewardPercent);
+                            dto.setRewardAnnualAmount(record.getAmount().multiply(STAKING_ANNUAL_PERCENT.divide(Constant.HUNDRED)).stripTrailingZeros());
+                            dto.setRewardAnnualPercent(STAKING_ANNUAL_PERCENT);
+                            dto.setDays(days);
+                            dto.setMinDays(STAKING_MIN_DAYS);
+
+                            return dto;
+                        }
                     }
                 }
             }
@@ -506,16 +509,22 @@ public class TransactionService {
             list.stream().forEach(t -> {
                 try {
                     CoinService.CoinEnum coinCode = CoinService.CoinEnum.valueOf(t.getRefCoin().getCode());
-                    BigDecimal txFee = coinCode.getCoinSettings().getTxFee();
+                    BigDecimal txFee = coinCode == CoinService.CoinEnum.CATM ? coinCode.getCoinSettings().getRecallFee() : coinCode.getCoinSettings().getTxFee();
                     BigDecimal withdrawAmount = t.getRefAmount().subtract(txFee);
-                    BigDecimal walletBalance = walletService.getBalance(coinCode);
 
-                    if (walletBalance.compareTo(withdrawAmount.add(txFee)) >= 0) {
+                    if (walletService.isEnoughBalance(coinCode, t.getRefAmount())) {
                         Identity identity = t.getIdentity();
                         String fromAddress = coinCode.getWalletAddress();
                         String toAddress = userService.getUserCoin(identity.getUser().getId(), coinCode.name()).getAddress();
                         String hex = coinCode.sign(fromAddress, toAddress, withdrawAmount);
-                        String txId = coinCode.submitTransaction(hex);
+
+                        SubmitTransactionDTO submit = new SubmitTransactionDTO();
+                        submit.setHex(hex);
+                        submit.setFromAddress(fromAddress);
+                        submit.setToAddress(toAddress);
+                        submit.setCryptoAmount(t.getRefAmount());
+
+                        String txId = coinCode.submitTransaction(submit);
 
                         if (StringUtils.isNotBlank(txId)) {
                             TransactionRecordWallet rec = new TransactionRecordWallet();
@@ -563,11 +572,10 @@ public class TransactionService {
 
                     if (receiver != null) {
                         CoinService.CoinEnum coinCode = CoinService.CoinEnum.valueOf(t.getCoin().getCode());
-                        BigDecimal txFee = coinCode.getCoinSettings().getTxFee();
+                        BigDecimal txFee = coinCode == CoinService.CoinEnum.CATM ? coinCode.getCoinSettings().getRecallFee() : coinCode.getCoinSettings().getTxFee();
                         BigDecimal withdrawAmount = t.getAmount().subtract(txFee);
-                        BigDecimal walletBalance = walletService.getBalance(coinCode);
 
-                        if (walletBalance.compareTo(withdrawAmount.add(txFee)) >= 0) {
+                        if (walletService.isEnoughBalance(coinCode, t.getAmount())) {
                             String fromAddress = coinCode.getWalletAddress();
                             String toAddress = userService.getUserCoin(receiver.getId(), t.getCoin().getCode()).getAddress();
                             String hex = coinCode.sign(fromAddress, toAddress, withdrawAmount);
@@ -582,7 +590,7 @@ public class TransactionService {
                             dto.setMessage(t.getMessage());
                             dto.setFromServerWallet(true);
 
-                            String txId = coinCode.submitTransaction(hex);
+                            String txId = coinCode.submitTransaction(dto);
 
                             if (StringUtils.isNotBlank(txId)) {
                                 saveGift(t.getIdentity().getUser().getId(), coinCode, txId, dto);

@@ -4,7 +4,6 @@ import com.batm.dto.SubmitTransactionDTO;
 import com.batm.model.Response;
 import com.batm.model.TransactionType;
 import com.batm.service.CoinService;
-import com.batm.service.GethService;
 import com.batm.service.TransactionService;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,9 +15,6 @@ public class TransactionController {
 
     @Autowired
     private TransactionService transactionService;
-
-    @Autowired
-    private GethService geth;
 
     @GetMapping("/user/{userId}/coin/{coin}/transaction-history")
     public Response getTransactionHistory(@PathVariable Long userId, @PathVariable CoinService.CoinEnum coin, @RequestParam(required = false) Integer index) {
@@ -60,7 +56,7 @@ public class TransactionController {
             if (TransactionType.RECALL.getValue() == dto.getType()) {
                 txId = transactionService.recall(userId, coin, dto);
             } else {
-                txId = coin.submitTransaction(dto.getHex());
+                txId = coin.submitTransaction(dto);
             }
 
             if (StringUtils.isNotBlank(txId)) {
@@ -82,14 +78,6 @@ public class TransactionController {
 
                 if (TransactionType.UNSTAKE.getValue() == dto.getType()) {
                     transactionService.unstake(userId, coin, txId, dto.getCryptoAmount());
-                }
-
-                if (coin == CoinService.CoinEnum.ETH) {
-                    geth.addPendingEthTransaction(txId, dto.getFromAddress(), dto.getToAddress(), dto.getCryptoAmount(), dto.getFee());
-                }
-
-                if (coin == CoinService.CoinEnum.CATM) {
-                    geth.addPendingTokenTransaction(txId, dto.getFromAddress(), dto.getToAddress(), dto.getCryptoAmount(), dto.getFee());
                 }
 
                 return Response.ok("txId", txId);

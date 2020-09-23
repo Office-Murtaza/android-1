@@ -15,6 +15,7 @@ import com.mongodb.bulk.BulkWriteResult;
 import com.mongodb.client.model.FindOneAndUpdateOptions;
 import com.mongodb.client.model.UpdateOneModel;
 import lombok.Getter;
+import org.apache.commons.lang3.StringUtils;
 import org.bson.Document;
 import org.bson.types.Decimal128;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,13 +29,15 @@ import org.web3j.crypto.Credentials;
 import org.web3j.protocol.Web3j;
 import org.web3j.protocol.core.DefaultBlockParameterName;
 import org.web3j.protocol.core.DefaultBlockParameterNumber;
-import org.web3j.protocol.core.methods.request.Transaction;
 import org.web3j.protocol.core.methods.response.*;
 import org.web3j.protocol.http.HttpService;
 import org.web3j.tx.gas.DefaultGasProvider;
 import org.web3j.utils.Numeric;
 import wallet.core.java.AnySigner;
-import wallet.core.jni.*;
+import wallet.core.jni.CoinType;
+import wallet.core.jni.EthereumAbi;
+import wallet.core.jni.EthereumAbiFunction;
+import wallet.core.jni.PrivateKey;
 import wallet.core.jni.proto.Ethereum;
 
 import javax.annotation.PostConstruct;
@@ -89,6 +92,7 @@ public class GethService {
     private Web3j web3;
 
     private com.batm.contract.Token token;
+    private Coin catmCoin;
 
     @PostConstruct
     public void init() {
@@ -96,6 +100,8 @@ public class GethService {
 
         token = com.batm.contract.Token.load(contractAddress, web3,
                 Credentials.create(Numeric.toHexString(walletService.getPrivateKeyETH().data())), new DefaultGasProvider());
+
+        catmCoin = coinRep.findCoinByCode(CoinService.CoinEnum.CATM.name());
 
         if (!mongo.getCollection(ETH_TX_COLL).listIndexes().iterator().hasNext()) {
             mongo.getCollection(ETH_TX_COLL).createIndex(new Document("txId", 1).append("fromAddress", 1).append("toAddress", 1));
@@ -189,13 +195,7 @@ public class GethService {
 
     public BigDecimal getTokenBalance(String address) {
         try {
-            //String res = Hash.sha3String("balanceOf(address)");
-            String data = /*res.substring(2, 10)*/ "0x70a08231" + "000000000000000000000000" + Numeric.cleanHexPrefix(address);
-            Transaction tr = Transaction.createEthCallTransaction(null, contractAddress, data);
-
-            BigDecimal balanceWei = new BigDecimal(Numeric.decodeQuantity(web3.ethCall(tr, DefaultBlockParameterName.LATEST).send().getValue()));
-
-            return balanceWei.divide(ETH_DIVIDER);
+            return new BigDecimal(token.balanceOf(address).send()).divide(ETH_DIVIDER);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -203,9 +203,24 @@ public class GethService {
         return BigDecimal.ZERO;
     }
 
-    public String submitTransaction(String hex) {
+    public Boolean isStakeholder(String address) {
         try {
-            return web3.ethSendRawTransaction(hex).send().getTransactionHash();
+            return token.isStakeholder(address).send().component1();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return Boolean.FALSE;
+    }
+
+    public String submitTransaction(SubmitTransactionDTO dto) {
+        try {
+            String txId = web3.ethSendRawTransaction(dto.getHex()).send().getTransactionHash();
+
+            if (StringUtils.isNotBlank(txId)) {
+                addPendingEthTransaction(txId, dto.getFromAddress(), dto.getToAddress(), dto.getCryptoAmount(), dto.getFee());
+                return txId;
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -213,7 +228,23 @@ public class GethService {
         return null;
     }
 
-    public void addPendingEthTransaction(String txId, String fromAddress, String toAddress, BigDecimal amount, BigDecimal fee) {
+    public String submitTokenTransaction(SubmitTransactionDTO dto) {
+        try {
+            String txId = web3.ethSendRawTransaction(dto.getHex()).send().getTransactionHash();
+
+            if (StringUtils.isNotBlank(txId)) {
+                addPendingTokenTransaction(txId, dto.getFromAddress(), dto.getToAddress(), dto.getCryptoAmount(), dto.getFee());
+
+                return txId;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    private void addPendingEthTransaction(String txId, String fromAddress, String toAddress, BigDecimal amount, BigDecimal fee) {
         Document doc = new Document("txId", txId.toLowerCase())
                 .append("fromAddress", fromAddress.toLowerCase())
                 .append("toAddress", toAddress.toLowerCase())
@@ -226,7 +257,7 @@ public class GethService {
         mongo.getCollection(ETH_TX_COLL).insertOne(doc);
     }
 
-    public void addPendingTokenTransaction(String txId, String fromAddress, String toAddress, BigDecimal amount, BigDecimal fee) {
+    private void addPendingTokenTransaction(String txId, String fromAddress, String toAddress, BigDecimal amount, BigDecimal fee) {
         addPendingEthTransaction(txId, fromAddress, contractAddress, BigDecimal.ZERO, fee);
 
         Document doc = new Document("txId", txId.toLowerCase())
@@ -334,6 +365,22 @@ public class GethService {
             Ethereum.SigningOutput output = AnySigner.sign(input.build(), CoinType.ETHEREUM, Ethereum.SigningOutput.parser());
 
             return Numeric.toHexString(output.getEncoded().toByteArray());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    public String tokenTransfer(String toAddress, BigDecimal amount) {
+        try {
+            TransactionReceipt receipt = token.transfer(toAddress, amount.multiply(ETH_DIVIDER).toBigInteger()).send();
+            String txId = receipt.getTransactionHash();
+            BigDecimal fee = new BigDecimal(receipt.getGasUsed()).multiply(new BigDecimal(catmCoin.getGasPrice())).divide(ETH_DIVIDER).stripTrailingZeros();
+
+            addPendingTokenTransaction(txId, receipt.getFrom(), receipt.getTo(), amount, fee);
+
+            return txId;
         } catch (Exception e) {
             e.printStackTrace();
         }

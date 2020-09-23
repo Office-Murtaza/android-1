@@ -9,15 +9,17 @@ import com.google.protobuf.ByteString;
 import lombok.Getter;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
 import org.web3j.utils.Numeric;
 import wallet.core.java.AnySigner;
 import wallet.core.jni.*;
 import wallet.core.jni.proto.Bitcoin;
-
+import javax.annotation.PostConstruct;
 import java.math.BigDecimal;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -52,132 +54,192 @@ public class BlockbookService {
     @Autowired
     private WalletService walletService;
 
-    public BigDecimal getBalance(String url, String address) {
-        try {
-            JSONObject res = rest.getForObject(url + "/api/v2/address/" + address + "?details=basic", JSONObject.class);
+    private Map<CoinType, String> nodeUrlMap = new HashMap<>();
+    private Map<CoinType, String> explorerUrlMap = new HashMap<>();
+    private Map<CoinType, Boolean> nodeAvailableMap = new HashMap<>();
 
-            return Util.format6(new BigDecimal(res.optString("balance")).divide(BTC_DIVIDER));
-        } catch (Exception e) {
+    @PostConstruct
+    public void init() {
+        if (StringUtils.isNotBlank(btcNodeUrl)) {
+            nodeUrlMap.put(CoinType.BITCOIN, btcNodeUrl);
+            nodeAvailableMap.put(CoinType.BITCOIN, true);
+        } else {
+            nodeAvailableMap.put(CoinType.BITCOIN, false);
+        }
+
+        if (StringUtils.isNotBlank(bchNodeUrl)) {
+            nodeUrlMap.put(CoinType.BITCOINCASH, bchNodeUrl);
+            nodeAvailableMap.put(CoinType.BITCOINCASH, true);
+        } else {
+            nodeAvailableMap.put(CoinType.BITCOINCASH, false);
+        }
+
+        if (StringUtils.isNotBlank(ltcNodeUrl)) {
+            nodeUrlMap.put(CoinType.LITECOIN, ltcNodeUrl);
+            nodeAvailableMap.put(CoinType.LITECOIN, true);
+        } else {
+            nodeAvailableMap.put(CoinType.LITECOIN, false);
+        }
+
+        explorerUrlMap.put(CoinType.BITCOIN, btcExplorerUrl);
+        explorerUrlMap.put(CoinType.BITCOINCASH, bchExplorerUrl);
+        explorerUrlMap.put(CoinType.LITECOIN, ltcExplorerUrl);
+    }
+
+    public BigDecimal getBalance(CoinType coinType, String address) {
+        if (nodeAvailableMap.get(coinType)) {
+            try {
+                JSONObject res = rest.getForObject(nodeUrlMap.get(coinType) + "/api/v2/address/" + address + "?details=basic", JSONObject.class);
+
+                return Util.format6(new BigDecimal(res.optString("balance")).divide(BTC_DIVIDER));
+            } catch (ResourceAccessException rae) {
+                nodeAvailableMap.put(coinType, false);
+            } catch (Exception e) {
+            }
         }
 
         return BigDecimal.ZERO;
     }
 
-    public String submitTransaction(String url, String hex) {
-        try {
-            JSONObject res = rest.getForObject(url + "/api/v2/sendtx/" + hex, JSONObject.class);
+    public String submitTransaction(CoinType coinType, String hex) {
+        if (nodeAvailableMap.get(coinType)) {
+            try {
+                JSONObject res = rest.getForObject(nodeUrlMap.get(coinType) + "/api/v2/sendtx/" + hex, JSONObject.class);
 
-            return res.optString("result");
-        } catch (Exception e) {
-            e.printStackTrace();
+                return res.optString("result");
+            } catch (ResourceAccessException rae) {
+                nodeAvailableMap.put(coinType, false);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 
         return null;
     }
 
-    public UtxoDTO getUTXO(String url, String xpub) {
-        try {
-            JSONArray res = rest.getForObject(url + "/api/v2/utxo/" + xpub, JSONArray.class);
+    public UtxoDTO getUTXO(CoinType coinType, String xpub) {
+        if (nodeAvailableMap.get(coinType)) {
+            try {
+                JSONArray res = rest.getForObject(nodeUrlMap.get(coinType) + "/api/v2/utxo/" + xpub, JSONArray.class);
 
-            return new UtxoDTO(res);
-        } catch (Exception e) {
-            e.printStackTrace();
+                return new UtxoDTO(res);
+            } catch (ResourceAccessException rae) {
+                nodeAvailableMap.put(coinType, false);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 
         return new UtxoDTO();
     }
 
-    public Long getByteFee(String url) {
-        try {
-            JSONObject res = rest.getForObject(url + "/api/v2/estimatefee/2", JSONObject.class);
+    public Long getByteFee(CoinType coinType) {
+        if (nodeAvailableMap.get(coinType)) {
+            try {
+                JSONObject res = rest.getForObject(nodeUrlMap.get(coinType) + "/api/v2/estimatefee/2", JSONObject.class);
 
-            return new BigDecimal(res.optString("result")).divide(new BigDecimal(1000)).multiply(BTC_DIVIDER).longValue();
-        } catch (Exception e) {
-            e.printStackTrace();
+                return new BigDecimal(res.optString("result")).divide(new BigDecimal(1000)).multiply(BTC_DIVIDER).longValue();
+            } catch (ResourceAccessException rae) {
+                nodeAvailableMap.put(coinType, false);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 
         return null;
     }
 
-    public TransactionNumberDTO getTransactionNumber(String url, String address, BigDecimal amount, TransactionType type) {
-        try {
-            JSONObject res = rest.getForObject(url + "/api/v2/address/" + address + "?details=txs&pageSize=1000&page=1", JSONObject.class);
-            JSONArray array = res.optJSONArray("transactions");
+    public TransactionNumberDTO getTransactionNumber(CoinType coinType, String address, BigDecimal amount, TransactionType type) {
+        if (nodeAvailableMap.get(coinType)) {
+            try {
+                JSONObject res = rest.getForObject(nodeUrlMap.get(coinType) + "/api/v2/address/" + address + "?details=txs&pageSize=1000&page=1", JSONObject.class);
+                JSONArray array = res.optJSONArray("transactions");
 
-            if (array != null && !array.isEmpty()) {
-                for (int i = 0; i < array.size(); i++) {
-                    JSONObject json = array.optJSONObject(i);
-                    JSONArray voutArray = json.optJSONArray("vout");
+                if (array != null && !array.isEmpty()) {
+                    for (int i = 0; i < array.size(); i++) {
+                        JSONObject json = array.optJSONObject(i);
+                        JSONArray voutArray = json.optJSONArray("vout");
 
-                    for (int j = 0; j < voutArray.size(); j++) {
-                        JSONObject voutJson = voutArray.optJSONObject(j);
+                        for (int j = 0; j < voutArray.size(); j++) {
+                            JSONObject voutJson = voutArray.optJSONObject(j);
 
-                        if (voutJson.optJSONArray("addresses").toString().toLowerCase().contains(address.toLowerCase())) {
-                            if (type == TransactionType.SELL) {
-                                return new TransactionNumberDTO(json.optString("txid"), voutJson.optInt("n"));
-                            } else if (type == TransactionType.BUY) {
-                                BigDecimal value = new BigDecimal(voutJson.optString("value")).divide(BTC_DIVIDER);
-
-                                if (amount.compareTo(value) == 0) {
+                            if (voutJson.optJSONArray("addresses").toString().toLowerCase().contains(address.toLowerCase())) {
+                                if (type == TransactionType.SELL) {
                                     return new TransactionNumberDTO(json.optString("txid"), voutJson.optInt("n"));
+                                } else if (type == TransactionType.BUY) {
+                                    BigDecimal value = new BigDecimal(voutJson.optString("value")).divide(BTC_DIVIDER);
+
+                                    if (amount.compareTo(value) == 0) {
+                                        return new TransactionNumberDTO(json.optString("txid"), voutJson.optInt("n"));
+                                    }
                                 }
                             }
                         }
                     }
                 }
+            } catch (ResourceAccessException rae) {
+                nodeAvailableMap.put(coinType, false);
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-        } catch (Exception e) {
-            e.printStackTrace();
         }
 
         return null;
     }
 
-    public TransactionDetailsDTO getTransaction(String nodeUrl, String explorerUrl, String txId, String address) {
+    public TransactionDetailsDTO getTransaction(CoinType coinType, String txId, String address) {
         TransactionDetailsDTO dto = new TransactionDetailsDTO();
 
-        try {
-            JSONObject res = rest.getForObject(nodeUrl + "/api/v2/tx/" + txId, JSONObject.class);
-            JSONArray vinArray = res.optJSONArray("vin");
-            JSONArray voutArray = res.optJSONArray("vout");
+        if (nodeAvailableMap.get(coinType)) {
+            try {
+                JSONObject res = rest.getForObject(nodeUrlMap.get(coinType) + "/api/v2/tx/" + txId, JSONObject.class);
+                JSONArray vinArray = res.optJSONArray("vin");
+                JSONArray voutArray = res.optJSONArray("vout");
 
-            String fromAddress = getFromAddress(vinArray, address);
-            String toAddress = getToAddress(voutArray, address, fromAddress);
-            TransactionType type = TransactionType.getType(fromAddress, toAddress, address);
-            BigDecimal amount = Util.format6(getAmount(type, fromAddress, toAddress, voutArray, BTC_DIVIDER));
+                String fromAddress = getFromAddress(vinArray, address);
+                String toAddress = getToAddress(voutArray, address, fromAddress);
+                TransactionType type = TransactionType.getType(fromAddress, toAddress, address);
+                BigDecimal amount = Util.format6(getAmount(type, fromAddress, toAddress, voutArray, BTC_DIVIDER));
 
-            dto.setTxId(txId);
-            dto.setLink(explorerUrl + "/" + txId);
-            dto.setType(type);
-            dto.setCryptoAmount(amount);
-            dto.setFromAddress(fromAddress);
-            dto.setToAddress(toAddress);
-            dto.setCryptoFee(new BigDecimal(res.optString("fees")).divide(BTC_DIVIDER).stripTrailingZeros());
-            dto.setStatus(getStatus(res.optInt("confirmations")));
-            dto.setDate2(new Date(res.optLong("blockTime") * 1000));
-        } catch (Exception e) {
-            e.printStackTrace();
+                dto.setTxId(txId);
+                dto.setLink(explorerUrlMap.get(coinType) + "/" + txId);
+                dto.setType(type);
+                dto.setCryptoAmount(amount);
+                dto.setFromAddress(fromAddress);
+                dto.setToAddress(toAddress);
+                dto.setCryptoFee(new BigDecimal(res.optString("fees")).divide(BTC_DIVIDER).stripTrailingZeros());
+                dto.setStatus(getStatus(res.optInt("confirmations")));
+                dto.setDate2(new Date(res.optLong("blockTime") * 1000));
+            } catch (ResourceAccessException rae) {
+                nodeAvailableMap.put(coinType, false);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 
         return dto;
     }
 
-    public NodeTransactionsDTO getNodeTransactions(String url, String address) {
-        try {
-            JSONObject res = rest.getForObject(url + "/api/v2/address/" + address + "?details=txs&pageSize=1000&page=1", JSONObject.class);
-            JSONArray array = res.optJSONArray("transactions");
+    public NodeTransactionsDTO getNodeTransactions(CoinType coinType, String address) {
+        if (nodeAvailableMap.get(coinType)) {
+            try {
+                JSONObject res = rest.getForObject(nodeUrlMap.get(coinType) + "/api/v2/address/" + address + "?details=txs&pageSize=1000&page=1", JSONObject.class);
+                JSONArray array = res.optJSONArray("transactions");
 
-            return new NodeTransactionsDTO(collectNodeTxs(array, address));
-        } catch (Exception e) {
-            e.printStackTrace();
+                return new NodeTransactionsDTO(collectNodeTxs(array, address));
+            } catch (ResourceAccessException rae) {
+                nodeAvailableMap.put(coinType, false);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 
         return new NodeTransactionsDTO();
     }
 
-    public TransactionListDTO getTransactionList(String url, String address, Integer startIndex, Integer limit, TxListDTO txDTO) {
+    public TransactionListDTO getTransactionList(CoinType coinType, String address, Integer startIndex, Integer limit, TxListDTO txDTO) {
         try {
-            Map<String, TransactionDetailsDTO> map = getNodeTransactions(url, address).getMap();
+            Map<String, TransactionDetailsDTO> map = getNodeTransactions(coinType, address).getMap();
 
             return TxUtil.buildTxs(map, startIndex, limit, txDTO);
         } catch (Exception e) {
@@ -250,8 +312,8 @@ public class BlockbookService {
         return null;
     }
 
-    public CoinSettingsDTO getCoinSettings(String url, BigDecimal profitExchange, String walletAddress) {
-        Long byteFee = getByteFee(url);
+    public CoinSettingsDTO getCoinSettings(CoinType coinType, BigDecimal profitExchange, String walletAddress) {
+        Long byteFee = getByteFee(coinType);
 
         CoinSettingsDTO dto = new CoinSettingsDTO();
         dto.setProfitExchange(profitExchange);

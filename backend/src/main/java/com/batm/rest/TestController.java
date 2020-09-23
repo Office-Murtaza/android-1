@@ -1,11 +1,13 @@
 package com.batm.rest;
 
+import com.batm.dto.SubmitTransactionDTO;
 import com.batm.service.*;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import com.batm.model.Response;
 import wallet.core.jni.CoinType;
+
 import java.math.BigDecimal;
 
 @RestController
@@ -54,7 +56,10 @@ public class TestController {
 
     @GetMapping("/coin/{coin}/submit")
     public Response submit(@PathVariable CoinService.CoinEnum coin, @RequestParam String hex) {
-        return Response.ok(coin.submitTransaction(hex));
+        SubmitTransactionDTO dto = new SubmitTransactionDTO();
+        dto.setHex(hex);
+
+        return Response.ok(coin.submitTransaction(dto));
     }
 
     @GetMapping("/user/{userId}/kyc-delete")

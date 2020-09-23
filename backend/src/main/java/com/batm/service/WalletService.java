@@ -1,8 +1,6 @@
 package com.batm.service;
 
-import com.batm.dto.NodeTransactionsDTO;
-import com.batm.dto.ReceivedAddressDTO;
-import com.batm.dto.TransactionDetailsDTO;
+import com.batm.dto.*;
 import com.batm.entity.Coin;
 import com.batm.entity.CoinPath;
 import com.batm.entity.TransactionRecordWallet;
@@ -203,6 +201,19 @@ public class WalletService {
         return BigDecimal.ZERO;
     }
 
+    public boolean isEnoughBalance(CoinService.CoinEnum coin, BigDecimal amount) {
+        BigDecimal balance = getBalance(coin);
+        CoinSettingsDTO settings = coin.getCoinSettings();
+
+        if(coin == CoinService.CoinEnum.CATM) {
+            BigDecimal ethBalance = getBalance(CoinService.CoinEnum.ETH);
+
+            return balance.compareTo(amount.add(settings.getRecallFee())) >= 0 && ethBalance.compareTo(settings.getTxFee()) >= 0;
+        }
+
+        return balance.compareTo(amount.add(settings.getTxFee())) >= 0;
+    }
+
     public List<ReceivedAddressDTO> getReceivedAddresses(CoinService.CoinEnum coinCode, Set<String> addresses) {
         List<ReceivedAddressDTO> list = new ArrayList<>();
 
@@ -230,7 +241,15 @@ public class WalletService {
 
             if (balance.compareTo(amount) >= 0 && amount.compareTo(BigDecimal.ZERO) > 0) {
                 String hex = coin.sign(fromAddress, toAddress, amount);
-                String txId = coin.submitTransaction(hex);
+
+                SubmitTransactionDTO dto = new SubmitTransactionDTO();
+                dto.setHex(hex);
+                dto.setFromAddress(fromAddress);
+                dto.setToAddress(toAddress);
+                dto.setCryptoAmount(amount);
+                dto.setFee(BigDecimal.ZERO);
+
+                String txId = coin.submitTransaction(dto);
 
                 TransactionRecordWallet wallet = new TransactionRecordWallet();
                 wallet.setCoin(coin.getCoinEntity());
