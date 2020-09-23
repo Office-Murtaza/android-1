@@ -56,7 +56,7 @@ final class CoinStakingViewController: ModuleViewController<CoinStakingPresenter
     presenter.state
       .map { $0.coin?.type.code }
       .filterNil()
-      .drive(onNext: { [customView] in
+      .drive(onNext: { [unowned self] in
         self.title = String(format: localize(L.CoinStaking.title), $0)
       })
       .disposed(by: disposeBag)
