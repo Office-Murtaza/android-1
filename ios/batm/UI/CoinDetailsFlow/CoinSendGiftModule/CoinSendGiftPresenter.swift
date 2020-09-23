@@ -1,7 +1,6 @@
 import Foundation
 import RxSwift
 import RxCocoa
-import FlagPhoneNumber
 
 final class CoinSendGiftPresenter: ModulePresenter, CoinSendGiftModule {
 

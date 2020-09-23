@@ -4,7 +4,6 @@ import RxCocoa
 import MaterialComponents
 import GiphyUISDK
 import GiphyCoreSDK
-import FlagPhoneNumber
 
 final class CoinSendGiftFormView: UIView, HasDisposeBag {
   
