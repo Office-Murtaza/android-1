@@ -13,11 +13,14 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
 import org.web3j.utils.Numeric;
 import wallet.core.java.AnySigner;
 import wallet.core.jni.*;
 import wallet.core.jni.proto.Ripple;
+
+import javax.annotation.PostConstruct;
 import java.math.BigDecimal;
 import java.util.*;
 
@@ -39,72 +42,94 @@ public class RippledService {
     @Value("${xrp.explorer.url}")
     private String explorerUrl;
 
+    private boolean isNodeAvailable;
+
+    @PostConstruct
+    public void init() {
+        if (org.apache.commons.lang3.StringUtils.isNotBlank(nodeUrl)) {
+            isNodeAvailable = true;
+        }
+    }
+
     public BigDecimal getBalance(String address) {
-        try {
-            JSONObject param = new JSONObject();
-            param.put("account", address);
+        if (isNodeAvailable) {
+            try {
+                JSONObject param = new JSONObject();
+                param.put("account", address);
 
-            JSONArray params = new JSONArray();
-            params.add(param);
+                JSONArray params = new JSONArray();
+                params.add(param);
 
-            JSONObject req = new JSONObject();
-            req.put("method", "account_info");
-            req.put("params", params);
+                JSONObject req = new JSONObject();
+                req.put("method", "account_info");
+                req.put("params", params);
 
-            JSONObject res = rest.postForObject(nodeUrl, req, JSONObject.class);
-            String balance = res.getJSONObject("result").getJSONObject("account_data").getString("Balance");
+                JSONObject res = rest.postForObject(nodeUrl, req, JSONObject.class);
+                String balance = res.getJSONObject("result").getJSONObject("account_data").getString("Balance");
 
-            return Util.format6(new BigDecimal(balance).divide(XRP_DIVIDER));
-        } catch (Exception e) {
+                return Util.format6(new BigDecimal(balance).divide(XRP_DIVIDER));
+            } catch (ResourceAccessException rae) {
+                isNodeAvailable = false;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 
         return BigDecimal.ZERO;
     }
 
     public String submitTransaction(String hex) {
-        try {
-            JSONObject param = new JSONObject();
-            param.put("tx_blob", hex);
+        if (isNodeAvailable) {
+            try {
+                JSONObject param = new JSONObject();
+                param.put("tx_blob", hex);
 
-            JSONArray params = new JSONArray();
-            params.add(param);
+                JSONArray params = new JSONArray();
+                params.add(param);
 
-            JSONObject req = new JSONObject();
-            req.put("method", "submit");
-            req.put("params", params);
+                JSONObject req = new JSONObject();
+                req.put("method", "submit");
+                req.put("params", params);
 
-            JSONObject res = rest.postForObject(nodeUrl, req, JSONObject.class);
+                JSONObject res = rest.postForObject(nodeUrl, req, JSONObject.class);
 
-            String txId = res.optJSONObject("result").optJSONObject("tx_json").optString("hash");
+                String txId = res.optJSONObject("result").optJSONObject("tx_json").optString("hash");
 
-            if (isTransactionExist(txId)) {
-                return txId;
+                if (isTransactionExist(txId)) {
+                    return txId;
+                }
+            } catch (ResourceAccessException rae) {
+                isNodeAvailable = false;
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-        } catch (Exception e) {
-            e.printStackTrace();
         }
 
         return null;
     }
 
     public CurrentAccountDTO getCurrentAccount(String address) {
-        try {
-            JSONObject param = new JSONObject();
-            param.put("account", address);
+        if (isNodeAvailable) {
+            try {
+                JSONObject param = new JSONObject();
+                param.put("account", address);
 
-            JSONArray params = new JSONArray();
-            params.add(param);
+                JSONArray params = new JSONArray();
+                params.add(param);
 
-            JSONObject req = new JSONObject();
-            req.put("method", "account_info");
-            req.put("params", params);
+                JSONObject req = new JSONObject();
+                req.put("method", "account_info");
+                req.put("params", params);
 
-            JSONObject res = rest.postForObject(nodeUrl, req, JSONObject.class);
-            Integer sequence = res.getJSONObject("result").getJSONObject("account_data").optInt("Sequence");
+                JSONObject res = rest.postForObject(nodeUrl, req, JSONObject.class);
+                Integer sequence = res.getJSONObject("result").getJSONObject("account_data").optInt("Sequence");
 
-            return new CurrentAccountDTO(null, sequence, null);
-        } catch (Exception e) {
-            e.printStackTrace();
+                return new CurrentAccountDTO(null, sequence, null);
+            } catch (ResourceAccessException rae) {
+                isNodeAvailable = false;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 
         return new CurrentAccountDTO();
@@ -113,60 +138,64 @@ public class RippledService {
     public TransactionDetailsDTO getTransaction(String txId, String address) {
         TransactionDetailsDTO dto = new TransactionDetailsDTO();
 
-        try {
-            JSONObject param = new JSONObject();
-            param.put("transaction", txId);
+        if (isNodeAvailable) {
+            try {
+                JSONObject param = new JSONObject();
+                param.put("transaction", txId);
 
-            JSONArray params = new JSONArray();
-            params.add(param);
+                JSONArray params = new JSONArray();
+                params.add(param);
 
-            JSONObject req = new JSONObject();
-            req.put("method", "tx");
-            req.put("params", params);
+                JSONObject req = new JSONObject();
+                req.put("method", "tx");
+                req.put("params", params);
 
-            JSONObject res = rest.postForObject(nodeUrl, req, JSONObject.class);
-            JSONObject tx = res.optJSONObject("result");
+                JSONObject res = rest.postForObject(nodeUrl, req, JSONObject.class);
+                JSONObject tx = res.optJSONObject("result");
 
-            dto.setTxId(txId);
-            dto.setLink(explorerUrl + "/" + txId);
-            dto.setCryptoAmount(getAmount(tx.optString("Amount")));
-            dto.setCryptoFee(getAmount(tx.optString("Fee")));
-            dto.setFromAddress(tx.optString("Account"));
-            dto.setToAddress(tx.optString("Destination"));
-            dto.setType(TransactionType.getType(dto.getFromAddress(), dto.getToAddress(), address));
-            dto.setStatus(getStatus(tx.optJSONObject("meta").optString("TransactionResult")));
-            dto.setDate2(new Date((tx.optLong("date") + 946684800L) * 1000));
-        } catch (Exception e) {
-            dto.setStatus(TransactionStatus.FAIL);
-
-            e.printStackTrace();
+                dto.setTxId(txId);
+                dto.setLink(explorerUrl + "/" + txId);
+                dto.setCryptoAmount(getAmount(tx.optString("Amount")));
+                dto.setCryptoFee(getAmount(tx.optString("Fee")));
+                dto.setFromAddress(tx.optString("Account"));
+                dto.setToAddress(tx.optString("Destination"));
+                dto.setType(TransactionType.getType(dto.getFromAddress(), dto.getToAddress(), address));
+                dto.setStatus(getStatus(tx.optJSONObject("meta").optString("TransactionResult")));
+                dto.setDate2(new Date((tx.optLong("date") + 946684800L) * 1000));
+            } catch (ResourceAccessException rae) {
+                isNodeAvailable = false;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 
         return dto;
     }
 
     public NodeTransactionsDTO getNodeTransactions(String address) {
-        try {
-            JSONObject param = new JSONObject();
-            param.put("account", address);
-            param.put("limit", 1000);
+        if (isNodeAvailable) {
+            try {
+                JSONObject param = new JSONObject();
+                param.put("account", address);
+                param.put("limit", 1000);
 
-            JSONArray params = new JSONArray();
-            params.add(param);
+                JSONArray params = new JSONArray();
+                params.add(param);
 
-            JSONObject req = new JSONObject();
-            req.put("method", "account_tx");
-            req.put("params", params);
+                JSONObject req = new JSONObject();
+                req.put("method", "account_tx");
+                req.put("params", params);
 
-            JSONObject res = rest.postForObject(nodeUrl, req, JSONObject.class);
-            JSONObject jsonResult = res.optJSONObject("result");
-            JSONArray array = jsonResult.optJSONArray("transactions");
+                JSONObject res = rest.postForObject(nodeUrl, req, JSONObject.class);
+                JSONObject jsonResult = res.optJSONObject("result");
+                JSONArray array = jsonResult.optJSONArray("transactions");
 
-            Map<String, TransactionDetailsDTO> map = collectNodeTxs(array, address);
+                Map<String, TransactionDetailsDTO> map = collectNodeTxs(array, address);
 
-            return new NodeTransactionsDTO(map);
-        } catch (Exception e) {
-            e.printStackTrace();
+                return new NodeTransactionsDTO(map);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 
         return new NodeTransactionsDTO();
@@ -253,23 +282,27 @@ public class RippledService {
     }
 
     private boolean isTransactionExist(String txId) {
-        try {
-            JSONObject param = new JSONObject();
-            param.put("transaction", txId);
+        if (isNodeAvailable) {
+            try {
+                JSONObject param = new JSONObject();
+                param.put("transaction", txId);
 
-            JSONArray params = new JSONArray();
-            params.add(param);
+                JSONArray params = new JSONArray();
+                params.add(param);
 
-            JSONObject req = new JSONObject();
-            req.put("method", "tx");
-            req.put("params", params);
+                JSONObject req = new JSONObject();
+                req.put("method", "tx");
+                req.put("params", params);
 
-            JSONObject res = rest.postForObject(nodeUrl, req, JSONObject.class);
-            JSONObject tx = res.optJSONObject("result");
+                JSONObject res = rest.postForObject(nodeUrl, req, JSONObject.class);
+                JSONObject tx = res.optJSONObject("result");
 
-            return !tx.optString("status").equalsIgnoreCase("error");
-        } catch (Exception e) {
-            e.printStackTrace();
+                return !tx.optString("status").equalsIgnoreCase("error");
+            } catch (ResourceAccessException rae) {
+                isNodeAvailable = false;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 
         return false;

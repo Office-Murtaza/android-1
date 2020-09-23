@@ -14,6 +14,7 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
 import org.web3j.utils.Numeric;
 import wallet.core.java.AnySigner;
@@ -21,6 +22,7 @@ import wallet.core.jni.CoinType;
 import wallet.core.jni.PrivateKey;
 import wallet.core.jni.proto.Tron;
 
+import javax.annotation.PostConstruct;
 import java.math.BigDecimal;
 import java.util.*;
 
@@ -42,31 +44,49 @@ public class TrongridService {
     @Value("${trx.explorer.url}")
     private String explorerUrl;
 
+    private boolean isNodeAvailable;
+
+    @PostConstruct
+    public void init() {
+        if (org.apache.commons.lang3.StringUtils.isNotBlank(nodeUrl)) {
+            isNodeAvailable = true;
+        }
+    }
+
     public BigDecimal getBalance(String address) {
-        try {
-            JSONObject json = new JSONObject();
-            json.put("address", Base58.toHex(address));
+        if (isNodeAvailable) {
+            try {
+                JSONObject json = new JSONObject();
+                json.put("address", Base58.toHex(address));
 
-            JSONObject res = JSONObject.fromObject(rest.postForObject(nodeUrl + "/wallet/getaccount", json, String.class));
-            String balance = res.optString("balance");
+                JSONObject res = JSONObject.fromObject(rest.postForObject(nodeUrl + "/wallet/getaccount", json, String.class));
+                String balance = res.optString("balance");
 
-            return Util.format6(new BigDecimal(balance).divide(TRX_DIVIDER));
-        } catch (Exception e) {
+                return Util.format6(new BigDecimal(balance).divide(TRX_DIVIDER));
+            } catch (ResourceAccessException rae) {
+                isNodeAvailable = false;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 
         return BigDecimal.ZERO;
     }
 
     public String submitTransaction(String hex) {
-        try {
-            JSONObject json = JSONObject.fromObject(hex);
-            JSONObject res = JSONObject.fromObject(rest.postForObject(nodeUrl + "/wallet/broadcasttransaction", json, String.class));
+        if (isNodeAvailable) {
+            try {
+                JSONObject json = JSONObject.fromObject(hex);
+                JSONObject res = JSONObject.fromObject(rest.postForObject(nodeUrl + "/wallet/broadcasttransaction", json, String.class));
 
-            if (res.optBoolean("result")) {
-                return json.optString("txID");
+                if (res.optBoolean("result")) {
+                    return json.optString("txID");
+                }
+            } catch (ResourceAccessException rae) {
+                isNodeAvailable = false;
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-        } catch (Exception e) {
-            e.printStackTrace();
         }
 
         return null;
@@ -75,41 +95,49 @@ public class TrongridService {
     public TransactionDetailsDTO getTransaction(String txId, String address) {
         TransactionDetailsDTO dto = new TransactionDetailsDTO();
 
-        try {
-            JSONObject res = rest.getForObject(nodeUrl + "/v1/transactions/" + txId, JSONObject.class);
-            JSONArray array = res.optJSONArray("data");
+        if (isNodeAvailable) {
+            try {
+                JSONObject res = rest.getForObject(nodeUrl + "/v1/transactions/" + txId, JSONObject.class);
+                JSONArray array = res.optJSONArray("data");
 
-            if (array != null && !array.isEmpty()) {
-                JSONObject tx = array.getJSONObject(0);
-                JSONObject row = tx.optJSONObject("raw_data").optJSONArray("contract").getJSONObject(0).getJSONObject("parameter").optJSONObject("value");
+                if (array != null && !array.isEmpty()) {
+                    JSONObject tx = array.getJSONObject(0);
+                    JSONObject row = tx.optJSONObject("raw_data").optJSONArray("contract").getJSONObject(0).getJSONObject("parameter").optJSONObject("value");
 
-                dto.setTxId(txId);
-                dto.setLink(explorerUrl + "/" + txId);
-                dto.setCryptoAmount(getAmount(row.optLong("amount")));
-                dto.setCryptoFee(getAmount(tx.optJSONObject("raw_data").optLong("fee_limit")));
-                dto.setFromAddress(Base58.toBase58(row.optString("owner_address")));
-                dto.setToAddress(Base58.toBase58(row.optString("to_address")));
-                dto.setType(TransactionType.getType(dto.getFromAddress(), dto.getToAddress(), address));
-                dto.setStatus(getStatus(tx.optJSONArray("ret").getJSONObject(0).optString("contractRet")));
-                dto.setConfirmations(dto.getStatus().getConfirmations());
-                dto.setDate2(new Date(tx.optJSONObject("raw_data").optLong("timestamp")));
+                    dto.setTxId(txId);
+                    dto.setLink(explorerUrl + "/" + txId);
+                    dto.setCryptoAmount(getAmount(row.optLong("amount")));
+                    dto.setCryptoFee(getAmount(tx.optJSONObject("raw_data").optLong("fee_limit")));
+                    dto.setFromAddress(Base58.toBase58(row.optString("owner_address")));
+                    dto.setToAddress(Base58.toBase58(row.optString("to_address")));
+                    dto.setType(TransactionType.getType(dto.getFromAddress(), dto.getToAddress(), address));
+                    dto.setStatus(getStatus(tx.optJSONArray("ret").getJSONObject(0).optString("contractRet")));
+                    dto.setConfirmations(dto.getStatus().getConfirmations());
+                    dto.setDate2(new Date(tx.optJSONObject("raw_data").optLong("timestamp")));
+                }
+            } catch (ResourceAccessException rae) {
+                isNodeAvailable = false;
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-        } catch (Exception e) {
-            e.printStackTrace();
         }
 
         return dto;
     }
 
     public NodeTransactionsDTO getNodeTransactions(String address) {
-        try {
-            JSONObject res = rest.getForObject(nodeUrl + "/v1/accounts/" + address + "/transactions?limit=200&search_internal=true", JSONObject.class);
-            JSONArray array = res.optJSONArray("data");
-            Map<String, TransactionDetailsDTO> map = collectNodeTxs(array, address);
+        if (isNodeAvailable) {
+            try {
+                JSONObject res = rest.getForObject(nodeUrl + "/v1/accounts/" + address + "/transactions?limit=200&search_internal=true", JSONObject.class);
+                JSONArray array = res.optJSONArray("data");
+                Map<String, TransactionDetailsDTO> map = collectNodeTxs(array, address);
 
-            return new NodeTransactionsDTO(map);
-        } catch (Exception e) {
-            e.printStackTrace();
+                return new NodeTransactionsDTO(map);
+            } catch (ResourceAccessException rae) {
+                isNodeAvailable = false;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 
         return new NodeTransactionsDTO();
@@ -128,13 +156,17 @@ public class TrongridService {
     }
 
     public CurrentBlockDTO getCurrentBlock() {
-        try {
-            String resStr = rest.getForObject(nodeUrl + "/wallet/getnowblock", String.class);
-            JSONObject res = JSONObject.fromObject(resStr);
+        if (isNodeAvailable) {
+            try {
+                String resStr = rest.getForObject(nodeUrl + "/wallet/getnowblock", String.class);
+                JSONObject res = JSONObject.fromObject(resStr);
 
-            return new CurrentBlockDTO(res.optJSONObject("block_header"));
-        } catch (Exception e) {
-            e.printStackTrace();
+                return new CurrentBlockDTO(res.optJSONObject("block_header"));
+            } catch (ResourceAccessException rae) {
+                isNodeAvailable = false;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 
         return new CurrentBlockDTO();

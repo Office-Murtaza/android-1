@@ -14,12 +14,14 @@ import com.google.protobuf.ByteString;
 import lombok.Getter;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
 import org.web3j.utils.Numeric;
 import wallet.core.java.AnySigner;
@@ -27,6 +29,8 @@ import wallet.core.jni.AnyAddress;
 import wallet.core.jni.CoinType;
 import wallet.core.jni.PrivateKey;
 import wallet.core.jni.proto.Binance;
+
+import javax.annotation.PostConstruct;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.time.ZonedDateTime;
@@ -61,6 +65,15 @@ public class BinanceService {
     @Value("${bnb.explorer.url}")
     private String explorerUrl;
 
+    private boolean isNodeAvailable;
+
+    @PostConstruct
+    public void init() {
+        if (StringUtils.isNotBlank(nodeUrl)) {
+            isNodeAvailable = true;
+        }
+    }
+
     public BigDecimal getBalance(String address) {
         try {
             return Util.format6(binanceDex
@@ -77,15 +90,19 @@ public class BinanceService {
     }
 
     public String submitTransaction(String hex) {
-        try {
-            HttpHeaders headers = new HttpHeaders();
-            headers.setContentType(MediaType.TEXT_PLAIN);
+        if (isNodeAvailable) {
+            try {
+                HttpHeaders headers = new HttpHeaders();
+                headers.setContentType(MediaType.TEXT_PLAIN);
 
-            JSONObject res = JSONArray.fromObject(rest.postForObject(nodeUrl + "/api/v1/broadcast", hex, String.class)).getJSONObject(0);
+                JSONObject res = JSONArray.fromObject(rest.postForObject(nodeUrl + "/api/v1/broadcast", hex, String.class)).getJSONObject(0);
 
-            return res.optString("hash");
-        } catch (Exception e) {
-            e.printStackTrace();
+                return res.optString("hash");
+            } catch (ResourceAccessException rae) {
+                isNodeAvailable = false;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 
         return null;
@@ -94,22 +111,24 @@ public class BinanceService {
     public TransactionDetailsDTO getTransaction(String txId, String address) {
         TransactionDetailsDTO dto = new TransactionDetailsDTO();
 
-        try {
-            JSONObject res = rest.getForObject(nodeUrl + "/api/v1/tx/" + txId + "?format=json", JSONObject.class);
-            JSONObject msg = res.optJSONObject("tx").optJSONObject("value").optJSONArray("msg").getJSONObject(0);
+        if (isNodeAvailable) {
+            try {
+                JSONObject res = rest.getForObject(nodeUrl + "/api/v1/tx/" + txId + "?format=json", JSONObject.class);
+                JSONObject msg = res.optJSONObject("tx").optJSONObject("value").optJSONArray("msg").getJSONObject(0);
 
-            dto.setTxId(txId);
-            dto.setLink(explorerUrl + "/" + txId);
-            dto.setFromAddress(msg.optJSONObject("value").optJSONArray("inputs").getJSONObject(0).optString("address"));
-            dto.setToAddress(msg.optJSONObject("value").optJSONArray("outputs").getJSONObject(0).optString("address"));
-            dto.setType(com.batm.model.TransactionType.getType(dto.getFromAddress(), dto.getToAddress(), address));
-            dto.setStatus(getStatus(res.getInt("code")));
-            dto.setCryptoAmount(getAmount(msg.optJSONObject("value").optJSONArray("inputs").getJSONObject(0).getJSONArray("coins").getJSONObject(0).optString("amount")));
-            dto.setCryptoFee(getAmount("1000000"));
-        } catch (Exception e) {
-            dto.setStatus(TransactionStatus.FAIL);
-
-            e.printStackTrace();
+                dto.setTxId(txId);
+                dto.setLink(explorerUrl + "/" + txId);
+                dto.setFromAddress(msg.optJSONObject("value").optJSONArray("inputs").getJSONObject(0).optString("address"));
+                dto.setToAddress(msg.optJSONObject("value").optJSONArray("outputs").getJSONObject(0).optString("address"));
+                dto.setType(com.batm.model.TransactionType.getType(dto.getFromAddress(), dto.getToAddress(), address));
+                dto.setStatus(getStatus(res.getInt("code")));
+                dto.setCryptoAmount(getAmount(msg.optJSONObject("value").optJSONArray("inputs").getJSONObject(0).getJSONArray("coins").getJSONObject(0).optString("amount")));
+                dto.setCryptoFee(getAmount("1000000"));
+            } catch (ResourceAccessException rae) {
+                isNodeAvailable = false;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 
         return dto;
