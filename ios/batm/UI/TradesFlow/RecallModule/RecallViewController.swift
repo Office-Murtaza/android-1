@@ -18,6 +18,8 @@ final class RecallViewController: NavigationScreenViewController<RecallPresenter
     return .lightContent
   }
   
+  override var shouldShowNavigationBar: Bool { return false }
+  
   override func setupUI() {
     customView.rootScrollView.contentInsetAdjustmentBehavior = .never
     customView.contentView.addSubviews(errorView,

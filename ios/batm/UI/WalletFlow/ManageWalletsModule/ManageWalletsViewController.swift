@@ -9,8 +9,6 @@ class ManageWalletsViewController: ModuleViewController<ManageWalletsPresenter> 
   
   let tableView = ManageWalletsTableView()
   
-  override var shouldShowNavigationBar: Bool { return true }
-  
   override func setupUI() {
     title = localize(L.ManageWallets.title)
     

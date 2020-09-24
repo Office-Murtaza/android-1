@@ -20,8 +20,6 @@ final class TransactionDetailsViewController: ModuleViewController<TransactionDe
   let headerViewContainer = UIView()
   
   let headerView = HeaderView()
-  
-  override var shouldShowNavigationBar: Bool { return true }
 
   override func setupUI() {
     title = localize(L.TransactionDetails.title)

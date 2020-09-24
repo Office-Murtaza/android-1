@@ -18,8 +18,6 @@ class UnlinkViewController: ModuleViewController<UnlinkPresenter> {
   
   let unlinkButton = MDCButton.unlink
   
-  override var shouldShowNavigationBar: Bool { return true }
-  
   override func setupUI() {
     title = localize(L.Unlink.title)
     

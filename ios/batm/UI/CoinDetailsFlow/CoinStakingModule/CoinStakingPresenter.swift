@@ -7,7 +7,6 @@ final class CoinStakingPresenter: ModulePresenter, CoinStakingModule {
   typealias Store = ViewStore<CoinStakingAction, CoinStakingState>
 
   struct Input {
-    var back: Driver<Void>
     var updateCoinAmount: Driver<String?>
     var max: Driver<Void>
     var stake: Driver<Void>
@@ -37,10 +36,6 @@ final class CoinStakingPresenter: ModulePresenter, CoinStakingModule {
   }
 
   func bind(input: Input) {
-    input.back
-      .drive(onNext: { [delegate] in delegate?.didFinishCoinStaking() })
-      .disposed(by: disposeBag)
-    
     input.updateCoinAmount
       .asObservable()
       .map { CoinStakingAction.updateCoinAmount($0) }
@@ -77,8 +72,8 @@ final class CoinStakingPresenter: ModulePresenter, CoinStakingModule {
     
     return usecaseCall
       .catchError { [store] in
-        if let apiError = $0 as? APIError, case let .serverError(error) = apiError {
-          store.action.accept(.makeInvalidState(error.message))
+        if let apiError = $0 as? APIError, case let .serverError(error) = apiError, let code = error.code, code > 1 {
+          store.action.accept(.updateCoinAmountError(error.message))
         }
         
         throw $0

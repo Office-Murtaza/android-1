@@ -11,8 +11,6 @@ final class EnterPasswordViewController: ModuleViewController<EnterPasswordPrese
   let formView = EnterPasswordFormView()
   
   let nextButton = MDCButton.next
-  
-  override var shouldShowNavigationBar: Bool { return true }
 
   override func setupUI() {
     view.addSubviews(rootScrollView)

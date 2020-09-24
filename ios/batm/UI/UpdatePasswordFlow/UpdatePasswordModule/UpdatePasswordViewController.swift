@@ -12,8 +12,6 @@ final class UpdatePasswordViewController: ModuleViewController<UpdatePasswordPre
   
   let updateButton = MDCButton.update
   
-  override var shouldShowNavigationBar: Bool { return true }
-  
   override func setupUI() {
     title = localize(L.UpdatePassword.title)
     

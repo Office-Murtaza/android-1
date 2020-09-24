@@ -50,6 +50,7 @@ protocol APIGateway {
                          message: String?,
                          imageId: String?,
                          toCoinType: CustomCoinType?,
+                         toCoinAmount: Decimal?,
                          txhex: String?) -> Completable
   func getTronBlockHeader(type: CustomCoinType) -> Single<BTMTronBlockHeader>
   func getGiftAddress(type: CustomCoinType, phone: String) -> Single<GiftAddress>
@@ -222,6 +223,7 @@ final class APIGatewayImpl: APIGateway {
                          message: String?,
                          imageId: String?,
                          toCoinType: CustomCoinType?,
+                         toCoinAmount: Decimal?,
                          txhex: String?) -> Completable {
     let request = SubmitTransactionRequest(userId: userId,
                                            coinId: type.code,
@@ -234,6 +236,7 @@ final class APIGatewayImpl: APIGateway {
                                            message: message,
                                            imageId: imageId,
                                            toCoinId: toCoinType?.code,
+                                           toCoinAmount: toCoinAmount,
                                            txhex: txhex)
     return execute(request)
   }

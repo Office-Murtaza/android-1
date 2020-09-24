@@ -7,8 +7,6 @@ import MaterialComponents
 final class CoinDepositViewController: ModuleViewController<CoinDepositPresenter> {
   
   let qrCodeCardView = QRCodeCardView()
-  
-  override var shouldShowNavigationBar: Bool { return true }
 
   override func setupUI() {
     view.addSubview(qrCodeCardView)

@@ -22,8 +22,6 @@ final class VIPVerificationViewController: ModuleViewController<VIPVerificationP
   
   let sendButton = MDCButton.send
   
-  override var shouldShowNavigationBar: Bool { return true }
-  
   override func setupUI() {
     title = localize(L.VIPVerification.title)
     

@@ -22,8 +22,6 @@ class SeedPhraseViewController: ModuleViewController<SeedPhrasePresenter> {
   
   let nextButton = MDCButton.next
   
-  override var shouldShowNavigationBar: Bool { return true }
-  
   override func setupUI() {
     title = localize(L.SeedPhrase.title)
     

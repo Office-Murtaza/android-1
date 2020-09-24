@@ -14,8 +14,6 @@ class RecoverViewController: ModuleViewController<RecoverPresenter> {
   
   let nextButton = MDCButton.next
   
-  override var shouldShowNavigationBar: Bool { return true }
-  
   override func viewDidDisappear(_ animated: Bool) {
     super.viewDidDisappear(animated)
     

@@ -29,6 +29,8 @@ final class CoinSellDetailsAnotherAddressViewController: NavigationScreenViewCon
   override var preferredStatusBarStyle: UIStatusBarStyle {
     return .lightContent
   }
+  
+  override var shouldShowNavigationBar: Bool { return false }
 
   override func setupUI() {
     customView.contentView.addSubviews(qrCodeCardView,

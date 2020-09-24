@@ -17,8 +17,6 @@ final class CoinWithdrawViewController: ModuleViewController<CoinWithdrawPresent
   
   let submitButton = MDCButton.submit
   
-  override var shouldShowNavigationBar: Bool { return true }
-  
   override func setupUI() {
     view.addSubview(rootScrollView)
     rootScrollView.contentView.addSubviews(headerView,

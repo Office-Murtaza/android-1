@@ -4,9 +4,9 @@ import RxSwift
 import SnapKit
 import MaterialComponents
 
-final class CoinStakingViewController: NavigationScreenViewController<CoinStakingPresenter> {
+final class CoinStakingViewController: ModuleViewController<CoinStakingPresenter> {
   
-  let errorView = ErrorView()
+  let rootScrollView = RootScrollView()
   
   let headerView = HeaderView()
   
@@ -16,25 +16,23 @@ final class CoinStakingViewController: NavigationScreenViewController<CoinStakin
   
   let unstakeButton = MDCButton.unstake
   
-  override var preferredStatusBarStyle: UIStatusBarStyle {
-    return .lightContent
-  }
-  
   override func setupUI() {
-    customView.rootScrollView.contentInsetAdjustmentBehavior = .never
-    customView.contentView.addSubviews(errorView,
-                                       headerView,
-                                       formView,
-                                       stakeButton,
-                                       unstakeButton)
+    view.addSubview(rootScrollView)
+    rootScrollView.contentView.addSubviews(headerView,
+                                           formView,
+                                           stakeButton,
+                                           unstakeButton)
     
     setupDefaultKeyboardHandling()
   }
   
   override func setupLayout() {
-    errorView.snp.makeConstraints {
-      $0.top.equalToSuperview().offset(5)
-      $0.centerX.equalToSuperview()
+    rootScrollView.snp.makeConstraints {
+      $0.top.equalTo(view.safeAreaLayoutGuide)
+      $0.left.right.bottom.equalToSuperview()
+    }
+    rootScrollView.contentView.snp.makeConstraints {
+      $0.height.equalToSuperview()
     }
     headerView.snp.makeConstraints {
       $0.top.equalToSuperview().offset(25)
@@ -42,15 +40,14 @@ final class CoinStakingViewController: NavigationScreenViewController<CoinStakin
       $0.right.lessThanOrEqualToSuperview().offset(-15)
     }
     formView.snp.makeConstraints {
-      $0.top.equalTo(headerView.snp.bottom).offset(20)
+      $0.top.equalTo(headerView.snp.bottom).offset(30)
       $0.left.right.equalToSuperview().inset(15)
     }
     [stakeButton, unstakeButton].forEach {
       $0.snp.makeConstraints {
         $0.height.equalTo(50)
-        $0.top.equalTo(formView.snp.bottom).offset(5)
         $0.left.right.equalToSuperview().inset(15)
-        $0.bottom.lessThanOrEqualToSuperview().offset(-30)
+        $0.bottom.equalToSuperview().offset(-40)
       }
     }
   }
@@ -59,9 +56,8 @@ final class CoinStakingViewController: NavigationScreenViewController<CoinStakin
     presenter.state
       .map { $0.coin?.type.code }
       .filterNil()
-      .drive(onNext: { [customView] in
-        let title = String(format: localize(L.CoinStaking.title), $0)
-        customView.setTitle(title)
+      .drive(onNext: { [unowned self] in
+        self.title = String(format: localize(L.CoinStaking.title), $0)
       })
       .disposed(by: disposeBag)
     
@@ -73,6 +69,9 @@ final class CoinStakingViewController: NavigationScreenViewController<CoinStakin
       .map { $0.stakeDetails }
       .filterNil()
     
+    let feeDriver = presenter.state
+      .map { $0.coinSettings?.txFee }
+    
     Driver.combineLatest(coinBalanceDriver, stakeDetailsDriver)
       .drive(onNext: { [headerView] coinBalance, stakeDetails in
         let amountView = CryptoFiatAmountView()
@@ -83,23 +82,47 @@ final class CoinStakingViewController: NavigationScreenViewController<CoinStakin
         headerView.add(title: localize(L.CoinDetails.balance), valueView: amountView)
         
         if stakeDetails.exist {
-          headerView.add(title: localize(L.CoinStaking.Header.Staked.title),
-                         value: "\(stakeDetails.stakedAmount ?? 0) \(coinBalance.type.code)")
+          headerView.add(title: localize(L.CoinStaking.Header.Amount.title),
+                         value: "\(stakeDetails.amount ?? 0) \(coinBalance.type.code)")
           
-          headerView.add(title: localize(L.CoinStaking.Header.Rewards.title),
-                         value: "\(stakeDetails.rewardsAmount ?? 0) \(coinBalance.type.code), \(stakeDetails.rewardsPercent ?? 0) %")
+          headerView.add(title: localize(L.CoinStaking.Header.Reward.title),
+                         value: "\(stakeDetails.rewardAmount ?? 0) \(coinBalance.type.code), \(stakeDetails.rewardPercent ?? 0)%")
+          
+          headerView.add(title: localize(L.CoinStaking.Header.RewardAnnual.title),
+                         value: "\(stakeDetails.rewardAnnualAmount ?? 0) \(coinBalance.type.code), \(stakeDetails.rewardAnnualPercent)%")
           
           headerView.add(title: localize(L.CoinStaking.Header.Duration.title),
-                         value: String(format: localize(L.CoinStaking.Header.Duration.value), stakeDetails.stakedDays ?? 0))
-          
-          headerView.add(title: localize(L.CoinStaking.Header.MinDuration.title),
-                         value: String(format: localize(L.CoinStaking.Header.MinDuration.value), stakeDetails.stakingMinDays ?? 0))
+                         value: String(format: localize(L.CoinStaking.Header.Duration.value), stakeDetails.days ?? 0))
+        } else {
+          headerView.add(title: localize(L.CoinStaking.Header.RewardAnnual.title),
+                         value: "\(stakeDetails.rewardAnnualPercent)%")
         }
+        
+        headerView.add(title: localize(L.CoinStaking.Header.MinDuration.title),
+                       value: String(format: localize(L.CoinStaking.Header.MinDuration.value), stakeDetails.minDays))
       })
       .disposed(by: disposeBag)
     
-    Driver.combineLatest(coinBalanceDriver, stakeDetailsDriver)
-      .drive(onNext: { [formView] in formView.configure(with: $0.type.code, stakeDetails: $1) })
+    Driver.combineLatest(coinBalanceDriver, stakeDetailsDriver, feeDriver)
+      .drive(onNext: { [formView] in formView.configure(coinType: $0.type, stakeDetails: $1, fee: $2) })
+      .disposed(by: disposeBag)
+    
+    presenter.state
+      .asObservable()
+      .map { $0.coinAmount }
+      .bind(to: formView.rx.coinAmountText)
+      .disposed(by: disposeBag)
+    
+    presenter.state
+      .asObservable()
+      .map { $0.fiatAmount }
+      .bind(to: formView.rx.fiatAmountText)
+      .disposed(by: disposeBag)
+    
+    presenter.state
+      .asObservable()
+      .map { $0.coinAmountError }
+      .bind(to: formView.rx.coinAmountErrorText)
       .disposed(by: disposeBag)
     
     stakeDetailsDriver
@@ -116,23 +139,8 @@ final class CoinStakingViewController: NavigationScreenViewController<CoinStakin
     
     stakeDetailsDriver
       .asObservable()
-      .map { $0.unstakeAvailable }
+      .map { ($0.days ?? 0) >= $0.minDays }
       .bind(to: unstakeButton.rx.isEnabled)
-      .disposed(by: disposeBag)
-    
-    presenter.state
-      .asObservable()
-      .map { $0.coinAmount }
-      .bind(to: formView.rx.coinText)
-      .disposed(by: disposeBag)
-    
-    presenter.state
-      .map { $0.validationState }
-      .mapToErrorMessage()
-      .drive(onNext: { [errorView] in
-        errorView.isHidden = $0 == nil
-        errorView.configure(for: $0)
-      })
       .disposed(by: disposeBag)
     
     Driver.merge(stakeButton.rx.tap.asDriver(),
@@ -144,14 +152,12 @@ final class CoinStakingViewController: NavigationScreenViewController<CoinStakin
   override func setupBindings() {
     setupUIBindings()
     
-    let backDriver = customView.backButton.rx.tap.asDriver()
-    let updateCoinAmountDriver = formView.rx.coinText.asDriver(onErrorDriveWith: .empty())
+    let updateCoinAmountDriver = formView.rx.coinAmountText.asDriver(onErrorDriveWith: .empty())
     let maxDriver = formView.rx.maxTap
     let stakeDriver = stakeButton.rx.tap.asDriver()
     let unstakeDriver = unstakeButton.rx.tap.asDriver()
     
-    presenter.bind(input: CoinStakingPresenter.Input(back: backDriver,
-                                                     updateCoinAmount: updateCoinAmountDriver,
+    presenter.bind(input: CoinStakingPresenter.Input(updateCoinAmount: updateCoinAmountDriver,
                                                      max: maxDriver,
                                                      stake: stakeDriver,
                                                      unstake: unstakeDriver))

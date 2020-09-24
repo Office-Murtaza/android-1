@@ -25,8 +25,6 @@ final class CoinDetailsViewController: ModuleViewController<CoinDetailsPresenter
   
   let fab = FloatingActionButton()
   
-  override var shouldShowNavigationBar: Bool { return true }
-  
   override func viewWillAppear(_ animated: Bool) {
     if let index = self.tableView.indexPathForSelectedRow {
       self.tableView.deselectRow(at: index, animated: true)
@@ -59,7 +57,7 @@ final class CoinDetailsViewController: ModuleViewController<CoinDetailsPresenter
       self.didTapSendGiftRelay.accept(())
     }
     
-    // TODO: enable other actions when ready
+    // TODO: enable other actions when redesigned
     //    fab.view.addItem(title: localize(L.CoinDetails.sell), image: UIImage(named: "fab_sell")) { [unowned self] _ in
     //      self.didTapSellRelay.accept(())
     //    }
@@ -93,18 +91,17 @@ final class CoinDetailsViewController: ModuleViewController<CoinDetailsPresenter
     tableView.dataSource = dataSource
     dataSource.tableView = tableView
     
-    // TODO: enable staking when ready
-    //    presenter.state
-    //      .map { $0.coin?.type == .catm }
-    //      .filter { $0 }
-    //      .asObservable()
-    //      .take(1)
-    //      .subscribe(onNext: { [unowned self] _ in
-    //        self.fab.view.addItem(title: localize(L.CoinDetails.staking), image: UIImage(named: "fab_staking")) { [unowned self] _ in
-    //          self.didTapStakingRelay.accept(())
-    //        }
-    //      })
-    //      .disposed(by: disposeBag)
+    presenter.state
+      .map { $0.coin?.type == .catm }
+      .filter { $0 }
+      .asObservable()
+      .take(1)
+      .subscribe(onNext: { [unowned self] _ in
+        self.fab.view.addItem(title: localize(L.CoinDetails.staking), image: UIImage(named: "fab_staking")) { [unowned self] _ in
+          self.didTapStakingRelay.accept(())
+        }
+      })
+      .disposed(by: disposeBag)
     
     presenter.state
       .map { $0.coinBalance }

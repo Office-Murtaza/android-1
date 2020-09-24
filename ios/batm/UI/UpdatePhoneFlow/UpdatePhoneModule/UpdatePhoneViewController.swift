@@ -11,8 +11,6 @@ final class UpdatePhoneViewController: ModuleViewController<UpdatePhonePresenter
   let formView = UpdatePhoneFormView()
   
   let nextButton = MDCButton.next
-  
-  override var shouldShowNavigationBar: Bool { return true }
 
   override func setupUI() {
     title = localize(L.UpdatePhone.title)

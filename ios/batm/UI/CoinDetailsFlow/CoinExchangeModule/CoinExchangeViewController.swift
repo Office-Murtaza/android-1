@@ -13,8 +13,6 @@ final class CoinExchangeViewController: ModuleViewController<CoinExchangePresent
   let formView = CoinExchangeFormView()
   
   let submitButton = MDCButton.submit
-  
-  override var shouldShowNavigationBar: Bool { return true }
 
   override func setupUI() {
     view.addSubview(rootScrollView)

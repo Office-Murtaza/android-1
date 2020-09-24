@@ -35,9 +35,6 @@ PODS:
     - GoogleUtilities/Environment (~> 6.7)
     - GoogleUtilities/UserDefaults (~> 6.7)
     - PromisesObjC (~> 1.2)
-  - FlagPhoneNumber (0.8.0):
-    - FlagPhoneNumber/libPhoneNumberiOS (= 0.8.0)
-  - FlagPhoneNumber/libPhoneNumberiOS (0.8.0)
   - Giphy (1.2.9):
     - DeepDiff
     - libwebp
@@ -743,7 +740,6 @@ DEPENDENCIES:
   - BigNumber (from `https://github.com/mkrd/Swift-Big-Integer.git`)
   - Charts (= 3.4.0)
   - Firebase/Analytics (= 6.29.0)
-  - FlagPhoneNumber (= 0.8.0)
   - Giphy (= 1.2.9)
   - GoogleMaps (= 3.4.0)
   - JJFloatingActionButton (= 2.4.0)
@@ -773,7 +769,6 @@ SPEC REPOS:
     - FirebaseCore
     - FirebaseCoreDiagnostics
     - FirebaseInstallations
-    - FlagPhoneNumber
     - Giphy
     - GoogleAppMeasurement
     - GoogleDataTransport
@@ -826,7 +821,6 @@ SPEC CHECKSUMS:
   FirebaseCore: 7930a1946517d94256d857f97371ed993b55f7bd
   FirebaseCoreDiagnostics: 7535fe695737f8c5b350584292a70b7f8ff0357b
   FirebaseInstallations: 3c520c951305cbf9ca54eb891ff9e6d1fd384881
-  FlagPhoneNumber: 3712455b95f66cb0f2016fef7d9e34cddf8c7f9a
   Giphy: 69c3bae5da59c699f222599c877949cf166de726
   GoogleAppMeasurement: 345d365fd105e6682bf5084783a5352a3db26820
   GoogleDataTransport: af0c79193dc59acd37630b4833d0dc6912ae6bd5
@@ -860,6 +854,6 @@ SPEC CHECKSUMS:
   Toast-Swift: 9b6a70f28b3bf0b96c40d46c0c4b9d6639846711
   TrustWalletCore: 6bf9821db20951be01a4d69f8703a5cf36560f36
 
-PODFILE CHECKSUM: 01c58a0e9894ba31c94f873124e2bdf5debe939e
+PODFILE CHECKSUM: 1fab2579e4f0b30891667fe652cabad6da8e6ca2
 
 COCOAPODS: 1.9.3
