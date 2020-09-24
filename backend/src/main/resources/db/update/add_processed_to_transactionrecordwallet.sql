@@ -1,0 +1,1 @@
+ALTER TABLE w_transactionrecordwallet ADD COLUMN processed INT(2) DEFAULT 0 NOT NULL AFTER status;

@@ -54,7 +54,7 @@ public class TransactionController {
             String txId;
 
             if (TransactionType.RECALL.getValue() == dto.getType()) {
-                txId = transactionService.recall(userId, coin, dto);
+                return transactionService.recall(userId, coin, dto);
             } else {
                 txId = coin.submitTransaction(dto);
             }

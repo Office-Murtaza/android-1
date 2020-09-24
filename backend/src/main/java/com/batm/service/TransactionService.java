@@ -14,6 +14,7 @@ import org.joda.time.Days;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -28,6 +29,7 @@ public class TransactionService {
 
     private static final BigDecimal STAKING_ANNUAL_PERCENT = new BigDecimal(12);
     private static final int STAKING_MIN_DAYS = 21;
+    private static final Pageable page = PageRequest.of(0, 100);
 
     @Autowired
     private TransactionRecordRep recordRep;
@@ -297,7 +299,7 @@ public class TransactionService {
         }
     }
 
-    public String recall(Long userId, CoinService.CoinEnum coinCode, SubmitTransactionDTO dto) {
+    public Response recall(Long userId, CoinService.CoinEnum coinCode, SubmitTransactionDTO dto) {
         try {
             UserCoin userCoin = userService.getUserCoin(userId, coinCode.name());
             BigDecimal reserved = userCoin.getReservedBalance();
@@ -336,14 +338,18 @@ public class TransactionService {
                     userCoin.setReservedBalance(userCoin.getReservedBalance().subtract(dto.getCryptoAmount().add(txFee)));
                     userCoinRep.save(userCoin);
 
-                    return txId;
+                    return Response.ok("txId", txId);
+                } else {
+                    return Response.error(3, "Error create transaction");
                 }
+            } else {
+                return Response.error(2, "Insufficient server wallet balance");
             }
         } catch (Exception e) {
             e.printStackTrace();
-        }
 
-        return null;
+            return Response.serverError();
+        }
     }
 
     public void stake(Long userId, CoinService.CoinEnum coinCode, String txId, BigDecimal amount) {
@@ -435,7 +441,7 @@ public class TransactionService {
 
     private void completePendingRecords() {
         try {
-            List<TransactionRecordWallet> pendingRecords = walletRep.findAllByStatusAndHoursAgo(TransactionStatus.PENDING.getValue(), 2, PageRequest.of(0, 50));
+            List<TransactionRecordWallet> pendingRecords = walletRep.findAllByProcessedAndStatus(ProcessedType.SUCCESS.getValue(), TransactionStatus.PENDING.getValue(), page);
             List<TransactionRecordWallet> completeRecords = massStatusCheck(pendingRecords);
 
             completeRecords.forEach(e -> {
@@ -490,7 +496,7 @@ public class TransactionService {
 
     private void chainalysisTracking() {
         try {
-            List<TransactionRecord> list = recordRep.findNotTrackedTransactions(PageRequest.of(0, 50));
+            List<TransactionRecord> list = recordRep.findNotTrackedTransactions(page);
 
             if (!list.isEmpty()) {
                 List<TransactionRecord> listRes = chainalysisService.process(list);
@@ -503,8 +509,7 @@ public class TransactionService {
 
     private void deliverReservedExchange() {
         try {
-            List<TransactionRecordWallet> list = walletRep.findAllByTypeAndStatusAndRefTxIdNullAndHoursAgo(TransactionType.SEND_EXCHANGE.getValue(), TransactionStatus.COMPLETE.getValue(), 2, PageRequest.of(0, 10));
-            List<TransactionRecordWallet> confirmedList = new ArrayList<>();
+            List<TransactionRecordWallet> list = walletRep.findAllByProcessedAndTypeAndStatusAndRefTxIdNull(ProcessedType.SUCCESS.getValue(), TransactionType.SEND_EXCHANGE.getValue(), TransactionStatus.COMPLETE.getValue(), page);
 
             list.stream().forEach(t -> {
                 try {
@@ -542,15 +547,18 @@ public class TransactionService {
                             walletRep.save(rec);
 
                             t.setRefTxId(txId);
-                            confirmedList.add(t);
+                        } else {
+                            t.setProcessed(ProcessedType.ERROR_CREATE_TRANSACTION.getValue());
                         }
+                    } else {
+                        t.setProcessed(ProcessedType.INSUFFICIENT_WALLET_BALANCE.getValue());
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             });
 
-            walletRep.saveAll(confirmedList);
+            walletRep.saveAll(list);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -558,13 +566,10 @@ public class TransactionService {
 
     private void deliverReservedGifts() {
         try {
-            List<TransactionRecordWallet> list = walletRep.findAllByTypeAndStatusAndStepAndDaysAgo(
+            List<TransactionRecordWallet> list = walletRep.findAllByProcessedAndTypeAndStatusAndReceiverStatus(ProcessedType.SUCCESS.getValue(),
                     TransactionType.SEND_GIFT.getValue(),
                     TransactionStatus.COMPLETE.getValue(),
-                    TransactionRecordWallet.RECEIVER_NOT_EXIST,
-                    7, PageRequest.of(0, 10));
-
-            List<TransactionRecordWallet> confirmedList = new ArrayList<>();
+                    TransactionRecordWallet.RECEIVER_NOT_EXIST, page);
 
             list.stream().forEach(t -> {
                 try {
@@ -596,8 +601,11 @@ public class TransactionService {
                                 saveGift(t.getIdentity().getUser().getId(), coinCode, txId, dto);
 
                                 t.setReceiverStatus(TransactionRecordWallet.RECEIVER_EXIST);
-                                confirmedList.add(t);
+                            } else {
+                                t.setProcessed(ProcessedType.ERROR_CREATE_TRANSACTION.getValue());
                             }
+                        } else {
+                            t.setProcessed(ProcessedType.INSUFFICIENT_WALLET_BALANCE.getValue());
                         }
                     }
                 } catch (Exception e) {
@@ -605,7 +613,7 @@ public class TransactionService {
                 }
             });
 
-            walletRep.saveAll(confirmedList);
+            walletRep.saveAll(list);
         } catch (Exception e) {
             e.printStackTrace();
         }

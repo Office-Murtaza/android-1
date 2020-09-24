@@ -62,7 +62,9 @@ public class TrongridService {
                 JSONObject res = JSONObject.fromObject(rest.postForObject(nodeUrl + "/wallet/getaccount", json, String.class));
                 String balance = res.optString("balance");
 
-                return Util.format6(new BigDecimal(balance).divide(TRX_DIVIDER));
+                if(StringUtils.isNotBlank(balance)) {
+                    return Util.format6(new BigDecimal(balance).divide(TRX_DIVIDER));
+                }
             } catch (ResourceAccessException rae) {
                 isNodeAvailable = false;
             } catch (Exception e) {
