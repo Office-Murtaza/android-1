@@ -184,8 +184,8 @@
 "coin_details.buy" = "Buy";
 "coin_details.sell" = "Sell";
 "coin_details.move" = "Move";
-"coin_details.send_c_2_c" = "Send C2C";
-"coin_details.receive_c_2_c" = "Receive C2C";
+"coin_details.send_exchange" = "Send exchange";
+"coin_details.receive_exchange" = "Receive exchange";
 "coin_details.reserve" = "Reserve";
 "coin_details.recall" = "Recall";
 "coin_details.se1f" = "Self";
