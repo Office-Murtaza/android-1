@@ -63,17 +63,8 @@ final class BTMNetworkService: NetworkRequestExecutor {
       return retry(request, signal: requestSignal)
         .catchError { [unowned self] error in
           let mappedError = error.mapToAPIError()
-          
-          if case let .serverError(serverError) = mappedError {
-            if serverError.code == 1 {
-              return self.errorService.showError(for: .serverError).andThen(.error(mappedError))
-            }
-            
-            return .error(mappedError)
-          }
-          
           return self.errorService.showError(for: .somethingWentWrong).andThen(.error(mappedError))
-      }
+        }
   }
   
   private func retry<Request, O>(_ request: Request, signal: O) -> Observable<O.E>

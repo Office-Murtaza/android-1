@@ -74,20 +74,31 @@ protocol APIGateway {
 final class APIGatewayImpl: APIGateway {
   
   let api: NetworkRequestExecutor
+  let errorService: ErrorService
   
-  required init(networkProvider api: NetworkRequestExecutor) {
+  required init(networkProvider api: NetworkRequestExecutor,
+                errorService: ErrorService) {
     self.api = api
+    self.errorService = errorService
+  }
+  
+  private func processError<T>(_ error: APIError) -> Single<T> {
+    if case let .serverError(serverError) = error, serverError.code == 1 {
+      return errorService.showError(for: .serverError).andThen(.error(error))
+    }
+    
+    return Single.error(error)
   }
   
   func execute<Response: ImmutableMappable, Request: APIRequest>(_ request: Request) -> Single<Response>
     where Request.ResponseType == APIResponse<Response>, Request.ResponseTrait == SingleResponseTrait {
       return api.execute(request)
-        .flatMap {
+        .flatMap { [unowned self] in
           switch $0 {
           case let .response(response):
             return Single.just(response)
           case let .error(error):
-            return Single.error(error)
+            return self.processError(error)
           }
         }
   }
@@ -95,12 +106,12 @@ final class APIGatewayImpl: APIGateway {
   func execute<Request: APIRequest>(_ request: Request) -> Completable
     where Request.ResponseType == APIEmptyResponse, Request.ResponseTrait == SingleResponseTrait {
       return api.execute(request)
-        .map { apiResponse -> Void in
+        .flatMap { [unowned self] apiResponse -> Single<Void> in
           switch apiResponse {
           case .response:
-            return Void()
+            return Single.just(())
           case let .error(error):
-            throw error
+            return self.processError(error)
           }
         }
         .toCompletable()

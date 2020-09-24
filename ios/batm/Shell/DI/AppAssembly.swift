@@ -54,7 +54,9 @@ final class AppAssembly: Assembly {
     container.register(APIGateway.self) { ioc in
       let apiUrl = ioc.resolve(URL.self, name: Keys.apiUrl.rawValue)!
       let networkService = ioc.resolve(NetworkRequestExecutor.self, argument: apiUrl)!
-      return APIGatewayImpl(networkProvider: networkService)
+      let errorService = ioc.resolve(ErrorService.self)!
+      return APIGatewayImpl(networkProvider: networkService,
+                            errorService: errorService)
       } .inObjectScope(.container)
   }
   
