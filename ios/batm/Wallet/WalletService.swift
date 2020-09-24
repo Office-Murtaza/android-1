@@ -103,13 +103,6 @@ class WalletServiceImpl: WalletService {
       $0.coinType = coin.type.defaultCoinType.rawValue
     }
     
-    let utxos = utxos.filter { utxo in
-      guard let intValue = Int(utxo.value) else { return false }
-      
-      let minValue = (coinSettings.byteFee ?? 0) * 180
-      return intValue > minValue
-    }
-    
     utxos.compactMap { DerivationPath($0.path) }.forEach {
       let privateKey = wallet.getKey(coin: coin.type.defaultCoinType, derivationPath: $0.description)
       input.privateKey.append(privateKey.data)
