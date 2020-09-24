@@ -204,7 +204,7 @@ class CoinDetailsUsecaseImpl: CoinDetailsUsecase {
       .flatMapCompletable { [unowned self] account, transactionResultString in
         return self.submit(userId: account.userId,
                            type: fromCoin.type,
-                           txType: .sendC2C,
+                           txType: .sendExchange,
                            amount: amount,
                            fee: coinSettings.txFee,
                            fromAddress: fromCoin.address,
