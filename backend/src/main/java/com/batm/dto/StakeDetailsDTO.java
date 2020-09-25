@@ -1,10 +1,12 @@
 package com.batm.dto;
 
 import com.batm.util.Util;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 @Getter
 @NoArgsConstructor
@@ -12,7 +14,9 @@ import java.math.BigDecimal;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class StakeDetailsDTO {
 
-    private boolean exist;
+    private boolean created;
+    private boolean canceled;
+    private boolean withdrawn;
 
     private BigDecimal amount;
     private String amountStr;
@@ -25,11 +29,26 @@ public class StakeDetailsDTO {
     private BigDecimal rewardAnnualPercent;
     private String rewardAnnualPercentStr;
 
-    private Integer days;
-    private Integer minDays;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+    private Date createDate;
 
-    public void setExist(boolean exist) {
-        this.exist = exist;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+    private Date cancelDate;
+
+    private Integer duration;
+    private Integer untilWithdraw;
+    private Integer cancelPeriod;
+
+    public void setCreated(boolean created) {
+        this.created = created;
+    }
+
+    public void setCanceled(boolean canceled) {
+        this.canceled = canceled;
+    }
+
+    public void setWithdrawn(boolean withdrawn) {
+        this.withdrawn = withdrawn;
     }
 
     public void setAmount(BigDecimal amount) {
@@ -57,11 +76,23 @@ public class StakeDetailsDTO {
         this.rewardAnnualPercentStr = Util.convert(rewardAnnualPercent);
     }
 
-    public void setDays(Integer days) {
-        this.days = days;
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
     }
 
-    public void setMinDays(Integer minDays) {
-        this.minDays = minDays;
+    public void setCancelDate(Date cancelDate) {
+        this.cancelDate = cancelDate;
+    }
+
+    public void setDuration(Integer duration) {
+        this.duration = duration;
+    }
+
+    public void setUntilWithdraw(Integer untilWithdraw) {
+        this.untilWithdraw = untilWithdraw;
+    }
+
+    public void setCancelPeriod(Integer cancelPeriod) {
+        this.cancelPeriod = cancelPeriod;
     }
 }

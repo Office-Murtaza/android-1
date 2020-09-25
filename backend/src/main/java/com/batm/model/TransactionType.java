@@ -14,13 +14,14 @@ public enum TransactionType {
     BUY(5),
     SELL(6),
     MOVE(7),
-    SEND_EXCHANGE(8),
-    RECEIVE_EXCHANGE(9),
+    SEND_C2C(8),
+    RECEIVE_C2C(9),
     RESERVE(10),
     RECALL(11),
     SELF(12),
-    STAKE(13),
-    UNSTAKE(14);
+    CREATE_STAKE(13),
+    CANCEL_STAKE(14),
+    WITHDRAW_STAKE(15);
 
     private int value;
 
@@ -68,11 +69,11 @@ public enum TransactionType {
             } else if (type == DEPOSIT) {
                 return RECEIVE_GIFT;
             }
-        } else if (type2 == SEND_EXCHANGE || type2 == RECEIVE_EXCHANGE) {
+        } else if (type2 == SEND_C2C || type2 == RECEIVE_C2C) {
             if (type == WITHDRAW) {
-                return SEND_EXCHANGE;
+                return SEND_C2C;
             } else if (type == DEPOSIT) {
-                return RECEIVE_EXCHANGE;
+                return RECEIVE_C2C;
             }
         }
 

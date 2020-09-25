@@ -1,5 +1,6 @@
 package com.batm.entity;
 
+import com.batm.model.ProcessedType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,7 +23,7 @@ public class TransactionRecordWallet extends BaseEntity {
 
     private Integer type;
     private Integer status;
-    private Integer processed;
+    private Integer processed = ProcessedType.SUCCESS.getValue();
     private BigDecimal amount;
     private BigDecimal refAmount;
     private String txId;

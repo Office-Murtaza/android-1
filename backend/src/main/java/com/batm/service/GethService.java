@@ -220,20 +220,6 @@ public class GethService {
         return BigDecimal.ZERO;
     }
 
-    public Boolean isStakeholder(String address) {
-        if (isNodeAvailable) {
-            try {
-                return token.isStakeholder(address).send().component1();
-            } catch (ConnectException ce) {
-                isNodeAvailable = false;
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-
-        return Boolean.FALSE;
-    }
-
     public String submitTransaction(SubmitTransactionDTO dto) {
         if (isNodeAvailable) {
             try {
@@ -259,6 +245,7 @@ public class GethService {
                 String txId = web3.ethSendRawTransaction(dto.getHex()).send().getTransactionHash();
 
                 if (StringUtils.isNotBlank(txId)) {
+                    addPendingEthTransaction(txId, dto.getFromAddress(), dto.getToAddress(), BigDecimal.ZERO, dto.getFee());
                     addPendingTokenTransaction(txId, dto.getFromAddress(), dto.getToAddress(), dto.getCryptoAmount(), dto.getFee());
 
                     return txId;
@@ -404,26 +391,6 @@ public class GethService {
             return Numeric.toHexString(output.getEncoded().toByteArray());
         } catch (Exception e) {
             e.printStackTrace();
-        }
-
-        return null;
-    }
-
-    public String tokenTransfer(String toAddress, BigDecimal amount) {
-        if (isNodeAvailable) {
-            try {
-                TransactionReceipt receipt = token.transfer(toAddress, amount.multiply(ETH_DIVIDER).toBigInteger()).send();
-                String txId = receipt.getTransactionHash();
-                BigDecimal fee = new BigDecimal(receipt.getGasUsed()).multiply(new BigDecimal(catmCoin.getGasPrice())).divide(ETH_DIVIDER).stripTrailingZeros();
-
-                addPendingTokenTransaction(txId, receipt.getFrom(), receipt.getTo(), amount, fee);
-
-                return txId;
-            } catch (ConnectException ce) {
-                isNodeAvailable = false;
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
         }
 
         return null;

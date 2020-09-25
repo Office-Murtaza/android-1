@@ -13,7 +13,7 @@ public interface TransactionRecordWalletRep extends JpaRepository<TransactionRec
 
     Optional<TransactionRecordWallet> findFirstByIdentityAndCoinAndTxIdAndTypeIn(Identity identity, Coin coin, String txId, List<Integer> types);
 
-    List<TransactionRecordWallet> findAllByIdentityAndCoinAndTypeIn(Identity identity, Coin coin, List<Integer> types);
+    List<TransactionRecordWallet> findAllByIdentityAndCoinAndTypeInOrderByCreateDate(Identity identity, Coin coin, List<Integer> types);
 
     List<TransactionRecordWallet> findAllByIdentityAndCoin(Identity identity, Coin coin);
 
@@ -22,4 +22,8 @@ public interface TransactionRecordWalletRep extends JpaRepository<TransactionRec
     List<TransactionRecordWallet> findAllByProcessedAndTypeAndStatusAndReceiverStatus(Integer processed, Integer type, Integer status, Integer receiverStatus, Pageable page);
 
     List<TransactionRecordWallet> findAllByProcessedAndTypeAndStatusAndRefTxIdNull(Integer processed, Integer type, Integer status, Pageable page);
+
+    Optional<TransactionRecordWallet> findFirstByProcessedAndTypeAndStatusAndRefTxIdNull(Integer processed, Integer type, Integer status);
+
+    Optional<TransactionRecordWallet> findFirstByTxId(String txId);
 }

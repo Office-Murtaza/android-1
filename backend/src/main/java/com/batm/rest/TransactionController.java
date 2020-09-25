@@ -64,7 +64,7 @@ public class TransactionController {
                     transactionService.saveGift(userId, coin, txId, dto);
                 }
 
-                if (TransactionType.SEND_EXCHANGE.getValue() == dto.getType()) {
+                if (TransactionType.SEND_C2C.getValue() == dto.getType()) {
                     transactionService.exchange(userId, coin, txId, dto);
                 }
 
@@ -72,12 +72,16 @@ public class TransactionController {
                     transactionService.reserve(userId, coin, txId, dto);
                 }
 
-                if (TransactionType.STAKE.getValue() == dto.getType()) {
-                    transactionService.stake(userId, coin, txId, dto.getCryptoAmount());
+                if (TransactionType.CREATE_STAKE.getValue() == dto.getType()) {
+                    transactionService.createStake(userId, coin, txId, dto.getCryptoAmount());
                 }
 
-                if (TransactionType.UNSTAKE.getValue() == dto.getType()) {
-                    transactionService.unstake(userId, coin, txId, dto.getCryptoAmount());
+                if (TransactionType.CANCEL_STAKE.getValue() == dto.getType()) {
+                    transactionService.cancelStake(userId, coin, txId, dto.getCryptoAmount());
+                }
+
+                if (TransactionType.WITHDRAW_STAKE.getValue() == dto.getType()) {
+                    transactionService.withdrawStake(userId, coin, txId, dto.getCryptoAmount());
                 }
 
                 return Response.ok("txId", txId);
