@@ -4,22 +4,19 @@
     <color name="colorPrimaryDark">#004ba0</color>
     <color name="colorAccent">#0074e5</color>
     <color name="colorStatusBar">#f4f4f4</color>
+
     <color name="colorText">#58585a</color>
-    <color name="colorPinSelectedIndicator">@color/colorPrimary</color>
-    <color name="colorPinUnselectedIndicator">#e0e0e0</color>
+    <color name="gray_text_color">#7c7c7c</color>
+    <color name="light_gray_text_color">#c1c1c1</color>
 
     <color name="edit_text_drawable_tint">#c6c6c6</color>
+
     <color name="toast_background">#80000000</color>
     <color name="toast_text">#FFFFFF</color>
-
-    <color name="colorErrorSnackBar">#ff5722</color>
 
     <color name="gray_progress">#90000000</color>
 
     <color name="bg_color">#f3f3f3</color>
-    <color name="light_gray_text_color">#c1c1c1</color>
-    <color name="gray_text_color">#7c7c7c</color>
-    <color name="dark_gray_text_color">#58585a</color>
 
     <color name="bt_gray">#afb0ab</color>
     <color name="bt_orange">#ffcd4c</color>
@@ -33,20 +30,6 @@
     <color name="colorStatusFail">#e02d2d</color>
     <color name="colorStatusUnknown">#afb0ab</color>
 
-    <color name="pin_gray_unchecked">#4d6c91</color>
-
-    <color name="cash_status_not_available">#e02d2d</color>
-    <color name="cash_status_available">#48be53</color>
-    <color name="cash_status_withdrawn">#cbcaca</color>
-
-    <color name="verification_status_not_verified">#cbcaca</color>
-    <color name="verification_status_verification_pending">#ffcd4c</color>
-    <color name="verification_status_verification_rejected">#e02d2d</color>
-    <color name="verification_status_verified">#48be53</color>
-    <color name="verification_status_vip_verification_pending">#ffa32b</color>
-    <color name="verification_status_vip_verification_rejected">#a17e55</color>
-    <color name="verification_status_vip_verified">#0073e4</color>
-
     <color name="chart_line">#a2c6fd</color>
     <color name="chart_point">#84b4fd</color>
     <color name="chart_changes_up">#48be53</color>
@@ -57,12 +40,10 @@
 
     <color name="thin_divider">#11000000</color>
 
-    //verification
     <color name="vip_verified_background">#effff0</color>
     <color name="vip_verified_border">#48be53</color>
     <color name="verified_background">#f8ffed</color>
     <color name="verified_border">#9fd256</color>
-    <color name="pending_background">#fffcf3</color>
     <color name="pending_border">#ffcd4c</color>
     <color name="rejected_background">#fff2f2</color>
     <color name="rejected_border">#e02d2d</color>
