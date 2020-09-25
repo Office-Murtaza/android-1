@@ -75,6 +75,10 @@ struct CoinExchangeState: Equatable {
     return coinBalances?.filter { $0.type != fromCoin?.type }
   }
   
+  var isAllFieldsNotEmpty: Bool {
+    return fromCoinAmount.count > 0 && toCoinType != nil
+  }
+  
 }
 
 final class CoinExchangeStore: ViewStore<CoinExchangeAction, CoinExchangeState> {
