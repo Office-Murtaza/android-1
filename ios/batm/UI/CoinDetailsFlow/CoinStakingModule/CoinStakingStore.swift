@@ -43,6 +43,10 @@ struct CoinStakingState: Equatable {
       return max(0, balance - fee)
     }
   }
+  
+  var isAllFieldsNotEmpty: Bool {
+    return coinAmount.count > 0
+  }
 }
 
 final class CoinStakingStore: ViewStore<CoinStakingAction, CoinStakingState> {

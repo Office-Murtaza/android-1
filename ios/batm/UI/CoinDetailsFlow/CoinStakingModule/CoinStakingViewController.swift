@@ -131,6 +131,12 @@ final class CoinStakingViewController: ModuleViewController<CoinStakingPresenter
       .bind(to: stakeButton.rx.isHidden)
       .disposed(by: disposeBag)
     
+    presenter.state
+      .asObservable()
+      .map { $0.isAllFieldsNotEmpty }
+      .bind(to: stakeButton.rx.isEnabled)
+      .disposed(by: disposeBag)
+    
     stakeDetailsDriver
       .asObservable()
       .map { !$0.exist }
