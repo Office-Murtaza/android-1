@@ -37,7 +37,12 @@ class TransactionsFragment : BaseFragment() {
     private val adapter: TransactionsAdapter = TransactionsAdapter(
         itemClickListener = {
             val transactionId = if (it.id.isBlank()) it.dbId else it.id
-            navigate(TransactionsFragmentDirections.toTransactionDetailsFragment(viewModel.coinCode, transactionId))
+            navigate(
+                TransactionsFragmentDirections.toTransactionDetailsFragment(
+                    viewModel.coinCode,
+                    transactionId
+                )
+            )
         },
         endListListener = { viewModel.updateTransactionList() }
     )
@@ -47,9 +52,14 @@ class TransactionsFragment : BaseFragment() {
     override var isMenuEnabled: Boolean = true
     override val customToolbarId: Int = R.id.customToolbarView
     override val isFirstShowContent: Boolean = false
-    override val retryListener: View.OnClickListener = View.OnClickListener { viewModel.updateData() }
+    override val retryListener: View.OnClickListener =
+        View.OnClickListener { viewModel.updateData() }
 
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<String>,
+        grantResults: IntArray
+    ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         // NOTE: delegate the permission handling to generated method
         onRequestPermissionsResult(requestCode, grantResults)
@@ -58,7 +68,8 @@ class TransactionsFragment : BaseFragment() {
     override fun initViews() {
         setToolbarTitle(LocalCoinType.valueOf(viewModel.coinCode).fullName)
         ContextCompat.getDrawable(listView.context, R.drawable.bg_divider)?.let {
-            val dividerItemDecoration = DividerItemDecoration(listView.context, DividerItemDecoration.VERTICAL)
+            val dividerItemDecoration =
+                DividerItemDecoration(listView.context, DividerItemDecoration.VERTICAL)
             dividerItemDecoration.setDrawable(it)
             listView.addItemDecoration(dividerItemDecoration)
         }
@@ -89,7 +100,11 @@ class TransactionsFragment : BaseFragment() {
         }
         withdrawButtonView.setOnClickListener {
             if (isCorrectCoinId()) {
-                navigate(TransactionsFragmentDirections.toWithdrawFragment(viewModel.coinDataItem?.code ?: ""))
+                navigate(
+                    TransactionsFragmentDirections.toWithdrawFragment(
+                        viewModel.coinDataItem?.code ?: ""
+                    )
+                )
             } else {
                 AlertHelper.showToastShort(
                     withdrawButtonView.context,
@@ -100,7 +115,11 @@ class TransactionsFragment : BaseFragment() {
         }
         sendGiftButtonView.setOnClickListener {
             if (isCorrectCoinId()) {
-                navigate(TransactionsFragmentDirections.toSendGiftFragment(viewModel.coinDataItem?.code ?: ""))
+                navigate(
+                    TransactionsFragmentDirections.toSendGiftFragment(
+                        viewModel.coinDataItem?.code ?: ""
+                    )
+                )
             } else {
                 AlertHelper.showToastShort(
                     sendGiftButtonView.context,
@@ -123,7 +142,11 @@ class TransactionsFragment : BaseFragment() {
 //        }
         c2cExchangeButtonView.setOnClickListener {
             if (isCorrectCoinId()) {
-                navigate(TransactionsFragmentDirections.toExchangeFragment(viewModel.coinDataItem?.code ?: ""))
+                navigate(
+                    TransactionsFragmentDirections.toExchangeFragment(
+                        viewModel.coinDataItem?.code ?: ""
+                    )
+                )
             } else {
                 AlertHelper.showToastShort(
                     c2cExchangeButtonView.context,
@@ -165,7 +188,8 @@ class TransactionsFragment : BaseFragment() {
             priceUsdView.text = getString(R.string.text_usd, it.priceUsd.toStringUsd())
             balanceCryptoView.text =
                 getString(R.string.text_text, it.balance.toStringCoin(), viewModel.coinCode)
-            balanceUsdView.text = getString(R.string.text_usd, (it.balance * it.priceUsd).toStringUsd())
+            balanceUsdView.text =
+                getString(R.string.text_usd, (it.balance * it.priceUsd).toStringUsd())
         })
         viewModel.transactionListLiveData.observe(this, {
             adapter.setItemList(it)
@@ -252,15 +276,26 @@ class TransactionsFragment : BaseFragment() {
             changesView.setDrawableStart(R.drawable.ic_arrow_drop_up)
             changesView.compoundDrawableTintList =
                 ContextCompat.getColorStateList(changesView.context, R.color.chart_changes_up)
-            changesView.setTextColor(ContextCompat.getColor(changesView.context, R.color.chart_changes_up))
+            changesView.setTextColor(
+                ContextCompat.getColor(
+                    changesView.context,
+                    R.color.chart_changes_up
+                )
+            )
         } else {
             changesView.setDrawableStart(R.drawable.ic_arrow_drop_down)
             changesView.compoundDrawableTintList =
                 ContextCompat.getColorStateList(changesView.context, R.color.chart_changes_down)
-            changesView.setTextColor(ContextCompat.getColor(changesView.context, R.color.chart_changes_down))
+            changesView.setTextColor(
+                ContextCompat.getColor(
+                    changesView.context,
+                    R.color.chart_changes_down
+                )
+            )
         }
 
-        changesView.text = resources.getString(R.string.transaction_changes_percent, changes.toString())
+        changesView.text =
+            resources.getString(R.string.transaction_changes_percent, changes.toString())
     }
 
     private fun setChart(chartType: ChartPeriodType, chartList: List<Double>) {
@@ -272,7 +307,8 @@ class TransactionsFragment : BaseFragment() {
             ChartPeriodType.YEAR -> chartChipGroupView.check(R.id.oneYearChipView)
         }
 
-        val valueList = chartList.mapIndexed { index, value -> BarEntry(index.toFloat(), value.toFloat()) }
+        val valueList =
+            chartList.mapIndexed { index, value -> BarEntry(index.toFloat(), value.toFloat()) }
         val dataSet = LineDataSet(valueList, null).apply {
             mode = LineDataSet.Mode.CUBIC_BEZIER
             color = ContextCompat.getColor(chartView.context, R.color.chart_line)

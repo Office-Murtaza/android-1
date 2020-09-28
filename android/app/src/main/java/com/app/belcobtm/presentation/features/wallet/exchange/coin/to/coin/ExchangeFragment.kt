@@ -12,7 +12,6 @@ import kotlinx.android.synthetic.main.fragment_exchange.balanceCryptoView
 import kotlinx.android.synthetic.main.fragment_exchange.balanceUsdView
 import kotlinx.android.synthetic.main.fragment_exchange.nextButtonView
 import kotlinx.android.synthetic.main.fragment_exchange.priceUsdView
-import kotlinx.android.synthetic.main.fragment_send_gift.*
 import org.koin.android.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
@@ -81,31 +80,39 @@ class ExchangeFragment : BaseFragment() {
             R.string.text_amount,
             viewModel.toCoinItem?.code ?: ""
         )
-        LocalCoinType
-            .values()
-            .first { it.name == viewModel.toCoinItem?.code }
-            .let { coinType ->
-                pickCoinButtonView.setText(coinType.fullName)
-                pickCoinButtonView.setResizedDrawableStart(
-                    coinType.resIcon(),
-                    R.drawable.ic_arrow_drop_down
-                )
-                balanceCoinToView.text = getString(R.string.text_text, "0.0", coinType.name)
-                amountCoinToView.text = getString(R.string.text_usd, "0.0")
-            }
         amountCoinFromView.helperText = getString(
             R.string.transaction_helper_text_commission,
             viewModel.fromCoinFeeItem.txFee.toStringCoin(),
             if (viewModel.fromCoinItem.code == LocalCoinType.CATM.name) LocalCoinType.ETH.name else viewModel.fromCoinItem.code
         )
+
+        val toCoinCode: String? = viewModel
+            .coinItemList
+            .firstOrNull { it.code == viewModel.toCoinItem?.code }
+            ?.code
+
+        if (toCoinCode == null) {
+            pickCoinButtonView.isEnabled = false
+        } else {
+            pickCoinButtonView.isEnabled = true
+            val coinType = LocalCoinType.valueOf(toCoinCode)
+            pickCoinButtonView.setText(coinType.fullName)
+            pickCoinButtonView.setResizedDrawableStart(
+                coinType.resIcon(),
+                R.drawable.ic_arrow_drop_down
+            )
+            balanceCoinToView.text = getString(R.string.text_text, "0.0", coinType.name)
+            amountCoinToView.text = getString(R.string.text_usd, "0.0")
+        }
     }
 
     override fun initListeners() {
         pickCoinButtonView.editText?.keyListener = null
         pickCoinButtonView.editText?.setOnClickListener {
-            val itemList: List<LocalCoinType> = LocalCoinType
-                .values()
-                .filter { it.name != viewModel.fromCoinItem.code }
+            val itemList: List<LocalCoinType> = viewModel
+                .coinItemList
+                .filter { it.code != viewModel.fromCoinItem.code }
+                .map { LocalCoinType.valueOf(it.code) }
             val coinAdapter = CoinDialogAdapter(pickCoinButtonView.context, itemList)
             MaterialAlertDialogBuilder(pickCoinButtonView.context)
                 .setTitle(R.string.exchange_coin_to_coin_screen_select_coin)

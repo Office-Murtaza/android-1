@@ -9,6 +9,9 @@ import com.app.belcobtm.domain.Either
 import com.app.belcobtm.domain.Failure
 import com.app.belcobtm.domain.wallet.WalletRepository
 import com.app.belcobtm.domain.wallet.item.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class WalletRepositoryImpl(
     private val apiService: WalletApiService,
@@ -19,7 +22,8 @@ class WalletRepositoryImpl(
 
     override fun getCoinFeeMap(): Map<String, CoinFeeDataItem> = prefHelper.coinsFee
 
-    override fun getCoinFeeItemByCode(coinCode: String): CoinFeeDataItem = prefHelper.coinsFee[coinCode] ?: error("")
+    override fun getCoinFeeItemByCode(coinCode: String): CoinFeeDataItem =
+        prefHelper.coinsFee[coinCode] ?: error("")
 
     override fun getCoinItemByCode(
         coinCode: String
@@ -38,12 +42,17 @@ class WalletRepositoryImpl(
     override suspend fun getFreshCoinDataItem(
         coinCode: String
     ): Either<Failure, CoinDataItem> {
-        val enabledCoinList = daoAccount.getItemList()?.filter { it.isEnabled }?.map { it.type.name } ?: emptyList()
-        val response = apiService.getBalance(enabledCoinList)
+        val enabledCodeList =
+            daoAccount.getItemList()?.filter { it.isEnabled }?.map { it.type.name } ?: emptyList()
+        val response = apiService.getBalance(enabledCodeList)
         return if (response.isRight) {
             val balanceItem = (response as Either.Right).b
+            //TODO need find best way
+            val enabledCoinList = balanceItem.coinList.map { coinItem ->
+                coinItem.copy(isEnabled = enabledCodeList.firstOrNull { it == coinItem.code } != null)
+            }
             cachedCoinDataItemList.clear()
-            cachedCoinDataItemList.addAll(balanceItem.coinList)
+            cachedCoinDataItemList.addAll(enabledCoinList)
             val coinDataItem = balanceItem.coinList.find { it.code == coinCode }
             if (coinDataItem == null) {
                 Either.Left(Failure.MessageError("Data error"))
@@ -56,12 +65,16 @@ class WalletRepositoryImpl(
     }
 
     override suspend fun getBalanceItem(): Either<Failure, BalanceDataItem> {
-        val enabledCoinList = daoAccount.getItemList()?.filter { it.isEnabled }?.map { it.type.name } ?: emptyList()
-        val response = apiService.getBalance(enabledCoinList)
+        val enabledCodeList =
+            daoAccount.getItemList()?.filter { it.isEnabled }?.map { it.type.name } ?: emptyList()
+        val response = apiService.getBalance(enabledCodeList)
         if (response.isRight) {
             val balanceItem = (response as Either.Right).b
+            val enabledCoinList = balanceItem.coinList.map { coinItem ->
+                coinItem.copy(isEnabled = enabledCodeList.firstOrNull { it == coinItem.code } != null)
+            }
             cachedCoinDataItemList.clear()
-            cachedCoinDataItemList.addAll(balanceItem.coinList)
+            cachedCoinDataItemList.addAll(enabledCoinList)
         }
         return response
     }

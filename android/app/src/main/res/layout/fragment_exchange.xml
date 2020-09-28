@@ -148,7 +148,7 @@
         android:id="@+id/nextButtonView"
         style="@style/Button.Primary"
         android:enabled="false"
-        android:text="@string/next"
+        android:text="@string/submit"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

@@ -47,13 +47,15 @@ val viewModelModule = module {
     viewModel { VerificationVipViewModel(get()) }
     viewModel { (coinCode: String) ->
         val coinList = (get() as GetCoinListUseCase).invoke()
+        val filteredCoinList = coinList.filter { it.isEnabled }
         val fromCoinDataItem = coinList.find { it.code == coinCode }!!
         val feeMap = get<WalletRepository>().getCoinFeeMap()
         val fromCoinFee = feeMap[coinCode] ?: error("")
+
         ExchangeViewModel(
             get(),
             fromCoinDataItem,
-            coinList,
+            filteredCoinList,
             fromCoinFee,
             feeMap
         )
@@ -103,7 +105,13 @@ val viewModelModule = module {
     viewModel { PhoneDisplayViewModel(get(), get()) }
     viewModel { PhoneChangeViewModel(get(), get(), get()) }
     viewModel { AtmViewModel(get()) }
-    viewModel { (txId: String, coinCode: String) -> TransactionDetailsViewModel(txId, coinCode, get()) }
+    viewModel { (txId: String, coinCode: String) ->
+        TransactionDetailsViewModel(
+            txId,
+            coinCode,
+            get()
+        )
+    }
     viewModel { (coinCode: String) ->
         val coinList = (get() as GetCoinListUseCase).invoke()
         val fromCoinDataItem = coinList.find { it.code == coinCode }!!
