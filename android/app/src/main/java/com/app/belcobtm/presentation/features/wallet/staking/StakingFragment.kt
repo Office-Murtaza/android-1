@@ -1,14 +1,14 @@
 package com.app.belcobtm.presentation.features.wallet.staking
 
 import android.content.Intent
-import androidx.core.os.bundleOf
+import android.graphics.drawable.GradientDrawable
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import com.app.belcobtm.R
 import com.app.belcobtm.domain.Failure
 import com.app.belcobtm.domain.wallet.LocalCoinType
 import com.app.belcobtm.presentation.core.extensions.*
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
-import com.app.belcobtm.presentation.core.ui.SmsDialogFragment
 import com.app.belcobtm.presentation.core.ui.fragment.BaseFragment
 import com.app.belcobtm.presentation.features.HostActivity
 import kotlinx.android.synthetic.main.fragment_staking.*
@@ -40,12 +40,28 @@ class StakingFragment : BaseFragment() {
                 viewModel.stakeCreateTransaction(amount)
             }
         }
+        cancelButtonView.setOnClickListener {
+            viewModel.stakeCancelCreateTransaction()
+        }
         unstakeButtonView.setOnClickListener { viewModel.unstakeCreateTransaction() }
         amountCryptoView.editText?.afterTextChanged {
             val loadingData = viewModel.stakeDetailsLiveData.value
-            fiatView.text = "${it.toString().toDouble() * coef}"
+            val amount = try {
+                it.toString().toDouble()
+            } catch (e: Exception) {
+                0.0
+            }
+            fiatView.text = if (amount > 0) {
+                "${(amount * coef).toStringUsd()}$"
+            } else {
+                getText(R.string.staking_screen_null_price)
+            }
             stakeButtonView.isEnabled = if (loadingData is LoadingData.Success) {
-                amountCryptoView.getDouble() > 0 && amountCryptoView.getDouble() <= loadingData.data.balanceCoin
+                try {
+                    amountCryptoView.getDouble() > 0 && amountCryptoView.getDouble() <= loadingData.data.balanceCoin
+                } catch (e: Exception) {
+                    false
+                }
             } else {
                 false
             }
@@ -54,29 +70,96 @@ class StakingFragment : BaseFragment() {
 
     override fun initObservers() {
         viewModel.stakeDetailsLiveData.listen(success = {
-            coef = it.balanceUsd / it.balanceCoin
-            priceUsdView.text = getString(R.string.text_usd, it.price.toStringUsd())
-            balanceCryptoView.text = getString(
-                R.string.text_text,
-                it.balanceCoin.toStringCoin(),
-                LocalCoinType.CATM.name
-            )
-            balanceUsdView.text = getString(R.string.text_usd, it.balanceUsd.toStringUsd())
-            stakedView.text = getString(R.string.staking_screen_staked_amount, it.staked.toStringCoin())
-            rewardsView.text =
-                getString(R.string.staking_screen_rewards_amount, it.rewardsAmount.toStringCoin(), it.rewardsPercent)
-            timeView.text = resources.getQuantityString(R.plurals.staking_screen_time_value, it.time, it.time)
-            rewardAnnualView.text = getString(R.string.staking_screen_rewards_amount, it.rewardsAmount.toStringCoin(), it.rewardsPercent)
-            stackingMinDays.text = it.stakingMinDays.toString()
+            with(it) {
+                coef = price
+                priceUsdView.text = price.toStringUsd()
+                balanceCryptoView.text = getString(
+                    R.string.text_text,
+                    balanceCoin.toStringCoin(),
+                    LocalCoinType.CATM.name
+                )
+                balanceUsdView.text = getString(R.string.text_usd, balanceUsd.toStringUsd())
 
-            amountCryptoView.toggle(!it.isExist)
-            maxView.toggle(!it.isExist)
-            fiatView.toggle(!it.isExist)
-            rewardsTitleView.toggle(it.isExist)
-            rewardsView.toggle(it.isExist)
-            editStakeGroupView.toggle(!it.isExist)
-            unstakeButtonView.toggle(it.isExist && it.time >= it.stakingMinDays)
-            unstakeButtonView.isEnabled = it.isUnStakeAvailable
+                when (status) {
+                    StakeStatus.CREATED -> {
+                        statusTitleView.toggle(true)
+                        statusView.toggle(true)
+                        statusView.text = getString(R.string.staking_screen_created)
+                        setStatusColors(R.color.pending_border, R.color.pending_background)
+                        editStakeGroupView.toggle(false)
+                        cancelButtonView.toggle(true)
+                        unstakeButtonView.toggle(false)
+                    }
+//                    StakeStatus.CANCELED ->  {
+//                        statusTitleView.toggle(true)
+//                        statusView.toggle(true)
+//                        statusView.text = getString(R.string.staking_screen_canceled)
+//                        setStatusColors(R.color.staking_canceled_border, R.color.staking_canceled_background)
+//                        editStakeGroupView.toggle(false)
+//                        cancelButtonView.toggle(false)
+//                        unstakeButtonView.toggle(true)
+//                    }
+                    else -> {
+                        statusTitleView.toggle(false)
+                        statusView.toggle(false)
+                        cancelButtonView.toggle(false)
+                        unstakeButtonView.toggle(false)
+                        editStakeGroupView.toggle(true)
+                    }
+                }
+
+                val created = status == StakeStatus.CREATED || status == StakeStatus.CANCELED
+                val canceled = status == StakeStatus.CANCELED
+                if (created && amount != null) {
+                    amountView.text = getString(R.string.staking_screen_staked_amount, amount.toStringCoin())
+                }
+                amountTitleView.toggle(created)
+                amountView.toggle(created)
+
+                if (created && rewardsAmount != null && rewardsPercent != null) {
+                    rewardsView.text =
+                        getString(
+                            R.string.staking_screen_rewards_amount,
+                            rewardsAmount.toStringCoin(),
+                            rewardsPercent
+                        )
+                }
+                rewardsView.toggle(created)
+                rewardsTitleView.toggle(created)
+
+                rewardAnnualView.text = getString(
+                    R.string.staking_screen_rewards_amount,
+                    it.rewardsAmountAnnual.toStringCoin(),
+                    it.rewardsPercent)
+
+                if (created && createDate != null) {
+                    createDateView.text = createDate
+                }
+                createDateView.toggle(createDate != null)
+                createDateTitleView.toggle(createDate != null)
+
+                if (canceled && cancelDate != null) {
+                    cancelDateView.text = cancelDate
+                }
+                cancelDateView.toggle(canceled)
+                cancelDateTitleView.toggle(canceled)
+
+                if (created && duration != null) {
+                    durationView.text = resources.getQuantityString(R.plurals.staking_screen_time_value, duration, duration)
+                }
+                durationView.toggle(created)
+                durationTitleView.toggle(created)
+
+                cancelPeriodView.text = resources.getQuantityString(R.plurals.staking_screen_time_value, cancelPeriod, cancelPeriod)
+
+                if (canceled && untilWithdraw != null) {
+                    untilWithdrawView.text = resources.getQuantityString(R.plurals.staking_screen_time_value, untilWithdraw, untilWithdraw)
+                    unstakeButtonView.isEnabled = untilWithdraw <= 0
+                }
+                untilWithdrawView.toggle(canceled)
+                untilWithdrawTitleView.toggle(canceled)
+            }
+
             showContent()
         })
         viewModel.transactionLiveData.observe(this, Observer { loadingData ->
@@ -85,9 +168,8 @@ class StakingFragment : BaseFragment() {
                 is LoadingData.Success -> {
                     showContent()
                     when (loadingData.data) {
-                        StakingViewModel.TransactionState.STAKE_CREATE,
-                        StakingViewModel.TransactionState.UNSTAKE_CREATE -> showSmsDialog()
                         StakingViewModel.TransactionState.STAKE_COMPLETE,
+                        StakingViewModel.TransactionState.STAKE_CANCEL_COMPLETE,
                         StakingViewModel.TransactionState.UNSTAKE_COMPLETE -> popBackStack()
                     }
                 }
@@ -100,14 +182,7 @@ class StakingFragment : BaseFragment() {
                             startActivity(intent)
                         }
                         is Failure.NetworkConnection -> showError(R.string.error_internet_unavailable)
-                        is Failure.MessageError -> if (
-                            loadingData.data == StakingViewModel.TransactionState.STAKE_COMPLETE ||
-                            loadingData.data == StakingViewModel.TransactionState.UNSTAKE_COMPLETE
-                        ) {
-                            showSmsDialog(loadingData.errorType.message)
-                        } else {
-                            showError(loadingData.errorType.message.orEmpty())
-                        }
+                        is Failure.MessageError -> showError(loadingData.errorType.message.orEmpty())
                         else -> showError(R.string.error_something_went_wrong)
                     }
                 }
@@ -115,19 +190,13 @@ class StakingFragment : BaseFragment() {
         })
     }
 
-    private fun showSmsDialog(errorMessage: String? = null) {
-        val fragment = SmsDialogFragment()
-        fragment.arguments = bundleOf(SmsDialogFragment.TAG_ERROR to errorMessage)
-        fragment.show(childFragmentManager, SmsDialogFragment::class.simpleName)
-        fragment.setDialogListener { smsCode ->
-            val loadingData = viewModel.transactionLiveData.value
-            when {
-                loadingData is LoadingData.Success && loadingData.data == StakingViewModel.TransactionState.STAKE_CREATE ->
-                    viewModel.stakeCompleteTransaction(smsCode)
-                loadingData is LoadingData.Success && loadingData.data == StakingViewModel.TransactionState.UNSTAKE_CREATE ->
-                    viewModel.unstakeCompleteTransaction(smsCode, amountCryptoView.getDouble())
-                else -> Unit
-            }
-        }
+    private fun setStatusColors(strokeColor: Int, backgroundColor: Int) {
+        val shape = GradientDrawable()
+        shape.shape = GradientDrawable.RECTANGLE
+        shape.cornerRadii = floatArrayOf(8f, 8f, 8f, 8f, 8f, 8f, 8f, 8f)
+        shape.setStroke(3, ContextCompat.getColor(requireContext(), strokeColor))
+        shape.setColor(ContextCompat.getColor(requireContext(), backgroundColor))
+        statusView.setTextColor(ContextCompat.getColor(requireContext(), strokeColor))
+        statusView.background = shape
     }
 }
