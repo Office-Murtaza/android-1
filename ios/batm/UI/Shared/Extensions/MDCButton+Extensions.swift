@@ -115,7 +115,7 @@ extension MDCButton {
   
   static var create: MDCButton {
     let button = MDCButton.contained
-    button.setTitle(localize(L.CreateEditTrade.Button.create), for: .normal)
+    button.setTitle(localize(L.Shared.Button.create), for: .normal)
     return button
   }
   
@@ -131,15 +131,15 @@ extension MDCButton {
     return button
   }
   
-  static var stake: MDCButton {
-    let button = MDCButton.contained
-    button.setTitle(localize(L.CoinStaking.Button.stake), for: .normal)
+  static var cancel: MDCButton {
+    let button = MDCButton.secondaryText
+    button.setTitle(localize(L.Shared.Button.cancel), for: .normal)
     return button
   }
   
-  static var unstake: MDCButton {
+  static var withdraw: MDCButton {
     let button = MDCButton.secondaryText
-    button.setTitle(localize(L.CoinStaking.Button.unstake), for: .normal)
+    button.setTitle(localize(L.CoinStaking.Button.withdraw), for: .normal)
     return button
   }
   

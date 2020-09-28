@@ -14,7 +14,7 @@ protocol WalletService {
                          with coinSettings: CoinSettings,
                          destination: String,
                          amount: Decimal,
-                         stake: Bool?) -> Single<String>
+                         stakingType: TransactionType?) -> Single<String>
 }
 
 class WalletServiceImpl: WalletService {
@@ -49,12 +49,12 @@ class WalletServiceImpl: WalletService {
                          with coinSettings: CoinSettings,
                          destination: String,
                          amount: Decimal,
-                         stake: Bool? = nil) -> Single<String> {
+                         stakingType: TransactionType? = nil) -> Single<String> {
     switch coin.type {
     case .bitcoin, .bitcoinCash, .litecoin:
       return getBitcoinLikeTransactionHex(for: coin, with: coinSettings, to: destination, amount: amount)
     case .ethereum, .catm:
-      return getEthereumTransactionHex(for: coin, with: coinSettings, to: destination, amount: amount, stake: stake)
+      return getEthereumTransactionHex(for: coin, with: coinSettings, to: destination, amount: amount, stakingType: stakingType)
     case .tron:
       return getTronTransactionHex(for: coin, with: coinSettings, to: destination, amount: amount)
     case .binance:
@@ -159,14 +159,14 @@ class WalletServiceImpl: WalletService {
                                  with coinSettings: CoinSettings,
                                  to destination: String,
                                  amount: Decimal,
-                                 stake: Bool? = nil) -> Single<String> {
+                                 stakingType: TransactionType? = nil) -> Single<String> {
     return api.getNonce(type: coin.type, address: coin.address)
       .map { [unowned self] in try self.getEthereumTransactionHex(coin: coin,
                                                                   coinSettings: coinSettings,
                                                                   toAddress: destination,
                                                                   amount: amount,
                                                                   nonce: $0.nonce,
-                                                                  stake: stake) }
+                                                                  stakingType: stakingType) }
   }
   
   private func getEthereumTransactionHex(coin: BTMCoin,
@@ -174,7 +174,7 @@ class WalletServiceImpl: WalletService {
                                          toAddress: String,
                                          amount: Decimal,
                                          nonce: Int,
-                                         stake: Bool? = nil) throws -> String {
+                                         stakingType: TransactionType? = nil) throws -> String {
     let divider: Int64 = Int64(10.pow(CustomCoinType.maxNumberOfFractionDigits))
     
     let dividerthUnit = coin.type.unit / divider
@@ -207,12 +207,17 @@ class WalletServiceImpl: WalletService {
     if coin.type == .catm {
       let function: EthereumAbiFunction
       
-      if let stake = stake {
-        if stake {
+      if let stakingType = stakingType {
+        switch stakingType {
+        case .createStake:
           function = EthereumAbiFunction(name: "createStake")
           function.addParamUInt256(val: dataAmount, isOutput: false)
-        } else {
+        case .cancelStake:
+          function = EthereumAbiFunction(name: "cancelStake")
+        case .withdrawStake:
           function = EthereumAbiFunction(name: "withdrawStake")
+        default:
+          fatalError("Unsupported transaction type for staking")
         }
       } else {
         function = EthereumAbiFunction(name: "transfer")

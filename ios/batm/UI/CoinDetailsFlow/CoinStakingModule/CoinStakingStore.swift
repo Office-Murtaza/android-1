@@ -47,6 +47,18 @@ struct CoinStakingState: Equatable {
   var isAllFieldsNotEmpty: Bool {
     return coinAmount.count > 0
   }
+  
+  var shouldShowCreateButton: Bool {
+    return stakeDetails?.status == .notCreatedOrWithdrawn
+  }
+  
+  var shouldShowCancelButton: Bool {
+    return stakeDetails?.status == .created
+  }
+  
+  var shouldShowWithdrawButton: Bool {
+    return stakeDetails?.status == .canceled && stakeDetails?.untilWithdraw == 0
+  }
 }
 
 final class CoinStakingStore: ViewStore<CoinStakingAction, CoinStakingState> {
@@ -73,39 +85,52 @@ final class CoinStakingStore: ViewStore<CoinStakingAction, CoinStakingState> {
     return state
   }
   
+  private func validateETHBalance(_ state: inout CoinStakingState) {
+    guard state.coin?.type == .catm, let fee = state.coinSettings?.txFee else { return }
+    
+    let ethBalance = state.coinBalances?.first { $0.type == .ethereum }?.balance ?? 0
+      
+    if !ethBalance.greaterThanOrEqualTo(fee) {
+      let errorString = localize(L.CoinWithdraw.Form.Error.insufficientETHBalance)
+      state.coinAmountError = errorString
+      state.validationState = .invalid(errorString)
+    }
+  }
+  
   private func validate(_ state: inout CoinStakingState) {
     state.validationState = .valid
     
-    if state.stakeDetails?.exist == false {
-      if state.coinAmount.count == 0 {
-        let errorString = localize(L.CreateWallet.Form.Error.fieldRequired)
-        state.coinAmountError = errorString
-        state.validationState = .invalid(errorString)
-      } else if state.coinAmount.decimalValue == nil {
-        let errorString = localize(L.CoinWithdraw.Form.Error.invalidAmount)
-        state.coinAmountError = errorString
-        state.validationState = .invalid(errorString)
-      } else if state.coinAmount.decimalValue! <= 0 {
-        let errorString = localize(L.CoinWithdraw.Form.Error.tooLowAmount)
-        state.coinAmountError = errorString
-        state.validationState = .invalid(errorString)
-      } else if !state.coinAmount.decimalValue!.lessThanOrEqualTo(state.maxValue) {
-        let errorString = localize(L.CoinWithdraw.Form.Error.tooHighAmount)
-        state.coinAmountError = errorString
-        state.validationState = .invalid(errorString)
-      } else {
-        state.coinAmountError = nil
-        
-        if state.coin?.type == .catm, let fee = state.coinSettings?.txFee {
-          let ethBalance = state.coinBalances?.first { $0.type == .ethereum }?.balance ?? 0
-          
-          if !ethBalance.greaterThanOrEqualTo(fee) {
-            let errorString = localize(L.CoinWithdraw.Form.Error.insufficientETHBalance)
-            state.coinAmountError = errorString
-            state.validationState = .invalid(errorString)
-          }
-        }
-      }
+    state.coinAmountError = nil
+    
+    guard let status = state.stakeDetails?.status else {
+      state.coinAmountError = ""
+      state.validationState = .invalid("")
+      return
+    }
+    
+    if status != .notCreatedOrWithdrawn {
+      validateETHBalance(&state)
+      return
+    }
+    
+    if state.coinAmount.count == 0 {
+      let errorString = localize(L.CreateWallet.Form.Error.fieldRequired)
+      state.coinAmountError = errorString
+      state.validationState = .invalid(errorString)
+    } else if state.coinAmount.decimalValue == nil {
+      let errorString = localize(L.CoinWithdraw.Form.Error.invalidAmount)
+      state.coinAmountError = errorString
+      state.validationState = .invalid(errorString)
+    } else if state.coinAmount.decimalValue! <= 0 {
+      let errorString = localize(L.CoinWithdraw.Form.Error.tooLowAmount)
+      state.coinAmountError = errorString
+      state.validationState = .invalid(errorString)
+    } else if !state.coinAmount.decimalValue!.lessThanOrEqualTo(state.maxValue) {
+      let errorString = localize(L.CoinWithdraw.Form.Error.tooHighAmount)
+      state.coinAmountError = errorString
+      state.validationState = .invalid(errorString)
+    } else {
+      validateETHBalance(&state)
     }
   }
 }

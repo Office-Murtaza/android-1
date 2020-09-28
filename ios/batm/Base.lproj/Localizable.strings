@@ -1,18 +1,6 @@
 "shared.ok" = "OK";
 "shared.cancel" = "Cancel";
-"shared.next" = "Next";
-"shared.copy" = "Copy";
 "shared.copied" = "Copied";
-"shared.paste" = "Paste";
-"shared.done" = "Done";
-"shared.send" = "Send";
-"shared.change" = "Change";
-"shared.scan" = "Scan";
-"shared.max" = "Max";
-"shared.add_gif" = "Add GIF";
-"shared.remove_gif" = "Remove GIF";
-"shared.select" = "Select";
-"shared.remove" = "Remove";
 "shared.button.max" = "Max";
 "shared.button.paste" = "Paste";
 "shared.button.add" = "Add";
@@ -26,6 +14,8 @@
 "shared.button.unlink" = "Unlink";
 "shared.button.send" = "Send";
 "shared.button.submit" = "Submit";
+"shared.button.create" = "Create";
+"shared.button.cancel" = "Cancel";
 "shared.error.title" = "Error";
 "shared.error.message" = "Server error, try again later";
 "shared.error.no_connection.message" = "No Internet Connection";
@@ -189,8 +179,9 @@
 "coin_details.reserve" = "Reserve";
 "coin_details.recall" = "Recall";
 "coin_details.se1f" = "Self";
-"coin_details.stake" = "Stake";
-"coin_details.unstake" = "Unstake";
+"coin_details.create_stake" = "Create stake";
+"coin_details.cancel_stake" = "Cancel stake";
+"coin_details.withdraw_stake" = "Withdraw stake";
 "coin_details.pending" = "Pending";
 "coin_details.complete" = "Complete";
 "coin_details.fail" = "Fail";
@@ -299,7 +290,6 @@
 "create_edit_trade.form.error.invalid_min_limit" = "Min limit should be greater than 0";
 "create_edit_trade.form.error.invalid_max_limit" = "Max limit should be greater than Min limit";
 "create_edit_trade.form.error.too_many_characters_in_terms" = "Trade terms is too long";
-"create_edit_trade.button.create" = "Create";
 
 "reserve.title" = "Reserve %@";
 "reserve.button.reserve" = "Reserve";
@@ -310,14 +300,20 @@
 
 "coin_staking.title" = "Staking %@";
 "coin_staking.header.amount.title" = "Amount";
+"coin_staking.header.status.title" = "Status";
 "coin_staking.header.reward.title" = "Reward";
 "coin_staking.header.reward_annual.title" = "Reward\n(annual)";
+"coin_staking.header.create_date.title" = "Create date";
+"coin_staking.header.cancel_date.title" = "Cancel date";
 "coin_staking.header.duration.title" = "Duration";
 "coin_staking.header.duration.value" = "%d days";
-"coin_staking.header.min_duration.title" = "Duration\n(min)";
-"coin_staking.header.min_duration.value" = "%d days";
-"coin_staking.button.stake" = "Stake";
-"coin_staking.button.unstake" = "Unstake";
+"coin_staking.header.cancel_period.title" = "Cancel\nperiod";
+"coin_staking.header.cancel_period.value" = "%d days";
+"coin_staking.header.until_withdraw.title" = "Until\nwithdraw";
+"coin_staking.header.until_withdraw.value" = "%d days";
+"coin_staking.status.created" = "Created";
+"coin_staking.status.canceled" = "Canceled";
+"coin_staking.button.withdraw" = "Withdraw";
 
 "error.server_error.title" = "Server error";
 "error.server_error.subtitle" = "Our server goes down. Please,\ntry again later.";

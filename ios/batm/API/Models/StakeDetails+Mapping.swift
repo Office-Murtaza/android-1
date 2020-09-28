@@ -11,13 +11,16 @@ extension StakeDetails: ImmutableMappable {
     let rewardPercent: String? = try map.value("rewardPercentStr")
     let rewardAnnualAmount: String? = try map.value("rewardAnnualAmountStr")
     
-    exist = try map.value("exist")
+    created = try map.value("created")
+    canceled = try map.value("canceled")
+    withdrawn = try map.value("withdrawn")
     self.amount = amount.flatMap { Decimal(string: $0) }
     self.rewardAmount = rewardAmount.flatMap { Decimal(string: $0) }
     self.rewardPercent = rewardPercent.flatMap { Decimal(string: $0) }
     self.rewardAnnualAmount = rewardAnnualAmount.flatMap { Decimal(string: $0) }
     self.rewardAnnualPercent = rewardAnnualPercent
-    days = try map.value("days")
-    minDays = try map.value("minDays")
+    duration = try map.value("duration")
+    untilWithdraw = try map.value("untilWithdraw")
+    cancelPeriod = try map.value("cancelPeriod")
   }
 }

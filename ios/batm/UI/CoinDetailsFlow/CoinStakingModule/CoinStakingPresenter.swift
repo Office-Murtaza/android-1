@@ -9,8 +9,9 @@ final class CoinStakingPresenter: ModulePresenter, CoinStakingModule {
   struct Input {
     var updateCoinAmount: Driver<String?>
     var max: Driver<Void>
-    var stake: Driver<Void>
-    var unstake: Driver<Void>
+    var create: Driver<Void>
+    var cancel: Driver<Void>
+    var withdraw: Driver<Void>
   }
   
   private let usecase: CoinDetailsUsecase
@@ -50,27 +51,31 @@ final class CoinStakingPresenter: ModulePresenter, CoinStakingModule {
       .bind(to: store.action)
       .disposed(by: disposeBag)
     
-    Driver.merge(input.stake, input.unstake)
+    Driver.merge(input.create, input.cancel, input.withdraw)
       .asObservable()
       .doOnNext { [store] in store.action.accept(.updateValidationState) }
       .withLatestFrom(state)
       .filter { $0.validationState.isValid }
-      .flatMap { [unowned self] in self.track(self.stakeOrUnstake(for: $0)) }
+      .flatMap { [unowned self] in self.track(self.proceedWithStaking(for: $0)) }
       .subscribe(onNext: { [delegate] in delegate?.didFinishCoinStaking() })
       .disposed(by: disposeBag)
   }
   
-  private func stakeOrUnstake(for state: CoinStakingState) -> Completable {
+  private func proceedWithStaking(for state: CoinStakingState) -> Completable {
     let coin = state.coin!
     let coinSettings = state.coinSettings!
     let coinAmount = state.coinAmount.decimalValue ?? 0.0
     let stakeDetails = state.stakeDetails!
     
-    let usecaseCall = stakeDetails.exist
-      ? usecase.unstake(from: coin, with: coinSettings, stakeDetails: stakeDetails)
-      : usecase.stake(from: coin, with: coinSettings, amount: coinAmount)
+    if stakeDetails.status == .created {
+      return usecase.cancelStake(from: coin, with: coinSettings, stakeDetails: stakeDetails)
+    }
     
-    return usecaseCall
+    if stakeDetails.status == .canceled {
+      return usecase.withdrawStake(from: coin, with: coinSettings, stakeDetails: stakeDetails)
+    }
+    
+    return usecase.createStake(from: coin, with: coinSettings, amount: coinAmount)
       .catchError { [store] in
         if let apiError = $0 as? APIError, case let .serverError(error) = apiError, let code = error.code, code > 1 {
           store.action.accept(.updateCoinAmountError(error.message))
