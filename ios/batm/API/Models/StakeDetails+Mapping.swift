@@ -19,6 +19,8 @@ extension StakeDetails: ImmutableMappable {
     self.rewardPercent = rewardPercent.flatMap { Decimal(string: $0) }
     self.rewardAnnualAmount = rewardAnnualAmount.flatMap { Decimal(string: $0) }
     self.rewardAnnualPercent = rewardAnnualPercent
+    createDateString = try map.value("createDate")
+    cancelDateString = try map.value("cancelDate")
     duration = try map.value("duration")
     untilWithdraw = try map.value("untilWithdraw")
     cancelPeriod = try map.value("cancelPeriod")
