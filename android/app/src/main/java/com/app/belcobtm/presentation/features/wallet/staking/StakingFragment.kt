@@ -90,15 +90,15 @@ class StakingFragment : BaseFragment() {
                         cancelButtonView.toggle(true)
                         unstakeButtonView.toggle(false)
                     }
-//                    StakeStatus.CANCELED ->  {
-//                        statusTitleView.toggle(true)
-//                        statusView.toggle(true)
-//                        statusView.text = getString(R.string.staking_screen_canceled)
-//                        setStatusColors(R.color.staking_canceled_border, R.color.staking_canceled_background)
-//                        editStakeGroupView.toggle(false)
-//                        cancelButtonView.toggle(false)
-//                        unstakeButtonView.toggle(true)
-//                    }
+                    StakeStatus.CANCELED ->  {
+                        statusTitleView.toggle(true)
+                        statusView.toggle(true)
+                        statusView.text = getString(R.string.staking_screen_canceled)
+                        setStatusColors(R.color.staking_canceled_border, R.color.staking_canceled_background)
+                        editStakeGroupView.toggle(false)
+                        cancelButtonView.toggle(false)
+                        unstakeButtonView.toggle(true)
+                    }
                     else -> {
                         statusTitleView.toggle(false)
                         statusView.toggle(false)
