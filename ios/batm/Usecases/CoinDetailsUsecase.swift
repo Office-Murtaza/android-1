@@ -208,7 +208,7 @@ class CoinDetailsUsecaseImpl: CoinDetailsUsecase {
                            amount: amount,
                            fee: coinSettings.txFee,
                            fromAddress: fromCoin.address,
-                           toAddress: coinSettings.walletAddress,
+                           toAddress: coinSettings.contractAddress,
                            toCoinType: toCoinType,
                            toCoinAmount: toCoinAmount,
                            transactionResultString: transactionResultString)
