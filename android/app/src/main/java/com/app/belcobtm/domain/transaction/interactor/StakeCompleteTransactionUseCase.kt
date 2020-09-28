@@ -9,14 +9,12 @@ class StakeCompleteTransactionUseCase(
     private val transactionRepository: TransactionRepository
 ) : UseCase<Unit, StakeCompleteTransactionUseCase.Params>() {
     override suspend fun run(params: Params): Either<Failure, Unit> = transactionRepository.stakeCompleteTransaction(
-        params.smsCode,
         params.hash,
         params.coinCode,
         params.cryptoAmount
     )
 
     data class Params(
-        val smsCode: String,
         val hash: String,
         val coinCode: String,
         val cryptoAmount: Double

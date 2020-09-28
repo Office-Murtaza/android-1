@@ -76,6 +76,16 @@ class TransactionHashHelper(
         ETH_CATM_FUNCTION_NAME_CREATE_STAKE
     )
 
+    suspend fun createTransactionStakeCancelHash(
+        fromCoinAmount: Double,
+        toAddress: String
+    ) = createTransactionHashETH(
+        toAddress,
+        LocalCoinType.CATM,
+        fromCoinAmount,
+        ETH_CATM_FUNCTION_NAME_CANCEL_STAKE
+    )
+
     suspend fun createTransactionUnStakeHash(
         fromCoinAmount: Double,
         toAddress: String
@@ -405,6 +415,7 @@ class TransactionHashHelper(
     private companion object {
         private const val ETH_CATM_FUNCTION_NAME_TRANSFER: String = "transfer"
         private const val ETH_CATM_FUNCTION_NAME_CREATE_STAKE: String = "createStake"
+        private const val ETH_CATM_FUNCTION_NAME_CANCEL_STAKE: String = "cancelStake "
         private const val ETH_CATM_FUNCTION_NAME_WITHDRAW_STAKE: String = "withdrawStake"
     }
 }
