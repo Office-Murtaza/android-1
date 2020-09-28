@@ -23,7 +23,7 @@ public interface TransactionRecordWalletRep extends JpaRepository<TransactionRec
 
     List<TransactionRecordWallet> findAllByProcessedAndTypeAndStatusAndRefTxIdNull(Integer processed, Integer type, Integer status, Pageable page);
 
-    Optional<TransactionRecordWallet> findFirstByProcessedAndTypeAndStatusAndRefTxIdNull(Integer processed, Integer type, Integer status);
+    Optional<TransactionRecordWallet> findFirstByIdentityAndProcessedAndTypeAndStatusAndRefTxIdNull(Identity identity, Integer processed, Integer type, Integer status);
 
     Optional<TransactionRecordWallet> findFirstByTxId(String txId);
 }

@@ -371,7 +371,9 @@ public class TransactionService {
     public void cancelStake(Long userId, CoinService.CoinEnum coin, String txId, BigDecimal amount) {
         try {
             TransactionRecordWallet record = new TransactionRecordWallet();
-            record.setIdentity(userService.findByUserId(userId));
+            Identity identity = userService.findByUserId(userId);
+
+            record.setIdentity(identity);
             record.setCoin(coin.getCoinEntity());
             record.setType(TransactionType.CANCEL_STAKE.getValue());
             record.setStatus(TransactionStatus.PENDING.getValue());
@@ -379,6 +381,14 @@ public class TransactionService {
             record.setTxId(txId);
 
             walletRep.save(record);
+
+            Optional<TransactionRecordWallet> createStakeRecOpt = walletRep.findFirstByIdentityAndProcessedAndTypeAndStatusAndRefTxIdNull(identity, ProcessedType.SUCCESS.getValue(), TransactionType.CREATE_STAKE.getValue(), TransactionStatus.COMPLETE.getValue());
+
+            if (createStakeRecOpt.isPresent()) {
+                TransactionRecordWallet createStakeRec = createStakeRecOpt.get();
+                createStakeRec.setRefTxId(txId);
+                walletRep.save(createStakeRec);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -387,7 +397,9 @@ public class TransactionService {
     public void withdrawStake(Long userId, CoinService.CoinEnum coin, String txId, BigDecimal amount) {
         try {
             TransactionRecordWallet record = new TransactionRecordWallet();
-            record.setIdentity(userService.findByUserId(userId));
+            Identity identity = userService.findByUserId(userId);
+
+            record.setIdentity(identity);
             record.setCoin(coin.getCoinEntity());
             record.setType(TransactionType.WITHDRAW_STAKE.getValue());
             record.setStatus(TransactionStatus.PENDING.getValue());
@@ -395,6 +407,14 @@ public class TransactionService {
             record.setTxId(txId);
 
             walletRep.save(record);
+
+            Optional<TransactionRecordWallet> cancelStakeRecOpt = walletRep.findFirstByIdentityAndProcessedAndTypeAndStatusAndRefTxIdNull(identity, ProcessedType.SUCCESS.getValue(), TransactionType.CANCEL_STAKE.getValue(), TransactionStatus.COMPLETE.getValue());
+
+            if (cancelStakeRecOpt.isPresent()) {
+                TransactionRecordWallet cancelStakeRec = cancelStakeRecOpt.get();
+                cancelStakeRec.setRefTxId(txId);
+                walletRep.save(record);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -435,7 +455,7 @@ public class TransactionService {
                     } else {
                         TransactionRecordWallet cancelStakeRec = walletRep.findFirstByTxId(record.getRefTxId()).get();
 
-                        if(cancelStakeRec.getStatus() == TransactionStatus.PENDING.getValue() || cancelStakeRec.getStatus() == TransactionStatus.COMPLETE.getValue()) {
+                        if (cancelStakeRec.getStatus() == TransactionStatus.PENDING.getValue() || cancelStakeRec.getStatus() == TransactionStatus.COMPLETE.getValue()) {
                             dto.setCanceled(true);
                             dto.setCancelDate(cancelStakeRec.getCreateDate());
                             int days = Days.daysBetween(new DateTime(record.getCreateDate()), new DateTime(cancelStakeRec.getCreateDate())).getDays();
@@ -492,26 +512,6 @@ public class TransactionService {
                         userCoin.setReservedBalance(userCoin.getReservedBalance().add(e.getAmount()));
 
                         userCoinRep.save(userCoin);
-                    }
-
-                    if (e.getType() == TransactionType.CANCEL_STAKE.getValue()) {
-                        Optional<TransactionRecordWallet> createStakeRecOpt = walletRep.findFirstByProcessedAndTypeAndStatusAndRefTxIdNull(ProcessedType.SUCCESS.getValue(), TransactionType.CREATE_STAKE.getValue(), TransactionStatus.COMPLETE.getValue());
-
-                        if (createStakeRecOpt.isPresent()) {
-                            TransactionRecordWallet record = createStakeRecOpt.get();
-                            record.setRefTxId(e.getTxId());
-                            walletRep.save(record);
-                        }
-                    }
-
-                    if (e.getType() == TransactionType.WITHDRAW_STAKE.getValue()) {
-                        Optional<TransactionRecordWallet> cancelStakeRecOpt = walletRep.findFirstByProcessedAndTypeAndStatusAndRefTxIdNull(ProcessedType.SUCCESS.getValue(), TransactionType.CANCEL_STAKE.getValue(), TransactionStatus.COMPLETE.getValue());
-
-                        if (cancelStakeRecOpt.isPresent()) {
-                            TransactionRecordWallet record = cancelStakeRecOpt.get();
-                            record.setRefTxId(e.getTxId());
-                            walletRep.save(record);
-                        }
                     }
                 }
             });

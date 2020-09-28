@@ -19,6 +19,7 @@ import org.web3j.utils.Numeric;
 import wallet.core.java.AnySigner;
 import wallet.core.jni.*;
 import wallet.core.jni.proto.Bitcoin;
+
 import javax.annotation.PostConstruct;
 import java.math.BigDecimal;
 import java.util.*;
@@ -260,7 +261,7 @@ public class BlockbookService {
             input.setToAddress(toAddress);
             input.setUseMaxAmount(false);
 
-            utxos = utxos.stream().filter(e -> Long.parseLong(e.optString("value")) > byteFee * 180).collect(Collectors.toList());
+            //utxos = utxos.stream().filter(e -> Long.parseLong(e.optString("value")) > byteFee * 180).collect(Collectors.toList());
 
             utxos.forEach(e -> {
                 PrivateKey privateKey = walletService.getWallet().getKey(coinType, e.optString("path"));
