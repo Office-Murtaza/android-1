@@ -22,7 +22,9 @@ enum L {
     static let available = "coin_details.available"
     static let balance = "coin_details.balance"
     static let buy = "coin_details.buy"
+    static let cancelStake = "coin_details.cancel_stake"
     static let complete = "coin_details.complete"
+    static let createStake = "coin_details.create_stake"
     static let deposit = "coin_details.deposit"
     static let exchange = "coin_details.exchange"
     static let fail = "coin_details.fail"
@@ -35,21 +37,20 @@ enum L {
     static let pending = "coin_details.pending"
     static let price = "coin_details.price"
     static let recall = "coin_details.recall"
-    static let receiveExchange = "coin_details.receive_exchange"
+    static let receiveC2C = "coin_details.receive_c_2_c"
     static let receiveGift = "coin_details.receive_gift"
     static let reserve = "coin_details.reserve"
     static let se1f = "coin_details.se1f"
     static let sell = "coin_details.sell"
-    static let sendExchange = "coin_details.send_exchange"
+    static let sendC2C = "coin_details.send_c_2_c"
     static let sendGift = "coin_details.send_gift"
-    static let stake = "coin_details.stake"
     static let staking = "coin_details.staking"
     static let threeMonths = "coin_details.three_months"
     static let trade = "coin_details.trade"
     static let transactionCreated = "coin_details.transaction_created"
     static let unknown = "coin_details.unknown"
-    static let unstake = "coin_details.unstake"
     static let withdraw = "coin_details.withdraw"
+    static let withdrawStake = "coin_details.withdraw_stake"
     static let withdrawn = "coin_details.withdrawn"
   }
 
@@ -146,21 +147,9 @@ enum L {
   }
 
   struct Shared {
-    static let addGif = "shared.add_gif"
     static let cancel = "shared.cancel"
-    static let change = "shared.change"
     static let copied = "shared.copied"
-    static let copy = "shared.copy"
-    static let done = "shared.done"
-    static let max = "shared.max"
-    static let next = "shared.next"
     static let ok = "shared.ok"
-    static let paste = "shared.paste"
-    static let remove = "shared.remove"
-    static let removeGif = "shared.remove_gif"
-    static let scan = "shared.scan"
-    static let select = "shared.select"
-    static let send = "shared.send"
     static let termsAndConditions = "shared.terms_and_conditions"
   }
 
@@ -322,11 +311,15 @@ extension L.CoinSendGift.Form {
 extension L.CoinStaking {
 
   struct Button {
-    static let stake = "coin_staking.button.stake"
-    static let unstake = "coin_staking.button.unstake"
+    static let withdraw = "coin_staking.button.withdraw"
   }
 
   struct Header {
+  }
+
+  struct Status {
+    static let canceled = "coin_staking.status.canceled"
+    static let created = "coin_staking.status.created"
   }
 }
 extension L.CoinStaking.Header {
@@ -335,14 +328,22 @@ extension L.CoinStaking.Header {
     static let title = "coin_staking.header.amount.title"
   }
 
+  struct CancelDate {
+    static let title = "coin_staking.header.cancel_date.title"
+  }
+
+  struct CancelPeriod {
+    static let title = "coin_staking.header.cancel_period.title"
+    static let value = "coin_staking.header.cancel_period.value"
+  }
+
+  struct CreateDate {
+    static let title = "coin_staking.header.create_date.title"
+  }
+
   struct Duration {
     static let title = "coin_staking.header.duration.title"
     static let value = "coin_staking.header.duration.value"
-  }
-
-  struct MinDuration {
-    static let title = "coin_staking.header.min_duration.title"
-    static let value = "coin_staking.header.min_duration.value"
   }
 
   struct Reward {
@@ -351,6 +352,15 @@ extension L.CoinStaking.Header {
 
   struct RewardAnnual {
     static let title = "coin_staking.header.reward_annual.title"
+  }
+
+  struct Status {
+    static let title = "coin_staking.header.status.title"
+  }
+
+  struct UntilWithdraw {
+    static let title = "coin_staking.header.until_withdraw.title"
+    static let value = "coin_staking.header.until_withdraw.value"
   }
 }
 extension L.CoinWithdraw {
@@ -391,10 +401,6 @@ extension L.CoinWithdraw.Form {
   }
 }
 extension L.CreateEditTrade {
-
-  struct Button {
-    static let create = "create_edit_trade.button.create"
-  }
 
   struct Form {
   }
@@ -634,7 +640,9 @@ extension L.Shared {
 
   struct Button {
     static let add = "shared.button.add"
+    static let cancel = "shared.button.cancel"
     static let copy = "shared.button.copy"
+    static let create = "shared.button.create"
     static let done = "shared.button.done"
     static let goBack = "shared.button.go_back"
     static let max = "shared.button.max"

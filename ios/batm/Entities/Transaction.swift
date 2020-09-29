@@ -9,13 +9,14 @@ enum TransactionType {
   case buy
   case sell
   case move
-  case sendExchange
-  case receiveExchange
+  case sendС2С
+  case receiveС2С
   case reserve
   case recall
   case `self`
-  case stake
-  case unstake
+  case createStake
+  case cancelStake
+  case withdrawStake
   
   var verboseValue: String {
     switch self {
@@ -27,13 +28,14 @@ enum TransactionType {
     case .buy: return localize(L.CoinDetails.buy)
     case .sell: return localize(L.CoinDetails.sell)
     case .move: return localize(L.CoinDetails.move)
-    case .sendExchange: return localize(L.CoinDetails.sendExchange)
-    case .receiveExchange: return localize(L.CoinDetails.receiveExchange)
+    case .sendС2С: return localize(L.CoinDetails.sendC2C)
+    case .receiveС2С: return localize(L.CoinDetails.receiveC2C)
     case .reserve: return localize(L.CoinDetails.reserve)
     case .recall: return localize(L.CoinDetails.recall)
     case .self: return localize(L.CoinDetails.se1f)
-    case .stake: return localize(L.CoinDetails.stake)
-    case .unstake: return localize(L.CoinDetails.unstake)
+    case .createStake: return localize(L.CoinDetails.createStake)
+    case .cancelStake: return localize(L.CoinDetails.cancelStake)
+    case .withdrawStake: return localize(L.CoinDetails.withdrawStake)
     }
   }
   
@@ -47,13 +49,14 @@ enum TransactionType {
     case .buy: return 5
     case .sell: return 6
     case .move: return 7
-    case .sendExchange: return 8
-    case .receiveExchange: return 9
+    case .sendС2С: return 8
+    case .receiveС2С: return 9
     case .reserve: return 10
     case .recall: return 11
     case .self: return 12
-    case .stake: return 13
-    case .unstake: return 14
+    case .createStake: return 13
+    case .cancelStake: return 14
+    case .withdrawStake: return 15
     }
   }
   
@@ -67,13 +70,14 @@ enum TransactionType {
     case 5: self = .buy
     case 6: self = .sell
     case 7: self = .move
-    case 8: self = .sendExchange
-    case 9: self = .receiveExchange
+    case 8: self = .sendС2С
+    case 9: self = .receiveС2С
     case 10: self = .reserve
     case 11: self = .recall
     case 12: self = .self
-    case 13: self = .stake
-    case 14: self = .unstake
+    case 13: self = .createStake
+    case 14: self = .cancelStake
+    case 15: self = .withdrawStake
     default: self = .unknown
     }
   }

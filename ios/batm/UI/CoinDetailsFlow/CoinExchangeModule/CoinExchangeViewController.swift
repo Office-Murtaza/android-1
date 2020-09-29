@@ -124,6 +124,12 @@ final class CoinExchangeViewController: ModuleViewController<CoinExchangePresent
       .bind(to: formView.rx.toCoinErrorText)
       .disposed(by: disposeBag)
     
+    presenter.state
+      .asObservable()
+      .map { $0.isAllFieldsNotEmpty }
+      .bind(to: submitButton.rx.isEnabled)
+      .disposed(by: disposeBag)
+    
     submitButton.rx.tap.asDriver()
       .drive(onNext: { [unowned self] in self.view.endEditing(true) })
       .disposed(by: disposeBag)
