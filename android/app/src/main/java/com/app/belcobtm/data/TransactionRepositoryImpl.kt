@@ -169,7 +169,7 @@ class TransactionRepositoryImpl(
         coinTo: String
     ): Either<Failure, Unit> {
         val coinType = LocalCoinType.valueOf(fromCoin)
-        val toAddress = daoAccount.getItem(coinTo).publicKey
+        val toAddress = prefHelper.coinsFee[fromCoin]?.walletAddress ?: ""
         val hashResponse =
             transactionHashRepository.createTransactionHash(coinType, fromCoinAmount, toAddress)
         return if (hashResponse.isRight) {
