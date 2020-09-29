@@ -144,7 +144,17 @@ interface TransactionRepository {
     ): Either<Failure, String>
 
     suspend fun stakeCompleteTransaction(
-        smsCode: String,
+        hash: String,
+        coinCode: String,
+        cryptoAmount: Double
+    ): Either<Failure, Unit>
+
+    suspend fun stakeCancelCreateTransaction(
+        coinCode: String,
+        cryptoAmount: Double
+    ): Either<Failure, String>
+
+    suspend fun stakeCancelCompleteTransaction(
         hash: String,
         coinCode: String,
         cryptoAmount: Double
@@ -156,7 +166,6 @@ interface TransactionRepository {
     ): Either<Failure, String>
 
     suspend fun unStakeCompleteTransaction(
-        smsCode: String,
         hash: String,
         coinCode: String,
         cryptoAmount: Double

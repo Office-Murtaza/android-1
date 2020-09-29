@@ -45,8 +45,13 @@
     <color name="verified_background">#f8ffed</color>
     <color name="verified_border">#9fd256</color>
     <color name="pending_border">#ffcd4c</color>
+    <color name="pending_background">#fffcf3</color>
     <color name="rejected_background">#fff2f2</color>
     <color name="rejected_border">#e02d2d</color>
     <color name="not_verified_background">#f3f3f3</color>
     <color name="not_verified_border">#ababab</color>
+
+    //staking
+    <color name="staking_canceled_border">#ff984c</color>
+    <color name="staking_canceled_background">#fff8f3</color>
 </resources>

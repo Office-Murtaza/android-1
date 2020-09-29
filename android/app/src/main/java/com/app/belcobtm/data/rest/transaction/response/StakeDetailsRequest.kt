@@ -3,21 +3,38 @@ package com.app.belcobtm.data.rest.transaction.response
 import com.app.belcobtm.domain.transaction.item.StakeDetailsDataItem
 
 class StakeDetailsRequest(
-    val exist: Boolean,
-    val unstakeAvailable: Boolean,
-    val stakedDays: Int,
-    val stakedAmount: Double,
-    val rewardsAmount: Double,
-    val rewardsPercent: Double,
-    val stakingMinDays: Int
+    val amount: Double,
+    val amountStr: String,
+    val cancelDate: String,
+    val cancelPeriod: Int,
+    val canceled: Boolean,
+    val createDate: String,
+    val created: Boolean,
+    val duration: Int,
+    val rewardAmount: Double,
+    val rewardAmountStr: String,
+    val rewardAnnualAmount: Double,
+    val rewardAnnualAmountStr: String,
+    val rewardAnnualPercent: Double,
+    val rewardAnnualPercentStr: String,
+    val rewardPercent: Double,
+    val rewardPercentStr: String,
+    val untilWithdraw: Int,
+    val withdrawn: Boolean
 )
 
 fun StakeDetailsRequest.mapToDataItem(): StakeDetailsDataItem = StakeDetailsDataItem(
-    exist = exist,
-    isUnStakeAvailable = unstakeAvailable,
-    stakedDays = stakedDays,
-    stakedAmount = stakedAmount,
-    rewardsAmount = rewardsAmount,
-    rewardsPercent = rewardsPercent,
-    stakingMinDays = stakingMinDays
+    created = created,
+    canceled = canceled,
+    withdrawn = withdrawn,
+    amount = amount,
+    rewardsAnnualAmount = rewardAnnualAmount,
+    rewardsAnnualPercent = rewardAnnualPercent,
+    rewardsAmount = rewardAmount,
+    rewardsPercent = rewardPercent,
+    createDate = createDate,
+    cancelDate = cancelDate,
+    duration = duration,
+    cancelPeriod = cancelPeriod,
+    untilWithdraw = untilWithdraw
 )

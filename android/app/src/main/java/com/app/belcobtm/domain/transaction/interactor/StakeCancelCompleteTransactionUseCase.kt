@@ -5,10 +5,10 @@ import com.app.belcobtm.domain.Failure
 import com.app.belcobtm.domain.UseCase
 import com.app.belcobtm.domain.transaction.TransactionRepository
 
-class UnStakeCompleteTransactionUseCase(
+class StakeCancelCompleteTransactionUseCase(
     private val transactionRepository: TransactionRepository
-) : UseCase<Unit, UnStakeCompleteTransactionUseCase.Params>() {
-    override suspend fun run(params: Params): Either<Failure, Unit> = transactionRepository.unStakeCompleteTransaction(
+) : UseCase<Unit, StakeCancelCompleteTransactionUseCase.Params>() {
+    override suspend fun run(params: Params): Either<Failure, Unit> = transactionRepository.stakeCancelCompleteTransaction(
         params.hash,
         params.coinCode,
         params.cryptoAmount

@@ -75,6 +75,22 @@
             app:exitAnim="@anim/slide_to_left"
             app:popEnterAnim="@anim/slide_from_left"
             app:popExitAnim="@anim/slide_to_right" />
+
+        <action
+            android:id="@+id/to_staking_fragment"
+            app:destination="@id/staking_fragment"
+            app:enterAnim="@anim/slide_from_right"
+            app:exitAnim="@anim/slide_to_left"
+            app:popEnterAnim="@anim/slide_from_left"
+            app:popExitAnim="@anim/slide_to_right" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/staking_fragment"
+        android:name="com.app.belcobtm.presentation.features.wallet.staking.StakingFragment"
+        android:label="StakingFragment"
+        tools:layout="@layout/fragment_staking">
+
     </fragment>
 
     <fragment

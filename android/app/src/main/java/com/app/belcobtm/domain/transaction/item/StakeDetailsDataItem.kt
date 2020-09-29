@@ -1,11 +1,18 @@
 package com.app.belcobtm.domain.transaction.item
 
 class StakeDetailsDataItem(
-    val exist: Boolean,
-    val isUnStakeAvailable: Boolean,
-    val stakedDays: Int,
-    val stakedAmount: Double,
-    val rewardsAmount: Double,
-    val rewardsPercent: Double,
-    val stakingMinDays: Int
+    val created: Boolean,
+    val canceled: Boolean,
+    val withdrawn: Boolean,
+    val amount: Double?,
+    val rewardsAmount: Double?,
+    val rewardsAnnualAmount: Double,
+    val rewardsPercent: Double?,
+    val rewardsAnnualPercent: Double,
+    val createDate: String?,
+    val cancelDate: String?,
+    val duration: Int?,
+    val cancelPeriod: Int,
+    val untilWithdraw: Int?
+
 )

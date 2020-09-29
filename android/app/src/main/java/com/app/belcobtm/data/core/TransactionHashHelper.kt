@@ -4,15 +4,11 @@ import com.app.belcobtm.api.model.param.trx.Trx
 import com.app.belcobtm.data.disk.database.AccountDao
 import com.app.belcobtm.data.disk.shared.preferences.SharedPreferencesHelper
 import com.app.belcobtm.data.rest.transaction.TransactionApiService
-import com.app.belcobtm.data.rest.transaction.response.hash.UtxoItemResponse
 import com.app.belcobtm.domain.Either
 import com.app.belcobtm.domain.Failure
 import com.app.belcobtm.domain.wallet.LocalCoinType
 import com.app.belcobtm.presentation.core.Numeric
-import com.app.belcobtm.presentation.core.extensions.code
-import com.app.belcobtm.presentation.core.extensions.customPurpose
-import com.app.belcobtm.presentation.core.extensions.customXpubVersion
-import com.app.belcobtm.presentation.core.extensions.unit
+import com.app.belcobtm.presentation.core.extensions.*
 import com.app.belcobtm.presentation.core.toHexByteArray
 import com.app.belcobtm.presentation.core.toHexBytes
 import com.app.belcobtm.presentation.core.toHexBytesInByteString
@@ -76,6 +72,16 @@ class TransactionHashHelper(
         ETH_CATM_FUNCTION_NAME_CREATE_STAKE
     )
 
+    suspend fun createTransactionStakeCancelHash(
+        fromCoinAmount: Double,
+        toAddress: String
+    ) = createTransactionHashETH(
+        toAddress,
+        LocalCoinType.CATM,
+        fromCoinAmount,
+        ETH_CATM_FUNCTION_NAME_CANCEL_STAKE
+    )
+
     suspend fun createTransactionUnStakeHash(
         fromCoinAmount: Double,
         toAddress: String
@@ -101,14 +107,14 @@ class TransactionHashHelper(
         val response = apiService.getUtxoList(fromCoin.name, publicKey)
 
         return if (response.isRight) {
-            var utxos: List<UtxoItemResponse> = (response as Either.Right).b
-            val fromAddress: String = daoAccount.getItem(fromCoin.name).publicKey
-            val cryptoToSatoshi: Double = fromCoinAmount * CoinType.BITCOIN.unit()
+            val utxos = (response as Either.Right).b
+            val fromAddress = daoAccount.getItem(fromCoin.name).publicKey
+            val cryptoToSatoshi = fromCoinAmount * CoinType.BITCOIN.unit()
             val amount: Long = cryptoToSatoshi.toLong()
-            val byteFee: Long = getByteFee(fromCoin.name)
-            val sngHash: Int = BitcoinScript.hashTypeForCoin(trustWalletCoin)
-            val coinTypeValue: Int = trustWalletCoin.value()
-            val input: Bitcoin.SigningInput.Builder = Bitcoin.SigningInput.newBuilder()
+            val byteFee = getByteFee(fromCoin.name)
+            val sngHash = BitcoinScript.hashTypeForCoin(trustWalletCoin)
+            val coinTypeValue = trustWalletCoin.value()
+            val input = Bitcoin.SigningInput.newBuilder()
                 .setCoinType(coinTypeValue)
                 .setAmount(amount)
                 .setByteFee(byteFee)
@@ -117,10 +123,8 @@ class TransactionHashHelper(
                 .setToAddress(toAddress)
                 .setUseMaxAmount(false)
 
-            utxos = utxos.filter { it.value.toLong() > byteFee * 180 }
-
             utxos.forEach {
-                val privateKey: PrivateKey = hdWallet.getKey(trustWalletCoin, it.path)
+                val privateKey = hdWallet.getKey(trustWalletCoin, it.path)
                 input.addPrivateKey(ByteString.copyFrom(privateKey.data()))
             }
 
@@ -174,8 +178,7 @@ class TransactionHashHelper(
         }
     }
 
-    private fun getByteFee(coinName: String?): Long =
-        prefsHelper.coinsFee[coinName]?.byteFee ?: Long.MIN_VALUE
+    private fun getByteFee(coinName: String?): Long = prefsHelper.coinsFee[coinName]?.byteFee ?: Long.MIN_VALUE
 
     private suspend fun createTransactionHashETH(
         toAddress: String,
@@ -190,41 +193,31 @@ class TransactionHashHelper(
             val nonceResponse = (response as Either.Right).b
             val coinFee = prefsHelper.coinsFee[fromCoin.name]
             val amountMultipliedByDivider = BigDecimal(fromCoinAmount * CoinType.ETHEREUM.unit())
-            val hexAmount =
-                addLeadingZeroes(amountMultipliedByDivider.toLong().toString(16))?.toHexByteArray()
+            val hexAmount = addLeadingZeroes(amountMultipliedByDivider.toLong().toString(16))?.toHexByteArray()
             val hexNonce = addLeadingZeroes(nonceResponse?.toString(16) ?: "")?.toHexByteArray()
-            val hexGasLimit =
-                addLeadingZeroes((coinFee?.gasLimit?.toLong() ?: 0).toString(16))?.toHexByteArray()
-            val hexGasPrice =
-                addLeadingZeroes((coinFee?.gasPrice?.toLong() ?: 0).toString(16))?.toHexByteArray()
+            val hexGasLimit = addLeadingZeroes((coinFee?.gasLimit?.toLong() ?: 0).toString(16))?.toHexByteArray()
+            val hexGasPrice = addLeadingZeroes((coinFee?.gasPrice?.toLong() ?: 0).toString(16))?.toHexByteArray()
             val input = Ethereum.SigningInput.newBuilder().also {
                 it.chainId = ByteString.copyFrom("0x1".toHexByteArray())
                 it.nonce = ByteString.copyFrom(hexNonce)
                 it.gasLimit = ByteString.copyFrom(hexGasLimit)
                 it.gasPrice = ByteString.copyFrom(hexGasPrice)
-                it.privateKey =
-                    daoAccount.getItem(fromCoin.name).privateKey.toHexBytesInByteString()
+                it.privateKey = daoAccount.getItem(fromCoin.name).privateKey.toHexBytesInByteString()
             }
 
             if (fromCoin == LocalCoinType.CATM) {
                 val function = when (customFunctionName) {
-                    ETH_CATM_FUNCTION_NAME_WITHDRAW_STAKE -> EthereumAbiFunction(
-                        ETH_CATM_FUNCTION_NAME_WITHDRAW_STAKE
-                    )
+                    ETH_CATM_FUNCTION_NAME_WITHDRAW_STAKE -> EthereumAbiFunction(ETH_CATM_FUNCTION_NAME_WITHDRAW_STAKE)
                     ETH_CATM_FUNCTION_NAME_CREATE_STAKE -> {
                         val function = EthereumAbiFunction(ETH_CATM_FUNCTION_NAME_CREATE_STAKE)
                         function.addParamAddress(toAddress.toHexByteArray(), false)
-                        function.addParamUInt256(
-                            amountMultipliedByDivider.toBigInteger().toByteArray(), false
-                        )
+                        function.addParamUInt256(amountMultipliedByDivider.toBigInteger().toByteArray(), false)
                         function
                     }
                     else -> {
                         val function = EthereumAbiFunction(ETH_CATM_FUNCTION_NAME_TRANSFER)
                         function.addParamAddress(toAddress.toHexByteArray(), false)
-                        function.addParamUInt256(
-                            amountMultipliedByDivider.toBigInteger().toByteArray(), false
-                        )
+                        function.addParamUInt256(amountMultipliedByDivider.toBigInteger().toByteArray(), false)
                         function
                     }
                 }
@@ -235,8 +228,7 @@ class TransactionHashHelper(
                 input.toAddress = toAddress
             }
 
-            val output =
-                AnySigner.sign(input.build(), CoinType.ETHEREUM, Ethereum.SigningOutput.parser())
+            val output = AnySigner.sign(input.build(), CoinType.ETHEREUM, Ethereum.SigningOutput.parser())
             val transactionHash = Numeric.toHexString(output.encoded.toByteArray())
             Either.Right(transactionHash)
         } else {
@@ -393,8 +385,7 @@ class TransactionHashHelper(
                 it.privateKey = coinEntity.privateKey.toHexBytesInByteString()
             }.build()
 
-            val signJson =
-                AnySigner.sign(signingInput, CoinType.TRON, Tron.SigningOutput.parser()).json
+            val signJson = AnySigner.sign(signingInput, CoinType.TRON, Tron.SigningOutput.parser()).json
             val correctJson = Gson().toJson(Gson().fromJson(signJson, Trx::class.java))
             Either.Right(correctJson)
         } else {
@@ -405,6 +396,7 @@ class TransactionHashHelper(
     private companion object {
         private const val ETH_CATM_FUNCTION_NAME_TRANSFER: String = "transfer"
         private const val ETH_CATM_FUNCTION_NAME_CREATE_STAKE: String = "createStake"
+        private const val ETH_CATM_FUNCTION_NAME_CANCEL_STAKE: String = "cancelStake "
         private const val ETH_CATM_FUNCTION_NAME_WITHDRAW_STAKE: String = "withdrawStake"
     }
 }

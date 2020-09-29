@@ -8,6 +8,7 @@ import android.location.Location
 import android.location.LocationManager
 import android.view.View
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.observe
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.app.belcobtm.R
 import com.app.belcobtm.domain.wallet.LocalCoinType
@@ -64,11 +65,11 @@ class TransactionsFragment : BaseFragment() {
         }
         listView.adapter = adapter
         initChart()
-//        if (viewModel.coinCode == LocalCoinType.CATM.name) {
-//            stakingButtonView.show()
-//        } else {
-//            stakingButtonView.hide()
-//        }
+        if (viewModel.coinCode == LocalCoinType.CATM.name) {
+            stakingButtonView.show()
+        } else {
+            stakingButtonView.hide()
+        }
     }
 
     override fun initListeners() {
@@ -135,17 +136,17 @@ class TransactionsFragment : BaseFragment() {
 //
 //        tradeButtonView.setOnClickListener { tradeOpenWithPermissionCheck() }
 //
-//        stakingButtonView.setOnClickListener {
-//            if (isCorrectCoinId()) {
-//                startActivity(Intent(requireContext(), StakingActivity::class.java))
-//            } else {
-//                AlertHelper.showToastShort(
-//                    c2cExchangeButtonView.context,
-//                    "In progress. Only BTC, BCH, XRP, BNB and LTC withdraw available"
-//                )
-//            }
-//            fabMenuView.close(false)
-//        }
+        stakingButtonView.setOnClickListener {
+            if (isCorrectCoinId()) {
+                navigate(R.id.to_staking_fragment)
+            } else {
+                AlertHelper.showToastShort(
+                    c2cExchangeButtonView.context,
+                    "In progress. Only BTC, BCH, XRP, BNB and LTC withdraw available"
+                )
+            }
+            fabMenuView.close(false)
+        }
 
         fabMenuView.setOnMenuToggleListener {
             fabMenuView?.isClickable = it
@@ -167,11 +168,11 @@ class TransactionsFragment : BaseFragment() {
                 getString(R.string.text_text, it.balance.toStringCoin(), viewModel.coinCode)
             balanceUsdView.text = getString(R.string.text_usd, (it.balance * it.priceUsd).toStringUsd())
         })
-        viewModel.transactionListLiveData.observe(this, {
+        viewModel.transactionListLiveData.observe(this) {
             adapter.setItemList(it)
             swipeToRefreshView.isRefreshing = false
-        })
-        viewModel.feeLiveData.observe(this, { loadingData ->
+        }
+        viewModel.feeLiveData.observe(this) { loadingData ->
             when (loadingData) {
                 is LoadingData.Success -> {
                     sendGiftButtonView.show()
@@ -182,7 +183,7 @@ class TransactionsFragment : BaseFragment() {
                     withdrawButtonView.hide()
                 }
             }
-        })
+        }
     }
 
     @SuppressLint("MissingPermission")
