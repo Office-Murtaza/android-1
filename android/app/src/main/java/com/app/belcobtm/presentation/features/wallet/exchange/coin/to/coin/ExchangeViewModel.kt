@@ -16,9 +16,13 @@ class ExchangeViewModel(
     val coinFeeItemList: Map<String, CoinFeeDataItem>
 ) : ViewModel() {
     val exchangeLiveData: MutableLiveData<LoadingData<Unit>> = MutableLiveData()
-    var toCoinItem: CoinDataItem? = coinItemList.first { it.code != fromCoinItem.code }
-    var toCoinFeeItem: CoinFeeDataItem? =
-        coinFeeItemList[toCoinItem?.code ?: LocalCoinType.BTC.name]
+    var toCoinItem: CoinDataItem? = null
+    var toCoinFeeItem: CoinFeeDataItem? = null
+
+    init {
+        toCoinItem = coinItemList.firstOrNull { it.code != fromCoinItem.code }
+        toCoinFeeItem = toCoinItem?.code?.let { coinFeeItemList[it] }
+    }
 
     fun exchange(fromCoinAmount: Double) {
         val toCoinAmount: Double = getCoinToAmount(fromCoinAmount)

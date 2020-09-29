@@ -51,11 +51,7 @@ class SettingsRepositoryImpl(
 
     override suspend fun sendVerificationVip(
         vipDataItem: VerificationVipDataItem
-    ): Either<Failure, Unit> = if (networkUtils.isNetworkAvailable()) {
-        apiService.sendVerificationVip(prefHelper.userId, vipDataItem)
-    } else {
-        Either.Left(Failure.NetworkConnection)
-    }
+    ): Either<Failure, Unit> = apiService.sendVerificationVip(prefHelper.userId, vipDataItem)
 
     override suspend fun unlink(): Either<Failure, Boolean> =
         if (networkUtils.isNetworkAvailable()) {

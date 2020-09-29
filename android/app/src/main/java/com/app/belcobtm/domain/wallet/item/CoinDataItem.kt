@@ -11,5 +11,6 @@ data class CoinDataItem(
     val reservedBalanceCoin: Double,
     val reservedBalanceUsd: Double,
     val code: String,
-    val publicKey: String
+    val publicKey: String,
+    val isEnabled: Boolean = true
 ) : Parcelable

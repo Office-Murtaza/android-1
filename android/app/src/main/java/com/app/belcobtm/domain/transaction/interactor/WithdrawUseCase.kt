@@ -9,8 +9,8 @@ class WithdrawUseCase(
     private val repository: TransactionRepository
 ) :
     UseCase<Unit, WithdrawUseCase.Params>() {
-    override suspend fun run(params: Params): Either<Failure, Unit> =
-        repository.withdraw(params.fromCoin, params.fromCoinAmount, params.toAddress)
+
+    override suspend fun run(params: Params): Either<Failure, Unit> = repository.withdraw(params.fromCoin, params.fromCoinAmount, params.toAddress)
 
     data class Params(
         val fromCoin: String,
