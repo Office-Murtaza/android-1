@@ -576,7 +576,7 @@ public class TransactionService {
                         submit.setHex(hex);
                         submit.setFromAddress(fromAddress);
                         submit.setToAddress(toAddress);
-                        submit.setCryptoAmount(t.getRefAmount());
+                        submit.setCryptoAmount(withdrawAmount);
 
                         String txId = coinCode.submitTransaction(submit);
 
@@ -585,7 +585,7 @@ public class TransactionService {
                             rec.setTxId(txId);
                             rec.setIdentity(identity);
                             rec.setCoin(coinCode.getCoinEntity());
-                            rec.setAmount(t.getRefAmount());
+                            rec.setAmount(withdrawAmount);
                             rec.setType(TransactionType.RECEIVE_C2C.getValue());
                             rec.setStatus(TransactionStatus.PENDING.getValue());
                             rec.setProfit(t.getProfit());
