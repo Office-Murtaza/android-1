@@ -209,7 +209,7 @@ class CoinDetailsUsecaseImpl: CoinDetailsUsecase {
                            amount: amount,
                            fee: coinSettings.txFee,
                            fromAddress: fromCoin.address,
-                           toAddress: coinSettings.contractAddress,
+                           toAddress: fromCoin.type == .catm ? coinSettings.contractAddress : coinSettings.walletAddress,
                            toCoinType: toCoinType,
                            toCoinAmount: toCoinAmount,
                            transactionResultString: transactionResultString)
