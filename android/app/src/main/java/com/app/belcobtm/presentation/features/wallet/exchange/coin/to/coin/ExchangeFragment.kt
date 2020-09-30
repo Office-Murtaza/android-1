@@ -137,8 +137,12 @@ class ExchangeFragment : BaseFragment() {
         amountCoinFromView?.editText?.addTextChangedListener(doubleTextWatcher.firstTextWatcher)
         maxCoinFromView.setOnClickListener { amountCoinFromView.setText(viewModel.getMaxValue().toStringCoin()) }
         nextButtonView.setOnClickListener {
-            amountCoinFromView.clearError()
-            viewModel.exchange(amountCoinFromView.getString().toDouble())
+            if (viewModel.isNotEnoughBalanceETH()) {
+                amountCoinFromView.showError(R.string.withdraw_screen_where_money_libovski)
+            } else {
+                amountCoinFromView.clearError()
+                viewModel.exchange(amountCoinFromView.getString().toDouble())
+            }
         }
     }
 

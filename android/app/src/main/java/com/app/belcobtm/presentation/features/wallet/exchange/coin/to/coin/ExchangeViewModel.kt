@@ -46,4 +46,8 @@ class ExchangeViewModel(
         LocalCoinType.XRP.name -> max(0.0, fromCoinItem.balanceCoin - fromCoinFeeItem.txFee - 20)
         else -> max(0.0, fromCoinItem.balanceCoin) - fromCoinFeeItem.txFee
     }
+
+    fun isNotEnoughBalanceETH(): Boolean =
+        fromCoinItem.code == LocalCoinType.CATM.name &&
+                coinItemList.find { LocalCoinType.ETH.name == it.code }?.balanceCoin ?: 0.0 < fromCoinFeeItem.txFee
 }
