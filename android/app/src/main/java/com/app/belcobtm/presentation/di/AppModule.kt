@@ -49,15 +49,13 @@ val viewModelModule = module {
         val coinList = (get() as GetCoinListUseCase).invoke()
         val filteredCoinList = coinList.filter { it.isEnabled }
         val fromCoinDataItem = coinList.find { it.code == coinCode }!!
-        val feeMap = get<WalletRepository>().getCoinFeeMap()
-        val fromCoinFee = feeMap[coinCode] ?: error("")
+        val fromCoinFee = get<WalletRepository>().getCoinFeeMap()[coinCode] ?: error("")
 
         ExchangeViewModel(
             get(),
             fromCoinDataItem,
             filteredCoinList,
-            fromCoinFee,
-            feeMap
+            fromCoinFee
         )
     }
     viewModel { ManageWalletsViewModel(get(), get()) }

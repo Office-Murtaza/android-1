@@ -169,10 +169,15 @@ class TransactionRepositoryImpl(
         coinTo: String
     ): Either<Failure, Unit> {
         val coinType = LocalCoinType.valueOf(fromCoin)
-        val toAddress = prefHelper.coinsFee[fromCoin]?.walletAddress ?: ""
+        val toAddress: String = if (fromCoin == LocalCoinType.CATM.name) {
+            prefHelper.coinsFee[fromCoin]?.contractAddress
+        } else {
+            prefHelper.coinsFee[fromCoin]?.walletAddress
+        } ?: ""
         val hashResponse =
             transactionHashRepository.createTransactionHash(coinType, fromCoinAmount, toAddress)
         return if (hashResponse.isRight) {
+            val toAddressSend = prefHelper.coinsFee[fromCoin]?.walletAddress ?: ""
             val fee = prefHelper.coinsFee[fromCoin]?.txFee ?: 0.0
             val fromAddress = daoAccount.getItem(fromCoin).publicKey
             val hash = (hashResponse as Either.Right).b
@@ -184,7 +189,7 @@ class TransactionRepositoryImpl(
                 hash,
                 fee,
                 fromAddress,
-                toAddress
+                toAddressSend
             )
         } else {
             hashResponse as Either.Left
@@ -371,7 +376,10 @@ class TransactionRepositoryImpl(
         coinCode: String,
         cryptoAmount: Double
     ): Either<Failure, String> = if (networkUtils.isNetworkAvailable()) {
-        transactionHashRepository.createTransactionStakeHash(cryptoAmount, prefHelper.coinsFee[coinCode]?.walletAddress ?: "")
+        transactionHashRepository.createTransactionStakeHash(
+            cryptoAmount,
+            prefHelper.coinsFee[coinCode]?.walletAddress ?: ""
+        )
     } else {
         Either.Left(Failure.NetworkConnection)
     }
@@ -393,7 +401,10 @@ class TransactionRepositoryImpl(
         coinCode: String,
         cryptoAmount: Double
     ): Either<Failure, String> = if (networkUtils.isNetworkAvailable()) {
-        transactionHashRepository.createTransactionStakeCancelHash(cryptoAmount, prefHelper.coinsFee[coinCode]?.walletAddress ?: "")
+        transactionHashRepository.createTransactionStakeCancelHash(
+            cryptoAmount,
+            prefHelper.coinsFee[coinCode]?.walletAddress ?: ""
+        )
     } else {
         Either.Left(Failure.NetworkConnection)
     }
@@ -415,7 +426,10 @@ class TransactionRepositoryImpl(
         coinCode: String,
         cryptoAmount: Double
     ): Either<Failure, String> = if (networkUtils.isNetworkAvailable()) {
-        transactionHashRepository.createTransactionUnStakeHash(cryptoAmount, prefHelper.coinsFee[coinCode]?.walletAddress ?: "")
+        transactionHashRepository.createTransactionUnStakeHash(
+            cryptoAmount,
+            prefHelper.coinsFee[coinCode]?.walletAddress ?: ""
+        )
     } else {
         Either.Left(Failure.NetworkConnection)
     }

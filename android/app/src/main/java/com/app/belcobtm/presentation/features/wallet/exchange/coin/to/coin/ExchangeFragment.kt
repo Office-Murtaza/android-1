@@ -10,11 +10,6 @@ import com.app.belcobtm.presentation.core.ui.fragment.BaseFragment
 import com.app.belcobtm.presentation.core.watcher.DoubleTextWatcher
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.android.synthetic.main.fragment_exchange.*
-import kotlinx.android.synthetic.main.fragment_exchange.balanceCryptoView
-import kotlinx.android.synthetic.main.fragment_exchange.balanceUsdView
-import kotlinx.android.synthetic.main.fragment_exchange.nextButtonView
-import kotlinx.android.synthetic.main.fragment_exchange.priceUsdView
-import kotlinx.android.synthetic.main.fragment_withdraw.*
 import org.koin.android.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
@@ -27,7 +22,7 @@ class ExchangeFragment : BaseFragment() {
         maxCharsAfterDotSecond = DoubleTextWatcher.MAX_CHARS_AFTER_DOT_CRYPTO,
         firstTextWatcher = { editable ->
             val fromCoinAmountTemporary = editable.getDouble()
-            val fromMaxValue = getMaxValueFromCoin()
+            val fromMaxValue = viewModel.getMaxValue()
             val cryptoAmount: Double
 
             if (fromCoinAmountTemporary >= fromMaxValue) {
@@ -134,16 +129,15 @@ class ExchangeFragment : BaseFragment() {
                     )
                     viewModel.toCoinItem =
                         viewModel.coinItemList.find { it.code == selectedItem.name }
-                    viewModel.toCoinFeeItem =
-                        viewModel.coinFeeItemList[selectedItem.name]
                     amountCoinFromView?.editText?.setText(amountCoinFromView.getString())
                 }
                 .create()
                 .show()
         }
         amountCoinFromView?.editText?.addTextChangedListener(doubleTextWatcher.firstTextWatcher)
-        maxCoinFromView.setOnClickListener { amountCoinFromView.setText(getMaxValueFromCoin().toStringCoin()) }
+        maxCoinFromView.setOnClickListener { amountCoinFromView.setText(viewModel.getMaxValue().toStringCoin()) }
         nextButtonView.setOnClickListener {
+            amountCoinFromView.clearError()
             viewModel.exchange(amountCoinFromView.getString().toDouble())
         }
     }
@@ -163,7 +157,7 @@ class ExchangeFragment : BaseFragment() {
                     }
                     is Failure.ServerError -> showErrorServerError()
                     is Failure.XRPLowAmountToSend -> {
-                        amountCryptoView.showError(R.string.error_xrp_amount_is_not_enough)
+                        amountCoinFromView.showError(R.string.error_xrp_amount_is_not_enough)
                         showContent()
                     }
                     else -> showErrorSomethingWrong()
@@ -171,7 +165,4 @@ class ExchangeFragment : BaseFragment() {
             }
         )
     }
-
-    private fun getMaxValueFromCoin(): Double =
-        viewModel.fromCoinItem.balanceCoin - viewModel.fromCoinFeeItem.txFee
 }
