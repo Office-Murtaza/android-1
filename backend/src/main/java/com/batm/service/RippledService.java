@@ -160,7 +160,15 @@ public class RippledService {
                 dto.setFromAddress(tx.optString("Account"));
                 dto.setToAddress(tx.optString("Destination"));
                 dto.setType(TransactionType.getType(dto.getFromAddress(), dto.getToAddress(), address));
-                dto.setStatus(getStatus(tx.optJSONObject("meta").optString("TransactionResult")));
+
+                JSONObject meta = tx.optJSONObject("meta");
+
+                if(meta != null) {
+                    dto.setStatus(getStatus(meta.optString("TransactionResult")));
+                } else {
+                    dto.setStatus(TransactionStatus.FAIL);
+                }
+
                 dto.setDate2(new Date((tx.optLong("date") + 946684800L) * 1000));
             } catch (ResourceAccessException rae) {
                 isNodeAvailable = false;
@@ -278,7 +286,11 @@ public class RippledService {
     }
 
     private BigDecimal getAmount(String amount) {
-        return new BigDecimal(amount).divide(XRP_DIVIDER).stripTrailingZeros();
+        if(StringUtils.isNotBlank(amount)) {
+            return new BigDecimal(amount).divide(XRP_DIVIDER).stripTrailingZeros();
+        }
+
+        return BigDecimal.ZERO;
     }
 
     private boolean isTransactionExist(String txId) {
