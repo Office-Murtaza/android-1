@@ -9,11 +9,12 @@ enum class TransactionType(val code: Int) {
     BUY(5),
     SELL(6),
     MOVE(7),
-    SEND_EXCHANGE(8),
-    RECEIVE_EXCHANGE(9),
+    EXCHANGE_SEND(8),
+    EXCHANGE_RECEIVE(9),
     RESERVE(10),
     RECALL(11),
     SELF(12),
-    STAKE(13),
-    UNSTAKE(14)
+    STAKE_CREATE(13),
+    STAKE_CANCEL(14),
+    STAKE_WITHDRAW(15)
 }

@@ -196,29 +196,29 @@
         app:menu_labels_showAnimation="@anim/fab_scale_up"
         app:menu_labels_textColor="#58585a">
 
-                <com.github.clans.fab.FloatingActionButton
-                    android:id="@+id/stakingButtonView"
-                    style="@style/TransactionsScreen.FloatingActionButtonChild"
-                    android:src="@drawable/ic_money"
-                    app:fab_label="@string/transitions_staking" />
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/stakingButtonView"
+            style="@style/TransactionsScreen.FloatingActionButtonChild"
+            android:src="@drawable/ic_money"
+            app:fab_label="@string/transitions_staking" />
 
-                <com.github.clans.fab.FloatingActionButton
-                    android:id="@+id/tradeButtonView"
-                    style="@style/TransactionsScreen.FloatingActionButtonChild"
-                    android:src="@drawable/ic_trade"
-                    app:fab_label="@string/transitions_trade" />
+        <!--        <com.github.clans.fab.FloatingActionButton-->
+        <!--            android:id="@+id/tradeButtonView"-->
+        <!--            style="@style/TransactionsScreen.FloatingActionButtonChild"-->
+        <!--            android:src="@drawable/ic_trade"-->
+        <!--            app:fab_label="@string/transitions_trade" />-->
 
-                <com.github.clans.fab.FloatingActionButton
-                    android:id="@+id/c2cExchangeButtonView"
-                    style="@style/TransactionsScreen.FloatingActionButtonChild"
-                    android:src="@drawable/ic_exchange"
-                    app:fab_label="@string/transitions_exchange" />
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/c2cExchangeButtonView"
+            style="@style/TransactionsScreen.FloatingActionButtonChild"
+            android:src="@drawable/ic_exchange"
+            app:fab_label="@string/transitions_exchange" />
 
-                <com.github.clans.fab.FloatingActionButton
-                    android:id="@+id/sellButtonView"
-                    style="@style/TransactionsScreen.FloatingActionButtonChild"
-                    android:src="@drawable/ic_shopping_cart"
-                    app:fab_label="@string/sell" />
+        <!--        <com.github.clans.fab.FloatingActionButton-->
+        <!--            android:id="@+id/sellButtonView"-->
+        <!--            style="@style/TransactionsScreen.FloatingActionButtonChild"-->
+        <!--            android:src="@drawable/ic_shopping_cart"-->
+        <!--            app:fab_label="@string/sell" />-->
 
         <com.github.clans.fab.FloatingActionButton
             android:id="@+id/sendGiftButtonView"
