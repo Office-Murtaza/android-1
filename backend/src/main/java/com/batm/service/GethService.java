@@ -15,6 +15,7 @@ import com.mongodb.bulk.BulkWriteResult;
 import com.mongodb.client.model.FindOneAndUpdateOptions;
 import com.mongodb.client.model.UpdateOneModel;
 import lombok.Getter;
+import net.sf.json.JSONObject;
 import org.apache.commons.lang3.StringUtils;
 import org.bson.Document;
 import org.bson.types.Decimal128;
@@ -31,6 +32,7 @@ import org.web3j.protocol.core.DefaultBlockParameterName;
 import org.web3j.protocol.core.DefaultBlockParameterNumber;
 import org.web3j.protocol.core.methods.response.*;
 import org.web3j.protocol.http.HttpService;
+import org.web3j.tuples.generated.Tuple2;
 import org.web3j.tx.gas.DefaultGasProvider;
 import org.web3j.utils.Numeric;
 import wallet.core.java.AnySigner;
@@ -42,6 +44,7 @@ import wallet.core.jni.proto.Ethereum;
 
 import javax.annotation.PostConstruct;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.net.ConnectException;
 import java.util.*;
 
@@ -451,17 +454,83 @@ public class GethService {
         return mongo.getCollection(ADDRESS_COLL).find(new Document("$or", or)).iterator().hasNext();
     }
 
-    public CoinSettingsDTO getCoinSettings(Coin coin, String walletAddress) {
+    public CoinSettingsDTO getCoinSettings(Coin coin, Long gasLimit, Long gasPrice, String walletAddress) {
         CoinSettingsDTO dto = new CoinSettingsDTO();
         dto.setProfitExchange(coin.getProfitExchange().stripTrailingZeros());
-        dto.setGasLimit(coin.getGasLimit());
-        dto.setGasPrice(coin.getGasPrice());
+        dto.setGasLimit(gasLimit);
+        dto.setGasPrice(gasPrice);
         dto.setTxFee(calculateFee(dto.getGasLimit(), dto.getGasPrice()));
         dto.setRecallFee(coin.getRecallFee());
         dto.setWalletAddress(walletAddress);
         dto.setContractAddress(contractAddress);
 
         return dto;
+    }
+
+    public Long getEthGasLimit(String walletAddress) {
+        if (isNodeAvailable) {
+            try {
+                return (long) (web3.ethEstimateGas(org.web3j.protocol.core.methods.request.Transaction.createEthCallTransaction(null, walletAddress, null)).send().getAmountUsed().longValue() * 1.25);
+            } catch (ConnectException ce) {
+                isNodeAvailable = false;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        return null;
+    }
+
+    public Long getTokenGasLimit() {
+        if (isNodeAvailable) {
+            try {
+                return (long) (web3.ethEstimateGas(org.web3j.protocol.core.methods.request.Transaction.createEthCallTransaction(null, contractAddress, null)).send().getAmountUsed().longValue() * 1.25);
+            } catch (ConnectException ce) {
+                isNodeAvailable = false;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        return null;
+    }
+
+    public Long getGasPrice() {
+        if (isNodeAvailable) {
+            try {
+                return (long) (web3.ethGasPrice().send().getGasPrice().longValue() * 1.25);
+            } catch (ConnectException ce) {
+                isNodeAvailable = false;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        return null;
+    }
+
+    public JSONObject getStakeDetails(String address) {
+        JSONObject json = new JSONObject();
+        json.put("isStakeholder", false);
+
+        try {
+            json.put("isStakeholder", token.isStakeholder(address).send().component1());
+        } catch (Exception e) {
+        }
+
+        try {
+            json.put("amount", token.stakeOf(address).send().intValue());
+        } catch (Exception e) {
+        }
+
+        try {
+            Tuple2<BigInteger, BigInteger> tuple2 = token.stakeDetails(address).send();
+            json.put("startDate", tuple2.component1());
+            json.put("cancelDate", tuple2.component2());
+        } catch (Exception e) {
+        }
+
+        return json;
     }
 
     private String convertAddress32BytesTo20Bytes(String address32Bytes) {

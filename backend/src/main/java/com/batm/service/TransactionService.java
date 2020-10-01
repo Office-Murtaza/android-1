@@ -64,21 +64,22 @@ public class TransactionService {
         Coin coin = coinCode.getCoinEntity();
 
         TransactionDetailsDTO dto = new TransactionDetailsDTO();
-        Optional<TransactionRecord> buySellTx;
+        Optional<TransactionRecord> buySellRecOpt;
 
         if (org.apache.commons.lang.StringUtils.isNumeric(txId)) {  /** consider as txDbId */
-            buySellTx = recordRep.findById(Long.valueOf(txId));
+            buySellRecOpt = recordRep.findById(Long.valueOf(txId));
         } else {                                                    /** consider as txId */
             String address = user.getUserCoin(coinCode.name()).getAddress();
             dto = coinCode.getTransaction(txId, address);
-            buySellTx = recordRep.findOneByIdentityAndDetailAndCryptoCurrency(user.getIdentity(), txId, coinCode.name());
+            buySellRecOpt = recordRep.findOneByIdentityAndDetailAndCryptoCurrency(user.getIdentity(), txId, coinCode.name());
         }
 
-        Optional<TransactionRecordWallet> giftTx = walletRep.findFirstByIdentityAndCoinAndTxIdAndTypeIn(identity, coin, txId, Arrays.asList(TransactionType.SEND_GIFT.getValue(), TransactionType.RECEIVE_GIFT.getValue()));
-        Optional<TransactionRecordWallet> exchangeTx = walletRep.findFirstByIdentityAndCoinAndTxIdAndTypeIn(identity, coin, txId, Arrays.asList(TransactionType.SEND_C2C.getValue(), TransactionType.RECEIVE_C2C.getValue()));
+        Optional<TransactionRecordWallet> giftRecOpt = walletRep.findFirstByIdentityAndCoinAndTxIdAndTypeIn(identity, coin, txId, Arrays.asList(TransactionType.SEND_GIFT.getValue(), TransactionType.RECEIVE_GIFT.getValue()));
+        Optional<TransactionRecordWallet> exchangeRecOpt = walletRep.findFirstByIdentityAndCoinAndTxIdAndTypeIn(identity, coin, txId, Arrays.asList(TransactionType.SEND_C2C.getValue(), TransactionType.RECEIVE_C2C.getValue()));
+        Optional<TransactionRecordWallet> stakeRecOpt = walletRep.findFirstByIdentityAndCoinAndTxIdAndTypeIn(identity, coin, txId, Arrays.asList(TransactionType.CREATE_STAKE.getValue(), TransactionType.CANCEL_STAKE.getValue(), TransactionType.WITHDRAW_STAKE.getValue()));
 
-        if (giftTx.isPresent()) {
-            TransactionRecordWallet gift = giftTx.get();
+        if (giftRecOpt.isPresent()) {
+            TransactionRecordWallet gift = giftRecOpt.get();
 
             if (gift.getType() == TransactionType.SEND_GIFT.getValue()) {
                 dto.setToPhone(gift.getToPhone());
@@ -89,8 +90,8 @@ public class TransactionService {
             dto.setImageId(gift.getImageId());
             dto.setMessage(gift.getMessage());
             dto.setType(TransactionType.convert(dto.getType(), TransactionType.valueOf(gift.getType())));
-        } else if (exchangeTx.isPresent()) {
-            TransactionRecordWallet exchange = exchangeTx.get();
+        } else if (exchangeRecOpt.isPresent()) {
+            TransactionRecordWallet exchange = exchangeRecOpt.get();
 
             String code = exchange.getRefCoin().getCode();
             dto.setRefTxId(exchange.getRefTxId());
@@ -98,8 +99,8 @@ public class TransactionService {
             dto.setRefCoin(code);
             dto.setRefCryptoAmount(exchange.getRefAmount());
             dto.setType(TransactionType.convert(dto.getType(), TransactionType.valueOf(exchange.getType())));
-        } else if (buySellTx.isPresent()) {
-            TransactionRecord buySell = buySellTx.get();
+        } else if (buySellRecOpt.isPresent()) {
+            TransactionRecord buySell = buySellRecOpt.get();
 
             //return either txId or txDbId
             if (StringUtils.isBlank(dto.getTxId())) {
@@ -124,6 +125,8 @@ public class TransactionService {
                         + "&label=" + buySell.getRemoteTransactionId()
                         + "&uuid=" + buySell.getUuid());
             }
+        } else if (stakeRecOpt.isPresent()) {
+            dto.setType(TransactionType.valueOf(stakeRecOpt.get().getType()));
         }
 
         return dto;

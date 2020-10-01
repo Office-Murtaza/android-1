@@ -334,9 +334,7 @@ public class CoinService {
 
             @Override
             public String sign(String fromAddress, String toAddress, BigDecimal amount) {
-                Coin coin = getCoinEntity();
-
-                return geth.ethSign(fromAddress, toAddress, amount, coin.getGasLimit(), coin.getGasPrice());
+                return geth.ethSign(fromAddress, toAddress, amount, geth.getEthGasLimit(toAddress), geth.getGasPrice());
             }
 
             @Override
@@ -361,7 +359,7 @@ public class CoinService {
 
             @Override
             public CoinSettingsDTO getCoinSettings() {
-                return geth.getCoinSettings(getCoinEntity(), getWalletAddress());
+                return geth.getCoinSettings(getCoinEntity(), geth.getEthGasLimit(getWalletAddress()), geth.getGasPrice(), getWalletAddress());
             }
 
             @Override
@@ -432,9 +430,7 @@ public class CoinService {
 
             @Override
             public String sign(String fromAddress, String toAddress, BigDecimal amount) {
-                Coin coin = getCoinEntity();
-
-                return geth.tokenSign(fromAddress, toAddress, amount, coin.getGasLimit(), coin.getGasPrice());
+                return geth.tokenSign(fromAddress, toAddress, amount, geth.getTokenGasLimit(), geth.getGasPrice());
             }
 
             @Override
@@ -459,7 +455,7 @@ public class CoinService {
 
             @Override
             public CoinSettingsDTO getCoinSettings() {
-                return geth.getCoinSettings(getCoinEntity(), getWalletAddress());
+                return geth.getCoinSettings(getCoinEntity(), geth.getTokenGasLimit(), geth.getGasPrice(), getWalletAddress());
             }
 
             @Override

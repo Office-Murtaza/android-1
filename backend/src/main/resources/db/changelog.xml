@@ -325,4 +325,11 @@
                  splitStatements="true"
                  stripComments="true"/>
     </changeSet>
+    <changeSet id="47" author="Kostya" failOnError="false">
+        <sqlFile encoding="utf8"
+                 endDelimiter=";"
+                 path="db/update/drop_gas_price_and_gas_limit_from_coin.sql"
+                 splitStatements="true"
+                 stripComments="true"/>
+    </changeSet>
 </databaseChangeLog>

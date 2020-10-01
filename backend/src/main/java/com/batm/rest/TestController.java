@@ -23,6 +23,9 @@ public class TestController {
     @Autowired
     private WalletService walletService;
 
+    @Autowired
+    private GethService gethService;
+
     @GetMapping("/sms")
     public Response sendSMS(@RequestParam String phone) {
         return Response.ok(twilioService.sendMessage(phone, "This is a test message"));
@@ -42,6 +45,11 @@ public class TestController {
         res.put("TRX", getCoinJson(walletService.getAddressTRX(), CoinService.CoinEnum.TRX.getBalance(walletService.getAddressTRX()), CoinType.TRON.derivationPath()));
 
         return Response.ok(res);
+    }
+
+    @GetMapping("/stake-details")
+    public Response getStakeDetails(@RequestParam String address) {
+        return Response.ok(gethService.getStakeDetails(address));
     }
 
     @GetMapping("/coin/{coin}/price")
