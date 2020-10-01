@@ -274,6 +274,7 @@
     <string name="withdraw_screen_balance">Balance</string>
     <string name="withdraw_screen_recipient_address">Recipient address</string>
     <string name="withdraw_screen_where_money_libovski">Insufficient ETH balance for transaction fee</string>
+    <string name="withdraw_screen_max_exceeded">Max amount exceeded</string>
 
     <!-- Sell screen -->
     <string name="sell_screen_price">Price</string>
