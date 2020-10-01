@@ -6,21 +6,26 @@ import android.content.Context
 import android.content.Intent
 import android.location.Location
 import android.location.LocationManager
+import android.view.Menu
 import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.observe
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.app.belcobtm.R
 import com.app.belcobtm.domain.wallet.LocalCoinType
-import com.app.belcobtm.presentation.core.extensions.*
-import com.app.belcobtm.presentation.core.helper.AlertHelper
+import com.app.belcobtm.presentation.core.extensions.setDrawableStart
+import com.app.belcobtm.presentation.core.extensions.toStringCoin
+import com.app.belcobtm.presentation.core.extensions.toStringUsd
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
 import com.app.belcobtm.presentation.core.ui.fragment.BaseFragment
 import com.app.belcobtm.presentation.features.wallet.trade.main.TradeActivity
+import com.app.belcobtm.presentation.features.wallet.transactions.TransactionsFABType.*
 import com.app.belcobtm.presentation.features.wallet.transactions.adapter.TransactionsAdapter
+import com.app.belcobtm.ui.main.coins.sell.SellActivity
 import com.github.mikephil.charting.data.BarEntry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
+import io.github.kobakei.materialfabspeeddial.FabSpeedDialMenu
 import kotlinx.android.synthetic.main.fragment_transactions.*
 import org.koin.android.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
@@ -66,20 +71,31 @@ class TransactionsFragment : BaseFragment() {
         onRequestPermissionsResult(requestCode, grantResults)
     }
 
+    private fun initFabMenu() {
+        val groupId = Menu.FIRST
+        val menu = FabSpeedDialMenu(requireContext())
+        if (viewModel.coinCode == LocalCoinType.CATM.name) {
+            menu.add(groupId, STAKING.id, STAKING.ordinal, STAKING.resText).setIcon(STAKING.resIcon)
+        }
+//        menu.add(groupId, TRADE.id, TRADE.ordinal, TRADE.resText).setIcon(TRADE.resIcon)
+        menu.add(groupId, EXCHANGE.id, EXCHANGE.ordinal, EXCHANGE.resText).setIcon(EXCHANGE.resIcon)
+//        menu.add(groupId, SELL.id, SELL.ordinal, SELL.resText).setIcon(SELL.resIcon)
+        menu.add(groupId, SEND_GIFT.id, SEND_GIFT.ordinal, SEND_GIFT.resText).setIcon(SEND_GIFT.resIcon)
+        menu.add(groupId, WITHDRAW.id, WITHDRAW.ordinal, WITHDRAW.resText).setIcon(WITHDRAW.resIcon)
+        menu.add(groupId, DEPOSIT.id, DEPOSIT.ordinal, DEPOSIT.resText).setIcon(DEPOSIT.resIcon)
+        fabListView.setMenu(menu)
+    }
+
     override fun initViews() {
         setToolbarTitle(LocalCoinType.valueOf(viewModel.coinCode).fullName)
+        initFabMenu()
+        initChart()
+        listView.adapter = adapter
         ContextCompat.getDrawable(listView.context, R.drawable.bg_divider)?.let {
             val dividerItemDecoration =
                 DividerItemDecoration(listView.context, DividerItemDecoration.VERTICAL)
             dividerItemDecoration.setDrawable(it)
             listView.addItemDecoration(dividerItemDecoration)
-        }
-        listView.adapter = adapter
-        initChart()
-        if (viewModel.coinCode == LocalCoinType.CATM.name) {
-            stakingButtonView.show()
-        } else {
-            stakingButtonView.hide()
         }
     }
 
@@ -95,90 +111,22 @@ class TransactionsFragment : BaseFragment() {
             updateChartByPeriod()
         }
         swipeToRefreshView.setOnRefreshListener { viewModel.refreshTransactionList() }
-        depositButtonView.setOnClickListener {
-            showDepositDialog()
-            fabMenuView.close(true)
-        }
-        withdrawButtonView.setOnClickListener {
-            if (isCorrectCoinId()) {
-                navigate(
-                    TransactionsFragmentDirections.toWithdrawFragment(
-                        viewModel.coinDataItem?.code ?: ""
-                    )
-                )
-            } else {
-                AlertHelper.showToastShort(
-                    withdrawButtonView.context,
-                    "In progress. Only BTC, BCH, XRP, BNB and LTC withdraw available"
-                )
-            }
-            fabMenuView.close(false)
-        }
-        sendGiftButtonView.setOnClickListener {
-            if (isCorrectCoinId()) {
-                navigate(
-                    TransactionsFragmentDirections.toSendGiftFragment(
-                        viewModel.coinDataItem?.code ?: ""
-                    )
-                )
-            } else {
-                AlertHelper.showToastShort(
-                    sendGiftButtonView.context,
-                    "In progress. Only BTC, BCH, XRP, BNB and LTC withdraw available"
-                )
-            }
-            fabMenuView.close(false)
-        }
 
-//        sellButtonView.setOnClickListener {
-//            if (isCorrectCoinId()) {
-//                SellActivity.start(requireContext(), viewModel.coinDataItem, viewModel.coinDataItemList)
-//            } else {
-//                AlertHelper.showToastShort(
-//                    sellButtonView.context,
-//                    "In progress. Only BTC, BCH, XRP, BNB and LTC withdraw available"
-//                )
-//            }
-//            fabMenuView.close(false)
-//        }
-        c2cExchangeButtonView.setOnClickListener {
-            if (isCorrectCoinId()) {
-                navigate(
-                    TransactionsFragmentDirections.toExchangeFragment(
-                        viewModel.coinDataItem?.code ?: ""
-                    )
+        fabListView.addOnMenuItemClickListener { _, _, itemId ->
+            when (itemId) {
+                STAKING.id -> TransactionsFragmentDirections.toStakingFragment()
+                TRADE.id -> tradeOpenWithPermissionCheck()
+                EXCHANGE.id -> navigate(
+                    TransactionsFragmentDirections.toExchangeFragment(viewModel.coinDataItem?.code ?: "")
                 )
-            } else {
-                AlertHelper.showToastShort(
-                    c2cExchangeButtonView.context,
-                    "In progress. Only BTC, BCH, XRP, BNB and LTC withdraw available"
+                SELL.id -> SellActivity.start(requireContext(), viewModel.coinDataItem, viewModel.coinDataItemList)
+                SEND_GIFT.id -> navigate(
+                    TransactionsFragmentDirections.toSendGiftFragment(viewModel.coinDataItem?.code ?: "")
                 )
-            }
-            fabMenuView.close(false)
-        }
-//
-//        tradeButtonView.setOnClickListener { tradeOpenWithPermissionCheck() }
-//
-        stakingButtonView.setOnClickListener {
-            if (isCorrectCoinId()) {
-                navigate(R.id.to_staking_fragment)
-            } else {
-                AlertHelper.showToastShort(
-                    c2cExchangeButtonView.context,
-                    "In progress. Only BTC, BCH, XRP, BNB and LTC withdraw available"
+                WITHDRAW.id -> navigate(
+                    TransactionsFragmentDirections.toWithdrawFragment(viewModel.coinDataItem?.code ?: "")
                 )
-            }
-            fabMenuView.close(false)
-        }
-
-        fabMenuView.setOnMenuToggleListener {
-            fabMenuView?.isClickable = it
-            if (it) {
-                fabMenuView?.setOnClickListener { fabMenuView?.close(true) }
-            } else {
-                fabMenuView?.setOnClickListener(null)
-                fabMenuView?.isClickable = false
-                fabMenuView?.isFocusable = false
+                DEPOSIT.id -> showDepositDialog()
             }
         }
     }
@@ -195,18 +143,6 @@ class TransactionsFragment : BaseFragment() {
         viewModel.transactionListLiveData.observe(this) {
             adapter.setItemList(it)
             swipeToRefreshView.isRefreshing = false
-        }
-        viewModel.feeLiveData.observe(this) { loadingData ->
-            when (loadingData) {
-                is LoadingData.Success -> {
-                    sendGiftButtonView.show()
-                    withdrawButtonView.show()
-                }
-                is LoadingData.Error -> {
-                    sendGiftButtonView.hide()
-                    withdrawButtonView.hide()
-                }
-            }
         }
     }
 
@@ -338,32 +274,15 @@ class TransactionsFragment : BaseFragment() {
     }
 
     private fun showTradeScreen(latitude: Double = 0.0, longitude: Double = 0.0) {
-        if (isCorrectCoinId()) {
-            val intent = Intent(requireContext(), TradeActivity::class.java)
-            intent.putExtra(
-                TradeActivity.TAG_COIN_CODE,
-                TransactionsFragmentArgs.fromBundle(requireArguments()).coinCode
-            )
-            intent.putExtra(TradeActivity.TAG_LATITUDE, latitude)
-            intent.putExtra(TradeActivity.TAG_LONGITUDE, longitude)
-            startActivity(intent)
-        } else {
-            AlertHelper.showToastShort(
-                fabMenuView.context,
-                "In progress. Only BTC, BCH, XRP, ETH, BNB and LTC withdraw available"
-            )
-        }
-        fabMenuView.close(false)
+        val intent = Intent(requireContext(), TradeActivity::class.java)
+        intent.putExtra(
+            TradeActivity.TAG_COIN_CODE,
+            TransactionsFragmentArgs.fromBundle(requireArguments()).coinCode
+        )
+        intent.putExtra(TradeActivity.TAG_LATITUDE, latitude)
+        intent.putExtra(TradeActivity.TAG_LONGITUDE, longitude)
+        startActivity(intent)
     }
-
-    private fun isCorrectCoinId(): Boolean = viewModel.coinCode == LocalCoinType.BTC.name
-            || viewModel.coinCode == LocalCoinType.BCH.name
-            || viewModel.coinCode == LocalCoinType.ETH.name
-            || viewModel.coinCode == LocalCoinType.LTC.name
-            || viewModel.coinCode == LocalCoinType.XRP.name
-            || viewModel.coinCode == LocalCoinType.TRX.name
-            || viewModel.coinCode == LocalCoinType.BNB.name
-            || viewModel.coinCode == LocalCoinType.CATM.name
 
     companion object {
         private const val CHART_MARGIN_END_DP = 15F

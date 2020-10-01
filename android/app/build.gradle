@@ -166,6 +166,10 @@ dependencies {
     //Charts
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
 
+    //fab list
+    implementation 'com.github.kobakei:MaterialFabSpeedDial:2.0.0'
+
+    //old fab list - for remove
     implementation 'com.github.clans:fab:1.6.4'
 
     //conflict 2020, need remove in future

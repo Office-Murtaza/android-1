@@ -179,63 +179,17 @@
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
-    <com.github.clans.fab.FloatingActionMenu
-        android:id="@+id/fabMenuView"
+    <io.github.kobakei.materialfabspeeddial.FabSpeedDial
+        android:id="@+id/fabListView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="16dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:menu_backgroundColor="#80000000"
-        app:menu_colorNormal="@color/blue_color"
-        app:menu_colorPressed="@color/chart_point"
-        app:menu_fab_size="normal"
-        app:menu_icon="@drawable/ic_add"
-        app:menu_labels_colorNormal="@android:color/white"
-        app:menu_labels_hideAnimation="@anim/fab_scale_down"
-        app:menu_labels_showAnimation="@anim/fab_scale_up"
-        app:menu_labels_textColor="#58585a">
-
-        <com.github.clans.fab.FloatingActionButton
-            android:id="@+id/stakingButtonView"
-            style="@style/TransactionsScreen.FloatingActionButtonChild"
-            android:src="@drawable/ic_money"
-            app:fab_label="@string/transitions_staking" />
-
-        <!--        <com.github.clans.fab.FloatingActionButton-->
-        <!--            android:id="@+id/tradeButtonView"-->
-        <!--            style="@style/TransactionsScreen.FloatingActionButtonChild"-->
-        <!--            android:src="@drawable/ic_trade"-->
-        <!--            app:fab_label="@string/transitions_trade" />-->
-
-        <com.github.clans.fab.FloatingActionButton
-            android:id="@+id/c2cExchangeButtonView"
-            style="@style/TransactionsScreen.FloatingActionButtonChild"
-            android:src="@drawable/ic_exchange"
-            app:fab_label="@string/transitions_exchange" />
-
-        <!--        <com.github.clans.fab.FloatingActionButton-->
-        <!--            android:id="@+id/sellButtonView"-->
-        <!--            style="@style/TransactionsScreen.FloatingActionButtonChild"-->
-        <!--            android:src="@drawable/ic_shopping_cart"-->
-        <!--            app:fab_label="@string/sell" />-->
-
-        <com.github.clans.fab.FloatingActionButton
-            android:id="@+id/sendGiftButtonView"
-            style="@style/TransactionsScreen.FloatingActionButtonChild"
-            android:src="@drawable/ic_gift"
-            app:fab_label="@string/send_gift" />
-
-        <com.github.clans.fab.FloatingActionButton
-            android:id="@+id/withdrawButtonView"
-            style="@style/TransactionsScreen.FloatingActionButtonChild"
-            android:src="@drawable/ic_publish"
-            app:fab_label="@string/withdraw" />
-
-        <com.github.clans.fab.FloatingActionButton
-            android:id="@+id/depositButtonView"
-            style="@style/TransactionsScreen.FloatingActionButtonChild"
-            android:src="@drawable/ic_file_download"
-            app:fab_label="@string/deposit" />
-    </com.github.clans.fab.FloatingActionMenu>
+        app:fab_extraMargin="-12dp"
+        app:fab_fabBackgroundColor="@color/blue_color"
+        app:fab_fabDrawable="@drawable/ic_add"
+        app:fab_fabDrawableTint="@android:color/white"
+        app:fab_miniFabBackgroundColor="@color/blue_color"
+        app:fab_miniFabDrawableTint="@android:color/white"
+        app:fab_miniFabRippleColor="#80000000"
+        app:fab_miniFabTextBackground="@drawable/bg_fab_text"
+        app:fab_miniFabTextColor="#58585a" />
 </androidx.constraintlayout.widget.ConstraintLayout>
