@@ -34,10 +34,16 @@ class StakingFragment : BaseFragment() {
         }
         stakeButtonView.setOnClickListener {
             val amount = amountCryptoView.getDouble()
-            if (viewModel.isNotEnoughETHBalanceForCATM()) {
-                showError(R.string.withdraw_screen_where_money_libovski)
-            } else {
-                viewModel.stakeCreateTransaction(amount)
+            when {
+                viewModel.isNotEnoughETHBalanceForCATM() -> {
+                    showError(R.string.withdraw_screen_where_money_libovski)
+                }
+                viewModel.getMaxValue() < amount -> {
+                    showError(R.string.withdraw_screen_max_exceeded)
+                }
+                else -> {
+                    viewModel.stakeCreateTransaction(amount)
+                }
             }
         }
         cancelButtonView.setOnClickListener {
@@ -97,7 +103,7 @@ class StakingFragment : BaseFragment() {
                         setStatusColors(R.color.staking_canceled_border, R.color.staking_canceled_background)
                         editStakeGroupView.toggle(false)
                         cancelButtonView.toggle(false)
-                        unstakeButtonView.toggle(true)
+                        unstakeButtonView.toggle(it.untilWithdraw?: 0 <= 0)
                     }
                     else -> {
                         statusTitleView.toggle(false)
