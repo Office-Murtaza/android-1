@@ -406,7 +406,7 @@ class TransactionApiService(
         Either.Left(failure)
     }
 
-    suspend fun stake(
+    suspend fun stakeCreate(
         coinCode: String,
         fromAddress: String,
         toAddress: String,

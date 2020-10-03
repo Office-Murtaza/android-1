@@ -8,6 +8,7 @@ import android.telephony.PhoneNumberUtils
 import android.text.SpannableString
 import android.text.style.UnderlineSpan
 import android.view.View
+import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.content.ContextCompat
 import com.app.belcobtm.R
 import com.app.belcobtm.domain.transaction.type.TransactionCashStatusType
@@ -19,9 +20,7 @@ import com.app.belcobtm.presentation.core.extensions.*
 import com.app.belcobtm.presentation.core.ui.fragment.BaseFragment
 import com.giphy.sdk.ui.GiphyCoreUI
 import com.giphy.sdk.ui.views.GPHMediaView
-import kotlinx.android.synthetic.main.fragment_recover_wallet.*
 import kotlinx.android.synthetic.main.fragment_transaction_details.*
-import kotlinx.android.synthetic.main.fragment_transaction_details.phoneView
 import org.koin.android.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
@@ -96,23 +95,38 @@ class TransactionDetailsFragment : BaseFragment() {
         typeView.setText(transactionType.getResText())
     }
 
+    private fun updateStatusView(textView: AppCompatTextView, textColor: Int, backgroundColor: Int, resText: Int) {
+        textView.setTextColor(ContextCompat.getColor(requireContext(), textColor))
+        textView.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), backgroundColor))
+        textView.setText(resText)
+    }
+
     private fun showStatusView(statusType: TransactionStatusType) = when (statusType) {
         TransactionStatusType.PENDING -> {
-            statusView.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.bg_status_pending))
-            statusView.setTextColor(ContextCompat.getColor(requireContext(), R.color.colorStatusPending))
-            statusView.setText(R.string.transition_details_screen_pending)
+            updateStatusView(
+                statusView,
+                R.color.colorStatusPending,
+                R.drawable.bg_status_pending,
+                R.string.transition_details_screen_pending
+            )
             statusContainerView.show()
         }
         TransactionStatusType.COMPLETE -> {
-            statusView.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.bg_status_complete))
-            statusView.setTextColor(ContextCompat.getColor(requireContext(), R.color.colorStatusComplete))
-            statusView.setText(R.string.transition_details_screen_complete)
+            updateStatusView(
+                statusView,
+                R.color.colorStatusComplete,
+                R.drawable.bg_status_complete,
+                R.string.transition_details_screen_complete
+            )
             statusContainerView.show()
         }
         TransactionStatusType.FAIL -> {
-            statusView.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.bg_status_fail))
-            statusView.setTextColor(ContextCompat.getColor(requireContext(), R.color.colorStatusFail))
-            statusView.setText(R.string.transition_details_screen_fail)
+            updateStatusView(
+                statusView,
+                R.color.colorStatusFail,
+                R.drawable.bg_status_fail,
+                R.string.transition_details_screen_fail
+            )
             statusContainerView.show()
         }
         else -> statusContainerView.hide()
@@ -120,31 +134,30 @@ class TransactionDetailsFragment : BaseFragment() {
 
     private fun showCashStatus(statusType: TransactionCashStatusType) = when (statusType) {
         TransactionCashStatusType.NOT_AVAILABLE -> {
-            cashStatusView.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.bg_status_fail))
-            cashStatusView.setTextColor(ContextCompat.getColor(requireContext(), R.color.colorStatusFail))
-            cashStatusView.setText(R.string.transition_details_screen_not_available)
+            updateStatusView(
+                cashStatusView,
+                R.color.colorStatusFail,
+                R.drawable.bg_status_fail,
+                R.string.transition_details_screen_not_available
+            )
             cashStatusContainerView.show()
         }
         TransactionCashStatusType.AVAILABLE -> {
-            cashStatusView.setBackgroundDrawable(
-                ContextCompat.getDrawable(
-                    requireContext(),
-                    R.drawable.bg_status_complete
-                )
+            updateStatusView(
+                cashStatusView,
+                R.color.colorStatusComplete,
+                R.drawable.bg_status_complete,
+                R.string.transition_details_screen_available
             )
-            cashStatusView.setTextColor(ContextCompat.getColor(requireContext(), R.color.colorStatusComplete))
-            cashStatusView.setText(R.string.transition_details_screen_available)
             cashStatusContainerView.show()
         }
         TransactionCashStatusType.WITHDRAWN -> {
-            cashStatusView.setBackgroundDrawable(
-                ContextCompat.getDrawable(
-                    requireContext(),
-                    R.drawable.bg_status_pending
-                )
+            updateStatusView(
+                cashStatusView,
+                R.color.colorStatusPending,
+                R.drawable.bg_status_pending,
+                R.string.transition_details_screen_withdrawn
             )
-            cashStatusView.setTextColor(ContextCompat.getColor(requireContext(), R.color.colorStatusPending))
-            cashStatusView.setText(R.string.transition_details_screen_withdrawn)
             cashStatusContainerView.show()
         }
         else -> cashStatusContainerView.hide()

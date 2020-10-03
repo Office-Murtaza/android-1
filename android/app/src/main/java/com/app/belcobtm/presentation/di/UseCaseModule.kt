@@ -51,11 +51,6 @@ val useCaseModule = module {
     single { TradeReserveTransactionCompleteUseCase(get()) }
     single { TradeReserveTransactionCreateUseCase(get()) }
     single { TradeRecallTransactionCreateUseCase(get()) }
-    single { StakeDetailsGetUseCase(get()) }
-    single { StakeCreateTransactionUseCase(get()) }
-    single { StakeCompleteTransactionUseCase(get()) }
-    single { UnStakeCreateTransactionUseCase(get()) }
-    single { UnStakeCompleteTransactionUseCase(get()) }
     single { GetFreshCoinUseCase(get()) }
     single { RecoverWalletUseCase(get()) }
     single { CreateSeedUseCase(get()) }
@@ -68,6 +63,8 @@ val useCaseModule = module {
     single { GetTransactionDetailsUseCase(get()) }
     single { GetCoinListUseCase(get()) }
     single { VerifyPhoneUseCase(get()) }
-    single { StakeCancelCreateTransactionUseCase(get()) }
-    single { StakeCancelCompleteTransactionUseCase(get()) }
+    single { StakeDetailsGetUseCase(get()) }
+    single { StakeCreateUseCase(get()) }
+    single { StakeCancelUseCase(get()) }
+    single { StakeWithdrawUseCase(get()) }
 }

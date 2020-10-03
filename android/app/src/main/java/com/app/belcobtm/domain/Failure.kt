@@ -8,8 +8,10 @@ import java.io.IOException
  */
 sealed class Failure : IOException() {
     object NetworkConnection : Failure()
-    object TokenError : Failure()
     object XRPLowAmountToSend : Failure()
+
+    @Deprecated("This is old realisation for activities. In [data.rest.interceptor.ResponseInterceptor] you can find broadcast that send event for [presentation.features.HostActivity].")
+    object TokenError : Failure()
 
     data class ServerError(override val message: String? = null) : Failure()
     data class MessageError(override val message: String?, val code: Int? = null) : Failure()

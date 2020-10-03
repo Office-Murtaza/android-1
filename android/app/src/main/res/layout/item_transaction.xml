@@ -11,16 +11,17 @@
     android:padding="@dimen/margin_main">
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/transaction_date"
+        android:id="@+id/dateView"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
+        android:gravity="center_vertical"
         android:lines="1"
         android:textSize="13sp"
         tools:text="12.12.2045" />
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/transaction_type"
+        android:id="@+id/typeView"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1.5"
@@ -36,20 +37,10 @@
         android:layout_weight="1.5">
 
         <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/transaction_status"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:id="@+id/statusView"
+            style="@style/Text.Status"
             android:layout_gravity="center"
-            android:gravity="center"
-            android:lines="1"
-            android:paddingStart="4dp"
-            android:paddingTop="2dp"
-            android:paddingEnd="4dp"
-            android:paddingBottom="2dp"
-            android:textSize="11sp"
-            android:textStyle="bold"
-            tools:background="@drawable/bg_status_unkown"
-            tools:ignore="SmallSp"
+            tools:background="@drawable/bg_status_unknown"
             tools:text="Complete"
             tools:textColor="@color/colorStatusUnknown" />
     </FrameLayout>
@@ -60,7 +51,7 @@
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:ellipsize="end"
-        android:gravity="end"
+        android:gravity="end|center_vertical"
         android:lines="1"
         android:textColor="#8d8d8d"
         android:textSize="13sp"

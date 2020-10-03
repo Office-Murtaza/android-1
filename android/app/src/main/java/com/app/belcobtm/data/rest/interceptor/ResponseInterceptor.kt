@@ -9,17 +9,14 @@ import com.app.belcobtm.data.rest.ApiFactory
 import com.app.belcobtm.data.rest.authorization.request.RefreshTokenRequest
 import com.app.belcobtm.data.rest.authorization.response.AuthorizationResponse
 import com.app.belcobtm.domain.Failure
-import com.app.belcobtm.domain.authorization.AuthorizationRepository
 import com.squareup.moshi.Moshi
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.runBlocking
 import okhttp3.*
-import org.json.JSONException
 import org.json.JSONObject
 import java.net.HttpURLConnection
 
 
 class ResponseInterceptor(
+    @Deprecated("Need change to simple listener")
     private val broadcastManager: LocalBroadcastManager,
     private val networkUtils: NetworkUtils,
     private val prefsHelper: SharedPreferencesHelper
