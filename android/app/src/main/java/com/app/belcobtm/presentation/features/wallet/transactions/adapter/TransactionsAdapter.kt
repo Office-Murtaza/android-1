@@ -3,6 +3,7 @@ package com.app.belcobtm.presentation.features.wallet.transactions.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -35,37 +36,12 @@ class TransactionsAdapter(
         val context = holder.itemView.context
         val item = itemList[position]
 
-        val transactionStatusBgId: Int
-        val transactionStatusTextId: Int
-        val transactionStatusTextColor: Int
-        when (item.status) {
-            TransactionStatusType.PENDING -> {
-                transactionStatusBgId = R.drawable.bg_status_pending
-                transactionStatusTextId = R.string.transaction_status_pending
-                transactionStatusTextColor = R.color.colorStatusPending
-            }
-            TransactionStatusType.COMPLETE -> {
-                transactionStatusBgId = R.drawable.bg_status_complete
-                transactionStatusTextColor = R.color.colorStatusComplete
-                transactionStatusTextId = R.string.transaction_status_complete
-            }
-            TransactionStatusType.FAIL -> {
-                transactionStatusBgId = R.drawable.bg_status_fail
-                transactionStatusTextColor = R.color.colorStatusFail
-                transactionStatusTextId = R.string.transaction_status_fail
-            }
-            else -> {
-                transactionStatusBgId = R.drawable.bg_status_unkown
-                transactionStatusTextColor = R.color.colorStatusUnknown
-                transactionStatusTextId = R.string.transaction_status_unknown
-            }
+        with(holder.itemView) {
+            dateView.text = item.date
+            typeView.text = context.getString(item.type.getResText())
+            amountView.text = item.cryptoAmount.toStringCoin()
+            updateStatusView(statusView, item.status)
         }
-        holder.itemView.transaction_date.text = item.date
-        holder.itemView.transaction_status.text = context.getString(transactionStatusTextId)
-        holder.itemView.transaction_status.setTextColor(ContextCompat.getColor(context, transactionStatusTextColor))
-        holder.itemView.transaction_status.background = context.getDrawable(transactionStatusBgId)
-        holder.itemView.transaction_type.text = context.getString(item.type.getResText())
-        holder.itemView.amountView.text = item.cryptoAmount.toStringCoin()
 
         if (position >= itemList.size - 1) {
             endListListener.invoke()
@@ -76,6 +52,39 @@ class TransactionsAdapter(
         DiffUtil.calculateDiff(BaseDiffCallback(this.itemList, itemList)).dispatchUpdatesTo(this)
         this.itemList.clear()
         this.itemList.addAll(itemList)
+    }
+
+    private fun updateStatusView(textView: AppCompatTextView, status: TransactionStatusType) {
+        val resText: Int
+        val resBackground: Int
+        val resTextColor: Int
+
+        when (status) {
+            TransactionStatusType.PENDING -> {
+                resText = R.string.transaction_status_pending
+                resBackground = R.drawable.bg_status_pending
+                resTextColor = R.color.colorStatusPending
+            }
+            TransactionStatusType.COMPLETE -> {
+                resTextColor = R.color.colorStatusComplete
+                resBackground = R.drawable.bg_status_complete
+                resText = R.string.transaction_status_complete
+            }
+            TransactionStatusType.FAIL -> {
+                resText = R.string.transaction_status_fail
+                resBackground = R.drawable.bg_status_fail
+                resTextColor = R.color.colorStatusFail
+            }
+            else -> {
+                resText = R.string.transaction_status_unknown
+                resBackground = R.drawable.bg_status_unknown
+                resTextColor = R.color.colorStatusUnknown
+            }
+        }
+
+        textView.setTextColor(ContextCompat.getColor(textView.context, resTextColor))
+        textView.setBackgroundDrawable(ContextCompat.getDrawable(textView.context, resBackground))
+        textView.setText(resText)
     }
 
     class Holder(itemView: View) : RecyclerView.ViewHolder(itemView)

@@ -89,7 +89,7 @@ val viewModelModule = module {
     viewModel {
         val coinDataItem = get<WalletRepository>().getCoinItemByCode(LocalCoinType.CATM.name)
         val coinFee = get<WalletRepository>().getCoinFeeItemByCode(LocalCoinType.CATM.name)
-        StakingViewModel(coinDataItem, coinFee, get(), get(), get(), get(), get(), get(), get(), get())
+        StakingViewModel(coinDataItem, coinFee, get(), get(), get(), get(), get())
     }
     viewModel { (phone: String) ->
         SmsCodeViewModel(phone, get(), get())

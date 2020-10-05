@@ -30,6 +30,11 @@
     <color name="colorStatusFail">#e02d2d</color>
     <color name="colorStatusUnknown">#afb0ab</color>
 
+    //staking
+    <color name="colorStatusCreated">#ffcd4c</color>
+    <color name="colorStatusCanceled">#ff984c</color>
+
+
     <color name="chart_line">#a2c6fd</color>
     <color name="chart_point">#84b4fd</color>
     <color name="chart_changes_up">#48be53</color>
@@ -50,8 +55,4 @@
     <color name="rejected_border">#e02d2d</color>
     <color name="not_verified_background">#f3f3f3</color>
     <color name="not_verified_border">#ababab</color>
-
-    //staking
-    <color name="staking_canceled_border">#ff984c</color>
-    <color name="staking_canceled_background">#fff8f3</color>
 </resources>

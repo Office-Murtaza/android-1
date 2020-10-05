@@ -1,9 +1,9 @@
 package com.app.belcobtm.domain.transaction.item
 
+import com.app.belcobtm.domain.transaction.type.StakeStatus
+
 class StakeDetailsDataItem(
-    val created: Boolean,
-    val canceled: Boolean,
-    val withdrawn: Boolean,
+    val status: StakeStatus,
     val amount: Double?,
     val rewardsAmount: Double?,
     val rewardsAnnualAmount: Double,
@@ -14,5 +14,4 @@ class StakeDetailsDataItem(
     val duration: Int?,
     val cancelPeriod: Int,
     val untilWithdraw: Int?
-
 )

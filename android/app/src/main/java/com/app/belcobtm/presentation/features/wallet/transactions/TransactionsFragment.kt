@@ -114,7 +114,7 @@ class TransactionsFragment : BaseFragment() {
 
         fabListView.addOnMenuItemClickListener { _, _, itemId ->
             when (itemId) {
-                STAKING.id -> TransactionsFragmentDirections.toStakingFragment()
+                STAKING.id -> navigate(TransactionsFragmentDirections.toStakingFragment())
                 TRADE.id -> tradeOpenWithPermissionCheck()
                 EXCHANGE.id -> navigate(
                     TransactionsFragmentDirections.toExchangeFragment(viewModel.coinDataItem?.code ?: "")

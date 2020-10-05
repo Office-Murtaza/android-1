@@ -1,6 +1,7 @@
 package com.app.belcobtm.data.rest.transaction.response
 
 import com.app.belcobtm.domain.transaction.item.StakeDetailsDataItem
+import com.app.belcobtm.domain.transaction.type.StakeStatus
 
 class StakeDetailsRequest(
     val amount: Double,
@@ -24,9 +25,12 @@ class StakeDetailsRequest(
 )
 
 fun StakeDetailsRequest.mapToDataItem(): StakeDetailsDataItem = StakeDetailsDataItem(
-    created = created,
-    canceled = canceled,
-    withdrawn = withdrawn,
+    status = when {
+        created -> StakeStatus.CREATED
+        canceled -> StakeStatus.CANCELED
+        withdrawn -> StakeStatus.WITHDRAWN
+        else -> StakeStatus.NONE
+    },
     amount = amount,
     rewardsAnnualAmount = rewardAnnualAmount,
     rewardsAnnualPercent = rewardAnnualPercent,

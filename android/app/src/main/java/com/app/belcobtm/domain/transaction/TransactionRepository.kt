@@ -138,35 +138,16 @@ interface TransactionRepository {
         coinCode: String
     ): Either<Failure, StakeDetailsDataItem>
 
-    suspend fun stakeCreateTransaction(
-        coinCode: String,
-        cryptoAmount: Double
-    ): Either<Failure, String>
-
-    suspend fun stakeCompleteTransaction(
-        hash: String,
+    suspend fun stakeCreate(
         coinCode: String,
         cryptoAmount: Double
     ): Either<Failure, Unit>
 
-    suspend fun stakeCancelCreateTransaction(
-        coinCode: String,
-        cryptoAmount: Double
-    ): Either<Failure, String>
-
-    suspend fun stakeCancelCompleteTransaction(
-        hash: String,
-        coinCode: String,
-        cryptoAmount: Double
+    suspend fun stakeCancel(
+        coinCode: String
     ): Either<Failure, Unit>
 
-    suspend fun unStakeCreateTransaction(
-        coinCode: String,
-        cryptoAmount: Double
-    ): Either<Failure, String>
-
-    suspend fun unStakeCompleteTransaction(
-        hash: String,
+    suspend fun stakeWithdraw(
         coinCode: String,
         cryptoAmount: Double
     ): Either<Failure, Unit>

@@ -1,10 +1,7 @@
 package com.app.belcobtm.presentation.features.wallet.staking
 
-import com.app.belcobtm.domain.transaction.item.StakeDetailsDataItem
+import com.app.belcobtm.domain.transaction.type.StakeStatus
 
-enum class StakeStatus {
-    CREATED, CANCELED, WITHDRAWN, NONE
-}
 data class StakingScreenItem(
     val price: Double,
     val balanceCoin: Double,
@@ -21,12 +18,3 @@ data class StakingScreenItem(
     val cancelPeriod: Int,
     val untilWithdraw: Int?
 )
-
-fun StakeDetailsDataItem.getStakeStatus(): StakeStatus {
-    return when {
-        this.withdrawn -> StakeStatus.WITHDRAWN
-        this.canceled -> StakeStatus.CANCELED
-        this.created -> StakeStatus.CREATED
-        else -> StakeStatus.NONE
-    }
-}
