@@ -26,9 +26,8 @@ class StakeDetailsRequest(
 
 fun StakeDetailsRequest.mapToDataItem(): StakeDetailsDataItem = StakeDetailsDataItem(
     status = when {
-        created -> StakeStatus.CREATED
-        canceled -> StakeStatus.CANCELED
-        withdrawn -> StakeStatus.WITHDRAWN
+        created && !canceled -> StakeStatus.CREATED
+        canceled && !withdrawn  -> StakeStatus.CANCELED
         else -> StakeStatus.NONE
     },
     amount = amount,

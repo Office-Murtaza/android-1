@@ -141,7 +141,7 @@ class StakingFragment : BaseFragment() {
                             rewardsGroupView.show()
                         }
                     }
-                    StakeStatus.WITHDRAWN -> {
+                    else -> {
                         statusGroupView.hide()
                         editStakeGroupView.show()
                         amountGroupView.hide()
@@ -152,9 +152,6 @@ class StakingFragment : BaseFragment() {
                         untilWithdrawGroupView.hide()
                         cancelButtonView.hide()
                         unstakeButtonView.hide()
-                    }
-                    else -> {
-                        //empty?
                     }
                 }
 
