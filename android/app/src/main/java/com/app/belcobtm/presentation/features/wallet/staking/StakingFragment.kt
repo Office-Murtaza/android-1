@@ -1,10 +1,12 @@
 package com.app.belcobtm.presentation.features.wallet.staking
 
+import android.view.View
 import androidx.core.content.ContextCompat
 import com.app.belcobtm.R
 import com.app.belcobtm.domain.transaction.type.StakeStatus
 import com.app.belcobtm.domain.wallet.LocalCoinType
 import com.app.belcobtm.presentation.core.extensions.*
+import com.app.belcobtm.presentation.core.mvvm.LoadingData
 import com.app.belcobtm.presentation.core.ui.fragment.BaseFragment
 import com.app.belcobtm.presentation.core.watcher.DoubleTextWatcher
 import kotlinx.android.synthetic.main.fragment_staking.*
@@ -40,6 +42,16 @@ class StakingFragment : BaseFragment() {
     override val resourceLayout = R.layout.fragment_staking
     override var isMenuEnabled = true
     override val isHomeButtonEnabled = true
+    override val retryListener: View.OnClickListener = View.OnClickListener {
+        when (val loadingData = viewModel.transactionLiveData.value) {
+            is LoadingData.Error -> when (loadingData.data) {
+                StakingTransactionState.CREATE -> viewModel.stakeCreate(amountCryptoView.getDouble())
+                StakingTransactionState.CANCEL -> viewModel.stakeCancel()
+                StakingTransactionState.WITHDRAW -> viewModel.unstakeCreateTransaction()
+            }
+            else -> viewModel.loadBaseData()
+        }
+    }
 
     override fun initViews() {
         super.initViews()
@@ -50,14 +62,20 @@ class StakingFragment : BaseFragment() {
         maxView.setOnClickListener { amountCryptoView.setText(viewModel.getMaxValue().toStringCoin()) }
         stakeButtonView.setOnClickListener {
             amountCryptoView.clearError()
-            when {
-                viewModel.isNotEnoughETHBalanceForCATM() -> amountCryptoView.showError(R.string.withdraw_screen_where_money_libovski)
-                viewModel.getMaxValue() < amountCryptoView.getDouble() -> amountCryptoView.showError(R.string.withdraw_screen_max_exceeded)
-                else -> viewModel.stakeCreate(amountCryptoView.getDouble())
+            if (isValid()) {
+                viewModel.stakeCreate(amountCryptoView.getDouble())
             }
         }
-        cancelButtonView.setOnClickListener { viewModel.stakeCancel() }
-        unstakeButtonView.setOnClickListener { viewModel.unstakeCreateTransaction() }
+        cancelButtonView.setOnClickListener {
+            if (isValid()) {
+                viewModel.stakeCancel()
+            }
+        }
+        unstakeButtonView.setOnClickListener {
+            if (isValid()) {
+                viewModel.unstakeCreateTransaction()
+            }
+        }
         amountCryptoView.editText?.addTextChangedListener(doubleTextWatcher.firstTextWatcher)
     }
 
@@ -154,14 +172,23 @@ class StakingFragment : BaseFragment() {
                         unstakeButtonView.hide()
                     }
                 }
-
             }
-
-            showContent()
         })
-        viewModel.transactionLiveData.listen({
+        viewModel.transactionLiveData.listen(success = {
             popBackStack()
         })
+    }
+
+    private fun isValid(): Boolean = when {
+        viewModel.isNotEnoughETHBalanceForCATM() -> {
+            showError(R.string.withdraw_screen_where_money_libovski)
+            false
+        }
+        viewModel.getMaxValue() < amountCryptoView.getDouble() -> {
+            showError(R.string.withdraw_screen_max_exceeded)
+            false
+        }
+        else -> true
     }
 
     private fun updateStatusView(textColor: Int, backgroundColor: Int, resText: Int) {

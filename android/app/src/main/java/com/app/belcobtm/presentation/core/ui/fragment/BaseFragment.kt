@@ -14,7 +14,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import androidx.navigation.NavDirections
 import androidx.navigation.Navigation
@@ -271,7 +270,7 @@ abstract class BaseFragment : Fragment() {
         error: (error: Failure?) -> Unit = baseErrorHandler,
         onUpdate: ((LoadingData<T>) -> Unit)? = null
     ) {
-        this.observe(viewLifecycleOwner, Observer { loadingData ->
+        this.observe(viewLifecycleOwner, { loadingData ->
             when (loadingData) {
                 is LoadingData.Loading<T> -> showLoading()
                 is LoadingData.Success<T> -> {

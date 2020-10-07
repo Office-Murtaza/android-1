@@ -20,13 +20,17 @@ class StakingViewModel(
     private val stakeCreateUseCase: StakeCreateUseCase,
     private val stakeCancelUseCase: StakeCancelUseCase,
     private val stakeWithdrawUseCase: StakeWithdrawUseCase,
-    stakeDetailsUseCase: StakeDetailsGetUseCase
+    private val stakeDetailsUseCase: StakeDetailsGetUseCase
 ) : ViewModel() {
     private var stakeDetailsDataItem: StakeDetailsDataItem? = null
     val stakeDetailsLiveData: MutableLiveData<LoadingData<StakingScreenItem>> = MutableLiveData()
     val transactionLiveData: MutableLiveData<LoadingData<StakingTransactionState>> = MutableLiveData()
 
     init {
+        loadBaseData()
+    }
+
+    fun loadBaseData() {
         stakeDetailsLiveData.value = LoadingData.Loading()
         stakeDetailsUseCase.invoke(
             params = StakeDetailsGetUseCase.Params(coinDataItem.code),
@@ -59,13 +63,12 @@ class StakingViewModel(
         transactionLiveData.value = LoadingData.Loading()
         stakeCreateUseCase.invoke(
             params = StakeCreateUseCase.Params(coinDataItem.code, amount),
-            onSuccess = { LoadingData.Success(StakingTransactionState.COMPLETE) },
-            onError = { transactionLiveData.value = LoadingData.Error(it, StakingTransactionState.COMPLETE) }
+            onSuccess = { LoadingData.Success(StakingTransactionState.CREATE) },
+            onError = { transactionLiveData.value = LoadingData.Error(it, StakingTransactionState.CREATE) }
         )
     }
 
     fun stakeCancel() {
-//        val amount = (stakeDetailsDataItem?.amount ?: 0.0) + (stakeDetailsDataItem?.rewardsAmount ?: 0.0)
         transactionLiveData.value = LoadingData.Loading()
         stakeCancelUseCase.invoke(
             params = StakeCancelUseCase.Params(coinDataItem.code),

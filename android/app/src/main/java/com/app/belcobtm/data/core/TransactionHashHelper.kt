@@ -8,7 +8,10 @@ import com.app.belcobtm.domain.Either
 import com.app.belcobtm.domain.Failure
 import com.app.belcobtm.domain.wallet.LocalCoinType
 import com.app.belcobtm.presentation.core.Numeric
-import com.app.belcobtm.presentation.core.extensions.*
+import com.app.belcobtm.presentation.core.extensions.code
+import com.app.belcobtm.presentation.core.extensions.customPurpose
+import com.app.belcobtm.presentation.core.extensions.customXpubVersion
+import com.app.belcobtm.presentation.core.extensions.unit
 import com.app.belcobtm.presentation.core.toHexByteArray
 import com.app.belcobtm.presentation.core.toHexBytes
 import com.app.belcobtm.presentation.core.toHexBytesInByteString
@@ -206,14 +209,16 @@ class TransactionHashHelper(
             }
 
             if (fromCoin == LocalCoinType.CATM) {
+                println("MAMAMA - $customFunctionName")
                 val function = when (customFunctionName) {
-                    ETH_CATM_FUNCTION_NAME_WITHDRAW_STAKE -> EthereumAbiFunction(ETH_CATM_FUNCTION_NAME_WITHDRAW_STAKE)
                     ETH_CATM_FUNCTION_NAME_CREATE_STAKE -> {
                         val function = EthereumAbiFunction(ETH_CATM_FUNCTION_NAME_CREATE_STAKE)
                         function.addParamAddress(toAddress.toHexByteArray(), false)
                         function.addParamUInt256(amountMultipliedByDivider.toBigInteger().toByteArray(), false)
                         function
                     }
+                    ETH_CATM_FUNCTION_NAME_CANCEL_STAKE -> EthereumAbiFunction(ETH_CATM_FUNCTION_NAME_CANCEL_STAKE)
+                    ETH_CATM_FUNCTION_NAME_WITHDRAW_STAKE -> EthereumAbiFunction(ETH_CATM_FUNCTION_NAME_WITHDRAW_STAKE)
                     else -> {
                         val function = EthereumAbiFunction(ETH_CATM_FUNCTION_NAME_TRANSFER)
                         function.addParamAddress(toAddress.toHexByteArray(), false)
@@ -396,7 +401,7 @@ class TransactionHashHelper(
     private companion object {
         private const val ETH_CATM_FUNCTION_NAME_TRANSFER: String = "transfer"
         private const val ETH_CATM_FUNCTION_NAME_CREATE_STAKE: String = "createStake"
-        private const val ETH_CATM_FUNCTION_NAME_CANCEL_STAKE: String = "cancelStake "
+        private const val ETH_CATM_FUNCTION_NAME_CANCEL_STAKE: String = "cancelStake"
         private const val ETH_CATM_FUNCTION_NAME_WITHDRAW_STAKE: String = "withdrawStake"
     }
 }
