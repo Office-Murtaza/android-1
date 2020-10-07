@@ -97,7 +97,7 @@ public class TransactionController {
     @GetMapping("/user/{userId}/coin/{coin}/stake-details")
     public Response getStakeDetails(@PathVariable Long userId, @PathVariable CoinService.CoinEnum coin) {
         try {
-            return Response.ok(transactionService.getStakeDetails(userId, coin));
+            return Response.ok(transactionService.getStakeDetails(userId));
         } catch (Exception e) {
             e.printStackTrace();
             return Response.serverError();

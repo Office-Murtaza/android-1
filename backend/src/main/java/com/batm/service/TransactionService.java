@@ -423,26 +423,25 @@ public class TransactionService {
         }
     }
 
-    public StakeDetailsDTO getStakeDetails(Long userId, CoinService.CoinEnum coinCode) {
+    public StakeDetailsDTO getStakeDetails(Long userId) {
         StakeDetailsDTO dto = new StakeDetailsDTO();
         dto.setRewardAnnualPercent(REWARD_ANNUAL_PERCENT);
         dto.setCancelPeriod(CANCEL_PERIOD);
 
         try {
             Identity identity = userService.findByUserId(userId);
-            Coin coin = coinCode.getCoinEntity();
+            Optional<TransactionRecordWallet> createStakeRecOpt = walletRep.findFirstByIdentityAndTypeOrderByCreateDateDesc(identity, TransactionType.CREATE_STAKE.getValue());
 
-            List<TransactionRecordWallet> createStakeRecords = walletRep.findAllByIdentityAndCoinAndTypeInOrderByCreateDate(identity, coin, Arrays.asList(TransactionType.CREATE_STAKE.getValue()));
+            if (createStakeRecOpt.isPresent()) {
+                TransactionRecordWallet createStakeRec = createStakeRecOpt.get();
 
-            for (TransactionRecordWallet record : createStakeRecords) {
-                if (record.getStatus() == TransactionStatus.PENDING.getValue() || record.getStatus() == TransactionStatus.COMPLETE.getValue()) {
+                if (createStakeRec.getStatus() == TransactionStatus.PENDING.getValue() || createStakeRec.getStatus() == TransactionStatus.COMPLETE.getValue()) {
                     dto.setCreated(true);
-                    dto.setAmount(record.getAmount());
+                    dto.setAmount(createStakeRec.getAmount());
+                    dto.setCreateDate(createStakeRec.getCreateDate());
 
-                    dto.setCreateDate(record.getCreateDate());
-
-                    if (StringUtils.isBlank(record.getRefTxId())) {
-                        int days = Days.daysBetween(new DateTime(record.getCreateDate()), DateTime.now()).getDays();
+                    if (StringUtils.isBlank(createStakeRec.getRefTxId())) {
+                        int days = Days.daysBetween(new DateTime(createStakeRec.getCreateDate()), DateTime.now()).getDays();
                         dto.setDuration(days);
 
                         BigDecimal rewardPercent = new BigDecimal(days)
@@ -450,18 +449,18 @@ public class TransactionService {
                                 .divide(new BigDecimal(365), 2, RoundingMode.HALF_DOWN)
                                 .stripTrailingZeros();
 
-                        dto.setRewardAmount(record.getAmount().multiply(rewardPercent.divide(Constant.HUNDRED)).stripTrailingZeros());
+                        dto.setRewardAmount(createStakeRec.getAmount().multiply(rewardPercent.divide(Constant.HUNDRED)).stripTrailingZeros());
                         dto.setRewardPercent(rewardPercent);
-                        dto.setRewardAnnualAmount(record.getAmount().multiply(REWARD_ANNUAL_PERCENT.divide(Constant.HUNDRED)).stripTrailingZeros());
+                        dto.setRewardAnnualAmount(createStakeRec.getAmount().multiply(REWARD_ANNUAL_PERCENT.divide(Constant.HUNDRED)).stripTrailingZeros());
 
                         return dto;
                     } else {
-                        TransactionRecordWallet cancelStakeRec = walletRep.findFirstByTxId(record.getRefTxId()).get();
+                        TransactionRecordWallet cancelStakeRec = walletRep.findFirstByTxId(createStakeRec.getRefTxId()).get();
 
                         if (cancelStakeRec.getStatus() == TransactionStatus.PENDING.getValue() || cancelStakeRec.getStatus() == TransactionStatus.COMPLETE.getValue()) {
                             dto.setCanceled(true);
                             dto.setCancelDate(cancelStakeRec.getCreateDate());
-                            int days = Days.daysBetween(new DateTime(record.getCreateDate()), new DateTime(cancelStakeRec.getCreateDate())).getDays();
+                            int days = Days.daysBetween(new DateTime(createStakeRec.getCreateDate()), new DateTime(cancelStakeRec.getCreateDate())).getDays();
                             dto.setDuration(days);
 
                             BigDecimal rewardPercent = new BigDecimal(days)
@@ -469,7 +468,7 @@ public class TransactionService {
                                     .divide(new BigDecimal(365), 2, RoundingMode.HALF_DOWN)
                                     .stripTrailingZeros();
 
-                            dto.setRewardAmount(record.getAmount().multiply(rewardPercent.divide(Constant.HUNDRED)).stripTrailingZeros());
+                            dto.setRewardAmount(createStakeRec.getAmount().multiply(rewardPercent.divide(Constant.HUNDRED)).stripTrailingZeros());
                             dto.setRewardPercent(rewardPercent);
 
                             dto.setUntilWithdraw(Math.max(0, CANCEL_PERIOD - Days.daysBetween(new DateTime(cancelStakeRec.getCreateDate()), DateTime.now()).getDays()));
