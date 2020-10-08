@@ -209,11 +209,9 @@ class TransactionHashHelper(
             }
 
             if (fromCoin == LocalCoinType.CATM) {
-                println("MAMAMA - $customFunctionName")
                 val function = when (customFunctionName) {
                     ETH_CATM_FUNCTION_NAME_CREATE_STAKE -> {
                         val function = EthereumAbiFunction(ETH_CATM_FUNCTION_NAME_CREATE_STAKE)
-                        function.addParamAddress(toAddress.toHexByteArray(), false)
                         function.addParamUInt256(amountMultipliedByDivider.toBigInteger().toByteArray(), false)
                         function
                     }

@@ -66,6 +66,12 @@ class StakingFragment : BaseFragment() {
                 viewModel.stakeCreate(amountCryptoView.getDouble())
             }
         }
+        amountCryptoView.actionDoneListener {
+            amountCryptoView.clearError()
+            if (isValid()) {
+                viewModel.stakeCreate(amountCryptoView.getDouble())
+            }
+        }
         cancelButtonView.setOnClickListener {
             if (isValid()) {
                 viewModel.stakeCancel()

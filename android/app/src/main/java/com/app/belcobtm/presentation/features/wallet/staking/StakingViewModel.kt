@@ -63,7 +63,7 @@ class StakingViewModel(
         transactionLiveData.value = LoadingData.Loading()
         stakeCreateUseCase.invoke(
             params = StakeCreateUseCase.Params(coinDataItem.code, amount),
-            onSuccess = { LoadingData.Success(StakingTransactionState.CREATE) },
+            onSuccess = { transactionLiveData.value = LoadingData.Success(StakingTransactionState.CREATE) },
             onError = { transactionLiveData.value = LoadingData.Error(it, StakingTransactionState.CREATE) }
         )
     }

@@ -254,8 +254,8 @@
                 style="@style/EditText.InputWithMax"
                 android:digits="1234567890."
                 android:hint="@string/staking_screen_hint_catm_amount"
-                android:inputType="numberDecimal"
-                android:nextFocusDown="@id/amountUsdView" />
+                android:imeOptions="actionDone"
+                android:inputType="numberDecimal" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <androidx.appcompat.widget.AppCompatTextView
