@@ -65,9 +65,17 @@ public class RippledService {
                 req.put("params", params);
 
                 JSONObject res = rest.postForObject(nodeUrl, req, JSONObject.class);
-                String balance = res.getJSONObject("result").getJSONObject("account_data").getString("Balance");
+                JSONObject result = res.optJSONObject("result");
 
-                return Util.format6(new BigDecimal(balance).divide(XRP_DIVIDER));
+                if (result != null) {
+                    JSONObject accountData = result.optJSONObject("account_data");
+
+                    if (accountData != null) {
+                        String balance = accountData.optString("Balance");
+
+                        return Util.format6(new BigDecimal(balance).divide(XRP_DIVIDER));
+                    }
+                }
             } catch (ResourceAccessException rae) {
                 isNodeAvailable = false;
             } catch (Exception e) {
@@ -163,7 +171,7 @@ public class RippledService {
 
                 JSONObject meta = tx.optJSONObject("meta");
 
-                if(meta != null) {
+                if (meta != null) {
                     dto.setStatus(getStatus(meta.optString("TransactionResult")));
                 } else {
                     dto.setStatus(TransactionStatus.FAIL);
@@ -286,7 +294,7 @@ public class RippledService {
     }
 
     private BigDecimal getAmount(String amount) {
-        if(StringUtils.isNotBlank(amount)) {
+        if (StringUtils.isNotBlank(amount)) {
             return new BigDecimal(amount).divide(XRP_DIVIDER).stripTrailingZeros();
         }
 

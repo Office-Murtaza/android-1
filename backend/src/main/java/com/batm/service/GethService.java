@@ -74,6 +74,15 @@ public class GethService {
     @Value("${wallet.contract.address}")
     private String contractAddress;
 
+    @Value("${eth.gas-price.multiplier:1}")
+    private double ethGasPriceMultiplier;
+
+    @Value("${eth.gas-limit.multiplier:1}")
+    private double ethGasLimitMultiplier;
+
+    @Value("${token.gas-limit.multiplier:1}")
+    private double tokenGasLimitMultiplier;
+
     @Autowired
     private RestTemplate rest;
 
@@ -468,23 +477,17 @@ public class GethService {
     }
 
     public Long getEthGasLimit(String walletAddress) {
-        if (isNodeAvailable) {
-            try {
-                return (long) (web3.ethEstimateGas(org.web3j.protocol.core.methods.request.Transaction.createEthCallTransaction(null, walletAddress, null)).send().getAmountUsed().longValue() * 1.25);
-            } catch (ConnectException ce) {
-                isNodeAvailable = false;
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-
-        return null;
+        return getGasLimit(walletAddress, ethGasPriceMultiplier);
     }
 
     public Long getTokenGasLimit() {
+        return getGasLimit(contractAddress, tokenGasLimitMultiplier);
+    }
+
+    public Long getGasLimit(String address, double multiplier) {
         if (isNodeAvailable) {
             try {
-                return (long) (web3.ethEstimateGas(org.web3j.protocol.core.methods.request.Transaction.createEthCallTransaction(null, contractAddress, null)).send().getAmountUsed().longValue() * 1.25);
+                return (long) (web3.ethEstimateGas(org.web3j.protocol.core.methods.request.Transaction.createEthCallTransaction(null, address, null)).send().getAmountUsed().longValue() * multiplier);
             } catch (ConnectException ce) {
                 isNodeAvailable = false;
             } catch (Exception e) {
@@ -498,7 +501,7 @@ public class GethService {
     public Long getGasPrice() {
         if (isNodeAvailable) {
             try {
-                return (long) (web3.ethGasPrice().send().getGasPrice().longValue() * 1.25);
+                return (long) (web3.ethGasPrice().send().getGasPrice().longValue() * ethGasPriceMultiplier);
             } catch (ConnectException ce) {
                 isNodeAvailable = false;
             } catch (Exception e) {
