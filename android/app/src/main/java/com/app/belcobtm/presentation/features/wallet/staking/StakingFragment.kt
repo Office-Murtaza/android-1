@@ -59,7 +59,9 @@ class StakingFragment : BaseFragment() {
     }
 
     override fun initListeners() {
-        maxView.setOnClickListener { amountCryptoView.setText(viewModel.getMaxValue().toStringCoin()) }
+        maxView.setOnClickListener {
+            amountCryptoView.setText(viewModel.getMaxValue().toStringCoin())
+        }
         stakeButtonView.setOnClickListener {
             amountCryptoView.clearError()
             if (isValid()) {
@@ -96,13 +98,26 @@ class StakingFragment : BaseFragment() {
                     LocalCoinType.CATM.name
                 )
                 balanceUsdView.text = getString(R.string.text_usd, balanceUsd.toStringUsd())
-                cancelPeriodView.text =
-                    resources.getQuantityString(R.plurals.staking_screen_time_value, cancelPeriod, cancelPeriod)
-                rewardAnnualView.text = getString(
-                    R.string.staking_screen_rewards_amount,
-                    it.rewardsAmountAnnual.toStringCoin(),
-                    it.rewardsPercent
+                cancelPeriodView.text = resources.getQuantityString(
+                    R.plurals.staking_screen_time_value,
+                    cancelPeriod,
+                    cancelPeriod
                 )
+                when {
+                    rewardsAmountAnnual != null -> rewardAnnualView.text = getString(
+                        R.string.staking_screen_rewards_amount,
+                        it.rewardsAmountAnnual?.toStringCoin(),
+                        it.rewardsPercent
+                    )
+                    rewardsPercent != null -> rewardAnnualView.text = getString(
+                        R.string.staking_screen_rewards_percent,
+                        it.rewardsPercent
+                    )
+                    else -> {
+                        rewardAnnualTitleView.hide()
+                        rewardAnnualView.hide()
+                    }
+                }
 
                 when (status) {
                     StakeStatus.CREATED,
@@ -127,24 +142,27 @@ class StakingFragment : BaseFragment() {
                                 cancelDateView.text = cancelDate
                                 cancelDateGroupView.show()
                             }
-                            untilWithdraw?.let {
+                            untilWithdraw?.let { untilWithdraw ->
                                 untilWithdrawView.text =
                                     resources.getQuantityString(
                                         R.plurals.staking_screen_time_value,
                                         untilWithdraw,
                                         untilWithdraw
                                     )
-                                unstakeButtonView.isEnabled = untilWithdraw <= 0
-                                untilWithdrawGroupView.show()
+                                untilWithdrawGroupView.toggle(untilWithdraw > 0)
                             }
+
                             cancelButtonView.hide()
-                            unstakeButtonView.toggle(it.untilWithdraw ?: 0 <= 0)
+                            unstakeButtonView.toggle(it.untilWithdraw ?: 0 == 0)
                         }
 
                         statusGroupView.show()
                         editStakeGroupView.hide()
                         amount?.let { amount ->
-                            amountView.text = getString(R.string.staking_screen_staked_amount, amount.toStringCoin())
+                            amountView.text = getString(
+                                R.string.staking_screen_staked_amount,
+                                amount.toStringCoin()
+                            )
                             amountGroupView.show()
                         }
                         createDate?.let { createDate ->
@@ -153,7 +171,11 @@ class StakingFragment : BaseFragment() {
                         }
                         duration?.let {
                             durationView.text =
-                                resources.getQuantityString(R.plurals.staking_screen_time_value, duration, duration)
+                                resources.getQuantityString(
+                                    R.plurals.staking_screen_time_value,
+                                    duration,
+                                    duration
+                                )
                             durationGroupView.show()
                         }
                         if (rewardsAmount != null && rewardsPercent != null) {
