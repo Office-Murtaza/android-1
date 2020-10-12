@@ -3,10 +3,10 @@ package com.app.belcobtm.presentation.features.wallet.transactions
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.app.belcobtm.domain.transaction.interactor.GetTransactionListUseCase
-import com.app.belcobtm.domain.wallet.interactor.GetBalanceUseCase
+import com.app.belcobtm.domain.wallet.LocalCoinType
 import com.app.belcobtm.domain.wallet.interactor.GetChartsUseCase
 import com.app.belcobtm.domain.wallet.interactor.UpdateCoinFeeUseCase
-import com.app.belcobtm.domain.wallet.item.CoinDataItem
+import com.app.belcobtm.domain.wallet.item.CoinFeeDataItem
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
 import com.app.belcobtm.presentation.features.wallet.transactions.item.TransactionsAdapterItem
 import com.app.belcobtm.presentation.features.wallet.transactions.item.TransactionsScreenItem
@@ -16,58 +16,41 @@ class TransactionsViewModel(
     val coinCode: String,
     private val chartUseCase: GetChartsUseCase,
     private val transactionListUseCase: GetTransactionListUseCase,
-    private val balanceUseCase: GetBalanceUseCase,
     private val updateCoinFeeUseCase: UpdateCoinFeeUseCase
 ) : ViewModel() {
-    val chartLiveData: MutableLiveData<LoadingData<TransactionsScreenItem>> = MutableLiveData()
+    val chartLiveData: MutableLiveData<TransactionsScreenItem> = MutableLiveData()
+    val feeLiveData: MutableLiveData<LoadingData<CoinFeeDataItem>> = MutableLiveData()
     val transactionListLiveData: MutableLiveData<List<TransactionsAdapterItem>> = MutableLiveData()
-    val feeLiveData: MutableLiveData<LoadingData<Unit>> = MutableLiveData()
     var currentChartPeriodType = ChartPeriodType.DAY
     var totalTransactionListSize: Int = 0
-    var coinDataItemList: ArrayList<CoinDataItem>? = null
-    var coinDataItem: CoinDataItem? = null
 
     init {
         updateData()
     }
 
     fun updateData() {
-        chartLiveData.value = LoadingData.Loading()
+        feeLiveData.value = LoadingData.Loading()
         chartUseCase.invoke(
             params = GetChartsUseCase.Params(coinCode),
             onSuccess = { dataItem ->
-                chartLiveData.value = LoadingData.Success(
-                    TransactionsScreenItem(
-                        balance = dataItem.balance,
-                        priceUsd = dataItem.price,
-                        chartDay = dataItem.chart.day,
-                        chartWeek = dataItem.chart.week,
-                        chartMonth = dataItem.chart.month,
-                        chartThreeMonths = dataItem.chart.threeMonths,
-                        chartYear = dataItem.chart.year
-                    )
+                chartLiveData.value = TransactionsScreenItem(
+                    balance = dataItem.balance,
+                    priceUsd = dataItem.price,
+                    chartDay = dataItem.chart.day,
+                    chartWeek = dataItem.chart.week,
+                    chartMonth = dataItem.chart.month,
+                    chartThreeMonths = dataItem.chart.threeMonths,
+                    chartYear = dataItem.chart.year
                 )
             },
-            onError = { chartLiveData.value = LoadingData.Error(it) }
+            onError = { it.printStackTrace() }
         )
         updateCoinFeeUseCase.invoke(
             params = UpdateCoinFeeUseCase.Params(coinCode),
-            onSuccess = {
-                feeLiveData.value = LoadingData.Success(Unit)
-            },
-            onError = {
-                feeLiveData.value = LoadingData.Error(it)
-            }
+            onSuccess = { feeLiveData.value = LoadingData.Success(it) },
+            onError = { feeLiveData.value = LoadingData.Error(it) }
         )
         refreshTransactionList()
-
-        //Todo need find best way
-        balanceUseCase.invoke(
-            params = Unit,
-            onSuccess = { dataItem ->
-                coinDataItemList = ArrayList(dataItem.coinList)
-                coinDataItem = dataItem.coinList.firstOrNull { it.code == coinCode }
-            })
     }
 
     fun updateTransactionList() {
@@ -98,7 +81,7 @@ class TransactionsViewModel(
                     transactionListLiveData.value = newList
                 }
             },
-            onError = {}
+            onError = { it.printStackTrace() }
         )
     }
 }

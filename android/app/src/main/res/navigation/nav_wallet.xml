@@ -101,9 +101,6 @@
         <argument
             android:name="coin_code"
             app:argType="string" />
-        <argument
-            android:name="coin_address"
-            app:argType="string" />
     </fragment>
 
     <fragment

@@ -21,6 +21,7 @@ import com.app.belcobtm.presentation.features.settings.verification.vip.Verifica
 import com.app.belcobtm.presentation.features.sms.code.SmsCodeViewModel
 import com.app.belcobtm.presentation.features.wallet.add.ManageWalletsViewModel
 import com.app.belcobtm.presentation.features.wallet.balance.WalletViewModel
+import com.app.belcobtm.presentation.features.wallet.deposit.DepositViewModel
 import com.app.belcobtm.presentation.features.wallet.exchange.coin.to.coin.ExchangeViewModel
 import com.app.belcobtm.presentation.features.wallet.send.gift.SendGiftViewModel
 import com.app.belcobtm.presentation.features.wallet.staking.StakingViewModel
@@ -38,7 +39,7 @@ import org.koin.dsl.module
 
 val viewModelModule = module {
     viewModel { WalletViewModel(get(), get()) }
-    viewModel { (coinCode: String) -> TransactionsViewModel(coinCode, get(), get(), get(), get()) }
+    viewModel { (coinCode: String) -> TransactionsViewModel(coinCode, get(), get(), get()) }
     viewModel { RecoverWalletViewModel(get()) }
     viewModel { CreateWalletViewModel(get()) }
     viewModel { PinCodeViewModel(get(), get(), get()) }
@@ -46,10 +47,10 @@ val viewModelModule = module {
     viewModel { VerificationBlankViewModel(get(), get()) }
     viewModel { VerificationVipViewModel(get()) }
     viewModel { (coinCode: String) ->
-        val coinList = (get() as GetCoinListUseCase).invoke()
+        val coinList = (get<WalletRepository>()).getCoinItemList()
         val filteredCoinList = coinList.filter { it.isEnabled }
-        val fromCoinDataItem = coinList.find { it.code == coinCode }!!
-        val fromCoinFee = get<WalletRepository>().getCoinFeeMap()[coinCode] ?: error("")
+        val fromCoinDataItem = filteredCoinList.first { it.code == coinCode }
+        val fromCoinFee = get<WalletRepository>().getCoinFeeMap().getValue(coinCode)
 
         ExchangeViewModel(
             get(),
@@ -121,5 +122,8 @@ val viewModelModule = module {
         val fromCoinDataItem = coinList.find { it.code == coinCode }
         val fromCoinFee = get<WalletRepository>().getCoinFeeItemByCode(coinCode)
         WithdrawViewModel(get(), fromCoinDataItem, fromCoinFee, coinList)
+    }
+    viewModel { (coinCode: String) ->
+        DepositViewModel(coinCode, get())
     }
 }

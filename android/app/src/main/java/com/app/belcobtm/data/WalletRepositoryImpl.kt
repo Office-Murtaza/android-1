@@ -22,8 +22,9 @@ class WalletRepositoryImpl(
 
     override fun getCoinFeeMap(): Map<String, CoinFeeDataItem> = prefHelper.coinsFee
 
-    override fun getCoinFeeItemByCode(coinCode: String): CoinFeeDataItem =
-        prefHelper.coinsFee[coinCode] ?: error("")
+    override fun getCoinFeeItemByCode(
+        coinCode: String
+    ): CoinFeeDataItem = prefHelper.coinsFee.getValue(coinCode)
 
     override fun getCoinItemByCode(
         coinCode: String

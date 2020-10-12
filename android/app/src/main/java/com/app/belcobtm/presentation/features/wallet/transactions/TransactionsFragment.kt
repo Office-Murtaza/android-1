@@ -9,6 +9,7 @@ import android.location.LocationManager
 import android.view.Menu
 import android.view.View
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.Observer
 import androidx.lifecycle.observe
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.app.belcobtm.R
@@ -16,12 +17,10 @@ import com.app.belcobtm.domain.wallet.LocalCoinType
 import com.app.belcobtm.presentation.core.extensions.setDrawableStart
 import com.app.belcobtm.presentation.core.extensions.toStringCoin
 import com.app.belcobtm.presentation.core.extensions.toStringUsd
-import com.app.belcobtm.presentation.core.mvvm.LoadingData
 import com.app.belcobtm.presentation.core.ui.fragment.BaseFragment
 import com.app.belcobtm.presentation.features.wallet.trade.main.TradeActivity
 import com.app.belcobtm.presentation.features.wallet.transactions.TransactionsFABType.*
 import com.app.belcobtm.presentation.features.wallet.transactions.adapter.TransactionsAdapter
-import com.app.belcobtm.ui.main.coins.sell.SellActivity
 import com.github.mikephil.charting.data.BarEntry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
@@ -58,8 +57,9 @@ class TransactionsFragment : BaseFragment() {
     override var isMenuEnabled: Boolean = true
     override val customToolbarId: Int = R.id.customToolbarView
     override val isFirstShowContent: Boolean = false
-    override val retryListener: View.OnClickListener =
-        View.OnClickListener { viewModel.updateData() }
+    override val retryListener: View.OnClickListener = View.OnClickListener {
+        viewModel.updateData()
+    }
 
     override fun onRequestPermissionsResult(
         requestCode: Int,
@@ -80,7 +80,8 @@ class TransactionsFragment : BaseFragment() {
 //        menu.add(groupId, TRADE.id, TRADE.ordinal, TRADE.resText).setIcon(TRADE.resIcon)
         menu.add(groupId, EXCHANGE.id, EXCHANGE.ordinal, EXCHANGE.resText).setIcon(EXCHANGE.resIcon)
 //        menu.add(groupId, SELL.id, SELL.ordinal, SELL.resText).setIcon(SELL.resIcon)
-        menu.add(groupId, SEND_GIFT.id, SEND_GIFT.ordinal, SEND_GIFT.resText).setIcon(SEND_GIFT.resIcon)
+        menu.add(groupId, SEND_GIFT.id, SEND_GIFT.ordinal, SEND_GIFT.resText)
+            .setIcon(SEND_GIFT.resIcon)
         menu.add(groupId, WITHDRAW.id, WITHDRAW.ordinal, WITHDRAW.resText).setIcon(WITHDRAW.resIcon)
         menu.add(groupId, DEPOSIT.id, DEPOSIT.ordinal, DEPOSIT.resText).setIcon(DEPOSIT.resIcon)
         fabListView.setMenu(menu)
@@ -111,28 +112,29 @@ class TransactionsFragment : BaseFragment() {
             updateChartByPeriod()
         }
         swipeToRefreshView.setOnRefreshListener { viewModel.refreshTransactionList() }
-
         fabListView.addOnMenuItemClickListener { _, _, itemId ->
             when (itemId) {
-                STAKING.id -> navigate(TransactionsFragmentDirections.toStakingFragment())
                 TRADE.id -> tradeOpenWithPermissionCheck()
-                EXCHANGE.id -> navigate(
-                    TransactionsFragmentDirections.toExchangeFragment(viewModel.coinDataItem?.code ?: "")
-                )
-                SELL.id -> SellActivity.start(requireContext(), viewModel.coinDataItem, viewModel.coinDataItemList)
-                SEND_GIFT.id -> navigate(
-                    TransactionsFragmentDirections.toSendGiftFragment(viewModel.coinDataItem?.code ?: "")
-                )
-                WITHDRAW.id -> navigate(
-                    TransactionsFragmentDirections.toWithdrawFragment(viewModel.coinDataItem?.code ?: "")
-                )
-                DEPOSIT.id -> showDepositDialog()
+                STAKING.id -> navigate(TransactionsFragmentDirections.toStakingFragment())
+                EXCHANGE.id ->
+                    navigate(TransactionsFragmentDirections.toExchangeFragment(viewModel.coinCode))
+                SEND_GIFT.id ->
+                    navigate(TransactionsFragmentDirections.toSendGiftFragment(viewModel.coinCode))
+                WITHDRAW.id ->
+                    navigate(TransactionsFragmentDirections.toWithdrawFragment(viewModel.coinCode))
+                DEPOSIT.id ->
+                    navigate(TransactionsFragmentDirections.toDepositFragment(viewModel.coinCode))
+                //SELL.id -> SellActivity.start(
+                //    requireContext(),
+                //    viewModel.coinDataItem,
+                //    viewModel.coinDataItemList
+                //)
             }
         }
     }
 
     override fun initObservers() {
-        viewModel.chartLiveData.listen({
+        viewModel.chartLiveData.observe(viewLifecycleOwner, Observer {
             updateChartByPeriod()
             priceUsdView.text = getString(R.string.text_usd, it.priceUsd.toStringUsd())
             balanceCryptoView.text =
@@ -144,6 +146,9 @@ class TransactionsFragment : BaseFragment() {
             adapter.setItemList(it)
             swipeToRefreshView.isRefreshing = false
         }
+        viewModel.feeLiveData.listen({
+            //important download fee
+        })
     }
 
     @SuppressLint("MissingPermission")
@@ -179,30 +184,27 @@ class TransactionsFragment : BaseFragment() {
     }
 
     private fun updateChartByPeriod() {
-        val loadingData = viewModel.chartLiveData.value
-        if (loadingData is LoadingData.Success) {
-            with(loadingData.data) {
-                when (val chartType = viewModel.currentChartPeriodType) {
-                    ChartPeriodType.DAY -> {
-                        setChart(chartType, chartDay.second)
-                        setChanges(chartDay.first)
-                    }
-                    ChartPeriodType.WEEK -> {
-                        setChart(chartType, chartWeek.second)
-                        setChanges(chartWeek.first)
-                    }
-                    ChartPeriodType.MONTH -> {
-                        setChart(chartType, chartMonth.second)
-                        setChanges(chartMonth.first)
-                    }
-                    ChartPeriodType.THREE_MONTHS -> {
-                        setChart(chartType, chartThreeMonths.second)
-                        setChanges(chartThreeMonths.first)
-                    }
-                    ChartPeriodType.YEAR -> {
-                        setChart(chartType, chartYear.second)
-                        setChanges(chartYear.first)
-                    }
+        viewModel.chartLiveData.value?.let {
+            when (val chartType = viewModel.currentChartPeriodType) {
+                ChartPeriodType.DAY -> {
+                    setChart(chartType, it.chartDay.second)
+                    setChanges(it.chartDay.first)
+                }
+                ChartPeriodType.WEEK -> {
+                    setChart(chartType, it.chartWeek.second)
+                    setChanges(it.chartWeek.first)
+                }
+                ChartPeriodType.MONTH -> {
+                    setChart(chartType, it.chartMonth.second)
+                    setChanges(it.chartMonth.first)
+                }
+                ChartPeriodType.THREE_MONTHS -> {
+                    setChart(chartType, it.chartThreeMonths.second)
+                    setChanges(it.chartThreeMonths.first)
+                }
+                ChartPeriodType.YEAR -> {
+                    setChart(chartType, it.chartYear.second)
+                    setChanges(it.chartYear.first)
                 }
             }
         }
@@ -262,15 +264,6 @@ class TransactionsFragment : BaseFragment() {
 
         chartView.data = LineData(dataSet)
         chartView.invalidate()
-    }
-
-    private fun showDepositDialog() {
-        navigate(
-            TransactionsFragmentDirections.toDepositFragment(
-                viewModel.coinDataItem?.code ?: "",
-                viewModel.coinDataItem?.publicKey ?: ""
-            )
-        )
     }
 
     private fun showTradeScreen(latitude: Double = 0.0, longitude: Double = 0.0) {
