@@ -5,13 +5,8 @@ import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.observe
 import com.app.belcobtm.R
 import com.app.belcobtm.domain.Failure
-import com.app.belcobtm.domain.settings.interactor.CHANGE_PASS_ERROR_OLD_PASS
-import com.app.belcobtm.domain.settings.interactor.ERROR_UPDATE_PHONE_IS_SAME
-import com.app.belcobtm.domain.settings.interactor.ERROR_UPDATE_PHONE_IS_USED
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
 import com.app.belcobtm.presentation.core.ui.fragment.BaseFragment
-import com.app.belcobtm.presentation.features.settings.SettingsFragment.Companion.SETTINGS_SECURITY
-import kotlinx.android.synthetic.main.fragment_change_phone.*
 import kotlinx.android.synthetic.main.fragment_update_password.*
 import kotlinx.android.synthetic.main.fragment_update_password.nextButton
 import org.koin.android.viewmodel.ext.android.viewModel
@@ -90,14 +85,9 @@ class UpdatePasswordFragment : BaseFragment() {
             when (action) {
                 is UpdatePasswordAction.Success -> {
                     showSnackBar(R.string.password_changed)
-                    navigate(R.id.update_to_settings_fragment)
+                    popBackStack()
                 }
             }
         }
-    }
-
-    override fun popBackStack(): Boolean {
-        navigate(UpdatePasswordFragmentDirections.updateToSettingsFragment(SETTINGS_SECURITY))
-        return true
     }
 }

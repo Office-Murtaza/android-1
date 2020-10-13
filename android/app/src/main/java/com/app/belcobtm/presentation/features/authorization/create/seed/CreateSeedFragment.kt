@@ -12,14 +12,13 @@ import com.app.belcobtm.R
 import com.app.belcobtm.presentation.core.helper.AlertHelper
 import com.app.belcobtm.presentation.core.ui.fragment.BaseFragment
 import com.app.belcobtm.presentation.features.pin.code.PinCodeFragment
-import com.app.belcobtm.presentation.features.settings.SettingsFragment.Companion.SETTINGS_SECURITY
 import com.app.belcobtm.presentation.features.sms.code.SmsCodeFragment
 import kotlinx.android.synthetic.main.fragment_create_seed.*
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class CreateSeedFragment : BaseFragment() {
     private val viewModel: CreateSeedViewModel by viewModel()
-    val args: CreateSeedFragmentArgs by navArgs()
+    private val args: CreateSeedFragmentArgs by navArgs()
     override val resourceLayout: Int = R.layout.fragment_create_seed
     override val isToolbarEnabled: Boolean = true
     override val isHomeButtonEnabled: Boolean = true
@@ -95,7 +94,7 @@ class CreateSeedFragment : BaseFragment() {
     private fun goBack() {
         when (args.mode) {
             MODE_SETTINGS -> {
-                navigate(CreateSeedFragmentDirections.seedToSettingsFragment(SETTINGS_SECURITY))
+                popBackStack(R.id.settings_fragment, false)
             }
             MODE_DEFAULT -> {
                 popBackStack(R.id.create_wallet_fragment, false)

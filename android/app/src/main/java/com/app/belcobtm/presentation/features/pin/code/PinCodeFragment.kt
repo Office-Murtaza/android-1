@@ -14,7 +14,6 @@ import com.app.belcobtm.presentation.core.extensions.toggle
 import com.app.belcobtm.presentation.core.ui.fragment.BaseFragment
 import com.app.belcobtm.presentation.features.HostActivity
 import com.app.belcobtm.presentation.features.HostNavigationFragment
-import com.app.belcobtm.presentation.features.settings.SettingsFragment.Companion.SETTINGS_SECURITY
 import kotlinx.android.synthetic.main.fragment_pin_code.*
 import org.koin.android.viewmodel.ext.android.viewModel
 
@@ -31,7 +30,7 @@ class PinCodeFragment : BaseFragment() {
     override var isMenuEnabled: Boolean = true
     override val backPressedListener: View.OnClickListener = View.OnClickListener {
         if (pinMode == KEY_PIN_MODE_CHANGE) {
-            navigate(PinCodeFragmentDirections.pinCodeToSettingsFragment(SETTINGS_SECURITY))
+            popBackStack(R.id.settings_fragment, false)
         } else {
             //do nothing, user need to enter/create pin
         }
@@ -106,7 +105,7 @@ class PinCodeFragment : BaseFragment() {
                 }
                 is PinCodeAction.ChangedPin -> {
                     showSnackBar(R.string.pin_updated)
-                    navigate(PinCodeFragmentDirections.pinCodeToSettingsFragment(SETTINGS_SECURITY))
+                    popBackStack(R.id.settings_fragment, false)
                 }
                 is PinCodeAction.Vibrate -> vibrate(action.duration)
                 is PinCodeAction.AuthorizeError -> when (action.failure) {
@@ -118,8 +117,7 @@ class PinCodeFragment : BaseFragment() {
                     is Failure.ServerError -> showErrorServerError()
                     else -> showErrorSomethingWrong()
                 }
-                is PinCodeAction.BackPress ->
-                    navigate(PinCodeFragmentDirections.pinCodeToSettingsFragment(SETTINGS_SECURITY))
+                is PinCodeAction.BackPress -> popBackStack()
             }
         }
     }

@@ -2,6 +2,7 @@ package com.app.belcobtm.presentation.features.settings
 
 import android.view.MenuItem
 import android.view.View
+import androidx.lifecycle.Observer
 import androidx.navigation.fragment.navArgs
 import com.app.belcobtm.R
 import com.app.belcobtm.presentation.core.ui.fragment.BaseFragment
@@ -53,7 +54,7 @@ class SettingsFragment : BaseFragment() {
     }
 
     override fun initObservers() {
-        viewModel.stateData.observe(this, { state ->
+        viewModel.stateData.observe(this, Observer { state ->
 //            state.viewFlipperValue.doIfChanged(appliedState?.viewFlipperValue, {
             flipper.displayedChild = state.viewFlipperValue
 //            })
@@ -70,11 +71,10 @@ class SettingsFragment : BaseFragment() {
             appliedState = state
         })
 
-        viewModel.actionData.observe(this, { action ->
+        viewModel.actionData.observe(this, Observer { action ->
             when (action) {
                 is SettingsAction.NavigateAction -> navigate(action.navDirections)
             }
-
         })
     }
 

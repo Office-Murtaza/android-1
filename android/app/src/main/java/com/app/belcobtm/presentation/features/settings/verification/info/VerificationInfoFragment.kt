@@ -76,9 +76,4 @@ class VerificationInfoFragment: BaseFragment() {
             }
         )
     }
-
-    override fun popBackStack(): Boolean {
-        navigate(VerificationInfoFragmentDirections.verificationToSettingsFragment(SETTINGS_MAIN))
-        return true
-    }
 }

@@ -4,12 +4,10 @@ import android.content.Context
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavDirections
-import com.app.belcobtm.R
 import com.app.belcobtm.data.disk.shared.preferences.SharedPreferencesHelper
 import com.app.belcobtm.domain.Failure
 import com.app.belcobtm.domain.settings.interactor.ERROR_UPDATE_PHONE_IS_SAME
 import com.app.belcobtm.domain.settings.interactor.ERROR_UPDATE_PHONE_IS_USED
-import com.app.belcobtm.domain.settings.interactor.UpdatePhoneUseCase
 import com.app.belcobtm.domain.settings.interactor.VerifyPhoneUseCase
 import com.app.belcobtm.presentation.core.SingleLiveData
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
@@ -44,18 +42,20 @@ class PhoneChangeViewModel(
             VerifyPhoneUseCase.Params(phone),
             onSuccess = {
                 if (it) {
-                    stateData.value = LoadingData.Error(data = stateData.value?.commonData, errorType = Failure.MessageError(code = ERROR_UPDATE_PHONE_IS_USED, message = null))
-                } else {
-                    actionData.value = PhoneChangeAction.NavigateAction(
-                        PhoneChangeFragmentDirections.phoneChangeToSmsFragment(
-                            phone,
-                            R.id.sms_code_to_settings_fragment
+                    stateData.value = LoadingData.Error(
+                        data = stateData.value?.commonData,
+                        errorType = Failure.MessageError(
+                            code = ERROR_UPDATE_PHONE_IS_USED,
+                            message = null
                         )
                     )
+                } else {
+                    actionData.value = PhoneChangeAction.PopBackStackToSettings
                 }
             },
             onError = {
-                stateData.value = LoadingData.Error(data = stateData.value?.commonData, errorType = it)
+                stateData.value =
+                    LoadingData.Error(data = stateData.value?.commonData, errorType = it)
             })
     }
 
@@ -77,5 +77,6 @@ data class PhoneChangeState(
 )
 
 sealed class PhoneChangeAction {
+    object PopBackStackToSettings : PhoneChangeAction()
     class NavigateAction(val navDirections: NavDirections) : PhoneChangeAction()
 }
