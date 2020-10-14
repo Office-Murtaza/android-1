@@ -4,7 +4,7 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.navArgs
 import com.app.belcobtm.R
 import com.app.belcobtm.presentation.core.ui.fragment.BaseFragment
-import kotlinx.android.synthetic.main.layout_settings_main.*
+import kotlinx.android.synthetic.main.fragment_settings.*
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class SettingsFragment : BaseFragment() {
@@ -12,7 +12,7 @@ class SettingsFragment : BaseFragment() {
     private val viewModel by viewModel<SettingsViewModel>()
     private val settingsArgs: SettingsFragmentArgs by navArgs()
 
-    override val resourceLayout = R.layout.layout_settings_main
+    override val resourceLayout = R.layout.fragment_settings
     override var isMenuEnabled = true
 
     companion object {

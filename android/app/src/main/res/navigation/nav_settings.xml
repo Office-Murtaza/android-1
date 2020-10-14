@@ -130,7 +130,7 @@
         android:id="@+id/security_fragment"
         android:name="com.app.belcobtm.presentation.features.settings.security.SecurityFragment"
         android:label="SecurityFragment"
-        tools:layout="@layout/layout_settings_security">
+        tools:layout="@layout/fragment_security">
 
         <action
             android:id="@+id/to_password"
@@ -244,6 +244,6 @@
         android:id="@+id/about_fragment"
         android:name="com.app.belcobtm.presentation.features.settings.about.AboutFragment"
         android:label="AboutFragment"
-        tools:layout="@layout/layout_settings_about" />
+        tools:layout="@layout/fragment_about" />
 
 </navigation>

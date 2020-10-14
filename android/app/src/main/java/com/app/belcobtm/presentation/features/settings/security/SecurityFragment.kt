@@ -5,14 +5,14 @@ import android.view.View
 import androidx.lifecycle.Observer
 import com.app.belcobtm.R
 import com.app.belcobtm.presentation.core.ui.fragment.BaseFragment
-import kotlinx.android.synthetic.main.layout_settings_security.*
+import kotlinx.android.synthetic.main.fragment_security.*
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class SecurityFragment : BaseFragment() {
 
     private val viewModel by viewModel<SecurityViewModel>()
 
-    override val resourceLayout: Int = R.layout.layout_settings_security
+    override val resourceLayout: Int = R.layout.fragment_security
     override var isBackButtonEnabled: Boolean = true
     override var isMenuEnabled: Boolean = true
 

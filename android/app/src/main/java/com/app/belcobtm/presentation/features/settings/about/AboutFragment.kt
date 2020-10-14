@@ -5,14 +5,14 @@ import android.view.View
 import androidx.lifecycle.Observer
 import com.app.belcobtm.R
 import com.app.belcobtm.presentation.core.ui.fragment.BaseFragment
-import kotlinx.android.synthetic.main.layout_settings_about.*
+import kotlinx.android.synthetic.main.fragment_about.*
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class AboutFragment : BaseFragment() {
 
     private val viewModel by viewModel<AboutViewModel>()
 
-    override val resourceLayout: Int = R.layout.layout_settings_about
+    override val resourceLayout: Int = R.layout.fragment_about
     override val isHomeButtonEnabled: Boolean = true
     override var isMenuEnabled: Boolean = true
 
