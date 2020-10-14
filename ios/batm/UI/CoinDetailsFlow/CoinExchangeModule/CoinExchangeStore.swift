@@ -47,7 +47,7 @@ struct CoinExchangeState: Equatable {
     }
     
     let toCoinAmountDecimal = fromCoinAmountDecimal * fromCoinPrice / toCoinPrice * (100 - profitExchange) / 100
-    return toCoinAmountDecimal.coinFormatted.withCoinType(toCoinType)
+    return toCoinAmountDecimal.cointFormatted(fractionDigits: coinSettings?.scale).withCoinType(toCoinType)
   }
   
   var maxValue: Decimal {

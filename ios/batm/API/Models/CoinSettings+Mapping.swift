@@ -19,6 +19,7 @@ extension CoinSettings: ImmutableMappable {
     self.txFee = txFee
     self.recallFee = recallFee.flatMap { Decimal(string: $0) }
     byteFee = try map.value("byteFee")
+    scale = try map.value("scale")
     gasPrice = try map.value("gasPrice")
     gasLimit = try map.value("gasLimit")
     self.profitExchange = profitExchange
