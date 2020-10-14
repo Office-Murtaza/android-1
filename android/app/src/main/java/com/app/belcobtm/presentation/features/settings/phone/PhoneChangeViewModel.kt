@@ -50,7 +50,7 @@ class PhoneChangeViewModel(
                         )
                     )
                 } else {
-                    actionData.value = PhoneChangeAction.PopBackStackToSettings
+                    actionData.value = PhoneChangeAction.PopBackStackToSecurity
                 }
             },
             onError = {
@@ -77,6 +77,6 @@ data class PhoneChangeState(
 )
 
 sealed class PhoneChangeAction {
-    object PopBackStackToSettings : PhoneChangeAction()
+    object PopBackStackToSecurity : PhoneChangeAction()
     class NavigateAction(val navDirections: NavDirections) : PhoneChangeAction()
 }

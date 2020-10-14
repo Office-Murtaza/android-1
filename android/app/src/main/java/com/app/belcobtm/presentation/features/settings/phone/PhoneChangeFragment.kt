@@ -73,10 +73,9 @@ class PhoneChangeFragment : BaseFragment() {
                 is PhoneChangeAction.NavigateAction -> {
                     navigate(action.navDirections)
                 }
-                PhoneChangeAction.PopBackStackToSettings -> popBackStack(
-                    R.id.settings_fragment,
-                    false
-                )
+                PhoneChangeAction.PopBackStackToSecurity -> {
+                    popBackStack(R.id.security_fragment, false)
+                }
             }
         }
     }

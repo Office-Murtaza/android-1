@@ -74,7 +74,7 @@ class PasswordFragment : BaseFragment() {
                     showContent()
                     getNavController()?.popBackStack()
                 }
-                PasswordAction.PopToSettingsAction -> popBackStack(R.id.settings_fragment, false)
+                PasswordAction.PopToSecurityAction -> popBackStack(R.id.security_fragment, false)
             }
         })
     }

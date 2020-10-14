@@ -12,52 +12,16 @@
         tools:layout="@layout/fragment_settings">
 
         <action
-            android:id="@+id/to_password"
-            app:destination="@id/password_fragment"
-            app:enterAnim="@anim/slide_from_right"
-            app:exitAnim="@anim/slide_to_left"
-            app:popEnterAnim="@anim/slide_from_left"
-            app:popExitAnim="@anim/slide_to_right" />
-
-        <action
-            android:id="@+id/settings_to_display_phone"
-            app:destination="@id/display_phone_fragment"
-            app:enterAnim="@anim/slide_from_right"
-            app:exitAnim="@anim/slide_to_left"
-            app:popEnterAnim="@anim/slide_from_left"
-            app:popExitAnim="@anim/slide_to_right" />
-
-        <action
-            android:id="@+id/settings_to_pin_code"
-            app:destination="@id/pin_code_fragment"
-            app:enterAnim="@anim/slide_from_right"
-            app:exitAnim="@anim/slide_to_left"
-            app:popEnterAnim="@anim/slide_from_left"
-            app:popExitAnim="@anim/slide_to_right" />
-
-        <action
-            android:id="@+id/settings_to_update_password"
-            app:destination="@id/update_password_fragment"
-            app:enterAnim="@anim/slide_from_right"
-            app:exitAnim="@anim/slide_to_left"
-            app:popEnterAnim="@anim/slide_from_left"
-            app:popExitAnim="@anim/slide_to_right" />
-
-        <action
             android:id="@+id/settings_to_verification_info_fragment"
-            app:destination="@id/verification_info_fragment"
-            app:enterAnim="@anim/slide_from_right"
-            app:exitAnim="@anim/slide_to_left"
-            app:popEnterAnim="@anim/slide_from_left"
-            app:popExitAnim="@anim/slide_to_right" />
+            app:destination="@id/verification_info_fragment" />
 
         <action
-            android:id="@+id/settings_to_unlink"
-            app:destination="@id/unlink_fragment"
-            app:enterAnim="@anim/slide_from_right"
-            app:exitAnim="@anim/slide_to_left"
-            app:popEnterAnim="@anim/slide_from_left"
-            app:popExitAnim="@anim/slide_to_right" />
+            android:id="@+id/settings_to_about_fragment"
+            app:destination="@id/about_fragment" />
+
+        <action
+            android:id="@+id/settings_to_security_fragment"
+            app:destination="@id/security_fragment" />
 
         <argument
             android:name="view_flipper_value"
@@ -163,6 +127,54 @@
     </fragment>
 
     <fragment
+        android:id="@+id/security_fragment"
+        android:name="com.app.belcobtm.presentation.features.settings.security.SecurityFragment"
+        android:label="SecurityFragment"
+        tools:layout="@layout/layout_settings_security">
+
+        <action
+            android:id="@+id/to_password"
+            app:destination="@id/password_fragment"
+            app:enterAnim="@anim/slide_from_right"
+            app:exitAnim="@anim/slide_to_left"
+            app:popEnterAnim="@anim/slide_from_left"
+            app:popExitAnim="@anim/slide_to_right" />
+
+        <action
+            android:id="@+id/to_display_phone"
+            app:destination="@id/display_phone_fragment"
+            app:enterAnim="@anim/slide_from_right"
+            app:exitAnim="@anim/slide_to_left"
+            app:popEnterAnim="@anim/slide_from_left"
+            app:popExitAnim="@anim/slide_to_right" />
+
+        <action
+            android:id="@+id/to_pin_code"
+            app:destination="@id/pin_code_fragment"
+            app:enterAnim="@anim/slide_from_right"
+            app:exitAnim="@anim/slide_to_left"
+            app:popEnterAnim="@anim/slide_from_left"
+            app:popExitAnim="@anim/slide_to_right" />
+
+        <action
+            android:id="@+id/to_update_password"
+            app:destination="@id/update_password_fragment"
+            app:enterAnim="@anim/slide_from_right"
+            app:exitAnim="@anim/slide_to_left"
+            app:popEnterAnim="@anim/slide_from_left"
+            app:popExitAnim="@anim/slide_to_right" />
+
+        <action
+            android:id="@+id/to_unlink"
+            app:destination="@id/unlink_fragment"
+            app:enterAnim="@anim/slide_from_right"
+            app:exitAnim="@anim/slide_to_left"
+            app:popEnterAnim="@anim/slide_from_left"
+            app:popExitAnim="@anim/slide_to_right" />
+
+    </fragment>
+
+    <fragment
         android:id="@+id/sms_code_fragment"
         android:name="com.app.belcobtm.presentation.features.sms.code.SmsCodeFragment"
         android:label="SmsCodeFragment"
@@ -227,5 +239,11 @@
         android:name="com.app.belcobtm.presentation.features.settings.verification.vip.VerificationVipFragment"
         android:label="VerificationVipFragment"
         tools:layout="@layout/fragment_verification_vip" />
+
+    <fragment
+        android:id="@+id/about_fragment"
+        android:name="com.app.belcobtm.presentation.features.settings.about.AboutFragment"
+        android:label="AboutFragment"
+        tools:layout="@layout/layout_settings_about" />
 
 </navigation>

@@ -30,7 +30,7 @@ class PinCodeFragment : BaseFragment() {
     override var isMenuEnabled: Boolean = true
     override val backPressedListener: View.OnClickListener = View.OnClickListener {
         if (pinMode == KEY_PIN_MODE_CHANGE) {
-            popBackStack(R.id.settings_fragment, false)
+            popBackStack(R.id.security_fragment, false)
         } else {
             //do nothing, user need to enter/create pin
         }
@@ -105,7 +105,7 @@ class PinCodeFragment : BaseFragment() {
                 }
                 is PinCodeAction.ChangedPin -> {
                     showSnackBar(R.string.pin_updated)
-                    popBackStack(R.id.settings_fragment, false)
+                    popBackStack(R.id.security_fragment, false)
                 }
                 is PinCodeAction.Vibrate -> vibrate(action.duration)
                 is PinCodeAction.AuthorizeError -> when (action.failure) {
@@ -117,7 +117,7 @@ class PinCodeFragment : BaseFragment() {
                     is Failure.ServerError -> showErrorServerError()
                     else -> showErrorSomethingWrong()
                 }
-                is PinCodeAction.BackPress -> popBackStack()
+                is PinCodeAction.BackPress -> popBackStack(R.id.security_fragment, false)
             }
         }
     }

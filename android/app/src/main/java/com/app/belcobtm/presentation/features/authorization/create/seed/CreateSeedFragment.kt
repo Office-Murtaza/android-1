@@ -94,7 +94,7 @@ class CreateSeedFragment : BaseFragment() {
     private fun goBack() {
         when (args.mode) {
             MODE_SETTINGS -> {
-                popBackStack(R.id.settings_fragment, false)
+                popBackStack(R.id.security_fragment, false)
             }
             MODE_DEFAULT -> {
                 popBackStack(R.id.create_wallet_fragment, false)

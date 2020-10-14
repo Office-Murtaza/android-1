@@ -65,7 +65,7 @@ class PasswordViewModel(
     fun popBackStack() {
         when (arguments.destination) {
             R.id.password_to_create_seed_fragment -> actionData.value =
-                PasswordAction.PopToSettingsAction
+                PasswordAction.PopToSecurityAction
             R.id.password_to_change_phone_fragment -> actionData.value =
                 PasswordAction.BackStackAction
             else -> throw IllegalArgumentException("wrong direction passed")
@@ -78,5 +78,5 @@ data class PasswordState(val isButtonEnabled: Boolean = false)
 sealed class PasswordAction {
     data class NavigateAction(val navDirections: NavDirections) : PasswordAction()
     object BackStackAction : PasswordAction()
-    object PopToSettingsAction : PasswordAction()
+    object PopToSecurityAction : PasswordAction()
 }
