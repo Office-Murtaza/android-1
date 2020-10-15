@@ -113,13 +113,13 @@ struct CoinsBalanceRequest: AuthorizedAPIRequest {
   }
 }
 
-struct CoinSettingsRequest: AuthorizedAPIRequest {
+struct CoinDetailsRequest: AuthorizedAPIRequest {
   typealias ResponseType = APIResponse<CoinSettings>
   typealias ResponseTrait = SingleResponseTrait
   
   let coinId: String
   
-  var path: String { return "/coin/\(coinId)/settings" }
+  var path: String { return "/coin/\(coinId)/details" }
   var method: HTTPMethod { return .get }
   var task: HTTPTask {
     return .requestPlain
