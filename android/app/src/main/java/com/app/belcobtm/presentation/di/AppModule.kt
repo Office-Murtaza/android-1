@@ -10,9 +10,11 @@ import com.app.belcobtm.presentation.features.authorization.recover.seed.Recover
 import com.app.belcobtm.presentation.features.authorization.recover.wallet.RecoverWalletViewModel
 import com.app.belcobtm.presentation.features.pin.code.PinCodeViewModel
 import com.app.belcobtm.presentation.features.settings.SettingsViewModel
+import com.app.belcobtm.presentation.features.settings.about.AboutViewModel
 import com.app.belcobtm.presentation.features.settings.password.PasswordViewModel
 import com.app.belcobtm.presentation.features.settings.phone.PhoneChangeViewModel
 import com.app.belcobtm.presentation.features.settings.phone.PhoneDisplayViewModel
+import com.app.belcobtm.presentation.features.settings.security.SecurityViewModel
 import com.app.belcobtm.presentation.features.settings.unlink.UnlinkViewModel
 import com.app.belcobtm.presentation.features.settings.update_password.UpdatePasswordViewModel
 import com.app.belcobtm.presentation.features.settings.verification.blank.VerificationBlankViewModel
@@ -34,10 +36,13 @@ import com.app.belcobtm.presentation.features.wallet.trade.reserve.TradeReserveV
 import com.app.belcobtm.presentation.features.wallet.transaction.details.TransactionDetailsViewModel
 import com.app.belcobtm.presentation.features.wallet.transactions.TransactionsViewModel
 import com.app.belcobtm.presentation.features.wallet.withdraw.WithdrawViewModel
+import org.koin.android.ext.koin.androidApplication
 import org.koin.android.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
 val viewModelModule = module {
+    viewModel { AboutViewModel(androidApplication(), get()) }
+    viewModel { SecurityViewModel() }
     viewModel { WalletViewModel(get(), get()) }
     viewModel { (coinCode: String) -> TransactionsViewModel(coinCode, get(), get(), get()) }
     viewModel { RecoverWalletViewModel(get()) }
@@ -97,7 +102,7 @@ val viewModelModule = module {
     }
     viewModel { RecoverSeedViewModel(get()) }
     viewModel { CreateSeedViewModel(get(), get()) }
-    viewModel { SettingsViewModel(get(), get()) }
+    viewModel { SettingsViewModel() }
     viewModel { PasswordViewModel(get(), get()) }
     viewModel { UnlinkViewModel(get()) }
     viewModel { UpdatePasswordViewModel(get()) }

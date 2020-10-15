@@ -11,7 +11,6 @@ import com.app.belcobtm.presentation.core.Const.MIN_PASS
 import com.app.belcobtm.presentation.core.SingleLiveData
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
 import com.app.belcobtm.presentation.features.authorization.create.seed.CreateSeedFragment
-import com.app.belcobtm.presentation.features.settings.SettingsFragment.Companion.SETTINGS_SECURITY
 
 class PasswordViewModel(
     val checkPassUseCase: CheckPassUseCase,
@@ -21,6 +20,7 @@ class PasswordViewModel(
     val stateData =
         MutableLiveData<LoadingData<PasswordState>>(LoadingData.Success(PasswordState()))
     val actionData = SingleLiveData<PasswordAction>()
+
     lateinit var arguments: PasswordFragmentArgs
 
     fun passArgs(args: PasswordFragmentArgs) {
@@ -38,7 +38,8 @@ class PasswordViewModel(
                 }
             },
             onError = {
-                stateData.value = LoadingData.Error(data = stateData.value?.commonData, errorType = it)
+                stateData.value =
+                    LoadingData.Error(data = stateData.value?.commonData, errorType = it)
             })
     }
 
@@ -64,11 +65,7 @@ class PasswordViewModel(
     fun popBackStack() {
         when (arguments.destination) {
             R.id.password_to_create_seed_fragment -> actionData.value =
-                PasswordAction.NavigateAction(
-                    PasswordFragmentDirections.passwordToSettingsFragment(
-                        SETTINGS_SECURITY
-                    )
-                )
+                PasswordAction.PopToSecurityAction
             R.id.password_to_change_phone_fragment -> actionData.value =
                 PasswordAction.BackStackAction
             else -> throw IllegalArgumentException("wrong direction passed")
@@ -81,4 +78,5 @@ data class PasswordState(val isButtonEnabled: Boolean = false)
 sealed class PasswordAction {
     data class NavigateAction(val navDirections: NavDirections) : PasswordAction()
     object BackStackAction : PasswordAction()
+    object PopToSecurityAction : PasswordAction()
 }
