@@ -22,18 +22,7 @@ class WithdrawFragment : BaseFragment() {
     }
     private val doubleTextWatcher: DoubleTextWatcher = DoubleTextWatcher(
         firstTextWatcher = { editable ->
-            val fromMaxValue = viewModel.getMaxValue()
-            val fromCoinAmountTemporary = editable.getDouble()
-            val cryptoAmount: Double
-
-            if (fromCoinAmountTemporary >= fromMaxValue) {
-                cryptoAmount = fromMaxValue
-                editable.clear()
-                editable.insert(0, cryptoAmount.toStringCoin())
-            } else {
-                cryptoAmount = fromCoinAmountTemporary
-            }
-
+            val cryptoAmount: Double = editable.getDouble()
             amountUsdView.text = if (cryptoAmount > 0) {
                 getString(R.string.text_usd, (cryptoAmount * viewModel.getUsdPrice()).toStringUsd())
             } else {
@@ -144,6 +133,11 @@ class WithdrawFragment : BaseFragment() {
             amountCryptoView.showError(R.string.insufficient_balance)
         }
 
+        if(amountCryptoView.getDouble() >= viewModel.getMaxValue()) {
+            errors++
+            amountCryptoView.showError(R.string.balance_amount_exceeded)
+        }
+
         if (errors == 0) {
             viewModel.withdraw(addressView.getString(), amountCryptoView.getDouble())
         }
@@ -156,7 +150,6 @@ class WithdrawFragment : BaseFragment() {
     private fun updateNextButton() {
         nextButtonView.isEnabled = amountCryptoView.isNotBlank()
                 && amountCryptoView.getDouble() > 0
-                && amountCryptoView.getDouble() <= (viewModel.getCoinBalance() - viewModel.getTransactionFee())
                 && isValidAddress()
     }
 }
