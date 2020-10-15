@@ -15,7 +15,6 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import wallet.core.jni.CoinType;
-
 import java.math.BigDecimal;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
@@ -132,6 +131,22 @@ public class CoinService {
         return true;
     }
 
+    public CoinDetailsDTO getCoinDetails(CoinService.CoinEnum coin) {
+        CoinDetailsDTO dto = new CoinDetailsDTO();
+        dto.setCode(coin.name());
+        dto.setByteFee(coin.getByteFee());
+        dto.setTxFee(coin.getTxFee());
+        dto.setGasPrice(coin.getGasPrice());
+        dto.setGasLimit(coin.getGasLimit());
+        dto.setScale(coin.getCoinEntity().getScale());
+        dto.setRecallFee(coin.getCoinEntity().getRecallFee());
+        dto.setProfitExchange(coin.getCoinEntity().getProfitExchange());
+        dto.setWalletAddress(coin.getWalletAddress());
+        dto.setContractAddress(coin.getContractAddress());
+
+        return dto;
+    }
+
     private CompletableFuture<CoinBalanceDTO> callAsync(UserCoin userCoin) {
         return CompletableFuture.supplyAsync(() -> {
             CoinEnum coinEnum = CoinEnum.valueOf(userCoin.getCoin().getCode());
@@ -162,15 +177,6 @@ public class CoinService {
         return cache.getBinancePriceBySymbol(symbol);
     }
 
-    private static CoinSettingsDTO getAltCoinSettings(Coin coin, String walletAddress) {
-        CoinSettingsDTO dto = new CoinSettingsDTO();
-        dto.setProfitExchange(coin.getProfitExchange().stripTrailingZeros());
-        dto.setTxFee(coin.getFee().stripTrailingZeros());
-        dto.setWalletAddress(walletAddress);
-
-        return dto;
-    }
-
     public enum CoinEnum {
         BTC {
             @Override
@@ -181,6 +187,26 @@ public class CoinService {
             @Override
             public BigDecimal getBalance(String address) {
                 return blockbook.getBalance(getCoinType(), address);
+            }
+
+            @Override
+            public Long getByteFee() {
+                return blockbook.getByteFee(getCoinType());
+            }
+
+            @Override
+            public BigDecimal getTxFee() {
+                return blockbook.getTxFee(getCoinType());
+            }
+
+            @Override
+            public Long getGasPrice() {
+                return null;
+            }
+
+            @Override
+            public Long getGasLimit() {
+                return null;
             }
 
             @Override
@@ -262,13 +288,13 @@ public class CoinService {
             }
 
             @Override
-            public CoinSettingsDTO getCoinSettings() {
-                return blockbook.getCoinSettings(getCoinType(), getCoinEntity().getProfitExchange(), getWalletAddress());
+            public String getExplorerUrl() {
+                return blockbook.getBtcExplorerUrl();
             }
 
             @Override
-            public String getExplorerUrl() {
-                return blockbook.getBtcExplorerUrl();
+            public String getContractAddress() {
+                return null;
             }
         },
         ETH {
@@ -280,6 +306,26 @@ public class CoinService {
             @Override
             public BigDecimal getBalance(String address) {
                 return geth.getEthBalance(address);
+            }
+
+            @Override
+            public Long getByteFee() {
+                return null;
+            }
+
+            @Override
+            public BigDecimal getTxFee() {
+                return geth.getTxFee(geth.getEthGasLimit(getWalletAddress()), geth.getGasPrice());
+            }
+
+            @Override
+            public Long getGasPrice() {
+                return geth.getGasPrice();
+            }
+
+            @Override
+            public Long getGasLimit() {
+                return geth.getEthGasLimit(getWalletAddress());
             }
 
             @Override
@@ -358,13 +404,13 @@ public class CoinService {
             }
 
             @Override
-            public CoinSettingsDTO getCoinSettings() {
-                return geth.getCoinSettings(getCoinEntity(), geth.getEthGasLimit(getWalletAddress()), geth.getGasPrice(), getWalletAddress());
+            public String getExplorerUrl() {
+                return geth.getExplorerUrl();
             }
 
             @Override
-            public String getExplorerUrl() {
-                return geth.getExplorerUrl();
+            public String getContractAddress() {
+                return null;
             }
         },
         CATM {
@@ -376,6 +422,26 @@ public class CoinService {
             @Override
             public BigDecimal getBalance(String address) {
                 return geth.getTokenBalance(address);
+            }
+
+            @Override
+            public Long getByteFee() {
+                return null;
+            }
+
+            @Override
+            public BigDecimal getTxFee() {
+                return geth.getTxFee(geth.getTokenGasLimit(), geth.getGasPrice());
+            }
+
+            @Override
+            public Long getGasPrice() {
+                return geth.getGasPrice();
+            }
+
+            @Override
+            public Long getGasLimit() {
+                return geth.getTokenGasLimit();
             }
 
             @Override
@@ -454,13 +520,13 @@ public class CoinService {
             }
 
             @Override
-            public CoinSettingsDTO getCoinSettings() {
-                return geth.getCoinSettings(getCoinEntity(), geth.getTokenGasLimit(), geth.getGasPrice(), getWalletAddress());
+            public String getExplorerUrl() {
+                return geth.getExplorerUrl();
             }
 
             @Override
-            public String getExplorerUrl() {
-                return geth.getExplorerUrl();
+            public String getContractAddress() {
+                return geth.getContractAddress();
             }
         },
         BCH {
@@ -472,6 +538,26 @@ public class CoinService {
             @Override
             public BigDecimal getBalance(String address) {
                 return blockbook.getBalance(getCoinType(), address);
+            }
+
+            @Override
+            public Long getByteFee() {
+                return blockbook.getByteFee(getCoinType());
+            }
+
+            @Override
+            public BigDecimal getTxFee() {
+                return blockbook.getTxFee(getCoinType());
+            }
+
+            @Override
+            public Long getGasPrice() {
+                return null;
+            }
+
+            @Override
+            public Long getGasLimit() {
+                return null;
             }
 
             @Override
@@ -553,13 +639,13 @@ public class CoinService {
             }
 
             @Override
-            public CoinSettingsDTO getCoinSettings() {
-                return blockbook.getCoinSettings(getCoinType(), getCoinEntity().getProfitExchange(), getWalletAddress());
+            public String getExplorerUrl() {
+                return blockbook.getBchExplorerUrl();
             }
 
             @Override
-            public String getExplorerUrl() {
-                return blockbook.getBchExplorerUrl();
+            public String getContractAddress() {
+                return null;
             }
         },
         LTC {
@@ -571,6 +657,26 @@ public class CoinService {
             @Override
             public BigDecimal getBalance(String address) {
                 return blockbook.getBalance(getCoinType(), address);
+            }
+
+            @Override
+            public Long getByteFee() {
+                return blockbook.getByteFee(getCoinType());
+            }
+
+            @Override
+            public BigDecimal getTxFee() {
+                return blockbook.getTxFee(getCoinType());
+            }
+
+            @Override
+            public Long getGasPrice() {
+                return null;
+            }
+
+            @Override
+            public Long getGasLimit() {
+                return null;
             }
 
             @Override
@@ -652,13 +758,13 @@ public class CoinService {
             }
 
             @Override
-            public CoinSettingsDTO getCoinSettings() {
-                return blockbook.getCoinSettings(getCoinType(), getCoinEntity().getProfitExchange(), getWalletAddress());
+            public String getExplorerUrl() {
+                return blockbook.getLtcExplorerUrl();
             }
 
             @Override
-            public String getExplorerUrl() {
-                return blockbook.getLtcExplorerUrl();
+            public String getContractAddress() {
+                return null;
             }
         },
         BNB {
@@ -670,6 +776,26 @@ public class CoinService {
             @Override
             public BigDecimal getBalance(String address) {
                 return binance.getBalance(address);
+            }
+
+            @Override
+            public Long getByteFee() {
+                return null;
+            }
+
+            @Override
+            public BigDecimal getTxFee() {
+                return getCoinEntity().getFee().stripTrailingZeros();
+            }
+
+            @Override
+            public Long getGasPrice() {
+                return null;
+            }
+
+            @Override
+            public Long getGasLimit() {
+                return null;
             }
 
             @Override
@@ -748,13 +874,13 @@ public class CoinService {
             }
 
             @Override
-            public CoinSettingsDTO getCoinSettings() {
-                return getAltCoinSettings(getCoinEntity(), getWalletAddress());
+            public String getExplorerUrl() {
+                return binance.getExplorerUrl();
             }
 
             @Override
-            public String getExplorerUrl() {
-                return binance.getExplorerUrl();
+            public String getContractAddress() {
+                return null;
             }
         },
         XRP {
@@ -766,6 +892,26 @@ public class CoinService {
             @Override
             public BigDecimal getBalance(String address) {
                 return rippled.getBalance(address);
+            }
+
+            @Override
+            public Long getByteFee() {
+                return null;
+            }
+
+            @Override
+            public BigDecimal getTxFee() {
+                return getCoinEntity().getFee().stripTrailingZeros();
+            }
+
+            @Override
+            public Long getGasPrice() {
+                return null;
+            }
+
+            @Override
+            public Long getGasLimit() {
+                return null;
             }
 
             @Override
@@ -852,13 +998,13 @@ public class CoinService {
             }
 
             @Override
-            public CoinSettingsDTO getCoinSettings() {
-                return getAltCoinSettings(getCoinEntity(), getWalletAddress());
+            public String getExplorerUrl() {
+                return rippled.getExplorerUrl();
             }
 
             @Override
-            public String getExplorerUrl() {
-                return rippled.getExplorerUrl();
+            public String getContractAddress() {
+                return null;
             }
         },
         TRX {
@@ -870,6 +1016,26 @@ public class CoinService {
             @Override
             public BigDecimal getBalance(String address) {
                 return trongrid.getBalance(address);
+            }
+
+            @Override
+            public Long getByteFee() {
+                return null;
+            }
+
+            @Override
+            public BigDecimal getTxFee() {
+                return getCoinEntity().getFee().stripTrailingZeros();
+            }
+
+            @Override
+            public Long getGasPrice() {
+                return null;
+            }
+
+            @Override
+            public Long getGasLimit() {
+                return null;
             }
 
             @Override
@@ -948,19 +1114,27 @@ public class CoinService {
             }
 
             @Override
-            public CoinSettingsDTO getCoinSettings() {
-                return getAltCoinSettings(getCoinEntity(), getWalletAddress());
+            public String getExplorerUrl() {
+                return trongrid.getExplorerUrl();
             }
 
             @Override
-            public String getExplorerUrl() {
-                return trongrid.getExplorerUrl();
+            public String getContractAddress() {
+                return null;
             }
         };
 
         public abstract BigDecimal getPrice();
 
         public abstract BigDecimal getBalance(String address);
+
+        public abstract Long getByteFee();
+
+        public abstract BigDecimal getTxFee();
+
+        public abstract Long getGasPrice();
+
+        public abstract Long getGasLimit();
 
         public abstract String getName();
 
@@ -992,8 +1166,8 @@ public class CoinService {
 
         public abstract Coin getCoinEntity();
 
-        public abstract CoinSettingsDTO getCoinSettings();
-
         public abstract String getExplorerUrl();
+
+        public abstract String getContractAddress();
     }
 }

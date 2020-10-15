@@ -313,16 +313,8 @@ public class BlockbookService {
         return null;
     }
 
-    public CoinSettingsDTO getCoinSettings(CoinType coinType, BigDecimal profitExchange, String walletAddress) {
-        Long byteFee = getByteFee(coinType);
-
-        CoinSettingsDTO dto = new CoinSettingsDTO();
-        dto.setProfitExchange(profitExchange);
-        dto.setByteFee(byteFee);
-        dto.setTxFee(BigDecimal.valueOf(byteFee).divide(BTC_DIVIDER).multiply(BigDecimal.valueOf(1000)).stripTrailingZeros());
-        dto.setWalletAddress(walletAddress);
-
-        return dto;
+    public BigDecimal getTxFee(CoinType coinType) {
+        return BigDecimal.valueOf(getByteFee(coinType)).divide(BTC_DIVIDER).multiply(BigDecimal.valueOf(1000)).stripTrailingZeros();
     }
 
     private Map<String, TransactionDetailsDTO> collectNodeTxs(JSONArray array, String address) {

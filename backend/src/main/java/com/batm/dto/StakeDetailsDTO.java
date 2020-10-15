@@ -1,5 +1,6 @@
 package com.batm.dto;
 
+import com.batm.model.StakeStatus;
 import com.batm.util.Util;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -14,10 +15,7 @@ import java.util.Date;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class StakeDetailsDTO {
 
-    private boolean created;
-    private boolean canceled;
-    private boolean withdrawn;
-
+    private StakeStatus status;
     private BigDecimal amount;
     private String amountStr;
     private BigDecimal rewardAmount;
@@ -39,16 +37,8 @@ public class StakeDetailsDTO {
     private Integer untilWithdraw;
     private Integer cancelPeriod;
 
-    public void setCreated(boolean created) {
-        this.created = created;
-    }
-
-    public void setCanceled(boolean canceled) {
-        this.canceled = canceled;
-    }
-
-    public void setWithdrawn(boolean withdrawn) {
-        this.withdrawn = withdrawn;
+    public void setStatus(StakeStatus status) {
+        this.status = status;
     }
 
     public void setAmount(BigDecimal amount) {

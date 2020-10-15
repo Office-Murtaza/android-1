@@ -306,7 +306,7 @@ public class TransactionService {
         try {
             UserCoin userCoin = userService.getUserCoin(userId, coinCode.name());
             BigDecimal reserved = userCoin.getReservedBalance();
-            BigDecimal txFee = coinCode == CoinService.CoinEnum.CATM ? coinCode.getCoinSettings().getRecallFee() : coinCode.getCoinSettings().getTxFee();
+            BigDecimal txFee = coinCode == CoinService.CoinEnum.CATM ? coinCode.getCoinEntity().getRecallFee() : coinCode.getTxFee();
 
             if (walletService.isEnoughBalance(coinCode, dto.getCryptoAmount()) && reserved.compareTo(dto.getCryptoAmount().add(txFee)) >= 0) {
                 String fromAddress = coinCode.getWalletAddress();
@@ -385,7 +385,7 @@ public class TransactionService {
 
             walletRep.save(record);
 
-            Optional<TransactionRecordWallet> createStakeRecOpt = walletRep.findFirstByIdentityAndProcessedAndTypeAndStatusAndRefTxIdNull(identity, ProcessedType.SUCCESS.getValue(), TransactionType.CREATE_STAKE.getValue(), TransactionStatus.COMPLETE.getValue());
+            Optional<TransactionRecordWallet> createStakeRecOpt = walletRep.findFirstByIdentityAndCoinAndTypeAndStatusOrderByCreateDateDesc(identity, coin.getCoinEntity(), TransactionType.CREATE_STAKE.getValue(), TransactionStatus.COMPLETE.getValue());
 
             if (createStakeRecOpt.isPresent()) {
                 TransactionRecordWallet createStakeRec = createStakeRecOpt.get();
@@ -411,7 +411,7 @@ public class TransactionService {
 
             walletRep.save(record);
 
-            Optional<TransactionRecordWallet> cancelStakeRecOpt = walletRep.findFirstByIdentityAndProcessedAndTypeAndStatusAndRefTxIdNull(identity, ProcessedType.SUCCESS.getValue(), TransactionType.CANCEL_STAKE.getValue(), TransactionStatus.COMPLETE.getValue());
+            Optional<TransactionRecordWallet> cancelStakeRecOpt = walletRep.findFirstByIdentityAndCoinAndTypeAndStatusOrderByCreateDateDesc(identity, coin.getCoinEntity(), TransactionType.CANCEL_STAKE.getValue(), TransactionStatus.COMPLETE.getValue());
 
             if (cancelStakeRecOpt.isPresent()) {
                 TransactionRecordWallet cancelStakeRec = cancelStakeRecOpt.get();
@@ -423,67 +423,60 @@ public class TransactionService {
         }
     }
 
-    public StakeDetailsDTO getStakeDetails(Long userId) {
+    public StakeDetailsDTO getStakeDetails(Long userId, CoinService.CoinEnum coin) {
         StakeDetailsDTO dto = new StakeDetailsDTO();
+        dto.setStatus(StakeStatus.NOT_EXIST);
         dto.setRewardAnnualPercent(REWARD_ANNUAL_PERCENT);
         dto.setCancelPeriod(CANCEL_PERIOD);
 
         try {
             Identity identity = userService.findByUserId(userId);
-            Optional<TransactionRecordWallet> createStakeRecOpt = walletRep.findFirstByIdentityAndTypeOrderByCreateDateDesc(identity, TransactionType.CREATE_STAKE.getValue());
+            Optional<TransactionRecordWallet> createStakeRecOpt = walletRep.findFirstByIdentityAndCoinAndTypeOrderByCreateDateDesc(identity, coin.getCoinEntity(), TransactionType.CREATE_STAKE.getValue());
 
             if (createStakeRecOpt.isPresent()) {
                 TransactionRecordWallet createStakeRec = createStakeRecOpt.get();
 
-                if (createStakeRec.getStatus() == TransactionStatus.PENDING.getValue() || createStakeRec.getStatus() == TransactionStatus.COMPLETE.getValue()) {
-                    dto.setCreated(true);
-                    dto.setAmount(createStakeRec.getAmount());
-                    dto.setCreateDate(createStakeRec.getCreateDate());
+                dto.setStatus(StakeStatus.convert(TransactionType.valueOf(createStakeRec.getType()), TransactionStatus.valueOf(createStakeRec.getStatus())));
+                dto.setAmount(createStakeRec.getAmount());
+                dto.setCreateDate(createStakeRec.getCreateDate());
 
-                    if (StringUtils.isBlank(createStakeRec.getRefTxId())) {
-                        int days = Days.daysBetween(new DateTime(createStakeRec.getCreateDate()), DateTime.now()).getDays();
-                        dto.setDuration(days);
+                if (StringUtils.isBlank(createStakeRec.getRefTxId())) {
+                    int days = Days.daysBetween(new DateTime(createStakeRec.getCreateDate()), DateTime.now()).getDays();
+                    dto.setDuration(days);
 
-                        BigDecimal rewardPercent = new BigDecimal(days)
-                                .multiply(REWARD_ANNUAL_PERCENT)
-                                .divide(new BigDecimal(365), 2, RoundingMode.HALF_DOWN)
-                                .stripTrailingZeros();
+                    BigDecimal rewardPercent = new BigDecimal(days)
+                            .multiply(REWARD_ANNUAL_PERCENT)
+                            .divide(new BigDecimal(365), 2, RoundingMode.HALF_DOWN)
+                            .stripTrailingZeros();
 
-                        dto.setRewardAmount(createStakeRec.getAmount().multiply(rewardPercent.divide(Constant.HUNDRED)).stripTrailingZeros());
-                        dto.setRewardPercent(rewardPercent);
-                        dto.setRewardAnnualAmount(createStakeRec.getAmount().multiply(REWARD_ANNUAL_PERCENT.divide(Constant.HUNDRED)).stripTrailingZeros());
+                    dto.setRewardAmount(createStakeRec.getAmount().multiply(rewardPercent.divide(Constant.HUNDRED)).stripTrailingZeros());
+                    dto.setRewardPercent(rewardPercent);
+                    dto.setRewardAnnualAmount(createStakeRec.getAmount().multiply(REWARD_ANNUAL_PERCENT.divide(Constant.HUNDRED)).stripTrailingZeros());
 
-                        return dto;
-                    } else {
-                        TransactionRecordWallet cancelStakeRec = walletRep.findFirstByTxId(createStakeRec.getRefTxId()).get();
+                    return dto;
+                } else {
+                    TransactionRecordWallet cancelStakeRec = walletRep.findFirstByTxId(createStakeRec.getRefTxId()).get();
 
-                        if (cancelStakeRec.getStatus() == TransactionStatus.PENDING.getValue() || cancelStakeRec.getStatus() == TransactionStatus.COMPLETE.getValue()) {
-                            dto.setCanceled(true);
-                            dto.setCancelDate(cancelStakeRec.getCreateDate());
-                            int days = Days.daysBetween(new DateTime(createStakeRec.getCreateDate()), new DateTime(cancelStakeRec.getCreateDate())).getDays();
-                            dto.setDuration(days);
+                    dto.setStatus(StakeStatus.convert(TransactionType.valueOf(cancelStakeRec.getType()), TransactionStatus.valueOf(cancelStakeRec.getStatus())));
+                    dto.setCancelDate(cancelStakeRec.getCreateDate());
+                    int days = Days.daysBetween(new DateTime(createStakeRec.getCreateDate()), new DateTime(cancelStakeRec.getCreateDate())).getDays();
+                    dto.setDuration(days);
 
-                            BigDecimal rewardPercent = new BigDecimal(days)
-                                    .multiply(REWARD_ANNUAL_PERCENT)
-                                    .divide(new BigDecimal(365), 2, RoundingMode.HALF_DOWN)
-                                    .stripTrailingZeros();
+                    BigDecimal rewardPercent = new BigDecimal(days)
+                            .multiply(REWARD_ANNUAL_PERCENT)
+                            .divide(new BigDecimal(365), 2, RoundingMode.HALF_DOWN)
+                            .stripTrailingZeros();
 
-                            dto.setRewardAmount(createStakeRec.getAmount().multiply(rewardPercent.divide(Constant.HUNDRED)).stripTrailingZeros());
-                            dto.setRewardPercent(rewardPercent);
+                    dto.setRewardAmount(createStakeRec.getAmount().multiply(rewardPercent.divide(Constant.HUNDRED)).stripTrailingZeros());
+                    dto.setRewardPercent(rewardPercent);
+                    dto.setUntilWithdraw(Math.max(0, CANCEL_PERIOD - Days.daysBetween(new DateTime(cancelStakeRec.getCreateDate()), DateTime.now()).getDays() + 1));
 
-                            dto.setUntilWithdraw(Math.max(0, CANCEL_PERIOD - Days.daysBetween(new DateTime(cancelStakeRec.getCreateDate()), DateTime.now()).getDays()));
-
-                            if (StringUtils.isNotBlank(cancelStakeRec.getRefTxId())) {
-                                TransactionRecordWallet withdrawStakeRec = walletRep.findFirstByTxId(cancelStakeRec.getRefTxId()).get();
-
-                                if (withdrawStakeRec.getStatus() == TransactionStatus.COMPLETE.getValue()) {
-                                    dto.setWithdrawn(true);
-                                }
-                            }
-
-                            return dto;
-                        }
+                    if (StringUtils.isNotBlank(cancelStakeRec.getRefTxId())) {
+                        TransactionRecordWallet withdrawStakeRec = walletRep.findFirstByTxId(cancelStakeRec.getRefTxId()).get();
+                        dto.setStatus(StakeStatus.convert(TransactionType.valueOf(withdrawStakeRec.getType()), TransactionStatus.valueOf(withdrawStakeRec.getStatus())));
                     }
+
+                    return dto;
                 }
             }
         } catch (Exception e) {
@@ -565,7 +558,7 @@ public class TransactionService {
             list.stream().forEach(t -> {
                 try {
                     CoinService.CoinEnum coinCode = CoinService.CoinEnum.valueOf(t.getRefCoin().getCode());
-                    BigDecimal txFee = coinCode == CoinService.CoinEnum.CATM ? coinCode.getCoinSettings().getRecallFee() : coinCode.getCoinSettings().getTxFee();
+                    BigDecimal txFee = coinCode == CoinService.CoinEnum.CATM ? coinCode.getCoinEntity().getRecallFee() : coinCode.getTxFee();
                     BigDecimal withdrawAmount = t.getRefAmount().subtract(txFee);
 
                     if (walletService.isEnoughBalance(coinCode, t.getRefAmount())) {
@@ -628,7 +621,7 @@ public class TransactionService {
 
                     if (receiver != null) {
                         CoinService.CoinEnum coinCode = CoinService.CoinEnum.valueOf(t.getCoin().getCode());
-                        BigDecimal txFee = coinCode == CoinService.CoinEnum.CATM ? coinCode.getCoinSettings().getRecallFee() : coinCode.getCoinSettings().getTxFee();
+                        BigDecimal txFee = coinCode == CoinService.CoinEnum.CATM ? coinCode.getCoinEntity().getRecallFee() : coinCode.getTxFee();
                         BigDecimal withdrawAmount = t.getAmount().subtract(txFee);
 
                         if (walletService.isEnoughBalance(coinCode, t.getAmount())) {

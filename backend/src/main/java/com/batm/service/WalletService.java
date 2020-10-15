@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import wallet.core.jni.*;
+
 import javax.annotation.PostConstruct;
 import java.math.BigDecimal;
 import java.util.*;
@@ -203,15 +204,14 @@ public class WalletService {
 
     public boolean isEnoughBalance(CoinService.CoinEnum coin, BigDecimal amount) {
         BigDecimal balance = getBalance(coin);
-        CoinSettingsDTO settings = coin.getCoinSettings();
 
-        if(coin == CoinService.CoinEnum.CATM) {
+        if (coin == CoinService.CoinEnum.CATM) {
             BigDecimal ethBalance = getBalance(CoinService.CoinEnum.ETH);
 
-            return balance.compareTo(amount.add(settings.getRecallFee())) >= 0 && ethBalance.compareTo(settings.getTxFee()) >= 0;
+            return balance.compareTo(amount.add(coin.getCoinEntity().getRecallFee())) >= 0 && ethBalance.compareTo(coin.getTxFee()) >= 0;
         }
 
-        return balance.compareTo(amount.add(settings.getTxFee())) >= 0;
+        return balance.compareTo(amount.add(coin.getTxFee())) >= 0;
     }
 
     public List<ReceivedAddressDTO> getReceivedAddresses(CoinService.CoinEnum coinCode, Set<String> addresses) {

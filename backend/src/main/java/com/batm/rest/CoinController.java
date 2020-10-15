@@ -2,7 +2,6 @@ package com.batm.rest;
 
 import java.util.List;
 
-import com.batm.dto.CoinSettingsDTO;
 import com.batm.service.PriceChartService;
 import com.batm.service.RippledService;
 import com.batm.service.UserService;
@@ -27,13 +26,10 @@ public class CoinController {
     @Autowired
     private PriceChartService chartService;
 
-    @GetMapping("/coin/{coin}/settings")
-    public Response getSettings(@PathVariable CoinService.CoinEnum coin) {
+    @GetMapping("/coin/{coin}/details")
+    public Response getDetails(@PathVariable CoinService.CoinEnum coin) {
         try {
-            CoinSettingsDTO dto = coin.getCoinSettings();
-            dto.setCode(coin.name());
-
-            return Response.ok(dto);
+            return Response.ok(coinService.getCoinDetails(coin));
         } catch (Exception e) {
             e.printStackTrace();
             return Response.serverError();
