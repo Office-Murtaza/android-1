@@ -1,26 +1,19 @@
 package com.app.belcobtm.presentation.features.settings
 
-import android.view.MenuItem
-import android.view.View
+import androidx.lifecycle.Observer
 import androidx.navigation.fragment.navArgs
 import com.app.belcobtm.R
 import com.app.belcobtm.presentation.core.ui.fragment.BaseFragment
 import kotlinx.android.synthetic.main.fragment_settings.*
-import kotlinx.android.synthetic.main.layout_settings_about.*
-import kotlinx.android.synthetic.main.layout_settings_main.*
-import kotlinx.android.synthetic.main.layout_settings_security.*
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class SettingsFragment : BaseFragment() {
-    val viewModel by viewModel<SettingsViewModel>()
-    val settingsArgs: SettingsFragmentArgs by navArgs()
-    private var appliedState: SettingsState? = null
+
+    private val viewModel by viewModel<SettingsViewModel>()
+    private val settingsArgs: SettingsFragmentArgs by navArgs()
+
     override val resourceLayout = R.layout.fragment_settings
     override var isMenuEnabled = true
-
-    override val backPressedListener = View.OnClickListener {
-        viewModel.onBackPress()
-    }
 
     companion object {
         const val SETTINGS_MAIN = 0
@@ -29,7 +22,6 @@ class SettingsFragment : BaseFragment() {
     }
 
     override fun initViews() {
-        appliedState = null
         setToolbarTitle(R.string.settings)
         viewModel.processArgs(settingsArgs)
     }
@@ -39,63 +31,17 @@ class SettingsFragment : BaseFragment() {
         securityItem.setOnClickListener { onSectionClick(SettingsSections.SECURITY) }
         kycItem.setOnClickListener { onSectionClick(SettingsSections.KYC) }
         aboutItem.setOnClickListener { onSectionClick(SettingsSections.ABOUT) }
-
-        //about listeners
-        termsItem.setOnClickListener { onAboutItemClick(AboutItems.TERMS) }
-        supportItem.setOnClickListener { onAboutItemClick(AboutItems.SUPPORT) }
-
-        //security listeners
-        updatePhoneItem.setOnClickListener { onSecurityItemClick(SecurityItems.PHONE) }
-        updatePassItem.setOnClickListener { onSecurityItemClick(SecurityItems.PASS) }
-        updatePinItem.setOnClickListener { onSecurityItemClick(SecurityItems.PIN) }
-        seedPhraseItem.setOnClickListener { onSecurityItemClick(SecurityItems.SEED) }
-        unlinkItem.setOnClickListener { onSecurityItemClick(SecurityItems.UNLINK) }
     }
 
     override fun initObservers() {
-        viewModel.stateData.observe(this, { state ->
-//            state.viewFlipperValue.doIfChanged(appliedState?.viewFlipperValue, {
-            flipper.displayedChild = state.viewFlipperValue
-//            })
-            state.versionName.doIfChanged(appliedState?.versionName, {
-                versionItem.setValue(it)
-            })
-            state.showBackButton.doIfChanged(appliedState?.showBackButton, {
-                isBackButtonEnabled = it
-                showBackButton(it)
-            })
-            state.toolbarRes.doIfChanged(appliedState?.toolbarRes) {
-                setToolbarTitle(it)
-            }
-            appliedState = state
-        })
-
-        viewModel.actionData.observe(this, { action ->
+        viewModel.actionData.observe(this, Observer { action ->
             when (action) {
                 is SettingsAction.NavigateAction -> navigate(action.navDirections)
             }
-
         })
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return if (item.itemId == android.R.id.home) {
-            viewModel.onBackPress()
-            true
-        } else {
-            super.onOptionsItemSelected(item)
-        }
     }
 
     private fun onSectionClick(section: SettingsSections) {
         viewModel.onSectionClick(section)
-    }
-
-    private fun onAboutItemClick(aboutItem: AboutItems) {
-        viewModel.onAboutItemClick(aboutItem)
-    }
-
-    private fun onSecurityItemClick(securityItem: SecurityItems) {
-        viewModel.onSecurityItemClick(securityItem)
     }
 }

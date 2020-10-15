@@ -8,7 +8,6 @@ import com.app.belcobtm.presentation.core.ui.fragment.BaseFragment
 import com.app.belcobtm.R
 import com.app.belcobtm.domain.Failure
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
-import com.app.belcobtm.presentation.features.settings.SettingsFragment.Companion.SETTINGS_SECURITY
 import kotlinx.android.synthetic.main.layout_password.*
 import kotlinx.android.synthetic.main.layout_password.nextButton
 import org.koin.android.viewmodel.ext.android.viewModel
@@ -75,6 +74,7 @@ class PasswordFragment : BaseFragment() {
                     showContent()
                     getNavController()?.popBackStack()
                 }
+                PasswordAction.PopToSecurityAction -> popBackStack(R.id.security_fragment, false)
             }
         })
     }

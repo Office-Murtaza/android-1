@@ -9,7 +9,6 @@ import com.app.belcobtm.domain.settings.interactor.ERROR_UPDATE_PHONE_IS_SAME
 import com.app.belcobtm.domain.settings.interactor.ERROR_UPDATE_PHONE_IS_USED
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
 import com.app.belcobtm.presentation.core.ui.fragment.BaseFragment
-import com.app.belcobtm.presentation.features.settings.SettingsFragment.Companion.SETTINGS_SECURITY
 import kotlinx.android.synthetic.main.fragment_change_phone.*
 import kotlinx.android.synthetic.main.fragment_display_phone.nextButton
 import org.koin.android.viewmodel.ext.android.viewModel
@@ -23,6 +22,7 @@ class PhoneChangeFragment : BaseFragment() {
     override val retryListener = View.OnClickListener {
         viewModel.onNextClick()
     }
+
     override fun initViews() {
         appliedState = null
         setToolbarTitle(R.string.update_phone_label)
@@ -35,15 +35,6 @@ class PhoneChangeFragment : BaseFragment() {
         phoneView.addTextChangedListener {
             viewModel.onPhoneInput(it?.toString().orEmpty())
         }
-    }
-
-    override fun popBackStack(): Boolean {
-        getNavController()?.navigate(
-            PhoneChangeFragmentDirections.changePhoneToSettings(
-                SETTINGS_SECURITY
-            )
-        )
-        return true
     }
 
     override fun initObservers() {
@@ -81,6 +72,9 @@ class PhoneChangeFragment : BaseFragment() {
             when (action) {
                 is PhoneChangeAction.NavigateAction -> {
                     navigate(action.navDirections)
+                }
+                PhoneChangeAction.PopBackStackToSecurity -> {
+                    popBackStack(R.id.security_fragment, false)
                 }
             }
         }

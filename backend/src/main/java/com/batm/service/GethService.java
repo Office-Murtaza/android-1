@@ -300,7 +300,7 @@ public class GethService {
         mongo.getCollection(TOKEN_TX_COLL).insertOne(doc);
     }
 
-    private BigDecimal calculateFee(Long gasLimit, Long gasPrice) {
+    public BigDecimal getTxFee(Long gasLimit, Long gasPrice) {
         return new BigDecimal(gasLimit).multiply(new BigDecimal(gasPrice)).divide(ETH_DIVIDER).stripTrailingZeros();
     }
 
@@ -461,19 +461,6 @@ public class GethService {
         or.add(new Document("address", toAddress));
 
         return mongo.getCollection(ADDRESS_COLL).find(new Document("$or", or)).iterator().hasNext();
-    }
-
-    public CoinSettingsDTO getCoinSettings(Coin coin, Long gasLimit, Long gasPrice, String walletAddress) {
-        CoinSettingsDTO dto = new CoinSettingsDTO();
-        dto.setProfitExchange(coin.getProfitExchange().stripTrailingZeros());
-        dto.setGasLimit(gasLimit);
-        dto.setGasPrice(gasPrice);
-        dto.setTxFee(calculateFee(dto.getGasLimit(), dto.getGasPrice()));
-        dto.setRecallFee(coin.getRecallFee());
-        dto.setWalletAddress(walletAddress);
-        dto.setContractAddress(contractAddress);
-
-        return dto;
     }
 
     public Long getEthGasLimit(String walletAddress) {

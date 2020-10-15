@@ -12,7 +12,7 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class CoinSettingsDTO {
+public class CoinDetailsDTO {
 
     private String code;
     private BigDecimal txFee;
@@ -22,6 +22,7 @@ public class CoinSettingsDTO {
     private String recallFeeStr;
     private Long gasPrice;
     private Long gasLimit;
+    private Integer scale;
     private BigDecimal profitExchange;
     private String profitExchangeStr;
     private String walletAddress;
@@ -56,6 +57,10 @@ public class CoinSettingsDTO {
 
     public void setGasLimit(Long gasLimit) {
         this.gasLimit = gasLimit;
+    }
+
+    public void setScale(Integer scale) {
+        this.scale = scale;
     }
 
     public void setWalletAddress(String walletAddress) {

@@ -1,11 +1,9 @@
 package com.app.belcobtm.presentation.features.settings.phone
 
 import android.view.View
-import androidx.lifecycle.observe
 import com.app.belcobtm.R
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
 import com.app.belcobtm.presentation.core.ui.fragment.BaseFragment
-import com.app.belcobtm.presentation.features.settings.SettingsFragment.Companion.SETTINGS_SECURITY
 import kotlinx.android.synthetic.main.fragment_display_phone.*
 import org.koin.android.viewmodel.ext.android.viewModel
 
@@ -53,10 +51,5 @@ class PhoneDisplayFragment : BaseFragment() {
                 appliedState = it
             }
         )
-    }
-
-    override fun popBackStack(): Boolean {
-        navigate(PhoneDisplayFragmentDirections.phoneDisplayToSettingsFragment(SETTINGS_SECURITY))
-        return true
     }
 }

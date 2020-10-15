@@ -15,18 +15,25 @@ import org.koin.android.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
 class SmsCodeFragment : BaseFragment() {
-    private val viewModel: SmsCodeViewModel by viewModel { parametersOf(requireArguments().getString(TAG_PHONE)) }
+    private val viewModel: SmsCodeViewModel by viewModel {
+        parametersOf(
+            requireArguments().getString(
+                TAG_PHONE
+            )
+        )
+    }
     private var isResendClicked: Boolean = false
     override val resourceLayout: Int = R.layout.fragment_sms_code
     override val isToolbarEnabled: Boolean = true
     override val isHomeButtonEnabled: Boolean = true
-    override val retryListener: View.OnClickListener = View.OnClickListener { viewModel.sendSmsToDevice() }
+    override val retryListener: View.OnClickListener =
+        View.OnClickListener { viewModel.sendSmsToDevice() }
 
     override fun initViews() {
         setToolbarTitle(R.string.sms_code_screen_title)
         setToolbarTitle()
         setNextButtonTitle()
-        isMenuEnabled = isPhoneChange()
+        isMenuEnabled = false
     }
 
     override fun initListeners() {
@@ -36,7 +43,7 @@ class SmsCodeFragment : BaseFragment() {
             viewModel.sendSmsToDevice()
         }
         nextButtonView.setOnClickListener { onNextClick() }
-        pinEntryView.actionDoneListener  {onNextClick() }
+        pinEntryView.actionDoneListener { onNextClick() }
         pinEntryView.afterTextChanged {
             nextButtonView.isEnabled = pinEntryView.getString().length >= SMS_CODE_LENGTH
             errorMessageView.invisible()
@@ -67,7 +74,11 @@ class SmsCodeFragment : BaseFragment() {
                             showContent()
                         }
                     }
-                    is Failure.ServerError -> if (it.message.equals("No value for errorMsg", true)) {
+                    is Failure.ServerError -> if (it.message.equals(
+                            "No value for errorMsg",
+                            true
+                        )
+                    ) {
                         showSnackBar("Incorrect phone number")
                         showContent()
                         popBackStack()
@@ -90,11 +101,7 @@ class SmsCodeFragment : BaseFragment() {
     }
 
     private fun onNextClick() {
-        if (isPhoneChange()) {
-            viewModel.changePhone()
-        } else {
-            openNextScreen()
-        }
+        openNextScreen()
     }
 
     private fun openNextScreen() {
@@ -123,23 +130,12 @@ class SmsCodeFragment : BaseFragment() {
     }
 
     private fun setToolbarTitle() {
-        when (requireArguments().getInt(TAG_NEXT_FRAGMENT_ID)) {
-            R.id.sms_code_to_settings_fragment -> setToolbarTitle(R.string.update_phone_label)
-            else -> setToolbarTitle(R.string.sms_code_screen_title)
-        }
+        setToolbarTitle(R.string.sms_code_screen_title)
     }
 
     private fun setNextButtonTitle() {
-        nextButtonView.text = getString(
-            when (requireArguments().getInt(TAG_NEXT_FRAGMENT_ID)) {
-                R.id.sms_code_to_settings_fragment -> R.string.done
-                else -> R.string.next
-            }
-        )
+        nextButtonView.text = getString(R.string.next)
     }
-
-    private fun isPhoneChange() =
-        requireArguments().getInt(TAG_NEXT_FRAGMENT_ID) == R.id.sms_code_to_settings_fragment
 
     companion object {
         private const val SMS_CODE_LENGTH: Int = 4
