@@ -1,5 +1,6 @@
 package com.app.belcobtm.presentation.core.extensions
 
+import java.math.BigDecimal
 import java.math.RoundingMode
 import java.text.DecimalFormat
 
@@ -35,4 +36,12 @@ fun Double.toStringCoin(): String = if (this > 0) {
     }
 } else {
     "0"
+}
+
+fun Double.truncateDecimal(numberOfDecimals: Int): Double {
+    return if (this > 0) {
+        BigDecimal(this.toString()).setScale(numberOfDecimals, BigDecimal.ROUND_FLOOR)
+    } else {
+        BigDecimal(this.toString()).setScale(numberOfDecimals, BigDecimal.ROUND_CEILING)
+    }.toDouble()
 }
