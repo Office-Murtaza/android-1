@@ -233,10 +233,11 @@ extension Decimal {
     return string.coinFormatted
   }
     
-  func cointFormatted(fractionDigits: Int?) -> String {
+  func coinFormatted(fractionDigits: Int?) -> String {
     let number = NSDecimalNumber(decimal: self)
-    let string = NumberFormatter.cointFormatter(fractionDigits: fractionDigits).string(from: number) ?? ""
-    return string.coinFormatted
+    let fractionPart = fractionDigits ?? CustomCoinType.maxNumberOfFractionDigits
+    let string = NumberFormatter.coinFormatter(fractionDigits: fractionPart).string(from: number) ?? ""
+    return string.withFractionDigits(max: fractionPart, trailingZeros: false)
   }
   
   var intValue: Int? {
@@ -344,9 +345,9 @@ extension NumberFormatter {
     return formatter
   }
   
-  static func cointFormatter(fractionDigits: Int?) -> NumberFormatter {
+  static func coinFormatter(fractionDigits: Int) -> NumberFormatter {
     let formatter = defaultCurrencyFormatter
-    formatter.maximumFractionDigits = fractionDigits ?? CustomCoinType.maxNumberOfFractionDigits
+    formatter.maximumFractionDigits = fractionDigits
     return formatter
   }
 }
