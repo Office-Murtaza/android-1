@@ -22,6 +22,14 @@ import com.giphy.sdk.ui.views.GiphyDialogFragment
 import io.michaelrocks.libphonenumber.android.NumberParseException
 import io.michaelrocks.libphonenumber.android.PhoneNumberUtil
 import kotlinx.android.synthetic.main.fragment_send_gift.*
+import kotlinx.android.synthetic.main.fragment_send_gift.amountCryptoView
+import kotlinx.android.synthetic.main.fragment_send_gift.amountUsdView
+import kotlinx.android.synthetic.main.fragment_send_gift.balanceCryptoView
+import kotlinx.android.synthetic.main.fragment_send_gift.balanceUsdView
+import kotlinx.android.synthetic.main.fragment_send_gift.maxCryptoView
+import kotlinx.android.synthetic.main.fragment_send_gift.nextButtonView
+import kotlinx.android.synthetic.main.fragment_send_gift.priceUsdView
+import kotlinx.android.synthetic.main.fragment_withdraw.*
 import org.koin.android.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
@@ -32,18 +40,7 @@ class SendGiftFragment : BaseFragment(), GiphyDialogFragment.GifSelectionListene
     private val phoneUtil: PhoneNumberUtil by lazy { PhoneNumberUtil.createInstance(requireContext()) }
     private val doubleTextWatcher: DoubleTextWatcher = DoubleTextWatcher(
         firstTextWatcher = { editable ->
-            val fromMaxValue = viewModel.getMaxValue()
-            val fromCoinAmountTemporary = editable.getDouble()
-            val cryptoAmount: Double
-
-            if (fromCoinAmountTemporary >= fromMaxValue) {
-                cryptoAmount = fromMaxValue
-                editable.clear()
-                editable.insert(0, fromMaxValue.toStringCoin())
-            } else {
-                cryptoAmount = fromCoinAmountTemporary
-            }
-
+            val cryptoAmount: Double = editable.getDouble()
             if (cryptoAmount > 0) {
                 amountUsdView.text = getString(
                     R.string.text_usd,
@@ -161,6 +158,11 @@ class SendGiftFragment : BaseFragment(), GiphyDialogFragment.GifSelectionListene
             amountCryptoView.showError(R.string.insufficient_balance)
         }
 
+        if(amountCryptoView.getDouble() >= viewModel.getMaxValue()) {
+            errors++
+            amountCryptoView.showError(R.string.balance_amount_exceeded)
+        }
+
         if (errors == 0) {
             sendGift()
         }
@@ -190,7 +192,6 @@ class SendGiftFragment : BaseFragment(), GiphyDialogFragment.GifSelectionListene
                 && isValidMobileNumber(phoneContainerView.getString())
                 && amountCryptoView.isNotBlank()
                 && amountCryptoView.getDouble() > 0
-                && amountCryptoView.getDouble() <= (viewModel.getCoinBalance() - viewModel.getTransactionFee())
     }
 
     private fun sendGift() {

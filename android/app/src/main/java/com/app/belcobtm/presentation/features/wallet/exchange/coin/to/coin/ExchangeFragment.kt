@@ -22,17 +22,7 @@ class ExchangeFragment : BaseFragment() {
         maxCharsAfterDotSecond = DoubleTextWatcher.MAX_CHARS_AFTER_DOT_CRYPTO,
         firstTextWatcher = { editable ->
             val fromCoinAmountTemporary = editable.getDouble()
-            val fromMaxValue = viewModel.getMaxValue()
-            val cryptoAmount: Double
-
-            if (fromCoinAmountTemporary >= fromMaxValue) {
-                cryptoAmount = fromMaxValue
-                editable.clear()
-                editable.insert(0, fromMaxValue.toStringCoin())
-            } else {
-                cryptoAmount = fromCoinAmountTemporary
-            }
-
+            val cryptoAmount: Double = editable.getDouble()
             nextButtonView.isEnabled = fromCoinAmountTemporary > 0
             amountCoinToView.text = getString(
                 R.string.text_usd,
@@ -136,13 +126,17 @@ class ExchangeFragment : BaseFragment() {
         }
         amountCoinFromView?.editText?.addTextChangedListener(doubleTextWatcher.firstTextWatcher)
         maxCoinFromView.setOnClickListener { amountCoinFromView.setText(viewModel.getMaxValue().toStringCoin()) }
-        nextButtonView.setOnClickListener {
+        nextButtonView.setOnClickListener listener@{
             if (viewModel.isNotEnoughBalanceETH()) {
                 amountCoinFromView.showError(R.string.withdraw_screen_where_money_libovski)
-            } else {
-                amountCoinFromView.clearError()
-                viewModel.exchange(amountCoinFromView.getString().toDouble())
+                return@listener
             }
+            if(amountCoinFromView.getDouble() >= viewModel.getMaxValue()) {
+                amountCoinFromView.showError(R.string.balance_amount_exceeded)
+                return@listener
+            }
+            amountCoinFromView.clearError()
+            viewModel.exchange(amountCoinFromView.getString().toDouble())
         }
     }
 

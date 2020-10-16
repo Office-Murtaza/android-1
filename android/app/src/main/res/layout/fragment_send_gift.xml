@@ -128,12 +128,14 @@
 
         <TextView
             android:id="@id/amountUsdView"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="0.00 $"
+            android:gravity="end"
             android:textColor="@color/colorPrimary"
             android:textSize="16sp"
             android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="@id/amountCryptoView"
             app:layout_constraintEnd_toEndOf="@id/amountCryptoView"
             app:layout_constraintTop_toBottomOf="@id/amountCryptoView" />
 

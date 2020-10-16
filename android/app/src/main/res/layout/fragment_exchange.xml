@@ -87,6 +87,7 @@
             <com.google.android.material.textfield.TextInputEditText
                 style="@style/EditText.InputWithMax"
                 android:digits="1234567890."
+                android:singleLine="true"
                 android:inputType="numberDecimal"
                 android:nextFocusDown="@id/amountUsdView"
                 tools:hint="@string/text_amount" />
@@ -104,13 +105,14 @@
 
         <TextView
             android:id="@+id/amountCoinToView"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:gravity="end"
             android:text="0.00 $"
             android:textColor="@color/colorPrimary"
             android:textSize="16sp"
             android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="@id/amountCoinFromView"
             app:layout_constraintEnd_toEndOf="@id/amountCoinFromView"
             app:layout_constraintTop_toBottomOf="@id/amountCoinFromView" />
 
@@ -136,12 +138,14 @@
 
         <TextView
             android:id="@+id/balanceCoinToView"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="0.00"
+            android:gravity="end"
             android:textSize="16sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@id/spaceView"
+            app:layout_constraintStart_toStartOf="@id/pickCoinButtonView"
             app:layout_constraintEnd_toEndOf="@id/pickCoinButtonView"
             app:layout_constraintTop_toBottomOf="@id/pickCoinButtonView" />
 

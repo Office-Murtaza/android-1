@@ -152,14 +152,16 @@
 
         <TextView
             android:id="@id/amountUsdView"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="0.00 $"
             android:textColor="@color/colorPrimary"
             android:textSize="16sp"
+            android:gravity="end"
             android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@id/spaceView"
             app:layout_constraintEnd_toEndOf="@id/amountCryptoView"
+            app:layout_constraintStart_toStartOf="@id/amountCryptoView"
             app:layout_constraintTop_toBottomOf="@id/amountCryptoView" />
 
         <Space

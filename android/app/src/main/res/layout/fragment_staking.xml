@@ -271,11 +271,15 @@
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/amountUsdView"
+            android:layout_height="wrap_content"
+            android:layout_width="0dp"
             style="@style/EditText.TextLink"
             android:padding="0dp"
             android:text="@string/staking_screen_null_price"
             android:textSize="16sp"
-            app:layout_constraintEnd_toEndOf="@id/maxView"
+            android:gravity="end"
+            app:layout_constraintEnd_toEndOf="@id/amountCryptoView"
+            app:layout_constraintStart_toStartOf="@id/amountCryptoView"
             app:layout_constraintTop_toBottomOf="@id/amountCryptoView"
             tools:text="0.00$" />
 

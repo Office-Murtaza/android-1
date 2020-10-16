@@ -16,18 +16,7 @@ class StakingFragment : BaseFragment() {
     private val viewModel: StakingViewModel by viewModel()
     private val doubleTextWatcher: DoubleTextWatcher = DoubleTextWatcher(
         firstTextWatcher = { editable ->
-            val fromMaxValue = viewModel.getMaxValue()
-            val fromCoinAmountTemporary = editable.getDouble()
-            val cryptoAmount: Double
-
-            if (fromCoinAmountTemporary >= fromMaxValue) {
-                cryptoAmount = fromMaxValue
-                editable.clear()
-                editable.insert(0, cryptoAmount.toStringCoin())
-            } else {
-                cryptoAmount = fromCoinAmountTemporary
-            }
-
+            val cryptoAmount: Double = editable.getDouble()
             amountUsdView.text = if (cryptoAmount > 0) {
                 getString(R.string.text_usd, (cryptoAmount * viewModel.getUsdPrice()).toStringUsd())
             } else {
@@ -36,7 +25,6 @@ class StakingFragment : BaseFragment() {
 
             stakeButtonView.isEnabled = amountCryptoView.isNotBlank()
                     && amountCryptoView.getDouble() > 0
-                    && amountCryptoView.getDouble() <= viewModel.getMaxValue()
         }
     )
     override val resourceLayout = R.layout.fragment_staking
@@ -213,7 +201,7 @@ class StakingFragment : BaseFragment() {
             false
         }
         viewModel.getMaxValue() < amountCryptoView.getDouble() -> {
-            showError(R.string.withdraw_screen_max_exceeded)
+            showError(R.string.balance_amount_exceeded)
             false
         }
         else -> true

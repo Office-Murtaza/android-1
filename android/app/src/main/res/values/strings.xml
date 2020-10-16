@@ -235,6 +235,7 @@
     <string name="should_be_filled">Should be filled</string>
     <string name="not_enough_balance">Not enough balance</string>
     <string name="insufficient_balance">Insufficient balance</string>
+    <string name="balance_amount_exceeded">Amount can’t be higher than your balance</string>
 
     <!-- Transition details screen -->
     <string name="transition_details_screen_id">ID</string>
