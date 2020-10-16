@@ -385,8 +385,13 @@
     <string name="staking_screen_rewards_amount">%1$s CATM,  %2$.2f %%</string>
     <string name="staking_screen_rewards_percent">%1$.2f %%</string>
     <string name="staking_screen_null_price">0.00$</string>
+    <string name="staking_screen_not_exist">Not exist</string>
+    <string name="staking_screen_create_pending">Create pending</string>
     <string name="staking_screen_created">Created</string>
+    <string name="staking_screen_cancel_pending">Cancel pending</string>
     <string name="staking_screen_canceled">Canceled</string>
+    <string name="staking_screen_withdraw_pending">Withdraw pending</string>
+    <string name="staking_screen_withdrawn">Withdrawn</string>
     <plurals name="staking_screen_time_value">
         <item quantity="one">%d day</item>
         <item quantity="few">%d days</item>

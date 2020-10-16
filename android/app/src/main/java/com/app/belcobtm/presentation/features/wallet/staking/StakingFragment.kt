@@ -3,7 +3,7 @@ package com.app.belcobtm.presentation.features.wallet.staking
 import android.view.View
 import androidx.core.content.ContextCompat
 import com.app.belcobtm.R
-import com.app.belcobtm.domain.transaction.type.StakeStatus
+import com.app.belcobtm.data.rest.transaction.response.StakeDetailsStatus
 import com.app.belcobtm.domain.wallet.LocalCoinType
 import com.app.belcobtm.presentation.core.extensions.*
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
@@ -106,74 +106,40 @@ class StakingFragment : BaseFragment() {
                         rewardAnnualView.hide()
                     }
                 }
+                when(status) {
+                    StakeDetailsStatus.NOT_EXIST, StakeDetailsStatus.WITHDRAWN -> {
+                        stakeButtonView.show()
+                        cancelButtonView.hide()
+                        unstakeButtonView.hide()
+                    }
+                    StakeDetailsStatus.CREATE_PENDING -> {
+                        cancelDateGroupView.hide()
+                        untilWithdrawGroupView.hide()
+                        updateStakingDetails()
 
-                when (status) {
-                    StakeStatus.CREATED,
-                    StakeStatus.CANCELED -> {
-                        if (status == StakeStatus.CREATED) {
-                            updateStatusView(
-                                R.color.colorStatusCreated,
-                                R.drawable.bg_status_created,
-                                R.string.staking_screen_created
-                            )
-                            cancelDateGroupView.hide()
-                            untilWithdrawGroupView.hide()
-                            cancelButtonView.show()
-                            unstakeButtonView.hide()
-                        } else {
-                            updateStatusView(
-                                R.color.colorStatusCanceled,
-                                R.drawable.bg_status_canceled,
-                                R.string.staking_screen_canceled
-                            )
-                            cancelDate?.let { cancelDate ->
-                                cancelDateView.text = cancelDate
-                                cancelDateGroupView.show()
-                            }
-                            untilWithdraw?.let { untilWithdraw ->
-                                untilWithdrawView.text =
+                        stakeButtonView.hide()
+                        cancelButtonView.show()
+                        unstakeButtonView.hide()
+                    }
+                    StakeDetailsStatus.CANCEL -> {
+                        cancelDate?.let { cancelDate ->
+                            cancelDateView.text = cancelDate
+                            cancelDateGroupView.show()
+                        }
+                        untilWithdraw?.let { untilWithdraw ->
+                            untilWithdrawView.text =
                                     resources.getQuantityString(
-                                        R.plurals.staking_screen_time_value,
-                                        untilWithdraw,
-                                        untilWithdraw
+                                            R.plurals.staking_screen_time_value,
+                                            untilWithdraw,
+                                            untilWithdraw
                                     )
-                                untilWithdrawGroupView.toggle(untilWithdraw > 0)
-                            }
+                            untilWithdrawGroupView.toggle(untilWithdraw > 0)
+                        }
+                        updateStakingDetails()
 
-                            cancelButtonView.hide()
-                            unstakeButtonView.toggle(it.untilWithdraw ?: 0 == 0)
-                        }
-
-                        statusGroupView.show()
-                        editStakeGroupView.hide()
-                        amount?.let { amount ->
-                            amountView.text = getString(
-                                R.string.staking_screen_staked_amount,
-                                amount.toStringCoin()
-                            )
-                            amountGroupView.show()
-                        }
-                        createDate?.let { createDate ->
-                            createDateView.text = createDate
-                            createDateGroupView.show()
-                        }
-                        duration?.let {
-                            durationView.text =
-                                resources.getQuantityString(
-                                    R.plurals.staking_screen_time_value,
-                                    duration,
-                                    duration
-                                )
-                            durationGroupView.show()
-                        }
-                        if (rewardsAmount != null && rewardsPercent != null) {
-                            rewardsView.text = getString(
-                                R.string.staking_screen_rewards_amount,
-                                rewardsAmount.toStringCoin(),
-                                rewardsPercent
-                            )
-                            rewardsGroupView.show()
-                        }
+                        stakeButtonView.hide()
+                        cancelButtonView.hide()
+                        unstakeButtonView.toggle(it.untilWithdraw ?: 0 == 0)
                     }
                     else -> {
                         statusGroupView.hide()
@@ -184,15 +150,95 @@ class StakingFragment : BaseFragment() {
                         rewardsGroupView.hide()
                         cancelDateGroupView.hide()
                         untilWithdrawGroupView.hide()
+                        stakeButtonView.hide()
                         cancelButtonView.hide()
                         unstakeButtonView.hide()
                     }
+                }
+                when(status) {
+                    StakeDetailsStatus.NOT_EXIST ->
+                        updateStatusView(
+                                R.color.colorStatusUnknown,
+                                R.drawable.bg_status_unknown,
+                                R.string.staking_screen_not_exist
+                        )
+                    StakeDetailsStatus.CREATE_PENDING ->
+                        updateStatusView(
+                                R.color.colorStatusCreated,
+                                R.drawable.bg_status_created,
+                                R.string.staking_screen_create_pending
+                        )
+                    StakeDetailsStatus.CREATED ->
+                        updateStatusView(
+                                R.color.colorStatusComplete,
+                                R.drawable.bg_status_complete,
+                                R.string.staking_screen_created
+                        )
+                    StakeDetailsStatus.CANCEL_PENDING ->
+                        updateStatusView(
+                                R.color.colorStatusCanceled,
+                                R.drawable.bg_status_canceled,
+                                R.string.staking_screen_cancel_pending
+                        )
+                    StakeDetailsStatus.CANCEL ->
+                        updateStatusView(
+                                R.color.colorStatusCreated,
+                                R.drawable.bg_status_created,
+                                R.string.staking_screen_canceled
+                        )
+                    StakeDetailsStatus.WITHDRAW_PENDING ->
+                        // TODO change color
+                        updateStatusView(
+                                R.color.colorStatusCreated,
+                                R.drawable.bg_status_created,
+                                R.string.staking_screen_withdraw_pending
+                        )
+                    StakeDetailsStatus.WITHDRAWN ->
+                        // TODO change color
+                        updateStatusView(
+                                R.color.colorStatusCreated,
+                                R.drawable.bg_status_created,
+                                R.string.staking_screen_withdrawn
+                        )
                 }
             }
         })
         viewModel.transactionLiveData.listen(success = {
             popBackStack()
         })
+    }
+
+    private fun StakingScreenItem.updateStakingDetails() {
+        statusGroupView.show()
+        editStakeGroupView.hide()
+        amount?.let { amount ->
+            amountView.text = getString(
+                    R.string.staking_screen_staked_amount,
+                    amount.toStringCoin()
+            )
+            amountGroupView.show()
+        }
+        createDate?.let { createDate ->
+            createDateView.text = createDate
+            createDateGroupView.show()
+        }
+        duration?.let {
+            durationView.text =
+                    resources.getQuantityString(
+                            R.plurals.staking_screen_time_value,
+                            duration,
+                            duration
+                    )
+            durationGroupView.show()
+        }
+        if (rewardsAmount != null && rewardsPercent != null) {
+            rewardsView.text = getString(
+                    R.string.staking_screen_rewards_amount,
+                    rewardsAmount.toStringCoin(),
+                    rewardsPercent
+            )
+            rewardsGroupView.show()
+        }
     }
 
     private fun isValid(): Boolean = when {

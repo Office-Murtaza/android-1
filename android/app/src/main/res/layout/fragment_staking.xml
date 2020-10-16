@@ -288,9 +288,11 @@
             style="@style/Button.Primary"
             android:enabled="false"
             android:text="@string/staking_screen_stake"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/amountUsdView" />
+            app:layout_constraintTop_toBottomOf="@id/amountUsdView"
+            tools:visibility="visible"/>
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/cancelButtonView"
