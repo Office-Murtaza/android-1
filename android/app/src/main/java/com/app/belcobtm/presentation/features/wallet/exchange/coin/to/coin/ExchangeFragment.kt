@@ -72,7 +72,7 @@ class ExchangeFragment : BaseFragment() {
         )
         amountCoinFromView.helperText = getString(
             R.string.transaction_helper_text_commission,
-            viewModel.fromCoinFeeItem.txFee.toStringCoin(),
+            viewModel.fromCoinDetailsItem.txFee.toStringCoin(),
             if (viewModel.fromCoinItem.code == LocalCoinType.CATM.name) LocalCoinType.ETH.name else viewModel.fromCoinItem.code
         )
 

@@ -32,7 +32,7 @@ class TransactionRepositoryImpl(
         fromCoinAmount: Double,
         isNeedSendSms: Boolean
     ): Either<Failure, String> {
-        val toAddress = prefHelper.coinsFee[fromCoin]?.walletAddress ?: ""
+        val toAddress = prefHelper.coinsDetails[fromCoin]?.walletAddress ?: ""
         val coinType = LocalCoinType.valueOf(fromCoin)
         val hashResponse =
             transactionHashRepository.createTransactionHash(coinType, fromCoinAmount, toAddress)
@@ -59,7 +59,7 @@ class TransactionRepositoryImpl(
         val hashResponse =
             transactionHashRepository.createTransactionHash(coinType, fromCoinAmount, toAddress)
         return if (hashResponse.isRight) {
-            val fee = prefHelper.coinsFee[fromCoin]?.txFee ?: 0.0
+            val fee = prefHelper.coinsDetails[fromCoin]?.txFee ?: 0.0
             val fromAddress = daoAccount.getItem(fromCoin).publicKey
             apiService.withdraw(
                 (hashResponse as Either.Right).b,
@@ -88,7 +88,7 @@ class TransactionRepositoryImpl(
             val hashResponse =
                 transactionHashRepository.createTransactionHash(coinType, amount, toAddress)
             if (hashResponse.isRight) {
-                val fee = prefHelper.coinsFee[coinCode]?.txFee ?: 0.0
+                val fee = prefHelper.coinsDetails[coinCode]?.txFee ?: 0.0
                 val fromAddress = daoAccount.getItem(coinCode).publicKey
                 val hash = (hashResponse as Either.Right).b
                 if (coinCode == LocalCoinType.ETH.name || coinCode == LocalCoinType.CATM.name) {
@@ -152,15 +152,15 @@ class TransactionRepositoryImpl(
     ): Either<Failure, Unit> {
         val coinType = LocalCoinType.valueOf(fromCoin)
         val toAddress: String = if (fromCoin == LocalCoinType.CATM.name) {
-            prefHelper.coinsFee[fromCoin]?.contractAddress
+            prefHelper.coinsDetails[fromCoin]?.contractAddress
         } else {
-            prefHelper.coinsFee[fromCoin]?.walletAddress
+            prefHelper.coinsDetails[fromCoin]?.walletAddress
         } ?: ""
         val hashResponse =
             transactionHashRepository.createTransactionHash(coinType, fromCoinAmount, toAddress)
         return if (hashResponse.isRight) {
-            val toAddressSend = prefHelper.coinsFee[fromCoin]?.walletAddress ?: ""
-            val fee = prefHelper.coinsFee[fromCoin]?.txFee ?: 0.0
+            val toAddressSend = prefHelper.coinsDetails[fromCoin]?.walletAddress ?: ""
+            val fee = prefHelper.coinsDetails[fromCoin]?.txFee ?: 0.0
             val fromAddress = daoAccount.getItem(fromCoin).publicKey
             val hash = (hashResponse as Either.Right).b
             apiService.exchange(
@@ -295,7 +295,7 @@ class TransactionRepositoryImpl(
         coinCode: String,
         cryptoAmount: Double
     ): Either<Failure, String> = if (networkUtils.isNetworkAvailable()) {
-        val toAddress = prefHelper.coinsFee[coinCode]?.walletAddress ?: ""
+        val toAddress = prefHelper.coinsDetails[coinCode]?.walletAddress ?: ""
         val coinType = LocalCoinType.valueOf(coinCode)
         val hashResponse =
             transactionHashRepository.createTransactionHash(coinType, cryptoAmount, toAddress)
@@ -317,9 +317,9 @@ class TransactionRepositoryImpl(
     ): Either<Failure, Unit> = if (networkUtils.isNetworkAvailable()) {
         val smsCodeVerifyResponse = toolsRepository.verifySmsCodeOld(smsCode)
         if (smsCodeVerifyResponse.isRight) {
-            val fromAddress = prefHelper.coinsFee[coinCode]?.walletAddress ?: ""
-            val toAddress = prefHelper.coinsFee[coinCode]?.contractAddress ?: ""
-            val fee = prefHelper.coinsFee[coinCode]?.txFee ?: 0.0
+            val fromAddress = prefHelper.coinsDetails[coinCode]?.walletAddress ?: ""
+            val toAddress = prefHelper.coinsDetails[coinCode]?.contractAddress ?: ""
+            val fee = prefHelper.coinsDetails[coinCode]?.txFee ?: 0.0
             apiService.submitReserve(coinCode, fromAddress, toAddress, cryptoAmount, fee, hash)
         } else {
             smsCodeVerifyResponse as Either.Left
@@ -338,13 +338,13 @@ class TransactionRepositoryImpl(
     ): Either<Failure, Unit> {
         val transactionResponse = transactionHashRepository.createTransactionStakeHash(
             cryptoAmount,
-            prefHelper.coinsFee[coinCode]?.walletAddress ?: ""
+            prefHelper.coinsDetails[coinCode]?.walletAddress ?: ""
         )
         return if (transactionResponse.isRight) {
             val hash = (transactionResponse as Either.Right).b
-            val fromAddress = prefHelper.coinsFee[coinCode]?.walletAddress ?: ""
-            val toAddress = prefHelper.coinsFee[coinCode]?.contractAddress ?: ""
-            val coinFee = prefHelper.coinsFee[coinCode]?.txFee ?: 0.0
+            val fromAddress = prefHelper.coinsDetails[coinCode]?.walletAddress ?: ""
+            val toAddress = prefHelper.coinsDetails[coinCode]?.contractAddress ?: ""
+            val coinFee = prefHelper.coinsDetails[coinCode]?.txFee ?: 0.0
             apiService.stakeCreate(coinCode, fromAddress, toAddress, cryptoAmount, coinFee, hash)
         } else {
             transactionResponse as Either.Left
@@ -356,14 +356,14 @@ class TransactionRepositoryImpl(
     ): Either<Failure, Unit> {
         val transactionResponse = transactionHashRepository.createTransactionStakeCancelHash(
             0.0,
-            prefHelper.coinsFee[coinCode]?.walletAddress ?: ""
+            prefHelper.coinsDetails[coinCode]?.walletAddress ?: ""
         )
 
         return if (transactionResponse.isRight) {
             val hash = (transactionResponse as Either.Right).b
-            val fromAddress = prefHelper.coinsFee[coinCode]?.walletAddress ?: ""
-            val toAddress = prefHelper.coinsFee[coinCode]?.contractAddress ?: ""
-            val coinFee = prefHelper.coinsFee[coinCode]?.txFee ?: 0.0
+            val fromAddress = prefHelper.coinsDetails[coinCode]?.walletAddress ?: ""
+            val toAddress = prefHelper.coinsDetails[coinCode]?.contractAddress ?: ""
+            val coinFee = prefHelper.coinsDetails[coinCode]?.txFee ?: 0.0
             apiService.stakeCancel(coinCode, fromAddress, toAddress, 0.0, coinFee, hash)
         } else {
             transactionResponse as Either.Left
@@ -376,14 +376,14 @@ class TransactionRepositoryImpl(
     ): Either<Failure, Unit> {
         val transactionResponse = transactionHashRepository.createTransactionUnStakeHash(
             cryptoAmount,
-            prefHelper.coinsFee[coinCode]?.walletAddress ?: ""
+            prefHelper.coinsDetails[coinCode]?.walletAddress ?: ""
         )
 
         return if (transactionResponse.isRight) {
             val hash = (transactionResponse as Either.Right).b
-            val fromAddress = prefHelper.coinsFee[coinCode]?.walletAddress ?: ""
-            val toAddress = prefHelper.coinsFee[coinCode]?.contractAddress ?: ""
-            val coinFee = prefHelper.coinsFee[coinCode]?.txFee ?: 0.0
+            val fromAddress = prefHelper.coinsDetails[coinCode]?.walletAddress ?: ""
+            val toAddress = prefHelper.coinsDetails[coinCode]?.contractAddress ?: ""
+            val coinFee = prefHelper.coinsDetails[coinCode]?.txFee ?: 0.0
             apiService.unStake(coinCode, fromAddress, toAddress, cryptoAmount, coinFee, hash)
         } else {
             transactionResponse as Either.Left

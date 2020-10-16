@@ -6,7 +6,7 @@ import com.app.belcobtm.domain.Either
 import com.app.belcobtm.domain.Failure
 import com.app.belcobtm.domain.wallet.item.BalanceDataItem
 import com.app.belcobtm.domain.wallet.item.ChartDataItem
-import com.app.belcobtm.domain.wallet.item.CoinFeeDataItem
+import com.app.belcobtm.domain.wallet.item.CoinDetailsDataItem
 
 class WalletApiService(
     private val api: WalletApi,
@@ -29,8 +29,8 @@ class WalletApiService(
         Either.Left(failure)
     }
 
-    suspend fun getCoinFee(coinCode: String): Either<Failure, CoinFeeDataItem> = try {
-        val request = api.getCoinFeeAsync(coinCode).await()
+    suspend fun getCoinDetails(coinCode: String): Either<Failure, CoinDetailsDataItem> = try {
+        val request = api.getCoinDetailsAsync(coinCode).await()
         request.body()?.let { Either.Right(it.mapToDataItem()) } ?: Either.Left(Failure.ServerError())
     } catch (failure: Failure) {
         failure.printStackTrace()

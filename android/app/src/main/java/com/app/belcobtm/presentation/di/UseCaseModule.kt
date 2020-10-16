@@ -44,7 +44,7 @@ val useCaseModule = module {
     single { GetBalanceUseCase(get()) }
     single { GetChartsUseCase(get()) }
     single { GetTransactionListUseCase(get()) }
-    single { UpdateCoinFeeUseCase(get()) }
+    single { UpdateCoinDetailsUseCase(get()) }
     single { WithdrawUseCase(get()) }
     single { GetCoinByCodeUseCase(get()) }
     single { TradeRecallTransactionCompleteUseCase(get()) }

@@ -1,8 +1,8 @@
 package com.app.belcobtm.data.rest.wallet.response
 
-import com.app.belcobtm.domain.wallet.item.CoinFeeDataItem
+import com.app.belcobtm.domain.wallet.item.CoinDetailsDataItem
 
-data class GetCoinFeeResponse(
+data class GetCoinDetailsResponse(
     val txFee: Double,
     val byteFee: Long?,
     val recallFee: Double?,
@@ -13,7 +13,7 @@ data class GetCoinFeeResponse(
     val contractAddress: String?
 )
 
-fun GetCoinFeeResponse.mapToDataItem(): CoinFeeDataItem = CoinFeeDataItem(
+fun GetCoinDetailsResponse.mapToDataItem(): CoinDetailsDataItem = CoinDetailsDataItem(
     txFee = txFee,
     profitExchange = profitExchange,
     byteFee = byteFee ?: 0,

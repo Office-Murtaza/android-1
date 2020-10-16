@@ -181,7 +181,7 @@ class TransactionHashHelper(
         }
     }
 
-    private fun getByteFee(coinName: String?): Long = prefsHelper.coinsFee[coinName]?.byteFee ?: Long.MIN_VALUE
+    private fun getByteFee(coinName: String?): Long = prefsHelper.coinsDetails[coinName]?.byteFee ?: Long.MIN_VALUE
 
     private suspend fun createTransactionHashETH(
         toAddress: String,
@@ -194,7 +194,7 @@ class TransactionHashHelper(
 
         return if (response.isRight) {
             val nonceResponse = (response as Either.Right).b
-            val coinFee = prefsHelper.coinsFee[fromCoin.name]
+            val coinFee = prefsHelper.coinsDetails[fromCoin.name]
             val amountMultipliedByDivider = BigDecimal(fromCoinAmount * CoinType.ETHEREUM.unit())
             val hexAmount = addLeadingZeroes(amountMultipliedByDivider.toLong().toString(16))?.toHexByteArray()
             val hexNonce = addLeadingZeroes(nonceResponse?.toString(16) ?: "")?.toHexByteArray()
@@ -277,7 +277,7 @@ class TransactionHashHelper(
                         it.account = coinEntity.publicKey
                         it.amount = (fromCoinAmount * CoinType.XRP.unit()).toLong()
                         it.destination = toAddress
-                        it.fee = ((prefsHelper.coinsFee[CoinType.XRP.code()]?.txFee?.toBigDecimal()
+                        it.fee = ((prefsHelper.coinsDetails[CoinType.XRP.code()]?.txFee?.toBigDecimal()
                             ?: BigDecimal(0.000020)) * BigDecimal.valueOf(CoinType.XRP.unit())).toLong()
                         it.privateKey = ByteString.copyFrom(privateKey.data())
                     }
@@ -379,7 +379,7 @@ class TransactionHashHelper(
                     calendar.time = Date()
                     calendar.add(Calendar.HOUR, 10)
                 }.timeInMillis
-                it.feeLimit = ((prefsHelper.coinsFee[CoinType.TRON.code()]?.txFee?.toBigDecimal()
+                it.feeLimit = ((prefsHelper.coinsDetails[CoinType.TRON.code()]?.txFee?.toBigDecimal()
                     ?: BigDecimal(1)) * BigDecimal.valueOf(CoinType.TRON.unit())).toLong()
                 it.blockHeader = tronBlock.build()
             }

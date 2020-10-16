@@ -1,6 +1,6 @@
 package com.app.belcobtm.domain.wallet.item
 
-class CoinFeeDataItem(
+class CoinDetailsDataItem(
     val txFee: Double,
     val byteFee: Long,
     val recallFee: Double?,

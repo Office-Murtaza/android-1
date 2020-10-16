@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import com.app.belcobtm.domain.transaction.interactor.SendGiftTransactionCreateUseCase
 import com.app.belcobtm.domain.wallet.LocalCoinType
 import com.app.belcobtm.domain.wallet.item.CoinDataItem
-import com.app.belcobtm.domain.wallet.item.CoinFeeDataItem
+import com.app.belcobtm.domain.wallet.item.CoinDetailsDataItem
 import com.app.belcobtm.presentation.core.SingleLiveData
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
 import kotlin.math.max
@@ -12,7 +12,7 @@ import kotlin.math.max
 class SendGiftViewModel(
     private val transactionCreateUseCase: SendGiftTransactionCreateUseCase,
     private val fromCoinDataItem: CoinDataItem,
-    private val fromCoinFeeDataItem: CoinFeeDataItem,
+    private val fromCoinDetailsDataItem: CoinDetailsDataItem,
     private val coinDataItemList: List<CoinDataItem>
 ) : ViewModel() {
     val sendGiftLiveData: SingleLiveData<LoadingData<Unit>> = SingleLiveData()
@@ -43,7 +43,7 @@ class SendGiftViewModel(
         else -> max(0.0, getCoinBalance() - getTransactionFee())
     }
 
-    fun getTransactionFee(): Double = fromCoinFeeDataItem.txFee
+    fun getTransactionFee(): Double = fromCoinDetailsDataItem.txFee
 
     fun getCoinBalance(): Double = fromCoinDataItem.balanceCoin
 
