@@ -6,6 +6,7 @@ import com.app.belcobtm.domain.transaction.interactor.ExchangeUseCase
 import com.app.belcobtm.domain.wallet.LocalCoinType
 import com.app.belcobtm.domain.wallet.item.CoinDataItem
 import com.app.belcobtm.domain.wallet.item.CoinFeeDataItem
+import com.app.belcobtm.presentation.core.extensions.truncateDecimal
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
 import kotlin.math.max
 
@@ -37,9 +38,13 @@ class ExchangeViewModel(
         )
     }
 
-    fun getCoinToAmount(fromCoinAmount: Double): Double =
-        fromCoinAmount * fromCoinItem.priceUsd / (toCoinItem?.priceUsd
+    fun getCoinToAmount(fromCoinAmount: Double): Double {
+        val coinToAmount = fromCoinAmount * fromCoinItem.priceUsd / (toCoinItem?.priceUsd
             ?: 0.0) * (100 - fromCoinFeeItem.profitExchange) / 100
+        // apply scaling to given coin
+        val coinScale = fromCoinFeeItem.scale
+        return coinToAmount.truncateDecimal(coinScale)
+    }
 
     fun getMaxValue(): Double = when (fromCoinItem.code) {
         LocalCoinType.CATM.name -> fromCoinItem.balanceCoin
