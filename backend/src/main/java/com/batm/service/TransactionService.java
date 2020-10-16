@@ -469,7 +469,7 @@ public class TransactionService {
 
                     dto.setRewardAmount(createStakeRec.getAmount().multiply(rewardPercent.divide(Constant.HUNDRED)).stripTrailingZeros());
                     dto.setRewardPercent(rewardPercent);
-                    dto.setUntilWithdraw(Math.max(0, CANCEL_PERIOD - Days.daysBetween(new DateTime(cancelStakeRec.getCreateDate()), DateTime.now()).getDays() + 1));
+                    dto.setUntilWithdraw(Math.max(0, CANCEL_PERIOD - Days.daysBetween(new DateTime(cancelStakeRec.getCreateDate()), DateTime.now()).getDays()));
 
                     if (StringUtils.isNotBlank(cancelStakeRec.getRefTxId())) {
                         TransactionRecordWallet withdrawStakeRec = walletRep.findFirstByTxId(cancelStakeRec.getRefTxId()).get();
