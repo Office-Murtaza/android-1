@@ -17,9 +17,9 @@ class WalletRepositoryImpl(
 ) : WalletRepository {
     private val cachedCoinDataItemList: MutableList<CoinDataItem> = mutableListOf()
 
-    override fun getCoinFeeMap(): Map<String, CoinDetailsDataItem> = prefHelper.coinsDetails
+    override fun getCoinDetailsMap(): Map<String, CoinDetailsDataItem> = prefHelper.coinsDetails
 
-    override fun getCoinFeeItemByCode(
+    override fun getCoinDetailsItemByCode(
         coinCode: String
     ): CoinDetailsDataItem = prefHelper.coinsDetails.getValue(coinCode)
 

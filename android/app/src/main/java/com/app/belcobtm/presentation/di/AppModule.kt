@@ -52,16 +52,19 @@ val viewModelModule = module {
     viewModel { VerificationBlankViewModel(get(), get()) }
     viewModel { VerificationVipViewModel(get()) }
     viewModel { (coinCode: String) ->
-        val coinList = (get<WalletRepository>()).getCoinItemList()
+        val walletRepo = get<WalletRepository>()
+        val coinList = walletRepo.getCoinItemList()
         val filteredCoinList = coinList.filter { it.isEnabled }
         val fromCoinDataItem = filteredCoinList.first { it.code == coinCode }
-        val fromCoinFee = get<WalletRepository>().getCoinFeeMap().getValue(coinCode)
+        val fromCoinDetails = walletRepo.getCoinDetailsMap().getValue(coinCode)
 
         ExchangeViewModel(
             get(),
+            get(),
+            get(),
             fromCoinDataItem,
-            filteredCoinList,
-            fromCoinFee
+            fromCoinDetails,
+            filteredCoinList
         )
     }
     viewModel { ManageWalletsViewModel(get(), get()) }
@@ -79,7 +82,7 @@ val viewModelModule = module {
     viewModel { (coinCode: String) ->
         TradeRecallViewModel(
             get<WalletRepository>().getCoinItemByCode(coinCode),
-            get<WalletRepository>().getCoinFeeItemByCode(coinCode),
+            get<WalletRepository>().getCoinDetailsItemByCode(coinCode),
             get(),
             get()
         )
@@ -87,14 +90,14 @@ val viewModelModule = module {
     viewModel { (coinCode: String) ->
         TradeReserveViewModel(
             get<WalletRepository>().getCoinItemByCode(coinCode),
-            get<WalletRepository>().getCoinFeeItemByCode(coinCode),
+            get<WalletRepository>().getCoinDetailsItemByCode(coinCode),
             get(),
             get()
         )
     }
     viewModel {
         val coinDataItem = get<WalletRepository>().getCoinItemByCode(LocalCoinType.CATM.name)
-        val coinFee = get<WalletRepository>().getCoinFeeItemByCode(LocalCoinType.CATM.name)
+        val coinFee = get<WalletRepository>().getCoinDetailsItemByCode(LocalCoinType.CATM.name)
         StakingViewModel(coinDataItem, coinFee, get(), get(), get(), get(), get())
     }
     viewModel { (phone: String) ->
@@ -119,13 +122,13 @@ val viewModelModule = module {
     viewModel { (coinCode: String) ->
         val coinList = (get() as GetCoinListUseCase).invoke()
         val fromCoinDataItem = coinList.find { it.code == coinCode }!!
-        val fromCoinFee = get<WalletRepository>().getCoinFeeItemByCode(coinCode)
+        val fromCoinFee = get<WalletRepository>().getCoinDetailsItemByCode(coinCode)
         SendGiftViewModel(get(), fromCoinDataItem, fromCoinFee, coinList)
     }
     viewModel { (coinCode: String) ->
         val coinList = (get() as GetCoinListUseCase).invoke()
         val fromCoinDataItem = coinList.find { it.code == coinCode }
-        val fromCoinFee = get<WalletRepository>().getCoinFeeItemByCode(coinCode)
+        val fromCoinFee = get<WalletRepository>().getCoinDetailsItemByCode(coinCode)
         WithdrawViewModel(get(), fromCoinDataItem, fromCoinFee, coinList)
     }
     viewModel { (coinCode: String) ->
