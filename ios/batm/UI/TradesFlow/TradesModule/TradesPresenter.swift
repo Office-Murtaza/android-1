@@ -40,10 +40,10 @@ final class TradesPresenter: ModulePresenter, TradesModule {
     self.locationService = locationService
   }
   
-  func setup(coin: BTMCoin, coinBalances: [CoinBalance], coinSettings: CoinSettings) {
+  func setup(coin: BTMCoin, coinBalances: [CoinBalance], coinDetails: CoinDetails) {
     store.action.accept(.setupCoin(coin))
     store.action.accept(.setupCoinBalances(coinBalances))
-    store.action.accept(.setupCoinSettings(coinSettings))
+    store.action.accept(.setupCoinDetails(coinDetails))
   }
 
   func bind(input: Input) {
@@ -112,14 +112,14 @@ final class TradesPresenter: ModulePresenter, TradesModule {
       .withLatestFrom(state)
       .drive(onNext: { [delegate] in delegate?.showReserve(coin: $0.coin!,
                                                            coinBalances: $0.coinBalances!,
-                                                           coinSettings: $0.coinSettings!) })
+                                                           coinDetails: $0.coinDetails!) })
       .disposed(by: disposeBag)
     
     input.recall
       .withLatestFrom(state)
       .drive(onNext: { [delegate] in delegate?.showRecall(coin: $0.coin!,
                                                           coinBalances: $0.coinBalances!,
-                                                          coinSettings: $0.coinSettings!) })
+                                                          coinDetails: $0.coinDetails!) })
       .disposed(by: disposeBag)
     
     setupBindings()

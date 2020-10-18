@@ -1,7 +1,7 @@
 import Foundation
 import TrustWalletCore
 
-struct CoinSettings: Equatable {
+struct CoinDetails: Equatable {
   var type: CustomCoinType
   var txFee: Decimal
   var recallFee: Decimal?

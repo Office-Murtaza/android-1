@@ -57,7 +57,7 @@ class WalletPresenter: ModulePresenter, WalletModule {
       }
       .withLatestFrom(state) { ($1, $0.0, $0.1) }
       .subscribe(onNext: { [delegate] in delegate?.showCoinDetails(coinBalances: $0.coinsBalance.coins,
-                                                                   coinSettings: $1,
+                                                                   coinDetails: $1,
                                                                    data: $2) })
       .disposed(by: disposeBag)
     

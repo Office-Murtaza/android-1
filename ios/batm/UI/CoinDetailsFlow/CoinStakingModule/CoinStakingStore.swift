@@ -3,7 +3,7 @@ import Foundation
 enum CoinStakingAction: Equatable {
   case setupCoin(BTMCoin)
   case setupCoinBalances([CoinBalance])
-  case setupCoinSettings(CoinSettings)
+  case setupCoinDetails(CoinDetails)
   case setupStakeDetails(StakeDetails)
   case updateCoinAmount(String?)
   case updateCoinAmountError(String?)
@@ -14,7 +14,7 @@ struct CoinStakingState: Equatable {
   
   var coin: BTMCoin?
   var coinBalances: [CoinBalance]?
-  var coinSettings: CoinSettings?
+  var coinDetails: CoinDetails?
   var stakeDetails: StakeDetails?
   var coinAmount: String = ""
   var coinAmountError: String?
@@ -32,7 +32,7 @@ struct CoinStakingState: Equatable {
   }
   
   var maxValue: Decimal {
-    guard let type = coin?.type, let balance = coinBalance?.balance, let fee = coinSettings?.txFee else { return 0 }
+    guard let type = coin?.type, let balance = coinBalance?.balance, let fee = coinDetails?.txFee else { return 0 }
     
     switch type {
     case .catm:
@@ -73,7 +73,7 @@ final class CoinStakingStore: ViewStore<CoinStakingAction, CoinStakingState> {
     switch action {
     case let .setupCoin(coin): state.coin = coin
     case let .setupCoinBalances(coinBalances): state.coinBalances = coinBalances
-    case let .setupCoinSettings(coinSettings): state.coinSettings = coinSettings
+    case let .setupCoinDetails(coinDetails): state.coinDetails = coinDetails
     case let .setupStakeDetails(stakeDetails): state.stakeDetails = stakeDetails
     case let .updateCoinAmount(amount):
       state.coinAmount = (amount ?? "").coinWithdrawFormatted
@@ -86,7 +86,7 @@ final class CoinStakingStore: ViewStore<CoinStakingAction, CoinStakingState> {
   }
   
   private func validateETHBalance(_ state: inout CoinStakingState) {
-    guard state.coin?.type == .catm, let fee = state.coinSettings?.txFee else { return }
+    guard state.coin?.type == .catm, let fee = state.coinDetails?.txFee else { return }
     
     let ethBalance = state.coinBalances?.first { $0.type == .ethereum }?.balance ?? 0
       

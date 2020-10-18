@@ -23,7 +23,7 @@ protocol APIGateway {
   func recoverWallet(phoneNumber: String, password: String, coinAddresses: [CoinAddress]) -> Single<Account>
   func verifyCode(userId: Int, code: String) -> Completable
   func getCoinsBalance(userId: Int, coins: [BTMCoin]) -> Single<CoinsBalance>
-  func getCoinDetails(type: CustomCoinType) -> Single<CoinSettings>
+  func getCoinDetails(type: CustomCoinType) -> Single<CoinDetails>
   func getMapAddresses() -> Single<MapAddresses>
   func getPhoneNumber(userId: Int) -> Single<PhoneNumber>
   func verifyPassword(userId: Int, password: String) -> Single<Bool>
@@ -151,7 +151,7 @@ final class APIGatewayImpl: APIGateway {
     return execute(request)
   }
   
-  func getCoinDetails(type: CustomCoinType) -> Single<CoinSettings> {
+  func getCoinDetails(type: CustomCoinType) -> Single<CoinDetails> {
     let request = CoinDetailsRequest(coinId: type.code)
     return execute(request)
   }

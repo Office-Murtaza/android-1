@@ -29,10 +29,10 @@ final class ReservePresenter: ModulePresenter, ReserveModule {
     self.store = store
   }
   
-  func setup(coin: BTMCoin, coinBalances: [CoinBalance], coinSettings: CoinSettings) {
+  func setup(coin: BTMCoin, coinBalances: [CoinBalance], coinDetails: CoinDetails) {
     store.action.accept(.setupCoin(coin))
     store.action.accept(.setupCoinBalances(coinBalances))
-    store.action.accept(.setupCoinSettings(coinSettings))
+    store.action.accept(.setupCoinDetails(coinDetails))
   }
 
   func bind(input: Input) {
@@ -72,7 +72,7 @@ final class ReservePresenter: ModulePresenter, ReserveModule {
   
   private func reserve(for state: ReserveState) -> Completable {
     return usecase.reserve(from: state.coin!,
-                               with: state.coinSettings!,
+                               with: state.coinDetails!,
                                amount: state.coinAmount.decimalValue ?? 0.0)
       .catchError { [store] in
         if let apiError = $0 as? APIError, case let .serverError(error) = apiError {

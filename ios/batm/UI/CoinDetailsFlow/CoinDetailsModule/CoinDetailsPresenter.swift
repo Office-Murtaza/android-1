@@ -37,9 +37,9 @@ final class CoinDetailsPresenter: ModulePresenter, CoinDetailsModule {
     self.store = store
   }
   
-  func setup(coinBalances: [CoinBalance], coinSettings: CoinSettings, data: PriceChartData) {
+  func setup(coinBalances: [CoinBalance], coinDetails: CoinDetails, data: PriceChartData) {
     store.action.accept(.setupCoinBalances(coinBalances))
-    store.action.accept(.setupCoinSettings(coinSettings))
+    store.action.accept(.setupCoinDetails(coinDetails))
     store.action.accept(.setupPriceChartData(data))
   }
 
@@ -48,7 +48,7 @@ final class CoinDetailsPresenter: ModulePresenter, CoinDetailsModule {
       .asObservable()
       .flatFilter(activity.not())
       .withLatestFrom(state)
-      .map { $0.coinSettings?.type }
+      .map { $0.coinDetails?.type }
       .filterNil()
       .doOnNext { [store] _ in store.action.accept(.startFetching) }
       .flatMap { [unowned self] in
@@ -68,7 +68,7 @@ final class CoinDetailsPresenter: ModulePresenter, CoinDetailsModule {
       .filter { $0.coin != nil }
       .drive(onNext: { [delegate] in delegate?.showWithdrawScreen(coin: $0.coin!,
                                                                   coinBalances: $0.coinBalances!,
-                                                                  coinSettings: $0.coinSettings!) })
+                                                                  coinDetails: $0.coinDetails!) })
       .disposed(by: disposeBag)
     
     input.sendGift
@@ -76,19 +76,19 @@ final class CoinDetailsPresenter: ModulePresenter, CoinDetailsModule {
       .filter { $0.coin != nil }
       .drive(onNext: { [delegate] in delegate?.showSendGiftScreen(coin: $0.coin!,
                                                                   coinBalances: $0.coinBalances!,
-                                                                  coinSettings: $0.coinSettings!) })
+                                                                  coinDetails: $0.coinDetails!) })
       .disposed(by: disposeBag)
     
     input.sell
       .asObservable()
       .withLatestFrom(state)
       .filter { $0.coin != nil }
-      .map { ($0.coin!, $0.coinBalances!, $0.coinSettings!) }
-      .flatMap { [unowned self] coin, coinBalances, coinSettings in
+      .map { ($0.coin!, $0.coinBalances!, $0.coinDetails!) }
+      .flatMap { [unowned self] coin, coinBalances, coinDetails in
         return self.track(self.usecase.getSellDetails())
-          .map { (coin, coinBalances, coinSettings, $0) }
+          .map { (coin, coinBalances, coinDetails, $0) }
       }
-      .subscribe(onNext: { [delegate] in delegate?.showSellScreen(coin: $0, coinBalances: $1, coinSettings: $2, details: $3) })
+      .subscribe(onNext: { [delegate] in delegate?.showSellScreen(coin: $0, coinBalances: $1, coinDetails: $2, details: $3) })
       .disposed(by: disposeBag)
     
     input.exchange
@@ -96,7 +96,7 @@ final class CoinDetailsPresenter: ModulePresenter, CoinDetailsModule {
       .filter { $0.coin != nil }
       .drive(onNext: { [delegate] in delegate?.showExchangeScreen(coin: $0.coin!,
                                                                   coinBalances: $0.coinBalances!,
-                                                                  coinSettings: $0.coinSettings!) })
+                                                                  coinDetails: $0.coinDetails!) })
       .disposed(by: disposeBag)
     
     input.trades
@@ -104,7 +104,7 @@ final class CoinDetailsPresenter: ModulePresenter, CoinDetailsModule {
       .filter { $0.coin != nil }
       .drive(onNext: { [delegate] in delegate?.showTradesScreen(coin: $0.coin!,
                                                                 coinBalances: $0.coinBalances!,
-                                                                coinSettings: $0.coinSettings!) })
+                                                                coinDetails: $0.coinDetails!) })
       .disposed(by: disposeBag)
     
     input.staking
@@ -116,7 +116,7 @@ final class CoinDetailsPresenter: ModulePresenter, CoinDetailsModule {
       }
       .drive(onNext: { [delegate] in delegate?.showStakingScreen(coin: $0.coin!,
                                                                  coinBalances: $0.coinBalances!,
-                                                                 coinSettings: $0.coinSettings!,
+                                                                 coinDetails: $0.coinDetails!,
                                                                  stakeDetails: $1) })
       .disposed(by: disposeBag)
     
@@ -154,7 +154,7 @@ final class CoinDetailsPresenter: ModulePresenter, CoinDetailsModule {
   
   private func setupBindings() {
     let coinTypeObservable = state
-      .map { $0.coinSettings?.type }
+      .map { $0.coinDetails?.type }
       .filterNil()
       .asObservable()
       .take(1)
@@ -176,7 +176,7 @@ final class CoinDetailsPresenter: ModulePresenter, CoinDetailsModule {
       .withLatestFrom(state)
       .filter { !$0.isLastPage }
       .flatMap { [unowned self] in
-        self.track(self.getTransactions(for: $0.coinSettings!.type, from: $0.nextPage), trackers: [self.errorTracker])
+        self.track(self.getTransactions(for: $0.coinDetails!.type, from: $0.nextPage), trackers: [self.errorTracker])
       }
       .subscribe()
       .disposed(by: disposeBag)

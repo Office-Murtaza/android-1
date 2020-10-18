@@ -15,32 +15,32 @@ extension CoinDetailsFlowController: CoinDetailsModuleDelegate {
     step.accept(CoinDetailsFlow.Steps.deposit(coin))
   }
   
-  func showWithdrawScreen(coin: BTMCoin, coinBalances: [CoinBalance], coinSettings: CoinSettings) {
-    step.accept(CoinDetailsFlow.Steps.withdraw(coin, coinBalances, coinSettings))
+  func showWithdrawScreen(coin: BTMCoin, coinBalances: [CoinBalance], coinDetails: CoinDetails) {
+    step.accept(CoinDetailsFlow.Steps.withdraw(coin, coinBalances, coinDetails))
   }
   
-  func showSendGiftScreen(coin: BTMCoin, coinBalances: [CoinBalance], coinSettings: CoinSettings) {
-    step.accept(CoinDetailsFlow.Steps.sendGift(coin, coinBalances, coinSettings))
+  func showSendGiftScreen(coin: BTMCoin, coinBalances: [CoinBalance], coinDetails: CoinDetails) {
+    step.accept(CoinDetailsFlow.Steps.sendGift(coin, coinBalances, coinDetails))
   }
   
-  func showSellScreen(coin: BTMCoin, coinBalances: [CoinBalance], coinSettings: CoinSettings, details: SellDetails) {
-    step.accept(CoinDetailsFlow.Steps.sell(coin, coinBalances, coinSettings, details))
+  func showSellScreen(coin: BTMCoin, coinBalances: [CoinBalance], coinDetails: CoinDetails, details: SellDetails) {
+    step.accept(CoinDetailsFlow.Steps.sell(coin, coinBalances, coinDetails, details))
   }
   
   func showTransactionDetails(with details: TransactionDetails, for type: CustomCoinType) {
     step.accept(CoinDetailsFlow.Steps.transactionDetails(details, type))
   }
   
-  func showExchangeScreen(coin: BTMCoin, coinBalances: [CoinBalance], coinSettings: CoinSettings) {
-    step.accept(CoinDetailsFlow.Steps.exchange(coin, coinBalances, coinSettings))
+  func showExchangeScreen(coin: BTMCoin, coinBalances: [CoinBalance], coinDetails: CoinDetails) {
+    step.accept(CoinDetailsFlow.Steps.exchange(coin, coinBalances, coinDetails))
   }
   
-  func showTradesScreen(coin: BTMCoin, coinBalances: [CoinBalance], coinSettings: CoinSettings) {
-    step.accept(CoinDetailsFlow.Steps.trades(coin, coinBalances, coinSettings))
+  func showTradesScreen(coin: BTMCoin, coinBalances: [CoinBalance], coinDetails: CoinDetails) {
+    step.accept(CoinDetailsFlow.Steps.trades(coin, coinBalances, coinDetails))
   }
   
-  func showStakingScreen(coin: BTMCoin, coinBalances: [CoinBalance], coinSettings: CoinSettings, stakeDetails: StakeDetails) {
-    step.accept(CoinDetailsFlow.Steps.staking(coin, coinBalances, coinSettings, stakeDetails))
+  func showStakingScreen(coin: BTMCoin, coinBalances: [CoinBalance], coinDetails: CoinDetails, stakeDetails: StakeDetails) {
+    step.accept(CoinDetailsFlow.Steps.staking(coin, coinBalances, coinDetails, stakeDetails))
   }
   
 }

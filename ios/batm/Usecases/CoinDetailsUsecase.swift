@@ -8,29 +8,29 @@ protocol CoinDetailsUsecase {
   func getCoin(for type: CustomCoinType) -> Single<BTMCoin>
   func verifyCode(code: String) -> Completable
   func withdraw(from coin: BTMCoin,
-                with coinSettings: CoinSettings,
+                with coinDetails: CoinDetails,
                 to destination: String,
                 amount: Decimal) -> Completable
   func getSellDetails() -> Single<SellDetails>
   func presubmit(for type: CustomCoinType, coinAmount: Decimal, currencyAmount: Decimal) -> Single<PreSubmitResponse>
-  func sell(from coin: BTMCoin, with coinSettings: CoinSettings, amount: Decimal, to toAddress: String) -> Completable
+  func sell(from coin: BTMCoin, with coinDetails: CoinDetails, amount: Decimal, to toAddress: String) -> Completable
   func sendGift(from coin: BTMCoin,
-                with coinSettings: CoinSettings,
+                with CoinDetails: CoinDetails,
                 to phone: String,
                 amount: Decimal,
                 message: String,
                 imageId: String?) -> Completable
   func exchange(from fromCoin: BTMCoin,
-                with coinSettings: CoinSettings,
+                with coinDetails: CoinDetails,
                 to toCoinType: CustomCoinType,
                 amount: Decimal,
                 toCoinAmount: Decimal) -> Completable
-  func reserve(from coin: BTMCoin, with coinSettings: CoinSettings, amount: Decimal) -> Completable
+  func reserve(from coin: BTMCoin, with coinDetails: CoinDetails, amount: Decimal) -> Completable
   func recall(from coin: BTMCoin, amount: Decimal) -> Completable
   func getStakeDetails(for type: CustomCoinType) -> Single<StakeDetails>
-  func createStake(from coin: BTMCoin, with coinSettings: CoinSettings, amount: Decimal) -> Completable
-  func cancelStake(from coin: BTMCoin, with coinSettings: CoinSettings, stakeDetails: StakeDetails) -> Completable
-  func withdrawStake(from coin: BTMCoin, with coinSettings: CoinSettings, stakeDetails: StakeDetails) -> Completable
+  func createStake(from coin: BTMCoin, with coinDetails: CoinDetails, amount: Decimal) -> Completable
+  func cancelStake(from coin: BTMCoin, with coinDetails: CoinDetails, stakeDetails: StakeDetails) -> Completable
+  func withdrawStake(from coin: BTMCoin, with coinDetails: CoinDetails, stakeDetails: StakeDetails) -> Completable
 }
 
 class CoinDetailsUsecaseImpl: CoinDetailsUsecase {
@@ -79,7 +79,7 @@ class CoinDetailsUsecaseImpl: CoinDetailsUsecase {
   }
   
   func withdraw(from coin: BTMCoin,
-                with coinSettings: CoinSettings,
+                with coinDetails: CoinDetails,
                 to destination: String,
                 amount: Decimal) -> Completable {
     return Single.just(coin.type)
@@ -100,7 +100,7 @@ class CoinDetailsUsecaseImpl: CoinDetailsUsecase {
       .flatMap { [accountStorage] in accountStorage.get() }
       .flatMap { [walletService] account in
         return walletService.getTransactionHex(for: coin,
-                                               with: coinSettings,
+                                               with: coinDetails,
                                                destination: destination,
                                                amount: amount,
                                                stakingType: nil)
@@ -111,7 +111,7 @@ class CoinDetailsUsecaseImpl: CoinDetailsUsecase {
                            type: coin.type,
                            txType: .withdraw,
                            amount: amount,
-                           fee: coinSettings.txFee,
+                           fee: coinDetails.txFee,
                            fromAddress: coin.address,
                            toAddress: destination,
                            transactionResultString: transactionResultString)
@@ -119,7 +119,7 @@ class CoinDetailsUsecaseImpl: CoinDetailsUsecase {
   }
   
   func sendGift(from coin: BTMCoin,
-                with coinSettings: CoinSettings,
+                with coinDetails: CoinDetails,
                 to phone: String,
                 amount: Decimal,
                 message: String,
@@ -128,7 +128,7 @@ class CoinDetailsUsecaseImpl: CoinDetailsUsecase {
       .map { $0.address }
       .flatMap { [walletService] destination in
         return walletService.getTransactionHex(for: coin,
-                                               with: coinSettings,
+                                               with: coinDetails,
                                                destination: destination,
                                                amount: amount,
                                                stakingType: nil)
@@ -143,7 +143,7 @@ class CoinDetailsUsecaseImpl: CoinDetailsUsecase {
                          type: coin.type,
                          txType: .sendGift,
                          amount: amount,
-                         fee: coinSettings.txFee,
+                         fee: coinDetails.txFee,
                          fromAddress: coin.address,
                          toAddress: toAddress,
                          phone: phone,
@@ -166,11 +166,11 @@ class CoinDetailsUsecaseImpl: CoinDetailsUsecase {
                                                    currencyAmount: currencyAmount) }
   }
   
-  func sell(from coin: BTMCoin, with coinSettings: CoinSettings, amount: Decimal, to toAddress: String) -> Completable {
+  func sell(from coin: BTMCoin, with coinDetails: CoinDetails, amount: Decimal, to toAddress: String) -> Completable {
     return accountStorage.get()
       .flatMap { [walletService] account in
         return walletService.getTransactionHex(for: coin,
-                                               with: coinSettings,
+                                               with: coinDetails,
                                                destination: toAddress,
                                                amount: amount,
                                                stakingType: nil)
@@ -181,7 +181,7 @@ class CoinDetailsUsecaseImpl: CoinDetailsUsecase {
                            type: coin.type,
                            txType: .sell,
                            amount: amount,
-                           fee: coinSettings.txFee,
+                           fee: coinDetails.txFee,
                            fromAddress: coin.address,
                            toAddress: toAddress,
                            transactionResultString: transactionResultString)
@@ -189,15 +189,15 @@ class CoinDetailsUsecaseImpl: CoinDetailsUsecase {
   }
   
   func exchange(from fromCoin: BTMCoin,
-                with coinSettings: CoinSettings,
+                with coinDetails: CoinDetails,
                 to toCoinType: CustomCoinType,
                 amount: Decimal,
                 toCoinAmount: Decimal) -> Completable {
     return accountStorage.get()
       .flatMap { [walletService] account in
         return walletService.getTransactionHex(for: fromCoin,
-                                               with: coinSettings,
-                                               destination: coinSettings.walletAddress,
+                                               with: coinDetails,
+                                               destination: coinDetails.walletAddress,
                                                amount: amount,
                                                stakingType: nil)
           .map { (account, $0) }
@@ -207,21 +207,21 @@ class CoinDetailsUsecaseImpl: CoinDetailsUsecase {
                            type: fromCoin.type,
                            txType: .sendС2С,
                            amount: amount,
-                           fee: coinSettings.txFee,
+                           fee: coinDetails.txFee,
                            fromAddress: fromCoin.address,
-                           toAddress: fromCoin.type == .catm ? coinSettings.contractAddress : coinSettings.walletAddress,
+                           toAddress: fromCoin.type == .catm ? coinDetails.contractAddress : coinDetails.walletAddress,
                            toCoinType: toCoinType,
                            toCoinAmount: toCoinAmount,
                            transactionResultString: transactionResultString)
       }
   }
   
-  func reserve(from coin: BTMCoin, with coinSettings: CoinSettings, amount: Decimal) -> Completable {
+  func reserve(from coin: BTMCoin, with coinDetails: CoinDetails, amount: Decimal) -> Completable {
     return accountStorage.get()
       .flatMap { [walletService] account in
         return walletService.getTransactionHex(for: coin,
-                                               with: coinSettings,
-                                               destination: coinSettings.walletAddress,
+                                               with: coinDetails,
+                                               destination: coinDetails.walletAddress,
                                                amount: amount,
                                                stakingType: nil)
           .map { (account, $0) }
@@ -231,9 +231,9 @@ class CoinDetailsUsecaseImpl: CoinDetailsUsecase {
                            type: coin.type,
                            txType: .reserve,
                            amount: amount,
-                           fee: coinSettings.txFee,
+                           fee: coinDetails.txFee,
                            fromAddress: coin.address,
-                           toAddress: coinSettings.walletAddress,
+                           toAddress: coinDetails.walletAddress,
                            transactionResultString: transactionResultString)
       }
   }
@@ -248,11 +248,11 @@ class CoinDetailsUsecaseImpl: CoinDetailsUsecase {
       }
   }
   
-  func createStake(from coin: BTMCoin, with coinSettings: CoinSettings, amount: Decimal) -> Completable {
+  func createStake(from coin: BTMCoin, with coinDetails: CoinDetails, amount: Decimal) -> Completable {
     return accountStorage.get()
       .flatMap { [walletService] account in
         return walletService.getTransactionHex(for: coin,
-                                               with: coinSettings,
+                                               with: coinDetails,
                                                destination: "",
                                                amount: amount,
                                                stakingType: .createStake)
@@ -263,18 +263,18 @@ class CoinDetailsUsecaseImpl: CoinDetailsUsecase {
                            type: coin.type,
                            txType: .createStake,
                            amount: amount,
-                           fee: coinSettings.txFee,
+                           fee: coinDetails.txFee,
                            fromAddress: coin.address,
-                           toAddress: coinSettings.contractAddress,
+                           toAddress: coinDetails.contractAddress,
                            transactionResultString: transactionResultString)
       }
   }
   
-  func cancelStake(from coin: BTMCoin, with coinSettings: CoinSettings, stakeDetails: StakeDetails) -> Completable {
+  func cancelStake(from coin: BTMCoin, with coinDetails: CoinDetails, stakeDetails: StakeDetails) -> Completable {
     return accountStorage.get()
       .flatMap { [walletService] account in
         return walletService.getTransactionHex(for: coin,
-                                               with: coinSettings,
+                                               with: coinDetails,
                                                destination: "",
                                                amount: 0,
                                                stakingType: .cancelStake)
@@ -285,18 +285,18 @@ class CoinDetailsUsecaseImpl: CoinDetailsUsecase {
                            type: coin.type,
                            txType: .cancelStake,
                            amount: 0,
-                           fee: coinSettings.txFee,
+                           fee: coinDetails.txFee,
                            fromAddress: coin.address,
-                           toAddress: coinSettings.contractAddress,
+                           toAddress: coinDetails.contractAddress,
                            transactionResultString: transactionResultString)
       }
   }
   
-  func withdrawStake(from coin: BTMCoin, with coinSettings: CoinSettings, stakeDetails: StakeDetails) -> Completable {
+  func withdrawStake(from coin: BTMCoin, with coinDetails: CoinDetails, stakeDetails: StakeDetails) -> Completable {
     return accountStorage.get()
       .flatMap { [walletService] account in
         return walletService.getTransactionHex(for: coin,
-                                               with: coinSettings,
+                                               with: coinDetails,
                                                destination: "",
                                                amount: 0,
                                                stakingType: .withdrawStake)
@@ -307,9 +307,9 @@ class CoinDetailsUsecaseImpl: CoinDetailsUsecase {
                            type: coin.type,
                            txType: .withdrawStake,
                            amount: (stakeDetails.amount ?? 0) + (stakeDetails.rewardAmount ?? 0),
-                           fee: coinSettings.txFee,
+                           fee: coinDetails.txFee,
                            fromAddress: coin.address,
-                           toAddress: coinSettings.contractAddress,
+                           toAddress: coinDetails.contractAddress,
                            transactionResultString: transactionResultString)
       }
   }

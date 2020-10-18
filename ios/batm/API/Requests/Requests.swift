@@ -114,7 +114,7 @@ struct CoinsBalanceRequest: AuthorizedAPIRequest {
 }
 
 struct CoinDetailsRequest: AuthorizedAPIRequest {
-  typealias ResponseType = APIResponse<CoinSettings>
+  typealias ResponseType = APIResponse<CoinDetails>
   typealias ResponseTrait = SingleResponseTrait
   
   let coinId: String

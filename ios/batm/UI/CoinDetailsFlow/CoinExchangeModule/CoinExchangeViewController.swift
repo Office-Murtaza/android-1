@@ -81,7 +81,7 @@ final class CoinExchangeViewController: ModuleViewController<CoinExchangePresent
       .distinctUntilChanged()
     
     let feeDriver = presenter.state
-    .map { $0.coinSettings?.txFee }
+    .map { $0.coinDetails?.txFee }
     
     Driver.combineLatest(fromCoinDriver, otherCoinBalancesDriver, feeDriver)
       .drive(onNext: { [formView] in formView.configure(coin: $0, otherCoins: $1, fee: $2) })

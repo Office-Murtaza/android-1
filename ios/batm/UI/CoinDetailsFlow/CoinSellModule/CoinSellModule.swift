@@ -1,7 +1,7 @@
 import Foundation
 
 protocol CoinSellModule: class {
-  func setup(coin: BTMCoin, coinBalances: [CoinBalance], coinSettings: CoinSettings, details: SellDetails)
+  func setup(coin: BTMCoin, coinBalances: [CoinBalance], coinDetails: CoinDetails, details: SellDetails)
 }
 protocol CoinSellModuleDelegate: class {
   func showSellDetailsForAnotherAddress(_ details: SellDetailsForAnotherAddress)
