@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		23AAC3F3253CCB3E004FD32B /* CoinDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23AAC3F2253CCB3E004FD32B /* CoinDetails.swift */; };
+		23AAC3F7253CCB5A004FD32B /* CoinDetails+Mapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23AAC3F6253CCB59004FD32B /* CoinDetails+Mapping.swift */; };
 		32C70C2C2AC5257199173D49 /* Pods_batm.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5D2E48FC9C22336570E8297D /* Pods_batm.framework */; };
 		757DD7261AB321C5873550C2 /* Pods_batmTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 142D5BA6DA2741657FE02671 /* Pods_batmTests.framework */; };
 		DB020DAA246D9A760036B413 /* TradesTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB020DA9246D9A760036B413 /* TradesTableView.swift */; };
@@ -177,8 +179,6 @@
 		DB5B2DE4230A769300821713 /* CoinDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB5B2DE0230A769300821713 /* CoinDetailsViewController.swift */; };
 		DB5B2DE5230A769300821713 /* CoinDetailsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB5B2DE1230A769300821713 /* CoinDetailsPresenter.swift */; };
 		DB5B2DE6230A769300821713 /* CoinDetailsAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB5B2DE2230A769300821713 /* CoinDetailsAssembly.swift */; };
-		DB5E3DDC23869DFC00D267E5 /* CoinDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB5E3DDB23869DFC00D267E5 /* CoinDetails.swift */; };
-		DB5E3DE023869EAF00D267E5 /* CoinDetails+Mapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB5E3DDF23869EAF00D267E5 /* CoinDetails+Mapping.swift */; };
 		DB5EB8DA2452B23D00CD1C63 /* MDCTextInputControllerBase+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB5EB8D92452B23D00CD1C63 /* MDCTextInputControllerBase+Extensions.swift */; };
 		DB5EB8DC2452C5CC00CD1C63 /* CoinSellFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB5EB8DB2452C5CC00CD1C63 /* CoinSellFormView.swift */; };
 		DB5EB8DE2452D80F00CD1C63 /* CheckBoxView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB5EB8DD2452D80F00CD1C63 /* CheckBoxView.swift */; };
@@ -530,6 +530,8 @@
 
 /* Begin PBXFileReference section */
 		142D5BA6DA2741657FE02671 /* Pods_batmTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_batmTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		23AAC3F2253CCB3E004FD32B /* CoinDetails.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoinDetails.swift; sourceTree = "<group>"; };
+		23AAC3F6253CCB59004FD32B /* CoinDetails+Mapping.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CoinDetails+Mapping.swift"; sourceTree = "<group>"; };
 		45A08286B5F7CE8E60F5C7D3 /* Pods-batmTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-batmTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-batmTests/Pods-batmTests.release.xcconfig"; sourceTree = "<group>"; };
 		5D2E48FC9C22336570E8297D /* Pods_batm.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_batm.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		92EFAEC3F34F5098AD0B7F2B /* Pods-batm.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-batm.debug.xcconfig"; path = "Pods/Target Support Files/Pods-batm/Pods-batm.debug.xcconfig"; sourceTree = "<group>"; };
@@ -704,8 +706,6 @@
 		DB5B2DE0230A769300821713 /* CoinDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinDetailsViewController.swift; sourceTree = "<group>"; };
 		DB5B2DE1230A769300821713 /* CoinDetailsPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinDetailsPresenter.swift; sourceTree = "<group>"; };
 		DB5B2DE2230A769300821713 /* CoinDetailsAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinDetailsAssembly.swift; sourceTree = "<group>"; };
-		DB5E3DDB23869DFC00D267E5 /* CoinDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinDetails.swift; sourceTree = "<group>"; };
-		DB5E3DDF23869EAF00D267E5 /* CoinDetails+Mapping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CoinDetails+Mapping.swift"; sourceTree = "<group>"; };
 		DB5EB8D92452B23D00CD1C63 /* MDCTextInputControllerBase+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MDCTextInputControllerBase+Extensions.swift"; sourceTree = "<group>"; };
 		DB5EB8DB2452C5CC00CD1C63 /* CoinSellFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinSellFormView.swift; sourceTree = "<group>"; };
 		DB5EB8DD2452D80F00CD1C63 /* CheckBoxView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckBoxView.swift; sourceTree = "<group>"; };
@@ -2117,6 +2117,7 @@
 		DB9616B622C63E190078E92D /* Entities */ = {
 			isa = PBXGroup;
 			children = (
+				23AAC3F2253CCB3E004FD32B /* CoinDetails.swift */,
 				DB9616B722C63E270078E92D /* Account.swift */,
 				DBC3FF4E24BB348300198597 /* CheckAccountResponse.swift */,
 				DBC3FF5224BB375B00198597 /* PhoneVerificationResponse.swift */,
@@ -2125,7 +2126,6 @@
 				DBBF299F22D3814300A5DE6A /* CoinAddress.swift */,
 				DBBF29A122D381A200A5DE6A /* CoinBalance.swift */,
 				DBBF299B22D3801500A5DE6A /* CoinsBalance.swift */,
-				DB5E3DDB23869DFC00D267E5 /* CoinDetails.swift */,
 				DB308EB422E737FA003D91AF /* OpenHour.swift */,
 				DB308EB222E73793003D91AF /* MapAddress.swift */,
 				DB308EB022E73762003D91AF /* MapAddresses.swift */,
@@ -2251,6 +2251,7 @@
 		DB96170422C75E950078E92D /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				23AAC3F6253CCB59004FD32B /* CoinDetails+Mapping.swift */,
 				DBBF29A522D386B500A5DE6A /* ObjectMapperError.swift */,
 				DB96170B22C75E950078E92D /* Account+Mapping.swift */,
 				DBC3FF5024BB34BD00198597 /* CheckAccountResponse+Mapping.swift */,
@@ -2258,7 +2259,6 @@
 				DBBF299D22D3810200A5DE6A /* CoinAddress+Mapping.swift */,
 				DBBF29A322D3848F00A5DE6A /* CoinBalance+Mapping.swift */,
 				DBBF29A722D3872D00A5DE6A /* CoinsBalance+Mapping.swift */,
-				DB5E3DDF23869EAF00D267E5 /* CoinDetails+Mapping.swift */,
 				DB308EB622E73837003D91AF /* OpenHour+Mapping.swift */,
 				DB308EB822E73888003D91AF /* MapAddress+Mapping.swift */,
 				DB308EBA22E738FC003D91AF /* MapAddresses+Mapping.swift */,
@@ -3148,7 +3148,6 @@
 				DB9616F922C7553D0078E92D /* StorageError.swift in Sources */,
 				DBAD539B22D7B8870005F682 /* PinCodePresenter.swift in Sources */,
 				DB70852522CFA3C500FFE4F7 /* WalletPresenter.swift in Sources */,
-				DB5E3DE023869EAF00D267E5 /* CoinDetails+Mapping.swift in Sources */,
 				DB38683B2476CA2B0070E13E /* LocationService.swift in Sources */,
 				DB1D21EE24AE6F2A001E9696 /* CoinStakingModule.swift in Sources */,
 				DB39DF5924E17FC700468ADA /* ErrorPresenter.swift in Sources */,
@@ -3157,7 +3156,6 @@
 				DBEBC6BB2402987C00D7C8A6 /* ToastInitializer.swift in Sources */,
 				DB904A9E22C00E2A007CB734 /* RxFlow+Extensions.swift in Sources */,
 				DBDA456024E5BD83002A3AF5 /* SecurityAssembly.swift in Sources */,
-				DB5E3DDC23869DFC00D267E5 /* CoinDetails.swift in Sources */,
 				DB9616EE22C74EB40078E92D /* RecursiveLock+Extensions.swift in Sources */,
 				DB04E4D422D85EE5000E2D85 /* PinCodeUsecase.swift in Sources */,
 				DBFAED912326C7CC004B6D79 /* Utxo+Mapping.swift in Sources */,
@@ -3172,6 +3170,7 @@
 				DBADDE382438DD6600BFD806 /* CoinExchangePresenter.swift in Sources */,
 				DB5EB8DE2452D80F00CD1C63 /* CheckBoxView.swift in Sources */,
 				DBC68C9522F85DF700473247 /* PhoneNumber.swift in Sources */,
+				23AAC3F3253CCB3E004FD32B /* CoinDetails.swift in Sources */,
 				DB83663A22FAB7CE00454F5C /* UpdatePinFlowController.swift in Sources */,
 				DB247B432478F88C009802BB /* SplashAssembly.swift in Sources */,
 				DB96173722C7B1140078E92D /* BTMCoinRecord+CoreDataProperties.swift in Sources */,
@@ -3467,6 +3466,7 @@
 				DB5185AD231FE68300052229 /* CoinWithdrawModule.swift in Sources */,
 				DBBD6AA924F72CD300610A4E /* WalletTableView.swift in Sources */,
 				DBDA966722C00424005B93DF /* ErrorTracker.swift in Sources */,
+				23AAC3F7253CCB5A004FD32B /* CoinDetails+Mapping.swift in Sources */,
 				DB5B2DDB230A74D000821713 /* CoinDetailsFlow+Dependencies.swift in Sources */,
 				DBA1B60F24A9C5B300A9A703 /* ReservePresenter.swift in Sources */,
 				DB21B1F124AA63AA008444D3 /* RecallModule.swift in Sources */,
