@@ -15,7 +15,7 @@ protocol CoinDetailsUsecase {
   func presubmit(for type: CustomCoinType, coinAmount: Decimal, currencyAmount: Decimal) -> Single<PreSubmitResponse>
   func sell(from coin: BTMCoin, with coinDetails: CoinDetails, amount: Decimal, to toAddress: String) -> Completable
   func sendGift(from coin: BTMCoin,
-                with CoinDetails: CoinDetails,
+                with coinDetails: CoinDetails,
                 to phone: String,
                 amount: Decimal,
                 message: String,

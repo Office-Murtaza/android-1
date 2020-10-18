@@ -63,19 +63,19 @@ final class CoinStakingPresenter: ModulePresenter, CoinStakingModule {
   
   private func proceedWithStaking(for state: CoinStakingState) -> Completable {
     let coin = state.coin!
-    let CoinDetails = state.coinDetails!
+    let coinDetails = state.coinDetails!
     let coinAmount = state.coinAmount.decimalValue ?? 0.0
     let stakeDetails = state.stakeDetails!
     
     if stakeDetails.status == .created {
-      return usecase.cancelStake(from: coin, with: CoinDetails, stakeDetails: stakeDetails)
+      return usecase.cancelStake(from: coin, with: coinDetails, stakeDetails: stakeDetails)
     }
     
     if stakeDetails.status == .canceled {
-      return usecase.withdrawStake(from: coin, with: CoinDetails, stakeDetails: stakeDetails)
+      return usecase.withdrawStake(from: coin, with: coinDetails, stakeDetails: stakeDetails)
     }
     
-    return usecase.createStake(from: coin, with: CoinDetails, amount: coinAmount)
+    return usecase.createStake(from: coin, with: coinDetails, amount: coinAmount)
       .catchError { [store] in
         if let apiError = $0 as? APIError, case let .serverError(error) = apiError, let code = error.code, code > 1 {
           store.action.accept(.updateCoinAmountError(error.message))

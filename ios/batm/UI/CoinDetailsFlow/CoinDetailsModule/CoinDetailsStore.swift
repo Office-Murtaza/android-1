@@ -58,7 +58,7 @@ final class CoinDetailsStore: ViewStore<CoinDetailsAction, CoinDetailsState> {
     
     switch action {
     case let .setupCoinBalances(coinBalances): state.coinBalances = coinBalances
-    case let .setupCoinDetails(CoinDetails): state.coinDetails = CoinDetails
+    case let .setupCoinDetails(coinDetails): state.coinDetails = coinDetails
     case let .setupPriceChartData(data): state.priceChartData = data
     case let .updateSelectedPeriod(selectedPeriod): state.selectedPeriod = selectedPeriod
     case .startFetching: state.isFetching = true
