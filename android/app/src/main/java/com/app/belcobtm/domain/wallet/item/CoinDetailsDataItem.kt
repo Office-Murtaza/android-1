@@ -1,8 +1,9 @@
 package com.app.belcobtm.domain.wallet.item
 
-class CoinFeeDataItem(
+class CoinDetailsDataItem(
     val txFee: Double,
     val byteFee: Long,
+    val scale: Int,
     val recallFee: Double?,
     val gasPrice: Double,
     val gasLimit: Double,

@@ -61,7 +61,7 @@ class App
 
             androidContext(applicationContext)
         }
-        prefHelper.coinsFee = emptyMap()
+        prefHelper.coinsDetails = emptyMap()
 
         DaggerAppComponent
             .builder()

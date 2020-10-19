@@ -5,14 +5,14 @@ import androidx.lifecycle.ViewModel
 import com.app.belcobtm.domain.transaction.interactor.WithdrawUseCase
 import com.app.belcobtm.domain.wallet.LocalCoinType
 import com.app.belcobtm.domain.wallet.item.CoinDataItem
-import com.app.belcobtm.domain.wallet.item.CoinFeeDataItem
+import com.app.belcobtm.domain.wallet.item.CoinDetailsDataItem
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
 import kotlin.math.max
 
 class WithdrawViewModel(
     private val withdrawUseCase: WithdrawUseCase,
     private val fromCoinDataItem: CoinDataItem?,
-    private val fromCoinFeeDataItem: CoinFeeDataItem,
+    private val fromCoinDetailsDataItem: CoinDetailsDataItem,
     private val coinDataItemList: List<CoinDataItem>
 ) : ViewModel() {
 
@@ -36,7 +36,7 @@ class WithdrawViewModel(
         else -> max(0.0, getCoinBalance() - getTransactionFee())
     }
 
-    fun getTransactionFee(): Double = fromCoinFeeDataItem.txFee
+    fun getTransactionFee(): Double = fromCoinDetailsDataItem.txFee
 
     fun getCoinBalance(): Double = fromCoinDataItem?.balanceCoin ?: 0.0
 

@@ -24,15 +24,7 @@ class ExchangeFragment : BaseFragment() {
             val fromCoinAmountTemporary = editable.getDouble()
             val cryptoAmount: Double = editable.getDouble()
             nextButtonView.isEnabled = fromCoinAmountTemporary > 0
-            amountCoinToView.text = getString(
-                R.string.text_usd,
-                (cryptoAmount * viewModel.fromCoinItem.priceUsd).toStringCoin()
-            )
-            balanceCoinToView.text = getString(
-                R.string.text_text,
-                viewModel.getCoinToAmount(cryptoAmount).toStringCoin(),
-                viewModel.toCoinItem?.code ?: ""
-            )
+            setToCoinValue(cryptoAmount)
         }
     )
 
@@ -66,41 +58,19 @@ class ExchangeFragment : BaseFragment() {
             R.string.text_amount,
             viewModel.fromCoinItem.code
         )
-        amountCoinToView.hint = getString(
-            R.string.text_amount,
-            viewModel.toCoinItem?.code ?: ""
-        )
         amountCoinFromView.helperText = getString(
             R.string.transaction_helper_text_commission,
-            viewModel.fromCoinFeeItem.txFee.toStringCoin(),
+            viewModel.fromCoinDetailsItem.txFee.toStringCoin(),
             if (viewModel.fromCoinItem.code == LocalCoinType.CATM.name) LocalCoinType.ETH.name else viewModel.fromCoinItem.code
         )
-
-        val toCoinCode: String? = viewModel
-            .coinItemList
-            .firstOrNull { it.code == viewModel.toCoinItem?.code }
-            ?.code
-
-        if (toCoinCode == null) {
-            pickCoinButtonView.isEnabled = false
-        } else {
-            pickCoinButtonView.isEnabled = true
-            val coinType = LocalCoinType.valueOf(toCoinCode)
-            pickCoinButtonView.setText(coinType.fullName)
-            pickCoinButtonView.setResizedDrawableStart(
-                coinType.resIcon(),
-                R.drawable.ic_arrow_drop_down
-            )
-            balanceCoinToView.text = getString(R.string.text_text, "0.0", coinType.name)
-            amountCoinToView.text = getString(R.string.text_usd, "0.0")
-        }
+        initToCoinView()
     }
 
     override fun initListeners() {
         pickCoinButtonView.editText?.keyListener = null
         pickCoinButtonView.editText?.setOnClickListener {
             val itemList: List<LocalCoinType> = viewModel
-                .coinItemList
+                .toCoinItemList
                 .filter { it.code != viewModel.fromCoinItem.code }
                 .map { LocalCoinType.valueOf(it.code) }
             val coinAdapter = CoinDialogAdapter(pickCoinButtonView.context, itemList)
@@ -118,7 +88,7 @@ class ExchangeFragment : BaseFragment() {
                         selectedItem.name
                     )
                     viewModel.toCoinItem =
-                        viewModel.coinItemList.find { it.code == selectedItem.name }
+                        viewModel.toCoinItemList.find { it.code == selectedItem.name }
                     amountCoinFromView?.editText?.setText(amountCoinFromView.getString())
                 }
                 .create()
@@ -141,6 +111,10 @@ class ExchangeFragment : BaseFragment() {
     }
 
     override fun initObservers() {
+        viewModel.coinDetailsLiveData.listen(
+            success = { initToCoinView() },
+            error = { showSnackBar(R.string.exchange_coin_to_coin_screen_error_coin_details_fetch) }
+        )
         viewModel.exchangeLiveData.listen(
             success = {
                 AlertHelper.showToastShort(requireContext(), R.string.transactions_screen_transaction_created)
@@ -161,6 +135,43 @@ class ExchangeFragment : BaseFragment() {
                     else -> showErrorSomethingWrong()
                 }
             }
+        )
+    }
+
+    private fun initToCoinView() {
+        val toCoinCode: String? = viewModel
+            .toCoinItemList
+            .firstOrNull { it.code == viewModel.toCoinItem?.code }
+            ?.code
+
+        amountCoinToView.hint = getString(
+            R.string.text_amount,
+            viewModel.toCoinItem?.code ?: ""
+        )
+
+        if (toCoinCode == null) {
+            pickCoinButtonView.isEnabled = false
+        } else {
+            pickCoinButtonView.isEnabled = true
+            val coinType = LocalCoinType.valueOf(toCoinCode)
+            pickCoinButtonView.setText(coinType.fullName)
+            pickCoinButtonView.setResizedDrawableStart(
+                coinType.resIcon(),
+                R.drawable.ic_arrow_drop_down
+            )
+            setToCoinValue(amountCoinFromView.getDouble())
+        }
+    }
+
+    private fun setToCoinValue(fromAmount: Double) {
+        amountCoinToView.text = getString(
+            R.string.text_usd,
+            (fromAmount * viewModel.fromCoinItem.priceUsd).toStringCoin()
+        )
+        balanceCoinToView.text = getString(
+            R.string.text_text,
+            viewModel.getCoinToAmount(fromAmount).toStringCoin(),
+            viewModel.toCoinItem?.code ?: ""
         )
     }
 }

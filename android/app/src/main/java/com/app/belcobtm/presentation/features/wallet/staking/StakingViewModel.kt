@@ -10,12 +10,12 @@ import com.app.belcobtm.domain.transaction.item.StakeDetailsDataItem
 import com.app.belcobtm.domain.wallet.LocalCoinType
 import com.app.belcobtm.domain.wallet.interactor.GetCoinByCodeUseCase
 import com.app.belcobtm.domain.wallet.item.CoinDataItem
-import com.app.belcobtm.domain.wallet.item.CoinFeeDataItem
+import com.app.belcobtm.domain.wallet.item.CoinDetailsDataItem
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
 
 class StakingViewModel(
     private val coinDataItem: CoinDataItem,
-    private val coinFeeDataItem: CoinFeeDataItem,
+    private val coinDetailsDataItem: CoinDetailsDataItem,
     private val getCoinByCodeUseCase: GetCoinByCodeUseCase,
     private val stakeCreateUseCase: StakeCreateUseCase,
     private val stakeCancelUseCase: StakeCancelUseCase,
@@ -88,12 +88,12 @@ class StakingViewModel(
     }
 
     fun isNotEnoughETHBalanceForCATM(): Boolean =
-        getCoinByCodeUseCase.invoke(LocalCoinType.ETH.name).balanceCoin < coinFeeDataItem.txFee
+        getCoinByCodeUseCase.invoke(LocalCoinType.ETH.name).balanceCoin < coinDetailsDataItem.txFee
 
     fun getMaxValue(): Double = if (coinDataItem.code == LocalCoinType.CATM.name) {
         coinDataItem.balanceCoin
     } else {
-        0.0.coerceAtLeast(coinDataItem.balanceCoin - coinFeeDataItem.txFee)
+        0.0.coerceAtLeast(coinDataItem.balanceCoin - coinDetailsDataItem.txFee)
     }
 
     fun getUsdPrice(): Double = coinDataItem.priceUsd

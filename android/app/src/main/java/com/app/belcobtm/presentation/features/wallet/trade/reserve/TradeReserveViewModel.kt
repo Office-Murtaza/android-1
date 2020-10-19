@@ -6,14 +6,14 @@ import com.app.belcobtm.domain.transaction.interactor.trade.TradeReserveTransact
 import com.app.belcobtm.domain.transaction.interactor.trade.TradeReserveTransactionCreateUseCase
 import com.app.belcobtm.domain.wallet.LocalCoinType
 import com.app.belcobtm.domain.wallet.item.CoinDataItem
-import com.app.belcobtm.domain.wallet.item.CoinFeeDataItem
+import com.app.belcobtm.domain.wallet.item.CoinDetailsDataItem
 import com.app.belcobtm.presentation.core.item.CoinScreenItem
 import com.app.belcobtm.presentation.core.item.mapToScreenItem
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
 
 class TradeReserveViewModel(
     private val coinDataItem: CoinDataItem,
-    private val feeDataItem: CoinFeeDataItem,
+    private val detailsDataItem: CoinDetailsDataItem,
     private val createTransactionUseCase: TradeReserveTransactionCreateUseCase,
     private val completeTransactionUseCase: TradeReserveTransactionCompleteUseCase
 ) : ViewModel() {
@@ -47,6 +47,6 @@ class TradeReserveViewModel(
     fun getMaxValue(): Double = if (coinDataItem.code == LocalCoinType.CATM.name) {
         coinDataItem.balanceCoin
     } else {
-        0.0.coerceAtLeast(coinDataItem.balanceCoin - feeDataItem.txFee)
+        0.0.coerceAtLeast(coinDataItem.balanceCoin - detailsDataItem.txFee)
     }
 }
