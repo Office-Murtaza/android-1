@@ -1,7 +1,7 @@
 package com.batm.config;
 
 import com.batm.entity.User;
-import com.batm.security.TokenProvider;
+import com.batm.security.JWTTokenProvider;
 import com.batm.service.CoinService;
 import com.batm.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +27,7 @@ import java.util.List;
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
     @Autowired
-    private TokenProvider tokenProvider;
+    private JWTTokenProvider tokenProvider;
 
     @Autowired
     @Lazy

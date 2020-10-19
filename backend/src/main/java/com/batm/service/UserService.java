@@ -9,8 +9,14 @@ import liquibase.util.file.FilenameUtils;
 import org.apache.commons.lang.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
 import javax.transaction.Transactional;
 import java.io.File;
 import java.math.BigDecimal;
@@ -20,7 +26,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
-public class UserService {
+public class UserService implements UserDetailsService {
 
     private static final int TIER_1 = 1;
     private static final int TIER_2 = 2;
@@ -131,7 +137,7 @@ public class UserService {
     }
 
     public Boolean isPhoneExist(Long userId, String phone) {
-        User user = userRep.findOneByPhone(phone);
+        User user = userRep.findOneByPhone(phone).get();
 
         if (user != null && !user.getId().equals(userId)) {
             return true;
@@ -182,7 +188,7 @@ public class UserService {
     }
 
     public User findByPhone(String phone) {
-        return userRep.findOneByPhone(phone);
+        return userRep.findOneByPhone(phone).get();
     }
 
     public GiftAddressDTO getCoinAddressByPhone(CoinService.CoinEnum coinCode, String phone) {
@@ -267,9 +273,9 @@ public class UserService {
             dto.setMessage(ikr.getRejectedMessage());
         }
 
-        if(dto.getStatus() == KycStatus.NOT_VERIFIED) {
+        if (dto.getStatus() == KycStatus.NOT_VERIFIED) {
             dto.setMessage("To increase your limits to 3000$ per transaction and 10000$ per day, please verify your account");
-        } else if(dto.getStatus() == KycStatus.VERIFIED) {
+        } else if (dto.getStatus() == KycStatus.VERIFIED) {
             dto.setMessage("To increase your limits to 10000$ per transaction and 20000$ per day, please VIP verify your account");
         }
 
@@ -535,5 +541,24 @@ public class UserService {
 
     private BigDecimal getLastLimit(List<Limit> limits) {
         return limits.get(limits.size() - 1).getAmount().stripTrailingZeros();
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String phone) throws UsernameNotFoundException {
+        Optional<User> userByPhone = userRep.findOneByPhone(phone);
+
+        if (userByPhone.isPresent()) {
+            return build(userByPhone.get());
+        }
+
+        throw new UsernameNotFoundException("User not found");
+    }
+
+    private org.springframework.security.core.userdetails.User build(User user) {
+        Set<GrantedAuthority> authorities = new HashSet<>();
+        authorities.add(new SimpleGrantedAuthority(user.getRole()));
+
+        return new org.springframework.security.core.userdetails.User(user.getPhone(), user.getPassword(),
+                authorities);
     }
 }
