@@ -17,7 +17,7 @@ extension Error {
       return .notValid
     case let .statusCode(response) where response.statusCode == 409:
       return .conflict
-    case let .statusCode(response) where response.statusCode == 403:
+    case let .statusCode(response) where response.statusCode == 401:
       return .notAuthorized
     case let .statusCode(response) where response.statusCode == 404:
       return .notFound
@@ -38,7 +38,7 @@ extension MoyaError {
       return .notValid
     case let .statusCode(response) where response.statusCode == 409:
       return .conflict
-    case let .statusCode(response) where response.statusCode == 403:
+    case let .statusCode(response) where response.statusCode == 401:
       return .notAuthorized
     case let .statusCode(response) where response.statusCode == 404:
       return .notFound
