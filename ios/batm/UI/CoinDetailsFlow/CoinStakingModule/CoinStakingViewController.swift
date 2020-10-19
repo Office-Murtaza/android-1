@@ -102,7 +102,7 @@ final class CoinStakingViewController: ModuleViewController<CoinStakingPresenter
       .filterNil()
     
     let feeDriver = presenter.state
-      .map { $0.coinSettings?.txFee }
+      .map { $0.coinDetails?.txFee }
     
     Driver.combineLatest(coinBalanceDriver, stakeDetailsDriver)
       .drive(onNext: { [headerView] coinBalance, stakeDetails in

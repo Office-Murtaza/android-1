@@ -19,17 +19,17 @@ class CoinDetailsFlow: BaseFlow<BTMNavigationController, CoinDetailsFlowControll
   }
   
   enum Steps: Step, Equatable {
-    case coinDetails([CoinBalance], CoinSettings, PriceChartData)
+    case coinDetails([CoinBalance], CoinDetails, PriceChartData)
     case transactionDetails(TransactionDetails, CustomCoinType)
     case deposit(BTMCoin)
-    case withdraw(BTMCoin, [CoinBalance], CoinSettings)
-    case sendGift(BTMCoin, [CoinBalance], CoinSettings)
-    case sell(BTMCoin, [CoinBalance], CoinSettings, SellDetails)
+    case withdraw(BTMCoin, [CoinBalance], CoinDetails)
+    case sendGift(BTMCoin, [CoinBalance], CoinDetails)
+    case sell(BTMCoin, [CoinBalance], CoinDetails, SellDetails)
     case sellDetailsForAnotherAddress(SellDetailsForAnotherAddress)
     case sellDetailsForCurrentAddress(SellDetailsForCurrentAddress)
-    case exchange(BTMCoin, [CoinBalance], CoinSettings)
-    case trades(BTMCoin, [CoinBalance], CoinSettings)
-    case staking(BTMCoin, [CoinBalance], CoinSettings, StakeDetails)
+    case exchange(BTMCoin, [CoinBalance], CoinDetails)
+    case trades(BTMCoin, [CoinBalance], CoinDetails)
+    case staking(BTMCoin, [CoinBalance], CoinDetails, StakeDetails)
     case pop(String? = nil)
   }
   
@@ -41,9 +41,9 @@ class CoinDetailsFlow: BaseFlow<BTMNavigationController, CoinDetailsFlowControll
   
   private func handleFlow(step: Steps) -> NextFlowItems {
     switch step {
-    case let .coinDetails(coinBalances, coinSettings, data):
+    case let .coinDetails(coinBalances, coinDetails, data):
       let module = resolver.resolve(Module<CoinDetailsModule>.self)!
-      module.input.setup(coinBalances: coinBalances, coinSettings: coinSettings, data: data)
+      module.input.setup(coinBalances: coinBalances, coinDetails: coinDetails, data: data)
       return push(module.controller)
     case let .transactionDetails(details, type):
       let module = resolver.resolve(Module<TransactionDetailsModule>.self)!
@@ -53,17 +53,17 @@ class CoinDetailsFlow: BaseFlow<BTMNavigationController, CoinDetailsFlowControll
       let module = resolver.resolve(Module<CoinDepositModule>.self)!
       module.input.setup(coin: coin)
       return push(module.controller)
-    case let .withdraw(coin, coinBalances, coinSettings):
+    case let .withdraw(coin, coinBalances, coinDetails):
       let module = resolver.resolve(Module<CoinWithdrawModule>.self)!
-      module.input.setup(coin: coin, coinBalances: coinBalances, coinSettings: coinSettings)
+      module.input.setup(coin: coin, coinBalances: coinBalances, coinDetails: coinDetails)
       return push(module.controller)
-    case let .sendGift(coin, coinBalances, coinSettings):
+    case let .sendGift(coin, coinBalances, coinDetails):
       let module = resolver.resolve(Module<CoinSendGiftModule>.self)!
-      module.input.setup(coin: coin, coinBalances: coinBalances, coinSettings: coinSettings)
+      module.input.setup(coin: coin, coinBalances: coinBalances, coinDetails: coinDetails)
       return push(module.controller)
-    case let .sell(coin, coinBalances, coinSettings, details):
+    case let .sell(coin, coinBalances, coinDetails, details):
       let module = resolver.resolve(Module<CoinSellModule>.self)!
-      module.input.setup(coin: coin, coinBalances: coinBalances, coinSettings: coinSettings, details: details)
+      module.input.setup(coin: coin, coinBalances: coinBalances, coinDetails: coinDetails, details: details)
       return push(module.controller)
     case let .sellDetailsForAnotherAddress(details):
       let module = resolver.resolve(Module<CoinSellDetailsAnotherAddressModule>.self)!
@@ -73,17 +73,17 @@ class CoinDetailsFlow: BaseFlow<BTMNavigationController, CoinDetailsFlowControll
       let module = resolver.resolve(Module<CoinSellDetailsCurrentAddressModule>.self)!
       module.input.setup(with: details)
       return replaceLast(module.controller)
-    case let .exchange(coin, coinBalances, coinSettings):
+    case let .exchange(coin, coinBalances, coinDetails):
       let module = resolver.resolve(Module<CoinExchangeModule>.self)!
-      module.input.setup(coin: coin, coinBalances: coinBalances, coinSettings: coinSettings)
+      module.input.setup(coin: coin, coinBalances: coinBalances, coinDetails: coinDetails)
       return push(module.controller)
-    case let .trades(coin, coinBalances, coinSettings):
+    case let .trades(coin, coinBalances, CoinDetails):
       let flow = TradesFlow(view: view, parent: self)
-      let step = TradesFlow.Steps.trades(coin, coinBalances, coinSettings)
+      let step = TradesFlow.Steps.trades(coin, coinBalances, CoinDetails)
       return next(flow: flow, step: step)
-    case let .staking(coin, coinBalances, coinSettings, stakeDetails):
+    case let .staking(coin, coinBalances, coinDetails, stakeDetails):
       let module = resolver.resolve(Module<CoinStakingModule>.self)!
-      module.input.setup(coin: coin, coinBalances: coinBalances, coinSettings: coinSettings, stakeDetails: stakeDetails)
+      module.input.setup(coin: coin, coinBalances: coinBalances, coinDetails: coinDetails, stakeDetails: stakeDetails)
       return push(module.controller)
     case let .pop(toastMessage):
       toastMessage.flatMap { message in

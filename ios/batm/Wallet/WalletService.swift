@@ -11,7 +11,7 @@ protocol WalletService {
   func createWallet() -> Completable
   func recoverWallet(seedPhrase: String) -> Completable
   func getTransactionHex(for coin: BTMCoin,
-                         with coinSettings: CoinSettings,
+                         with coinDetails: CoinDetails,
                          destination: String,
                          amount: Decimal,
                          stakingType: TransactionType?) -> Single<String>
@@ -46,26 +46,26 @@ class WalletServiceImpl: WalletService {
   }
   
   func getTransactionHex(for coin: BTMCoin,
-                         with coinSettings: CoinSettings,
+                         with coinDetails: CoinDetails,
                          destination: String,
                          amount: Decimal,
                          stakingType: TransactionType? = nil) -> Single<String> {
     switch coin.type {
     case .bitcoin, .bitcoinCash, .litecoin:
-      return getBitcoinLikeTransactionHex(for: coin, with: coinSettings, to: destination, amount: amount)
+      return getBitcoinLikeTransactionHex(for: coin, with: coinDetails, to: destination, amount: amount)
     case .ethereum, .catm:
-      return getEthereumTransactionHex(for: coin, with: coinSettings, to: destination, amount: amount, stakingType: stakingType)
+      return getEthereumTransactionHex(for: coin, with: coinDetails, to: destination, amount: amount, stakingType: stakingType)
     case .tron:
-      return getTronTransactionHex(for: coin, with: coinSettings, to: destination, amount: amount)
+      return getTronTransactionHex(for: coin, with: coinDetails, to: destination, amount: amount)
     case .binance:
       return getBinanceTransactionHex(for: coin, to: destination, amount: amount)
     case .ripple:
-      return getRippleTransactionHex(for: coin, with: coinSettings, to: destination, amount: amount)
+      return getRippleTransactionHex(for: coin, with: coinDetails, to: destination, amount: amount)
     }
   }
   
   func getBitcoinLikeTransactionHex(for coin: BTMCoin,
-                                    with coinSettings: CoinSettings,
+                                    with coinDetails: CoinDetails,
                                     to destination: String,
                                     amount: Decimal) -> Single<String> {
     return walletStorage.get()
@@ -76,7 +76,7 @@ class WalletServiceImpl: WalletService {
       .flatMap { [api] xpub, wallet in
         return api.getUtxos(type: coin.type, xpub: xpub)
           .map { [unowned self] in try self.getBitcoinLikeTransactionHex(coin: coin,
-                                                                         coinSettings: coinSettings,
+                                                                         coinDetails: coinDetails,
                                                                          toAddress: destination,
                                                                          amount: amount,
                                                                          utxos: $0,
@@ -85,7 +85,7 @@ class WalletServiceImpl: WalletService {
   }
   
   private func getBitcoinLikeTransactionHex(coin: BTMCoin,
-                                            coinSettings: CoinSettings,
+                                            coinDetails: CoinDetails,
                                             toAddress: String,
                                             amount: Decimal,
                                             utxos: [Utxo],
@@ -97,7 +97,7 @@ class WalletServiceImpl: WalletService {
     var input = BitcoinSigningInput.with {
       $0.hashType = coin.type.hashType
       $0.amount = amountInUnits
-      $0.byteFee = Int64(coinSettings.byteFee ?? 0)
+      $0.byteFee = Int64(coinDetails.byteFee ?? 0)
       $0.changeAddress = coin.address
       $0.toAddress = toAddress
       $0.coinType = coin.type.defaultCoinType.rawValue
@@ -156,13 +156,13 @@ class WalletServiceImpl: WalletService {
   }
   
   func getEthereumTransactionHex(for coin: BTMCoin,
-                                 with coinSettings: CoinSettings,
+                                 with coinDetails: CoinDetails,
                                  to destination: String,
                                  amount: Decimal,
                                  stakingType: TransactionType? = nil) -> Single<String> {
     return api.getNonce(type: coin.type, address: coin.address)
       .map { [unowned self] in try self.getEthereumTransactionHex(coin: coin,
-                                                                  coinSettings: coinSettings,
+                                                                  coinDetails: coinDetails,
                                                                   toAddress: destination,
                                                                   amount: amount,
                                                                   nonce: $0.nonce,
@@ -170,7 +170,7 @@ class WalletServiceImpl: WalletService {
   }
   
   private func getEthereumTransactionHex(coin: BTMCoin,
-                                         coinSettings: CoinSettings,
+                                         coinDetails: CoinDetails,
                                          toAddress: String,
                                          amount: Decimal,
                                          nonce: Int,
@@ -189,8 +189,8 @@ class WalletServiceImpl: WalletService {
     let dataAmount = Data(hexString: hexAmountInUnits)!
     
     let hexNonce = BInt(nonce).asString(radix: 16).leadingZeros(64)
-    let hexGasLimit = BInt(coinSettings.gasLimit ?? 0).asString(radix: 16).leadingZeros(64)
-    let hexGasPrice = BInt(coinSettings.gasPrice ?? 0).asString(radix: 16).leadingZeros(64)
+    let hexGasLimit = BInt(coinDetails.gasLimit ?? 0).asString(radix: 16).leadingZeros(64)
+    let hexGasPrice = BInt(coinDetails.gasPrice ?? 0).asString(radix: 16).leadingZeros(64)
     
     guard let privateKey = Data(hexString: coin.privateKey) else {
       throw CreateTransactionError.cantCreate
@@ -226,7 +226,7 @@ class WalletServiceImpl: WalletService {
       }
       
       input.payload = EthereumAbi.encode(fn: function)
-      input.toAddress = coinSettings.contractAddress ?? ""
+      input.toAddress = coinDetails.contractAddress ?? ""
     } else {
       input.amount = dataAmount
       input.toAddress = toAddress
@@ -239,19 +239,19 @@ class WalletServiceImpl: WalletService {
   }
   
   func getTronTransactionHex(for coin: BTMCoin,
-                             with coinSettings: CoinSettings,
+                             with coinDetails: CoinDetails,
                              to destination: String,
                              amount: Decimal) -> Single<String> {
     return api.getTronBlockHeader(type: coin.type)
       .map { [unowned self] in try self.getTronTransactionJson(coin: coin,
-                                                               coinSettings: coinSettings,
+                                                               coinDetails: coinDetails,
                                                                toAddress: destination,
                                                                amount: amount,
                                                                blockHeader: $0) }
   }
   
   private func getTronTransactionJson(coin: BTMCoin,
-                                      coinSettings: CoinSettings,
+                                      coinDetails: CoinDetails,
                                       toAddress: String,
                                       amount: Decimal,
                                       blockHeader: BTMTronBlockHeader) throws -> String {
@@ -285,7 +285,7 @@ class WalletServiceImpl: WalletService {
       $0.transfer = transfer
       $0.timestamp = timestamp
       $0.expiration = expiration
-      $0.feeLimit = coin.transactionFee(fee: coinSettings.txFee)
+      $0.feeLimit = coin.transactionFee(fee: coinDetails.txFee)
       $0.blockHeader = blockHeader
     }
     
@@ -355,19 +355,19 @@ class WalletServiceImpl: WalletService {
   }
   
   func getRippleTransactionHex(for coin: BTMCoin,
-                               with coinSettings: CoinSettings,
+                               with coinDetails: CoinDetails,
                                to destination: String,
                                amount: Decimal) -> Single<String> {
     return api.getRippleSequence(type: coin.type, address: coin.address)
       .map { [unowned self] in try self.getRippleTransactionHex(coin: coin,
-                                                                coinSettings: coinSettings,
+                                                                coinDetails: coinDetails,
                                                                 toAddress: destination,
                                                                 amount: amount,
                                                                 sequence: $0.sequence) }
   }
   
   private func getRippleTransactionHex(coin: BTMCoin,
-                                       coinSettings: CoinSettings,
+                                       coinDetails: CoinDetails,
                                        toAddress: String,
                                        amount: Decimal,
                                        sequence: Int) throws -> String {
@@ -383,7 +383,7 @@ class WalletServiceImpl: WalletService {
       $0.account = coin.address
       $0.destination = toAddress
       $0.amount = amountInUnits
-      $0.fee = coin.transactionFee(fee: coinSettings.txFee)
+      $0.fee = coin.transactionFee(fee: coinDetails.txFee)
       $0.sequence = Int32(sequence)
       $0.privateKey = privateKey
     }

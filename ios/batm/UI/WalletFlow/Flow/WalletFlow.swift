@@ -13,7 +13,7 @@ class WalletFlow: BaseFlow<BTMNavigationController, WalletFlowController> {
   enum Steps: Step, Equatable {
     case wallet
     case manageWallets
-    case coinDetails([CoinBalance], CoinSettings, PriceChartData)
+    case coinDetails([CoinBalance], CoinDetails, PriceChartData)
   }
   
   override func route(to step: Step) -> NextFlowItems {
@@ -33,9 +33,9 @@ class WalletFlow: BaseFlow<BTMNavigationController, WalletFlowController> {
     case .manageWallets:
       let module = resolver.resolve(Module<ManageWalletsModule>.self)!
       return push(module.controller)
-    case let .coinDetails(coinBalances, coinSettings, data):
+    case let .coinDetails(coinBalances, coinDetails, data):
       let flow = CoinDetailsFlow(view: view, parent: self)
-      let step = CoinDetailsFlow.Steps.coinDetails(coinBalances, coinSettings, data)
+      let step = CoinDetailsFlow.Steps.coinDetails(coinBalances, coinDetails, data)
       return next(flow: flow, step: step)
     }
   }
