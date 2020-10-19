@@ -56,19 +56,15 @@ class ResponseInterceptor(
                     }
                 }
                 HttpURLConnection.HTTP_NOT_FOUND -> throw Failure.ServerError("Not found")
-                HttpURLConnection.HTTP_FORBIDDEN -> {
+                HttpURLConnection.HTTP_UNAUTHORIZED -> {
                     val refreshResponse = refreshToken(chain)
                     parseAuthResponse(refreshResponse)
                     val newResp = retryWithNewToken(chain, request)
                     if (newResp.code() == HttpURLConnection.HTTP_OK) {
-                        newResp.let {
-                            return proceedSuccessResponce(it)
-                        }
+                        proceedSuccessResponse(newResp)
                     } else {
-                        val isUserUnauthorized =
-                            request.url().encodedPath().equals(REQUEST_REFRESH_PATH, true)
                         val intent = Intent(TAG_USER_AUTHORIZATION)
-                        intent.putExtra(KEY_IS_USER_UNAUTHORIZED, isUserUnauthorized)
+                        intent.putExtra(KEY_IS_USER_UNAUTHORIZED, true)
                         broadcastManager.sendBroadcast(intent)
                         throw Failure.TokenError
                     }
@@ -134,7 +130,7 @@ class ResponseInterceptor(
         )
     }
 
-    private fun proceedSuccessResponce(response: Response): Response {
+    private fun proceedSuccessResponse(response: Response): Response {
         return response.body()?.let {
             val json = it.string()
             when {
@@ -169,7 +165,6 @@ class ResponseInterceptor(
         private const val ERROR_FIELD = "error"
         private const val ERROR_SUB_FIELD = "message"
         private const val ERROR_SUB_FIELD_CODE = "code"
-        private const val REQUEST_REFRESH_PATH = "/api/v1/refresh"
         const val TAG_USER_AUTHORIZATION = "tag_broadcast_user_unauthorized"
         const val KEY_IS_USER_UNAUTHORIZED = "key_is_user_unauthorized"
     }
