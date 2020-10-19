@@ -62,7 +62,7 @@ class ResponseInterceptor(
                     val newResp = retryWithNewToken(chain, request)
                     if (newResp.code() == HttpURLConnection.HTTP_OK) {
                         proceedSuccessResponse(newResp)
-                    } else {
+                    } else if (newResp.code() == HttpURLConnection.HTTP_UNAUTHORIZED) {
                         val intent = Intent(TAG_USER_AUTHORIZATION)
                         intent.putExtra(KEY_IS_USER_UNAUTHORIZED, true)
                         broadcastManager.sendBroadcast(intent)
