@@ -3,7 +3,7 @@ import Foundation
 enum ReserveAction: Equatable {
   case setupCoin(BTMCoin)
   case setupCoinBalances([CoinBalance])
-  case setupCoinSettings(CoinSettings)
+  case setupCoinDetails(CoinDetails)
   case updateCurrencyAmount(String?)
   case updateCoinAmount(String?)
   case updateValidationState
@@ -14,7 +14,7 @@ struct ReserveState: Equatable {
   
   var coin: BTMCoin?
   var coinBalances: [CoinBalance]?
-  var coinSettings: CoinSettings?
+  var coinDetails: CoinDetails?
   var currencyAmount: String = ""
   var coinAmount: String = ""
   var validationState: ValidationState = .unknown
@@ -24,7 +24,7 @@ struct ReserveState: Equatable {
   }
   
   var maxValue: Decimal {
-    guard let type = coin?.type, let balance = coinBalance?.balance, let fee = coinSettings?.txFee else { return 0 }
+    guard let type = coin?.type, let balance = coinBalance?.balance, let fee = coinDetails?.txFee else { return 0 }
     
     if type == .catm {
       return balance
@@ -47,7 +47,7 @@ final class ReserveStore: ViewStore<ReserveAction, ReserveState> {
     switch action {
     case let .setupCoin(coin): state.coin = coin
     case let .setupCoinBalances(coinBalances): state.coinBalances = coinBalances
-    case let .setupCoinSettings(coinSettings): state.coinSettings = coinSettings
+    case let .setupCoinDetails(coinDetails): state.coinDetails = coinDetails
     case let .updateCurrencyAmount(amount):
       let currencyAmount = (amount ?? "").fiatWithdrawFormatted
       let decimalCurrencyAmount = currencyAmount.decimalValue
@@ -88,7 +88,7 @@ final class ReserveStore: ViewStore<ReserveAction, ReserveState> {
       return .invalid(localize(L.CoinWithdraw.Form.Error.tooHighAmount))
     }
     
-    if state.coin?.type == .catm, let fee = state.coinSettings?.txFee {
+    if state.coin?.type == .catm, let fee = state.coinDetails?.txFee {
       let ethBalance = state.coinBalances?.first { $0.type == .ethereum }?.balance ?? 0
       
       if !ethBalance.greaterThanOrEqualTo(fee) {

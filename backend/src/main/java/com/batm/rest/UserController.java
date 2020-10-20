@@ -4,7 +4,7 @@ import com.batm.dto.*;
 import com.batm.entity.*;
 import com.batm.model.Response;
 import com.batm.repository.TokenRep;
-import com.batm.security.TokenProvider;
+import com.batm.security.JWTTokenProvider;
 import com.batm.service.CoinService;
 import com.batm.service.TwilioService;
 import com.batm.service.TransactionService;
@@ -39,7 +39,7 @@ public class UserController {
     private Long verificationCodeValidity;
 
     @Autowired
-    private TokenProvider tokenProvider;
+    private JWTTokenProvider tokenProvider;
 
     @Autowired
     private AuthenticationManager authenticationManager;

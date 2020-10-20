@@ -21,7 +21,7 @@ import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 
 @Component
-public class TokenProvider implements InitializingBean {
+public class JWTTokenProvider implements InitializingBean {
 
     @Value("${security.jwt.base64-secret}")
     private String base64Secret;

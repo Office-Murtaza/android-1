@@ -29,10 +29,10 @@ final class CoinExchangePresenter: ModulePresenter, CoinExchangeModule {
     self.store = store
   }
   
-  func setup(coin: BTMCoin, coinBalances: [CoinBalance], coinSettings: CoinSettings) {
+  func setup(coin: BTMCoin, coinBalances: [CoinBalance], coinDetails: CoinDetails) {
     store.action.accept(.setupCoin(coin))
     store.action.accept(.setupCoinBalances(coinBalances))
-    store.action.accept(.setupCoinSettings(coinSettings))
+    store.action.accept(.setupCoinDetails(coinDetails))
   }
 
   func bind(input: Input) {
@@ -66,7 +66,7 @@ final class CoinExchangePresenter: ModulePresenter, CoinExchangeModule {
   
   private func exchange(for state: CoinExchangeState) -> Completable {
     return usecase.exchange(from: state.fromCoin!,
-                                with: state.coinSettings!,
+                                with: state.coinDetails!,
                                 to: state.toCoinType!,
                                 amount: state.fromCoinAmount.decimalValue ?? 0.0,
                                 toCoinAmount: state.toCoinAmount.decimalValue ?? 0.0)

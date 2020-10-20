@@ -84,7 +84,7 @@ final class CoinSendGiftViewController: ModuleViewController<CoinSendGiftPresent
       .filterNil()
     
     let feeDriver = presenter.state
-      .map { $0.coinSettings?.txFee }
+      .map { $0.coinDetails?.txFee }
     
     Driver.combineLatest(coinTypeDriver, feeDriver)
       .drive(onNext: { [formView] in formView.configure(coinType: $0, fee: $1) })

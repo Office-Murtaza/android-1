@@ -30,10 +30,10 @@ final class CoinSendGiftPresenter: ModulePresenter, CoinSendGiftModule {
     self.store = store
   }
   
-  func setup(coin: BTMCoin, coinBalances: [CoinBalance], coinSettings: CoinSettings) {
+  func setup(coin: BTMCoin, coinBalances: [CoinBalance], coinDetails: CoinDetails) {
     store.action.accept(.setupCoin(coin))
     store.action.accept(.setupCoinBalances(coinBalances))
-    store.action.accept(.setupCoinSettings(coinSettings))
+    store.action.accept(.setupCoinDetails(coinDetails))
   }
 
   func bind(input: Input) {
@@ -81,7 +81,7 @@ final class CoinSendGiftPresenter: ModulePresenter, CoinSendGiftModule {
   
   private func sendGift(for state: CoinSendGiftState) -> Completable {
     return usecase.sendGift(from: state.coin!,
-                                with: state.coinSettings!,
+                                with: state.coinDetails!,
                                 to: state.phoneE164,
                                 amount: state.coinAmount.decimalValue ?? 0.0,
                                 message: state.message,

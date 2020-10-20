@@ -3,7 +3,7 @@ import Foundation
 enum RecallAction: Equatable {
   case setupCoin(BTMCoin)
   case setupCoinBalances([CoinBalance])
-  case setupCoinSettings(CoinSettings)
+  case setupCoinDetails(CoinDetails)
   case updateCurrencyAmount(String?)
   case updateCoinAmount(String?)
   case updateValidationState
@@ -14,7 +14,7 @@ struct RecallState: Equatable {
   
   var coin: BTMCoin?
   var coinBalances: [CoinBalance]?
-  var coinSettings: CoinSettings?
+  var coinDetails: CoinDetails?
   var currencyAmount: String = ""
   var coinAmount: String = ""
   var validationState: ValidationState = .unknown
@@ -28,7 +28,7 @@ struct RecallState: Equatable {
   }
   
   var fee: Decimal {
-    return coinSettings?.recallFee ?? coinSettings?.txFee ?? 0
+    return coinDetails?.recallFee ?? coinDetails?.txFee ?? 0
   }
   
   var maxValue: Decimal {
@@ -49,7 +49,7 @@ final class RecallStore: ViewStore<RecallAction, RecallState> {
     switch action {
     case let .setupCoin(coin): state.coin = coin
     case let .setupCoinBalances(coinBalances): state.coinBalances = coinBalances
-    case let .setupCoinSettings(coinSettings): state.coinSettings = coinSettings
+    case let .setupCoinDetails(coinDetails): state.coinDetails = coinDetails
     case let .updateCurrencyAmount(amount):
       let currencyAmount = (amount ?? "").fiatWithdrawFormatted
       let decimalCurrencyAmount = currencyAmount.decimalValue
