@@ -25,7 +25,10 @@ jobs:
         run: bash ./gradlew assembleDebug 
         working-directory: ${{ env.working-directory }}
         
-      - name: Distribute to Firebase
-        run: bash export FIREBASE_TOKEN=1//0c6viHtVMDtEoCgYIARAAGAwSNwF-L9IrR1xmTnIQONgpfI9xiLAOV61mxhIG3YMGZtVuv_nsBcEH1CQrjNDK2Z-KZpHX1Yh5OJM
-             | bash ./gradlew --stop
-             | bash ./gradlew assembleDebug appDistributionUploadDevDebug
+      - name: upload artifact to Firebase App Distribution
+        uses: wzieba/Firebase-Distribution-Github-Action@v1
+        with:
+          appId: "1:747193228705:android:6c7b104fe4e0182c1fbfe0"
+          token: "1//0c6viHtVMDtEoCgYIARAAGAwSNwF-L9IrR1xmTnIQONgpfI9xiLAOV61mxhIG3YMGZtVuv_nsBcEH1CQrjNDK2Z-KZpHX1Yh5OJM"
+          file: ${{ env.working-directory }}/app/build/outputs/apk/dev/debug/app-dev-debug.apk
+        
