@@ -41,13 +41,11 @@ android {
     flavorDimensions "version"
     productFlavors {
         prod {
-            applicationId "com.app.belcobtm"
             dimension "version"
             buildConfigField 'String', 'BASE_URL', "\"https://prod.belcobtm.com\""
             buildConfigField 'String', 'API_VERSION', "\"1\""
         }
         dev {
-            applicationId "com.app.belcobtm.dev"
             dimension "version"
             buildConfigField 'String', 'BASE_URL', "\"http://test.belcobtm.com\""
             buildConfigField 'String', 'API_VERSION', "\"1\""
