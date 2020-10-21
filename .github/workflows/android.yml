@@ -21,7 +21,11 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: 1.8
-      - name: Build Debug APKs
-        run: bash ./gradlew assembleDebug appDistributionUploadDevDebug
+      - name: Build Debug
+        run: bash ./gradlew assembleDebug 
         working-directory: ${{ env.working-directory }}
         
+      - name: Distribute to Firebase
+        run: bash export FIREBASE_TOKEN=1//0c6viHtVMDtEoCgYIARAAGAwSNwF-L9IrR1xmTnIQONgpfI9xiLAOV61mxhIG3YMGZtVuv_nsBcEH1CQrjNDK2Z-KZpHX1Yh5OJM
+             | bash ./gradlew --stop
+             | bash ./gradlew assembleDebug appDistributionUploadDevDebug
