@@ -3,34 +3,34 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>1081646718412-r4oln7hkeec1ag961mrp7lci68em4ms9.apps.googleusercontent.com</string>
+	<string>747193228705-nef7b0j6lophhjmistm0qi8mhqli0qc2.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.1081646718412-r4oln7hkeec1ag961mrp7lci68em4ms9</string>
+	<string>com.googleusercontent.apps.747193228705-nef7b0j6lophhjmistm0qi8mhqli0qc2</string>
 	<key>API_KEY</key>
-	<string>AIzaSyAZ4aqw5Hzh0EU8Axf6o1d3zGjHJgVwMJE</string>
+	<string>AIzaSyBq5JbmQKCSWm9odSqmW7O2ajMMWBzqlek</string>
 	<key>GCM_SENDER_ID</key>
-	<string>1081646718412</string>
+	<string>747193228705</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
 	<string>com.belcobtm.BelcoWallet</string>
 	<key>PROJECT_ID</key>
-	<string>belcobatm</string>
+	<string>belco-test</string>
 	<key>STORAGE_BUCKET</key>
-	<string>belcobatm.appspot.com</string>
+	<string>belco-test.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
-	<false/>
+	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
-	<false/>
+	<false></false>
 	<key>IS_APPINVITE_ENABLED</key>
-	<true/>
+	<true></true>
 	<key>IS_GCM_ENABLED</key>
-	<true/>
+	<true></true>
 	<key>IS_SIGNIN_ENABLED</key>
-	<true/>
+	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:1081646718412:ios:93ef07da16c24f5eef9169</string>
+	<string>1:747193228705:ios:415c267e62830bfc1fbfe0</string>
 	<key>DATABASE_URL</key>
-	<string>https://belcobatm.firebaseio.com</string>
+	<string>https://belco-test.firebaseio.com</string>
 </dict>
 </plist>
