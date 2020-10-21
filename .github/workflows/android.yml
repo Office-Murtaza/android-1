@@ -25,12 +25,9 @@ jobs:
         run: bash ./gradlew assembleDebug 
         working-directory: ${{ env.working-directory }}
         
-      - name: Export GOOGLE_APPLICATION_CREDENTIALS path 
+      - name: Upload artifact to Firebase App Distribution
         env: 
           GOOGLE_APPLICATION_CREDENTIALS: /app/dest-service-acc.json
-        working-directory: ${{ env.working-directory }}
-        
-      - name: Upload artifact to Firebase App Distribution
         run: bash ./gradlew assembleDebug appDistributionUploadDevDebug
         working-directory: ${{ env.working-directory }}
         
