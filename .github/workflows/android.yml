@@ -25,5 +25,5 @@ jobs:
       - name: Upload artifact to Firebase App Distribution
         env: 
           GOOGLE_APPLICATION_CREDENTIALS: /home/runner/work/belcobtm/belcobtm/android/app/dest-service-acc.json
-        run: bash ./gradlew :app:appDistributionUploadDevDebug -groups=testers
+        run: bash ./gradlew :app:assembleDevDebug :app:appDistributionUploadDevDebug -groups=testers
         working-directory: ${{ env.working-directory }}
