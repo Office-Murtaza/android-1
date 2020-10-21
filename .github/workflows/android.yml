@@ -22,6 +22,6 @@ jobs:
         with:
           java-version: 1.8
       - name: Build Debug APKs
-        run: bash ./gradlew assembleDebug appDistributionUploadDebug
+        run: bash ./gradlew assembleDebug appDistributionUploadDevDebug
         working-directory: ${{ env.working-directory }}
         
