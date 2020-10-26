@@ -20,6 +20,10 @@ import org.springframework.messaging.support.MessageHeaderAccessor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.socket.config.annotation.*;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 @Configuration
@@ -87,11 +91,14 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
                     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
                     String name = authentication == null ? accessor.getUser().getName() : authentication.getName();
 
+                    List<String> coinsHeader = accessor.getNativeHeader("coins");
+                    List<String> coins = new ArrayList<>(Arrays.asList(coinsHeader.get(0).split("\\s*,\\s*")));
+
                     System.out.println(" ---- SUBSCRIBE: " + name);
 
-                    User user = userService.findByPhone(name);
-                    CoinService.wsMap.put(authentication.getName(), user.getId());
-                    coinService.sendStompBalance(authentication.getName(), user.getId());
+                    User user = userService.findByPhone(name).get();
+                    CoinService.wsMap.put(authentication.getName(), Collections.singletonMap(user.getId(), coins));
+                    coinService.sendStompBalance(authentication.getName(), user.getId(), coins);
                 } else if (StompCommand.DISCONNECT.equals(accessor.getCommand()) || StompCommand.UNSUBSCRIBE.equals(accessor.getCommand())) {
                     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
                     String name = authentication == null ? accessor.getUser().getName() : authentication.getName();

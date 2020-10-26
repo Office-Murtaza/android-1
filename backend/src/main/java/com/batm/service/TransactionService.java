@@ -148,7 +148,7 @@ public class TransactionService {
     public void saveGift(Long userId, CoinService.CoinEnum coinCode, String txId, SubmitTransactionDTO dto) {
         try {
             User user = userService.findById(userId);
-            User receiver = userService.findByPhone(dto.getPhone());
+            Optional<User> receiverOpt = userService.findByPhone(dto.getPhone());
             Coin coin = userService.getUserCoin(userId, coinCode.name()).getCoin();
 
             if (BooleanUtils.isTrue(dto.getFromServerWallet())) {
@@ -161,14 +161,13 @@ public class TransactionService {
                 record.setMessage(dto.getMessage());
                 record.setImageId(dto.getImageId());
                 record.setReceiverStatus(TransactionRecordWallet.RECEIVER_EXIST);
-                record.setIdentity(receiver.getIdentity());
+                record.setIdentity(receiverOpt.get().getIdentity());
                 record.setCoin(coin);
                 record.setAmount(dto.getCryptoAmount());
 
                 walletRep.save(record);
             } else {
-                boolean receiverExists = receiver != null;
-                twilioService.sendGiftMessage(coinCode, dto, receiverExists);
+                twilioService.sendGiftMessage(coinCode, dto, receiverOpt.isPresent());
 
                 TransactionRecordWallet sendRecord = new TransactionRecordWallet();
                 sendRecord.setTxId(txId);
@@ -179,14 +178,14 @@ public class TransactionService {
                 sendRecord.setToPhone(dto.getPhone());
                 sendRecord.setMessage(dto.getMessage());
                 sendRecord.setImageId(dto.getImageId());
-                sendRecord.setReceiverStatus(receiverExists ? TransactionRecordWallet.RECEIVER_EXIST : TransactionRecordWallet.RECEIVER_NOT_EXIST);
+                sendRecord.setReceiverStatus(receiverOpt.isPresent() ? TransactionRecordWallet.RECEIVER_EXIST : TransactionRecordWallet.RECEIVER_NOT_EXIST);
                 sendRecord.setIdentity(user.getIdentity());
                 sendRecord.setCoin(coin);
                 sendRecord.setRefTxId(dto.getRefTxId());
 
                 walletRep.save(sendRecord);
 
-                if (receiverExists) {
+                if (receiverOpt.isPresent()) {
                     TransactionRecordWallet receiveRecord = new TransactionRecordWallet();
                     receiveRecord.setTxId(sendRecord.getTxId());
                     receiveRecord.setType(TransactionType.RECEIVE_GIFT.getValue());
@@ -196,7 +195,7 @@ public class TransactionService {
                     receiveRecord.setMessage(sendRecord.getMessage());
                     receiveRecord.setImageId(sendRecord.getImageId());
                     receiveRecord.setReceiverStatus(TransactionRecordWallet.RECEIVER_EXIST);
-                    receiveRecord.setIdentity(receiver.getIdentity());
+                    receiveRecord.setIdentity(receiverOpt.get().getIdentity());
                     receiveRecord.setCoin(sendRecord.getCoin());
                     receiveRecord.setAmount(sendRecord.getAmount());
 
@@ -617,16 +616,16 @@ public class TransactionService {
 
             list.stream().forEach(t -> {
                 try {
-                    User receiver = userService.findByPhone(t.getToPhone());
+                    Optional<User> receiverOpt = userService.findByPhone(t.getToPhone());
 
-                    if (receiver != null) {
+                    if (receiverOpt.isPresent()) {
                         CoinService.CoinEnum coinCode = CoinService.CoinEnum.valueOf(t.getCoin().getCode());
                         BigDecimal txFee = coinCode == CoinService.CoinEnum.CATM ? coinCode.getCoinEntity().getRecallFee() : coinCode.getTxFee();
                         BigDecimal withdrawAmount = t.getAmount().subtract(txFee);
 
                         if (walletService.isEnoughBalance(coinCode, t.getAmount())) {
                             String fromAddress = coinCode.getWalletAddress();
-                            String toAddress = userService.getUserCoin(receiver.getId(), t.getCoin().getCode()).getAddress();
+                            String toAddress = userService.getUserCoin(receiverOpt.get().getId(), t.getCoin().getCode()).getAddress();
                             String hex = coinCode.sign(fromAddress, toAddress, withdrawAmount);
 
                             SubmitTransactionDTO dto = new SubmitTransactionDTO();

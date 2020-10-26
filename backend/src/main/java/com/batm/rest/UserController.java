@@ -24,7 +24,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -34,9 +36,6 @@ public class UserController {
 
     @Value("${security.jwt.access-token-duration}")
     private Long tokenDuration;
-
-    @Value("${security.verification.code-validity}")
-    private Long verificationCodeValidity;
 
     @Autowired
     private JWTTokenProvider tokenProvider;
@@ -66,10 +65,10 @@ public class UserController {
     public Response check(@RequestBody CheckDTO dto) {
         try {
             CheckResponseDTO res = new CheckResponseDTO();
-            User user = userService.findByPhone(dto.getPhone());
+            Optional<User> userOpt = userService.findByPhone(dto.getPhone());
 
-            res.setPhoneExist(user != null);
-            res.setPasswordMatch(user != null && passwordEncoder.matches(dto.getPassword(), user.getPassword()));
+            res.setPhoneExist(userOpt.isPresent());
+            res.setPasswordMatch(userOpt.isPresent() && passwordEncoder.matches(dto.getPassword(), userOpt.get().getPassword()));
 
             return Response.ok(res);
         } catch (Exception e) {
@@ -110,9 +109,9 @@ public class UserController {
                 return Response.error(3, "Some coin is missed");
             }
 
-            User existingUser = userService.findByPhone(dto.getPhone());
+            Optional<User> userOpt = userService.findByPhone(dto.getPhone());
 
-            if (existingUser != null) {
+            if (userOpt.isPresent()) {
                 return Response.error(4, "Phone is already used");
             }
 
@@ -149,10 +148,12 @@ public class UserController {
                 return Response.error(3, "Some coin is missed");
             }
 
-            User user = userService.findByPhone(dto.getPhone());
-            if (user == null) {
+            Optional<User> userOpt = userService.findByPhone(dto.getPhone());
+            if (!userOpt.isPresent()) {
                 return Response.error(4, "Phone doesn't exist");
             }
+
+            User user = userOpt.get();
 
             boolean isPasswordMatch = passwordEncoder.matches(dto.getPassword(), user.getPassword());
             if (!isPasswordMatch) {

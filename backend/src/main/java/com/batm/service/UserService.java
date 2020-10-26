@@ -187,15 +187,15 @@ public class UserService implements UserDetailsService {
         return userCoinRep.findByUserIdAndCoinCode(userId, coinCode);
     }
 
-    public User findByPhone(String phone) {
-        return userRep.findOneByPhone(phone).get();
+    public Optional<User> findByPhone(String phone) {
+        return userRep.findOneByPhone(phone);
     }
 
     public GiftAddressDTO getCoinAddressByPhone(CoinService.CoinEnum coinCode, String phone) {
-        User user = findByPhone(phone);
+        Optional<User> userOpt = findByPhone(phone);
 
-        if (user != null) {
-            String address = user.getUserCoins().stream()
+        if (userOpt.isPresent()) {
+            String address = userOpt.get().getUserCoins().stream()
                     .filter(k -> k.getCoin().getCode().equalsIgnoreCase(coinCode.name()))
                     .findFirst().get().getAddress();
 
