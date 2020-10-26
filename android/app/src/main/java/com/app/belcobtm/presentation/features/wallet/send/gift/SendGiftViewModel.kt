@@ -37,6 +37,8 @@ class SendGiftViewModel(
         )
     }
 
+    fun getMinValue(): Double = getTransactionFee()
+
     fun getMaxValue(): Double = when (getCoinCode()) {
         LocalCoinType.CATM.name -> getCoinBalance()
         LocalCoinType.XRP.name -> max(0.0, getCoinBalance() - getTransactionFee() - 20)

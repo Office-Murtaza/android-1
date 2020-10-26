@@ -144,10 +144,24 @@
             android:gravity="end"
             android:textSize="16sp"
             android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@id/spaceView"
+            app:layout_constraintBottom_toTopOf="@id/coinToErrorMessageView"
             app:layout_constraintStart_toStartOf="@id/pickCoinButtonView"
             app:layout_constraintEnd_toEndOf="@id/pickCoinButtonView"
             app:layout_constraintTop_toBottomOf="@id/pickCoinButtonView" />
+
+        <TextView
+            android:id="@+id/coinToErrorMessageView"
+            style="@style/TextAppearance.Design.Error"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="end"
+            android:visibility="gone"
+            app:layout_constraintBottom_toTopOf="@id/spaceView"
+            app:layout_constraintStart_toStartOf="@id/pickCoinButtonView"
+            app:layout_constraintEnd_toEndOf="@id/pickCoinButtonView"
+            app:layout_constraintTop_toBottomOf="@id/balanceCoinToView"
+            tools:visibility="visible"
+            tools:text="@string/balance_amount_too_small"/>
 
         <Space
             android:id="@+id/spaceView"
@@ -155,7 +169,7 @@
             android:layout_height="0dp"
             app:layout_constraintBottom_toTopOf="@id/nextButtonView"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/balanceCoinToView" />
+            app:layout_constraintTop_toBottomOf="@id/coinToErrorMessageView" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/nextButtonView"
