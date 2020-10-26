@@ -120,7 +120,12 @@ final class AppAssembly: Assembly {
       }.inObjectScope(.container)
     container.register(LogoutUsecase.self) { ioc in
       let registry = ioc.resolve(LogoutStorageRegistry.self)!
-      return LogoutUsecaseImpl(storageRegistry: registry)
+      let apiUrl = ioc.resolve(URL.self, name: Keys.apiUrl.rawValue)!
+      let networkService = ioc.resolve(NetworkService.self, argument: apiUrl)!
+      let accountService = ioc.resolve(AccountStorage.self)!
+      return LogoutUsecaseImpl(storageRegistry: registry,
+                               networkService: networkService,
+                               accountStorage: accountService)
       }
       .inObjectScope(.container)
     container.register(WalletUsecase.self) { ioc in
