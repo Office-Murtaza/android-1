@@ -29,10 +29,10 @@ final class RecallPresenter: ModulePresenter, RecallModule {
     self.store = store
   }
   
-  func setup(coin: BTMCoin, coinBalances: [CoinBalance], coinSettings: CoinSettings) {
+  func setup(coin: BTMCoin, coinBalances: [CoinBalance], coinDetails: CoinDetails) {
     store.action.accept(.setupCoin(coin))
     store.action.accept(.setupCoinBalances(coinBalances))
-    store.action.accept(.setupCoinSettings(coinSettings))
+    store.action.accept(.setupCoinDetails(coinDetails))
   }
 
   func bind(input: Input) {

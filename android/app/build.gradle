@@ -23,6 +23,11 @@ android {
         vectorDrawables.useSupportLibrary = true
     }
     buildTypes {
+        debug {
+            firebaseAppDistribution {
+                groups="testers"
+            }
+        }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
@@ -41,13 +46,11 @@ android {
     flavorDimensions "version"
     productFlavors {
         prod {
-            applicationId "com.app.belcobtm"
             dimension "version"
             buildConfigField 'String', 'BASE_URL', "\"https://prod.belcobtm.com\""
             buildConfigField 'String', 'API_VERSION', "\"1\""
         }
         dev {
-            applicationId "com.app.belcobtm.dev"
             dimension "version"
             buildConfigField 'String', 'BASE_URL', "\"http://test.belcobtm.com\""
             buildConfigField 'String', 'API_VERSION', "\"1\""

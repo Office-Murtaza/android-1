@@ -5,14 +5,14 @@ import androidx.lifecycle.ViewModel
 import com.app.belcobtm.domain.transaction.interactor.trade.TradeRecallTransactionCompleteUseCase
 import com.app.belcobtm.domain.transaction.interactor.trade.TradeRecallTransactionCreateUseCase
 import com.app.belcobtm.domain.wallet.item.CoinDataItem
-import com.app.belcobtm.domain.wallet.item.CoinFeeDataItem
+import com.app.belcobtm.domain.wallet.item.CoinDetailsDataItem
 import com.app.belcobtm.presentation.core.item.CoinScreenItem
 import com.app.belcobtm.presentation.core.item.mapToScreenItem
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
 
 class TradeRecallViewModel(
     private val coinDataItem: CoinDataItem,
-    private val feeDataItem: CoinFeeDataItem,
+    private val detailsDataItem: CoinDetailsDataItem,
     private val createTransactionUseCase: TradeRecallTransactionCreateUseCase,
     private val completeTransactionUseCase: TradeRecallTransactionCompleteUseCase
 ) : ViewModel() {
@@ -40,8 +40,8 @@ class TradeRecallViewModel(
     }
 
     fun getMaxValue(): Double =
-        0.0.coerceAtLeast(coinDataItem.reservedBalanceCoin - (feeDataItem.recallFee ?: feeDataItem.txFee))
+        0.0.coerceAtLeast(coinDataItem.reservedBalanceCoin - (detailsDataItem.recallFee ?: detailsDataItem.txFee))
 
     fun isEnoughReservedAmount(): Boolean =
-        coinDataItem.reservedBalanceCoin > feeDataItem.recallFee ?: feeDataItem.txFee
+        coinDataItem.reservedBalanceCoin > detailsDataItem.recallFee ?: detailsDataItem.txFee
 }

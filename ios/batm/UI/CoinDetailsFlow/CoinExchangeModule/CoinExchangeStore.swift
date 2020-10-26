@@ -9,7 +9,7 @@ enum ExchangePickerOption {
 enum CoinExchangeAction: Equatable {
   case setupCoin(BTMCoin)
   case setupCoinBalances([CoinBalance])
-  case setupCoinSettings(CoinSettings)
+  case setupCoinDetails(CoinDetails)
   case updateFromCoinAmount(String?)
   case updateToCoinType(CustomCoinType)
   case updateFromCoinAmountError(String?)
@@ -22,7 +22,7 @@ struct CoinExchangeState: Equatable {
   var fromCoin: BTMCoin?
   var toCoinType: CustomCoinType?
   var coinBalances: [CoinBalance]?
-  var coinSettings: CoinSettings?
+  var coinDetails: CoinDetails?
   var fromCoinAmount: String = ""
   var fromCoinAmountError: String?
   var toCoinTypeError: String?
@@ -41,16 +41,16 @@ struct CoinExchangeState: Equatable {
     guard
       let fromCoinAmountDecimal = fromCoinAmount.decimalValue,
       let fromCoinPrice = fromCoinBalance?.price, let toCoinPrice = toCoinBalance?.price,
-      let profitExchange = coinSettings?.profitExchange
+      let profitExchange = coinDetails?.profitExchange
     else {
       return 0.0.coinFormatted.withCoinType(toCoinType)
     }
     let toCoinAmountDecimal = fromCoinAmountDecimal * fromCoinPrice / toCoinPrice * (100 - profitExchange) / 100
-    return toCoinAmountDecimal.coinFormatted(fractionDigits: coinSettings?.scale).withCoinType(toCoinType)
+    return toCoinAmountDecimal.coinFormatted(fractionDigits: coinDetails?.scale).withCoinType(toCoinType)
   }
   
   var maxValue: Decimal {
-    guard let type = fromCoin?.type, let balance = fromCoinBalance?.balance, let fee = coinSettings?.txFee else { return 0 }
+    guard let type = fromCoin?.type, let balance = fromCoinBalance?.balance, let fee = coinDetails?.txFee else { return 0 }
     
     switch type {
     case .catm:
@@ -96,7 +96,7 @@ final class CoinExchangeStore: ViewStore<CoinExchangeAction, CoinExchangeState> 
     case let .setupCoinBalances(coinBalances):
       state.coinBalances = coinBalances
       state.toCoinType = coinBalances.first(where: { $0.type != state.fromCoin?.type })?.type
-    case let .setupCoinSettings(coinSettings): state.coinSettings = coinSettings
+    case let .setupCoinDetails(coinDetails): state.coinDetails = coinDetails
     case let .updateFromCoinAmount(amount):
       state.fromCoinAmount = (amount ?? "").coinWithdrawFormatted
       state.fromCoinAmountError = nil
@@ -133,7 +133,7 @@ final class CoinExchangeStore: ViewStore<CoinExchangeAction, CoinExchangeState> 
     } else {
       state.fromCoinAmountError = nil
       
-      if state.fromCoin?.type == .catm, let fee = state.coinSettings?.txFee {
+      if state.fromCoin?.type == .catm, let fee = state.coinDetails?.txFee {
         let ethBalance = state.coinBalances?.first { $0.type == .ethereum }?.balance ?? 0
         
         if !ethBalance.greaterThanOrEqualTo(fee) {

@@ -23,7 +23,7 @@ val useCaseModule = module {
     single { SendVerificationBlankUseCase(get()) }
     single { GetVerificationCountryListUseCase(get()) }
     single { SendVerificationVipUseCase(get()) }
-    single { GetCoinFeeMapUseCase(get()) }
+    single { GetCoinDetailsMapUseCase(get()) }
     single { ExchangeUseCase(get()) }
     single { CreateTransactionUseCase(get()) }
     single { SendGiftTransactionCreateUseCase(get()) }
@@ -44,7 +44,7 @@ val useCaseModule = module {
     single { GetBalanceUseCase(get()) }
     single { GetChartsUseCase(get()) }
     single { GetTransactionListUseCase(get()) }
-    single { UpdateCoinFeeUseCase(get()) }
+    single { UpdateCoinDetailsUseCase(get()) }
     single { WithdrawUseCase(get()) }
     single { GetCoinByCodeUseCase(get()) }
     single { TradeRecallTransactionCompleteUseCase(get()) }

@@ -3,10 +3,9 @@ package com.app.belcobtm.presentation.features.wallet.transactions
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.app.belcobtm.domain.transaction.interactor.GetTransactionListUseCase
-import com.app.belcobtm.domain.wallet.LocalCoinType
 import com.app.belcobtm.domain.wallet.interactor.GetChartsUseCase
-import com.app.belcobtm.domain.wallet.interactor.UpdateCoinFeeUseCase
-import com.app.belcobtm.domain.wallet.item.CoinFeeDataItem
+import com.app.belcobtm.domain.wallet.interactor.UpdateCoinDetailsUseCase
+import com.app.belcobtm.domain.wallet.item.CoinDetailsDataItem
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
 import com.app.belcobtm.presentation.features.wallet.transactions.item.TransactionsAdapterItem
 import com.app.belcobtm.presentation.features.wallet.transactions.item.TransactionsScreenItem
@@ -16,10 +15,10 @@ class TransactionsViewModel(
     val coinCode: String,
     private val chartUseCase: GetChartsUseCase,
     private val transactionListUseCase: GetTransactionListUseCase,
-    private val updateCoinFeeUseCase: UpdateCoinFeeUseCase
+    private val updateCoinDetailsUseCase: UpdateCoinDetailsUseCase
 ) : ViewModel() {
     val chartLiveData: MutableLiveData<TransactionsScreenItem> = MutableLiveData()
-    val feeLiveData: MutableLiveData<LoadingData<CoinFeeDataItem>> = MutableLiveData()
+    val detailsLiveData: MutableLiveData<LoadingData<CoinDetailsDataItem>> = MutableLiveData()
     val transactionListLiveData: MutableLiveData<List<TransactionsAdapterItem>> = MutableLiveData()
     var currentChartPeriodType = ChartPeriodType.DAY
     var totalTransactionListSize: Int = 0
@@ -29,7 +28,7 @@ class TransactionsViewModel(
     }
 
     fun updateData() {
-        feeLiveData.value = LoadingData.Loading()
+        detailsLiveData.value = LoadingData.Loading()
         chartUseCase.invoke(
             params = GetChartsUseCase.Params(coinCode),
             onSuccess = { dataItem ->
@@ -45,10 +44,10 @@ class TransactionsViewModel(
             },
             onError = { it.printStackTrace() }
         )
-        updateCoinFeeUseCase.invoke(
-            params = UpdateCoinFeeUseCase.Params(coinCode),
-            onSuccess = { feeLiveData.value = LoadingData.Success(it) },
-            onError = { feeLiveData.value = LoadingData.Error(it) }
+        updateCoinDetailsUseCase.invoke(
+            params = UpdateCoinDetailsUseCase.Params(coinCode),
+            onSuccess = { detailsLiveData.value = LoadingData.Success(it) },
+            onError = { detailsLiveData.value = LoadingData.Error(it) }
         )
         refreshTransactionList()
     }

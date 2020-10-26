@@ -3,7 +3,7 @@ import Foundation
 enum CoinWithdrawAction: Equatable {
   case setupCoin(BTMCoin)
   case setupCoinBalances([CoinBalance])
-  case setupCoinSettings(CoinSettings)
+  case setupCoinDetails(CoinDetails)
   case updateAddress(String?)
   case updateCoinAmount(String?)
   case updateAddressError(String?)
@@ -15,7 +15,7 @@ struct CoinWithdrawState: Equatable {
   
   var coin: BTMCoin?
   var coinBalances: [CoinBalance]?
-  var coinSettings: CoinSettings?
+  var coinDetails: CoinDetails?
   var address: String = ""
   var coinAmount: String = ""
   var addressError: String?
@@ -27,7 +27,7 @@ struct CoinWithdrawState: Equatable {
   }
   
   var maxValue: Decimal {
-    guard let type = coin?.type, let balance = coinBalance?.balance, let fee = coinSettings?.txFee else { return 0 }
+    guard let type = coin?.type, let balance = coinBalance?.balance, let fee = coinDetails?.txFee else { return 0 }
     
     switch type {
     case .catm:
@@ -64,7 +64,7 @@ final class CoinWithdrawStore: ViewStore<CoinWithdrawAction, CoinWithdrawState> 
     switch action {
     case let .setupCoin(coin): state.coin = coin
     case let .setupCoinBalances(coinBalances): state.coinBalances = coinBalances
-    case let .setupCoinSettings(coinSettings): state.coinSettings = coinSettings
+    case let .setupCoinDetails(coinDetails): state.coinDetails = coinDetails
     case let .updateAddress(address):
       state.address = address ?? ""
       state.addressError = nil
@@ -117,7 +117,7 @@ final class CoinWithdrawStore: ViewStore<CoinWithdrawAction, CoinWithdrawState> 
     } else {
       state.coinAmountError = nil
       
-      if state.coin?.type == .catm, let fee = state.coinSettings?.txFee {
+      if state.coin?.type == .catm, let fee = state.coinDetails?.txFee {
         let ethBalance = state.coinBalances?.first { $0.type == .ethereum }?.balance ?? 0
         
         if !ethBalance.greaterThanOrEqualTo(fee) {

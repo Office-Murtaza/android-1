@@ -146,7 +146,7 @@ class TransactionsFragment : BaseFragment() {
             adapter.setItemList(it)
             swipeToRefreshView.isRefreshing = false
         }
-        viewModel.feeLiveData.listen({
+        viewModel.detailsLiveData.listen({
             //important download fee
         })
     }

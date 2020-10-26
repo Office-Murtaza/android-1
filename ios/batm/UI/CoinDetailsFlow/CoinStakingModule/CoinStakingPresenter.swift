@@ -29,10 +29,10 @@ final class CoinStakingPresenter: ModulePresenter, CoinStakingModule {
     self.store = store
   }
   
-  func setup(coin: BTMCoin, coinBalances: [CoinBalance], coinSettings: CoinSettings, stakeDetails: StakeDetails) {
+  func setup(coin: BTMCoin, coinBalances: [CoinBalance], coinDetails: CoinDetails, stakeDetails: StakeDetails) {
     store.action.accept(.setupCoin(coin))
     store.action.accept(.setupCoinBalances(coinBalances))
-    store.action.accept(.setupCoinSettings(coinSettings))
+    store.action.accept(.setupCoinDetails(coinDetails))
     store.action.accept(.setupStakeDetails(stakeDetails))
   }
 
@@ -63,19 +63,19 @@ final class CoinStakingPresenter: ModulePresenter, CoinStakingModule {
   
   private func proceedWithStaking(for state: CoinStakingState) -> Completable {
     let coin = state.coin!
-    let coinSettings = state.coinSettings!
+    let coinDetails = state.coinDetails!
     let coinAmount = state.coinAmount.decimalValue ?? 0.0
     let stakeDetails = state.stakeDetails!
     
     if stakeDetails.status == .created {
-      return usecase.cancelStake(from: coin, with: coinSettings, stakeDetails: stakeDetails)
+      return usecase.cancelStake(from: coin, with: coinDetails, stakeDetails: stakeDetails)
     }
     
     if stakeDetails.status == .canceled {
-      return usecase.withdrawStake(from: coin, with: coinSettings, stakeDetails: stakeDetails)
+      return usecase.withdrawStake(from: coin, with: coinDetails, stakeDetails: stakeDetails)
     }
     
-    return usecase.createStake(from: coin, with: coinSettings, amount: coinAmount)
+    return usecase.createStake(from: coin, with: coinDetails, amount: coinAmount)
       .catchError { [store] in
         if let apiError = $0 as? APIError, case let .serverError(error) = apiError, let code = error.code, code > 1 {
           store.action.accept(.updateCoinAmountError(error.message))

@@ -142,7 +142,6 @@ class StakingFragment : BaseFragment() {
                         unstakeButtonView.toggle(it.untilWithdraw ?: 0 == 0)
                     }
                     else -> {
-                        statusGroupView.hide()
                         editStakeGroupView.show()
                         amountGroupView.hide()
                         createDateGroupView.hide()
@@ -182,22 +181,20 @@ class StakingFragment : BaseFragment() {
                         )
                     StakeDetailsStatus.CANCEL ->
                         updateStatusView(
-                                R.color.colorStatusCreated,
-                                R.drawable.bg_status_created,
+                                R.color.colorStatusFail,
+                                R.drawable.bg_status_fail,
                                 R.string.staking_screen_canceled
                         )
                     StakeDetailsStatus.WITHDRAW_PENDING ->
-                        // TODO change color
                         updateStatusView(
-                                R.color.colorStatusCreated,
-                                R.drawable.bg_status_created,
+                                R.color.colorStatusWithdrawPending,
+                                R.drawable.bg_status_withdraw_pending,
                                 R.string.staking_screen_withdraw_pending
                         )
                     StakeDetailsStatus.WITHDRAWN ->
-                        // TODO change color
                         updateStatusView(
-                                R.color.colorStatusCreated,
-                                R.drawable.bg_status_created,
+                                R.color.colorStatusWithdrawn,
+                                R.drawable.bg_status_withdrawn,
                                 R.string.staking_screen_withdrawn
                         )
                 }

@@ -15,6 +15,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import wallet.core.jni.CoinType;
+
 import java.math.BigDecimal;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
@@ -27,7 +28,7 @@ import java.util.stream.Collectors;
 public class CoinService {
 
     private static Map<String, Coin> coinMap;
-    public static Map<String, Long> wsMap = new ConcurrentHashMap<>();
+    public static Map<String, Map<Long, List<String>>> wsMap = new ConcurrentHashMap<>();
 
     private static WalletService walletService;
     private static UserService userService;
@@ -68,12 +69,10 @@ public class CoinService {
 
     @Scheduled(cron = "*/5 * * * * *")
     public void wsStompBalance() {
-        wsMap.forEach((k, v) -> sendStompBalance(k, v));
+        wsMap.forEach((k, v) -> sendStompBalance(k, (Long) v.keySet().toArray()[0], v.get((Long) v.keySet().toArray()[0])));
     }
 
-    public void sendStompBalance(String phone, Long userId) {
-        List<String> coins = new ArrayList<>(coinMap.keySet());
-
+    public void sendStompBalance(String phone, Long userId, List<String> coins) {
         simp.convertAndSendToUser(phone, "/queue/balance", getCoinsBalance(userId, coins));
     }
 
@@ -145,6 +144,26 @@ public class CoinService {
         dto.setContractAddress(coin.getContractAddress());
 
         return dto;
+    }
+
+    public boolean manage(Long userId, CoinEnum coin, boolean enabled) {
+        User user = userService.findById(userId);
+
+        if (wsMap.containsKey(user.getPhone())) {
+            List<String> coins = wsMap.get(user.getPhone()).get(userId);
+
+            if (!enabled && coins.contains(coin.name())) {
+                coins.remove(coin.name());
+            } else if (enabled && !coins.contains(coin.name())) {
+                coins.add(coin.name());
+            }
+
+            sendStompBalance(user.getPhone(), userId, coins);
+
+            return true;
+        }
+
+        return false;
     }
 
     private CompletableFuture<CoinBalanceDTO> callAsync(UserCoin userCoin) {

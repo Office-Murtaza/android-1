@@ -2,7 +2,7 @@ package com.app.belcobtm.data.rest.wallet
 
 import com.app.belcobtm.data.rest.wallet.response.BalanceResponse
 import com.app.belcobtm.data.rest.wallet.response.ChartResponse
-import com.app.belcobtm.data.rest.wallet.response.GetCoinFeeResponse
+import com.app.belcobtm.data.rest.wallet.response.GetCoinDetailsResponse
 import kotlinx.coroutines.Deferred
 import retrofit2.Response
 import retrofit2.http.GET
@@ -23,8 +23,8 @@ interface WalletApi {
         @Path("coinId") coinCode: String
     ): Deferred<Response<ChartResponse>>
 
-    @GET("coin/{coinId}/settings")
-    fun getCoinFeeAsync(
+    @GET("coin/{coinId}/details")
+    fun getCoinDetailsAsync(
         @Path("coinId") coinCode: String
-    ): Deferred<Response<GetCoinFeeResponse>>
+    ): Deferred<Response<GetCoinDetailsResponse>>
 }

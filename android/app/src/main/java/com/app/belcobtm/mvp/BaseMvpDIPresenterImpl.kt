@@ -64,5 +64,5 @@ abstract class BaseMvpDIPresenterImpl<V : BaseMvpView, T : BaseDataManager> : Ba
         if (LocalCoinType.CATM.name == coinId) LocalCoinType.ETH.name else coinId
     )?.validate(walletAddress) ?: false
 
-    open fun getTransactionFee(coinName: String): Double = prefsHelper.coinsFee[coinName]?.txFee ?: 0.0
+    open fun getTransactionFee(coinName: String): Double = prefsHelper.coinsDetails[coinName]?.txFee ?: 0.0
 }

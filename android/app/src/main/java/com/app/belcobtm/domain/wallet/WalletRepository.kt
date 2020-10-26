@@ -6,9 +6,9 @@ import com.app.belcobtm.domain.wallet.item.*
 
 interface WalletRepository {
 
-    fun getCoinFeeMap(): Map<String, CoinFeeDataItem>
+    fun getCoinDetailsMap(): Map<String, CoinDetailsDataItem>
 
-    fun getCoinFeeItemByCode(coinCode: String): CoinFeeDataItem
+    fun getCoinDetailsItemByCode(coinCode: String): CoinDetailsDataItem
 
     fun getCoinItemByCode(coinCode: String): CoinDataItem
 
@@ -24,6 +24,6 @@ interface WalletRepository {
 
     suspend fun getChart(coinCode: String): Either<Failure, ChartDataItem>
 
-    suspend fun updateCoinFee(coinCode: String): Either<Failure, CoinFeeDataItem>
+    suspend fun updateCoinDetails(coinCode: String): Either<Failure, CoinDetailsDataItem>
 }
 

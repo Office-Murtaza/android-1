@@ -20,8 +20,8 @@ extension WalletFlowController: WalletModuleDelegate {
     step.accept(WalletFlow.Steps.manageWallets)
   }
   
-  func showCoinDetails(coinBalances: [CoinBalance], coinSettings: CoinSettings, data: PriceChartData) {
-    step.accept(WalletFlow.Steps.coinDetails(coinBalances, coinSettings, data))
+  func showCoinDetails(coinBalances: [CoinBalance], coinDetails: CoinDetails, data: PriceChartData) {
+    step.accept(WalletFlow.Steps.coinDetails(coinBalances, coinDetails, data))
   }
   
 }

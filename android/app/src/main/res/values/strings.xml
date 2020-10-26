@@ -304,6 +304,7 @@
     <string name="exchange_coin_to_coin_screen_price">Price</string>
     <string name="exchange_coin_to_coin_screen_balance">Balance</string>
     <string name="exchange_coin_to_coin_screen_select_coin">Select coin please</string>
+    <string name="exchange_coin_to_coin_screen_error_coin_details_fetch">Unable to load coin details. Try again later</string>
 
     <!-- Deposit -->
     <string name="deposit_screen_title">Deposit %1$s</string>

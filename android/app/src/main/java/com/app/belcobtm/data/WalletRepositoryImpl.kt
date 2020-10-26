@@ -9,9 +9,6 @@ import com.app.belcobtm.domain.Either
 import com.app.belcobtm.domain.Failure
 import com.app.belcobtm.domain.wallet.WalletRepository
 import com.app.belcobtm.domain.wallet.item.*
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 class WalletRepositoryImpl(
     private val apiService: WalletApiService,
@@ -20,11 +17,11 @@ class WalletRepositoryImpl(
 ) : WalletRepository {
     private val cachedCoinDataItemList: MutableList<CoinDataItem> = mutableListOf()
 
-    override fun getCoinFeeMap(): Map<String, CoinFeeDataItem> = prefHelper.coinsFee
+    override fun getCoinDetailsMap(): Map<String, CoinDetailsDataItem> = prefHelper.coinsDetails
 
-    override fun getCoinFeeItemByCode(
+    override fun getCoinDetailsItemByCode(
         coinCode: String
-    ): CoinFeeDataItem = prefHelper.coinsFee.getValue(coinCode)
+    ): CoinDetailsDataItem = prefHelper.coinsDetails.getValue(coinCode)
 
     override fun getCoinItemByCode(
         coinCode: String
@@ -84,14 +81,14 @@ class WalletRepositoryImpl(
         coinCode: String
     ): Either<Failure, ChartDataItem> = apiService.getChart(coinCode)
 
-    override suspend fun updateCoinFee(
+    override suspend fun updateCoinDetails(
         coinCode: String
-    ): Either<Failure, CoinFeeDataItem> {
-        val response = apiService.getCoinFee(coinCode)
+    ): Either<Failure, CoinDetailsDataItem> {
+        val response = apiService.getCoinDetails(coinCode)
         if (response.isRight) {
-            val mutableCoinsFeeMap = prefHelper.coinsFee.toMutableMap()
+            val mutableCoinsFeeMap = prefHelper.coinsDetails.toMutableMap()
             mutableCoinsFeeMap[coinCode] = (response as Either.Right).b
-            prefHelper.coinsFee = mutableCoinsFeeMap
+            prefHelper.coinsDetails = mutableCoinsFeeMap
         }
         return response
     }

@@ -10,24 +10,6 @@ extension Error {
       .map(MoyaError.convert(error:))
       .extract(.unknown)
   }
-  
-  static func convert(error: MoyaError) -> APIError {
-    switch error {
-    case let .statusCode(response) where response.statusCode == 422:
-      return .notValid
-    case let .statusCode(response) where response.statusCode == 409:
-      return .conflict
-    case let .statusCode(response) where response.statusCode == 403:
-      return .notAuthorized
-    case let .statusCode(response) where response.statusCode == 404:
-      return .notFound
-    case .underlying(_, .none):
-      return .networkError
-    default:
-      return .unknown
-    }
-  }
-  
 }
 
 extension MoyaError {
@@ -38,7 +20,7 @@ extension MoyaError {
       return .notValid
     case let .statusCode(response) where response.statusCode == 409:
       return .conflict
-    case let .statusCode(response) where response.statusCode == 403:
+    case let .statusCode(response) where response.statusCode == 401:
       return .notAuthorized
     case let .statusCode(response) where response.statusCode == 404:
       return .notFound

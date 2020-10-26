@@ -1,79 +1,41 @@
 {
   "project_info": {
-    "project_number": "1081646718412",
-    "firebase_url": "https://belcobatm.firebaseio.com",
-    "project_id": "belcobatm",
-    "storage_bucket": "belcobatm.appspot.com"
+    "project_number": "747193228705",
+    "firebase_url": "https://belco-test.firebaseio.com",
+    "project_id": "belco-test",
+    "storage_bucket": "belco-test.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1081646718412:android:f56e2fa7edc7957fef9169",
+        "mobilesdk_app_id": "1:747193228705:android:6c7b104fe4e0182c1fbfe0",
         "android_client_info": {
           "package_name": "com.app.belcobtm"
         }
       },
       "oauth_client": [
         {
-          "client_id": "1081646718412-d2rqena84f1dbjv96bo9ooub6sd6mto8.apps.googleusercontent.com",
+          "client_id": "747193228705-42mrqv36om00s6l887t6kbktuqtq4i3h.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCbiVh6LcLaAmOiETJi39WvEPnfufDc3JQ"
+          "current_key": "AIzaSyBuT8vczJdlgtDzvR_Y8eJ7V9sMiXvDXa0"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "1081646718412-d2rqena84f1dbjv96bo9ooub6sd6mto8.apps.googleusercontent.com",
+              "client_id": "747193228705-42mrqv36om00s6l887t6kbktuqtq4i3h.apps.googleusercontent.com",
               "client_type": 3
             },
             {
-              "client_id": "1081646718412-r4oln7hkeec1ag961mrp7lci68em4ms9.apps.googleusercontent.com",
+              "client_id": "747193228705-nef7b0j6lophhjmistm0qi8mhqli0qc2.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.belcobtm.BelcoWallet",
-                "app_store_id": "1475407885"
-              }
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:1081646718412:android:27a7afdf467fb362ef9169",
-        "android_client_info": {
-          "package_name": "com.app.belcobtm.dev"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "1081646718412-d2rqena84f1dbjv96bo9ooub6sd6mto8.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyCbiVh6LcLaAmOiETJi39WvEPnfufDc3JQ"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "1081646718412-d2rqena84f1dbjv96bo9ooub6sd6mto8.apps.googleusercontent.com",
-              "client_type": 3
-            },
-            {
-              "client_id": "1081646718412-r4oln7hkeec1ag961mrp7lci68em4ms9.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "com.belcobtm.BelcoWallet",
-                "app_store_id": "1475407885"
+                "bundle_id": "com.belcobtm.BelcoWallet"
               }
             }
           ]

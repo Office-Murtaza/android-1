@@ -38,10 +38,6 @@ fun Double.toStringCoin(): String = if (this > 0) {
     "0"
 }
 
-fun Double.truncateDecimal(numberOfDecimals: Int): Double {
-    return if (this > 0) {
-        BigDecimal(this.toString()).setScale(numberOfDecimals, BigDecimal.ROUND_FLOOR)
-    } else {
-        BigDecimal(this.toString()).setScale(numberOfDecimals, BigDecimal.ROUND_CEILING)
-    }.toDouble()
+fun Double.withScale(scale: Int): Double {
+    return BigDecimal(this).setScale(scale, RoundingMode.DOWN).toDouble()
 }

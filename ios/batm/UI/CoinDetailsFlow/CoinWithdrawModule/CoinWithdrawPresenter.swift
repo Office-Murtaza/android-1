@@ -29,10 +29,10 @@ final class CoinWithdrawPresenter: ModulePresenter, CoinWithdrawModule {
     self.store = store
   }
   
-  func setup(coin: BTMCoin, coinBalances: [CoinBalance], coinSettings: CoinSettings) {
+  func setup(coin: BTMCoin, coinBalances: [CoinBalance], coinDetails: CoinDetails) {
     store.action.accept(.setupCoin(coin))
     store.action.accept(.setupCoinBalances(coinBalances))
-    store.action.accept(.setupCoinSettings(coinSettings))
+    store.action.accept(.setupCoinDetails(coinDetails))
   }
 
   func bind(input: Input) {
@@ -78,7 +78,7 @@ final class CoinWithdrawPresenter: ModulePresenter, CoinWithdrawModule {
   
   private func withdraw(for state: CoinWithdrawState) -> Completable {
     return usecase.withdraw(from: state.coin!,
-                                with: state.coinSettings!,
+                                with: state.coinDetails!,
                                 to: state.address,
                                 amount: state.coinAmount.decimalValue ?? 0.0)
       .catchError { [store] in
