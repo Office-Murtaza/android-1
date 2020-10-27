@@ -108,6 +108,9 @@ class PinCodeFragment : BaseFragment() {
                     popBackStack(R.id.security_fragment, false)
                 }
                 is PinCodeAction.Vibrate -> vibrate(action.duration)
+                is PinCodeAction.StartWelcomeScreen -> {
+                    (requireActivity() as HostActivity).showAuthorizationScreen()
+                }
                 is PinCodeAction.AuthorizeError -> when (action.failure) {
                     is Failure.NetworkConnection -> showErrorNoInternetConnection()
                     is Failure.MessageError -> {

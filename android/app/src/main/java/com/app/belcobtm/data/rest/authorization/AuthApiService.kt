@@ -6,6 +6,7 @@ import com.app.belcobtm.data.rest.authorization.response.CheckPassResponse
 import com.app.belcobtm.data.rest.authorization.response.CreateRecoverWalletResponse
 import com.app.belcobtm.domain.Either
 import com.app.belcobtm.domain.Failure
+import java.net.HttpURLConnection
 
 class AuthApiService(private val authApi: AuthApi) {
 
@@ -52,7 +53,10 @@ class AuthApiService(private val authApi: AuthApi) {
 
     suspend fun authorizeByRefreshToken(refreshToken: String): Either<Failure, AuthorizationResponse> = try {
         val request = authApi.signInByRefreshTokenAsync(RefreshTokenRequest(refreshToken)).await()
-        request.body()?.let { Either.Right(it) } ?: Either.Left(Failure.ServerError())
+        request.body()?.let { Either.Right(it) } ?: when (request.code()) {
+            HttpURLConnection.HTTP_FORBIDDEN -> Either.Left(Failure.TokenError)
+            else -> Either.Left(Failure.ServerError())
+        }
     } catch (failure: Failure) {
         failure.printStackTrace()
         Either.Left(failure)

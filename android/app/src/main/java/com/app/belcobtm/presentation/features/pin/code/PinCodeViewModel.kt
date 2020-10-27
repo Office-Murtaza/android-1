@@ -7,6 +7,7 @@ import com.app.belcobtm.domain.Failure
 import com.app.belcobtm.domain.authorization.interactor.AuthorizeUseCase
 import com.app.belcobtm.domain.authorization.interactor.GetAuthorizePinUseCase
 import com.app.belcobtm.domain.authorization.interactor.SaveAuthorizePinUseCase
+import com.app.belcobtm.domain.settings.interactor.UnlinkUseCase
 import com.app.belcobtm.presentation.core.SingleLiveData
 import com.app.belcobtm.presentation.features.pin.code.PinCodeFragment.Companion.KEY_PIN_MODE_CHANGE
 import com.app.belcobtm.presentation.features.pin.code.PinCodeFragment.Companion.KEY_PIN_MODE_CREATE
@@ -18,6 +19,7 @@ import com.app.belcobtm.presentation.features.pin.code.PinCodeFragment.Companion
 
 class PinCodeViewModel(
     private val authorizeUseCase: AuthorizeUseCase,
+    private val unlinkUseCase: UnlinkUseCase,
     private val authorizePinUseCase: GetAuthorizePinUseCase,
     private val savePinCodeUseCase: SaveAuthorizePinUseCase
 ) : ViewModel() {
@@ -32,15 +34,21 @@ class PinCodeViewModel(
             Unit,
             onSuccess = { actionData.value = PinCodeAction.Success },
             onError = {
-                enteredPin = ""
-                currentPin = ""
-                updateState()
-                actionData.value = PinCodeAction.AuthorizeError(it)
+                if (it is Failure.TokenError) {
+                    // in case we faced with a TokenError during refreshing
+                    // we should start an unlink flow
+                    unlinkAccountAndStartAuthorization()
+                } else {
+                    enteredPin = ""
+                    currentPin = ""
+                    updateState()
+                    actionData.value = PinCodeAction.AuthorizeError(it)
+                }
             }
         )
     }
 
-    val stateData = MutableLiveData<PinCodeState>(PinCodeState())
+    val stateData = MutableLiveData(PinCodeState())
     val actionData = SingleLiveData<PinCodeAction>()
 
     private var enteredPin = ""
@@ -187,6 +195,14 @@ class PinCodeViewModel(
             else -> throw IllegalStateException("Wrong logic case, fix on dev side")
         }
     }
+
+    private fun unlinkAccountAndStartAuthorization() {
+        unlinkUseCase(
+            Unit,
+            onSuccess = { actionData.value = PinCodeAction.StartWelcomeScreen },
+            onError = { actionData.value = PinCodeAction.StartWelcomeScreen }
+        )
+    }
 }
 
 data class PinCodeState(
@@ -204,4 +220,5 @@ sealed class PinCodeAction {
     object ChangedPin : PinCodeAction()
     data class AuthorizeError(val failure: Failure) : PinCodeAction()
     object BackPress : PinCodeAction()
+    object StartWelcomeScreen: PinCodeAction()
 }
