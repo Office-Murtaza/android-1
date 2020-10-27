@@ -133,6 +133,11 @@ class WithdrawFragment : BaseFragment() {
             amountCryptoView.showError(R.string.insufficient_balance)
         }
 
+        if(amountCryptoView.getDouble() < viewModel.getMinValue()) {
+            errors++
+            amountCryptoView.showError(R.string.balance_amount_too_small)
+        }
+
         if(amountCryptoView.getDouble() >= viewModel.getMaxValue()) {
             errors++
             amountCryptoView.showError(R.string.balance_amount_exceeded)

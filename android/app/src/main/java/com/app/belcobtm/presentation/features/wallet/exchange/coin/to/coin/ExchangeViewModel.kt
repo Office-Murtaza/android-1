@@ -73,6 +73,11 @@ class ExchangeViewModel(
         return toCoinAmount.withScale(currentCoinDetails.scale)
     }
 
+    fun getFromMinValue(): Double = fromCoinDetailsItem.txFee
+
+    fun getToMinValue(): Double = getCoinDetailsUseCase.getCoinDetailsMap()
+        .getValue(toCoinItem!!.code).txFee
+
     fun getMaxValue(): Double = when (fromCoinItem.code) {
         LocalCoinType.CATM.name -> fromCoinItem.balanceCoin
         LocalCoinType.XRP.name -> max(

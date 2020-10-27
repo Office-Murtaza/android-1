@@ -101,11 +101,22 @@ class ExchangeFragment : BaseFragment() {
                 amountCoinFromView.showError(R.string.withdraw_screen_where_money_libovski)
                 return@listener
             }
+            if(amountCoinFromView.getDouble() < viewModel.getFromMinValue()) {
+                amountCoinFromView.showError(R.string.balance_amount_too_small)
+                return@listener
+            }
             if(amountCoinFromView.getDouble() >= viewModel.getMaxValue()) {
                 amountCoinFromView.showError(R.string.balance_amount_exceeded)
                 return@listener
             }
             amountCoinFromView.clearError()
+            val toCoinAmount = viewModel.getCoinToAmount(amountCoinFromView.getDouble())
+            val isToCoinAmountValid = toCoinAmount < viewModel.getToMinValue()
+            coinToErrorMessageView.toggle(isToCoinAmountValid)
+            if(isToCoinAmountValid) {
+                coinToErrorMessageView.setText(R.string.balance_amount_too_small)
+                return@listener
+            }
             viewModel.exchange(amountCoinFromView.getString().toDouble())
         }
     }
