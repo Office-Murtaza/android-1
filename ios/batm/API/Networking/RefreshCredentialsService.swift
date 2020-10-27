@@ -72,9 +72,8 @@ class RefreshCredentialsServiceImpl: RefreshCredentialsService {
           let completableError = Completable.error(mappedError)
           
           if mappedError == .notAuthorized {
-            return self.logoutUsecase.logout().flatMapCompletable { _ in completableError }
+            return self.logoutUsecase.unlink()
           }
-          
           return completableError
         }
     }
