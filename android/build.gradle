@@ -20,6 +20,12 @@ buildscript {
     }
 }
 
+ext {
+    // query git for the commit count to automate versioning.
+    gitCommitCount =
+            Integer.parseInt('git rev-list --count HEAD'.execute([], project.rootDir).text.trim())
+}
+
 allprojects {
     repositories {
         google()
