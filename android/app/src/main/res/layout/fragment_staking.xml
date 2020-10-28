@@ -288,9 +288,11 @@
             style="@style/Button.Primary"
             android:enabled="false"
             android:text="@string/staking_screen_stake"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/amountUsdView" />
+            app:layout_constraintTop_toBottomOf="@id/amountUsdView"
+            tools:visibility="visible"/>
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/cancelButtonView"
@@ -330,9 +332,8 @@
             android:id="@+id/statusGroupView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:visibility="gone"
-            app:constraint_referenced_ids="statusTitleView, statusView"
-            tools:visibility="visible" />
+            android:visibility="visible"
+            app:constraint_referenced_ids="statusTitleView, statusView" />
 
         <androidx.constraintlayout.widget.Group
             android:id="@+id/rewardsGroupView"
