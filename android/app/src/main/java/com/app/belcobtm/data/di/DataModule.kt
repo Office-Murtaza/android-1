@@ -36,7 +36,7 @@ val dataModule = module {
     single { LogInterceptor(get()) }
     single { BaseInterceptor(get(), get()) }
     single { NoConnectionInterceptor(get()) }
-    single { ResponseInterceptor(LocalBroadcastManager.getInstance(get()), get(), get()) }
+    single { ResponseInterceptor(get(), get()) }
     single { ApiFactory(get()) }
     single { OkHttpClientProvider().provideOkHttpClient(get(), get(), get(), get()) }
     single { AuthApiService((get() as ApiFactory).authApi) }
@@ -57,5 +57,5 @@ val dataModule = module {
     single { (get() as AppDatabase).getCoinDao() }
     single<IntentActions> { IntentActionsImpl(get()) }
     single { AtmApiService((get() as ApiFactory).atmApi) }
-    single { SocketClient(get(), get(),LocalBroadcastManager.getInstance(get())) }
+    single { SocketClient(get(), get()) }
 }
