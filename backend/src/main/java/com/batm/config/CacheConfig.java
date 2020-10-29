@@ -9,6 +9,7 @@ import org.springframework.cache.caffeine.CaffeineCache;
 import org.springframework.cache.support.SimpleCacheManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -23,7 +24,7 @@ public class CacheConfig {
 
     @Data
     public static class CacheSpec {
-        private Integer timeout;
+        private Long timeout;
         private Integer max = 200;
     }
 
@@ -45,7 +46,7 @@ public class CacheConfig {
 
     private CaffeineCache buildCache(String name, CacheSpec cacheSpec, Ticker ticker) {
         Caffeine<Object, Object> caffeineBuilder = Caffeine.newBuilder()
-                .expireAfterWrite(cacheSpec.getTimeout(), TimeUnit.SECONDS)
+                .expireAfterWrite(cacheSpec.getTimeout(), TimeUnit.MILLISECONDS)
                 .maximumSize(cacheSpec.getMax()).ticker(ticker);
 
         return new CaffeineCache(name, caffeineBuilder.build());

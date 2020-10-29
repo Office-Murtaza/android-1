@@ -229,8 +229,8 @@ public class TransactionService {
                 dailyLimit.subtract(txAmount);
             }
 
-            dto.setDailyLimit(Util.format2(dailyLimit));
-            dto.setTxLimit(Util.format2(txLimit));
+            dto.setDailyLimit(Util.format(dailyLimit, 2));
+            dto.setTxLimit(Util.format(txLimit, 2));
             dto.setSellProfitRate(new BigDecimal("1.05"));
         } catch (Exception e) {
             e.printStackTrace();

@@ -73,7 +73,7 @@ public class RippledService {
                     if (accountData != null) {
                         String balance = accountData.optString("Balance");
 
-                        return Util.format6(new BigDecimal(balance).divide(XRP_DIVIDER));
+                        return Util.format(new BigDecimal(balance).divide(XRP_DIVIDER), 6);
                     }
                 }
             } catch (ResourceAccessException rae) {
@@ -275,7 +275,7 @@ public class RippledService {
                 String fromAddress = tx.optString("Account");
                 String toAddress = tx.optString("Destination");
                 TransactionType type = TransactionType.getType(tx.optString("Account"), tx.optString("Destination"), address);
-                BigDecimal amount = Util.format6(getAmount(tx.optString("Amount")));
+                BigDecimal amount = Util.format(getAmount(tx.optString("Amount")), 6);
                 Date date1 = new Date((tx.optLong("date") + 946684800L) * 1000);
 
                 map.put(txId, new TransactionDetailsDTO(txId, amount, fromAddress, toAddress, type, status, date1));

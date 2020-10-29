@@ -92,7 +92,7 @@ public class BlockbookService {
             try {
                 JSONObject res = rest.getForObject(nodeUrlMap.get(coinType) + "/api/v2/address/" + address + "?details=basic", JSONObject.class);
 
-                return Util.format6(new BigDecimal(res.optString("balance")).divide(BTC_DIVIDER));
+                return Util.format(new BigDecimal(res.optString("balance")).divide(BTC_DIVIDER), 6);
             } catch (ResourceAccessException rae) {
                 nodeAvailableMap.put(coinType, false);
             } catch (Exception e) {
@@ -200,7 +200,7 @@ public class BlockbookService {
                 String fromAddress = getFromAddress(vinArray, address);
                 String toAddress = getToAddress(voutArray, address, fromAddress);
                 TransactionType type = TransactionType.getType(fromAddress, toAddress, address);
-                BigDecimal amount = Util.format6(getAmount(type, fromAddress, toAddress, voutArray, BTC_DIVIDER));
+                BigDecimal amount = Util.format(getAmount(type, fromAddress, toAddress, voutArray, BTC_DIVIDER), 6);
 
                 dto.setTxId(txId);
                 dto.setLink(explorerUrlMap.get(coinType) + "/" + txId);
@@ -330,7 +330,7 @@ public class BlockbookService {
                 String fromAddress = getFromAddress(vinArray, address);
                 String toAddress = getToAddress(voutArray, address, fromAddress);
                 TransactionType type = TransactionType.getType(fromAddress, toAddress, address);
-                BigDecimal amount = Util.format6(getAmount(type, fromAddress, toAddress, voutArray, BTC_DIVIDER));
+                BigDecimal amount = Util.format(getAmount(type, fromAddress, toAddress, voutArray, BTC_DIVIDER), 6);
 
                 TransactionStatus status = getStatus(json.optInt("confirmations"));
                 Date date1 = new Date(json.optLong("blockTime") * 1000);

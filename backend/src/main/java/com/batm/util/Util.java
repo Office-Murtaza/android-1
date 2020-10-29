@@ -4,6 +4,7 @@ import com.batm.entity.User;
 import net.sf.json.JSONObject;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.web.multipart.MultipartFile;
+
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 import javax.net.ssl.HttpsURLConnection;
@@ -24,12 +25,12 @@ import java.util.Date;
 public class Util {
 
     public static BigDecimal convert(String str) {
-        return new BigDecimal(str).setScale(3, RoundingMode.DOWN).stripTrailingZeros();
+        return new BigDecimal(str);
     }
 
     public static String convert(BigDecimal value) {
-        if(value != null) {
-           return value.toString();
+        if (value != null) {
+            return value.toString();
         }
 
         return null;
@@ -60,14 +61,6 @@ public class Util {
         c.set(Calendar.MILLISECOND, 0);
 
         return c.getTime();
-    }
-
-    public static BigDecimal format2(BigDecimal value) {
-        return format(value, 2);
-    }
-
-    public static BigDecimal format6(BigDecimal value) {
-        return format(value, 6);
     }
 
     public static BigDecimal format(BigDecimal value, int scale) {

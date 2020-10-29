@@ -20,10 +20,8 @@ public class CoinBalanceDTO {
     private String balanceStr;
     private BigDecimal fiatBalance;
     private String fiatBalanceStr;
-    private BigDecimal reservedBalance;
-    private String reservedBalanceStr;
-    private BigDecimal reservedFiatBalance;
-    private String reservedFiatBalanceStr;
+    private BigDecimal reserved;
+    private String reservedStr;
     private BigDecimal price;
     private String priceStr;
 
@@ -53,14 +51,9 @@ public class CoinBalanceDTO {
         this.fiatBalanceStr = Util.convert(fiatBalance);
     }
 
-    public void setReservedBalance(BigDecimal reservedBalance) {
-        this.reservedBalance = reservedBalance;
-        this.reservedBalanceStr = Util.convert(reservedBalance);
-    }
-
-    public void setReservedFiatBalance(BigDecimal reservedFiatBalance) {
-        this.reservedFiatBalance = reservedFiatBalance;
-        this.reservedFiatBalanceStr = Util.convert(reservedFiatBalance);
+    public void setReserved(BigDecimal reserved) {
+        this.reserved = reserved;
+        this.reservedStr = Util.convert(reserved);
     }
 
     public void setPrice(BigDecimal price) {

@@ -105,10 +105,6 @@ public class UserController {
                 return Response.defaultError("Empty coin list");
             }
 
-            if (dto.getCoins().size() != 8) {
-                return Response.error(3, "Some coin is missed");
-            }
-
             Optional<User> userOpt = userService.findByPhone(dto.getPhone());
 
             if (userOpt.isPresent()) {
@@ -144,10 +140,6 @@ public class UserController {
                 return Response.defaultError("Empty coin list");
             }
 
-            if (dto.getCoins().size() != 8) {
-                return Response.error(3, "Some coin is missed");
-            }
-
             Optional<User> userOpt = userService.findByPhone(dto.getPhone());
             if (!userOpt.isPresent()) {
                 return Response.error(4, "Phone doesn't exist");
@@ -174,6 +166,7 @@ public class UserController {
 
             user.setPlatform(dto.getPlatform());
             userService.save(user);
+            coinService.addUserCoins(user, dto.getCoins());
 
             List<String> coins = dto.getCoins().stream().map(e -> e.getCode()).collect(Collectors.toList());
 

@@ -67,7 +67,7 @@ public class CoinService {
         CoinService.trongrid = trongrid;
     }
 
-    @Scheduled(cron = "*/5 * * * * *")
+    @Scheduled(cron = "*/10 * * * * *")
     public void wsStompBalance() {
         wsMap.forEach((k, v) -> sendStompBalance(k, (Long) v.keySet().toArray()[0], v.get((Long) v.keySet().toArray()[0])));
     }
@@ -93,9 +93,9 @@ public class CoinService {
                 .sorted(Comparator.comparing(CoinBalanceDTO::getIdx))
                 .collect(Collectors.toList());
 
-        BigDecimal totalBalance = Util.format2(balances.stream()
-                .map(it -> it.getPrice().multiply(it.getBalance().add(it.getReservedBalance())))
-                .reduce(BigDecimal.ZERO, BigDecimal::add));
+        BigDecimal totalBalance = Util.format(balances.stream()
+                .map(it -> it.getPrice().multiply(it.getBalance().add(it.getReserved())))
+                .reduce(BigDecimal.ZERO, BigDecimal::add), 2);
 
         return new BalanceDTO(totalBalance, totalBalance.toString(), balances);
     }
@@ -104,12 +104,16 @@ public class CoinService {
         List<UserCoin> userCoins = new ArrayList<>();
 
         coins.stream().forEach(e -> {
-            Coin coin = coinMap.get(e.getCode());
+            boolean coinExist = user.getUserCoins().stream().anyMatch(t -> t.getCoin().getCode().equalsIgnoreCase(e.getCode()));
 
-            userCoins.add(new UserCoin(user, coin, e.getAddress(), BigDecimal.ZERO));
+            if(!coinExist) {
+                Coin coin = coinMap.get(e.getCode());
 
-            if (CoinEnum.valueOf(e.getCode()) == CoinEnum.ETH) {
-                geth.addAddressToJournal(e.getAddress());
+                userCoins.add(new UserCoin(user, coin, e.getAddress(), BigDecimal.ZERO));
+
+                if (CoinEnum.valueOf(e.getCode()) == CoinEnum.ETH) {
+                    geth.addAddressToJournal(e.getAddress());
+                }
             }
         });
 
@@ -175,7 +179,6 @@ public class CoinService {
             BigDecimal coinBalance = coinEnum.getBalance(userCoin.getAddress()).setScale(scale, BigDecimal.ROUND_DOWN).stripTrailingZeros();
             BigDecimal coinFiatBalance = Util.format(coinBalance.multiply(coinPrice), 3);
             BigDecimal reservedBalance = userCoin.getReservedBalance().stripTrailingZeros();
-            BigDecimal reservedFiatBalance = Util.format(reservedBalance.multiply(coinPrice), 3);
 
             CoinBalanceDTO dto = new CoinBalanceDTO();
             dto.setId(userCoin.getCoin().getId());
@@ -184,23 +187,22 @@ public class CoinService {
             dto.setAddress(userCoin.getAddress());
             dto.setBalance(coinBalance);
             dto.setFiatBalance(coinFiatBalance);
-            dto.setReservedBalance(reservedBalance);
-            dto.setReservedFiatBalance(reservedFiatBalance);
+            dto.setReserved(reservedBalance);
             dto.setPrice(coinPrice);
 
             return dto;
         });
     }
 
-    private static BigDecimal getBinancePriceBySymbol(String symbol) {
-        return cache.getBinancePriceBySymbol(symbol);
+    private static BigDecimal getPriceById(String id) {
+        return cache.getPriceById(id);
     }
 
     public enum CoinEnum {
         BTC {
             @Override
             public BigDecimal getPrice() {
-                return getBinancePriceBySymbol("BTCUSDT");
+                return getPriceById(getName());
             }
 
             @Override
@@ -319,7 +321,7 @@ public class CoinService {
         ETH {
             @Override
             public BigDecimal getPrice() {
-                return getBinancePriceBySymbol("ETHUSDT");
+                return getPriceById(getName());
             }
 
             @Override
@@ -551,7 +553,7 @@ public class CoinService {
         BCH {
             @Override
             public BigDecimal getPrice() {
-                return getBinancePriceBySymbol("BCHUSDT");
+                return getPriceById(getName());
             }
 
             @Override
@@ -581,7 +583,7 @@ public class CoinService {
 
             @Override
             public String getName() {
-                return "bitcoincash";
+                return "bitcoin-cash";
             }
 
             @Override
@@ -670,7 +672,7 @@ public class CoinService {
         LTC {
             @Override
             public BigDecimal getPrice() {
-                return getBinancePriceBySymbol("LTCUSDT");
+                return getPriceById(getName());
             }
 
             @Override
@@ -789,7 +791,7 @@ public class CoinService {
         BNB {
             @Override
             public BigDecimal getPrice() {
-                return getBinancePriceBySymbol("BNBUSDT");
+                return getPriceById(getName());
             }
 
             @Override
@@ -819,7 +821,7 @@ public class CoinService {
 
             @Override
             public String getName() {
-                return "binance";
+                return "binancecoin";
             }
 
             @Override
@@ -905,7 +907,7 @@ public class CoinService {
         XRP {
             @Override
             public BigDecimal getPrice() {
-                return getBinancePriceBySymbol("XRPUSDT");
+                return getPriceById(getName());
             }
 
             @Override
@@ -1029,7 +1031,7 @@ public class CoinService {
         TRX {
             @Override
             public BigDecimal getPrice() {
-                return getBinancePriceBySymbol("TRXUSDT");
+                return getPriceById(getName());
             }
 
             @Override
@@ -1135,6 +1137,354 @@ public class CoinService {
             @Override
             public String getExplorerUrl() {
                 return trongrid.getExplorerUrl();
+            }
+
+            @Override
+            public String getContractAddress() {
+                return null;
+            }
+        },
+        DASH {
+            @Override
+            public BigDecimal getPrice() {
+                return getPriceById(getName());
+            }
+
+            @Override
+            public BigDecimal getBalance(String address) {
+                return null;
+            }
+
+            @Override
+            public Long getByteFee() {
+                return null;
+            }
+
+            @Override
+            public BigDecimal getTxFee() {
+                return null;
+            }
+
+            @Override
+            public Long getGasPrice() {
+                return null;
+            }
+
+            @Override
+            public Long getGasLimit() {
+                return null;
+            }
+
+            @Override
+            public String getName() {
+                return "dash";
+            }
+
+            @Override
+            public TransactionNumberDTO getTransactionNumber(String address, BigDecimal amount, TransactionType type) {
+                return null;
+            }
+
+            @Override
+            public TransactionStatus getTransactionStatus(String txId) {
+                return null;
+            }
+
+            @Override
+            public TransactionDetailsDTO getTransaction(String txId, String address) {
+                return null;
+            }
+
+            @Override
+            public TransactionListDTO getTransactionList(String address, Integer startIndex, Integer limit, TxListDTO txDTO) {
+                return null;
+            }
+
+            @Override
+            public UtxoDTO getUTXO(String xpub) {
+                return null;
+            }
+
+            @Override
+            public NonceDTO getNonce(String address) {
+                return null;
+            }
+
+            @Override
+            public CurrentAccountDTO getCurrentAccount(String address) {
+                return null;
+            }
+
+            @Override
+            public CurrentBlockDTO getCurrentBlock() {
+                return null;
+            }
+
+            @Override
+            public String getWalletAddress() {
+                return null;
+            }
+
+            @Override
+            public String sign(String fromAddress, String toAddress, BigDecimal amount) {
+                return null;
+            }
+
+            @Override
+            public String submitTransaction(SubmitTransactionDTO dto) {
+                return null;
+            }
+
+            @Override
+            public CoinType getCoinType() {
+                return null;
+            }
+
+            @Override
+            public NodeTransactionsDTO getNodeTransactions(String address) {
+                return null;
+            }
+
+            @Override
+            public Coin getCoinEntity() {
+                return null;
+            }
+
+            @Override
+            public String getExplorerUrl() {
+                return null;
+            }
+
+            @Override
+            public String getContractAddress() {
+                return null;
+            }
+        },
+        DOGE {
+            @Override
+            public BigDecimal getPrice() {
+                return getPriceById(getName());
+            }
+
+            @Override
+            public BigDecimal getBalance(String address) {
+                return null;
+            }
+
+            @Override
+            public Long getByteFee() {
+                return null;
+            }
+
+            @Override
+            public BigDecimal getTxFee() {
+                return null;
+            }
+
+            @Override
+            public Long getGasPrice() {
+                return null;
+            }
+
+            @Override
+            public Long getGasLimit() {
+                return null;
+            }
+
+            @Override
+            public String getName() {
+                return "dogecoin";
+            }
+
+            @Override
+            public TransactionNumberDTO getTransactionNumber(String address, BigDecimal amount, TransactionType type) {
+                return null;
+            }
+
+            @Override
+            public TransactionStatus getTransactionStatus(String txId) {
+                return null;
+            }
+
+            @Override
+            public TransactionDetailsDTO getTransaction(String txId, String address) {
+                return null;
+            }
+
+            @Override
+            public TransactionListDTO getTransactionList(String address, Integer startIndex, Integer limit, TxListDTO txDTO) {
+                return null;
+            }
+
+            @Override
+            public UtxoDTO getUTXO(String xpub) {
+                return null;
+            }
+
+            @Override
+            public NonceDTO getNonce(String address) {
+                return null;
+            }
+
+            @Override
+            public CurrentAccountDTO getCurrentAccount(String address) {
+                return null;
+            }
+
+            @Override
+            public CurrentBlockDTO getCurrentBlock() {
+                return null;
+            }
+
+            @Override
+            public String getWalletAddress() {
+                return null;
+            }
+
+            @Override
+            public String sign(String fromAddress, String toAddress, BigDecimal amount) {
+                return null;
+            }
+
+            @Override
+            public String submitTransaction(SubmitTransactionDTO dto) {
+                return null;
+            }
+
+            @Override
+            public CoinType getCoinType() {
+                return null;
+            }
+
+            @Override
+            public NodeTransactionsDTO getNodeTransactions(String address) {
+                return null;
+            }
+
+            @Override
+            public Coin getCoinEntity() {
+                return null;
+            }
+
+            @Override
+            public String getExplorerUrl() {
+                return null;
+            }
+
+            @Override
+            public String getContractAddress() {
+                return null;
+            }
+        },
+        USDT {
+            @Override
+            public BigDecimal getPrice() {
+                return getPriceById(getName());
+            }
+
+            @Override
+            public BigDecimal getBalance(String address) {
+                return null;
+            }
+
+            @Override
+            public Long getByteFee() {
+                return null;
+            }
+
+            @Override
+            public BigDecimal getTxFee() {
+                return null;
+            }
+
+            @Override
+            public Long getGasPrice() {
+                return null;
+            }
+
+            @Override
+            public Long getGasLimit() {
+                return null;
+            }
+
+            @Override
+            public String getName() {
+                return "tether";
+            }
+
+            @Override
+            public TransactionNumberDTO getTransactionNumber(String address, BigDecimal amount, TransactionType type) {
+                return null;
+            }
+
+            @Override
+            public TransactionStatus getTransactionStatus(String txId) {
+                return null;
+            }
+
+            @Override
+            public TransactionDetailsDTO getTransaction(String txId, String address) {
+                return null;
+            }
+
+            @Override
+            public TransactionListDTO getTransactionList(String address, Integer startIndex, Integer limit, TxListDTO txDTO) {
+                return null;
+            }
+
+            @Override
+            public UtxoDTO getUTXO(String xpub) {
+                return null;
+            }
+
+            @Override
+            public NonceDTO getNonce(String address) {
+                return null;
+            }
+
+            @Override
+            public CurrentAccountDTO getCurrentAccount(String address) {
+                return null;
+            }
+
+            @Override
+            public CurrentBlockDTO getCurrentBlock() {
+                return null;
+            }
+
+            @Override
+            public String getWalletAddress() {
+                return null;
+            }
+
+            @Override
+            public String sign(String fromAddress, String toAddress, BigDecimal amount) {
+                return null;
+            }
+
+            @Override
+            public String submitTransaction(SubmitTransactionDTO dto) {
+                return null;
+            }
+
+            @Override
+            public CoinType getCoinType() {
+                return null;
+            }
+
+            @Override
+            public NodeTransactionsDTO getNodeTransactions(String address) {
+                return null;
+            }
+
+            @Override
+            public Coin getCoinEntity() {
+                return null;
+            }
+
+            @Override
+            public String getExplorerUrl() {
+                return null;
             }
 
             @Override

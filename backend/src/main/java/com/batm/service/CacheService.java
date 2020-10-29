@@ -2,12 +2,15 @@ package com.batm.service;
 
 import com.batm.dto.CoinPriceListDTO;
 import com.batm.util.Util;
-import com.binance.api.client.BinanceApiRestClient;
+import net.sf.json.JSONObject;
 import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
+
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,14 +19,25 @@ import java.util.List;
 public class CacheService {
 
     @Autowired
-    private BinanceApiRestClient binanceApi;
+    private RestTemplate rest;
 
     @Autowired
     private MongoTemplate mongo;
 
-    @Cacheable(cacheNames = {"price"}, key = "#symbol")
-    public BigDecimal getBinancePriceBySymbol(String symbol) {
-        return Util.convert(binanceApi.getPrice(symbol).getPrice());
+    @Value("${coingecko.api.url}")
+    private String apiUrl;
+
+    @Cacheable(cacheNames = {"price"}, key = "#id")
+    public BigDecimal getPriceById(String id) {
+        try {
+            JSONObject res = rest.getForObject(apiUrl + "/api/v3/simple/price?ids=" + id + "&vs_currencies=usd", JSONObject.class);
+
+            return Util.format(Util.convert(res.optJSONObject(id).optString("usd")), 3);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return BigDecimal.ZERO;
     }
 
     @Cacheable(cacheNames = {"price-chart"}, key = "#coin")

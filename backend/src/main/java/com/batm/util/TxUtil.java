@@ -49,7 +49,7 @@ public class TxUtil {
                     map.get(e.getDetail()).setType(type);
                     map.get(e.getDetail()).setStatus(status);
                 } else {
-                    TransactionDetailsDTO transactionDetailsDTO = new TransactionDetailsDTO(null, Util.format6(e.getCryptoAmount()), type, status, e.getServerTime());
+                    TransactionDetailsDTO transactionDetailsDTO = new TransactionDetailsDTO(null, Util.format(e.getCryptoAmount(), 6), type, status, e.getServerTime());
                     String txDbId = e.getId().toString();
                     transactionDetailsDTO.setTxDbId(txDbId);
 

@@ -4,7 +4,6 @@ import com.batm.dto.*;
 import com.batm.model.TransactionStatus;
 import com.batm.util.TxUtil;
 import com.batm.util.Util;
-import com.binance.api.client.BinanceApiRestClient;
 import com.binance.dex.api.client.BinanceDexApiRestClient;
 import com.binance.dex.api.client.domain.Account;
 import com.binance.dex.api.client.domain.TransactionPage;
@@ -48,9 +47,6 @@ public class BinanceService {
     private BinanceDexApiRestClient binanceDex;
 
     @Autowired
-    private BinanceApiRestClient binanceRest;
-
-    @Autowired
     private MongoOperations mongo;
 
     @Autowired
@@ -76,13 +72,13 @@ public class BinanceService {
 
     public BigDecimal getBalance(String address) {
         try {
-            return Util.format6(binanceDex
+            return Util.format(binanceDex
                     .getAccount(address)
                     .getBalances()
                     .stream()
                     .filter(e -> "BNB".equals(e.getSymbol()))
                     .map(it -> new BigDecimal(it.getFree()).add(new BigDecimal(it.getLocked())))
-                    .reduce(BigDecimal.ZERO, BigDecimal::add));
+                    .reduce(BigDecimal.ZERO, BigDecimal::add), 6);
         } catch (Exception e) {
         }
 
@@ -234,7 +230,7 @@ public class BinanceService {
 
             String txId = tx.getTxHash();
             com.batm.model.TransactionType type = com.batm.model.TransactionType.getType(tx.getFromAddr(), tx.getToAddr(), address);
-            BigDecimal amount = Util.format6(new BigDecimal(tx.getValue()));
+            BigDecimal amount = Util.format(new BigDecimal(tx.getValue()), 6);
             TransactionStatus status = getStatus(tx.getCode());
             Date date1 = Date.from(ZonedDateTime.parse(tx.getTimeStamp()).toInstant());
 

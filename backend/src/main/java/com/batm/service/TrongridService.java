@@ -63,7 +63,7 @@ public class TrongridService {
                 String balance = res.optString("balance");
 
                 if(StringUtils.isNotBlank(balance)) {
-                    return Util.format6(new BigDecimal(balance).divide(TRX_DIVIDER));
+                    return Util.format(new BigDecimal(balance).divide(TRX_DIVIDER), 6);
                 }
             } catch (ResourceAccessException rae) {
                 isNodeAvailable = false;
@@ -240,7 +240,7 @@ public class TrongridService {
                 String toAddress = Base58.toBase58(row.optString("to_address"));
                 String contractRet = tx.optJSONArray("ret").getJSONObject(0).optString("contractRet");
                 TransactionType type = TransactionType.getType(fromAddress, toAddress, address);
-                BigDecimal amount = Util.format6(getAmount(row.optLong("amount")));
+                BigDecimal amount = Util.format(getAmount(row.optLong("amount")), 6);
                 TransactionStatus status = getStatus(contractRet);
                 Date date1 = new Date(tx.optJSONObject("raw_data").optLong("timestamp"));
 
