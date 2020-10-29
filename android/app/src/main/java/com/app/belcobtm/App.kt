@@ -1,9 +1,7 @@
 package com.app.belcobtm
 
-import android.app.Activity
 import android.content.Context
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.OnLifecycleEvent
@@ -15,28 +13,15 @@ import com.app.belcobtm.data.disk.shared.preferences.SharedPreferencesHelper
 import com.app.belcobtm.data.sockets.SocketClient
 import com.app.belcobtm.presentation.di.useCaseModule
 import com.app.belcobtm.presentation.di.viewModelModule
-import dagger.android.AndroidInjector
-import dagger.android.DispatchingAndroidInjector
-import dagger.android.HasActivityInjector
-import dagger.android.support.HasSupportFragmentInjector
 import org.koin.android.ext.android.inject
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
-import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
-class App
-@Inject constructor() : MultiDexApplication(), HasActivityInjector, HasSupportFragmentInjector, LifecycleObserver {
+
+class App : MultiDexApplication(), LifecycleObserver {
     private val prefHelper: SharedPreferencesHelper by inject()
     private val socketClient: SocketClient by inject()
     private var loggedIn = false
-
-    @Inject
-    lateinit var dispatchingAndroidInjector: DispatchingAndroidInjector<Activity>
-
-    @Inject
-    lateinit var fragmentDispatchingAndroidInjector: DispatchingAndroidInjector<Fragment>
 
     init {
         instance = this
@@ -61,14 +46,6 @@ class App
             androidContext(applicationContext)
         }
         prefHelper.coinsDetails = emptyMap()
-    }
-
-    override fun activityInjector(): AndroidInjector<Activity>? {
-        return dispatchingAndroidInjector
-    }
-
-    override fun supportFragmentInjector(): AndroidInjector<Fragment> {
-        return fragmentDispatchingAndroidInjector
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_STOP)

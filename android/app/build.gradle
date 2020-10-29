@@ -108,14 +108,6 @@ dependencies {
     implementation "org.parceler:parceler-api:1.1.12"
     kapt "org.parceler:parceler:1.1.12"
 
-    // Dagger 2
-    // Dagger core
-    implementation "com.google.dagger:dagger:2.27"
-    kapt "com.google.dagger:dagger-compiler:2.23.1"
-    // Dagger Android
-    implementation "com.google.dagger:dagger-android:2.23.1"
-    implementation "com.google.dagger:dagger-android-support:2.23.1" // if you use the support libraries
-    kapt "com.google.dagger:dagger-android-processor:2.23.1"
 
     implementation 'com.github.tbruyelle:rxpermissions:0.10.2'
 
