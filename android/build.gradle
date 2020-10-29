@@ -22,8 +22,9 @@ buildscript {
 
 ext {
     // query git for the commit count to automate versioning.
+    HEAD_SHA1 = 'git rev-parse origin/HEAD'.execute([], project.rootDir).text.trim()
     gitCommitCount =
-            Integer.parseInt('git rev-list --count HEAD'.execute([], project.rootDir).text.trim())
+            Integer.parseInt("git rev-list --count $HEAD_SHA1".execute([], project.rootDir).text.trim())
 }
 
 allprojects {
