@@ -1,17 +1,16 @@
 package com.app.belcobtm.presentation.features.authorization.create.wallet
 
 import android.graphics.Color
-import android.net.Uri
 import android.telephony.PhoneNumberFormattingTextWatcher
 import android.text.SpannableString
 import android.text.Spanned
 import android.text.TextUtils
 import android.text.method.LinkMovementMethod
 import android.view.View
-import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import com.app.belcobtm.R
+import com.app.belcobtm.domain.tools.IntentActions
 import com.app.belcobtm.presentation.core.Const
 import com.app.belcobtm.presentation.core.extensions.*
 import com.app.belcobtm.presentation.core.helper.SimpleClickableSpan
@@ -21,9 +20,11 @@ import com.app.belcobtm.presentation.features.sms.code.SmsCodeFragment
 import io.michaelrocks.libphonenumber.android.NumberParseException
 import io.michaelrocks.libphonenumber.android.PhoneNumberUtil
 import kotlinx.android.synthetic.main.fragment_create_wallet.*
+import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class CreateWalletFragment : BaseFragment() {
+    private val intentActions: IntentActions by inject()
     private val viewModel: CreateWalletViewModel by viewModel()
     private val phoneUtil: PhoneNumberUtil by lazy { PhoneNumberUtil.createInstance(requireContext()) }
     override val resourceLayout: Int = R.layout.fragment_create_wallet
@@ -70,7 +71,7 @@ class CreateWalletFragment : BaseFragment() {
 
     private fun initTncView() {
         val linkClickableSpan = SimpleClickableSpan(
-            onClick = { CustomTabsIntent.Builder().build().launchUrl(requireContext(), Uri.parse(Const.TERMS_URL)) },
+            onClick = { intentActions.openViewActivity(Const.TERMS_URL) },
             updateDrawState = { it.isUnderlineText = false }
         )
         val defaultTextClickableSpan = SimpleClickableSpan(
