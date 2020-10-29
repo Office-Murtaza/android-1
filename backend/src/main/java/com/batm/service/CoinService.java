@@ -94,7 +94,7 @@ public class CoinService {
                 .collect(Collectors.toList());
 
         BigDecimal totalBalance = Util.format(balances.stream()
-                .map(it -> it.getPrice().multiply(it.getBalance().add(it.getReserved())))
+                .map(it -> it.getPrice().multiply(it.getBalance().add(it.getReservedBalance())))
                 .reduce(BigDecimal.ZERO, BigDecimal::add), 2);
 
         return new BalanceDTO(totalBalance, totalBalance.toString(), balances);
@@ -187,7 +187,7 @@ public class CoinService {
             dto.setAddress(userCoin.getAddress());
             dto.setBalance(coinBalance);
             dto.setFiatBalance(coinFiatBalance);
-            dto.setReserved(reservedBalance);
+            dto.setReservedBalance(reservedBalance);
             dto.setPrice(coinPrice);
 
             return dto;
