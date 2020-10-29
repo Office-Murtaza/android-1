@@ -13,7 +13,6 @@ import com.app.belcobtm.data.di.dataModule
 import com.app.belcobtm.data.di.repositoryModule
 import com.app.belcobtm.data.disk.shared.preferences.SharedPreferencesHelper
 import com.app.belcobtm.data.sockets.SocketClient
-import com.app.belcobtm.di.component.DaggerAppComponent
 import com.app.belcobtm.presentation.di.useCaseModule
 import com.app.belcobtm.presentation.di.viewModelModule
 import dagger.android.AndroidInjector
@@ -62,12 +61,6 @@ class App
             androidContext(applicationContext)
         }
         prefHelper.coinsDetails = emptyMap()
-
-        DaggerAppComponent
-            .builder()
-            .application(this)
-            .build()
-            .inject(this)
     }
 
     override fun activityInjector(): AndroidInjector<Activity>? {

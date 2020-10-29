@@ -1,6 +1,6 @@
 package com.app.belcobtm.data.core
 
-import com.app.belcobtm.api.model.param.trx.Trx
+import com.app.belcobtm.data.core.trx.Trx
 import com.app.belcobtm.data.disk.database.AccountDao
 import com.app.belcobtm.data.disk.shared.preferences.SharedPreferencesHelper
 import com.app.belcobtm.data.rest.transaction.TransactionApiService
