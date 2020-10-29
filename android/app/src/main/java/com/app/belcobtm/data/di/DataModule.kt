@@ -24,6 +24,7 @@ import com.app.belcobtm.data.rest.wallet.WalletApiService
 import com.app.belcobtm.data.sockets.SocketClient
 import com.app.belcobtm.domain.tools.IntentActions
 import com.app.belcobtm.domain.tools.IntentActionsImpl
+import com.squareup.moshi.Moshi
 import okhttp3.OkHttpClient
 import org.koin.dsl.module
 
@@ -46,12 +47,13 @@ val dataModule = module {
     single { NetworkUtils(get()) }
     single { FileHelper(get()) }
     single { AssetsDataStore(get()) }
-    single { TransactionHashHelper(get(), get(), get()) }
+    single { TransactionHashHelper(get(), get(), get(), get()) }
     single {
         Room.databaseBuilder(get(), AppDatabase::class.java, "belco_database")
             .fallbackToDestructiveMigration()
             .build()
     }
+    single { Moshi.Builder().build() }
     single { (get() as AppDatabase).getCoinDao() }
     single<IntentActions> { IntentActionsImpl(get()) }
     single { AtmApiService((get() as ApiFactory).atmApi) }
