@@ -1,7 +1,6 @@
 package com.app.belcobtm.data.di
 
 import android.preference.PreferenceManager
-import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.room.Room
 import com.app.belcobtm.data.core.FileHelper
 import com.app.belcobtm.data.core.NetworkUtils
@@ -14,7 +13,6 @@ import com.app.belcobtm.data.rest.OkHttpClientProvider
 import com.app.belcobtm.data.rest.atm.AtmApiService
 import com.app.belcobtm.data.rest.authorization.AuthApiService
 import com.app.belcobtm.data.rest.interceptor.BaseInterceptor
-import com.app.belcobtm.data.rest.interceptor.LogInterceptor
 import com.app.belcobtm.data.rest.interceptor.NoConnectionInterceptor
 import com.app.belcobtm.data.rest.interceptor.ResponseInterceptor
 import com.app.belcobtm.data.rest.settings.SettingsApiService
@@ -25,7 +23,6 @@ import com.app.belcobtm.data.sockets.SocketClient
 import com.app.belcobtm.domain.tools.IntentActions
 import com.app.belcobtm.domain.tools.IntentActionsImpl
 import com.squareup.moshi.Moshi
-import okhttp3.OkHttpClient
 import org.koin.dsl.module
 
 val dataModule = module {
@@ -33,7 +30,6 @@ val dataModule = module {
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(get())
         SharedPreferencesHelper(sharedPreferences)
     }
-    single { LogInterceptor(get()) }
     single { BaseInterceptor(get(), get()) }
     single { NoConnectionInterceptor(get()) }
     single { ResponseInterceptor(get(), get()) }

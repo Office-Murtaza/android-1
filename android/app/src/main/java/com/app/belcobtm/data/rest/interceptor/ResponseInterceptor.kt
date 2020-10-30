@@ -1,7 +1,6 @@
 package com.app.belcobtm.data.rest.interceptor
 
 
-import com.app.belcobtm.data.core.NetworkUtils
 import com.app.belcobtm.data.disk.shared.preferences.SharedPreferencesHelper
 import com.app.belcobtm.data.rest.ApiFactory
 import com.app.belcobtm.data.rest.authorization.request.RefreshTokenRequest
@@ -13,10 +12,7 @@ import org.json.JSONObject
 import java.net.HttpURLConnection
 
 
-class ResponseInterceptor(
-    private val networkUtils: NetworkUtils,
-    private val prefsHelper: SharedPreferencesHelper
-) : Interceptor {
+class ResponseInterceptor(private val prefsHelper: SharedPreferencesHelper) : Interceptor {
 
     override fun intercept(chain: Interceptor.Chain): Response? = try {
         val request = chain.request()
@@ -69,11 +65,7 @@ class ResponseInterceptor(
             response
         }
     } catch (e: Exception) {
-        if (networkUtils.isNetworkAvailable()) {
-            throw Failure.ServerError(e.message)
-        } else {
-            throw Failure.NetworkConnection
-        }
+        throw Failure.ServerError(e.message)
     }
 
     private fun retryWithNewToken(
