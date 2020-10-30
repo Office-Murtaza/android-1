@@ -1,6 +1,6 @@
 package com.app.belcobtm.data.core
 
-import com.app.belcobtm.api.model.param.trx.Trx
+import com.app.belcobtm.data.core.trx.Trx
 import com.app.belcobtm.data.disk.database.AccountDao
 import com.app.belcobtm.data.disk.shared.preferences.SharedPreferencesHelper
 import com.app.belcobtm.data.rest.transaction.TransactionApiService
@@ -15,8 +15,8 @@ import com.app.belcobtm.presentation.core.extensions.unit
 import com.app.belcobtm.presentation.core.toHexByteArray
 import com.app.belcobtm.presentation.core.toHexBytes
 import com.app.belcobtm.presentation.core.toHexBytesInByteString
-import com.google.gson.Gson
 import com.google.protobuf.ByteString
+import com.squareup.moshi.Moshi
 import wallet.core.java.AnySigner
 import wallet.core.jni.*
 import wallet.core.jni.proto.*
@@ -25,6 +25,7 @@ import java.util.*
 
 
 class TransactionHashHelper(
+    private val moshi: Moshi,
     private val apiService: TransactionApiService,
     private val prefsHelper: SharedPreferencesHelper,
     private val daoAccount: AccountDao
@@ -347,6 +348,7 @@ class TransactionHashHelper(
         }
     }
 
+    @Suppress("BlockingMethodInNonBlockingContext")
     private suspend fun createTransactionHashTron(
         toAddress: String,
         fromCoin: LocalCoinType,
@@ -389,7 +391,9 @@ class TransactionHashHelper(
             }.build()
 
             val signJson = AnySigner.sign(signingInput, CoinType.TRON, Tron.SigningOutput.parser()).json
-            val correctJson = Gson().toJson(Gson().fromJson(signJson, Trx::class.java))
+            val adapter = moshi.adapter(Trx::class.java)
+            val jsonContent = adapter.fromJson(signJson)
+            val correctJson = adapter.toJson(jsonContent)
             Either.Right(correctJson)
         } else {
             response as Either.Left

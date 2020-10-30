@@ -1,4 +1,4 @@
-package com.app.belcobtm.api.model.param.trx
+package com.app.belcobtm.data.core.trx
 
 data class Raw_data(
 

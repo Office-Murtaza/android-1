@@ -35,12 +35,6 @@
             </intent-filter>
         </activity>
 
-
-        <activity
-            android:name=".ui.main.coins.sell.SellActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppThemeNoActionBar" />
-
         <activity
             android:name=".presentation.features.wallet.trade.main.TradeActivity"
             android:screenOrientation="portrait"

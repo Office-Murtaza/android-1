@@ -6,9 +6,11 @@ import okhttp3.Interceptor
 import okhttp3.Response
 
 class NoConnectionInterceptor(private val networkUtils: NetworkUtils) : Interceptor {
-    override fun intercept(chain: Interceptor.Chain): Response = if (networkUtils.isNetworkAvailable()) {
-        chain.proceed(chain.request())
-    } else {
-        throw Failure.NetworkConnection
+
+    override fun intercept(chain: Interceptor.Chain): Response {
+        return when (networkUtils.isNetworkAvailable()) {
+            true -> chain.proceed(chain.request())
+            false -> throw Failure.NetworkConnection
+        }
     }
 }

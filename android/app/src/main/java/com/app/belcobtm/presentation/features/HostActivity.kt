@@ -1,21 +1,14 @@
 package com.app.belcobtm.presentation.features
 
-import android.content.BroadcastReceiver
-import android.content.Context
-import android.content.Intent
-import android.content.IntentFilter
 import android.os.Build
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.os.bundleOf
-import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.navigation.fragment.NavHostFragment
 import com.app.belcobtm.App
 import com.app.belcobtm.R
-import com.app.belcobtm.data.rest.interceptor.ResponseInterceptor.Companion.KEY_IS_USER_UNAUTHORIZED
-import com.app.belcobtm.data.rest.interceptor.ResponseInterceptor.Companion.TAG_USER_AUTHORIZATION
 import com.app.belcobtm.domain.authorization.AuthorizationStatus
 import com.app.belcobtm.domain.authorization.interactor.AuthorizationStatusGetUseCase
 import com.app.belcobtm.domain.authorization.interactor.ClearAppDataUseCase
@@ -26,16 +19,6 @@ class HostActivity : AppCompatActivity() {
     private val authorizationStatusUseCase: AuthorizationStatusGetUseCase by inject()
     private val clearAppDataUseCase: ClearAppDataUseCase by inject()
     private lateinit var currentNavFragment: NavHostFragment
-    private val authorizationBroadcast: BroadcastReceiver = object : BroadcastReceiver() {
-        override fun onReceive(
-            context: Context,
-            intent: Intent
-        ) = if (intent.getBooleanExtra(KEY_IS_USER_UNAUTHORIZED, false)) {
-            showAuthorizationScreen()
-        } else {
-            showPinScreen()
-        }
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(R.style.AppTheme)
@@ -57,17 +40,6 @@ class HostActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         super.onOptionsItemSelected(item)
         return false
-    }
-
-    override fun onResume() {
-        super.onResume()
-        val intentFilter = IntentFilter(TAG_USER_AUTHORIZATION)
-        LocalBroadcastManager.getInstance(applicationContext).registerReceiver(authorizationBroadcast, intentFilter)
-    }
-
-    override fun onPause() {
-        super.onPause()
-        LocalBroadcastManager.getInstance(applicationContext).unregisterReceiver(authorizationBroadcast)
     }
 
     fun showMainScreen() = setHostFragment(HostNavigationFragment())
