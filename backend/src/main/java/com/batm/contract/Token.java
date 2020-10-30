@@ -86,15 +86,15 @@ public class Token extends Contract {
 
     public static final String FUNC_REWARDOF = "rewardOf";
 
-    public static final String FUNC_STAKEANNUALPERCENT = "stakeAnnualPercent";
+    public static final String FUNC_ANNUALPERCENT = "annualPercent";
 
-    public static final String FUNC_STAKEANNUALPERIOD = "stakeAnnualPeriod";
+    public static final String FUNC_ANNUALPERIOD = "annualPeriod";
 
-    public static final String FUNC_STAKEBASEPERIOD = "stakeBasePeriod";
+    public static final String FUNC_BASEPERIOD = "basePeriod";
 
     public static final String FUNC_STAKEDETAILS = "stakeDetails";
 
-    public static final String FUNC_STAKEHOLDPERIOD = "stakeHoldPeriod";
+    public static final String FUNC_HOLDPERIOD = "holdPeriod";
 
     public static final String FUNC_STAKEOF = "stakeOf";
 
@@ -640,22 +640,22 @@ public class Token extends Contract {
         return executeRemoteCallSingleValueReturn(function, BigInteger.class);
     }
 
-    public RemoteFunctionCall<BigInteger> stakeAnnualPercent() {
-        final org.web3j.abi.datatypes.Function function = new org.web3j.abi.datatypes.Function(FUNC_STAKEANNUALPERCENT, 
+    public RemoteFunctionCall<BigInteger> annualPercent() {
+        final org.web3j.abi.datatypes.Function function = new org.web3j.abi.datatypes.Function(FUNC_ANNUALPERCENT,
                 Arrays.<Type>asList(), 
                 Arrays.<TypeReference<?>>asList(new TypeReference<Uint256>() {}));
         return executeRemoteCallSingleValueReturn(function, BigInteger.class);
     }
 
-    public RemoteFunctionCall<BigInteger> stakeAnnualPeriod() {
-        final org.web3j.abi.datatypes.Function function = new org.web3j.abi.datatypes.Function(FUNC_STAKEANNUALPERIOD, 
+    public RemoteFunctionCall<BigInteger> annualPeriod() {
+        final org.web3j.abi.datatypes.Function function = new org.web3j.abi.datatypes.Function(FUNC_ANNUALPERIOD,
                 Arrays.<Type>asList(), 
                 Arrays.<TypeReference<?>>asList(new TypeReference<Uint256>() {}));
         return executeRemoteCallSingleValueReturn(function, BigInteger.class);
     }
 
-    public RemoteFunctionCall<BigInteger> stakeBasePeriod() {
-        final org.web3j.abi.datatypes.Function function = new org.web3j.abi.datatypes.Function(FUNC_STAKEBASEPERIOD, 
+    public RemoteFunctionCall<BigInteger> basePeriod() {
+        final org.web3j.abi.datatypes.Function function = new org.web3j.abi.datatypes.Function(FUNC_BASEPERIOD,
                 Arrays.<Type>asList(), 
                 Arrays.<TypeReference<?>>asList(new TypeReference<Uint256>() {}));
         return executeRemoteCallSingleValueReturn(function, BigInteger.class);
@@ -677,8 +677,8 @@ public class Token extends Contract {
                 });
     }
 
-    public RemoteFunctionCall<BigInteger> stakeHoldPeriod() {
-        final org.web3j.abi.datatypes.Function function = new org.web3j.abi.datatypes.Function(FUNC_STAKEHOLDPERIOD, 
+    public RemoteFunctionCall<BigInteger> holdPeriod() {
+        final org.web3j.abi.datatypes.Function function = new org.web3j.abi.datatypes.Function(FUNC_HOLDPERIOD,
                 Arrays.<Type>asList(), 
                 Arrays.<TypeReference<?>>asList(new TypeReference<Uint256>() {}));
         return executeRemoteCallSingleValueReturn(function, BigInteger.class);

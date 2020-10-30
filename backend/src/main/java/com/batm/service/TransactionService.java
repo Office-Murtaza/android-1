@@ -10,7 +10,7 @@ import net.sf.json.JSONObject;
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
-import org.joda.time.Days;
+import org.joda.time.Seconds;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
@@ -18,7 +18,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.*;
@@ -27,8 +26,6 @@ import java.util.*;
 @EnableScheduling
 public class TransactionService {
 
-    private static final BigDecimal REWARD_ANNUAL_PERCENT = new BigDecimal(12);
-    private static final int CANCEL_PERIOD = 21;
     private static final Pageable page = PageRequest.of(0, 100);
 
     @Autowired
@@ -425,8 +422,8 @@ public class TransactionService {
     public StakeDetailsDTO getStakeDetails(Long userId, CoinService.CoinEnum coin) {
         StakeDetailsDTO dto = new StakeDetailsDTO();
         dto.setStatus(StakeStatus.NOT_EXIST);
-        dto.setRewardAnnualPercent(REWARD_ANNUAL_PERCENT);
-        dto.setCancelPeriod(CANCEL_PERIOD);
+        dto.setRewardAnnualPercent(geth.getStakeAnnualPercent());
+        dto.setHoldPeriod(geth.getDaysHoldPeriod());
 
         try {
             Identity identity = userService.findByUserId(userId);
@@ -440,35 +437,29 @@ public class TransactionService {
                 dto.setCreateDate(createStakeRec.getCreateDate());
 
                 if (StringUtils.isBlank(createStakeRec.getRefTxId())) {
-                    int days = Days.daysBetween(new DateTime(createStakeRec.getCreateDate()), DateTime.now()).getDays();
+                    int days = Seconds.secondsBetween(new DateTime(createStakeRec.getCreateDate()), DateTime.now()).getSeconds() / geth.getStakeBasePeriod().intValue();
+                    BigDecimal percent = calculatePercent(days);
+
                     dto.setDuration(days);
-
-                    BigDecimal rewardPercent = new BigDecimal(days)
-                            .multiply(REWARD_ANNUAL_PERCENT)
-                            .divide(new BigDecimal(365), 2, RoundingMode.HALF_DOWN)
-                            .stripTrailingZeros();
-
-                    dto.setRewardAmount(createStakeRec.getAmount().multiply(rewardPercent.divide(Constant.HUNDRED)).stripTrailingZeros());
-                    dto.setRewardPercent(rewardPercent);
-                    dto.setRewardAnnualAmount(createStakeRec.getAmount().multiply(REWARD_ANNUAL_PERCENT.divide(Constant.HUNDRED)).stripTrailingZeros());
+                    dto.setRewardPercent(percent);
+                    dto.setRewardAmount(createStakeRec.getAmount().multiply(percent.divide(Constant.HUNDRED)).stripTrailingZeros());
+                    dto.setRewardAnnualAmount(createStakeRec.getAmount().multiply(geth.getStakeAnnualPercent().divide(Constant.HUNDRED)).stripTrailingZeros());
 
                     return dto;
                 } else {
                     TransactionRecordWallet cancelStakeRec = walletRep.findFirstByTxId(createStakeRec.getRefTxId()).get();
 
+                    int days = Seconds.secondsBetween(new DateTime(createStakeRec.getCreateDate()), new DateTime(cancelStakeRec.getCreateDate())).getSeconds() / geth.getStakeBasePeriod().intValue();
+                    int holdDays = Seconds.secondsBetween(new DateTime(cancelStakeRec.getCreateDate()), DateTime.now()).getSeconds() / geth.getStakeBasePeriod().intValue();
+                    BigDecimal percent = calculatePercent(days);
+
+                    dto.setDuration(days);
+                    dto.setRewardPercent(percent);
                     dto.setStatus(StakeStatus.convert(TransactionType.valueOf(cancelStakeRec.getType()), TransactionStatus.valueOf(cancelStakeRec.getStatus())));
                     dto.setCancelDate(cancelStakeRec.getCreateDate());
-                    int days = Days.daysBetween(new DateTime(createStakeRec.getCreateDate()), new DateTime(cancelStakeRec.getCreateDate())).getDays();
-                    dto.setDuration(days);
-
-                    BigDecimal rewardPercent = new BigDecimal(days)
-                            .multiply(REWARD_ANNUAL_PERCENT)
-                            .divide(new BigDecimal(365), 2, RoundingMode.HALF_DOWN)
-                            .stripTrailingZeros();
-
-                    dto.setRewardAmount(createStakeRec.getAmount().multiply(rewardPercent.divide(Constant.HUNDRED)).stripTrailingZeros());
-                    dto.setRewardPercent(rewardPercent);
-                    dto.setUntilWithdraw(Math.max(0, CANCEL_PERIOD - Days.daysBetween(new DateTime(cancelStakeRec.getCreateDate()), DateTime.now()).getDays()));
+                    dto.setRewardAmount(createStakeRec.getAmount().multiply(percent.divide(Constant.HUNDRED)).stripTrailingZeros());
+                    dto.setRewardAnnualAmount(createStakeRec.getAmount().multiply(geth.getStakeAnnualPercent().divide(Constant.HUNDRED)).stripTrailingZeros());
+                    dto.setUntilWithdraw(Math.max(0, geth.getDaysHoldPeriod() - holdDays));
 
                     if (StringUtils.isNotBlank(cancelStakeRec.getRefTxId())) {
                         TransactionRecordWallet withdrawStakeRec = walletRep.findFirstByTxId(cancelStakeRec.getRefTxId()).get();
@@ -660,5 +651,9 @@ public class TransactionService {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private BigDecimal calculatePercent(int days) {
+        return geth.getStakeAnnualPercent().multiply(new BigDecimal(days).divide(new BigDecimal(geth.getStakeAnnualPeriod()), 2, RoundingMode.HALF_DOWN)).stripTrailingZeros();
     }
 }

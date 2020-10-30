@@ -53,7 +53,7 @@ import java.util.*;
 @EnableScheduling
 public class GethService {
 
-    private static final BigDecimal ETH_DIVIDER = BigDecimal.valueOf(1_000_000_000_000_000_000L);
+    public static final BigDecimal ETH_DIVIDER = BigDecimal.valueOf(1_000_000_000_000_000_000L);
 
     private final int START_BLOCK = 10290000;
     private final int MAX_BLOCK_COUNT = 500;
@@ -107,38 +107,52 @@ public class GethService {
     private Coin catmCoin;
     private boolean isNodeAvailable;
 
+    private BigInteger stakeBasePeriod;
+    private BigInteger stakeAnnualPeriod;
+    private BigDecimal stakeAnnualPercent;
+    private int daysHoldPeriod;
+
     @PostConstruct
     public void init() {
-        if (StringUtils.isNotBlank(nodeUrl)) {
-            isNodeAvailable = true;
+        try {
+            if (StringUtils.isNotBlank(nodeUrl)) {
+                isNodeAvailable = true;
 
-            web3 = Web3j.build(new HttpService(nodeUrl));
+                web3 = Web3j.build(new HttpService(nodeUrl));
 
-            token = com.batm.contract.Token.load(contractAddress, web3,
-                    Credentials.create(Numeric.toHexString(walletService.getPrivateKeyETH().data())), new DefaultGasProvider());
+                token = com.batm.contract.Token.load(contractAddress, web3,
+                        Credentials.create(Numeric.toHexString(walletService.getPrivateKeyETH().data())), new DefaultGasProvider());
 
-            catmCoin = coinRep.findCoinByCode(CoinService.CoinEnum.CATM.name());
+                stakeBasePeriod = token.basePeriod().send();
+                stakeAnnualPeriod = token.annualPeriod().send();
+                stakeAnnualPercent = new BigDecimal(token.annualPercent().send());
+                daysHoldPeriod = token.holdPeriod().send().divide(token.basePeriod().send()).intValue();
 
-            if (!mongo.getCollection(ETH_TX_COLL).listIndexes().iterator().hasNext()) {
-                mongo.getCollection(ETH_TX_COLL).createIndex(new Document("txId", 1).append("fromAddress", 1).append("toAddress", 1));
+                catmCoin = coinRep.findCoinByCode(CoinService.CoinEnum.CATM.name());
+
+                if (!mongo.getCollection(ETH_TX_COLL).listIndexes().iterator().hasNext()) {
+                    mongo.getCollection(ETH_TX_COLL).createIndex(new Document("txId", 1).append("fromAddress", 1).append("toAddress", 1));
+                }
+
+                if (!mongo.getCollection(TOKEN_TX_COLL).listIndexes().iterator().hasNext()) {
+                    mongo.getCollection(TOKEN_TX_COLL).createIndex(new Document("txId", 1).append("fromAddress", 1).append("toAddress", 1));
+                }
+
+                if (!mongo.getCollection(ADDRESS_COLL).listIndexes().iterator().hasNext()) {
+                    mongo.getCollection(ADDRESS_COLL).createIndex(new Document("address", 1));
+                }
+
+                if (mongo.getCollection(ADDRESS_COLL).countDocuments() == 0) {
+                    addAddressToJournal(walletService.getAddressETH());
+                    addAddressToJournal(contractAddress);
+
+                    Coin coin = coinRep.findCoinByCode(CoinService.CoinEnum.ETH.name());
+                    userCoinRep.findAllByCoin(coin).stream().forEach(e -> addAddressToJournal(e.getAddress()));
+                    coinPathRep.findAllByCoin(coin).stream().forEach(e -> addAddressToJournal(e.getAddress()));
+                }
             }
-
-            if (!mongo.getCollection(TOKEN_TX_COLL).listIndexes().iterator().hasNext()) {
-                mongo.getCollection(TOKEN_TX_COLL).createIndex(new Document("txId", 1).append("fromAddress", 1).append("toAddress", 1));
-            }
-
-            if (!mongo.getCollection(ADDRESS_COLL).listIndexes().iterator().hasNext()) {
-                mongo.getCollection(ADDRESS_COLL).createIndex(new Document("address", 1));
-            }
-
-            if (mongo.getCollection(ADDRESS_COLL).countDocuments() == 0) {
-                addAddressToJournal(walletService.getAddressETH());
-                addAddressToJournal(contractAddress);
-
-                Coin coin = coinRep.findCoinByCode(CoinService.CoinEnum.ETH.name());
-                userCoinRep.findAllByCoin(coin).stream().forEach(e -> addAddressToJournal(e.getAddress()));
-                coinPathRep.findAllByCoin(coin).stream().forEach(e -> addAddressToJournal(e.getAddress()));
-            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

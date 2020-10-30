@@ -33,9 +33,9 @@ public class StakeDetailsDTO {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private Date cancelDate;
 
-    private Integer duration;
-    private Integer untilWithdraw;
-    private Integer cancelPeriod;
+    private int duration;
+    private int untilWithdraw;
+    private int holdPeriod;
 
     public void setStatus(StakeStatus status) {
         this.status = status;
@@ -74,15 +74,15 @@ public class StakeDetailsDTO {
         this.cancelDate = cancelDate;
     }
 
-    public void setDuration(Integer duration) {
+    public void setDuration(int duration) {
         this.duration = duration;
     }
 
-    public void setUntilWithdraw(Integer untilWithdraw) {
+    public void setUntilWithdraw(int untilWithdraw) {
         this.untilWithdraw = untilWithdraw;
     }
 
-    public void setCancelPeriod(Integer cancelPeriod) {
-        this.cancelPeriod = cancelPeriod;
+    public void setHoldPeriod(int holdPeriod) {
+        this.holdPeriod = holdPeriod;
     }
 }

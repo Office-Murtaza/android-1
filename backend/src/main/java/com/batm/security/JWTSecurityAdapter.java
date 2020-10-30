@@ -79,6 +79,14 @@ public class JWTSecurityAdapter extends WebSecurityConfigurerAdapter {
                     .anyRequest().authenticated();
 
             http.addFilterBefore(tokenFilter, UsernamePasswordAuthenticationFilter.class);
+        } else {
+            http.cors().and().csrf().disable()
+                    .exceptionHandling().authenticationEntryPoint(entryPoint).and()
+                    .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
+                    .authorizeRequests()
+                    .anyRequest().permitAll();
+
+            http.addFilterBefore(tokenFilter, UsernamePasswordAuthenticationFilter.class);
         }
     }
 }

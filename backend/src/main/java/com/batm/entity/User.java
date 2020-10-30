@@ -1,6 +1,7 @@
 package com.batm.entity;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.*;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
@@ -28,7 +29,7 @@ public class User extends BaseEntity {
 
     @JsonManagedReference
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<UserCoin> userCoins;
+    private List<UserCoin> userCoins = new ArrayList<>();
 
     @OneToOne(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Token refreshToken;

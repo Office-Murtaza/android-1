@@ -9,6 +9,7 @@ import com.batm.model.Response;
 import wallet.core.jni.CoinType;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 
 @RestController
 @RequestMapping("/api/v1/test")
@@ -43,6 +44,25 @@ public class TestController {
         res.put("BNB", getCoinJson(walletService.getAddressBNB(), CoinService.CoinEnum.BNB.getBalance(walletService.getAddressBNB()), CoinType.BINANCE.derivationPath()));
         res.put("XRP", getCoinJson(walletService.getAddressXRP(), CoinService.CoinEnum.XRP.getBalance(walletService.getAddressXRP()), CoinType.XRP.derivationPath()));
         res.put("TRX", getCoinJson(walletService.getAddressTRX(), CoinService.CoinEnum.TRX.getBalance(walletService.getAddressTRX()), CoinType.TRON.derivationPath()));
+
+        return Response.ok(res);
+    }
+
+    @GetMapping("/stake")
+    public Response getStake() {
+        JSONObject res = new JSONObject();
+
+        try {
+            res.put("totalStakes", new BigDecimal(gethService.getToken().totalStakes().send()).divide(gethService.ETH_DIVIDER));
+            res.put("basePeriod(s)", gethService.getToken().basePeriod().send());
+            res.put("holdPeriod(s)", gethService.getToken().holdPeriod().send());
+            res.put("annualPercent", gethService.getToken().annualPercent().send());
+            res.put("annualPeriod(s)", gethService.getToken().annualPeriod().send());
+
+            gethService.getToken().stakeParams(BigInteger.valueOf(1), BigInteger.valueOf(10), BigInteger.valueOf(20), BigInteger.valueOf(60)).send();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         return Response.ok(res);
     }

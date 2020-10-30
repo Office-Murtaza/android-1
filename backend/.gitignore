@@ -8,6 +8,7 @@
 
 # Maven
 log/
+logs/
 target/
 
 # eclipse project file
