@@ -1,9 +1,6 @@
 package com.app.belcobtm.data.rest.interceptor
 
 
-import android.content.Intent
-import androidx.localbroadcastmanager.content.LocalBroadcastManager
-import com.app.belcobtm.data.core.NetworkUtils
 import com.app.belcobtm.data.disk.shared.preferences.SharedPreferencesHelper
 import com.app.belcobtm.data.rest.ApiFactory
 import com.app.belcobtm.data.rest.authorization.request.RefreshTokenRequest
@@ -15,12 +12,7 @@ import org.json.JSONObject
 import java.net.HttpURLConnection
 
 
-class ResponseInterceptor(
-    @Deprecated("Need change to simple listener")
-    private val broadcastManager: LocalBroadcastManager,
-    private val networkUtils: NetworkUtils,
-    private val prefsHelper: SharedPreferencesHelper
-) : Interceptor {
+class ResponseInterceptor(private val prefsHelper: SharedPreferencesHelper) : Interceptor {
 
     override fun intercept(chain: Interceptor.Chain): Response? = try {
         val request = chain.request()
@@ -63,9 +55,6 @@ class ResponseInterceptor(
                     if (newResp.code() == HttpURLConnection.HTTP_OK) {
                         proceedSuccessResponse(newResp)
                     } else if (newResp.code() == HttpURLConnection.HTTP_UNAUTHORIZED) {
-                        val intent = Intent(TAG_USER_AUTHORIZATION)
-                        intent.putExtra(KEY_IS_USER_UNAUTHORIZED, true)
-                        broadcastManager.sendBroadcast(intent)
                         throw Failure.TokenError
                     }
                 }
@@ -76,11 +65,7 @@ class ResponseInterceptor(
             response
         }
     } catch (e: Exception) {
-        if (networkUtils.isNetworkAvailable()) {
-            throw Failure.ServerError(e.message)
-        } else {
-            throw Failure.NetworkConnection
-        }
+        throw Failure.ServerError(e.message)
     }
 
     private fun retryWithNewToken(
@@ -165,7 +150,5 @@ class ResponseInterceptor(
         private const val ERROR_FIELD = "error"
         private const val ERROR_SUB_FIELD = "message"
         private const val ERROR_SUB_FIELD_CODE = "code"
-        const val TAG_USER_AUTHORIZATION = "tag_broadcast_user_unauthorized"
-        const val KEY_IS_USER_UNAUTHORIZED = "key_is_user_unauthorized"
     }
 }

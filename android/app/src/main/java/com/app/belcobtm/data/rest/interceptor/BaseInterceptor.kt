@@ -6,6 +6,7 @@ import com.app.belcobtm.domain.Failure
 import okhttp3.Interceptor
 import okhttp3.Response
 import java.io.IOException
+import kotlin.jvm.Throws
 
 class BaseInterceptor(
     private val prefHelper: SharedPreferencesHelper,

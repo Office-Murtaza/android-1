@@ -143,7 +143,7 @@ class TransactionsFragment : BaseFragment() {
                 getString(R.string.text_usd, (it.balance * it.priceUsd).toStringUsd())
         })
         viewModel.transactionListLiveData.observe(this) {
-            adapter.setItemList(it)
+            adapter.submitList(it)
             swipeToRefreshView.isRefreshing = false
         }
         viewModel.detailsLiveData.listen({

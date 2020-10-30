@@ -1,6 +1,5 @@
 package com.app.belcobtm.data
 
-import com.app.belcobtm.data.core.NetworkUtils
 import com.app.belcobtm.data.core.TransactionHashHelper
 import com.app.belcobtm.data.disk.database.AccountDao
 import com.app.belcobtm.data.disk.shared.preferences.SharedPreferencesHelper
@@ -18,7 +17,6 @@ class TransactionRepositoryImpl(
     private val prefHelper: SharedPreferencesHelper,
     private val toolsRepository: ToolsRepository,
     private val transactionHashRepository: TransactionHashHelper,
-    private val networkUtils: NetworkUtils,
     private val daoAccount: AccountDao
 ) : TransactionRepository {
 
@@ -185,7 +183,6 @@ class TransactionRepositoryImpl(
         sortType: TradeSortType,
         paginationStep: Int
     ): Either<Failure, TradeInfoDataItem> = when {
-        !networkUtils.isNetworkAvailable() -> Either.Left(Failure.NetworkConnection)
         (latitude > 0 || longitude > 0) && prefHelper.tradeLocationExpirationTime < System.currentTimeMillis() -> {
             val locationRequest = apiService.sendTradeUserLocation(latitude, longitude)
             prefHelper.tradeLocationExpirationTime =
@@ -202,7 +199,6 @@ class TransactionRepositoryImpl(
         sortType: TradeSortType,
         paginationStep: Int
     ): Either<Failure, TradeInfoDataItem> = when {
-        !networkUtils.isNetworkAvailable() -> Either.Left(Failure.NetworkConnection)
         (latitude > 0 || longitude > 0) && prefHelper.tradeLocationExpirationTime < System.currentTimeMillis() -> {
             val locationRequest = apiService.sendTradeUserLocation(latitude, longitude)
             prefHelper.tradeLocationExpirationTime =
@@ -219,7 +215,6 @@ class TransactionRepositoryImpl(
         sortType: TradeSortType,
         paginationStep: Int
     ): Either<Failure, TradeInfoDataItem> = when {
-        !networkUtils.isNetworkAvailable() -> Either.Left(Failure.NetworkConnection)
         (latitude > 0 || longitude > 0) && prefHelper.tradeLocationExpirationTime < System.currentTimeMillis() -> {
             val locationRequest = apiService.sendTradeUserLocation(latitude, longitude)
             prefHelper.tradeLocationExpirationTime =
@@ -236,7 +231,6 @@ class TransactionRepositoryImpl(
         sortType: TradeSortType,
         paginationStep: Int
     ): Either<Failure, TradeInfoDataItem> = when {
-        !networkUtils.isNetworkAvailable() -> Either.Left(Failure.NetworkConnection)
         (latitude > 0 || longitude > 0) && prefHelper.tradeLocationExpirationTime < System.currentTimeMillis() -> {
             val locationRequest = apiService.sendTradeUserLocation(latitude, longitude)
             prefHelper.tradeLocationExpirationTime =
@@ -294,19 +288,17 @@ class TransactionRepositoryImpl(
     override suspend fun tradeReserveTransactionCreate(
         coinCode: String,
         cryptoAmount: Double
-    ): Either<Failure, String> = if (networkUtils.isNetworkAvailable()) {
+    ): Either<Failure, String> {
         val toAddress = prefHelper.coinsDetails[coinCode]?.walletAddress ?: ""
         val coinType = LocalCoinType.valueOf(coinCode)
         val hashResponse =
             transactionHashRepository.createTransactionHash(coinType, cryptoAmount, toAddress)
         val sendSmsToDeviceResponse = toolsRepository.sendSmsToDeviceOld()
-        when {
+        return when {
             hashResponse.isRight && sendSmsToDeviceResponse.isRight -> hashResponse as Either.Right
             sendSmsToDeviceResponse.isLeft -> sendSmsToDeviceResponse as Either.Left
             else -> hashResponse as Either.Left
         }
-    } else {
-        Either.Left(Failure.NetworkConnection)
     }
 
     override suspend fun tradeReserveTransactionComplete(
@@ -314,9 +306,9 @@ class TransactionRepositoryImpl(
         coinCode: String,
         cryptoAmount: Double,
         hash: String
-    ): Either<Failure, Unit> = if (networkUtils.isNetworkAvailable()) {
+    ): Either<Failure, Unit> {
         val smsCodeVerifyResponse = toolsRepository.verifySmsCodeOld(smsCode)
-        if (smsCodeVerifyResponse.isRight) {
+        return if (smsCodeVerifyResponse.isRight) {
             val fromAddress = prefHelper.coinsDetails[coinCode]?.walletAddress ?: ""
             val toAddress = prefHelper.coinsDetails[coinCode]?.contractAddress ?: ""
             val fee = prefHelper.coinsDetails[coinCode]?.txFee ?: 0.0
@@ -324,10 +316,7 @@ class TransactionRepositoryImpl(
         } else {
             smsCodeVerifyResponse as Either.Left
         }
-    } else {
-        Either.Left(Failure.NetworkConnection)
     }
-
     override suspend fun stakeDetails(
         coinCode: String
     ): Either<Failure, StakeDetailsDataItem> = apiService.stakeDetails(coinCode)
