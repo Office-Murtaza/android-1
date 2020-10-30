@@ -20,10 +20,10 @@ val repositoryModule = module {
             (get() as AppDatabase).getCoinDao()
         )
     }
-    single<SettingsRepository> { SettingsRepositoryImpl(get(), get(), get(), get()) }
+    single<SettingsRepository> { SettingsRepositoryImpl(get(), get(), get()) }
     single<WalletRepository> { WalletRepositoryImpl(get(), get(), get()) }
-    single<TransactionRepository> { TransactionRepositoryImpl(get(), get(), get(), get(), get(), get()) }
-    single<ToolsRepository> { ToolsRepositoryImpl(get(), get()) }
-    single<AtmRepository> { AtmRepositoryImpl(get(), get()) }
+    single<TransactionRepository> { TransactionRepositoryImpl(get(), get(), get(), get(), get()) }
+    single<ToolsRepository> { ToolsRepositoryImpl(get()) }
+    single<AtmRepository> { AtmRepositoryImpl(get()) }
     single<WalletSocketRepository> { WalletSocketRepositoryImpl(get()) }
 }

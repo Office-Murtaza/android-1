@@ -19,17 +19,17 @@ android {
         targetSdkVersion 29
         versionCode rootProject.gitCommitCount
         versionName "1.6"
-        multiDexEnabled = true
         vectorDrawables.useSupportLibrary = true
     }
     buildTypes {
         debug {
+            minifyEnabled false
             firebaseAppDistribution {
                 groups = "testers"
             }
         }
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
@@ -78,8 +78,6 @@ dependencies {
 
     //swipe refresh layout
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
-
-    implementation 'androidx.multidex:multidex:2.0.1'
 
     implementation "com.trustwallet:wallet-core:2.2.9"
 

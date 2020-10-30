@@ -1,12 +1,12 @@
 package com.app.belcobtm
 
+import android.app.Application
 import android.content.Context
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.OnLifecycleEvent
 import androidx.lifecycle.ProcessLifecycleOwner
-import androidx.multidex.MultiDexApplication
 import com.app.belcobtm.data.di.dataModule
 import com.app.belcobtm.data.di.repositoryModule
 import com.app.belcobtm.data.disk.shared.preferences.SharedPreferencesHelper
@@ -18,7 +18,7 @@ import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 
 
-class App : MultiDexApplication(), LifecycleObserver {
+class App : Application(), LifecycleObserver {
     private val prefHelper: SharedPreferencesHelper by inject()
     private val socketClient: SocketClient by inject()
     private var loggedIn = false
