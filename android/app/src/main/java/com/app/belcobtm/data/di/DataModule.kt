@@ -12,6 +12,7 @@ import com.app.belcobtm.data.rest.ApiFactory
 import com.app.belcobtm.data.rest.OkHttpClientProvider
 import com.app.belcobtm.data.rest.atm.AtmApiService
 import com.app.belcobtm.data.rest.authorization.AuthApiService
+import com.app.belcobtm.data.rest.interceptor.AuthorizationInterceptor
 import com.app.belcobtm.data.rest.interceptor.BaseInterceptor
 import com.app.belcobtm.data.rest.interceptor.NoConnectionInterceptor
 import com.app.belcobtm.data.rest.interceptor.ResponseInterceptor
@@ -32,9 +33,10 @@ val dataModule = module {
     }
     single { BaseInterceptor(get(), get()) }
     single { NoConnectionInterceptor(get()) }
-    single { ResponseInterceptor(get()) }
+    single { ResponseInterceptor() }
+    single { AuthorizationInterceptor(get(), get(), get()) }
     single { ApiFactory(get()) }
-    single { OkHttpClientProvider().provideOkHttpClient(get(), get(), get()) }
+    single { OkHttpClientProvider().provideOkHttpClient(get(), get(), get(), get()) }
     single { AuthApiService((get() as ApiFactory).authApi) }
     single { SettingsApiService(get(), (get() as ApiFactory).settingsApi) }
     single { WalletApiService((get() as ApiFactory).walletApi, get()) }
