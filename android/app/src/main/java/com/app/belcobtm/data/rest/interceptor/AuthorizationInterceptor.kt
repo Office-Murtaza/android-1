@@ -1,5 +1,6 @@
 package com.app.belcobtm.data.rest.interceptor
 
+import com.app.belcobtm.data.core.getJSONFromBody
 import com.app.belcobtm.data.disk.shared.preferences.SharedPreferencesHelper
 import com.app.belcobtm.data.rest.ApiFactory
 import com.app.belcobtm.data.rest.authorization.request.RefreshTokenRequest
@@ -52,7 +53,8 @@ class AuthorizationInterceptor(
     }
 
     private fun mapRefreshTokenResponseToModel(respone: Response): AuthorizationResponse? {
-        val json = responseInterceptor.extractResponse(respone).body()?.string().orEmpty()
+        val extractedResponse = responseInterceptor.extractResponse(respone)
+        val json = extractedResponse.getJSONFromBody()
         val adapter = moshi.adapter(AuthorizationResponse::class.java)
         return adapter.fromJson(json)
     }
