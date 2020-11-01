@@ -377,7 +377,7 @@
     <string name="staking_screen_create_date">Create date</string>
     <string name="staking_screen_cancel_date">Cancel date</string>
     <string name="staking_screen_time">Duration</string>
-    <string name="staking_screen_cancel_period">Cancel \nperiod</string>
+    <string name="staking_screen_hold_period">Hold \nperiod</string>
     <string name="staking_screen_until_withdraw">Until \nwithdraw</string>
     <string name="staking_screen_stake">Create</string>
     <string name="staking_screen_stake_cancel">Cancel</string>

@@ -51,7 +51,7 @@ class StakingViewModel(
                         createDate = stakeDataItem.createDate,
                         cancelDate = stakeDataItem.cancelDate,
                         duration = stakeDataItem.duration,
-                        cancelPeriod = stakeDataItem.cancelPeriod,
+                        holdPeriod = stakeDataItem.holdPeriod,
                         untilWithdraw = stakeDataItem.untilWithdraw
                     )
                 )
