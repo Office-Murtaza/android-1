@@ -7,6 +7,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.OnLifecycleEvent
 import androidx.lifecycle.ProcessLifecycleOwner
+import com.app.belcobtm.data.di.authenticatorModule
 import com.app.belcobtm.data.di.dataModule
 import com.app.belcobtm.data.di.repositoryModule
 import com.app.belcobtm.data.disk.shared.preferences.SharedPreferencesHelper
@@ -37,6 +38,7 @@ class App : Application(), LifecycleObserver {
             modules(
                 listOf(
                     dataModule,
+                    authenticatorModule,
                     repositoryModule,
                     useCaseModule,
                     viewModelModule

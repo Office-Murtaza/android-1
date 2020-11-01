@@ -1,7 +1,5 @@
 package com.app.belcobtm.data.rest.interceptor
 
-
-import com.app.belcobtm.data.core.getJSONFromBody
 import com.app.belcobtm.domain.Failure
 import okhttp3.Interceptor
 import okhttp3.Response
@@ -29,9 +27,9 @@ class ResponseInterceptor : Interceptor {
         throw Failure.ServerError(e.message)
     }
 
-    fun extractResponse(response: Response): Response {
+    private fun extractResponse(response: Response): Response {
         val body = response.body() ?: return response
-        val json = response.getJSONFromBody()
+        val json = getJSONFromBody(body)
         return when {
             response.isSuccessful && !JSONObject(json).isNull(RESPONSE_FIELD) -> {
                 val resultJson = JSONObject(json).get(RESPONSE_FIELD)
@@ -56,6 +54,12 @@ class ResponseInterceptor : Interceptor {
             }
             else -> response
         }
+    }
+
+    private fun getJSONFromBody(body: ResponseBody): String {
+        val source = body.source()
+        source.request(Long.MAX_VALUE) // Buffer the entire body.
+        return source.buffer.clone().readString(Charset.forName("UTF-8"))
     }
 
     companion object {

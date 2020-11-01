@@ -3,8 +3,8 @@ package com.app.belcobtm.data.sockets
 import android.annotation.SuppressLint
 import android.util.Log
 import com.app.belcobtm.data.disk.shared.preferences.SharedPreferencesHelper
-import com.app.belcobtm.data.rest.ApiFactory
 import com.app.belcobtm.domain.Failure
+import com.app.belcobtm.presentation.core.Const
 import okhttp3.*
 import java.io.EOFException
 import java.util.*
@@ -25,7 +25,7 @@ class SocketClient(
     fun connect() {
         Log.d(TAG,"socket connect called")
         val request = Request.Builder()
-            .url(ApiFactory.SOCKET_URL)
+            .url(Const.SOCKET_URL)
             .build()
         okHttpClient.newWebSocket(request, this)
     }
