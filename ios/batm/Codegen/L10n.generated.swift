@@ -318,8 +318,11 @@ extension L.CoinStaking {
   }
 
   struct Status {
+    static let cancelPending = "coin_staking.status.cancel_pending"
     static let canceled = "coin_staking.status.canceled"
+    static let createPending = "coin_staking.status.create_pending"
     static let created = "coin_staking.status.created"
+    static let withdrawPending = "coin_staking.status.withdraw_pending"
   }
 }
 extension L.CoinStaking.Header {

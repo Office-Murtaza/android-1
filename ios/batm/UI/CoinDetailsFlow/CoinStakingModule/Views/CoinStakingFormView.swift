@@ -39,7 +39,8 @@ final class CoinStakingFormView: UIView {
   
   func configure(coinType: CustomCoinType, stakeDetails: StakeDetails, fee: Decimal?) {
     coinAmountTextFieldView.configure(coinType: coinType, fee: fee)
-    coinAmountTextFieldView.isHidden = stakeDetails.status != .notCreatedOrWithdrawn
+    let status = stakeDetails.status == .notExist || stakeDetails.status == .withdrawn
+    coinAmountTextFieldView.isHidden = status
   }
 }
 

@@ -4,196 +4,196 @@ import RxCocoa
 import TrustWalletCore
 
 final class CoinDetailsPresenter: ModulePresenter, CoinDetailsModule {
-  
-  typealias Store = ViewStore<CoinDetailsAction, CoinDetailsState>
-
-  struct Input {
-    var refresh: Driver<Void>
-    var deposit: Driver<Void>
-    var withdraw: Driver<Void>
-    var sendGift: Driver<Void>
-    var sell: Driver<Void>
-    var exchange: Driver<Void>
-    var trades: Driver<Void>
-    var staking: Driver<Void>
-    var showMore: Driver<Void>
-    var transactionSelected: Driver<IndexPath>
-    var updateSelectedPeriod: Driver<SelectedPeriod>
-  }
-  
-  private let usecase: CoinDetailsUsecase
-  private let store: Store
-  private let fetchTransactionsRelay = PublishRelay<Void>()
-
-  weak var delegate: CoinDetailsModuleDelegate?
-  
-  var state: Driver<CoinDetailsState> {
-    return store.state
-  }
-  
-  init(usecase: CoinDetailsUsecase,
-       store: Store = CoinDetailsStore()) {
-    self.usecase = usecase
-    self.store = store
-  }
-  
-  func setup(coinBalances: [CoinBalance], coinDetails: CoinDetails, data: PriceChartData) {
-    store.action.accept(.setupCoinBalances(coinBalances))
-    store.action.accept(.setupCoinDetails(coinDetails))
-    store.action.accept(.setupPriceChartData(data))
-  }
-
-  func bind(input: Input) {
-    input.refresh
-      .asObservable()
-      .flatFilter(activity.not())
-      .withLatestFrom(state)
-      .map { $0.coinDetails?.type }
-      .filterNil()
-      .doOnNext { [store] _ in store.action.accept(.startFetching) }
-      .flatMap { [unowned self] in
-        self.track(self.getTransactions(for: $0), trackers: [self.errorTracker])
-      }
-      .subscribe()
-      .disposed(by: disposeBag)
     
-    input.deposit
-      .withLatestFrom(state)
-      .filter { $0.coin != nil }
-      .drive(onNext: { [delegate] in delegate?.showDepositScreen(coin: $0.coin!) })
-      .disposed(by: disposeBag)
+    typealias Store = ViewStore<CoinDetailsAction, CoinDetailsState>
     
-    input.withdraw
-      .withLatestFrom(state)
-      .filter { $0.coin != nil }
-      .drive(onNext: { [delegate] in delegate?.showWithdrawScreen(coin: $0.coin!,
-                                                                  coinBalances: $0.coinBalances!,
-                                                                  coinDetails: $0.coinDetails!) })
-      .disposed(by: disposeBag)
+    struct Input {
+        var refresh: Driver<Void>
+        var deposit: Driver<Void>
+        var withdraw: Driver<Void>
+        var sendGift: Driver<Void>
+        var sell: Driver<Void>
+        var exchange: Driver<Void>
+        var trades: Driver<Void>
+        var staking: Driver<Void>
+        var showMore: Driver<Void>
+        var transactionSelected: Driver<IndexPath>
+        var updateSelectedPeriod: Driver<SelectedPeriod>
+    }
     
-    input.sendGift
-      .withLatestFrom(state)
-      .filter { $0.coin != nil }
-      .drive(onNext: { [delegate] in delegate?.showSendGiftScreen(coin: $0.coin!,
-                                                                  coinBalances: $0.coinBalances!,
-                                                                  coinDetails: $0.coinDetails!) })
-      .disposed(by: disposeBag)
+    private let usecase: CoinDetailsUsecase
+    private let store: Store
+    private let fetchTransactionsRelay = PublishRelay<Void>()
     
-    input.sell
-      .asObservable()
-      .withLatestFrom(state)
-      .filter { $0.coin != nil }
-      .map { ($0.coin!, $0.coinBalances!, $0.coinDetails!) }
-      .flatMap { [unowned self] coin, coinBalances, coinDetails in
-        return self.track(self.usecase.getSellDetails())
-          .map { (coin, coinBalances, coinDetails, $0) }
-      }
-      .subscribe(onNext: { [delegate] in delegate?.showSellScreen(coin: $0, coinBalances: $1, coinDetails: $2, details: $3) })
-      .disposed(by: disposeBag)
+    weak var delegate: CoinDetailsModuleDelegate?
     
-    input.exchange
-      .withLatestFrom(state)
-      .filter { $0.coin != nil }
-      .drive(onNext: { [delegate] in delegate?.showExchangeScreen(coin: $0.coin!,
-                                                                  coinBalances: $0.coinBalances!,
-                                                                  coinDetails: $0.coinDetails!) })
-      .disposed(by: disposeBag)
+    var state: Driver<CoinDetailsState> {
+        return store.state
+    }
     
-    input.trades
-      .withLatestFrom(state)
-      .filter { $0.coin != nil }
-      .drive(onNext: { [delegate] in delegate?.showTradesScreen(coin: $0.coin!,
-                                                                coinBalances: $0.coinBalances!,
-                                                                coinDetails: $0.coinDetails!) })
-      .disposed(by: disposeBag)
+    init(usecase: CoinDetailsUsecase,
+         store: Store = CoinDetailsStore()) {
+        self.usecase = usecase
+        self.store = store
+    }
     
-    input.staking
-      .withLatestFrom(state)
-      .filter { $0.coin != nil }
-      .flatMap { [unowned self] state in
-        return self.track(self.usecase.getStakeDetails(for: state.coin!.type))
-          .map { (state, $0) }
-      }
-      .drive(onNext: { [delegate] in delegate?.showStakingScreen(coin: $0.coin!,
-                                                                 coinBalances: $0.coinBalances!,
-                                                                 coinDetails: $0.coinDetails!,
-                                                                 stakeDetails: $1) })
-      .disposed(by: disposeBag)
+    func setup(coinBalances: [CoinBalance], coinDetails: CoinDetails, data: PriceChartData) {
+        store.action.accept(.setupCoinBalances(coinBalances))
+        store.action.accept(.setupCoinDetails(coinDetails))
+        store.action.accept(.setupPriceChartData(data))
+    }
     
-    input.showMore
-      .drive(onNext: { [fetchTransactionsRelay] _ in fetchTransactionsRelay.accept(()) })
-      .disposed(by: disposeBag)
-    
-    input.transactionSelected
-      .asObservable()
-      .withLatestFrom(state) { indexPath, state in
-        let transaction = state.transactions?.transactions[indexPath.item]
-        let id = transaction?.txId ?? transaction?.txDbId
+    func bind(input: Input) {
+        input.refresh
+            .asObservable()
+            .flatFilter(activity.not())
+            .withLatestFrom(state)
+            .map { $0.coinDetails?.type }
+            .filterNil()
+            .doOnNext { [store] _ in store.action.accept(.startFetching) }
+            .flatMap { [unowned self] in
+                self.track(self.getTransactions(for: $0), trackers: [self.errorTracker])
+            }
+            .subscribe()
+            .disposed(by: disposeBag)
         
-        if let type = state.coin?.type, let id = id {
-          return (type, id)
-        }
+        input.deposit
+            .withLatestFrom(state)
+            .filter { $0.coin != nil }
+            .drive(onNext: { [delegate] in delegate?.showDepositScreen(coin: $0.coin!) })
+            .disposed(by: disposeBag)
         
-        return nil
-      }
-      .filter { $0 != nil }
-      .map { $0! }
-      .flatMap { [unowned self] type, id in
-        return self.track(self.usecase.getTransactionDetails(for: type, by: id))
-          .map { ($0, type) }
-      }
-      .subscribe(onNext: { [delegate] in delegate?.showTransactionDetails(with: $0, for: $1) })
-      .disposed(by: disposeBag)
+        input.withdraw
+            .withLatestFrom(state)
+            .filter { $0.coin != nil }
+            .drive(onNext: { [delegate] in delegate?.showWithdrawScreen(coin: $0.coin!,
+                                                                        coinBalances: $0.coinBalances!,
+                                                                        coinDetails: $0.coinDetails!) })
+            .disposed(by: disposeBag)
+        
+        input.sendGift
+            .withLatestFrom(state)
+            .filter { $0.coin != nil }
+            .drive(onNext: { [delegate] in delegate?.showSendGiftScreen(coin: $0.coin!,
+                                                                        coinBalances: $0.coinBalances!,
+                                                                        coinDetails: $0.coinDetails!) })
+            .disposed(by: disposeBag)
+        
+        input.sell
+            .asObservable()
+            .withLatestFrom(state)
+            .filter { $0.coin != nil }
+            .map { ($0.coin!, $0.coinBalances!, $0.coinDetails!) }
+            .flatMap { [unowned self] coin, coinBalances, coinDetails in
+                return self.track(self.usecase.getSellDetails())
+                    .map { (coin, coinBalances, coinDetails, $0) }
+            }
+            .subscribe(onNext: { [delegate] in delegate?.showSellScreen(coin: $0, coinBalances: $1, coinDetails: $2, details: $3) })
+            .disposed(by: disposeBag)
+        
+        input.exchange
+            .withLatestFrom(state)
+            .filter { $0.coin != nil }
+            .drive(onNext: { [delegate] in delegate?.showExchangeScreen(coin: $0.coin!,
+                                                                        coinBalances: $0.coinBalances!,
+                                                                        coinDetails: $0.coinDetails!) })
+            .disposed(by: disposeBag)
+        
+        input.trades
+            .withLatestFrom(state)
+            .filter { $0.coin != nil }
+            .drive(onNext: { [delegate] in delegate?.showTradesScreen(coin: $0.coin!,
+                                                                      coinBalances: $0.coinBalances!,
+                                                                      coinDetails: $0.coinDetails!) })
+            .disposed(by: disposeBag)
+        
+        input.staking
+            .withLatestFrom(state)
+            .filter { $0.coin != nil }
+            .flatMap { [unowned self] state in
+                return self.track(self.usecase.getStakeDetails(for: state.coin!.type))
+                    .map { (state, $0) }
+            }
+            .drive(onNext: { [delegate] in delegate?.showStakingScreen(coin: $0.coin!,
+                                                                       coinBalances: $0.coinBalances!,
+                                                                       coinDetails: $0.coinDetails!,
+                                                                       stakeDetails: $1) })
+            .disposed(by: disposeBag)
+        
+        input.showMore
+            .drive(onNext: { [fetchTransactionsRelay] _ in fetchTransactionsRelay.accept(()) })
+            .disposed(by: disposeBag)
+        
+        input.transactionSelected
+            .asObservable()
+            .withLatestFrom(state) { indexPath, state in
+                let transaction = state.transactions?.transactions[indexPath.item]
+                let id = transaction?.txId ?? transaction?.txDbId
+                
+                if let type = state.coin?.type, let id = id {
+                    return (type, id)
+                }
+                
+                return nil
+            }
+            .filter { $0 != nil }
+            .map { $0! }
+            .flatMap { [unowned self] type, id in
+                return self.track(self.usecase.getTransactionDetails(for: type, by: id))
+                    .map { ($0, type) }
+            }
+            .subscribe(onNext: { [delegate] in delegate?.showTransactionDetails(with: $0, for: $1) })
+            .disposed(by: disposeBag)
+        
+        input.updateSelectedPeriod
+            .drive(onNext: { [store] in store.action.accept(.updateSelectedPeriod($0)) })
+            .disposed(by: disposeBag)
+        
+        setupBindings()
+    }
     
-    input.updateSelectedPeriod
-      .drive(onNext: { [store] in store.action.accept(.updateSelectedPeriod($0)) })
-      .disposed(by: disposeBag)
+    private func setupBindings() {
+        let coinTypeObservable = state
+            .map { $0.coinDetails?.type }
+            .filterNil()
+            .asObservable()
+            .take(1)
+        
+        coinTypeObservable
+            .flatMap { [unowned self] in self.track(self.usecase.getCoin(for: $0)) }
+            .subscribe(onNext: { [store] in store.action.accept(.finishFetchingCoin($0)) })
+            .disposed(by: disposeBag)
+        
+        coinTypeObservable
+            .flatMap { [unowned self] in
+                self.track(self.getTransactions(for: $0), trackers: [self.errorTracker])
+            }
+            .subscribe()
+            .disposed(by: disposeBag)
+        
+        fetchTransactionsRelay
+            .flatFilter(activity.not())
+            .withLatestFrom(state)
+            .filter { !$0.isLastPage }
+            .flatMap { [unowned self] in
+                self.track(self.getTransactions(for: $0.coinDetails!.type, from: $0.nextPage), trackers: [self.errorTracker])
+            }
+            .subscribe()
+            .disposed(by: disposeBag)
+    }
     
-    setupBindings()
-  }
-  
-  private func setupBindings() {
-    let coinTypeObservable = state
-      .map { $0.coinDetails?.type }
-      .filterNil()
-      .asObservable()
-      .take(1)
-    
-    coinTypeObservable
-      .flatMap { [unowned self] in self.track(self.usecase.getCoin(for: $0)) }
-      .subscribe(onNext: { [store] in store.action.accept(.finishFetchingCoin($0)) })
-      .disposed(by: disposeBag)
-    
-    coinTypeObservable
-      .flatMap { [unowned self] in
-        self.track(self.getTransactions(for: $0), trackers: [self.errorTracker])
-      }
-      .subscribe()
-      .disposed(by: disposeBag)
-    
-    fetchTransactionsRelay
-      .flatFilter(activity.not())
-      .withLatestFrom(state)
-      .filter { !$0.isLastPage }
-      .flatMap { [unowned self] in
-        self.track(self.getTransactions(for: $0.coinDetails!.type, from: $0.nextPage), trackers: [self.errorTracker])
-      }
-      .subscribe()
-      .disposed(by: disposeBag)
-  }
-  
-  private func getTransactions(for type: CustomCoinType, from index: Int = 0) -> Single<Transactions> {
-    return usecase.getTransactions(for: type, from: index)
-      .do(onSuccess: { [store] in
-        if index > 0 {
-          store.action.accept(.finishFetchingNextTransactions($0))
-        } else {
-          store.action.accept(.finishFetchingTransactions($0))
-        }
-        store.action.accept(.updatePage(index))
-      },
-      onError: { [store] _ in
-        store.action.accept(.finishFetching)
-      })
-  }
+    private func getTransactions(for type: CustomCoinType, from index: Int = 0) -> Single<Transactions> {
+        return usecase.getTransactions(for: type, from: index)
+            .do(onSuccess: { [store] in
+                if index > 0 {
+                    store.action.accept(.finishFetchingNextTransactions($0))
+                } else {
+                    store.action.accept(.finishFetchingTransactions($0))
+                }
+                store.action.accept(.updatePage(index))
+            },
+            onError: { [store] _ in
+                store.action.accept(.finishFetching)
+            })
+    }
 }

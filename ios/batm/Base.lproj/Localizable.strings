@@ -313,6 +313,9 @@
 "coin_staking.header.until_withdraw.value" = "%d days";
 "coin_staking.status.created" = "Created";
 "coin_staking.status.canceled" = "Canceled";
+"coin_staking.status.create_pending" = "Create pending";
+"coin_staking.status.cancel_pending" = "Cancel pending";
+"coin_staking.status.withdraw_pending" = "Withdraw pending";
 "coin_staking.button.withdraw" = "Withdraw";
 
 "error.server_error.title" = "Server error";
