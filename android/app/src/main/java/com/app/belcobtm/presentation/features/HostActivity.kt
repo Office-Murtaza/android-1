@@ -55,7 +55,6 @@ class HostActivity : AppCompatActivity() {
 
     fun showAuthorizationScreen() {
         clearAppDataUseCase.invoke()
-        (application as App).onLogout()
         setHostFragment(NavHostFragment.create(R.navigation.nav_authorization))
     }
 

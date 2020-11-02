@@ -19,7 +19,6 @@ import com.app.belcobtm.data.rest.settings.SettingsApiService
 import com.app.belcobtm.data.rest.tools.ToolsApiService
 import com.app.belcobtm.data.rest.transaction.TransactionApiService
 import com.app.belcobtm.data.rest.wallet.WalletApiService
-import com.app.belcobtm.data.sockets.SocketClient
 import com.app.belcobtm.domain.tools.IntentActions
 import com.app.belcobtm.domain.tools.IntentActionsImpl
 import com.squareup.moshi.Moshi
@@ -53,5 +52,4 @@ val dataModule = module {
     single { (get() as AppDatabase).getCoinDao() }
     single<IntentActions> { IntentActionsImpl(get()) }
     single { AtmApiService((get() as ApiFactory).atmApi) }
-    single { SocketClient(get(), get()) }
 }
