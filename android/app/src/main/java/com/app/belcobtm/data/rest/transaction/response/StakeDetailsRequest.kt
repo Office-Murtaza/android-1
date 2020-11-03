@@ -7,7 +7,7 @@ class StakeDetailsRequest(
     val amount: Double,
     val amountStr: String,
     val cancelDate: String?,
-    val cancelPeriod: Int,
+    val holdPeriod: Int,
     val createDate: String?,
     val duration: Int?,
     val rewardAmount: Double?,
@@ -31,6 +31,6 @@ fun StakeDetailsRequest.mapToDataItem(): StakeDetailsDataItem = StakeDetailsData
     createDate = createDate,
     cancelDate = cancelDate,
     duration = duration,
-    cancelPeriod = cancelPeriod,
+    holdPeriod = holdPeriod,
     untilWithdraw = untilWithdraw
 )

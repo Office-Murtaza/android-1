@@ -86,10 +86,10 @@ class StakingFragment : BaseFragment() {
                     LocalCoinType.CATM.name
                 )
                 balanceUsdView.text = getString(R.string.text_usd, balanceUsd.toStringUsd())
-                cancelPeriodView.text = resources.getQuantityString(
+                holdPeriodView.text = resources.getQuantityString(
                     R.plurals.staking_screen_time_value,
-                    cancelPeriod,
-                    cancelPeriod
+                    holdPeriod,
+                    holdPeriod
                 )
                 when {
                     rewardsAmountAnnual != null -> rewardAnnualView.text = getString(
@@ -108,6 +108,7 @@ class StakingFragment : BaseFragment() {
                 }
                 when(status) {
                     StakeDetailsStatus.NOT_EXIST, StakeDetailsStatus.WITHDRAWN -> {
+                        editStakeGroupView.show()
                         stakeButtonView.show()
                         cancelButtonView.hide()
                         unstakeButtonView.hide()
