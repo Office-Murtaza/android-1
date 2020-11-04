@@ -3,6 +3,7 @@ package com.app.belcobtm
 import android.app.Application
 import android.content.Context
 import androidx.appcompat.app.AppCompatDelegate
+import com.app.belcobtm.data.di.authenticatorModule
 import com.app.belcobtm.data.di.dataModule
 import com.app.belcobtm.data.di.repositoryModule
 import com.app.belcobtm.data.disk.shared.preferences.SharedPreferencesHelper
@@ -29,6 +30,7 @@ class App : Application() {
             modules(
                 listOf(
                     dataModule,
+                    authenticatorModule,
                     repositoryModule,
                     useCaseModule,
                     viewModelModule

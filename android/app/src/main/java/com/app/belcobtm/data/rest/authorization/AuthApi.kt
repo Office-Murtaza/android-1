@@ -6,6 +6,7 @@ import com.app.belcobtm.data.rest.authorization.response.CheckCredentialsRespons
 import com.app.belcobtm.data.rest.authorization.response.CheckPassResponse
 import com.app.belcobtm.data.rest.authorization.response.CreateRecoverWalletResponse
 import kotlinx.coroutines.Deferred
+import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.POST
@@ -28,11 +29,16 @@ interface AuthApi {
     ): Deferred<Response<CreateRecoverWalletResponse>>
 
     @POST("refresh")
-    fun signInByRefreshTokenAsync(@Body request: RefreshTokenRequest): Deferred<Response<AuthorizationResponse>>
+    fun signInByRefreshTokenAsync(
+        @Body request: RefreshTokenRequest
+    ): Deferred<Response<AuthorizationResponse>>
 
     @POST("user/{userId}/password-verify")
     fun checkPass(
         @Path("userId") userId: String,
         @Body checkPassParam: CheckPassRequest
     ): Deferred<Response<CheckPassResponse>>
+
+    @POST("refresh")
+    fun refereshToken(@Body request: RefreshTokenRequest): Call<AuthorizationResponse>
 }

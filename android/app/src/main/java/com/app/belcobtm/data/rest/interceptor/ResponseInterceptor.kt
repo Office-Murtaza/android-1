@@ -1,66 +1,25 @@
 package com.app.belcobtm.data.rest.interceptor
 
-
-import com.app.belcobtm.data.disk.shared.preferences.SharedPreferencesHelper
-import com.app.belcobtm.data.rest.ApiFactory
-import com.app.belcobtm.data.rest.authorization.request.RefreshTokenRequest
-import com.app.belcobtm.data.rest.authorization.response.AuthorizationResponse
 import com.app.belcobtm.domain.Failure
-import com.squareup.moshi.Moshi
-import okhttp3.*
+import okhttp3.Interceptor
+import okhttp3.Response
+import okhttp3.ResponseBody
 import org.json.JSONObject
 import java.net.HttpURLConnection
+import java.nio.charset.Charset
 
 
-class ResponseInterceptor(private val prefsHelper: SharedPreferencesHelper) : Interceptor {
+class ResponseInterceptor : Interceptor {
 
-    override fun intercept(chain: Interceptor.Chain): Response? = try {
+    override fun intercept(chain: Interceptor.Chain): Response = try {
         val request = chain.request()
-        request.header("Content-Type: application/json")
-        val response: Response = chain.proceed(request)
+        val response = chain.proceed(request)
         if (!request.url().url().toString().contains("/ws")) {
-            when (response.code()) {
-                HttpURLConnection.HTTP_OK -> response.body()?.let {
-                    val json = it.string()
-                    when {
-                        response.isSuccessful && !JSONObject(json).isNull(RESPONSE_FIELD) -> {
-                            val resultJson = JSONObject(json).get(RESPONSE_FIELD)
-                            val newBody =
-                                ResponseBody.create(it.contentType(), resultJson.toString())
-                            return response.newBuilder().body(newBody).build()
-                        }
-                        response.isSuccessful && !JSONObject(json).isNull(ERROR_FIELD) -> {
-                            val message = try {
-                                JSONObject(json).getJSONObject(ERROR_FIELD)
-                                    .getString(ERROR_SUB_FIELD)
-                            } catch (e: Exception) {
-                                null
-                            }
-                            val code = try {
-                                JSONObject(json).getJSONObject(ERROR_FIELD)
-                                    .getInt(ERROR_SUB_FIELD_CODE)
-                            } catch (e: Exception) {
-                                null
-                            }
-                            throw Failure.MessageError(message, code)
-                        }
-                        else -> Unit
-                    }
-                }
-                HttpURLConnection.HTTP_NOT_FOUND -> throw Failure.ServerError("Not found")
-                HttpURLConnection.HTTP_UNAUTHORIZED -> {
-                    val refreshResponse = refreshToken(chain)
-                    parseAuthResponse(refreshResponse)
-                    val newResp = retryWithNewToken(chain, request)
-                    if (newResp.code() == HttpURLConnection.HTTP_OK) {
-                        proceedSuccessResponse(newResp)
-                    } else if (newResp.code() == HttpURLConnection.HTTP_UNAUTHORIZED) {
-                        throw Failure.TokenError
-                    }
-                }
-                else -> Unit
+            if (response.code() == HttpURLConnection.HTTP_OK) {
+                extractResponse(response)
+            } else {
+                response
             }
-            response
         } else {
             response
         }
@@ -68,81 +27,39 @@ class ResponseInterceptor(private val prefsHelper: SharedPreferencesHelper) : In
         throw Failure.ServerError(e.message)
     }
 
-    private fun retryWithNewToken(
-        chain: Interceptor.Chain,
-        request: Request
-    ): Response {
-        return chain.proceed(
-            request.newBuilder()
-                .removeHeader(BaseInterceptor.HEADER_AUTHORIZATION_KEY)
-                .addHeader(
-                    BaseInterceptor.HEADER_AUTHORIZATION_KEY,
-                    prefsHelper.accessToken
-                )
-                .build()
-        )
-    }
-
-    private fun parseAuthResponse(refreshResponse: Response): AuthorizationResponse? {
-        val json = refreshResponse.body()?.string().orEmpty()
-        val resultJson = JSONObject(json).get(RESPONSE_FIELD)
-        return Moshi.Builder()
-            .build()
-            .adapter(AuthorizationResponse::class.java)
-            .fromJson(resultJson.toString())
-            ?.apply {
-                prefsHelper.processAuthResponse(this)
+    private fun extractResponse(response: Response): Response {
+        val body = response.body() ?: return response
+        val json = getJSONFromBody(body)
+        val jsonObject = JSONObject(json)
+        return when {
+            response.isSuccessful && !jsonObject.isNull(RESPONSE_FIELD) -> {
+                val resultJson = jsonObject.get(RESPONSE_FIELD)
+                val newBody =
+                    ResponseBody.create(body.contentType(), resultJson.toString())
+                response.newBuilder().body(newBody).build()
             }
-    }
-
-    private fun refreshToken(
-        chain: Interceptor.Chain
-    ): Response {
-        return chain.proceed(
-            Request.Builder()
-                .url("${ApiFactory.SERVER_URL}refresh")
-                .method(
-                    "POST", RequestBody
-                        .create(
-                            MediaType.get("application/json; charset=utf-8"),
-                            Moshi.Builder()
-                                .build().adapter(RefreshTokenRequest::class.java).toJson(
-                                    RefreshTokenRequest(prefsHelper.refreshToken)
-                                )
-                        )
-                )
-                .build()
-        )
-    }
-
-    private fun proceedSuccessResponse(response: Response): Response {
-        return response.body()?.let {
-            val json = it.string()
-            when {
-                response.isSuccessful && !JSONObject(json).isNull(RESPONSE_FIELD) -> {
-                    val resultJson = JSONObject(json).get(RESPONSE_FIELD)
-                    val newBody =
-                        ResponseBody.create(it.contentType(), resultJson.toString())
-                    response.newBuilder().body(newBody).build()
+            response.isSuccessful && !jsonObject.isNull(ERROR_FIELD) -> {
+                val errorJsonObject = jsonObject.getJSONObject(ERROR_FIELD)
+                val message = try {
+                    errorJsonObject.getString(ERROR_SUB_FIELD)
+                } catch (e: Exception) {
+                    null
                 }
-                response.isSuccessful && !JSONObject(json).isNull(ERROR_FIELD) -> {
-                    val message = try {
-                        JSONObject(json).getJSONObject(ERROR_FIELD)
-                            .getString(ERROR_SUB_FIELD)
-                    } catch (e: Exception) {
-                        null
-                    }
-                    val code = try {
-                        JSONObject(json).getJSONObject(ERROR_FIELD)
-                            .getInt(ERROR_SUB_FIELD_CODE)
-                    } catch (e: Exception) {
-                        null
-                    }
-                    throw Failure.MessageError(message, code)
+                val code = try {
+                    errorJsonObject.getInt(ERROR_SUB_FIELD_CODE)
+                } catch (e: Exception) {
+                    null
                 }
-                else -> response
+                throw Failure.MessageError(message, code)
             }
-        } ?: response
+            else -> response
+        }
+    }
+
+    private fun getJSONFromBody(body: ResponseBody): String {
+        val source = body.source()
+        source.request(Long.MAX_VALUE) // Buffer the entire body.
+        return source.buffer.clone().readString(Charset.forName("UTF-8"))
     }
 
     companion object {
