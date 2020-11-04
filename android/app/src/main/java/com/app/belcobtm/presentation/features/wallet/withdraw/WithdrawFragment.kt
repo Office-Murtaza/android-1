@@ -64,7 +64,11 @@ class WithdrawFragment : BaseFragment() {
             addressView.setText(getTextFromClipboard())
             updateNextButton()
         }
-        maxCryptoView.setOnClickListener { amountCryptoView.setText(viewModel.getCoinBalance().toStringCoin()) }
+        maxCryptoView.setOnClickListener {
+            amountCryptoView.setText(
+                viewModel.getMaxValue().toStringCoin()
+            )
+        }
         amountCryptoView.editText?.addTextChangedListener(doubleTextWatcher.firstTextWatcher)
     }
 
