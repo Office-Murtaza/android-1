@@ -22,14 +22,6 @@ import com.giphy.sdk.ui.views.GiphyDialogFragment
 import io.michaelrocks.libphonenumber.android.NumberParseException
 import io.michaelrocks.libphonenumber.android.PhoneNumberUtil
 import kotlinx.android.synthetic.main.fragment_send_gift.*
-import kotlinx.android.synthetic.main.fragment_send_gift.amountCryptoView
-import kotlinx.android.synthetic.main.fragment_send_gift.amountUsdView
-import kotlinx.android.synthetic.main.fragment_send_gift.balanceCryptoView
-import kotlinx.android.synthetic.main.fragment_send_gift.balanceUsdView
-import kotlinx.android.synthetic.main.fragment_send_gift.maxCryptoView
-import kotlinx.android.synthetic.main.fragment_send_gift.nextButtonView
-import kotlinx.android.synthetic.main.fragment_send_gift.priceUsdView
-import kotlinx.android.synthetic.main.fragment_withdraw.*
 import org.koin.android.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
@@ -133,7 +125,7 @@ class SendGiftFragment : BaseFragment(), GiphyDialogFragment.GifSelectionListene
             })
     }
 
-    private fun selectMaxPrice() = amountCryptoView.setText(viewModel.getCoinBalance().toStringCoin())
+    private fun selectMaxPrice() = amountCryptoView.setText(viewModel.getMaxValue().toStringCoin())
 
     private fun openGift() {
         gifsDialog.show(childFragmentManager, "gifs_dialog")
