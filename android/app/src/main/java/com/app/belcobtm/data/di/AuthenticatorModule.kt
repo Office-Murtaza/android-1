@@ -5,7 +5,7 @@ import com.app.belcobtm.data.rest.interceptor.BaseInterceptor
 import com.app.belcobtm.data.rest.interceptor.NoConnectionInterceptor
 import com.app.belcobtm.data.rest.interceptor.ResponseInterceptor
 import com.app.belcobtm.data.rest.interceptor.TokenAuthenticator
-import com.app.belcobtm.presentation.core.Const
+import com.app.belcobtm.presentation.core.Endpoint
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -40,7 +40,7 @@ val authenticatorModule = module {
     }
     single(authenticatorQualified) {
         Retrofit.Builder()
-            .baseUrl(Const.SERVER_URL)
+            .baseUrl(Endpoint.SERVER_URL)
             .addConverterFactory(MoshiConverterFactory.create())
             .addCallAdapterFactory(CoroutineCallAdapterFactory())
             .client(get(authenticatorQualified))

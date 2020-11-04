@@ -19,11 +19,11 @@ class TokenAuthenticator(
         val refreshToken = prefsHelper.refreshToken
         val refereshBody = RefreshTokenRequest(refreshToken)
         val authResponse = authApi.refereshToken(refereshBody).execute()
-        if (authResponse.code() == HttpURLConnection.HTTP_OK) {
-            val authModel = authResponse.body()!!
-            val updatedToken = authModel.accessToken
+        val responseBody = authResponse.body()
+        if (authResponse.code() == HttpURLConnection.HTTP_OK && responseBody != null) {
+            val updatedToken = responseBody.accessToken
             // update session
-            prefsHelper.processAuthResponse(authModel)
+            prefsHelper.processAuthResponse(responseBody)
             // return old request with updated token
             return response.request().newBuilder()
                 .header(BaseInterceptor.HEADER_AUTHORIZATION_KEY, updatedToken)

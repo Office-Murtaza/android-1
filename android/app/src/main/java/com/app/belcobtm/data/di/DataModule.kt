@@ -26,7 +26,7 @@ import com.app.belcobtm.data.rest.wallet.WalletApi
 import com.app.belcobtm.data.rest.wallet.WalletApiService
 import com.app.belcobtm.domain.tools.IntentActions
 import com.app.belcobtm.domain.tools.IntentActionsImpl
-import com.app.belcobtm.presentation.core.Const
+import com.app.belcobtm.presentation.core.Endpoint
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import com.squareup.moshi.Moshi
 import okhttp3.OkHttpClient
@@ -80,7 +80,7 @@ val dataModule = module {
     }
     single {
         Retrofit.Builder()
-            .baseUrl(Const.SERVER_URL)
+            .baseUrl(Endpoint.SERVER_URL)
             .addConverterFactory(MoshiConverterFactory.create())
             .addCallAdapterFactory(CoroutineCallAdapterFactory())
             .client(get())
