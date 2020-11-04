@@ -5,6 +5,7 @@ import android.content.Context
 import androidx.appcompat.app.AppCompatDelegate
 import com.app.belcobtm.data.di.dataModule
 import com.app.belcobtm.data.di.repositoryModule
+import com.app.belcobtm.data.di.webSocketModule
 import com.app.belcobtm.data.disk.shared.preferences.SharedPreferencesHelper
 import com.app.belcobtm.presentation.di.useCaseModule
 import com.app.belcobtm.presentation.di.viewModelModule
@@ -30,6 +31,7 @@ class App : Application() {
                 listOf(
                     dataModule,
                     repositoryModule,
+                    webSocketModule,
                     useCaseModule,
                     viewModelModule
                 )

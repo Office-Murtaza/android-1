@@ -6,9 +6,10 @@ import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.os.bundleOf
+import androidx.lifecycle.LifecycleObserver
 import androidx.navigation.fragment.NavHostFragment
-import com.app.belcobtm.App
 import com.app.belcobtm.R
+import com.app.belcobtm.data.di.WALLET_LIFECYCLE_OBSERVER_QUAILIFIER
 import com.app.belcobtm.domain.authorization.AuthorizationStatus
 import com.app.belcobtm.domain.authorization.interactor.AuthorizationStatusGetUseCase
 import com.app.belcobtm.domain.authorization.interactor.ClearAppDataUseCase
@@ -18,12 +19,15 @@ import org.koin.android.ext.android.inject
 class HostActivity : AppCompatActivity() {
     private val authorizationStatusUseCase: AuthorizationStatusGetUseCase by inject()
     private val clearAppDataUseCase: ClearAppDataUseCase by inject()
+    private val walletLifecycleObserver: LifecycleObserver by inject(
+        WALLET_LIFECYCLE_OBSERVER_QUAILIFIER
+    )
     private lateinit var currentNavFragment: NavHostFragment
 
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(R.style.AppTheme)
         super.onCreate(savedInstanceState)
-
+        lifecycle.addObserver(walletLifecycleObserver)
         window.decorView.systemUiVisibility = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             View.SYSTEM_UI_FLAG_LAYOUT_STABLE or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
         } else {
@@ -51,6 +55,11 @@ class HostActivity : AppCompatActivity() {
                 bundleOf(PinCodeFragment.TAG_PIN_MODE to mode)
             )
         )
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        lifecycle.removeObserver(walletLifecycleObserver)
     }
 
     fun showAuthorizationScreen() {
