@@ -24,7 +24,6 @@ import com.app.belcobtm.data.rest.transaction.TransactionApi
 import com.app.belcobtm.data.rest.transaction.TransactionApiService
 import com.app.belcobtm.data.rest.wallet.WalletApi
 import com.app.belcobtm.data.rest.wallet.WalletApiService
-import com.app.belcobtm.data.sockets.SocketClient
 import com.app.belcobtm.domain.tools.IntentActions
 import com.app.belcobtm.domain.tools.IntentActionsImpl
 import com.app.belcobtm.presentation.core.Const
@@ -68,6 +67,7 @@ val dataModule = module {
     single { Moshi.Builder().build() }
     single { (get() as AppDatabase).getCoinDao() }
     single<IntentActions> { IntentActionsImpl(get()) }
+<<<<<<< HEAD
     single { SocketClient(get(), get()) }
     single {
         OkHttpClient().newBuilder()
@@ -95,3 +95,7 @@ val dataModule = module {
     single { get<Retrofit>().create(SettingsApi::class.java) }
     single { get<Retrofit>().create(TransactionApi::class.java) }
 }
+=======
+    single { AtmApiService((get() as ApiFactory).atmApi) }
+}
+>>>>>>> 3c3f9d3ed0c1a052456241c1d274bd34bf3dde71

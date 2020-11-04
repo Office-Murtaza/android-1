@@ -23,6 +23,7 @@
         <javassist.version>3.23.1-GA</javassist.version>
         <validation-api.version>2.0.1.Final</validation-api.version>
         <kotlin.version>1.3.70</kotlin.version>
+        <start-class>com.belco.server.Main</start-class>
     </properties>
 
     <dependencies>
@@ -180,7 +181,7 @@
     </repositories>
 
     <build>
-        <finalName>batm</finalName>
+        <finalName>belco-server</finalName>
 
         <plugins>
             <plugin>

@@ -71,7 +71,6 @@ class WalletFragment : BaseFragment() {
                 }
             }
         )
-        viewModel.subscribeToChannel()
     }
 
     override fun showLoading() {
@@ -84,10 +83,4 @@ class WalletFragment : BaseFragment() {
             swipeToRefreshView.isRefreshing = true
         }
     }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        viewModel.closeChannel()
-    }
-
 }
