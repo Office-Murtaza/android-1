@@ -1,7 +1,5 @@
 package com.app.belcobtm.presentation.core
 
-import com.app.belcobtm.BuildConfig
-
 object Const {
     const val TERMS_URL = "https://www.belcobtm.com/terms-and-conditions "
     const val SUPPORT_URL = "https://www.belcobtm.com/contact-us"
