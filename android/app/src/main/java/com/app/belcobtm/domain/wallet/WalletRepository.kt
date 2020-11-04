@@ -1,10 +1,14 @@
 package com.app.belcobtm.domain.wallet
 
+import com.app.belcobtm.data.websockets.wallet.WalletConnectionHandler
 import com.app.belcobtm.domain.Either
 import com.app.belcobtm.domain.Failure
 import com.app.belcobtm.domain.wallet.item.*
+import kotlinx.coroutines.flow.Flow
 
-interface WalletRepository {
+interface WalletRepository : WalletConnectionHandler {
+
+    fun observerWalletBalance(): Flow<BalanceDataItem>
 
     fun getCoinDetailsMap(): Map<String, CoinDetailsDataItem>
 

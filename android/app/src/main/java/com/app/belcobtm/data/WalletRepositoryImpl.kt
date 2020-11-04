@@ -5,17 +5,23 @@ import com.app.belcobtm.data.disk.database.mapToDataItem
 import com.app.belcobtm.data.disk.database.mapToEntity
 import com.app.belcobtm.data.disk.shared.preferences.SharedPreferencesHelper
 import com.app.belcobtm.data.rest.wallet.WalletApiService
+import com.app.belcobtm.data.websockets.wallet.WalletConnectionHandler
+import com.app.belcobtm.data.websockets.wallet.WalletObserver
 import com.app.belcobtm.domain.Either
 import com.app.belcobtm.domain.Failure
 import com.app.belcobtm.domain.wallet.WalletRepository
 import com.app.belcobtm.domain.wallet.item.*
+import kotlinx.coroutines.flow.Flow
 
 class WalletRepositoryImpl(
     private val apiService: WalletApiService,
     private val prefHelper: SharedPreferencesHelper,
-    private val daoAccount: AccountDao
-) : WalletRepository {
+    private val daoAccount: AccountDao,
+    private val walletObserver: WalletObserver
+) : WalletRepository, WalletConnectionHandler by walletObserver {
     private val cachedCoinDataItemList: MutableList<CoinDataItem> = mutableListOf()
+
+    override fun observerWalletBalance(): Flow<BalanceDataItem> = walletObserver.observe()
 
     override fun getCoinDetailsMap(): Map<String, CoinDetailsDataItem> = prefHelper.coinsDetails
 

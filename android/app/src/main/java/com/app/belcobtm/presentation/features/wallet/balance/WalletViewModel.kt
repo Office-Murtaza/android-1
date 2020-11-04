@@ -4,21 +4,38 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.app.belcobtm.domain.Failure
 import com.app.belcobtm.domain.wallet.interactor.GetBalanceUseCase
+import com.app.belcobtm.domain.wallet.interactor.ObserveBalanceUseCase
 import com.app.belcobtm.domain.wallet.item.BalanceDataItem
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
 import com.app.belcobtm.presentation.features.wallet.balance.adapter.BalanceListItem
 
-class WalletViewModel(private val balanceUseCase: GetBalanceUseCase) : ViewModel() {
+class WalletViewModel(
+    private val balanceUseCase: GetBalanceUseCase,
+    private val observeBalanceUseCase: ObserveBalanceUseCase
+) : ViewModel() {
     val balanceLiveData: MutableLiveData<LoadingData<Pair<Double, List<BalanceListItem.Coin>>>> =
         MutableLiveData()
 
     init {
         updateBalanceData()
+        observeBalance()
     }
 
     fun updateBalanceData() {
         balanceLiveData.value = LoadingData.Loading()
         balanceUseCase.invoke(
+            Unit,
+            onSuccess = {
+                updateCoinsItems(it)
+            },
+            onError = {
+                updateOnError(it)
+            }
+        )
+    }
+
+    private fun observeBalance() {
+        observeBalanceUseCase(
             Unit,
             onSuccess = {
                 updateCoinsItems(it)

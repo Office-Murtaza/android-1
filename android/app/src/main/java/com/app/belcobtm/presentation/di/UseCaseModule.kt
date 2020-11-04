@@ -67,4 +67,9 @@ val useCaseModule = module {
     single { StakeCreateUseCase(get()) }
     single { StakeCancelUseCase(get()) }
     single { StakeWithdrawUseCase(get()) }
+    single { ObserveBalanceUseCase(get()) }
+    single { ConnectToWalletUseCase(get()) }
+    single { SubscribeToWalletUseCase(get()) }
+    single { UnsubscribeFromWalletUseCase(get()) }
+    single { DisconnectFromWalletUseCase(get()) }
 }
