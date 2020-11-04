@@ -30,23 +30,23 @@ class ResponseInterceptor : Interceptor {
     private fun extractResponse(response: Response): Response {
         val body = response.body() ?: return response
         val json = getJSONFromBody(body)
+        val jsonObject = JSONObject(json)
         return when {
-            response.isSuccessful && !JSONObject(json).isNull(RESPONSE_FIELD) -> {
-                val resultJson = JSONObject(json).get(RESPONSE_FIELD)
+            response.isSuccessful && !jsonObject.isNull(RESPONSE_FIELD) -> {
+                val resultJson = jsonObject.get(RESPONSE_FIELD)
                 val newBody =
                     ResponseBody.create(body.contentType(), resultJson.toString())
                 response.newBuilder().body(newBody).build()
             }
-            response.isSuccessful && !JSONObject(json).isNull(ERROR_FIELD) -> {
+            response.isSuccessful && !jsonObject.isNull(ERROR_FIELD) -> {
+                val errorJsonObject = jsonObject.getJSONObject(ERROR_FIELD)
                 val message = try {
-                    JSONObject(json).getJSONObject(ERROR_FIELD)
-                        .getString(ERROR_SUB_FIELD)
+                    errorJsonObject.getString(ERROR_SUB_FIELD)
                 } catch (e: Exception) {
                     null
                 }
                 val code = try {
-                    JSONObject(json).getJSONObject(ERROR_FIELD)
-                        .getInt(ERROR_SUB_FIELD_CODE)
+                    errorJsonObject.getInt(ERROR_SUB_FIELD_CODE)
                 } catch (e: Exception) {
                     null
                 }
