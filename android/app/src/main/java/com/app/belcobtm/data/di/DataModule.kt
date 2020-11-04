@@ -67,8 +67,6 @@ val dataModule = module {
     single { Moshi.Builder().build() }
     single { (get() as AppDatabase).getCoinDao() }
     single<IntentActions> { IntentActionsImpl(get()) }
-<<<<<<< HEAD
-    single { SocketClient(get(), get()) }
     single {
         OkHttpClient().newBuilder()
             .connectTimeout(60, TimeUnit.SECONDS)
@@ -95,7 +93,3 @@ val dataModule = module {
     single { get<Retrofit>().create(SettingsApi::class.java) }
     single { get<Retrofit>().create(TransactionApi::class.java) }
 }
-=======
-    single { AtmApiService((get() as ApiFactory).atmApi) }
-}
->>>>>>> 3c3f9d3ed0c1a052456241c1d274bd34bf3dde71
