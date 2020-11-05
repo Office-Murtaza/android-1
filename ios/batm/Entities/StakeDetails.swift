@@ -1,51 +1,54 @@
 import UIKit
 
 struct StakeDetails: Equatable {
-  var created: Bool
-  var canceled: Bool
-  var withdrawn: Bool
-  var amount: Decimal?
-  var rewardAmount: Decimal?
-  var rewardPercent: Decimal?
-  var rewardAnnualAmount: Decimal?
-  var rewardAnnualPercent: Decimal
-  var createDateString: String?
-  var cancelDateString: String?
-  var duration: Int?
-  var untilWithdraw: Int?
-  var cancelPeriod: Int
-  
-  var status: StakingStatus {
-    if !created || withdrawn {
-      return .notCreatedOrWithdrawn
-    }
-    
-    if !canceled {
-      return .created
-    }
-    
-    return .canceled
-  }
+    var status: StakingStatus
+    var amount: Decimal?
+    var amountStr: String?
+    var rewardAmount: Decimal?
+    var rewardAmountStr: String?
+    var rewardPercent: Decimal?
+    var rewardPercentStr: String?
+    var rewardAnnualAmount: Decimal?
+    var rewardAnnualAmountStr: String?
+    var rewardAnnualPercent: Decimal
+    var rewardAnnualPercentStr: String
+    var createDate: String?
+    var cancelDate: String?
+    var duration: Int?
+    var untilWithdraw: Int?
+    var holdPeriod: Int
 }
 
-enum StakingStatus {
-  case notCreatedOrWithdrawn
-  case created
-  case canceled
-  
-  var verboseValue: String {
-    switch self {
-    case .notCreatedOrWithdrawn: return ""
-    case .created: return localize(L.CoinStaking.Status.created)
-    case .canceled: return localize(L.CoinStaking.Status.canceled)
+enum StakingStatus: Int, Equatable {
+    case notExist = 1
+    case createPending = 2
+    case created = 3
+    case cancelPending = 4
+    case canceled = 5
+    case withdrawPending = 6
+    case withdrawn = 7
+    
+    var verboseValue: String {
+        switch self {
+        case .notExist: return ""
+        case .createPending: return localize(L.CoinStaking.Status.createPending)
+        case .created: return localize(L.CoinStaking.Status.created)
+        case .cancelPending: return localize(L.CoinStaking.Status.cancelPending)
+        case .canceled: return localize(L.CoinStaking.Status.canceled)
+        case .withdrawPending: return localize(L.CoinStaking.Status.withdrawPending)
+        case .withdrawn: return ""
+        }
     }
-  }
-  
-  var associatedColor: UIColor {
-    switch self {
-    case .notCreatedOrWithdrawn: return .clear
-    case .created: return .lightGold
-    case .canceled: return .pastelOrange
+    
+    var associatedColor: StatusColorPallete.Type {
+        switch self {
+        case .notExist: return UIColor.StatusColor.Gray.self
+        case .createPending: return UIColor.StatusColor.Yellow.self
+        case .created: return UIColor.StatusColor.Green.self
+        case .cancelPending: return UIColor.StatusColor.Orange.self
+        case .canceled: return UIColor.StatusColor.Red.self
+        case .withdrawPending: return UIColor.StatusColor.Pink.self
+        case .withdrawn: return UIColor.StatusColor.Blue.self
+        }
     }
-  }
 }
