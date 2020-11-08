@@ -99,8 +99,10 @@ class PinCodeFragment : BaseFragment() {
         }
         viewModel.actionData.observe(this) { action ->
             when (action) {
-                is PinCodeAction.Success ->
+                is PinCodeAction.Success -> {
+                    viewModel.connectToWallet()
                     (requireActivity() as HostActivity).showMainScreen()
+                }
                 is PinCodeAction.ChangedPin -> {
                     showSnackBar(R.string.pin_updated)
                     popBackStack(R.id.security_fragment, false)

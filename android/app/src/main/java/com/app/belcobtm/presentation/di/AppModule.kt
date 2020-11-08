@@ -43,11 +43,11 @@ import org.koin.dsl.module
 val viewModelModule = module {
     viewModel { AboutViewModel(androidApplication(), get()) }
     viewModel { SecurityViewModel() }
-    viewModel { WalletViewModel(get(), get()) }
+    viewModel { WalletViewModel(get()) }
     viewModel { (coinCode: String) -> TransactionsViewModel(coinCode, get(), get(), get()) }
     viewModel { RecoverWalletViewModel(get()) }
     viewModel { CreateWalletViewModel(get()) }
-    viewModel { PinCodeViewModel(get(), get(), get(), get()) }
+    viewModel { PinCodeViewModel(get(), get(), get(), get(), get()) }
     viewModel { VerificationInfoViewModel(get()) }
     viewModel { VerificationBlankViewModel(get(), get()) }
     viewModel { VerificationVipViewModel(get()) }

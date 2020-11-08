@@ -1,64 +1,45 @@
 package com.app.belcobtm.presentation.features.wallet.balance
 
-import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
-import com.app.belcobtm.domain.Failure
-import com.app.belcobtm.domain.wallet.interactor.GetBalanceUseCase
-import com.app.belcobtm.domain.wallet.interactor.ObserveBalanceUseCase
-import com.app.belcobtm.domain.wallet.item.BalanceDataItem
+import androidx.lifecycle.asLiveData
+import androidx.lifecycle.viewModelScope
+import com.app.belcobtm.data.websockets.wallet.WalletObserver
+import com.app.belcobtm.data.websockets.wallet.model.WalletBalance
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
 import com.app.belcobtm.presentation.features.wallet.balance.adapter.BalanceListItem
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.launch
 
-class WalletViewModel(
-    private val balanceUseCase: GetBalanceUseCase,
-    private val observeBalanceUseCase: ObserveBalanceUseCase
-) : ViewModel() {
-    val balanceLiveData: MutableLiveData<LoadingData<Pair<Double, List<BalanceListItem.Coin>>>> =
-        MutableLiveData()
+class WalletViewModel(private val walletObserver: WalletObserver) : ViewModel() {
 
-    init {
-        updateBalanceData()
-        observeBalance()
-    }
+    val balanceLiveData: LiveData<LoadingData<Pair<Double, List<BalanceListItem.Coin>>>> =
+        walletObserver.observe()
+            .map { mapWalletBalance(it) }
+            .asLiveData(viewModelScope.coroutineContext)
 
-    fun updateBalanceData() {
-        balanceLiveData.value = LoadingData.Loading()
-        balanceUseCase.invoke(
-            Unit,
-            onSuccess = {
-                updateCoinsItems(it)
-            },
-            onError = {
-                updateOnError(it)
-            }
-        )
-    }
-
-    private fun observeBalance() {
-        observeBalanceUseCase(
-            Unit,
-            onSuccess = {
-                updateCoinsItems(it)
-            },
-            onError = {
-                updateOnError(it)
-            }
-        )
-    }
-
-    private fun updateOnError(it: Failure) {
-        balanceLiveData.value = LoadingData.Error(it)
-    }
-
-    private fun updateCoinsItems(dataItem: BalanceDataItem) {
-        val coinList = dataItem.coinList.map {
-            BalanceListItem.Coin(
-                code = it.code,
-                balanceCrypto = it.balanceCoin,
-                balanceFiat = it.balanceUsd,
-                priceUsd = it.priceUsd
-            )
+    fun reconnectToWallet() {
+        viewModelScope.launch {
+            walletObserver.connect()
         }
-        balanceLiveData.value = LoadingData.Success(Pair(dataItem.balance, coinList))
     }
+
+    private fun mapWalletBalance(
+        wallet: WalletBalance
+    ): LoadingData<Pair<Double, List<BalanceListItem.Coin>>> =
+        when (wallet) {
+            is WalletBalance.NoInfo -> LoadingData.Loading()
+            is WalletBalance.Error -> LoadingData.Error(wallet.error)
+            is WalletBalance.Balance ->
+                wallet.data.coinList.map {
+                    BalanceListItem.Coin(
+                        code = it.code,
+                        balanceCrypto = it.balanceCoin,
+                        balanceFiat = it.balanceUsd,
+                        priceUsd = it.priceUsd
+                    )
+                }.let { coinList ->
+                    LoadingData.Success(wallet.data.balance to coinList)
+                }
+        }
 }
