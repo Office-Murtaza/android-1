@@ -142,9 +142,11 @@ final class CoinExchangeViewController: ModuleViewController<CoinExchangePresent
     let updatePickerItemDriver = formView.rx.selectPickerItem
     let maxDriver = formView.rx.maxTap
     let submitDriver = submitButton.rx.tap.asDriver()
+    let toCoinTypeDriver = formView.rx.willChangeCoinType
     
     presenter.bind(input: CoinExchangePresenter.Input(updateFromCoinAmount: updateFromCoinAmountDriver,
                                                       updatePickerItem: updatePickerItemDriver,
+                                                      toCoinType: toCoinTypeDriver,
                                                       max: maxDriver,
                                                       submit: submitDriver))
   }
