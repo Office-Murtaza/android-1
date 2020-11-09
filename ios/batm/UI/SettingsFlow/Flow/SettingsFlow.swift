@@ -5,16 +5,20 @@ class SettingsFlow: BaseFlow<BTMNavigationController, SettingsFlowController> {
   override func assemblies() -> [Assembly] {
     return [
       Dependencies(),
+        ManageWalletsAssembly(),
       SettingsAssembly(),
       SecurityAssembly(),
+        SupportAssembly(),
       AboutAssembly(),
     ]
   }
   
   enum Steps: Step, Equatable {
     case settings
+    case wallet
     case security
     case kyc(KYC)
+    case support
     case about
     case updatePhone(PhoneNumber)
     case updatePassword
@@ -38,9 +42,15 @@ class SettingsFlow: BaseFlow<BTMNavigationController, SettingsFlowController> {
       module.controller.tabBarItem.image = UIImage(named: "tab_bar_settings")
       module.controller.tabBarItem.selectedImage = UIImage(named: "tab_bar_active_settings")
       return push(module.controller, animated: false)
+    case .wallet:
+        let module = resolver.resolve(Module<ManageWalletsModule>.self)!
+        return push(module.controller)
     case .security:
       let module = resolver.resolve(Module<SecurityModule>.self)!
       return push(module.controller)
+    case .support:
+        let module = resolver.resolve(Module<SupportModule>.self)!
+        return push(module.controller)
     case .about:
       let module = resolver.resolve(Module<AboutModule>.self)!
       return push(module.controller)

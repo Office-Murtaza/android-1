@@ -181,12 +181,6 @@ extension MDCButton {
     return button
   }
   
-  static var manageWallets: MDCButton {
-    let button = MDCButton.outlined
-    button.setTitle(localize(L.Wallet.Footer.Button.manageWallets), for: .normal)
-    return button
-  }
-  
   static var submit: MDCButton {
     let button = MDCButton.contained
     button.setTitle(localize(L.Shared.Button.submit), for: .normal)

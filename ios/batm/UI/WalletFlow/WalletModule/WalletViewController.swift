@@ -10,9 +10,7 @@ class WalletViewController: ModuleViewController<WalletPresenter> {
   let headerView = WalletHeaderView()
   
   let tableView = WalletTableView()
-  
-  let footerView = WalletFooterView()
-  
+    
   let refreshControl = UIRefreshControl()
   
   override var shouldShowNavigationBar: Bool { return false }
@@ -42,9 +40,7 @@ class WalletViewController: ModuleViewController<WalletPresenter> {
                      tableView)
     
     headerView.divider.backgroundColor = tableView.separatorColor
-    footerView.divider.backgroundColor = tableView.separatorColor
     
-    tableView.tableFooterView = footerView
     tableView.refreshControl = refreshControl
   }
   
@@ -86,11 +82,9 @@ class WalletViewController: ModuleViewController<WalletPresenter> {
     setupUIBindings()
     
     let refreshDriver = refreshControl.rx.controlEvent(.valueChanged).asDriver()
-    let manageWalletsDriver = footerView.rx.manageWallets
     let coinSelectedDriver = tableView.rx.itemSelected.asDriver()
     
     presenter.bind(input: WalletPresenter.Input(refresh: refreshDriver,
-                                                manageWallets: manageWalletsDriver,
                                                 coinSelected: coinSelectedDriver))
   }
 }
