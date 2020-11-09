@@ -26,7 +26,10 @@ class TokenAuthenticator(
             prefsHelper.processAuthResponse(responseBody)
             // return old request with updated token
             return response.request().newBuilder()
-                .header(BaseInterceptor.HEADER_AUTHORIZATION_KEY, updatedToken)
+                .header(
+                    BaseInterceptor.HEADER_AUTHORIZATION_KEY,
+                    prefsHelper.formatToken(updatedToken)
+                )
                 .build()
         }
         return null
