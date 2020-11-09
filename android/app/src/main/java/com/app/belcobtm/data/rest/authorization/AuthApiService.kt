@@ -54,6 +54,7 @@ class AuthApiService(private val authApi: AuthApi) {
     suspend fun authorizeByRefreshToken(refreshToken: String): Either<Failure, AuthorizationResponse> = try {
         val request = authApi.signInByRefreshTokenAsync(RefreshTokenRequest(refreshToken)).await()
         request.body()?.let { Either.Right(it) } ?: when (request.code()) {
+            HttpURLConnection.HTTP_UNAUTHORIZED,
             HttpURLConnection.HTTP_FORBIDDEN -> Either.Left(Failure.TokenError)
             else -> Either.Left(Failure.ServerError())
         }
