@@ -11,13 +11,6 @@
         android:label="WalletFragment"
         tools:layout="@layout/fragment_balance">
         <action
-            android:id="@+id/to_manage_wallets_fragment"
-            app:destination="@id/manage_wallets_fragment"
-            app:enterAnim="@anim/nav_default_enter_anim"
-            app:exitAnim="@anim/nav_default_exit_anim"
-            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
-            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
-        <action
             android:id="@+id/to_transactions_fragment"
             app:destination="@id/transactions_fragment"
             app:enterAnim="@anim/slide_from_right"
@@ -25,12 +18,6 @@
             app:popEnterAnim="@anim/slide_from_left"
             app:popExitAnim="@anim/slide_to_right" />
     </fragment>
-
-    <fragment
-        android:id="@+id/manage_wallets_fragment"
-        android:name="com.app.belcobtm.presentation.features.wallet.add.ManageWalletsFragment"
-        android:label="AddWalletFragment"
-        tools:layout="@layout/fragment_manage_wallets" />
 
     <fragment
         android:id="@+id/transactions_fragment"

@@ -13,29 +13,14 @@ import kotlinx.android.synthetic.main.item_balance_coin.view.*
 
 class CoinsAdapter(private val listener: (item: BalanceListItem) -> Unit) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-    private val itemList: MutableList<BalanceListItem> = mutableListOf(
-        BalanceListItem.AddButton
-    )
+    private val itemList: MutableList<BalanceListItem> = mutableListOf()
 
     override fun getItemCount(): Int = itemList.size
 
-    override fun getItemViewType(position: Int): Int = when (itemList[position]) {
-        is BalanceListItem.Coin -> R.layout.item_balance_coin
-        is BalanceListItem.AddButton -> R.layout.item_balance_button_manage_wallets
-    }
-
-    override fun onCreateViewHolder(parent: ViewGroup, layout: Int): RecyclerView.ViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(layout, parent, false)
-        val holder = Holder(view)
-        when (layout) {
-            R.layout.item_balance_coin -> {
-                view.containerView.setOnClickListener { listener.invoke(itemList[holder.adapterPosition]) }
-            }
-            R.layout.item_balance_button_manage_wallets -> {
-                view.setOnClickListener { listener.invoke(itemList[holder.adapterPosition]) }
-            }
-        }
-        return holder
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        val inflater = LayoutInflater.from(parent.context)
+        val view = inflater.inflate(R.layout.item_balance_coin, parent, false)
+        return Holder(view)
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
@@ -45,10 +30,17 @@ class CoinsAdapter(private val listener: (item: BalanceListItem) -> Unit) :
                 imageView.setImageResource(LocalCoinType.valueOf(item.code).resIcon())
                 nameView.text = LocalCoinType.valueOf(item.code).fullName
                 balanceCryptoView.text =
-                    context.getString(R.string.text_text, item.balanceCrypto.toStringCoin(), item.code)
+                    context.getString(
+                        R.string.text_text,
+                        item.balanceCrypto.toStringCoin(),
+                        item.code
+                    )
                 balanceFiatView.text =
                     context.getString(R.string.text_usd, item.balanceFiat.toStringUsd())
                 priceView.text = context.getString(R.string.text_usd, item.priceUsd.toStringUsd())
+                setOnClickListener {
+                    listener.invoke(itemList[holder.adapterPosition])
+                }
             }
         }
     }
@@ -56,7 +48,6 @@ class CoinsAdapter(private val listener: (item: BalanceListItem) -> Unit) :
     fun setItemList(itemList: List<BalanceListItem.Coin>) {
         this.itemList.clear()
         this.itemList.addAll(itemList)
-        this.itemList.add(BalanceListItem.AddButton)
         notifyDataSetChanged()
     }
 
