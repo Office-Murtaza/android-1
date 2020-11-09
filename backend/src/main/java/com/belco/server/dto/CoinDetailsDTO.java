@@ -18,8 +18,6 @@ public class CoinDetailsDTO {
     private BigDecimal txFee;
     private String txFeeStr;
     private Long byteFee;
-    private BigDecimal recallFee;
-    private String recallFeeStr;
     private Long gasPrice;
     private Long gasLimit;
     private Integer scale;
@@ -35,11 +33,6 @@ public class CoinDetailsDTO {
 
     public void setByteFee(Long byteFee) {
         this.byteFee = byteFee;
-    }
-
-    public void setRecallFee(BigDecimal recallFee) {
-        this.recallFee = recallFee;
-        this.recallFeeStr = Util.convert(recallFee);
     }
 
     public void setProfitExchange(BigDecimal profitExchange) {

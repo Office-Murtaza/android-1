@@ -20,6 +20,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.*;
@@ -304,7 +305,7 @@ public class TransactionService {
         try {
             UserCoin userCoin = userService.getUserCoin(userId, coinCode.name());
             BigDecimal reserved = userCoin.getReservedBalance();
-            BigDecimal txFee = coinCode == CoinService.CoinEnum.CATM ? coinCode.getCoinEntity().getRecallFee() : coinCode.getTxFee();
+            BigDecimal txFee = coinCode == CoinService.CoinEnum.CATM ? dto.getFee() : coinCode.getTxFee();
 
             if (walletService.isEnoughBalance(coinCode, dto.getCryptoAmount()) && reserved.compareTo(dto.getCryptoAmount().add(txFee)) >= 0) {
                 String fromAddress = coinCode.getWalletAddress();
@@ -334,7 +335,7 @@ public class TransactionService {
                     dto.setFromAddress(fromAddress);
                     dto.setToAddress(toAddress);
                     dto.setCryptoAmount(dto.getCryptoAmount());
-                    dto.setFee(txFee);
+                    dto.setFee(coinCode.getTxFee());
 
                     userCoin.setReservedBalance(userCoin.getReservedBalance().subtract(dto.getCryptoAmount().add(txFee)));
                     userCoinRep.save(userCoin);
@@ -435,7 +436,7 @@ public class TransactionService {
                 TransactionRecordWallet createStakeRec = createStakeRecOpt.get();
 
                 dto.setStatus(StakeStatus.convert(TransactionType.valueOf(createStakeRec.getType()), TransactionStatus.valueOf(createStakeRec.getStatus())));
-                dto.setAmount(createStakeRec.getAmount());
+                dto.setAmount(createStakeRec.getAmount().stripTrailingZeros());
                 dto.setCreateDate(createStakeRec.getCreateDate());
 
                 if (StringUtils.isBlank(createStakeRec.getRefTxId())) {
@@ -493,13 +494,11 @@ public class TransactionService {
             List<TransactionRecordWallet> completeRecords = massStatusUpdate(pendingRecords);
 
             completeRecords.forEach(e -> {
-                if (e.getStatus() == TransactionStatus.COMPLETE.getValue()) {
-                    if (e.getType() == TransactionType.RESERVE.getValue()) {
-                        UserCoin userCoin = userService.getUserCoin(e.getIdentity().getUser().getId(), e.getCoin().getCode());
-                        userCoin.setReservedBalance(userCoin.getReservedBalance().add(e.getAmount()));
+                if (e.getType() == TransactionType.RESERVE.getValue() && e.getStatus() == TransactionStatus.COMPLETE.getValue()) {
+                    UserCoin userCoin = userService.getUserCoin(e.getIdentity().getUser().getId(), e.getCoin().getCode());
+                    userCoin.setReservedBalance(userCoin.getReservedBalance().add(e.getAmount()));
 
-                        userCoinRep.save(userCoin);
-                    }
+                    userCoinRep.save(userCoin);
                 }
             });
 
@@ -550,7 +549,7 @@ public class TransactionService {
             list.stream().forEach(t -> {
                 try {
                     CoinService.CoinEnum coinCode = CoinService.CoinEnum.valueOf(t.getRefCoin().getCode());
-                    BigDecimal txFee = coinCode == CoinService.CoinEnum.CATM ? coinCode.getCoinEntity().getRecallFee() : coinCode.getTxFee();
+                    BigDecimal txFee = coinCode == CoinService.CoinEnum.CATM ? walletService.convertEthFeeToCatmFee() : coinCode.getTxFee();
                     BigDecimal withdrawAmount = t.getRefAmount().subtract(txFee);
 
                     if (walletService.isEnoughBalance(coinCode, t.getRefAmount())) {
@@ -613,7 +612,7 @@ public class TransactionService {
 
                     if (receiverOpt.isPresent()) {
                         CoinService.CoinEnum coinCode = CoinService.CoinEnum.valueOf(t.getCoin().getCode());
-                        BigDecimal txFee = coinCode == CoinService.CoinEnum.CATM ? coinCode.getCoinEntity().getRecallFee() : coinCode.getTxFee();
+                        BigDecimal txFee = coinCode == CoinService.CoinEnum.CATM ? walletService.convertEthFeeToCatmFee() : coinCode.getTxFee();
                         BigDecimal withdrawAmount = t.getAmount().subtract(txFee);
 
                         if (walletService.isEnoughBalance(coinCode, t.getAmount())) {

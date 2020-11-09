@@ -108,7 +108,7 @@ public class CoinService {
         coins.stream().forEach(e -> {
             boolean coinExist = user.getUserCoins().stream().anyMatch(t -> t.getCoin().getCode().equalsIgnoreCase(e.getCode()));
 
-            if(!coinExist) {
+            if (!coinExist) {
                 Coin coin = coinMap.get(e.getCode());
 
                 userCoins.add(new UserCoin(user, coin, e.getAddress(), BigDecimal.ZERO));
@@ -144,7 +144,6 @@ public class CoinService {
         dto.setGasPrice(coin.getGasPrice());
         dto.setGasLimit(coin.getGasLimit());
         dto.setScale(coin.getCoinEntity().getScale());
-        dto.setRecallFee(coin.getCoinEntity().getRecallFee());
         dto.setProfitExchange(coin.getCoinEntity().getProfitExchange());
         dto.setWalletAddress(coin.getWalletAddress());
         dto.setContractAddress(coin.getContractAddress());

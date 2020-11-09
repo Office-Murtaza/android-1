@@ -2,6 +2,7 @@ package com.belco.server.entity;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,7 +20,6 @@ public class Coin extends BaseEntity {
     private String name;
     private Integer idx;
     private BigDecimal fee;
-    private BigDecimal recallFee;
     private BigDecimal tolerance;
     private Integer scale;
 
