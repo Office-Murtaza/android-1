@@ -420,6 +420,7 @@
 
     //settings
     <string name="security_label">Security</string>
+    <string name="wallets_label">Wallets</string>
     <string name="kyc_label">KYC</string>
     <string name="about_label">About</string>
     <string name="terms_label">Terms &amp; conditions</string>
@@ -433,6 +434,18 @@
     <string name="unlink_wallet_label">Unlink</string>
     <string name="phone_changed">Phone changed</string>
     
+    //support
+    <string name="support_title">Support</string>
+    <string name="support_phone_label">Phone</string>
+    <string name="support_email_label">Email</string>
+    <string name="support_telegram_label">Telegram</string>
+    <string name="support_whatapp_label">WhatsApp</string>
+    <string name="support_phone">+18888483033</string>
+    <string name="support_email">support@belcobtm.com</string>
+    <string name="support_telegram">\@belco_support</string>
+    <string name="support_whatapp">\@belco_support</string>
+    <string name="support_chooser_message">\Choose an option</string>
+
     //pass
     <string name="password_hint">Password</string>
     <string name="password_doesnt_match">Wrong password</string>

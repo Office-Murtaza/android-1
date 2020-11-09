@@ -7,6 +7,4 @@ sealed class BalanceListItem {
         val balanceFiat: Double,
         val priceUsd: Double
     ) : BalanceListItem()
-
-    object AddButton : BalanceListItem()
 }

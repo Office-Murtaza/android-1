@@ -12,6 +12,13 @@
         android:label="WelcomeFragment"
         tools:layout="@layout/fragment_welcome">
         <action
+            android:id="@+id/to_support_fragment"
+            app:destination="@id/support_fragment"
+            app:enterAnim="@anim/slide_from_right"
+            app:exitAnim="@anim/slide_to_left"
+            app:popEnterAnim="@anim/slide_from_left"
+            app:popExitAnim="@anim/slide_to_right" />
+        <action
             android:id="@+id/to_recover_wallet_fragment"
             app:destination="@id/recover_wallet_fragment"
             app:enterAnim="@anim/slide_from_right"
@@ -26,6 +33,7 @@
             app:popEnterAnim="@anim/slide_from_left"
             app:popExitAnim="@anim/slide_to_right" />
     </fragment>
+
     <fragment
         android:id="@+id/recover_wallet_fragment"
         android:name="com.app.belcobtm.presentation.features.authorization.recover.wallet.RecoverWalletFragment"
@@ -130,6 +138,7 @@
         android:name="com.app.belcobtm.presentation.features.pin.code.PinCodeFragment"
         android:label="PinCodeFragment"
         tools:layout="@layout/fragment_pin_code" />
+
     <fragment
         android:id="@+id/settings_fragment"
         android:name="com.app.belcobtm.presentation.features.settings.SettingsFragment"
@@ -141,4 +150,11 @@
             app:argType="integer" />
 
     </fragment>
+
+    <fragment
+        android:id="@+id/support_fragment"
+        android:name="com.app.belcobtm.presentation.features.settings.support.SupportFragment"
+        android:label="SupportFragment"
+        tools:layout="@layout/fragment_support"/>
+
 </navigation>

@@ -28,8 +28,10 @@ class SettingsFragment : BaseFragment() {
 
     override fun initListeners() {
         //sections listener
+        walletsItem.setOnClickListener { onSectionClick(SettingsSections.WALLETS) }
         securityItem.setOnClickListener { onSectionClick(SettingsSections.SECURITY) }
         kycItem.setOnClickListener { onSectionClick(SettingsSections.KYC) }
+        supportItem.setOnClickListener { onSectionClick(SettingsSections.SUPPORT) }
         aboutItem.setOnClickListener { onSectionClick(SettingsSections.ABOUT) }
     }
 

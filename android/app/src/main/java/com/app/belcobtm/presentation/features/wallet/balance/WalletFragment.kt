@@ -2,12 +2,10 @@ package com.app.belcobtm.presentation.features.wallet.balance
 
 import android.graphics.Color
 import android.view.View
-import androidx.fragment.app.setFragmentResultListener
 import com.app.belcobtm.R
 import com.app.belcobtm.domain.Failure
 import com.app.belcobtm.presentation.core.extensions.toStringUsd
 import com.app.belcobtm.presentation.core.ui.fragment.BaseFragment
-import com.app.belcobtm.presentation.features.wallet.add.ManageWalletsFragment
 import com.app.belcobtm.presentation.features.wallet.balance.adapter.BalanceListItem
 import com.app.belcobtm.presentation.features.wallet.balance.adapter.CoinsAdapter
 import kotlinx.android.synthetic.main.fragment_balance.*
@@ -20,19 +18,14 @@ class WalletFragment : BaseFragment() {
     private val adapter: CoinsAdapter = CoinsAdapter {
         when (it) {
             is BalanceListItem.Coin -> navigate(WalletFragmentDirections.toTransactionsFragment(it.code))
-            is BalanceListItem.AddButton -> {
-                setFragmentResultListener(ManageWalletsFragment.REQUEST_KEY) { _, _ ->
-                    viewModel.updateBalanceData()
-                }
-                navigate(WalletFragmentDirections.toManageWalletsFragment())
-            }
         }
     }
     override val resourceLayout: Int = R.layout.fragment_balance
     override val isToolbarEnabled: Boolean = false
     override var isMenuEnabled: Boolean = true
     override val isFirstShowContent: Boolean = false
-    override val retryListener: View.OnClickListener = View.OnClickListener { viewModel.updateBalanceData() }
+    override val retryListener: View.OnClickListener =
+        View.OnClickListener { viewModel.updateBalanceData() }
 
     override fun initViews() {
         listView.adapter = adapter
@@ -74,13 +67,13 @@ class WalletFragment : BaseFragment() {
     }
 
     override fun showLoading() {
-        if (adapter.itemCount <= 1) {
-            super.showLoading()
-        } else {
+        if (adapter.itemCount > 0) {
             hideKeyboard()
             view?.clearFocus()
             view?.requestFocus()
             swipeToRefreshView.isRefreshing = true
+        } else {
+            super.showLoading()
         }
     }
 }
