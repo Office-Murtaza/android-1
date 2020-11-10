@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical">
 
     <View
@@ -12,58 +13,50 @@
         android:background="@color/thin_divider" />
 
     <com.app.belcobtm.presentation.core.views.SettingsItemView
-        android:id="@+id/walletsItem"
+        android:id="@+id/phoneItem"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:src="@drawable/ic_wallet"
-        app:text="@string/wallets_label" />
+        app:src="@drawable/ic_phone_waves"
+        app:text="@string/support_phone_label"
+        tools:value="@string/support_phone" />
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="@dimen/divider_size"
+        android:layout_height="1dp"
         android:background="@color/thin_divider" />
 
     <com.app.belcobtm.presentation.core.views.SettingsItemView
-        android:id="@+id/securityItem"
+        android:id="@+id/emailItem"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:src="@drawable/ic_security"
-        app:text="@string/security_label" />
+        app:src="@drawable/ic_mail"
+        app:text="@string/support_email_label"
+        app:value="@string/support_email" />
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="@dimen/divider_size"
+        android:layout_height="1dp"
         android:background="@color/thin_divider" />
 
     <com.app.belcobtm.presentation.core.views.SettingsItemView
-        android:id="@+id/kycItem"
+        android:id="@+id/telegramItem"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:src="@drawable/ic_kyc"
-        app:text="@string/kyc_label" />
+        app:src="@drawable/ic_telegram"
+        app:text="@string/support_telegram_label"
+        app:value="@string/support_telegram" />
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="@dimen/divider_size"
+        android:layout_height="1dp"
         android:background="@color/thin_divider" />
 
     <com.app.belcobtm.presentation.core.views.SettingsItemView
-        android:id="@+id/supportItem"
+        android:id="@+id/whatsAppItem"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:src="@drawable/ic_support"
-        app:text="@string/support_label" />
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/divider_size"
-        android:background="@color/thin_divider" />
-
-    <com.app.belcobtm.presentation.core.views.SettingsItemView
-        android:id="@+id/aboutItem"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:src="@drawable/ic_info"
-        app:text="@string/about_label" />
+        app:src="@drawable/ic_whatsapp"
+        app:text="@string/support_whatapp_label"
+        app:value="@string/support_whatapp" />
 
 </androidx.appcompat.widget.LinearLayoutCompat>

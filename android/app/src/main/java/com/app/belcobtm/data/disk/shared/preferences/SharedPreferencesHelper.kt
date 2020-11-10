@@ -20,7 +20,7 @@ class SharedPreferencesHelper(private val sharedPreferences: SharedPreferences) 
 
     var accessToken: String = ""
         set(value) {
-            field = if (value.isBlank()) "" else ACCESS_TOKEN_BEARER + value
+            field = if (value.isBlank()) "" else formatToken(value)
         }
 
     var refreshToken: String
@@ -59,6 +59,16 @@ class SharedPreferencesHelper(private val sharedPreferences: SharedPreferences) 
             refreshToken = it.refreshToken
             userId = it.userId
         }
+    }
+
+    /**
+     * Formats given token to the one with [ACCESS_TOKEN_BEARER] prefix
+     *
+     * @param token raw token to be formatted
+     * @return formatted token with [ACCESS_TOKEN_BEARER] prefix
+     * */
+    fun formatToken(token: String): String{
+        return ACCESS_TOKEN_BEARER.plus(token)
     }
 
     fun clearValue(key: String) {

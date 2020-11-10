@@ -7,16 +7,18 @@ import androidx.lifecycle.viewModelScope
 import com.app.belcobtm.data.websockets.wallet.WalletObserver
 import com.app.belcobtm.data.websockets.wallet.model.WalletBalance
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
-import com.app.belcobtm.presentation.features.wallet.balance.adapter.BalanceListItem
+import com.app.belcobtm.presentation.features.wallet.balance.adapter.CoinListItem
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 
 class WalletViewModel(private val walletObserver: WalletObserver) : ViewModel() {
 
-    val balanceLiveData: LiveData<LoadingData<Pair<Double, List<BalanceListItem.Coin>>>> =
+    val balanceLiveData: LiveData<LoadingData<Pair<Double, List<CoinListItem>>>> =
         walletObserver.observe()
+            .receiveAsFlow()
             .map { mapWalletBalance(it) }
-            .asLiveData(viewModelScope.coroutineContext)
+            .asLiveData()
 
     fun reconnectToWallet() {
         viewModelScope.launch {
@@ -26,13 +28,13 @@ class WalletViewModel(private val walletObserver: WalletObserver) : ViewModel() 
 
     private fun mapWalletBalance(
         wallet: WalletBalance
-    ): LoadingData<Pair<Double, List<BalanceListItem.Coin>>> =
+    ): LoadingData<Pair<Double, List<CoinListItem>>> =
         when (wallet) {
             is WalletBalance.NoInfo -> LoadingData.Loading()
             is WalletBalance.Error -> LoadingData.Error(wallet.error)
             is WalletBalance.Balance ->
                 wallet.data.coinList.map {
-                    BalanceListItem.Coin(
+                    CoinListItem(
                         code = it.code,
                         balanceCrypto = it.balanceCoin,
                         balanceFiat = it.balanceUsd,

@@ -41,6 +41,7 @@ class SettingsItemView @JvmOverloads constructor(
         try {
             setImage(typedArray.getDrawable(R.styleable.SettingsItemView_src))
             setLabel(typedArray.getString(R.styleable.SettingsItemView_text))
+            setValue(typedArray.getString(R.styleable.SettingsItemView_value))
         } finally {
             typedArray.recycle()
         }
@@ -57,7 +58,7 @@ class SettingsItemView @JvmOverloads constructor(
         labelText.text = label ?: ""
     }
 
-    fun setValue(value: CharSequence) {
-        valueText.text = value
+    fun setValue(value: CharSequence?) {
+        valueText.text = value ?: ""
     }
 }

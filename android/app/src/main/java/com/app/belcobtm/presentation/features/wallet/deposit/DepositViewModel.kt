@@ -7,6 +7,7 @@ import com.app.belcobtm.data.websockets.wallet.WalletObserver
 import com.app.belcobtm.data.websockets.wallet.model.WalletBalance
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.filterIsInstance
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 
 class DepositViewModel(
@@ -18,6 +19,7 @@ class DepositViewModel(
     init {
         viewModelScope.launch {
             walletObserver.observe()
+                .receiveAsFlow()
                 .filterIsInstance<WalletBalance.Balance>()
                 .collect { balance ->
                     addressLiveData.value = balance.data.coinList

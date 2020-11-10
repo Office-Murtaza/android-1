@@ -17,7 +17,8 @@ import com.app.belcobtm.presentation.core.Endpoint
 import com.squareup.moshi.Moshi
 import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.ConflatedBroadcastChannel
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.channels.ReceiveChannel
+import kotlinx.coroutines.flow.collect
 import com.app.belcobtm.data.websockets.base.model.SocketResponse.Status.Companion as SocketStatus
 
 @kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -68,14 +69,8 @@ class WebSocketWalletObserver(
         }
     }
 
-    override fun observe(): Flow<WalletBalance> {
-        val subscribeChannel = balanceInfo.openSubscription()
-        return flow<WalletBalance> {
-            emitAll(subscribeChannel)
-        }.onCompletion {
-            subscribeChannel.cancel()
-        }
-    }
+    override fun observe(): ReceiveChannel<WalletBalance> =
+        balanceInfo.openSubscription()
 
     override suspend fun connect() {
         withContext(ioScope.coroutineContext) {
@@ -94,7 +89,6 @@ class WebSocketWalletObserver(
             )
             socketClient.sendMessage(serializer.serialize(request))
             socketClient.close(1000)
-            balanceInfo.send(WalletBalance.NoInfo)
         }
     }
 

@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.*;
 import wallet.core.jni.CoinType;
 
 import java.math.BigDecimal;
-import java.math.BigInteger;
 
 @RestController
 @RequestMapping("/api/v1/test")
@@ -58,8 +57,6 @@ public class TestController {
             res.put("holdPeriod(s)", gethService.getToken().holdPeriod().send());
             res.put("annualPercent", gethService.getToken().annualPercent().send());
             res.put("annualPeriod(s)", gethService.getToken().annualPeriod().send());
-
-            gethService.getToken().stakeParams(BigInteger.valueOf(1), BigInteger.valueOf(10), BigInteger.valueOf(20), BigInteger.valueOf(60)).send();
         } catch (Exception e) {
             e.printStackTrace();
         }

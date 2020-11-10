@@ -13,12 +13,20 @@ class SettingsViewModel : ViewModel() {
 
     fun onSectionClick(section: SettingsSections) {
         when (section) {
+            SettingsSections.WALLETS -> {
+                val dest = SettingsFragmentDirections.settingsToManageFragment()
+                actionData.value = SettingsAction.NavigateAction(dest)
+            }
             SettingsSections.SECURITY -> {
                 val dest = SettingsFragmentDirections.settingsToSecurityFragment()
                 actionData.value = SettingsAction.NavigateAction(dest)
             }
             SettingsSections.KYC -> {
                 val dest = SettingsFragmentDirections.settingsToVerificationInfoFragment()
+                actionData.value = SettingsAction.NavigateAction(dest)
+            }
+            SettingsSections.SUPPORT -> {
+                val dest = SettingsFragmentDirections.settingsToSupportFragment()
                 actionData.value = SettingsAction.NavigateAction(dest)
             }
             SettingsSections.ABOUT -> {
@@ -46,8 +54,10 @@ class SettingsViewModel : ViewModel() {
 }
 
 enum class SettingsSections {
+    WALLETS,
     SECURITY,
     KYC,
+    SUPPORT,
     ABOUT
 }
 

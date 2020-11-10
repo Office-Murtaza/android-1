@@ -339,4 +339,11 @@
                  splitStatements="true"
                  stripComments="true"/>
     </changeSet>
+    <changeSet id="49" author="Kostya" failOnError="false">
+        <sqlFile encoding="utf8"
+                 endDelimiter=";"
+                 path="db/update/drop_recall_fee_column.sql"
+                 splitStatements="true"
+                 stripComments="true"/>
+    </changeSet>
 </databaseChangeLog>

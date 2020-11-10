@@ -211,7 +211,7 @@ public class WalletService {
         if (coin == CoinService.CoinEnum.CATM) {
             BigDecimal ethBalance = getBalance(CoinService.CoinEnum.ETH);
 
-            return balance.compareTo(amount.add(coin.getCoinEntity().getRecallFee())) >= 0 && ethBalance.compareTo(coin.getTxFee()) >= 0;
+            return balance.compareTo(amount.add(convertEthFeeToCatmFee())) >= 0 && ethBalance.compareTo(coin.getTxFee()) >= 0;
         }
 
         return balance.compareTo(amount.add(coin.getTxFee())) >= 0;
@@ -280,5 +280,9 @@ public class WalletService {
 
     public boolean isServerAddress(String address) {
         return serverAddresses.contains(address);
+    }
+
+    public BigDecimal convertEthFeeToCatmFee() {
+        return CoinService.CoinEnum.CATM.getTxFee().multiply(CoinService.CoinEnum.ETH.getPrice()).divide(CoinService.CoinEnum.CATM.getPrice());
     }
 }

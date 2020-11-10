@@ -20,6 +20,14 @@
             app:destination="@id/about_fragment" />
 
         <action
+            android:id="@+id/settings_to_support_fragment"
+            app:destination="@id/support_fragment" />
+
+        <action
+            android:id="@+id/settings_to_manage_fragment"
+            app:destination="@id/manage_wallets_fragment" />
+
+        <action
             android:id="@+id/settings_to_security_fragment"
             app:destination="@id/security_fragment" />
 
@@ -245,5 +253,17 @@
         android:name="com.app.belcobtm.presentation.features.settings.about.AboutFragment"
         android:label="AboutFragment"
         tools:layout="@layout/fragment_about" />
+
+    <fragment
+        android:id="@+id/manage_wallets_fragment"
+        android:name="com.app.belcobtm.presentation.features.wallet.add.ManageWalletsFragment"
+        android:label="ManageWalletFragment"
+        tools:layout="@layout/fragment_manage_wallets" />
+
+    <fragment
+        android:id="@+id/support_fragment"
+        android:name="com.app.belcobtm.presentation.features.settings.support.SupportFragment"
+        android:label="SupportFragment"
+        tools:layout="@layout/fragment_support" />
 
 </navigation>
