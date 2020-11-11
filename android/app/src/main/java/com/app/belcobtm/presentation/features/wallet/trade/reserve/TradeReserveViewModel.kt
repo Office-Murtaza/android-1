@@ -14,6 +14,7 @@ import com.app.belcobtm.presentation.core.mvvm.LoadingData
 class TradeReserveViewModel(
     private val coinDataItem: CoinDataItem,
     private val detailsDataItem: CoinDetailsDataItem,
+    private val etheriumCoinDataItem: CoinDataItem,
     private val createTransactionUseCase: TradeReserveTransactionCreateUseCase,
     private val completeTransactionUseCase: TradeReserveTransactionCompleteUseCase
 ) : ViewModel() {
@@ -38,15 +39,31 @@ class TradeReserveViewModel(
     fun completeTransaction(smsCode: String) {
         completeTransactionLiveData.value = LoadingData.Loading()
         completeTransactionUseCase.invoke(
-            params = TradeReserveTransactionCompleteUseCase.Params(smsCode, coinDataItem.code, selectedAmount, hash),
+            params = TradeReserveTransactionCompleteUseCase.Params(
+                smsCode,
+                coinDataItem.code,
+                selectedAmount,
+                hash
+            ),
             onSuccess = { completeTransactionLiveData.value = LoadingData.Success(Unit) },
             onError = { completeTransactionLiveData.value = LoadingData.Error(it) }
         )
     }
 
-    fun getMaxValue(): Double = if (coinDataItem.code == LocalCoinType.CATM.name) {
+    fun getMaxValue(): Double = if (isCATM()) {
         coinDataItem.balanceCoin
     } else {
         0.0.coerceAtLeast(coinDataItem.balanceCoin - detailsDataItem.txFee)
+    }
+
+    fun isEnoughBalance(): Boolean = if (isCATM()) {
+        selectedAmount <= coinDataItem.balanceCoin
+                && etheriumCoinDataItem.balanceCoin >= detailsDataItem.txFee
+    } else {
+        selectedAmount <= getMaxValue()
+    }
+
+    private fun isCATM(): Boolean {
+        return coinDataItem.code == LocalCoinType.CATM.name
     }
 }

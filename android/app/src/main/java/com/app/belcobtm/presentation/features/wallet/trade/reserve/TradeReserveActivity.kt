@@ -17,7 +17,9 @@ import org.koin.android.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
 class TradeReserveActivity : BaseActivity() {
-    private val viewModel: TradeReserveViewModel by viewModel { parametersOf(intent.getStringExtra(TAG_COIN_CODE)) }
+    private val viewModel: TradeReserveViewModel by viewModel {
+        parametersOf(intent.getStringExtra(TAG_COIN_CODE))
+    }
     private val doubleTextWatcher: DoubleTextWatcher = DoubleTextWatcher(
         maxCharsAfterDotFirst = DoubleTextWatcher.MAX_CHARS_AFTER_DOT_CRYPTO,
         maxCharsAfterDotSecond = DoubleTextWatcher.MAX_CHARS_AFTER_DOT_USD,
@@ -84,7 +86,13 @@ class TradeReserveActivity : BaseActivity() {
         maxUsdView.setOnClickListener { amountCryptoView.setText(viewModel.getMaxValue().toStringCoin()) }
         amountCryptoView.editText?.addTextChangedListener(doubleTextWatcher.firstTextWatcher)
         amountUsdView.editText?.addTextChangedListener(doubleTextWatcher.secondTextWatcher)
-        recallButtonView.setOnClickListener { viewModel.createTransaction() }
+        recallButtonView.setOnClickListener {
+            if (viewModel.isEnoughBalance()) {
+                viewModel.createTransaction()
+            } else {
+                showError(R.string.trade_reserve_screen_not_enough_reserved_amount)
+            }
+        }
     }
 
     private fun initObservers() {
@@ -111,8 +119,7 @@ class TradeReserveActivity : BaseActivity() {
             }
         })
 
-        viewModel.completeTransactionLiveData.observe(this, Observer
-        { loadingData ->
+        viewModel.completeTransactionLiveData.observe(this, Observer { loadingData ->
             when (loadingData) {
                 is LoadingData.Loading -> progressView.show()
                 is LoadingData.Success -> finish()
