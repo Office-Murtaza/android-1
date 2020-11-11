@@ -293,29 +293,21 @@ class TransactionRepositoryImpl(
         val coinType = LocalCoinType.valueOf(coinCode)
         val hashResponse =
             transactionHashRepository.createTransactionHash(coinType, cryptoAmount, toAddress)
-        val sendSmsToDeviceResponse = toolsRepository.sendSmsToDeviceOld()
         return when {
-            hashResponse.isRight && sendSmsToDeviceResponse.isRight -> hashResponse as Either.Right
-            sendSmsToDeviceResponse.isLeft -> sendSmsToDeviceResponse as Either.Left
+            hashResponse.isRight -> hashResponse as Either.Right
             else -> hashResponse as Either.Left
         }
     }
 
     override suspend fun tradeReserveTransactionComplete(
-        smsCode: String,
         coinCode: String,
         cryptoAmount: Double,
         hash: String
     ): Either<Failure, Unit> {
-        val smsCodeVerifyResponse = toolsRepository.verifySmsCodeOld(smsCode)
-        return if (smsCodeVerifyResponse.isRight) {
-            val fromAddress = prefHelper.coinsDetails[coinCode]?.walletAddress ?: ""
-            val toAddress = prefHelper.coinsDetails[coinCode]?.contractAddress ?: ""
-            val fee = prefHelper.coinsDetails[coinCode]?.txFee ?: 0.0
-            apiService.submitReserve(coinCode, fromAddress, toAddress, cryptoAmount, fee, hash)
-        } else {
-            smsCodeVerifyResponse as Either.Left
-        }
+        val fromAddress = prefHelper.coinsDetails[coinCode]?.walletAddress ?: ""
+        val toAddress = prefHelper.coinsDetails[coinCode]?.contractAddress ?: ""
+        val fee = prefHelper.coinsDetails[coinCode]?.txFee ?: 0.0
+        return apiService.submitReserve(coinCode, fromAddress, toAddress, cryptoAmount, fee, hash)
     }
     override suspend fun stakeDetails(
         coinCode: String

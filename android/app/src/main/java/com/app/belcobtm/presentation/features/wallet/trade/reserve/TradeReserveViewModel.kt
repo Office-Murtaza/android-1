@@ -18,9 +18,7 @@ class TradeReserveViewModel(
     private val createTransactionUseCase: TradeReserveTransactionCreateUseCase,
     private val completeTransactionUseCase: TradeReserveTransactionCompleteUseCase
 ) : ViewModel() {
-    private var hash: String = ""
     val createTransactionLiveData: MutableLiveData<LoadingData<Unit>> = MutableLiveData()
-    val completeTransactionLiveData: MutableLiveData<LoadingData<Unit>> = MutableLiveData()
     val coinItem: CoinScreenItem = coinDataItem.mapToScreenItem()
     var selectedAmount: Double = 0.0
 
@@ -28,25 +26,21 @@ class TradeReserveViewModel(
         createTransactionLiveData.value = LoadingData.Loading()
         createTransactionUseCase.invoke(
             params = TradeReserveTransactionCreateUseCase.Params(coinDataItem.code, selectedAmount),
-            onSuccess = {
-                hash = it
-                createTransactionLiveData.value = LoadingData.Success(Unit)
-            },
+            onSuccess = { completeTransaction(it) },
             onError = { createTransactionLiveData.value = LoadingData.Error(it) }
         )
     }
 
-    fun completeTransaction(smsCode: String) {
-        completeTransactionLiveData.value = LoadingData.Loading()
+    private fun completeTransaction(hash: String) {
+        createTransactionLiveData.value = LoadingData.Loading()
         completeTransactionUseCase.invoke(
             params = TradeReserveTransactionCompleteUseCase.Params(
-                smsCode,
                 coinDataItem.code,
                 selectedAmount,
                 hash
             ),
-            onSuccess = { completeTransactionLiveData.value = LoadingData.Success(Unit) },
-            onError = { completeTransactionLiveData.value = LoadingData.Error(it) }
+            onSuccess = { createTransactionLiveData.value = LoadingData.Success(Unit) },
+            onError = { createTransactionLiveData.value = LoadingData.Error(it) }
         )
     }
 

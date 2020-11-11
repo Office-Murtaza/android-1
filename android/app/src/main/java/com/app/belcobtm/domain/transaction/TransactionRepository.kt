@@ -128,7 +128,6 @@ interface TransactionRepository {
     ): Either<Failure, String>
 
     suspend fun tradeReserveTransactionComplete(
-        smsCode: String,
         coinCode: String,
         cryptoAmount: Double,
         hash: String
