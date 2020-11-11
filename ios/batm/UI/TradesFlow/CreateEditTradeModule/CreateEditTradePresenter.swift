@@ -7,7 +7,6 @@ final class CreateEditTradePresenter: ModulePresenter, CreateEditTradeModule {
   typealias Store = ViewStore<CreateEditTradeAction, CreateEditTradeState>
 
   struct Input {
-    var back: Driver<Void>
     var updateSelectedType: Driver<TradeType>
     var updatePayment: Driver<String?>
     var updateMargin: Driver<String?>
@@ -37,10 +36,6 @@ final class CreateEditTradePresenter: ModulePresenter, CreateEditTradeModule {
   }
 
   func bind(input: Input) {
-    input.back
-      .drive(onNext: { [delegate] in delegate?.didFinishCreateEditTrade() })
-      .disposed(by: disposeBag)
-    
     input.updateSelectedType
       .drive(onNext: { [store] in store.action.accept(.updateSelectedType($0)) })
       .disposed(by: disposeBag)

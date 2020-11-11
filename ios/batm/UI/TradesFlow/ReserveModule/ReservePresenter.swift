@@ -7,7 +7,6 @@ final class ReservePresenter: ModulePresenter, ReserveModule {
   typealias Store = ViewStore<ReserveAction, ReserveState>
 
   struct Input {
-    var back: Driver<Void>
     var updateCurrencyAmount: Driver<String?>
     var updateCoinAmount: Driver<String?>
     var max: Driver<Void>
@@ -36,10 +35,6 @@ final class ReservePresenter: ModulePresenter, ReserveModule {
   }
 
   func bind(input: Input) {
-    input.back
-      .drive(onNext: { [delegate] in delegate?.didFinishReserve() })
-      .disposed(by: disposeBag)
-    
     input.updateCurrencyAmount
       .asObservable()
       .map { ReserveAction.updateCurrencyAmount($0) }

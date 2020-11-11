@@ -8,7 +8,6 @@ final class TradesPresenter: ModulePresenter, TradesModule {
   typealias Store = ViewStore<TradesAction, TradesState>
 
   struct Input {
-    var back: Driver<Void>
     var refreshBuyTrades: Driver<Void>
     var refreshSellTrades: Driver<Void>
     var showMoreBuyTrades: Driver<Void>
@@ -47,10 +46,6 @@ final class TradesPresenter: ModulePresenter, TradesModule {
   }
 
   func bind(input: Input) {
-    input.back
-      .drive(onNext: { [delegate] in delegate?.didFinishTrades() })
-      .disposed(by: disposeBag)
-    
     input.refreshBuyTrades
       .asObservable()
       .flatFilter(activity.not())

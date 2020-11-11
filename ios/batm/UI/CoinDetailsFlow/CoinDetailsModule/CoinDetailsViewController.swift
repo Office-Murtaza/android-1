@@ -64,9 +64,9 @@ final class CoinDetailsViewController: ModuleViewController<CoinDetailsPresenter
     fab.view.addItem(title: localize(L.CoinDetails.exchange), image: UIImage(named: "fab_exchange")) { [unowned self] _ in
       self.didTapExchangeRelay.accept(())
     }
-    //    fab.view.addItem(title: localize(L.CoinDetails.trade), image: UIImage(named: "fab_trade")) { [unowned self] _ in
-    //      self.didTapTradesRelay.accept(())
-    //    }
+    fab.view.addItem(title: localize(L.CoinDetails.trade), image: UIImage(named: "fab_trade")) { [unowned self] _ in
+        self.didTapTradesRelay.accept(())
+    }
   }
   
   override func setupLayout() {

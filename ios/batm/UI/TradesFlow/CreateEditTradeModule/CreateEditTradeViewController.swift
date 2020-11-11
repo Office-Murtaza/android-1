@@ -4,7 +4,7 @@ import RxSwift
 import SnapKit
 import MaterialComponents
 
-final class CreateEditTradeViewController: NavigationScreenViewController<CreateEditTradePresenter> {
+final class CreateEditTradeViewController: ModuleViewController<CreateEditTradePresenter> {
   
   let errorView = ErrorView()
   
@@ -15,19 +15,12 @@ final class CreateEditTradeViewController: NavigationScreenViewController<Create
   let formView = CreateEditTradeFormView()
   
   let createButton = MDCButton.create
-  
-  override var preferredStatusBarStyle: UIStatusBarStyle {
-    return .lightContent
-  }
-  
-  override var shouldShowNavigationBar: Bool { return false }
 
   override func setupUI() {
-    customView.rootScrollView.contentInsetAdjustmentBehavior = .never
-    customView.contentView.addSubviews(errorView,
-                                       headerView,
-                                       formView,
-                                       createButton)
+    view.addSubviews(errorView,
+                     headerView,
+                     formView,
+                     createButton)
     
     setupDefaultKeyboardHandling()
   }
@@ -65,7 +58,7 @@ final class CreateEditTradeViewController: NavigationScreenViewController<Create
       .distinctUntilChanged()
     
     Driver.combineLatest(coinBalanceDriver, tradeDriver)
-      .drive(onNext: { [customView] in
+      .drive(onNext: { [weak self] in
         let title: String
         
         if $1 == nil {
@@ -74,7 +67,7 @@ final class CreateEditTradeViewController: NavigationScreenViewController<Create
           title = String(format: localize(L.CreateEditTrade.editTitle), $0.type.code)
         }
         
-        customView.setTitle(title)
+        self?.title = title
       })
       .disposed(by: disposeBag)
     
@@ -143,7 +136,6 @@ final class CreateEditTradeViewController: NavigationScreenViewController<Create
   override func setupBindings() {
     setupUIBindings()
     
-    let backDriver = customView.backButton.rx.tap.asDriver()
     let updateSelectedTypeDriver = tradeTypeView.rx.acceptedType
     let updatePaymentDriver = formView.rx.paymentText.asDriver()
     let updateMarginDriver = formView.rx.marginText.asDriver()
@@ -152,8 +144,7 @@ final class CreateEditTradeViewController: NavigationScreenViewController<Create
     let updateTermsDriver = formView.rx.termsText.asDriver()
     let createDriver = createButton.rx.tap.asDriver()
     
-    presenter.bind(input: CreateEditTradePresenter.Input(back: backDriver,
-                                                         updateSelectedType: updateSelectedTypeDriver,
+    presenter.bind(input: CreateEditTradePresenter.Input(updateSelectedType: updateSelectedTypeDriver,
                                                          updatePayment: updatePaymentDriver,
                                                          updateMargin: updateMarginDriver,
                                                          updateMinLimit: updateMinLimitDriver,

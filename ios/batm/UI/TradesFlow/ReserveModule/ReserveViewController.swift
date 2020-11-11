@@ -4,7 +4,7 @@ import RxSwift
 import SnapKit
 import MaterialComponents
 
-final class ReserveViewController: NavigationScreenViewController<ReservePresenter> {
+final class ReserveViewController: ModuleViewController<ReservePresenter> {
   
   let errorView = ErrorView()
   
@@ -14,26 +14,16 @@ final class ReserveViewController: NavigationScreenViewController<ReservePresent
   
   let reserveButton = MDCButton.reserve
   
-  override var preferredStatusBarStyle: UIStatusBarStyle {
-    return .lightContent
-  }
-  
-  override var shouldShowNavigationBar: Bool { return false }
-  
   override func setupUI() {
-    customView.rootScrollView.contentInsetAdjustmentBehavior = .never
-    customView.contentView.addSubviews(errorView,
-                                       headerView,
-                                       formView,
-                                       reserveButton)
+    view.addSubviews(errorView,
+                     headerView,
+                     formView,
+                     reserveButton)
     
     setupDefaultKeyboardHandling()
   }
   
   override func setupLayout() {
-    customView.contentView.snp.makeConstraints {
-      $0.height.equalToSuperview()
-    }
     errorView.snp.makeConstraints {
       $0.top.equalToSuperview().offset(5)
       $0.centerX.equalToSuperview()
@@ -59,8 +49,8 @@ final class ReserveViewController: NavigationScreenViewController<ReservePresent
       .map { $0.coin?.type.code }
       .filterNil()
       .distinctUntilChanged()
-      .drive(onNext: { [customView] in
-        customView.setTitle(String(format: localize(L.Reserve.title), $0))
+      .drive(onNext: { [weak self] in
+        self?.title = String(format: localize(L.Reserve.title), $0)
       })
       .disposed(by: disposeBag)
     
@@ -116,14 +106,12 @@ final class ReserveViewController: NavigationScreenViewController<ReservePresent
   override func setupBindings() {
     setupUIBindings()
     
-    let backDriver = customView.backButton.rx.tap.asDriver()
     let updateCurrencyAmountDriver = formView.rx.currencyText.asDriver(onErrorDriveWith: .empty())
     let updateCoinAmountDriver = formView.rx.coinText.asDriver(onErrorDriveWith: .empty())
     let maxDriver = formView.rx.maxTap
     let reserveDriver = reserveButton.rx.tap.asDriver()
     
-    presenter.bind(input: ReservePresenter.Input(back: backDriver,
-                                                 updateCurrencyAmount: updateCurrencyAmountDriver,
+    presenter.bind(input: ReservePresenter.Input(updateCurrencyAmount: updateCurrencyAmountDriver,
                                                  updateCoinAmount: updateCoinAmountDriver,
                                                  max: maxDriver,
                                                  reserve: reserveDriver))

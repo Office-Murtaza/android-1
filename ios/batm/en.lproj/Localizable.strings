@@ -171,6 +171,7 @@
 
 "coin_details.price" = "Price";
 "coin_details.balance" = "Balance";
+"coin_details.reserved" = "Reserved";
 "coin_details.deposit" = "Deposit";
 "coin_details.withdraw" = "Withdraw";
 "coin_details.send_gift" = "Send gift";
