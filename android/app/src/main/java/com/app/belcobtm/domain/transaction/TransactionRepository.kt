@@ -111,13 +111,7 @@ interface TransactionRepository {
         terms: String
     ): Either<Failure, Unit>
 
-    suspend fun tradeRecallTransactionCreate(
-        coinCode: String,
-        cryptoAmount: Double
-    ): Either<Failure, Unit>
-
     suspend fun tradeRecallTransactionComplete(
-        smsCode: String,
         coinCode: String,
         cryptoAmount: Double
     ): Either<Failure, Unit>

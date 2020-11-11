@@ -2,14 +2,12 @@ package com.app.belcobtm.presentation.features.wallet.trade.recall
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.core.os.bundleOf
 import androidx.lifecycle.Observer
 import com.app.belcobtm.R
 import com.app.belcobtm.domain.Failure
 import com.app.belcobtm.presentation.core.extensions.*
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
 import com.app.belcobtm.presentation.core.ui.BaseActivity
-import com.app.belcobtm.presentation.core.ui.SmsDialogFragment
 import com.app.belcobtm.presentation.core.watcher.DoubleTextWatcher
 import com.app.belcobtm.presentation.features.HostActivity
 import kotlinx.android.synthetic.main.activity_trade_recall.*
@@ -85,8 +83,8 @@ class TradeRecallActivity : BaseActivity() {
         amountCryptoView.editText?.addTextChangedListener(doubleTextWatcher.firstTextWatcher)
         amountUsdView.editText?.addTextChangedListener(doubleTextWatcher.secondTextWatcher)
         recallButtonView.setOnClickListener {
-            if (viewModel.isEnoughReservedAmount()) {
-                viewModel.createTransaction()
+            if (viewModel.isEnoughRecallAmount()) {
+                viewModel.performTransaction()
             } else {
                 showError(R.string.trade_reserve_screen_not_enough_reserved_amount)
             }
@@ -94,31 +92,7 @@ class TradeRecallActivity : BaseActivity() {
     }
 
     private fun initObservers() {
-        viewModel.createTransactionLiveData.observe(this, Observer { loadingData ->
-            when (loadingData) {
-                is LoadingData.Loading -> progressView.show()
-                is LoadingData.Success -> {
-                    showSmsDialog()
-                    progressView.hide()
-                }
-                is LoadingData.Error -> {
-                    when (loadingData.errorType) {
-                        is Failure.TokenError -> {
-                            val intent = Intent(this, HostActivity::class.java)
-                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-                            startActivity(intent)
-                        }
-                        is Failure.MessageError -> showError(loadingData.errorType.message)
-                        is Failure.NetworkConnection -> showError(R.string.error_internet_unavailable)
-                        else -> showError(R.string.error_something_went_wrong)
-                    }
-                    progressView.hide()
-                }
-            }
-        })
-
-        viewModel.completeTransactionLiveData.observe(this, Observer
-        { loadingData ->
+        viewModel.transactionLiveData.observe(this, Observer { loadingData ->
             when (loadingData) {
                 is LoadingData.Loading -> progressView.show()
                 is LoadingData.Success -> finish()
@@ -129,7 +103,6 @@ class TradeRecallActivity : BaseActivity() {
                             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
                             startActivity(intent)
                         }
-                        is Failure.MessageError -> showSmsDialog(loadingData.errorType.message)
                         is Failure.NetworkConnection -> showError(R.string.error_internet_unavailable)
                         else -> showError(R.string.error_something_went_wrong)
                     }
@@ -159,13 +132,6 @@ class TradeRecallActivity : BaseActivity() {
             viewModel.coinItem.reservedBalanceUsd.toStringUsd()
         )
         amountCryptoView.hint = getString(R.string.text_amount, viewModel.coinItem.code)
-    }
-
-    private fun showSmsDialog(errorMessage: String? = null) {
-        val fragment = SmsDialogFragment()
-        fragment.arguments = bundleOf(SmsDialogFragment.TAG_ERROR to errorMessage)
-        fragment.show(supportFragmentManager, SmsDialogFragment::class.simpleName)
-        fragment.setDialogListener { smsCode -> viewModel.completeTransaction(smsCode) }
     }
 
     companion object {

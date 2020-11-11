@@ -39,7 +39,6 @@ import com.app.belcobtm.presentation.features.wallet.withdraw.WithdrawViewModel
 import org.koin.android.ext.koin.androidApplication
 import org.koin.android.viewmodel.dsl.viewModel
 import org.koin.dsl.module
-import wallet.core.jni.CoinType
 
 val viewModelModule = module {
     viewModel { AboutViewModel(androidApplication(), get()) }
@@ -84,7 +83,7 @@ val viewModelModule = module {
         TradeRecallViewModel(
             get<WalletRepository>().getCoinItemByCode(coinCode),
             get<WalletRepository>().getCoinDetailsItemByCode(coinCode),
-            get(),
+            get<WalletRepository>().getCoinItemByCode(LocalCoinType.ETH.name),
             get()
         )
     }

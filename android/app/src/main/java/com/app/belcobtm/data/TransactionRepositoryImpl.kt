@@ -267,22 +267,11 @@ class TransactionRepositoryImpl(
         terms: String
     ): Either<Failure, Unit> = apiService.tradeSellCreate(coinCode, paymentMethod, margin, minLimit, maxLimit, terms)
 
-    override suspend fun tradeRecallTransactionCreate(
-        coinCode: String,
-        cryptoAmount: Double
-    ): Either<Failure, Unit> = toolsRepository.sendSmsToDeviceOld()
-
     override suspend fun tradeRecallTransactionComplete(
-        smsCode: String,
         coinCode: String,
         cryptoAmount: Double
     ): Either<Failure, Unit> {
-        val smsCodeVerifyResponse = toolsRepository.verifySmsCodeOld(smsCode)
-        return if (smsCodeVerifyResponse.isRight) {
-            apiService.submitRecall(coinCode, cryptoAmount)
-        } else {
-            smsCodeVerifyResponse as Either.Left
-        }
+        return apiService.submitRecall(coinCode, cryptoAmount)
     }
 
     override suspend fun tradeReserveTransactionCreate(
