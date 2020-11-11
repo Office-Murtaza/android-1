@@ -19,6 +19,8 @@ import com.app.belcobtm.presentation.core.extensions.toStringCoin
 import com.app.belcobtm.presentation.core.extensions.toStringUsd
 import com.app.belcobtm.presentation.core.ui.fragment.BaseFragment
 import com.app.belcobtm.presentation.features.wallet.trade.main.TradeActivity
+import com.app.belcobtm.presentation.features.wallet.trade.recall.TradeRecallActivity
+import com.app.belcobtm.presentation.features.wallet.trade.reserve.TradeReserveActivity
 import com.app.belcobtm.presentation.features.wallet.transactions.TransactionsFABType.*
 import com.app.belcobtm.presentation.features.wallet.transactions.adapter.TransactionsAdapter
 import com.github.mikephil.charting.data.BarEntry
@@ -72,19 +74,25 @@ class TransactionsFragment : BaseFragment() {
     }
 
     private fun initFabMenu() {
-        val groupId = Menu.FIRST
         val menu = FabSpeedDialMenu(requireContext())
         if (viewModel.coinCode == LocalCoinType.CATM.name) {
-            menu.add(groupId, STAKING.id, STAKING.ordinal, STAKING.resText).setIcon(STAKING.resIcon)
+            addButtonToMenu(menu, STAKING)
         }
-//        menu.add(groupId, TRADE.id, TRADE.ordinal, TRADE.resText).setIcon(TRADE.resIcon)
-        menu.add(groupId, EXCHANGE.id, EXCHANGE.ordinal, EXCHANGE.resText).setIcon(EXCHANGE.resIcon)
-//        menu.add(groupId, SELL.id, SELL.ordinal, SELL.resText).setIcon(SELL.resIcon)
-        menu.add(groupId, SEND_GIFT.id, SEND_GIFT.ordinal, SEND_GIFT.resText)
-            .setIcon(SEND_GIFT.resIcon)
-        menu.add(groupId, WITHDRAW.id, WITHDRAW.ordinal, WITHDRAW.resText).setIcon(WITHDRAW.resIcon)
-        menu.add(groupId, DEPOSIT.id, DEPOSIT.ordinal, DEPOSIT.resText).setIcon(DEPOSIT.resIcon)
+//        addButtonToMenu(groupId, menu, TRADE)
+        addButtonToMenu(menu, EXCHANGE)
+//        addButtonToMenu(groupId, menu, SELL)
+        addButtonToMenu(menu, SEND_GIFT)
+        addButtonToMenu(menu, WITHDRAW)
+        addButtonToMenu(menu, DEPOSIT)
+        addButtonToMenu(menu, RECALL)
+        addButtonToMenu(menu, RESERVE)
         fabListView.setMenu(menu)
+    }
+
+    private fun addButtonToMenu(menu: Menu, buttonType: TransactionsFABType) {
+        menu
+            .add(Menu.FIRST, buttonType.id, buttonType.ordinal, buttonType.resText)
+            .setIcon(buttonType.resIcon)
     }
 
     override fun initViews() {
@@ -124,6 +132,15 @@ class TransactionsFragment : BaseFragment() {
                     navigate(TransactionsFragmentDirections.toWithdrawFragment(viewModel.coinCode))
                 DEPOSIT.id ->
                     navigate(TransactionsFragmentDirections.toDepositFragment(viewModel.coinCode))
+                RECALL.id ->
+                    startTradeRecallActivity(
+                        TransactionsFragmentArgs.fromBundle(requireArguments()).coinCode
+                    )
+                RESERVE.id ->
+                    startTradeReserveActivity(
+                        TransactionsFragmentArgs.fromBundle(requireArguments()).coinCode
+                    )
+
                 //SELL.id -> SellActivity.start(
                 //    requireContext(),
                 //    viewModel.coinDataItem,
@@ -275,6 +292,20 @@ class TransactionsFragment : BaseFragment() {
         intent.putExtra(TradeActivity.TAG_LATITUDE, latitude)
         intent.putExtra(TradeActivity.TAG_LONGITUDE, longitude)
         startActivity(intent)
+    }
+
+    private fun startTradeRecallActivity(coinCode: String) {
+        val notNullContext = context ?: return
+        val recallIntent = Intent(notNullContext, TradeRecallActivity::class.java)
+        recallIntent.putExtra(TradeRecallActivity.TAG_COIN_CODE, coinCode)
+        startActivity(recallIntent)
+    }
+
+    private fun startTradeReserveActivity(coinCode: String) {
+        val notNullContext = context ?: return
+        val reserveIntent = Intent(notNullContext, TradeReserveActivity::class.java)
+        reserveIntent.putExtra(TradeReserveActivity.TAG_COIN_CODE, coinCode)
+        startActivity(reserveIntent)
     }
 
     companion object {

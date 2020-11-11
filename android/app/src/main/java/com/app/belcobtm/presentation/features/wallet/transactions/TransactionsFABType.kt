@@ -9,5 +9,7 @@ enum class TransactionsFABType(val id: Int, val resText: Int, val resIcon: Int) 
     SELL(1004, R.string.sell, R.drawable.ic_shopping_cart),
     SEND_GIFT(1005, R.string.send_gift, R.drawable.ic_gift),
     WITHDRAW(1006, R.string.withdraw, R.drawable.ic_publish),
-    DEPOSIT(1007, R.string.deposit, R.drawable.ic_file_download)
+    DEPOSIT(1007, R.string.deposit, R.drawable.ic_file_download),
+    RECALL(1008, R.string.recall, R.drawable.ic_file_download),
+    RESERVE(1009, R.string.reserve, R.drawable.ic_publish),
 }
