@@ -1,5 +1,6 @@
 import Foundation
 import RxSwift
+import RxCocoa
 
 protocol ManageWalletsUsecase {
   func getCoins() -> Single<[BTMCoin]>
@@ -7,7 +8,6 @@ protocol ManageWalletsUsecase {
 }
 
 class ManageWalletsUsecaseImpl: ManageWalletsUsecase {
-  
   let walletStorage: BTMWalletStorage
   
   init(walletStorage: BTMWalletStorage) {

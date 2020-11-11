@@ -8,7 +8,6 @@ class WalletPresenter: ModulePresenter, WalletModule {
   
   struct Input {
     var refresh: Driver<Void>
-    var manageWallets: Driver<Void>
     var coinSelected: Driver<IndexPath>
   }
   
@@ -33,6 +32,13 @@ class WalletPresenter: ModulePresenter, WalletModule {
   }
   
   func bind(input: Input) {
+    usecase.getCoins()
+        .throttle(2.0, scheduler: MainScheduler.instance)
+        .flatMap { [unowned self] in self.track(self.usecase.getCoinsBalance()) }
+        .map { WalletAction.finishFetchingCoinsBalance($0) }
+        .bind(to: store.action)
+        .disposed(by: disposeBag)
+    
     input.refresh
       .asObservable()
       .doOnNext { [store] in store.action.accept(.startFetching) }
@@ -42,10 +48,6 @@ class WalletPresenter: ModulePresenter, WalletModule {
       }
       .map { WalletAction.finishFetchingCoinsBalance($0) }
       .bind(to: store.action)
-      .disposed(by: disposeBag)
-    
-    input.manageWallets
-      .drive(onNext: { [unowned self] in self.delegate?.showManageWallets(from: self) })
       .disposed(by: disposeBag)
     
     input.coinSelected

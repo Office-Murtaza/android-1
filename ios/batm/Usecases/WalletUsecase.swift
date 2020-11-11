@@ -6,6 +6,7 @@ protocol WalletUsecase {
   func getCoinsBalance() -> Single<CoinsBalance>
   func getCoinDetails(for type: CustomCoinType) -> Single<CoinDetails>
   func getPriceChartData(for type: CustomCoinType) -> Single<PriceChartData>
+  func getCoins() -> Observable<Void>
 }
 
 class WalletUsecaseImpl: WalletUsecase, HasDisposeBag {
@@ -49,4 +50,7 @@ class WalletUsecaseImpl: WalletUsecase, HasDisposeBag {
       .flatMap { [api] in api.getPriceChartData(userId: $0.userId, type: type) }
   }
   
+    func getCoins() -> Observable<Void> {
+        return walletStorage.coinChanged
+    }
 }
