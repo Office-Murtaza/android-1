@@ -12,10 +12,10 @@ enum CoinExchangeAction: Equatable {
     case setupCoinDetails(CoinDetails)
     case updateFromCoinAmount(String?)
     case updateToCoinType(CustomCoinType)
-    case updateToCoinTxFee(Decimal)
     case updateFromCoinAmountError(String?)
     case updateToCoinTypeError(String?)
     case updateValidationState
+    case updateToCoinDetails(CoinDetails)
 }
 
 struct CoinExchangeState: Equatable {
@@ -24,6 +24,7 @@ struct CoinExchangeState: Equatable {
     var toCoinType: CustomCoinType?
     var coinBalances: [CoinBalance]?
     var coinDetails: CoinDetails?
+    var toCoinDetails: CoinDetails?
     var fromCoinAmount: String = ""
     var fromCoinAmountError: String?
     var toCoinTxFee: Decimal?
@@ -48,7 +49,7 @@ struct CoinExchangeState: Equatable {
             return 0.0.coinFormatted.withCoinType(toCoinType)
         }
         let toCoinAmountDecimal = fromCoinAmountDecimal * fromCoinPrice / toCoinPrice * (100 - profitExchange) / 100
-        return toCoinAmountDecimal.coinFormatted(fractionDigits: coinDetails?.scale).withCoinType(toCoinType)
+      return toCoinAmountDecimal.coinFormatted(fractionDigits: toCoinDetails?.scale).withCoinType(toCoinType)
     }
     
     var maxValue: Decimal {
@@ -105,13 +106,14 @@ final class CoinExchangeStore: ViewStore<CoinExchangeAction, CoinExchangeState> 
         case let .updateToCoinType(coinType):
             state.toCoinType = coinType
             state.toCoinTypeError = nil
-        case let .updateToCoinTxFee(txFee):
-            state.toCoinTxFee = txFee
         case let .updateFromCoinAmountError(fromCoinAmountError): state.fromCoinAmountError = fromCoinAmountError
         case let .updateToCoinTypeError(toCoinTypeError): state.toCoinTypeError = toCoinTypeError
         case .updateValidationState: validate(&state)
+        case let .updateToCoinDetails(details):
+          state.toCoinDetails = details
+          state.toCoinTxFee = details.txFee
         }
-        
+      
         return state
     }
     

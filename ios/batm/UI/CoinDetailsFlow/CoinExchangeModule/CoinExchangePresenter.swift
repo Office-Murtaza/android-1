@@ -42,15 +42,19 @@ final class CoinExchangePresenter: ModulePresenter, CoinExchangeModule {
             .map { CoinExchangeAction.updateFromCoinAmount($0) }
             .bind(to: store.action)
             .disposed(by: disposeBag)
-        
-        input.toCoinType.drive(onNext: { [weak self] type in
-            guard let self = self else { return }
-            self.usecase.getCoinDetails(for: type).subscribe { [weak self] details in
-                self?.store.action.accept(.updateToCoinTxFee(details.txFee))
-            }
-            .disposed(by: self.disposeBag)
-        })
-        .disposed(by: disposeBag)
+      
+      input.toCoinType
+        .asObservable()
+        .distinctUntilChanged()
+        .observeOn(MainScheduler.instance)
+        .flatMap { [unowned self] type in self.track(self.usecase.getCoinDetails(for: type))}
+        .subscribe { [unowned self] result in
+          switch result {
+          case let .next(details):
+            self.store.action.accept(.updateToCoinDetails(details))
+          default: break
+          }
+        }.disposed(by: disposeBag)
         
         input.updatePickerItem
             .drive(onNext: { [store] in store.action.accept(.updateToCoinType($0)) })
