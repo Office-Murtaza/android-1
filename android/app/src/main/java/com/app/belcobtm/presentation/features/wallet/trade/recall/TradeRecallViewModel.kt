@@ -68,9 +68,8 @@ class TradeRecallViewModel(
 
     private fun fetchEtherium() {
         _initialLoadLiveData.value = LoadingData.Loading()
-        val params = GetFreshCoinUseCase.Params(LocalCoinType.ETH.name)
         getCoinDataUseCase.invoke(
-            params,
+            params = GetFreshCoinUseCase.Params(LocalCoinType.ETH.name),
             onSuccess = {
                 etheriumCoinDataItem = it
                 _initialLoadLiveData.value = LoadingData.Success(Unit)
