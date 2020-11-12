@@ -6,13 +6,17 @@ import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.app.belcobtm.data.websockets.wallet.WalletObserver
 import com.app.belcobtm.data.websockets.wallet.model.WalletBalance
+import com.app.belcobtm.domain.wallet.WalletRepository
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
 import com.app.belcobtm.presentation.features.wallet.balance.adapter.CoinListItem
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 
-class WalletViewModel(private val walletObserver: WalletObserver) : ViewModel() {
+class WalletViewModel(
+    private val walletObserver: WalletObserver,
+    private val walletRepository: WalletRepository,
+) : ViewModel() {
 
     val balanceLiveData: LiveData<LoadingData<Pair<Double, List<CoinListItem>>>> =
         walletObserver.observe()
@@ -32,7 +36,12 @@ class WalletViewModel(private val walletObserver: WalletObserver) : ViewModel() 
         when (wallet) {
             is WalletBalance.NoInfo -> LoadingData.Loading()
             is WalletBalance.Error -> LoadingData.Error(wallet.error)
-            is WalletBalance.Balance ->
+            is WalletBalance.Balance -> {
+                // workaround to update wallet repository cache
+                // this cache is used to initialize ViewModels
+                // see AppModule.kt
+                walletRepository.updateCoinsCache(wallet.data.coinList)
+
                 wallet.data.coinList.map {
                     CoinListItem(
                         code = it.code,
@@ -43,5 +52,7 @@ class WalletViewModel(private val walletObserver: WalletObserver) : ViewModel() 
                 }.let { coinList ->
                     LoadingData.Success(wallet.data.balance to coinList)
                 }
+            }
+
         }
 }
