@@ -15,7 +15,9 @@ import org.koin.android.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
 class TradeRecallActivity : BaseActivity() {
-    private val viewModel: TradeRecallViewModel by viewModel { parametersOf(intent.getStringExtra(TAG_COIN_CODE)) }
+    private val viewModel: TradeRecallViewModel by viewModel {
+        parametersOf(intent.getStringExtra(TAG_COIN_CODE))
+    }
     private val doubleTextWatcher: DoubleTextWatcher = DoubleTextWatcher(
         maxCharsAfterDotFirst = DoubleTextWatcher.MAX_CHARS_AFTER_DOT_CRYPTO,
         maxCharsAfterDotSecond = DoubleTextWatcher.MAX_CHARS_AFTER_DOT_USD,
@@ -92,6 +94,26 @@ class TradeRecallActivity : BaseActivity() {
     }
 
     private fun initObservers() {
+        viewModel.initialLoadLiveData.observe(this, Observer { initialLoadData ->
+            when (initialLoadData) {
+                is LoadingData.Loading -> {
+                    progressView.show()
+                    recallContent.hide()
+                }
+                is LoadingData.Success -> {
+                    progressView.hide()
+                    recallContent.show()
+                }
+                is LoadingData.Error -> {
+                    progressView.hide()
+                    // do not show content
+                    when (initialLoadData.errorType) {
+                        is Failure.NetworkConnection -> showError(R.string.error_internet_unavailable)
+                        else -> showError(R.string.error_something_went_wrong)
+                    }
+                }
+            }
+        })
         viewModel.transactionLiveData.observe(this, Observer { loadingData ->
             when (loadingData) {
                 is LoadingData.Loading -> progressView.show()

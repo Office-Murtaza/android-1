@@ -83,7 +83,7 @@ val viewModelModule = module {
         TradeRecallViewModel(
             get<WalletRepository>().getCoinItemByCode(coinCode),
             get<WalletRepository>().getCoinDetailsItemByCode(coinCode),
-            get<WalletRepository>().getCoinItemByCode(LocalCoinType.ETH.name),
+            get(),
             get()
         )
     }
@@ -91,7 +91,7 @@ val viewModelModule = module {
         TradeReserveViewModel(
             get<WalletRepository>().getCoinItemByCode(coinCode),
             get<WalletRepository>().getCoinDetailsItemByCode(coinCode),
-            get<WalletRepository>().getCoinItemByCode(LocalCoinType.ETH.name),
+            get(),
             get(),
             get()
         )

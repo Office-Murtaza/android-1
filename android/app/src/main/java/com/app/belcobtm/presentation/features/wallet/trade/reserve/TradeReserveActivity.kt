@@ -11,6 +11,18 @@ import com.app.belcobtm.presentation.core.ui.BaseActivity
 import com.app.belcobtm.presentation.core.watcher.DoubleTextWatcher
 import com.app.belcobtm.presentation.features.HostActivity
 import kotlinx.android.synthetic.main.activity_trade_reserve.*
+import kotlinx.android.synthetic.main.activity_trade_reserve.amountCryptoView
+import kotlinx.android.synthetic.main.activity_trade_reserve.amountUsdView
+import kotlinx.android.synthetic.main.activity_trade_reserve.balanceCryptoView
+import kotlinx.android.synthetic.main.activity_trade_reserve.balanceUsdView
+import kotlinx.android.synthetic.main.activity_trade_reserve.maxCryptoView
+import kotlinx.android.synthetic.main.activity_trade_reserve.maxUsdView
+import kotlinx.android.synthetic.main.activity_trade_reserve.priceUsdView
+import kotlinx.android.synthetic.main.activity_trade_reserve.progressView
+import kotlinx.android.synthetic.main.activity_trade_reserve.recallButtonView
+import kotlinx.android.synthetic.main.activity_trade_reserve.reservedCryptoView
+import kotlinx.android.synthetic.main.activity_trade_reserve.reservedUsdView
+import kotlinx.android.synthetic.main.activity_trade_reserve.toolbarView
 import org.koin.android.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
@@ -94,6 +106,26 @@ class TradeReserveActivity : BaseActivity() {
     }
 
     private fun initObservers() {
+        viewModel.initialLoadLiveData.observe(this, Observer { initialLoadData ->
+            when (initialLoadData) {
+                is LoadingData.Loading -> {
+                    progressView.show()
+                    reserveContent.hide()
+                }
+                is LoadingData.Success -> {
+                    progressView.hide()
+                    reserveContent.show()
+                }
+                is LoadingData.Error -> {
+                    progressView.hide()
+                    // do not show content
+                    when (initialLoadData.errorType) {
+                        is Failure.NetworkConnection -> showError(R.string.error_internet_unavailable)
+                        else -> showError(R.string.error_something_went_wrong)
+                    }
+                }
+            }
+        })
         viewModel.createTransactionLiveData.observe(this, Observer { loadingData ->
             when (loadingData) {
                 is LoadingData.Loading -> progressView.show()
