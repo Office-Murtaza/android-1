@@ -10,15 +10,18 @@ import com.squareup.moshi.Types
 class SharedPreferencesHelper(private val sharedPreferences: SharedPreferences) {
     private val jsonAdapter: JsonAdapter<Map<String, CoinDetailsDataItem>> by lazy {
         val moshi: Moshi = Moshi.Builder().build()
-        val listType = Types.newParameterizedType(Map::class.java, String::class.java, CoinDetailsDataItem::class.java)
+        val listType = Types.newParameterizedType(
+            Map::class.java,
+            String::class.java,
+            CoinDetailsDataItem::class.java
+        )
         moshi.adapter<Map<String, CoinDetailsDataItem>>(listType)
     }
 
-    var accessToken: String
-        set(value) = sharedPreferences.set(
-            ACCESS_TOKEN, if (value.isBlank()) "" else formatToken(value)
-        )
-        get() = sharedPreferences[ACCESS_TOKEN] ?: ""
+    var accessToken: String = ""
+        set(value) {
+            field = if (value.isBlank()) "" else formatToken(value)
+        }
 
     var refreshToken: String
         set(value) = sharedPreferences.set(REFRESH_TOKEN, value)
@@ -68,8 +71,12 @@ class SharedPreferencesHelper(private val sharedPreferences: SharedPreferences) 
         return ACCESS_TOKEN_BEARER.plus(token)
     }
 
+    fun clearValue(key: String) {
+        sharedPreferences[key] = null
+    }
+
     companion object {
-        private const val ACCESS_TOKEN = "KEY_API_SESSION_TOKEN"
+        const val ACCESS_TOKEN = "KEY_API_SESSION_TOKEN"
         private const val ACCESS_TOKEN_BEARER = "Bearer "
 
         private const val REFRESH_TOKEN = "KEY_API_REFRESH_TOKEN"

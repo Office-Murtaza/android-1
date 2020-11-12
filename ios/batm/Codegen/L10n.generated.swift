@@ -157,6 +157,10 @@ enum L {
     static let title = "show_phone.title"
   }
 
+  struct Support {
+    static let title = "support.title"
+  }
+
   struct Trades {
     static let buy = "trades.buy"
     static let create = "trades.create"
@@ -638,6 +642,8 @@ extension L.Settings {
     static let about = "settings.cell.about"
     static let kyc = "settings.cell.kyc"
     static let security = "settings.cell.security"
+    static let support = "settings.cell.support"
+    static let wallet = "settings.cell.wallet"
   }
 }
 extension L.Shared {
@@ -669,6 +675,15 @@ extension L.Shared.Error {
 
   struct NoConnection {
     static let message = "shared.error.no_connection.message"
+  }
+}
+extension L.Support {
+
+  struct Cell {
+    static let email = "support.cell.email"
+    static let phone = "support.cell.phone"
+    static let telegram = "support.cell.telegram"
+    static let whatsApp = "support.cell.whats_app"
   }
 }
 extension L.TransactionDetails {
@@ -868,17 +883,8 @@ extension L.Verification.Picker {
 }
 extension L.Wallet {
 
-  struct Footer {
-  }
-
   struct Header {
     static let title = "wallet.header.title"
-  }
-}
-extension L.Wallet.Footer {
-
-  struct Button {
-    static let manageWallets = "wallet.footer.button.manage_wallets"
   }
 }
 extension L.Welcome {

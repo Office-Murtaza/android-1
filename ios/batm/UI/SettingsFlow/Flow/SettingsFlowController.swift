@@ -13,6 +13,10 @@ class SettingsFlowController: FlowController, FlowActivator {
 }
 
 extension SettingsFlowController: SettingsModuleDelegate {
+    func didSelectWallet() {
+        step.accept(SettingsFlow.Steps.wallet)
+    }
+    
   func didSelectSecurity() {
     step.accept(SettingsFlow.Steps.security)
   }
@@ -24,6 +28,10 @@ extension SettingsFlowController: SettingsModuleDelegate {
   func didSelectAbout() {
     step.accept(SettingsFlow.Steps.about)
   }
+    
+    func didSelectSupport() {
+        step.accept(SettingsFlow.Steps.support)
+    }
 }
 
 extension SettingsFlowController: SecurityModuleDelegate {
@@ -50,6 +58,7 @@ extension SettingsFlowController: SecurityModuleDelegate {
   
 }
 
+extension SettingsFlowController: SupportModuleDelegate {}
 extension SettingsFlowController: AboutModuleDelegate {}
 
 extension SettingsFlowController: UpdatePhoneFlowControllerDelegate {

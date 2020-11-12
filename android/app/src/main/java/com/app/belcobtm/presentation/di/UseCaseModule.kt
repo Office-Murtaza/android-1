@@ -54,7 +54,7 @@ val useCaseModule = module {
     single { RecoverWalletUseCase(get()) }
     single { CreateSeedUseCase(get()) }
     single { CheckPassUseCase(get()) }
-    single { UnlinkUseCase(get()) }
+    single { UnlinkUseCase(get(), get()) }
     single { ChangePassUseCase(get()) }
     single { GetPhoneUseCase(get()) }
     single { UpdatePhoneUseCase(get()) }
@@ -68,7 +68,4 @@ val useCaseModule = module {
     single { StakeWithdrawUseCase(get()) }
     single { ObserveBalanceUseCase(get()) }
     single { ConnectToWalletUseCase(get()) }
-    single { SubscribeToWalletUseCase(get()) }
-    single { UnsubscribeFromWalletUseCase(get()) }
-    single { DisconnectFromWalletUseCase(get()) }
 }

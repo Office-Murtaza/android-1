@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "support_whatsapp.pdf",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

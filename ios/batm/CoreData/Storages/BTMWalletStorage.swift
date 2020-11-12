@@ -1,6 +1,7 @@
 import Foundation
 import CoreData
 import RxSwift
+import RxCocoa
 import TrustWalletCore
 
 protocol BTMWalletStorage: ClearOnLogoutStorage {
@@ -9,6 +10,7 @@ protocol BTMWalletStorage: ClearOnLogoutStorage {
   func changeVisibility(of coin: BTMCoin) -> Completable
   func changeIndex(of type: CustomCoinType, with index: Int) -> Completable
   func delete() -> Completable
+  var coinChanged: Observable<Void> { get }
 }
 
 enum BTMWalletStorageError: Error {
@@ -16,7 +18,11 @@ enum BTMWalletStorageError: Error {
 }
 
 class BTMWalletStorageImpl: CoreDataStorage<BTMWalletStorageUtils>, BTMWalletStorage {
-  
+    private let didCoinsChange = PublishRelay<Void>()
+    var coinChanged: Observable<Void> {
+        return didCoinsChange.asObservable()
+    }
+    
   func save(wallet: BTMWallet) -> Completable {
     return save {
       try $0.save(wallet: wallet)
@@ -30,8 +36,10 @@ class BTMWalletStorageImpl: CoreDataStorage<BTMWalletStorageUtils>, BTMWalletSto
   }
   
   func changeVisibility(of coin: BTMCoin) -> Completable {
-    return save {
+    return save(transaction: {
       try $0.changeVisibility(of: coin)
+    }) { [weak self] in
+        self?.didCoinsChange.accept(())
     }
   }
   

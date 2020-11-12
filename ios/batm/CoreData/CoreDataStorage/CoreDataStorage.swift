@@ -18,28 +18,31 @@ class CoreDataStorage<U: StorageUtils> {
     executor = transactionExecutor
   }
   
-  func save(transaction: @escaping (U) throws -> Void) -> Completable {
+    func save(transaction: @escaping (U) throws -> Void, completion: (() -> Void)? = nil) -> Completable {
     return executor.perform { context in
       let utils = U(context: context)
       try transaction(utils)
       try context.save()
+      completion?()
       }.toCompletable()
   }
   
-  func save(transaction: @escaping (U) throws -> Completable) -> Completable {
+  func save(transaction: @escaping (U) throws -> Completable, completion: (() -> Void)? = nil) -> Completable {
     return executor.perform { context -> Completable in
       let utils = U(context: context)
       let result = try transaction(utils)
       try context.save()
+      completion?()
       return result
       }.toCompletable()
   }
   
-  func save<T>(transaction: @escaping (U) throws -> T) -> Single<T> {
+  func save<T>(transaction: @escaping (U) throws -> T, completion: (() -> Void)? = nil) -> Single<T> {
     return executor.perform { context in
       let utils = U(context: context)
       let result = try transaction(utils)
       try context.save()
+      completion?()
       return result
       }
   }

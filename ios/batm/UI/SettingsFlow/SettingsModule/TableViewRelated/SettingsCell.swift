@@ -16,22 +16,28 @@ extension SettingsCellTypeRepresentable {
 }
 
 enum SettingsCellType: CaseIterable, SettingsCellTypeRepresentable {
+    case wallet
   case security
   case kyc
+    case support
   case about
 
   var title: String {
     switch self {
+    case .wallet: return localize(L.Settings.Cell.wallet)
     case .security: return localize(L.Settings.Cell.security)
     case .kyc: return localize(L.Settings.Cell.kyc)
+    case .support: return localize(L.Settings.Cell.support)
     case .about: return localize(L.Settings.Cell.about)
     }
   }
 
   var image: UIImage? {
     switch self {
+    case .wallet: return UIImage(named: "settings_wallet")
     case .security: return UIImage(named: "settings_security")
     case .kyc: return UIImage(named: "settings_kyc")
+    case .support: return UIImage(named: "settings_support")
     case .about: return UIImage(named: "settings_about")
     }
   }

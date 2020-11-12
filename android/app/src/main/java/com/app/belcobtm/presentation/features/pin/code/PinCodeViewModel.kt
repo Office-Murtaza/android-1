@@ -8,6 +8,7 @@ import com.app.belcobtm.domain.authorization.interactor.AuthorizeUseCase
 import com.app.belcobtm.domain.authorization.interactor.GetAuthorizePinUseCase
 import com.app.belcobtm.domain.authorization.interactor.SaveAuthorizePinUseCase
 import com.app.belcobtm.domain.settings.interactor.UnlinkUseCase
+import com.app.belcobtm.domain.wallet.interactor.ConnectToWalletUseCase
 import com.app.belcobtm.presentation.core.SingleLiveData
 import com.app.belcobtm.presentation.features.pin.code.PinCodeFragment.Companion.KEY_PIN_MODE_CHANGE
 import com.app.belcobtm.presentation.features.pin.code.PinCodeFragment.Companion.KEY_PIN_MODE_CREATE
@@ -20,9 +21,25 @@ import com.app.belcobtm.presentation.features.pin.code.PinCodeFragment.Companion
 class PinCodeViewModel(
     private val authorizeUseCase: AuthorizeUseCase,
     private val unlinkUseCase: UnlinkUseCase,
+    private val connectToWalletUseCase: ConnectToWalletUseCase,
     private val authorizePinUseCase: GetAuthorizePinUseCase,
     private val savePinCodeUseCase: SaveAuthorizePinUseCase
 ) : ViewModel() {
+
+    val stateData = MutableLiveData(PinCodeState())
+    val actionData = SingleLiveData<PinCodeAction>()
+
+    private var enteredPin = ""
+
+    private var mode = KEY_PIN_MODE_ENTER
+    private var step = STEP_CREATE
+    private var currentPin = ""
+    private var isError = false
+
+    fun connectToWallet() {
+        connectToWalletUseCase.invoke(Unit)
+    }
+
     fun savePinCode(pinCode: String) =
         savePinCodeUseCase.invoke(SaveAuthorizePinUseCase.Params(pinCode))
 
@@ -47,16 +64,6 @@ class PinCodeViewModel(
             }
         )
     }
-
-    val stateData = MutableLiveData(PinCodeState())
-    val actionData = SingleLiveData<PinCodeAction>()
-
-    private var enteredPin = ""
-
-    private var mode = KEY_PIN_MODE_ENTER
-    private var step = STEP_CREATE
-    private var currentPin = ""
-    private var isError = false
 
     fun setMode(mode: String) {
         this.mode = mode
@@ -158,10 +165,11 @@ class PinCodeViewModel(
     }
 
     private fun matchedPin() {
-        when {
-            mode == KEY_PIN_MODE_ENTER || mode == KEY_PIN_MODE_CREATE -> actionData.value =
-                PinCodeAction.Success
-            mode == KEY_PIN_MODE_CHANGE -> actionData.value = PinCodeAction.ChangedPin
+        when (mode) {
+            KEY_PIN_MODE_ENTER, KEY_PIN_MODE_CREATE ->
+                actionData.value = PinCodeAction.Success
+            KEY_PIN_MODE_CHANGE ->
+                actionData.value = PinCodeAction.ChangedPin
         }
     }
 
