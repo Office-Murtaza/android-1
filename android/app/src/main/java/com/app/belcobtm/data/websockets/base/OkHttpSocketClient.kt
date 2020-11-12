@@ -35,7 +35,7 @@ class OkHttpSocketClient(
 
     override fun onOpen(webSocket: WebSocket, response: Response) {
         this.webSocket = webSocket
-        messages.sendBlocking(SocketResponse.Status(SocketResponse.Status.OPENED))
+        messages.sendBlocking(SocketResponse.Opened)
     }
 
     override fun onMessage(webSocket: WebSocket, text: String) {
@@ -45,7 +45,7 @@ class OkHttpSocketClient(
     override fun onFailure(webSocket: WebSocket, t: Throwable, response: Response?) {
         messages.sendBlocking(SocketResponse.Message(Either.Right(t)))
         this.webSocket = null
-        messages.sendBlocking(SocketResponse.Status(SocketResponse.Status.FAILURE))
+        messages.sendBlocking(SocketResponse.Failure)
     }
 
     override fun onClosing(webSocket: WebSocket, code: Int, reason: String) {
@@ -54,6 +54,6 @@ class OkHttpSocketClient(
 
     override fun onClosed(webSocket: WebSocket, code: Int, reason: String) {
         this.webSocket = null
-        messages.sendBlocking(SocketResponse.Status(SocketResponse.Status.DISCONNECTED))
+        messages.sendBlocking(SocketResponse.Disconnected)
     }
 }

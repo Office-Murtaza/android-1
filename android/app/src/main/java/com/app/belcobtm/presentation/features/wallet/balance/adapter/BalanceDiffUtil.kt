@@ -7,7 +7,8 @@ class BalanceDiffUtil : DiffUtil.Callback() {
     var oldList: List<CoinListItem> = emptyList()
     var newList: List<CoinListItem> = emptyList()
 
-    override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean = true
+    override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
+        oldList[oldItemPosition].code == newList[newItemPosition].code
 
     override fun getOldListSize(): Int = oldList.size
 

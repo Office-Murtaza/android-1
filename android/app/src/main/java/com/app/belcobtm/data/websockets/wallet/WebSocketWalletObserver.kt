@@ -19,7 +19,6 @@ import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.ConflatedBroadcastChannel
 import kotlinx.coroutines.channels.ReceiveChannel
 import kotlinx.coroutines.flow.collect
-import com.app.belcobtm.data.websockets.base.model.SocketResponse.Status.Companion as SocketStatus
 
 @kotlinx.coroutines.ExperimentalCoroutinesApi
 class WebSocketWalletObserver(
@@ -54,7 +53,11 @@ class WebSocketWalletObserver(
             socketClient.observeMessages()
                 .collect {
                     when (it) {
-                        is SocketResponse.Status -> processStatus(it.code)
+                        is SocketResponse.Opened -> onOpened()
+                        is SocketResponse.Failure ->
+                            runBlocking {
+                                processError()
+                            }
                         is SocketResponse.Message -> it.content.either({
                             runBlocking {
                                 processMessage(it)
@@ -128,18 +131,14 @@ class WebSocketWalletObserver(
         balanceInfo.send(WalletBalance.Error(Failure.ServerError()))
     }
 
-    private fun processStatus(@SocketStatus.Code code: Int) {
-        when (code) {
-            SocketStatus.OPENED -> {
-                val request = WalletSocketRequest(
-                    WalletSocketRequest.CONNECT, mapOf(
-                        ACCEPT_VERSION_HEADER to ACCEPT_VERSION_VALUE,
-                        AUTH_HEADER to sharedPreferencesHelper.accessToken,
-                        HEARTBEAT_HEADER to HEARTBEAT_VALUE
-                    )
-                )
-                socketClient.sendMessage(serializer.serialize(request))
-            }
-        }
+    private fun onOpened() {
+        val request = WalletSocketRequest(
+            WalletSocketRequest.CONNECT, mapOf(
+                ACCEPT_VERSION_HEADER to ACCEPT_VERSION_VALUE,
+                AUTH_HEADER to sharedPreferencesHelper.accessToken,
+                HEARTBEAT_HEADER to HEARTBEAT_VALUE
+            )
+        )
+        socketClient.sendMessage(serializer.serialize(request))
     }
 }
