@@ -7,6 +7,7 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.setFragmentResult
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.app.belcobtm.R
+import com.app.belcobtm.domain.Failure
 import com.app.belcobtm.presentation.core.ui.fragment.BaseFragment
 import com.app.belcobtm.presentation.features.wallet.add.adapter.AddWalletCoinsAdapter
 import kotlinx.android.synthetic.main.fragment_manage_wallets.*
@@ -25,18 +26,35 @@ class ManageWalletsFragment : BaseFragment() {
     override val isToolbarEnabled: Boolean = true
     override val isHomeButtonEnabled: Boolean = true
     override var isMenuEnabled: Boolean = true
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean = if (item.itemId == android.R.id.home) {
-        setFragmentResult(REQUEST_KEY, bundleOf())
-        hideKeyboard()
-        popBackStack()
-        true
-    } else {
-        false
+    override val retryListener: View.OnClickListener = View.OnClickListener {
+        viewModel.retry()
     }
 
+    override fun onOptionsItemSelected(item: MenuItem): Boolean =
+        if (item.itemId == android.R.id.home) {
+            setFragmentResult(REQUEST_KEY, bundleOf())
+            hideKeyboard()
+            popBackStack()
+            true
+        } else {
+            false
+        }
+
     override fun initObservers() {
-        viewModel.coinListLiveData.observe(this, { adapter.setItemList(it) })
+        viewModel.coinListLiveData.listen(
+            success = adapter::setItemList,
+            error = {
+                when (it) {
+                    is Failure.NetworkConnection -> showErrorNoInternetConnection()
+                    is Failure.MessageError -> {
+                        showSnackBar(it.message ?: "")
+                        showContent()
+                    }
+                    is Failure.ServerError -> showErrorServerError()
+                    else -> showErrorSomethingWrong()
+                }
+            }
+        )
     }
 
     override fun initViews() {

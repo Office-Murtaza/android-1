@@ -4,6 +4,7 @@ import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import android.view.ViewTreeObserver
+import androidx.lifecycle.Observer
 import com.app.belcobtm.R
 import com.app.belcobtm.presentation.core.QRUtils
 import com.app.belcobtm.presentation.core.helper.AlertHelper
@@ -21,41 +22,39 @@ class DepositFragment : BaseFragment() {
     override val isHomeButtonEnabled: Boolean = true
     override var isMenuEnabled: Boolean = true
 
-    override fun initListeners() {
-        copyButtonView.setOnClickListener {
-            copyToClipboard(
-                getString(R.string.wallet_code_clipboard),
-                viewModel.addressLiveData.value ?: ""
-            )
-            AlertHelper.showToastLong(requireContext(), R.string.clipboard)
-        }
-
-        imageView.viewTreeObserver.addOnGlobalLayoutListener(object :
-            ViewTreeObserver.OnGlobalLayoutListener {
-            override fun onGlobalLayout() {
-                val params = imageView.layoutParams
-                val imageSize = imageView.width
-                params.height = imageSize
-                imageView.layoutParams = params
-                imageView.setImageBitmap(
-                    QRUtils.getSpacelessQR(
-                        viewModel.addressLiveData.value ?: "",
-                        imageSize,
-                        imageSize
-                    )
-                )
-                imageView.viewTreeObserver.removeOnGlobalLayoutListener(this)
-            }
-        })
-    }
-
     override fun initViews() {
         val coinCode = DepositFragmentArgs.fromBundle(requireArguments()).coinCode
         setToolbarTitle(getString(R.string.deposit_screen_title, coinCode))
     }
 
     override fun initObservers() {
-        viewModel.addressLiveData.observe(viewLifecycleOwner, { addressView.text = it })
+        viewModel.addressLiveData.observe(viewLifecycleOwner, Observer { address ->
+            addressView.text = address
+            imageView.viewTreeObserver.addOnGlobalLayoutListener(object :
+                ViewTreeObserver.OnGlobalLayoutListener {
+                override fun onGlobalLayout() {
+                    val params = imageView.layoutParams
+                    val imageSize = imageView.width
+                    params.height = imageSize
+                    imageView.layoutParams = params
+                    imageView.setImageBitmap(
+                        QRUtils.getSpacelessQR(
+                            address,
+                            imageSize,
+                            imageSize
+                        )
+                    )
+                    copyButtonView.setOnClickListener {
+                        copyToClipboard(
+                            getString(R.string.wallet_code_clipboard),
+                            address
+                        )
+                        AlertHelper.showToastLong(requireContext(), R.string.clipboard)
+                    }
+                    imageView.viewTreeObserver.removeOnGlobalLayoutListener(this)
+                }
+            })
+        })
     }
 
     private fun copyToClipboard(toastText: String, copiedText: String) {

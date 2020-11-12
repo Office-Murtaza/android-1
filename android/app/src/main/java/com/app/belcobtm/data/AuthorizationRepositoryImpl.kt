@@ -32,7 +32,7 @@ class AuthorizationRepositoryImpl(
             clearAppData()
         }
         return when {
-            prefHelper.accessToken.isEmpty() -> AuthorizationStatus.UNAUTHORIZED //Welcome fragment
+            prefHelper.refreshToken.isEmpty() -> AuthorizationStatus.UNAUTHORIZED //Welcome fragment
             prefHelper.userPin.isNotBlank() -> AuthorizationStatus.PIN_CODE_ENTER //PinActivity
             else -> AuthorizationStatus.PIN_CODE_CREATE
         }

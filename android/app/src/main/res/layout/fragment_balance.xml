@@ -1,74 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/swipeToRefreshView"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <View
+        android:id="@+id/headerPlaceholderView"
+        android:layout_width="0dp"
+        android:layout_height="120dp"
+        android:background="@android:color/white"
+        android:elevation="1dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/logoView"
+        android:layout_width="109dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:elevation="2dp"
+        app:layout_constraintBottom_toBottomOf="@id/balanceView"
+        app:layout_constraintStart_toStartOf="@id/headerPlaceholderView"
+        app:srcCompat="@drawable/ic_logo_main" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/balanceTitleView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:elevation="2dp"
+        android:text="@string/balance_screen_title_screen"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@id/balanceView"
+        app:layout_constraintEnd_toEndOf="@id/headerPlaceholderView"
+        app:layout_constraintTop_toTopOf="@id/headerPlaceholderView"
+        app:layout_constraintVertical_chainStyle="packed" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/balanceView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:elevation="2dp"
+        android:text="@string/balance_screen_empty_balance"
+        android:textColor="@color/colorPrimary"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@id/headerPlaceholderView"
+        app:layout_constraintEnd_toEndOf="@id/balanceTitleView"
+        app:layout_constraintTop_toBottomOf="@id/balanceTitleView"
+        tools:text="15 232 $" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/listView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="0dp"
+        android:overScrollMode="never"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/headerPlaceholderView"
+        tools:listitem="@layout/item_balance_coin" />
 
-        <View
-            android:id="@+id/headerPlaceholderView"
-            android:layout_width="0dp"
-            android:layout_height="120dp"
-            android:background="@android:color/white"
-            android:elevation="1dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/logoView"
-            android:layout_width="109dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:elevation="2dp"
-            app:layout_constraintBottom_toBottomOf="@id/balanceView"
-            app:layout_constraintStart_toStartOf="@id/headerPlaceholderView"
-            app:srcCompat="@drawable/ic_logo_main" />
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/balanceTitleView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
-            android:elevation="2dp"
-            android:text="@string/balance_screen_title_screen"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@id/balanceView"
-            app:layout_constraintEnd_toEndOf="@id/headerPlaceholderView"
-            app:layout_constraintTop_toTopOf="@id/headerPlaceholderView"
-            app:layout_constraintVertical_chainStyle="packed" />
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/balanceView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:elevation="2dp"
-            android:text="@string/balance_screen_empty_balance"
-            android:textColor="@color/colorPrimary"
-            android:textSize="22sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="@id/headerPlaceholderView"
-            app:layout_constraintEnd_toEndOf="@id/balanceTitleView"
-            app:layout_constraintTop_toBottomOf="@id/balanceTitleView"
-            tools:text="15 232 $" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/listView"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:overScrollMode="never"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/headerPlaceholderView"
-            tools:listitem="@layout/item_balance_coin" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

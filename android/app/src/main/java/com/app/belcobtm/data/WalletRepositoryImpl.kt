@@ -5,23 +5,17 @@ import com.app.belcobtm.data.disk.database.mapToDataItem
 import com.app.belcobtm.data.disk.database.mapToEntity
 import com.app.belcobtm.data.disk.shared.preferences.SharedPreferencesHelper
 import com.app.belcobtm.data.rest.wallet.WalletApiService
-import com.app.belcobtm.data.websockets.wallet.WalletConnectionHandler
-import com.app.belcobtm.data.websockets.wallet.WalletObserver
 import com.app.belcobtm.domain.Either
 import com.app.belcobtm.domain.Failure
 import com.app.belcobtm.domain.wallet.WalletRepository
 import com.app.belcobtm.domain.wallet.item.*
-import kotlinx.coroutines.flow.Flow
 
 class WalletRepositoryImpl(
     private val apiService: WalletApiService,
     private val prefHelper: SharedPreferencesHelper,
-    private val daoAccount: AccountDao,
-    private val walletObserver: WalletObserver
-) : WalletRepository, WalletConnectionHandler by walletObserver {
+    private val daoAccount: AccountDao
+) : WalletRepository {
     private val cachedCoinDataItemList: MutableList<CoinDataItem> = mutableListOf()
-
-    override fun observerWalletBalance(): Flow<BalanceDataItem> = walletObserver.observe()
 
     override fun getCoinDetailsMap(): Map<String, CoinDetailsDataItem> = prefHelper.coinsDetails
 
@@ -39,8 +33,16 @@ class WalletRepositoryImpl(
         (daoAccount.getItemList() ?: emptyList()).sortedBy { it.id }.map { it.mapToDataItem() }
 
     override suspend fun updateAccount(accountDataItem: AccountDataItem): Either<Failure, Unit> {
-        daoAccount.updateItem(accountDataItem.mapToEntity())
-        return Either.Right(Unit)
+        val toggleCoinStateResult = apiService.toggleCoinState(
+            accountDataItem.type.name,
+            accountDataItem.isEnabled
+        )
+        return if (toggleCoinStateResult.isRight) {
+            daoAccount.updateItem(accountDataItem.mapToEntity())
+            Either.Right(Unit)
+        } else {
+            toggleCoinStateResult
+        }
     }
 
     override suspend fun getFreshCoinDataItem(

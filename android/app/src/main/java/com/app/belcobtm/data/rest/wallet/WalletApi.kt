@@ -27,4 +27,11 @@ interface WalletApi {
     fun getCoinDetailsAsync(
         @Path("coinId") coinCode: String
     ): Deferred<Response<GetCoinDetailsResponse>>
+
+    @GET("user/{userId}/coin/{coinId}/manage")
+    fun toggleCoinStateAsync(
+        @Path("userId") userId: Int,
+        @Path("coinId") coinCode: String,
+        @Query("enabled") enabled: Boolean
+    ): Deferred<Response<Unit>>
 }
