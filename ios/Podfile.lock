@@ -726,6 +726,7 @@ PODS:
     - RxSwift (~> 4)
   - RxSwift (4.5.0)
   - SnapKit (5.0.1)
+  - Starscream (4.0.4)
   - SwiftProtobuf (1.12.0)
   - Swinject (2.7.1)
   - Toast-Swift (5.0.1)
@@ -755,6 +756,7 @@ DEPENDENCIES:
   - RxReachability (= 0.1.8)
   - RxSwift (= 4.5.0)
   - SnapKit (= 5.0.1)
+  - Starscream (~> 4.0.0)
   - Swinject (= 2.7.1)
   - Toast-Swift (= 5.0.1)
   - TrustWalletCore (= 2.2.9)
@@ -797,6 +799,7 @@ SPEC REPOS:
     - RxReachability
     - RxSwift
     - SnapKit
+    - Starscream
     - SwiftProtobuf
     - Swinject
     - Toast-Swift
@@ -849,11 +852,12 @@ SPEC CHECKSUMS:
   RxReachability: 053f2d913db44998242ade488ccaef558f3ce7cb
   RxSwift: f172070dfd1a93d70a9ab97a5a01166206e1c575
   SnapKit: 97b92857e3df3a0c71833cce143274bf6ef8e5eb
+  Starscream: 5178aed56b316f13fa3bc55694e583d35dd414d9
   SwiftProtobuf: 4ef85479c18ca85b5482b343df9c319c62bda699
   Swinject: ddf78b8486dd9b71a667b852cad919ab4484478e
   Toast-Swift: 9b6a70f28b3bf0b96c40d46c0c4b9d6639846711
   TrustWalletCore: 6bf9821db20951be01a4d69f8703a5cf36560f36
 
-PODFILE CHECKSUM: 1fab2579e4f0b30891667fe652cabad6da8e6ca2
+PODFILE CHECKSUM: 598bcc091e4cca7bde8a9ba635b93d9b2d4afef3
 
 COCOAPODS: 1.9.3

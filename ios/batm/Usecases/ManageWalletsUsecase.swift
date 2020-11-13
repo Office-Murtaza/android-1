@@ -9,9 +9,15 @@ protocol ManageWalletsUsecase {
 
 class ManageWalletsUsecaseImpl: ManageWalletsUsecase {
   let walletStorage: BTMWalletStorage
+  let api: APIGateway
+  let accountStorage: AccountStorage
   
-  init(walletStorage: BTMWalletStorage) {
+  init(walletStorage: BTMWalletStorage,
+       api: APIGateway,
+       accountStorage: AccountStorage) {
     self.walletStorage = walletStorage
+    self.api = api
+    self.accountStorage = accountStorage
   }
   
   func getCoins() -> Single<[BTMCoin]> {
@@ -19,6 +25,11 @@ class ManageWalletsUsecaseImpl: ManageWalletsUsecase {
   }
   
   func changeVisibility(of coin: BTMCoin) -> Completable {
-    return walletStorage.changeVisibility(of: coin)
+    return  walletStorage.changeVisibility(of: coin).andThen(changeVisibilityRequest(coin: coin))
+  }
+  
+  func changeVisibilityRequest(coin: BTMCoin) -> Completable {
+    return accountStorage.get()
+      .flatMapCompletable { [api] account in api.manageCoins(userId: account.userId, coin: coin.type.code, visible: !coin.isVisible)}
   }
 }

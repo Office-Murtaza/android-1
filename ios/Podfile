@@ -21,6 +21,7 @@ target 'batm' do
   pod 'Swinject', '2.7.1'
   pod 'ObjectMapper', '3.5.1'
   pod 'BigNumber', :git => 'https://github.com/mkrd/Swift-Big-Integer.git'
+  pod 'Starscream', '~> 4.0.0'
   
   # Rx
   pod 'Moya/RxSwift', '13.0.1'

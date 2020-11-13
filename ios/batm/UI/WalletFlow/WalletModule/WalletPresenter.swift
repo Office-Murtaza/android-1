@@ -14,6 +14,7 @@ class WalletPresenter: ModulePresenter, WalletModule {
   private let usecase: WalletUsecase
   private let store: Store
   private let fetchCoinsBalanceRelay = PublishRelay<Void>()
+  private let balanceService: BalanceService
   
   var state: Driver<WalletState> {
     return store.state
@@ -22,11 +23,13 @@ class WalletPresenter: ModulePresenter, WalletModule {
   weak var delegate: WalletModuleDelegate?
   
   init(usecase: WalletUsecase,
+       balanceService: BalanceService,
        store: Store = WalletStore()) {
     self.usecase = usecase
     self.store = store
+    self.balanceService = balanceService
   }
-  
+
   func fetchCoinsBalance() {
     fetchCoinsBalanceRelay.accept(())
   }
@@ -69,9 +72,9 @@ class WalletPresenter: ModulePresenter, WalletModule {
   
   private func setupBindings() {
     fetchCoinsBalanceRelay
-      .throttle(2.0, scheduler: MainScheduler.instance)
-      .flatMap { [unowned self] in self.track(self.usecase.getCoinsBalance()) }
-      .map { WalletAction.finishFetchingCoinsBalance($0) }
+      .observeOn(MainScheduler.instance)
+      .flatMap { [unowned self] in self.track(self.balanceService.getCoinsBalance()) }
+      .map { WalletAction.finishFetchingCoinsBalance($0)}
       .bind(to: store.action)
       .disposed(by: disposeBag)
   }

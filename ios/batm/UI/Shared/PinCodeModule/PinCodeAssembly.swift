@@ -7,8 +7,9 @@ class PinCodeAssembly: Assembly {
     container.register(Module<PinCodeModule>.self) { resolver in
       let viewController = PinCodeViewController()
       let usecase = resolver.resolve(PinCodeUsecase.self)!
-      let presenter = PinCodePresenter(usecase: usecase)
-      
+      let balanceService = resolver.resolve(BalanceService.self)!
+      let presenter = PinCodePresenter(usecase: usecase,
+                                       balanceService: balanceService)
       presenter.delegate = resolver.resolve(PinCodeModuleDelegate.self)
       viewController.presenter = presenter
       

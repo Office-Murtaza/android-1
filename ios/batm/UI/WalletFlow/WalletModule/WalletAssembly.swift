@@ -8,7 +8,9 @@ class WalletAssembly: Assembly {
       let dataSource = WalletTableViewDataSource()
       let viewController = WalletViewController()
       let usecase = resolver.resolve(WalletUsecase.self)!
-      let presenter = WalletPresenter(usecase: usecase)
+      let balanceService = resolver.resolve(BalanceService.self)!
+      let presenter = WalletPresenter(usecase: usecase,
+                                      balanceService: balanceService)
       
       presenter.delegate = resolver.resolve(WalletModuleDelegate.self)
       viewController.presenter = presenter

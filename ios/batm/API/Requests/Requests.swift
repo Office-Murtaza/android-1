@@ -599,3 +599,19 @@ struct StakeDetailsRequest: AuthorizedAPIRequest {
     return .requestPlain
   }
 }
+
+struct ManageCoinsRequest: AuthorizedAPIRequest {
+  typealias ResponseType = APIEmptyResponse
+  typealias ResponseTrait = SingleResponseTrait
+  
+  let userId: Int
+  let coinId: String
+  let isVisible: String
+  
+  var path: String { return "/user/\(userId)/coin/\(coinId)/manage" }
+  var method: HTTPMethod { return .get }
+  var task: HTTPTask {
+      return .requestParameters(parameters: ["enabled": isVisible],
+                                encoding: URLEncoding.customDefault)
+  }
+}

@@ -14,6 +14,7 @@ class PinCodePresenter: ModulePresenter, PinCodeModule {
   
   private let usecase: PinCodeUsecase
   private let store: Store
+  private let balanceService: BalanceService
   
   let didTypeWrongPinCode = PublishRelay<Void>()
   
@@ -24,9 +25,11 @@ class PinCodePresenter: ModulePresenter, PinCodeModule {
   weak var delegate: PinCodeModuleDelegate?
   
   init(usecase: PinCodeUsecase,
+       balanceService: BalanceService,
        store: Store = PinCodeStore()) {
     self.usecase = usecase
     self.store = store
+    self.balanceService = balanceService
   }
   
   func setup(for stage: PinCodeStage) {
@@ -96,13 +99,15 @@ class PinCodePresenter: ModulePresenter, PinCodeModule {
       clearCode()
       return .error(PinCodeError.notMatch)
     }
-    
+    self.balanceService.start()
     return usecase.save(pinCode: state.code)
   }
   
   private func verifyPin(for state: PinCodeState) -> Completable {
     return usecase.verify(pinCode: state.code).andThen(usecase.refresh())
-      .do(onError: { [unowned self] _ in self.clearCode() })
+      .do(onError: { [unowned self] _ in self.clearCode() }, onCompleted: { [unowned self] in
+        self.balanceService.start()
+      })
   }
   
 }

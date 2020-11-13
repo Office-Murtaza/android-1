@@ -69,6 +69,7 @@ protocol APIGateway {
   func submitTradeRequest(userId: Int, data: SubmitTradeRequestData) -> Completable
   func submitTrade(userId: Int, data: SubmitTradeData) -> Completable
   func getStakeDetails(userId: Int, type: CustomCoinType) -> Single<StakeDetails>
+  func manageCoins(userId: Int, coin: String, visible: Bool) -> Completable
 }
 
 final class APIGatewayImpl: APIGateway {
@@ -339,5 +340,9 @@ final class APIGatewayImpl: APIGateway {
     return execute(request)
   }
   
+  func manageCoins(userId: Int, coin: String, visible: Bool) -> Completable {
+    let request = ManageCoinsRequest(userId: userId, coinId: coin, isVisible: String(visible))
+    return execute(request)
+  }
 }
 
