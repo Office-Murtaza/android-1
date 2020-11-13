@@ -82,6 +82,12 @@ final class RecallStore: ViewStore<RecallAction, RecallState> {
       return .invalid(localize(L.CoinWithdraw.Form.Error.invalidAmount))
     }
     
+    if state.coin?.type != .catm, let fee = state.coinDetails?.txFee {
+        guard amount.greaterThanOrEqualTo(fee) else {
+            return .invalid(localize(L.CoinWithdraw.Form.Error.lessThanFee))
+        }
+    }
+    
     guard state.reservedBalance > state.fee else {
       return .invalid(localize(L.Recall.Form.Error.tooLowAmount))
     }
@@ -90,6 +96,15 @@ final class RecallStore: ViewStore<RecallAction, RecallState> {
       return .invalid(localize(L.CoinWithdraw.Form.Error.tooHighAmount))
     }
     
+    if state.coin?.type == .catm, let fee = state.coinDetails?.txFee {
+      let ethPrice = state.coinBalances?.first { $0.type == .ethereum }?.price ?? 0
+      let catmPrice = state.coinBalances?.first { $0.type == .catm }?.price ?? 0
+      let catmFee = (fee * ethPrice) / catmPrice
+      
+      if amount.lessThanOrEqualTo(catmFee) {
+        return .invalid(localize(L.CoinWithdraw.Form.Error.insufficientETHBalance))
+      }
+    }
     return .valid
   }
 }

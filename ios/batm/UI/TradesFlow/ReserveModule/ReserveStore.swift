@@ -84,6 +84,12 @@ final class ReserveStore: ViewStore<ReserveAction, ReserveState> {
       return .invalid(localize(L.CoinWithdraw.Form.Error.tooLowAmount))
     }
     
+    if state.coin?.type != .catm, let fee = state.coinDetails?.txFee {
+        guard amount.greaterThanOrEqualTo(fee) else {
+            return .invalid(localize(L.CoinWithdraw.Form.Error.lessThanFee))
+        }
+    }
+    
     guard amount.lessThanOrEqualTo(state.maxValue) else {
       return .invalid(localize(L.CoinWithdraw.Form.Error.tooHighAmount))
     }
@@ -91,7 +97,7 @@ final class ReserveStore: ViewStore<ReserveAction, ReserveState> {
     if state.coin?.type == .catm, let fee = state.coinDetails?.txFee {
       let ethBalance = state.coinBalances?.first { $0.type == .ethereum }?.balance ?? 0
       
-      if !ethBalance.greaterThanOrEqualTo(fee) {
+      if !ethBalance.greaterThanOrEqualTo(fee) && amount.greaterThanOrEqualTo(state.coinBalance?.balance ?? 0) {
         return .invalid(localize(L.CoinWithdraw.Form.Error.insufficientETHBalance))
       }
     }

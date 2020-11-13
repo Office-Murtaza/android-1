@@ -81,7 +81,7 @@ class CoinDetailsHeaderView: UICollectionReusableView, HasDisposeBag {
     balanceView.snp.makeConstraints {
       $0.top.equalTo(topDivider.snp.bottom)
       $0.left.right.equalToSuperview()
-      $0.height.equalTo(50)
+      $0.height.equalTo(80)
     }
     bottomDivider.snp.makeConstraints {
       $0.top.equalTo(balanceView.snp.bottom)

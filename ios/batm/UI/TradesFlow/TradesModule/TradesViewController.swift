@@ -4,7 +4,7 @@ import RxSwift
 import SnapKit
 import MaterialComponents
 
-final class TradesViewController: NavigationScreenViewController<TradesPresenter>, MDCTabBarDelegate {
+final class TradesViewController: ModuleViewController<TradesPresenter>, MDCTabBarDelegate {
   
   let didTapRecallRelay = PublishRelay<Void>()
   let didTapReserveRelay = PublishRelay<Void>()
@@ -40,25 +40,20 @@ final class TradesViewController: NavigationScreenViewController<TradesPresenter
   var tableViews: [TradesTableView] { return [buyTradesTableView, sellTradesTableView, openTradesTableView] }
   
   let fab = FloatingActionButton()
-  
-  override var preferredStatusBarStyle: UIStatusBarStyle {
-    return .lightContent
-  }
-  
-  override var shouldShowNavigationBar: Bool { return false }
 
   override func setupUI() {
     tabBar.delegate = self
     sellTradesTableView.isHidden = true
     openTradesTableView.isHidden = true
     
-    customView.contentView.addSubviews(headerView,
-                                       tabBar,
-                                       buyTradesTableView,
-                                       sellTradesTableView,
-                                       openTradesTableView,
-                                       fab.view)
-    customView.tapRecognizer.isEnabled = false
+    view.addSubviews(headerView,
+                     tabBar,
+                     buyTradesTableView,
+                     sellTradesTableView,
+                     openTradesTableView,
+                     fab.view)
+    let tapRecognizer = UITapGestureRecognizer()
+    tapRecognizer.isEnabled = false
     
     buyTradesTableView.refreshControl = buyTradesRefreshControl
     sellTradesTableView.refreshControl = sellTradesRefreshControl
@@ -79,9 +74,6 @@ final class TradesViewController: NavigationScreenViewController<TradesPresenter
   }
 
   override func setupLayout() {
-    customView.contentView.snp.makeConstraints {
-      $0.height.equalToSuperview()
-    }
     headerView.snp.makeConstraints {
       $0.top.equalToSuperview().offset(25)
       $0.left.equalToSuperview().offset(15)
@@ -113,7 +105,7 @@ final class TradesViewController: NavigationScreenViewController<TradesPresenter
       .map { $0.coinBalance?.type.code }
       .filterNil()
       .map { String(format: localize(L.Trades.title), $0) }
-      .drive(onNext: { [customView] in customView.setTitle($0) })
+      .drive(onNext: { [weak self] in self?.title = $0 })
       .disposed(by: disposeBag)
     
     presenter.state
@@ -163,7 +155,6 @@ final class TradesViewController: NavigationScreenViewController<TradesPresenter
   override func setupBindings() {
     setupUIBindings()
     
-    let backDriver = customView.backButton.rx.tap.asDriver()
     let refreshBuyTradesDriver = buyTradesRefreshControl.rx.controlEvent(.valueChanged).asDriver()
     let refreshSellTradesDriver = sellTradesRefreshControl.rx.controlEvent(.valueChanged).asDriver()
     let showMoreBuyTradesDriver = buyTradesTableView.rx.willDisplayLastCell.asDriver(onErrorDriveWith: .empty())
@@ -174,8 +165,7 @@ final class TradesViewController: NavigationScreenViewController<TradesPresenter
     let reserveDriver = didTapReserveRelay.asDriver(onErrorDriveWith: .empty())
     let createDriver = didTapCreateRelay.asDriver(onErrorDriveWith: .empty())
     
-    presenter.bind(input: TradesPresenter.Input(back: backDriver,
-                                                refreshBuyTrades: refreshBuyTradesDriver,
+    presenter.bind(input: TradesPresenter.Input(refreshBuyTrades: refreshBuyTradesDriver,
                                                 refreshSellTrades: refreshSellTradesDriver,
                                                 showMoreBuyTrades: showMoreBuyTradesDriver,
                                                 showMoreSellTrades: showMoreSellTradesDriver,

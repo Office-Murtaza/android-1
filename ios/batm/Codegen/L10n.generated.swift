@@ -40,6 +40,7 @@ enum L {
     static let receiveC2C = "coin_details.receive_c_2_c"
     static let receiveGift = "coin_details.receive_gift"
     static let reserve = "coin_details.reserve"
+    static let reserved = "coin_details.reserved"
     static let se1f = "coin_details.se1f"
     static let sell = "coin_details.sell"
     static let sendC2C = "coin_details.send_c_2_c"
