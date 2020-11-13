@@ -50,7 +50,6 @@ val useCaseModule = module {
     single { TradeRecallTransactionCompleteUseCase(get()) }
     single { TradeReserveTransactionCompleteUseCase(get()) }
     single { TradeReserveTransactionCreateUseCase(get()) }
-    single { TradeRecallTransactionCreateUseCase(get()) }
     single { GetFreshCoinUseCase(get()) }
     single { RecoverWalletUseCase(get()) }
     single { CreateSeedUseCase(get()) }

@@ -79,8 +79,7 @@ class WalletRepositoryImpl(
             val enabledCoinList = balanceItem.coinList.map { coinItem ->
                 coinItem.copy(isEnabled = enabledCodeList.firstOrNull { it == coinItem.code } != null)
             }
-            cachedCoinDataItemList.clear()
-            cachedCoinDataItemList.addAll(enabledCoinList)
+            updateCoinsCache(enabledCoinList)
         }
         return response
     }
@@ -99,5 +98,10 @@ class WalletRepositoryImpl(
             prefHelper.coinsDetails = mutableCoinsFeeMap
         }
         return response
+    }
+
+    override fun updateCoinsCache(coins: List<CoinDataItem>) {
+        cachedCoinDataItemList.clear()
+        cachedCoinDataItemList.addAll(coins)
     }
 }

@@ -2,22 +2,34 @@ package com.app.belcobtm.presentation.features.wallet.trade.reserve
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.core.os.bundleOf
 import androidx.lifecycle.Observer
 import com.app.belcobtm.R
 import com.app.belcobtm.domain.Failure
 import com.app.belcobtm.presentation.core.extensions.*
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
 import com.app.belcobtm.presentation.core.ui.BaseActivity
-import com.app.belcobtm.presentation.core.ui.SmsDialogFragment
 import com.app.belcobtm.presentation.core.watcher.DoubleTextWatcher
 import com.app.belcobtm.presentation.features.HostActivity
 import kotlinx.android.synthetic.main.activity_trade_reserve.*
+import kotlinx.android.synthetic.main.activity_trade_reserve.amountCryptoView
+import kotlinx.android.synthetic.main.activity_trade_reserve.amountUsdView
+import kotlinx.android.synthetic.main.activity_trade_reserve.balanceCryptoView
+import kotlinx.android.synthetic.main.activity_trade_reserve.balanceUsdView
+import kotlinx.android.synthetic.main.activity_trade_reserve.maxCryptoView
+import kotlinx.android.synthetic.main.activity_trade_reserve.maxUsdView
+import kotlinx.android.synthetic.main.activity_trade_reserve.priceUsdView
+import kotlinx.android.synthetic.main.activity_trade_reserve.progressView
+import kotlinx.android.synthetic.main.activity_trade_reserve.recallButtonView
+import kotlinx.android.synthetic.main.activity_trade_reserve.reservedCryptoView
+import kotlinx.android.synthetic.main.activity_trade_reserve.reservedUsdView
+import kotlinx.android.synthetic.main.activity_trade_reserve.toolbarView
 import org.koin.android.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
 class TradeReserveActivity : BaseActivity() {
-    private val viewModel: TradeReserveViewModel by viewModel { parametersOf(intent.getStringExtra(TAG_COIN_CODE)) }
+    private val viewModel: TradeReserveViewModel by viewModel {
+        parametersOf(intent.getStringExtra(TAG_COIN_CODE))
+    }
     private val doubleTextWatcher: DoubleTextWatcher = DoubleTextWatcher(
         maxCharsAfterDotFirst = DoubleTextWatcher.MAX_CHARS_AFTER_DOT_CRYPTO,
         maxCharsAfterDotSecond = DoubleTextWatcher.MAX_CHARS_AFTER_DOT_USD,
@@ -84,16 +96,42 @@ class TradeReserveActivity : BaseActivity() {
         maxUsdView.setOnClickListener { amountCryptoView.setText(viewModel.getMaxValue().toStringCoin()) }
         amountCryptoView.editText?.addTextChangedListener(doubleTextWatcher.firstTextWatcher)
         amountUsdView.editText?.addTextChangedListener(doubleTextWatcher.secondTextWatcher)
-        recallButtonView.setOnClickListener { viewModel.createTransaction() }
+        recallButtonView.setOnClickListener {
+            if (viewModel.isEnoughBalance()) {
+                viewModel.createTransaction()
+            } else {
+                showError(R.string.trade_reserve_screen_not_enough_reserved_amount)
+            }
+        }
     }
 
     private fun initObservers() {
+        viewModel.initialLoadLiveData.observe(this, Observer { initialLoadData ->
+            when (initialLoadData) {
+                is LoadingData.Loading -> {
+                    progressView.show()
+                    reserveContent.hide()
+                }
+                is LoadingData.Success -> {
+                    progressView.hide()
+                    reserveContent.show()
+                }
+                is LoadingData.Error -> {
+                    progressView.hide()
+                    // do not show content
+                    when (initialLoadData.errorType) {
+                        is Failure.NetworkConnection -> showError(R.string.error_internet_unavailable)
+                        else -> showError(R.string.error_something_went_wrong)
+                    }
+                }
+            }
+        })
         viewModel.createTransactionLiveData.observe(this, Observer { loadingData ->
             when (loadingData) {
                 is LoadingData.Loading -> progressView.show()
                 is LoadingData.Success -> {
-                    showSmsDialog()
                     progressView.hide()
+                    finish()
                 }
                 is LoadingData.Error -> {
                     when (loadingData.errorType) {
@@ -103,27 +141,6 @@ class TradeReserveActivity : BaseActivity() {
                             startActivity(intent)
                         }
                         is Failure.MessageError -> showError(loadingData.errorType.message)
-                        is Failure.NetworkConnection -> showError(R.string.error_internet_unavailable)
-                        else -> showError(R.string.error_something_went_wrong)
-                    }
-                    progressView.hide()
-                }
-            }
-        })
-
-        viewModel.completeTransactionLiveData.observe(this, Observer
-        { loadingData ->
-            when (loadingData) {
-                is LoadingData.Loading -> progressView.show()
-                is LoadingData.Success -> finish()
-                is LoadingData.Error -> {
-                    when (loadingData.errorType) {
-                        is Failure.TokenError -> {
-                            val intent = Intent(this, HostActivity::class.java)
-                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-                            startActivity(intent)
-                        }
-                        is Failure.MessageError -> showSmsDialog(loadingData.errorType.message)
                         is Failure.NetworkConnection -> showError(R.string.error_internet_unavailable)
                         else -> showError(R.string.error_something_went_wrong)
                     }
@@ -153,13 +170,6 @@ class TradeReserveActivity : BaseActivity() {
             viewModel.coinItem.reservedBalanceUsd.toStringUsd()
         )
         amountCryptoView.hint = getString(R.string.text_amount, viewModel.coinItem.code)
-    }
-
-    private fun showSmsDialog(errorMessage: String? = null) {
-        val fragment = SmsDialogFragment()
-        fragment.arguments = bundleOf(SmsDialogFragment.TAG_ERROR to errorMessage)
-        fragment.show(supportFragmentManager, SmsDialogFragment::class.simpleName)
-        fragment.setDialogListener { smsCode -> viewModel.completeTransaction(smsCode) }
     }
 
     companion object {

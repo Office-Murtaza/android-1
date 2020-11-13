@@ -181,6 +181,8 @@
 
     <!--transactions-->
     <string name="deposit">Deposit</string>
+    <string name="reserve">Reserve</string>
+    <string name="recall">Recall</string>
     <string name="wallet_code_clipboard">Wallet code copied to clipboard</string>
     <string name="transactions_screen_balance">Balance</string>
     <string name="transactions_screen_transaction_created">Transaction was successfully created</string>
