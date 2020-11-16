@@ -3,12 +3,10 @@ package com.app.belcobtm.presentation.features.settings.support
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.telephony.PhoneNumberUtils
 import android.view.View
 import com.app.belcobtm.R
 import com.app.belcobtm.presentation.core.ui.fragment.BaseFragment
 import kotlinx.android.synthetic.main.fragment_support.*
-import java.util.*
 
 class SupportFragment : BaseFragment() {
 
@@ -23,17 +21,13 @@ class SupportFragment : BaseFragment() {
     }
 
     private fun setupPhoneNumber() {
-        val supportPhone = getString(R.string.support_phone)
-        val formattedSupportPhone = PhoneNumberUtils.formatNumber(
-            supportPhone,
-            Locale.US.country
-        )
-        phoneItem.setValue(formattedSupportPhone)
+        val supportPhone = getString(R.string.support_phone_formatted)
+        phoneItem.setValue(supportPhone)
     }
 
     private fun setClickListeners() {
         phoneItem.setOnClickListener {
-            val phoneNumber = getString(R.string.support_phone)
+            val phoneNumber = getString(R.string.support_phone_formatted)
             val callURI = Uri.fromParts("tel", phoneNumber, null)
             val dialIntent = Intent(Intent.ACTION_DIAL, callURI)
             startIntentSafe(dialIntent)
