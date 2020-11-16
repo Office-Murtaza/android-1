@@ -82,10 +82,10 @@ class TransactionsFragment : BaseFragment() {
         addButtonToMenu(menu, EXCHANGE)
 //        addButtonToMenu(groupId, menu, SELL)
         addButtonToMenu(menu, SEND_GIFT)
-        addButtonToMenu(menu, WITHDRAW)
-        addButtonToMenu(menu, DEPOSIT)
         addButtonToMenu(menu, RECALL)
         addButtonToMenu(menu, RESERVE)
+        addButtonToMenu(menu, WITHDRAW)
+        addButtonToMenu(menu, DEPOSIT)
         fabListView.setMenu(menu)
     }
 
