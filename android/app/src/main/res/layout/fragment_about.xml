@@ -33,17 +33,6 @@
         android:background="@color/thin_divider" />
 
     <com.app.belcobtm.presentation.core.views.SettingsItemView
-        android:id="@+id/supportItem"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:text="@string/support_label" />
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/divider_size"
-        android:background="@color/thin_divider" />
-
-    <com.app.belcobtm.presentation.core.views.SettingsItemView
         android:id="@+id/versionItem"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

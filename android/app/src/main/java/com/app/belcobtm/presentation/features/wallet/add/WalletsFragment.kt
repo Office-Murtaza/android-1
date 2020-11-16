@@ -10,11 +10,11 @@ import com.app.belcobtm.R
 import com.app.belcobtm.domain.Failure
 import com.app.belcobtm.presentation.core.ui.fragment.BaseFragment
 import com.app.belcobtm.presentation.features.wallet.add.adapter.AddWalletCoinsAdapter
-import kotlinx.android.synthetic.main.fragment_manage_wallets.*
+import kotlinx.android.synthetic.main.fragment_wallets.*
 import org.koin.android.ext.android.inject
 
-class ManageWalletsFragment : BaseFragment() {
-    private val viewModel: ManageWalletsViewModel by inject()
+class WalletsFragment : BaseFragment() {
+    private val viewModel: WalletsViewModel by inject()
     private val adapter: AddWalletCoinsAdapter = AddWalletCoinsAdapter { position, isChecked ->
         viewModel.changeCoinState(position, isChecked)
     }
@@ -22,7 +22,7 @@ class ManageWalletsFragment : BaseFragment() {
         setFragmentResult(REQUEST_KEY, bundleOf())
         popBackStack()
     }
-    override val resourceLayout: Int = R.layout.fragment_manage_wallets
+    override val resourceLayout: Int = R.layout.fragment_wallets
     override val isToolbarEnabled: Boolean = true
     override val isHomeButtonEnabled: Boolean = true
     override var isMenuEnabled: Boolean = true
@@ -58,7 +58,7 @@ class ManageWalletsFragment : BaseFragment() {
     }
 
     override fun initViews() {
-        setToolbarTitle(R.string.manage_wallets_screen_title)
+        setToolbarTitle(R.string.wallets_screen_title)
         ContextCompat.getDrawable(requireContext(), R.drawable.bg_divider)?.let {
             val itemDecorator = DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL)
             itemDecorator.setDrawable(it)

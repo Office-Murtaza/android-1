@@ -22,7 +22,6 @@ class AboutViewModel(
 
     fun handleItemClick(item: AboutItem) = when (item) {
         AboutItem.TERMS -> intentActions.openViewActivity(Const.TERMS_URL)
-        AboutItem.SUPPORT -> intentActions.openViewActivity(Const.SUPPORT_URL)
     }
 
     private fun populateAppVersion() {
@@ -34,6 +33,5 @@ class AboutViewModel(
 }
 
 enum class AboutItem {
-    TERMS,
-    SUPPORT
+    TERMS
 }

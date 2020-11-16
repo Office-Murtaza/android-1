@@ -113,8 +113,8 @@
     <string name="settings">Settings</string>
     <string name="wallet">Wallet</string>
 
-    <!-- Manage Wallets Screen-->
-    <string name="manage_wallets_screen_title">Manage wallets</string>
+    <!-- Wallets Screen-->
+    <string name="wallets_screen_title">Wallets</string>
 
     <!--atm-->
     <string name="open_now">Open now:</string>
@@ -423,7 +423,7 @@
     //settings
     <string name="security_label">Security</string>
     <string name="wallets_label">Wallets</string>
-    <string name="kyc_label">KYC</string>
+    <string name="kyc_label">AML/KYC</string>
     <string name="about_label">About</string>
     <string name="terms_label">Terms &amp; conditions</string>
     <string name="support_label">Support</string>
@@ -445,7 +445,7 @@
     <string name="support_phone">+18888483033</string>
     <string name="support_email">support@belcobtm.com</string>
     <string name="support_telegram">\@belco_support</string>
-    <string name="support_whatapp">\@belco_support</string>
+    <string name="support_whatapp">\@HLM8HlzE5VjDjhEiZJpKJr</string>
     <string name="support_chooser_message">\Choose an option</string>
 
     //pass
