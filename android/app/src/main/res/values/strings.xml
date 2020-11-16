@@ -423,7 +423,7 @@
     //settings
     <string name="security_label">Security</string>
     <string name="wallets_label">Wallets</string>
-    <string name="kyc_label">KYC</string>
+    <string name="kyc_label">AML/KYC</string>
     <string name="about_label">About</string>
     <string name="terms_label">Terms &amp; conditions</string>
     <string name="support_label">Support</string>
