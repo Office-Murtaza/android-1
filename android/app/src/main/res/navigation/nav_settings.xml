@@ -256,9 +256,9 @@
 
     <fragment
         android:id="@+id/manage_wallets_fragment"
-        android:name="com.app.belcobtm.presentation.features.wallet.add.ManageWalletsFragment"
+        android:name="com.app.belcobtm.presentation.features.wallet.add.WalletsFragment"
         android:label="ManageWalletFragment"
-        tools:layout="@layout/fragment_manage_wallets" />
+        tools:layout="@layout/fragment_wallets" />
 
     <fragment
         android:id="@+id/support_fragment"

@@ -8,7 +8,7 @@ import com.app.belcobtm.domain.wallet.item.AccountDataItem
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
 import com.app.belcobtm.presentation.features.wallet.add.adapter.AddWalletCoinItem
 
-class ManageWalletsViewModel(
+class WalletsViewModel(
     coinListUseCase: GetLocalCoinListUseCase,
     private val updateCoinUseCase: UpdateCoinUseCase
 ) : ViewModel() {

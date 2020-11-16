@@ -113,8 +113,8 @@
     <string name="settings">Settings</string>
     <string name="wallet">Wallet</string>
 
-    <!-- Manage Wallets Screen-->
-    <string name="manage_wallets_screen_title">Manage wallets</string>
+    <!-- Wallets Screen-->
+    <string name="wallets_screen_title">Wallets</string>
 
     <!--atm-->
     <string name="open_now">Open now:</string>
