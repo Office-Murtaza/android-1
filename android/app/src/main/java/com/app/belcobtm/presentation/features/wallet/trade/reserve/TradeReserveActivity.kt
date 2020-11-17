@@ -97,7 +97,7 @@ class TradeReserveActivity : BaseActivity() {
         amountCryptoView.editText?.addTextChangedListener(doubleTextWatcher.firstTextWatcher)
         amountUsdView.editText?.addTextChangedListener(doubleTextWatcher.secondTextWatcher)
         recallButtonView.setOnClickListener {
-            if (viewModel.isEnoughBalance()) {
+            if (viewModel.isValidAmount()) {
                 viewModel.createTransaction()
             } else {
                 showError(R.string.trade_reserve_screen_not_enough_reserved_amount)
