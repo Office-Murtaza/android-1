@@ -16,10 +16,10 @@ extension SettingsCellTypeRepresentable {
 }
 
 enum SettingsCellType: CaseIterable, SettingsCellTypeRepresentable {
-    case wallet
+  case wallet
   case security
   case kyc
-    case support
+  case support
   case about
 
   var title: String {

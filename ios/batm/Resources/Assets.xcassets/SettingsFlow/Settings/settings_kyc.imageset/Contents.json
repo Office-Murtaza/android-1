@@ -1,19 +1,8 @@
 {
   "images" : [
     {
-      "filename" : "user1.png",
-      "idiom" : "universal",
-      "scale" : "1x"
-    },
-    {
-      "filename" : "user1@2x.png",
-      "idiom" : "universal",
-      "scale" : "2x"
-    },
-    {
-      "filename" : "user1@3x.png",
-      "idiom" : "universal",
-      "scale" : "3x"
+      "filename" : "Vector-3.pdf",
+      "idiom" : "universal"
     }
   ],
   "info" : {

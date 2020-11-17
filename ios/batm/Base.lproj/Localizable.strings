@@ -77,9 +77,9 @@
 "atm.info_window.open_now" = "Open Now:";
 
 "settings.title" = "Settings";
-"settings.cell.wallet" = "Manage wallets";
+"settings.cell.wallet" = "Wallets";
 "settings.cell.security" = "Security";
-"settings.cell.kyc" = "KYC";
+"settings.cell.kyc" = "AML/KYC";
 "settings.cell.about" = "About";
 "settings.cell.support" = "Support";
 
