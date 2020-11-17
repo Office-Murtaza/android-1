@@ -66,9 +66,9 @@ class TradeReserveViewModel(
     }
 
     fun isValidAmount(): Boolean {
-        if (isXRP() && isEnoughBalance()) {
+        if (isXRP()) {
             // Check for minimum amount
-            return selectedAmount >= 20
+            return isEnoughBalance() && selectedAmount >= 20
         }
         return isEnoughBalance()
     }
