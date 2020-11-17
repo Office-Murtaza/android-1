@@ -53,6 +53,10 @@ class SendGiftViewModel(
 
     fun getUsdPrice(): Double = fromCoinDataItem.priceUsd
 
+    fun getReservedBalanceUsd(): Double = fromCoinDataItem.reservedBalanceUsd
+
+    fun getReservedBalanceCoin(): Double = fromCoinDataItem.reservedBalanceCoin
+
     fun getCoinCode(): String = fromCoinDataItem.code
 
     fun isNotEnoughBalanceETH(): Boolean =
