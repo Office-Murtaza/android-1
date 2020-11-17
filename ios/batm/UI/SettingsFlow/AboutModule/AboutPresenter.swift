@@ -19,7 +19,6 @@ class AboutPresenter: ModulePresenter, AboutModule {
       .subscribe(onNext: {
         switch $0 {
         case .termsAndConditions: UIApplication.shared.open(URL.termsAndConditions)
-        case .support: UIApplication.shared.open(URL.support)
         default: break
         }
       })
