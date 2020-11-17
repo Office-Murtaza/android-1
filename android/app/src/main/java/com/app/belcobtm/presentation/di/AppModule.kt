@@ -44,7 +44,7 @@ val viewModelModule = module {
     viewModel { AboutViewModel(androidApplication(), get()) }
     viewModel { SecurityViewModel() }
     viewModel { WalletViewModel(get(), get()) }
-    viewModel { (coinCode: String) -> TransactionsViewModel(coinCode, get(), get(), get()) }
+    viewModel { (coinCode: String) -> TransactionsViewModel(coinCode, get(), get(), get(), get()) }
     viewModel { RecoverWalletViewModel(get()) }
     viewModel { CreateWalletViewModel(get()) }
     viewModel { PinCodeViewModel(get(), get(), get(), get(), get()) }

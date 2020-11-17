@@ -46,6 +46,10 @@ class WithdrawViewModel(
 
     fun getUsdPrice(): Double = fromCoinDataItem?.priceUsd ?: 0.0
 
+    fun getReservedBalanceUsd(): Double = fromCoinDataItem?.reservedBalanceUsd ?: 0.0
+
+    fun getReservedBalanceCoin(): Double = fromCoinDataItem?.reservedBalanceCoin ?: 0.0
+
     fun getCoinCode(): String = fromCoinDataItem?.code ?: ""
 
     fun isNotEnoughBalanceETH(): Boolean =

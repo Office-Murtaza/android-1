@@ -75,6 +75,15 @@ class SendGiftFragment : BaseFragment(), GiphyDialogFragment.GifSelectionListene
             viewModel.getCoinCode()
         )
         balanceUsdView.text = getString(R.string.text_usd, viewModel.getUsdBalance().toStringUsd())
+        reservedCryptoView.text = getString(
+            R.string.text_text,
+            viewModel.getReservedBalanceCoin().toStringCoin(),
+            viewModel.getCoinCode()
+        )
+        reservedUsdView.text = getString(
+            R.string.text_usd,
+            viewModel.getReservedBalanceUsd().toStringUsd()
+        )
         amountCryptoView.helperText = getString(
             R.string.transaction_helper_text_commission,
             viewModel.getTransactionFee().toStringCoin(),

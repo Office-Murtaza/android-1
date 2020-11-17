@@ -54,6 +54,15 @@ class ExchangeFragment : BaseFragment() {
         )
         balanceUsdView.text =
             getString(R.string.text_usd, viewModel.fromCoinItem.balanceUsd.toStringUsd())
+        reservedCryptoView.text = getString(
+            R.string.text_text,
+            viewModel.fromCoinItem.reservedBalanceCoin.toStringCoin(),
+            viewModel.fromCoinItem.code
+        )
+        reservedUsdView.text = getString(
+            R.string.text_usd,
+            viewModel.fromCoinItem.reservedBalanceUsd.toStringUsd()
+        )
         amountCoinFromView.hint = getString(
             R.string.text_amount,
             viewModel.fromCoinItem.code

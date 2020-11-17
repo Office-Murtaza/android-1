@@ -19,7 +19,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:barrierDirection="end"
-            app:constraint_referenced_ids="balanceTitleView,priceTitleView" />
+            app:constraint_referenced_ids="balanceTitleView,priceTitleView,reservedTitleView" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/priceTitleView"
@@ -52,6 +52,41 @@
             app:layout_constraintStart_toStartOf="@id/priceUsdView"
             app:layout_constraintTop_toTopOf="@id/balanceTitleView"
             tools:text="0.000902 BTC" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/reservedTitleView"
+            style="@style/Transaction.Title.Medium.Key"
+            android:text="@string/add_edit_trade_screen_reserved"
+            app:layout_constraintStart_toStartOf="@id/balanceTitleView"
+            app:layout_constraintTop_toBottomOf="@id/balanceTitleView" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/reservedCryptoView"
+            style="@style/Transaction.Title.Medium.Value"
+            app:layout_constraintStart_toStartOf="@id/balanceCryptoView"
+            app:layout_constraintTop_toTopOf="@id/reservedTitleView"
+            tools:text="0.000902 BTC" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/reservedExchangeView"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:layout_marginStart="8dp"
+            app:layout_constraintBottom_toBottomOf="@id/reservedCryptoView"
+            app:layout_constraintEnd_toStartOf="@id/reservedUsdView"
+            app:layout_constraintStart_toEndOf="@id/reservedCryptoView"
+            app:layout_constraintTop_toTopOf="@id/reservedCryptoView"
+            app:srcCompat="@drawable/ic_compare_arrows" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/reservedUsdView"
+            style="@style/Transaction.Title.Medium.Value"
+            android:layout_marginStart="8dp"
+            android:textColor="@color/blue_color"
+            app:layout_constraintBottom_toBottomOf="@id/reservedExchangeView"
+            app:layout_constraintStart_toEndOf="@id/reservedExchangeView"
+            app:layout_constraintTop_toTopOf="@id/reservedExchangeView"
+            tools:text="8.90 USD" />
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/exchangeView"
@@ -86,7 +121,7 @@
             android:layout_marginEnd="16dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/balanceTitleView">
+            app:layout_constraintTop_toBottomOf="@id/reservedTitleView">
 
             <androidx.appcompat.widget.AppCompatEditText
                 android:layout_width="match_parent"
