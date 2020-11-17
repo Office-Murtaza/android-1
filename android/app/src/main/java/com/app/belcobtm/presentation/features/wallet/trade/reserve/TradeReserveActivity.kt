@@ -11,18 +11,6 @@ import com.app.belcobtm.presentation.core.ui.BaseActivity
 import com.app.belcobtm.presentation.core.watcher.DoubleTextWatcher
 import com.app.belcobtm.presentation.features.HostActivity
 import kotlinx.android.synthetic.main.activity_trade_reserve.*
-import kotlinx.android.synthetic.main.activity_trade_reserve.amountCryptoView
-import kotlinx.android.synthetic.main.activity_trade_reserve.amountUsdView
-import kotlinx.android.synthetic.main.activity_trade_reserve.balanceCryptoView
-import kotlinx.android.synthetic.main.activity_trade_reserve.balanceUsdView
-import kotlinx.android.synthetic.main.activity_trade_reserve.maxCryptoView
-import kotlinx.android.synthetic.main.activity_trade_reserve.maxUsdView
-import kotlinx.android.synthetic.main.activity_trade_reserve.priceUsdView
-import kotlinx.android.synthetic.main.activity_trade_reserve.progressView
-import kotlinx.android.synthetic.main.activity_trade_reserve.recallButtonView
-import kotlinx.android.synthetic.main.activity_trade_reserve.reservedCryptoView
-import kotlinx.android.synthetic.main.activity_trade_reserve.reservedUsdView
-import kotlinx.android.synthetic.main.activity_trade_reserve.toolbarView
 import org.koin.android.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
@@ -50,10 +38,10 @@ class TradeReserveActivity : BaseActivity() {
 
             if (cryptoAmountTemporary > 0) {
                 amountUsdView.setText((cryptoAmount * viewModel.coinItem.priceUsd).toStringUsd())
-                recallButtonView.isEnabled = true
+                reserveButtonView.isEnabled = true
             } else {
                 amountUsdView.clearText()
-                recallButtonView.isEnabled = false
+                reserveButtonView.isEnabled = false
             }
         },
         secondTextWatcher = {
@@ -74,10 +62,10 @@ class TradeReserveActivity : BaseActivity() {
 
             if (usdAmountTemporary > 0) {
                 amountCryptoView.setText((usdAmount / viewModel.coinItem.priceUsd).toStringCoin())
-                recallButtonView.isEnabled = true
+                reserveButtonView.isEnabled = true
             } else {
                 amountCryptoView.clearText()
-                recallButtonView.isEnabled = false
+                reserveButtonView.isEnabled = false
             }
         }
     )
@@ -96,7 +84,7 @@ class TradeReserveActivity : BaseActivity() {
         maxUsdView.setOnClickListener { amountCryptoView.setText(viewModel.getMaxValue().toStringCoin()) }
         amountCryptoView.editText?.addTextChangedListener(doubleTextWatcher.firstTextWatcher)
         amountUsdView.editText?.addTextChangedListener(doubleTextWatcher.secondTextWatcher)
-        recallButtonView.setOnClickListener {
+        reserveButtonView.setOnClickListener {
             if (viewModel.isEnoughBalance()) {
                 viewModel.createTransaction()
             } else {
@@ -170,6 +158,7 @@ class TradeReserveActivity : BaseActivity() {
             viewModel.coinItem.reservedBalanceUsd.toStringUsd()
         )
         amountCryptoView.hint = getString(R.string.text_amount, viewModel.coinItem.code)
+        reserveButtonView.isEnabled = false
     }
 
     companion object {
