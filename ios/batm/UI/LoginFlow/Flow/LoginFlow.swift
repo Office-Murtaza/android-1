@@ -12,6 +12,7 @@ final class LoginFlow: BaseFlow<BTMNavigationController, LoginFlowController> {
       SeedPhraseAssembly(),
       RecoverAssembly(),
       RecoverSeedPhraseAssembly(),
+      SupportAssembly()
     ]
   }
   
@@ -75,8 +76,8 @@ final class LoginFlow: BaseFlow<BTMNavigationController, LoginFlowController> {
       
       return push(module.controller)
     case .contactSupport:
-      let alert = resolver.resolve(UIAlertController.self, argument: view.topViewController!)!
-      return present(alert, animated: true)
+      let module = resolver.resolve(Module<SupportModule>.self)!
+      return push(module.controller)
     case .pop:
       return pop()
     }
