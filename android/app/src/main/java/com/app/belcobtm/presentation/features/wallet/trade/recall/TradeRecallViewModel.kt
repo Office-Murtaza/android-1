@@ -48,8 +48,10 @@ class TradeRecallViewModel(
         )
     }
 
-    fun getMaxValue(): Double =
-        0.0.coerceAtLeast(coinDataItem.reservedBalanceCoin - detailsDataItem.txFee)
+    fun getMaxValue(): Double = when {
+        isXRP() -> 0.0.coerceAtLeast(coinDataItem.reservedBalanceCoin - detailsDataItem.txFee - 20)
+        else -> 0.0.coerceAtLeast(coinDataItem.reservedBalanceCoin - detailsDataItem.txFee)
+    }
 
     fun isEnoughRecallAmount(): Boolean {
         return if (isCATM()) {
@@ -58,12 +60,16 @@ class TradeRecallViewModel(
                 detailsDataItem.txFee * localEtheriumItem.priceUsd / coinDataItem.priceUsd
             selectedAmount <= controlValue.withScale(detailsDataItem.scale)
         } else {
-            selectedAmount <= coinDataItem.reservedBalanceCoin - detailsDataItem.txFee
+            selectedAmount <= getMaxValue()
         }
     }
 
     private fun isCATM(): Boolean {
         return coinDataItem.code == LocalCoinType.CATM.name
+    }
+
+    private fun isXRP(): Boolean {
+        return coinDataItem.code == LocalCoinType.XRP.name
     }
 
     private fun fetchEtherium() {

@@ -59,10 +59,10 @@ class TradeReserveViewModel(
         )
     }
 
-    fun getMaxValue(): Double = if (isCATM()) {
-        coinDataItem.balanceCoin
-    } else {
-        0.0.coerceAtLeast(coinDataItem.balanceCoin - detailsDataItem.txFee)
+    fun getMaxValue(): Double = when {
+        isCATM() -> coinDataItem.balanceCoin
+        isXRP() -> 0.0.coerceAtLeast(coinDataItem.balanceCoin - detailsDataItem.txFee - 20)
+        else -> 0.0.coerceAtLeast(coinDataItem.balanceCoin - detailsDataItem.txFee)
     }
 
     fun isEnoughBalance(): Boolean {
@@ -77,6 +77,10 @@ class TradeReserveViewModel(
 
     private fun isCATM(): Boolean {
         return coinDataItem.code == LocalCoinType.CATM.name
+    }
+
+    private fun isXRP(): Boolean {
+        return coinDataItem.code == LocalCoinType.XRP.name
     }
 
     private fun fetchEtherium() {
