@@ -90,6 +90,12 @@ final class ReserveViewController: ModuleViewController<ReservePresenter> {
       .disposed(by: disposeBag)
     
     presenter.state
+      .asObservable()
+      .map { $0.isFieldNotEmpty }
+      .bind(to: reserveButton.rx.isEnabled)
+      .disposed(by: disposeBag)
+    
+    presenter.state
       .map { $0.validationState }
       .mapToErrorMessage()
       .drive(onNext: { [errorView] in

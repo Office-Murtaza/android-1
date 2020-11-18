@@ -26,13 +26,19 @@ struct ReserveState: Equatable {
   var maxValue: Decimal {
     guard let type = coin?.type, let balance = coinBalance?.balance, let fee = coinDetails?.txFee else { return 0 }
     
-    if type == .catm {
-      return balance
+    switch type {
+    case .catm:
+        return balance
+    case .ripple:
+        return max(0, balance - fee - 20)
+    default:
+        return max(0, balance - fee)
     }
-    
-    return max(0, balance - fee)
   }
-  
+    
+  var isFieldNotEmpty: Bool {
+    return coinAmount.isNotEmpty
+  }
 }
 
 final class ReserveStore: ViewStore<ReserveAction, ReserveState> {
@@ -76,7 +82,8 @@ final class ReserveStore: ViewStore<ReserveAction, ReserveState> {
       return .invalid(localize(L.CreateWallet.Form.Error.allFieldsRequired))
     }
     
-    guard let amount = state.coinAmount.decimalValue else {
+    guard let amount = state.coinAmount.decimalValue,
+          isValidXRPAmount(amount: amount, state: state) else {
       return .invalid(localize(L.CoinWithdraw.Form.Error.invalidAmount))
     }
     
@@ -104,4 +111,11 @@ final class ReserveStore: ViewStore<ReserveAction, ReserveState> {
     
     return .valid
   }
+    
+    private func isValidXRPAmount(amount: Decimal, state: ReserveState) -> Bool {
+        if state.coin?.type == .ripple {
+            return amount.greaterThanOrEqualTo(20)
+        }
+        return true
+    }
 }
