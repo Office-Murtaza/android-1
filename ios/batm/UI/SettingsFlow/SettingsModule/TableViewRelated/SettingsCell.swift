@@ -95,6 +95,9 @@ final class SettingsCell: UITableViewCell {
   }
   
   private func setupLayout() {
+    iconImageView.snp.makeConstraints {
+      $0.size.equalTo(24)
+    }
     stackView.snp.makeConstraints {
       $0.left.equalToSuperview().offset(15)
       $0.centerY.equalToSuperview()
@@ -106,8 +109,12 @@ final class SettingsCell: UITableViewCell {
   }
   
   func configure(for type: SettingsCellTypeRepresentable) {
+    if type is SupportCellType {
+        accessoryType = .disclosureIndicator
+    }
     iconImageView.image = type.image
     iconImageView.isHidden = type.image == nil
+    iconImageView.contentMode = .center
     titleLabel.text = type.title
     valueLabel.text = type.value
     valueLabel.isHidden = type.value == nil

@@ -38,7 +38,7 @@ class SupportViewController: ModuleViewController<SupportPresenter> {
         dataSource.tableView = tableView
         
         tableView.rx.itemSelected.asDriver()
-            .drive(onNext: { [tableView] in tableView.deselectRow(at: $0, animated: true) })
+            .drive(onNext: { [weak self] in self?.tableView.deselectRow(at: $0, animated: true) })
             .disposed(by: disposeBag)
     }
     

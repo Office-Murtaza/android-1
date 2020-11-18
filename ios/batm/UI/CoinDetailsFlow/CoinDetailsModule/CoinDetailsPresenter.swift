@@ -19,6 +19,8 @@ final class CoinDetailsPresenter: ModulePresenter, CoinDetailsModule {
         var showMore: Driver<Void>
         var transactionSelected: Driver<IndexPath>
         var updateSelectedPeriod: Driver<SelectedPeriod>
+        var reserve: Driver<Void>
+        var recall: Driver<Void>
     }
     
     private let usecase: CoinDetailsUsecase
@@ -106,6 +108,23 @@ final class CoinDetailsPresenter: ModulePresenter, CoinDetailsModule {
                                                                       coinBalances: $0.coinBalances!,
                                                                       coinDetails: $0.coinDetails!) })
             .disposed(by: disposeBag)
+        
+        input.reserve
+          .withLatestFrom(state)
+          .filter { $0.coin != nil }
+          .drive(onNext: { [delegate] in delegate?.showReserve(coin: $0.coin!,
+                                                               coinBalances: $0.coinBalances!,
+                                                               coinDetails: $0.coinDetails!) })
+          .disposed(by: disposeBag)
+        
+        input.recall
+          .withLatestFrom(state)
+          .filter { $0.coin != nil }
+          .drive(onNext: { [delegate] in delegate?.showRecall(coin: $0.coin!,
+                                                              coinBalances: $0.coinBalances!,
+                                                              coinDetails: $0.coinDetails!) })
+          .disposed(by: disposeBag)
+        
         
         input.staking
             .withLatestFrom(state)

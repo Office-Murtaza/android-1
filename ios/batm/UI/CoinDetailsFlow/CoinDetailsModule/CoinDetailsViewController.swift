@@ -12,6 +12,8 @@ final class CoinDetailsViewController: ModuleViewController<CoinDetailsPresenter
   let didTapExchangeRelay = PublishRelay<Void>()
   let didTapTradesRelay = PublishRelay<Void>()
   let didTapStakingRelay = PublishRelay<Void>()
+  let didTapRecallRelay = PublishRelay<Void>()
+  let didTapReserveRelay = PublishRelay<Void>()
   
   let didSelectPeriodRelay = PublishRelay<SelectedPeriod>()
   
@@ -53,6 +55,12 @@ final class CoinDetailsViewController: ModuleViewController<CoinDetailsPresenter
     fab.view.addItem(title: localize(L.CoinDetails.withdraw), image: UIImage(named: "fab_withdraw")) { [unowned self] _ in
       self.didTapWithdrawRelay.accept(())
     }
+    fab.view.addItem(title: localize(L.Trades.recall), image: UIImage(named: "fab_recall")) { [unowned self] _ in
+      self.didTapRecallRelay.accept(())
+    }
+    fab.view.addItem(title: localize(L.Trades.reserve), image: UIImage(named: "fab_reserve")) { [unowned self] _ in
+      self.didTapReserveRelay.accept(())
+    }
     fab.view.addItem(title: localize(L.CoinDetails.sendGift), image: UIImage(named: "fab_send_gift")) { [unowned self] _ in
       self.didTapSendGiftRelay.accept(())
     }
@@ -64,9 +72,9 @@ final class CoinDetailsViewController: ModuleViewController<CoinDetailsPresenter
     fab.view.addItem(title: localize(L.CoinDetails.exchange), image: UIImage(named: "fab_exchange")) { [unowned self] _ in
       self.didTapExchangeRelay.accept(())
     }
-    fab.view.addItem(title: localize(L.CoinDetails.trade), image: UIImage(named: "fab_trade")) { [unowned self] _ in
-        self.didTapTradesRelay.accept(())
-    }
+//    fab.view.addItem(title: localize(L.CoinDetails.trade), image: UIImage(named: "fab_trade")) { [unowned self] _ in
+//        self.didTapTradesRelay.accept(())
+//    }
   }
   
   override func setupLayout() {
@@ -164,6 +172,8 @@ final class CoinDetailsViewController: ModuleViewController<CoinDetailsPresenter
     let showMoreDriver = tableView.rx.willDisplayLastCell.asDriver(onErrorDriveWith: .empty())
     let transactionSelectedDriver = tableView.rx.itemSelected.asDriver()
     let updateSelectedPeriodDriver = didSelectPeriodRelay.asDriver(onErrorDriveWith: .empty())
+    let reserveDriver = didTapReserveRelay.asDriver(onErrorDriveWith: .empty())
+    let recallDriver = didTapRecallRelay.asDriver(onErrorDriveWith: .empty())
     
     presenter.bind(input: CoinDetailsPresenter.Input(refresh: refreshDriver,
                                                      deposit: depositDriver,
@@ -175,7 +185,9 @@ final class CoinDetailsViewController: ModuleViewController<CoinDetailsPresenter
                                                      staking: stakingDriver,
                                                      showMore: showMoreDriver,
                                                      transactionSelected: transactionSelectedDriver,
-                                                     updateSelectedPeriod: updateSelectedPeriodDriver))
+                                                     updateSelectedPeriod: updateSelectedPeriodDriver,
+                                                     reserve: reserveDriver,
+                                                     recall: recallDriver))
   }
 }
 

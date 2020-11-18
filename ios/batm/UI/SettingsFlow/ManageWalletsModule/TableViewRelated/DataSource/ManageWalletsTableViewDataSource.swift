@@ -9,6 +9,7 @@ final class ManageWalletsTableViewDataSource: NSObject, UITableViewDataSource, H
   
   private var values: [BTMCoin] = [] {
     didSet {
+      values.sort { $0.index < $1.index }
       tableView?.reloadData()
     }
   }

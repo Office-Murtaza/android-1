@@ -43,6 +43,13 @@ extension CoinDetailsFlowController: CoinDetailsModuleDelegate {
     step.accept(CoinDetailsFlow.Steps.staking(coin, coinBalances, coinDetails, stakeDetails))
   }
   
+  func showReserve(coin: BTMCoin, coinBalances: [CoinBalance], coinDetails: CoinDetails) {
+    step.accept(CoinDetailsFlow.Steps.reserve(coin, coinBalances, coinDetails))
+  }
+    
+  func showRecall(coin: BTMCoin, coinBalances: [CoinBalance], coinDetails: CoinDetails) {
+    step.accept(CoinDetailsFlow.Steps.recall(coin, coinBalances, coinDetails))
+  }
 }
 
 extension CoinDetailsFlowController: CoinDepositModuleDelegate {}
@@ -125,4 +132,16 @@ extension CoinDetailsFlowController: TradesFlowControllerDelegate {
     step.accept(CoinDetailsFlow.Steps.pop(nil))
   }
   
+}
+
+extension CoinDetailsFlowController: ReserveModuleDelegate {
+  func didFinishReserve() {
+    step.accept(CoinDetailsFlow.Steps.pop(nil))
+  }
+}
+
+extension CoinDetailsFlowController: RecallModuleDelegate {
+  func didFinishRecall() {
+    step.accept(CoinDetailsFlow.Steps.pop(nil))
+  }
 }

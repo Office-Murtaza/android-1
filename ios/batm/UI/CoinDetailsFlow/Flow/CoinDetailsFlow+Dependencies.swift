@@ -22,7 +22,9 @@ extension CoinDetailsFlow {
                     CoinExchangeModuleDelegate.self,
                     CoinStakingModuleDelegate.self,
                     TransactionDetailsModuleDelegate.self,
-                    TradesFlowControllerDelegate.self)
+                    TradesFlowControllerDelegate.self,
+                    ReserveModuleDelegate.self,
+                    RecallModuleDelegate.self)
     }
   }
 }

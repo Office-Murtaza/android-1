@@ -15,6 +15,8 @@ class CoinDetailsFlow: BaseFlow<BTMNavigationController, CoinDetailsFlowControll
       CoinExchangeAssembly(),
       CoinStakingAssembly(),
       TransactionDetailsAssembly(),
+      ReserveAssembly(),
+      RecallAssembly(),
     ]
   }
   
@@ -30,6 +32,8 @@ class CoinDetailsFlow: BaseFlow<BTMNavigationController, CoinDetailsFlowControll
     case exchange(BTMCoin, [CoinBalance], CoinDetails)
     case trades(BTMCoin, [CoinBalance], CoinDetails)
     case staking(BTMCoin, [CoinBalance], CoinDetails, StakeDetails)
+    case reserve(BTMCoin, [CoinBalance], CoinDetails)
+    case recall(BTMCoin, [CoinBalance], CoinDetails)
     case pop(String? = nil)
   }
   
@@ -84,6 +88,14 @@ class CoinDetailsFlow: BaseFlow<BTMNavigationController, CoinDetailsFlowControll
     case let .staking(coin, coinBalances, coinDetails, stakeDetails):
       let module = resolver.resolve(Module<CoinStakingModule>.self)!
       module.input.setup(coin: coin, coinBalances: coinBalances, coinDetails: coinDetails, stakeDetails: stakeDetails)
+      return push(module.controller)
+    case let .reserve(coin, coinBalances, coinDetails):
+      let module = resolver.resolve(Module<ReserveModule>.self)!
+      module.input.setup(coin: coin, coinBalances: coinBalances, coinDetails: coinDetails)
+      return push(module.controller)
+    case let .recall(coin, coinBalances, coinDetails):
+      let module = resolver.resolve(Module<RecallModule>.self)!
+      module.input.setup(coin: coin, coinBalances: coinBalances, coinDetails: coinDetails)
       return push(module.controller)
     case let .pop(toastMessage):
       toastMessage.flatMap { message in

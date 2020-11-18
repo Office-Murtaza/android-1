@@ -31,6 +31,15 @@ class ManageWalletsPresenter: ModulePresenter, ManageWalletsModule {
       .bind(to: store.action)
       .disposed(by: disposeBag)
   }
+    
+    
+  func bind(input: Input) {
+    input.changeVisibility
+      .asObservable()
+      .flatMap { [unowned self] in self.track(self.changeVisibility(of: $0)) }
+      .bind(to: store.action)
+      .disposed(by: disposeBag)
+  }
   
   private func fetchCoins() -> Observable<ManageWalletsAction> {
     return usecase.getCoins()
@@ -43,13 +52,5 @@ class ManageWalletsPresenter: ModulePresenter, ManageWalletsModule {
       .flatMap { [usecase] in usecase.changeVisibility(of: $0).andThen(Observable.just(())) }
       .doOnNext { [delegate] in delegate?.didChangeVisibility() }
       .flatMap { [unowned self] in self.fetchCoins() }
-  }
-  
-  func bind(input: Input) {
-    input.changeVisibility
-      .asObservable()
-      .flatMap { [unowned self] in self.track(self.changeVisibility(of: $0)) }
-      .bind(to: store.action)
-      .disposed(by: disposeBag)
   }
 }

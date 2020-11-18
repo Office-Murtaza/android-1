@@ -13,4 +13,6 @@ protocol CoinDetailsModuleDelegate: class {
   func showExchangeScreen(coin: BTMCoin, coinBalances: [CoinBalance], coinDetails: CoinDetails)
   func showTradesScreen(coin: BTMCoin, coinBalances: [CoinBalance], coinDetails: CoinDetails)
   func showStakingScreen(coin: BTMCoin, coinBalances: [CoinBalance], coinDetails: CoinDetails, stakeDetails: StakeDetails)
+  func showReserve(coin: BTMCoin, coinBalances: [CoinBalance], coinDetails: CoinDetails)
+  func showRecall(coin: BTMCoin, coinBalances: [CoinBalance], coinDetails: CoinDetails)
 }

@@ -71,7 +71,7 @@
 "wallet.title" = "Wallet";
 "wallet.header.title" = "Total";
 
-"manage_wallets.title" = "Manage wallets";
+"manage_wallets.title" = "Wallets";
 
 "atm.title" = "Locations";
 "atm.info_window.open_now" = "Open Now:";
