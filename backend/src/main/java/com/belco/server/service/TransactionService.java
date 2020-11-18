@@ -513,8 +513,8 @@ public class TransactionService {
 
         list.stream().forEach(t -> {
             try {
-                CoinService.CoinEnum coinId = CoinService.CoinEnum.valueOf(t.getCoin().getCode());
-                TransactionStatus status = coinId.getTransactionStatus(t.getTxId());
+                CoinService.CoinEnum coin = CoinService.CoinEnum.valueOf(t.getCoin().getCode());
+                TransactionStatus status = coin.getTransactionStatus(t.getTxId());
 
                 if (status != TransactionStatus.PENDING) {
                     t.setStatus(status.getValue());

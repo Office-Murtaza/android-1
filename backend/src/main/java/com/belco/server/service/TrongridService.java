@@ -62,7 +62,7 @@ public class TrongridService {
                 JSONObject res = JSONObject.fromObject(rest.postForObject(nodeUrl + "/wallet/getaccount", json, String.class));
                 String balance = res.optString("balance");
 
-                if(StringUtils.isNotBlank(balance)) {
+                if (StringUtils.isNotBlank(balance)) {
                     return Util.format(new BigDecimal(balance).divide(TRX_DIVIDER), 6);
                 }
             } catch (ResourceAccessException rae) {
@@ -99,24 +99,22 @@ public class TrongridService {
 
         if (isNodeAvailable) {
             try {
-                JSONObject res = rest.getForObject(nodeUrl + "/v1/transactions/" + txId, JSONObject.class);
-                JSONArray array = res.optJSONArray("data");
+                JSONObject json = new JSONObject();
+                json.put("value", txId);
 
-                if (array != null && !array.isEmpty()) {
-                    JSONObject tx = array.getJSONObject(0);
-                    JSONObject row = tx.optJSONObject("raw_data").optJSONArray("contract").getJSONObject(0).getJSONObject("parameter").optJSONObject("value");
+                JSONObject res = JSONObject.fromObject(rest.postForObject(nodeUrl + "/wallet/gettransactionbyid", json, String.class));
+                JSONObject row = res.optJSONObject("raw_data").optJSONArray("contract").getJSONObject(0).getJSONObject("parameter").optJSONObject("value");
 
-                    dto.setTxId(txId);
-                    dto.setLink(explorerUrl + "/" + txId);
-                    dto.setCryptoAmount(getAmount(row.optLong("amount")));
-                    dto.setCryptoFee(getAmount(tx.optJSONObject("raw_data").optLong("fee_limit")));
-                    dto.setFromAddress(Base58.toBase58(row.optString("owner_address")));
-                    dto.setToAddress(Base58.toBase58(row.optString("to_address")));
-                    dto.setType(TransactionType.getType(dto.getFromAddress(), dto.getToAddress(), address));
-                    dto.setStatus(getStatus(tx.optJSONArray("ret").getJSONObject(0).optString("contractRet")));
-                    dto.setConfirmations(dto.getStatus().getConfirmations());
-                    dto.setDate2(new Date(tx.optJSONObject("raw_data").optLong("timestamp")));
-                }
+                dto.setTxId(txId);
+                dto.setLink(explorerUrl + "/" + txId);
+                dto.setCryptoAmount(getAmount(row.optLong("amount")));
+                dto.setCryptoFee(getAmount(res.optJSONObject("raw_data").optLong("fee_limit")));
+                dto.setFromAddress(Base58.toBase58(row.optString("owner_address")));
+                dto.setToAddress(Base58.toBase58(row.optString("to_address")));
+                dto.setType(TransactionType.getType(dto.getFromAddress(), dto.getToAddress(), address));
+                dto.setStatus(getStatus(res.optJSONArray("ret").getJSONObject(0).optString("contractRet")));
+                dto.setConfirmations(dto.getStatus().getConfirmations());
+                dto.setDate2(new Date(res.optJSONObject("raw_data").optLong("timestamp")));
             } catch (ResourceAccessException rae) {
                 isNodeAvailable = false;
             } catch (Exception e) {
