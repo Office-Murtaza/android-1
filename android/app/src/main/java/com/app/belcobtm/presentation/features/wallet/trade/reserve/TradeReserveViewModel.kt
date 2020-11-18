@@ -59,24 +59,39 @@ class TradeReserveViewModel(
         )
     }
 
-    fun getMaxValue(): Double = if (isCATM()) {
-        coinDataItem.balanceCoin
-    } else {
-        0.0.coerceAtLeast(coinDataItem.balanceCoin - detailsDataItem.txFee)
+    fun getMaxValue(): Double = when {
+        isCATM() -> coinDataItem.balanceCoin
+        isXRP() -> 0.0.coerceAtLeast(coinDataItem.balanceCoin - detailsDataItem.txFee - 20)
+        else -> 0.0.coerceAtLeast(coinDataItem.balanceCoin - detailsDataItem.txFee)
     }
 
-    fun isEnoughBalance(): Boolean {
-        return if (isCATM()) {
-            val localEththeriumCoin = etheriumCoinDataItem ?: return false
-            selectedAmount <= coinDataItem.balanceCoin
-                    && localEththeriumCoin.balanceCoin >= detailsDataItem.txFee
-        } else {
-            selectedAmount <= getMaxValue()
+    fun isValidAmount(): Boolean {
+        if (isXRP()) {
+            // Check for minimum amount
+            return isEnoughBalance() && selectedAmount >= 20
+        }
+        return isEnoughBalance()
+    }
+
+    private fun isEnoughBalance(): Boolean {
+        return when {
+            isCATM() -> {
+                val localEththeriumCoin = etheriumCoinDataItem ?: return false
+                selectedAmount <= coinDataItem.balanceCoin
+                        && localEththeriumCoin.balanceCoin >= detailsDataItem.txFee
+            }
+            else -> {
+                selectedAmount <= getMaxValue()
+            }
         }
     }
 
     private fun isCATM(): Boolean {
         return coinDataItem.code == LocalCoinType.CATM.name
+    }
+
+    private fun isXRP(): Boolean {
+        return coinDataItem.code == LocalCoinType.XRP.name
     }
 
     private fun fetchEtherium() {

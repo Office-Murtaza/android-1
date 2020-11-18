@@ -58,7 +58,7 @@ class TradeRecallViewModel(
                 detailsDataItem.txFee * localEtheriumItem.priceUsd / coinDataItem.priceUsd
             selectedAmount <= controlValue.withScale(detailsDataItem.scale)
         } else {
-            selectedAmount <= coinDataItem.reservedBalanceCoin - detailsDataItem.txFee
+            selectedAmount <= getMaxValue()
         }
     }
 

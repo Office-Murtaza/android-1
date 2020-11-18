@@ -80,12 +80,20 @@ class TradeReserveActivity : BaseActivity() {
     }
 
     private fun initListeners() {
-        maxCryptoView.setOnClickListener { amountCryptoView.setText(viewModel.getMaxValue().toStringCoin()) }
-        maxUsdView.setOnClickListener { amountCryptoView.setText(viewModel.getMaxValue().toStringCoin()) }
+        maxCryptoView.setOnClickListener {
+            amountCryptoView.setText(
+                viewModel.getMaxValue().toStringCoin()
+            )
+        }
+        maxUsdView.setOnClickListener {
+            amountCryptoView.setText(
+                viewModel.getMaxValue().toStringCoin()
+            )
+        }
         amountCryptoView.editText?.addTextChangedListener(doubleTextWatcher.firstTextWatcher)
         amountUsdView.editText?.addTextChangedListener(doubleTextWatcher.secondTextWatcher)
         reserveButtonView.setOnClickListener {
-            if (viewModel.isEnoughBalance()) {
+            if (viewModel.isValidAmount()) {
                 viewModel.createTransaction()
             } else {
                 showError(R.string.trade_reserve_screen_not_enough_reserved_amount)
@@ -147,7 +155,8 @@ class TradeReserveActivity : BaseActivity() {
             viewModel.coinItem.balanceCoin.toStringCoin(),
             viewModel.coinItem.code
         )
-        balanceUsdView.text = getString(R.string.text_usd, viewModel.coinItem.balanceUsd.toStringUsd())
+        balanceUsdView.text =
+            getString(R.string.text_usd, viewModel.coinItem.balanceUsd.toStringUsd())
         reservedCryptoView.text = getString(
             R.string.text_text,
             viewModel.coinItem.reservedBalanceCoin.toStringCoin(),
