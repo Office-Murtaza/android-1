@@ -86,6 +86,15 @@ class StakingFragment : BaseFragment() {
                     LocalCoinType.CATM.name
                 )
                 balanceUsdView.text = getString(R.string.text_usd, balanceUsd.toStringUsd())
+                reservedCryptoView.text = getString(
+                    R.string.text_text,
+                    reservedBalanceCoin.toStringCoin(),
+                    reservedCode
+                )
+                reservedUsdView.text = getString(
+                    R.string.text_usd,
+                    reservedBalanceUsd.toStringUsd()
+                )
                 holdPeriodView.text = resources.getQuantityString(
                     R.plurals.staking_screen_time_value,
                     holdPeriod,

@@ -158,6 +158,15 @@ class TransactionsFragment : BaseFragment() {
                 getString(R.string.text_text, it.balance.toStringCoin(), viewModel.coinCode)
             balanceUsdView.text =
                 getString(R.string.text_usd, (it.balance * it.priceUsd).toStringUsd())
+            reservedCryptoView.text = getString(
+                R.string.text_text,
+                it.reservedBalanceCoin.toStringCoin(),
+                it.reservedCode
+            )
+            reservedUsdView.text = getString(
+                R.string.text_usd,
+                it.reservedBalanceUsd.toStringUsd()
+            )
         })
         viewModel.transactionListLiveData.observe(this) {
             adapter.submitList(it)

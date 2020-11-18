@@ -56,6 +56,15 @@ class WithdrawFragment : BaseFragment() {
             viewModel.getTransactionFee().toStringCoin(),
             if (viewModel.getCoinCode() == LocalCoinType.CATM.name) LocalCoinType.ETH.name else viewModel.getCoinCode()
         )
+        reservedCryptoView.text = getString(
+            R.string.text_text,
+            viewModel.getReservedBalanceCoin().toStringCoin(),
+            viewModel.getCoinCode()
+        )
+        reservedUsdView.text = getString(
+            R.string.text_usd,
+            viewModel.getReservedBalanceUsd().toStringUsd()
+        )
     }
 
     override fun initListeners() {

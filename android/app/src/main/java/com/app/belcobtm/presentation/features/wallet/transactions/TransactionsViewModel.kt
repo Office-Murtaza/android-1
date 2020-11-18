@@ -4,6 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.app.belcobtm.domain.transaction.interactor.GetTransactionListUseCase
 import com.app.belcobtm.domain.wallet.interactor.GetChartsUseCase
+import com.app.belcobtm.domain.wallet.interactor.GetCoinByCodeUseCase
 import com.app.belcobtm.domain.wallet.interactor.UpdateCoinDetailsUseCase
 import com.app.belcobtm.domain.wallet.item.CoinDetailsDataItem
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
@@ -15,7 +16,8 @@ class TransactionsViewModel(
     val coinCode: String,
     private val chartUseCase: GetChartsUseCase,
     private val transactionListUseCase: GetTransactionListUseCase,
-    private val updateCoinDetailsUseCase: UpdateCoinDetailsUseCase
+    private val updateCoinDetailsUseCase: UpdateCoinDetailsUseCase,
+    private val getCoinByCodeUseCase: GetCoinByCodeUseCase
 ) : ViewModel() {
     val chartLiveData: MutableLiveData<TransactionsScreenItem> = MutableLiveData()
     val detailsLiveData: MutableLiveData<LoadingData<CoinDetailsDataItem>> = MutableLiveData()
@@ -32,9 +34,13 @@ class TransactionsViewModel(
         chartUseCase.invoke(
             params = GetChartsUseCase.Params(coinCode),
             onSuccess = { dataItem ->
+                val coindDataItem = getCoinByCodeUseCase.invoke(coinCode)
                 chartLiveData.value = TransactionsScreenItem(
                     balance = dataItem.balance,
                     priceUsd = dataItem.price,
+                    reservedBalanceUsd = coindDataItem.reservedBalanceUsd,
+                    reservedCode = coindDataItem.code,
+                    reservedBalanceCoin = coindDataItem.reservedBalanceCoin,
                     chartDay = dataItem.chart.day,
                     chartWeek = dataItem.chart.week,
                     chartMonth = dataItem.chart.month,
