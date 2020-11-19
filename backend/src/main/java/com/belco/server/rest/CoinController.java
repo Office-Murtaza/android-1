@@ -137,9 +137,9 @@ public class CoinController {
     }
 
     @GetMapping("/user/{userId}/coin/{coin}/manage")
-    public Response enable(@PathVariable Long userId, @PathVariable CoinService.CoinEnum coin, @RequestParam boolean enabled) {
+    public Response enableCoin(@PathVariable Long userId, @PathVariable CoinService.CoinEnum coin, @RequestParam boolean enabled) {
         try {
-            return Response.ok(coinService.manage(userId, coin, enabled));
+            return Response.ok(coinService.enableCoin(userId, coin, enabled));
         } catch (Exception e) {
             e.printStackTrace();
             return Response.serverError();

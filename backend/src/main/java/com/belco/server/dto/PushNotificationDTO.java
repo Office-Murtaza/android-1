@@ -5,18 +5,16 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import java.util.List;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class AuthenticationDTO {
+public class PushNotificationDTO {
 
-    private String phone;
-    private String password;
-    private Integer platform;
-    private String appToken;
-    private List<CoinDTO> coins;
+    private String title;
+    private String message;
+    private String topic;
+    private String token;
 }

@@ -113,7 +113,7 @@ public class UserController {
                 return Response.error(4, "Phone is already used");
             }
 
-            User user = userService.register(dto.getPhone(), dto.getPassword(), dto.getPlatform(), dto.getCoins());
+            User user = userService.register(dto.getPhone(), dto.getPassword(), dto.getPlatform(), dto.getAppToken(), dto.getCoins());
 
             TokenDTO jwt = getJwt(user.getId(), user.getIdentity().getId(), dto.getPhone(), dto.getPassword());
 
@@ -167,6 +167,7 @@ public class UserController {
             refreshTokenRep.save(token);
 
             user.setPlatform(dto.getPlatform());
+            user.setAppToken(dto.getAppToken());
             userService.save(user);
             coinService.addUserCoins(user, dto.getCoins());
 
@@ -321,6 +322,16 @@ public class UserController {
     public Response getLimits(@PathVariable Long userId) {
         try {
             return Response.ok(transactionService.getLimits(userId));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Response.serverError();
+        }
+    }
+
+    @GetMapping("/user/{userId}/push-notifications")
+    public Response enablePushNotifications(@PathVariable Long userId, @RequestParam boolean enabled) {
+        try {
+            return Response.ok(userService.enablePushNotifications(userId, enabled));
         } catch (Exception e) {
             e.printStackTrace();
             return Response.serverError();

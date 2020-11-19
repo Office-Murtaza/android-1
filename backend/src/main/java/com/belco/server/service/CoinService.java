@@ -151,7 +151,7 @@ public class CoinService {
         return dto;
     }
 
-    public boolean manage(Long userId, CoinEnum coin, boolean enabled) {
+    public boolean enableCoin(Long userId, CoinEnum coin, boolean enabled) {
         User user = userService.findById(userId);
 
         if (wsMap.containsKey(user.getPhone())) {

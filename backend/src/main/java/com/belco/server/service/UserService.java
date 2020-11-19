@@ -84,12 +84,13 @@ public class UserService implements UserDetailsService {
     private String documentUploadPath;
 
     @Transactional
-    public User register(String phone, String password, Integer platform, List<CoinDTO> coins) {
+    public User register(String phone, String password, Integer platform, String appToken, List<CoinDTO> coins) {
         User user = new User();
         user.setPhone(phone);
         user.setPassword(passwordEncoder.encode(password));
         user.setRole("ROLE_USER");
         user.setPlatform(platform);
+        user.setAppToken(appToken);
 
         User savedUser = userRep.save(user);
 
@@ -509,6 +510,15 @@ public class UserService implements UserDetailsService {
         User user = findById(userId);
         user.setLatitude(dto.getLatitude());
         user.setLongitude(dto.getLongitude());
+
+        userRep.save(user);
+
+        return true;
+    }
+
+    public boolean enablePushNotifications(Long userId, boolean enabled) {
+        User user = findById(userId);
+        user.setReceivePushNotifications(enabled);
 
         userRep.save(user);
 
