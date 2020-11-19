@@ -67,12 +67,20 @@ class SharedPreferencesHelper(private val sharedPreferences: SharedPreferences) 
      * @param token raw token to be formatted
      * @return formatted token with [ACCESS_TOKEN_BEARER] prefix
      * */
-    fun formatToken(token: String): String{
+    fun formatToken(token: String): String {
         return ACCESS_TOKEN_BEARER.plus(token)
     }
 
     fun clearValue(key: String) {
         sharedPreferences[key] = null
+    }
+
+    fun clearData() {
+        accessToken = ""
+        refreshToken = ""
+        apiSeed = ""
+        userPin = ""
+        userId = -1
     }
 
     companion object {

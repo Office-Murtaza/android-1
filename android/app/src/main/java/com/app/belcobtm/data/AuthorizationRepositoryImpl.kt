@@ -39,11 +39,7 @@ class AuthorizationRepositoryImpl(
     }
 
     override fun clearAppData() {
-        prefHelper.accessToken = ""
-        prefHelper.refreshToken = ""
-        prefHelper.apiSeed = ""
-        prefHelper.userPin = ""
-        prefHelper.userId = -1
+        prefHelper.clearData()
         CoroutineScope(Dispatchers.IO).launch { daoAccount.clearTable() }
     }
 
