@@ -17,7 +17,10 @@ import org.koin.android.ext.android.inject
 class HostActivity : AppCompatActivity() {
     private val authorizationStatusUseCase: AuthorizationStatusGetUseCase by inject()
     private val clearAppDataUseCase: ClearAppDataUseCase by inject()
-    private lateinit var currentNavFragment: NavHostFragment
+
+    companion object {
+        const val FORCE_UNLINK_KEY = "force.unlink.key"
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(R.style.AppTheme)
@@ -28,6 +31,9 @@ class HostActivity : AppCompatActivity() {
             View.SYSTEM_UI_FLAG_LAYOUT_STABLE
         }
 
+        if (intent.extras?.getBoolean(FORCE_UNLINK_KEY) == true) {
+            showAuthorizationScreen()
+        }
         when (authorizationStatusUseCase.invoke()) {
             AuthorizationStatus.PIN_CODE_CREATE -> showPinScreen(PinCodeFragment.KEY_PIN_MODE_CREATE)
             AuthorizationStatus.PIN_CODE_ENTER -> showPinScreen()
@@ -57,7 +63,6 @@ class HostActivity : AppCompatActivity() {
     }
 
     private fun setHostFragment(fragment: NavHostFragment) {
-        currentNavFragment = fragment
         supportFragmentManager.beginTransaction()
             .replace(android.R.id.content, fragment, fragment.javaClass.name)
             .commit()

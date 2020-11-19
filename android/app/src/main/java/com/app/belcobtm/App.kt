@@ -17,7 +17,7 @@ import org.koin.core.context.startKoin
 class App : Application() {
     private val prefHelper: SharedPreferencesHelper by inject()
     private val walletLifecycleObserver: LifecycleObserver by inject(
-        WALLET_LIFECYCLE_OBSERVER_QUAILIFIER
+        WALLET_LIFECYCLE_OBSERVER_QUALIFIER
     )
 
     init {
