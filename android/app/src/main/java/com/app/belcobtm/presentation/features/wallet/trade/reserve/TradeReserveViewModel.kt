@@ -26,9 +26,19 @@ class TradeReserveViewModel(
     private val _createTransactionLiveData = MutableLiveData<LoadingData<Unit>>()
     val createTransactionLiveData: LiveData<LoadingData<Unit>> = _createTransactionLiveData
 
+    private val _cryptoFieldState = MutableLiveData<InputFieldState>()
+    val cryptoFieldState: LiveData<InputFieldState> = _cryptoFieldState
+
+    private val _usdFieldState = MutableLiveData<InputFieldState>()
+    val usdFieldState: LiveData<InputFieldState> = _usdFieldState
+
+    private val _submitButtonEnable = MutableLiveData(false)
+    val submitButtonEnable: LiveData<Boolean> = _submitButtonEnable
+
     private var etheriumCoinDataItem: CoinDataItem? = null
     val coinItem: CoinScreenItem = coinDataItem.mapToScreenItem()
-    var selectedAmount: Double = 0.0
+
+    private var selectedAmount: Double = 0.0
 
     init {
         if (isCATM()) {
@@ -61,29 +71,53 @@ class TradeReserveViewModel(
 
     fun getMaxValue(): Double = when {
         isCATM() -> coinDataItem.balanceCoin
-        isXRP() -> 0.0.coerceAtLeast(coinDataItem.balanceCoin - detailsDataItem.txFee - 20)
-        else -> 0.0.coerceAtLeast(coinDataItem.balanceCoin - detailsDataItem.txFee)
+        else -> 0.0.coerceAtLeast(coinDataItem.balanceCoin - getTransactionFee())
     }
 
-    fun isValidAmount(): Boolean {
-        if (isXRP()) {
-            // Check for minimum amount
-            return isEnoughBalance() && selectedAmount >= 20
-        }
-        return isEnoughBalance()
+    private fun getMinValue(): Double {
+        return getTransactionFee()
     }
 
-    private fun isEnoughBalance(): Boolean {
-        return when {
-            isCATM() -> {
-                val localEththeriumCoin = etheriumCoinDataItem ?: return false
-                selectedAmount <= coinDataItem.balanceCoin
-                        && localEththeriumCoin.balanceCoin >= detailsDataItem.txFee
+    private fun getTransactionFee(): Double = when  {
+        isXRP() -> 20 + detailsDataItem.txFee
+        else -> detailsDataItem.txFee
+    }
+
+    fun validateCryptoAmount(amount: Double) {
+        selectedAmount = amount
+
+        val minValue = getMinValue()
+        val maxValue = getMaxValue()
+        val enoughETHForExtraFee = enoughETHForExtraFee()
+        when {
+            amount in minValue..maxValue && enoughETHForExtraFee -> {
+                _cryptoFieldState.value = InputFieldState.Valid
+                _usdFieldState.value = InputFieldState.Valid
+                _submitButtonEnable.value = true
             }
-            else -> {
-                selectedAmount <= getMaxValue()
+            amount > maxValue -> {
+                _cryptoFieldState.value = InputFieldState.MoreThanNeedError
+                _usdFieldState.value = InputFieldState.MoreThanNeedError
+                _submitButtonEnable.value = false
+            }
+            amount < minValue -> {
+                _cryptoFieldState.value = InputFieldState.LessThanNeedError
+                _usdFieldState.value = InputFieldState.LessThanNeedError
+                _submitButtonEnable.value = false
+            }
+            enoughETHForExtraFee.not() -> {
+                _cryptoFieldState.value = InputFieldState.NotEnoughETHError
+                _usdFieldState.value = InputFieldState.NotEnoughETHError
+                _submitButtonEnable.value = false
             }
         }
+    }
+
+    private fun enoughETHForExtraFee(): Boolean {
+        if (isCATM()) {
+            return etheriumCoinDataItem!!.balanceCoin >= detailsDataItem.txFee
+        }
+        return true
     }
 
     private fun isCATM(): Boolean {
@@ -106,3 +140,4 @@ class TradeReserveViewModel(
         )
     }
 }
+
