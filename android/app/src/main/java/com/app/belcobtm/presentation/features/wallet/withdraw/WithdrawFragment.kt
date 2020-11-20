@@ -70,8 +70,10 @@ class WithdrawFragment : BaseFragment() {
     override fun initListeners() {
         addressScanView.setOnClickListener { IntentIntegrator.forSupportFragment(this).initiateScan() }
         addressPasteView.setOnClickListener {
-            addressView.setText(getTextFromClipboard())
-            updateNextButton()
+            getTextFromClipboard()?.let {
+                addressView.setText(it)
+                updateNextButton()
+            }
         }
         maxCryptoView.setOnClickListener {
             amountCryptoView.setText(
@@ -105,11 +107,12 @@ class WithdrawFragment : BaseFragment() {
         )
     }
 
-    private fun getTextFromClipboard(): String {
-        val clipboard = requireContext().getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+    private fun getTextFromClipboard(): String? {
+        val clipboard =
+            requireContext().getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
         val clipData = clipboard.primaryClip
         val item = clipData?.getItemAt(0)
-        return item?.text.toString()
+        return item?.text?.toString()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
