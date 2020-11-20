@@ -121,7 +121,7 @@ class TradeRecallActivity : BaseActivity() {
                 is LoadingData.Success -> {
                     progressView.hide()
                     AlertHelper.showToastShort(
-                        this, R.string.transactions_screen_transaction_created
+                        this, R.string.trade_recall_screen_success_message
                     )
                     finish()
                 }
