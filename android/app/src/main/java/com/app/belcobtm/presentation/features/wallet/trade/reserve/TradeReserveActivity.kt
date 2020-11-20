@@ -6,6 +6,7 @@ import androidx.lifecycle.Observer
 import com.app.belcobtm.R
 import com.app.belcobtm.domain.Failure
 import com.app.belcobtm.presentation.core.extensions.*
+import com.app.belcobtm.presentation.core.helper.AlertHelper
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
 import com.app.belcobtm.presentation.core.ui.BaseActivity
 import com.app.belcobtm.presentation.core.watcher.DoubleTextWatcher
@@ -127,6 +128,9 @@ class TradeReserveActivity : BaseActivity() {
                 is LoadingData.Loading -> progressView.show()
                 is LoadingData.Success -> {
                     progressView.hide()
+                    AlertHelper.showToastShort(
+                        this, R.string.transactions_screen_transaction_created
+                    )
                     finish()
                 }
                 is LoadingData.Error -> {
