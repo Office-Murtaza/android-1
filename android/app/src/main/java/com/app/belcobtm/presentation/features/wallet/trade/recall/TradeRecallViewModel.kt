@@ -12,6 +12,7 @@ import com.app.belcobtm.presentation.core.extensions.withScale
 import com.app.belcobtm.presentation.core.item.CoinScreenItem
 import com.app.belcobtm.presentation.core.item.mapToScreenItem
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
+import com.app.belcobtm.presentation.features.wallet.trade.reserve.InputFieldState
 
 class TradeRecallViewModel(
     private val coinDataItem: CoinDataItem,
@@ -25,9 +26,19 @@ class TradeRecallViewModel(
     private val _transactionLiveData = MutableLiveData<LoadingData<Unit>>()
     val transactionLiveData: LiveData<LoadingData<Unit>> = _transactionLiveData
 
+    private val _cryptoFieldState = MutableLiveData<InputFieldState>()
+    val cryptoFieldState: LiveData<InputFieldState> = _cryptoFieldState
+
+    private val _usdFieldState = MutableLiveData<InputFieldState>()
+    val usdFieldState: LiveData<InputFieldState> = _usdFieldState
+
+    private val _submitButtonEnable = MutableLiveData(false)
+    val submitButtonEnable: LiveData<Boolean> = _submitButtonEnable
+
     private var etheriumCoinDataItem: CoinDataItem? = null
     val coinItem: CoinScreenItem = coinDataItem.mapToScreenItem()
-    var selectedAmount: Double = 0.0
+
+    private var selectedAmount: Double = 0.0
 
     init {
         if (isCATM()) {
@@ -48,19 +59,53 @@ class TradeRecallViewModel(
         )
     }
 
-    fun getMaxValue(): Double =
-        0.0.coerceAtLeast(coinDataItem.reservedBalanceCoin - detailsDataItem.txFee)
+    fun validateCryptoAmount(amount: Double) {
+        selectedAmount = amount
 
-    fun isEnoughRecallAmount(): Boolean {
-        return if (isCATM()) {
-            val localEtheriumItem = etheriumCoinDataItem ?: return false
-            val controlValue =
-                detailsDataItem.txFee * localEtheriumItem.priceUsd / coinDataItem.priceUsd
-            selectedAmount <= controlValue.withScale(detailsDataItem.scale)
-        } else {
-            selectedAmount <= getMaxValue()
+        val minValue = getMinValue()
+        val maxValue = getMaxValue()
+        val enoughETHForExtraFee = enoughETHForExtraFee(amount)
+        when {
+            amount in minValue..maxValue && enoughETHForExtraFee -> {
+                _cryptoFieldState.value = InputFieldState.Valid
+                _usdFieldState.value = InputFieldState.Valid
+                _submitButtonEnable.value = true
+            }
+            amount > maxValue -> {
+                _cryptoFieldState.value = InputFieldState.MoreThanNeedError
+                _usdFieldState.value = InputFieldState.MoreThanNeedError
+                _submitButtonEnable.value = false
+            }
+            amount < minValue -> {
+                _cryptoFieldState.value = InputFieldState.LessThanNeedError
+                _usdFieldState.value = InputFieldState.LessThanNeedError
+                _submitButtonEnable.value = false
+            }
+            enoughETHForExtraFee.not() -> {
+                _cryptoFieldState.value = InputFieldState.NotEnoughETHError
+                _usdFieldState.value = InputFieldState.NotEnoughETHError
+                _submitButtonEnable.value = false
+            }
         }
     }
+
+    fun getMaxValue(): Double =
+        0.0.coerceAtLeast(coinDataItem.reservedBalanceCoin - getTransactionFee())
+
+    private fun enoughETHForExtraFee(currentCryptoAmount: Double): Boolean {
+        if (isCATM()) {
+            val controlValue =
+                detailsDataItem.txFee * etheriumCoinDataItem!!.priceUsd / coinDataItem.priceUsd
+            return currentCryptoAmount <= controlValue.withScale(detailsDataItem.scale)
+        }
+        return true
+    }
+
+    private fun getMinValue(): Double {
+        return getTransactionFee()
+    }
+
+    private fun getTransactionFee(): Double = detailsDataItem.txFee
 
     private fun isCATM(): Boolean {
         return coinDataItem.code == LocalCoinType.CATM.name

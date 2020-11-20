@@ -1,6 +1,5 @@
 package com.app.belcobtm.presentation.features.wallet.trade.reserve
 
-import android.content.Intent
 import android.os.Bundle
 import androidx.lifecycle.Observer
 import com.app.belcobtm.R
@@ -10,7 +9,6 @@ import com.app.belcobtm.presentation.core.helper.AlertHelper
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
 import com.app.belcobtm.presentation.core.ui.BaseActivity
 import com.app.belcobtm.presentation.core.watcher.DoubleTextWatcher
-import com.app.belcobtm.presentation.features.HostActivity
 import kotlinx.android.synthetic.main.activity_trade_reserve.*
 import org.koin.android.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
@@ -23,51 +21,23 @@ class TradeReserveActivity : BaseActivity() {
         maxCharsAfterDotFirst = DoubleTextWatcher.MAX_CHARS_AFTER_DOT_CRYPTO,
         maxCharsAfterDotSecond = DoubleTextWatcher.MAX_CHARS_AFTER_DOT_USD,
         firstTextWatcher = {
-            val cryptoBalance = viewModel.getMaxValue()
-            val cryptoAmountTemporary = it.getDouble()
-            val cryptoAmount: Double
-
-            if (cryptoAmountTemporary > cryptoBalance) {
-                viewModel.selectedAmount = viewModel.coinItem.balanceCoin
-                cryptoAmount = cryptoBalance
-                it.clear()
-                it.insert(0, cryptoAmount.toStringCoin())
-            } else {
-                viewModel.selectedAmount = cryptoAmountTemporary
-                cryptoAmount = cryptoAmountTemporary
-            }
-
-            if (cryptoAmountTemporary > 0) {
+            val cryptoAmount = it.getDouble()
+            if (cryptoAmount > 0) {
                 amountUsdView.setText((cryptoAmount * viewModel.coinItem.priceUsd).toStringUsd())
-                reserveButtonView.isEnabled = true
             } else {
                 amountUsdView.clearText()
-                reserveButtonView.isEnabled = false
             }
+            viewModel.validateCryptoAmount(cryptoAmount)
         },
         secondTextWatcher = {
-            val maxCryptoAmount = viewModel.getMaxValue()
-            val maxUsdAmount = maxCryptoAmount * viewModel.coinItem.priceUsd
-            val usdAmountTemporary = it.getDouble()
-            val usdAmount: Double
-
-            if (usdAmountTemporary > maxUsdAmount) {
-                viewModel.selectedAmount = viewModel.coinItem.balanceCoin
-                usdAmount = maxUsdAmount
-                it.clear()
-                it.insert(0, usdAmount.toStringUsd())
-            } else {
-                viewModel.selectedAmount = usdAmountTemporary / viewModel.coinItem.priceUsd
-                usdAmount = usdAmountTemporary
-            }
-
-            if (usdAmountTemporary > 0) {
-                amountCryptoView.setText((usdAmount / viewModel.coinItem.priceUsd).toStringCoin())
-                reserveButtonView.isEnabled = true
+            val usdAmount = it.getDouble()
+            val cryptoAmount = usdAmount / viewModel.coinItem.priceUsd
+            if (usdAmount > 0) {
+                amountCryptoView.setText(cryptoAmount.toStringCoin())
             } else {
                 amountCryptoView.clearText()
-                reserveButtonView.isEnabled = false
             }
+            viewModel.validateCryptoAmount(cryptoAmount)
         }
     )
 
@@ -93,13 +63,7 @@ class TradeReserveActivity : BaseActivity() {
         }
         amountCryptoView.editText?.addTextChangedListener(doubleTextWatcher.firstTextWatcher)
         amountUsdView.editText?.addTextChangedListener(doubleTextWatcher.secondTextWatcher)
-        reserveButtonView.setOnClickListener {
-            if (viewModel.isValidAmount()) {
-                viewModel.createTransaction()
-            } else {
-                showError(R.string.trade_reserve_screen_not_enough_reserved_amount)
-            }
-        }
+        reserveButtonView.setOnClickListener { viewModel.createTransaction() }
     }
 
     private fun initObservers() {
@@ -135,18 +99,37 @@ class TradeReserveActivity : BaseActivity() {
                 }
                 is LoadingData.Error -> {
                     when (loadingData.errorType) {
-                        is Failure.TokenError -> {
-                            val intent = Intent(this, HostActivity::class.java)
-                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-                            startActivity(intent)
-                        }
-                        is Failure.MessageError -> showError(loadingData.errorType.message)
                         is Failure.NetworkConnection -> showError(R.string.error_internet_unavailable)
                         else -> showError(R.string.error_something_went_wrong)
                     }
                     progressView.hide()
                 }
             }
+        })
+        viewModel.cryptoFieldState.observe(this, Observer { fieldState ->
+            when (fieldState) {
+                InputFieldState.Valid -> amountCryptoView.clearError()
+                InputFieldState.LessThanNeedError -> amountCryptoView.error =
+                    getString(R.string.trade_reserve_screen_min_error)
+                InputFieldState.MoreThanNeedError -> amountCryptoView.error =
+                    getString(R.string.trade_reserve_screen_max_error)
+                InputFieldState.NotEnoughETHError -> amountUsdView.error =
+                    getString(R.string.trade_reserve_screen_not_enough_eth)
+            }
+        })
+        viewModel.usdFieldState.observe(this, Observer { fieldState ->
+            when (fieldState) {
+                InputFieldState.Valid -> amountUsdView.clearError()
+                InputFieldState.LessThanNeedError -> amountUsdView.error =
+                    getString(R.string.trade_reserve_screen_min_error)
+                InputFieldState.MoreThanNeedError -> amountUsdView.error =
+                    getString(R.string.trade_reserve_screen_max_error)
+                InputFieldState.NotEnoughETHError -> amountUsdView.error =
+                    getString(R.string.trade_reserve_screen_not_enough_eth)
+            }
+        })
+        viewModel.submitButtonEnable.observe(this, Observer { enable ->
+            reserveButtonView.isEnabled = enable
         })
     }
 
@@ -171,7 +154,6 @@ class TradeReserveActivity : BaseActivity() {
             viewModel.coinItem.reservedBalanceUsd.toStringUsd()
         )
         amountCryptoView.hint = getString(R.string.text_amount, viewModel.coinItem.code)
-        reserveButtonView.isEnabled = false
     }
 
     companion object {
