@@ -5,6 +5,7 @@ import androidx.lifecycle.Observer
 import com.app.belcobtm.R
 import com.app.belcobtm.domain.Failure
 import com.app.belcobtm.presentation.core.extensions.*
+import com.app.belcobtm.presentation.core.helper.AlertHelper
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
 import com.app.belcobtm.presentation.core.ui.BaseActivity
 import com.app.belcobtm.presentation.core.watcher.DoubleTextWatcher
@@ -91,7 +92,13 @@ class TradeRecallActivity : BaseActivity() {
         viewModel.transactionLiveData.observe(this, Observer { loadingData ->
             when (loadingData) {
                 is LoadingData.Loading -> progressView.show()
-                is LoadingData.Success -> finish()
+                is LoadingData.Success -> {
+                    progressView.hide()
+                    AlertHelper.showToastShort(
+                        this, R.string.trade_recall_screen_success_message
+                    )
+                    finish()
+                }
                 is LoadingData.Error -> {
                     when (loadingData.errorType) {
                         is Failure.NetworkConnection -> showError(R.string.error_internet_unavailable)
