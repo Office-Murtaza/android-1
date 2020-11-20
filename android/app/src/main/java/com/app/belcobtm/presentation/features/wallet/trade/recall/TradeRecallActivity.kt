@@ -1,6 +1,5 @@
 package com.app.belcobtm.presentation.features.wallet.trade.recall
 
-import android.content.Intent
 import android.os.Bundle
 import androidx.lifecycle.Observer
 import com.app.belcobtm.R
@@ -9,7 +8,7 @@ import com.app.belcobtm.presentation.core.extensions.*
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
 import com.app.belcobtm.presentation.core.ui.BaseActivity
 import com.app.belcobtm.presentation.core.watcher.DoubleTextWatcher
-import com.app.belcobtm.presentation.features.HostActivity
+import com.app.belcobtm.presentation.features.wallet.trade.reserve.InputFieldState
 import kotlinx.android.synthetic.main.activity_trade_recall.*
 import org.koin.android.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
@@ -22,51 +21,24 @@ class TradeRecallActivity : BaseActivity() {
         maxCharsAfterDotFirst = DoubleTextWatcher.MAX_CHARS_AFTER_DOT_CRYPTO,
         maxCharsAfterDotSecond = DoubleTextWatcher.MAX_CHARS_AFTER_DOT_USD,
         firstTextWatcher = {
-            val cryptoBalance = viewModel.getMaxValue()
-            val cryptoAmountTemporary = it.getDouble()
-            val cryptoAmount: Double
-
-            if (cryptoAmountTemporary > cryptoBalance) {
-                viewModel.selectedAmount = viewModel.coinItem.balanceCoin
-                cryptoAmount = cryptoBalance
-                it.clear()
-                it.insert(0, cryptoAmount.toStringCoin())
-            } else {
-                viewModel.selectedAmount = cryptoAmountTemporary
-                cryptoAmount = cryptoAmountTemporary
-            }
-
-            if (cryptoAmountTemporary > 0) {
-                amountUsdView.setText((cryptoAmount * viewModel.coinItem.priceUsd).toStringUsd())
-                recallButtonView.isEnabled = true
+            val cryptoAmount = it.getDouble()
+            val usdAmount = cryptoAmount * viewModel.coinItem.priceUsd
+            if (cryptoAmount > 0) {
+                amountUsdView.setText(usdAmount.toStringUsd())
             } else {
                 amountUsdView.clearText()
-                recallButtonView.isEnabled = false
             }
+            viewModel.validateCryptoAmount(cryptoAmount)
         },
         secondTextWatcher = {
-            val maxCryptoAmount = viewModel.getMaxValue()
-            val maxUsdAmount = maxCryptoAmount * viewModel.coinItem.priceUsd
-            val usdAmountTemporary = it.getDouble()
-            val usdAmount: Double
-
-            if (usdAmountTemporary > maxUsdAmount) {
-                viewModel.selectedAmount = viewModel.coinItem.balanceCoin
-                usdAmount = maxUsdAmount
-                it.clear()
-                it.insert(0, usdAmount.toStringUsd())
-            } else {
-                viewModel.selectedAmount = usdAmountTemporary / viewModel.coinItem.priceUsd
-                usdAmount = usdAmountTemporary
-            }
-
-            if (usdAmountTemporary > 0) {
-                amountCryptoView.setText((usdAmount / viewModel.coinItem.priceUsd).toStringCoin())
-                recallButtonView.isEnabled = true
+            val usdAmount = it.getDouble()
+            val cryptoAmount = usdAmount / viewModel.coinItem.priceUsd
+            if (usdAmount > 0) {
+                amountCryptoView.setText(cryptoAmount.toStringCoin())
             } else {
                 amountCryptoView.clearText()
-                recallButtonView.isEnabled = false
             }
+            viewModel.validateCryptoAmount(cryptoAmount)
         }
     )
 
@@ -80,17 +52,19 @@ class TradeRecallActivity : BaseActivity() {
     }
 
     private fun initListeners() {
-        maxCryptoView.setOnClickListener { amountCryptoView.setText(viewModel.getMaxValue().toStringCoin()) }
-        maxUsdView.setOnClickListener { amountCryptoView.setText(viewModel.getMaxValue().toStringCoin()) }
+        maxCryptoView.setOnClickListener {
+            amountCryptoView.setText(
+                viewModel.getMaxValue().toStringCoin()
+            )
+        }
+        maxUsdView.setOnClickListener {
+            amountCryptoView.setText(
+                viewModel.getMaxValue().toStringCoin()
+            )
+        }
         amountCryptoView.editText?.addTextChangedListener(doubleTextWatcher.firstTextWatcher)
         amountUsdView.editText?.addTextChangedListener(doubleTextWatcher.secondTextWatcher)
-        recallButtonView.setOnClickListener {
-            if (viewModel.isEnoughRecallAmount()) {
-                viewModel.performTransaction()
-            } else {
-                showError(R.string.trade_reserve_screen_not_enough_reserved_amount)
-            }
-        }
+        recallButtonView.setOnClickListener { viewModel.performTransaction() }
     }
 
     private fun initObservers() {
@@ -120,17 +94,37 @@ class TradeRecallActivity : BaseActivity() {
                 is LoadingData.Success -> finish()
                 is LoadingData.Error -> {
                     when (loadingData.errorType) {
-                        is Failure.TokenError -> {
-                            val intent = Intent(this, HostActivity::class.java)
-                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-                            startActivity(intent)
-                        }
                         is Failure.NetworkConnection -> showError(R.string.error_internet_unavailable)
                         else -> showError(R.string.error_something_went_wrong)
                     }
                     progressView.hide()
                 }
             }
+        })
+        viewModel.cryptoFieldState.observe(this, Observer { fieldState ->
+            when (fieldState) {
+                InputFieldState.Valid -> amountCryptoView.clearError()
+                InputFieldState.LessThanNeedError -> amountCryptoView.error =
+                    getString(R.string.trade_recall_screen_min_error)
+                InputFieldState.MoreThanNeedError -> amountCryptoView.error =
+                    getString(R.string.trade_recall_screen_max_error)
+                InputFieldState.NotEnoughETHError -> amountUsdView.error =
+                    getString(R.string.trade_recall_screen_not_enough_eth)
+            }
+        })
+        viewModel.usdFieldState.observe(this, Observer { fieldState ->
+            when (fieldState) {
+                InputFieldState.Valid -> amountUsdView.clearError()
+                InputFieldState.LessThanNeedError -> amountUsdView.error =
+                    getString(R.string.trade_recall_screen_min_error)
+                InputFieldState.MoreThanNeedError -> amountUsdView.error =
+                    getString(R.string.trade_recall_screen_max_error)
+                InputFieldState.NotEnoughETHError -> amountUsdView.error =
+                    getString(R.string.trade_recall_screen_not_enough_eth)
+            }
+        })
+        viewModel.submitButtonEnable.observe(this, Observer { enable ->
+            recallButtonView.isEnabled = enable
         })
     }
 
@@ -143,7 +137,8 @@ class TradeRecallActivity : BaseActivity() {
             viewModel.coinItem.balanceCoin.toStringCoin(),
             viewModel.coinItem.code
         )
-        balanceUsdView.text = getString(R.string.text_usd, viewModel.coinItem.balanceUsd.toStringUsd())
+        balanceUsdView.text =
+            getString(R.string.text_usd, viewModel.coinItem.balanceUsd.toStringUsd())
         reservedCryptoView.text = getString(
             R.string.text_text,
             viewModel.coinItem.reservedBalanceCoin.toStringCoin(),
