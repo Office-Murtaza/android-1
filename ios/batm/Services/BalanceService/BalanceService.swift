@@ -17,6 +17,7 @@ protocol BalanceServiceWebSocket {
   func subscribe()
   func unsubscribe() -> Completable
   func disconnect() -> Completable
+  func restart()
 }
 
 enum BalanceServiceError: Error {
@@ -65,8 +66,19 @@ class BalanceServiceImpl: BalanceService {
   }
   
   func subscribeSystemNotifications() {
-    NotificationCenter.default.addObserver(self, selector: #selector(handleForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
-    NotificationCenter.default.addObserver(self, selector: #selector(handleBackground), name: UIApplication.didEnterBackgroundNotification, object:nil)
+    NotificationCenter.default.addObserver(self,
+                                           selector: #selector(handleForeground),
+                                           name: UIApplication.willEnterForegroundNotification,
+                                           object: nil)
+    NotificationCenter.default.addObserver(self,
+                                           selector: #selector(handleBackground),
+                                           name: UIApplication.didEnterBackgroundNotification,
+                                           object:nil)
+    let  notificationName = Notification.Name(RefreshCredentialsConstants.refreshNotificationName)
+    NotificationCenter.default.addObserver(self,
+                                           selector: #selector(restart),
+                                           name: notificationName,
+                                           object:nil)
   }
   
   deinit {
@@ -97,6 +109,24 @@ extension BalanceServiceImpl: BalanceServiceWebSocket {
     } onError: { _ in
       print("error")
     }.disposed(by: disposeBag)
+  }
+  
+  @objc func restart() {
+    unsubscribe()
+      .andThen(disconnect())
+      .subscribe { [weak self] in
+        self?.start()
+      } onError: { [weak self] error in
+        guard let disposeBag = self?.disposeBag else { return }
+        if (error as? BalanceServiceError) == BalanceServiceError.phoneEmptyDuringUnsubscribe {
+          self?.disconnectAndStart()
+        } else {
+          self?.errorService
+            .showError(for: .serverError)
+            .subscribe()
+            .disposed(by: disposeBag)
+        }
+      }.disposed(by: disposeBag)
   }
   
   func connect() {
@@ -168,10 +198,7 @@ extension BalanceServiceImpl: BalanceServiceWebSocket {
     case .MESSAGE:
       notify(model)
     case .ERROR, .UNDEFINED:
-      errorService
-        .showError(for: .serverError)
-        .subscribe()
-        .disposed(by: disposeBag)
+      handleErrorModel(model)
     default: break
     }
   }
@@ -180,6 +207,33 @@ extension BalanceServiceImpl: BalanceServiceWebSocket {
     guard let json = model.jsonData,
           let balance = CoinsBalance(JSON: json) else { return }
     balanceProperty.accept(balance)
+  }
+  
+  private func handleErrorModel(_ model: MessageModel) {
+    let messageKey = "message"
+    let accessDeniedKey = "Access is denied"
+    guard let errorMessage = model.headers[messageKey],
+          errorMessage == accessDeniedKey else {
+      errorService
+        .showError(for: .serverError)
+        .subscribe()
+        .disposed(by: disposeBag)
+      return
+    }
+    disconnectAndStart()
+  }
+  
+  private func disconnectAndStart() {
+    disconnect()
+      .subscribe { [weak self] in
+        self?.start()
+      } onError: { [weak self] (error) in
+        guard let self = self else { return }
+        self.errorService
+          .showError(for: .serverError)
+          .subscribe()
+          .disposed(by: self.disposeBag)
+      }.disposed(by: disposeBag)
   }
 }
 

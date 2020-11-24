@@ -6,6 +6,10 @@ protocol RefreshCredentialsService: class {
   func refresh() -> Completable
 }
 
+enum RefreshCredentialsConstants {
+  static let refreshNotificationName = "refreshNotificationName"
+}
+
 class RefreshCredentialsServiceImpl: RefreshCredentialsService {
   
   private let credentialsRelay = PublishRelay<(Account?, Error?)>()
@@ -62,7 +66,8 @@ class RefreshCredentialsServiceImpl: RefreshCredentialsService {
         .do(onSuccess: { [unowned self] in
           self.isFetching = false
           self.credentialsRelay.accept(($0, nil))
-          }, onError: { [unowned self] in
+          self.notifyCredentialsDidRefershed()
+        }, onError: { [unowned self] in
             self.isFetching = false
             self.credentialsRelay.accept((nil, $0))
         })
@@ -77,5 +82,12 @@ class RefreshCredentialsServiceImpl: RefreshCredentialsService {
           return completableError
         }
     }
+  }
+  
+  func notifyCredentialsDidRefershed() {
+    let  notificationName = Notification.Name(RefreshCredentialsConstants.refreshNotificationName)
+    NotificationCenter
+      .default
+      .post(Notification(name: notificationName))
   }
 }
