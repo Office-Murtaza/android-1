@@ -20,7 +20,6 @@ import com.app.belcobtm.presentation.features.wallet.trade.main.adapter.TradePag
 import com.app.belcobtm.presentation.features.wallet.trade.main.item.TradeDetailsItem
 import com.app.belcobtm.presentation.features.wallet.trade.main.type.TradeTabType
 import com.app.belcobtm.presentation.features.wallet.trade.recall.TradeRecallActivity
-import com.app.belcobtm.presentation.features.wallet.trade.reserve.TradeReserveActivity
 import com.google.android.material.tabs.TabLayoutMediator
 import kotlinx.android.synthetic.main.activity_trade.*
 import org.koin.android.viewmodel.ext.android.viewModel
@@ -118,10 +117,10 @@ class TradeActivity : BaseActivity() {
             fabMenuView.close(true)
         }
         reverseButtonView.setOnClickListener {
-            val intent = Intent(this, TradeReserveActivity::class.java)
-            intent.putExtra(TradeReserveActivity.TAG_COIN_CODE, this.intent.getStringExtra(TAG_COIN_CODE))
-            startActivity(intent)
-            fabMenuView.close(true)
+//            val intent = Intent(this, TradeReserveFragment::class.java)
+//            intent.putExtra(TradeReserveFragment.TAG_COIN_CODE, this.intent.getStringExtra(TAG_COIN_CODE))
+//            startActivity(intent)
+//            fabMenuView.close(true)
         }
         recallButtonView.setOnClickListener {
             val intent = Intent(this, TradeRecallActivity::class.java)

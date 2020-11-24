@@ -56,11 +56,6 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppThemeNoActionBar" />
 
-        <activity
-            android:name=".presentation.features.wallet.trade.reserve.TradeReserveActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppThemeNoActionBar" />
-
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />

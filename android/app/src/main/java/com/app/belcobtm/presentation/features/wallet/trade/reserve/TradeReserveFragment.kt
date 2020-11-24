@@ -1,21 +1,21 @@
 package com.app.belcobtm.presentation.features.wallet.trade.reserve
 
-import android.os.Bundle
 import androidx.lifecycle.Observer
 import com.app.belcobtm.R
-import com.app.belcobtm.domain.Failure
 import com.app.belcobtm.presentation.core.extensions.*
 import com.app.belcobtm.presentation.core.helper.AlertHelper
-import com.app.belcobtm.presentation.core.mvvm.LoadingData
-import com.app.belcobtm.presentation.core.ui.BaseActivity
+import com.app.belcobtm.presentation.core.ui.fragment.BaseFragment
 import com.app.belcobtm.presentation.core.watcher.DoubleTextWatcher
-import kotlinx.android.synthetic.main.activity_trade_reserve.*
+import kotlinx.android.synthetic.main.fragment_trade_reserve.*
 import org.koin.android.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
-class TradeReserveActivity : BaseActivity() {
+class TradeReserveFragment : BaseFragment() {
+    override val isToolbarEnabled: Boolean = true
+    override val isHomeButtonEnabled: Boolean = true
+    override val resourceLayout: Int = R.layout.fragment_trade_reserve
     private val viewModel: TradeReserveViewModel by viewModel {
-        parametersOf(intent.getStringExtra(TAG_COIN_CODE))
+        parametersOf(TradeReserveFragmentArgs.fromBundle(requireArguments()).coinCode)
     }
     private val doubleTextWatcher: DoubleTextWatcher = DoubleTextWatcher(
         maxCharsAfterDotFirst = DoubleTextWatcher.MAX_CHARS_AFTER_DOT_CRYPTO,
@@ -41,16 +41,7 @@ class TradeReserveActivity : BaseActivity() {
         }
     )
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_trade_reserve)
-
-        initListeners()
-        initObservers()
-        initViews()
-    }
-
-    private fun initListeners() {
+    override fun initListeners() {
         maxCryptoView.setOnClickListener {
             amountCryptoView.setText(
                 viewModel.getMaxValue().toStringCoin()
@@ -66,47 +57,17 @@ class TradeReserveActivity : BaseActivity() {
         reserveButtonView.setOnClickListener { viewModel.createTransaction() }
     }
 
-    private fun initObservers() {
-        viewModel.initialLoadLiveData.observe(this, Observer { initialLoadData ->
-            when (initialLoadData) {
-                is LoadingData.Loading -> {
-                    progressView.show()
-                    reserveContent.hide()
-                }
-                is LoadingData.Success -> {
-                    progressView.hide()
-                    reserveContent.show()
-                }
-                is LoadingData.Error -> {
-                    progressView.hide()
-                    // do not show content
-                    when (initialLoadData.errorType) {
-                        is Failure.NetworkConnection -> showError(R.string.error_internet_unavailable)
-                        else -> showError(R.string.error_something_went_wrong)
-                    }
-                }
+    override fun initObservers() {
+        viewModel.initialLoadLiveData.listen(success = {})
+        viewModel.createTransactionLiveData.listen(
+            success = {
+                AlertHelper.showToastShort(
+                    requireContext(), R.string.trade_reserve_screen_success_message
+                )
+                popBackStack()
             }
-        })
-        viewModel.createTransactionLiveData.observe(this, Observer { loadingData ->
-            when (loadingData) {
-                is LoadingData.Loading -> progressView.show()
-                is LoadingData.Success -> {
-                    progressView.hide()
-                    AlertHelper.showToastShort(
-                        this, R.string.trade_reserve_screen_success_message
-                    )
-                    finish()
-                }
-                is LoadingData.Error -> {
-                    when (loadingData.errorType) {
-                        is Failure.NetworkConnection -> showError(R.string.error_internet_unavailable)
-                        else -> showError(R.string.error_something_went_wrong)
-                    }
-                    progressView.hide()
-                }
-            }
-        })
-        viewModel.cryptoFieldState.observe(this, Observer { fieldState ->
+        )
+        viewModel.cryptoFieldState.observe(viewLifecycleOwner, Observer { fieldState ->
             when (fieldState) {
                 InputFieldState.Valid -> amountCryptoView.clearError()
                 InputFieldState.LessThanNeedError -> amountCryptoView.error =
@@ -117,7 +78,7 @@ class TradeReserveActivity : BaseActivity() {
                     getString(R.string.trade_reserve_screen_not_enough_eth)
             }
         })
-        viewModel.usdFieldState.observe(this, Observer { fieldState ->
+        viewModel.usdFieldState.observe(viewLifecycleOwner, Observer { fieldState ->
             when (fieldState) {
                 InputFieldState.Valid -> amountUsdView.clearError()
                 InputFieldState.LessThanNeedError -> amountUsdView.error =
@@ -133,9 +94,8 @@ class TradeReserveActivity : BaseActivity() {
         })
     }
 
-    private fun initViews() {
-        setSupportActionBar(toolbarView)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+    override fun initViews() {
+        setToolbarTitle(R.string.trade_reserve_screen_title)
         priceUsdView.text = getString(R.string.text_usd, viewModel.coinItem.priceUsd.toStringUsd())
         balanceCryptoView.text = getString(
             R.string.text_text,
@@ -154,9 +114,5 @@ class TradeReserveActivity : BaseActivity() {
             viewModel.coinItem.reservedBalanceUsd.toStringUsd()
         )
         amountCryptoView.hint = getString(R.string.text_amount, viewModel.coinItem.code)
-    }
-
-    companion object {
-        const val TAG_COIN_CODE = "tag_coin_code"
     }
 }

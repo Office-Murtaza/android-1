@@ -20,7 +20,7 @@ import com.app.belcobtm.presentation.core.extensions.toStringUsd
 import com.app.belcobtm.presentation.core.ui.fragment.BaseFragment
 import com.app.belcobtm.presentation.features.wallet.trade.main.TradeActivity
 import com.app.belcobtm.presentation.features.wallet.trade.recall.TradeRecallActivity
-import com.app.belcobtm.presentation.features.wallet.trade.reserve.TradeReserveActivity
+import com.app.belcobtm.presentation.features.wallet.trade.reserve.TradeReserveFragment
 import com.app.belcobtm.presentation.features.wallet.transactions.TransactionsFABType.*
 import com.app.belcobtm.presentation.features.wallet.transactions.adapter.TransactionsAdapter
 import com.github.mikephil.charting.data.BarEntry
@@ -137,9 +137,7 @@ class TransactionsFragment : BaseFragment() {
                         TransactionsFragmentArgs.fromBundle(requireArguments()).coinCode
                     )
                 RESERVE.id ->
-                    startTradeReserveActivity(
-                        TransactionsFragmentArgs.fromBundle(requireArguments()).coinCode
-                    )
+                    navigate(TransactionsFragmentDirections.toReserveFragment(viewModel.coinCode))
 
                 //SELL.id -> SellActivity.start(
                 //    requireContext(),
@@ -308,13 +306,6 @@ class TransactionsFragment : BaseFragment() {
         val recallIntent = Intent(notNullContext, TradeRecallActivity::class.java)
         recallIntent.putExtra(TradeRecallActivity.TAG_COIN_CODE, coinCode)
         startActivity(recallIntent)
-    }
-
-    private fun startTradeReserveActivity(coinCode: String) {
-        val notNullContext = context ?: return
-        val reserveIntent = Intent(notNullContext, TradeReserveActivity::class.java)
-        reserveIntent.putExtra(TradeReserveActivity.TAG_COIN_CODE, coinCode)
-        startActivity(reserveIntent)
     }
 
     companion object {
