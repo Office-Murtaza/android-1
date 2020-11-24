@@ -76,6 +76,13 @@
             app:exitAnim="@anim/slide_to_left"
             app:popEnterAnim="@anim/slide_from_left"
             app:popExitAnim="@anim/slide_to_right" />
+        <action
+            android:id="@+id/to_recall_fragment"
+            app:destination="@id/recall_fragment"
+            app:enterAnim="@anim/slide_from_right"
+            app:exitAnim="@anim/slide_to_left"
+            app:popEnterAnim="@anim/slide_from_left"
+            app:popExitAnim="@anim/slide_to_right" />
     </fragment>
 
     <fragment
@@ -143,6 +150,16 @@
         android:name="com.app.belcobtm.presentation.features.wallet.trade.reserve.TradeReserveFragment"
         android:label="ReserveFragment"
         tools:layout="@layout/fragment_trade_reserve">
+        <argument
+            android:name="coin_code"
+            app:argType="string" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/recall_fragment"
+        android:name="com.app.belcobtm.presentation.features.wallet.trade.recall.TradeRecallFragment"
+        android:label="RecallFragment"
+        tools:layout="@layout/fragment_trade_recall">
         <argument
             android:name="coin_code"
             app:argType="string" />

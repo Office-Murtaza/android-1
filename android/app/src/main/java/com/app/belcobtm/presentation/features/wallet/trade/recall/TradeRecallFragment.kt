@@ -1,22 +1,23 @@
 package com.app.belcobtm.presentation.features.wallet.trade.recall
 
-import android.os.Bundle
 import androidx.lifecycle.Observer
 import com.app.belcobtm.R
-import com.app.belcobtm.domain.Failure
 import com.app.belcobtm.presentation.core.extensions.*
 import com.app.belcobtm.presentation.core.helper.AlertHelper
-import com.app.belcobtm.presentation.core.mvvm.LoadingData
-import com.app.belcobtm.presentation.core.ui.BaseActivity
+import com.app.belcobtm.presentation.core.ui.fragment.BaseFragment
 import com.app.belcobtm.presentation.core.watcher.DoubleTextWatcher
 import com.app.belcobtm.presentation.features.wallet.trade.reserve.InputFieldState
-import kotlinx.android.synthetic.main.activity_trade_recall.*
+import kotlinx.android.synthetic.main.fragment_trade_recall.*
 import org.koin.android.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
-class TradeRecallActivity : BaseActivity() {
+class TradeRecallFragment : BaseFragment() {
+    override val resourceLayout: Int = R.layout.fragment_trade_recall
+    override var isMenuEnabled: Boolean = true
+    override val isToolbarEnabled: Boolean = true
+    override val isHomeButtonEnabled: Boolean = true
     private val viewModel: TradeRecallViewModel by viewModel {
-        parametersOf(intent.getStringExtra(TAG_COIN_CODE))
+        parametersOf(TradeRecallFragmentArgs.fromBundle(requireArguments()).coinCode)
     }
     private val doubleTextWatcher: DoubleTextWatcher = DoubleTextWatcher(
         maxCharsAfterDotFirst = DoubleTextWatcher.MAX_CHARS_AFTER_DOT_CRYPTO,
@@ -43,16 +44,7 @@ class TradeRecallActivity : BaseActivity() {
         }
     )
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_trade_recall)
-
-        initListeners()
-        initObservers()
-        initViews()
-    }
-
-    private fun initListeners() {
+    override fun initListeners() {
         maxCryptoView.setOnClickListener {
             amountCryptoView.setText(
                 viewModel.getMaxValue().toStringCoin()
@@ -68,46 +60,16 @@ class TradeRecallActivity : BaseActivity() {
         recallButtonView.setOnClickListener { viewModel.performTransaction() }
     }
 
-    private fun initObservers() {
-        viewModel.initialLoadLiveData.observe(this, Observer { initialLoadData ->
-            when (initialLoadData) {
-                is LoadingData.Loading -> {
-                    progressView.show()
-                    recallContent.hide()
-                }
-                is LoadingData.Success -> {
-                    progressView.hide()
-                    recallContent.show()
-                }
-                is LoadingData.Error -> {
-                    progressView.hide()
-                    // do not show content
-                    when (initialLoadData.errorType) {
-                        is Failure.NetworkConnection -> showError(R.string.error_internet_unavailable)
-                        else -> showError(R.string.error_something_went_wrong)
-                    }
-                }
+    override fun initObservers() {
+        viewModel.initialLoadLiveData.listen(success = {})
+        viewModel.transactionLiveData.listen(
+            success = {
+                AlertHelper.showToastShort(
+                    requireContext(), R.string.trade_recall_screen_success_message
+                )
+                popBackStack()
             }
-        })
-        viewModel.transactionLiveData.observe(this, Observer { loadingData ->
-            when (loadingData) {
-                is LoadingData.Loading -> progressView.show()
-                is LoadingData.Success -> {
-                    progressView.hide()
-                    AlertHelper.showToastShort(
-                        this, R.string.trade_recall_screen_success_message
-                    )
-                    finish()
-                }
-                is LoadingData.Error -> {
-                    when (loadingData.errorType) {
-                        is Failure.NetworkConnection -> showError(R.string.error_internet_unavailable)
-                        else -> showError(R.string.error_something_went_wrong)
-                    }
-                    progressView.hide()
-                }
-            }
-        })
+        )
         viewModel.cryptoFieldState.observe(this, Observer { fieldState ->
             when (fieldState) {
                 InputFieldState.Valid -> amountCryptoView.clearError()
@@ -135,9 +97,8 @@ class TradeRecallActivity : BaseActivity() {
         })
     }
 
-    private fun initViews() {
-        setSupportActionBar(toolbarView)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+    override fun initViews() {
+        setToolbarTitle(R.string.trade_recall_screen_title)
         priceUsdView.text = getString(R.string.text_usd, viewModel.coinItem.priceUsd.toStringUsd())
         balanceCryptoView.text = getString(
             R.string.text_text,
@@ -156,9 +117,5 @@ class TradeRecallActivity : BaseActivity() {
             viewModel.coinItem.reservedBalanceUsd.toStringUsd()
         )
         amountCryptoView.hint = getString(R.string.text_amount, viewModel.coinItem.code)
-    }
-
-    companion object {
-        const val TAG_COIN_CODE = "tag_coin_code"
     }
 }

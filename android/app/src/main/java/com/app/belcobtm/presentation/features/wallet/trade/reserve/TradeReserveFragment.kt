@@ -13,6 +13,7 @@ import org.koin.core.parameter.parametersOf
 class TradeReserveFragment : BaseFragment() {
     override val isToolbarEnabled: Boolean = true
     override val isHomeButtonEnabled: Boolean = true
+    override var isMenuEnabled: Boolean = true
     override val resourceLayout: Int = R.layout.fragment_trade_reserve
     private val viewModel: TradeReserveViewModel by viewModel {
         parametersOf(TradeReserveFragmentArgs.fromBundle(requireArguments()).coinCode)

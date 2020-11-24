@@ -19,8 +19,7 @@ import com.app.belcobtm.presentation.core.extensions.toStringCoin
 import com.app.belcobtm.presentation.core.extensions.toStringUsd
 import com.app.belcobtm.presentation.core.ui.fragment.BaseFragment
 import com.app.belcobtm.presentation.features.wallet.trade.main.TradeActivity
-import com.app.belcobtm.presentation.features.wallet.trade.recall.TradeRecallActivity
-import com.app.belcobtm.presentation.features.wallet.trade.reserve.TradeReserveFragment
+import com.app.belcobtm.presentation.features.wallet.trade.recall.TradeRecallFragment
 import com.app.belcobtm.presentation.features.wallet.transactions.TransactionsFABType.*
 import com.app.belcobtm.presentation.features.wallet.transactions.adapter.TransactionsAdapter
 import com.github.mikephil.charting.data.BarEntry
@@ -133,9 +132,7 @@ class TransactionsFragment : BaseFragment() {
                 DEPOSIT.id ->
                     navigate(TransactionsFragmentDirections.toDepositFragment(viewModel.coinCode))
                 RECALL.id ->
-                    startTradeRecallActivity(
-                        TransactionsFragmentArgs.fromBundle(requireArguments()).coinCode
-                    )
+                    navigate(TransactionsFragmentDirections.toRecallFragment(viewModel.coinCode))
                 RESERVE.id ->
                     navigate(TransactionsFragmentDirections.toReserveFragment(viewModel.coinCode))
 
@@ -299,13 +296,6 @@ class TransactionsFragment : BaseFragment() {
         intent.putExtra(TradeActivity.TAG_LATITUDE, latitude)
         intent.putExtra(TradeActivity.TAG_LONGITUDE, longitude)
         startActivity(intent)
-    }
-
-    private fun startTradeRecallActivity(coinCode: String) {
-        val notNullContext = context ?: return
-        val recallIntent = Intent(notNullContext, TradeRecallActivity::class.java)
-        recallIntent.putExtra(TradeRecallActivity.TAG_COIN_CODE, coinCode)
-        startActivity(recallIntent)
     }
 
     companion object {
