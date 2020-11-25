@@ -5,7 +5,7 @@ import TrustWalletCore
 protocol WalletUsecase {
   func getCoinsBalance() -> Single<CoinsBalance>
   func getCoinDetails(for type: CustomCoinType) -> Single<CoinDetails>
-  func getPriceChartData(for type: CustomCoinType) -> Single<PriceChartData>
+  func getPriceChartDetails(for type: CustomCoinType, period: PriceChartDetailsPeriod) -> Single<PriceChartDetails>
   func getCoins() -> Observable<Void>
 }
 
@@ -44,10 +44,9 @@ class WalletUsecaseImpl: WalletUsecase, HasDisposeBag {
   func getCoinDetails(for type: CustomCoinType) -> Single<CoinDetails> {
     return api.getCoinDetails(type: type)
   }
-  
-  func getPriceChartData(for type: CustomCoinType) -> Single<PriceChartData> {
-    return accountStorage.get()
-      .flatMap { [api] in api.getPriceChartData(userId: $0.userId, type: type) }
+
+  func getPriceChartDetails(for type: CustomCoinType, period: PriceChartDetailsPeriod) -> Single<PriceChartDetails> {
+    return api.getPriceChart(type: type, period: period)
   }
   
     func getCoins() -> Observable<Void> {

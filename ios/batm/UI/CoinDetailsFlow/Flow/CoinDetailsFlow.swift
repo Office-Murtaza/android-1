@@ -21,7 +21,7 @@ class CoinDetailsFlow: BaseFlow<BTMNavigationController, CoinDetailsFlowControll
   }
   
   enum Steps: Step, Equatable {
-    case coinDetails([CoinBalance], CoinDetails, PriceChartData)
+    case coinDetails([CoinBalance], CoinDetails, PriceChartDetails)
     case transactionDetails(TransactionDetails, CustomCoinType)
     case deposit(BTMCoin)
     case withdraw(BTMCoin, [CoinBalance], CoinDetails)

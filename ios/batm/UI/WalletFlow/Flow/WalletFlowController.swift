@@ -14,7 +14,7 @@ class WalletFlowController: FlowController, FlowActivator {
 }
 
 extension WalletFlowController: WalletModuleDelegate {
-  func showCoinDetails(coinBalances: [CoinBalance], coinDetails: CoinDetails, data: PriceChartData) {
+  func showCoinDetails(coinBalances: [CoinBalance], coinDetails: CoinDetails, data: PriceChartDetails) {
     step.accept(WalletFlow.Steps.coinDetails(coinBalances, coinDetails, data))
   }
 }

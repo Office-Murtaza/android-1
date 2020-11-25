@@ -88,34 +88,34 @@ class CoinDetailsChartView: UIView {
     }
   }
   
-  func configure(for data: PriceChartData, and selectedPeriod: SelectedPeriod) {
-    let period: PriceChartPeriod
-    
+  func configure(for data: PriceChartDetails, and selectedPeriod: SelectedPeriod) {
+//    let period: PriceChartPeriod
+    let period: [[Double]]
     switch selectedPeriod {
-    case .oneDay: period = data.periods.oneDayPeriod
-    case .oneWeek: period = data.periods.oneWeekPeriod
-    case .oneMonth: period = data.periods.oneMonthPeriod
-    case .threeMonths: period = data.periods.threeMonthsPeriod
-    case .oneYear: period = data.periods.oneYearPeriod
+    case .oneDay: period = data.prices
+    case .oneWeek: period = data.prices
+    case .oneMonth: period = data.prices
+    case .threeMonths: period = data.prices
+    case .oneYear: period = data.prices
     }
     
-    priceLabel.text = data.price.fiatFormatted.withDollarSign
-    changeRateImageView.image = period.changeRate < 0
-      ? UIImage(named: "change_rate_down")
-      : UIImage(named: "change_rate_up")
-    changeRateLabel.text = "\(abs(period.changeRate)) %"
-    changeRateLabel.textColor = period.changeRate < 0 ? .tomato : .darkMint
+//    priceLabel.text = data.price.fiatFormatted.withDollarSign
+//    changeRateImageView.image = period.changeRate < 0
+//      ? UIImage(named: "change_rate_down")
+//      : UIImage(named: "change_rate_up")
+//    changeRateLabel.text = "\(abs(period.changeRate)) %"
+//    changeRateLabel.textColor = period.changeRate < 0 ? .tomato : .darkMint
     
-    configureChart(with: period.prices)
+    configureChart(with: period)
     periodButtonsView.configure(for: selectedPeriod)
   }
-  
-  private func configureChart(with prices: [Double]) {
-    let entries = prices
-      .enumerated()
-      .map { ChartDataEntry(x: Double($0), y: $1) }
-    
-    let dataSet = LineChartDataSet(entries: entries)
+
+  private func configureChart(with prices: [[Double]]) {
+    let entries = prices.enumerated().map { (element) -> ChartDataEntry? in
+      guard let first = element.element.first, let second = element.element.last else { return nil }
+      return ChartDataEntry(x: first, y: second)
+    }
+    let dataSet = LineChartDataSet(entries: entries.compactMap{ $0 })
     dataSet.mode = .cubicBezier
     dataSet.drawValuesEnabled = false
     dataSet.drawCirclesEnabled = false
@@ -123,5 +123,7 @@ class CoinDetailsChartView: UIView {
     
     chartView.data = LineChartData(dataSet: dataSet)
   }
+  
+  
 }
 

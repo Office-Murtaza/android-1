@@ -6,7 +6,7 @@ protocol CoinDetailsHeaderViewDelegate: class {
 
 struct CoinDetailsHeaderViewConfig {
   let coinBalance: CoinBalance
-  let priceChartData: PriceChartData
+  let priceChartData: PriceChartDetails
   let selectedPeriod: SelectedPeriod
 }
 

@@ -120,9 +120,9 @@ final class CoinDetailsViewController: ModuleViewController<CoinDetailsPresenter
       .disposed(by: disposeBag)
     
     presenter.state
-      .filter { $0.coinBalance != nil && $0.priceChartData != nil }
+      .filter { $0.coinBalance != nil && $0.priceChartDetails != nil }
       .map { CoinDetailsHeaderViewConfig(coinBalance: $0.coinBalance!,
-                                         priceChartData: $0.priceChartData!,
+                                         priceChartData: $0.priceChartDetails!,
                                          selectedPeriod: $0.selectedPeriod) }
       .drive(onNext: { [headerView] in headerView.configure(with: $0) })
       .disposed(by: disposeBag)

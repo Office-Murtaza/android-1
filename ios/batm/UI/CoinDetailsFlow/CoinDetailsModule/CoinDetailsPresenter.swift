@@ -4,7 +4,6 @@ import RxCocoa
 import TrustWalletCore
 
 final class CoinDetailsPresenter: ModulePresenter, CoinDetailsModule {
-    
     typealias Store = ViewStore<CoinDetailsAction, CoinDetailsState>
     
     struct Input {
@@ -39,7 +38,7 @@ final class CoinDetailsPresenter: ModulePresenter, CoinDetailsModule {
         self.store = store
     }
     
-    func setup(coinBalances: [CoinBalance], coinDetails: CoinDetails, data: PriceChartData) {
+    func setup(coinBalances: [CoinBalance], coinDetails: CoinDetails, data: PriceChartDetails) {
         store.action.accept(.setupCoinBalances(coinBalances))
         store.action.accept(.setupCoinDetails(coinDetails))
         store.action.accept(.setupPriceChartData(data))

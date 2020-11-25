@@ -11,7 +11,7 @@ class WalletFlow: BaseFlow<BTMNavigationController, WalletFlowController> {
   
   enum Steps: Step, Equatable {
     case wallet
-    case coinDetails([CoinBalance], CoinDetails, PriceChartData)
+    case coinDetails([CoinBalance], CoinDetails, PriceChartDetails)
   }
   
   override func route(to step: Step) -> NextFlowItems {

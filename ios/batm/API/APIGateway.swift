@@ -62,7 +62,6 @@ protocol APIGateway {
   func getKYC(userId: Int) -> Single<KYC>
   func sendVerification(userId: Int, userData: VerificationUserData) -> Completable
   func sendVIPVerification(userId: Int, userData: VIPVerificationUserData) -> Completable
-  func getPriceChartData(userId: Int, type: CustomCoinType) -> Single<PriceChartData>
   func getBuyTrades(userId: Int, type: CustomCoinType, page: Int) -> Single<BuySellTrades>
   func getSellTrades(userId: Int, type: CustomCoinType, page: Int) -> Single<BuySellTrades>
   func updateLocation(userId: Int, latitude: Double, longitude: Double) -> Completable
@@ -70,6 +69,7 @@ protocol APIGateway {
   func submitTrade(userId: Int, data: SubmitTradeData) -> Completable
   func getStakeDetails(userId: Int, type: CustomCoinType) -> Single<StakeDetails>
   func manageCoins(userId: Int, coin: String, visible: Bool) -> Completable
+  func getPriceChart(type: CustomCoinType, period: PriceChartDetailsPeriod) -> Single<PriceChartDetails>
 }
 
 final class APIGatewayImpl: APIGateway {
@@ -302,9 +302,9 @@ final class APIGatewayImpl: APIGateway {
     let request = SendVIPVerificationRequest(userId: userId, userData: userData)
     return execute(request)
   }
-  
-  func getPriceChartData(userId: Int, type: CustomCoinType) -> Single<PriceChartData> {
-    let request = GetPriceChartDataRequest(userId: userId, coinId: type.code)
+
+  func getPriceChart(type: CustomCoinType, period: PriceChartDetailsPeriod) -> Single<PriceChartDetails> {
+    let request = GetPriceChartDetailsRequest(coinId: type.code, coinPeriod: period)
     return execute(request)
   }
   

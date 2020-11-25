@@ -32,8 +32,10 @@
 		232E33482550626A00A9BF72 /* BalanceService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 232E33472550626A00A9BF72 /* BalanceService.swift */; };
 		232E345E2558772B00A9BF72 /* SocketMessageBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 232E345D2558772B00A9BF72 /* SocketMessageBuilder.swift */; };
 		232E346425593BA200A9BF72 /* SocketResultMessageMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 232E346325593BA200A9BF72 /* SocketResultMessageMapper.swift */; };
+		237EC457256DAE8A005BB79B /* PriceChartDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 237EC456256DAE8A005BB79B /* PriceChartDetails.swift */; };
 		23AAC3F3253CCB3E004FD32B /* CoinDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23AAC3F2253CCB3E004FD32B /* CoinDetails.swift */; };
 		23AAC3F7253CCB5A004FD32B /* CoinDetails+Mapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23AAC3F6253CCB59004FD32B /* CoinDetails+Mapping.swift */; };
+		23F68EB6256DB33100470534 /* PriceChartDetails+Mapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23F68EB5256DB33100470534 /* PriceChartDetails+Mapping.swift */; };
 		32C70C2C2AC5257199173D49 /* Pods_batm.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5D2E48FC9C22336570E8297D /* Pods_batm.framework */; };
 		757DD7261AB321C5873550C2 /* Pods_batmTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 142D5BA6DA2741657FE02671 /* Pods_batmTests.framework */; };
 		DB020DAA246D9A760036B413 /* TradesTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB020DA9246D9A760036B413 /* TradesTableView.swift */; };
@@ -579,8 +581,10 @@
 		232E33472550626A00A9BF72 /* BalanceService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BalanceService.swift; sourceTree = "<group>"; };
 		232E345D2558772B00A9BF72 /* SocketMessageBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocketMessageBuilder.swift; sourceTree = "<group>"; };
 		232E346325593BA200A9BF72 /* SocketResultMessageMapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocketResultMessageMapper.swift; sourceTree = "<group>"; };
+		237EC456256DAE8A005BB79B /* PriceChartDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PriceChartDetails.swift; sourceTree = "<group>"; };
 		23AAC3F2253CCB3E004FD32B /* CoinDetails.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoinDetails.swift; sourceTree = "<group>"; };
 		23AAC3F6253CCB59004FD32B /* CoinDetails+Mapping.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CoinDetails+Mapping.swift"; sourceTree = "<group>"; };
+		23F68EB5256DB33100470534 /* PriceChartDetails+Mapping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PriceChartDetails+Mapping.swift"; sourceTree = "<group>"; };
 		45A08286B5F7CE8E60F5C7D3 /* Pods-batmTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-batmTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-batmTests/Pods-batmTests.release.xcconfig"; sourceTree = "<group>"; };
 		5D2E48FC9C22336570E8297D /* Pods_batm.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_batm.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		92EFAEC3F34F5098AD0B7F2B /* Pods-batm.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-batm.debug.xcconfig"; path = "Pods/Target Support Files/Pods-batm/Pods-batm.debug.xcconfig"; sourceTree = "<group>"; };
@@ -2295,6 +2299,7 @@
 				DB156E2224A644F600E59F76 /* Platform.swift */,
 				DB1D21E524AE6C6A001E9696 /* StakeDetails.swift */,
 				DB8BAE0524CF53A700CA8EC1 /* ServerError.swift */,
+				237EC456256DAE8A005BB79B /* PriceChartDetails.swift */,
 			);
 			path = Entities;
 			sourceTree = "<group>";
@@ -2427,6 +2432,7 @@
 				DB66CEB32475AAF300FDB694 /* BuySellTrades+Mapping.swift */,
 				DB1D21E724AE6CCB001E9696 /* StakeDetails+Mapping.swift */,
 				DB8BAE0724CF53D500CA8EC1 /* ServerError+Mapping.swift */,
+				23F68EB5256DB33100470534 /* PriceChartDetails+Mapping.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -3464,6 +3470,7 @@
 				DB8D408522C3DBF200D5FBD0 /* CreateWalletViewController.swift in Sources */,
 				DBAEA6CD24D9E7EB004001C9 /* InfoView.swift in Sources */,
 				232E346425593BA200A9BF72 /* SocketResultMessageMapper.swift in Sources */,
+				23F68EB6256DB33100470534 /* PriceChartDetails+Mapping.swift in Sources */,
 				DBA6845922E45B600079429E /* SettingsAssembly.swift in Sources */,
 				DB8D409122C3E89C00D5FBD0 /* RootFlow.swift in Sources */,
 				DB33E9BA241CF75000764BF5 /* UILabel+Extensions.swift in Sources */,
@@ -3484,6 +3491,7 @@
 				DBC68C9722F85E1300473247 /* PhoneNumber+Mapping.swift in Sources */,
 				DB5B2DDD230A74D000821713 /* CoinDetailsFlowController.swift in Sources */,
 				DBA65C09244DBF1D0034678E /* FakeTextFied.swift in Sources */,
+				237EC457256DAE8A005BB79B /* PriceChartDetails.swift in Sources */,
 				DBA6844822E44C390079429E /* ATMAssembly.swift in Sources */,
 				DB9D3EA022C0F6BA008DC600 /* UIColor+Additions.swift in Sources */,
 				DBA7393D22C3482E00CEFD57 /* L10n.generated.swift in Sources */,
