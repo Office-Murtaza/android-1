@@ -71,6 +71,8 @@ class TradeReserveViewModel(
 
     fun getMaxValue(): Double = when {
         isCATM() -> coinDataItem.balanceCoin
+        // at least 20 XRP coins must stay within the wallet
+        isXRP() -> 0.0.coerceAtLeast(coinDataItem.balanceCoin - getTransactionFee() - 20)
         else -> 0.0.coerceAtLeast(coinDataItem.balanceCoin - getTransactionFee())
     }
 
@@ -79,7 +81,6 @@ class TradeReserveViewModel(
     }
 
     private fun getTransactionFee(): Double = when  {
-        isXRP() -> 20 + detailsDataItem.txFee
         else -> detailsDataItem.txFee
     }
 
@@ -140,4 +141,3 @@ class TradeReserveViewModel(
         )
     }
 }
-
