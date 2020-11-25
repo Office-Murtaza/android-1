@@ -2,13 +2,11 @@ package com.belco.server.rest;
 
 import java.util.List;
 
+import com.belco.server.model.PricePeriod;
 import com.belco.server.model.Response;
-import com.belco.server.service.PriceChartService;
-import com.belco.server.service.RippledService;
-import com.belco.server.service.UserService;
+import com.belco.server.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import com.belco.server.service.CoinService;
 
 @RestController
 @RequestMapping("/api/v1")
@@ -24,7 +22,7 @@ public class CoinController {
     private RippledService rippledService;
 
     @Autowired
-    private PriceChartService chartService;
+    private CacheService cacheService;
 
     @GetMapping("/coin/{coin}/details")
     public Response getDetails(@PathVariable CoinService.CoinEnum coin) {
@@ -116,20 +114,20 @@ public class CoinController {
         }
     }
 
-    @GetMapping("/user/{userId}/balance")
-    public Response getBalance(@PathVariable Long userId, @RequestParam(required = false) List<String> coins) {
+    @GetMapping("/coin/{coin}/price-chart")
+    public Response getPriceChart(@PathVariable CoinService.CoinEnum coin, @RequestParam int period) {
         try {
-            return Response.ok(coinService.getCoinsBalance(userId, coins));
+            return Response.ok("prices", cacheService.getPriceChartById(coin.getName(), PricePeriod.valueOf(period)));
         } catch (Exception e) {
             e.printStackTrace();
             return Response.serverError();
         }
     }
 
-    @GetMapping("/user/{userId}/coin/{coin}/price-chart")
-    public Response getPriceChart(@PathVariable Long userId, @PathVariable CoinService.CoinEnum coin) {
+    @GetMapping("/user/{userId}/balance")
+    public Response getBalance(@PathVariable Long userId, @RequestParam(required = false) List<String> coins) {
         try {
-            return Response.ok(chartService.getPriceChart(userId, coin));
+            return Response.ok(coinService.getCoinsBalance(userId, coins));
         } catch (Exception e) {
             e.printStackTrace();
             return Response.serverError();
