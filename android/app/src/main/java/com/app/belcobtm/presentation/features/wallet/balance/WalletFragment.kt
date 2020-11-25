@@ -13,9 +13,7 @@ import org.koin.android.viewmodel.ext.android.viewModel
 @ExperimentalCoroutinesApi
 class WalletFragment : BaseFragment() {
     private val viewModel: WalletViewModel by viewModel()
-    private val adapter: CoinsAdapter = CoinsAdapter {
-        navigate(WalletFragmentDirections.toTransactionsFragment(it.code))
-    }
+    private lateinit var adapter: CoinsAdapter
     override val resourceLayout: Int = R.layout.fragment_balance
     override val isToolbarEnabled: Boolean = false
     override var isMenuEnabled: Boolean = true
@@ -24,6 +22,9 @@ class WalletFragment : BaseFragment() {
         View.OnClickListener { viewModel.reconnectToWallet() }
 
     override fun initViews() {
+        adapter = CoinsAdapter {
+            navigate(WalletFragmentDirections.toTransactionsFragment(it.code))
+        }
         listView.adapter = adapter
     }
 
