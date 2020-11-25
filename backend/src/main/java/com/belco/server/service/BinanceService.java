@@ -122,8 +122,10 @@ public class BinanceService {
                 dto.setCryptoFee(getAmount("1000000"));
             } catch (ResourceAccessException rae) {
                 isNodeAvailable = false;
+                dto.setStatus(TransactionStatus.PENDING);
             } catch (Exception e) {
                 e.printStackTrace();
+                dto.setStatus(TransactionStatus.FAIL);
             }
         }
 

@@ -14,8 +14,8 @@ public enum TransactionType {
     BUY(5),
     SELL(6),
     MOVE(7),
-    SEND_C2C(8),
-    RECEIVE_C2C(9),
+    SWAP_OUT(8),
+    SWAP_IN(9),
     RESERVE(10),
     RECALL(11),
     SELF(12),
@@ -69,11 +69,11 @@ public enum TransactionType {
             } else if (type == DEPOSIT) {
                 return RECEIVE_GIFT;
             }
-        } else if (type2 == SEND_C2C || type2 == RECEIVE_C2C) {
+        } else if (type2 == SWAP_IN || type2 == SWAP_OUT) {
             if (type == WITHDRAW) {
-                return SEND_C2C;
+                return SWAP_OUT;
             } else if (type == DEPOSIT) {
-                return RECEIVE_C2C;
+                return SWAP_IN;
             }
         }
 

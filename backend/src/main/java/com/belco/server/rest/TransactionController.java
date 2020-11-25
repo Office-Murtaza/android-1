@@ -64,8 +64,8 @@ public class TransactionController {
                     transactionService.saveGift(userId, coin, txId, dto);
                 }
 
-                if (TransactionType.SEND_C2C.getValue() == dto.getType()) {
-                    transactionService.exchange(userId, coin, txId, dto);
+                if (TransactionType.SWAP_OUT.getValue() == dto.getType()) {
+                    transactionService.swap(userId, coin, txId, dto);
                 }
 
                 if (TransactionType.RESERVE.getValue() == dto.getType()) {

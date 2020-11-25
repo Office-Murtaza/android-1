@@ -75,8 +75,9 @@ public class TransactionService {
         }
 
         Optional<TransactionRecordWallet> giftRecOpt = walletRep.findFirstByIdentityAndCoinAndTxIdAndTypeIn(identity, coin, txId, Arrays.asList(TransactionType.SEND_GIFT.getValue(), TransactionType.RECEIVE_GIFT.getValue()));
-        Optional<TransactionRecordWallet> exchangeRecOpt = walletRep.findFirstByIdentityAndCoinAndTxIdAndTypeIn(identity, coin, txId, Arrays.asList(TransactionType.SEND_C2C.getValue(), TransactionType.RECEIVE_C2C.getValue()));
+        Optional<TransactionRecordWallet> swapRecOpt = walletRep.findFirstByIdentityAndCoinAndTxIdAndTypeIn(identity, coin, txId, Arrays.asList(TransactionType.SWAP_OUT.getValue(), TransactionType.SWAP_IN.getValue()));
         Optional<TransactionRecordWallet> stakeRecOpt = walletRep.findFirstByIdentityAndCoinAndTxIdAndTypeIn(identity, coin, txId, Arrays.asList(TransactionType.CREATE_STAKE.getValue(), TransactionType.CANCEL_STAKE.getValue(), TransactionType.WITHDRAW_STAKE.getValue()));
+        Optional<TransactionRecordWallet> reserveRecOpt = walletRep.findFirstByIdentityAndCoinAndTxIdAndTypeIn(identity, coin, txId, Arrays.asList(TransactionType.RESERVE.getValue(), TransactionType.RECALL.getValue()));
 
         if (giftRecOpt.isPresent()) {
             TransactionRecordWallet gift = giftRecOpt.get();
@@ -90,8 +91,8 @@ public class TransactionService {
             dto.setImageId(gift.getImageId());
             dto.setMessage(gift.getMessage());
             dto.setType(TransactionType.convert(dto.getType(), TransactionType.valueOf(gift.getType())));
-        } else if (exchangeRecOpt.isPresent()) {
-            TransactionRecordWallet exchange = exchangeRecOpt.get();
+        } else if (swapRecOpt.isPresent()) {
+            TransactionRecordWallet exchange = swapRecOpt.get();
 
             String code = exchange.getRefCoin().getCode();
             dto.setRefTxId(exchange.getRefTxId());
@@ -127,6 +128,8 @@ public class TransactionService {
             }
         } else if (stakeRecOpt.isPresent()) {
             dto.setType(TransactionType.valueOf(stakeRecOpt.get().getType()));
+        } else if (reserveRecOpt.isPresent()) {
+            dto.setType(TransactionType.valueOf(reserveRecOpt.get().getType()));
         }
 
         return dto;
@@ -264,7 +267,7 @@ public class TransactionService {
         return dto;
     }
 
-    public void exchange(Long userId, CoinService.CoinEnum coin, String txId, SubmitTransactionDTO dto) {
+    public void swap(Long userId, CoinService.CoinEnum coin, String txId, SubmitTransactionDTO dto) {
         try {
             CoinService.CoinEnum refCoin = CoinService.CoinEnum.valueOf(dto.getRefCoin());
 
@@ -273,7 +276,7 @@ public class TransactionService {
             record.setIdentity(userService.findById(userId).getIdentity());
             record.setCoin(coin.getCoinEntity());
             record.setAmount(dto.getCryptoAmount());
-            record.setType(TransactionType.SEND_C2C.getValue());
+            record.setType(TransactionType.SWAP_OUT.getValue());
             record.setStatus(TransactionStatus.PENDING.getValue());
             record.setProfit(coin.getCoinEntity().getProfitExchange());
             record.setRefCoin(refCoin.getCoinEntity());
@@ -544,7 +547,7 @@ public class TransactionService {
 
     private void deliverReservedExchange() {
         try {
-            List<TransactionRecordWallet> list = walletRep.findAllByProcessedAndTypeAndStatusAndRefTxIdNull(ProcessedType.SUCCESS.getValue(), TransactionType.SEND_C2C.getValue(), TransactionStatus.COMPLETE.getValue(), page);
+            List<TransactionRecordWallet> list = walletRep.findAllByProcessedAndTypeAndStatusAndRefTxIdNull(ProcessedType.SUCCESS.getValue(), TransactionType.SWAP_OUT.getValue(), TransactionStatus.COMPLETE.getValue(), page);
 
             list.stream().forEach(t -> {
                 try {
@@ -572,7 +575,7 @@ public class TransactionService {
                             rec.setIdentity(identity);
                             rec.setCoin(coinCode.getCoinEntity());
                             rec.setAmount(withdrawAmount);
-                            rec.setType(TransactionType.RECEIVE_C2C.getValue());
+                            rec.setType(TransactionType.SWAP_IN.getValue());
                             rec.setStatus(TransactionStatus.PENDING.getValue());
                             rec.setProfit(t.getProfit());
                             rec.setRefCoin(t.getCoin());

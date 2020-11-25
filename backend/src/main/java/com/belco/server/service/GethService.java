@@ -343,12 +343,13 @@ public class GethService {
                 }
             } catch (ConnectException ce) {
                 isNodeAvailable = false;
+                return TransactionStatus.PENDING;
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
 
-        return TransactionStatus.PENDING;
+        return TransactionStatus.FAIL;
     }
 
     public TransactionStatus getTransactionStatus(TransactionReceipt receipt) {
@@ -683,6 +684,9 @@ public class GethService {
                             if (tokenDoc != null) {
                                 fromAddress = Util.nvl(fromAddress, tokenDoc.getString("fromAddress"));
                                 toAddress = Util.nvl(toAddress, tokenDoc.getString("toAddress"));
+
+                                tokenDoc.put("fromAddress", fromAddress);
+                                tokenDoc.put("toAddress", toAddress);
 
                                 UpdateOneModel tokenUpdate = new UpdateOneModel(new Document("txId", tokenDoc.getString("txId")), new Document("$set", tokenDoc));
                                 tokenUpdate.getOptions().upsert(true);
