@@ -18,25 +18,25 @@ public enum PricePeriod {
     WEEK(2) {
         @Override
         public long getFrom() {
-            return Instant.now().minus(1, ChronoUnit.WEEKS).getEpochSecond();
+            return Instant.now().minus(7, ChronoUnit.DAYS).getEpochSecond();
         }
     },
     MONTH(3) {
         @Override
         public long getFrom() {
-            return Instant.now().minus(1, ChronoUnit.MONTHS).getEpochSecond();
+            return Instant.now().minus(30, ChronoUnit.DAYS).getEpochSecond();
         }
     },
     MONTH_3(4) {
         @Override
         public long getFrom() {
-            return Instant.now().minus(3, ChronoUnit.MONTHS).getEpochSecond();
+            return Instant.now().minus(90, ChronoUnit.DAYS).getEpochSecond();
         }
     },
     YEAR(5) {
         @Override
         public long getFrom() {
-            return Instant.now().minus(1, ChronoUnit.YEARS).getEpochSecond();
+            return Instant.now().minus(365, ChronoUnit.DAYS).getEpochSecond();
         }
     };
 
