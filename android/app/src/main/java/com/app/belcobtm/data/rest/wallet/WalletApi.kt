@@ -1,5 +1,6 @@
 package com.app.belcobtm.data.rest.wallet
 
+import com.app.belcobtm.data.rest.wallet.request.PriceChartPeriod
 import com.app.belcobtm.data.rest.wallet.response.BalanceResponse
 import com.app.belcobtm.data.rest.wallet.response.ChartResponse
 import com.app.belcobtm.data.rest.wallet.response.GetCoinDetailsResponse
@@ -17,10 +18,10 @@ interface WalletApi {
         @Query("coins") coins: List<String>
     ): Deferred<Response<BalanceResponse>>
 
-    @GET("user/{userId}/coin/{coinId}/price-chart")
+    @GET("coin/{coinId}/price-chart")
     fun getChartAsync(
-        @Path("userId") userId: Int,
-        @Path("coinId") coinCode: String
+        @Path("coinId") coinCode: String,
+        @Query("period") @PriceChartPeriod period: Int
     ): Deferred<Response<ChartResponse>>
 
     @GET("coin/{coinId}/details")

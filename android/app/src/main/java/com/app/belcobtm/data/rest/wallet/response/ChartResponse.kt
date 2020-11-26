@@ -1,37 +1,29 @@
 package com.app.belcobtm.data.rest.wallet.response
 
+import com.app.belcobtm.domain.wallet.item.ChartChangesColor
 import com.app.belcobtm.domain.wallet.item.ChartDataItem
-import com.app.belcobtm.domain.wallet.item.ChartInfoListDataItem
+import com.github.mikephil.charting.data.BarEntry
 
 data class ChartResponse(
-    val price: Double,
-    val balance: Double,
-    val chart: ChartInfoListResponse
+    val prices: List<List<Double>>
 )
 
-data class ChartInfoListResponse(
-    val day: ChartInfoResponse,
-    val week: ChartInfoResponse,
-    val month: ChartInfoResponse,
-    val threeMonths: ChartInfoResponse,
-    val year: ChartInfoResponse
-)
-
-data class ChartInfoResponse(
-    val prices: List<Double>,
-    val changes: Double
-)
-
-fun ChartResponse.mapToDataItem(): ChartDataItem = ChartDataItem(
-    price = price,
-    balance = balance,
-    chart = chart.mapToDataItem()
-)
-
-private fun ChartInfoListResponse.mapToDataItem(): ChartInfoListDataItem = ChartInfoListDataItem(
-    day = Pair(day.changes, day.prices),
-    week = Pair(week.changes, week.prices),
-    month = Pair(month.changes, month.prices),
-    threeMonths = Pair(threeMonths.changes, threeMonths.prices),
-    year = Pair(year.changes, year.prices)
-)
+fun ChartResponse.mapToDataItem(): ChartDataItem =
+    prices.map { it.last() }.let { prices ->
+        val changes = prices.takeIf(List<Double>::isNotEmpty)
+            ?.let {
+                (prices.last() - prices.first()) / prices.first() * 100
+            } ?: 0.0
+        ChartDataItem(
+            prices = prices.mapIndexed { index, value ->
+                BarEntry(index.toFloat(), value.toFloat())
+            },
+            circles = prices.takeIf(List<Double>::isNotEmpty)
+                ?.last()
+                ?.let { lastPrice ->
+                    listOf(BarEntry((prices.size - 1).toFloat(), lastPrice.toFloat()))
+                }.orEmpty(),
+            changes = changes,
+            changesColor = if (changes >= 0) ChartChangesColor.GREEN else ChartChangesColor.RED
+        )
+    }
