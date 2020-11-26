@@ -109,7 +109,7 @@ class CoinDetailsHeaderView: UICollectionReusableView, HasDisposeBag {
   }
   
   func configure(with config: CoinDetailsHeaderViewConfig) {
-    chartView.configure(for: config.priceChartData, and: config.selectedPeriod)
+    chartView.configure(for: config.priceChartData, and: config.selectedPeriod, balance: config.coinBalance)
     balanceView.configure(for: config.coinBalance)
   }
   

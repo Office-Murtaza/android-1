@@ -25,7 +25,8 @@ final class CoinDetailsPresenter: ModulePresenter, CoinDetailsModule {
     private let usecase: CoinDetailsUsecase
     private let store: Store
     private let fetchTransactionsRelay = PublishRelay<Void>()
-    
+    private let walletUsecase: WalletUsecase
+  
     weak var delegate: CoinDetailsModuleDelegate?
     
     var state: Driver<CoinDetailsState> {
@@ -33,15 +34,19 @@ final class CoinDetailsPresenter: ModulePresenter, CoinDetailsModule {
     }
     
     init(usecase: CoinDetailsUsecase,
+         walletUsecase: WalletUsecase,
          store: Store = CoinDetailsStore()) {
         self.usecase = usecase
         self.store = store
+        self.walletUsecase = walletUsecase
     }
     
     func setup(coinBalances: [CoinBalance], coinDetails: CoinDetails, data: PriceChartDetails) {
+        let balance = coinBalances.first(where:{$0.type == coinDetails.type})
+      
         store.action.accept(.setupCoinBalances(coinBalances))
         store.action.accept(.setupCoinDetails(coinDetails))
-        store.action.accept(.setupPriceChartData(data))
+        store.action.accept(.setupPriceChartData(balance, data))
     }
     
     func bind(input: Input) {
@@ -162,13 +167,35 @@ final class CoinDetailsPresenter: ModulePresenter, CoinDetailsModule {
             }
             .subscribe(onNext: { [delegate] in delegate?.showTransactionDetails(with: $0, for: $1) })
             .disposed(by: disposeBag)
-        
-        input.updateSelectedPeriod
-            .drive(onNext: { [store] in store.action.accept(.updateSelectedPeriod($0)) })
-            .disposed(by: disposeBag)
-        
-        setupBindings()
+      
+      input.updateSelectedPeriod
+        .asObservable()
+        .flatMap{ period in
+          return self.track(self.updateChartDetails(period: period))
+        }.subscribe()
+        .disposed(by: disposeBag)
+      
+      setupBindings()
     }
+  
+  private func updateChartDetails(period: SelectedPeriod) -> Completable {
+    return Completable.create { [unowned self] completable -> Disposable in
+       guard let type = self.store.currentState.coin?.type else {
+        completable(.completed)
+        return Disposables.create {}
+      }
+      
+      self.walletUsecase
+        .getPriceChartDetails(for: type, period: period)
+        .subscribe(onSuccess: { [store] (details) in
+         store.action.accept(.updateSelectedPeriod(period, details))
+      }).disposed(by: self.disposeBag)
+      
+      completable(.completed)
+      return Disposables.create {}
+    }
+  }
+  
     
     private func setupBindings() {
         let coinTypeObservable = state

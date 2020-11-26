@@ -88,8 +88,8 @@ class CoinDetailsChartView: UIView {
     }
   }
   
-  func configure(for data: PriceChartDetails, and selectedPeriod: SelectedPeriod) {
-//    let period: PriceChartPeriod
+  func configure(for data: PriceChartDetails, and selectedPeriod: SelectedPeriod, balance: CoinBalance) {
+
     let period: [[Double]]
     switch selectedPeriod {
     case .oneDay: period = data.prices
@@ -99,12 +99,17 @@ class CoinDetailsChartView: UIView {
     case .oneYear: period = data.prices
     }
     
-//    priceLabel.text = data.price.fiatFormatted.withDollarSign
-//    changeRateImageView.image = period.changeRate < 0
-//      ? UIImage(named: "change_rate_down")
-//      : UIImage(named: "change_rate_up")
-//    changeRateLabel.text = "\(abs(period.changeRate)) %"
-//    changeRateLabel.textColor = period.changeRate < 0 ? .tomato : .darkMint
+    priceLabel.text = balance.fiatBalance.fiatFormatted.withDollarSign
+    
+    guard let firstPrice = data.prices.first?.last,
+    let lastPrice = data.prices.last?.last else { return }
+    let rate = (lastPrice - firstPrice) / firstPrice * 100
+    
+    changeRateImageView.image = rate < 0
+      ? UIImage(named: "change_rate_down")
+      : UIImage(named: "change_rate_up")
+    changeRateLabel.text = "\(abs(rate).formatted(fractionPart: 2)) %"
+    changeRateLabel.textColor = rate < 0 ? .tomato : .darkMint
     
     configureChart(with: period)
     periodButtonsView.configure(for: selectedPeriod)

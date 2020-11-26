@@ -293,6 +293,15 @@ extension Double {
         return string.coinFormatted
     }
     
+  func formatted(fractionPart: Int) -> String {
+    let number = NSNumber(value: self)
+    let formatter = NumberFormatter.defaultCurrencyFormatter
+    formatter.maximumFractionDigits = fractionPart
+    let string = formatter.string(from: number) ?? ""
+    
+    return string
+  }
+  
     var nearestNumberThatCanBeGivenByTwentyAndFifty: Double {
         let integer = Int(self)
         

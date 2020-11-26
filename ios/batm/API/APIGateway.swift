@@ -69,7 +69,7 @@ protocol APIGateway {
   func submitTrade(userId: Int, data: SubmitTradeData) -> Completable
   func getStakeDetails(userId: Int, type: CustomCoinType) -> Single<StakeDetails>
   func manageCoins(userId: Int, coin: String, visible: Bool) -> Completable
-  func getPriceChart(type: CustomCoinType, period: PriceChartDetailsPeriod) -> Single<PriceChartDetails>
+  func getPriceChart(type: CustomCoinType, period: SelectedPeriod) -> Single<PriceChartDetails>
 }
 
 final class APIGatewayImpl: APIGateway {
@@ -303,7 +303,7 @@ final class APIGatewayImpl: APIGateway {
     return execute(request)
   }
 
-  func getPriceChart(type: CustomCoinType, period: PriceChartDetailsPeriod) -> Single<PriceChartDetails> {
+  func getPriceChart(type: CustomCoinType, period: SelectedPeriod) -> Single<PriceChartDetails> {
     let request = GetPriceChartDetailsRequest(coinId: type.code, coinPeriod: period)
     return execute(request)
   }

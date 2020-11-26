@@ -516,7 +516,7 @@ struct GetPriceChartDetailsRequest: AuthorizedAPIRequest {
   typealias ResponseTrait = SingleResponseTrait
 
   let coinId: String
-  let coinPeriod: PriceChartDetailsPeriod
+  let coinPeriod: SelectedPeriod
   var path: String { return "/coin/\(coinId)/price-chart" }
   var method: HTTPMethod { .get }
   var task: HTTPTask {
