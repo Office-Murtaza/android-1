@@ -63,12 +63,6 @@ abstract class BaseFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(isToolbarEnabled)
-        val callback: OnBackPressedCallback = object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                backPressedListener.onClick(null)
-            }
-        }
-        requireActivity().onBackPressedDispatcher.addCallback(this, callback)
     }
 
     override fun onCreateView(
@@ -77,14 +71,27 @@ abstract class BaseFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val rootView = inflater.inflate(R.layout.fragment_base, container, false)
-        inflater.inflate(resourceLayout, rootView.findViewById<FrameLayout>(R.id.contentContainerView), true)
+        inflater.inflate(
+            resourceLayout,
+            rootView.findViewById<FrameLayout>(R.id.contentContainerView),
+            true
+        )
         if (customToolbarId != 0) {
             rootView.toolbarView.hide()
-            (activity as AppCompatActivity).setSupportActionBar(rootView.findViewById(customToolbarId))
+            (activity as AppCompatActivity).setSupportActionBar(
+                rootView.findViewById(
+                    customToolbarId
+                )
+            )
         } else {
             (activity as AppCompatActivity).setSupportActionBar(rootView.toolbarView)
         }
-
+        val callback: OnBackPressedCallback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                backPressedListener.onClick(null)
+            }
+        }
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
         return rootView
     }
 
@@ -101,18 +108,24 @@ abstract class BaseFragment : Fragment() {
         }
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        this.navController = null
+    }
+
     override fun onResume() {
         super.onResume()
         showBottomMenu()
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean = if (item.itemId == android.R.id.home) {
-        hideKeyboard()
-        popBackStack()
-        true
-    } else {
-        false
-    }
+    override fun onOptionsItemSelected(item: MenuItem): Boolean =
+        if (item.itemId == android.R.id.home) {
+            hideKeyboard()
+            popBackStack()
+            true
+        } else {
+            false
+        }
 
     protected inline fun <reified T : Any> ComponentCallbacks.injectPresenter() = lazy {
         get<T>(null) { parametersOf(this) }
