@@ -5,4 +5,5 @@ protocol WalletModule: class {
 }
 protocol WalletModuleDelegate: class {
   func showCoinDetails(coinBalances: [CoinBalance], coinDetails: CoinDetails, data: PriceChartDetails)
+  func showCoinDetail(predefinedConfig: CoinDetailsPredefinedDataConfig)
 }

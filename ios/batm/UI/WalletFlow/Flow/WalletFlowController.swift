@@ -17,6 +17,10 @@ extension WalletFlowController: WalletModuleDelegate {
   func showCoinDetails(coinBalances: [CoinBalance], coinDetails: CoinDetails, data: PriceChartDetails) {
     step.accept(WalletFlow.Steps.coinDetails(coinBalances, coinDetails, data))
   }
+  
+  func showCoinDetail(predefinedConfig: CoinDetailsPredefinedDataConfig) {
+    step.accept(WalletFlow.Steps.coinDetailsPredefinedData(predefinedConfig))
+  }
 }
 
 extension WalletFlowController: ManageWalletsModuleDelegate {

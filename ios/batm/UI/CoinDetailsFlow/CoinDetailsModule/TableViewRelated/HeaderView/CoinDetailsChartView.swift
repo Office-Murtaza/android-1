@@ -88,21 +88,50 @@ class CoinDetailsChartView: UIView {
     }
   }
   
-  func configure(for data: PriceChartDetails, and selectedPeriod: SelectedPeriod, balance: CoinBalance) {
+  func configure(for data: PriceChartDetails?, and selectedPeriod: SelectedPeriod, balance: CoinBalance, predefinedData: CoinDetailsPredefinedDataConfig?) {
 
-    let period: [[Double]]
-    switch selectedPeriod {
-    case .oneDay: period = data.prices
-    case .oneWeek: period = data.prices
-    case .oneMonth: period = data.prices
-    case .threeMonths: period = data.prices
-    case .oneYear: period = data.prices
+    var period: [[Double]]?
+    if let data = data {
+      switch selectedPeriod {
+      case .oneDay: period = data.prices
+      case .oneWeek: period = data.prices
+      case .oneMonth: period = data.prices
+      case .threeMonths: period = data.prices
+      case .oneYear: period = data.prices
+      }
     }
     
+    if let predefinedConfig = predefinedData {
+      configurePredefinedData(config: predefinedConfig)
+    } else {
+      
+      configureAllCoins(data: data,
+                        selectedPeriod: selectedPeriod,
+                        balance: balance,
+                        period: period)
+    }
+  }
+
+  private func configurePredefinedData(config: CoinDetailsPredefinedDataConfig) {
+    priceLabel.text = config.price.fiatFormatted.withDollarSign
+    changeRateLabel.text = config.rateToDisplay
+    changeRateLabel.textColor = .black
+    configureChart(with: config.chartData)
+    periodButtonsView.configure(for: config.selectedPrediod)
+  }
+  
+  
+  private func configureAllCoins(data: PriceChartDetails?,
+                                 selectedPeriod: SelectedPeriod,
+                                 balance: CoinBalance,
+                                 period: [[Double]]?) {
     priceLabel.text = balance.fiatBalance.fiatFormatted.withDollarSign
     
-    guard let firstPrice = data.prices.first?.last,
-    let lastPrice = data.prices.last?.last else { return }
+    guard let data = data,
+          let firstPrice = data.prices.first?.last,
+          let lastPrice = data.prices.last?.last,
+          let period = period else { return }
+    
     let rate = (lastPrice - firstPrice) / firstPrice * 100
     
     changeRateImageView.image = rate < 0
@@ -115,6 +144,7 @@ class CoinDetailsChartView: UIView {
     periodButtonsView.configure(for: selectedPeriod)
   }
 
+  
   private func configureChart(with prices: [[Double]]) {
     let entries = prices.enumerated().map { (element) -> ChartDataEntry? in
       guard let first = element.element.first, let second = element.element.last else { return nil }

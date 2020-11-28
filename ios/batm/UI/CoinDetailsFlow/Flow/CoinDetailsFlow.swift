@@ -34,6 +34,7 @@ class CoinDetailsFlow: BaseFlow<BTMNavigationController, CoinDetailsFlowControll
     case staking(BTMCoin, [CoinBalance], CoinDetails, StakeDetails)
     case reserve(BTMCoin, [CoinBalance], CoinDetails)
     case recall(BTMCoin, [CoinBalance], CoinDetails)
+    case coinDetailsPredefinedData(CoinDetailsPredefinedDataConfig)
     case pop(String? = nil)
   }
   
@@ -48,6 +49,10 @@ class CoinDetailsFlow: BaseFlow<BTMNavigationController, CoinDetailsFlowControll
     case let .coinDetails(coinBalances, coinDetails, data):
       let module = resolver.resolve(Module<CoinDetailsModule>.self)!
       module.input.setup(coinBalances: coinBalances, coinDetails: coinDetails, data: data)
+      return push(module.controller)
+    case let .coinDetailsPredefinedData(config):
+      let module = resolver.resolve(Module<CoinDetailsModule>.self)!
+      module.input.setup(predefinedData: config)
       return push(module.controller)
     case let .transactionDetails(details, type):
       let module = resolver.resolve(Module<TransactionDetailsModule>.self)!

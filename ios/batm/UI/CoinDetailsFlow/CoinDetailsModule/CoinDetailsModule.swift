@@ -3,6 +3,7 @@ import TrustWalletCore
 
 protocol CoinDetailsModule: class {
   func setup(coinBalances: [CoinBalance], coinDetails: CoinDetails, data: PriceChartDetails)
+  func setup(predefinedData: CoinDetailsPredefinedDataConfig)
 }
 protocol CoinDetailsModuleDelegate: class {
   func showDepositScreen(coin: BTMCoin)

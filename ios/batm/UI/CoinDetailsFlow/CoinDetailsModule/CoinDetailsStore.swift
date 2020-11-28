@@ -11,7 +11,7 @@ enum SelectedPeriod: Int {
 enum CoinDetailsAction: Equatable {
   case setupCoinBalances([CoinBalance])
   case setupCoinDetails(CoinDetails)
-  case setupPriceChartData(CoinBalance?, PriceChartDetails)
+  case setupPriceChartData(CoinBalance?, PriceChartDetails?)
   case updateSelectedPeriod(SelectedPeriod, PriceChartDetails)
   case startFetching
   case finishFetching
@@ -19,6 +19,16 @@ enum CoinDetailsAction: Equatable {
   case finishFetchingNextTransactions(Transactions)
   case finishFetchingCoin(BTMCoin)
   case updatePage(Int)
+  case setupPredefinedData(CoinDetailsPredefinedDataConfig)
+}
+
+struct CoinDetailsPredefinedDataConfig: Equatable {
+  var price: Double
+  var rate: Double
+  var rateToDisplay: String
+  var balance: CoinBalance
+  var selectedPrediod: SelectedPeriod
+  var chartData: [[Double]]
 }
 
 struct CoinDetailsState: Equatable {
@@ -32,6 +42,7 @@ struct CoinDetailsState: Equatable {
   var isFetching: Bool = false
   var priceChartDetails: PriceChartDetails?
   var currentBalance: CoinBalance?
+  var predefinedData: CoinDetailsPredefinedDataConfig?
   
   var nextPage: Int {
     return page + 1
@@ -60,12 +71,14 @@ final class CoinDetailsStore: ViewStore<CoinDetailsAction, CoinDetailsState> {
     switch action {
     case let .setupCoinBalances(coinBalances): state.coinBalances = coinBalances
     case let .setupCoinDetails(coinDetails): state.coinDetails = coinDetails
+    case let .setupPredefinedData(data): state.predefinedData = data
     case let .setupPriceChartData(balance, data):
       state.priceChartDetails = data
       state.currentBalance = balance
     case let .updateSelectedPeriod(selectedPeriod, details):
       state.selectedPeriod = selectedPeriod
       state.priceChartDetails = details
+      state.predefinedData?.selectedPrediod = selectedPeriod
     case .startFetching: state.isFetching = true
     case .finishFetching: state.isFetching = false
     case let.finishFetchingTransactions(transactions):

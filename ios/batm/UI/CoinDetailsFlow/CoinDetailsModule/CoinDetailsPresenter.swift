@@ -48,7 +48,12 @@ final class CoinDetailsPresenter: ModulePresenter, CoinDetailsModule {
         store.action.accept(.setupCoinDetails(coinDetails))
         store.action.accept(.setupPriceChartData(balance, data))
     }
-    
+  
+    func setup(predefinedData: CoinDetailsPredefinedDataConfig) {
+      store.action.accept(.setupPredefinedData(predefinedData))
+      store.action.accept(.setupCoinBalances([predefinedData.balance]))
+    }
+      
     func bind(input: Input) {
         input.refresh
             .asObservable()
@@ -62,6 +67,19 @@ final class CoinDetailsPresenter: ModulePresenter, CoinDetailsModule {
             }
             .subscribe()
             .disposed(by: disposeBag)
+      
+      input.refresh
+          .asObservable()
+          .flatFilter(activity.not())
+          .withLatestFrom(state)
+          .map { $0.predefinedData?.balance.type }
+          .filterNil()
+          .doOnNext { [store] _ in store.action.accept(.startFetching) }
+          .flatMap { [unowned self] in
+              self.track(self.getTransactions(for: $0), trackers: [self.errorTracker])
+          }
+          .subscribe()
+          .disposed(by: disposeBag)
         
         input.deposit
             .withLatestFrom(state)
@@ -180,18 +198,23 @@ final class CoinDetailsPresenter: ModulePresenter, CoinDetailsModule {
   
   private func updateChartDetails(period: SelectedPeriod) -> Completable {
     return Completable.create { [unowned self] completable -> Disposable in
-       guard let type = self.store.currentState.coin?.type else {
+      guard let type = self.store.currentState.coin?.type ?? self.store.currentState.predefinedData?.balance.type else {
         completable(.completed)
         return Disposables.create {}
       }
       
-      self.walletUsecase
-        .getPriceChartDetails(for: type, period: period)
-        .subscribe(onSuccess: { [store] (details) in
-         store.action.accept(.updateSelectedPeriod(period, details))
-      }).disposed(by: self.disposeBag)
       
-      completable(.completed)
+      if let predefinedData = self.store.currentState.predefinedData {
+        store.action.accept(.updateSelectedPeriod(period, PriceChartDetails(prices: predefinedData.chartData)))
+      } else {
+        self.walletUsecase
+          .getPriceChartDetails(for: type, period: period)
+          .subscribe(onSuccess: { [store] (details) in
+            store.action.accept(.updateSelectedPeriod(period, details))
+          }).disposed(by: self.disposeBag)
+      }
+      
+      completable (.completed)
       return Disposables.create {}
     }
   }
@@ -203,6 +226,12 @@ final class CoinDetailsPresenter: ModulePresenter, CoinDetailsModule {
             .filterNil()
             .asObservable()
             .take(1)
+      
+     let predefinedTypeObservable = state
+        .map { $0.predefinedData?.balance.type }
+          .filterNil()
+          .asObservable()
+          .take(1)
         
         coinTypeObservable
             .flatMap { [unowned self] in self.track(self.usecase.getCoin(for: $0)) }
@@ -215,13 +244,22 @@ final class CoinDetailsPresenter: ModulePresenter, CoinDetailsModule {
             }
             .subscribe()
             .disposed(by: disposeBag)
+      
+      predefinedTypeObservable
+          .flatMap { [unowned self] in
+              self.track(self.getTransactions(for: $0), trackers: [self.errorTracker])
+          }
+          .subscribe()
+          .disposed(by: disposeBag)
         
         fetchTransactionsRelay
             .flatFilter(activity.not())
             .withLatestFrom(state)
             .filter { !$0.isLastPage }
             .flatMap { [unowned self] in
-                self.track(self.getTransactions(for: $0.coinDetails!.type, from: $0.nextPage), trackers: [self.errorTracker])
+              self.track(self.getTransactions(for: ($0.coinDetails?.type ?? $0.predefinedData?.balance.type as! CustomCoinType),
+                                              from: $0.nextPage),
+                         trackers: [self.errorTracker])
             }
             .subscribe()
             .disposed(by: disposeBag)
