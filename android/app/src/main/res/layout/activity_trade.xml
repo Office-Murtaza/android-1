@@ -5,8 +5,7 @@
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".ui.main.settings.phone.ShowPhoneActivity">
+    android:orientation="vertical">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbarView"
@@ -203,13 +202,13 @@
         <com.github.clans.fab.FloatingActionButton
             android:id="@+id/reverseButtonView"
             style="@style/TransactionsScreen.FloatingActionButtonChild"
-            android:src="@drawable/ic_publish"
+            android:src="@drawable/ic_reserve"
             app:fab_label="@string/trade_screen_reserve" />
 
         <com.github.clans.fab.FloatingActionButton
             android:id="@+id/recallButtonView"
             style="@style/TransactionsScreen.FloatingActionButtonChild"
-            android:src="@drawable/ic_file_download"
+            android:src="@drawable/ic_recall"
             app:fab_label="@string/trade_screen_recall" />
 
         <com.github.clans.fab.FloatingActionButton
