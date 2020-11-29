@@ -31,5 +31,7 @@ class AboutFragment : BaseFragment() {
 
     private fun setClickListeners() {
         termsItem.setOnClickListener { viewModel.handleItemClick(AboutItem.TERMS) }
+        privacyItem.setOnClickListener { viewModel.handleItemClick(AboutItem.PRIVACY) }
+        complaintItem.setOnClickListener { viewModel.handleItemClick(AboutItem.COMPLAINT) }
     }
 }
