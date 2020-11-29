@@ -13,7 +13,6 @@ import com.app.belcobtm.presentation.features.settings.SettingsViewModel
 import com.app.belcobtm.presentation.features.settings.about.AboutViewModel
 import com.app.belcobtm.presentation.features.settings.password.PasswordViewModel
 import com.app.belcobtm.presentation.features.settings.phone.PhoneChangeViewModel
-import com.app.belcobtm.presentation.features.settings.phone.PhoneDisplayViewModel
 import com.app.belcobtm.presentation.features.settings.security.SecurityViewModel
 import com.app.belcobtm.presentation.features.settings.unlink.UnlinkViewModel
 import com.app.belcobtm.presentation.features.settings.update_password.UpdatePasswordViewModel
@@ -42,7 +41,7 @@ import org.koin.dsl.module
 
 val viewModelModule = module {
     viewModel { AboutViewModel(androidApplication(), get()) }
-    viewModel { SecurityViewModel() }
+    viewModel { SecurityViewModel(get()) }
     viewModel { WalletViewModel(get(), get()) }
     viewModel { (coinCode: String) -> TransactionsViewModel(coinCode, get(), get(), get(), get()) }
     viewModel { RecoverWalletViewModel(get()) }
@@ -110,7 +109,6 @@ val viewModelModule = module {
     viewModel { PasswordViewModel(get(), get()) }
     viewModel { UnlinkViewModel(get()) }
     viewModel { UpdatePasswordViewModel(get()) }
-    viewModel { PhoneDisplayViewModel(get(), get()) }
     viewModel { PhoneChangeViewModel(get(), get(), get()) }
     viewModel { AtmViewModel(get()) }
     viewModel { (txId: String, coinCode: String) ->

@@ -103,22 +103,6 @@
     </fragment>
 
     <fragment
-        android:id="@+id/display_phone_fragment"
-        android:name="com.app.belcobtm.presentation.features.settings.phone.PhoneDisplayFragment"
-        android:label="PhoneDisplayFragment"
-        tools:layout="@layout/fragment_display_phone">
-
-        <action
-            android:id="@+id/phone_display_to_password_fragment"
-            app:destination="@id/password_fragment"
-            app:enterAnim="@anim/slide_from_right"
-            app:exitAnim="@anim/slide_to_left"
-            app:popEnterAnim="@anim/slide_from_left"
-            app:popExitAnim="@anim/slide_to_right" />
-
-    </fragment>
-
-    <fragment
         android:id="@+id/change_phone_fragment"
         android:name="com.app.belcobtm.presentation.features.settings.phone.PhoneChangeFragment"
         android:label="ChangePhoneFragment"
@@ -143,14 +127,6 @@
         <action
             android:id="@+id/to_password"
             app:destination="@id/password_fragment"
-            app:enterAnim="@anim/slide_from_right"
-            app:exitAnim="@anim/slide_to_left"
-            app:popEnterAnim="@anim/slide_from_left"
-            app:popExitAnim="@anim/slide_to_right" />
-
-        <action
-            android:id="@+id/to_display_phone"
-            app:destination="@id/display_phone_fragment"
             app:enterAnim="@anim/slide_from_right"
             app:exitAnim="@anim/slide_to_left"
             app:popEnterAnim="@anim/slide_from_left"
