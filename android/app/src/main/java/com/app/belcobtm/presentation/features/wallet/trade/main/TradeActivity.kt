@@ -115,18 +115,6 @@ class TradeActivity : BaseActivity() {
             startActivity(intent)
             fabMenuView.close(true)
         }
-//        reverseButtonView.setOnClickListener {
-//            val intent = Intent(this, TradeReserveFragment::class.java)
-//            intent.putExtra(TradeReserveFragment.TAG_COIN_CODE, this.intent.getStringExtra(TAG_COIN_CODE))
-//            startActivity(intent)
-//            fabMenuView.close(true)
-//        }
-//        recallButtonView.setOnClickListener {
-//            val intent = Intent(this, TradeRecallActivity::class.java)
-//            intent.putExtra(TradeRecallActivity.TAG_COIN_CODE, this.intent.getStringExtra(TAG_COIN_CODE))
-//            startActivity(intent)
-//            fabMenuView.close(true)
-//        }
         priceButtonView.setOnClickListener {
             tradePageAdapter.clearData()
             viewModel.updateSorting(TradeSortType.PRICE)
