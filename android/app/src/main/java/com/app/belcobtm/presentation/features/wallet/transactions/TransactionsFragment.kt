@@ -23,8 +23,7 @@ import com.app.belcobtm.presentation.core.extensions.toggle
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
 import com.app.belcobtm.presentation.core.ui.fragment.BaseFragment
 import com.app.belcobtm.presentation.features.wallet.trade.main.TradeActivity
-import com.app.belcobtm.presentation.features.wallet.trade.recall.TradeRecallActivity
-import com.app.belcobtm.presentation.features.wallet.trade.reserve.TradeReserveActivity
+import com.app.belcobtm.presentation.features.wallet.trade.recall.TradeRecallFragment
 import com.app.belcobtm.presentation.features.wallet.transactions.TransactionsFABType.*
 import com.app.belcobtm.presentation.features.wallet.transactions.adapter.TransactionsAdapter
 import com.app.belcobtm.presentation.features.wallet.transactions.item.CurrentChartInfo
@@ -130,13 +129,9 @@ class TransactionsFragment : BaseFragment() {
                 DEPOSIT.id ->
                     navigate(TransactionsFragmentDirections.toDepositFragment(viewModel.coinCode))
                 RECALL.id ->
-                    startTradeRecallActivity(
-                        TransactionsFragmentArgs.fromBundle(requireArguments()).coinCode
-                    )
+                    navigate(TransactionsFragmentDirections.toRecallFragment(viewModel.coinCode))
                 RESERVE.id ->
-                    startTradeReserveActivity(
-                        TransactionsFragmentArgs.fromBundle(requireArguments()).coinCode
-                    )
+                    navigate(TransactionsFragmentDirections.toReserveFragment(viewModel.coinCode))
 
                 //SELL.id -> SellActivity.start(
                 //    requireContext(),
@@ -316,20 +311,6 @@ class TransactionsFragment : BaseFragment() {
         intent.putExtra(TradeActivity.TAG_LATITUDE, latitude)
         intent.putExtra(TradeActivity.TAG_LONGITUDE, longitude)
         startActivity(intent)
-    }
-
-    private fun startTradeRecallActivity(coinCode: String) {
-        val notNullContext = context ?: return
-        val recallIntent = Intent(notNullContext, TradeRecallActivity::class.java)
-        recallIntent.putExtra(TradeRecallActivity.TAG_COIN_CODE, coinCode)
-        startActivity(recallIntent)
-    }
-
-    private fun startTradeReserveActivity(coinCode: String) {
-        val notNullContext = context ?: return
-        val reserveIntent = Intent(notNullContext, TradeReserveActivity::class.java)
-        reserveIntent.putExtra(TradeReserveActivity.TAG_COIN_CODE, coinCode)
-        startActivity(reserveIntent)
     }
 
     companion object {
