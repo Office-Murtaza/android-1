@@ -53,6 +53,16 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/changesView" />
 
+    <ProgressBar
+        android:id="@+id/chartProgressView"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@+id/chartView"
+        app:layout_constraintEnd_toEndOf="@+id/chartView"
+        app:layout_constraintStart_toStartOf="@+id/chartView"
+        app:layout_constraintTop_toTopOf="@+id/chartView" />
+
     <com.google.android.material.chip.ChipGroup
         android:id="@+id/chartChipGroupView"
         android:layout_width="wrap_content"
