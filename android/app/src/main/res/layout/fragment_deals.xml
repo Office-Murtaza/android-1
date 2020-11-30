@@ -12,7 +12,7 @@
         android:background="@color/thin_divider" />
 
     <com.app.belcobtm.presentation.core.views.SettingsItemView
-        android:id="@+id/walletsItem"
+        android:id="@+id/stakingItem"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:src="@drawable/ic_staking"
@@ -25,7 +25,7 @@
         android:background="@color/thin_divider" />
 
     <com.app.belcobtm.presentation.core.views.SettingsItemView
-        android:id="@+id/securityItem"
+        android:id="@+id/swapItem"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:src="@drawable/ic_swap"
@@ -38,7 +38,7 @@
         android:background="@color/thin_divider" />
 
     <com.app.belcobtm.presentation.core.views.SettingsItemView
-        android:id="@+id/kycItem"
+        android:id="@+id/tradeItem"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:src="@drawable/ic_trade"
