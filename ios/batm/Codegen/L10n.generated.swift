@@ -93,6 +93,10 @@ enum L {
     static let title = "create_wallet.title"
   }
 
+  struct Deals {
+    static let title = "deals.title"
+  }
+
   struct EnterPassword {
   }
 

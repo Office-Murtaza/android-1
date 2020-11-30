@@ -15,7 +15,8 @@ extension MainFlow {
         .inObjectScope(.container)
         .implements(WalletFlowControllerDelegate.self,
                     ATMFlowControllerDelegate.self,
-                    SettingsFlowControllerDelegate.self)
+                    SettingsFlowControllerDelegate.self,
+                    DealsFlowControllerDelegate.self)
     }
   }
 }

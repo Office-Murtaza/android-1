@@ -335,3 +335,5 @@
 
 "error.no_connection.title" = "No internet connection";
 "error.no_connection.subtitle" = "Connect to WiFi or turn on mobile data.";
+
+"deals.title" = "Deals";
