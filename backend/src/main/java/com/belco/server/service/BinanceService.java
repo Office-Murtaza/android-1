@@ -180,8 +180,8 @@ public class BinanceService {
         try {
             PrivateKey privateKey;
 
-            if (walletService.isServerAddress(fromAddress)) {
-                privateKey = walletService.getPrivateKeyBNB();
+            if (walletService.isServerAddress(CoinType.BINANCE, fromAddress)) {
+                privateKey = walletService.getCoinsMap().get(CoinType.BINANCE).getPrivateKey();
             } else {
                 String path = walletService.getPath(fromAddress);
                 privateKey = walletService.getWallet().getKey(CoinType.BINANCE, path);

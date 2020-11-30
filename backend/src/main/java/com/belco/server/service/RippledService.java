@@ -233,8 +233,8 @@ public class RippledService {
         try {
             PrivateKey privateKey;
 
-            if (walletService.isServerAddress(fromAddress)) {
-                privateKey = walletService.getPrivateKeyXRP();
+            if (walletService.isServerAddress(CoinType.XRP, fromAddress)) {
+                privateKey = walletService.getCoinsMap().get(CoinType.XRP).getPrivateKey();
             } else {
                 String path = walletService.getPath(fromAddress);
                 privateKey = walletService.getWallet().getKey(CoinType.XRP, path);

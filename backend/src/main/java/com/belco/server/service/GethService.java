@@ -122,7 +122,7 @@ public class GethService {
                 web3 = Web3j.build(new HttpService(nodeUrl));
 
                 token = Token.load(contractAddress, web3,
-                        Credentials.create(Numeric.toHexString(walletService.getPrivateKeyETH().data())), new DefaultGasProvider());
+                        Credentials.create(Numeric.toHexString(walletService.getCoinsMap().get(CoinType.ETHEREUM).getPrivateKey().data())), new DefaultGasProvider());
 
                 stakeBasePeriod = token.basePeriod().send();
                 stakeAnnualPeriod = token.annualPeriod().send();
@@ -144,7 +144,7 @@ public class GethService {
                 }
 
                 if (mongo.getCollection(ADDRESS_COLL).countDocuments() == 0) {
-                    addAddressToJournal(walletService.getAddressETH());
+                    addAddressToJournal(walletService.getCoinsMap().get(CoinType.ETHEREUM).getAddress());
                     addAddressToJournal(contractAddress);
 
                     Coin coin = coinRep.findCoinByCode(CoinService.CoinEnum.ETH.name());
@@ -396,8 +396,8 @@ public class GethService {
         try {
             PrivateKey privateKey;
 
-            if (walletService.isServerAddress(fromAddress)) {
-                privateKey = walletService.getPrivateKeyETH();
+            if (walletService.isServerAddress(CoinType.ETHEREUM, fromAddress)) {
+                privateKey = walletService.getCoinsMap().get(CoinType.ETHEREUM).getPrivateKey();
             } else {
                 String path = walletService.getPath(fromAddress);
                 privateKey = walletService.getWallet().getKey(CoinType.ETHEREUM, path);
@@ -428,8 +428,8 @@ public class GethService {
         try {
             PrivateKey privateKey;
 
-            if (walletService.isServerAddress(fromAddress)) {
-                privateKey = walletService.getPrivateKeyETH();
+            if (walletService.isServerAddress(CoinType.ETHEREUM, fromAddress)) {
+                privateKey = walletService.getCoinsMap().get(CoinType.ETHEREUM).getPrivateKey();
             } else {
                 String path = walletService.getPath(fromAddress);
                 privateKey = walletService.getWallet().getKey(CoinType.ETHEREUM, path);

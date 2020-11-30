@@ -2,6 +2,7 @@ package com.belco.server.rest;
 
 import com.belco.server.dto.SubmitTransactionDTO;
 import com.belco.server.model.Response;
+import com.belco.server.repository.CoinRep;
 import com.belco.server.service.*;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,9 @@ public class TestController {
     @Autowired
     private GethService gethService;
 
+    @Autowired
+    private CoinRep coinRep;
+
     @GetMapping("/sms")
     public Response sendSMS(@RequestParam String phone) {
         return Response.ok(twilioService.sendMessage(phone, "This is a test message"));
@@ -35,14 +39,12 @@ public class TestController {
     public Response getWalletAddresses() {
         JSONObject res = new JSONObject();
 
-        res.put("BTC", getCoinJson(walletService.getAddressBTC(), CoinService.CoinEnum.BTC.getBalance(walletService.getAddressBTC()), CoinType.BITCOIN.derivationPath()));
-        res.put("BCH", getCoinJson(walletService.getAddressBCH(), CoinService.CoinEnum.BCH.getBalance(walletService.getAddressBCH()), CoinType.BITCOINCASH.derivationPath()));
-        res.put("ETH", getCoinJson(walletService.getAddressETH(), CoinService.CoinEnum.ETH.getBalance(walletService.getAddressETH()), CoinType.ETHEREUM.derivationPath()));
-        res.put("CATM", getCoinJson(walletService.getAddressETH(), CoinService.CoinEnum.CATM.getBalance(walletService.getAddressETH()), CoinType.ETHEREUM.derivationPath()));
-        res.put("LTC", getCoinJson(walletService.getAddressLTC(), CoinService.CoinEnum.LTC.getBalance(walletService.getAddressLTC()), CoinType.LITECOIN.derivationPath()));
-        res.put("BNB", getCoinJson(walletService.getAddressBNB(), CoinService.CoinEnum.BNB.getBalance(walletService.getAddressBNB()), CoinType.BINANCE.derivationPath()));
-        res.put("XRP", getCoinJson(walletService.getAddressXRP(), CoinService.CoinEnum.XRP.getBalance(walletService.getAddressXRP()), CoinType.XRP.derivationPath()));
-        res.put("TRX", getCoinJson(walletService.getAddressTRX(), CoinService.CoinEnum.TRX.getBalance(walletService.getAddressTRX()), CoinType.TRON.derivationPath()));
+        coinRep.findAllByOrderByIdxAsc().stream().forEach(e -> {
+            CoinService.CoinEnum coinEnum = CoinService.CoinEnum.valueOf(e.getCode());
+            CoinType coinType = coinEnum.getCoinType();
+
+            res.put(e.getCode(), getCoinJson(walletService.getCoinsMap().get(coinType).getAddress(), coinEnum.getBalance(walletService.getCoinsMap().get(coinType).getAddress())));
+        });
 
         return Response.ok(res);
     }
@@ -92,12 +94,11 @@ public class TestController {
         return Response.ok(userService.deleteKyc(userId));
     }
 
-    private JSONObject getCoinJson(String address, BigDecimal balance, String path) {
+    private JSONObject getCoinJson(String address, BigDecimal balance) {
         JSONObject json = new JSONObject();
 
         json.put("address", address);
         json.put("balance", balance);
-        json.put("path", path);
 
         return json;
     }

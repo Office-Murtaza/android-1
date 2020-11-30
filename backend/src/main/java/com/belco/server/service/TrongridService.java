@@ -176,8 +176,8 @@ public class TrongridService {
         try {
             PrivateKey privateKey;
 
-            if (walletService.isServerAddress(fromAddress)) {
-                privateKey = walletService.getPrivateKeyTRX();
+            if (walletService.isServerAddress(CoinType.TRON, fromAddress)) {
+                privateKey = walletService.getCoinsMap().get(CoinType.TRON).getPrivateKey();
             } else {
                 String path = walletService.getPath(fromAddress);
                 privateKey = walletService.getWallet().getKey(CoinType.TRON, path);

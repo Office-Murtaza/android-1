@@ -1,8 +1,6 @@
 package com.belco.server.service;
 
-import com.belco.server.dto.NodeTransactionsDTO;
-import com.belco.server.dto.SubmitTransactionDTO;
-import com.belco.server.dto.TransactionDetailsDTO;
+import com.belco.server.dto.*;
 import com.belco.server.entity.Coin;
 import com.belco.server.entity.CoinPath;
 import com.belco.server.entity.TransactionRecordWallet;
@@ -10,7 +8,6 @@ import com.belco.server.model.TransactionStatus;
 import com.belco.server.model.TransactionType;
 import com.belco.server.repository.CoinPathRep;
 import com.belco.server.repository.TransactionRecordWalletRep;
-import com.belco.server.dto.ReceivedAddressDTO;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,55 +39,21 @@ public class WalletService {
     private TransactionRecordWalletRep transactionRecordWalletRep;
 
     private HDWallet wallet = null;
-
-    private String addressBTC = null;
-    private String addressBCH = null;
-    private String addressETH = null;
-    private String addressLTC = null;
-    private String addressBNB = null;
-    private String addressXRP = null;
-    private String addressTRX = null;
-
-    private PrivateKey privateKeyBTC = null;
-    private PrivateKey privateKeyETH = null;
-    private PrivateKey privateKeyXRP = null;
-    private PrivateKey privateKeyTRX = null;
-    private PrivateKey privateKeyBNB = null;
-
-    private List<String> serverAddresses = new ArrayList<>();
+    private Map<CoinType, CoinDTO> coinsMap = new HashMap<>();
 
     @PostConstruct
     public void init() {
         wallet = new HDWallet(seed, "");
 
-        privateKeyBTC = wallet.getKeyForCoin(CoinType.BITCOIN);
-        PublicKey publicKeyBTC = HDWallet.getPublicKeyFromExtended(getXPUB(CoinType.BITCOIN), CoinType.BITCOIN, getPath(CoinType.BITCOIN));
-        addressBTC = new BitcoinAddress(publicKeyBTC, CoinType.BITCOIN.p2pkhPrefix()).description();
-        serverAddresses.add(addressBTC);
-
-        PrivateKey privateKeyBCH = wallet.getKeyForCoin(CoinType.BITCOINCASH);
-        addressBCH = CoinType.BITCOINCASH.deriveAddress(privateKeyBCH);
-        serverAddresses.add(addressBCH);
-
-        privateKeyETH = wallet.getKeyForCoin(CoinType.ETHEREUM);
-        addressETH = CoinType.ETHEREUM.deriveAddress(privateKeyETH);
-        serverAddresses.add(addressETH);
-
-        PrivateKey privateKeyLTC = wallet.getKeyForCoin(CoinType.LITECOIN);
-        addressLTC = CoinType.LITECOIN.deriveAddress(privateKeyLTC);
-        serverAddresses.add(addressLTC);
-
-        privateKeyBNB = wallet.getKeyForCoin(CoinType.BINANCE);
-        addressBNB = CoinType.BINANCE.deriveAddress(privateKeyBNB);
-        serverAddresses.add(addressBNB);
-
-        privateKeyXRP = wallet.getKeyForCoin(CoinType.XRP);
-        addressXRP = CoinType.XRP.deriveAddress(privateKeyXRP);
-        serverAddresses.add(addressXRP);
-
-        privateKeyTRX = wallet.getKeyForCoin(CoinType.TRON);
-        addressTRX = CoinType.TRON.deriveAddress(privateKeyTRX);
-        serverAddresses.add(addressTRX);
+        coinsMap.put(CoinType.BITCOIN, new CoinDTO(CoinService.CoinEnum.BTC.name(), new BitcoinAddress(HDWallet.getPublicKeyFromExtended(getXPUB(CoinType.BITCOIN), CoinType.BITCOIN, getPath(CoinType.BITCOIN)), CoinType.BITCOIN.p2pkhPrefix()).description(), wallet.getKeyForCoin(CoinType.BITCOIN)));
+        coinsMap.put(CoinType.BITCOINCASH, new CoinDTO(CoinService.CoinEnum.BCH.name(), CoinType.BITCOINCASH.deriveAddress(wallet.getKeyForCoin(CoinType.BITCOINCASH)), wallet.getKeyForCoin(CoinType.BITCOINCASH)));
+        coinsMap.put(CoinType.LITECOIN, new CoinDTO(CoinService.CoinEnum.LTC.name(), CoinType.LITECOIN.deriveAddress(wallet.getKeyForCoin(CoinType.LITECOIN)), wallet.getKeyForCoin(CoinType.LITECOIN)));
+        coinsMap.put(CoinType.DASH, new CoinDTO(CoinService.CoinEnum.DASH.name(), CoinType.DASH.deriveAddress(wallet.getKeyForCoin(CoinType.DASH)), wallet.getKeyForCoin(CoinType.DASH)));
+        coinsMap.put(CoinType.DOGECOIN, new CoinDTO(CoinService.CoinEnum.DOGE.name(), CoinType.DOGECOIN.deriveAddress(wallet.getKeyForCoin(CoinType.DOGECOIN)), wallet.getKeyForCoin(CoinType.DOGECOIN)));
+        coinsMap.put(CoinType.ETHEREUM, new CoinDTO(CoinService.CoinEnum.ETH.name(), CoinType.ETHEREUM.deriveAddress(wallet.getKeyForCoin(CoinType.ETHEREUM)), wallet.getKeyForCoin(CoinType.ETHEREUM)));
+        coinsMap.put(CoinType.BINANCE, new CoinDTO(CoinService.CoinEnum.BNB.name(), CoinType.BINANCE.deriveAddress(wallet.getKeyForCoin(CoinType.BINANCE)), wallet.getKeyForCoin(CoinType.BINANCE)));
+        coinsMap.put(CoinType.XRP, new CoinDTO(CoinService.CoinEnum.XRP.name(), CoinType.XRP.deriveAddress(wallet.getKeyForCoin(CoinType.XRP)), wallet.getKeyForCoin(CoinType.XRP)));
+        coinsMap.put(CoinType.TRON, new CoinDTO(CoinService.CoinEnum.TRX.name(), CoinType.TRON.deriveAddress(wallet.getKeyForCoin(CoinType.TRON)), wallet.getKeyForCoin(CoinType.TRON)));
     }
 
     public String getPath(CoinType coinType) {
@@ -258,7 +221,7 @@ public class WalletService {
                 wallet.setCoin(coin.getCoinEntity());
                 wallet.setAmount(amount);
 
-                if (isServerAddress(fromAddress)) {
+                if (isServerAddress(coin.getCoinType(), fromAddress)) {
                     wallet.setType(TransactionType.SELL.getValue());
                 } else {
                     wallet.setType(TransactionType.MOVE.getValue());
@@ -278,8 +241,8 @@ public class WalletService {
         return null;
     }
 
-    public boolean isServerAddress(String address) {
-        return serverAddresses.contains(address);
+    public boolean isServerAddress(CoinType coinType, String address) {
+        return coinsMap.get(coinType).getAddress().equalsIgnoreCase(address);
     }
 
     public BigDecimal convertEthFeeToCatmFee() {

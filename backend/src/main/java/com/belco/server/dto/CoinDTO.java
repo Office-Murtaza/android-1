@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import wallet.core.jni.PrivateKey;
 
 @Getter
 @Setter
@@ -15,4 +16,5 @@ public class CoinDTO {
 
     private String code;
     private String address;
+    private PrivateKey privateKey;
 }
