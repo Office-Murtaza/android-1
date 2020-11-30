@@ -13,6 +13,15 @@
 		0522EB632559883B0028CD51 /* SupportModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0522EB622559883B0028CD51 /* SupportModule.swift */; };
 		0522EB67255988490028CD51 /* SupportAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0522EB66255988490028CD51 /* SupportAssembly.swift */; };
 		0522EB6E25598C650028CD51 /* SendHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0522EB6D25598C650028CD51 /* SendHelper.swift */; };
+		055A9B72257552B700A8E8F1 /* DealsFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 055A9B71257552B700A8E8F1 /* DealsFlow.swift */; };
+		055A9B76257552C100A8E8F1 /* DealsFlowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 055A9B75257552C100A8E8F1 /* DealsFlowController.swift */; };
+		055A9B7A257552D000A8E8F1 /* DealsFlow+Dependencies.swift in Sources */ = {isa = PBXBuildFile; fileRef = 055A9B79257552D000A8E8F1 /* DealsFlow+Dependencies.swift */; };
+		055A9B7E257552E500A8E8F1 /* DealsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 055A9B7D257552E500A8E8F1 /* DealsPresenter.swift */; };
+		055A9B82257552F000A8E8F1 /* DealsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 055A9B81257552F000A8E8F1 /* DealsViewController.swift */; };
+		055A9B86257552F900A8E8F1 /* DealsModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 055A9B85257552F900A8E8F1 /* DealsModule.swift */; };
+		055A9B8A2575530700A8E8F1 /* DealsAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = 055A9B892575530700A8E8F1 /* DealsAssembly.swift */; };
+		055A9B8E2575530E00A8E8F1 /* DealsStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 055A9B8D2575530E00A8E8F1 /* DealsStore.swift */; };
+		055A9B9E25755A5C00A8E8F1 /* DealsUsecase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 055A9B9D25755A5C00A8E8F1 /* DealsUsecase.swift */; };
 		232E33482550626A00A9BF72 /* BalanceService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 232E33472550626A00A9BF72 /* BalanceService.swift */; };
 		232E345E2558772B00A9BF72 /* SocketMessageBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 232E345D2558772B00A9BF72 /* SocketMessageBuilder.swift */; };
 		232E346425593BA200A9BF72 /* SocketResultMessageMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 232E346325593BA200A9BF72 /* SocketResultMessageMapper.swift */; };
@@ -543,6 +552,15 @@
 		0522EB622559883B0028CD51 /* SupportModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SupportModule.swift; sourceTree = "<group>"; };
 		0522EB66255988490028CD51 /* SupportAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SupportAssembly.swift; sourceTree = "<group>"; };
 		0522EB6D25598C650028CD51 /* SendHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendHelper.swift; sourceTree = "<group>"; };
+		055A9B71257552B700A8E8F1 /* DealsFlow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DealsFlow.swift; sourceTree = "<group>"; };
+		055A9B75257552C100A8E8F1 /* DealsFlowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DealsFlowController.swift; sourceTree = "<group>"; };
+		055A9B79257552D000A8E8F1 /* DealsFlow+Dependencies.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DealsFlow+Dependencies.swift"; sourceTree = "<group>"; };
+		055A9B7D257552E500A8E8F1 /* DealsPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DealsPresenter.swift; sourceTree = "<group>"; };
+		055A9B81257552F000A8E8F1 /* DealsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DealsViewController.swift; sourceTree = "<group>"; };
+		055A9B85257552F900A8E8F1 /* DealsModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DealsModule.swift; sourceTree = "<group>"; };
+		055A9B892575530700A8E8F1 /* DealsAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DealsAssembly.swift; sourceTree = "<group>"; };
+		055A9B8D2575530E00A8E8F1 /* DealsStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DealsStore.swift; sourceTree = "<group>"; };
+		055A9B9D25755A5C00A8E8F1 /* DealsUsecase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DealsUsecase.swift; sourceTree = "<group>"; };
 		142D5BA6DA2741657FE02671 /* Pods_batmTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_batmTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		232E33472550626A00A9BF72 /* BalanceService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BalanceService.swift; sourceTree = "<group>"; };
 		232E345D2558772B00A9BF72 /* SocketMessageBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocketMessageBuilder.swift; sourceTree = "<group>"; };
@@ -1105,6 +1123,37 @@
 			path = TableViewRelated;
 			sourceTree = "<group>";
 		};
+		055A9B6E2575522700A8E8F1 /* DealsFlow */ = {
+			isa = PBXGroup;
+			children = (
+				055A9B702575528800A8E8F1 /* Flow */,
+				055A9B6F2575527F00A8E8F1 /* DealsModule */,
+			);
+			path = DealsFlow;
+			sourceTree = "<group>";
+		};
+		055A9B6F2575527F00A8E8F1 /* DealsModule */ = {
+			isa = PBXGroup;
+			children = (
+				055A9B7D257552E500A8E8F1 /* DealsPresenter.swift */,
+				055A9B81257552F000A8E8F1 /* DealsViewController.swift */,
+				055A9B85257552F900A8E8F1 /* DealsModule.swift */,
+				055A9B892575530700A8E8F1 /* DealsAssembly.swift */,
+				055A9B8D2575530E00A8E8F1 /* DealsStore.swift */,
+			);
+			path = DealsModule;
+			sourceTree = "<group>";
+		};
+		055A9B702575528800A8E8F1 /* Flow */ = {
+			isa = PBXGroup;
+			children = (
+				055A9B71257552B700A8E8F1 /* DealsFlow.swift */,
+				055A9B75257552C100A8E8F1 /* DealsFlowController.swift */,
+				055A9B79257552D000A8E8F1 /* DealsFlow+Dependencies.swift */,
+			);
+			path = Flow;
+			sourceTree = "<group>";
+		};
 		232E33462550622C00A9BF72 /* BalanceService */ = {
 			isa = PBXGroup;
 			children = (
@@ -1503,6 +1552,7 @@
 				DBA6842C22E42AA20079429E /* WalletFlow */,
 				DB5B2DD6230A74A800821713 /* CoinDetailsFlow */,
 				DB1CFB3E246C4F3D00020104 /* TradesFlow */,
+				055A9B6E2575522700A8E8F1 /* DealsFlow */,
 				DBA6843622E449A20079429E /* ATMFlow */,
 				DBA6844922E45A040079429E /* SettingsFlow */,
 				DBECA62922F7FADF002C2610 /* UpdatePhoneFlow */,
@@ -2157,6 +2207,7 @@
 				DB308EBE22E73A56003D91AF /* ATMUsecase.swift */,
 				DBC68C9222F85C9900473247 /* SettingsUsecase.swift */,
 				DB66CEB52475AF2300FDB694 /* TradesUsecase.swift */,
+				055A9B9D25755A5C00A8E8F1 /* DealsUsecase.swift */,
 			);
 			path = Usecases;
 			sourceTree = "<group>";
@@ -3173,6 +3224,7 @@
 				DB4D7BCA2409A17E008C2BD5 /* KYCModule.swift in Sources */,
 				DB59EA2122F9C51B00EB64A7 /* UpdatePasswordModule.swift in Sources */,
 				DB51F3132490D34F007F47B4 /* CreateEditTradeStore.swift in Sources */,
+				055A9B7A257552D000A8E8F1 /* DealsFlow+Dependencies.swift in Sources */,
 				DB350532248E7C170074DCF8 /* BuySellTradeDetailsFormView.swift in Sources */,
 				DBEE1371230E80680020E211 /* Transactions+Mapping.swift in Sources */,
 				DB8D408322C3DBC000D5FBD0 /* CreateWalletPresenter.swift in Sources */,
@@ -3183,6 +3235,7 @@
 				DBBF299A22D3764100A5DE6A /* WalletCell.swift in Sources */,
 				DB0BB5F722BD10B90035FF6C /* AppDelegate.swift in Sources */,
 				DBA6843322E42B920079429E /* WalletFlow+Dependencies.swift in Sources */,
+				055A9B76257552C100A8E8F1 /* DealsFlowController.swift in Sources */,
 				DB1CFB54246C518200020104 /* TradesViewController.swift in Sources */,
 				DB904AA722C011B1007CB734 /* WelcomeModule.swift in Sources */,
 				DBE4942C25122B680025FEF9 /* CoinExchangeTextFieldView.swift in Sources */,
@@ -3212,6 +3265,7 @@
 				DB04E4D422D85EE5000E2D85 /* PinCodeUsecase.swift in Sources */,
 				DBFAED912326C7CC004B6D79 /* Utxo+Mapping.swift in Sources */,
 				DBBF299622D3725D00A5DE6A /* UITableView+ReusableView.swift in Sources */,
+				055A9B82257552F000A8E8F1 /* DealsViewController.swift in Sources */,
 				DB64DA5A2416B8890019D38B /* VerificationConstants.swift in Sources */,
 				DBC620B3234769120007D412 /* RippleSequence+Mapping.swift in Sources */,
 				DBC68CB322F8759100473247 /* ResponseResult+Mapping.swift in Sources */,
@@ -3234,6 +3288,7 @@
 				DBC9E06523618E270008E0A6 /* TransactionDetails+Mapping.swift in Sources */,
 				DB8D40B022C3F4D700D5FBD0 /* BTMNavigationController.swift in Sources */,
 				DBA6844422E44B0F0079429E /* ATMStore.swift in Sources */,
+				055A9B86257552F900A8E8F1 /* DealsModule.swift in Sources */,
 				DBB5B38F22E0CD5800222640 /* BTMCoin.swift in Sources */,
 				DB9616DC22C748610078E92D /* StorageTransaction.swift in Sources */,
 				DB8D408C22C3E54200D5FBD0 /* Initializer.swift in Sources */,
@@ -3348,6 +3403,7 @@
 				DB96172D22C78BF30078E92D /* AppAssembly.swift in Sources */,
 				DB6A578722C1F00300DEE38A /* WelcomeButtonsView.swift in Sources */,
 				DB59EA2322F9C51B00EB64A7 /* UpdatePasswordPresenter.swift in Sources */,
+				055A9B9E25755A5C00A8E8F1 /* DealsUsecase.swift in Sources */,
 				DBC620B5234769330007D412 /* RippleSequence.swift in Sources */,
 				DB9616FB22C757D30078E92D /* LogoutStorageRegistry.swift in Sources */,
 				DB308EB722E73837003D91AF /* OpenHour+Mapping.swift in Sources */,
@@ -3399,6 +3455,7 @@
 				DB96174422C7D1070078E92D /* BTMWalletConverter.swift in Sources */,
 				DB49463A22DF2B0C001EE56E /* ManageWalletsAssembly.swift in Sources */,
 				DBBF29A422D3848F00A5DE6A /* CoinBalance+Mapping.swift in Sources */,
+				055A9B8A2575530700A8E8F1 /* DealsAssembly.swift in Sources */,
 				DB39DF4824E17C1700468ADA /* UIViewController+Extensions.swift in Sources */,
 				DB96171522C75E950078E92D /* BTMNetworkService.swift in Sources */,
 				DB70852722CFA3EC00FFE4F7 /* WalletViewController.swift in Sources */,
@@ -3452,6 +3509,7 @@
 				DB26C00D24D1E4BD007FE258 /* FirebaseInitializer.swift in Sources */,
 				DB5185AE231FE68300052229 /* CoinWithdrawViewController.swift in Sources */,
 				DB16A871235F4438007E3B20 /* CoinSellDetailsAnotherAddressViewController.swift in Sources */,
+				055A9B72257552B700A8E8F1 /* DealsFlow.swift in Sources */,
 				DB2F250C2360687800274C60 /* CoinSellDetailsCurrentAddressModule.swift in Sources */,
 				DB904AA322C00FC7007CB734 /* UIView+MBProgressHUD.swift in Sources */,
 				DB83663922FAB7CE00454F5C /* UpdatePinFlow.swift in Sources */,
@@ -3473,6 +3531,7 @@
 				DBECA63722F7FC36002C2610 /* ShowPhoneViewController.swift in Sources */,
 				DB66CEB82475BAC200FDB694 /* UITableView+Extensions.swift in Sources */,
 				DB1CFB53246C518200020104 /* TradesModule.swift in Sources */,
+				055A9B7E257552E500A8E8F1 /* DealsPresenter.swift in Sources */,
 				DB96168822C50E720078E92D /* CreateWalletStore.swift in Sources */,
 				DB51F31A2491606C007F47B4 /* CreateEditTradeFormView.swift in Sources */,
 				DBBF299422D3719500A5DE6A /* WalletTableViewDataSource.swift in Sources */,
@@ -3542,6 +3601,7 @@
 				DBA6843822E449BA0079429E /* ATMFlow.swift in Sources */,
 				DB1CFB55246C518200020104 /* TradesPresenter.swift in Sources */,
 				DB2F250E2360687800274C60 /* CoinSellDetailsCurrentAddressPresenter.swift in Sources */,
+				055A9B8E2575530E00A8E8F1 /* DealsStore.swift in Sources */,
 				DB8A1960235729A0003E8F7D /* NavigationScreenView.swift in Sources */,
 				DB0AD1D624BA1F4C00806282 /* PasswordTextField.swift in Sources */,
 				DB8D408122C3DBA700D5FBD0 /* CreateWalletModule.swift in Sources */,
