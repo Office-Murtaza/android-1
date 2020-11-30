@@ -4,5 +4,6 @@
         <attr name="src" format="reference" />
         <attr name="text" format="string" />
         <attr name="value" format="string" />
+        <attr name="withChevron" format="boolean" />
     </declare-styleable>
 </resources>

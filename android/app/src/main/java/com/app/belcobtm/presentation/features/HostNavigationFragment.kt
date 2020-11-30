@@ -21,6 +21,7 @@ class HostNavigationFragment : NavHostFragment() {
     private lateinit var currentNavHostController: LiveData<NavController>
     private val navGraphIds = listOf(
         R.navigation.nav_wallet,
+        R.navigation.nav_deals,
         R.navigation.nav_atm,
         R.navigation.nav_settings
     )

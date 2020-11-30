@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="@dimen/margin_large"
+        android:background="@color/thin_divider" />
+
+    <com.app.belcobtm.presentation.core.views.SettingsItemView
+        android:id="@+id/walletsItem"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:src="@drawable/ic_staking"
+        app:text="@string/deals_staking"
+        app:withChevron="true" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/divider_size"
+        android:background="@color/thin_divider" />
+
+    <com.app.belcobtm.presentation.core.views.SettingsItemView
+        android:id="@+id/securityItem"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:src="@drawable/ic_swap"
+        app:text="@string/deals_swap"
+        app:withChevron="true" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/divider_size"
+        android:background="@color/thin_divider" />
+
+    <com.app.belcobtm.presentation.core.views.SettingsItemView
+        android:id="@+id/kycItem"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:src="@drawable/ic_trade"
+        app:text="@string/deals_trade"
+        app:withChevron="true" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/divider_size"
+        android:background="@color/thin_divider" />
+
+</androidx.appcompat.widget.LinearLayoutCompat>
