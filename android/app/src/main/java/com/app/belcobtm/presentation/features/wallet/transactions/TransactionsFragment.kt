@@ -9,21 +9,24 @@ import android.location.LocationManager
 import android.view.Menu
 import android.view.View
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.Observer
 import androidx.lifecycle.observe
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.app.belcobtm.R
+import com.app.belcobtm.data.rest.wallet.request.PriceChartPeriod
 import com.app.belcobtm.domain.wallet.LocalCoinType
+import com.app.belcobtm.domain.wallet.item.ChartChangesColor
+import com.app.belcobtm.domain.wallet.item.ChartDataItem
 import com.app.belcobtm.presentation.core.extensions.setDrawableStart
 import com.app.belcobtm.presentation.core.extensions.toStringCoin
 import com.app.belcobtm.presentation.core.extensions.toStringUsd
+import com.app.belcobtm.presentation.core.extensions.toggle
+import com.app.belcobtm.presentation.core.mvvm.LoadingData
 import com.app.belcobtm.presentation.core.ui.fragment.BaseFragment
 import com.app.belcobtm.presentation.features.wallet.trade.main.TradeActivity
-import com.app.belcobtm.presentation.features.wallet.trade.recall.TradeRecallActivity
-import com.app.belcobtm.presentation.features.wallet.trade.reserve.TradeReserveActivity
+import com.app.belcobtm.presentation.features.wallet.trade.recall.TradeRecallFragment
 import com.app.belcobtm.presentation.features.wallet.transactions.TransactionsFABType.*
 import com.app.belcobtm.presentation.features.wallet.transactions.adapter.TransactionsAdapter
-import com.github.mikephil.charting.data.BarEntry
+import com.app.belcobtm.presentation.features.wallet.transactions.item.CurrentChartInfo
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import io.github.kobakei.materialfabspeeddial.FabSpeedDialMenu
@@ -110,14 +113,7 @@ class TransactionsFragment : BaseFragment() {
 
     override fun initListeners() {
         chartChipGroupView.setOnCheckedChangeListener { _, checkedId ->
-            viewModel.currentChartPeriodType = when (checkedId) {
-                R.id.oneWeekChipView -> ChartPeriodType.WEEK
-                R.id.oneMonthChipView -> ChartPeriodType.MONTH
-                R.id.threeMonthChipView -> ChartPeriodType.THREE_MONTHS
-                R.id.oneYearChipView -> ChartPeriodType.YEAR
-                else -> ChartPeriodType.DAY
-            }
-            updateChartByPeriod()
+            viewModel.changeCurrentTypePeriod(checkedId)
         }
         swipeToRefreshView.setOnRefreshListener { viewModel.refreshTransactionList() }
         fabListView.addOnMenuItemClickListener { _, _, itemId ->
@@ -133,13 +129,9 @@ class TransactionsFragment : BaseFragment() {
                 DEPOSIT.id ->
                     navigate(TransactionsFragmentDirections.toDepositFragment(viewModel.coinCode))
                 RECALL.id ->
-                    startTradeRecallActivity(
-                        TransactionsFragmentArgs.fromBundle(requireArguments()).coinCode
-                    )
+                    navigate(TransactionsFragmentDirections.toRecallFragment(viewModel.coinCode))
                 RESERVE.id ->
-                    startTradeReserveActivity(
-                        TransactionsFragmentArgs.fromBundle(requireArguments()).coinCode
-                    )
+                    navigate(TransactionsFragmentDirections.toReserveFragment(viewModel.coinCode))
 
                 //SELL.id -> SellActivity.start(
                 //    requireContext(),
@@ -151,8 +143,34 @@ class TransactionsFragment : BaseFragment() {
     }
 
     override fun initObservers() {
-        viewModel.chartLiveData.observe(viewLifecycleOwner, Observer {
-            updateChartByPeriod()
+        viewModel.chartLiveData.observe(viewLifecycleOwner) { loadingData ->
+            when (loadingData) {
+                is LoadingData.Loading<CurrentChartInfo> -> {
+                    chartProgressView.toggle(true)
+                }
+                is LoadingData.Success<CurrentChartInfo> -> {
+                    with(loadingData.data) {
+                        setChart(period, chartInfo)
+                        setChanges(chartInfo.changes, chartInfo.changesColor)
+                    }
+                    chartProgressView.toggle(false)
+                }
+                is LoadingData.Error<CurrentChartInfo> -> {
+                    loadingData.data?.let { data ->
+                        setChart(data.period, data.chartInfo)
+                    }
+                    changesView.setCompoundDrawables(null, null, null, null)
+                    changesView.text = ""
+                    chartProgressView.toggle(false)
+                }
+            }
+        }
+        viewModel.transactionListLiveData.observe(this) {
+            adapter.submitList(it)
+            swipeToRefreshView.isRefreshing = false
+        }
+        viewModel.detailsLiveData.listen({
+            //important download fee
             priceUsdView.text = getString(R.string.text_usd, it.priceUsd.toStringUsd())
             balanceCryptoView.text =
                 getString(R.string.text_text, it.balance.toStringCoin(), viewModel.coinCode)
@@ -167,13 +185,6 @@ class TransactionsFragment : BaseFragment() {
                 R.string.text_usd,
                 it.reservedBalanceUsd.toStringUsd()
             )
-        })
-        viewModel.transactionListLiveData.observe(this) {
-            adapter.submitList(it)
-            swipeToRefreshView.isRefreshing = false
-        }
-        viewModel.detailsLiveData.listen({
-            //important download fee
         })
     }
 
@@ -209,86 +220,85 @@ class TransactionsFragment : BaseFragment() {
         }
     }
 
-    private fun updateChartByPeriod() {
-        viewModel.chartLiveData.value?.let {
-            when (val chartType = viewModel.currentChartPeriodType) {
-                ChartPeriodType.DAY -> {
-                    setChart(chartType, it.chartDay.second)
-                    setChanges(it.chartDay.first)
-                }
-                ChartPeriodType.WEEK -> {
-                    setChart(chartType, it.chartWeek.second)
-                    setChanges(it.chartWeek.first)
-                }
-                ChartPeriodType.MONTH -> {
-                    setChart(chartType, it.chartMonth.second)
-                    setChanges(it.chartMonth.first)
-                }
-                ChartPeriodType.THREE_MONTHS -> {
-                    setChart(chartType, it.chartThreeMonths.second)
-                    setChanges(it.chartThreeMonths.first)
-                }
-                ChartPeriodType.YEAR -> {
-                    setChart(chartType, it.chartYear.second)
-                    setChanges(it.chartYear.first)
-                }
+    private fun setChanges(changes: Double, @ChartChangesColor color: Int) {
+        when (color) {
+            ChartChangesColor.RED -> {
+                changesView.setDrawableStart(R.drawable.ic_arrow_drop_down)
+                changesView.compoundDrawableTintList =
+                    ContextCompat.getColorStateList(changesView.context, R.color.chart_changes_down)
+                changesView.setTextColor(
+                    ContextCompat.getColor(
+                        changesView.context,
+                        R.color.chart_changes_down
+                    )
+                )
+            }
+            ChartChangesColor.GREEN -> {
+                changesView.setDrawableStart(R.drawable.ic_arrow_drop_up)
+                changesView.compoundDrawableTintList =
+                    ContextCompat.getColorStateList(changesView.context, R.color.chart_changes_up)
+                changesView.setTextColor(
+                    ContextCompat.getColor(
+                        changesView.context,
+                        R.color.chart_changes_up
+                    )
+                )
+            }
+            ChartChangesColor.BLACK -> {
+                changesView.setCompoundDrawables(null, null, null, null)
+                changesView.compoundDrawableTintList =
+                    ContextCompat.getColorStateList(changesView.context, R.color.chart_no_highlight)
+                changesView.setTextColor(
+                    ContextCompat.getColor(
+                        changesView.context,
+                        R.color.chart_no_highlight
+                    )
+                )
             }
         }
-    }
-
-    private fun setChanges(changes: Double) {
-        if (changes >= 0) {
-            changesView.setDrawableStart(R.drawable.ic_arrow_drop_up)
-            changesView.compoundDrawableTintList =
-                ContextCompat.getColorStateList(changesView.context, R.color.chart_changes_up)
-            changesView.setTextColor(
-                ContextCompat.getColor(
-                    changesView.context,
-                    R.color.chart_changes_up
-                )
-            )
-        } else {
-            changesView.setDrawableStart(R.drawable.ic_arrow_drop_down)
-            changesView.compoundDrawableTintList =
-                ContextCompat.getColorStateList(changesView.context, R.color.chart_changes_down)
-            changesView.setTextColor(
-                ContextCompat.getColor(
-                    changesView.context,
-                    R.color.chart_changes_down
-                )
-            )
-        }
-
         changesView.text =
-            resources.getString(R.string.transaction_changes_percent, changes.toString())
+            resources.getString(
+                R.string.transaction_changes_percent,
+                String.format("%.2f", changes)
+            )
     }
 
-    private fun setChart(chartType: ChartPeriodType, chartList: List<Double>) {
+    private fun setChart(@PriceChartPeriod chartType: Int, chartInfo: ChartDataItem) {
         when (chartType) {
-            ChartPeriodType.DAY -> chartChipGroupView.check(R.id.oneDayChipView)
-            ChartPeriodType.WEEK -> chartChipGroupView.check(R.id.oneWeekChipView)
-            ChartPeriodType.MONTH -> chartChipGroupView.check(R.id.oneMonthChipView)
-            ChartPeriodType.THREE_MONTHS -> chartChipGroupView.check(R.id.threeMonthChipView)
-            ChartPeriodType.YEAR -> chartChipGroupView.check(R.id.oneYearChipView)
+            PriceChartPeriod.PERIOD_DAY -> chartChipGroupView.check(R.id.oneDayChipView)
+            PriceChartPeriod.PERIOD_WEEK -> chartChipGroupView.check(R.id.oneWeekChipView)
+            PriceChartPeriod.PERIOD_MONTH -> chartChipGroupView.check(R.id.oneMonthChipView)
+            PriceChartPeriod.PERIOD_QUARTER -> chartChipGroupView.check(R.id.threeMonthChipView)
+            PriceChartPeriod.PERIOD_YEAR -> chartChipGroupView.check(R.id.oneYearChipView)
         }
-
-        val valueList =
-            chartList.mapIndexed { index, value -> BarEntry(index.toFloat(), value.toFloat()) }
-        val dataSet = LineDataSet(valueList, null).apply {
-            mode = LineDataSet.Mode.CUBIC_BEZIER
-            color = ContextCompat.getColor(chartView.context, R.color.chart_line)
-            setCircleColors(
-                chartList.mapIndexed { index, _ ->
-                    if (index == chartList.lastIndex) R.color.chart_point else android.R.color.transparent
-                }.toIntArray(),
-                chartView.context
-            )
-            setDrawCircleHole(false)
-            circleRadius = 3f
-            setDrawValues(false)
+        val dataSet: LineDataSet
+        val circleDataSet: LineDataSet
+        if (chartView.data != null && chartView.data.dataSetCount > 0) {
+            dataSet = chartView.data.getDataSetByIndex(0) as LineDataSet
+            dataSet.values = chartInfo.prices
+            circleDataSet = chartView.data.getDataSetByIndex(1) as LineDataSet
+            circleDataSet.values = chartInfo.circles
+            chartView.data.notifyDataChanged()
+            chartView.notifyDataSetChanged()
+        } else {
+            dataSet = LineDataSet(chartInfo.prices, null).apply {
+                mode = LineDataSet.Mode.CUBIC_BEZIER
+                color = ContextCompat.getColor(chartView.context, R.color.chart_line)
+                setDrawCircleHole(false)
+                setDrawCircles(false)
+                circleRadius = 3f
+                setDrawValues(false)
+            }
+            circleDataSet = LineDataSet(chartInfo.circles, null).apply {
+                mode = LineDataSet.Mode.CUBIC_BEZIER
+                color = ContextCompat.getColor(chartView.context, R.color.chart_line)
+                setCircleColor(ContextCompat.getColor(chartView.context, R.color.chart_point))
+                setDrawCircleHole(false)
+                circleRadius = 3f
+                setDrawValues(false)
+            }
+            chartView.data = LineData(dataSet, circleDataSet)
         }
-
-        chartView.data = LineData(dataSet)
         chartView.invalidate()
     }
 
@@ -301,20 +311,6 @@ class TransactionsFragment : BaseFragment() {
         intent.putExtra(TradeActivity.TAG_LATITUDE, latitude)
         intent.putExtra(TradeActivity.TAG_LONGITUDE, longitude)
         startActivity(intent)
-    }
-
-    private fun startTradeRecallActivity(coinCode: String) {
-        val notNullContext = context ?: return
-        val recallIntent = Intent(notNullContext, TradeRecallActivity::class.java)
-        recallIntent.putExtra(TradeRecallActivity.TAG_COIN_CODE, coinCode)
-        startActivity(recallIntent)
-    }
-
-    private fun startTradeReserveActivity(coinCode: String) {
-        val notNullContext = context ?: return
-        val reserveIntent = Intent(notNullContext, TradeReserveActivity::class.java)
-        reserveIntent.putExtra(TradeReserveActivity.TAG_COIN_CODE, coinCode)
-        startActivity(reserveIntent)
     }
 
     companion object {

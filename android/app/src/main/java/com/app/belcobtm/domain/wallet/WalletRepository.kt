@@ -1,5 +1,6 @@
 package com.app.belcobtm.domain.wallet
 
+import com.app.belcobtm.data.rest.wallet.request.PriceChartPeriod
 import com.app.belcobtm.domain.Either
 import com.app.belcobtm.domain.Failure
 import com.app.belcobtm.domain.wallet.item.*
@@ -24,7 +25,10 @@ interface WalletRepository {
 
     suspend fun getBalanceItem(): Either<Failure, BalanceDataItem>
 
-    suspend fun getChart(coinCode: String): Either<Failure, ChartDataItem>
+    suspend fun getChart(
+        coinCode: String,
+        @PriceChartPeriod period: Int
+    ): Either<Failure, ChartDataItem>
 
     suspend fun updateCoinDetails(coinCode: String): Either<Failure, CoinDetailsDataItem>
 }

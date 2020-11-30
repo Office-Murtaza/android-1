@@ -1,6 +1,7 @@
 package com.app.belcobtm.data.rest.wallet
 
 import com.app.belcobtm.data.disk.shared.preferences.SharedPreferencesHelper
+import com.app.belcobtm.data.rest.wallet.request.PriceChartPeriod
 import com.app.belcobtm.data.rest.wallet.response.mapToDataItem
 import com.app.belcobtm.domain.Either
 import com.app.belcobtm.domain.Failure
@@ -23,8 +24,11 @@ class WalletApiService(
         Either.Left(failure)
     }
 
-    suspend fun getChart(coinCode: String): Either<Failure, ChartDataItem> = try {
-        val request = api.getChartAsync(prefHelper.userId, coinCode).await()
+    suspend fun getChart(
+        coinCode: String,
+        @PriceChartPeriod period: Int
+    ): Either<Failure, ChartDataItem> = try {
+        val request = api.getChartAsync(coinCode, period).await()
         request.body()?.let { Either.Right(it.mapToDataItem()) }
             ?: Either.Left(Failure.ServerError())
     } catch (failure: Failure) {

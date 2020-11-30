@@ -5,6 +5,7 @@ import com.app.belcobtm.data.disk.database.mapToDataItem
 import com.app.belcobtm.data.disk.database.mapToEntity
 import com.app.belcobtm.data.disk.shared.preferences.SharedPreferencesHelper
 import com.app.belcobtm.data.rest.wallet.WalletApiService
+import com.app.belcobtm.data.rest.wallet.request.PriceChartPeriod
 import com.app.belcobtm.domain.Either
 import com.app.belcobtm.domain.Failure
 import com.app.belcobtm.domain.wallet.WalletRepository
@@ -85,8 +86,9 @@ class WalletRepositoryImpl(
     }
 
     override suspend fun getChart(
-        coinCode: String
-    ): Either<Failure, ChartDataItem> = apiService.getChart(coinCode)
+        coinCode: String,
+        @PriceChartPeriod period: Int
+    ): Either<Failure, ChartDataItem> = apiService.getChart(coinCode, period)
 
     override suspend fun updateCoinDetails(
         coinCode: String
