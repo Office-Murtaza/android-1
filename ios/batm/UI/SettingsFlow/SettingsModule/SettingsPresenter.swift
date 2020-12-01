@@ -25,6 +25,7 @@ class SettingsPresenter: ModulePresenter, SettingsModule {
         case .wallet: delegate?.didSelectWallet()
         case .security: delegate?.didSelectSecurity()
         case .kyc: self.fetchVerificationInfo()
+        case .notifications: delegate?.didSelectNotifications()
         case .support: delegate?.didSelectSupport()
         case .about: delegate?.didSelectAbout()
         }

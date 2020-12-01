@@ -22,6 +22,13 @@
 		055A9B8A2575530700A8E8F1 /* DealsAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = 055A9B892575530700A8E8F1 /* DealsAssembly.swift */; };
 		055A9B8E2575530E00A8E8F1 /* DealsStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 055A9B8D2575530E00A8E8F1 /* DealsStore.swift */; };
 		055A9B9E25755A5C00A8E8F1 /* DealsUsecase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 055A9B9D25755A5C00A8E8F1 /* DealsUsecase.swift */; };
+		055A9BA92575823400A8E8F1 /* NotificationsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 055A9BA82575823400A8E8F1 /* NotificationsPresenter.swift */; };
+		055A9BAD2575823F00A8E8F1 /* NotificationsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 055A9BAC2575823F00A8E8F1 /* NotificationsViewController.swift */; };
+		055A9BB12575824C00A8E8F1 /* NotificationsModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 055A9BB02575824C00A8E8F1 /* NotificationsModule.swift */; };
+		055A9BB92575826200A8E8F1 /* NotificationsAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = 055A9BB82575826200A8E8F1 /* NotificationsAssembly.swift */; };
+		055A9BBE257585C200A8E8F1 /* NotificationsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 055A9BBD257585C200A8E8F1 /* NotificationsCell.swift */; };
+		055A9BC52575874D00A8E8F1 /* NotificationsTableViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 055A9BC42575874D00A8E8F1 /* NotificationsTableViewDataSource.swift */; };
+		055A9BCB2575875D00A8E8F1 /* NotificationsTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 055A9BCA2575875D00A8E8F1 /* NotificationsTableView.swift */; };
 		232E33482550626A00A9BF72 /* BalanceService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 232E33472550626A00A9BF72 /* BalanceService.swift */; };
 		232E345E2558772B00A9BF72 /* SocketMessageBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 232E345D2558772B00A9BF72 /* SocketMessageBuilder.swift */; };
 		232E346425593BA200A9BF72 /* SocketResultMessageMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 232E346325593BA200A9BF72 /* SocketResultMessageMapper.swift */; };
@@ -561,6 +568,13 @@
 		055A9B892575530700A8E8F1 /* DealsAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DealsAssembly.swift; sourceTree = "<group>"; };
 		055A9B8D2575530E00A8E8F1 /* DealsStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DealsStore.swift; sourceTree = "<group>"; };
 		055A9B9D25755A5C00A8E8F1 /* DealsUsecase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DealsUsecase.swift; sourceTree = "<group>"; };
+		055A9BA82575823400A8E8F1 /* NotificationsPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsPresenter.swift; sourceTree = "<group>"; };
+		055A9BAC2575823F00A8E8F1 /* NotificationsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsViewController.swift; sourceTree = "<group>"; };
+		055A9BB02575824C00A8E8F1 /* NotificationsModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsModule.swift; sourceTree = "<group>"; };
+		055A9BB82575826200A8E8F1 /* NotificationsAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsAssembly.swift; sourceTree = "<group>"; };
+		055A9BBD257585C200A8E8F1 /* NotificationsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsCell.swift; sourceTree = "<group>"; };
+		055A9BC42575874D00A8E8F1 /* NotificationsTableViewDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsTableViewDataSource.swift; sourceTree = "<group>"; };
+		055A9BCA2575875D00A8E8F1 /* NotificationsTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsTableView.swift; sourceTree = "<group>"; };
 		142D5BA6DA2741657FE02671 /* Pods_batmTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_batmTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		232E33472550626A00A9BF72 /* BalanceService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BalanceService.swift; sourceTree = "<group>"; };
 		232E345D2558772B00A9BF72 /* SocketMessageBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocketMessageBuilder.swift; sourceTree = "<group>"; };
@@ -1152,6 +1166,36 @@
 				055A9B79257552D000A8E8F1 /* DealsFlow+Dependencies.swift */,
 			);
 			path = Flow;
+            sourceTree = "<group>";
+        };
+		055A9BA72575820400A8E8F1 /* NotificationsModule */ = {
+			isa = PBXGroup;
+			children = (
+				055A9BBC257585B100A8E8F1 /* TableViewRelated */,
+				055A9BA82575823400A8E8F1 /* NotificationsPresenter.swift */,
+				055A9BAC2575823F00A8E8F1 /* NotificationsViewController.swift */,
+				055A9BB02575824C00A8E8F1 /* NotificationsModule.swift */,
+				055A9BB82575826200A8E8F1 /* NotificationsAssembly.swift */,
+			);
+			path = NotificationsModule;
+			sourceTree = "<group>";
+		};
+		055A9BBC257585B100A8E8F1 /* TableViewRelated */ = {
+			isa = PBXGroup;
+			children = (
+				055A9BC32575873400A8E8F1 /* DataSource */,
+				055A9BBD257585C200A8E8F1 /* NotificationsCell.swift */,
+				055A9BCA2575875D00A8E8F1 /* NotificationsTableView.swift */,
+			);
+			path = TableViewRelated;
+			sourceTree = "<group>";
+		};
+		055A9BC32575873400A8E8F1 /* DataSource */ = {
+			isa = PBXGroup;
+			children = (
+				055A9BC42575874D00A8E8F1 /* NotificationsTableViewDataSource.swift */,
+			);
+			path = DataSource;
 			sourceTree = "<group>";
 		};
 		232E33462550622C00A9BF72 /* BalanceService */ = {
@@ -2555,6 +2599,7 @@
 			children = (
 				DBA6844A22E45A110079429E /* Flow */,
 				DBA6845122E45A880079429E /* SettingsModule */,
+				055A9BA72575820400A8E8F1 /* NotificationsModule */,
 				DB4F394F22DEFA0600D53BF3 /* ManageWalletsModule */,
 				DBDA455824E5BD6D002A3AF5 /* SecurityModule */,
 				0522EB1E25597B310028CD51 /* SupportModule */,
@@ -3146,6 +3191,7 @@
 				DBA7A4A5235662AD000BE997 /* CoinSellModule.swift in Sources */,
 				DB5B2DE6230A769300821713 /* CoinDetailsAssembly.swift in Sources */,
 				DBADDE372438DD6600BFD806 /* CoinExchangeViewController.swift in Sources */,
+				055A9BB12575824C00A8E8F1 /* NotificationsModule.swift in Sources */,
 				DBB99D1C24F89D38008CC21B /* CoinAmountTextFieldView.swift in Sources */,
 				DB38281C240CF9BA00418D3D /* VIPVerificationModule.swift in Sources */,
 				DBECA63022F7FBA9002C2610 /* UpdatePhoneFlow+Dependencies.swift in Sources */,
@@ -3246,6 +3292,7 @@
 				DB904AA522C01189007CB734 /* WelcomePresenter.swift in Sources */,
 				DB9616C122C745980078E92D /* Database.xcdatamodeld in Sources */,
 				DBC620AF23475AF80007D412 /* BinanceAccountInfo.swift in Sources */,
+				055A9BAD2575823F00A8E8F1 /* NotificationsViewController.swift in Sources */,
 				DB2F2503236049DB00274C60 /* CoinSellDetailsInstructionView.swift in Sources */,
 				DBA1B61324A9C5E300A9A703 /* ReserveStore.swift in Sources */,
 				DB5B2DE4230A769300821713 /* CoinDetailsViewController.swift in Sources */,
@@ -3309,6 +3356,7 @@
 				DBC68CB122F8755000473247 /* ResponseResult.swift in Sources */,
 				DB1BAEF52503E70200D65477 /* GlobalConstants.swift in Sources */,
 				DB59EA1B22F9C4BF00EB64A7 /* UpdatePasswordFlowController.swift in Sources */,
+				055A9BA92575823400A8E8F1 /* NotificationsPresenter.swift in Sources */,
 				DBAD539F22D7BA1D0005F682 /* PinCodeViewController.swift in Sources */,
 				DB59EA2222F9C51B00EB64A7 /* UpdatePasswordViewController.swift in Sources */,
 				DB21B1F224AA63AA008444D3 /* RecallViewController.swift in Sources */,
@@ -3432,6 +3480,7 @@
 				DB5EB8DC2452C5CC00CD1C63 /* CoinSellFormView.swift in Sources */,
 				DB5F18C02472AC6B00E37311 /* BuySellTradesTableViewDataSource.swift in Sources */,
 				DB1D21F024AE6F2A001E9696 /* CoinStakingPresenter.swift in Sources */,
+				055A9BC52575874D00A8E8F1 /* NotificationsTableViewDataSource.swift in Sources */,
 				DBC68C9722F85E1300473247 /* PhoneNumber+Mapping.swift in Sources */,
 				DB5B2DDD230A74D000821713 /* CoinDetailsFlowController.swift in Sources */,
 				DBA65C09244DBF1D0034678E /* FakeTextFied.swift in Sources */,
@@ -3443,6 +3492,7 @@
 				DB83661622FA9FCB00454F5C /* SeedPhraseFlow.swift in Sources */,
 				DBDA966222BFDB6E005B93DF /* ModulePresenter.swift in Sources */,
 				DBCFBD5224BE53420045B9B4 /* SeedPhraseStore.swift in Sources */,
+				055A9BB92575826200A8E8F1 /* NotificationsAssembly.swift in Sources */,
 				DBA4F4A324CDDE4200E6FAAB /* PinCodeKeyboardView.swift in Sources */,
 				DB95EB20230AA52A0059C84C /* Transaction.swift in Sources */,
 				DB2C971E23449109006E7D61 /* CoinSendGiftAssembly.swift in Sources */,
@@ -3470,6 +3520,7 @@
 				DB497AFC22BFD5F7008CE4A8 /* ModuleViewController.swift in Sources */,
 				DBAB1CF3240C336500DDF9F5 /* KYC+Mapping.swift in Sources */,
 				DB04E4CB22D85C50000E2D85 /* PinCodeStorage.swift in Sources */,
+				055A9BBE257585C200A8E8F1 /* NotificationsCell.swift in Sources */,
 				DB8D409822C3EA0400D5FBD0 /* BaseFlow.swift in Sources */,
 				DB39DF5A24E17FC700468ADA /* ErrorAssembly.swift in Sources */,
 				DB0211BB22CCE42B004065E9 /* RecoverSeedPhraseModule.swift in Sources */,
@@ -3494,6 +3545,7 @@
 				DB33E9BE241D389400764BF5 /* PriceChartData.swift in Sources */,
 				DBF98D3F24502B0700AF6D5A /* CoinDepositViewController.swift in Sources */,
 				DBAD539922D7B7D10005F682 /* PinCodeModule.swift in Sources */,
+				055A9BCB2575875D00A8E8F1 /* NotificationsTableView.swift in Sources */,
 				DB8F077D24102DAE00770643 /* PickerConfig.swift in Sources */,
 				DB0211C122CCE6EC004065E9 /* RecoverSeedPhraseAssembly.swift in Sources */,
 				DB4AAE9F250630BE00C9565B /* DummyButton.swift in Sources */,

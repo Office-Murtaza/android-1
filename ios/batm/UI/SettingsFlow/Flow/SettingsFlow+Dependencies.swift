@@ -22,7 +22,8 @@ extension SettingsFlow {
                     KYCFlowControllerDelegate.self,
                     SeedPhraseFlowControllerDelegate.self,
                     UnlinkFlowControllerDelegate.self)
-        .implements(SupportModuleDelegate.self)
+        .implements(SupportModuleDelegate.self,
+                    NotificationsModuleDelegate.self)
     }
   }
 }

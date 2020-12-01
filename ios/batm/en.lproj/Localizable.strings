@@ -80,6 +80,7 @@
 "settings.cell.wallet" = "Wallets";
 "settings.cell.security" = "Security";
 "settings.cell.kyc" = "AML/KYC";
+"settings.cell.notifications" = "Notifications";
 "settings.cell.about" = "About";
 "settings.cell.support" = "Support";
 
@@ -92,6 +93,8 @@
 
 "about.title" = "About";
 "about.cell.terms_and_conditions" = "Terms & Conditions";
+"about.cell.privacy_policy" = "Privacy Policy";
+"about.cell.compliant_policy" = "Compliant Policy";
 "about.cell.support" = "Support";
 "about.cell.version" = "Version";
 
@@ -337,3 +340,6 @@
 "error.no_connection.subtitle" = "Connect to WiFi or turn on mobile data.";
 
 "deals.title" = "Deals";
+
+"notifications.title" = "Notifications";
+"notifications.cell.title" = "Receive push notifications";

@@ -2,8 +2,7 @@ import Foundation
 import RxSwift
 import RxCocoa
 
-class AboutPresenter: ModulePresenter, AboutModule {
-  
+class AboutPresenter: ModulePresenter, AboutModule, SendHelperProtocol {
   struct Input {
     var select: Driver<IndexPath>
   }
@@ -16,9 +15,11 @@ class AboutPresenter: ModulePresenter, AboutModule {
     input.select
       .asObservable()
       .map { [types] in types[$0.item] }
-      .subscribe(onNext: {
+      .subscribe(onNext: { [weak self] in
         switch $0 {
-        case .termsAndConditions: UIApplication.shared.open(URL.termsAndConditions)
+        case .privacyPolicy: self?.openWeblink($0.link)
+        case .compliantPolicy: self?.openWeblink($0.link)
+        case .termsAndConditions: self?.openWeblink($0.link)
         default: break
         }
       })

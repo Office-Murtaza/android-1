@@ -32,11 +32,15 @@ extension SettingsFlowController: SettingsModuleDelegate {
     func didSelectSupport() {
         step.accept(SettingsFlow.Steps.support)
     }
+    
+    func didSelectNotifications() {
+        step.accept(SettingsFlow.Steps.notifications)
+    }
 }
 
 extension SettingsFlowController: SecurityModuleDelegate {
   
-  func didSelectUpdatePhone(_ phoneNumber: PhoneNumber) {
+  func didSelectUpdatePhone(_ phoneNumber: String) {
     step.accept(SettingsFlow.Steps.updatePhone(phoneNumber))
   }
   
@@ -60,6 +64,7 @@ extension SettingsFlowController: SecurityModuleDelegate {
 
 extension SettingsFlowController: SupportModuleDelegate {}
 extension SettingsFlowController: AboutModuleDelegate {}
+extension SettingsFlowController: NotificationsModuleDelegate {}
 
 extension SettingsFlowController: UpdatePhoneFlowControllerDelegate {
   
