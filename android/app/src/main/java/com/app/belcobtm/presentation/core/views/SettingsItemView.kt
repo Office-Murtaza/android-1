@@ -42,6 +42,7 @@ class SettingsItemView @JvmOverloads constructor(
             setImage(typedArray.getDrawable(R.styleable.SettingsItemView_src))
             setLabel(typedArray.getString(R.styleable.SettingsItemView_text))
             setValue(typedArray.getString(R.styleable.SettingsItemView_value))
+            showChevron(typedArray.getBoolean(R.styleable.SettingsItemView_withChevron, false))
         } finally {
             typedArray.recycle()
         }
@@ -60,5 +61,9 @@ class SettingsItemView @JvmOverloads constructor(
 
     fun setValue(value: CharSequence?) {
         valueText.text = value ?: ""
+    }
+
+    fun showChevron(show: Boolean) {
+        ivChevron.toggle(show)
     }
 }

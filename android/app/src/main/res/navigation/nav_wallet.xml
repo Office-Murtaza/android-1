@@ -135,6 +135,7 @@
             android:name="coin_code"
             app:argType="string" />
     </fragment>
+
     <fragment
         android:id="@+id/exchange_fragment"
         android:name="com.app.belcobtm.presentation.features.wallet.exchange.coin.to.coin.ExchangeFragment"

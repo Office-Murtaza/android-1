@@ -9,6 +9,7 @@
     <string name="bottom_menu_locations">Locations</string>
     <string name="bottom_menu_settings">Settings</string>
     <string name="bottom_menu_wallet">Wallet</string>
+    <string name="bottom_menu_deals">Deals</string>
 
     <!-- Base screen -->
     <string name="base_screen_no_internet_title">No internet connection</string>
@@ -500,4 +501,10 @@
     <string name="zip_validation_text">Zip code should be 5 digits</string>
     <string name="scan_validation_text">Please, upload ID scan image</string>
     <string name="selfie_validation_text">Please, upload ID selfie image</string>
+
+    <!--Deals-->
+    <string name="deals_toolsbar_title">Deals</string>
+    <string name="deals_staking">Staking</string>
+    <string name="deals_swap">Swap</string>
+    <string name="deals_trade">Trade</string>
 </resources>
