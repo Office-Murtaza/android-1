@@ -7,6 +7,7 @@ import com.app.belcobtm.presentation.features.settings.SettingsFragment.Companio
 import com.app.belcobtm.presentation.features.settings.SettingsFragment.Companion.SETTINGS_MAIN
 import com.app.belcobtm.presentation.features.settings.SettingsFragment.Companion.SETTINGS_SECURITY
 
+
 class SettingsViewModel : ViewModel() {
 
     val actionData = SingleLiveData<SettingsAction>()
@@ -33,6 +34,9 @@ class SettingsViewModel : ViewModel() {
                 val dest = SettingsFragmentDirections.settingsToAboutFragment()
                 actionData.value = SettingsAction.NavigateAction(dest)
             }
+            SettingsSections.NOTIFICATIONS -> {
+                actionData.value = SettingsAction.NotificationOptions
+            }
         }
     }
 
@@ -57,11 +61,13 @@ enum class SettingsSections {
     WALLETS,
     SECURITY,
     KYC,
+    NOTIFICATIONS,
     SUPPORT,
     ABOUT
 }
 
 sealed class SettingsAction {
+    object NotificationOptions : SettingsAction()
     data class NavigateAction(val navDirections: NavDirections) : SettingsAction()
 }
 

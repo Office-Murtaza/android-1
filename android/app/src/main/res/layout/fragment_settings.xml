@@ -48,6 +48,18 @@
         android:background="@color/thin_divider" />
 
     <com.app.belcobtm.presentation.core.views.SettingsItemView
+        android:id="@+id/notificationsItem"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:src="@drawable/ic_notifications"
+        app:text="@string/notifications_label" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/divider_size"
+        android:background="@color/thin_divider" />
+
+    <com.app.belcobtm.presentation.core.views.SettingsItemView
         android:id="@+id/supportItem"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

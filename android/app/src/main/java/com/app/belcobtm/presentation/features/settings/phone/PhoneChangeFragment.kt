@@ -10,7 +10,6 @@ import com.app.belcobtm.domain.settings.interactor.ERROR_UPDATE_PHONE_IS_USED
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
 import com.app.belcobtm.presentation.core.ui.fragment.BaseFragment
 import kotlinx.android.synthetic.main.fragment_change_phone.*
-import kotlinx.android.synthetic.main.fragment_display_phone.nextButton
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class PhoneChangeFragment : BaseFragment() {

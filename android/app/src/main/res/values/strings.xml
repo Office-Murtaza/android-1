@@ -431,8 +431,11 @@
     <string name="security_label">Security</string>
     <string name="wallets_label">Wallets</string>
     <string name="kyc_label">AML/KYC</string>
+    <string name="notifications_label">Notifications</string>
     <string name="about_label">About</string>
     <string name="terms_label">Terms &amp; conditions</string>
+    <string name="privacy_label">Privacy Policy</string>
+    <string name="comlaint_label">Complaint Policy</string>
     <string name="support_label">Support</string>
     <string name="version_label">Version</string>
     <string name="update_phone_label">Update phone</string>
