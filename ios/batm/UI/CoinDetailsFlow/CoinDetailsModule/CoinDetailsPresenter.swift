@@ -19,8 +19,8 @@ final class CoinDetailsPresenter: ModulePresenter, CoinDetailsModule {
         var showMore: Driver<Void>
         var transactionSelected: Driver<IndexPath>
         var updateSelectedPeriod: Driver<SelectedPeriod>
-        var reserve: Driver<Void>
         var recall: Driver<Void>
+        var reserve: Driver<Void>
     }
     
     private let usecase: CoinDetailsUsecase

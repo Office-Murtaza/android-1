@@ -55,23 +55,25 @@ final class CoinDetailsViewController: ModuleViewController<CoinDetailsPresenter
     fab.view.addItem(title: localize(L.CoinDetails.withdraw), image: UIImage(named: "fab_withdraw")) { [unowned self] _ in
       self.didTapWithdrawRelay.accept(())
     }
-    fab.view.addItem(title: localize(L.Trades.recall), image: UIImage(named: "fab_recall")) { [unowned self] _ in
-      self.didTapRecallRelay.accept(())
-    }
     fab.view.addItem(title: localize(L.Trades.reserve), image: UIImage(named: "fab_reserve")) { [unowned self] _ in
       self.didTapReserveRelay.accept(())
     }
-    fab.view.addItem(title: localize(L.CoinDetails.sendGift), image: UIImage(named: "fab_send_gift")) { [unowned self] _ in
-      self.didTapSendGiftRelay.accept(())
+    fab.view.addItem(title: localize(L.Trades.recall), image: UIImage(named: "fab_recall")) { [unowned self] _ in
+        self.didTapRecallRelay.accept(())
     }
     
-    // TODO: enable other actions when redesigned
-    //    fab.view.addItem(title: localize(L.CoinDetails.sell), image: UIImage(named: "fab_sell")) { [unowned self] _ in
-    //      self.didTapSellRelay.accept(())
-    //    }
-    fab.view.addItem(title: localize(L.CoinDetails.exchange), image: UIImage(named: "fab_exchange")) { [unowned self] _ in
-      self.didTapExchangeRelay.accept(())
-    }
+    // TODO: Should be removed after transferring to the Deals screen
+    
+//    fab.view.addItem(title: localize(L.CoinDetails.sendGift), image: UIImage(named: "fab_send_gift")) { [unowned self] _ in
+//      self.didTapSendGiftRelay.accept(())
+//    }
+    
+//        fab.view.addItem(title: localize(L.CoinDetails.sell), image: UIImage(named: "fab_sell")) { [unowned self] _ in
+//          self.didTapSellRelay.accept(())
+//        }
+//    fab.view.addItem(title: localize(L.CoinDetails.exchange), image: UIImage(named: "fab_exchange")) { [unowned self] _ in
+//      self.didTapExchangeRelay.accept(())
+//    }
 //    fab.view.addItem(title: localize(L.CoinDetails.trade), image: UIImage(named: "fab_trade")) { [unowned self] _ in
 //        self.didTapTradesRelay.accept(())
 //    }
@@ -186,8 +188,8 @@ final class CoinDetailsViewController: ModuleViewController<CoinDetailsPresenter
                                                      showMore: showMoreDriver,
                                                      transactionSelected: transactionSelectedDriver,
                                                      updateSelectedPeriod: updateSelectedPeriodDriver,
-                                                     reserve: reserveDriver,
-                                                     recall: recallDriver))
+                                                     recall: recallDriver,
+                                                     reserve: reserveDriver))
   }
 }
 
