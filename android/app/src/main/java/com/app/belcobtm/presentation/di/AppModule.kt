@@ -23,7 +23,7 @@ import com.app.belcobtm.presentation.features.sms.code.SmsCodeViewModel
 import com.app.belcobtm.presentation.features.wallet.add.WalletsViewModel
 import com.app.belcobtm.presentation.features.wallet.balance.WalletViewModel
 import com.app.belcobtm.presentation.features.wallet.deposit.DepositViewModel
-import com.app.belcobtm.presentation.features.wallet.exchange.coin.to.coin.ExchangeViewModel
+import com.app.belcobtm.presentation.features.deals.swap.SwapViewModel
 import com.app.belcobtm.presentation.features.wallet.send.gift.SendGiftViewModel
 import com.app.belcobtm.presentation.features.wallet.staking.StakingViewModel
 import com.app.belcobtm.presentation.features.wallet.trade.create.TradeCreateViewModel
@@ -57,7 +57,7 @@ val viewModelModule = module {
         val fromCoinDataItem = filteredCoinList.first { it.code == coinCode }
         val fromCoinDetails = walletRepo.getCoinDetailsMap().getValue(coinCode)
 
-        ExchangeViewModel(
+        SwapViewModel(
             get(),
             get(),
             get(),

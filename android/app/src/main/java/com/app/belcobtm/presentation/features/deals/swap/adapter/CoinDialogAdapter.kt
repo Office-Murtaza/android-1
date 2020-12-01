@@ -1,4 +1,4 @@
-package com.app.belcobtm.presentation.features.wallet.exchange.coin.to.coin
+package com.app.belcobtm.presentation.features.deals.swap.adapter
 
 import android.content.Context
 import android.view.LayoutInflater

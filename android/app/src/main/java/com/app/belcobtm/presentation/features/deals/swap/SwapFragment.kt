@@ -1,4 +1,4 @@
-package com.app.belcobtm.presentation.features.wallet.exchange.coin.to.coin
+package com.app.belcobtm.presentation.features.deals.swap
 
 import android.view.View
 import com.app.belcobtm.R
@@ -8,14 +8,19 @@ import com.app.belcobtm.presentation.core.extensions.*
 import com.app.belcobtm.presentation.core.helper.AlertHelper
 import com.app.belcobtm.presentation.core.ui.fragment.BaseFragment
 import com.app.belcobtm.presentation.core.watcher.DoubleTextWatcher
+import com.app.belcobtm.presentation.features.deals.swap.adapter.CoinDialogAdapter
+import com.app.belcobtm.presentation.features.wallet.exchange.coin.to.coin.ExchangeFragmentArgs
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import kotlinx.android.synthetic.main.fragment_exchange.*
+import kotlinx.android.synthetic.main.fragment_swap.*
 import org.koin.android.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
-class ExchangeFragment : BaseFragment() {
-    private val viewModel: ExchangeViewModel by viewModel {
-        parametersOf(ExchangeFragmentArgs.fromBundle(requireArguments()).coinCode)
+class SwapFragment : BaseFragment() {
+    private val viewModel: SwapViewModel by viewModel {
+        parametersOf(
+            ExchangeFragmentArgs.fromBundle(
+                requireArguments()
+            ).coinCode)
     }
 
     private val doubleTextWatcher: DoubleTextWatcher = DoubleTextWatcher(
@@ -28,7 +33,7 @@ class ExchangeFragment : BaseFragment() {
         }
     )
 
-    override val resourceLayout: Int = R.layout.fragment_exchange
+    override val resourceLayout: Int = R.layout.fragment_swap
     override val isToolbarEnabled: Boolean = true
     override val isHomeButtonEnabled: Boolean = true
     override var isMenuEnabled: Boolean = true
@@ -82,7 +87,11 @@ class ExchangeFragment : BaseFragment() {
                 .toCoinItemList
                 .filter { it.code != viewModel.fromCoinItem.code }
                 .map { LocalCoinType.valueOf(it.code) }
-            val coinAdapter = CoinDialogAdapter(pickCoinButtonView.context, itemList)
+            val coinAdapter =
+                CoinDialogAdapter(
+                    pickCoinButtonView.context,
+                    itemList
+                )
             MaterialAlertDialogBuilder(pickCoinButtonView.context)
                 .setTitle(R.string.exchange_coin_to_coin_screen_select_coin)
                 .setAdapter(coinAdapter) { _, which ->

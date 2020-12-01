@@ -1,4 +1,4 @@
-package com.app.belcobtm.presentation.features.wallet.exchange.coin.to.coin
+package com.app.belcobtm.presentation.features.deals.swap
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -12,7 +12,7 @@ import com.app.belcobtm.presentation.core.extensions.withScale
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
 import kotlin.math.max
 
-class ExchangeViewModel(
+class SwapViewModel(
     private val exchangeUseCase: ExchangeUseCase,
     private val getCoinDetailsUseCase: GetCoinDetailsMapUseCase,
     private val updateCoinDetailsUseCase: UpdateCoinDetailsUseCase,

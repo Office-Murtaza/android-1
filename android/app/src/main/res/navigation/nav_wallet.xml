@@ -138,9 +138,9 @@
 
     <fragment
         android:id="@+id/exchange_fragment"
-        android:name="com.app.belcobtm.presentation.features.wallet.exchange.coin.to.coin.ExchangeFragment"
+        android:name="com.app.belcobtm.presentation.features.deals.swap.SwapFragment"
         android:label="ExchangeFragment"
-        tools:layout="@layout/fragment_exchange">
+        tools:layout="@layout/fragment_swap">
         <argument
             android:name="coin_code"
             app:argType="string" />
