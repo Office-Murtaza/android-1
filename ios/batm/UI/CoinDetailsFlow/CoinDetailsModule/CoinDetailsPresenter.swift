@@ -4,7 +4,6 @@ import RxCocoa
 import TrustWalletCore
 
 final class CoinDetailsPresenter: ModulePresenter, CoinDetailsModule {
-    
     typealias Store = ViewStore<CoinDetailsAction, CoinDetailsState>
     
     struct Input {
@@ -26,7 +25,8 @@ final class CoinDetailsPresenter: ModulePresenter, CoinDetailsModule {
     private let usecase: CoinDetailsUsecase
     private let store: Store
     private let fetchTransactionsRelay = PublishRelay<Void>()
-    
+    private let walletUsecase: WalletUsecase
+  
     weak var delegate: CoinDetailsModuleDelegate?
     
     var state: Driver<CoinDetailsState> {
@@ -34,17 +34,26 @@ final class CoinDetailsPresenter: ModulePresenter, CoinDetailsModule {
     }
     
     init(usecase: CoinDetailsUsecase,
+         walletUsecase: WalletUsecase,
          store: Store = CoinDetailsStore()) {
         self.usecase = usecase
         self.store = store
+        self.walletUsecase = walletUsecase
     }
     
-    func setup(coinBalances: [CoinBalance], coinDetails: CoinDetails, data: PriceChartData) {
+    func setup(coinBalances: [CoinBalance], coinDetails: CoinDetails, data: PriceChartDetails) {
+        let balance = coinBalances.first(where:{$0.type == coinDetails.type})
+      
         store.action.accept(.setupCoinBalances(coinBalances))
         store.action.accept(.setupCoinDetails(coinDetails))
-        store.action.accept(.setupPriceChartData(data))
+        store.action.accept(.setupPriceChartData(balance, data))
     }
-    
+  
+    func setup(predefinedData: CoinDetailsPredefinedDataConfig) {
+      store.action.accept(.setupPredefinedData(predefinedData))
+      store.action.accept(.setupCoinBalances([predefinedData.balance]))
+    }
+      
     func bind(input: Input) {
         input.refresh
             .asObservable()
@@ -58,6 +67,19 @@ final class CoinDetailsPresenter: ModulePresenter, CoinDetailsModule {
             }
             .subscribe()
             .disposed(by: disposeBag)
+      
+      input.refresh
+          .asObservable()
+          .flatFilter(activity.not())
+          .withLatestFrom(state)
+          .map { $0.predefinedData?.balance.type }
+          .filterNil()
+          .doOnNext { [store] _ in store.action.accept(.startFetching) }
+          .flatMap { [unowned self] in
+              self.track(self.getTransactions(for: $0), trackers: [self.errorTracker])
+          }
+          .subscribe()
+          .disposed(by: disposeBag)
         
         input.deposit
             .withLatestFrom(state)
@@ -163,13 +185,40 @@ final class CoinDetailsPresenter: ModulePresenter, CoinDetailsModule {
             }
             .subscribe(onNext: { [delegate] in delegate?.showTransactionDetails(with: $0, for: $1) })
             .disposed(by: disposeBag)
-        
-        input.updateSelectedPeriod
-            .drive(onNext: { [store] in store.action.accept(.updateSelectedPeriod($0)) })
-            .disposed(by: disposeBag)
-        
-        setupBindings()
+      
+      input.updateSelectedPeriod
+        .asObservable()
+        .flatMap{ period in
+          return self.track(self.updateChartDetails(period: period))
+        }.subscribe()
+        .disposed(by: disposeBag)
+      
+      setupBindings()
     }
+  
+  private func updateChartDetails(period: SelectedPeriod) -> Completable {
+    return Completable.create { [unowned self] completable -> Disposable in
+      guard let type = self.store.currentState.coin?.type ?? self.store.currentState.predefinedData?.balance.type else {
+        completable(.completed)
+        return Disposables.create {}
+      }
+      
+      
+      if let predefinedData = self.store.currentState.predefinedData {
+        store.action.accept(.updateSelectedPeriod(period, PriceChartDetails(prices: predefinedData.chartData)))
+      } else {
+        self.walletUsecase
+          .getPriceChartDetails(for: type, period: period)
+          .subscribe(onSuccess: { [store] (details) in
+            store.action.accept(.updateSelectedPeriod(period, details))
+          }).disposed(by: self.disposeBag)
+      }
+      
+      completable (.completed)
+      return Disposables.create {}
+    }
+  }
+  
     
     private func setupBindings() {
         let coinTypeObservable = state
@@ -177,6 +226,12 @@ final class CoinDetailsPresenter: ModulePresenter, CoinDetailsModule {
             .filterNil()
             .asObservable()
             .take(1)
+      
+     let predefinedTypeObservable = state
+        .map { $0.predefinedData?.balance.type }
+          .filterNil()
+          .asObservable()
+          .take(1)
         
         coinTypeObservable
             .flatMap { [unowned self] in self.track(self.usecase.getCoin(for: $0)) }
@@ -189,13 +244,22 @@ final class CoinDetailsPresenter: ModulePresenter, CoinDetailsModule {
             }
             .subscribe()
             .disposed(by: disposeBag)
+      
+      predefinedTypeObservable
+          .flatMap { [unowned self] in
+              self.track(self.getTransactions(for: $0), trackers: [self.errorTracker])
+          }
+          .subscribe()
+          .disposed(by: disposeBag)
         
         fetchTransactionsRelay
             .flatFilter(activity.not())
             .withLatestFrom(state)
             .filter { !$0.isLastPage }
             .flatMap { [unowned self] in
-                self.track(self.getTransactions(for: $0.coinDetails!.type, from: $0.nextPage), trackers: [self.errorTracker])
+              self.track(self.getTransactions(for: ($0.coinDetails?.type ?? $0.predefinedData?.balance.type as! CustomCoinType),
+                                              from: $0.nextPage),
+                         trackers: [self.errorTracker])
             }
             .subscribe()
             .disposed(by: disposeBag)

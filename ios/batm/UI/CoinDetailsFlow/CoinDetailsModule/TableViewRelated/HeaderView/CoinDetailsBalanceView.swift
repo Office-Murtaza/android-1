@@ -62,7 +62,7 @@ final class CoinDetailsBalanceView: UIView {
   }
   
   func configure(for coinBalance: CoinBalance) {
-    amountView.configure(for: coinBalance, weighted: true)
+     amountView.configure(for: coinBalance, weighted: true)
     reservedView.configure(for: coinBalance, useReserved: true, weighted: true)
   }
 }

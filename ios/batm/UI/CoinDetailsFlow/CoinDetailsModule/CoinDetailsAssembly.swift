@@ -8,7 +8,9 @@ final class CoinDetailsAssembly: Assembly {
     container.register(Module<CoinDetailsModule>.self) { resolver in
       let viewController = CoinDetailsViewController()
       let usecase = resolver.resolve(CoinDetailsUsecase.self)!
-      let presenter = CoinDetailsPresenter(usecase: usecase)
+      let walletUsecase = resolver.resolve(WalletUsecase.self)!
+      let presenter = CoinDetailsPresenter(usecase: usecase,
+                                           walletUsecase: walletUsecase)
       
       let dataSource = CoinDetailsTableViewDataSource()
       viewController.dataSource = dataSource
