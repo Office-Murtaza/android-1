@@ -89,17 +89,6 @@ class CoinDetailsChartView: UIView {
   }
   
   func configure(for data: PriceChartDetails?, and selectedPeriod: SelectedPeriod, balance: CoinBalance, predefinedData: CoinDetailsPredefinedDataConfig?) {
-
-    var period: [[Double]]?
-    if let data = data {
-      switch selectedPeriod {
-      case .oneDay: period = data.prices
-      case .oneWeek: period = data.prices
-      case .oneMonth: period = data.prices
-      case .threeMonths: period = data.prices
-      case .oneYear: period = data.prices
-      }
-    }
     
     if let predefinedConfig = predefinedData {
       configurePredefinedData(config: predefinedConfig)
@@ -108,7 +97,7 @@ class CoinDetailsChartView: UIView {
       configureAllCoins(data: data,
                         selectedPeriod: selectedPeriod,
                         balance: balance,
-                        period: period)
+                        period: data?.prices)
     }
   }
 
