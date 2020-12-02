@@ -13,7 +13,7 @@ final class CoinExchangeFormView: UIView, HasDisposeBag {
     }()
     
     let fromCoinAmountTextFieldView = CoinAmountTextFieldView()
-    let toCoinTextFieldView = CoinExchangeTextFieldView()
+    let toCoinTextFieldView = CoinExchangeSwapTextFieldView()//CoinExchangeTextFieldView()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -38,6 +38,9 @@ final class CoinExchangeFormView: UIView, HasDisposeBag {
         stackView.snp.makeConstraints {
             $0.edges.equalToSuperview()
         }
+      toCoinTextFieldView.snp.makeConstraints {
+        $0.height.equalTo(150)
+      }
     }
     
     func configure(coin: CustomCoinType, otherCoins: [CustomCoinType], fee: Decimal?) {
@@ -65,9 +68,9 @@ extension Reactive where Base == CoinExchangeFormView {
     var selectPickerItem: Driver<CustomCoinType> {
         return base.toCoinTextFieldView.rx.selectPickerItem
     }
-    var toCoinAmountText: Binder<String?> {
-        return base.toCoinTextFieldView.rx.toCoinAmountText
-    }
+//    var toCoinAmountText: Binder<String?> {
+//        return base.toCoinTextFieldView.rx.toCoinAmountText
+//    }
     var maxTap: Driver<Void> {
         return base.fromCoinAmountTextFieldView.rx.maxTap
     }

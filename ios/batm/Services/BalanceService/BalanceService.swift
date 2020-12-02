@@ -17,7 +17,6 @@ protocol BalanceServiceWebSocket {
   func subscribe()
   func unsubscribe() -> Completable
   func disconnect() -> Completable
-  func restart()
 }
 
 enum BalanceServiceError: Error {
@@ -76,7 +75,7 @@ class BalanceServiceImpl: BalanceService {
                                            object:nil)
     let  notificationName = Notification.Name(RefreshCredentialsConstants.refreshNotificationName)
     NotificationCenter.default.addObserver(self,
-                                           selector: #selector(restart),
+                                           selector: #selector(disconnectAndStart),
                                            name: notificationName,
                                            object:nil)
   }
@@ -111,23 +110,23 @@ extension BalanceServiceImpl: BalanceServiceWebSocket {
     }.disposed(by: disposeBag)
   }
   
-  @objc func restart() {
-    unsubscribe()
-      .andThen(disconnect())
-      .subscribe { [weak self] in
-        self?.start()
-      } onError: { [weak self] error in
-        guard let disposeBag = self?.disposeBag else { return }
-        if (error as? BalanceServiceError) == BalanceServiceError.phoneEmptyDuringUnsubscribe {
-          self?.disconnectAndStart()
-        } else {
-          self?.errorService
-            .showError(for: .serverError)
-            .subscribe()
-            .disposed(by: disposeBag)
-        }
-      }.disposed(by: disposeBag)
-  }
+//  @objc func restart() {
+//    unsubscribe()
+//      .andThen(disconnect())
+//      .subscribe { [weak self] in
+//        self?.start()
+//      } onError: { [weak self] error in
+//        guard let disposeBag = self?.disposeBag else { return }
+//        if (error as? BalanceServiceError) == BalanceServiceError.phoneEmptyDuringUnsubscribe {
+//          self?.disconnectAndStart()
+//        } else {
+//          self?.errorService
+//            .showError(for: .serverError)
+//            .subscribe()
+//            .disposed(by: disposeBag)
+//        }
+//      }.disposed(by: disposeBag)
+//  }
   
   func connect() {
     guard let accessToken = account?.accessToken else { return }
@@ -223,7 +222,7 @@ extension BalanceServiceImpl: BalanceServiceWebSocket {
     disconnectAndStart()
   }
   
-  private func disconnectAndStart() {
+  @objc private func disconnectAndStart() {
     disconnect()
       .subscribe { [weak self] in
         self?.start()

@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "swap_vert-black-18dp.svg",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

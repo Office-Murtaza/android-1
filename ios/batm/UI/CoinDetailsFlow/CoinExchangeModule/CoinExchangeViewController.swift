@@ -109,11 +109,11 @@ final class CoinExchangeViewController: ModuleViewController<CoinExchangePresent
       .bind(to: formView.rx.toCoin)
       .disposed(by: disposeBag)
     
-    presenter.state
-      .asObservable()
-      .map { $0.toCoinAmount }
-      .bind(to: formView.rx.toCoinAmountText)
-      .disposed(by: disposeBag)
+//    presenter.state
+//      .asObservable()
+//      .map { $0.toCoinAmount }
+//      .bind(to: formView.rx.toCoinAmountText)
+//      .disposed(by: disposeBag)
     
     presenter.state
       .asObservable()
