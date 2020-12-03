@@ -170,6 +170,12 @@ enum L {
     static let title = "support.title"
   }
 
+  struct Swap {
+    static let percent = "swap.percent"
+    static let platformfee = "swap.platformfee"
+    static let tilda = "swap.tilda"
+  }
+
   struct Trades {
     static let buy = "trades.buy"
     static let create = "trades.create"

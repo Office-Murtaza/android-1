@@ -243,6 +243,8 @@ extension BalanceServiceImpl: WebSocketDelegate {
     case .disconnected(_, _): start()
     case .text(let string):
       let model = SocketResultMessageMapper().mapMessage(string)
+       print("model, \(model)")
+       print("model string: \(string)")
       handleMessage(model)
     case .reconnectSuggested(_):
       unsubscribe()

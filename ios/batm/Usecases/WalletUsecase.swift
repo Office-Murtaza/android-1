@@ -7,6 +7,7 @@ protocol WalletUsecase {
   func getCoinDetails(for type: CustomCoinType) -> Single<CoinDetails>
   func getPriceChartDetails(for type: CustomCoinType, period: SelectedPeriod) -> Single<PriceChartDetails>
   func getCoins() -> Observable<Void>
+  func getCoinsList() -> Single<[BTMCoin]>
 }
 
 class WalletUsecaseImpl: WalletUsecase, HasDisposeBag {
@@ -28,7 +29,10 @@ class WalletUsecaseImpl: WalletUsecase, HasDisposeBag {
       .map { $0.coins.filter { $0.isVisible } }
       .asObservable()
       .withLatestFrom(accountStorage.get()) { ($1, $0) }
-      .flatMap { [api] in api.getCoinsBalance(userId: $0.userId, coins: $1) }
+      .flatMap { [api] in
+        api.getCoinsBalance(userId: $0.userId, coins: $1)
+        
+      }
       .doOnNext { [unowned self] in self.updateIndexes(for: $0) }
       .asSingle()
   }
@@ -48,8 +52,12 @@ class WalletUsecaseImpl: WalletUsecase, HasDisposeBag {
   func getPriceChartDetails(for type: CustomCoinType, period: SelectedPeriod) -> Single<PriceChartDetails> {
     return api.getPriceChart(type: type, period: period)
   }
-  
+    
     func getCoins() -> Observable<Void> {
         return walletStorage.coinChanged
+    }
+    
+    func getCoinsList() -> Single<[BTMCoin]> {
+        return walletStorage.get().map { $0.coins }
     }
 }

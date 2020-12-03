@@ -7,22 +7,19 @@ import MaterialComponents
 final class CoinExchangeViewController: ModuleViewController<CoinExchangePresenter> {
   
   let rootScrollView = RootScrollView()
-  
-  let headerView = HeaderView()
-  
+    
   let formView = CoinExchangeFormView()
   
   let submitButton = MDCButton.submit
 
   override func setupUI() {
     view.addSubview(rootScrollView)
-    rootScrollView.contentView.addSubviews(headerView,
-                                           formView,
+    rootScrollView.contentView.addSubviews(formView,
                                            submitButton)
     
     setupDefaultKeyboardHandling()
   }
-
+    
   override func setupLayout() {
     rootScrollView.snp.makeConstraints {
       $0.top.equalTo(view.safeAreaLayoutGuide)
@@ -31,15 +28,12 @@ final class CoinExchangeViewController: ModuleViewController<CoinExchangePresent
     rootScrollView.contentView.snp.makeConstraints {
       $0.height.equalToSuperview()
     }
-    headerView.snp.makeConstraints {
-      $0.top.equalToSuperview().offset(25)
-      $0.left.equalToSuperview().offset(15)
-      $0.right.lessThanOrEqualToSuperview().offset(-15)
-    }
     formView.snp.makeConstraints {
-      $0.top.equalTo(headerView.snp.bottom).offset(30)
-      $0.left.right.equalToSuperview().inset(15)
+      $0.top.equalToSuperview()
+      $0.left.right.equalToSuperview()
+      $0.height.equalTo(300)
     }
+    
     submitButton.snp.makeConstraints {
       $0.height.equalTo(50)
       $0.left.right.equalToSuperview().inset(15)
@@ -51,18 +45,19 @@ final class CoinExchangeViewController: ModuleViewController<CoinExchangePresent
     presenter.state
       .map { $0.fromCoinBalance }
       .filterNil()
-      .drive(onNext: { [headerView] coinBalance in
-        let amountView = CryptoFiatAmountView()
-        amountView.configure(for: coinBalance)
-        let reservedView = CryptoFiatAmountView()
-        reservedView.configure(for: coinBalance, useReserved: true)
-        
-        headerView.removeAll()
-        headerView.add(title: localize(L.CoinDetails.price), value: coinBalance.price.fiatFormatted.withDollarSign)
-        headerView.add(title: localize(L.CoinDetails.balance), valueView: amountView)
-        headerView.add(title: localize(L.CoinDetails.reserved), valueView: reservedView)
+      .drive(onNext: { [unowned self] coinBalance in
+        self.formView.fromCoinView.configurBalance(for: coinBalance)
       })
       .disposed(by: disposeBag)
+    
+    presenter.state
+      .map { $0.toCoinBalance }
+      .filterNil()
+      .drive(onNext: { [unowned self] coinBalance in
+        self.formView.toCoinView.configurBalance(for: coinBalance)
+      })
+      .disposed(by: disposeBag)
+    
     
     presenter.state
       .map { $0.fromCoin?.type.code }
@@ -83,11 +78,23 @@ final class CoinExchangeViewController: ModuleViewController<CoinExchangePresent
       .filterNil()
       .distinctUntilChanged()
     
+    let fromCoinBalancesDriver = presenter.state
+      .map { state in state.fromCoinBalances?.map { $0.type } }
+      .filterNil()
+      .distinctUntilChanged()
+    
+    let toCoinBalancesDriver = presenter.state
+      .map { state in state.toCoinBalances?.map { $0.type } }
+      .filterNil()
+      .distinctUntilChanged()
+    
     let feeDriver = presenter.state
     .map { $0.coinDetails?.txFee }
     
-    Driver.combineLatest(fromCoinDriver, otherCoinBalancesDriver, feeDriver)
-      .drive(onNext: { [formView] in formView.configure(coin: $0, otherCoins: $1, fee: $2) })
+    Driver.combineLatest(fromCoinDriver, fromCoinBalancesDriver, toCoinBalancesDriver, feeDriver)
+      .drive(onNext: { [formView] in
+              formView.configure(coin: $0, fromCoins: $1, toCoins: $2, fee: $3)
+      })
       .disposed(by: disposeBag)
     
     presenter.state
@@ -96,11 +103,35 @@ final class CoinExchangeViewController: ModuleViewController<CoinExchangePresent
       .bind(to: formView.rx.fromCoinAmountText)
       .disposed(by: disposeBag)
     
+    
     presenter.state
       .asObservable()
-      .map { $0.fromCoinFiatAmount }
-      .bind(to: formView.rx.fromCoinFiatAmountText)
+      .map { $0.fromCoinAmount }
+      .bind(to: formView.rx.fromCoinAmountText)
       .disposed(by: disposeBag)
+    
+    presenter.state
+        .asObservable()
+        .subscribeOn(MainScheduler.instance)
+        .subscribe { [weak self] result in
+            guard let fee = result.element?.platformFee else { return }
+            self?.formView.configureFeeView(fee: fee)
+        }.disposed(by: disposeBag)
+    
+    
+//    presenter.state
+//      .asObservable()
+//      .map { $0.fromCoinFiatAmount }
+//      .bind(to: formView.rx.fromCoinFiatAmountText)
+//      .disposed(by: disposeBag)
+    
+    presenter.state
+        .asObservable()
+        .subscribeOn(MainScheduler.instance)
+        .subscribe { [weak self] (state) in
+        guard let fromRate = state.element?.fromRate, let toRate = state.element?.toRate else { return }
+        self?.formView.configureRateView(fromCoin: fromRate, toCoin: toRate)
+    }.disposed(by: disposeBag)
     
     presenter.state
       .asObservable()
@@ -109,18 +140,37 @@ final class CoinExchangeViewController: ModuleViewController<CoinExchangePresent
       .bind(to: formView.rx.toCoin)
       .disposed(by: disposeBag)
     
-//    presenter.state
-//      .asObservable()
-//      .map { $0.toCoinAmount }
-//      .bind(to: formView.rx.toCoinAmountText)
-//      .disposed(by: disposeBag)
+    presenter.state
+      .asObservable()
+      .map { $0.fromCoinType }
+      .filterNil()
+      .bind(to: formView.rx.fromCoin)
+      .disposed(by: disposeBag)
+    
+    presenter.state
+      .asObservable()
+      .map { $0.toCoinAmount }
+      .bind(to: formView.rx.toCoinAmountText)
+      .disposed(by: disposeBag)
     
     presenter.state
       .asObservable()
       .map { $0.fromCoinAmountError }
-      .bind(to: formView.rx.fromCoinAmountErrorText)
-      .disposed(by: disposeBag)
+        .subscribeOn(MainScheduler.instance)
+        .subscribe { [weak self] result in
+            guard let error = result.element else { return }
+            self?.formView.configureFromError(error: error )
+        }.disposed(by: disposeBag)
 
+    presenter.state
+      .asObservable()
+      .map { $0.toCoinTypeError }
+        .subscribeOn(MainScheduler.instance)
+        .subscribe { [weak self] result in
+            guard let error = result.element else { return }
+            self?.formView.configureToError(error: error )
+        }.disposed(by: disposeBag)
+    
     presenter.state
       .asObservable()
       .map { $0.toCoinTypeError }
@@ -136,21 +186,49 @@ final class CoinExchangeViewController: ModuleViewController<CoinExchangePresent
     submitButton.rx.tap.asDriver()
       .drive(onNext: { [unowned self] in self.view.endEditing(true) })
       .disposed(by: disposeBag)
+    
+    presenter.coinTypeDidChange.observeOn(MainScheduler.instance).subscribe({ [weak self] _ in
+        self?.formView.fromCoinView.amountTextField.text = nil
+        self?.formView.toCoinView.amountTextField.text = nil
+    })
+    .disposed(by: disposeBag)
   }
 
   override func setupBindings() {
     setupUIBindings()
     
     let updateFromCoinAmountDriver = formView.rx.fromCoinAmountText.asDriver()
-    let updatePickerItemDriver = formView.rx.selectPickerItem
-    let maxDriver = formView.rx.maxTap
+    let updateToCoinAmountDriver = formView.rx.toCoinAmountText.asDriver()
+    let updateToPickerItemDriver = formView.rx.selectToPickerItem
+    let updateFromPickerItemDriver = formView.rx.selectFromPickerItem
+    let maxFromDriver = formView.rx.maxFromTap
+    let maxToDriver = formView.rx.maxToTap
     let submitDriver = submitButton.rx.tap.asDriver()
-    let toCoinTypeDriver = formView.rx.willChangeCoinType
+    let toCoinTypeDriver = formView.rx.willChangeToCoinType
+    let fromCoinTypeDriver = formView.rx.willChangeFromCoinType
+    let swapDriver = formView.rx.swapButtonDidPushed.asDriver()
     
     presenter.bind(input: CoinExchangePresenter.Input(updateFromCoinAmount: updateFromCoinAmountDriver,
-                                                      updatePickerItem: updatePickerItemDriver,
+                                                      updateToCoinAmount: updateToCoinAmountDriver,
+                                                      updateToPickerItem: updateToPickerItemDriver,
+                                                      updateFromPickerItem: updateFromPickerItemDriver,
                                                       toCoinType: toCoinTypeDriver,
-                                                      max: maxDriver,
-                                                      submit: submitDriver))
+                                                      fromCoinType: fromCoinTypeDriver,
+                                                      maxFrom: maxFromDriver,
+                                                      maxTo: maxToDriver,
+                                                      submit: submitDriver,
+                                                      swap: swapDriver))
+  }
+}
+
+extension ObservableType {
+
+  func withPrevious() -> Observable<(E?, E)> {
+    return scan([], accumulator: { (previous, current) in
+        Array(previous + [current]).suffix(2)
+      })
+      .map({ (arr) -> (previous: E?, current: E) in
+        (arr.count > 1 ? arr.first : nil, arr.last!)
+      })
   }
 }

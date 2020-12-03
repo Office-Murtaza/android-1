@@ -185,8 +185,8 @@
 "coin_details.buy" = "Buy";
 "coin_details.sell" = "Sell";
 "coin_details.move" = "Move";
-"coin_details.send_c_2_c" = "Send c2c";
-"coin_details.receive_c_2_c" = "Receive c2c";
+"coin_details.send_c_2_c" = "Swap send";
+"coin_details.receive_c_2_c" = "Swap receive";
 "coin_details.reserve" = "Reserve";
 "coin_details.recall" = "Recall";
 "coin_details.se1f" = "Self";
@@ -268,7 +268,7 @@
 "transaction_details.header.ref_amount.title" = "Ref amount";
 "transaction_details.header.sell_q_r_code.title" = "Sell QR code";
 
-"coin_exchange.title" = "Exchange %@";
+"coin_exchange.title" = "Swap";
 
 "trades.title" = "Trade %@";
 "trades.reserved" = "Reserved";
@@ -345,3 +345,7 @@
 
 "notifications.title" = "Notifications";
 "notifications.cell.title" = "Receive push notifications";
+
+"swap.platformfee" = "Platform fee";
+"swap.tilda" = "~";
+"swap.percent" = "%";

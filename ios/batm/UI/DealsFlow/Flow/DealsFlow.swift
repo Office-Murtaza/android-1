@@ -26,7 +26,7 @@ class DealsFlow: BaseFlow<BTMNavigationController, DealsFlowController> {
     private func handleFlow(step: Steps) -> NextFlowItems {
         switch step {
         case .deals:
-            let module = resolver.resolve(Module<DealsModule>.self)!
+          let module = resolver.resolve(Module<CoinExchangeModule>.self)!//resolver.resolve(Module<DealsModule>.self)!
             module.controller.title = localize(L.Deals.title)
             module.controller.tabBarItem.image = UIImage(named: "tab_bar_deals")
             module.controller.tabBarItem.selectedImage = UIImage(named: "tab_bar_active_deals")

@@ -52,6 +52,7 @@ final class CoinDetailsPresenter: ModulePresenter, CoinDetailsModule {
     func setup(predefinedData: CoinDetailsPredefinedDataConfig) {
       store.action.accept(.setupPredefinedData(predefinedData))
       store.action.accept(.setupCoinBalances([predefinedData.balance]))
+      store.action.accept(.setupCoinDetails(predefinedData.coinDetails))
     }
       
     func bind(input: Input) {
