@@ -89,6 +89,7 @@ class TradeRecallViewModel(
         }
     }
 
+    // TODO wrong max value handling
     fun getMaxValue(): Double =
         0.0.coerceAtLeast(coinDataItem.reservedBalanceCoin - getTransactionFee())
 

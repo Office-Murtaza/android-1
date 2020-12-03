@@ -9,6 +9,7 @@ import com.app.belcobtm.domain.wallet.LocalCoinType
 import com.app.belcobtm.domain.wallet.interactor.GetFreshCoinUseCase
 import com.app.belcobtm.domain.wallet.item.CoinDataItem
 import com.app.belcobtm.domain.wallet.item.CoinDetailsDataItem
+import com.app.belcobtm.presentation.core.coin.MinMaxCoinValueProvider
 import com.app.belcobtm.presentation.core.item.CoinScreenItem
 import com.app.belcobtm.presentation.core.item.mapToScreenItem
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
@@ -18,7 +19,8 @@ class TradeReserveViewModel(
     private val detailsDataItem: CoinDetailsDataItem,
     private val getCoinUseCace: GetFreshCoinUseCase,
     private val createTransactionUseCase: TradeReserveTransactionCreateUseCase,
-    private val completeTransactionUseCase: TradeReserveTransactionCompleteUseCase
+    private val completeTransactionUseCase: TradeReserveTransactionCompleteUseCase,
+    private val minMaxCoinValueProvider: MinMaxCoinValueProvider
 ) : ViewModel() {
     private val _initialLoadLiveData = MutableLiveData<LoadingData<Unit>>()
     val initialLoadLiveData: LiveData<LoadingData<Unit>> = _initialLoadLiveData
@@ -69,20 +71,11 @@ class TradeReserveViewModel(
         )
     }
 
-    fun getMaxValue(): Double = when {
-        isCATM() -> coinDataItem.balanceCoin
-        // at least 20 XRP coins must stay within the wallet
-        isXRP() -> 0.0.coerceAtLeast(coinDataItem.balanceCoin - getTransactionFee() - 20)
-        else -> 0.0.coerceAtLeast(coinDataItem.balanceCoin - getTransactionFee())
-    }
+    fun getMinValue(): Double =
+        minMaxCoinValueProvider.getMinValue(coinDataItem, detailsDataItem)
 
-    private fun getMinValue(): Double {
-        return getTransactionFee()
-    }
-
-    private fun getTransactionFee(): Double = when  {
-        else -> detailsDataItem.txFee
-    }
+    fun getMaxValue(): Double =
+        minMaxCoinValueProvider.getMaxValue(coinDataItem, detailsDataItem)
 
     fun validateCryptoAmount(amount: Double) {
         selectedAmount = amount

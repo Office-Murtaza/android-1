@@ -6,7 +6,7 @@ import android.content.Intent
 import android.view.View
 import com.app.belcobtm.R
 import com.app.belcobtm.domain.Failure
-import com.app.belcobtm.domain.wallet.LocalCoinType
+import com.app.belcobtm.presentation.core.coin.model.ValidationResult
 import com.app.belcobtm.presentation.core.extensions.*
 import com.app.belcobtm.presentation.core.helper.AlertHelper
 import com.app.belcobtm.presentation.core.ui.fragment.BaseFragment
@@ -54,7 +54,7 @@ class WithdrawFragment : BaseFragment() {
         amountCryptoView.helperText = getString(
             R.string.transaction_helper_text_commission,
             viewModel.getTransactionFee().toStringCoin(),
-            if (viewModel.getCoinCode() == LocalCoinType.CATM.name) LocalCoinType.ETH.name else viewModel.getCoinCode()
+            viewModel.getCoinCode()
         )
         reservedCryptoView.text = getString(
             R.string.text_text,
@@ -137,24 +137,18 @@ class WithdrawFragment : BaseFragment() {
 
         var errors = 0
 
-        val isCatm = viewModel.getCoinCode() == LocalCoinType.CATM.name
-        //Validate CATM by ETH commission
-        if (isCatm && viewModel.isNotEnoughBalanceETH()) {
+        val validationResult = viewModel.validateAmount(amountCryptoView.getDouble())
+        if (validationResult is ValidationResult.InValid) {
             errors++
-            amountCryptoView.showError(R.string.withdraw_screen_where_money_libovski)
+            amountCryptoView.showError(validationResult.error)
         }
 
-        if (!isCatm && amountCryptoView.getDouble() > (viewModel.getCoinBalance() - viewModel.getTransactionFee())) {
-            errors++
-            amountCryptoView.showError(R.string.insufficient_balance)
-        }
-
-        if(amountCryptoView.getDouble() < viewModel.getMinValue()) {
+        if (amountCryptoView.getDouble() < viewModel.getMinValue()) {
             errors++
             amountCryptoView.showError(R.string.balance_amount_too_small)
         }
 
-        if(amountCryptoView.getDouble() >= viewModel.getMaxValue()) {
+        if (amountCryptoView.getDouble() >= viewModel.getMaxValue()) {
             errors++
             amountCryptoView.showError(R.string.balance_amount_exceeded)
         }
@@ -164,9 +158,9 @@ class WithdrawFragment : BaseFragment() {
         }
     }
 
-    private fun isValidAddress(): Boolean = CoinTypeExtension.getTypeByCode(
-        if (LocalCoinType.CATM.name == viewModel.getCoinCode()) LocalCoinType.ETH.name else viewModel.getCoinCode()
-    )?.validate(addressView.getString()) ?: false
+    private fun isValidAddress(): Boolean =
+        CoinTypeExtension.getTypeByCode(viewModel.getCoinCode())
+            ?.validate(addressView.getString()) ?: false
 
     private fun updateNextButton() {
         nextButtonView.isEnabled = amountCryptoView.isNotBlank()

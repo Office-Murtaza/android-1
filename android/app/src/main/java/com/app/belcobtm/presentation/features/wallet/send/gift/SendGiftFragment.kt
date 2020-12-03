@@ -5,8 +5,8 @@ import android.telephony.PhoneNumberFormattingTextWatcher
 import android.view.View
 import com.app.belcobtm.R
 import com.app.belcobtm.domain.Failure
-import com.app.belcobtm.domain.wallet.LocalCoinType
 import com.app.belcobtm.presentation.core.Const.GIPHY_API_KEY
+import com.app.belcobtm.presentation.core.coin.model.ValidationResult
 import com.app.belcobtm.presentation.core.extensions.*
 import com.app.belcobtm.presentation.core.helper.AlertHelper
 import com.app.belcobtm.presentation.core.ui.fragment.BaseFragment
@@ -87,7 +87,7 @@ class SendGiftFragment : BaseFragment(), GiphyDialogFragment.GifSelectionListene
         amountCryptoView.helperText = getString(
             R.string.transaction_helper_text_commission,
             viewModel.getTransactionFee().toStringCoin(),
-            if (viewModel.getCoinCode() == LocalCoinType.CATM.name) LocalCoinType.ETH.name else viewModel.getCoinCode()
+            viewModel.getCoinCode()
         )
     }
 
@@ -146,25 +146,19 @@ class SendGiftFragment : BaseFragment(), GiphyDialogFragment.GifSelectionListene
         phoneContainerView.clearError()
 
         var errors = 0
-        val isCatm = viewModel.getCoinCode() == LocalCoinType.CATM.name
 
-        //Validate CATM by ETH commission
-        if (isCatm && viewModel.isNotEnoughBalanceETH()) {
+        val validationResult = viewModel.validateAmount(amountCryptoView.getDouble())
+        if (validationResult is ValidationResult.InValid) {
             errors++
-            amountCryptoView.showError(R.string.withdraw_screen_where_money_libovski)
+            amountCryptoView.showError(validationResult.error)
         }
 
-        if (!isCatm && amountCryptoView.getDouble() > (viewModel.getCoinBalance() - viewModel.getTransactionFee())) {
-            errors++
-            amountCryptoView.showError(R.string.insufficient_balance)
-        }
-
-        if(amountCryptoView.getDouble() < viewModel.getMinValue()) {
+        if (amountCryptoView.getDouble() < viewModel.getMinValue()) {
             errors++
             amountCryptoView.showError(R.string.balance_amount_too_small)
         }
 
-        if(amountCryptoView.getDouble() >= viewModel.getMaxValue()) {
+        if (amountCryptoView.getDouble() >= viewModel.getMaxValue()) {
             errors++
             amountCryptoView.showError(R.string.balance_amount_exceeded)
         }
