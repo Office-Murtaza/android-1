@@ -1,93 +1,119 @@
 package com.app.belcobtm.presentation.features.deals.swap
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.app.belcobtm.domain.transaction.interactor.ExchangeUseCase
-import com.app.belcobtm.domain.wallet.LocalCoinType
-import com.app.belcobtm.domain.wallet.interactor.GetCoinDetailsMapUseCase
-import com.app.belcobtm.domain.wallet.interactor.UpdateCoinDetailsUseCase
+import com.app.belcobtm.domain.wallet.interactor.GetCoinDetailsUseCase
+import com.app.belcobtm.domain.wallet.interactor.GetCoinListUseCase
 import com.app.belcobtm.domain.wallet.item.CoinDataItem
-import com.app.belcobtm.domain.wallet.item.CoinDetailsDataItem
 import com.app.belcobtm.presentation.core.extensions.withScale
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
-import kotlin.math.max
 
 class SwapViewModel(
-    private val exchangeUseCase: ExchangeUseCase,
-    private val getCoinDetailsUseCase: GetCoinDetailsMapUseCase,
-    private val updateCoinDetailsUseCase: UpdateCoinDetailsUseCase,
-    val fromCoinItem: CoinDataItem,
-    val fromCoinDetailsItem: CoinDetailsDataItem,
-    val toCoinItemList: List<CoinDataItem>
+    getCoinListUseCase: GetCoinListUseCase,
+    private val getCoinDetailsUseCase: GetCoinDetailsUseCase
 ) : ViewModel() {
-    val exchangeLiveData: MutableLiveData<LoadingData<Unit>> = MutableLiveData()
-    val coinDetailsLiveData: MutableLiveData<LoadingData<Unit>> = MutableLiveData()
-    var toCoinItem: CoinDataItem? = null
-        set(value) {
-            if (field == value || value == null) {
-                return
-            }
-            val coinCode = value.code
-            val coinDetailsMap = getCoinDetailsUseCase.getCoinDetailsMap()
-            if (coinDetailsMap[coinCode] == null) {
-                val params = UpdateCoinDetailsUseCase.Params(coinCode)
-                coinDetailsLiveData.value = LoadingData.Loading()
-                updateCoinDetailsUseCase.invoke(
-                    params = params,
-                    onSuccess = {
-                        field = value
-                        coinDetailsLiveData.value = LoadingData.Success(Unit)
-                    },
-                    onError = { coinDetailsLiveData.value = LoadingData.Error(it) }
-                )
-            } else {
-                field = value
-            }
-        }
+
+    val originCoinsData = getCoinListUseCase()
+
+    private val _coinToSend = MutableLiveData<CoinDataItem>()
+    val coinToSend: LiveData<CoinDataItem> = _coinToSend
+
+    private val _coinToReceive = MutableLiveData<CoinDataItem>()
+    val coinToReceive: LiveData<CoinDataItem> = _coinToReceive
+
+    private val _swapRate = MutableLiveData<SwapRateModelView>()
+    val swapRate: LiveData<SwapRateModelView> = _swapRate
+
+    private val _swapFee = MutableLiveData<SwapFeeModelView>()
+    val swapFee: LiveData<SwapFeeModelView> = _swapFee
+
+    private val _submitButtonEnabled = MutableLiveData<Boolean>(false)
+    val submitButtonEnabled: LiveData<Boolean> = _submitButtonEnabled
+
+    private val _coinsDetailsLoadingState = MutableLiveData<LoadingData<Unit>>()
+    val coinsDetailsLoadingState: LiveData<LoadingData<Unit>> = _coinsDetailsLoadingState
 
     init {
-        toCoinItem = toCoinItemList.firstOrNull { it.code != fromCoinItem.code }
+        updateCoins(originCoinsData.first(), originCoinsData.last())
     }
 
-    fun exchange(fromCoinAmount: Double) {
-        val toCoinAmount: Double = getCoinToAmount(fromCoinAmount)
-        exchangeLiveData.value = LoadingData.Loading()
-        exchangeUseCase.invoke(
-            params = ExchangeUseCase.Params(
-                fromCoinAmount,
-                toCoinAmount,
-                fromCoinItem.code,
-                toCoinItem?.code ?: ""
-            ),
-            onSuccess = { exchangeLiveData.value = LoadingData.Success(it) },
-            onError = { exchangeLiveData.value = LoadingData.Error(it) }
+    fun updateCoinToSend(coin: CoinDataItem) {
+        if (coin != coinToSend.value) {
+            updateCoins(coin, coinToReceive.value!!)
+        }
+    }
+
+    fun updateCoinToReceive(coin: CoinDataItem) {
+        if (coin != coinToReceive.value) {
+            updateCoins(coinToSend.value!!, coin)
+        }
+    }
+
+    private fun updateCoins(coinToSend: CoinDataItem, coinToReceive: CoinDataItem) {
+        if (coinToSend == coinToReceive) {
+            return
+        }
+        // notify UI that coin details is fetching
+        _coinsDetailsLoadingState.value = LoadingData.Loading()
+        getCoinDetailsUseCase(
+            params = GetCoinDetailsUseCase.Params(coinToSend.code),
+            onSuccess = { coinToSendDetails ->
+                getCoinDetailsUseCase(
+                    params = GetCoinDetailsUseCase.Params(coinToReceive.code),
+                    onSuccess = { coinToReceiveDetails ->
+                        val receiveAmount = 5
+                        val platformFee = coinToReceiveDetails.txFee
+                        val platformFeeCoinsAmount = receiveAmount * platformFee
+                        val atomicAmount = 1 // probably will depend on the coin type
+                        val atomicSwapAmount = calcSwapAmount(
+                            coinToSend,
+                            coinToReceive,
+                            atomicAmount.toDouble()
+                        ).withScale(coinToReceiveDetails.scale)
+                        _coinToSend.value = coinToSend
+                        _coinToReceive.value = coinToReceive
+                        _swapRate.value = SwapRateModelView(
+                            atomicAmount,
+                            coinToSend.code,
+                            atomicSwapAmount,
+                            coinToReceive.code
+                        )
+                        _swapFee.value = SwapFeeModelView(
+                            platformFee,
+                            platformFeeCoinsAmount,
+                            coinToReceive.code
+                        )
+                        // notify UI that coin details has beed successfully fetched
+                        _coinsDetailsLoadingState.value = LoadingData.Success(Unit)
+                    },
+                    onError = { _coinsDetailsLoadingState.value = LoadingData.Error(it) }
+                )
+            },
+            onError = { _coinsDetailsLoadingState.value = LoadingData.Error(it) }
         )
     }
 
-    fun getCoinToAmount(fromCoinAmount: Double): Double {
-        val toCoinAmount = fromCoinAmount * fromCoinItem.priceUsd / (toCoinItem?.priceUsd
-            ?: 0.0) * (100 - fromCoinDetailsItem.profitExchange) / 100
-        // try to get saved scale
-        val coinDetailsMap = getCoinDetailsUseCase.getCoinDetailsMap()
-        val currentCoinDetails = coinDetailsMap.getValue(toCoinItem!!.code)
-        return toCoinAmount.withScale(currentCoinDetails.scale)
+    private fun calcSwapAmount(
+        sendCoin: CoinDataItem,
+        receiveCoin: CoinDataItem,
+        sendCoinAmount: Double
+    ): Double {
+        val sendCoinPriceUSD = sendCoin.priceUsd
+        val receiveCoinPriceUSD = receiveCoin.priceUsd
+        return sendCoinPriceUSD * sendCoinAmount / receiveCoinPriceUSD
     }
-
-    fun getFromMinValue(): Double = fromCoinDetailsItem.txFee
-
-    fun getToMinValue(): Double = getCoinDetailsUseCase.getCoinDetailsMap()
-        .getValue(toCoinItem!!.code).txFee
-
-    fun getMaxValue(): Double = when (fromCoinItem.code) {
-        LocalCoinType.CATM.name -> fromCoinItem.balanceCoin
-        LocalCoinType.XRP.name -> max(
-            0.0,
-            fromCoinItem.balanceCoin - fromCoinDetailsItem.txFee - 20
-        )
-        else -> max(0.0, fromCoinItem.balanceCoin) - fromCoinDetailsItem.txFee
-    }
-
-    fun isNotEnoughBalanceETH(): Boolean =
-        fromCoinItem.code == LocalCoinType.CATM.name &&
-                toCoinItemList.find { LocalCoinType.ETH.name == it.code }?.balanceCoin ?: 0.0 < fromCoinDetailsItem.txFee
 }
+
+data class SwapFeeModelView(
+    val platformFeePercents: Double,
+    val platformFeeCoinAmount: Double,
+    val swapCoinCode: String
+)
+
+data class SwapRateModelView(
+    val fromCoinAmount: Int,
+    val fromCoinCode: String,
+    val swapAmount: Double,
+    val swapCoinCode: String
+)

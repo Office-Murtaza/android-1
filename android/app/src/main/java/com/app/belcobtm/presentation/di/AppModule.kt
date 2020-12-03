@@ -50,22 +50,7 @@ val viewModelModule = module {
     viewModel { VerificationInfoViewModel(get()) }
     viewModel { VerificationBlankViewModel(get(), get()) }
     viewModel { VerificationVipViewModel(get()) }
-    viewModel { (coinCode: String) ->
-        val walletRepo = get<WalletRepository>()
-        val coinList = walletRepo.getCoinItemList()
-        val filteredCoinList = coinList.filter { it.isEnabled }
-        val fromCoinDataItem = filteredCoinList.first { it.code == coinCode }
-        val fromCoinDetails = walletRepo.getCoinDetailsMap().getValue(coinCode)
-
-        SwapViewModel(
-            get(),
-            get(),
-            get(),
-            fromCoinDataItem,
-            fromCoinDetails,
-            filteredCoinList
-        )
-    }
+    viewModel { SwapViewModel(get(), get()) }
     viewModel { WalletsViewModel(get(), get()) }
     viewModel { (latitude: Double, longitude: Double, coinCode: String) ->
         TradeViewModel(coinCode, latitude, longitude, get(), get(), get(), get(), get())
