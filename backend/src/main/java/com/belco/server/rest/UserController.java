@@ -113,7 +113,7 @@ public class UserController {
                 return Response.error(4, "Phone is already used");
             }
 
-            User user = userService.register(dto.getPhone(), dto.getPassword(), dto.getPlatform(), dto.getAppToken(), dto.getCoins());
+            User user = userService.register(dto.getPhone(), dto.getPassword(), dto.getPlatform(), dto.getNotificationsToken(), dto.getCoins());
 
             TokenDTO jwt = getJwt(user.getId(), user.getIdentity().getId(), dto.getPhone(), dto.getPassword());
 
@@ -167,7 +167,7 @@ public class UserController {
             refreshTokenRep.save(token);
 
             user.setPlatform(dto.getPlatform());
-            user.setAppToken(dto.getAppToken());
+            user.setNotificationsToken(dto.getNotificationsToken());
             userService.save(user);
             coinService.addUserCoins(user, dto.getCoins());
 

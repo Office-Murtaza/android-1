@@ -84,13 +84,13 @@ public class UserService implements UserDetailsService {
     private String documentUploadPath;
 
     @Transactional
-    public User register(String phone, String password, Integer platform, String appToken, List<CoinDTO> coins) {
+    public User register(String phone, String password, Integer platform, String notificationsToken, List<CoinDTO> coins) {
         User user = new User();
         user.setPhone(phone);
         user.setPassword(passwordEncoder.encode(password));
         user.setRole("ROLE_USER");
         user.setPlatform(platform);
-        user.setAppToken(appToken);
+        user.setNotificationsToken(notificationsToken);
 
         User savedUser = userRep.save(user);
 
@@ -518,7 +518,7 @@ public class UserService implements UserDetailsService {
 
     public boolean enablePushNotifications(Long userId, boolean enabled) {
         User user = findById(userId);
-        user.setReceivePushNotifications(enabled);
+        user.setNotificationsEnabled(enabled);
 
         userRep.save(user);
 
