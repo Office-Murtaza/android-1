@@ -24,8 +24,7 @@ public class StakeDetailsDTO {
     private String rewardPercentStr;
     private BigDecimal rewardAnnualAmount;
     private String rewardAnnualAmountStr;
-    private BigDecimal rewardAnnualPercent;
-    private String rewardAnnualPercentStr;
+    private int rewardAnnualPercent;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private Date createDate;
@@ -61,9 +60,8 @@ public class StakeDetailsDTO {
         this.rewardAnnualAmountStr = Util.convert(rewardAnnualAmount);
     }
 
-    public void setRewardAnnualPercent(BigDecimal rewardAnnualPercent) {
+    public void setRewardAnnualPercent(int rewardAnnualPercent) {
         this.rewardAnnualPercent = rewardAnnualPercent;
-        this.rewardAnnualPercentStr = Util.convert(rewardAnnualPercent);
     }
 
     public void setCreateDate(Date createDate) {

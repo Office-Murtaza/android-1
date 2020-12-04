@@ -17,6 +17,8 @@ public class CoinDetailsDTO {
     private String code;
     private BigDecimal txFee;
     private String txFeeStr;
+    private BigDecimal convertedTxFee;
+    private String convertedTxFeeStr;
     private Long byteFee;
     private Long gasPrice;
     private Long gasLimit;
@@ -29,6 +31,11 @@ public class CoinDetailsDTO {
     public void setTxFee(BigDecimal txFee) {
         this.txFee = txFee;
         this.txFeeStr = Util.convert(txFee);
+    }
+
+    public void setConvertedTxFee(BigDecimal convertedTxFee) {
+        this.convertedTxFee = convertedTxFee;
+        this.convertedTxFeeStr = Util.convert(convertedTxFee);
     }
 
     public void setByteFee(Long byteFee) {

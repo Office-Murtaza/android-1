@@ -31,6 +31,21 @@ public class TransactionService {
 
     private static final Pageable page = PageRequest.of(0, 100);
 
+    @Value("${gb.url}")
+    private String gbUrl;
+
+    @Value("${stake.base-period}")
+    private int stakeBasePeriod;
+
+    @Value("${stake.hold-period}")
+    private int stakeHoldPeriod;
+
+    @Value("${stake.annual-period}")
+    private int stakeAnnualPeriod;
+
+    @Value("${stake.annual-percent}")
+    private int stakeAnnualPercent;
+
     @Autowired
     private TransactionRecordRep recordRep;
 
@@ -51,12 +66,6 @@ public class TransactionService {
 
     @Autowired
     private WalletService walletService;
-
-    @Autowired
-    private GethService geth;
-
-    @Value("${gb.url}")
-    private String gbUrl;
 
     public TransactionDetailsDTO getTransactionDetails(Long userId, CoinService.CoinEnum coinCode, String txId) {
         User user = userService.findById(userId);
@@ -428,8 +437,8 @@ public class TransactionService {
     public StakeDetailsDTO getStakeDetails(Long userId, CoinService.CoinEnum coin) {
         StakeDetailsDTO dto = new StakeDetailsDTO();
         dto.setStatus(StakeStatus.NOT_EXIST);
-        dto.setRewardAnnualPercent(geth.getStakeAnnualPercent());
-        dto.setHoldPeriod(geth.getDaysHoldPeriod());
+        dto.setRewardAnnualPercent(stakeAnnualPercent);
+        dto.setHoldPeriod(stakeHoldPeriod / stakeBasePeriod);
 
         try {
             Identity identity = userService.findByUserId(userId);
@@ -443,29 +452,29 @@ public class TransactionService {
                 dto.setCreateDate(createStakeRec.getCreateDate());
 
                 if (StringUtils.isBlank(createStakeRec.getRefTxId())) {
-                    int days = Seconds.secondsBetween(new DateTime(createStakeRec.getCreateDate()), DateTime.now()).getSeconds() / geth.getStakeBasePeriod().intValue();
-                    BigDecimal percent = calculatePercent(days);
+                    int days = Seconds.secondsBetween(new DateTime(createStakeRec.getCreateDate()), DateTime.now()).getSeconds() / stakeBasePeriod;
+                    BigDecimal percent = calculateStakeRewardPercent(days);
 
                     dto.setDuration(days);
                     dto.setRewardPercent(percent);
                     dto.setRewardAmount(createStakeRec.getAmount().multiply(percent.divide(Constant.HUNDRED)).stripTrailingZeros());
-                    dto.setRewardAnnualAmount(createStakeRec.getAmount().multiply(geth.getStakeAnnualPercent().divide(Constant.HUNDRED)).stripTrailingZeros());
+                    dto.setRewardAnnualAmount(createStakeRec.getAmount().multiply(BigDecimal.valueOf(stakeAnnualPercent)).divide(Constant.HUNDRED).stripTrailingZeros());
 
                     return dto;
                 } else {
                     TransactionRecordWallet cancelStakeRec = walletRep.findFirstByTxId(createStakeRec.getRefTxId()).get();
 
-                    int days = Seconds.secondsBetween(new DateTime(createStakeRec.getCreateDate()), new DateTime(cancelStakeRec.getCreateDate())).getSeconds() / geth.getStakeBasePeriod().intValue();
-                    int holdDays = Seconds.secondsBetween(new DateTime(cancelStakeRec.getCreateDate()), DateTime.now()).getSeconds() / geth.getStakeBasePeriod().intValue();
-                    BigDecimal percent = calculatePercent(days);
+                    int days = Seconds.secondsBetween(new DateTime(createStakeRec.getCreateDate()), new DateTime(cancelStakeRec.getCreateDate())).getSeconds() / stakeBasePeriod;
+                    int holdDays = Seconds.secondsBetween(new DateTime(cancelStakeRec.getCreateDate()), DateTime.now()).getSeconds() / stakeBasePeriod;
+                    BigDecimal percent = calculateStakeRewardPercent(days);
 
                     dto.setDuration(days);
                     dto.setRewardPercent(percent);
                     dto.setStatus(StakeStatus.convert(TransactionType.valueOf(cancelStakeRec.getType()), TransactionStatus.valueOf(cancelStakeRec.getStatus())));
                     dto.setCancelDate(cancelStakeRec.getCreateDate());
                     dto.setRewardAmount(createStakeRec.getAmount().multiply(percent.divide(Constant.HUNDRED)).stripTrailingZeros());
-                    dto.setRewardAnnualAmount(createStakeRec.getAmount().multiply(geth.getStakeAnnualPercent().divide(Constant.HUNDRED)).stripTrailingZeros());
-                    dto.setUntilWithdraw(Math.max(0, geth.getDaysHoldPeriod() - holdDays));
+                    dto.setRewardAnnualAmount(createStakeRec.getAmount().multiply(BigDecimal.valueOf(stakeAnnualPercent)).divide(Constant.HUNDRED).stripTrailingZeros());
+                    dto.setUntilWithdraw(Math.max(0, stakeHoldPeriod / stakeBasePeriod - holdDays));
 
                     if (StringUtils.isNotBlank(cancelStakeRec.getRefTxId())) {
                         TransactionRecordWallet withdrawStakeRec = walletRep.findFirstByTxId(cancelStakeRec.getRefTxId()).get();
@@ -552,7 +561,7 @@ public class TransactionService {
             list.stream().forEach(t -> {
                 try {
                     CoinService.CoinEnum coinCode = CoinService.CoinEnum.valueOf(t.getRefCoin().getCode());
-                    BigDecimal txFee = coinCode == CoinService.CoinEnum.CATM ? walletService.convertEthFeeToCatmFee() : coinCode.getTxFee();
+                    BigDecimal txFee = coinCode == CoinService.CoinEnum.CATM || coinCode == CoinService.CoinEnum.USDT ? walletService.convertToFee(coinCode) : coinCode.getTxFee();
                     BigDecimal withdrawAmount = t.getRefAmount().subtract(txFee);
 
                     if (walletService.isEnoughBalance(coinCode, t.getRefAmount())) {
@@ -615,7 +624,7 @@ public class TransactionService {
 
                     if (receiverOpt.isPresent()) {
                         CoinService.CoinEnum coinCode = CoinService.CoinEnum.valueOf(t.getCoin().getCode());
-                        BigDecimal txFee = coinCode == CoinService.CoinEnum.CATM ? walletService.convertEthFeeToCatmFee() : coinCode.getTxFee();
+                        BigDecimal txFee = coinCode == CoinService.CoinEnum.CATM || coinCode == CoinService.CoinEnum.USDT ? walletService.convertToFee(coinCode) : coinCode.getTxFee();
                         BigDecimal withdrawAmount = t.getAmount().subtract(txFee);
 
                         if (walletService.isEnoughBalance(coinCode, t.getAmount())) {
@@ -657,7 +666,7 @@ public class TransactionService {
         }
     }
 
-    private BigDecimal calculatePercent(int days) {
-        return geth.getStakeAnnualPercent().multiply(new BigDecimal(days).divide(new BigDecimal(geth.getStakeAnnualPeriod()), 2, RoundingMode.HALF_DOWN)).stripTrailingZeros();
+    private BigDecimal calculateStakeRewardPercent(int days) {
+        return new BigDecimal(days * stakeAnnualPercent).divide(new BigDecimal(stakeAnnualPeriod / stakeBasePeriod), 2, RoundingMode.HALF_DOWN).stripTrailingZeros();
     }
 }

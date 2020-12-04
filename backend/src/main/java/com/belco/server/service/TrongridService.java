@@ -103,7 +103,7 @@ public class TrongridService {
                 json.put("value", txId);
 
                 JSONObject res = JSONObject.fromObject(rest.postForObject(nodeUrl + "/wallet/gettransactionbyid", json, String.class));
-                JSONObject row = res.optJSONObject("raw_data").optJSONArray("contract").getJSONObject(0).getJSONObject("parameter").optJSONObject("value");
+                JSONObject row = res.optJSONObject("raw_data").optJSONArray("token").getJSONObject(0).getJSONObject("parameter").optJSONObject("value");
 
                 dto.setTxId(txId);
                 dto.setLink(explorerUrl + "/" + txId);
@@ -227,7 +227,7 @@ public class TrongridService {
             for (int i = 0; i < array.size(); i++) {
                 JSONObject tx = array.getJSONObject(i);
 
-                JSONObject row = tx.optJSONObject("raw_data").optJSONArray("contract").getJSONObject(0).getJSONObject("parameter").optJSONObject("value");
+                JSONObject row = tx.optJSONObject("raw_data").optJSONArray("token").getJSONObject(0).getJSONObject("parameter").optJSONObject("value");
 
                 if (row.containsKey("asset_name")) {
                     continue;
