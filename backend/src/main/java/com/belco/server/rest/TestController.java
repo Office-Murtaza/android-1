@@ -1,5 +1,6 @@
 package com.belco.server.rest;
 
+import com.belco.server.dto.PushNotificationDTO;
 import com.belco.server.dto.SubmitTransactionDTO;
 import com.belco.server.model.Response;
 import com.belco.server.repository.CoinRep;
@@ -19,6 +20,9 @@ public class TestController {
 
     @Autowired
     private TwilioService twilioService;
+
+    @Autowired
+    private PushNotificationService pushNotificationService;
 
     @Autowired
     private UserService userService;
@@ -91,6 +95,13 @@ public class TestController {
         }
 
         return Response.ok(json);
+    }
+
+    @GetMapping("/push-notifications")
+    public Response pushNotifications(@RequestParam String title, @RequestParam String message, @RequestParam String token) {
+        String result = pushNotificationService.sendMessageToToken(new PushNotificationDTO(title, message, null, token));
+
+        return Response.ok("result", result);
     }
 
     @GetMapping("/coin/{coin}/price")
