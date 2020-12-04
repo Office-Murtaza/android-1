@@ -39,6 +39,10 @@ class SharedPreferencesHelper(private val sharedPreferences: SharedPreferences) 
         set(value) = sharedPreferences.set(USER_PIN, value)
         get() = sharedPreferences[USER_PIN] ?: ""
 
+    var notificationToken: String?
+        set(value) = sharedPreferences.set(NOTIFICATION_TOKEN, value)
+        get() = sharedPreferences[NOTIFICATION_TOKEN]
+
     var coinsDetails: Map<String, CoinDetailsDataItem>
         set(value) = sharedPreferences.set(COINS_FEE, jsonAdapter.toJson(value))
         get() {
@@ -91,6 +95,7 @@ class SharedPreferencesHelper(private val sharedPreferences: SharedPreferences) 
         private const val API_SEED = "KEY_API_SEED"
         private const val USER_ID = "KEY_USER_ID"
         private const val USER_PIN = "KEY_PIN"
+        private const val NOTIFICATION_TOKEN = "KEY_NOTIFICATION"
         private const val USER_PHONE = "KEY_PHONE"
         private const val COINS_FEE = "PREF_KEY_COINS_FEE"
         private const val TRADE_LOCATION_EXPIRATION_TIME = "trade_location_expiration_time"

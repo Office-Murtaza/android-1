@@ -8,6 +8,7 @@ import com.app.belcobtm.presentation.features.authorization.create.seed.CreateSe
 import com.app.belcobtm.presentation.features.authorization.create.wallet.CreateWalletViewModel
 import com.app.belcobtm.presentation.features.authorization.recover.seed.RecoverSeedViewModel
 import com.app.belcobtm.presentation.features.authorization.recover.wallet.RecoverWalletViewModel
+import com.app.belcobtm.presentation.features.notification.NotificationHelper
 import com.app.belcobtm.presentation.features.pin.code.PinCodeViewModel
 import com.app.belcobtm.presentation.features.settings.SettingsViewModel
 import com.app.belcobtm.presentation.features.settings.about.AboutViewModel
@@ -133,4 +134,8 @@ val viewModelModule = module {
     viewModel { (coinCode: String) ->
         DepositViewModel(coinCode, get())
     }
+}
+
+val helperModule = module {
+    factory { NotificationHelper(get()) }
 }

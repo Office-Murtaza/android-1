@@ -24,11 +24,13 @@ class AuthApiService(private val authApi: AuthApi) {
     suspend fun createWallet(
         phone: String,
         password: String,
+        notificationToken: String?,
         coinMap: Map<String, String>
     ): Either<Failure, CreateRecoverWalletResponse> = try {
         val coinList = coinMap.map { CreateWalletCoinRequest(it.key, it.value) }
-        val request = authApi.createWalletAsync(CreateWalletRequest(phone, password, coinList)).await()
-        request.body()?.let { Either.Right(it) } ?: Either.Left(Failure.ServerError())
+        val request = CreateWalletRequest(phone, password, notificationToken, coinList)
+        val response = authApi.createWalletAsync(request).await()
+        response.body()?.let { Either.Right(it) } ?: Either.Left(Failure.ServerError())
     } catch (failure: Failure) {
         failure.printStackTrace()
         Either.Left(failure)
@@ -37,11 +39,13 @@ class AuthApiService(private val authApi: AuthApi) {
     suspend fun recoverWallet(
         phone: String,
         password: String,
+        notificationToken: String?,
         coinMap: Map<String, String>
     ): Either<Failure, CreateRecoverWalletResponse> = try {
         val coinList = coinMap.map { RecoverWalletCoinRequest(it.key, it.value) }
-        val request = authApi.recoverWalletAsync(RecoverWalletRequest(phone, password, coinList)).await()
-        request.body()?.let { Either.Right(it) } ?: Either.Left(Failure.ServerError())
+        val request = RecoverWalletRequest(phone, password, notificationToken, coinList)
+        val response = authApi.recoverWalletAsync(request).await()
+        response.body()?.let { Either.Right(it) } ?: Either.Left(Failure.ServerError())
     } catch (failure: Failure) {
         failure.printStackTrace()
         if (failure.message == "No value for errorMsg") {

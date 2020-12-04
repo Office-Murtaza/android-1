@@ -7,6 +7,7 @@ import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.ProcessLifecycleOwner
 import com.app.belcobtm.data.di.*
 import com.app.belcobtm.data.disk.shared.preferences.SharedPreferencesHelper
+import com.app.belcobtm.presentation.di.helperModule
 import com.app.belcobtm.presentation.di.useCaseModule
 import com.app.belcobtm.presentation.di.viewModelModule
 import org.koin.android.ext.android.inject
@@ -37,10 +38,10 @@ class App : Application() {
                     repositoryModule,
                     webSocketModule,
                     useCaseModule,
-                    viewModelModule
+                    viewModelModule,
+                    helperModule
                 )
             )
-
             androidContext(applicationContext)
         }
         prefHelper.coinsDetails = emptyMap()
