@@ -328,16 +328,6 @@ public class UserController {
         }
     }
 
-    @GetMapping("/user/{userId}/push-notifications")
-    public Response enablePushNotifications(@PathVariable Long userId, @RequestParam boolean enabled) {
-        try {
-            return Response.ok(userService.enablePushNotifications(userId, enabled));
-        } catch (Exception e) {
-            e.printStackTrace();
-            return Response.serverError();
-        }
-    }
-
     private TokenDTO getJwt(Long userId, Long identityId, String username, String password) {
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username,
                 password);

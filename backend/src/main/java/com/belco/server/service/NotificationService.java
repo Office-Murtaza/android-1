@@ -1,6 +1,6 @@
 package com.belco.server.service;
 
-import com.belco.server.dto.PushNotificationDTO;
+import com.belco.server.dto.NotificationDTO;
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
@@ -22,7 +22,7 @@ import com.google.firebase.messaging.Message;
 import com.google.firebase.messaging.Notification;
 
 @Service
-public class PushNotificationService {
+public class NotificationService {
 
     private final static String SOUND = "default";
     private final static String COLOR = "#FFFF00";
@@ -47,7 +47,7 @@ public class PushNotificationService {
         }
     }
 
-    public String sendMessageWithData(Map<String, String> data, PushNotificationDTO dto) {
+    public String sendMessageWithData(Map<String, String> data, NotificationDTO dto) {
         try {
             return sendAndGetResponse(getPreconfiguredMessageWithData(data, dto));
         } catch (Exception e) {
@@ -57,7 +57,7 @@ public class PushNotificationService {
         return null;
     }
 
-    public String sendMessageToTopic(PushNotificationDTO dto) {
+    public String sendMessageToTopic(NotificationDTO dto) {
         try {
             return sendAndGetResponse(getPreconfiguredMessageToTopic(dto));
         } catch (Exception e) {
@@ -67,7 +67,7 @@ public class PushNotificationService {
         return null;
     }
 
-    public String sendMessageToToken(PushNotificationDTO dto) {
+    public String sendMessageToToken(NotificationDTO dto) {
         try {
             return sendAndGetResponse(getPreconfiguredMessageToToken(dto));
         } catch (Exception e) {
@@ -94,22 +94,22 @@ public class PushNotificationService {
                 .setAps(Aps.builder().setCategory(topic).setThreadId(topic).build()).build();
     }
 
-    private Message getPreconfiguredMessageToTopic(PushNotificationDTO dto) {
+    private Message getPreconfiguredMessageToTopic(NotificationDTO dto) {
         return getPreconfiguredMessageBuilder(dto).setTopic(dto.getTopic())
                 .build();
     }
 
-    private Message getPreconfiguredMessageToToken(PushNotificationDTO dto) {
+    private Message getPreconfiguredMessageToToken(NotificationDTO dto) {
         return getPreconfiguredMessageBuilder(dto).setToken(dto.getToken())
                 .build();
     }
 
-    private Message getPreconfiguredMessageWithData(Map<String, String> data, PushNotificationDTO dto) {
+    private Message getPreconfiguredMessageWithData(Map<String, String> data, NotificationDTO dto) {
         return getPreconfiguredMessageBuilder(dto).putAllData(data).setToken(dto.getToken())
                 .build();
     }
 
-    private Message.Builder getPreconfiguredMessageBuilder(PushNotificationDTO dto) {
+    private Message.Builder getPreconfiguredMessageBuilder(NotificationDTO dto) {
         AndroidConfig androidConfig = getAndroidConfig(dto.getTopic());
         ApnsConfig apnsConfig = getApnsConfig(dto.getTopic());
 

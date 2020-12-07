@@ -516,15 +516,6 @@ public class UserService implements UserDetailsService {
         return true;
     }
 
-    public boolean enablePushNotifications(Long userId, boolean enabled) {
-        User user = findById(userId);
-        user.setNotificationsEnabled(enabled);
-
-        userRep.save(user);
-
-        return true;
-    }
-
     public void save(User user) {
         userRep.save(user);
     }
