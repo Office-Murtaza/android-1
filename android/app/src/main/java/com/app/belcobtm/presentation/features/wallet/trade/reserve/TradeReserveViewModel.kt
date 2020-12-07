@@ -9,7 +9,9 @@ import com.app.belcobtm.domain.wallet.LocalCoinType
 import com.app.belcobtm.domain.wallet.interactor.GetFreshCoinUseCase
 import com.app.belcobtm.domain.wallet.item.CoinDataItem
 import com.app.belcobtm.domain.wallet.item.CoinDetailsDataItem
+import com.app.belcobtm.presentation.core.coin.AmountCoinValidator
 import com.app.belcobtm.presentation.core.coin.MinMaxCoinValueProvider
+import com.app.belcobtm.presentation.core.coin.model.ValidationResult
 import com.app.belcobtm.presentation.core.item.CoinScreenItem
 import com.app.belcobtm.presentation.core.item.mapToScreenItem
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
@@ -20,7 +22,8 @@ class TradeReserveViewModel(
     private val getCoinUseCace: GetFreshCoinUseCase,
     private val createTransactionUseCase: TradeReserveTransactionCreateUseCase,
     private val completeTransactionUseCase: TradeReserveTransactionCompleteUseCase,
-    private val minMaxCoinValueProvider: MinMaxCoinValueProvider
+    private val minMaxCoinValueProvider: MinMaxCoinValueProvider,
+    private val amountCoinValidator: AmountCoinValidator
 ) : ViewModel() {
     private val _initialLoadLiveData = MutableLiveData<LoadingData<Unit>>()
     val initialLoadLiveData: LiveData<LoadingData<Unit>> = _initialLoadLiveData
@@ -43,7 +46,7 @@ class TradeReserveViewModel(
     private var selectedAmount: Double = 0.0
 
     init {
-        if (isCATM()) {
+        if (isETHsubCoin()) {
             // for CATM amount calculation we need ETH coin
             fetchEtherium()
         }
@@ -108,19 +111,18 @@ class TradeReserveViewModel(
     }
 
     private fun enoughETHForExtraFee(): Boolean {
-        if (isCATM()) {
-            return etheriumCoinDataItem!!.balanceCoin >= detailsDataItem.txFee
-        }
-        return true
+        val coinList = etheriumCoinDataItem?.let(::listOf).orEmpty()
+        val validationResult = amountCoinValidator.validateBalance(
+            amount = 0.0,
+            coin = coinDataItem,
+            coinList = coinList,
+            coinDetails = detailsDataItem
+        )
+        return validationResult is ValidationResult.Valid
     }
 
-    private fun isCATM(): Boolean {
-        return coinDataItem.code == LocalCoinType.CATM.name
-    }
-
-    private fun isXRP(): Boolean {
-        return coinDataItem.code == LocalCoinType.XRP.name
-    }
+    private fun isETHsubCoin(): Boolean =
+        coinDataItem.code == LocalCoinType.CATM.name || coinDataItem.code == LocalCoinType.USDT.name
 
     private fun fetchEtherium() {
         _initialLoadLiveData.value = LoadingData.Loading()
