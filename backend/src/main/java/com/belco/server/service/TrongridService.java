@@ -195,8 +195,13 @@ public class TrongridService {
         if (array != null && !array.isEmpty()) {
             for (int i = 0; i < array.size(); i++) {
                 JSONObject tx = array.getJSONObject(i);
+                JSONObject row = tx.optJSONObject("raw_data");
 
-                JSONObject row = tx.optJSONObject("raw_data").optJSONArray("token").getJSONObject(0).getJSONObject("parameter").optJSONObject("value");
+                if (row.containsKey("contract")) {
+                    row = row.optJSONArray("contract").getJSONObject(0).getJSONObject("parameter").optJSONObject("value");
+                } else {
+                    row = row.optJSONArray("token").getJSONObject(0).getJSONObject("parameter").optJSONObject("value");
+                }
 
                 if (row.containsKey("asset_name")) {
                     continue;

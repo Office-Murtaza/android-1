@@ -68,23 +68,26 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
                 if (StompCommand.CONNECT.equals(accessor.getCommand())) {
                     if (accessor.getNativeHeader("Authorization") != null) {
                         List<String> authorization = accessor.getNativeHeader("Authorization");
-                        String accessToken = authorization.get(0).split(" ")[1];
 
-                        if (tokenProvider.validateToken(accessToken)) {
-                            Authentication authentication = tokenProvider.getAuthentication(accessToken);
+                        if (authorization.size() > 0 && authorization.get(0).split(" ").length > 1) {
+                            String accessToken = authorization.get(0).split(" ")[1];
 
-                            if (SecurityContextHolder.getContext().getAuthentication() == null) {
-                                SecurityContextHolder.getContext().setAuthentication(authentication);
+                            if (tokenProvider.validateToken(accessToken)) {
+                                Authentication authentication = tokenProvider.getAuthentication(accessToken);
+
+                                if (SecurityContextHolder.getContext().getAuthentication() == null) {
+                                    SecurityContextHolder.getContext().setAuthentication(authentication);
+                                }
+
+                                accessor.setUser(authentication);
+
+                                System.out.println(" ---- CONNECT: " + authentication.getName());
+                            } else {
+                                StompHeaderAccessor headerAccessor = StompHeaderAccessor.create(StompCommand.ERROR);
+                                headerAccessor.setMessage("Access is denied");
+                                headerAccessor.setSessionId(accessor.getSessionId());
+                                clientOutboundChannel.send(MessageBuilder.createMessage(new byte[0], headerAccessor.getMessageHeaders()));
                             }
-
-                            accessor.setUser(authentication);
-
-                            System.out.println(" ---- CONNECT: " + authentication.getName());
-                        } else {
-                            StompHeaderAccessor headerAccessor = StompHeaderAccessor.create(StompCommand.ERROR);
-                            headerAccessor.setMessage("Access is denied");
-                            headerAccessor.setSessionId(accessor.getSessionId());
-                            clientOutboundChannel.send(MessageBuilder.createMessage(new byte[0], headerAccessor.getMessageHeaders()));
                         }
                     }
                 } else if (StompCommand.SUBSCRIBE.equals(accessor.getCommand())) {
