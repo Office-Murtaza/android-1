@@ -4,12 +4,20 @@ import android.view.View
 import com.app.belcobtm.R
 import com.app.belcobtm.domain.Failure
 import com.app.belcobtm.domain.wallet.LocalCoinType
+import com.app.belcobtm.presentation.core.coin.model.ValidationResult
 import com.app.belcobtm.presentation.core.extensions.*
 import com.app.belcobtm.presentation.core.helper.AlertHelper
 import com.app.belcobtm.presentation.core.ui.fragment.BaseFragment
 import com.app.belcobtm.presentation.core.watcher.DoubleTextWatcher
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.android.synthetic.main.fragment_exchange.*
+import kotlinx.android.synthetic.main.fragment_exchange.balanceCryptoView
+import kotlinx.android.synthetic.main.fragment_exchange.balanceUsdView
+import kotlinx.android.synthetic.main.fragment_exchange.nextButtonView
+import kotlinx.android.synthetic.main.fragment_exchange.priceUsdView
+import kotlinx.android.synthetic.main.fragment_exchange.reservedCryptoView
+import kotlinx.android.synthetic.main.fragment_exchange.reservedUsdView
+import kotlinx.android.synthetic.main.fragment_withdraw.*
 import org.koin.android.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
@@ -70,7 +78,7 @@ class ExchangeFragment : BaseFragment() {
         amountCoinFromView.helperText = getString(
             R.string.transaction_helper_text_commission,
             viewModel.fromCoinDetailsItem.txFee.toStringCoin(),
-            if (viewModel.fromCoinItem.code == LocalCoinType.CATM.name) LocalCoinType.ETH.name else viewModel.fromCoinItem.code
+            viewModel.getCoinCode()
         )
         initToCoinView()
     }
@@ -106,15 +114,16 @@ class ExchangeFragment : BaseFragment() {
         amountCoinFromView?.editText?.addTextChangedListener(doubleTextWatcher.firstTextWatcher)
         maxCoinFromView.setOnClickListener { amountCoinFromView.setText(viewModel.getMaxValue().toStringCoin()) }
         nextButtonView.setOnClickListener listener@{
-            if (viewModel.isNotEnoughBalanceETH()) {
+            val validationResult = viewModel.validateAmount(amountCryptoView.getDouble())
+            if (validationResult is ValidationResult.InValid) {
                 amountCoinFromView.showError(R.string.withdraw_screen_where_money_libovski)
                 return@listener
             }
-            if(amountCoinFromView.getDouble() < viewModel.getFromMinValue()) {
+            if (amountCoinFromView.getDouble() < viewModel.getFromMinValue()) {
                 amountCoinFromView.showError(R.string.balance_amount_too_small)
                 return@listener
             }
-            if(amountCoinFromView.getDouble() >= viewModel.getMaxValue()) {
+            if (amountCoinFromView.getDouble() >= viewModel.getMaxValue()) {
                 amountCoinFromView.showError(R.string.balance_amount_exceeded)
                 return@listener
             }

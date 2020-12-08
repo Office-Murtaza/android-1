@@ -2,18 +2,23 @@ package com.app.belcobtm.presentation.features.wallet.send.gift
 
 import androidx.lifecycle.ViewModel
 import com.app.belcobtm.domain.transaction.interactor.SendGiftTransactionCreateUseCase
-import com.app.belcobtm.domain.wallet.LocalCoinType
 import com.app.belcobtm.domain.wallet.item.CoinDataItem
 import com.app.belcobtm.domain.wallet.item.CoinDetailsDataItem
 import com.app.belcobtm.presentation.core.SingleLiveData
+import com.app.belcobtm.presentation.core.coin.AmountCoinValidator
+import com.app.belcobtm.presentation.core.coin.CoinCodeProvider
+import com.app.belcobtm.presentation.core.coin.MinMaxCoinValueProvider
+import com.app.belcobtm.presentation.core.coin.model.ValidationResult
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
-import kotlin.math.max
 
 class SendGiftViewModel(
     private val transactionCreateUseCase: SendGiftTransactionCreateUseCase,
     private val fromCoinDataItem: CoinDataItem,
     private val fromCoinDetailsDataItem: CoinDetailsDataItem,
-    private val coinDataItemList: List<CoinDataItem>
+    private val coinDataItemList: List<CoinDataItem>,
+    private val minMaxCoinValueProvider: MinMaxCoinValueProvider,
+    private val coinCodeProvider: CoinCodeProvider,
+    private val amountCoinValidator: AmountCoinValidator
 ) : ViewModel() {
     val sendGiftLiveData: SingleLiveData<LoadingData<Unit>> = SingleLiveData()
 
@@ -37,13 +42,11 @@ class SendGiftViewModel(
         )
     }
 
-    fun getMinValue(): Double = getTransactionFee()
+    fun getMinValue(): Double =
+        minMaxCoinValueProvider.getMinValue(fromCoinDataItem, fromCoinDetailsDataItem)
 
-    fun getMaxValue(): Double = when (getCoinCode()) {
-        LocalCoinType.CATM.name -> getCoinBalance()
-        LocalCoinType.XRP.name -> max(0.0, getCoinBalance() - getTransactionFee() - 20)
-        else -> max(0.0, getCoinBalance() - getTransactionFee())
-    }
+    fun getMaxValue(): Double =
+        minMaxCoinValueProvider.getMaxValue(fromCoinDataItem, fromCoinDetailsDataItem)
 
     fun getTransactionFee(): Double = fromCoinDetailsDataItem.txFee
 
@@ -57,8 +60,10 @@ class SendGiftViewModel(
 
     fun getReservedBalanceCoin(): Double = fromCoinDataItem.reservedBalanceCoin
 
-    fun getCoinCode(): String = fromCoinDataItem.code
+    fun getCoinCode(): String = coinCodeProvider.getCoinCode(fromCoinDataItem)
 
-    fun isNotEnoughBalanceETH(): Boolean =
-        coinDataItemList.find { LocalCoinType.ETH.name == it.code }?.balanceCoin ?: 0.0 < getTransactionFee()
+    fun validateAmount(amount: Double): ValidationResult =
+        amountCoinValidator.validateBalance(
+            amount, fromCoinDataItem, fromCoinDetailsDataItem, coinDataItemList
+        )
 }
