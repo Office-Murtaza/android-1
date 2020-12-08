@@ -15,7 +15,7 @@
         android:layout_height="wrap_content">
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/amountCoinFromView"
+            android:id="@+id/amountCoinToSendView"
             style="@style/TextInputLayoutOutline"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
@@ -45,7 +45,7 @@
             android:paddingStart="@dimen/margin_half"
             android:paddingEnd="@dimen/margin_half"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@id/amountCoinFromView">
+            app:layout_constraintTop_toTopOf="@id/amountCoinToSendView">
 
             <ImageView
                 android:id="@+id/coinToSendImageView"
@@ -68,9 +68,9 @@
             android:layout_marginEnd="10dp"
             android:layout_marginBottom="10dp"
             android:text="@string/max"
-            app:layout_constraintBottom_toBottomOf="@id/amountCoinFromView"
+            app:layout_constraintBottom_toBottomOf="@id/amountCoinToSendView"
             app:layout_constraintEnd_toStartOf="@id/sendCoinButton"
-            app:layout_constraintTop_toTopOf="@id/amountCoinFromView" />
+            app:layout_constraintTop_toTopOf="@id/amountCoinToSendView" />
 
         <ImageView
             android:id="@+id/iconSwap"
@@ -81,11 +81,11 @@
             android:src="@drawable/ic_swap_vert"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/amountCoinFromView"
+            app:layout_constraintTop_toBottomOf="@id/amountCoinToSendView"
             app:tint="@color/colorPrimary" />
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/receiveCoinView"
+            android:id="@+id/amountCoinToReceiveView"
             style="@style/TextInputLayoutOutline"
             android:layout_marginStart="16dp"
             android:layout_marginTop="@dimen/margin_normal"
@@ -97,8 +97,9 @@
 
             <com.google.android.material.textfield.TextInputEditText
                 style="@style/EditText.InputWithMax"
+                android:digits="1234567890."
                 android:hint="@string/swap_screen_receive_amount_hint"
-                android:inputType="text"
+                android:inputType="numberDecimal"
                 android:paddingEnd="12dp"
                 android:singleLine="true"
                 tools:ignore="RtlSymmetry" />
@@ -115,7 +116,7 @@
             android:paddingStart="@dimen/margin_half"
             android:paddingEnd="@dimen/margin_half"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@id/receiveCoinView">
+            app:layout_constraintTop_toTopOf="@id/amountCoinToReceiveView">
 
             <ImageView
                 android:id="@+id/coinToReceiveImageView"
@@ -138,9 +139,9 @@
             android:layout_marginEnd="10dp"
             android:layout_marginBottom="10dp"
             android:text="@string/max"
-            app:layout_constraintBottom_toBottomOf="@id/receiveCoinView"
+            app:layout_constraintBottom_toBottomOf="@id/amountCoinToReceiveView"
             app:layout_constraintEnd_toStartOf="@id/receiveCoinButton"
-            app:layout_constraintTop_toTopOf="@id/receiveCoinView" />
+            app:layout_constraintTop_toTopOf="@id/amountCoinToReceiveView" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/rateTextView"
@@ -150,9 +151,9 @@
             android:layout_marginTop="@dimen/margin_x3"
             android:paddingStart="@dimen/margin_half"
             android:paddingEnd="@dimen/margin_half"
-            app:layout_constraintEnd_toEndOf="@id/receiveCoinView"
-            app:layout_constraintStart_toStartOf="@id/receiveCoinView"
-            app:layout_constraintTop_toBottomOf="@id/receiveCoinView"
+            app:layout_constraintEnd_toEndOf="@id/amountCoinToReceiveView"
+            app:layout_constraintStart_toStartOf="@id/amountCoinToReceiveView"
+            app:layout_constraintTop_toBottomOf="@id/amountCoinToReceiveView"
             tools:text="Rate 1BTC ~ 23.7835LTC" />
 
         <androidx.appcompat.widget.AppCompatTextView
@@ -174,7 +175,7 @@
             android:layout_height="0dp"
             app:layout_constraintBottom_toTopOf="@id/nextButtonView"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/receiveCoinView" />
+            app:layout_constraintTop_toBottomOf="@id/amountCoinToReceiveView" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/nextButtonView"

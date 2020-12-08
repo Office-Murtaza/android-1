@@ -314,6 +314,7 @@
     <string name="swap_screen_fee_formatted">Platform fee %1$s\%% ~ %2$s%3$s</string>
     <string name="swap_screen_select_coin">Select coin please</string>
     <string name="swap_screen_error_coin_details_fetch">Unable to load coin details. Try again later</string>
+    <string name="swap_screen_error_not_enough_balance">Not enough coins on balance</string>
 
     <!-- Deposit -->
     <string name="deposit_screen_title">Deposit %1$s</string>
