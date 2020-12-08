@@ -24,8 +24,6 @@ import com.google.firebase.messaging.Notification;
 @Service
 public class NotificationService {
 
-    private final static String SOUND = "default";
-    private final static String COLOR = "#FFFF00";
     private final static String TITLE_KEY = "title";
     private final static String MESSAGE_KEY = "message";
 
@@ -83,19 +81,6 @@ public class NotificationService {
         return FirebaseMessaging.getInstance().sendAsync(message).get();
     }
 
-    private AndroidConfig getAndroidConfig(String topic) {
-        return AndroidConfig.builder()
-                .setTtl(Duration.ofMinutes(2).toMillis()).setCollapseKey(topic)
-                .setPriority(AndroidConfig.Priority.HIGH)
-                .setNotification(AndroidNotification.builder().setSound(SOUND)
-                        .setColor(COLOR).setTag(topic).build()).build();
-    }
-
-    private ApnsConfig getApnsConfig(String topic) {
-        return ApnsConfig.builder()
-                .setAps(Aps.builder().setCategory(topic).setThreadId(topic).build()).build();
-    }
-
     private Message getPreconfiguredMessageToTopic(NotificationDTO dto) {
         return getPreconfiguredMessageBuilder(dto).setTopic(dto.getTopic())
                 .build();
@@ -112,11 +97,7 @@ public class NotificationService {
     }
 
     private Message.Builder getPreconfiguredMessageBuilder(NotificationDTO dto) {
-        AndroidConfig androidConfig = getAndroidConfig(dto.getTopic());
-        ApnsConfig apnsConfig = getApnsConfig(dto.getTopic());
-
         return Message.builder()
-                .setApnsConfig(apnsConfig).setAndroidConfig(androidConfig)
                 .putData(TITLE_KEY, dto.getTitle())
                 .putData(MESSAGE_KEY, dto.getMessage())
                 .setNotification(new Notification(dto.getTitle(), dto.getMessage()));
