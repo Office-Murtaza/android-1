@@ -304,10 +304,10 @@
 "create_edit_trade.form.error.too_many_characters_in_terms" = "Trade terms is too long";
 
 "reserve.title" = "Reserve %@";
-"reserve.button.reserve" = "Reserve";
+"reserve.button.reserve" = "Submit";
 
 "recall.title" = "Recall %@";
-"recall.button.recall" = "Recall";
+"recall.button.recall" = "Submit";
 "recall.form.error.too_low_amount" = "Reserved amount is lower than transaction fee";
 
 "coin_staking.title" = "Staking %@";

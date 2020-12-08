@@ -33,7 +33,18 @@ final class ReserveFormView: UIView, HasDisposeBag {
   required init?(coder aDecoder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
-  
+    
+  func configure(coinType: CustomCoinType, fee: Decimal? = nil) {
+    coinAmountTextFieldController.placeholderText = String(format: localize(L.CoinWithdraw.Form.CoinAmount.placeholder), coinType.code)
+    
+    guard let fee = fee else { return }
+    let coinType = coinType == .catm ? CustomCoinType.ethereum : coinType
+    let helperValueText = fee.coinFormatted.withCoinType(coinType)
+    let helperText = String(format: localize(L.CoinWithdraw.Form.CoinAmount.helper), helperValueText)
+        
+    coinAmountTextFieldController.setHelperText(helperText, helperAccessibilityLabel: helperText)
+  }
+    
   private func setupUI() {
     translatesAutoresizingMaskIntoConstraints = false
     
@@ -52,10 +63,6 @@ final class ReserveFormView: UIView, HasDisposeBag {
     stackView.snp.makeConstraints {
       $0.edges.equalToSuperview()
     }
-  }
-  
-  func configure(with coinCode: String) {
-    coinAmountTextFieldController.placeholderText = String(format: localize(L.CoinWithdraw.Form.CoinAmount.placeholder), coinCode)
   }
 }
 

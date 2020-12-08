@@ -39,8 +39,8 @@ final class RecallViewController: ModuleViewController<RecallPresenter> {
     }
     recallButton.snp.makeConstraints {
       $0.height.equalTo(50)
-      $0.top.equalTo(formView.snp.bottom).offset(20)
       $0.left.right.equalToSuperview().inset(15)
+      $0.bottom.equalToSuperview().offset(-40)
     }
   }
   
@@ -72,9 +72,9 @@ final class RecallViewController: ModuleViewController<RecallPresenter> {
       .disposed(by: disposeBag)
     
     presenter.state
-      .map { $0.coin?.type.code }
+      .map { $0.coin?.type }
       .filterNil()
-      .drive(onNext: { [formView] in formView.configure(with: $0) })
+      .drive(onNext: { [formView] in formView.configure(coinType: $0) })
       .disposed(by: disposeBag)
     
     presenter.state
@@ -87,6 +87,12 @@ final class RecallViewController: ModuleViewController<RecallPresenter> {
       .asObservable()
       .map { $0.coinAmount }
       .bind(to: formView.rx.coinText)
+      .disposed(by: disposeBag)
+    
+    presenter.state
+      .asObservable()
+      .map { $0.isFieldNotEmpty }
+      .bind(to: recallButton.rx.isEnabled)
       .disposed(by: disposeBag)
     
     presenter.state

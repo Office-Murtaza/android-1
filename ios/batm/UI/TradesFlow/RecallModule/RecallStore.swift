@@ -34,7 +34,10 @@ struct RecallState: Equatable {
   var maxValue: Decimal {
     return max(0, reservedBalance - fee)
   }
-  
+    
+  var isFieldNotEmpty: Bool {
+    return coinAmount.isNotEmpty
+  }
 }
 
 final class RecallStore: ViewStore<RecallAction, RecallState> {
