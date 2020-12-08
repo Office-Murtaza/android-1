@@ -50,7 +50,7 @@ class TransactionsViewModel(
                 val coinDataItem = getCoinByCodeUseCase.invoke(coinCode)
                 detailsLiveData.value = LoadingData.Success(
                     TransactionsScreenItem(
-                        balance = coinDataItem.balanceUsd,
+                        balance = coinDataItem.balanceCoin,
                         priceUsd = coinDataItem.priceUsd,
                         reservedBalanceUsd = coinDataItem.reservedBalanceUsd,
                         reservedCode = coinDataItem.code,
