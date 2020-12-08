@@ -3,22 +3,27 @@ package com.app.belcobtm.presentation.features.deals.swap
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.app.belcobtm.R
+import com.app.belcobtm.data.websockets.wallet.WalletObserver
+import com.app.belcobtm.data.websockets.wallet.model.WalletBalance
 import com.app.belcobtm.domain.Failure
 import com.app.belcobtm.domain.transaction.interactor.CheckXRPAddressActivatedUseCase
 import com.app.belcobtm.domain.transaction.interactor.SwapUseCase
 import com.app.belcobtm.domain.wallet.LocalCoinType
 import com.app.belcobtm.domain.wallet.interactor.GetCoinDetailsUseCase
-import com.app.belcobtm.domain.wallet.interactor.GetCoinListUseCase
 import com.app.belcobtm.domain.wallet.item.CoinDataItem
 import com.app.belcobtm.domain.wallet.item.CoinDetailsDataItem
 import com.app.belcobtm.presentation.core.coin.AmountCoinValidator
 import com.app.belcobtm.presentation.core.coin.MinMaxCoinValueProvider
 import com.app.belcobtm.presentation.core.coin.model.ValidationResult
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.launch
 
 class SwapViewModel(
-    getCoinListUseCase: GetCoinListUseCase,
+    private val walletObserver: WalletObserver,
     private val amountValidator: AmountCoinValidator,
     private val swapUseCase: SwapUseCase,
     private val checkXRPAddressActivatedUseCase: CheckXRPAddressActivatedUseCase,
@@ -26,7 +31,7 @@ class SwapViewModel(
     private val getCoinDetailsUseCase: GetCoinDetailsUseCase
 ) : ViewModel() {
 
-    val originCoinsData = getCoinListUseCase()
+    val originCoinsData = mutableListOf<CoinDataItem>()
 
     private var coinToSendDetails: CoinDetailsDataItem? = null
     private var coinToReceiveDetails: CoinDetailsDataItem? = null
@@ -61,8 +66,39 @@ class SwapViewModel(
     private val _swapLoadingData = MutableLiveData<LoadingData<Unit>>()
     val swapLoadingData: LiveData<LoadingData<Unit>> = _swapLoadingData
 
+    private val _initLoadingData = MutableLiveData<LoadingData<Unit>>()
+    val initLoadingData: LiveData<LoadingData<Unit>> = _initLoadingData
+
     init {
-        updateCoins(originCoinsData.first(), originCoinsData.last())
+        viewModelScope.launch {
+            _initLoadingData.value = LoadingData.Loading(Unit)
+            val balance = walletObserver.observe()
+                .receiveAsFlow()
+                .first { it != WalletBalance.NoInfo }
+            when (balance) {
+                is WalletBalance.Balance -> {
+                    originCoinsData.clear()
+                    originCoinsData.addAll(balance.data.coinList)
+                    _initLoadingData.value = LoadingData.Success(Unit)
+                    // move to next step
+                    updateCoins(
+                        originCoinsData.first { it.code == LocalCoinType.BTC.name },
+                        originCoinsData.first { it.code == LocalCoinType.USDT.name }
+                    )
+                }
+                is WalletBalance.Error -> {
+                    _initLoadingData.value = LoadingData.Error(balance.error)
+                }
+                else -> _initLoadingData.value = LoadingData.Error(Failure.ServerError())
+            }
+        }
+    }
+
+    fun reconnectToWallet() {
+        viewModelScope.launch {
+            _initLoadingData.value = LoadingData.Loading(Unit)
+            walletObserver.connect()
+        }
     }
 
     fun setCoinToSend(coin: CoinDataItem) {

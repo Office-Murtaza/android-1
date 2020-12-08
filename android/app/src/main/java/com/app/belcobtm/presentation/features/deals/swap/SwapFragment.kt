@@ -1,6 +1,7 @@
 package com.app.belcobtm.presentation.features.deals.swap
 
 import android.text.TextWatcher
+import android.view.View
 import android.widget.EditText
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.Observer
@@ -37,6 +38,15 @@ class SwapFragment : BaseFragment() {
     override val isToolbarEnabled: Boolean = true
     override val isHomeButtonEnabled: Boolean = true
     override var isMenuEnabled: Boolean = true
+    override val retryListener: View.OnClickListener = View.OnClickListener {
+        if (viewModel.originCoinsData.isEmpty()) {
+            // data not yet initialized
+            viewModel.reconnectToWallet()
+        } else if (viewModel.submitButtonEnabled.value == true) {
+            // re submit swap
+            viewModel.executeSwap()
+        }
+    }
 
     override fun initViews() {
         setToolbarTitle(R.string.swap_screen_title)
@@ -67,6 +77,7 @@ class SwapFragment : BaseFragment() {
             AlertHelper.showToastShort(requireContext(), R.string.swap_screen_success_message)
             popBackStack()
         })
+        viewModel.initLoadingData.listen(success = {}) // just listen
         viewModel.coinsDetailsLoadingState.listen(success = {}) // just listen
         viewModel.coinToSend.observe(viewLifecycleOwner, Observer { coin ->
             val coinCode = coin.code
