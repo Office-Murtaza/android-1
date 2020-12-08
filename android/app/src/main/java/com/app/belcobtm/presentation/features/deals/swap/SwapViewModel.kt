@@ -4,7 +4,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.app.belcobtm.R
+import com.app.belcobtm.domain.Failure
+import com.app.belcobtm.domain.transaction.interactor.CheckXRPAddressActivatedUseCase
 import com.app.belcobtm.domain.transaction.interactor.SwapUseCase
+import com.app.belcobtm.domain.wallet.LocalCoinType
 import com.app.belcobtm.domain.wallet.interactor.GetCoinDetailsUseCase
 import com.app.belcobtm.domain.wallet.interactor.GetCoinListUseCase
 import com.app.belcobtm.domain.wallet.item.CoinDataItem
@@ -18,6 +21,7 @@ class SwapViewModel(
     getCoinListUseCase: GetCoinListUseCase,
     private val amountValidator: AmountCoinValidator,
     private val swapUseCase: SwapUseCase,
+    private val checkXRPAddressActivatedUseCase: CheckXRPAddressActivatedUseCase,
     private val minMaxCoinValueProvider: MinMaxCoinValueProvider,
     private val getCoinDetailsUseCase: GetCoinDetailsUseCase
 ) : ViewModel() {
@@ -98,13 +102,46 @@ class SwapViewModel(
         val receiveCoinItem = coinToReceive.value ?: return
         val sendCoinAmount = sendCoinAmount.value ?: return
         val receiveCoinAmount = receiveCoinAmount.value ?: return
+        val receiveCoinDetails = coinToReceiveDetails ?: return
+        if (receiveCoinItem.code == LocalCoinType.XRP.name) {
+            val minXRPValue = 20 + receiveCoinDetails.txFee
+            if (receiveCoinAmount < minXRPValue) {
+                _swapLoadingData.value = LoadingData.Loading()
+                checkXRPAddressActivatedUseCase(
+                    params = CheckXRPAddressActivatedUseCase.Param(receiveCoinDetails.walletAddress),
+                    onSuccess = { addressActivated ->
+                        if (addressActivated) {
+                            executeSwapInternal(
+                                sendCoinAmount,
+                                receiveCoinAmount,
+                                sendCoinItem,
+                                receiveCoinItem
+                            )
+                        } else {
+                            _swapLoadingData.value = LoadingData.Error(Failure.XRPLowAmountToSend)
+                        }
+                    },
+                    onError = { _swapLoadingData.value = LoadingData.Error(it) }
+                )
+            }
+        } else {
+            executeSwapInternal(sendCoinAmount, receiveCoinAmount, sendCoinItem, receiveCoinItem)
+        }
+    }
+
+    private fun executeSwapInternal(
+        sendAmount: Double,
+        receiveAmount: Double,
+        sendCoin: CoinDataItem,
+        receiveCoin: CoinDataItem
+    ) {
         _swapLoadingData.value = LoadingData.Loading()
         swapUseCase(
             params = SwapUseCase.Params(
-                sendCoinAmount,
-                receiveCoinAmount,
-                sendCoinItem.code,
-                receiveCoinItem.code
+                sendAmount,
+                receiveAmount,
+                sendCoin.code,
+                receiveCoin.code
             ),
             onSuccess = { _swapLoadingData.value = LoadingData.Success(it) },
             onError = { _swapLoadingData.value = LoadingData.Error(it) }
@@ -231,8 +268,7 @@ class SwapViewModel(
         amount: Double
     ): Double {
         val price = amount * from.priceUsd / to.priceUsd
-        val result = price * (1 - fromDetails.profitExchange / 100) - toDetails.txFee
-        return result
+        return price * (1 - fromDetails.profitExchange / 100) - toDetails.txFee
     }
 }
 
