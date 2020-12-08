@@ -12,4 +12,7 @@ fun LocalCoinType.resIcon(): Int = when (this) {
     LocalCoinType.TRX -> R.drawable.ic_coin_tron
     LocalCoinType.XRP -> R.drawable.ic_coin_ripple
     LocalCoinType.CATM -> R.drawable.ic_coin_catm
+    LocalCoinType.USDT -> R.drawable.ic_coin_tether
+    LocalCoinType.DASH -> R.drawable.ic_coin_dash
+    LocalCoinType.DOGE -> R.drawable.ic_coin_doge
 }

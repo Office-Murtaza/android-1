@@ -3,14 +3,16 @@ package com.app.belcobtm.presentation.features.wallet.exchange.coin.to.coin
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.app.belcobtm.domain.transaction.interactor.ExchangeUseCase
-import com.app.belcobtm.domain.wallet.LocalCoinType
 import com.app.belcobtm.domain.wallet.interactor.GetCoinDetailsMapUseCase
 import com.app.belcobtm.domain.wallet.interactor.UpdateCoinDetailsUseCase
 import com.app.belcobtm.domain.wallet.item.CoinDataItem
 import com.app.belcobtm.domain.wallet.item.CoinDetailsDataItem
+import com.app.belcobtm.presentation.core.coin.AmountCoinValidator
+import com.app.belcobtm.presentation.core.coin.CoinCodeProvider
+import com.app.belcobtm.presentation.core.coin.MinMaxCoinValueProvider
+import com.app.belcobtm.presentation.core.coin.model.ValidationResult
 import com.app.belcobtm.presentation.core.extensions.withScale
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
-import kotlin.math.max
 
 class ExchangeViewModel(
     private val exchangeUseCase: ExchangeUseCase,
@@ -18,7 +20,10 @@ class ExchangeViewModel(
     private val updateCoinDetailsUseCase: UpdateCoinDetailsUseCase,
     val fromCoinItem: CoinDataItem,
     val fromCoinDetailsItem: CoinDetailsDataItem,
-    val toCoinItemList: List<CoinDataItem>
+    val toCoinItemList: List<CoinDataItem>,
+    private val minMaxCoinValueProvider: MinMaxCoinValueProvider,
+    private val coinCodeProvider: CoinCodeProvider,
+    private val amountCoinValidator: AmountCoinValidator
 ) : ViewModel() {
     val exchangeLiveData: MutableLiveData<LoadingData<Unit>> = MutableLiveData()
     val coinDetailsLiveData: MutableLiveData<LoadingData<Unit>> = MutableLiveData()
@@ -73,21 +78,23 @@ class ExchangeViewModel(
         return toCoinAmount.withScale(currentCoinDetails.scale)
     }
 
-    fun getFromMinValue(): Double = fromCoinDetailsItem.txFee
+    fun getFromMinValue(): Double =
+        minMaxCoinValueProvider.getMinValue(fromCoinItem, fromCoinDetailsItem)
 
-    fun getToMinValue(): Double = getCoinDetailsUseCase.getCoinDetailsMap()
-        .getValue(toCoinItem!!.code).txFee
-
-    fun getMaxValue(): Double = when (fromCoinItem.code) {
-        LocalCoinType.CATM.name -> fromCoinItem.balanceCoin
-        LocalCoinType.XRP.name -> max(
-            0.0,
-            fromCoinItem.balanceCoin - fromCoinDetailsItem.txFee - 20
-        )
-        else -> max(0.0, fromCoinItem.balanceCoin) - fromCoinDetailsItem.txFee
+    fun getToMinValue(): Double {
+        val coinDataItem = toCoinItem ?: return 0.0
+        val coinDetails = getCoinDetailsUseCase.getCoinDetailsMap().getValue(coinDataItem.code)
+        return minMaxCoinValueProvider.getMinValue(coinDataItem, coinDetails)
     }
 
-    fun isNotEnoughBalanceETH(): Boolean =
-        fromCoinItem.code == LocalCoinType.CATM.name &&
-                toCoinItemList.find { LocalCoinType.ETH.name == it.code }?.balanceCoin ?: 0.0 < fromCoinDetailsItem.txFee
+    fun getMaxValue(): Double =
+        minMaxCoinValueProvider.getMaxValue(fromCoinItem, fromCoinDetailsItem)
+
+    fun getCoinCode(): String =
+        coinCodeProvider.getCoinCode(fromCoinItem)
+
+    fun validateAmount(amount: Double): ValidationResult =
+        amountCoinValidator.validateBalance(
+            amount, fromCoinItem, fromCoinDetailsItem, toCoinItemList
+        )
 }

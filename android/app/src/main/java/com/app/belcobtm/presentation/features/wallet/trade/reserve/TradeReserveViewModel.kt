@@ -9,6 +9,9 @@ import com.app.belcobtm.domain.wallet.LocalCoinType
 import com.app.belcobtm.domain.wallet.interactor.GetFreshCoinUseCase
 import com.app.belcobtm.domain.wallet.item.CoinDataItem
 import com.app.belcobtm.domain.wallet.item.CoinDetailsDataItem
+import com.app.belcobtm.presentation.core.coin.AmountCoinValidator
+import com.app.belcobtm.presentation.core.coin.MinMaxCoinValueProvider
+import com.app.belcobtm.presentation.core.coin.model.ValidationResult
 import com.app.belcobtm.presentation.core.item.CoinScreenItem
 import com.app.belcobtm.presentation.core.item.mapToScreenItem
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
@@ -18,7 +21,9 @@ class TradeReserveViewModel(
     private val detailsDataItem: CoinDetailsDataItem,
     private val getCoinUseCace: GetFreshCoinUseCase,
     private val createTransactionUseCase: TradeReserveTransactionCreateUseCase,
-    private val completeTransactionUseCase: TradeReserveTransactionCompleteUseCase
+    private val completeTransactionUseCase: TradeReserveTransactionCompleteUseCase,
+    private val minMaxCoinValueProvider: MinMaxCoinValueProvider,
+    private val amountCoinValidator: AmountCoinValidator
 ) : ViewModel() {
     private val _initialLoadLiveData = MutableLiveData<LoadingData<Unit>>()
     val initialLoadLiveData: LiveData<LoadingData<Unit>> = _initialLoadLiveData
@@ -41,7 +46,7 @@ class TradeReserveViewModel(
     private var selectedAmount: Double = 0.0
 
     init {
-        if (isCATM()) {
+        if (isETHsubCoin()) {
             // for CATM amount calculation we need ETH coin
             fetchEtherium()
         }
@@ -69,20 +74,11 @@ class TradeReserveViewModel(
         )
     }
 
-    fun getMaxValue(): Double = when {
-        isCATM() -> coinDataItem.balanceCoin
-        // at least 20 XRP coins must stay within the wallet
-        isXRP() -> 0.0.coerceAtLeast(coinDataItem.balanceCoin - getTransactionFee() - 20)
-        else -> 0.0.coerceAtLeast(coinDataItem.balanceCoin - getTransactionFee())
-    }
+    fun getMinValue(): Double =
+        minMaxCoinValueProvider.getMinValue(coinDataItem, detailsDataItem)
 
-    private fun getMinValue(): Double {
-        return getTransactionFee()
-    }
-
-    private fun getTransactionFee(): Double = when  {
-        else -> detailsDataItem.txFee
-    }
+    fun getMaxValue(): Double =
+        minMaxCoinValueProvider.getMaxValue(coinDataItem, detailsDataItem)
 
     fun validateCryptoAmount(amount: Double) {
         selectedAmount = amount
@@ -115,19 +111,18 @@ class TradeReserveViewModel(
     }
 
     private fun enoughETHForExtraFee(): Boolean {
-        if (isCATM()) {
-            return etheriumCoinDataItem!!.balanceCoin >= detailsDataItem.txFee
-        }
-        return true
+        val coinList = etheriumCoinDataItem?.let(::listOf).orEmpty()
+        val validationResult = amountCoinValidator.validateBalance(
+            amount = 0.0,
+            coin = coinDataItem,
+            coinList = coinList,
+            coinDetails = detailsDataItem
+        )
+        return validationResult is ValidationResult.Valid
     }
 
-    private fun isCATM(): Boolean {
-        return coinDataItem.code == LocalCoinType.CATM.name
-    }
-
-    private fun isXRP(): Boolean {
-        return coinDataItem.code == LocalCoinType.XRP.name
-    }
+    private fun isETHsubCoin(): Boolean =
+        coinDataItem.code == LocalCoinType.CATM.name || coinDataItem.code == LocalCoinType.USDT.name
 
     private fun fetchEtherium() {
         _initialLoadLiveData.value = LoadingData.Loading()
