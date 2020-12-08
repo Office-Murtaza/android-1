@@ -34,8 +34,8 @@ public class TransactionRecordWallet extends BaseEntity {
     private String message;
     private Date createDate = new Date();
 
-    @Column(name = "profit")
-    private BigDecimal profit;
+    @Column(name = "profit_percent")
+    private BigDecimal profitPercent;
 
     @Column(name = "ref_tx_id")
     private String refTxId;

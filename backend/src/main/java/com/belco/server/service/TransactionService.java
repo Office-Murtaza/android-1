@@ -46,6 +46,9 @@ public class TransactionService {
     @Value("${stake.annual-percent}")
     private int stakeAnnualPercent;
 
+    @Value("${swap.profit-percent}")
+    private BigDecimal swapProfitPercent;
+
     @Autowired
     private TransactionRecordRep recordRep;
 
@@ -287,7 +290,7 @@ public class TransactionService {
             record.setAmount(dto.getCryptoAmount());
             record.setType(TransactionType.SWAP_OUT.getValue());
             record.setStatus(TransactionStatus.PENDING.getValue());
-            record.setProfit(coin.getCoinEntity().getProfitExchange());
+            record.setProfitPercent(swapProfitPercent);
             record.setRefCoin(refCoin.getCoinEntity());
             record.setRefAmount(dto.getRefCryptoAmount());
 
@@ -497,7 +500,7 @@ public class TransactionService {
 
         chainalysisTracking();
         deliverReservedGifts();
-        deliverReservedExchange();
+        deliverSwaps();
     }
 
     private void completePendingRecords() {
@@ -554,7 +557,7 @@ public class TransactionService {
         }
     }
 
-    private void deliverReservedExchange() {
+    private void deliverSwaps() {
         try {
             List<TransactionRecordWallet> list = walletRep.findAllByProcessedAndTypeAndStatusAndRefTxIdNull(ProcessedType.SUCCESS.getValue(), TransactionType.SWAP_OUT.getValue(), TransactionStatus.COMPLETE.getValue(), page);
 
@@ -586,7 +589,7 @@ public class TransactionService {
                             rec.setAmount(withdrawAmount);
                             rec.setType(TransactionType.SWAP_IN.getValue());
                             rec.setStatus(TransactionStatus.PENDING.getValue());
-                            rec.setProfit(t.getProfit());
+                            rec.setProfitPercent(t.getProfitPercent());
                             rec.setRefCoin(t.getCoin());
                             rec.setRefAmount(t.getAmount());
                             rec.setRefTxId(t.getTxId());

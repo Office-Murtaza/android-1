@@ -23,8 +23,8 @@ public class CoinDetailsDTO {
     private Long gasPrice;
     private Long gasLimit;
     private Integer scale;
-    private BigDecimal profitExchange;
-    private String profitExchangeStr;
+    private BigDecimal swapProfitPercent;
+    private String swapProfitPercentStr;
     private String walletAddress;
     private String contractAddress;
 
@@ -42,9 +42,9 @@ public class CoinDetailsDTO {
         this.byteFee = byteFee;
     }
 
-    public void setProfitExchange(BigDecimal profitExchange) {
-        this.profitExchange = profitExchange;
-        this.profitExchangeStr = Util.convert(profitExchange);
+    public void setSwapProfitPercent(BigDecimal swapProfitPercent) {
+        this.swapProfitPercent = swapProfitPercent;
+        this.swapProfitPercentStr = Util.convert(swapProfitPercent);
     }
 
     public void setCode(String code) {

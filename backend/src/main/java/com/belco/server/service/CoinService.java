@@ -11,6 +11,7 @@ import com.belco.server.util.Util;
 import net.sf.json.JSONObject;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.scheduling.annotation.EnableScheduling;
@@ -28,6 +29,9 @@ import java.util.stream.Collectors;
 @Service
 @EnableScheduling
 public class CoinService {
+
+    @Value("${swap.profit-percent}")
+    private BigDecimal swapProfitPercent;
 
     private static Map<String, Coin> coinMap;
     public static Map<String, Map<Long, List<String>>> wsMap = new ConcurrentHashMap<>();
@@ -144,7 +148,7 @@ public class CoinService {
         dto.setGasPrice(coin.getGasPrice());
         dto.setGasLimit(coin.getGasLimit());
         dto.setScale(coin.getCoinEntity().getScale());
-        dto.setProfitExchange(coin.getCoinEntity().getProfitExchange());
+        dto.setSwapProfitPercent(swapProfitPercent);
         dto.setWalletAddress(coin.getWalletAddress());
         dto.setContractAddress(coin.getContractAddress());
 
