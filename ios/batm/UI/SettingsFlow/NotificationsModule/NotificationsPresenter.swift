@@ -12,9 +12,20 @@ import RxCocoa
 
 class NotificationsPresenter: ModulePresenter, NotificationsModule {
     struct Input {
-        var changeVisibility: Driver<Void>
+        var changeVisibility: Driver<Bool>
     }
     weak var delegate: NotificationsModuleDelegate?
     
-    func bind(input: Input) {}
+    func bind(input: Input) {
+        input.changeVisibility
+            .asObservable()
+            .subscribe(onNext: { value in
+                if value {
+                    UIApplication.shared.registerForRemoteNotifications()
+                } else {
+                    UIApplication.shared.unregisterForRemoteNotifications()
+                }
+            })
+            .disposed(by: disposeBag)
+    }
 }

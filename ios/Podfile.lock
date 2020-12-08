@@ -12,6 +12,9 @@ PODS:
     - FirebaseAnalytics (= 6.7.0)
   - Firebase/CoreOnly (6.29.0):
     - FirebaseCore (= 6.9.2)
+  - Firebase/Messaging (6.29.0):
+    - Firebase/CoreOnly
+    - FirebaseMessaging (~> 4.6.1)
   - FirebaseAnalytics (6.7.0):
     - FirebaseCore (~> 6.8)
     - FirebaseInstallations (~> 1.4)
@@ -35,6 +38,19 @@ PODS:
     - GoogleUtilities/Environment (~> 6.7)
     - GoogleUtilities/UserDefaults (~> 6.7)
     - PromisesObjC (~> 1.2)
+  - FirebaseInstanceID (4.5.1):
+    - FirebaseCore (~> 6.8)
+    - FirebaseInstallations (~> 1.0)
+    - GoogleUtilities/Environment (~> 6.7)
+    - GoogleUtilities/UserDefaults (~> 6.7)
+  - FirebaseMessaging (4.6.1):
+    - FirebaseCore (~> 6.8)
+    - FirebaseInstanceID (~> 4.3)
+    - GoogleUtilities/AppDelegateSwizzler (~> 6.7)
+    - GoogleUtilities/Environment (~> 6.7)
+    - GoogleUtilities/Reachability (~> 6.7)
+    - GoogleUtilities/UserDefaults (~> 6.7)
+    - Protobuf (>= 3.9.2, ~> 3.9)
   - Giphy (1.2.9):
     - DeepDiff
     - libwebp
@@ -709,6 +725,7 @@ PODS:
     - PhoneNumberKit/PhoneNumberKitCore
   - PINCache (2.3)
   - PromisesObjC (1.2.9)
+  - Protobuf (3.13.0)
   - QRCodeReader.swift (10.1.0)
   - ReachabilitySwift (4.3.1)
   - Result (4.1.0)
@@ -741,6 +758,7 @@ DEPENDENCIES:
   - BigNumber (from `https://github.com/mkrd/Swift-Big-Integer.git`)
   - Charts (= 3.4.0)
   - Firebase/Analytics (= 6.29.0)
+  - Firebase/Messaging
   - Giphy (= 1.2.9)
   - GoogleMaps (= 3.4.0)
   - JJFloatingActionButton (= 2.4.0)
@@ -771,6 +789,8 @@ SPEC REPOS:
     - FirebaseCore
     - FirebaseCoreDiagnostics
     - FirebaseInstallations
+    - FirebaseInstanceID
+    - FirebaseMessaging
     - Giphy
     - GoogleAppMeasurement
     - GoogleDataTransport
@@ -790,6 +810,7 @@ SPEC REPOS:
     - PhoneNumberKit
     - PINCache
     - PromisesObjC
+    - Protobuf
     - QRCodeReader.swift
     - ReachabilitySwift
     - Result
@@ -824,6 +845,8 @@ SPEC CHECKSUMS:
   FirebaseCore: 7930a1946517d94256d857f97371ed993b55f7bd
   FirebaseCoreDiagnostics: 7535fe695737f8c5b350584292a70b7f8ff0357b
   FirebaseInstallations: 3c520c951305cbf9ca54eb891ff9e6d1fd384881
+  FirebaseInstanceID: c4ad474b87787afd27d09541800620993b457d6f
+  FirebaseMessaging: 942cfe05b4f53c95ab8959395ca35c200398b2f0
   Giphy: 69c3bae5da59c699f222599c877949cf166de726
   GoogleAppMeasurement: 345d365fd105e6682bf5084783a5352a3db26820
   GoogleDataTransport: af0c79193dc59acd37630b4833d0dc6912ae6bd5
@@ -843,6 +866,7 @@ SPEC CHECKSUMS:
   PhoneNumberKit: 86019c972ef6904bcad11b46a6b8a91184d51117
   PINCache: ce36ed282031b92fc7733ffe831f474ff80fddc2
   PromisesObjC: b48e0338dbbac2207e611750777895f7a5811b75
+  Protobuf: 3dac39b34a08151c6d949560efe3f86134a3f748
   QRCodeReader.swift: 373a389fe9a22d513c879a32a6f647c58f4ef572
   ReachabilitySwift: 4032e2f59586e11e3b0ebe15b167abdd587a388b
   Result: bd966fac789cc6c1563440b348ab2598cc24d5c7
@@ -858,6 +882,6 @@ SPEC CHECKSUMS:
   Toast-Swift: 9b6a70f28b3bf0b96c40d46c0c4b9d6639846711
   TrustWalletCore: 6bf9821db20951be01a4d69f8703a5cf36560f36
 
-PODFILE CHECKSUM: 598bcc091e4cca7bde8a9ba635b93d9b2d4afef3
+PODFILE CHECKSUM: 90f7b0beffc44408c8adf7bb634acc165c3b3655
 
 COCOAPODS: 1.9.3

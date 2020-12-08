@@ -29,6 +29,7 @@
 		055A9BBE257585C200A8E8F1 /* NotificationsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 055A9BBD257585C200A8E8F1 /* NotificationsCell.swift */; };
 		055A9BC52575874D00A8E8F1 /* NotificationsTableViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 055A9BC42575874D00A8E8F1 /* NotificationsTableViewDataSource.swift */; };
 		055A9BCB2575875D00A8E8F1 /* NotificationsTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 055A9BCA2575875D00A8E8F1 /* NotificationsTableView.swift */; };
+		05C62222257ECE28008787F3 /* KeychainManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05C62221257ECE28008787F3 /* KeychainManager.swift */; };
 		232E33482550626A00A9BF72 /* BalanceService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 232E33472550626A00A9BF72 /* BalanceService.swift */; };
 		232E345E2558772B00A9BF72 /* SocketMessageBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 232E345D2558772B00A9BF72 /* SocketMessageBuilder.swift */; };
 		232E346425593BA200A9BF72 /* SocketResultMessageMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 232E346325593BA200A9BF72 /* SocketResultMessageMapper.swift */; };
@@ -577,6 +578,8 @@
 		055A9BBD257585C200A8E8F1 /* NotificationsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsCell.swift; sourceTree = "<group>"; };
 		055A9BC42575874D00A8E8F1 /* NotificationsTableViewDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsTableViewDataSource.swift; sourceTree = "<group>"; };
 		055A9BCA2575875D00A8E8F1 /* NotificationsTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsTableView.swift; sourceTree = "<group>"; };
+		05C6219F257EB413008787F3 /* batm.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = batm.entitlements; sourceTree = "<group>"; };
+		05C62221257ECE28008787F3 /* KeychainManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainManager.swift; sourceTree = "<group>"; };
 		142D5BA6DA2741657FE02671 /* Pods_batmTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_batmTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		232E33472550626A00A9BF72 /* BalanceService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BalanceService.swift; sourceTree = "<group>"; };
 		232E345D2558772B00A9BF72 /* SocketMessageBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocketMessageBuilder.swift; sourceTree = "<group>"; };
@@ -1170,8 +1173,8 @@
 				055A9B79257552D000A8E8F1 /* DealsFlow+Dependencies.swift */,
 			);
 			path = Flow;
-            sourceTree = "<group>";
-        };
+			sourceTree = "<group>";
+		};
 		055A9BA72575820400A8E8F1 /* NotificationsModule */ = {
 			isa = PBXGroup;
 			children = (
@@ -1323,6 +1326,7 @@
 				DBA7393422C33D0C00CEFD57 /* Localizable.strings */,
 				DB0BB60222BD10BA0035FF6C /* Info.plist */,
 				DB26C00A24D1E3F4007FE258 /* GoogleService-Info.plist */,
+				05C6219F257EB413008787F3 /* batm.entitlements */,
 			);
 			path = batm;
 			sourceTree = "<group>";
@@ -2313,6 +2317,7 @@
 				DB96173A22C7B3480078E92D /* BTMWalletStorage.swift */,
 				DB04E4CA22D85C50000E2D85 /* PinCodeStorage.swift */,
 				DB86FD2B2477FFC4002FE22D /* LocationUpdateDateStorage.swift */,
+				05C62221257ECE28008787F3 /* KeychainManager.swift */,
 			);
 			path = Storages;
 			sourceTree = "<group>";
@@ -3248,6 +3253,7 @@
 				DBD8C214240AF52300BD8A74 /* KYC.swift in Sources */,
 				DB4D7BC32409A133008C2BD5 /* KYCFlowController.swift in Sources */,
 				DB8D409E22C3EC9D00D5FBD0 /* UIWindow+Transitions.swift in Sources */,
+				05C62222257ECE28008787F3 /* KeychainManager.swift in Sources */,
 				DB83624F24C205B700A5FEFC /* CodeInputView+Rx.swift in Sources */,
 				DB9616B022C60EFB0078E92D /* UIStackView+Extensions.swift in Sources */,
 				DB9616AE22C60ECA0078E92D /* UIView+Extensions.swift in Sources */,
@@ -3834,6 +3840,7 @@
 			baseConfigurationReference = 92EFAEC3F34F5098AD0B7F2B /* Pods-batm.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = batm/batm.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 79;
@@ -3858,6 +3865,7 @@
 			baseConfigurationReference = F62E959DD3C3751B0D83F925 /* Pods-batm.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = batm/batm.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 79;
