@@ -12,8 +12,8 @@ fun TransactionType.getResText(): Int = when (this) {
     TransactionType.BUY -> R.string.transaction_type_buy
     TransactionType.SELL -> R.string.transaction_type_sell
     TransactionType.MOVE -> R.string.transaction_type_move
-    TransactionType.EXCHANGE_SEND -> R.string.transaction_type_send_exchange
-    TransactionType.EXCHANGE_RECEIVE -> R.string.transaction_type_receive_exchange
+    TransactionType.SWAP_SEND -> R.string.transaction_type_send_exchange
+    TransactionType.SWAP_RECEIVE -> R.string.transaction_type_receive_exchange
     TransactionType.RESERVE -> R.string.transaction_type_reserve
     TransactionType.RECALL -> R.string.transaction_type_recall
     TransactionType.SELF -> R.string.transaction_type_self

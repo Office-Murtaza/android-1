@@ -205,8 +205,8 @@
     <string name="transaction_type_buy">Buy</string>
     <string name="transaction_type_sell">Sell</string>
     <string name="transaction_type_move">Move</string>
-    <string name="transaction_type_send_exchange">Send c2c</string>
-    <string name="transaction_type_receive_exchange">Receive c2c</string>
+    <string name="transaction_type_send_exchange">Swap send</string>
+    <string name="transaction_type_receive_exchange">Swap receive</string>
     <string name="transaction_type_reserve">Reserve</string>
     <string name="transaction_type_recall">Recall</string>
     <string name="transaction_type_self">Self</string>
