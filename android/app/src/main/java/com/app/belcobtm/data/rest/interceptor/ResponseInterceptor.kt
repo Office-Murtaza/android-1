@@ -24,7 +24,11 @@ class ResponseInterceptor : Interceptor {
             response
         }
     } catch (e: Exception) {
-        throw Failure.ServerError(e.message)
+        if (e !is Failure) {
+            throw Failure.ServerError(e.message)
+        } else {
+            throw e
+        }
     }
 
     private fun extractResponse(response: Response): Response {
