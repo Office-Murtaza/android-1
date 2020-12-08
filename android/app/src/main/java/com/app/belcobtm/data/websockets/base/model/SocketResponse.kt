@@ -8,7 +8,7 @@ sealed class SocketResponse {
 
     object Disconnected : SocketResponse()
 
-    object Failure : SocketResponse()
+    class Failure(val cause: Throwable) : SocketResponse()
 
     data class Message(val content: Either<String, Throwable>) : SocketResponse()
 }
