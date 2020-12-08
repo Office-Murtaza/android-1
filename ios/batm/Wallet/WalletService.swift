@@ -51,9 +51,9 @@ class WalletServiceImpl: WalletService {
                          amount: Decimal,
                          stakingType: TransactionType? = nil) -> Single<String> {
     switch coin.type {
-    case .bitcoin, .bitcoinCash, .litecoin:
+    case .bitcoin, .bitcoinCash, .litecoin, .dash, .doge:
       return getBitcoinLikeTransactionHex(for: coin, with: coinDetails, to: destination, amount: amount)
-    case .ethereum, .catm:
+    case .ethereum, .catm, .usdt:
       return getEthereumTransactionHex(for: coin, with: coinDetails, to: destination, amount: amount, stakingType: stakingType)
     case .tron:
       return getTronTransactionHex(for: coin, with: coinDetails, to: destination, amount: amount)
@@ -204,7 +204,7 @@ class WalletServiceImpl: WalletService {
       $0.privateKey = privateKey
     }
     
-    if coin.type == .catm {
+    if coin.type.isETHBased {
       let function: EthereumAbiFunction
       
       if let stakingType = stakingType {
@@ -237,7 +237,7 @@ class WalletServiceImpl: WalletService {
     
     return transactionHex
   }
-  
+    
   func getTronTransactionHex(for coin: BTMCoin,
                              with coinDetails: CoinDetails,
                              to destination: String,
@@ -365,6 +365,8 @@ class WalletServiceImpl: WalletService {
                                                                 amount: amount,
                                                                 sequence: $0.sequence) }
   }
+    
+    
   
   private func getRippleTransactionHex(coin: BTMCoin,
                                        coinDetails: CoinDetails,
@@ -393,5 +395,4 @@ class WalletServiceImpl: WalletService {
     
     return transactionHex
   }
-  
 }

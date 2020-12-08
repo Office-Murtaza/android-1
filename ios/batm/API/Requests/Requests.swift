@@ -108,8 +108,8 @@ struct CoinsBalanceRequest: AuthorizedAPIRequest {
   var path: String { return "/user/\(userId)/balance" }
   var method: HTTPMethod { return .get }
   var task: HTTPTask {
-    return .requestParameters(parameters: ["coins": coins.map { $0.type.code }],
-                              encoding: URLEncoding.customDefault)
+  return .requestParameters(parameters: ["coins": coins.map { $0.type.code }],
+                            encoding: URLEncoding.customDefault)
   }
 }
 

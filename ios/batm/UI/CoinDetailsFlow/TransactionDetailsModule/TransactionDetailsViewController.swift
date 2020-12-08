@@ -110,7 +110,7 @@ final class TransactionDetailsViewController: ModuleViewController<TransactionDe
     
     switch (details.cryptoFee, details.fiatFee) {
     case (.some(let cryptoFee), .none):
-      let coinType = coinType == .catm ? CustomCoinType.ethereum : coinType
+      let coinType = coinType.isETHBased ? CustomCoinType.ethereum : coinType
       let value = cryptoFee.coinFormatted.withCoinType(coinType)
       
       headerView.add(title: localize(L.TransactionDetails.Header.Fee.title), value: value)
@@ -120,7 +120,7 @@ final class TransactionDetailsViewController: ModuleViewController<TransactionDe
       headerView.add(title: localize(L.TransactionDetails.Header.Fee.title), value: value)
     case (.some(let cryptoFee), .some(let fiatFee)):
       let amountView = CryptoFiatAmountView()
-      let coinType = coinType == .catm ? CustomCoinType.ethereum : coinType
+        let coinType = coinType.isETHBased ? CustomCoinType.ethereum : coinType
       
       amountView.configure(cryptoAmount: cryptoFee, fiatAmount: fiatFee, type: coinType)
       headerView.add(title: localize(L.TransactionDetails.Header.Fee.title), valueView: amountView)

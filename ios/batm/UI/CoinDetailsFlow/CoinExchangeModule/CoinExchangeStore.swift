@@ -135,7 +135,7 @@ final class CoinExchangeStore: ViewStore<CoinExchangeAction, CoinExchangeState> 
         } else {
             state.fromCoinAmountError = nil
             
-            if state.fromCoin?.type == .catm, let fee = state.coinDetails?.txFee {
+            if state.fromCoin?.type.isETHBased ?? false, let fee = state.coinDetails?.txFee {
                 let ethBalance = state.coinBalances?.first { $0.type == .ethereum }?.balance ?? 0
                 
                 if !ethBalance.greaterThanOrEqualTo(fee) {

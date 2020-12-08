@@ -211,7 +211,7 @@ class CoinDetailsUsecaseImpl: CoinDetailsUsecase {
                                    amount: amount,
                                    fee: coinDetails.txFee,
                                    fromAddress: fromCoin.address,
-                                   toAddress: fromCoin.type == .catm ? coinDetails.contractAddress : coinDetails.walletAddress,
+                                   toAddress: fromCoin.type.isETHBased ? coinDetails.contractAddress : coinDetails.walletAddress,
                                    toCoinType: toCoinType,
                                    toCoinAmount: toCoinAmount,
                                    transactionResultString: transactionResultString)

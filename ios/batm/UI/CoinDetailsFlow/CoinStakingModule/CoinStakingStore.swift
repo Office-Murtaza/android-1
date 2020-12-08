@@ -86,7 +86,7 @@ final class CoinStakingStore: ViewStore<CoinStakingAction, CoinStakingState> {
     }
     
     private func validateETHBalance(_ state: inout CoinStakingState) {
-        guard state.coin?.type == .catm, let fee = state.coinDetails?.txFee else { return }
+        guard state.coin?.type.isETHBased ?? false, let fee = state.coinDetails?.txFee else { return }
         
         let ethBalance = state.coinBalances?.first { $0.type == .ethereum }?.balance ?? 0
         

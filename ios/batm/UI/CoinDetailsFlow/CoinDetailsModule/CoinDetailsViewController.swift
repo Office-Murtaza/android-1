@@ -102,7 +102,7 @@ final class CoinDetailsViewController: ModuleViewController<CoinDetailsPresenter
     dataSource.tableView = tableView
     
     presenter.state
-      .map { $0.coin?.type == .catm }
+      .map { $0.coin?.type.isETHBased ?? false }
       .filter { $0 }
       .asObservable()
       .take(1)

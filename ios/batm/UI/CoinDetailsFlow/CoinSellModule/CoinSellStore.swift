@@ -49,7 +49,7 @@ struct CoinSellState: Equatable {
     else { return 0 }
     let balanceMaxValue: Decimal
     
-    if type == .catm {
+    if type.isETHBased {
       balanceMaxValue = balance
     } else {
       balanceMaxValue = max(0, balance - fee)
@@ -141,7 +141,7 @@ final class CoinSellStore: ViewStore<CoinSellAction, CoinSellState> {
       return .invalid(localize(L.CoinWithdraw.Form.Error.tooHighAmount))
     }
     
-    if state.coin?.type == .catm, let fee = state.coinDetails?.txFee {
+    if state.coin?.type.isETHBased ?? false, let fee = state.coinDetails?.txFee {
       let ethBalance = state.coinBalances?.first { $0.type == .ethereum }?.balance ?? 0
       
       if !ethBalance.greaterThanOrEqualTo(fee) {

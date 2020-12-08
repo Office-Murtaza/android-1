@@ -111,7 +111,7 @@ final class CoinWithdrawStore: ViewStore<CoinWithdrawAction, CoinWithdrawState> 
         } else {
             state.coinAmountError = nil
             
-            if state.coin?.type == .catm, let fee = state.coinDetails?.txFee {
+            if state.coin?.type.isETHBased ?? false, let fee = state.coinDetails?.txFee {
                 let ethBalance = state.coinBalances?.first { $0.type == .ethereum }?.balance ?? 0
                 
                 if !ethBalance.greaterThanOrEqualTo(fee) {

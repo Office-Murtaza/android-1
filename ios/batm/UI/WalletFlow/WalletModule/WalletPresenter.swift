@@ -57,7 +57,7 @@ class WalletPresenter: ModulePresenter, WalletModule {
       .asObservable()
       .withLatestFrom(state) { indexPath, state in state.coins[indexPath.item] }
       .flatMap{ [delegate, unowned self] coinBalance -> Signal<CoinBalance?> in
-        if coinBalance.type == .catm {
+        if coinBalance.type.isETHBased {
           delegate?.showCoinDetail(predefinedConfig: self.catmPredefinedData())
           return Signal<CoinBalance?>.just(nil)
         } else {

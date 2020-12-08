@@ -38,7 +38,7 @@ final class ReserveFormView: UIView, HasDisposeBag {
     coinAmountTextFieldController.placeholderText = String(format: localize(L.CoinWithdraw.Form.CoinAmount.placeholder), coinType.code)
     
     guard let fee = fee else { return }
-    let coinType = coinType == .catm ? CustomCoinType.ethereum : coinType
+    let coinType = coinType.isETHBased ? CustomCoinType.ethereum : coinType
     let helperValueText = fee.coinFormatted.withCoinType(coinType)
     let helperText = String(format: localize(L.CoinWithdraw.Form.CoinAmount.helper), helperValueText)
         

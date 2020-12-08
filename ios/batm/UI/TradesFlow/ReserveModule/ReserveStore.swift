@@ -101,7 +101,7 @@ final class ReserveStore: ViewStore<ReserveAction, ReserveState> {
       return .invalid(localize(L.CoinWithdraw.Form.Error.tooHighAmount))
     }
     
-    if state.coin?.type == .catm, let fee = state.coinDetails?.txFee {
+    if state.coin?.type.isETHBased, let fee = state.coinDetails?.txFee {
       let ethBalance = state.coinBalances?.first { $0.type == .ethereum }?.balance ?? 0
       
       if !ethBalance.greaterThanOrEqualTo(fee) && amount.greaterThanOrEqualTo(state.coinBalance?.balance ?? 0) {
