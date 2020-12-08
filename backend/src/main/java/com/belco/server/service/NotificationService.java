@@ -26,6 +26,8 @@ public class NotificationService {
 
     private final static String SOUND = "default";
     private final static String COLOR = "#FFFF00";
+    private final static String TITLE_KEY = "title";
+    private final static String MESSAGE_KEY = "message";
 
     @Value("${app.firebase.project-name}")
     private String projectName;
@@ -114,7 +116,9 @@ public class NotificationService {
         ApnsConfig apnsConfig = getApnsConfig(dto.getTopic());
 
         return Message.builder()
-                .setApnsConfig(apnsConfig).setAndroidConfig(androidConfig).setNotification(
-                        new Notification(dto.getTitle(), dto.getMessage()));
+                .setApnsConfig(apnsConfig).setAndroidConfig(androidConfig)
+                .putData(TITLE_KEY, dto.getTitle())
+                .putData(MESSAGE_KEY, dto.getMessage())
+                .setNotification(new Notification(dto.getTitle(), dto.getMessage()));
     }
 }
