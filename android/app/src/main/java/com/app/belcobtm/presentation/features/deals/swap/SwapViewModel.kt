@@ -3,18 +3,29 @@ package com.app.belcobtm.presentation.features.deals.swap
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.app.belcobtm.R
+import com.app.belcobtm.domain.transaction.interactor.SwapUseCase
 import com.app.belcobtm.domain.wallet.interactor.GetCoinDetailsUseCase
 import com.app.belcobtm.domain.wallet.interactor.GetCoinListUseCase
 import com.app.belcobtm.domain.wallet.item.CoinDataItem
-import com.app.belcobtm.presentation.core.extensions.withScale
+import com.app.belcobtm.domain.wallet.item.CoinDetailsDataItem
+import com.app.belcobtm.presentation.core.coin.AmountCoinValidator
+import com.app.belcobtm.presentation.core.coin.MinMaxCoinValueProvider
+import com.app.belcobtm.presentation.core.coin.model.ValidationResult
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
 
 class SwapViewModel(
     getCoinListUseCase: GetCoinListUseCase,
+    private val amountValidator: AmountCoinValidator,
+    private val swapUseCase: SwapUseCase,
+    private val minMaxCoinValueProvider: MinMaxCoinValueProvider,
     private val getCoinDetailsUseCase: GetCoinDetailsUseCase
 ) : ViewModel() {
 
     val originCoinsData = getCoinListUseCase()
+
+    private var coinToSendDetails: CoinDetailsDataItem? = null
+    private var coinToReceiveDetails: CoinDetailsDataItem? = null
 
     private val _coinToSend = MutableLiveData<CoinDataItem>()
     val coinToSend: LiveData<CoinDataItem> = _coinToSend
@@ -31,8 +42,8 @@ class SwapViewModel(
     private val _submitButtonEnabled = MutableLiveData<Boolean>(false)
     val submitButtonEnabled: LiveData<Boolean> = _submitButtonEnabled
 
-    private val _coinToSendError = MutableLiveData<ValidationError>(ValidationError.None)
-    val coinToSendError: LiveData<ValidationError> = _coinToSendError
+    private val _coinToSendError = MutableLiveData<ValidationResult>(ValidationResult.Valid)
+    val coinToSendError: LiveData<ValidationResult> = _coinToSendError
 
     private val _coinsDetailsLoadingState = MutableLiveData<LoadingData<Unit>>()
     val coinsDetailsLoadingState: LiveData<LoadingData<Unit>> = _coinsDetailsLoadingState
@@ -42,6 +53,9 @@ class SwapViewModel(
 
     private val _receiveCoinAmount = MutableLiveData<Double>()
     val receiveCoinAmount: LiveData<Double> = _receiveCoinAmount
+
+    private val _swapLoadingData = MutableLiveData<LoadingData<Unit>>()
+    val swapLoadingData: LiveData<LoadingData<Unit>> = _swapLoadingData
 
     init {
         updateCoins(originCoinsData.first(), originCoinsData.last())
@@ -62,12 +76,39 @@ class SwapViewModel(
     fun setSendAmount(sendAmount: Double) {
         _sendCoinAmount.value = sendAmount
         _receiveCoinAmount.value = calcReceiveAmountFromSend(sendAmount)
+        // extra validation step
         validateCoinToSendAmount(sendAmount)
     }
 
     fun setReceiveAmount(receiveAmount: Double) {
         _receiveCoinAmount.value = receiveAmount
         _sendCoinAmount.value = calcSendAmountFromReceive(receiveAmount)
+    }
+
+    fun setMaxSendAmount() {
+        val currentCoinToSend = coinToSend.value ?: return
+        val currentCoinToSendDetails = coinToSendDetails ?: return
+        val maxAmount = minMaxCoinValueProvider
+            .getMaxValue(currentCoinToSend, currentCoinToSendDetails)
+        setSendAmount(maxAmount)
+    }
+
+    fun executeSwap() {
+        val sendCoinItem = coinToSend.value ?: return
+        val receiveCoinItem = coinToReceive.value ?: return
+        val sendCoinAmount = sendCoinAmount.value ?: return
+        val receiveCoinAmount = receiveCoinAmount.value ?: return
+        _swapLoadingData.value = LoadingData.Loading()
+        swapUseCase(
+            params = SwapUseCase.Params(
+                sendCoinAmount,
+                receiveCoinAmount,
+                sendCoinItem.code,
+                receiveCoinItem.code
+            ),
+            onSuccess = { _swapLoadingData.value = LoadingData.Success(it) },
+            onError = { _swapLoadingData.value = LoadingData.Error(it) }
+        )
     }
 
     private fun updateCoins(coinToSend: CoinDataItem, coinToReceive: CoinDataItem) {
@@ -88,9 +129,13 @@ class SwapViewModel(
                         val atomicAmount = 1 // probably will depend on the coin type
                         val atomicSwapAmount = calcSwapAmount(
                             coinToSend,
+                            coinToSendDetails,
                             coinToReceive,
+                            coinToReceiveDetails,
                             atomicAmount.toDouble()
-                        ).withScale(coinToReceiveDetails.scale)
+                        )
+                        this.coinToSendDetails = coinToSendDetails
+                        this.coinToReceiveDetails = coinToReceiveDetails
                         _coinToSend.value = coinToSend
                         _coinToReceive.value = coinToReceive
                         _swapRate.value = SwapRateModelView(
@@ -124,35 +169,71 @@ class SwapViewModel(
 
     private fun validateCoinToSendAmount(coinAmount: Double) {
         val currentCoinToSend = coinToSend.value ?: return
-        if (coinAmount > currentCoinToSend.balanceCoin) {
-            _coinToSendError.value = ValidationError.AmountLessThanBalance
-            return
+        val currentCoinToSendDetails = coinToSendDetails ?: return
+        val balanceValidationResult = amountValidator.validateBalance(
+            coinAmount, currentCoinToSend, currentCoinToSendDetails, originCoinsData
+        )
+        val minCoinAmount = minMaxCoinValueProvider
+            .getMinValue(currentCoinToSend, currentCoinToSendDetails)
+        val maxCoinAmount = minMaxCoinValueProvider
+            .getMaxValue(currentCoinToSend, currentCoinToSendDetails)
+        val validationResult = when {
+            balanceValidationResult is ValidationResult.InValid -> {
+                balanceValidationResult
+            }
+            coinAmount > maxCoinAmount -> {
+                ValidationResult.InValid(R.string.swap_screen_max_error)
+            }
+            coinAmount < minCoinAmount -> {
+                ValidationResult.InValid(R.string.swap_screen_min_error)
+            }
+            else -> {
+                ValidationResult.Valid
+            }
         }
-        _coinToSendError.value = ValidationError.None
+        _coinToSendError.value = validationResult
+        _submitButtonEnabled.value = validationResult == ValidationResult.Valid
     }
 
     private fun calcReceiveAmountFromSend(sendAmount: Double): Double {
         val currentCoinToSend = coinToSend.value ?: return 0.0
         val currentCoinToReceive = coinToReceive.value ?: return 0.0
-        return calcSwapAmount(currentCoinToSend, currentCoinToReceive, sendAmount)
+        val currentCoinToSendDetails = coinToSendDetails ?: return 0.0
+        val currentCoinToReceiveDetails = coinToReceiveDetails ?: return 0.0
+        return calcSwapAmount(
+            currentCoinToSend,
+            currentCoinToSendDetails,
+            currentCoinToReceive,
+            currentCoinToReceiveDetails,
+            sendAmount
+        )
     }
 
     private fun calcSendAmountFromReceive(receiveAmount: Double): Double {
         val currentCoinToSend = coinToSend.value ?: return 0.0
         val currentCoinToReceive = coinToReceive.value ?: return 0.0
-        return calcSwapAmount(currentCoinToReceive, currentCoinToSend, receiveAmount)
+        val currentCoinToSendDetails = coinToSendDetails ?: return 0.0
+        val currentCoinToReceiveDetails = coinToReceiveDetails ?: return 0.0
+        return calcSwapAmount(
+            currentCoinToReceive,
+            currentCoinToReceiveDetails,
+            currentCoinToSend,
+            currentCoinToSendDetails,
+            receiveAmount
+        )
     }
 
-    private fun calcSwapAmount(from: CoinDataItem, to: CoinDataItem, amount: Double): Double {
-        val fromCoinPriceUSD = from.priceUsd
-        val toCoinPriceUSD = to.priceUsd
-        return fromCoinPriceUSD * amount / toCoinPriceUSD
+    private fun calcSwapAmount(
+        from: CoinDataItem,
+        fromDetails: CoinDetailsDataItem,
+        to: CoinDataItem,
+        toDetails: CoinDetailsDataItem,
+        amount: Double
+    ): Double {
+        val price = amount * from.priceUsd / to.priceUsd
+        val result = price * (1 - fromDetails.profitExchange / 100) - toDetails.txFee
+        return result
     }
-}
-
-sealed class ValidationError {
-    object None : ValidationError()
-    object AmountLessThanBalance : ValidationError()
 }
 
 data class SwapFeeModelView(

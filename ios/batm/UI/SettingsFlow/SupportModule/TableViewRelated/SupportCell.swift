@@ -71,4 +71,6 @@ enum SupportCellType: CaseIterable, SettingsCellTypeRepresentable {
         default: return true
         }
     }
+    
+    var isDisclosureNeeded: Bool { true }
 }

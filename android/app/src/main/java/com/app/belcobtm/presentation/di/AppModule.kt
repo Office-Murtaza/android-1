@@ -3,6 +3,9 @@ package com.app.belcobtm.presentation.di
 import com.app.belcobtm.domain.wallet.LocalCoinType
 import com.app.belcobtm.domain.wallet.WalletRepository
 import com.app.belcobtm.domain.wallet.interactor.GetCoinListUseCase
+import com.app.belcobtm.presentation.core.coin.AmountCoinValidator
+import com.app.belcobtm.presentation.core.coin.CoinCodeProvider
+import com.app.belcobtm.presentation.core.coin.MinMaxCoinValueProvider
 import com.app.belcobtm.presentation.features.atm.AtmViewModel
 import com.app.belcobtm.presentation.features.authorization.create.seed.CreateSeedViewModel
 import com.app.belcobtm.presentation.features.authorization.create.wallet.CreateWalletViewModel
@@ -50,7 +53,7 @@ val viewModelModule = module {
     viewModel { VerificationInfoViewModel(get()) }
     viewModel { VerificationBlankViewModel(get(), get()) }
     viewModel { VerificationVipViewModel(get()) }
-    viewModel { SwapViewModel(get(), get()) }
+    viewModel { SwapViewModel(get(), get(), get(), get(), get()) }
     viewModel { WalletsViewModel(get(), get()) }
     viewModel { (latitude: Double, longitude: Double, coinCode: String) ->
         TradeViewModel(coinCode, latitude, longitude, get(), get(), get(), get(), get())
@@ -75,6 +78,8 @@ val viewModelModule = module {
         TradeReserveViewModel(
             get<WalletRepository>().getCoinItemByCode(coinCode),
             get<WalletRepository>().getCoinDetailsItemByCode(coinCode),
+            get(),
+            get(),
             get(),
             get(),
             get()
@@ -107,15 +112,21 @@ val viewModelModule = module {
         val coinList = (get() as GetCoinListUseCase).invoke()
         val fromCoinDataItem = coinList.find { it.code == coinCode }!!
         val fromCoinFee = get<WalletRepository>().getCoinDetailsItemByCode(coinCode)
-        SendGiftViewModel(get(), fromCoinDataItem, fromCoinFee, coinList)
+        SendGiftViewModel(get(), fromCoinDataItem, fromCoinFee, coinList, get(), get(), get())
     }
     viewModel { (coinCode: String) ->
         val coinList = (get() as GetCoinListUseCase).invoke()
         val fromCoinDataItem = coinList.find { it.code == coinCode }
         val fromCoinFee = get<WalletRepository>().getCoinDetailsItemByCode(coinCode)
-        WithdrawViewModel(get(), fromCoinDataItem, fromCoinFee, coinList)
+        WithdrawViewModel(get(), fromCoinDataItem, fromCoinFee, coinList, get(), get(), get())
     }
     viewModel { (coinCode: String) ->
         DepositViewModel(coinCode, get())
     }
+}
+
+val viewModelHelperModule = module {
+    factory { MinMaxCoinValueProvider() }
+    factory { CoinCodeProvider() }
+    factory { AmountCoinValidator() }
 }

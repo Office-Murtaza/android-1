@@ -38,12 +38,15 @@ class TransactionHashHelper(
     ): Either<Failure, String> = when (fromCoin) {
         LocalCoinType.BTC,
         LocalCoinType.BCH,
+        LocalCoinType.DOGE,
+        LocalCoinType.DASH,
         LocalCoinType.LTC -> createTransactionHashBTCorLTCorBTH(
             toAddress,
             fromCoin,
             fromCoinAmount
         )
         LocalCoinType.ETH,
+        LocalCoinType.USDT,
         LocalCoinType.CATM -> createTransactionHashETH(
             toAddress,
             fromCoin,

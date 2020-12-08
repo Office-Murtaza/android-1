@@ -5,11 +5,12 @@ class SettingsFlow: BaseFlow<BTMNavigationController, SettingsFlowController> {
   override func assemblies() -> [Assembly] {
     return [
       Dependencies(),
-        ManageWalletsAssembly(),
+      ManageWalletsAssembly(),
       SettingsAssembly(),
       SecurityAssembly(),
-        SupportAssembly(),
+      SupportAssembly(),
       AboutAssembly(),
+      NotificationsAssembly()
     ]
   }
   
@@ -18,9 +19,10 @@ class SettingsFlow: BaseFlow<BTMNavigationController, SettingsFlowController> {
     case wallet
     case security
     case kyc(KYC)
+    case notifications
     case support
     case about
-    case updatePhone(PhoneNumber)
+    case updatePhone(String)
     case updatePassword
     case updatePIN(String)
     case seedPhrase
@@ -56,7 +58,7 @@ class SettingsFlow: BaseFlow<BTMNavigationController, SettingsFlowController> {
       return push(module.controller)
     case let .updatePhone(phoneNumber):
       let flow = UpdatePhoneFlow(view: view, parent: self)
-      let step = UpdatePhoneFlow.Steps.showPhone(phoneNumber)
+      let step = UpdatePhoneFlow.Steps.updatePhone(phoneNumber)
       return next(flow: flow, step: step)
     case .updatePassword:
       let flow = UpdatePasswordFlow(view: view, parent: self)
@@ -78,6 +80,9 @@ class SettingsFlow: BaseFlow<BTMNavigationController, SettingsFlowController> {
       let flow = KYCFlow(view: view, parent: self)
       let step = KYCFlow.Steps.kyc(kyc)
       return next(flow: flow, step: step)
+    case .notifications:
+        let module = resolver.resolve(Module<NotificationsModule>.self)!
+        return push(module.controller)
     case let .popToRoot(toastMessage):
       view.popToRootViewController(animated: true)
       toastMessage.flatMap { message in

@@ -7,7 +7,9 @@ import androidx.lifecycle.Observer
 import com.app.belcobtm.R
 import com.app.belcobtm.domain.wallet.LocalCoinType
 import com.app.belcobtm.domain.wallet.item.CoinDataItem
+import com.app.belcobtm.presentation.core.coin.model.ValidationResult
 import com.app.belcobtm.presentation.core.extensions.*
+import com.app.belcobtm.presentation.core.helper.AlertHelper
 import com.app.belcobtm.presentation.core.ui.fragment.BaseFragment
 import com.app.belcobtm.presentation.core.watcher.DoubleTextWatcher
 import com.app.belcobtm.presentation.features.deals.swap.adapter.CoinDialogAdapter
@@ -41,6 +43,15 @@ class SwapFragment : BaseFragment() {
     }
 
     override fun initListeners() {
+        nextButtonView.setOnClickListener {
+            viewModel.executeSwap()
+        }
+        maxCoinSendView.setOnClickListener {
+            viewModel.setMaxSendAmount()
+        }
+        maxCoinReceiveView.setOnClickListener {
+            viewModel.setMaxSendAmount()
+        }
         sendCoinButton.setOnClickListener {
             showSelectCoinDialog { viewModel.setCoinToSend(it) }
         }
@@ -52,6 +63,10 @@ class SwapFragment : BaseFragment() {
     }
 
     override fun initObservers() {
+        viewModel.swapLoadingData.listen(success = {
+            AlertHelper.showToastShort(requireContext(), R.string.swap_screen_success_message)
+            popBackStack()
+        })
         viewModel.coinsDetailsLoadingState.listen(success = {}) // just listen
         viewModel.coinToSend.observe(viewLifecycleOwner, Observer { coin ->
             val coinCode = coin.code
@@ -93,9 +108,8 @@ class SwapFragment : BaseFragment() {
         })
         viewModel.coinToSendError.observe(viewLifecycleOwner, Observer { error ->
             amountCoinToSendView.error = when (error) {
-                ValidationError.None -> null
-                ValidationError.AmountLessThanBalance ->
-                    getString(R.string.swap_screen_error_not_enough_balance)
+                is ValidationResult.Valid -> null
+                is ValidationResult.InValid -> getString(error.error)
             }
         })
         viewModel.sendCoinAmount.observe(viewLifecycleOwner, Observer { sendAmount ->

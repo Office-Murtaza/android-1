@@ -7,6 +7,7 @@ protocol SettingsCellTypeRepresentable {
   var image: UIImage? { get }
   var value: String? { get }
   var isEnabled: Bool { get }
+  var isDisclosureNeeded: Bool { get }
 }
 
 extension SettingsCellTypeRepresentable {
@@ -19,6 +20,7 @@ enum SettingsCellType: CaseIterable, SettingsCellTypeRepresentable {
   case wallet
   case security
   case kyc
+  case notifications
   case support
   case about
 
@@ -27,6 +29,7 @@ enum SettingsCellType: CaseIterable, SettingsCellTypeRepresentable {
     case .wallet: return localize(L.Settings.Cell.wallet)
     case .security: return localize(L.Settings.Cell.security)
     case .kyc: return localize(L.Settings.Cell.kyc)
+    case .notifications: return localize(L.Settings.Cell.notifications)
     case .support: return localize(L.Settings.Cell.support)
     case .about: return localize(L.Settings.Cell.about)
     }
@@ -37,10 +40,13 @@ enum SettingsCellType: CaseIterable, SettingsCellTypeRepresentable {
     case .wallet: return UIImage(named: "settings_wallet")
     case .security: return UIImage(named: "settings_security")
     case .kyc: return UIImage(named: "settings_kyc")
+    case .notifications: return UIImage(named: "settings_notifications")
     case .support: return UIImage(named: "settings_support")
     case .about: return UIImage(named: "settings_about")
     }
   }
+    
+  var isDisclosureNeeded: Bool { true }
 }
 
 final class SettingsCell: UITableViewCell {
@@ -109,9 +115,7 @@ final class SettingsCell: UITableViewCell {
   }
   
   func configure(for type: SettingsCellTypeRepresentable) {
-    if type is SupportCellType {
-        accessoryType = .disclosureIndicator
-    }
+    accessoryType = type.isDisclosureNeeded ? .disclosureIndicator : .none
     iconImageView.image = type.image
     iconImageView.isHidden = type.image == nil
     iconImageView.contentMode = .center

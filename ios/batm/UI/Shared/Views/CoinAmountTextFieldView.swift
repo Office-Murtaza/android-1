@@ -57,7 +57,7 @@ final class CoinAmountTextFieldView: UIView, HasDisposeBag {
   func configure(coinType: CustomCoinType, fee: Decimal?) {
     coinAmountTextFieldController.placeholderText = String(format: localize(L.CoinWithdraw.Form.CoinAmount.placeholder), coinType.code)
     
-    let coinType = coinType == .catm ? CustomCoinType.ethereum : coinType
+    let coinType = coinType.isETHBased ? CustomCoinType.ethereum : coinType
     let helperValueText = (fee ?? 0).coinFormatted.withCoinType(coinType)
     let helperText = String(format: localize(L.CoinWithdraw.Form.CoinAmount.helper), helperValueText)
     

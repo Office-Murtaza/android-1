@@ -171,10 +171,11 @@ public class WalletService {
     public boolean isEnoughBalance(CoinService.CoinEnum coin, BigDecimal amount) {
         BigDecimal balance = getBalance(coin);
 
-        if (coin == CoinService.CoinEnum.CATM) {
+        if (coin == CoinService.CoinEnum.CATM || coin == CoinService.CoinEnum.USDT) {
             BigDecimal ethBalance = getBalance(CoinService.CoinEnum.ETH);
+            BigDecimal fee = convertToFee(coin);
 
-            return balance.compareTo(amount.add(convertEthFeeToCatmFee())) >= 0 && ethBalance.compareTo(coin.getTxFee()) >= 0;
+            return balance.compareTo(amount.add(fee)) >= 0 && ethBalance.compareTo(coin.getTxFee()) >= 0;
         }
 
         return balance.compareTo(amount.add(coin.getTxFee())) >= 0;
@@ -245,7 +246,7 @@ public class WalletService {
         return coinsMap.get(coinType).getAddress().equalsIgnoreCase(address);
     }
 
-    public BigDecimal convertEthFeeToCatmFee() {
-        return CoinService.CoinEnum.CATM.getTxFee().multiply(CoinService.CoinEnum.ETH.getPrice()).divide(CoinService.CoinEnum.CATM.getPrice());
+    public BigDecimal convertToFee(CoinService.CoinEnum toCoin) {
+        return toCoin.getTxFee().multiply(CoinService.CoinEnum.ETH.getPrice()).divide(toCoin.getPrice(), toCoin.getCoinEntity().getScale(), BigDecimal.ROUND_DOWN).stripTrailingZeros();
     }
 }

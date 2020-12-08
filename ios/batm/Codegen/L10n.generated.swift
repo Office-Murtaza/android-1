@@ -111,6 +111,10 @@ enum L {
     static let title = "manage_wallets.title"
   }
 
+  struct Notifications {
+    static let title = "notifications.title"
+  }
+
   struct PhoneVerification {
     static let codeSent = "phone_verification.code_sent"
     static let enterCode = "phone_verification.enter_code"
@@ -222,6 +226,8 @@ enum L {
 extension L.About {
 
   struct Cell {
+    static let compliantPolicy = "about.cell.compliant_policy"
+    static let privacyPolicy = "about.cell.privacy_policy"
     static let support = "about.cell.support"
     static let termsAndConditions = "about.cell.terms_and_conditions"
     static let version = "about.cell.version"
@@ -545,6 +551,12 @@ extension L.KYC.Header.Status {
     static let vipVerified = "k_y_c.header.status.value.vip_verified"
   }
 }
+extension L.Notifications {
+
+  struct Cell {
+    static let title = "notifications.cell.title"
+  }
+}
 extension L.PhoneVerification {
 
   struct Error {
@@ -646,6 +658,7 @@ extension L.Settings {
   struct Cell {
     static let about = "settings.cell.about"
     static let kyc = "settings.cell.kyc"
+    static let notifications = "settings.cell.notifications"
     static let security = "settings.cell.security"
     static let support = "settings.cell.support"
     static let wallet = "settings.cell.wallet"

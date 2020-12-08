@@ -108,8 +108,8 @@ struct CoinsBalanceRequest: AuthorizedAPIRequest {
   var path: String { return "/user/\(userId)/balance" }
   var method: HTTPMethod { return .get }
   var task: HTTPTask {
-    return .requestParameters(parameters: ["coins": coins.map { $0.type.code }],
-                              encoding: URLEncoding.customDefault)
+  return .requestParameters(parameters: ["coins": coins.map { $0.type.code }],
+                            encoding: URLEncoding.customDefault)
   }
 }
 
@@ -509,6 +509,20 @@ struct GetPriceChartDataRequest: AuthorizedAPIRequest {
   var task: HTTPTask {
     return .requestPlain
   }
+}
+
+struct GetPriceChartDetailsRequest: AuthorizedAPIRequest {
+  typealias ResponseType = APIResponse<PriceChartDetails>
+  typealias ResponseTrait = SingleResponseTrait
+
+  let coinId: String
+  let coinPeriod: SelectedPeriod
+  var path: String { return "/coin/\(coinId)/price-chart" }
+  var method: HTTPMethod { .get }
+  var task: HTTPTask {
+    return .requestParameters(parameters: [
+      "period" : coinPeriod.rawValue
+    ], encoding: URLEncoding.customDefault)}
 }
 
 struct BuySellTradesRequest: AuthorizedAPIRequest {
