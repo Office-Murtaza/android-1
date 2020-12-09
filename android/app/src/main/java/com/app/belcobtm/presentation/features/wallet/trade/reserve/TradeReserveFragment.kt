@@ -18,7 +18,8 @@ class TradeReserveFragment : BaseFragment() {
     override var isMenuEnabled: Boolean = true
     override val resourceLayout: Int = R.layout.fragment_trade_reserve
     override val retryListener: View.OnClickListener = View.OnClickListener {
-        if (viewModel.initialLoadLiveData.value is LoadingData.Success) {
+        val initValue = viewModel.initialLoadLiveData.value
+        if (initValue == null || initValue is LoadingData.Success) {
             viewModel.createTransaction()
         }
     }

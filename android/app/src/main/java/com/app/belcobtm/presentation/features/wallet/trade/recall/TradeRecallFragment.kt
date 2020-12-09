@@ -19,7 +19,8 @@ class TradeRecallFragment : BaseFragment() {
     override val isToolbarEnabled: Boolean = true
     override val isHomeButtonEnabled: Boolean = true
     override val retryListener: View.OnClickListener = View.OnClickListener {
-        if (viewModel.initialLoadLiveData.value is LoadingData.Success) {
+        val initValue = viewModel.initialLoadLiveData.value
+        if (initValue == null || initValue is LoadingData.Success) {
             viewModel.performTransaction()
         }
     }
