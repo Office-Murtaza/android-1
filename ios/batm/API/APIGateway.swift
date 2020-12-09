@@ -129,12 +129,14 @@ final class APIGatewayImpl: APIGateway {
   }
   
   func createAccount(phoneNumber: String, password: String, coinAddresses: [CoinAddress]) -> Single<Account> {
-    let request = CreateAccountRequest(phoneNumber: phoneNumber, password: password, coinAddresses: coinAddresses)
+    let token = KeychainManager.loadValue(for: GlobalConstants.fcmPushToken)
+    let request = CreateAccountRequest(phoneNumber: phoneNumber, password: password, coinAddresses: coinAddresses, notificationsToken: token)
     return execute(request)
   }
   
   func recoverWallet(phoneNumber: String, password: String, coinAddresses: [CoinAddress]) -> Single<Account> {
-    let request = RecoverWalletRequest(phoneNumber: phoneNumber, password: password, coinAddresses: coinAddresses)
+    let token = KeychainManager.loadValue(for: GlobalConstants.fcmPushToken)
+    let request = RecoverWalletRequest(phoneNumber: phoneNumber, password: password, coinAddresses: coinAddresses, notificationsToken: token ?? "")
     return execute(request)
   }
   
@@ -345,4 +347,3 @@ final class APIGatewayImpl: APIGateway {
     return execute(request)
   }
 }
-

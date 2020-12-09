@@ -51,6 +51,10 @@ final class NotificationsCell: UITableViewCell {
     
     func configure() {
         typeLabel.text = localize(L.Notifications.Cell.title)
+        visibilitySwitch.rx.isOn
+          .asDriver()
+          .drive(onNext: { [weak self] _ in self?.delegate?.didTapChangeNotifications() })
+          .disposed(by: disposeBag)
     }
     
     private func setupUI() {
