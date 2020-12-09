@@ -45,7 +45,7 @@ class OkHttpSocketClient(
     override fun onFailure(webSocket: WebSocket, t: Throwable, response: Response?) {
         messages.sendBlocking(SocketResponse.Message(Either.Right(t)))
         this.webSocket = null
-        messages.sendBlocking(SocketResponse.Failure)
+        messages.sendBlocking(SocketResponse.Failure(t))
     }
 
     override fun onClosing(webSocket: WebSocket, code: Int, reason: String) {
