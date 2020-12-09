@@ -6,12 +6,12 @@
     <dimen name="margin_x2">32dp</dimen>
     <dimen name="margin_main">16dp</dimen>
     <dimen name="margin_half">8dp</dimen>
+    <dimen name="margin_normal">12dp</dimen>
     <dimen name="margin_quoter">4dp</dimen>
     <dimen name="margin_large">24dp</dimen>
     <dimen name="divider_size">1dp</dimen>
 
     <dimen name="photo_picker_column_size">100dp</dimen>
-
 
     <integer name="slide_animation_duration">300</integer>
 
@@ -25,4 +25,7 @@
 
     //settings
     <dimen name="settings_item_height">56dp</dimen>
+
+    // common
+    <dimen name="common_image_size">56dp</dimen>
 </resources>

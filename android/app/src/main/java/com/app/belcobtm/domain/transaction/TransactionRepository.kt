@@ -149,4 +149,8 @@ interface TransactionRepository {
         txId: String,
         coinCode: String
     ): Either<Failure, TransactionDetailsDataItem>
+
+    suspend fun checkXRPAddressActivated(
+        address: String
+    ): Either<Failure, Boolean>
 }

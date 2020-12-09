@@ -26,7 +26,7 @@ import com.app.belcobtm.presentation.features.sms.code.SmsCodeViewModel
 import com.app.belcobtm.presentation.features.wallet.add.WalletsViewModel
 import com.app.belcobtm.presentation.features.wallet.balance.WalletViewModel
 import com.app.belcobtm.presentation.features.wallet.deposit.DepositViewModel
-import com.app.belcobtm.presentation.features.wallet.exchange.coin.to.coin.ExchangeViewModel
+import com.app.belcobtm.presentation.features.deals.swap.SwapViewModel
 import com.app.belcobtm.presentation.features.wallet.send.gift.SendGiftViewModel
 import com.app.belcobtm.presentation.features.wallet.staking.StakingViewModel
 import com.app.belcobtm.presentation.features.wallet.trade.create.TradeCreateViewModel
@@ -53,25 +53,7 @@ val viewModelModule = module {
     viewModel { VerificationInfoViewModel(get()) }
     viewModel { VerificationBlankViewModel(get(), get()) }
     viewModel { VerificationVipViewModel(get()) }
-    viewModel { (coinCode: String) ->
-        val walletRepo = get<WalletRepository>()
-        val coinList = walletRepo.getCoinItemList()
-        val filteredCoinList = coinList.filter { it.isEnabled }
-        val fromCoinDataItem = filteredCoinList.first { it.code == coinCode }
-        val fromCoinDetails = walletRepo.getCoinDetailsMap().getValue(coinCode)
-
-        ExchangeViewModel(
-            get(),
-            get(),
-            get(),
-            fromCoinDataItem,
-            fromCoinDetails,
-            filteredCoinList,
-            get(),
-            get(),
-            get()
-        )
-    }
+    viewModel { SwapViewModel(get(), get(), get(), get(), get(), get()) }
     viewModel { WalletsViewModel(get(), get()) }
     viewModel { (latitude: Double, longitude: Double, coinCode: String) ->
         TradeViewModel(coinCode, latitude, longitude, get(), get(), get(), get(), get())

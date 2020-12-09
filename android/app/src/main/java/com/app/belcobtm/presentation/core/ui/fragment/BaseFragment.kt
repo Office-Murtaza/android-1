@@ -56,6 +56,10 @@ abstract class BaseFragment : Fragment() {
                 showSnackBar(error.message ?: "")
                 showContent()
             }
+            is Failure.XRPLowAmountToSend -> {
+                showError(R.string.error_xrp_amount_is_not_enough)
+                showContent()
+            }
             is Failure.ServerError -> showErrorServerError()
             else -> showErrorSomethingWrong()
         }
