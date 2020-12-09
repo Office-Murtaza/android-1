@@ -23,7 +23,6 @@ import com.app.belcobtm.presentation.core.extensions.toggle
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
 import com.app.belcobtm.presentation.core.ui.fragment.BaseFragment
 import com.app.belcobtm.presentation.features.wallet.trade.main.TradeActivity
-import com.app.belcobtm.presentation.features.wallet.trade.recall.TradeRecallFragment
 import com.app.belcobtm.presentation.features.wallet.transactions.TransactionsFABType.*
 import com.app.belcobtm.presentation.features.wallet.transactions.adapter.TransactionsAdapter
 import com.app.belcobtm.presentation.features.wallet.transactions.item.CurrentChartInfo
@@ -82,7 +81,6 @@ class TransactionsFragment : BaseFragment() {
             addButtonToMenu(menu, STAKING)
         }
 //        addButtonToMenu(groupId, menu, TRADE)
-        addButtonToMenu(menu, EXCHANGE)
 //        addButtonToMenu(groupId, menu, SELL)
         addButtonToMenu(menu, SEND_GIFT)
         addButtonToMenu(menu, WITHDRAW)
@@ -120,8 +118,6 @@ class TransactionsFragment : BaseFragment() {
             when (itemId) {
                 TRADE.id -> tradeOpenWithPermissionCheck()
                 STAKING.id -> navigate(TransactionsFragmentDirections.toStakingFragment())
-                EXCHANGE.id ->
-                    navigate(TransactionsFragmentDirections.toExchangeFragment(viewModel.coinCode))
                 SEND_GIFT.id ->
                     navigate(TransactionsFragmentDirections.toSendGiftFragment(viewModel.coinCode))
                 WITHDRAW.id ->

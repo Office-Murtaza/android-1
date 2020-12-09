@@ -56,7 +56,7 @@ class WebSocketWalletObserver(
                         is SocketResponse.Opened -> onOpened()
                         is SocketResponse.Failure ->
                             runBlocking {
-                                processError()
+                                processError(it.cause)
                             }
                         is SocketResponse.Message -> it.content.either({
                             runBlocking {
@@ -64,7 +64,7 @@ class WebSocketWalletObserver(
                             }
                         }) {
                             runBlocking {
-                                processError()
+                                processError(it)
                             }
                         }
                     }
@@ -100,7 +100,7 @@ class WebSocketWalletObserver(
         val response = deserializer.deserialize(content)
         when (response.status) {
             WalletSocketResponse.CONNECTED -> subscribe()
-            WalletSocketResponse.ERROR -> processError()
+            WalletSocketResponse.ERROR -> processError(Failure.ServerError())
             WalletSocketResponse.CONTENT -> {
                 moshi.adapter(BalanceResponse::class.java)
                     .fromJson(response.body)
@@ -127,8 +127,12 @@ class WebSocketWalletObserver(
         socketClient.sendMessage(serializer.serialize(request))
     }
 
-    private suspend fun processError() {
-        balanceInfo.send(WalletBalance.Error(Failure.ServerError()))
+    private suspend fun processError(throwable: Throwable) {
+        val error = when (throwable) {
+            is Failure -> throwable
+            else -> Failure.ServerError()
+        }
+        balanceInfo.send(WalletBalance.Error(error))
     }
 
     private fun onOpened() {

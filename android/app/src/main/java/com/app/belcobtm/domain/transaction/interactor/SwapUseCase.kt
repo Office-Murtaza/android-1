@@ -5,10 +5,9 @@ import com.app.belcobtm.domain.Failure
 import com.app.belcobtm.domain.UseCase
 import com.app.belcobtm.domain.transaction.TransactionRepository
 
-class ExchangeUseCase(
+class SwapUseCase(
     private val repository: TransactionRepository
-) :
-    UseCase<Unit, ExchangeUseCase.Params>() {
+) : UseCase<Unit, SwapUseCase.Params>() {
 
     override suspend fun run(params: Params): Either<Failure, Unit> = repository.exchange(
         params.coinFromAmount,

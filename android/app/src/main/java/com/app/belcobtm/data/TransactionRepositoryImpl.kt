@@ -364,4 +364,8 @@ class TransactionRepositoryImpl(
         txId: String,
         coinCode: String
     ): Either<Failure, TransactionDetailsDataItem> = apiService.getTransactionDetails(txId, coinCode)
+
+    override suspend fun checkXRPAddressActivated(address: String): Either<Failure, Boolean> {
+        return apiService.getXRPAddressActivated(address)
+    }
 }
