@@ -1,9 +1,11 @@
 package com.app.belcobtm.presentation.features.wallet.trade.recall
 
+import android.view.View
 import androidx.lifecycle.Observer
 import com.app.belcobtm.R
 import com.app.belcobtm.presentation.core.extensions.*
 import com.app.belcobtm.presentation.core.helper.AlertHelper
+import com.app.belcobtm.presentation.core.mvvm.LoadingData
 import com.app.belcobtm.presentation.core.ui.fragment.BaseFragment
 import com.app.belcobtm.presentation.core.watcher.DoubleTextWatcher
 import com.app.belcobtm.presentation.features.wallet.trade.reserve.InputFieldState
@@ -16,6 +18,11 @@ class TradeRecallFragment : BaseFragment() {
     override var isMenuEnabled: Boolean = true
     override val isToolbarEnabled: Boolean = true
     override val isHomeButtonEnabled: Boolean = true
+    override val retryListener: View.OnClickListener = View.OnClickListener {
+        if (viewModel.initialLoadLiveData.value is LoadingData.Success) {
+            viewModel.performTransaction()
+        }
+    }
     private val viewModel: TradeRecallViewModel by viewModel {
         parametersOf(TradeRecallFragmentArgs.fromBundle(requireArguments()).coinCode)
     }
