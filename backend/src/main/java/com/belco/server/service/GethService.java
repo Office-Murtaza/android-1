@@ -9,6 +9,7 @@ import com.belco.server.util.TxUtil;
 import com.belco.server.util.Util;
 import com.google.protobuf.ByteString;
 import com.mongodb.BasicDBList;
+import com.mongodb.BasicDBObject;
 import com.mongodb.bulk.BulkWriteResult;
 import com.mongodb.client.model.FindOneAndUpdateOptions;
 import com.mongodb.client.model.UpdateOneModel;
@@ -19,6 +20,7 @@ import org.bson.types.Decimal128;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.http.HttpStatus;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -59,8 +61,8 @@ public class GethService {
     private static final String ETH_TX_COLL = "eth_transaction";
     private static final String TOKEN_TX_COLL = "token_transaction";
 
-    private static String nodeUrl;
     public static String explorerUrl;
+    private static String nodeUrl;
     private static long ethInitialGasLimit;
     private static String catmContractAddress;
     private static String usdtContractAddress;
@@ -95,6 +97,10 @@ public class GethService {
         GethService.walletService = walletService;
 
         try {
+            if (rest.getForEntity(nodeUrl, String.class).getStatusCode() != HttpStatus.OK) {
+                throw new RuntimeException("Eth node " + nodeUrl + " is down");
+            }
+
             web3 = Web3j.build(new HttpService(nodeUrl));
 
             ContractGasProvider gasProvider = new StaticGasProvider(BigInteger.valueOf(getFastGasPrice()), BigInteger.valueOf(ethInitialGasLimit));
@@ -293,54 +299,48 @@ public class GethService {
         return TransactionStatus.PENDING;
     }
 
-    public TransactionDetailsDTO getTransaction(String txId, String address) {
-        Document search = new Document("txId", txId.toLowerCase());
+    public void addAddressToJournal(String address) {
+        mongo.getCollection(ADDRESS_COLL).findOneAndUpdate(new BasicDBObject("address", address.toLowerCase()), new BasicDBObject("$set", new BasicDBObject("address", address.toLowerCase()).append("timestamp", System.currentTimeMillis())), new FindOneAndUpdateOptions().upsert(true));
+    }
 
-        return getTransactionFromDB(ETH_TX_COLL, search, address.toLowerCase());
+    public boolean existsInJournal(String fromAddress, String toAddress) {
+        BasicDBList or = new BasicDBList();
+        or.add(new BasicDBObject("address", fromAddress.toLowerCase()));
+        or.add(new BasicDBObject("address", toAddress.toLowerCase()));
+
+        return mongo.getCollection(ADDRESS_COLL).find(new BasicDBObject("$or", or)).iterator().hasNext();
+    }
+
+    public TransactionDetailsDTO getTransaction(String txId, String address) {
+        return getTransactionFromDB(ETH_TX_COLL, new BasicDBObject("txId", txId.toLowerCase()), address);
     }
 
     public TransactionDetailsDTO getTransaction(ERC20 token, String txId, String address) {
-        return getTransactionFromDB(TOKEN_TX_COLL, new Document("txId", txId).append("token", token.name()), address.toLowerCase());
+        return getTransactionFromDB(TOKEN_TX_COLL, new BasicDBObject("txId", txId.toLowerCase()).append("token", token.name()), address);
     }
 
     public TransactionListDTO getTransactionList(String address, Integer startIndex, Integer limit, TxListDTO txDTO) {
-        BasicDBList or = new BasicDBList();
-        or.add(new Document("fromAddress", address));
-        or.add(new Document("toAddress", address));
+        BasicDBObject query = buildQuery(address);
 
-        return buildTransactionList(ETH_TX_COLL, new Document("$or", or), address.toLowerCase(), startIndex, limit, txDTO);
+        return buildTransactionList(ETH_TX_COLL, query, address, startIndex, limit, txDTO);
     }
 
     public TransactionListDTO getTransactionList(ERC20 token, String address, Integer startIndex, Integer limit, TxListDTO txDTO) {
-        BasicDBList or = new BasicDBList();
-        or.add(new Document("fromAddress", address));
-        or.add(new Document("toAddress", address));
+        BasicDBObject query = buildQuery(token, address);
 
-        BasicDBList and = new BasicDBList();
-        and.add(new Document("$or", or));
-        and.add(new Document("token", token.name()));
-
-        return buildTransactionList(TOKEN_TX_COLL, new Document("$and", and), address.toLowerCase(), startIndex, limit, txDTO);
+        return buildTransactionList(TOKEN_TX_COLL, query, address, startIndex, limit, txDTO);
     }
 
     public NodeTransactionsDTO getNodeTransactions(String address) {
-        BasicDBList or = new BasicDBList();
-        or.add(new Document("fromAddress", address.toLowerCase()));
-        or.add(new Document("toAddress", address.toLowerCase()));
+        BasicDBObject query = buildQuery(address);
 
-        return getNodeTransactionsFromDB(ETH_TX_COLL, new Document("$or", or), address.toLowerCase());
+        return getNodeTransactionsFromDB(ETH_TX_COLL, query, address);
     }
 
     public NodeTransactionsDTO getNodeTransactions(ERC20 token, String address) {
-        BasicDBList or = new BasicDBList();
-        or.add(new Document("fromAddress", address));
-        or.add(new Document("toAddress", address));
+        BasicDBObject query = buildQuery(token, address);
 
-        BasicDBList and = new BasicDBList();
-        and.add(new Document("$or", or));
-        and.add(new Document("token", token.name()));
-
-        return getNodeTransactionsFromDB(ETH_TX_COLL, new Document("$and", and), address.toLowerCase());
+        return getNodeTransactionsFromDB(ETH_TX_COLL, query, address);
     }
 
     public String sign(String fromAddress, String toAddress, BigDecimal amount, Long gasLimit, Long gasPrice) {
@@ -414,23 +414,6 @@ public class GethService {
         return null;
     }
 
-    public void addAddressToJournal(String address) {
-        address = address.toLowerCase();
-
-        mongo.getCollection(ADDRESS_COLL).findOneAndUpdate(
-                new Document("address", address),
-                new Document("$set", new Document("address", address).append("timestamp", System.currentTimeMillis())),
-                new FindOneAndUpdateOptions().upsert(true));
-    }
-
-    public boolean existsInJournal(String fromAddress, String toAddress) {
-        BasicDBList or = new BasicDBList();
-        or.add(new Document("address", fromAddress));
-        or.add(new Document("address", toAddress));
-
-        return mongo.getCollection(ADDRESS_COLL).find(new Document("$or", or)).iterator().hasNext();
-    }
-
     public Long getGasLimit(String address) {
         try {
             return web3.ethEstimateGas(org.web3j.protocol.core.methods.request.Transaction.createEthCallTransaction(null, address, null)).send().getAmountUsed().longValue();
@@ -458,9 +441,9 @@ public class GethService {
         return address20Bytes;
     }
 
-    private static TransactionListDTO buildTransactionList(String coll, Document search, String address, Integer startIndex, Integer limit, TxListDTO txDTO) {
+    private static TransactionListDTO buildTransactionList(String coll, BasicDBObject query, String address, Integer startIndex, Integer limit, TxListDTO txDTO) {
         try {
-            Map<String, TransactionDetailsDTO> map = getNodeTransactionsFromDB(coll, search, address).getMap();
+            Map<String, TransactionDetailsDTO> map = getNodeTransactionsFromDB(coll, query, address).getMap();
 
             return TxUtil.buildTxs(map, startIndex, limit, txDTO);
         } catch (Exception e) {
@@ -470,11 +453,11 @@ public class GethService {
         return new TransactionListDTO();
     }
 
-    private static NodeTransactionsDTO getNodeTransactionsFromDB(String coll, Document search, String address) {
-        try {
-            Map<String, TransactionDetailsDTO> map = new HashMap<>();
+    private static NodeTransactionsDTO getNodeTransactionsFromDB(String coll, BasicDBObject query, String address) {
+        Map<String, TransactionDetailsDTO> map = new HashMap<>();
 
-            mongo.getCollection(coll).find(search).into(new ArrayList<>()).stream().forEach(d -> {
+        mongo.getCollection(coll).find(query).into(new ArrayList<>()).stream().forEach(d -> {
+            try {
                 TransactionDetailsDTO dto = new TransactionDetailsDTO();
 
                 String fromAddress = d.getString("fromAddress");
@@ -490,19 +473,17 @@ public class GethService {
                 dto.setDate1(new Date(d.getLong("blockTime")));
 
                 map.put(d.getString("txId"), dto);
-            });
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
 
-            return new NodeTransactionsDTO(map);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return new NodeTransactionsDTO();
+        return new NodeTransactionsDTO(map);
     }
 
-    private static TransactionDetailsDTO getTransactionFromDB(String coll, Document search, String address) {
+    private static TransactionDetailsDTO getTransactionFromDB(String coll, BasicDBObject query, String address) {
         try {
-            Document txDoc = mongo.getCollection(coll).find(search).first();
+            Document txDoc = mongo.getCollection(coll).find(query).first();
 
             if (txDoc == null) {
                 return new TransactionDetailsDTO();
@@ -699,5 +680,21 @@ public class GethService {
         }
 
         return null;
+    }
+
+    private static BasicDBObject buildQuery(String address) {
+        BasicDBList or = new BasicDBList();
+        or.add(new BasicDBObject("fromAddress", address.toLowerCase()));
+        or.add(new BasicDBObject("toAddress", address.toLowerCase()));
+
+        return new BasicDBObject("$or", or);
+    }
+
+    private static BasicDBObject buildQuery(ERC20 token, String address) {
+        BasicDBList and = new BasicDBList();
+        and.add(buildQuery(address));
+        and.add(new BasicDBObject("token", token.name()));
+
+        return new BasicDBObject("$and", and);
     }
 }
