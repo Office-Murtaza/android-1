@@ -70,34 +70,13 @@ class SwapViewModel(
     val initLoadingData: LiveData<LoadingData<Unit>> = _initLoadingData
 
     init {
-        viewModelScope.launch {
-            _initLoadingData.value = LoadingData.Loading(Unit)
-            val balance = walletObserver.observe()
-                .receiveAsFlow()
-                .first { it != WalletBalance.NoInfo }
-            when (balance) {
-                is WalletBalance.Balance -> {
-                    originCoinsData.clear()
-                    originCoinsData.addAll(balance.data.coinList)
-                    _initLoadingData.value = LoadingData.Success(Unit)
-                    // move to next step
-                    updateCoins(
-                        originCoinsData.first { it.code == LocalCoinType.BTC.name },
-                        originCoinsData.first { it.code == LocalCoinType.USDT.name }
-                    )
-                }
-                is WalletBalance.Error -> {
-                    _initLoadingData.value = LoadingData.Error(balance.error)
-                }
-                else -> _initLoadingData.value = LoadingData.Error(Failure.ServerError())
-            }
-        }
+       initWalletObservation()
     }
 
     fun reconnectToWallet() {
         viewModelScope.launch {
-            _initLoadingData.value = LoadingData.Loading(Unit)
             walletObserver.connect()
+            initWalletObservation()
         }
     }
 
@@ -121,8 +100,11 @@ class SwapViewModel(
     }
 
     fun setReceiveAmount(receiveAmount: Double) {
+        val sendAmount = calcSendAmountFromReceive(receiveAmount)
         _receiveCoinAmount.value = receiveAmount
-        _sendCoinAmount.value = calcSendAmountFromReceive(receiveAmount)
+        _sendCoinAmount.value = sendAmount
+        // extra validation step
+        validateCoinToSendAmount(sendAmount)
     }
 
     fun setMaxSendAmount() {
@@ -200,7 +182,7 @@ class SwapViewModel(
                         val platformFee = coinToReceiveDetails.txFee
                         val platformFeeCoinsAmount = receiveAmount * platformFee
                         val atomicAmount = 1 // probably will depend on the coin type
-                        val atomicSwapAmount = calcSwapAmount(
+                        val atomicSwapAmount = calcSwapAmountFromSend(
                             coinToSend,
                             coinToSendDetails,
                             coinToReceive,
@@ -273,7 +255,7 @@ class SwapViewModel(
         val currentCoinToReceive = coinToReceive.value ?: return 0.0
         val currentCoinToSendDetails = coinToSendDetails ?: return 0.0
         val currentCoinToReceiveDetails = coinToReceiveDetails ?: return 0.0
-        return calcSwapAmount(
+        return calcSwapAmountFromSend(
             currentCoinToSend,
             currentCoinToSendDetails,
             currentCoinToReceive,
@@ -287,24 +269,81 @@ class SwapViewModel(
         val currentCoinToReceive = coinToReceive.value ?: return 0.0
         val currentCoinToSendDetails = coinToSendDetails ?: return 0.0
         val currentCoinToReceiveDetails = coinToReceiveDetails ?: return 0.0
-        return calcSwapAmount(
-            currentCoinToReceive,
-            currentCoinToReceiveDetails,
+        return calcSwapAmountFromReceive(
             currentCoinToSend,
             currentCoinToSendDetails,
+            currentCoinToReceive,
+            currentCoinToReceiveDetails,
             receiveAmount
         )
     }
 
-    private fun calcSwapAmount(
-        from: CoinDataItem,
-        fromDetails: CoinDetailsDataItem,
-        to: CoinDataItem,
-        toDetails: CoinDetailsDataItem,
-        amount: Double
+    private fun calcSwapAmountFromSend(
+        sendCoin: CoinDataItem,
+        sendCoinDetails: CoinDetailsDataItem,
+        receiveCoin: CoinDataItem,
+        receiveCoinDetails: CoinDetailsDataItem,
+        sendAmount: Double
     ): Double {
-        val price = amount * from.priceUsd / to.priceUsd
-        return price * (1 - fromDetails.profitExchange / 100) - toDetails.txFee
+        // Case:
+        // User swap from A to B, user enter amount(A),
+        // amount(B) = amount(A) x price(A) / price(B) x (1 - swapProfitPercent / 100) - fee(B)
+        val receiveFee = getReceiveFee(receiveCoin, receiveCoinDetails)
+        val price = sendAmount * sendCoin.priceUsd / receiveCoin.priceUsd
+        return price * (1 - sendCoinDetails.profitExchange / 100) - receiveFee
+    }
+
+    private fun calcSwapAmountFromReceive(
+        sendCoin: CoinDataItem,
+        sendCoinDetails: CoinDetailsDataItem,
+        receiveCoin: CoinDataItem,
+        receiveCoinDetails: CoinDetailsDataItem,
+        receiveAmount: Double
+    ): Double {
+        // Case:
+        // User swap from A to B, user enter amount(B),
+        // amount(A) = (amount(B) + fee(B)) x price(B) / price(A) / (1 - swapProfitPercent / 100)
+        val receiveFee = getReceiveFee(receiveCoin, receiveCoinDetails)
+        return (receiveAmount + receiveFee) *
+                receiveCoin.priceUsd / sendCoin.priceUsd / (1 - sendCoinDetails.profitExchange / 100)
+    }
+
+    private fun getReceiveFee(
+        receiveCoin: CoinDataItem,
+        receiveCoinDetails: CoinDetailsDataItem,
+    ): Double {
+        // fee(B) = convertedTxFee(B) in case B is CATM or USDT
+        // fee(B) = txFee(B) for the rest of coins.
+        return when (receiveCoin.code) {
+            LocalCoinType.CATM.name,
+            LocalCoinType.USDT.name -> receiveCoinDetails.convertedTxFee
+            else -> receiveCoinDetails.txFee
+        }
+    }
+
+    private fun initWalletObservation() {
+        viewModelScope.launch {
+            _initLoadingData.value = LoadingData.Loading(Unit)
+            val balance = walletObserver.observe()
+                .receiveAsFlow()
+                .first { it != WalletBalance.NoInfo }
+            when (balance) {
+                is WalletBalance.Balance -> {
+                    originCoinsData.clear()
+                    originCoinsData.addAll(balance.data.coinList)
+                    _initLoadingData.value = LoadingData.Success(Unit)
+                    // move to next step
+                    updateCoins(
+                        originCoinsData.first { it.code == LocalCoinType.BTC.name },
+                        originCoinsData.first { it.code == LocalCoinType.USDT.name }
+                    )
+                }
+                is WalletBalance.Error -> {
+                    _initLoadingData.value = LoadingData.Error(balance.error)
+                }
+                else -> _initLoadingData.value = LoadingData.Error(Failure.ServerError())
+            }
+        }
     }
 }
 

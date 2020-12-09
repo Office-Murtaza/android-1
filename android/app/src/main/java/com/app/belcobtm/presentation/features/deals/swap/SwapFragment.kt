@@ -20,6 +20,8 @@ import org.koin.android.viewmodel.ext.android.viewModel
 class SwapFragment : BaseFragment() {
     private val viewModel: SwapViewModel by viewModel()
     private val textWatcher = DoubleTextWatcher(
+        maxCharsAfterDotFirst = DoubleTextWatcher.MAX_CHARS_AFTER_DOT_CRYPTO,
+        maxCharsAfterDotSecond = DoubleTextWatcher.MAX_CHARS_AFTER_DOT_CRYPTO,
         firstTextWatcher = { editable ->
             val parsedCoinAmount = editable.getDouble()
             if (parsedCoinAmount != viewModel.sendCoinAmount.value) {
