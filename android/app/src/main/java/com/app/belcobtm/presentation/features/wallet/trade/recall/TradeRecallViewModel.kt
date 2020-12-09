@@ -105,10 +105,9 @@ class TradeRecallViewModel(
         return getTransactionFee()
     }
 
-    private fun getTransactionFee(): Double = if (isEtheriumRelatedCoin()) {
-        detailsDataItem.txFee
-    } else {
-        detailsDataItem.txFee
+    private fun getTransactionFee(): Double = when (isEtheriumRelatedCoin()) {
+        true -> detailsDataItem.txFee
+        false -> detailsDataItem.convertedTxFee
     }
 
     private fun isEtheriumRelatedCoin(): Boolean {
