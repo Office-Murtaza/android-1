@@ -9,6 +9,7 @@ import com.app.belcobtm.domain.wallet.LocalCoinType
 import com.app.belcobtm.domain.wallet.interactor.GetFreshCoinUseCase
 import com.app.belcobtm.domain.wallet.item.CoinDataItem
 import com.app.belcobtm.domain.wallet.item.CoinDetailsDataItem
+import com.app.belcobtm.domain.wallet.item.isEthRelatedCoin
 import com.app.belcobtm.presentation.core.coin.AmountCoinValidator
 import com.app.belcobtm.presentation.core.coin.MinMaxCoinValueProvider
 import com.app.belcobtm.presentation.core.coin.model.ValidationResult
@@ -46,7 +47,7 @@ class TradeReserveViewModel(
     private var selectedAmount: Double = 0.0
 
     init {
-        if (isETHsubCoin()) {
+        if (coinDataItem.isEthRelatedCoin()) {
             // for CATM amount calculation we need ETH coin
             fetchEtherium()
         }
@@ -120,9 +121,6 @@ class TradeReserveViewModel(
         )
         return validationResult is ValidationResult.Valid
     }
-
-    private fun isETHsubCoin(): Boolean =
-        coinDataItem.code == LocalCoinType.CATM.name || coinDataItem.code == LocalCoinType.USDT.name
 
     private fun fetchEtherium() {
         _initialLoadLiveData.value = LoadingData.Loading()

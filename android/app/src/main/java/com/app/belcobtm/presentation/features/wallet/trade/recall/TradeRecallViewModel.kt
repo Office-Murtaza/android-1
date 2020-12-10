@@ -8,6 +8,7 @@ import com.app.belcobtm.domain.wallet.LocalCoinType
 import com.app.belcobtm.domain.wallet.interactor.GetFreshCoinUseCase
 import com.app.belcobtm.domain.wallet.item.CoinDataItem
 import com.app.belcobtm.domain.wallet.item.CoinDetailsDataItem
+import com.app.belcobtm.domain.wallet.item.isEthRelatedCoin
 import com.app.belcobtm.presentation.core.extensions.withScale
 import com.app.belcobtm.presentation.core.item.CoinScreenItem
 import com.app.belcobtm.presentation.core.item.mapToScreenItem
@@ -41,7 +42,7 @@ class TradeRecallViewModel(
     private var selectedAmount: Double = 0.0
 
     init {
-        if (isEtheriumRelatedCoin()) {
+        if (coinDataItem.isEthRelatedCoin()) {
             // for CATM amount calculation we need ETH coin
             fetchEtherium()
         }
@@ -93,7 +94,7 @@ class TradeRecallViewModel(
         0.0.coerceAtLeast(coinDataItem.reservedBalanceCoin - getTransactionFee())
 
     private fun enoughETHForExtraFee(currentCryptoAmount: Double): Boolean {
-        if (isEtheriumRelatedCoin()) {
+        if (coinDataItem.isEthRelatedCoin()) {
             val controlValue =
                 detailsDataItem.txFee * etheriumCoinDataItem!!.priceUsd / coinDataItem.priceUsd
             return currentCryptoAmount <= controlValue.withScale(detailsDataItem.scale)
@@ -105,14 +106,9 @@ class TradeRecallViewModel(
         return getTransactionFee()
     }
 
-    private fun getTransactionFee(): Double = when (isEtheriumRelatedCoin()) {
+    private fun getTransactionFee(): Double = when (coinDataItem.isEthRelatedCoin()) {
         true -> detailsDataItem.txFee
         false -> detailsDataItem.convertedTxFee
-    }
-
-    private fun isEtheriumRelatedCoin(): Boolean {
-        return coinDataItem.code == LocalCoinType.CATM.name
-                || coinDataItem.code == LocalCoinType.USDT.name
     }
 
     private fun fetchEtherium() {
