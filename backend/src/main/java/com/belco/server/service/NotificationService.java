@@ -9,14 +9,8 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
-import java.util.Map;
 import java.util.concurrent.ExecutionException;
-import java.time.Duration;
 
-import com.google.firebase.messaging.AndroidConfig;
-import com.google.firebase.messaging.AndroidNotification;
-import com.google.firebase.messaging.ApnsConfig;
-import com.google.firebase.messaging.Aps;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.Message;
 import com.google.firebase.messaging.Notification;
@@ -47,9 +41,9 @@ public class NotificationService {
         }
     }
 
-    public String sendMessageWithData(Map<String, String> data, NotificationDTO dto) {
+    public String sendMessageWithData(NotificationDTO dto) {
         try {
-            return sendAndGetResponse(getPreconfiguredMessageWithData(data, dto));
+            return sendAndGetResponse(getPreconfiguredMessageWithData(dto));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -91,15 +85,11 @@ public class NotificationService {
                 .build();
     }
 
-    private Message getPreconfiguredMessageWithData(Map<String, String> data, NotificationDTO dto) {
-        return getPreconfiguredMessageBuilder(dto).putAllData(data).setToken(dto.getToken())
-                .build();
+    private Message getPreconfiguredMessageWithData(NotificationDTO dto) {
+        return getPreconfiguredMessageBuilder(dto).setToken(dto.getToken()).build();
     }
 
     private Message.Builder getPreconfiguredMessageBuilder(NotificationDTO dto) {
-        return Message.builder()
-                .putData(TITLE_KEY, dto.getTitle())
-                .putData(MESSAGE_KEY, dto.getMessage())
-                .setNotification(new Notification(dto.getTitle(), dto.getMessage()));
+        return Message.builder().putData(TITLE_KEY, dto.getTitle()).putData(MESSAGE_KEY, dto.getMessage()).setNotification(new Notification(dto.getTitle(), dto.getMessage()));
     }
 }

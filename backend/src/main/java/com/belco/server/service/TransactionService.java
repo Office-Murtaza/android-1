@@ -531,7 +531,7 @@ public class TransactionService {
                 CoinService.CoinEnum coin = CoinService.CoinEnum.valueOf(t.getCoin().getCode());
                 TransactionStatus status = coin.getTransactionStatus(t.getTxId());
 
-                if (status != TransactionStatus.PENDING) {
+                if (status != null && status != TransactionStatus.PENDING) {
                     t.setStatus(status.getValue());
 
                     confirmedList.add(t);
