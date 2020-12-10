@@ -130,7 +130,7 @@ final class APIGatewayImpl: APIGateway {
   
   func createAccount(phoneNumber: String, password: String, coinAddresses: [CoinAddress]) -> Single<Account> {
     let token = KeychainManager.loadValue(for: GlobalConstants.fcmPushToken)
-    let request = CreateAccountRequest(phoneNumber: phoneNumber, password: password, coinAddresses: coinAddresses, notificationsToken: token)
+    let request = CreateAccountRequest(phoneNumber: phoneNumber, password: password, coinAddresses: coinAddresses, notificationsToken: token ?? "")
     return execute(request)
   }
   

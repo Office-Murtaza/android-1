@@ -43,8 +43,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 }
 
 extension AppDelegate: UNUserNotificationCenterDelegate, MessagingDelegate {
-    func application(application: UIApplication,
-                     didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+    func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
         Messaging.messaging().apnsToken = deviceToken
     }
     
@@ -57,8 +56,12 @@ extension AppDelegate: UNUserNotificationCenterDelegate, MessagingDelegate {
         UNUserNotificationCenter.current().delegate = self
         
         let authOptions: UNAuthorizationOptions = [.alert, .badge, .sound]
-        UNUserNotificationCenter.current().requestAuthorization(options: authOptions, completionHandler: { (_, _) in })
-        
-        application.registerForRemoteNotifications()
+        UNUserNotificationCenter.current().requestAuthorization(options: authOptions, completionHandler: { (registered, error) in
+            if registered {
+                DispatchQueue.main.async {
+                    application.registerForRemoteNotifications()
+                }
+            }
+        })
     }
 }

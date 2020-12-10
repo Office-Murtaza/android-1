@@ -52,7 +52,7 @@ struct CreateAccountRequest: RetriableAPIRequest {
   let phoneNumber: String
   let password: String
   let coinAddresses: [CoinAddress]
-  let notificationsToken: String?
+  let notificationsToken: String
   
   var path: String { return "/register" }
   var method: HTTPMethod { return .post }
@@ -60,7 +60,7 @@ struct CreateAccountRequest: RetriableAPIRequest {
     return .requestParameters(parameters: ["phone": phoneNumber,
                                            "password": password,
                                            "platform": MobilePlatform.iOS.rawValue,
-                                           "notificationsToken": notificationsToken ?? "",
+                                           "notificationsToken": notificationsToken,
                                            "coins": coinAddresses.toJSON()],
                               encoding: JSONEncoding.default)
   }
