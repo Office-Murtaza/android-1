@@ -134,13 +134,19 @@ class SwapFragment : BaseFragment() {
             }
         })
         viewModel.sendCoinAmount.observe(viewLifecycleOwner, Observer { sendAmount ->
-            val targetEditText = amountCoinToSendView.editText ?: return@Observer
+            val targetEditText = amountCoinToSendView.editText
+            if (targetEditText == null || (targetEditText.text.getDouble() == 0.0 && sendAmount == 0.0)) {
+                return@Observer
+            }
             val coinAmountString = sendAmount.toStringCoin()
             val watcher = textWatcher.firstTextWatcher
             setTextSilently(targetEditText, watcher, coinAmountString)
         })
         viewModel.receiveCoinAmount.observe(viewLifecycleOwner, Observer { receiveAmount ->
-            val targetEditText = amountCoinToReceiveView.editText ?: return@Observer
+            val targetEditText = amountCoinToReceiveView.editText
+            if (targetEditText == null || (targetEditText.text.getDouble() == 0.0 && receiveAmount == 0.0)) {
+                return@Observer
+            }
             val coinAmountString = receiveAmount.toStringCoin()
             val watcher = textWatcher.secondTextWatcher
             setTextSilently(targetEditText, watcher, coinAmountString)
