@@ -53,7 +53,7 @@ val viewModelModule = module {
     viewModel { VerificationInfoViewModel(get()) }
     viewModel { VerificationBlankViewModel(get(), get()) }
     viewModel { VerificationVipViewModel(get()) }
-    viewModel { SwapViewModel(get(), get(), get(), get(), get(), get()) }
+    viewModel { SwapViewModel(get(), get(), get(), get(), get(), get(), get()) }
     viewModel { WalletsViewModel(get(), get()) }
     viewModel { (latitude: Double, longitude: Double, coinCode: String) ->
         TradeViewModel(coinCode, latitude, longitude, get(), get(), get(), get(), get())

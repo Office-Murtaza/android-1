@@ -5,25 +5,24 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.app.belcobtm.R
-import com.app.belcobtm.data.websockets.wallet.WalletObserver
-import com.app.belcobtm.data.websockets.wallet.model.WalletBalance
+import com.app.belcobtm.data.disk.database.AccountDao
 import com.app.belcobtm.domain.Failure
 import com.app.belcobtm.domain.transaction.interactor.CheckXRPAddressActivatedUseCase
 import com.app.belcobtm.domain.transaction.interactor.SwapUseCase
 import com.app.belcobtm.domain.wallet.LocalCoinType
 import com.app.belcobtm.domain.wallet.interactor.GetCoinDetailsUseCase
+import com.app.belcobtm.domain.wallet.interactor.GetFreshCoinsUseCase
 import com.app.belcobtm.domain.wallet.item.CoinDataItem
 import com.app.belcobtm.domain.wallet.item.CoinDetailsDataItem
 import com.app.belcobtm.presentation.core.coin.AmountCoinValidator
 import com.app.belcobtm.presentation.core.coin.MinMaxCoinValueProvider
 import com.app.belcobtm.presentation.core.coin.model.ValidationResult
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 
 class SwapViewModel(
-    private val walletObserver: WalletObserver,
+    private val accountDao: AccountDao,
+    private val getFreshCoinsUseCase: GetFreshCoinsUseCase,
     private val amountValidator: AmountCoinValidator,
     private val swapUseCase: SwapUseCase,
     private val checkXRPAddressActivatedUseCase: CheckXRPAddressActivatedUseCase,
@@ -70,13 +69,32 @@ class SwapViewModel(
     val initLoadingData: LiveData<LoadingData<Unit>> = _initLoadingData
 
     init {
-       initWalletObservation()
+        fetchInitialData()
     }
 
-    fun reconnectToWallet() {
+    fun fetchInitialData() {
         viewModelScope.launch {
-            walletObserver.connect()
-            initWalletObservation()
+            _initLoadingData.value = LoadingData.Loading(Unit)
+            val allCoins = accountDao.getItemList().orEmpty()
+            if (allCoins.isNotEmpty()) {
+                val coinCodesList = allCoins.map { it.type.name }
+                getFreshCoinsUseCase(
+                    params = GetFreshCoinsUseCase.Params(coinCodesList),
+                    onSuccess = { coinsDataList ->
+                        originCoinsData.clear()
+                        originCoinsData.addAll(coinsDataList)
+                        _initLoadingData.value = LoadingData.Success(Unit)
+                        // move to next step
+                        updateCoins(
+                            originCoinsData.first { it.code == LocalCoinType.BTC.name },
+                            originCoinsData.first { it.code == LocalCoinType.USDT.name }
+                        )
+                    },
+                    onError = { _initLoadingData.value = LoadingData.Error(Failure.ServerError()) }
+                )
+            } else {
+                _initLoadingData.value = LoadingData.Error(Failure.ServerError())
+            }
         }
     }
 
@@ -318,31 +336,6 @@ class SwapViewModel(
             LocalCoinType.CATM.name,
             LocalCoinType.USDT.name -> receiveCoinDetails.convertedTxFee
             else -> receiveCoinDetails.txFee
-        }
-    }
-
-    private fun initWalletObservation() {
-        viewModelScope.launch {
-            _initLoadingData.value = LoadingData.Loading(Unit)
-            val balance = walletObserver.observe()
-                .receiveAsFlow()
-                .first { it != WalletBalance.NoInfo }
-            when (balance) {
-                is WalletBalance.Balance -> {
-                    originCoinsData.clear()
-                    originCoinsData.addAll(balance.data.coinList)
-                    _initLoadingData.value = LoadingData.Success(Unit)
-                    // move to next step
-                    updateCoins(
-                        originCoinsData.first { it.code == LocalCoinType.BTC.name },
-                        originCoinsData.first { it.code == LocalCoinType.USDT.name }
-                    )
-                }
-                is WalletBalance.Error -> {
-                    _initLoadingData.value = LoadingData.Error(balance.error)
-                }
-                else -> _initLoadingData.value = LoadingData.Error(Failure.ServerError())
-            }
         }
     }
 }

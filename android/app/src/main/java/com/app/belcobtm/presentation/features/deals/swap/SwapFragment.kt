@@ -11,6 +11,7 @@ import com.app.belcobtm.domain.wallet.item.CoinDataItem
 import com.app.belcobtm.presentation.core.coin.model.ValidationResult
 import com.app.belcobtm.presentation.core.extensions.*
 import com.app.belcobtm.presentation.core.helper.AlertHelper
+import com.app.belcobtm.presentation.core.mvvm.LoadingData
 import com.app.belcobtm.presentation.core.ui.fragment.BaseFragment
 import com.app.belcobtm.presentation.core.watcher.DoubleTextWatcher
 import com.app.belcobtm.presentation.features.deals.swap.adapter.CoinDialogAdapter
@@ -41,9 +42,9 @@ class SwapFragment : BaseFragment() {
     override val isHomeButtonEnabled: Boolean = true
     override var isMenuEnabled: Boolean = true
     override val retryListener: View.OnClickListener = View.OnClickListener {
-        if (viewModel.originCoinsData.isEmpty()) {
+        if (viewModel.initLoadingData.value is LoadingData.Error) {
             // data not yet initialized
-            viewModel.reconnectToWallet()
+            viewModel.fetchInitialData()
         } else if (viewModel.submitButtonEnabled.value == true) {
             // re submit swap
             viewModel.executeSwap()

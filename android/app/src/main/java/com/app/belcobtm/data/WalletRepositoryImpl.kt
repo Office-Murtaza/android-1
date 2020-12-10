@@ -71,6 +71,17 @@ class WalletRepositoryImpl(
         }
     }
 
+    override suspend fun getFreshCoinDataItems(
+        coinCodes: List<String>
+    ): Either<Failure, List<CoinDataItem>> {
+        val response = apiService.getBalance(coinCodes)
+        return if (response is Either.Right) {
+            Either.Right(response.b.coinList)
+        } else {
+            response as Either.Left
+        }
+    }
+
     override suspend fun getBalanceItem(): Either<Failure, BalanceDataItem> {
         val enabledCodeList =
             daoAccount.getItemList()?.filter { it.isEnabled }?.map { it.type.name } ?: emptyList()
