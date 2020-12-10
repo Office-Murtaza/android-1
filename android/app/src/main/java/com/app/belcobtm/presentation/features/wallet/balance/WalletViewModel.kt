@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
+import com.app.belcobtm.data.disk.database.AccountDao
 import com.app.belcobtm.data.websockets.wallet.WalletObserver
 import com.app.belcobtm.data.websockets.wallet.model.WalletBalance
 import com.app.belcobtm.domain.wallet.WalletRepository
@@ -14,6 +15,7 @@ import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 
 class WalletViewModel(
+    private val accountDao: AccountDao,
     private val walletObserver: WalletObserver,
     private val walletRepository: WalletRepository,
 ) : ViewModel() {
@@ -30,7 +32,7 @@ class WalletViewModel(
         }
     }
 
-    private fun mapWalletBalance(
+    private suspend fun mapWalletBalance(
         wallet: WalletBalance
     ): LoadingData<Pair<Double, List<CoinListItem>>> =
         when (wallet) {
@@ -42,17 +44,18 @@ class WalletViewModel(
                 // see AppModule.kt
                 walletRepository.updateCoinsCache(wallet.data.coinList)
 
-                wallet.data.coinList.map {
-                    CoinListItem(
-                        code = it.code,
-                        balanceCrypto = it.balanceCoin + it.reservedBalanceCoin,
-                        balanceFiat = it.balanceUsd + it.reservedBalanceUsd,
-                        priceUsd = it.priceUsd
-                    )
-                }.let { coinList ->
-                    LoadingData.Success(wallet.data.balance to coinList)
-                }
+                wallet.data.coinList
+                    .filter { accountDao.getItem(it.code).isEnabled }
+                    .map {
+                        CoinListItem(
+                            code = it.code,
+                            balanceCrypto = it.balanceCoin + it.reservedBalanceCoin,
+                            balanceFiat = it.balanceUsd + it.reservedBalanceUsd,
+                            priceUsd = it.priceUsd
+                        )
+                    }.let { coinList ->
+                        LoadingData.Success(wallet.data.balance to coinList)
+                    }
             }
-
         }
 }

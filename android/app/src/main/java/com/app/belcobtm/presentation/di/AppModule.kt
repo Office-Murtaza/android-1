@@ -45,7 +45,7 @@ import org.koin.dsl.module
 val viewModelModule = module {
     viewModel { AboutViewModel(androidApplication(), get()) }
     viewModel { SecurityViewModel(get()) }
-    viewModel { WalletViewModel(get(), get()) }
+    viewModel { WalletViewModel(get(), get(), get()) }
     viewModel { (coinCode: String) -> TransactionsViewModel(coinCode, get(), get(), get(), get()) }
     viewModel { RecoverWalletViewModel(get()) }
     viewModel { CreateWalletViewModel(get()) }
