@@ -59,7 +59,9 @@ class AuthorizationRepositoryImpl(
     override suspend fun createSeedPhrase(): Either<Failure, String> {
         val wallet = HDWallet(128, "")
         temporaryCoinMap.clear()
-        temporaryCoinMap.putAll(LocalCoinType.values().map { Pair(it, createTemporaryAccount(it, wallet)) }.toMap())
+        temporaryCoinMap.putAll(
+            LocalCoinType.values().map { Pair(it, createTemporaryAccount(it, wallet)) }.toMap()
+        )
         prefHelper.apiSeed = wallet.mnemonic()
         return Either.Right(prefHelper.apiSeed)
     }
@@ -71,6 +73,7 @@ class AuthorizationRepositoryImpl(
         val response = apiService.createWallet(
             phone = phone,
             password = password,
+            notificationToken = prefHelper.notificationToken,
             coinMap = temporaryCoinMap.map { it.key.name to it.value.first }.toMap()
         )
 
@@ -95,9 +98,14 @@ class AuthorizationRepositoryImpl(
     ): Either<Failure, Unit> {
         val wallet = HDWallet(seed, "")
         temporaryCoinMap.clear()
-        temporaryCoinMap.putAll(LocalCoinType.values().map { Pair(it, createTemporaryAccount(it, wallet)) }.toMap())
+        temporaryCoinMap.putAll(
+            LocalCoinType.values().map { Pair(it, createTemporaryAccount(it, wallet)) }.toMap()
+        )
         val recoverResponse =
-            apiService.recoverWallet(phone, password, temporaryCoinMap.map { it.key.name to it.value.first }.toMap())
+            apiService.recoverWallet(
+                phone, password, prefHelper.notificationToken,
+                temporaryCoinMap.map { it.key.name to it.value.first }.toMap()
+            )
 
         return if (recoverResponse.isRight) {
             val result = (recoverResponse as Either.Right).b
@@ -131,15 +139,29 @@ class AuthorizationRepositoryImpl(
         prefHelper.userPin = pinCode
     }
 
-    private fun createTemporaryAccount(coinType: LocalCoinType, wallet: HDWallet): Pair<String, String> {
+    private fun createTemporaryAccount(
+        coinType: LocalCoinType,
+        wallet: HDWallet
+    ): Pair<String, String> {
         val privateKey: PrivateKey = wallet.getKeyForCoin(coinType.trustWalletType)
         val publicKey: String = when (coinType) {
             LocalCoinType.BTC -> {
                 val extBitcoinPublicKey =
-                    wallet.getExtendedPublicKey(Purpose.BIP44, coinType.trustWalletType, HDVersion.XPUB)
+                    wallet.getExtendedPublicKey(
+                        Purpose.BIP44,
+                        coinType.trustWalletType,
+                        HDVersion.XPUB
+                    )
                 val bitcoinPublicKey =
-                    HDWallet.getPublicKeyFromExtended(extBitcoinPublicKey, coinType.trustWalletType, "m/44'/0'/0'/0/0")
-                BitcoinAddress(bitcoinPublicKey, coinType.trustWalletType.p2pkhPrefix()).description()
+                    HDWallet.getPublicKeyFromExtended(
+                        extBitcoinPublicKey,
+                        coinType.trustWalletType,
+                        "m/44'/0'/0'/0/0"
+                    )
+                BitcoinAddress(
+                    bitcoinPublicKey,
+                    coinType.trustWalletType.p2pkhPrefix()
+                ).description()
             }
             else -> coinType.trustWalletType.deriveAddress(privateKey)
         }
@@ -155,7 +177,15 @@ class AuthorizationRepositoryImpl(
             val publicKey: String = value.first
             val privateKey: String = value.second
             responseCoinList.find { it.code == localCoinType.name }?.let { responseItem ->
-                entityList.add(AccountEntity(responseItem.idx, localCoinType, publicKey, privateKey, true))
+                entityList.add(
+                    AccountEntity(
+                        responseItem.idx,
+                        localCoinType,
+                        publicKey,
+                        privateKey,
+                        true
+                    )
+                )
             }
         }
         return entityList

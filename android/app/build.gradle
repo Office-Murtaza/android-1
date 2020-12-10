@@ -150,6 +150,7 @@ dependencies {
     implementation 'io.michaelrocks:libphonenumber-android:8.12.7'
 
     //firebase
+    implementation "com.google.firebase:firebase-messaging:$lib.firebaseMessaging"
     implementation "com.google.firebase:firebase-crashlytics:$lib.crashlytics"
     implementation "com.google.firebase:firebase-analytics-ktx:$lib.firebaseAnalytics"
     implementation("com.google.firebase:firebase-perf:$lib.performance", {
