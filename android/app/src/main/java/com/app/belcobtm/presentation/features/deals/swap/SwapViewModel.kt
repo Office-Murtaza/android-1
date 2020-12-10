@@ -71,7 +71,7 @@ class SwapViewModel(
     val initLoadingData: LiveData<LoadingData<Unit>> = _initLoadingData
 
     init {
-       initWalletObservation()
+        initWalletObservation()
     }
 
     fun reconnectToWallet() {
@@ -218,6 +218,8 @@ class SwapViewModel(
     }
 
     private fun validateCoinToSendAmount(coinAmount: Double) {
+        val sendAmount = sendCoinAmount.value ?: return
+        val receiveAmount = receiveCoinAmount.value ?: return
         val currentCoinToSend = coinToSend.value ?: return
         val currentCoinToSendDetails = coinToSendDetails ?: return
         val balanceValidationResult = amountValidator.validateBalance(
@@ -243,6 +245,7 @@ class SwapViewModel(
         }
         _coinToSendError.value = validationResult
         _submitButtonEnabled.value = validationResult == ValidationResult.Valid
+                && sendAmount > 0 && receiveAmount > 0
     }
 
     private fun calcReceiveAmountFromSend(sendAmount: Double): Double {
