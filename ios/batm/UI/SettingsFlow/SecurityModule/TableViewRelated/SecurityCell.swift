@@ -1,7 +1,7 @@
 import UIKit
 
-enum SecurityCellType: CaseIterable, SettingsCellTypeRepresentable {
-  case updatePhone
+enum SecurityCellType: Equatable, SettingsCellTypeRepresentable {
+  case updatePhone(phoneNumber: String? = nil)
   case updatePassword
   case updatePIN
   case seedPhrase
@@ -17,6 +17,13 @@ enum SecurityCellType: CaseIterable, SettingsCellTypeRepresentable {
     }
   }
 
+  var value: String? {
+    switch self {
+    case .updatePhone(let phoneNumber): return phoneNumber
+    default: return nil
+    }
+  }
+    
   var image: UIImage? {
     switch self {
     case .updatePhone: return UIImage(named: "security_phone")
@@ -24,6 +31,13 @@ enum SecurityCellType: CaseIterable, SettingsCellTypeRepresentable {
     case .updatePIN: return UIImage(named: "security_pin")
     case .seedPhrase: return UIImage(named: "security_seed_phrase")
     case .unlink: return UIImage(named: "security_unlink")
+    }
+  }
+    
+  var isDisclosureNeeded: Bool {
+    switch self {
+    case .updatePhone: return false
+    default: return true
     }
   }
 }

@@ -1,9 +1,11 @@
 package com.app.belcobtm.presentation.features.wallet.trade.reserve
 
+import android.view.View
 import androidx.lifecycle.Observer
 import com.app.belcobtm.R
 import com.app.belcobtm.presentation.core.extensions.*
 import com.app.belcobtm.presentation.core.helper.AlertHelper
+import com.app.belcobtm.presentation.core.mvvm.LoadingData
 import com.app.belcobtm.presentation.core.ui.fragment.BaseFragment
 import com.app.belcobtm.presentation.core.watcher.DoubleTextWatcher
 import kotlinx.android.synthetic.main.fragment_trade_reserve.*
@@ -15,6 +17,12 @@ class TradeReserveFragment : BaseFragment() {
     override val isHomeButtonEnabled: Boolean = true
     override var isMenuEnabled: Boolean = true
     override val resourceLayout: Int = R.layout.fragment_trade_reserve
+    override val retryListener: View.OnClickListener = View.OnClickListener {
+        val initValue = viewModel.initialLoadLiveData.value
+        if (initValue == null || initValue is LoadingData.Success) {
+            viewModel.createTransaction()
+        }
+    }
     private val viewModel: TradeReserveViewModel by viewModel {
         parametersOf(TradeReserveFragmentArgs.fromBundle(requireArguments()).coinCode)
     }

@@ -52,6 +52,7 @@ struct CreateAccountRequest: RetriableAPIRequest {
   let phoneNumber: String
   let password: String
   let coinAddresses: [CoinAddress]
+  let notificationsToken: String
   
   var path: String { return "/register" }
   var method: HTTPMethod { return .post }
@@ -59,6 +60,7 @@ struct CreateAccountRequest: RetriableAPIRequest {
     return .requestParameters(parameters: ["phone": phoneNumber,
                                            "password": password,
                                            "platform": MobilePlatform.iOS.rawValue,
+                                           "notificationsToken": notificationsToken,
                                            "coins": coinAddresses.toJSON()],
                               encoding: JSONEncoding.default)
   }
@@ -71,6 +73,7 @@ struct RecoverWalletRequest: RetriableAPIRequest {
   let phoneNumber: String
   let password: String
   let coinAddresses: [CoinAddress]
+  let notificationsToken: String
   
   var path: String { return "/recover" }
   var method: HTTPMethod { return .post }
@@ -78,6 +81,7 @@ struct RecoverWalletRequest: RetriableAPIRequest {
     return .requestParameters(parameters: ["phone": phoneNumber,
                                            "password": password,
                                            "platform": MobilePlatform.iOS.rawValue,
+                                           "notificationsToken": notificationsToken,
                                            "coins": coinAddresses.toJSON()],
                               encoding: JSONEncoding.default)
   }
@@ -108,8 +112,8 @@ struct CoinsBalanceRequest: AuthorizedAPIRequest {
   var path: String { return "/user/\(userId)/balance" }
   var method: HTTPMethod { return .get }
   var task: HTTPTask {
-    return .requestParameters(parameters: ["coins": coins.map { $0.type.code }],
-                              encoding: URLEncoding.customDefault)
+  return .requestParameters(parameters: ["coins": coins.map { $0.type.code }],
+                            encoding: URLEncoding.customDefault)
   }
 }
 
@@ -509,6 +513,20 @@ struct GetPriceChartDataRequest: AuthorizedAPIRequest {
   var task: HTTPTask {
     return .requestPlain
   }
+}
+
+struct GetPriceChartDetailsRequest: AuthorizedAPIRequest {
+  typealias ResponseType = APIResponse<PriceChartDetails>
+  typealias ResponseTrait = SingleResponseTrait
+
+  let coinId: String
+  let coinPeriod: SelectedPeriod
+  var path: String { return "/coin/\(coinId)/price-chart" }
+  var method: HTTPMethod { .get }
+  var task: HTTPTask {
+    return .requestParameters(parameters: [
+      "period" : coinPeriod.rawValue
+    ], encoding: URLEncoding.customDefault)}
 }
 
 struct BuySellTradesRequest: AuthorizedAPIRequest {

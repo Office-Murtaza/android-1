@@ -2,7 +2,6 @@ import Foundation
 import TrustWalletCore
 
 enum CustomCoinType: CaseIterable {
-  
   case bitcoin
   case bitcoinCash
   case litecoin
@@ -11,6 +10,9 @@ enum CustomCoinType: CaseIterable {
   case binance
   case tron
   case ripple
+  case usdt
+  case dash
+  case doge
   
   static let maxNumberOfFractionDigits = 6
   
@@ -24,6 +26,9 @@ enum CustomCoinType: CaseIterable {
     case .binance: return "Binance"
     case .tron: return "Tron"
     case .ripple: return "Ripple"
+    case .usdt: return "Tether"
+    case .dash: return "Dash"
+    case .doge: return "Dogecoin"
     }
   }
   
@@ -37,6 +42,9 @@ enum CustomCoinType: CaseIterable {
     case .binance: return UIImage(named: "coins_binance")
     case .tron: return UIImage(named: "coins_tron")
     case .ripple: return UIImage(named: "coins_ripple")
+    case .usdt: return UIImage(named: "coins_usdt")
+    case .dash: return UIImage(named: "coins_dash")
+    case .doge: return UIImage(named: "coins_doge")
     }
   }
   
@@ -50,6 +58,9 @@ enum CustomCoinType: CaseIterable {
     case .binance: return UIImage(named: "coins_binance_medium")
     case .tron: return UIImage(named: "coins_tron_medium")
     case .ripple: return UIImage(named: "coins_ripple_medium")
+    case .usdt: return UIImage(named: "coins_usdt_medium")
+    case .dash: return UIImage(named: "coins_dash_medium")
+    case .doge: return UIImage(named: "coins_doge_medium")
     }
   }
   
@@ -63,6 +74,9 @@ enum CustomCoinType: CaseIterable {
     case .binance: return UIImage(named: "coins_binance_small")
     case .tron: return UIImage(named: "coins_tron_small")
     case .ripple: return UIImage(named: "coins_ripple_small")
+    case .usdt: return UIImage(named: "coins_usdt_small")
+    case .dash: return UIImage(named: "coins_dash_small")
+    case .doge: return UIImage(named: "coins_doge_small")
     }
   }
   
@@ -76,6 +90,9 @@ enum CustomCoinType: CaseIterable {
     case .binance: return "BNB"
     case .tron: return "TRX"
     case .ripple: return "XRP"
+    case .usdt: return "USDT"
+    case .dash: return "DASH"
+    case .doge: return "DOGE"
     }
   }
   
@@ -84,17 +101,19 @@ enum CustomCoinType: CaseIterable {
     case .bitcoin: return .bitcoin
     case .bitcoinCash: return .bitcoinCash
     case .litecoin: return .litecoin
-    case .ethereum, .catm: return .ethereum
+    case .ethereum, .catm, .usdt: return .ethereum
     case .binance: return .binance
     case .tron: return .tron
     case .ripple: return .xrp
+    case .dash: return .dash
+    case .doge: return .dogecoin
     }
   }
   
   var unit: Int64 {
     switch self {
-    case .bitcoin, .bitcoinCash, .litecoin, .binance: return 100_000_000
-    case .ethereum, .catm: return 1_000_000_000_000_000_000
+    case .bitcoin, .bitcoinCash, .litecoin, .binance, .dash, .doge: return 100_000_000
+    case .ethereum, .catm, .usdt: return 1_000_000_000_000_000_000
     case .tron, .ripple: return 1_000_000
     }
   }
@@ -119,6 +138,13 @@ enum CustomCoinType: CaseIterable {
     default: return defaultCoinType.xpubVersion
     }
   }
+    
+    var isETHBased: Bool {
+        switch self {
+        case .catm, .usdt: return true
+        default: return false
+        }
+    }
   
   init?(code: String) {
     switch code {
@@ -130,8 +156,10 @@ enum CustomCoinType: CaseIterable {
     case CustomCoinType.binance.code: self = .binance
     case CustomCoinType.tron.code: self = .tron
     case CustomCoinType.ripple.code: self = .ripple
+    case CustomCoinType.usdt.code: self = .usdt
+    case CustomCoinType.dash.code: self = .dash
+    case CustomCoinType.doge.code: self = .doge
     default: return nil
     }
   }
-  
 }

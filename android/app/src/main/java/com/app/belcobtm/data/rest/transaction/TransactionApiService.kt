@@ -467,6 +467,15 @@ class TransactionApiService(
         Either.Left(failure)
     }
 
+    suspend fun getXRPAddressActivated(address: String): Either<Failure, Boolean> = try {
+        val request = api.checkRippleAccountActivationAsync(address).await()
+        request.body()?.let { Either.Right(it.result ?: false) }
+            ?: Either.Left(Failure.ServerError())
+    } catch (failure: Failure) {
+        failure.printStackTrace()
+        Either.Left(failure)
+    }
+
     companion object {
         const val TRANSACTION_WITHDRAW = 2
         const val TRANSACTION_SEND_GIFT = 3

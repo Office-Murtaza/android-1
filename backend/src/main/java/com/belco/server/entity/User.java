@@ -22,8 +22,7 @@ public class User extends BaseEntity {
     private String password;
     private String role;
     private Integer platform;
-    private String appToken;
-    private boolean receivePushNotifications;
+    private String notificationsToken;
     private Long tradeCount;
     private BigDecimal tradeRate;
     private BigDecimal latitude;

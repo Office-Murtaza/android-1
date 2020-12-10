@@ -205,8 +205,8 @@
     <string name="transaction_type_buy">Buy</string>
     <string name="transaction_type_sell">Sell</string>
     <string name="transaction_type_move">Move</string>
-    <string name="transaction_type_send_exchange">Send c2c</string>
-    <string name="transaction_type_receive_exchange">Receive c2c</string>
+    <string name="transaction_type_send_exchange">Swap send</string>
+    <string name="transaction_type_receive_exchange">Swap receive</string>
     <string name="transaction_type_reserve">Reserve</string>
     <string name="transaction_type_recall">Recall</string>
     <string name="transaction_type_self">Self</string>
@@ -305,11 +305,20 @@
     <string name="send_gift_screen_remove">Remove</string>
 
     <!-- Coin to coin screen -->
-    <string name="exchange_coin_to_coin_screen_title">Exchange %1$s</string>
-    <string name="exchange_coin_to_coin_screen_price">Price</string>
-    <string name="exchange_coin_to_coin_screen_balance">Balance</string>
-    <string name="exchange_coin_to_coin_screen_select_coin">Select coin please</string>
-    <string name="exchange_coin_to_coin_screen_error_coin_details_fetch">Unable to load coin details. Try again later</string>
+    <string name="swap_screen_title">Swap</string>
+    <string name="swap_screen_send_amount_hint">Send amount</string>
+    <string name="swap_screen_receive_amount_hint">Receive amount</string>
+    <string name="swap_screen_price">Price</string>
+    <string name="swap_screen_balance_formatted">Balance %1$s%2$s</string>
+    <string name="swap_screen_rate_formatted">Rate %1$s%2$s ~ %3$s%4$s</string>
+    <string name="swap_screen_fee_formatted">Platform fee %1$s\%% ~ %2$s%3$s</string>
+    <string name="swap_screen_select_coin">Select coin please</string>
+    <string name="swap_screen_error_coin_details_fetch">Unable to load coin details. Try again later</string>
+    <string name="swap_screen_error_not_enough_balance">Not enough coins on balance</string>
+    <string name="swap_screen_min_error">Amount can\'t be less than fee</string>
+    <string name="swap_screen_max_error">Amount can\'t be higher than your balance</string>
+    <string name="swap_screen_success_message">@string/transactions_screen_transaction_created</string>
+
 
     <!-- Deposit -->
     <string name="deposit_screen_title">Deposit %1$s</string>

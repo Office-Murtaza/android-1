@@ -22,7 +22,4 @@ public class Coin extends BaseEntity {
     private BigDecimal fee;
     private BigDecimal tolerance;
     private Integer scale;
-
-    @Column(name = "profit_exchange")
-    private BigDecimal profitExchange;
 }

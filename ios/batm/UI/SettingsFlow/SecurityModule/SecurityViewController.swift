@@ -29,7 +29,11 @@ class SecurityViewController: ModuleViewController<SecurityPresenter> {
   }
   
   private func setupUIBindings() {
-    dataSource.values = presenter.types
+    presenter.types
+        .asDriver()
+        .drive(onNext: { [unowned self] in self.dataSource.values = $0 })
+        .disposed(by: disposeBag)
+    
     tableView.dataSource = dataSource
     dataSource.tableView = tableView
   }

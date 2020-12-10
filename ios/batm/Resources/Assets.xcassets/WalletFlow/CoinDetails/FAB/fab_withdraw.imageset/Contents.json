@@ -1,23 +1,15 @@
 {
   "images" : [
     {
-      "filename" : "publish24Px.png",
-      "idiom" : "universal",
-      "scale" : "1x"
-    },
-    {
-      "filename" : "publish24Px@2x.png",
-      "idiom" : "universal",
-      "scale" : "2x"
-    },
-    {
-      "filename" : "publish24Px@3x.png",
-      "idiom" : "universal",
-      "scale" : "3x"
+      "filename" : "fab_withdraw.pdf",
+      "idiom" : "universal"
     }
   ],
   "info" : {
     "author" : "xcode",
     "version" : 1
+  },
+  "properties" : {
+    "preserves-vector-representation" : true
   }
 }

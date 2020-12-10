@@ -41,7 +41,7 @@ class TradeRecallViewModel(
     private var selectedAmount: Double = 0.0
 
     init {
-        if (isCATM()) {
+        if (isEtheriumRelatedCoin()) {
             // for CATM amount calculation we need ETH coin
             fetchEtherium()
         }
@@ -93,7 +93,7 @@ class TradeRecallViewModel(
         0.0.coerceAtLeast(coinDataItem.reservedBalanceCoin - getTransactionFee())
 
     private fun enoughETHForExtraFee(currentCryptoAmount: Double): Boolean {
-        if (isCATM()) {
+        if (isEtheriumRelatedCoin()) {
             val controlValue =
                 detailsDataItem.txFee * etheriumCoinDataItem!!.priceUsd / coinDataItem.priceUsd
             return currentCryptoAmount <= controlValue.withScale(detailsDataItem.scale)
@@ -105,10 +105,14 @@ class TradeRecallViewModel(
         return getTransactionFee()
     }
 
-    private fun getTransactionFee(): Double = detailsDataItem.txFee
+    private fun getTransactionFee(): Double = when (isEtheriumRelatedCoin()) {
+        true -> detailsDataItem.txFee
+        false -> detailsDataItem.convertedTxFee
+    }
 
-    private fun isCATM(): Boolean {
+    private fun isEtheriumRelatedCoin(): Boolean {
         return coinDataItem.code == LocalCoinType.CATM.name
+                || coinDataItem.code == LocalCoinType.USDT.name
     }
 
     private fun fetchEtherium() {

@@ -3,12 +3,12 @@ import RxSwift
 import RxCocoa
 
 class SecurityPresenter: ModulePresenter, SecurityModule {
-  
   struct Input {
     var select: Driver<IndexPath>
   }
-  
-  let types = SecurityCellType.allCases
+      
+  var types = BehaviorRelay<[SecurityCellType]>(value: [])
+  private var userPhoneNumber: String?
   private let usecase: SettingsUsecase
   
   weak var delegate: SecurityModuleDelegate?
@@ -18,24 +18,30 @@ class SecurityPresenter: ModulePresenter, SecurityModule {
   }
   
   func bind(input: Input) {
+    track(usecase.getPhoneNumber())
+        .drive(onNext: { [weak self] user in
+            guard let self = self else { return }
+            self.userPhoneNumber = user.phoneNumber
+            self.types.accept([.updatePhone(phoneNumber: user.phoneNumber.phoneFormatted),
+                               .updatePassword,
+                               .updatePIN,
+                               .seedPhrase,
+                               .unlink])
+        })
+        .disposed(by: disposeBag)
+    
     input.select
       .asObservable()
-      .map { [types] in types[$0.item] }
+      .withLatestFrom(types) { $1[$0.item] }
       .subscribe(onNext: { [unowned self, delegate] in
         switch $0 {
-        case .updatePhone: self.fetchPhoneNumber()
+        case .updatePhone: delegate?.didSelectUpdatePhone(self.userPhoneNumber ?? "")
         case .updatePassword: delegate?.didSelectUpdatePassword()
         case .updatePIN: self.fetchPinCode()
         case .seedPhrase: delegate?.didSelectSeedPhrase()
         case .unlink: delegate?.didSelectUnlink()
         }
       })
-      .disposed(by: disposeBag)
-  }
-  
-  private func fetchPhoneNumber() {
-    track(usecase.getPhoneNumber())
-      .drive(onNext: { [delegate] in delegate?.didSelectUpdatePhone($0) })
       .disposed(by: disposeBag)
   }
   

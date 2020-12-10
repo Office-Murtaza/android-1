@@ -17,12 +17,14 @@ public class CoinDetailsDTO {
     private String code;
     private BigDecimal txFee;
     private String txFeeStr;
+    private BigDecimal convertedTxFee;
+    private String convertedTxFeeStr;
     private Long byteFee;
     private Long gasPrice;
     private Long gasLimit;
     private Integer scale;
-    private BigDecimal profitExchange;
-    private String profitExchangeStr;
+    private BigDecimal swapProfitPercent;
+    private String swapProfitPercentStr;
     private String walletAddress;
     private String contractAddress;
 
@@ -31,13 +33,18 @@ public class CoinDetailsDTO {
         this.txFeeStr = Util.convert(txFee);
     }
 
+    public void setConvertedTxFee(BigDecimal convertedTxFee) {
+        this.convertedTxFee = convertedTxFee;
+        this.convertedTxFeeStr = Util.convert(convertedTxFee);
+    }
+
     public void setByteFee(Long byteFee) {
         this.byteFee = byteFee;
     }
 
-    public void setProfitExchange(BigDecimal profitExchange) {
-        this.profitExchange = profitExchange;
-        this.profitExchangeStr = Util.convert(profitExchange);
+    public void setSwapProfitPercent(BigDecimal swapProfitPercent) {
+        this.swapProfitPercent = swapProfitPercent;
+        this.swapProfitPercentStr = Util.convert(swapProfitPercent);
     }
 
     public void setCode(String code) {

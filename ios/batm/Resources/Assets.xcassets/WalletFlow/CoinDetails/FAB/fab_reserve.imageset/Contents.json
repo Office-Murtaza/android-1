@@ -1,0 +1,15 @@
+{
+  "images" : [
+    {
+      "filename" : "fab_reserve.pdf",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  },
+  "properties" : {
+    "preserves-vector-representation" : true
+  }
+}

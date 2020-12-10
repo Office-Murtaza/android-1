@@ -9,6 +9,7 @@ import com.app.belcobtm.data.di.*
 import com.app.belcobtm.data.disk.shared.preferences.SharedPreferencesHelper
 import com.app.belcobtm.presentation.di.helperModule
 import com.app.belcobtm.presentation.di.useCaseModule
+import com.app.belcobtm.presentation.di.viewModelHelperModule
 import com.app.belcobtm.presentation.di.viewModelModule
 import org.koin.android.ext.android.inject
 import org.koin.android.ext.koin.androidContext
@@ -39,6 +40,7 @@ class App : Application() {
                     webSocketModule,
                     useCaseModule,
                     viewModelModule,
+                    viewModelHelperModule,
                     helperModule
                 )
             )

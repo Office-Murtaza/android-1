@@ -33,6 +33,7 @@ target 'batm' do
   
   # Firebase
   pod 'Firebase/Analytics', '6.29.0'
+  pod 'Firebase/Messaging'
   
   target 'batmTests' do
     inherit! :search_paths

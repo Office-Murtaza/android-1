@@ -88,34 +88,58 @@ class CoinDetailsChartView: UIView {
     }
   }
   
-  func configure(for data: PriceChartData, and selectedPeriod: SelectedPeriod) {
-    let period: PriceChartPeriod
+  func configure(for data: PriceChartDetails?, and selectedPeriod: SelectedPeriod, balance: CoinBalance, predefinedData: CoinDetailsPredefinedDataConfig?) {
     
-    switch selectedPeriod {
-    case .oneDay: period = data.periods.oneDayPeriod
-    case .oneWeek: period = data.periods.oneWeekPeriod
-    case .oneMonth: period = data.periods.oneMonthPeriod
-    case .threeMonths: period = data.periods.threeMonthsPeriod
-    case .oneYear: period = data.periods.oneYearPeriod
+    if let predefinedConfig = predefinedData {
+      configurePredefinedData(config: predefinedConfig)
+    } else {
+      
+      configureAllCoins(data: data,
+                        selectedPeriod: selectedPeriod,
+                        balance: balance,
+                        period: data?.prices)
     }
-    
-    priceLabel.text = data.price.fiatFormatted.withDollarSign
-    changeRateImageView.image = period.changeRate < 0
-      ? UIImage(named: "change_rate_down")
-      : UIImage(named: "change_rate_up")
-    changeRateLabel.text = "\(abs(period.changeRate)) %"
-    changeRateLabel.textColor = period.changeRate < 0 ? .tomato : .darkMint
-    
-    configureChart(with: period.prices)
-    periodButtonsView.configure(for: selectedPeriod)
+  }
+
+  private func configurePredefinedData(config: CoinDetailsPredefinedDataConfig) {
+    priceLabel.text = config.price.fiatFormatted.withDollarSign
+    changeRateLabel.text = config.rateToDisplay
+    changeRateLabel.textColor = .black
+    configureChart(with: config.chartData)
+    periodButtonsView.configure(for: config.selectedPrediod)
   }
   
-  private func configureChart(with prices: [Double]) {
-    let entries = prices
-      .enumerated()
-      .map { ChartDataEntry(x: Double($0), y: $1) }
+  
+  private func configureAllCoins(data: PriceChartDetails?,
+                                 selectedPeriod: SelectedPeriod,
+                                 balance: CoinBalance,
+                                 period: [[Double]]?) {
+    priceLabel.text = balance.fiatBalance.fiatFormatted.withDollarSign
     
-    let dataSet = LineChartDataSet(entries: entries)
+    guard let data = data,
+          let firstPrice = data.prices.first?.last,
+          let lastPrice = data.prices.last?.last,
+          let period = period else { return }
+    
+    let rate = (lastPrice - firstPrice) / firstPrice * 100
+    
+    changeRateImageView.image = rate < 0
+      ? UIImage(named: "change_rate_down")
+      : UIImage(named: "change_rate_up")
+    changeRateLabel.text = "\(abs(rate).formatted(fractionPart: 2)) %"
+    changeRateLabel.textColor = rate < 0 ? .tomato : .darkMint
+    
+    configureChart(with: period)
+    periodButtonsView.configure(for: selectedPeriod)
+  }
+
+  
+  private func configureChart(with prices: [[Double]]) {
+    let entries = prices.enumerated().map { (element) -> ChartDataEntry? in
+      guard let first = element.element.first, let second = element.element.last else { return nil }
+      return ChartDataEntry(x: first, y: second)
+    }
+    let dataSet = LineChartDataSet(entries: entries.compactMap{ $0 })
     dataSet.mode = .cubicBezier
     dataSet.drawValuesEnabled = false
     dataSet.drawCirclesEnabled = false
@@ -123,5 +147,7 @@ class CoinDetailsChartView: UIView {
     
     chartView.data = LineChartData(dataSet: dataSet)
   }
+  
+  
 }
 

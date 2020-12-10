@@ -1,5 +1,6 @@
 package com.belco.server.rest;
 
+import com.belco.server.dto.NotificationDTO;
 import com.belco.server.dto.SubmitTransactionDTO;
 import com.belco.server.model.Response;
 import com.belco.server.repository.CoinRep;
@@ -7,9 +8,11 @@ import com.belco.server.service.*;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.web3j.tuples.generated.Tuple2;
 import wallet.core.jni.CoinType;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 
 @RestController
 @RequestMapping("/api/v1/test")
@@ -17,6 +20,9 @@ public class TestController {
 
     @Autowired
     private TwilioService twilioService;
+
+    @Autowired
+    private NotificationService pushNotificationService;
 
     @Autowired
     private UserService userService;
@@ -54,11 +60,11 @@ public class TestController {
         JSONObject res = new JSONObject();
 
         try {
-            res.put("totalStakes", new BigDecimal(gethService.getToken().totalStakes().send()).divide(gethService.ETH_DIVIDER));
-            res.put("basePeriod(s)", gethService.getToken().basePeriod().send());
-            res.put("holdPeriod(s)", gethService.getToken().holdPeriod().send());
-            res.put("annualPercent", gethService.getToken().annualPercent().send());
-            res.put("annualPeriod(s)", gethService.getToken().annualPeriod().send());
+            res.put("totalStakes", new BigDecimal(gethService.catm.totalStakes().send()).divide(GethService.ETH_DIVIDER));
+            res.put("basePeriod(s)", gethService.catm.basePeriod().send());
+            res.put("holdPeriod(s)", gethService.catm.holdPeriod().send());
+            res.put("annualPercent", gethService.catm.annualPercent().send());
+            res.put("annualPeriod(s)", gethService.catm.annualPeriod().send());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -68,7 +74,32 @@ public class TestController {
 
     @GetMapping("/stake-details")
     public Response getStakeDetails(@RequestParam String address) {
-        return Response.ok(gethService.getStakeDetails(address));
+        JSONObject json = new JSONObject();
+        json.put("isStakeholder", false);
+
+        try {
+            json.put("isStakeholder", gethService.catm.isStakeholder(address).send().component1());
+        } catch (Exception e) {
+        }
+
+        try {
+            json.put("amount", gethService.catm.stakeOf(address).send().intValue());
+        } catch (Exception e) {
+        }
+
+        try {
+            Tuple2<BigInteger, BigInteger> tuple2 = gethService.catm.stakeDetails(address).send();
+            json.put("startDate", tuple2.component1());
+            json.put("cancelDate", tuple2.component2());
+        } catch (Exception e) {
+        }
+
+        return Response.ok(json);
+    }
+
+    @GetMapping("/push-notifications")
+    public Response pushNotifications(@RequestParam String title, @RequestParam String message, @RequestParam String token) {
+        return Response.ok("result", pushNotificationService.sendMessageWithData(new NotificationDTO(title, message, null, token)));
     }
 
     @GetMapping("/coin/{coin}/price")

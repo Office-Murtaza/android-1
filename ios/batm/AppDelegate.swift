@@ -1,9 +1,9 @@
 import UIKit
 import RxFlow
+import FirebaseMessaging
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
-  
   let container = Container()
   let assembler: Assembler
   let coordinator = Coordinator()
@@ -11,6 +11,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
   
   var window: UIWindow?
   
+  private var initializers: [Initializer] {
+    return [
+        DIInitializer(),
+        FirebaseInitializer(),
+        GoogleServicesInitializer(),
+        GiphyInitializer(),
+        ToastInitializer(),
+    ]
+  }
+    
   override init() {
     assembler = Assembler(container: container)
     super.init()
@@ -26,18 +36,32 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     rootFlow = RootFlow(view: window, parent: assembler)
     coordinator.coordinate(flow: rootFlow, withStepper: rootFlow.stepper)
+    registerRemoteNotifications(with: application)
     
     return true
   }
-  
-  private var initializers: [Initializer] {
-    return [
-      DIInitializer(),
-      FirebaseInitializer(),
-      GoogleServicesInitializer(),
-      GiphyInitializer(),
-      ToastInitializer(),
-    ]
-  }
 }
 
+extension AppDelegate: UNUserNotificationCenterDelegate, MessagingDelegate {
+    func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+        Messaging.messaging().apnsToken = deviceToken
+    }
+    
+    func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String) {
+        KeychainManager.save(value: fcmToken, for: GlobalConstants.fcmPushToken)
+    }
+    
+    private func registerRemoteNotifications(with application: UIApplication) {
+        Messaging.messaging().delegate = self
+        UNUserNotificationCenter.current().delegate = self
+        
+        let authOptions: UNAuthorizationOptions = [.alert, .badge, .sound]
+        UNUserNotificationCenter.current().requestAuthorization(options: authOptions, completionHandler: { (registered, error) in
+            if registered {
+                DispatchQueue.main.async {
+                    application.registerForRemoteNotifications()
+                }
+            }
+        })
+    }
+}

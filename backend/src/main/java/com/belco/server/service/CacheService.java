@@ -47,4 +47,15 @@ public class CacheService {
 
         return new JSONArray();
     }
+
+    @Cacheable(cacheNames = {"etherscan-gas-price"})
+    public JSONObject getEtherscanGasPrice() {
+        try {
+            return rest.getForObject("https://api.etherscan.io/api?module=gastracker&action=gasoracle&apikey=CHX6UBUCBAYVE3MSNZWXEN5CTYRWZXMRYV", JSONObject.class);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        throw new RuntimeException("Error getting gas price");
+    }
 }

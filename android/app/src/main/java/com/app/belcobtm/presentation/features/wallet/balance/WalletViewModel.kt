@@ -45,8 +45,8 @@ class WalletViewModel(
                 wallet.data.coinList.map {
                     CoinListItem(
                         code = it.code,
-                        balanceCrypto = it.balanceCoin,
-                        balanceFiat = it.balanceUsd,
+                        balanceCrypto = it.balanceCoin + it.reservedBalanceCoin,
+                        balanceFiat = it.balanceUsd + it.reservedBalanceUsd,
                         priceUsd = it.priceUsd
                     )
                 }.let { coinList ->

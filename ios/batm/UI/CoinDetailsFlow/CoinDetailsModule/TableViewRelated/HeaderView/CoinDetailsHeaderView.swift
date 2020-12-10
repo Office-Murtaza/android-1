@@ -6,8 +6,9 @@ protocol CoinDetailsHeaderViewDelegate: class {
 
 struct CoinDetailsHeaderViewConfig {
   let coinBalance: CoinBalance
-  let priceChartData: PriceChartData
+  let priceChartData: PriceChartDetails?
   let selectedPeriod: SelectedPeriod
+  let predefinedData: CoinDetailsPredefinedDataConfig?
 }
 
 class CoinDetailsHeaderView: UICollectionReusableView, HasDisposeBag {
@@ -109,7 +110,10 @@ class CoinDetailsHeaderView: UICollectionReusableView, HasDisposeBag {
   }
   
   func configure(with config: CoinDetailsHeaderViewConfig) {
-    chartView.configure(for: config.priceChartData, and: config.selectedPeriod)
+    chartView.configure(for: config.priceChartData,
+                        and: config.selectedPeriod,
+                        balance: config.coinBalance,
+                        predefinedData: config.predefinedData)
     balanceView.configure(for: config.coinBalance)
   }
   

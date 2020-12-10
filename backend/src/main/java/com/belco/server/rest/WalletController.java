@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 import java.math.BigDecimal;
 import java.util.Set;
 
@@ -17,14 +18,14 @@ import java.util.Set;
 @RequestMapping("/api/v1/wallet")
 public class WalletController {
 
-    @Value("${wallet.api.key}")
-    private String apiKey;
-
-    @Value("${wallet.api.secret}")
-    private String apiSecret;
-
     @Value("${wallet.api.security.enabled}")
     private Boolean enabled;
+
+    @Value("${wallet.api.security.key}")
+    private String apiKey;
+
+    @Value("${wallet.api.security.secret}")
+    private String apiSecret;
 
     @Autowired
     private WalletService walletService;

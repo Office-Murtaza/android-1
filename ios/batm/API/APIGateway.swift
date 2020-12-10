@@ -62,7 +62,6 @@ protocol APIGateway {
   func getKYC(userId: Int) -> Single<KYC>
   func sendVerification(userId: Int, userData: VerificationUserData) -> Completable
   func sendVIPVerification(userId: Int, userData: VIPVerificationUserData) -> Completable
-  func getPriceChartData(userId: Int, type: CustomCoinType) -> Single<PriceChartData>
   func getBuyTrades(userId: Int, type: CustomCoinType, page: Int) -> Single<BuySellTrades>
   func getSellTrades(userId: Int, type: CustomCoinType, page: Int) -> Single<BuySellTrades>
   func updateLocation(userId: Int, latitude: Double, longitude: Double) -> Completable
@@ -70,6 +69,7 @@ protocol APIGateway {
   func submitTrade(userId: Int, data: SubmitTradeData) -> Completable
   func getStakeDetails(userId: Int, type: CustomCoinType) -> Single<StakeDetails>
   func manageCoins(userId: Int, coin: String, visible: Bool) -> Completable
+  func getPriceChart(type: CustomCoinType, period: SelectedPeriod) -> Single<PriceChartDetails>
 }
 
 final class APIGatewayImpl: APIGateway {
@@ -129,12 +129,14 @@ final class APIGatewayImpl: APIGateway {
   }
   
   func createAccount(phoneNumber: String, password: String, coinAddresses: [CoinAddress]) -> Single<Account> {
-    let request = CreateAccountRequest(phoneNumber: phoneNumber, password: password, coinAddresses: coinAddresses)
+    let token = KeychainManager.loadValue(for: GlobalConstants.fcmPushToken)
+    let request = CreateAccountRequest(phoneNumber: phoneNumber, password: password, coinAddresses: coinAddresses, notificationsToken: token ?? "")
     return execute(request)
   }
   
   func recoverWallet(phoneNumber: String, password: String, coinAddresses: [CoinAddress]) -> Single<Account> {
-    let request = RecoverWalletRequest(phoneNumber: phoneNumber, password: password, coinAddresses: coinAddresses)
+    let token = KeychainManager.loadValue(for: GlobalConstants.fcmPushToken)
+    let request = RecoverWalletRequest(phoneNumber: phoneNumber, password: password, coinAddresses: coinAddresses, notificationsToken: token ?? "")
     return execute(request)
   }
   
@@ -302,9 +304,9 @@ final class APIGatewayImpl: APIGateway {
     let request = SendVIPVerificationRequest(userId: userId, userData: userData)
     return execute(request)
   }
-  
-  func getPriceChartData(userId: Int, type: CustomCoinType) -> Single<PriceChartData> {
-    let request = GetPriceChartDataRequest(userId: userId, coinId: type.code)
+
+  func getPriceChart(type: CustomCoinType, period: SelectedPeriod) -> Single<PriceChartDetails> {
+    let request = GetPriceChartDetailsRequest(coinId: type.code, coinPeriod: period)
     return execute(request)
   }
   
@@ -345,4 +347,3 @@ final class APIGatewayImpl: APIGateway {
     return execute(request)
   }
 }
-

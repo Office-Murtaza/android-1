@@ -8,6 +8,20 @@
     <fragment
         android:id="@+id/fragment_deals"
         android:name="com.app.belcobtm.presentation.features.deals.DealsFragment"
-        tools:layout="@layout/fragment_deals" />
+        tools:layout="@layout/fragment_deals">
+        <action
+            android:id="@+id/to_swap_fragment"
+            app:destination="@id/swap_fragment"
+            app:enterAnim="@anim/slide_from_right"
+            app:exitAnim="@anim/slide_to_left"
+            app:popEnterAnim="@anim/slide_from_left"
+            app:popExitAnim="@anim/slide_to_right" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/swap_fragment"
+        android:name="com.app.belcobtm.presentation.features.deals.swap.SwapFragment"
+        android:label="ExchangeFragment"
+        tools:layout="@layout/fragment_swap" />
 
 </navigation>

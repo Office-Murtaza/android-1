@@ -39,8 +39,8 @@ final class ReserveViewController: ModuleViewController<ReservePresenter> {
     }
     reserveButton.snp.makeConstraints {
       $0.height.equalTo(50)
-      $0.top.equalTo(formView.snp.bottom).offset(20)
       $0.left.right.equalToSuperview().inset(15)
+      $0.bottom.equalToSuperview().offset(-40)
     }
   }
   
@@ -71,10 +71,15 @@ final class ReserveViewController: ModuleViewController<ReservePresenter> {
       })
       .disposed(by: disposeBag)
     
-    presenter.state
-      .map { $0.coin?.type.code }
+    let coinTypeDriver = presenter.state
+      .map { $0.coin?.type }
       .filterNil()
-      .drive(onNext: { [formView] in formView.configure(with: $0) })
+    
+    let feeDriver = presenter.state
+      .map { $0.coinDetails?.txFee }
+    
+    Driver.combineLatest(coinTypeDriver, feeDriver)
+      .drive(onNext: { [formView] in formView.configure(coinType: $0, fee: $1) })
       .disposed(by: disposeBag)
     
     presenter.state
