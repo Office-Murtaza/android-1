@@ -1,7 +1,6 @@
 package com.app.belcobtm.data.websockets.wallet
 
 import com.app.belcobtm.data.disk.database.AccountDao
-import com.app.belcobtm.data.disk.database.AccountEntity
 import com.app.belcobtm.data.disk.shared.preferences.SharedPreferencesHelper
 import com.app.belcobtm.data.rest.wallet.response.BalanceResponse
 import com.app.belcobtm.data.rest.wallet.response.mapToDataItem
@@ -114,7 +113,6 @@ class WebSocketWalletObserver(
     private fun subscribe() {
         val coinList = runBlocking {
             accountDao.getItemList().orEmpty()
-                .filter(AccountEntity::isEnabled)
                 .map { it.type.name }
         }.joinToString()
         val request = WalletSocketRequest(

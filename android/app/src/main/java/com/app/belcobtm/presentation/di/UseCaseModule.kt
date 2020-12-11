@@ -70,4 +70,5 @@ val useCaseModule = module {
     single { ConnectToWalletUseCase(get()) }
     single { GetCoinDetailsUseCase(get()) }
     single { CheckXRPAddressActivatedUseCase(get()) }
+    single { GetFreshCoinsUseCase(get()) }
 }

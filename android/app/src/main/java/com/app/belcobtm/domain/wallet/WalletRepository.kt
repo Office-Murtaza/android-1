@@ -23,6 +23,8 @@ interface WalletRepository {
 
     suspend fun getFreshCoinDataItem(coinCode: String): Either<Failure, CoinDataItem>
 
+    suspend fun getFreshCoinDataItems(coinCodes: List<String>): Either<Failure, List<CoinDataItem>>
+
     suspend fun getBalanceItem(): Either<Failure, BalanceDataItem>
 
     suspend fun getChart(
