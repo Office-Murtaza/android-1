@@ -25,7 +25,4 @@
 
     //settings
     <dimen name="settings_item_height">56dp</dimen>
-
-    // common
-    <dimen name="common_image_size">56dp</dimen>
 </resources>

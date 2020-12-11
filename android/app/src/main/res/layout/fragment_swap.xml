@@ -14,165 +14,100 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/amountCoinToSendView"
-            style="@style/TextInputLayoutOutline"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
+        <View
+            android:id="@+id/topDivider"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:background="@color/colorLightGray2"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:helperText="Balance 123 BTC">
+            app:layout_constraintTop_toTopOf="parent" />
 
-            <com.google.android.material.textfield.TextInputEditText
-                style="@style/EditText.InputWithMax"
-                android:digits="1234567890."
-                android:hint="@string/swap_screen_send_amount_hint"
-                android:inputType="numberDecimal"
-                android:nextFocusDown="@id/amountUsdView"
-                android:singleLine="true" />
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <LinearLayout
-            android:id="@+id/sendCoinButton"
-            android:layout_width="wrap_content"
-            android:layout_height="50dp"
-            android:layout_marginTop="@dimen/margin_half"
-            android:layout_marginEnd="24dp"
-            android:gravity="center"
-            android:orientation="horizontal"
-            android:paddingStart="@dimen/margin_half"
-            android:paddingEnd="@dimen/margin_half"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@id/amountCoinToSendView">
-
-            <ImageView
-                android:id="@+id/coinToSendImageView"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
-                android:contentDescription="@null"
-                tools:src="@drawable/ic_coin_bitcoin" />
-
-            <ImageView
-                android:layout_width="18dp"
-                android:layout_height="18dp"
-                android:contentDescription="@null"
-                android:src="@drawable/ic_arrow_drop_down" />
-
-        </LinearLayout>
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/maxCoinSendView"
-            style="@style/EditText.TextLink"
-            android:layout_marginEnd="10dp"
-            android:layout_marginBottom="10dp"
-            android:text="@string/max"
-            app:layout_constraintBottom_toBottomOf="@id/amountCoinToSendView"
-            app:layout_constraintEnd_toStartOf="@id/sendCoinButton"
-            app:layout_constraintTop_toTopOf="@id/amountCoinToSendView" />
-
-        <ImageView
-            android:id="@+id/iconSwap"
-            android:layout_width="@dimen/common_image_size"
-            android:layout_height="@dimen/common_image_size"
-            android:layout_marginTop="@dimen/margin_normal"
-            android:contentDescription="@null"
-            android:src="@drawable/ic_swap_vert"
+        <com.app.belcobtm.presentation.core.views.CoinInputLayout
+            android:id="@+id/sendCoinInputLayout"
+            android:layout_width="0dp"
+            android:layout_height="150dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/amountCoinToSendView"
-            app:tint="@color/colorPrimary" />
+            app:layout_constraintTop_toBottomOf="@id/topDivider" />
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/amountCoinToReceiveView"
-            style="@style/TextInputLayoutOutline"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="@dimen/margin_normal"
-            android:layout_marginEnd="16dp"
+        <com.app.belcobtm.presentation.core.views.CoinInputLayout
+            android:id="@+id/receiveCoinInputLayout"
+            android:layout_width="0dp"
+            android:layout_height="150dp"
+            android:background="@color/colorLightGray"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/iconSwap"
-            tools:helperText="Balance 1000 LTC">
+            app:layout_constraintTop_toBottomOf="@id/sendCoinInputLayout" />
 
-            <com.google.android.material.textfield.TextInputEditText
-                style="@style/EditText.InputWithMax"
-                android:digits="1234567890."
-                android:hint="@string/swap_screen_receive_amount_hint"
-                android:inputType="numberDecimal"
-                android:paddingEnd="12dp"
-                android:singleLine="true"
-                tools:ignore="RtlSymmetry" />
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <LinearLayout
-            android:id="@+id/receiveCoinButton"
-            android:layout_width="wrap_content"
-            android:layout_height="50dp"
-            android:layout_marginTop="@dimen/margin_half"
-            android:layout_marginEnd="24dp"
-            android:gravity="center"
-            android:orientation="horizontal"
-            android:paddingStart="@dimen/margin_half"
-            android:paddingEnd="@dimen/margin_half"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@id/amountCoinToReceiveView">
-
-            <ImageView
-                android:id="@+id/coinToReceiveImageView"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
-                android:contentDescription="@null"
-                tools:src="@drawable/ic_coin_ripple" />
-
-            <ImageView
-                android:layout_width="18dp"
-                android:layout_height="18dp"
-                android:contentDescription="@null"
-                android:src="@drawable/ic_arrow_drop_down" />
-
-        </LinearLayout>
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/maxCoinReceiveView"
-            style="@style/EditText.TextLink"
-            android:layout_marginEnd="10dp"
-            android:layout_marginBottom="10dp"
-            android:text="@string/max"
-            app:layout_constraintBottom_toBottomOf="@id/amountCoinToReceiveView"
-            app:layout_constraintEnd_toStartOf="@id/receiveCoinButton"
-            app:layout_constraintTop_toTopOf="@id/amountCoinToReceiveView" />
+        <View
+            android:id="@+id/viewCircle"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="@dimen/margin_main"
+            android:background="@drawable/bg_white_circle_with_gray_stroke"
+            app:layout_constraintBottom_toTopOf="@id/receiveCoinInputLayout"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/sendCoinInputLayout" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/rateTextView"
-            style="@style/Transaction.Title.Medium.Key"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_x3"
-            android:paddingStart="@dimen/margin_half"
-            android:paddingEnd="@dimen/margin_half"
-            app:layout_constraintEnd_toEndOf="@id/amountCoinToReceiveView"
-            app:layout_constraintStart_toStartOf="@id/amountCoinToReceiveView"
-            app:layout_constraintTop_toBottomOf="@id/amountCoinToReceiveView"
-            tools:text="Rate 1BTC ~ 23.7835LTC" />
+            android:layout_marginEnd="@dimen/margin_main"
+            android:background="@drawable/bg_white_rect_with_gray_stroke"
+            android:drawableStart="@drawable/ic_vector"
+            android:drawablePadding="@dimen/margin_half"
+            android:paddingStart="@dimen/margin_normal"
+            android:paddingTop="@dimen/margin_half"
+            android:paddingEnd="@dimen/margin_normal"
+            android:paddingBottom="@dimen/margin_half"
+            android:textAppearance="@style/Text.Regular2"
+            app:layout_constraintBottom_toTopOf="@id/receiveCoinInputLayout"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/sendCoinInputLayout"
+            tools:text="1 BTC ~ 23.7835 LTC" />
 
-        <androidx.appcompat.widget.AppCompatTextView
+        <ImageView
+            android:id="@+id/iconSwap"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_margin="8dp"
+            android:contentDescription="@null"
+            android:src="@drawable/ic_swap_vert"
+            app:layout_constraintBottom_toBottomOf="@id/viewCircle"
+            app:layout_constraintEnd_toEndOf="@id/viewCircle"
+            app:layout_constraintStart_toStartOf="@id/viewCircle"
+            app:layout_constraintTop_toTopOf="@id/viewCircle"
+            app:tint="@color/colorPrimary" />
+
+        <TextView
+            android:id="@+id/platformFeeLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_main"
+            android:layout_marginTop="@dimen/margin_main"
+            android:text="@string/swap_screen_fee"
+            android:textAppearance="@style/Text.Regular2"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/receiveCoinInputLayout" />
+
+        <TextView
             android:id="@+id/platformFeeTextView"
-            style="@style/Transaction.Title.Medium.Key"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_half"
-            android:paddingStart="@dimen/margin_half"
-            android:paddingEnd="@dimen/margin_half"
-            app:layout_constraintEnd_toEndOf="@id/rateTextView"
-            app:layout_constraintStart_toStartOf="@id/rateTextView"
-            app:layout_constraintTop_toBottomOf="@id/rateTextView"
-            tools:text="Platform fee 3% ~ 0.25673LTC" />
+            android:layout_marginTop="@dimen/margin_main"
+            android:layout_marginEnd="@dimen/margin_main"
+            android:textAppearance="@style/Text.Regular2"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/receiveCoinInputLayout"
+            tools:text="3% ~ 0.25673 LTC" />
 
         <Space
             android:id="@+id/spaceView"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            android:layout_marginTop="@dimen/margin_main"
             app:layout_constraintBottom_toTopOf="@id/nextButtonView"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
