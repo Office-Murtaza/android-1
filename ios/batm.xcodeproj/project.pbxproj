@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		05021CFE2582679000FE8809 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 05021CFD2582679000FE8809 /* GoogleService-Info.plist */; };
 		0522EB23255984AC0028CD51 /* SupportCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0522EB22255984AC0028CD51 /* SupportCell.swift */; };
 		0522EB27255988230028CD51 /* SupportViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0522EB26255988230028CD51 /* SupportViewController.swift */; };
 		0522EB61255988310028CD51 /* SupportPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0522EB60255988310028CD51 /* SupportPresenter.swift */; };
@@ -94,7 +95,6 @@
 		DB226C5A22E99E3E0087E6C5 /* URLEncoding+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB226C5922E99E3E0087E6C5 /* URLEncoding+Extensions.swift */; };
 		DB247B412478F88C009802BB /* SplashViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB247B3D2478F88C009802BB /* SplashViewController.swift */; };
 		DB247B432478F88C009802BB /* SplashAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB247B3F2478F88C009802BB /* SplashAssembly.swift */; };
-		DB26C00B24D1E3F4007FE258 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = DB26C00A24D1E3F4007FE258 /* GoogleService-Info.plist */; };
 		DB26C00D24D1E4BD007FE258 /* FirebaseInitializer.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB26C00C24D1E4BD007FE258 /* FirebaseInitializer.swift */; };
 		DB2A0DF324CD655C009C9D1C /* PhoneVerificationStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB2A0DF224CD655C009C9D1C /* PhoneVerificationStore.swift */; };
 		DB2C699A24D88DDF0043C344 /* PhoneVerificationResendCodeLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB2C699924D88DDF0043C344 /* PhoneVerificationResendCodeLabel.swift */; };
@@ -556,6 +556,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		05021CFD2582679000FE8809 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		0522EB22255984AC0028CD51 /* SupportCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SupportCell.swift; sourceTree = "<group>"; };
 		0522EB26255988230028CD51 /* SupportViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SupportViewController.swift; sourceTree = "<group>"; };
 		0522EB60255988310028CD51 /* SupportPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SupportPresenter.swift; sourceTree = "<group>"; };
@@ -649,7 +650,6 @@
 		DB226C5922E99E3E0087E6C5 /* URLEncoding+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URLEncoding+Extensions.swift"; sourceTree = "<group>"; };
 		DB247B3D2478F88C009802BB /* SplashViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashViewController.swift; sourceTree = "<group>"; };
 		DB247B3F2478F88C009802BB /* SplashAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashAssembly.swift; sourceTree = "<group>"; };
-		DB26C00A24D1E3F4007FE258 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		DB26C00C24D1E4BD007FE258 /* FirebaseInitializer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseInitializer.swift; sourceTree = "<group>"; };
 		DB2A0DF224CD655C009C9D1C /* PhoneVerificationStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneVerificationStore.swift; sourceTree = "<group>"; };
 		DB2C699924D88DDF0043C344 /* PhoneVerificationResendCodeLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneVerificationResendCodeLabel.swift; sourceTree = "<group>"; };
@@ -1325,7 +1325,7 @@
 				DB0BB5FF22BD10BA0035FF6C /* LaunchScreen.storyboard */,
 				DBA7393422C33D0C00CEFD57 /* Localizable.strings */,
 				DB0BB60222BD10BA0035FF6C /* Info.plist */,
-				DB26C00A24D1E3F4007FE258 /* GoogleService-Info.plist */,
+				05021CFD2582679000FE8809 /* GoogleService-Info.plist */,
 				05C6219F257EB413008787F3 /* batm.entitlements */,
 			);
 			path = batm;
@@ -3038,7 +3038,6 @@
 				DB9D3EC622C15349008DC600 /* Poppins-ExtraLightItalic.ttf in Resources */,
 				DB64DA5C2416BBD90019D38B /* countries.json in Resources */,
 				DB9D3EBF22C1533B008DC600 /* Poppins-Black.ttf in Resources */,
-				DB26C00B24D1E3F4007FE258 /* GoogleService-Info.plist in Resources */,
 				DB9D3ECC22C15354008DC600 /* Poppins-Regular.ttf in Resources */,
 				DBA7393622C33D0C00CEFD57 /* Localizable.strings in Resources */,
 				DB9D3EC522C15347008DC600 /* Poppins-ExtraLight.ttf in Resources */,
@@ -3048,6 +3047,7 @@
 				DB9D3EC722C1534B008DC600 /* Poppins-Italic.ttf in Resources */,
 				DB9D3EC222C15340008DC600 /* Poppins-BoldItalic.ttf in Resources */,
 				DB0BB60122BD10BA0035FF6C /* LaunchScreen.storyboard in Resources */,
+				05021CFE2582679000FE8809 /* GoogleService-Info.plist in Resources */,
 				DB9D3ED022C1535C008DC600 /* Poppins-ThinItalic.ttf in Resources */,
 				DB0BB5FE22BD10BA0035FF6C /* Assets.xcassets in Resources */,
 				DB9D3ECD22C15356008DC600 /* Poppins-SemiBold.ttf in Resources */,
@@ -3843,7 +3843,7 @@
 				CODE_SIGN_ENTITLEMENTS = batm/batm.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 79;
+				CURRENT_PROJECT_VERSION = 90;
 				DEVELOPMENT_TEAM = 2RUJ559RK4;
 				INFOPLIST_FILE = batm/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -3851,7 +3851,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.7;
+				MARKETING_VERSION = 1.8;
 				PRODUCT_BUNDLE_IDENTIFIER = com.belcobtm.BelcoWallet;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "Belco Wallet Development";
@@ -3868,7 +3868,7 @@
 				CODE_SIGN_ENTITLEMENTS = batm/batm.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 79;
+				CURRENT_PROJECT_VERSION = 90;
 				DEVELOPMENT_TEAM = 2RUJ559RK4;
 				INFOPLIST_FILE = batm/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -3876,7 +3876,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.7;
+				MARKETING_VERSION = 1.8;
 				PRODUCT_BUNDLE_IDENTIFIER = com.belcobtm.BelcoWallet;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = BelcoWalletAppStoreProfile;

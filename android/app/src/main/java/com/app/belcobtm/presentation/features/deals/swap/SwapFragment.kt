@@ -9,7 +9,9 @@ import com.app.belcobtm.R
 import com.app.belcobtm.domain.wallet.LocalCoinType
 import com.app.belcobtm.domain.wallet.item.CoinDataItem
 import com.app.belcobtm.presentation.core.coin.model.ValidationResult
-import com.app.belcobtm.presentation.core.extensions.*
+import com.app.belcobtm.presentation.core.extensions.getDouble
+import com.app.belcobtm.presentation.core.extensions.resIcon
+import com.app.belcobtm.presentation.core.extensions.toStringCoin
 import com.app.belcobtm.presentation.core.helper.AlertHelper
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
 import com.app.belcobtm.presentation.core.ui.fragment.BaseFragment
@@ -66,10 +68,16 @@ class SwapFragment : BaseFragment() {
             viewModel.setMaxSendAmount()
         }
         sendCoinButton.setOnClickListener {
-            showSelectCoinDialog { viewModel.setCoinToSend(it) }
+            val coinToSend = viewModel.coinToSend.value ?: return@setOnClickListener
+            val coinToReceive = viewModel.coinToReceive.value ?: return@setOnClickListener
+            val coinsToExclude = listOf(coinToSend, coinToReceive)
+            showSelectCoinDialog(coinsToExclude) { viewModel.setCoinToSend(it) }
         }
         receiveCoinButton.setOnClickListener {
-            showSelectCoinDialog { viewModel.setCoinToReceive(it) }
+            val coinToSend = viewModel.coinToSend.value ?: return@setOnClickListener
+            val coinToReceive = viewModel.coinToReceive.value ?: return@setOnClickListener
+            val coinsToExclude = listOf(coinToSend, coinToReceive)
+            showSelectCoinDialog(coinsToExclude) { viewModel.setCoinToReceive(it) }
         }
         amountCoinToSendView.editText?.addTextChangedListener(textWatcher.firstTextWatcher)
         amountCoinToReceiveView.editText?.addTextChangedListener(textWatcher.secondTextWatcher)
@@ -127,22 +135,33 @@ class SwapFragment : BaseFragment() {
             }
         })
         viewModel.sendCoinAmount.observe(viewLifecycleOwner, Observer { sendAmount ->
-            val targetEditText = amountCoinToSendView.editText ?: return@Observer
+            val targetEditText = amountCoinToSendView.editText
+            if (targetEditText == null || (targetEditText.text.getDouble() == 0.0 && sendAmount == 0.0)) {
+                return@Observer
+            }
             val coinAmountString = sendAmount.toStringCoin()
             val watcher = textWatcher.firstTextWatcher
             setTextSilently(targetEditText, watcher, coinAmountString)
         })
         viewModel.receiveCoinAmount.observe(viewLifecycleOwner, Observer { receiveAmount ->
-            val targetEditText = amountCoinToReceiveView.editText ?: return@Observer
+            val targetEditText = amountCoinToReceiveView.editText
+            if (targetEditText == null || (targetEditText.text.getDouble() == 0.0 && receiveAmount == 0.0)) {
+                return@Observer
+            }
             val coinAmountString = receiveAmount.toStringCoin()
             val watcher = textWatcher.secondTextWatcher
             setTextSilently(targetEditText, watcher, coinAmountString)
         })
     }
 
-    private fun showSelectCoinDialog(action: (CoinDataItem) -> Unit) {
+    private fun showSelectCoinDialog(
+        coinsToExclude: List<CoinDataItem>,
+        action: (CoinDataItem) -> Unit
+    ) {
         val safeContext = context ?: return
-        val coinsList = viewModel.originCoinsData
+        val coinsList = viewModel.originCoinsData.toMutableList().apply {
+            removeAll(coinsToExclude)
+        }
         val adapter = CoinDialogAdapter(safeContext, coinsList)
         AlertDialog.Builder(safeContext)
             .setAdapter(adapter) { _, position -> action.invoke(coinsList[position]) }

@@ -14,6 +14,7 @@ import com.app.belcobtm.domain.wallet.interactor.GetCoinDetailsUseCase
 import com.app.belcobtm.domain.wallet.interactor.GetFreshCoinsUseCase
 import com.app.belcobtm.domain.wallet.item.CoinDataItem
 import com.app.belcobtm.domain.wallet.item.CoinDetailsDataItem
+import com.app.belcobtm.domain.wallet.item.isEthRelatedCoin
 import com.app.belcobtm.presentation.core.coin.AmountCoinValidator
 import com.app.belcobtm.presentation.core.coin.MinMaxCoinValueProvider
 import com.app.belcobtm.presentation.core.coin.model.ValidationResult
@@ -197,16 +198,10 @@ class SwapViewModel(
                     params = GetCoinDetailsUseCase.Params(coinToReceive.code),
                     onSuccess = { coinToReceiveDetails ->
                         val receiveAmount = receiveCoinAmount.value ?: 1.0
-                        val platformFee = coinToReceiveDetails.txFee
+                        val platformFee = getReceiveFee(coinToReceive, coinToReceiveDetails)
                         val platformFeeCoinsAmount = receiveAmount * platformFee
                         val atomicAmount = 1 // probably will depend on the coin type
-                        val atomicSwapAmount = calcSwapAmountFromSend(
-                            coinToSend,
-                            coinToSendDetails,
-                            coinToReceive,
-                            coinToReceiveDetails,
-                            atomicAmount.toDouble()
-                        )
+                        val atomicSwapAmount = calcCoinsRatio(coinToSend, coinToReceive)
                         this.coinToSendDetails = coinToSendDetails
                         this.coinToReceiveDetails = coinToReceiveDetails
                         _coinToSend.value = coinToSend
@@ -241,6 +236,8 @@ class SwapViewModel(
     }
 
     private fun validateCoinToSendAmount(coinAmount: Double) {
+        val sendAmount = sendCoinAmount.value ?: return
+        val receiveAmount = receiveCoinAmount.value ?: return
         val currentCoinToSend = coinToSend.value ?: return
         val currentCoinToSendDetails = coinToSendDetails ?: return
         val balanceValidationResult = amountValidator.validateBalance(
@@ -266,6 +263,7 @@ class SwapViewModel(
         }
         _coinToSendError.value = validationResult
         _submitButtonEnabled.value = validationResult == ValidationResult.Valid
+                && sendAmount > 0 && receiveAmount > 0
     }
 
     private fun calcReceiveAmountFromSend(sendAmount: Double): Double {
@@ -307,7 +305,7 @@ class SwapViewModel(
         // User swap from A to B, user enter amount(A),
         // amount(B) = amount(A) x price(A) / price(B) x (1 - swapProfitPercent / 100) - fee(B)
         val receiveFee = getReceiveFee(receiveCoin, receiveCoinDetails)
-        val price = sendAmount * sendCoin.priceUsd / receiveCoin.priceUsd
+        val price = sendAmount * calcCoinsRatio(sendCoin, receiveCoin)
         return price * (1 - sendCoinDetails.profitExchange / 100) - receiveFee
     }
 
@@ -322,8 +320,8 @@ class SwapViewModel(
         // User swap from A to B, user enter amount(B),
         // amount(A) = (amount(B) + fee(B)) x price(B) / price(A) / (1 - swapProfitPercent / 100)
         val receiveFee = getReceiveFee(receiveCoin, receiveCoinDetails)
-        return (receiveAmount + receiveFee) *
-                receiveCoin.priceUsd / sendCoin.priceUsd / (1 - sendCoinDetails.profitExchange / 100)
+        val coinRatio = calcCoinsRatio(receiveCoin, sendCoin)
+        return (receiveAmount + receiveFee) * coinRatio / (1 - sendCoinDetails.profitExchange / 100)
     }
 
     private fun getReceiveFee(
@@ -332,11 +330,14 @@ class SwapViewModel(
     ): Double {
         // fee(B) = convertedTxFee(B) in case B is CATM or USDT
         // fee(B) = txFee(B) for the rest of coins.
-        return when (receiveCoin.code) {
-            LocalCoinType.CATM.name,
-            LocalCoinType.USDT.name -> receiveCoinDetails.convertedTxFee
-            else -> receiveCoinDetails.txFee
+        return when (receiveCoin.isEthRelatedCoin()) {
+            true -> receiveCoinDetails.convertedTxFee
+            false -> receiveCoinDetails.txFee
         }
+    }
+
+    private fun calcCoinsRatio(coin1: CoinDataItem, coin2: CoinDataItem): Double {
+        return coin1.priceUsd / coin2.priceUsd
     }
 }
 

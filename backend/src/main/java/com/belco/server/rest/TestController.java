@@ -13,8 +13,6 @@ import wallet.core.jni.CoinType;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.util.HashMap;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1/test")
@@ -101,14 +99,7 @@ public class TestController {
 
     @GetMapping("/push-notifications")
     public Response pushNotifications(@RequestParam String title, @RequestParam String message, @RequestParam String token) {
-        Map<String, String> data = new HashMap<>();
-        data.put("title", title);
-        data.put("message", message);
-
-        NotificationDTO dto = new NotificationDTO();
-        dto.setToken(token);
-
-        return Response.ok("result", pushNotificationService.sendMessageWithData(data, dto));
+        return Response.ok("result", pushNotificationService.sendMessageWithData(new NotificationDTO(title, message, null, token)));
     }
 
     @GetMapping("/coin/{coin}/price")
