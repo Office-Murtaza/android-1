@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:layout_height="150dp">
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/coinInputEditText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_x2"
+        android:background="@android:color/transparent"
+        android:digits="1234567890."
+        android:gravity="end"
+        android:inputType="numberDecimal"
+        android:paddingStart="@dimen/margin_main"
+        android:paddingTop="@dimen/margin_half"
+        android:paddingEnd="@dimen/margin_main"
+        android:paddingBottom="@dimen/margin_half"
+        android:singleLine="true"
+        android:textAppearance="@style/Text.Bold1"
+        app:layout_constraintBottom_toTopOf="@id/tvMax"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/coinButton"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed"
+        tools:hint="Coin amoun" />
+
+    <LinearLayout
+        android:id="@+id/coinButton"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:layout_marginStart="@dimen/margin_main"
+        android:gravity="center"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="@id/coinInputEditText"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/coinInputEditText">
+
+        <ImageView
+            android:id="@+id/ivCoin"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:contentDescription="@null"
+            tools:src="@drawable/ic_coin_bitcoin" />
+
+        <TextView
+            android:id="@+id/tvCoinName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_half"
+            android:layout_marginEnd="@dimen/margin_half"
+            android:textAppearance="@style/Text.Bold1"
+            tools:text="BTC" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@null"
+            android:src="@drawable/ic_chevron_down_24" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tvHelperText"
+        style="@style/Text.Regular1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingStart="@dimen/margin_normal"
+        android:paddingEnd="@dimen/margin_normal"
+        android:text="@string/max"
+        app:layout_constraintBaseline_toBaselineOf="@id/tvMax"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:text="Balance: 0.6583 BTC" />
+
+    <TextView
+        android:id="@+id/tvMax"
+        style="@style/EditText.TextLink"
+        android:padding="@dimen/margin_normal"
+        android:text="@string/max"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/coinInputEditText" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
