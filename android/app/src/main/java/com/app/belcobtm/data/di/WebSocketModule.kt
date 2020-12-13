@@ -31,7 +31,10 @@ val webSocketModule = module {
         WalletLifecycleObserver(get(), get())
     }
     single<WalletObserver> {
-        WebSocketWalletObserver(get(), get(), get(), get(), get(), get())
+        WebSocketWalletObserver(
+            get(), get(), get(), get(), get(), get(),
+            get(), get(authenticatorQualified)
+        )
     } bind WalletConnectionHandler::class
     single<SocketClient> { OkHttpSocketClient(get(WEB_SOCKET_OK_HTTP_CLIENT_QUALIFIER)) }
     single<OkHttpClient>(WEB_SOCKET_OK_HTTP_CLIENT_QUALIFIER) {
