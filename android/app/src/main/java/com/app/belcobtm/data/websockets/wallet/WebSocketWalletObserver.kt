@@ -2,6 +2,8 @@ package com.app.belcobtm.data.websockets.wallet
 
 import com.app.belcobtm.data.disk.database.AccountDao
 import com.app.belcobtm.data.disk.shared.preferences.SharedPreferencesHelper
+import com.app.belcobtm.data.rest.authorization.AuthApi
+import com.app.belcobtm.data.rest.authorization.request.RefreshTokenRequest
 import com.app.belcobtm.data.rest.wallet.response.BalanceResponse
 import com.app.belcobtm.data.rest.wallet.response.mapToDataItem
 import com.app.belcobtm.data.websockets.base.SocketClient
@@ -18,6 +20,7 @@ import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.ConflatedBroadcastChannel
 import kotlinx.coroutines.channels.ReceiveChannel
 import kotlinx.coroutines.flow.collect
+import java.net.HttpURLConnection
 
 @kotlinx.coroutines.ExperimentalCoroutinesApi
 class WebSocketWalletObserver(
@@ -26,7 +29,9 @@ class WebSocketWalletObserver(
     private val sharedPreferencesHelper: SharedPreferencesHelper,
     private val serializer: RequestSerializer<WalletSocketRequest>,
     private val deserializer: ResponseDeserializer<WalletSocketResponse>,
-    private val moshi: Moshi
+    private val moshi: Moshi,
+    private val preferencesHelper: SharedPreferencesHelper,
+    private val authApi: AuthApi
 ) : WalletObserver {
 
     private companion object {
@@ -42,6 +47,9 @@ class WebSocketWalletObserver(
 
         const val HEARTBEAT_HEADER = "heart-beat"
         const val HEARTBEAT_VALUE = "1000,1000"
+
+        const val HEADER_MESSAGE_KEY = "message"
+        const val AUTH_ERROR_MESSAGE = "Access is denied"
     }
 
     private val ioScope = CoroutineScope(Dispatchers.IO)
@@ -99,7 +107,7 @@ class WebSocketWalletObserver(
         val response = deserializer.deserialize(content)
         when (response.status) {
             WalletSocketResponse.CONNECTED -> subscribe()
-            WalletSocketResponse.ERROR -> processError(Failure.ServerError())
+            WalletSocketResponse.ERROR -> processErrorMessage(response)
             WalletSocketResponse.CONTENT -> {
                 moshi.adapter(BalanceResponse::class.java)
                     .fromJson(response.body)
@@ -131,6 +139,26 @@ class WebSocketWalletObserver(
             else -> Failure.ServerError()
         }
         balanceInfo.send(WalletBalance.Error(error))
+    }
+
+    private suspend fun processErrorMessage(socketResponse: WalletSocketResponse) {
+        val isTokenExpired = socketResponse.headers[HEADER_MESSAGE_KEY]
+            .orEmpty()
+            .contains(AUTH_ERROR_MESSAGE)
+        if (isTokenExpired) {
+            val request = RefreshTokenRequest(preferencesHelper.refreshToken)
+            val response = authApi.refereshToken(request).execute()
+            val responseBody = response.body()
+            if (response.code() == HttpURLConnection.HTTP_OK && responseBody != null) {
+                preferencesHelper.processAuthResponse(responseBody)
+                disconnect()
+                connect()
+            } else {
+                balanceInfo.send(WalletBalance.Error(Failure.ServerError()))
+            }
+        } else {
+            balanceInfo.send(WalletBalance.Error(Failure.ServerError()))
+        }
     }
 
     private fun onOpened() {

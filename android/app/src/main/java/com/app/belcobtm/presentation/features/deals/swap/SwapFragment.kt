@@ -11,6 +11,7 @@ import com.app.belcobtm.domain.wallet.item.CoinDataItem
 import com.app.belcobtm.presentation.core.coin.model.ValidationResult
 import com.app.belcobtm.presentation.core.extensions.getDouble
 import com.app.belcobtm.presentation.core.extensions.resIcon
+import com.app.belcobtm.presentation.core.extensions.toHtmlSpan
 import com.app.belcobtm.presentation.core.extensions.toStringCoin
 import com.app.belcobtm.presentation.core.helper.AlertHelper
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
@@ -55,32 +56,34 @@ class SwapFragment : BaseFragment() {
 
     override fun initViews() {
         setToolbarTitle(R.string.swap_screen_title)
+        sendCoinInputLayout.getEditText().setHint(R.string.swap_screen_send_hint)
+        receiveCoinInputLayout.getEditText().setHint(R.string.swap_screen_receive_hint)
     }
 
     override fun initListeners() {
         nextButtonView.setOnClickListener {
             viewModel.executeSwap()
         }
-        maxCoinSendView.setOnClickListener {
+        sendCoinInputLayout.setOnMaxClickListener(View.OnClickListener {
             viewModel.setMaxSendAmount()
-        }
-        maxCoinReceiveView.setOnClickListener {
+        })
+        receiveCoinInputLayout.setOnMaxClickListener(View.OnClickListener {
             viewModel.setMaxSendAmount()
-        }
-        sendCoinButton.setOnClickListener {
-            val coinToSend = viewModel.coinToSend.value ?: return@setOnClickListener
-            val coinToReceive = viewModel.coinToReceive.value ?: return@setOnClickListener
+        })
+        sendCoinInputLayout.setOnCoinButtonClickListener(View.OnClickListener {
+            val coinToSend = viewModel.coinToSend.value ?: return@OnClickListener
+            val coinToReceive = viewModel.coinToReceive.value ?: return@OnClickListener
             val coinsToExclude = listOf(coinToSend, coinToReceive)
             showSelectCoinDialog(coinsToExclude) { viewModel.setCoinToSend(it) }
-        }
-        receiveCoinButton.setOnClickListener {
-            val coinToSend = viewModel.coinToSend.value ?: return@setOnClickListener
-            val coinToReceive = viewModel.coinToReceive.value ?: return@setOnClickListener
+        })
+        receiveCoinInputLayout.setOnCoinButtonClickListener(View.OnClickListener {
+            val coinToSend = viewModel.coinToSend.value ?: return@OnClickListener
+            val coinToReceive = viewModel.coinToReceive.value ?: return@OnClickListener
             val coinsToExclude = listOf(coinToSend, coinToReceive)
             showSelectCoinDialog(coinsToExclude) { viewModel.setCoinToReceive(it) }
-        }
-        amountCoinToSendView.editText?.addTextChangedListener(textWatcher.firstTextWatcher)
-        amountCoinToReceiveView.editText?.addTextChangedListener(textWatcher.secondTextWatcher)
+        })
+        sendCoinInputLayout.getEditText().addTextChangedListener(textWatcher.firstTextWatcher)
+        receiveCoinInputLayout.getEditText().addTextChangedListener(textWatcher.secondTextWatcher)
     }
 
     override fun initObservers() {
@@ -94,18 +97,22 @@ class SwapFragment : BaseFragment() {
             val coinCode = coin.code
             val coinBalance = coin.balanceCoin.toStringCoin()
             val localType = LocalCoinType.valueOf(coinCode)
-            coinToSendImageView.setImageResource(localType.resIcon())
-            amountCoinToSendView.helperText = getString(
-                R.string.swap_screen_balance_formatted, coinBalance, coinCode
+            sendCoinInputLayout.setCoinData(coinCode, localType.resIcon())
+            sendCoinInputLayout.setHelperText(
+                getString(
+                    R.string.swap_screen_balance_formatted, coinBalance, coinCode
+                )
             )
         })
         viewModel.coinToReceive.observe(viewLifecycleOwner, Observer { coin ->
             val coinCode = coin.code
             val coinBalance = coin.balanceCoin.toStringCoin()
             val localType = LocalCoinType.valueOf(coinCode)
-            coinToReceiveImageView.setImageResource(localType.resIcon())
-            amountCoinToReceiveView.helperText = getString(
-                R.string.swap_screen_balance_formatted, coinBalance, coinCode
+            receiveCoinInputLayout.setCoinData(coinCode, localType.resIcon())
+            receiveCoinInputLayout.setHelperText(
+                getString(
+                    R.string.swap_screen_balance_formatted, coinBalance, coinCode
+                )
             )
         })
         viewModel.swapRate.observe(viewLifecycleOwner, Observer { rate ->
@@ -115,7 +122,7 @@ class SwapFragment : BaseFragment() {
                 rate.fromCoinCode,
                 rate.swapAmount.toStringCoin(),
                 rate.swapCoinCode
-            )
+            ).toHtmlSpan()
         })
         viewModel.swapFee.observe(viewLifecycleOwner, Observer { fee ->
             platformFeeTextView.text = getString(
@@ -123,20 +130,22 @@ class SwapFragment : BaseFragment() {
                 fee.platformFeePercents.toStringCoin(),
                 fee.platformFeeCoinAmount.toStringCoin(),
                 fee.swapCoinCode
-            )
+            ).toHtmlSpan()
         })
         viewModel.submitButtonEnabled.observe(viewLifecycleOwner, Observer { enabled ->
             nextButtonView.isEnabled = enabled
         })
         viewModel.coinToSendError.observe(viewLifecycleOwner, Observer { error ->
-            amountCoinToSendView.error = when (error) {
-                is ValidationResult.Valid -> null
-                is ValidationResult.InValid -> getString(error.error)
-            }
+            sendCoinInputLayout.setErrorText(
+                when (error) {
+                    is ValidationResult.Valid -> null
+                    is ValidationResult.InValid -> getString(error.error)
+                }
+            )
         })
         viewModel.sendCoinAmount.observe(viewLifecycleOwner, Observer { sendAmount ->
-            val targetEditText = amountCoinToSendView.editText
-            if (targetEditText == null || (targetEditText.text.getDouble() == 0.0 && sendAmount == 0.0)) {
+            val targetEditText = sendCoinInputLayout.getEditText()
+            if (targetEditText.text.getDouble() == 0.0 && sendAmount == 0.0) {
                 return@Observer
             }
             val coinAmountString = sendAmount.toStringCoin()
@@ -144,8 +153,8 @@ class SwapFragment : BaseFragment() {
             setTextSilently(targetEditText, watcher, coinAmountString)
         })
         viewModel.receiveCoinAmount.observe(viewLifecycleOwner, Observer { receiveAmount ->
-            val targetEditText = amountCoinToReceiveView.editText
-            if (targetEditText == null || (targetEditText.text.getDouble() == 0.0 && receiveAmount == 0.0)) {
+            val targetEditText = receiveCoinInputLayout.getEditText()
+            if (targetEditText.text.getDouble() == 0.0 && receiveAmount == 0.0) {
                 return@Observer
             }
             val coinAmountString = receiveAmount.toStringCoin()
