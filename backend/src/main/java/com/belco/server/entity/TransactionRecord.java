@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.Date;
@@ -38,8 +39,6 @@ public class TransactionRecord extends BaseEntity {
 
     @Column(name = "detail")
     private String detail;
-
-    private Integer n;
 
     @Column(name = "cashamount")
     private BigDecimal cashAmount;
@@ -118,9 +117,6 @@ public class TransactionRecord extends BaseEntity {
 
     @Column(name = "expectedprofitvalue")
     private BigDecimal expectedProfitValue;
-
-    private Integer tracked;
-    private Integer notified;
 
     @Column(name = "ratesourceprice")
     private BigDecimal rateSourcePrice;

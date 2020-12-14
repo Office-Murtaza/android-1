@@ -17,10 +17,8 @@ import lombok.Getter;
 import org.apache.commons.lang3.StringUtils;
 import org.bson.Document;
 import org.bson.types.Decimal128;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.http.HttpStatus;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -29,7 +27,10 @@ import org.web3j.crypto.Credentials;
 import org.web3j.protocol.Web3j;
 import org.web3j.protocol.core.DefaultBlockParameterName;
 import org.web3j.protocol.core.DefaultBlockParameterNumber;
-import org.web3j.protocol.core.methods.response.*;
+import org.web3j.protocol.core.methods.response.EthBlock;
+import org.web3j.protocol.core.methods.response.EthGetBalance;
+import org.web3j.protocol.core.methods.response.Log;
+import org.web3j.protocol.core.methods.response.TransactionReceipt;
 import org.web3j.protocol.http.HttpService;
 import org.web3j.tx.gas.ContractGasProvider;
 import org.web3j.tx.gas.StaticGasProvider;
@@ -40,7 +41,6 @@ import wallet.core.jni.EthereumAbi;
 import wallet.core.jni.EthereumAbiFunction;
 import wallet.core.jni.PrivateKey;
 import wallet.core.jni.proto.Ethereum;
-
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.*;
@@ -51,6 +51,7 @@ import java.util.*;
 public class GethService {
 
     public static final BigDecimal ETH_DIVIDER = BigDecimal.valueOf(1_000_000_000_000_000_000L);
+    private static final CoinType ETHEREUM = CoinType.ETHEREUM;
 
     private static final int START_BLOCK = 10290000;
     private static final int MAX_BLOCK_COUNT = 500;
@@ -62,31 +63,28 @@ public class GethService {
     private static final String TOKEN_TX_COLL = "token_transaction";
 
     public static String explorerUrl;
-    private static String nodeUrl;
+    public static Web3j web3;
+    public static CATM catm;
+    public static USDT usdt;
     private static long ethInitialGasLimit;
     private static String catmContractAddress;
     private static String usdtContractAddress;
-
     private static RestTemplate rest;
     private static MongoTemplate mongo;
     private static CacheService cacheService;
     private static WalletService walletService;
+    private static MonitorService monitorService;
 
-    public static Web3j web3;
-    public static CATM catm;
-    public static USDT usdt;
-
-    public GethService(@Value("${eth.node.url}") String nodeUrl,
-                       @Value("${eth.explorer.url}") String explorerUrl,
+    public GethService(@Value("${eth.explorer.url}") String explorerUrl,
                        @Value("${eth.initial.gas-limit}") long ethInitialGasLimit,
                        @Value("${catm.contract.address}") String catmContractAddress,
                        @Value("${usdt.contract.address}") String usdtContractAddress,
-                       @Autowired RestTemplate rest,
-                       @Autowired MongoTemplate mongo,
-                       @Autowired CacheService cacheService,
-                       @Autowired WalletService walletService) {
+                       RestTemplate rest,
+                       MongoTemplate mongo,
+                       CacheService cacheService,
+                       WalletService walletService,
+                       MonitorService monitorService) {
 
-        GethService.nodeUrl = nodeUrl;
         GethService.explorerUrl = explorerUrl;
         GethService.ethInitialGasLimit = ethInitialGasLimit;
         GethService.catmContractAddress = catmContractAddress;
@@ -95,13 +93,45 @@ public class GethService {
         GethService.mongo = mongo;
         GethService.cacheService = cacheService;
         GethService.walletService = walletService;
+        GethService.monitorService = monitorService;
 
-        try {
-            if (rest.getForEntity(nodeUrl, String.class).getStatusCode() != HttpStatus.OK) {
-                throw new RuntimeException("Eth node " + nodeUrl + " is down");
+        init();
+    }
+
+    public static String submitTransaction(ERC20 token, SubmitTransactionDTO dto) {
+        if (monitorService.isNodeAvailable(ETHEREUM)) {
+            try {
+                String txId = web3.ethSendRawTransaction(dto.getHex()).send().getTransactionHash();
+
+                if (StringUtils.isNotBlank(txId)) {
+                    addPendingTransaction(token, txId, dto.getFromAddress(), dto.getToAddress(), dto.getCryptoAmount(), dto.getFee());
+
+                    return txId;
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+
+                if (monitorService.switchToReserveNode(ETHEREUM)) {
+                    init();
+                    return submitTransaction(token, dto);
+                }
             }
+        }
 
-            web3 = Web3j.build(new HttpService(nodeUrl));
+        return null;
+    }
+
+    public static Long getAvgGasPrice() {
+        return Long.valueOf(cacheService.getEtherscanGasPrice().optJSONObject("result").optString("ProposeGasPrice")) * 1000_000_000;
+    }
+
+    public static Long getFastGasPrice() {
+        return Long.valueOf(cacheService.getEtherscanGasPrice().optJSONObject("result").optString("FastGasPrice")) * 1000_000_000;
+    }
+
+    private static void init() {
+        try {
+            web3 = Web3j.build(new HttpService(monitorService.getNodeUrl(ETHEREUM)));
 
             ContractGasProvider gasProvider = new StaticGasProvider(BigInteger.valueOf(getFastGasPrice()), BigInteger.valueOf(ethInitialGasLimit));
 
@@ -115,81 +145,163 @@ public class GethService {
         }
     }
 
-    public enum ERC20 {
-        CATM {
-            @Override
-            public String getContractAddress() {
-                return catmContractAddress;
+    private static TransactionListDTO buildTransactionList(String coll, BasicDBObject query, String address, Integer startIndex, Integer limit, TxListDTO txDTO) {
+        try {
+            Map<String, TransactionDetailsDTO> map = getNodeTransactionsFromDB(coll, query, address).getMap();
+
+            return TxUtil.buildTxs(map, startIndex, limit, txDTO);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return new TransactionListDTO();
+    }
+
+    private static NodeTransactionsDTO getNodeTransactionsFromDB(String coll, BasicDBObject query, String address) {
+        Map<String, TransactionDetailsDTO> map = new HashMap<>();
+
+        mongo.getCollection(coll).find(query).into(new ArrayList<>()).stream().forEach(d -> {
+            try {
+                TransactionDetailsDTO dto = new TransactionDetailsDTO();
+
+                String fromAddress = d.getString("fromAddress");
+                String toAddress = d.getString("toAddress");
+
+                dto.setTxId(d.getString("txId"));
+                dto.setType(TransactionType.getType(fromAddress, toAddress, address));
+                dto.setStatus(TransactionStatus.valueOf(d.getInteger("status")));
+                dto.setCryptoAmount(d.get("amount", Decimal128.class).bigDecimalValue());
+                dto.setCryptoFee(d.get("fee", Decimal128.class).bigDecimalValue());
+                dto.setFromAddress(fromAddress);
+                dto.setToAddress(toAddress);
+                dto.setDate1(new Date(d.getLong("blockTime")));
+
+                map.put(d.getString("txId"), dto);
+            } catch (Exception e) {
+                e.printStackTrace();
             }
+        });
 
-            @Override
-            public BigDecimal getBalance(String address) {
-                try {
-                    return new BigDecimal(catm.balanceOf(address).send()).divide(ETH_DIVIDER);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+        return new NodeTransactionsDTO(map);
+    }
 
-                return BigDecimal.ZERO;
+    private static TransactionDetailsDTO getTransactionFromDB(String coll, BasicDBObject query, String address) {
+        try {
+            Document txDoc = mongo.getCollection(coll).find(query).first();
+
+            if (txDoc == null) {
+                return new TransactionDetailsDTO();
+            } else {
+                String txId = txDoc.getString("txId");
+                String fromAddress = txDoc.getString("fromAddress");
+                String toAddress = txDoc.getString("toAddress");
+
+                TransactionDetailsDTO dto = new TransactionDetailsDTO();
+                dto.setTxId(txId);
+                dto.setLink(explorerUrl + "/" + txId);
+                dto.setType(TransactionType.getType(fromAddress, toAddress, address));
+                dto.setCryptoAmount(txDoc.get("amount", Decimal128.class).bigDecimalValue());
+                dto.setFromAddress(fromAddress);
+                dto.setToAddress(toAddress);
+                dto.setCryptoFee(txDoc.get("fee", Decimal128.class).bigDecimalValue());
+                dto.setStatus(TransactionStatus.valueOf(txDoc.getInteger("status")));
+                dto.setDate2(new Date(txDoc.getLong("blockTime")));
+
+                return dto;
             }
-        },
-        USDT {
-            @Override
-            public String getContractAddress() {
-                return usdtContractAddress;
-            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
-            @Override
-            public BigDecimal getBalance(String address) {
-                try {
-                    return new BigDecimal(usdt.balanceOf(address).send()).divide(ETH_DIVIDER);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+        return new TransactionDetailsDTO();
+    }
 
-                return BigDecimal.ZERO;
-            }
-        };
+    private static void addPendingTransaction(String txId, String fromAddress, String toAddress, BigDecimal amount, BigDecimal fee) {
+        Document doc = new Document("txId", txId.toLowerCase())
+                .append("fromAddress", fromAddress.toLowerCase())
+                .append("toAddress", toAddress.toLowerCase())
+                .append("amount", amount)
+                .append("fee", fee)
+                .append("status", TransactionStatus.PENDING.getValue())
+                .append("blockTime", System.currentTimeMillis())
+                .append("timestamp", System.currentTimeMillis());
 
-        public abstract String getContractAddress();
+        mongo.getCollection(ETH_TX_COLL).insertOne(doc);
+    }
 
-        public abstract BigDecimal getBalance(String address);
+    private static void addPendingTransaction(ERC20 token, String txId, String fromAddress, String toAddress, BigDecimal amount, BigDecimal fee) {
+        addPendingTransaction(txId, fromAddress, token.getContractAddress(), BigDecimal.ZERO, fee);
+
+        Document doc = new Document("txId", txId.toLowerCase())
+                .append("fromAddress", fromAddress.toLowerCase())
+                .append("toAddress", toAddress.toLowerCase())
+                .append("amount", amount)
+                .append("fee", fee)
+                .append("status", TransactionStatus.PENDING.getValue())
+                .append("blockTime", System.currentTimeMillis())
+                .append("timestamp", System.currentTimeMillis())
+                .append("token", token.name());
+
+        mongo.getCollection(TOKEN_TX_COLL).insertOne(doc);
+    }
+
+    private static BasicDBObject buildQuery(String address) {
+        BasicDBList or = new BasicDBList();
+        or.add(new BasicDBObject("fromAddress", address.toLowerCase()));
+        or.add(new BasicDBObject("toAddress", address.toLowerCase()));
+
+        return new BasicDBObject("$or", or);
+    }
+
+    private static BasicDBObject buildQuery(ERC20 token, String address) {
+        BasicDBList and = new BasicDBList();
+        and.add(buildQuery(address));
+        and.add(new BasicDBObject("token", token.name()));
+
+        return new BasicDBObject("$and", and);
     }
 
     @Scheduled(cron = "0 */10 * * * *")
     public void storeNodeTransactions() {
-        try {
-            int lastSuccessBlock = mongo.getCollection(BLOCK_COLL).countDocuments() > 0 ? mongo.getCollection(BLOCK_COLL).find().first().getInteger("lastSuccessBlock") : START_BLOCK;
-            int lastBlockNumber = web3.ethBlockNumber().send().getBlockNumber().intValue();
+        if (monitorService.isNodeAvailable(ETHEREUM)) {
+            try {
+                int lastSuccessBlock = mongo.getCollection(BLOCK_COLL).countDocuments() > 0 ? mongo.getCollection(BLOCK_COLL).find().first().getInteger("lastSuccessBlock") : START_BLOCK;
+                int lastBlockNumber = web3.ethBlockNumber().send().getBlockNumber().intValue();
 
-            if (lastSuccessBlock < lastBlockNumber) {
-                int n = Math.min(MAX_BLOCK_COUNT, lastBlockNumber - lastSuccessBlock);
-                int toBlockNumber = lastSuccessBlock + n;
+                if (lastSuccessBlock < lastBlockNumber) {
+                    int n = Math.min(MAX_BLOCK_COUNT, lastBlockNumber - lastSuccessBlock);
+                    int toBlockNumber = lastSuccessBlock + n;
 
-                for (int i = lastSuccessBlock + 1; i <= toBlockNumber; i++) {
-                    List<UpdateOneModel<Document>> ethTxs = new ArrayList<>();
-                    List<UpdateOneModel<Document>> tokenTxs = new ArrayList<>();
+                    for (int i = lastSuccessBlock + 1; i <= toBlockNumber; i++) {
+                        List<UpdateOneModel<Document>> ethTxs = new ArrayList<>();
+                        List<UpdateOneModel<Document>> tokenTxs = new ArrayList<>();
 
-                    EthBlock.Block block = web3.ethGetBlockByNumber(new DefaultBlockParameterNumber(i), true).send().getBlock();
+                        EthBlock.Block block = web3.ethGetBlockByNumber(new DefaultBlockParameterNumber(i), true).send().getBlock();
 
-                    block.getTransactions().stream().forEach(e -> {
-                        org.web3j.protocol.core.methods.response.Transaction tx = ((EthBlock.TransactionObject) e.get()).get();
-                        long timestamp = block.getTimestamp().longValue() * 1000;
+                        block.getTransactions().stream().forEach(e -> {
+                            org.web3j.protocol.core.methods.response.Transaction tx = ((EthBlock.TransactionObject) e.get()).get();
+                            long timestamp = block.getTimestamp().longValue() * 1000;
 
-                        fetchEthTransaction(tx, timestamp, ethTxs, tokenTxs);
-                    });
+                            fetchEthTransaction(tx, timestamp, ethTxs, tokenTxs);
+                        });
 
-                    bulkWrite(ETH_TX_COLL, ethTxs);
-                    bulkWrite(TOKEN_TX_COLL, tokenTxs);
+                        bulkWrite(ETH_TX_COLL, ethTxs);
+                        bulkWrite(TOKEN_TX_COLL, tokenTxs);
 
-                    mongo.getCollection(BLOCK_COLL).findOneAndUpdate(
-                            new Document("lastSuccessBlock", new Document("$exists", true)),
-                            new Document("$set", new Document("lastSuccessBlock", i).append("timestamp", System.currentTimeMillis())),
-                            new FindOneAndUpdateOptions().upsert(true));
+                        mongo.getCollection(BLOCK_COLL).findOneAndUpdate(
+                                new Document("lastSuccessBlock", new Document("$exists", true)),
+                                new Document("$set", new Document("lastSuccessBlock", i).append("timestamp", System.currentTimeMillis())),
+                                new FindOneAndUpdateOptions().upsert(true));
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+
+                if (monitorService.switchToReserveNode(ETHEREUM)) {
+                    init();
+                    storeNodeTransactions();
                 }
             }
-        } catch (Exception e) {
-            e.printStackTrace();
         }
     }
 
@@ -213,43 +325,41 @@ public class GethService {
     }
 
     public BigDecimal getBalance(String address) {
-        try {
-            EthGetBalance getBalance = web3.ethGetBalance(address, DefaultBlockParameterName.LATEST).send();
+        if (monitorService.isNodeAvailable(ETHEREUM)) {
+            try {
+                EthGetBalance getBalance = web3.ethGetBalance(address, DefaultBlockParameterName.LATEST).send();
 
-            return new BigDecimal(getBalance.getBalance()).divide(ETH_DIVIDER);
-        } catch (Exception e) {
-            e.printStackTrace();
+                return new BigDecimal(getBalance.getBalance()).divide(ETH_DIVIDER);
+            } catch (Exception e) {
+                e.printStackTrace();
+
+                if (monitorService.switchToReserveNode(ETHEREUM)) {
+                    init();
+                    return getBalance(address);
+                }
+            }
         }
 
         return BigDecimal.ZERO;
     }
 
     public String submitTransaction(SubmitTransactionDTO dto) {
-        try {
-            String txId = web3.ethSendRawTransaction(dto.getHex()).send().getTransactionHash();
+        if (monitorService.isNodeAvailable(ETHEREUM)) {
+            try {
+                String txId = web3.ethSendRawTransaction(dto.getHex()).send().getTransactionHash();
 
-            if (StringUtils.isNotBlank(txId)) {
-                addPendingTransaction(txId, dto.getFromAddress(), dto.getToAddress(), dto.getCryptoAmount(), dto.getFee());
-                return txId;
+                if (StringUtils.isNotBlank(txId)) {
+                    addPendingTransaction(txId, dto.getFromAddress(), dto.getToAddress(), dto.getCryptoAmount(), dto.getFee());
+                    return txId;
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+
+                if (monitorService.switchToReserveNode(ETHEREUM)) {
+                    init();
+                    return submitTransaction(dto);
+                }
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return null;
-    }
-
-    public static String submitTransaction(ERC20 token, SubmitTransactionDTO dto) {
-        try {
-            String txId = web3.ethSendRawTransaction(dto.getHex()).send().getTransactionHash();
-
-            if (StringUtils.isNotBlank(txId)) {
-                addPendingTransaction(token, txId, dto.getFromAddress(), dto.getToAddress(), dto.getCryptoAmount(), dto.getFee());
-
-                return txId;
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
         }
 
         return null;
@@ -260,27 +370,43 @@ public class GethService {
     }
 
     public Integer getNonce(String address) {
-        try {
-            return web3.ethGetTransactionCount(address, DefaultBlockParameterName.PENDING).send().getTransactionCount().intValue();
-        } catch (Exception e) {
-            e.printStackTrace();
+        if (monitorService.isNodeAvailable(ETHEREUM)) {
+            try {
+                return web3.ethGetTransactionCount(address, DefaultBlockParameterName.PENDING).send().getTransactionCount().intValue();
+            } catch (Exception e) {
+                e.printStackTrace();
+
+                if (monitorService.switchToReserveNode(ETHEREUM)) {
+                    init();
+                    return getNonce(address);
+                }
+            }
         }
 
         return null;
     }
 
     public TransactionStatus getTransactionStatus(String txId) {
-        try {
-            Optional<TransactionReceipt> receiptOptional = web3.ethGetTransactionReceipt(txId).send().getTransactionReceipt();
+        if (monitorService.isNodeAvailable(ETHEREUM)) {
+            try {
+                Optional<TransactionReceipt> receiptOptional = web3.ethGetTransactionReceipt(txId).send().getTransactionReceipt();
 
-            if (receiptOptional.isPresent()) {
-                return getTransactionStatus(receiptOptional.get());
+                if (receiptOptional.isPresent()) {
+                    return getTransactionStatus(receiptOptional.get());
+                } else {
+                    return TransactionStatus.FAIL;
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+
+                if (monitorService.switchToReserveNode(ETHEREUM)) {
+                    init();
+                    return getTransactionStatus(txId);
+                }
             }
-        } catch (Exception e) {
-            e.printStackTrace();
         }
 
-        return TransactionStatus.FAIL;
+        return TransactionStatus.PENDING;
     }
 
     public TransactionStatus getTransactionStatus(TransactionReceipt receipt) {
@@ -415,184 +541,82 @@ public class GethService {
     }
 
     public Long getGasLimit(String address) {
-        try {
-            return web3.ethEstimateGas(org.web3j.protocol.core.methods.request.Transaction.createEthCallTransaction(null, address, null)).send().getAmountUsed().longValue();
-        } catch (Exception e) {
+        if (monitorService.isNodeAvailable(ETHEREUM)) {
+            try {
+                return web3.ethEstimateGas(org.web3j.protocol.core.methods.request.Transaction.createEthCallTransaction(null, address, null)).send().getAmountUsed().longValue();
+            } catch (Exception e) {}
         }
 
         return ethInitialGasLimit;
     }
 
-    public Long getAvgGasPrice() {
-        return Long.valueOf(cacheService.getEtherscanGasPrice().optJSONObject("result").optString("ProposeGasPrice")) * 1000_000_000;
-    }
-
-    public Long getFastGasPrice() {
-        return Long.valueOf(cacheService.getEtherscanGasPrice().optJSONObject("result").optString("FastGasPrice")) * 1000_000_000;
-    }
-
     private String convertAddress32BytesTo20Bytes(String contractAddress, String address32Bytes) {
         String address20Bytes = Numeric.prependHexPrefix(address32Bytes.substring(address32Bytes.length() - 40));
 
-        if (Numeric.toBigInt(address20Bytes).intValue() == 0) {
-            return contractAddress;
-        }
+        if (Numeric.toBigInt(address20Bytes).intValue() == 0) return contractAddress;
 
         return address20Bytes;
     }
 
-    private static TransactionListDTO buildTransactionList(String coll, BasicDBObject query, String address, Integer startIndex, Integer limit, TxListDTO txDTO) {
-        try {
-            Map<String, TransactionDetailsDTO> map = getNodeTransactionsFromDB(coll, query, address).getMap();
-
-            return TxUtil.buildTxs(map, startIndex, limit, txDTO);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return new TransactionListDTO();
-    }
-
-    private static NodeTransactionsDTO getNodeTransactionsFromDB(String coll, BasicDBObject query, String address) {
-        Map<String, TransactionDetailsDTO> map = new HashMap<>();
-
-        mongo.getCollection(coll).find(query).into(new ArrayList<>()).stream().forEach(d -> {
+    private void fetchEthTransaction(org.web3j.protocol.core.methods.response.Transaction tx, Long timestamp, List<UpdateOneModel<Document>> ethTxs, List<UpdateOneModel<Document>> tokenTxs) {
+        if (monitorService.isNodeAvailable(ETHEREUM)) {
             try {
-                TransactionDetailsDTO dto = new TransactionDetailsDTO();
+                String txId = tx.getHash();
+                String fromAddress = tx.getFrom();
+                String toAddress = tx.getTo();
 
-                String fromAddress = d.getString("fromAddress");
-                String toAddress = d.getString("toAddress");
+                if (existsInJournal(fromAddress, toAddress)) {
+                    BigDecimal amount = new BigDecimal(tx.getValue()).divide(ETH_DIVIDER).stripTrailingZeros();
+                    BigDecimal fee = new BigDecimal(tx.getGasPrice()).multiply(new BigDecimal(tx.getGas())).divide(ETH_DIVIDER).stripTrailingZeros();
+                    Integer blockNumber = parseBlockNumber(tx);
 
-                dto.setTxId(d.getString("txId"));
-                dto.setType(TransactionType.getType(fromAddress, toAddress, address));
-                dto.setStatus(TransactionStatus.valueOf(d.getInteger("status")));
-                dto.setCryptoAmount(d.get("amount", Decimal128.class).bigDecimalValue());
-                dto.setCryptoFee(d.get("fee", Decimal128.class).bigDecimalValue());
-                dto.setFromAddress(fromAddress);
-                dto.setToAddress(toAddress);
-                dto.setDate1(new Date(d.getLong("blockTime")));
+                    Optional<TransactionReceipt> receiptOptional = web3.ethGetTransactionReceipt(txId).send().getTransactionReceipt();
 
-                map.put(d.getString("txId"), dto);
+                    if (receiptOptional.isPresent()) {
+                        TransactionReceipt receipt = receiptOptional.get();
+                        TransactionStatus status = getTransactionStatus(receipt);
+
+                        if (amount.compareTo(BigDecimal.ZERO) == 0) {
+                            Document tokenDoc = fetchTokenTransaction(txId, blockNumber, timestamp, fee, status, receipt);
+
+                            if (tokenDoc != null) {
+                                fromAddress = Util.nvl(fromAddress, tokenDoc.getString("fromAddress"));
+                                toAddress = Util.nvl(toAddress, tokenDoc.getString("toAddress"));
+
+                                tokenDoc.put("fromAddress", fromAddress);
+                                tokenDoc.put("toAddress", toAddress);
+
+                                UpdateOneModel tokenUpdate = new UpdateOneModel(new Document("txId", tokenDoc.getString("txId")), new Document("$set", tokenDoc));
+                                tokenUpdate.getOptions().upsert(true);
+
+                                tokenTxs.add(tokenUpdate);
+                            }
+                        }
+
+                        Document doc = new Document("txId", txId)
+                                .append("blockNumber", blockNumber)
+                                .append("fromAddress", fromAddress)
+                                .append("toAddress", toAddress)
+                                .append("status", status.getValue())
+                                .append("amount", amount)
+                                .append("fee", fee)
+                                .append("blockTime", timestamp)
+                                .append("timestamp", System.currentTimeMillis());
+
+                        UpdateOneModel update = new UpdateOneModel(new Document("txId", doc.getString("txId")), new Document("$set", doc));
+                        update.getOptions().upsert(true);
+
+                        ethTxs.add(update);
+                    }
+                }
             } catch (Exception e) {
                 e.printStackTrace();
-            }
-        });
 
-        return new NodeTransactionsDTO(map);
-    }
-
-    private static TransactionDetailsDTO getTransactionFromDB(String coll, BasicDBObject query, String address) {
-        try {
-            Document txDoc = mongo.getCollection(coll).find(query).first();
-
-            if (txDoc == null) {
-                return new TransactionDetailsDTO();
-            } else {
-                String txId = txDoc.getString("txId");
-                String fromAddress = txDoc.getString("fromAddress");
-                String toAddress = txDoc.getString("toAddress");
-
-                TransactionDetailsDTO dto = new TransactionDetailsDTO();
-                dto.setTxId(txId);
-                dto.setLink(explorerUrl + "/" + txId);
-                dto.setType(TransactionType.getType(fromAddress, toAddress, address));
-                dto.setCryptoAmount(txDoc.get("amount", Decimal128.class).bigDecimalValue());
-                dto.setFromAddress(fromAddress);
-                dto.setToAddress(toAddress);
-                dto.setCryptoFee(txDoc.get("fee", Decimal128.class).bigDecimalValue());
-                dto.setStatus(TransactionStatus.valueOf(txDoc.getInteger("status")));
-                dto.setDate2(new Date(txDoc.getLong("blockTime")));
-
-                return dto;
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return new TransactionDetailsDTO();
-    }
-
-    private static void addPendingTransaction(String txId, String fromAddress, String toAddress, BigDecimal amount, BigDecimal fee) {
-        Document doc = new Document("txId", txId.toLowerCase())
-                .append("fromAddress", fromAddress.toLowerCase())
-                .append("toAddress", toAddress.toLowerCase())
-                .append("amount", amount)
-                .append("fee", fee)
-                .append("status", TransactionStatus.PENDING.getValue())
-                .append("blockTime", System.currentTimeMillis())
-                .append("timestamp", System.currentTimeMillis());
-
-        mongo.getCollection(ETH_TX_COLL).insertOne(doc);
-    }
-
-    private static void addPendingTransaction(ERC20 token, String txId, String fromAddress, String toAddress, BigDecimal amount, BigDecimal fee) {
-        addPendingTransaction(txId, fromAddress, token.getContractAddress(), BigDecimal.ZERO, fee);
-
-        Document doc = new Document("txId", txId.toLowerCase())
-                .append("fromAddress", fromAddress.toLowerCase())
-                .append("toAddress", toAddress.toLowerCase())
-                .append("amount", amount)
-                .append("fee", fee)
-                .append("status", TransactionStatus.PENDING.getValue())
-                .append("blockTime", System.currentTimeMillis())
-                .append("timestamp", System.currentTimeMillis())
-                .append("token", token.name());
-
-        mongo.getCollection(TOKEN_TX_COLL).insertOne(doc);
-    }
-
-    private void fetchEthTransaction(org.web3j.protocol.core.methods.response.Transaction tx, Long timestamp, List<UpdateOneModel<Document>> ethTxs, List<UpdateOneModel<Document>> tokenTxs) {
-        try {
-            String txId = tx.getHash();
-            String fromAddress = tx.getFrom();
-            String toAddress = tx.getTo();
-
-            if (existsInJournal(fromAddress, toAddress)) {
-                BigDecimal amount = new BigDecimal(tx.getValue()).divide(ETH_DIVIDER).stripTrailingZeros();
-                BigDecimal fee = new BigDecimal(tx.getGasPrice()).multiply(new BigDecimal(tx.getGas())).divide(ETH_DIVIDER).stripTrailingZeros();
-                Integer blockNumber = parseBlockNumber(tx);
-
-                Optional<TransactionReceipt> receiptOptional = web3.ethGetTransactionReceipt(txId).send().getTransactionReceipt();
-
-                if (receiptOptional.isPresent()) {
-                    TransactionReceipt receipt = receiptOptional.get();
-                    TransactionStatus status = getTransactionStatus(receipt);
-
-                    if (amount.compareTo(BigDecimal.ZERO) == 0) {
-                        Document tokenDoc = fetchTokenTransaction(txId, blockNumber, timestamp, fee, status, receipt);
-
-                        if (tokenDoc != null) {
-                            fromAddress = Util.nvl(fromAddress, tokenDoc.getString("fromAddress"));
-                            toAddress = Util.nvl(toAddress, tokenDoc.getString("toAddress"));
-
-                            tokenDoc.put("fromAddress", fromAddress);
-                            tokenDoc.put("toAddress", toAddress);
-
-                            UpdateOneModel tokenUpdate = new UpdateOneModel(new Document("txId", tokenDoc.getString("txId")), new Document("$set", tokenDoc));
-                            tokenUpdate.getOptions().upsert(true);
-
-                            tokenTxs.add(tokenUpdate);
-                        }
-                    }
-
-                    Document doc = new Document("txId", txId)
-                            .append("blockNumber", blockNumber)
-                            .append("fromAddress", fromAddress)
-                            .append("toAddress", toAddress)
-                            .append("status", status.getValue())
-                            .append("amount", amount)
-                            .append("fee", fee)
-                            .append("blockTime", timestamp)
-                            .append("timestamp", System.currentTimeMillis());
-
-                    UpdateOneModel update = new UpdateOneModel(new Document("txId", doc.getString("txId")), new Document("$set", doc));
-                    update.getOptions().upsert(true);
-
-                    ethTxs.add(update);
+                if (monitorService.switchToReserveNode(ETHEREUM)) {
+                    init();
+                    fetchEthTransaction(tx, timestamp, ethTxs, tokenTxs);
                 }
             }
-        } catch (Exception e) {
-            e.printStackTrace();
         }
     }
 
@@ -673,28 +697,74 @@ public class GethService {
     }
 
     private org.web3j.protocol.core.methods.response.Transaction getTransactionByHash(String txId) {
-        try {
-            return web3.ethGetTransactionByHash(txId).send().getTransaction().get();
-        } catch (Exception e) {
-            e.printStackTrace();
+        if (monitorService.isNodeAvailable(ETHEREUM)) {
+            try {
+                return web3.ethGetTransactionByHash(txId).send().getTransaction().get();
+            } catch (Exception e) {
+                e.printStackTrace();
+
+                if (monitorService.switchToReserveNode(ETHEREUM)) {
+                    init();
+                    return getTransactionByHash(txId);
+                }
+            }
         }
 
         return null;
     }
 
-    private static BasicDBObject buildQuery(String address) {
-        BasicDBList or = new BasicDBList();
-        or.add(new BasicDBObject("fromAddress", address.toLowerCase()));
-        or.add(new BasicDBObject("toAddress", address.toLowerCase()));
+    public enum ERC20 {
+        CATM {
+            @Override
+            public String getContractAddress() {
+                return catmContractAddress;
+            }
 
-        return new BasicDBObject("$or", or);
-    }
+            @Override
+            public BigDecimal getBalance(String address) {
+                if (monitorService.isNodeAvailable(ETHEREUM)) {
+                    try {
+                        return new BigDecimal(catm.balanceOf(address).send()).divide(ETH_DIVIDER);
+                    } catch (Exception e) {
+                        e.printStackTrace();
 
-    private static BasicDBObject buildQuery(ERC20 token, String address) {
-        BasicDBList and = new BasicDBList();
-        and.add(buildQuery(address));
-        and.add(new BasicDBObject("token", token.name()));
+                        if (monitorService.switchToReserveNode(ETHEREUM)) {
+                            init();
+                            return getBalance(address);
+                        }
+                    }
+                }
 
-        return new BasicDBObject("$and", and);
+                return BigDecimal.ZERO;
+            }
+        },
+        USDT {
+            @Override
+            public String getContractAddress() {
+                return usdtContractAddress;
+            }
+
+            @Override
+            public BigDecimal getBalance(String address) {
+                if (monitorService.isNodeAvailable(ETHEREUM)) {
+                    try {
+                        return new BigDecimal(usdt.balanceOf(address).send()).divide(ETH_DIVIDER);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+
+                        if (monitorService.switchToReserveNode(ETHEREUM)) {
+                            init();
+                            return getBalance(address);
+                        }
+                    }
+                }
+
+                return BigDecimal.ZERO;
+            }
+        };
+
+        public abstract String getContractAddress();
+
+        public abstract BigDecimal getBalance(String address);
     }
 }

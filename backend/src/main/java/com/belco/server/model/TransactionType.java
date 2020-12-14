@@ -2,6 +2,7 @@ package com.belco.server.model;
 
 import com.fasterxml.jackson.annotation.JsonValue;
 import org.apache.commons.lang3.StringUtils;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -9,21 +10,19 @@ public enum TransactionType {
 
     DEPOSIT(1),
     WITHDRAW(2),
-    SEND_GIFT(3),
-    RECEIVE_GIFT(4),
+    TRANSFER_SEND(3),
+    TRANSFER_RECEIVE(4),
     BUY(5),
     SELL(6),
     MOVE(7),
-    SWAP_OUT(8),
-    SWAP_IN(9),
+    SWAP_SEND(8),
+    SWAP_RECEIVE(9),
     RESERVE(10),
     RECALL(11),
     SELF(12),
     CREATE_STAKE(13),
     CANCEL_STAKE(14),
     WITHDRAW_STAKE(15);
-
-    private int value;
 
     private static final Map<Integer, TransactionType> map = new HashMap<>();
 
@@ -33,13 +32,10 @@ public enum TransactionType {
         }
     }
 
+    private int value;
+
     TransactionType(int value) {
         this.value = value;
-    }
-
-    @JsonValue
-    public int getValue() {
-        return value;
     }
 
     public static TransactionType valueOf(Integer value) {
@@ -63,20 +59,25 @@ public enum TransactionType {
     public static TransactionType convert(TransactionType type, TransactionType type2) {
         if (type == TransactionType.SELF) {
             return type;
-        } else if (type2 == SEND_GIFT || type2 == RECEIVE_GIFT) {
+        } else if (type2 == TRANSFER_SEND || type2 == TRANSFER_RECEIVE) {
             if (type == WITHDRAW) {
-                return SEND_GIFT;
+                return TRANSFER_SEND;
             } else if (type == DEPOSIT) {
-                return RECEIVE_GIFT;
+                return TRANSFER_RECEIVE;
             }
-        } else if (type2 == SWAP_IN || type2 == SWAP_OUT) {
+        } else if (type2 == SWAP_RECEIVE || type2 == SWAP_SEND) {
             if (type == WITHDRAW) {
-                return SWAP_OUT;
+                return SWAP_SEND;
             } else if (type == DEPOSIT) {
-                return SWAP_IN;
+                return SWAP_RECEIVE;
             }
         }
 
         return type2;
+    }
+
+    @JsonValue
+    public int getValue() {
+        return value;
     }
 }

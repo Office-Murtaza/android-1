@@ -10,49 +10,42 @@ import lombok.Getter;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.apache.commons.lang.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
 import org.web3j.utils.Numeric;
 import wallet.core.java.AnySigner;
-import wallet.core.jni.*;
+import wallet.core.jni.CoinType;
+import wallet.core.jni.PrivateKey;
 import wallet.core.jni.proto.Ripple;
 
-import javax.annotation.PostConstruct;
 import java.math.BigDecimal;
-import java.util.*;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 @Getter
 @Service
 public class RippledService {
 
     private static final BigDecimal XRP_DIVIDER = BigDecimal.valueOf(1_000_000L);
+    private static final CoinType XRP = CoinType.XRP;
 
-    @Autowired
-    private RestTemplate rest;
-
-    @Autowired
-    private WalletService walletService;
-
-    @Value("${xrp.node.url}")
-    private String nodeUrl;
+    private final RestTemplate rest;
+    private final WalletService walletService;
+    private final MonitorService monitorService;
 
     @Value("${xrp.explorer.url}")
     private String explorerUrl;
 
-    private boolean isNodeAvailable;
-
-    @PostConstruct
-    public void init() {
-        if (org.apache.commons.lang3.StringUtils.isNotBlank(nodeUrl)) {
-            isNodeAvailable = true;
-        }
+    public RippledService(RestTemplate rest, WalletService walletService, MonitorService monitorService) {
+        this.rest = rest;
+        this.walletService = walletService;
+        this.monitorService = monitorService;
     }
 
     public BigDecimal getBalance(String address) {
-        if (isNodeAvailable) {
+        if (monitorService.isNodeAvailable(XRP)) {
             try {
                 JSONObject param = new JSONObject();
                 param.put("account", address);
@@ -64,7 +57,7 @@ public class RippledService {
                 req.put("method", "account_info");
                 req.put("params", params);
 
-                JSONObject res = rest.postForObject(nodeUrl, req, JSONObject.class);
+                JSONObject res = rest.postForObject(monitorService.getNodeUrl(XRP), req, JSONObject.class);
                 JSONObject result = res.optJSONObject("result");
 
                 if (result != null) {
@@ -76,10 +69,12 @@ public class RippledService {
                         return Util.format(new BigDecimal(balance).divide(XRP_DIVIDER), 6);
                     }
                 }
-            } catch (ResourceAccessException rae) {
-                isNodeAvailable = false;
             } catch (Exception e) {
                 e.printStackTrace();
+
+                if (monitorService.switchToReserveNode(XRP)) {
+                    return getBalance(address);
+                }
             }
         }
 
@@ -87,7 +82,7 @@ public class RippledService {
     }
 
     public String submitTransaction(String hex) {
-        if (isNodeAvailable) {
+        if (monitorService.isNodeAvailable(XRP)) {
             try {
                 JSONObject param = new JSONObject();
                 param.put("tx_blob", hex);
@@ -99,17 +94,18 @@ public class RippledService {
                 req.put("method", "submit");
                 req.put("params", params);
 
-                JSONObject res = rest.postForObject(nodeUrl, req, JSONObject.class);
-
+                JSONObject res = rest.postForObject(monitorService.getNodeUrl(XRP), req, JSONObject.class);
                 String txId = res.optJSONObject("result").optJSONObject("tx_json").optString("hash");
 
                 if (isTransactionExist(txId)) {
                     return txId;
                 }
-            } catch (ResourceAccessException rae) {
-                isNodeAvailable = false;
             } catch (Exception e) {
                 e.printStackTrace();
+
+                if (monitorService.switchToReserveNode(XRP)) {
+                    return submitTransaction(hex);
+                }
             }
         }
 
@@ -117,7 +113,7 @@ public class RippledService {
     }
 
     public CurrentAccountDTO getCurrentAccount(String address) {
-        if (isNodeAvailable) {
+        if (monitorService.isNodeAvailable(XRP)) {
             try {
                 JSONObject param = new JSONObject();
                 param.put("account", address);
@@ -129,14 +125,16 @@ public class RippledService {
                 req.put("method", "account_info");
                 req.put("params", params);
 
-                JSONObject res = rest.postForObject(nodeUrl, req, JSONObject.class);
+                JSONObject res = rest.postForObject(monitorService.getNodeUrl(XRP), req, JSONObject.class);
                 Integer sequence = res.getJSONObject("result").getJSONObject("account_data").optInt("Sequence");
 
                 return new CurrentAccountDTO(null, sequence, null);
-            } catch (ResourceAccessException rae) {
-                isNodeAvailable = false;
             } catch (Exception e) {
                 e.printStackTrace();
+
+                if (monitorService.switchToReserveNode(XRP)) {
+                    return getCurrentAccount(address);
+                }
             }
         }
 
@@ -146,7 +144,7 @@ public class RippledService {
     public TransactionDetailsDTO getTransaction(String txId, String address) {
         TransactionDetailsDTO dto = new TransactionDetailsDTO();
 
-        if (isNodeAvailable) {
+        if (monitorService.isNodeAvailable(XRP)) {
             try {
                 JSONObject param = new JSONObject();
                 param.put("transaction", txId);
@@ -158,7 +156,7 @@ public class RippledService {
                 req.put("method", "tx");
                 req.put("params", params);
 
-                JSONObject res = rest.postForObject(nodeUrl, req, JSONObject.class);
+                JSONObject res = rest.postForObject(monitorService.getNodeUrl(XRP), req, JSONObject.class);
                 JSONObject tx = res.optJSONObject("result");
 
                 dto.setTxId(txId);
@@ -178,10 +176,12 @@ public class RippledService {
                 }
 
                 dto.setDate2(new Date((tx.optLong("date") + 946684800L) * 1000));
-            } catch (ResourceAccessException rae) {
-                isNodeAvailable = false;
             } catch (Exception e) {
                 e.printStackTrace();
+
+                if (monitorService.switchToReserveNode(XRP)) {
+                    return getTransaction(txId, address);
+                }
             }
         }
 
@@ -189,7 +189,7 @@ public class RippledService {
     }
 
     public NodeTransactionsDTO getNodeTransactions(String address) {
-        if (isNodeAvailable) {
+        if (monitorService.isNodeAvailable(XRP)) {
             try {
                 JSONObject param = new JSONObject();
                 param.put("account", address);
@@ -202,7 +202,7 @@ public class RippledService {
                 req.put("method", "account_tx");
                 req.put("params", params);
 
-                JSONObject res = rest.postForObject(nodeUrl, req, JSONObject.class);
+                JSONObject res = rest.postForObject(monitorService.getNodeUrl(XRP), req, JSONObject.class);
                 JSONObject jsonResult = res.optJSONObject("result");
                 JSONArray array = jsonResult.optJSONArray("transactions");
 
@@ -211,6 +211,10 @@ public class RippledService {
                 return new NodeTransactionsDTO(map);
             } catch (Exception e) {
                 e.printStackTrace();
+
+                if (monitorService.switchToReserveNode(XRP)) {
+                    return getNodeTransactions(address);
+                }
             }
         }
 
@@ -302,7 +306,7 @@ public class RippledService {
     }
 
     private boolean isTransactionExist(String txId) {
-        if (isNodeAvailable) {
+        if (monitorService.isNodeAvailable(XRP)) {
             try {
                 JSONObject param = new JSONObject();
                 param.put("transaction", txId);
@@ -314,14 +318,16 @@ public class RippledService {
                 req.put("method", "tx");
                 req.put("params", params);
 
-                JSONObject res = rest.postForObject(nodeUrl, req, JSONObject.class);
+                JSONObject res = rest.postForObject(monitorService.getNodeUrl(XRP), req, JSONObject.class);
                 JSONObject tx = res.optJSONObject("result");
 
                 return !tx.optString("status").equalsIgnoreCase("error");
-            } catch (ResourceAccessException rae) {
-                isNodeAvailable = false;
             } catch (Exception e) {
                 e.printStackTrace();
+
+                if (monitorService.switchToReserveNode(XRP)) {
+                    return isTransactionExist(txId);
+                }
             }
         }
 

@@ -13,7 +13,6 @@ import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 import org.joda.time.Seconds;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -31,44 +30,34 @@ public class TransactionService {
 
     private static final Pageable page = PageRequest.of(0, 100);
 
+    private final TransactionRecordRep recordRep;
+    private final TransactionRecordWalletRep walletRep;
+    private final UserCoinRep userCoinRep;
+    private final UserService userService;
+    private final TwilioService twilioService;
+    private final WalletService walletService;
+
     @Value("${gb.url}")
     private String gbUrl;
-
     @Value("${stake.base-period}")
     private int stakeBasePeriod;
-
     @Value("${stake.hold-period}")
     private int stakeHoldPeriod;
-
     @Value("${stake.annual-period}")
     private int stakeAnnualPeriod;
-
     @Value("${stake.annual-percent}")
     private int stakeAnnualPercent;
-
     @Value("${swap.profit-percent}")
     private BigDecimal swapProfitPercent;
 
-    @Autowired
-    private TransactionRecordRep recordRep;
-
-    @Autowired
-    private TransactionRecordWalletRep walletRep;
-
-    @Autowired
-    private UserCoinRep userCoinRep;
-
-    @Autowired
-    private UserService userService;
-
-    @Autowired
-    private ChainalysisService chainalysisService;
-
-    @Autowired
-    private TwilioService twilioService;
-
-    @Autowired
-    private WalletService walletService;
+    public TransactionService(TransactionRecordRep recordRep, TransactionRecordWalletRep walletRep, UserCoinRep userCoinRep, UserService userService, TwilioService twilioService, WalletService walletService) {
+        this.recordRep = recordRep;
+        this.walletRep = walletRep;
+        this.userCoinRep = userCoinRep;
+        this.userService = userService;
+        this.twilioService = twilioService;
+        this.walletService = walletService;
+    }
 
     public TransactionDetailsDTO getTransactionDetails(Long userId, CoinService.CoinEnum coinCode, String txId) {
         User user = userService.findById(userId);
@@ -86,17 +75,17 @@ public class TransactionService {
             buySellRecOpt = recordRep.findOneByIdentityAndDetailAndCryptoCurrency(user.getIdentity(), txId, coinCode.name());
         }
 
-        Optional<TransactionRecordWallet> giftRecOpt = walletRep.findFirstByIdentityAndCoinAndTxIdAndTypeIn(identity, coin, txId, Arrays.asList(TransactionType.SEND_GIFT.getValue(), TransactionType.RECEIVE_GIFT.getValue()));
-        Optional<TransactionRecordWallet> swapRecOpt = walletRep.findFirstByIdentityAndCoinAndTxIdAndTypeIn(identity, coin, txId, Arrays.asList(TransactionType.SWAP_OUT.getValue(), TransactionType.SWAP_IN.getValue()));
+        Optional<TransactionRecordWallet> giftRecOpt = walletRep.findFirstByIdentityAndCoinAndTxIdAndTypeIn(identity, coin, txId, Arrays.asList(TransactionType.TRANSFER_SEND.getValue(), TransactionType.TRANSFER_RECEIVE.getValue()));
+        Optional<TransactionRecordWallet> swapRecOpt = walletRep.findFirstByIdentityAndCoinAndTxIdAndTypeIn(identity, coin, txId, Arrays.asList(TransactionType.SWAP_SEND.getValue(), TransactionType.SWAP_RECEIVE.getValue()));
         Optional<TransactionRecordWallet> stakeRecOpt = walletRep.findFirstByIdentityAndCoinAndTxIdAndTypeIn(identity, coin, txId, Arrays.asList(TransactionType.CREATE_STAKE.getValue(), TransactionType.CANCEL_STAKE.getValue(), TransactionType.WITHDRAW_STAKE.getValue()));
         Optional<TransactionRecordWallet> reserveRecOpt = walletRep.findFirstByIdentityAndCoinAndTxIdAndTypeIn(identity, coin, txId, Arrays.asList(TransactionType.RESERVE.getValue(), TransactionType.RECALL.getValue()));
 
         if (giftRecOpt.isPresent()) {
             TransactionRecordWallet gift = giftRecOpt.get();
 
-            if (gift.getType() == TransactionType.SEND_GIFT.getValue()) {
+            if (gift.getType() == TransactionType.TRANSFER_SEND.getValue()) {
                 dto.setToPhone(gift.getToPhone());
-            } else if (gift.getType() == TransactionType.RECEIVE_GIFT.getValue()) {
+            } else if (gift.getType() == TransactionType.TRANSFER_RECEIVE.getValue()) {
                 dto.setFromPhone(gift.getFromPhone());
             }
 
@@ -169,7 +158,7 @@ public class TransactionService {
             if (BooleanUtils.isTrue(dto.getFromServerWallet())) {
                 TransactionRecordWallet record = new TransactionRecordWallet();
                 record.setTxId(txId);
-                record.setType(TransactionType.RECEIVE_GIFT.getValue());
+                record.setType(TransactionType.TRANSFER_RECEIVE.getValue());
                 record.setStatus(TransactionStatus.PENDING.getValue());
                 record.setFromPhone(user.getPhone());
                 record.setToPhone(dto.getPhone());
@@ -186,7 +175,7 @@ public class TransactionService {
 
                 TransactionRecordWallet sendRecord = new TransactionRecordWallet();
                 sendRecord.setTxId(txId);
-                sendRecord.setType(TransactionType.SEND_GIFT.getValue());
+                sendRecord.setType(TransactionType.TRANSFER_SEND.getValue());
                 sendRecord.setAmount(dto.getCryptoAmount());
                 sendRecord.setStatus(TransactionStatus.PENDING.getValue());
                 sendRecord.setFromPhone(user.getPhone());
@@ -203,7 +192,7 @@ public class TransactionService {
                 if (receiverOpt.isPresent()) {
                     TransactionRecordWallet receiveRecord = new TransactionRecordWallet();
                     receiveRecord.setTxId(sendRecord.getTxId());
-                    receiveRecord.setType(TransactionType.RECEIVE_GIFT.getValue());
+                    receiveRecord.setType(TransactionType.TRANSFER_RECEIVE.getValue());
                     receiveRecord.setStatus(TransactionStatus.PENDING.getValue());
                     receiveRecord.setFromPhone(sendRecord.getFromPhone());
                     receiveRecord.setToPhone(sendRecord.getToPhone());
@@ -288,7 +277,7 @@ public class TransactionService {
             record.setIdentity(userService.findById(userId).getIdentity());
             record.setCoin(coin.getCoinEntity());
             record.setAmount(dto.getCryptoAmount());
-            record.setType(TransactionType.SWAP_OUT.getValue());
+            record.setType(TransactionType.SWAP_SEND.getValue());
             record.setStatus(TransactionStatus.PENDING.getValue());
             record.setProfitPercent(swapProfitPercent);
             record.setRefCoin(refCoin.getCoinEntity());
@@ -498,7 +487,6 @@ public class TransactionService {
     public void processCronTasks() {
         completePendingRecords();
 
-        chainalysisTracking();
         deliverReservedGifts();
         deliverSwaps();
     }
@@ -544,22 +532,9 @@ public class TransactionService {
         return confirmedList;
     }
 
-    private void chainalysisTracking() {
-        try {
-            List<TransactionRecord> list = recordRep.findNotTrackedTransactions(page);
-
-            if (!list.isEmpty()) {
-                List<TransactionRecord> listRes = chainalysisService.process(list);
-                recordRep.saveAll(listRes);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
     private void deliverSwaps() {
         try {
-            List<TransactionRecordWallet> list = walletRep.findAllByProcessedAndTypeAndStatusAndRefTxIdNull(ProcessedType.SUCCESS.getValue(), TransactionType.SWAP_OUT.getValue(), TransactionStatus.COMPLETE.getValue(), page);
+            List<TransactionRecordWallet> list = walletRep.findAllByProcessedAndTypeAndStatusAndRefTxIdNull(ProcessedType.SUCCESS.getValue(), TransactionType.SWAP_SEND.getValue(), TransactionStatus.COMPLETE.getValue(), page);
 
             list.stream().forEach(t -> {
                 try {
@@ -587,7 +562,7 @@ public class TransactionService {
                             rec.setIdentity(identity);
                             rec.setCoin(coinCode.getCoinEntity());
                             rec.setAmount(withdrawAmount);
-                            rec.setType(TransactionType.SWAP_IN.getValue());
+                            rec.setType(TransactionType.SWAP_RECEIVE.getValue());
                             rec.setStatus(TransactionStatus.PENDING.getValue());
                             rec.setProfitPercent(t.getProfitPercent());
                             rec.setRefCoin(t.getCoin());
@@ -617,7 +592,7 @@ public class TransactionService {
     private void deliverReservedGifts() {
         try {
             List<TransactionRecordWallet> list = walletRep.findAllByProcessedAndTypeAndStatusAndReceiverStatus(ProcessedType.SUCCESS.getValue(),
-                    TransactionType.SEND_GIFT.getValue(),
+                    TransactionType.TRANSFER_SEND.getValue(),
                     TransactionStatus.COMPLETE.getValue(),
                     TransactionRecordWallet.RECEIVER_NOT_EXIST, page);
 
@@ -639,7 +614,7 @@ public class TransactionService {
                             dto.setHex(hex);
                             dto.setCryptoAmount(withdrawAmount);
                             dto.setRefTxId(t.getTxId());
-                            dto.setType(TransactionType.SEND_GIFT.getValue());
+                            dto.setType(TransactionType.TRANSFER_SEND.getValue());
                             dto.setPhone(t.getToPhone());
                             dto.setImageId(t.getImageId());
                             dto.setMessage(t.getMessage());
