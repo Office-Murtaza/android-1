@@ -1,12 +1,11 @@
 package com.belco.server.service;
 
-import com.belco.server.model.TransactionStatus;
-import com.belco.server.model.TransactionType;
-import com.belco.server.repository.CoinRep;
 import com.belco.server.dto.*;
 import com.belco.server.entity.Coin;
 import com.belco.server.entity.User;
 import com.belco.server.entity.UserCoin;
+import com.belco.server.model.TransactionStatus;
+import com.belco.server.repository.CoinRep;
 import com.belco.server.util.Util;
 import net.sf.json.JSONObject;
 import org.apache.commons.lang.StringUtils;
@@ -30,28 +29,29 @@ import java.util.stream.Collectors;
 @EnableScheduling
 public class CoinService {
 
-    @Value("${swap.profit-percent}")
-    private BigDecimal swapProfitPercent;
-
-    private static Map<String, Coin> coinMap;
     public static Map<String, Map<Long, List<String>>> wsMap = new ConcurrentHashMap<>();
 
+    private static Map<String, Coin> coinMap;
     private static WalletService walletService;
     private static UserService userService;
-
+    private static CacheService cacheService;
+    private static SimpMessagingTemplate simpMessagingTemplate;
+    private static NodeService nodeService;
     private static BlockbookService blockbookService;
     private static GethService gethService;
     private static BinanceService binanceService;
     private static RippledService rippledService;
     private static TrongridService trongridService;
-    private static CacheService cacheService;
-    private static SimpMessagingTemplate simpMessagingTemplate;
+
+    @Value("${swap.profit-percent}")
+    private BigDecimal swapProfitPercent;
 
     public CoinService(@Autowired final WalletService walletService,
                        @Autowired @Lazy final UserService userService,
                        @Autowired final CoinRep coinRep,
                        @Autowired final CacheService cacheService,
                        @Autowired final SimpMessagingTemplate simpMessagingTemplate,
+                       @Autowired final NodeService nodeService,
 
                        @Autowired final BlockbookService blockbookService,
                        @Autowired final GethService gethService,
@@ -65,12 +65,17 @@ public class CoinService {
         CoinService.coinMap = coinRep.findAll().stream().collect(Collectors.toMap(Coin::getCode, Function.identity()));
         CoinService.cacheService = cacheService;
         CoinService.simpMessagingTemplate = simpMessagingTemplate;
+        CoinService.nodeService = nodeService;
 
         CoinService.blockbookService = blockbookService;
         CoinService.gethService = gethService;
         CoinService.binanceService = binanceService;
         CoinService.rippledService = rippledService;
         CoinService.trongridService = trongridService;
+    }
+
+    private static BigDecimal getPriceById(String id) {
+        return cacheService.getPriceById(id);
     }
 
     @Scheduled(cron = "*/10 * * * * *")
@@ -205,10 +210,6 @@ public class CoinService {
         });
     }
 
-    private static BigDecimal getPriceById(String id) {
-        return cacheService.getPriceById(id);
-    }
-
     public enum CoinEnum {
         BTC {
             @Override
@@ -247,18 +248,13 @@ public class CoinService {
             }
 
             @Override
-            public TransactionNumberDTO getTransactionNumber(String address, BigDecimal amount, TransactionType type) {
-                return blockbookService.getTransactionNumber(getCoinType(), address, amount, type);
-            }
-
-            @Override
             public TransactionStatus getTransactionStatus(String txId) {
                 return getTransaction(txId, StringUtils.EMPTY).getStatus();
             }
 
             @Override
             public TransactionDetailsDTO getTransaction(String txId, String address) {
-                return blockbookService.getTransaction(getCoinType(), txId, address);
+                return blockbookService.getTransaction(getCoinType(), txId, address, getExplorerUrl());
             }
 
             @Override
@@ -321,7 +317,7 @@ public class CoinService {
 
             @Override
             public String getExplorerUrl() {
-                return blockbookService.getExplorerUrl(getCoinType());
+                return nodeService.getExplorerUrl(getCoinType());
             }
 
             @Override
@@ -366,18 +362,13 @@ public class CoinService {
             }
 
             @Override
-            public TransactionNumberDTO getTransactionNumber(String address, BigDecimal amount, TransactionType type) {
-                return blockbookService.getTransactionNumber(getCoinType(), address, amount, type);
-            }
-
-            @Override
             public TransactionStatus getTransactionStatus(String txId) {
                 return getTransaction(txId, StringUtils.EMPTY).getStatus();
             }
 
             @Override
             public TransactionDetailsDTO getTransaction(String txId, String address) {
-                return blockbookService.getTransaction(getCoinType(), txId, address);
+                return blockbookService.getTransaction(getCoinType(), txId, address, getExplorerUrl());
             }
 
             @Override
@@ -440,7 +431,7 @@ public class CoinService {
 
             @Override
             public String getExplorerUrl() {
-                return blockbookService.getExplorerUrl(getCoinType());
+                return nodeService.getExplorerUrl(getCoinType());
             }
 
             @Override
@@ -485,18 +476,13 @@ public class CoinService {
             }
 
             @Override
-            public TransactionNumberDTO getTransactionNumber(String address, BigDecimal amount, TransactionType type) {
-                return blockbookService.getTransactionNumber(getCoinType(), address, amount, type);
-            }
-
-            @Override
             public TransactionStatus getTransactionStatus(String txId) {
                 return getTransaction(txId, StringUtils.EMPTY).getStatus();
             }
 
             @Override
             public TransactionDetailsDTO getTransaction(String txId, String address) {
-                return blockbookService.getTransaction(getCoinType(), txId, address);
+                return blockbookService.getTransaction(getCoinType(), txId, address, getExplorerUrl());
             }
 
             @Override
@@ -559,7 +545,7 @@ public class CoinService {
 
             @Override
             public String getExplorerUrl() {
-                return blockbookService.getExplorerUrl(getCoinType());
+                return nodeService.getExplorerUrl(getCoinType());
             }
 
             @Override
@@ -604,18 +590,13 @@ public class CoinService {
             }
 
             @Override
-            public TransactionNumberDTO getTransactionNumber(String address, BigDecimal amount, TransactionType type) {
-                return blockbookService.getTransactionNumber(getCoinType(), address, amount, type);
-            }
-
-            @Override
             public TransactionStatus getTransactionStatus(String txId) {
                 return getTransaction(txId, StringUtils.EMPTY).getStatus();
             }
 
             @Override
             public TransactionDetailsDTO getTransaction(String txId, String address) {
-                return blockbookService.getTransaction(getCoinType(), txId, address);
+                return blockbookService.getTransaction(getCoinType(), txId, address, getExplorerUrl());
             }
 
             @Override
@@ -678,7 +659,7 @@ public class CoinService {
 
             @Override
             public String getExplorerUrl() {
-                return blockbookService.getExplorerUrl(getCoinType());
+                return nodeService.getExplorerUrl(getCoinType());
             }
 
             @Override
@@ -723,18 +704,13 @@ public class CoinService {
             }
 
             @Override
-            public TransactionNumberDTO getTransactionNumber(String address, BigDecimal amount, TransactionType type) {
-                return blockbookService.getTransactionNumber(getCoinType(), address, amount, type);
-            }
-
-            @Override
             public TransactionStatus getTransactionStatus(String txId) {
                 return getTransaction(txId, StringUtils.EMPTY).getStatus();
             }
 
             @Override
             public TransactionDetailsDTO getTransaction(String txId, String address) {
-                return blockbookService.getTransaction(getCoinType(), txId, address);
+                return blockbookService.getTransaction(getCoinType(), txId, address, getExplorerUrl());
             }
 
             @Override
@@ -797,7 +773,7 @@ public class CoinService {
 
             @Override
             public String getExplorerUrl() {
-                return blockbookService.getExplorerUrl(getCoinType());
+                return nodeService.getExplorerUrl(getCoinType());
             }
 
             @Override
@@ -842,18 +818,13 @@ public class CoinService {
             }
 
             @Override
-            public TransactionNumberDTO getTransactionNumber(String address, BigDecimal amount, TransactionType type) {
-                return null;
-            }
-
-            @Override
             public TransactionStatus getTransactionStatus(String txId) {
                 return gethService.getTransactionStatus(txId);
             }
 
             @Override
             public TransactionDetailsDTO getTransaction(String txId, String address) {
-                return gethService.getTransaction(txId, address);
+                return gethService.getTransaction(txId, address, getExplorerUrl());
             }
 
             @Override
@@ -913,7 +884,7 @@ public class CoinService {
 
             @Override
             public String getExplorerUrl() {
-                return GethService.explorerUrl;
+                return nodeService.getExplorerUrl(getCoinType());
             }
 
             @Override
@@ -958,18 +929,13 @@ public class CoinService {
             }
 
             @Override
-            public TransactionNumberDTO getTransactionNumber(String address, BigDecimal amount, TransactionType type) {
-                return null;
-            }
-
-            @Override
             public TransactionStatus getTransactionStatus(String txId) {
                 return gethService.getTransactionStatus(txId);
             }
 
             @Override
             public TransactionDetailsDTO getTransaction(String txId, String address) {
-                return gethService.getTransaction(GethService.ERC20.CATM, txId, address);
+                return gethService.getTransaction(GethService.ERC20.CATM, txId, address, getExplorerUrl());
             }
 
             @Override
@@ -1029,7 +995,7 @@ public class CoinService {
 
             @Override
             public String getExplorerUrl() {
-                return GethService.explorerUrl;
+                return nodeService.getExplorerUrl(getCoinType());
             }
 
             @Override
@@ -1074,18 +1040,13 @@ public class CoinService {
             }
 
             @Override
-            public TransactionNumberDTO getTransactionNumber(String address, BigDecimal amount, TransactionType type) {
-                return null;
-            }
-
-            @Override
             public TransactionStatus getTransactionStatus(String txId) {
                 return gethService.getTransactionStatus(txId);
             }
 
             @Override
             public TransactionDetailsDTO getTransaction(String txId, String address) {
-                return gethService.getTransaction(GethService.ERC20.USDT, txId, address);
+                return gethService.getTransaction(GethService.ERC20.USDT, txId, address, getExplorerUrl());
             }
 
             @Override
@@ -1145,7 +1106,7 @@ public class CoinService {
 
             @Override
             public String getExplorerUrl() {
-                return GethService.explorerUrl;
+                return nodeService.getExplorerUrl(getCoinType());
             }
 
             @Override
@@ -1190,18 +1151,13 @@ public class CoinService {
             }
 
             @Override
-            public TransactionNumberDTO getTransactionNumber(String address, BigDecimal amount, TransactionType type) {
-                return null;
-            }
-
-            @Override
             public TransactionStatus getTransactionStatus(String txId) {
                 return getTransaction(txId, StringUtils.EMPTY).getStatus();
             }
 
             @Override
             public TransactionDetailsDTO getTransaction(String txId, String address) {
-                return binanceService.getTransaction(txId, address);
+                return binanceService.getTransaction(txId, address, getExplorerUrl());
             }
 
             @Override
@@ -1261,7 +1217,7 @@ public class CoinService {
 
             @Override
             public String getExplorerUrl() {
-                return binanceService.getExplorerUrl();
+                return nodeService.getExplorerUrl(getCoinType());
             }
 
             @Override
@@ -1306,18 +1262,13 @@ public class CoinService {
             }
 
             @Override
-            public TransactionNumberDTO getTransactionNumber(String address, BigDecimal amount, TransactionType type) {
-                return null;
-            }
-
-            @Override
             public TransactionStatus getTransactionStatus(String txId) {
                 return getTransaction(txId, StringUtils.EMPTY).getStatus();
             }
 
             @Override
             public TransactionDetailsDTO getTransaction(String txId, String address) {
-                return rippledService.getTransaction(txId, address);
+                return rippledService.getTransaction(txId, address, getExplorerUrl());
             }
 
             @Override
@@ -1385,7 +1336,7 @@ public class CoinService {
 
             @Override
             public String getExplorerUrl() {
-                return rippledService.getExplorerUrl();
+                return nodeService.getExplorerUrl(getCoinType());
             }
 
             @Override
@@ -1430,18 +1381,13 @@ public class CoinService {
             }
 
             @Override
-            public TransactionNumberDTO getTransactionNumber(String address, BigDecimal amount, TransactionType type) {
-                return null;
-            }
-
-            @Override
             public TransactionStatus getTransactionStatus(String txId) {
                 return getTransaction(txId, StringUtils.EMPTY).getStatus();
             }
 
             @Override
             public TransactionDetailsDTO getTransaction(String txId, String address) {
-                return trongridService.getTransaction(txId, address);
+                return trongridService.getTransaction(txId, address, getExplorerUrl());
             }
 
             @Override
@@ -1501,7 +1447,7 @@ public class CoinService {
 
             @Override
             public String getExplorerUrl() {
-                return trongridService.getExplorerUrl();
+                return nodeService.getExplorerUrl(getCoinType());
             }
 
             @Override
@@ -1523,8 +1469,6 @@ public class CoinService {
         public abstract Long getGasLimit();
 
         public abstract String getName();
-
-        public abstract TransactionNumberDTO getTransactionNumber(String address, BigDecimal amount, TransactionType type);
 
         public abstract TransactionStatus getTransactionStatus(String txId);
 

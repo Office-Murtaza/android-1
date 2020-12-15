@@ -13,14 +13,10 @@ import com.google.protobuf.ByteString;
 import lombok.Getter;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
 import org.web3j.utils.Numeric;
 import wallet.core.java.AnySigner;
@@ -29,11 +25,13 @@ import wallet.core.jni.CoinType;
 import wallet.core.jni.PrivateKey;
 import wallet.core.jni.proto.Binance;
 
-import javax.annotation.PostConstruct;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.time.ZonedDateTime;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 @Getter
@@ -42,32 +40,20 @@ public class BinanceService {
 
     private static final String CHAIN_ID = "Binance-Chain-Tigris";
     private static final BigDecimal BNB_DIVIDER = BigDecimal.valueOf(100_000_000L);
+    private static final CoinType COIN_TYPE = CoinType.BINANCE;
 
-    @Autowired
-    private BinanceDexApiRestClient binanceDex;
+    private final BinanceDexApiRestClient binanceDex;
+    private final RestTemplate rest;
+    private final MongoOperations mongo;
+    private final WalletService walletService;
+    private final NodeService nodeService;
 
-    @Autowired
-    private MongoOperations mongo;
-
-    @Autowired
-    private RestTemplate rest;
-
-    @Autowired
-    private WalletService walletService;
-
-    @Value("${bnb.node.url}")
-    private String nodeUrl;
-
-    @Value("${bnb.explorer.url}")
-    private String explorerUrl;
-
-    private boolean isNodeAvailable;
-
-    @PostConstruct
-    public void init() {
-        if (StringUtils.isNotBlank(nodeUrl)) {
-            isNodeAvailable = true;
-        }
+    public BinanceService(BinanceDexApiRestClient binanceDex, RestTemplate rest, MongoOperations mongo, WalletService walletService, NodeService nodeService) {
+        this.binanceDex = binanceDex;
+        this.mongo = mongo;
+        this.rest = rest;
+        this.walletService = walletService;
+        this.nodeService = nodeService;
     }
 
     public BigDecimal getBalance(String address) {
@@ -80,36 +66,39 @@ public class BinanceService {
                     .map(it -> new BigDecimal(it.getFree()).add(new BigDecimal(it.getLocked())))
                     .reduce(BigDecimal.ZERO, BigDecimal::add), 6);
         } catch (Exception e) {
+            e.printStackTrace();
         }
 
         return BigDecimal.ZERO;
     }
 
     public String submitTransaction(String hex) {
-        if (isNodeAvailable) {
+        if (nodeService.isNodeAvailable(COIN_TYPE)) {
             try {
                 HttpHeaders headers = new HttpHeaders();
                 headers.setContentType(MediaType.TEXT_PLAIN);
 
-                JSONObject res = JSONArray.fromObject(rest.postForObject(nodeUrl + "/api/v1/broadcast", hex, String.class)).getJSONObject(0);
+                JSONObject res = JSONArray.fromObject(rest.postForObject(nodeService.getNodeUrl(COIN_TYPE) + "/api/v1/broadcast", hex, String.class)).getJSONObject(0);
 
                 return res.optString("hash");
-            } catch (ResourceAccessException rae) {
-                isNodeAvailable = false;
             } catch (Exception e) {
                 e.printStackTrace();
+
+                if (nodeService.switchToReserveNode(COIN_TYPE)) {
+                    return submitTransaction(hex);
+                }
             }
         }
 
         return null;
     }
 
-    public TransactionDetailsDTO getTransaction(String txId, String address) {
+    public TransactionDetailsDTO getTransaction(String txId, String address, String explorerUrl) {
         TransactionDetailsDTO dto = new TransactionDetailsDTO();
 
-        if (isNodeAvailable) {
+        if (nodeService.isNodeAvailable(COIN_TYPE)) {
             try {
-                JSONObject res = rest.getForObject(nodeUrl + "/api/v1/tx/" + txId + "?format=json", JSONObject.class);
+                JSONObject res = rest.getForObject(nodeService.getNodeUrl(COIN_TYPE) + "/api/v1/tx/" + txId + "?format=json", JSONObject.class);
                 JSONObject msg = res.optJSONObject("tx").optJSONObject("value").optJSONArray("msg").getJSONObject(0);
 
                 dto.setTxId(txId);
@@ -120,11 +109,13 @@ public class BinanceService {
                 dto.setStatus(getStatus(res.getInt("code")));
                 dto.setCryptoAmount(getAmount(msg.optJSONObject("value").optJSONArray("inputs").getJSONObject(0).getJSONArray("coins").getJSONObject(0).optString("amount")));
                 dto.setCryptoFee(getAmount("1000000"));
-            } catch (ResourceAccessException rae) {
-                isNodeAvailable = false;
-                dto.setStatus(TransactionStatus.PENDING);
             } catch (Exception e) {
                 e.printStackTrace();
+
+                if (nodeService.switchToReserveNode(COIN_TYPE)) {
+                    return getTransaction(txId, address, explorerUrl);
+                }
+
                 dto.setStatus(TransactionStatus.FAIL);
             }
         }
