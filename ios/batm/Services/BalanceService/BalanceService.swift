@@ -110,24 +110,6 @@ extension BalanceServiceImpl: BalanceServiceWebSocket {
     }.disposed(by: disposeBag)
   }
   
-//  @objc func restart() {
-//    unsubscribe()
-//      .andThen(disconnect())
-//      .subscribe { [weak self] in
-//        self?.start()
-//      } onError: { [weak self] error in
-//        guard let disposeBag = self?.disposeBag else { return }
-//        if (error as? BalanceServiceError) == BalanceServiceError.phoneEmptyDuringUnsubscribe {
-//          self?.disconnectAndStart()
-//        } else {
-//          self?.errorService
-//            .showError(for: .serverError)
-//            .subscribe()
-//            .disposed(by: disposeBag)
-//        }
-//      }.disposed(by: disposeBag)
-//  }
-  
   func connect() {
     guard let accessToken = account?.accessToken else { return }
     let token = "Bearer " + accessToken
@@ -243,8 +225,6 @@ extension BalanceServiceImpl: WebSocketDelegate {
     case .disconnected(_, _): start()
     case .text(let string):
       let model = SocketResultMessageMapper().mapMessage(string)
-       print("model, \(model)")
-       print("model string: \(string)")
       handleMessage(model)
     case .reconnectSuggested(_):
       unsubscribe()
