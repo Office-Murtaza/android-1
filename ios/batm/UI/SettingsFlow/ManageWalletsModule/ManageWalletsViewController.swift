@@ -27,7 +27,7 @@ class ManageWalletsViewController: ModuleViewController<ManageWalletsPresenter> 
     dataSource.tableView = tableView
     
     presenter.state
-      .map { $0.coins.sorted() }
+      .map { $0.coins.sorted { $0.index < $1.index } }
       .asObservable()
       .bind(to: dataSource.coinsRelay)
       .disposed(by: disposeBag)

@@ -98,7 +98,6 @@ class WalletPresenter: ModulePresenter, WalletModule {
   
   private func setupBindings() {
     fetchCoinsBalanceRelay
-      .observeOn(MainScheduler.instance)
       .flatMap { [unowned self] in self.track(self.balanceService.getCoinsBalance()) }
       .map { WalletAction.finishFetchingCoinsBalance($0)}
       .bind(to: store.action)

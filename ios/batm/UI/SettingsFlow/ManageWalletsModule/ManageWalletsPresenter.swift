@@ -32,7 +32,6 @@ class ManageWalletsPresenter: ModulePresenter, ManageWalletsModule {
       .disposed(by: disposeBag)
   }
     
-    
   func bind(input: Input) {
     input.changeVisibility
       .asObservable()
@@ -49,7 +48,8 @@ class ManageWalletsPresenter: ModulePresenter, ManageWalletsModule {
   
   private func changeVisibility(of coin: BTMCoin) -> Observable<ManageWalletsAction> {
     return Observable.just(coin)
-      .flatMap { [usecase] in usecase.changeVisibility(of: $0).andThen(Observable.just(())) }
+      .flatMap { [usecase] in usecase.changeVisibility(of: $0)
+      .andThen(Observable.just(())) }
       .doOnNext { [delegate] in delegate?.didChangeVisibility() }
       .flatMap { [unowned self] in self.fetchCoins() }
   }

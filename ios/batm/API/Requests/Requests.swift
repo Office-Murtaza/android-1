@@ -46,7 +46,7 @@ struct PhoneVerificationRequest: AuthorizedAPIRequest {
 }
 
 struct CreateAccountRequest: RetriableAPIRequest {
-  typealias ResponseType = APIResponse<Account>
+  typealias ResponseType = APIResponse<CreateWalletResponse>
   typealias ResponseTrait = SingleResponseTrait
   
   let phoneNumber: String
@@ -67,7 +67,7 @@ struct CreateAccountRequest: RetriableAPIRequest {
 }
 
 struct RecoverWalletRequest: RetriableAPIRequest {
-  typealias ResponseType = APIResponse<Account>
+  typealias ResponseType = APIResponse<CreateWalletResponse>
   typealias ResponseTrait = SingleResponseTrait
   
   let phoneNumber: String

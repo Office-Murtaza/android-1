@@ -20,7 +20,7 @@ final class ManageWalletsStore: ViewStore<ManageWalletsAction, ManageWalletsStat
     var state = state
     
     switch action {
-    case let .updateCoins(coins): state.coins = coins.sorted { $0.type.verboseValue < $1.type.verboseValue }
+    case let .updateCoins(coins): state.coins = coins.sorted { $0.index < $1.index }
     }
     
     return state

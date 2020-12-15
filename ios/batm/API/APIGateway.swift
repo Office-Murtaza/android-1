@@ -19,8 +19,8 @@ protocol APIGateway {
   
   func checkAccount(phoneNumber: String, password: String) -> Single<CheckAccountResponse>
   func verifyPhone(phoneNumber: String) -> Single<PhoneVerificationResponse>
-  func createAccount(phoneNumber: String, password: String, coinAddresses: [CoinAddress]) -> Single<Account>
-  func recoverWallet(phoneNumber: String, password: String, coinAddresses: [CoinAddress]) -> Single<Account>
+  func createAccount(phoneNumber: String, password: String, coinAddresses: [CoinAddress]) -> Single<CreateWalletResponse>
+  func recoverWallet(phoneNumber: String, password: String, coinAddresses: [CoinAddress]) -> Single<CreateWalletResponse>
   func verifyCode(userId: Int, code: String) -> Completable
   func getCoinsBalance(userId: Int, coins: [BTMCoin]) -> Single<CoinsBalance>
   func getCoinDetails(type: CustomCoinType) -> Single<CoinDetails>
@@ -128,13 +128,13 @@ final class APIGatewayImpl: APIGateway {
     return execute(request)
   }
   
-  func createAccount(phoneNumber: String, password: String, coinAddresses: [CoinAddress]) -> Single<Account> {
+  func createAccount(phoneNumber: String, password: String, coinAddresses: [CoinAddress]) -> Single<CreateWalletResponse> {
     let token = KeychainManager.loadValue(for: GlobalConstants.fcmPushToken)
     let request = CreateAccountRequest(phoneNumber: phoneNumber, password: password, coinAddresses: coinAddresses, notificationsToken: token ?? "")
     return execute(request)
   }
   
-  func recoverWallet(phoneNumber: String, password: String, coinAddresses: [CoinAddress]) -> Single<Account> {
+  func recoverWallet(phoneNumber: String, password: String, coinAddresses: [CoinAddress]) -> Single<CreateWalletResponse> {
     let token = KeychainManager.loadValue(for: GlobalConstants.fcmPushToken)
     let request = RecoverWalletRequest(phoneNumber: phoneNumber, password: password, coinAddresses: coinAddresses, notificationsToken: token ?? "")
     return execute(request)

@@ -106,9 +106,11 @@ class LoginUsecaseImpl: LoginUsecase {
     return walletStorage.get()
       .map { $0.coins.map { CoinAddress(coin: $0) } }
       .flatMap { [api] in api.createAccount(phoneNumber: phoneNumber, password: password, coinAddresses: $0) }
-      .asObservable()
-      .flatMap { [accountStorage] in accountStorage.save(account: $0).andThen(Observable.just($0)) }
-      .toCompletable()
+      .flatMapCompletable { [accountStorage, walletStorage] in
+        let changeIndexMapper = $0.coins.map { coin in walletStorage.changeIndex(of: coin.type, with: coin.index) }
+        let mapperConcat = Completable.concat(changeIndexMapper)
+        return accountStorage.save(account: $0.account).andThen(mapperConcat)
+      }
   }
   
   func recoverWallet(phoneNumber: String, password: String, seedPhrase: String) -> Completable {
@@ -116,9 +118,10 @@ class LoginUsecaseImpl: LoginUsecase {
       .andThen(walletStorage.get())
       .map { $0.coins.map { CoinAddress(coin: $0) } }
       .flatMap { [api] in api.recoverWallet(phoneNumber: phoneNumber, password: password, coinAddresses: $0) }
-      .asObservable()
-      .flatMap { [accountStorage] in accountStorage.save(account: $0).andThen(Observable.just($0)) }
-      .toCompletable()
+      .flatMapCompletable { [accountStorage, walletStorage] in
+        let changeIndexMapper = $0.coins.map { coin in walletStorage.changeIndex(of: coin.type, with: coin.index) }
+        let mapperConcat = Completable.concat(changeIndexMapper)
+        return accountStorage.save(account: $0.account).andThen(mapperConcat)
+      }
   }
-  
 }
