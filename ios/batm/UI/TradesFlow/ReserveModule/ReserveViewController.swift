@@ -5,9 +5,6 @@ import SnapKit
 import MaterialComponents
 
 final class ReserveViewController: ModuleViewController<ReservePresenter> {
-  
-  let errorView = ErrorView()
-  
   let headerView = HeaderView()
   
   let formView = ReserveFormView()
@@ -15,8 +12,7 @@ final class ReserveViewController: ModuleViewController<ReservePresenter> {
   let reserveButton = MDCButton.reserve
   
   override func setupUI() {
-    view.addSubviews(errorView,
-                     headerView,
+    view.addSubviews(headerView,
                      formView,
                      reserveButton)
     
@@ -24,10 +20,6 @@ final class ReserveViewController: ModuleViewController<ReservePresenter> {
   }
   
   override func setupLayout() {
-    errorView.snp.makeConstraints {
-      $0.top.equalToSuperview().offset(5)
-      $0.centerX.equalToSuperview()
-    }
     headerView.snp.makeConstraints {
       $0.top.equalToSuperview().offset(25)
       $0.left.equalToSuperview().offset(15)
@@ -101,12 +93,9 @@ final class ReserveViewController: ModuleViewController<ReservePresenter> {
       .disposed(by: disposeBag)
     
     presenter.state
-      .map { $0.validationState }
-      .mapToErrorMessage()
-      .drive(onNext: { [errorView] in
-        errorView.isHidden = $0 == nil
-        errorView.configure(for: $0)
-      })
+      .asObservable()
+      .map { $0.coinAmountError }
+      .bind(to: formView.rx.coinAmountErrorText)
       .disposed(by: disposeBag)
     
     reserveButton.rx.tap.asDriver()

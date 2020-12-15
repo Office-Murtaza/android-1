@@ -48,6 +48,7 @@ final class ReserveFormView: UIView, HasDisposeBag {
   private func setupUI() {
     translatesAutoresizingMaskIntoConstraints = false
     
+    setupTextFields()
     addSubviews(stackView)
     stackView.addArrangedSubviews(coinAmountTextField,
                                   currencyAmountTextField)
@@ -64,6 +65,31 @@ final class ReserveFormView: UIView, HasDisposeBag {
       $0.edges.equalToSuperview()
     }
   }
+  
+  func configure(with coinCode: String) {
+    coinAmountTextFieldController.placeholderText = String(format: localize(L.CoinWithdraw.Form.CoinAmount.placeholder), coinCode)
+  }
+    
+  private func setupTextFields() {
+    let toolbar = UIToolbar()
+    let flexSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace,
+                                    target: nil,
+                                    action: nil)
+    let doneButton = UIBarButtonItem(title: localize(L.Shared.Button.done),
+                                     style: .done,
+                                     target: self,
+                                     action: #selector(doneButtonTapped))
+        
+    toolbar.setItems([flexSpace, doneButton], animated: true)
+    toolbar.sizeToFit()
+        
+    coinAmountTextField.inputAccessoryView = toolbar
+    currencyAmountTextField.inputAccessoryView = toolbar
+  }
+    
+  @objc private func doneButtonTapped() {
+    endEditing(true)
+  }
 }
 
 extension Reactive where Base == ReserveFormView {
@@ -72,6 +98,11 @@ extension Reactive where Base == ReserveFormView {
   }
   var coinText: ControlProperty<String?> {
     return base.coinAmountTextField.rx.text
+  }
+  var coinAmountErrorText: Binder<String?> {
+    return Binder(base) { target, value in
+      target.coinAmountTextFieldController.setErrorText(value, errorAccessibilityValue: value)
+    }
   }
   var maxTap: Driver<Void> {
     return Driver.merge(base.coinMaxButton.rx.tap.asDriver(),

@@ -17,6 +17,7 @@ struct RecallState: Equatable {
   var coinDetails: CoinDetails?
   var currencyAmount: String = ""
   var coinAmount: String = ""
+  var coinAmountError: String?
   var validationState: ValidationState = .unknown
   
   var coinBalance: CoinBalance? {
@@ -69,34 +70,36 @@ final class RecallStore: ViewStore<RecallAction, RecallState> {
       
       state.coinAmount = coinAmount
       state.currencyAmount = currencyAmount
-    case .updateValidationState: state.validationState = validate(state)
+    case .updateValidationState: validate(&state)
     case let .makeInvalidState(error): state.validationState = .invalid(error)
     }
     
     return state
   }
   
-  private func validate(_ state: RecallState) -> ValidationState {
+  private func validate(_ state: inout RecallState) {
+    state.validationState = .valid
+    
     guard state.coinAmount.isNotEmpty else {
-      return .invalid(localize(L.CreateWallet.Form.Error.allFieldsRequired))
+      return setupState(with: &state, errorString: L.CreateWallet.Form.Error.allFieldsRequired)
     }
     
     guard let amount = state.coinAmount.decimalValue else {
-      return .invalid(localize(L.CoinWithdraw.Form.Error.invalidAmount))
+      return setupState(with: &state, errorString: L.CoinWithdraw.Form.Error.invalidAmount)
     }
     
     if state.coin?.type != .catm, let fee = state.coinDetails?.txFee {
         guard amount.greaterThanOrEqualTo(fee) else {
-            return .invalid(localize(L.CoinWithdraw.Form.Error.lessThanFee))
+            return setupState(with: &state, errorString: L.CoinWithdraw.Form.Error.lessThanFee)
         }
     }
     
     guard state.reservedBalance > state.fee else {
-      return .invalid(localize(L.Recall.Form.Error.tooLowAmount))
+      return setupState(with: &state, errorString: L.Recall.Form.Error.tooLowAmount)
     }
     
     guard amount.lessThanOrEqualTo(state.maxValue) else {
-      return .invalid(localize(L.CoinWithdraw.Form.Error.tooHighAmount))
+      return setupState(with: &state, errorString: L.CoinWithdraw.Form.Error.tooHighAmount)
     }
     
     if state.coin?.type.isETHBased == false, let fee = state.coinDetails?.txFee {
@@ -105,9 +108,14 @@ final class RecallStore: ViewStore<RecallAction, RecallState> {
       let catmFee = (fee * ethPrice) / catmPrice
       
       if amount.lessThanOrEqualTo(catmFee) {
-        return .invalid(localize(L.CoinWithdraw.Form.Error.insufficientETHBalance))
+        return setupState(with: &state, errorString: L.CoinWithdraw.Form.Error.insufficientETHBalance)
       }
     }
-    return .valid
   }
+    
+    private func setupState(with state: inout RecallState, errorString: String) {
+        let errorString = localize(errorString)
+        state.coinAmountError = errorString
+        state.validationState = .invalid(errorString)
+    }
 }
