@@ -170,7 +170,6 @@ class CoinExchangeSwapTextFieldView: UIView, UIPickerViewDataSource, HasDisposeB
         
         let font = UIFont.systemFont(ofSize: 16, weight: weighted ? .medium : .regular)
         balanceLabel.font = font
-        //      balanceCurrencyLabel.font = font
     }
     
 }
@@ -199,27 +198,18 @@ extension Reactive where Base == CoinExchangeSwapTextFieldView {
             base.willChangeCoinType.accept(CustomCoinType.allCases.first {
                 $0.verboseValue == value.verboseValue
             } ?? .bitcoin)
-            //          target.coinTextField.setLeftView(UIImageView(image: value.mediumLogo))
-            
             target.coinTypeImageView.image = value.mediumLogo
             target.coinTextField.text = value.code
-            //            target.coinTextFieldController.placeholderText = value.verboseValue
         }
     }
-    var сoinErrorText: Binder<String?> {
-        return Binder(base) { target, value in
-            //            target.coinTextFieldController.setErrorText(value, errorAccessibilityValue: value)
-        }
-    }
+    
     var selectPickerItem: Driver<CustomCoinType> {
         return base.didSelectPickerRow.asDriver(onErrorDriveWith: .empty())
     }
+    
     var willCointTypeChanged: Driver<CustomCoinType> {
         return base.willChangeCoinType.asDriver(onErrorDriveWith: .empty())
     }
-    //    var toCoinAmountText: Binder<String?> {
-    //        return base.coinAmountLabel.rx.text
-    //    }
     
     var coinAmountText: ControlProperty<String?> {
         return base.amountTextField.rx.text

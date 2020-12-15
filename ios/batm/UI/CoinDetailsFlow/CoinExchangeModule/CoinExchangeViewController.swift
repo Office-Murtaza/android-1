@@ -117,14 +117,7 @@ final class CoinExchangeViewController: ModuleViewController<CoinExchangePresent
             guard let fee = result.element?.platformFee else { return }
             self?.formView.configureFeeView(fee: fee)
         }.disposed(by: disposeBag)
-    
-    
-//    presenter.state
-//      .asObservable()
-//      .map { $0.fromCoinFiatAmount }
-//      .bind(to: formView.rx.fromCoinFiatAmountText)
-//      .disposed(by: disposeBag)
-    
+
     presenter.state
         .asObservable()
         .subscribeOn(MainScheduler.instance)
@@ -170,12 +163,6 @@ final class CoinExchangeViewController: ModuleViewController<CoinExchangePresent
             guard let error = result.element else { return }
             self?.formView.configureToError(error: error )
         }.disposed(by: disposeBag)
-    
-    presenter.state
-      .asObservable()
-      .map { $0.toCoinTypeError }
-      .bind(to: formView.rx.toCoinErrorText)
-      .disposed(by: disposeBag)
     
     presenter.state
       .asObservable()

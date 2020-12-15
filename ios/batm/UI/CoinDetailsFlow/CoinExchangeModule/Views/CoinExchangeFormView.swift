@@ -132,21 +132,12 @@ extension Reactive where Base == CoinExchangeFormView {
         return base.fromCoinView.rx.maxTap
     }
     
-  //property from the CoinAmountTextFieldView
-//    var fromCoinFiatAmountText: Binder<String?> {
-//        return base.fromCoinAmountTextFieldView.rx.fiatAmountText
-//    }
-    
-    //TODO: fromMaxTap???
-    
     //MARK: - To coin
     
     var toCoin: Binder<CustomCoinType> {
         return base.toCoinView.rx.сoin
     }
-    var toCoinErrorText: Binder<String?> {
-        return base.toCoinView.rx.сoinErrorText
-    }
+
     var selectToPickerItem: Driver<CustomCoinType> {
         return base.toCoinView.rx.selectPickerItem
     }
