@@ -19,6 +19,7 @@ import com.squareup.moshi.Moshi
 import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.ConflatedBroadcastChannel
 import kotlinx.coroutines.channels.ReceiveChannel
+import kotlinx.coroutines.channels.sendBlocking
 import kotlinx.coroutines.flow.collect
 import java.net.HttpURLConnection
 
@@ -65,14 +66,12 @@ class WebSocketWalletObserver(
                             runBlocking {
                                 processError(it.cause)
                             }
-                        is SocketResponse.Message -> it.content.either({
+                        is SocketResponse.Message ->
                             runBlocking {
-                                processMessage(it)
+                                processMessage(it.content)
                             }
-                        }) {
-                            runBlocking {
-                                processError(it)
-                            }
+                        is SocketResponse.Disconnected -> {
+                            balanceInfo.sendBlocking(WalletBalance.NoInfo)
                         }
                     }
                 }
