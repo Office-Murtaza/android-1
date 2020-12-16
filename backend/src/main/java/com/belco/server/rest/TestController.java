@@ -6,11 +6,10 @@ import com.belco.server.model.Response;
 import com.belco.server.repository.CoinRep;
 import com.belco.server.service.*;
 import net.sf.json.JSONObject;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.web3j.tuples.generated.Tuple2;
 import wallet.core.jni.CoinType;
-
 import java.math.BigDecimal;
 import java.math.BigInteger;
 
@@ -18,31 +17,29 @@ import java.math.BigInteger;
 @RequestMapping("/api/v1/test")
 public class TestController {
 
-    @Autowired
-    private TwilioService twilioService;
+    private final TwilioService twilioService;
+    private final NotificationService pushNotificationService;
+    private final UserService userService;
+    private final WalletService walletService;
+    private final GethService gethService;
+    private final CoinRep coinRep;
 
-    @Autowired
-    private NotificationService pushNotificationService;
+    public TestController(TwilioService twilioService, NotificationService pushNotificationService, UserService userService, WalletService walletService, GethService gethService, CoinRep coinRep) {
+        this.twilioService = twilioService;
+        this.pushNotificationService = pushNotificationService;
+        this.userService = userService;
+        this.walletService = walletService;
+        this.gethService = gethService;
+        this.coinRep = coinRep;
+    }
 
-    @Autowired
-    private UserService userService;
-
-    @Autowired
-    private WalletService walletService;
-
-    @Autowired
-    private GethService gethService;
-
-    @Autowired
-    private CoinRep coinRep;
-
-    @GetMapping("/sms")
+    @GetMapping("/send-sms")
     public Response sendSMS(@RequestParam String phone) {
         return Response.ok(twilioService.sendMessage(phone, "This is a test message"));
     }
 
-    @GetMapping("/wallet")
-    public Response getWalletAddresses() {
+    @GetMapping("/wallet-details")
+    public Response getWalletDetails() {
         JSONObject res = new JSONObject();
 
         coinRep.findAllByOrderByIdxAsc().stream().forEach(e -> {
@@ -55,23 +52,6 @@ public class TestController {
         return Response.ok(res);
     }
 
-    @GetMapping("/stake")
-    public Response getStake() {
-        JSONObject res = new JSONObject();
-
-        try {
-            res.put("totalStakes", new BigDecimal(gethService.catm.totalStakes().send()).divide(GethService.ETH_DIVIDER));
-            res.put("basePeriod(s)", gethService.catm.basePeriod().send());
-            res.put("holdPeriod(s)", gethService.catm.holdPeriod().send());
-            res.put("annualPercent", gethService.catm.annualPercent().send());
-            res.put("annualPeriod(s)", gethService.catm.annualPeriod().send());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return Response.ok(res);
-    }
-
     @GetMapping("/stake-details")
     public Response getStakeDetails(@RequestParam String address) {
         JSONObject json = new JSONObject();
@@ -79,32 +59,51 @@ public class TestController {
 
         try {
             json.put("isStakeholder", gethService.catm.isStakeholder(address).send().component1());
-        } catch (Exception e) {
-        }
+        } catch (Exception e) {}
 
         try {
             json.put("amount", gethService.catm.stakeOf(address).send().intValue());
-        } catch (Exception e) {
-        }
+        } catch (Exception e) {}
 
         try {
             Tuple2<BigInteger, BigInteger> tuple2 = gethService.catm.stakeDetails(address).send();
             json.put("startDate", tuple2.component1());
             json.put("cancelDate", tuple2.component2());
-        } catch (Exception e) {
-        }
+        } catch (Exception e) {}
+
+        try {
+            json.put("totalStakes", new BigDecimal(gethService.catm.totalStakes().send()).divide(GethService.ETH_DIVIDER));
+        } catch (Exception e) {}
+
+        try {
+            json.put("basePeriod(s)", gethService.catm.basePeriod().send());
+        } catch (Exception e) {}
+
+        try {
+            json.put("holdPeriod(s)", gethService.catm.holdPeriod().send());
+        } catch (Exception e) {}
+
+        try {
+            json.put("annualPercent", gethService.catm.annualPercent().send());
+        } catch (Exception e) {}
+
+        try {
+            json.put("annualPeriod(s)", gethService.catm.annualPeriod().send());
+        } catch (Exception e) {}
 
         return Response.ok(json);
     }
 
-    @GetMapping("/push-notifications")
-    public Response pushNotifications(@RequestParam String title, @RequestParam String message, @RequestParam String token) {
+    @GetMapping("/send-notification")
+    public Response sendNotification(@RequestParam(required = false) Long userId, @RequestParam(required = false) String token, @RequestParam String title, @RequestParam String message) {
+        if (StringUtils.isBlank(token)) token = userService.findById(userId).getNotificationsToken();
+
         return Response.ok("result", pushNotificationService.sendMessageWithData(new NotificationDTO(title, message, null, token)));
     }
 
-    @GetMapping("/coin/{coin}/price")
-    public Response price(@PathVariable CoinService.CoinEnum coin) {
-        return Response.ok(coin.getPrice());
+    @GetMapping("/user/{userId}/delete-verification")
+    public Response deleteUserVerification(@PathVariable Long userId) {
+        return Response.ok(userService.deleteKyc(userId));
     }
 
     @GetMapping("/coin/{coin}/sign")
@@ -118,11 +117,6 @@ public class TestController {
         dto.setHex(hex);
 
         return Response.ok(coin.submitTransaction(dto));
-    }
-
-    @GetMapping("/user/{userId}/kyc-delete")
-    public Response deleteKyc(@PathVariable Long userId) {
-        return Response.ok(userService.deleteKyc(userId));
     }
 
     private JSONObject getCoinJson(String address, BigDecimal balance) {
