@@ -80,8 +80,23 @@
         style="@style/EditText.TextLink"
         android:padding="@dimen/margin_normal"
         android:text="@string/max"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/tvError"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/coinInputEditText" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvError"
+        style="@style/Text.Regular1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_half"
+        android:layout_marginEnd="@dimen/margin_half"
+        android:drawableStart="@drawable/ic_error"
+        android:drawablePadding="@dimen/margin_half"
+        android:textColor="@color/colorError"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvMax"
+        tools:text="Error message here" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -26,7 +26,7 @@
         <com.app.belcobtm.presentation.core.views.CoinInputLayout
             android:id="@+id/sendCoinInputLayout"
             android:layout_width="0dp"
-            android:layout_height="150dp"
+            android:layout_height="180dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/topDivider" />
@@ -34,7 +34,7 @@
         <com.app.belcobtm.presentation.core.views.CoinInputLayout
             android:id="@+id/receiveCoinInputLayout"
             android:layout_width="0dp"
-            android:layout_height="150dp"
+            android:layout_height="180dp"
             android:background="@color/colorLightGray"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -94,7 +94,7 @@
 
         <TextView
             android:id="@+id/platformFeeTextView"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_main"
             android:layout_marginEnd="@dimen/margin_main"
