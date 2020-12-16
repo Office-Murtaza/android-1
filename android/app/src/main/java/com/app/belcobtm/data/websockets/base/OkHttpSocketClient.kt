@@ -1,12 +1,13 @@
 package com.app.belcobtm.data.websockets.base
 
 import com.app.belcobtm.data.websockets.base.model.SocketResponse
-import com.app.belcobtm.domain.Either
+import com.app.belcobtm.domain.Failure
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.channels.sendBlocking
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.consumeAsFlow
 import okhttp3.*
+import java.net.SocketException
 
 class OkHttpSocketClient(
     private val okHttpClient: OkHttpClient
@@ -14,6 +15,10 @@ class OkHttpSocketClient(
 
     private var webSocket: WebSocket? = null
     private val messages = Channel<SocketResponse>(Channel.CONFLATED)
+
+    companion object {
+        const val NO_INTERNET_MESSAGE = "connection abort"
+    }
 
     override fun connect(url: String) {
         if (webSocket != null) {
@@ -39,13 +44,16 @@ class OkHttpSocketClient(
     }
 
     override fun onMessage(webSocket: WebSocket, text: String) {
-        messages.sendBlocking(SocketResponse.Message(Either.Left(text)))
+        messages.sendBlocking(SocketResponse.Message(text))
     }
 
     override fun onFailure(webSocket: WebSocket, t: Throwable, response: Response?) {
-        messages.sendBlocking(SocketResponse.Message(Either.Right(t)))
         this.webSocket = null
-        messages.sendBlocking(SocketResponse.Failure(t))
+        if (t is SocketException && t.message.orEmpty().contains(NO_INTERNET_MESSAGE)) {
+            messages.sendBlocking(SocketResponse.Failure(Failure.NetworkConnection))
+        } else {
+            messages.sendBlocking(SocketResponse.Failure(t))
+        }
     }
 
     override fun onClosing(webSocket: WebSocket, code: Int, reason: String) {
