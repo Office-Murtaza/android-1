@@ -41,7 +41,6 @@ import wallet.core.jni.EthereumAbi;
 import wallet.core.jni.EthereumAbiFunction;
 import wallet.core.jni.PrivateKey;
 import wallet.core.jni.proto.Ethereum;
-
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.*;
@@ -427,10 +426,13 @@ public class GethService {
         mongo.getCollection(ADDRESS_COLL).findOneAndUpdate(new BasicDBObject("address", address.toLowerCase()), new BasicDBObject("$set", new BasicDBObject("address", address.toLowerCase()).append("timestamp", System.currentTimeMillis())), new FindOneAndUpdateOptions().upsert(true));
     }
 
-    public boolean existsInJournal(String fromAddress, String toAddress) {
+    public boolean isAddressInJournal(String... addresses) {
+        if (addresses.length == 0) {
+            return false;
+        }
+
         BasicDBList or = new BasicDBList();
-        or.add(new BasicDBObject("address", fromAddress.toLowerCase()));
-        or.add(new BasicDBObject("address", toAddress.toLowerCase()));
+        Arrays.stream(addresses).filter(e -> StringUtils.isNotBlank(e)).forEach(e -> or.add(new BasicDBObject("address", e.toLowerCase())));
 
         return mongo.getCollection(ADDRESS_COLL).find(new BasicDBObject("$or", or)).iterator().hasNext();
     }
@@ -564,7 +566,7 @@ public class GethService {
                 String fromAddress = tx.getFrom();
                 String toAddress = tx.getTo();
 
-                if (existsInJournal(fromAddress, toAddress)) {
+                if (isAddressInJournal(fromAddress, toAddress)) {
                     BigDecimal amount = new BigDecimal(tx.getValue()).divide(ETH_DIVIDER).stripTrailingZeros();
                     BigDecimal fee = new BigDecimal(tx.getGasPrice()).multiply(new BigDecimal(tx.getGas())).divide(ETH_DIVIDER).stripTrailingZeros();
                     Integer blockNumber = parseBlockNumber(tx);
@@ -610,11 +612,6 @@ public class GethService {
                 }
             } catch (Exception e) {
                 e.printStackTrace();
-
-                if (nodeService.switchToReserveNode(ETHEREUM)) {
-                    init();
-                    fetchEthTransaction(tx, timestamp, ethTxs, tokenTxs);
-                }
             }
         }
     }
