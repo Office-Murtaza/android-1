@@ -31,7 +31,6 @@ class WalletUsecaseImpl: WalletUsecase, HasDisposeBag {
       .withLatestFrom(accountStorage.get()) { ($1, $0) }
       .flatMap { [api] in
         api.getCoinsBalance(userId: $0.userId, coins: $1)
-        
       }
       .doOnNext { [unowned self] in self.updateIndexes(for: $0) }
       .asSingle()

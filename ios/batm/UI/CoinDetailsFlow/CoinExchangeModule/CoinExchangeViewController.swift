@@ -13,6 +13,9 @@ final class CoinExchangeViewController: ModuleViewController<CoinExchangePresent
   let submitButton = MDCButton.submit
 
   override func setupUI() {
+    if #available(iOS 13.0, *) {
+        overrideUserInterfaceStyle = .light
+    }
     view.addSubview(rootScrollView)
     rootScrollView.contentView.addSubviews(formView,
                                            submitButton)
@@ -205,17 +208,5 @@ final class CoinExchangeViewController: ModuleViewController<CoinExchangePresent
                                                       maxTo: maxToDriver,
                                                       submit: submitDriver,
                                                       swap: swapDriver))
-  }
-}
-
-extension ObservableType {
-
-  func withPrevious() -> Observable<(E?, E)> {
-    return scan([], accumulator: { (previous, current) in
-        Array(previous + [current]).suffix(2)
-      })
-      .map({ (arr) -> (previous: E?, current: E) in
-        (arr.count > 1 ? arr.first : nil, arr.last!)
-      })
   }
 }

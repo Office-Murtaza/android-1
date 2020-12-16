@@ -51,7 +51,7 @@ final class CoinExchangePresenter: ModulePresenter, CoinExchangeModule {
         fetchDataRelay
             .asObservable()
           .flatMap { [unowned self]  in
-            return self.track(Observable.combineLatest(walletUseCase.getCoinsBalance().asObservable(),
+            return self.track(Observable.combineLatest(self.walletUseCase.getCoinsBalance().asObservable(),
                                                        self.walletUseCase.getCoinDetails(for: CustomCoinType.bitcoin).asObservable(),
                                                        self.walletUseCase.getCoinsList().asObservable()))
           }.subscribe({ [weak self] in
@@ -100,7 +100,7 @@ final class CoinExchangePresenter: ModulePresenter, CoinExchangeModule {
           }.disposed(by: disposeBag)
         
         input.updateToPickerItem
-            .drive(onNext: { [store] in
+            .drive(onNext: { [unowned self, store] in
                     store.action.accept(.updateToCoinType($0))
                 self.coinTypeDidChange.accept(())
             })
@@ -117,7 +117,7 @@ final class CoinExchangePresenter: ModulePresenter, CoinExchangeModule {
             }.subscribe { [unowned self] result in
                 switch result {
                 case let .next(isActivated):
-                    store.action.accept(.isCoinActivated(isActivated))
+                    self.store.action.accept(.isCoinActivated(isActivated))
                 default: break
                 }
               }.disposed(by: disposeBag)
@@ -133,8 +133,8 @@ final class CoinExchangePresenter: ModulePresenter, CoinExchangeModule {
           .subscribe { [unowned self] result in
             switch result {
             case let .next(coin):
-                store.action.accept(.updateFromCoin(coin))
-                store.action.accept(.updateFromCoinType(coin.type))
+                self.store.action.accept(.updateFromCoin(coin))
+                self.store.action.accept(.updateFromCoinType(coin.type))
                 self.coinTypeDidChange.accept(())
             default: break
             }

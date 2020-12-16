@@ -90,25 +90,23 @@ struct CoinExchangeState: Equatable {
     var maxFromValue: Decimal {
         guard let type = fromCoinType, let balance = fromCoinBalance?.balance, let fee = coinDetails?.txFee else { return 0 }
         
-        switch type {
-        case .catm:
+        if type.isETHBased == true {
             return balance
-        case .ripple:
+        } else if type == .ripple {
             return max(0, balance - fee - 20)
-        default:
+        } else {
             return max(0, balance - fee)
         }
     }
     
     var maxToValue: Decimal {
         guard let type = toCoinType, let balance = toCoinBalance?.balance, let fee = toCoinDetails?.txFee else { return 0 }
-        
-        switch type {
-        case .catm:
+      
+        if type.isETHBased == true {
             return balance
-        case .ripple:
+        } else if type == .ripple {
             return max(0, balance - fee - 20)
-        default:
+        } else {
             return max(0, balance - fee)
         }
     }
