@@ -94,7 +94,7 @@
 
         <TextView
             android:id="@+id/platformFeeTextView"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_main"
             android:layout_marginEnd="@dimen/margin_main"
