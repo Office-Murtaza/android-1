@@ -48,9 +48,6 @@ class SwapViewModel(
     private val _swapFee = MutableLiveData<SwapFeeModelView>()
     val swapFee: LiveData<SwapFeeModelView> = _swapFee
 
-    private val _submitButtonEnabled = MutableLiveData<Boolean>(false)
-    val submitButtonEnabled: LiveData<Boolean> = _submitButtonEnabled
-
     private val _coinToSendError = MutableLiveData<ValidationResult>(ValidationResult.Valid)
     val coinToSendError: LiveData<ValidationResult> = _coinToSendError
 
@@ -115,8 +112,6 @@ class SwapViewModel(
         _sendCoinAmount.value = sendAmount
         _receiveCoinAmount.value = calcReceiveAmountFromSend(sendAmount)
         updateFeeInfo(sendAmount)
-        // extra validation step
-        validateCoinToSendAmount(sendAmount)
     }
 
     fun setReceiveAmount(receiveAmount: Double) {
@@ -124,8 +119,6 @@ class SwapViewModel(
         _receiveCoinAmount.value = receiveAmount
         _sendCoinAmount.value = sendAmount
         updateFeeInfo(sendAmount)
-        // extra validation step
-        validateCoinToSendAmount(sendAmount)
     }
 
     fun setMaxSendAmount() {
@@ -142,6 +135,9 @@ class SwapViewModel(
         val sendCoinAmount = sendCoinAmount.value ?: return
         val receiveCoinAmount = receiveCoinAmount.value ?: return
         val receiveCoinDetails = coinToReceiveDetails ?: return
+        if (!validateCoinToSendAmount(sendCoinAmount)) {
+            return
+        }
         if (receiveCoinItem.code == LocalCoinType.XRP.name) {
             val minXRPValue = 20 + receiveCoinDetails.txFee
             if (receiveCoinAmount < minXRPValue) {
@@ -225,11 +221,11 @@ class SwapViewModel(
         )
     }
 
-    private fun validateCoinToSendAmount(coinAmount: Double) {
-        val sendAmount = sendCoinAmount.value ?: return
-        val receiveAmount = receiveCoinAmount.value ?: return
-        val currentCoinToSend = coinToSend.value ?: return
-        val currentCoinToSendDetails = coinToSendDetails ?: return
+    private fun validateCoinToSendAmount(coinAmount: Double): Boolean {
+        val sendAmount = sendCoinAmount.value ?: return false
+        val receiveAmount = receiveCoinAmount.value ?: return false
+        val currentCoinToSend = coinToSend.value ?: return false
+        val currentCoinToSendDetails = coinToSendDetails ?: return false
         val balanceValidationResult = amountValidator.validateBalance(
             coinAmount, currentCoinToSend, currentCoinToSendDetails, originCoinsData
         )
@@ -252,8 +248,7 @@ class SwapViewModel(
             }
         }
         _coinToSendError.value = validationResult
-        _submitButtonEnabled.value = validationResult == ValidationResult.Valid
-                && sendAmount > 0 && receiveAmount > 0
+        return validationResult == ValidationResult.Valid && sendAmount > 0 && receiveAmount > 0
     }
 
     private fun calcReceiveAmountFromSend(sendAmount: Double): Double {

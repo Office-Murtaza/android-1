@@ -48,7 +48,7 @@ class SwapFragment : BaseFragment() {
         if (viewModel.initLoadingData.value is LoadingData.Error) {
             // data not yet initialized
             viewModel.fetchInitialData()
-        } else if (viewModel.submitButtonEnabled.value == true) {
+        } else {
             // re submit swap
             viewModel.executeSwap()
         }
@@ -131,9 +131,6 @@ class SwapFragment : BaseFragment() {
                 fee.platformFeeCoinAmount.toStringCoin(),
                 fee.swapCoinCode
             ).toHtmlSpan()
-        })
-        viewModel.submitButtonEnabled.observe(viewLifecycleOwner, Observer { enabled ->
-            nextButtonView.isEnabled = enabled
         })
         viewModel.coinToSendError.observe(viewLifecycleOwner, Observer { error ->
             sendCoinInputLayout.setErrorText(
