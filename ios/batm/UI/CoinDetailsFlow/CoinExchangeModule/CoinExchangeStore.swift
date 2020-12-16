@@ -11,17 +11,25 @@ enum CoinExchangeAction: Equatable {
     case setupCoinBalances([CoinBalance])
     case setupCoinDetails(CoinDetails)
     case updateFromCoinAmount(String?)
+    case updateToCoinAmount(String?)
     case updateToCoinType(CustomCoinType)
+    case updateFromCoinType(CustomCoinType)
     case updateFromCoinAmountError(String?)
     case updateToCoinTypeError(String?)
     case updateValidationState
     case updateToCoinDetails(CoinDetails)
+    case finishFetchingCoinsData(CoinsBalance, CoinDetails, [BTMCoin])
+    case updateFromCoinDetails(CoinDetails)
+    case updateFromCoin(BTMCoin)
+    case isCoinActivated(Bool)
+    case swap
 }
 
 struct CoinExchangeState: Equatable {
     
     var fromCoin: BTMCoin?
     var toCoinType: CustomCoinType?
+    var fromCoinType: CustomCoinType?
     var coinBalances: [CoinBalance]?
     var coinDetails: CoinDetails?
     var toCoinDetails: CoinDetails?
@@ -30,6 +38,15 @@ struct CoinExchangeState: Equatable {
     var toCoinTxFee: Decimal?
     var toCoinTypeError: String?
     var validationState: ValidationState = .unknown
+    var fromRate: String?
+    var toRate: String?
+    var platformFee: String?
+    var coins: [BTMCoin]?
+    var isCoinActivated: Bool?
+    var toCoinAmountBackConvertation: String?
+    
+    var coinBalance: CoinsBalance?
+    
     
     var fromCoinFiatAmount: String {
         let fromCoinAmountDecimal = fromCoinAmount.decimalValue ?? 0
@@ -39,34 +56,63 @@ struct CoinExchangeState: Equatable {
     }
     
     var toCoinAmount: String {
-        guard let toCoinType = toCoinType else { return "" }
+
+        guard toCoinAmountBackConvertation == nil else {
+            return toCoinAmountBackConvertation?.coinFormatted ?? 0.0.coinFormatted
+        }
         
         guard
             let fromCoinAmountDecimal = fromCoinAmount.decimalValue,
             let fromCoinPrice = fromCoinBalance?.price, let toCoinPrice = toCoinBalance?.price,
-            let profitExchange = coinDetails?.profitExchange
+            let profitExchange = coinDetails?.swapProfitPercent
+        else {
+            return 0.0.coinFormatted
+        }
+        let toCoinAmountDecimal = fromCoinAmountDecimal * fromCoinPrice / toCoinPrice * (100 - profitExchange) / 100
+        
+        return toCoinAmountDecimal.coinFormatted(fractionDigits: toCoinDetails?.scale)
+    }
+    
+    func toCoinAmount(amount: Decimal) -> String {
+        guard let toCoinType = toCoinType else { return "" }
+        
+        guard
+            let fromCoinPrice = fromCoinBalance?.price, let toCoinPrice = toCoinBalance?.price,
+            let profitExchange = coinDetails?.swapProfitPercent
         else {
             return 0.0.coinFormatted.withCoinType(toCoinType)
         }
-        let toCoinAmountDecimal = fromCoinAmountDecimal * fromCoinPrice / toCoinPrice * (100 - profitExchange) / 100
-      return toCoinAmountDecimal.coinFormatted(fractionDigits: toCoinDetails?.scale).withCoinType(toCoinType)
+        let toCoinAmountDecimal = amount * fromCoinPrice / toCoinPrice * (100 - profitExchange) / 100
+        
+        return toCoinAmountDecimal.coinFormatted(fractionDigits:nil).withCoinType(toCoinType)
     }
     
-    var maxValue: Decimal {
-        guard let type = fromCoin?.type, let balance = fromCoinBalance?.balance, let fee = coinDetails?.txFee else { return 0 }
+    var maxFromValue: Decimal {
+        guard let type = fromCoinType, let balance = fromCoinBalance?.balance, let fee = coinDetails?.txFee else { return 0 }
         
-        switch type {
-        case .catm:
+        if type.isETHBased == true {
             return balance
-        case .ripple:
+        } else if type == .ripple {
             return max(0, balance - fee - 20)
-        default:
+        } else {
+            return max(0, balance - fee)
+        }
+    }
+    
+    var maxToValue: Decimal {
+        guard let type = toCoinType, let balance = toCoinBalance?.balance, let fee = toCoinDetails?.txFee else { return 0 }
+      
+        if type.isETHBased == true {
+            return balance
+        } else if type == .ripple {
+            return max(0, balance - fee - 20)
+        } else {
             return max(0, balance - fee)
         }
     }
     
     var fromCoinBalance: CoinBalance? {
-        return coinBalances?.first { $0.type == fromCoin?.type }
+        return coinBalances?.first { $0.type == fromCoinType}
     }
     
     var toCoinBalance: CoinBalance? {
@@ -74,7 +120,15 @@ struct CoinExchangeState: Equatable {
     }
     
     var otherCoinBalances: [CoinBalance]? {
-        return coinBalances?.filter { $0.type != fromCoin?.type }
+        return coinBalances//?.filter { $0.type != fromCoin?.type }
+    }
+    
+    var fromCoinBalances: [BTMCoin]? {
+        return coins?.filter{ $0.type != toCoinType }
+    }
+    
+    var toCoinBalances: [BTMCoin]? {
+        return coins?.filter{ $0.type != fromCoinType }
     }
     
     var isAllFieldsNotEmpty: Bool {
@@ -99,12 +153,29 @@ final class CoinExchangeStore: ViewStore<CoinExchangeAction, CoinExchangeState> 
         case let .setupCoinBalances(coinBalances):
             state.coinBalances = coinBalances
             state.toCoinType = coinBalances.first(where: { $0.type != state.fromCoin?.type })?.type
-        case let .setupCoinDetails(coinDetails): state.coinDetails = coinDetails
+        case let .setupCoinDetails(coinDetails):
+            state.coinDetails = coinDetails
         case let .updateFromCoinAmount(amount):
+            state.toCoinAmountBackConvertation = nil
             state.fromCoinAmount = (amount ?? "").coinWithdrawFormatted
             state.fromCoinAmountError = nil
+            state.toCoinTypeError = nil
+        case let .updateToCoinAmount(amount):
+            state.toCoinAmountBackConvertation = amount
+            state.fromCoinAmount = backConvertation(state: &state, amount: amount ?? "")
+            state.fromCoinAmountError = nil
+            state.toCoinTypeError = nil
         case let .updateToCoinType(coinType):
             state.toCoinType = coinType
+            state.fromCoinAmount = "".coinWithdrawFormatted
+            updateRateViewState(state: &state, amount: 1)
+            state.fromCoinAmountError = nil
+            state.toCoinTypeError = nil
+        case let .updateFromCoinType(coinType):
+            state.fromCoinType = coinType;
+            state.fromCoinAmount = "".coinWithdrawFormatted
+        updateRateViewState(state: &state, amount: 1)
+            state.fromCoinAmountError = nil
             state.toCoinTypeError = nil
         case let .updateFromCoinAmountError(fromCoinAmountError): state.fromCoinAmountError = fromCoinAmountError
         case let .updateToCoinTypeError(toCoinTypeError): state.toCoinTypeError = toCoinTypeError
@@ -112,9 +183,61 @@ final class CoinExchangeStore: ViewStore<CoinExchangeAction, CoinExchangeState> 
         case let .updateToCoinDetails(details):
           state.toCoinDetails = details
           state.toCoinTxFee = details.txFee
+          updatePlatformFee(state: &state)
+        updateRateViewState(state: &state, amount: 1)
+        case let .updateFromCoinDetails(details):
+            state.coinDetails = details
+        case let .finishFetchingCoinsData(balances, details, coins):
+            state.coinBalance = balances
+            state.coinBalances = balances.coins
+            state.coins = coins
+            state.coinDetails = details
+            let firstCoin = balances.coins.first
+            if let type = firstCoin?.type, let address = firstCoin?.address {
+                let coin = BTMCoin(type: type, privateKey: "", address: address)
+                state.fromCoin = coin
+                state.fromCoinType = coin.type
+            }
+            state.toCoinType = balances.coins.first(where: { $0.type != firstCoin?.type })?.type
+        case .swap:
+            state.fromCoinAmount = "".coinWithdrawFormatted
+            let toCoinType = state.toCoinType
+            state.toCoinType = state.fromCoinType
+            state.fromCoinType = toCoinType
+            updatePlatformFee(state: &state)
+            state.fromCoinAmountError = nil
+            state.toCoinTypeError = nil
+        case let .updateFromCoin(coin):
+            state.fromCoin = coin
+        case let .isCoinActivated(isActive):
+            state.isCoinActivated = isActive
         }
-      
+        
         return state
+    }
+    
+    private func updatePlatformFee(state: inout CoinExchangeState) {
+        if let details = state.toCoinDetails {
+            state.platformFee = platformFeeString(details: details)
+        }
+    }
+    
+    private func updateRateViewState(state:inout CoinExchangeState, amount: Int ) {
+        state.fromRate = "1".coinFormatted.withCoinType(state.fromCoinType ?? .bitcoin)
+        state.toRate = state.toCoinAmount(amount: 1)
+    }
+    
+    private func backConvertation(state: inout CoinExchangeState, amount: String) -> String {
+        guard let feeB = state.toCoinDetails?.txFee ?? state.toCoinDetails?.convertedTxFee,
+              let priceB = state.toCoinBalance?.price,
+              let priceA = state.fromCoinBalance?.price,
+              let profit = state.toCoinDetails?.swapProfitPercent else { return 0.0.coinFormatted }
+        
+        let firstExpression = (amount.decimalValue ?? 0 + feeB) * priceB
+        let secondPart = priceA / (1 - profit / 100)
+        let result = firstExpression / secondPart
+        
+        return result.coinFormatted
     }
     
     private func validate(_ state: inout CoinExchangeState) {
@@ -130,8 +253,14 @@ final class CoinExchangeStore: ViewStore<CoinExchangeAction, CoinExchangeState> 
             setupState(with: &state, errorString: L.CoinWithdraw.Form.Error.tooLowAmount)
         } else if lessThanTxFee {
             setupState(with: &state, errorString: L.CoinWithdraw.Form.Error.lessThanFee)
-        } else if !state.fromCoinAmount.decimalValue!.lessThanOrEqualTo(state.maxValue) {
+        } else if !state.fromCoinAmount.decimalValue!.lessThanOrEqualTo(state.maxFromValue) {
             setupState(with: &state, errorString: L.CoinWithdraw.Form.Error.tooHighAmount)
+        } else if state.toCoinType == .ripple,
+                  state.isCoinActivated == false,
+                  (state.toCoinAmount.decimalValue ?? 0 >= (20 + (state.toCoinDetails?.txFee ?? 0.0) )) {
+            let errorString = localize(L.CoinWithdraw.Form.Error.insufficientETHBalance)
+            state.toCoinTypeError = errorString
+            state.validationState = .invalid(errorString)
         } else {
             state.fromCoinAmountError = nil
             
@@ -156,5 +285,11 @@ final class CoinExchangeStore: ViewStore<CoinExchangeAction, CoinExchangeState> 
         let errorString = localize(errorString)
         state.fromCoinAmountError = errorString
         state.validationState = .invalid(errorString)
+    }
+    
+    private func platformFeeString(details: CoinDetails) -> String {
+        let percent =  "\(details.swapProfitPercent)%"
+        let fee = "\(details.txFee.coinFormatted.withCoinType(details.type))"
+        return "\(percent) ~ \(fee)"
     }
 }

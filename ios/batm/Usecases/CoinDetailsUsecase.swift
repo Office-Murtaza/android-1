@@ -32,7 +32,7 @@ protocol CoinDetailsUsecase {
     func cancelStake(from coin: BTMCoin, with coinDetails: CoinDetails, stakeDetails: StakeDetails) -> Completable
     func withdrawStake(from coin: BTMCoin, with coinDetails: CoinDetails, stakeDetails: StakeDetails) -> Completable
     func getCoinDetails(for type: CustomCoinType) -> Single<CoinDetails>
-    
+    func getCoinActivatedState(for coin: BTMCoin) -> Single<Bool>
 }
 
 class CoinDetailsUsecaseImpl: CoinDetailsUsecase {
@@ -118,6 +118,10 @@ class CoinDetailsUsecaseImpl: CoinDetailsUsecase {
                                    toAddress: destination,
                                    transactionResultString: transactionResultString)
             }
+    }
+    
+    func getCoinActivatedState(for coin: BTMCoin) -> Single<Bool> {
+        return api.getCurrentAccountActivated(type: coin.type, address: coin.address)
     }
     
     func sendGift(from coin: BTMCoin,
