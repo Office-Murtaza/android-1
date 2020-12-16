@@ -308,7 +308,7 @@ class CoinDetailsUsecaseImpl: CoinDetailsUsecase {
                 return self.submit(userId: account.userId,
                                    type: coin.type,
                                    txType: .withdrawStake,
-                                   amount: (stakeDetails.amount ?? 0) + (stakeDetails.rewardAmount ?? 0),
+                                   amount: (Decimal(stakeDetails.amount ?? 0)) + (Decimal(stakeDetails.rewardAmount ?? 0)),
                                    fee: coinDetails.txFee,
                                    fromAddress: coin.address,
                                    toAddress: coinDetails.contractAddress,

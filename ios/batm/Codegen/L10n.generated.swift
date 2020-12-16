@@ -482,6 +482,13 @@ extension L.CreateWallet.Form {
     static let placeholder = "create_wallet.form.phone.placeholder"
   }
 }
+extension L.Deals {
+
+  struct Cell {
+    static let staking = "deals.cell.staking"
+    static let swap = "deals.cell.swap"
+  }
+}
 extension L.EnterPassword {
 
   struct Form {

@@ -340,6 +340,8 @@
 "error.no_connection.subtitle" = "Connect to WiFi or turn on mobile data.";
 
 "deals.title" = "Deals";
+"deals.cell.staking" = "Staking";
+"deals.cell.swap" = "Swap";
 
 "notifications.title" = "Notifications";
 "notifications.cell.title" = "Receive push notifications";

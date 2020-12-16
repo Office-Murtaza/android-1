@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		05021CFE2582679000FE8809 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 05021CFD2582679000FE8809 /* GoogleService-Info.plist */; };
+		05144137258950D7000B56E7 /* DealsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05144136258950D7000B56E7 /* DealsCell.swift */; };
+		0514414125895378000B56E7 /* DealsTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0514414025895378000B56E7 /* DealsTableView.swift */; };
+		0514414525895412000B56E7 /* DealsTableViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0514414425895412000B56E7 /* DealsTableViewDataSource.swift */; };
 		0522EB23255984AC0028CD51 /* SupportCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0522EB22255984AC0028CD51 /* SupportCell.swift */; };
 		0522EB27255988230028CD51 /* SupportViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0522EB26255988230028CD51 /* SupportViewController.swift */; };
 		0522EB61255988310028CD51 /* SupportPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0522EB60255988310028CD51 /* SupportPresenter.swift */; };
@@ -559,6 +562,9 @@
 
 /* Begin PBXFileReference section */
 		05021CFD2582679000FE8809 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		05144136258950D7000B56E7 /* DealsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DealsCell.swift; sourceTree = "<group>"; };
+		0514414025895378000B56E7 /* DealsTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DealsTableView.swift; sourceTree = "<group>"; };
+		0514414425895412000B56E7 /* DealsTableViewDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DealsTableViewDataSource.swift; sourceTree = "<group>"; };
 		0522EB22255984AC0028CD51 /* SupportCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SupportCell.swift; sourceTree = "<group>"; };
 		0522EB26255988230028CD51 /* SupportViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SupportViewController.swift; sourceTree = "<group>"; };
 		0522EB60255988310028CD51 /* SupportPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SupportPresenter.swift; sourceTree = "<group>"; };
@@ -1128,6 +1134,24 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0514413A258952E1000B56E7 /* TableViewRelated */ = {
+			isa = PBXGroup;
+			children = (
+				0514413F25895367000B56E7 /* DataSource */,
+				05144136258950D7000B56E7 /* DealsCell.swift */,
+				0514414025895378000B56E7 /* DealsTableView.swift */,
+			);
+			path = TableViewRelated;
+			sourceTree = "<group>";
+		};
+		0514413F25895367000B56E7 /* DataSource */ = {
+			isa = PBXGroup;
+			children = (
+				0514414425895412000B56E7 /* DealsTableViewDataSource.swift */,
+			);
+			path = DataSource;
+			sourceTree = "<group>";
+		};
 		0522EB1E25597B310028CD51 /* SupportModule */ = {
 			isa = PBXGroup;
 			children = (
@@ -1160,6 +1184,7 @@
 		055A9B6F2575527F00A8E8F1 /* DealsModule */ = {
 			isa = PBXGroup;
 			children = (
+				0514413A258952E1000B56E7 /* TableViewRelated */,
 				055A9B7D257552E500A8E8F1 /* DealsPresenter.swift */,
 				055A9B81257552F000A8E8F1 /* DealsViewController.swift */,
 				055A9B85257552F900A8E8F1 /* DealsModule.swift */,
@@ -3330,6 +3355,7 @@
 				DBDA456024E5BD83002A3AF5 /* SecurityAssembly.swift in Sources */,
 				DB9616EE22C74EB40078E92D /* RecursiveLock+Extensions.swift in Sources */,
 				DB04E4D422D85EE5000E2D85 /* PinCodeUsecase.swift in Sources */,
+				0514414525895412000B56E7 /* DealsTableViewDataSource.swift in Sources */,
 				DBFAED912326C7CC004B6D79 /* Utxo+Mapping.swift in Sources */,
 				DBBF299622D3725D00A5DE6A /* UITableView+ReusableView.swift in Sources */,
 				055A9B82257552F000A8E8F1 /* DealsViewController.swift in Sources */,
@@ -3420,6 +3446,7 @@
 				DBAD53A422D7C5610005F682 /* PinCodeDotsView.swift in Sources */,
 				DB5EB8DA2452B23D00CD1C63 /* MDCTextInputControllerBase+Extensions.swift in Sources */,
 				DB247B412478F88C009802BB /* SplashViewController.swift in Sources */,
+				0514414125895378000B56E7 /* DealsTableView.swift in Sources */,
 				DB3C03DD22CB5F7C0036F779 /* RecoverFormView.swift in Sources */,
 				DB497AF722BF6AA0008CE4A8 /* WelcomeViewController.swift in Sources */,
 				DBDA456924E5C1BD002A3AF5 /* AboutModule.swift in Sources */,
@@ -3486,6 +3513,7 @@
 				232E346425593BA200A9BF72 /* SocketResultMessageMapper.swift in Sources */,
 				23F68EB6256DB33100470534 /* PriceChartDetails+Mapping.swift in Sources */,
 				DBA6845922E45B600079429E /* SettingsAssembly.swift in Sources */,
+				05144137258950D7000B56E7 /* DealsCell.swift in Sources */,
 				DB8D409122C3E89C00D5FBD0 /* RootFlow.swift in Sources */,
 				DB33E9BA241CF75000764BF5 /* UILabel+Extensions.swift in Sources */,
 				DB2C97242344CE8B006E7D61 /* GiphyInitializer.swift in Sources */,
