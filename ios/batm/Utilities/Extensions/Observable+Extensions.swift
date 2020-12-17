@@ -12,6 +12,15 @@ extension Observable {
   public func doOnNext(_ action: @escaping ((E) throws -> Void)) -> Observable<E> {
     return self.do(onNext: action)
   }
+    
+    func withPrevious() -> Observable<(E?, E)> {
+      return scan([], accumulator: { (previous, current) in
+          Array(previous + [current]).suffix(2)
+        })
+        .map({ (arr) -> (previous: E?, current: E) in
+          (arr.count > 1 ? arr.first : nil, arr.last!)
+        })
+    }
   
 }
 

@@ -29,7 +29,7 @@ struct RecallState: Equatable {
   }
   
   var fee: Decimal {
-    return coinDetails?.recallFee ?? coinDetails?.txFee ?? 0
+    return coinDetails?.convertedTxFee ?? coinDetails?.txFee ?? 0
   }
   
   var maxValue: Decimal {

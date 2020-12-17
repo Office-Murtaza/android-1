@@ -8,14 +8,18 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.DrawableRes
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat
 import com.app.belcobtm.R
 
 class CoinInputLayout @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : ConstraintLayout(context, attrs, defStyleAttr) {
 
+    private val textColorOrigin: Int
+    private val textColorError = ContextCompat.getColor(context, R.color.colorError)
     private val tvMax: TextView
     private val coinButton: View
+    private val tvError: TextView
     private val ivCoin: ImageView
     private val editText: EditText
     private val tvCoinName: TextView
@@ -25,10 +29,14 @@ class CoinInputLayout @JvmOverloads constructor(
         inflate(context, R.layout.view_coin_input_layout, this)
         tvMax = findViewById(R.id.tvMax)
         ivCoin = findViewById(R.id.ivCoin)
+        tvError = findViewById(R.id.tvError)
         tvCoinName = findViewById(R.id.tvCoinName)
         coinButton = findViewById(R.id.coinButton)
         tvHelperText = findViewById(R.id.tvHelperText)
         editText = findViewById(R.id.coinInputEditText)
+
+        textColorOrigin = editText.textColors.defaultColor
+        setErrorText(null)
     }
 
     fun getEditText(): EditText = editText
@@ -51,6 +59,13 @@ class CoinInputLayout @JvmOverloads constructor(
     }
 
     fun setErrorText(text: CharSequence?) {
-        // todo implement
+        if (text != null) {
+            editText.setTextColor(textColorError)
+            tvError.visibility = View.VISIBLE
+        } else {
+            editText.setTextColor(textColorOrigin)
+            tvError.visibility = View.INVISIBLE
+        }
+        tvError.text = text
     }
 }

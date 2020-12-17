@@ -374,7 +374,7 @@ struct GetTronBlockHeaderRequest: AuthorizedAPIRequest {
   var task: HTTPTask {
     return .requestPlain
   }
-}
+} 
 
 struct GetBinanceAccountInfoRequest: AuthorizedAPIRequest {
   typealias ResponseType = APIResponse<BinanceAccountInfo>

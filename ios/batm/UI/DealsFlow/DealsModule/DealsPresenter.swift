@@ -3,16 +3,30 @@ import RxSwift
 import RxCocoa
 
 class DealsPresenter: ModulePresenter, DealsModule {
-    typealias Store = ViewStore<DealsAction, DealsState>
+    struct Input {
+        var select: Driver<IndexPath>
+    }
     
     weak var delegate: DealsModuleDelegate?
-
+    let types = DealsCellType.allCases
     private let usecase: DealsUsecase
-    private let store: Store
     
-    init(usecase: DealsUsecase,
-         store: Store = DealsStore()) {
+    init(usecase: DealsUsecase) {
         self.usecase = usecase
-        self.store = store
     }
+    
+    func bind(input: Input) {
+        input.select
+            .asObservable()
+            .map { [types] in types[$0.item] }
+            .subscribe(onNext: { [delegate] in
+                switch $0 {
+                case .staking: delegate?.didSelectStaking()
+                case .swap: delegate?.didSelectSwap()
+                }
+            })
+            .disposed(by: disposeBag)
+    }
+    
+    
 }

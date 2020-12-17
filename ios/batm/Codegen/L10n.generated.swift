@@ -170,6 +170,12 @@ enum L {
     static let title = "support.title"
   }
 
+  struct Swap {
+    static let percent = "swap.percent"
+    static let platformfee = "swap.platformfee"
+    static let tilda = "swap.tilda"
+  }
+
   struct Trades {
     static let buy = "trades.buy"
     static let create = "trades.create"
@@ -480,6 +486,13 @@ extension L.CreateWallet.Form {
 
   struct Phone {
     static let placeholder = "create_wallet.form.phone.placeholder"
+  }
+}
+extension L.Deals {
+
+  struct Cell {
+    static let staking = "deals.cell.staking"
+    static let swap = "deals.cell.swap"
   }
 }
 extension L.EnterPassword {

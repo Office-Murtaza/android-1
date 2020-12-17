@@ -129,10 +129,10 @@ final class CoinStakingViewController: ModuleViewController<CoinStakingPresenter
                                    value: "\(stakeDetails.rewardAmount ?? 0) \(coinBalance.type.code), \(stakeDetails.rewardPercent ?? 0)%")
                     
                     headerView.add(title: localize(L.CoinStaking.Header.RewardAnnual.title),
-                                   value: "\(stakeDetails.rewardAnnualAmount ?? 0) \(coinBalance.type.code), \(stakeDetails.rewardAnnualPercent)%")
+                                   value: "\(stakeDetails.rewardAnnualAmount ?? 0) \(coinBalance.type.code), \(stakeDetails.rewardAnnualPercent ?? 0)%")
                 } else {
                     headerView.add(title: localize(L.CoinStaking.Header.RewardAnnual.title),
-                                   value: "\(stakeDetails.rewardAnnualPercent)%")
+                                   value: "\(stakeDetails.rewardAnnualPercent ?? 0)%")
                 }
                 
                 stakeDetails.createDate.flatMap {
@@ -151,7 +151,7 @@ final class CoinStakingViewController: ModuleViewController<CoinStakingPresenter
                 }
                 
                 headerView.add(title: localize(L.CoinStaking.Header.CancelPeriod.title),
-                               value: String(format: localize(L.CoinStaking.Header.CancelPeriod.value), stakeDetails.holdPeriod))
+                               value: String(format: localize(L.CoinStaking.Header.CancelPeriod.value), stakeDetails.holdPeriod ?? 0))
                 
                 if stakeDetails.status == StakingStatus.canceled {
                     headerView.add(title: localize(L.CoinStaking.Header.UntilWithdraw.title),

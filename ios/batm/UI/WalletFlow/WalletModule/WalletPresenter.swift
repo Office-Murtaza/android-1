@@ -56,15 +56,7 @@ class WalletPresenter: ModulePresenter, WalletModule {
     input.coinSelected
       .asObservable()
       .withLatestFrom(state) { indexPath, state in state.coins[indexPath.item] }
-      .flatMap{ [delegate, unowned self] coinBalance -> Signal<CoinBalance?> in
-        if coinBalance.type.isETHBased {
-          delegate?.showCoinDetail(predefinedConfig: self.catmPredefinedData())
-          return Signal<CoinBalance?>.just(nil)
-        } else {
-          return Signal.just(coinBalance)
-        }
-      }
-      .filterNil()
+        .filter { !$0.type.isETHBased }
       .flatMap { [unowned self] coinBalance in
         return self.track(Observable.combineLatest(self.usecase.getCoinDetails(for: coinBalance.type).asObservable(),
                                                    self.usecase.getPriceChartDetails(for: coinBalance.type, period: .oneDay).asObservable()))
@@ -74,26 +66,38 @@ class WalletPresenter: ModulePresenter, WalletModule {
                                                                    data: $2) })
       .disposed(by: disposeBag)
     
+    
+    input.coinSelected
+        .asObservable()
+        .withLatestFrom(state) { indexPath, state in state.coins[indexPath.item] }
+        .filter { $0.type.isETHBased }
+        .flatMap { [unowned self] coinBalance in
+            return self.track(Observable.combineLatest(self.usecase.getCoinDetails(for: coinBalance.type).asObservable(), Signal.just(coinBalance).asObservable()))
+        }
+        .subscribe { [delegate, unowned self] result in
+            switch result {
+            case let .next((details, balance)):
+                let catmPredefinedData = self.catmPredefinedData(details: details, balance: balance)
+               delegate?.showCoinDetail(predefinedConfig: catmPredefinedData)
+            default: break;
+            }
+        }
+        .disposed(by: disposeBag)
+    
     setupBindings()
     fetchCoinsBalance()
   }
   
-  private func catmPredefinedData() -> CoinDetailsPredefinedDataConfig {
-    let catmDataBalance = CoinBalance(type: .catm,
-                                      address: "",
-                                      balance: 0,
-                                      fiatBalance: 0,
-                                      reservedBalance: 0,
-                                      reservedFiatBalance: 0,
-                                      price: 0.1,
-                                      index: 0)
+    private func catmPredefinedData(details: CoinDetails, balance: CoinBalance) -> CoinDetailsPredefinedDataConfig {
     let horizontalLineData: [[Double]] = [[0, 50], [100, 50]]
-    return CoinDetailsPredefinedDataConfig(price: 0.1,
+        return CoinDetailsPredefinedDataConfig(price: NSDecimalNumber(decimal:balance.price).doubleValue,
                                            rate: 0.00,
                                            rateToDisplay: "0.00 %",
-                                           balance: catmDataBalance,
+                                           balance: balance,
                                            selectedPrediod: .oneDay,
-                                           chartData: horizontalLineData)
+                                           chartData: horizontalLineData,
+                                           coinDetails: details)
+    
   }
   
   private func setupBindings() {

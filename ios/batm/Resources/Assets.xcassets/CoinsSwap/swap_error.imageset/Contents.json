@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "swap_error.svg",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

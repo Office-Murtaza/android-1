@@ -48,9 +48,6 @@ class SwapViewModel(
     private val _swapFee = MutableLiveData<SwapFeeModelView>()
     val swapFee: LiveData<SwapFeeModelView> = _swapFee
 
-    private val _submitButtonEnabled = MutableLiveData<Boolean>(false)
-    val submitButtonEnabled: LiveData<Boolean> = _submitButtonEnabled
-
     private val _coinToSendError = MutableLiveData<ValidationResult>(ValidationResult.Valid)
     val coinToSendError: LiveData<ValidationResult> = _coinToSendError
 
@@ -114,16 +111,14 @@ class SwapViewModel(
     fun setSendAmount(sendAmount: Double) {
         _sendCoinAmount.value = sendAmount
         _receiveCoinAmount.value = calcReceiveAmountFromSend(sendAmount)
-        // extra validation step
-        validateCoinToSendAmount(sendAmount)
+        updateFeeInfo(sendAmount)
     }
 
     fun setReceiveAmount(receiveAmount: Double) {
         val sendAmount = calcSendAmountFromReceive(receiveAmount)
         _receiveCoinAmount.value = receiveAmount
         _sendCoinAmount.value = sendAmount
-        // extra validation step
-        validateCoinToSendAmount(sendAmount)
+        updateFeeInfo(sendAmount)
     }
 
     fun setMaxSendAmount() {
@@ -140,6 +135,9 @@ class SwapViewModel(
         val sendCoinAmount = sendCoinAmount.value ?: return
         val receiveCoinAmount = receiveCoinAmount.value ?: return
         val receiveCoinDetails = coinToReceiveDetails ?: return
+        if (!validateCoinToSendAmount(sendCoinAmount)) {
+            return
+        }
         if (receiveCoinItem.code == LocalCoinType.XRP.name) {
             val minXRPValue = 20 + receiveCoinDetails.txFee
             if (receiveCoinAmount < minXRPValue) {
@@ -191,40 +189,28 @@ class SwapViewModel(
         }
         // notify UI that coin details is fetching
         _coinsDetailsLoadingState.value = LoadingData.Loading()
+        // clear up the values to operate with 0 amount in the callbacks
+        clearSendAndReceiveAmount()
+        // start fetching only after clearing up amount values
         getCoinDetailsUseCase(
             params = GetCoinDetailsUseCase.Params(coinToSend.code),
             onSuccess = { coinToSendDetails ->
                 getCoinDetailsUseCase(
                     params = GetCoinDetailsUseCase.Params(coinToReceive.code),
                     onSuccess = { coinToReceiveDetails ->
-                        val receiveAmount = receiveCoinAmount.value ?: 1.0
-                        val platformFee = getReceiveFee(coinToReceive, coinToReceiveDetails)
-                        val platformFeeCoinsAmount = receiveAmount * platformFee
-                        val atomicAmount = 1 // probably will depend on the coin type
-                        val atomicSwapAmount = calcCoinsRatio(coinToSend, coinToReceive)
-                        this.coinToSendDetails = coinToSendDetails
-                        this.coinToReceiveDetails = coinToReceiveDetails
                         _coinToSend.value = coinToSend
                         _coinToReceive.value = coinToReceive
+                        this.coinToSendDetails = coinToSendDetails
+                        this.coinToReceiveDetails = coinToReceiveDetails
+                        val sendAmount = sendCoinAmount.value ?: 0.0
+                        val atomicSwapAmount = calcCoinsRatio(coinToSend, coinToReceive)
                         _swapRate.value = SwapRateModelView(
-                            atomicAmount,
+                            1,
                             coinToSend.code,
                             atomicSwapAmount,
                             coinToReceive.code
                         )
-                        _swapFee.value = SwapFeeModelView(
-                            platformFee,
-                            platformFeeCoinsAmount,
-                            coinToReceive.code
-                        )
-                        // recalc the data
-                        val sendCoinAmountLocal = _sendCoinAmount.value
-                        val receiveCoinAmountLocal = _receiveCoinAmount.value
-                        if (sendCoinAmountLocal != null) {
-                            setSendAmount(sendCoinAmountLocal)
-                        } else if (receiveCoinAmountLocal != null) {
-                            setReceiveAmount(receiveCoinAmountLocal)
-                        }
+                        updateFeeInfo(sendAmount)
                         // notify UI that coin details has beed successfully fetched
                         _coinsDetailsLoadingState.value = LoadingData.Success(Unit)
                     },
@@ -235,11 +221,11 @@ class SwapViewModel(
         )
     }
 
-    private fun validateCoinToSendAmount(coinAmount: Double) {
-        val sendAmount = sendCoinAmount.value ?: return
-        val receiveAmount = receiveCoinAmount.value ?: return
-        val currentCoinToSend = coinToSend.value ?: return
-        val currentCoinToSendDetails = coinToSendDetails ?: return
+    private fun validateCoinToSendAmount(coinAmount: Double): Boolean {
+        val sendAmount = sendCoinAmount.value ?: return false
+        val receiveAmount = receiveCoinAmount.value ?: return false
+        val currentCoinToSend = coinToSend.value ?: return false
+        val currentCoinToSendDetails = coinToSendDetails ?: return false
         val balanceValidationResult = amountValidator.validateBalance(
             coinAmount, currentCoinToSend, currentCoinToSendDetails, originCoinsData
         )
@@ -262,8 +248,7 @@ class SwapViewModel(
             }
         }
         _coinToSendError.value = validationResult
-        _submitButtonEnabled.value = validationResult == ValidationResult.Valid
-                && sendAmount > 0 && receiveAmount > 0
+        return validationResult == ValidationResult.Valid && sendAmount > 0 && receiveAmount > 0
     }
 
     private fun calcReceiveAmountFromSend(sendAmount: Double): Double {
@@ -304,9 +289,10 @@ class SwapViewModel(
         // Case:
         // User swap from A to B, user enter amount(A),
         // amount(B) = amount(A) x price(A) / price(B) x (1 - swapProfitPercent / 100) - fee(B)
-        val receiveFee = getReceiveFee(receiveCoin, receiveCoinDetails)
         val price = sendAmount * calcCoinsRatio(sendCoin, receiveCoin)
-        return price * (1 - sendCoinDetails.profitExchange / 100) - receiveFee
+        val receiveCoinFee = getReceiveCoinFee(receiveCoin, receiveCoinDetails)
+        val sendCoinFee = getSendCoinFee(sendCoinDetails)
+        return price * sendCoinFee - receiveCoinFee
     }
 
     private fun calcSwapAmountFromReceive(
@@ -319,12 +305,13 @@ class SwapViewModel(
         // Case:
         // User swap from A to B, user enter amount(B),
         // amount(A) = (amount(B) + fee(B)) x price(B) / price(A) / (1 - swapProfitPercent / 100)
-        val receiveFee = getReceiveFee(receiveCoin, receiveCoinDetails)
+        val receiveCoinFee = getReceiveCoinFee(receiveCoin, receiveCoinDetails)
         val coinRatio = calcCoinsRatio(receiveCoin, sendCoin)
-        return (receiveAmount + receiveFee) * coinRatio / (1 - sendCoinDetails.profitExchange / 100)
+        val sendCoinFee = getSendCoinFee(sendCoinDetails)
+        return (receiveAmount + receiveCoinFee) * coinRatio / sendCoinFee
     }
 
-    private fun getReceiveFee(
+    private fun getReceiveCoinFee(
         receiveCoin: CoinDataItem,
         receiveCoinDetails: CoinDetailsDataItem,
     ): Double {
@@ -336,8 +323,39 @@ class SwapViewModel(
         }
     }
 
+    private fun getSendCoinFee(coinDetailsDataItem: CoinDetailsDataItem): Double {
+        return 1 - coinDetailsDataItem.profitExchange / 100
+    }
+
     private fun calcCoinsRatio(coin1: CoinDataItem, coin2: CoinDataItem): Double {
         return coin1.priceUsd / coin2.priceUsd
+    }
+
+    private fun updateFeeInfo(sendAmount: Double) {
+        val coinToSend = coinToSend.value ?: return
+        val coinToReceive = coinToReceive.value ?: return
+        val receiveRawAmount = sendAmount * calcCoinsRatio(coinToSend, coinToReceive)
+        val receiveWithFeeAmount = calcReceiveAmountFromSend(sendAmount)
+        val platformFeeCoinsAmount = receiveRawAmount - receiveWithFeeAmount
+        val platformFeeActual = platformFeeCoinsAmount / receiveRawAmount
+        if (platformFeeActual.isFinite()) {
+            _swapFee.value = SwapFeeModelView(
+                platformFeeActual,
+                platformFeeCoinsAmount,
+                coinToReceive.code
+            )
+        } else {
+            _swapFee.value = SwapFeeModelView(
+                0.0,
+                0.0,
+                coinToReceive.code
+            )
+        }
+    }
+
+    private fun clearSendAndReceiveAmount() {
+        _sendCoinAmount.value = 0.0
+        _receiveCoinAmount.value = 0.0
     }
 }
 

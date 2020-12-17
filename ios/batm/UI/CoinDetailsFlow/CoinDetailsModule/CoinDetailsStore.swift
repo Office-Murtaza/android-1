@@ -29,6 +29,7 @@ struct CoinDetailsPredefinedDataConfig: Equatable {
   var balance: CoinBalance
   var selectedPrediod: SelectedPeriod
   var chartData: [[Double]]
+  var coinDetails: CoinDetails
 }
 
 struct CoinDetailsState: Equatable {
