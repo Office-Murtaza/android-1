@@ -41,6 +41,7 @@ import wallet.core.jni.EthereumAbi;
 import wallet.core.jni.EthereumAbiFunction;
 import wallet.core.jni.PrivateKey;
 import wallet.core.jni.proto.Ethereum;
+
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.*;
@@ -168,7 +169,14 @@ public class GethService {
                 dto.setType(TransactionType.getType(fromAddress, toAddress, address));
                 dto.setStatus(TransactionStatus.valueOf(d.getInteger("status")));
                 dto.setCryptoAmount(d.get("amount", Decimal128.class).bigDecimalValue());
-                dto.setCryptoFee(d.get("fee", Decimal128.class).bigDecimalValue());
+
+                try {
+                    dto.setCryptoFee(d.get("fee", Decimal128.class).bigDecimalValue());
+                } catch (Exception e) {
+                    System.out.println(" !!!! fee: " + d.getString("fee"));
+                    dto.setCryptoFee(BigDecimal.ZERO);
+                }
+
                 dto.setFromAddress(fromAddress);
                 dto.setToAddress(toAddress);
                 dto.setDate1(new Date(d.getLong("blockTime")));

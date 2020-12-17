@@ -13,6 +13,7 @@ public class NodeService {
     private final Map<CoinType, Set<String>> coinNodeMap = new ConcurrentHashMap<>();
     private final Map<CoinType, String> coinCurrentNodeMap = new ConcurrentHashMap<>();
     private final Map<CoinType, String> coinExplorerMap = new ConcurrentHashMap<>();
+    private final Map<CoinType, Long> coinTimeMap = new ConcurrentHashMap<>();
 
     public NodeService(
             @Value("${btc.node.main.url}") String btcNodeMainUrl,
@@ -79,20 +80,29 @@ public class NodeService {
 
     private boolean init(CoinType coinType) {
         if (coinCurrentNodeMap.containsKey(coinType)) {
-            String currentNode = coinCurrentNodeMap.get(coinType);
-            Optional<String> reserveNodeOpt = coinNodeMap.get(coinType).stream().filter(e -> !e.equalsIgnoreCase(currentNode)).findFirst();
+            if (coinTimeMap.get(coinType) < System.currentTimeMillis() - 10 * 60 * 1000) {
+                String currentNode = coinCurrentNodeMap.get(coinType);
+                Optional<String> reserveNodeOpt = coinNodeMap.get(coinType).stream().filter(e -> !e.equalsIgnoreCase(currentNode)).findFirst();
 
-            if (reserveNodeOpt.isPresent()) {
-                String reserveNode = reserveNodeOpt.get();
-                coinCurrentNodeMap.put(coinType, reserveNode);
+                if (reserveNodeOpt.isPresent()) {
+                    String reserveNode = reserveNodeOpt.get();
+                    coinNodeMap.remove(coinType);
+                    coinCurrentNodeMap.put(coinType, reserveNode);
+                    coinTimeMap.put(coinType, System.currentTimeMillis());
+
+                    return true;
+                }
+            }
+        } else {
+            Iterator<String> iterator = coinNodeMap.get(coinType).stream().iterator();
+
+            if (iterator.hasNext()) {
+                String currentNode = iterator.next();
+                coinCurrentNodeMap.put(coinType, currentNode);
+                coinTimeMap.put(coinType, System.currentTimeMillis());
 
                 return true;
             }
-        } else {
-            String currentNode = coinNodeMap.get(coinType).stream().iterator().next();
-            coinCurrentNodeMap.put(coinType, currentNode);
-
-            return true;
         }
 
         if (!coinCurrentNodeMap.containsKey(coinType))

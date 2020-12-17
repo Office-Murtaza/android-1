@@ -10,6 +10,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.web3j.tuples.generated.Tuple2;
 import wallet.core.jni.CoinType;
+
 import java.math.BigDecimal;
 import java.math.BigInteger;
 
@@ -22,14 +23,16 @@ public class TestController {
     private final UserService userService;
     private final WalletService walletService;
     private final GethService gethService;
+    private final NodeService nodeService;
     private final CoinRep coinRep;
 
-    public TestController(TwilioService twilioService, NotificationService pushNotificationService, UserService userService, WalletService walletService, GethService gethService, CoinRep coinRep) {
+    public TestController(TwilioService twilioService, NotificationService pushNotificationService, UserService userService, WalletService walletService, GethService gethService, NodeService nodeService, CoinRep coinRep) {
         this.twilioService = twilioService;
         this.pushNotificationService = pushNotificationService;
         this.userService = userService;
         this.walletService = walletService;
         this.gethService = gethService;
+        this.nodeService = nodeService;
         this.coinRep = coinRep;
     }
 
@@ -46,7 +49,7 @@ public class TestController {
             CoinService.CoinEnum coinEnum = CoinService.CoinEnum.valueOf(e.getCode());
             CoinType coinType = coinEnum.getCoinType();
 
-            res.put(e.getCode(), getCoinJson(walletService.getCoinsMap().get(coinType).getAddress(), coinEnum.getBalance(walletService.getCoinsMap().get(coinType).getAddress())));
+            res.put(e.getCode(), getCoinJson(walletService.getCoinsMap().get(coinType).getAddress(), coinEnum.getBalance(walletService.getCoinsMap().get(coinType).getAddress()), nodeService.getNodeUrl(coinType)));
         });
 
         return Response.ok(res);
@@ -59,37 +62,45 @@ public class TestController {
 
         try {
             json.put("isStakeholder", gethService.catm.isStakeholder(address).send().component1());
-        } catch (Exception e) {}
+        } catch (Exception e) {
+        }
 
         try {
             json.put("amount", gethService.catm.stakeOf(address).send().intValue());
-        } catch (Exception e) {}
+        } catch (Exception e) {
+        }
 
         try {
             Tuple2<BigInteger, BigInteger> tuple2 = gethService.catm.stakeDetails(address).send();
             json.put("startDate", tuple2.component1());
             json.put("cancelDate", tuple2.component2());
-        } catch (Exception e) {}
+        } catch (Exception e) {
+        }
 
         try {
             json.put("totalStakes", new BigDecimal(gethService.catm.totalStakes().send()).divide(GethService.ETH_DIVIDER));
-        } catch (Exception e) {}
+        } catch (Exception e) {
+        }
 
         try {
             json.put("basePeriod(s)", gethService.catm.basePeriod().send());
-        } catch (Exception e) {}
+        } catch (Exception e) {
+        }
 
         try {
             json.put("holdPeriod(s)", gethService.catm.holdPeriod().send());
-        } catch (Exception e) {}
+        } catch (Exception e) {
+        }
 
         try {
             json.put("annualPercent", gethService.catm.annualPercent().send());
-        } catch (Exception e) {}
+        } catch (Exception e) {
+        }
 
         try {
             json.put("annualPeriod(s)", gethService.catm.annualPeriod().send());
-        } catch (Exception e) {}
+        } catch (Exception e) {
+        }
 
         return Response.ok(json);
     }
@@ -119,11 +130,11 @@ public class TestController {
         return Response.ok(coin.submitTransaction(dto));
     }
 
-    private JSONObject getCoinJson(String address, BigDecimal balance) {
+    private JSONObject getCoinJson(String address, BigDecimal balance, String nodeUrl) {
         JSONObject json = new JSONObject();
-
         json.put("address", address);
         json.put("balance", balance);
+        json.put("nodeUrl", nodeUrl);
 
         return json;
     }
