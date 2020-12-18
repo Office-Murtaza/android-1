@@ -124,11 +124,11 @@ struct CoinExchangeState: Equatable {
     }
     
     var fromCoinBalances: [BTMCoin]? {
-        return coins?.filter{ $0.type != toCoinType }
+        return coins?.sorted(by: { $0.index < $1.index }).filter{ $0.type != toCoinType }
     }
     
     var toCoinBalances: [BTMCoin]? {
-        return coins?.filter{ $0.type != fromCoinType }
+        return coins?.sorted(by: { $0.index < $1.index }).filter{ $0.type != fromCoinType }
     }
     
     var isAllFieldsNotEmpty: Bool {

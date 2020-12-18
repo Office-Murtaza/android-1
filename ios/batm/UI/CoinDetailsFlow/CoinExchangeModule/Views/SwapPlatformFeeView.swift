@@ -19,9 +19,10 @@ class SwapPlatformFeeView: UIView {
 
     private lazy var feeLabel: UILabel = {
         let label = UILabel()
-        label.font = .systemFont(ofSize: 16, weight: .bold)
+        label.font = .systemFont(ofSize: 16, weight: .semibold)
         return label
     }()
+    
     private lazy var feeTitleLabel: UILabel = {
         let label = UILabel()
         label.text = localize(L.Swap.platformfee)

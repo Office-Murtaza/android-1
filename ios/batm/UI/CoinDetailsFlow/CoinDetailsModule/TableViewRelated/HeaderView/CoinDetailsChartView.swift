@@ -114,7 +114,7 @@ class CoinDetailsChartView: UIView {
                                  selectedPeriod: SelectedPeriod,
                                  balance: CoinBalance,
                                  period: [[Double]]?) {
-    priceLabel.text = balance.fiatBalance.fiatFormatted.withDollarSign
+    priceLabel.text = balance.price.fiatFormatted.withDollarSign
     
     guard let data = data,
           let firstPrice = data.prices.first?.last,
