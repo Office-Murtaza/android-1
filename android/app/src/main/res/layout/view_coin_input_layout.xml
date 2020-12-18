@@ -20,7 +20,7 @@
         android:paddingEnd="@dimen/margin_main"
         android:paddingBottom="@dimen/margin_half"
         android:singleLine="true"
-        android:textAppearance="@style/Text.Bold1"
+        android:textAppearance="@style/SwapAmountTextAppearance"
         app:layout_constraintBottom_toTopOf="@id/tvMax"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/coinButton"

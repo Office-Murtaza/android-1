@@ -6,6 +6,7 @@
     <dimen name="margin_x2">32dp</dimen>
     <dimen name="margin_main">16dp</dimen>
     <dimen name="margin_half">8dp</dimen>
+    <dimen name="margin_quarter">4dp</dimen>
     <dimen name="margin_normal">12dp</dimen>
     <dimen name="margin_quoter">4dp</dimen>
     <dimen name="margin_large">24dp</dimen>

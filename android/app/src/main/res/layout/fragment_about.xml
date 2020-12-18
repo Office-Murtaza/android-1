@@ -22,20 +22,11 @@
         android:background="@color/thin_divider" />
 
     <com.app.belcobtm.presentation.core.views.SettingsItemView
-        android:id="@+id/termsItem"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:text="@string/terms_label" />
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/divider_size"
-        android:background="@color/thin_divider" />
-
-    <com.app.belcobtm.presentation.core.views.SettingsItemView
         android:id="@+id/privacyItem"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingTop="@dimen/margin_quarter"
+        android:paddingBottom="@dimen/margin_quarter"
         app:text="@string/privacy_label" />
 
     <View
@@ -47,7 +38,22 @@
         android:id="@+id/complaintItem"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingTop="@dimen/margin_quarter"
+        android:paddingBottom="@dimen/margin_quarter"
         app:text="@string/comlaint_label" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/divider_size"
+        android:background="@color/thin_divider" />
+
+    <com.app.belcobtm.presentation.core.views.SettingsItemView
+        android:id="@+id/termsItem"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="@dimen/margin_quarter"
+        android:paddingBottom="@dimen/margin_quarter"
+        app:text="@string/terms_label" />
 
     <View
         android:layout_width="match_parent"
@@ -58,6 +64,8 @@
         android:id="@+id/versionItem"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingTop="@dimen/margin_quarter"
+        android:paddingBottom="@dimen/margin_quarter"
         app:text="@string/version_label" />
 
     <View

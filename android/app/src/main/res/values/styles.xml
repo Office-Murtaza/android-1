@@ -127,6 +127,11 @@
         <item name="android:textColor">@color/colorText</item>
     </style>
 
+    <style name="SwapAmountTextAppearance" parent="Text.Regular1">
+        <item name="android:textSize">22sp</item>
+        <item name="android:textColor">@color/chip_default_text_color</item>
+    </style>
+
     <style name="EditText" />
 
     <style name="EditText.InputWithMax">
