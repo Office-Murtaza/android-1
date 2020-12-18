@@ -384,8 +384,6 @@ class TransactionHashHelper(
                     calendar.time = Date()
                     calendar.add(Calendar.HOUR, 10)
                 }.timeInMillis
-                it.feeLimit = ((prefsHelper.coinsDetails[CoinType.TRON.code()]?.txFee?.toBigDecimal()
-                    ?: BigDecimal(1)) * BigDecimal.valueOf(CoinType.TRON.unit())).toLong()
                 it.blockHeader = tronBlock.build()
             }
             val signingInput = Tron.SigningInput.newBuilder().also {

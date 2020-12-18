@@ -14,5 +14,6 @@ class DealsFragment : BaseFragment() {
 
     override fun initListeners() {
         swapItem.setOnClickListener { navigate(DealsFragmentDirections.toSwapFragment()) }
+        stakingItem.setOnClickListener { navigate(DealsFragmentDirections.toStakingFragment()) }
     }
 }
