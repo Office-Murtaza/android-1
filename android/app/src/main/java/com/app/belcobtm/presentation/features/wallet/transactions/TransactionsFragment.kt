@@ -77,12 +77,11 @@ class TransactionsFragment : BaseFragment() {
 
     private fun initFabMenu() {
         val menu = FabSpeedDialMenu(requireContext())
-        if (viewModel.coinCode == LocalCoinType.CATM.name) {
-            addButtonToMenu(menu, STAKING)
-        }
 //        addButtonToMenu(groupId, menu, TRADE)
 //        addButtonToMenu(groupId, menu, SELL)
-        addButtonToMenu(menu, SEND_GIFT)
+        if (viewModel.coinCode != LocalCoinType.DOGE.name) {
+            addButtonToMenu(menu, SEND_GIFT)
+        }
         addButtonToMenu(menu, WITHDRAW)
         addButtonToMenu(menu, DEPOSIT)
         addButtonToMenu(menu, RECALL)

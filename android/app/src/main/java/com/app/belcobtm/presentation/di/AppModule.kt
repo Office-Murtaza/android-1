@@ -1,6 +1,5 @@
 package com.app.belcobtm.presentation.di
 
-import com.app.belcobtm.domain.wallet.LocalCoinType
 import com.app.belcobtm.domain.wallet.WalletRepository
 import com.app.belcobtm.domain.wallet.interactor.GetCoinListUseCase
 import com.app.belcobtm.presentation.core.coin.AmountCoinValidator
@@ -11,6 +10,7 @@ import com.app.belcobtm.presentation.features.authorization.create.seed.CreateSe
 import com.app.belcobtm.presentation.features.authorization.create.wallet.CreateWalletViewModel
 import com.app.belcobtm.presentation.features.authorization.recover.seed.RecoverSeedViewModel
 import com.app.belcobtm.presentation.features.authorization.recover.wallet.RecoverWalletViewModel
+import com.app.belcobtm.presentation.features.deals.swap.SwapViewModel
 import com.app.belcobtm.presentation.features.notification.NotificationHelper
 import com.app.belcobtm.presentation.features.pin.code.PinCodeViewModel
 import com.app.belcobtm.presentation.features.settings.SettingsViewModel
@@ -27,7 +27,6 @@ import com.app.belcobtm.presentation.features.sms.code.SmsCodeViewModel
 import com.app.belcobtm.presentation.features.wallet.add.WalletsViewModel
 import com.app.belcobtm.presentation.features.wallet.balance.WalletViewModel
 import com.app.belcobtm.presentation.features.wallet.deposit.DepositViewModel
-import com.app.belcobtm.presentation.features.deals.swap.SwapViewModel
 import com.app.belcobtm.presentation.features.wallet.send.gift.SendGiftViewModel
 import com.app.belcobtm.presentation.features.wallet.staking.StakingViewModel
 import com.app.belcobtm.presentation.features.wallet.trade.create.TradeCreateViewModel
@@ -87,9 +86,7 @@ val viewModelModule = module {
         )
     }
     viewModel {
-        val coinDataItem = get<WalletRepository>().getCoinItemByCode(LocalCoinType.CATM.name)
-        val coinFee = get<WalletRepository>().getCoinDetailsItemByCode(LocalCoinType.CATM.name)
-        StakingViewModel(coinDataItem, coinFee, get(), get(), get(), get(), get())
+        StakingViewModel(get(), get(), get(), get(), get(), get(), get())
     }
     viewModel { (phone: String) ->
         SmsCodeViewModel(phone, get(), get())

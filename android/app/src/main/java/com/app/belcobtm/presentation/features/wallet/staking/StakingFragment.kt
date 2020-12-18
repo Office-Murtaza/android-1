@@ -37,7 +37,7 @@ class StakingFragment : BaseFragment() {
                 StakingTransactionState.CANCEL -> viewModel.stakeCancel()
                 StakingTransactionState.WITHDRAW -> viewModel.unstakeCreateTransaction()
             }
-            else -> viewModel.loadBaseData()
+            else -> viewModel.loadData()
         }
     }
 
