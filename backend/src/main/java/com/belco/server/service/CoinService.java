@@ -1132,7 +1132,7 @@ public class CoinService {
 
             @Override
             public BigDecimal getTxFee() {
-                return getCoinEntity().getFee().stripTrailingZeros();
+                return binanceService.getTxFee();
             }
 
             @Override
@@ -1243,7 +1243,7 @@ public class CoinService {
 
             @Override
             public BigDecimal getTxFee() {
-                return getCoinEntity().getFee().stripTrailingZeros();
+                return rippledService.getTxFee();
             }
 
             @Override
@@ -1304,7 +1304,7 @@ public class CoinService {
             @Override
             public String sign(String fromAddress, String toAddress, BigDecimal amount) {
                 BigDecimal balance = getBalance(fromAddress);
-                BigDecimal fee = getCoinEntity().getFee();
+                BigDecimal fee = getTxFee();
                 BigDecimal maxWithdrawAmount = balance.subtract(new BigDecimal(20).subtract(fee));
 
                 if (maxWithdrawAmount.compareTo(amount) < 0) {
@@ -1422,7 +1422,7 @@ public class CoinService {
 
             @Override
             public String sign(String fromAddress, String toAddress, BigDecimal amount) {
-                return trongridService.sign(fromAddress, toAddress, amount, getCoinEntity().getFee());
+                return trongridService.sign(fromAddress, toAddress, amount);
             }
 
             @Override

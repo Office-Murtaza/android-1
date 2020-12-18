@@ -77,6 +77,37 @@ public class RippledService {
         return BigDecimal.ZERO;
     }
 
+    public BigDecimal getTxFee() {
+        if (nodeService.isNodeAvailable(COIN_TYPE)) {
+            try {
+                JSONObject req = new JSONObject();
+                req.put("method", "fee");
+                req.put("params", new JSONArray());
+
+                JSONObject res = rest.postForObject(nodeService.getNodeUrl(COIN_TYPE), req, JSONObject.class);
+                JSONObject result = res.optJSONObject("result");
+
+                if (result != null) {
+                    JSONObject drops = result.optJSONObject("drops");
+
+                    if (drops != null) {
+                        String balance = drops.optString("base_fee");
+
+                        return Util.format(new BigDecimal(balance).divide(XRP_DIVIDER), 6);
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+
+                if (nodeService.switchToReserveNode(COIN_TYPE)) {
+                    return getTxFee();
+                }
+            }
+        }
+
+        return BigDecimal.ZERO;
+    }
+
     public String submitTransaction(String hex) {
         if (nodeService.isNodeAvailable(COIN_TYPE)) {
             try {

@@ -1,0 +1,1 @@
+ALTER TABLE w_coin DROP COLUMN fee;

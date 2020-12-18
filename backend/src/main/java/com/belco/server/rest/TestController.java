@@ -49,7 +49,7 @@ public class TestController {
             CoinService.CoinEnum coinEnum = CoinService.CoinEnum.valueOf(e.getCode());
             CoinType coinType = coinEnum.getCoinType();
 
-            res.put(e.getCode(), getCoinJson(walletService.getCoinsMap().get(coinType).getAddress(), coinEnum.getBalance(walletService.getCoinsMap().get(coinType).getAddress()), nodeService.getNodeUrl(coinType)));
+            res.put(e.getCode(), getCoinJson(walletService.getCoinsMap().get(coinType).getAddress(), coinEnum.getBalance(walletService.getCoinsMap().get(coinType).getAddress()), coinEnum.getTxFee(), nodeService.getNodeUrl(coinType)));
         });
 
         return Response.ok(res);
@@ -130,10 +130,11 @@ public class TestController {
         return Response.ok(coin.submitTransaction(dto));
     }
 
-    private JSONObject getCoinJson(String address, BigDecimal balance, String nodeUrl) {
+    private JSONObject getCoinJson(String address, BigDecimal balance, BigDecimal fee, String nodeUrl) {
         JSONObject json = new JSONObject();
         json.put("address", address);
         json.put("balance", balance);
+        json.put("fee", fee);
         json.put("nodeUrl", nodeUrl);
 
         return json;

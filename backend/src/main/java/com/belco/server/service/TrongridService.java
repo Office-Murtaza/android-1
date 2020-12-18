@@ -170,7 +170,7 @@ public class TrongridService {
         return new CurrentBlockDTO();
     }
 
-    public String sign(String fromAddress, String toAddress, BigDecimal amount, BigDecimal fee2) {
+    public String sign(String fromAddress, String toAddress, BigDecimal amount) {
         try {
             PrivateKey privateKey;
 

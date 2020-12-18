@@ -39,7 +39,8 @@ import java.util.concurrent.TimeUnit;
 public class BinanceService {
 
     private static final String CHAIN_ID = "Binance-Chain-Tigris";
-    private static final BigDecimal BNB_DIVIDER = BigDecimal.valueOf(100_000_000L);
+    private static final BigDecimal DIVIDER = BigDecimal.valueOf(100_000_000L);
+    private static final BigDecimal FEE = new BigDecimal("0.000375");
     private static final CoinType COIN_TYPE = CoinType.BINANCE;
 
     private final BinanceDexApiRestClient binanceDex;
@@ -70,6 +71,10 @@ public class BinanceService {
         }
 
         return BigDecimal.ZERO;
+    }
+
+    public BigDecimal getTxFee() {
+        return FEE;
     }
 
     public String submitTransaction(String hex) {
@@ -188,7 +193,7 @@ public class BinanceService {
 
             Binance.SendOrder.Token.Builder token = Binance.SendOrder.Token.newBuilder();
             token.setDenom("BNB");
-            token.setAmount(amount.multiply(BNB_DIVIDER).longValue());
+            token.setAmount(amount.multiply(DIVIDER).longValue());
 
             Binance.SendOrder.Input.Builder input = Binance.SendOrder.Input.newBuilder();
             input.setAddress(ByteString.copyFrom(new AnyAddress(fromAddress, CoinType.BINANCE).data()));
@@ -242,6 +247,6 @@ public class BinanceService {
     }
 
     private BigDecimal getAmount(String amount) {
-        return new BigDecimal(amount).divide(BNB_DIVIDER).stripTrailingZeros();
+        return new BigDecimal(amount).divide(DIVIDER).stripTrailingZeros();
     }
 }
