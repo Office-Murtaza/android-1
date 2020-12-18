@@ -98,6 +98,6 @@ final class WalletCell: UITableViewCell {
     typeLabel.text = model.type.verboseValue
     priceLabel.text = model.price.fiatFormatted.withDollarSign
     coinBalanceLabel.text = (model.balance + model.reservedBalance).coinFormatted.withCoinType(model.type)
-    fiatBalanceLabel.text = model.fiatBalance.fiatFormatted.withDollarSign
+    fiatBalanceLabel.text = (model.fiatBalance + model.reservedFiatBalance).fiatFormatted.withDollarSign
   }
 }
