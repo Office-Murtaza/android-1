@@ -1362,7 +1362,7 @@ public class CoinService {
 
             @Override
             public BigDecimal getTxFee() {
-                return getCoinEntity().getFee().stripTrailingZeros();
+                return BigDecimal.ZERO;
             }
 
             @Override

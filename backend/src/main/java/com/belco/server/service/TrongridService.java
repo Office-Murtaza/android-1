@@ -170,7 +170,7 @@ public class TrongridService {
         return new CurrentBlockDTO();
     }
 
-    public String sign(String fromAddress, String toAddress, BigDecimal amount, BigDecimal fee) {
+    public String sign(String fromAddress, String toAddress, BigDecimal amount, BigDecimal fee2) {
         try {
             PrivateKey privateKey;
 
@@ -201,7 +201,6 @@ public class TrongridService {
             transactionBuilder.setTransfer(transferBuilder.build());
             transactionBuilder.setTimestamp(System.currentTimeMillis());
             transactionBuilder.setExpiration(transactionBuilder.getTimestamp() + 36000000);
-            transactionBuilder.setFeeLimit(fee.multiply(TRX_DIVIDER).longValue());
             transactionBuilder.setBlockHeader(headerBuilder.build());
 
             Tron.SigningInput.Builder sign = Tron.SigningInput.newBuilder();
