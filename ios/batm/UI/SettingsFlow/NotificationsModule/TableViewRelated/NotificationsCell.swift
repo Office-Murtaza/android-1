@@ -34,7 +34,7 @@ final class NotificationsCell: UITableViewCell {
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        
+        visibilitySwitch.isOn = UserDefaultsHelper.notificationsEnabled.value
         setupUI()
         setupLayout()
     }
@@ -51,10 +51,10 @@ final class NotificationsCell: UITableViewCell {
     
     func configure() {
         typeLabel.text = localize(L.Notifications.Cell.title)
-        visibilitySwitch.rx.isOn
-          .asDriver()
-          .drive(onNext: { [weak self] _ in self?.delegate?.didTapChangeNotifications() })
-          .disposed(by: disposeBag)
+        visibilitySwitch.rx.value.changed.subscribe(onNext: { [weak self] isChanged in
+            self?.delegate?.didTapChangeNotifications()
+        })
+        .disposed(by: disposeBag)
     }
     
     private func setupUI() {

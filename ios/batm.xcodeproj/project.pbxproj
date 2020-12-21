@@ -33,6 +33,9 @@
 		055A9BBE257585C200A8E8F1 /* NotificationsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 055A9BBD257585C200A8E8F1 /* NotificationsCell.swift */; };
 		055A9BC52575874D00A8E8F1 /* NotificationsTableViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 055A9BC42575874D00A8E8F1 /* NotificationsTableViewDataSource.swift */; };
 		055A9BCB2575875D00A8E8F1 /* NotificationsTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 055A9BCA2575875D00A8E8F1 /* NotificationsTableView.swift */; };
+		05A52BB1258D20E800F44A4D /* PropertyWrappers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05A52BB0258D20E800F44A4D /* PropertyWrappers.swift */; };
+		05A52BB5258D211F00F44A4D /* UserDefaultsHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05A52BB4258D211F00F44A4D /* UserDefaultsHelper.swift */; };
+		05A52BF5258D225200F44A4D /* OptionalHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05A52BF4258D225200F44A4D /* OptionalHelper.swift */; };
 		05A7C4FC258815B70039E0B5 /* CreateWalletResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05A7C4FB258815B70039E0B5 /* CreateWalletResponse.swift */; };
 		05B7596F25880C3800F23F23 /* CreateWalletResponse+Mapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05B7596E25880C3800F23F23 /* CreateWalletResponse+Mapping.swift */; };
 		05C62222257ECE28008787F3 /* KeychainManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05C62221257ECE28008787F3 /* KeychainManager.swift */; };
@@ -591,6 +594,9 @@
 		055A9BBD257585C200A8E8F1 /* NotificationsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsCell.swift; sourceTree = "<group>"; };
 		055A9BC42575874D00A8E8F1 /* NotificationsTableViewDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsTableViewDataSource.swift; sourceTree = "<group>"; };
 		055A9BCA2575875D00A8E8F1 /* NotificationsTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsTableView.swift; sourceTree = "<group>"; };
+		05A52BB0258D20E800F44A4D /* PropertyWrappers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PropertyWrappers.swift; sourceTree = "<group>"; };
+		05A52BB4258D211F00F44A4D /* UserDefaultsHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsHelper.swift; sourceTree = "<group>"; };
+		05A52BF4258D225200F44A4D /* OptionalHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionalHelper.swift; sourceTree = "<group>"; };
 		05A7C4FB258815B70039E0B5 /* CreateWalletResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateWalletResponse.swift; sourceTree = "<group>"; };
 		05B7596E25880C3800F23F23 /* CreateWalletResponse+Mapping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CreateWalletResponse+Mapping.swift"; sourceTree = "<group>"; };
 		05C6219F257EB413008787F3 /* batm.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = batm.entitlements; sourceTree = "<group>"; };
@@ -2690,6 +2696,9 @@
 				DBAD53A722D7CC500005F682 /* KeyboardHelper.swift */,
 				DBEE2E6523F5B7C700EBB915 /* ValidationPhoneNumber.swift */,
 				0522EB6D25598C650028CD51 /* SendHelper.swift */,
+				05A52BF4258D225200F44A4D /* OptionalHelper.swift */,
+				05A52BB0258D20E800F44A4D /* PropertyWrappers.swift */,
+				05A52BB4258D211F00F44A4D /* UserDefaultsHelper.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -3426,6 +3435,7 @@
 				DB96173222C791690078E92D /* WalletService.swift in Sources */,
 				DB83625024C205B700A5FEFC /* CodeInputView.swift in Sources */,
 				DB8D409C22C3EBF700D5FBD0 /* Module.swift in Sources */,
+				05A52BB5258D211F00F44A4D /* UserDefaultsHelper.swift in Sources */,
 				DB226C5A22E99E3E0087E6C5 /* URLEncoding+Extensions.swift in Sources */,
 				DB9616B222C610280078E92D /* LinkView.swift in Sources */,
 				DBEE2E6623F5B7C700EBB915 /* ValidationPhoneNumber.swift in Sources */,
@@ -3501,6 +3511,7 @@
 				DB1D21E624AE6C6A001E9696 /* StakeDetails.swift in Sources */,
 				DBC68CA722F868E000473247 /* EnterPasswordModule.swift in Sources */,
 				DBECA63322F7FBE3002C2610 /* ShowPhoneModule.swift in Sources */,
+				05A52BF5258D225200F44A4D /* OptionalHelper.swift in Sources */,
 				DB16A870235F4438007E3B20 /* CoinSellDetailsAnotherAddressModule.swift in Sources */,
 				DB9616BA22C63F9B0078E92D /* APIGateway.swift in Sources */,
 				DBC620A923466B250007D412 /* GiftAddress+Mapping.swift in Sources */,
@@ -3607,6 +3618,7 @@
 				DB86FD2C2477FFC4002FE22D /* LocationUpdateDateStorage.swift in Sources */,
 				DBF98D4024502B0700AF6D5A /* CoinDepositPresenter.swift in Sources */,
 				DB95EB2A230AEFEA0059C84C /* UIImage+Extensions.swift in Sources */,
+				05A52BB1258D20E800F44A4D /* PropertyWrappers.swift in Sources */,
 				DBA6845322E45A9A0079429E /* SettingsModule.swift in Sources */,
 				DB33E9BE241D389400764BF5 /* PriceChartData.swift in Sources */,
 				DBF98D3F24502B0700AF6D5A /* CoinDepositViewController.swift in Sources */,

@@ -10,19 +10,53 @@ protocol DealsUsecase {
     func getStakeDetails(for type: CustomCoinType) -> Single<StakeDetails>
     func createStake(from coin: BTMCoin, with coinDetails: CoinDetails, amount: Decimal) -> Completable
     func cancelStake(from coin: BTMCoin, with coinDetails: CoinDetails, stakeDetails: StakeDetails) -> Completable
+    func getCoinDetails(for type: CustomCoinType) -> Single<CoinDetails>
+    func getCoin(for type: CustomCoinType) -> Single<BTMCoin>
+    func getCoinsBalance() -> Single<CoinsBalance>
 }
 
 class DealsUsecaseImpl: DealsUsecase {
     let api: APIGateway
     let accountStorage: AccountStorage
     let walletService: WalletService
+    let walletStorage: BTMWalletStorage
     
     init(api: APIGateway,
          accountStorage: AccountStorage,
-         walletService: WalletService) {
+         walletService: WalletService,
+         walletStorage: BTMWalletStorage) {
         self.api = api
         self.accountStorage = accountStorage
         self.walletService = walletService
+        self.walletStorage = walletStorage
+    }
+    
+    func getCoinsBalance() -> Single<CoinsBalance> {
+        return walletStorage.get()
+            .map { $0.coins.filter { $0.isVisible } }
+            .asObservable()
+            .withLatestFrom(accountStorage.get()) { ($1, $0) }
+            .flatMap { [api] in
+                api.getCoinsBalance(userId: $0.userId, coins: $1)
+            }
+            .asSingle()
+    }
+    
+    func getCoin(for type: CustomCoinType) -> Single<BTMCoin> {
+        return walletStorage.get()
+            .map {
+                let coin = $0.coins.first { $0.type == type }
+                
+                guard let unwrappedCoin = coin  else {
+                    throw StorageError.notFound
+                }
+                
+                return unwrappedCoin
+            }
+    }
+    
+    func getCoinDetails(for type: CustomCoinType) -> Single<CoinDetails> {
+        return api.getCoinDetails(type: type)
     }
     
     func exchange(from fromCoin: BTMCoin,

@@ -157,9 +157,11 @@ final class AppAssembly: Assembly {
         let api = ioc.resolve(APIGateway.self)!
         let accountStorage = ioc.resolve(AccountStorage.self)!
         let walletService = ioc.resolve(WalletService.self)!
+        let walletStorage = ioc.resolve(BTMWalletStorage.self)!
         return DealsUsecaseImpl(api: api,
                                 accountStorage: accountStorage,
-                                walletService: walletService)
+                                walletService: walletService,
+                                walletStorage: walletStorage)
     }.inObjectScope(.container)
     container.register(ATMUsecase.self) { ioc in
       let api = ioc.resolve(APIGateway.self)!

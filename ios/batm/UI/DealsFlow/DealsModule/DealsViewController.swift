@@ -31,10 +31,10 @@ class DealsViewController: ModuleViewController<DealsPresenter> {
     }
     
     override func setupBindings() {
-        let selectDriver = tableView.rx.itemSelected.asDriver()
+        let select = tableView.rx.itemSelected.asDriver()
         
         setupUIBindings()
-        presenter.bind(input: DealsPresenter.Input(select: selectDriver))
+        presenter.bind(input: DealsPresenter.Input(select: select))
     }
     
 }

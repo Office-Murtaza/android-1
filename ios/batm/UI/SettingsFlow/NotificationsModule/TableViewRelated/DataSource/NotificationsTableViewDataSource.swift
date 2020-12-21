@@ -12,7 +12,6 @@ import RxCocoa
 
 final class NotificationsTableViewDataSource: NSObject, UITableViewDataSource, HasDisposeBag {
     let changeVisibilityRelay = PublishRelay<Bool>()
-    private var isEnabled = true
     
     weak var tableView: UITableView? {
         didSet {
@@ -44,7 +43,7 @@ final class NotificationsTableViewDataSource: NSObject, UITableViewDataSource, H
 
 extension NotificationsTableViewDataSource: NotificationsCellDelegate {
     func didTapChangeNotifications() {
-        isEnabled = !isEnabled
-        changeVisibilityRelay.accept(isEnabled)
+        UserDefaultsHelper.notificationsEnabled = !UserDefaultsHelper.notificationsEnabled.value
+        changeVisibilityRelay.accept(UserDefaultsHelper.notificationsEnabled.value)
     }
 }

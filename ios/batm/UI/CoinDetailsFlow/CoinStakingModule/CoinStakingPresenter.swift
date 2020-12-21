@@ -61,17 +61,17 @@ final class CoinStakingPresenter: ModulePresenter, CoinStakingModule {
             .disposed(by: disposeBag)
     }
     
-    private func getCoin() -> Observable<CoinStakingAction> {
-        return usecase.getCoin(for: .catm).asObservable().map { CoinStakingAction.setupCoin($0) }
-    }
-    
-    private func getCoinDetails() -> Observable<CoinStakingAction> {
-        return usecase.getCoinDetails(for: .catm).asObservable().map { CoinStakingAction.setupCoinDetails($0) }
-    }
-    
-    private func getStakeDetails() -> Observable<CoinStakingAction> {
-        return usecase.getStakeDetails(for: .catm).asObservable().map { CoinStakingAction.setupStakeDetails($0) }
-    }
+//    private func getCoin() -> Observable<CoinStakingAction> {
+//        return usecase.getCoin(for: .catm).asObservable().map { CoinStakingAction.setupCoin($0) }
+//    }
+//
+//    private func getCoinDetails() -> Observable<CoinStakingAction> {
+//        return usecase.getCoinDetails(for: .catm).asObservable().map { CoinStakingAction.setupCoinDetails($0) }
+//    }
+//
+//    private func getStakeDetails() -> Observable<CoinStakingAction> {
+//        return usecase.getStakeDetails(for: .catm).asObservable().map { CoinStakingAction.setupStakeDetails($0) }
+//    }
     
     private func proceedWithStaking(for state: CoinStakingState) -> Completable {
         let coin = state.coin!

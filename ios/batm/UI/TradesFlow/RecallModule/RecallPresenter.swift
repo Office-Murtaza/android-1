@@ -67,7 +67,7 @@ final class RecallPresenter: ModulePresenter, RecallModule {
   
   private func recall(for state: RecallState) -> Completable {
     return usecase.recall(from: state.coin!,
-                              amount: state.coinAmount.decimalValue ?? 0.0)
+                          amount: state.coinAmount.decimalValue ?? 0.0)
       .catchError { [store] in
         if let apiError = $0 as? APIError, case let .serverError(error) = apiError {
           store.action.accept(.makeInvalidState(error.message))

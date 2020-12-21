@@ -59,6 +59,7 @@ extension AppDelegate: UNUserNotificationCenterDelegate, MessagingDelegate {
         UNUserNotificationCenter.current().requestAuthorization(options: authOptions, completionHandler: { (registered, error) in
             if registered {
                 DispatchQueue.main.async {
+                    UserDefaultsHelper.notificationsEnabled = true
                     application.registerForRemoteNotifications()
                 }
             }

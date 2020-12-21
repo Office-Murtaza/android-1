@@ -33,7 +33,6 @@ struct CoinDetailsPredefinedDataConfig: Equatable {
 }
 
 struct CoinDetailsState: Equatable {
-  
   var coinBalances: [CoinBalance]?
   var coinDetails: CoinDetails?
   var selectedPeriod: SelectedPeriod = .oneDay

@@ -10,8 +10,8 @@ class DealsFlowController: FlowController, FlowActivator {
 }
 
 extension DealsFlowController: DealsModuleDelegate {
-    func didSelectStaking() {
-        step.accept(DealsFlow.Steps.staking)
+    func didSelectStaking(coin: BTMCoin, coinBalances: [CoinBalance], coinDetails: CoinDetails, stakeDetails: StakeDetails) {
+        step.accept(DealsFlow.Steps.staking(coin, coinBalances, coinDetails, stakeDetails))
     }
     
     func didSelectSwap() {

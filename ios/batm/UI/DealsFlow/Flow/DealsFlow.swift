@@ -12,7 +12,7 @@ class DealsFlow: BaseFlow<BTMNavigationController, DealsFlowController> {
     
     enum Steps: Step, Equatable {
         case deals
-        case staking
+        case staking(BTMCoin, [CoinBalance], CoinDetails, StakeDetails)
         case swap
         case pop(String? = nil)
     }
@@ -31,8 +31,9 @@ class DealsFlow: BaseFlow<BTMNavigationController, DealsFlowController> {
             module.controller.tabBarItem.image = UIImage(named: "tab_bar_deals")
             module.controller.tabBarItem.selectedImage = UIImage(named: "tab_bar_active_deals")
             return push(module.controller, animated: false)
-        case .staking:
+        case let .staking(coin, coinBalances, coinDetails, stakeDetails):
             let module = resolver.resolve(Module<CoinStakingModule>.self)!
+            module.input.setup(coin: coin, coinBalances: coinBalances, coinDetails: coinDetails, stakeDetails: stakeDetails)
             return push(module.controller)
         case .swap:
             let module = resolver.resolve(Module<CoinExchangeModule>.self)!

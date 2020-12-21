@@ -11,7 +11,6 @@ enum CoinStakingAction: Equatable {
 }
 
 struct CoinStakingState: Equatable {
-    
     var coin: BTMCoin?
     var coinBalances: [CoinBalance]?
     var coinDetails: CoinDetails?
@@ -62,7 +61,6 @@ struct CoinStakingState: Equatable {
 }
 
 final class CoinStakingStore: ViewStore<CoinStakingAction, CoinStakingState> {
-    
     override var initialState: CoinStakingState {
         return CoinStakingState()
     }

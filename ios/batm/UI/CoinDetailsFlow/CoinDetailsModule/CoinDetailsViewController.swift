@@ -100,18 +100,6 @@ final class CoinDetailsViewController: ModuleViewController<CoinDetailsPresenter
     dataSource.tableView = tableView
     
     presenter.state
-      .map { $0.coin?.type.isETHBased ?? false }
-      .filter { $0 }
-      .asObservable()
-      .take(1)
-      .subscribe(onNext: { [unowned self] _ in
-        self.fab.view.addItem(title: localize(L.CoinDetails.staking), image: UIImage(named: "fab_staking")) { [unowned self] _ in
-          self.didTapStakingRelay.accept(())
-        }
-      })
-      .disposed(by: disposeBag)
-    
-    presenter.state
       .map { $0.coinBalance }
       .filterNil()
       .drive(onNext: { [unowned self] in self.title = $0.type.verboseValue })
