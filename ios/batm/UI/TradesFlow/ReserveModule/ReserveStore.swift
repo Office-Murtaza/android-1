@@ -120,7 +120,7 @@ final class ReserveStore: ViewStore<ReserveAction, ReserveState> {
     
     private func isValidXRPAmount(amount: Decimal, state: ReserveState) -> Bool {
         if state.coin?.type == .ripple {
-            return amount.greaterThanOrEqualTo(20)
+            return (state.coinBalance?.balance ?? 0 - amount).greaterThanOrEqualTo(20)
         }
         return true
     }
