@@ -192,7 +192,7 @@ final class CoinExchangeStore: ViewStore<CoinExchangeAction, CoinExchangeState> 
             state.coinBalances = balances.coins
             state.coins = coins
             state.coinDetails = details
-            let firstCoin = balances.coins.first
+            let firstCoin = coins.first
             if let type = firstCoin?.type, let address = firstCoin?.address {
                 let coin = BTMCoin(type: type, privateKey: "", address: address)
                 state.fromCoin = coin

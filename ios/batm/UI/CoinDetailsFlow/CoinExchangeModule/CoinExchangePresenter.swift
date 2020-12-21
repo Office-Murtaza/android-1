@@ -51,7 +51,7 @@ final class CoinExchangePresenter: ModulePresenter, CoinExchangeModule {
         fetchDataRelay
             .asObservable()
           .flatMap { [unowned self]  in
-            return self.track(Observable.combineLatest(self.walletUseCase.getCoinsBalance().asObservable(),
+            return self.track(Observable.combineLatest(self.walletUseCase.getCoinsBalance(filteredByActive: false).asObservable(),
                                                        self.walletUseCase.getCoinDetails(for: CustomCoinType.bitcoin).asObservable(),
                                                        self.walletUseCase.getCoinsList().asObservable()))
           }.subscribe({ [weak self] in

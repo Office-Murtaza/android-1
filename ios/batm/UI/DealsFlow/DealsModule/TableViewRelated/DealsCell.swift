@@ -65,6 +65,8 @@ final class DealsCell: UITableViewCell {
         iconImageView.isHidden = type.image == nil
         iconImageView.contentMode = .center
         titleLabel.text = type.title
+        accessoryView = UIImageView(image: UIImage(named: "deals-disclosure"))
+        separatorInset = UIEdgeInsets(top: 0, left: 15, bottom: 0, right: 15)
     }
     
     private func setupUI() {

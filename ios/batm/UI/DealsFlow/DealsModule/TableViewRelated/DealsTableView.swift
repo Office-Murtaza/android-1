@@ -17,11 +17,11 @@ class DealsTableView: UITableView, UITableViewDelegate {
         
         translatesAutoresizingMaskIntoConstraints = false
         backgroundColor = .white
-        rowHeight = 60
+        rowHeight = 62
         delegate = self
         separatorInset = .zero
         tableHeaderView = headerView
-        tableFooterView = UIView(frame: CGRect(x: 0, y: 0, width: frame.size.width, height: 1))
+        tableFooterView = UIView()
         bounces = false
     }
     

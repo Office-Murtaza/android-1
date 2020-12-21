@@ -37,7 +37,7 @@ class WalletPresenter: ModulePresenter, WalletModule {
   func bind(input: Input) {
     usecase.getCoins()
         .throttle(2.0, scheduler: MainScheduler.instance)
-        .flatMap { [unowned self] in self.track(self.usecase.getCoinsBalance()) }
+        .flatMap { [unowned self] in self.track(self.usecase.getCoinsBalance(filteredByActive: true)) }
         .map { WalletAction.finishFetchingCoinsBalance($0) }
         .bind(to: store.action)
         .disposed(by: disposeBag)
@@ -46,7 +46,7 @@ class WalletPresenter: ModulePresenter, WalletModule {
       .asObservable()
       .doOnNext { [store] in store.action.accept(.startFetching) }
       .flatMap { [unowned self] in
-        self.track(self.usecase.getCoinsBalance())
+        self.track(self.usecase.getCoinsBalance(filteredByActive: true))
           .do(onCompleted: { self.store.action.accept(.finishFetching) })
       }
       .map { WalletAction.finishFetchingCoinsBalance($0) }
