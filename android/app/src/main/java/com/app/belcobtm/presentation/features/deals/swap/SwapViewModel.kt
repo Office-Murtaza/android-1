@@ -57,6 +57,9 @@ class SwapViewModel(
     private val _sendCoinAmount = MutableLiveData<Double>()
     val sendCoinAmount: LiveData<Double> = _sendCoinAmount
 
+    private val _submitEnabled = MutableLiveData(false)
+    val submitEnabled: LiveData<Boolean> = _submitEnabled
+
     private val _receiveCoinAmount = MutableLiveData<Double>()
     val receiveCoinAmount: LiveData<Double> = _receiveCoinAmount
 
@@ -112,6 +115,7 @@ class SwapViewModel(
         _sendCoinAmount.value = sendAmount
         _receiveCoinAmount.value = calcReceiveAmountFromSend(sendAmount)
         updateFeeInfo(sendAmount)
+        validateCoinsAmount()
     }
 
     fun setReceiveAmount(receiveAmount: Double) {
@@ -119,6 +123,7 @@ class SwapViewModel(
         _receiveCoinAmount.value = receiveAmount
         _sendCoinAmount.value = sendAmount
         updateFeeInfo(sendAmount)
+        validateCoinsAmount()
     }
 
     fun setMaxSendAmount() {
@@ -135,7 +140,7 @@ class SwapViewModel(
         val sendCoinAmount = sendCoinAmount.value ?: return
         val receiveCoinAmount = receiveCoinAmount.value ?: return
         val receiveCoinDetails = coinToReceiveDetails ?: return
-        if (!validateCoinToSendAmount(sendCoinAmount)) {
+        if (!validateCoinToSendAmount(sendCoinAmount) || !validateCoinsAmount()) {
             return
         }
         if (receiveCoinItem.code == LocalCoinType.XRP.name) {
@@ -222,8 +227,6 @@ class SwapViewModel(
     }
 
     private fun validateCoinToSendAmount(coinAmount: Double): Boolean {
-        val sendAmount = sendCoinAmount.value ?: return false
-        val receiveAmount = receiveCoinAmount.value ?: return false
         val currentCoinToSend = coinToSend.value ?: return false
         val currentCoinToSendDetails = coinToSendDetails ?: return false
         val balanceValidationResult = amountValidator.validateBalance(
@@ -248,7 +251,14 @@ class SwapViewModel(
             }
         }
         _coinToSendError.value = validationResult
-        return validationResult == ValidationResult.Valid && sendAmount > 0 && receiveAmount > 0
+        return validationResult == ValidationResult.Valid
+    }
+
+    private fun validateCoinsAmount(): Boolean {
+        val sendAmount = sendCoinAmount.value ?: return false
+        val receiveAmount = receiveCoinAmount.value ?: return false
+        val amountsArePositive =  sendAmount > 0 && receiveAmount > 0
+        return amountsArePositive.also { _submitEnabled.value = it }
     }
 
     private fun calcReceiveAmountFromSend(sendAmount: Double): Double {

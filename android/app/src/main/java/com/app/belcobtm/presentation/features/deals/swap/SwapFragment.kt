@@ -158,6 +158,9 @@ class SwapFragment : BaseFragment() {
             val watcher = textWatcher.secondTextWatcher
             setTextSilently(targetEditText, watcher, coinAmountString)
         })
+        viewModel.submitEnabled.observe(viewLifecycleOwner, Observer { enabled ->
+            nextButtonView.isEnabled = enabled
+        })
     }
 
     private fun showSelectCoinDialog(
