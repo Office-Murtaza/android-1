@@ -285,7 +285,6 @@ class WalletServiceImpl: WalletService {
       $0.transfer = transfer
       $0.timestamp = timestamp
       $0.expiration = expiration
-      $0.feeLimit = coin.transactionFee(fee: coinDetails.txFee)
       $0.blockHeader = blockHeader
     }
     
