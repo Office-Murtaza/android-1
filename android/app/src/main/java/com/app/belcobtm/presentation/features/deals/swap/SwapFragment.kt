@@ -66,6 +66,9 @@ class SwapFragment : BaseFragment() {
         nextButtonView.setOnClickListener {
             viewModel.executeSwap()
         }
+        viewCircle.setOnClickListener {
+            viewModel.changeCoins()
+        }
         sendCoinInputLayout.setOnMaxClickListener(View.OnClickListener {
             viewModel.setMaxSendAmount()
         })

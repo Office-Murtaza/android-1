@@ -108,6 +108,12 @@ class SwapViewModel(
         }
     }
 
+    fun changeCoins() {
+        val coinToSend = coinToSend.value ?: return
+        val coinToReceive = coinToReceive.value ?: return
+        updateCoins(coinToReceive, coinToSend)
+    }
+
     fun setSendAmount(sendAmount: Double) {
         _sendCoinAmount.value = sendAmount
         _receiveCoinAmount.value = calcReceiveAmountFromSend(sendAmount)
