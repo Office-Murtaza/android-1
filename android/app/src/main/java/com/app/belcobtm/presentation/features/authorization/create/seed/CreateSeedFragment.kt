@@ -107,7 +107,7 @@ class CreateSeedFragment : BaseFragment() {
             MODE_SETTINGS -> {
                 nextButtonView.text = getString(R.string.done)
                 nextButtonView.setOnClickListener {
-                    navigate(R.id.seed_to_settings_fragment)
+                    popBackStack(R.id.security_fragment, false)
                 }
             }
             MODE_DEFAULT -> {
