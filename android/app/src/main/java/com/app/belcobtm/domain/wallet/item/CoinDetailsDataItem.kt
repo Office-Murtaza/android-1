@@ -8,6 +8,7 @@ class CoinDetailsDataItem(
     val gasPrice: Double,
     val gasLimit: Double,
     val profitExchange: Double,
+    val swapProfitPercent: Double,
     val walletAddress: String, //server address
     val contractAddress: String,
     val convertedTxFee: Double
