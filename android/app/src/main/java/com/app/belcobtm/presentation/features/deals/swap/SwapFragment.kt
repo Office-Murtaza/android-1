@@ -58,6 +58,8 @@ class SwapFragment : BaseFragment() {
         setToolbarTitle(R.string.swap_screen_title)
         sendCoinInputLayout.getEditText().setHint(R.string.swap_screen_send_hint)
         receiveCoinInputLayout.getEditText().setHint(R.string.swap_screen_receive_hint)
+        setTextSilently(sendCoinInputLayout.getEditText(), textWatcher.firstTextWatcher, "0")
+        setTextSilently(receiveCoinInputLayout.getEditText(), textWatcher.secondTextWatcher, "0")
     }
 
     override fun initListeners() {

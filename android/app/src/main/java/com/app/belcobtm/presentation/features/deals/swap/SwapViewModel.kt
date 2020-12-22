@@ -54,10 +54,10 @@ class SwapViewModel(
     private val _coinsDetailsLoadingState = MutableLiveData<LoadingData<Unit>>()
     val coinsDetailsLoadingState: LiveData<LoadingData<Unit>> = _coinsDetailsLoadingState
 
-    private val _sendCoinAmount = MutableLiveData<Double>()
+    private val _sendCoinAmount = MutableLiveData<Double>(0.0)
     val sendCoinAmount: LiveData<Double> = _sendCoinAmount
 
-    private val _receiveCoinAmount = MutableLiveData<Double>()
+    private val _receiveCoinAmount = MutableLiveData<Double>(0.0)
     val receiveCoinAmount: LiveData<Double> = _receiveCoinAmount
 
     private val _swapLoadingData = MutableLiveData<LoadingData<Unit>>()
