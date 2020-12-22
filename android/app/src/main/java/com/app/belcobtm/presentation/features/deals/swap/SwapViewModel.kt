@@ -297,7 +297,7 @@ class SwapViewModel(
         // amount(B) = amount(A) x price(A) / price(B) x (1 - swapProfitPercent / 100) - fee(B)
         val price = sendAmount * calcCoinsRatio(sendCoin, receiveCoin)
         val receiveCoinFee = getReceiveCoinFee(receiveCoin, receiveCoinDetails)
-        val sendCoinFee = getSendCoinFee(sendCoinDetails)
+        val sendCoinFee = getCoinFeeActual(sendCoinDetails)
         return price * sendCoinFee - receiveCoinFee
     }
 
@@ -313,7 +313,7 @@ class SwapViewModel(
         // amount(A) = (amount(B) + fee(B)) x price(B) / price(A) / (1 - swapProfitPercent / 100)
         val receiveCoinFee = getReceiveCoinFee(receiveCoin, receiveCoinDetails)
         val coinRatio = calcCoinsRatio(receiveCoin, sendCoin)
-        val sendCoinFee = getSendCoinFee(sendCoinDetails)
+        val sendCoinFee = getCoinFeeActual(sendCoinDetails)
         return (receiveAmount + receiveCoinFee) * coinRatio / sendCoinFee
     }
 
@@ -329,8 +329,8 @@ class SwapViewModel(
         }
     }
 
-    private fun getSendCoinFee(coinDetailsDataItem: CoinDetailsDataItem): Double {
-        return 1 - coinDetailsDataItem.profitExchange / 100
+    private fun getCoinFeeActual(coinDetailsDataItem: CoinDetailsDataItem): Double {
+        return 1 - coinDetailsDataItem.swapProfitPercent / 100
     }
 
     private fun calcCoinsRatio(coin1: CoinDataItem, coin2: CoinDataItem): Double {
@@ -340,10 +340,11 @@ class SwapViewModel(
     private fun updateFeeInfo(sendAmount: Double) {
         val coinToSend = coinToSend.value ?: return
         val coinToReceive = coinToReceive.value ?: return
+        val coinToReceiveDetails = coinToReceiveDetails ?: return
         val receiveRawAmount = sendAmount * calcCoinsRatio(coinToSend, coinToReceive)
         val receiveWithFeeAmount = calcReceiveAmountFromSend(sendAmount)
         val platformFeeCoinsAmount = receiveRawAmount - receiveWithFeeAmount
-        val platformFeeActual = platformFeeCoinsAmount / receiveRawAmount
+        val platformFeeActual = getCoinFeeActual(coinToReceiveDetails)
         if (platformFeeActual.isFinite()) {
             _swapFee.value = SwapFeeModelView(
                 platformFeeActual,
