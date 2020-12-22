@@ -47,6 +47,13 @@ extension AppDelegate: UNUserNotificationCenterDelegate, MessagingDelegate {
         Messaging.messaging().apnsToken = deviceToken
     }
     
+    func userNotificationCenter(_ center: UNUserNotificationCenter,
+                                  willPresent notification: UNNotification,
+                                  withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+        completionHandler([.alert, .sound])
+      }
+
+    
     func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String) {
         KeychainManager.save(value: fcmToken, for: GlobalConstants.fcmPushToken)
     }

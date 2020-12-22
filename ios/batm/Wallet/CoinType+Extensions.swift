@@ -145,6 +145,13 @@ enum CustomCoinType: CaseIterable {
         default: return false
         }
     }
+    
+    var isETHBasedWithoutUSDT: Bool {
+        switch self {
+        case .catm: return true
+        default: return false
+        }
+    }
   
   init?(code: String) {
     switch code {

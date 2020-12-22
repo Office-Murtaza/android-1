@@ -56,7 +56,7 @@ class WalletPresenter: ModulePresenter, WalletModule {
     input.coinSelected
       .asObservable()
       .withLatestFrom(state) { indexPath, state in state.coins[indexPath.item] }
-        .filter { !$0.type.isETHBased }
+        .filter { !$0.type.isETHBasedWithoutUSDT }
       .flatMap { [unowned self] coinBalance in
         return self.track(Observable.combineLatest(self.usecase.getCoinDetails(for: coinBalance.type).asObservable(),
                                                    self.usecase.getPriceChartDetails(for: coinBalance.type, period: .oneDay).asObservable()))
@@ -70,9 +70,10 @@ class WalletPresenter: ModulePresenter, WalletModule {
     input.coinSelected
         .asObservable()
         .withLatestFrom(state) { indexPath, state in state.coins[indexPath.item] }
-        .filter { $0.type.isETHBased }
+        .filter { $0.type.isETHBasedWithoutUSDT }
         .flatMap { [unowned self] coinBalance in
-            return self.track(Observable.combineLatest(self.usecase.getCoinDetails(for: coinBalance.type).asObservable(), Signal.just(coinBalance).asObservable()))
+            return self.track(Observable.combineLatest(self.usecase.getCoinDetails(for: coinBalance.type).asObservable(),
+                                                       Signal.just(coinBalance).asObservable()))
         }
         .subscribe { [delegate, unowned self] result in
             switch result {

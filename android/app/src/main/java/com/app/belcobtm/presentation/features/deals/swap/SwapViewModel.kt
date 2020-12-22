@@ -54,13 +54,13 @@ class SwapViewModel(
     private val _coinsDetailsLoadingState = MutableLiveData<LoadingData<Unit>>()
     val coinsDetailsLoadingState: LiveData<LoadingData<Unit>> = _coinsDetailsLoadingState
 
-    private val _sendCoinAmount = MutableLiveData<Double>()
+    private val _sendCoinAmount = MutableLiveData<Double>(0.0)
     val sendCoinAmount: LiveData<Double> = _sendCoinAmount
 
     private val _submitEnabled = MutableLiveData(false)
     val submitEnabled: LiveData<Boolean> = _submitEnabled
 
-    private val _receiveCoinAmount = MutableLiveData<Double>()
+    private val _receiveCoinAmount = MutableLiveData<Double>(0.0)
     val receiveCoinAmount: LiveData<Double> = _receiveCoinAmount
 
     private val _swapLoadingData = MutableLiveData<LoadingData<Unit>>()
@@ -109,6 +109,12 @@ class SwapViewModel(
         if (coin != coinToReceive.value) {
             updateCoins(coinToSend.value!!, coin)
         }
+    }
+
+    fun changeCoins() {
+        val coinToSend = coinToSend.value ?: return
+        val coinToReceive = coinToReceive.value ?: return
+        updateCoins(coinToReceive, coinToSend)
     }
 
     fun setSendAmount(sendAmount: Double) {
