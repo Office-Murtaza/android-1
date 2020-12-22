@@ -26,9 +26,7 @@ import org.koin.android.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
 class SendGiftFragment : BaseFragment(), GiphyDialogFragment.GifSelectionListener {
-    private val viewModel: SendGiftViewModel by viewModel {
-        parametersOf(SendGiftFragmentArgs.fromBundle(requireArguments()).coinCode)
-    }
+    private val viewModel: SendGiftViewModel by viewModel()
     private val phoneUtil: PhoneNumberUtil by lazy { PhoneNumberUtil.createInstance(requireContext()) }
     private val doubleTextWatcher: DoubleTextWatcher = DoubleTextWatcher(
         firstTextWatcher = { editable ->

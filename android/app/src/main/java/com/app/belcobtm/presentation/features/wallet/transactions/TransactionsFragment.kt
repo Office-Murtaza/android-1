@@ -79,9 +79,6 @@ class TransactionsFragment : BaseFragment() {
         val menu = FabSpeedDialMenu(requireContext())
 //        addButtonToMenu(groupId, menu, TRADE)
 //        addButtonToMenu(groupId, menu, SELL)
-        if (viewModel.coinCode != LocalCoinType.DOGE.name) {
-            addButtonToMenu(menu, SEND_GIFT)
-        }
         addButtonToMenu(menu, WITHDRAW)
         addButtonToMenu(menu, DEPOSIT)
         addButtonToMenu(menu, RECALL)
@@ -117,8 +114,6 @@ class TransactionsFragment : BaseFragment() {
             when (itemId) {
                 TRADE.id -> tradeOpenWithPermissionCheck()
                 STAKING.id -> navigate(TransactionsFragmentDirections.toStakingFragment())
-                SEND_GIFT.id ->
-                    navigate(TransactionsFragmentDirections.toSendGiftFragment(viewModel.coinCode))
                 WITHDRAW.id ->
                     navigate(TransactionsFragmentDirections.toWithdrawFragment(viewModel.coinCode))
                 DEPOSIT.id ->
