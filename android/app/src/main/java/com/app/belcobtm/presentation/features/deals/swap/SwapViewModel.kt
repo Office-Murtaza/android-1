@@ -351,23 +351,15 @@ class SwapViewModel(
         val coinToSend = coinToSend.value ?: return
         val coinToReceive = coinToReceive.value ?: return
         val coinToReceiveDetails = coinToReceiveDetails ?: return
+        // Platform fee(B) = amount(A) x price(A) / price(B) x (swapProfitPercent / 100)
         val receiveRawAmount = sendAmount * calcCoinsRatio(coinToSend, coinToReceive)
-        val receiveWithFeeAmount = calcReceiveAmountFromSend(sendAmount)
-        val platformFeeCoinsAmount = receiveRawAmount - receiveWithFeeAmount
-        val platformFeeActual = getCoinFeeActual(coinToReceiveDetails)
-        if (platformFeeActual.isFinite()) {
-            _swapFee.value = SwapFeeModelView(
-                platformFeeActual,
-                platformFeeCoinsAmount,
-                coinToReceive.code
-            )
-        } else {
-            _swapFee.value = SwapFeeModelView(
-                0.0,
-                0.0,
-                coinToReceive.code
-            )
-        }
+        val platformFeeActual = coinToReceiveDetails.swapProfitPercent
+        val platformFeeCoinsAmount = receiveRawAmount * (platformFeeActual / 100)
+        _swapFee.value = SwapFeeModelView(
+            platformFeeActual,
+            platformFeeCoinsAmount,
+            coinToReceive.code
+        )
     }
 
     private fun clearSendAndReceiveAmount() {
