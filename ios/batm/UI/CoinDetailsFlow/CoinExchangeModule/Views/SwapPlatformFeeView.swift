@@ -9,14 +9,7 @@
 import UIKit
 
 class SwapPlatformFeeView: UIView {
-    private lazy var stackView: UIStackView = {
-        let stack = UIStackView()
-        stack.axis = .horizontal
-        stack.layoutMargins = UIEdgeInsets(top: 0, left: 15, bottom: 0, right: 15)
-        stack.isLayoutMarginsRelativeArrangement = true
-        return stack
-    }()
-
+    
     private lazy var feeLabel: UILabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: 16, weight: .semibold)
@@ -42,17 +35,20 @@ class SwapPlatformFeeView: UIView {
     }
     
     private func setupUI() {
-        stackView.addArrangedSubviews([
-            feeTitleLabel,
-            feeLabel
-        ])
         
-        addSubview(stackView)
+        addSubviews([feeLabel, feeTitleLabel])
     }
     
     private func setupLayout() {
-        stackView.snp.makeConstraints {
-            $0.edges.equalToSuperview()
+        feeTitleLabel.snp.makeConstraints{
+            $0.top.bottom.equalToSuperview()
+            $0.left.equalToSuperview().offset(15)
+            $0.right.equalTo(self.snp.centerX)
+        }
+        feeLabel.snp.makeConstraints{
+            $0.right.equalToSuperview().offset(-15)
+            $0.top.bottom.equalToSuperview()
+            $0.left.greaterThanOrEqualTo(feeTitleLabel.snp.right)
         }
     }
     

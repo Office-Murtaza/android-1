@@ -63,28 +63,28 @@ struct CoinExchangeState: Equatable {
         
         guard
             let fromCoinAmountDecimal = fromCoinAmount.decimalValue,
-            let fromCoinPrice = fromCoinBalance?.price, let toCoinPrice = toCoinBalance?.price,
-            let profitExchange = coinDetails?.swapProfitPercent
+            fromCoinAmountDecimal != 0
         else {
             return 0.0.coinFormatted
         }
-        let toCoinAmountDecimal = fromCoinAmountDecimal * fromCoinPrice / toCoinPrice * (100 - profitExchange) / 100
         
-        return toCoinAmountDecimal.coinFormatted(fractionDigits: toCoinDetails?.scale)
+        let receiveCoinFee = (toCoinType?.isETHBased ?? false) ? toCoinDetails?.convertedTxFee : toCoinDetails?.txFee
+        let price = fromCoinAmountDecimal * (toRateString().decimalValue ?? 0)
+        let sendCoinFee = 1 - (toCoinDetails?.swapProfitPercent ?? 0) / 100
+        let result = price * sendCoinFee - (receiveCoinFee ?? 0)
+        
+        return result.coinFormatted(fractionDigits: toCoinDetails?.scale)
     }
     
-    func toCoinAmount(amount: Decimal) -> String {
-        guard let toCoinType = toCoinType else { return "" }
-        
-        guard
-            let fromCoinPrice = fromCoinBalance?.price, let toCoinPrice = toCoinBalance?.price,
-            let profitExchange = coinDetails?.swapProfitPercent
-        else {
-            return 0.0.coinFormatted.withCoinType(toCoinType)
+    func toRateString() -> String {
+        guard let fromPrice = fromCoinBalance?.price,
+              let toPrice = toCoinBalance?.price,
+              let toCoinType = toCoinType else {
+            return ""
         }
-        let toCoinAmountDecimal = amount * fromCoinPrice / toCoinPrice * (100 - profitExchange) / 100
+        let result = fromPrice / toPrice
         
-        return toCoinAmountDecimal.coinFormatted(fractionDigits:nil).withCoinType(toCoinType)
+        return result.coinFormatted(fractionDigits:nil).withCoinType(toCoinType)
     }
     
     var maxFromValue: Decimal {
@@ -160,11 +160,13 @@ final class CoinExchangeStore: ViewStore<CoinExchangeAction, CoinExchangeState> 
             state.fromCoinAmount = (amount ?? "").coinWithdrawFormatted
             state.fromCoinAmountError = nil
             state.toCoinTypeError = nil
+            updatePlatformFee(state: &state)
         case let .updateToCoinAmount(amount):
             state.toCoinAmountBackConvertation = amount
             state.fromCoinAmount = backConvertation(state: &state, amount: amount ?? "")
             state.fromCoinAmountError = nil
             state.toCoinTypeError = nil
+            updatePlatformFee(state: &state)
         case let .updateToCoinType(coinType):
             state.toCoinType = coinType
             state.fromCoinAmount = "".coinWithdrawFormatted
@@ -217,14 +219,23 @@ final class CoinExchangeStore: ViewStore<CoinExchangeAction, CoinExchangeState> 
     }
     
     private func updatePlatformFee(state: inout CoinExchangeState) {
-        if let details = state.toCoinDetails {
-            state.platformFee = platformFeeString(details: details)
+        guard let toCoinType = state.toCoinType, let swapPrecent = state.toCoinDetails?.swapProfitPercent else {
+            state.platformFee = ""
+            return
         }
+        
+        let percent =  "\(swapPrecent)%"
+        let fromAmount = Decimal(string: state.fromCoinAmount) ?? 0
+        let fromPrice = state.fromCoinBalance?.price ?? 0
+        let toPrice = state.toCoinBalance?.price ?? 0
+        let feeAmount = fromAmount * fromPrice / toPrice * ((state.toCoinDetails?.swapProfitPercent ?? 0) / 100)
+        let fee = feeAmount.isNaN ? 0 : feeAmount
+        state.platformFee = "\(percent) ~ \(fee.coinFormatted(fractionDigits:nil).withCoinType(toCoinType))"
     }
     
     private func updateRateViewState(state:inout CoinExchangeState, amount: Int ) {
         state.fromRate = "1".coinFormatted.withCoinType(state.fromCoinType ?? .bitcoin)
-        state.toRate = state.toCoinAmount(amount: 1)
+        state.toRate = state.toRateString()
     }
     
     private func backConvertation(state: inout CoinExchangeState, amount: String) -> String {
@@ -285,11 +296,5 @@ final class CoinExchangeStore: ViewStore<CoinExchangeAction, CoinExchangeState> 
         let errorString = localize(errorString)
         state.fromCoinAmountError = errorString
         state.validationState = .invalid(errorString)
-    }
-    
-    private func platformFeeString(details: CoinDetails) -> String {
-        let percent =  "\(details.swapProfitPercent)%"
-        let fee = "\(details.txFee.coinFormatted.withCoinType(details.type))"
-        return "\(percent) ~ \(fee)"
     }
 }
