@@ -63,7 +63,7 @@ struct CoinExchangeState: Equatable {
         
         guard
             let fromCoinAmountDecimal = fromCoinAmount.decimalValue,
-            fromCoinAmountDecimal != 0
+            fromCoinAmountDecimal > 0
         else {
             return 0.0.coinFormatted
         }
@@ -79,12 +79,13 @@ struct CoinExchangeState: Equatable {
     func toRateString() -> String {
         guard let fromPrice = fromCoinBalance?.price,
               let toPrice = toCoinBalance?.price,
-              let toCoinType = toCoinType else {
+              let toCoinType = toCoinType,
+              let scale = toCoinDetails?.scale  else {
             return ""
         }
         let result = fromPrice / toPrice
         
-        return result.coinFormatted(fractionDigits:nil).withCoinType(toCoinType)
+        return result.coinFormatted(fractionDigits:scale).withCoinType(toCoinType)
     }
     
     var maxFromValue: Decimal {
@@ -132,7 +133,7 @@ struct CoinExchangeState: Equatable {
     }
     
     var isAllFieldsNotEmpty: Bool {
-        return fromCoinAmount.count > 0 && toCoinType != nil
+        return fromCoinAmount.decimalValue ?? 0 > 0 && toCoinAmount.decimalValue ?? 0 > 0
     }
     
 }
