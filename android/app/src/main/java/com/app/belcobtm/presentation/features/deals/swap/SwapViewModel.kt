@@ -308,7 +308,8 @@ class SwapViewModel(
         val price = sendAmount * calcCoinsRatio(sendCoin, receiveCoin)
         val receiveCoinFee = getReceiveCoinFee(receiveCoin, receiveCoinDetails)
         val sendCoinFee = getCoinFeeActual(sendCoinDetails)
-        return price * sendCoinFee - receiveCoinFee
+        val result = price * sendCoinFee - receiveCoinFee
+        return 0.0.coerceAtLeast(result)
     }
 
     private fun calcSwapAmountFromReceive(
@@ -324,7 +325,8 @@ class SwapViewModel(
         val receiveCoinFee = getReceiveCoinFee(receiveCoin, receiveCoinDetails)
         val coinRatio = calcCoinsRatio(receiveCoin, sendCoin)
         val sendCoinFee = getCoinFeeActual(sendCoinDetails)
-        return (receiveAmount + receiveCoinFee) * coinRatio / sendCoinFee
+        val result = (receiveAmount + receiveCoinFee) * coinRatio / sendCoinFee
+        return 0.0.coerceAtLeast(result)
     }
 
     private fun getReceiveCoinFee(
