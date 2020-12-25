@@ -15,7 +15,7 @@ val useCaseModule = module {
     single { AuthorizationStatusGetUseCase(get()) }
     single { ClearAppDataUseCase(get()) }
     single { AuthorizationCheckCredentialsUseCase(get()) }
-    single { CreateWalletUseCase(get()) }
+    single { CreateWalletUseCase(get(), get()) }
     single { AuthorizeUseCase(get()) }
     single { GetAuthorizePinUseCase(get()) }
     single { SaveAuthorizePinUseCase(get()) }
@@ -51,7 +51,7 @@ val useCaseModule = module {
     single { TradeReserveTransactionCompleteUseCase(get()) }
     single { TradeReserveTransactionCreateUseCase(get()) }
     single { GetFreshCoinUseCase(get()) }
-    single { RecoverWalletUseCase(get()) }
+    single { RecoverWalletUseCase(get(), get()) }
     single { CreateSeedUseCase(get()) }
     single { CheckPassUseCase(get()) }
     single { UnlinkUseCase(get(), get()) }
