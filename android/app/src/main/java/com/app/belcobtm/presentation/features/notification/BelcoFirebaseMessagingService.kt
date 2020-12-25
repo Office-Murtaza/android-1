@@ -3,7 +3,7 @@ package com.app.belcobtm.presentation.features.notification
 import android.app.PendingIntent
 import android.content.Intent
 import androidx.core.app.NotificationManagerCompat
-import com.app.belcobtm.data.disk.shared.preferences.SharedPreferencesHelper
+import com.app.belcobtm.domain.notification.NotificationTokenRepository
 import com.app.belcobtm.presentation.features.HostActivity
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
@@ -18,10 +18,10 @@ class BelcoFirebaseMessagingService : FirebaseMessagingService() {
 
     private val notificationHelper: NotificationHelper by inject()
 
-    private val sharedPresHelper: SharedPreferencesHelper by inject()
+    private val notificationRepository: NotificationTokenRepository by inject()
 
     override fun onNewToken(token: String) {
-        sharedPresHelper.notificationToken = token
+        notificationRepository.saveToken(token)
     }
 
     override fun onMessageReceived(remoteMessage: RemoteMessage) {

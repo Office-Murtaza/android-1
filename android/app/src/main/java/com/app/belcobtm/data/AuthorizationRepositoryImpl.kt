@@ -68,12 +68,13 @@ class AuthorizationRepositoryImpl(
 
     override suspend fun createWallet(
         phone: String,
-        password: String
+        password: String,
+        notificationToken: String
     ): Either<Failure, Unit> {
         val response = apiService.createWallet(
             phone = phone,
             password = password,
-            notificationToken = prefHelper.notificationToken,
+            notificationToken = notificationToken,
             coinMap = temporaryCoinMap.map { it.key.name to it.value.first }.toMap()
         )
 
@@ -94,7 +95,8 @@ class AuthorizationRepositoryImpl(
     override suspend fun recoverWallet(
         seed: String,
         phone: String,
-        password: String
+        password: String,
+        notificationToken: String
     ): Either<Failure, Unit> {
         val wallet = HDWallet(seed, "")
         temporaryCoinMap.clear()
@@ -103,7 +105,7 @@ class AuthorizationRepositoryImpl(
         )
         val recoverResponse =
             apiService.recoverWallet(
-                phone, password, prefHelper.notificationToken,
+                phone, password, notificationToken,
                 temporaryCoinMap.map { it.key.name to it.value.first }.toMap()
             )
 
