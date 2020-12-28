@@ -1,6 +1,8 @@
 package com.belco.server.service;
 
-import com.belco.server.dto.*;
+import com.belco.server.dto.CoinDTO;
+import com.belco.server.dto.SubmitTransactionDTO;
+import com.belco.server.dto.TransactionDetailsDTO;
 import com.belco.server.entity.Coin;
 import com.belco.server.entity.CoinPath;
 import com.belco.server.entity.TransactionRecordWallet;
@@ -10,14 +12,16 @@ import com.belco.server.repository.CoinPathRep;
 import com.belco.server.repository.TransactionRecordWalletRep;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import wallet.core.jni.*;
 
-import javax.annotation.PostConstruct;
 import java.math.BigDecimal;
-import java.util.*;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -29,23 +33,20 @@ public class WalletService {
         System.loadLibrary("TrustWalletCore");
     }
 
+    private final CoinPathRep coinPathRep;
+    private final TransactionRecordWalletRep transactionRecordWalletRep;
+    private final Map<CoinType, CoinDTO> coinsMap = new HashMap<>();
+
     @Value("${wallet.seed}")
     private String seed;
-
-    @Autowired
-    private CoinPathRep coinPathRep;
-
-    @Autowired
-    private TransactionRecordWalletRep transactionRecordWalletRep;
-
     private HDWallet wallet = null;
-    private Map<CoinType, CoinDTO> coinsMap = new HashMap<>();
 
-    @PostConstruct
-    public void init() {
-        wallet = new HDWallet(seed, "");
+    public WalletService(CoinPathRep coinPathRep, TransactionRecordWalletRep transactionRecordWalletRep) {
+        this.coinPathRep = coinPathRep;
+        this.transactionRecordWalletRep = transactionRecordWalletRep;
+        this.wallet = new HDWallet(seed, "");
 
-        coinsMap.put(CoinType.BITCOIN, new CoinDTO(CoinService.CoinEnum.BTC.name(), new BitcoinAddress(HDWallet.getPublicKeyFromExtended(getXPUB(CoinType.BITCOIN), CoinType.BITCOIN, getPath(CoinType.BITCOIN)), CoinType.BITCOIN.p2pkhPrefix()).description(), wallet.getKeyForCoin(CoinType.BITCOIN)));
+        coinsMap.put(CoinType.BITCOIN, new CoinDTO(CoinService.CoinEnum.BTC.name(), new BitcoinAddress(HDWallet.getPublicKeyFromExtended(getXpub(CoinType.BITCOIN), CoinType.BITCOIN, getPath(CoinType.BITCOIN)), CoinType.BITCOIN.p2pkhPrefix()).description(), wallet.getKeyForCoin(CoinType.BITCOIN)));
         coinsMap.put(CoinType.BITCOINCASH, new CoinDTO(CoinService.CoinEnum.BCH.name(), CoinType.BITCOINCASH.deriveAddress(wallet.getKeyForCoin(CoinType.BITCOINCASH)), wallet.getKeyForCoin(CoinType.BITCOINCASH)));
         coinsMap.put(CoinType.LITECOIN, new CoinDTO(CoinService.CoinEnum.LTC.name(), CoinType.LITECOIN.deriveAddress(wallet.getKeyForCoin(CoinType.LITECOIN)), wallet.getKeyForCoin(CoinType.LITECOIN)));
         coinsMap.put(CoinType.DASH, new CoinDTO(CoinService.CoinEnum.DASH.name(), CoinType.DASH.deriveAddress(wallet.getKeyForCoin(CoinType.DASH)), wallet.getKeyForCoin(CoinType.DASH)));
@@ -68,7 +69,7 @@ public class WalletService {
         return coinPathRep.getCoinPathByAddress(address).getPath();
     }
 
-    public String getXPUB(CoinType coinType) {
+    public String getXpub(CoinType coinType) {
         if (coinType == CoinType.BITCOIN || coinType == CoinType.XRP) {
             return wallet.getExtendedPublicKey(Purpose.BIP44, coinType, HDVersion.XPUB);
         } else {
@@ -80,17 +81,17 @@ public class WalletService {
         return path.substring(0, path.length() - 1) + index;
     }
 
-    public String generateNewAddress(CoinType coinType, String newPath) {
+    public String getAddress(CoinType coinType, String newPath) {
         if (coinType == CoinType.BITCOIN) {
-            PublicKey publicKey = HDWallet.getPublicKeyFromExtended(getXPUB(coinType), CoinType.BITCOIN, newPath);
+            PublicKey publicKey = HDWallet.getPublicKeyFromExtended(getXpub(coinType), CoinType.BITCOIN, newPath);
 
             return new BitcoinAddress(publicKey, CoinType.BITCOIN.p2pkhPrefix()).description();
         } else if (coinType == CoinType.BITCOINCASH || coinType == CoinType.LITECOIN) {
-            PublicKey publicKey = HDWallet.getPublicKeyFromExtended(getXPUB(coinType), coinType, newPath);
+            PublicKey publicKey = HDWallet.getPublicKeyFromExtended(getXpub(coinType), coinType, newPath);
 
             return coinType.deriveAddressFromPublicKey(publicKey);
         } else if (coinType == CoinType.XRP) {
-            PublicKey publicKey = HDWallet.getPublicKeyFromExtended(getXPUB(coinType), coinType, newPath);
+            PublicKey publicKey = HDWallet.getPublicKeyFromExtended(getXpub(coinType), coinType, newPath);
 
             return new AnyAddress(publicKey, coinType).description();
         } else if (coinType == CoinType.ETHEREUM) {
@@ -110,7 +111,7 @@ public class WalletService {
         return null;
     }
 
-    public String generateNewAddress(CoinService.CoinEnum coin) {
+    public String getReceivingAddress(CoinService.CoinEnum coin) {
         try {
             CoinType coinType = coin.getCoinType();
             Coin coinEntity = coin.getCoinEntity();
@@ -123,7 +124,7 @@ public class WalletService {
 
                 String path = getPath(coinType);
                 String newPath = generateNewPath(path, index + 1);
-                String address = generateNewAddress(coinType, newPath);
+                String address = getAddress(coinType, newPath);
 
                 CoinPath coinPath = new CoinPath();
                 coinPath.setPath(newPath);
@@ -149,9 +150,8 @@ public class WalletService {
         try {
             String walletAddress = coin.getWalletAddress();
             BigDecimal balance = coin.getBalance(walletAddress);
-            NodeTransactionsDTO nodeTransactionsDTO = coin.getNodeTransactions(walletAddress);
 
-            BigDecimal pendingSum = nodeTransactionsDTO.getMap().values().stream()
+            BigDecimal pendingSum = coin.getNodeTransactions(walletAddress).values().stream()
                     .filter(e -> e.getType() == TransactionType.WITHDRAW && e.getStatus() == TransactionStatus.PENDING)
                     .map(TransactionDetailsDTO::getCryptoAmount)
                     .reduce(BigDecimal.ZERO, BigDecimal::add);
@@ -181,28 +181,21 @@ public class WalletService {
         return balance.compareTo(amount.add(coin.getTxFee())) >= 0;
     }
 
-    public List<ReceivedAddressDTO> getReceivedAddresses(CoinService.CoinEnum coinCode, Set<String> addresses) {
-        List<ReceivedAddressDTO> list = new ArrayList<>();
+    public Map<String, List<String>> getReceivingAddressesTxs(CoinService.CoinEnum coinCode, List<String> addresses) {
+        Map<String, List<String>> map = new HashMap<>();
 
-        for (String address : addresses) {
-            ReceivedAddressDTO dto = new ReceivedAddressDTO();
-            dto.setAddress(address);
+        addresses.stream().forEach(e -> {
+            List<String> txIds = coinCode.getNodeTransactions(e).entrySet().stream()
+                    .filter(x -> x.getValue().getToAddress().equalsIgnoreCase(e))
+                    .map(x -> x.getKey()).collect(Collectors.toList());
 
-            Map<String, TransactionDetailsDTO> map = coinCode.getNodeTransactions(address).getMap();
+            map.put(e, txIds);
+        });
 
-            Set<String> txIds = map.entrySet().stream()
-                    .filter(x -> x.getValue().getToAddress().equalsIgnoreCase(address))
-                    .map(x -> x.getKey()).collect(Collectors.toSet());
-
-            dto.setTxIds(txIds);
-
-            list.add(dto);
-        }
-
-        return list;
+        return map;
     }
 
-    public String sendCoins(CoinService.CoinEnum coin, String fromAddress, String toAddress, BigDecimal amount) {
+    public String transfer(CoinService.CoinEnum coin, String fromAddress, String toAddress, BigDecimal amount) {
         try {
             BigDecimal balance = getBalance(coin);
 
@@ -229,7 +222,7 @@ public class WalletService {
                 }
 
                 wallet.setTxId(txId);
-                wallet.setStatus(coin.getTransactionStatus(txId).getValue());
+                wallet.setStatus(coin.getTransactionDetails(txId, StringUtils.EMPTY).getStatus().getValue());
 
                 transactionRecordWalletRep.save(wallet);
 

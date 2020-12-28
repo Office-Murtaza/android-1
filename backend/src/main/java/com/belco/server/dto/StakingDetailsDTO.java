@@ -4,7 +4,9 @@ import com.belco.server.model.StakeStatus;
 import com.belco.server.util.Util;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -13,7 +15,7 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class StakeDetailsDTO {
+public class StakingDetailsDTO {
 
     private StakeStatus status;
     private BigDecimal amount;

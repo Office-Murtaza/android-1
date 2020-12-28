@@ -1,6 +1,10 @@
 package com.belco.server.service;
 
-import com.belco.server.dto.*;
+import com.belco.server.dto.SubmitTransactionDTO;
+import com.belco.server.dto.TransactionDetailsDTO;
+import com.belco.server.dto.TransactionHistoryDTO;
+import com.belco.server.entity.TransactionRecord;
+import com.belco.server.entity.TransactionRecordWallet;
 import com.belco.server.model.TransactionStatus;
 import com.belco.server.model.TransactionType;
 import com.belco.server.token.CATM;
@@ -143,19 +147,11 @@ public class GethService {
         }
     }
 
-    private static TransactionListDTO buildTransactionList(String coll, BasicDBObject query, String address, Integer startIndex, Integer limit, TxListDTO txDTO) {
-        try {
-            Map<String, TransactionDetailsDTO> map = getNodeTransactionsFromDB(coll, query, address).getMap();
-
-            return TxUtil.buildTxs(map, startIndex, limit, txDTO);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return new TransactionListDTO();
+    private static TransactionHistoryDTO buildTransactionList(String coll, BasicDBObject query, String address, Integer startIndex, Integer limit, List<TransactionRecord> transactionRecords, List<TransactionRecordWallet> transactionRecordWallets) {
+        return TxUtil.buildTxs(getNodeTransactionsFromDB(coll, query, address), startIndex, limit, transactionRecords, transactionRecordWallets);
     }
 
-    private static NodeTransactionsDTO getNodeTransactionsFromDB(String coll, BasicDBObject query, String address) {
+    private static Map<String, TransactionDetailsDTO> getNodeTransactionsFromDB(String coll, BasicDBObject query, String address) {
         Map<String, TransactionDetailsDTO> map = new HashMap<>();
 
         mongo.getCollection(coll).find(query).into(new ArrayList<>()).stream().forEach(d -> {
@@ -187,7 +183,7 @@ public class GethService {
             }
         });
 
-        return new NodeTransactionsDTO(map);
+        return map;
     }
 
     private static TransactionDetailsDTO getTransactionFromDB(String coll, BasicDBObject query, String address, String explorerUrl) {
@@ -445,33 +441,33 @@ public class GethService {
         return mongo.getCollection(ADDRESS_COLL).find(new BasicDBObject("$or", or)).iterator().hasNext();
     }
 
-    public TransactionDetailsDTO getTransaction(String txId, String address, String explorerUrl) {
+    public TransactionDetailsDTO getTransactionDetails(String txId, String address, String explorerUrl) {
         return getTransactionFromDB(ETH_TX_COLL, new BasicDBObject("txId", txId.toLowerCase()), address, explorerUrl);
     }
 
-    public TransactionDetailsDTO getTransaction(ERC20 token, String txId, String address, String explorerUrl) {
+    public TransactionDetailsDTO getTransactionDetails(ERC20 token, String txId, String address, String explorerUrl) {
         return getTransactionFromDB(TOKEN_TX_COLL, new BasicDBObject("txId", txId.toLowerCase()).append("token", token.name()), address, explorerUrl);
     }
 
-    public TransactionListDTO getTransactionList(String address, Integer startIndex, Integer limit, TxListDTO txDTO) {
+    public TransactionHistoryDTO getTransactionHistory(String address, Integer startIndex, Integer limit, List<TransactionRecord> transactionRecords, List<TransactionRecordWallet> transactionRecordWallets) {
         BasicDBObject query = buildQuery(address);
 
-        return buildTransactionList(ETH_TX_COLL, query, address, startIndex, limit, txDTO);
+        return buildTransactionList(ETH_TX_COLL, query, address, startIndex, limit, transactionRecords, transactionRecordWallets);
     }
 
-    public TransactionListDTO getTransactionList(ERC20 token, String address, Integer startIndex, Integer limit, TxListDTO txDTO) {
+    public TransactionHistoryDTO getTransactionHistory(ERC20 token, String address, Integer startIndex, Integer limit, List<TransactionRecord> transactionRecords, List<TransactionRecordWallet> transactionRecordWallets) {
         BasicDBObject query = buildQuery(token, address);
 
-        return buildTransactionList(TOKEN_TX_COLL, query, address, startIndex, limit, txDTO);
+        return buildTransactionList(TOKEN_TX_COLL, query, address, startIndex, limit, transactionRecords, transactionRecordWallets);
     }
 
-    public NodeTransactionsDTO getNodeTransactions(String address) {
+    public Map<String, TransactionDetailsDTO> getNodeTransactions(String address) {
         BasicDBObject query = buildQuery(address);
 
         return getNodeTransactionsFromDB(ETH_TX_COLL, query, address);
     }
 
-    public NodeTransactionsDTO getNodeTransactions(ERC20 token, String address) {
+    public Map<String, TransactionDetailsDTO> getNodeTransactions(ERC20 token, String address) {
         BasicDBObject query = buildQuery(token, address);
 
         return getNodeTransactionsFromDB(ETH_TX_COLL, query, address);
@@ -479,15 +475,7 @@ public class GethService {
 
     public String sign(String fromAddress, String toAddress, BigDecimal amount, Long gasLimit, Long gasPrice) {
         try {
-            PrivateKey privateKey;
-
-            if (walletService.isServerAddress(CoinType.ETHEREUM, fromAddress)) {
-                privateKey = walletService.getCoinsMap().get(CoinType.ETHEREUM).getPrivateKey();
-            } else {
-                String path = walletService.getPath(fromAddress);
-                privateKey = walletService.getWallet().getKey(CoinType.ETHEREUM, path);
-            }
-
+            PrivateKey privateKey = getPrivateKey(fromAddress);
             Integer nonce = getNonce(fromAddress);
 
             Ethereum.SigningInput.Builder input = Ethereum.SigningInput.newBuilder();
@@ -509,17 +497,18 @@ public class GethService {
         return null;
     }
 
+    private PrivateKey getPrivateKey(String fromAddress) {
+        if (walletService.isServerAddress(CoinType.ETHEREUM, fromAddress)) {
+            return walletService.getCoinsMap().get(CoinType.ETHEREUM).getPrivateKey();
+        } else {
+            String path = walletService.getPath(fromAddress);
+            return walletService.getWallet().getKey(CoinType.ETHEREUM, path);
+        }
+    }
+
     public String sign(ERC20 token, String fromAddress, String toAddress, BigDecimal amount, Long gasLimit, Long gasPrice) {
         try {
-            PrivateKey privateKey;
-
-            if (walletService.isServerAddress(CoinType.ETHEREUM, fromAddress)) {
-                privateKey = walletService.getCoinsMap().get(CoinType.ETHEREUM).getPrivateKey();
-            } else {
-                String path = walletService.getPath(fromAddress);
-                privateKey = walletService.getWallet().getKey(CoinType.ETHEREUM, path);
-            }
-
+            PrivateKey privateKey = getPrivateKey(fromAddress);
             Integer nonce = getNonce(fromAddress);
 
             Ethereum.SigningInput.Builder input = Ethereum.SigningInput.newBuilder();

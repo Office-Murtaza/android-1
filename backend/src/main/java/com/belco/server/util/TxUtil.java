@@ -1,13 +1,13 @@
 package com.belco.server.util;
 
 import com.belco.server.dto.TransactionDetailsDTO;
-import com.belco.server.dto.TransactionListDTO;
-import com.belco.server.dto.TxListDTO;
+import com.belco.server.dto.TransactionHistoryDTO;
 import com.belco.server.entity.TransactionRecord;
 import com.belco.server.entity.TransactionRecordWallet;
 import com.belco.server.model.TransactionStatus;
 import com.belco.server.model.TransactionType;
 import org.apache.commons.lang.StringUtils;
+
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -15,17 +15,13 @@ import java.util.Map;
 
 public class TxUtil {
 
-    public static TransactionListDTO buildTxs(Map<String, TransactionDetailsDTO> map, Integer startIndex, Integer limit, TxListDTO txDTO) {
-        mergeTransactionRecordWallets(map, txDTO.getTransactionRecordWallets());
-        mergeTransactionRecords(map, txDTO.getTransactionRecords());
+    public static TransactionHistoryDTO buildTxs(Map<String, TransactionDetailsDTO> map, Integer startIndex, Integer limit, List<TransactionRecord> transactionRecords, List<TransactionRecordWallet> transactionRecordWallets) {
+        mergeTransactionRecords(map, transactionRecords);
+        mergeTransactionRecordWallets(map, transactionRecordWallets);
 
         List<TransactionDetailsDTO> list = convertAndSort(map);
 
-        TransactionListDTO dto = new TransactionListDTO();
-        dto.setTotal(list.size());
-        dto.setTransactions(list.subList(startIndex - 1, Math.min(list.size(), startIndex + limit - 1)));
-
-        return dto;
+        return new TransactionHistoryDTO(list.size(), list.subList(startIndex - 1, Math.min(list.size(), startIndex + limit - 1)));
     }
 
     private static void mergeTransactionRecordWallets(Map<String, TransactionDetailsDTO> map, List<TransactionRecordWallet> list) {

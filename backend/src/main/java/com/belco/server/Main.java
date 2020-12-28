@@ -32,25 +32,26 @@ public class Main {
     }
 
     @Component
-    public class AnotherCustomLoggingFilter extends AbstractRequestLoggingFilter {
+    public class RestRequestLoggingFilter extends AbstractRequestLoggingFilter {
 
-        public AnotherCustomLoggingFilter() {
+        private volatile long beforeRequestTimestamp;
+
+        public RestRequestLoggingFilter() {
             setIncludeClientInfo(false);
             setIncludeHeaders(false);
             setIncludePayload(true);
             setIncludeQueryString(true);
-            setBeforeMessagePrefix("Request started => ");
-            setAfterMessagePrefix("Request ended => ");
+            setAfterMessagePrefix("Request -> ");
         }
 
         @Override
         protected void beforeRequest(HttpServletRequest request, String message) {
-            logger.info(message);
+            beforeRequestTimestamp = System.currentTimeMillis();
         }
 
         @Override
         protected void afterRequest(HttpServletRequest request, String message) {
-            logger.info(message);
+            logger.info(message + ", duration: " + (System.currentTimeMillis() - beforeRequestTimestamp));
         }
     }
 }

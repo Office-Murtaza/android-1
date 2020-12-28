@@ -1,6 +1,10 @@
 package com.belco.server.service;
 
-import com.belco.server.dto.*;
+import com.belco.server.dto.CurrentBlockDTO;
+import com.belco.server.dto.TransactionDetailsDTO;
+import com.belco.server.dto.TransactionHistoryDTO;
+import com.belco.server.entity.TransactionRecord;
+import com.belco.server.entity.TransactionRecordWallet;
 import com.belco.server.model.TransactionStatus;
 import com.belco.server.model.TransactionType;
 import com.belco.server.util.Base58;
@@ -20,9 +24,7 @@ import wallet.core.jni.PrivateKey;
 import wallet.core.jni.proto.Tron;
 
 import java.math.BigDecimal;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 @Getter
 @Service
@@ -86,7 +88,7 @@ public class TrongridService {
         return null;
     }
 
-    public TransactionDetailsDTO getTransaction(String txId, String address, String explorerUrl) {
+    public TransactionDetailsDTO getTransactionDetails(String txId, String address, String explorerUrl) {
         TransactionDetailsDTO dto = new TransactionDetailsDTO();
 
         if (nodeService.isNodeAvailable(COIN_TYPE)) {
@@ -111,7 +113,7 @@ public class TrongridService {
                 e.printStackTrace();
 
                 if (nodeService.switchToReserveNode(COIN_TYPE)) {
-                    return getTransaction(txId, address, explorerUrl);
+                    return getTransactionDetails(txId, address, explorerUrl);
                 }
             }
         }
@@ -119,14 +121,13 @@ public class TrongridService {
         return dto;
     }
 
-    public NodeTransactionsDTO getNodeTransactions(String address) {
+    public Map<String, TransactionDetailsDTO> getNodeTransactions(String address) {
         if (nodeService.isNodeAvailable(COIN_TYPE)) {
             try {
                 JSONObject res = rest.getForObject(nodeService.getNodeUrl(COIN_TYPE) + "/v1/accounts/" + address + "/transactions?limit=200&search_internal=true", JSONObject.class);
                 JSONArray array = res.optJSONArray("data");
-                Map<String, TransactionDetailsDTO> map = collectNodeTxs(array, address);
 
-                return new NodeTransactionsDTO(map);
+                return collectNodeTxs(array, address);
             } catch (Exception e) {
                 e.printStackTrace();
 
@@ -136,19 +137,11 @@ public class TrongridService {
             }
         }
 
-        return new NodeTransactionsDTO();
+        return Collections.emptyMap();
     }
 
-    public TransactionListDTO getTransactionList(String address, Integer startIndex, Integer limit, TxListDTO txDTO) {
-        try {
-            Map<String, TransactionDetailsDTO> map = getNodeTransactions(address).getMap();
-
-            return TxUtil.buildTxs(map, startIndex, limit, txDTO);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return new TransactionListDTO();
+    public TransactionHistoryDTO getTransactionHistory(String address, Integer startIndex, Integer limit, List<TransactionRecord> transactionRecords, List<TransactionRecordWallet> transactionRecordWallets) {
+        return TxUtil.buildTxs(getNodeTransactions(address), startIndex, limit, transactionRecords, transactionRecordWallets);
     }
 
     public CurrentBlockDTO getCurrentBlock() {

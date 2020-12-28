@@ -1,6 +1,10 @@
 package com.belco.server.service;
 
-import com.belco.server.dto.*;
+import com.belco.server.dto.CurrentAccountDTO;
+import com.belco.server.dto.TransactionDetailsDTO;
+import com.belco.server.dto.TransactionHistoryDTO;
+import com.belco.server.entity.TransactionRecord;
+import com.belco.server.entity.TransactionRecordWallet;
 import com.belco.server.model.TransactionStatus;
 import com.belco.server.model.TransactionType;
 import com.belco.server.util.TxUtil;
@@ -19,9 +23,7 @@ import wallet.core.jni.PrivateKey;
 import wallet.core.jni.proto.Ripple;
 
 import java.math.BigDecimal;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 @Getter
 @Service
@@ -168,7 +170,7 @@ public class RippledService {
         return new CurrentAccountDTO();
     }
 
-    public TransactionDetailsDTO getTransaction(String txId, String address, String explorerUrl) {
+    public TransactionDetailsDTO getTransactionHistory(String txId, String address, String explorerUrl) {
         TransactionDetailsDTO dto = new TransactionDetailsDTO();
 
         if (nodeService.isNodeAvailable(COIN_TYPE)) {
@@ -207,7 +209,7 @@ public class RippledService {
                 e.printStackTrace();
 
                 if (nodeService.switchToReserveNode(COIN_TYPE)) {
-                    return getTransaction(txId, address, explorerUrl);
+                    return getTransactionHistory(txId, address, explorerUrl);
                 }
             }
         }
@@ -215,7 +217,7 @@ public class RippledService {
         return dto;
     }
 
-    public NodeTransactionsDTO getNodeTransactions(String address) {
+    public Map<String, TransactionDetailsDTO> getNodeTransactions(String address) {
         if (nodeService.isNodeAvailable(COIN_TYPE)) {
             try {
                 JSONObject param = new JSONObject();
@@ -233,9 +235,7 @@ public class RippledService {
                 JSONObject jsonResult = res.optJSONObject("result");
                 JSONArray array = jsonResult.optJSONArray("transactions");
 
-                Map<String, TransactionDetailsDTO> map = collectNodeTxs(array, address);
-
-                return new NodeTransactionsDTO(map);
+                return collectNodeTxs(array, address);
             } catch (Exception e) {
                 e.printStackTrace();
 
@@ -245,19 +245,11 @@ public class RippledService {
             }
         }
 
-        return new NodeTransactionsDTO();
+        return Collections.emptyMap();
     }
 
-    public TransactionListDTO getTransactionList(String address, Integer startIndex, Integer limit, TxListDTO txDTO) {
-        try {
-            Map<String, TransactionDetailsDTO> map = getNodeTransactions(address).getMap();
-
-            return TxUtil.buildTxs(map, startIndex, limit, txDTO);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return new TransactionListDTO();
+    public TransactionHistoryDTO getTransactionHistory(String address, Integer startIndex, Integer limit, List<TransactionRecord> transactionRecords, List<TransactionRecordWallet> transactionRecordWallets) {
+        return TxUtil.buildTxs(getNodeTransactions(address), startIndex, limit, transactionRecords, transactionRecordWallets);
     }
 
     public String sign(String fromAddress, String toAddress, BigDecimal amount, BigDecimal fee) {

@@ -1,9 +1,10 @@
 package com.belco.server.service;
 
 import com.belco.server.dto.SubmitTransactionDTO;
-import com.belco.server.util.Constant;
 import com.twilio.Twilio;
+import com.twilio.rest.api.v2010.account.Message;
 import com.twilio.rest.api.v2010.account.MessageCreator;
+import com.twilio.type.PhoneNumber;
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
@@ -13,12 +14,11 @@ import javax.annotation.PostConstruct;
 import java.net.URI;
 import java.util.Arrays;
 
-import com.twilio.rest.api.v2010.account.Message;
-import com.twilio.type.PhoneNumber;
-
 @Service
 public class TwilioService {
 
+    private static final String APP_LINK_IOS = "itms-apps://itunes.apple.com/app/apple-store/id1475407885";
+    private static final String APP_LINK_ANDROID = "https://play.google.com/store/apps/details?id=com.app.belcobtm";
     private static final String DEFAULT_CODE = "1234";
 
     @Value("${twilio.enabled}")
@@ -83,9 +83,9 @@ public class TwilioService {
             if (!receiverExists) {
                 body.append("\n\n").append("To receive it, install Belco Wallet from a link");
                 body.append("\n\n").append("IOS:");
-                body.append("\n").append(Constant.APP_LINK_IOS);
+                body.append("\n").append(APP_LINK_IOS);
                 body.append("\n\n").append("Android:");
-                body.append("\n").append(Constant.APP_LINK_ANDROID);
+                body.append("\n").append(APP_LINK_ANDROID);
                 body.append("\n\n").append("and create an account using " + dto.getPhone() + " number");
                 body.append("\n");
             }

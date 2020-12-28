@@ -2,9 +2,9 @@ package com.belco.server.config;
 
 import com.belco.server.entity.User;
 import com.belco.server.security.JWTTokenProvider;
-import com.belco.server.service.UserService;
 import com.belco.server.service.CoinService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.belco.server.service.UserService;
+import com.belco.server.util.Constant;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
@@ -19,7 +19,9 @@ import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.messaging.support.MessageHeaderAccessor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.socket.config.annotation.*;
+import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
+import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
+import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -30,21 +32,23 @@ import java.util.List;
 @EnableWebSocketMessageBroker
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
-    @Autowired
-    private JWTTokenProvider tokenProvider;
+    private final JWTTokenProvider tokenProvider;
 
-    @Autowired
     @Lazy
-    private CoinService coinService;
+    private final CoinService coinService;
 
-    @Autowired
     @Lazy
-    private UserService userService;
+    private final UserService userService;
 
-    @Autowired
     @Lazy
-    @Qualifier("clientOutboundChannel")
-    private MessageChannel clientOutboundChannel;
+    private final MessageChannel clientOutboundChannel;
+
+    public WebSocketConfig(JWTTokenProvider tokenProvider, CoinService coinService, UserService userService, @Qualifier("clientOutboundChannel") MessageChannel clientOutboundChannel) {
+        this.tokenProvider = tokenProvider;
+        this.coinService = coinService;
+        this.userService = userService;
+        this.clientOutboundChannel = clientOutboundChannel;
+    }
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
@@ -66,8 +70,8 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
                 StompHeaderAccessor accessor = MessageHeaderAccessor.getAccessor(message, StompHeaderAccessor.class);
 
                 if (StompCommand.CONNECT.equals(accessor.getCommand())) {
-                    if (accessor.getNativeHeader("Authorization") != null) {
-                        List<String> authorization = accessor.getNativeHeader("Authorization");
+                    if (accessor.getNativeHeader(Constant.AUTHORIZATION_HEADER) != null) {
+                        List<String> authorization = accessor.getNativeHeader(Constant.AUTHORIZATION_HEADER);
 
                         if (authorization.size() > 0 && authorization.get(0).split(" ").length > 1) {
                             String accessToken = authorization.get(0).split(" ")[1];

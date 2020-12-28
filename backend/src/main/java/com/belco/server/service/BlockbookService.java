@@ -1,6 +1,10 @@
 package com.belco.server.service;
 
-import com.belco.server.dto.*;
+import com.belco.server.dto.TransactionDetailsDTO;
+import com.belco.server.dto.TransactionHistoryDTO;
+import com.belco.server.dto.UtxoDTO;
+import com.belco.server.entity.TransactionRecord;
+import com.belco.server.entity.TransactionRecordWallet;
 import com.belco.server.model.TransactionStatus;
 import com.belco.server.model.TransactionType;
 import com.belco.server.util.TxUtil;
@@ -19,15 +23,12 @@ import wallet.core.jni.PrivateKey;
 import wallet.core.jni.proto.Bitcoin;
 
 import java.math.BigDecimal;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class BlockbookService {
 
-    public static final BigDecimal BTC_DIVIDER = BigDecimal.valueOf(100_000_000L);
+    public static final BigDecimal DIVIDER = BigDecimal.valueOf(100_000_000L);
 
     private final RestTemplate rest;
     private final WalletService walletService;
@@ -44,7 +45,7 @@ public class BlockbookService {
             try {
                 JSONObject res = rest.getForObject(nodeService.getNodeUrl(coinType) + "/api/v2/address/" + address + "?details=basic", JSONObject.class);
 
-                return Util.format(new BigDecimal(res.optString("balance")).divide(BTC_DIVIDER), 6);
+                return Util.format(new BigDecimal(res.optString("balance")).divide(DIVIDER), 6);
             } catch (Exception e) {
                 e.printStackTrace();
 
@@ -75,7 +76,7 @@ public class BlockbookService {
         return null;
     }
 
-    public UtxoDTO getUTXO(CoinType coinType, String xpub) {
+    public UtxoDTO getUtxo(CoinType coinType, String xpub) {
         if (nodeService.isNodeAvailable(coinType)) {
             try {
                 JSONArray res = rest.getForObject(nodeService.getNodeUrl(coinType) + "/api/v2/utxo/" + xpub, JSONArray.class);
@@ -85,7 +86,7 @@ public class BlockbookService {
                 e.printStackTrace();
 
                 if (nodeService.switchToReserveNode(coinType)) {
-                    return getUTXO(coinType, xpub);
+                    return getUtxo(coinType, xpub);
                 }
             }
         }
@@ -98,7 +99,7 @@ public class BlockbookService {
             try {
                 JSONObject res = rest.getForObject(nodeService.getNodeUrl(coinType) + "/api/v2/estimatefee/2", JSONObject.class);
 
-                return new BigDecimal(res.optString("result")).divide(new BigDecimal(1000)).multiply(BTC_DIVIDER).longValue();
+                return new BigDecimal(res.optString("result")).divide(new BigDecimal(1000)).multiply(DIVIDER).longValue();
             } catch (Exception e) {
                 e.printStackTrace();
 
@@ -111,47 +112,7 @@ public class BlockbookService {
         return null;
     }
 
-    public TransactionNumberDTO getTransactionNumber(CoinType coinType, String address, BigDecimal amount, TransactionType type) {
-        if (nodeService.isNodeAvailable(coinType)) {
-            try {
-                JSONObject res = rest.getForObject(nodeService.getNodeUrl(coinType) + "/api/v2/address/" + address + "?details=txs&pageSize=1000&page=1", JSONObject.class);
-                JSONArray array = res.optJSONArray("transactions");
-
-                if (array != null && !array.isEmpty()) {
-                    for (int i = 0; i < array.size(); i++) {
-                        JSONObject json = array.optJSONObject(i);
-                        JSONArray voutArray = json.optJSONArray("vout");
-
-                        for (int j = 0; j < voutArray.size(); j++) {
-                            JSONObject voutJson = voutArray.optJSONObject(j);
-
-                            if (voutJson.optJSONArray("addresses").toString().toLowerCase().contains(address.toLowerCase())) {
-                                if (type == TransactionType.SELL) {
-                                    return new TransactionNumberDTO(json.optString("txid"), voutJson.optInt("n"));
-                                } else if (type == TransactionType.BUY) {
-                                    BigDecimal value = new BigDecimal(voutJson.optString("value")).divide(BTC_DIVIDER);
-
-                                    if (amount.compareTo(value) == 0) {
-                                        return new TransactionNumberDTO(json.optString("txid"), voutJson.optInt("n"));
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-
-                if (nodeService.switchToReserveNode(coinType)) {
-                    return getTransactionNumber(coinType, address, amount, type);
-                }
-            }
-        }
-
-        return null;
-    }
-
-    public TransactionDetailsDTO getTransaction(CoinType coinType, String txId, String address, String explorerUrl) {
+    public TransactionDetailsDTO getTransactionDetails(CoinType coinType, String txId, String address, String explorerUrl) {
         TransactionDetailsDTO dto = new TransactionDetailsDTO();
 
         if (nodeService.isNodeAvailable(coinType)) {
@@ -163,7 +124,7 @@ public class BlockbookService {
                 String fromAddress = getFromAddress(vinArray, address);
                 String toAddress = getToAddress(voutArray, address, fromAddress);
                 TransactionType type = TransactionType.getType(fromAddress, toAddress, address);
-                BigDecimal amount = Util.format(getAmount(type, fromAddress, toAddress, voutArray, BTC_DIVIDER), 6);
+                BigDecimal amount = Util.format(getAmount(type, fromAddress, toAddress, voutArray, DIVIDER), 6);
 
                 dto.setTxId(txId);
                 dto.setLink(explorerUrl + "/" + txId);
@@ -171,7 +132,8 @@ public class BlockbookService {
                 dto.setCryptoAmount(amount);
                 dto.setFromAddress(fromAddress);
                 dto.setToAddress(toAddress);
-                dto.setCryptoFee(new BigDecimal(res.optString("fees")).divide(BTC_DIVIDER).stripTrailingZeros());
+                dto.setCryptoFee(new BigDecimal(res.optString("fees")).divide(DIVIDER).stripTrailingZeros());
+                dto.setConfirmations(res.optInt("confirmations"));
                 dto.setStatus(getStatus(res.optInt("confirmations")));
                 dto.setDate2(new Date(res.optLong("blockTime") * 1000));
             } catch (HttpClientErrorException he) {
@@ -180,7 +142,7 @@ public class BlockbookService {
                 e.printStackTrace();
 
                 if (nodeService.switchToReserveNode(coinType)) {
-                    return getTransaction(coinType, txId, address, explorerUrl);
+                    return getTransactionDetails(coinType, txId, address, explorerUrl);
                 }
             }
         }
@@ -188,13 +150,13 @@ public class BlockbookService {
         return dto;
     }
 
-    public NodeTransactionsDTO getNodeTransactions(CoinType coinType, String address) {
+    public Map<String, TransactionDetailsDTO> getNodeTransactions(CoinType coinType, String address) {
         if (nodeService.isNodeAvailable(coinType)) {
             try {
                 JSONObject res = rest.getForObject(nodeService.getNodeUrl(coinType) + "/api/v2/address/" + address + "?details=txs&pageSize=1000&page=1", JSONObject.class);
                 JSONArray array = res.optJSONArray("transactions");
 
-                return new NodeTransactionsDTO(collectNodeTxs(array, address));
+                return collectNodeTxs(array, address);
             } catch (Exception e) {
                 e.printStackTrace();
 
@@ -204,26 +166,18 @@ public class BlockbookService {
             }
         }
 
-        return new NodeTransactionsDTO();
+        return Collections.emptyMap();
     }
 
-    public TransactionListDTO getTransactionList(CoinType coinType, String address, Integer startIndex, Integer limit, TxListDTO txDTO) {
-        try {
-            Map<String, TransactionDetailsDTO> map = getNodeTransactions(coinType, address).getMap();
-
-            return TxUtil.buildTxs(map, startIndex, limit, txDTO);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return new TransactionListDTO();
+    public TransactionHistoryDTO getTransactionHistory(CoinType coinType, String address, Integer startIndex, Integer limit, List<TransactionRecord> transactionRecords, List<TransactionRecordWallet> transactionRecordWallets) {
+        return TxUtil.buildTxs(getNodeTransactions(coinType, address), startIndex, limit, transactionRecords, transactionRecordWallets);
     }
 
     public String signBTCForks(CoinType coinType, String fromAddress, String toAddress, BigDecimal amount, Long byteFee, List<JSONObject> utxos) {
         try {
             Bitcoin.SigningInput.Builder input = Bitcoin.SigningInput.newBuilder();
             input.setCoinType(coinType.value());
-            input.setAmount(amount.multiply(BTC_DIVIDER).longValue());
+            input.setAmount(amount.multiply(DIVIDER).longValue());
             input.setByteFee(byteFee);
             input.setHashType(BitcoinScript.hashTypeForCoin(coinType));
             input.setChangeAddress(fromAddress);
@@ -283,7 +237,7 @@ public class BlockbookService {
     }
 
     public BigDecimal getTxFee(CoinType coinType) {
-        return BigDecimal.valueOf(getByteFee(coinType)).divide(BTC_DIVIDER).multiply(BigDecimal.valueOf(1000)).stripTrailingZeros();
+        return BigDecimal.valueOf(getByteFee(coinType)).divide(DIVIDER).multiply(BigDecimal.valueOf(1000)).stripTrailingZeros();
     }
 
     private Map<String, TransactionDetailsDTO> collectNodeTxs(JSONArray array, String address) {
@@ -299,7 +253,7 @@ public class BlockbookService {
                 String fromAddress = getFromAddress(vinArray, address);
                 String toAddress = getToAddress(voutArray, address, fromAddress);
                 TransactionType type = TransactionType.getType(fromAddress, toAddress, address);
-                BigDecimal amount = Util.format(getAmount(type, fromAddress, toAddress, voutArray, BTC_DIVIDER), 6);
+                BigDecimal amount = Util.format(getAmount(type, fromAddress, toAddress, voutArray, DIVIDER), 6);
 
                 TransactionStatus status = getStatus(json.optInt("confirmations"));
                 Date date1 = new Date(json.optLong("blockTime") * 1000);

@@ -1,6 +1,5 @@
 package com.belco.server.util;
 
-import com.belco.server.entity.User;
 import net.sf.json.JSONObject;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.web.multipart.MultipartFile;
@@ -69,6 +68,10 @@ public class Util {
         }
 
         return value.setScale(scale, RoundingMode.DOWN).stripTrailingZeros();
+    }
+
+    public static BigDecimal convertPercentToDecimal(BigDecimal percent) {
+        return percent.divide(BigDecimal.valueOf(100));
     }
 
     public static JSONObject insecureRequest(String path) {
@@ -153,10 +156,6 @@ public class Util {
         }
     }
 
-    public static int distance(User user, User user2) {
-        return distance(user.getLatitude().doubleValue(), user.getLongitude().doubleValue(), user2.getLatitude().doubleValue(), user2.getLongitude().doubleValue());
-    }
-
     public static int distance(double lat1, double lon1, double lat2, double lon2) {
         double theta = lon1 - lon2;
         double dist = Math.sin(deg2rad(lat1)) * Math.sin(deg2rad(lat2)) + Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * Math.cos(deg2rad(theta));
@@ -181,25 +180,5 @@ public class Util {
 
     private static double rad2deg(double rad) {
         return (rad * 180.0 / Math.PI);
-    }
-
-    public static String getPriceDayColl(String coin) {
-        return "price_day_" + coin;
-    }
-
-    public static String getPriceWeekColl(String coin) {
-        return "price_week_" + coin;
-    }
-
-    public static String getPriceMonthColl(String coin) {
-        return "price_month_" + coin;
-    }
-
-    public static String getPrice3MonthColl(String coin) {
-        return "price_three_months_" + coin;
-    }
-
-    public static String getPriceYearColl(String coin) {
-        return "price_year_" + coin;
     }
 }

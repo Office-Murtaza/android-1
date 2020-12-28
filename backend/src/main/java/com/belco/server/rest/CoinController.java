@@ -1,28 +1,30 @@
 package com.belco.server.rest;
 
-import java.util.List;
-
 import com.belco.server.model.PricePeriod;
 import com.belco.server.model.Response;
-import com.belco.server.service.*;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.belco.server.service.CacheService;
+import com.belco.server.service.CoinService;
+import com.belco.server.service.RippledService;
+import com.belco.server.service.UserService;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1")
 public class CoinController {
 
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
+    private final CoinService coinService;
+    private final RippledService rippledService;
+    private final CacheService cacheService;
 
-    @Autowired
-    private CoinService coinService;
-
-    @Autowired
-    private RippledService rippledService;
-
-    @Autowired
-    private CacheService cacheService;
+    public CoinController(UserService userService, CoinService coinService, RippledService rippledService, CacheService cacheService) {
+        this.userService = userService;
+        this.coinService = coinService;
+        this.rippledService = rippledService;
+        this.cacheService = cacheService;
+    }
 
     @GetMapping("/coin/{coin}/details")
     public Response getDetails(@PathVariable CoinService.CoinEnum coin) {
@@ -48,7 +50,7 @@ public class CoinController {
     public Response getUtxo(@PathVariable CoinService.CoinEnum coin, @RequestParam String xpub) {
         try {
             if (coin == CoinService.CoinEnum.BTC || coin == CoinService.CoinEnum.BCH || coin == CoinService.CoinEnum.LTC) {
-                return Response.ok(coin.getUTXO(xpub));
+                return Response.ok(coin.getUtxo(xpub));
             } else {
                 return Response.defaultError(coin.name() + " not allowed");
             }
@@ -90,7 +92,7 @@ public class CoinController {
     public Response getCurrentAccountActivated(@PathVariable CoinService.CoinEnum coin, @RequestParam String address) {
         try {
             if (coin == CoinService.CoinEnum.XRP) {
-                return Response.ok(!rippledService.getNodeTransactions(address).getMap().isEmpty());
+                return Response.ok(!rippledService.getNodeTransactions(address).isEmpty());
             } else {
                 return Response.defaultError(coin.name() + " not allowed");
             }

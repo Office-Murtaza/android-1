@@ -6,7 +6,6 @@ import com.belco.server.model.*;
 import com.belco.server.repository.TransactionRecordRep;
 import com.belco.server.repository.TransactionRecordWalletRep;
 import com.belco.server.repository.UserCoinRep;
-import com.belco.server.util.Constant;
 import com.belco.server.util.Util;
 import net.sf.json.JSONObject;
 import org.apache.commons.lang3.BooleanUtils;
@@ -28,6 +27,7 @@ import java.util.*;
 @EnableScheduling
 public class TransactionService {
 
+    private static final String TERMINAL_SERIAL_NUMBER = "BT100872";
     private static final Pageable page = PageRequest.of(0, 100);
 
     private final TransactionRecordRep recordRep;
@@ -71,7 +71,7 @@ public class TransactionService {
             buySellRecOpt = recordRep.findById(Long.valueOf(txId));
         } else {                                                    /** consider as txId */
             String address = user.getUserCoin(coinCode.name()).getAddress();
-            dto = coinCode.getTransaction(txId, address);
+            dto = coinCode.getTransactionDetails(txId, address);
             buySellRecOpt = recordRep.findOneByIdentityAndDetailAndCryptoCurrency(user.getIdentity(), txId, coinCode.name());
         }
 
@@ -136,17 +136,16 @@ public class TransactionService {
         return dto;
     }
 
-    public TransactionListDTO getTransactionHistory(Long userId, CoinService.CoinEnum coinCode, Integer startIndex) {
+    public TransactionHistoryDTO getTransactionHistory(Long userId, CoinService.CoinEnum coinCode, Integer startIndex) {
         User user = userService.findById(userId);
         Identity identity = user.getIdentity();
         Coin coin = coinCode.getCoinEntity();
         String address = user.getUserCoin(coinCode.name()).getAddress();
 
-        TxListDTO txDTO = new TxListDTO();
-        txDTO.setTransactionRecords(recordRep.findAllByIdentityAndCryptoCurrency(user.getIdentity(), coinCode.name()));
-        txDTO.setTransactionRecordWallets(walletRep.findAllByIdentityAndCoin(identity, coin));
+        List<TransactionRecord> transactionRecords = recordRep.findAllByIdentityAndCryptoCurrency(user.getIdentity(), coinCode.name());
+        List<TransactionRecordWallet> transactionRecordWallets = walletRep.findAllByIdentityAndCoin(identity, coin);
 
-        return coinCode.getTransactionList(address, startIndex, Constant.TRANSACTIONS_COUNT, txDTO);
+        return coinCode.getTransactionHistory(address, startIndex, 10, transactionRecords, transactionRecordWallets);
     }
 
     public void saveGift(Long userId, CoinService.CoinEnum coinCode, String txId, SubmitTransactionDTO dto) {
@@ -250,7 +249,7 @@ public class TransactionService {
             User user = userService.findById(userId);
 
             StringBuilder params = new StringBuilder();
-            params.append("?serial_number=").append(Constant.TERMINAL_SERIAL_NUMBER);
+            params.append("?serial_number=").append(TERMINAL_SERIAL_NUMBER);
             params.append("&fiat_amount=").append(transaction.getFiatAmount());
             params.append("&fiat_currency=").append(transaction.getFiatCurrency());
             params.append("&crypto_amount=").append(transaction.getCryptoAmount());
@@ -426,8 +425,8 @@ public class TransactionService {
         }
     }
 
-    public StakeDetailsDTO getStakeDetails(Long userId, CoinService.CoinEnum coin) {
-        StakeDetailsDTO dto = new StakeDetailsDTO();
+    public StakingDetailsDTO getStakeDetails(Long userId, CoinService.CoinEnum coin) {
+        StakingDetailsDTO dto = new StakingDetailsDTO();
         dto.setStatus(StakeStatus.NOT_EXIST);
         dto.setRewardAnnualPercent(stakeAnnualPercent);
         dto.setHoldPeriod(stakeHoldPeriod / stakeBasePeriod);
@@ -449,8 +448,8 @@ public class TransactionService {
 
                     dto.setDuration(days);
                     dto.setRewardPercent(percent);
-                    dto.setRewardAmount(createStakeRec.getAmount().multiply(percent.divide(Constant.HUNDRED)).stripTrailingZeros());
-                    dto.setRewardAnnualAmount(createStakeRec.getAmount().multiply(BigDecimal.valueOf(stakeAnnualPercent)).divide(Constant.HUNDRED).stripTrailingZeros());
+                    dto.setRewardAmount(createStakeRec.getAmount().multiply(Util.convertPercentToDecimal(percent)).stripTrailingZeros());
+                    dto.setRewardAnnualAmount(createStakeRec.getAmount().multiply(Util.convertPercentToDecimal(BigDecimal.valueOf(stakeAnnualPercent))).stripTrailingZeros());
 
                     return dto;
                 } else {
@@ -464,8 +463,8 @@ public class TransactionService {
                     dto.setRewardPercent(percent);
                     dto.setStatus(StakeStatus.convert(TransactionType.valueOf(cancelStakeRec.getType()), TransactionStatus.valueOf(cancelStakeRec.getStatus())));
                     dto.setCancelDate(cancelStakeRec.getCreateDate());
-                    dto.setRewardAmount(createStakeRec.getAmount().multiply(percent.divide(Constant.HUNDRED)).stripTrailingZeros());
-                    dto.setRewardAnnualAmount(createStakeRec.getAmount().multiply(BigDecimal.valueOf(stakeAnnualPercent)).divide(Constant.HUNDRED).stripTrailingZeros());
+                    dto.setRewardAmount(createStakeRec.getAmount().multiply(Util.convertPercentToDecimal(percent)).stripTrailingZeros());
+                    dto.setRewardAnnualAmount(createStakeRec.getAmount().multiply(Util.convertPercentToDecimal(BigDecimal.valueOf(stakeAnnualPercent))).stripTrailingZeros());
                     dto.setUntilWithdraw(Math.max(0, stakeHoldPeriod / stakeBasePeriod - holdDays));
 
                     if (StringUtils.isNotBlank(cancelStakeRec.getRefTxId())) {
@@ -517,7 +516,7 @@ public class TransactionService {
         list.stream().forEach(t -> {
             try {
                 CoinService.CoinEnum coin = CoinService.CoinEnum.valueOf(t.getCoin().getCode());
-                TransactionStatus status = coin.getTransactionStatus(t.getTxId());
+                TransactionStatus status = coin.getTransactionDetails(t.getTxId(), StringUtils.EMPTY).getStatus();
 
                 if (status != null && status != TransactionStatus.PENDING) {
                     t.setStatus(status.getValue());

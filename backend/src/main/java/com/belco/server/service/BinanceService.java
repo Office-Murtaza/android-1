@@ -1,6 +1,10 @@
 package com.belco.server.service;
 
-import com.belco.server.dto.*;
+import com.belco.server.dto.CurrentAccountDTO;
+import com.belco.server.dto.TransactionDetailsDTO;
+import com.belco.server.dto.TransactionHistoryDTO;
+import com.belco.server.entity.TransactionRecord;
+import com.belco.server.entity.TransactionRecordWallet;
 import com.belco.server.model.TransactionStatus;
 import com.belco.server.util.TxUtil;
 import com.belco.server.util.Util;
@@ -28,10 +32,7 @@ import wallet.core.jni.proto.Binance;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.time.ZonedDateTime;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 @Getter
@@ -67,7 +68,6 @@ public class BinanceService {
                     .map(it -> new BigDecimal(it.getFree()).add(new BigDecimal(it.getLocked())))
                     .reduce(BigDecimal.ZERO, BigDecimal::add), 6);
         } catch (Exception e) {
-            e.printStackTrace();
         }
 
         return BigDecimal.ZERO;
@@ -98,7 +98,7 @@ public class BinanceService {
         return null;
     }
 
-    public TransactionDetailsDTO getTransaction(String txId, String address, String explorerUrl) {
+    public TransactionDetailsDTO getTransactionDetails(String txId, String address, String explorerUrl) {
         TransactionDetailsDTO dto = new TransactionDetailsDTO();
 
         if (nodeService.isNodeAvailable(COIN_TYPE)) {
@@ -118,7 +118,7 @@ public class BinanceService {
                 e.printStackTrace();
 
                 if (nodeService.switchToReserveNode(COIN_TYPE)) {
-                    return getTransaction(txId, address, explorerUrl);
+                    return getTransactionDetails(txId, address, explorerUrl);
                 }
 
                 dto.setStatus(TransactionStatus.FAIL);
@@ -128,7 +128,7 @@ public class BinanceService {
         return dto;
     }
 
-    public NodeTransactionsDTO getNodeTransactions(String address) {
+    public Map<String, TransactionDetailsDTO> getNodeTransactions(String address) {
         try {
             TransactionsRequest request = new TransactionsRequest();
             request.setStartTime(new SimpleDateFormat("yyyy").parse("2010").getTime());
@@ -140,24 +140,16 @@ public class BinanceService {
 
             TransactionPage page = binanceDex.getTransactions(request);
 
-            return new NodeTransactionsDTO(collectNodeTxs(page, address));
+            return collectNodeTxs(page, address);
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        return new NodeTransactionsDTO();
+        return Collections.emptyMap();
     }
 
-    public TransactionListDTO getTransactionList(String address, Integer startIndex, Integer limit, TxListDTO txDTO) {
-        try {
-            Map<String, TransactionDetailsDTO> map = getNodeTransactions(address).getMap();
-
-            return TxUtil.buildTxs(map, startIndex, limit, txDTO);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return new TransactionListDTO();
+    public TransactionHistoryDTO getTransactionHistory(String address, Integer startIndex, Integer limit, List<TransactionRecord> transactionRecords, List<TransactionRecordWallet> transactionRecordWallets) {
+        return TxUtil.buildTxs(getNodeTransactions(address), startIndex, limit, transactionRecords, transactionRecordWallets);
     }
 
     public CurrentAccountDTO getCurrentAccount(String address) {

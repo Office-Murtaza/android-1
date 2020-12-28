@@ -1,14 +1,10 @@
 package com.belco.server.service;
 
 import com.belco.server.dto.*;
-import com.belco.server.entity.Coin;
-import com.belco.server.entity.User;
-import com.belco.server.entity.UserCoin;
-import com.belco.server.model.TransactionStatus;
+import com.belco.server.entity.*;
 import com.belco.server.repository.CoinRep;
 import com.belco.server.util.Util;
 import net.sf.json.JSONObject;
-import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Lazy;
@@ -248,23 +244,18 @@ public class CoinService {
             }
 
             @Override
-            public TransactionStatus getTransactionStatus(String txId) {
-                return getTransaction(txId, StringUtils.EMPTY).getStatus();
+            public TransactionDetailsDTO getTransactionDetails(String txId, String address) {
+                return blockbookService.getTransactionDetails(getCoinType(), txId, address, getExplorerUrl());
             }
 
             @Override
-            public TransactionDetailsDTO getTransaction(String txId, String address) {
-                return blockbookService.getTransaction(getCoinType(), txId, address, getExplorerUrl());
+            public TransactionHistoryDTO getTransactionHistory(String address, Integer startIndex, Integer limit, List<TransactionRecord> transactionRecords, List<TransactionRecordWallet> transactionRecordWallets) {
+                return blockbookService.getTransactionHistory(getCoinType(), address, startIndex, limit, transactionRecords, transactionRecordWallets);
             }
 
             @Override
-            public TransactionListDTO getTransactionList(String address, Integer startIndex, Integer limit, TxListDTO txDTO) {
-                return blockbookService.getTransactionList(getCoinType(), address, startIndex, limit, txDTO);
-            }
-
-            @Override
-            public UtxoDTO getUTXO(String xpub) {
-                return blockbookService.getUTXO(getCoinType(), xpub);
+            public UtxoDTO getUtxo(String xpub) {
+                return blockbookService.getUtxo(getCoinType(), xpub);
             }
 
             @Override
@@ -289,7 +280,7 @@ public class CoinService {
 
             @Override
             public String sign(String fromAddress, String toAddress, BigDecimal amount) {
-                List<JSONObject> utxos = getUTXO(walletService.getXPUB(getCoinType())).getUtxos();
+                List<JSONObject> utxos = getUtxo(walletService.getXpub(getCoinType())).getUtxos();
                 Long byteFee = blockbookService.getByteFee(getCoinType());
 
                 return blockbookService.signBTCForks(getCoinType(), fromAddress, toAddress, amount, byteFee, utxos);
@@ -306,7 +297,7 @@ public class CoinService {
             }
 
             @Override
-            public NodeTransactionsDTO getNodeTransactions(String address) {
+            public Map<String, TransactionDetailsDTO> getNodeTransactions(String address) {
                 return blockbookService.getNodeTransactions(getCoinType(), address);
             }
 
@@ -362,23 +353,18 @@ public class CoinService {
             }
 
             @Override
-            public TransactionStatus getTransactionStatus(String txId) {
-                return getTransaction(txId, StringUtils.EMPTY).getStatus();
+            public TransactionDetailsDTO getTransactionDetails(String txId, String address) {
+                return blockbookService.getTransactionDetails(getCoinType(), txId, address, getExplorerUrl());
             }
 
             @Override
-            public TransactionDetailsDTO getTransaction(String txId, String address) {
-                return blockbookService.getTransaction(getCoinType(), txId, address, getExplorerUrl());
+            public TransactionHistoryDTO getTransactionHistory(String address, Integer startIndex, Integer limit, List<TransactionRecord> transactionRecords, List<TransactionRecordWallet> transactionRecordWallets) {
+                return blockbookService.getTransactionHistory(getCoinType(), address, startIndex, limit, transactionRecords, transactionRecordWallets);
             }
 
             @Override
-            public TransactionListDTO getTransactionList(String address, Integer startIndex, Integer limit, TxListDTO txDTO) {
-                return blockbookService.getTransactionList(getCoinType(), address, startIndex, limit, txDTO);
-            }
-
-            @Override
-            public UtxoDTO getUTXO(String xpub) {
-                return blockbookService.getUTXO(getCoinType(), xpub);
+            public UtxoDTO getUtxo(String xpub) {
+                return blockbookService.getUtxo(getCoinType(), xpub);
             }
 
             @Override
@@ -403,7 +389,7 @@ public class CoinService {
 
             @Override
             public String sign(String fromAddress, String toAddress, BigDecimal amount) {
-                List<JSONObject> utxos = getUTXO(walletService.getXPUB(getCoinType())).getUtxos();
+                List<JSONObject> utxos = getUtxo(walletService.getXpub(getCoinType())).getUtxos();
                 Long byteFee = blockbookService.getByteFee(getCoinType());
 
                 return blockbookService.signBTCForks(getCoinType(), fromAddress, toAddress, amount, byteFee, utxos);
@@ -420,7 +406,7 @@ public class CoinService {
             }
 
             @Override
-            public NodeTransactionsDTO getNodeTransactions(String address) {
+            public Map<String, TransactionDetailsDTO> getNodeTransactions(String address) {
                 return blockbookService.getNodeTransactions(getCoinType(), address);
             }
 
@@ -476,23 +462,18 @@ public class CoinService {
             }
 
             @Override
-            public TransactionStatus getTransactionStatus(String txId) {
-                return getTransaction(txId, StringUtils.EMPTY).getStatus();
+            public TransactionDetailsDTO getTransactionDetails(String txId, String address) {
+                return blockbookService.getTransactionDetails(getCoinType(), txId, address, getExplorerUrl());
             }
 
             @Override
-            public TransactionDetailsDTO getTransaction(String txId, String address) {
-                return blockbookService.getTransaction(getCoinType(), txId, address, getExplorerUrl());
+            public TransactionHistoryDTO getTransactionHistory(String address, Integer startIndex, Integer limit, List<TransactionRecord> transactionRecords, List<TransactionRecordWallet> transactionRecordWallets) {
+                return blockbookService.getTransactionHistory(getCoinType(), address, startIndex, limit, transactionRecords, transactionRecordWallets);
             }
 
             @Override
-            public TransactionListDTO getTransactionList(String address, Integer startIndex, Integer limit, TxListDTO txDTO) {
-                return blockbookService.getTransactionList(getCoinType(), address, startIndex, limit, txDTO);
-            }
-
-            @Override
-            public UtxoDTO getUTXO(String xpub) {
-                return blockbookService.getUTXO(getCoinType(), xpub);
+            public UtxoDTO getUtxo(String xpub) {
+                return blockbookService.getUtxo(getCoinType(), xpub);
             }
 
             @Override
@@ -517,7 +498,7 @@ public class CoinService {
 
             @Override
             public String sign(String fromAddress, String toAddress, BigDecimal amount) {
-                List<JSONObject> utxos = getUTXO(walletService.getXPUB(getCoinType())).getUtxos();
+                List<JSONObject> utxos = getUtxo(walletService.getXpub(getCoinType())).getUtxos();
                 Long byteFee = blockbookService.getByteFee(getCoinType());
 
                 return blockbookService.signBTCForks(getCoinType(), fromAddress, toAddress, amount, byteFee, utxos);
@@ -534,7 +515,7 @@ public class CoinService {
             }
 
             @Override
-            public NodeTransactionsDTO getNodeTransactions(String address) {
+            public Map<String, TransactionDetailsDTO> getNodeTransactions(String address) {
                 return blockbookService.getNodeTransactions(getCoinType(), address);
             }
 
@@ -590,23 +571,18 @@ public class CoinService {
             }
 
             @Override
-            public TransactionStatus getTransactionStatus(String txId) {
-                return getTransaction(txId, StringUtils.EMPTY).getStatus();
+            public TransactionDetailsDTO getTransactionDetails(String txId, String address) {
+                return blockbookService.getTransactionDetails(getCoinType(), txId, address, getExplorerUrl());
             }
 
             @Override
-            public TransactionDetailsDTO getTransaction(String txId, String address) {
-                return blockbookService.getTransaction(getCoinType(), txId, address, getExplorerUrl());
+            public TransactionHistoryDTO getTransactionHistory(String address, Integer startIndex, Integer limit, List<TransactionRecord> transactionRecords, List<TransactionRecordWallet> transactionRecordWallets) {
+                return blockbookService.getTransactionHistory(getCoinType(), address, startIndex, limit, transactionRecords, transactionRecordWallets);
             }
 
             @Override
-            public TransactionListDTO getTransactionList(String address, Integer startIndex, Integer limit, TxListDTO txDTO) {
-                return blockbookService.getTransactionList(getCoinType(), address, startIndex, limit, txDTO);
-            }
-
-            @Override
-            public UtxoDTO getUTXO(String xpub) {
-                return blockbookService.getUTXO(getCoinType(), xpub);
+            public UtxoDTO getUtxo(String xpub) {
+                return blockbookService.getUtxo(getCoinType(), xpub);
             }
 
             @Override
@@ -631,7 +607,7 @@ public class CoinService {
 
             @Override
             public String sign(String fromAddress, String toAddress, BigDecimal amount) {
-                List<JSONObject> utxos = getUTXO(walletService.getXPUB(getCoinType())).getUtxos();
+                List<JSONObject> utxos = getUtxo(walletService.getXpub(getCoinType())).getUtxos();
                 Long byteFee = blockbookService.getByteFee(getCoinType());
 
                 return blockbookService.signBTCForks(getCoinType(), fromAddress, toAddress, amount, byteFee, utxos);
@@ -648,7 +624,7 @@ public class CoinService {
             }
 
             @Override
-            public NodeTransactionsDTO getNodeTransactions(String address) {
+            public Map<String, TransactionDetailsDTO> getNodeTransactions(String address) {
                 return blockbookService.getNodeTransactions(getCoinType(), address);
             }
 
@@ -704,23 +680,18 @@ public class CoinService {
             }
 
             @Override
-            public TransactionStatus getTransactionStatus(String txId) {
-                return getTransaction(txId, StringUtils.EMPTY).getStatus();
+            public TransactionDetailsDTO getTransactionDetails(String txId, String address) {
+                return blockbookService.getTransactionDetails(getCoinType(), txId, address, getExplorerUrl());
             }
 
             @Override
-            public TransactionDetailsDTO getTransaction(String txId, String address) {
-                return blockbookService.getTransaction(getCoinType(), txId, address, getExplorerUrl());
+            public TransactionHistoryDTO getTransactionHistory(String address, Integer startIndex, Integer limit, List<TransactionRecord> transactionRecords, List<TransactionRecordWallet> transactionRecordWallets) {
+                return blockbookService.getTransactionHistory(getCoinType(), address, startIndex, limit, transactionRecords, transactionRecordWallets);
             }
 
             @Override
-            public TransactionListDTO getTransactionList(String address, Integer startIndex, Integer limit, TxListDTO txDTO) {
-                return blockbookService.getTransactionList(getCoinType(), address, startIndex, limit, txDTO);
-            }
-
-            @Override
-            public UtxoDTO getUTXO(String xpub) {
-                return blockbookService.getUTXO(getCoinType(), xpub);
+            public UtxoDTO getUtxo(String xpub) {
+                return blockbookService.getUtxo(getCoinType(), xpub);
             }
 
             @Override
@@ -745,7 +716,7 @@ public class CoinService {
 
             @Override
             public String sign(String fromAddress, String toAddress, BigDecimal amount) {
-                List<JSONObject> utxos = getUTXO(walletService.getXPUB(getCoinType())).getUtxos();
+                List<JSONObject> utxos = getUtxo(walletService.getXpub(getCoinType())).getUtxos();
                 Long byteFee = blockbookService.getByteFee(getCoinType());
 
                 return blockbookService.signBTCForks(getCoinType(), fromAddress, toAddress, amount, byteFee, utxos);
@@ -762,7 +733,7 @@ public class CoinService {
             }
 
             @Override
-            public NodeTransactionsDTO getNodeTransactions(String address) {
+            public Map<String, TransactionDetailsDTO> getNodeTransactions(String address) {
                 return blockbookService.getNodeTransactions(getCoinType(), address);
             }
 
@@ -818,22 +789,17 @@ public class CoinService {
             }
 
             @Override
-            public TransactionStatus getTransactionStatus(String txId) {
-                return gethService.getTransactionStatus(txId);
+            public TransactionDetailsDTO getTransactionDetails(String txId, String address) {
+                return gethService.getTransactionDetails(txId, address, getExplorerUrl());
             }
 
             @Override
-            public TransactionDetailsDTO getTransaction(String txId, String address) {
-                return gethService.getTransaction(txId, address, getExplorerUrl());
+            public TransactionHistoryDTO getTransactionHistory(String address, Integer startIndex, Integer limit, List<TransactionRecord> transactionRecords, List<TransactionRecordWallet> transactionRecordWallets) {
+                return gethService.getTransactionHistory(address, startIndex, limit, transactionRecords, transactionRecordWallets);
             }
 
             @Override
-            public TransactionListDTO getTransactionList(String address, Integer startIndex, Integer limit, TxListDTO txDTO) {
-                return gethService.getTransactionList(address, startIndex, limit, txDTO);
-            }
-
-            @Override
-            public UtxoDTO getUTXO(String xpub) {
+            public UtxoDTO getUtxo(String xpub) {
                 return null;
             }
 
@@ -873,7 +839,7 @@ public class CoinService {
             }
 
             @Override
-            public NodeTransactionsDTO getNodeTransactions(String address) {
+            public Map<String, TransactionDetailsDTO> getNodeTransactions(String address) {
                 return gethService.getNodeTransactions(address);
             }
 
@@ -929,22 +895,17 @@ public class CoinService {
             }
 
             @Override
-            public TransactionStatus getTransactionStatus(String txId) {
-                return gethService.getTransactionStatus(txId);
+            public TransactionDetailsDTO getTransactionDetails(String txId, String address) {
+                return gethService.getTransactionDetails(GethService.ERC20.CATM, txId, address, getExplorerUrl());
             }
 
             @Override
-            public TransactionDetailsDTO getTransaction(String txId, String address) {
-                return gethService.getTransaction(GethService.ERC20.CATM, txId, address, getExplorerUrl());
+            public TransactionHistoryDTO getTransactionHistory(String address, Integer startIndex, Integer limit, List<TransactionRecord> transactionRecords, List<TransactionRecordWallet> transactionRecordWallets) {
+                return gethService.getTransactionHistory(GethService.ERC20.CATM, address, startIndex, limit, transactionRecords, transactionRecordWallets);
             }
 
             @Override
-            public TransactionListDTO getTransactionList(String address, Integer startIndex, Integer limit, TxListDTO txDTO) {
-                return gethService.getTransactionList(GethService.ERC20.CATM, address, startIndex, limit, txDTO);
-            }
-
-            @Override
-            public UtxoDTO getUTXO(String xpub) {
+            public UtxoDTO getUtxo(String xpub) {
                 return null;
             }
 
@@ -984,7 +945,7 @@ public class CoinService {
             }
 
             @Override
-            public NodeTransactionsDTO getNodeTransactions(String address) {
+            public Map<String, TransactionDetailsDTO> getNodeTransactions(String address) {
                 return gethService.getNodeTransactions(GethService.ERC20.CATM, address);
             }
 
@@ -1040,22 +1001,17 @@ public class CoinService {
             }
 
             @Override
-            public TransactionStatus getTransactionStatus(String txId) {
-                return gethService.getTransactionStatus(txId);
+            public TransactionDetailsDTO getTransactionDetails(String txId, String address) {
+                return gethService.getTransactionDetails(GethService.ERC20.USDT, txId, address, getExplorerUrl());
             }
 
             @Override
-            public TransactionDetailsDTO getTransaction(String txId, String address) {
-                return gethService.getTransaction(GethService.ERC20.USDT, txId, address, getExplorerUrl());
+            public TransactionHistoryDTO getTransactionHistory(String address, Integer startIndex, Integer limit, List<TransactionRecord> transactionRecords, List<TransactionRecordWallet> transactionRecordWallets) {
+                return gethService.getTransactionHistory(GethService.ERC20.USDT, address, startIndex, limit, transactionRecords, transactionRecordWallets);
             }
 
             @Override
-            public TransactionListDTO getTransactionList(String address, Integer startIndex, Integer limit, TxListDTO txDTO) {
-                return gethService.getTransactionList(GethService.ERC20.USDT, address, startIndex, limit, txDTO);
-            }
-
-            @Override
-            public UtxoDTO getUTXO(String xpub) {
+            public UtxoDTO getUtxo(String xpub) {
                 return null;
             }
 
@@ -1095,7 +1051,7 @@ public class CoinService {
             }
 
             @Override
-            public NodeTransactionsDTO getNodeTransactions(String address) {
+            public Map<String, TransactionDetailsDTO> getNodeTransactions(String address) {
                 return gethService.getNodeTransactions(GethService.ERC20.USDT, address);
             }
 
@@ -1151,22 +1107,17 @@ public class CoinService {
             }
 
             @Override
-            public TransactionStatus getTransactionStatus(String txId) {
-                return getTransaction(txId, StringUtils.EMPTY).getStatus();
+            public TransactionDetailsDTO getTransactionDetails(String txId, String address) {
+                return binanceService.getTransactionDetails(txId, address, getExplorerUrl());
             }
 
             @Override
-            public TransactionDetailsDTO getTransaction(String txId, String address) {
-                return binanceService.getTransaction(txId, address, getExplorerUrl());
+            public TransactionHistoryDTO getTransactionHistory(String address, Integer startIndex, Integer limit, List<TransactionRecord> transactionRecords, List<TransactionRecordWallet> transactionRecordWallets) {
+                return binanceService.getTransactionHistory(address, startIndex, limit, transactionRecords, transactionRecordWallets);
             }
 
             @Override
-            public TransactionListDTO getTransactionList(String address, Integer startIndex, Integer limit, TxListDTO txDTO) {
-                return binanceService.getTransactionList(address, startIndex, limit, txDTO);
-            }
-
-            @Override
-            public UtxoDTO getUTXO(String xpub) {
+            public UtxoDTO getUtxo(String xpub) {
                 return null;
             }
 
@@ -1206,7 +1157,7 @@ public class CoinService {
             }
 
             @Override
-            public NodeTransactionsDTO getNodeTransactions(String address) {
+            public Map<String, TransactionDetailsDTO> getNodeTransactions(String address) {
                 return binanceService.getNodeTransactions(address);
             }
 
@@ -1262,22 +1213,17 @@ public class CoinService {
             }
 
             @Override
-            public TransactionStatus getTransactionStatus(String txId) {
-                return getTransaction(txId, StringUtils.EMPTY).getStatus();
+            public TransactionDetailsDTO getTransactionDetails(String txId, String address) {
+                return rippledService.getTransactionHistory(txId, address, getExplorerUrl());
             }
 
             @Override
-            public TransactionDetailsDTO getTransaction(String txId, String address) {
-                return rippledService.getTransaction(txId, address, getExplorerUrl());
+            public TransactionHistoryDTO getTransactionHistory(String address, Integer startIndex, Integer limit, List<TransactionRecord> transactionRecords, List<TransactionRecordWallet> transactionRecordWallets) {
+                return rippledService.getTransactionHistory(address, startIndex, limit, transactionRecords, transactionRecordWallets);
             }
 
             @Override
-            public TransactionListDTO getTransactionList(String address, Integer startIndex, Integer limit, TxListDTO txDTO) {
-                return rippledService.getTransactionList(address, startIndex, limit, txDTO);
-            }
-
-            @Override
-            public UtxoDTO getUTXO(String xpub) {
+            public UtxoDTO getUtxo(String xpub) {
                 return null;
             }
 
@@ -1325,7 +1271,7 @@ public class CoinService {
             }
 
             @Override
-            public NodeTransactionsDTO getNodeTransactions(String address) {
+            public Map<String, TransactionDetailsDTO> getNodeTransactions(String address) {
                 return rippledService.getNodeTransactions(address);
             }
 
@@ -1381,22 +1327,17 @@ public class CoinService {
             }
 
             @Override
-            public TransactionStatus getTransactionStatus(String txId) {
-                return getTransaction(txId, StringUtils.EMPTY).getStatus();
+            public TransactionDetailsDTO getTransactionDetails(String txId, String address) {
+                return trongridService.getTransactionDetails(txId, address, getExplorerUrl());
             }
 
             @Override
-            public TransactionDetailsDTO getTransaction(String txId, String address) {
-                return trongridService.getTransaction(txId, address, getExplorerUrl());
+            public TransactionHistoryDTO getTransactionHistory(String address, Integer startIndex, Integer limit, List<TransactionRecord> transactionRecords, List<TransactionRecordWallet> transactionRecordWallets) {
+                return trongridService.getTransactionHistory(address, startIndex, limit, transactionRecords, transactionRecordWallets);
             }
 
             @Override
-            public TransactionListDTO getTransactionList(String address, Integer startIndex, Integer limit, TxListDTO txDTO) {
-                return trongridService.getTransactionList(address, startIndex, limit, txDTO);
-            }
-
-            @Override
-            public UtxoDTO getUTXO(String xpub) {
+            public UtxoDTO getUtxo(String xpub) {
                 return null;
             }
 
@@ -1436,7 +1377,7 @@ public class CoinService {
             }
 
             @Override
-            public NodeTransactionsDTO getNodeTransactions(String address) {
+            public Map<String, TransactionDetailsDTO> getNodeTransactions(String address) {
                 return trongridService.getNodeTransactions(address);
             }
 
@@ -1470,13 +1411,11 @@ public class CoinService {
 
         public abstract String getName();
 
-        public abstract TransactionStatus getTransactionStatus(String txId);
+        public abstract TransactionDetailsDTO getTransactionDetails(String txId, String address);
 
-        public abstract TransactionDetailsDTO getTransaction(String txId, String address);
+        public abstract TransactionHistoryDTO getTransactionHistory(String address, Integer startIndex, Integer limit, List<TransactionRecord> transactionRecords, List<TransactionRecordWallet> transactionRecordWallets);
 
-        public abstract TransactionListDTO getTransactionList(String address, Integer startIndex, Integer limit, TxListDTO txDTO);
-
-        public abstract UtxoDTO getUTXO(String xpub);
+        public abstract UtxoDTO getUtxo(String xpub);
 
         public abstract NonceDTO getNonce(String address);
 
@@ -1492,7 +1431,7 @@ public class CoinService {
 
         public abstract CoinType getCoinType();
 
-        public abstract NodeTransactionsDTO getNodeTransactions(String address);
+        public abstract Map<String, TransactionDetailsDTO> getNodeTransactions(String address);
 
         public abstract Coin getCoinEntity();
 
