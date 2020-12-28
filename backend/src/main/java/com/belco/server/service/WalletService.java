@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import wallet.core.jni.*;
 
+import javax.annotation.PostConstruct;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.HashMap;
@@ -44,6 +45,10 @@ public class WalletService {
     public WalletService(CoinPathRep coinPathRep, TransactionRecordWalletRep transactionRecordWalletRep) {
         this.coinPathRep = coinPathRep;
         this.transactionRecordWalletRep = transactionRecordWalletRep;
+    }
+
+    @PostConstruct
+    public void init() {
         this.wallet = new HDWallet(seed, "");
 
         coinsMap.put(CoinType.BITCOIN, new CoinDTO(CoinService.CoinEnum.BTC.name(), new BitcoinAddress(HDWallet.getPublicKeyFromExtended(getXpub(CoinType.BITCOIN), CoinType.BITCOIN, getPath(CoinType.BITCOIN)), CoinType.BITCOIN.p2pkhPrefix()).description(), wallet.getKeyForCoin(CoinType.BITCOIN)));

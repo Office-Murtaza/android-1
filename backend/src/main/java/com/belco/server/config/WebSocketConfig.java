@@ -5,6 +5,7 @@ import com.belco.server.security.JWTTokenProvider;
 import com.belco.server.service.CoinService;
 import com.belco.server.service.UserService;
 import com.belco.server.util.Constant;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
@@ -32,23 +33,21 @@ import java.util.List;
 @EnableWebSocketMessageBroker
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
-    private final JWTTokenProvider tokenProvider;
+    @Autowired
+    private JWTTokenProvider tokenProvider;
 
+    @Autowired
     @Lazy
-    private final CoinService coinService;
+    private CoinService coinService;
 
+    @Autowired
     @Lazy
-    private final UserService userService;
+    private UserService userService;
 
+    @Autowired
     @Lazy
-    private final MessageChannel clientOutboundChannel;
-
-    public WebSocketConfig(JWTTokenProvider tokenProvider, CoinService coinService, UserService userService, @Qualifier("clientOutboundChannel") MessageChannel clientOutboundChannel) {
-        this.tokenProvider = tokenProvider;
-        this.coinService = coinService;
-        this.userService = userService;
-        this.clientOutboundChannel = clientOutboundChannel;
-    }
+    @Qualifier("clientOutboundChannel")
+    private MessageChannel clientOutboundChannel;
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
