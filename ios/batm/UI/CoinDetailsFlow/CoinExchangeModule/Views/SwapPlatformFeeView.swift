@@ -12,7 +12,7 @@ class SwapPlatformFeeView: UIView {
     
     private lazy var feeLabel: UILabel = {
         let label = UILabel()
-        label.font = .systemFont(ofSize: 16, weight: .semibold)
+        label.font = .systemFont(ofSize: 16, weight: .regular)
         return label
     }()
     
