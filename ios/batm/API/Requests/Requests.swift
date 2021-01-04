@@ -60,6 +60,9 @@ struct CreateAccountRequest: RetriableAPIRequest {
     return .requestParameters(parameters: ["phone": phoneNumber,
                                            "password": password,
                                            "platform": MobilePlatform.iOS.rawValue,
+                                           "deviceModel": UIDevice.current.deviceModel,
+                                           "deviceOS": UIDevice.current.deviceOS,
+                                           "appVersion": UIApplication.shared.appVersion,
                                            "notificationsToken": notificationsToken,
                                            "coins": coinAddresses.toJSON()],
                               encoding: JSONEncoding.default)
@@ -81,6 +84,9 @@ struct RecoverWalletRequest: RetriableAPIRequest {
     return .requestParameters(parameters: ["phone": phoneNumber,
                                            "password": password,
                                            "platform": MobilePlatform.iOS.rawValue,
+                                           "deviceModel": UIDevice.current.deviceModel,
+                                           "deviceOS": UIDevice.current.deviceOS,
+                                           "appVersion": UIApplication.shared.appVersion,
                                            "notificationsToken": notificationsToken,
                                            "coins": coinAddresses.toJSON()],
                               encoding: JSONEncoding.default)

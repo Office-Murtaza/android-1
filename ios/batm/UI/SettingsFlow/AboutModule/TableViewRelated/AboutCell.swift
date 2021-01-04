@@ -23,7 +23,7 @@ enum AboutCellType: CaseIterable, SettingsCellTypeRepresentable {
   
   var value: String? {
     switch self {
-    case .version: return UIApplication.appVersion
+    case .version: return UIApplication.shared.appVersion
     default: return nil
     }
   }
