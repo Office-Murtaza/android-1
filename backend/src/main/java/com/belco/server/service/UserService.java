@@ -1,6 +1,9 @@
 package com.belco.server.service;
 
-import com.belco.server.dto.*;
+import com.belco.server.dto.CoinDTO;
+import com.belco.server.dto.KycDetailsDTO;
+import com.belco.server.dto.LocationDTO;
+import com.belco.server.dto.SubmitKycDTO;
 import com.belco.server.entity.*;
 import com.belco.server.model.KycStatus;
 import com.belco.server.repository.*;
@@ -84,12 +87,15 @@ public class UserService implements UserDetailsService {
     private String documentUploadPath;
 
     @Transactional
-    public User register(String phone, String password, Integer platform, String notificationsToken, List<CoinDTO> coins) {
+    public User register(String phone, String password, Integer platform, String deviceModel, String deviceOS, String appVersion, String notificationsToken, List<CoinDTO> coins) {
         User user = new User();
         user.setPhone(phone);
         user.setPassword(passwordEncoder.encode(password));
         user.setRole("ROLE_USER");
         user.setPlatform(platform);
+        user.setDeviceModel(deviceModel);
+        user.setDeviceOS(deviceOS);
+        user.setAppVersion(appVersion);
         user.setNotificationsToken(notificationsToken);
 
         User savedUser = userRep.save(user);

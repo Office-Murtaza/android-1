@@ -17,6 +17,9 @@ public class AuthenticationDTO {
     private String phone;
     private String password;
     private Integer platform;
+    private String deviceModel;
+    private String deviceOS;
+    private String appVersion;
     private String notificationsToken;
     private List<CoinDTO> coins;
 }

@@ -395,4 +395,11 @@
                  splitStatements="true"
                  stripComments="true"/>
     </changeSet>
+    <changeSet id="57" author="Kostya" failOnError="false">
+        <sqlFile encoding="utf8"
+                 endDelimiter=";"
+                 path="db/update/add_device_info_to_user.sql"
+                 splitStatements="true"
+                 stripComments="true"/>
+    </changeSet>
 </databaseChangeLog>

@@ -133,8 +133,8 @@ public class TestController {
     private JSONObject getCoinJson(String address, BigDecimal balance, BigDecimal fee, String nodeUrl) {
         JSONObject json = new JSONObject();
         json.put("address", address);
-        json.put("balance", balance);
-        json.put("fee", fee);
+        json.put("balance", balance.toPlainString());
+        json.put("fee", fee.toPlainString());
         json.put("nodeUrl", nodeUrl);
 
         return json;

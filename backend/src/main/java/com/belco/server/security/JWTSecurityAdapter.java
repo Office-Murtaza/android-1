@@ -3,10 +3,10 @@ package com.belco.server.security;
 import com.belco.server.service.UserService;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.binary.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -22,17 +22,18 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class JWTSecurityAdapter extends WebSecurityConfigurerAdapter {
 
+    private final JWTEntryPoint entryPoint;
+    private final JWTTokenFilter tokenFilter;
+    private final UserService userService;
+
     @Value("${security.enabled}")
     private Boolean securityEnabled;
 
-    @Autowired
-    private JWTEntryPoint entryPoint;
-
-    @Autowired
-    private JWTTokenFilter tokenFilter;
-
-    @Autowired
-    private UserService userService;
+    public JWTSecurityAdapter(JWTEntryPoint entryPoint, JWTTokenFilter tokenFilter, UserService userService) {
+        this.entryPoint = entryPoint;
+        this.tokenFilter = tokenFilter;
+        this.userService = userService;
+    }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {

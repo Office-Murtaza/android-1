@@ -113,7 +113,7 @@ public class UserController {
                 return Response.error(4, "Phone is already used");
             }
 
-            User user = userService.register(dto.getPhone(), dto.getPassword(), dto.getPlatform(), dto.getNotificationsToken(), dto.getCoins());
+            User user = userService.register(dto.getPhone(), dto.getPassword(), dto.getPlatform(), dto.getDeviceModel(), dto.getDeviceOS(), dto.getAppVersion(), dto.getNotificationsToken(), dto.getCoins());
 
             TokenDTO jwt = getJwt(user.getId(), user.getIdentity().getId(), dto.getPhone(), dto.getPassword());
 

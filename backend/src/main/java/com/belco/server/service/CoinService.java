@@ -5,7 +5,6 @@ import com.belco.server.entity.*;
 import com.belco.server.repository.CoinRep;
 import com.belco.server.util.Util;
 import net.sf.json.JSONObject;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
@@ -42,19 +41,7 @@ public class CoinService {
     @Value("${swap.profit-percent}")
     private BigDecimal swapProfitPercent;
 
-    public CoinService(@Autowired final WalletService walletService,
-                       @Autowired @Lazy final UserService userService,
-                       @Autowired final CoinRep coinRep,
-                       @Autowired final CacheService cacheService,
-                       @Autowired final SimpMessagingTemplate simpMessagingTemplate,
-                       @Autowired final NodeService nodeService,
-
-                       @Autowired final BlockbookService blockbookService,
-                       @Autowired final GethService gethService,
-                       @Autowired final BinanceService binanceService,
-                       @Autowired final RippledService rippledService,
-                       @Autowired final TrongridService trongridService) {
-
+    public CoinService(WalletService walletService, UserService userService, CoinRep coinRep, CacheService cacheService, SimpMessagingTemplate simpMessagingTemplate, NodeService nodeService, BlockbookService blockbookService, GethService gethService, BinanceService binanceService, RippledService rippledService, TrongridService trongridService) {
         CoinService.walletService = walletService;
         CoinService.userService = userService;
 
@@ -76,7 +63,7 @@ public class CoinService {
 
     @Scheduled(cron = "*/10 * * * * *")
     public void wsStompBalance() {
-        wsMap.forEach((k, v) -> sendStompBalance(k, (Long) v.keySet().toArray()[0], v.get((Long) v.keySet().toArray()[0])));
+        wsMap.forEach((k, v) -> sendStompBalance(k, (Long) v.keySet().toArray()[0], v.get(v.keySet().toArray()[0])));
     }
 
     public void sendStompBalance(String phone, Long userId, List<String> coins) {
@@ -775,7 +762,7 @@ public class CoinService {
 
             @Override
             public Long getGasPrice() {
-                return gethService.getAvgGasPrice();
+                return GethService.getAvgGasPrice();
             }
 
             @Override
@@ -881,7 +868,7 @@ public class CoinService {
 
             @Override
             public Long getGasPrice() {
-                return gethService.getFastGasPrice();
+                return GethService.getFastGasPrice();
             }
 
             @Override
@@ -936,7 +923,7 @@ public class CoinService {
 
             @Override
             public String submitTransaction(SubmitTransactionDTO dto) {
-                return gethService.submitTransaction(GethService.ERC20.CATM, dto);
+                return GethService.submitTransaction(GethService.ERC20.CATM, dto);
             }
 
             @Override
@@ -987,7 +974,7 @@ public class CoinService {
 
             @Override
             public Long getGasPrice() {
-                return gethService.getFastGasPrice();
+                return GethService.getFastGasPrice();
             }
 
             @Override
@@ -1042,7 +1029,7 @@ public class CoinService {
 
             @Override
             public String submitTransaction(SubmitTransactionDTO dto) {
-                return gethService.submitTransaction(GethService.ERC20.USDT, dto);
+                return GethService.submitTransaction(GethService.ERC20.USDT, dto);
             }
 
             @Override

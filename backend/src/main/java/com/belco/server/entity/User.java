@@ -1,19 +1,20 @@
 package com.belco.server.entity;
 
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
-import javax.persistence.*;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Getter
+import javax.persistence.*;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
+
 @Setter
-@AllArgsConstructor
+@Getter
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "w_user")
 public class User extends BaseEntity {
@@ -21,6 +22,9 @@ public class User extends BaseEntity {
     private String phone;
     private String password;
     private String role;
+    private String deviceModel;
+    private String deviceOS;
+    private String appVersion;
     private Integer platform;
     private String notificationsToken;
     private Long tradeCount;
