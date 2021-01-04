@@ -56,6 +56,8 @@ import java.util.*;
 public class GethService {
 
     public static final BigDecimal ETH_DIVIDER = BigDecimal.valueOf(1_000_000_000_000_000_000L);
+    public static final BigDecimal USDT_DIVIDER = BigDecimal.valueOf(1_000_000L);
+
     private static final CoinType ETHEREUM = CoinType.ETHEREUM;
 
     private static final int START_BLOCK = 10290000;
@@ -143,7 +145,9 @@ public class GethService {
             usdt = USDT.load(usdtContractAddress, web3,
                     Credentials.create(Numeric.toHexString(walletService.getCoinsMap().get(CoinType.ETHEREUM).getPrivateKey().data())), gasProvider);
         } catch (Exception e) {
-            e.printStackTrace();
+            if (nodeService.switchToReserveNode(ETHEREUM)) {
+                init();
+            }
         }
     }
 
@@ -741,7 +745,7 @@ public class GethService {
             public BigDecimal getBalance(String address) {
                 if (nodeService.isNodeAvailable(ETHEREUM)) {
                     try {
-                        return new BigDecimal(usdt.balanceOf(address).send()).divide(ETH_DIVIDER);
+                        return new BigDecimal(usdt.balanceOf(address).send()).divide(USDT_DIVIDER);
                     } catch (Exception e) {
                         e.printStackTrace();
 

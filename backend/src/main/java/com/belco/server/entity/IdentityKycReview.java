@@ -2,13 +2,16 @@ package com.belco.server.entity;
 
 import lombok.*;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
 
-@Builder
-@Getter
 @Setter
-@AllArgsConstructor
+@Getter
+@Builder
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "w_identitykycreview")
 public class IdentityKycReview extends BaseEntity {

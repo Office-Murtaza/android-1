@@ -1,14 +1,15 @@
 package com.belco.server.entity;
 
 import lombok.*;
+
 import javax.persistence.*;
 import java.util.Date;
 
-@Builder
-@Getter
 @Setter
-@AllArgsConstructor
+@Getter
+@Builder
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "identitypieceselfie")
 public class IdentityPieceSelfie extends BaseEntity {

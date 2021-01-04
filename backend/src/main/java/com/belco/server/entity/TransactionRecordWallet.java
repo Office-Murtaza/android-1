@@ -10,10 +10,10 @@ import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.Date;
 
-@Getter
 @Setter
-@AllArgsConstructor
+@Getter
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "w_transactionrecordwallet")
 public class TransactionRecordWallet extends BaseEntity {

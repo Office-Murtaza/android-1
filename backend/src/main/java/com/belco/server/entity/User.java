@@ -23,7 +23,10 @@ public class User extends BaseEntity {
     private String password;
     private String role;
     private String deviceModel;
+
+    @Column(name = "device_os")
     private String deviceOS;
+
     private String appVersion;
     private Integer platform;
     private String notificationsToken;

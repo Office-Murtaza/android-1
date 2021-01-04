@@ -1,9 +1,10 @@
 package com.belco.server.entity;
 
 import lombok.Getter;
-import javax.persistence.Id;
+
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 
 @Getter

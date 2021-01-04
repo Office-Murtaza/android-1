@@ -1,16 +1,17 @@
 package com.belco.server.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Getter
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
 @Setter
-@AllArgsConstructor
+@Getter
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "w_terminallocationhour")
 public class TerminalLocationHour extends BaseEntity {
