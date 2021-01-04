@@ -71,8 +71,8 @@ struct CoinExchangeState: Equatable {
         let receiveCoinFee = (toCoinType?.isETHBased ?? false) ? toCoinDetails?.convertedTxFee : toCoinDetails?.txFee
         let price = fromCoinAmountDecimal * (toRateString().decimalValue ?? 0)
         let sendCoinFee = 1 - (toCoinDetails?.swapProfitPercent ?? 0) / 100
-        let result = price * sendCoinFee - (receiveCoinFee ?? 0)
-        
+        var result = price * sendCoinFee - (receiveCoinFee ?? 0)
+        result = result > 0 ? result : 0
         return result.coinFormatted(fractionDigits: toCoinDetails?.scale)
     }
     
