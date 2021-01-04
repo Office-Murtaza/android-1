@@ -60,11 +60,11 @@ public class TransactionController {
             }
 
             if (StringUtils.isNotBlank(txId)) {
-                if (TransactionType.TRANSFER_SEND.getValue() == dto.getType()) {
-                    transactionService.saveGift(userId, coin, txId, dto);
+                if (TransactionType.SEND_TRANSFER.getValue() == dto.getType()) {
+                    transactionService.persistTransfer(userId, coin, txId, dto);
                 }
 
-                if (TransactionType.SWAP_SEND.getValue() == dto.getType()) {
+                if (TransactionType.SEND_SWAP.getValue() == dto.getType()) {
                     transactionService.swap(userId, coin, txId, dto);
                 }
 

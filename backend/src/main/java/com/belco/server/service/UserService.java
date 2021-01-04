@@ -192,7 +192,7 @@ public class UserService implements UserDetailsService {
         return userRep.findOneByPhone(phone);
     }
 
-    public GiftAddressDTO getCoinAddressByPhone(CoinService.CoinEnum coinCode, String phone) {
+    public String getTransferAddress(CoinService.CoinEnum coinCode, String phone) {
         Optional<User> userOpt = findByPhone(phone);
 
         if (userOpt.isPresent()) {
@@ -200,9 +200,9 @@ public class UserService implements UserDetailsService {
                     .filter(k -> k.getCoin().getCode().equalsIgnoreCase(coinCode.name()))
                     .findFirst().get().getAddress();
 
-            return new GiftAddressDTO(address);
+            return address;
         } else {
-            return new GiftAddressDTO(coinCode.getWalletAddress());
+            return coinCode.getWalletAddress();
         }
     }
 

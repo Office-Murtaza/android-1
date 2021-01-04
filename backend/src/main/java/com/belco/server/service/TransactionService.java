@@ -35,6 +35,7 @@ public class TransactionService {
     private final UserCoinRep userCoinRep;
     private final UserService userService;
     private final TwilioService twilioService;
+    private final NotificationService notificationService;
     private final WalletService walletService;
 
     @Value("${gb.url}")
@@ -50,12 +51,13 @@ public class TransactionService {
     @Value("${swap.profit-percent}")
     private BigDecimal swapProfitPercent;
 
-    public TransactionService(TransactionRecordRep recordRep, TransactionRecordWalletRep walletRep, UserCoinRep userCoinRep, UserService userService, TwilioService twilioService, WalletService walletService) {
+    public TransactionService(TransactionRecordRep recordRep, TransactionRecordWalletRep walletRep, UserCoinRep userCoinRep, UserService userService, TwilioService twilioService, NotificationService notificationService, WalletService walletService) {
         this.recordRep = recordRep;
         this.walletRep = walletRep;
         this.userCoinRep = userCoinRep;
         this.userService = userService;
         this.twilioService = twilioService;
+        this.notificationService = notificationService;
         this.walletService = walletService;
     }
 
@@ -75,17 +77,17 @@ public class TransactionService {
             buySellRecOpt = recordRep.findOneByIdentityAndDetailAndCryptoCurrency(user.getIdentity(), txId, coinCode.name());
         }
 
-        Optional<TransactionRecordWallet> giftRecOpt = walletRep.findFirstByIdentityAndCoinAndTxIdAndTypeIn(identity, coin, txId, Arrays.asList(TransactionType.TRANSFER_SEND.getValue(), TransactionType.TRANSFER_RECEIVE.getValue()));
-        Optional<TransactionRecordWallet> swapRecOpt = walletRep.findFirstByIdentityAndCoinAndTxIdAndTypeIn(identity, coin, txId, Arrays.asList(TransactionType.SWAP_SEND.getValue(), TransactionType.SWAP_RECEIVE.getValue()));
+        Optional<TransactionRecordWallet> giftRecOpt = walletRep.findFirstByIdentityAndCoinAndTxIdAndTypeIn(identity, coin, txId, Arrays.asList(TransactionType.SEND_TRANSFER.getValue(), TransactionType.RECEIVE_TRANSFER.getValue()));
+        Optional<TransactionRecordWallet> swapRecOpt = walletRep.findFirstByIdentityAndCoinAndTxIdAndTypeIn(identity, coin, txId, Arrays.asList(TransactionType.SEND_SWAP.getValue(), TransactionType.RECEIVE_SWAP.getValue()));
         Optional<TransactionRecordWallet> stakeRecOpt = walletRep.findFirstByIdentityAndCoinAndTxIdAndTypeIn(identity, coin, txId, Arrays.asList(TransactionType.CREATE_STAKE.getValue(), TransactionType.CANCEL_STAKE.getValue(), TransactionType.WITHDRAW_STAKE.getValue()));
         Optional<TransactionRecordWallet> reserveRecOpt = walletRep.findFirstByIdentityAndCoinAndTxIdAndTypeIn(identity, coin, txId, Arrays.asList(TransactionType.RESERVE.getValue(), TransactionType.RECALL.getValue()));
 
         if (giftRecOpt.isPresent()) {
             TransactionRecordWallet gift = giftRecOpt.get();
 
-            if (gift.getType() == TransactionType.TRANSFER_SEND.getValue()) {
+            if (gift.getType() == TransactionType.SEND_TRANSFER.getValue()) {
                 dto.setToPhone(gift.getToPhone());
-            } else if (gift.getType() == TransactionType.TRANSFER_RECEIVE.getValue()) {
+            } else if (gift.getType() == TransactionType.RECEIVE_TRANSFER.getValue()) {
                 dto.setFromPhone(gift.getFromPhone());
             }
 
@@ -148,7 +150,7 @@ public class TransactionService {
         return coinCode.getTransactionHistory(address, startIndex, 10, transactionRecords, transactionRecordWallets);
     }
 
-    public void saveGift(Long userId, CoinService.CoinEnum coinCode, String txId, SubmitTransactionDTO dto) {
+    public void persistTransfer(Long userId, CoinService.CoinEnum coinCode, String txId, SubmitTransactionDTO dto) {
         try {
             User user = userService.findById(userId);
             Optional<User> receiverOpt = userService.findByPhone(dto.getPhone());
@@ -157,7 +159,7 @@ public class TransactionService {
             if (BooleanUtils.isTrue(dto.getFromServerWallet())) {
                 TransactionRecordWallet record = new TransactionRecordWallet();
                 record.setTxId(txId);
-                record.setType(TransactionType.TRANSFER_RECEIVE.getValue());
+                record.setType(TransactionType.RECEIVE_TRANSFER.getValue());
                 record.setStatus(TransactionStatus.PENDING.getValue());
                 record.setFromPhone(user.getPhone());
                 record.setToPhone(dto.getPhone());
@@ -170,11 +172,23 @@ public class TransactionService {
 
                 walletRep.save(record);
             } else {
-                twilioService.sendGiftMessage(coinCode, dto, receiverOpt.isPresent());
+                if (receiverOpt.isPresent()) {
+                    String token = userService.findById(userId).getNotificationsToken();
+                    StringBuilder messageBuilder = new StringBuilder("You just received " + dto.getCryptoAmount().stripTrailingZeros() + " " + coinCode.name());
+
+                    if (StringUtils.isNotBlank(dto.getMessage())) {
+                        messageBuilder.append("\n\n").append("\"").append(dto.getMessage()).append("\"").append("\n");
+                    }
+
+                    //TODO: add giphy image
+                    notificationService.sendMessageWithData(new NotificationDTO("New incoming transfer", messageBuilder.toString(), null, token));
+                } else {
+                    twilioService.sendTransferMessageToNotExistingUser(coinCode, dto.getPhone(), dto.getMessage(), dto.getImageId(), dto.getCryptoAmount().stripTrailingZeros());
+                }
 
                 TransactionRecordWallet sendRecord = new TransactionRecordWallet();
                 sendRecord.setTxId(txId);
-                sendRecord.setType(TransactionType.TRANSFER_SEND.getValue());
+                sendRecord.setType(TransactionType.SEND_TRANSFER.getValue());
                 sendRecord.setAmount(dto.getCryptoAmount());
                 sendRecord.setStatus(TransactionStatus.PENDING.getValue());
                 sendRecord.setFromPhone(user.getPhone());
@@ -191,7 +205,7 @@ public class TransactionService {
                 if (receiverOpt.isPresent()) {
                     TransactionRecordWallet receiveRecord = new TransactionRecordWallet();
                     receiveRecord.setTxId(sendRecord.getTxId());
-                    receiveRecord.setType(TransactionType.TRANSFER_RECEIVE.getValue());
+                    receiveRecord.setType(TransactionType.RECEIVE_TRANSFER.getValue());
                     receiveRecord.setStatus(TransactionStatus.PENDING.getValue());
                     receiveRecord.setFromPhone(sendRecord.getFromPhone());
                     receiveRecord.setToPhone(sendRecord.getToPhone());
@@ -276,7 +290,7 @@ public class TransactionService {
             record.setIdentity(userService.findById(userId).getIdentity());
             record.setCoin(coin.getCoinEntity());
             record.setAmount(dto.getCryptoAmount());
-            record.setType(TransactionType.SWAP_SEND.getValue());
+            record.setType(TransactionType.SEND_SWAP.getValue());
             record.setStatus(TransactionStatus.PENDING.getValue());
             record.setProfitPercent(swapProfitPercent);
             record.setRefCoin(refCoin.getCoinEntity());
@@ -533,7 +547,7 @@ public class TransactionService {
 
     private void deliverSwaps() {
         try {
-            List<TransactionRecordWallet> list = walletRep.findAllByProcessedAndTypeAndStatusAndRefTxIdNull(ProcessedType.SUCCESS.getValue(), TransactionType.SWAP_SEND.getValue(), TransactionStatus.COMPLETE.getValue(), page);
+            List<TransactionRecordWallet> list = walletRep.findAllByProcessedAndTypeAndStatusAndRefTxIdNull(ProcessedType.SUCCESS.getValue(), TransactionType.SEND_SWAP.getValue(), TransactionStatus.COMPLETE.getValue(), page);
 
             list.stream().forEach(t -> {
                 try {
@@ -561,7 +575,7 @@ public class TransactionService {
                             rec.setIdentity(identity);
                             rec.setCoin(coinCode.getCoinEntity());
                             rec.setAmount(withdrawAmount);
-                            rec.setType(TransactionType.SWAP_RECEIVE.getValue());
+                            rec.setType(TransactionType.RECEIVE_SWAP.getValue());
                             rec.setStatus(TransactionStatus.PENDING.getValue());
                             rec.setProfitPercent(t.getProfitPercent());
                             rec.setRefCoin(t.getCoin());
@@ -591,7 +605,7 @@ public class TransactionService {
     private void deliverReservedGifts() {
         try {
             List<TransactionRecordWallet> list = walletRep.findAllByProcessedAndTypeAndStatusAndReceiverStatus(ProcessedType.SUCCESS.getValue(),
-                    TransactionType.TRANSFER_SEND.getValue(),
+                    TransactionType.SEND_TRANSFER.getValue(),
                     TransactionStatus.COMPLETE.getValue(),
                     TransactionRecordWallet.RECEIVER_NOT_EXIST, page);
 
@@ -613,7 +627,7 @@ public class TransactionService {
                             dto.setHex(hex);
                             dto.setCryptoAmount(withdrawAmount);
                             dto.setRefTxId(t.getTxId());
-                            dto.setType(TransactionType.TRANSFER_SEND.getValue());
+                            dto.setType(TransactionType.SEND_TRANSFER.getValue());
                             dto.setPhone(t.getToPhone());
                             dto.setImageId(t.getImageId());
                             dto.setMessage(t.getMessage());
@@ -622,7 +636,7 @@ public class TransactionService {
                             String txId = coinCode.submitTransaction(dto);
 
                             if (StringUtils.isNotBlank(txId)) {
-                                saveGift(t.getIdentity().getUser().getId(), coinCode, txId, dto);
+                                persistTransfer(t.getIdentity().getUser().getId(), coinCode, txId, dto);
 
                                 t.setReceiverStatus(TransactionRecordWallet.RECEIVER_EXIST);
                             } else {

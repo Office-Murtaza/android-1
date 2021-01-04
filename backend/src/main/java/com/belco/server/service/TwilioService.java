@@ -1,6 +1,5 @@
 package com.belco.server.service;
 
-import com.belco.server.dto.SubmitTransactionDTO;
 import com.twilio.Twilio;
 import com.twilio.rest.api.v2010.account.Message;
 import com.twilio.rest.api.v2010.account.MessageCreator;
@@ -9,8 +8,8 @@ import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-
 import javax.annotation.PostConstruct;
+import java.math.BigDecimal;
 import java.net.URI;
 import java.util.Arrays;
 
@@ -70,35 +69,29 @@ public class TwilioService {
         return null;
     }
 
-    public Message.Status sendGiftMessage(CoinService.CoinEnum coinCode, SubmitTransactionDTO dto, boolean receiverExists) {
+    public Message.Status sendTransferMessageToNotExistingUser(CoinService.CoinEnum coinCode, String phone, String message, String imageId, BigDecimal amount) {
         try {
-            StringBuilder body = new StringBuilder();
+            StringBuilder messageBuilder = new StringBuilder("You just received " + amount.toPlainString() + " " + coinCode.name());
 
-            if (StringUtils.isNotBlank(dto.getMessage())) {
-                body.append("\"").append(dto.getMessage()).append("\"").append("\n");
+            if (StringUtils.isNotBlank(message)) {
+                messageBuilder.append("\n\n").append("\"").append(message).append("\"").append("\n");
             }
 
-            body.append("\n").append("Congrats, you've just received " + dto.getCryptoAmount().stripTrailingZeros() + " " + coinCode.name() + " gift");
+            messageBuilder.append("\n\n").append("To get it, please install our app from a link");
+            messageBuilder.append("\n\n").append("IOS:");
+            messageBuilder.append("\n").append(APP_LINK_IOS);
+            messageBuilder.append("\n\n").append("Android:");
+            messageBuilder.append("\n").append(APP_LINK_ANDROID);
+            messageBuilder.append("\n\n").append("and create an account using " + phone + " number");
+            messageBuilder.append("\n");
 
-            if (!receiverExists) {
-                body.append("\n\n").append("To receive it, install Belco Wallet from a link");
-                body.append("\n\n").append("IOS:");
-                body.append("\n").append(APP_LINK_IOS);
-                body.append("\n\n").append("Android:");
-                body.append("\n").append(APP_LINK_ANDROID);
-                body.append("\n\n").append("and create an account using " + dto.getPhone() + " number");
-                body.append("\n");
+            MessageCreator messageCreator = Message.creator(new PhoneNumber(phone), new PhoneNumber(fromNumber), messageBuilder.toString());
+
+            if (StringUtils.isNotBlank(imageId)) {
+                messageCreator.setMediaUrl(Arrays.asList(URI.create("https://media.giphy.com/media/" + imageId + "/giphy.gif")));
             }
 
-            MessageCreator messageCreator = Message.creator(new PhoneNumber(dto.getPhone()), new PhoneNumber(fromNumber), body.toString());
-
-            if (StringUtils.isNotBlank(dto.getImageId())) {
-                messageCreator.setMediaUrl(Arrays.asList(URI.create("https://media.giphy.com/media/" + dto.getImageId().trim() + "/giphy.gif")));
-            }
-
-            Message message = messageCreator.create();
-
-            return message.getStatus();
+            return messageCreator.create().getStatus();
         } catch (Exception e) {
             e.printStackTrace();
         }

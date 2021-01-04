@@ -10,13 +10,13 @@ public enum TransactionType {
 
     DEPOSIT(1),
     WITHDRAW(2),
-    TRANSFER_SEND(3),
-    TRANSFER_RECEIVE(4),
+    SEND_TRANSFER(3),
+    RECEIVE_TRANSFER(4),
     BUY(5),
     SELL(6),
     MOVE(7),
-    SWAP_SEND(8),
-    SWAP_RECEIVE(9),
+    SEND_SWAP(8),
+    RECEIVE_SWAP(9),
     RESERVE(10),
     RECALL(11),
     SELF(12),
@@ -59,17 +59,17 @@ public enum TransactionType {
     public static TransactionType convert(TransactionType type, TransactionType type2) {
         if (type == TransactionType.SELF) {
             return type;
-        } else if (type2 == TRANSFER_SEND || type2 == TRANSFER_RECEIVE) {
+        } else if (type2 == SEND_TRANSFER || type2 == RECEIVE_TRANSFER) {
             if (type == WITHDRAW) {
-                return TRANSFER_SEND;
+                return SEND_TRANSFER;
             } else if (type == DEPOSIT) {
-                return TRANSFER_RECEIVE;
+                return RECEIVE_TRANSFER;
             }
-        } else if (type2 == SWAP_RECEIVE || type2 == SWAP_SEND) {
+        } else if (type2 == RECEIVE_SWAP || type2 == SEND_SWAP) {
             if (type == WITHDRAW) {
-                return SWAP_SEND;
+                return SEND_SWAP;
             } else if (type == DEPOSIT) {
-                return SWAP_RECEIVE;
+                return RECEIVE_SWAP;
             }
         }
 

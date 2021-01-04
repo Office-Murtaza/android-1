@@ -36,10 +36,10 @@ public class CoinController {
         }
     }
 
-    @GetMapping("/coin/{coin}/gift-address")
-    public Response getAddressByPhone(@PathVariable CoinService.CoinEnum coin, @RequestParam String phone) {
+    @GetMapping("/coin/{coin}/transfer-address")
+    public Response getTransferAddress(@PathVariable CoinService.CoinEnum coin, @RequestParam String phone) {
         try {
-            return Response.ok(userService.getCoinAddressByPhone(coin, phone));
+            return Response.ok("address", userService.getTransferAddress(coin, phone));
         } catch (Exception e) {
             e.printStackTrace();
             return Response.serverError();
