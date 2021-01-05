@@ -21,7 +21,6 @@ import wallet.core.java.AnySigner;
 import wallet.core.jni.CoinType;
 import wallet.core.jni.PrivateKey;
 import wallet.core.jni.proto.Ripple;
-
 import java.math.BigDecimal;
 import java.util.*;
 
@@ -170,16 +169,13 @@ public class RippledService {
         return new CurrentAccountDTO();
     }
 
-    public TransactionDetailsDTO getTransactionHistory(String txId, String address, String explorerUrl) {
+    public TransactionDetailsDTO getTransactionDetails(String txId, String address, String explorerUrl) {
         TransactionDetailsDTO dto = new TransactionDetailsDTO();
 
         if (nodeService.isNodeAvailable(COIN_TYPE)) {
             try {
-                JSONObject param = new JSONObject();
-                param.put("transaction", txId);
-
                 JSONArray params = new JSONArray();
-                params.add(param);
+                params.add(Util.toJsonObject("transaction", txId));
 
                 JSONObject req = new JSONObject();
                 req.put("method", "tx");
@@ -195,21 +191,13 @@ public class RippledService {
                 dto.setFromAddress(tx.optString("Account"));
                 dto.setToAddress(tx.optString("Destination"));
                 dto.setType(TransactionType.getType(dto.getFromAddress(), dto.getToAddress(), address));
-
-                JSONObject meta = tx.optJSONObject("meta");
-
-                if (meta != null) {
-                    dto.setStatus(getStatus(meta.optString("TransactionResult")));
-                } else {
-                    dto.setStatus(TransactionStatus.FAIL);
-                }
-
+                dto.setStatus(getStatus(tx.optString("status")));
                 dto.setDate2(new Date((tx.optLong("date") + 946684800L) * 1000));
             } catch (Exception e) {
                 e.printStackTrace();
 
                 if (nodeService.switchToReserveNode(COIN_TYPE)) {
-                    return getTransactionHistory(txId, address, explorerUrl);
+                    return getTransactionDetails(txId, address, explorerUrl);
                 }
             }
         }
@@ -248,7 +236,7 @@ public class RippledService {
         return Collections.emptyMap();
     }
 
-    public TransactionHistoryDTO getTransactionHistory(String address, Integer startIndex, Integer limit, List<TransactionRecord> transactionRecords, List<TransactionRecordWallet> transactionRecordWallets) {
+    public TransactionHistoryDTO getTransactionDetails(String address, Integer startIndex, Integer limit, List<TransactionRecord> transactionRecords, List<TransactionRecordWallet> transactionRecordWallets) {
         return TxUtil.buildTxs(getNodeTransactions(address), startIndex, limit, transactionRecords, transactionRecordWallets);
     }
 
@@ -309,7 +297,7 @@ public class RippledService {
     }
 
     private TransactionStatus getStatus(String str) {
-        if (StringUtils.isNotBlank(str) && str.equalsIgnoreCase("tesSUCCESS")) {
+        if (StringUtils.isNotBlank(str) && str.equalsIgnoreCase("success")) {
             return TransactionStatus.COMPLETE;
         }
 

@@ -1,5 +1,6 @@
 package com.belco.server.util;
 
+import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.web.multipart.MultipartFile;
@@ -18,6 +19,8 @@ import java.math.RoundingMode;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -180,5 +183,19 @@ public class Util {
 
     private static double rad2deg(double rad) {
         return (rad * 180.0 / Math.PI);
+    }
+
+    public static JSONObject toJsonObject(String name, Object value) {
+        JSONObject obj = new JSONObject();
+        obj.put(name, value);
+
+        return obj;
+    }
+
+    public static JSONArray toJsonArray(JSONObject... objects) {
+        JSONArray array = new JSONArray();
+        array.addAll(Arrays.asList(objects));
+
+        return array;
     }
 }

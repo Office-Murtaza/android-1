@@ -6,7 +6,6 @@ import com.belco.server.repository.CoinRep;
 import com.belco.server.util.Util;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -1201,12 +1200,12 @@ public class CoinService {
 
             @Override
             public TransactionDetailsDTO getTransactionDetails(String txId, String address) {
-                return rippledService.getTransactionHistory(txId, address, getExplorerUrl());
+                return rippledService.getTransactionDetails(txId, address, getExplorerUrl());
             }
 
             @Override
             public TransactionHistoryDTO getTransactionHistory(String address, Integer startIndex, Integer limit, List<TransactionRecord> transactionRecords, List<TransactionRecordWallet> transactionRecordWallets) {
-                return rippledService.getTransactionHistory(address, startIndex, limit, transactionRecords, transactionRecordWallets);
+                return rippledService.getTransactionDetails(address, startIndex, limit, transactionRecords, transactionRecordWallets);
             }
 
             @Override
