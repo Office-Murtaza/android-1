@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		05021CFE2582679000FE8809 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 05021CFD2582679000FE8809 /* GoogleService-Info.plist */; };
+		050625D825A36B6C007E0512 /* UIDevice+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 050625D725A36B6C007E0512 /* UIDevice+Helper.swift */; };
 		05144137258950D7000B56E7 /* DealsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05144136258950D7000B56E7 /* DealsCell.swift */; };
 		0514414125895378000B56E7 /* DealsTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0514414025895378000B56E7 /* DealsTableView.swift */; };
 		0514414525895412000B56E7 /* DealsTableViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0514414425895412000B56E7 /* DealsTableViewDataSource.swift */; };
@@ -33,6 +34,7 @@
 		055A9BBE257585C200A8E8F1 /* NotificationsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 055A9BBD257585C200A8E8F1 /* NotificationsCell.swift */; };
 		055A9BC52575874D00A8E8F1 /* NotificationsTableViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 055A9BC42575874D00A8E8F1 /* NotificationsTableViewDataSource.swift */; };
 		055A9BCB2575875D00A8E8F1 /* NotificationsTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 055A9BCA2575875D00A8E8F1 /* NotificationsTableView.swift */; };
+		0561D19325A3804400C1CF70 /* UIApplication+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0561D19225A3804400C1CF70 /* UIApplication+Helper.swift */; };
 		05A52BB1258D20E800F44A4D /* PropertyWrappers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05A52BB0258D20E800F44A4D /* PropertyWrappers.swift */; };
 		05A52BB5258D211F00F44A4D /* UserDefaultsHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05A52BB4258D211F00F44A4D /* UserDefaultsHelper.swift */; };
 		05A52BF5258D225200F44A4D /* OptionalHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05A52BF4258D225200F44A4D /* OptionalHelper.swift */; };
@@ -569,6 +571,7 @@
 
 /* Begin PBXFileReference section */
 		05021CFD2582679000FE8809 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		050625D725A36B6C007E0512 /* UIDevice+Helper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIDevice+Helper.swift"; sourceTree = "<group>"; };
 		05144136258950D7000B56E7 /* DealsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DealsCell.swift; sourceTree = "<group>"; };
 		0514414025895378000B56E7 /* DealsTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DealsTableView.swift; sourceTree = "<group>"; };
 		0514414425895412000B56E7 /* DealsTableViewDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DealsTableViewDataSource.swift; sourceTree = "<group>"; };
@@ -594,6 +597,7 @@
 		055A9BBD257585C200A8E8F1 /* NotificationsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsCell.swift; sourceTree = "<group>"; };
 		055A9BC42575874D00A8E8F1 /* NotificationsTableViewDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsTableViewDataSource.swift; sourceTree = "<group>"; };
 		055A9BCA2575875D00A8E8F1 /* NotificationsTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsTableView.swift; sourceTree = "<group>"; };
+		0561D19225A3804400C1CF70 /* UIApplication+Helper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIApplication+Helper.swift"; sourceTree = "<group>"; };
 		05A52BB0258D20E800F44A4D /* PropertyWrappers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PropertyWrappers.swift; sourceTree = "<group>"; };
 		05A52BB4258D211F00F44A4D /* UserDefaultsHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsHelper.swift; sourceTree = "<group>"; };
 		05A52BF4258D225200F44A4D /* OptionalHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionalHelper.swift; sourceTree = "<group>"; };
@@ -2699,6 +2703,8 @@
 				05A52BF4258D225200F44A4D /* OptionalHelper.swift */,
 				05A52BB0258D20E800F44A4D /* PropertyWrappers.swift */,
 				05A52BB4258D211F00F44A4D /* UserDefaultsHelper.swift */,
+				050625D725A36B6C007E0512 /* UIDevice+Helper.swift */,
+				0561D19225A3804400C1CF70 /* UIApplication+Helper.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -3278,6 +3284,7 @@
 				DB96171422C75E950078E92D /* Requests.swift in Sources */,
 				DBBD6AA724F723E800610A4E /* WalletHeaderView.swift in Sources */,
 				DB3C03D222CB5AA00036F779 /* RecoverModule.swift in Sources */,
+				0561D19325A3804400C1CF70 /* UIApplication+Helper.swift in Sources */,
 				DB382813240CF7D600418D3D /* VerificationModule.swift in Sources */,
 				DBC68CA922F868E000473247 /* EnterPasswordPresenter.swift in Sources */,
 				DBBF29A822D3872D00A5DE6A /* CoinsBalance+Mapping.swift in Sources */,
@@ -3631,6 +3638,7 @@
 				DB86FD282477FBE6002FE22D /* LocationUpdateDateRecord+CoreDataProperties.swift in Sources */,
 				DB9616D822C748610078E92D /* NSPersistentContainer+RecoverLoad.swift in Sources */,
 				DB8D40A022C3ED0400D5FBD0 /* RootFlowController.swift in Sources */,
+				050625D825A36B6C007E0512 /* UIDevice+Helper.swift in Sources */,
 				DB3C03D422CB5ADE0036F779 /* RecoverStore.swift in Sources */,
 				232E33482550626A00A9BF72 /* BalanceService.swift in Sources */,
 				DB9616D622C748610078E92D /* FetchRequestBuilder.swift in Sources */,
