@@ -552,20 +552,18 @@ public class TransactionService {
             list.stream().forEach(t -> {
                 try {
                     CoinService.CoinEnum coinCode = CoinService.CoinEnum.valueOf(t.getRefCoin().getCode());
-                    BigDecimal txFee = coinCode == CoinService.CoinEnum.CATM || coinCode == CoinService.CoinEnum.USDT ? walletService.convertToFee(coinCode) : coinCode.getTxFee();
-                    BigDecimal withdrawAmount = t.getRefAmount().subtract(txFee);
 
                     if (walletService.isEnoughBalance(coinCode, t.getRefAmount())) {
                         Identity identity = t.getIdentity();
                         String fromAddress = coinCode.getWalletAddress();
                         String toAddress = userService.getUserCoin(identity.getUser().getId(), coinCode.name()).getAddress();
-                        String hex = coinCode.sign(fromAddress, toAddress, withdrawAmount);
+                        String hex = coinCode.sign(fromAddress, toAddress, t.getRefAmount());
 
                         SubmitTransactionDTO submit = new SubmitTransactionDTO();
                         submit.setHex(hex);
                         submit.setFromAddress(fromAddress);
                         submit.setToAddress(toAddress);
-                        submit.setCryptoAmount(withdrawAmount);
+                        submit.setCryptoAmount(t.getRefAmount());
 
                         String txId = coinCode.submitTransaction(submit);
 
@@ -574,7 +572,7 @@ public class TransactionService {
                             rec.setTxId(txId);
                             rec.setIdentity(identity);
                             rec.setCoin(coinCode.getCoinEntity());
-                            rec.setAmount(withdrawAmount);
+                            rec.setAmount(t.getRefAmount());
                             rec.setType(TransactionType.RECEIVE_SWAP.getValue());
                             rec.setStatus(TransactionStatus.PENDING.getValue());
                             rec.setProfitPercent(t.getProfitPercent());
