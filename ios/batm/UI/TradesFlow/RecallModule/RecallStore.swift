@@ -102,7 +102,7 @@ final class RecallStore: ViewStore<RecallAction, RecallState> {
       return setupState(with: &state, errorString: L.CoinWithdraw.Form.Error.tooHighAmount)
     }
     
-    if state.coin?.type.isETHBased == false, let fee = state.coinDetails?.txFee {
+    if state.coin?.type.isETHBased == true, let fee = state.coinDetails?.txFee {
       let ethPrice = state.coinBalances?.first { $0.type == .ethereum }?.price ?? 0
       let catmPrice = state.coinBalances?.first { $0.type.isETHBased }?.price ?? 0
       let catmFee = (fee * ethPrice) / catmPrice
