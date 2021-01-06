@@ -7,7 +7,6 @@ final class ReservePresenter: ModulePresenter, ReserveModule {
   typealias Store = ViewStore<ReserveAction, ReserveState>
 
   struct Input {
-    var updateCurrencyAmount: Driver<String?>
     var updateCoinAmount: Driver<String?>
     var max: Driver<Void>
     var reserve: Driver<Void>
@@ -35,12 +34,6 @@ final class ReservePresenter: ModulePresenter, ReserveModule {
   }
 
   func bind(input: Input) {
-    input.updateCurrencyAmount
-      .asObservable()
-      .map { ReserveAction.updateCurrencyAmount($0) }
-      .bind(to: store.action)
-      .disposed(by: disposeBag)
-    
     input.updateCoinAmount
       .asObservable()
       .map { ReserveAction.updateCoinAmount($0) }

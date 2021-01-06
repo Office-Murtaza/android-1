@@ -77,13 +77,13 @@ final class ReserveViewController: ModuleViewController<ReservePresenter> {
     presenter.state
       .asObservable()
       .map { $0.currencyAmount }
-      .bind(to: formView.rx.currencyText)
+      .bind(to: formView.rx.fiatAmountText)
       .disposed(by: disposeBag)
     
     presenter.state
       .asObservable()
       .map { $0.coinAmount }
-      .bind(to: formView.rx.coinText)
+      .bind(to: formView.rx.coinAmountText)
       .disposed(by: disposeBag)
     
     presenter.state
@@ -106,13 +106,11 @@ final class ReserveViewController: ModuleViewController<ReservePresenter> {
   override func setupBindings() {
     setupUIBindings()
     
-    let updateCurrencyAmountDriver = formView.rx.currencyText.asDriver(onErrorDriveWith: .empty())
-    let updateCoinAmountDriver = formView.rx.coinText.asDriver(onErrorDriveWith: .empty())
+    let updateCoinAmountDriver = formView.rx.coinAmountText.asDriver(onErrorDriveWith: .empty())
     let maxDriver = formView.rx.maxTap
     let reserveDriver = reserveButton.rx.tap.asDriver()
     
-    presenter.bind(input: ReservePresenter.Input(updateCurrencyAmount: updateCurrencyAmountDriver,
-                                                 updateCoinAmount: updateCoinAmountDriver,
+    presenter.bind(input: ReservePresenter.Input(updateCoinAmount: updateCoinAmountDriver,
                                                  max: maxDriver,
                                                  reserve: reserveDriver))
   }

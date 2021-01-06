@@ -7,7 +7,6 @@ final class RecallPresenter: ModulePresenter, RecallModule {
   typealias Store = ViewStore<RecallAction, RecallState>
 
   struct Input {
-    var updateCurrencyAmount: Driver<String?>
     var updateCoinAmount: Driver<String?>
     var max: Driver<Void>
     var recall: Driver<Void>
@@ -35,12 +34,6 @@ final class RecallPresenter: ModulePresenter, RecallModule {
   }
 
   func bind(input: Input) {
-    input.updateCurrencyAmount
-      .asObservable()
-      .map { RecallAction.updateCurrencyAmount($0) }
-      .bind(to: store.action)
-      .disposed(by: disposeBag)
-    
     input.updateCoinAmount
       .asObservable()
       .map { RecallAction.updateCoinAmount($0) }
