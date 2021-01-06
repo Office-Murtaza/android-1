@@ -1,5 +1,7 @@
 package com.app.belcobtm.data.rest.authorization
 
+import android.os.Build
+import com.app.belcobtm.BuildConfig
 import com.app.belcobtm.data.rest.authorization.request.*
 import com.app.belcobtm.data.rest.authorization.response.AuthorizationResponse
 import com.app.belcobtm.data.rest.authorization.response.CheckPassResponse
@@ -9,6 +11,12 @@ import com.app.belcobtm.domain.Failure
 import java.net.HttpURLConnection
 
 class AuthApiService(private val authApi: AuthApi) {
+
+    companion object {
+        private val deviceOS = Build.VERSION.RELEASE
+        private val deviceModel = Build.MODEL
+        private const val appVersion = BuildConfig.VERSION_NAME
+    }
 
     suspend fun authorizationCheckCredentials(
         phone: String,
@@ -28,7 +36,15 @@ class AuthApiService(private val authApi: AuthApi) {
         coinMap: Map<String, String>
     ): Either<Failure, CreateRecoverWalletResponse> = try {
         val coinList = coinMap.map { CreateWalletCoinRequest(it.key, it.value) }
-        val request = CreateWalletRequest(phone, password, notificationToken, coinList)
+        val request = CreateWalletRequest(
+            phone,
+            password,
+            deviceModel,
+            deviceOS,
+            appVersion,
+            notificationToken,
+            coinList
+        )
         val response = authApi.createWalletAsync(request).await()
         response.body()?.let { Either.Right(it) } ?: Either.Left(Failure.ServerError())
     } catch (failure: Failure) {
@@ -43,7 +59,15 @@ class AuthApiService(private val authApi: AuthApi) {
         coinMap: Map<String, String>
     ): Either<Failure, CreateRecoverWalletResponse> = try {
         val coinList = coinMap.map { RecoverWalletCoinRequest(it.key, it.value) }
-        val request = RecoverWalletRequest(phone, password, notificationToken, coinList)
+        val request = RecoverWalletRequest(
+            phone,
+            password,
+            deviceModel,
+            deviceOS,
+            appVersion,
+            notificationToken,
+            coinList
+        )
         val response = authApi.recoverWalletAsync(request).await()
         response.body()?.let { Either.Right(it) } ?: Either.Left(Failure.ServerError())
     } catch (failure: Failure) {
