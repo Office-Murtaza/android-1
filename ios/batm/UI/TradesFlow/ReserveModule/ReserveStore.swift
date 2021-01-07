@@ -15,10 +15,16 @@ struct ReserveState: Equatable {
   var coin: BTMCoin?
   var coinBalances: [CoinBalance]?
   var coinDetails: CoinDetails?
-  var currencyAmount: String = ""
   var coinAmount: String = ""
   var coinAmountError: String?
   var validationState: ValidationState = .unknown
+    
+  var currencyAmount: String {
+    let coinAmountDecimal = coinAmount.decimalValue ?? 0
+    let price = coinBalance?.price ?? 0
+        
+    return (coinAmountDecimal * price).fiatFormatted.withDollarSign
+  }
   
   var coinBalance: CoinBalance? {
     return coinBalances?.first { $0.type == coin?.type }
@@ -56,21 +62,16 @@ final class ReserveStore: ViewStore<ReserveAction, ReserveState> {
     case let .setupCoinBalances(coinBalances): state.coinBalances = coinBalances
     case let .setupCoinDetails(coinDetails): state.coinDetails = coinDetails
     case let .updateCurrencyAmount(amount):
-      let currencyAmount = (amount ?? "").fiatWithdrawFormatted
+      let currencyAmount = (amount ?? "").fiatWithdrawFormatted.withDollarSign
       let decimalCurrencyAmount = currencyAmount.decimalValue
       let price = state.coinBalance!.price
       let coinAmount = decimalCurrencyAmount == nil ? "" : (decimalCurrencyAmount! / price).coinFormatted
       
       state.coinAmount = coinAmount
-      state.currencyAmount = currencyAmount
     case let .updateCoinAmount(amount):
       let coinAmount = (amount ?? "").coinWithdrawFormatted
-      let decimalCoinAmount = coinAmount.decimalValue
-      let price = state.coinBalance!.price
-      let currencyAmount = decimalCoinAmount == nil ? "" : (decimalCoinAmount! * price).fiatFormatted
       
       state.coinAmount = coinAmount
-      state.currencyAmount = currencyAmount
     case .updateValidationState: validate(&state)
     case let .makeInvalidState(error): state.validationState = .invalid(error)
     }
