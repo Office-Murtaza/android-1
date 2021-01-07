@@ -9,10 +9,7 @@ import com.app.belcobtm.R
 import com.app.belcobtm.domain.wallet.LocalCoinType
 import com.app.belcobtm.domain.wallet.item.CoinDataItem
 import com.app.belcobtm.presentation.core.coin.model.ValidationResult
-import com.app.belcobtm.presentation.core.extensions.getDouble
-import com.app.belcobtm.presentation.core.extensions.resIcon
-import com.app.belcobtm.presentation.core.extensions.toHtmlSpan
-import com.app.belcobtm.presentation.core.extensions.toStringCoin
+import com.app.belcobtm.presentation.core.extensions.*
 import com.app.belcobtm.presentation.core.helper.AlertHelper
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
 import com.app.belcobtm.presentation.core.ui.fragment.BaseFragment
@@ -108,25 +105,27 @@ class SwapFragment : BaseFragment() {
         })
         viewModel.initLoadingData.listen(success = {}) // just listen
         viewModel.coinsDetailsLoadingState.listen(success = {}) // just listen
-        viewModel.coinToSend.observe(viewLifecycleOwner, Observer { coin ->
-            val coinCode = coin.code
-            val coinBalance = coin.balanceCoin.toStringCoin()
+        viewModel.coinToSendModel.observe(viewLifecycleOwner, Observer { coin ->
+            val coinCode = coin.coinCode
+            val coinFee = coin.coinFee.toStringCoin()
+            val coinBalance = coin.coinBalance.toStringCoin()
             val localType = LocalCoinType.valueOf(coinCode)
             sendCoinInputLayout.setCoinData(coinCode, localType.resIcon())
             sendCoinInputLayout.setHelperText(
                 getString(
-                    R.string.swap_screen_balance_formatted, coinBalance, coinCode
+                    R.string.swap_screen_balance_formatted, coinBalance, coinCode, coinFee, coinCode
                 )
             )
         })
-        viewModel.coinToReceive.observe(viewLifecycleOwner, Observer { coin ->
-            val coinCode = coin.code
-            val coinBalance = coin.balanceCoin.toStringCoin()
+        viewModel.coinToReceiveModel.observe(viewLifecycleOwner, Observer { coin ->
+            val coinCode = coin.coinCode
+            val coinFee = coin.coinFee.toStringCoin()
+            val coinBalance = coin.coinBalance.toStringCoin()
             val localType = LocalCoinType.valueOf(coinCode)
             receiveCoinInputLayout.setCoinData(coinCode, localType.resIcon())
             receiveCoinInputLayout.setHelperText(
                 getString(
-                    R.string.swap_screen_balance_formatted, coinBalance, coinCode
+                    R.string.swap_screen_balance_formatted, coinBalance, coinCode, coinFee, coinCode
                 )
             )
         })
@@ -175,6 +174,10 @@ class SwapFragment : BaseFragment() {
         })
         viewModel.submitEnabled.observe(viewLifecycleOwner, Observer { enabled ->
             nextButtonView.isEnabled = enabled
+        })
+        viewModel.usdReceiveAmount.observe(viewLifecycleOwner, Observer { usdAmount ->
+            val usdAmountString = usdAmount.toStringUsd()
+            tvUSDConvertedValue.text = getString(R.string.swap_screen_usd_value, usdAmountString)
         })
     }
 

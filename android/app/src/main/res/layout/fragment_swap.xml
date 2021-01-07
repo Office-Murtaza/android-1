@@ -82,37 +82,65 @@
             app:tint="@color/colorPrimary" />
 
         <TextView
-            android:id="@+id/platformFeeLabel"
+            android:id="@+id/tvUSDConvertedLabel"
+            style="@style/Text.Regular1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/margin_main"
-            android:layout_marginTop="@dimen/margin_main"
-            android:text="@string/swap_screen_fee"
-            android:textAppearance="@style/Text.Regular2"
-            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="@dimen/margin_half"
+            android:layout_marginEnd="@dimen/margin_half"
+            android:text="@string/swap_screen_usd_label"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/receiveCoinInputLayout" />
 
         <TextView
-            android:id="@+id/platformFeeTextView"
+            android:id="@+id/tvUSDConvertedValue"
+            style="@style/Text.Regular2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_main"
-            android:layout_marginEnd="@dimen/margin_main"
-            android:textAppearance="@style/Text.Regular2"
-            android:textColor="@color/black_text_color"
+            android:layout_marginTop="@dimen/margin_quoter"
+            android:layout_marginEnd="@dimen/margin_half"
+            tools:text="$ 245.66"
+            android:textColor="@android:color/black"
+            android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/receiveCoinInputLayout"
-            tools:text="3% ~ 0.25673 LTC" />
+            app:layout_constraintTop_toBottomOf="@id/tvUSDConvertedLabel" />
 
         <Space
             android:id="@+id/spaceView"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_marginTop="@dimen/margin_main"
-            app:layout_constraintBottom_toTopOf="@id/nextButtonView"
+            android:layout_marginTop="16dp"
+            app:layout_constraintBottom_toTopOf="@id/platformFeeLabel"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/platformFeeTextView" />
+            app:layout_constraintTop_toBottomOf="@id/tvUSDConvertedValue" />
+
+        <TextView
+            android:id="@+id/platformFeeLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_main"
+            android:layout_marginEnd="4dp"
+            android:layout_marginBottom="@dimen/margin_half"
+            android:text="@string/swap_screen_fee"
+            android:textAppearance="@style/Text.Regular1"
+            app:layout_constraintBottom_toTopOf="@id/nextButtonView"
+            app:layout_constraintEnd_toStartOf="@id/platformFeeTextView"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/platformFeeTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_marginEnd="@dimen/margin_main"
+            android:layout_marginBottom="@dimen/margin_half"
+            android:textAppearance="@style/Text.Regular1"
+            app:layout_constraintBottom_toTopOf="@id/nextButtonView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/platformFeeLabel"
+            tools:text="3% ~ 0.25673 LTC" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/nextButtonView"
@@ -120,8 +148,7 @@
             android:text="@string/submit"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/spaceView" />
+            app:layout_constraintStart_toStartOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
