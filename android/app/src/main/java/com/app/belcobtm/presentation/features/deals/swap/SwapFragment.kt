@@ -31,11 +31,21 @@ class SwapFragment : BaseFragment() {
             if (parsedCoinAmount != viewModel.sendCoinAmount.value) {
                 viewModel.setSendAmount(parsedCoinAmount)
             }
+            // "0" should always be displayed for user
+            // even through they try to clear the input
+            if (editable.isEmpty()) {
+                editable.insert(0, "0")
+            }
         },
         secondTextWatcher = { editable ->
             val parsedCoinAmount = editable.getDouble()
             if (parsedCoinAmount != viewModel.receiveCoinAmount.value) {
                 viewModel.setReceiveAmount(parsedCoinAmount)
+            }
+            // "0" should always be displayed for user
+            // even through they try to clear the input
+            if (editable.isEmpty()) {
+                editable.insert(0, "0")
             }
         }
     )
