@@ -1,7 +1,9 @@
 package com.app.belcobtm.data.di
 
+import android.content.Context
 import android.preference.PreferenceManager
 import androidx.room.Room
+import com.app.belcobtm.data.ContactsRepositoryImpl
 import com.app.belcobtm.data.core.FileHelper
 import com.app.belcobtm.data.core.NetworkUtils
 import com.app.belcobtm.data.core.TransactionHashHelper
@@ -25,6 +27,7 @@ import com.app.belcobtm.data.rest.transaction.TransactionApi
 import com.app.belcobtm.data.rest.transaction.TransactionApiService
 import com.app.belcobtm.data.rest.wallet.WalletApi
 import com.app.belcobtm.data.rest.wallet.WalletApiService
+import com.app.belcobtm.domain.contacts.ContactsRepository
 import com.app.belcobtm.domain.notification.NotificationTokenRepository
 import com.app.belcobtm.domain.tools.IntentActions
 import com.app.belcobtm.domain.tools.IntentActionsImpl
@@ -95,4 +98,5 @@ val dataModule = module {
     single { get<Retrofit>().create(SettingsApi::class.java) }
     single { get<Retrofit>().create(TransactionApi::class.java) }
     single<NotificationTokenRepository> { NotificationTokenRepositoryImpl(get()) }
+    single<ContactsRepository> { ContactsRepositoryImpl(get<Context>().contentResolver) }
 }

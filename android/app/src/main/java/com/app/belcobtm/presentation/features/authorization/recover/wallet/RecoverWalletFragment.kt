@@ -8,15 +8,13 @@ import com.app.belcobtm.presentation.core.extensions.*
 import com.app.belcobtm.presentation.core.ui.fragment.BaseFragment
 import com.app.belcobtm.presentation.features.authorization.recover.seed.RecoverSeedFragment
 import com.app.belcobtm.presentation.features.sms.code.SmsCodeFragment
-import io.michaelrocks.libphonenumber.android.NumberParseException
-import io.michaelrocks.libphonenumber.android.PhoneNumberUtil
 import kotlinx.android.synthetic.main.fragment_recover_wallet.*
 import org.koin.android.viewmodel.ext.android.viewModel
 
 
 class RecoverWalletFragment : BaseFragment() {
+
     private val viewModel: RecoverWalletViewModel by viewModel()
-    private val phoneUtil: PhoneNumberUtil by lazy { PhoneNumberUtil.createInstance(requireContext()) }
 
     override val isToolbarEnabled: Boolean = true
     override val isHomeButtonEnabled: Boolean = true
@@ -96,19 +94,8 @@ class RecoverWalletFragment : BaseFragment() {
 
     private fun updateNextButton() {
         nextButtonView.isEnabled = phoneView.getString().isNotEmpty()
-                && isValidMobileNumber(phoneView.getString())
+                && viewModel.isValidMobileNumber(phoneView.getString())
                 && passwordView.getString().isNotEmpty()
-    }
-
-    private fun isValidMobileNumber(phone: String): Boolean = if (phone.isNotBlank()) {
-        try {
-            val number = PhoneNumberUtil.createInstance(requireContext()).parse(phone, "")
-            phoneUtil.isValidNumber(number)
-        } catch (e: NumberParseException) {
-            false
-        }
-    } else {
-        false
     }
 
     private fun getPhone(): String = phoneView.getString().replace("[-() ]".toRegex(), "")

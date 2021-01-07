@@ -3,17 +3,19 @@ package com.app.belcobtm.presentation.features.settings.support
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.telephony.PhoneNumberUtils
 import android.view.View
 import com.app.belcobtm.R
+import com.app.belcobtm.presentation.core.formatter.Formatter
 import com.app.belcobtm.presentation.core.ui.fragment.BaseFragment
 import kotlinx.android.synthetic.main.fragment_support.*
-import java.util.*
+import org.koin.android.ext.android.inject
 
 class SupportFragment : BaseFragment() {
 
     override val resourceLayout: Int = R.layout.fragment_support
     override val isHomeButtonEnabled: Boolean = true
+
+    private val phoneNumberFormatter: Formatter<String> by inject()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -24,11 +26,7 @@ class SupportFragment : BaseFragment() {
 
     private fun setupPhoneNumber() {
         val supportPhone = getString(R.string.support_phone)
-        val formattedSupportPhone = PhoneNumberUtils.formatNumber(
-            supportPhone,
-            Locale.US.country
-        )
-        phoneItem.setValue(formattedSupportPhone)
+        phoneItem.setValue(phoneNumberFormatter.format(supportPhone))
     }
 
     private fun setClickListeners() {

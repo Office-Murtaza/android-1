@@ -11,6 +11,7 @@ import com.app.belcobtm.domain.transaction.TransactionRepository
 import com.app.belcobtm.domain.transaction.item.*
 import com.app.belcobtm.domain.transaction.type.TradeSortType
 import com.app.belcobtm.domain.wallet.LocalCoinType
+import com.app.belcobtm.domain.wallet.item.isEthRelatedCoin
 
 class TransactionRepositoryImpl(
     private val apiService: TransactionApiService,
@@ -75,9 +76,9 @@ class TransactionRepositoryImpl(
     override suspend fun sendGift(
         amount: Double,
         coinCode: String,
-        giftId: String,
+        giftId: String?,
         phone: String,
-        message: String
+        message: String?
     ): Either<Failure, Unit> {
         val giftAddressResponse = apiService.getGiftAddress(coinCode, phone)
         return if (giftAddressResponse.isRight) {
@@ -87,9 +88,10 @@ class TransactionRepositoryImpl(
                 transactionHashRepository.createTransactionHash(coinType, amount, toAddress)
             if (hashResponse.isRight) {
                 val fee = prefHelper.coinsDetails[coinCode]?.txFee ?: 0.0
-                val fromAddress = daoAccount.getItem(coinCode).publicKey
+                val item = daoAccount.getItem(coinCode)
+                val fromAddress = item.publicKey
                 val hash = (hashResponse as Either.Right).b
-                if (coinCode == LocalCoinType.ETH.name || coinCode == LocalCoinType.CATM.name) {
+                if (coinCode == LocalCoinType.ETH.name || coinCode.isEthRelatedCoin()) {
                     apiService.sendGift(
                         hash,
                         coinCode,

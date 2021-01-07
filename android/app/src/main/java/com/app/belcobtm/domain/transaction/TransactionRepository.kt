@@ -26,9 +26,9 @@ interface TransactionRepository {
     suspend fun sendGift(
         amount: Double,
         coinCode: String,
-        giftId: String,
+        giftId: String?,
         phone: String,
-        message: String
+        message: String?
     ): Either<Failure, Unit>
 
     suspend fun sellGetLimits(): Either<Failure, SellLimitsDataItem>

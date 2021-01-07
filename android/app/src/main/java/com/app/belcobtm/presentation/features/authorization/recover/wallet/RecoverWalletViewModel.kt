@@ -4,9 +4,11 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.app.belcobtm.domain.authorization.interactor.AuthorizationCheckCredentialsUseCase
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
+import com.app.belcobtm.presentation.core.validator.Validator
 
 class RecoverWalletViewModel(
-    private val checkCredentialsUseCase: AuthorizationCheckCredentialsUseCase
+    private val checkCredentialsUseCase: AuthorizationCheckCredentialsUseCase,
+    private val phoneNumberValidator: Validator<String>
 ) : ViewModel() {
     val checkCredentialsLiveData: MutableLiveData<LoadingData<Pair<Boolean, Boolean>>> = MutableLiveData()
 
@@ -18,4 +20,8 @@ class RecoverWalletViewModel(
             onError = { checkCredentialsLiveData.value = LoadingData.Error(it) }
         )
     }
+
+    fun isValidMobileNumber(phoneNumber: String): Boolean =
+        phoneNumberValidator.isValid(phoneNumber)
+
 }

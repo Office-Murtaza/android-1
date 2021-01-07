@@ -1,14 +1,12 @@
 package com.app.belcobtm.presentation.features.settings.security
 
 import android.os.Bundle
-import android.telephony.PhoneNumberUtils
 import android.view.View
 import androidx.lifecycle.Observer
 import com.app.belcobtm.R
 import com.app.belcobtm.presentation.core.ui.fragment.BaseFragment
 import kotlinx.android.synthetic.main.fragment_security.*
 import org.koin.android.viewmodel.ext.android.viewModel
-import java.util.*
 
 class SecurityFragment : BaseFragment() {
 
@@ -26,7 +24,7 @@ class SecurityFragment : BaseFragment() {
     }
 
     private fun observeData() {
-        viewModel.userPhone.listen(success = { setupPhone(it) })
+        viewModel.userPhone.listen(success = { updatePhoneItem.setValue(it) })
         viewModel.actionData.observe(viewLifecycleOwner, Observer { action ->
             if (action is SecurityAction.NavigateAction) {
                 navigate(action.navDirections)
@@ -40,11 +38,5 @@ class SecurityFragment : BaseFragment() {
         updatePinItem.setOnClickListener { viewModel.handleItemClick(SecurityItem.PIN) }
         seedPhraseItem.setOnClickListener { viewModel.handleItemClick(SecurityItem.SEED) }
         unlinkItem.setOnClickListener { viewModel.handleItemClick(SecurityItem.UNLINK) }
-    }
-
-    private fun setupPhone(phoneNumber: String) {
-        val countlyCode = Locale.US.country
-        val formattedPhone = PhoneNumberUtils.formatNumber(phoneNumber, countlyCode)
-        updatePhoneItem.setValue(formattedPhone)
     }
 }

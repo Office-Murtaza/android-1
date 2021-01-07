@@ -19,3 +19,7 @@ data class CoinDataItem(
 fun CoinDataItem.isEthRelatedCoin(): Boolean {
     return this.code == LocalCoinType.USDT.name || this.code == LocalCoinType.CATM.name
 }
+
+fun String.isEthRelatedCoin(): Boolean {
+    return this == LocalCoinType.USDT.name || this == LocalCoinType.CATM.name
+}
