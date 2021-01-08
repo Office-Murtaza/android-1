@@ -717,6 +717,12 @@ extension L.Support {
     static let whatsApp = "support.cell.whats_app"
   }
 }
+extension L.Swap {
+
+  struct Usd {
+    static let title = "swap.usd.title"
+  }
+}
 extension L.TransactionDetails {
 
   struct Header {

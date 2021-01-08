@@ -44,6 +44,7 @@
 		232E33482550626A00A9BF72 /* BalanceService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 232E33472550626A00A9BF72 /* BalanceService.swift */; };
 		232E345E2558772B00A9BF72 /* SocketMessageBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 232E345D2558772B00A9BF72 /* SocketMessageBuilder.swift */; };
 		232E346425593BA200A9BF72 /* SocketResultMessageMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 232E346325593BA200A9BF72 /* SocketResultMessageMapper.swift */; };
+		2362ECE325A7AA4500E9BC85 /* SwapUsdValueView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2362ECE225A7AA4500E9BC85 /* SwapUsdValueView.swift */; };
 		237EC457256DAE8A005BB79B /* PriceChartDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 237EC456256DAE8A005BB79B /* PriceChartDetails.swift */; };
 		239685DB2575988A00C0FF1E /* CoinExchangeSwapTextFieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 239685DA2575988A00C0FF1E /* CoinExchangeSwapTextFieldView.swift */; };
 		23AAC3F3253CCB3E004FD32B /* CoinDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23AAC3F2253CCB3E004FD32B /* CoinDetails.swift */; };
@@ -609,6 +610,7 @@
 		232E33472550626A00A9BF72 /* BalanceService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BalanceService.swift; sourceTree = "<group>"; };
 		232E345D2558772B00A9BF72 /* SocketMessageBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocketMessageBuilder.swift; sourceTree = "<group>"; };
 		232E346325593BA200A9BF72 /* SocketResultMessageMapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocketResultMessageMapper.swift; sourceTree = "<group>"; };
+		2362ECE225A7AA4500E9BC85 /* SwapUsdValueView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwapUsdValueView.swift; sourceTree = "<group>"; };
 		237EC456256DAE8A005BB79B /* PriceChartDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PriceChartDetails.swift; sourceTree = "<group>"; };
 		239685DA2575988A00C0FF1E /* CoinExchangeSwapTextFieldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinExchangeSwapTextFieldView.swift; sourceTree = "<group>"; };
 		23AAC3F2253CCB3E004FD32B /* CoinDetails.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoinDetails.swift; sourceTree = "<group>"; };
@@ -2778,6 +2780,7 @@
 				23E86F9225782C61003712E7 /* SwapButton.swift */,
 				23E86F96257831F5003712E7 /* SwapExchangeRateView.swift */,
 				23D4D0242585690000853679 /* SwapPlatformFeeView.swift */,
+				2362ECE225A7AA4500E9BC85 /* SwapUsdValueView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -3609,6 +3612,7 @@
 				DB39DF5A24E17FC700468ADA /* ErrorAssembly.swift in Sources */,
 				DB0211BB22CCE42B004065E9 /* RecoverSeedPhraseModule.swift in Sources */,
 				DB21B1F424AA63AA008444D3 /* RecallAssembly.swift in Sources */,
+				2362ECE325A7AA4500E9BC85 /* SwapUsdValueView.swift in Sources */,
 				DB9D3EA722C1476F008DC600 /* WelcomeSlideView.swift in Sources */,
 				DB5185AF231FE68300052229 /* CoinWithdrawPresenter.swift in Sources */,
 				DBC68CB922F8798F00473247 /* UpdatePhoneModule.swift in Sources */,

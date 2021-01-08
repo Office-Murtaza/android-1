@@ -11,6 +11,10 @@ final class CoinExchangeViewController: ModuleViewController<CoinExchangePresent
   let formView = CoinExchangeFormView()
   
   let submitButton = MDCButton.submit
+    
+  private let swapFeeView = SwapPlatformFeeView()
+    
+  private let usdView = SwapUsdValueView()
 
   override func setupUI() {
     if #available(iOS 13.0, *) {
@@ -18,7 +22,9 @@ final class CoinExchangeViewController: ModuleViewController<CoinExchangePresent
     }
     view.addSubview(rootScrollView)
     rootScrollView.contentView.addSubviews(formView,
-                                           submitButton)
+                                           swapFeeView,
+                                           submitButton,
+                                           usdView)
     
     setupDefaultKeyboardHandling()
   }
@@ -42,25 +48,39 @@ final class CoinExchangeViewController: ModuleViewController<CoinExchangePresent
       $0.left.right.equalToSuperview().inset(15)
       $0.bottom.equalToSuperview().offset(-40)
     }
+    
+    swapFeeView.snp.makeConstraints {
+        $0.height.equalTo(60)
+        $0.left.right.equalToSuperview()
+        $0.bottom.equalTo(submitButton.snp.top)
+    }
+    
+    usdView.snp.makeConstraints {
+        $0.right.equalToSuperview()
+        $0.top.equalTo(formView.snp.bottom).offset(10)
+        $0.left.equalToSuperview()
+        $0.height.equalTo(45)
+    }
   }
   
   func setupUIBindings() {
+
     presenter.state
-      .map { $0.fromCoinBalance }
-      .filterNil()
-      .drive(onNext: { [unowned self] coinBalance in
-        self.formView.fromCoinView.configurBalance(for: coinBalance)
-      })
-      .disposed(by: disposeBag)
+        .drive(onNext:{[unowned self] state in
+            guard let fromBalance = state.fromCoinBalance, let fromDetails = state.coinDetails else { return }
+            self.formView.fromCoinView.configurBalance(for: fromBalance, coinDetails: fromDetails)
+            let number = (Decimal(string: state.fromCoinAmount) ?? 0) * fromBalance.price
+            self.usdView.configure(value: number)
+    })
+    .disposed(by: disposeBag)
+    
     
     presenter.state
-      .map { $0.toCoinBalance }
-      .filterNil()
-      .drive(onNext: { [unowned self] coinBalance in
-        self.formView.toCoinView.configurBalance(for: coinBalance)
-      })
-      .disposed(by: disposeBag)
-    
+        .drive(onNext:{[unowned self] result in
+            guard let toBalance = result.toCoinBalance, let toDetails = result.toCoinDetails else { return }
+            self.formView.toCoinView.configurBalance(for: toBalance, coinDetails: toDetails)
+    })
+    .disposed(by: disposeBag)
     
     presenter.state
       .map { $0.fromCoin?.type.code }
@@ -106,19 +126,12 @@ final class CoinExchangeViewController: ModuleViewController<CoinExchangePresent
       .bind(to: formView.rx.fromCoinAmountText)
       .disposed(by: disposeBag)
     
-    
-    presenter.state
-      .asObservable()
-      .map { $0.fromCoinAmount }
-      .bind(to: formView.rx.fromCoinAmountText)
-      .disposed(by: disposeBag)
-    
     presenter.state
         .asObservable()
         .subscribeOn(MainScheduler.instance)
         .subscribe { [weak self] result in
             guard let fee = result.element?.platformFee else { return }
-            self?.formView.configureFeeView(fee: fee)
+            self?.swapFeeView.configure(fee: fee)
         }.disposed(by: disposeBag)
 
     presenter.state
