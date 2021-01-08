@@ -7,6 +7,7 @@ import com.app.belcobtm.data.rest.transaction.TransactionApiService
 import com.app.belcobtm.domain.Either
 import com.app.belcobtm.domain.Failure
 import com.app.belcobtm.domain.wallet.LocalCoinType
+import com.app.belcobtm.domain.wallet.item.isEthRelatedCoinCode
 import com.app.belcobtm.presentation.core.Numeric
 import com.app.belcobtm.presentation.core.extensions.code
 import com.app.belcobtm.presentation.core.extensions.customPurpose
@@ -199,7 +200,10 @@ class TransactionHashHelper(
         return if (response.isRight) {
             val nonceResponse = (response as Either.Right).b
             val coinFee = prefsHelper.coinsDetails[fromCoin.name]
-            val amountMultipliedByDivider = BigDecimal(fromCoinAmount * CoinType.ETHEREUM.unit())
+            val amountMultipliedByDivider = when (fromCoin == LocalCoinType.USDT) {
+                true -> BigDecimal(fromCoinAmount * 1_000_000L)
+                false -> BigDecimal(fromCoinAmount * CoinType.ETHEREUM.unit())
+            }
             val hexAmount = addLeadingZeroes(amountMultipliedByDivider.toLong().toString(16))?.toHexByteArray()
             val hexNonce = addLeadingZeroes(nonceResponse?.toString(16) ?: "")?.toHexByteArray()
             val hexGasLimit = addLeadingZeroes((coinFee?.gasLimit?.toLong() ?: 0).toString(16))?.toHexByteArray()
@@ -212,7 +216,7 @@ class TransactionHashHelper(
                 it.privateKey = daoAccount.getItem(fromCoin.name).privateKey.toHexBytesInByteString()
             }
 
-            if (fromCoin == LocalCoinType.CATM) {
+            if (fromCoin.name.isEthRelatedCoinCode()) {
                 val function = when (customFunctionName) {
                     ETH_CATM_FUNCTION_NAME_CREATE_STAKE -> {
                         val function = EthereumAbiFunction(ETH_CATM_FUNCTION_NAME_CREATE_STAKE)
