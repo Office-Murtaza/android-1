@@ -17,5 +17,9 @@ data class CoinDataItem(
 ) : Parcelable
 
 fun CoinDataItem.isEthRelatedCoin(): Boolean {
-    return this.code == LocalCoinType.USDT.name || this.code == LocalCoinType.CATM.name
+    return this.code.isEthRelatedCoinCode()
+}
+
+fun String.isEthRelatedCoinCode(): Boolean {
+    return this == LocalCoinType.USDT.name || this == LocalCoinType.CATM.name
 }
