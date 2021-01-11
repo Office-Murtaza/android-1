@@ -2,10 +2,7 @@ package com.belco.server.rest;
 
 import com.belco.server.model.PricePeriod;
 import com.belco.server.model.Response;
-import com.belco.server.service.CacheService;
-import com.belco.server.service.CoinService;
-import com.belco.server.service.RippledService;
-import com.belco.server.service.UserService;
+import com.belco.server.service.*;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,12 +14,14 @@ public class CoinController {
     private final UserService userService;
     private final CoinService coinService;
     private final RippledService rippledService;
+    private final TrongridService trongridService;
     private final CacheService cacheService;
 
-    public CoinController(UserService userService, CoinService coinService, RippledService rippledService, CacheService cacheService) {
+    public CoinController(UserService userService, CoinService coinService, RippledService rippledService, TrongridService trongridService, CacheService cacheService) {
         this.userService = userService;
         this.coinService = coinService;
         this.rippledService = rippledService;
+        this.trongridService = trongridService;
         this.cacheService = cacheService;
     }
 
@@ -49,11 +48,7 @@ public class CoinController {
     @GetMapping("/coin/{coin}/utxo")
     public Response getUtxo(@PathVariable CoinService.CoinEnum coin, @RequestParam String xpub) {
         try {
-            if (coin == CoinService.CoinEnum.BTC || coin == CoinService.CoinEnum.BCH || coin == CoinService.CoinEnum.LTC) {
-                return Response.ok(coin.getUtxo(xpub));
-            } else {
-                return Response.defaultError(coin.name() + " not allowed");
-            }
+            return Response.ok(coin.getUtxo(xpub));
         } catch (Exception e) {
             e.printStackTrace();
             return Response.serverError();
@@ -63,11 +58,7 @@ public class CoinController {
     @GetMapping("/coin/{coin}/nonce")
     public Response getNonce(@PathVariable CoinService.CoinEnum coin, @RequestParam String address) {
         try {
-            if (coin == CoinService.CoinEnum.ETH || coin == CoinService.CoinEnum.CATM) {
-                return Response.ok(coin.getNonce(address));
-            } else {
-                return Response.defaultError(coin.name() + " not allowed");
-            }
+            return Response.ok(coin.getNonce(address));
         } catch (Exception e) {
             e.printStackTrace();
             return Response.serverError();
@@ -77,11 +68,7 @@ public class CoinController {
     @GetMapping("/coin/{coin}/current-account")
     public Response getCurrentAccount(@PathVariable CoinService.CoinEnum coin, @RequestParam String address) {
         try {
-            if (coin == CoinService.CoinEnum.BNB || coin == CoinService.CoinEnum.XRP) {
-                return Response.ok(coin.getCurrentAccount(address));
-            } else {
-                return Response.defaultError(coin.name() + " not allowed");
-            }
+            return Response.ok(coin.getCurrentAccount(address));
         } catch (Exception e) {
             e.printStackTrace();
             return Response.serverError();
@@ -91,11 +78,7 @@ public class CoinController {
     @GetMapping("/coin/{coin}/current-account-activated")
     public Response getCurrentAccountActivated(@PathVariable CoinService.CoinEnum coin, @RequestParam String address) {
         try {
-            if (coin == CoinService.CoinEnum.XRP) {
-                return Response.ok(!rippledService.getNodeTransactions(address).isEmpty());
-            } else {
-                return Response.defaultError(coin.name() + " not allowed");
-            }
+            return Response.ok(!rippledService.getNodeTransactions(address).isEmpty());
         } catch (Exception e) {
             e.printStackTrace();
             return Response.serverError();
@@ -105,11 +88,7 @@ public class CoinController {
     @GetMapping("/coin/{coin}/current-block")
     public Response getCurrentBlock(@PathVariable CoinService.CoinEnum coin) {
         try {
-            if (coin == CoinService.CoinEnum.TRX) {
-                return Response.ok(coin.getCurrentBlock());
-            } else {
-                return Response.defaultError(coin.name() + " not allowed");
-            }
+            return Response.ok(trongridService.getCurrentBlock());
         } catch (Exception e) {
             e.printStackTrace();
             return Response.serverError();
