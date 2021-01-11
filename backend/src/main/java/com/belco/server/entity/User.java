@@ -30,6 +30,7 @@ public class User extends BaseEntity {
     private String appVersion;
     private Integer platform;
     private String notificationsToken;
+    private String byReferralCode;
     private Long tradeCount;
     private BigDecimal tradeRate;
     private BigDecimal latitude;
@@ -47,6 +48,9 @@ public class User extends BaseEntity {
 
     @OneToOne(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Identity identity;
+
+    @OneToOne(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Referral referral;
 
     @Transient
     public UserCoin getUserCoin(String coinCode) {

@@ -1,6 +1,6 @@
 package com.belco.server.service;
 
-import com.belco.server.dto.CoinDTO;
+import com.belco.server.dto.AuthenticationDTO;
 import com.belco.server.dto.KycDetailsDTO;
 import com.belco.server.dto.LocationDTO;
 import com.belco.server.dto.SubmitKycDTO;
@@ -81,6 +81,9 @@ public class UserService implements UserDetailsService {
     @Autowired
     private IdentityPieceSelfieRep identityPieceSelfieRep;
 
+    @Autowired
+    private ReferralRep referralRep;
+
     @Lazy
     @Autowired
     private CoinService coinService;
@@ -89,31 +92,31 @@ public class UserService implements UserDetailsService {
     private String documentUploadPath;
 
     @Transactional
-    public User register(String phone, String password, Integer platform, String deviceModel, String deviceOS, String appVersion, String notificationsToken, List<CoinDTO> coins) {
+    public User register(AuthenticationDTO dto) {
         User user = new User();
-        user.setPhone(phone);
-        user.setPassword(passwordEncoder.encode(password));
+        user.setPhone(dto.getPhone());
+        user.setPassword(passwordEncoder.encode(dto.getPassword()));
         user.setRole("ROLE_USER");
-        user.setPlatform(platform);
-        user.setDeviceModel(deviceModel);
-        user.setDeviceOS(deviceOS);
-        user.setAppVersion(appVersion);
-        user.setNotificationsToken(notificationsToken);
-
+        user.setPlatform(dto.getPlatform());
+        user.setDeviceModel(dto.getDeviceModel());
+        user.setDeviceOS(dto.getDeviceOS());
+        user.setAppVersion(dto.getAppVersion());
+        user.setNotificationsToken(dto.getNotificationsToken());
+        user.setByReferralCode(dto.getByReferralCode());
         User savedUser = userRep.save(user);
 
-        Date date = new Date();
-        String formattedPhone = Util.formatPhone(user.getPhone());
+        addUserReferral(savedUser);
 
+        String formattedPhone = Util.formatPhone(user.getPhone());
         List<IdentityPieceCellPhone> pieceCellPhones = identityPieceCellPhoneRep.findByPhoneNumber(formattedPhone);
 
         if (pieceCellPhones.isEmpty()) {
-            user.setIdentity(createNewIdentity(savedUser, date, formattedPhone));
+            user.setIdentity(createNewIdentity(savedUser, new Date(), formattedPhone));
         } else {
             user.setIdentity(selectFromExistingIdentities(savedUser, pieceCellPhones));
         }
 
-        coinService.addUserCoins(user, coins);
+        coinService.addUserCoins(user, dto.getCoins());
 
         return user;
     }
@@ -522,6 +525,10 @@ public class UserService implements UserDetailsService {
         userRep.save(user);
 
         return true;
+    }
+
+    public void addUserReferral(User user) {
+        referralRep.save(new Referral(RandomStringUtils.randomAlphanumeric(10).toUpperCase(), 0, BigDecimal.ZERO, user));
     }
 
     public void save(User user) {

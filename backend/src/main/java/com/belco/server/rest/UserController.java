@@ -1,12 +1,12 @@
 package com.belco.server.rest;
 
-import com.belco.server.model.Response;
-import com.belco.server.repository.TokenRep;
-import com.belco.server.security.JWTTokenProvider;
 import com.belco.server.dto.*;
 import com.belco.server.entity.Token;
 import com.belco.server.entity.Unlink;
 import com.belco.server.entity.User;
+import com.belco.server.model.Response;
+import com.belco.server.repository.TokenRep;
+import com.belco.server.security.JWTTokenProvider;
 import com.belco.server.service.CoinService;
 import com.belco.server.service.TransactionService;
 import com.belco.server.service.TwilioService;
@@ -113,7 +113,7 @@ public class UserController {
                 return Response.error(4, "Phone is already used");
             }
 
-            User user = userService.register(dto.getPhone(), dto.getPassword(), dto.getPlatform(), dto.getDeviceModel(), dto.getDeviceOS(), dto.getAppVersion(), dto.getNotificationsToken(), dto.getCoins());
+            User user = userService.register(dto);
 
             TokenDTO jwt = getJwt(user.getId(), user.getIdentity().getId(), dto.getPhone(), dto.getPassword());
 
@@ -168,6 +168,11 @@ public class UserController {
 
             user.setPlatform(dto.getPlatform());
             user.setNotificationsToken(dto.getNotificationsToken());
+
+            if (user.getReferral() == null) {
+                userService.addUserReferral(user);
+            }
+
             userService.save(user);
             coinService.addUserCoins(user, dto.getCoins());
 
@@ -322,6 +327,16 @@ public class UserController {
     public Response getLimits(@PathVariable Long userId) {
         try {
             return Response.ok(transactionService.getLimits(userId));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Response.serverError();
+        }
+    }
+
+    @GetMapping("/user/{userId}/referral")
+    public Response referral(@PathVariable Long userId) {
+        try {
+            return Response.ok(userService.findById(userId).getReferral().toDTO());
         } catch (Exception e) {
             e.printStackTrace();
             return Response.serverError();

@@ -7,8 +7,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import java.util.List;
 
-@Getter
 @Setter
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -21,5 +21,6 @@ public class AuthenticationDTO {
     private String deviceOS;
     private String appVersion;
     private String notificationsToken;
+    private String byReferralCode;
     private List<CoinDTO> coins;
 }
