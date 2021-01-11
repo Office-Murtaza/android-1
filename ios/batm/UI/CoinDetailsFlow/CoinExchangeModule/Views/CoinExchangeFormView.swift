@@ -24,8 +24,6 @@ class CoinExchangeFormView: UIView {
         return textFieldView
     }()
     
-    private let swapFeeView = SwapPlatformFeeView()
-    
     override init(frame: CGRect) {
         super.init(frame: frame)
         
@@ -45,8 +43,8 @@ class CoinExchangeFormView: UIView {
             toCoinView,
             swapButton,
             swapRateView,
-            swapFeeView
         ])
+        
     }
     
   private func setupLayout() {
@@ -71,13 +69,7 @@ class CoinExchangeFormView: UIView {
         $0.centerY.equalTo(fromCoinView.snp.bottom)
         $0.right.equalToSuperview().offset(-15)
     }
-    
-    swapFeeView.snp.makeConstraints {
-        $0.height.equalTo(60)
-        $0.left.right.equalToSuperview()
-        $0.top.equalTo(toCoinView.snp.bottom)
-    }
-    
+
   }
     
     func configure(coin: CustomCoinType, fromCoins: [CustomCoinType], toCoins:  [CustomCoinType], fee: Decimal?) {
@@ -88,11 +80,7 @@ class CoinExchangeFormView: UIView {
     func configureRateView(fromCoin: String, toCoin: String) {
         swapRateView.configure(fromCoin: fromCoin, toCoin: toCoin)
     }
-    
-    func configureFeeView(fee: String) {
-        swapFeeView.configure(fee: fee)
-    }
-    
+
     func configureFromError(error: String?) {
         configureField(field: &fromCoinView, error: error)
     }

@@ -11,6 +11,7 @@ import com.app.belcobtm.domain.transaction.TransactionRepository
 import com.app.belcobtm.domain.transaction.item.*
 import com.app.belcobtm.domain.transaction.type.TradeSortType
 import com.app.belcobtm.domain.wallet.LocalCoinType
+import com.app.belcobtm.domain.wallet.item.isEthRelatedCoinCode
 
 class TransactionRepositoryImpl(
     private val apiService: TransactionApiService,
@@ -149,7 +150,7 @@ class TransactionRepositoryImpl(
         coinTo: String
     ): Either<Failure, Unit> {
         val coinType = LocalCoinType.valueOf(fromCoin)
-        val toAddress: String = if (fromCoin == LocalCoinType.CATM.name) {
+        val toAddress: String = if (fromCoin.isEthRelatedCoinCode()) {
             prefHelper.coinsDetails[fromCoin]?.contractAddress
         } else {
             prefHelper.coinsDetails[fromCoin]?.walletAddress

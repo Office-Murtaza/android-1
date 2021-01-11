@@ -11,7 +11,8 @@ extension DealsFlow {
                     return flowController
                 }
                 .inObjectScope(.container)
-                .implements(DealsModuleDelegate.self)
+                .implements(DealsModuleDelegate.self,
+                            CoinExchangeModuleDelegate.self)
         }
   }
 }

@@ -56,6 +56,12 @@ class CoinExchangeSwapTextFieldView: UIView, UIPickerViewDataSource, HasDisposeB
         return textField
     }()
     
+    lazy var feeLabel: UILabel = {
+        let label = UILabel()
+        label.textColor = .slateGrey
+        label.font = .systemFont(ofSize: 16, weight: .regular)
+        return label
+    }()
     
     var coins: [CustomCoinType] = [] {
         didSet {
@@ -70,8 +76,6 @@ class CoinExchangeSwapTextFieldView: UIView, UIPickerViewDataSource, HasDisposeB
         
         setupUI()
         setupLayout()
-        
-        errorField.text = "asfsadfs error"
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -88,7 +92,8 @@ class CoinExchangeSwapTextFieldView: UIView, UIPickerViewDataSource, HasDisposeB
                     balanceLabel,
                     amountTextField,
                     maxButton,
-                    errorField)
+                    errorField,
+                    feeLabel)
         coinTextField.font = .systemFont(ofSize: 22, weight: .bold)
     }
     
@@ -104,6 +109,11 @@ class CoinExchangeSwapTextFieldView: UIView, UIPickerViewDataSource, HasDisposeB
         balanceLabel.snp.makeConstraints {
             $0.top.equalTo(coinTypeImageView.snp.bottom).offset(10)
             $0.left.equalTo(coinTypeImageView)
+        }
+        
+        feeLabel.snp.makeConstraints {
+            $0.top.equalTo(balanceLabel.snp.bottom).offset(5)
+            $0.left.equalTo(balanceLabel.snp.left)
         }
         
         coinTextField.snp.makeConstraints {
@@ -158,18 +168,26 @@ class CoinExchangeSwapTextFieldView: UIView, UIPickerViewDataSource, HasDisposeB
         self.coinType = coinType
     }
     
-    func configurBalance(for coinBalance: CoinBalance, useReserved: Bool = false, weighted: Bool = false) {
+    func configurBalance(for coinBalance: CoinBalance, coinDetails: CoinDetails ,useReserved: Bool = false, weighted: Bool = false) {
       let cryptoAmount = useReserved ? coinBalance.reservedBalance : coinBalance.balance
       let fiatAmount = useReserved ? coinBalance.reservedFiatBalance : coinBalance.fiatBalance
       
-      configure(cryptoAmount: cryptoAmount, fiatAmount: fiatAmount, type: coinBalance.type, weighted: weighted)
+        configure(cryptoAmount: cryptoAmount, fiatAmount: fiatAmount,txFee: coinDetails.txFee ?? 0 , type: coinBalance.type, weighted: weighted)
+        configureFee(fee: coinDetails.txFee, type: coinBalance.type)
     }
     
-    private func configure(cryptoAmount: Decimal, fiatAmount: Decimal, type: CustomCoinType, weighted: Bool = false) {
+    private func configure(cryptoAmount: Decimal, fiatAmount: Decimal,txFee: Decimal , type: CustomCoinType, weighted: Bool = false) {
         balanceLabel.text = "\(localize(L.CoinDetails.balance)): \(cryptoAmount.coinFormatted.withCoinType(type))"
         
         let font = UIFont.systemFont(ofSize: 16, weight: weighted ? .medium : .regular)
         balanceLabel.font = font
+    }
+    
+    private func configureFee(fee: Decimal, type: CustomCoinType) {
+        let feeFormatted = fee.coinFormatted.withCoinType(type)
+        let feeText = String(format: localize(L.CoinWithdraw.Form.CoinAmount.helper), feeFormatted)
+        
+        feeLabel.text = feeText
     }
     
 }
