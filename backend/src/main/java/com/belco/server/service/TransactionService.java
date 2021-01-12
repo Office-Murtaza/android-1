@@ -322,7 +322,7 @@ public class TransactionService {
         try {
             UserCoin userCoin = userService.getUserCoin(userId, coinCode.name());
             BigDecimal reserved = userCoin.getReservedBalance();
-            BigDecimal txFee = coinCode == CoinService.CoinEnum.CATM ? dto.getFee() : coinCode.getTxFee();
+            BigDecimal txFee = coinCode == CoinService.CoinEnum.CATM || coinCode == CoinService.CoinEnum.USDT ? walletService.convertToFee(coinCode) : coinCode.getTxFee();
 
             if (walletService.isEnoughBalance(coinCode, dto.getCryptoAmount()) && reserved.compareTo(dto.getCryptoAmount().add(txFee)) >= 0) {
                 String fromAddress = coinCode.getWalletAddress();
@@ -500,7 +500,7 @@ public class TransactionService {
     public void processCronTasks() {
         completePendingRecords();
 
-        deliverReservedGifts();
+        deliverTransfers();
         deliverSwaps();
     }
 
@@ -600,7 +600,7 @@ public class TransactionService {
         }
     }
 
-    private void deliverReservedGifts() {
+    private void deliverTransfers() {
         try {
             List<TransactionRecordWallet> list = walletRep.findAllByProcessedAndTypeAndStatusAndReceiverStatus(ProcessedType.SUCCESS.getValue(),
                     TransactionType.SEND_TRANSFER.getValue(),
