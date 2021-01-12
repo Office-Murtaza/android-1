@@ -205,8 +205,8 @@
     <string name="transaction_type_buy">Buy</string>
     <string name="transaction_type_sell">Sell</string>
     <string name="transaction_type_move">Move</string>
-    <string name="transaction_type_send_exchange">Swap send</string>
-    <string name="transaction_type_receive_exchange">Swap receive</string>
+    <string name="transaction_type_send_exchange">Send swap</string>
+    <string name="transaction_type_receive_exchange">Receive swap</string>
     <string name="transaction_type_reserve">Reserve</string>
     <string name="transaction_type_recall">Recall</string>
     <string name="transaction_type_self">Self</string>
@@ -308,9 +308,11 @@
     <!-- Coin to coin screen -->
     <string name="swap_screen_title">Swap</string>
     <string name="swap_screen_price">Price</string>
-    <string name="swap_screen_balance_formatted">Balance %1$s %2$s</string>
+    <string name="swap_screen_balance_formatted">Balance %1$s %2$s\nFee ~%3$s %4$s</string>
     <string name="swap_screen_rate_formatted"><![CDATA[<b>%1$s</b> %2$s ~ <b>%3$s</b> %4$s]]></string>
     <string name="swap_screen_fee_formatted"><![CDATA[%1$s\%% ~ %2$s %3$s]]></string>
+    <string name="swap_screen_usd_label">USD converted value</string>
+    <string name="swap_screen_usd_value">$ %1$s</string>
     <string name="swap_screen_fee">Platform fee</string>
     <string name="swap_screen_select_coin">Select coin please</string>
     <string name="swap_screen_error_coin_details_fetch">Unable to load coin details. Try again later</string>

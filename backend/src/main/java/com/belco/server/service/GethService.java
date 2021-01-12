@@ -524,7 +524,7 @@ public class GethService {
             input.setGasPrice(ByteString.copyFrom(Numeric.hexStringToByteArray(Long.toHexString(gasPrice))));
 
             EthereumAbiFunction function = new EthereumAbiFunction("transfer");
-            byte[] amountBytes = amount.multiply(ETH_DIVIDER).toBigInteger().toByteArray();
+            byte[] amountBytes = amount.multiply(token.getDivider()).toBigInteger().toByteArray();
             function.addParamAddress(Numeric.hexStringToByteArray(toAddress), false);
             function.addParamUInt256(amountBytes, false);
             byte[] encode = EthereumAbi.encode(function);
@@ -734,6 +734,11 @@ public class GethService {
 
                 return BigDecimal.ZERO;
             }
+
+            @Override
+            public BigDecimal getDivider() {
+                return ETH_DIVIDER;
+            }
         },
         USDT {
             @Override
@@ -758,10 +763,17 @@ public class GethService {
 
                 return BigDecimal.ZERO;
             }
+
+            @Override
+            public BigDecimal getDivider() {
+                return USDT_DIVIDER;
+            }
         };
 
         public abstract String getContractAddress();
 
         public abstract BigDecimal getBalance(String address);
+
+        public abstract BigDecimal getDivider();
     }
 }

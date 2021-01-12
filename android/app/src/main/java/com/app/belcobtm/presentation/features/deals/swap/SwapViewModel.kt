@@ -42,6 +42,15 @@ class SwapViewModel(
     private val _coinToReceive = MutableLiveData<CoinDataItem>()
     val coinToReceive: LiveData<CoinDataItem> = _coinToReceive
 
+    private val _coinToSendModel = MutableLiveData<CoinPresentationModel>()
+    val coinToSendModel: LiveData<CoinPresentationModel> = _coinToSendModel
+
+    private val _coinToReceiveModel = MutableLiveData<CoinPresentationModel>()
+    val coinToReceiveModel: LiveData<CoinPresentationModel> = _coinToReceiveModel
+
+    private val _usdReceiveAmount = MutableLiveData<Double>()
+    val usdReceiveAmount: LiveData<Double> = _usdReceiveAmount
+
     private val _swapRate = MutableLiveData<SwapRateModelView>()
     val swapRate: LiveData<SwapRateModelView> = _swapRate
 
@@ -114,6 +123,7 @@ class SwapViewModel(
     fun changeCoins() {
         val coinToSend = coinToSend.value ?: return
         val coinToReceive = coinToReceive.value ?: return
+        _coinToSendError.value = ValidationResult.Valid
         updateCoins(coinToReceive, coinToSend)
     }
 
@@ -219,9 +229,19 @@ class SwapViewModel(
                             1,
                             coinToSend.code,
                             atomicSwapAmount,
-                            coinToReceive.code
+                            coinToReceive.code,
                         )
                         updateFeeInfo(sendAmount)
+                        _coinToSendModel.value = CoinPresentationModel(
+                            coinToSend.code,
+                            coinToSend.balanceCoin,
+                            coinToSendDetails.txFee
+                        )
+                        _coinToReceiveModel.value = CoinPresentationModel(
+                            coinToReceive.code,
+                            coinToReceive.balanceCoin,
+                            coinToReceiveDetails.txFee
+                        )
                         // notify UI that coin details has beed successfully fetched
                         _coinsDetailsLoadingState.value = LoadingData.Success(Unit)
                     },
@@ -362,6 +382,7 @@ class SwapViewModel(
             platformFeeCoinsAmount,
             coinToReceive.code
         )
+        _usdReceiveAmount.value = calcReceiveAmountFromSend(sendAmount) * coinToReceive.priceUsd
     }
 
     private fun clearSendAndReceiveAmount() {
@@ -381,4 +402,10 @@ data class SwapRateModelView(
     val fromCoinCode: String,
     val swapAmount: Double,
     val swapCoinCode: String
+)
+
+data class CoinPresentationModel(
+    val coinCode: String,
+    val coinBalance: Double,
+    val coinFee: Double
 )

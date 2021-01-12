@@ -68,12 +68,13 @@
         style="@style/Text.Regular1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:lineSpacingExtra="8dp"
         android:paddingStart="@dimen/margin_normal"
         android:paddingEnd="@dimen/margin_normal"
         android:text="@string/max"
         app:layout_constraintBaseline_toBaselineOf="@id/tvMax"
         app:layout_constraintStart_toStartOf="parent"
-        tools:text="Balance: 0.6583 BTC" />
+        tools:text="Balance: 0.6583 BTC\nFee ~0.6555 BTC" />
 
     <TextView
         android:id="@+id/tvAdditionalHelperText"

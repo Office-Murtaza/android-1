@@ -24,6 +24,8 @@ public class JWTSecurityAdapter extends WebSecurityConfigurerAdapter {
 
     private final JWTEntryPoint entryPoint;
     private final JWTTokenFilter tokenFilter;
+
+    @Lazy
     private final UserService userService;
 
     @Value("${security.enabled}")

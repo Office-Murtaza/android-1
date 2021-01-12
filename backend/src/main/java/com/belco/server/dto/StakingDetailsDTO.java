@@ -35,8 +35,8 @@ public class StakingDetailsDTO {
     private Date cancelDate;
 
     private int duration;
-    private int untilWithdraw;
-    private int holdPeriod;
+    private int tillWithdrawal;
+    private int cancelHoldPeriod;
 
     public void setStatus(StakeStatus status) {
         this.status = status;
@@ -78,11 +78,11 @@ public class StakingDetailsDTO {
         this.duration = duration;
     }
 
-    public void setUntilWithdraw(int untilWithdraw) {
-        this.untilWithdraw = untilWithdraw;
+    public void setTillWithdrawal(int tillWithdrawal) {
+        this.tillWithdrawal = tillWithdrawal;
     }
 
-    public void setHoldPeriod(int holdPeriod) {
-        this.holdPeriod = holdPeriod;
+    public void setCancelHoldPeriod(int cancelHoldPeriod) {
+        this.cancelHoldPeriod = cancelHoldPeriod;
     }
 }

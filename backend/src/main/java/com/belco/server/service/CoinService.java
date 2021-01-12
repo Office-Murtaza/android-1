@@ -6,6 +6,7 @@ import com.belco.server.repository.CoinRep;
 import com.belco.server.util.Util;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -255,11 +256,6 @@ public class CoinService {
             }
 
             @Override
-            public CurrentBlockDTO getCurrentBlock() {
-                return null;
-            }
-
-            @Override
             public String getWalletAddress() {
                 return walletService.getCoinsMap().get(getCoinType()).getAddress();
             }
@@ -360,11 +356,6 @@ public class CoinService {
 
             @Override
             public CurrentAccountDTO getCurrentAccount(String address) {
-                return null;
-            }
-
-            @Override
-            public CurrentBlockDTO getCurrentBlock() {
                 return null;
             }
 
@@ -473,11 +464,6 @@ public class CoinService {
             }
 
             @Override
-            public CurrentBlockDTO getCurrentBlock() {
-                return null;
-            }
-
-            @Override
             public String getWalletAddress() {
                 return walletService.getCoinsMap().get(getCoinType()).getAddress();
             }
@@ -578,11 +564,6 @@ public class CoinService {
 
             @Override
             public CurrentAccountDTO getCurrentAccount(String address) {
-                return null;
-            }
-
-            @Override
-            public CurrentBlockDTO getCurrentBlock() {
                 return null;
             }
 
@@ -691,11 +672,6 @@ public class CoinService {
             }
 
             @Override
-            public CurrentBlockDTO getCurrentBlock() {
-                return null;
-            }
-
-            @Override
             public String getWalletAddress() {
                 return walletService.getCoinsMap().get(getCoinType()).getAddress();
             }
@@ -796,11 +772,6 @@ public class CoinService {
 
             @Override
             public CurrentAccountDTO getCurrentAccount(String address) {
-                return null;
-            }
-
-            @Override
-            public CurrentBlockDTO getCurrentBlock() {
                 return null;
             }
 
@@ -906,11 +877,6 @@ public class CoinService {
             }
 
             @Override
-            public CurrentBlockDTO getCurrentBlock() {
-                return null;
-            }
-
-            @Override
             public String getWalletAddress() {
                 return walletService.getCoinsMap().get(CoinType.ETHEREUM).getAddress();
             }
@@ -1008,11 +974,6 @@ public class CoinService {
 
             @Override
             public CurrentAccountDTO getCurrentAccount(String address) {
-                return null;
-            }
-
-            @Override
-            public CurrentBlockDTO getCurrentBlock() {
                 return null;
             }
 
@@ -1118,11 +1079,6 @@ public class CoinService {
             }
 
             @Override
-            public CurrentBlockDTO getCurrentBlock() {
-                return null;
-            }
-
-            @Override
             public String getWalletAddress() {
                 return walletService.getCoinsMap().get(getCoinType()).getAddress();
             }
@@ -1221,11 +1177,6 @@ public class CoinService {
             @Override
             public CurrentAccountDTO getCurrentAccount(String address) {
                 return rippledService.getCurrentAccount(address);
-            }
-
-            @Override
-            public CurrentBlockDTO getCurrentBlock() {
-                return null;
             }
 
             @Override
@@ -1338,11 +1289,6 @@ public class CoinService {
             }
 
             @Override
-            public CurrentBlockDTO getCurrentBlock() {
-                return trongridService.getCurrentBlock();
-            }
-
-            @Override
             public String getWalletAddress() {
                 return walletService.getCoinsMap().get(getCoinType()).getAddress();
             }
@@ -1406,8 +1352,6 @@ public class CoinService {
         public abstract NonceDTO getNonce(String address);
 
         public abstract CurrentAccountDTO getCurrentAccount(String address);
-
-        public abstract CurrentBlockDTO getCurrentBlock();
 
         public abstract String getWalletAddress();
 

@@ -42,8 +42,8 @@ public class TransactionService {
     private String gbUrl;
     @Value("${stake.base-period}")
     private int stakeBasePeriod;
-    @Value("${stake.hold-period}")
-    private int stakeHoldPeriod;
+    @Value("${stake.cancel-hold-period}")
+    private int stakeCancelHoldPeriod;
     @Value("${stake.annual-period}")
     private int stakeAnnualPeriod;
     @Value("${stake.annual-percent}")
@@ -322,7 +322,7 @@ public class TransactionService {
         try {
             UserCoin userCoin = userService.getUserCoin(userId, coinCode.name());
             BigDecimal reserved = userCoin.getReservedBalance();
-            BigDecimal txFee = coinCode == CoinService.CoinEnum.CATM ? dto.getFee() : coinCode.getTxFee();
+            BigDecimal txFee = coinCode == CoinService.CoinEnum.CATM || coinCode == CoinService.CoinEnum.USDT ? walletService.convertToFee(coinCode) : coinCode.getTxFee();
 
             if (walletService.isEnoughBalance(coinCode, dto.getCryptoAmount()) && reserved.compareTo(dto.getCryptoAmount().add(txFee)) >= 0) {
                 String fromAddress = coinCode.getWalletAddress();
@@ -443,7 +443,7 @@ public class TransactionService {
         StakingDetailsDTO dto = new StakingDetailsDTO();
         dto.setStatus(StakeStatus.NOT_EXIST);
         dto.setRewardAnnualPercent(stakeAnnualPercent);
-        dto.setHoldPeriod(stakeHoldPeriod / stakeBasePeriod);
+        dto.setCancelHoldPeriod(stakeCancelHoldPeriod / stakeBasePeriod);
 
         try {
             Identity identity = userService.findByUserId(userId);
@@ -479,7 +479,7 @@ public class TransactionService {
                     dto.setCancelDate(cancelStakeRec.getCreateDate());
                     dto.setRewardAmount(createStakeRec.getAmount().multiply(Util.convertPercentToDecimal(percent)).stripTrailingZeros());
                     dto.setRewardAnnualAmount(createStakeRec.getAmount().multiply(Util.convertPercentToDecimal(BigDecimal.valueOf(stakeAnnualPercent))).stripTrailingZeros());
-                    dto.setUntilWithdraw(Math.max(0, stakeHoldPeriod / stakeBasePeriod - holdDays));
+                    dto.setTillWithdrawal(Math.max(0, stakeCancelHoldPeriod / stakeBasePeriod - holdDays));
 
                     if (StringUtils.isNotBlank(cancelStakeRec.getRefTxId())) {
                         TransactionRecordWallet withdrawStakeRec = walletRep.findFirstByTxId(cancelStakeRec.getRefTxId()).get();
@@ -500,7 +500,7 @@ public class TransactionService {
     public void processCronTasks() {
         completePendingRecords();
 
-        deliverReservedGifts();
+        deliverTransfers();
         deliverSwaps();
     }
 
@@ -600,7 +600,7 @@ public class TransactionService {
         }
     }
 
-    private void deliverReservedGifts() {
+    private void deliverTransfers() {
         try {
             List<TransactionRecordWallet> list = walletRep.findAllByProcessedAndTypeAndStatusAndReceiverStatus(ProcessedType.SUCCESS.getValue(),
                     TransactionType.SEND_TRANSFER.getValue(),
