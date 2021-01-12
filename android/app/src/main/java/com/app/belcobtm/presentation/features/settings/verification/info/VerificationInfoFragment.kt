@@ -1,38 +1,38 @@
 package com.app.belcobtm.presentation.features.settings.verification.info
 
 import android.graphics.drawable.GradientDrawable
+import android.view.LayoutInflater
+import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.observe
 import com.app.belcobtm.R
+import com.app.belcobtm.databinding.FragmentVerificationInfoBinding
 import com.app.belcobtm.presentation.core.extensions.toggle
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
 import com.app.belcobtm.presentation.core.ui.fragment.BaseFragment
-import com.app.belcobtm.presentation.features.settings.SettingsFragment.Companion.SETTINGS_MAIN
-import kotlinx.android.synthetic.main.fragment_verification_info.*
 import org.koin.android.viewmodel.ext.android.viewModel
 
 
-class VerificationInfoFragment: BaseFragment() {
+class VerificationInfoFragment : BaseFragment<FragmentVerificationInfoBinding>() {
     val viewModel by viewModel<VerificationInfoViewModel>()
-    override val resourceLayout = R.layout.fragment_verification_info
     override val isHomeButtonEnabled = true
     override var isMenuEnabled = true
     private var appliedState: LoadingData<VerificationInfoState>? = null
 
-    override fun initViews() {
+    override fun FragmentVerificationInfoBinding.initViews() {
         appliedState = null
         setToolbarTitle(R.string.kyc_label)
         viewModel.updateData()
     }
 
-    override fun initListeners() {
+    override fun FragmentVerificationInfoBinding.initListeners() {
         nextButton.setOnClickListener {
             viewModel.onNextClick()
         }
     }
 
-    override fun initObservers() {
-        viewModel.actionData.observe(this) { action ->
+    override fun FragmentVerificationInfoBinding.initObservers() {
+        viewModel.actionData.observe(viewLifecycleOwner) { action ->
             when (action) {
                 is VerificationInfoAction.NavigateAction -> navigate(action.navDirections)
             }
@@ -76,4 +76,7 @@ class VerificationInfoFragment: BaseFragment() {
             }
         )
     }
+
+    override fun createBinding(inflater: LayoutInflater, container: ViewGroup?): FragmentVerificationInfoBinding =
+        FragmentVerificationInfoBinding.inflate(inflater, container, false)
 }

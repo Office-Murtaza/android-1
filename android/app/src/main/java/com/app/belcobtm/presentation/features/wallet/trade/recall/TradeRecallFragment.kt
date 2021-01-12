@@ -1,20 +1,21 @@
 package com.app.belcobtm.presentation.features.wallet.trade.recall
 
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import com.app.belcobtm.R
+import com.app.belcobtm.databinding.FragmentTradeRecallBinding
 import com.app.belcobtm.presentation.core.extensions.*
 import com.app.belcobtm.presentation.core.helper.AlertHelper
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
 import com.app.belcobtm.presentation.core.ui.fragment.BaseFragment
 import com.app.belcobtm.presentation.core.watcher.DoubleTextWatcher
 import com.app.belcobtm.presentation.features.wallet.trade.reserve.InputFieldState
-import kotlinx.android.synthetic.main.fragment_trade_recall.*
 import org.koin.android.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
-class TradeRecallFragment : BaseFragment() {
-    override val resourceLayout: Int = R.layout.fragment_trade_recall
+class TradeRecallFragment : BaseFragment<FragmentTradeRecallBinding>() {
     override var isMenuEnabled: Boolean = true
     override val isToolbarEnabled: Boolean = true
     override val isHomeButtonEnabled: Boolean = true
@@ -34,9 +35,9 @@ class TradeRecallFragment : BaseFragment() {
             val cryptoAmount = it.getDouble()
             val usdAmount = cryptoAmount * viewModel.coinItem.priceUsd
             if (cryptoAmount > 0) {
-                amountUsdView.setText(usdAmount.toStringUsd())
+                binding.amountUsdView.setText(usdAmount.toStringUsd())
             } else {
-                amountUsdView.clearText()
+                binding.amountUsdView.clearText()
             }
             viewModel.validateCryptoAmount(cryptoAmount)
         },
@@ -44,15 +45,15 @@ class TradeRecallFragment : BaseFragment() {
             val usdAmount = it.getDouble()
             val cryptoAmount = usdAmount / viewModel.coinItem.priceUsd
             if (usdAmount > 0) {
-                amountCryptoView.setText(cryptoAmount.toStringCoin())
+                binding.amountCryptoView.setText(cryptoAmount.toStringCoin())
             } else {
-                amountCryptoView.clearText()
+                binding.amountCryptoView.clearText()
             }
             viewModel.validateCryptoAmount(cryptoAmount)
         }
     )
 
-    override fun initListeners() {
+    override fun FragmentTradeRecallBinding.initListeners() {
         maxCryptoView.setOnClickListener {
             amountCryptoView.setText(
                 viewModel.getMaxValue().toStringCoin()
@@ -68,7 +69,7 @@ class TradeRecallFragment : BaseFragment() {
         recallButtonView.setOnClickListener { viewModel.performTransaction() }
     }
 
-    override fun initObservers() {
+    override fun FragmentTradeRecallBinding.initObservers() {
         viewModel.initialLoadLiveData.listen(success = {})
         viewModel.transactionLiveData.listen(
             success = {
@@ -78,7 +79,7 @@ class TradeRecallFragment : BaseFragment() {
                 popBackStack()
             }
         )
-        viewModel.cryptoFieldState.observe(this, Observer { fieldState ->
+        viewModel.cryptoFieldState.observe(viewLifecycleOwner, Observer { fieldState ->
             when (fieldState) {
                 InputFieldState.Valid -> amountCryptoView.clearError()
                 InputFieldState.LessThanNeedError -> amountCryptoView.error =
@@ -89,7 +90,7 @@ class TradeRecallFragment : BaseFragment() {
                     getString(R.string.trade_recall_screen_not_enough_eth)
             }
         })
-        viewModel.usdFieldState.observe(this, Observer { fieldState ->
+        viewModel.usdFieldState.observe(viewLifecycleOwner, Observer { fieldState ->
             when (fieldState) {
                 InputFieldState.Valid -> amountUsdView.clearError()
                 InputFieldState.LessThanNeedError -> amountUsdView.error =
@@ -100,12 +101,12 @@ class TradeRecallFragment : BaseFragment() {
                     getString(R.string.trade_recall_screen_not_enough_eth)
             }
         })
-        viewModel.submitButtonEnable.observe(this, Observer { enable ->
+        viewModel.submitButtonEnable.observe(viewLifecycleOwner, Observer { enable ->
             recallButtonView.isEnabled = enable
         })
     }
 
-    override fun initViews() {
+    override fun FragmentTradeRecallBinding.initViews() {
         setToolbarTitle(R.string.trade_recall_screen_title)
         priceUsdView.text = getString(R.string.text_usd, viewModel.coinItem.priceUsd.toStringUsd())
         balanceCryptoView.text = getString(
@@ -126,4 +127,7 @@ class TradeRecallFragment : BaseFragment() {
         )
         amountCryptoView.hint = getString(R.string.text_amount, viewModel.coinItem.code)
     }
+
+    override fun createBinding(inflater: LayoutInflater, container: ViewGroup?): FragmentTradeRecallBinding =
+        FragmentTradeRecallBinding.inflate(inflater, container, false)
 }

@@ -1,11 +1,10 @@
 package com.app.belcobtm.presentation.features.authorization.welcome
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.app.belcobtm.R
-import kotlinx.android.synthetic.main.item_welcome_pager.view.*
+import com.app.belcobtm.databinding.ItemWelcomePagerBinding
 
 class WelcomePagerAdapter : RecyclerView.Adapter<WelcomePagerAdapter.Holder>() {
     private val itemList: List<WelcomePagerItem> = listOf(
@@ -28,12 +27,14 @@ class WelcomePagerAdapter : RecyclerView.Adapter<WelcomePagerAdapter.Holder>() {
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
-    ): Holder = Holder(LayoutInflater.from(parent.context).inflate(R.layout.item_welcome_pager, parent, false))
+    ): Holder = Holder(
+        ItemWelcomePagerBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+    )
 
     override fun onBindViewHolder(holder: Holder, position: Int) {
-        holder.itemView.imageView.setImageResource(itemList[position].imageRes)
-        holder.itemView.textView.text = holder.itemView.context.getString(itemList[position].nameRes)
+        holder.binding.imageView.setImageResource(itemList[position].imageRes)
+        holder.binding.textView.text = holder.itemView.context.getString(itemList[position].nameRes)
     }
 
-    class Holder(view: View) : RecyclerView.ViewHolder(view)
+    class Holder(val binding: ItemWelcomePagerBinding) : RecyclerView.ViewHolder(binding.root)
 }

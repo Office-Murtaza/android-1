@@ -22,7 +22,7 @@
         android:background="@color/thin_divider" />
 
     <com.app.belcobtm.presentation.core.views.SettingsItemView
-        android:id="@+id/privacyItem"
+        android:id="@+id/privacy_item"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingTop="@dimen/margin_quarter"
@@ -35,7 +35,7 @@
         android:background="@color/thin_divider" />
 
     <com.app.belcobtm.presentation.core.views.SettingsItemView
-        android:id="@+id/complaintItem"
+        android:id="@+id/complaint_item"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingTop="@dimen/margin_quarter"
@@ -48,7 +48,7 @@
         android:background="@color/thin_divider" />
 
     <com.app.belcobtm.presentation.core.views.SettingsItemView
-        android:id="@+id/termsItem"
+        android:id="@+id/terms_item"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingTop="@dimen/margin_quarter"
@@ -61,7 +61,7 @@
         android:background="@color/thin_divider" />
 
     <com.app.belcobtm.presentation.core.views.SettingsItemView
-        android:id="@+id/versionItem"
+        android:id="@+id/version_item"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingTop="@dimen/margin_quarter"

@@ -1,20 +1,22 @@
 package com.app.belcobtm.presentation.features.sms.code
 
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.fragment.app.setFragmentResult
 import com.app.belcobtm.R
+import com.app.belcobtm.databinding.FragmentSmsCodeBinding
 import com.app.belcobtm.domain.Failure
 import com.app.belcobtm.domain.authorization.interactor.AUTH_ERROR_PHONE_NOT_SUPPORTED
 import com.app.belcobtm.presentation.core.extensions.*
 import com.app.belcobtm.presentation.core.helper.AlertHelper
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
 import com.app.belcobtm.presentation.core.ui.fragment.BaseFragment
-import kotlinx.android.synthetic.main.fragment_sms_code.*
 import org.koin.android.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
-class SmsCodeFragment : BaseFragment() {
+class SmsCodeFragment : BaseFragment<FragmentSmsCodeBinding>() {
     private val viewModel: SmsCodeViewModel by viewModel {
         parametersOf(
             requireArguments().getString(
@@ -23,20 +25,19 @@ class SmsCodeFragment : BaseFragment() {
         )
     }
     private var isResendClicked: Boolean = false
-    override val resourceLayout: Int = R.layout.fragment_sms_code
     override val isToolbarEnabled: Boolean = true
     override val isHomeButtonEnabled: Boolean = true
     override val retryListener: View.OnClickListener =
         View.OnClickListener { viewModel.sendSmsToDevice() }
 
-    override fun initViews() {
+    override fun FragmentSmsCodeBinding.initViews() {
         setToolbarTitle(R.string.sms_code_screen_title)
         setToolbarTitle()
         setNextButtonTitle()
         isMenuEnabled = false
     }
 
-    override fun initListeners() {
+    override fun FragmentSmsCodeBinding.initListeners() {
         resendCodeButtonView.setOnClickListener {
             isResendClicked = true
             pinEntryView.setText("")
@@ -51,7 +52,7 @@ class SmsCodeFragment : BaseFragment() {
         }
     }
 
-    override fun initObservers() {
+    override fun FragmentSmsCodeBinding.initObservers() {
         viewModel.smsLiveData.listen(
             success = {
                 errorTextView.hide()
@@ -106,7 +107,7 @@ class SmsCodeFragment : BaseFragment() {
 
     private fun openNextScreen() {
         val isSuccessLoadingData =
-            (viewModel.smsLiveData.value as? LoadingData.Success)?.data == pinEntryView.getString()
+            (viewModel.smsLiveData.value as? LoadingData.Success)?.data == binding.pinEntryView.getString()
         when {
             isSuccessLoadingData -> {
                 val nextScreenId = requireArguments().getInt(TAG_NEXT_FRAGMENT_ID, -1)
@@ -117,9 +118,9 @@ class SmsCodeFragment : BaseFragment() {
                     popBackStack()
                 }
             }
-            !isSuccessLoadingData && pinEntryView.getString().length == SMS_CODE_LENGTH -> {
-                errorMessageView.show()
-                pinEntryView.isError = true
+            !isSuccessLoadingData && binding.pinEntryView.getString().length == SMS_CODE_LENGTH -> {
+                binding.errorMessageView.show()
+                binding.pinEntryView.isError = true
             }
         }
     }
@@ -134,7 +135,7 @@ class SmsCodeFragment : BaseFragment() {
     }
 
     private fun setNextButtonTitle() {
-        nextButtonView.text = getString(R.string.next)
+        binding.nextButtonView.text = getString(R.string.next)
     }
 
     companion object {
@@ -145,4 +146,7 @@ class SmsCodeFragment : BaseFragment() {
         const val REQUEST_KEY = "sms_code_request_key"
         const val REQUEST_TAG_IS_SUCCESS = "sms_code_is_success"
     }
+
+    override fun createBinding(inflater: LayoutInflater, container: ViewGroup?): FragmentSmsCodeBinding =
+        FragmentSmsCodeBinding.inflate(inflater, container, false)
 }

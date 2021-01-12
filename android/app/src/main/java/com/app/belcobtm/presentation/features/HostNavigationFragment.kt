@@ -11,14 +11,17 @@ import androidx.lifecycle.LiveData
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import com.app.belcobtm.R
+import com.app.belcobtm.databinding.FragmentNavigationBinding
 import com.app.belcobtm.presentation.core.extensions.hide
 import com.app.belcobtm.presentation.core.extensions.setupWithNavController
 import com.app.belcobtm.presentation.core.extensions.show
-import kotlinx.android.synthetic.main.fragment_navigation.*
 import permissions.dispatcher.NeedsPermission
 
 class HostNavigationFragment : NavHostFragment() {
+
     private lateinit var currentNavHostController: LiveData<NavController>
+    private lateinit var binding: FragmentNavigationBinding
+
     private val navGraphIds = listOf(
         R.navigation.nav_wallet,
         R.navigation.nav_deals,
@@ -26,16 +29,17 @@ class HostNavigationFragment : NavHostFragment() {
         R.navigation.nav_settings
     )
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? =
-        inflater.inflate(R.layout.fragment_navigation, container, false)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        binding = FragmentNavigationBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        currentNavHostController = bottomNavigationView.setupWithNavController(
+        currentNavHostController = binding.bottomNavigationView.setupWithNavController(
             navGraphIds,
             childFragmentManager,
-            R.id.navHostFragment,
+            R.id.nav_host_fragment,
             Intent()
         )
     }
@@ -56,7 +60,7 @@ class HostNavigationFragment : NavHostFragment() {
         return false
     }
 
-    fun showBottomMenu() = bottomNavigationView.show()
+    fun showBottomMenu() = binding.bottomNavigationView.show()
 
-    fun hideBottomMenu() = bottomNavigationView.hide()
+    fun hideBottomMenu() = binding.bottomNavigationView.hide()
 }

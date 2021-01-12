@@ -7,7 +7,7 @@
     tools:parentTag="androidx.constraintlayout.widget.ConstraintLayout">
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/image_view"
         android:layout_width="@dimen/margin_large"
         android:layout_height="@dimen/margin_large"
         android:layout_marginStart="@dimen/margin_main"
@@ -20,7 +20,7 @@
         tools:visibility="visible" />
 
     <TextView
-        android:id="@+id/labelText"
+        android:id="@+id/label_text"
         style="@style/SettingsLabel"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -29,21 +29,21 @@
         android:layout_marginEnd="@dimen/margin_main"
         android:layout_marginBottom="@dimen/margin_main"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/valueText"
-        app:layout_constraintStart_toEndOf="@id/imageView"
+        app:layout_constraintEnd_toStartOf="@id/value_text"
+        app:layout_constraintStart_toEndOf="@id/image_view"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/valueText"
+        android:id="@+id/value_text"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/margin_main"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/ivChevron"
+        app:layout_constraintEnd_toStartOf="@id/iv_chevron"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
-        android:id="@+id/ivChevron"
+        android:id="@+id/iv_chevron"
         android:layout_width="24dp"
         android:layout_height="24dp"
         android:layout_marginEnd="@dimen/margin_main"

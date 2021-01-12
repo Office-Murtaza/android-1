@@ -1,22 +1,23 @@
 package com.app.belcobtm.presentation.features.wallet.trade.reserve
 
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import com.app.belcobtm.R
+import com.app.belcobtm.databinding.FragmentTradeReserveBinding
 import com.app.belcobtm.presentation.core.extensions.*
 import com.app.belcobtm.presentation.core.helper.AlertHelper
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
 import com.app.belcobtm.presentation.core.ui.fragment.BaseFragment
 import com.app.belcobtm.presentation.core.watcher.DoubleTextWatcher
-import kotlinx.android.synthetic.main.fragment_trade_reserve.*
 import org.koin.android.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
-class TradeReserveFragment : BaseFragment() {
+class TradeReserveFragment : BaseFragment<FragmentTradeReserveBinding>() {
     override val isToolbarEnabled: Boolean = true
     override val isHomeButtonEnabled: Boolean = true
     override var isMenuEnabled: Boolean = true
-    override val resourceLayout: Int = R.layout.fragment_trade_reserve
     override val retryListener: View.OnClickListener = View.OnClickListener {
         val initValue = viewModel.initialLoadLiveData.value
         if (initValue == null || initValue is LoadingData.Success) {
@@ -32,9 +33,9 @@ class TradeReserveFragment : BaseFragment() {
         firstTextWatcher = {
             val cryptoAmount = it.getDouble()
             if (cryptoAmount > 0) {
-                amountUsdView.setText((cryptoAmount * viewModel.coinItem.priceUsd).toStringUsd())
+                binding.amountUsdView.setText((cryptoAmount * viewModel.coinItem.priceUsd).toStringUsd())
             } else {
-                amountUsdView.clearText()
+                binding.amountUsdView.clearText()
             }
             viewModel.validateCryptoAmount(cryptoAmount)
         },
@@ -42,15 +43,15 @@ class TradeReserveFragment : BaseFragment() {
             val usdAmount = it.getDouble()
             val cryptoAmount = usdAmount / viewModel.coinItem.priceUsd
             if (usdAmount > 0) {
-                amountCryptoView.setText(cryptoAmount.toStringCoin())
+                binding.amountCryptoView.setText(cryptoAmount.toStringCoin())
             } else {
-                amountCryptoView.clearText()
+                binding.amountCryptoView.clearText()
             }
             viewModel.validateCryptoAmount(cryptoAmount)
         }
     )
 
-    override fun initListeners() {
+    override fun FragmentTradeReserveBinding.initListeners() {
         maxCryptoView.setOnClickListener {
             amountCryptoView.setText(
                 viewModel.getMaxValue().toStringCoin()
@@ -66,7 +67,7 @@ class TradeReserveFragment : BaseFragment() {
         reserveButtonView.setOnClickListener { viewModel.createTransaction() }
     }
 
-    override fun initObservers() {
+    override fun FragmentTradeReserveBinding.initObservers() {
         viewModel.initialLoadLiveData.listen(success = {})
         viewModel.createTransactionLiveData.listen(
             success = {
@@ -98,12 +99,12 @@ class TradeReserveFragment : BaseFragment() {
                     getString(R.string.trade_reserve_screen_not_enough_eth)
             }
         })
-        viewModel.submitButtonEnable.observe(this, Observer { enable ->
+        viewModel.submitButtonEnable.observe(viewLifecycleOwner, Observer { enable ->
             reserveButtonView.isEnabled = enable
         })
     }
 
-    override fun initViews() {
+    override fun FragmentTradeReserveBinding.initViews() {
         setToolbarTitle(R.string.trade_reserve_screen_title)
         priceUsdView.text = getString(R.string.text_usd, viewModel.coinItem.priceUsd.toStringUsd())
         balanceCryptoView.text = getString(
@@ -124,4 +125,7 @@ class TradeReserveFragment : BaseFragment() {
         )
         amountCryptoView.hint = getString(R.string.text_amount, viewModel.coinItem.code)
     }
+
+    override fun createBinding(inflater: LayoutInflater, container: ViewGroup?): FragmentTradeReserveBinding =
+        FragmentTradeReserveBinding.inflate(inflater, container, false)
 }

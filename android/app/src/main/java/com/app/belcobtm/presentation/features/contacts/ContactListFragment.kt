@@ -4,24 +4,25 @@ import android.Manifest
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import androidx.lifecycle.observe
 import com.app.belcobtm.R
+import com.app.belcobtm.databinding.FragmentContactListBinding
 import com.app.belcobtm.presentation.core.adapter.MultiTypeAdapter
 import com.app.belcobtm.presentation.core.extensions.actionDoneListener
 import com.app.belcobtm.presentation.core.ui.fragment.BaseFragment
 import com.app.belcobtm.presentation.features.contacts.adapter.ContactListDiffUtil
 import com.app.belcobtm.presentation.features.contacts.adapter.delegate.ContactDelegate
 import com.app.belcobtm.presentation.features.contacts.adapter.delegate.ContactHeaderDelegate
-import kotlinx.android.synthetic.main.fragment_contact_list.*
 import org.koin.android.viewmodel.ext.android.viewModel
 import permissions.dispatcher.NeedsPermission
 import permissions.dispatcher.RuntimePermissions
 
 @RuntimePermissions
-class ContactListFragment : BaseFragment() {
+class ContactListFragment : BaseFragment<FragmentContactListBinding>() {
 
-    override val resourceLayout: Int = R.layout.fragment_contact_list
     override var isMenuEnabled: Boolean = true
     override val isHomeButtonEnabled: Boolean = true
 
@@ -55,10 +56,20 @@ class ContactListFragment : BaseFragment() {
 
     @NeedsPermission(Manifest.permission.READ_CONTACTS)
     fun loadInitialData() {
-        viewModel.loadContacts(searchEditText.text.toString())
+        viewModel.loadContacts(binding.searchEditText.text.toString())
     }
 
-    override fun initListeners() {
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        // NOTE: delegate the permission handling to generated method
+        onRequestPermissionsResult(requestCode, grantResults)
+    }
+
+    override fun FragmentContactListBinding.initListeners() {
         searchEditText.addTextChangedListener(searchQueryTextWatcher)
         searchEditText.actionDoneListener {
             hideKeyboard()
@@ -69,12 +80,12 @@ class ContactListFragment : BaseFragment() {
         }
     }
 
-    override fun initViews() {
+    override fun FragmentContactListBinding.initViews() {
         contactsList.adapter = adapter
         setToolbarTitle(R.string.transfer_screen_title)
     }
 
-    override fun initObservers() {
+    override fun FragmentContactListBinding.initObservers() {
         viewModel.contacts.observe(viewLifecycleOwner, adapter::update)
         viewModel.selectedContact.observe(viewLifecycleOwner) {
             if (it != null) {
@@ -87,9 +98,9 @@ class ContactListFragment : BaseFragment() {
     }
 
     private fun validateSearchQuery() {
-        val phoneNumber = searchEditText.text.toString()
+        val phoneNumber = binding.searchEditText.text.toString()
         if (viewModel.isValidMobileNumber(phoneNumber)) {
-            searchView.error = null
+            binding.searchView.error = null
             val selectedContact = viewModel.selectedContact.value
             navigate(
                 ContactListFragmentDirections.toSendGifFragment(
@@ -97,7 +108,10 @@ class ContactListFragment : BaseFragment() {
                 )
             )
         } else {
-            searchView.error = getString(R.string.transfer_phone_number_invalid)
+            binding.searchView.error = getString(R.string.transfer_phone_number_invalid)
         }
     }
+
+    override fun createBinding(inflater: LayoutInflater, container: ViewGroup?): FragmentContactListBinding =
+        FragmentContactListBinding.inflate(inflater, container, false)
 }

@@ -1,39 +1,40 @@
 package com.app.belcobtm.presentation.features.wallet.staking
 
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import com.app.belcobtm.R
 import com.app.belcobtm.data.rest.transaction.response.StakeDetailsStatus
+import com.app.belcobtm.databinding.FragmentStakingBinding
 import com.app.belcobtm.domain.wallet.LocalCoinType
 import com.app.belcobtm.presentation.core.extensions.*
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
 import com.app.belcobtm.presentation.core.ui.fragment.BaseFragment
 import com.app.belcobtm.presentation.core.watcher.DoubleTextWatcher
-import kotlinx.android.synthetic.main.fragment_staking.*
 import org.koin.android.viewmodel.ext.android.viewModel
 
-class StakingFragment : BaseFragment() {
+class StakingFragment : BaseFragment<FragmentStakingBinding>() {
     private val viewModel: StakingViewModel by viewModel()
     private val doubleTextWatcher: DoubleTextWatcher = DoubleTextWatcher(
         firstTextWatcher = { editable ->
             val cryptoAmount: Double = editable.getDouble()
-            amountUsdView.text = if (cryptoAmount > 0) {
+            binding.amountUsdView.text = if (cryptoAmount > 0) {
                 getString(R.string.text_usd, (cryptoAmount * viewModel.getUsdPrice()).toStringUsd())
             } else {
                 getString(R.string.text_usd, "0.0")
             }
 
-            stakeButtonView.isEnabled = amountCryptoView.isNotBlank()
-                    && amountCryptoView.getDouble() > 0
+            binding.stakeButtonView.isEnabled = binding.amountCryptoView.isNotBlank()
+                    && binding.amountCryptoView.getDouble() > 0
         }
     )
-    override val resourceLayout = R.layout.fragment_staking
     override var isMenuEnabled = true
     override val isHomeButtonEnabled = true
     override val retryListener: View.OnClickListener = View.OnClickListener {
         when (val loadingData = viewModel.transactionLiveData.value) {
             is LoadingData.Error -> when (loadingData.data) {
-                StakingTransactionState.CREATE -> viewModel.stakeCreate(amountCryptoView.getDouble())
+                StakingTransactionState.CREATE -> viewModel.stakeCreate(binding.amountCryptoView.getDouble())
                 StakingTransactionState.CANCEL -> viewModel.stakeCancel()
                 StakingTransactionState.WITHDRAW -> viewModel.unstakeCreateTransaction()
             }
@@ -41,12 +42,11 @@ class StakingFragment : BaseFragment() {
         }
     }
 
-    override fun initViews() {
-        super.initViews()
+    override fun FragmentStakingBinding.initViews() {
         setToolbarTitle(R.string.staking_screen_title)
     }
 
-    override fun initListeners() {
+    override fun FragmentStakingBinding.initListeners() {
         maxView.setOnClickListener {
             amountCryptoView.setText(viewModel.getMaxValue().toStringCoin())
         }
@@ -76,7 +76,7 @@ class StakingFragment : BaseFragment() {
     }
 
 
-    override fun initObservers() {
+    override fun FragmentStakingBinding.initObservers() {
         viewModel.stakeDetailsLiveData.listen(success = {
             with(it) {
                 priceUsdView.text = price.toStringUsd()
@@ -216,35 +216,35 @@ class StakingFragment : BaseFragment() {
     }
 
     private fun StakingScreenItem.updateStakingDetails() {
-        statusGroupView.show()
-        editStakeGroupView.hide()
+        binding.statusGroupView.show()
+        binding.editStakeGroupView.hide()
         amount?.let { amount ->
-            amountView.text = getString(
-                    R.string.staking_screen_staked_amount,
-                    amount.toStringCoin()
+            binding.amountView.text = getString(
+                R.string.staking_screen_staked_amount,
+                amount.toStringCoin()
             )
-            amountGroupView.show()
+            binding.amountGroupView.show()
         }
         createDate?.let { createDate ->
-            createDateView.text = createDate
-            createDateGroupView.show()
+            binding.createDateView.text = createDate
+            binding.createDateGroupView.show()
         }
         duration?.let {
-            durationView.text =
-                    resources.getQuantityString(
-                            R.plurals.staking_screen_time_value,
-                            duration,
-                            duration
-                    )
-            durationGroupView.show()
+            binding.durationView.text =
+                resources.getQuantityString(
+                    R.plurals.staking_screen_time_value,
+                    duration,
+                    duration
+                )
+            binding.durationGroupView.show()
         }
         if (rewardsAmount != null && rewardsPercent != null) {
-            rewardsView.text = getString(
-                    R.string.staking_screen_rewards_amount,
-                    rewardsAmount.toStringCoin(),
-                    rewardsPercent
+            binding.rewardsView.text = getString(
+                R.string.staking_screen_rewards_amount,
+                rewardsAmount.toStringCoin(),
+                rewardsPercent
             )
-            rewardsGroupView.show()
+            binding.rewardsGroupView.show()
         }
     }
 
@@ -253,7 +253,7 @@ class StakingFragment : BaseFragment() {
             showError(R.string.withdraw_screen_where_money_libovski)
             false
         }
-        viewModel.getMaxValue() < amountCryptoView.getDouble() -> {
+        viewModel.getMaxValue() < binding.amountCryptoView.getDouble() -> {
             showError(R.string.balance_amount_exceeded)
             false
         }
@@ -261,8 +261,11 @@ class StakingFragment : BaseFragment() {
     }
 
     private fun updateStatusView(textColor: Int, backgroundColor: Int, resText: Int) {
-        statusView.setTextColor(ContextCompat.getColor(requireContext(), textColor))
-        statusView.setBackgroundResource(backgroundColor)
-        statusView.setText(resText)
+        binding.statusView.setTextColor(ContextCompat.getColor(requireContext(), textColor))
+        binding.statusView.setBackgroundResource(backgroundColor)
+        binding.statusView.setText(resText)
     }
+
+    override fun createBinding(inflater: LayoutInflater, container: ViewGroup?): FragmentStakingBinding =
+        FragmentStakingBinding.inflate(inflater, container, false)
 }

@@ -2,7 +2,6 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/rootView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
@@ -16,14 +15,14 @@
         android:paddingBottom="16dp">
 
         <androidx.constraintlayout.widget.Barrier
-            android:id="@+id/priceBarrierView"
+            android:id="@+id/price_barrier_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:barrierDirection="end"
-            app:constraint_referenced_ids="untilWithdrawTitleView,holdPeriodTitleView,createDateTitleView,cancelDateTitleView,statusTitleView,balanceTitleView,priceTitleView,amountTitleView,rewardsTitleView,durationTitleView,reservedTitleView" />
+            app:constraint_referenced_ids="until_withdraw_title_view,hold_period_title_view,create_date_title_view,cancelDateTitleView,statusTitleView,balance_title_view,price_title_view,amountTitleView,rewards_title_view,duration_title_view,reserved_title_view" />
 
         <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/priceTitleView"
+            android:id="@+id/price_title_view"
             style="@style/Transaction.Title.Medium.Key"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
@@ -32,52 +31,52 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/priceUsdView"
+            android:id="@+id/price_usd_view"
             style="@style/Transaction.Title.Medium.Value"
             android:layout_marginStart="16dp"
-            app:layout_constraintStart_toEndOf="@id/priceBarrierView"
-            app:layout_constraintTop_toTopOf="@id/priceTitleView"
+            app:layout_constraintStart_toEndOf="@id/price_barrier_view"
+            app:layout_constraintTop_toTopOf="@id/price_title_view"
             tools:text="2525.31 USD" />
 
         <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/balanceTitleView"
+            android:id="@+id/balance_title_view"
             style="@style/Transaction.Title.Medium.Key"
             android:layout_marginTop="16dp"
             android:text="@string/staking_screen_balance"
-            app:layout_constraintStart_toStartOf="@id/priceTitleView"
-            app:layout_constraintTop_toBottomOf="@id/priceTitleView" />
+            app:layout_constraintStart_toStartOf="@id/price_title_view"
+            app:layout_constraintTop_toBottomOf="@id/price_title_view" />
 
         <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/balanceCryptoView"
+            android:id="@+id/balance_crypto_view"
             style="@style/Transaction.Title.Medium.Value"
-            app:layout_constraintStart_toEndOf="@id/priceBarrierView"
-            app:layout_constraintStart_toStartOf="@id/priceUsdView"
-            app:layout_constraintTop_toTopOf="@id/balanceTitleView"
+            app:layout_constraintStart_toEndOf="@id/price_barrier_view"
+            app:layout_constraintStart_toStartOf="@id/price_usd_view"
+            app:layout_constraintTop_toTopOf="@id/balance_title_view"
             tools:text="0.000902 BTC" />
 
         <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/exchangeView"
+            android:id="@+id/exchange_view"
             android:layout_width="16dp"
             android:layout_height="16dp"
             android:layout_marginStart="8dp"
-            app:layout_constraintBottom_toBottomOf="@id/balanceCryptoView"
+            app:layout_constraintBottom_toBottomOf="@id/balance_crypto_view"
             app:layout_constraintEnd_toStartOf="@id/balanceUsdView"
-            app:layout_constraintStart_toEndOf="@id/balanceCryptoView"
-            app:layout_constraintTop_toTopOf="@id/balanceCryptoView"
+            app:layout_constraintStart_toEndOf="@id/balance_crypto_view"
+            app:layout_constraintTop_toTopOf="@id/balance_crypto_view"
             app:srcCompat="@drawable/ic_compare_arrows" />
 
         <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/reservedTitleView"
+            android:id="@+id/reserved_title_view"
             style="@style/Transaction.Title.Medium.Key"
             android:text="@string/add_edit_trade_screen_reserved"
-            app:layout_constraintStart_toStartOf="@id/balanceTitleView"
-            app:layout_constraintTop_toBottomOf="@id/balanceTitleView" />
+            app:layout_constraintStart_toStartOf="@id/balance_title_view"
+            app:layout_constraintTop_toBottomOf="@id/balance_title_view" />
 
         <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/reservedCryptoView"
+            android:id="@+id/reserved_crypto_view"
             style="@style/Transaction.Title.Medium.Value"
-            app:layout_constraintStart_toStartOf="@id/balanceCryptoView"
-            app:layout_constraintTop_toTopOf="@id/reservedTitleView"
+            app:layout_constraintStart_toStartOf="@id/balance_crypto_view"
+            app:layout_constraintTop_toTopOf="@id/reserved_title_view"
             tools:text="0.000902 BTC" />
 
         <androidx.appcompat.widget.AppCompatImageView
@@ -85,10 +84,10 @@
             android:layout_width="16dp"
             android:layout_height="16dp"
             android:layout_marginStart="8dp"
-            app:layout_constraintBottom_toBottomOf="@id/reservedCryptoView"
+            app:layout_constraintBottom_toBottomOf="@id/reserved_crypto_view"
             app:layout_constraintEnd_toStartOf="@id/reservedUsdView"
-            app:layout_constraintStart_toEndOf="@id/reservedCryptoView"
-            app:layout_constraintTop_toTopOf="@id/reservedCryptoView"
+            app:layout_constraintStart_toEndOf="@id/reserved_crypto_view"
+            app:layout_constraintTop_toTopOf="@id/reserved_crypto_view"
             app:srcCompat="@drawable/ic_compare_arrows" />
 
         <androidx.appcompat.widget.AppCompatTextView
@@ -106,9 +105,9 @@
             style="@style/Transaction.Title.Medium.Value"
             android:layout_marginStart="8dp"
             android:textColor="@color/blue_color"
-            app:layout_constraintBottom_toBottomOf="@id/exchangeView"
-            app:layout_constraintStart_toEndOf="@id/exchangeView"
-            app:layout_constraintTop_toTopOf="@id/exchangeView"
+            app:layout_constraintBottom_toBottomOf="@id/exchange_view"
+            app:layout_constraintStart_toEndOf="@id/exchange_view"
+            app:layout_constraintTop_toTopOf="@id/exchange_view"
             tools:text="8.90 USD" />
 
         <androidx.appcompat.widget.AppCompatTextView
@@ -118,13 +117,13 @@
             android:layout_marginTop="16dp"
             android:text="@string/staking_screen_staked"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/reservedTitleView" />
+            app:layout_constraintTop_toBottomOf="@id/reserved_title_view" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/amountView"
             style="@style/Transaction.Title.Medium.Value"
             android:layout_marginStart="16dp"
-            app:layout_constraintStart_toEndOf="@id/priceBarrierView"
+            app:layout_constraintStart_toEndOf="@id/price_barrier_view"
             app:layout_constraintTop_toTopOf="@id/amountTitleView"
             tools:text="12 CATM" />
 
@@ -142,14 +141,14 @@
             style="@style/Text.Status"
             android:layout_marginStart="16dp"
             app:layout_constraintBottom_toBottomOf="@id/statusTitleView"
-            app:layout_constraintStart_toEndOf="@id/priceBarrierView"
+            app:layout_constraintStart_toEndOf="@id/price_barrier_view"
             app:layout_constraintTop_toTopOf="@id/statusTitleView"
             tools:background="@drawable/bg_status_created"
             tools:text="12 CATM"
             tools:textColor="@color/colorStatusCreated" />
 
         <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/rewardsTitleView"
+            android:id="@+id/rewards_title_view"
             style="@style/Transaction.Title.Medium.Key"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
@@ -158,45 +157,45 @@
             app:layout_constraintTop_toBottomOf="@id/statusTitleView" />
 
         <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/rewardsView"
+            android:id="@+id/rewards_view"
             style="@style/Transaction.Title.Medium.Value"
             android:layout_marginStart="16dp"
-            app:layout_constraintStart_toEndOf="@id/priceBarrierView"
-            app:layout_constraintTop_toTopOf="@id/rewardsTitleView"
+            app:layout_constraintStart_toEndOf="@id/price_barrier_view"
+            app:layout_constraintTop_toTopOf="@id/rewards_title_view"
             tools:text="5 CATM,  2.3 %" />
 
         <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/rewardAnnualTitleView"
+            android:id="@+id/reward_annual_title_view"
             style="@style/Transaction.Title.Medium.Key"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:text="@string/staking_screen_rewards_annual"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/rewardsTitleView" />
+            app:layout_constraintTop_toBottomOf="@id/rewards_title_view" />
 
         <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/rewardAnnualView"
+            android:id="@+id/reward_annual_view"
             style="@style/Transaction.Title.Medium.Value"
             android:layout_marginStart="16dp"
-            app:layout_constraintStart_toEndOf="@id/priceBarrierView"
-            app:layout_constraintTop_toTopOf="@id/rewardAnnualTitleView"
+            app:layout_constraintStart_toEndOf="@id/price_barrier_view"
+            app:layout_constraintTop_toTopOf="@id/reward_annual_title_view"
             tools:text="12 CATM, 12%" />
 
         <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/createDateTitleView"
+            android:id="@+id/create_date_title_view"
             style="@style/Transaction.Title.Medium.Key"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:text="@string/staking_screen_create_date"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/rewardAnnualTitleView" />
+            app:layout_constraintTop_toBottomOf="@id/reward_annual_title_view" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/createDateView"
             style="@style/Transaction.Title.Medium.Value"
             android:layout_marginStart="16dp"
-            app:layout_constraintStart_toEndOf="@id/priceBarrierView"
-            app:layout_constraintTop_toTopOf="@id/createDateTitleView"
+            app:layout_constraintStart_toEndOf="@id/price_barrier_view"
+            app:layout_constraintTop_toTopOf="@id/create_date_title_view"
             tools:text="2020-10-24" />
 
         <androidx.appcompat.widget.AppCompatTextView
@@ -206,18 +205,18 @@
             android:layout_marginTop="16dp"
             android:text="@string/staking_screen_cancel_date"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/createDateTitleView" />
+            app:layout_constraintTop_toBottomOf="@id/create_date_title_view" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/cancelDateView"
             style="@style/Transaction.Title.Medium.Value"
             android:layout_marginStart="16dp"
-            app:layout_constraintStart_toEndOf="@id/priceBarrierView"
+            app:layout_constraintStart_toEndOf="@id/price_barrier_view"
             app:layout_constraintTop_toTopOf="@id/cancelDateTitleView"
             tools:text="2020-10-25" />
 
         <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/durationTitleView"
+            android:id="@+id/duration_title_view"
             style="@style/Transaction.Title.Medium.Key"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
@@ -229,42 +228,42 @@
             android:id="@+id/durationView"
             style="@style/Transaction.Title.Medium.Value"
             android:layout_marginStart="16dp"
-            app:layout_constraintStart_toEndOf="@id/priceBarrierView"
-            app:layout_constraintTop_toTopOf="@id/durationTitleView"
+            app:layout_constraintStart_toEndOf="@id/price_barrier_view"
+            app:layout_constraintTop_toTopOf="@id/duration_title_view"
             tools:text="14 days" />
 
         <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/holdPeriodTitleView"
+            android:id="@+id/hold_period_title_view"
             style="@style/Transaction.Title.Medium.Key"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:text="@string/staking_screen_hold_period"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/durationTitleView" />
+            app:layout_constraintTop_toBottomOf="@id/duration_title_view" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/holdPeriodView"
             style="@style/Transaction.Title.Medium.Value"
             android:layout_marginStart="16dp"
-            app:layout_constraintStart_toEndOf="@id/priceBarrierView"
-            app:layout_constraintTop_toTopOf="@id/holdPeriodTitleView"
+            app:layout_constraintStart_toEndOf="@id/price_barrier_view"
+            app:layout_constraintTop_toTopOf="@id/hold_period_title_view"
             tools:text="21 days" />
 
         <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/untilWithdrawTitleView"
+            android:id="@+id/until_withdraw_title_view"
             style="@style/Transaction.Title.Medium.Key"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:text="@string/staking_screen_until_withdraw"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/holdPeriodTitleView" />
+            app:layout_constraintTop_toBottomOf="@id/hold_period_title_view" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/untilWithdrawView"
             style="@style/Transaction.Title.Medium.Value"
             android:layout_marginStart="16dp"
-            app:layout_constraintStart_toEndOf="@id/priceBarrierView"
-            app:layout_constraintTop_toTopOf="@id/untilWithdrawTitleView"
+            app:layout_constraintStart_toEndOf="@id/price_barrier_view"
+            app:layout_constraintTop_toTopOf="@id/until_withdraw_title_view"
             tools:text="5 days" />
 
         <Space
@@ -274,7 +273,7 @@
             android:layout_marginTop="24dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/untilWithdrawTitleView" />
+            app:layout_constraintTop_toBottomOf="@id/until_withdraw_title_view" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/amountCryptoView"
@@ -375,7 +374,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:visibility="gone"
-            app:constraint_referenced_ids="rewardsTitleView, rewardsView"
+            app:constraint_referenced_ids="rewards_title_view, rewards_view"
             tools:visibility="visible" />
 
         <androidx.constraintlayout.widget.Group
@@ -383,7 +382,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:visibility="gone"
-            app:constraint_referenced_ids="createDateTitleView, createDateView"
+            app:constraint_referenced_ids="create_date_title_view, createDateView"
             tools:visibility="visible" />
 
         <androidx.constraintlayout.widget.Group
@@ -399,7 +398,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:visibility="gone"
-            app:constraint_referenced_ids="durationTitleView, durationView"
+            app:constraint_referenced_ids="duration_title_view, durationView"
             tools:visibility="visible" />
 
         <androidx.constraintlayout.widget.Group
@@ -407,7 +406,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:visibility="gone"
-            app:constraint_referenced_ids="untilWithdrawTitleView, untilWithdrawView"
+            app:constraint_referenced_ids="until_withdraw_title_view, untilWithdrawView"
             tools:visibility="visible" />
 
         <androidx.constraintlayout.widget.Group

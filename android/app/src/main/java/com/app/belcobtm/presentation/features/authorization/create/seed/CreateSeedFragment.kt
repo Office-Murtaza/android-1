@@ -3,26 +3,27 @@ package com.app.belcobtm.presentation.features.authorization.create.seed
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
+import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
+import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.os.bundleOf
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.navArgs
 import com.app.belcobtm.R
+import com.app.belcobtm.databinding.FragmentCreateSeedBinding
 import com.app.belcobtm.presentation.core.extensions.hide
 import com.app.belcobtm.presentation.core.extensions.show
 import com.app.belcobtm.presentation.core.helper.AlertHelper
 import com.app.belcobtm.presentation.core.ui.fragment.BaseFragment
 import com.app.belcobtm.presentation.features.pin.code.PinCodeFragment
 import com.app.belcobtm.presentation.features.sms.code.SmsCodeFragment
-import kotlinx.android.synthetic.main.fragment_create_seed.*
 import org.koin.android.viewmodel.ext.android.viewModel
 
-class CreateSeedFragment : BaseFragment() {
+class CreateSeedFragment : BaseFragment<FragmentCreateSeedBinding>() {
     private val viewModel: CreateSeedViewModel by viewModel()
     private val args: CreateSeedFragmentArgs by navArgs()
-    override val resourceLayout: Int = R.layout.fragment_create_seed
     override val isToolbarEnabled: Boolean = true
     override val isHomeButtonEnabled: Boolean = true
     override val backPressedListener: View.OnClickListener = View.OnClickListener {
@@ -31,7 +32,7 @@ class CreateSeedFragment : BaseFragment() {
     override val retryListener: View.OnClickListener = View.OnClickListener { createWallet() }
     private var seedPhrase = ""
 
-    override fun initViews() {
+    override fun FragmentCreateSeedBinding.initViews() {
         setToolbarTitle(R.string.create_seed_screen_title)
         initNextButton()
         showBackButton(true)
@@ -49,7 +50,7 @@ class CreateSeedFragment : BaseFragment() {
         }
     }
 
-    override fun initListeners() {
+    override fun FragmentCreateSeedBinding.initListeners() {
         copyButtonView.setOnClickListener {
             copyToClipboard(seedPhrase)
         }
@@ -62,7 +63,7 @@ class CreateSeedFragment : BaseFragment() {
         }
     }
 
-    override fun initObservers() {
+    override fun FragmentCreateSeedBinding.initObservers() {
         viewModel.seedLiveData.observe(viewLifecycleOwner, Observer { seedPhrase ->
             if (args.mode != MODE_SETTINGS) {
                 showSeed(seedPhrase)
@@ -84,18 +85,18 @@ class CreateSeedFragment : BaseFragment() {
             .filter { it.isNotEmpty() }
             .toList()
 
-        word1.text = wordList[0]
-        word2.text = wordList[1]
-        word3.text = wordList[2]
-        word4.text = wordList[3]
-        word5.text = wordList[4]
-        word6.text = wordList[5]
-        word7.text = wordList[6]
-        word8.text = wordList[7]
-        word9.text = wordList[8]
-        word10.text = wordList[9]
-        word11.text = wordList[10]
-        word12.text = wordList[11]
+        binding.word1.text = wordList[0]
+        binding.word2.text = wordList[1]
+        binding.word3.text = wordList[2]
+        binding.word4.text = wordList[3]
+        binding.word5.text = wordList[4]
+        binding.word6.text = wordList[5]
+        binding.word7.text = wordList[6]
+        binding.word8.text = wordList[7]
+        binding.word9.text = wordList[8]
+        binding.word10.text = wordList[9]
+        binding.word11.text = wordList[10]
+        binding.word12.text = wordList[11]
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean = if (item.itemId == android.R.id.home) {
@@ -104,6 +105,9 @@ class CreateSeedFragment : BaseFragment() {
     } else {
         false
     }
+
+    override fun createBinding(inflater: LayoutInflater, container: ViewGroup?): FragmentCreateSeedBinding =
+        FragmentCreateSeedBinding.inflate(inflater, container, false)
 
     private fun goBack() {
         when (args.mode) {
@@ -119,13 +123,13 @@ class CreateSeedFragment : BaseFragment() {
     private fun initNextButton() {
         when (args.mode) {
             MODE_SETTINGS -> {
-                nextButtonView.text = getString(R.string.done)
-                nextButtonView.setOnClickListener {
+                binding.nextButtonView.text = getString(R.string.done)
+                binding.nextButtonView.setOnClickListener {
                     popBackStack(R.id.security_fragment, false)
                 }
             }
             MODE_DEFAULT -> {
-                nextButtonView.setOnClickListener {
+                binding.nextButtonView.setOnClickListener {
                     createWallet()
                 }
             }

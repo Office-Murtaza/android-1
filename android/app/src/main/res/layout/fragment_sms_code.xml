@@ -15,10 +15,10 @@
         android:layout_height="wrap_content">
 
         <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/imageView"
+            android:id="@+id/image_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintBottom_toTopOf="@id/titleView"
+            app:layout_constraintBottom_toTopOf="@id/title_view"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -26,19 +26,19 @@
             app:srcCompat="@drawable/ic_sms_code" />
 
         <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/titleView"
+            android:id="@+id/title_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="36dp"
             android:gravity="center"
             android:text="@string/sms_code_screen_description"
-            app:layout_constraintBottom_toTopOf="@id/pinEntryView"
+            app:layout_constraintBottom_toTopOf="@id/pin_entry_view"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/imageView" />
+            app:layout_constraintTop_toBottomOf="@id/image_view" />
 
         <com.alimuzaffar.lib.pin.PinEntryEditText
-            android:id="@+id/pinEntryView"
+            android:id="@+id/pin_entry_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="22dp"
@@ -52,49 +52,49 @@
             android:textColor="@color/colorText"
             android:textIsSelectable="false"
             android:textSize="32sp"
-            app:layout_constraintBottom_toTopOf="@id/nextButtonView"
+            app:layout_constraintBottom_toTopOf="@id/next_button_view"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/titleView"
+            app:layout_constraintTop_toBottomOf="@id/title_view"
             app:pinAnimationType="popIn"
             app:pinLineColors="@color/selector_pin_line_color"
             tools:text="5522" />
 
         <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/errorMessageView"
+            android:id="@+id/error_message_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:text="@string/sms_code_screen_invalid_code"
             android:textColor="@android:color/holo_red_light"
             android:visibility="invisible"
-            app:layout_constraintBottom_toTopOf="@id/spaceView"
-            app:layout_constraintEnd_toEndOf="@id/pinEntryView"
-            app:layout_constraintStart_toStartOf="@id/pinEntryView"
-            app:layout_constraintTop_toBottomOf="@id/pinEntryView" />
+            app:layout_constraintBottom_toTopOf="@id/space_view"
+            app:layout_constraintEnd_toEndOf="@id/pin_entry_view"
+            app:layout_constraintStart_toStartOf="@id/pin_entry_view"
+            app:layout_constraintTop_toBottomOf="@id/pin_entry_view" />
 
         <Space
-            android:id="@+id/spaceView"
+            android:id="@+id/space_view"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            app:layout_constraintBottom_toTopOf="@id/nextButtonView"
+            app:layout_constraintBottom_toTopOf="@id/next_button_view"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/errorMessageView" />
+            app:layout_constraintTop_toBottomOf="@id/error_message_view" />
 
         <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/errorTextView"
+            android:id="@+id/error_text_view"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/margin_main"
             android:gravity="center"
-            app:layout_constraintBottom_toTopOf="@id/nextButtonView"
+            app:layout_constraintBottom_toTopOf="@id/next_button_view"
             app:layout_constraintEnd_toEndOf="parent"
             android:textColor="#e02d2d"
             android:text="@string/not_supported_phone"
             app:layout_constraintStart_toStartOf="parent" />
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/nextButtonView"
+            android:id="@+id/next_button_view"
             style="@style/Button.Primary"
             android:layout_marginTop="16dp"
             android:enabled="false"
@@ -102,7 +102,7 @@
             app:layout_constraintBottom_toTopOf="@id/resendCodeTitleView"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/spaceView" />
+            app:layout_constraintTop_toBottomOf="@id/space_view" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/resendCodeTitleView"

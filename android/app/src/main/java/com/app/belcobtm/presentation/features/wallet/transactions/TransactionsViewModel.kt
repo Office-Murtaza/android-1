@@ -67,11 +67,11 @@ class TransactionsViewModel(
 
     fun changeCurrentTypePeriod(selectedPeriod: Int) {
         val period = when (selectedPeriod) {
-            R.id.oneWeekChipView -> PriceChartPeriod.PERIOD_WEEK
-            R.id.oneMonthChipView -> PriceChartPeriod.PERIOD_MONTH
-            R.id.threeMonthChipView -> PriceChartPeriod.PERIOD_QUARTER
-            R.id.oneYearChipView -> PriceChartPeriod.PERIOD_YEAR
-            R.id.oneDayChipView -> PriceChartPeriod.PERIOD_DAY
+            R.id.one_week_chip_view -> PriceChartPeriod.PERIOD_WEEK
+            R.id.one_month_chip_view -> PriceChartPeriod.PERIOD_MONTH
+            R.id.three_month_chip_view -> PriceChartPeriod.PERIOD_QUARTER
+            R.id.one_year_chip_view -> PriceChartPeriod.PERIOD_YEAR
+            R.id.one_day_chip_view -> PriceChartPeriod.PERIOD_DAY
             else -> return
         }
         chartInfo[period]?.let {

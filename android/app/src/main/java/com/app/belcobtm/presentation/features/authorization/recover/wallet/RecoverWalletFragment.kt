@@ -1,32 +1,31 @@
 package com.app.belcobtm.presentation.features.authorization.recover.wallet
 
 import android.telephony.PhoneNumberFormattingTextWatcher
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import com.app.belcobtm.R
+import com.app.belcobtm.databinding.FragmentRecoverWalletBinding
 import com.app.belcobtm.presentation.core.extensions.*
 import com.app.belcobtm.presentation.core.ui.fragment.BaseFragment
 import com.app.belcobtm.presentation.features.authorization.recover.seed.RecoverSeedFragment
 import com.app.belcobtm.presentation.features.sms.code.SmsCodeFragment
-import kotlinx.android.synthetic.main.fragment_recover_wallet.*
 import org.koin.android.viewmodel.ext.android.viewModel
 
-
-class RecoverWalletFragment : BaseFragment() {
+class RecoverWalletFragment : BaseFragment<FragmentRecoverWalletBinding>() {
 
     private val viewModel: RecoverWalletViewModel by viewModel()
 
     override val isToolbarEnabled: Boolean = true
     override val isHomeButtonEnabled: Boolean = true
-    override val resourceLayout: Int = R.layout.fragment_recover_wallet
     override val retryListener: View.OnClickListener = View.OnClickListener { checkCredentials() }
 
-    override fun initViews() {
-        super.initViews()
+    override fun FragmentRecoverWalletBinding.initViews() {
         setToolbarTitle(R.string.recover_wallet_screen_title)
     }
 
-    override fun initListeners() {
+    override fun FragmentRecoverWalletBinding.initListeners() {
         nextButtonView.setOnClickListener {
             phoneView.clearError()
             passwordView.clearError()
@@ -41,7 +40,10 @@ class RecoverWalletFragment : BaseFragment() {
         phoneEditView.addTextChangedListener(PhoneNumberFormattingTextWatcher())
     }
 
-    override fun initObservers() {
+    override fun createBinding(inflater: LayoutInflater, container: ViewGroup?): FragmentRecoverWalletBinding =
+        FragmentRecoverWalletBinding.inflate(inflater, container, false)
+
+    override fun FragmentRecoverWalletBinding.initObservers() {
         viewModel.checkCredentialsLiveData.listen(success = {
             var isValid = true
 
@@ -56,7 +58,7 @@ class RecoverWalletFragment : BaseFragment() {
                 isValid = false
                 passwordView.showError(R.string.recover_wallet_incorrect_password)
             } else {
-                passwordView.clearError()
+                binding.passwordView.clearError()
             }
 
             if (isValid) {
@@ -85,7 +87,7 @@ class RecoverWalletFragment : BaseFragment() {
 
     private fun checkCredentials() {
         val phone = getPhone()
-        val password = passwordView.getString()
+        val password = binding.passwordView.getString()
 
         if (isValidFields(phone, password)) {
             viewModel.checkCredentials(phone, password)
@@ -93,10 +95,10 @@ class RecoverWalletFragment : BaseFragment() {
     }
 
     private fun updateNextButton() {
-        nextButtonView.isEnabled = phoneView.getString().isNotEmpty()
-                && viewModel.isValidMobileNumber(phoneView.getString())
-                && passwordView.getString().isNotEmpty()
+        binding.nextButtonView.isEnabled = binding.phoneView.getString().isNotEmpty()
+                && viewModel.isValidMobileNumber(binding.phoneView.getString())
+                && binding.passwordView.getString().isNotEmpty()
     }
 
-    private fun getPhone(): String = phoneView.getString().replace("[-() ]".toRegex(), "")
+    private fun getPhone(): String = binding.phoneView.getString().replace("[-() ]".toRegex(), "")
 }

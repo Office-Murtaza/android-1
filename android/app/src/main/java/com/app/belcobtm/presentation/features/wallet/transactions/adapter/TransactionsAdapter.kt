@@ -1,19 +1,18 @@
 package com.app.belcobtm.presentation.features.wallet.transactions.adapter
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.app.belcobtm.R
+import com.app.belcobtm.databinding.ItemTransactionBinding
 import com.app.belcobtm.domain.transaction.type.TransactionStatusType
 import com.app.belcobtm.presentation.core.extensions.getResText
 import com.app.belcobtm.presentation.core.extensions.toStringCoin
 import com.app.belcobtm.presentation.features.wallet.transactions.item.TransactionsAdapterItem
 import com.app.belcobtm.presentation.features.wallet.transactions.item.TransactionsAdapterItemCallback
-import kotlinx.android.synthetic.main.item_transaction.view.*
 
 class TransactionsAdapter(
     private val itemClickListener: (item: TransactionsAdapterItem) -> Unit,
@@ -21,19 +20,16 @@ class TransactionsAdapter(
 ) : ListAdapter<TransactionsAdapterItem, TransactionsAdapter.Holder>(TransactionsAdapterItemCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
-        val view =
-            LayoutInflater.from(parent.context).inflate(R.layout.item_transaction, parent, false)
-        val holder =
-            Holder(view)
-        view.setOnClickListener { itemClickListener.invoke(getItem(holder.adapterPosition)) }
+        val binding = ItemTransactionBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val holder = Holder(binding)
+        binding.root.setOnClickListener { itemClickListener.invoke(getItem(holder.adapterPosition)) }
         return holder
     }
 
     override fun onBindViewHolder(holder: Holder, position: Int) {
         val context = holder.itemView.context
         val item = getItem(position)
-
-        with(holder.itemView) {
+        with(holder.binding) {
             dateView.text = item.date
             typeView.text = context.getString(item.type.getResText())
             amountView.text = item.cryptoAmount.toStringCoin()
@@ -78,6 +74,6 @@ class TransactionsAdapter(
         textView.setText(resText)
     }
 
-    class Holder(itemView: View) : RecyclerView.ViewHolder(itemView)
+    class Holder(val binding: ItemTransactionBinding) : RecyclerView.ViewHolder(binding.root)
 
 }

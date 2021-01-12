@@ -6,7 +6,7 @@
     android:layout_height="match_parent">
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/searchView"
+        android:id="@+id/search_view"
         style="@style/VerificationBlankScreen.EditTextContainer"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -23,7 +23,7 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/contactsList"
+        android:id="@+id/contacts_list"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginStart="16dp"
@@ -32,7 +32,7 @@
         app:layout_constraintBottom_toTopOf="@+id/nextButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/searchView"
+        app:layout_constraintTop_toBottomOf="@id/search_view"
         tools:listitem="@layout/item_contact" />
 
     <Button
@@ -41,10 +41,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:text="Next"
+        android:text="@string/next"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/contactsList" />
+        app:layout_constraintTop_toBottomOf="@id/contacts_list" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

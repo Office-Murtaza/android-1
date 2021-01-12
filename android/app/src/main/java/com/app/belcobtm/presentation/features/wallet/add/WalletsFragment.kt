@@ -1,19 +1,21 @@
 package com.app.belcobtm.presentation.features.wallet.add
 
+import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
+import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.fragment.app.setFragmentResult
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.app.belcobtm.R
+import com.app.belcobtm.databinding.FragmentWalletsBinding
 import com.app.belcobtm.domain.Failure
 import com.app.belcobtm.presentation.core.ui.fragment.BaseFragment
 import com.app.belcobtm.presentation.features.wallet.add.adapter.AddWalletCoinsAdapter
-import kotlinx.android.synthetic.main.fragment_wallets.*
 import org.koin.android.ext.android.inject
 
-class WalletsFragment : BaseFragment() {
+class WalletsFragment : BaseFragment<FragmentWalletsBinding>() {
     private val viewModel: WalletsViewModel by inject()
     private val adapter: AddWalletCoinsAdapter = AddWalletCoinsAdapter { position, isChecked ->
         viewModel.changeCoinState(position, isChecked)
@@ -22,7 +24,6 @@ class WalletsFragment : BaseFragment() {
         setFragmentResult(REQUEST_KEY, bundleOf())
         popBackStack()
     }
-    override val resourceLayout: Int = R.layout.fragment_wallets
     override val isToolbarEnabled: Boolean = true
     override val isHomeButtonEnabled: Boolean = true
     override var isMenuEnabled: Boolean = true
@@ -40,7 +41,7 @@ class WalletsFragment : BaseFragment() {
             false
         }
 
-    override fun initObservers() {
+    override fun FragmentWalletsBinding.initObservers() {
         viewModel.coinListLiveData.listen(
             success = adapter::setItemList,
             error = {
@@ -57,7 +58,7 @@ class WalletsFragment : BaseFragment() {
         )
     }
 
-    override fun initViews() {
+    override fun FragmentWalletsBinding.initViews() {
         setToolbarTitle(R.string.wallets_screen_title)
         ContextCompat.getDrawable(requireContext(), R.drawable.bg_divider)?.let {
             val itemDecorator = DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL)
@@ -70,4 +71,7 @@ class WalletsFragment : BaseFragment() {
     companion object {
         const val REQUEST_KEY = "request_key_manage_wallets_fragment"
     }
+
+    override fun createBinding(inflater: LayoutInflater, container: ViewGroup?): FragmentWalletsBinding =
+        FragmentWalletsBinding.inflate(inflater, container, false)
 }
