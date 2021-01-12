@@ -169,7 +169,7 @@ public class UserService implements UserDetailsService {
     }
 
     public Unlink unlinkUser(Long userId) {
-        User user = userRep.getOne(userId);
+        User user = findById(userId);
 
         if (user != null) {
             Unlink unlink = unlinkRep.findByUserId(userId);
@@ -177,9 +177,12 @@ public class UserService implements UserDetailsService {
             if (unlink == null) {
                 unlink = new Unlink();
                 unlink.setUser(user);
+
+                unlinkRep.save(unlink);
             }
 
-            unlinkRep.save(unlink);
+            user.setNotificationsToken(null);
+            save(user);
 
             return unlink;
         }
