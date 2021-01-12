@@ -426,6 +426,7 @@
     <string name="create">Create</string>
     <string name="submit">Submit</string>
     <string name="paste">Paste</string>
+    <string name="generate">Generate</string>
     <string name="next">Next</string>
     <string name="update">Update</string>
     <string name="cancel">Cancel</string>
