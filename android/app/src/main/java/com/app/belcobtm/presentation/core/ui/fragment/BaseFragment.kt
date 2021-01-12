@@ -106,6 +106,8 @@ abstract class BaseFragment : Fragment() {
         updateActionBar()
         errorRetryButtonView.setOnClickListener(retryListener)
         initListeners()
+        // TODO it would be better to change the order because views should be initialized before observers
+        //  otherwise it might lead to crash
         initObservers()
         initViews()
         if (isFirstShowContent) {
@@ -216,6 +218,11 @@ abstract class BaseFragment : Fragment() {
     protected fun hideKeyboard() = activity?.currentFocus?.let { focus ->
         val imm = activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
         imm?.hideSoftInputFromWindow(focus.windowToken, 0)
+    }
+
+    protected fun showKeyboard() {
+        val imm = activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
+        imm?.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0)
     }
 
     protected open fun showLoading() {

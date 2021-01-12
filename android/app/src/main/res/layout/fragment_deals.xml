@@ -12,6 +12,19 @@
         android:background="@color/thin_divider" />
 
     <com.app.belcobtm.presentation.core.views.SettingsItemView
+        android:id="@+id/transferItem"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:src="@drawable/ic_transfer"
+        app:text="@string/deals_transfer"
+        app:withChevron="true" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/divider_size"
+        android:background="@color/thin_divider" />
+
+    <com.app.belcobtm.presentation.core.views.SettingsItemView
         android:id="@+id/swapItem"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

@@ -21,7 +21,7 @@ class SendGiftTransactionCreateUseCase(
         val amount: Double,
         val coinCode: String,
         val phone: String,
-        val message: String,
-        val giftId: String
+        val message: String?,
+        val giftId: String?
     )
 }

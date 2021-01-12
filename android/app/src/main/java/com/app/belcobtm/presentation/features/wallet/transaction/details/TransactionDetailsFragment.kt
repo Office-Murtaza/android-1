@@ -4,7 +4,6 @@ import android.content.Intent
 import android.graphics.Point
 import android.net.Uri
 import android.telephony.PhoneNumberFormattingTextWatcher
-import android.telephony.PhoneNumberUtils
 import android.text.SpannableString
 import android.text.style.UnderlineSpan
 import android.view.View
@@ -17,10 +16,12 @@ import com.app.belcobtm.domain.transaction.type.TransactionType
 import com.app.belcobtm.presentation.core.Const.GIPHY_API_KEY
 import com.app.belcobtm.presentation.core.QRUtils.Companion.getSpacelessQR
 import com.app.belcobtm.presentation.core.extensions.*
+import com.app.belcobtm.presentation.core.formatter.Formatter
 import com.app.belcobtm.presentation.core.ui.fragment.BaseFragment
 import com.giphy.sdk.ui.GiphyCoreUI
 import com.giphy.sdk.ui.views.GPHMediaView
 import kotlinx.android.synthetic.main.fragment_transaction_details.*
+import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
@@ -29,6 +30,7 @@ class TransactionDetailsFragment : BaseFragment() {
         val args = TransactionDetailsFragmentArgs.fromBundle(requireArguments())
         parametersOf(args.txId, args.coinCode)
     }
+    private val phoneNumberFormatter: Formatter<String> by inject()
     override val resourceLayout: Int = R.layout.fragment_transaction_details
     override val isToolbarEnabled: Boolean = true
     override val isHomeButtonEnabled: Boolean = true
@@ -222,7 +224,7 @@ class TransactionDetailsFragment : BaseFragment() {
         phoneContainerView.hide()
     } else {
         phoneContainerView.show()
-        phoneView.text = PhoneNumberUtils.formatNumber(phone, "US")
+        phoneView.text = phoneNumberFormatter.format(phone)
     }
 
     private fun showImageView(imageId: String) = if (imageId.isBlank()) {

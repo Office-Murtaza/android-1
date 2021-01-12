@@ -77,6 +77,17 @@
         tools:text="Balance: 0.6583 BTC\nFee ~0.6555 BTC" />
 
     <TextView
+        android:id="@+id/tvAdditionalHelperText"
+        style="@style/Text.Regular1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingStart="@dimen/margin_normal"
+        android:paddingEnd="@dimen/margin_normal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvHelperText"
+        tools:text="Fee: ~0.6583 BTC" />
+
+    <TextView
         android:id="@+id/tvMax"
         style="@style/EditText.TextLink"
         android:padding="@dimen/margin_normal"

@@ -17,8 +17,6 @@ import com.app.belcobtm.presentation.core.helper.SimpleClickableSpan
 import com.app.belcobtm.presentation.core.ui.fragment.BaseFragment
 import com.app.belcobtm.presentation.features.authorization.create.seed.CreateSeedFragment
 import com.app.belcobtm.presentation.features.sms.code.SmsCodeFragment
-import io.michaelrocks.libphonenumber.android.NumberParseException
-import io.michaelrocks.libphonenumber.android.PhoneNumberUtil
 import kotlinx.android.synthetic.main.fragment_create_wallet.*
 import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
@@ -26,7 +24,6 @@ import org.koin.android.viewmodel.ext.android.viewModel
 class CreateWalletFragment : BaseFragment() {
     private val intentActions: IntentActions by inject()
     private val viewModel: CreateWalletViewModel by viewModel()
-    private val phoneUtil: PhoneNumberUtil by lazy { PhoneNumberUtil.createInstance(requireContext()) }
     override val resourceLayout: Int = R.layout.fragment_create_wallet
     override val isToolbarEnabled: Boolean = true
     override val isHomeButtonEnabled: Boolean = true
@@ -118,21 +115,10 @@ class CreateWalletFragment : BaseFragment() {
 
     private fun updateNextButton() {
         nextButtonView.isEnabled = phoneView.getString().isNotEmpty()
-                && isValidMobileNumber(phoneView.getString())
+                && viewModel.isValidMobileNumber(phoneView.getString())
                 && passwordView.getString().isNotEmpty()
                 && passwordConfirmView.getString().isNotEmpty()
                 && tncCheckBoxView.isChecked
-    }
-
-    private fun isValidMobileNumber(phone: String): Boolean = if (phone.isNotBlank()) {
-        try {
-            val number = PhoneNumberUtil.createInstance(requireContext()).parse(phone, "")
-            phoneUtil.isValidNumber(number)
-        } catch (e: NumberParseException) {
-            false
-        }
-    } else {
-        false
     }
 
     private fun getPhone(): String = phoneView.getString().replace("[-() ]".toRegex(), "")

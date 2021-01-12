@@ -1,15 +1,20 @@
 package com.app.belcobtm.presentation.di
 
+import android.content.Context
 import com.app.belcobtm.domain.wallet.WalletRepository
 import com.app.belcobtm.domain.wallet.interactor.GetCoinListUseCase
 import com.app.belcobtm.presentation.core.coin.AmountCoinValidator
 import com.app.belcobtm.presentation.core.coin.CoinCodeProvider
 import com.app.belcobtm.presentation.core.coin.MinMaxCoinValueProvider
+import com.app.belcobtm.presentation.core.formatter.Formatter
+import com.app.belcobtm.presentation.core.formatter.PhoneNumberFormatter
+import com.app.belcobtm.presentation.core.validator.PhoneNumberValidator
 import com.app.belcobtm.presentation.features.atm.AtmViewModel
 import com.app.belcobtm.presentation.features.authorization.create.seed.CreateSeedViewModel
 import com.app.belcobtm.presentation.features.authorization.create.wallet.CreateWalletViewModel
 import com.app.belcobtm.presentation.features.authorization.recover.seed.RecoverSeedViewModel
 import com.app.belcobtm.presentation.features.authorization.recover.wallet.RecoverWalletViewModel
+import com.app.belcobtm.presentation.features.contacts.ContactListViewModel
 import com.app.belcobtm.presentation.features.deals.swap.SwapViewModel
 import com.app.belcobtm.presentation.features.notification.NotificationHelper
 import com.app.belcobtm.presentation.features.pin.code.PinCodeViewModel
@@ -38,17 +43,19 @@ import com.app.belcobtm.presentation.features.wallet.trade.reserve.TradeReserveV
 import com.app.belcobtm.presentation.features.wallet.transaction.details.TransactionDetailsViewModel
 import com.app.belcobtm.presentation.features.wallet.transactions.TransactionsViewModel
 import com.app.belcobtm.presentation.features.wallet.withdraw.WithdrawViewModel
+import io.michaelrocks.libphonenumber.android.PhoneNumberUtil
 import org.koin.android.ext.koin.androidApplication
 import org.koin.android.viewmodel.dsl.viewModel
 import org.koin.dsl.module
+import java.util.*
 
 val viewModelModule = module {
     viewModel { AboutViewModel(androidApplication(), get()) }
     viewModel { SecurityViewModel(get()) }
     viewModel { WalletViewModel(get(), get(), get()) }
     viewModel { (coinCode: String) -> TransactionsViewModel(coinCode, get(), get(), get(), get()) }
-    viewModel { RecoverWalletViewModel(get()) }
-    viewModel { CreateWalletViewModel(get()) }
+    viewModel { RecoverWalletViewModel(get(), get<PhoneNumberValidator>()) }
+    viewModel { CreateWalletViewModel(get(), get<PhoneNumberValidator>()) }
     viewModel { PinCodeViewModel(get(), get(), get(), get(), get()) }
     viewModel { VerificationInfoViewModel(get()) }
     viewModel { VerificationBlankViewModel(get(), get()) }
@@ -97,7 +104,7 @@ val viewModelModule = module {
     viewModel { PasswordViewModel(get(), get()) }
     viewModel { UnlinkViewModel(get()) }
     viewModel { UpdatePasswordViewModel(get()) }
-    viewModel { PhoneChangeViewModel(get(), get(), get()) }
+    viewModel { PhoneChangeViewModel(get(), get(), get(), get<PhoneNumberValidator>()) }
     viewModel { AtmViewModel(get()) }
     viewModel { (txId: String, coinCode: String) ->
         TransactionDetailsViewModel(
@@ -106,11 +113,8 @@ val viewModelModule = module {
             get()
         )
     }
-    viewModel { (coinCode: String) ->
-        val coinList = (get() as GetCoinListUseCase).invoke()
-        val fromCoinDataItem = coinList.find { it.code == coinCode }!!
-        val fromCoinFee = get<WalletRepository>().getCoinDetailsItemByCode(coinCode)
-        SendGiftViewModel(get(), fromCoinDataItem, fromCoinFee, coinList, get(), get(), get())
+    viewModel {
+        SendGiftViewModel(get(), get(), get(), get(), get(), get(), get(), get<PhoneNumberValidator>())
     }
     viewModel { (coinCode: String) ->
         val coinList = (get() as GetCoinListUseCase).invoke()
@@ -121,12 +125,18 @@ val viewModelModule = module {
     viewModel { (coinCode: String) ->
         DepositViewModel(coinCode, get())
     }
+    viewModel {
+        ContactListViewModel(get(), get<PhoneNumberValidator>(), get())
+    }
 }
 
 val viewModelHelperModule = module {
     factory { MinMaxCoinValueProvider() }
     factory { CoinCodeProvider() }
     factory { AmountCoinValidator() }
+    factory { PhoneNumberUtil.createInstance(get<Context>()) }
+    factory { PhoneNumberValidator(get()) }
+    factory<Formatter<String>> { PhoneNumberFormatter(Locale.US.country) }
 }
 
 val helperModule = module {
