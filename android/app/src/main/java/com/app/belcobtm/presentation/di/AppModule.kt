@@ -2,7 +2,6 @@ package com.app.belcobtm.presentation.di
 
 import android.content.Context
 import com.app.belcobtm.domain.wallet.WalletRepository
-import com.app.belcobtm.domain.wallet.interactor.GetCoinListUseCase
 import com.app.belcobtm.presentation.core.coin.AmountCoinValidator
 import com.app.belcobtm.presentation.core.coin.CoinCodeProvider
 import com.app.belcobtm.presentation.core.coin.MinMaxCoinValueProvider
@@ -117,10 +116,7 @@ val viewModelModule = module {
         SendGiftViewModel(get(), get(), get(), get(), get(), get(), get(), get<PhoneNumberValidator>())
     }
     viewModel { (coinCode: String) ->
-        val coinList = (get() as GetCoinListUseCase).invoke()
-        val fromCoinDataItem = coinList.find { it.code == coinCode }
-        val fromCoinFee = get<WalletRepository>().getCoinDetailsItemByCode(coinCode)
-        WithdrawViewModel(get(), fromCoinDataItem, fromCoinFee, coinList, get(), get(), get())
+        WithdrawViewModel(coinCode, get(), get(), get(), get(), get(), get())
     }
     viewModel { (coinCode: String) ->
         DepositViewModel(coinCode, get())

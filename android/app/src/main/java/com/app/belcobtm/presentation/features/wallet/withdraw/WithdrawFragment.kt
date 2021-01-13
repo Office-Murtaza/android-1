@@ -39,35 +39,6 @@ class WithdrawFragment : BaseFragment<FragmentWithdrawBinding>() {
     override var isMenuEnabled: Boolean = true
     override val retryListener: View.OnClickListener = View.OnClickListener { binding.validateAndSubmit() }
 
-    override fun FragmentWithdrawBinding.initViews() {
-        setToolbarTitle(getString(R.string.withdraw_screen_screen_title, viewModel.getCoinCode()))
-        priceUsdView.text = getString(R.string.text_usd, viewModel.getUsdPrice().toStringUsd())
-        balanceCryptoView.text =
-            getString(
-                R.string.text_text,
-                viewModel.getCoinBalance().toStringCoin(),
-                viewModel.getCoinCode()
-            )
-        balanceUsdView.text = getString(R.string.text_usd, viewModel.getUsdBalance().toStringUsd())
-        amountCryptoView.hint = getString(R.string.text_amount, viewModel.getCoinCode())
-        amountCryptoView.actionDoneListener { validateAndSubmit() }
-        nextButtonView.setOnClickListener { validateAndSubmit() }
-        amountCryptoView.helperText = getString(
-            R.string.transaction_helper_text_commission,
-            viewModel.getTransactionFee().toStringCoin(),
-            viewModel.getCoinCode()
-        )
-        reservedCryptoView.text = getString(
-            R.string.text_text,
-            viewModel.getReservedBalanceCoin().toStringCoin(),
-            viewModel.getCoinCode()
-        )
-        reservedUsdView.text = getString(
-            R.string.text_usd,
-            viewModel.getReservedBalanceUsd().toStringUsd()
-        )
-    }
-
     override fun FragmentWithdrawBinding.initListeners() {
         addressScanView.setOnClickListener {
             IntentIntegrator.forSupportFragment(this@WithdrawFragment).initiateScan()
@@ -87,6 +58,9 @@ class WithdrawFragment : BaseFragment<FragmentWithdrawBinding>() {
     }
 
     override fun FragmentWithdrawBinding.initObservers() {
+        viewModel.loadingLiveData.listen({
+            initScreen()
+        })
         viewModel.transactionLiveData.listen(
             success = {
                 AlertHelper.showToastShort(requireContext(), R.string.transactions_screen_transaction_created)
@@ -135,6 +109,35 @@ class WithdrawFragment : BaseFragment<FragmentWithdrawBinding>() {
         } else {
             super.onActivityResult(requestCode, resultCode, data)
         }
+    }
+
+    private fun FragmentWithdrawBinding.initScreen() {
+        setToolbarTitle(getString(R.string.withdraw_screen_screen_title, viewModel.getCoinCode()))
+        priceUsdView.text = getString(R.string.text_usd, viewModel.getUsdPrice().toStringUsd())
+        balanceCryptoView.text =
+            getString(
+                R.string.text_text,
+                viewModel.getCoinBalance().toStringCoin(),
+                viewModel.getCoinCode()
+            )
+        balanceUsdView.text = getString(R.string.text_usd, viewModel.getUsdBalance().toStringUsd())
+        amountCryptoView.hint = getString(R.string.text_amount, viewModel.getCoinCode())
+        amountCryptoView.actionDoneListener { validateAndSubmit() }
+        nextButtonView.setOnClickListener { validateAndSubmit() }
+        amountCryptoView.helperText = getString(
+            R.string.transaction_helper_text_commission,
+            viewModel.getTransactionFee().toStringCoin(),
+            viewModel.getCoinCode()
+        )
+        reservedCryptoView.text = getString(
+            R.string.text_text,
+            viewModel.getReservedBalanceCoin().toStringCoin(),
+            viewModel.getCoinCode()
+        )
+        reservedUsdView.text = getString(
+            R.string.text_usd,
+            viewModel.getReservedBalanceUsd().toStringUsd()
+        )
     }
 
     private fun FragmentWithdrawBinding.validateAndSubmit() {
