@@ -52,7 +52,7 @@ class WithdrawFragment : BaseFragment<FragmentWithdrawBinding>() {
         amountCryptoView.hint = getString(R.string.text_amount, viewModel.getCoinCode())
         amountCryptoView.actionDoneListener { validateAndSubmit() }
         nextButtonView.setOnClickListener { validateAndSubmit() }
-        amountCryptoView.helperText = getString(
+        feeLabel.text = getString(
             R.string.transaction_helper_text_commission,
             viewModel.getTransactionFee().toStringCoin(),
             viewModel.getCoinCode()
@@ -171,6 +171,6 @@ class WithdrawFragment : BaseFragment<FragmentWithdrawBinding>() {
     private fun FragmentWithdrawBinding.updateNextButton() {
         nextButtonView.isEnabled = amountCryptoView.isNotBlank()
                 && amountCryptoView.getDouble() > 0
-                && isValidAddress()
+//                && isValidAddress()
     }
 }
