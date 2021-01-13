@@ -388,30 +388,7 @@ public class GethService {
             }
         }
 
-        return null;
-    }
-
-    public TransactionStatus getTransactionStatus(String txId) {
-        if (nodeService.isNodeAvailable(ETHEREUM)) {
-            try {
-                Optional<TransactionReceipt> receiptOptional = web3.ethGetTransactionReceipt(txId).send().getTransactionReceipt();
-
-                if (receiptOptional.isPresent()) {
-                    return getTransactionStatus(receiptOptional.get());
-                } else {
-                    return TransactionStatus.FAIL;
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-
-                if (nodeService.switchToReserveNode(ETHEREUM)) {
-                    init();
-                    return getTransactionStatus(txId);
-                }
-            }
-        }
-
-        return TransactionStatus.PENDING;
+        return 0;
     }
 
     public TransactionStatus getTransactionStatus(TransactionReceipt receipt) {
@@ -541,10 +518,10 @@ public class GethService {
         return null;
     }
 
-    public Long getGasLimit(String address) {
+    public Long getGasLimit(String toAddress) {
         if (nodeService.isNodeAvailable(ETHEREUM)) {
             try {
-                return web3.ethEstimateGas(org.web3j.protocol.core.methods.request.Transaction.createEthCallTransaction(null, address, null)).send().getAmountUsed().longValue();
+                return web3.ethEstimateGas(org.web3j.protocol.core.methods.request.Transaction.createEthCallTransaction(null, toAddress, null)).send().getAmountUsed().longValue();
             } catch (Exception e) {
             }
         }

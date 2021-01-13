@@ -15,13 +15,15 @@ public class CoinController {
     private final CoinService coinService;
     private final RippledService rippledService;
     private final TrongridService trongridService;
+    private final GethService gethService;
     private final CacheService cacheService;
 
-    public CoinController(UserService userService, CoinService coinService, RippledService rippledService, TrongridService trongridService, CacheService cacheService) {
+    public CoinController(UserService userService, CoinService coinService, RippledService rippledService, TrongridService trongridService, GethService gethService, CacheService cacheService) {
         this.userService = userService;
         this.coinService = coinService;
         this.rippledService = rippledService;
         this.trongridService = trongridService;
+        this.gethService = gethService;
         this.cacheService = cacheService;
     }
 
@@ -58,7 +60,7 @@ public class CoinController {
     @GetMapping("/coin/{coin}/nonce")
     public Response getNonce(@PathVariable CoinService.CoinEnum coin, @RequestParam String address) {
         try {
-            return Response.ok(coin.getNonce(address));
+            return Response.ok("nonce", gethService.getNonce(address));
         } catch (Exception e) {
             e.printStackTrace();
             return Response.serverError();

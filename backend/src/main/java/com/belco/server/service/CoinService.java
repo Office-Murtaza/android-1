@@ -6,7 +6,6 @@ import com.belco.server.repository.CoinRep;
 import com.belco.server.util.Util;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -134,13 +133,18 @@ public class CoinService {
         dto.setByteFee(coin.getByteFee());
         dto.setTxFee(coin.getTxFee());
         dto.setGasPrice(coin.getGasPrice());
-        dto.setGasLimit(coin.getGasLimit());
         dto.setScale(coin.getCoinEntity().getScale());
         dto.setSwapProfitPercent(swapProfitPercent);
         dto.setWalletAddress(coin.getWalletAddress());
         dto.setContractAddress(coin.getContractAddress());
 
-        if (coin == CoinEnum.CATM || coin == CoinEnum.USDT) {
+        if(coin == CoinEnum.ETH) {
+            dto.setGasLimit(coin.getGasLimit(coin.getWalletAddress()));
+        } else if(coin == CoinEnum.CATM){
+            dto.setGasLimit(coin.getGasLimit(GethService.ERC20.CATM.getContractAddress()));
+            dto.setConvertedTxFee(walletService.convertToFee(coin));
+        }else if (coin == CoinEnum.USDT) {
+            dto.setGasLimit(coin.getGasLimit(GethService.ERC20.USDT.getContractAddress()));
             dto.setConvertedTxFee(walletService.convertToFee(coin));
         }
 
@@ -221,7 +225,7 @@ public class CoinService {
             }
 
             @Override
-            public Long getGasLimit() {
+            public Long getGasLimit(String toAddress) {
                 return null;
             }
 
@@ -243,11 +247,6 @@ public class CoinService {
             @Override
             public UtxoDTO getUtxo(String xpub) {
                 return blockbookService.getUtxo(getCoinType(), xpub);
-            }
-
-            @Override
-            public NonceDTO getNonce(String address) {
-                return null;
             }
 
             @Override
@@ -325,7 +324,7 @@ public class CoinService {
             }
 
             @Override
-            public Long getGasLimit() {
+            public Long getGasLimit(String toAddress) {
                 return null;
             }
 
@@ -347,11 +346,6 @@ public class CoinService {
             @Override
             public UtxoDTO getUtxo(String xpub) {
                 return blockbookService.getUtxo(getCoinType(), xpub);
-            }
-
-            @Override
-            public NonceDTO getNonce(String address) {
-                return null;
             }
 
             @Override
@@ -429,7 +423,7 @@ public class CoinService {
             }
 
             @Override
-            public Long getGasLimit() {
+            public Long getGasLimit(String toAddress) {
                 return null;
             }
 
@@ -451,11 +445,6 @@ public class CoinService {
             @Override
             public UtxoDTO getUtxo(String xpub) {
                 return blockbookService.getUtxo(getCoinType(), xpub);
-            }
-
-            @Override
-            public NonceDTO getNonce(String address) {
-                return null;
             }
 
             @Override
@@ -533,7 +522,7 @@ public class CoinService {
             }
 
             @Override
-            public Long getGasLimit() {
+            public Long getGasLimit(String toAddress) {
                 return null;
             }
 
@@ -555,11 +544,6 @@ public class CoinService {
             @Override
             public UtxoDTO getUtxo(String xpub) {
                 return blockbookService.getUtxo(getCoinType(), xpub);
-            }
-
-            @Override
-            public NonceDTO getNonce(String address) {
-                return null;
             }
 
             @Override
@@ -637,7 +621,7 @@ public class CoinService {
             }
 
             @Override
-            public Long getGasLimit() {
+            public Long getGasLimit(String toAddress) {
                 return null;
             }
 
@@ -659,11 +643,6 @@ public class CoinService {
             @Override
             public UtxoDTO getUtxo(String xpub) {
                 return blockbookService.getUtxo(getCoinType(), xpub);
-            }
-
-            @Override
-            public NonceDTO getNonce(String address) {
-                return null;
             }
 
             @Override
@@ -732,7 +711,7 @@ public class CoinService {
 
             @Override
             public BigDecimal getTxFee() {
-                return gethService.getTxFee(getGasLimit(), getGasPrice());
+                return gethService.getTxFee(getGasLimit(getWalletAddress()), getGasPrice());
             }
 
             @Override
@@ -741,8 +720,8 @@ public class CoinService {
             }
 
             @Override
-            public Long getGasLimit() {
-                return gethService.getGasLimit(getWalletAddress());
+            public Long getGasLimit(String toAddress) {
+                return gethService.getGasLimit(toAddress);
             }
 
             @Override
@@ -766,11 +745,6 @@ public class CoinService {
             }
 
             @Override
-            public NonceDTO getNonce(String address) {
-                return new NonceDTO(gethService.getNonce(address));
-            }
-
-            @Override
             public CurrentAccountDTO getCurrentAccount(String address) {
                 return null;
             }
@@ -782,7 +756,7 @@ public class CoinService {
 
             @Override
             public String sign(String fromAddress, String toAddress, BigDecimal amount) {
-                return gethService.sign(fromAddress, toAddress, amount, getGasLimit(), getGasPrice());
+                return gethService.sign(fromAddress, toAddress, amount, getGasLimit(toAddress), getGasPrice());
             }
 
             @Override
@@ -833,7 +807,7 @@ public class CoinService {
 
             @Override
             public BigDecimal getTxFee() {
-                return gethService.getTxFee(getGasLimit(), getGasPrice());
+                return gethService.getTxFee(getGasLimit(GethService.ERC20.CATM.getContractAddress()), getGasPrice());
             }
 
             @Override
@@ -842,8 +816,8 @@ public class CoinService {
             }
 
             @Override
-            public Long getGasLimit() {
-                return gethService.getGasLimit(GethService.ERC20.CATM.getContractAddress());
+            public Long getGasLimit(String toAddress) {
+                return gethService.getGasLimit(toAddress);
             }
 
             @Override
@@ -867,11 +841,6 @@ public class CoinService {
             }
 
             @Override
-            public NonceDTO getNonce(String address) {
-                return new NonceDTO(gethService.getNonce(address));
-            }
-
-            @Override
             public CurrentAccountDTO getCurrentAccount(String address) {
                 return null;
             }
@@ -883,7 +852,7 @@ public class CoinService {
 
             @Override
             public String sign(String fromAddress, String toAddress, BigDecimal amount) {
-                return gethService.sign(GethService.ERC20.CATM, fromAddress, toAddress, amount, getGasLimit(), getGasPrice());
+                return gethService.sign(GethService.ERC20.CATM, fromAddress, toAddress, amount, getGasLimit(GethService.ERC20.CATM.getContractAddress()), getGasPrice());
             }
 
             @Override
@@ -934,7 +903,7 @@ public class CoinService {
 
             @Override
             public BigDecimal getTxFee() {
-                return gethService.getTxFee(getGasLimit(), getGasPrice());
+                return gethService.getTxFee(getGasLimit(GethService.ERC20.USDT.getContractAddress()), getGasPrice());
             }
 
             @Override
@@ -943,8 +912,8 @@ public class CoinService {
             }
 
             @Override
-            public Long getGasLimit() {
-                return gethService.getGasLimit(GethService.ERC20.USDT.getContractAddress());
+            public Long getGasLimit(String toAddress) {
+                return gethService.getGasLimit(toAddress);
             }
 
             @Override
@@ -968,11 +937,6 @@ public class CoinService {
             }
 
             @Override
-            public NonceDTO getNonce(String address) {
-                return new NonceDTO(gethService.getNonce(address));
-            }
-
-            @Override
             public CurrentAccountDTO getCurrentAccount(String address) {
                 return null;
             }
@@ -984,7 +948,7 @@ public class CoinService {
 
             @Override
             public String sign(String fromAddress, String toAddress, BigDecimal amount) {
-                return gethService.sign(GethService.ERC20.USDT, fromAddress, toAddress, amount, getGasLimit(), getGasPrice());
+                return gethService.sign(GethService.ERC20.USDT, fromAddress, toAddress, amount, getGasLimit(GethService.ERC20.USDT.getContractAddress()), getGasPrice());
             }
 
             @Override
@@ -1044,7 +1008,7 @@ public class CoinService {
             }
 
             @Override
-            public Long getGasLimit() {
+            public Long getGasLimit(String toAddress) {
                 return null;
             }
 
@@ -1065,11 +1029,6 @@ public class CoinService {
 
             @Override
             public UtxoDTO getUtxo(String xpub) {
-                return null;
-            }
-
-            @Override
-            public NonceDTO getNonce(String address) {
                 return null;
             }
 
@@ -1145,7 +1104,7 @@ public class CoinService {
             }
 
             @Override
-            public Long getGasLimit() {
+            public Long getGasLimit(String toAddress) {
                 return null;
             }
 
@@ -1166,11 +1125,6 @@ public class CoinService {
 
             @Override
             public UtxoDTO getUtxo(String xpub) {
-                return null;
-            }
-
-            @Override
-            public NonceDTO getNonce(String address) {
                 return null;
             }
 
@@ -1254,7 +1208,7 @@ public class CoinService {
             }
 
             @Override
-            public Long getGasLimit() {
+            public Long getGasLimit(String toAddress) {
                 return null;
             }
 
@@ -1275,11 +1229,6 @@ public class CoinService {
 
             @Override
             public UtxoDTO getUtxo(String xpub) {
-                return null;
-            }
-
-            @Override
-            public NonceDTO getNonce(String address) {
                 return null;
             }
 
@@ -1339,7 +1288,7 @@ public class CoinService {
 
         public abstract Long getGasPrice();
 
-        public abstract Long getGasLimit();
+        public abstract Long getGasLimit(String toAddress);
 
         public abstract String getName();
 
@@ -1348,8 +1297,6 @@ public class CoinService {
         public abstract TransactionHistoryDTO getTransactionHistory(String address, Integer startIndex, Integer limit, List<TransactionRecord> transactionRecords, List<TransactionRecordWallet> transactionRecordWallets);
 
         public abstract UtxoDTO getUtxo(String xpub);
-
-        public abstract NonceDTO getNonce(String address);
 
         public abstract CurrentAccountDTO getCurrentAccount(String address);
 
