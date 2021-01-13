@@ -7,7 +7,7 @@
     android:layout_height="match_parent">
 
     <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/backButtonView"
+        android:id="@+id/back_button_view"
         android:layout_width="?android:attr/actionBarSize"
         android:layout_height="?android:attr/actionBarSize"
         android:background="?selectableItemBackground"
@@ -22,7 +22,7 @@
         tools:visibility="visible" />
 
     <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/logoView"
+        android:id="@+id/logo_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="80dp"
@@ -32,19 +32,19 @@
         app:srcCompat="@drawable/ic_logo_main" />
 
     <TextView
-        android:id="@+id/titleView"
+        android:id="@+id/title_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="44dp"
         android:text="@string/pin_code_screen_enter_pin"
         android:textSize="20sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@id/pinIndicatorsView"
+        app:layout_constraintBottom_toTopOf="@id/pin_indicators_view"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
-        android:id="@+id/errorView"
+        android:id="@+id/error_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
@@ -52,12 +52,12 @@
         android:textColor="@android:color/holo_red_light"
         android:textSize="12sp"
         android:visibility="gone"
-        app:layout_constraintBottom_toTopOf="@id/pinIndicatorsView"
-        app:layout_constraintEnd_toEndOf="@id/titleView"
-        app:layout_constraintStart_toStartOf="@id/titleView" />
+        app:layout_constraintBottom_toTopOf="@id/pin_indicators_view"
+        app:layout_constraintEnd_toEndOf="@id/title_view"
+        app:layout_constraintStart_toStartOf="@id/title_view" />
 
     <com.alimuzaffar.lib.pin.PinEntryEditText
-        android:id="@+id/pinIndicatorsView"
+        android:id="@+id/pin_indicators_view"
         android:layout_width="88dp"
         android:layout_height="8dp"
         android:layout_gravity="center_horizontal"
@@ -73,16 +73,16 @@
         android:textColor="@android:color/transparent"
         android:textIsSelectable="false"
         android:textSize="0px"
-        app:layout_constraintBottom_toTopOf="@id/keyboardView"
-        app:layout_constraintEnd_toEndOf="@id/titleView"
-        app:layout_constraintStart_toStartOf="@id/titleView"
+        app:layout_constraintBottom_toTopOf="@id/keyboard_view"
+        app:layout_constraintEnd_toEndOf="@id/title_view"
+        app:layout_constraintStart_toStartOf="@id/title_view"
         app:pinBackgroundDrawable="@drawable/bg_pin_round"
         app:pinBackgroundIsSquare="true"
         app:pinCharacterSpacing="8dp"
         app:pinTextBottomPadding="4dp" />
 
     <TableLayout
-        android:id="@+id/keyboardView"
+        android:id="@+id/keyboard_view"
         android:layout_width="match_parent"
         android:layout_height="240dp"
         android:background="#f5f5f5"
@@ -92,19 +92,19 @@
         <TableRow android:layout_weight="1">
 
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/key1View"
+                android:id="@+id/key1_view"
                 style="@style/Button.PinCodeKeyboard"
                 android:tag="1"
                 android:text="1" />
 
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/key2View"
+                android:id="@+id/key2_view"
                 style="@style/Button.PinCodeKeyboard"
                 android:tag="2"
                 android:text="2" />
 
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/key3View"
+                android:id="@+id/key3_view"
                 style="@style/Button.PinCodeKeyboard"
                 android:tag="3"
                 android:text="3" />
@@ -113,19 +113,19 @@
         <TableRow android:layout_weight="1">
 
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/key4View"
+                android:id="@+id/key4_view"
                 style="@style/Button.PinCodeKeyboard"
                 android:tag="4"
                 android:text="4" />
 
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/key5View"
+                android:id="@+id/key5_view"
                 style="@style/Button.PinCodeKeyboard"
                 android:tag="5"
                 android:text="5" />
 
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/key6View"
+                android:id="@+id/key6_view"
                 style="@style/Button.PinCodeKeyboard"
                 android:tag="6"
                 android:text="6" />
@@ -134,19 +134,19 @@
         <TableRow android:layout_weight="1">
 
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/key7View"
+                android:id="@+id/key7_view"
                 style="@style/Button.PinCodeKeyboard"
                 android:tag="7"
                 android:text="7" />
 
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/key8View"
+                android:id="@+id/key8_view"
                 style="@style/Button.PinCodeKeyboard"
                 android:tag="8"
                 android:text="8" />
 
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/key9View"
+                android:id="@+id/key9_view"
                 style="@style/Button.PinCodeKeyboard"
                 android:tag="9"
                 android:text="9" />
@@ -159,14 +159,14 @@
                 android:visibility="invisible" />
 
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/key0View"
+                android:id="@+id/key0_view"
                 style="@style/Button.PinCodeKeyboard"
                 android:gravity="center"
                 android:tag="0"
                 android:text="0" />
 
             <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/keyEraseView"
+                android:id="@+id/key_erase_view"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"

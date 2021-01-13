@@ -8,7 +8,6 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
-import android.widget.FrameLayout
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -19,7 +18,9 @@ import androidx.navigation.NavController
 import androidx.navigation.NavDirections
 import androidx.navigation.Navigation
 import androidx.navigation.Navigator
+import androidx.viewbinding.ViewBinding
 import com.app.belcobtm.R
+import com.app.belcobtm.databinding.FragmentBaseBinding
 import com.app.belcobtm.domain.Failure
 import com.app.belcobtm.presentation.core.extensions.hide
 import com.app.belcobtm.presentation.core.extensions.show
@@ -28,12 +29,10 @@ import com.app.belcobtm.presentation.core.mvvm.LoadingData
 import com.app.belcobtm.presentation.features.HostActivity
 import com.app.belcobtm.presentation.features.HostNavigationFragment
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.android.synthetic.main.fragment_base.*
-import kotlinx.android.synthetic.main.fragment_base.view.*
 import org.koin.android.ext.android.get
 import org.koin.core.parameter.parametersOf
 
-abstract class BaseFragment : Fragment() {
+abstract class BaseFragment<V : ViewBinding> : Fragment() {
     private var cachedToolbarTitle: String = ""
     private var navController: NavController? = null
     protected open val isToolbarEnabled: Boolean = true
@@ -42,12 +41,14 @@ abstract class BaseFragment : Fragment() {
     protected open val homeButtonDrawable: Int = R.drawable.ic_arrow_back
     protected open val retryListener: View.OnClickListener? = null
     protected open val backPressedListener: View.OnClickListener = View.OnClickListener { popBackStack() }
-    protected open val customToolbarId: Int = 0
     protected open val isFirstShowContent: Boolean = true
 
     //field used for dynamic setting of back button because we handle it on resume
     protected open var isBackButtonEnabled: Boolean = false
-    protected abstract val resourceLayout: Int
+    protected lateinit var binding: V
+        private set
+    protected lateinit var baseBinding: FragmentBaseBinding
+        private set
 
     protected val baseErrorHandler: (error: Failure?) -> Unit = { error ->
         when (error) {
@@ -75,41 +76,38 @@ abstract class BaseFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val rootView = inflater.inflate(R.layout.fragment_base, container, false)
-        inflater.inflate(
-            resourceLayout,
-            rootView.findViewById<FrameLayout>(R.id.contentContainerView),
-            true
-        )
-        if (customToolbarId != 0) {
-            rootView.toolbarView.hide()
-            (activity as AppCompatActivity).setSupportActionBar(
-                rootView.findViewById(
-                    customToolbarId
-                )
-            )
-        } else {
-            (activity as AppCompatActivity).setSupportActionBar(rootView.toolbarView)
-        }
+        baseBinding = FragmentBaseBinding.inflate(inflater, container, false)
+        binding = createBinding(inflater, container)
+        baseBinding.contentContainerView.addView(binding.root)
+        initToolbar()
         val callback: OnBackPressedCallback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 backPressedListener.onClick(null)
             }
         }
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
-        return rootView
+        return baseBinding.root
+    }
+
+    protected abstract fun createBinding(inflater: LayoutInflater, container: ViewGroup?): V
+
+    protected open fun initToolbar() {
+        (activity as AppCompatActivity).setSupportActionBar(baseBinding.toolbarView)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         this.navController = Navigation.findNavController(view)
         updateActionBar()
-        errorRetryButtonView.setOnClickListener(retryListener)
-        initListeners()
-        // TODO it would be better to change the order because views should be initialized before observers
-        //  otherwise it might lead to crash
-        initObservers()
-        initViews()
+        baseBinding.errorRetryButtonView.setOnClickListener(retryListener)
+        with(binding) {
+            initViews()
+            initListeners()
+            initObservers()
+        }
+        binding.initViews()
+        binding.initListeners()
+        binding.initObservers()
         if (isFirstShowContent) {
             showContent()
         }
@@ -237,35 +235,35 @@ abstract class BaseFragment : Fragment() {
     }
 
     protected open fun showError(message: String) {
-        contentContainerView.show()
-        progressView.hide()
+        baseBinding.contentContainerView.show()
+        baseBinding.progressView.hide()
         showSnackBar(message)
     }
 
     protected open fun showError(resMessage: Int) {
-        contentContainerView.show()
-        progressView.hide()
+        baseBinding.contentContainerView.show()
+        baseBinding.progressView.hide()
         showSnackBar(resMessage)
     }
 
     protected open fun showErrorNoInternetConnection() {
-        errorImageView.setImageResource(R.drawable.ic_screen_state_no_internet)
-        errorTitleView.setText(R.string.base_screen_no_internet_title)
-        errorDescriptionView.setText(R.string.base_screen_no_internet_description)
+        baseBinding.errorImageView.setImageResource(R.drawable.ic_screen_state_no_internet)
+        baseBinding.errorTitleView.setText(R.string.base_screen_no_internet_title)
+        baseBinding.errorDescriptionView.setText(R.string.base_screen_no_internet_description)
         updateContentContainer(isErrorVisible = true)
     }
 
     protected open fun showErrorServerError() {
-        errorImageView.setImageResource(R.drawable.ic_screen_state_server_error)
-        errorTitleView.setText(R.string.base_screen_server_error_title)
-        errorDescriptionView.setText(R.string.base_screen_server_error_description)
+        baseBinding.errorImageView.setImageResource(R.drawable.ic_screen_state_server_error)
+        baseBinding.errorTitleView.setText(R.string.base_screen_server_error_title)
+        baseBinding.errorDescriptionView.setText(R.string.base_screen_server_error_description)
         updateContentContainer(isErrorVisible = true)
     }
 
     protected open fun showErrorSomethingWrong() {
-        errorImageView.setImageResource(R.drawable.ic_screen_state_something_wrong)
-        errorTitleView.setText(R.string.base_screen_something_wrong_title)
-        errorDescriptionView.setText(R.string.base_screen_something_wrong_description)
+        baseBinding.errorImageView.setImageResource(R.drawable.ic_screen_state_something_wrong)
+        baseBinding.errorTitleView.setText(R.string.base_screen_something_wrong_title)
+        baseBinding.errorDescriptionView.setText(R.string.base_screen_something_wrong_description)
         updateContentContainer(isErrorVisible = true)
     }
 
@@ -285,9 +283,9 @@ abstract class BaseFragment : Fragment() {
         isProgressVisible: Boolean = false,
         isErrorVisible: Boolean = false
     ) {
-        contentContainerView.toggle(isContentVisible)
-        progressView.toggle(isProgressVisible)
-        errorContainerView.toggle(isErrorVisible)
+        baseBinding.contentContainerView.toggle(isContentVisible)
+        baseBinding.progressView.toggle(isProgressVisible)
+        baseBinding.errorContainerView.toggle(isErrorVisible)
     }
 
     protected fun <T> LiveData<LoadingData<T>>.listen(
@@ -308,11 +306,11 @@ abstract class BaseFragment : Fragment() {
         })
     }
 
-    protected open fun initViews() = Unit
+    protected open fun V.initViews() = Unit
 
-    protected open fun initListeners() = Unit
+    protected open fun V.initListeners() = Unit
 
-    protected open fun initObservers() = Unit
+    protected open fun V.initObservers() = Unit
 
     fun <T> T.doIfChanged(old: T?, action: (T) -> Unit) {
         if (this != old) {

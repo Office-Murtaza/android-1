@@ -12,7 +12,7 @@
         android:layout_marginEnd="16dp">
 
         <TableRow
-            android:id="@+id/txIdContainerView"
+            android:id="@+id/tx_id_container_view"
             style="@style/CoinDetails.Table.Row"
             android:visibility="gone">
 
@@ -21,7 +21,7 @@
                 android:text="@string/transition_details_screen_id" />
 
             <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/txIdView"
+                android:id="@+id/tx_id_view"
                 style="@style/CoinDetails.Table.Value"
                 android:background="?android:selectableItemBackground"
                 android:clickable="true"
@@ -32,7 +32,7 @@
         </TableRow>
 
         <TableRow
-            android:id="@+id/txDbldContainerView"
+            android:id="@+id/txD_bld_container_view"
             style="@style/CoinDetails.Table.Row"
             android:visibility="gone"
             tools:visibility="visible">
@@ -42,13 +42,13 @@
                 android:text="@string/transition_details_screen_id" />
 
             <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/txDbldView"
+                android:id="@+id/txD_bldView"
                 style="@style/CoinDetails.Table.Value"
                 tools:text="1273" />
         </TableRow>
 
         <TableRow
-            android:id="@+id/typeContainerView"
+            android:id="@+id/type_container_view"
             style="@style/CoinDetails.Table.Row">
 
             <androidx.appcompat.widget.AppCompatTextView
@@ -56,13 +56,13 @@
                 android:text="@string/transition_details_screen_type" />
 
             <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/typeView"
+                android:id="@+id/type_view"
                 style="@style/CoinDetails.Table.Value"
                 tools:text="Deposit" />
         </TableRow>
 
         <TableRow
-            android:id="@+id/statusContainerView"
+            android:id="@+id/status_container_view"
             style="@style/CoinDetails.Table.Row">
 
             <androidx.appcompat.widget.AppCompatTextView
@@ -75,7 +75,7 @@
                 android:layout_gravity="center_vertical">
 
                 <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/statusView"
+                    android:id="@+id/status_view"
                     style="@style/Text.Status"
                     tools:background="@drawable/bg_status_complete"
                     tools:text="Pending"
@@ -85,7 +85,7 @@
         </TableRow>
 
         <TableRow
-            android:id="@+id/cashStatusContainerView"
+            android:id="@+id/cash_status_container_view"
             style="@style/CoinDetails.Table.Row"
             tools:visibility="visible">
 
@@ -98,7 +98,7 @@
                 android:layout_gravity="center_vertical">
 
                 <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/cashStatusView"
+                    android:id="@+id/cash_status_view"
                     style="@style/Text.Status"
                     tools:background="@drawable/bg_status_fail"
                     tools:text="Not Available"
@@ -108,7 +108,7 @@
         </TableRow>
 
         <TableRow
-            android:id="@+id/amountContainerView"
+            android:id="@+id/amount_container_view"
             style="@style/CoinDetails.Table.Row">
 
             <androidx.appcompat.widget.AppCompatTextView
@@ -122,14 +122,14 @@
                 android:orientation="horizontal">
 
                 <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/amountCryptoView"
+                    android:id="@+id/amount_crypto_view"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="16sp"
                     tools:text="0.5 BTC" />
 
                 <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/amountArrowsView"
+                    android:id="@+id/amount_arrows_view"
                     android:layout_width="16dp"
                     android:layout_height="16dp"
                     android:layout_margin="3dp"
@@ -138,7 +138,7 @@
                     tools:visibility="visible" />
 
                 <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/amountUsdView"
+                    android:id="@+id/amount_usd_view"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/colorPrimary"
@@ -151,7 +151,7 @@
         </TableRow>
 
         <TableRow
-            android:id="@+id/feeContainerView"
+            android:id="@+id/fee_container_view"
             style="@style/CoinDetails.Table.Row">
 
             <androidx.appcompat.widget.AppCompatTextView
@@ -159,13 +159,13 @@
                 android:text="@string/transition_details_screen_fee" />
 
             <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/feeView"
+                android:id="@+id/fee_view"
                 style="@style/CoinDetails.Table.Value"
                 tools:text="0.001 BTC" />
         </TableRow>
 
         <TableRow
-            android:id="@+id/fromPhoneContainerView"
+            android:id="@+id/from_phone_container_view"
             style="@style/CoinDetails.Table.Row">
 
             <androidx.appcompat.widget.AppCompatTextView
@@ -173,7 +173,7 @@
                 android:text="@string/transition_details_screen_from_phone" />
 
             <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/fromPhoneView"
+                android:id="@+id/from_phone_view"
                 style="@style/CoinDetails.Table.Value"
                 android:layout_weight="2"
                 android:maxLines="3"
@@ -182,7 +182,7 @@
         </TableRow>
 
         <TableRow
-            android:id="@+id/fromAddressContainerView"
+            android:id="@+id/from_address_container_view"
             style="@style/CoinDetails.Table.Row">
 
             <androidx.appcompat.widget.AppCompatTextView
@@ -190,7 +190,7 @@
                 android:text="@string/transition_details_screen_from_address" />
 
             <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/fromAddressView"
+                android:id="@+id/from_address_view"
                 style="@style/CoinDetails.Table.Value"
                 android:layout_weight="2"
                 android:maxLines="3"
@@ -199,7 +199,7 @@
         </TableRow>
 
         <TableRow
-            android:id="@+id/toPhoneContainerView"
+            android:id="@+id/to_phone_container_view"
             style="@style/CoinDetails.Table.Row">
 
             <androidx.appcompat.widget.AppCompatTextView
@@ -207,7 +207,7 @@
                 android:text="@string/transition_details_screen_to_phone" />
 
             <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/toPhoneView"
+                android:id="@+id/to_phone_view"
                 style="@style/CoinDetails.Table.Value"
                 android:layout_weight="2"
                 android:maxLines="3"
@@ -216,7 +216,7 @@
         </TableRow>
 
         <TableRow
-            android:id="@+id/toAddressContainerView"
+            android:id="@+id/to_address_container_view"
             style="@style/CoinDetails.Table.Row">
 
             <androidx.appcompat.widget.AppCompatTextView
@@ -224,14 +224,14 @@
                 android:text="@string/transition_details_screen_to_address" />
 
             <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/toAddressView"
+                android:id="@+id/to_address_view"
                 style="@style/CoinDetails.Table.Value"
                 android:maxLines="3"
                 tools:text="1256400438568459684598645946fdsfsdf" />
         </TableRow>
 
         <TableRow
-            android:id="@+id/dateContainerView"
+            android:id="@+id/date_container_view"
             style="@style/CoinDetails.Table.Row">
 
             <androidx.appcompat.widget.AppCompatTextView
@@ -239,13 +239,13 @@
                 android:text="@string/transition_details_screen_date" />
 
             <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/dateView"
+                android:id="@+id/date_view"
                 style="@style/CoinDetails.Table.Value"
                 tools:text="2019.10.08 06:32:58 PM" />
         </TableRow>
 
         <TableRow
-            android:id="@+id/phoneContainerView"
+            android:id="@+id/phone_container_view"
             style="@style/CoinDetails.Table.Row"
             android:visibility="gone"
             tools:visibility="visible">
@@ -255,13 +255,13 @@
                 android:text="@string/transition_details_screen_phone" />
 
             <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/phoneView"
+                android:id="@+id/phone_view"
                 style="@style/CoinDetails.Table.Value"
                 tools:text="+1 (800) 123 456 789" />
         </TableRow>
 
         <TableRow
-            android:id="@+id/imageContainerView"
+            android:id="@+id/image_container_view"
             style="@style/CoinDetails.Table.Row"
             android:visibility="gone"
             tools:visibility="visible">
@@ -273,7 +273,7 @@
             <FrameLayout style="@style/CoinDetails.Table.Value">
 
                 <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/imageView"
+                    android:id="@+id/image_view"
                     android:layout_width="95dp"
                     android:layout_height="95dp"
                     app:tint="#b7b7b7"
@@ -283,7 +283,7 @@
         </TableRow>
 
         <TableRow
-            android:id="@+id/messageContainerView"
+            android:id="@+id/message_container_view"
             style="@style/CoinDetails.Table.Row"
             android:visibility="gone"
             tools:visibility="visible">
@@ -293,13 +293,13 @@
                 android:text="@string/transition_details_screen_message" />
 
             <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/messageView"
+                android:id="@+id/message_view"
                 style="@style/CoinDetails.Table.Value"
                 tools:text="Happy Birthday!" />
         </TableRow>
 
         <TableRow
-            android:id="@+id/refTxIdContainerView"
+            android:id="@+id/ref_tx_id_container_view"
             style="@style/CoinDetails.Table.Row">
 
             <androidx.appcompat.widget.AppCompatTextView
@@ -307,7 +307,7 @@
                 android:text="@string/transition_details_screen_ref_tax_id" />
 
             <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/refTxIdView"
+                android:id="@+id/ref_tx_id_view"
                 style="@style/CoinDetails.Table.Value"
                 android:background="?android:selectableItemBackground"
                 android:clickable="true"
@@ -318,7 +318,7 @@
         </TableRow>
 
         <TableRow
-            android:id="@+id/refCoinContainerView"
+            android:id="@+id/ref_coin_container_view"
             style="@style/CoinDetails.Table.Row"
             android:visibility="gone"
             tools:visibility="visible">
@@ -328,13 +328,13 @@
                 android:text="@string/transition_details_screen_ref_coin" />
 
             <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/refCoinView"
+                android:id="@+id/ref_coin_view"
                 style="@style/CoinDetails.Table.Value"
                 tools:text="1 BTC" />
         </TableRow>
 
         <TableRow
-            android:id="@+id/refAmountContainerView"
+            android:id="@+id/ref_amount_container_view"
             style="@style/CoinDetails.Table.Row"
             android:visibility="gone"
             tools:visibility="visible">
@@ -344,20 +344,20 @@
                 android:text="@string/transition_details_screen_ref_amount" />
 
             <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/refAmountView"
+                android:id="@+id/ref_amount_view"
                 style="@style/CoinDetails.Table.Value"
                 tools:text="Happy Birthday!" />
         </TableRow>
 
         <TextView
-            android:id="@+id/qrCodeTitleView"
+            android:id="@+id/qr_code_title_view"
             style="@style/CoinDetails.Table.Key"
             android:layout_marginTop="6dp"
             android:text="@string/transition_details_screen_sell_qr_code"
             android:visibility="gone" />
 
         <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/qrCodeView"
+            android:id="@+id/qr_code_view"
             style="@style/CoinDetails.Table.Row"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

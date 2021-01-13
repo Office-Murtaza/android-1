@@ -12,7 +12,7 @@
         android:background="@color/thin_divider" />
 
     <com.app.belcobtm.presentation.core.views.SettingsItemView
-        android:id="@+id/walletsItem"
+        android:id="@+id/wallets_item"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:src="@drawable/ic_wallet"
@@ -24,7 +24,7 @@
         android:background="@color/thin_divider" />
 
     <com.app.belcobtm.presentation.core.views.SettingsItemView
-        android:id="@+id/securityItem"
+        android:id="@+id/security_item"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:src="@drawable/ic_security"
@@ -36,7 +36,7 @@
         android:background="@color/thin_divider" />
 
     <com.app.belcobtm.presentation.core.views.SettingsItemView
-        android:id="@+id/kycItem"
+        android:id="@+id/kyc_item"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:src="@drawable/ic_kyc"
@@ -60,7 +60,7 @@
         android:background="@color/thin_divider" />
 
     <com.app.belcobtm.presentation.core.views.SettingsItemView
-        android:id="@+id/supportItem"
+        android:id="@+id/support_item"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:src="@drawable/ic_support"
@@ -72,7 +72,7 @@
         android:background="@color/thin_divider" />
 
     <com.app.belcobtm.presentation.core.views.SettingsItemView
-        android:id="@+id/aboutItem"
+        android:id="@+id/about_item"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:src="@drawable/ic_info"

@@ -6,10 +6,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import com.app.belcobtm.R
+import com.app.belcobtm.databinding.ItemCoinToCoinBinding
 import com.app.belcobtm.domain.wallet.LocalCoinType
 import com.app.belcobtm.domain.wallet.item.CoinDataItem
 import com.app.belcobtm.presentation.core.extensions.resIcon
-import kotlinx.android.synthetic.main.item_coin_to_coin.view.*
 
 class CoinDialogAdapter(
     context: Context,
@@ -17,13 +17,18 @@ class CoinDialogAdapter(
 ) : ArrayAdapter<CoinDataItem>(context, R.layout.item_coin_to_coin, itemList) {
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
-        val view = convertView ?: LayoutInflater.from(context)
-            .inflate(R.layout.item_coin_to_coin, parent, false)
+        val binding = if (convertView != null) {
+            convertView.tag as ItemCoinToCoinBinding
+        } else {
+            ItemCoinToCoinBinding.inflate(LayoutInflater.from(context), parent, false).apply {
+                root.tag = this
+            }
+        }
         getItem(position)?.let { coin ->
             val localType = LocalCoinType.valueOf(coin.code)
-            view.imageView.setImageResource(localType.resIcon())
-            view.textView.text = localType.fullName
+            binding.imageView.setImageResource(localType.resIcon())
+            binding.textView.text = localType.fullName
         }
-        return view
+        return binding.root
     }
 }

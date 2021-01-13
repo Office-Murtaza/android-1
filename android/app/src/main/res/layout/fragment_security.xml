@@ -13,7 +13,7 @@
         android:background="@color/thin_divider" />
 
     <com.app.belcobtm.presentation.core.views.SettingsItemView
-        android:id="@+id/updatePhoneItem"
+        android:id="@+id/update_phone_item"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:src="@drawable/ic_add_call"
@@ -26,7 +26,7 @@
         android:background="@color/thin_divider" />
 
     <com.app.belcobtm.presentation.core.views.SettingsItemView
-        android:id="@+id/updatePassItem"
+        android:id="@+id/update_pass_item"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:src="@drawable/ic_lock"
@@ -38,7 +38,7 @@
         android:background="@color/thin_divider" />
 
     <com.app.belcobtm.presentation.core.views.SettingsItemView
-        android:id="@+id/updatePinItem"
+        android:id="@+id/update_pin_item"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:src="@drawable/ic_security_pin"
@@ -50,7 +50,7 @@
         android:background="@color/thin_divider" />
 
     <com.app.belcobtm.presentation.core.views.SettingsItemView
-        android:id="@+id/seedPhraseItem"
+        android:id="@+id/seed_phrase_item"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:src="@drawable/ic_seed"
@@ -62,7 +62,7 @@
         android:background="@color/thin_divider" />
 
     <com.app.belcobtm.presentation.core.views.SettingsItemView
-        android:id="@+id/unlinkItem"
+        android:id="@+id/unlink_item"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:src="@drawable/ic_unlink"

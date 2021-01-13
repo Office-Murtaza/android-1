@@ -83,7 +83,7 @@
         android:id="@+id/deposit_fragment"
         android:name="com.app.belcobtm.presentation.features.wallet.deposit.DepositFragment"
         android:label="DepositFragment"
-        tools:layout="@layout/activity_deposit">
+        tools:layout="@layout/fragment_deposit">
         <argument
             android:name="coin_code"
             app:argType="string" />

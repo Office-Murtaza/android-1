@@ -1,36 +1,36 @@
 package com.app.belcobtm.presentation.features.settings.password
 
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.navArgs
-import com.app.belcobtm.presentation.core.ui.fragment.BaseFragment
 import com.app.belcobtm.R
+import com.app.belcobtm.databinding.FragmentPasswordBinding
 import com.app.belcobtm.domain.Failure
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
-import kotlinx.android.synthetic.main.layout_password.*
-import kotlinx.android.synthetic.main.layout_password.nextButton
+import com.app.belcobtm.presentation.core.ui.fragment.BaseFragment
 import org.koin.android.viewmodel.ext.android.viewModel
 
-class PasswordFragment : BaseFragment() {
+class PasswordFragment : BaseFragment<FragmentPasswordBinding>() {
     private val viewModel by viewModel<PasswordViewModel>()
-    private val args:  PasswordFragmentArgs by navArgs()
+    private val args: PasswordFragmentArgs by navArgs()
     private var appliedState: LoadingData<PasswordState>? = null
     override val retryListener = View.OnClickListener {
-        viewModel.onNextClick(passwordView.text?.toString().orEmpty())
+        viewModel.onNextClick(binding.passwordView.text?.toString().orEmpty())
     }
 
-    override val resourceLayout: Int = R.layout.layout_password
     override val isHomeButtonEnabled = true
     override var isMenuEnabled = true
 
-    override fun initViews() {
+    override fun FragmentPasswordBinding.initViews() {
         appliedState = null
         setToolbarTitle(args.title)
         viewModel.passArgs(args)
     }
 
-    override fun initListeners() {
+    override fun FragmentPasswordBinding.initListeners() {
         nextButton.setOnClickListener {
             viewModel.onNextClick(passwordView.text?.toString().orEmpty())
         }
@@ -39,7 +39,7 @@ class PasswordFragment : BaseFragment() {
         }
     }
 
-    override fun initObservers() {
+    override fun FragmentPasswordBinding.initObservers() {
         viewModel.stateData.listen(
             success = { state ->
                 state.doIfChanged(appliedState, {
@@ -64,7 +64,7 @@ class PasswordFragment : BaseFragment() {
                 appliedState = it
             }
         )
-        viewModel.actionData.observe(this, Observer { action ->
+        viewModel.actionData.observe(viewLifecycleOwner, Observer { action ->
             when (action) {
                 is PasswordAction.NavigateAction -> {
                     showContent()
@@ -83,4 +83,7 @@ class PasswordFragment : BaseFragment() {
         viewModel.popBackStack()
         return true
     }
+
+    override fun createBinding(inflater: LayoutInflater, container: ViewGroup?): FragmentPasswordBinding =
+        FragmentPasswordBinding.inflate(inflater, container, false)
 }

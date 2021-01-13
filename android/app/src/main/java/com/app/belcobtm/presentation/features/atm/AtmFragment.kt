@@ -8,9 +8,12 @@ import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import com.app.belcobtm.R
 import com.app.belcobtm.data.rest.atm.response.AtmResponse
+import com.app.belcobtm.databinding.FragmentAtmBinding
 import com.app.belcobtm.presentation.core.helper.AlertHelper
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
 import com.app.belcobtm.presentation.core.ui.fragment.BaseFragment
@@ -27,13 +30,12 @@ import permissions.dispatcher.OnNeverAskAgain
 import permissions.dispatcher.RuntimePermissions
 
 @RuntimePermissions
-class AtmFragment : BaseFragment(),
+class AtmFragment : BaseFragment<FragmentAtmBinding>(),
     GoogleMap.OnInfoWindowClickListener,
     OnMapReadyCallback,
     LocationListener {
     private val viewModel by viewModel<AtmViewModel>()
 
-    override val resourceLayout = R.layout.fragment_atm
     override var isMenuEnabled = true
     override val isToolbarEnabled = false
     override val retryListener: View.OnClickListener = View.OnClickListener { viewModel.requestAtms() }
@@ -53,8 +55,7 @@ class AtmFragment : BaseFragment(),
 //        AlertHelper.showToastShort(requireContext(),  "Info window clicked")
     }
 
-    override fun initObservers() {
-        super.initObservers()
+    override fun FragmentAtmBinding.initObservers() {
         viewModel.stateData.listen(
             success = { state ->
                 state.doIfChanged(appliedState?.commonData) {
@@ -146,4 +147,7 @@ class AtmFragment : BaseFragment(),
             }
         }
     }
+
+    override fun createBinding(inflater: LayoutInflater, container: ViewGroup?): FragmentAtmBinding =
+        FragmentAtmBinding.inflate(inflater, container, false)
 }

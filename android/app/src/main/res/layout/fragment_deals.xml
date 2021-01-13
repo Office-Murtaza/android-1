@@ -12,7 +12,7 @@
         android:background="@color/thin_divider" />
 
     <com.app.belcobtm.presentation.core.views.SettingsItemView
-        android:id="@+id/transferItem"
+        android:id="@+id/transfer_item"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:src="@drawable/ic_transfer"
@@ -25,7 +25,7 @@
         android:background="@color/thin_divider" />
 
     <com.app.belcobtm.presentation.core.views.SettingsItemView
-        android:id="@+id/swapItem"
+        android:id="@+id/swap_item"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:src="@drawable/ic_swap"
@@ -38,7 +38,7 @@
         android:background="@color/thin_divider" />
 
     <com.app.belcobtm.presentation.core.views.SettingsItemView
-        android:id="@+id/stakingItem"
+        android:id="@+id/staking_item"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:src="@drawable/ic_staking"

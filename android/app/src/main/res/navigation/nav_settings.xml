@@ -42,7 +42,7 @@
         android:id="@+id/password_fragment"
         android:name="com.app.belcobtm.presentation.features.settings.password.PasswordFragment"
         android:label="PasswordFragment"
-        tools:layout="@layout/layout_password">
+        tools:layout="@layout/fragment_password">
 
         <action
             android:id="@+id/password_to_create_seed_fragment"

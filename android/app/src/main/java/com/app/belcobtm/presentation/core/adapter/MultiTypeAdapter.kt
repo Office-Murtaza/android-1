@@ -9,7 +9,7 @@ import com.app.belcobtm.presentation.core.adapter.diffutl.ListItemDiffUtil
 import com.app.belcobtm.presentation.core.adapter.holder.MultiTypeViewHolder
 import com.app.belcobtm.presentation.core.adapter.model.ListItem
 
-class MultiTypeAdapter(
+open class MultiTypeAdapter(
     private val diffUtil: ListItemDiffUtil = ListItemDiffUtil()
 ) : RecyclerView.Adapter<MultiTypeViewHolder<*>>() {
 

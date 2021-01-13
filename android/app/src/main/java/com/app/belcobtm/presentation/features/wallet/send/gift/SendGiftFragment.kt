@@ -4,12 +4,15 @@ import android.content.Context
 import android.net.Uri
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.observe
 import androidx.navigation.fragment.navArgs
 import com.app.belcobtm.R
+import com.app.belcobtm.databinding.FragmentSendGiftBinding
 import com.app.belcobtm.domain.Failure
 import com.app.belcobtm.domain.wallet.LocalCoinType
 import com.app.belcobtm.domain.wallet.item.CoinDataItem
@@ -30,17 +33,15 @@ import com.giphy.sdk.ui.GiphyCoreUI
 import com.giphy.sdk.ui.themes.GridType
 import com.giphy.sdk.ui.themes.LightTheme
 import com.giphy.sdk.ui.views.GiphyDialogFragment
-import kotlinx.android.synthetic.main.fragment_send_gift.*
 import org.koin.android.viewmodel.ext.android.viewModel
 
-class SendGiftFragment : BaseFragment(), GiphyDialogFragment.GifSelectionListener {
+class SendGiftFragment : BaseFragment<FragmentSendGiftBinding>(), GiphyDialogFragment.GifSelectionListener {
 
     private val viewModel: SendGiftViewModel by viewModel()
     private val sendGiftArgs: SendGiftFragmentArgs by navArgs()
     private lateinit var gifsDialog: GiphyDialogFragment
     private var gifMedia: Media? = null
 
-    override val resourceLayout: Int = R.layout.fragment_send_gift
     override val isToolbarEnabled: Boolean = true
     override val isHomeButtonEnabled: Boolean = true
     override var isMenuEnabled: Boolean = true
@@ -48,7 +49,7 @@ class SendGiftFragment : BaseFragment(), GiphyDialogFragment.GifSelectionListene
         if (viewModel.initialLoadingData.value is LoadingData.Error) {
             viewModel.fetchInitialData()
         } else {
-            viewModel.sendGift(0.0, sendGiftArgs.phoneNumber, messageView.getString(), gifMedia?.id)
+            viewModel.sendGift(0.0, sendGiftArgs.phoneNumber, binding.messageView.getString(), gifMedia?.id)
         }
     }
 
@@ -71,7 +72,7 @@ class SendGiftFragment : BaseFragment(), GiphyDialogFragment.GifSelectionListene
         GiphyCoreUI.configure(context, GIPHY_API_KEY)
     }
 
-    override fun initViews() {
+    override fun FragmentSendGiftBinding.initViews() {
         contactName.toggle(!sendGiftArgs.contactName.isNullOrEmpty())
         contactName.text = sendGiftArgs.contactName
         contactPhone.text = sendGiftArgs.phoneNumber
@@ -97,7 +98,7 @@ class SendGiftFragment : BaseFragment(), GiphyDialogFragment.GifSelectionListene
         messageView.editText?.inputType = EditorInfo.IME_ACTION_DONE
     }
 
-    override fun initListeners() {
+    override fun FragmentSendGiftBinding.initListeners() {
         sendCoinInputLayout.setOnMaxClickListener(View.OnClickListener { viewModel.setMaxCoinAmount() })
         addGif.setOnClickListener { openGift() }
         gifImage.setOnClickListener { openGift() }
@@ -130,7 +131,7 @@ class SendGiftFragment : BaseFragment(), GiphyDialogFragment.GifSelectionListene
         sendGift.setOnClickListener { sendGift() }
     }
 
-    override fun initObservers() {
+    override fun FragmentSendGiftBinding.initObservers() {
         viewModel.initialLoadingData.listen({})
         viewModel.sendCoinAmount.observe(viewLifecycleOwner) { cryptoAmount ->
             with(sendCoinInputLayout.getEditText()) {
@@ -145,22 +146,22 @@ class SendGiftFragment : BaseFragment(), GiphyDialogFragment.GifSelectionListene
             }
         }
         viewModel.cryptoAmountError.observe(viewLifecycleOwner) {
-            sendCoinInputLayout.setErrorText(it?.let(::getString))
+            binding.sendCoinInputLayout.setErrorText(it?.let(::getString))
         }
         viewModel.usdAmount.observe(viewLifecycleOwner) {
-            amountUsdView.text = getString(R.string.text_usd, it)
+            binding.amountUsdView.text = getString(R.string.text_usd, it)
         }
         viewModel.coinToSend.observe(viewLifecycleOwner) { coin ->
             val coinCode = coin.code
             val coinBalance = coin.balanceCoin.toStringCoin()
             val localType = LocalCoinType.valueOf(coinCode)
-            sendCoinInputLayout.setCoinData(coinCode, localType.resIcon())
-            sendCoinInputLayout.setHelperText(
-                getString(R.string.swap_screen_balance_formatted, coinBalance, coinCode)
+            binding.sendCoinInputLayout.setCoinData(coinCode, localType.resIcon())
+            binding.sendCoinInputLayout.setHelperText(
+                getString(R.string.send_gift_screen_balance_formatted, coinBalance, coinCode)
             )
         }
         viewModel.fee.observe(viewLifecycleOwner) { amount ->
-            sendCoinInputLayout.setAdditionalHelperText(
+            binding.sendCoinInputLayout.setAdditionalHelperText(
                 getString(
                     R.string.send_gift_screen_fee_formatted,
                     amount.toStringCoin(),
@@ -182,7 +183,7 @@ class SendGiftFragment : BaseFragment(), GiphyDialogFragment.GifSelectionListene
                     }
                     is Failure.ServerError -> showErrorServerError()
                     is Failure.XRPLowAmountToSend -> {
-                        sendCoinInputLayout.setErrorText(getString(R.string.error_xrp_amount_is_not_enough))
+                        binding.sendCoinInputLayout.setErrorText(getString(R.string.error_xrp_amount_is_not_enough))
                         showContent()
                     }
                     else -> showErrorSomethingWrong()
@@ -211,9 +212,9 @@ class SendGiftFragment : BaseFragment(), GiphyDialogFragment.GifSelectionListene
 
     override fun onGifSelected(media: Media) {
         gifMedia = media
-        gifImage.setMedia(media, RenditionType.original)
-        gifImage.show()
-        removeGifButton.show()
+        binding.gifImage.setMedia(media, RenditionType.original)
+        binding.gifImage.show()
+        binding.removeGifButton.show()
     }
 
     private fun sendGift() {
@@ -223,10 +224,13 @@ class SendGiftFragment : BaseFragment(), GiphyDialogFragment.GifSelectionListene
             .replace(")", "")
             .replace(" ", "")
         viewModel.sendGift(
-            sendCoinInputLayout.getEditText().text.getDouble(),
+            binding.sendCoinInputLayout.getEditText().text.getDouble(),
             phone,
-            messageView.getString(),
+            binding.messageView.getString(),
             gifMedia?.id ?: ""
         )
     }
+
+    override fun createBinding(inflater: LayoutInflater, container: ViewGroup?): FragmentSendGiftBinding =
+        FragmentSendGiftBinding.inflate(inflater, container, false)
 }

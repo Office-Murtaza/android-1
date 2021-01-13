@@ -6,7 +6,7 @@
     android:layout_height="match_parent">
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/phoneView"
+        android:id="@+id/phone_view"
         style="@style/TextInputLayoutOutline"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -18,7 +18,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <com.app.belcobtm.presentation.core.ui.view.EditTextNoAutoFill
-            android:id="@+id/phoneEditView"
+            android:id="@+id/phone_edit_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:drawableEnd="@drawable/ic_phone"
@@ -31,13 +31,13 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/passwordView"
+        android:id="@+id/password_view"
         style="@style/TextInputLayoutOutline"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="@id/phoneView"
-        app:layout_constraintStart_toStartOf="@id/phoneView"
-        app:layout_constraintTop_toBottomOf="@id/phoneView"
+        app:layout_constraintEnd_toEndOf="@id/phone_view"
+        app:layout_constraintStart_toStartOf="@id/phone_view"
+        app:layout_constraintTop_toBottomOf="@id/phone_view"
         app:passwordToggleEnabled="true"
         app:passwordToggleTint="@color/colorPrimary">
 
@@ -53,7 +53,7 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/nextButtonView"
+        android:id="@+id/next_button_view"
         style="@style/Button.Primary"
         android:enabled="false"
         android:text="@string/next"

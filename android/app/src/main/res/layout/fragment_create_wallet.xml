@@ -14,7 +14,7 @@
         android:layout_height="0dp">
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/phoneView"
+            android:id="@+id/phone_view"
             style="@style/TextInputLayoutOutline"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -26,7 +26,7 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <com.app.belcobtm.presentation.core.ui.view.EditTextNoAutoFill
-                android:id="@+id/phoneEditView"
+                android:id="@+id/phone_edit_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:drawableEnd="@drawable/ic_phone"
@@ -35,17 +35,17 @@
                 android:importantForAutofill="no"
                 android:inputType="phone|textNoSuggestions"
                 android:lines="1"
-                android:nextFocusDown="@id/passwordView" />
+                android:nextFocusDown="@id/password_view" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/passwordView"
+            android:id="@+id/password_view"
             style="@style/TextInputLayoutOutline"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="@id/phoneView"
-            app:layout_constraintStart_toStartOf="@id/phoneView"
-            app:layout_constraintTop_toBottomOf="@id/phoneView"
+            app:layout_constraintEnd_toEndOf="@id/phone_view"
+            app:layout_constraintStart_toStartOf="@id/phone_view"
+            app:layout_constraintTop_toBottomOf="@id/phone_view"
             app:passwordToggleEnabled="true"
             app:passwordToggleTint="@color/colorPrimary">
 
@@ -56,18 +56,18 @@
                 android:importantForAutofill="no"
                 android:inputType="textPassword|textNoSuggestions"
                 android:lines="1"
-                android:nextFocusDown="@id/passwordConfirmView" />
+                android:nextFocusDown="@id/password_confirm_view" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/passwordConfirmView"
+            android:id="@+id/password_confirm_view"
             style="@style/TextInputLayoutOutline"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="@id/passwordView"
-            app:layout_constraintStart_toStartOf="@id/passwordView"
-            app:layout_constraintTop_toBottomOf="@id/passwordView"
+            app:layout_constraintEnd_toEndOf="@id/password_view"
+            app:layout_constraintStart_toStartOf="@id/password_view"
+            app:layout_constraintTop_toBottomOf="@id/password_view"
             app:passwordToggleEnabled="true"
             app:passwordToggleTint="@color/colorPrimary">
 
@@ -77,21 +77,21 @@
                 android:hint="@string/create_wallet_screen_confirm_password"
                 android:inputType="textPassword"
                 android:lines="1"
-                android:nextFocusDown="@id/tncCheckBoxView" />
+                android:nextFocusDown="@id/tnc_check_box_view" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
         <Space
-            android:id="@+id/spaceView"
+            android:id="@+id/space_view"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            app:layout_constraintBottom_toTopOf="@id/tncCheckBoxView"
+            app:layout_constraintBottom_toTopOf="@id/tnc_check_box_view"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/passwordConfirmView"
+            app:layout_constraintTop_toBottomOf="@id/password_confirm_view"
             app:layout_constraintVertical_weight="1" />
 
         <com.google.android.material.checkbox.MaterialCheckBox
-            android:id="@+id/tncCheckBoxView"
+            android:id="@+id/tnc_check_box_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
@@ -101,10 +101,10 @@
             android:minWidth="0dp"
             app:layout_constraintBottom_toTopOf="@id/nextButtonView"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/spaceView" />
+            app:layout_constraintTop_toBottomOf="@id/space_view" />
 
         <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tncTextView"
+            android:id="@+id/tnc_text_view"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
             android:gravity="center_vertical"
@@ -113,9 +113,9 @@
             android:text="@string/welcome_screen_accept_terms_and_conditions"
             android:textColor="#58585a"
             android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="@id/tncCheckBoxView"
-            app:layout_constraintStart_toEndOf="@id/tncCheckBoxView"
-            app:layout_constraintTop_toTopOf="@id/tncCheckBoxView" />
+            app:layout_constraintBottom_toBottomOf="@id/tnc_check_box_view"
+            app:layout_constraintStart_toEndOf="@id/tnc_check_box_view"
+            app:layout_constraintTop_toTopOf="@id/tnc_check_box_view" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/nextButtonView"

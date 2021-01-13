@@ -13,7 +13,7 @@
         android:background="@color/thin_divider" />
 
     <com.app.belcobtm.presentation.core.views.SettingsItemView
-        android:id="@+id/phoneItem"
+        android:id="@+id/phone_item"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:src="@drawable/ic_phone_waves"
@@ -26,7 +26,7 @@
         android:background="@color/thin_divider" />
 
     <com.app.belcobtm.presentation.core.views.SettingsItemView
-        android:id="@+id/emailItem"
+        android:id="@+id/email_item"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:src="@drawable/ic_mail"
@@ -39,7 +39,7 @@
         android:background="@color/thin_divider" />
 
     <com.app.belcobtm.presentation.core.views.SettingsItemView
-        android:id="@+id/telegramItem"
+        android:id="@+id/telegram_item"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:src="@drawable/ic_telegram"
@@ -52,7 +52,7 @@
         android:background="@color/thin_divider" />
 
     <com.app.belcobtm.presentation.core.views.SettingsItemView
-        android:id="@+id/whatsAppItem"
+        android:id="@+id/whats_app_item"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:src="@drawable/ic_whatsapp"

@@ -2,12 +2,11 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <androidx.appcompat.widget.Toolbar
-        android:id="@+id/customToolbarView"
+        android:id="@+id/custom_toolbar_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@android:color/white"
@@ -19,7 +18,7 @@
         tools:title="Bitcoin" />
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/priceUsdView"
+        android:id="@+id/price_usd_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
@@ -28,90 +27,90 @@
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/customToolbarView"
+        app:layout_constraintTop_toBottomOf="@id/custom_toolbar_view"
         tools:text="245876543 $" />
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/changesView"
+        android:id="@+id/changes_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:drawableStart="@drawable/ic_arrow_drop_down"
         android:drawableTint="#e02d2d"
         android:textColor="#e02d2d"
-        app:layout_constraintEnd_toEndOf="@id/priceUsdView"
-        app:layout_constraintStart_toStartOf="@id/priceUsdView"
-        app:layout_constraintTop_toBottomOf="@id/priceUsdView"
+        app:layout_constraintEnd_toEndOf="@id/price_usd_view"
+        app:layout_constraintStart_toStartOf="@id/price_usd_view"
+        app:layout_constraintTop_toBottomOf="@id/price_usd_view"
         tools:text="2.18 %" />
 
     <com.github.mikephil.charting.charts.LineChart
-        android:id="@+id/chartView"
+        android:id="@+id/chart_view"
         android:layout_width="0dp"
         android:layout_height="140dp"
         android:layout_marginTop="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/changesView" />
+        app:layout_constraintTop_toBottomOf="@id/changes_view" />
 
     <ProgressBar
-        android:id="@+id/chartProgressView"
+        android:id="@+id/chart_progress_view"
         style="?android:attr/progressBarStyleLarge"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="@+id/chartView"
-        app:layout_constraintEnd_toEndOf="@+id/chartView"
-        app:layout_constraintStart_toStartOf="@+id/chartView"
-        app:layout_constraintTop_toTopOf="@+id/chartView" />
+        app:layout_constraintBottom_toBottomOf="@+id/chart_view"
+        app:layout_constraintEnd_toEndOf="@+id/chart_view"
+        app:layout_constraintStart_toStartOf="@+id/chart_view"
+        app:layout_constraintTop_toTopOf="@+id/chart_view" />
 
     <com.google.android.material.chip.ChipGroup
-        android:id="@+id/chartChipGroupView"
+        android:id="@+id/chart_chip_group_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/chartView"
+        app:layout_constraintTop_toBottomOf="@id/chart_view"
         app:singleSelection="true">
 
         <com.google.android.material.chip.Chip
-            android:id="@+id/oneDayChipView"
+            android:id="@+id/one_day_chip_view"
             style="@style/Button.Chip"
             android:text="@string/transition_details_screen_one_day"
             tools:checked="true" />
 
         <com.google.android.material.chip.Chip
-            android:id="@+id/oneWeekChipView"
+            android:id="@+id/one_week_chip_view"
             style="@style/Button.Chip"
             android:text="@string/transition_details_screen_one_week" />
 
         <com.google.android.material.chip.Chip
-            android:id="@+id/oneMonthChipView"
+            android:id="@+id/one_month_chip_view"
             style="@style/Button.Chip"
             android:text="@string/transition_details_screen_one_month" />
 
         <com.google.android.material.chip.Chip
-            android:id="@+id/threeMonthChipView"
+            android:id="@+id/three_month_chip_view"
             style="@style/Button.Chip"
             android:text="@string/transition_details_screen_three_month" />
 
         <com.google.android.material.chip.Chip
-            android:id="@+id/oneYearChipView"
+            android:id="@+id/one_year_chip_view"
             style="@style/Button.Chip"
             android:text="@string/transition_details_screen_one_year" />
 
     </com.google.android.material.chip.ChipGroup>
 
     <View
-        android:id="@+id/graphDividerView"
+        android:id="@+id/graph_divider_view"
         android:layout_width="0dp"
         android:layout_height="1dp"
         android:layout_marginTop="4dp"
         android:background="@drawable/bg_divider"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/chartChipGroupView" />
+        app:layout_constraintTop_toBottomOf="@id/chart_chip_group_view" />
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/balanceTitleView"
+        android:id="@+id/balance_title_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -123,58 +122,58 @@
         android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/graphDividerView" />
+        app:layout_constraintTop_toBottomOf="@id/graph_divider_view" />
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/balanceCryptoView"
+        android:id="@+id/balance_crypto_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:textSize="16sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@id/balanceTitleView"
-        app:layout_constraintEnd_toStartOf="@id/exchangeView"
-        app:layout_constraintTop_toTopOf="@id/balanceTitleView"
+        app:layout_constraintBottom_toBottomOf="@id/balance_title_view"
+        app:layout_constraintEnd_toStartOf="@id/exchange_view"
+        app:layout_constraintTop_toTopOf="@id/balance_title_view"
         tools:text="0.000902 BTC" />
 
     <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/exchangeView"
+        android:id="@+id/exchange_view"
         android:layout_width="16dp"
         android:layout_height="16dp"
         android:layout_marginEnd="8dp"
         android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="@id/balanceCryptoView"
-        app:layout_constraintEnd_toStartOf="@id/balanceUsdView"
-        app:layout_constraintTop_toTopOf="@id/balanceCryptoView"
+        app:layout_constraintBottom_toBottomOf="@id/balance_crypto_view"
+        app:layout_constraintEnd_toStartOf="@id/balance_usd_view"
+        app:layout_constraintTop_toTopOf="@id/balance_crypto_view"
         app:srcCompat="@drawable/ic_compare_arrows" />
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/balanceUsdView"
+        android:id="@+id/balance_usd_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         android:textColor="@color/blue_color"
         android:textSize="16sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@id/balanceTitleView"
+        app:layout_constraintBottom_toBottomOf="@id/balance_title_view"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/balanceTitleView"
+        app:layout_constraintTop_toTopOf="@id/balance_title_view"
         tools:text="8.90 $" />
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/reservedTitleView"
+        android:id="@+id/reserved_title_view"
         style="@style/Transaction.Title.Medium.Key"
         android:text="@string/add_edit_trade_screen_reserved"
-        app:layout_constraintStart_toStartOf="@id/balanceTitleView"
-        app:layout_constraintTop_toBottomOf="@id/balanceTitleView" />
+        app:layout_constraintStart_toStartOf="@id/balance_title_view"
+        app:layout_constraintTop_toBottomOf="@id/balance_title_view" />
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/reservedCryptoView"
+        android:id="@+id/reserved_crypto_view"
         style="@style/Transaction.Title.Medium.Value"
         android:layout_marginEnd="8dp"
-        app:layout_constraintBottom_toBottomOf="@id/reservedTitleView"
+        app:layout_constraintBottom_toBottomOf="@id/reserved_title_view"
         app:layout_constraintEnd_toStartOf="@id/reservedExchangeView"
-        app:layout_constraintTop_toTopOf="@id/reservedTitleView"
+        app:layout_constraintTop_toTopOf="@id/reserved_title_view"
         tools:text="0.00902 BTC" />
 
     <androidx.appcompat.widget.AppCompatImageView
@@ -182,13 +181,13 @@
         android:layout_width="16dp"
         android:layout_height="16dp"
         android:layout_marginEnd="8dp"
-        app:layout_constraintBottom_toBottomOf="@id/reservedCryptoView"
-        app:layout_constraintEnd_toStartOf="@id/reservedUsdView"
-        app:layout_constraintTop_toTopOf="@id/reservedCryptoView"
+        app:layout_constraintBottom_toBottomOf="@id/reserved_crypto_view"
+        app:layout_constraintEnd_toStartOf="@id/reserved_usd_view"
+        app:layout_constraintTop_toTopOf="@id/reserved_crypto_view"
         app:srcCompat="@drawable/ic_compare_arrows" />
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/reservedUsdView"
+        android:id="@+id/reserved_usd_view"
         style="@style/Transaction.Title.Medium.Value"
         android:layout_marginEnd="16dp"
         android:textColor="@color/blue_color"
@@ -198,14 +197,14 @@
         tools:text="8.90 USD" />
 
     <View
-        android:id="@+id/balanceDividerView"
+        android:id="@+id/balance_divider_view"
         android:layout_width="0dp"
         android:layout_height="1dp"
         android:layout_marginTop="16dp"
         android:background="@drawable/bg_divider"
         app:layout_constraintEnd_toEndOf="@id/swipeToRefreshView"
         app:layout_constraintStart_toStartOf="@id/swipeToRefreshView"
-        app:layout_constraintTop_toBottomOf="@id/reservedTitleView" />
+        app:layout_constraintTop_toBottomOf="@id/reserved_title_view" />
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/swipeToRefreshView"
@@ -214,10 +213,10 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/balanceDividerView">
+        app:layout_constraintTop_toBottomOf="@id/balance_divider_view">
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/listView"
+            android:id="@+id/list_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
@@ -226,7 +225,7 @@
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     <io.github.kobakei.materialfabspeeddial.FabSpeedDial
-        android:id="@+id/fabListView"
+        android:id="@+id/fab_list_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:fab_extraMargin="-12dp"

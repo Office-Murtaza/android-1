@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.MenuItem
 import androidx.lifecycle.Observer
 import com.app.belcobtm.R
+import com.app.belcobtm.databinding.ActivityTradeBinding
 import com.app.belcobtm.domain.Failure
 import com.app.belcobtm.domain.transaction.type.TradeSortType
 import com.app.belcobtm.presentation.core.extensions.hide
@@ -17,14 +18,18 @@ import com.app.belcobtm.presentation.features.HostActivity
 import com.app.belcobtm.presentation.features.wallet.trade.create.TradeCreateActivity
 import com.app.belcobtm.presentation.features.wallet.trade.details.TradeDetailsBuyActivity
 import com.app.belcobtm.presentation.features.wallet.trade.main.adapter.TradePageAdapter
-import com.app.belcobtm.presentation.features.wallet.trade.main.item.TradeDetailsItem
+import com.app.belcobtm.presentation.features.wallet.trade.main.item.TradeDetailsBuySellItem
+import com.app.belcobtm.presentation.features.wallet.trade.main.item.TradeDetailsError
+import com.app.belcobtm.presentation.features.wallet.trade.main.item.TradeDetailsLoading
 import com.app.belcobtm.presentation.features.wallet.trade.main.type.TradeTabType
 import com.google.android.material.tabs.TabLayoutMediator
-import kotlinx.android.synthetic.main.activity_trade.*
 import org.koin.android.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
 class TradeActivity : BaseActivity() {
+
+    private lateinit var binding: ActivityTradeBinding
+
     private val viewModel: TradeViewModel by viewModel {
         parametersOf(
             intent.getDoubleExtra(TAG_LATITUDE, 0.0),
@@ -34,9 +39,9 @@ class TradeActivity : BaseActivity() {
     }
     private val tradePageAdapter = TradePageAdapter({ tradeListItem ->
         when (tradeListItem) {
-//            is TradeDetailsItem.Open,
-//            is TradeDetailsItem.My,
-            is TradeDetailsItem.BuySell -> {
+//            is TradeDetailsOpenItem,
+//            is TradeDetailsMyItem,
+            is TradeDetailsBuySellItem -> {
                 val intent = Intent(this, TradeDetailsBuyActivity::class.java)
                 intent.putExtra(
                     TradeDetailsBuyActivity.TAG_COIN_CODE,
@@ -77,10 +82,11 @@ class TradeActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_trade)
-        initListeners()
-        initObservers()
-        initViews()
+        binding = ActivityTradeBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        binding.initListeners()
+        binding.initObservers()
+        binding.initViews()
     }
 
     override fun onResume() {
@@ -98,7 +104,7 @@ class TradeActivity : BaseActivity() {
         return super.onOptionsItemSelected(item)
     }
 
-    private fun initListeners() {
+    private fun ActivityTradeBinding.initListeners() {
         fabMenuView.setOnMenuToggleListener {
             if (it) {
                 fabMenuView.setOnClickListener { fabMenuView.close(true) }
@@ -110,8 +116,8 @@ class TradeActivity : BaseActivity() {
             }
         }
         createButtonView.setOnClickListener {
-            val intent = Intent(this, TradeCreateActivity::class.java)
-            intent.putExtra(TradeCreateActivity.TAG_COIN_CODE, this.intent.getStringExtra(TAG_COIN_CODE))
+            val intent = Intent(this@TradeActivity, TradeCreateActivity::class.java)
+            intent.putExtra(TradeCreateActivity.TAG_COIN_CODE, this@TradeActivity.intent.getStringExtra(TAG_COIN_CODE))
             startActivity(intent)
             fabMenuView.close(true)
         }
@@ -125,60 +131,60 @@ class TradeActivity : BaseActivity() {
         }
     }
 
-    private fun initObservers() {
-        viewModel.buyListLiveData.observe(this, Observer { loadingData ->
+    private fun ActivityTradeBinding.initObservers() {
+        viewModel.buyListLiveData.observe(this@TradeActivity, Observer { loadingData ->
             when (loadingData) {
                 is LoadingData.Loading -> {
-                    val listSize = tradePageAdapter.adapterList[TradeTabType.BUY.ordinal].getItemListSize()
+                    val listSize = tradePageAdapter.adapterList[TradeTabType.BUY.ordinal].content.size
                     if (listSize == 0) {
-                        tradePageAdapter.setBuyList(listOf(TradeDetailsItem.Loading))
+                        tradePageAdapter.setBuyList(listOf(TradeDetailsLoading()))
                     }
                 }
                 is LoadingData.Success -> tradePageAdapter.setBuyList(loadingData.data.second)
-                is LoadingData.Error -> tradePageAdapter.setBuyList(listOf(TradeDetailsItem.Error))
+                is LoadingData.Error -> tradePageAdapter.setBuyList(listOf(TradeDetailsError()))
             }
         })
 
-        viewModel.sellListLiveData.observe(this, Observer { loadingData ->
+        viewModel.sellListLiveData.observe(this@TradeActivity, Observer { loadingData ->
             when (loadingData) {
                 is LoadingData.Loading -> {
-                    val listSize = tradePageAdapter.adapterList[TradeTabType.SELL.ordinal].getItemListSize()
+                    val listSize = tradePageAdapter.adapterList[TradeTabType.SELL.ordinal].content.size
                     if (listSize == 0) {
-                        tradePageAdapter.setSellList(listOf(TradeDetailsItem.Loading))
+                        tradePageAdapter.setSellList(listOf(TradeDetailsLoading()))
                     }
                 }
                 is LoadingData.Success -> tradePageAdapter.setSellList(loadingData.data.second)
-                is LoadingData.Error -> tradePageAdapter.setSellList(listOf(TradeDetailsItem.Error))
+                is LoadingData.Error -> tradePageAdapter.setSellList(listOf(TradeDetailsError()))
             }
         })
 
-        viewModel.myListLiveData.observe(this, Observer { loadingData ->
+        viewModel.myListLiveData.observe(this@TradeActivity, Observer { loadingData ->
             when (loadingData) {
                 is LoadingData.Loading -> {
-                    val listSize = tradePageAdapter.adapterList[TradeTabType.MY.ordinal].getItemListSize()
+                    val listSize = tradePageAdapter.adapterList[TradeTabType.MY.ordinal].content.size
                     if (listSize == 0) {
-                        tradePageAdapter.setMyList(listOf(TradeDetailsItem.Loading))
+                        tradePageAdapter.setMyList(listOf(TradeDetailsLoading()))
                     }
                 }
                 is LoadingData.Success -> tradePageAdapter.setMyList(loadingData.data.second)
-                is LoadingData.Error -> tradePageAdapter.setMyList(listOf(TradeDetailsItem.Error))
+                is LoadingData.Error -> tradePageAdapter.setMyList(listOf(TradeDetailsError()))
             }
         })
 
-        viewModel.openListLiveData.observe(this, Observer { loadingData ->
+        viewModel.openListLiveData.observe(this@TradeActivity, Observer { loadingData ->
             when (loadingData) {
                 is LoadingData.Loading -> {
-                    val listSize = tradePageAdapter.adapterList[TradeTabType.OPEN.ordinal].getItemListSize()
+                    val listSize = tradePageAdapter.adapterList[TradeTabType.OPEN.ordinal].content.size
                     if (listSize == 0) {
-                        tradePageAdapter.setOpenList(listOf(TradeDetailsItem.Loading))
+                        tradePageAdapter.setOpenList(listOf(TradeDetailsLoading()))
                     }
                 }
                 is LoadingData.Success -> tradePageAdapter.setOpenList(loadingData.data.second)
-                is LoadingData.Error -> tradePageAdapter.setOpenList(listOf(TradeDetailsItem.Error))
+                is LoadingData.Error -> tradePageAdapter.setOpenList(listOf(TradeDetailsError()))
             }
         })
 
-        viewModel.fromCoinLiveData.observe(this, Observer { loadingData ->
+        viewModel.fromCoinLiveData.observe(this@TradeActivity, Observer { loadingData ->
             when (loadingData) {
                 is LoadingData.Loading -> progressView.show()
                 is LoadingData.Success -> with(loadingData.data) {
@@ -214,7 +220,7 @@ class TradeActivity : BaseActivity() {
         })
     }
 
-    private fun initViews() {
+    private fun ActivityTradeBinding.initViews() {
         setSupportActionBar(toolbarView)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.title = getString(R.string.trade_screen_title, intent.getStringExtra(TAG_COIN_CODE))

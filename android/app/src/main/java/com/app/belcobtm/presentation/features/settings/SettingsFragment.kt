@@ -1,19 +1,20 @@
 package com.app.belcobtm.presentation.features.settings
 
 import android.content.Intent
+import android.view.LayoutInflater
+import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.navArgs
 import com.app.belcobtm.R
+import com.app.belcobtm.databinding.FragmentSettingsBinding
 import com.app.belcobtm.presentation.core.ui.fragment.BaseFragment
-import kotlinx.android.synthetic.main.fragment_settings.*
 import org.koin.android.viewmodel.ext.android.viewModel
 
-class SettingsFragment : BaseFragment() {
+class SettingsFragment : BaseFragment<FragmentSettingsBinding>() {
 
     private val viewModel by viewModel<SettingsViewModel>()
     private val settingsArgs: SettingsFragmentArgs by navArgs()
 
-    override val resourceLayout = R.layout.fragment_settings
     override var isMenuEnabled = true
 
     companion object {
@@ -22,12 +23,12 @@ class SettingsFragment : BaseFragment() {
         const val SETTINGS_ABOUT = 2
     }
 
-    override fun initViews() {
+    override fun FragmentSettingsBinding.initViews() {
         setToolbarTitle(R.string.settings)
         viewModel.processArgs(settingsArgs)
     }
 
-    override fun initListeners() {
+    override fun FragmentSettingsBinding.initListeners() {
         //sections listener
         walletsItem.setOnClickListener { onSectionClick(SettingsSections.WALLETS) }
         securityItem.setOnClickListener { onSectionClick(SettingsSections.SECURITY) }
@@ -37,8 +38,8 @@ class SettingsFragment : BaseFragment() {
         aboutItem.setOnClickListener { onSectionClick(SettingsSections.ABOUT) }
     }
 
-    override fun initObservers() {
-        viewModel.actionData.observe(this, Observer { action ->
+    override fun FragmentSettingsBinding.initObservers() {
+        viewModel.actionData.observe(viewLifecycleOwner, Observer { action ->
             when (action) {
                 is SettingsAction.NavigateAction -> navigate(action.navDirections)
                 SettingsAction.NotificationOptions -> startNotificationsSettings()
@@ -58,4 +59,7 @@ class SettingsFragment : BaseFragment() {
         intent.putExtra("android.provider.extra.APP_PACKAGE", activity?.packageName)
         startActivity(intent)
     }
+
+    override fun createBinding(inflater: LayoutInflater, container: ViewGroup?): FragmentSettingsBinding =
+        FragmentSettingsBinding.inflate(inflater, container, false)
 }

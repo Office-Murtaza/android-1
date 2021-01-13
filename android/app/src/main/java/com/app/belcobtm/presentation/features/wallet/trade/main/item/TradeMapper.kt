@@ -2,8 +2,8 @@ package com.app.belcobtm.presentation.features.wallet.trade.main.item
 
 import com.app.belcobtm.domain.transaction.item.TradeDataItem
 
-fun TradeDataItem.mapToUiBuySellItem(isBuyType: Boolean): TradeDetailsItem.BuySell = TradeDetailsItem.BuySell(
-    id = id,
+fun TradeDataItem.mapToUiBuySellItem(isBuyType: Boolean): TradeDetailsBuySellItem = TradeDetailsBuySellItem(
+    tradeId = id,
     minLimit = minLimit,
     maxLimit = maxLimit,
     tradeCount = tradeCount,
@@ -16,8 +16,8 @@ fun TradeDataItem.mapToUiBuySellItem(isBuyType: Boolean): TradeDetailsItem.BuySe
     isBuyType = isBuyType
 )
 
-fun TradeDataItem.mapToUiMyItem(): TradeDetailsItem.My = TradeDetailsItem.My(
-    id = id,
+fun TradeDataItem.mapToUiMyItem(): TradeDetailsMyItem = TradeDetailsMyItem(
+    tradeId = id,
     userName = userName,
     minLimit = minLimit,
     maxLimit = maxLimit,
@@ -29,8 +29,8 @@ fun TradeDataItem.mapToUiMyItem(): TradeDetailsItem.My = TradeDetailsItem.My(
     isBuyType = true
 )
 
-fun TradeDataItem.mapToUiOpenItem(): TradeDetailsItem.Open = TradeDetailsItem.Open(
-    id = id,
+fun TradeDataItem.mapToUiOpenItem(): TradeDetailsOpenItem = TradeDetailsOpenItem(
+    tradeId = id,
     userName = userName,
     minLimit = minLimit,
     maxLimit = maxLimit,

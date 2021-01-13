@@ -2,7 +2,6 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/rootView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
@@ -15,7 +14,7 @@
         android:layout_height="wrap_content">
 
         <View
-            android:id="@+id/topDivider"
+            android:id="@+id/top_divider"
             android:layout_width="0dp"
             android:layout_height="1dp"
             android:background="@color/thin_divider"
@@ -24,34 +23,34 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <com.app.belcobtm.presentation.core.views.CoinInputLayout
-            android:id="@+id/sendCoinInputLayout"
+            android:id="@+id/send_coin_input_layout"
             android:layout_width="0dp"
             android:layout_height="180dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/topDivider" />
+            app:layout_constraintTop_toBottomOf="@id/top_divider" />
 
         <com.app.belcobtm.presentation.core.views.CoinInputLayout
-            android:id="@+id/receiveCoinInputLayout"
+            android:id="@+id/receive_coin_Input_layout"
             android:layout_width="0dp"
             android:layout_height="180dp"
             android:background="@color/colorLightGray"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/sendCoinInputLayout" />
+            app:layout_constraintTop_toBottomOf="@id/send_coin_input_layout" />
 
         <View
-            android:id="@+id/viewCircle"
+            android:id="@+id/view_circle"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_marginStart="@dimen/margin_main"
             android:background="@drawable/bg_white_circle_with_gray_stroke"
-            app:layout_constraintBottom_toTopOf="@id/receiveCoinInputLayout"
+            app:layout_constraintBottom_toTopOf="@id/receive_coin_Input_layout"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/sendCoinInputLayout" />
+            app:layout_constraintTop_toBottomOf="@id/send_coin_input_layout" />
 
         <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/rateTextView"
+            android:id="@+id/rate_text_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/margin_main"
@@ -63,9 +62,9 @@
             android:paddingEnd="@dimen/margin_normal"
             android:paddingBottom="@dimen/margin_half"
             android:textAppearance="@style/Text.Regular2"
-            app:layout_constraintBottom_toTopOf="@id/receiveCoinInputLayout"
+            app:layout_constraintBottom_toTopOf="@id/receive_coin_Input_layout"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/sendCoinInputLayout"
+            app:layout_constraintTop_toBottomOf="@id/send_coin_input_layout"
             tools:text="1 BTC ~ 23.7835 LTC" />
 
         <ImageView
@@ -75,10 +74,10 @@
             android:layout_margin="8dp"
             android:contentDescription="@null"
             android:src="@drawable/ic_swap_vert"
-            app:layout_constraintBottom_toBottomOf="@id/viewCircle"
-            app:layout_constraintEnd_toEndOf="@id/viewCircle"
-            app:layout_constraintStart_toStartOf="@id/viewCircle"
-            app:layout_constraintTop_toTopOf="@id/viewCircle"
+            app:layout_constraintBottom_toBottomOf="@id/view_circle"
+            app:layout_constraintEnd_toEndOf="@id/view_circle"
+            app:layout_constraintStart_toStartOf="@id/view_circle"
+            app:layout_constraintTop_toTopOf="@id/view_circle"
             app:tint="@color/colorPrimary" />
 
         <TextView
@@ -90,7 +89,7 @@
             android:layout_marginEnd="@dimen/margin_half"
             android:text="@string/swap_screen_usd_label"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/receiveCoinInputLayout" />
+            app:layout_constraintTop_toBottomOf="@id/receive_coin_Input_layout" />
 
         <TextView
             android:id="@+id/tvUSDConvertedValue"
@@ -124,26 +123,26 @@
             android:layout_marginBottom="@dimen/margin_half"
             android:text="@string/swap_screen_fee"
             android:textAppearance="@style/Text.Regular1"
-            app:layout_constraintBottom_toTopOf="@id/nextButtonView"
-            app:layout_constraintEnd_toStartOf="@id/platformFeeTextView"
+            app:layout_constraintBottom_toTopOf="@id/next_button_view"
+            app:layout_constraintEnd_toStartOf="@id/platform_fee_text_view"
             app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintStart_toStartOf="parent" />
 
         <TextView
-            android:id="@+id/platformFeeTextView"
+            android:id="@+id/platform_fee_text_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
             android:layout_marginEnd="@dimen/margin_main"
             android:layout_marginBottom="@dimen/margin_half"
             android:textAppearance="@style/Text.Regular1"
-            app:layout_constraintBottom_toTopOf="@id/nextButtonView"
+            app:layout_constraintBottom_toTopOf="@id/next_button_view"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/platformFeeLabel"
             tools:text="3% ~ 0.25673 LTC" />
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/nextButtonView"
+            android:id="@+id/next_button_view"
             style="@style/Button.Primary"
             android:text="@string/submit"
             app:layout_constraintBottom_toBottomOf="parent"
