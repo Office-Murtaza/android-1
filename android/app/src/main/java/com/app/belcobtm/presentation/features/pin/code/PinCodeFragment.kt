@@ -4,20 +4,22 @@ import android.content.Context
 import android.os.Build
 import android.os.VibrationEffect
 import android.os.Vibrator
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.TableLayout
 import androidx.lifecycle.observe
 import com.app.belcobtm.App
 import com.app.belcobtm.R
+import com.app.belcobtm.databinding.FragmentPinCodeBinding
 import com.app.belcobtm.domain.Failure
 import com.app.belcobtm.presentation.core.extensions.toggle
 import com.app.belcobtm.presentation.core.ui.fragment.BaseFragment
 import com.app.belcobtm.presentation.features.HostActivity
 import com.app.belcobtm.presentation.features.HostNavigationFragment
-import kotlinx.android.synthetic.main.fragment_pin_code.*
 import org.koin.android.viewmodel.ext.android.viewModel
 
-class PinCodeFragment : BaseFragment() {
+class PinCodeFragment : BaseFragment<FragmentPinCodeBinding>() {
     private val viewModel: PinCodeViewModel by viewModel()
     private val pinMode: String by lazy {
         requireArguments().getString(
@@ -25,7 +27,6 @@ class PinCodeFragment : BaseFragment() {
             KEY_PIN_MODE_ENTER
         )
     }
-    override val resourceLayout: Int = R.layout.fragment_pin_code
     override val isToolbarEnabled: Boolean = false
     override var isMenuEnabled: Boolean = true
     override val backPressedListener: View.OnClickListener = View.OnClickListener {
@@ -39,12 +40,12 @@ class PinCodeFragment : BaseFragment() {
 
     private var appliedState: PinCodeState? = null
 
-    override fun initViews() {
+    override fun FragmentPinCodeBinding.initViews() {
         appliedState = null
         viewModel.setMode(pinMode)
     }
 
-    override fun initListeners() {
+    override fun FragmentPinCodeBinding.initListeners() {
         key1View.setOnClickListener { addPinSymbol(it) }
         key2View.setOnClickListener { addPinSymbol(it) }
         key3View.setOnClickListener { addPinSymbol(it) }
@@ -61,8 +62,8 @@ class PinCodeFragment : BaseFragment() {
         }
     }
 
-    override fun initObservers() {
-        viewModel.stateData.observe(this) { state ->
+    override fun FragmentPinCodeBinding.initObservers() {
+        viewModel.stateData.observe(viewLifecycleOwner) { state ->
             state.isLoading.doIfChanged(appliedState?.isLoading) {
                 if (it) {
                     showLoading()
@@ -82,22 +83,22 @@ class PinCodeFragment : BaseFragment() {
                 }
             }
             state.visiblePin.doIfChanged(appliedState?.visiblePin) {
-                pinIndicatorsView.setText(it)
+                binding.pinIndicatorsView.setText(it)
             }
             state.labelResource.doIfChanged(appliedState?.labelResource) {
-                titleView.setText(it)
+                binding.titleView.setText(it)
             }
             state.isError.doIfChanged(appliedState?.isError) {
-                errorView.toggle(it)
+                binding.errorView.toggle(it)
                 if (it) {
                     vibrateError()
                 }
             }
             state.backButtonVisible.doIfChanged(appliedState?.backButtonVisible) {
-                backButtonView.toggle(it)
+                binding.backButtonView.toggle(it)
             }
         }
-        viewModel.actionData.observe(this) { action ->
+        viewModel.actionData.observe(viewLifecycleOwner) { action ->
             when (action) {
                 is PinCodeAction.Success -> {
                     viewModel.connectToWallet()
@@ -172,4 +173,7 @@ class PinCodeFragment : BaseFragment() {
 
         const val PIN_CODE_LENGTH: Int = 6
     }
+
+    override fun createBinding(inflater: LayoutInflater, container: ViewGroup?): FragmentPinCodeBinding =
+        FragmentPinCodeBinding.inflate(inflater, container, false)
 }

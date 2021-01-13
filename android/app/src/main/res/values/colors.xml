@@ -9,6 +9,7 @@
     <color name="gray_text_color">#7c7c7c</color>
     <color name="black_text_color">#000</color>
     <color name="light_gray_text_color">#c1c1c1</color>
+    <color name="dark_text_color">#212121</color>
 
     <color name="colorLightGray">#F3F3F3</color>
     <color name="colorLightGray2">#DADADA</color>

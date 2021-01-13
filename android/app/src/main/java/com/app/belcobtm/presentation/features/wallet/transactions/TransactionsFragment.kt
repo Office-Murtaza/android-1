@@ -6,20 +6,22 @@ import android.content.Context
 import android.content.Intent
 import android.location.Location
 import android.location.LocationManager
+import android.view.LayoutInflater
 import android.view.Menu
 import android.view.View
+import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.core.widget.TextViewCompat
 import androidx.lifecycle.observe
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.app.belcobtm.R
 import com.app.belcobtm.data.rest.wallet.request.PriceChartPeriod
+import com.app.belcobtm.databinding.FragmentTransactionsBinding
 import com.app.belcobtm.domain.wallet.LocalCoinType
 import com.app.belcobtm.domain.wallet.item.ChartChangesColor
 import com.app.belcobtm.domain.wallet.item.ChartDataItem
-import com.app.belcobtm.presentation.core.extensions.setDrawableStart
-import com.app.belcobtm.presentation.core.extensions.toStringCoin
-import com.app.belcobtm.presentation.core.extensions.toStringUsd
-import com.app.belcobtm.presentation.core.extensions.toggle
+import com.app.belcobtm.presentation.core.extensions.*
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
 import com.app.belcobtm.presentation.core.ui.fragment.BaseFragment
 import com.app.belcobtm.presentation.features.wallet.trade.main.TradeActivity
@@ -29,7 +31,6 @@ import com.app.belcobtm.presentation.features.wallet.transactions.item.CurrentCh
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import io.github.kobakei.materialfabspeeddial.FabSpeedDialMenu
-import kotlinx.android.synthetic.main.fragment_transactions.*
 import org.koin.android.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import permissions.dispatcher.NeedsPermission
@@ -38,7 +39,7 @@ import permissions.dispatcher.OnPermissionDenied
 import permissions.dispatcher.RuntimePermissions
 
 @RuntimePermissions
-class TransactionsFragment : BaseFragment() {
+class TransactionsFragment : BaseFragment<FragmentTransactionsBinding>() {
     private val viewModel: TransactionsViewModel by viewModel {
         parametersOf(TransactionsFragmentArgs.fromBundle(requireArguments()).coinCode)
     }
@@ -55,11 +56,9 @@ class TransactionsFragment : BaseFragment() {
         },
         endListListener = { viewModel.updateTransactionList() }
     )
-    override val resourceLayout: Int = R.layout.fragment_transactions
     override val isToolbarEnabled: Boolean = true
     override val isHomeButtonEnabled: Boolean = true
     override var isMenuEnabled: Boolean = true
-    override val customToolbarId: Int = R.id.customToolbarView
     override val isFirstShowContent: Boolean = false
     override val retryListener: View.OnClickListener = View.OnClickListener {
         viewModel.updateData()
@@ -75,6 +74,9 @@ class TransactionsFragment : BaseFragment() {
         onRequestPermissionsResult(requestCode, grantResults)
     }
 
+    override fun createBinding(inflater: LayoutInflater, container: ViewGroup?): FragmentTransactionsBinding =
+        FragmentTransactionsBinding.inflate(inflater, container, false)
+
     private fun initFabMenu() {
         val menu = FabSpeedDialMenu(requireContext())
 //        addButtonToMenu(groupId, menu, TRADE)
@@ -83,7 +85,13 @@ class TransactionsFragment : BaseFragment() {
         addButtonToMenu(menu, DEPOSIT)
         addButtonToMenu(menu, RECALL)
         addButtonToMenu(menu, RESERVE)
-        fabListView.setMenu(menu)
+        binding.fabListView.setMenu(menu)
+    }
+
+
+    override fun initToolbar() {
+        baseBinding.toolbarView.hide()
+        (activity as AppCompatActivity).setSupportActionBar(binding.customToolbarView)
     }
 
     private fun addButtonToMenu(menu: Menu, buttonType: TransactionsFABType) {
@@ -92,7 +100,7 @@ class TransactionsFragment : BaseFragment() {
             .setIcon(buttonType.resIcon)
     }
 
-    override fun initViews() {
+    override fun FragmentTransactionsBinding.initViews() {
         setToolbarTitle(LocalCoinType.valueOf(viewModel.coinCode).fullName)
         initFabMenu()
         initChart()
@@ -105,7 +113,7 @@ class TransactionsFragment : BaseFragment() {
         }
     }
 
-    override fun initListeners() {
+    override fun FragmentTransactionsBinding.initListeners() {
         chartChipGroupView.setOnCheckedChangeListener { _, checkedId ->
             viewModel.changeCurrentTypePeriod(checkedId)
         }
@@ -132,7 +140,7 @@ class TransactionsFragment : BaseFragment() {
         }
     }
 
-    override fun initObservers() {
+    override fun FragmentTransactionsBinding.initObservers() {
         viewModel.chartLiveData.observe(viewLifecycleOwner) { loadingData ->
             when (loadingData) {
                 is LoadingData.Loading<CurrentChartInfo> -> {
@@ -155,7 +163,7 @@ class TransactionsFragment : BaseFragment() {
                 }
             }
         }
-        viewModel.transactionListLiveData.observe(this) {
+        viewModel.transactionListLiveData.observe(viewLifecycleOwner) {
             adapter.submitList(it)
             swipeToRefreshView.isRefreshing = false
         }
@@ -195,7 +203,7 @@ class TransactionsFragment : BaseFragment() {
     fun tradeDenied() = showTradeScreen()
 
     private fun initChart() {
-        with(chartView) {
+        with(binding.chartView) {
             isDragEnabled = false
             isAutoScaleMinMaxEnabled = true
             isHighlightPerTapEnabled = false
@@ -213,53 +221,59 @@ class TransactionsFragment : BaseFragment() {
     private fun setChanges(changes: Double, @ChartChangesColor color: Int) {
         when (color) {
             ChartChangesColor.RED -> {
-                changesView.setDrawableStart(R.drawable.ic_arrow_drop_down)
-                changesView.compoundDrawableTintList =
-                    ContextCompat.getColorStateList(changesView.context, R.color.chart_changes_down)
-                changesView.setTextColor(
+                binding.changesView.setDrawableStart(R.drawable.ic_arrow_drop_down)
+                TextViewCompat.setCompoundDrawableTintList(
+                    binding.changesView,
+                    ContextCompat.getColorStateList(binding.changesView.context, R.color.chart_changes_down)
+                )
+                binding.changesView.setTextColor(
                     ContextCompat.getColor(
-                        changesView.context,
+                        binding.changesView.context,
                         R.color.chart_changes_down
                     )
                 )
             }
             ChartChangesColor.GREEN -> {
-                changesView.setDrawableStart(R.drawable.ic_arrow_drop_up)
-                changesView.compoundDrawableTintList =
-                    ContextCompat.getColorStateList(changesView.context, R.color.chart_changes_up)
-                changesView.setTextColor(
+                binding.changesView.setDrawableStart(R.drawable.ic_arrow_drop_up)
+                TextViewCompat.setCompoundDrawableTintList(
+                    binding.changesView,
+                    ContextCompat.getColorStateList(binding.changesView.context, R.color.chart_changes_up)
+                )
+                binding.changesView.setTextColor(
                     ContextCompat.getColor(
-                        changesView.context,
+                        binding.changesView.context,
                         R.color.chart_changes_up
                     )
                 )
             }
             ChartChangesColor.BLACK -> {
-                changesView.setCompoundDrawables(null, null, null, null)
-                changesView.compoundDrawableTintList =
-                    ContextCompat.getColorStateList(changesView.context, R.color.chart_no_highlight)
-                changesView.setTextColor(
+                binding.changesView.setCompoundDrawables(null, null, null, null)
+                TextViewCompat.setCompoundDrawableTintList(
+                    binding.changesView,
+                    ContextCompat.getColorStateList(binding.changesView.context, R.color.chart_no_highlight)
+                )
+                binding.changesView.setTextColor(
                     ContextCompat.getColor(
-                        changesView.context,
+                        binding.changesView.context,
                         R.color.chart_no_highlight
                     )
                 )
             }
         }
-        changesView.text =
+        binding.changesView.text =
             resources.getString(
                 R.string.transaction_changes_percent,
                 String.format("%.2f", changes)
             )
     }
 
-    private fun setChart(@PriceChartPeriod chartType: Int, chartInfo: ChartDataItem) {
+    private fun FragmentTransactionsBinding.setChart(@PriceChartPeriod chartType: Int, chartInfo: ChartDataItem) {
         when (chartType) {
-            PriceChartPeriod.PERIOD_DAY -> chartChipGroupView.check(R.id.oneDayChipView)
-            PriceChartPeriod.PERIOD_WEEK -> chartChipGroupView.check(R.id.oneWeekChipView)
-            PriceChartPeriod.PERIOD_MONTH -> chartChipGroupView.check(R.id.oneMonthChipView)
-            PriceChartPeriod.PERIOD_QUARTER -> chartChipGroupView.check(R.id.threeMonthChipView)
-            PriceChartPeriod.PERIOD_YEAR -> chartChipGroupView.check(R.id.oneYearChipView)
+            PriceChartPeriod.PERIOD_DAY -> chartChipGroupView.check(R.id.one_day_chip_view)
+            PriceChartPeriod.PERIOD_WEEK -> chartChipGroupView.check(R.id.one_week_chip_view)
+            PriceChartPeriod.PERIOD_MONTH -> chartChipGroupView.check(R.id.one_month_chip_view)
+            PriceChartPeriod.PERIOD_QUARTER -> chartChipGroupView.check(R.id.three_month_chip_view)
+            PriceChartPeriod.PERIOD_YEAR -> chartChipGroupView.check(R.id.one_year_chip_view)
         }
         val dataSet: LineDataSet
         val circleDataSet: LineDataSet

@@ -9,29 +9,30 @@ import android.view.View
 import androidx.appcompat.widget.AppCompatTextView
 import com.app.belcobtm.R
 import com.app.belcobtm.data.rest.atm.response.AtmResponse
+import com.app.belcobtm.databinding.AtmInfoWindowBinding
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.Marker
-import kotlinx.android.synthetic.main.atm_info_window.view.*
 
 
 class AtmInfoWindowAdapter(val context: Context) : GoogleMap.InfoWindowAdapter {
 
-    private var mWindow = LayoutInflater.from(context).inflate(R.layout.atm_info_window, null)
+    private val binding: AtmInfoWindowBinding =
+        AtmInfoWindowBinding.inflate(LayoutInflater.from(context), null, false)
 
-    private fun renderWindowText(marker: Marker, view: View) {
+    private fun renderWindowText(marker: Marker) {
 
         val atmAddress = marker.tag as AtmResponse.AtmAddress
 
-        view.atm_name.text = atmAddress.name
-        view.atm_address.text = atmAddress.address
+        binding.atmName.text = atmAddress.name
+        binding.atmAddress.text = atmAddress.address
 
-        view.atm_open_hours_container.removeAllViews()
+        binding.atmOpenHoursContainer.removeAllViews()
         atmAddress.hours.forEach { openHour ->
             val openHourText = getOpenHoursColorText(openHour.days, openHour.hours)
             val textView = AppCompatTextView(context)
             textView.text = openHourText
             textView.textSize = 12f
-            view.atm_open_hours_container.addView(textView)
+            binding.atmOpenHoursContainer.addView(textView)
         }
     }
 
@@ -57,12 +58,12 @@ class AtmInfoWindowAdapter(val context: Context) : GoogleMap.InfoWindowAdapter {
     }
 
     override fun getInfoWindow(marker: Marker): View {
-        renderWindowText(marker, mWindow)
-        return mWindow
+        renderWindowText(marker)
+        return binding.root
     }
 
     override fun getInfoContents(marker: Marker): View {
-        renderWindowText(marker, mWindow)
-        return mWindow
+        renderWindowText(marker)
+        return binding.root
     }
 }

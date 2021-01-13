@@ -24,6 +24,7 @@ class CoinInputLayout @JvmOverloads constructor(
     private val editText: EditText
     private val tvCoinName: TextView
     private val tvHelperText: TextView
+    private val tvAdditionalHelperText: TextView
 
     init {
         inflate(context, R.layout.view_coin_input_layout, this)
@@ -33,6 +34,7 @@ class CoinInputLayout @JvmOverloads constructor(
         tvCoinName = findViewById(R.id.tvCoinName)
         coinButton = findViewById(R.id.coinButton)
         tvHelperText = findViewById(R.id.tvHelperText)
+        tvAdditionalHelperText = findViewById(R.id.tvAdditionalHelperText)
         editText = findViewById(R.id.coinInputEditText)
 
         textColorOrigin = editText.textColors.defaultColor
@@ -56,6 +58,10 @@ class CoinInputLayout @JvmOverloads constructor(
 
     fun setHelperText(text: CharSequence?) {
         tvHelperText.text = text
+    }
+
+    fun setAdditionalHelperText(text: CharSequence?) {
+        tvAdditionalHelperText.text = text
     }
 
     fun setErrorText(text: CharSequence?) {

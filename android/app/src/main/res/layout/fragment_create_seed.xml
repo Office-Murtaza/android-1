@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/rootView"
     android:layout_width="match_parent"
@@ -10,12 +11,13 @@
     android:overScrollMode="never"
     android:scrollbars="none">
 
-    <androidx.appcompat.widget.LinearLayoutCompat
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
         <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
@@ -28,14 +30,20 @@
             android:padding="16dp"
             android:text="@string/create_seed_screen_description"
             android:textColor="@color/colorPrimary"
-            android:textSize="16sp" />
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <com.app.belcobtm.presentation.features.authorization.create.seed.ChipGroupCenter
-            android:id="@+id/chipGroupView"
+            android:id="@+id/chip_group_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="32dp"
-            android:layout_marginEnd="32dp">
+            android:layout_marginEnd="32dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/description">
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/word1"
@@ -121,25 +129,66 @@
         </com.app.belcobtm.presentation.features.authorization.create.seed.ChipGroupCenter>
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/copyButtonView"
+            android:id="@+id/generate_button_view"
             style="@style/Button.Secondary"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="16dp"
-            android:text="@string/copy_text" />
-
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1" />
+            android:text="@string/generate"
+            app:icon="@drawable/ic_generate"
+            app:iconTint="@color/colorPrimary"
+            app:layout_constraintEnd_toStartOf="@+id/paste_button_view"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/chip_group_view" />
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/nextButtonView"
+            android:id="@+id/paste_button_view"
+            style="@style/Button.Secondary"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="16dp"
+            android:text="@string/paste"
+            app:icon="@drawable/ic_paste"
+            app:iconTint="@color/colorPrimary"
+            app:layout_constraintEnd_toStartOf="@+id/copy_button_view"
+            app:layout_constraintStart_toEndOf="@+id/generate_button_view"
+            app:layout_constraintTop_toBottomOf="@+id/chip_group_view" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/copy_button_view"
+            style="@style/Button.Secondary"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="16dp"
+            android:text="@string/copy_text"
+            app:icon="@drawable/ic_copy"
+            app:iconTint="@color/colorPrimary"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/paste_button_view"
+            app:layout_constraintTop_toBottomOf="@+id/chip_group_view" />
+
+        <Space
+            android:id="@+id/space"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toTopOf="@+id/next_button_view"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/copy_button_view" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/next_button_view"
             style="@style/Button.Primary"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/next" />
+            android:text="@string/next"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/space" />
 
-    </androidx.appcompat.widget.LinearLayoutCompat>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

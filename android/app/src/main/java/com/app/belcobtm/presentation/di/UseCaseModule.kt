@@ -2,6 +2,7 @@ package com.app.belcobtm.presentation.di
 
 import com.app.belcobtm.domain.atm.interactor.GetAtmsUseCase
 import com.app.belcobtm.domain.authorization.interactor.*
+import com.app.belcobtm.domain.contacts.GetContactsUseCase
 import com.app.belcobtm.domain.settings.interactor.*
 import com.app.belcobtm.domain.tools.interactor.OldSendSmsToDeviceUseCase
 import com.app.belcobtm.domain.tools.interactor.OldVerifySmsCodeUseCase
@@ -71,4 +72,5 @@ val useCaseModule = module {
     single { GetCoinDetailsUseCase(get()) }
     single { CheckXRPAddressActivatedUseCase(get()) }
     single { GetFreshCoinsUseCase(get()) }
+    single { GetContactsUseCase(get()) }
 }

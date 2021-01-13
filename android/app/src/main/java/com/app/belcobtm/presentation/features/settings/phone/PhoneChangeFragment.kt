@@ -1,33 +1,34 @@
 package com.app.belcobtm.presentation.features.settings.phone
 
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.observe
 import com.app.belcobtm.R
+import com.app.belcobtm.databinding.FragmentChangePhoneBinding
 import com.app.belcobtm.domain.Failure
 import com.app.belcobtm.domain.settings.interactor.ERROR_UPDATE_PHONE_IS_SAME
 import com.app.belcobtm.domain.settings.interactor.ERROR_UPDATE_PHONE_IS_USED
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
 import com.app.belcobtm.presentation.core.ui.fragment.BaseFragment
-import kotlinx.android.synthetic.main.fragment_change_phone.*
 import org.koin.android.viewmodel.ext.android.viewModel
 
-class PhoneChangeFragment : BaseFragment() {
+class PhoneChangeFragment : BaseFragment<FragmentChangePhoneBinding>() {
     val viewModel by viewModel<PhoneChangeViewModel>()
     private var appliedState: LoadingData<PhoneChangeState>? = null
-    override val resourceLayout = R.layout.fragment_change_phone
     override val isHomeButtonEnabled = true
     override var isMenuEnabled = true
     override val retryListener = View.OnClickListener {
         viewModel.onNextClick()
     }
 
-    override fun initViews() {
+    override fun FragmentChangePhoneBinding.initViews() {
         appliedState = null
         setToolbarTitle(R.string.update_phone_label)
     }
 
-    override fun initListeners() {
+    override fun FragmentChangePhoneBinding.initListeners() {
         nextButton.setOnClickListener {
             viewModel.onNextClick()
         }
@@ -36,7 +37,7 @@ class PhoneChangeFragment : BaseFragment() {
         }
     }
 
-    override fun initObservers() {
+    override fun FragmentChangePhoneBinding.initObservers() {
         viewModel.stateData.listen(
             success = { state ->
                 state.doIfChanged(appliedState) {
@@ -67,7 +68,7 @@ class PhoneChangeFragment : BaseFragment() {
                 appliedState = it
             }
         )
-        viewModel.actionData.observe(this) { action ->
+        viewModel.actionData.observe(viewLifecycleOwner) { action ->
             when (action) {
                 is PhoneChangeAction.NavigateAction -> {
                     navigate(action.navDirections)
@@ -78,4 +79,7 @@ class PhoneChangeFragment : BaseFragment() {
             }
         }
     }
+
+    override fun createBinding(inflater: LayoutInflater, container: ViewGroup?): FragmentChangePhoneBinding =
+        FragmentChangePhoneBinding.inflate(inflater, container, false)
 }

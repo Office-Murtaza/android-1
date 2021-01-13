@@ -3,17 +3,20 @@ package com.app.belcobtm.presentation.features.settings.support
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.telephony.PhoneNumberUtils
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import com.app.belcobtm.R
+import com.app.belcobtm.databinding.FragmentSupportBinding
+import com.app.belcobtm.presentation.core.formatter.Formatter
 import com.app.belcobtm.presentation.core.ui.fragment.BaseFragment
-import kotlinx.android.synthetic.main.fragment_support.*
-import java.util.*
+import org.koin.android.ext.android.inject
 
-class SupportFragment : BaseFragment() {
+class SupportFragment : BaseFragment<FragmentSupportBinding>() {
 
-    override val resourceLayout: Int = R.layout.fragment_support
     override val isHomeButtonEnabled: Boolean = true
+
+    private val phoneNumberFormatter: Formatter<String> by inject()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -22,34 +25,33 @@ class SupportFragment : BaseFragment() {
         setClickListeners()
     }
 
+    override fun createBinding(inflater: LayoutInflater, container: ViewGroup?): FragmentSupportBinding =
+        FragmentSupportBinding.inflate(inflater, container, false)
+
     private fun setupPhoneNumber() {
         val supportPhone = getString(R.string.support_phone)
-        val formattedSupportPhone = PhoneNumberUtils.formatNumber(
-            supportPhone,
-            Locale.US.country
-        )
-        phoneItem.setValue(formattedSupportPhone)
+        binding.phoneItem.setValue(phoneNumberFormatter.format(supportPhone))
     }
 
     private fun setClickListeners() {
-        phoneItem.setOnClickListener {
+        binding.phoneItem.setOnClickListener {
             val phoneNumber = getString(R.string.support_phone)
             val callURI = Uri.fromParts("tel", phoneNumber, null)
             val dialIntent = Intent(Intent.ACTION_DIAL, callURI)
             startIntentSafe(dialIntent)
         }
-        emailItem.setOnClickListener {
+        binding.emailItem.setOnClickListener {
             val email = getString(R.string.support_email)
             val emailURI = Uri.fromParts("mailto", email, null)
             val mainIntent = Intent(Intent.ACTION_SENDTO, emailURI)
             startIntentSafe(mainIntent)
         }
-        telegramItem.setOnClickListener {
+        binding.telegramItem.setOnClickListener {
             val tgURI = Uri.parse("http://www.telegram.me/belco_support")
             val telegramIntent = Intent(Intent.ACTION_VIEW, tgURI)
             startIntentSafe(telegramIntent)
         }
-        whatsAppItem.setOnClickListener {
+        binding.whatsAppItem.setOnClickListener {
             val whatsAppUri = Uri.parse("https://chat.whatsapp.com/HLM8HlzE5VjDjhEiZJpKJr")
             val whatsAppIntent = Intent(Intent.ACTION_VIEW, whatsAppUri)
             startIntentSafe(whatsAppIntent)

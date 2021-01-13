@@ -6,7 +6,7 @@
     android:layout_height="match_parent">
 
     <View
-        android:id="@+id/headerPlaceholderView"
+        android:id="@+id/header_placeholder_view"
         android:layout_width="0dp"
         android:layout_height="120dp"
         android:background="@android:color/white"
@@ -16,30 +16,30 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/logoView"
+        android:id="@+id/logo_view"
         android:layout_width="109dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:elevation="2dp"
-        app:layout_constraintBottom_toBottomOf="@id/balanceView"
-        app:layout_constraintStart_toStartOf="@id/headerPlaceholderView"
+        app:layout_constraintBottom_toBottomOf="@id/balance_view"
+        app:layout_constraintStart_toStartOf="@id/header_placeholder_view"
         app:srcCompat="@drawable/ic_logo_main" />
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/balanceTitleView"
+        android:id="@+id/balance_title_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         android:elevation="2dp"
         android:text="@string/balance_screen_title_screen"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@id/balanceView"
-        app:layout_constraintEnd_toEndOf="@id/headerPlaceholderView"
-        app:layout_constraintTop_toTopOf="@id/headerPlaceholderView"
+        app:layout_constraintBottom_toTopOf="@id/balance_view"
+        app:layout_constraintEnd_toEndOf="@id/header_placeholder_view"
+        app:layout_constraintTop_toTopOf="@id/header_placeholder_view"
         app:layout_constraintVertical_chainStyle="packed" />
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/balanceView"
+        android:id="@+id/balance_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
@@ -48,13 +48,13 @@
         android:textColor="@color/colorPrimary"
         android:textSize="22sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@id/headerPlaceholderView"
-        app:layout_constraintEnd_toEndOf="@id/balanceTitleView"
-        app:layout_constraintTop_toBottomOf="@id/balanceTitleView"
+        app:layout_constraintBottom_toBottomOf="@id/header_placeholder_view"
+        app:layout_constraintEnd_toEndOf="@id/balance_title_view"
+        app:layout_constraintTop_toBottomOf="@id/balance_title_view"
         tools:text="15 232 $" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/listView"
+        android:id="@+id/list_view"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:overScrollMode="never"
@@ -62,7 +62,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/headerPlaceholderView"
+        app:layout_constraintTop_toBottomOf="@id/header_placeholder_view"
         tools:listitem="@layout/item_balance_coin" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

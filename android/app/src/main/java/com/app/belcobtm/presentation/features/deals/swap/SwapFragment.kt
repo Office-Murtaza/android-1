@@ -1,11 +1,14 @@
 package com.app.belcobtm.presentation.features.deals.swap
 
 import android.text.TextWatcher
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.EditText
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.Observer
 import com.app.belcobtm.R
+import com.app.belcobtm.databinding.FragmentSwapBinding
 import com.app.belcobtm.domain.wallet.LocalCoinType
 import com.app.belcobtm.domain.wallet.item.CoinDataItem
 import com.app.belcobtm.presentation.core.coin.model.ValidationResult
@@ -15,10 +18,9 @@ import com.app.belcobtm.presentation.core.mvvm.LoadingData
 import com.app.belcobtm.presentation.core.ui.fragment.BaseFragment
 import com.app.belcobtm.presentation.core.watcher.DoubleTextWatcher
 import com.app.belcobtm.presentation.features.deals.swap.adapter.CoinDialogAdapter
-import kotlinx.android.synthetic.main.fragment_swap.*
 import org.koin.android.viewmodel.ext.android.viewModel
 
-class SwapFragment : BaseFragment() {
+class SwapFragment : BaseFragment<FragmentSwapBinding>() {
     private val viewModel: SwapViewModel by viewModel()
     private val textWatcher = DoubleTextWatcher(
         maxCharsAfterDotFirst = DoubleTextWatcher.MAX_CHARS_AFTER_DOT_CRYPTO,
@@ -47,7 +49,6 @@ class SwapFragment : BaseFragment() {
         }
     )
 
-    override val resourceLayout: Int = R.layout.fragment_swap
     override val isToolbarEnabled: Boolean = true
     override val isHomeButtonEnabled: Boolean = true
     override var isMenuEnabled: Boolean = true
@@ -61,7 +62,7 @@ class SwapFragment : BaseFragment() {
         }
     }
 
-    override fun initViews() {
+    override fun FragmentSwapBinding.initViews() {
         setToolbarTitle(R.string.swap_screen_title)
         sendCoinInputLayout.getEditText().setHint(R.string.swap_screen_send_hint)
         receiveCoinInputLayout.getEditText().setHint(R.string.swap_screen_receive_hint)
@@ -69,7 +70,10 @@ class SwapFragment : BaseFragment() {
         setTextSilently(receiveCoinInputLayout.getEditText(), textWatcher.secondTextWatcher, "0")
     }
 
-    override fun initListeners() {
+    override fun createBinding(inflater: LayoutInflater, container: ViewGroup?): FragmentSwapBinding =
+        FragmentSwapBinding.inflate(inflater, container, false)
+
+    override fun FragmentSwapBinding.initListeners() {
         nextButtonView.setOnClickListener {
             viewModel.executeSwap()
         }
@@ -98,7 +102,7 @@ class SwapFragment : BaseFragment() {
         receiveCoinInputLayout.getEditText().addTextChangedListener(textWatcher.secondTextWatcher)
     }
 
-    override fun initObservers() {
+    override fun FragmentSwapBinding.initObservers() {
         viewModel.swapLoadingData.listen(success = {
             AlertHelper.showToastShort(requireContext(), R.string.swap_screen_success_message)
             popBackStack()

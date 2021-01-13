@@ -8,7 +8,7 @@
     android:orientation="vertical">
 
     <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbarView"
+        android:id="@+id/toolbar_view"
         android:layout_width="0dp"
         android:layout_height="?attr/actionBarSize"
         android:background="@drawable/bg_toolbar"
@@ -21,56 +21,56 @@
         tools:title="@string/trade_screen_title" />
 
     <androidx.constraintlayout.widget.Barrier
-        android:id="@+id/priceBarrierView"
+        android:id="@+id/price_barrier_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:barrierDirection="end"
-        app:constraint_referenced_ids="balanceTitleView,priceTitleView,reserveTitleView" />
+        app:constraint_referenced_ids="balance_title_view,price_title_view,reserve_title_view" />
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/priceTitleView"
+        android:id="@+id/price_title_view"
         style="@style/Transaction.Title.Medium.Key"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:text="@string/trade_screen_price"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/toolbarView" />
+        app:layout_constraintTop_toBottomOf="@id/toolbar_view" />
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/priceUsdView"
+        android:id="@+id/price_usd_view"
         style="@style/Transaction.Title.Medium.Value"
         android:layout_marginStart="16dp"
-        app:layout_constraintStart_toEndOf="@id/priceBarrierView"
-        app:layout_constraintTop_toTopOf="@id/priceTitleView"
+        app:layout_constraintStart_toEndOf="@id/price_barrier_view"
+        app:layout_constraintTop_toTopOf="@id/price_title_view"
         tools:text="2525.31 USD" />
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/balanceTitleView"
+        android:id="@+id/balance_title_view"
         style="@style/Transaction.Title.Medium.Key"
         android:text="@string/trade_screen_balance"
-        app:layout_constraintStart_toStartOf="@id/priceTitleView"
-        app:layout_constraintTop_toBottomOf="@id/priceTitleView" />
+        app:layout_constraintStart_toStartOf="@id/price_title_view"
+        app:layout_constraintTop_toBottomOf="@id/price_title_view" />
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/balanceCryptoView"
+        android:id="@+id/balance_crypto_view"
         style="@style/Transaction.Title.Medium.Value"
-        app:layout_constraintStart_toStartOf="@id/priceUsdView"
-        app:layout_constraintTop_toTopOf="@id/balanceTitleView"
+        app:layout_constraintStart_toStartOf="@id/price_usd_view"
+        app:layout_constraintTop_toTopOf="@id/balance_title_view"
         tools:text="0.000902 BTC" />
 
     <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/exchangeView"
+        android:id="@+id/exchange_view"
         android:layout_width="16dp"
         android:layout_height="16dp"
         android:layout_marginStart="8dp"
-        app:layout_constraintBottom_toBottomOf="@id/balanceCryptoView"
-        app:layout_constraintEnd_toStartOf="@id/balanceUsdView"
-        app:layout_constraintStart_toEndOf="@id/balanceCryptoView"
-        app:layout_constraintTop_toTopOf="@id/balanceCryptoView"
+        app:layout_constraintBottom_toBottomOf="@id/balance_crypto_view"
+        app:layout_constraintEnd_toStartOf="@id/balance_usd_view"
+        app:layout_constraintStart_toEndOf="@id/balance_crypto_view"
+        app:layout_constraintTop_toTopOf="@id/balance_crypto_view"
         app:srcCompat="@drawable/ic_compare_arrows" />
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/balanceUsdView"
+        android:id="@+id/balance_usd_view"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -78,38 +78,38 @@
         android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constrainedWidth="true"
-        app:layout_constraintBottom_toBottomOf="@id/exchangeView"
-        app:layout_constraintStart_toEndOf="@id/exchangeView"
-        app:layout_constraintTop_toTopOf="@id/exchangeView"
+        app:layout_constraintBottom_toBottomOf="@id/exchange_view"
+        app:layout_constraintStart_toEndOf="@id/exchange_view"
+        app:layout_constraintTop_toTopOf="@id/exchange_view"
         tools:text="8.90 USD" />
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/reserveTitleView"
+        android:id="@+id/reserve_title_view"
         style="@style/Transaction.Title.Medium.Key"
         android:text="@string/trade_screen_reserved"
-        app:layout_constraintStart_toStartOf="@id/balanceTitleView"
-        app:layout_constraintTop_toBottomOf="@id/balanceTitleView" />
+        app:layout_constraintStart_toStartOf="@id/balance_title_view"
+        app:layout_constraintTop_toBottomOf="@id/balance_title_view" />
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/reserveCryptoView"
+        android:id="@+id/reserve_crypto_view"
         style="@style/Transaction.Title.Medium.Value"
-        app:layout_constraintStart_toStartOf="@id/balanceCryptoView"
-        app:layout_constraintTop_toTopOf="@id/reserveTitleView"
+        app:layout_constraintStart_toStartOf="@id/balance_crypto_view"
+        app:layout_constraintTop_toTopOf="@id/reserve_title_view"
         tools:text="0.000902 BTC" />
 
     <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/reserveExchangeView"
+        android:id="@+id/reserve_exchange_view"
         android:layout_width="16dp"
         android:layout_height="16dp"
         android:layout_marginStart="8dp"
-        app:layout_constraintBottom_toBottomOf="@id/reserveCryptoView"
-        app:layout_constraintEnd_toStartOf="@id/reserveUsdView"
-        app:layout_constraintStart_toEndOf="@id/reserveCryptoView"
-        app:layout_constraintTop_toTopOf="@id/reserveCryptoView"
+        app:layout_constraintBottom_toBottomOf="@id/reserve_crypto_view"
+        app:layout_constraintEnd_toStartOf="@id/reserve_usd_view"
+        app:layout_constraintStart_toEndOf="@id/reserve_crypto_view"
+        app:layout_constraintTop_toTopOf="@id/reserve_crypto_view"
         app:srcCompat="@drawable/ic_compare_arrows" />
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/reserveUsdView"
+        android:id="@+id/reserve_usd_view"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -117,31 +117,31 @@
         android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constrainedWidth="true"
-        app:layout_constraintBottom_toBottomOf="@id/reserveExchangeView"
-        app:layout_constraintStart_toEndOf="@id/reserveExchangeView"
-        app:layout_constraintTop_toTopOf="@id/reserveExchangeView"
+        app:layout_constraintBottom_toBottomOf="@id/reserve_exchange_view"
+        app:layout_constraintStart_toEndOf="@id/reserve_exchange_view"
+        app:layout_constraintTop_toTopOf="@id/reserve_exchange_view"
         tools:text="8.90 USD" />
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/sortTitleView"
+        android:id="@+id/sort_title_view"
         style="@style/Transaction.Title.Medium.Key"
         android:text="@string/add_edit_trade_screen_i_want_to"
-        app:layout_constraintStart_toStartOf="@id/reserveTitleView"
-        app:layout_constraintTop_toBottomOf="@id/reserveTitleView" />
+        app:layout_constraintStart_toStartOf="@id/reserve_title_view"
+        app:layout_constraintTop_toBottomOf="@id/reserve_title_view" />
 
     <RadioGroup
-        android:id="@+id/sortContainerView"
+        android:id="@+id/sort_container_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
-        android:checkedButton="@id/priceButtonView"
+        android:checkedButton="@id/price_button_view"
         android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="@id/sortTitleView"
-        app:layout_constraintStart_toStartOf="@id/priceBarrierView"
-        app:layout_constraintTop_toTopOf="@id/sortTitleView">
+        app:layout_constraintBottom_toBottomOf="@id/sort_title_view"
+        app:layout_constraintStart_toStartOf="@id/price_barrier_view"
+        app:layout_constraintTop_toTopOf="@id/sort_title_view">
 
         <androidx.appcompat.widget.AppCompatRadioButton
-            android:id="@+id/priceButtonView"
+            android:id="@+id/price_button_view"
             style="@style/Transaction.Title.Medium.Value"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -150,7 +150,7 @@
             android:text="@string/trade_screen_price" />
 
         <androidx.appcompat.widget.AppCompatRadioButton
-            android:id="@+id/distanceButtonView"
+            android:id="@+id/distance_button_view"
             style="@style/Transaction.Title.Medium.Value"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -160,19 +160,19 @@
     </RadioGroup>
 
     <com.google.android.material.tabs.TabLayout
-        android:id="@+id/tabLayoutView"
+        android:id="@+id/tab_layout_view"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/sortTitleView"
+        app:layout_constraintTop_toBottomOf="@id/sort_title_view"
         app:tabMode="fixed"
         app:tabGravity="fill"
         app:tabTextAppearance="@style/TabLayoutTextStyle" />
 
     <androidx.viewpager2.widget.ViewPager2
-        android:id="@+id/pagerView"
+        android:id="@+id/pager_view"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_weight="1"
@@ -180,10 +180,10 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tabLayoutView" />
+        app:layout_constraintTop_toBottomOf="@id/tab_layout_view" />
 
     <com.github.clans.fab.FloatingActionMenu
-        android:id="@+id/fabMenuView"
+        android:id="@+id/fab_menu_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:padding="16dp"
@@ -200,19 +200,19 @@
         app:menu_labels_textColor="#58585a">
 
         <com.github.clans.fab.FloatingActionButton
-            android:id="@+id/reverseButtonView"
+            android:id="@+id/reverse_button_view"
             style="@style/TransactionsScreen.FloatingActionButtonChild"
             android:src="@drawable/ic_reserve"
             app:fab_label="@string/trade_screen_reserve" />
 
         <com.github.clans.fab.FloatingActionButton
-            android:id="@+id/recallButtonView"
+            android:id="@+id/recall_button_view"
             style="@style/TransactionsScreen.FloatingActionButtonChild"
             android:src="@drawable/ic_recall"
             app:fab_label="@string/trade_screen_recall" />
 
         <com.github.clans.fab.FloatingActionButton
-            android:id="@+id/createButtonView"
+            android:id="@+id/create_button_view"
             style="@style/TransactionsScreen.FloatingActionButtonChild"
             android:src="@drawable/ic_create"
             app:fab_label="@string/create" />
@@ -220,7 +220,7 @@
     </com.github.clans.fab.FloatingActionMenu>
 
     <FrameLayout
-        android:id="@+id/progressView"
+        android:id="@+id/progress_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/gray_progress"
@@ -231,7 +231,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/toolbarView">
+        app:layout_constraintTop_toBottomOf="@id/toolbar_view">
 
         <ProgressBar
             style="?android:attr/progressBarStyleLarge"

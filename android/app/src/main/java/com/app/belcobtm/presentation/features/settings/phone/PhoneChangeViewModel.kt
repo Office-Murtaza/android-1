@@ -11,19 +11,18 @@ import com.app.belcobtm.domain.settings.interactor.ERROR_UPDATE_PHONE_IS_USED
 import com.app.belcobtm.domain.settings.interactor.VerifyPhoneUseCase
 import com.app.belcobtm.presentation.core.SingleLiveData
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
-import io.michaelrocks.libphonenumber.android.NumberParseException
-import io.michaelrocks.libphonenumber.android.PhoneNumberUtil
+import com.app.belcobtm.presentation.core.validator.Validator
 
 class PhoneChangeViewModel(
     private val verifyPhoneUseCase: VerifyPhoneUseCase,
     private val appContext: Context,
-    private val prefsHelper: SharedPreferencesHelper
+    private val prefsHelper: SharedPreferencesHelper,
+    private val phoneNumberValidator: Validator<String>
 ) : ViewModel() {
     val stateData =
         MutableLiveData<LoadingData<PhoneChangeState>>(LoadingData.Success(PhoneChangeState()))
     val actionData = SingleLiveData<PhoneChangeAction>()
     private var phone = ""
-    private val phoneUtil: PhoneNumberUtil by lazy { PhoneNumberUtil.createInstance(appContext) }
 
     fun onPhoneInput(text: String) {
         phone = text
@@ -59,16 +58,8 @@ class PhoneChangeViewModel(
             })
     }
 
-    private fun isValidMobileNumber(phone: String): Boolean = if (phone.isNotBlank()) {
-        try {
-            val number = PhoneNumberUtil.createInstance(appContext).parse(phone, "")
-            phoneUtil.isValidNumber(number)
-        } catch (e: NumberParseException) {
-            false
-        }
-    } else {
-        false
-    }
+    private fun isValidMobileNumber(phone: String): Boolean =
+        phoneNumberValidator.isValid(phone)
 }
 
 data class PhoneChangeState(

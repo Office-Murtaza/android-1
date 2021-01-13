@@ -24,10 +24,10 @@ class TradeViewModel(
 ) : ViewModel() {
     private var sortType: TradeSortType = TradeSortType.PRICE
     val fromCoinLiveData: MutableLiveData<LoadingData<CoinDataItem>> = MutableLiveData()
-    val buyListLiveData: MutableLiveData<LoadingData<Pair<Int, List<TradeDetailsItem.BuySell>>>> = MutableLiveData()
-    val sellListLiveData: MutableLiveData<LoadingData<Pair<Int, List<TradeDetailsItem.BuySell>>>> = MutableLiveData()
-    val myListLiveData: MutableLiveData<LoadingData<Pair<Int, List<TradeDetailsItem.My>>>> = MutableLiveData()
-    val openListLiveData: MutableLiveData<LoadingData<Pair<Int, List<TradeDetailsItem.Open>>>> = MutableLiveData()
+    val buyListLiveData: MutableLiveData<LoadingData<Pair<Int, List<TradeDetailsItem>>>> = MutableLiveData()
+    val sellListLiveData: MutableLiveData<LoadingData<Pair<Int, List<TradeDetailsItem>>>> = MutableLiveData()
+    val myListLiveData: MutableLiveData<LoadingData<Pair<Int, List<TradeDetailsItem>>>> = MutableLiveData()
+    val openListLiveData: MutableLiveData<LoadingData<Pair<Int, List<TradeDetailsItem>>>> = MutableLiveData()
 
     fun updateDataItem() {
         fromCoinLiveData.value = LoadingData.Loading()

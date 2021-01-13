@@ -67,9 +67,9 @@ class TransactionApiService(
         hash: String,
         coinFrom: String,
         coinFromAmount: Double,
-        giftId: String,
+        giftId: String?,
         phone: String,
-        message: String,
+        message: String?,
         fee: Double? = null,
         fromAddress: String? = null,
         toAddress: String? = null

@@ -6,12 +6,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import com.app.belcobtm.R
+import com.app.belcobtm.databinding.FragmentDialogSmsCodeBinding
 import com.app.belcobtm.presentation.core.extensions.getString
 import com.app.belcobtm.presentation.core.extensions.showError
-import kotlinx.android.synthetic.main.fragment_dialog_sms_code.*
 
 class SmsDialogFragment : DialogFragment() {
     private var listener: ((smsCode: String) -> Unit)? = null
+    private lateinit var binding: FragmentDialogSmsCodeBinding
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -19,23 +20,24 @@ class SmsDialogFragment : DialogFragment() {
         savedInstanceState: Bundle?
     ): View? {
         dialog?.setCanceledOnTouchOutside(false)
-        return inflater.inflate(R.layout.fragment_dialog_sms_code, container)
+        binding = FragmentDialogSmsCodeBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        smsCodeView.error = arguments?.getString(TAG_ERROR)
+        binding.smsCodeView.error = arguments?.getString(TAG_ERROR)
         arguments?.remove(TAG_ERROR)
 
-        nextButtonView.setOnClickListener {
-            if (smsCodeView.getString().length != SMS_CODE_LENGTH) {
-                smsCodeView.showError(R.string.error_sms_code_4_digits)
+        binding.nextButtonView.setOnClickListener {
+            if (binding.smsCodeView.getString().length != SMS_CODE_LENGTH) {
+                binding.smsCodeView.showError(R.string.error_sms_code_4_digits)
             } else {
-                listener?.invoke(smsCodeView.getString())
+                listener?.invoke(binding.smsCodeView.getString())
                 dismiss()
             }
         }
-        cancelButtonView.setOnClickListener { dismiss() }
+        binding.cancelButtonView.setOnClickListener { dismiss() }
     }
 
     fun setDialogListener(listener: (smsCode: String) -> Unit) {

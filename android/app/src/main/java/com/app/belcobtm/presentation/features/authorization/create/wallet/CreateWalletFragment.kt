@@ -6,10 +6,13 @@ import android.text.SpannableString
 import android.text.Spanned
 import android.text.TextUtils
 import android.text.method.LinkMovementMethod
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import com.app.belcobtm.R
+import com.app.belcobtm.databinding.FragmentCreateWalletBinding
 import com.app.belcobtm.domain.tools.IntentActions
 import com.app.belcobtm.presentation.core.Const
 import com.app.belcobtm.presentation.core.extensions.*
@@ -17,37 +20,34 @@ import com.app.belcobtm.presentation.core.helper.SimpleClickableSpan
 import com.app.belcobtm.presentation.core.ui.fragment.BaseFragment
 import com.app.belcobtm.presentation.features.authorization.create.seed.CreateSeedFragment
 import com.app.belcobtm.presentation.features.sms.code.SmsCodeFragment
-import io.michaelrocks.libphonenumber.android.NumberParseException
-import io.michaelrocks.libphonenumber.android.PhoneNumberUtil
-import kotlinx.android.synthetic.main.fragment_create_wallet.*
 import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
 
-class CreateWalletFragment : BaseFragment() {
+class CreateWalletFragment : BaseFragment<FragmentCreateWalletBinding>() {
     private val intentActions: IntentActions by inject()
     private val viewModel: CreateWalletViewModel by viewModel()
-    private val phoneUtil: PhoneNumberUtil by lazy { PhoneNumberUtil.createInstance(requireContext()) }
-    override val resourceLayout: Int = R.layout.fragment_create_wallet
     override val isToolbarEnabled: Boolean = true
     override val isHomeButtonEnabled: Boolean = true
     override val retryListener: View.OnClickListener = View.OnClickListener { checkCredentials() }
 
-    override fun initViews() {
+    override fun FragmentCreateWalletBinding.initViews() {
         setToolbarTitle(R.string.create_wallet_screen_title)
         initTncView()
     }
 
-    override fun initListeners() {
+    override fun FragmentCreateWalletBinding.initListeners() {
         nextButtonView.setOnClickListener { checkCredentials() }
         phoneView.editText?.afterTextChanged { updateNextButton() }
         passwordView.editText?.afterTextChanged { updateNextButton() }
         passwordConfirmView.editText?.afterTextChanged { updateNextButton() }
         tncCheckBoxView.setOnCheckedChangeListener { _, _ -> updateNextButton() }
-
         phoneEditView.addTextChangedListener(PhoneNumberFormattingTextWatcher())
     }
 
-    override fun initObservers() {
+    override fun createBinding(inflater: LayoutInflater, container: ViewGroup?): FragmentCreateWalletBinding =
+        FragmentCreateWalletBinding.inflate(inflater, container, false)
+
+    override fun FragmentCreateWalletBinding.initObservers() {
         viewModel.checkCredentialsLiveData.listen(
             success = {
                 if (it.first) {
@@ -69,7 +69,7 @@ class CreateWalletFragment : BaseFragment() {
             })
     }
 
-    private fun initTncView() {
+    private fun FragmentCreateWalletBinding.initTncView() {
         val linkClickableSpan = SimpleClickableSpan(
             onClick = { intentActions.openViewActivity(Const.TERMS_URL) },
             updateDrawState = { it.isUnderlineText = false }
@@ -102,14 +102,14 @@ class CreateWalletFragment : BaseFragment() {
     }
 
     private fun isValidFields(): Boolean {
-        passwordConfirmView.clearError()
+        binding.passwordConfirmView.clearError()
         return when {
-            passwordView.getString().length < PASSWORD_MIN_LENGTH || passwordView.getString().length > PASSWORD_MAX_LENGTH -> {
-                passwordConfirmView.showError(R.string.create_wallet_error_short_pass)
+            binding.passwordView.getString().length < PASSWORD_MIN_LENGTH || binding.passwordView.getString().length > PASSWORD_MAX_LENGTH -> {
+                binding.passwordConfirmView.showError(R.string.create_wallet_error_short_pass)
                 false
             }
-            passwordView.getString() != passwordConfirmView.getString() -> {
-                passwordConfirmView.showError(R.string.create_wallet_error_confirm_pass)
+            binding.passwordView.getString() != binding.passwordConfirmView.getString() -> {
+                binding.passwordConfirmView.showError(R.string.create_wallet_error_confirm_pass)
                 false
             }
             else -> true
@@ -117,31 +117,20 @@ class CreateWalletFragment : BaseFragment() {
     }
 
     private fun updateNextButton() {
-        nextButtonView.isEnabled = phoneView.getString().isNotEmpty()
-                && isValidMobileNumber(phoneView.getString())
-                && passwordView.getString().isNotEmpty()
-                && passwordConfirmView.getString().isNotEmpty()
-                && tncCheckBoxView.isChecked
+        binding.nextButtonView.isEnabled = binding.phoneView.getString().isNotEmpty()
+                && viewModel.isValidMobileNumber(binding.phoneView.getString())
+                && binding.passwordView.getString().isNotEmpty()
+                && binding.passwordConfirmView.getString().isNotEmpty()
+                && binding.tncCheckBoxView.isChecked
     }
 
-    private fun isValidMobileNumber(phone: String): Boolean = if (phone.isNotBlank()) {
-        try {
-            val number = PhoneNumberUtil.createInstance(requireContext()).parse(phone, "")
-            phoneUtil.isValidNumber(number)
-        } catch (e: NumberParseException) {
-            false
-        }
-    } else {
-        false
-    }
-
-    private fun getPhone(): String = phoneView.getString().replace("[-() ]".toRegex(), "")
+    private fun getPhone(): String = binding.phoneView.getString().replace("[-() ]".toRegex(), "")
 
     private fun checkCredentials() {
-        phoneView.clearError()
-        passwordView.clearError()
+        binding.phoneView.clearError()
+        binding.passwordView.clearError()
         if (isValidFields()) {
-            viewModel.checkCredentials(getPhone(), passwordView.getString())
+            viewModel.checkCredentials(getPhone(), binding.passwordView.getString())
         }
     }
 

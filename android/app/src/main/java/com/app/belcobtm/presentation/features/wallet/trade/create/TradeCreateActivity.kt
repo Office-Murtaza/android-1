@@ -3,32 +3,36 @@ package com.app.belcobtm.presentation.features.wallet.trade.create
 import android.os.Bundle
 import androidx.lifecycle.Observer
 import com.app.belcobtm.R
+import com.app.belcobtm.databinding.ActivityTradeCreateBinding
 import com.app.belcobtm.domain.Failure
 import com.app.belcobtm.presentation.core.extensions.*
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
 import com.app.belcobtm.presentation.core.ui.BaseActivity
-import kotlinx.android.synthetic.main.activity_trade_create.*
 import org.koin.android.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
 class TradeCreateActivity : BaseActivity() {
+
     private val viewModel: TradeCreateViewModel by viewModel { parametersOf(intent.getStringExtra(TAG_COIN_CODE)) }
+    private lateinit var binding: ActivityTradeCreateBinding
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_trade_create)
-        initListeners()
-        initObservers()
-        initViews()
+        binding = ActivityTradeCreateBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        binding.initListeners()
+        binding.initObservers()
+        binding.initViews()
     }
 
-    private fun initListeners() {
+    private fun ActivityTradeCreateBinding.initListeners() {
         createButtonView.setOnClickListener { createTrade() }
         tradeTermsView.actionDoneListener { createTrade() }
     }
 
-    private fun initObservers() {
-        viewModel.createTradeLiveData.observe(this, Observer { loadingData ->
+    private fun ActivityTradeCreateBinding.initObservers() {
+        viewModel.createTradeLiveData.observe(this@TradeCreateActivity, Observer { loadingData ->
             when (loadingData) {
                 is LoadingData.Loading -> progressView.show()
                 is LoadingData.Success -> {
@@ -47,7 +51,7 @@ class TradeCreateActivity : BaseActivity() {
         })
     }
 
-    private fun initViews() {
+    private fun ActivityTradeCreateBinding.initViews() {
         setSupportActionBar(toolbarView)
         supportActionBar?.let { toolbar ->
             toolbar.setDisplayHomeAsUpEnabled(true)
@@ -77,7 +81,7 @@ class TradeCreateActivity : BaseActivity() {
         }
     }
 
-    private fun createTrade() {
+    private fun ActivityTradeCreateBinding.createTrade() {
         when {
             isEmptyFields() -> showError(R.string.error_please_fill_all_fields)
             !isCorrectLimits() -> showError(R.string.add_edit_trade_screen_max_min_limit_error)
@@ -93,15 +97,16 @@ class TradeCreateActivity : BaseActivity() {
         }
     }
 
-    private fun isEmptyFields(): Boolean = paymentMethodView.getString().isEmpty()
+    private fun ActivityTradeCreateBinding.isEmptyFields(): Boolean = paymentMethodView.getString().isEmpty()
             || marginView.getString().isEmpty()
             || minLimitView.getString().isEmpty()
             || maxLimitView.getString().isEmpty()
             || tradeTermsView.getString().isEmpty()
 
-    private fun isCorrectLimits(): Boolean = minLimitView.getString().toInt() < maxLimitView.getString().toInt()
+    private fun isCorrectLimits(): Boolean =
+        binding.minLimitView.getString().toInt() < binding.maxLimitView.getString().toInt()
 
-    private fun isCorrectMargin(): Boolean = marginView.getString().toDouble() <= 100
+    private fun isCorrectMargin(): Boolean = binding.marginView.getString().toDouble() <= 100
 
     companion object {
         const val TAG_COIN_CODE = "tag_coin_code"

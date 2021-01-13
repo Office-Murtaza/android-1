@@ -2,12 +2,15 @@ package com.app.belcobtm.presentation.features.settings.verification.blank
 
 import android.Manifest
 import android.net.Uri
+import android.view.LayoutInflater
+import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.Observer
 import com.app.belcobtm.R
+import com.app.belcobtm.databinding.FragmentVerificationBlankBinding
 import com.app.belcobtm.domain.Failure
 import com.app.belcobtm.presentation.core.extensions.*
 import com.app.belcobtm.presentation.core.helper.AlertHelper
@@ -15,22 +18,17 @@ import com.app.belcobtm.presentation.core.mvvm.LoadingData
 import com.app.belcobtm.presentation.core.ui.fragment.BaseFragment
 import com.kroegerama.imgpicker.BottomSheetImagePicker
 import com.kroegerama.imgpicker.ButtonType
-import kotlinx.android.synthetic.main.fragment_verification_blank.*
-import kotlinx.android.synthetic.main.fragment_verification_blank.imageContainer
-import kotlinx.android.synthetic.main.fragment_verification_blank.imageView
-import kotlinx.android.synthetic.main.fragment_verification_blank.removeImageButtonView
-import kotlinx.android.synthetic.main.fragment_verification_blank.selectImageButtonView
-import kotlinx.android.synthetic.main.fragment_verification_blank.verifyButtonView
 import org.koin.android.viewmodel.ext.android.viewModel
 import permissions.dispatcher.NeedsPermission
 import permissions.dispatcher.OnNeverAskAgain
 import permissions.dispatcher.RuntimePermissions
 
 @RuntimePermissions
-class VerificationBlankFragment : BaseFragment(), BottomSheetImagePicker.OnImagesSelectedListener {
+class VerificationBlankFragment :
+    BaseFragment<FragmentVerificationBlankBinding>(),
+    BottomSheetImagePicker.OnImagesSelectedListener {
     private val viewModel: VerificationBlankViewModel by viewModel()
 
-    override val resourceLayout = R.layout.fragment_verification_blank
     override val isHomeButtonEnabled = true
     override var isMenuEnabled = true
 
@@ -38,14 +36,14 @@ class VerificationBlankFragment : BaseFragment(), BottomSheetImagePicker.OnImage
 
     override fun onImagesSelected(uris: List<Uri>, tag: String?) {
         viewModel.fileUri = uris.first()
-        imageView.scaleType = ImageView.ScaleType.CENTER_CROP
-        imageView.setImageURI(viewModel.fileUri)
+        binding.imageView.scaleType = ImageView.ScaleType.CENTER_CROP
+        binding.imageView.setImageURI(viewModel.fileUri)
         validatePhoto()
-        removeImageButtonView.show()
-        selectImageButtonView.hide()
+        binding.removeImageButtonView.show()
+        binding.selectImageButtonView.hide()
     }
 
-    override fun initViews() {
+    override fun FragmentVerificationBlankBinding.initViews() {
         setToolbarTitle(R.string.verify_label)
     }
 
@@ -73,7 +71,7 @@ class VerificationBlankFragment : BaseFragment(), BottomSheetImagePicker.OnImage
         AlertHelper.showToastShort(requireContext(), R.string.verification_please_on_permissions)
     }
 
-    override fun initListeners() {
+    override fun FragmentVerificationBlankBinding.initListeners() {
         selectImageButtonView.setOnClickListener {
             showFilePickerWithPermissionCheck()
         }
@@ -184,8 +182,8 @@ class VerificationBlankFragment : BaseFragment(), BottomSheetImagePicker.OnImage
         }
     }
 
-    override fun initObservers() {
-        viewModel.uploadingLiveData.observe(this, Observer { loadingData ->
+    override fun FragmentVerificationBlankBinding.initObservers() {
+        viewModel.uploadingLiveData.observe(viewLifecycleOwner, Observer { loadingData ->
             when (loadingData) {
                 is LoadingData.Loading -> showLoading()
                 is LoadingData.Success -> {
@@ -205,12 +203,15 @@ class VerificationBlankFragment : BaseFragment(), BottomSheetImagePicker.OnImage
         })
     }
 
+    override fun createBinding(inflater: LayoutInflater, container: ViewGroup?): FragmentVerificationBlankBinding =
+        FragmentVerificationBlankBinding.inflate(inflater, container, false)
+
     private fun checkCountry() {
-        validateCountry()
+        binding.validateCountry()
     }
 
     private fun checkProvince() {
-        validateProvince()
+        binding.validateProvince()
     }
 
     private fun sendBlank() {
@@ -219,14 +220,14 @@ class VerificationBlankFragment : BaseFragment(), BottomSheetImagePicker.OnImage
             viewModel.fileUri?.let { imageUri ->
                 viewModel.sendBlank(
                     imageUri,
-                    idNumberView.getString(),
-                    firstNameView.getString(),
-                    lastNameView.getString(),
-                    addressView.getString(),
-                    cityView.getString(),
-                    countryView.getString(),
-                    provinceView.getString(),
-                    zipCodeView.getString()
+                    binding.idNumberView.getString(),
+                    binding.firstNameView.getString(),
+                    binding.lastNameView.getString(),
+                    binding.addressView.getString(),
+                    binding.cityView.getString(),
+                    binding.countryView.getString(),
+                    binding.provinceView.getString(),
+                    binding.zipCodeView.getString()
                 )
             }
         }
@@ -234,14 +235,14 @@ class VerificationBlankFragment : BaseFragment(), BottomSheetImagePicker.OnImage
 
     private fun isValidFields(): Boolean {
         val photo = validatePhoto()
-        val idNumber = validateIdNumber()
-        val firstName = validateFirstName()
-        val lastName = validateLastName()
-        val address = validateAddress()
-        val city = validateCity()
-        val country = validateCountry()
-        val province = validateProvince()
-        val zip = validateZipCode()
+        val idNumber = binding.validateIdNumber()
+        val firstName = binding.validateFirstName()
+        val lastName = binding.validateLastName()
+        val address = binding.validateAddress()
+        val city = binding.validateCity()
+        val country = binding.validateCountry()
+        val province = binding.validateProvince()
+        val zip = binding.validateZipCode()
         return photo
                 && idNumber
                 && firstName
@@ -253,17 +254,16 @@ class VerificationBlankFragment : BaseFragment(), BottomSheetImagePicker.OnImage
                 && zip
     }
 
-    private fun validatePhoto(): Boolean {
+    private fun validatePhoto(): Boolean =
         if (viewModel.fileUri == null) {
-            photoErrorView.toggle(true)
-            return false
+            binding.photoErrorView.toggle(true)
+            false
         } else {
-            photoErrorView.toggle(false)
-            return true
+            binding.photoErrorView.toggle(false)
+            true
         }
-    }
 
-    private fun validateIdNumber(): Boolean {
+    private fun FragmentVerificationBlankBinding.validateIdNumber(): Boolean {
         return if (idNumberView.getString().length > 9 || idNumberView.getString().isEmpty()) {
             idNumberView.isErrorEnabled = true
             idNumberView.error = getString(R.string.id_number_validation_text)
@@ -274,7 +274,7 @@ class VerificationBlankFragment : BaseFragment(), BottomSheetImagePicker.OnImage
         }
     }
 
-    private fun validateFirstName(): Boolean {
+    private fun FragmentVerificationBlankBinding.validateFirstName(): Boolean {
         return if (firstNameView.getString().length > 255 || firstNameView.getString().isEmpty()) {
             firstNameView.isErrorEnabled = true
             firstNameView.error = getString(R.string.first_name_validation_text)
@@ -285,7 +285,7 @@ class VerificationBlankFragment : BaseFragment(), BottomSheetImagePicker.OnImage
         }
     }
 
-    private fun validateLastName(): Boolean {
+    private fun FragmentVerificationBlankBinding.validateLastName(): Boolean {
         return if (lastNameView.getString().length > 255 || lastNameView.getString().isEmpty()) {
             lastNameView.isErrorEnabled = true
             lastNameView.error = getString(R.string.last_name_validation_text)
@@ -296,7 +296,7 @@ class VerificationBlankFragment : BaseFragment(), BottomSheetImagePicker.OnImage
         }
     }
 
-    private fun validateAddress(): Boolean {
+    private fun FragmentVerificationBlankBinding.validateAddress(): Boolean {
         return if (addressView.getString().length > 255 || addressView.getString().isEmpty()) {
             addressView.isErrorEnabled = true
             addressView.error = getString(R.string.address_validation_text)
@@ -307,7 +307,7 @@ class VerificationBlankFragment : BaseFragment(), BottomSheetImagePicker.OnImage
         }
     }
 
-    private fun validateCity(): Boolean {
+    private fun FragmentVerificationBlankBinding.validateCity(): Boolean {
         return if (cityView.getString().isEmpty()) {
             cityView.isErrorEnabled = true
             cityView.error = getString(R.string.city_validation_text)
@@ -318,7 +318,7 @@ class VerificationBlankFragment : BaseFragment(), BottomSheetImagePicker.OnImage
         }
     }
 
-    private fun validateCountry(): Boolean {
+    private fun FragmentVerificationBlankBinding.validateCountry(): Boolean {
         return if (countryView.getString().isEmpty()) {
             countryView.isErrorEnabled = true
             countryView.error = getString(R.string.country_validation_text)
@@ -329,7 +329,7 @@ class VerificationBlankFragment : BaseFragment(), BottomSheetImagePicker.OnImage
         }
     }
 
-    private fun validateProvince(): Boolean {
+    private fun FragmentVerificationBlankBinding.validateProvince(): Boolean {
         return if (provinceView.getString().isEmpty()) {
             provinceView.isErrorEnabled = true
             provinceView.error = getString(R.string.province_validation_text)
@@ -340,7 +340,7 @@ class VerificationBlankFragment : BaseFragment(), BottomSheetImagePicker.OnImage
         }
     }
 
-    private fun validateZipCode(): Boolean {
+    private fun FragmentVerificationBlankBinding.validateZipCode(): Boolean {
         return if (zipCodeView.getString().length == 5 && zipCodeView.getString().toInt() >= 10000) {
             zipCodeView.isErrorEnabled = false
             true

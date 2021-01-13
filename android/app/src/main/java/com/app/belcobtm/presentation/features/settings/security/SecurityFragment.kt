@@ -1,20 +1,19 @@
 package com.app.belcobtm.presentation.features.settings.security
 
 import android.os.Bundle
-import android.telephony.PhoneNumberUtils
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import com.app.belcobtm.R
+import com.app.belcobtm.databinding.FragmentSecurityBinding
 import com.app.belcobtm.presentation.core.ui.fragment.BaseFragment
-import kotlinx.android.synthetic.main.fragment_security.*
 import org.koin.android.viewmodel.ext.android.viewModel
-import java.util.*
 
-class SecurityFragment : BaseFragment() {
+class SecurityFragment : BaseFragment<FragmentSecurityBinding>() {
 
     private val viewModel by viewModel<SecurityViewModel>()
 
-    override val resourceLayout: Int = R.layout.fragment_security
     override var isBackButtonEnabled: Boolean = true
     override var isMenuEnabled: Boolean = true
 
@@ -26,7 +25,7 @@ class SecurityFragment : BaseFragment() {
     }
 
     private fun observeData() {
-        viewModel.userPhone.listen(success = { setupPhone(it) })
+        viewModel.userPhone.listen(success = { binding.updatePhoneItem.setValue(it) })
         viewModel.actionData.observe(viewLifecycleOwner, Observer { action ->
             if (action is SecurityAction.NavigateAction) {
                 navigate(action.navDirections)
@@ -35,16 +34,13 @@ class SecurityFragment : BaseFragment() {
     }
 
     private fun setClickListeners() {
-        updatePhoneItem.setOnClickListener { viewModel.handleItemClick(SecurityItem.PHONE) }
-        updatePassItem.setOnClickListener { viewModel.handleItemClick(SecurityItem.PASS) }
-        updatePinItem.setOnClickListener { viewModel.handleItemClick(SecurityItem.PIN) }
-        seedPhraseItem.setOnClickListener { viewModel.handleItemClick(SecurityItem.SEED) }
-        unlinkItem.setOnClickListener { viewModel.handleItemClick(SecurityItem.UNLINK) }
+        binding.updatePhoneItem.setOnClickListener { viewModel.handleItemClick(SecurityItem.PHONE) }
+        binding.updatePassItem.setOnClickListener { viewModel.handleItemClick(SecurityItem.PASS) }
+        binding.updatePinItem.setOnClickListener { viewModel.handleItemClick(SecurityItem.PIN) }
+        binding.seedPhraseItem.setOnClickListener { viewModel.handleItemClick(SecurityItem.SEED) }
+        binding.unlinkItem.setOnClickListener { viewModel.handleItemClick(SecurityItem.UNLINK) }
     }
 
-    private fun setupPhone(phoneNumber: String) {
-        val countlyCode = Locale.US.country
-        val formattedPhone = PhoneNumberUtils.formatNumber(phoneNumber, countlyCode)
-        updatePhoneItem.setValue(formattedPhone)
-    }
+    override fun createBinding(inflater: LayoutInflater, container: ViewGroup?): FragmentSecurityBinding =
+        FragmentSecurityBinding.inflate(inflater, container, false)
 }

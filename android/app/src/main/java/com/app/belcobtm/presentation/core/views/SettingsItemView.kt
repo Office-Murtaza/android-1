@@ -4,12 +4,11 @@ import android.content.Context
 import android.graphics.drawable.Drawable
 import android.util.AttributeSet
 import android.util.TypedValue
-import android.view.View
+import android.view.LayoutInflater
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.app.belcobtm.R
+import com.app.belcobtm.databinding.ItemSettingsBinding
 import com.app.belcobtm.presentation.core.extensions.toggle
-import kotlinx.android.synthetic.main.item_settings.view.*
-
 
 class SettingsItemView @JvmOverloads constructor(
     context: Context,
@@ -17,8 +16,10 @@ class SettingsItemView @JvmOverloads constructor(
     defStyleAttr: Int = 0
 ) : ConstraintLayout(context, attrs, defStyleAttr) {
 
+    private val binding: ItemSettingsBinding
+
     init {
-        View.inflate(context, R.layout.item_settings, this)
+        binding = ItemSettingsBinding.inflate(LayoutInflater.from(context), this)
 
         val typedArray =
             context
@@ -50,20 +51,20 @@ class SettingsItemView @JvmOverloads constructor(
 
     fun setImage(imageRes: Drawable?) {
         imageRes?.let {
-            imageView.setImageDrawable(it)
-            imageView.toggle(true)
+            binding.imageView.setImageDrawable(it)
+            binding.imageView.toggle(true)
         }
     }
 
     fun setLabel(label: CharSequence?) {
-        labelText.text = label ?: ""
+        binding.labelText.text = label ?: ""
     }
 
     fun setValue(value: CharSequence?) {
-        valueText.text = value ?: ""
+        binding.valueText.text = value ?: ""
     }
 
     fun showChevron(show: Boolean) {
-        ivChevron.toggle(show)
+        binding.ivChevron.toggle(show)
     }
 }

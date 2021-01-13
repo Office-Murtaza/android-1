@@ -1,54 +1,20 @@
 package com.app.belcobtm.presentation.features.wallet.trade.main.item
 
-import android.os.Parcelable
-import kotlinx.android.parcel.Parcelize
+import com.app.belcobtm.presentation.core.adapter.model.ListItem
 
-sealed class TradeDetailsItem {
+interface TradeDetailsItem : ListItem {
+    val tradeId: Int
+    val minLimit: Int
+    val maxLimit: Int
+    val tradeCount: Int
+    val distance: Int
+    val rate: Double
+    val userName: String
+    val paymentMethod: String
+    val price: Double
+    val isBuyType: Boolean
 
-    @Parcelize
-    data class BuySell(
-        val id: Int,
-        val minLimit: Int,
-        val maxLimit: Int,
-        val tradeCount: Int,
-        val distance: Int,
-        val rate: Double,
-        val userName: String,
-        val paymentMethod: String,
-        val price: Double,
-        val terms: String,
-        val isBuyType: Boolean
-    ) : TradeDetailsItem(), Parcelable
-
-    @Parcelize
-    data class My(
-        val id: Int,
-        val minLimit: Int,
-        val maxLimit: Int,
-        val tradeCount: Int,
-        val distance: Int,
-        val rate: Double,
-        val userName: String,
-        val paymentMethod: String,
-        val price: Double,
-        val isBuyType: Boolean
-    ) : TradeDetailsItem(), Parcelable
-
-    @Parcelize
-    data class Open(
-        val id: Int,
-        val minLimit: Int,
-        val maxLimit: Int,
-        val tradeCount: Int,
-        val distance: Int,
-        val rate: Double,
-        val userName: String,
-        val paymentMethod: String,
-        val price: Double,
-        val isBuyType: Boolean
-    ) : TradeDetailsItem(), Parcelable
-
-    object Empty : TradeDetailsItem()
-    object Loading : TradeDetailsItem()
-    object Error : TradeDetailsItem()
+    companion object {
+        const val TRADE_DETAILS_ITEM_TYPE = 830
+    }
 }

@@ -24,6 +24,14 @@
             app:exitAnim="@anim/slide_to_left"
             app:popEnterAnim="@anim/slide_from_left"
             app:popExitAnim="@anim/slide_to_right" />
+
+        <action
+            android:id="@+id/to_contact_list_fragment"
+            app:destination="@id/contact_list_fragment"
+            app:enterAnim="@anim/slide_from_right"
+            app:exitAnim="@anim/slide_to_left"
+            app:popEnterAnim="@anim/slide_from_left"
+            app:popExitAnim="@anim/slide_to_right" />
     </fragment>
 
     <fragment
@@ -37,5 +45,48 @@
         android:name="com.app.belcobtm.presentation.features.wallet.staking.StakingFragment"
         android:label="ExchangeFragment"
         tools:layout="@layout/fragment_swap" />
+
+    <fragment
+        android:id="@+id/contact_list_fragment"
+        android:name="com.app.belcobtm.presentation.features.contacts.ContactListFragment"
+        android:label="ContactListFragment"
+        tools:layout="@layout/fragment_contact_list">
+
+        <action
+            android:id="@+id/to_send_gif_fragment"
+            app:destination="@id/send_gif_fragment"
+            app:enterAnim="@anim/slide_from_right"
+            app:exitAnim="@anim/slide_to_left"
+            app:popEnterAnim="@anim/slide_from_left"
+            app:popExitAnim="@anim/slide_to_right" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/send_gif_fragment"
+        android:name="com.app.belcobtm.presentation.features.wallet.send.gift.SendGiftFragment"
+        android:label="TransferDetailsFragment"
+        tools:layout="@layout/fragment_send_gift">
+
+        <argument
+            android:name="address"
+            app:argType="string" />
+
+        <argument
+            android:name="phoneNumber"
+            app:argType="string" />
+
+        <argument
+            android:name="contactPhotoUri"
+            android:defaultValue="@null"
+            app:argType="string"
+            app:nullable="true" />
+
+        <argument
+            android:name="contactName"
+            android:defaultValue="@null"
+            app:argType="string"
+            app:nullable="true" />
+
+    </fragment>
 
 </navigation>

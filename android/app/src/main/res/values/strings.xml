@@ -296,13 +296,14 @@
     <string name="sell_screen_instructions_4">Scan QR code from transaction details popup.</string>
 
     <!-- Send gift screen -->
-    <string name="send_gift_screen_title">Send gift %1$s</string>
-    <string name="send_gift_screen_price">Price</string>
-    <string name="send_gift_screen_balance">Balance</string>
-    <string name="send_gift_screen_recipient_address">Recipient phone</string>
+    <string name="send_gift_screen_title">Transfer</string>
+    <string name="send_gift_screen_balance_formatted">Balance %1$s %2$s</string>
+    <string name="send_gift_screen_fee_formatted"><![CDATA[Fee ~%1$s %2$s]]></string>
     <string name="send_gift_screen_message">Message</string>
-    <string name="send_gift_screen_add">Add</string>
-    <string name="send_gift_screen_remove">Remove</string>
+    <string name="send_gift_screen_submit_button_label">Submit</string>
+    <string name="send_gift_screen_converted_label">USD converted value</string>
+    <string name="send_gift_screen_add_gif_label">Add gif</string>
+    <string name="send_gift_screen_add_note_label">Add note</string>
 
     <!-- Coin to coin screen -->
     <string name="swap_screen_title">Swap</string>
@@ -426,6 +427,7 @@
     <string name="create">Create</string>
     <string name="submit">Submit</string>
     <string name="paste">Paste</string>
+    <string name="generate">Generate</string>
     <string name="next">Next</string>
     <string name="update">Update</string>
     <string name="cancel">Cancel</string>
@@ -519,4 +521,10 @@
     <string name="deals_staking">Staking</string>
     <string name="deals_swap">Swap</string>
     <string name="deals_trade">Trade</string>
+    <string name="deals_transfer">Transfer</string>
+
+    <!-- Transfer flow -->
+    <string name="transfer_screen_title">Transfer</string>
+    <string name="transfer_contact_search_hint">Type mobile number or contact name</string>
+    <string name="transfer_phone_number_invalid">Please input correct number</string>
 </resources>

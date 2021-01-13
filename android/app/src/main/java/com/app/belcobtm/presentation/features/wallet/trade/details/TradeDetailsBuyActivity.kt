@@ -5,20 +5,22 @@ import android.os.Bundle
 import android.view.MenuItem
 import androidx.lifecycle.Observer
 import com.app.belcobtm.R
+import com.app.belcobtm.databinding.ActivityTradeDetailsBinding
 import com.app.belcobtm.domain.Failure
 import com.app.belcobtm.presentation.core.extensions.*
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
 import com.app.belcobtm.presentation.core.ui.BaseActivity
 import com.app.belcobtm.presentation.core.watcher.DoubleTextWatcher
 import com.app.belcobtm.presentation.features.HostActivity
-import com.app.belcobtm.presentation.features.wallet.trade.main.item.TradeDetailsItem
-import kotlinx.android.synthetic.main.activity_trade_details.*
+import com.app.belcobtm.presentation.features.wallet.trade.main.item.TradeDetailsBuySellItem
 import org.koin.android.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import kotlin.math.roundToInt
 
 class TradeDetailsBuyActivity : BaseActivity() {
-    private lateinit var tradeDetailsItem: TradeDetailsItem.BuySell
+
+    private lateinit var tradeDetailsItem: TradeDetailsBuySellItem
+    private lateinit var binding: ActivityTradeDetailsBinding
     private val viewModel: TradeDetailsBuyViewModel by viewModel {
         parametersOf(intent.getStringExtra(TAG_COIN_CODE))
     }
@@ -33,18 +35,18 @@ class TradeDetailsBuyActivity : BaseActivity() {
 
             when {
                 cryptoAmount == 0.0 || usdAmount < minLimit -> {
-                    amountUsdView.clearText()
-                    sendButtonView.isEnabled = false
+                    binding.amountUsdView.clearText()
+                    binding.sendButtonView.isEnabled = false
                 }
                 usdAmount > maxLimit -> {
                     it.clear()
                     it.insert(0, (maxLimit / viewModel.fromCoinItem.priceUsd).toStringCoin())
-                    amountUsdView.setText(maxLimit.toString())
-                    sendButtonView.isEnabled = true
+                    binding.amountUsdView.setText(maxLimit.toString())
+                    binding.sendButtonView.isEnabled = true
                 }
                 else -> {
-                    amountUsdView.setText(usdAmount.toString())
-                    sendButtonView.isEnabled = true
+                    binding.amountUsdView.setText(usdAmount.toString())
+                    binding.sendButtonView.isEnabled = true
                 }
             }
         },
@@ -54,18 +56,18 @@ class TradeDetailsBuyActivity : BaseActivity() {
             val usdAmountText = it.getInt()
             when {
                 usdAmountText == 0 || usdAmountText < minLimit -> {
-                    amountCryptoView.clearText()
-                    sendButtonView.isEnabled = false
+                    binding.amountCryptoView.clearText()
+                    binding.sendButtonView.isEnabled = false
                 }
                 usdAmountText > maxLimit -> {
                     it.clear()
                     it.insert(0, maxLimit.toString())
-                    amountCryptoView.setText((maxLimit / viewModel.fromCoinItem.priceUsd).toStringCoin())
-                    sendButtonView.isEnabled = true
+                    binding.amountCryptoView.setText((maxLimit / viewModel.fromCoinItem.priceUsd).toStringCoin())
+                    binding.sendButtonView.isEnabled = true
                 }
                 else -> {
-                    amountCryptoView.setText((usdAmountText / viewModel.fromCoinItem.priceUsd).toStringCoin())
-                    sendButtonView.isEnabled = true
+                    binding.amountCryptoView.setText((usdAmountText / viewModel.fromCoinItem.priceUsd).toStringCoin())
+                    binding.sendButtonView.isEnabled = true
                 }
             }
         }
@@ -73,10 +75,11 @@ class TradeDetailsBuyActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_trade_details)
-        initListeners()
-        initObservers()
-        initViews()
+        binding = ActivityTradeDetailsBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        binding.initListeners()
+        binding.initObservers()
+        binding.initViews()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -87,7 +90,7 @@ class TradeDetailsBuyActivity : BaseActivity() {
         return super.onOptionsItemSelected(item)
     }
 
-    private fun initListeners() {
+    private fun ActivityTradeDetailsBinding.initListeners() {
         maxCryptoView.setOnClickListener {
             val balance = tradeDetailsItem.maxLimit
             amountUsdView.setText(balance.toString())
@@ -98,7 +101,7 @@ class TradeDetailsBuyActivity : BaseActivity() {
         }
         sendButtonView.setOnClickListener {
             viewModel.buy(
-                tradeDetailsItem.id,
+                tradeDetailsItem.tradeId,
                 tradeDetailsItem.price,
                 amountUsdView.getString().toInt(),
                 amountCryptoView.getString().toDouble(),
@@ -109,8 +112,8 @@ class TradeDetailsBuyActivity : BaseActivity() {
         amountUsdView.editText?.addTextChangedListener(doubleTextWatcher.secondTextWatcher)
     }
 
-    private fun initObservers() {
-        viewModel.buyLiveData.observe(this, Observer {
+    private fun ActivityTradeDetailsBinding.initObservers() {
+        viewModel.buyLiveData.observe(this@TradeDetailsBuyActivity, Observer {
             when (it) {
                 is LoadingData.Loading -> progressView.show()
                 is LoadingData.Success -> {
@@ -120,7 +123,7 @@ class TradeDetailsBuyActivity : BaseActivity() {
                 is LoadingData.Error -> {
                     when (it.errorType) {
                         is Failure.TokenError -> {
-                            val intent = Intent(this, HostActivity::class.java)
+                            val intent = Intent(this@TradeDetailsBuyActivity, HostActivity::class.java)
                             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
                             startActivity(intent)
                         }
@@ -134,7 +137,7 @@ class TradeDetailsBuyActivity : BaseActivity() {
         })
     }
 
-    private fun initViews() {
+    private fun ActivityTradeDetailsBinding.initViews() {
         tradeDetailsItem = intent.getParcelableExtra(TAG_TRADE_DETAILS_ITEM)!!
 
         setSupportActionBar(toolbarView)

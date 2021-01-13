@@ -1,7 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
-apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-parcelize'
 apply plugin: 'com.google.gms.google-services'
 apply plugin: 'com.google.firebase.crashlytics'
 apply plugin: 'com.google.firebase.firebase-perf'
@@ -55,6 +55,9 @@ android {
             buildConfigField 'String', 'BASE_URL', "\"http://test.belcobtm.com\""
             buildConfigField 'String', 'API_VERSION', "\"1\""
         }
+    }
+    buildFeatures {
+        viewBinding true
     }
 }
 
