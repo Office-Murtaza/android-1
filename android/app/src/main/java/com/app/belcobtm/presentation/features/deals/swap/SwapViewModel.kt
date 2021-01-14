@@ -15,6 +15,7 @@ import com.app.belcobtm.domain.wallet.interactor.GetFreshCoinsUseCase
 import com.app.belcobtm.domain.wallet.item.CoinDataItem
 import com.app.belcobtm.domain.wallet.item.CoinDetailsDataItem
 import com.app.belcobtm.domain.wallet.item.isEthRelatedCoin
+import com.app.belcobtm.presentation.core.SingleLiveData
 import com.app.belcobtm.presentation.core.coin.AmountCoinValidator
 import com.app.belcobtm.presentation.core.coin.MinMaxCoinValueProvider
 import com.app.belcobtm.presentation.core.coin.model.ValidationResult
@@ -72,7 +73,7 @@ class SwapViewModel(
     private val _receiveCoinAmount = MutableLiveData<Double>(0.0)
     val receiveCoinAmount: LiveData<Double> = _receiveCoinAmount
 
-    private val _swapLoadingData = MutableLiveData<LoadingData<Unit>>()
+    private val _swapLoadingData = SingleLiveData<LoadingData<Unit>>()
     val swapLoadingData: LiveData<LoadingData<Unit>> = _swapLoadingData
 
     private val _initLoadingData = MutableLiveData<LoadingData<Unit>>()

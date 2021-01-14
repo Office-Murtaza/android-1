@@ -72,7 +72,6 @@
         android:lineSpacingExtra="8dp"
         android:paddingStart="@dimen/margin_normal"
         android:paddingEnd="@dimen/margin_normal"
-        android:text="@string/max"
         app:layout_constraintBaseline_toBaselineOf="@id/tvMax"
         app:layout_constraintStart_toStartOf="parent"
         tools:text="Balance: 0.6583 BTC\nFee ~0.6555 BTC" />
@@ -85,7 +84,6 @@
         android:lineSpacingExtra="8dp"
         android:paddingStart="@dimen/margin_normal"
         android:paddingEnd="@dimen/margin_normal"
-        android:text="@string/max"
         app:layout_constraintBaseline_toBaselineOf="@id/tvHelperText"
         app:layout_constraintEnd_toEndOf="parent"
         tools:text="Staked" />

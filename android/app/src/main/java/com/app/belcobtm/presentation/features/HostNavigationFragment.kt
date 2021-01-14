@@ -29,7 +29,11 @@ class HostNavigationFragment : NavHostFragment() {
         R.navigation.nav_settings
     )
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         binding = FragmentNavigationBinding.inflate(inflater, container, false)
         return binding.root
     }

@@ -11,6 +11,7 @@ import com.app.belcobtm.R
 import com.app.belcobtm.databinding.FragmentSwapBinding
 import com.app.belcobtm.domain.wallet.LocalCoinType
 import com.app.belcobtm.domain.wallet.item.CoinDataItem
+import com.app.belcobtm.domain.wallet.item.isEthRelatedCoinCode
 import com.app.belcobtm.presentation.core.coin.model.ValidationResult
 import com.app.belcobtm.presentation.core.extensions.*
 import com.app.belcobtm.presentation.core.helper.AlertHelper
@@ -114,10 +115,18 @@ class SwapFragment : BaseFragment<FragmentSwapBinding>() {
             val coinFee = coin.coinFee.toStringCoin()
             val coinBalance = coin.coinBalance.toStringCoin()
             val localType = LocalCoinType.valueOf(coinCode)
+            val coinCodeFee = when (coinCode.isEthRelatedCoinCode()) {
+                true -> LocalCoinType.ETH.name
+                false -> coinCode
+            }
             sendCoinInputLayout.setCoinData(coinCode, localType.resIcon())
             sendCoinInputLayout.setHelperText(
                 getString(
-                    R.string.swap_screen_balance_formatted, coinBalance, coinCode, coinFee, coinCode
+                    R.string.swap_screen_balance_formatted,
+                    coinBalance,
+                    coinCode,
+                    coinFee,
+                    coinCodeFee
                 )
             )
         })
@@ -126,10 +135,18 @@ class SwapFragment : BaseFragment<FragmentSwapBinding>() {
             val coinFee = coin.coinFee.toStringCoin()
             val coinBalance = coin.coinBalance.toStringCoin()
             val localType = LocalCoinType.valueOf(coinCode)
+            val coinCodeFee = when (coinCode.isEthRelatedCoinCode()) {
+                true -> LocalCoinType.ETH.name
+                false -> coinCode
+            }
             receiveCoinInputLayout.setCoinData(coinCode, localType.resIcon())
             receiveCoinInputLayout.setHelperText(
                 getString(
-                    R.string.swap_screen_balance_formatted, coinBalance, coinCode, coinFee, coinCode
+                    R.string.swap_screen_balance_formatted,
+                    coinBalance,
+                    coinCode,
+                    coinFee,
+                    coinCodeFee
                 )
             )
         })
