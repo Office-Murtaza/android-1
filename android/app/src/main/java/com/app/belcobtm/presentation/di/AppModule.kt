@@ -78,6 +78,8 @@ val viewModelModule = module {
             get<WalletRepository>().getCoinItemByCode(coinCode),
             get<WalletRepository>().getCoinDetailsItemByCode(coinCode),
             get(),
+            get(),
+            get(),
             get()
         )
     }
@@ -85,6 +87,7 @@ val viewModelModule = module {
         TradeReserveViewModel(
             get<WalletRepository>().getCoinItemByCode(coinCode),
             get<WalletRepository>().getCoinDetailsItemByCode(coinCode),
+            get(),
             get(),
             get(),
             get(),

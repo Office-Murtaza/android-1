@@ -11,6 +11,7 @@ import com.app.belcobtm.domain.wallet.item.CoinDataItem
 import com.app.belcobtm.domain.wallet.item.CoinDetailsDataItem
 import com.app.belcobtm.domain.wallet.item.isEthRelatedCoin
 import com.app.belcobtm.presentation.core.coin.AmountCoinValidator
+import com.app.belcobtm.presentation.core.coin.CoinCodeProvider
 import com.app.belcobtm.presentation.core.coin.MinMaxCoinValueProvider
 import com.app.belcobtm.presentation.core.coin.model.ValidationResult
 import com.app.belcobtm.presentation.core.item.CoinScreenItem
@@ -24,7 +25,8 @@ class TradeReserveViewModel(
     private val createTransactionUseCase: TradeReserveTransactionCreateUseCase,
     private val completeTransactionUseCase: TradeReserveTransactionCompleteUseCase,
     private val minMaxCoinValueProvider: MinMaxCoinValueProvider,
-    private val amountCoinValidator: AmountCoinValidator
+    private val amountCoinValidator: AmountCoinValidator,
+    private val coinCodeProvider: CoinCodeProvider
 ) : ViewModel() {
     private val _initialLoadLiveData = MutableLiveData<LoadingData<Unit>>()
     val initialLoadLiveData: LiveData<LoadingData<Unit>> = _initialLoadLiveData
@@ -34,9 +36,6 @@ class TradeReserveViewModel(
 
     private val _cryptoFieldState = MutableLiveData<InputFieldState>()
     val cryptoFieldState: LiveData<InputFieldState> = _cryptoFieldState
-
-    private val _usdFieldState = MutableLiveData<InputFieldState>()
-    val usdFieldState: LiveData<InputFieldState> = _usdFieldState
 
     private val _submitButtonEnable = MutableLiveData(false)
     val submitButtonEnable: LiveData<Boolean> = _submitButtonEnable
@@ -75,6 +74,10 @@ class TradeReserveViewModel(
         )
     }
 
+    fun getTransactionFee(): Double = detailsDataItem.txFee
+
+    fun getCoinCode(): String = coinCodeProvider.getCoinCode(coinDataItem)
+
     fun getMinValue(): Double =
         minMaxCoinValueProvider.getMinValue(coinDataItem, detailsDataItem)
 
@@ -90,22 +93,18 @@ class TradeReserveViewModel(
         when {
             amount in minValue..maxValue && enoughETHForExtraFee -> {
                 _cryptoFieldState.value = InputFieldState.Valid
-                _usdFieldState.value = InputFieldState.Valid
                 _submitButtonEnable.value = true
             }
             amount > maxValue -> {
                 _cryptoFieldState.value = InputFieldState.MoreThanNeedError
-                _usdFieldState.value = InputFieldState.MoreThanNeedError
                 _submitButtonEnable.value = false
             }
             amount < minValue -> {
                 _cryptoFieldState.value = InputFieldState.LessThanNeedError
-                _usdFieldState.value = InputFieldState.LessThanNeedError
                 _submitButtonEnable.value = false
             }
             enoughETHForExtraFee.not() -> {
                 _cryptoFieldState.value = InputFieldState.NotEnoughETHError
-                _usdFieldState.value = InputFieldState.NotEnoughETHError
                 _submitButtonEnable.value = false
             }
         }
