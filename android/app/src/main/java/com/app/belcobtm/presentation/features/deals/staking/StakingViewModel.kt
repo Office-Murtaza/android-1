@@ -1,5 +1,6 @@
 package com.app.belcobtm.presentation.features.deals.staking
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -15,6 +16,7 @@ import com.app.belcobtm.domain.wallet.interactor.GetCoinByCodeUseCase
 import com.app.belcobtm.domain.wallet.interactor.GetCoinDetailsUseCase
 import com.app.belcobtm.domain.wallet.item.CoinDataItem
 import com.app.belcobtm.domain.wallet.item.CoinDetailsDataItem
+import com.app.belcobtm.presentation.core.SingleLiveData
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.filterIsInstance
@@ -32,9 +34,12 @@ class StakingViewModel(
     private val stakeDetailsUseCase: StakeDetailsGetUseCase
 ) : ViewModel() {
     private var stakeDetailsDataItem: StakeDetailsDataItem? = null
-    val stakeDetailsLiveData: MutableLiveData<LoadingData<StakingScreenItem>> = MutableLiveData()
-    val transactionLiveData: MutableLiveData<LoadingData<StakingTransactionState>> =
-        MutableLiveData()
+
+    private val _stakeDetailsLiveData = MutableLiveData<LoadingData<StakingScreenItem>>()
+    val stakeDetailsLiveData: LiveData<LoadingData<StakingScreenItem>> = _stakeDetailsLiveData
+
+    private val _transactionLiveData = SingleLiveData<LoadingData<StakingTransactionState>>()
+    val transactionLiveData : LiveData<LoadingData<StakingTransactionState>> = _transactionLiveData
 
     private lateinit var coinDataItem: CoinDataItem
     private lateinit var coinDetailsDataItem: CoinDetailsDataItem
@@ -44,7 +49,7 @@ class StakingViewModel(
     }
 
     fun loadData() {
-        stakeDetailsLiveData.value = LoadingData.Loading()
+        _stakeDetailsLiveData.value = LoadingData.Loading()
         viewModelScope.launch {
             walletObserver.observe()
                 .receiveAsFlow()
@@ -59,7 +64,7 @@ class StakingViewModel(
                             loadBaseData()
                         },
                         onError = {
-                            stakeDetailsLiveData.value = LoadingData.Error(it)
+                            _stakeDetailsLiveData.value = LoadingData.Error(it)
                         }
                     )
                 }
@@ -69,10 +74,10 @@ class StakingViewModel(
     private fun loadBaseData() {
         stakeDetailsUseCase.invoke(
             params = StakeDetailsGetUseCase.Params(coinDataItem.code),
-            onError = { stakeDetailsLiveData.value = LoadingData.Error(it) },
+            onError = { _stakeDetailsLiveData.value = LoadingData.Error(it) },
             onSuccess = { stakeDataItem ->
                 stakeDetailsDataItem = stakeDataItem
-                stakeDetailsLiveData.value = LoadingData.Success(
+                _stakeDetailsLiveData.value = LoadingData.Success(
                     StakingScreenItem(
                         price = coinDataItem.priceUsd,
                         balanceCoin = coinDataItem.balanceCoin,
@@ -99,27 +104,27 @@ class StakingViewModel(
     }
 
     fun stakeCreate(amount: Double) {
-        transactionLiveData.value = LoadingData.Loading()
+        _transactionLiveData.value = LoadingData.Loading()
         stakeCreateUseCase.invoke(
             params = StakeCreateUseCase.Params(coinDataItem.code, amount),
             onSuccess = {
-                transactionLiveData.value = LoadingData.Success(StakingTransactionState.CREATE)
+                _transactionLiveData.value = LoadingData.Success(StakingTransactionState.CREATE)
             },
             onError = {
-                transactionLiveData.value = LoadingData.Error(it, StakingTransactionState.CREATE)
+                _transactionLiveData.value = LoadingData.Error(it, StakingTransactionState.CREATE)
             }
         )
     }
 
     fun stakeCancel() {
-        transactionLiveData.value = LoadingData.Loading()
+        _transactionLiveData.value = LoadingData.Loading()
         stakeCancelUseCase.invoke(
             params = StakeCancelUseCase.Params(coinDataItem.code),
             onSuccess = {
-                transactionLiveData.value = LoadingData.Success(StakingTransactionState.CANCEL)
+                _transactionLiveData.value = LoadingData.Success(StakingTransactionState.CANCEL)
             },
             onError = {
-                transactionLiveData.value = LoadingData.Error(it, StakingTransactionState.CANCEL)
+                _transactionLiveData.value = LoadingData.Error(it, StakingTransactionState.CANCEL)
             }
         )
     }
@@ -127,14 +132,14 @@ class StakingViewModel(
     fun unstakeCreateTransaction() {
         val amount =
             (stakeDetailsDataItem?.amount ?: 0.0) + (stakeDetailsDataItem?.rewardsAmount ?: 0.0)
-        transactionLiveData.value = LoadingData.Loading()
+        _transactionLiveData.value = LoadingData.Loading()
         stakeWithdrawUseCase.invoke(
             params = StakeWithdrawUseCase.Params(coinDataItem.code, amount),
             onSuccess = {
-                transactionLiveData.value = LoadingData.Success(StakingTransactionState.WITHDRAW)
+                _transactionLiveData.value = LoadingData.Success(StakingTransactionState.WITHDRAW)
             },
             onError = {
-                transactionLiveData.value = LoadingData.Error(it, StakingTransactionState.WITHDRAW)
+                _transactionLiveData.value = LoadingData.Error(it, StakingTransactionState.WITHDRAW)
             }
         )
     }
