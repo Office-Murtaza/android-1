@@ -73,4 +73,5 @@ val useCaseModule = module {
     single { CheckXRPAddressActivatedUseCase(get()) }
     single { GetFreshCoinsUseCase(get()) }
     single { GetContactsUseCase(get()) }
+    single { SaveSeedUseCase(get()) }
 }
