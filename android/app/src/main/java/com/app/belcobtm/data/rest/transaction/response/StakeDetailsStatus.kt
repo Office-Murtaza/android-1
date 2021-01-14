@@ -2,7 +2,7 @@ package com.app.belcobtm.data.rest.transaction.response
 
 import androidx.annotation.IntDef
 
-@IntDef()
+@IntDef
 @Retention(AnnotationRetention.SOURCE)
 annotation class StakeDetailsStatus {
     companion object {

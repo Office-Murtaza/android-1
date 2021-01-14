@@ -1,4 +1,4 @@
-package com.app.belcobtm.presentation.features.wallet.staking
+package com.app.belcobtm.presentation.features.deals.staking
 
 import com.app.belcobtm.data.rest.transaction.response.StakeDetailsStatus
 
@@ -6,6 +6,7 @@ data class StakingScreenItem(
     val price: Double,
     val balanceCoin: Double,
     val balanceUsd: Double,
+    val ethFee: Double,
     val reservedCode: String,
     val reservedBalanceCoin: Double,
     val reservedBalanceUsd: Double,
@@ -18,6 +19,6 @@ data class StakingScreenItem(
     val createDate: String?,
     val cancelDate: String?,
     val duration: Int?,
-    val holdPeriod: Int,
+    val cancelHoldPeriod: Int,
     val untilWithdraw: Int?
 )

@@ -1,4 +1,4 @@
-package com.app.belcobtm.presentation.features.wallet.staking
+package com.app.belcobtm.presentation.features.deals.staking
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -77,6 +77,7 @@ class StakingViewModel(
                         price = coinDataItem.priceUsd,
                         balanceCoin = coinDataItem.balanceCoin,
                         balanceUsd = coinDataItem.balanceUsd,
+                        ethFee = coinDetailsDataItem.txFee,
                         reservedBalanceCoin = coinDataItem.reservedBalanceCoin,
                         reservedBalanceUsd = coinDataItem.reservedBalanceUsd,
                         reservedCode = coinDataItem.code,
@@ -89,7 +90,7 @@ class StakingViewModel(
                         createDate = stakeDataItem.createDate,
                         cancelDate = stakeDataItem.cancelDate,
                         duration = stakeDataItem.duration,
-                        holdPeriod = stakeDataItem.holdPeriod,
+                        cancelHoldPeriod = stakeDataItem.cancelHoldPeriod,
                         untilWithdraw = stakeDataItem.untilWithdraw
                     )
                 )
