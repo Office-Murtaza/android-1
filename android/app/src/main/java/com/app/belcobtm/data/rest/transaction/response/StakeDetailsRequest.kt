@@ -5,19 +5,14 @@ import com.app.belcobtm.domain.transaction.item.StakeDetailsDataItem
 class StakeDetailsRequest(
     @StakeDetailsStatus val status: Int,
     val amount: Double,
-    val amountStr: String,
     val cancelDate: String?,
-    val holdPeriod: Int,
+    val cancelHoldPeriod: Int,
     val createDate: String?,
     val duration: Int?,
     val rewardAmount: Double?,
-    val rewardAmountStr: String,
     val rewardAnnualAmount: Double?,
-    val rewardAnnualAmountStr: String,
     val rewardAnnualPercent: Double?,
-    val rewardAnnualPercentStr: String,
     val rewardPercent: Double,
-    val rewardPercentStr: String,
     val untilWithdraw: Int
 )
 
@@ -31,6 +26,6 @@ fun StakeDetailsRequest.mapToDataItem(): StakeDetailsDataItem = StakeDetailsData
     createDate = createDate,
     cancelDate = cancelDate,
     duration = duration,
-    holdPeriod = holdPeriod,
+    cancelHoldPeriod = cancelHoldPeriod,
     untilWithdraw = untilWithdraw
 )

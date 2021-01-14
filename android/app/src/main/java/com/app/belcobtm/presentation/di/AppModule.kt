@@ -32,7 +32,7 @@ import com.app.belcobtm.presentation.features.wallet.add.WalletsViewModel
 import com.app.belcobtm.presentation.features.wallet.balance.WalletViewModel
 import com.app.belcobtm.presentation.features.wallet.deposit.DepositViewModel
 import com.app.belcobtm.presentation.features.wallet.send.gift.SendGiftViewModel
-import com.app.belcobtm.presentation.features.wallet.staking.StakingViewModel
+import com.app.belcobtm.presentation.features.deals.staking.StakingViewModel
 import com.app.belcobtm.presentation.features.wallet.trade.create.TradeCreateViewModel
 import com.app.belcobtm.presentation.features.wallet.trade.details.TradeDetailsBuyViewModel
 import com.app.belcobtm.presentation.features.wallet.trade.edit.TradeEditViewModel
@@ -77,6 +77,8 @@ val viewModelModule = module {
             get<WalletRepository>().getCoinItemByCode(coinCode),
             get<WalletRepository>().getCoinDetailsItemByCode(coinCode),
             get(),
+            get(),
+            get(),
             get()
         )
     }
@@ -84,6 +86,7 @@ val viewModelModule = module {
         TradeReserveViewModel(
             get<WalletRepository>().getCoinItemByCode(coinCode),
             get<WalletRepository>().getCoinDetailsItemByCode(coinCode),
+            get(),
             get(),
             get(),
             get(),

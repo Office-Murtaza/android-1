@@ -12,6 +12,6 @@ class StakeDetailsDataItem(
         val createDate: String?,
         val cancelDate: String?,
         val duration: Int?,
-        val holdPeriod: Int,
+        val cancelHoldPeriod: Int,
         val untilWithdraw: Int?
 )
