@@ -5,12 +5,14 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.observe
 import com.app.belcobtm.R
 import com.app.belcobtm.databinding.FragmentTradeRecallBinding
-import com.app.belcobtm.presentation.core.extensions.getDouble
-import com.app.belcobtm.presentation.core.extensions.toStringUsd
+import com.app.belcobtm.presentation.core.extensions.*
+import com.app.belcobtm.presentation.core.helper.AlertHelper
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
 import com.app.belcobtm.presentation.core.ui.fragment.BaseFragment
+import com.app.belcobtm.presentation.features.wallet.trade.reserve.InputFieldState
 import org.koin.android.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
@@ -64,7 +66,7 @@ class TradeRecallFragment : BaseFragment<FragmentTradeRecallBinding>() {
                 popBackStack()
             }
         )
-        viewModel.cryptoFieldState.observe(viewLifecycleOwner, Observer { fieldState ->
+        viewModel.cryptoFieldState.observe(viewLifecycleOwner) { fieldState ->
             when (fieldState) {
                 InputFieldState.Valid -> amountCryptoView.clearError()
                 InputFieldState.LessThanNeedError -> amountCryptoView.error =
@@ -74,13 +76,13 @@ class TradeRecallFragment : BaseFragment<FragmentTradeRecallBinding>() {
                 InputFieldState.NotEnoughETHError -> amountCryptoView.error =
                     getString(R.string.trade_recall_screen_not_enough_eth)
             }
-        })
+        }
         amountCryptoView.editText?.actionDoneListener {
             hideKeyboard()
         }
-        viewModel.submitButtonEnable.observe(viewLifecycleOwner, Observer { enable ->
+        viewModel.submitButtonEnable.observe(viewLifecycleOwner) { enable ->
             recallButtonView.isEnabled = enable
-        })
+        }
     }
 
     override fun FragmentTradeRecallBinding.initViews() {
