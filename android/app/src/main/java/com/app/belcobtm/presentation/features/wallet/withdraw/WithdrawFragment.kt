@@ -9,6 +9,8 @@ import android.view.ViewGroup
 import com.app.belcobtm.R
 import com.app.belcobtm.databinding.FragmentWithdrawBinding
 import com.app.belcobtm.domain.Failure
+import com.app.belcobtm.domain.wallet.LocalCoinType
+import com.app.belcobtm.domain.wallet.item.isEthRelatedCoinCode
 import com.app.belcobtm.presentation.core.coin.model.ValidationResult
 import com.app.belcobtm.presentation.core.extensions.*
 import com.app.belcobtm.presentation.core.helper.AlertHelper
@@ -17,6 +19,7 @@ import com.app.belcobtm.presentation.core.watcher.DoubleTextWatcher
 import com.google.zxing.integration.android.IntentIntegrator
 import org.koin.android.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
+import wallet.core.jni.CoinType
 
 class WithdrawFragment : BaseFragment<FragmentWithdrawBinding>() {
     private val viewModel: WithdrawViewModel by viewModel {
@@ -127,7 +130,10 @@ class WithdrawFragment : BaseFragment<FragmentWithdrawBinding>() {
         feeLabel.text = getString(
             R.string.transaction_helper_text_commission,
             viewModel.getTransactionFee().toStringCoin(),
-            viewModel.getCoinCode()
+            when (viewModel.getCoinCode().isEthRelatedCoinCode()) {
+                true -> LocalCoinType.ETH.name
+                false -> viewModel.getCoinCode()
+            }
         )
         reservedCryptoView.text = getString(
             R.string.text_text,
@@ -167,13 +173,17 @@ class WithdrawFragment : BaseFragment<FragmentWithdrawBinding>() {
         }
     }
 
-    private fun FragmentWithdrawBinding.isValidAddress(): Boolean =
-        CoinTypeExtension.getTypeByCode(viewModel.getCoinCode())
-            ?.validate(addressView.getString()) ?: false
+    private fun FragmentWithdrawBinding.isValidAddress(): Boolean {
+        val coinType = when (val coinCode = viewModel.getCoinCode()) {
+            LocalCoinType.USDT.name -> CoinType.ETHEREUM
+            else -> CoinTypeExtension.getTypeByCode(coinCode)
+        }
+        return coinType?.validate(addressView.getString()) ?: false
+    }
 
     private fun FragmentWithdrawBinding.updateNextButton() {
         nextButtonView.isEnabled = amountCryptoView.isNotBlank()
                 && amountCryptoView.getDouble() > 0
-//                && isValidAddress()
+                && isValidAddress()
     }
 }
