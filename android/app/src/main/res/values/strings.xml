@@ -200,8 +200,8 @@
     <string name="transaction_type_unknown">Unknown</string>
     <string name="transaction_type_deposit">Deposit</string>
     <string name="transaction_type_withdraw">Withdraw</string>
-    <string name="transaction_type_send_gift">Send gift</string>
-    <string name="transaction_type_receive_gift">Receive gift</string>
+    <string name="transaction_type_send_gift">Send transfer</string>
+    <string name="transaction_type_receive_gift">Receive transfer</string>
     <string name="transaction_type_buy">Buy</string>
     <string name="transaction_type_sell">Sell</string>
     <string name="transaction_type_move">Move</string>
