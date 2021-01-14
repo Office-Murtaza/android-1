@@ -2,8 +2,6 @@ package com.app.belcobtm.presentation.features.contacts
 
 import android.Manifest
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,6 +11,7 @@ import com.app.belcobtm.databinding.FragmentContactListBinding
 import com.app.belcobtm.presentation.core.adapter.MultiTypeAdapter
 import com.app.belcobtm.presentation.core.extensions.actionDoneListener
 import com.app.belcobtm.presentation.core.ui.fragment.BaseFragment
+import com.app.belcobtm.presentation.core.views.listeners.SafeDecimalEditTextWatcher
 import com.app.belcobtm.presentation.features.contacts.adapter.ContactListDiffUtil
 import com.app.belcobtm.presentation.features.contacts.adapter.delegate.ContactDelegate
 import com.app.belcobtm.presentation.features.contacts.adapter.delegate.ContactHeaderDelegate
@@ -34,18 +33,14 @@ class ContactListFragment : BaseFragment<FragmentContactListBinding>() {
         }
     }
     private val searchQueryTextWatcher by lazy {
-        object : TextWatcher {
-            override fun onTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) = Unit
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) = Unit
-            override fun afterTextChanged(editable: Editable) {
-                val formattedSearchQuery = viewModel.getFormattedPhoneNumber(editable.toString())
-                if (formattedSearchQuery != editable.toString()) {
-                    editable.replace(0, editable.length, formattedSearchQuery)
-                    return
-                }
-                viewModel.clearSelectedContact()
-                viewModel.loadContacts(formattedSearchQuery)
+        SafeDecimalEditTextWatcher { editable ->
+            val formattedSearchQuery = viewModel.getFormattedPhoneNumber(editable.toString())
+            if (formattedSearchQuery != editable.toString()) {
+                editable.replace(0, editable.length, formattedSearchQuery)
+                return@SafeDecimalEditTextWatcher
             }
+            viewModel.clearSelectedContact()
+            viewModel.loadContacts(formattedSearchQuery)
         }
     }
 
