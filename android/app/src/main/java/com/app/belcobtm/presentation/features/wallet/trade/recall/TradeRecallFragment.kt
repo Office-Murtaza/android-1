@@ -3,7 +3,7 @@ package com.app.belcobtm.presentation.features.wallet.trade.recall
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.Observer
+import androidx.lifecycle.observe
 import com.app.belcobtm.R
 import com.app.belcobtm.databinding.FragmentTradeRecallBinding
 import com.app.belcobtm.presentation.core.extensions.*
@@ -60,7 +60,7 @@ class TradeRecallFragment : BaseFragment<FragmentTradeRecallBinding>() {
                 popBackStack()
             }
         )
-        viewModel.cryptoFieldState.observe(viewLifecycleOwner, Observer { fieldState ->
+        viewModel.cryptoFieldState.observe(viewLifecycleOwner) { fieldState ->
             when (fieldState) {
                 InputFieldState.Valid -> amountCryptoView.clearError()
                 InputFieldState.LessThanNeedError -> amountCryptoView.error =
@@ -70,13 +70,13 @@ class TradeRecallFragment : BaseFragment<FragmentTradeRecallBinding>() {
                 InputFieldState.NotEnoughETHError -> amountCryptoView.error =
                     getString(R.string.trade_recall_screen_not_enough_eth)
             }
-        })
+        }
         amountCryptoView.editText?.actionDoneListener {
             hideKeyboard()
         }
-        viewModel.submitButtonEnable.observe(viewLifecycleOwner, Observer { enable ->
+        viewModel.submitButtonEnable.observe(viewLifecycleOwner) { enable ->
             recallButtonView.isEnabled = enable
-        })
+        }
     }
 
     override fun FragmentTradeRecallBinding.initViews() {

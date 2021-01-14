@@ -58,8 +58,12 @@ class CreateSeedFragment : BaseFragment<FragmentCreateSeedBinding>() {
             viewModel.createSeed()
         }
         pasteButtonView.setOnClickListener {
-            getTextFromClipboard().takeIf(String::isNotBlank)
-                ?.let(::showSeed)
+            val seed = getTextFromClipboard().takeIf(String::isNotBlank)
+            if (seed != null && viewModel.isValidSeed(seed)) {
+                viewModel.saveSeed(seed)
+            } else {
+                showSnackBar(R.string.seed_pharse_paste_error_message)
+            }
         }
     }
 

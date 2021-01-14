@@ -93,6 +93,7 @@
     <string name="seed_clipboard">Seed phrase copied to clipboard</string>
     <string name="seed_phrase_screen_copy">Copy</string>
     <string name="seed_phrase_screen_done">Done</string>
+    <string name="seed_pharse_paste_error_message">Seed phrase should contain 12 words separated by space. Please rechecked seed phrase and paste it again</string>
 
     <!-- Recover Seed Screen -->
     <string name="recover_seed_screen_title">Seed phrase</string>
