@@ -52,7 +52,7 @@ class WithdrawViewModel(
     ) {
         transactionLiveData.value = LoadingData.Loading()
         withdrawUseCase.invoke(
-            params = WithdrawUseCase.Params(fromCoinDataItem?.code ?: "", coinAmount, toAddress),
+            params = WithdrawUseCase.Params(getCoinCode(), coinAmount, toAddress),
             onSuccess = { transactionLiveData.value = LoadingData.Success(it) },
             onError = { transactionLiveData.value = LoadingData.Error(it) }
         )
