@@ -125,9 +125,9 @@ class WithdrawFragment : BaseFragment<FragmentWithdrawBinding>() {
             )
         balanceUsdView.text = getString(R.string.text_usd, viewModel.getUsdBalance().toStringUsd())
         amountCryptoView.hint = getString(R.string.text_amount, viewModel.getCoinCode())
-        amountCryptoView.actionDoneListener { validateAndSubmit() }
+        amountCryptoView.actionDoneListener { hideKeyboard() }
         nextButtonView.setOnClickListener { validateAndSubmit() }
-        feeLabel.text = getString(
+        amountCryptoView.helperText = getString(
             R.string.transaction_helper_text_commission,
             viewModel.getTransactionFee().toStringCoin(),
             when (viewModel.getCoinCode().isEthRelatedCoinCode()) {

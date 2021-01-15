@@ -122,9 +122,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/withdraw_screen_recipient_address"
-                android:inputType="text"
+                android:inputType="textMultiLine"
                 android:maxHeight="100dp"
-                android:maxLines="1"
                 android:nextFocusDown="@id/amount_crypto_view"
                 android:paddingStart="12dp"
                 android:paddingEnd="100dp"
@@ -187,18 +186,6 @@
             app:layout_constraintTop_toTopOf="@id/amount_crypto_view" />
 
         <TextView
-            android:id="@+id/fee_label"
-            style="@style/Text.Regular1"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="12dp"
-            app:layout_constraintBottom_toTopOf="@id/amount_usd_view"
-            app:layout_constraintEnd_toEndOf="@id/amount_usd_view"
-            app:layout_constraintStart_toStartOf="@id/amount_crypto_view"
-            app:layout_constraintTop_toBottomOf="@id/amount_crypto_view"
-            tools:text="Fee" />
-
-        <TextView
             android:id="@+id/amount_usd_view"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -210,7 +197,7 @@
             app:layout_constraintBottom_toTopOf="@id/space_view"
             app:layout_constraintEnd_toEndOf="@id/amount_crypto_view"
             app:layout_constraintStart_toStartOf="@id/amount_crypto_view"
-            app:layout_constraintTop_toBottomOf="@id/fee_label" />
+            app:layout_constraintTop_toBottomOf="@id/amount_crypto_view" />
 
         <Space
             android:id="@+id/space_view"
