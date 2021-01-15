@@ -10,6 +10,9 @@ import androidx.annotation.DrawableRes
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import com.app.belcobtm.R
+import com.app.belcobtm.presentation.core.extensions.invisible
+import com.app.belcobtm.presentation.core.extensions.show
+import com.app.belcobtm.presentation.core.extensions.toggle
 
 class CoinInputLayout @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
@@ -21,20 +24,24 @@ class CoinInputLayout @JvmOverloads constructor(
     private val coinButton: View
     private val tvError: TextView
     private val ivCoin: ImageView
+    private val ivCoinArrow: ImageView
     private val editText: EditText
     private val tvCoinName: TextView
     private val tvHelperText: TextView
     private val tvAdditionalHelperText: TextView
+    private val tvHelperText2: TextView
 
     init {
         inflate(context, R.layout.view_coin_input_layout, this)
         tvMax = findViewById(R.id.tvMax)
         ivCoin = findViewById(R.id.ivCoin)
+        ivCoinArrow = findViewById(R.id.ivCoinArrow)
         tvError = findViewById(R.id.tvError)
         tvCoinName = findViewById(R.id.tvCoinName)
         coinButton = findViewById(R.id.coinButton)
         tvHelperText = findViewById(R.id.tvHelperText)
         tvAdditionalHelperText = findViewById(R.id.tvAdditionalHelperText)
+        tvHelperText2 = findViewById(R.id.tvHelperText2)
         editText = findViewById(R.id.coinInputEditText)
 
         textColorOrigin = editText.textColors.defaultColor
@@ -51,9 +58,14 @@ class CoinInputLayout @JvmOverloads constructor(
         tvMax.setOnClickListener(listener)
     }
 
-    fun setCoinData(coinName: CharSequence?, @DrawableRes coinImage: Int) {
+    fun setCoinData(
+        coinName: CharSequence?,
+        @DrawableRes coinImage: Int,
+        showCoinArrow: Boolean = true
+    ) {
         tvCoinName.text = coinName
         ivCoin.setImageResource(coinImage)
+        ivCoinArrow.toggle(showCoinArrow)
     }
 
     fun setHelperText(text: CharSequence?) {
@@ -62,6 +74,20 @@ class CoinInputLayout @JvmOverloads constructor(
 
     fun setAdditionalHelperText(text: CharSequence?) {
         tvAdditionalHelperText.text = text
+    }
+
+    fun setMaxVisible(visible: Boolean) {
+        if (visible) {
+            tvMax.isEnabled = true
+            tvMax.show()
+        } else {
+            tvMax.isEnabled = false
+            tvMax.invisible()
+        }
+    }
+
+    fun setHelperText2(charSequence: CharSequence?) {
+        tvHelperText2.text = charSequence
     }
 
     fun setErrorText(text: CharSequence?) {

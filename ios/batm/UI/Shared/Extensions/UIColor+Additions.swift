@@ -177,6 +177,13 @@ extension UIColor {
         return UIColor(red: 255.0 / 255.0, green: 152.0 / 255.0, blue: 76.0 / 255.0, alpha: 1.0)
     }
     
+    @nonobjc class var textfieldLightGray: UIColor {
+        return UIColor(red: 141.0 / 255.0, green: 141.0 / 255.0, blue: 141.0 / 255.0, alpha: 0.1)
+    }
+    
+    @nonobjc class var errorRed: UIColor {
+        return UIColor(hexString: "B00020")
+    }
 }
 
 extension UIColor {

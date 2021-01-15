@@ -37,6 +37,9 @@ final class RecallViewController: ModuleViewController<RecallPresenter> {
   }
   
   func setupUIBindings() {
+    let coinTypeDriver = presenter.state.map { $0.coin?.type }.filterNil()
+    let feeDriver = presenter.state.map { $0.coinDetails?.txFee }
+    
     presenter.state
       .map { $0.coin?.type.code }
       .filterNil()
@@ -63,11 +66,9 @@ final class RecallViewController: ModuleViewController<RecallPresenter> {
       })
       .disposed(by: disposeBag)
     
-    presenter.state
-      .map { $0.coin?.type }
-      .filterNil()
-      .drive(onNext: { [formView] in formView.configure(coinType: $0) })
-      .disposed(by: disposeBag)
+    Driver.combineLatest(coinTypeDriver, feeDriver)
+        .drive(onNext: { [formView] in formView.configure(coinType: $0, fee: $1) })
+        .disposed(by: disposeBag)
     
     presenter.state
       .asObservable()

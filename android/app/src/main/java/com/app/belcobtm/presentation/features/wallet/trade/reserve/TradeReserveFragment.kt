@@ -10,7 +10,7 @@ import com.app.belcobtm.presentation.core.extensions.*
 import com.app.belcobtm.presentation.core.helper.AlertHelper
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
 import com.app.belcobtm.presentation.core.ui.fragment.BaseFragment
-import com.app.belcobtm.presentation.core.watcher.DoubleTextWatcher
+import com.app.belcobtm.presentation.core.views.listeners.SafeDecimalEditTextWatcher
 import org.koin.android.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
@@ -27,29 +27,18 @@ class TradeReserveFragment : BaseFragment<FragmentTradeReserveBinding>() {
     private val viewModel: TradeReserveViewModel by viewModel {
         parametersOf(TradeReserveFragmentArgs.fromBundle(requireArguments()).coinCode)
     }
-    private val doubleTextWatcher: DoubleTextWatcher = DoubleTextWatcher(
-        maxCharsAfterDotFirst = DoubleTextWatcher.MAX_CHARS_AFTER_DOT_CRYPTO,
-        maxCharsAfterDotSecond = DoubleTextWatcher.MAX_CHARS_AFTER_DOT_USD,
-        firstTextWatcher = {
-            val cryptoAmount = it.getDouble()
-            if (cryptoAmount > 0) {
-                binding.amountUsdView.setText((cryptoAmount * viewModel.coinItem.priceUsd).toStringUsd())
+
+    private val cryptoAmountTextWatcher by lazy {
+        SafeDecimalEditTextWatcher { editable ->
+            val cryptoAmount = editable.getDouble()
+            binding.amountUsdView.text = if (cryptoAmount > 0) {
+                getString(R.string.text_usd, (cryptoAmount * viewModel.coinItem.priceUsd).toStringUsd())
             } else {
-                binding.amountUsdView.clearText()
-            }
-            viewModel.validateCryptoAmount(cryptoAmount)
-        },
-        secondTextWatcher = {
-            val usdAmount = it.getDouble()
-            val cryptoAmount = usdAmount / viewModel.coinItem.priceUsd
-            if (usdAmount > 0) {
-                binding.amountCryptoView.setText(cryptoAmount.toStringCoin())
-            } else {
-                binding.amountCryptoView.clearText()
+                getString(R.string.text_usd, "0.0")
             }
             viewModel.validateCryptoAmount(cryptoAmount)
         }
-    )
+    }
 
     override fun FragmentTradeReserveBinding.initListeners() {
         maxCryptoView.setOnClickListener {
@@ -57,13 +46,10 @@ class TradeReserveFragment : BaseFragment<FragmentTradeReserveBinding>() {
                 viewModel.getMaxValue().toStringCoin()
             )
         }
-        maxUsdView.setOnClickListener {
-            amountCryptoView.setText(
-                viewModel.getMaxValue().toStringCoin()
-            )
+        amountCryptoView.editText?.actionDoneListener {
+            hideKeyboard()
         }
-        amountCryptoView.editText?.addTextChangedListener(doubleTextWatcher.firstTextWatcher)
-        amountUsdView.editText?.addTextChangedListener(doubleTextWatcher.secondTextWatcher)
+        amountCryptoView.editText?.addTextChangedListener(cryptoAmountTextWatcher)
         reserveButtonView.setOnClickListener { viewModel.createTransaction() }
     }
 
@@ -88,17 +74,6 @@ class TradeReserveFragment : BaseFragment<FragmentTradeReserveBinding>() {
                     getString(R.string.trade_reserve_screen_not_enough_eth)
             }
         })
-        viewModel.usdFieldState.observe(viewLifecycleOwner, Observer { fieldState ->
-            when (fieldState) {
-                InputFieldState.Valid -> amountUsdView.clearError()
-                InputFieldState.LessThanNeedError -> amountUsdView.error =
-                    getString(R.string.trade_reserve_screen_min_error)
-                InputFieldState.MoreThanNeedError -> amountUsdView.error =
-                    getString(R.string.trade_reserve_screen_max_error)
-                InputFieldState.NotEnoughETHError -> amountUsdView.error =
-                    getString(R.string.trade_reserve_screen_not_enough_eth)
-            }
-        })
         viewModel.submitButtonEnable.observe(viewLifecycleOwner, Observer { enable ->
             reserveButtonView.isEnabled = enable
         })
@@ -114,6 +89,16 @@ class TradeReserveFragment : BaseFragment<FragmentTradeReserveBinding>() {
         )
         balanceUsdView.text =
             getString(R.string.text_usd, viewModel.coinItem.balanceUsd.toStringUsd())
+        feeLabel.text = getString(
+            R.string.transaction_helper_text_commission,
+            viewModel.getTransactionFee().toStringCoin(),
+            viewModel.coinItem.code
+        )
+        feeLabel.text = getString(
+            R.string.transaction_helper_text_commission,
+            viewModel.getTransactionFee().toStringCoin(),
+            viewModel.getCoinCode()
+        )
         reservedCryptoView.text = getString(
             R.string.text_text,
             viewModel.coinItem.reservedBalanceCoin.toStringCoin(),

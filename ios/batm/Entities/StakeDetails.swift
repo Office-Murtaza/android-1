@@ -15,7 +15,7 @@ struct StakeDetails: Equatable {
     var cancelDate: String?
     var duration: Int?
     var untilWithdraw: Int?
-    var holdPeriod: Int?
+    var cancelHoldPeriod: Int?
 }
 
 enum StakingStatus: Int, Equatable {

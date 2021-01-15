@@ -73,7 +73,7 @@
 
     <fragment
         android:id="@+id/staking_fragment"
-        android:name="com.app.belcobtm.presentation.features.wallet.staking.StakingFragment"
+        android:name="com.app.belcobtm.presentation.features.deals.staking.StakingFragment"
         android:label="StakingFragment"
         tools:layout="@layout/fragment_staking">
 

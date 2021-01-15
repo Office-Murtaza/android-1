@@ -14,6 +14,9 @@ interface AuthorizationRepository {
     ): Either<Failure, Pair<Boolean, Boolean>>
 
     suspend fun createSeedPhrase(): Either<Failure, String>
+
+    suspend fun saveSeed(seed: String): Either<Failure, Unit>
+
     suspend fun createWallet(
         phone: String, password: String, notificationToken: String
     ): Either<Failure, Unit>

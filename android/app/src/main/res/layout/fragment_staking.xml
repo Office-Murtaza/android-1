@@ -14,408 +14,288 @@
         android:layout_height="wrap_content"
         android:paddingBottom="16dp">
 
-        <androidx.constraintlayout.widget.Barrier
-            android:id="@+id/price_barrier_view"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:barrierDirection="end"
-            app:constraint_referenced_ids="until_withdraw_title_view,hold_period_title_view,create_date_title_view,cancelDateTitleView,statusTitleView,balance_title_view,price_title_view,amountTitleView,rewards_title_view,duration_title_view,reserved_title_view" />
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/price_title_view"
-            style="@style/Transaction.Title.Medium.Key"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:text="@string/staking_screen_price"
+        <com.app.belcobtm.presentation.core.views.CoinInputLayout
+            android:id="@+id/coinInputLayout"
+            android:layout_width="0dp"
+            android:layout_height="160dp"
+            android:background="@color/colorLightGray"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/price_usd_view"
-            style="@style/Transaction.Title.Medium.Value"
-            android:layout_marginStart="16dp"
-            app:layout_constraintStart_toEndOf="@id/price_barrier_view"
-            app:layout_constraintTop_toTopOf="@id/price_title_view"
-            tools:text="2525.31 USD" />
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/balance_title_view"
-            style="@style/Transaction.Title.Medium.Key"
-            android:layout_marginTop="16dp"
-            android:text="@string/staking_screen_balance"
-            app:layout_constraintStart_toStartOf="@id/price_title_view"
-            app:layout_constraintTop_toBottomOf="@id/price_title_view" />
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/balance_crypto_view"
-            style="@style/Transaction.Title.Medium.Value"
-            app:layout_constraintStart_toEndOf="@id/price_barrier_view"
-            app:layout_constraintStart_toStartOf="@id/price_usd_view"
-            app:layout_constraintTop_toTopOf="@id/balance_title_view"
-            tools:text="0.000902 BTC" />
-
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/exchange_view"
-            android:layout_width="16dp"
-            android:layout_height="16dp"
-            android:layout_marginStart="8dp"
-            app:layout_constraintBottom_toBottomOf="@id/balance_crypto_view"
-            app:layout_constraintEnd_toStartOf="@id/balanceUsdView"
-            app:layout_constraintStart_toEndOf="@id/balance_crypto_view"
-            app:layout_constraintTop_toTopOf="@id/balance_crypto_view"
-            app:srcCompat="@drawable/ic_compare_arrows" />
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/reserved_title_view"
-            style="@style/Transaction.Title.Medium.Key"
-            android:text="@string/add_edit_trade_screen_reserved"
-            app:layout_constraintStart_toStartOf="@id/balance_title_view"
-            app:layout_constraintTop_toBottomOf="@id/balance_title_view" />
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/reserved_crypto_view"
-            style="@style/Transaction.Title.Medium.Value"
-            app:layout_constraintStart_toStartOf="@id/balance_crypto_view"
-            app:layout_constraintTop_toTopOf="@id/reserved_title_view"
-            tools:text="0.000902 BTC" />
-
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/reservedExchangeView"
-            android:layout_width="16dp"
-            android:layout_height="16dp"
-            android:layout_marginStart="8dp"
-            app:layout_constraintBottom_toBottomOf="@id/reserved_crypto_view"
-            app:layout_constraintEnd_toStartOf="@id/reservedUsdView"
-            app:layout_constraintStart_toEndOf="@id/reserved_crypto_view"
-            app:layout_constraintTop_toTopOf="@id/reserved_crypto_view"
-            app:srcCompat="@drawable/ic_compare_arrows" />
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/reservedUsdView"
-            style="@style/Transaction.Title.Medium.Value"
-            android:layout_marginStart="8dp"
-            android:textColor="@color/blue_color"
-            app:layout_constraintBottom_toBottomOf="@id/reservedExchangeView"
-            app:layout_constraintStart_toEndOf="@id/reservedExchangeView"
-            app:layout_constraintTop_toTopOf="@id/reservedExchangeView"
-            tools:text="8.90 USD" />
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/balanceUsdView"
-            style="@style/Transaction.Title.Medium.Value"
-            android:layout_marginStart="8dp"
-            android:textColor="@color/blue_color"
-            app:layout_constraintBottom_toBottomOf="@id/exchange_view"
-            app:layout_constraintStart_toEndOf="@id/exchange_view"
-            app:layout_constraintTop_toTopOf="@id/exchange_view"
-            tools:text="8.90 USD" />
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/amountTitleView"
-            style="@style/Transaction.Title.Medium.Key"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:text="@string/staking_screen_staked"
+            android:id="@+id/tvStakeRate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_main"
+            android:background="@drawable/bg_white_rect_with_gray_stroke"
+            android:drawableStart="@drawable/ic_local_offer"
+            android:drawablePadding="@dimen/margin_half"
+            android:paddingStart="@dimen/margin_normal"
+            android:paddingTop="@dimen/margin_half"
+            android:paddingEnd="@dimen/margin_normal"
+            android:paddingBottom="@dimen/margin_half"
+            android:textAppearance="@style/Text.Regular2"
+            android:textColor="@android:color/black"
+            app:layout_constraintBottom_toBottomOf="@id/coinInputLayout"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/reserved_title_view" />
+            app:layout_constraintTop_toBottomOf="@id/coinInputLayout"
+            tools:text="1 CATM = 0.1 USD" />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="45dp"
+            android:background="@color/dark_bg"
+            app:layout_constraintBottom_toBottomOf="@id/tvAnualPercentValue"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/tvAnualPercent" />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="45dp"
+            android:background="@color/dark_bg"
+            app:layout_constraintBottom_toBottomOf="@id/tvCancelHoldPeriodValue"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/tvCancelHoldPeriod" />
+
+        <View
+            android:id="@+id/thirdDivider"
+            android:layout_width="1dp"
+            android:layout_height="45dp"
+            android:background="@color/dark_bg"
+            app:layout_constraintBottom_toBottomOf="@id/tvRewardsValue"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/tvRewards" />
 
         <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/amountView"
-            style="@style/Transaction.Title.Medium.Value"
-            android:layout_marginStart="16dp"
-            app:layout_constraintStart_toEndOf="@id/price_barrier_view"
-            app:layout_constraintTop_toTopOf="@id/amountTitleView"
-            tools:text="12 CATM" />
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/statusTitleView"
-            style="@style/Transaction.Title.Medium.Key"
+            android:id="@+id/tvAnualPercent"
+            style="@style/Text.Regular1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
-            android:text="@string/staking_screen_status"
+            android:text="@string/staking_screen_anual_percent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/amountTitleView" />
+            app:layout_constraintTop_toBottomOf="@id/tvStakeRate" />
 
         <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/statusView"
-            style="@style/Text.Status"
+            android:id="@+id/tvAnualPercentValue"
+            style="@style/Text.Regular3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            app:layout_constraintBottom_toBottomOf="@id/statusTitleView"
-            app:layout_constraintStart_toEndOf="@id/price_barrier_view"
-            app:layout_constraintTop_toTopOf="@id/statusTitleView"
-            tools:background="@drawable/bg_status_created"
-            tools:text="12 CATM"
-            tools:textColor="@color/colorStatusCreated" />
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/rewards_title_view"
-            style="@style/Transaction.Title.Medium.Key"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:text="@string/staking_screen_rewards"
+            android:layout_marginTop="2dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/statusTitleView" />
+            app:layout_constraintTop_toBottomOf="@id/tvAnualPercent"
+            tools:text="25%" />
 
         <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/rewards_view"
-            style="@style/Transaction.Title.Medium.Value"
+            android:id="@+id/tvCancelHoldPeriod"
+            style="@style/Text.Regular1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            app:layout_constraintStart_toEndOf="@id/price_barrier_view"
-            app:layout_constraintTop_toTopOf="@id/rewards_title_view"
-            tools:text="5 CATM,  2.3 %" />
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/reward_annual_title_view"
-            style="@style/Transaction.Title.Medium.Key"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:text="@string/staking_screen_rewards_annual"
+            android:layout_marginTop="24dp"
+            android:text="@string/staking_screen_cancel_period"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/rewards_title_view" />
+            app:layout_constraintTop_toBottomOf="@id/tvAnualPercentValue" />
 
         <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/reward_annual_view"
-            style="@style/Transaction.Title.Medium.Value"
+            android:id="@+id/tvCancelHoldPeriodValue"
+            style="@style/Text.Regular3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            app:layout_constraintStart_toEndOf="@id/price_barrier_view"
-            app:layout_constraintTop_toTopOf="@id/reward_annual_title_view"
-            tools:text="12 CATM, 12%" />
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/create_date_title_view"
-            style="@style/Transaction.Title.Medium.Key"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:text="@string/staking_screen_create_date"
+            android:layout_marginTop="2dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/reward_annual_title_view" />
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/createDateView"
-            style="@style/Transaction.Title.Medium.Value"
-            android:layout_marginStart="16dp"
-            app:layout_constraintStart_toEndOf="@id/price_barrier_view"
-            app:layout_constraintTop_toTopOf="@id/create_date_title_view"
-            tools:text="2020-10-24" />
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/cancelDateTitleView"
-            style="@style/Transaction.Title.Medium.Key"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:text="@string/staking_screen_cancel_date"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/create_date_title_view" />
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/cancelDateView"
-            style="@style/Transaction.Title.Medium.Value"
-            android:layout_marginStart="16dp"
-            app:layout_constraintStart_toEndOf="@id/price_barrier_view"
-            app:layout_constraintTop_toTopOf="@id/cancelDateTitleView"
-            tools:text="2020-10-25" />
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/duration_title_view"
-            style="@style/Transaction.Title.Medium.Key"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:text="@string/staking_screen_time"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/cancelDateTitleView" />
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/durationView"
-            style="@style/Transaction.Title.Medium.Value"
-            android:layout_marginStart="16dp"
-            app:layout_constraintStart_toEndOf="@id/price_barrier_view"
-            app:layout_constraintTop_toTopOf="@id/duration_title_view"
-            tools:text="14 days" />
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/hold_period_title_view"
-            style="@style/Transaction.Title.Medium.Key"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:text="@string/staking_screen_hold_period"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/duration_title_view" />
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/holdPeriodView"
-            style="@style/Transaction.Title.Medium.Value"
-            android:layout_marginStart="16dp"
-            app:layout_constraintStart_toEndOf="@id/price_barrier_view"
-            app:layout_constraintTop_toTopOf="@id/hold_period_title_view"
+            app:layout_constraintTop_toBottomOf="@id/tvCancelHoldPeriod"
             tools:text="21 days" />
 
         <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/until_withdraw_title_view"
-            style="@style/Transaction.Title.Medium.Key"
+            android:id="@+id/tvRewards"
+            style="@style/Text.Regular1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:text="@string/staking_screen_until_withdraw"
+            android:layout_marginTop="24dp"
+            android:text="@string/staking_screen_rewards"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/hold_period_title_view" />
+            app:layout_constraintTop_toBottomOf="@id/tvCancelHoldPeriodValue" />
 
         <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/untilWithdrawView"
-            style="@style/Transaction.Title.Medium.Value"
+            android:id="@+id/tvRewardsValue"
+            style="@style/Text.Regular3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            app:layout_constraintStart_toEndOf="@id/price_barrier_view"
-            app:layout_constraintTop_toTopOf="@id/until_withdraw_title_view"
-            tools:text="5 days" />
-
-        <Space
-            android:id="@+id/timeSpaceView"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginTop="24dp"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="2dp"
+            android:textColor="@color/colorPrimary"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/until_withdraw_title_view" />
+            app:layout_constraintTop_toBottomOf="@id/tvRewards"
+            tools:text="3.56 CATM, 2%" />
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/amountCryptoView"
-            style="@style/TextInputLayoutOutline"
-            android:layout_marginStart="16dp"
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvUsdConverted"
+            style="@style/Text.Regular1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:text="@string/staking_screen_usd_converted"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvStakeRate" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvUsdConvertedValue"
+            style="@style/Text.Regular3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
             android:layout_marginEnd="16dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/timeSpaceView">
-
-            <com.google.android.material.textfield.TextInputEditText
-                style="@style/EditText.InputWithMax"
-                android:digits="1234567890."
-                android:hint="@string/staking_screen_hint_catm_amount"
-                android:imeOptions="actionDone"
-                android:inputType="numberDecimal" />
-        </com.google.android.material.textfield.TextInputLayout>
+            app:layout_constraintTop_toBottomOf="@id/tvUsdConverted"
+            tools:text="$ 15.4" />
 
         <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/maxView"
-            style="@style/EditText.TextLink"
-            android:layout_marginEnd="10dp"
-            android:layout_marginBottom="10dp"
-            android:padding="0dp"
-            android:text="@string/max"
-            app:layout_constraintBottom_toBottomOf="@id/amountCryptoView"
-            app:layout_constraintEnd_toEndOf="@id/amountCryptoView"
-            app:layout_constraintTop_toTopOf="@id/amountCryptoView" />
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/amountUsdView"
+            android:id="@+id/tvAnualRewardAmount"
+            style="@style/Text.Regular1"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_width="0dp"
-            style="@style/EditText.TextLink"
-            android:padding="0dp"
-            android:text="@string/staking_screen_null_price"
-            android:textSize="16sp"
-            android:gravity="end"
-            app:layout_constraintEnd_toEndOf="@id/amountCryptoView"
-            app:layout_constraintStart_toStartOf="@id/amountCryptoView"
-            app:layout_constraintTop_toBottomOf="@id/amountCryptoView"
-            tools:text="0.00$" />
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="16dp"
+            android:text="@string/staking_screen_anual_reward"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvUsdConvertedValue" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvAnualRewardAmountValue"
+            style="@style/Text.Regular3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:layout_marginEnd="16dp"
+            android:textColor="@color/colorPrimary"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvAnualRewardAmount"
+            tools:text="184.4 CATM" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvCreated"
+            style="@style/Text.Regular1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="16dp"
+            android:text="@string/staking_screen_created"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvAnualRewardAmountValue" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvCreatedValue"
+            style="@style/Text.Regular3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:layout_marginEnd="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvCreated"
+            tools:text="2020-06-20" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvCanceled"
+            style="@style/Text.Regular1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="16dp"
+            android:text="@string/staking_screen_canceled"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvCreatedValue" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvCanceledValue"
+            style="@style/Text.Regular3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:layout_marginEnd="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvCanceled"
+            tools:text="2020-06-20" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvDuration"
+            style="@style/Text.Regular1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="16dp"
+            android:text="@string/staking_screen_duration"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvCanceledValue" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvDurationValue"
+            style="@style/Text.Regular3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:layout_marginEnd="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvDuration"
+            tools:text="5 days" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvWithdraw"
+            style="@style/Text.Regular3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:drawableStart="@drawable/ic_withdraw"
+            android:drawablePadding="8dp"
+            android:textColor="@color/colorPrimary"
+            app:layout_constraintBottom_toTopOf="@id/createButtonView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:text="16 days to withdraw" />
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/stakeButtonView"
+            android:id="@+id/createButtonView"
             style="@style/Button.Primary"
+            android:layout_marginBottom="0dp"
             android:enabled="false"
             android:text="@string/staking_screen_stake"
             android:visibility="gone"
+            app:layout_constraintBottom_toTopOf="@id/cancelButtonView"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/amountUsdView"
-            tools:visibility="visible"/>
+            tools:enabled="true"
+            tools:visibility="visible" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/cancelButtonView"
-            style="@style/Button.Secondary"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="16dp"
+            style="@style/Button.Primary"
+            android:layout_marginBottom="0dp"
             android:text="@string/staking_screen_stake_cancel"
             android:visibility="gone"
+            app:layout_constraintBottom_toTopOf="@id/withdrawButtonView"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/stakeButtonView"
             tools:visibility="visible" />
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/unstakeButtonView"
+            android:id="@+id/withdrawButtonView"
             style="@style/Button.Secondary"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
             android:text="@string/staking_screen_unstake"
             android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/cancelButtonView"
             tools:visibility="visible" />
-
-        <androidx.constraintlayout.widget.Group
-            android:id="@+id/amountGroupView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="gone"
-            app:constraint_referenced_ids="amountTitleView, amountView"
-            tools:visibility="visible" />
-
-        <androidx.constraintlayout.widget.Group
-            android:id="@+id/statusGroupView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="visible"
-            app:constraint_referenced_ids="statusTitleView, statusView" />
-
-        <androidx.constraintlayout.widget.Group
-            android:id="@+id/rewardsGroupView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="gone"
-            app:constraint_referenced_ids="rewards_title_view, rewards_view"
-            tools:visibility="visible" />
-
-        <androidx.constraintlayout.widget.Group
-            android:id="@+id/createDateGroupView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="gone"
-            app:constraint_referenced_ids="create_date_title_view, createDateView"
-            tools:visibility="visible" />
-
-        <androidx.constraintlayout.widget.Group
-            android:id="@+id/cancelDateGroupView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="gone"
-            app:constraint_referenced_ids="cancelDateTitleView, cancelDateView"
-            tools:visibility="visible" />
-
-        <androidx.constraintlayout.widget.Group
-            android:id="@+id/durationGroupView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="gone"
-            app:constraint_referenced_ids="duration_title_view, durationView"
-            tools:visibility="visible" />
-
-        <androidx.constraintlayout.widget.Group
-            android:id="@+id/untilWithdrawGroupView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="gone"
-            app:constraint_referenced_ids="until_withdraw_title_view, untilWithdrawView"
-            tools:visibility="visible" />
-
-        <androidx.constraintlayout.widget.Group
-            android:id="@+id/editStakeGroupView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="gone"
-            app:constraint_referenced_ids="amountCryptoView,stakeButtonView,maxView, amountUsdView"
-            tools:visibility="visible" />
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

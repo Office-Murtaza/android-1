@@ -87,61 +87,49 @@ extension CoinDetailsFlowController: CoinSellModuleDelegate {
 }
 
 extension CoinDetailsFlowController: CoinSellDetailsAnotherAddressModuleDelegate {
-  
   func didFinishCoinSellDetailsAnotherAddress() {
     step.accept(CoinDetailsFlow.Steps.pop(nil))
   }
-  
 }
 
 extension CoinDetailsFlowController: CoinSellDetailsCurrentAddressModuleDelegate {
-  
   func didFinishCoinSellDetailsCurrentAddress() {
     step.accept(CoinDetailsFlow.Steps.pop(nil))
   }
-  
 }
 
 extension CoinDetailsFlowController: CoinExchangeModuleDelegate {
-  
   func didFinishCoinExchange() {
     step.accept(CoinDetailsFlow.Steps.pop(localize(L.CoinDetails.transactionCreated)))
   }
-  
 }
 
 extension CoinDetailsFlowController: CoinStakingModuleDelegate {
-  
   func didFinishCoinStaking() {
     step.accept(CoinDetailsFlow.Steps.pop(localize(L.CoinDetails.transactionCreated)))
   }
-  
 }
 
 extension CoinDetailsFlowController: TransactionDetailsModuleDelegate {
-  
   func didFinishTransactionDetails() {
-    step.accept(CoinDetailsFlow.Steps.pop(nil))
+    step.accept(CoinDetailsFlow.Steps.pop(localize(L.CoinDetails.transactionCreated)))
   }
-  
 }
 
 extension CoinDetailsFlowController: TradesFlowControllerDelegate {
-  
   func didFinishTradesFlow() {
-    step.accept(CoinDetailsFlow.Steps.pop(nil))
+    step.accept(CoinDetailsFlow.Steps.pop(localize(L.CoinDetails.transactionCreated)))
   }
-  
 }
 
 extension CoinDetailsFlowController: ReserveModuleDelegate {
   func didFinishReserve() {
-    step.accept(CoinDetailsFlow.Steps.pop(nil))
+    step.accept(CoinDetailsFlow.Steps.pop(localize(L.CoinDetails.transactionCreated)))
   }
 }
 
 extension CoinDetailsFlowController: RecallModuleDelegate {
   func didFinishRecall() {
-    step.accept(CoinDetailsFlow.Steps.pop(nil))
+    step.accept(CoinDetailsFlow.Steps.pop(localize(L.CoinDetails.transactionCreated)))
   }
 }

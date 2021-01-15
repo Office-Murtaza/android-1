@@ -70,8 +70,8 @@ final class ReserveStore: ViewStore<ReserveAction, ReserveState> {
       state.coinAmount = coinAmount
     case let .updateCoinAmount(amount):
       let coinAmount = (amount ?? "").coinWithdrawFormatted
-      
       state.coinAmount = coinAmount
+      state.coinAmountError = nil
     case .updateValidationState: validate(&state)
     case let .makeInvalidState(error): state.validationState = .invalid(error)
     }

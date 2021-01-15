@@ -100,14 +100,11 @@ abstract class BaseFragment<V : ViewBinding> : Fragment() {
         this.navController = Navigation.findNavController(view)
         updateActionBar()
         baseBinding.errorRetryButtonView.setOnClickListener(retryListener)
-        with(binding) {
+        with (binding) {
             initViews()
             initListeners()
             initObservers()
         }
-        binding.initViews()
-        binding.initListeners()
-        binding.initObservers()
         if (isFirstShowContent) {
             showContent()
         }

@@ -15,7 +15,7 @@ extension StakeDetails: ImmutableMappable {
         createDate = try map.value("createDate")
         cancelDate = try map.value("cancelDate")
         duration = try map.value("duration")
-        untilWithdraw = try map.value("untilWithdraw")
-        holdPeriod = try map.value("holdPeriod")
+        untilWithdraw = try map.value("tillWithdrawal")
+        cancelHoldPeriod = try map.value("cancelHoldPeriod")
     }
 }

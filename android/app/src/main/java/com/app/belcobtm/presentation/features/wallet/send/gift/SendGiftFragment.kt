@@ -2,8 +2,6 @@ package com.app.belcobtm.presentation.features.wallet.send.gift
 
 import android.content.Context
 import android.net.Uri
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,6 +19,7 @@ import com.app.belcobtm.presentation.core.extensions.*
 import com.app.belcobtm.presentation.core.helper.AlertHelper
 import com.app.belcobtm.presentation.core.mvvm.LoadingData
 import com.app.belcobtm.presentation.core.ui.fragment.BaseFragment
+import com.app.belcobtm.presentation.core.views.listeners.SafeDecimalEditTextWatcher
 import com.app.belcobtm.presentation.features.deals.swap.adapter.CoinDialogAdapter
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
@@ -49,20 +48,23 @@ class SendGiftFragment : BaseFragment<FragmentSendGiftBinding>(), GiphyDialogFra
         if (viewModel.initialLoadingData.value is LoadingData.Error) {
             viewModel.fetchInitialData()
         } else {
-            viewModel.sendGift(0.0, sendGiftArgs.phoneNumber, binding.messageView.getString(), gifMedia?.id)
+            viewModel.sendGift(
+                binding.sendCoinInputLayout.getEditText().text.getDouble(),
+                sendGiftArgs.phoneNumber,
+                binding.messageView.getString(),
+                gifMedia?.id
+            )
         }
     }
 
     private val cryptoAmountTextWatcher by lazy {
-        object : TextWatcher {
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) = Unit
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) = Unit
-
-            override fun afterTextChanged(editable: Editable?) {
-                val parsedCoinAmount = editable?.getDouble() ?: 0.0
-                if (parsedCoinAmount != viewModel.sendCoinAmount.value) {
-                    viewModel.updateAmountToSend(parsedCoinAmount)
-                }
+        SafeDecimalEditTextWatcher { editable ->
+            val parsedCoinAmount = editable.getDouble()
+            if (parsedCoinAmount != viewModel.sendCoinAmount.value) {
+                viewModel.updateAmountToSend(parsedCoinAmount)
+            }
+            if (editable.isEmpty()) {
+                editable.insert(0, "0")
             }
         }
     }
@@ -96,6 +98,7 @@ class SendGiftFragment : BaseFragment<FragmentSendGiftBinding>(), GiphyDialogFra
             .apply(RequestOptions().override(contactImage.width, contactImage.height))
             .into(contactImage)
         messageView.editText?.inputType = EditorInfo.IME_ACTION_DONE
+        sendCoinInputLayout.getEditText().setText("0")
     }
 
     override fun FragmentSendGiftBinding.initListeners() {
@@ -123,7 +126,7 @@ class SendGiftFragment : BaseFragment<FragmentSendGiftBinding>(), GiphyDialogFra
             if (messageView.editText?.text.isNullOrEmpty()) {
                 messageView.hide()
                 addMessage.show()
-                messageView?.editText?.clearFocus()
+                messageView.editText?.clearFocus()
             }
             hideKeyboard()
         }
@@ -135,14 +138,15 @@ class SendGiftFragment : BaseFragment<FragmentSendGiftBinding>(), GiphyDialogFra
         viewModel.initialLoadingData.listen({})
         viewModel.sendCoinAmount.observe(viewLifecycleOwner) { cryptoAmount ->
             with(sendCoinInputLayout.getEditText()) {
-                if (text.getDouble() != cryptoAmount) {
-                    removeTextChangedListener(cryptoAmountTextWatcher)
-                    setText(cryptoAmount.toString())
-                    if (isFocused) {
-                        setSelection(text.length)
-                    }
-                    addTextChangedListener(cryptoAmountTextWatcher)
+                if (text.getDouble() == 0.0 && cryptoAmount == 0.0) {
+                    return@observe
                 }
+                removeTextChangedListener(cryptoAmountTextWatcher)
+                setText(cryptoAmount.toStringCoin())
+                if (isFocused) {
+                    setSelection(text.length)
+                }
+                addTextChangedListener(cryptoAmountTextWatcher)
             }
         }
         viewModel.cryptoAmountError.observe(viewLifecycleOwner) {

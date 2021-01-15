@@ -310,10 +310,20 @@
 "recall.button.recall" = "Submit";
 "recall.form.error.too_low_amount" = "Reserved amount is lower than transaction fee";
 
+"coin_staking.header.staking_anual_percent" = "Staking annual percent";
+"coin_staking.header.usd_converted.title" = "USD converted value";
+"coin_staking.header.usd_converted.value" = "$ %@";
+"coin_staking.header.created_date" = "Created";
+"coin_staking.header.cancel_hold_period" = "Cancel hold period";
+"coin_staking.header.annual_reward_amount" = "Annual reward amount";
+"coin_staking.header.reward.title" = "Reward";
+"coin_staking.header.reward.value" = "%@ %";
+"coin_staking.withdraw_view.description" = "%d days until withdrawal";
+"coin_staking.status.form_view_status" = "Staked";
+
 "coin_staking.title" = "Staking %@";
 "coin_staking.header.amount.title" = "Amount";
 "coin_staking.header.status.title" = "Status";
-"coin_staking.header.reward.title" = "Reward";
 "coin_staking.header.reward_annual.title" = "Reward\n(annual)";
 "coin_staking.header.create_date.title" = "Create date";
 "coin_staking.header.cancel_date.title" = "Cancel date";

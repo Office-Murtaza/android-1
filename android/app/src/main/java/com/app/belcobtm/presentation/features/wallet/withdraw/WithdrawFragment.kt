@@ -9,6 +9,8 @@ import android.view.ViewGroup
 import com.app.belcobtm.R
 import com.app.belcobtm.databinding.FragmentWithdrawBinding
 import com.app.belcobtm.domain.Failure
+import com.app.belcobtm.domain.wallet.LocalCoinType
+import com.app.belcobtm.domain.wallet.item.isEthRelatedCoinCode
 import com.app.belcobtm.presentation.core.coin.model.ValidationResult
 import com.app.belcobtm.presentation.core.extensions.*
 import com.app.belcobtm.presentation.core.helper.AlertHelper
@@ -17,6 +19,7 @@ import com.app.belcobtm.presentation.core.watcher.DoubleTextWatcher
 import com.google.zxing.integration.android.IntentIntegrator
 import org.koin.android.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
+import wallet.core.jni.CoinType
 
 class WithdrawFragment : BaseFragment<FragmentWithdrawBinding>() {
     private val viewModel: WithdrawViewModel by viewModel {
@@ -39,35 +42,6 @@ class WithdrawFragment : BaseFragment<FragmentWithdrawBinding>() {
     override var isMenuEnabled: Boolean = true
     override val retryListener: View.OnClickListener = View.OnClickListener { binding.validateAndSubmit() }
 
-    override fun FragmentWithdrawBinding.initViews() {
-        setToolbarTitle(getString(R.string.withdraw_screen_screen_title, viewModel.getCoinCode()))
-        priceUsdView.text = getString(R.string.text_usd, viewModel.getUsdPrice().toStringUsd())
-        balanceCryptoView.text =
-            getString(
-                R.string.text_text,
-                viewModel.getCoinBalance().toStringCoin(),
-                viewModel.getCoinCode()
-            )
-        balanceUsdView.text = getString(R.string.text_usd, viewModel.getUsdBalance().toStringUsd())
-        amountCryptoView.hint = getString(R.string.text_amount, viewModel.getCoinCode())
-        amountCryptoView.actionDoneListener { validateAndSubmit() }
-        nextButtonView.setOnClickListener { validateAndSubmit() }
-        amountCryptoView.helperText = getString(
-            R.string.transaction_helper_text_commission,
-            viewModel.getTransactionFee().toStringCoin(),
-            viewModel.getCoinCode()
-        )
-        reservedCryptoView.text = getString(
-            R.string.text_text,
-            viewModel.getReservedBalanceCoin().toStringCoin(),
-            viewModel.getCoinCode()
-        )
-        reservedUsdView.text = getString(
-            R.string.text_usd,
-            viewModel.getReservedBalanceUsd().toStringUsd()
-        )
-    }
-
     override fun FragmentWithdrawBinding.initListeners() {
         addressScanView.setOnClickListener {
             IntentIntegrator.forSupportFragment(this@WithdrawFragment).initiateScan()
@@ -87,6 +61,9 @@ class WithdrawFragment : BaseFragment<FragmentWithdrawBinding>() {
     }
 
     override fun FragmentWithdrawBinding.initObservers() {
+        viewModel.loadingLiveData.listen({
+            initScreen()
+        })
         viewModel.transactionLiveData.listen(
             success = {
                 AlertHelper.showToastShort(requireContext(), R.string.transactions_screen_transaction_created)
@@ -137,6 +114,38 @@ class WithdrawFragment : BaseFragment<FragmentWithdrawBinding>() {
         }
     }
 
+    private fun FragmentWithdrawBinding.initScreen() {
+        setToolbarTitle(getString(R.string.withdraw_screen_screen_title, viewModel.getCoinCode()))
+        priceUsdView.text = getString(R.string.text_usd, viewModel.getUsdPrice().toStringUsd())
+        balanceCryptoView.text =
+            getString(
+                R.string.text_text,
+                viewModel.getCoinBalance().toStringCoin(),
+                viewModel.getCoinCode()
+            )
+        balanceUsdView.text = getString(R.string.text_usd, viewModel.getUsdBalance().toStringUsd())
+        amountCryptoView.hint = getString(R.string.text_amount, viewModel.getCoinCode())
+        amountCryptoView.actionDoneListener { validateAndSubmit() }
+        nextButtonView.setOnClickListener { validateAndSubmit() }
+        feeLabel.text = getString(
+            R.string.transaction_helper_text_commission,
+            viewModel.getTransactionFee().toStringCoin(),
+            when (viewModel.getCoinCode().isEthRelatedCoinCode()) {
+                true -> LocalCoinType.ETH.name
+                false -> viewModel.getCoinCode()
+            }
+        )
+        reservedCryptoView.text = getString(
+            R.string.text_text,
+            viewModel.getReservedBalanceCoin().toStringCoin(),
+            viewModel.getCoinCode()
+        )
+        reservedUsdView.text = getString(
+            R.string.text_usd,
+            viewModel.getReservedBalanceUsd().toStringUsd()
+        )
+    }
+
     private fun FragmentWithdrawBinding.validateAndSubmit() {
         amountCryptoView.clearError()
         addressView.clearError()
@@ -164,9 +173,13 @@ class WithdrawFragment : BaseFragment<FragmentWithdrawBinding>() {
         }
     }
 
-    private fun FragmentWithdrawBinding.isValidAddress(): Boolean =
-        CoinTypeExtension.getTypeByCode(viewModel.getCoinCode())
-            ?.validate(addressView.getString()) ?: false
+    private fun FragmentWithdrawBinding.isValidAddress(): Boolean {
+        val coinType = when (val coinCode = viewModel.getCoinCode()) {
+            LocalCoinType.USDT.name -> CoinType.ETHEREUM
+            else -> CoinTypeExtension.getTypeByCode(coinCode)
+        }
+        return coinType?.validate(addressView.getString()) ?: false
+    }
 
     private fun FragmentWithdrawBinding.updateNextButton() {
         nextButtonView.isEnabled = amountCryptoView.isNotBlank()

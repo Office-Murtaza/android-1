@@ -5,13 +5,12 @@ import MaterialComponents
 import TrustWalletCore
 
 class CoinExchangeFormView: UIView {
-
     lazy var swapButton: SwapButton = {
         let button = SwapButton(type: .system)
         return button
     }()
     
-    let swapRateView = SwapExchangeRateView()
+    let swapRateView = СoinRateView()
     
     lazy var fromCoinView: CoinExchangeSwapTextFieldView = {
         let textFieldView = CoinExchangeSwapTextFieldView()
@@ -20,7 +19,7 @@ class CoinExchangeFormView: UIView {
     
     lazy var toCoinView: CoinExchangeSwapTextFieldView = {
         let textFieldView = CoinExchangeSwapTextFieldView()
-        textFieldView.backgroundColor = UIColor(red: 0.553, green: 0.553, blue: 0.553, alpha: 0.1)
+        textFieldView.backgroundColor = .textfieldLightGray
         return textFieldView
     }()
     
@@ -69,7 +68,6 @@ class CoinExchangeFormView: UIView {
         $0.centerY.equalTo(fromCoinView.snp.bottom)
         $0.right.equalToSuperview().offset(-15)
     }
-
   }
     
     func configure(coin: CustomCoinType, fromCoins: [CustomCoinType], toCoins:  [CustomCoinType], fee: Decimal?) {
@@ -78,6 +76,8 @@ class CoinExchangeFormView: UIView {
     }
     
     func configureRateView(fromCoin: String, toCoin: String) {
+        swapRateView.tildaLabelText = localize(L.Swap.tilda)
+        swapRateView.trandingViewImage = UIImage(named: "trending_up")
         swapRateView.configure(fromCoin: fromCoin, toCoin: toCoin)
     }
 
@@ -92,7 +92,7 @@ class CoinExchangeFormView: UIView {
     private func configureField(field: inout CoinExchangeSwapTextFieldView, error: String?) {
         field.errorField.isHidden = error == nil
         field.errorField.text = error
-        field.amountTextField.textColor = error == nil ? UIColor.black : UIColor(hexString: "B00020")
+        field.amountTextField.textColor = error == nil ? .black : .errorRed
     }
 }
 

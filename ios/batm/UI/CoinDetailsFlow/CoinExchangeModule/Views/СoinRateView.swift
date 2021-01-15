@@ -1,26 +1,32 @@
-//
-//  SwapExchangeRateView.swift
-//  batm
-//
-//  Created by Dmytro Frolov on 02.12.2020.
-//  Copyright © 2020 Daniel Tischenko. All rights reserved.
-//
-
 import UIKit
 
-class SwapExchangeRateView: UIView {
+class СoinRateView: UIView {
+    var tildaLabelText: String? {
+        didSet {
+            tildeLabel.textColor = .black
+            tildeLabel.text = tildaLabelText
+        }
+    }
+    
+    var trandingViewImage: UIImage? {
+        didSet {
+            trandingView.setImage(trandingViewImage, for: .normal)
+        }
+    }
     
     private let trandingView = UIButton(type: .system)
     private let tildeLabel = UILabel()
 
     private lazy var fromCoinLabel: UILabel = {
         let label = UILabel()
+        label.textColor = .black
         label.font = .systemFont(ofSize: 16, weight: .semibold)
         return label
     }()
 
     private lazy var toCoinLabel:UILabel = {
         let label = UILabel()
+        label.textColor = .black
         label.font = .systemFont(ofSize: 16, weight: .semibold)
         return label
     }()
@@ -37,8 +43,6 @@ class SwapExchangeRateView: UIView {
         super.init(frame: frame)
         setupUI()
         setupLayout()
-        tildeLabel.text = localize(L.Swap.tilda)
-        trandingView.setImage(UIImage(named: "trending_up"), for: .normal)
     }
     
     required init?(coder: NSCoder) {
@@ -73,7 +77,5 @@ class SwapExchangeRateView: UIView {
         trandingView.snp.makeConstraints {
             $0.width.height.equalTo(36)
         }
-        
     }
- 
 }
