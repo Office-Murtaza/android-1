@@ -1,13 +1,16 @@
 package com.app.belcobtm.presentation.features.wallet.transactions
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asLiveData
 import com.app.belcobtm.R
 import com.app.belcobtm.data.rest.wallet.request.PriceChartPeriod
+import com.app.belcobtm.data.websockets.wallet.WalletObserver
+import com.app.belcobtm.data.websockets.wallet.model.WalletBalance
 import com.app.belcobtm.domain.transaction.interactor.GetTransactionListUseCase
 import com.app.belcobtm.domain.wallet.LocalCoinType
 import com.app.belcobtm.domain.wallet.interactor.GetChartsUseCase
-import com.app.belcobtm.domain.wallet.interactor.GetCoinByCodeUseCase
 import com.app.belcobtm.domain.wallet.interactor.UpdateCoinDetailsUseCase
 import com.app.belcobtm.domain.wallet.item.ChartChangesColor
 import com.app.belcobtm.domain.wallet.item.ChartDataItem
@@ -17,20 +20,42 @@ import com.app.belcobtm.presentation.features.wallet.transactions.item.Transacti
 import com.app.belcobtm.presentation.features.wallet.transactions.item.TransactionsScreenItem
 import com.app.belcobtm.presentation.features.wallet.transactions.item.mapToUiItem
 import com.github.mikephil.charting.data.BarEntry
+import kotlinx.coroutines.flow.filterIsInstance
+import kotlinx.coroutines.flow.mapNotNull
+import kotlinx.coroutines.flow.receiveAsFlow
+import kotlin.collections.set
 
 class TransactionsViewModel(
     val coinCode: String,
+    walletObserver: WalletObserver,
     private val chartUseCase: GetChartsUseCase,
     private val transactionListUseCase: GetTransactionListUseCase,
-    private val updateCoinDetailsUseCase: UpdateCoinDetailsUseCase,
-    private val getCoinByCodeUseCase: GetCoinByCodeUseCase
+    private val updateCoinDetailsUseCase: UpdateCoinDetailsUseCase
 ) : ViewModel() {
     val chartLiveData: MutableLiveData<LoadingData<CurrentChartInfo>> =
         MutableLiveData(LoadingData.Loading())
-    val detailsLiveData: MutableLiveData<LoadingData<TransactionsScreenItem>> = MutableLiveData()
     val transactionListLiveData: MutableLiveData<List<TransactionsAdapterItem>> = MutableLiveData()
     private val chartInfo = HashMap<@PriceChartPeriod Int, ChartDataItem>()
     var totalTransactionListSize: Int = 0
+    val detailsLiveData: LiveData<TransactionsScreenItem> =
+        walletObserver.observe()
+            .receiveAsFlow()
+            .filterIsInstance<WalletBalance.Balance>()
+            .mapNotNull { balance ->
+                balance.data.coinList.find { it.code == coinCode }?.let { coinDataItem ->
+                    TransactionsScreenItem(
+                        balance = coinDataItem.balanceCoin,
+                        priceUsd = coinDataItem.priceUsd,
+                        reservedBalanceUsd = coinDataItem.reservedBalanceUsd,
+                        reservedCode = coinDataItem.code,
+                        reservedBalanceCoin = coinDataItem.reservedBalanceCoin
+                    )
+                }
+            }.asLiveData()
+
+    private val _loadingLiveData = MutableLiveData<LoadingData<Unit>>()
+    val loadingData: LiveData<LoadingData<Unit>>
+        get() = _loadingLiveData
 
     companion object {
         const val CATM_PRICE = 0.1
@@ -42,24 +67,15 @@ class TransactionsViewModel(
     }
 
     fun updateData() {
-        detailsLiveData.value = LoadingData.Loading()
+        _loadingLiveData.value = LoadingData.Loading()
         loadChartData(PriceChartPeriod.PERIOD_DAY)
         updateCoinDetailsUseCase.invoke(
             params = UpdateCoinDetailsUseCase.Params(coinCode),
             onSuccess = {
-                val coinDataItem = getCoinByCodeUseCase.invoke(coinCode)
-                detailsLiveData.value = LoadingData.Success(
-                    TransactionsScreenItem(
-                        balance = coinDataItem.balanceCoin,
-                        priceUsd = coinDataItem.priceUsd,
-                        reservedBalanceUsd = coinDataItem.reservedBalanceUsd,
-                        reservedCode = coinDataItem.code,
-                        reservedBalanceCoin = coinDataItem.reservedBalanceCoin
-                    )
-                )
+                _loadingLiveData.value = LoadingData.Success(Unit)
             },
             onError = {
-                detailsLiveData.value = LoadingData.Error(it)
+                _loadingLiveData.value = LoadingData.Error(it)
             }
         )
         refreshTransactionList()

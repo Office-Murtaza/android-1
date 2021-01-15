@@ -167,7 +167,8 @@ class TransactionsFragment : BaseFragment<FragmentTransactionsBinding>() {
             adapter.submitList(it)
             swipeToRefreshView.isRefreshing = false
         }
-        viewModel.detailsLiveData.listen({
+        viewModel.loadingData.listen({})
+        viewModel.detailsLiveData.observe(viewLifecycleOwner) {
             //important download fee
             priceUsdView.text = getString(R.string.text_usd, it.priceUsd.toStringUsd())
             balanceCryptoView.text =
@@ -183,7 +184,7 @@ class TransactionsFragment : BaseFragment<FragmentTransactionsBinding>() {
                 R.string.text_usd,
                 it.reservedBalanceUsd.toStringUsd()
             )
-        })
+        }
     }
 
     @SuppressLint("MissingPermission")
