@@ -212,7 +212,6 @@ public class WalletService {
                 dto.setFromAddress(fromAddress);
                 dto.setToAddress(toAddress);
                 dto.setCryptoAmount(amount);
-                dto.setFee(BigDecimal.ZERO);
 
                 String txId = coin.submitTransaction(dto);
 

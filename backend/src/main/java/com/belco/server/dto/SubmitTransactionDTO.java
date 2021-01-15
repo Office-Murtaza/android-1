@@ -17,7 +17,7 @@ public class SubmitTransactionDTO {
     private String toAddress;
     private BigDecimal cryptoAmount;
     private BigDecimal refCryptoAmount;
-    private BigDecimal fee;
+    //private BigDecimal fee;
     private Integer fiatAmount;
     private String fiatCurrency;
     private String phone;

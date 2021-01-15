@@ -123,12 +123,11 @@ public class TestController {
     }
 
     @GetMapping("/coin/{coin}/submit")
-    public Response submit(@PathVariable CoinService.CoinEnum coin, @RequestParam String fromAddress, @RequestParam String toAddress, @RequestParam BigDecimal amount, @RequestParam BigDecimal fee, @RequestParam String hex) {
+    public Response submit(@PathVariable CoinService.CoinEnum coin, @RequestParam String fromAddress, @RequestParam String toAddress, @RequestParam BigDecimal amount, @RequestParam String hex) {
         SubmitTransactionDTO dto = new SubmitTransactionDTO();
         dto.setFromAddress(fromAddress);
         dto.setToAddress(toAddress);
         dto.setCryptoAmount(amount);
-        dto.setFee(fee);
         dto.setHex(hex);
 
         return Response.ok(coin.submitTransaction(dto));

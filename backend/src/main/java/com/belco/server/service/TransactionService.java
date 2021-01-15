@@ -334,7 +334,6 @@ public class TransactionService {
                 submit.setFromAddress(fromAddress);
                 submit.setToAddress(toAddress);
                 submit.setCryptoAmount(dto.getCryptoAmount());
-                submit.setFee(txFee);
 
                 String txId = coinCode.submitTransaction(submit);
 
@@ -352,7 +351,6 @@ public class TransactionService {
                     dto.setFromAddress(fromAddress);
                     dto.setToAddress(toAddress);
                     dto.setCryptoAmount(dto.getCryptoAmount());
-                    dto.setFee(coinCode.getTxFee());
 
                     userCoin.setReservedBalance(userCoin.getReservedBalance().subtract(dto.getCryptoAmount().add(txFee)));
                     userCoinRep.save(userCoin);

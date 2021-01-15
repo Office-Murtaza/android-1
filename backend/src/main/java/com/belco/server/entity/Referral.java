@@ -27,6 +27,6 @@ public class Referral extends BaseEntity {
 
     @Transient
     public ReferralDTO toDTO() {
-        return new ReferralDTO(code, invited, earned);
+        return new ReferralDTO("http://test.belcobtm.com/" + code, invited, earned);
     }
 }

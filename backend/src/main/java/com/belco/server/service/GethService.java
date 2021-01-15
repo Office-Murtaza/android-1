@@ -108,7 +108,7 @@ public class GethService {
                 String txId = web3.ethSendRawTransaction(dto.getHex()).send().getTransactionHash();
 
                 if (StringUtils.isNotBlank(txId)) {
-                    addPendingTransaction(token, txId, dto.getFromAddress(), dto.getToAddress(), dto.getCryptoAmount(), dto.getFee());
+                    addPendingTransaction(token, txId, dto.getFromAddress(), dto.getToAddress(), dto.getCryptoAmount());
 
                     return txId;
                 }
@@ -173,7 +173,6 @@ public class GethService {
                 try {
                     dto.setCryptoFee(d.get("fee", Decimal128.class).bigDecimalValue());
                 } catch (Exception e) {
-                    System.out.println(" !!!! fee: " + d.getString("fee"));
                     dto.setCryptoFee(BigDecimal.ZERO);
                 }
 
@@ -221,12 +220,11 @@ public class GethService {
         return new TransactionDetailsDTO();
     }
 
-    private static void addPendingTransaction(String txId, String fromAddress, String toAddress, BigDecimal amount, BigDecimal fee) {
+    private static void addPendingTransaction(String txId, String fromAddress, String toAddress, BigDecimal amount) {
         Document doc = new Document("txId", txId.toLowerCase())
                 .append("fromAddress", fromAddress.toLowerCase())
                 .append("toAddress", toAddress.toLowerCase())
                 .append("amount", amount)
-                .append("fee", fee)
                 .append("status", TransactionStatus.PENDING.getValue())
                 .append("blockTime", System.currentTimeMillis())
                 .append("timestamp", System.currentTimeMillis());
@@ -234,14 +232,13 @@ public class GethService {
         mongo.getCollection(ETH_TX_COLL).insertOne(doc);
     }
 
-    private static void addPendingTransaction(ERC20 token, String txId, String fromAddress, String toAddress, BigDecimal amount, BigDecimal fee) {
-        addPendingTransaction(txId, fromAddress, token.getContractAddress(), BigDecimal.ZERO, fee);
+    private static void addPendingTransaction(ERC20 token, String txId, String fromAddress, String toAddress, BigDecimal amount) {
+        addPendingTransaction(txId, fromAddress, token.getContractAddress(), BigDecimal.ZERO);
 
         Document doc = new Document("txId", txId.toLowerCase())
                 .append("fromAddress", fromAddress.toLowerCase())
                 .append("toAddress", toAddress.toLowerCase())
                 .append("amount", amount)
-                .append("fee", fee)
                 .append("status", TransactionStatus.PENDING.getValue())
                 .append("blockTime", System.currentTimeMillis())
                 .append("timestamp", System.currentTimeMillis())
@@ -319,7 +316,9 @@ public class GethService {
             mongo.getCollection(ETH_TX_COLL).find(new Document("status", TransactionStatus.PENDING.getValue()).append("timestamp", new Document("$gte", System.currentTimeMillis() - WATCH_TIME))).limit(10).into(new ArrayList<>()).stream().forEach(d -> {
                 org.web3j.protocol.core.methods.response.Transaction tx = getTransactionByHash(d.getString("txId"));
 
-                fetchEthTransaction(tx, System.currentTimeMillis(), ethTxs, tokenTxs);
+                if(tx != null) {
+                    fetchEthTransaction(tx, System.currentTimeMillis(), ethTxs, tokenTxs);
+                }
             });
 
             bulkWrite(ETH_TX_COLL, ethTxs);
@@ -354,7 +353,7 @@ public class GethService {
                 String txId = web3.ethSendRawTransaction(dto.getHex()).send().getTransactionHash();
 
                 if (StringUtils.isNotBlank(txId)) {
-                    addPendingTransaction(txId, dto.getFromAddress(), dto.getToAddress(), dto.getCryptoAmount(), dto.getFee());
+                    addPendingTransaction(txId, dto.getFromAddress(), dto.getToAddress(), dto.getCryptoAmount());
                     return txId;
                 }
             } catch (Exception e) {

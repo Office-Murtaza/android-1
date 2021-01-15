@@ -45,6 +45,7 @@ public class UserService implements UserDetailsService {
     private static final BigDecimal VIP_VERIFIED_DAILY_LIMIT = BigDecimal.valueOf(20_000);
     private static final BigDecimal VIP_VERIFIED_TX_LIMIT = BigDecimal.valueOf(10_000);
 
+    @Lazy
     @Autowired
     private PasswordEncoder passwordEncoder;
 

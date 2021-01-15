@@ -1,7 +1,6 @@
 package com.belco.server.security;
 
 import com.belco.server.util.Constant;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
@@ -17,8 +16,11 @@ import java.io.IOException;
 @Component
 public class JWTTokenFilter extends OncePerRequestFilter {
 
-    @Autowired
-    private JWTTokenProvider tokenProvider;
+    private final JWTTokenProvider tokenProvider;
+
+    public JWTTokenFilter(JWTTokenProvider tokenProvider) {
+        this.tokenProvider = tokenProvider;
+    }
 
     @Override
     protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, FilterChain filterChain) throws ServletException, IOException {

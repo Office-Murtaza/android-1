@@ -15,7 +15,7 @@ import java.math.BigDecimal;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ReferralDTO {
 
-    private String code;
+    private String link;
     private int invited;
     private BigDecimal earned;
 }
