@@ -336,6 +336,10 @@ extension L.CoinStaking {
   }
 
   struct Header {
+    static let annualRewardAmount = "coin_staking.header.annual_reward_amount"
+    static let cancelHoldPeriod = "coin_staking.header.cancel_hold_period"
+    static let createdDate = "coin_staking.header.created_date"
+    static let stakingAnualPercent = "coin_staking.header.staking_anual_percent"
   }
 
   struct Status {
@@ -343,7 +347,12 @@ extension L.CoinStaking {
     static let canceled = "coin_staking.status.canceled"
     static let createPending = "coin_staking.status.create_pending"
     static let created = "coin_staking.status.created"
+    static let formViewStatus = "coin_staking.status.form_view_status"
     static let withdrawPending = "coin_staking.status.withdraw_pending"
+  }
+
+  struct WithdrawView {
+    static let description = "coin_staking.withdraw_view.description"
   }
 }
 extension L.CoinStaking.Header {
@@ -372,6 +381,7 @@ extension L.CoinStaking.Header {
 
   struct Reward {
     static let title = "coin_staking.header.reward.title"
+    static let value = "coin_staking.header.reward.value"
   }
 
   struct RewardAnnual {
@@ -385,6 +395,11 @@ extension L.CoinStaking.Header {
   struct UntilWithdraw {
     static let title = "coin_staking.header.until_withdraw.title"
     static let value = "coin_staking.header.until_withdraw.value"
+  }
+
+  struct UsdConverted {
+    static let title = "coin_staking.header.usd_converted.title"
+    static let value = "coin_staking.header.usd_converted.value"
   }
 }
 extension L.CoinWithdraw {

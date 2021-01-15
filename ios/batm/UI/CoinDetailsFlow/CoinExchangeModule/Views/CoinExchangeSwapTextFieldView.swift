@@ -5,7 +5,6 @@ import MaterialComponents
 import TrustWalletCore
 
 class CoinExchangeSwapTextFieldView: UIView, UIPickerViewDataSource, HasDisposeBag {
-    
     let didSelectPickerRow = PublishRelay<CustomCoinType>()
     let willChangeCoinType = BehaviorRelay<CustomCoinType>(value: .bitcoin)
     let fakeToCoinTextField = FakeTextField()
@@ -13,6 +12,13 @@ class CoinExchangeSwapTextFieldView: UIView, UIPickerViewDataSource, HasDisposeB
     let coinPickerView = UIPickerView()
     let maxButton = MDCButton.max
     var coinType: CustomCoinType?
+    
+    lazy var resultLabel: UILabel = {
+        let label = UILabel()
+        label.textColor = .slateGrey
+        label.font = .systemFont(ofSize: 12, weight: .regular)
+        return label
+    }()
     
     lazy var errorField: UITextField = {
         let textField = UITextField()
@@ -43,13 +49,14 @@ class CoinExchangeSwapTextFieldView: UIView, UIPickerViewDataSource, HasDisposeB
     lazy var balanceLabel: UILabel = {
         let label = UILabel()
         label.textColor = .slateGrey
-        label.font = .systemFont(ofSize: 16, weight: .regular)
+        label.font = .systemFont(ofSize: 12, weight: .regular)
         return label
     }();
     
     lazy var amountTextField: UITextField = {
         let textField = UITextField()
         textField.textAlignment = .right
+        textField.textColor = .black
         textField.attributedPlaceholder = NSAttributedString(string: "0", attributes: [.foregroundColor : UIColor.black])
         textField.font = .systemFont(ofSize: 22, weight: .bold)
         textField.keyboardType = .decimalPad
@@ -59,15 +66,16 @@ class CoinExchangeSwapTextFieldView: UIView, UIPickerViewDataSource, HasDisposeB
     lazy var feeLabel: UILabel = {
         let label = UILabel()
         label.textColor = .slateGrey
-        label.font = .systemFont(ofSize: 16, weight: .regular)
+        label.font = .systemFont(ofSize: 12, weight: .regular)
         return label
     }()
     
     var coins: [CustomCoinType] = [] {
         didSet {
             coinPickerView.reloadAllComponents()
-            coinTextField.isEnabled = coins.isNotEmpty
-            fakeToCoinTextField.isEnabled = coins.isNotEmpty
+            coinTextField.isEnabled = coins.count > 1
+            coinTextField.textColor = .black
+            fakeToCoinTextField.isEnabled = coins.count > 1
         }
     }
     
@@ -92,13 +100,13 @@ class CoinExchangeSwapTextFieldView: UIView, UIPickerViewDataSource, HasDisposeB
                     balanceLabel,
                     amountTextField,
                     maxButton,
+                    resultLabel,
                     errorField,
                     feeLabel)
         coinTextField.font = .systemFont(ofSize: 22, weight: .bold)
     }
     
     private func setupLayout() {
-        
         coinTypeImageView.snp.makeConstraints {
             $0.top.equalToSuperview().offset(32)
             $0.left.equalToSuperview().offset(15)
@@ -140,6 +148,11 @@ class CoinExchangeSwapTextFieldView: UIView, UIPickerViewDataSource, HasDisposeB
             $0.edges.equalTo(coinTextField)
         }
         
+        resultLabel.snp.makeConstraints {
+            $0.right.equalToSuperview().offset(-8)
+            $0.centerY.equalTo(balanceLabel)
+        }
+        
         maxButton.snp.makeConstraints {
             $0.right.equalToSuperview().offset(-8)
             $0.centerY.equalTo(balanceLabel)
@@ -147,6 +160,7 @@ class CoinExchangeSwapTextFieldView: UIView, UIPickerViewDataSource, HasDisposeB
         
         errorField.snp.makeConstraints {
             $0.top.equalTo(maxButton.snp.bottom)
+            $0.top.equalTo(resultLabel.snp.bottom)
             $0.right.equalTo(amountTextField.snp.right)
             $0.left.greaterThanOrEqualTo(self)
         }
@@ -163,23 +177,23 @@ class CoinExchangeSwapTextFieldView: UIView, UIPickerViewDataSource, HasDisposeB
     
     
     
-    func configure(for coinType:CustomCoinType,  coins: [CustomCoinType]) {
+    func configure(for coinType:CustomCoinType, coins: [CustomCoinType]) {
         self.coins = coins
         self.coinType = coinType
     }
     
-    func configurBalance(for coinBalance: CoinBalance, coinDetails: CoinDetails ,useReserved: Bool = false, weighted: Bool = false) {
-      let cryptoAmount = useReserved ? coinBalance.reservedBalance : coinBalance.balance
-      let fiatAmount = useReserved ? coinBalance.reservedFiatBalance : coinBalance.fiatBalance
-      
-        configure(cryptoAmount: cryptoAmount, fiatAmount: fiatAmount,txFee: coinDetails.txFee ?? 0 , type: coinBalance.type, weighted: weighted)
+    func configureBalance(for coinBalance: CoinBalance, coinDetails: CoinDetails, useReserved: Bool = false, weighted: Bool = false) {
+        let cryptoAmount = useReserved ? coinBalance.reservedBalance : coinBalance.balance
+        let fiatAmount = useReserved ? coinBalance.reservedFiatBalance : coinBalance.fiatBalance
+        
+        configure(cryptoAmount: cryptoAmount, fiatAmount: fiatAmount,txFee: coinDetails.txFee, type: coinBalance.type, weighted: weighted)
         configureFee(fee: coinDetails.txFee, type: coinBalance.type)
     }
     
     private func configure(cryptoAmount: Decimal, fiatAmount: Decimal,txFee: Decimal , type: CustomCoinType, weighted: Bool = false) {
         balanceLabel.text = "\(localize(L.CoinDetails.balance)): \(cryptoAmount.coinFormatted.withCoinType(type))"
         
-        let font = UIFont.systemFont(ofSize: 16, weight: weighted ? .medium : .regular)
+        let font = UIFont.systemFont(ofSize: 12, weight: weighted ? .medium : .regular)
         balanceLabel.font = font
     }
     
@@ -189,7 +203,6 @@ class CoinExchangeSwapTextFieldView: UIView, UIPickerViewDataSource, HasDisposeB
         
         feeLabel.text = feeText
     }
-    
 }
 
 extension CoinExchangeSwapTextFieldView: UIPickerViewDelegate {
@@ -237,4 +250,3 @@ extension Reactive where Base == CoinExchangeSwapTextFieldView {
         return base.maxButton.rx.tap.asDriver()
     }
 }
-

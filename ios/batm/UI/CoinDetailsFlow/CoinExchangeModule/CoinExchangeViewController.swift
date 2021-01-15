@@ -68,7 +68,7 @@ final class CoinExchangeViewController: ModuleViewController<CoinExchangePresent
     presenter.state
         .drive(onNext:{[unowned self] state in
             guard let fromBalance = state.fromCoinBalance, let fromDetails = state.coinDetails else { return }
-            self.formView.fromCoinView.configurBalance(for: fromBalance, coinDetails: fromDetails)
+            self.formView.fromCoinView.configureBalance(for: fromBalance, coinDetails: fromDetails)
             let number = (Decimal(string: state.fromCoinAmount) ?? 0) * fromBalance.price
             self.usdView.configure(value: number)
     })
@@ -78,7 +78,7 @@ final class CoinExchangeViewController: ModuleViewController<CoinExchangePresent
     presenter.state
         .drive(onNext:{[unowned self] result in
             guard let toBalance = result.toCoinBalance, let toDetails = result.toCoinDetails else { return }
-            self.formView.toCoinView.configurBalance(for: toBalance, coinDetails: toDetails)
+            self.formView.toCoinView.configureBalance(for: toBalance, coinDetails: toDetails)
     })
     .disposed(by: disposeBag)
     

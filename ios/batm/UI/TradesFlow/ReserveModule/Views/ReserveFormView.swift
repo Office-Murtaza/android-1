@@ -20,7 +20,6 @@ final class ReserveFormView: UIView, HasDisposeBag {
   }
     
   func configure(coinType: CustomCoinType, fee: Decimal? = nil) {
-    let coinType = coinType.isETHBased ? CustomCoinType.ethereum : coinType
     coinAmountTextFieldView.configure(coinType: coinType, fee: fee)
   }
     

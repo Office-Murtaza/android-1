@@ -2,59 +2,96 @@ import UIKit
 import RxSwift
 import RxCocoa
 import MaterialComponents
+import TrustWalletCore
 
-final class CoinStakingFormView: UIView {
-  
-  let stackView: UIStackView = {
-    let stackView = UIStackView()
-    stackView.axis = .vertical
-    return stackView
-  }()
-  
-  let coinAmountTextFieldView = CoinAmountTextFieldView()
-  
-  override init(frame: CGRect) {
-    super.init(frame: frame)
+class CoinStakingFormView: UIView {
+    let stakingRateView = СoinRateView()
+    fileprivate lazy var fromCoinView: CoinExchangeSwapTextFieldView = {
+        let textFieldView = CoinExchangeSwapTextFieldView()
+        textFieldView.backgroundColor = .textfieldLightGray
+        textFieldView.coinCheckMarkImageView.image = nil
+        return textFieldView
+    }()
     
-    setupUI()
-    setupLayout()
-  }
-  
-  required init?(coder aDecoder: NSCoder) {
-    fatalError("init(coder:) has not been implemented")
-  }
-  
-  private func setupUI() {
-    translatesAutoresizingMaskIntoConstraints = false
-    
-    addSubview(stackView)
-    stackView.addArrangedSubview(coinAmountTextFieldView)
-  }
-  
-  private func setupLayout() {
-    stackView.snp.makeConstraints {
-      $0.edges.equalToSuperview()
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        setupUI()
+        setupLayout()
     }
-  }
-  
-  func configure(coinType: CustomCoinType, stakeDetails: StakeDetails, fee: Decimal?) {
-    coinAmountTextFieldView.configure(coinType: coinType, fee: fee)
-    let status = stakeDetails.status == .notExist || stakeDetails.status == .withdrawn
-    coinAmountTextFieldView.isHidden = status
-  }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    func configure(coinType: CustomCoinType, stakeDetails: StakeDetails, fee: Decimal?) {
+        fromCoinView.configure(for: coinType, coins: [coinType])
+        switch stakeDetails.status {
+        case .notExist, .withdrawn:
+            break
+        default:
+            fromCoinView.maxButton.isHidden = true
+            fromCoinView.resultLabel.text = localize(L.CoinStaking.Status.formViewStatus)
+            fromCoinView.amountTextField.isEnabled = false
+        }
+      }
+    
+    func configureRateView(fromCoin: String, toCurrency: String) {
+        stakingRateView.tildaLabelText = " = "
+        stakingRateView.trandingViewImage = UIImage(named: "local_offer")
+        stakingRateView.configure(fromCoin: fromCoin, toCoin: toCurrency)
+    }
+    
+    func configure(from error: String?) {
+        configureField(field: &fromCoinView, error: error)
+    }
+    
+    func configureBalance(for coinBalance: CoinBalance, coinDetails: CoinDetails) {
+        fromCoinView.configureBalance(for: coinBalance, coinDetails: coinDetails)
+    }
+    
+    private func setupUI() {
+        translatesAutoresizingMaskIntoConstraints = false
+        addSubviews([fromCoinView, stakingRateView])
+    }
+    
+    private func setupLayout() {
+        fromCoinView.snp.makeConstraints {
+            $0.top.left.right.equalToSuperview()
+            $0.height.equalTo(150)
+        }
+        
+        stakingRateView.snp.makeConstraints {
+            $0.height.equalTo(36)
+            $0.centerY.equalTo(fromCoinView.snp.bottom)
+            $0.left.equalToSuperview().offset(15)
+        }
+    }
+    
+    private func configureField(field: inout CoinExchangeSwapTextFieldView, error: String?) {
+        field.errorField.isHidden = error == nil
+        field.errorField.text = error
+        field.amountTextField.textColor = error == nil ? .black : .errorRed
+    }
 }
 
 extension Reactive where Base == CoinStakingFormView {
-  var coinAmountText: ControlProperty<String?> {
-    return base.coinAmountTextFieldView.rx.coinAmountText
-  }
-  var coinAmountErrorText: Binder<String?> {
-    return base.coinAmountTextFieldView.rx.coinAmountErrorText
-  }
-  var fiatAmountText: Binder<String?> {
-     return base.coinAmountTextFieldView.rx.fiatAmountText
-  }
-  var maxTap: Driver<Void> {
-    return base.coinAmountTextFieldView.rx.maxTap
-  }
+    var fromCoin: Binder<CustomCoinType> {
+        return base.fromCoinView.rx.сoin
+    }
+    
+    var fromCoinAmountText: ControlProperty<String?> {
+        return base.fromCoinView.rx.coinAmountText
+    }
+    
+    var willChangeFromCoinType: Driver<CustomCoinType> {
+        return base.fromCoinView.rx.willCointTypeChanged
+    }
+    
+    var selectFromPickerItem: Driver<CustomCoinType> {
+        return base.fromCoinView.rx.selectPickerItem
+    }
+    
+    var maxFromTap: Driver<Void> {
+        return base.fromCoinView.rx.maxTap
+    }
 }

@@ -132,13 +132,13 @@ extension MDCButton {
   }
   
   static var cancel: MDCButton {
-    let button = MDCButton.secondaryText
+    let button = MDCButton.contained
     button.setTitle(localize(L.Shared.Button.cancel), for: .normal)
     return button
   }
   
   static var withdraw: MDCButton {
-    let button = MDCButton.secondaryText
+    let button = MDCButton.contained
     button.setTitle(localize(L.CoinStaking.Button.withdraw), for: .normal)
     return button
   }
