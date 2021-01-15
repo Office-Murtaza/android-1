@@ -3,18 +3,20 @@ package com.belco.server.rest;
 import com.belco.server.dto.SubmitTransactionDTO;
 import com.belco.server.model.Response;
 import com.belco.server.model.TransactionType;
-import com.belco.server.service.TransactionService;
 import com.belco.server.service.CoinService;
+import com.belco.server.service.TransactionService;
 import org.apache.commons.lang.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1")
 public class TransactionController {
 
-    @Autowired
-    private TransactionService transactionService;
+    private final TransactionService transactionService;
+
+    public TransactionController(TransactionService transactionService) {
+        this.transactionService = transactionService;
+    }
 
     @GetMapping("/user/{userId}/coin/{coin}/transaction-history")
     public Response getTransactionHistory(@PathVariable Long userId, @PathVariable CoinService.CoinEnum coin, @RequestParam(required = false) Integer index) {

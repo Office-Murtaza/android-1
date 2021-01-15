@@ -17,6 +17,7 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.bulk.BulkWriteResult;
 import com.mongodb.client.model.FindOneAndUpdateOptions;
 import com.mongodb.client.model.UpdateOneModel;
+import com.mongodb.client.model.UpdateOptions;
 import lombok.Getter;
 import org.apache.commons.lang3.StringUtils;
 import org.bson.Document;
@@ -316,7 +317,7 @@ public class GethService {
             mongo.getCollection(ETH_TX_COLL).find(new Document("status", TransactionStatus.PENDING.getValue()).append("timestamp", new Document("$gte", System.currentTimeMillis() - WATCH_TIME))).limit(10).into(new ArrayList<>()).stream().forEach(d -> {
                 org.web3j.protocol.core.methods.response.Transaction tx = getTransactionByHash(d.getString("txId"));
 
-                if(tx != null) {
+                if (tx != null) {
                     fetchEthTransaction(tx, System.currentTimeMillis(), ethTxs, tokenTxs);
                 }
             });
@@ -555,18 +556,23 @@ public class GethService {
                         TransactionStatus status = getTransactionStatus(receipt);
 
                         if (amount.compareTo(BigDecimal.ZERO) == 0) {
-                            Document tokenDoc = fetchTokenTransaction(txId, blockNumber, timestamp, fee, status, receipt);
+                            Document tokenDoc = fetchTokenTransaction(receipt);
 
                             if (tokenDoc != null) {
+                                tokenDoc.append("txId", txId);
+                                tokenDoc.append("blockNumber", blockNumber);
+                                tokenDoc.append("fee", fee);
+                                tokenDoc.append("status", status.getValue());
+                                tokenDoc.append("blockTime", timestamp);
+                                tokenDoc.append("timestamp", System.currentTimeMillis());
+
                                 fromAddress = Util.nvl(fromAddress, tokenDoc.getString("fromAddress"));
                                 toAddress = Util.nvl(toAddress, tokenDoc.getString("toAddress"));
 
                                 tokenDoc.put("fromAddress", fromAddress);
                                 tokenDoc.put("toAddress", toAddress);
 
-                                UpdateOneModel tokenUpdate = new UpdateOneModel(new Document("txId", tokenDoc.getString("txId")), new Document("$set", tokenDoc));
-                                tokenUpdate.getOptions().upsert(true);
-
+                                UpdateOneModel tokenUpdate = new UpdateOneModel(new Document("txId", tokenDoc.getString("txId")), new Document("$set", tokenDoc), new UpdateOptions().upsert(true));
                                 tokenTxs.add(tokenUpdate);
                             }
                         }
@@ -581,9 +587,7 @@ public class GethService {
                                 .append("blockTime", timestamp)
                                 .append("timestamp", System.currentTimeMillis());
 
-                        UpdateOneModel update = new UpdateOneModel(new Document("txId", doc.getString("txId")), new Document("$set", doc));
-                        update.getOptions().upsert(true);
-
+                        UpdateOneModel update = new UpdateOneModel(new Document("txId", doc.getString("txId")), new Document("$set", doc), new UpdateOptions().upsert(true));
                         ethTxs.add(update);
                     }
                 }
@@ -593,7 +597,7 @@ public class GethService {
         }
     }
 
-    private Document fetchTokenTransaction(String txId, Integer blockNumber, Long blockTime, BigDecimal fee, TransactionStatus status, TransactionReceipt receipt) {
+    private Document fetchTokenTransaction(TransactionReceipt receipt) {
         try {
             if (receipt.getLogs().size() > 0) {
                 Log log = receipt.getLogs().get(0);
@@ -603,30 +607,18 @@ public class GethService {
                     String fromAddressToken = convertAddress32BytesTo20Bytes(catmContractAddress, log.getTopics().get(1));
                     String toAddressToken = convertAddress32BytesTo20Bytes(catmContractAddress, log.getTopics().get(2));
 
-                    return new Document("txId", txId)
-                            .append("blockNumber", blockNumber)
-                            .append("fromAddress", fromAddressToken)
+                    return new Document("fromAddress", fromAddressToken)
                             .append("toAddress", toAddressToken)
-                            .append("amount", amountToken)
-                            .append("fee", fee)
-                            .append("status", status.getValue())
-                            .append("blockTime", blockTime)
+                            .append("amount", amountToken.divide(ETH_DIVIDER).stripTrailingZeros())
                             .append("timestamp", System.currentTimeMillis())
                             .append("token", ERC20.CATM.name());
-                }
-
-                if (usdtContractAddress.equalsIgnoreCase(log.getAddress())) {
+                } else if (usdtContractAddress.equalsIgnoreCase(log.getAddress())) {
                     String fromAddressToken = convertAddress32BytesTo20Bytes(catmContractAddress, log.getTopics().get(1));
                     String toAddressToken = convertAddress32BytesTo20Bytes(catmContractAddress, log.getTopics().get(2));
 
-                    return new Document("txId", txId)
-                            .append("blockNumber", blockNumber)
-                            .append("fromAddress", fromAddressToken)
+                    return new Document("fromAddress", fromAddressToken)
                             .append("toAddress", toAddressToken)
-                            .append("amount", amountToken)
-                            .append("fee", fee)
-                            .append("status", status.getValue())
-                            .append("blockTime", blockTime)
+                            .append("amount", amountToken.divide(USDT_DIVIDER).stripTrailingZeros())
                             .append("timestamp", System.currentTimeMillis())
                             .append("token", ERC20.USDT.name());
                 }
@@ -635,13 +627,7 @@ public class GethService {
             e.printStackTrace();
         }
 
-        return new Document("txId", txId)
-                .append("blockNumber", blockNumber)
-                .append("fee", fee)
-                .append("status", status.getValue())
-                .append("blockTime", blockTime)
-                .append("timestamp", System.currentTimeMillis())
-                .append("token", ERC20.CATM.name());
+        return null;
     }
 
     private BigDecimal parseTokenAmount(String data) {
@@ -649,7 +635,7 @@ public class GethService {
             return BigDecimal.ZERO;
         }
 
-        return new BigDecimal(Numeric.toBigInt(data)).divide(ETH_DIVIDER).stripTrailingZeros();
+        return new BigDecimal(Numeric.toBigInt(data));
     }
 
     private Integer parseBlockNumber(org.web3j.protocol.core.methods.response.Transaction tx) {
