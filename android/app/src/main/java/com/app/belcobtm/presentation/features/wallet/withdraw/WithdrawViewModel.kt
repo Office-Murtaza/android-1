@@ -20,7 +20,6 @@ class WithdrawViewModel(
     private val getCoinDetailsUseCase: GetCoinDetailsUseCase,
     private val withdrawUseCase: WithdrawUseCase,
     private val minMaxCoinValueProvider: MinMaxCoinValueProvider,
-    private val coinCodeProvider: CoinCodeProvider,
     private val amountCoinValidator: AmountCoinValidator
 ) : ViewModel() {
 
@@ -75,7 +74,7 @@ class WithdrawViewModel(
 
     fun getReservedBalanceCoin(): Double = fromCoinDataItem.reservedBalanceCoin
 
-    fun getCoinCode(): String = coinCodeProvider.getCoinCode(fromCoinDataItem)
+    fun getCoinCode(): String = coinCode
 
     fun validateAmount(amount: Double): ValidationResult =
         amountCoinValidator.validateBalance(

@@ -119,7 +119,7 @@ val viewModelModule = module {
         SendGiftViewModel(get(), get(), get(), get(), get(), get(), get(), get<PhoneNumberValidator>())
     }
     viewModel { (coinCode: String) ->
-        WithdrawViewModel(coinCode, get(), get(), get(), get(), get(), get())
+        WithdrawViewModel(coinCode, get(), get(), get(), get(), get())
     }
     viewModel { (coinCode: String) ->
         DepositViewModel(coinCode, get())
