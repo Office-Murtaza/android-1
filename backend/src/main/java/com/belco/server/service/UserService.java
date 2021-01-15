@@ -173,19 +173,17 @@ public class UserService implements UserDetailsService {
         User user = findById(userId);
 
         if (user != null) {
-            Unlink unlink = unlinkRep.findByUserId(userId);
+            user.setNotificationsToken(null);
+            user = save(user);
+
+            Unlink unlink = unlinkRep.findFirstByUser(user);
 
             if (unlink == null) {
                 unlink = new Unlink();
                 unlink.setUser(user);
 
-                unlinkRep.save(unlink);
+                return unlinkRep.save(unlink);
             }
-
-            user.setNotificationsToken(null);
-            save(user);
-
-            return unlink;
         }
 
         return null;
@@ -535,8 +533,8 @@ public class UserService implements UserDetailsService {
         referralRep.save(new Referral(RandomStringUtils.randomAlphanumeric(10).toUpperCase(), 0, BigDecimal.ZERO, user));
     }
 
-    public void save(User user) {
-        userRep.save(user);
+    public User save(User user) {
+        return userRep.save(user);
     }
 
     private void addTransactionLimit(IdentityKycReview review, BigDecimal newTxLimit) {

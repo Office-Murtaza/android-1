@@ -5,6 +5,7 @@ import com.belco.server.entity.Identity;
 import com.belco.server.entity.TradeRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+
 import java.util.List;
 
 public interface TradeRequestRep extends JpaRepository<TradeRequest, Long> {

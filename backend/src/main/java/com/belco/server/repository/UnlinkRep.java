@@ -1,9 +1,10 @@
 package com.belco.server.repository;
 
-import org.springframework.data.jpa.repository.JpaRepository;
 import com.belco.server.entity.Unlink;
+import com.belco.server.entity.User;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface UnlinkRep extends JpaRepository<Unlink, Long> {
 
-    Unlink findByUserId(Long userId);
+    Unlink findFirstByUser(User user);
 }

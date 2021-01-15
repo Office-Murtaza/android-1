@@ -6,7 +6,5 @@ import java.util.List;
 
 public interface CoinRep extends JpaRepository<Coin, Long> {
 
-    Coin findCoinByCode(String code);
-
     List<Coin> findAllByOrderByIdxAsc();
 }
