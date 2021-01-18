@@ -53,9 +53,6 @@ public class UserService implements UserDetailsService {
     private UserRep userRep;
 
     @Autowired
-    private UnlinkRep unlinkRep;
-
-    @Autowired
     private IdentityRep identityRep;
 
     @Autowired
@@ -169,24 +166,16 @@ public class UserService implements UserDetailsService {
         return false;
     }
 
-    public Unlink unlinkUser(Long userId) {
+    public boolean unlinkUser(Long userId) {
         User user = findById(userId);
 
         if (user != null) {
             user.setNotificationsToken(null);
-            user = save(user);
+            return save(user) != null;
 
-            Unlink unlink = unlinkRep.findFirstByUser(user);
-
-            if (unlink == null) {
-                unlink = new Unlink();
-                unlink.setUser(user);
-
-                return unlinkRep.save(unlink);
-            }
         }
 
-        return null;
+        return false;
     }
 
     public List<UserCoin> save(List<UserCoin> list) {

@@ -170,13 +170,7 @@ public class GethService {
                 dto.setType(TransactionType.getType(fromAddress, toAddress, address));
                 dto.setStatus(TransactionStatus.valueOf(d.getInteger("status")));
                 dto.setCryptoAmount(d.get("amount", Decimal128.class).bigDecimalValue());
-
-                try {
-                    dto.setCryptoFee(d.get("fee", Decimal128.class).bigDecimalValue());
-                } catch (Exception e) {
-                    dto.setCryptoFee(BigDecimal.ZERO);
-                }
-
+                dto.setCryptoFee(extractFee(d));
                 dto.setFromAddress(fromAddress);
                 dto.setToAddress(toAddress);
                 dto.setDate1(new Date(d.getLong("blockTime")));
@@ -188,6 +182,16 @@ public class GethService {
         });
 
         return map;
+    }
+
+    private static BigDecimal extractFee(Document d) {
+        try {
+            if (d.containsKey("fee")) {
+                return d.get("fee", Decimal128.class).bigDecimalValue();
+            }
+        } catch (Exception e) {}
+
+        return BigDecimal.ZERO;
     }
 
     private static TransactionDetailsDTO getTransactionFromDB(String coll, BasicDBObject query, String address, String explorerUrl) {
@@ -208,7 +212,7 @@ public class GethService {
                 dto.setCryptoAmount(txDoc.get("amount", Decimal128.class).bigDecimalValue());
                 dto.setFromAddress(fromAddress);
                 dto.setToAddress(toAddress);
-                dto.setCryptoFee(txDoc.get("fee", Decimal128.class).bigDecimalValue());
+                dto.setCryptoFee(extractFee(txDoc));
                 dto.setStatus(TransactionStatus.valueOf(txDoc.getInteger("status")));
                 dto.setDate2(new Date(txDoc.getLong("blockTime")));
 

@@ -2,7 +2,6 @@ package com.belco.server.rest;
 
 import com.belco.server.dto.*;
 import com.belco.server.entity.Token;
-import com.belco.server.entity.Unlink;
 import com.belco.server.entity.User;
 import com.belco.server.model.Response;
 import com.belco.server.repository.TokenRep;
@@ -213,9 +212,7 @@ public class UserController {
     @GetMapping("/user/{userId}/unlink")
     public Response unlink(@PathVariable Long userId) {
         try {
-            Unlink unlink = userService.unlinkUser(userId);
-
-            return Response.ok(unlink != null);
+            return Response.ok(userService.unlinkUser(userId));
         } catch (Exception e) {
             e.printStackTrace();
             return Response.serverError();
